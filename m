@@ -1,124 +1,225 @@
-Return-Path: <stable+bounces-185878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D64BE175F
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 06:59:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5D4BE17D7
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 07:05:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 41BF84E8C41
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 04:59:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CB203AD0D7
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 05:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5B021CC44;
-	Thu, 16 Oct 2025 04:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B75221714;
+	Thu, 16 Oct 2025 05:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="gmU1P8B4"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BPE3gqlm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F75218592
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 04:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B022A1CF
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 05:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760590750; cv=none; b=p6D/wVF6qIHRJjihJkFgsRJaKjFmSDJBb9G19ZvFGmBFoCah8DYiEbrylUOJ+Iy8MWbe0tt14AbzU8ag+MCX7iYhxb/FCiuwc+opYgHz4Ov6Ly9Nk62qgBn8UvnLJnseN2PDZLDnCcCmDF2Fyg9VBc9cwvxMz5KvTSTeJ4G43AI=
+	t=1760591137; cv=none; b=dM3PH910dFpjpZWLXrxcp3B9/UPhZ/2TuOQqlqp5/3K+ySibF2szEppAJnkr+RkWbrIWaQ7EZuArJef98ivXdcGam2W1WB4RH/+9i9QKodGC3Kq0jdVEZUhn/Pi+FeKLTglFOgiL1b7MJ49qUp5z4wlvcUuMFNQEnQlsxhpVmKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760590750; c=relaxed/simple;
-	bh=ojVgl1LVryfcqgJbjwS21DlJ4kE/86MdW49ExwHxtas=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DS0f0HwoYQ0yR3OzQKA9gJSKMx4xk/WrG4zqxNGYHH1wjjenEy4tZL3WsXpzpfC0omvpDm1rops2G9TBUKvKILv5L3pA7Mik+TUAyBb9uVIkhgCL7bfKKNl+wNay49xLtv3PjIk4rO0Dr+6Hi01fLVDWahMOOxcYp9O8m3CdAKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=gmU1P8B4; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-789fb76b466so304245b3a.0
-        for <stable@vger.kernel.org>; Wed, 15 Oct 2025 21:59:08 -0700 (PDT)
+	s=arc-20240116; t=1760591137; c=relaxed/simple;
+	bh=v/niRFXGHLbuHdz9SVJ/KCn6aLK8QZaKQTmiLUVJvaw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=GoWcpv8tLyOGKUFG/Rj6b42xbHu4/uhRXo4xMf3FsaNYiK0hMa5oNDeoORRs+EXXCZDDCSKZ22lAuK/zjDD2H6hPv4YOWaJHCXACokJXt/aG9Ze64pznB7M1FpjFp+8MDoq5jN6Wfb7ed5YO9clotVWWZJBvWkHiSlo0jtK+ADA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BPE3gqlm; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-780fe76f457so3532877b3.0
+        for <stable@vger.kernel.org>; Wed, 15 Oct 2025 22:05:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1760590748; x=1761195548; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=C7IQhiry+tJsODKqoRHwSfbwUoBnbdX2eSRUQa901FI=;
-        b=gmU1P8B4+3LulwylktX7K4F/IfIGGl1GmoYE/5Lg1i0SYJHXEu8J9GVbvU1zwLTTU6
-         +Zx6HKNNQzRdWQfw4mDhVjhZ6/wwW0TQujFdJwiWtyPffgu59L6pH5POJ4gtQQjYwefB
-         fOugj8gu5udheO1bfiZEtdxY56Z5GwV026dzk=
+        d=google.com; s=20230601; t=1760591134; x=1761195934; darn=vger.kernel.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SL78+SZbXELe5OjpiYZ40otsTW6VBbAoBUm1tT/or+E=;
+        b=BPE3gqlmQf+4JlGxMT7EW2MW0GM5EFCnc6GDMGjXh/G5oRjtztsh9oMVU00h20CBqQ
+         IyY1rF330o3VZzVb7qjj6NltbD9EvEYrxoqcF2fQDhMyFzsGcBmTE7WObD6P+viqa85U
+         v5QBqzupTD4aoxHlK1kEsFk+D3AyHMYoP9S0yV5tiPXymD82uR4Fwh67Uj98fbrs4wsd
+         xU5Ao4N24rPCeJVVnmbXKrX1wfHcsRRJdCEjbD6CGEDlY2KELLYAG/P0gp01BWBj5k/G
+         31dAxzlFE6XmcxHpAYtcr1M+LHdyskdXQovGGS6rqX7n0/+Qj7NUDYEAuTJYrA2lbzVO
+         ZasQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760590748; x=1761195548;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C7IQhiry+tJsODKqoRHwSfbwUoBnbdX2eSRUQa901FI=;
-        b=EHBI4HUNNUaw0sSxpbqjR1qTBclVI6aO4Fttuyjkgv2Uwo6sDh/ai8MBfB/1y7qyCm
-         iPgNjbzwPK5cLjo2uLiqAABIUatYmMjouKJRZSjgp+YHWKrcGHxjPDoGsU0QyBlfiQ3h
-         vOpm+zk5Q9/exFwzznYgdXEQmwRcXZpLLs5uxwVvYd4kaW2MVZdnVZbMJouoa0hJAY2S
-         66xoVU2uioiRscguf1QXW1YZSlqKeA4liEjQb8loShyJiJsjWB+u5jW3q8/rAoN45oJL
-         33xPFG/D6ANAxskRskdCBKFR+lyy4KSjCtT3j27cWKsYjZTKU1sDZsyVK5CtuR8DBOso
-         P2wg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQLnzgyAmb5DTtawlLe7DGT4RBGDN0AK+HWvSOqyDUqUVJOQhHPxsEjls71csIR1cAhmOhgi4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKvijz9ZT14pZSKlkAj/+sutWGfoKPlJ99WjpjQmjJKNXfRQks
-	dlNqsRbNoGozT8CaKGPnvcEYySXmc3VgyP1rKYxRORYXusHCEfO8nWIRSHtEI5lgog==
-X-Gm-Gg: ASbGncsNQL04RzNrrscrRqexZIZ9SGvNhlaYMdTM3X2iQKt2VzXc3jU6VY6msJdeNmj
-	UBP40NOQxXszO+FijuS1UeQkL6HrfCYsBi1e4R98PltjmzjS8szwHpsKc3dyAICSRHa+B7BITwP
-	wEdJf5xcvHbWjfje/kwy/abgYRH7/1REUS0FwuTe3QS+kFS5EpVnFc0tjSPitZcao0TJBQf3uuI
-	x+nCxPbxinnTmcE0mzS8quXO3bjg037Mm1/0+TURJsHAwWdREmZp5x1dq2gnsgCH1FzyDkItHc8
-	0XXpBZgTnBKjvXwFfqHmtfdoz0rBRQwBLnuBGqGFpGdCS3kHsAdnoFZZ1kj/XZ19Rj3sJ24hG5l
-	W3MsHd4Vc7AmGQacCXqY0yxL73n+utyFGJITedSf22wbFDqTZ6uvUuOYy9rmgYy69dPg3RqmPSo
-	zyoWFjOL+V6nKVjA==
-X-Google-Smtp-Source: AGHT+IF8i59pqIJ10iUVBW21MsNsjP0W/N9hc5HRpbWDVehk+KejBdGe0d9HU1R+rNjZ98P24Lm3Rw==
-X-Received: by 2002:a05:6a20:1591:b0:334:8c6b:f0b3 with SMTP id adf61e73a8af0-3348c6c1916mr5922821637.15.1760590748070;
-        Wed, 15 Oct 2025 21:59:08 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:18d7:f088:3b2a:6563])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992bc18c96sm20698225b3a.37.2025.10.15.21.59.05
+        d=1e100.net; s=20230601; t=1760591134; x=1761195934;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SL78+SZbXELe5OjpiYZ40otsTW6VBbAoBUm1tT/or+E=;
+        b=b9gL1qDtMdjY5gXbWFpyU/Ubjoee3Zgf0LfLDg/TKS8rtVjoqDest18Kh4zIgF16ac
+         nkgB6ripP5jtW4QQcSYAiRfrzktx41x6pq0+Vjo80RMZ8lrlK/o+uEWYzhF/6LeRoLV4
+         4mDrmeD7aREs12ZuEuytrWX4QfhxqwBBvH9uwlc5us1ylo9af9vKD5S1gv4TSGc096fm
+         3YQtyENKgRUL18SJwQcO5Y0YHwVIVYHfpF6o5pdZqGLiQl0bJ3UoacNvRzOy5+YYAezG
+         k+Pz6v/BSFIQFLxC1yj7j4QZ0FNAAf/U5OJvn/8JoE2U9R3lSPPDCbglAINt9gZN++hS
+         nAPA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPbnKsd2UKWeLryttLWrHQ96BJkhgpfbIgtnQkgxmtgE4MmLSC7IQFXAdQQ6WW6rwfdht6ATE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoFdi4uNyuRoxE9ngymPeGdjt4IzNr9z3YKPe0rM/EPpOcWVc1
+	75cxQGEKtOBH4+2uda3pTosAQSFqAAfcL0FCdTYBrktMtZHCuoVN7Jp7ZByTnWz8KQ==
+X-Gm-Gg: ASbGnctXSRjiBkviBOeKw1xrsxC1ygZ9HL/e8qpMQBUmcIYkRJ61M8WrlD2KeekL16X
+	ax+i8CwVobfnGZaLN6KWnqh73lweRMevl8Z36jNvlt7F+7vcHnkY/gavEAlk0unnre0tuHh5aJi
+	OISaY+i2xXPjhVOX5swHpT+FT/tTlu1Z6wGpTnRDlqWCnSz1gnwbEvnmfzyBB3Qj5aCUlb5h9oV
+	SJ/g3wrDxqsA/lUQwGCMT/S2r2dQ9Y0t60SKnr+ZUPWbbuj8R9rUxr3vv5qOXTJ1CnzORKeAyOm
+	tAs4x+nlstx+ZfJyAgwFdLxVw6GOLa3tReYApz59haXeXlltntIUR3a2zCUMgkaLDDzFn/lyDga
+	p4rloURjRga5LI7PdUvI9e1JwniL9ElANHxXnUnOQBwzLlifMx25QjM0OpGGPG+HRVsViZ31Bgl
+	5mp3z6M53yYcIQfi2zLWknZ5yBqrFRDr9+mfRhfHAkhF4e2DERbvDWaPTeY97wNmyji7lkOA6/y
+	AxBsCcJD5cJeJo=
+X-Google-Smtp-Source: AGHT+IGKHjTCfZs9WliaOHICesM+L1X3EuoBynLJInRo210xgEeIFS6mewEtS3BfqWgQnxUg9wNNRQ==
+X-Received: by 2002:a05:690c:670b:b0:783:116b:fc5 with SMTP id 00721157ae682-783116b1024mr9954377b3.33.1760591134146;
+        Wed, 15 Oct 2025 22:05:34 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7828d7b9deesm4928007b3.26.2025.10.15.22.05.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 21:59:07 -0700 (PDT)
-Date: Thu, 16 Oct 2025 13:59:02 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Doug Smythies <dsmythies@telus.net>
-Cc: 'Sergey Senozhatsky' <senozhatsky@chromium.org>, 
-	"'Rafael J. Wysocki'" <rafael@kernel.org>, 'Christian Loehle' <christian.loehle@arm.com>, 
-	"'Rafael J. Wysocki'" <rafael.j.wysocki@intel.com>, 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>, 
-	'Artem Bityutskiy' <artem.bityutskiy@linux.intel.com>, 'Sasha Levin' <sashal@kernel.org>, 
-	'Daniel Lezcano' <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	'Tomasz Figa' <tfiga@chromium.org>, stable@vger.kernel.org
-Subject: Re: stable: commit "cpuidle: menu: Avoid discarding useful
- information" causes regressions
-Message-ID: <ewahdjfgiog4onnrd2i4vg4ucbrchesrkksrqqpr7apyy6b76p@uznmxhbcwctw>
-References: <08529809-5ca1-4495-8160-15d8e85ad640@arm.com>
- <2zreguw4djctgcmvgticnm4dctcuja7yfnp3r6bxaqon3i2pxf@thee3p3qduoq>
- <8da42386-282e-4f97-af93-4715ae206361@arm.com>
- <nd64xabhbb53bbqoxsjkfvkmlpn5tkdlu3nb5ofwdhyauko35b@qv6in7biupgi>
- <49cf14a1-b96f-4413-a17e-599bc1c104cd@arm.com>
- <CAJZ5v0hGu-JdwR57cwKfB+a98Pv7e3y36X6xCo=PyGdD2hwkhQ@mail.gmail.com>
- <7ctfmyzpcogc5qug6u3jm2o32vy2ldo3ml5gsoxdm3gyr6l3fc@jo7inkr3otua>
- <001601dc3d85$933dd540$b9b97fc0$@telus.net>
- <sw4p2hk4ofyyz3ncnwi3qs36yc2leailqmal5kksozodkak2ju@wfpqlwep7aid>
- <001601dc3ddd$a19f9850$e4dec8f0$@telus.net>
+        Wed, 15 Oct 2025 22:05:32 -0700 (PDT)
+Date: Wed, 15 Oct 2025 22:05:20 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Kalesh Singh <kaleshsingh@google.com>
+cc: Hugh Dickins <hughd@google.com>, akpm@linux-foundation.org, 
+    minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com, 
+    Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
+    kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org, 
+    SeongJae Park <sj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+    Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+    Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+    Jann Horn <jannh@google.com>, Steven Rostedt <rostedt@goodmis.org>, 
+    Masami Hiramatsu <mhiramat@kernel.org>, 
+    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+    Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+    Juri Lelli <juri.lelli@redhat.com>, 
+    Vincent Guittot <vincent.guittot@linaro.org>, 
+    Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+    Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+    Valentin Schneider <vschneid@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+    linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] mm: fix off-by-one error in VMA count limit
+ checks
+In-Reply-To: <CAC_TJvdLxPRC5r+Ae+h2Zmc68B5+s40+413Xo4SjvXH2x2F6hg@mail.gmail.com>
+Message-ID: <af0618c0-03c5-9133-bb14-db8ddb72b8de@google.com>
+References: <20251013235259.589015-1-kaleshsingh@google.com> <20251013235259.589015-2-kaleshsingh@google.com> <144f3ee6-1a5f-57fc-d5f8-5ce54a3ac139@google.com> <CAC_TJvdLxPRC5r+Ae+h2Zmc68B5+s40+413Xo4SjvXH2x2F6hg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <001601dc3ddd$a19f9850$e4dec8f0$@telus.net>
+Content-Type: multipart/mixed; boundary="-1463770367-1513627236-1760591132=:18627"
 
-On (25/10/15 07:11), Doug Smythies wrote:
-> >> What thermal limiting methods are being used? Is idle injection being used? Or CPU frequency limiting or both.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+---1463770367-1513627236-1760591132=:18627
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+
+On Tue, 14 Oct 2025, Kalesh Singh wrote:
+> On Mon, Oct 13, 2025 at 11:28=E2=80=AFPM Hugh Dickins <hughd@google.com> =
+wrote:
 > >
-> > How do I find out?
-> 
-> From the turbostat data you do not appear to be using the TCC offset method. This line:
-> 
-> cpu0: MSR_IA32_TEMPERATURE_TARGET: 0x0f690080 (105 C)
-> 
-> whereas on my test computer, using the TCC offset method, shows:
-> 
->  cpu0: MSR_IA32_TEMPERATURE_TARGET: 0x14641422 (80 C) (100 default - 20 offset)
-> 
-> To check if thermal is being used do:
-> 
-> systemctl status thermal
+> > Sorry for letting you go so far before speaking up (I had to test what
+> > I believed to be true, and had hoped that meanwhile one of your many
+> > illustrious reviewers would say so first, but no): it's a NAK from me.
+> >
+> > These are not off-by-ones: at the point of these checks, it is not
+> > known whether an additional map/vma will have to be added, or the
+> > addition will be merged into an existing map/vma.  So the checks
+> > err on the lenient side, letting you get perhaps one more than the
+> > sysctl said, but not allowing any more than that.
+> >
+> > Which is all that matters, isn't it? Limiting unrestrained growth.
+> >
+> > In this patch you're proposing to change it from erring on the
+> > lenient side to erring on the strict side - prohibiting merges
+> > at the limit which have been allowed for many years.
+> >
+> > Whatever one thinks about the merits of erring on the lenient versus
+> > erring on the strict side, I see no reason to make this change now,
+> > and most certainly not with a Fixes Cc: stable. There is no danger
+> > in the current behaviour; there is danger in prohibiting what was
+> > allowed before.
+> >
+> > As to the remainder of your series: I have to commend you for doing
+> > a thorough and well-presented job, but I cannot myself see the point in
+> > changing 21 files for what almost amounts to a max_map_count subsystem.
+> > I call it misdirected effort, not at all to my taste, which prefers the
+> > straightforward checks already there; but accept that my taste may be
+> > out of fashion, so won't stand in the way if others think it worthwhile=
+=2E
+>=20
+> Hi Hugh,
+>=20
+> Thanks for the detailed review and for taking the time to test the behavi=
+or.
+>=20
+> You've raised a valid point. I wasn't aware of the history behind the
+> lenient check for merges. The lack of a comment, like the one that
+> exists for exceeding the limit in munmap(), led me to misinterpret
+> this as an off-by-one bug. The convention makes sense if we consider
+> potential merges.
 
-chromeos doesn't use systemd.
-A quick ps grep doesn't show any thermal-related processes.
+Yes, a comment there would be helpful (and I doubt it's worth more
+than adding a comment); but I did not understand at all, Liam's
+suggestion for the comment "to state that the count may not change".
+
+>=20
+> If it was in-fact the intended behavior, then I agree we should keep
+> it lenient. It would mean though, that munmap() being able to free a
+> VMA if a split is required (by permitting exceeding the limit by 1)
+> would not work in the case where we have already exceeded the limit. I
+> find this to be inconsistent but this is also the current behavior ...
+
+You're saying that once we go one over the limit, say with a new mmap,
+an munmap check makes it impossible to munmap that or any other vma?
+
+If that's so, I do agree with you, that's nasty, and I would hate any
+new code to behave that way.  In code that's survived as long as this
+without troubling anyone, I'm not so sure: but if it's easily fixed
+(a more lenient check at the munmap end?) that would seem worthwhile.
+
+Ah, but reading again, you say "if a split is required": I guess
+munmapping the whole vma has no problem; and it's fine for a middle
+munmap, splitting into three before munmapping the middle, to fail.
+I suppose it would be nicer if munmaping start or end succeeeded,
+but I don't think that matters very much in this case.
+
+>=20
+> I will drop this patch and the patch that introduces the
+> vma_count_remaining() helper, as I see your point about it potentially
+> being unnecessary overhead.
+>=20
+> Regarding your feedback on the rest of the series, I believe the 3
+> remaining patches are still valuable on their own.
+>=20
+>  - The selftest adds a comprehensive tests for VMA operations at the
+> sysctl_max_map_count limit. This will self-document the exact behavior
+> expected, including the leniency for potential merges that you
+> highlighted, preventing the kind of misunderstanding that led to my
+> initial patch.
+>=20
+>  - The rename of mm_struct->map_count to vma_count, is a
+> straightforward cleanup for code clarity that makes the purpose of the
+> field more explicit.
+>=20
+>  - The tracepoint adds needed observability for telemetry, allowing us
+> to see when processes are failing in the field due to VMA count limit.
+>=20
+> The  selftest, is what  makes up a large portion of the diff you
+> sited, and with vma_count_remaining() gone the series will not touch
+> nearly as many files.
+>=20
+> Would this be an acceptable path forward?
+
+Possibly, if others like it: my concern was to end a misunderstanding
+(I'm generally much too slow to get involved in cleanups).
+
+Though given that the sysctl is named "max_map_count", I'm not very
+keen on renaming everything else from map_count to vma_count
+(and of course I'm not suggesting to rename the sysctl).
+
+Hugh
+---1463770367-1513627236-1760591132=:18627--
 
