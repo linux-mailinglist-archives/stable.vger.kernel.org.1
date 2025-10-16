@@ -1,198 +1,108 @@
-Return-Path: <stable+bounces-186020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CA4BE35D4
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 14:28:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1ECDBE3622
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 14:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76A934E9B06
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 12:28:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A083454699C
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 12:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B15F31196A;
-	Thu, 16 Oct 2025 12:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8F831AF1E;
+	Thu, 16 Oct 2025 12:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="kWSlquUL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WK6K/nCD"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA60A31AF00
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 12:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706C32E36F2
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 12:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760617719; cv=none; b=u0H+2fqZ6UDXbkl9jjbIS+od7PunFT7RLgAjX42fxxG83OlJZewwgYz9v8imMM13ZoEjhgScMnDAQLnXaaTPtJM0F4jduFZBcU5QU7phTRA9Dld3BQv/KbLIJA4prubKrtfTvpqxUP3om6LW4FIF1wIYOtpcKouQ9SzAYeAW7MM=
+	t=1760617980; cv=none; b=fL1O7jiwKFHX2a45YwBh2F5xtuFjsDGitBWS4S+YT6ONT7He9Y0+pkw52y6yS3N4HEAZj/ER4iQNu2cEc5qUHMWOSc3/uM7WhPRg+kscaibNtoDVlM1r9oqHlyUkEinrRk4gw7TdhH8pmFcOR7T8UVm8zXi1YdEah9CzQxF57dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760617719; c=relaxed/simple;
-	bh=uAydum4T/ok01iU7aQpiCpTdf/Ug15SijFE0AvMevcQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZRPPNO034kHmHiJnYXqmo6pLXG7mCJYAI1KpKLbk1T6JI6eEf+T7LMtWESqJ9G4qg+wQ9QPzkJYF5D7ejolFujvArtb8E9QolFSna4vEUsWvAFWzIcdJN+g13TrWfatubZtO8qs1cPXN1QWc4HCe5BJjfnYhdZX0p0U93XkaAXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=kWSlquUL; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4cnS0w5vtwz9tVG;
-	Thu, 16 Oct 2025 14:28:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760617712; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jeF7R+P9lKwA0xVRJFuEYPzxNZB2FBffSFs2Uv8RH7o=;
-	b=kWSlquUL3EcYsjIUaDPRVRGdP0NHIR617+NOH9x0oP3LKJGoRYoRjJVsFHliXmFGWdnlv4
-	N6uYeub4HOR8IpI5b+ITdnXFXXpJ++iKEis31iy2MJ9mNnLt31IFQQPZgUJf7WsvfHRmdA
-	o4qoHfcLLETYRL7/NGZ1joNZOdYfRIdzg0NrT6QElG+IbPgJ76iHZmqXQpN5LgsQkp9AMh
-	hxpVz8zisG6nwfrZGG2UH00MDeuG0WwauRjOdvbdm+iwbNY+xrmyFhg/YspIlAU5VUhjNS
-	H5ivAC5SZwZp4FKZjgn/nXwStF5sLTRoOUgtfuQ0f48hbIzdtWq0Aawm+J0jgQ==
-Message-ID: <035d823a40424adfc2861fe99c4eb1a2d606e923.camel@mailbox.org>
-Subject: Re: [PATCH v3] drm/sched: Fix potential double free in
- drm_sched_job_add_resv_dependencies
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
-	dri-devel@lists.freedesktop.org
-Cc: kernel-dev@igalia.com, Dan Carpenter <dan.carpenter@linaro.org>, 
- Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Rob Clark
- <robdclark@chromium.org>, Daniel Vetter <daniel.vetter@ffwll.ch>, Matthew
- Brost <matthew.brost@intel.com>, Danilo Krummrich <dakr@kernel.org>,
- Philipp Stanner <phasta@kernel.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <ckoenig.leichtzumerken@gmail.com>, stable@vger.kernel.org
-Date: Thu, 16 Oct 2025 14:28:28 +0200
-In-Reply-To: <20251015084015.6273-1-tvrtko.ursulin@igalia.com>
-References: <20251015084015.6273-1-tvrtko.ursulin@igalia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1760617980; c=relaxed/simple;
+	bh=uxO0CiwA2WbByamXHbLQKDSSyJwupkregm7hZkixATc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GXdVH1jTLZsguCdFdkpixFG235Be1K55GAKcNS0mbOS26eYSuTy59EPRQZGneeXMxgs4QUVIad/k9ZASaAbYX4rSfca25LHovf54KupwqX2ASy/rrudEamMPTwlnfHdXOOxA5bvLRzy7jrWAnms/mmctMPy+rOUJTs33g1rxtuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WK6K/nCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98717C4CEF1;
+	Thu, 16 Oct 2025 12:32:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760617980;
+	bh=uxO0CiwA2WbByamXHbLQKDSSyJwupkregm7hZkixATc=;
+	h=Subject:To:Cc:From:Date:From;
+	b=WK6K/nCDse30H57d0yCoJxEKylDQgoHb1a3VHsoH+OyAHaVG1Lm2xGclaLUWPpywn
+	 1+E2b5EEv8Fkc1Ex2piYa/+Z6Ggao0QO8woVKAZvfhN8jj8eEc5EK2+UdGBlTP9Y2Y
+	 AONGH2kM8Al8WfEBmfnFEnT11uQLSFPvjofIl/OE=
+Subject: FAILED: patch "[PATCH] cdx: Fix device node reference leak in cdx_msi_domain_init" failed to apply to 6.12-stable tree
+To: linmq006@gmail.com,gregkh@linuxfoundation.org,nipun.gupta@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 16 Oct 2025 14:32:57 +0200
+Message-ID: <2025101657-coaster-squall-0e3f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: adecc1d7c22fbb28de3
-X-MBO-RS-META: w11redpxdjrpni3zgfm6g8hd84pwc1dj
-
-On Wed, 2025-10-15 at 09:40 +0100, Tvrtko Ursulin wrote:
-> When adding dependencies with drm_sched_job_add_dependency(), that
-> function consumes the fence reference both on success and failure, so in
-> the latter case the dma_fence_put() on the error path (xarray failed to
-> expand) is a double free.
->=20
-> Interestingly this bug appears to have been present ever since
-> commit ebd5f74255b9 ("drm/sched: Add dependency tracking"), since the cod=
-e
-> back then looked like this:
->=20
-> drm_sched_job_add_implicit_dependencies():
-> ...
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < fence_count; i++) =
-{
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 ret =3D drm_sched_job_add_dependency(job, fences[i]);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 if (ret)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (; i < fence_count; i++)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 dma_fence_put(fences[i]);
->=20
-> Which means for the failing 'i' the dma_fence_put was already a double
-> free. Possibly there were no users at that time, or the test cases were
-> insufficient to hit it.
->=20
-> The bug was then only noticed and fixed after
-> commit 9c2ba265352a ("drm/scheduler: use new iterator in drm_sched_job_ad=
-d_implicit_dependencies v2")
-> landed, with its fixup of
-> commit 4eaf02d6076c ("drm/scheduler: fix drm_sched_job_add_implicit_depen=
-dencies").
->=20
-> At that point it was a slightly different flavour of a double free, which
-> commit 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_depen=
-dencies harder")
-> noticed and attempted to fix.
->=20
-> But it only moved the double free from happening inside the
-> drm_sched_job_add_dependency(), when releasing the reference not yet
-> obtained, to the caller, when releasing the reference already released by
-> the former in the failure case.
->=20
-> As such it is not easy to identify the right target for the fixes tag so
-> lets keep it simple and just continue the chain.
->=20
-> While fixing we also improve the comment and explain the reason for takin=
-g
-> the reference and not dropping it.
->=20
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Fixes: 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_depen=
-dencies harder")
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/dri-devel/aNFbXq8OeYl3QSdm@stanley.mounta=
-in/
-
-Applied to drm-misc-fixes
-
-Thx
-P.
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-> Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
-> Cc: Rob Clark <robdclark@chromium.org>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: Philipp Stanner <phasta@kernel.org>
-> Cc: "Christian K=C3=B6nig" <ckoenig.leichtzumerken@gmail.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v5.16+
-> ---
-> v2:
-> =C2=A0* Re-arrange commit text so discussion around sentences starting wi=
-th
-> =C2=A0=C2=A0 capital letters in all cases can be avoided.
-> =C2=A0* Keep double return for now.
-> =C2=A0* Improved comment instead of dropping it.
->=20
-> v3:
-> =C2=A0* Commit SHA formatting in the commit message.
-> ---
-> =C2=A0drivers/gpu/drm/scheduler/sched_main.c | 13 +++++++------
-> =C2=A01 file changed, 7 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/sch=
-eduler/sched_main.c
-> index 46119aacb809..c39f0245e3a9 100644
-> --- a/drivers/gpu/drm/scheduler/sched_main.c
-> +++ b/drivers/gpu/drm/scheduler/sched_main.c
-> @@ -965,13 +965,14 @@ int drm_sched_job_add_resv_dependencies(struct drm_=
-sched_job *job,
-> =C2=A0	dma_resv_assert_held(resv);
-> =C2=A0
-> =C2=A0	dma_resv_for_each_fence(&cursor, resv, usage, fence) {
-> -		/* Make sure to grab an additional ref on the added fence */
-> -		dma_fence_get(fence);
-> -		ret =3D drm_sched_job_add_dependency(job, fence);
-> -		if (ret) {
-> -			dma_fence_put(fence);
-> +		/*
-> +		 * As drm_sched_job_add_dependency always consumes the fence
-> +		 * reference (even when it fails), and dma_resv_for_each_fence
-> +		 * is not obtaining one, we need to grab one before calling.
-> +		 */
-> +		ret =3D drm_sched_job_add_dependency(job, dma_fence_get(fence));
-> +		if (ret)
-> =C2=A0			return ret;
-> -		}
-> =C2=A0	}
-> =C2=A0	return 0;
-> =C2=A0}
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 76254bc489d39dae9a3427f0984fe64213d20548
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101657-coaster-squall-0e3f@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 76254bc489d39dae9a3427f0984fe64213d20548 Mon Sep 17 00:00:00 2001
+From: Miaoqian Lin <linmq006@gmail.com>
+Date: Tue, 2 Sep 2025 16:49:33 +0800
+Subject: [PATCH] cdx: Fix device node reference leak in cdx_msi_domain_init
+
+Add missing of_node_put() call to release
+the device node reference obtained via of_parse_phandle().
+
+Fixes: 0e439ba38e61 ("cdx: add MSI support for CDX bus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Acked-by: Nipun Gupta <nipun.gupta@amd.com>
+Link: https://lore.kernel.org/r/20250902084933.2418264-1-linmq006@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/cdx/cdx_msi.c b/drivers/cdx/cdx_msi.c
+index 3388a5d1462c..91b95422b263 100644
+--- a/drivers/cdx/cdx_msi.c
++++ b/drivers/cdx/cdx_msi.c
+@@ -174,6 +174,7 @@ struct irq_domain *cdx_msi_domain_init(struct device *dev)
+ 	}
+ 
+ 	parent = irq_find_matching_fwnode(of_fwnode_handle(parent_node), DOMAIN_BUS_NEXUS);
++	of_node_put(parent_node);
+ 	if (!parent || !msi_get_domain_info(parent)) {
+ 		dev_err(dev, "unable to locate ITS domain\n");
+ 		return NULL;
 
 
