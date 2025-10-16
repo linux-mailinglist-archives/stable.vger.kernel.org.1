@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-185972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9192BBE25F0
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:26:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA00BE25F9
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:26:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B66324FB079
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:26:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 692231A613CF
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2295A3176ED;
-	Thu, 16 Oct 2025 09:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CBD317715;
+	Thu, 16 Oct 2025 09:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3mbY/JZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jf37cuxK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27742FF669
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B932F2E62AD
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760606796; cv=none; b=kWiZSJEY8cA20VZ36jspMOl8UxUiiryUiZofBrw09iJjwO6o/Yfy8FZY9hTOMP/T4h7RZhBW9ItcHyI2k/ra1IvmFIAry9+01kXbkEYR0MTBpND5uAuB6JhztH8GUBMrmn01N6bNTK1+KBqgIVEwsIRx9UxMT01JpMV85QRQ3MU=
+	t=1760606799; cv=none; b=EMdAsWWraSQLoYan2M4c4f8Pb5dNYjLuWmDLGVAuLiJmowB06VCtrNqpBYEsSwcY83U+VaLIZjux4jMOSSAasZ0xCZPvLe81dNeqiAzrRoJ/chKHUX686XWR5w7xn/cUqospy0xXadcxbNE/vLYKRGl2FDKjaWtcLdP6V+zjn1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760606796; c=relaxed/simple;
-	bh=Wboemib2spzCVzLqCZvezFUFI4bRXvY/SG4hg6rNF20=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IYOOXsTbBPwL1NFdcIDTLdMTWricBLSnjdH7Kk82VhWXoaJiD7St16pvFBy/Fz6Wt+0fh0aWr7wdd/0EKGWoD39LB0TuusmvPHGxcZkdoGpOfbEIKbI5UYmPlkF3yDm5s8YhC1VRkqfMzJNRb+G1y8IK8/zWnCmr0hEPLCC/j58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3mbY/JZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B15AC4CEF1;
-	Thu, 16 Oct 2025 09:26:36 +0000 (UTC)
+	s=arc-20240116; t=1760606799; c=relaxed/simple;
+	bh=GL/rZVEP5AYm2SSPIBCDFQ1wtLonFmUGYqt9MPTHdTc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bBbuZ5Q2blVZs8SAR+HduAdKVZ5fTAa0ICJL1TrlYe+EpSy1hORwz9MI7jLnzlwnLsyM+oNt2sNfvZ5pbJFzMKN5UAjskpAkR2SO3Z8Qeo/f9lQPY6YYVh5E1cQ6Z8K/YuO+0cIMPMrtkr3ykiMhV0bPirSIiZOIxi97LZgtC/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jf37cuxK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6D8C4CEF1;
+	Thu, 16 Oct 2025 09:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760606796;
-	bh=Wboemib2spzCVzLqCZvezFUFI4bRXvY/SG4hg6rNF20=;
+	s=korg; t=1760606799;
+	bh=GL/rZVEP5AYm2SSPIBCDFQ1wtLonFmUGYqt9MPTHdTc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=o3mbY/JZA5sqHdomnEwxwj5wFLyV+3bky+Den/1wORV82CV5h46/FsXs7fVu8br09
-	 vdaUlMUaZc8e2f6BMbfQ81evs6OFptkAtu6XaJWhlV0rQ0DQDKtyQ2pcWr+JuU29Mx
-	 5XoSFmUO1CXT2/EJQQ6eIdJ9Dvatvku0Nq2JgEbQ=
-Subject: FAILED: patch "[PATCH] usb: gadget: f_rndis: Refactor bind path to use __free()" failed to apply to 6.6-stable tree
+	b=jf37cuxKCc+jzreXm8gjVOCu+FcRZpdVhblk1wv0IyZGodQ4uPRRb3wN0SH2ozGEv
+	 TSEYthjTxa1sJq/kG1tQK67SJN6WzHf07dWLvxWpCxePpi/4gWvjYHtfJpNlKhULSH
+	 MCY0wdZgazhvTapVLbbD1x0Pl8FMDVREbs61pizg=
+Subject: FAILED: patch "[PATCH] usb: gadget: f_rndis: Refactor bind path to use __free()" failed to apply to 6.12-stable tree
 To: khtsai@google.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Thu, 16 Oct 2025 11:26:31 +0200
-Message-ID: <2025101631-subscript-pruning-bc19@gregkh>
+Message-ID: <2025101631-macaroni-reabsorb-72e7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
 git cherry-pick -x 08228941436047bdcd35a612c1aec0912a29d8cd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101631-subscript-pruning-bc19@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101631-macaroni-reabsorb-72e7@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
