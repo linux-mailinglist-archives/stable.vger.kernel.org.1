@@ -1,248 +1,180 @@
-Return-Path: <stable+bounces-186112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C269DBE3982
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:05:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AACD1BE3967
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:04:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F6454256AB
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:02:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7A945505434
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C7B1922FB;
-	Thu, 16 Oct 2025 13:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9684C30507F;
+	Thu, 16 Oct 2025 13:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kHHAYkR"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mFngzCWQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F7211712
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3946019E7F9;
+	Thu, 16 Oct 2025 13:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760619755; cv=none; b=jQrZtHQGzZLLD63v9moeTBIs2IYrReHXZ6BXFOjBG0AtNzBV15KwJzHhnQ5ascLGNgGaLGp71SQbKt2aDt7X+ScNXiTNbwBzCPu41wXkc+rn6xhESWAf2kKGa+wIBkWkGDwtuiuFFsuALmtWEJmg58h2tKpEvqEFuXruLIZ8IJc=
+	t=1760619856; cv=none; b=tu2vs7FUB/57becCV5rpn+urn6dOzacHSiHpQtWnz3kMJT7xAYB7N40hxP8e6Snn0offN9WbZcYuYCFYB90l3leNtb6wV4ppWjjxGqPRZqL5ZDOm+KDWv98EhHgxQ8ey8L2RBeu3EulHXAndjbMhPHb9LsnKBkSkNFk87a3VLX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760619755; c=relaxed/simple;
-	bh=NUYlpkcfD6K20aP8XVvI9DjHYt+vHcfV6X8kUGusClA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=V6hnu7rGllq/2dZOpYFHUKs9IYM5p0REIDVrhk9U4qUgwOk5z2kmf5ZQrQlHQicCeCJfkT0kZiADjX11gwTb/JtUYhf1QL6BTQLXHXcobdwNjcI8x68Mav+zeePY0fO/3BbhBxdv4UwL4gD/A1IF6ozCqx0EQ/tCo6Pf47VQqTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kHHAYkR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8351AC4CEF1;
-	Thu, 16 Oct 2025 13:02:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760619754;
-	bh=NUYlpkcfD6K20aP8XVvI9DjHYt+vHcfV6X8kUGusClA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=2kHHAYkRcrIHFKBkjgrkTGL1G38Q0RVsM7/yAYqGgGaAfDBCefeWjQAc1iTsgOIXH
-	 aS0FsMaVQpGp7PmPPKGsEAgY3srg3EOoyLckNJfeAUJrr/pOGBl+eoWPakt/puOKpq
-	 l/XS5P7I1SGhTDkrPo03l1RLfcJruKPk9ovSSMwo=
-Subject: FAILED: patch "[PATCH] xfs: fix log CRC mismatches between i386 and other" failed to apply to 5.4-stable tree
-To: hch@lst.de,cem@kernel.org,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 15:02:18 +0200
-Message-ID: <2025101618-dotted-recount-322d@gregkh>
+	s=arc-20240116; t=1760619856; c=relaxed/simple;
+	bh=QReg2vp97BUkr6fGoaX3HVTBKM4wAz/0LebQasrMhpw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ldrJJjX6VxCfNYmpfdIlKgstLuYyWnJHfyRkbgl8Rrz39/rbfXPoGI24mjhheSBH+Xp77MaBwxOtZUFWpm1jG92qiud4rZp0rW1OznogpyPMmAjfzRAQ2/mJyY/MOAxw6kDpIiHmH9ucpg/u0Ma5T0e9SzdGWfUQPMd9qveOabM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mFngzCWQ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 64C991A1429;
+	Thu, 16 Oct 2025 13:04:12 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 39C4B6062C;
+	Thu, 16 Oct 2025 13:04:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BDD77102F22EF;
+	Thu, 16 Oct 2025 15:04:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760619851; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=xjCaRMRjVPxm5y+Ak8E+acuNrbc32ytUH8e92tM/4FA=;
+	b=mFngzCWQYfGixlbS21zV34AGh8gfnhdomnXyf160lglJWjQXIQtRjcsCVB2RaAW5gt5SMU
+	kZca+FEXkN5PzDeH+0T9MO8d7CKHHEKIIYT1Tgo+JmR3qgBugv5K2bZOrnk97rm73y3qsq
+	LQQU7oyqzZD3GrBcWNM3+qHwmyOduKRZ6H/OsVzpFBOsqFJmZIwr+FokdYwrE7ErKy8nBk
+	1e9iekLQ3IMC/28Qxpt3dlDMPD7LgJOjHeTz6Lynvt4DMEJyA4Sz0hyCMBfX5Dh8LrZSD1
+	eshHBrzqZ8q0+SggSYnYURVONhDgK8/bWAdDtSO/RVSAmGY0GkgdgFLtlutxZA==
+From: Herve Codina <herve.codina@bootlin.com>
+To: David Rhodes <david.rhodes@cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Nikita Shubin <nikita.shubin@maquefel.me>,
+	Axel Lin <axel.lin@ingics.com>,
+	Brian Austin <brian.austin@cirrus.com>
+Cc: linux-sound@vger.kernel.org,
+	patches@opensource.cirrus.com,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/3] ASoC: cs4271: Fix cs4271 I2C and SPI drivers automatic module loading
+Date: Thu, 16 Oct 2025 15:03:37 +0200
+Message-ID: <20251016130340.1442090-2-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251016130340.1442090-1-herve.codina@bootlin.com>
+References: <20251016130340.1442090-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+In commit c973b8a7dc50 ("ASoC: cs4271: Split SPI and I2C code into
+different modules") the driver was slit into a core, an SPI and an I2C
+part.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+However, the MODULE_DEVICE_TABLE(of, cs4271_dt_ids) was in the core part
+and so, module loading based on module.alias (based on DT compatible
+string matching) loads the core part but not the SPI or I2C parts.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+In order to have the I2C or the SPI module loaded automatically, move
+the MODULE_DEVICE_TABLE(of, ...) the core to I2C and SPI parts.
+Also move cs4271_dt_ids itself from the core part to I2C and SPI parts
+as both the call to MODULE_DEVICE_TABLE(of, ...) and the cs4271_dt_ids
+table itself need to be in the same file.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x e747883c7d7306acb4d683038d881528fbfbe749
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101618-dotted-recount-322d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+Fixes: c973b8a7dc50 ("ASoC: cs4271: Split SPI and I2C code into different modules")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+---
+ sound/soc/codecs/cs4271-i2c.c | 6 ++++++
+ sound/soc/codecs/cs4271-spi.c | 6 ++++++
+ sound/soc/codecs/cs4271.c     | 9 ---------
+ sound/soc/codecs/cs4271.h     | 1 -
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From e747883c7d7306acb4d683038d881528fbfbe749 Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Mon, 15 Sep 2025 06:20:30 -0700
-Subject: [PATCH] xfs: fix log CRC mismatches between i386 and other
- architectures
-
-When mounting file systems with a log that was dirtied on i386 on
-other architectures or vice versa, log recovery is unhappy:
-
-[   11.068052] XFS (vdb): Torn write (CRC failure) detected at log block 0x2. Truncating head block from 0xc.
-
-This is because the CRCs generated by i386 and other architectures
-always diff.  The reason for that is that sizeof(struct xlog_rec_header)
-returns different values for i386 vs the rest (324 vs 328), because the
-struct is not sizeof(uint64_t) aligned, and i386 has odd struct size
-alignment rules.
-
-This issue goes back to commit 13cdc853c519 ("Add log versioning, and new
-super block field for the log stripe") in the xfs-import tree, which
-adds log v2 support and the h_size field that causes the unaligned size.
-At that time it only mattered for the crude debug only log header
-checksum, but with commit 0e446be44806 ("xfs: add CRC checks to the log")
-it became a real issue for v5 file system, because now there is a proper
-CRC, and regular builds actually expect it match.
-
-Fix this by allowing checksums with and without the padding.
-
-Fixes: 0e446be44806 ("xfs: add CRC checks to the log")
-Cc: <stable@vger.kernel.org> # v3.8
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-
-diff --git a/fs/xfs/libxfs/xfs_log_format.h b/fs/xfs/libxfs/xfs_log_format.h
-index a42a83211724..fd00b77af32b 100644
---- a/fs/xfs/libxfs/xfs_log_format.h
-+++ b/fs/xfs/libxfs/xfs_log_format.h
-@@ -173,12 +173,40 @@ typedef struct xlog_rec_header {
- 	__be32	  h_prev_block; /* block number to previous LR		:  4 */
- 	__be32	  h_num_logops;	/* number of log operations in this LR	:  4 */
- 	__be32	  h_cycle_data[XLOG_HEADER_CYCLE_SIZE / BBSIZE];
--	/* new fields */
-+
-+	/* fields added by the Linux port: */
- 	__be32    h_fmt;        /* format of log record                 :  4 */
- 	uuid_t	  h_fs_uuid;    /* uuid of FS                           : 16 */
-+
-+	/* fields added for log v2: */
- 	__be32	  h_size;	/* iclog size				:  4 */
-+
-+	/*
-+	 * When h_size added for log v2 support, it caused structure to have
-+	 * a different size on i386 vs all other architectures because the
-+	 * sum of the size ofthe  member is not aligned by that of the largest
-+	 * __be64-sized member, and i386 has really odd struct alignment rules.
-+	 *
-+	 * Due to the way the log headers are placed out on-disk that alone is
-+	 * not a problem becaue the xlog_rec_header always sits alone in a
-+	 * BBSIZEs area, and the rest of that area is padded with zeroes.
-+	 * But xlog_cksum used to calculate the checksum based on the structure
-+	 * size, and thus gives different checksums for i386 vs the rest.
-+	 * We now do two checksum validation passes for both sizes to allow
-+	 * moving v5 file systems with unclean logs between i386 and other
-+	 * (little-endian) architectures.
-+	 */
-+	__u32	  h_pad0;
- } xlog_rec_header_t;
+diff --git a/sound/soc/codecs/cs4271-i2c.c b/sound/soc/codecs/cs4271-i2c.c
+index 1d210b969173..cefb8733fc61 100644
+--- a/sound/soc/codecs/cs4271-i2c.c
++++ b/sound/soc/codecs/cs4271-i2c.c
+@@ -28,6 +28,12 @@ static const struct i2c_device_id cs4271_i2c_id[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, cs4271_i2c_id);
  
-+#ifdef __i386__
-+#define XLOG_REC_SIZE		offsetofend(struct xlog_rec_header, h_size)
-+#define XLOG_REC_SIZE_OTHER	sizeof(struct xlog_rec_header)
-+#else
-+#define XLOG_REC_SIZE		sizeof(struct xlog_rec_header)
-+#define XLOG_REC_SIZE_OTHER	offsetofend(struct xlog_rec_header, h_size)
-+#endif /* __i386__ */
++static const struct of_device_id cs4271_dt_ids[] = {
++	{ .compatible = "cirrus,cs4271", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, cs4271_dt_ids);
 +
- typedef struct xlog_rec_ext_header {
- 	__be32	  xh_cycle;	/* write cycle of log			: 4 */
- 	__be32	  xh_cycle_data[XLOG_HEADER_CYCLE_SIZE / BBSIZE]; /*	: 256 */
-diff --git a/fs/xfs/libxfs/xfs_ondisk.h b/fs/xfs/libxfs/xfs_ondisk.h
-index 5ed44fdf7491..7bfa3242e2c5 100644
---- a/fs/xfs/libxfs/xfs_ondisk.h
-+++ b/fs/xfs/libxfs/xfs_ondisk.h
-@@ -174,6 +174,8 @@ xfs_check_ondisk_structs(void)
- 	XFS_CHECK_STRUCT_SIZE(struct xfs_rud_log_format,	16);
- 	XFS_CHECK_STRUCT_SIZE(struct xfs_map_extent,		32);
- 	XFS_CHECK_STRUCT_SIZE(struct xfs_phys_extent,		16);
-+	XFS_CHECK_STRUCT_SIZE(struct xlog_rec_header,		328);
-+	XFS_CHECK_STRUCT_SIZE(struct xlog_rec_ext_header,	260);
+ static struct i2c_driver cs4271_i2c_driver = {
+ 	.driver = {
+ 		.name = "cs4271",
+diff --git a/sound/soc/codecs/cs4271-spi.c b/sound/soc/codecs/cs4271-spi.c
+index 4feb80436bd9..82abc654293c 100644
+--- a/sound/soc/codecs/cs4271-spi.c
++++ b/sound/soc/codecs/cs4271-spi.c
+@@ -23,6 +23,12 @@ static int cs4271_spi_probe(struct spi_device *spi)
+ 	return cs4271_probe(&spi->dev, devm_regmap_init_spi(spi, &config));
+ }
  
- 	XFS_CHECK_OFFSET(struct xfs_bui_log_format, bui_extents,	16);
- 	XFS_CHECK_OFFSET(struct xfs_cui_log_format, cui_extents,	16);
-diff --git a/fs/xfs/xfs_log.c b/fs/xfs/xfs_log.c
-index 7c590ecdf865..2978de9da38e 100644
---- a/fs/xfs/xfs_log.c
-+++ b/fs/xfs/xfs_log.c
-@@ -1568,13 +1568,13 @@ xlog_cksum(
- 	struct xlog		*log,
- 	struct xlog_rec_header	*rhead,
- 	char			*dp,
--	int			size)
-+	unsigned int		hdrsize,
-+	unsigned int		size)
++static const struct of_device_id cs4271_dt_ids[] = {
++	{ .compatible = "cirrus,cs4271", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, cs4271_dt_ids);
++
+ static struct spi_driver cs4271_spi_driver = {
+ 	.driver = {
+ 		.name	= "cs4271",
+diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
+index 6a3cca3d26c7..ff9c6628224c 100644
+--- a/sound/soc/codecs/cs4271.c
++++ b/sound/soc/codecs/cs4271.c
+@@ -543,15 +543,6 @@ static int cs4271_soc_resume(struct snd_soc_component *component)
+ #define cs4271_soc_resume	NULL
+ #endif /* CONFIG_PM */
+ 
+-#ifdef CONFIG_OF
+-const struct of_device_id cs4271_dt_ids[] = {
+-	{ .compatible = "cirrus,cs4271", },
+-	{ }
+-};
+-MODULE_DEVICE_TABLE(of, cs4271_dt_ids);
+-EXPORT_SYMBOL_GPL(cs4271_dt_ids);
+-#endif
+-
+ static int cs4271_component_probe(struct snd_soc_component *component)
  {
- 	uint32_t		crc;
+ 	struct cs4271_private *cs4271 = snd_soc_component_get_drvdata(component);
+diff --git a/sound/soc/codecs/cs4271.h b/sound/soc/codecs/cs4271.h
+index 290283a9149e..4965ce085875 100644
+--- a/sound/soc/codecs/cs4271.h
++++ b/sound/soc/codecs/cs4271.h
+@@ -4,7 +4,6 @@
  
- 	/* first generate the crc for the record header ... */
--	crc = xfs_start_cksum_update((char *)rhead,
--			      sizeof(struct xlog_rec_header),
-+	crc = xfs_start_cksum_update((char *)rhead, hdrsize,
- 			      offsetof(struct xlog_rec_header, h_crc));
+ #include <linux/regmap.h>
  
- 	/* ... then for additional cycle data for v2 logs ... */
-@@ -1818,7 +1818,7 @@ xlog_sync(
+-extern const struct of_device_id cs4271_dt_ids[];
+ extern const struct regmap_config cs4271_regmap_config;
  
- 	/* calculcate the checksum */
- 	iclog->ic_header.h_crc = xlog_cksum(log, &iclog->ic_header,
--					    iclog->ic_datap, size);
-+			iclog->ic_datap, XLOG_REC_SIZE, size);
- 	/*
- 	 * Intentionally corrupt the log record CRC based on the error injection
- 	 * frequency, if defined. This facilitates testing log recovery in the
-diff --git a/fs/xfs/xfs_log_priv.h b/fs/xfs/xfs_log_priv.h
-index a9a7a271c15b..0cfc654d8e87 100644
---- a/fs/xfs/xfs_log_priv.h
-+++ b/fs/xfs/xfs_log_priv.h
-@@ -499,8 +499,8 @@ xlog_recover_finish(
- extern void
- xlog_recover_cancel(struct xlog *);
- 
--extern __le32	 xlog_cksum(struct xlog *log, struct xlog_rec_header *rhead,
--			    char *dp, int size);
-+__le32	 xlog_cksum(struct xlog *log, struct xlog_rec_header *rhead,
-+		char *dp, unsigned int hdrsize, unsigned int size);
- 
- extern struct kmem_cache *xfs_log_ticket_cache;
- struct xlog_ticket *xlog_ticket_alloc(struct xlog *log, int unit_bytes,
-diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
-index 0a4db8efd903..549d60959aee 100644
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2894,9 +2894,24 @@ xlog_recover_process(
- 	int			pass,
- 	struct list_head	*buffer_list)
- {
--	__le32			expected_crc = rhead->h_crc, crc;
-+	__le32			expected_crc = rhead->h_crc, crc, other_crc;
- 
--	crc = xlog_cksum(log, rhead, dp, be32_to_cpu(rhead->h_len));
-+	crc = xlog_cksum(log, rhead, dp, XLOG_REC_SIZE,
-+			be32_to_cpu(rhead->h_len));
-+
-+	/*
-+	 * Look at the end of the struct xlog_rec_header definition in
-+	 * xfs_log_format.h for the glory details.
-+	 */
-+	if (expected_crc && crc != expected_crc) {
-+		other_crc = xlog_cksum(log, rhead, dp, XLOG_REC_SIZE_OTHER,
-+				be32_to_cpu(rhead->h_len));
-+		if (other_crc == expected_crc) {
-+			xfs_notice_once(log->l_mp,
-+	"Fixing up incorrect CRC due to padding.");
-+			crc = other_crc;
-+		}
-+	}
- 
- 	/*
- 	 * Nothing else to do if this is a CRC verification pass. Just return
+ int cs4271_probe(struct device *dev, struct regmap *regmap);
+-- 
+2.51.0
 
 
