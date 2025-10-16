@@ -1,726 +1,397 @@
-Return-Path: <stable+bounces-186049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9D45BE3710
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 14:39:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7EBBE372B
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 14:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5F7AC4F73D6
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 12:39:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05706583156
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 12:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0ADB32C30B;
-	Thu, 16 Oct 2025 12:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BB632D456;
+	Thu, 16 Oct 2025 12:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqePM3X9"
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="UFTrpa5N";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="bsfBaUu/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDB6326D50
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 12:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4629A326D60;
+	Thu, 16 Oct 2025 12:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760618338; cv=none; b=kZ63btEV2juhU1yJU5Nyn7M6M9hTFEN+BFZzSUqAEkB/YkBMajZOYZ+UBHjsqU0K2PHgkjpP2/fR9MBSMGWli5ELPyW15HfhYY215m2DWMIuWhittmlNAT8jxz0lCym79VQi81g+8YGCCsRJ1akwR3gND80BVRd9XRFtHNoJwL4=
+	t=1760618377; cv=none; b=Pln5Me/yx0EgkzGI7SkAsQVrsXtkIpAkUbvS8jVggRq//f2pPWZez8MjAUZZIh1EJr6ZxIS0MnI8CjKAbC+DOQQqZSoh8RumbXzoy7phX6my8cUvpqfsitpI33FdX5JC6td9dn6ojLPhvjcbzvyb8AXeixH6R6EbiBKmSapXrPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760618338; c=relaxed/simple;
-	bh=RuSn1QPAO/LxycaTLh55sPkURq17vUoyolU26EBz7Ig=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XasPpHGf0xN188pgtnU92pUOUf8sH9YDrx4f3PLtqK5RrR4ZKktAyhakNTA42MUsSifp9SOjOrrESQOKPLmfG8oO0kQEFzmDZcK3f5Nxin3ZkfZh0cq99Jf/Vq9aCHFpxxjsFxipxvqbqYQUTgxoPMzYHiwRIqdzkBk0QFpg19I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqePM3X9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D971C4CEF1;
-	Thu, 16 Oct 2025 12:38:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760618338;
-	bh=RuSn1QPAO/LxycaTLh55sPkURq17vUoyolU26EBz7Ig=;
-	h=Subject:To:Cc:From:Date:From;
-	b=AqePM3X9jksgYnndYL8ijrnz5iSUgz7VkyUjFERr9XrhLwd8jYS0Z8BF7gL3fFGg9
-	 3EHzmBTx341YMrrOck5B9gCiFXwVTXO4+7GYXC4TnBn+D27e8VJNwKF7AACWkV/q0h
-	 ggy0nMxpmUHjSEgmgTzW1+AYGbqh1zfA4c8de508=
-Subject: FAILED: patch "[PATCH] ipmi: Rework user message limit handling" failed to apply to 6.1-stable tree
-To: corey@minyard.net,gilles.buloz@kontron.com,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 14:38:47 +0200
-Message-ID: <2025101647-unsteady-antitrust-ef9e@gregkh>
+	s=arc-20240116; t=1760618377; c=relaxed/simple;
+	bh=hrpDqz3q3YhCsIwjYm7LFylXdk4n0DLUPi60nR0B/fg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c/dNcdAW/YnMFrfI0zxKE5OYbM6ABp42ZvYEblpykC+0ge0QFlWEA1QbCwcVWZAtFyJYK5tolmGp8cIjQibK0iAzXnnOJfeGk/9Vzu+P8SYY18GhChyrwsHmZrDxN1Px+5/GsCUxB1kHh/1J11zCNX1f8ThTcRkdEIT4+M6bKZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=UFTrpa5N; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=bsfBaUu/; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.stl.internal (Postfix) with ESMTP id CBED61D0019D;
+	Thu, 16 Oct 2025 08:39:32 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Thu, 16 Oct 2025 08:39:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1760618372;
+	 x=1760704772; bh=Lr6DR8N342XriAxN8x3LUIg/Ew5xZ2snZt/u/08ZmH8=; b=
+	UFTrpa5NDKm2Z2TI27Vy+SThcoFmqEHib0dQh3BgQ7kQ2siOVkVGNAmHMm2VKtvA
+	oWFxxumpFbLvF96MVQwfqcw4zoXNhpOgBqC2N/ooVAHq5uwORSuNbNBWa8tuWkyN
+	djlA/y+1R5vI0VXcuvf4UgIaF/KiwrotVrScpqwcOwdaf6Fes6RLJZ3MRdwXmwUz
+	aVwlVOt85pb8xEcvJC5YC4+Aa/sz9m8r05Cpvw1RDvue9GHh67kHx51qcdYpBHl1
+	2SLYKELpp34TRUSHzseuM53gkNGeOQ1O1Iaka0GntXckak5n4d6V5uDlZeFtd8K4
+	USJoq1IJhHL5GosFJ/cjjQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1760618372; x=
+	1760704772; bh=Lr6DR8N342XriAxN8x3LUIg/Ew5xZ2snZt/u/08ZmH8=; b=b
+	sfBaUu/L//kD4o+Bpo11bCjnyLjF3/ip2a+cC/iqBYf22fbY4k17473m6IF6m8RN
+	ScQ1Ky6gcLPIuQ32TsLFp7qHkJz/4GiTr/nV8fej0RBizyXm19wrOXzyOKdZJpKD
+	9zZqvaJgC8fMGgIhqtKKoFMQVm9jsUMd7eTdgX+CUyjfQy4BktctpPpPx7b61L+7
+	mxishXlRxMiccJsyAe4N7I0crQckpg0f4hcNbGUmLlEg5q7KFlpkOaZuSSjOI0Kq
+	cZcox+6IjmJ2uWG85oLqsGieiJf3JPJOlApHEdhyvCgyUlsvcffPFkRkRG52YLVV
+	ZzGAgWxyy64dli8eDpq8A==
+X-ME-Sender: <xms:g-fwaGTpahBqlrgTbSy8UeUX4zkk95gAIXlSrLVOCMsYuke2Dzb8hA>
+    <xme:g-fwaBWXGJ_8r2_t5bDMYLUecb52O_VpNe7HmWF5Pq3ZTjdFQYtqSKyn9b4Tl7tHV
+    1PXqb1mAlVuDAzkkJKXKSGWrA_tuh9EirsQzvdoGr4CUVIoScRQjG4>
+X-ME-Received: <xmr:g-fwaNa54mYuU0dbgL-ev41yVgPhCcc9A_JMWuBmY_CoPlu2GUnR4ikSZR45tuHKM97UPIsEPVLTb8w0yNZHSppMa96E7nU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdeifedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpedfnhhikhhl
+    rghsrdhsohguvghrlhhunhgufdcuoehnihhklhgrshdrshhouggvrhhluhhnugesrhgrgh
+    hnrghtvggthhdrshgvqeenucggtffrrghtthgvrhhnpeekkeeufedvveeihfdvteeugfet
+    ffegfeeuudeffedtieegkefhvdegfeffvdeujeenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgr
+    ghhnrghtvggthhdrshgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouh
+    htpdhrtghpthhtohepfhgrsghrihiiihhordgtrghsthhrohdrjhiisehrvghnvghsrghs
+    rdgtohhmpdhrtghpthhtohepphhrrggshhgrkhgrrhdrtghsvghnghhgsehgmhgrihhlrd
+    gtohhmpdhrtghpthhtohepphgruhhlsehpsggrrhhkvghrrdguvghvpdhrtghpthhtohep
+    rghnughrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmse
+    gurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhl
+    vgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehsvghrghgvihdrshhh
+    thihlhihohhvsegtohhgvghnthgvmhgsvgguuggvugdrtghomh
+X-ME-Proxy: <xmx:g-fwaC6iTUZBWNvE9yQc8-ay4Y8K28-GAGoAYcs_RlvsmFUPvctqxg>
+    <xmx:g-fwaGx9J4vUv61eo0CSLkca1mdDAxTK8_tZJecXZmheTKvEsdpQ1A>
+    <xmx:g-fwaLq6ddNyxyigxSx7YvIch-NgXchPI8MQp1s1jPxe6rp67nVcsA>
+    <xmx:g-fwaA3bWg6uJftWQYu2AoBpYGLwKvIe8c2O5BRmi1xUlTh-vVbdDQ>
+    <xmx:hOfwaNG_jGEAZS3ToX85C5Z4AJBu8PthRjiukQyz_gvSH_oLx286WrJv>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 16 Oct 2025 08:39:30 -0400 (EDT)
+Date: Thu, 16 Oct 2025 14:39:28 +0200
+From: "niklas.soderlund" <niklas.soderlund@ragnatech.se>
+To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Cc: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>,
+	Paul Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 3/3] net: ravb: Enforce descriptor type ordering to
+ prevent early DMA start
+Message-ID: <20251016123928.GA856714@ragnatech.se>
+References: <20251015150026.117587-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20251015150026.117587-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20251015155622.GE439570@ragnatech.se>
+ <CA+V-a8vudn0=kSnaAT4qDCcRtVShmS+n2A4GOQH2iogYizUBzw@mail.gmail.com>
+ <20251015172815.GG439570@ragnatech.se>
+ <TYCPR01MB12093AA1F44F7BC9961B5672FC2E9A@TYCPR01MB12093.jpnprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <TYCPR01MB12093AA1F44F7BC9961B5672FC2E9A@TYCPR01MB12093.jpnprd01.prod.outlook.com>
 
+Hi Fabrizio,
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 2025-10-16 12:00:29 +0000, Fabrizio Castro wrote:
+> Hi Niklas,
+> 
+> Thanks for your feedback!
+> 
+> > From: Niklas Söderlund <niklas.soderlund@ragnatech.se>
+> > Sent: 15 October 2025 18:28
+> > To: Lad, Prabhakar <prabhakar.csengg@gmail.com>
+> > Cc: Paul Barker <paul@pbarker.dev>; Andrew Lunn <andrew+netdev@lunn.ch>; David S. Miller
+> > <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
+> > Abeni <pabeni@redhat.com>; Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>;
+> > netdev@vger.kernel.org; linux-renesas-soc@vger.kernel.org; linux-kernel@vger.kernel.org; Biju Das
+> > <biju.das.jz@bp.renesas.com>; Fabrizio Castro <fabrizio.castro.jz@renesas.com>; Prabhakar Mahadev Lad
+> > <prabhakar.mahadev-lad.rj@bp.renesas.com>; stable@vger.kernel.org
+> > Subject: Re: [PATCH 3/3] net: ravb: Enforce descriptor type ordering to prevent early DMA start
+> > 
+> > Hello,
+> > 
+> > On 2025-10-15 18:01:13 +0100, Lad, Prabhakar wrote:
+> > > Hi Niklas,
+> > >
+> > > Thank you for the review.
+> > >
+> > > On Wed, Oct 15, 2025 at 4:56 PM Niklas Söderlund
+> > > <niklas.soderlund@ragnatech.se> wrote:
+> > > >
+> > > > Hi Prabhakar,
+> > > >
+> > > > Thanks for your work.
+> > > >
+> > > > On 2025-10-15 16:00:26 +0100, Prabhakar wrote:
+> > > > > From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> > > > >
+> > > > > Ensure TX descriptor type fields are written in a safe order so the DMA
+> > > > > engine does not begin processing a chain before all descriptors are
+> > > > > fully initialised.
+> > > > >
+> > > > > For multi-descriptor transmissions the driver writes DT_FEND into the
+> > > > > last descriptor and DT_FSTART into the first. The DMA engine starts
+> > > > > processing when it sees DT_FSTART. If the compiler or CPU reorders the
+> > > > > writes and publishes DT_FSTART before DT_FEND, the DMA can start early
+> > > > > and process an incomplete chain, leading to corrupted transmissions or
+> > > > > DMA errors.
+> > > > >
+> > > > > Fix this by writing DT_FEND before the dma_wmb() barrier, executing
+> > > > > dma_wmb() immediately before DT_FSTART (or DT_FSINGLE in the single
+> > > > > descriptor case), and then adding a wmb() after the type updates to
+> > > > > ensure CPU-side ordering before ringing the hardware doorbell.
+> > > > >
+> > > > > On an RZ/G2L platform running an RT kernel, this reordering hazard was
+> > > > > observed as TX stalls and timeouts:
+> > > > >
+> > > > >   [  372.968431] NETDEV WATCHDOG: end0 (ravb): transmit queue 0 timed out
+> > > > >   [  372.968494] WARNING: CPU: 0 PID: 10 at net/sched/sch_generic.c:467 dev_watchdog+0x4a4/0x4ac
+> > > > >   [  373.969291] ravb 11c20000.ethernet end0: transmit timed out, status 00000000, resetting...
+> > > > >
+> > > > > This change enforces the required ordering and prevents the DMA engine
+> > > > > from observing DT_FSTART before the rest of the descriptor chain is
+> > > > > valid.
+> > > > >
+> > > > > Fixes: 2f45d1902acf ("ravb: minimize TX data copying")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+> > > > > Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+> > > > > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> > > > > ---
+> > > > >  drivers/net/ethernet/renesas/ravb_main.c | 14 +++++++++-----
+> > > > >  1 file changed, 9 insertions(+), 5 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+> > > > > index a200e205825a..2a995fa9bfff 100644
+> > > > > --- a/drivers/net/ethernet/renesas/ravb_main.c
+> > > > > +++ b/drivers/net/ethernet/renesas/ravb_main.c
+> > > > > @@ -2211,15 +2211,19 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device
+> > *ndev)
+> > > > >
+> > > > >               skb_tx_timestamp(skb);
+> > > > >       }
+> > > > > -     /* Descriptor type must be set after all the above writes */
+> > > > > -     dma_wmb();
+> > > > > +
+> > > > > +     /* For multi-descriptors set DT_FEND before calling dma_wmb() */
+> > > > >       if (num_tx_desc > 1) {
+> > > > >               desc->die_dt = DT_FEND;
+> > > > >               desc--;
+> > > > > -             desc->die_dt = DT_FSTART;
+> > > > > -     } else {
+> > > > > -             desc->die_dt = DT_FSINGLE;
+> > > > >       }
+> > > > > +
+> > > > > +     /* Descriptor type must be set after all the above writes */
+> > > > > +     dma_wmb();
+> > > > > +     desc->die_dt = (num_tx_desc > 1) ? DT_FSTART : DT_FSINGLE;
+> > > >
+> > > > IMHO it's ugly to evaluate num_tx_desc twice. I would rather just open
+> > > > code the full steps in each branch of the if above. It would make it
+> > > > easier to read and understand.
+> > > >
+> > > I did this just to avoid compiler optimizations. With the previous
+> > > similar code on 5.10 CIP RT it was observed that the compiler
+> > > optimized code in such a way that the DT_FSTART was written first
+> > > before DT_FEND while the DMA was active because of which we ran into
+> > > DMA issues causing QEF errors.
+> > 
+> > I was thinking of something like
+> > 
+> >   /* Descriptor type must be set after all the above writes */
+> >   dma_wmb();
+> > 
+> >   if (num_tx_desc > 1) {
+> >           desc->die_dt = DT_FEND;
+> >           desc--;
+> > 	  /* For multi-descriptors ensure DT_FEND before start
+> >            * TODO: Add explanation about compiler optimised code etc.
+> >            */
+> >           dma_wmb();
+> >           desc->die_dt = DT_FSTART;
+> >   } else {
+> >           desc->die_dt = DT_FSINGLE;
+> >   }
+> > 
+> > 
+> > Would make new new special case clearer to understand. And if we figure
+> > out different way of doing it it's very clear why the second dma_wmb()
+> > is needed. But after writing it out I'm not so sure anymore, maybe
+> > adding a temporary variable instead would make it a clearer read.
+> > 
+> >     u8 die_dt = DT_FSINGLE;
+> > 
+> >     /* For multi-descriptors ensure DT_FEND before DT_FEND
+> >      * TODO: Add explanation about compiler optimised code etc.
+> >      */
+> >     if (num_tx_desc > 1) {
+> >         desc->die_dt = DT_FEND;
+> >         desc--;
+> >         die_dt = DT_FSTART;
+> >     }
+> > 
+> >     /* Descriptor type must be set after all the above writes */
+> >     dma_wmb();
+> >     desc->die_dt = die_dt;
+> > 
+> > I think my main complaint is that evaluating num_tx_desc > 1 multiple
+> > times makes the code read as stuff was just thrown into the driver until
+> > a test-case passed without understanding the root cause.
+> 
+> What about the below instead?
+> 
+>   if (num_tx_desc > 1) {
+>           desc->die_dt = DT_FEND;
+>           desc--;
+> 	    /* When using multi-descriptors, DT_FEND needs to get written
+>            * before DT_FSTART, but the compiler may reorder the memory
+>            * writes in an attempt to optimize the code.
+>            * Use a dma_wmb() barrier to make sure DT_FEND and DT_FSTART
+>            * are written exactly in the order shown in the code.
+>            */
+>           dma_wmb();
+>           desc->die_dt = DT_FSTART;
+>   } else {
+> 	    /* The descriptor type must be set after all the previous writes */
+> 	    dma_wmb();
+>           desc->die_dt = DT_FSINGLE;
+>   }
 
-To reproduce the conflict and resubmit, you may use the following commands:
+I like this. It makes the two conditions very clear. Maybe extend the 
+first comment a bit with the information you add below. That the 
+important thing is that this protects for cases where the DMA engine is 
+already running, and it's very important that it do not see a DT_FSTART 
+before a DT_FEND is already committed, else it can run amuck. That would 
+make the intent super clear.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x b52da4054ee0bf9ecb44996f2c83236ff50b3812
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101647-unsteady-antitrust-ef9e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> 
+> > 
+> > >
+> > > > > +
+> > > > > +     /* Ensure data is written to RAM before initiating DMA transfer */
+> > > > > +     wmb();
+> > > >
+> > > > All of this looks a bit odd, why not just do a single dma_wmb() or wmb()
+> > > > before ringing the doorbell? Maybe I'm missing something obvious?
+> > > >
+> > > This wmb() was mainly added to ensure all the descriptor data is in
+> > > RAM. The HW manual for RZ/G1/2, R-Car Gen1/2 and RZ/G2L family
+> > > mentions that we need to read back the last written descriptor before
+> > > triggering the DMA. Please let me know if you think this can be
+> > > handled differently.
+> > 
+> > Have you observed any issues without the wmb() here?
+> 
+> No, we haven't. We have added it because after further discussions
+> with the design team, it became clear that the best thing to do
+> is to wait for all the previous memory writes to have completed fully,
+> alongside cache, branch prediction, and other operations, so that when
+> we ring the DMA bell everything is in the right place.
+> 
+> As Prabhakar pointed out, the manual refers to a `read` operation to be
+> used as a delay, but a wmb() barrier is more accurate and its purposes
+> is clearer than a random memory read.
+> 
+> Having said that, we haven't noticed any issues without it in practice,
+> but having it might prevent issues going forward.
+> 
+> The dma_wmb() barrier is still needed for cases where the DMA engine
+> is already active, therefore writing the descriptor(s) at the wrong
+> time can lead to error conditions (which we have managed to see, and
+> which this patch addresses for multi-descriptor cases).
+> 
+> Perhaps this patch should be split into two patches:
+> 1. to address the error we have seen, for use cases where the DMA engine
+>    is already running (this is regarding dma_wmb())
+> 2. to address the use cases where the DMA engine is not running yet,
+>    and we want to avoid the possibility of ringing the bell when things
+>    are not 100% ready.
+> 
+> What do you think?
 
-Possible dependencies:
+More and smaller patches are always a good idea IMHO, makes bisecting 
+stuff so much easier.
 
+I still have my doubts about the usefulness of adding a wmb() here.  
+Maybe beacause I'm also confused about why it's a wmb() and not a 
+dma_wmb(), are not only trying to make sure the DMA is not started 
+before we know the last desc->die_dt = {DT_FSTART,DT_FSINGLE} have would 
+be visible?
 
+The usefulness of that I can imagine. As if the DMA engine is not 
+running and we start it and that write is not visible we could delay 
+sending until the doorbell is rang again.
 
-thanks,
+> 
+> Cheers,
+> Fab
+> 
+> > 
+> > What I'm trying to understand is why a new barrier is needed here when
+> > it have worked without one before. I'm likely just slow but what I'm
+> > trying to grasp is the need for the intermittent dma_wmb() above in
+> > relation to this one.
+> > 
+> > Should it not be, setup the descriptors, barrier to ensure it's in RAM,
+> > ring doorbell. The staggered method of setup descriptors, barrier, setup
+> > more descriptors, barrier, ring doorbell is what confuses me, I think
+> > :-)
+> > 
+> > >
+> > > Cheers,
+> > > Prabhakar
+> > >
+> > > > >       ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
+> > > > >
+> > > > >       priv->cur_tx[q] += num_tx_desc;
+> > > > > --
+> > > > > 2.43.0
+> > > > >
+> > > >
+> > > > --
+> > > > Kind Regards,
+> > > > Niklas Söderlund
+> > 
+> > --
+> > Kind Regards,
+> > Niklas Söderlund
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From b52da4054ee0bf9ecb44996f2c83236ff50b3812 Mon Sep 17 00:00:00 2001
-From: Corey Minyard <corey@minyard.net>
-Date: Fri, 5 Sep 2025 11:33:39 -0500
-Subject: [PATCH] ipmi: Rework user message limit handling
-
-The limit on the number of user messages had a number of issues,
-improper counting in some cases and a use after free.
-
-Restructure how this is all done to handle more in the receive message
-allocation routine, so all refcouting and user message limit counts
-are done in that routine.  It's a lot cleaner and safer.
-
-Reported-by: Gilles BULOZ <gilles.buloz@kontron.com>
-Closes: https://lore.kernel.org/lkml/aLsw6G0GyqfpKs2S@mail.minyard.net/
-Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
-Cc: <stable@vger.kernel.org> # 4.19
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Tested-by: Gilles BULOZ <gilles.buloz@kontron.com>
-
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index b78cc359534d..d2fbf2203bd2 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -38,7 +38,9 @@
- 
- #define IPMI_DRIVER_VERSION "39.2"
- 
--static struct ipmi_recv_msg *ipmi_alloc_recv_msg(void);
-+static struct ipmi_recv_msg *ipmi_alloc_recv_msg(struct ipmi_user *user);
-+static void ipmi_set_recv_msg_user(struct ipmi_recv_msg *msg,
-+				   struct ipmi_user *user);
- static int ipmi_init_msghandler(void);
- static void smi_work(struct work_struct *t);
- static void handle_new_recv_msgs(struct ipmi_smi *intf);
-@@ -955,7 +957,6 @@ static int deliver_response(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
- 		 * risk.  At this moment, simply skip it in that case.
- 		 */
- 		ipmi_free_recv_msg(msg);
--		atomic_dec(&msg->user->nr_msgs);
- 	} else {
- 		/*
- 		 * Deliver it in smi_work.  The message will hold a
-@@ -1611,8 +1612,7 @@ int ipmi_set_gets_events(struct ipmi_user *user, bool val)
- 		}
- 
- 		list_for_each_entry_safe(msg, msg2, &msgs, link) {
--			msg->user = user;
--			kref_get(&user->refcount);
-+			ipmi_set_recv_msg_user(msg, user);
- 			deliver_local_response(intf, msg);
- 		}
- 	}
-@@ -2277,22 +2277,15 @@ static int i_ipmi_request(struct ipmi_user     *user,
- 	int run_to_completion = READ_ONCE(intf->run_to_completion);
- 	int rv = 0;
- 
--	if (user) {
--		if (atomic_add_return(1, &user->nr_msgs) > max_msgs_per_user) {
--			/* Decrement will happen at the end of the routine. */
--			rv = -EBUSY;
--			goto out;
--		}
--	}
--
--	if (supplied_recv)
-+	if (supplied_recv) {
- 		recv_msg = supplied_recv;
--	else {
--		recv_msg = ipmi_alloc_recv_msg();
--		if (recv_msg == NULL) {
--			rv = -ENOMEM;
--			goto out;
--		}
-+		recv_msg->user = user;
-+		if (user)
-+			atomic_inc(&user->nr_msgs);
-+	} else {
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+		if (IS_ERR(recv_msg))
-+			return PTR_ERR(recv_msg);
- 	}
- 	recv_msg->user_msg_data = user_msg_data;
- 
-@@ -2303,8 +2296,7 @@ static int i_ipmi_request(struct ipmi_user     *user,
- 		if (smi_msg == NULL) {
- 			if (!supplied_recv)
- 				ipmi_free_recv_msg(recv_msg);
--			rv = -ENOMEM;
--			goto out;
-+			return -ENOMEM;
- 		}
- 	}
- 
-@@ -2315,10 +2307,6 @@ static int i_ipmi_request(struct ipmi_user     *user,
- 		goto out_err;
- 	}
- 
--	recv_msg->user = user;
--	if (user)
--		/* The put happens when the message is freed. */
--		kref_get(&user->refcount);
- 	recv_msg->msgid = msgid;
- 	/*
- 	 * Store the message to send in the receive message so timeout
-@@ -2347,8 +2335,10 @@ static int i_ipmi_request(struct ipmi_user     *user,
- 
- 	if (rv) {
- out_err:
--		ipmi_free_smi_msg(smi_msg);
--		ipmi_free_recv_msg(recv_msg);
-+		if (!supplied_smi)
-+			ipmi_free_smi_msg(smi_msg);
-+		if (!supplied_recv)
-+			ipmi_free_recv_msg(recv_msg);
- 	} else {
- 		dev_dbg(intf->si_dev, "Send: %*ph\n",
- 			smi_msg->data_size, smi_msg->data);
-@@ -2358,9 +2348,6 @@ static int i_ipmi_request(struct ipmi_user     *user,
- 	if (!run_to_completion)
- 		mutex_unlock(&intf->users_mutex);
- 
--out:
--	if (rv && user)
--		atomic_dec(&user->nr_msgs);
- 	return rv;
- }
- 
-@@ -3851,7 +3838,7 @@ static int handle_ipmb_get_msg_cmd(struct ipmi_smi *intf,
- 	unsigned char            chan;
- 	struct ipmi_user         *user = NULL;
- 	struct ipmi_ipmb_addr    *ipmb_addr;
--	struct ipmi_recv_msg     *recv_msg;
-+	struct ipmi_recv_msg     *recv_msg = NULL;
- 
- 	if (msg->rsp_size < 10) {
- 		/* Message not big enough, just ignore it. */
-@@ -3872,9 +3859,8 @@ static int handle_ipmb_get_msg_cmd(struct ipmi_smi *intf,
- 	rcvr = find_cmd_rcvr(intf, netfn, cmd, chan);
- 	if (rcvr) {
- 		user = rcvr->user;
--		kref_get(&user->refcount);
--	} else
--		user = NULL;
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+	}
- 	rcu_read_unlock();
- 
- 	if (user == NULL) {
-@@ -3904,47 +3890,41 @@ static int handle_ipmb_get_msg_cmd(struct ipmi_smi *intf,
- 		 * causes it to not be freed or queued.
- 		 */
- 		rv = -1;
-+	} else if (!IS_ERR(recv_msg)) {
-+		/* Extract the source address from the data. */
-+		ipmb_addr = (struct ipmi_ipmb_addr *) &recv_msg->addr;
-+		ipmb_addr->addr_type = IPMI_IPMB_ADDR_TYPE;
-+		ipmb_addr->slave_addr = msg->rsp[6];
-+		ipmb_addr->lun = msg->rsp[7] & 3;
-+		ipmb_addr->channel = msg->rsp[3] & 0xf;
-+
-+		/*
-+		 * Extract the rest of the message information
-+		 * from the IPMB header.
-+		 */
-+		recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
-+		recv_msg->msgid = msg->rsp[7] >> 2;
-+		recv_msg->msg.netfn = msg->rsp[4] >> 2;
-+		recv_msg->msg.cmd = msg->rsp[8];
-+		recv_msg->msg.data = recv_msg->msg_data;
-+
-+		/*
-+		 * We chop off 10, not 9 bytes because the checksum
-+		 * at the end also needs to be removed.
-+		 */
-+		recv_msg->msg.data_len = msg->rsp_size - 10;
-+		memcpy(recv_msg->msg_data, &msg->rsp[9],
-+		       msg->rsp_size - 10);
-+		if (deliver_response(intf, recv_msg))
-+			ipmi_inc_stat(intf, unhandled_commands);
-+		else
-+			ipmi_inc_stat(intf, handled_commands);
- 	} else {
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
--			/*
--			 * We couldn't allocate memory for the
--			 * message, so requeue it for handling
--			 * later.
--			 */
--			rv = 1;
--			kref_put(&user->refcount, free_ipmi_user);
--		} else {
--			/* Extract the source address from the data. */
--			ipmb_addr = (struct ipmi_ipmb_addr *) &recv_msg->addr;
--			ipmb_addr->addr_type = IPMI_IPMB_ADDR_TYPE;
--			ipmb_addr->slave_addr = msg->rsp[6];
--			ipmb_addr->lun = msg->rsp[7] & 3;
--			ipmb_addr->channel = msg->rsp[3] & 0xf;
--
--			/*
--			 * Extract the rest of the message information
--			 * from the IPMB header.
--			 */
--			recv_msg->user = user;
--			recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
--			recv_msg->msgid = msg->rsp[7] >> 2;
--			recv_msg->msg.netfn = msg->rsp[4] >> 2;
--			recv_msg->msg.cmd = msg->rsp[8];
--			recv_msg->msg.data = recv_msg->msg_data;
--
--			/*
--			 * We chop off 10, not 9 bytes because the checksum
--			 * at the end also needs to be removed.
--			 */
--			recv_msg->msg.data_len = msg->rsp_size - 10;
--			memcpy(recv_msg->msg_data, &msg->rsp[9],
--			       msg->rsp_size - 10);
--			if (deliver_response(intf, recv_msg))
--				ipmi_inc_stat(intf, unhandled_commands);
--			else
--				ipmi_inc_stat(intf, handled_commands);
--		}
-+		/*
-+		 * We couldn't allocate memory for the message, so
-+		 * requeue it for handling later.
-+		 */
-+		rv = 1;
- 	}
- 
- 	return rv;
-@@ -3957,7 +3937,7 @@ static int handle_ipmb_direct_rcv_cmd(struct ipmi_smi *intf,
- 	int                      rv = 0;
- 	struct ipmi_user         *user = NULL;
- 	struct ipmi_ipmb_direct_addr *daddr;
--	struct ipmi_recv_msg     *recv_msg;
-+	struct ipmi_recv_msg     *recv_msg = NULL;
- 	unsigned char netfn = msg->rsp[0] >> 2;
- 	unsigned char cmd = msg->rsp[3];
- 
-@@ -3966,9 +3946,8 @@ static int handle_ipmb_direct_rcv_cmd(struct ipmi_smi *intf,
- 	rcvr = find_cmd_rcvr(intf, netfn, cmd, 0);
- 	if (rcvr) {
- 		user = rcvr->user;
--		kref_get(&user->refcount);
--	} else
--		user = NULL;
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+	}
- 	rcu_read_unlock();
- 
- 	if (user == NULL) {
-@@ -3990,44 +3969,38 @@ static int handle_ipmb_direct_rcv_cmd(struct ipmi_smi *intf,
- 		 * causes it to not be freed or queued.
- 		 */
- 		rv = -1;
-+	} else if (!IS_ERR(recv_msg)) {
-+		/* Extract the source address from the data. */
-+		daddr = (struct ipmi_ipmb_direct_addr *)&recv_msg->addr;
-+		daddr->addr_type = IPMI_IPMB_DIRECT_ADDR_TYPE;
-+		daddr->channel = 0;
-+		daddr->slave_addr = msg->rsp[1];
-+		daddr->rs_lun = msg->rsp[0] & 3;
-+		daddr->rq_lun = msg->rsp[2] & 3;
-+
-+		/*
-+		 * Extract the rest of the message information
-+		 * from the IPMB header.
-+		 */
-+		recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
-+		recv_msg->msgid = (msg->rsp[2] >> 2);
-+		recv_msg->msg.netfn = msg->rsp[0] >> 2;
-+		recv_msg->msg.cmd = msg->rsp[3];
-+		recv_msg->msg.data = recv_msg->msg_data;
-+
-+		recv_msg->msg.data_len = msg->rsp_size - 4;
-+		memcpy(recv_msg->msg_data, msg->rsp + 4,
-+		       msg->rsp_size - 4);
-+		if (deliver_response(intf, recv_msg))
-+			ipmi_inc_stat(intf, unhandled_commands);
-+		else
-+			ipmi_inc_stat(intf, handled_commands);
- 	} else {
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
--			/*
--			 * We couldn't allocate memory for the
--			 * message, so requeue it for handling
--			 * later.
--			 */
--			rv = 1;
--			kref_put(&user->refcount, free_ipmi_user);
--		} else {
--			/* Extract the source address from the data. */
--			daddr = (struct ipmi_ipmb_direct_addr *)&recv_msg->addr;
--			daddr->addr_type = IPMI_IPMB_DIRECT_ADDR_TYPE;
--			daddr->channel = 0;
--			daddr->slave_addr = msg->rsp[1];
--			daddr->rs_lun = msg->rsp[0] & 3;
--			daddr->rq_lun = msg->rsp[2] & 3;
--
--			/*
--			 * Extract the rest of the message information
--			 * from the IPMB header.
--			 */
--			recv_msg->user = user;
--			recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
--			recv_msg->msgid = (msg->rsp[2] >> 2);
--			recv_msg->msg.netfn = msg->rsp[0] >> 2;
--			recv_msg->msg.cmd = msg->rsp[3];
--			recv_msg->msg.data = recv_msg->msg_data;
--
--			recv_msg->msg.data_len = msg->rsp_size - 4;
--			memcpy(recv_msg->msg_data, msg->rsp + 4,
--			       msg->rsp_size - 4);
--			if (deliver_response(intf, recv_msg))
--				ipmi_inc_stat(intf, unhandled_commands);
--			else
--				ipmi_inc_stat(intf, handled_commands);
--		}
-+		/*
-+		 * We couldn't allocate memory for the message, so
-+		 * requeue it for handling later.
-+		 */
-+		rv = 1;
- 	}
- 
- 	return rv;
-@@ -4141,7 +4114,7 @@ static int handle_lan_get_msg_cmd(struct ipmi_smi *intf,
- 	unsigned char            chan;
- 	struct ipmi_user         *user = NULL;
- 	struct ipmi_lan_addr     *lan_addr;
--	struct ipmi_recv_msg     *recv_msg;
-+	struct ipmi_recv_msg     *recv_msg = NULL;
- 
- 	if (msg->rsp_size < 12) {
- 		/* Message not big enough, just ignore it. */
-@@ -4162,9 +4135,8 @@ static int handle_lan_get_msg_cmd(struct ipmi_smi *intf,
- 	rcvr = find_cmd_rcvr(intf, netfn, cmd, chan);
- 	if (rcvr) {
- 		user = rcvr->user;
--		kref_get(&user->refcount);
--	} else
--		user = NULL;
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+	}
- 	rcu_read_unlock();
- 
- 	if (user == NULL) {
-@@ -4195,49 +4167,44 @@ static int handle_lan_get_msg_cmd(struct ipmi_smi *intf,
- 		 * causes it to not be freed or queued.
- 		 */
- 		rv = -1;
-+	} else if (!IS_ERR(recv_msg)) {
-+		/* Extract the source address from the data. */
-+		lan_addr = (struct ipmi_lan_addr *) &recv_msg->addr;
-+		lan_addr->addr_type = IPMI_LAN_ADDR_TYPE;
-+		lan_addr->session_handle = msg->rsp[4];
-+		lan_addr->remote_SWID = msg->rsp[8];
-+		lan_addr->local_SWID = msg->rsp[5];
-+		lan_addr->lun = msg->rsp[9] & 3;
-+		lan_addr->channel = msg->rsp[3] & 0xf;
-+		lan_addr->privilege = msg->rsp[3] >> 4;
-+
-+		/*
-+		 * Extract the rest of the message information
-+		 * from the IPMB header.
-+		 */
-+		recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
-+		recv_msg->msgid = msg->rsp[9] >> 2;
-+		recv_msg->msg.netfn = msg->rsp[6] >> 2;
-+		recv_msg->msg.cmd = msg->rsp[10];
-+		recv_msg->msg.data = recv_msg->msg_data;
-+
-+		/*
-+		 * We chop off 12, not 11 bytes because the checksum
-+		 * at the end also needs to be removed.
-+		 */
-+		recv_msg->msg.data_len = msg->rsp_size - 12;
-+		memcpy(recv_msg->msg_data, &msg->rsp[11],
-+		       msg->rsp_size - 12);
-+		if (deliver_response(intf, recv_msg))
-+			ipmi_inc_stat(intf, unhandled_commands);
-+		else
-+			ipmi_inc_stat(intf, handled_commands);
- 	} else {
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
--			/*
--			 * We couldn't allocate memory for the
--			 * message, so requeue it for handling later.
--			 */
--			rv = 1;
--			kref_put(&user->refcount, free_ipmi_user);
--		} else {
--			/* Extract the source address from the data. */
--			lan_addr = (struct ipmi_lan_addr *) &recv_msg->addr;
--			lan_addr->addr_type = IPMI_LAN_ADDR_TYPE;
--			lan_addr->session_handle = msg->rsp[4];
--			lan_addr->remote_SWID = msg->rsp[8];
--			lan_addr->local_SWID = msg->rsp[5];
--			lan_addr->lun = msg->rsp[9] & 3;
--			lan_addr->channel = msg->rsp[3] & 0xf;
--			lan_addr->privilege = msg->rsp[3] >> 4;
--
--			/*
--			 * Extract the rest of the message information
--			 * from the IPMB header.
--			 */
--			recv_msg->user = user;
--			recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
--			recv_msg->msgid = msg->rsp[9] >> 2;
--			recv_msg->msg.netfn = msg->rsp[6] >> 2;
--			recv_msg->msg.cmd = msg->rsp[10];
--			recv_msg->msg.data = recv_msg->msg_data;
--
--			/*
--			 * We chop off 12, not 11 bytes because the checksum
--			 * at the end also needs to be removed.
--			 */
--			recv_msg->msg.data_len = msg->rsp_size - 12;
--			memcpy(recv_msg->msg_data, &msg->rsp[11],
--			       msg->rsp_size - 12);
--			if (deliver_response(intf, recv_msg))
--				ipmi_inc_stat(intf, unhandled_commands);
--			else
--				ipmi_inc_stat(intf, handled_commands);
--		}
-+		/*
-+		 * We couldn't allocate memory for the message, so
-+		 * requeue it for handling later.
-+		 */
-+		rv = 1;
- 	}
- 
- 	return rv;
-@@ -4259,7 +4226,7 @@ static int handle_oem_get_msg_cmd(struct ipmi_smi *intf,
- 	unsigned char         chan;
- 	struct ipmi_user *user = NULL;
- 	struct ipmi_system_interface_addr *smi_addr;
--	struct ipmi_recv_msg  *recv_msg;
-+	struct ipmi_recv_msg  *recv_msg = NULL;
- 
- 	/*
- 	 * We expect the OEM SW to perform error checking
-@@ -4288,9 +4255,8 @@ static int handle_oem_get_msg_cmd(struct ipmi_smi *intf,
- 	rcvr = find_cmd_rcvr(intf, netfn, cmd, chan);
- 	if (rcvr) {
- 		user = rcvr->user;
--		kref_get(&user->refcount);
--	} else
--		user = NULL;
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+	}
- 	rcu_read_unlock();
- 
- 	if (user == NULL) {
-@@ -4303,48 +4269,42 @@ static int handle_oem_get_msg_cmd(struct ipmi_smi *intf,
- 		 */
- 
- 		rv = 0;
-+	} else if (!IS_ERR(recv_msg)) {
-+		/*
-+		 * OEM Messages are expected to be delivered via
-+		 * the system interface to SMS software.  We might
-+		 * need to visit this again depending on OEM
-+		 * requirements
-+		 */
-+		smi_addr = ((struct ipmi_system_interface_addr *)
-+			    &recv_msg->addr);
-+		smi_addr->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
-+		smi_addr->channel = IPMI_BMC_CHANNEL;
-+		smi_addr->lun = msg->rsp[0] & 3;
-+
-+		recv_msg->user_msg_data = NULL;
-+		recv_msg->recv_type = IPMI_OEM_RECV_TYPE;
-+		recv_msg->msg.netfn = msg->rsp[0] >> 2;
-+		recv_msg->msg.cmd = msg->rsp[1];
-+		recv_msg->msg.data = recv_msg->msg_data;
-+
-+		/*
-+		 * The message starts at byte 4 which follows the
-+		 * Channel Byte in the "GET MESSAGE" command
-+		 */
-+		recv_msg->msg.data_len = msg->rsp_size - 4;
-+		memcpy(recv_msg->msg_data, &msg->rsp[4],
-+		       msg->rsp_size - 4);
-+		if (deliver_response(intf, recv_msg))
-+			ipmi_inc_stat(intf, unhandled_commands);
-+		else
-+			ipmi_inc_stat(intf, handled_commands);
- 	} else {
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
--			/*
--			 * We couldn't allocate memory for the
--			 * message, so requeue it for handling
--			 * later.
--			 */
--			rv = 1;
--			kref_put(&user->refcount, free_ipmi_user);
--		} else {
--			/*
--			 * OEM Messages are expected to be delivered via
--			 * the system interface to SMS software.  We might
--			 * need to visit this again depending on OEM
--			 * requirements
--			 */
--			smi_addr = ((struct ipmi_system_interface_addr *)
--				    &recv_msg->addr);
--			smi_addr->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
--			smi_addr->channel = IPMI_BMC_CHANNEL;
--			smi_addr->lun = msg->rsp[0] & 3;
--
--			recv_msg->user = user;
--			recv_msg->user_msg_data = NULL;
--			recv_msg->recv_type = IPMI_OEM_RECV_TYPE;
--			recv_msg->msg.netfn = msg->rsp[0] >> 2;
--			recv_msg->msg.cmd = msg->rsp[1];
--			recv_msg->msg.data = recv_msg->msg_data;
--
--			/*
--			 * The message starts at byte 4 which follows the
--			 * Channel Byte in the "GET MESSAGE" command
--			 */
--			recv_msg->msg.data_len = msg->rsp_size - 4;
--			memcpy(recv_msg->msg_data, &msg->rsp[4],
--			       msg->rsp_size - 4);
--			if (deliver_response(intf, recv_msg))
--				ipmi_inc_stat(intf, unhandled_commands);
--			else
--				ipmi_inc_stat(intf, handled_commands);
--		}
-+		/*
-+		 * We couldn't allocate memory for the message, so
-+		 * requeue it for handling later.
-+		 */
-+		rv = 1;
- 	}
- 
- 	return rv;
-@@ -4402,8 +4362,8 @@ static int handle_read_event_rsp(struct ipmi_smi *intf,
- 		if (!user->gets_events)
- 			continue;
- 
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+		if (IS_ERR(recv_msg)) {
- 			mutex_unlock(&intf->users_mutex);
- 			list_for_each_entry_safe(recv_msg, recv_msg2, &msgs,
- 						 link) {
-@@ -4424,8 +4384,6 @@ static int handle_read_event_rsp(struct ipmi_smi *intf,
- 		deliver_count++;
- 
- 		copy_event_into_recv_msg(recv_msg, msg);
--		recv_msg->user = user;
--		kref_get(&user->refcount);
- 		list_add_tail(&recv_msg->link, &msgs);
- 	}
- 	mutex_unlock(&intf->users_mutex);
-@@ -4441,8 +4399,8 @@ static int handle_read_event_rsp(struct ipmi_smi *intf,
- 		 * No one to receive the message, put it in queue if there's
- 		 * not already too many things in the queue.
- 		 */
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
-+		recv_msg = ipmi_alloc_recv_msg(NULL);
-+		if (IS_ERR(recv_msg)) {
- 			/*
- 			 * We couldn't allocate memory for the
- 			 * message, so requeue it for handling
-@@ -4858,12 +4816,10 @@ static void smi_work(struct work_struct *t)
- 
- 		list_del(&msg->link);
- 
--		if (refcount_read(&user->destroyed) == 0) {
-+		if (refcount_read(&user->destroyed) == 0)
- 			ipmi_free_recv_msg(msg);
--		} else {
--			atomic_dec(&user->nr_msgs);
-+		else
- 			user->handler->ipmi_recv_hndl(msg, user->handler_data);
--		}
- 	}
- 	mutex_unlock(&intf->user_msgs_mutex);
- 
-@@ -5179,27 +5135,51 @@ static void free_recv_msg(struct ipmi_recv_msg *msg)
- 		kfree(msg);
- }
- 
--static struct ipmi_recv_msg *ipmi_alloc_recv_msg(void)
-+static struct ipmi_recv_msg *ipmi_alloc_recv_msg(struct ipmi_user *user)
- {
- 	struct ipmi_recv_msg *rv;
- 
--	rv = kmalloc(sizeof(struct ipmi_recv_msg), GFP_ATOMIC);
--	if (rv) {
--		rv->user = NULL;
--		rv->done = free_recv_msg;
--		atomic_inc(&recv_msg_inuse_count);
-+	if (user) {
-+		if (atomic_add_return(1, &user->nr_msgs) > max_msgs_per_user) {
-+			atomic_dec(&user->nr_msgs);
-+			return ERR_PTR(-EBUSY);
-+		}
- 	}
-+
-+	rv = kmalloc(sizeof(struct ipmi_recv_msg), GFP_ATOMIC);
-+	if (!rv) {
-+		if (user)
-+			atomic_dec(&user->nr_msgs);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	rv->user = user;
-+	rv->done = free_recv_msg;
-+	if (user)
-+		kref_get(&user->refcount);
-+	atomic_inc(&recv_msg_inuse_count);
- 	return rv;
- }
- 
- void ipmi_free_recv_msg(struct ipmi_recv_msg *msg)
- {
--	if (msg->user && !oops_in_progress)
-+	if (msg->user && !oops_in_progress) {
-+		atomic_dec(&msg->user->nr_msgs);
- 		kref_put(&msg->user->refcount, free_ipmi_user);
-+	}
- 	msg->done(msg);
- }
- EXPORT_SYMBOL(ipmi_free_recv_msg);
- 
-+static void ipmi_set_recv_msg_user(struct ipmi_recv_msg *msg,
-+				   struct ipmi_user *user)
-+{
-+	WARN_ON_ONCE(msg->user); /* User should not be set. */
-+	msg->user = user;
-+	atomic_inc(&user->nr_msgs);
-+	kref_get(&user->refcount);
-+}
-+
- static atomic_t panic_done_count = ATOMIC_INIT(0);
- 
- static void dummy_smi_done_handler(struct ipmi_smi_msg *msg)
-
+-- 
+Kind Regards,
+Niklas Söderlund
 
