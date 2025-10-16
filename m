@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-186097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE58BE3935
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F57BE393E
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:03:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4C941506E31
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:01:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DA825508855
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809D11DF996;
-	Thu, 16 Oct 2025 13:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB1D33438A;
+	Thu, 16 Oct 2025 13:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6njuG1C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIN3yRk8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5F42AE68
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C3332E68C
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760619648; cv=none; b=KaG0FI5tirAUCNvCwsnE0EACmprrrYVN7eeE/2NsyeEcPxY3WBiFCqBljAFQrUC2nf2CNCr3l76NhKfzCoOsMASvlk6W3yB8svTTw4gc6C95zFm3+yPpXuDoOkqU3sfh1fK+5djnVZDsR1Wnn4QEfX221/zNfAkSUZ/f49CHQ34=
+	t=1760619654; cv=none; b=rhB6GU3ozDF4rm0MdJncCj2DuSZYFnJEgdsCJbtAcpdNW6iYl54vWLq9Ras+5dTRgzIBxuQqmMF+lbxoSZ+bFSbeO2s4SlJF9CXvHIbNVMYBSw+I3Bd05fqp0nk3u2qvAWYdS50cauok1mtXx86s1eJo6dy7t0nNUqmK1tcF18g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760619648; c=relaxed/simple;
-	bh=G9MWohqkkWzMqsQhfPdsa+vSXatiKlNAo2+b7Ly1LM4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bLHUr8Duy/aiOEOirWUxzYswG0yAqUylXmqngmUR7qpk5lLz3UXJiXjXw92SpBwxPHJ6XHhEyVGxDZ0zR9efPgNdPNrMU1Jv9x5b7daoOJmh5GXaugRKUt+nkvkDJVUqdU3qFKK9wNOQx6QXaCHTrQtPq9OXxkuuu06/t3hjNXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6njuG1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E6BC4CEF1;
-	Thu, 16 Oct 2025 13:00:47 +0000 (UTC)
+	s=arc-20240116; t=1760619654; c=relaxed/simple;
+	bh=Hs5RXaGcHo43beWwUxiCpupwle4AASscZY8Rj+eOwR0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tMs0oq2vFIaJ5o/PDFwRoDeFLaME0L44epBjUP6gm7se7DxcKDmy7mFw0uIzujZGEmkoYfrZ/ahR3NW0QC0eOvn3hOL+ilGDrc7IvdQbcDdhnNQPhyKJ7zikLeTTlQ4JurTGZ7Cl+waYtr8h4QtXJsKBpi/IUiSMDIkjjEJlqVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIN3yRk8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97535C113D0;
+	Thu, 16 Oct 2025 13:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760619648;
-	bh=G9MWohqkkWzMqsQhfPdsa+vSXatiKlNAo2+b7Ly1LM4=;
+	s=korg; t=1760619654;
+	bh=Hs5RXaGcHo43beWwUxiCpupwle4AASscZY8Rj+eOwR0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=e6njuG1C7HAq0d2tjcQEaYKOER+ANC+5qULWN4c83xSn07qCke6/V+fMI544scTy4
-	 l3Lqz/422ACAs4WH243sjV8l/ts7C68ZLeYLBsyYGhl/MKQ1uwcjVtSQduYNglhDx0
-	 hNCxBKr+uj+MWcFKVLmUcnFxwxrsmzfojR/dlRxA=
-Subject: FAILED: patch "[PATCH] PCI: tegra194: Reset BARs when running in PCIe endpoint mode" failed to apply to 6.6-stable tree
+	b=IIN3yRk8CeARDSdoEIkWUOR2jWkC28+TcYrdPbRBh29uwAeotAHIk1FAHj+eRDx3g
+	 I7uvmnKiKFc9xqghuA1sfW79oyI8rtFhvWDiaK3lpTkvTXloYuNmqEENgtrM42jzei
+	 +5cMUtvbz/04PS1WwPxJea7f7z6OOmwyqHWu7Doc=
+Subject: FAILED: patch "[PATCH] PCI: tegra194: Reset BARs when running in PCIe endpoint mode" failed to apply to 6.1-stable tree
 To: cassel@kernel.org,bhelgaas@google.com,mani@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 15:00:38 +0200
-Message-ID: <2025101638-carry-unwashed-bba6@gregkh>
+Date: Thu, 16 Oct 2025 15:00:39 +0200
+Message-ID: <2025101638-slider-outlying-148b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 42f9c66a6d0cc45758dab77233c5460e1cf003df
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101638-carry-unwashed-bba6@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101638-slider-outlying-148b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
