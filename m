@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-186103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884E9BE394F
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:03:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 803AFBE3917
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E6400508D3F
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:01:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 569B31886AEC
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838AA1C32FF;
-	Thu, 16 Oct 2025 13:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87162475CB;
+	Thu, 16 Oct 2025 13:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i319MNaJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nmtJxC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354431CD1F
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C8C205E2F
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760619707; cv=none; b=pckOBA4cj1+oHkXiegXGuVo6sKwNRXI1EdlpXPN9E3hyB6U5+9Qr1RkYcOWY9z5vFOWwPJHt8BksHN2JsSyIggOJALzk94kCT3HO9n1Ow49qOiV8KOCEjlOhyW7HknWWdHvft0lxZ73fcYYNt1taxIA0+LYA6n5Vqvfc5SXJEag=
+	t=1760619726; cv=none; b=UQs+AiX12xjUOqL13tMUG78pda8PaOcVAYlgGXeI44aN/ZwR/5B0YcVbvVfBGs0B1MjvBn8CmnLppvoZ+NHiklWpRLwSXLlH2QI/TP8xCmA6cNwfumRQW6yx+/0LiwINRkxsoPaJtju4wVm2tp7rJ243bo8h10C67y+MAmcZ1ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760619707; c=relaxed/simple;
-	bh=p8J3bgFm/JZDPGqWN8scnMKB9Nv93boKWIyapkN9Rjs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dtWiQBNUngiNXLCGkITCKVvSfbqfiOh96y1/8K8GmBffrmdFPnikYuoRTPM8DmVZ0/Cj2gr5tySjBNP2fA1IWqSDnpnlf42aLxjbFwB0NyF6AIYd/sS8QKjyrtGCwW0f3LzBuMyaGya3PhI6sOdgvZIrqH/AhxpHb8e7tvizHKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i319MNaJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB8DC4CEF1;
-	Thu, 16 Oct 2025 13:01:45 +0000 (UTC)
+	s=arc-20240116; t=1760619726; c=relaxed/simple;
+	bh=eF9Wf43q2CGQLEIH4beBeo3SbuOfY2G9/O9XGgr+ZPo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IWE6HVyjp4GKu0Fofbjk4ULI7aCJB9aZw39kp1XkRhfShMXVKTCc6io0zNv7fQzyaqxsbrfKgCB17dsP/WXiOPHQEVKndJVWBrdxgTooKnP390KJGH+8LykaulwYi51u6JiwmsQnJZKAWR/+TA2jnRnLJDgjA3tuTTxFyMW5efs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nmtJxC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E27A6C4CEF1;
+	Thu, 16 Oct 2025 13:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760619705;
-	bh=p8J3bgFm/JZDPGqWN8scnMKB9Nv93boKWIyapkN9Rjs=;
+	s=korg; t=1760619726;
+	bh=eF9Wf43q2CGQLEIH4beBeo3SbuOfY2G9/O9XGgr+ZPo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=i319MNaJRTYQcZMON/GLPkTIBFeF0VVZ8U6Hqj5AJ6rTdBOVnQ5UAMdAfh7oqWVoL
-	 r2T2lDxhz22fc7gjEGZTwdxB8dDXc7g+h+JhLj6D2MoVbNP/RhmCxzeF90KxjtT2YT
-	 lMlrtnsMawS/Bkpv3SUgNMy6uwyvg1rOiRXQePrM=
-Subject: FAILED: patch "[PATCH] spi: cadence-quadspi: Flush posted register writes before DAC" failed to apply to 5.4-stable tree
-To: pratyush@kernel.org,broonie@kernel.org,s-k6@ti.com
+	b=1nmtJxC8l905Yd5lFIFNwVI5EGeI/EiLEBnovPWNbDLtvrb8eCtojB3nDY2RkCNye
+	 50vVwUVTwi4FhpJ/S9P7pB00IahrxNRNKUwmu13bTkBgF2VirJYtLugxmmU+YFWvsa
+	 aHzTZHPQT2ZerRm+anrC+78mLeLWnRn899v/sVKw=
+Subject: FAILED: patch "[PATCH] xfs: use deferred intent items for reaping crosslinked blocks" failed to apply to 6.12-stable tree
+To: djwong@kernel.org,hch@lst.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 15:01:35 +0200
-Message-ID: <2025101635-laurel-crawling-2104@gregkh>
+Date: Thu, 16 Oct 2025 15:02:03 +0200
+Message-ID: <2025101603-parasitic-impatient-2d2b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1ad55767e77a853c98752ed1e33b68049a243bd7
+git cherry-pick -x cd32a0c0dcdf634f2e0e71f41c272e19dece6264
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101635-laurel-crawling-2104@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101603-parasitic-impatient-2d2b@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,53 +77,49 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1ad55767e77a853c98752ed1e33b68049a243bd7 Mon Sep 17 00:00:00 2001
-From: Pratyush Yadav <pratyush@kernel.org>
-Date: Sat, 6 Sep 2025 00:29:56 +0530
-Subject: [PATCH] spi: cadence-quadspi: Flush posted register writes before DAC
- access
+From cd32a0c0dcdf634f2e0e71f41c272e19dece6264 Mon Sep 17 00:00:00 2001
+From: "Darrick J. Wong" <djwong@kernel.org>
+Date: Tue, 8 Apr 2025 16:14:32 -0700
+Subject: [PATCH] xfs: use deferred intent items for reaping crosslinked blocks
 
-cqspi_read_setup() and cqspi_write_setup() program the address width as
-the last step in the setup. This is likely to be immediately followed by
-a DAC region read/write. On TI K3 SoCs the DAC region is on a different
-endpoint from the register region. This means that the order of the two
-operations is not guaranteed, and they might be reordered at the
-interconnect level. It is possible that the DAC read/write goes through
-before the address width update goes through. In this situation if the
-previous command used a different address width the OSPI command is sent
-with the wrong number of address bytes, resulting in an invalid command
-and undefined behavior.
+When we're removing rmap records for crosslinked blocks, use deferred
+intent items so that we can try to free/unmap as many of the old data
+structure's blocks as we can in the same transaction as the commit.
 
-Read back the size register to make sure the write gets flushed before
-accessing the DAC region.
+Cc: <stable@vger.kernel.org> # v6.6
+Fixes: 1c7ce115e52106 ("xfs: reap large AG metadata extents when possible")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-CC: stable@vger.kernel.org
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
-Message-ID: <20250905185958.3575037-3-s-k6@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index eaf9a0f522d5..447a32a08a93 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -719,6 +719,7 @@ static int cqspi_read_setup(struct cqspi_flash_pdata *f_pdata,
- 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
- 	reg |= (op->addr.nbytes - 1);
- 	writel(reg, reg_base + CQSPI_REG_SIZE);
-+	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
- 	return 0;
- }
+diff --git a/fs/xfs/scrub/reap.c b/fs/xfs/scrub/reap.c
+index 8703897c0a9c..86d3d104b8d9 100644
+--- a/fs/xfs/scrub/reap.c
++++ b/fs/xfs/scrub/reap.c
+@@ -416,8 +416,6 @@ xreap_agextent_iter(
+ 		trace_xreap_dispose_unmap_extent(pag_group(sc->sa.pag), agbno,
+ 				*aglenp);
  
-@@ -1063,6 +1064,7 @@ static int cqspi_write_setup(struct cqspi_flash_pdata *f_pdata,
- 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
- 	reg |= (op->addr.nbytes - 1);
- 	writel(reg, reg_base + CQSPI_REG_SIZE);
-+	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
- 	return 0;
- }
+-		rs->force_roll = true;
+-
+ 		if (rs->oinfo == &XFS_RMAP_OINFO_COW) {
+ 			/*
+ 			 * If we're unmapping CoW staging extents, remove the
+@@ -426,11 +424,14 @@ xreap_agextent_iter(
+ 			 */
+ 			xfs_refcount_free_cow_extent(sc->tp, false, fsbno,
+ 					*aglenp);
++			rs->force_roll = true;
+ 			return 0;
+ 		}
  
+-		return xfs_rmap_free(sc->tp, sc->sa.agf_bp, sc->sa.pag, agbno,
+-				*aglenp, rs->oinfo);
++		xfs_rmap_free_extent(sc->tp, false, fsbno, *aglenp,
++				rs->oinfo->oi_owner);
++		rs->deferred++;
++		return 0;
+ 	}
+ 
+ 	trace_xreap_dispose_free_extent(pag_group(sc->sa.pag), agbno, *aglenp);
 
 
