@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-186105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A31BE3955
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:04:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20AABE396D
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1944C500712
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7415421F9F
 	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590FB19E7F9;
-	Thu, 16 Oct 2025 13:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFEF2FE056;
+	Thu, 16 Oct 2025 13:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7xPa/Fn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTl613dd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A881CD1F
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAA7205E2F
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760619736; cv=none; b=DH7RYr56WgpuquP3SrMonVKDGrysFLMpkQdGfnVFOerxzVM54iElffjQ4m5B6eQCV3sRqI96172LJDiAYZarQVe6QwyMTWGkY00lc+t9epbSAdIypHSFJOtWjlYIzcaQfZ4JhYH8FKk0Gj5RGHgtEEq2jFciSc7g7+L+rTXQs90=
+	t=1760619737; cv=none; b=s8ZQdN4N1wbS9UHIred+MArNM4S1RN3J3+/5GBSfGvf/HmR3+cwHMroVA+l0joj7cNC1MzeIngOMUrHpjoh6ZPyI/ScLIBVz9iKlwfKDaVi3vkrOtJvMo1nr03Heyoxx/9Dnjuy4AeEfP4uSiqJwi+eK0TUUT7NEJY+uP1+FYxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760619736; c=relaxed/simple;
-	bh=QwMlYfCbZsCiYOQYQFXllh3uG83C+8Wd30QSOrSLjQs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mF2ZCp0l79Y+0nvm4Wu72i4f5ao1oRw00qahbJWZ1JB8OJD5KzG3lll1/PlayWh5UZpYhIVDuCyxO5NDzc+iHO1Q2gzT/UZxFZioyhuiP2hVcjUCaHGe/11k9zoJTmxg72tXdUr1CznFj1iwNzBw4CCneWOy4ksqvvnMcNAw0kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7xPa/Fn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBA3C4CEF1;
-	Thu, 16 Oct 2025 13:02:13 +0000 (UTC)
+	s=arc-20240116; t=1760619737; c=relaxed/simple;
+	bh=4BB7ZDQ+mPgfRRB9jKh+GsfDQCuFsvgmeYStE+oNHrM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=T6h0/3FzjW2wdvkU3R+lm6HbaelZqUqsQGjfcDRLHP3XMgttyYwEvGSiW/jfzKmnQsbNk12Gzpe0vv70mS4ZDmNF6Nuz88sSBNfKgZo7mRUhMBgyYM+obommnq1D6DPGw6ZV0Skpfk34RoLCYhmqpfa8YXnIypvAInGUs46XMkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTl613dd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CEBC4CEF1;
+	Thu, 16 Oct 2025 13:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760619734;
-	bh=QwMlYfCbZsCiYOQYQFXllh3uG83C+8Wd30QSOrSLjQs=;
+	s=korg; t=1760619737;
+	bh=4BB7ZDQ+mPgfRRB9jKh+GsfDQCuFsvgmeYStE+oNHrM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Y7xPa/Fn0WAL1rbptAs09BwLxpaTdRF2FwKlMnUSmG8usz37inuzpD+Q4LzdJ4S0Z
-	 ViqQlvcbT/BRoYxuACc44JyDGn6kKbmMbU4lHIudfqekrq0+buGc9SmjCaZo35msrU
-	 fLXnF8oKXxROzj6XHlD1MlNe+OhJWQ7P6qvC7aHg=
-Subject: FAILED: patch "[PATCH] xfs: use deferred intent items for reaping crosslinked blocks" failed to apply to 6.6-stable tree
-To: djwong@kernel.org,hch@lst.de,stable@vger.kernel.org
+	b=fTl613ddmOaFlqkzjn0sTJcdHEU6jge4NW8tlmOl3mUMouY1GcxGLWI/bftgUNEBq
+	 F1ayWoJi2esJjXeBwiAeXILNmnp9q9OObBTgbV+Y8sxvyIDLKDlh8f5W6Z0tr7vb+X
+	 SenOUQrJw3V34lTAbsEceD/IFH0dnKe6jYU6uhTU=
+Subject: FAILED: patch "[PATCH] xfs: fix log CRC mismatches between i386 and other" failed to apply to 6.17-stable tree
+To: hch@lst.de,cem@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 15:02:03 +0200
-Message-ID: <2025101603-baggage-humming-330b@gregkh>
+Date: Thu, 16 Oct 2025 15:02:13 +0200
+Message-ID: <2025101613-unworldly-lumpiness-b4a6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x cd32a0c0dcdf634f2e0e71f41c272e19dece6264
+git cherry-pick -x e747883c7d7306acb4d683038d881528fbfbe749
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101603-baggage-humming-330b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101613-unworldly-lumpiness-b4a6@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,49 +77,172 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cd32a0c0dcdf634f2e0e71f41c272e19dece6264 Mon Sep 17 00:00:00 2001
-From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Tue, 8 Apr 2025 16:14:32 -0700
-Subject: [PATCH] xfs: use deferred intent items for reaping crosslinked blocks
+From e747883c7d7306acb4d683038d881528fbfbe749 Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Mon, 15 Sep 2025 06:20:30 -0700
+Subject: [PATCH] xfs: fix log CRC mismatches between i386 and other
+ architectures
 
-When we're removing rmap records for crosslinked blocks, use deferred
-intent items so that we can try to free/unmap as many of the old data
-structure's blocks as we can in the same transaction as the commit.
+When mounting file systems with a log that was dirtied on i386 on
+other architectures or vice versa, log recovery is unhappy:
 
-Cc: <stable@vger.kernel.org> # v6.6
-Fixes: 1c7ce115e52106 ("xfs: reap large AG metadata extents when possible")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+[   11.068052] XFS (vdb): Torn write (CRC failure) detected at log block 0x2. Truncating head block from 0xc.
 
-diff --git a/fs/xfs/scrub/reap.c b/fs/xfs/scrub/reap.c
-index 8703897c0a9c..86d3d104b8d9 100644
---- a/fs/xfs/scrub/reap.c
-+++ b/fs/xfs/scrub/reap.c
-@@ -416,8 +416,6 @@ xreap_agextent_iter(
- 		trace_xreap_dispose_unmap_extent(pag_group(sc->sa.pag), agbno,
- 				*aglenp);
+This is because the CRCs generated by i386 and other architectures
+always diff.  The reason for that is that sizeof(struct xlog_rec_header)
+returns different values for i386 vs the rest (324 vs 328), because the
+struct is not sizeof(uint64_t) aligned, and i386 has odd struct size
+alignment rules.
+
+This issue goes back to commit 13cdc853c519 ("Add log versioning, and new
+super block field for the log stripe") in the xfs-import tree, which
+adds log v2 support and the h_size field that causes the unaligned size.
+At that time it only mattered for the crude debug only log header
+checksum, but with commit 0e446be44806 ("xfs: add CRC checks to the log")
+it became a real issue for v5 file system, because now there is a proper
+CRC, and regular builds actually expect it match.
+
+Fix this by allowing checksums with and without the padding.
+
+Fixes: 0e446be44806 ("xfs: add CRC checks to the log")
+Cc: <stable@vger.kernel.org> # v3.8
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+
+diff --git a/fs/xfs/libxfs/xfs_log_format.h b/fs/xfs/libxfs/xfs_log_format.h
+index a42a83211724..fd00b77af32b 100644
+--- a/fs/xfs/libxfs/xfs_log_format.h
++++ b/fs/xfs/libxfs/xfs_log_format.h
+@@ -173,12 +173,40 @@ typedef struct xlog_rec_header {
+ 	__be32	  h_prev_block; /* block number to previous LR		:  4 */
+ 	__be32	  h_num_logops;	/* number of log operations in this LR	:  4 */
+ 	__be32	  h_cycle_data[XLOG_HEADER_CYCLE_SIZE / BBSIZE];
+-	/* new fields */
++
++	/* fields added by the Linux port: */
+ 	__be32    h_fmt;        /* format of log record                 :  4 */
+ 	uuid_t	  h_fs_uuid;    /* uuid of FS                           : 16 */
++
++	/* fields added for log v2: */
+ 	__be32	  h_size;	/* iclog size				:  4 */
++
++	/*
++	 * When h_size added for log v2 support, it caused structure to have
++	 * a different size on i386 vs all other architectures because the
++	 * sum of the size ofthe  member is not aligned by that of the largest
++	 * __be64-sized member, and i386 has really odd struct alignment rules.
++	 *
++	 * Due to the way the log headers are placed out on-disk that alone is
++	 * not a problem becaue the xlog_rec_header always sits alone in a
++	 * BBSIZEs area, and the rest of that area is padded with zeroes.
++	 * But xlog_cksum used to calculate the checksum based on the structure
++	 * size, and thus gives different checksums for i386 vs the rest.
++	 * We now do two checksum validation passes for both sizes to allow
++	 * moving v5 file systems with unclean logs between i386 and other
++	 * (little-endian) architectures.
++	 */
++	__u32	  h_pad0;
+ } xlog_rec_header_t;
  
--		rs->force_roll = true;
--
- 		if (rs->oinfo == &XFS_RMAP_OINFO_COW) {
- 			/*
- 			 * If we're unmapping CoW staging extents, remove the
-@@ -426,11 +424,14 @@ xreap_agextent_iter(
- 			 */
- 			xfs_refcount_free_cow_extent(sc->tp, false, fsbno,
- 					*aglenp);
-+			rs->force_roll = true;
- 			return 0;
- 		}
++#ifdef __i386__
++#define XLOG_REC_SIZE		offsetofend(struct xlog_rec_header, h_size)
++#define XLOG_REC_SIZE_OTHER	sizeof(struct xlog_rec_header)
++#else
++#define XLOG_REC_SIZE		sizeof(struct xlog_rec_header)
++#define XLOG_REC_SIZE_OTHER	offsetofend(struct xlog_rec_header, h_size)
++#endif /* __i386__ */
++
+ typedef struct xlog_rec_ext_header {
+ 	__be32	  xh_cycle;	/* write cycle of log			: 4 */
+ 	__be32	  xh_cycle_data[XLOG_HEADER_CYCLE_SIZE / BBSIZE]; /*	: 256 */
+diff --git a/fs/xfs/libxfs/xfs_ondisk.h b/fs/xfs/libxfs/xfs_ondisk.h
+index 5ed44fdf7491..7bfa3242e2c5 100644
+--- a/fs/xfs/libxfs/xfs_ondisk.h
++++ b/fs/xfs/libxfs/xfs_ondisk.h
+@@ -174,6 +174,8 @@ xfs_check_ondisk_structs(void)
+ 	XFS_CHECK_STRUCT_SIZE(struct xfs_rud_log_format,	16);
+ 	XFS_CHECK_STRUCT_SIZE(struct xfs_map_extent,		32);
+ 	XFS_CHECK_STRUCT_SIZE(struct xfs_phys_extent,		16);
++	XFS_CHECK_STRUCT_SIZE(struct xlog_rec_header,		328);
++	XFS_CHECK_STRUCT_SIZE(struct xlog_rec_ext_header,	260);
  
--		return xfs_rmap_free(sc->tp, sc->sa.agf_bp, sc->sa.pag, agbno,
--				*aglenp, rs->oinfo);
-+		xfs_rmap_free_extent(sc->tp, false, fsbno, *aglenp,
-+				rs->oinfo->oi_owner);
-+		rs->deferred++;
-+		return 0;
- 	}
+ 	XFS_CHECK_OFFSET(struct xfs_bui_log_format, bui_extents,	16);
+ 	XFS_CHECK_OFFSET(struct xfs_cui_log_format, cui_extents,	16);
+diff --git a/fs/xfs/xfs_log.c b/fs/xfs/xfs_log.c
+index 7c590ecdf865..2978de9da38e 100644
+--- a/fs/xfs/xfs_log.c
++++ b/fs/xfs/xfs_log.c
+@@ -1568,13 +1568,13 @@ xlog_cksum(
+ 	struct xlog		*log,
+ 	struct xlog_rec_header	*rhead,
+ 	char			*dp,
+-	int			size)
++	unsigned int		hdrsize,
++	unsigned int		size)
+ {
+ 	uint32_t		crc;
  
- 	trace_xreap_dispose_free_extent(pag_group(sc->sa.pag), agbno, *aglenp);
+ 	/* first generate the crc for the record header ... */
+-	crc = xfs_start_cksum_update((char *)rhead,
+-			      sizeof(struct xlog_rec_header),
++	crc = xfs_start_cksum_update((char *)rhead, hdrsize,
+ 			      offsetof(struct xlog_rec_header, h_crc));
+ 
+ 	/* ... then for additional cycle data for v2 logs ... */
+@@ -1818,7 +1818,7 @@ xlog_sync(
+ 
+ 	/* calculcate the checksum */
+ 	iclog->ic_header.h_crc = xlog_cksum(log, &iclog->ic_header,
+-					    iclog->ic_datap, size);
++			iclog->ic_datap, XLOG_REC_SIZE, size);
+ 	/*
+ 	 * Intentionally corrupt the log record CRC based on the error injection
+ 	 * frequency, if defined. This facilitates testing log recovery in the
+diff --git a/fs/xfs/xfs_log_priv.h b/fs/xfs/xfs_log_priv.h
+index a9a7a271c15b..0cfc654d8e87 100644
+--- a/fs/xfs/xfs_log_priv.h
++++ b/fs/xfs/xfs_log_priv.h
+@@ -499,8 +499,8 @@ xlog_recover_finish(
+ extern void
+ xlog_recover_cancel(struct xlog *);
+ 
+-extern __le32	 xlog_cksum(struct xlog *log, struct xlog_rec_header *rhead,
+-			    char *dp, int size);
++__le32	 xlog_cksum(struct xlog *log, struct xlog_rec_header *rhead,
++		char *dp, unsigned int hdrsize, unsigned int size);
+ 
+ extern struct kmem_cache *xfs_log_ticket_cache;
+ struct xlog_ticket *xlog_ticket_alloc(struct xlog *log, int unit_bytes,
+diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
+index 0a4db8efd903..549d60959aee 100644
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2894,9 +2894,24 @@ xlog_recover_process(
+ 	int			pass,
+ 	struct list_head	*buffer_list)
+ {
+-	__le32			expected_crc = rhead->h_crc, crc;
++	__le32			expected_crc = rhead->h_crc, crc, other_crc;
+ 
+-	crc = xlog_cksum(log, rhead, dp, be32_to_cpu(rhead->h_len));
++	crc = xlog_cksum(log, rhead, dp, XLOG_REC_SIZE,
++			be32_to_cpu(rhead->h_len));
++
++	/*
++	 * Look at the end of the struct xlog_rec_header definition in
++	 * xfs_log_format.h for the glory details.
++	 */
++	if (expected_crc && crc != expected_crc) {
++		other_crc = xlog_cksum(log, rhead, dp, XLOG_REC_SIZE_OTHER,
++				be32_to_cpu(rhead->h_len));
++		if (other_crc == expected_crc) {
++			xfs_notice_once(log->l_mp,
++	"Fixing up incorrect CRC due to padding.");
++			crc = other_crc;
++		}
++	}
+ 
+ 	/*
+ 	 * Nothing else to do if this is a CRC verification pass. Just return
 
 
