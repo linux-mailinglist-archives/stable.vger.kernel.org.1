@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-186140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C6CBE3AEA
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:23:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE2FBE3AE7
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:23:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64C34403A4B
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:23:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 646FB1A65A5F
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E832FFFA8;
-	Thu, 16 Oct 2025 13:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2018B30BBA2;
+	Thu, 16 Oct 2025 13:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWzzY4Ns"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ot8W8tGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1791F1505
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D490C31690D
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760620996; cv=none; b=YYpoeZqLV/Tw4+LcTk4a+6LGU2HzZKt9ygl6twBug2xJIzov5vrO7MlJNX1R0lP/ZU3n8Bjse3qqeX0dSFkFKpJbmki1RbDCkE5ck9f/FBYnawWpfVPMITFhNZLR0Rl5Gzi3Ql0oPzFJN4YZ2Dkwb/8V6B4hrRava81vsWsKrXw=
+	t=1760620999; cv=none; b=pDRMJEXVUT4M3ZYixOzx+AOpIVSF94fw7J+sq4g9kgqHvmxI1j901m1CtuZaJ42bL4eLJWcOwS3k2xHlgJ5IwO33Awar0w6JrVWH24OCLRU/X9/4aYQ4pIbuwhzkM4IXuEIUyHISaWofabYxA8rw71lRWT2lkgx0G9eRt5xJti8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760620996; c=relaxed/simple;
-	bh=np335C/jl7rhikP338NePJlFKDX6wKVw9xIvM1T2G1A=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cUWmak/tSeObdS5ajtnrK9RIXu8F/JAYeisvM6QcH8CoAOaNnObjBIdYDHhwDcvxJaAav8w5QOOsSEWN2bMYMF4rsKEMkjXbKsHQ8qHLqSPVzLjz7wxtTaMeR9OfJff761fm1laa8RhrYe5CoFj+LIajQWg5Q8pGzCzpIU+FrA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWzzY4Ns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F84CC4CEF1;
-	Thu, 16 Oct 2025 13:23:16 +0000 (UTC)
+	s=arc-20240116; t=1760620999; c=relaxed/simple;
+	bh=0eIdgOrlqFIr+rvY747EPxCUc2toxLHKAKS1amScNfw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jG4JGfr41+oomg3gQ+0HATVGB46TypUliFdre8kUOU4xVX3ZiRK/BVzHcxkhnrDpmDiMnaK5zLPSTF3EbHvEugUcFhez1AXinC3N9loLkliQFN9zMD/Pa6iULtcPtoPE2OcMuwJOpdvFTQoQdfG72g1CjCXFm2m56zp3rDhaqvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ot8W8tGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B36C4CEF1;
+	Thu, 16 Oct 2025 13:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760620996;
-	bh=np335C/jl7rhikP338NePJlFKDX6wKVw9xIvM1T2G1A=;
+	s=korg; t=1760620999;
+	bh=0eIdgOrlqFIr+rvY747EPxCUc2toxLHKAKS1amScNfw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=PWzzY4NsTTMbeadsjUN25KLuIpnYljx+qm1z+VdhP1gjrP6c5SEJehbxRFDPwc/eA
-	 xi7+ZI82DSN69MbWtzYDgg9lY5tfcq8RRJHCzEItsqWtKJk4XYXRm/hk4QDs+tbyCe
-	 CMTzUS0r/s3jb8vQdiVQ14hFJwH/vSqI+r1spRME=
-Subject: FAILED: patch "[PATCH] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping" failed to apply to 6.12-stable tree
-To: lance.yang@linux.dev,Liam.Howlett@oracle.com,akpm@linux-foundation.org,apopple@nvidia.com,baohua@kernel.org,baolin.wang@linux.alibaba.com,byungchul@sk.com,david@redhat.com,dev.jain@arm.com,gourry@gourry.net,harry.yoo@oracle.com,jannh@google.com,joshua.hahnjy@gmail.com,lorenzo.stoakes@oracle.com,matthew.brost@intel.com,npache@redhat.com,peterx@redhat.com,rakie.kim@sk.com,riel@surriel.com,ryan.roberts@arm.com,stable@vger.kernel.org,usamaarif642@gmail.com,vbabka@suse.cz,ying.huang@linux.alibaba.com,yuzhao@google.com,ziy@nvidia.com
+	b=Ot8W8tGDbhHsZ4UUGCs9zap+kNZD856qtEgQ3WBzDG+KMP1Oqecwdia1BojpU0h4h
+	 8FRFLSeMwzikgBfS9MAp6WyFTLrHOv2wCPUur1lU7oRB+LsBlg/nwD1HHq0HY0QytU
+	 CzfYD8/nodJ6KQRoV+bslRyBS3lmtBzFspSkCO7g=
+Subject: FAILED: patch "[PATCH] nfsd: decouple the xprtsec policy check from" failed to apply to 6.12-stable tree
+To: smayhew@redhat.com,chuck.lever@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 15:22:27 +0200
-Message-ID: <2025101627-shortage-author-7f5b@gregkh>
+Date: Thu, 16 Oct 2025 15:23:10 +0200
+Message-ID: <2025101610-ranch-sincerity-0fc4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9658d698a8a83540bf6a6c80d13c9a61590ee985
+git cherry-pick -x e4f574ca9c6dfa66695bb054ff5df43ecea873ec
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101627-shortage-author-7f5b@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101610-ranch-sincerity-0fc4@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,110 +77,224 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9658d698a8a83540bf6a6c80d13c9a61590ee985 Mon Sep 17 00:00:00 2001
-From: Lance Yang <lance.yang@linux.dev>
-Date: Tue, 30 Sep 2025 16:10:40 +0800
-Subject: [PATCH] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping
- zero-filled mTHP subpage to shared zeropage
+From e4f574ca9c6dfa66695bb054ff5df43ecea873ec Mon Sep 17 00:00:00 2001
+From: Scott Mayhew <smayhew@redhat.com>
+Date: Wed, 6 Aug 2025 15:15:43 -0400
+Subject: [PATCH] nfsd: decouple the xprtsec policy check from
+ check_nfsd_access()
 
-When splitting an mTHP and replacing a zero-filled subpage with the shared
-zeropage, try_to_map_unused_to_zeropage() currently drops several
-important PTE bits.
+A while back I had reported that an NFSv3 client could successfully
+mount using '-o xprtsec=none' an export that had been exported with
+'xprtsec=tls:mtls'.  By "successfully" I mean that the mount command
+would succeed and the mount would show up in /proc/mount.  Attempting
+to do anything futher with the mount would be met with NFS3ERR_ACCES.
 
-For userspace tools like CRIU, which rely on the soft-dirty mechanism for
-incremental snapshots, losing the soft-dirty bit means modified pages are
-missed, leading to inconsistent memory state after restore.
+This was fixed (albeit accidentally) by commit bb4f07f2409c ("nfsd:
+Fix NFSD_MAY_BYPASS_GSS and NFSD_MAY_BYPASS_GSS_ON_ROOT") and was
+subsequently re-broken by commit 0813c5f01249 ("nfsd: fix access
+checking for NLM under XPRTSEC policies").
 
-As pointed out by David, the more critical uffd-wp bit is also dropped.
-This breaks the userfaultfd write-protection mechanism, causing writes to
-be silently missed by monitoring applications, which can lead to data
-corruption.
+Transport Layer Security isn't an RPC security flavor or pseudo-flavor,
+so we shouldn't be conflating them when determining whether the access
+checks can be bypassed.  Split check_nfsd_access() into two helpers, and
+have __fh_verify() call the helpers directly since __fh_verify() has
+logic that allows one or both of the checks to be skipped.  All other
+sites will continue to call check_nfsd_access().
 
-Preserve both the soft-dirty and uffd-wp bits from the old PTE when
-creating the new zeropage mapping to ensure they are correctly tracked.
+Link: https://lore.kernel.org/linux-nfs/ZjO3Qwf_G87yNXb2@aion/
+Fixes: 9280c5774314 ("NFSD: Handle new xprtsec= export option")
+Cc: stable@vger.kernel.org
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 
-Link: https://lkml.kernel.org/r/20250930081040.80926-1-lance.yang@linux.dev
-Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Suggested-by: Dev Jain <dev.jain@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mariano Pache <npache@redhat.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/migrate.c b/mm/migrate.c
-index ce83c2c3c287..e3065c9edb55 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -296,8 +296,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list)
+diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
+index cadfc2bae60e..95b5681152c4 100644
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1082,50 +1082,62 @@ static struct svc_export *exp_find(struct cache_detail *cd,
  }
  
- static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
--					  struct folio *folio,
--					  unsigned long idx)
-+		struct folio *folio, pte_t old_pte, unsigned long idx)
+ /**
+- * check_nfsd_access - check if access to export is allowed.
++ * check_xprtsec_policy - check if access to export is allowed by the
++ *			  xprtsec policy
+  * @exp: svc_export that is being accessed.
+- * @rqstp: svc_rqst attempting to access @exp (will be NULL for LOCALIO).
+- * @may_bypass_gss: reduce strictness of authorization check
++ * @rqstp: svc_rqst attempting to access @exp.
++ *
++ * Helper function for check_nfsd_access().  Note that callers should be
++ * using check_nfsd_access() instead of calling this function directly.  The
++ * one exception is __fh_verify() since it has logic that may result in one
++ * or both of the helpers being skipped.
+  *
+  * Return values:
+  *   %nfs_ok if access is granted, or
+  *   %nfserr_wrongsec if access is denied
+  */
+-__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
+-			 bool may_bypass_gss)
++__be32 check_xprtsec_policy(struct svc_export *exp, struct svc_rqst *rqstp)
  {
- 	struct page *page = folio_page(folio, idx);
- 	pte_t newpte;
-@@ -306,7 +305,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 		return false;
- 	VM_BUG_ON_PAGE(!PageAnon(page), page);
- 	VM_BUG_ON_PAGE(!PageLocked(page), page);
--	VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
-+	VM_BUG_ON_PAGE(pte_present(old_pte), page);
+-	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
+-	struct svc_xprt *xprt;
+-
+-	/*
+-	 * If rqstp is NULL, this is a LOCALIO request which will only
+-	 * ever use a filehandle/credential pair for which access has
+-	 * been affirmed (by ACCESS or OPEN NFS requests) over the
+-	 * wire. So there is no need for further checks here.
+-	 */
+-	if (!rqstp)
+-		return nfs_ok;
+-
+-	xprt = rqstp->rq_xprt;
++	struct svc_xprt *xprt = rqstp->rq_xprt;
  
- 	if (folio_test_mlocked(folio) || (pvmw->vma->vm_flags & VM_LOCKED) ||
- 	    mm_forbids_zeropage(pvmw->vma->vm_mm))
-@@ -322,6 +321,12 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 
- 	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
- 					pvmw->vma->vm_page_prot));
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_NONE) {
+ 		if (!test_bit(XPT_TLS_SESSION, &xprt->xpt_flags))
+-			goto ok;
++			return nfs_ok;
+ 	}
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_TLS) {
+ 		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
+ 		    !test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
+-			goto ok;
++			return nfs_ok;
+ 	}
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_MTLS) {
+ 		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
+ 		    test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
+-			goto ok;
++			return nfs_ok;
+ 	}
+-	if (!may_bypass_gss)
+-		goto denied;
++	return nfserr_wrongsec;
++}
 +
-+	if (pte_swp_soft_dirty(old_pte))
-+		newpte = pte_mksoft_dirty(newpte);
-+	if (pte_swp_uffd_wp(old_pte))
-+		newpte = pte_mkuffd_wp(newpte);
-+
- 	set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
++/**
++ * check_security_flavor - check if access to export is allowed by the
++ *			   security flavor
++ * @exp: svc_export that is being accessed.
++ * @rqstp: svc_rqst attempting to access @exp.
++ * @may_bypass_gss: reduce strictness of authorization check
++ *
++ * Helper function for check_nfsd_access().  Note that callers should be
++ * using check_nfsd_access() instead of calling this function directly.  The
++ * one exception is __fh_verify() since it has logic that may result in one
++ * or both of the helpers being skipped.
++ *
++ * Return values:
++ *   %nfs_ok if access is granted, or
++ *   %nfserr_wrongsec if access is denied
++ */
++__be32 check_security_flavor(struct svc_export *exp, struct svc_rqst *rqstp,
++			     bool may_bypass_gss)
++{
++	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
  
- 	dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
-@@ -364,13 +369,13 @@ static bool remove_migration_pte(struct folio *folio,
- 			continue;
+-ok:
+ 	/* legacy gss-only clients are always OK: */
+ 	if (exp->ex_client == rqstp->rq_gssclient)
+ 		return nfs_ok;
+@@ -1167,10 +1179,30 @@ __be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
  		}
- #endif
-+		old_pte = ptep_get(pvmw.pte);
- 		if (rmap_walk_arg->map_unused_to_zeropage &&
--		    try_to_map_unused_to_zeropage(&pvmw, folio, idx))
-+		    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
- 			continue;
+ 	}
  
- 		folio_get(folio);
- 		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
--		old_pte = ptep_get(pvmw.pte);
+-denied:
+ 	return nfserr_wrongsec;
+ }
  
- 		entry = pte_to_swp_entry(old_pte);
- 		if (!is_migration_entry_young(entry))
++/**
++ * check_nfsd_access - check if access to export is allowed.
++ * @exp: svc_export that is being accessed.
++ * @rqstp: svc_rqst attempting to access @exp.
++ * @may_bypass_gss: reduce strictness of authorization check
++ *
++ * Return values:
++ *   %nfs_ok if access is granted, or
++ *   %nfserr_wrongsec if access is denied
++ */
++__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
++			 bool may_bypass_gss)
++{
++	__be32 status;
++
++	status = check_xprtsec_policy(exp, rqstp);
++	if (status != nfs_ok)
++		return status;
++	return check_security_flavor(exp, rqstp, may_bypass_gss);
++}
++
+ /*
+  * Uses rq_client and rq_gssclient to find an export; uses rq_client (an
+  * auth_unix client) if it's available and has secinfo information;
+diff --git a/fs/nfsd/export.h b/fs/nfsd/export.h
+index b9c0adb3ce09..ef5581911d5b 100644
+--- a/fs/nfsd/export.h
++++ b/fs/nfsd/export.h
+@@ -101,6 +101,9 @@ struct svc_expkey {
+ 
+ struct svc_cred;
+ int nfsexp_flags(struct svc_cred *cred, struct svc_export *exp);
++__be32 check_xprtsec_policy(struct svc_export *exp, struct svc_rqst *rqstp);
++__be32 check_security_flavor(struct svc_export *exp, struct svc_rqst *rqstp,
++			     bool may_bypass_gss);
+ __be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
+ 			 bool may_bypass_gss);
+ 
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index f4c2fb3dd5d0..062cfc18d8c6 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -364,10 +364,30 @@ __fh_verify(struct svc_rqst *rqstp,
+ 	if (error)
+ 		goto out;
+ 
++	/*
++	 * If rqstp is NULL, this is a LOCALIO request which will only
++	 * ever use a filehandle/credential pair for which access has
++	 * been affirmed (by ACCESS or OPEN NFS requests) over the
++	 * wire.  Skip both the xprtsec policy and the security flavor
++	 * checks.
++	 */
++	if (!rqstp)
++		goto check_permissions;
++
+ 	if ((access & NFSD_MAY_NLM) && (exp->ex_flags & NFSEXP_NOAUTHNLM))
+ 		/* NLM is allowed to fully bypass authentication */
+ 		goto out;
+ 
++	/*
++	 * NLM is allowed to bypass the xprtsec policy check because lockd
++	 * doesn't support xprtsec.
++	 */
++	if (!(access & NFSD_MAY_NLM)) {
++		error = check_xprtsec_policy(exp, rqstp);
++		if (error)
++			goto out;
++	}
++
+ 	if (access & NFSD_MAY_BYPASS_GSS)
+ 		may_bypass_gss = true;
+ 	/*
+@@ -379,13 +399,15 @@ __fh_verify(struct svc_rqst *rqstp,
+ 			&& exp->ex_path.dentry == dentry)
+ 		may_bypass_gss = true;
+ 
+-	error = check_nfsd_access(exp, rqstp, may_bypass_gss);
++	error = check_security_flavor(exp, rqstp, may_bypass_gss);
+ 	if (error)
+ 		goto out;
++
+ 	/* During LOCALIO call to fh_verify will be called with a NULL rqstp */
+ 	if (rqstp)
+ 		svc_xprt_set_valid(rqstp->rq_xprt);
+ 
++check_permissions:
+ 	/* Finally, check access permissions. */
+ 	error = nfsd_permission(cred, exp, dentry, access);
+ out:
 
 
