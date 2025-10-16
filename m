@@ -1,81 +1,71 @@
-Return-Path: <stable+bounces-185868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6637DBE112E
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 02:06:37 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF85DBE1177
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 02:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D7EBF4EF82D
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 00:05:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 69C274EC2B2
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 00:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34500211F;
-	Thu, 16 Oct 2025 00:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87B364A8F;
+	Thu, 16 Oct 2025 00:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="AfgZj5v3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fuhhYyqH"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982DBB661;
-	Thu, 16 Oct 2025 00:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5ED1C69D;
+	Thu, 16 Oct 2025 00:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760573152; cv=none; b=mXpg4o6uHoo+mvqEhJTE0Qn9eByVXTvKkLXX5G4oINd9GMbbBVca2tuZsqp6J7hR8IT7RQ7wTQBi4qoy927PRleP/w+P+Dr9CvKg72k48VKS6W5P8p2Ggt46H/TpV2RImE1bUXPoO2AJ3+9WOxqzjSaqG/DakuQupzYi7zC3auI=
+	t=1760574052; cv=none; b=PAc9JmDhdV4Co7E/rY+lq6exo827yMdwxMB/t6AooEUys1wop8EUBEOSfQK06dkFJLDSspUStWuuDRDqTi8JzLRwo4eTayYEJy+awP51cDOuvOicyMsPI3CvgDw18poIlsCUC+DEZma4OPaKXmrk2XvPUIdxoHczGob7huLjDMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760573152; c=relaxed/simple;
-	bh=mF8DJBtCc+Ug9ubwwJhIISeRTGlaB9/PCq3LYeDrrdU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=kmP9gYv3MBPjV2WSAEzpXHT/fswBkbOtsxt9mHCFlcTuIaO/Kgf4ZWrNOCUHVyXrSCEpOuWXfb1xE7eQrfIIXhGj04G/oidj98wqfMrPq80wp1VcaCbC7w8v1zhTdmAqkhCQ3HfQTSmGXR6+xXfP927LsJV+Sv7s8XK5KhVm5i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=AfgZj5v3; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1158)
-	id 4D28921244DA; Wed, 15 Oct 2025 17:05:44 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4D28921244DA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1760573144;
-	bh=mF8DJBtCc+Ug9ubwwJhIISeRTGlaB9/PCq3LYeDrrdU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AfgZj5v3lgZ4fV4hDh2WUnHLprQuDVXGNGEnmHtM1BoNg8qQ2q0x84Gyn8E28fB9X
-	 PSrSAjmr9YCUGDhvI2QX1TfzqqblRgaEUZRnuXoxXEpBhlHDtRN2YBaZLRGE0HxAMf
-	 dk/dQ6jmiTgYMrk07em89Hm3AVLmLFHO9l8L7Cnc=
-From: Hardik Garg <hargar@linux.microsoft.com>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org
-Subject: Re: [PATCH 6.1 000/196] 6.1.156-rc1 review
-Date: Wed, 15 Oct 2025 17:05:44 -0700
-Message-Id: <1760573144-28384-1-git-send-email-hargar@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <20251013144314.549284796@linuxfoundation.org>
-References: <20251013144314.549284796@linuxfoundation.org>
+	s=arc-20240116; t=1760574052; c=relaxed/simple;
+	bh=mjXQjGcqZW3rSyWGQMi9ntYLHm3rktZp0EcvQaOAXtI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QZ0sk0zGqsTreUNmJ0CMiT5O5c1lLxEdNBftkl5f33rTkxm638m+bkd/PdP5ZwZLKC9A3BDtFC2sBk1Hi4SsX+mX8axixljHfGAgNR61IgjvVvdwF5xVQzRbWJQv2geTrpk1880JBJXB5nsCZluKjyLiRx8SzGSl4Diy5RpNCF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fuhhYyqH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49ABC4CEF8;
+	Thu, 16 Oct 2025 00:20:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760574052;
+	bh=mjXQjGcqZW3rSyWGQMi9ntYLHm3rktZp0EcvQaOAXtI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fuhhYyqHRdvx70nok2XfxxEUbH4Vt55w0F4Il9F6aiN1cpBke3o201smCkcVxryrO
+	 J4Nef1kwKphDtiTNJwOxD2Jc3eskdQRnv/Knqrhj4QR0KNV1+3U63Ku1np/T0FSVlX
+	 HkrErT+uztNS1cPlTF31EO+5zy+22vvSew5MsbgoKyV1NyHU2HY3nS8xUlDxgLTMey
+	 xU/ypjrl7+hH+UXNV2g/E7MUDWiGZ92gR3jwYrJirhzXyHR2rcYohkATshig3CSxKz
+	 3/10u1kcJGSXNrwxTlgBegcYKmtuZIVFdatWtVhCeRK+AVX17khHGDO34q7jkcYKGS
+	 /Fw3VHHDp5p8w==
+Date: Wed, 15 Oct 2025 17:20:51 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: yicongsrfy@163.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ oneukum@suse.com, horms@kernel.org, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org, stable@vger.kernel.org, Yi Cong <yicong@kylinos.cn>
+Subject: Re: [PATCH net v3] r8152: add error handling in rtl8152_driver_init
+Message-ID: <20251015172051.7d115f5b@kernel.org>
+In-Reply-To: <20251011082415.580740-1-yicongsrfy@163.com>
+References: <20251011082415.580740-1-yicongsrfy@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The kernel, bpf tool, perf tool, and kselftest builds fine for v6.1.156-rc1 on x86 and arm64 Azure VM.
+On Sat, 11 Oct 2025 16:24:15 +0800 yicongsrfy@163.com wrote:
+> From: Yi Cong <yicong@kylinos.cn>
+> 
+> rtl8152_driver_init missing error handling.
+> If cannot register rtl8152_driver, rtl8152_cfgselector_driver
+> should be deregistered.
 
-
-Tested-by: Hardik Garg <hargar@linux.microsoft.com>
-
-
-Thanks,
-Hardik
+This has been (silently) applied on Tue, thanks!
 
