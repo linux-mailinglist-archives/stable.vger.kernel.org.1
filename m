@@ -1,87 +1,57 @@
-Return-Path: <stable+bounces-186218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F79BE5CA3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 01:28:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3FCBE5BEB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 01:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9529219A74D7
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 23:28:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0945C4E1B4C
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 23:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFF42E6CA4;
-	Thu, 16 Oct 2025 23:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EAF2E62B9;
+	Thu, 16 Oct 2025 23:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nlcTtEqO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tZ/TORWh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AC323C4E0
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 23:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEEA2E6135
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 23:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760657296; cv=none; b=NrP6jT9ge/G4v3YkHPXYKPauNloyZLux9FAN3sD0PJqAkmthURoynNI7vQ9QJURudXGIQ2PQpX4YHgkWnVDL8NSuc9DLoDXqMnIKuK9o7zeDT+c/q7JpThFdOMNQTAE3rqXl+xJa8UnEIna2WZxfqpRXvueQ2CmDg5lIt34E9VA=
+	t=1760655610; cv=none; b=PkAQuKoLoThRcNPXOfbbjd4AZoH9xy7+HKUdccx8WqBn2SU9mzD983rtQRprTZA6h3xcU/uGVkp50b/8nqjVLNg9t0CAAZGKDwW03J5Pi3VNwSAoVPMjtjF0zcOFNLqxMmt3kf2EXujn5MV8lnKeyg6RwvAvhKH6kBkafe7dskY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760657296; c=relaxed/simple;
-	bh=XJoRXhF6cct+u5hqeBr/GjrKmq9CEKau2+FBHdOwe7Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u9w2K+/5lD1aOkmJizBmIWNpJVM1Lj2cTs1yaUEgUD/qlByu8nhVN85WKoXpG657qQ3oIhTRSyfQEjthnVrwrUYfISOUICnVoSzGZ6yDPf1Q5tEHXeEv30HzMGr8ixXKJ1E+/c5Q7N5vEe7q6Otu3wHMsviMHd1bceeSnpKThqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=nlcTtEqO; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so1265190b3a.1
-        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 16:28:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1760657294; x=1761262094; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VDHKL7YrbYj0WMr/qaC61DmFE96g6L5ksIAhfdoxQrQ=;
-        b=nlcTtEqOnd54qW/ICO8glTxNOt8FmeJe9owrl9qhvsPQpg/B2Mp2KNJrvMtdul+Qc0
-         5ZrKRVGXHR9+Sciv6jft3dF9eSOcsgAtHbQadNAfu0F+YCXY0RCAJj29LAAA/rB3arHR
-         zik0LCswwZQ/Ug93I4EKLk4SwByaxOXB4G2HA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760657294; x=1761262094;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VDHKL7YrbYj0WMr/qaC61DmFE96g6L5ksIAhfdoxQrQ=;
-        b=EeO4yojqphn6ThmWiUIlyI0mxrpp3NwiDsv6VaU9vOVZdLjaS2l6zgGHhUNsbmpc90
-         WV1IC+odGHh8nlM0Swn7MRA3NApx6pTYA+yv8SSzkn25D4mnDSauggK3xPTINsCCOvGK
-         ipB3bBde/S/UyqBww0S9Tp1IpkH5NdZgmvLS8eq7GmJs+DoLVeUrR78mVzJp+qKmiAQn
-         c3UkZK2IuyieDaB36kv2QuN7iDZSPD/W/SgcrgBaGvlqmAhILm0bMMTMEdgzlr6rfukc
-         5f57DxrP0PkutFpLiP0UwDp/OFn3cI78fYAtzFjtJkmpu6klQFX48s16NfgYa3mZajF9
-         Ng0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUVCBi9rR8BVsUemhFnKJCTto+009W8TK5/EcmZPwv1HvnxJyRRIlz2YP//bQZ0neDA2VD/Rik=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGchptvNZijmUJnEiaZVj0u5IA5pd+Zjk/a8LuwpyD4hKkRpnI
-	XIGJ70ry0UOODEnbSzdR7Qb2cl4mHftMADq2xqP833GGV4tSTLYvP76wN2Yl1Wbzcg==
-X-Gm-Gg: ASbGncu6zwa57DQxzG0BGooUz9DyvH1JhpuOGKHGfdSdmAdMVhinUIN2zg7ve38/4vM
-	vbCfBqaesXlHbiitYf5WZZ3Gi7I7efJwmKLo2fVpkc2UrYc8TUmW0kjqJgBy+zWAZA2kfBfEcn0
-	KCb2Q3f1hHSaJEBbUArvcr+MSWLg6lQtF7rPeVSQ3/v8kdymoqaP7pwdy8yi1Vg/vA19nuFxK6h
-	LCBqo8twRRDB+e5ZgNCZTELeYsJLc8IMNaWQWtuuoPaTPlQAiZM5bBzMHqevPBVJOJMR7aRiJSa
-	jNJzTlyR2ku/Lf/PL1Sxnwb12h9JO9Nm7HFp4TvbFRgysMkUPAIwZE1guRlB1jXJWd6A+rnuRC8
-	SObKUVRDnJ0HSbXNcnvfxfbJ/82PiFq8AZI6zL+A9CRTQF2MtwAsFnHEC2rZ3txwo335ZPeBvSd
-	1n6M+zgAHwSZTOFgYt8BMBukrqNcE8FFMXWMI9EA==
-X-Google-Smtp-Source: AGHT+IHptz2Viou3aQb7JTKgXj8lqBa3xVm9ubMw1J3oe5c1h0nSfI0VxDkbrkw3mL1kDx6q4igwAQ==
-X-Received: by 2002:a05:6a20:6a28:b0:32d:b925:22ab with SMTP id adf61e73a8af0-334a78fbd98mr2663524637.17.1760657294603;
-        Thu, 16 Oct 2025 16:28:14 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e7c:8:98f9:84ca:9891:3fd2])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7992b060b59sm24127004b3a.2.2025.10.16.16.28.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Oct 2025 16:28:13 -0700 (PDT)
-From: Brian Norris <briannorris@chromium.org>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	linux-pci@vger.kernel.org,
-	Brian Norris <briannorris@chromium.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] PCI/PM: Prevent runtime suspend before devices are fully initialized
-Date: Thu, 16 Oct 2025 15:53:35 -0700
-Message-ID: <20251016155335.1.I60a53c170a8596661883bd2b4ef475155c7aa72b@changeid>
-X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
+	s=arc-20240116; t=1760655610; c=relaxed/simple;
+	bh=xFeJkYrzN2TIrG0dyICres1vqkIE6Ffg/vI9qpYfHSU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Px/BINJlXhtdOsfcCW08yHHoZy1gGbZ4W790QXE1AEYvVzg9M1Xgrr6xIsJ6tbRSzQIRKcHqQp0BDMsKQ3bRHIxHEafBRmYZI1BzVT3fq6GBdEKdJpKOH1sBmoCt5NOPmp4g6NqHbYRpu4icbu03o9oimda6w+7Nphu6xrg0cn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tZ/TORWh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E29C4CEF1;
+	Thu, 16 Oct 2025 23:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760655609;
+	bh=xFeJkYrzN2TIrG0dyICres1vqkIE6Ffg/vI9qpYfHSU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tZ/TORWhL0kSVgpl4g5ouXlYALhb2AND80ySaBf0juLjHiq4TKM5IxLP2TdmCvZNB
+	 9bmGHBKqRoDR7CfPHKWrtUbufpggwtNgUouFYjDwrqHxJKFSjaZpln6eEaDKTgosuD
+	 dv1c7VHBi8RCIP69fhG1+YnaoC7ZBs8I7uP+xHvUDAmlvQXKa/GiAPLyk6lkPl//ir
+	 zFrHR3UchWP/ui8q8QXStkKfpR+kS35ogH0z4m/yuiJyWfS9yK9QZJ0K0ObbtXJCyW
+	 UYgn7wZFueR2IAF5j6/fE3rRsSJBojTjl6D5oa+EVlkw/ecn1F4FxYQEVz7t8zB4GO
+	 yzLseChU/dUGw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/4] ACPI: property: Fix buffer properties extraction for subnodes
+Date: Thu, 16 Oct 2025 19:00:04 -0400
+Message-ID: <20251016230007.3453571-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101649-bride-landmark-1121@gregkh>
+References: <2025101649-bride-landmark-1121@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,79 +60,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-PCI devices are created via pci_scan_slot() and similar, and are
-promptly configured for runtime PM (pci_pm_init()). They are initially
-prevented from suspending by way of pm_runtime_forbid(); however, it's
-expected that user space may override this via sysfs [1].
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-Now, sometime after initial scan, a PCI device receives its BAR
-configuration (pci_assign_unassigned_bus_resources(), etc.).
+[ Upstream commit d0759b10989c5c5aae3d455458c9fc4e8cc694f7 ]
 
-If a PCI device is allowed to suspend between pci_scan_slot() and
-pci_assign_unassigned_bus_resources(), then pci-driver.c will
-save/restore incorrect BAR configuration for the device, and the device
-may cease to function.
+The ACPI handle passed to acpi_extract_properties() as the first
+argument represents the ACPI namespace scope in which to look for
+objects returning buffers associated with buffer properties.
 
-This behavior races with user space, since user space may enable runtime
-PM [1] as soon as it sees the device, which may be before BAR
-configuration.
+For _DSD objects located immediately under ACPI devices, this handle is
+the same as the handle of the device object holding the _DSD, but for
+data-only subnodes it is not so.
 
-Prevent suspending in this intermediate state by holding a runtime PM
-reference until the device is fully initialized and ready for probe().
+First of all, data-only subnodes are represented by objects that
+cannot hold other objects in their scopes (like control methods).
+Therefore a data-only subnode handle cannot be used for completing
+relative pathname segments, so the current code in
+in acpi_nondev_subnode_extract() passing a data-only subnode handle
+to acpi_extract_properties() is invalid.
 
-[1] echo auto > /sys/bus/pci/devices/.../power/control
+Moreover, a data-only subnode of device A may be represented by an
+object located in the scope of device B (which kind of makes sense,
+for instance, if A is a B's child).  In that case, the scope in
+question would be the one of device B.  In other words, the scope
+mentioned above is the same as the scope used for subnode object
+lookup in acpi_nondev_subnode_extract().
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Brian Norris <briannorris@chromium.org>
+Accordingly, rearrange that function to use the same scope for the
+extraction of properties and subnode object lookup.
+
+Fixes: 103e10c69c61 ("ACPI: property: Add support for parsing buffer property UUID")
+Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Stable-dep-of: baf60d5cb8bc ("ACPI: property: Do not pass NULL handles to acpi_attach_data()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/acpi/property.c | 30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
 
- drivers/pci/bus.c | 7 +++++++
- drivers/pci/pci.c | 6 ++++++
- 2 files changed, 13 insertions(+)
-
-diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
-index f26aec6ff588..227a8898acac 100644
---- a/drivers/pci/bus.c
-+++ b/drivers/pci/bus.c
-@@ -14,6 +14,7 @@
- #include <linux/of.h>
- #include <linux/of_platform.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/proc_fs.h>
- #include <linux/slab.h>
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index f8a56aae97a5a..ee22307e92a6d 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -74,6 +74,7 @@ static bool acpi_nondev_subnode_extract(union acpi_object *desc,
+ 					struct fwnode_handle *parent)
+ {
+ 	struct acpi_data_node *dn;
++	acpi_handle scope = NULL;
+ 	bool result;
  
-@@ -375,6 +376,12 @@ void pci_bus_add_device(struct pci_dev *dev)
- 		put_device(&pdev->dev);
- 	}
+ 	dn = kzalloc(sizeof(*dn), GFP_KERNEL);
+@@ -86,27 +87,18 @@ static bool acpi_nondev_subnode_extract(union acpi_object *desc,
+ 	INIT_LIST_HEAD(&dn->data.properties);
+ 	INIT_LIST_HEAD(&dn->data.subnodes);
  
+-	result = acpi_extract_properties(handle, desc, &dn->data);
+-
+-	if (handle) {
+-		acpi_handle scope;
+-		acpi_status status;
 +	/*
-+	 * Now that resources are assigned, drop the reference we grabbed in
-+	 * pci_pm_init().
++	 * The scope for the completion of relative pathname segments and
++	 * subnode object lookup is the one of the namespace node (device)
++	 * containing the object that has returned the package.  That is, it's
++	 * the scope of that object's parent device.
 +	 */
-+	pm_runtime_put_noidle(&dev->dev);
-+
- 	if (!dn || of_device_is_available(dn))
- 		pci_dev_allow_binding(dev);
++	if (handle)
++		acpi_get_parent(handle, &scope);
  
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index b14dd064006c..06a901214f2c 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3226,6 +3226,12 @@ void pci_pm_init(struct pci_dev *dev)
- 	pci_pm_power_up_and_verify_state(dev);
- 	pm_runtime_forbid(&dev->dev);
- 	pm_runtime_set_active(&dev->dev);
-+	/*
-+	 * We cannot allow a device to suspend before its resources are
-+	 * configured. Otherwise, we may allow saving/restoring unexpected BAR
-+	 * configuration.
-+	 */
-+	pm_runtime_get_noresume(&dev->dev);
- 	pm_runtime_enable(&dev->dev);
- }
+-		/*
+-		 * The scope for the subnode object lookup is the one of the
+-		 * namespace node (device) containing the object that has
+-		 * returned the package.  That is, it's the scope of that
+-		 * object's parent.
+-		 */
+-		status = acpi_get_parent(handle, &scope);
+-		if (ACPI_SUCCESS(status)
+-		    && acpi_enumerate_nondev_subnodes(scope, desc, &dn->data,
+-						      &dn->fwnode))
+-			result = true;
+-	} else if (acpi_enumerate_nondev_subnodes(NULL, desc, &dn->data,
+-						  &dn->fwnode)) {
++	result = acpi_extract_properties(scope, desc, &dn->data);
++	if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->fwnode))
+ 		result = true;
+-	}
  
+ 	if (result) {
+ 		dn->handle = handle;
 -- 
-2.51.0.858.gf9c4a03a3a-goog
+2.51.0
 
 
