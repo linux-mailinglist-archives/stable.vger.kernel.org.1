@@ -1,82 +1,87 @@
-Return-Path: <stable+bounces-186212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9476BE59EC
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 23:55:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F79BE5CA3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 01:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C3A004F51DF
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 21:55:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9529219A74D7
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 23:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E3F2DE6F4;
-	Thu, 16 Oct 2025 21:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFF42E6CA4;
+	Thu, 16 Oct 2025 23:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="b4tURawA"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nlcTtEqO"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBA12E3B11
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 21:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AC323C4E0
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 23:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760651731; cv=none; b=UG/okzIxYoU43iRfuEqRkn+u0qHRpCQYCRRX87bedcfS+0BTosauPaJQgv0GGTBp+D6qOtVFLrPRCJiC9TaAZvzdM6cIIGKizvy4XOlIESBc8oWgx0YftE/7Cui04vIg9juoF0hlp77MH0ObmeuLrDQ+k1b51qBlLjzFacfwyrc=
+	t=1760657296; cv=none; b=NrP6jT9ge/G4v3YkHPXYKPauNloyZLux9FAN3sD0PJqAkmthURoynNI7vQ9QJURudXGIQ2PQpX4YHgkWnVDL8NSuc9DLoDXqMnIKuK9o7zeDT+c/q7JpThFdOMNQTAE3rqXl+xJa8UnEIna2WZxfqpRXvueQ2CmDg5lIt34E9VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760651731; c=relaxed/simple;
-	bh=9bdPOPGf4o0GjD1y6LDPNUBC7f4fEg7rKwQjxiizuz8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AajAN9m+tKQj5azfeSiCmrs1NTjWvb3GWbVxFR29BgSGVVPembuVhsUuRPa01dcQGLqe9L4yFZ5GwYozllCTd0uUR/hTbqDAqMNszrqtAD/eE1lBPMYhgtxjqfAMCWOswrkPEBD1q7K6snZQ9rZC9nXTAZ1nqYKhVcSwhUVS1dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=b4tURawA; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59GGUG00010109;
-	Thu, 16 Oct 2025 21:55:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Vnd+B9T3yQ3HbkLY3
-	N15OAhv4wgLSXQGf0Tf2YvhZVw=; b=b4tURawAlKxSAjt3fgJIgfCII/6rO0z5z
-	iGWs6h37E9Zoe8ReHPN98ufzDl2TsiWwGaXecj5jUTbU4joZZOOq3rFEgn1D5hiH
-	GUz+lZlVAtn0RyBeYGgBbe9+AOpQkdofuvd5OOnrTi4Hycink7O/zO+xk5lEG895
-	gifNxPS6FUmXt9yRN6fu0hO3gKYfFuAK7s75f63x0x8yt9AUfJDFa4hGI8HGaNIz
-	ARNWD9IhWHDlZv0lI0MbpsWixiSJxK8cx13bQ1bkyZDFHl4XbJmgOYC0e5LpQ0iH
-	wGtyZQ3/gv8sOSq71rmCT+IUVdG3nU8XgN+pFp5D5hDpNMgq3OEsw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qewudduq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Oct 2025 21:55:17 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59GINbaB014981;
-	Thu, 16 Oct 2025 21:55:16 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49r3sjqtbm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Oct 2025 21:55:16 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59GLtCQO33751458
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Oct 2025 21:55:13 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CE60C20174;
-	Thu, 16 Oct 2025 21:55:12 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9A94520173;
-	Thu, 16 Oct 2025 21:55:12 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.111.58.138])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 Oct 2025 21:55:12 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: stable@vger.kernel.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
-        Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 6.6.y 5/5] s390/bpf: Write back tail call counter for BPF_TRAMP_F_CALL_ORIG
-Date: Thu, 16 Oct 2025 23:51:28 +0200
-Message-ID: <20251016215450.53494-6-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251016215450.53494-1-iii@linux.ibm.com>
-References: <20251016215450.53494-1-iii@linux.ibm.com>
+	s=arc-20240116; t=1760657296; c=relaxed/simple;
+	bh=XJoRXhF6cct+u5hqeBr/GjrKmq9CEKau2+FBHdOwe7Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u9w2K+/5lD1aOkmJizBmIWNpJVM1Lj2cTs1yaUEgUD/qlByu8nhVN85WKoXpG657qQ3oIhTRSyfQEjthnVrwrUYfISOUICnVoSzGZ6yDPf1Q5tEHXeEv30HzMGr8ixXKJ1E+/c5Q7N5vEe7q6Otu3wHMsviMHd1bceeSnpKThqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=nlcTtEqO; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so1265190b3a.1
+        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 16:28:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1760657294; x=1761262094; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VDHKL7YrbYj0WMr/qaC61DmFE96g6L5ksIAhfdoxQrQ=;
+        b=nlcTtEqOnd54qW/ICO8glTxNOt8FmeJe9owrl9qhvsPQpg/B2Mp2KNJrvMtdul+Qc0
+         5ZrKRVGXHR9+Sciv6jft3dF9eSOcsgAtHbQadNAfu0F+YCXY0RCAJj29LAAA/rB3arHR
+         zik0LCswwZQ/Ug93I4EKLk4SwByaxOXB4G2HA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760657294; x=1761262094;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VDHKL7YrbYj0WMr/qaC61DmFE96g6L5ksIAhfdoxQrQ=;
+        b=EeO4yojqphn6ThmWiUIlyI0mxrpp3NwiDsv6VaU9vOVZdLjaS2l6zgGHhUNsbmpc90
+         WV1IC+odGHh8nlM0Swn7MRA3NApx6pTYA+yv8SSzkn25D4mnDSauggK3xPTINsCCOvGK
+         ipB3bBde/S/UyqBww0S9Tp1IpkH5NdZgmvLS8eq7GmJs+DoLVeUrR78mVzJp+qKmiAQn
+         c3UkZK2IuyieDaB36kv2QuN7iDZSPD/W/SgcrgBaGvlqmAhILm0bMMTMEdgzlr6rfukc
+         5f57DxrP0PkutFpLiP0UwDp/OFn3cI78fYAtzFjtJkmpu6klQFX48s16NfgYa3mZajF9
+         Ng0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUVCBi9rR8BVsUemhFnKJCTto+009W8TK5/EcmZPwv1HvnxJyRRIlz2YP//bQZ0neDA2VD/Rik=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGchptvNZijmUJnEiaZVj0u5IA5pd+Zjk/a8LuwpyD4hKkRpnI
+	XIGJ70ry0UOODEnbSzdR7Qb2cl4mHftMADq2xqP833GGV4tSTLYvP76wN2Yl1Wbzcg==
+X-Gm-Gg: ASbGncu6zwa57DQxzG0BGooUz9DyvH1JhpuOGKHGfdSdmAdMVhinUIN2zg7ve38/4vM
+	vbCfBqaesXlHbiitYf5WZZ3Gi7I7efJwmKLo2fVpkc2UrYc8TUmW0kjqJgBy+zWAZA2kfBfEcn0
+	KCb2Q3f1hHSaJEBbUArvcr+MSWLg6lQtF7rPeVSQ3/v8kdymoqaP7pwdy8yi1Vg/vA19nuFxK6h
+	LCBqo8twRRDB+e5ZgNCZTELeYsJLc8IMNaWQWtuuoPaTPlQAiZM5bBzMHqevPBVJOJMR7aRiJSa
+	jNJzTlyR2ku/Lf/PL1Sxnwb12h9JO9Nm7HFp4TvbFRgysMkUPAIwZE1guRlB1jXJWd6A+rnuRC8
+	SObKUVRDnJ0HSbXNcnvfxfbJ/82PiFq8AZI6zL+A9CRTQF2MtwAsFnHEC2rZ3txwo335ZPeBvSd
+	1n6M+zgAHwSZTOFgYt8BMBukrqNcE8FFMXWMI9EA==
+X-Google-Smtp-Source: AGHT+IHptz2Viou3aQb7JTKgXj8lqBa3xVm9ubMw1J3oe5c1h0nSfI0VxDkbrkw3mL1kDx6q4igwAQ==
+X-Received: by 2002:a05:6a20:6a28:b0:32d:b925:22ab with SMTP id adf61e73a8af0-334a78fbd98mr2663524637.17.1760657294603;
+        Thu, 16 Oct 2025 16:28:14 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e7c:8:98f9:84ca:9891:3fd2])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7992b060b59sm24127004b3a.2.2025.10.16.16.28.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Oct 2025 16:28:13 -0700 (PDT)
+From: Brian Norris <briannorris@chromium.org>
+To: Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	linux-pci@vger.kernel.org,
+	Brian Norris <briannorris@chromium.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] PCI/PM: Prevent runtime suspend before devices are fully initialized
+Date: Thu, 16 Oct 2025 15:53:35 -0700
+Message-ID: <20251016155335.1.I60a53c170a8596661883bd2b4ef475155c7aa72b@changeid>
+X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,71 +89,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Md0HeZckuN_UAoo1znghaJSRIFUxE_KK
-X-Authority-Analysis: v=2.4 cv=Kr1AGGWN c=1 sm=1 tr=0 ts=68f169c5 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=hWMQpYRtAAAA:8 a=PzRsl5-gkreILLghS_IA:9 a=KCsI-UfzjElwHeZNREa_:22
-X-Proofpoint-ORIG-GUID: Md0HeZckuN_UAoo1znghaJSRIFUxE_KK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX/O/WFspc4NJ0
- Wg0Pys5C6A8pWJNYZmZi1T5f8syM8TsJWLMcm1nlaDMMw/CGQBodx94Dp7BdePEnHMEt7M4ET5R
- E6xELBZ+4ldAyYKzp79eF7VgmvezFdxu904P+BTesl5X85x7VUGiHfY2G4JUHAqOLQhzm+joAgX
- kdsxPKxNUBL05Ca/Q1LsUvDS262rY2zZC08FViRCA950jsazw/tHKHhvJExkp0LGEr6IF13R4/u
- Ifb0JAlnFaDpanzeH2XyGsZx0HANI6QBQunWEsQIsL389SHLPb7smha67XT58QDnCEJgRxN7vru
- 6Mt+SmS4Vqb/abKGOoC0luAVmGYtvvyGtR8CiuPXWDEknFVxdSd+hJjXVyIIw8wh2v631ykxW8z
- YE2fBtwO+SrFqUuXp7zukwBvJidKJg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-16_04,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0
- phishscore=0 suspectscore=0 malwarescore=0 clxscore=1015 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
 
-commit bc3905a71f02511607d3ccf732360580209cac4c upstream.
+PCI devices are created via pci_scan_slot() and similar, and are
+promptly configured for runtime PM (pci_pm_init()). They are initially
+prevented from suspending by way of pm_runtime_forbid(); however, it's
+expected that user space may override this via sysfs [1].
 
-The tailcall_bpf2bpf_hierarchy_fentry test hangs on s390. Its call
-graph is as follows:
+Now, sometime after initial scan, a PCI device receives its BAR
+configuration (pci_assign_unassigned_bus_resources(), etc.).
 
-  entry()
-    subprog_tail()
-      trampoline()
-        fentry()
-        the rest of subprog_tail()  # via BPF_TRAMP_F_CALL_ORIG
-        return to entry()
+If a PCI device is allowed to suspend between pci_scan_slot() and
+pci_assign_unassigned_bus_resources(), then pci-driver.c will
+save/restore incorrect BAR configuration for the device, and the device
+may cease to function.
 
-The problem is that the rest of subprog_tail() increments the tail call
-counter, but the trampoline discards the incremented value. This
-results in an astronomically large number of tail calls.
+This behavior races with user space, since user space may enable runtime
+PM [1] as soon as it sees the device, which may be before BAR
+configuration.
 
-Fix by making the trampoline write the incremented tail call counter
-back.
+Prevent suspending in this intermediate state by holding a runtime PM
+reference until the device is fully initialized and ready for probe().
 
-Fixes: 528eb2cb87bc ("s390/bpf: Implement arch_prepare_bpf_trampoline()")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20250813121016.163375-4-iii@linux.ibm.com
+[1] echo auto > /sys/bus/pci/devices/.../power/control
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Brian Norris <briannorris@chromium.org>
 ---
- arch/s390/net/bpf_jit_comp.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index 15c6ab660a5ba..5a64d34a37482 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -2462,6 +2462,9 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
- 		/* stg %r2,retval_off(%r15) */
- 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_2, REG_0, REG_15,
- 			      tjit->retval_off);
-+		/* mvc tccnt_off(%r15),tail_call_cnt(4,%r15) */
-+		_EMIT6(0xd203f000 | tjit->tccnt_off,
-+		       0xf000 | offsetof(struct prog_frame, tail_call_cnt));
+ drivers/pci/bus.c | 7 +++++++
+ drivers/pci/pci.c | 6 ++++++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+index f26aec6ff588..227a8898acac 100644
+--- a/drivers/pci/bus.c
++++ b/drivers/pci/bus.c
+@@ -14,6 +14,7 @@
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/proc_fs.h>
+ #include <linux/slab.h>
  
- 		im->ip_after_call = jit->prg_buf + jit->prg;
+@@ -375,6 +376,12 @@ void pci_bus_add_device(struct pci_dev *dev)
+ 		put_device(&pdev->dev);
+ 	}
+ 
++	/*
++	 * Now that resources are assigned, drop the reference we grabbed in
++	 * pci_pm_init().
++	 */
++	pm_runtime_put_noidle(&dev->dev);
++
+ 	if (!dn || of_device_is_available(dn))
+ 		pci_dev_allow_binding(dev);
+ 
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index b14dd064006c..06a901214f2c 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3226,6 +3226,12 @@ void pci_pm_init(struct pci_dev *dev)
+ 	pci_pm_power_up_and_verify_state(dev);
+ 	pm_runtime_forbid(&dev->dev);
+ 	pm_runtime_set_active(&dev->dev);
++	/*
++	 * We cannot allow a device to suspend before its resources are
++	 * configured. Otherwise, we may allow saving/restoring unexpected BAR
++	 * configuration.
++	 */
++	pm_runtime_get_noresume(&dev->dev);
+ 	pm_runtime_enable(&dev->dev);
+ }
  
 -- 
-2.51.0
+2.51.0.858.gf9c4a03a3a-goog
 
 
