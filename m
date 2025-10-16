@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-185982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A633BE2617
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:28:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D53FBE2618
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71C353B45F3
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:28:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC903188DA63
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806BB2E62AD;
-	Thu, 16 Oct 2025 09:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E0E3176E6;
+	Thu, 16 Oct 2025 09:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9iVNs6b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtMtyiQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEFD192D97
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0604A2D3A7B
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760606882; cv=none; b=GWiTytVhf/Nr3bzTK7Otw3TujSX4GNOReiEycJGWqmah+1QtLvwst+XnBI0H59PsyES0rcQ6COsbtHUQZBEaal8CZ+KVNlszsZ9LHmz4oxqra77NloY59YQGrMYOatCgi2qz+0f1oWfbHATOqKIv63ZKJJtBVw8qSl2ErVhatHo=
+	t=1760606887; cv=none; b=a+Ma0dQyZfJ+m4PmlYSQLlRnR9H2w/qEzy0Xb65RaRFPjU64wzOMog4xeTHo6yZh4O/Eai+Gzpg10XpMZmLEY1mvXQZTV04Rw4JoWmJLj9kOfbHYqa2NuqE9BDkQkV3GAoUgkBMSLNYbm5bBV5bI2F9G0eJz3IuKiz98wwtpD4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760606882; c=relaxed/simple;
-	bh=gFggOcjCwIXyAT7oZQwolRNLTfz1V9av7SA8+9Qnvt0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tdamKBdyGdHHgb8qBnZuFmufAg0YHwOx4yawkJSaFy1qrGaAKWsgpN1tV4lvuoykjFvDHJhIeBZAuszHHCkLdTxSUWSC99eCVwsfuvUe4hT1cI1j9bq4acN0YPdyYlh3I/lvVgwCSaIAsvMlR3tTmzG6vWMZ8ipb0JEOz65FIl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9iVNs6b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB76C4CEF1;
-	Thu, 16 Oct 2025 09:28:01 +0000 (UTC)
+	s=arc-20240116; t=1760606887; c=relaxed/simple;
+	bh=MoYv9NhuG2P+Qml/x/PKBBl4U1Tf28e8J52JpPZTD1Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FRIeFHXiLxAmOeM+vL5NpZfab+STUQNz3WWNDADeHnS15L4C6pbkG6v+uT7pXQQxMuBtuYh7U+Iw8Nf90O2wFKUy6elVSJYA8mAPdD7Cx2iRm+1O6Qpa+dXuTIlY3anwW/UqA0qYeY3YELcloNedNCaYSm2k2SUSyHeoyC0fgyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtMtyiQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD39C116D0;
+	Thu, 16 Oct 2025 09:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760606882;
-	bh=gFggOcjCwIXyAT7oZQwolRNLTfz1V9av7SA8+9Qnvt0=;
+	s=korg; t=1760606886;
+	bh=MoYv9NhuG2P+Qml/x/PKBBl4U1Tf28e8J52JpPZTD1Y=;
 	h=Subject:To:Cc:From:Date:From;
-	b=X9iVNs6bdJ9H2Xm5UNwH5JtZ3yPIfOPID87LtXndSUJUJm0lT0XvegBoBPTPvEuzy
-	 jJEycVeOrFfB0xcIpuRsxdr4aC2VsO07V2rmvoKp+jY2sQTcT2UA26bGeIq9ZbdILL
-	 JJW1/MxZ/+9uT84R+8hH7PlNSJRpUcRNKzI+bL1Y=
-Subject: FAILED: patch "[PATCH] drm/exynos: exynos7_drm_decon: remove ctx->suspended" failed to apply to 5.10-stable tree
-To: kauschluss@disroot.org,inki.dae@samsung.com
+	b=HtMtyiQzYOj0fWlGGUuJ1dNaBuUBRrX7onvY7Ub2R0Lt7GaPp908B1vzpItLJLptu
+	 JBa7/T64DOnpnEOowSaEDoGAnjajrD5n/Kcy8BSBuJWFp9dSxT5WIxCwS3uXEsb/B7
+	 +hEUM/sdbhpVw9FcA2f+bOLtdE9qP9gZg1/lt1fo=
+Subject: FAILED: patch "[PATCH] drm/xe: Extend Wa_13011645652 to PTL-H, WCL" failed to apply to 6.17-stable tree
+To: julia.filipchuk@intel.com,daniele.ceraolospurio@intel.com,lucas.demarchi@intel.com,rodrigo.vivi@intel.com,stable@vger.kernel.org,stuart.summers@intel.com,thomas.hellstrom@linux.intel.com,vinay.belgaumkar@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 11:27:41 +0200
-Message-ID: <2025101641-plop-hertz-3940@gregkh>
+Date: Thu, 16 Oct 2025 11:27:56 +0200
+Message-ID: <2025101656-edgy-outbreak-15f9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x e1361a4f1be9cb69a662c6d7b5ce218007d6e82b
+git cherry-pick -x 6fc957185e1691bb6dfa4193698a229db537c2a2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101641-plop-hertz-3940@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101656-edgy-outbreak-15f9@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,161 +77,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e1361a4f1be9cb69a662c6d7b5ce218007d6e82b Mon Sep 17 00:00:00 2001
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
-Date: Sun, 6 Jul 2025 22:59:46 +0530
-Subject: [PATCH] drm/exynos: exynos7_drm_decon: remove ctx->suspended
+From 6fc957185e1691bb6dfa4193698a229db537c2a2 Mon Sep 17 00:00:00 2001
+From: Julia Filipchuk <julia.filipchuk@intel.com>
+Date: Wed, 3 Sep 2025 12:00:38 -0700
+Subject: [PATCH] drm/xe: Extend Wa_13011645652 to PTL-H, WCL
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Condition guards are found to be redundant, as the call flow is properly
-managed now, as also observed in the Exynos5433 DECON driver. Since
-state checking is no longer necessary, remove it.
+Expand workaround to additional graphics architectures.
 
-This also fixes an issue which prevented decon_commit() from
-decon_atomic_enable() due to an incorrect state change setting.
+Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Cc: Stuart Summers <stuart.summers@intel.com>
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: intel-xe@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.17+
+Signed-off-by: Julia Filipchuk <julia.filipchuk@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://lore.kernel.org/r/20250903190122.1028373-2-julia.filipchuk@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
-Cc: stable@vger.kernel.org
-Suggested-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-
-diff --git a/drivers/gpu/drm/exynos/exynos7_drm_decon.c b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-index 805aa28c1723..b8d9b7251319 100644
---- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-+++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-@@ -69,7 +69,6 @@ struct decon_context {
- 	void __iomem			*regs;
- 	unsigned long			irq_flags;
- 	bool				i80_if;
--	bool				suspended;
- 	wait_queue_head_t		wait_vsync_queue;
- 	atomic_t			wait_vsync_event;
- 
-@@ -132,9 +131,6 @@ static void decon_shadow_protect_win(struct decon_context *ctx,
- 
- static void decon_wait_for_vblank(struct decon_context *ctx)
- {
--	if (ctx->suspended)
--		return;
--
- 	atomic_set(&ctx->wait_vsync_event, 1);
- 
- 	/*
-@@ -210,9 +206,6 @@ static void decon_commit(struct exynos_drm_crtc *crtc)
- 	struct drm_display_mode *mode = &crtc->base.state->adjusted_mode;
- 	u32 val, clkdiv;
- 
--	if (ctx->suspended)
--		return;
--
- 	/* nothing to do if we haven't set the mode yet */
- 	if (mode->htotal == 0 || mode->vtotal == 0)
- 		return;
-@@ -274,9 +267,6 @@ static int decon_enable_vblank(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	u32 val;
- 
--	if (ctx->suspended)
--		return -EPERM;
--
- 	if (!test_and_set_bit(0, &ctx->irq_flags)) {
- 		val = readl(ctx->regs + VIDINTCON0);
- 
-@@ -299,9 +289,6 @@ static void decon_disable_vblank(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	u32 val;
- 
--	if (ctx->suspended)
--		return;
--
- 	if (test_and_clear_bit(0, &ctx->irq_flags)) {
- 		val = readl(ctx->regs + VIDINTCON0);
- 
-@@ -404,9 +391,6 @@ static void decon_atomic_begin(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
- 
--	if (ctx->suspended)
--		return;
--
- 	for (i = 0; i < WINDOWS_NR; i++)
- 		decon_shadow_protect_win(ctx, i, true);
- }
-@@ -427,9 +411,6 @@ static void decon_update_plane(struct exynos_drm_crtc *crtc,
- 	unsigned int pitch = fb->pitches[0];
- 	unsigned int vidw_addr0_base = ctx->data->vidw_buf_start_base;
- 
--	if (ctx->suspended)
--		return;
--
- 	/*
- 	 * SHADOWCON/PRTCON register is used for enabling timing.
- 	 *
-@@ -517,9 +498,6 @@ static void decon_disable_plane(struct exynos_drm_crtc *crtc,
- 	unsigned int win = plane->index;
- 	u32 val;
- 
--	if (ctx->suspended)
--		return;
--
- 	/* protect windows */
- 	decon_shadow_protect_win(ctx, win, true);
- 
-@@ -538,9 +516,6 @@ static void decon_atomic_flush(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
- 
--	if (ctx->suspended)
--		return;
--
- 	for (i = 0; i < WINDOWS_NR; i++)
- 		decon_shadow_protect_win(ctx, i, false);
- 	exynos_crtc_handle_event(crtc);
-@@ -568,9 +543,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int ret;
- 
--	if (!ctx->suspended)
--		return;
--
- 	ret = pm_runtime_resume_and_get(ctx->dev);
- 	if (ret < 0) {
- 		DRM_DEV_ERROR(ctx->dev, "failed to enable DECON device.\n");
-@@ -584,8 +556,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
- 		decon_enable_vblank(ctx->crtc);
- 
- 	decon_commit(ctx->crtc);
--
--	ctx->suspended = false;
- }
- 
- static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
-@@ -593,9 +563,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
- 
--	if (ctx->suspended)
--		return;
--
- 	/*
- 	 * We need to make sure that all windows are disabled before we
- 	 * suspend that connector. Otherwise we might try to scan from
-@@ -605,8 +572,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
- 		decon_disable_plane(crtc, &ctx->planes[i]);
- 
- 	pm_runtime_put_sync(ctx->dev);
--
--	ctx->suspended = true;
- }
- 
- static const struct exynos_drm_crtc_ops decon_crtc_ops = {
-@@ -727,7 +692,6 @@ static int decon_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	ctx->dev = dev;
--	ctx->suspended = true;
- 	ctx->data = of_device_get_match_data(dev);
- 
- 	i80_if_timings = of_get_child_by_name(dev->of_node, "i80-if-timings");
+diff --git a/drivers/gpu/drm/xe/xe_wa_oob.rules b/drivers/gpu/drm/xe/xe_wa_oob.rules
+index 0cf2b3c03532..338c344dcd7d 100644
+--- a/drivers/gpu/drm/xe/xe_wa_oob.rules
++++ b/drivers/gpu/drm/xe/xe_wa_oob.rules
+@@ -32,7 +32,8 @@
+ 16022287689	GRAPHICS_VERSION(2001)
+ 		GRAPHICS_VERSION(2004)
+ 13011645652	GRAPHICS_VERSION(2004)
+-		GRAPHICS_VERSION(3001)
++		GRAPHICS_VERSION_RANGE(3000, 3001)
++		GRAPHICS_VERSION(3003)
+ 14022293748	GRAPHICS_VERSION_RANGE(2001, 2002)
+ 		GRAPHICS_VERSION(2004)
+ 		GRAPHICS_VERSION_RANGE(3000, 3001)
 
 
