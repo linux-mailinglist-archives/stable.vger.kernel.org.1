@@ -1,125 +1,128 @@
-Return-Path: <stable+bounces-185992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A780BE2753
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:42:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49D3FBE27C2
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 949E83E455A
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:37:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6F951897BBB
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBDB3191D5;
-	Thu, 16 Oct 2025 09:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DB32DE704;
+	Thu, 16 Oct 2025 09:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U50RpXKU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EibSK2HB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2768D3191C1
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879EF1DE2AF
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760607249; cv=none; b=MpuUacjfaz6Qi7qCzmh8Lq53i7nNHsEXM0rcYIAN97oMkz2DAiL4rSBZd7sI1eI9aJpxJDxhXWEHNukClusU/fywi6dmc3tnTSlZ/aJCsJLRsB0H/I55KQJZIeRTS3GXXFQtK0pXFqPwnX20qhGLLVKECRsQKMEhF/M6IIG0584=
+	t=1760608042; cv=none; b=DvwXRrVVfFeH7WnnQyv+oZU0TNdLn124soLEB6iK4bQLEu2KOmsBCs2FQaJZ2fC1DkM+X2tSUk9SU+HcX/Fkci9v/C1fbSAV56wXDHNAPrL2X0eAhJMo0MHRsz+vPHzr7jK/5kDTfETRMEDdrP3OA+kZ3Wp0r9Re37lBaqhAtKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760607249; c=relaxed/simple;
-	bh=Q66X6igimOSJ4mO8hOsCTUFd421jUfUEZ1zAX1dvxdc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rqqtadrKiVBw0CbEKQ5m1ho2uLFfIaVqxphz04CgbBtz5lfnkmz43x3hpj0AGGxfaS5YqHTgjcQdApYLbwKLVy53MzFuj1jNk1hjiujOHSVvJVAZ8+lfzEf9VMG4+pRKZukaemmWRnvCXpReM0A7hy2bq8q6CvFsp3pDu1xg6Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U50RpXKU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23EFDC4CEF1;
-	Thu, 16 Oct 2025 09:34:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760607247;
-	bh=Q66X6igimOSJ4mO8hOsCTUFd421jUfUEZ1zAX1dvxdc=;
-	h=Subject:To:Cc:From:Date:From;
-	b=U50RpXKUS0YxiqBRUWD6kOV/tJAs7Non7CNnVjHQz2+pam8uadoG/kgwh04b7sGw/
-	 JyLaDpWC4k55QwlaxnbK7me52vpD2S/xozWHXlaOSJh7VZdrN6F2tqNjSqJo6R5ARk
-	 yXnT/2CuPEfg+PgrN0TN5rKqWS5adO/bDb7v+uJ4=
-Subject: FAILED: patch "[PATCH] drm/amd: Fix hybrid sleep" failed to apply to 6.17-stable tree
-To: superm1@kernel.org,alexander.deucher@amd.com,ionut_n2001@yahoo.com,kenny@panix.com,rafael.j.wysocki@intel.com,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 11:33:57 +0200
-Message-ID: <2025101656-trailside-reabsorb-e368@gregkh>
+	s=arc-20240116; t=1760608042; c=relaxed/simple;
+	bh=zwUsELB+Lg2vK2SBHg5w+9exptWG549/si/vw3mXHgM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MOcBGpiQ8YAclVQoSQ+Kuv9ENbF++Df4EKagBGDzxVNKCC7n/dmYaHOndGPYOfYq3U2ZudJh/hzLUIjZgv4F6O05MGSiuwgofqxW+zX4GNaGXduRmvVBi4JY/2EzLaMMYFB1dEyo0pkQqOO2eZ0Y87UXiE+qz5yCoNSX4PwYdTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EibSK2HB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30788C4CEF9
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:47:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760608042;
+	bh=zwUsELB+Lg2vK2SBHg5w+9exptWG549/si/vw3mXHgM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=EibSK2HBQhWjxefDwcE/iAwM4DCBVh1K0vPbwdhPtbPnc79WY1Z/nvUpKnQQLwpw7
+	 Z7TnMU3ILP0NrsASML8PGObtedWicIv4EG9Q68iqJzKAaSeDguB+5qryWd9+84+jvY
+	 eAUBcYRHhSgf+eOocrUJvwHo7BuY5om3m9SAAr1CY0ZXJKTlxuQ2vOO7nobBqzna4m
+	 iydmD5jc+G0a6Cwu+sl0xUADXQFXNPu6bXbYjjzniFK9/+ldSG/AKWzrPp1lc5abKI
+	 yhYe4ex2cjNUrXj562fQNNUyywGLVpYNvKTQHY0rzVvc1ny6vTqgHKUx+R4F2pEgfw
+	 2t3QnaQ/0jmxw==
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7b06f879d7bso1225704a34.0
+        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 02:47:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWCk8DcvEBYT7u9euEzQzpQl5MBaSkOsg8XD9D77Skj7Szggc2AHA7Etmp45BF+NZmOeNF2oyI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNFMtUcknkw65PuWHYk466rWUuAUqLQeyZSn+Mps2NSZCS/pq1
+	UUA6oB84Jq5/aUb9JVQiZ7DgnhgiPjf/P0wpoIBrqE/CYnea5yDT7vX7I2pEHOsvh7tps8c9iy5
+	EB/hEuQQMImrVNutGQ2lyVkG74LBCwvU=
+X-Google-Smtp-Source: AGHT+IGZxhmCLS8oGjw1bVMksbGQJRc8+MIBMOaMwF8vzghAQVz3g1hrXmIbNS04A+H14tMno+frWVQLqWnMuKPtVGo=
+X-Received: by 2002:a05:6808:16a3:b0:438:3b69:ab94 with SMTP id
+ 5614622812f47-441fb710514mr1676547b6e.0.1760608041488; Thu, 16 Oct 2025
+ 02:47:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+References: <36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7>
+ <08529809-5ca1-4495-8160-15d8e85ad640@arm.com> <2zreguw4djctgcmvgticnm4dctcuja7yfnp3r6bxaqon3i2pxf@thee3p3qduoq>
+ <CAJZ5v0h-=MU2uwC0+TZy0WpyyMpFibW58=t68+NPqE0W9WxWtQ@mail.gmail.com>
+ <ns2dglxkdqiidj445xal2w4onk56njkzllgoads377oaix7wuh@afvq7yinhpl7>
+ <a9857ceb-bf3e-4229-9c2f-ecab6eb2e1b0@arm.com> <CAJZ5v0iF0NE07KcK4J2_Pko-1p2wuQXjLSD7iOTBr4QcDCX4vA@mail.gmail.com>
+ <wd3rjb7lfwmi2cnx3up3wkfiv4tamoz66vgtv756rfaqmwaiwf@7wapktjpctsj>
+ <CAJZ5v0g=HNDEbD=nTGNKtSex1E2m2PJmvz1V4HoEFDbdZ7mN3g@mail.gmail.com> <ry5gjxocyzo6waonjyc7hgvo7bc6riqpmy6l3f2au7dm4j5dtd@shma7ngcqjuk>
+In-Reply-To: <ry5gjxocyzo6waonjyc7hgvo7bc6riqpmy6l3f2au7dm4j5dtd@shma7ngcqjuk>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 16 Oct 2025 11:47:10 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gqKcmXEObq6UmfTBXgueHw3eMk+CM74-FLjB3wk3WjGQ@mail.gmail.com>
+X-Gm-Features: AS18NWBivoWKQ8bl6nqOscRSzPuSIsdjWErU9lzu02ziu_6o3oQgiJOT-owWFzk
+Message-ID: <CAJZ5v0gqKcmXEObq6UmfTBXgueHw3eMk+CM74-FLjB3wk3WjGQ@mail.gmail.com>
+Subject: Re: stable: commit "cpuidle: menu: Avoid discarding useful
+ information" causes regressions
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Christian Loehle <christian.loehle@arm.com>, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>, Sasha Levin <sashal@kernel.org>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Tomasz Figa <tfiga@chromium.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Oct 16, 2025 at 6:54=E2=80=AFAM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> On (25/10/15 15:08), Rafael J. Wysocki wrote:
+> > On Wed, Oct 15, 2025 at 3:56=E2=80=AFAM Sergey Senozhatsky
+> > <senozhatsky@chromium.org> wrote:
+> > >
+> > > On (25/10/14 16:02), Rafael J. Wysocki wrote:
+> > > > > >> Would it be possible to check if the mainline has this issue? =
+ That
+> > > > > >> is, compare the benchmark results on unmodified 6.17 (say) and=
+ on 6.17
+> > > > > >> with commit 85975daeaa4 reverted?
+> > > > > >
+> > > > > > I don't think mainline kernel can run on those devices (due to
+> > > > > > a bunch of downstream patches).  Best bet is 6.12, I guess.
+> > > > >
+> > > > > Depending on what Rafael is expecting here you might just get
+> > > > > away with copying menu.c from mainline, the interactions to other
+> > > > > subsystems are limited fortunately.
+> > > >
+> > > > Yeah, that'd be sufficiently close.
+> > >
+> > > Test results for menu.c from linux-next are within regressed range: 7=
+8.5
+> >
+> > So please check if the attached patch makes any difference.
+>
+> From what I can tell the patch fixes it!
 
-The patch below does not apply to the 6.17-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Well, that's something.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+As far as I'm concerned, this change can be made.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
-git checkout FETCH_HEAD
-git cherry-pick -x 0a6e9e098fcc318fec0f45a05a5c4743a81a60d9
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101656-trailside-reabsorb-e368@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+From a purely theoretical standpoint, arguments can be made for doing
+it as well as for the current code and none of them is definitely
+preferable.
 
-Possible dependencies:
+The current approach was chosen because it led to lower latency which
+should result in better performance, but after the patch the code is
+closer to what was done before.
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 0a6e9e098fcc318fec0f45a05a5c4743a81a60d9 Mon Sep 17 00:00:00 2001
-From: "Mario Limonciello (AMD)" <superm1@kernel.org>
-Date: Thu, 25 Sep 2025 13:51:08 -0500
-Subject: [PATCH] drm/amd: Fix hybrid sleep
-
-[Why]
-commit 530694f54dd5e ("drm/amdgpu: do not resume device in thaw for
-normal hibernation") optimized the flow for systems that are going
-into S4 where the power would be turned off.  Basically the thaw()
-callback wouldn't resume the device if the hibernation image was
-successfully created since the system would be powered off.
-
-This however isn't the correct flow for a system entering into
-s0i3 after the hibernation image is created.  Some of the amdgpu
-callbacks have different behavior depending upon the intended
-state of the suspend.
-
-[How]
-Use pm_hibernation_mode_is_suspend() as an input to decide whether
-to run resume during thaw() callback.
-
-Reported-by: Ionut Nechita <ionut_n2001@yahoo.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4573
-Tested-by: Ionut Nechita <ionut_n2001@yahoo.com>
-Fixes: 530694f54dd5e ("drm/amdgpu: do not resume device in thaw for normal hibernation")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Tested-by: Kenneth Crudup <kenny@panix.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Cc: 6.17+ <stable@vger.kernel.org> # 6.17+: 495c8d35035e: PM: hibernate: Add pm_hibernation_mode_is_suspend()
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index 395c6be901ce..dcea66aadfa3 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2665,7 +2665,7 @@ static int amdgpu_pmops_thaw(struct device *dev)
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
- 
- 	/* do not resume device if it's normal hibernation */
--	if (!pm_hibernate_is_recovering())
-+	if (!pm_hibernate_is_recovering() && !pm_hibernation_mode_is_suspend())
- 		return 0;
- 
- 	return amdgpu_device_resume(drm_dev, true);
-
+Let me submit it officially and we'll see what people will have to say.
 
