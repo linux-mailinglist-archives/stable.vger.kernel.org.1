@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-185991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80734BE2635
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:29:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A780BE2753
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 113B41890DD7
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:29:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 949E83E455A
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759DB3090CB;
-	Thu, 16 Oct 2025 09:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBDB3191D5;
+	Thu, 16 Oct 2025 09:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBw7Wvsk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U50RpXKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358252D3A7B
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2768D3191C1
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760606943; cv=none; b=ViGDMWXZ/ZRO8K+MMYUAkDjHIkBdV3xy1GaQYwPGTNrP+7WHyGZjQRzNCYH88rNfIwBORLNT3zvjveiar7ngKhetnY5njoI+5+j5gc60o1kS3hIS/nGuPfglHcqI6RjvYHjACv9BX1JJbLsSwJuV3AvAdWv4Xo7D1WHfbevYm74=
+	t=1760607249; cv=none; b=MpuUacjfaz6Qi7qCzmh8Lq53i7nNHsEXM0rcYIAN97oMkz2DAiL4rSBZd7sI1eI9aJpxJDxhXWEHNukClusU/fywi6dmc3tnTSlZ/aJCsJLRsB0H/I55KQJZIeRTS3GXXFQtK0pXFqPwnX20qhGLLVKECRsQKMEhF/M6IIG0584=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760606943; c=relaxed/simple;
-	bh=P+HTOGFl77q9q7PmnykLlC5nmVIdL4oTh4MiqmLUq2A=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sT3GFgM02962NYf+7iw0DczmvFKrrBAErVu2o4KN8daQ6p9HEzeUMD89kWwo9cHKcvyKS0nj87wVvKb6RJ3Jd7tjkL0YbT/Tz8W1WWRchMTYv9LhDG5j8M/rn5vlA+qoRbKuOKPSEJDsLgfkXZeVCkZHXuJxBAQZVt4LQSl2Tso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBw7Wvsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6563DC4CEF1;
-	Thu, 16 Oct 2025 09:29:02 +0000 (UTC)
+	s=arc-20240116; t=1760607249; c=relaxed/simple;
+	bh=Q66X6igimOSJ4mO8hOsCTUFd421jUfUEZ1zAX1dvxdc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rqqtadrKiVBw0CbEKQ5m1ho2uLFfIaVqxphz04CgbBtz5lfnkmz43x3hpj0AGGxfaS5YqHTgjcQdApYLbwKLVy53MzFuj1jNk1hjiujOHSVvJVAZ8+lfzEf9VMG4+pRKZukaemmWRnvCXpReM0A7hy2bq8q6CvFsp3pDu1xg6Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U50RpXKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23EFDC4CEF1;
+	Thu, 16 Oct 2025 09:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760606942;
-	bh=P+HTOGFl77q9q7PmnykLlC5nmVIdL4oTh4MiqmLUq2A=;
+	s=korg; t=1760607247;
+	bh=Q66X6igimOSJ4mO8hOsCTUFd421jUfUEZ1zAX1dvxdc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=gBw7WvskKwSkFmDzUcBtNjkqvgIi+y9hILYqKAGg9awrBgBCQyxYB4fXlXiioN+cJ
-	 rOpsAt/TOkBvwipwga+FDp2zD2o3vDALnKFTL7Xus13NVHpenZPFPJbPIrgCkX83AP
-	 mqF7uWqrQ1HOg4RIVjydxF9atdWKrW9RSu4uW19o=
-Subject: FAILED: patch "[PATCH] drm/rcar-du: dsi: Fix 1/2/3 lane support" failed to apply to 6.1-stable tree
-To: marek.vasut+renesas@mailbox.org,tomi.valkeinen+renesas@ideasonboard.com,tomi.valkeinen@ideasonboard.com
+	b=U50RpXKUS0YxiqBRUWD6kOV/tJAs7Non7CNnVjHQz2+pam8uadoG/kgwh04b7sGw/
+	 JyLaDpWC4k55QwlaxnbK7me52vpD2S/xozWHXlaOSJh7VZdrN6F2tqNjSqJo6R5ARk
+	 yXnT/2CuPEfg+PgrN0TN5rKqWS5adO/bDb7v+uJ4=
+Subject: FAILED: patch "[PATCH] drm/amd: Fix hybrid sleep" failed to apply to 6.17-stable tree
+To: superm1@kernel.org,alexander.deucher@amd.com,ionut_n2001@yahoo.com,kenny@panix.com,rafael.j.wysocki@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 11:28:59 +0200
-Message-ID: <2025101659-grinning-hertz-186a@gregkh>
+Date: Thu, 16 Oct 2025 11:33:57 +0200
+Message-ID: <2025101656-trailside-reabsorb-e368@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x d83f1d19c898ac1b54ae64d1c950f5beff801982
+git cherry-pick -x 0a6e9e098fcc318fec0f45a05a5c4743a81a60d9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101659-grinning-hertz-186a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101656-trailside-reabsorb-e368@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,73 +77,49 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d83f1d19c898ac1b54ae64d1c950f5beff801982 Mon Sep 17 00:00:00 2001
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Date: Wed, 13 Aug 2025 23:08:13 +0200
-Subject: [PATCH] drm/rcar-du: dsi: Fix 1/2/3 lane support
+From 0a6e9e098fcc318fec0f45a05a5c4743a81a60d9 Mon Sep 17 00:00:00 2001
+From: "Mario Limonciello (AMD)" <superm1@kernel.org>
+Date: Thu, 25 Sep 2025 13:51:08 -0500
+Subject: [PATCH] drm/amd: Fix hybrid sleep
 
-Remove fixed PPI lane count setup. The R-Car DSI host is capable
-of operating in 1..4 DSI lane mode. Remove the hard-coded 4-lane
-configuration from PPI register settings and instead configure
-the PPI lane count according to lane count information already
-obtained by this driver instance.
+[Why]
+commit 530694f54dd5e ("drm/amdgpu: do not resume device in thaw for
+normal hibernation") optimized the flow for systems that are going
+into S4 where the power would be turned off.  Basically the thaw()
+callback wouldn't resume the device if the hibernation image was
+successfully created since the system would be powered off.
 
-Configure TXSETR register to match PPI lane count. The R-Car V4H
-Reference Manual R19UH0186EJ0121 Rev.1.21 section 67.2.2.3 Tx Set
-Register (TXSETR), field LANECNT description indicates that the
-TXSETR register LANECNT bitfield lane count must be configured
-such, that it matches lane count configuration in PPISETR register
-DLEN bitfield. Make sure the LANECNT and DLEN bitfields are
-configured to match.
+This however isn't the correct flow for a system entering into
+s0i3 after the hibernation image is created.  Some of the amdgpu
+callbacks have different behavior depending upon the intended
+state of the suspend.
 
-Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250813210840.97621-1-marek.vasut+renesas@mailbox.org
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+[How]
+Use pm_hibernation_mode_is_suspend() as an input to decide whether
+to run resume during thaw() callback.
 
-diff --git a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
-index 1af4c73f7a88..952c3efb74da 100644
---- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
-+++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
-@@ -576,7 +576,10 @@ static int rcar_mipi_dsi_startup(struct rcar_mipi_dsi *dsi,
- 	udelay(10);
- 	rcar_mipi_dsi_clr(dsi, CLOCKSET1, CLOCKSET1_UPDATEPLL);
+Reported-by: Ionut Nechita <ionut_n2001@yahoo.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4573
+Tested-by: Ionut Nechita <ionut_n2001@yahoo.com>
+Fixes: 530694f54dd5e ("drm/amdgpu: do not resume device in thaw for normal hibernation")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Tested-by: Kenneth Crudup <kenny@panix.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Cc: 6.17+ <stable@vger.kernel.org> # 6.17+: 495c8d35035e: PM: hibernate: Add pm_hibernation_mode_is_suspend()
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 395c6be901ce..dcea66aadfa3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2665,7 +2665,7 @@ static int amdgpu_pmops_thaw(struct device *dev)
+ 	struct drm_device *drm_dev = dev_get_drvdata(dev);
  
--	ppisetr = PPISETR_DLEN_3 | PPISETR_CLEN;
-+	rcar_mipi_dsi_clr(dsi, TXSETR, TXSETR_LANECNT_MASK);
-+	rcar_mipi_dsi_set(dsi, TXSETR, dsi->lanes - 1);
-+
-+	ppisetr = ((BIT(dsi->lanes) - 1) & PPISETR_DLEN_MASK) | PPISETR_CLEN;
- 	rcar_mipi_dsi_write(dsi, PPISETR, ppisetr);
+ 	/* do not resume device if it's normal hibernation */
+-	if (!pm_hibernate_is_recovering())
++	if (!pm_hibernate_is_recovering() && !pm_hibernation_mode_is_suspend())
+ 		return 0;
  
- 	rcar_mipi_dsi_set(dsi, PHYSETUP, PHYSETUP_SHUTDOWNZ);
-diff --git a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
-index a6b276f1d6ee..a54c7eb4113b 100644
---- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
-+++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
-@@ -12,6 +12,9 @@
- #define LINKSR_LPBUSY			(1 << 1)
- #define LINKSR_HSBUSY			(1 << 0)
- 
-+#define TXSETR				0x100
-+#define TXSETR_LANECNT_MASK		(0x3 << 0)
-+
- /*
-  * Video Mode Register
-  */
-@@ -80,10 +83,7 @@
-  * PHY-Protocol Interface (PPI) Registers
-  */
- #define PPISETR				0x700
--#define PPISETR_DLEN_0			(0x1 << 0)
--#define PPISETR_DLEN_1			(0x3 << 0)
--#define PPISETR_DLEN_2			(0x7 << 0)
--#define PPISETR_DLEN_3			(0xf << 0)
-+#define PPISETR_DLEN_MASK		(0xf << 0)
- #define PPISETR_CLEN			(1 << 8)
- 
- #define PPICLCR				0x710
+ 	return amdgpu_device_resume(drm_dev, true);
 
 
