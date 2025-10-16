@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-185893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2686DBE22F5
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 10:40:15 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A32FFBE2310
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 10:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 892F019A5FDA
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 08:40:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B97EA4F8653
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 08:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54713081B8;
-	Thu, 16 Oct 2025 08:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E96030505F;
+	Thu, 16 Oct 2025 08:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iETxos4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nevbc/mC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F54307ACE
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 08:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D093D2040B6
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 08:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760604006; cv=none; b=og/0Cpr1cc1bQOJeb/KQ9f7LYYpI/LG7AfMyViKj72qcEPgCsDfeRRNy/RDGYPhBNxfTee98xJHWceAIswTc20J0ED5Su6hPSQtj0DLp8eeSIY0zmItb5Ynmf/Pf/ON/RrZBBeRDNOt+JRTHjKYcCVlSzdlgkEL+io/bGi/SbrI=
+	t=1760604040; cv=none; b=nOXYRSLxcQ7RLHwG9HOqDBES5f1mGt6AkjXwBj6BDmV4yjDD3LZ2NaDSZ8KlaqUArNtXuN/Uh4wgQ93ESEz9yYwN1Qq+PVIe/Dhzz+7a6F5S++Pg7rUITpUtY/qwWOaUKNnoPG9FWETZSHQLf43QHq/AX1bnzOzA1ZUETRzwajQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760604006; c=relaxed/simple;
-	bh=HEIT59dr6nwUHXKNl0U+SKpjezsPGwdPpbV+AiIUkDg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pxa+gbZDa5h2b12I4bQKSMaLk3A3rNooAfVfFveVNl+ujTQ3wXOjhuor+uq6B18URSfbyjyo+zD+WQ8TnQXXGUl2OCqJzR2UeMrncKwBkK07jEDw/xqDmFYl7fAJhOfjM7ikjwY5/FOzUGRwpzLZcB7tdTSQNVRRXKU6EjrdTjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iETxos4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821F4C4CEF1;
-	Thu, 16 Oct 2025 08:40:04 +0000 (UTC)
+	s=arc-20240116; t=1760604040; c=relaxed/simple;
+	bh=Qqt3dC0tGjnguy3Bkz52jYqTAUYmc8QM9mSlG514eHI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mYyx3N88zBGwQ6G5zkLMXxAuRUn5CtVKCGqqsi5hVslkUe1ZRLCGqNMd5EG0qGC1xcSPQfxp4tLqrxlPbqnnncl7KlnEwtAeisP5t7DPtKiQVAmB0z6CjTNpIU3OjpEtRjwh0DUIu/qmqFrffrKX4G4kHPZZkX1oQ/waD6zGTXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nevbc/mC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC67C4CEFB;
+	Thu, 16 Oct 2025 08:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760604004;
-	bh=HEIT59dr6nwUHXKNl0U+SKpjezsPGwdPpbV+AiIUkDg=;
+	s=korg; t=1760604040;
+	bh=Qqt3dC0tGjnguy3Bkz52jYqTAUYmc8QM9mSlG514eHI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iETxos4QgEr9Pf0Ye0hhkwGgKV46GZgbHQ8dclqSq5ZqB6qkTpwooVEQqcOr2rbFY
-	 +hMX/cH0hiqPLuBYVZKlyJhIdqrko8Hm5cFi0G3B+r+aAEfExVrk67m+ALWxMxIDeO
-	 V5i3XLrEaPamsRfyhyumPX3+uIRp2TtpdFHi9yJY=
-Subject: FAILED: patch "[PATCH] ACPI: property: Do not pass NULL handles to" failed to apply to 6.1-stable tree
-To: rafael.j.wysocki@intel.com,sakari.ailus@linux.intel.com,stable@vger.kernel.org
+	b=nevbc/mCwYfZ736LEgTcEbIvg9QMKSqGssCwehEeisWWyHkRZBopiUbkhYPHu1qVl
+	 v4uGJq1gYCYq61bwLD0zTHYgLnfB3n7SamrSO0zBpOF1ojZWpL+R6J/ZD/z+KNUW/K
+	 hYZENVtiWZ13Fbuma4SnazkDB2Ght+zqsWKXLEhc=
+Subject: FAILED: patch "[PATCH] arm64: dts: qcom: qcs615: add missing dt property in QUP SEs" failed to apply to 6.17-stable tree
+To: viken.dadhaniya@oss.qualcomm.com,andersson@kernel.org,dmitry.baryshkov@oss.qualcomm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 10:39:49 +0200
-Message-ID: <2025101649-bride-landmark-1121@gregkh>
+Date: Thu, 16 Oct 2025 10:40:37 +0200
+Message-ID: <2025101637-delegate-oversold-c71e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x baf60d5cb8bc6b85511c5df5f0ad7620bb66d23c
+git cherry-pick -x 6a5e9b9738a32229e2673d4eccfcbfe2ef3a1ab4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101649-bride-landmark-1121@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101637-delegate-oversold-c71e@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,73 +77,72 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From baf60d5cb8bc6b85511c5df5f0ad7620bb66d23c Mon Sep 17 00:00:00 2001
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Date: Mon, 15 Sep 2025 20:28:52 +0200
-Subject: [PATCH] ACPI: property: Do not pass NULL handles to
- acpi_attach_data()
+From 6a5e9b9738a32229e2673d4eccfcbfe2ef3a1ab4 Mon Sep 17 00:00:00 2001
+From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Date: Mon, 30 Jun 2025 12:13:38 +0530
+Subject: [PATCH] arm64: dts: qcom: qcs615: add missing dt property in QUP SEs
 
-In certain circumstances, the ACPI handle of a data-only node may be
-NULL, in which case it does not make sense to attempt to attach that
-node to an ACPI namespace object, so update the code to avoid attempts
-to do so.
+Add the missing required-opps and operating-points-v2 properties to
+several I2C, SPI, and UART nodes in the QUP SEs.
 
-This prevents confusing and unuseful error messages from being printed.
+Fixes: f6746dc9e379 ("arm64: dts: qcom: qcs615: Add QUPv3 configuration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250630064338.2487409-1-viken.dadhaniya@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 
-Also document the fact that the ACPI handle of a data-only node may be
-NULL and when that happens in a code comment.  In addition, make
-acpi_add_nondev_subnodes() print a diagnostic message for each data-only
-node with an unknown ACPI namespace scope.
-
-Fixes: 1d52f10917a7 ("ACPI: property: Tie data nodes to acpi handles")
-Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index f4776a4085e0..c086786fe84c 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -124,6 +124,10 @@ static bool acpi_nondev_subnode_extract(union acpi_object *desc,
- 		result = true;
+diff --git a/arch/arm64/boot/dts/qcom/sm6150.dtsi b/arch/arm64/boot/dts/qcom/sm6150.dtsi
+index bfbb21035492..e033b53f0f0f 100644
+--- a/arch/arm64/boot/dts/qcom/sm6150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6150.dtsi
+@@ -631,6 +631,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+ 				interconnect-names = "qup-core",
+ 						     "qup-config";
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
++				operating-points-v2 = <&qup_opp_table>;
+ 				status = "disabled";
+ 			};
  
- 	if (result) {
-+		/*
-+		 * This will be NULL if the desc package is embedded in an outer
-+		 * _DSD-equivalent package and its scope cannot be determined.
-+		 */
- 		dn->handle = handle;
- 		dn->data.pointer = desc;
- 		list_add_tail(&dn->sibling, list);
-@@ -224,6 +228,8 @@ static bool acpi_add_nondev_subnodes(acpi_handle scope,
- 			 * strings because there is no way to build full
- 			 * pathnames out of them.
- 			 */
-+			acpi_handle_debug(scope, "subnode %s: Unknown scope\n",
-+					  link->package.elements[0].string.pointer);
- 			desc = &link->package.elements[1];
- 			result = acpi_nondev_subnode_extract(desc, NULL, link,
- 							     list, parent);
-@@ -396,6 +402,9 @@ static void acpi_untie_nondev_subnodes(struct acpi_device_data *data)
- 	struct acpi_data_node *dn;
+@@ -654,6 +655,7 @@ &config_noc SLAVE_QUP_0 QCOM_ICC_TAG_ALWAYS>,
+ 						     "qup-config",
+ 						     "qup-memory";
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
++				required-opps = <&rpmhpd_opp_low_svs>;
+ 				dmas = <&gpi_dma0 0 1 QCOM_GPI_I2C>,
+ 				       <&gpi_dma0 1 1 QCOM_GPI_I2C>;
+ 				dma-names = "tx",
+@@ -681,6 +683,7 @@ &config_noc SLAVE_QUP_0 QCOM_ICC_TAG_ALWAYS>,
+ 						     "qup-config",
+ 						     "qup-memory";
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
++				required-opps = <&rpmhpd_opp_low_svs>;
+ 				dmas = <&gpi_dma0 0 2 QCOM_GPI_I2C>,
+ 				       <&gpi_dma0 1 2 QCOM_GPI_I2C>;
+ 				dma-names = "tx",
+@@ -703,6 +706,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+ 				interconnect-names = "qup-core",
+ 						     "qup-config";
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
++				operating-points-v2 = <&qup_opp_table>;
+ 				dmas = <&gpi_dma0 0 2 QCOM_GPI_SPI>,
+ 				       <&gpi_dma0 1 2 QCOM_GPI_SPI>;
+ 				dma-names = "tx",
+@@ -728,6 +732,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+ 				interconnect-names = "qup-core",
+ 						     "qup-config";
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
++				operating-points-v2 = <&qup_opp_table>;
+ 				status = "disabled";
+ 			};
  
- 	list_for_each_entry(dn, &data->subnodes, sibling) {
-+		if (!dn->handle)
-+			continue;
-+
- 		acpi_detach_data(dn->handle, acpi_nondev_subnode_tag);
- 
- 		acpi_untie_nondev_subnodes(&dn->data);
-@@ -410,6 +419,9 @@ static bool acpi_tie_nondev_subnodes(struct acpi_device_data *data)
- 		acpi_status status;
- 		bool ret;
- 
-+		if (!dn->handle)
-+			continue;
-+
- 		status = acpi_attach_data(dn->handle, acpi_nondev_subnode_tag, dn);
- 		if (ACPI_FAILURE(status) && status != AE_ALREADY_EXISTS) {
- 			acpi_handle_err(dn->handle, "Can't tag data node\n");
+@@ -751,6 +756,7 @@ &config_noc SLAVE_QUP_0 QCOM_ICC_TAG_ALWAYS>,
+ 						     "qup-config",
+ 						     "qup-memory";
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
++				required-opps = <&rpmhpd_opp_low_svs>;
+ 				dmas = <&gpi_dma0 0 3 QCOM_GPI_I2C>,
+ 				       <&gpi_dma0 1 3 QCOM_GPI_I2C>;
+ 				dma-names = "tx",
 
 
