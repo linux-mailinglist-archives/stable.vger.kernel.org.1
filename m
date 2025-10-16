@@ -1,176 +1,156 @@
-Return-Path: <stable+bounces-186197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D414BE53B2
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 21:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A607BBE53B8
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 21:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46C05482D96
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 19:27:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66C41541623
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 19:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE092D9EE4;
-	Thu, 16 Oct 2025 19:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884E82566E2;
+	Thu, 16 Oct 2025 19:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AfKJobVv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jS3kbz+C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520B42D94BB
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 19:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D1F22424E
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 19:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760642820; cv=none; b=SpwfBhscihOq5iEK2GfIFgnmSdgAehcSPJ7o1sxP97fvkMCj2pA8D8JQnlkO+B8smeEDNvAr+XV5VG0J+MQEm43nQ0ItFlUy+60XZ36kGDoLIRjTrloxIZAff3iXqbScFJyovovwZJf5SVXLQXE4Te86fg5A3kI2rjNsOxeMikQ=
+	t=1760642915; cv=none; b=GSmhMyELzxMdGxs3pF7XS1YNnRDg2giZq1Q1qwYsjurzEehPYr24fg+bwHzzG2tgS4VoOV7dbv8L6wYVr8d5SZ86fLVnZk/NkEVwUu6tcd5WDT25uad8WM9bNi665iedBDeXGG5lNTD/96jT7heEJgYZlP39ZikDNwIsDqQ7v7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760642820; c=relaxed/simple;
-	bh=Z4K3CmGQhxkB24mFx9E87SF9HhnIB+xHsfgBt0vqC10=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PjsazIQyQsrIORK+pnBOhO4+2jsoTIurYn9rW9nvyHz5UVnBNsa5BYjwdNFCmCtmdh32LJyVwW9urARNMHPJ238fxAK3USTo2aJM4cYEX5i1dmbj0pvmiHyyPNRV0+sYSiBRdp93o6t2vOHMhsOSSqlNlsGDPz2jvNzrGgHRNbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AfKJobVv; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-63c167b70f9so2580a12.0
-        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 12:26:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760642816; x=1761247616; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z4K3CmGQhxkB24mFx9E87SF9HhnIB+xHsfgBt0vqC10=;
-        b=AfKJobVvICqXTrPMJTeQqgEbWkRfS3xdwuJgDDYeVbGQR2AWNmKUb/gyTOSOywNJEc
-         sxhDKpJUBnr/sf2mpt8GSGMdrhWg8doQK8UsWIDlM85aEx1PDpQ8bo+hH4sqEn7qyp6q
-         fX9jyMM3X0ll3eDcaC57psRm33hB72wmBIGuBSVoN8ccf0rTpEzdfzmxeCYfvV85qNnJ
-         yyFlueJYd3NiWgWj44MYpoOCnaPZGI17t3hjkN0zu+jXYY0k9vhpVQp6+VF5m6RmvaEP
-         KUlLAAzdG+f1+cxbzhMuO+N+SauZko5/b2y3PeEaedWBzoBayyh2gP9alH+tX5iLDeKy
-         WwIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760642816; x=1761247616;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z4K3CmGQhxkB24mFx9E87SF9HhnIB+xHsfgBt0vqC10=;
-        b=p91G2OJUecJC1lgPGnJWuzKBMOO3+PE6QjX2OvDpefLOGQl8ECYDW+WOQ1SkklQgQ/
-         L/zItHsRQSsFv9oDcbTYg3YJeTKcKauUUlKBsRuvcCdLqYT6JA6HFoq8SECbBf8fPkKv
-         ScZ96Pn+k6SAUMXqXAMeMryi5Es0MVLPy/DcVcKI9hQl4cjOaMJAoyLexvSRwSvAWEjT
-         imcakd1bPQB6xLEkzUHafcCyc6ksCyjwe8JaU+2DHD6MDPfeUBBYD9MILzR3v001YDcK
-         BiQlfmzxRX/pP0jvMhMb/IO9t3nQJjroTTDaNVj0arHuZf9i2Aw9pllQ4OpNZTa/zRIE
-         ctlg==
-X-Forwarded-Encrypted: i=1; AJvYcCXrnbzm8DuXPPUaGMP/kgl/tHqdIf19LRzuRLXbBoYhE02D1m5dsbwsnt6T6jcZSQhY2bTPU1g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEwNe9mDK5s2OfmOXJU70PaedUZj1t8EtGyHgNvWmUJr3s4LUH
-	PObJTISXbizDTfn+z9ukYm5zB0L39B0+BLcWjQuIfAISIOPXXaNLAo3EYpWLruDCFSzV6VjeSgA
-	KdFyceY8UXsSlqKqqluNtjyDLSvDa/rPvTegChVBD
-X-Gm-Gg: ASbGnctkR/zKm5hCIU4eec1Gx8ptSoHO95pY+mdMfTLFpPcVwjGbW+QF7QeJtDrw2e5
-	gQgpZUNkDdpzwK1Lq1J2ak5XVYPdlkJSRz3CqH1AAQsTdgymJPIc/dSNapcotfI5VfFYQfFeAqg
-	QTiDRaq5U5//RcSFDWoT2m6LrzaEYtZPkZS+yuuXBK2HIGzcu4HevccJmHLF8yjaAwpjO/q4Hum
-	Ej9iV1VNqNh1QSSOo3BiQ7tF5TxU0uh/mWnR3ZrI6aaidQ/u8m7BzhzAtdsmhOl5RDJa4/zAZxd
-	m+3et1513I5APfkm2NsaDQkJew==
-X-Google-Smtp-Source: AGHT+IFSkPBYjPqAaxyKpCKp2eJnQr5HaNLRzD2pbX8r+A+QqRs0jInVBDCbCWKpORR4+60IktmUfG1H/6ZHo6Vavxw=
-X-Received: by 2002:a05:6402:1641:b0:624:45d0:4b33 with SMTP id
- 4fb4d7f45d1cf-63bee07947dmr244804a12.7.1760642816180; Thu, 16 Oct 2025
- 12:26:56 -0700 (PDT)
+	s=arc-20240116; t=1760642915; c=relaxed/simple;
+	bh=PE3fwrHmume9oXZVoXwhXTn+LF+mIG6PT2Qcks0haKA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=l/PI7VFE+bmzW2Vsf6UK+QSK5e1VzvmWeh6kNwerXO1CcMbsNxkDWgybMtDoBHfLTuKyZsKxHWmMudvy04J5LD5pwY/83RlhulpuTWXj7ymxlx+5XvZ7W+XZpKOqYqHoGyJsYR7EBInFEccQxPMzDLRh2UqeRvqCCbve6Mkj/iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jS3kbz+C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D1BC4CEF1;
+	Thu, 16 Oct 2025 19:28:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760642914;
+	bh=PE3fwrHmume9oXZVoXwhXTn+LF+mIG6PT2Qcks0haKA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jS3kbz+C3UknT4IAJNkWbwwkd5fww9BTuAMrAbm27rFz7gOXZ+urfO+SZSRTvtS8a
+	 qZX4bgRiFRSpRgWWmEgo6Ct09ERjFHwiQ1LLw+I8HEbwQQ6yTM+9PpYf0b6vBZWRsQ
+	 r+IrvSCtk+VtM1cjfnzcD9QA4lRaf3coZZ4JmgVPDPlIu6jVVA0TFwTr9wmb6vsda0
+	 +m82sfwbYFGOOeya3+VOxRDWBlpPIqJR1bFqeQy8AAauyOrmyBqebiZXsLhDCPcWUC
+	 VZL2LRLCDTBt6prpQI4x5fO98sj/lnO9l/0e3RC2aN7mAnJGia5b4PCjsYYXz4noFN
+	 iYRRyUvAmDClA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/4] ACPI: property: Fix buffer properties extraction for subnodes
+Date: Thu, 16 Oct 2025 15:28:29 -0400
+Message-ID: <20251016192832.3384290-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101648-surely-manhunt-fac9@gregkh>
+References: <2025101648-surely-manhunt-fac9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4d3878531c76479d9f8ca9789dc6485d@amazon.de> <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
- <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com> <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
- <e4277c1a-c8d4-429d-b455-8daa9f4bbd14@redhat.com>
-In-Reply-To: <e4277c1a-c8d4-429d-b455-8daa9f4bbd14@redhat.com>
-From: Jann Horn <jannh@google.com>
-Date: Thu, 16 Oct 2025 21:26:19 +0200
-X-Gm-Features: AS18NWDujHmIcngg16PpQMwwg8oF-_NIKvOm0btkYEtdspLHhr2gR_-TbMZsznU
-Message-ID: <CAG48ez0yz2DauOuJy=-CcpQpqReWhYH1dpW3QGHPSHQ1VbAf3g@mail.gmail.com>
-Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
- huge_pmd_unshare() vs GUP-fast race
-To: David Hildenbrand <david@redhat.com>
-Cc: "Uschakow, Stanislav" <suschako@amazon.de>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"trix@redhat.com" <trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>, 
-	"nathan@kernel.org" <nathan@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"muchun.song@linux.dev" <muchun.song@linux.dev>, "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>, 
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
-	"liam.howlett@oracle.com" <liam.howlett@oracle.com>, "osalvador@suse.de" <osalvador@suse.de>, 
-	"vbabka@suse.cz" <vbabka@suse.cz>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 16, 2025 at 9:10=E2=80=AFPM David Hildenbrand <david@redhat.com=
-> wrote:
-> >> I'm currently looking at the fix and what sticks out is "Fix it with a=
-n
-> >> explicit broadcast IPI through tlb_remove_table_sync_one()".
-> >>
-> >> (I don't understand how the page table can be used for "normal,
-> >> non-hugetlb". I could only see how it is used for the remaining user f=
-or
-> >> hugetlb stuff, but that's different question)
-> >
-> > If I remember correctly:
-> > When a hugetlb shared page table drops to refcount 1, it turns into a
-> > normal page table. If you then afterwards split the hugetlb VMA, unmap
-> > one half of it, and place a new unrelated VMA in its place, the same
-> > page table will be reused for PTEs of this new unrelated VMA.
->
-> That makes sense.
->
-> >
-> > So the scenario would be:
-> >
-> > 1. Initially, we have a hugetlb shared page table covering 1G of
-> > address space which maps hugetlb 2M pages, which is used by two
-> > hugetlb VMAs in different processes (processes P1 and P2).
-> > 2. A thread in P2 begins a gup_fast() walk in the hugetlb region, and
-> > walks down through the PUD entry that points to the shared page table,
-> > then when it reaches the loop in gup_fast_pmd_range() gets interrupted
-> > for a while by an NMI or preempted by the hypervisor or something.
-> > 3. P2 removes its VMA, and the hugetlb shared page table effectively
-> > becomes a normal page table in P1.
-> > 4. Then P1 splits the hugetlb VMA in the middle (at a 2M boundary),
-> > leaving two VMAs VMA1 and VMA2.
-> > 5. P1 unmaps VMA1, and creates a new VMA (VMA3) in its place, for
-> > example an anonymous private VMA.
-> > 6. P1 populates VMA3 with page table entries.
-> > 7. The gup_fast() walk in P2 continues, and gup_fast_pmd_range() now
-> > uses the new PMD/PTE entries created for VMA3.
->
-> Yeah, sounds possible. And nasty.
->
-> >
-> >> How does the fix work when an architecture does not issue IPIs for TLB
-> >> shootdown? To handle gup-fast on these architectures, we use RCU.
-> >
-> > gup-fast disables interrupts, which synchronizes against both RCU and I=
-PI.
->
-> Right, but RCU is only used for prevent walking a page table that has
-> been freed+reused in the meantime (prevent us from de-referencing
-> garbage entries).
->
-> It does not prevent walking the now-unshared page table that has been
-> modified by the other process.
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-Hm, I'm a bit lost... which page table walk implementation are you
-worried about that accesses page tables purely with RCU? I believe all
-page table walks should be happening either with interrupts off (in
-gup_fast()) or under the protection of higher-level locks; in
-particular, hugetlb page walks take an extra hugetlb specific lock
-(for hugetlb VMAs that are eligible for page table sharing, that is
-the rw_sema in hugetlb_vma_lock).
+[ Upstream commit d0759b10989c5c5aae3d455458c9fc4e8cc694f7 ]
 
-Regarding gup_fast():
+The ACPI handle passed to acpi_extract_properties() as the first
+argument represents the ACPI namespace scope in which to look for
+objects returning buffers associated with buffer properties.
 
-In the case where CONFIG_MMU_GATHER_RCU_TABLE_FREE is defined, the fix
-commit 1013af4f585f uses a synchronous IPI with
-tlb_remove_table_sync_one() to wait for any concurrent GUP-fast
-software page table walks, and some time after the call to
-huge_pmd_unshare() we will do a TLB flush that synchronizes against
-hardware page table walks.
+For _DSD objects located immediately under ACPI devices, this handle is
+the same as the handle of the device object holding the _DSD, but for
+data-only subnodes it is not so.
 
-In the case where CONFIG_MMU_GATHER_RCU_TABLE_FREE is not defined, I
-believe the expectation is that the TLB flush implicitly does an IPI
-which synchronizes against both software and hardware page table
-walks.
+First of all, data-only subnodes are represented by objects that
+cannot hold other objects in their scopes (like control methods).
+Therefore a data-only subnode handle cannot be used for completing
+relative pathname segments, so the current code in
+in acpi_nondev_subnode_extract() passing a data-only subnode handle
+to acpi_extract_properties() is invalid.
+
+Moreover, a data-only subnode of device A may be represented by an
+object located in the scope of device B (which kind of makes sense,
+for instance, if A is a B's child).  In that case, the scope in
+question would be the one of device B.  In other words, the scope
+mentioned above is the same as the scope used for subnode object
+lookup in acpi_nondev_subnode_extract().
+
+Accordingly, rearrange that function to use the same scope for the
+extraction of properties and subnode object lookup.
+
+Fixes: 103e10c69c61 ("ACPI: property: Add support for parsing buffer property UUID")
+Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Stable-dep-of: baf60d5cb8bc ("ACPI: property: Do not pass NULL handles to acpi_attach_data()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/property.c | 30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index dca5682308cb3..3058ed410810b 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -74,6 +74,7 @@ static bool acpi_nondev_subnode_extract(union acpi_object *desc,
+ 					struct fwnode_handle *parent)
+ {
+ 	struct acpi_data_node *dn;
++	acpi_handle scope = NULL;
+ 	bool result;
+ 
+ 	dn = kzalloc(sizeof(*dn), GFP_KERNEL);
+@@ -86,27 +87,18 @@ static bool acpi_nondev_subnode_extract(union acpi_object *desc,
+ 	INIT_LIST_HEAD(&dn->data.properties);
+ 	INIT_LIST_HEAD(&dn->data.subnodes);
+ 
+-	result = acpi_extract_properties(handle, desc, &dn->data);
+-
+-	if (handle) {
+-		acpi_handle scope;
+-		acpi_status status;
++	/*
++	 * The scope for the completion of relative pathname segments and
++	 * subnode object lookup is the one of the namespace node (device)
++	 * containing the object that has returned the package.  That is, it's
++	 * the scope of that object's parent device.
++	 */
++	if (handle)
++		acpi_get_parent(handle, &scope);
+ 
+-		/*
+-		 * The scope for the subnode object lookup is the one of the
+-		 * namespace node (device) containing the object that has
+-		 * returned the package.  That is, it's the scope of that
+-		 * object's parent.
+-		 */
+-		status = acpi_get_parent(handle, &scope);
+-		if (ACPI_SUCCESS(status)
+-		    && acpi_enumerate_nondev_subnodes(scope, desc, &dn->data,
+-						      &dn->fwnode))
+-			result = true;
+-	} else if (acpi_enumerate_nondev_subnodes(NULL, desc, &dn->data,
+-						  &dn->fwnode)) {
++	result = acpi_extract_properties(scope, desc, &dn->data);
++	if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->fwnode))
+ 		result = true;
+-	}
+ 
+ 	if (result) {
+ 		dn->handle = handle;
+-- 
+2.51.0
+
 
