@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-186175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18515BE471B
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 18:05:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9929BE4769
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 18:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B3061A64F1F
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 16:05:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D2B546DBA
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 16:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A164232D0D1;
-	Thu, 16 Oct 2025 16:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEF032D0D6;
+	Thu, 16 Oct 2025 16:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eG5Yih1x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u6wKvenz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F14B32D0C9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCB532D0C9
 	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 16:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760630688; cv=none; b=mpRMKm+U7PqXuvslXmM0eCdzyADWqFfvg2ZLNqwLQ98dhbipBcXad1VJDYSwZCW3JjGibVyTty2O4orbeRwSReEWqjVJOs67eEjNgy1RciIPVKZnw6JRN0cBBN5vMWxGh1jO/Q43JNV+dCB5q3nNSelV3Dpy/aE2cMQOHHVODvQ=
+	t=1760630689; cv=none; b=Go+fG24mJMGAwCFv34oSsh4pZ0fxo3Xx3dtDyt0tTcwDcouEVYl26/tW3Zwdnraab50Czn3ka/OMI5eaDxkiYjDaOwux0nTchdkcEVS4cXkbbut/LJJwMq3LXLW2VbTwfT3nPBmutC3IbcLJE3o+0wSNPCYP3vuOsWN7t3QWorQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760630688; c=relaxed/simple;
-	bh=ladAiyNb7gxEyiGGBqRcYQYcTzd8MmcCZPk0FKTiGRk=;
+	s=arc-20240116; t=1760630689; c=relaxed/simple;
+	bh=Gx3xoYqn/lsqmWdZkW85Y3Bzm5o2idJADTl3h5mN4vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hl+jrHvEzCIZ9ScRFzQg07zFDNwRcgWHHqKuIdXSIZ3Ov0LXqjCd1GE3nqLXbP/MfAvKYZF8a4uXe5toNbR7H4TYTj02amQLouY63/55jS841LizA77iq0kRz0zehF7h222lvCKhXz24V6ov9KhRIgPzTB1ApGinaRVYeEYZMkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eG5Yih1x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5E1C4CEFB;
-	Thu, 16 Oct 2025 16:04:47 +0000 (UTC)
+	 MIME-Version; b=rVafVA5xVSRFC4CNy7gWWHfgdH5TUifAlAxavk4wIPB76Kluv1YCTBU3IBQSY6/JY/2QDOYWusXfmtA3HnBzrtJ8ygsZBW+igiaw9zBq0LOeH/p6puJERMKvhyAk5gP+PkuM08ethvQsxeqvtse9uJJEktvlevDo7WTKAOMQmDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u6wKvenz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A561C4CEFE;
+	Thu, 16 Oct 2025 16:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760630687;
-	bh=ladAiyNb7gxEyiGGBqRcYQYcTzd8MmcCZPk0FKTiGRk=;
+	s=k20201202; t=1760630688;
+	bh=Gx3xoYqn/lsqmWdZkW85Y3Bzm5o2idJADTl3h5mN4vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eG5Yih1xjoOLkcex1mmqW//Ngz6+XCeMcw/6g05ghvndYhYffgL/AE9UAL6NCbJ2G
-	 YjyPD9XVAqa+jr4/3BO9W1P44PRBBBlDx6ruzrDfAOiyp7XmAWhHZ3Y9JXP9a8NN69
-	 H/OYZ5W2Txs7LR06w5F0LRLphtQbXymxT0SfW494EnVd4YmMK0snOC7PPPn29oZuZw
-	 sOLtTz/ZT2l0ndlZCIbL5KDM1bSPVPUb9/j2+HsDMuP1uKMlrZfHvO4hNLTMHkqk+p
-	 yuwRAHEucGoER/mgpoEWxzsghz9Aq+FkA9ZuemHWj53kmjp64V1kRJhrcRPqipFDD6
-	 I2inJYhtSZfvQ==
+	b=u6wKvenzL9qefwCMe7ekss1O7Yfn1+QQuH/0K/tsuqP4vcX/TMeOfDpWhVqGKynlW
+	 8uTn3vzvdK8A+zr5HbS4D1DQ54UIGs6B3/HFM6zVCMRh1QJevOzp939HSZ1mSUwusU
+	 vIgLrJlGYxEjCrBZPlN7WzuNbIdXEz7AFgFC1QtUXzE+xHqZODFzx7Atj0TjvmtXmv
+	 xAavRUI2cbDWs8JNGKfTaSWaE2Ii4xxoTa4qZmW+AiPBEorapMr0p3UUfST99rZiir
+	 rBP7nkv3GPO8+2BHmvpuzi+7icZVFDP6c4Frcb0lfwN8i3XxTg8VLZlSTPV2UrVm99
+	 t1KdVbfUCcO7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 2/4] ACPI: property: Disregard references in data-only subnode lists
-Date: Thu, 16 Oct 2025 12:04:41 -0400
-Message-ID: <20251016160443.3328083-2-sashal@kernel.org>
+Subject: [PATCH 6.17.y 3/4] ACPI: property: Add code comments explaining what is going on
+Date: Thu, 16 Oct 2025 12:04:42 -0400
+Message-ID: <20251016160443.3328083-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251016160443.3328083-1-sashal@kernel.org>
 References: <2025101647-crushable-wiring-b094@gregkh>
@@ -63,135 +63,112 @@ Content-Transfer-Encoding: 8bit
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit d06118fe9b03426484980ed4c189a8c7b99fa631 ]
+[ Upstream commit 737c3a09dcf69ba2814f3674947ccaec1861c985 ]
 
-Data-only subnode links following the ACPI data subnode GUID in a _DSD
-package are expected to point to named objects returning _DSD-equivalent
-packages.  If a reference to such an object is used in the target field
-of any of those links, that object will be evaluated in place (as a
-named object) and its return data will be embedded in the outer _DSD
-package.
+In some places in the ACPI device properties handling code, it is
+unclear why the code is what it is.  Some assumptions are not documented
+and some pieces of code are based on knowledge that is not mentioned
+anywhere.
 
-For this reason, it is not expected to see a subnode link with the
-target field containing a local reference (that would mean pointing
-to a device or another object that cannot be evaluated in place and
-therefore cannot return a _DSD-equivalent package).
+Add code comments explaining these things.
 
-Accordingly, simplify the code parsing data-only subnode links to
-simply print a message when it encounters a local reference in the
-target field of one of those links.
-
-Moreover, since acpi_nondev_subnode_data_ok() would only have one
-caller after the change above, fold it into that caller.
-
-Link: https://lore.kernel.org/linux-acpi/CAJZ5v0jVeSrDO6hrZhKgRZrH=FpGD4vNUjFD8hV9WwN9TLHjzQ@mail.gmail.com/
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Stable-dep-of: baf60d5cb8bc ("ACPI: property: Do not pass NULL handles to acpi_attach_data()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 51 ++++++++++++++++++-----------------------
- 1 file changed, 22 insertions(+), 29 deletions(-)
+ drivers/acpi/property.c | 46 +++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 44 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 83b03dce576c5..5b7c10a2824d6 100644
+index 5b7c10a2824d6..f4776a4085e06 100644
 --- a/drivers/acpi/property.c
 +++ b/drivers/acpi/property.c
-@@ -124,32 +124,12 @@ static bool acpi_nondev_subnode_extract(union acpi_object *desc,
- 	return false;
- }
+@@ -108,7 +108,18 @@ static bool acpi_nondev_subnode_extract(union acpi_object *desc,
+ 	if (handle)
+ 		acpi_get_parent(handle, &scope);
  
--static bool acpi_nondev_subnode_data_ok(acpi_handle handle,
--					const union acpi_object *link,
--					struct list_head *list,
--					struct fwnode_handle *parent)
--{
--	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
--	acpi_status status;
--
--	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
--					    ACPI_TYPE_PACKAGE);
--	if (ACPI_FAILURE(status))
--		return false;
--
--	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
--					parent))
--		return true;
--
--	ACPI_FREE(buf.pointer);
--	return false;
--}
--
- static bool acpi_nondev_subnode_ok(acpi_handle scope,
- 				   const union acpi_object *link,
- 				   struct list_head *list,
- 				   struct fwnode_handle *parent)
- {
-+	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
++	/*
++	 * Extract properties from the _DSD-equivalent package pointed to by
++	 * desc and use scope (if not NULL) for the completion of relative
++	 * pathname segments.
++	 *
++	 * The extracted properties will be held in the new data node dn.
++	 */
+ 	result = acpi_extract_properties(scope, desc, &dn->data);
++	/*
++	 * Look for subnodes in the _DSD-equivalent package pointed to by desc
++	 * and create child nodes of dn if there are any.
++	 */
+ 	if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->fwnode))
+ 		result = true;
+ 
+@@ -133,6 +144,12 @@ static bool acpi_nondev_subnode_ok(acpi_handle scope,
  	acpi_handle handle;
  	acpi_status status;
  
-@@ -161,7 +141,17 @@ static bool acpi_nondev_subnode_ok(acpi_handle scope,
- 	if (ACPI_FAILURE(status))
++	/*
++	 * If the scope is unknown, the _DSD-equivalent package being parsed
++	 * was embedded in an outer _DSD-equivalent package as a result of
++	 * direct evaluation of an object pointed to by a reference.  In that
++	 * case, using a pathname as the target object pointer is invalid.
++	 */
+ 	if (!scope)
  		return false;
  
--	return acpi_nondev_subnode_data_ok(handle, link, list, parent);
-+	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
-+					    ACPI_TYPE_PACKAGE);
-+	if (ACPI_FAILURE(status))
-+		return false;
-+
-+	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
-+					parent))
-+		return true;
-+
-+	ACPI_FREE(buf.pointer);
-+	return false;
- }
+@@ -162,6 +179,10 @@ static bool acpi_add_nondev_subnodes(acpi_handle scope,
+ 	bool ret = false;
+ 	int i;
  
- static bool acpi_add_nondev_subnodes(acpi_handle scope,
-@@ -174,7 +164,6 @@ static bool acpi_add_nondev_subnodes(acpi_handle scope,
- 
++	/*
++	 * Every element in the links package is expected to represent a link
++	 * to a non-device node in a tree containing device-specific data.
++	 */
  	for (i = 0; i < links->package.count; i++) {
  		union acpi_object *link, *desc;
--		acpi_handle handle;
  		bool result;
+@@ -171,17 +192,38 @@ static bool acpi_add_nondev_subnodes(acpi_handle scope,
+ 		if (link->package.count != 2)
+ 			continue;
  
- 		link = &links->package.elements[i];
-@@ -186,22 +175,26 @@ static bool acpi_add_nondev_subnodes(acpi_handle scope,
+-		/* The first one must be a string. */
++		/* The first one (the key) must be a string. */
  		if (link->package.elements[0].type != ACPI_TYPE_STRING)
  			continue;
  
--		/* The second one may be a string, a reference or a package. */
-+		/* The second one may be a string or a package. */
+-		/* The second one may be a string or a package. */
++		/* The second one (the target) may be a string or a package. */
  		switch (link->package.elements[1].type) {
  		case ACPI_TYPE_STRING:
++			/*
++			 * The string is expected to be a full pathname or a
++			 * pathname segment relative to the given scope.  That
++			 * pathname is expected to point to an object returning
++			 * a package that contains _DSD-equivalent information.
++			 */
  			result = acpi_nondev_subnode_ok(scope, link, list,
  							 parent);
  			break;
--		case ACPI_TYPE_LOCAL_REFERENCE:
--			handle = link->package.elements[1].reference.handle;
--			result = acpi_nondev_subnode_data_ok(handle, link, list,
--							     parent);
--			break;
  		case ACPI_TYPE_PACKAGE:
++			/*
++			 * This happens when a reference is used in AML to
++			 * point to the target.  Since the target is expected
++			 * to be a named object, a reference to it will cause it
++			 * to be avaluated in place and its return package will
++			 * be embedded in the links package at the location of
++			 * the reference.
++			 *
++			 * The target package is expected to contain _DSD-
++			 * equivalent information, but the scope in which it
++			 * is located in the original AML is unknown.  Thus
++			 * it cannot contain pathname segments represented as
++			 * strings because there is no way to build full
++			 * pathnames out of them.
++			 */
  			desc = &link->package.elements[1];
  			result = acpi_nondev_subnode_extract(desc, NULL, link,
  							     list, parent);
- 			break;
-+		case ACPI_TYPE_LOCAL_REFERENCE:
-+			/*
-+			 * It is not expected to see any local references in
-+			 * the links package because referencing a named object
-+			 * should cause it to be evaluated in place.
-+			 */
-+			acpi_handle_info(scope, "subnode %s: Unexpected reference\n",
-+					 link->package.elements[0].string.pointer);
-+			fallthrough;
- 		default:
- 			result = false;
- 			break;
 -- 
 2.51.0
 
