@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-185976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B62BE2605
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:27:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF86BE2608
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E324546E74
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:26:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC57F4EAFEC
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8D531618F;
-	Thu, 16 Oct 2025 09:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59452E62AD;
+	Thu, 16 Oct 2025 09:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrp6ljib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTjZMN/3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D13630EF92
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75360192D97
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760606813; cv=none; b=V4PvfRpMUCL05Dn99BXvyage150sEZnqSo6NZWZMUeHNuoN9FPtMhWzK6SacRQyqb9AaEt4HWMjdmx4jYgzdFesKjFmWAZq6Gb/nADM3L66vCiBhmkuG021onooPMcFaxoUbU0DHx5b4UH9E/5wNBC7ZI0h6bcrkB7hmGcpOysw=
+	t=1760606862; cv=none; b=qGoG1wT4vQ2ON6WEcstJomj9Hp09Yx1oUJEQwRGJZoYhbgeqqbrZgUvIMnGNZaiISK1Mqt2cZtZraicQdMlBpeX7ij9uYNaJcVa3Bl6CqTWTYNhtsQqQGuyM6TDXFbFrsCVRaQqR3ERiGv5xlk1y1QhreeX5qB4oJ5yy6UY1e0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760606813; c=relaxed/simple;
-	bh=afFNXHpvJZakWi4GZZSvVOLRUixWerAysEks4XrINTA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uKD1SUVDU5bTexe+F8bCyQiqaTxDWQya7RdB8MbGXOWiEiRlqfLZWqjfkctLaBuMTZ+r35lTko9+qjaK9SDSD+nLobZGa8QzDQhP5jdcuf6fLZIgIudI2XynXvrMLqpY2OioHjcGi627znNw5DRqKy2fmKclPZTgKWVweA/G7Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrp6ljib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E49C4CEF1;
-	Thu, 16 Oct 2025 09:26:52 +0000 (UTC)
+	s=arc-20240116; t=1760606862; c=relaxed/simple;
+	bh=nrb5O40TYZbhuz5bx1xf3Gf87vvu9XxBl4EUdUyPYsA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bn8hkgbGmLUYyu1/Hd2c+3W3U8byQXFo53jDpikBWCAodFSZsaexY6ssulAYrjubapXrvSYFqsTUQ7xNBvqQr6Tye+4DNyHIwpgPVcdc+TWXQEWhQZPFm5tANsgAbc6AKOFZvq3ZU4/oJSV/BYlxwv1y1GCl0p001xxO5ynRBzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTjZMN/3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97998C4CEF1;
+	Thu, 16 Oct 2025 09:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760606812;
-	bh=afFNXHpvJZakWi4GZZSvVOLRUixWerAysEks4XrINTA=;
+	s=korg; t=1760606862;
+	bh=nrb5O40TYZbhuz5bx1xf3Gf87vvu9XxBl4EUdUyPYsA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wrp6ljibVxobHO+bq7lMKhedzETgZbxgkQAqjsLhB/sIxNW2x6DkuOVJkqaE59gVl
-	 6iPt8f5L/RdX7qMsJ97Xkevuu47ggnhKr5hjkIXltLQoWk/8QSO3N80hPP//QxJ+j+
-	 yZeEWblpT2SprMhAB89ZetQVpc2DiRl9FwuYy1aI=
-Subject: FAILED: patch "[PATCH] usb: gadget: f_ecm: Refactor bind path to use __free()" failed to apply to 6.12-stable tree
-To: khtsai@google.com,gregkh@linuxfoundation.org
+	b=cTjZMN/34veLLTBHwg244HciGtyFaEYzQpnXkTTZUZ3lmo03qEHaqZc/hauyOY/mM
+	 FloIujpBV3ROesBUBAaQnFUc7QuD5QsVLpP2ac16hO9oIr2CAFPDfDcvRiNwuICsVj
+	 29Vn+uCQyF6dW4Kj6i7uH7W20oidSJzqFr6Tt+vg=
+Subject: FAILED: patch "[PATCH] drm/exynos: exynos7_drm_decon: remove ctx->suspended" failed to apply to 6.12-stable tree
+To: kauschluss@disroot.org,inki.dae@samsung.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 11:26:41 +0200
-Message-ID: <2025101641-spousal-accuracy-d282@gregkh>
+Date: Thu, 16 Oct 2025 11:27:39 +0200
+Message-ID: <2025101639-survey-affix-387d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 42988380ac67c76bb9dff8f77d7ef3eefd50b7b5
+git cherry-pick -x e1361a4f1be9cb69a662c6d7b5ce218007d6e82b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101641-spousal-accuracy-d282@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101639-survey-affix-387d@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,153 +77,161 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 42988380ac67c76bb9dff8f77d7ef3eefd50b7b5 Mon Sep 17 00:00:00 2001
-From: Kuen-Han Tsai <khtsai@google.com>
-Date: Tue, 16 Sep 2025 16:21:36 +0800
-Subject: [PATCH] usb: gadget: f_ecm: Refactor bind path to use __free()
+From e1361a4f1be9cb69a662c6d7b5ce218007d6e82b Mon Sep 17 00:00:00 2001
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
+Date: Sun, 6 Jul 2025 22:59:46 +0530
+Subject: [PATCH] drm/exynos: exynos7_drm_decon: remove ctx->suspended
 
-After an bind/unbind cycle, the ecm->notify_req is left stale. If a
-subsequent bind fails, the unified error label attempts to free this
-stale request, leading to a NULL pointer dereference when accessing
-ep->ops->free_request.
+Condition guards are found to be redundant, as the call flow is properly
+managed now, as also observed in the Exynos5433 DECON driver. Since
+state checking is no longer necessary, remove it.
 
-Refactor the error handling in the bind path to use the __free()
-automatic cleanup mechanism.
+This also fixes an issue which prevented decon_commit() from
+decon_atomic_enable() due to an incorrect state change setting.
 
-Fixes: da741b8c56d6 ("usb ethernet gadget: split CDC Ethernet function")
-Cc: stable@kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
+Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
+Cc: stable@vger.kernel.org
+Suggested-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 
-diff --git a/drivers/usb/gadget/function/f_ecm.c b/drivers/usb/gadget/function/f_ecm.c
-index 027226325039..675d2bc538a4 100644
---- a/drivers/usb/gadget/function/f_ecm.c
-+++ b/drivers/usb/gadget/function/f_ecm.c
-@@ -8,6 +8,7 @@
+diff --git a/drivers/gpu/drm/exynos/exynos7_drm_decon.c b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+index 805aa28c1723..b8d9b7251319 100644
+--- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+@@ -69,7 +69,6 @@ struct decon_context {
+ 	void __iomem			*regs;
+ 	unsigned long			irq_flags;
+ 	bool				i80_if;
+-	bool				suspended;
+ 	wait_queue_head_t		wait_vsync_queue;
+ 	atomic_t			wait_vsync_event;
  
- /* #define VERBOSE_DEBUG */
+@@ -132,9 +131,6 @@ static void decon_shadow_protect_win(struct decon_context *ctx,
  
-+#include <linux/cleanup.h>
- #include <linux/slab.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -15,6 +16,8 @@
- #include <linux/etherdevice.h>
- #include <linux/string_choices.h>
- 
-+#include <linux/usb/gadget.h>
-+
- #include "u_ether.h"
- #include "u_ether_configfs.h"
- #include "u_ecm.h"
-@@ -678,6 +681,7 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 	struct usb_ep		*ep;
- 
- 	struct f_ecm_opts	*ecm_opts;
-+	struct usb_request	*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_ecm(cdev->gadget))
- 		return -EINVAL;
-@@ -711,7 +715,7 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ecm->ctrl_id = status;
- 	ecm_iad_descriptor.bFirstInterface = status;
- 
-@@ -720,24 +724,22 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ecm->data_id = status;
- 
- 	ecm_data_nop_intf.bInterfaceNumber = status;
- 	ecm_data_intf.bInterfaceNumber = status;
- 	ecm_union_desc.bSlaveInterface0 = status;
- 
--	status = -ENODEV;
+ static void decon_wait_for_vblank(struct decon_context *ctx)
+ {
+-	if (ctx->suspended)
+-		return;
 -
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ecm->port.in_ep = ep;
+ 	atomic_set(&ctx->wait_vsync_event, 1);
  
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ecm->port.out_ep = ep;
+ 	/*
+@@ -210,9 +206,6 @@ static void decon_commit(struct exynos_drm_crtc *crtc)
+ 	struct drm_display_mode *mode = &crtc->base.state->adjusted_mode;
+ 	u32 val, clkdiv;
  
- 	/* NOTE:  a status/notification endpoint is *OPTIONAL* but we
-@@ -746,20 +748,18 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 	 */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_notify_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ecm->notify = ep;
- 
--	status = -ENOMEM;
+-	if (ctx->suspended)
+-		return;
 -
- 	/* allocate notification request and buffer */
--	ecm->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
--	if (!ecm->notify_req)
--		goto fail;
--	ecm->notify_req->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
--	if (!ecm->notify_req->buf)
--		goto fail;
--	ecm->notify_req->context = ecm;
--	ecm->notify_req->complete = ecm_notify_complete;
-+	request = usb_ep_alloc_request(ep, GFP_KERNEL);
-+	if (!request)
-+		return -ENOMEM;
-+	request->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
-+	if (!request->buf)
-+		return -ENOMEM;
-+	request->context = ecm;
-+	request->complete = ecm_notify_complete;
+ 	/* nothing to do if we haven't set the mode yet */
+ 	if (mode->htotal == 0 || mode->vtotal == 0)
+ 		return;
+@@ -274,9 +267,6 @@ static int decon_enable_vblank(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
  
- 	/* support all relevant hardware speeds... we expect that when
- 	 * hardware is dual speed, all bulk-capable endpoints work at
-@@ -778,7 +778,7 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 	status = usb_assign_descriptors(f, ecm_fs_function, ecm_hs_function,
- 			ecm_ss_function, ecm_ss_function);
- 	if (status)
--		goto fail;
-+		return status;
+-	if (ctx->suspended)
+-		return -EPERM;
+-
+ 	if (!test_and_set_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
  
- 	/* NOTE:  all that is done without knowing or caring about
- 	 * the network link ... which is unavailable to this code
-@@ -788,20 +788,12 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 	ecm->port.open = ecm_open;
- 	ecm->port.close = ecm_close;
+@@ -299,9 +289,6 @@ static void decon_disable_vblank(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
  
-+	ecm->notify_req = no_free_ptr(request);
-+
- 	DBG(cdev, "CDC Ethernet: IN/%s OUT/%s NOTIFY/%s\n",
- 			ecm->port.in_ep->name, ecm->port.out_ep->name,
- 			ecm->notify->name);
- 	return 0;
+-	if (ctx->suspended)
+-		return;
 -
--fail:
--	if (ecm->notify_req) {
--		kfree(ecm->notify_req->buf);
--		usb_ep_free_request(ecm->notify, ecm->notify_req);
--	}
+ 	if (test_and_clear_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
+ 
+@@ -404,9 +391,6 @@ static void decon_atomic_begin(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
 -
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, true);
+ }
+@@ -427,9 +411,6 @@ static void decon_update_plane(struct exynos_drm_crtc *crtc,
+ 	unsigned int pitch = fb->pitches[0];
+ 	unsigned int vidw_addr0_base = ctx->data->vidw_buf_start_base;
+ 
+-	if (ctx->suspended)
+-		return;
 -
--	return status;
+ 	/*
+ 	 * SHADOWCON/PRTCON register is used for enabling timing.
+ 	 *
+@@ -517,9 +498,6 @@ static void decon_disable_plane(struct exynos_drm_crtc *crtc,
+ 	unsigned int win = plane->index;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/* protect windows */
+ 	decon_shadow_protect_win(ctx, win, true);
+ 
+@@ -538,9 +516,6 @@ static void decon_atomic_flush(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, false);
+ 	exynos_crtc_handle_event(crtc);
+@@ -568,9 +543,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int ret;
+ 
+-	if (!ctx->suspended)
+-		return;
+-
+ 	ret = pm_runtime_resume_and_get(ctx->dev);
+ 	if (ret < 0) {
+ 		DRM_DEV_ERROR(ctx->dev, "failed to enable DECON device.\n");
+@@ -584,8 +556,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
+ 		decon_enable_vblank(ctx->crtc);
+ 
+ 	decon_commit(ctx->crtc);
+-
+-	ctx->suspended = false;
  }
  
- static inline struct f_ecm_opts *to_f_ecm_opts(struct config_item *item)
+ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+@@ -593,9 +563,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/*
+ 	 * We need to make sure that all windows are disabled before we
+ 	 * suspend that connector. Otherwise we might try to scan from
+@@ -605,8 +572,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+ 		decon_disable_plane(crtc, &ctx->planes[i]);
+ 
+ 	pm_runtime_put_sync(ctx->dev);
+-
+-	ctx->suspended = true;
+ }
+ 
+ static const struct exynos_drm_crtc_ops decon_crtc_ops = {
+@@ -727,7 +692,6 @@ static int decon_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	ctx->dev = dev;
+-	ctx->suspended = true;
+ 	ctx->data = of_device_get_match_data(dev);
+ 
+ 	i80_if_timings = of_get_child_by_name(dev->of_node, "i80-if-timings");
 
 
