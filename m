@@ -1,77 +1,76 @@
-Return-Path: <stable+bounces-185876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA28BE1740
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 06:54:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7510BE174D
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 06:57:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 64B5D4E477E
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 04:54:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB93B19C2E05
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 04:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CCD215F42;
-	Thu, 16 Oct 2025 04:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDA021CC4F;
+	Thu, 16 Oct 2025 04:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="k9W2Roms"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Q0GjQlM9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583DD1E5B72
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 04:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC72C20C00A
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 04:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760590481; cv=none; b=cpYV4Z6Ydgz+JTls5b32VQpKtfe6rOAhciATYPJcVHZ1AEYzfx8Obyt62JOl99JUyBorqsutb3A0aJqObO4Nly7FUs+Put0LAwL3aHDhC6V9+DVGRUPbWstYh8dIElDuZVj+Y/l66lmURyIi+WgoY2pZgfQGHMTFiIsYR4EwexE=
+	t=1760590651; cv=none; b=Hnvftdqok8JIcTzMMpYOMozT7QPimvJ9MJMrs5Q9L9Tt0KbSFSwJ47IvqeORGLKEJbkF+YGnoenT9/iw7ECqqVjtQuj8cl1raRs/S2TqiVcsN0Q3TTGD8ix313JSehBKkbCpfZgd+J9ZFMpaR8YvvrOxZHOxKvNA57YTt0/VXhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760590481; c=relaxed/simple;
-	bh=/Q6NfJWghWGNobhXEDBhXrQWhlfTOUPEdyfRJMrQ5PM=;
+	s=arc-20240116; t=1760590651; c=relaxed/simple;
+	bh=ycXwIHSULxLOKelyoMw1kfz4fvZtlHOxyQBUEQvwH1o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UgexEMv/wllP9yvo3CBKXCTkmbJlxHHGzFuXyO3F3He1Stu35WcOHZpuJN82J/2wK76807+qBXgbItfybzfY3mNPeSYJTC/TgqmLmeewQ4guDfHUGNPpimf4kSEsiz4aU8Jp/B/+nPcU5yz5k718NBoKcsd6RhleF82enjCUYMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=k9W2Roms; arc=none smtp.client-ip=209.85.214.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=JGXIwX80x/YyroE0VcKY3wzT8Vbntp/vbMH9z4P0kzV0Le+6TdgwhOBkjdPsSsNL5FydjNoxE5C2R1+RE0o/6qXHhdOBUZ2M3ny8LMYr0hAJ+pZA1h/vs1gkR7Xch0xso9HlxGX6GjcTfeRY7ohqBE8BgEK5LNNNW+nBSVDKI5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Q0GjQlM9; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-27eec33b737so4933875ad.1
-        for <stable@vger.kernel.org>; Wed, 15 Oct 2025 21:54:40 -0700 (PDT)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2681660d604so4200665ad.0
+        for <stable@vger.kernel.org>; Wed, 15 Oct 2025 21:57:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1760590480; x=1761195280; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jdHglGpSN3KxDuAvr8dPMfQT8EEnf8fGwUS/E78rcH8=;
-        b=k9W2Roms1z9Oth+D9VFUQ6ksuw/aqLt9bxMeo95+5mUJmAjf8V6qXHLv6KY/tfRoqD
-         bkEYogIJyzNZmemLP9Fr5KGzcTt6HOhv8Otv6oFeMQDJT8wFIxJw0cE5Iv2waqnCAUR3
-         sMtrObkC81MALTZGI/Bc7p8Vjvkz+bDOLWoaQ=
+        d=chromium.org; s=google; t=1760590649; x=1761195449; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bbio/3Hp4DA4Om97Ada+C8lyoGbDCkIRGtSA7EfxlAI=;
+        b=Q0GjQlM9DIG8TPbPaJDwaxYjFLwfRPrNMu6TdtNLxGOUUDeUfxoXGC9eKIq6naF7VU
+         KzvHV+6ebUfllk4C+tuEZWa3c26U2VpzgtOnILmVRxZOK/KJYMrYvQE7yRIG6OIppZNX
+         jcSDLgIOkP22qroDn3zITx2vHjjJjkuuMX4U4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760590480; x=1761195280;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jdHglGpSN3KxDuAvr8dPMfQT8EEnf8fGwUS/E78rcH8=;
-        b=jvPN3ljwj25i/zZ8T+Dc7P99J78lUM+WfqeBXYxIVFAA0+1wQyINt/bDCXSYnnjjcL
-         qNCSvPpxzyZmDjAsP/J2wbGz4ItvFvuCEGWeyqF6nm5Bt0hfP2T2LMHlay464uoKyLmx
-         WRnjqN6/nMroTVfLPPs/yir8meZ6RRaNm6qvj+/WjhjbMZS8hieRg2A+3QYwd4XmFs5B
-         tb9LbeYCYqBBX4MEZUX6TfV95DBJVGIbgoOhu9+GcjXIIb+zPrlyLtR5nz0Hzuojyaie
-         fD1o36y1zTyehnC1slElT5mx/1UeSVUaWfvn9aTJimB1HUU3lTkN9NpmOYm8rDWIaqyy
-         WTvA==
-X-Forwarded-Encrypted: i=1; AJvYcCVRxXaIqp44c1rzwEHU7euOjRaazBTtSkXDD4MBvDZfFawX+00UpzeJeQYVuFEVAR4l14GjRhs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNz9G6vyZdkhk4AaNIJJlj16qD3tA1L6bByClyecEhPg4jzbkZ
-	b+YHt1vrX/Qr4y+mJANTMRcqQKZfl8MX2a1/cLQVujHD3fOIRQPRy57Rx0cqnKh8oA==
-X-Gm-Gg: ASbGncvBlYORgH9BjLlH8ODClLNnJ4CVL1iZZIylZePQgP8DAF2m4l+22hh5S9VcCkZ
-	yS6tseQ7WOT8/SQH2Cy9/IIISxEudbVOkWMc/qq8VWX9ZKVmgGC/3fYMJ0PPHbKp1FndlnoCWeT
-	Dvaym+1t9cwKw7hxvNS5EybUB+1wzbFLyIgRK/CjcKY8u6f7Y3S9ddUxoWT1EjQhZrsJ/2i8Cn7
-	MPldW/1JsqABZU1qGSP7853OxLI3DXk9gKh29O2duni6r/Ff5IC9OfdL2OWqpOGXd9Aqnqm9RBr
-	nVDb0kgPWmqPebn9+nKWkPaWTKs4y2rsbnf9zAIinUkaCNhtj1GA1RopGNa9veY1jnDwLcK7vlm
-	QABq4obXJ/2f5YBWFB6oLrYrceU6gDiNylhKf1XKRmd9DS0z0Onzxt3yOLNFM5P5MgtwlsHg6gK
-	pkLD0=
-X-Google-Smtp-Source: AGHT+IE0ih/CjX4ELruc5guQe7p/S9Ic1AWEutevogqpYPhg2145lGm3u6x2XmjWR3oPrwyHajo9KA==
-X-Received: by 2002:a17:903:1510:b0:267:776b:a31a with SMTP id d9443c01a7336-290272c188dmr388977865ad.29.1760590479719;
-        Wed, 15 Oct 2025 21:54:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760590649; x=1761195449;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bbio/3Hp4DA4Om97Ada+C8lyoGbDCkIRGtSA7EfxlAI=;
+        b=LaAkNZ9Pd1zi+W6j4J+6XxU8jK21HdoPXuEVTnrjRWgrALMvwa4bxXQAHQ3ic0Mzyd
+         pKlqZ55D904jiW/oF0z1Gr+GTCCbQNPQBZbLcsK/uRa/JgRXeYvNi5nfbug3YyAFi0wT
+         Bi2gZ7KPOuL0WEwe+kXExV6qWsQQpE5X8lIy21lpIEwOepRqsaCV6yD/fT48hAbXJ5M7
+         LjTy3IlM4Lf9okhfuAauMbFzppsA/6wNL4gmxEsrXwe3471tg9nRmH2G3MA75L77NFic
+         DeeSi4CydL3k2bG9ub0WWmvb3rd++npmq+oN2y7pRK1BUsoXfaASA/JA1EXbZIrox3yH
+         I4rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXHk0m3bE8FmWFflB2CnHLXUsHisrs6QWmVzaa/tQJS8ROsJ1xrnqbUSqi+1v4Lo+DHHzWiVaA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxY/n9q7w/7fJLOXalBzMGvt2b8pr5wUa8u7cIKmCS0iaSyByRc
+	ryq6tU/tQ8/sulnvJ4Piu36IlJBjQZNSUrSkipy+QYRESug/rriH6Pn042SeWMiL+Q==
+X-Gm-Gg: ASbGncuV4D51+UdqsJDhS97JgEzVp9zV5Z62VCCqPpvRfAzQFUUYqnueXfN3qFuZWIo
+	0A6Cqvc2Tp08Ki9XpgumvXcmW+VO6GIzM07fXGib4jUgYk7o4YoIA9d2KA42kcAstzcp9eH9suh
+	+ttQml1rDnmYO+wLdnbCzUAw39QKlPCHsjxA4Uk4SEBbAi/VDkliAkK4TdweDUmNwUddfh/CxTn
+	i/gv/MvcrjBiMEtgfpgjZpCyn6lJ/086yxShW0gmoduu/i2BFsylunHwpkC+L4nrYTYlPKcN+7y
+	JIJ8mNc2aTlARXrK/zyDNVIkvM0zsU9I+rzyaUpo2bpGx7W3isaeUWIGgqZAFWuHNAJ8oXhZCf7
+	+K8DHNRru4QkXFP3nqmzR6qhE+aBrQMhofQtT+loIAMH4oMS+ZYOJigfI2URrvubm3VfxORDRoQ
+	DxZu0=
+X-Google-Smtp-Source: AGHT+IG6pV6T3EqWizlYJiSDqOG3iYJ0VWq5XBwemEziGJYiTELwOGp/PUZsKzFN0fJLNllV3149Lw==
+X-Received: by 2002:a17:903:3843:b0:24b:11c8:2d05 with SMTP id d9443c01a7336-290272dfc42mr385419215ad.45.1760590649069;
+        Wed, 15 Oct 2025 21:57:29 -0700 (PDT)
 Received: from google.com ([2401:fa00:8f:203:18d7:f088:3b2a:6563])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29099afbdb5sm14082495ad.104.2025.10.15.21.54.36
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29099343087sm14450085ad.31.2025.10.15.21.57.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 21:54:39 -0700 (PDT)
-Date: Thu, 16 Oct 2025 13:54:34 +0900
+        Wed, 15 Oct 2025 21:57:28 -0700 (PDT)
+Date: Thu, 16 Oct 2025 13:57:24 +0900
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
@@ -82,48 +81,40 @@ Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
 	stable@vger.kernel.org
 Subject: Re: stable: commit "cpuidle: menu: Avoid discarding useful
  information" causes regressions
-Message-ID: <ry5gjxocyzo6waonjyc7hgvo7bc6riqpmy6l3f2au7dm4j5dtd@shma7ngcqjuk>
+Message-ID: <t3sh2ifq7bdykxjejk2uopra76xp3fusbk3rpbw5aojmt3hjnt@o7djv3dntbwi>
 References: <36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7>
  <08529809-5ca1-4495-8160-15d8e85ad640@arm.com>
  <2zreguw4djctgcmvgticnm4dctcuja7yfnp3r6bxaqon3i2pxf@thee3p3qduoq>
- <CAJZ5v0h-=MU2uwC0+TZy0WpyyMpFibW58=t68+NPqE0W9WxWtQ@mail.gmail.com>
- <ns2dglxkdqiidj445xal2w4onk56njkzllgoads377oaix7wuh@afvq7yinhpl7>
- <a9857ceb-bf3e-4229-9c2f-ecab6eb2e1b0@arm.com>
- <CAJZ5v0iF0NE07KcK4J2_Pko-1p2wuQXjLSD7iOTBr4QcDCX4vA@mail.gmail.com>
- <wd3rjb7lfwmi2cnx3up3wkfiv4tamoz66vgtv756rfaqmwaiwf@7wapktjpctsj>
- <CAJZ5v0g=HNDEbD=nTGNKtSex1E2m2PJmvz1V4HoEFDbdZ7mN3g@mail.gmail.com>
+ <8da42386-282e-4f97-af93-4715ae206361@arm.com>
+ <nd64xabhbb53bbqoxsjkfvkmlpn5tkdlu3nb5ofwdhyauko35b@qv6in7biupgi>
+ <49cf14a1-b96f-4413-a17e-599bc1c104cd@arm.com>
+ <CAJZ5v0hGu-JdwR57cwKfB+a98Pv7e3y36X6xCo=PyGdD2hwkhQ@mail.gmail.com>
+ <7ctfmyzpcogc5qug6u3jm2o32vy2ldo3ml5gsoxdm3gyr6l3fc@jo7inkr3otua>
+ <CAJZ5v0ix7zdR0hJqN9OZPGp0oZMD_mzKU48HH1coqHTm7ucTDw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0g=HNDEbD=nTGNKtSex1E2m2PJmvz1V4HoEFDbdZ7mN3g@mail.gmail.com>
+In-Reply-To: <CAJZ5v0ix7zdR0hJqN9OZPGp0oZMD_mzKU48HH1coqHTm7ucTDw@mail.gmail.com>
 
-On (25/10/15 15:08), Rafael J. Wysocki wrote:
-> On Wed, Oct 15, 2025 at 3:56 AM Sergey Senozhatsky
-> <senozhatsky@chromium.org> wrote:
-> >
-> > On (25/10/14 16:02), Rafael J. Wysocki wrote:
-> > > > >> Would it be possible to check if the mainline has this issue?  That
-> > > > >> is, compare the benchmark results on unmodified 6.17 (say) and on 6.17
-> > > > >> with commit 85975daeaa4 reverted?
-> > > > >
-> > > > > I don't think mainline kernel can run on those devices (due to
-> > > > > a bunch of downstream patches).  Best bet is 6.12, I guess.
-> > > >
-> > > > Depending on what Rafael is expecting here you might just get
-> > > > away with copying menu.c from mainline, the interactions to other
-> > > > subsystems are limited fortunately.
-> > >
-> > > Yeah, that'd be sufficiently close.
-> >
-> > Test results for menu.c from linux-next are within regressed range: 78.5
+On (25/10/15 14:31), Rafael J. Wysocki wrote:
+> > Please find attached the turbostat logs for both cases.
 > 
-> So please check if the attached patch makes any difference.
+> Thanks!
+> 
+> First off, the CPUiD information reported by turbostat indicates that
+> the system is a Jasper Lake.  Is this correct?
 
-From what I can tell the patch fixes it!
+Correct.  That particular board is powered by Jasper Lake.
+
+[..]
+> Something like this may be induced by RAPL power limits, presumably PL1.
+> 
+> Do you use thermald?
+
+I don't think so.  chromeos doesn't use systemd.
 
