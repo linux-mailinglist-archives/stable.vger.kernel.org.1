@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-186024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D283CBE3640
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 14:34:14 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89E9BE3646
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 14:35:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2777934F962
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 12:34:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A397B4E9369
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 12:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A3631D75B;
-	Thu, 16 Oct 2025 12:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA5A30648D;
+	Thu, 16 Oct 2025 12:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJ8+9mQs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujjf82hV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523DB31CA4A
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 12:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD8F41AAC
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 12:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760618051; cv=none; b=Wuo2OKeCH6kyMXfaxWDFN+0Ukpv5aXyObfl/JnqQuMu12cbkCXcvRs98fqdsfWquXJiDRGzMSBtEo9BO8EPqx8LXKLjfi7DA5OvEOcXNmsIQLjd2rTagvlVeTr0Easg1ue7XJKQgtsJL0j3kRPOga9sdhdNySsPyLmwgeXWazGk=
+	t=1760618097; cv=none; b=AB47T7ZCEcUzaVtGyTJfprUc1YVaJMH1G60jkIsN0VIr+40i5DxggZ+FkarjJQmqOa4D0/MPfiFFhj+/2xszbWp/nCkp0KNCkIAuaojz2BVRtZm1nhKScNx5hcVO9w6QiFGNvilxvoEcVDXqzQKIo+xvjhaiZuQaVeqh/CQc5+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760618051; c=relaxed/simple;
-	bh=qi5UAsdwLhdaE84uTI9IDKqEdUV9ujSWFrVhCJUOt1U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rE9HUE+dtsYSEu+1DpR26F+WpT28Wi1u7Yd21QPmQ+vo2lbU0446DYKAy3zhwgz/9DwynDgDWoYoFwMbLxwfXST+BDYDz85/kpxy08l7tN90CCFroFtaTKLqGdyk5p6FOiK7yhLfKE8OolOIrsSlmozX4eahVA/053dZ+AArQYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJ8+9mQs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43745C116C6;
-	Thu, 16 Oct 2025 12:34:09 +0000 (UTC)
+	s=arc-20240116; t=1760618097; c=relaxed/simple;
+	bh=zFLPEQMhcydqaFKuIA1cEKCCbi60DkIuka/Mq45hIww=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Gl3Eq322H0OPNZbRIFlbbHdMV/FmwXJE0xeJoJfJWjmfqP0sypAFCA6jdHtUkBXvdDeJZ7eHTJVJGPWYKzAuxZ8a5fHw0DQ1LkYGznYiV16dvzW4Ykh8Or0Qj+kTHcIsFvxRgGbxvZpMXr+aqto1v3NjS0gfAfCzQ6LT7JBcOVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujjf82hV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF604C4CEFE;
+	Thu, 16 Oct 2025 12:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760618049;
-	bh=qi5UAsdwLhdaE84uTI9IDKqEdUV9ujSWFrVhCJUOt1U=;
+	s=korg; t=1760618097;
+	bh=zFLPEQMhcydqaFKuIA1cEKCCbi60DkIuka/Mq45hIww=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bJ8+9mQsFd6hpJh+4v11/8s3dSxFW7Mihxh3Hond025lvjsveHkc96qx/8MIa5oej
-	 mXIce/Ax9/nNh1sWaqM4MBDNkmV/1NDg4c7MPri98OBHp2a7LT7BpExjPo+Vsg4301
-	 3qmrHWx4ulJb3/Ba8mmiYaEHsqPC5X00mBhB2z2A=
-Subject: FAILED: patch "[PATCH] cpufreq: CPPC: Avoid using CPUFREQ_ETERNAL as transition" failed to apply to 5.4-stable tree
-To: rafael.j.wysocki@intel.com,qyousef@layalina.io,stable@vger.kernel.org,superm1@kernel.org,viresh.kumar@linaro.org,zhanjie9@hisilicon.com
+	b=ujjf82hVM+e/ySZ7Z0EsjTzkKvDQxZUW/9EjMakWKiEZpVokiRbCXO3spRUXXCixo
+	 63ZYkTLCvavSeNCOL4wfS8CO8tG4E1VJzDfT+23WUQcvl3mkGhwF4/3miaIymFt14H
+	 hSMNteFI7sVLrh1Jzy2PCEBXMtGGtrhYGK7IwerI=
+Subject: FAILED: patch "[PATCH] crypto: rockchip - Fix dma_unmap_sg() nents value" failed to apply to 5.15-stable tree
+To: fourier.thomas@gmail.com,herbert@gondor.apana.org.au,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 14:33:56 +0200
-Message-ID: <2025101656-peso-landfill-d499@gregkh>
+Date: Thu, 16 Oct 2025 14:34:46 +0200
+Message-ID: <2025101646-entitle-romp-923e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x f965d111e68f4a993cc44d487d416e3d954eea11
+git cherry-pick -x 21140e5caf019e4a24e1ceabcaaa16bd693b393f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101656-peso-landfill-d499@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101646-entitle-romp-923e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,65 +77,31 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f965d111e68f4a993cc44d487d416e3d954eea11 Mon Sep 17 00:00:00 2001
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Date: Fri, 26 Sep 2025 12:19:41 +0200
-Subject: [PATCH] cpufreq: CPPC: Avoid using CPUFREQ_ETERNAL as transition
- delay
+From 21140e5caf019e4a24e1ceabcaaa16bd693b393f Mon Sep 17 00:00:00 2001
+From: Thomas Fourier <fourier.thomas@gmail.com>
+Date: Wed, 3 Sep 2025 10:06:46 +0200
+Subject: [PATCH] crypto: rockchip - Fix dma_unmap_sg() nents value
 
-If cppc_get_transition_latency() returns CPUFREQ_ETERNAL to indicate a
-failure to retrieve the transition latency value from the platform
-firmware, the CPPC cpufreq driver will use that value (converted to
-microseconds) as the policy transition delay, but it is way too large
-for any practical use.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Address this by making the driver use the cpufreq's default
-transition latency value (in microseconds) as the transition delay
-if CPUFREQ_ETERNAL is returned by cppc_get_transition_latency().
+Fixes: 57d67c6e8219 ("crypto: rockchip - rework by using crypto_engine")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-Fixes: d4f3388afd48 ("cpufreq / CPPC: Set platform specific transition_delay_us")
-Cc: 5.19+ <stable@vger.kernel.org> # 5.19
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Qais Yousef <qyousef@layalina.io>
-
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 12de0ac7bbaf..b71946937c52 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -308,6 +308,16 @@ static int cppc_verify_policy(struct cpufreq_policy_data *policy)
- 	return 0;
+diff --git a/drivers/crypto/rockchip/rk3288_crypto_ahash.c b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
+index d6928ebe9526..b9f5a8b42e66 100644
+--- a/drivers/crypto/rockchip/rk3288_crypto_ahash.c
++++ b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
+@@ -254,7 +254,7 @@ static void rk_hash_unprepare(struct crypto_engine *engine, void *breq)
+ 	struct rk_ahash_rctx *rctx = ahash_request_ctx(areq);
+ 	struct rk_crypto_info *rkc = rctx->dev;
+ 
+-	dma_unmap_sg(rkc->dev, areq->src, rctx->nrsg, DMA_TO_DEVICE);
++	dma_unmap_sg(rkc->dev, areq->src, sg_nents(areq->src), DMA_TO_DEVICE);
  }
  
-+static unsigned int __cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
-+{
-+	unsigned int transition_latency_ns = cppc_get_transition_latency(cpu);
-+
-+	if (transition_latency_ns == CPUFREQ_ETERNAL)
-+		return CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS / NSEC_PER_USEC;
-+
-+	return transition_latency_ns / NSEC_PER_USEC;
-+}
-+
- /*
-  * The PCC subspace describes the rate at which platform can accept commands
-  * on the shared PCC channel (including READs which do not count towards freq
-@@ -330,12 +340,12 @@ static unsigned int cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
- 			return 10000;
- 		}
- 	}
--	return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
-+	return __cppc_cpufreq_get_transition_delay_us(cpu);
- }
- #else
- static unsigned int cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
- {
--	return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
-+	return __cppc_cpufreq_get_transition_delay_us(cpu);
- }
- #endif
- 
+ static int rk_hash_run(struct crypto_engine *engine, void *breq)
 
 
