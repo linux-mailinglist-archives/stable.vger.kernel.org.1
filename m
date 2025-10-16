@@ -1,264 +1,156 @@
-Return-Path: <stable+bounces-185996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EE0BE2A75
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 12:09:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F970BE2B6D
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 12:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A102E5062DD
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 10:07:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F158358808A
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 10:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EE731E106;
-	Thu, 16 Oct 2025 09:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8537932D421;
+	Thu, 16 Oct 2025 10:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="X7v9tVPP"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="Dkg1ccWx"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mail-m49241.qiye.163.com (mail-m49241.qiye.163.com [45.254.49.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EF631CA42;
-	Thu, 16 Oct 2025 09:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489BA32D450;
+	Thu, 16 Oct 2025 10:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760608548; cv=none; b=QWiEFotYM+85wTwE0stwEl68Nmznhq+xVi1SSpQO6/rRJnadIZzIcTqUdGhnGhDkenC+kdhD271FkHSA+QQiNdIgmCZVZXb0eNRdZj5vSBZpeX4RLuL8WYojcrt4XXTlg9CyHNtP36OfGS2E8Q/i+xWMjprQIJ73U5gkRyZLGpQ=
+	t=1760608843; cv=none; b=LDXvePj0NYYM8dZYfNMiK2Jah6kmfgbXMb3gsmGZ682+WOPyNQoKGMD6RFp0Am26FsLfrzOYT+2fUTaHV6UzgGT4UHa26OtAelmZWYXJLjw1ElAf+46aBbYBWlWw061ZWlJ6yhvZUC9azrd1JEEATdiG8B2nHP/Yfpk/DMfm7ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760608548; c=relaxed/simple;
-	bh=WaHJcppaHfmpqPT94nkk2b8FWT7Z886jFAvP3lSGR/s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jHO0p/89oW9eF6XlgT/qGn4fDgnMDyMfky1JmPrPYlZHa600/f4YAzPxDwzgoQ87bm1sb+WIzoJ0w1+PRN3LdvDVJCzYZwE/YT81Bjklq+3fmiae9NnTnydt5kIwtY0pxcWmw4ipPZ5q7Wu4vK0FzBUR5sUe0Dc9th4hIv1LsHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=X7v9tVPP; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59FM7elj021041;
-	Thu, 16 Oct 2025 09:55:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=v8L/XaJJedGtgX4ZoXrPanG37G3j
-	C4AFYJF+J4PWRBQ=; b=X7v9tVPPuHL8JtLuE0HRv5KkFFqHlmJcJZaJJYa9y2Yq
-	n140ilWnuzNLnIJdq2hsC/LDAICkXAhj11AEWFmoXN1QgRgLTqZsm9lcQ2eMpPMR
-	C6LULtqAgwsctxyoLoWxRSZsJKUw5Tsuol/lLmUKnYSaq4HPY4IdiH1d/Jw/rOBe
-	HDGJF8s0AkSSiR0g55LUXwWEQgN6qqRhdt34Q6KJy/gBDXYSTBG5J9LTp62aFcy8
-	HaZhS1wXzyQBed7zk15GHYpqkcOriC7U00RPFltm1ZWxEPuLC1GSL5yWS9f3MDxu
-	ITFJU9Shq0wRuDLABCielq8FIjgX/k6ShSzOXLlndg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew08pvf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Oct 2025 09:55:38 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59G6F4uL003626;
-	Thu, 16 Oct 2025 09:55:37 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r1xy54yh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Oct 2025 09:55:37 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59G9tTmn47448428
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Oct 2025 09:55:29 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 983AB2004F;
-	Thu, 16 Oct 2025 09:27:04 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4D2F32004E;
-	Thu, 16 Oct 2025 09:27:04 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 Oct 2025 09:27:04 +0000 (GMT)
-From: Gerd Bayer <gbayer@linux.ibm.com>
-Date: Thu, 16 Oct 2025 11:27:03 +0200
-Subject: [PATCH v3] s390/pci: Avoid deadlock between PCI error recovery and
- mlx5 crdump
+	s=arc-20240116; t=1760608843; c=relaxed/simple;
+	bh=L6laFqRaWSI17Vo5SosZbjACISiZSTJZPRWTW2IBLRk=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=FAJCR/vfRvaf7QMdT4kiqyi6zk3DyFS7SLvSlS8JKihE2FIGAfLOQOCNz92OL+ByXXBbC4k3hCg6qz9zuWAUCpOMqsBsuly68qx2gprxaOm3Dbr3JEDKS578hp1ycSh0p2/Eqk+Q6KNKlryPbkvPeK8CThrQHw0yOGYg1Fh1/BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=Dkg1ccWx; arc=none smtp.client-ip=45.254.49.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from [172.16.12.129] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 262323a9f;
+	Thu, 16 Oct 2025 18:00:28 +0800 (GMT+08:00)
+Message-ID: <3470351f-88ab-48bb-97af-dde4e6eba938@rock-chips.com>
+Date: Thu, 16 Oct 2025 18:00:24 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251016-fix_pcirecov_master-v3-1-9fb7c7badd67@linux.ibm.com>
-X-B4-Tracking: v=1; b=H4sIAGa68GgC/32NUQ6CMBBEr0L225JSsiB+eQ9DCNZFNrEtabHBk
- N7dygH8fJOZNzsE8kwBLsUOniIHdjZDfSpAz6N9kuBHZlBSYSUrFBNvw6LZk3ZxMGNYyQvEiep
- Wom50A3m5eMq1w3rrM88cVuc/x0lUv/S/LypRCZJt16iJOsTz9cX2vZV8N6V2BvqU0hcSh+/Wu
- gAAAA==
-X-Change-ID: 20251015-fix_pcirecov_master-55fe3705c6c6
-To: Niklas Schnelle <schnelle@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Shay Drori <shayd@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Tariq Toukan <tariqt@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Pierre Morel <pmorel@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org, stable@vger.kernel.org,
-        Gerd Bayer <gbayer@linux.ibm.com>
-X-Mailer: b4 0.14.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: HFngLfK9v-M4-cF5971wyzgHObP-mA_5
-X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68f0c11a cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=xSZCUV4fZdx31TixUsIA:9 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX8QojlHdVXh2B
- 1OqdtT89Q29igKg3cmirFIZHsIkIhGxPoiAY66PZz6xEhUfz3+Qy92gC0nZk+FpL8iOAWrOOjzZ
- CkaOG8ehXsEcWsYsyMHDkQ/bvFJcFdmUTqT5lJYGZh1LTPC2IApLDwYz/ubhnOiSTVQX00MPqL3
- ip2HmnpaZ07X+gWWXf2W+UNruxC7mXqdZk7jH6leNc1stqMDvLxP4RMrbXWBB0RUqmZBcs6cfuW
- 29SWhveS0YEnt4R0Wi6yKIonCFhgWtoQpfM4vaSghJeJwoVdMdpHf78WPYlw9VL4CVBKi09m7vM
- t/x68mHlnj3W8Z1jiMvpOcC+DEERrXeE/3H2vqvjecV5c8pnwTDJtLZAWcvSUui2EEzd9bVFVVj
- RVOEPnQXFge6uuZ8y2Ilqx5CuxHeiQ==
-X-Proofpoint-GUID: HFngLfK9v-M4-cF5971wyzgHObP-mA_5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-16_01,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1011 impostorscore=0
- phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
+User-Agent: Mozilla Thunderbird
+Cc: shawn.lin@rock-chips.com, Damien Le Moal <dlemoal@kernel.org>,
+ Dragan Simic <dsimic@manjaro.org>, FUKAUMI Naoki <naoki@radxa.com>,
+ Diederik de Haas <diederik@cknow-tech.com>, stable@vger.kernel.org,
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+ linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH v2] PCI: dw-rockchip: Disable L1 substates
+To: Niklas Cassel <cassel@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>,
+ Kever Yang <kever.yang@rock-chips.com>, Simon Xue <xxm@rock-chips.com>
+References: <20251016090422.451982-2-cassel@kernel.org>
+From: Shawn Lin <shawn.lin@rock-chips.com>
+In-Reply-To: <20251016090422.451982-2-cassel@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a99ec76ba4d09cckunmc3027d237c39a4
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGkNKTlZJT0hPSE4ZHx9IQ0xWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=Dkg1ccWxhcEzQTOcTY7bf6wuAXYywd+hMTvRqDxRE1vMLe89yV6Etd0r4HtjD7Lib8ucQ/xO9ILeS0kR9IRcb4AfFbQ7Zq1l5oLWraylks88KcjFaIB10gPecPxyug1hiVMXiTxry8XoDnCwbI/lCmmSFioxp53oLomGc7999KY=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=kN3t/e7sa1Sb2IowRbuDgju83rFZL2AXB/0qfNEujok=;
+	h=date:mime-version:subject:message-id:from;
 
-Do not block PCI config accesses through pci_cfg_access_lock() when
-executing the s390 variant of PCI error recovery: Acquire just
-device_lock() instead of pci_dev_lock() as powerpc's EEH and
-generig PCI AER processing do.
+在 2025/10/16 星期四 17:04, Niklas Cassel 写道:
+> The L1 substates support requires additional steps to work, see e.g.
+> section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0.
+> 
+> These steps are currently missing from the driver.
 
-During error recovery testing a pair of tasks was reported to be hung:
+Yes, we could add them later if concerns about supports-clkreq is fully
+discussed.
 
-mlx5_core 0000:00:00.1: mlx5_health_try_recover:338:(pid 5553): health recovery flow aborted, PCI reads still not working
-INFO: task kmcheck:72 blocked for more than 122 seconds.
-      Not tainted 5.14.0-570.12.1.bringup7.el9.s390x #1
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kmcheck         state:D stack:0     pid:72    tgid:72    ppid:2      flags:0x00000000
-Call Trace:
- [<000000065256f030>] __schedule+0x2a0/0x590
- [<000000065256f356>] schedule+0x36/0xe0
- [<000000065256f572>] schedule_preempt_disabled+0x22/0x30
- [<0000000652570a94>] __mutex_lock.constprop.0+0x484/0x8a8
- [<000003ff800673a4>] mlx5_unload_one+0x34/0x58 [mlx5_core]
- [<000003ff8006745c>] mlx5_pci_err_detected+0x94/0x140 [mlx5_core]
- [<0000000652556c5a>] zpci_event_attempt_error_recovery+0xf2/0x398
- [<0000000651b9184a>] __zpci_event_error+0x23a/0x2c0
-INFO: task kworker/u1664:6:1514 blocked for more than 122 seconds.
-      Not tainted 5.14.0-570.12.1.bringup7.el9.s390x #1
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/u1664:6 state:D stack:0     pid:1514  tgid:1514  ppid:2      flags:0x00000000
-Workqueue: mlx5_health0000:00:00.0 mlx5_fw_fatal_reporter_err_work [mlx5_core]
-Call Trace:
- [<000000065256f030>] __schedule+0x2a0/0x590
- [<000000065256f356>] schedule+0x36/0xe0
- [<0000000652172e28>] pci_wait_cfg+0x80/0xe8
- [<0000000652172f94>] pci_cfg_access_lock+0x74/0x88
- [<000003ff800916b6>] mlx5_vsc_gw_lock+0x36/0x178 [mlx5_core]
- [<000003ff80098824>] mlx5_crdump_collect+0x34/0x1c8 [mlx5_core]
- [<000003ff80074b62>] mlx5_fw_fatal_reporter_dump+0x6a/0xe8 [mlx5_core]
- [<0000000652512242>] devlink_health_do_dump.part.0+0x82/0x168
- [<0000000652513212>] devlink_health_report+0x19a/0x230
- [<000003ff80075a12>] mlx5_fw_fatal_reporter_err_work+0xba/0x1b0 [mlx5_core]
+> 
+> While this has always been a problem when using e.g.
+> CONFIG_PCIEASPM_POWER_SUPERSAVE=y, the problem became more apparent after
+> commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for
+> devicetree platforms"), which enabled ASPM also for
+> CONFIG_PCIEASPM_DEFAULT=y.
+> 
+> Disable L1 substates until proper support is added.
+> 
 
-No kernel log of the exact same error with an upstream kernel is
-available - but the very same deadlock situation can be constructed there,
-too:
+Thanks for the patch.
 
-- task: kmcheck
-  mlx5_unload_one() tries to acquire devlink lock while the PCI error
-  recovery code has set pdev->block_cfg_access by way of
-  pci_cfg_access_lock()
-- task: kworker
-  mlx5_crdump_collect() tries to set block_cfg_access through
-  pci_cfg_access_lock() while devlink_health_report() had acquired
-  the devlink lock.
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
 
-A similar deadlock situation can be reproduced by requesting a
-crdump with
-  > devlink health dump show pci/<BDF> reporter fw_fatal
-
-while PCI error recovery is executed on the same <BDF> physical function
-by mlx5_core's pci_error_handlers. On s390 this can be injected with
-  > zpcictl --reset-fw <BDF>
-
-Tests with this patch failed to reproduce that second deadlock situation,
-the devlink command is rejected with "kernel answers: Permission denied" -
-and we get a kernel log message of:
-
-mlx5_core 1ed0:00:00.1: mlx5_crdump_collect:50:(pid 254382): crdump: failed to lock vsc gw err -5
-
-because the config read of VSC_SEMAPHORE is rejected by the underlying
-hardware.
-
-Two prior attempts to address this issue have been discussed and
-ultimately rejected [see link], with the primary argument that s390's
-implementation of PCI error recovery is imposing restrictions that
-neither powerpc's EEH nor PCI AER handling need. Tests show that PCI
-error recovery on s390 is running to completion even without blocking
-access to PCI config space.
-
-Link: https://lore.kernel.org/all/20251007144826.2825134-1-gbayer@linux.ibm.com/
-Cc: stable@vger.kernel.org
-Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
----
-Hi Niklas, Shay, Jason,
-
-by now I believe fixing this in s390/pci is the right way to go, since
-the other PCI error recovery implementations apparently don't require
-this strict blocking of accesses to the PCI config space.
-    
-Hi Alexander, Vasily, Heiko,
-    
-while I sent this to netdev since prior versions were discussed there,
-I assume this patch will go through the s390 tree, right?
-    
-Thanks,
-Gerd
-
-    
----
-Changes in v3:
-- Incorporate changes to commit message as suggested by Niklas.
-- Link to v2: https://lore.kernel.org/r/20251015-fix_pcirecov_master-v2-1-e07962fe9558@linux.ibm.com
-
-Changes in v2:
-- Rebase to upstream master
----
- arch/s390/pci/pci_event.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
-index b95376041501f479eee20705d45fb8c68553da71..27db1e72c623f8a289cae457e87f0a9896ed241d 100644
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -188,7 +188,7 @@ static pci_ers_result_t zpci_event_attempt_error_recovery(struct pci_dev *pdev)
- 	 * is unbound or probed and that userspace can't access its
- 	 * configuration space while we perform recovery.
- 	 */
--	pci_dev_lock(pdev);
-+	device_lock(&pdev->dev);
- 	if (pdev->error_state == pci_channel_io_perm_failure) {
- 		ers_res = PCI_ERS_RESULT_DISCONNECT;
- 		goto out_unlock;
-@@ -257,7 +257,7 @@ static pci_ers_result_t zpci_event_attempt_error_recovery(struct pci_dev *pdev)
- 		driver->err_handler->resume(pdev);
- 	pci_uevent_ers(pdev, PCI_ERS_RESULT_RECOVERED);
- out_unlock:
--	pci_dev_unlock(pdev);
-+	device_unlock(&pdev->dev);
- 	zpci_report_status(zdev, "recovery", status_str);
- 
- 	return ers_res;
-
----
-base-commit: 9b332cece987ee1790b2ed4c989e28162fa47860
-change-id: 20251015-fix_pcirecov_master-55fe3705c6c6
-
-Best regards,
--- 
-Gerd Bayer <gbayer@linux.ibm.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> ---
+> Changes since v1:
+> -Remove superfluous dw_pcie_readl_dbi()
+> 
+>   drivers/pci/controller/dwc/pcie-dw-rockchip.c | 21 +++++++++++++++++++
+>   1 file changed, 21 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+> index 3e2752c7dd09..84f882abbca5 100644
+> --- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+> +++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+> @@ -200,6 +200,25 @@ static bool rockchip_pcie_link_up(struct dw_pcie *pci)
+>   	return FIELD_GET(PCIE_LINKUP_MASK, val) == PCIE_LINKUP;
+>   }
+>   
+> +/*
+> + * See e.g. section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0 for the steps
+> + * needed to support L1 substates. Currently, not a single rockchip platform
+> + * performs these steps, so disable L1 substates until there is proper support.
+> + */
+> +static void rockchip_pcie_disable_l1sub(struct dw_pcie *pci)
+> +{
+> +	u32 cap, l1subcap;
+> +
+> +	cap = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_L1SS);
+> +	if (cap) {
+> +		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
+> +		l1subcap &= ~(PCI_L1SS_CAP_L1_PM_SS | PCI_L1SS_CAP_ASPM_L1_1 |
+> +			      PCI_L1SS_CAP_ASPM_L1_2 | PCI_L1SS_CAP_PCIPM_L1_1 |
+> +			      PCI_L1SS_CAP_PCIPM_L1_2);
+> +		dw_pcie_writel_dbi(pci, cap + PCI_L1SS_CAP, l1subcap);
+> +	}
+> +}
+> +
+>   static void rockchip_pcie_enable_l0s(struct dw_pcie *pci)
+>   {
+>   	u32 cap, lnkcap;
+> @@ -264,6 +283,7 @@ static int rockchip_pcie_host_init(struct dw_pcie_rp *pp)
+>   	irq_set_chained_handler_and_data(irq, rockchip_pcie_intx_handler,
+>   					 rockchip);
+>   
+> +	rockchip_pcie_disable_l1sub(pci);
+>   	rockchip_pcie_enable_l0s(pci);
+>   
+>   	return 0;
+> @@ -301,6 +321,7 @@ static void rockchip_pcie_ep_init(struct dw_pcie_ep *ep)
+>   	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>   	enum pci_barno bar;
+>   
+> +	rockchip_pcie_disable_l1sub(pci);
+>   	rockchip_pcie_enable_l0s(pci);
+>   	rockchip_pcie_ep_hide_broken_ats_cap_rk3588(ep);
+>   
 
 
