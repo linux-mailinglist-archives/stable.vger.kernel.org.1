@@ -1,135 +1,139 @@
-Return-Path: <stable+bounces-185886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B1FBE204E
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:51:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5412BE2163
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 10:04:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C3B543526F9
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 07:51:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D80D3A9DD9
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 08:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D43F2FFDE1;
-	Thu, 16 Oct 2025 07:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FA32FF176;
+	Thu, 16 Oct 2025 08:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="kKlizNBA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mehtNlDq"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA58301473
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 07:46:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD1D1B4257;
+	Thu, 16 Oct 2025 08:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760600802; cv=none; b=YOttTI3fP2jsJExWc+3EtiaQrdpq9kMJVjbp+UAh29XV0x3vLPKoA7nIs6R9z2/IcJ8NVzosvHmzsWNk9GkDYU8o7xmiJxlJuj9nXz9To6Qo7CcGVlEy8gZe1qbEK5Lt1E/5qU9XZ0/JDd/xAZRu021Zqvc4CBwpvugeuNxunBs=
+	t=1760601880; cv=none; b=BSwIV5K8Oku9/doOCpycdrofNAhH6MO/Bz8lag34wwNSss98S7SpHHmUgYlskixleqQ0oCg3DKWR555DmYhbO/wBkAYIJLp36z2HCjCqB50OBHgTC3mIUlxInxTA1A1LrvPdSQazMT4Xy36izi0j2F3Qfo60+LxTJTMT50sVlA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760600802; c=relaxed/simple;
-	bh=dHPrJ50eCTYiaS/s2iwI8SvmORsSaKhX0z9JK0vu5kE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ts4kQyYHiRZ2lpyHZxuNCZrNg0r93jIN2BaGcC/0Do/WA84YfH/73m3a4haL0tkIHShiIxb9k2Ae+vQ+yQpleKU4NM1imClT2mToa2/kSIdl2tG9zbFeKZ1ky6pUEtbm3IUNRs0bSsArjhX5wi1oVsbLU4sjiYX6pbPD+GHJV2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=kKlizNBA; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59G6gOEM002989;
-	Thu, 16 Oct 2025 07:46:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=VwjxQTSrJV0JclUQurVZguLg0S//F
-	fWgIPL6cagkKXo=; b=kKlizNBA4C+mFXPv02UKlMP/hAWtAfPDdjhkAuOy2gqg2
-	Fl781wy3oNYlKpvGvZztcuThCokIpS2H5qyoEt7FWpV/3WLE5Xm6hgWXsa/aXsTg
-	P+q0/dp81B8ijY/+fbtwsYLQwEKysUC9MZE1bV4ftwifJwls3L/8/a4Dw1SQlQns
-	AthLeEouVIFbReSXoLAqeMTxYb/LGFbUFALaL/K1FDMJfI2TfpLtfd6YwE1Md9ck
-	Svuf8smH+5dIPScVBTdr7gaNsmVqSh/MDcOQRtyxiJj7s+J1pcjvex34aqQwAuIk
-	NqXkILpJXNlViETnc7VOg8ECdbTBEJT6pUgTvkA4A==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49ra1qfdw1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Oct 2025 07:46:31 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59G69N8A026299;
-	Thu, 16 Oct 2025 07:46:31 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 49qdpb4fax-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Oct 2025 07:46:31 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 59G7Yx8Z033426;
-	Thu, 16 Oct 2025 07:46:30 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 49qdpb4fac-1;
-	Thu, 16 Oct 2025 07:46:30 +0000
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-To: bp@alien8.de, stable@vger.kernel.org
-Cc: boris.ostrovsky@oracle.com, Nikolay Borisov <nik.borisov@suse.com>,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12.y] KVM: x86: Advertise SRSO_USER_KERNEL_NO to userspace
-Date: Thu, 16 Oct 2025 00:46:27 -0700
-Message-ID: <20251016074627.3417836-1-harshit.m.mogalapalli@oracle.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1760601880; c=relaxed/simple;
+	bh=ffNPg05OO9ZQ+iVrLLpApjwzhDydYcOe6ZOBkwVV7T0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kY2tvthMgDnmApl8Kp8N3gjuY+G4/lVUslsVTuhIodzzsEvjYEkp0aMa1bMfSNvz4g+FoG2WtZZOqAfZcQ7VjzuVxQfvZfZyqhY7sxNMpGHqckuOnStnwYT/FLDUj8xsudOV9odTft+AR3bDBKvWfGWlD59pGZKJ+Lt/OPmR6s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mehtNlDq; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760601879; x=1792137879;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ffNPg05OO9ZQ+iVrLLpApjwzhDydYcOe6ZOBkwVV7T0=;
+  b=mehtNlDq38p7LqQtOw3B7XtD3t0NS5nPePXMkhVCbyUzTHEkePE3LQCf
+   H8+PEuWEkLUo9vzx3QcG6XdowybTAX7xl0uYQPa6WmJfa8tgKNkdprelR
+   sZW5aZob9jnkEpDhsEaMb2AW3xub1YVD24eQu6zvaNPqtlupsuu07l6gn
+   HpxrNcPNYPAggnPWcULGF/qnNq9p68h3w6CS40sUZsvtLRRaMNJ+2A4Bu
+   /Oig5KYtm6Z+Ki32P0JUplLuJgjmnnXdZv268HJ3KorgsS6+htdXhsZAU
+   Jb4nSgOy38qanhixpR2r6+3ixORv98tcJ+Dfei19l5QHofpjekHfUe9jc
+   w==;
+X-CSE-ConnectionGUID: a95UtrVdQ8qkhS7g6AQiqA==
+X-CSE-MsgGUID: qYQ8f2TXTkSRjT2c8I1ljA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="62830276"
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
+   d="scan'208";a="62830276"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 01:04:38 -0700
+X-CSE-ConnectionGUID: cA4TqZ1TSxyq3V7qZWSmMQ==
+X-CSE-MsgGUID: I4mYOUFQTfaDa93MhgX5nQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
+   d="scan'208";a="187674419"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 01:04:29 -0700
+Message-ID: <8cdb459f-f7d1-4ca0-a6a0-5c83d5092cd8@linux.intel.com>
+Date: Thu, 16 Oct 2025 16:00:47 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-16_01,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
- phishscore=0 mlxlogscore=999 spamscore=0 bulkscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510020000 definitions=main-2510160059
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEyMDA1MSBTYWx0ZWRfX7Fwdj8Ilyxiy
- pgXLRhG9Z1md9yebmtiIu92YK6oXc4gyNDAt95liiTrP2xbvYyRT6bqBeDsyjjp7GTl/Ia+vgdK
- L1hk+wG8bk1nbsKlP4eKTSea+7Osb6dkNhNA93AX6/qeyhRrBttXfnW1YVbifBtBHQJ5oVGKix2
- dAOboB63aGzhHM5krQdDP29tZ57LwT0HJM1hMyjZkSDWmLf6djKwKF79EEBO8W+j9VVLzTw8Nt+
- 0YgSya126cs6pXx4D8iDMBAJ1YV5lQRaV0x5WzoTJyEppbIwcdS8vDQoW6+vB9N04u+F8BtSULn
- wEyU0QkyQoFp3+43zAF12f3a5aRIGb+/1jqNu+96e4vg3yblnjHlzXnsUayUh1NIGIy+5OYu16C
- oDCYX8e3euRnzThmX2iMfyeAgmJDoG/lCiEivYprIjbuktYiTmk=
-X-Proofpoint-GUID: CaszsR_4vO9uu-uzTuqSxbUyMlkEK0ON
-X-Proofpoint-ORIG-GUID: CaszsR_4vO9uu-uzTuqSxbUyMlkEK0ON
-X-Authority-Analysis: v=2.4 cv=GL0F0+NK c=1 sm=1 tr=0 ts=68f0a2d7 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=iox4zFpeAAAA:8
- a=yPCof4ZbAAAA:8 a=149Fr4XGxFghmVM1sOkA:9 a=WzC6qhA0u3u7Ye7llzcV:22 cc=ntf
- awl=host:13624
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot ci] Re: Fix stale IOTLB entries for kernel address space
+To: Dave Hansen <dave.hansen@intel.com>,
+ syzbot ci <syzbot+cid009622971eb4566@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, apopple@nvidia.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, david@redhat.com, iommu@lists.linux.dev,
+ jannh@google.com, jean-philippe@linaro.org, jgg@nvidia.com, joro@8bytes.org,
+ kevin.tian@intel.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
+ mhocko@kernel.org, mingo@redhat.com, peterz@infradead.org,
+ robin.murphy@arm.com, rppt@kernel.org, security@kernel.org,
+ stable@vger.kernel.org, tglx@linutronix.de, urezki@gmail.com,
+ vasant.hegde@amd.com, vbabka@suse.cz, will@kernel.org, willy@infradead.org,
+ x86@kernel.org, yi1.lai@intel.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <68eeb99e.050a0220.91a22.0220.GAE@google.com>
+ <89146527-3f41-4f1e-8511-0d06e169c09e@intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <89146527-3f41-4f1e-8511-0d06e169c09e@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+On 10/16/25 00:25, Dave Hansen wrote:
+> Here's the part that confuses me:
+> 
+> On 10/14/25 13:59, syzbot ci wrote:
+>> page last free pid 5965 tgid 5964 stack trace:
+>>   reset_page_owner include/linux/page_owner.h:25 [inline]
+>>   free_pages_prepare mm/page_alloc.c:1394 [inline]
+>>   __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2906
+>>   pmd_free_pte_page+0xa1/0xc0 arch/x86/mm/pgtable.c:783
+>>   vmap_try_huge_pmd mm/vmalloc.c:158 [inline]
+> ...
+> 
+> So, vmap_try_huge_pmd() did a pmd_free_pte_page(). Yet, somehow, the PMD
+> stuck around so that it *could* be used after being freed. It _looks_
+> like pmd_free_pte_page() freed the page, returned 0, and made
+> vmap_try_huge_pmd() return early, skipping the pmd pmd_set_huge().
+> 
+> But I don't know how that could possibly happen.
 
-[ Upstream commit 716f86b523d8ec3c17015ee0b03135c7aa6f2f08 ]
+The reported issue is only related to this patch:
 
-SRSO_USER_KERNEL_NO denotes whether the CPU is affected by SRSO across
-user/kernel boundaries. Advertise it to guest userspace.
+- [PATCH v6 3/7] x86/mm: Use 'ptdesc' when freeing PMD pages
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/r/20241202120416.6054-3-bp@kernel.org
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
----
-Boris Ostrovsky suggested that we backport this commit to 6.12.y as we
-have commit: 6f0f23ef76be ("KVM: x86: Add IBPB_BRTYPE support") in 6.12.y
+It appears that the pmd_ptdesc() helper can't be used directly here in
+this patch. pmd_ptdesc() retrieves the page table page that the PMD
+entry resides in:
 
-Hi borislav: Can you please ACK before stable maintainers pick this ?
----
- arch/x86/kvm/cpuid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+static inline struct page *pmd_pgtable_page(pmd_t *pmd)
+{
+         unsigned long mask = ~(PTRS_PER_PMD * sizeof(pmd_t) - 1);
+         return virt_to_page((void *)((unsigned long) pmd & mask));
+}
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 8f587c5bb6bc..a7a1486ce270 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -816,7 +816,7 @@ void kvm_set_cpu_caps(void)
- 		F(NO_NESTED_DATA_BP) | F(LFENCE_RDTSC) | 0 /* SmmPgCfgLock */ |
- 		F(VERW_CLEAR) |
- 		F(NULL_SEL_CLR_BASE) | F(AUTOIBRS) | 0 /* PrefetchCtlMsr */ |
--		F(WRMSR_XX_BASE_NS)
-+		F(WRMSR_XX_BASE_NS) | F(SRSO_USER_KERNEL_NO)
- 	);
- 
- 	kvm_cpu_cap_check_and_set(X86_FEATURE_SBPB);
--- 
-2.50.1
+static inline struct ptdesc *pmd_ptdesc(pmd_t *pmd)
+{
+         return page_ptdesc(pmd_pgtable_page(pmd));
+}
 
+while, in this patch, we need the page descriptor that a pmd entry
+points to. Perhaps we should roll back to the previous approach used in
+v5?
+
+I'm sorry that I didn't discover this during my development testing.
+Fortunately, I can reproduce it stably on my development machine now.
+
+Thanks,
+baolu
 
