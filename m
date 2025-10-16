@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-186092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CC2BE392C
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:03:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9328CBE3947
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:03:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 66FB4506939
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:01:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 872DE40448B
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDC133438E;
-	Thu, 16 Oct 2025 12:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CEB33437E;
+	Thu, 16 Oct 2025 12:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWHc9Z8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZy0QkkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C57A2BE020
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 12:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E0C3375B9
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 12:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760619572; cv=none; b=WM4fgCweQBNlCz2wGJErR1nuXlsVmIKoIM7qxB4SBat0zL60eYIolb91gvwzbVVLpgDsz1hJW4X1fCaFkkVBOLNc7P1PSpeGS3Ze/2w98XZ5N9pFYQFXu63yZ+zEjZYfrmbayV42PwxYRBCHug0376Qr2GjxrVE5M2e4tj2PmOg=
+	t=1760619592; cv=none; b=mNyh1Wv+DtjecO09OPhH1gayh74c5aKVuDCOi1Hz42LYVqP4PGQDI6sfvuvrQ8ttISsp5bxk1ADLvRZvN67aSatIPi9To6fR+aILEq+GFymrqO3vAdrjsEYyO/COCHjLGiTUfUojMZj/LJJ15ZSwH04yvMkr5Rr7ie8nEE+eRWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760619572; c=relaxed/simple;
-	bh=G/K4uRnhcQ8213iQKls4E56rqWH1qwHMKi4NlxfEMRY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CIH5nl8Pr1Z668mB9hg6wwGpocdeUPRy2/HqGWYaivscS44BwFFrzvd8p7euS5y7PUhreI3E73KLjEOTEhmL56jokZzyB1Q7b+M+7jDiH66gqBZJoJuBxBQ5nULK9cOzWgKcIEVHf9qF4EPzJGnYBo24tE/PvGUb/t8roHJAxeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWHc9Z8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92943C4CEF1;
-	Thu, 16 Oct 2025 12:59:31 +0000 (UTC)
+	s=arc-20240116; t=1760619592; c=relaxed/simple;
+	bh=ZkMT+cPndS5tBIQv1t5yFd2cAiR6f0otERHa800cwFc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h/OjR8ME2yNYUoeqe/dPbr0Kbl2uRS8S5ntHFgd20fJQFLlrcMnKsd+FVR5OwzXtnK6r2twrtEv6x1btyL0Ma+g3Q+OirkHYzh2S+d64TXSfyEeYUr07t72QPKFLJ/WuGwtIVKxOzIWgRhbTWJz78LDHt3fTrrff/GcEv8xfimQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZy0QkkL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704EEC4CEF1;
+	Thu, 16 Oct 2025 12:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760619572;
-	bh=G/K4uRnhcQ8213iQKls4E56rqWH1qwHMKi4NlxfEMRY=;
+	s=korg; t=1760619590;
+	bh=ZkMT+cPndS5tBIQv1t5yFd2cAiR6f0otERHa800cwFc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iWHc9Z8x/7Ao4cQnTCaVxmpfHih5U3RX57/p2PO0wlUEqNf+MtCR6YlS7rLzPCh5W
-	 lm98JqidSnxRjnHHJfIr19ky27RqkNjwonHdfAW3hzh8IOQFEIS5+HL072oBZk1XZw
-	 B9Kq6J0wxi1AOWyi8pc3h1/pSq4sd2mHIwIQ33iE=
-Subject: FAILED: patch "[PATCH] PCI: j721e: Fix programming sequence of "strap" settings" failed to apply to 5.10-stable tree
-To: s-vadapalli@ti.com,mani@kernel.org
+	b=nZy0QkkL7DBxI/tDCDN0CSAdk+zRGrDslA8dzf+aAPM3QyR9CfV2Dee19yZQW/XYn
+	 XVrcXLsZL8Nr9pqrKUsv3VV/pCT7N0tcAI041E4yi4kMdPXOjxPAWrgFK4cOIl4IaZ
+	 f+X0XWpxuGfv1rvGYOD1FEKcVcZ8fSPziiHCpNxU=
+Subject: FAILED: patch "[PATCH] PCI: rcar-host: Drop PMSR spinlock" failed to apply to 5.15-stable tree
+To: marek.vasut+renesas@mailbox.org,duy.nguyen.rh@renesas.com,geert+renesas@glider.be,mani@kernel.org,thuan.nguyen-hong@banvien.com.vn
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 14:59:17 +0200
-Message-ID: <2025101617-matching-native-d141@gregkh>
+Date: Thu, 16 Oct 2025 14:59:48 +0200
+Message-ID: <2025101648-abruptly-poncho-afdd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x f842d3313ba179d4005096357289c7ad09cec575
+git cherry-pick -x 0a8f173d9dad13930d5888505dc4c4fd6a1d4262
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101617-matching-native-d141@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101648-abruptly-poncho-afdd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,85 +77,78 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f842d3313ba179d4005096357289c7ad09cec575 Mon Sep 17 00:00:00 2001
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-Date: Mon, 8 Sep 2025 17:38:27 +0530
-Subject: [PATCH] PCI: j721e: Fix programming sequence of "strap" settings
+From 0a8f173d9dad13930d5888505dc4c4fd6a1d4262 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Date: Tue, 9 Sep 2025 18:26:24 +0200
+Subject: [PATCH] PCI: rcar-host: Drop PMSR spinlock
 
-The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
-Root-Complex and Endpoint modes of operation. The Glue Layer allows
-"strapping" the Mode of operation of the Controller, the Link Speed
-and the Link Width. This is enabled by programming the "PCIEn_CTRL"
-register (n corresponds to the PCIe instance) within the CTRL_MMR
-memory-mapped register space. The "reset-values" of the registers are
-also different depending on the mode of operation.
+The pmsr_lock spinlock used to be necessary to synchronize access to the
+PMSR register, because that access could have been triggered from either
+config space access in rcar_pcie_config_access() or an exception handler
+rcar_pcie_aarch32_abort_handler().
 
-Since the PCIe Controller latches onto the "reset-values" immediately
-after being powered on, if the Glue Layer configuration is not done while
-the PCIe Controller is off, it will result in the PCIe Controller latching
-onto the wrong "reset-values". In practice, this will show up as a wrong
-representation of the PCIe Controller's capability structures in the PCIe
-Configuration Space. Some such capabilities which are supported by the PCIe
-Controller in the Root-Complex mode but are incorrectly latched onto as
-being unsupported are:
-- Link Bandwidth Notification
-- Alternate Routing ID (ARI) Forwarding Support
-- Next capability offset within Advanced Error Reporting (AER) capability
+The rcar_pcie_aarch32_abort_handler() case is no longer applicable since
+commit 6e36203bc14c ("PCI: rcar: Use PCI_SET_ERROR_RESPONSE after read
+which triggered an exception"), which performs more accurate, controlled
+invocation of the exception, and a fixup.
 
-Fix this by powering off the PCIe Controller before programming the "strap"
-settings and powering it on after that. The runtime PM APIs namely
-pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
-increment the usage counter respectively, causing GENPD to power off and
-power on the PCIe Controller.
+This leaves rcar_pcie_config_access() as the only call site from which
+rcar_pcie_wakeup() is called. The rcar_pcie_config_access() can only be
+called from the controller struct pci_ops .read and .write callbacks,
+and those are serialized in drivers/pci/access.c using raw spinlock
+'pci_lock' . It should be noted that CONFIG_PCI_LOCKLESS_CONFIG is never
+set on this platform.
 
-Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Since the 'pci_lock' is a raw spinlock , and the 'pmsr_lock' is not a
+raw spinlock, this constellation triggers 'BUG: Invalid wait context'
+with CONFIG_PROVE_RAW_LOCK_NESTING=y .
+
+Remove the pmsr_lock to fix the locking.
+
+Fixes: a115b1bd3af0 ("PCI: rcar: Add L1 link state fix into data abort hook")
+Reported-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+Reported-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
 Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250908120828.1471776-1-s-vadapalli@ti.com
+Link: https://patch.msgid.link/20250909162707.13927-1-marek.vasut+renesas@mailbox.org
 
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index cfca13a4c840..5a9ae33e2b93 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -284,6 +284,25 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
- 	if (!ret)
- 		offset = args.args[0];
+diff --git a/drivers/pci/controller/pcie-rcar-host.c b/drivers/pci/controller/pcie-rcar-host.c
+index 4780e0109e58..625a00f3b223 100644
+--- a/drivers/pci/controller/pcie-rcar-host.c
++++ b/drivers/pci/controller/pcie-rcar-host.c
+@@ -52,20 +52,13 @@ struct rcar_pcie_host {
+ 	int			(*phy_init_fn)(struct rcar_pcie_host *host);
+ };
  
-+	/*
-+	 * The PCIe Controller's registers have different "reset-values"
-+	 * depending on the "strap" settings programmed into the PCIEn_CTRL
-+	 * register within the CTRL_MMR memory-mapped register space.
-+	 * The registers latch onto a "reset-value" based on the "strap"
-+	 * settings sampled after the PCIe Controller is powered on.
-+	 * To ensure that the "reset-values" are sampled accurately, power
-+	 * off the PCIe Controller before programming the "strap" settings
-+	 * and power it on after that. The runtime PM APIs namely
-+	 * pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
-+	 * increment the usage counter respectively, causing GENPD to power off
-+	 * and power on the PCIe Controller.
-+	 */
-+	ret = pm_runtime_put_sync(dev);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to power off PCIe Controller\n");
-+		return ret;
-+	}
-+
- 	ret = j721e_pcie_set_mode(pcie, syscon, offset);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to set pci mode\n");
-@@ -302,6 +321,12 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
- 		return ret;
+-static DEFINE_SPINLOCK(pmsr_lock);
+-
+ static int rcar_pcie_wakeup(struct device *pcie_dev, void __iomem *pcie_base)
+ {
+-	unsigned long flags;
+ 	u32 pmsr, val;
+ 	int ret = 0;
+ 
+-	spin_lock_irqsave(&pmsr_lock, flags);
+-
+-	if (!pcie_base || pm_runtime_suspended(pcie_dev)) {
+-		ret = -EINVAL;
+-		goto unlock_exit;
+-	}
++	if (!pcie_base || pm_runtime_suspended(pcie_dev))
++		return -EINVAL;
+ 
+ 	pmsr = readl(pcie_base + PMSR);
+ 
+@@ -87,8 +80,6 @@ static int rcar_pcie_wakeup(struct device *pcie_dev, void __iomem *pcie_base)
+ 		writel(L1FAEG | PMEL1RX, pcie_base + PMSR);
  	}
  
-+	ret = pm_runtime_get_sync(dev);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to power on PCIe Controller\n");
-+		return ret;
-+	}
-+
- 	/* Enable ACSPCIE refclk output if the optional property exists */
- 	syscon = syscon_regmap_lookup_by_phandle_optional(node,
- 						"ti,syscon-acspcie-proxy-ctrl");
+-unlock_exit:
+-	spin_unlock_irqrestore(&pmsr_lock, flags);
+ 	return ret;
+ }
+ 
 
 
