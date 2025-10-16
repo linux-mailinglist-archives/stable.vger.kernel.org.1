@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-185894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32FFBE2310
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 10:41:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94472BE2316
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 10:41:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B97EA4F8653
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 08:40:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34BB83B4289
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 08:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E96030505F;
-	Thu, 16 Oct 2025 08:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583672FF14D;
+	Thu, 16 Oct 2025 08:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nevbc/mC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3ilnjGH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D093D2040B6
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 08:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148AE2E7647
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 08:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760604040; cv=none; b=nOXYRSLxcQ7RLHwG9HOqDBES5f1mGt6AkjXwBj6BDmV4yjDD3LZ2NaDSZ8KlaqUArNtXuN/Uh4wgQ93ESEz9yYwN1Qq+PVIe/Dhzz+7a6F5S++Pg7rUITpUtY/qwWOaUKNnoPG9FWETZSHQLf43QHq/AX1bnzOzA1ZUETRzwajQ=
+	t=1760604067; cv=none; b=L2xzhkFInqad5wkraZHze7rPwQnv04IVx9c11QQjfKxNjrftmJky/TAbZH/f8iMn5b45vsWZiM3qZ7Sx+1dUuUimpKIXyIav9vEePGHg9W0eTbLmyQmAm+3rH3a3jADKz1cXFMD84J+iN0nSPIsrheduBi5JnQC5ktL1KPRSVRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760604040; c=relaxed/simple;
-	bh=Qqt3dC0tGjnguy3Bkz52jYqTAUYmc8QM9mSlG514eHI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mYyx3N88zBGwQ6G5zkLMXxAuRUn5CtVKCGqqsi5hVslkUe1ZRLCGqNMd5EG0qGC1xcSPQfxp4tLqrxlPbqnnncl7KlnEwtAeisP5t7DPtKiQVAmB0z6CjTNpIU3OjpEtRjwh0DUIu/qmqFrffrKX4G4kHPZZkX1oQ/waD6zGTXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nevbc/mC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC67C4CEFB;
-	Thu, 16 Oct 2025 08:40:40 +0000 (UTC)
+	s=arc-20240116; t=1760604067; c=relaxed/simple;
+	bh=XlmzcnQwz6RLYkkZlhDEhuTO/sHf9UsoLvBKpg8KKqE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IWY5EmfLbBCVNDMzOkvmhgWPAHnSbBU6UmtNJzpSm7bRCswb1f6JqaxZn/eocZpD5hWmqlVaQh2jL81a/UhUjqgE7JgnTdKWnkgFugkLu0lnrSeDU7G+8uyOLLjDARpXFs2k9+RntV+26m7TeY6/jQkDAKLLb+oNWsXF4fMUZ2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3ilnjGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225DEC4CEF1;
+	Thu, 16 Oct 2025 08:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760604040;
-	bh=Qqt3dC0tGjnguy3Bkz52jYqTAUYmc8QM9mSlG514eHI=;
+	s=korg; t=1760604064;
+	bh=XlmzcnQwz6RLYkkZlhDEhuTO/sHf9UsoLvBKpg8KKqE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=nevbc/mCwYfZ736LEgTcEbIvg9QMKSqGssCwehEeisWWyHkRZBopiUbkhYPHu1qVl
-	 v4uGJq1gYCYq61bwLD0zTHYgLnfB3n7SamrSO0zBpOF1ojZWpL+R6J/ZD/z+KNUW/K
-	 hYZENVtiWZ13Fbuma4SnazkDB2Ght+zqsWKXLEhc=
-Subject: FAILED: patch "[PATCH] arm64: dts: qcom: qcs615: add missing dt property in QUP SEs" failed to apply to 6.17-stable tree
-To: viken.dadhaniya@oss.qualcomm.com,andersson@kernel.org,dmitry.baryshkov@oss.qualcomm.com
+	b=Y3ilnjGHmOjvaep1PUNw4S6IujiYhnjrzry/7WyvMqtQx9m4q2deZK96SLUSa17YF
+	 CS8RvNXN7BZJRw2S3tdQ7l+rDKxAo53WC4PiOPzktk7XYxmo0WGMyVYMJZ0XyyPwSF
+	 WrNAsaIyJ09YGilWFzEyndGLSB+orslX/1HcWryM=
+Subject: FAILED: patch "[PATCH] arm64: dts: qcom: sdm845: Fix slimbam num-channels/ees" failed to apply to 5.10-stable tree
+To: stephan.gerhold@linaro.org,andersson@kernel.org,dmitry.baryshkov@oss.qualcomm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 10:40:37 +0200
-Message-ID: <2025101637-delegate-oversold-c71e@gregkh>
+Date: Thu, 16 Oct 2025 10:40:53 +0200
+Message-ID: <2025101653-armory-oxygen-af78@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.17-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6a5e9b9738a32229e2673d4eccfcbfe2ef3a1ab4
+git cherry-pick -x 316294bb6695a43a9181973ecd4e6fb3e576a9f7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101637-delegate-oversold-c71e@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101653-armory-oxygen-af78@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,72 +77,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6a5e9b9738a32229e2673d4eccfcbfe2ef3a1ab4 Mon Sep 17 00:00:00 2001
-From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Date: Mon, 30 Jun 2025 12:13:38 +0530
-Subject: [PATCH] arm64: dts: qcom: qcs615: add missing dt property in QUP SEs
+From 316294bb6695a43a9181973ecd4e6fb3e576a9f7 Mon Sep 17 00:00:00 2001
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
+Date: Thu, 21 Aug 2025 10:15:09 +0200
+Subject: [PATCH] arm64: dts: qcom: sdm845: Fix slimbam num-channels/ees
 
-Add the missing required-opps and operating-points-v2 properties to
-several I2C, SPI, and UART nodes in the QUP SEs.
+Reading the hardware registers of the &slimbam on RB3 reveals that the BAM
+supports only 23 pipes (channels) and supports 4 EEs instead of 2. This
+hasn't caused problems so far since nothing is using the extra channels,
+but attempting to use them would lead to crashes.
 
-Fixes: f6746dc9e379 ("arm64: dts: qcom: qcs615: Add QUPv3 configuration")
+The bam_dma driver might warn in the future if the num-channels in the DT
+are wrong, so correct the properties in the DT to avoid future regressions.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Fixes: 27ca1de07dc3 ("arm64: dts: qcom: sdm845: add slimbus nodes")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250630064338.2487409-1-viken.dadhaniya@oss.qualcomm.com
+Link: https://lore.kernel.org/r/20250821-sdm845-slimbam-channels-v1-1-498f7d46b9ee@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6150.dtsi b/arch/arm64/boot/dts/qcom/sm6150.dtsi
-index bfbb21035492..e033b53f0f0f 100644
---- a/arch/arm64/boot/dts/qcom/sm6150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6150.dtsi
-@@ -631,6 +631,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
- 				interconnect-names = "qup-core",
- 						     "qup-config";
- 				power-domains = <&rpmhpd RPMHPD_CX>;
-+				operating-points-v2 = <&qup_opp_table>;
- 				status = "disabled";
- 			};
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 828b55cb6baf..02536114edb8 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -5396,11 +5396,11 @@ slimbam: dma-controller@17184000 {
+ 			compatible = "qcom,bam-v1.7.4", "qcom,bam-v1.7.0";
+ 			qcom,controlled-remotely;
+ 			reg = <0 0x17184000 0 0x2a000>;
+-			num-channels = <31>;
++			num-channels = <23>;
+ 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
+ 			#dma-cells = <1>;
+ 			qcom,ee = <1>;
+-			qcom,num-ees = <2>;
++			qcom,num-ees = <4>;
+ 			iommus = <&apps_smmu 0x1806 0x0>;
+ 		};
  
-@@ -654,6 +655,7 @@ &config_noc SLAVE_QUP_0 QCOM_ICC_TAG_ALWAYS>,
- 						     "qup-config",
- 						     "qup-memory";
- 				power-domains = <&rpmhpd RPMHPD_CX>;
-+				required-opps = <&rpmhpd_opp_low_svs>;
- 				dmas = <&gpi_dma0 0 1 QCOM_GPI_I2C>,
- 				       <&gpi_dma0 1 1 QCOM_GPI_I2C>;
- 				dma-names = "tx",
-@@ -681,6 +683,7 @@ &config_noc SLAVE_QUP_0 QCOM_ICC_TAG_ALWAYS>,
- 						     "qup-config",
- 						     "qup-memory";
- 				power-domains = <&rpmhpd RPMHPD_CX>;
-+				required-opps = <&rpmhpd_opp_low_svs>;
- 				dmas = <&gpi_dma0 0 2 QCOM_GPI_I2C>,
- 				       <&gpi_dma0 1 2 QCOM_GPI_I2C>;
- 				dma-names = "tx",
-@@ -703,6 +706,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
- 				interconnect-names = "qup-core",
- 						     "qup-config";
- 				power-domains = <&rpmhpd RPMHPD_CX>;
-+				operating-points-v2 = <&qup_opp_table>;
- 				dmas = <&gpi_dma0 0 2 QCOM_GPI_SPI>,
- 				       <&gpi_dma0 1 2 QCOM_GPI_SPI>;
- 				dma-names = "tx",
-@@ -728,6 +732,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
- 				interconnect-names = "qup-core",
- 						     "qup-config";
- 				power-domains = <&rpmhpd RPMHPD_CX>;
-+				operating-points-v2 = <&qup_opp_table>;
- 				status = "disabled";
- 			};
- 
-@@ -751,6 +756,7 @@ &config_noc SLAVE_QUP_0 QCOM_ICC_TAG_ALWAYS>,
- 						     "qup-config",
- 						     "qup-memory";
- 				power-domains = <&rpmhpd RPMHPD_CX>;
-+				required-opps = <&rpmhpd_opp_low_svs>;
- 				dmas = <&gpi_dma0 0 3 QCOM_GPI_I2C>,
- 				       <&gpi_dma0 1 3 QCOM_GPI_I2C>;
- 				dma-names = "tx",
 
 
