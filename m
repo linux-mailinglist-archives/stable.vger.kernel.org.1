@@ -1,119 +1,161 @@
-Return-Path: <stable+bounces-186130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6AEBBE3A42
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:18:06 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85081BE3926
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:03:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A43DC5010D0
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:18:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F366C5065FA
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7211D7995;
-	Thu, 16 Oct 2025 13:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674583375C6;
+	Thu, 16 Oct 2025 12:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YjXTPgAa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4fr8YSC"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADAB1D63E6;
-	Thu, 16 Oct 2025 13:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7543375BD
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 12:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760620672; cv=none; b=CyKu8fklyvokFyWA5fSduVgyptoTaS/HkiE8tjgrdvBgnS5+rZ8l65/7DF8mYHEcFiLKWxmK/mXDPzr9w0LqA2SqPXl/mAJxb/i5l0AYzijgquuq5O9DDKHTuLItknKqejD+kZjGpFZnfcBgiUxx1Ll8SJtejkOeuPVAop4hNLA=
+	t=1760619559; cv=none; b=Z3+iV3b5wYdQ/5HQ+u9cr79p83t9vt9EbRO/98fdTRwDuuG9nc1JshwPzz5UbXT8FeDa+3ALwCSJM41mfc0mkDDZIcrCpht6LF/1QLQc+6xM7idn0gaCrS1f+8rLXgYKqNGtLl4OkJjlQ8MQNdF35X9JYa6u2R1xoVppYHhV/XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760620672; c=relaxed/simple;
-	bh=wSZgigGVWIWXmsilk3REynnteX2zpEVtIf+T+288B4Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X5M6U75og6i3gk4/FTeBV8c5zF1uNVHCfewW4gSW3gNlh3NuIBV2LSIM98PKKhiv87uF4pNFADZjO+sAGrl1EzLmo+Wbm4IkC7cyR8PCQKSK1CidimYXGlfubXIbsTwLxrjMrig1aOmFcH9nN5VeoShZtlXQELiNizva3jJGtP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YjXTPgAa; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760620670; x=1792156670;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wSZgigGVWIWXmsilk3REynnteX2zpEVtIf+T+288B4Q=;
-  b=YjXTPgAaiwW/MukkDxg/mpOV9qgeWSyGDKKMFWqQEBlIRQbTl/eZ3Crg
-   YbSZcPFKUbDXrTB1h09jNwEvsyEAtM+2m0pkB5XVwHM/qvaWIS9uwrCel
-   PnLKf2TsFYrIpyYq0ZXTW+XsJWQDyzNfOxpgZPN/lmqjO+LLX4jiE4FtK
-   lxFsvdCAIkGX6fNcugzjU5c3uL0605Pjj1E/xraKRa0XdtGAqMn6JAk1I
-   /QMLXesSOQogTUZOYTwWNgcByd3p0cHX7U3lu3d+dYonv7vj6S4ywzXfg
-   F8POMswetxTr+BRK65kxfVBxAuBdChEE84pCWXgKFaNZSP27Hu8zke03L
-   Q==;
-X-CSE-ConnectionGUID: ofWC3S6fRgeqdQosIPh9Hg==
-X-CSE-MsgGUID: fCuHOoX0R62ZQ5GRqR1bIw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="73923798"
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="73923798"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 06:17:50 -0700
-X-CSE-ConnectionGUID: IEXOvtPxTjuhI4gjMb8vgw==
-X-CSE-MsgGUID: q7c1O4ZDT3aZCyGvKiYhMQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="206159232"
-Received: from sannilnx-dsk.jer.intel.com ([10.12.231.107])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 06:17:47 -0700
-From: Alexander Usyskin <alexander.usyskin@intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Reuven Abliyev <reuven.abliyev@intel.com>,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Tomas Winkler <tomasw@gmail.com>
-Subject: [char-misc] mei: me: add wildcat lake P DID
-Date: Thu, 16 Oct 2025 15:59:12 +0300
-Message-ID: <20251016125912.2146136-1-alexander.usyskin@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1760619559; c=relaxed/simple;
+	bh=3ajf2VjlFXNCd1tuYPr+oYCcbQZx7xSjRscmLS8Fcmg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CXHhC18uL6k0vlTXl7BNeKOag+ndGs4CXmNeKs41x+rzPYD0H+6yS+9RaNR317gs3iU/obc27RJCCAit6pWn/J274gNQw4CMJMrJzzRr31XrRYY/rTHVHt/Qn955rdesNxGkNn0oioQanmQQdB9cCkhkp8Ohr7QWEaenz3xdDhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4fr8YSC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9A1C4CEF1;
+	Thu, 16 Oct 2025 12:59:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760619557;
+	bh=3ajf2VjlFXNCd1tuYPr+oYCcbQZx7xSjRscmLS8Fcmg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=p4fr8YSCcGFYgZgfoeKfn9y8ELzVQeThJLEixMs4Nhm/KG3wGRoUpBCZ9ypMuJwfS
+	 MgIRfeUQy0E2i6Vws1tv/OMlSBQGEUdne6UKLC6etUiD1K/ro9OXS6aKEkII1ObeDa
+	 Xzx5BkDkWGmM/huz/xfdNJ85RYOBAtRjUbufC0j4=
+Subject: FAILED: patch "[PATCH] PCI: j721e: Fix programming sequence of "strap" settings" failed to apply to 6.6-stable tree
+To: s-vadapalli@ti.com,mani@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 16 Oct 2025 14:59:14 +0200
+Message-ID: <2025101614-regulator-gumball-c7c6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-Add Wildcat Lake P device id.
 
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x f842d3313ba179d4005096357289c7ad09cec575
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101614-regulator-gumball-c7c6@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f842d3313ba179d4005096357289c7ad09cec575 Mon Sep 17 00:00:00 2001
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+Date: Mon, 8 Sep 2025 17:38:27 +0530
+Subject: [PATCH] PCI: j721e: Fix programming sequence of "strap" settings
+
+The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
+Root-Complex and Endpoint modes of operation. The Glue Layer allows
+"strapping" the Mode of operation of the Controller, the Link Speed
+and the Link Width. This is enabled by programming the "PCIEn_CTRL"
+register (n corresponds to the PCIe instance) within the CTRL_MMR
+memory-mapped register space. The "reset-values" of the registers are
+also different depending on the mode of operation.
+
+Since the PCIe Controller latches onto the "reset-values" immediately
+after being powered on, if the Glue Layer configuration is not done while
+the PCIe Controller is off, it will result in the PCIe Controller latching
+onto the wrong "reset-values". In practice, this will show up as a wrong
+representation of the PCIe Controller's capability structures in the PCIe
+Configuration Space. Some such capabilities which are supported by the PCIe
+Controller in the Root-Complex mode but are incorrectly latched onto as
+being unsupported are:
+- Link Bandwidth Notification
+- Alternate Routing ID (ARI) Forwarding Support
+- Next capability offset within Advanced Error Reporting (AER) capability
+
+Fix this by powering off the PCIe Controller before programming the "strap"
+settings and powering it on after that. The runtime PM APIs namely
+pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
+increment the usage counter respectively, causing GENPD to power off and
+power on the PCIe Controller.
+
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Cc: stable@vger.kernel.org
-Co-developed-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
----
- drivers/misc/mei/hw-me-regs.h | 2 ++
- drivers/misc/mei/pci-me.c     | 2 ++
- 2 files changed, 4 insertions(+)
+Link: https://patch.msgid.link/20250908120828.1471776-1-s-vadapalli@ti.com
 
-diff --git a/drivers/misc/mei/hw-me-regs.h b/drivers/misc/mei/hw-me-regs.h
-index bc40b940ae21..a4f75dc36929 100644
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -120,6 +120,8 @@
- #define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
- #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index cfca13a4c840..5a9ae33e2b93 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -284,6 +284,25 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
+ 	if (!ret)
+ 		offset = args.args[0];
  
-+#define MEI_DEV_ID_WCL_P      0x4D70  /* Wildcat Lake P */
++	/*
++	 * The PCIe Controller's registers have different "reset-values"
++	 * depending on the "strap" settings programmed into the PCIEn_CTRL
++	 * register within the CTRL_MMR memory-mapped register space.
++	 * The registers latch onto a "reset-value" based on the "strap"
++	 * settings sampled after the PCIe Controller is powered on.
++	 * To ensure that the "reset-values" are sampled accurately, power
++	 * off the PCIe Controller before programming the "strap" settings
++	 * and power it on after that. The runtime PM APIs namely
++	 * pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
++	 * increment the usage counter respectively, causing GENPD to power off
++	 * and power on the PCIe Controller.
++	 */
++	ret = pm_runtime_put_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power off PCIe Controller\n");
++		return ret;
++	}
 +
- /*
-  * MEI HW Section
-  */
-diff --git a/drivers/misc/mei/pci-me.c b/drivers/misc/mei/pci-me.c
-index b108a7c22388..b017ff29dbd1 100644
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -127,6 +127,8 @@ static const struct pci_device_id mei_me_pci_tbl[] = {
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
+ 	ret = j721e_pcie_set_mode(pcie, syscon, offset);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to set pci mode\n");
+@@ -302,6 +321,12 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
+ 		return ret;
+ 	}
  
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_WCL_P, MEI_ME_PCH15_CFG)},
++	ret = pm_runtime_get_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power on PCIe Controller\n");
++		return ret;
++	}
 +
- 	/* required last entry */
- 	{0, }
- };
--- 
-2.43.0
+ 	/* Enable ACSPCIE refclk output if the optional property exists */
+ 	syscon = syscon_regmap_lookup_by_phandle_optional(node,
+ 						"ti,syscon-acspcie-proxy-ctrl");
 
 
