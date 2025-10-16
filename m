@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-186122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89509BE39DC
+	by mail.lfdr.de (Postfix) with ESMTPS id A7ECEBE39DE
 	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 15:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 190A2505E3E
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:07:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 67ED4506175
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 13:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291FE334386;
-	Thu, 16 Oct 2025 13:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19866334399;
+	Thu, 16 Oct 2025 13:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRSWqaHw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jj7irwna"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC10732E686
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB42333438B
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 13:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760620052; cv=none; b=oJyRf5VuUX1g52PBKk1QE1MEWQfwZGRJ8PMOlMl2PvVV73GUVGDNNbLbQ+mRbI9WULZF7UD8e/SeY/8rFx12DEX2h+bKbDyNmNBo3ljpCzTVJemuNB96SK4qGfATCHlg915acRLV1cQ7YAoehRycmLQt7NpyCjYeMuKhlTB140s=
+	t=1760620054; cv=none; b=Rlmm3TFdFZOhPJeofc3ThzN6HUwn/qExzdjfGkttDj2rYS4R15i/Uo4PKmrKdtjuu+HhbkCFqOadYO7zEUaq1AUeiy9KNgN8uPv0y1EDpl1itIppg+Rc6Ymdbu8Ag+OvJOgDI31QTRYzrXJ7EuT7PpmbzW5jLQz7xSMFyVln/Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760620052; c=relaxed/simple;
-	bh=i7DAi8KYzXlV4lXF68kIzKBuClRK5WOIGk6OasbWMIg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dcsKk51yUmO+9qfAsbKCBoqIS0SQYsl4vyZ66IG6zWGtlqqe/NdV2gD63A+BHI29JYIzeC69zksNS0oslHDZB7nJzHled4MJc8ygcTipZqf+MADTF/KIdcLVgn31qnhlVnIiLoVPanJAiPVdIkaPWa3/J491U/5VvsX+z2AEvO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRSWqaHw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D569BC4CEF1;
-	Thu, 16 Oct 2025 13:07:30 +0000 (UTC)
+	s=arc-20240116; t=1760620054; c=relaxed/simple;
+	bh=Pyi4mR9czJ+Two5OSDqgQ6sGBtrqc+PpW4DH+yvLcKw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oMrQFFA4TavfuuSB4Zp3KULkKlxU//dhBbtrPTGfZB5UiK1XY4xhPHN+AS8/gfoKUeW89pBCK9M+lhzcWJK5AH6Sg9qHHFnWLJJkq8CVBWpRKN88EmVH2saMe9owd6r1Fpo3rhxzZnzCvuzlG/ckSBNW9CA+TLoDRFlnruq7Ukw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jj7irwna; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE7BC4CEFE;
+	Thu, 16 Oct 2025 13:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760620051;
-	bh=i7DAi8KYzXlV4lXF68kIzKBuClRK5WOIGk6OasbWMIg=;
+	s=korg; t=1760620054;
+	bh=Pyi4mR9czJ+Two5OSDqgQ6sGBtrqc+PpW4DH+yvLcKw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NRSWqaHwVQTbdUwEPigN/45KWezzVQa6hhf/tKOfNUC1MLhn4CrhKz9TZoYKbR4vc
-	 KLnG1Pvf88xhzbNcV70Qi7ClsTEsn3WQ0bDSIFDztoMkfY7vl9Jg/dlDcwAVMxTj+p
-	 nsXWIAEjiSIq7Blbmhxd0hyuPje2nc6dIVIjvr5M=
-Subject: FAILED: patch "[PATCH] phy: cadence: cdns-dphy: Update calibration wait time for" failed to apply to 6.12-stable tree
+	b=Jj7irwnaacOQUEvSsg8gysO4RWW706tWLZkYAYQ6zaT89pQ98kMMPwC/+BmdNmTtM
+	 YdWti4T9Z6Z2ZsWuib6//FAMku4vtq13tyOdUP9D5Le3la9aWSLbn9NwJYimeW0S7C
+	 Q9GXntQP0/7LkYgj/2/yDopMFaWKOsrKyveZ/yMs=
+Subject: FAILED: patch "[PATCH] phy: cadence: cdns-dphy: Update calibration wait time for" failed to apply to 6.1-stable tree
 To: devarsht@ti.com,h-shenoy@ti.com,tomi.valkeinen@ideasonboard.com,vkoul@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 15:07:25 +0200
-Message-ID: <2025101625-happiness-heavily-11c6@gregkh>
+Date: Thu, 16 Oct 2025 15:07:26 +0200
+Message-ID: <2025101626-squeamish-relock-6780@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2c27aaee934a1b5229152fe33a14f1fdf50da143
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101625-happiness-heavily-11c6@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101626-squeamish-relock-6780@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
