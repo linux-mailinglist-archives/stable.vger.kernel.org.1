@@ -1,127 +1,150 @@
-Return-Path: <stable+bounces-185930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8713FBE247B
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:02:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84259BE2496
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:04:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3412B3535CE
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:02:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CD12E4EEDED
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC0B253B5C;
-	Thu, 16 Oct 2025 09:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31527303A0B;
+	Thu, 16 Oct 2025 09:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtTM1BpA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pj9TzT0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB15257853
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF08E2DC760;
+	Thu, 16 Oct 2025 09:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760605340; cv=none; b=OU7CrzV//e5q4fTpXggwJzLjJvck9kKJDVEefVUkRquqillyFbYG/MkdUtIQ1NFIqdxu0VZRBPb9TDsA4AaCenp6PI3nXQPbIb6VS6BfMqFaKKpHJiFEn4QQ5CZdZqKNM9pBNEg2X5l1kVhkizENjcK3YYB1BpXWW8AmpDhSXzU=
+	t=1760605476; cv=none; b=q73Of+ArdECLsOT9I2SsbqDI9FR21aEbQEoiXT/0TS0WFOc6klfygVzSKQZB1Ypn/ETCTp1VKL1OrXF0EI7uGeRjrAU7+I261kaSDnMYYTBqznWtdqGNf0ELZEfLs5oxG53Be1voYq5e5fpDRfPHmCjy7foyfT/UHZBjLMkzz84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760605340; c=relaxed/simple;
-	bh=Xd8k80ZPiwFs1DZ4vY7ZmMKQfmh2rEaYz2Bufr2h5/M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WJ+rnqurAR8bpudbm/NsQ6m9cUpaQzbCuz+YV5JEdWfzkzFD8ysabLG7tjuAnffeEDjNxjhdMVgpmpJl4629nSPLJ8DsxG6/Wjc6WNOxHCfvSTq/e7vWaMHZqsWSDtHlqp6j0fu0RjICUWq+KfLecXyKdXdSSuJt7l0thgcfm24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtTM1BpA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9EDC4CEF1;
-	Thu, 16 Oct 2025 09:02:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760605339;
-	bh=Xd8k80ZPiwFs1DZ4vY7ZmMKQfmh2rEaYz2Bufr2h5/M=;
-	h=Subject:To:Cc:From:Date:From;
-	b=XtTM1BpAdzWwpTxgMAePpRCFmlt61p4T8FJ2ulNKCd5p9/H/lYFFd56JDGe5SB7mc
-	 xhTJxu3zOXYs95y8MQjU9yqfiB9uo9d4m43sSyCumHQnbIG6w3tUm7ORANxadprnKp
-	 KtShucQkRKPJdjYpBcgHykw7o5lpzV3jJhsPZ3jE=
-Subject: FAILED: patch "[PATCH] media: lirc: Fix error handling in lirc_register()" failed to apply to 5.4-stable tree
-To: make24@iscas.ac.cn,hverkuil+cisco@kernel.org,sean@mess.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Oct 2025 11:02:08 +0200
-Message-ID: <2025101607-contend-gentleman-9ae0@gregkh>
+	s=arc-20240116; t=1760605476; c=relaxed/simple;
+	bh=+lWpPiGYgIsj4CL7weoN8PdEGbyE8TzjYmObhr7nNbA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=janyGNvqgeRp3IFI1b5mfewN2MC8AxaTejicddcWn2//vhC7kbq2OXl9g21+JjZk/xJVliRD8zgg2Sp20vqLPOjKz04uy+uteI53JMdnTcC0SM72Bfljl7QumVTOVwiKFfSssclB9D+cblssxqUv/Rsif5LO9XK64iaff5RCudY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pj9TzT0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1058C4CEF1;
+	Thu, 16 Oct 2025 09:04:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760605475;
+	bh=+lWpPiGYgIsj4CL7weoN8PdEGbyE8TzjYmObhr7nNbA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Pj9TzT0AlasKWSmm2NeAMCofrPObdVRGipvxqqyYgXfize+/9whtSJT8M2u/uN8wF
+	 7a9m72xg9WK3i6EO6qxlcYG5Qjy2JTAEOlGAhm3EeeERq4Z7LTPETVW/RqrPfT9pQM
+	 LM1THAyUbLCe3blKMosls3+L4BldpdSqCymlT2FRGQ81AP4QnBhGFYtd0y+973F0U8
+	 diIUY7uTDVJOOLr7+l01jKkD0POvizO5VRXU0FkObwwQQzyssH2a7Zqe05YTieJamS
+	 OM4dMuhfdrlXLsQwFJRj/D3WamMk1chivdzaV/icwaeUYeCQeZ1Pm+GOXa/5eHs6fs
+	 Ze07tGQo3IRFg==
+From: Niklas Cassel <cassel@kernel.org>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Kever Yang <kever.yang@rock-chips.com>,
+	Simon Xue <xxm@rock-chips.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Diederik de Haas <diederik@cknow-tech.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	stable@vger.kernel.org,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: [PATCH v2] PCI: dw-rockchip: Disable L1 substates
+Date: Thu, 16 Oct 2025 11:04:22 +0200
+Message-ID: <20251016090422.451982-2-cassel@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2709; i=cassel@kernel.org; h=from:subject; bh=+lWpPiGYgIsj4CL7weoN8PdEGbyE8TzjYmObhr7nNbA=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGDI+bBW7H2mmu/iL+dml7il6tU1XA8/cu7Owb+miRqVpl gVXciX7O0pZGMS4GGTFFFl8f7jsL+52n3Jc8Y4NzBxWJpAhDFycAjCRzQaMDHcveHt4earZVtgZ n9lx5IC4svs+4S91u5jqZM0uBFw0cGD471LT/GSVf+zB5d9qDE+9uvN6S3TU3kVRzK9lFbe+CzU uZwQA
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
 Content-Transfer-Encoding: 8bit
 
+The L1 substates support requires additional steps to work, see e.g.
+section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+These steps are currently missing from the driver.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+While this has always been a problem when using e.g.
+CONFIG_PCIEASPM_POWER_SUPERSAVE=y, the problem became more apparent after
+commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for
+devicetree platforms"), which enabled ASPM also for
+CONFIG_PCIEASPM_DEFAULT=y.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 4f4098c57e139ad972154077fb45c3e3141555dd
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101607-contend-gentleman-9ae0@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 4f4098c57e139ad972154077fb45c3e3141555dd Mon Sep 17 00:00:00 2001
-From: Ma Ke <make24@iscas.ac.cn>
-Date: Fri, 18 Jul 2025 17:50:54 +0800
-Subject: [PATCH] media: lirc: Fix error handling in lirc_register()
-
-When cdev_device_add() failed, calling put_device() to explicitly
-release dev->lirc_dev. Otherwise, it could cause the fault of the
-reference count.
-
-Found by code review.
+Disable L1 substates until proper support is added.
 
 Cc: stable@vger.kernel.org
-Fixes: a6ddd4fecbb0 ("media: lirc: remove last remnants of lirc kapi")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+---
+Changes since v1:
+-Remove superfluous dw_pcie_readl_dbi()
 
-diff --git a/drivers/media/rc/lirc_dev.c b/drivers/media/rc/lirc_dev.c
-index a2257dc2f25d..7d4942925993 100644
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -736,11 +736,11 @@ int lirc_register(struct rc_dev *dev)
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+index 3e2752c7dd09..84f882abbca5 100644
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -200,6 +200,25 @@ static bool rockchip_pcie_link_up(struct dw_pcie *pci)
+ 	return FIELD_GET(PCIE_LINKUP_MASK, val) == PCIE_LINKUP;
+ }
  
- 	cdev_init(&dev->lirc_cdev, &lirc_fops);
- 
-+	get_device(&dev->dev);
++/*
++ * See e.g. section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0 for the steps
++ * needed to support L1 substates. Currently, not a single rockchip platform
++ * performs these steps, so disable L1 substates until there is proper support.
++ */
++static void rockchip_pcie_disable_l1sub(struct dw_pcie *pci)
++{
++	u32 cap, l1subcap;
 +
- 	err = cdev_device_add(&dev->lirc_cdev, &dev->lirc_dev);
- 	if (err)
--		goto out_ida;
--
--	get_device(&dev->dev);
-+		goto out_put_device;
++	cap = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_L1SS);
++	if (cap) {
++		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
++		l1subcap &= ~(PCI_L1SS_CAP_L1_PM_SS | PCI_L1SS_CAP_ASPM_L1_1 |
++			      PCI_L1SS_CAP_ASPM_L1_2 | PCI_L1SS_CAP_PCIPM_L1_1 |
++			      PCI_L1SS_CAP_PCIPM_L1_2);
++		dw_pcie_writel_dbi(pci, cap + PCI_L1SS_CAP, l1subcap);
++	}
++}
++
+ static void rockchip_pcie_enable_l0s(struct dw_pcie *pci)
+ {
+ 	u32 cap, lnkcap;
+@@ -264,6 +283,7 @@ static int rockchip_pcie_host_init(struct dw_pcie_rp *pp)
+ 	irq_set_chained_handler_and_data(irq, rockchip_pcie_intx_handler,
+ 					 rockchip);
  
- 	switch (dev->driver_type) {
- 	case RC_DRIVER_SCANCODE:
-@@ -764,7 +764,8 @@ int lirc_register(struct rc_dev *dev)
++	rockchip_pcie_disable_l1sub(pci);
+ 	rockchip_pcie_enable_l0s(pci);
  
  	return 0;
+@@ -301,6 +321,7 @@ static void rockchip_pcie_ep_init(struct dw_pcie_ep *ep)
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 	enum pci_barno bar;
  
--out_ida:
-+out_put_device:
-+	put_device(&dev->lirc_dev);
- 	ida_free(&lirc_ida, minor);
- 	return err;
- }
++	rockchip_pcie_disable_l1sub(pci);
+ 	rockchip_pcie_enable_l0s(pci);
+ 	rockchip_pcie_ep_hide_broken_ats_cap_rk3588(ep);
+ 
+-- 
+2.51.0
 
 
