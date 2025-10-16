@@ -1,190 +1,735 @@
-Return-Path: <stable+bounces-186183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86426BE5174
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 20:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EABD0BE51AB
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 20:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF44419A6D2E
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 18:46:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4109C1A67731
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 18:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861214438B;
-	Thu, 16 Oct 2025 18:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D99114F125;
+	Thu, 16 Oct 2025 18:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sGaP0exY"
+	dkim=pass (2048-bit key) header.d=minyard-net.20230601.gappssmtp.com header.i=@minyard-net.20230601.gappssmtp.com header.b="1buS3Eyj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB6D2AD32
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 18:45:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2301C84C0
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 18:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760640338; cv=none; b=NE+X6bMH2eJ47i43UN85VdG7LJkdHJGYGPR3RnLDg+7F4vivL+bgje440aMhT5+QWwKS+VqPTAZl04nS8saQvu0Ymez6u9sMaUtKq1RzE+MQxGvCCQgAO9dG7+00irHkz18r6PNmMftF+PGPQIuOoBTg1/C0X7/M+UUyGsTj2Yw=
+	t=1760640568; cv=none; b=AGAlBVuHeCcmgiHhtmIn4EPIeaPr+7fnN8bckZBw9FXFPJUfH13ycNzFNLoHj3GQeMoks/vOTxf8/JEp7UlbrPfVtSvtgq/jb/Zsi8XuWQWmRRRV7ZUav1/1u1IY8syD4mdNZjgWzAotzeBvIgC1kkl5scpjaiUNy+JPOqweTTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760640338; c=relaxed/simple;
-	bh=tSiAsiXFNrovAlX4G1WpxqgTAT+Xxjv5/WDeLRT3plM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QaOdizgcnwr4BXRdIdr3hYasQ3Kk4UL+84eGAjar6WmpsqWNlHTfHeyqSIvl9bibAHDW/c2aCGdMDRcJhItO5SxEYV/lhEbG8+bipJB/Kzfpcon0lp28B1L8J3E+sfT37iYuKIQYulDeDW8NGeIpaADx9E1otXv9z4XyIspk3RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sGaP0exY; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-63c167b70f9so1873a12.0
-        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 11:45:36 -0700 (PDT)
+	s=arc-20240116; t=1760640568; c=relaxed/simple;
+	bh=hYxBRol0U/RnakqhXWgeCKdzEuBVoKDcnJQ71GXYvi8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YOjI5ObbR/ThHydwjgLsnxf5paLpeRm5murpYYku27Ngv85y/EmhrNr+hkTAyWw8omBDKluOatws0Os8bUwjeTcUtnK9srxOydL808sIyRqqNNkY1+eppFkep06TuYCllek8whcevNMYUvaplz6Tnxr7d4qnsTkukvoOygrUfN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=minyard.net; spf=none smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard-net.20230601.gappssmtp.com header.i=@minyard-net.20230601.gappssmtp.com header.b=1buS3Eyj; arc=none smtp.client-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=minyard.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=minyard.net
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-651c77805b7so199455eaf.1
+        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 11:49:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760640335; x=1761245135; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=minyard-net.20230601.gappssmtp.com; s=20230601; t=1760640564; x=1761245364; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eKAdvV4xTE9n5qoKZxok1YZP3tAtC9BHXBT0bF0XgI4=;
-        b=sGaP0exYOPSC+5Q2Zf+8aI7Zvp0QmXIUiZdirZE4aFJPxYA4VlO/MDpru1/+ZjiICC
-         efhu/BAMm1Tz8enkXrklzLLK4AR5zyQTi5hfyRxsHJ07bizANwDD7t+KG/tgLtsT8Rt5
-         3ZlvUCtrbZfmN1NYfL+bRw8hZlI4OAxoZFgAsixicJRK8rB7NZCREVSiyBPzlweDoFy/
-         AkJTJMOqqnNebpTGrExZTgMHH5gRgRSwOwHVN2b9OowRHMDyDnq2ItpvT0e7aGdosGbl
-         Vu7Ixz8LYlBlDn07jGWJeSLb8rz5slKyBEbx5dzHFdn8RrRtdfhluj+NMKCPapXgauWK
-         hMRw==
+        bh=71z/KCD1EAdkSPpU9NkH1KtkxE64cDmB17gvKZSCvCc=;
+        b=1buS3Eyj/EBxZRXlNz54/Po3gPMrCs+w/uS5xstIuss5CxpOhU4pnFz2SZXeYOFqyf
+         NB7QjZqymXSaQLL+3X6KXZ1ZfJj4QFiut0grdKirLxhfHOZGq/BxFx0mLNJftcYw766z
+         iaghu53OQBGZ7/0oKLPeajjApV8Gno5slYxrV8Fs4mfqG4gs+AYODPpsqBGSXq6LNNpD
+         FC0YDcxEnsVtPw6j0makU8HBJUg2XdxxyNuwcKpLUGVUS1qBjqrXV0MQvtmj0zjGhaCM
+         vSY4RUd+Pk9J44Hn+DjAmACvoF/GPPtiqgKgtCSX8262e3mgAU2iTHsVxX2JIf+yOMnl
+         JDaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760640335; x=1761245135;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1760640564; x=1761245364;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eKAdvV4xTE9n5qoKZxok1YZP3tAtC9BHXBT0bF0XgI4=;
-        b=qRhSlOwoflR3vXZS7geJ3jb3czKgCEOHSAdC7khVyCHgnQoZaoa/b5Vg+Dk4lQs6Lh
-         x3Pwt5xK7b0Sc87+d7WuZflNtQmCGOhUTmJlcL2SCK5qS1E4tIPBQnfLLLRJU21GMPiY
-         UP5HFaseuPZX2NaWa/AuYh1uaEvMddwy4eAzwHILliv2J+4qngI9eAigfDsaw/VUHVRy
-         nEqEhYkdue234YVfzP3xExIPdI0m7xbIZXatVDH9l9pNkGCYrK1yOvpSPcnsP6enHME4
-         szv2O7HwrTB/5dvrlfhfR50+nZXHT0xDj8cLn9eQX8WdM1wffe+FgKl2Badc15V0VCcM
-         eDOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWOQytW9rrcua/LR0gvm9Ldqi6XTyC7aXpDbz6oSLmjBk6duOGOKXtwwTTELTWFgCnBbmw2xxE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyd4IFvAKgW+T/f8naIPWzC3eu1bzdlLABcpWN+SpCjCquHSlDi
-	w/XtNSuo9CM3moogOwqmcnPEeDZH9TeRSGNc0cWzpCs5wlmBZL7/vAtNbDu37Ms7/H+S4OFt3Mg
-	4poSVnDarVb+eA8hSrS45kENaC8vFYjTePdfQPUen
-X-Gm-Gg: ASbGncspwIkcE9ckM27nHtEOFv8ICo7Bxwn+WG4Qbndg94CCavawFT4yiAP3dVSp5WC
-	ZppqNUs6KEodTWQDs6P5I8VOF9uPd1I5UxeA216aUQ1o8VUbxS99KUseDMlsl2bkoJGf4zX19kW
-	riIhXjeB72/XIPKqXB/pHGdr1rTPmyTcHL0uayQ5mmSeHHFxasNQHLu74afsmwn5LnIoLOh9qPH
-	4rAzZrqoYK0r6VayS2txa8Ky2EIfCDhRXXHNfUbKr1UdRQaMMUspwMeJHRx6kOcQSD3qmXjaTGO
-	gbWMWN6NnKNBspcL0IJU6EuCBw==
-X-Google-Smtp-Source: AGHT+IHMU7eVzIIxanU4159bOcDF3YZy3khy4dytu3X9pooQwOC3RvBQR6FnIdRDKA1rp6F4oJCjxXDvC7z56ZeUki0=
-X-Received: by 2002:a50:ed13:0:b0:62f:c78f:d0d4 with SMTP id
- 4fb4d7f45d1cf-63bebfe1112mr244762a12.6.1760640334407; Thu, 16 Oct 2025
- 11:45:34 -0700 (PDT)
+        bh=71z/KCD1EAdkSPpU9NkH1KtkxE64cDmB17gvKZSCvCc=;
+        b=HvVpglTOLefygMLEVtmR+KvG9FWY5x1dKnxzrmKfOkA8vHl96AiB6z2IBllgmg4knf
+         75lqMy57NnaWk7hSBLuXC61As30pqSMvplr8IUiYPinnpBpzux3scbNqNWq/Td7J6fIH
+         mAC0M3ffTunaQbHpRmGdoGHDJXtPCfTj90DSkd+APhXlTbwTgZNKVY4cnYBSxLHJAns0
+         3mLnKz45G15M7WDS1ZO4RMoKs22FnxNU4gWjyHxGfRxjxQC67ICbzh9j8euKlVg3OZ+E
+         P8w7kAYLr7Of3TcpJ4/CRh3JD3UEArS7/B4qhUsoklqQTdUzq7UZvfecpUGvEGG8BFIZ
+         e5zA==
+X-Gm-Message-State: AOJu0YyR36s2tdMt8Uh6zpJd8zNUA1y4n9rE477Fk6NJDYCF3Bij+dia
+	E/E/T6k+jXsUMs/f0U1kkt5IA1buV0gYQ6bdwTX2AFs0pgFAajktGCgaFc+y6qskVuaPtTM6sOt
+	1wnl1
+X-Gm-Gg: ASbGncsHmCrdHG+IuCD69yiIIEO9N7MfYlE6Yaxakpg74SE4IGhd2v1KSzcdUdLym/I
+	Z7BZs9VQvhqgGyKQHfEjsJaU0VG0ozAK5LAgyX9Nx6OQJXzhpClT7QrjPVTnfAONInzNhnsrF9x
+	O1336lNQOXj/KBjFM7pMLxSc3YTawz9JUet2/6PBMHy3Z5S9TK3eJKoCXxpHVubZybzzLrumo5j
+	aAXVDa0hRwwManjNr0GTnsS8hwhayMnMQxBNnu/UO0pSNLTmUq+UGD96qbwVGR49Q9xwao4Xvd7
+	WvpwdRCS31fcvUevSAl3K0ZeME32h2vnHn5V1NvnXhqx3OtqA/+BxcnA77AiJD6baceqeTPOZ2/
+	oGkbisxzUzmPinvH7UyrNhnjPCwQmTApVEra5r4IWXzJkulANoAoyPcsywanKatcLIhWY/7L3yg
+	cInwzo
+X-Google-Smtp-Source: AGHT+IFJZFK9w0qREJ1fWwdPRV/CnqBxyBhJo5ePB6HZwqz1bxu2SPqrQxeSCxkt8MSiG05KopQTKw==
+X-Received: by 2002:a05:6870:780b:b0:332:8147:25b3 with SMTP id 586e51a60fabf-3c98d199c9emr354695fac.47.1760640563745;
+        Thu, 16 Oct 2025 11:49:23 -0700 (PDT)
+Received: from localhost ([2001:470:b8f6:1b:fbfe:2b7d:e6e9:975e])
+        by smtp.gmail.com with UTF8SMTPSA id 586e51a60fabf-3c98687601dsm395423fac.5.2025.10.16.11.49.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Oct 2025 11:49:22 -0700 (PDT)
+From: Corey Minyard <corey@minyard.net>
+To: stable@vger.kernel.org
+Cc: Corey Minyard <corey@minyard.net>,
+	Gilles BULOZ <gilles.buloz@kontron.com>
+Subject: [PATCH 6.12.y 1/2] ipmi: Rework user message limit handling
+Date: Thu, 16 Oct 2025 13:49:16 -0500
+Message-ID: <20251016184917.1875857-1-corey@minyard.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2025101646-stretch-gyration-6815@gregkh>
+References: <2025101646-stretch-gyration-6815@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4d3878531c76479d9f8ca9789dc6485d@amazon.de> <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
- <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com>
-In-Reply-To: <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com>
-From: Jann Horn <jannh@google.com>
-Date: Thu, 16 Oct 2025 20:44:57 +0200
-X-Gm-Features: AS18NWAPtIHsIZ0KkjzqmIc9gow3CG1PS8LMsfQSH4RUrDyio7sggwn916JOBbk
-Message-ID: <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
-Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
- huge_pmd_unshare() vs GUP-fast race
-To: David Hildenbrand <david@redhat.com>
-Cc: "Uschakow, Stanislav" <suschako@amazon.de>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"trix@redhat.com" <trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>, 
-	"nathan@kernel.org" <nathan@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"muchun.song@linux.dev" <muchun.song@linux.dev>, "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>, 
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
-	"liam.howlett@oracle.com" <liam.howlett@oracle.com>, "osalvador@suse.de" <osalvador@suse.de>, 
-	"vbabka@suse.cz" <vbabka@suse.cz>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 9, 2025 at 9:40=E2=80=AFAM David Hildenbrand <david@redhat.com>=
- wrote:
-> On 01.09.25 12:58, Jann Horn wrote:
-> > Hi!
-> >
-> > On Fri, Aug 29, 2025 at 4:30=E2=80=AFPM Uschakow, Stanislav <suschako@a=
-mazon.de> wrote:
-> >> We have observed a huge latency increase using `fork()` after ingestin=
-g the CVE-2025-38085 fix which leads to the commit `1013af4f585f: mm/hugetl=
-b: fix huge_pmd_unshare() vs GUP-fast race`. On large machines with 1.5TB o=
-f memory with 196 cores, we identified mmapping of 1.2TB of shared memory a=
-nd forking itself dozens or hundreds of times we see a increase of executio=
-n times of a factor of 4. The reproducer is at the end of the email.
-> >
-> > Yeah, every 1G virtual address range you unshare on unmap will do an
-> > extra synchronous IPI broadcast to all CPU cores, so it's not very
-> > surprising that doing this would be a bit slow on a machine with 196
-> > cores.
-> >
-> >> My observation/assumption is:
-> >>
-> >> each child touches 100 random pages and despawns
-> >> on each despawn `huge_pmd_unshare()` is called
-> >> each call to `huge_pmd_unshare()` syncrhonizes all threads using `tlb_=
-remove_table_sync_one()` leading to the regression
-> >
-> > Yeah, makes sense that that'd be slow.
-> >
-> > There are probably several ways this could be optimized - like maybe
-> > changing tlb_remove_table_sync_one() to rely on the MM's cpumask
-> > (though that would require thinking about whether this interacts with
-> > remote MM access somehow), or batching the refcount drops for hugetlb
-> > shared page tables through something like struct mmu_gather, or doing
-> > something special for the unmap path, or changing the semantics of
-> > hugetlb page tables such that they can never turn into normal page
-> > tables again. However, I'm not planning to work on optimizing this.
->
-> I'm currently looking at the fix and what sticks out is "Fix it with an
-> explicit broadcast IPI through tlb_remove_table_sync_one()".
->
-> (I don't understand how the page table can be used for "normal,
-> non-hugetlb". I could only see how it is used for the remaining user for
-> hugetlb stuff, but that's different question)
+commit b52da4054ee0bf9ecb44996f2c83236ff50b3812 upstream
 
-If I remember correctly:
-When a hugetlb shared page table drops to refcount 1, it turns into a
-normal page table. If you then afterwards split the hugetlb VMA, unmap
-one half of it, and place a new unrelated VMA in its place, the same
-page table will be reused for PTEs of this new unrelated VMA.
+This patch required quite a bit of work to backport due to a number
+of unrelated changes that do not make sense to backport.  This has
+been run against my test suite and passes all tests.
 
-So the scenario would be:
+The limit on the number of user messages had a number of issues,
+improper counting in some cases and a use after free.
 
-1. Initially, we have a hugetlb shared page table covering 1G of
-address space which maps hugetlb 2M pages, which is used by two
-hugetlb VMAs in different processes (processes P1 and P2).
-2. A thread in P2 begins a gup_fast() walk in the hugetlb region, and
-walks down through the PUD entry that points to the shared page table,
-then when it reaches the loop in gup_fast_pmd_range() gets interrupted
-for a while by an NMI or preempted by the hypervisor or something.
-3. P2 removes its VMA, and the hugetlb shared page table effectively
-becomes a normal page table in P1.
-4. Then P1 splits the hugetlb VMA in the middle (at a 2M boundary),
-leaving two VMAs VMA1 and VMA2.
-5. P1 unmaps VMA1, and creates a new VMA (VMA3) in its place, for
-example an anonymous private VMA.
-6. P1 populates VMA3 with page table entries.
-7. The gup_fast() walk in P2 continues, and gup_fast_pmd_range() now
-uses the new PMD/PTE entries created for VMA3.
+Restructure how this is all done to handle more in the receive message
+allocation routine, so all refcouting and user message limit counts
+are done in that routine.  It's a lot cleaner and safer.
 
-> How does the fix work when an architecture does not issue IPIs for TLB
-> shootdown? To handle gup-fast on these architectures, we use RCU.
+Reported-by: Gilles BULOZ <gilles.buloz@kontron.com>
+Closes: https://lore.kernel.org/lkml/aLsw6G0GyqfpKs2S@mail.minyard.net/
+Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
+Cc: <stable@vger.kernel.org> # 4.19
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Tested-by: Gilles BULOZ <gilles.buloz@kontron.com>
+---
+ drivers/char/ipmi/ipmi_msghandler.c | 415 +++++++++++++---------------
+ 1 file changed, 198 insertions(+), 217 deletions(-)
 
-gup-fast disables interrupts, which synchronizes against both RCU and IPI.
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index 09405668ebb3..6fb8210879bb 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -39,7 +39,9 @@
+ 
+ #define IPMI_DRIVER_VERSION "39.2"
+ 
+-static struct ipmi_recv_msg *ipmi_alloc_recv_msg(void);
++static struct ipmi_recv_msg *ipmi_alloc_recv_msg(struct ipmi_user *user);
++static void ipmi_set_recv_msg_user(struct ipmi_recv_msg *msg,
++				   struct ipmi_user *user);
+ static int ipmi_init_msghandler(void);
+ static void smi_recv_work(struct work_struct *t);
+ static void handle_new_recv_msgs(struct ipmi_smi *intf);
+@@ -939,13 +941,11 @@ static int deliver_response(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
+ 		 * risk.  At this moment, simply skip it in that case.
+ 		 */
+ 		ipmi_free_recv_msg(msg);
+-		atomic_dec(&msg->user->nr_msgs);
+ 	} else {
+ 		int index;
+ 		struct ipmi_user *user = acquire_ipmi_user(msg->user, &index);
+ 
+ 		if (user) {
+-			atomic_dec(&user->nr_msgs);
+ 			user->handler->ipmi_recv_hndl(msg, user->handler_data);
+ 			release_ipmi_user(user, index);
+ 		} else {
+@@ -1634,8 +1634,7 @@ int ipmi_set_gets_events(struct ipmi_user *user, bool val)
+ 		spin_unlock_irqrestore(&intf->events_lock, flags);
+ 
+ 		list_for_each_entry_safe(msg, msg2, &msgs, link) {
+-			msg->user = user;
+-			kref_get(&user->refcount);
++			ipmi_set_recv_msg_user(msg, user);
+ 			deliver_local_response(intf, msg);
+ 		}
+ 
+@@ -2309,22 +2308,15 @@ static int i_ipmi_request(struct ipmi_user     *user,
+ 	struct ipmi_recv_msg *recv_msg;
+ 	int rv = 0;
+ 
+-	if (user) {
+-		if (atomic_add_return(1, &user->nr_msgs) > max_msgs_per_user) {
+-			/* Decrement will happen at the end of the routine. */
+-			rv = -EBUSY;
+-			goto out;
+-		}
+-	}
+-
+-	if (supplied_recv)
++	if (supplied_recv) {
+ 		recv_msg = supplied_recv;
+-	else {
+-		recv_msg = ipmi_alloc_recv_msg();
+-		if (recv_msg == NULL) {
+-			rv = -ENOMEM;
+-			goto out;
+-		}
++		recv_msg->user = user;
++		if (user)
++			atomic_inc(&user->nr_msgs);
++	} else {
++		recv_msg = ipmi_alloc_recv_msg(user);
++		if (IS_ERR(recv_msg))
++			return PTR_ERR(recv_msg);
+ 	}
+ 	recv_msg->user_msg_data = user_msg_data;
+ 
+@@ -2335,8 +2327,7 @@ static int i_ipmi_request(struct ipmi_user     *user,
+ 		if (smi_msg == NULL) {
+ 			if (!supplied_recv)
+ 				ipmi_free_recv_msg(recv_msg);
+-			rv = -ENOMEM;
+-			goto out;
++			return -ENOMEM;
+ 		}
+ 	}
+ 
+@@ -2346,10 +2337,6 @@ static int i_ipmi_request(struct ipmi_user     *user,
+ 		goto out_err;
+ 	}
+ 
+-	recv_msg->user = user;
+-	if (user)
+-		/* The put happens when the message is freed. */
+-		kref_get(&user->refcount);
+ 	recv_msg->msgid = msgid;
+ 	/*
+ 	 * Store the message to send in the receive message so timeout
+@@ -2378,8 +2365,10 @@ static int i_ipmi_request(struct ipmi_user     *user,
+ 
+ 	if (rv) {
+ out_err:
+-		ipmi_free_smi_msg(smi_msg);
+-		ipmi_free_recv_msg(recv_msg);
++		if (!supplied_smi)
++			ipmi_free_smi_msg(smi_msg);
++		if (!supplied_recv)
++			ipmi_free_recv_msg(recv_msg);
+ 	} else {
+ 		dev_dbg(intf->si_dev, "Send: %*ph\n",
+ 			smi_msg->data_size, smi_msg->data);
+@@ -2388,9 +2377,6 @@ static int i_ipmi_request(struct ipmi_user     *user,
+ 	}
+ 	rcu_read_unlock();
+ 
+-out:
+-	if (rv && user)
+-		atomic_dec(&user->nr_msgs);
+ 	return rv;
+ }
+ 
+@@ -3882,7 +3868,7 @@ static int handle_ipmb_get_msg_cmd(struct ipmi_smi *intf,
+ 	unsigned char            chan;
+ 	struct ipmi_user         *user = NULL;
+ 	struct ipmi_ipmb_addr    *ipmb_addr;
+-	struct ipmi_recv_msg     *recv_msg;
++	struct ipmi_recv_msg     *recv_msg = NULL;
+ 
+ 	if (msg->rsp_size < 10) {
+ 		/* Message not big enough, just ignore it. */
+@@ -3903,9 +3889,8 @@ static int handle_ipmb_get_msg_cmd(struct ipmi_smi *intf,
+ 	rcvr = find_cmd_rcvr(intf, netfn, cmd, chan);
+ 	if (rcvr) {
+ 		user = rcvr->user;
+-		kref_get(&user->refcount);
+-	} else
+-		user = NULL;
++		recv_msg = ipmi_alloc_recv_msg(user);
++	}
+ 	rcu_read_unlock();
+ 
+ 	if (user == NULL) {
+@@ -3940,47 +3925,41 @@ static int handle_ipmb_get_msg_cmd(struct ipmi_smi *intf,
+ 			rv = -1;
+ 		}
+ 		rcu_read_unlock();
+-	} else {
+-		recv_msg = ipmi_alloc_recv_msg();
+-		if (!recv_msg) {
+-			/*
+-			 * We couldn't allocate memory for the
+-			 * message, so requeue it for handling
+-			 * later.
+-			 */
+-			rv = 1;
+-			kref_put(&user->refcount, free_user);
+-		} else {
+-			/* Extract the source address from the data. */
+-			ipmb_addr = (struct ipmi_ipmb_addr *) &recv_msg->addr;
+-			ipmb_addr->addr_type = IPMI_IPMB_ADDR_TYPE;
+-			ipmb_addr->slave_addr = msg->rsp[6];
+-			ipmb_addr->lun = msg->rsp[7] & 3;
+-			ipmb_addr->channel = msg->rsp[3] & 0xf;
++	} else if (!IS_ERR(recv_msg)) {
++		/* Extract the source address from the data. */
++		ipmb_addr = (struct ipmi_ipmb_addr *) &recv_msg->addr;
++		ipmb_addr->addr_type = IPMI_IPMB_ADDR_TYPE;
++		ipmb_addr->slave_addr = msg->rsp[6];
++		ipmb_addr->lun = msg->rsp[7] & 3;
++		ipmb_addr->channel = msg->rsp[3] & 0xf;
+ 
+-			/*
+-			 * Extract the rest of the message information
+-			 * from the IPMB header.
+-			 */
+-			recv_msg->user = user;
+-			recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
+-			recv_msg->msgid = msg->rsp[7] >> 2;
+-			recv_msg->msg.netfn = msg->rsp[4] >> 2;
+-			recv_msg->msg.cmd = msg->rsp[8];
+-			recv_msg->msg.data = recv_msg->msg_data;
++		/*
++		 * Extract the rest of the message information
++		 * from the IPMB header.
++		 */
++		recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
++		recv_msg->msgid = msg->rsp[7] >> 2;
++		recv_msg->msg.netfn = msg->rsp[4] >> 2;
++		recv_msg->msg.cmd = msg->rsp[8];
++		recv_msg->msg.data = recv_msg->msg_data;
+ 
+-			/*
+-			 * We chop off 10, not 9 bytes because the checksum
+-			 * at the end also needs to be removed.
+-			 */
+-			recv_msg->msg.data_len = msg->rsp_size - 10;
+-			memcpy(recv_msg->msg_data, &msg->rsp[9],
+-			       msg->rsp_size - 10);
+-			if (deliver_response(intf, recv_msg))
+-				ipmi_inc_stat(intf, unhandled_commands);
+-			else
+-				ipmi_inc_stat(intf, handled_commands);
+-		}
++		/*
++		 * We chop off 10, not 9 bytes because the checksum
++		 * at the end also needs to be removed.
++		 */
++		recv_msg->msg.data_len = msg->rsp_size - 10;
++		memcpy(recv_msg->msg_data, &msg->rsp[9],
++		       msg->rsp_size - 10);
++		if (deliver_response(intf, recv_msg))
++			ipmi_inc_stat(intf, unhandled_commands);
++		else
++			ipmi_inc_stat(intf, handled_commands);
++	} else {
++		/*
++		 * We couldn't allocate memory for the message, so
++		 * requeue it for handling later.
++		 */
++		rv = 1;
+ 	}
+ 
+ 	return rv;
+@@ -3993,7 +3972,7 @@ static int handle_ipmb_direct_rcv_cmd(struct ipmi_smi *intf,
+ 	int                      rv = 0;
+ 	struct ipmi_user         *user = NULL;
+ 	struct ipmi_ipmb_direct_addr *daddr;
+-	struct ipmi_recv_msg     *recv_msg;
++	struct ipmi_recv_msg     *recv_msg = NULL;
+ 	unsigned char netfn = msg->rsp[0] >> 2;
+ 	unsigned char cmd = msg->rsp[3];
+ 
+@@ -4002,9 +3981,8 @@ static int handle_ipmb_direct_rcv_cmd(struct ipmi_smi *intf,
+ 	rcvr = find_cmd_rcvr(intf, netfn, cmd, 0);
+ 	if (rcvr) {
+ 		user = rcvr->user;
+-		kref_get(&user->refcount);
+-	} else
+-		user = NULL;
++		recv_msg = ipmi_alloc_recv_msg(user);
++	}
+ 	rcu_read_unlock();
+ 
+ 	if (user == NULL) {
+@@ -4031,44 +4009,38 @@ static int handle_ipmb_direct_rcv_cmd(struct ipmi_smi *intf,
+ 			rv = -1;
+ 		}
+ 		rcu_read_unlock();
+-	} else {
+-		recv_msg = ipmi_alloc_recv_msg();
+-		if (!recv_msg) {
+-			/*
+-			 * We couldn't allocate memory for the
+-			 * message, so requeue it for handling
+-			 * later.
+-			 */
+-			rv = 1;
+-			kref_put(&user->refcount, free_user);
+-		} else {
+-			/* Extract the source address from the data. */
+-			daddr = (struct ipmi_ipmb_direct_addr *)&recv_msg->addr;
+-			daddr->addr_type = IPMI_IPMB_DIRECT_ADDR_TYPE;
+-			daddr->channel = 0;
+-			daddr->slave_addr = msg->rsp[1];
+-			daddr->rs_lun = msg->rsp[0] & 3;
+-			daddr->rq_lun = msg->rsp[2] & 3;
++	} else if (!IS_ERR(recv_msg)) {
++		/* Extract the source address from the data. */
++		daddr = (struct ipmi_ipmb_direct_addr *)&recv_msg->addr;
++		daddr->addr_type = IPMI_IPMB_DIRECT_ADDR_TYPE;
++		daddr->channel = 0;
++		daddr->slave_addr = msg->rsp[1];
++		daddr->rs_lun = msg->rsp[0] & 3;
++		daddr->rq_lun = msg->rsp[2] & 3;
+ 
+-			/*
+-			 * Extract the rest of the message information
+-			 * from the IPMB header.
+-			 */
+-			recv_msg->user = user;
+-			recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
+-			recv_msg->msgid = (msg->rsp[2] >> 2);
+-			recv_msg->msg.netfn = msg->rsp[0] >> 2;
+-			recv_msg->msg.cmd = msg->rsp[3];
+-			recv_msg->msg.data = recv_msg->msg_data;
+-
+-			recv_msg->msg.data_len = msg->rsp_size - 4;
+-			memcpy(recv_msg->msg_data, msg->rsp + 4,
+-			       msg->rsp_size - 4);
+-			if (deliver_response(intf, recv_msg))
+-				ipmi_inc_stat(intf, unhandled_commands);
+-			else
+-				ipmi_inc_stat(intf, handled_commands);
+-		}
++		/*
++		 * Extract the rest of the message information
++		 * from the IPMB header.
++		 */
++		recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
++		recv_msg->msgid = (msg->rsp[2] >> 2);
++		recv_msg->msg.netfn = msg->rsp[0] >> 2;
++		recv_msg->msg.cmd = msg->rsp[3];
++		recv_msg->msg.data = recv_msg->msg_data;
++
++		recv_msg->msg.data_len = msg->rsp_size - 4;
++		memcpy(recv_msg->msg_data, msg->rsp + 4,
++		       msg->rsp_size - 4);
++		if (deliver_response(intf, recv_msg))
++			ipmi_inc_stat(intf, unhandled_commands);
++		else
++			ipmi_inc_stat(intf, handled_commands);
++	} else {
++		/*
++		 * We couldn't allocate memory for the message, so
++		 * requeue it for handling later.
++		 */
++		rv = 1;
+ 	}
+ 
+ 	return rv;
+@@ -4182,7 +4154,7 @@ static int handle_lan_get_msg_cmd(struct ipmi_smi *intf,
+ 	unsigned char            chan;
+ 	struct ipmi_user         *user = NULL;
+ 	struct ipmi_lan_addr     *lan_addr;
+-	struct ipmi_recv_msg     *recv_msg;
++	struct ipmi_recv_msg     *recv_msg = NULL;
+ 
+ 	if (msg->rsp_size < 12) {
+ 		/* Message not big enough, just ignore it. */
+@@ -4203,9 +4175,8 @@ static int handle_lan_get_msg_cmd(struct ipmi_smi *intf,
+ 	rcvr = find_cmd_rcvr(intf, netfn, cmd, chan);
+ 	if (rcvr) {
+ 		user = rcvr->user;
+-		kref_get(&user->refcount);
+-	} else
+-		user = NULL;
++		recv_msg = ipmi_alloc_recv_msg(user);
++	}
+ 	rcu_read_unlock();
+ 
+ 	if (user == NULL) {
+@@ -4217,49 +4188,44 @@ static int handle_lan_get_msg_cmd(struct ipmi_smi *intf,
+ 		 * them to be freed.
+ 		 */
+ 		rv = 0;
+-	} else {
+-		recv_msg = ipmi_alloc_recv_msg();
+-		if (!recv_msg) {
+-			/*
+-			 * We couldn't allocate memory for the
+-			 * message, so requeue it for handling later.
+-			 */
+-			rv = 1;
+-			kref_put(&user->refcount, free_user);
+-		} else {
+-			/* Extract the source address from the data. */
+-			lan_addr = (struct ipmi_lan_addr *) &recv_msg->addr;
+-			lan_addr->addr_type = IPMI_LAN_ADDR_TYPE;
+-			lan_addr->session_handle = msg->rsp[4];
+-			lan_addr->remote_SWID = msg->rsp[8];
+-			lan_addr->local_SWID = msg->rsp[5];
+-			lan_addr->lun = msg->rsp[9] & 3;
+-			lan_addr->channel = msg->rsp[3] & 0xf;
+-			lan_addr->privilege = msg->rsp[3] >> 4;
++	} else if (!IS_ERR(recv_msg)) {
++		/* Extract the source address from the data. */
++		lan_addr = (struct ipmi_lan_addr *) &recv_msg->addr;
++		lan_addr->addr_type = IPMI_LAN_ADDR_TYPE;
++		lan_addr->session_handle = msg->rsp[4];
++		lan_addr->remote_SWID = msg->rsp[8];
++		lan_addr->local_SWID = msg->rsp[5];
++		lan_addr->lun = msg->rsp[9] & 3;
++		lan_addr->channel = msg->rsp[3] & 0xf;
++		lan_addr->privilege = msg->rsp[3] >> 4;
+ 
+-			/*
+-			 * Extract the rest of the message information
+-			 * from the IPMB header.
+-			 */
+-			recv_msg->user = user;
+-			recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
+-			recv_msg->msgid = msg->rsp[9] >> 2;
+-			recv_msg->msg.netfn = msg->rsp[6] >> 2;
+-			recv_msg->msg.cmd = msg->rsp[10];
+-			recv_msg->msg.data = recv_msg->msg_data;
++		/*
++		 * Extract the rest of the message information
++		 * from the IPMB header.
++		 */
++		recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
++		recv_msg->msgid = msg->rsp[9] >> 2;
++		recv_msg->msg.netfn = msg->rsp[6] >> 2;
++		recv_msg->msg.cmd = msg->rsp[10];
++		recv_msg->msg.data = recv_msg->msg_data;
+ 
+-			/*
+-			 * We chop off 12, not 11 bytes because the checksum
+-			 * at the end also needs to be removed.
+-			 */
+-			recv_msg->msg.data_len = msg->rsp_size - 12;
+-			memcpy(recv_msg->msg_data, &msg->rsp[11],
+-			       msg->rsp_size - 12);
+-			if (deliver_response(intf, recv_msg))
+-				ipmi_inc_stat(intf, unhandled_commands);
+-			else
+-				ipmi_inc_stat(intf, handled_commands);
+-		}
++		/*
++		 * We chop off 12, not 11 bytes because the checksum
++		 * at the end also needs to be removed.
++		 */
++		recv_msg->msg.data_len = msg->rsp_size - 12;
++		memcpy(recv_msg->msg_data, &msg->rsp[11],
++		       msg->rsp_size - 12);
++		if (deliver_response(intf, recv_msg))
++			ipmi_inc_stat(intf, unhandled_commands);
++		else
++			ipmi_inc_stat(intf, handled_commands);
++	} else {
++		/*
++		 * We couldn't allocate memory for the message, so
++		 * requeue it for handling later.
++		 */
++		rv = 1;
+ 	}
+ 
+ 	return rv;
+@@ -4281,7 +4247,7 @@ static int handle_oem_get_msg_cmd(struct ipmi_smi *intf,
+ 	unsigned char         chan;
+ 	struct ipmi_user *user = NULL;
+ 	struct ipmi_system_interface_addr *smi_addr;
+-	struct ipmi_recv_msg  *recv_msg;
++	struct ipmi_recv_msg  *recv_msg = NULL;
+ 
+ 	/*
+ 	 * We expect the OEM SW to perform error checking
+@@ -4310,9 +4276,8 @@ static int handle_oem_get_msg_cmd(struct ipmi_smi *intf,
+ 	rcvr = find_cmd_rcvr(intf, netfn, cmd, chan);
+ 	if (rcvr) {
+ 		user = rcvr->user;
+-		kref_get(&user->refcount);
+-	} else
+-		user = NULL;
++		recv_msg = ipmi_alloc_recv_msg(user);
++	}
+ 	rcu_read_unlock();
+ 
+ 	if (user == NULL) {
+@@ -4325,48 +4290,42 @@ static int handle_oem_get_msg_cmd(struct ipmi_smi *intf,
+ 		 */
+ 
+ 		rv = 0;
+-	} else {
+-		recv_msg = ipmi_alloc_recv_msg();
+-		if (!recv_msg) {
+-			/*
+-			 * We couldn't allocate memory for the
+-			 * message, so requeue it for handling
+-			 * later.
+-			 */
+-			rv = 1;
+-			kref_put(&user->refcount, free_user);
+-		} else {
+-			/*
+-			 * OEM Messages are expected to be delivered via
+-			 * the system interface to SMS software.  We might
+-			 * need to visit this again depending on OEM
+-			 * requirements
+-			 */
+-			smi_addr = ((struct ipmi_system_interface_addr *)
+-				    &recv_msg->addr);
+-			smi_addr->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
+-			smi_addr->channel = IPMI_BMC_CHANNEL;
+-			smi_addr->lun = msg->rsp[0] & 3;
+-
+-			recv_msg->user = user;
+-			recv_msg->user_msg_data = NULL;
+-			recv_msg->recv_type = IPMI_OEM_RECV_TYPE;
+-			recv_msg->msg.netfn = msg->rsp[0] >> 2;
+-			recv_msg->msg.cmd = msg->rsp[1];
+-			recv_msg->msg.data = recv_msg->msg_data;
++	} else if (!IS_ERR(recv_msg)) {
++		/*
++		 * OEM Messages are expected to be delivered via
++		 * the system interface to SMS software.  We might
++		 * need to visit this again depending on OEM
++		 * requirements
++		 */
++		smi_addr = ((struct ipmi_system_interface_addr *)
++			    &recv_msg->addr);
++		smi_addr->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
++		smi_addr->channel = IPMI_BMC_CHANNEL;
++		smi_addr->lun = msg->rsp[0] & 3;
++
++		recv_msg->user_msg_data = NULL;
++		recv_msg->recv_type = IPMI_OEM_RECV_TYPE;
++		recv_msg->msg.netfn = msg->rsp[0] >> 2;
++		recv_msg->msg.cmd = msg->rsp[1];
++		recv_msg->msg.data = recv_msg->msg_data;
+ 
+-			/*
+-			 * The message starts at byte 4 which follows the
+-			 * Channel Byte in the "GET MESSAGE" command
+-			 */
+-			recv_msg->msg.data_len = msg->rsp_size - 4;
+-			memcpy(recv_msg->msg_data, &msg->rsp[4],
+-			       msg->rsp_size - 4);
+-			if (deliver_response(intf, recv_msg))
+-				ipmi_inc_stat(intf, unhandled_commands);
+-			else
+-				ipmi_inc_stat(intf, handled_commands);
+-		}
++		/*
++		 * The message starts at byte 4 which follows the
++		 * Channel Byte in the "GET MESSAGE" command
++		 */
++		recv_msg->msg.data_len = msg->rsp_size - 4;
++		memcpy(recv_msg->msg_data, &msg->rsp[4],
++		       msg->rsp_size - 4);
++		if (deliver_response(intf, recv_msg))
++			ipmi_inc_stat(intf, unhandled_commands);
++		else
++			ipmi_inc_stat(intf, handled_commands);
++	} else {
++		/*
++		 * We couldn't allocate memory for the message, so
++		 * requeue it for handling later.
++		 */
++		rv = 1;
+ 	}
+ 
+ 	return rv;
+@@ -4425,8 +4384,8 @@ static int handle_read_event_rsp(struct ipmi_smi *intf,
+ 		if (!user->gets_events)
+ 			continue;
+ 
+-		recv_msg = ipmi_alloc_recv_msg();
+-		if (!recv_msg) {
++		recv_msg = ipmi_alloc_recv_msg(user);
++		if (IS_ERR(recv_msg)) {
+ 			rcu_read_unlock();
+ 			list_for_each_entry_safe(recv_msg, recv_msg2, &msgs,
+ 						 link) {
+@@ -4445,8 +4404,6 @@ static int handle_read_event_rsp(struct ipmi_smi *intf,
+ 		deliver_count++;
+ 
+ 		copy_event_into_recv_msg(recv_msg, msg);
+-		recv_msg->user = user;
+-		kref_get(&user->refcount);
+ 		list_add_tail(&recv_msg->link, &msgs);
+ 	}
+ 	srcu_read_unlock(&intf->users_srcu, index);
+@@ -4462,8 +4419,8 @@ static int handle_read_event_rsp(struct ipmi_smi *intf,
+ 		 * No one to receive the message, put it in queue if there's
+ 		 * not already too many things in the queue.
+ 		 */
+-		recv_msg = ipmi_alloc_recv_msg();
+-		if (!recv_msg) {
++		recv_msg = ipmi_alloc_recv_msg(NULL);
++		if (IS_ERR(recv_msg)) {
+ 			/*
+ 			 * We couldn't allocate memory for the
+ 			 * message, so requeue it for handling
+@@ -5155,27 +5112,51 @@ static void free_recv_msg(struct ipmi_recv_msg *msg)
+ 		kfree(msg);
+ }
+ 
+-static struct ipmi_recv_msg *ipmi_alloc_recv_msg(void)
++static struct ipmi_recv_msg *ipmi_alloc_recv_msg(struct ipmi_user *user)
+ {
+ 	struct ipmi_recv_msg *rv;
+ 
++	if (user) {
++		if (atomic_add_return(1, &user->nr_msgs) > max_msgs_per_user) {
++			atomic_dec(&user->nr_msgs);
++			return ERR_PTR(-EBUSY);
++		}
++	}
++
+ 	rv = kmalloc(sizeof(struct ipmi_recv_msg), GFP_ATOMIC);
+-	if (rv) {
+-		rv->user = NULL;
+-		rv->done = free_recv_msg;
+-		atomic_inc(&recv_msg_inuse_count);
++	if (!rv) {
++		if (user)
++			atomic_dec(&user->nr_msgs);
++		return ERR_PTR(-ENOMEM);
+ 	}
++
++	rv->user = user;
++	rv->done = free_recv_msg;
++	if (user)
++		kref_get(&user->refcount);
++	atomic_inc(&recv_msg_inuse_count);
+ 	return rv;
+ }
+ 
+ void ipmi_free_recv_msg(struct ipmi_recv_msg *msg)
+ {
+-	if (msg->user && !oops_in_progress)
++	if (msg->user && !oops_in_progress) {
++		atomic_dec(&msg->user->nr_msgs);
+ 		kref_put(&msg->user->refcount, free_user);
++	}
+ 	msg->done(msg);
+ }
+ EXPORT_SYMBOL(ipmi_free_recv_msg);
+ 
++static void ipmi_set_recv_msg_user(struct ipmi_recv_msg *msg,
++				   struct ipmi_user *user)
++{
++	WARN_ON_ONCE(msg->user); /* User should not be set. */
++	msg->user = user;
++	atomic_inc(&user->nr_msgs);
++	kref_get(&user->refcount);
++}
++
+ static atomic_t panic_done_count = ATOMIC_INIT(0);
+ 
+ static void dummy_smi_done_handler(struct ipmi_smi_msg *msg)
+-- 
+2.43.0
 
-> So I'm wondering whether we use RCU somehow.
->
-> But note that in gup_fast_pte_range(), we are validating whether the PMD
-> changed:
->
-> if (unlikely(pmd_val(pmd) !=3D pmd_val(*pmdp)) ||
->      unlikely(pte_val(pte) !=3D pte_val(ptep_get(ptep)))) {
->         gup_put_folio(folio, 1, flags);
->         goto pte_unmap;
-> }
->
->
-> So in case the page table got reused in the meantime, we should just
-> back off and be fine, right?
-
-The shared page table is mapped with a PUD entry, and we don't check
-whether the PUD entry changed here.
 
