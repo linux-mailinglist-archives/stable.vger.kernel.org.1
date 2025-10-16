@@ -1,115 +1,301 @@
-Return-Path: <stable+bounces-185939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-185941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD164BE2542
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02A5BE254E
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 11:19:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37D17425539
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:17:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6779948390B
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 09:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD2E26F46F;
-	Thu, 16 Oct 2025 09:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79E42E62AD;
+	Thu, 16 Oct 2025 09:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lAP/uSlH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOBAmXlk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0F73254BC
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C2C3254BC
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 09:19:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760606245; cv=none; b=H5WRbfI9rXi1NdrvlW1W6PKvtTU/mPfhDhgSDiWNOPzTUXtYwHPvvegOqxX/AHT8IWw9Lpf/BtaiQHlT+olrZ/Pco+/4/G3KU07OZvOPZgXvRT/BoZBMfQ61PPlf6IPfb6qXcCci2SeqwRQMLH2t8NF/2JCBAq66KqnfsEe2ZJc=
+	t=1760606349; cv=none; b=gBgzII41UPFREwHI5AGQgs5jB9QzOApnTYVxPYpWuimZSALdQlqjcDhwMbe+joq2nPdq7WwfOIzxDwFEmfyEk1XgR+rFtSNW3Yf5TWiY83gWMfgIUEXjli/Gq1htT0W7mN6zA1nlC8+CyR8tHIcy8aicuM7KapZqCdS+NWT9Ncs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760606245; c=relaxed/simple;
-	bh=eqLUPEo9Gd0DbwcwfRLPBforA+nxsuQCkKFW6i15MhI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tXgC69VjxS2kP5qxFvYE6e6uoMID4fMUZVpGHvPnSV9Wz3IvbbVjgxKu8TmMaBIAcWgqusiDAzekHdur+SSP+/fEnsJ6G+j3O7OSolvGwBEW9VlSYu3UTs8EPJT/b+o3oVs0+QUBwA9qPfshT5hPG411vD13nfLOfMpKSx8uulo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lAP/uSlH; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-279e2554c8fso5327805ad.2
-        for <stable@vger.kernel.org>; Thu, 16 Oct 2025 02:17:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1760606241; x=1761211041; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YewhkkrAxR5skN2UV7So4kHeHU1bICBISRlzVyf8pn0=;
-        b=lAP/uSlHX4iU34w6VvxdSORazTN2gqKD5ziUIb+pcD0SHPHrPIB2N3RAsu96TOIFQJ
-         JMMNxK+ragTE9U6B3o4CbsjNqmvpdd2Jh5s+5f9MH+j6dEnN3Keb/23KGAwVHjFnB/zy
-         QD0eaKCanmyruGDpmOrfl7CeSPK3WsZ9O2+3c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760606241; x=1761211041;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YewhkkrAxR5skN2UV7So4kHeHU1bICBISRlzVyf8pn0=;
-        b=AwUZDarTzYGZiCuVHBXMoLFjTUK9KzhoycTNL4vUGUwt6mIAASM7R/GxhxGem+7HSg
-         plUbacro6FiZLUwCFwyNON8v/xyL+K8X7GsMoZx7ob50uUcOm/KkDO1j3J4T0OMJcjq5
-         0Hm9VLgK1Y12uSeMwmpJDoaNVZ87vMlICWffmVBqBtfBaVkfQ6V2s3k5O0hgdFVI2Uyc
-         ElvD6KreLIK91au8giCv4NZus17X15u5Z7/81IzQ621H0eQG0GaeNH6/hg4MTb4MW+hD
-         xd5Tm+Gp3SmUveU6glzeWMDI7pSZ6ZprIjIrt0cmGr4b4y5TUbITKiPGEzYi86ZMz51o
-         STvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQJZxsZkVRhbf0qfDC2d6NbTxDff3wk8vWSFDh+M4mWqLxmVN28AZV+MtfDPgfHQlgUzCZtCs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6kjHq7knVyBJf1ZWwcR2XZnwOfGjVUz6qNAng0lWVCNP8b7tQ
-	jKmcpMUsGERHjxYdX8ExzUWw+IqKVsYah+AYXcadIrKl1PEzKNxaSDb57gBKncjzUA==
-X-Gm-Gg: ASbGncuWrNvH78jmwHqjkvUK0qU8ezDp8DU9PNBpWSRfqlWGQppLGzusNZy35qch0xB
-	LnyezeUhVLXGKrwA9fEeDFss4z8GLMQ6dqv/LwER43Y8BcFll6/g0C2+VnbhhPdN1GruYTwHfqI
-	fxDJBsjTZASs74A05iS4cOyctOSThg76VzRtwR4WuAcvdPFnmhL0iiSf0W3yx3dEsON4ANomnwj
-	UToolH33O4VqjrBqIPZvi+f4g6WPfroMTAWqGWnSXBPt+/gy6EX8xMS1Bb5OkmS8vK/gK4lpcIf
-	dqWwqJvC7zi4prGm3VB3gDv0MboATMLB5CvfQWLTTWrvVuQvMsNh9x4sONI41yEkb+9lOferisB
-	he8eE4cm1PfQl3U7U0vaEYwfC4PWUT5QzudxuExx8D7Pgoct7uzLXO9pQPYO4PGvkqsNfSilLDW
-	aRtAyoKtynl1aWfw==
-X-Google-Smtp-Source: AGHT+IFoMJAa9tR1kziKAzA6Wcvm3FfHVTemEffdiwWmdyUMKYfNnFDLp/93IJJ4us2oCj2e9wtLYw==
-X-Received: by 2002:a17:903:41c9:b0:23f:fa79:15d0 with SMTP id d9443c01a7336-290272e1026mr461762145ad.46.1760606241351;
-        Thu, 16 Oct 2025 02:17:21 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:98b0:109e:180c:f908])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29099afe03bsm22931265ad.107.2025.10.16.02.17.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 02:17:20 -0700 (PDT)
-Date: Thu, 16 Oct 2025 18:17:17 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, stable@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Christian Loehle <christian.loehle@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] cpuidle: governors: menu: Avoid using invalid
- recent intervals data
-Message-ID: <e6jvienmvfdr6pti3phhbpuot7p7tbg5oysctpcwpwy7s3twqa@m3nuc6zqmkc7>
-References: <20251014130300.2365621-1-senozhatsky@chromium.org>
- <2025101614-shown-handbag-58e3@gregkh>
- <p7j4aihzybksyabenydz634x4whuyjxsmvkhwiqxaor5uhpjz7@3l7kud4aobjf>
- <2025101606-galley-panda-297b@gregkh>
- <s7rjg3bxmjqxmqxppivrunk2awl2zwgxz7zb3godj3s2tvktg6@twicqbqsnuqk>
- <2025101611-shrubs-gigolo-3c4e@gregkh>
+	s=arc-20240116; t=1760606349; c=relaxed/simple;
+	bh=lRisJ3nPmecwaz7x4uv7ubj2x1FCjD7x9iwISLpVw+E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s9lVyd7kFJ1TuQfsWrLhdwASrmKv7QDaEYG5S74iYfwgVSxdmtZSIMDzXeLRkCVkiQ/yMSCKbEC5Wq+Sp5JZsKXlSd+Q3zzjzDyxxcEyuEWvp2UO4+ooHPu2Pbm5f/FrtxyMM37tN33/Oz3uqmdbmitBDW4WQ4qm50F7ek5VOEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOBAmXlk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2592C4CEF1;
+	Thu, 16 Oct 2025 09:19:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760606349;
+	bh=lRisJ3nPmecwaz7x4uv7ubj2x1FCjD7x9iwISLpVw+E=;
+	h=Subject:To:Cc:From:Date:From;
+	b=UOBAmXlkkIw+1aH/gzd+/dmZ23nWBruJ+kGrVKCY7UBxvtOpnAA8UtLPCxgA7cryn
+	 sW5Ph5dy/PugnOaM0lxwXACvYLLGUmoYX0441uE5VW1i1Q4bpF3vUDrZEaC3cm4LIm
+	 6mXkA1KNA6bVJYI7YIOV1AEOtB+9DsLkgKooPyoQ=
+Subject: FAILED: patch "[PATCH] usb: gadget: f_ncm: Refactor bind path to use __free()" failed to apply to 5.15-stable tree
+To: khtsai@google.com,gregkh@linuxfoundation.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 16 Oct 2025 11:18:58 +0200
+Message-ID: <2025101658-ajar-suggest-f20a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025101611-shrubs-gigolo-3c4e@gregkh>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On (25/10/16 11:12), Greg KH wrote:
-> On Thu, Oct 16, 2025 at 06:08:39PM +0900, Sergey Senozhatsky wrote:
-> > On (25/10/16 11:05), Greg KH wrote:
-> > > I've queued up a backport I did with a cc: to you on it already, that
-> > > should be identical to yours, right?
-> > 
-> > Looks right.  Thanks.
-> > 
-> > // I wonder why doesn't git cherry-pick -x add SoB automatically.
-> > 
-> 
-> You need "-s" to add your signed-off-by, "-x" just adds the text at the
-> bottom about the original commit id.
 
-Oh, today I learned.  Thank you for educating me, next time I'll
-make sure to use "-s".  And sorry for the missing signed-off-by
-in the backport.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 75a5b8d4ddd4eb6b16cb0b475d14ff4ae64295ef
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101658-ajar-suggest-f20a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 75a5b8d4ddd4eb6b16cb0b475d14ff4ae64295ef Mon Sep 17 00:00:00 2001
+From: Kuen-Han Tsai <khtsai@google.com>
+Date: Tue, 16 Sep 2025 16:21:34 +0800
+Subject: [PATCH] usb: gadget: f_ncm: Refactor bind path to use __free()
+
+After an bind/unbind cycle, the ncm->notify_req is left stale. If a
+subsequent bind fails, the unified error label attempts to free this
+stale request, leading to a NULL pointer dereference when accessing
+ep->ops->free_request.
+
+Refactor the error handling in the bind path to use the __free()
+automatic cleanup mechanism.
+
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
+Call trace:
+ usb_ep_free_request+0x2c/0xec
+ ncm_bind+0x39c/0x3dc
+ usb_add_function+0xcc/0x1f0
+ configfs_composite_bind+0x468/0x588
+ gadget_bind_driver+0x104/0x270
+ really_probe+0x190/0x374
+ __driver_probe_device+0xa0/0x12c
+ driver_probe_device+0x3c/0x218
+ __device_attach_driver+0x14c/0x188
+ bus_for_each_drv+0x10c/0x168
+ __device_attach+0xfc/0x198
+ device_initial_probe+0x14/0x24
+ bus_probe_device+0x94/0x11c
+ device_add+0x268/0x48c
+ usb_add_gadget+0x198/0x28c
+ dwc3_gadget_init+0x700/0x858
+ __dwc3_set_mode+0x3cc/0x664
+ process_scheduled_works+0x1d8/0x488
+ worker_thread+0x244/0x334
+ kthread+0x114/0x1bc
+ ret_from_fork+0x10/0x20
+
+Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
+Cc: stable@kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250916-ready-v1-3-4997bf277548@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916-ready-v1-3-4997bf277548@google.com
+
+diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
+index 58b0dd575af3..0148d60926dc 100644
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -11,6 +11,7 @@
+  * Copyright (C) 2008 Nokia Corporation
+  */
+ 
++#include <linux/cleanup.h>
+ #include <linux/kernel.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+@@ -20,6 +21,7 @@
+ #include <linux/string_choices.h>
+ 
+ #include <linux/usb/cdc.h>
++#include <linux/usb/gadget.h>
+ 
+ #include "u_ether.h"
+ #include "u_ether_configfs.h"
+@@ -1436,18 +1438,18 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	struct usb_ep		*ep;
+ 	struct f_ncm_opts	*ncm_opts;
+ 
++	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
++	struct usb_request		*request __free(free_usb_request) = NULL;
++
+ 	if (!can_support_ecm(cdev->gadget))
+ 		return -EINVAL;
+ 
+ 	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
+ 
+ 	if (cdev->use_os_string) {
+-		f->os_desc_table = kzalloc(sizeof(*f->os_desc_table),
+-					   GFP_KERNEL);
+-		if (!f->os_desc_table)
++		os_desc_table = kzalloc(sizeof(*os_desc_table), GFP_KERNEL);
++		if (!os_desc_table)
+ 			return -ENOMEM;
+-		f->os_desc_n = 1;
+-		f->os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
+ 	}
+ 
+ 	mutex_lock(&ncm_opts->lock);
+@@ -1459,16 +1461,15 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	mutex_unlock(&ncm_opts->lock);
+ 
+ 	if (status)
+-		goto fail;
++		return status;
+ 
+ 	ncm_opts->bound = true;
+ 
+ 	us = usb_gstrings_attach(cdev, ncm_strings,
+ 				 ARRAY_SIZE(ncm_string_defs));
+-	if (IS_ERR(us)) {
+-		status = PTR_ERR(us);
+-		goto fail;
+-	}
++	if (IS_ERR(us))
++		return PTR_ERR(us);
++
+ 	ncm_control_intf.iInterface = us[STRING_CTRL_IDX].id;
+ 	ncm_data_nop_intf.iInterface = us[STRING_DATA_IDX].id;
+ 	ncm_data_intf.iInterface = us[STRING_DATA_IDX].id;
+@@ -1478,20 +1479,16 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	/* allocate instance-specific interface IDs */
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	ncm->ctrl_id = status;
+ 	ncm_iad_desc.bFirstInterface = status;
+ 
+ 	ncm_control_intf.bInterfaceNumber = status;
+ 	ncm_union_desc.bMasterInterface0 = status;
+ 
+-	if (cdev->use_os_string)
+-		f->os_desc_table[0].if_id =
+-			ncm_iad_desc.bFirstInterface;
+-
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	ncm->data_id = status;
+ 
+ 	ncm_data_nop_intf.bInterfaceNumber = status;
+@@ -1500,35 +1497,31 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+ 
+ 	ecm_desc.wMaxSegmentSize = cpu_to_le16(ncm_opts->max_segment_size);
+ 
+-	status = -ENODEV;
+-
+ 	/* allocate instance-specific endpoints */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_in_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ncm->port.in_ep = ep;
+ 
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_out_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ncm->port.out_ep = ep;
+ 
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_notify_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ncm->notify = ep;
+ 
+-	status = -ENOMEM;
+-
+ 	/* allocate notification request and buffer */
+-	ncm->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
+-	if (!ncm->notify_req)
+-		goto fail;
+-	ncm->notify_req->buf = kmalloc(NCM_STATUS_BYTECOUNT, GFP_KERNEL);
+-	if (!ncm->notify_req->buf)
+-		goto fail;
+-	ncm->notify_req->context = ncm;
+-	ncm->notify_req->complete = ncm_notify_complete;
++	request = usb_ep_alloc_request(ep, GFP_KERNEL);
++	if (!request)
++		return -ENOMEM;
++	request->buf = kmalloc(NCM_STATUS_BYTECOUNT, GFP_KERNEL);
++	if (!request->buf)
++		return -ENOMEM;
++	request->context = ncm;
++	request->complete = ncm_notify_complete;
+ 
+ 	/*
+ 	 * support all relevant hardware speeds... we expect that when
+@@ -1548,7 +1541,7 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	status = usb_assign_descriptors(f, ncm_fs_function, ncm_hs_function,
+ 			ncm_ss_function, ncm_ss_function);
+ 	if (status)
+-		goto fail;
++		return status;
+ 
+ 	/*
+ 	 * NOTE:  all that is done without knowing or caring about
+@@ -1561,23 +1554,18 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+ 
+ 	hrtimer_setup(&ncm->task_timer, ncm_tx_timeout, CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
+ 
++	if (cdev->use_os_string) {
++		os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
++		os_desc_table[0].if_id = ncm_iad_desc.bFirstInterface;
++		f->os_desc_table = no_free_ptr(os_desc_table);
++		f->os_desc_n = 1;
++	}
++	ncm->notify_req = no_free_ptr(request);
++
+ 	DBG(cdev, "CDC Network: IN/%s OUT/%s NOTIFY/%s\n",
+ 			ncm->port.in_ep->name, ncm->port.out_ep->name,
+ 			ncm->notify->name);
+ 	return 0;
+-
+-fail:
+-	kfree(f->os_desc_table);
+-	f->os_desc_n = 0;
+-
+-	if (ncm->notify_req) {
+-		kfree(ncm->notify_req->buf);
+-		usb_ep_free_request(ncm->notify, ncm->notify_req);
+-	}
+-
+-	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
+-
+-	return status;
+ }
+ 
+ static inline struct f_ncm_opts *to_f_ncm_opts(struct config_item *item)
+
 
