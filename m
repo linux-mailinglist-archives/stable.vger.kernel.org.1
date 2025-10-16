@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-186216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5926BE5BF2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 01:00:16 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF18BE5C09
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 01:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B5EA5E2B79
-	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 23:00:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4E93F4E4C06
+	for <lists+stable@lfdr.de>; Thu, 16 Oct 2025 23:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97892E6106;
-	Thu, 16 Oct 2025 23:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D1025C70D;
+	Thu, 16 Oct 2025 23:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXvV9P4t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rsrH5u3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698551DF970
-	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 23:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9FF49659
+	for <stable@vger.kernel.org>; Thu, 16 Oct 2025 23:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760655612; cv=none; b=Ylyz+TxbOS8R3IkKgKV1+EJaoZv4VlfuQe9X0+dvF0vQtXA87BzbyR4CkD+R/96JAJJqbN0JikYZ2F2Pu5YXq1SVwVhAMaoHCveB40bfotzefOGs3Oh0zX0tP5UlorenFsqrW/hqveQGHuXPxdVUjJ6grzpwWqnjXFegPdYoW/8=
+	t=1760655669; cv=none; b=anS8MpH8Gb1Vvw9Lfga+jq9/wpe9IpTVgzycnDEvhDCk7xNarQvgYz4iJpHt+klUv4nf8sB9dn5l+ZKh1bi8ePj6qwHIJ8lYhbwIMvhJwrKxYU1nsWM/85inCrqF9edI4Ix+9QpEQGqT2HBfM8kJQbSPQ6fw1v32y23EtpMcB0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760655612; c=relaxed/simple;
-	bh=rATaF/zF6/CpEF/gVPKdGEwwNlOO4rsDqRQs4KX/Qgs=;
+	s=arc-20240116; t=1760655669; c=relaxed/simple;
+	bh=2a3OVGv5ZYPsdcyxmpgXLrP4P5nj5597wSX/wBW/ORI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E9D9CMG50VTG4h3qSGDXn+/bFz7RD2Fl6j0h/yJA8MA4e/cnUDUOiq6O97kCqdxD8Jexx8gctppS9CIU3738jfIiqsr3aBYciNWQDSu5VsJrEqj+0vnJWZyxosK1c51NSIucHqAgNss+D7UMNTh/XUR2pef26rzF3Xp2xXSBQ+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXvV9P4t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694B9C4CEFE;
-	Thu, 16 Oct 2025 23:00:11 +0000 (UTC)
+	 MIME-Version; b=up32Ut2PDv2Z+VEpodVkMzeWUD1/J9J/saR0O40LiwotrzQqS0c06Z7sWm/GvhgiS9jd7StZ5ZCZl2SV9uSRb3KQUBfWgxE5vwCFEnXyqKp00CTn8Ml6TBmvMVhWQDTleEaABflbfoiFf1TnxjZW78lliF10V2dXS/qV2vbEXTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rsrH5u3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2235C4CEF1;
+	Thu, 16 Oct 2025 23:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760655611;
-	bh=rATaF/zF6/CpEF/gVPKdGEwwNlOO4rsDqRQs4KX/Qgs=;
+	s=k20201202; t=1760655669;
+	bh=2a3OVGv5ZYPsdcyxmpgXLrP4P5nj5597wSX/wBW/ORI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXvV9P4tq56P5TKNe6vQD7I9I5gvQElMXN61BP8uxff+64LfMPpzvFWz2rpath+oQ
-	 GcU2d18RHQYYhldEqWaBFz+jKkyhCK1DeD4ScRo21RH5Ihh9KIjEkQm7PS6OSg8usY
-	 HXgazRl0eVJIneUFgL/9yZhwgsbYueauKTv+ayFHjMwtj5CDS+QiCKetN5Me+Xh0uA
-	 lZ/6XkvI/uD2wGuV3/rgjIEoSIPp8kC0ZJX6l9KzxKSj+uazLhjWtxsTUx0VOBRwF3
-	 rkGWM2TdUMN4vm4wxANcyjENQmhXnkHARlST1+LIXXJulOBcMBQJSOQGRgk07LytTq
-	 bAuIhXXptqkfw==
+	b=rsrH5u3e//Cf7Axtf4i9kLxRGio/OiRic+X3QW/5HfcStTNEHmDvdmBUiaaKI+6MH
+	 Dn30jtEx7KdtIeqdpWPEo+g+bzzbS3cWaocmlJUgG5nzYit2T37VlA35ZEJ49AH2Ea
+	 RNoQrZ+oHmdE14AToS63e32x3dHn/DRQZte4GiNYL04OawdeuCQczK+8KbI/sXWaUi
+	 pQwSX6bvC1XqM2ClD1R1Ts7NVFNQxHhjiZgMfgHIjgX2q8ETDsFsn0TAMBnk5w+aUU
+	 noTBLyQLzbpYbHz67XLb8EJdNyr76ghg1I/SC+qXWzHNJHbYbOUGNXx7Og2ioTyblx
+	 z2oNCiiSxddGg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+Cc: Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 4/4] ACPI: property: Do not pass NULL handles to acpi_attach_data()
-Date: Thu, 16 Oct 2025 19:00:07 -0400
-Message-ID: <20251016230007.3453571-4-sashal@kernel.org>
+Subject: [PATCH 5.15.y] arm64: dts: qcom: sdm845: Fix slimbam num-channels/ees
+Date: Thu, 16 Oct 2025 19:01:06 -0400
+Message-ID: <20251016230106.3454355-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251016230007.3453571-1-sashal@kernel.org>
-References: <2025101649-bride-landmark-1121@gregkh>
- <20251016230007.3453571-1-sashal@kernel.org>
+In-Reply-To: <2025101653-gray-unbroken-db61@gregkh>
+References: <2025101653-gray-unbroken-db61@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,76 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit baf60d5cb8bc6b85511c5df5f0ad7620bb66d23c ]
+[ Upstream commit 316294bb6695a43a9181973ecd4e6fb3e576a9f7 ]
 
-In certain circumstances, the ACPI handle of a data-only node may be
-NULL, in which case it does not make sense to attempt to attach that
-node to an ACPI namespace object, so update the code to avoid attempts
-to do so.
+Reading the hardware registers of the &slimbam on RB3 reveals that the BAM
+supports only 23 pipes (channels) and supports 4 EEs instead of 2. This
+hasn't caused problems so far since nothing is using the extra channels,
+but attempting to use them would lead to crashes.
 
-This prevents confusing and unuseful error messages from being printed.
+The bam_dma driver might warn in the future if the num-channels in the DT
+are wrong, so correct the properties in the DT to avoid future regressions.
 
-Also document the fact that the ACPI handle of a data-only node may be
-NULL and when that happens in a code comment.  In addition, make
-acpi_add_nondev_subnodes() print a diagnostic message for each data-only
-node with an unknown ACPI namespace scope.
-
-Fixes: 1d52f10917a7 ("ACPI: property: Tie data nodes to acpi handles")
-Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 27ca1de07dc3 ("arm64: dts: qcom: sdm845: add slimbus nodes")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250821-sdm845-slimbam-channels-v1-1-498f7d46b9ee@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index af18c939acc3a..46003b642b597 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -112,6 +112,10 @@ static bool acpi_nondev_subnode_extract(union acpi_object *desc,
- 		result = true;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 69212445d22c9..c00b5712959d3 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4839,11 +4839,11 @@ slimbam: dma-controller@17184000 {
+ 			compatible = "qcom,bam-v1.7.0";
+ 			qcom,controlled-remotely;
+ 			reg = <0 0x17184000 0 0x2a000>;
+-			num-channels  = <31>;
++			num-channels = <23>;
+ 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
+ 			#dma-cells = <1>;
+ 			qcom,ee = <1>;
+-			qcom,num-ees = <2>;
++			qcom,num-ees = <4>;
+ 			iommus = <&apps_smmu 0x1806 0x0>;
+ 		};
  
- 	if (result) {
-+		/*
-+		 * This will be NULL if the desc package is embedded in an outer
-+		 * _DSD-equivalent package and its scope cannot be determined.
-+		 */
- 		dn->handle = handle;
- 		dn->data.pointer = desc;
- 		list_add_tail(&dn->sibling, list);
-@@ -212,6 +216,8 @@ static bool acpi_add_nondev_subnodes(acpi_handle scope,
- 			 * strings because there is no way to build full
- 			 * pathnames out of them.
- 			 */
-+			acpi_handle_debug(scope, "subnode %s: Unknown scope\n",
-+					  link->package.elements[0].string.pointer);
- 			desc = &link->package.elements[1];
- 			result = acpi_nondev_subnode_extract(desc, NULL, link,
- 							     list, parent);
-@@ -384,6 +390,9 @@ static void acpi_untie_nondev_subnodes(struct acpi_device_data *data)
- 	struct acpi_data_node *dn;
- 
- 	list_for_each_entry(dn, &data->subnodes, sibling) {
-+		if (!dn->handle)
-+			continue;
-+
- 		acpi_detach_data(dn->handle, acpi_nondev_subnode_tag);
- 
- 		acpi_untie_nondev_subnodes(&dn->data);
-@@ -398,6 +407,9 @@ static bool acpi_tie_nondev_subnodes(struct acpi_device_data *data)
- 		acpi_status status;
- 		bool ret;
- 
-+		if (!dn->handle)
-+			continue;
-+
- 		status = acpi_attach_data(dn->handle, acpi_nondev_subnode_tag, dn);
- 		if (ACPI_FAILURE(status) && status != AE_ALREADY_EXISTS) {
- 			acpi_handle_err(dn->handle, "Can't tag data node\n");
 -- 
 2.51.0
 
