@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-186256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62ABBE71E3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 10:18:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A4BBE71F5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 10:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4AD913473C3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 08:18:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1F144055BB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 08:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F5827CB35;
-	Fri, 17 Oct 2025 08:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3159F28000B;
+	Fri, 17 Oct 2025 08:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="ZvE79FkM"
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="X6C/N3Hb"
 X-Original-To: stable@vger.kernel.org
 Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E1A269AEE;
-	Fri, 17 Oct 2025 08:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179B827F72C;
+	Fri, 17 Oct 2025 08:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760689075; cv=none; b=CSkkNFaQue+vvKl9APvnVCvJLfeuc0VXPZQs0HJ9C4uvCgWtVDCIICtisHG8G9E8U9CT3J7QvcHWgLZ3Dl+HrEtInA/lWOEKldy+yDOM1IQPwYHrPmrVUJyDzqPny5nh8zbhZYRB8fP/9L6hpak7FvnyhCLNBLkSkHLLjQkpwJ0=
+	t=1760689098; cv=none; b=svRa2LWN6LqpkgGXlCjgYjUW9ixWqKj77pKdg9xrSDsu0JxnwL1heyO2JtbwrKm3Q2a+BsL3qntuasvDe8Xm7jzxHbcvB1XIAX7Ushsc6I5h+gTEwOKc0s85pkeQnhKykFIotNwWyZQFihB96PJ8Zz5XT4ntSRVVkw4+AYs+/98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760689075; c=relaxed/simple;
-	bh=43YF12BDAH/Ba3dKvt6RFRpVtCOSXmUnBY3cZsIoIeE=;
+	s=arc-20240116; t=1760689098; c=relaxed/simple;
+	bh=wdVpLu79pmbA89LCGmxTUVEV1tX3C4XJaDey5g4sBqA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YgOFArZp4PmM6eHWa21FM4Bf5VbEdnZnc8wr2B6yF7ieqqsulBKNn+nU36WKu/ywqUrMUY78NE636AUGH9+gFUUUSTUC58OqFyQOzvFKDEUj96rrJOeS5qvv1Wz7ntZBGLXb1RengpEUUs+7kSRA1QZQhLBmn5S8zjJm7X/hJqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=ZvE79FkM; arc=none smtp.client-ip=180.181.231.80
+	 Content-Type:Content-Disposition:In-Reply-To; b=LzLMaKMCy9JQH7bToucAK9RS5u1JBqNEvE/wR3ySYclPc2yehPzTyaLCRLy2PjeNSRdG/xypP7mH/hKManbFaIK0fanfxJPfnhkaSWlHMgntmzcjnBfHCzg7vYokFpZQnK1yuFs84Qh9Czhs8FIDhMTm0TUeo86BlPbKFmCICeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=X6C/N3Hb; arc=none smtp.client-ip=180.181.231.80
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=96ZHaGBqeD7BFkim6YwKV7lQH4LexCYnCik0wXeuFf4=; 
-	b=ZvE79FkMcSa+mUlR8obnxBjWQobwgwTRmd4E8uzJo0+yc/+pClbvFHm4qD15L6R1UB5k2crwk2g
-	bkPCN8HpIBbviokWxD0Md7uuaHxHofoaTJrHST8sAuNQCynbyRqhIGscGM/mu6SdZehWvydh5tYSg
-	vedFlmzlu93Seq2On8jcXBUceS/7mHSVtHB2yGG4rvdPYmwVtgj85H8cebAsuYs/rnVRMs0MCAGrQ
-	urOSDZrRRSPMmwuiDbkO81eGcmcEg3WMC1p8o4TG3KZ5I9FbcNQ0GxsafGsdC9oFMovEQnnjNY9MO
-	q6UrNteHcQx58amxJMOfkltTyIi5nxGGJk8Q==;
+	from:content-type:reply-to; bh=XaYU9Wbn4fwn3k9kyBk0uiaNLW5c1SeE0TL9SWNic6A=; 
+	b=X6C/N3HbTciFbCwii+IIdfYvkp7VMI0qIueorWKxAYA6v56XYdOpOKFtD9+YKUMMjjgMNyDig/A
+	75p+y9E3plm5QFUM7o56BBkOqk3Z4X3ubEINQOQtc3Uk2jhZWl8roT5Kw3zj4jiiuGnpcxULwdC53
+	/HuQ+csozYO21TD5d6ou3jc3ZgQsS2LLKThssPlerzJbXNbwjXkpL3TIrDSJGMmvtQ0mwk5nrxqlo
+	cbVkVTmLBKptr3qpC/IorlwphJflmL3b4iBou47bKKkmBqw4zZgJOTMrXM/k8tWFHzbtWVEPw0O/n
+	AG3UEpXrOD8BdRLX9sODTHYIZBiFgGloR+ig==;
 Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
 	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1v9feg-00DN05-2L;
-	Fri, 17 Oct 2025 16:17:43 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 17 Oct 2025 16:17:42 +0800
-Date: Fri, 17 Oct 2025 16:17:42 +0800
+	id 1v9ff4-00DN17-1n;
+	Fri, 17 Oct 2025 16:18:07 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 17 Oct 2025 16:18:06 +0800
+Date: Fri, 17 Oct 2025 16:18:06 +0800
 From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
-	Pankaj Gupta <pankaj.gupta@nxp.com>,
-	Gaurav Jain <gaurav.jain@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Victoria Milhoan (b42089)" <vicki.milhoan@freescale.com>,
-	Dan Douglass <dan.douglass@nxp.com>,
-	Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] crypto: caam: Add check for kcalloc() in test_len()
-Message-ID: <aPH7puE_qyvONCcx@gondor.apana.org.au>
-References: <20250923124418.1857922-1-lgs201920130244@gmail.com>
+To: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Cc: davem@davemloft.net, smueller@chronox.de, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+	ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com,
+	tapas.kundu@broadcom.com, vamsi-krishna.brahmajosyula@broadcom.com,
+	srinidhi.rao@broadcom.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] crypto: zero initialize memory allocated via
+ sock_kmalloc
+Message-ID: <aPH7vuz7Z3dunQbk@gondor.apana.org.au>
+References: <20250924060148.299749-1-shivani.agarwal@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,27 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250923124418.1857922-1-lgs201920130244@gmail.com>
+In-Reply-To: <20250924060148.299749-1-shivani.agarwal@broadcom.com>
 
-On Tue, Sep 23, 2025 at 08:44:18PM +0800, Guangshuo Li wrote:
-> As kcalloc() may fail, check its return value to avoid a NULL pointer
-> dereference when passing the buffer to rng->read(). On allocation
-> failure, log the error and return since test_len() returns void.
+On Tue, Sep 23, 2025 at 11:01:48PM -0700, Shivani Agarwal wrote:
+> Several crypto user API contexts and requests allocated with
+> sock_kmalloc() were left uninitialized, relying on callers to
+> set fields explicitly. This resulted in the use of uninitialized
+> data in certain error paths or when new fields are added in the
+> future.
 > 
-> Fixes: 2be0d806e25e ("crypto: caam - add a test for the RNG")
+> The ACVP patches also contain two user-space interface files:
+> algif_kpp.c and algif_akcipher.c. These too rely on proper
+> initialization of their context structures.
+> 
+> A particular issue has been observed with the newly added
+> 'inflight' variable introduced in af_alg_ctx by commit:
+> 
+>   67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
+> 
+> Because the context is not memset to zero after allocation,
+> the inflight variable has contained garbage values. As a result,
+> af_alg_alloc_areq() has incorrectly returned -EBUSY randomly when
+> the garbage value was interpreted as true:
+> 
+>   https://github.com/gregkh/linux/blame/master/crypto/af_alg.c#L1209
+> 
+> The check directly tests ctx->inflight without explicitly
+> comparing against true/false. Since inflight is only ever set to
+> true or false later, an uninitialized value has triggered
+> -EBUSY failures. Zero-initializing memory allocated with
+> sock_kmalloc() ensures inflight and other fields start in a known
+> state, removing random issues caused by uninitialized data.
+> 
+> Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
+> Fixes: 5afdfd22e6ba ("crypto: algif_rng - add random number generator support")
+> Fixes: 2d97591ef43d ("crypto: af_alg - consolidation of duplicate code")
+> Fixes: 67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 > ---
-> changelog:
-> v3:
-> - Fix build error: test_len() returns void; return without a value.
-> - No functional changes beyond the allocation failure path.
-> 
-> v2:
-> - Return on allocation failure to avoid possible NULL dereference.
+> Changes in v2:
+> - Dropped algif_skcipher_export changes, The ctx->state will immediately
+> be overwritten by crypto_skcipher_export.
+> - No other changes.
 > ---
->  drivers/crypto/caam/caamrng.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  crypto/af_alg.c     | 5 ++---
+>  crypto/algif_hash.c | 3 +--
+>  crypto/algif_rng.c  | 3 +--
+>  3 files changed, 4 insertions(+), 7 deletions(-)
 
 Patch applied.  Thanks.
 -- 
