@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-186421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CB0BE9653
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35053BE9BDF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3F8F18847C2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B15C9626BE5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AED422A7E4;
-	Fri, 17 Oct 2025 14:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA35436CE10;
+	Fri, 17 Oct 2025 15:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkGYZV+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbIl9gUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4427D337100;
-	Fri, 17 Oct 2025 14:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6580F33711C;
+	Fri, 17 Oct 2025 15:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713194; cv=none; b=Lsdn81X6tw4vvW4cB8jvj5HlZnWwQJxsT1nL6C8e06Abv2h8GBWVbGeuZcmmNTnGSfN/+jXNsCzsGQ0uXTrVY4y/HME7accbEtZitOviS3lQ6lgmYjCdz0UTSawnQeUbZ+CKCdWWLJXvSKnEu4WQjQ30EBjsEAtX6Zkqh/T0Fdw=
+	t=1760713727; cv=none; b=LepTcdQMlKCR/QneXimc0/8q4Sdc6mD6WA+HYnE7eWEThhbEsgNWRVFcUiPumutuhuPZ3Lg7kJkW1yOfPY6OeONkzxVF1qytXG1qH9lasuUB8DR7wqqkjvnsc/aY37hiuYM/bveGAxuzX1Q5lKz9D3T3QUldOu+eaVMLclhMDjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713194; c=relaxed/simple;
-	bh=j9CcaA0Hk18LU1W8Xo4TtC+xW9UHwPKa0DhtS4iSnys=;
+	s=arc-20240116; t=1760713727; c=relaxed/simple;
+	bh=JKQtEKH45s0f9odsipS7gM6flVmaQ173y0oxX8US73A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZhIEtBtsBtc0KVZ1IyBdICLlW8+0Lhyg56KNmSmUw89Ui9+Tp1zl+uA/e/DXvAimhfXP7Tg1bNrzzWVPYcMV7UWTQ9pPnk1WJpjRbcYzi0SuzaOXsw25/MUCZwrPF0CxgEAGIud0S4RcimdNQ9ymNIytokgpS1AfYQGsNakxF0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkGYZV+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7478C4CEF9;
-	Fri, 17 Oct 2025 14:59:53 +0000 (UTC)
+	 MIME-Version; b=eB7ykkJc5myc41j908ptVK3Wz2nuSTtZ8qLpq0SL/Fy1mHozfQIWMCrK+5HWr2OvF+nKKrc1M8RFJOIZJz6r/SfLVMlzxAS1Go+gVL4ZJG5hT5u8WOC8EPDwVL3HlDI7tTqy+eaclXQMNpZyclN7w8GzrOTiT/RXeATDjJ7CGus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbIl9gUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9380BC4CEF9;
+	Fri, 17 Oct 2025 15:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713194;
-	bh=j9CcaA0Hk18LU1W8Xo4TtC+xW9UHwPKa0DhtS4iSnys=;
+	s=korg; t=1760713727;
+	bh=JKQtEKH45s0f9odsipS7gM6flVmaQ173y0oxX8US73A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZkGYZV+nLA10+7vqKcyVJ8D4sj4qRTqYZp1I3D7WfkgaEiOmddr0VZqt47qyNHzwR
-	 Edyn49CBB1mpItdwGE2E0grGvCWEs734GsRCbcsHHUPPqNHbBDQ3gKiJ7qHrAmXBzZ
-	 jgA31nJfRqPF/JMiTOtBKfOYRDO3sLx3Fxm/rJ6A=
+	b=xbIl9gUhclKgv+ot6rkVxWwjQu63I420gYYxSZMtyXkksXgcuaRfsxMwEh825vgC+
+	 97z44cD9crzfz7u1RHaUE06C+qr3VHdAP9EMwrD4q6QKZm23yF+D7gXMX6qIHwXiS2
+	 lMaVZaeuYJsCaeloaQ75IZieX1RigppPFW01Tajk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	"OGriofa, Conall" <conall.ogriofa@amd.com>,
-	"Erim, Salih" <Salih.Erim@amd.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 080/168] iio: xilinx-ams: Fix AMS_ALARM_THR_DIRECT_MASK
+	Joel Granados <joel.granados@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.6 098/201] iommu/vt-d: PRS isnt usable if PDS isnt supported
 Date: Fri, 17 Oct 2025 16:52:39 +0200
-Message-ID: <20251017145131.974657490@linuxfoundation.org>
+Message-ID: <20251017145138.349835735@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-commit 1315cc2dbd5034f566e20ddce4d675cb9e6d4ddd upstream.
+commit 5ef7e24c742038a5d8c626fdc0e3a21834358341 upstream.
 
-AMS_ALARM_THR_DIRECT_MASK should be bit 0, not bit 1. This would cause
-hysteresis to be enabled with a lower threshold of -28C. The temperature
-alarm would never deassert even if the temperature dropped below the
-upper threshold.
+The specification, Section 7.10, "Software Steps to Drain Page Requests &
+Responses," requires software to submit an Invalidation Wait Descriptor
+(inv_wait_dsc) with the Page-request Drain (PD=1) flag set, along with
+the Invalidation Wait Completion Status Write flag (SW=1). It then waits
+for the Invalidation Wait Descriptor's completion.
 
-Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: O'Griofa, Conall <conall.ogriofa@amd.com>
-Tested-by: Erim, Salih <Salih.Erim@amd.com>
-Acked-by: Erim, Salih <Salih.Erim@amd.com>
-Link: https://patch.msgid.link/20250715003058.2035656-1-sean.anderson@linux.dev
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+However, the PD field in the Invalidation Wait Descriptor is optional, as
+stated in Section 6.5.2.9, "Invalidation Wait Descriptor":
+
+"Page-request Drain (PD): Remapping hardware implementations reporting
+ Page-request draining as not supported (PDS = 0 in ECAP_REG) treat this
+ field as reserved."
+
+This implies that if the IOMMU doesn't support the PDS capability, software
+can't drain page requests and group responses as expected.
+
+Do not enable PCI/PRI if the IOMMU doesn't support PDS.
+
+Reported-by: Joel Granados <joel.granados@kernel.org>
+Closes: https://lore.kernel.org/r/20250909-jag-pds-v1-1-ad8cba0e494e@kernel.org
+Fixes: 66ac4db36f4c ("iommu/vt-d: Add page request draining support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20250915062946.120196-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/xilinx-ams.c |    2 +-
+ drivers/iommu/intel/iommu.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/xilinx-ams.c
-+++ b/drivers/iio/adc/xilinx-ams.c
-@@ -118,7 +118,7 @@
- #define AMS_ALARM_THRESHOLD_OFF_10	0x10
- #define AMS_ALARM_THRESHOLD_OFF_20	0x20
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4415,7 +4415,7 @@ static struct iommu_device *intel_iommu_
+ 			}
  
--#define AMS_ALARM_THR_DIRECT_MASK	BIT(1)
-+#define AMS_ALARM_THR_DIRECT_MASK	BIT(0)
- #define AMS_ALARM_THR_MIN		0x0000
- #define AMS_ALARM_THR_MAX		(BIT(16) - 1)
- 
+ 			if (info->ats_supported && ecap_prs(iommu->ecap) &&
+-			    pci_pri_supported(pdev))
++			    ecap_pds(iommu->ecap) && pci_pri_supported(pdev))
+ 				info->pri_supported = 1;
+ 		}
+ 	}
 
 
 
