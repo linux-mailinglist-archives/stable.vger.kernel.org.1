@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C240EBE9AFF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:38 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C044BEA53C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FAC462172C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3649D5A1D1B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B60232E144;
-	Fri, 17 Oct 2025 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DAA257437;
+	Fri, 17 Oct 2025 15:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpgbRSyN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ABtTKiK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022CF330317;
-	Fri, 17 Oct 2025 15:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91308330B04;
+	Fri, 17 Oct 2025 15:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713659; cv=none; b=d0gzJaADpo18drcBGwLdUe/MbUM4g6Zry26nLi57wsGFAKSRJHFZkjb2MVnnLYqyRAfZ1u9HJzZRHA7vRUVI6qJdhvxk+xxiy7lLrqqq5FjRgX33kcT90aepYoXsdqi1MNE5B/x3/ldLuZpT6o27CZgUvOS4SH43VhVrIzd2Klk=
+	t=1760716106; cv=none; b=oYFzX3RGSwV4QoFOMxD+zOwkj6d3pXQKJ/L4Jrd5Q3e6O9wJ4Sz5svsB7TAR+xF2NIpNQqZ6HDVRWvep+ASJyKb4NF4W2U8f9oExgAHpGUH5ZQ2j4GKAQibTLMJ4Y5dzHuOrE9d/8fVc3/Gkn44lSrOXmtxJpExsbxgub1yzlEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713659; c=relaxed/simple;
-	bh=07fuNhLn1efOFg/Te8ggwlHbRWpNtyC/quXaRaaEYjc=;
+	s=arc-20240116; t=1760716106; c=relaxed/simple;
+	bh=3cbZ8CzGijzoRf7Y3hGGchQx2S5YyH0CMLCJ5UitXDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bbdqp75uKlI6tIhpuomwoAbj7aYuvjTexMjXJ695GHHR4JZgK2qF5agP32ylnN2YwRBvLxLgYo2TvVWWgbSlkEzEz9+JVOzu8WD2MzK2Kfey1eAiWvCXfi4QckrdTIMG/INmuMUZ8oVaALoURV9LX5x7pFLPNMuMfXQadSgpkRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpgbRSyN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADF2C4CEE7;
-	Fri, 17 Oct 2025 15:07:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mt1C0sTJqrO+z/oapw8eFD2RPsq/949JeoEsTzpl2PbptrB1dWg2c+wAKKWks6OBDFbxUKNPxFx0zq3Q2KoQxpdhbKaymWG02XB64bdBsxaGvz27SKZ9xWuykTm6jp2L9c65WZHZ/oVBBkmGTIbvJwMQsKLau+YVgS3zl7CKoGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ABtTKiK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6EFC4CEE7;
+	Fri, 17 Oct 2025 15:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713658;
-	bh=07fuNhLn1efOFg/Te8ggwlHbRWpNtyC/quXaRaaEYjc=;
+	s=korg; t=1760716106;
+	bh=3cbZ8CzGijzoRf7Y3hGGchQx2S5YyH0CMLCJ5UitXDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QpgbRSyNZaADrmtz5OBHm/YCSSqNQQaYcn8GIZ/UXewoD/4mHCNUUF64PU0cZSUiW
-	 H+0kTKbp5RBB9F7gDjO3MfKhwAy7kbITZ0hir7q2BGiGI3aNeI9d/gPCPZF0e3PSDg
-	 R1YUn6c2AaOn3FeGuw0nbfKrdNdppzgXFNccLDuQ=
+	b=0ABtTKiKWbOFYrhS7cpG9nrdZCigzc021gdzm+zqX8CKBKRyDnOIGxHd1Rv0pQbOe
+	 fLnzobgqvy9OYSgfUj8RDICLMIeMa+45lO61L+8xt274iVoxgkwfFPuKbg+nslPUjy
+	 aaA+UDNeFFac4zk3KuRj2/X8s4R3DfG+OJzw7tWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.6 073/201] media: i2c: mt9v111: fix incorrect type for ret
-Date: Fri, 17 Oct 2025 16:52:14 +0200
-Message-ID: <20251017145137.437837908@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 042/276] pwm: tiehrpwm: Fix corner case in clock divisor calculation
+Date: Fri, 17 Oct 2025 16:52:15 +0200
+Message-ID: <20251017145143.941220897@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit bacd713145443dce7764bb2967d30832a95e5ec8 upstream.
+[ Upstream commit 00f83f0e07e44e2f1fb94b223e77ab7b18ee2d7d ]
 
-Change "ret" from unsigned int to int type in mt9v111_calc_frame_rate()
-to store negative error codes or zero returned by __mt9v111_hw_reset()
-and other functions.
+The function set_prescale_div() is responsible for calculating the clock
+divisor settings such that the input clock rate is divided down such that
+the required period length is at most 0x10000 clock ticks. If period_cycles
+is an integer multiple of 0x10000, the divisor period_cycles / 0x10000 is
+good enough. So round up in the calculation of the required divisor and
+compare it using >= instead of >.
 
-Storing the negative error codes in unsigned type, doesn't cause an issue
-at runtime but it's ugly as pants.
-
-No effect on runtime.
-
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Fixes: aab7ed1c3927 ("media: i2c: Add driver for Aptina MT9V111")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 19891b20e7c2 ("pwm: pwm-tiehrpwm: PWM driver support for EHRPWM")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/85488616d7bfcd9c32717651d0be7e330e761b9c.1754927682.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/mt9v111.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-tiehrpwm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/i2c/mt9v111.c
-+++ b/drivers/media/i2c/mt9v111.c
-@@ -534,8 +534,8 @@ static int mt9v111_calc_frame_rate(struc
- static int mt9v111_hw_config(struct mt9v111_dev *mt9v111)
- {
- 	struct i2c_client *c = mt9v111->client;
--	unsigned int ret;
- 	u16 outfmtctrl2;
-+	int ret;
+diff --git a/drivers/pwm/pwm-tiehrpwm.c b/drivers/pwm/pwm-tiehrpwm.c
+index 5b723a48c5f1d..3fef7d7987736 100644
+--- a/drivers/pwm/pwm-tiehrpwm.c
++++ b/drivers/pwm/pwm-tiehrpwm.c
+@@ -167,7 +167,7 @@ static int set_prescale_div(unsigned long rqst_prescaler, u16 *prescale_div,
  
- 	/* Force device reset. */
- 	ret = __mt9v111_hw_reset(mt9v111);
+ 			*prescale_div = (1 << clkdiv) *
+ 					(hspclkdiv ? (hspclkdiv * 2) : 1);
+-			if (*prescale_div > rqst_prescaler) {
++			if (*prescale_div >= rqst_prescaler) {
+ 				*tb_clk_div = (clkdiv << TBCTL_CLKDIV_SHIFT) |
+ 					(hspclkdiv << TBCTL_HSPCLKDIV_SHIFT);
+ 				return 0;
+@@ -266,7 +266,7 @@ static int ehrpwm_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	pc->period_cycles[pwm->hwpwm] = period_cycles;
+ 
+ 	/* Configure clock prescaler to support Low frequency PWM wave */
+-	if (set_prescale_div(period_cycles/PERIOD_MAX, &ps_divval,
++	if (set_prescale_div(DIV_ROUND_UP(period_cycles, PERIOD_MAX), &ps_divval,
+ 			     &tb_divval)) {
+ 		dev_err(chip->dev, "Unsupported values\n");
+ 		return -EINVAL;
+-- 
+2.51.0
+
 
 
 
