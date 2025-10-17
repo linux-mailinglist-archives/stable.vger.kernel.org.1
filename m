@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-187086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FB9BEA236
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F193DBE9A42
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4D405A23D5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96B391887B5C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2867632E13E;
-	Fri, 17 Oct 2025 15:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A640233290A;
+	Fri, 17 Oct 2025 15:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J9Efp/i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wG7xOE/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA24533291C;
-	Fri, 17 Oct 2025 15:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CF932E150;
+	Fri, 17 Oct 2025 15:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715078; cv=none; b=nS50jAf+KqkFIEfz6EQPxOWy0TtsUO69SC8NQDHHH7Ku9EbtSmmM1vYdsENcxNwZ8op/x3SThqxnaIZy/tnkMEnh9q37Ve/oKQeUdpuH0IeceYFxSeD8DIR6KkXQoILGE65aUkUF6yOptLZrpzT417qW8P70kV6t1zIdqFKcaFk=
+	t=1760714096; cv=none; b=TKNYOGIr8AwuY399Yo0qYZSxGJjW2lWaWWO+f/e2ohds4VDiYCzTktNtGs9aQ4dul3ndwrRjkLck5j7gUQwTeoia2R1ITxshGUdYNgKr8QAIeaWN9/JSX7pCe7dx5w8cupYocA9ZrbF1EGfNTjNwCpS6zszcv0Whi+/wYTFz+pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715078; c=relaxed/simple;
-	bh=Xmz8CAKjnqrgMpLfWTPb9To6bjhr6uiTAmEkjZ6mj38=;
+	s=arc-20240116; t=1760714096; c=relaxed/simple;
+	bh=j4S95gxoCndLRsITb9cHSXbRfxwBVODgWZTUEsggCZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZbdia9foNukHp2F7c0LgpR6PjQASwD2Z7L6Kosg0GBMIW2RkJb5HuKT0lR/BhBNhWuSzrHWrZLIFEW/TAK3CnEHbG2CmH4+p5NtqH5UPtj36E3xm5trv2jBOqY7RRi55/gYSAA0ns8U+LgqPrLHi7bZ6dWPrH5kcW27pLBQqUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J9Efp/i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542BEC4CEFE;
-	Fri, 17 Oct 2025 15:31:18 +0000 (UTC)
+	 MIME-Version; b=pqL6Gb7XXF3dERDOiOM+MHM+KdreSqQ3NUN+sZMpWmV3NFwWF01y9U63ZaGAnZ64yzRmTLjVLnLGZE60PTPKpPrzSgNPAz46pmHXhCqfmC6jVzJa0Dhoslc8e2gfIeVp3oijwhUwwWh6ZIcFxTC+4EzUATJm0kOmrHJ3n4LjB6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wG7xOE/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD31EC4CEE7;
+	Fri, 17 Oct 2025 15:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715078;
-	bh=Xmz8CAKjnqrgMpLfWTPb9To6bjhr6uiTAmEkjZ6mj38=;
+	s=korg; t=1760714096;
+	bh=j4S95gxoCndLRsITb9cHSXbRfxwBVODgWZTUEsggCZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1J9Efp/ioHUcblhbU0WPZBjr7VtGPBB/VnvMxQDRi3BLXvDcXbbN7TC40An77j+cd
-	 9ASALmDRkeTPGMLLGwB96wWIAJZcfjgWSrAZY+S0BV64wXJR7eRH7hddYEEoeNdhHZ
-	 luPezuBePlNmbCD7fxYBgXMf6VPfgXtygOAaGpfs=
+	b=wG7xOE/7N8Bm36M7qaSrKPn0mSD3WIiyfeLvckCjlKGUcyGTLkdnmY/MLiZur/V5w
+	 7sPH9ebmaYJJnS7P9L4YFyfnkv6AdlJyqAzpXyszxJ0i4oGA/b4os/ur/F3aMhs2wB
+	 2LJHsJybnr8mSWCTIukeXXeS5dInMJhGWddsuL6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ali Saidi <alisaidi@amazon.com>,
+	German Gomez <german.gomez@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 057/371] nfsd: ignore ATTR_DELEG when checking ia_valid before notify_change()
+Subject: [PATCH 6.12 025/277] perf arm_spe: Correct memory level for remote access
 Date: Fri, 17 Oct 2025 16:50:32 +0200
-Message-ID: <20251017145203.862034497@linuxfoundation.org>
+Message-ID: <20251017145148.067008195@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +72,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 5affb498e70bba3053b835c478a199bf92c99c4d ]
+[ Upstream commit cb300e3515057fb555983ce47e8acc86a5c69c3c ]
 
-If the only flag left is ATTR_DELEG, then there are no changes to be
-made.
+For remote accesses, the data source packet does not contain information
+about the memory level. To avoid misinformation, set the memory level to
+NA (Not Available).
 
-Fixes: 7e13f4f8d27d ("nfsd: handle delegated timestamps in SETATTR")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 4e6430cbb1a9f1dc ("perf arm-spe: Use SPE data source for neoverse cores")
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ali Saidi <alisaidi@amazon.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/arm-spe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index edf050766e570..3cd3b9e069f4a 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -467,7 +467,7 @@ static int __nfsd_setattr(struct dentry *dentry, struct iattr *iap)
- 			return 0;
- 	}
- 
--	if (!iap->ia_valid)
-+	if ((iap->ia_valid & ~ATTR_DELEG) == 0)
- 		return 0;
- 
- 	/*
+diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
+index 4754d247dbe73..9890b17241c34 100644
+--- a/tools/perf/util/arm-spe.c
++++ b/tools/perf/util/arm-spe.c
+@@ -479,8 +479,8 @@ static void arm_spe__synth_data_source_common(const struct arm_spe_record *recor
+ 	 * socket
+ 	 */
+ 	case ARM_SPE_COMMON_DS_REMOTE:
+-		data_src->mem_lvl = PERF_MEM_LVL_REM_CCE1;
+-		data_src->mem_lvl_num = PERF_MEM_LVLNUM_ANY_CACHE;
++		data_src->mem_lvl = PERF_MEM_LVL_NA;
++		data_src->mem_lvl_num = PERF_MEM_LVLNUM_NA;
+ 		data_src->mem_remote = PERF_MEM_REMOTE_REMOTE;
+ 		data_src->mem_snoopx = PERF_MEM_SNOOPX_PEER;
+ 		break;
 -- 
 2.51.0
 
