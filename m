@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-187517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C87EBEA4EC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:56:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE235BE9EE3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C52FC1889692
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8A81744B7C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2B7330B3C;
-	Fri, 17 Oct 2025 15:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8643328FD;
+	Fri, 17 Oct 2025 15:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8qmtZsx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+eVRBBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37296330B17;
-	Fri, 17 Oct 2025 15:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1A92745E;
+	Fri, 17 Oct 2025 15:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716299; cv=none; b=YsksGqpd+cMTQOJ8L9BOtjLjgSxXw0qvNp/y1hfj65o+IuNcVXZcqGH9B6DfgsJs0zg7nu9ORtsLlIlptHyF9MCl0Wp0d0bcNSR1UooGymul86EaNGy0609swG3hKpUlK9fYC7EyflzHfwKJ1ETo4QKEAqgqlKVY7RCHEiTj8xQ=
+	t=1760713942; cv=none; b=cE7OGcFGMG5T8TdTsHBGwoWQzgJ2OqNR8j8HqCwOQ8mJtO+dfUSOzrxo+4MQuXX6WK8Ulu0j/sI70S2SUoL2YWFD+r1hFXNbRDDOyeUZCNWjfcQ2pxUwLPjNxqTvUdrV/GcKukR+zmK6Emp5W7HRuQFNGGZ8iQoVhIQCB+EH9m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716299; c=relaxed/simple;
-	bh=gohRUfHNiaTEUbv233h7qPKQnZTslC00ZfLleEvnZpA=;
+	s=arc-20240116; t=1760713942; c=relaxed/simple;
+	bh=JXUBHKIzoiHphxfahWqIl7GT/hWFipRe9O9dwN5fuOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KueARIjQLGYWhGLbI3NlJMkwIRXlj+b+Tvr1eOPKeFY9hOBylYEskN3KjTy8VjDZq+v2Duqmpkplb4Ndqjcz0pLdxjJ1v0KTgFHse7FMkS8+sOE0CDnDsvhaiDssmauOdIC15ETc6w7QR8HIfvHdr8DSe5TrQTTDdHb6fvZ/nH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8qmtZsx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B144DC4CEE7;
-	Fri, 17 Oct 2025 15:51:38 +0000 (UTC)
+	 MIME-Version; b=WOJkNWSFw6Dzi1RsVIoqHb33/fJcwfrhCP/aIi/IrEoMs929jIGv8rizOm+mi3lO9H3f1d219O1GW2/5HuSnLr2jLKfIDLpJvQ83BnzL5BATWB5LE8YG1GnlRoTqgGUPDfn/nzKHuVJEBrA/nQ7jLzVxWwKmMpAj02qwSy8EpJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+eVRBBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011B0C4CEFE;
+	Fri, 17 Oct 2025 15:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716299;
-	bh=gohRUfHNiaTEUbv233h7qPKQnZTslC00ZfLleEvnZpA=;
+	s=korg; t=1760713942;
+	bh=JXUBHKIzoiHphxfahWqIl7GT/hWFipRe9O9dwN5fuOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G8qmtZsxc3g8s++GlDl14gsuLgQ/QRHPvsulsH/rkcE4VzjxNEgRU6ASh2A2ZpPeR
-	 2Hpp8WNo4nUbQLpAl98LojnThdBHKQpMCF35pVK+Lz2gEdvfLCOF0DJ+RU0NcwyLBT
-	 zNyyK9ZxSxvNZSxSquQqnByhB5tePwF8XziJRn0g=
+	b=k+eVRBBlF8bZzpOKlB0FSKF52cc7E26dRpEzm+1UHrqwHyyQXVmeeTtEUVORaONFJ
+	 hTlHtO4EOFgsB88ppl3JZz5v9a7FDaF+SIXbedZrksVZLaMINvHNBgL7lX6hzj/0vR
+	 yqdC9JS2JcptYdZfi3lRp2u6PRD5W9qlRSOMT3Gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.garry@huawei.com>,
-	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/276] scsi: mvsas: Delete mvs_tag_init()
+Subject: [PATCH 6.6 173/201] KVM: SVM: Emulate PERF_CNTR_GLOBAL_STATUS_SET for PerfMonV2
 Date: Fri, 17 Oct 2025 16:53:54 +0200
-Message-ID: <20251017145147.629838658@linuxfoundation.org>
+Message-ID: <20251017145141.097999552@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit ffc9f9bf3f14876d019f67ef17d41138802529a8 ]
+[ Upstream commit 68e61f6fd65610e73b17882f86fedfd784d99229 ]
 
-All mvs_tag_init() does is zero the tag bitmap, but this is already done
-with the kzalloc() call to alloc the tags, so delete this unneeded
-function.
+Emulate PERF_CNTR_GLOBAL_STATUS_SET when PerfMonV2 is enumerated to the
+guest, as the MSR is supposed to exist in all AMD v2 PMUs.
 
-Signed-off-by: John Garry <john.garry@huawei.com>
-Link: https://lore.kernel.org/r/1666091763-11023-7-git-send-email-john.garry@huawei.com
-Reviewed-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 60cd16a3b743 ("scsi: mvsas: Fix use-after-free bugs in mvs_work_queue")
+Fixes: 4a2771895ca6 ("KVM: x86/svm/pmu: Add AMD PerfMonV2 support")
+Cc: stable@vger.kernel.org
+Cc: Sandipan Das <sandipan.das@amd.com>
+Link: https://lore.kernel.org/r/20250711172746.1579423-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ changed global_status_rsvd field to global_status_mask ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mvsas/mv_init.c | 2 --
- drivers/scsi/mvsas/mv_sas.c  | 7 -------
- drivers/scsi/mvsas/mv_sas.h  | 1 -
- 3 files changed, 10 deletions(-)
+ arch/x86/include/asm/msr-index.h |    1 +
+ arch/x86/kvm/pmu.c               |    5 +++++
+ arch/x86/kvm/svm/pmu.c           |    1 +
+ arch/x86/kvm/x86.c               |    2 ++
+ 4 files changed, 9 insertions(+)
 
-diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
-index 1c98662db080f..e2093e7637d82 100644
---- a/drivers/scsi/mvsas/mv_init.c
-+++ b/drivers/scsi/mvsas/mv_init.c
-@@ -286,8 +286,6 @@ static int mvs_alloc(struct mvs_info *mvi, struct Scsi_Host *shost)
- 	}
- 	mvi->tags_num = slot_nr;
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -661,6 +661,7 @@
+ #define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS	0xc0000300
+ #define MSR_AMD64_PERF_CNTR_GLOBAL_CTL		0xc0000301
+ #define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR	0xc0000302
++#define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET	0xc0000303
  
--	/* Initialize tags */
--	mvs_tag_init(mvi);
- 	return 0;
- err_out:
- 	return 1;
-diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
-index efd11fabff937..3b4576dba590e 100644
---- a/drivers/scsi/mvsas/mv_sas.c
-+++ b/drivers/scsi/mvsas/mv_sas.c
-@@ -51,13 +51,6 @@ inline int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out)
- 	return 0;
- }
+ /* AMD Last Branch Record MSRs */
+ #define MSR_AMD64_LBR_SELECT			0xc000010e
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -588,6 +588,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcp
+ 		msr_info->data = pmu->global_ctrl;
+ 		break;
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
++	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
+ 	case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
+ 		msr_info->data = 0;
+ 		break;
+@@ -649,6 +650,10 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcp
+ 		if (!msr_info->host_initiated)
+ 			pmu->global_status &= ~data;
+ 		break;
++	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
++		if (!msr_info->host_initiated)
++			pmu->global_status |= data & ~pmu->global_status_mask;
++		break;
+ 	default:
+ 		kvm_pmu_mark_pmc_in_use(vcpu, msr_info->index);
+ 		return static_call(kvm_x86_pmu_set_msr)(vcpu, msr_info);
+--- a/arch/x86/kvm/svm/pmu.c
++++ b/arch/x86/kvm/svm/pmu.c
+@@ -117,6 +117,7 @@ static bool amd_is_valid_msr(struct kvm_
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
++	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
+ 		return pmu->version > 1;
+ 	default:
+ 		if (msr > MSR_F15H_PERF_CTR5 &&
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1495,6 +1495,7 @@ static const u32 msrs_to_save_pmu[] = {
+ 	MSR_AMD64_PERF_CNTR_GLOBAL_CTL,
+ 	MSR_AMD64_PERF_CNTR_GLOBAL_STATUS,
+ 	MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR,
++	MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET,
+ };
  
--void mvs_tag_init(struct mvs_info *mvi)
--{
--	int i;
--	for (i = 0; i < mvi->tags_num; ++i)
--		mvs_tag_clear(mvi, i);
--}
--
- static struct mvs_info *mvs_find_dev_mvi(struct domain_device *dev)
- {
- 	unsigned long i = 0, j = 0, hi = 0;
-diff --git a/drivers/scsi/mvsas/mv_sas.h b/drivers/scsi/mvsas/mv_sas.h
-index fa654c73beeee..8dd30f8b478ec 100644
---- a/drivers/scsi/mvsas/mv_sas.h
-+++ b/drivers/scsi/mvsas/mv_sas.h
-@@ -428,7 +428,6 @@ void mvs_tag_clear(struct mvs_info *mvi, u32 tag);
- void mvs_tag_free(struct mvs_info *mvi, u32 tag);
- void mvs_tag_set(struct mvs_info *mvi, unsigned int tag);
- int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out);
--void mvs_tag_init(struct mvs_info *mvi);
- void mvs_iounmap(void __iomem *regs);
- int mvs_ioremap(struct mvs_info *mvi, int bar, int bar_ex);
- void mvs_phys_reset(struct mvs_info *mvi, u32 phy_mask, int hard);
--- 
-2.51.0
-
+ static u32 msrs_to_save[ARRAY_SIZE(msrs_to_save_base) +
+@@ -7194,6 +7195,7 @@ static void kvm_probe_msr_to_save(u32 ms
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
++	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
+ 		if (!kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2))
+ 			return;
+ 		break;
 
 
 
