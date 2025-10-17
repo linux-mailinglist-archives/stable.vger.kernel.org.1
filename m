@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-187587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA850BEA734
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:06:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3931BEACC2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4E72E5A4CAF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2C5B74441B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039DA231C9F;
-	Fri, 17 Oct 2025 15:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E65330B1C;
+	Fri, 17 Oct 2025 15:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eODKn5SZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OE/xUVtG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA630330B35;
-	Fri, 17 Oct 2025 15:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D850330B03;
+	Fri, 17 Oct 2025 15:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716501; cv=none; b=lgH8pgoNHVur68qa0cjnHBrtglJZFSnypXj3dPXpHxbxvZTZW7Wh07cSUb5sGC/dHa0EPWrTjX72IkquMVxIIW0wgWuVpx6v209MhE4nXpWU5B/Zeyx1z+A+ath558V9oe935tBGSJ8ou8MQEFvRDc23z21KexTfIZUfTJjkuMk=
+	t=1760715768; cv=none; b=avDs4/CcuapL4yv1refAN6UBWUYHVf4Kl3LRmoDTnCzchN2w8e848dul3btwajEjN1l6A6HxhwTt8pcjrnxavt6sZIQSBgct14lmVrSrOAD59lHJXF5oKqM62yxWly4c2GVFNpkU0rU8ktuohNSXwjKspLZkaaM8UCeAq4SPXZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716501; c=relaxed/simple;
-	bh=Kk2su6eOPOc5zW7fGpxymRAAgI6rVJOnja2uu82+DAU=;
+	s=arc-20240116; t=1760715768; c=relaxed/simple;
+	bh=4nKA6rrBX0ejd5mj8k5g2kzeD9hMeKWRFjdo++ydCDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3nCDAzLGmdMVFURNOChIr8iqtihq7P18j+/PghgvR+elo0/y/t+hqFDXn+Zsfc9U5mUUAnHz5s33ze+xP5eIVKAeS/J7Qn7ULNYeGMwo5EWpMlRWYzrkPqUviPHKw1AZkXA4ArwI4EEdBil3dyOMcssopatCdDwkx58oYnwDkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eODKn5SZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3751C4CEFE;
-	Fri, 17 Oct 2025 15:55:00 +0000 (UTC)
+	 MIME-Version; b=kVXkfF+830imwdqoYsJU4xlNwwPwvsVE0C1qXgjU8s/6xe0IJLsoBG6cGHxqFxghmRCmNHmu/MLG0nGHuwvax6CaJYQtCueuX3nJBjo0pzyfbU/2E9aE2Z144QPSYSe7PsiCxGsm+8Duc9nvWwXOk/Xds/G+fi+ue+CI4TaA5C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OE/xUVtG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995ABC4CEE7;
+	Fri, 17 Oct 2025 15:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716501;
-	bh=Kk2su6eOPOc5zW7fGpxymRAAgI6rVJOnja2uu82+DAU=;
+	s=korg; t=1760715768;
+	bh=4nKA6rrBX0ejd5mj8k5g2kzeD9hMeKWRFjdo++ydCDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eODKn5SZAHh0drSoaGMW0zTDhV2znwck1K9/Lc8ivoZrMJ5nodKzadlExF7JQ4iV0
-	 s5RXpexM+4dY+f4qQ7O5in5QYPa8DWiMVez/jrtsKxRnfMmQsStkizzsq9PLa/PY2Z
-	 654Psdr5edn5SMLLfZaK4RsGBBb062MCjuzG0JII=
+	b=OE/xUVtGmZJdD1yUmzVKboRLj19b3h9T34tQBJpo1sdEDEyPqOA3zvT9vI4QTpkZ5
+	 Uty/Qklf8BFwqQRrcR1+Cx1BeIGgYSvDmW6HUY9pzpKKiFGQiEHuc1jDnJwKPevnBU
+	 d6KAAke2N2HEEIYmHBxR8hZn8D+OMIIdJCnVO+tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>
-Subject: [PATCH 5.15 211/276] PCI: tegra194: Fix broken tegra_pcie_ep_raise_msi_irq()
-Date: Fri, 17 Oct 2025 16:55:04 +0200
-Message-ID: <20251017145150.167269028@linuxfoundation.org>
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH 6.17 330/371] media: iris: Allow substate transition to load resources during output streaming
+Date: Fri, 17 Oct 2025 16:55:05 +0200
+Message-ID: <20251017145214.017051441@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-commit b640d42a6ac9ba01abe65ec34f7c73aaf6758ab8 upstream.
+commit 65f72c6a8d97c0cbdc785cb9a35dc358dee67959 upstream.
 
-The pci_epc_raise_irq() supplies a MSI or MSI-X interrupt number in range
-(1-N), as per the pci_epc_raise_irq() kdoc, where N is 32 for MSI.
+A client (e.g., GST for encoder) can initiate streaming on the capture
+port before the output port, causing the instance state to transition to
+OUTPUT_STREAMING. When streaming is subsequently started on the output
+port, the instance state advances to STREAMING, and the substate should
+transition to LOAD_RESOURCES.
 
-But tegra_pcie_ep_raise_msi_irq() incorrectly uses the interrupt number as
-the MSI vector. This causes wrong MSI vector to be triggered, leading to
-the failure of PCI endpoint Kselftest MSI_TEST test case.
+Previously, the code blocked the substate transition to LOAD_RESOURCES
+if the instance state was OUTPUT_STREAMING. This update modifies the
+logic to permit the substate transition to LOAD_RESOURCES when the
+instance state is OUTPUT_STREAMING, thereby supporting this client
+streaming sequence.
 
-To fix this issue, convert the interrupt number to MSI vector.
-
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Fixes: 547f7b8c5090 ("media: iris: add check to allow sub states transitions")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250922140822.519796-6-cassel@kernel.org
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # X1E80100
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/iris/iris_state.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1839,10 +1839,10 @@ static int tegra_pcie_ep_raise_legacy_ir
- 
- static int tegra_pcie_ep_raise_msi_irq(struct tegra_pcie_dw *pcie, u16 irq)
- {
--	if (unlikely(irq > 31))
-+	if (unlikely(irq > 32))
- 		return -EINVAL;
- 
--	appl_writel(pcie, BIT(irq), APPL_MSI_CTRL_1);
-+	appl_writel(pcie, BIT(irq - 1), APPL_MSI_CTRL_1);
- 
- 	return 0;
- }
+diff --git a/drivers/media/platform/qcom/iris/iris_state.c b/drivers/media/platform/qcom/iris/iris_state.c
+index 104e1687ad39..a21238d2818f 100644
+--- a/drivers/media/platform/qcom/iris/iris_state.c
++++ b/drivers/media/platform/qcom/iris/iris_state.c
+@@ -122,7 +122,8 @@ static bool iris_inst_allow_sub_state(struct iris_inst *inst, enum iris_inst_sub
+ 		return false;
+ 	case IRIS_INST_OUTPUT_STREAMING:
+ 		if (sub_state & (IRIS_INST_SUB_DRC_LAST |
+-			IRIS_INST_SUB_DRAIN_LAST | IRIS_INST_SUB_OUTPUT_PAUSE))
++			IRIS_INST_SUB_DRAIN_LAST | IRIS_INST_SUB_OUTPUT_PAUSE |
++			IRIS_INST_SUB_LOAD_RESOURCES))
+ 			return true;
+ 		return false;
+ 	case IRIS_INST_STREAMING:
+-- 
+2.51.0
+
 
 
 
