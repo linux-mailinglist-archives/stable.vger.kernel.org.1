@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-186686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1755BE9906
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:29 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D0FBE9F06
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 600D235CF25
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D4A595A1390
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCABA33290F;
-	Fri, 17 Oct 2025 15:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC6232C93A;
+	Fri, 17 Oct 2025 15:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA0v0NVE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzZ6S3Rg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C4419DF9A;
-	Fri, 17 Oct 2025 15:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3222F12A5;
+	Fri, 17 Oct 2025 15:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713948; cv=none; b=jUoF+RHx4+63e89DifDxPaBWQFIDw10FSJfWcD9LUFbozG1xhCQFOJZKSfIvP9+2qat9amhZEzy416m7LKXEMXeL/xHwyiiobZopgswjpCXMzaaNde68r4zZzDLfWcIGSJcsBXJ9PqUtOG/bmu0lp6v5rAdVU1wDQo6ugQqwCYE=
+	t=1760714684; cv=none; b=V3OYZKQXUtE4adC8bRUeKwmSDkA3KeXcgLrKCc4gbR5x2Qf2YCo+eOwEZyl1J203LOqr+M4CdZdEs7EFk18UJMCaROO+Pi75msOcqTO4m2IpMvCudsi+mJG7eP8+RFIp1iGKXowHc+6pLK4pIn5U+HLJfzgPijIVRT/hItOoh3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713948; c=relaxed/simple;
-	bh=+7FnJPn96W9GVGEWZ2XWvzatj6cgYrIpnaWmvD4zS9A=;
+	s=arc-20240116; t=1760714684; c=relaxed/simple;
+	bh=XHlBTjrMRiokzcz0YCKL4ryJZYJdrklWaOB+x2P4+MY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0M+ZvVRhr3f6/6Sm7AkXz9EfbTjW/qouUkDr3mP67MFl1Rtf//tY5/kAG8vCqe5KCDoST85tWPPgiinkBv6DM5+x28UOXMEoiGrI6ScIzw2EaZOsdb6oGLZtg17J5G29EB/0YviOKM5jsb4o7oYpDbMDIuz97CCN6kJNnHcBKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA0v0NVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F364EC4CEE7;
-	Fri, 17 Oct 2025 15:12:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fy43d6dt/zT3BZB5ScNYFE6kz5IcLTcV3QD8dT2qVbiZJOc+b3yQsAMo76JuO756pirBlmaMaJDHGKS4j/c9mnz7i2U/FE4C/VnDn0HtEH7w5D7zD4pJrAUZL4Zp2dVum/FGDu65av1s0nptp75llFqyXDpSP/2ZOW5Upo3CaAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzZ6S3Rg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72FCC4CEE7;
+	Fri, 17 Oct 2025 15:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713948;
-	bh=+7FnJPn96W9GVGEWZ2XWvzatj6cgYrIpnaWmvD4zS9A=;
+	s=korg; t=1760714684;
+	bh=XHlBTjrMRiokzcz0YCKL4ryJZYJdrklWaOB+x2P4+MY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IA0v0NVEHQlBpDFh5nrX1+dfyhYLFDd66vVpIvHSAwB3rQ7YZ02ivV9qJRxYBlnaX
-	 M+vnT+UewDXwRvb3zlWdxLSoTTA7zCynSW2sGseZyZ/mzHK7KkDgRv1/XZ82jxC+sn
-	 4LluCdqg/eVEPqM49BzB0sk1/QrqZkc9JjA0idno=
+	b=VzZ6S3RgRlN4PksEU0jAnlssg3uMVY/MCJdQv7doqYGNIRxFdpW95YsSFfmN3jMMy
+	 jpmx7v+b1WCS7dq3H2uVRkRsalzPglio4+98IFzzsTQ32uiCxzub3dw58zyTXPIq66
+	 myu64WEUEvV8doq2zCnTYRhk+riP5q5lsorvifNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Greg Thelen <gthelen@google.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 6.6 175/201] ipmi: Fix handling of messages with provided receive message pointer
-Date: Fri, 17 Oct 2025 16:53:56 +0200
-Message-ID: <20251017145141.173878947@linuxfoundation.org>
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 230/277] PCI: endpoint: pci-epf-test: Add NULL check for DMA channels before release
+Date: Fri, 17 Oct 2025 16:53:57 +0200
+Message-ID: <20251017145155.532113056@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit e2c69490dda5d4c9f1bfbb2898989c8f3530e354 upstream
+[ Upstream commit 85afa9ea122dd9d4a2ead104a951d318975dcd25 ]
 
-Prior to commit b52da4054ee0 ("ipmi: Rework user message limit handling"),
-i_ipmi_request() used to increase the user reference counter if the receive
-message is provided by the caller of IPMI API functions. This is no longer
-the case. However, ipmi_free_recv_msg() is still called and decreases the
-reference counter. This results in the reference counter reaching zero,
-the user data pointer is released, and all kinds of interesting crashes are
-seen.
+The fields dma_chan_tx and dma_chan_rx of the struct pci_epf_test can be
+NULL even after EPF initialization. Then it is prudent to check that
+they have non-NULL values before releasing the channels. Add the checks
+in pci_epf_test_clean_dma_chan().
 
-Fix the problem by increasing user reference counter if the receive message
-has been provided by the caller.
+Without the checks, NULL pointer dereferences happen and they can lead
+to a kernel panic in some cases:
 
-Fixes: b52da4054ee0 ("ipmi: Rework user message limit handling")
-Reported-by: Eric Dumazet <edumazet@google.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Greg Thelen <gthelen@google.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Message-ID: <20251006201857.3433837-1-linux@roeck-us.net>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000050
+  Call trace:
+   dma_release_channel+0x2c/0x120 (P)
+   pci_epf_test_epc_deinit+0x94/0xc0 [pci_epf_test]
+   pci_epc_deinit_notify+0x74/0xc0
+   tegra_pcie_ep_pex_rst_irq+0x250/0x5d8
+   irq_thread_fn+0x34/0xb8
+   irq_thread+0x18c/0x2e8
+   kthread+0x14c/0x210
+   ret_from_fork+0x10/0x20
+
+Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
+Fixes: 5ebf3fc59bd2 ("PCI: endpoint: functions/pci-epf-test: Add DMA support to transfer data")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+[mani: trimmed the stack trace]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250916025756.34807-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -2311,8 +2311,11 @@ static int i_ipmi_request(struct ipmi_us
- 	if (supplied_recv) {
- 		recv_msg = supplied_recv;
- 		recv_msg->user = user;
--		if (user)
-+		if (user) {
- 			atomic_inc(&user->nr_msgs);
-+			/* The put happens when the message is freed. */
-+			kref_get(&user->refcount);
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -282,15 +282,20 @@ static void pci_epf_test_clean_dma_chan(
+ 	if (!epf_test->dma_supported)
+ 		return;
+ 
+-	dma_release_channel(epf_test->dma_chan_tx);
+-	if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
++	if (epf_test->dma_chan_tx) {
++		dma_release_channel(epf_test->dma_chan_tx);
++		if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
++			epf_test->dma_chan_tx = NULL;
++			epf_test->dma_chan_rx = NULL;
++			return;
 +		}
- 	} else {
- 		recv_msg = ipmi_alloc_recv_msg(user);
- 		if (IS_ERR(recv_msg))
+ 		epf_test->dma_chan_tx = NULL;
+-		epf_test->dma_chan_rx = NULL;
+-		return;
+ 	}
+ 
+-	dma_release_channel(epf_test->dma_chan_rx);
+-	epf_test->dma_chan_rx = NULL;
++	if (epf_test->dma_chan_rx) {
++		dma_release_channel(epf_test->dma_chan_rx);
++		epf_test->dma_chan_rx = NULL;
++	}
+ }
+ 
+ static void pci_epf_test_print_rate(struct pci_epf_test *epf_test,
 
 
 
