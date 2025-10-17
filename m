@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60080BE9B29
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:16 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 669FBBEA1EC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0E119A7150
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2F713583A9B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9981E336ED1;
-	Fri, 17 Oct 2025 15:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF3332C93E;
+	Fri, 17 Oct 2025 15:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgLXHuRI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKG3XvPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1FD332ECA;
-	Fri, 17 Oct 2025 15:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5766932C929;
+	Fri, 17 Oct 2025 15:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714216; cv=none; b=DMRzMDFHwYpNOUdiAR27sX322NU9mnDovCPTCsOtsLTaxzRDF/YQNB4jH9bzkAk/0+mkEtNbcvQzphhrxCWUx9hmQ1b2PoUYGLtKQnWbbxNXibaJj+TnTzFO81Tf8HbNiMzmE03a5geIe3jN1145590xG2TxDLRb8r+UiVSRnBg=
+	t=1760715010; cv=none; b=PVA04uiqeNIFjHLPL9m042+Wyrw9K6J26bEcOoKcgT6qSUdnTAHKT/Hun7zmYeKefhRgsKA7MxcWcYAaKF7mFkdOAkADeskg3/4BIdo6nL5YHiyIO15yg2iWhB+VmN5I1bL8m+cugA9tutjDd5mNR98enUOn8DpeE2yvZ5hIl3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714216; c=relaxed/simple;
-	bh=mKGPDx8SfUnVKmer6hKDfS43QfWnO/fdv8YGrg2tZUA=;
+	s=arc-20240116; t=1760715010; c=relaxed/simple;
+	bh=+Lmg8IxSprLhdGzdG+BecBuWLqzJXhFOUaIHLsGadRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FsCv9L36wiBWYxZrgikbKFfNakNcAyebWoaPiuqVGbTAzMY55f69RU7fdUFSp6Ej+TrtRZN+a2dMU8y3aGcaGrWIYoy6bKxYzq3TcyrGx+u6H9+zbrndCtAKixat8rZM3vZ0GTEHtk5ccIcDD2gka9i5CVjk49wC8IIBQvS4NWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sgLXHuRI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0F1C4CEE7;
-	Fri, 17 Oct 2025 15:16:55 +0000 (UTC)
+	 MIME-Version; b=Bs6XVLHhz3gEqQIf+2g86gEO87YLq6rVG0XH9vgNeNhbPQCXOf6LiDiw0puGDaXy34eOaGxW8+1LGgN3esxH0x9qJBXQwPrlkzHg6HZHnjsH+6kRFPw4ir/Kkp8pEXcOE7EvRyy1ZJrax5KusuAsBBPDXVn80H0/t2OSR215bro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKG3XvPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D501DC4CEE7;
+	Fri, 17 Oct 2025 15:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714216;
-	bh=mKGPDx8SfUnVKmer6hKDfS43QfWnO/fdv8YGrg2tZUA=;
+	s=korg; t=1760715010;
+	bh=+Lmg8IxSprLhdGzdG+BecBuWLqzJXhFOUaIHLsGadRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sgLXHuRIdyeYMGyBzO7N9RkitbdlTPkwA3+4zKT24/30l8GenWxOkPkE+JQIzdequ
-	 46YMLhoGtRGvPs6owQIjfkrvoc7vA6cptSfP2Malsp+07NX0IoC+yrh6bliGmVJ4aP
-	 6ng140PGi/+V4bfECn5S/A5Xl9SFEYBs4zI61Tls=
+	b=TKG3XvPEpVNkpmDrCt+SEf8RqrT/B2CosQLqxYx4FDEdZbK1jtG9RfwrI7Y28T6Lo
+	 c86J8A9i5CqFDi8qDhrn8LeUrTZK9x620L91u+MXYEFAUw5L7bAsGtB2/RIU4gn+il
+	 O5iuZY86M7wWKGmT0TYh9P0zF6NrOA0cPui5xc5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/277] clk: mediatek: clk-mux: Do not pass flags to clk_mux_determine_rate_flags()
+Subject: [PATCH 6.17 067/371] cpufreq: tegra186: Set target frequency for all cpus in policy
 Date: Fri, 17 Oct 2025 16:50:42 +0200
-Message-ID: <20251017145148.429915015@linuxfoundation.org>
+Message-ID: <20251017145204.359294573@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 5e121370a7ad3414c7f3a77002e2b18abe5c6fe1 ]
+[ Upstream commit 0b1bb980fd7cae126ee3d59f817068a13e321b07 ]
 
-The `flags` in |struct mtk_mux| are core clk flags, not mux clk flags.
-Passing one to the other is wrong.
+The original commit set all cores in a cluster to a shared policy, but
+did not update set_target to apply a frequency change to all cores for
+the policy. This caused most cores to remain stuck at their boot
+frequency.
 
-Since there aren't any actual users adding CLK_MUX_* flags, just drop it
-for now.
-
-Fixes: b05ea3314390 ("clk: mediatek: clk-mux: Add .determine_rate() callback")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: be4ae8c19492 ("cpufreq: tegra186: Share policy per cluster")
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mux.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/cpufreq/tegra186-cpufreq.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mux.c b/drivers/clk/mediatek/clk-mux.c
-index 60990296450bb..9a12e58230bed 100644
---- a/drivers/clk/mediatek/clk-mux.c
-+++ b/drivers/clk/mediatek/clk-mux.c
-@@ -146,9 +146,7 @@ static int mtk_clk_mux_set_parent_setclr_lock(struct clk_hw *hw, u8 index)
- static int mtk_clk_mux_determine_rate(struct clk_hw *hw,
- 				      struct clk_rate_request *req)
+diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
+index cbabb726c6645..6c394b429b618 100644
+--- a/drivers/cpufreq/tegra186-cpufreq.c
++++ b/drivers/cpufreq/tegra186-cpufreq.c
+@@ -93,10 +93,14 @@ static int tegra186_cpufreq_set_target(struct cpufreq_policy *policy,
  {
--	struct mtk_clk_mux *mux = to_mtk_clk_mux(hw);
--
--	return clk_mux_determine_rate_flags(hw, req, mux->data->flags);
-+	return clk_mux_determine_rate_flags(hw, req, 0);
- }
+ 	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
+ 	struct cpufreq_frequency_table *tbl = policy->freq_table + index;
+-	unsigned int edvd_offset = data->cpus[policy->cpu].edvd_offset;
++	unsigned int edvd_offset;
+ 	u32 edvd_val = tbl->driver_data;
++	u32 cpu;
  
- const struct clk_ops mtk_mux_clr_set_upd_ops = {
+-	writel(edvd_val, data->regs + edvd_offset);
++	for_each_cpu(cpu, policy->cpus) {
++		edvd_offset = data->cpus[cpu].edvd_offset;
++		writel(edvd_val, data->regs + edvd_offset);
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
