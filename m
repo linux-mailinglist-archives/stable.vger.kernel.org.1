@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA354BE98CC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:12:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E0CBE9C06
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F114401AE6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EAEE2582E41
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AD7335093;
-	Fri, 17 Oct 2025 15:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A903330333;
+	Fri, 17 Oct 2025 15:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Izd11bGZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJQs+mnk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75000332907;
-	Fri, 17 Oct 2025 15:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F0A3370F7;
+	Fri, 17 Oct 2025 15:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713420; cv=none; b=NMajXOJoRLHL/213NPnQD9qi8bOPOSc+QGiK+cMD6qTiEs2AEKyCNU5fxORN/MKQ2oCP93sWUUsTpgg2JdNnrAVtv6Ayvc3ndLnFsEeQxgxUl1eWECoGlN+DqTsUXVp1+sKUk4VeVh+9xz60QCKyc5MOhV7BFmnxHeVOtMxdz0I=
+	t=1760713951; cv=none; b=ESQjCkbRAVGqCBWGUsrEBiqf8kDw/3WgZ+k0gqj2zEXJncDb/iMtLTLFlTs3taLDSqsSxoLWTTSBYKAT7UvCOMVVWjF82uzoUpFu9h+1S0hwFu5akCIBGywfh00/S9NVNUEYMcFJen5N8sARbK+azQ7vUM/y5W4EzaZYR+Nq2hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713420; c=relaxed/simple;
-	bh=vQ8DU6G1+n/KSHZaFhWCwa7+1Y+ajtZqAXKIX3H5ATs=;
+	s=arc-20240116; t=1760713951; c=relaxed/simple;
+	bh=kHoqUqS1KoBJijEGj0RtRdeHNdnfGC8mVbC3KSUufGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFo2S7lJbUyRlO2GJBETF3eN46mVJBldGfBQxq9itCYJSTUhSiRh9UdYgg6gI6h2scVlMbA3ri7o0mOlhniw6/FdMETANFc+uRwZOPGdHulm+rt5qVoyjl7Q1jwm1IXx/eEh2Td0+MYweCqcMsz87rFiAAY21JbFYjaG0SpLfTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Izd11bGZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58CEC4CEE7;
-	Fri, 17 Oct 2025 15:03:39 +0000 (UTC)
+	 MIME-Version; b=ORTI6ZoGszxg6HZvL3crkl+wAGMOIvvV6V1nb+VIMiK2vH28iuxt6VmfYeleplOUPKGnmc4Fy3lhnakyA4bmYNLnqzQZ3hxMZk4ysdbu1QD/X7CcIXGMyGNP12GPZ/Lbxdzx0AUOAmfpTwBZo9H84p3hhQ/ClzZeLTSPjutBv40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJQs+mnk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32F2C4CEE7;
+	Fri, 17 Oct 2025 15:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713420;
-	bh=vQ8DU6G1+n/KSHZaFhWCwa7+1Y+ajtZqAXKIX3H5ATs=;
+	s=korg; t=1760713951;
+	bh=kHoqUqS1KoBJijEGj0RtRdeHNdnfGC8mVbC3KSUufGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Izd11bGZDNcG5GDwKJjnBc03ZwMM5Q2uBCR1kCIwOTMTrNo14Ee2lDTR0QgBJ+7yf
-	 ezTEcguZCptkuYd2R8018WDeP+0p+L4PqLuAWkO8Sr/k92an6XufDNHn2tdzEPW9da
-	 z0Gmh0Jc1TEJRLnK/CnrHpXnz6YlitvX80FcgrrY=
+	b=dJQs+mnkl61kME3q7Fm+fLDan8Kt9FV1LJY1Tfv48tUEOpae/Kb5xESPH3Ak4Azpc
+	 UA2oyRfN9mQV6CHOSWyRoFVK9zWL2XanpLhzrx15N6JI1MTXDHp19xRnUQ6Q+kVfiI
+	 DUh57lzQ+nuRzRf0EMvh1gN0+3Jy3nCyvYRogdVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/168] asm-generic/io.h: suppress endianness warnings for relaxed accessors
+Subject: [PATCH 6.6 176/201] arm64: kprobes: call set_memory_rox() for kprobe page
 Date: Fri, 17 Oct 2025 16:53:57 +0200
-Message-ID: <20251017145134.867889832@linuxfoundation.org>
+Message-ID: <20251017145141.217151538@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Yang Shi <yang@os.amperecomputing.com>
 
-[ Upstream commit 05d3855b4d21ef3c2df26be1cbba9d2c68915fcb ]
+[ Upstream commit 195a1b7d8388c0ec2969a39324feb8bebf9bb907 ]
 
-Copy the forced type casts from the normal MMIO accessors to suppress
-the sparse warnings that point out __raw_readl() returns a native endian
-word (just like readl()).
+The kprobe page is allocated by execmem allocator with ROX permission.
+It needs to call set_memory_rox() to set proper permission for the
+direct map too. It was missed.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Stable-dep-of: 8327bd4fcb6c ("asm-generic/io.h: Skip trace helpers if rwmmio events are disabled")
+Fixes: 10d5e97c1bf8 ("arm64: use PAGE_KERNEL_ROX directly in alloc_insn_page")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+[ kept existing __vmalloc_node_range() instead of upstream's execmem_alloc() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/asm-generic/io.h |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm64/kernel/probes/kprobes.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -319,7 +319,7 @@ static inline u16 readw_relaxed(const vo
- 	u16 val;
+--- a/arch/arm64/kernel/probes/kprobes.c
++++ b/arch/arm64/kernel/probes/kprobes.c
+@@ -131,9 +131,15 @@ int __kprobes arch_prepare_kprobe(struct
  
- 	log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
--	val = __le16_to_cpu(__raw_readw(addr));
-+	val = __le16_to_cpu((__le16 __force)__raw_readw(addr));
- 	log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
- 	return val;
+ void *alloc_insn_page(void)
+ {
+-	return __vmalloc_node_range(PAGE_SIZE, 1, VMALLOC_START, VMALLOC_END,
++	void *addr;
++
++	addr = __vmalloc_node_range(PAGE_SIZE, 1, VMALLOC_START, VMALLOC_END,
+ 			GFP_KERNEL, PAGE_KERNEL_ROX, VM_FLUSH_RESET_PERMS,
+ 			NUMA_NO_NODE, __builtin_return_address(0));
++	if (!addr)
++		return NULL;
++	set_memory_rox((unsigned long)addr, 1);
++	return addr;
  }
-@@ -332,7 +332,7 @@ static inline u32 readl_relaxed(const vo
- 	u32 val;
  
- 	log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
--	val = __le32_to_cpu(__raw_readl(addr));
-+	val = __le32_to_cpu((__le32 __force)__raw_readl(addr));
- 	log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
-@@ -345,7 +345,7 @@ static inline u64 readq_relaxed(const vo
- 	u64 val;
- 
- 	log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
--	val = __le64_to_cpu(__raw_readq(addr));
-+	val = __le64_to_cpu((__le64 __force)__raw_readq(addr));
- 	log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
-@@ -366,7 +366,7 @@ static inline void writeb_relaxed(u8 val
- static inline void writew_relaxed(u16 value, volatile void __iomem *addr)
- {
- 	log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
--	__raw_writew(cpu_to_le16(value), addr);
-+	__raw_writew((u16 __force)cpu_to_le16(value), addr);
- 	log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
-@@ -376,7 +376,7 @@ static inline void writew_relaxed(u16 va
- static inline void writel_relaxed(u32 value, volatile void __iomem *addr)
- {
- 	log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
--	__raw_writel(__cpu_to_le32(value), addr);
-+	__raw_writel((u32 __force)__cpu_to_le32(value), addr);
- 	log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
-@@ -386,7 +386,7 @@ static inline void writel_relaxed(u32 va
- static inline void writeq_relaxed(u64 value, volatile void __iomem *addr)
- {
- 	log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
--	__raw_writeq(__cpu_to_le64(value), addr);
-+	__raw_writeq((u64 __force)__cpu_to_le64(value), addr);
- 	log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
+ /* arm kprobe: install breakpoint in text */
 
 
 
