@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA50DBE9F27
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6C4BE9E85
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:32:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3461743CF4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11DD9189BCC6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDE232C951;
-	Fri, 17 Oct 2025 15:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4A832C929;
+	Fri, 17 Oct 2025 15:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAxNq8B/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mK2a8n6A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891BC32E14E;
-	Fri, 17 Oct 2025 15:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D972F2F12B0;
+	Fri, 17 Oct 2025 15:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714130; cv=none; b=t/Asf6mbt6WH7lDQHitnrgNi1AW5ICVOqHUtX3CXMZkKJYJjJlGwqY6TpON5eeRDhJfc7d8iNO9GfuZHy5RIatDG6Smos8jy//a2nq+wDm71rNk7CZKvkNFxlXLX9cMoyTtpsOG/dIbqHTY7yknUoaCW/0B/zEWRZuvkU7xNW6U=
+	t=1760715018; cv=none; b=EKokMOwn4hAhDa4yJzyH7CbkYM3u/7I9G08S1kjZMPXRPJs/8TzpUlAKuLbAEahA4yo271snRqaFLsFAxMWkMjaGZqqkZHjWHeMrFoSyV1zVq3wzmWjMSaPyqLrKWZvmagQTJVZ0Es5YiMuApi186A6PXcVsqrcwLtWezOkCjQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714130; c=relaxed/simple;
-	bh=n2zBncX+5EO07xpUMbYSbsO5ssY9Qb1siuDjMGYVG6I=;
+	s=arc-20240116; t=1760715018; c=relaxed/simple;
+	bh=eulh7JLEU6m1CXhvnYfPlEJn0fDJyXv8uOeZFpCKGwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9xbqN9jsXKjF8ixUcHRwjR0Xvz/EaWU1tpCQGoIa1155Oq3nwlGodCD5715uEnAW/pOMlPrO+hwh6iVSGe4faOHEGQY9vjS4fxyt473IuXYUJ49x4M9nOamF8fEb9435PXtE1jVSK6TPOrydXgn0JZBYTvDRrFNkuoMQzb0RD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAxNq8B/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3195C4CEFE;
-	Fri, 17 Oct 2025 15:15:29 +0000 (UTC)
+	 MIME-Version; b=dMI9VS7OMj/tr5ZFATAH8hqcQL36YhJzVLbU9V7nMMlfPN/BJL9T1sxZTNT9Rnb/rnkDJWPiA8WnxT/Fk8cm3uW8p/aJnqsMDmDl60vsCNq1PV8yvhLcVVEJO4eSCBhtOXDdCX3dk6by0FhWohqV4vbksOfd811qNtQZqMqE9No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mK2a8n6A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E58C4CEE7;
+	Fri, 17 Oct 2025 15:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714130;
-	bh=n2zBncX+5EO07xpUMbYSbsO5ssY9Qb1siuDjMGYVG6I=;
+	s=korg; t=1760715018;
+	bh=eulh7JLEU6m1CXhvnYfPlEJn0fDJyXv8uOeZFpCKGwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAxNq8B/xd++OnCsmZtO5UCPL/YkKgxSK06Yswa1ic1Xn95QJJ5KS5L7ZYGbmkgPL
-	 wbfdVPy9m1ERLmqZoU+d2eNQis3WqYtPMieZ7NWQ9hUAVE6hBUEGASfopDZ1xhF8Sc
-	 EbA3wqrtVPQcIkh2okytlrcTFOJksR9MUfJjgAcY=
+	b=mK2a8n6AVpRRK53Szi94aUCWjOjNuDEtdcd3Voy1NkLIo4E2MTnAD7ZPefWWRpzdW
+	 7BbI8DINjyBB1pXN5WcoGgoqcU/tRg+SKfeDXAa9G5JBKMDQ4Euh7XB8mVrIKM6GNL
+	 n2Fa9x/Kd+UqNARWoYUZTTruWTxjM+j2QXlkadyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Daniel Lee <chullee@google.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/277] clk: tegra: do not overallocate memory for bpmp clocks
+Subject: [PATCH 6.17 070/371] scsi: ufs: sysfs: Make HID attributes visible
 Date: Fri, 17 Oct 2025 16:50:45 +0200
-Message-ID: <20251017145148.539162569@linuxfoundation.org>
+Message-ID: <20251017145204.469342901@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Daniel Lee <chullee@google.com>
 
-[ Upstream commit 49ef6491106209c595476fc122c3922dfd03253f ]
+[ Upstream commit bb7663dec67b691528f104894429b3859fb16c14 ]
 
-struct tegra_bpmp::clocks is a pointer to a dynamically allocated array
-of pointers to 'struct tegra_bpmp_clk'.
+Call sysfs_update_group() after reading the device descriptor to ensure
+the HID sysfs attributes are visible when the feature is supported.
 
-But the size of the allocated area is calculated like it is an array
-containing actual 'struct tegra_bpmp_clk' objects - it's not true, there
-are just pointers.
-
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
-
-Fixes: 2db12b15c6f3 ("clk: tegra: Register clocks from root to leaf")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: ae7795a8c258 ("scsi: ufs: core: Add HID support")
+Signed-off-by: Daniel Lee <chullee@google.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-bpmp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/core/ufs-sysfs.c | 2 +-
+ drivers/ufs/core/ufs-sysfs.h | 1 +
+ drivers/ufs/core/ufshcd.c    | 2 ++
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/tegra/clk-bpmp.c b/drivers/clk/tegra/clk-bpmp.c
-index 7bfba0afd7783..4ec408c3a26aa 100644
---- a/drivers/clk/tegra/clk-bpmp.c
-+++ b/drivers/clk/tegra/clk-bpmp.c
-@@ -635,7 +635,7 @@ static int tegra_bpmp_register_clocks(struct tegra_bpmp *bpmp,
+diff --git a/drivers/ufs/core/ufs-sysfs.c b/drivers/ufs/core/ufs-sysfs.c
+index 0086816b27cd9..c040afc6668e8 100644
+--- a/drivers/ufs/core/ufs-sysfs.c
++++ b/drivers/ufs/core/ufs-sysfs.c
+@@ -1949,7 +1949,7 @@ static umode_t ufs_sysfs_hid_is_visible(struct kobject *kobj,
+ 	return	hba->dev_info.hid_sup ? attr->mode : 0;
+ }
  
- 	bpmp->num_clocks = count;
+-static const struct attribute_group ufs_sysfs_hid_group = {
++const struct attribute_group ufs_sysfs_hid_group = {
+ 	.name = "hid",
+ 	.attrs = ufs_sysfs_hid,
+ 	.is_visible = ufs_sysfs_hid_is_visible,
+diff --git a/drivers/ufs/core/ufs-sysfs.h b/drivers/ufs/core/ufs-sysfs.h
+index 8d94af3b80771..6efb82a082fdd 100644
+--- a/drivers/ufs/core/ufs-sysfs.h
++++ b/drivers/ufs/core/ufs-sysfs.h
+@@ -14,5 +14,6 @@ void ufs_sysfs_remove_nodes(struct device *dev);
  
--	bpmp->clocks = devm_kcalloc(bpmp->dev, count, sizeof(struct tegra_bpmp_clk), GFP_KERNEL);
-+	bpmp->clocks = devm_kcalloc(bpmp->dev, count, sizeof(*bpmp->clocks), GFP_KERNEL);
- 	if (!bpmp->clocks)
- 		return -ENOMEM;
+ extern const struct attribute_group ufs_sysfs_unit_descriptor_group;
+ extern const struct attribute_group ufs_sysfs_lun_attributes_group;
++extern const struct attribute_group ufs_sysfs_hid_group;
  
+ #endif
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 96a0f5fcc0e57..465e66dbe08e8 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -8482,6 +8482,8 @@ static int ufs_get_device_desc(struct ufs_hba *hba)
+ 				DEVICE_DESC_PARAM_EXT_UFS_FEATURE_SUP) &
+ 				UFS_DEV_HID_SUPPORT;
+ 
++	sysfs_update_group(&hba->dev->kobj, &ufs_sysfs_hid_group);
++
+ 	model_index = desc_buf[DEVICE_DESC_PARAM_PRDCT_NAME];
+ 
+ 	err = ufshcd_read_string_desc(hba, model_index,
 -- 
 2.51.0
 
