@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-187063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F407ABEA84C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:11:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC5DABEA723
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:05:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B687620B35
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41C0B7C8279
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674132F12C2;
-	Fri, 17 Oct 2025 15:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DFDB335077;
+	Fri, 17 Oct 2025 15:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQPa0+TW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uf3gdNyk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3C31946C8;
-	Fri, 17 Oct 2025 15:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4F836CE19;
+	Fri, 17 Oct 2025 15:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715016; cv=none; b=FClpBazV8+egeVw+kE7o2rnPZETIk7gWcZw5jjUMoB0RqRezotbhhEHpErr/gTni4oLutUcEvdjqQE7jjyQtFDRMHp7hfrh01IyUujin4DnoAHWBwV7q3XUs/2o1pByO5AKZXL+no8za5EjrbIYOJ8/D4vhRrlIxj4zT0Yv1ndU=
+	t=1760715187; cv=none; b=TfSa5+fOfDEQGygvS6Iw9p2stQGA2I3IESnKH/KwcaTXOj7A8HYzag11H76pfxnv0qa3TQqiT8ngW/bcxPyCInHJxXmdGE0CrqVa2gtP4kHJVoUCVaDbqd8pe5qOS+6mOFsyhWD9xEeIzofzitfR0TJxbKLxcxzdloJXyCYyMMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715016; c=relaxed/simple;
-	bh=uowemTQlJiYgMGrbUDmHstGZHrwBihs94XchgZk6xHs=;
+	s=arc-20240116; t=1760715187; c=relaxed/simple;
+	bh=WG00oQunSAvlw9OLb552YG5OWIRcIZRfG5Ba2RaMtwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGiQDWvPWOauVYNCaCnbqEMRCu8xwlsDGQrJ37wxpqek/j8VVDM8ywOesuWR78y+D+43FFyJc892OooJs1SNILl6J+pmMb7QLhqScC58EMtmPwyxLMmrr5gvohjBwfmjTld2x1Hs0J6ib5YVsFNktdGLVhRmY4WG4G2hBmmdoKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQPa0+TW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4EBC4CEE7;
-	Fri, 17 Oct 2025 15:30:15 +0000 (UTC)
+	 MIME-Version; b=QBK6k/6kKSoXDuQ+ZHMPe6dF6u8cVMRMtvdhSRuPvFRIGkI1opsQdj69ipF3EGBVyXCzL40PXvRmrSx2oEXyPScFrTJUUU/4VfNFLm+nwdgk5hf1QpcBny1urA4lAKrcpxqLlWTwXRHY0ho+O6CUKa4fnZi9A88fH1Q2YOEjj2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uf3gdNyk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47495C113D0;
+	Fri, 17 Oct 2025 15:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715016;
-	bh=uowemTQlJiYgMGrbUDmHstGZHrwBihs94XchgZk6xHs=;
+	s=korg; t=1760715187;
+	bh=WG00oQunSAvlw9OLb552YG5OWIRcIZRfG5Ba2RaMtwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQPa0+TW0xXQ7b6GUESetvOUAXBdmfDlwHkCX4B8KSvlc4vaZv8SOd+4vkeL0rqSO
-	 JMwaMY9nTBvHWEVBwBS2jBVBeBW1SQhF9sbdPEj8fvpSdtbIRaH0V9xmufQru2msAB
-	 3MIgE4aA++zQdtVlPEeaCuexf7kHJLjEdsnTuSkE=
+	b=Uf3gdNykYBTh40fVOFXtbU4uhYaftrO5N+Cifmab4p3fzU1rgYtYSOK5eVtM6+GaF
+	 0GrLgCEDxsKX/k4c+BnIGKIHz3enJnt5miFrSYVgWZ+sDGPlso6hVLNz/5iGJbMjGV
+	 X85G8LHIlIFZtM1imri+fnez+GvrUWNobSTEjcsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	bpf@vger.kernel.org,
-	Hao Ge <gehao@kylinos.cn>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Richter <tmricht@linux.ibm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 069/371] perf bpf-filter: Fix opts declaration on older libbpfs
-Date: Fri, 17 Oct 2025 16:50:44 +0200
-Message-ID: <20251017145204.432766505@linuxfoundation.org>
+Subject: [PATCH 6.17 096/371] tcp: take care of zero tp->window_clamp in tcp_set_rcvlowat()
+Date: Fri, 17 Oct 2025 16:51:11 +0200
+Message-ID: <20251017145205.413221502@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -79,67 +68,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3a0f56d72a7575f03187a85b7869c76a862b40ab ]
+[ Upstream commit 21b29e74ffe5a6c851c235bb80bf5ee26292c67b ]
 
-Building perf with LIBBPF_DYNAMIC (ie not the default static linking of
-libbpf with perf) is breaking as the libbpf isn't version 1.7 or newer,
-where dont_enable is added to bpf_perf_event_opts.
+Some applications (like selftests/net/tcp_mmap.c) call SO_RCVLOWAT
+on their listener, before accept().
 
-To avoid this breakage add a compile time version check and don't
-declare the variable when not present.
+This has an unfortunate effect on wscale selection in
+tcp_select_initial_window() during 3WHS.
 
-Fixes: 5e2ac8e8571df54d ("perf bpf-filter: Enable events manually")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: bpf@vger.kernel.org
-Cc: Hao Ge <gehao@kylinos.cn>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+For instance, tcp_mmap was negotiating wscale 4, regardless
+of tcp_rmem[2] and sysctl_rmem_max.
+
+Do not change tp->window_clamp if it is zero
+or bigger than our computed value.
+
+Zero value is special, it allows tcp_select_initial_window()
+to enable autotuning.
+
+Note that SO_RCVLOWAT use on listener is probably not wise,
+because tp->scaling_ratio has a default value, possibly wrong.
+
+Fixes: d1361840f8c5 ("tcp: fix SO_RCVLOWAT and RCVBUF autotuning")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Link: https://patch.msgid.link/20251003184119.2526655-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/bpf-filter.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/ipv4/tcp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/bpf-filter.c b/tools/perf/util/bpf-filter.c
-index a0b11f35395f8..92308c38fbb56 100644
---- a/tools/perf/util/bpf-filter.c
-+++ b/tools/perf/util/bpf-filter.c
-@@ -443,6 +443,10 @@ static int create_idx_hash(struct evsel *evsel, struct perf_bpf_filter_entry *en
- 	return -1;
- }
- 
-+#define LIBBPF_CURRENT_VERSION_GEQ(major, minor)			\
-+	(LIBBPF_MAJOR_VERSION > (major) ||				\
-+	 (LIBBPF_MAJOR_VERSION == (major) && LIBBPF_MINOR_VERSION >= (minor)))
-+
- int perf_bpf_filter__prepare(struct evsel *evsel, struct target *target)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 89040007c7b70..ba36f558f144c 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1771,6 +1771,7 @@ EXPORT_IPV6_MOD(tcp_peek_len);
+ /* Make sure sk_rcvbuf is big enough to satisfy SO_RCVLOWAT hint */
+ int tcp_set_rcvlowat(struct sock *sk, int val)
  {
- 	int i, x, y, fd, ret;
-@@ -451,8 +455,12 @@ int perf_bpf_filter__prepare(struct evsel *evsel, struct target *target)
- 	struct bpf_link *link;
- 	struct perf_bpf_filter_entry *entry;
- 	bool needs_idx_hash = !target__has_cpu(target);
-+#if LIBBPF_CURRENT_VERSION_GEQ(1, 7)
- 	DECLARE_LIBBPF_OPTS(bpf_perf_event_opts, pe_opts,
- 			    .dont_enable = true);
-+#else
-+	DECLARE_LIBBPF_OPTS(bpf_perf_event_opts, pe_opts);
-+#endif
++	struct tcp_sock *tp = tcp_sk(sk);
+ 	int space, cap;
  
- 	entry = calloc(MAX_FILTERS, sizeof(*entry));
- 	if (entry == NULL)
+ 	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK)
+@@ -1789,7 +1790,9 @@ int tcp_set_rcvlowat(struct sock *sk, int val)
+ 	space = tcp_space_from_win(sk, val);
+ 	if (space > sk->sk_rcvbuf) {
+ 		WRITE_ONCE(sk->sk_rcvbuf, space);
+-		WRITE_ONCE(tcp_sk(sk)->window_clamp, val);
++
++		if (tp->window_clamp && tp->window_clamp < val)
++			WRITE_ONCE(tp->window_clamp, val);
+ 	}
+ 	return 0;
+ }
 -- 
 2.51.0
 
