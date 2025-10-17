@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-187077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB2CBEA0E9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 143F7BE9CE7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 437835A1E26
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1C4D1588D79
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1353532C940;
-	Fri, 17 Oct 2025 15:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65590331A7C;
+	Fri, 17 Oct 2025 15:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1lrIOB2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2k/4w6o9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5E62F12D2;
-	Fri, 17 Oct 2025 15:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B42D2745E;
+	Fri, 17 Oct 2025 15:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715055; cv=none; b=O5J5w6guqrAHTgCQD6TcOP0y92AYcPLNP7Aci2oitdST/jlh/ceKKiA5OMQ1qM90Ggn2MIUWPYyns+8vPOYou6ayLTEVtwT9+6LG9FKPD/wVNHcLIbrYr+URIF6i/u38UsJjVtxHejtDZTJWGZJowDm2n5xOxM574jdsKfX4VCY=
+	t=1760714167; cv=none; b=A2GMNAkVPOUSL5afVh0LbO6ba2EbzgFvQiRl/P33aIezOx5iqCOz/TSNhYxKD2csNNHDB4j/jm5ZI1nhf586RsAfhWOz1TwkSimPgRmZp14rMGiEwuQycDiCzYfqUtO2Ilxb622lYjzdN8IOy7tgJNttVheToYJ+AJ94vN7SZes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715055; c=relaxed/simple;
-	bh=eHUsPuyZmir5MY4+b2+32Afamx5Aajo8cZxxHzkxil0=;
+	s=arc-20240116; t=1760714167; c=relaxed/simple;
+	bh=JHlJimec6JtRICZoItQSch68QmCUSYyvGEBWsqwbknk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=APCNJpTSJ4x5TJgi7AIlqzpa8szhuXR1qr28G90SwlD/HS8cEXHFGKCXqYC2iZJW0hVadOVBDTwodaCxKT1qjne5BPWnd+MaERTxR694tmj18Bv65O/9GGOoUWaYH6CGKB4Y2ZjNq57RyziA1Z8OwNAAKOMwHtb/+w/gQkT23QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1lrIOB2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B941C4CEE7;
-	Fri, 17 Oct 2025 15:30:54 +0000 (UTC)
+	 MIME-Version; b=kZBKyTro9/Mgw5SWnVyIRmxTMjLTDE7UiwLR72oaTp/G8J80ag161NMnJWjboxHgfoqW9+Q91SwRr8I45v7SafBa6Pq8bLr1f4RcNLNVLVjjpmB5Q0TZW3+Ft5dnz544Pbl80Y+2Z78ypRuFRhDvnxI1UUnFuV1NnVn7ZGoCjsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2k/4w6o9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D1CC4CEE7;
+	Fri, 17 Oct 2025 15:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715055;
-	bh=eHUsPuyZmir5MY4+b2+32Afamx5Aajo8cZxxHzkxil0=;
+	s=korg; t=1760714166;
+	bh=JHlJimec6JtRICZoItQSch68QmCUSYyvGEBWsqwbknk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q1lrIOB2dwHHfeV3f+N1JMUjD/OF4WqMji6sAprSdFonEfN78J1UnnvpPmhyzCzlH
-	 0UHpprvHxbi25wMl6Hv9H0KNqmW8PKn9Mad8yvjOG7P+60FxIw0PfygUjnbA6XO3m5
-	 JY2idVHjyhgT1Y6Yw8vR4Wb8//z0lwCFR56ilbjA=
+	b=2k/4w6o9TnaxdfXzlra4e9jjuhS+G/DWpJbHUgfYXIKH+lQlC68ARlkx8t5kBAS1Z
+	 qUwbNzvzr1OC/JyLK/OlwWWBACIdayJmfsaiWFH81CKzHFkAikQYU+K3nSzBum8cIy
+	 R+Q7I3dnjqh0kA7q4/LMZFjMH/uLbu4tBjcibtoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francois Dugast <francois.dugast@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Ian Forbes <ian.forbes@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 082/371] drm/xe/hw_engine_group: Fix double write lock release in error path
+Subject: [PATCH 6.12 050/277] drm/vmwgfx: Fix a null-ptr access in the cursor snooper
 Date: Fri, 17 Oct 2025 16:50:57 +0200
-Message-ID: <20251017145204.905611538@linuxfoundation.org>
+Message-ID: <20251017145148.974814946@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit 08fdfd260e641da203f80aff8d3ed19c5ecceb7d ]
+[ Upstream commit 5ac2c0279053a2c5265d46903432fb26ae2d0da2 ]
 
-In xe_hw_engine_group_get_mode(), a write lock is acquired before
-calling switch_mode(), which in turn invokes
-xe_hw_engine_group_suspend_faulting_lr_jobs().
+Check that the resource which is converted to a surface exists before
+trying to use the cursor snooper on it.
 
-On failure inside xe_hw_engine_group_suspend_faulting_lr_jobs(),
-the write lock is released there, and then again in
-xe_hw_engine_group_get_mode(), leading to a double release.
+vmw_cmd_res_check allows explicit invalid (SVGA3D_INVALID_ID) identifiers
+because some svga commands accept SVGA3D_INVALID_ID to mean "no surface",
+unfortunately functions that accept the actual surfaces as objects might
+(and in case of the cursor snooper, do not) be able to handle null
+objects. Make sure that we validate not only the identifier (via the
+vmw_cmd_res_check) but also check that the actual resource exists before
+trying to do something with it.
 
-Fix this by keeping both acquire and release operation in
-xe_hw_engine_group_get_mode().
+Fixes unchecked null-ptr reference in the snooping code.
 
-Fixes: 770bd1d34113 ("drm/xe/hw_engine_group: Ensure safe transition between execution modes")
-Cc: Francois Dugast <francois.dugast@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-Link: https://lore.kernel.org/r/20250925023145.1203004-2-shuicheng.lin@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 662d98b8b373007fa1b08ba93fee11f6fd3e387c)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: c0951b797e7d ("drm/vmwgfx: Refactor resource management")
+Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
+Link: https://lore.kernel.org/r/20250917153655.1968583-1-zack.rusin@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_hw_engine_group.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_hw_engine_group.c b/drivers/gpu/drm/xe/xe_hw_engine_group.c
-index c926f840c87b0..cb1d7ed54f429 100644
---- a/drivers/gpu/drm/xe/xe_hw_engine_group.c
-+++ b/drivers/gpu/drm/xe/xe_hw_engine_group.c
-@@ -213,17 +213,13 @@ static int xe_hw_engine_group_suspend_faulting_lr_jobs(struct xe_hw_engine_group
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index ea741bc4ac3fc..8b72848bb25cd 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1515,6 +1515,7 @@ static int vmw_cmd_dma(struct vmw_private *dev_priv,
+ 		       SVGA3dCmdHeader *header)
+ {
+ 	struct vmw_bo *vmw_bo = NULL;
++	struct vmw_resource *res;
+ 	struct vmw_surface *srf = NULL;
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdSurfaceDMA);
+ 	int ret;
+@@ -1550,18 +1551,24 @@ static int vmw_cmd_dma(struct vmw_private *dev_priv,
  
- 		err = q->ops->suspend_wait(q);
- 		if (err)
--			goto err_suspend;
-+			return err;
+ 	dirty = (cmd->body.transfer == SVGA3D_WRITE_HOST_VRAM) ?
+ 		VMW_RES_DIRTY_SET : 0;
+-	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface,
+-				dirty, user_surface_converter,
+-				&cmd->body.host.sid, NULL);
++	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface, dirty,
++				user_surface_converter, &cmd->body.host.sid,
++				NULL);
+ 	if (unlikely(ret != 0)) {
+ 		if (unlikely(ret != -ERESTARTSYS))
+ 			VMW_DEBUG_USER("could not find surface for DMA.\n");
+ 		return ret;
  	}
  
- 	if (need_resume)
- 		xe_hw_engine_group_resume_faulting_lr_jobs(group);
+-	srf = vmw_res_to_srf(sw_context->res_cache[vmw_res_surface].res);
++	res = sw_context->res_cache[vmw_res_surface].res;
++	if (!res) {
++		VMW_DEBUG_USER("Invalid DMA surface.\n");
++		return -EINVAL;
++	}
+ 
+-	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->tbo, header);
++	srf = vmw_res_to_srf(res);
++	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->tbo,
++			     header);
  
  	return 0;
--
--err_suspend:
--	up_write(&group->mode_sem);
--	return err;
  }
- 
- /**
 -- 
 2.51.0
 
