@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC01BEA0B6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F85BEA40A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 417961888051
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE5BE1A606D4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E507330B1D;
-	Fri, 17 Oct 2025 15:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AA4330B3A;
+	Fri, 17 Oct 2025 15:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLphSnr3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1feZ3om"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B415336EE7;
-	Fri, 17 Oct 2025 15:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E68A257437;
+	Fri, 17 Oct 2025 15:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715361; cv=none; b=XfZR4I+y3IEmRTbZQc/dFS1+Raquhdyk1VJyR+PmO8P1QdCCQYuxiH+e+2My153Rdf4NKPFFBAOlPUIX/fp9TlHh3QiTJKghZ1o+12CZkW1WEc/jXR4WJtpK/wXvCJjhFUTtWp3qHVfTiPW1ZeGsbDLSzsQAbdDdGfDwLU5dAl4=
+	t=1760716098; cv=none; b=eZr96WcEHV4YdptJGO5iPIdy/m5KgoSwAqRFwDPrDMkmzSsknD8zAz3/Rysz87isCoL0RVrGgKJdpePwLOgzbQJsmDYbhScszBvpzqAKgGaz58a2Abg5KHXfV2LNle1lF2Dzr9HuX/t9nj3i93KZ8VMKgFZ3cg5sERw0b8RGK9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715361; c=relaxed/simple;
-	bh=6KxM+rrZADtaDKG6AXfMt7JpQGEzUJxR0sZfli734Ro=;
+	s=arc-20240116; t=1760716098; c=relaxed/simple;
+	bh=iERE1/Jb2HJn4+EENqyhvOBZ9nwmQjC9I6rgC6hLOFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkEGyy0Dg3kfBNlt0y2Ma+kWcfRNuf3YNQFhDPHsP8cJGMlZd0xSx5zG4V3CmUyw4yESb4Tb4wDL8twsaPN07wLi3h0ADTTF/0AM1DvWaqavOffyvH6u1xJ7FlCUryxYJ9JoJQ7wyLyk4mkWwpEQlHE0e6089feMpVqhXMC+m1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLphSnr3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6446C4CEFE;
-	Fri, 17 Oct 2025 15:36:00 +0000 (UTC)
+	 MIME-Version; b=lxBPSIU/GzwFN+VBnPwGiptnuycYcAyTfRKfMU7rhx8Zk7yeuaDakDVXE141WtrPcQZJsfS2TGZ+e6nTrFEeZE7UYnhJRfxlB77aw02xwh01RDorsV+ai7G7U9G+2LIgvhszlzmgvpJcWQ9TJVAL1i7RwlAWni+sYjQmFtY4n30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1feZ3om; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD95C113D0;
+	Fri, 17 Oct 2025 15:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715361;
-	bh=6KxM+rrZADtaDKG6AXfMt7JpQGEzUJxR0sZfli734Ro=;
+	s=korg; t=1760716097;
+	bh=iERE1/Jb2HJn4+EENqyhvOBZ9nwmQjC9I6rgC6hLOFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dLphSnr3zBRsZsnhOeMcDOqqCpcu0iWNKkgHy3cZ2pXSPbjl/beFaGnH/q4Q0MHv6
-	 jkBccD5ci3JaWack4OmVPPYoTZocA/dD2FTBiGo9DETiGY371C2mewQwHvdBkqZpU2
-	 iwbsipOxmYHJjGlfj3vkc2fSEU7NK4Zbjh6A9EFY=
+	b=c1feZ3omm6dq33wMVrFJ+CGhUXpflEC6L7TDI6X2QcC0b6j04kW32NiXtJt3xA+8H
+	 /5zCMjBwFIOh2c625qU5a+tmpUZ9NwGn7n2M6ywXL+u04E6oLdREpO7oHHoqG51vRe
+	 5hF8w1kYshGMkkdSAJdRaCHo4+K7LbYsgMiz7k1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 6.17 189/371] drm/rcar-du: dsi: Fix 1/2/3 lane support
+	Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 071/276] fs: ntfs3: Fix integer overflow in run_unpack()
 Date: Fri, 17 Oct 2025 16:52:44 +0200
-Message-ID: <20251017145208.761207823@linuxfoundation.org>
+Message-ID: <20251017145145.078427558@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
 
-commit d83f1d19c898ac1b54ae64d1c950f5beff801982 upstream.
+[ Upstream commit 736fc7bf5f68f6b74a0925b7e072c571838657d2 ]
 
-Remove fixed PPI lane count setup. The R-Car DSI host is capable
-of operating in 1..4 DSI lane mode. Remove the hard-coded 4-lane
-configuration from PPI register settings and instead configure
-the PPI lane count according to lane count information already
-obtained by this driver instance.
+The MFT record relative to the file being opened contains its runlist,
+an array containing information about the file's location on the physical
+disk. Analysis of all Call Stack paths showed that the values of the
+runlist array, from which LCNs are calculated, are not validated before
+run_unpack function.
 
-Configure TXSETR register to match PPI lane count. The R-Car V4H
-Reference Manual R19UH0186EJ0121 Rev.1.21 section 67.2.2.3 Tx Set
-Register (TXSETR), field LANECNT description indicates that the
-TXSETR register LANECNT bitfield lane count must be configured
-such, that it matches lane count configuration in PPISETR register
-DLEN bitfield. Make sure the LANECNT and DLEN bitfields are
-configured to match.
+The run_unpack function decodes the compressed runlist data format
+from MFT attributes (for example, $DATA), converting them into a runs_tree
+structure, which describes the mapping of virtual clusters (VCN) to
+logical clusters (LCN). The NTFS3 subsystem also has a shortcut for
+deleting files from MFT records - in this case, the RUN_DEALLOCATE
+command is sent to the run_unpack input, and the function logic
+provides that all data transferred to the runlist about file or
+directory is deleted without creating a runs_tree structure.
 
-Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250813210840.97621-1-marek.vasut+renesas@mailbox.org
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Substituting the runlist in the $DATA attribute of the MFT record for an
+arbitrary file can lead either to access to arbitrary data on the disk
+bypassing access checks to them (since the inode access check
+occurs above) or to destruction of arbitrary data on the disk.
+
+Add overflow check for addition operation.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c      |    5 ++++-
- drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h |    8 ++++----
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ fs/ntfs3/run.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
-+++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
-@@ -576,7 +576,10 @@ static int rcar_mipi_dsi_startup(struct
- 	udelay(10);
- 	rcar_mipi_dsi_clr(dsi, CLOCKSET1, CLOCKSET1_UPDATEPLL);
+diff --git a/fs/ntfs3/run.c b/fs/ntfs3/run.c
+index 6940ee5432ba3..52ce16218b299 100644
+--- a/fs/ntfs3/run.c
++++ b/fs/ntfs3/run.c
+@@ -9,6 +9,7 @@
+ #include <linux/blkdev.h>
+ #include <linux/fs.h>
+ #include <linux/log2.h>
++#include <linux/overflow.h>
  
--	ppisetr = PPISETR_DLEN_3 | PPISETR_CLEN;
-+	rcar_mipi_dsi_clr(dsi, TXSETR, TXSETR_LANECNT_MASK);
-+	rcar_mipi_dsi_set(dsi, TXSETR, dsi->lanes - 1);
+ #include "debug.h"
+ #include "ntfs.h"
+@@ -935,12 +936,16 @@ int run_unpack(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
+ 
+ 			if (!dlcn)
+ 				return -EINVAL;
+-			lcn = prev_lcn + dlcn;
 +
-+	ppisetr = ((BIT(dsi->lanes) - 1) & PPISETR_DLEN_MASK) | PPISETR_CLEN;
- 	rcar_mipi_dsi_write(dsi, PPISETR, ppisetr);
++			if (check_add_overflow(prev_lcn, dlcn, &lcn))
++				return -EINVAL;
+ 			prev_lcn = lcn;
+ 		} else
+ 			return -EINVAL;
  
- 	rcar_mipi_dsi_set(dsi, PHYSETUP, PHYSETUP_SHUTDOWNZ);
---- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
-+++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
-@@ -12,6 +12,9 @@
- #define LINKSR_LPBUSY			(1 << 1)
- #define LINKSR_HSBUSY			(1 << 0)
- 
-+#define TXSETR				0x100
-+#define TXSETR_LANECNT_MASK		(0x3 << 0)
+-		next_vcn = vcn64 + len;
++		if (check_add_overflow(vcn64, len, &next_vcn))
++			return -EINVAL;
 +
- /*
-  * Video Mode Register
-  */
-@@ -80,10 +83,7 @@
-  * PHY-Protocol Interface (PPI) Registers
-  */
- #define PPISETR				0x700
--#define PPISETR_DLEN_0			(0x1 << 0)
--#define PPISETR_DLEN_1			(0x3 << 0)
--#define PPISETR_DLEN_2			(0x7 << 0)
--#define PPISETR_DLEN_3			(0xf << 0)
-+#define PPISETR_DLEN_MASK		(0xf << 0)
- #define PPISETR_CLEN			(1 << 8)
+ 		/* Check boundary. */
+ 		if (next_vcn > evcn + 1)
+ 			return -EINVAL;
+@@ -1101,7 +1106,8 @@ int run_get_highest_vcn(CLST vcn, const u8 *run_buf, u64 *highest_vcn)
+ 			return -EINVAL;
  
- #define PPICLCR				0x710
+ 		run_buf += size_size + offset_size;
+-		vcn64 += len;
++		if (check_add_overflow(vcn64, len, &vcn64))
++			return -EINVAL;
+ 
+ #ifndef CONFIG_NTFS3_64BIT_CLUSTER
+ 		if (vcn64 > 0x100000000ull)
+-- 
+2.51.0
+
 
 
 
