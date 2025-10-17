@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-186370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3365BE967A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:01:15 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092FCBEA1F1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 952D7622D91
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AA24E35ED1F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9CB33711A;
-	Fri, 17 Oct 2025 14:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E025257437;
+	Fri, 17 Oct 2025 15:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Na1bvfj8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZOOyULm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AC33370F7;
-	Fri, 17 Oct 2025 14:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B31330B11;
+	Fri, 17 Oct 2025 15:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713050; cv=none; b=OG9RL5qRFB2W0XIeLy7NDkn+K+qcvi1M+OFpyH8WjhKLGisJ7Ka9cAm47YpN0XlfJa/QdIZGd7QY2OukaVjL05A8KzRy4lcTbwgZBp3HUlEw3Na5dlyykc/iVe03no1xjKZwPU/mdIoULmsQGBh5iwRNcaCcTqbYYdX9sll5b3g=
+	t=1760715936; cv=none; b=f6VVZIFEpGZRKN/PFgw2peXHOWRUWjcTV8AbQXWgYDjNI1joFiwmgqP74IiPbGo/ARrypDub3ueBuoxBnS5BwIY6sHi/KjMZcmctRZf49vgaNNnOYd/4eaItkwgTn+SGm5M9HY+o3kmH/MMxH2IYFKPYpHwdmhw3FR1+SE1ZwDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713050; c=relaxed/simple;
-	bh=3w6xi/j5Gq0yqgvEMbjlSdLfJJQIsK/CEsVarpxm3K0=;
+	s=arc-20240116; t=1760715936; c=relaxed/simple;
+	bh=hhtnTipYSbJRpfbCTnCWafAXW1OsO8zgdUp8TZDsY/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tW7xG6QlGYvzeFdrRzLwDqYkB4TImytRgDktdDkVzt6cTz6CBAZB7zv93VAwNgQQlgsZbnDaLNrG2FTyblN5LKoJPZg5ulOcu3H5WHo+jZ8hrZZ9+OFX+FCxDal9qYDxUMBnYBm/oJC7uao9vxpGzv8MYwAOHD6nGl/HqxprSzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Na1bvfj8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA4BC4CEE7;
-	Fri, 17 Oct 2025 14:57:28 +0000 (UTC)
+	 MIME-Version; b=uxOt6h1X7e7Dq8cqwK4tHnLCReTdP/Yzq6ZICtcNW8nidLyIP5NPBs4fZWoNK8t2ow7FwuyEan6rONFzG+boGJL9sjEa90EQXt4EgPCBrWU9N8pKon6IyvUFraB3Lysey3hsFdKTTv27ff0U1qKPuk9E+ghhT1MH/rzKWs7Dh7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZOOyULm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E674C4CEE7;
+	Fri, 17 Oct 2025 15:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713048;
-	bh=3w6xi/j5Gq0yqgvEMbjlSdLfJJQIsK/CEsVarpxm3K0=;
+	s=korg; t=1760715936;
+	bh=hhtnTipYSbJRpfbCTnCWafAXW1OsO8zgdUp8TZDsY/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Na1bvfj8bf6iClMc3fSOHRA9Q4S3VZGb7briah4pM1Mo85PtceeTBIk87k61w8f5k
-	 /Rc8wbyk573v5c6U6xF6vUK1rAD/10/6+5d6luNowWP4sKClMdX3Qxfwmz6LRl4IbE
-	 Nv/j/yfANq75J4jQIfbBQyk6+ZtPi0q2uAvJtCW0=
+	b=TZOOyULmyvZJZsP+qGfyfXqTGBd+MlOG4RE7RdYeo7krg4fBdF/Jl9fGhRD+pWbwx
+	 wFa+nZdBmvrimHqn/jMge6lGUsUEHGtYOawom7aqNT93SHWtlohObhwBKSwDw9BrqD
+	 bFzv8FrY7/BNG7zB9aBgY96rXdoUe/4XEoqzuVXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/168] net/mlx4: prevent potential use after free in mlx4_en_do_uc_filter()
-Date: Fri, 17 Oct 2025 16:51:49 +0200
-Message-ID: <20251017145130.128917636@linuxfoundation.org>
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 5.15 017/276] staging: axis-fifo: flush RX FIFO on read errors
+Date: Fri, 17 Oct 2025 16:51:50 +0200
+Message-ID: <20251017145143.031227203@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit 4f0d91ba72811fd5dd577bcdccd7fed649aae62c ]
+commit 82a051e2553b9e297cba82a975d9c538b882c79e upstream.
 
-Print "entry->mac" before freeing "entry".  The "entry" pointer is
-freed with kfree_rcu() so it's unlikely that we would trigger this
-in real life, but it's safer to re-order it.
+Flush stale data from the RX FIFO in case of errors, to avoid reading
+old data when new packets arrive.
 
-Fixes: cc5387f7346a ("net/mlx4_en: Add unicast MAC filtering")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/aNvMHX4g8RksFFvV@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for
+user errors") removed full FIFO resets from the read error paths, which
+fixed potential TX data losses, but introduced this RX issue.
+
+Fixes: c6e8d85fafa7 ("staging: axis-fifo: Remove hardware resets for user errors")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250912101322.1282507-2-ovidiu.panait.oss@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_netdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/axis-fifo/axis-fifo.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-index ca4b93a010346..e66f77af677cf 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-@@ -1177,9 +1177,9 @@ static void mlx4_en_do_uc_filter(struct mlx4_en_priv *priv,
- 				mlx4_unregister_mac(mdev->dev, priv->port, mac);
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -400,6 +400,7 @@ static ssize_t axis_fifo_read(struct fil
+ 	}
  
- 				hlist_del_rcu(&entry->hlist);
--				kfree_rcu(entry, rcu);
- 				en_dbg(DRV, priv, "Removed MAC %pM on port:%d\n",
- 				       entry->mac, priv->port);
-+				kfree_rcu(entry, rcu);
- 				++removed;
- 			}
+ 	bytes_available = ioread32(fifo->base_addr + XLLF_RLR_OFFSET);
++	words_available = bytes_available / sizeof(u32);
+ 	if (!bytes_available) {
+ 		dev_err(fifo->dt_device, "received a packet of length 0\n");
+ 		ret = -EIO;
+@@ -410,7 +411,7 @@ static ssize_t axis_fifo_read(struct fil
+ 		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu)\n",
+ 			bytes_available, len);
+ 		ret = -EINVAL;
+-		goto end_unlock;
++		goto err_flush_rx;
+ 	}
+ 
+ 	if (bytes_available % sizeof(u32)) {
+@@ -419,11 +420,9 @@ static ssize_t axis_fifo_read(struct fil
+ 		 */
+ 		dev_err(fifo->dt_device, "received a packet that isn't word-aligned\n");
+ 		ret = -EIO;
+-		goto end_unlock;
++		goto err_flush_rx;
+ 	}
+ 
+-	words_available = bytes_available / sizeof(u32);
+-
+ 	/* read data into an intermediate buffer, copying the contents
+ 	 * to userspace when the buffer is full
+ 	 */
+@@ -435,18 +434,23 @@ static ssize_t axis_fifo_read(struct fil
+ 			tmp_buf[i] = ioread32(fifo->base_addr +
+ 					      XLLF_RDFD_OFFSET);
  		}
--- 
-2.51.0
-
++		words_available -= copy;
+ 
+ 		if (copy_to_user(buf + copied * sizeof(u32), tmp_buf,
+ 				 copy * sizeof(u32))) {
+ 			ret = -EFAULT;
+-			goto end_unlock;
++			goto err_flush_rx;
+ 		}
+ 
+ 		copied += copy;
+-		words_available -= copy;
+ 	}
++	mutex_unlock(&fifo->read_lock);
++
++	return bytes_available;
+ 
+-	ret = bytes_available;
++err_flush_rx:
++	while (words_available--)
++		ioread32(fifo->base_addr + XLLF_RDFD_OFFSET);
+ 
+ end_unlock:
+ 	mutex_unlock(&fifo->read_lock);
 
 
 
