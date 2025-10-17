@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-187249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96A4BEA6FF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC1DBEA855
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:12:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 502A27481B7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86F3740587E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622D0330B17;
-	Fri, 17 Oct 2025 15:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14512330B39;
+	Fri, 17 Oct 2025 15:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scFyxn7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CURUhsR+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D46330B05;
-	Fri, 17 Oct 2025 15:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4478330B2E;
+	Fri, 17 Oct 2025 15:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715539; cv=none; b=IFR/2C4HH9I7GzgRTyHypNIJ6t2rgmhRuEf65z6p8xweG4PxEy/B6wxMRFRwJ84j+jW1mGtf8WkDs7tmiyJAr5+CC4qlNKc5YLBzyabrL8kYNdylZy0LVjl82QgwHN+VwFrV6BVRcuGjvfNOK4NrN3Tru5XYVSIkMN4vsnasYIk=
+	t=1760715570; cv=none; b=NDj91v/HpkORsVvlpoHc3myi0FrsQh193X3k3qilJjEvNaRqCJ5/ZIYPRRwvupV69HGvsCD9mVzhZkb+mVvBev09EW2ltGajKRanAJsrWm4QJg2undDBcP8wdoQ3WBgVOkPuKcpcl/5yRIuM3rBn+iHpKTUAOoEevlP+EzolWIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715539; c=relaxed/simple;
-	bh=aGsPVbV/cuikQx1NTVBPAQRASHBCW6d3XQSk50w1nAE=;
+	s=arc-20240116; t=1760715570; c=relaxed/simple;
+	bh=iCzwsPQUy7D4TG/BLfVcrFRcIRqO8cqeBX6vWKMvR80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCFwNZBAQB/RRGNjd3QZ4TQRrv6Y9XTTyUnllRmhw3n+YKQ83aIh3ntzTCR+UmtmTr6UF2nG8n74tN1sc6/owUz9OK0G5TsHlIXJVFIG4fUn3yGbBBclAm4sp5JIZtviRrMlIhTVzbJt3vIKK1ZyemiWyhsNWq4mfJOzCJPWCiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scFyxn7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C03AC4CEE7;
-	Fri, 17 Oct 2025 15:38:58 +0000 (UTC)
+	 MIME-Version; b=UiJsxl+PYZypx6fdZt0qwnu9yU0OqLdLcuQTVoLod7+PwUz2I72FxusSlkvpj0hes5z0QhmZCPm+cfPXU8Yaern2Yu/aj04rX7vs09dWqu5UozbkfJVolUWa1D5FdzIxPY2d+RO+3b6hhj+jfwqcFuod0TX03Hlut57Kyzxca0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CURUhsR+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23369C4CEE7;
+	Fri, 17 Oct 2025 15:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715538;
-	bh=aGsPVbV/cuikQx1NTVBPAQRASHBCW6d3XQSk50w1nAE=;
+	s=korg; t=1760715570;
+	bh=iCzwsPQUy7D4TG/BLfVcrFRcIRqO8cqeBX6vWKMvR80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=scFyxn7xSrZnAlwABeNKP1Kh77WEWrfGqMNc7tAiA/C9eBI+2YF2zIr/obvinpGYh
-	 A1dE6pJv8sIFFW6OZXrm6g/mN6Rwd366x5Osq8fgmuLwIRX+nWti0hVoUaXgnbHVLP
-	 CzBMingNLn68DV4kOqYXXCmXJW0OFKIndBMn5SaU=
+	b=CURUhsR+YYz85COx65HidnvUnSl/Joax16OyDmQmjkcpL/rqi349qAhOxBiEWqoMQ
+	 /KyEqdTyAF2+9led4eSVs+6byVViJP6ohmIthOTr4doquIXQJQ60hU9gI5PHJBIWYG
+	 0GRqMCvXP+NJ8VnEq0pRBgqdFKnCY27cnBlJO94E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pratyush Yadav <pratyush@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Baoquan He <bhe@redhat.com>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Johan Hovold <johan@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Vladimir Zapolskiy <vz@mleia.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 234/371] kho: only fill kimage if KHO is finalized
-Date: Fri, 17 Oct 2025 16:53:29 +0200
-Message-ID: <20251017145210.548948860@linuxfoundation.org>
+Subject: [PATCH 6.17 235/371] lib/genalloc: fix device leak in of_gen_pool_get()
+Date: Fri, 17 Oct 2025 16:53:30 +0200
+Message-ID: <20251017145210.584391425@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -71,60 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pratyush Yadav <pratyush@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit f322a97aeb2a05b6b1ee17629145eb02e1a4c6a0 upstream.
+commit 1260cbcffa608219fc9188a6cbe9c45a300ef8b5 upstream.
 
-kho_fill_kimage() only checks for KHO being enabled before filling in the
-FDT to the image.  KHO being enabled does not mean that the kernel has
-data to hand over.  That happens when KHO is finalized.
+Make sure to drop the reference taken when looking up the genpool platform
+device in of_gen_pool_get() before returning the pool.
 
-When a kexec is done with KHO enabled but not finalized, the FDT page is
-allocated but not initialized.  FDT initialization happens after finalize.
-This means the KHO segment is filled in but the FDT contains garbage
-data.
+Note that holding a reference to a device does typically not prevent its
+devres managed resources from being released so there is no point in
+keeping the reference.
 
-This leads to the below error messages in the next kernel:
-
-    [    0.000000] KHO: setup: handover FDT (0x10116b000) is invalid: -9
-    [    0.000000] KHO: disabling KHO revival: -22
-
-There is no problem in practice, and the next kernel boots and works fine.
-But this still leads to misleading error messages and garbage being
-handed over.
-
-Only fill in KHO segment when KHO is finalized.  When KHO is not enabled,
-the debugfs interface is not created and there is no way to finalize it
-anyway.  So the check for kho_enable is not needed, and kho_out.finalize
-alone is enough.
-
-Link: https://lkml.kernel.org/r/20250918170617.91413-1-pratyush@kernel.org
-Fixes: 3bdecc3c93f9 ("kexec: add KHO support to kexec file loads")
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Changyuan Lyu <changyuanl@google.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20250924080207.18006-1-johan@kernel.org
+Fixes: 9375db07adea ("genalloc: add devres support, allow to find a managed pool by device")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Vladimir Zapolskiy <vz@mleia.com>
+Cc: <stable@vger.kernel.org>	[3.10+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kexec_handover.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/genalloc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/kexec_handover.c
-+++ b/kernel/kexec_handover.c
-@@ -1233,7 +1233,7 @@ int kho_fill_kimage(struct kimage *image
- 	int err = 0;
- 	struct kexec_buf scratch;
+--- a/lib/genalloc.c
++++ b/lib/genalloc.c
+@@ -899,8 +899,11 @@ struct gen_pool *of_gen_pool_get(struct
+ 		if (!name)
+ 			name = of_node_full_name(np_pool);
+ 	}
+-	if (pdev)
++	if (pdev) {
+ 		pool = gen_pool_get(&pdev->dev, name);
++		put_device(&pdev->dev);
++	}
++
+ 	of_node_put(np_pool);
  
--	if (!kho_enable)
-+	if (!kho_out.finalized)
- 		return 0;
- 
- 	image->kho.fdt = page_to_phys(kho_out.ser.fdt);
+ 	return pool;
 
 
 
