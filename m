@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-187530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22319BEA696
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248F5BEA224
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17B205A4101
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EC1318948BB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6BE253B42;
-	Fri, 17 Oct 2025 15:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B1F330B38;
+	Fri, 17 Oct 2025 15:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vAdxw9KA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7cKfe+p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70DA2472B0;
-	Fri, 17 Oct 2025 15:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE7B330B2E;
+	Fri, 17 Oct 2025 15:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716337; cv=none; b=aWcGKRsc5b+Q4Bt6fEDnhhBje8Of2/YAauI2V4+h6df1EYRu+4CQfBYtusYhAETVe35T/uLxmow/2ciI0CBYFP2b9qgxg7h3QeAFPER1L8OKpd614tH5zSLxCp4/vp7GvGJLCpHLluvrw7/04J36dJUM3Exqfx3uCSIyuqblcQ8=
+	t=1760715698; cv=none; b=Z03hfsgbE/x6KGbnTuJqNitOIw7Y01A4OL0frArZA6yvAXnQDzJqyVaWhy3gw7QhfD545M0dNzb0bGTDC+/WoxWlxS0mCL+oxFw3hdUm0cuQCJwnV5SPPw4k0/+vaGZ2Yqtsw3bUbbvZF7QWawfnC3DyhHN55jkvjKxBTaXYMFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716337; c=relaxed/simple;
-	bh=aKeQQd7euaK3733oW8P1csyim3tJU8VYYMyxWMmkqWY=;
+	s=arc-20240116; t=1760715698; c=relaxed/simple;
+	bh=HItOEV4Mk2D804bfq/n05PvAJIl/wO/lzA9bfNQ2yXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXAYIG3JfyYjSTVmH9G4TnrBAelGfz0yKrdUF7BG0CE4J5+iVDRKrK7CSv+BlV7nmlo+TVoTCJlasjqo2X0Xi9Rd6riwmS3CHqXazHmOCtPWKNtm/bhzJlpV8z/fvh8X/8+BEa9kOd1E1o+4Nee+CL1hiPDDZCtJM1CMFcq/ZYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vAdxw9KA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C0A8C4CEFE;
-	Fri, 17 Oct 2025 15:52:15 +0000 (UTC)
+	 MIME-Version; b=aRPknAp9f1/Eq14Y5wqne+khK+rQTDSD2wXxOxrBWL7NTz+4MXGsjf8ptLtahO5qv8F4Gi1C0YEnPbYsUxdh4TK7Qnp2bi343bfI990w2vIqUnjT0v1K/LWfx03HfJr1melN6kCzk0ZPeZldn1MkprB5OlRC6Zx9t2EwylsLLu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7cKfe+p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC05BC4CEE7;
+	Fri, 17 Oct 2025 15:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716336;
-	bh=aKeQQd7euaK3733oW8P1csyim3tJU8VYYMyxWMmkqWY=;
+	s=korg; t=1760715698;
+	bh=HItOEV4Mk2D804bfq/n05PvAJIl/wO/lzA9bfNQ2yXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vAdxw9KAyutaDX4x2IxMqL83WabtNDu8GBlJV3glVEcAAXlRTm5H4PLkLBu2cwIpT
-	 widyB6ccaj2eqJr0CLK02tST2Ux307CQQ1AVjYqx6ltu71F+NolWp90JAnkWNJ2AsX
-	 6iWzXuu3aMabWx62i5ESzQvsW0JVZjw/MHXhD8uE=
+	b=D7cKfe+pv8W5ZzRyAgEtNlF2TwMgb5JHmS25KWeeReJXZgdn7SOKqq4POSaycDSCm
+	 a1OMfRXPN9I+9RK+Io5QqETjZdvKXpH+GosMJnMBfYTWeLEqvfaQZHxTxy1o3vjvdk
+	 jMeawL1ocU5zFZGYghjn7J7araxlcWN6MUI66mSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 156/276] drm/amdgpu: Add additional DCE6 SCL registers
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.17 274/371] PCI: tegra: Convert struct tegra_msi mask_lock into raw spinlock
 Date: Fri, 17 Oct 2025 16:54:09 +0200
-Message-ID: <20251017145148.172526294@linuxfoundation.org>
+Message-ID: <20251017145211.987869337@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 507296328b36ffd00ec1f4fde5b8acafb7222ec7 ]
+commit 26fda92d3b56bf44a02bcb4001c5a5548e0ae8ee upstream.
 
-Fixes: 102b2f587ac8 ("drm/amd/display: dce_transform: DCE6 Scaling Horizontal Filter Init (v2)")
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The tegra_msi_irq_unmask() function may be called from a PCI driver
+request_threaded_irq() function. This triggers kernel/irq/manage.c
+__setup_irq() which locks raw spinlock &desc->lock descriptor lock
+and with that descriptor lock held, calls tegra_msi_irq_unmask().
+
+Since the &desc->lock descriptor lock is a raw spinlock, and the tegra_msi
+.mask_lock is not a raw spinlock, this setup triggers 'BUG: Invalid wait
+context' with CONFIG_PROVE_RAW_LOCK_NESTING=y.
+
+Use scoped_guard() to simplify the locking.
+
+Fixes: 2c99e55f7955 ("PCI: tegra: Convert to MSI domains")
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Closes: https://patchwork.kernel.org/project/linux-pci/patch/20250909162707.13927-2-marek.vasut+renesas@mailbox.org/#26574451
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250922150811.88450-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h       | 7 +++++++
- drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h | 2 ++
- 2 files changed, 9 insertions(+)
+ drivers/pci/controller/pci-tegra.c |   27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
-index 9de01ae574c03..067eddd9c62d8 100644
---- a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
-+++ b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
-@@ -4115,6 +4115,7 @@
- #define mmSCL0_SCL_COEF_RAM_CONFLICT_STATUS 0x1B55
- #define mmSCL0_SCL_COEF_RAM_SELECT 0x1B40
- #define mmSCL0_SCL_COEF_RAM_TAP_DATA 0x1B41
-+#define mmSCL0_SCL_SCALER_ENABLE 0x1B42
- #define mmSCL0_SCL_CONTROL 0x1B44
- #define mmSCL0_SCL_DEBUG 0x1B6A
- #define mmSCL0_SCL_DEBUG2 0x1B69
-@@ -4144,6 +4145,7 @@
- #define mmSCL1_SCL_COEF_RAM_CONFLICT_STATUS 0x1E55
- #define mmSCL1_SCL_COEF_RAM_SELECT 0x1E40
- #define mmSCL1_SCL_COEF_RAM_TAP_DATA 0x1E41
-+#define mmSCL1_SCL_SCALER_ENABLE 0x1E42
- #define mmSCL1_SCL_CONTROL 0x1E44
- #define mmSCL1_SCL_DEBUG 0x1E6A
- #define mmSCL1_SCL_DEBUG2 0x1E69
-@@ -4173,6 +4175,7 @@
- #define mmSCL2_SCL_COEF_RAM_CONFLICT_STATUS 0x4155
- #define mmSCL2_SCL_COEF_RAM_SELECT 0x4140
- #define mmSCL2_SCL_COEF_RAM_TAP_DATA 0x4141
-+#define mmSCL2_SCL_SCALER_ENABLE 0x4142
- #define mmSCL2_SCL_CONTROL 0x4144
- #define mmSCL2_SCL_DEBUG 0x416A
- #define mmSCL2_SCL_DEBUG2 0x4169
-@@ -4202,6 +4205,7 @@
- #define mmSCL3_SCL_COEF_RAM_CONFLICT_STATUS 0x4455
- #define mmSCL3_SCL_COEF_RAM_SELECT 0x4440
- #define mmSCL3_SCL_COEF_RAM_TAP_DATA 0x4441
-+#define mmSCL3_SCL_SCALER_ENABLE 0x4442
- #define mmSCL3_SCL_CONTROL 0x4444
- #define mmSCL3_SCL_DEBUG 0x446A
- #define mmSCL3_SCL_DEBUG2 0x4469
-@@ -4231,6 +4235,7 @@
- #define mmSCL4_SCL_COEF_RAM_CONFLICT_STATUS 0x4755
- #define mmSCL4_SCL_COEF_RAM_SELECT 0x4740
- #define mmSCL4_SCL_COEF_RAM_TAP_DATA 0x4741
-+#define mmSCL4_SCL_SCALER_ENABLE 0x4742
- #define mmSCL4_SCL_CONTROL 0x4744
- #define mmSCL4_SCL_DEBUG 0x476A
- #define mmSCL4_SCL_DEBUG2 0x4769
-@@ -4260,6 +4265,7 @@
- #define mmSCL5_SCL_COEF_RAM_CONFLICT_STATUS 0x4A55
- #define mmSCL5_SCL_COEF_RAM_SELECT 0x4A40
- #define mmSCL5_SCL_COEF_RAM_TAP_DATA 0x4A41
-+#define mmSCL5_SCL_SCALER_ENABLE 0x4A42
- #define mmSCL5_SCL_CONTROL 0x4A44
- #define mmSCL5_SCL_DEBUG 0x4A6A
- #define mmSCL5_SCL_DEBUG2 0x4A69
-@@ -4287,6 +4293,7 @@
- #define mmSCL_COEF_RAM_CONFLICT_STATUS 0x1B55
- #define mmSCL_COEF_RAM_SELECT 0x1B40
- #define mmSCL_COEF_RAM_TAP_DATA 0x1B41
-+#define mmSCL_SCALER_ENABLE 0x1B42
- #define mmSCL_CONTROL 0x1B44
- #define mmSCL_DEBUG 0x1B6A
- #define mmSCL_DEBUG2 0x1B69
-diff --git a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
-index 41c4a46ce3572..afe7303802c61 100644
---- a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
-+++ b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
-@@ -8646,6 +8646,8 @@
- #define REGAMMA_LUT_INDEX__REGAMMA_LUT_INDEX__SHIFT 0x00000000
- #define REGAMMA_LUT_WRITE_EN_MASK__REGAMMA_LUT_WRITE_EN_MASK_MASK 0x00000007L
- #define REGAMMA_LUT_WRITE_EN_MASK__REGAMMA_LUT_WRITE_EN_MASK__SHIFT 0x00000000
-+#define SCL_SCALER_ENABLE__SCL_SCALE_EN_MASK 0x00000001L
-+#define SCL_SCALER_ENABLE__SCL_SCALE_EN__SHIFT 0x00000000
- #define SCL_ALU_CONTROL__SCL_ALU_DISABLE_MASK 0x00000001L
- #define SCL_ALU_CONTROL__SCL_ALU_DISABLE__SHIFT 0x00000000
- #define SCL_BYPASS_CONTROL__SCL_BYPASS_MODE_MASK 0x00000003L
--- 
-2.51.0
-
+--- a/drivers/pci/controller/pci-tegra.c
++++ b/drivers/pci/controller/pci-tegra.c
+@@ -14,6 +14,7 @@
+  */
+ 
+ #include <linux/clk.h>
++#include <linux/cleanup.h>
+ #include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/export.h>
+@@ -270,7 +271,7 @@ struct tegra_msi {
+ 	DECLARE_BITMAP(used, INT_PCI_MSI_NR);
+ 	struct irq_domain *domain;
+ 	struct mutex map_lock;
+-	spinlock_t mask_lock;
++	raw_spinlock_t mask_lock;
+ 	void *virt;
+ 	dma_addr_t phys;
+ 	int irq;
+@@ -1581,14 +1582,13 @@ static void tegra_msi_irq_mask(struct ir
+ 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
+ 	struct tegra_pcie *pcie = msi_to_pcie(msi);
+ 	unsigned int index = d->hwirq / 32;
+-	unsigned long flags;
+ 	u32 value;
+ 
+-	spin_lock_irqsave(&msi->mask_lock, flags);
+-	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
+-	value &= ~BIT(d->hwirq % 32);
+-	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
+-	spin_unlock_irqrestore(&msi->mask_lock, flags);
++	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
++		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
++		value &= ~BIT(d->hwirq % 32);
++		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
++	}
+ }
+ 
+ static void tegra_msi_irq_unmask(struct irq_data *d)
+@@ -1596,14 +1596,13 @@ static void tegra_msi_irq_unmask(struct
+ 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
+ 	struct tegra_pcie *pcie = msi_to_pcie(msi);
+ 	unsigned int index = d->hwirq / 32;
+-	unsigned long flags;
+ 	u32 value;
+ 
+-	spin_lock_irqsave(&msi->mask_lock, flags);
+-	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
+-	value |= BIT(d->hwirq % 32);
+-	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
+-	spin_unlock_irqrestore(&msi->mask_lock, flags);
++	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
++		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
++		value |= BIT(d->hwirq % 32);
++		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
++	}
+ }
+ 
+ static void tegra_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
+@@ -1711,7 +1710,7 @@ static int tegra_pcie_msi_setup(struct t
+ 	int err;
+ 
+ 	mutex_init(&msi->map_lock);
+-	spin_lock_init(&msi->mask_lock);
++	raw_spin_lock_init(&msi->mask_lock);
+ 
+ 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+ 		err = tegra_allocate_domains(msi);
 
 
 
