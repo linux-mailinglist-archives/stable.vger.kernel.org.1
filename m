@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-186907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CE1BE9E2B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:03 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC23ABE98AD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 11F29587E22
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 620B135D116
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476CF32E159;
-	Fri, 17 Oct 2025 15:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AF333506B;
+	Fri, 17 Oct 2025 15:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jePNw+SG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1Q9/+lJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B69337117;
-	Fri, 17 Oct 2025 15:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84E5332ECA;
+	Fri, 17 Oct 2025 15:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714568; cv=none; b=Xf92/b5gpznpn9K5xVweUNQqA8I2CHSZEd4o3i7okl2BBDVOFnYadAHdlg+Yjabr2TkdmfG6MDJiaju3XYggcRyqqYBnv7MnPCkyPRgKoMA09jZALUGD1Frn0LPZAqKtS86gofXw2qG4UJ2RK0tI/kdQPfPXt3DD0A5bVOTMjyQ=
+	t=1760713834; cv=none; b=i3DB8TVbTz81V9R0R8v0xHj/yaBaogo4EIQl2J2p7U6cZCrqUAXh384oxZlN3NFrTp3J22b3anZj78GlV5Tcfo9fuyWFjR1tAC/xoAjCBFbN8kpkh+nMayu+wUzOuGcCurck+gy7nGsAwrArwcErgUQ+mmIJShx5s5zO0z90U6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714568; c=relaxed/simple;
-	bh=Cv8alMDcaQfPVLhe9l5vazy3wPrjIG1i2JvHhcl+wkg=;
+	s=arc-20240116; t=1760713834; c=relaxed/simple;
+	bh=KEEJ9z2ARRTRtCiLLznjo0/6Ounix9LfKGt5v8sgVp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4XODy5q93MGTPE9Ug0cRGX3osEZJc92nJqjKdEs5zsz33p+ZgEWM1qr/bwlNWtcUYJ9lZlD56cs9h/oMYXMbkZpllJrsgHhtDlb/+pmmWDGzmYfrtmIH+7iwF6NnwotBu3rXstN8i3driMopPbCk4IlcAwMmMv4IDgxgTabwjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jePNw+SG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819BDC4CEE7;
-	Fri, 17 Oct 2025 15:22:47 +0000 (UTC)
+	 MIME-Version; b=J0pdqzB+17XIQXx5wz/4f8YIAvks2p9CFpPSRj50Iv+Hmlsu74XK7fRdFlXOdVZX6rzSf9T1cC3HERAGcyAEhQFZJrNJmcybOI3wAxmJ26V5h4iQRjHANZocnXPydfaUuN8PeK8lRDLu378MpnGfjDIZQxKKjx2+JHPo2p4GiMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1Q9/+lJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B52EC113D0;
+	Fri, 17 Oct 2025 15:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714567;
-	bh=Cv8alMDcaQfPVLhe9l5vazy3wPrjIG1i2JvHhcl+wkg=;
+	s=korg; t=1760713834;
+	bh=KEEJ9z2ARRTRtCiLLznjo0/6Ounix9LfKGt5v8sgVp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jePNw+SGutgKBZuOHfqvdnUJShjdW9QX+6dDcwefeGywh+JHh+dF1WX6EQokF32z/
-	 pYsFTWO5nLy6ntCABLPrBMzgScGyDrRBHZCUT3DWtgsDKLUHbY9JDEyKzp4PoTFHw7
-	 04582ap8c2Znop7Sjl5WJYO5B24TjrB5P3IPK48s=
+	b=Z1Q9/+lJf8CLG6gxYSzw0z95LTXov6BA3hOmXUDIXnExNHuCKttoxbHcaVbMI2YOs
+	 HHKAOMmv30F8Wcy+MzkkJiNIEawkXDJVu/4PDLTE+Ur48XDz/ZsD4+cqzVFXF0bgF0
+	 vjGvupqpYW8k9UWOsOjbAtfluwRxYoySTNAY5JjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Pratyush Yadav <pratyush@kernel.org>,
 	Santhosh Kumar K <s-k6@ti.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 190/277] spi: cadence-quadspi: Flush posted register writes before INDAC access
+Subject: [PATCH 6.6 136/201] spi: cadence-quadspi: Flush posted register writes before INDAC access
 Date: Fri, 17 Oct 2025 16:53:17 +0200
-Message-ID: <20251017145154.059567945@linuxfoundation.org>
+Message-ID: <20251017145139.733120338@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -96,15 +96,15 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/spi/spi-cadence-quadspi.c
 +++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -754,6 +754,7 @@ static int cqspi_indirect_read_execute(s
+@@ -726,6 +726,7 @@ static int cqspi_indirect_read_execute(s
  	reinit_completion(&cqspi->transfer_complete);
  	writel(CQSPI_REG_INDIRECTRD_START_MASK,
  	       reg_base + CQSPI_REG_INDIRECTRD);
 +	readl(reg_base + CQSPI_REG_INDIRECTRD); /* Flush posted write. */
  
  	while (remaining > 0) {
- 		if (use_irq &&
-@@ -1058,6 +1059,8 @@ static int cqspi_indirect_write_execute(
+ 		if (!wait_for_completion_timeout(&cqspi->transfer_complete,
+@@ -1029,6 +1030,8 @@ static int cqspi_indirect_write_execute(
  	reinit_completion(&cqspi->transfer_complete);
  	writel(CQSPI_REG_INDIRECTWR_START_MASK,
  	       reg_base + CQSPI_REG_INDIRECTWR);
