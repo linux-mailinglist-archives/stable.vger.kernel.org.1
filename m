@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-187319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FCBBEA3E9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CFBBEA407
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC78F58357B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B49E7C74F1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020E6335074;
-	Fri, 17 Oct 2025 15:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4F032C93A;
+	Fri, 17 Oct 2025 15:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pbV+NVf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTOrJOOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E3233506D;
-	Fri, 17 Oct 2025 15:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CFA330B1D;
+	Fri, 17 Oct 2025 15:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715741; cv=none; b=Fnb7saKsdlTOZreQl4kUfyC+Z/JanxRktK6jFdo+CzJqWIZDoXp8mKWiO1NZX5r+sUZI9l3qvebH10vU3wVfdfJup4uG9FmmrA5tdhNWB1N9aL2dKgsFqmLB0OL8aUMwPGo/df9eyVbnPyaiX4YKNcB+8ipYPC76pWbqqKq6c60=
+	t=1760715747; cv=none; b=A9z8UKfBFxpAsXcx8voVgl/0RMijAKEEAj7RlvjgRriL4/sKX33l7MVhXE+wYObBqLZm+zfT8IpQ11gjnPbcyeKiU4Dw9LsQ4SuLHAIuy5xPJwd5ZBbcn2QvhMDZmjXln/Q7RyVq+CsTyCHBwSQ07Vlmq5nSeGf/hjVkV30xJWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715741; c=relaxed/simple;
-	bh=pvFJ7bSSlx/PZFQQl0aUh5clZF9UifALY4R9QUqgcIQ=;
+	s=arc-20240116; t=1760715747; c=relaxed/simple;
+	bh=NePpJ8alNyRh1OQX1PSFyEBQ16m3U6HmwQdrF/KqQ/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAbTUHXGkeq2kEoRiNf+VultdLtUke8kzKiTcdyNIA1yB7Jy00lyv1EVz4sISPX8b3e/7/xOTh2PsrBSkhcThI7eCT0oHnRBQnI6zOOkPABs//luRZeIDCZZl8Dqsba5r+gT8UVeLQW5uCD3aBXceZO04JT81ja297uCuymBi3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pbV+NVf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F52C4CEFE;
-	Fri, 17 Oct 2025 15:42:21 +0000 (UTC)
+	 MIME-Version; b=Zx3cpK8Opwe3ukdarqI3kMcYvGJPbphOH6wXHHMcn9wbRCepk5HGxlZROmT3KIYSiaYFHm9/TpXn3zmA5mTKBBDkfB9IaKGqBu0TbR+C4rZHPfA+fDsywQ4ATUOR5ZPgIAHHVz3jeTpw5GRZSzHlvjwLmMchhHH/0xnzbiQpMKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTOrJOOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACE3C4CEE7;
+	Fri, 17 Oct 2025 15:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715741;
-	bh=pvFJ7bSSlx/PZFQQl0aUh5clZF9UifALY4R9QUqgcIQ=;
+	s=korg; t=1760715747;
+	bh=NePpJ8alNyRh1OQX1PSFyEBQ16m3U6HmwQdrF/KqQ/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0pbV+NVfEPkYIAxmu2N+WgYnZNotMvqOO6vWMXCcXrlQvSodpgj8PTDaDu0PI2/Jc
-	 HghIaHaXquhxi1gmsgwPBAH6Vw3TDF9LpT3ug/ru9HUyTHE1K28k3BiqIsleRwQFXB
-	 BdNLAt9p/JI6snG2lPuIbr0g5L2sg2TD8rHJbrpU=
+	b=bTOrJOOKcuwsH7GWsCFsVK8wjmcJFcA7BmODU9jyC9e7wEMHgMRIJwF+6C6eKrOHW
+	 MpkA/796oG349wXChV6OG4B9HM8L2G58TQx+SPYPAeKpwTMZ1Lv/+vljcZc6dIUY8Z
+	 fg8FDpZXmlKRl9Yc9dT6Psqc87V426WSRjN0mb6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
+	Olga Kornievskaia <okorniev@redhat.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.17 322/371] NFSD: Fix destination buffer size in nfsd4_ssc_setup_dul()
-Date: Fri, 17 Oct 2025 16:54:57 +0200
-Message-ID: <20251017145213.727106172@linuxfoundation.org>
+Subject: [PATCH 6.17 323/371] nfsd: nfserr_jukebox in nlm_fopen should lead to a retry
+Date: Fri, 17 Oct 2025 16:54:58 +0200
+Message-ID: <20251017145213.762835066@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -65,42 +65,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-commit ab1c282c010c4f327bd7addc3c0035fd8e3c1721 upstream.
+commit a082e4b4d08a4a0e656d90c2c05da85f23e6d0c9 upstream.
 
-Commit 5304877936c0 ("NFSD: Fix strncpy() fortify warning") replaced
-strncpy(,, sizeof(..)) with strlcpy(,, sizeof(..) - 1), but strlcpy()
-already guaranteed NUL-termination of the destination buffer and
-subtracting one byte potentially truncated the source string.
+When v3 NLM request finds a conflicting delegation, it triggers
+a delegation recall and nfsd_open fails with EAGAIN. nfsd_open
+then translates EAGAIN into nfserr_jukebox. In nlm_fopen, instead
+of returning nlm_failed for when there is a conflicting delegation,
+drop this NLM request so that the client retries. Once delegation
+is recalled and if a local lock is claimed, a retry would lead to
+nfsd returning a nlm_lck_blocked error or a successful nlm lock.
 
-The incorrect size was then carried over in commit 72f78ae00a8e ("NFSD:
-move from strlcpy with unused retval to strscpy") when switching from
-strlcpy() to strscpy().
-
-Fix this off-by-one error by using the full size of the destination
-buffer again.
-
-Cc: stable@vger.kernel.org
-Fixes: 5304877936c0 ("NFSD: Fix strncpy() fortify warning")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Fixes: d343fce148a4 ("[PATCH] knfsd: Allow lockd to drop replies as appropriate")
+Cc: stable@vger.kernel.org # v6.6
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/lockd.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1498,7 +1498,7 @@ try_again:
+--- a/fs/nfsd/lockd.c
++++ b/fs/nfsd/lockd.c
+@@ -57,6 +57,21 @@ nlm_fopen(struct svc_rqst *rqstp, struct
+ 	switch (nfserr) {
+ 	case nfs_ok:
  		return 0;
- 	}
- 	if (work) {
--		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr) - 1);
-+		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr));
- 		refcount_set(&work->nsui_refcnt, 2);
- 		work->nsui_busy = true;
- 		list_add_tail(&work->nsui_list, &nn->nfsd_ssc_mount_list);
++	case nfserr_jukebox:
++		/* this error can indicate a presence of a conflicting
++		 * delegation to an NLM lock request. Options are:
++		 * (1) For now, drop this request and make the client
++		 * retry. When delegation is returned, client's lock retry
++		 * will complete.
++		 * (2) NLM4_DENIED as per "spec" signals to the client
++		 * that the lock is unavailable now but client can retry.
++		 * Linux client implementation does not. It treats
++		 * NLM4_DENIED same as NLM4_FAILED and errors the request.
++		 * (3) For the future, treat this as blocked lock and try
++		 * to callback when the delegation is returned but might
++		 * not have a proper lock request to block on.
++		 */
++		fallthrough;
+ 	case nfserr_dropit:
+ 		return nlm_drop_reply;
+ 	case nfserr_stale:
 
 
 
