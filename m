@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-187183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1236DBEA5C0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:59:15 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 607D8BE9A5A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:18:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 317CB9421C7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 57FB758512E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F18B28935A;
-	Fri, 17 Oct 2025 15:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375EB393DC3;
+	Fri, 17 Oct 2025 15:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pzMZuQf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZ9ip/mH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E397233507F;
-	Fri, 17 Oct 2025 15:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E378445C0B;
+	Fri, 17 Oct 2025 15:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715350; cv=none; b=C1nzWgfmo2Ws5FBJAG4ji1OQvdg+rg7qAY8CY3FnXJPsuDqWPXyYamiHtyCXmusE2Sg/SboV3fkipsHFzzHJAvFQyZECXNmJFpyucSWPBFsRILbli+6ABKEQeyihg3NffRfvwP7Ka3V5KX8SRcd8COAULaMlHvmkLbP5SdDU6RY=
+	t=1760713730; cv=none; b=fSSjuIhu0IXzp7Ei8VmPPYGsJ8HtvN1QxIUWUOck445rgMFKU/e99IU6srH5Qg9/Bh5TV81/DAUVCLFQ2kpLeKhZUubQJttpef9OSjVe2ocXq5PVWzgRU9k2cZLRf0roCG2OT5t0pWtx/s7r17dUzG1V+NGG3o8rwoTlmaPYyng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715350; c=relaxed/simple;
-	bh=HpaBeYs2nD8GQa7ckrWZqhF7rdIh4kYJ9Mai8T+1LIY=;
+	s=arc-20240116; t=1760713730; c=relaxed/simple;
+	bh=zlN5XZLx7Vy0hhYh1hsTGvuv8lqAIgQYqfKTEdE4cjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0Y3HwHrgj3f65t8vqHiOoVAX+Jt3eLoNz+Gs379rSObRfdftf8Ee5e/TTqSqcCjBnyu8qRTKVUgutuykd2PJjKt5vUw1zm3YPEgTw9pCsOf+u1EvFPvNtYN959AUGYLOlGz757mk+kAUFbN7DEBkNNRcy/MnctZIZM/pq6UkiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pzMZuQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D480C4CEE7;
-	Fri, 17 Oct 2025 15:35:49 +0000 (UTC)
+	 MIME-Version; b=XTuLY8XbggX2G4Eq8zXDhZKinWn+UOJT2VGMnVxkl03mQg17hqwXrVZm8MUrqjAdOSURjVi4WjLDgYUj3aQhwQBYTDiiRU5PhR2PuduYzqSPm2V/Toda9BzxCsYrk7FDP/movWY3Zu4ZGfzqtOUTPRgTamhjX7vL+HSsVsQYLLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZ9ip/mH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE7FC4CEF9;
+	Fri, 17 Oct 2025 15:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715349;
-	bh=HpaBeYs2nD8GQa7ckrWZqhF7rdIh4kYJ9Mai8T+1LIY=;
+	s=korg; t=1760713729;
+	bh=zlN5XZLx7Vy0hhYh1hsTGvuv8lqAIgQYqfKTEdE4cjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0pzMZuQf8CSq8XM1N180rsLJrT+T0s2p19H9AaHr5SAy9qvm+I472va8PoeAFz5v9
-	 qyAhsDBfwiL2XJ5R+UZyFvzhry7y8+/tO/no+/0Jst7/EzIPSrhgJZtzraE1gV2DQj
-	 +oRFpYZhBGnkQi3exV45c83e6SAfrt7Q+wY7owis=
+	b=yZ9ip/mHTjkzr4nX6lOQfWhxSrIHOu639R8G2OQoaZMok5aIEk6HkR21Xu0JzF8K2
+	 kCZ5wqUqaM2AIZ02oC+NUkd82bONQlaD455wh+N4Wyzfr+wkCbEjDVgsSwRgkDD4sW
+	 OsBjyNlnImDDiYRpThw2caslR201tGkRKFZALJ74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.17 185/371] media: lirc: Fix error handling in lirc_register()
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 099/201] kernel/sys.c: fix the racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths
 Date: Fri, 17 Oct 2025 16:52:40 +0200
-Message-ID: <20251017145208.618807986@linuxfoundation.org>
+Message-ID: <20251017145138.386170973@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 4f4098c57e139ad972154077fb45c3e3141555dd upstream.
+commit a15f37a40145c986cdf289a4b88390f35efdecc4 upstream.
 
-When cdev_device_add() failed, calling put_device() to explicitly
-release dev->lirc_dev. Otherwise, it could cause the fault of the
-reference count.
+The usage of task_lock(tsk->group_leader) in sys_prlimit64()->do_prlimit()
+path is very broken.
 
-Found by code review.
+sys_prlimit64() does get_task_struct(tsk) but this only protects task_struct
+itself. If tsk != current and tsk is not a leader, this process can exit/exec
+and task_lock(tsk->group_leader) may use the already freed task_struct.
 
-Cc: stable@vger.kernel.org
-Fixes: a6ddd4fecbb0 ("media: lirc: remove last remnants of lirc kapi")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Another problem is that sys_prlimit64() can race with mt-exec which changes
+->group_leader. In this case do_prlimit() may take the wrong lock, or (worse)
+->group_leader may change between task_lock() and task_unlock().
+
+Change sys_prlimit64() to take tasklist_lock when necessary. This is not
+nice, but I don't see a better fix for -stable.
+
+Link: https://lkml.kernel.org/r/20250915120917.GA27702@redhat.com
+Fixes: 18c91bb2d872 ("prlimit: do not grab the tasklist_lock")
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/lirc_dev.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ kernel/sys.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -736,11 +736,11 @@ int lirc_register(struct rc_dev *dev)
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -1689,6 +1689,7 @@ SYSCALL_DEFINE4(prlimit64, pid_t, pid, u
+ 	struct rlimit old, new;
+ 	struct task_struct *tsk;
+ 	unsigned int checkflags = 0;
++	bool need_tasklist;
+ 	int ret;
  
- 	cdev_init(&dev->lirc_cdev, &lirc_fops);
+ 	if (old_rlim)
+@@ -1715,8 +1716,25 @@ SYSCALL_DEFINE4(prlimit64, pid_t, pid, u
+ 	get_task_struct(tsk);
+ 	rcu_read_unlock();
  
-+	get_device(&dev->dev);
+-	ret = do_prlimit(tsk, resource, new_rlim ? &new : NULL,
+-			old_rlim ? &old : NULL);
++	need_tasklist = !same_thread_group(tsk, current);
++	if (need_tasklist) {
++		/*
++		 * Ensure we can't race with group exit or de_thread(),
++		 * so tsk->group_leader can't be freed or changed until
++		 * read_unlock(tasklist_lock) below.
++		 */
++		read_lock(&tasklist_lock);
++		if (!pid_alive(tsk))
++			ret = -ESRCH;
++	}
 +
- 	err = cdev_device_add(&dev->lirc_cdev, &dev->lirc_dev);
- 	if (err)
--		goto out_ida;
--
--	get_device(&dev->dev);
-+		goto out_put_device;
++	if (!ret) {
++		ret = do_prlimit(tsk, resource, new_rlim ? &new : NULL,
++				old_rlim ? &old : NULL);
++	}
++
++	if (need_tasklist)
++		read_unlock(&tasklist_lock);
  
- 	switch (dev->driver_type) {
- 	case RC_DRIVER_SCANCODE:
-@@ -764,7 +764,8 @@ int lirc_register(struct rc_dev *dev)
- 
- 	return 0;
- 
--out_ida:
-+out_put_device:
-+	put_device(&dev->lirc_dev);
- 	ida_free(&lirc_ida, minor);
- 	return err;
- }
+ 	if (!ret && old_rlim) {
+ 		rlim_to_rlim64(&old, &old64);
 
 
 
