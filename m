@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B68CBE9F15
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:08 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77931BE9BB0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 467DD6E4956
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:11 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2358B35DB4A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E054F2D24B6;
-	Fri, 17 Oct 2025 15:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9F732E159;
+	Fri, 17 Oct 2025 15:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzLBoEDK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0TJUQkx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EF02F12CF;
-	Fri, 17 Oct 2025 15:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2BF32C929;
+	Fri, 17 Oct 2025 15:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713738; cv=none; b=CkkIgpEk/6qo/sDMPRQY8ZMlWxoYRQznbyZ1g5T1dDytpdSaoTahshOd34iZSEAGTjwGqWe3bNQz3m3Z5nGGM5yaMY55oqw8cwdPCCnFaN1yEQf6WPWgU+1IKZeyMlFEvU28C/IY0cr/kG9m5GlBCX2k5HoFbyKx99qFQijimhk=
+	t=1760714469; cv=none; b=NBhm5MY7fK9L6NpXbocp8MSQ3C7mYMGCxZzLO6FwQ+DCLyZl+GpUHvG53XrGL1fW7bluEbVQzu+/Z3HjGVyvSqLHiiCX5gBFA+8IWv5WTDhzcGJnHh3cTm+yQ+6WV1eyt77aGfjlTE2dBm3rQIgfZqeGxGBTU1/OsW/sY/Bg4zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713738; c=relaxed/simple;
-	bh=fL6FuuMvOCJJ7UodCKlCl9NlEfoobFOfv5X8KSxyNOY=;
+	s=arc-20240116; t=1760714469; c=relaxed/simple;
+	bh=KuR84vQFilv7w1r1cZJfmFhrQoRN75x1Bk/sk32Oag4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqs14ZB8EEui8u1oO26QBOmcUrRkznfne1FDDADC1d06oKUDKXvFITxC9DvBC+9isUDxkzXdaBIIaLNhhDCYopYNfWR3YOwb3hUYx+9eNNH5oY9G6LXRObRwdjRb5+BgDYJ/jbE19GiZEwYSZRQFDNFwProXHQrKuOFnhxTfIAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzLBoEDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2F2C4CEE7;
-	Fri, 17 Oct 2025 15:08:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ogaz0zcMHGZLzJwNpLWPbFNROFX3MOtPMyaPjT9W0pIoj5pkDHWreg1Xht0oK+8hmCvNhVqYjp7UdJl3ki4R1oPpIHhRfBf/yp3FUTodwcw+7JRmj/GxP8ervngaUXx4MF4eVdREZFUcoTSsKceLsU29gJjSUAQF6NCy7Ajk5So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0TJUQkx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CC6C4CEE7;
+	Fri, 17 Oct 2025 15:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713738;
-	bh=fL6FuuMvOCJJ7UodCKlCl9NlEfoobFOfv5X8KSxyNOY=;
+	s=korg; t=1760714469;
+	bh=KuR84vQFilv7w1r1cZJfmFhrQoRN75x1Bk/sk32Oag4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pzLBoEDKOmB/POAUeU9i2v7Xe5VDtMUF+XNfJrcgkZpBYGMG6neHYV+QLUOonc3C6
-	 wxhrTw1cyVVkPrpxdl2Ps/teqPKF0qxeAHcnEk6skdaITFPJdaPk/rXlGx7aapphdI
-	 haeDz7RcBQD1vnRXqSdue2n8mbH62tAdEHHCe9lM=
+	b=q0TJUQkxpQSCwePiadIrE82UHkhvETD6Suwcbx1spFVs26R9mRq7mMRprGT+TKPL6
+	 Gd/P9kASY62JDnwrOgzA71urzGx9giaRB4SdXV1Daj2uIHY9Jnm8Lc9f9UKKMt/xPo
+	 8AwYPcGn8PqdFNJO8f86PnR7Npfcy5AGTEfBPKK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.6 102/201] of: unittest: Fix device reference count leak in of_unittest_pci_node_verify
+	Nam Cao <namcao@linutronix.de>,
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.12 156/277] powerpc/powernv/pci: Fix underflow and leak issue
 Date: Fri, 17 Oct 2025 16:52:43 +0200
-Message-ID: <20251017145138.495482537@linuxfoundation.org>
+Message-ID: <20251017145152.820558501@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Nam Cao <namcao@linutronix.de>
 
-commit a8de554774ae48efbe48ace79f8badae2daa2bf1 upstream.
+commit a39087905af9ffecaa237a918a2c03a04e479934 upstream.
 
-In of_unittest_pci_node_verify(), when the add parameter is false,
-device_find_any_child() obtains a reference to a child device. This
-function implicitly calls get_device() to increment the device's
-reference count before returning the pointer. However, the caller
-fails to properly release this reference by calling put_device(),
-leading to a device reference count leak. Add put_device() in the else
-branch immediately after child_dev is no longer needed.
+pnv_irq_domain_alloc() allocates interrupts at parent's interrupt
+domain. If it fails in the progress, all allocated interrupts are
+freed.
 
-As the comment of device_find_any_child states: "NOTE: you will need
-to drop the reference with put_device() after use".
+The number of successfully allocated interrupts so far is stored
+"i". However, "i - 1" interrupts are freed. This is broken:
 
-Found by code review.
+    - One interrupt is not be freed
 
+    - If "i" is zero, "i - 1" wraps around
+
+Correct the number of freed interrupts to "i".
+
+Fixes: 0fcfe2247e75 ("powerpc/powernv/pci: Add MSI domains")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
 Cc: stable@vger.kernel.org
-Fixes: 26409dd04589 ("of: unittest: Add pci_dt_testdrv pci driver")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/70f8debe8688e0b467367db769b71c20146a836d.1754300646.git.namcao@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/unittest.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/platforms/powernv/pci-ioda.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -3957,6 +3957,7 @@ static int of_unittest_pci_node_verify(s
- 		unittest(!np, "Child device tree node is not removed\n");
- 		child_dev = device_find_any_child(&pdev->dev);
- 		unittest(!child_dev, "Child device is not removed\n");
-+		put_device(child_dev);
- 	}
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -1897,7 +1897,7 @@ static int pnv_irq_domain_alloc(struct i
+ 	return 0;
  
- failed:
+ out:
+-	irq_domain_free_irqs_parent(domain, virq, i - 1);
++	irq_domain_free_irqs_parent(domain, virq, i);
+ 	msi_bitmap_free_hwirqs(&phb->msi_bmp, hwirq, nr_irqs);
+ 	return ret;
+ }
 
 
 
