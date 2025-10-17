@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-187156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CE45BEA050
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B12F8BE96B5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:02:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6E751892A52
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1623A5686FA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223C036998C;
-	Fri, 17 Oct 2025 15:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353FB258ECA;
+	Fri, 17 Oct 2025 14:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvlpTF/2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCMpIJqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D284733290B;
-	Fri, 17 Oct 2025 15:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54A621C9EA;
+	Fri, 17 Oct 2025 14:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715272; cv=none; b=CO5ZwUVHm6iP9imY0g3xKWdBOe2RA9NjMpaolq1LjvetL236474gpS1u7q9s/+Mv68O6ATxIw+NIKP5JFYWreGKbCCjfLMYaoMYV789aIg6Cx9WHc+NVycKJnUPH9HSp9cYcJGOOvAXrls9X1I1okdSOGM2AhWwNu+unJyLkXt8=
+	t=1760713137; cv=none; b=DW3CeA36bafq5h2PHyWwSVVxajnJOtEJrouTCYNDJx2yUUwYvr4gwIe/3JFWxXi2fDt2xSmtAqpeWTyaq7UukVEHE4hiH8Ta3ZWGvqZW2gDh013NVOvb/fwPTZAcCj0cz/cCVq0mgovoycXMUwq+CF85guX6sAG6t31BYNIsbT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715272; c=relaxed/simple;
-	bh=/+HvnuotHKFqmrGzUjuNdz1M8PWYlOief5+UfXILHoY=;
+	s=arc-20240116; t=1760713137; c=relaxed/simple;
+	bh=rmStUZ6Fbsa7wqUeiDRjDZqC3y+70ifs02TQzQoZng0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OvAcBt0of0+/fXRZrokJuwMY5N1Z5l3kGmJZRzFYLNBLRe8f/ajLGU63QNiSk4mQAUCFiC1Yx6+6QMd6o9eE4sXVO49rpRcM6M0NhsDOukei/VSOWH3Vkpth/MV2rsi4syvRnLYvfMqwYHMTzKKLjMJ5KnGmXD6ZFngvUU13qzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvlpTF/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B413C4CEE7;
-	Fri, 17 Oct 2025 15:34:32 +0000 (UTC)
+	 MIME-Version; b=ZdBb8SymNsYNzxNyX/fWGE+Oh1ZGKmLmLfdP9ayT5GvIbE6Ajb4DII7ls5oShx6nuMSgUkO4vvlvNFxksrSp6OzsBmQmei1k7eEBp7jyj1BW4NrkjFpLWexQum/7Vzcy5meiGL8fSQqPbW9Uvoq//k8bBQAij25qrOASfGUgS9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCMpIJqO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F719C4CEE7;
+	Fri, 17 Oct 2025 14:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715272;
-	bh=/+HvnuotHKFqmrGzUjuNdz1M8PWYlOief5+UfXILHoY=;
+	s=korg; t=1760713136;
+	bh=rmStUZ6Fbsa7wqUeiDRjDZqC3y+70ifs02TQzQoZng0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvlpTF/2JtJ0sC8vKjQMHRSrJHWtDeW8JgQ2+kj/O23hErpOWoZGXkXuj53eH34rU
-	 XGaX+rLO7Wxj2J6SPiKppx+VKRVITyez3hW445BMy6Nt0IVDFp10VRVLnBeEfTkhlU
-	 YPp+iI7QhHRBrtqniAvXRXm22T35WiyADnSADdZ0=
+	b=OCMpIJqObjfkd6robzScBEqVbfN9vmZNtnBbNC1xdHAg1tvasM2nC3STyZTOi8mLX
+	 BCbqlDlS2Hmap0tSXzymrVKNjYZDyU7QqKAIbk8TAdyqVXO2ow5Yn/OJmLgwfptJ+t
+	 aj9+TCnIqVj7elvZ6zz2MobObC+EspY+/+fDgaY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Gonda <pgonda@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	=?UTF-8?q?J=C3=BCrgen=20Gro=C3=9F?= <jgross@suse.com>,
-	Korakit Seemakhupt <korakit@google.com>,
-	Jianxiong Gao <jxgao@google.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.17 157/371] x86/kvm: Force legacy PCI hole to UC when overriding MTRRs for TDX/SNP
+	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 053/168] ACPI: debug: fix signedness issues in read/write helpers
 Date: Fri, 17 Oct 2025 16:52:12 +0200
-Message-ID: <20251017145207.614456521@linuxfoundation.org>
+Message-ID: <20251017145130.973306286@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,203 +59,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
 
-commit 0dccbc75e18df85399a71933d60b97494110f559 upstream.
+commit 496f9372eae14775e0524e83e952814691fe850a upstream.
 
-When running as an SNP or TDX guest under KVM, force the legacy PCI hole,
-i.e. memory between Top of Lower Usable DRAM and 4GiB, to be mapped as UC
-via a forced variable MTRR range.
+In the ACPI debugger interface, the helper functions for read and write
+operations use "int" as the length parameter data type. When a large
+"size_t count" is passed from the file operations, this cast to "int"
+results in truncation and a negative value due to signed integer
+representation.
 
-In most KVM-based setups, legacy devices such as the HPET and TPM are
-enumerated via ACPI.  ACPI enumeration includes a Memory32Fixed entry, and
-optionally a SystemMemory descriptor for an OperationRegion, e.g. if the
-device needs to be accessed via a Control Method.
+Logically, this negative number propagates to the min() calculation,
+where it is selected over the positive buffer space value, leading to
+unexpected behavior. Subsequently, when this negative value is used in
+copy_to_user() or copy_from_user(), it is interpreted as a large positive
+value due to the unsigned nature of the size parameter in these functions,
+causing the copy operations to attempt handling sizes far beyond the
+intended buffer limits.
 
-If a SystemMemory entry is present, then the kernel's ACPI driver will
-auto-ioremap the region so that it can be accessed at will.  However, the
-ACPI spec doesn't provide a way to enumerate the memory type of
-SystemMemory regions, i.e. there's no way to tell software that a region
-must be mapped as UC vs. WB, etc.  As a result, Linux's ACPI driver always
-maps SystemMemory regions using ioremap_cache(), i.e. as WB on x86.
+Address the issue by:
+ - Changing the length parameters in acpi_aml_read_user() and
+   acpi_aml_write_user() from "int" to "size_t", aligning with the
+   expected unsigned size semantics.
+ - Updating return types and local variables in acpi_aml_read() and
+   acpi_aml_write() to "ssize_t" for consistency with kernel file
+   operation conventions.
+ - Using "size_t" for the "n" variable to ensure calculations remain
+   unsigned.
+ - Using min_t() for circ_count_to_end() and circ_space_to_end() to
+   ensure type-safe comparisons and prevent integer overflow.
 
-The dedicated device drivers however, e.g. the HPET driver and TPM driver,
-want to map their associated memory as UC or WC, as accessing PCI devices
-using WB is unsupported.
-
-On bare metal and non-CoCO, the conflicting requirements "work" as firmware
-configures the PCI hole (and other device memory) to be UC in the MTRRs.
-So even though the ACPI mappings request WB, they are forced to UC- in the
-kernel's tracking due to the kernel properly handling the MTRR overrides,
-and thus are compatible with the drivers' requested WC/UC-.
-
-With force WB MTRRs on SNP and TDX guests, the ACPI mappings get their
-requested WB if the ACPI mappings are established before the dedicated
-driver code attempts to initialize the device.  E.g. if acpi_init()
-runs before the corresponding device driver is probed, ACPI's WB mapping
-will "win", and result in the driver's ioremap() failing because the
-existing WB mapping isn't compatible with the requested WC/UC-.
-
-E.g. when a TPM is emulated by the hypervisor (ignoring the security
-implications of relying on what is allegedly an untrusted entity to store
-measurements), the TPM driver will request UC and fail:
-
-  [  1.730459] ioremap error for 0xfed40000-0xfed45000, requested 0x2, got 0x0
-  [  1.732780] tpm_tis MSFT0101:00: probe with driver tpm_tis failed with error -12
-
-Note, the '0x2' and '0x0' values refer to "enum page_cache_mode", not x86's
-memtypes (which frustratingly are an almost pure inversion; 2 == WB, 0 == UC).
-E.g. tracing mapping requests for TPM TIS yields:
-
- Mapping TPM TIS with req_type = 0
- WARNING: CPU: 22 PID: 1 at arch/x86/mm/pat/memtype.c:530 memtype_reserve+0x2ab/0x460
- Modules linked in:
- CPU: 22 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.16.0-rc7+ #2 VOLUNTARY
- Tainted: [W]=WARN
- Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/29/2025
- RIP: 0010:memtype_reserve+0x2ab/0x460
-  __ioremap_caller+0x16d/0x3d0
-  ioremap_cache+0x17/0x30
-  x86_acpi_os_ioremap+0xe/0x20
-  acpi_os_map_iomem+0x1f3/0x240
-  acpi_os_map_memory+0xe/0x20
-  acpi_ex_system_memory_space_handler+0x273/0x440
-  acpi_ev_address_space_dispatch+0x176/0x4c0
-  acpi_ex_access_region+0x2ad/0x530
-  acpi_ex_field_datum_io+0xa2/0x4f0
-  acpi_ex_extract_from_field+0x296/0x3e0
-  acpi_ex_read_data_from_field+0xd1/0x460
-  acpi_ex_resolve_node_to_value+0x2ee/0x530
-  acpi_ex_resolve_to_value+0x1f2/0x540
-  acpi_ds_evaluate_name_path+0x11b/0x190
-  acpi_ds_exec_end_op+0x456/0x960
-  acpi_ps_parse_loop+0x27a/0xa50
-  acpi_ps_parse_aml+0x226/0x600
-  acpi_ps_execute_method+0x172/0x3e0
-  acpi_ns_evaluate+0x175/0x5f0
-  acpi_evaluate_object+0x213/0x490
-  acpi_evaluate_integer+0x6d/0x140
-  acpi_bus_get_status+0x93/0x150
-  acpi_add_single_object+0x43a/0x7c0
-  acpi_bus_check_add+0x149/0x3a0
-  acpi_bus_check_add_1+0x16/0x30
-  acpi_ns_walk_namespace+0x22c/0x360
-  acpi_walk_namespace+0x15c/0x170
-  acpi_bus_scan+0x1dd/0x200
-  acpi_scan_init+0xe5/0x2b0
-  acpi_init+0x264/0x5b0
-  do_one_initcall+0x5a/0x310
-  kernel_init_freeable+0x34f/0x4f0
-  kernel_init+0x1b/0x200
-  ret_from_fork+0x186/0x1b0
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
-
-The above traces are from a Google-VMM based VM, but the same behavior
-happens with a QEMU based VM that is modified to add a SystemMemory range
-for the TPM TIS address space.
-
-The only reason this doesn't cause problems for HPET, which appears to
-require a SystemMemory region, is because HPET gets special treatment via
-x86_init.timers.timer_init(), and so gets a chance to create its UC-
-mapping before acpi_init() clobbers things.  Disabling the early call to
-hpet_time_init() yields the same behavior for HPET:
-
-  [  0.318264] ioremap error for 0xfed00000-0xfed01000, requested 0x2, got 0x0
-
-Hack around the ACPI gap by forcing the legacy PCI hole to UC when
-overriding the (virtual) MTRRs for CoCo guest, so that ioremap handling
-of MTRRs naturally kicks in and forces the ACPI mappings to be UC.
-
-Note, the requested/mapped memtype doesn't actually matter in terms of
-accessing the device.  In practically every setup, legacy PCI devices are
-emulated by the hypervisor, and accesses are intercepted and handled as
-emulated MMIO, i.e. never access physical memory and thus don't have an
-effective memtype.
-
-Even in a theoretical setup where such devices are passed through by the
-host, i.e. point at real MMIO memory, it is KVM's (as the hypervisor)
-responsibility to force the memory to be WC/UC, e.g. via EPT memtype
-under TDX or real hardware MTRRs under SNP.  Not doing so cannot work,
-and the hypervisor is highly motivated to do the right thing as letting
-the guest access hardware MMIO with WB would likely result in a variety
-of fatal #MCs.
-
-In other words, forcing the range to be UC is all about coercing the
-kernel's tracking into thinking that it has established UC mappings, so
-that the ioremap code doesn't reject mappings from e.g. the TPM driver and
-thus prevent the driver from loading and the device from functioning.
-
-Note #2, relying on guest firmware to handle this scenario, e.g. by setting
-virtual MTRRs and then consuming them in Linux, is not a viable option, as
-the virtual MTRR state is managed by the untrusted hypervisor, and because
-OVMF at least has stopped programming virtual MTRRs when running as a TDX
-guest.
-
-Link: https://lore.kernel.org/all/8137d98e-8825-415b-9282-1d2a115bb51a@linux.intel.com
-Fixes: 8e690b817e38 ("x86/kvm: Override default caching mode for SEV-SNP and TDX")
-Cc: stable@vger.kernel.org
-Cc: Peter Gonda <pgonda@google.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Jürgen Groß <jgross@suse.com>
-Cc: Korakit Seemakhupt <korakit@google.com>
-Cc: Jianxiong Gao <jxgao@google.com>
-Cc: Nikolay Borisov <nik.borisov@suse.com>
-Suggested-by: Binbin Wu <binbin.wu@linux.intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Tested-by: Korakit Seemakhupt <korakit@google.com>
-Link: https://lore.kernel.org/r/20250828005249.39339-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+Link: https://patch.msgid.link/20250923013113.20615-1-a.jahangirzad@gmail.com
+[ rjw: Changelog tweaks, local variable definitions ordering adjustments ]
+Fixes: 8cfb0cdf07e2 ("ACPI / debugger: Add IO interface to access debugger functionalities")
+Cc: 4.5+ <stable@vger.kernel.org> # 4.5+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/kvm.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/acpi/acpi_dbg.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -933,6 +933,19 @@ static void kvm_sev_hc_page_enc_status(u
- 
- static void __init kvm_init_platform(void)
- {
-+	u64 tolud = PFN_PHYS(e820__end_of_low_ram_pfn());
-+	/*
-+	 * Note, hardware requires variable MTRR ranges to be power-of-2 sized
-+	 * and naturally aligned.  But when forcing guest MTRR state, Linux
-+	 * doesn't program the forced ranges into hardware.  Don't bother doing
-+	 * the math to generate a technically-legal range.
-+	 */
-+	struct mtrr_var_range pci_hole = {
-+		.base_lo = tolud | X86_MEMTYPE_UC,
-+		.mask_lo = (u32)(~(SZ_4G - tolud - 1)) | MTRR_PHYSMASK_V,
-+		.mask_hi = (BIT_ULL(boot_cpu_data.x86_phys_bits) - 1) >> 32,
-+	};
-+
- 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) &&
- 	    kvm_para_has_feature(KVM_FEATURE_MIGRATION_CONTROL)) {
- 		unsigned long nr_pages;
-@@ -982,8 +995,12 @@ static void __init kvm_init_platform(voi
- 	kvmclock_init();
- 	x86_platform.apic_post_init = kvm_apic_init;
- 
--	/* Set WB as the default cache mode for SEV-SNP and TDX */
--	guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
-+	/*
-+	 * Set WB as the default cache mode for SEV-SNP and TDX, with a single
-+	 * UC range for the legacy PCI hole, e.g. so that devices that expect
-+	 * to get UC/WC mappings don't get surprised with WB.
-+	 */
-+	guest_force_mtrr_state(&pci_hole, 1, MTRR_TYPE_WRBACK);
+--- a/drivers/acpi/acpi_dbg.c
++++ b/drivers/acpi/acpi_dbg.c
+@@ -569,11 +569,11 @@ static int acpi_aml_release(struct inode
+ 	return 0;
  }
  
- #if defined(CONFIG_AMD_MEM_ENCRYPT)
+-static int acpi_aml_read_user(char __user *buf, int len)
++static ssize_t acpi_aml_read_user(char __user *buf, size_t len)
+ {
+-	int ret;
+ 	struct circ_buf *crc = &acpi_aml_io.out_crc;
+-	int n;
++	ssize_t ret;
++	size_t n;
+ 	char *p;
+ 
+ 	ret = acpi_aml_lock_read(crc, ACPI_AML_OUT_USER);
+@@ -582,7 +582,7 @@ static int acpi_aml_read_user(char __use
+ 	/* sync head before removing logs */
+ 	smp_rmb();
+ 	p = &crc->buf[crc->tail];
+-	n = min(len, circ_count_to_end(crc));
++	n = min_t(size_t, len, circ_count_to_end(crc));
+ 	if (copy_to_user(buf, p, n)) {
+ 		ret = -EFAULT;
+ 		goto out;
+@@ -599,8 +599,8 @@ out:
+ static ssize_t acpi_aml_read(struct file *file, char __user *buf,
+ 			     size_t count, loff_t *ppos)
+ {
+-	int ret = 0;
+-	int size = 0;
++	ssize_t ret = 0;
++	ssize_t size = 0;
+ 
+ 	if (!count)
+ 		return 0;
+@@ -639,11 +639,11 @@ again:
+ 	return size > 0 ? size : ret;
+ }
+ 
+-static int acpi_aml_write_user(const char __user *buf, int len)
++static ssize_t acpi_aml_write_user(const char __user *buf, size_t len)
+ {
+-	int ret;
+ 	struct circ_buf *crc = &acpi_aml_io.in_crc;
+-	int n;
++	ssize_t ret;
++	size_t n;
+ 	char *p;
+ 
+ 	ret = acpi_aml_lock_write(crc, ACPI_AML_IN_USER);
+@@ -652,7 +652,7 @@ static int acpi_aml_write_user(const cha
+ 	/* sync tail before inserting cmds */
+ 	smp_mb();
+ 	p = &crc->buf[crc->head];
+-	n = min(len, circ_space_to_end(crc));
++	n = min_t(size_t, len, circ_space_to_end(crc));
+ 	if (copy_from_user(p, buf, n)) {
+ 		ret = -EFAULT;
+ 		goto out;
+@@ -663,14 +663,14 @@ static int acpi_aml_write_user(const cha
+ 	ret = n;
+ out:
+ 	acpi_aml_unlock_fifo(ACPI_AML_IN_USER, ret >= 0);
+-	return n;
++	return ret;
+ }
+ 
+ static ssize_t acpi_aml_write(struct file *file, const char __user *buf,
+ 			      size_t count, loff_t *ppos)
+ {
+-	int ret = 0;
+-	int size = 0;
++	ssize_t ret = 0;
++	ssize_t size = 0;
+ 
+ 	if (!count)
+ 		return 0;
 
 
 
