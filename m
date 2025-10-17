@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3059CBEA020
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:39:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D23FBE9CC9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D17F135E37A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5B6C19A596A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E0C330B2D;
-	Fri, 17 Oct 2025 15:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7D02F12B4;
+	Fri, 17 Oct 2025 15:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBCbL3ca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtdPHYtE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B409F330B28;
-	Fri, 17 Oct 2025 15:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7FA3BB5A;
+	Fri, 17 Oct 2025 15:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715435; cv=none; b=uphWx5yOnTup7pVSxvJ3g+Ydh/M1KRpHzZp01qNx1qBnSWDt3XWHN7daYXMqIr1HSqGO6j0+elSyg7KNIjCfu9yNu2nHlh3zyzuvnzOLJjHxTywWnlR1L54YEScX2osoXZSNnzL4PL3s8F34YgbRFFGVAb16JbLIct1WQE5CIJw=
+	t=1760714504; cv=none; b=GTpP4jC02knJdBNGxSnOahv5YKggen52Q95IrzCJXHAtPspW4Z+/zDFdmOkC7+JqusthJu+KiYJRr5FBHd9RqTWZwacl8DhZQT8Um9CuA7MwRKuKP5QUGycOsFGm6MDELiF/GA+/OkLfXubMrqOYfwCnadByBVppwQwAhFWOQTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715435; c=relaxed/simple;
-	bh=IVqR2RtrYA7uk5butDsVMqgUPWIHF0jot70oeVVA5dY=;
+	s=arc-20240116; t=1760714504; c=relaxed/simple;
+	bh=C2hHx08eUavXEE/C1Y62sF3NgzBVJzvIfjDGlAZre6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYgEq2nHszp1FlAmjl+Ewt8cWY8FCKbO4q3BXkMtqF6O/ZrpvEbCIU7klq/SU29jQnF1AuGiXxlJ/K8Wc8BL5Ql6rieJgibKohu4yfgKHhsAimUaATZt4r8fW2NEZQ/lL4X8gWUCgB0A7XHAfJcSAezEThng+tAKHMYXb/LlA5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBCbL3ca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F71C4CEFE;
-	Fri, 17 Oct 2025 15:37:15 +0000 (UTC)
+	 MIME-Version; b=GokHr0FUz1TnhVcyL24qajijABjdJfpD6wWl3v/BM/rsDN9GzI0hTCUHUnCW5IvImB5qnbFBehb9cb2e6+NFmgJ3zA6kWsYwdBRJb6RoP8GW3Nj0eeJjBNTr05skYTeAY5nmuwSQ0h/r40HrtBQZ1QrfczskguE8q+/i/mVJ7/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtdPHYtE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1DAC4CEE7;
+	Fri, 17 Oct 2025 15:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715435;
-	bh=IVqR2RtrYA7uk5butDsVMqgUPWIHF0jot70oeVVA5dY=;
+	s=korg; t=1760714504;
+	bh=C2hHx08eUavXEE/C1Y62sF3NgzBVJzvIfjDGlAZre6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBCbL3caNqs4KKQbAEbeQF9qz8pZGYdqBI32rx/yMtTasFT/ArWtq3WBCRJEJTblU
-	 HXj4i+2R32ui3grjXBn7Q8B8CgrOFk5Q0coWjsP269rtltxO+AbVHfZ1fJx+jFHVE6
-	 JUtYa7L2kykvA9LMos+/nCMTM/fdUlyb96IQVaxg=
+	b=UtdPHYtE1FV1Glc/+nktI4U7LhJPhCgF1VFp9ZsNrfSvK2CsZKe48bVnNvUBBnh3w
+	 LhbbrlTckARI9VFhUtOk8ufJU4n0YNm0xcnK3bBFCuosOkngrm4gdYAVymjKX+1PmN
+	 p45I9dGUSdW9L4KOo8PcXYm1uWA3gEG+As/BC1gU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Xue <zxue@semtech.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: [PATCH 6.17 198/371] bus: mhi: host: Do not use uninitialized dev pointer in mhi_init_irq_setup()
-Date: Fri, 17 Oct 2025 16:52:53 +0200
-Message-ID: <20251017145209.090347930@linuxfoundation.org>
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.12 167/277] xsk: Harden userspace-supplied xdp_desc validation
+Date: Fri, 17 Oct 2025 16:52:54 +0200
+Message-ID: <20251017145153.225231604@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Xue <zxue@semtech.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-commit d0856a6dff57f95cc5d2d74e50880f01697d0cc4 upstream.
+commit 07ca98f906a403637fc5e513a872a50ef1247f3b upstream.
 
-In mhi_init_irq_setup, the device pointer used for dev_err() was not
-initialized. Use the pointer from mhi_cntrl instead.
+Turned out certain clearly invalid values passed in xdp_desc from
+userspace can pass xp_{,un}aligned_validate_desc() and then lead
+to UBs or just invalid frames to be queued for xmit.
 
-Fixes: b0fc0167f254 ("bus: mhi: core: Allow shared IRQ for event rings")
-Fixes: 3000f85b8f47 ("bus: mhi: core: Add support for basic PM operations")
-Signed-off-by: Adam Xue <zxue@semtech.com>
-[mani: reworded subject/description and CCed stable]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250905174118.38512-1-zxue@semtech.com
+desc->len close to ``U32_MAX`` with a non-zero pool->tx_metadata_len
+can cause positive integer overflow and wraparound, the same way low
+enough desc->addr with a non-zero pool->tx_metadata_len can cause
+negative integer overflow. Both scenarios can then pass the
+validation successfully.
+This doesn't happen with valid XSk applications, but can be used
+to perform attacks.
+
+Always promote desc->len to ``u64`` first to exclude positive
+overflows of it. Use explicit check_{add,sub}_overflow() when
+validating desc->addr (which is ``u64`` already).
+
+bloat-o-meter reports a little growth of the code size:
+
+add/remove: 0/0 grow/shrink: 2/1 up/down: 60/-16 (44)
+Function                                     old     new   delta
+xskq_cons_peek_desc                          299     330     +31
+xsk_tx_peek_release_desc_batch               973    1002     +29
+xsk_generic_xmit                            3148    3132     -16
+
+but hopefully this doesn't hurt the performance much.
+
+Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
+Cc: stable@vger.kernel.org # 6.8+
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20251008165659.4141318-1-aleksander.lobakin@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/init.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/xdp/xsk_queue.h |   45 +++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 35 insertions(+), 10 deletions(-)
 
---- a/drivers/bus/mhi/host/init.c
-+++ b/drivers/bus/mhi/host/init.c
-@@ -194,7 +194,6 @@ static void mhi_deinit_free_irq(struct m
- static int mhi_init_irq_setup(struct mhi_controller *mhi_cntrl)
+--- a/net/xdp/xsk_queue.h
++++ b/net/xdp/xsk_queue.h
+@@ -143,14 +143,24 @@ static inline bool xp_unused_options_set
+ static inline bool xp_aligned_validate_desc(struct xsk_buff_pool *pool,
+ 					    struct xdp_desc *desc)
  {
- 	struct mhi_event *mhi_event = mhi_cntrl->mhi_event;
--	struct device *dev = &mhi_cntrl->mhi_dev->dev;
- 	unsigned long irq_flags = IRQF_SHARED | IRQF_NO_SUSPEND;
- 	int i, ret;
+-	u64 addr = desc->addr - pool->tx_metadata_len;
+-	u64 len = desc->len + pool->tx_metadata_len;
+-	u64 offset = addr & (pool->chunk_size - 1);
++	u64 len = desc->len;
++	u64 addr, offset;
  
-@@ -221,7 +220,7 @@ static int mhi_init_irq_setup(struct mhi
- 			continue;
+-	if (!desc->len)
++	if (!len)
+ 		return false;
  
- 		if (mhi_event->irq >= mhi_cntrl->nr_irqs) {
--			dev_err(dev, "irq %d not available for event ring\n",
-+			dev_err(mhi_cntrl->cntrl_dev, "irq %d not available for event ring\n",
- 				mhi_event->irq);
- 			ret = -EINVAL;
- 			goto error_request;
-@@ -232,7 +231,7 @@ static int mhi_init_irq_setup(struct mhi
- 				  irq_flags,
- 				  "mhi", mhi_event);
- 		if (ret) {
--			dev_err(dev, "Error requesting irq:%d for ev:%d\n",
-+			dev_err(mhi_cntrl->cntrl_dev, "Error requesting irq:%d for ev:%d\n",
- 				mhi_cntrl->irq[mhi_event->irq], i);
- 			goto error_request;
- 		}
+-	if (offset + len > pool->chunk_size)
++	/* Can overflow if desc->addr < pool->tx_metadata_len */
++	if (check_sub_overflow(desc->addr, pool->tx_metadata_len, &addr))
++		return false;
++
++	offset = addr & (pool->chunk_size - 1);
++
++	/*
++	 * Can't overflow: @offset is guaranteed to be < ``U32_MAX``
++	 * (pool->chunk_size is ``u32``), @len is guaranteed
++	 * to be <= ``U32_MAX``.
++	 */
++	if (offset + len + pool->tx_metadata_len > pool->chunk_size)
+ 		return false;
+ 
+ 	if (addr >= pool->addrs_cnt)
+@@ -158,27 +168,42 @@ static inline bool xp_aligned_validate_d
+ 
+ 	if (xp_unused_options_set(desc->options))
+ 		return false;
++
+ 	return true;
+ }
+ 
+ static inline bool xp_unaligned_validate_desc(struct xsk_buff_pool *pool,
+ 					      struct xdp_desc *desc)
+ {
+-	u64 addr = xp_unaligned_add_offset_to_addr(desc->addr) - pool->tx_metadata_len;
+-	u64 len = desc->len + pool->tx_metadata_len;
++	u64 len = desc->len;
++	u64 addr, end;
+ 
+-	if (!desc->len)
++	if (!len)
+ 		return false;
+ 
++	/* Can't overflow: @len is guaranteed to be <= ``U32_MAX`` */
++	len += pool->tx_metadata_len;
+ 	if (len > pool->chunk_size)
+ 		return false;
+ 
+-	if (addr >= pool->addrs_cnt || addr + len > pool->addrs_cnt ||
+-	    xp_desc_crosses_non_contig_pg(pool, addr, len))
++	/* Can overflow if desc->addr is close to 0 */
++	if (check_sub_overflow(xp_unaligned_add_offset_to_addr(desc->addr),
++			       pool->tx_metadata_len, &addr))
++		return false;
++
++	if (addr >= pool->addrs_cnt)
++		return false;
++
++	/* Can overflow if pool->addrs_cnt is high enough */
++	if (check_add_overflow(addr, len, &end) || end > pool->addrs_cnt)
++		return false;
++
++	if (xp_desc_crosses_non_contig_pg(pool, addr, len))
+ 		return false;
+ 
+ 	if (xp_unused_options_set(desc->options))
+ 		return false;
++
+ 	return true;
+ }
+ 
 
 
 
