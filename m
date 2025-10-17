@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-187237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3B7BEAC3A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:34:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544FEBEAA46
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DCBA9448B7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9844D7C4CB7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF47341AC0;
-	Fri, 17 Oct 2025 15:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E699330B0D;
+	Fri, 17 Oct 2025 15:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X21ES++V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3r7YCBT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28B3336EED;
-	Fri, 17 Oct 2025 15:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE574330B20;
+	Fri, 17 Oct 2025 15:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715504; cv=none; b=AsNRzI00foCu9uLlxUFA6XJzu/JA6Oa4qedSS7mg7Y+8MCQmaWy+LdQPcPspvC7BLNy+DlfvAtNr7Wlm0BRazg6+M2Qn4pD+W8yjpDqXtGIdVsJisjNqWO+q8wW7Opzd+QsyGpsPw6GELF/cPyOa9KtI8hjdgHDJXfZLvbJyGoE=
+	t=1760716216; cv=none; b=DpiD8yCFjJJWtFAPFnLo27EJEivP8ybVftADEboODilLU2NnbIJB5hHbp4pPsSeyB7MEfaXzk6rGXBNgcC27OedznQfK3nrXV+3NPXyILEu1v08juroqe5w/Vbl6K0GVTAZhsmCkrqRVo+uGhZu0xBnafoxumGdAV+FmqMyK4I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715504; c=relaxed/simple;
-	bh=ViqXjPRBc03EfVrFjbGqM6kXnwHnzOw0eLmYwq2eWoU=;
+	s=arc-20240116; t=1760716216; c=relaxed/simple;
+	bh=9SHebWZQZvVPtBYrtN6qd3FK1XNdymE9Aaqi8KmquAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8JC6eTFJhlutuONqPe2EUrCzqgxcEgQTHUw/VSLxjNBj7EHSNdsqv5wu4Dol9or4unN8Q7olbxVeJhJxEJ2nXsinEDQGxLvsr9I5+aHxOwZV1rs9RHHZKtlRDug84FVlbnp+x84r/rwevlXQSTnIq7StpFCXEmjAKFh32grk6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X21ES++V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343D5C4CEE7;
-	Fri, 17 Oct 2025 15:38:24 +0000 (UTC)
+	 MIME-Version; b=U+pxWyc7tFNXUVKRbqtcgRSkSPPF7uXJsoXYx8mMdQ8udO3l+jbBXQxo6ClLQXU1haG5jIf4JpnY1t7+WQcyF9hgt30D+KNyejahOsWL06uLq44kp2bjnpHOoDlcu/DrBxYYIUvo3GME7SvTevRYzloAMNtZNfDkFe9WrMk7WkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3r7YCBT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702F9C4CEFE;
+	Fri, 17 Oct 2025 15:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715504;
-	bh=ViqXjPRBc03EfVrFjbGqM6kXnwHnzOw0eLmYwq2eWoU=;
+	s=korg; t=1760716215;
+	bh=9SHebWZQZvVPtBYrtN6qd3FK1XNdymE9Aaqi8KmquAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X21ES++V3W5FPgmN3kyqMrWLH3/DzOHJAg/zuvsDB2UuHz3JOT39M0TErkCzn5ABP
-	 3x6+DVbSA9Mu4njrpN9k0TFlrCvPIoRCsylaOctl+dOcMLixH8Hsxf9EHboZOYaUYB
-	 KI8v+X0kPc9HJcL7ylzsXvDzitPC3bhqQU9s6q5I=
+	b=d3r7YCBTds0JnwYSQZmrZmp3T7aUnLqBiET1DFSpF4rcQHMxxwAE8j8Y9m9gLX4I6
+	 mFMWUsqz/C0HjvLrLPj8BmpEyVosdrOfqnwmNIcUYecCy9q8Y83aDYDhW2EKoP4bV7
+	 2XzGrC8ry1scZwRjikmqQ8AewdTgxg+fXhNE6WHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.17 196/371] btrfs: avoid potential out-of-bounds in btrfs_encode_fh()
-Date: Fri, 17 Oct 2025 16:52:51 +0200
-Message-ID: <20251017145209.018024140@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 081/276] Revert "usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running"
+Date: Fri, 17 Oct 2025 16:52:54 +0200
+Message-ID: <20251017145145.444197738@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit dff4f9ff5d7f289e4545cc936362e01ed3252742 upstream.
+[ Upstream commit 08fa726e66039dfa80226dfa112931f60ad4c898 ]
 
-The function btrfs_encode_fh() does not properly account for the three
-cases it handles.
+This reverts commit 28a76fcc4c85dd39633fb96edb643c91820133e3.
 
-Before writing to the file handle (fh), the function only returns to the
-user BTRFS_FID_SIZE_NON_CONNECTABLE (5 dwords, 20 bytes) or
-BTRFS_FID_SIZE_CONNECTABLE (8 dwords, 32 bytes).
+No actual HW bugs are known where Endpoint Context shows Running state
+but Stop Endpoint fails repeatedly with Context State Error and leaves
+the endpoint state unchanged. Stop Endpoint retries on Running EPs have
+been performed since early 2021 with no such issues reported so far.
 
-However, when a parent exists and the root ID of the parent and the
-inode are different, the function writes BTRFS_FID_SIZE_CONNECTABLE_ROOT
-(10 dwords, 40 bytes).
+Trying to handle this hypothetical case brings a more realistic danger:
+if Stop Endpoint fails on an endpoint which hasn't yet started after a
+doorbell ring and enough latency occurs before this completion event is
+handled, the driver may time out and begin removing cancelled TDs from
+a running endpoint, even though one more retry would stop it reliably.
 
-If *max_len is not large enough, this write goes out of bounds because
-BTRFS_FID_SIZE_CONNECTABLE_ROOT is greater than
-BTRFS_FID_SIZE_CONNECTABLE originally returned.
+Such high latency is rare but not impossible, and removing TDs from a
+running endpoint can cause more damage than not giving back a cancelled
+URB (which wasn't happening anyway). So err on the side of caution and
+revert to the old policy of always retrying if the EP appears running.
 
-This results in an 8-byte out-of-bounds write at
-fid->parent_root_objectid = parent_root_id.
+[Remove stable tag as we are dealing with theoretical cases -Mathias]
 
-A previous attempt to fix this issue was made but was lost.
-
-https://lore.kernel.org/all/4CADAEEC020000780001B32C@vpn.id2.novell.com/
-
-Although this issue does not seem to be easily triggerable, it is a
-potential memory corruption bug that should be fixed. This patch
-resolves the issue by ensuring the function returns the appropriate size
-for all three cases and validates that *max_len is large enough before
-writing any data.
-
-Fixes: be6e8dc0ba84 ("NFS support for btrfs - v3")
-CC: stable@vger.kernel.org # 3.0+
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 28a76fcc4c85d ("usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running")
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250917210726.97100-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/export.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/fs/btrfs/export.c
-+++ b/fs/btrfs/export.c
-@@ -23,7 +23,11 @@ static int btrfs_encode_fh(struct inode
- 	int type;
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index ddb7c88d53650..0ff63e9d815aa 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1183,19 +1183,16 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
+ 			 * Stopped state, but it will soon change to Running.
+ 			 *
+ 			 * Assume this bug on unexpected Stop Endpoint failures.
+-			 * Keep retrying until the EP starts and stops again.
++			 * Keep retrying until the EP starts and stops again, on
++			 * chips where this is known to help. Wait for 100ms.
+ 			 */
++			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
++				break;
+ 			fallthrough;
+ 		case EP_STATE_RUNNING:
+ 			/* Race, HW handled stop ep cmd before ep was running */
+ 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
+ 					GET_EP_CTX_STATE(ep_ctx));
+-			/*
+-			 * Don't retry forever if we guessed wrong or a defective HC never starts
+-			 * the EP or says 'Running' but fails the command. We must give back TDs.
+-			 */
+-			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
+-				break;
  
- 	if (parent && (len < BTRFS_FID_SIZE_CONNECTABLE)) {
--		*max_len = BTRFS_FID_SIZE_CONNECTABLE;
-+		if (btrfs_root_id(BTRFS_I(inode)->root) !=
-+		    btrfs_root_id(BTRFS_I(parent)->root))
-+			*max_len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
-+		else
-+			*max_len = BTRFS_FID_SIZE_CONNECTABLE;
- 		return FILEID_INVALID;
- 	} else if (len < BTRFS_FID_SIZE_NON_CONNECTABLE) {
- 		*max_len = BTRFS_FID_SIZE_NON_CONNECTABLE;
-@@ -45,6 +49,8 @@ static int btrfs_encode_fh(struct inode
- 		parent_root_id = btrfs_root_id(BTRFS_I(parent)->root);
- 
- 		if (parent_root_id != fid->root_objectid) {
-+			if (*max_len < BTRFS_FID_SIZE_CONNECTABLE_ROOT)
-+				return FILEID_INVALID;
- 			fid->parent_root_objectid = parent_root_id;
- 			len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
- 			type = FILEID_BTRFS_WITH_PARENT_ROOT;
+ 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
+ 			if (!command)
+-- 
+2.51.0
+
 
 
 
