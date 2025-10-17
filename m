@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-187334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0780BEA4D3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE7FBEA642
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B5E4744BCE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F8721891EF8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F3A330B35;
-	Fri, 17 Oct 2025 15:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3641A1A9FB7;
+	Fri, 17 Oct 2025 15:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/TZEiDc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1Di6Baw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0008330B30;
-	Fri, 17 Oct 2025 15:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B57330B06;
+	Fri, 17 Oct 2025 15:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715782; cv=none; b=i1ZjMEeBQPqvN0gUx//f/wKVSkJc4+x9Ohs4u9+ZLPTg/ha/bHRhivaxcKMFKovDggskdF86Vil23GxVAOhhjc5ayT8MbBUheeXSFVOOByKG+6IillQdneaMRIWB5XqDsxVf7CveF2Z3MzPe2E7IE8KP51+I2BIXkMIOxjR1ng0=
+	t=1760716592; cv=none; b=cqzHsZbd+Bp8DVNGXo27EUPYlPfogR02msskKdrXDoeUsZSma1KC/P7+iPNYzO5zHYpWVQLs+lQ+Q7q+MWbd2O29dT2O0Z9WA0SdX0zviLsjsR6zurpeDKxkcQSb1PoPa9pW2w7532TiUCNjQMtnKYWjKrDxeTmMHc1fbteUfdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715782; c=relaxed/simple;
-	bh=iYnrjOhAxZHbcooLxXTiM8uxLzZgrnYIbcWyG7j7Jf0=;
+	s=arc-20240116; t=1760716592; c=relaxed/simple;
+	bh=fDExw3lajLnEojkhQwcYUzN2OKu8Kilww4+ymcb5DFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=co7s8Kv+S5kWH+IXsxerUeHaFshsokU8arTzl3BsKf9T4dQZRcSowU9L+UPSblfaLV2vIvKNDW0hN34ZQT0Io0AzonqbaGbDa90UOeQ/rdKFZneTXdNzYYVxPM6RR0kj+ggjPe03ipfJW/oqr15wvG6HWdQDBULwhTYVEXdIrZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/TZEiDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34418C4CEE7;
-	Fri, 17 Oct 2025 15:43:02 +0000 (UTC)
+	 MIME-Version; b=dnVTYzs5vASix1jWplWS7Y9eW6Zu2I8It8XqMSpfPCT9s4lW5rf9BsN2PU+1sKlTzOC+dzotel0dXPcqHHOhHcbR/Nowm1IR0eRFQorMbJyhllryr3GGNZLdpeBoKimlzyHMRsZDp2KD8vvFqh7FPWawpvsONEhK62LO49HilGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1Di6Baw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46362C4CEE7;
+	Fri, 17 Oct 2025 15:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715782;
-	bh=iYnrjOhAxZHbcooLxXTiM8uxLzZgrnYIbcWyG7j7Jf0=;
+	s=korg; t=1760716591;
+	bh=fDExw3lajLnEojkhQwcYUzN2OKu8Kilww4+ymcb5DFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/TZEiDce/vqwqVxVjfNfQ5I1YJ/3q3INs0YO3mp1QclgJpxHBkQiUZnDZtJy1Aea
-	 Gs8QIM/YhdlRW1hP3gbl2id20W7ADaxiKYXQKpgP/wzwOQxRxIHFlMFnkrHvV42Mfw
-	 UkBzCETX9bUak7eX/V9KwxbCiD7B+TOHe20t5bpY=
+	b=W1Di6BawPMtpBE87ZL7Si+nBiitRzJW3q5aj4PR4zX/MWzVZ8RnryNx07MxotL9Ng
+	 O9yO1dRz7c/XWaIZD/GH0/8EYIc+uwy3r+zd0qwSHjaFIpiiA0n5R6gX7NrrUlt8Xi
+	 IzLu31SQQo6VU91J15e5aNgRSL8D053bpToDqRLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.17 334/371] media: iris: Send dummy buffer address for all codecs during drain
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Helen Koike <koike@igalia.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Matthew Wilcox <willy@infradead.org>,
+	NeilBrown <neilb@suse.de>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 216/276] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH allocations
 Date: Fri, 17 Oct 2025 16:55:09 +0200
-Message-ID: <20251017145214.164122606@linuxfoundation.org>
+Message-ID: <20251017145150.348477435@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +73,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit dec073dd8452e174a69db8444e0932e6b4f31c99 upstream.
+commit 6a204d4b14c99232e05d35305c27ebce1c009840 upstream.
 
-Firmware can handle a dummy address for buffers with the EOS flag. To
-ensure consistent behavior across all codecs, update the drain
-command to always send a dummy buffer address.
+Commit 524c48072e56 ("mm/page_alloc: rename ALLOC_HIGH to
+ALLOC_MIN_RESERVE") is the start of a series that explains how __GFP_HIGH,
+which implies ALLOC_MIN_RESERVE, is going to be used instead of
+__GFP_ATOMIC for high atomic reserves.
 
-This makes the drain handling uniform and avoids any codec specific
-assumptions.
+Commit eb2e2b425c69 ("mm/page_alloc: explicitly record high-order atomic
+allocations in alloc_flags") introduced ALLOC_HIGHATOMIC for such
+allocations of order higher than 0.  It still used __GFP_ATOMIC, though.
 
-Fixes: 478c4478610d ("media: iris: Add codec specific check for VP9 decoder drain handling")
-Cc: stable@vger.kernel.org
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # X1E80100
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Then, commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how
+__GFP_HIGH non-blocking allocations accesses reserves") just turned that
+check for !__GFP_DIRECT_RECLAIM, ignoring that high atomic reserves were
+expected to test for __GFP_HIGH.
+
+This leads to high atomic reserves being added for high-order GFP_NOWAIT
+allocations and others that clear __GFP_DIRECT_RECLAIM, which is
+unexpected.  Later, those reserves lead to 0-order allocations going to
+the slow path and starting reclaim.
+
+>From /proc/pagetypeinfo, without the patch:
+
+Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+Node    0, zone    DMA32, type   HighAtomic      1      8     10      9      7      3      0      0      0      0      0
+Node    0, zone   Normal, type   HighAtomic     64     20     12      5      0      0      0      0      0      0      0
+
+With the patch:
+
+Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+Node    0, zone    DMA32, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+Node    0, zone   Normal, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+
+Link: https://lkml.kernel.org/r/20250814172245.1259625-1-cascardo@igalia.com
+Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Tested-by: Helen Koike <koike@igalia.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: NeilBrown <neilb@suse.de>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/page_alloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
-+++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
-@@ -397,8 +397,7 @@ static int iris_hfi_gen1_session_drain(s
- 	ip_pkt.shdr.hdr.pkt_type = HFI_CMD_SESSION_EMPTY_BUFFER;
- 	ip_pkt.shdr.session_id = inst->session_id;
- 	ip_pkt.flags = HFI_BUFFERFLAG_EOS;
--	if (inst->codec == V4L2_PIX_FMT_VP9)
--		ip_pkt.packet_buffer = 0xdeadb000;
-+	ip_pkt.packet_buffer = 0xdeadb000;
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4743,7 +4743,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsig
+ 		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
+ 			alloc_flags |= ALLOC_NON_BLOCK;
  
- 	return iris_hfi_queue_cmd_write(inst->core, &ip_pkt, ip_pkt.shdr.hdr.size);
- }
+-			if (order > 0)
++			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
+ 				alloc_flags |= ALLOC_HIGHATOMIC;
+ 		}
+ 
 
 
 
