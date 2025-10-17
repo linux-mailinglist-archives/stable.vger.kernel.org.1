@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39537BE9A3C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:18:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5C6BEA503
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:56:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB937740A8F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66B2C1889808
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA29B335096;
-	Fri, 17 Oct 2025 15:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE31330B2D;
+	Fri, 17 Oct 2025 15:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMdDjB+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAc+hEPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CE7332907;
-	Fri, 17 Oct 2025 15:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6967330B04;
+	Fri, 17 Oct 2025 15:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713426; cv=none; b=uB8sqjPG/h4exdn5376hThXSTaZXsp3HFv5foYpPdLgRpQoVXEX7FfCXbJsJeyM3pUESubBSsjdoDQVjI3uWZ9XmKxh4+7g/geuq9JLrrAsDz4xBWd2Pjy49itoU28hVy8ClWB3DDAaBthtGM7gRk54qaSSmi2iz0OJENX88bAM=
+	t=1760716310; cv=none; b=L4jGRgDD+oxYL6NlV4Oi1o/MwcirR+NmGIOCCUgRFt4Z9K+w7oU6pOE4tvl4zMfU5R/N+6o7PbOo9Iv3XRQTT2U97ZKqGx2VByMqOEwiWL1To4Nrbzmwp8tGmO9aOLGhsHYd1UCexoD+MCQ0cFjxEE/4jDzyUIe12zQ6+WdFkT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713426; c=relaxed/simple;
-	bh=fzRcVn2dSNjAMrJQaP1P3AaKfeUc0eUD0ruKf+G3Imo=;
+	s=arc-20240116; t=1760716310; c=relaxed/simple;
+	bh=k5XU4aJ+rqo1MYTIzFxVyKGD7IR9IKC8ZeDy0NLYsw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czmh6+XTrSYQCyvAuqgcUnxVv0zLE1emMHfp8hyzYzDByJxZg3dbeiylWe8OjWRGehJsOp13bgdd1AWZTV0G4NjS5FXvLsJTDPzSLuocQIcW+jOTG6pBy1tfxY0nFU3i2FJZUkt1CPyl4utV7pnYb+vZe8E3NKBZg3x5ZugfjnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMdDjB+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE17EC4CEE7;
-	Fri, 17 Oct 2025 15:03:45 +0000 (UTC)
+	 MIME-Version; b=eHoeNGXFKKYmh0uIf2I5cYCF63rLSBOunHawUZnYYphHAILXnIWFyt59UPkHcToKoIGE+nQ0lGP0f+2bMX2gkBzDyrouAZKtZCT+kzJ5CXFgpY+K4HjiyBMxVnsJOBA1n5hcjfvT69qbGSTBI31x5Akwj2VrE3U+4FjZoDEQ/SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAc+hEPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45849C4CEE7;
+	Fri, 17 Oct 2025 15:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713426;
-	bh=fzRcVn2dSNjAMrJQaP1P3AaKfeUc0eUD0ruKf+G3Imo=;
+	s=korg; t=1760716310;
+	bh=k5XU4aJ+rqo1MYTIzFxVyKGD7IR9IKC8ZeDy0NLYsw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AMdDjB+fmORRPnYXfsB7ZXO7qYnhQyQofzKaFfeAzQUYA9jTcVJR8TcjUHV1VzSdp
-	 sY/RSphdbLpn5oU/gQUPU/ARE/n79Pz7/1F0sP2kMFgvnEUuCmYufGzz8MnbJi4mIg
-	 Dg/XiS9cwnNx0WrRhIkiYerglV/8vByX5Zx1C91Y=
+	b=sAc+hEPEdesZvIXV2slRa8cyxmJxUOOpQcjXVkso+jFifcpyZrVWBfBY5+518H3E9
+	 ZVahF+Xwy7Vstg2krwPbgaifFBpkEPQKHVgTMufIC+NMrifUPLfmfaac8Vq90B6oiU
+	 3mP72DYGTJ+t1pP2pxvTODVKiZ6p3b+THuc9X7EI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 128/168] nfsd: nfserr_jukebox in nlm_fopen should lead to a retry
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: [PATCH 5.15 114/276] nvdimm: ndtest: Return -ENOMEM if devm_kcalloc() fails in ndtest_probe()
 Date: Fri, 17 Oct 2025 16:53:27 +0200
-Message-ID: <20251017145133.739951523@linuxfoundation.org>
+Message-ID: <20251017145146.640018184@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit a082e4b4d08a4a0e656d90c2c05da85f23e6d0c9 upstream.
+commit a9e6aa994917ee602798bbb03180a194b37865bb upstream.
 
-When v3 NLM request finds a conflicting delegation, it triggers
-a delegation recall and nfsd_open fails with EAGAIN. nfsd_open
-then translates EAGAIN into nfserr_jukebox. In nlm_fopen, instead
-of returning nlm_failed for when there is a conflicting delegation,
-drop this NLM request so that the client retries. Once delegation
-is recalled and if a local lock is claimed, a retry would lead to
-nfsd returning a nlm_lck_blocked error or a successful nlm lock.
+devm_kcalloc() may fail. ndtest_probe() allocates three DMA address
+arrays (dcr_dma, label_dma, dimm_dma) and later unconditionally uses
+them in ndtest_nvdimm_init(), which can lead to a NULL pointer
+dereference under low-memory conditions.
 
-Fixes: d343fce148a4 ("[PATCH] knfsd: Allow lockd to drop replies as appropriate")
-Cc: stable@vger.kernel.org # v6.6
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Check all three allocations and return -ENOMEM if any allocation fails,
+jumping to the common error path. Do not emit an extra error message
+since the allocator already warns on allocation failure.
+
+Fixes: 9399ab61ad82 ("ndtest: Add dimms to the two buses")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/lockd.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tools/testing/nvdimm/test/ndtest.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/lockd.c
-+++ b/fs/nfsd/lockd.c
-@@ -48,6 +48,21 @@ nlm_fopen(struct svc_rqst *rqstp, struct
- 	switch (nfserr) {
- 	case nfs_ok:
- 		return 0;
-+	case nfserr_jukebox:
-+		/* this error can indicate a presence of a conflicting
-+		 * delegation to an NLM lock request. Options are:
-+		 * (1) For now, drop this request and make the client
-+		 * retry. When delegation is returned, client's lock retry
-+		 * will complete.
-+		 * (2) NLM4_DENIED as per "spec" signals to the client
-+		 * that the lock is unavailable now but client can retry.
-+		 * Linux client implementation does not. It treats
-+		 * NLM4_DENIED same as NLM4_FAILED and errors the request.
-+		 * (3) For the future, treat this as blocked lock and try
-+		 * to callback when the delegation is returned but might
-+		 * not have a proper lock request to block on.
-+		 */
-+		fallthrough;
- 	case nfserr_dropit:
- 		return nlm_drop_reply;
- 	case nfserr_stale:
+--- a/tools/testing/nvdimm/test/ndtest.c
++++ b/tools/testing/nvdimm/test/ndtest.c
+@@ -981,11 +981,22 @@ static int ndtest_probe(struct platform_
+ 
+ 	p->dcr_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
+ 				 sizeof(dma_addr_t), GFP_KERNEL);
++	if (!p->dcr_dma) {
++		rc = -ENOMEM;
++		goto err;
++	}
+ 	p->label_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
+ 				   sizeof(dma_addr_t), GFP_KERNEL);
++	if (!p->label_dma) {
++		rc = -ENOMEM;
++		goto err;
++	}
+ 	p->dimm_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
+ 				  sizeof(dma_addr_t), GFP_KERNEL);
+-
++	if (!p->dimm_dma) {
++		rc = -ENOMEM;
++		goto err;
++	}
+ 	rc = ndtest_nvdimm_init(p);
+ 	if (rc)
+ 		goto err;
 
 
 
