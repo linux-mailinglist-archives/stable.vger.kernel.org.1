@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56401BE972A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D8BBEA4B8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C247F1A662D7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9BAE1AE57EB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4758E32E14F;
-	Fri, 17 Oct 2025 15:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158BC2472B0;
+	Fri, 17 Oct 2025 15:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0yO1wiv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I8Jk8hvx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033E53370E1;
-	Fri, 17 Oct 2025 15:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A31330B1E;
+	Fri, 17 Oct 2025 15:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713352; cv=none; b=sS1fLQg97Vtr/qO08Y9gQ8yENTHzTd6zNf1aZ1oqJvdnL+WiJ19kWsKB+3N2xasqLSHnHE66i2Tviz9htVtGRipESEjhz4M2ZjGahdEzEgvfF78+5C6acHIFQcCTrB9MQrhmK472CHivle4GM9DXLul3FV0QZR+tnFOnDR2Iqn4=
+	t=1760716238; cv=none; b=uAn8zdYf8ewyJkhWtp6h+jzk36oI730ElRXjPL/nFkSdkXrRblqYqjn/ov14LdSsmp2tHsblLo5HG2MJ/l9cHkixcP8AUmo1gmvi6kcR2PUZFWeWgWWR5TmaZXY3oI+IUD8GpSy1gzcNRV51j9oOEiLh5yMQ8MwDkEzhEW/XcbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713352; c=relaxed/simple;
-	bh=WkMIyHhbIPjXp9sAdW0Ftm3jKs6gLaXCG1Kry0VitoM=;
+	s=arc-20240116; t=1760716238; c=relaxed/simple;
+	bh=Iu0usOAScNv8DssVWEu4ti4rc/UtdHtdz+21fteVC0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UzQ0O/j4AxGDDh5gKd81mU9HoyiqWsobrV5H8Q0EziCvP4LSwnkGrBA1kiB/HEHDrk7I1oRpwS98OmozeoIavW63KiJzNy6JyjsEeMBq7Wd08gNj1Xv0eksqFUSPCiQ9lX4tWZxw/zNcSIuuUlwXJ39GY2YWUqqd9lwoIxQsRdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0yO1wiv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A91C4CEF9;
-	Fri, 17 Oct 2025 15:02:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q+m6yZp1a0BWbswe+hl+GuUb8deOLbE5Qy+eI+9ziVcQi2kL9Rgmzjzau5eiToQ8aztRV55oymYZ9SB4HocUUXB6kzFAmbI6hYyCc6p+leWMjwtAjxGCatk0pFE6uS6akzLb9X47a0amIUmV2TwDM73WMOAPnEssxj75i6VAO2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8Jk8hvx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401B8C4CEE7;
+	Fri, 17 Oct 2025 15:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713351;
-	bh=WkMIyHhbIPjXp9sAdW0Ftm3jKs6gLaXCG1Kry0VitoM=;
+	s=korg; t=1760716238;
+	bh=Iu0usOAScNv8DssVWEu4ti4rc/UtdHtdz+21fteVC0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0yO1wivUxJ0KUXNrN8MDlmtFiFu8aB0Po5BW0CjcrJA1lpoIQ5i2bGNzbnPhhRhy
-	 9AAxAF+EgBOvcY9LQZ8rvNE40uBHrj7sec9hHjhxlg/ihNZ8cDJg95RyfwRi+BKn54
-	 ME+CTi6FP+MCK8KJVZFot1/VWIy5ssysXl8yQKGo=
+	b=I8Jk8hvxXhdqQ3K1eC+8i72lXmDfOEyOqxIjVSQ2A89QZVhnN/xZ4Z7sY/O7LRhfU
+	 W20fZc/n37tSAAd8sOw4EyzCqqLKbZh5TbueySYnZ+DJwOnz4G99LPCEORnC/Cm3l1
+	 /B92T8IBick84zx5eQtXD2xfZbnWmcuxXf07rVmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/168] ASoC: codecs: wcd934x: Simplify with dev_err_probe
+	Michael Hennerich <michael.hennerich@analog.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 122/276] iio: frequency: adf4350: Fix ADF4350_REG3_12BIT_CLKDIV_MODE
 Date: Fri, 17 Oct 2025 16:53:35 +0200
-Message-ID: <20251017145134.036562769@linuxfoundation.org>
+Message-ID: <20251017145146.931220970@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Michael Hennerich <michael.hennerich@analog.com>
 
-[ Upstream commit fa92f4294283cc7d1f29151420be9e9336182518 ]
+commit 1d8fdabe19267338f29b58f968499e5b55e6a3b6 upstream.
 
-Replace dev_err() in probe() path with dev_err_probe() to:
-1. Make code a bit simpler and easier to read,
-2. Do not print messages on deferred probe.
+The clk div bits (2 bits wide) do not start in bit 16 but in bit 15. Fix it
+accordingly.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230418074630.8681-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 4e65bda8273c ("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e31166f0fd48 ("iio: frequency: New driver for Analog Devices ADF4350/ADF4351 Wideband Synthesizers")
+Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250829-adf4350-fix-v2-2-0bf543ba797d@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wcd934x.c |   19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ include/linux/iio/frequency/adf4350.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/codecs/wcd934x.c
-+++ b/sound/soc/codecs/wcd934x.c
-@@ -5884,10 +5884,9 @@ static int wcd934x_codec_parse_data(stru
- 	slim_get_logical_addr(wcd->sidev);
- 	wcd->if_regmap = regmap_init_slimbus(wcd->sidev,
- 				  &wcd934x_ifc_regmap_config);
--	if (IS_ERR(wcd->if_regmap)) {
--		dev_err(dev, "Failed to allocate ifc register map\n");
--		return PTR_ERR(wcd->if_regmap);
--	}
-+	if (IS_ERR(wcd->if_regmap))
-+		return dev_err_probe(dev, PTR_ERR(wcd->if_regmap),
-+				     "Failed to allocate ifc register map\n");
+--- a/include/linux/iio/frequency/adf4350.h
++++ b/include/linux/iio/frequency/adf4350.h
+@@ -51,7 +51,7 @@
  
- 	of_property_read_u32(dev->parent->of_node, "qcom,dmic-sample-rate",
- 			     &wcd->dmic_sample_rate);
-@@ -5939,19 +5938,15 @@ static int wcd934x_codec_probe(struct pl
- 	memcpy(wcd->tx_chs, wcd934x_tx_chs, sizeof(wcd934x_tx_chs));
- 
- 	irq = regmap_irq_get_virq(data->irq_data, WCD934X_IRQ_SLIMBUS);
--	if (irq < 0) {
--		dev_err(wcd->dev, "Failed to get SLIM IRQ\n");
--		return irq;
--	}
-+	if (irq < 0)
-+		return dev_err_probe(wcd->dev, irq, "Failed to get SLIM IRQ\n");
- 
- 	ret = devm_request_threaded_irq(dev, irq, NULL,
- 					wcd934x_slim_irq_handler,
- 					IRQF_TRIGGER_RISING | IRQF_ONESHOT,
- 					"slim", wcd);
--	if (ret) {
--		dev_err(dev, "Failed to request slimbus irq\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to request slimbus irq\n");
- 
- 	wcd934x_register_mclk_output(wcd);
- 	platform_set_drvdata(pdev, wcd);
+ /* REG3 Bit Definitions */
+ #define ADF4350_REG3_12BIT_CLKDIV(x)		((x) << 3)
+-#define ADF4350_REG3_12BIT_CLKDIV_MODE(x)	((x) << 16)
++#define ADF4350_REG3_12BIT_CLKDIV_MODE(x)	((x) << 15)
+ #define ADF4350_REG3_12BIT_CSR_EN		(1 << 18)
+ #define ADF4351_REG3_CHARGE_CANCELLATION_EN	(1 << 21)
+ #define ADF4351_REG3_ANTI_BACKLASH_3ns_EN	(1 << 22)
 
 
 
