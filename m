@@ -1,132 +1,156 @@
-Return-Path: <stable+bounces-186295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F41BE7D21
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 11:39:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB10BE7DFF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 11:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1AAF9563014
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 09:31:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 907EA3A2817
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 09:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC642E173D;
-	Fri, 17 Oct 2025 09:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDE72DAFAB;
+	Fri, 17 Oct 2025 09:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="qJ42qLwB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6jaivmL"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2691DC985;
-	Fri, 17 Oct 2025 09:23:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1E82DA774
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 09:45:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760693033; cv=none; b=tyRwrKtNJPv03/xPDFU4yKz66os0uzPh+HG99v/DdZx3zong+ZenDCjOpUhlLD9Igs0xyOiWZUy0BzmHrE+nAw8Z6EpTJodhp1fP6YCwkozjyZjiW02NHFFqh9CZqHpvneX9RVH90XLOBXopgozBp47XPk+GqQ5U/WUA0dNEX0I=
+	t=1760694328; cv=none; b=DT1G1OwjOm7eKUGOM3QcMKNBYENg68QYqX3U0gTcbaZetTPqctn6jU1ixXlisWSU6fTG0Q2CBlJsqds7UDd73hIrgZdXbieKHGnGBja5jdHPYaFz2Nv3kMzcH2fiBofjaYoOO9kg1Z3AgumELrhJCYyrCr9LixNT/X5gb0YlsVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760693033; c=relaxed/simple;
-	bh=Yx+F/b7bx3085dSktR/oo/zKJrjeNdPp6uiApzbMGF8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L7eUoEA99QMQC5wvChW+Ex6tOmEKtJN2Kb++CeUcV9LL/qWyF7+gs1X5wK5p05j2C1ufD2Zrytg17HFHn0V9Cui1obYk2VZGuNkFeKyz69Wfd3s5yKUg6yoSd5NDmWaIVWUl0SqC5JJnYlMfzSUUI0A/K7uPz2zmHaGBVZdtk0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=qJ42qLwB; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from ideasonboard.com (93-46-82-201.ip106.fastwebnet.it [93.46.82.201])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C40931118;
-	Fri, 17 Oct 2025 11:22:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1760692928;
-	bh=Yx+F/b7bx3085dSktR/oo/zKJrjeNdPp6uiApzbMGF8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qJ42qLwBarBIjjYx6xU1lARUVtRJTobqwKSuyXKJ+cuXVxIBnjwKY6y28tRZSXNNq
-	 ImF3xa+xnKcwJB4UW8digW+VqBausZFjvovAVYAejYZyuQcoY5KAMwoKQTvI8T7EE/
-	 Pm5nuKYQ0w4svfY/clh+dqfbXVq7CLqbyL2+WLWw=
-Date: Fri, 17 Oct 2025 11:23:46 +0200
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-To: Jai Luthra <jai.luthra@ideasonboard.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Dave Stevenson <dave.stevenson@raspberrypi.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans Verkuil <hverkuil@kernel.org>, 
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>, linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	=?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] media: i2c: imx219: Fix 1920x1080 mode to use 1:1
- pixel aspect ratio
-Message-ID: <cmj3pqfy7zvcdjw63ndkuwfcxapt5puv3swvnhfhjbqs5w7d2v@fmi3okbzhdvt>
-References: <20251017-imx219-1080p-v1-0-9173d5a47a0c@ideasonboard.com>
- <20251017-imx219-1080p-v1-1-9173d5a47a0c@ideasonboard.com>
+	s=arc-20240116; t=1760694328; c=relaxed/simple;
+	bh=XtO9sRQeiqTEF3Mgx59O+0CfGSoNUdMMWG3uX2sJANc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pv/Xjecr28/STvIJSbsyPaFIrK/aKue9hg7i9FIZrBa7oZ5HBiX8J7zH2pfqVnqGkZiysRHICcftJCkuZWIDcqEC2R3+7eDZGoORPm0CTjvHfgsgXPGfk7Cae1NGYEueYGFpAKh1TbxmsVT4RG34ernPsj0r4MB1cg1wVcl3ueE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6jaivmL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817CDC4CEE7
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 09:45:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760694327;
+	bh=XtO9sRQeiqTEF3Mgx59O+0CfGSoNUdMMWG3uX2sJANc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=S6jaivmL21W3j9X94Ug/vZPu9YmbLoyjEWgbaxTo4XE3WKXOrTeDKG9vdkTCgYWYg
+	 shWpjWn0BvJn0wMWGjEyrwPTD6mgziEtD6Vu0fQ7BSQUyHRBCn4z64q4iaGDdl5JjV
+	 qX6v0jC5yfFkeobv8NlBtsBLIY/cF2YO+yAtgiZLj4j3IJgMjkNuAIX5ONUZdHTm+M
+	 k368bR6By5fuuf1IVbEXp3ZbfMak4TdHOpL9YTKzWt1eyPsCcH4Yet+7u6fk8WhWCo
+	 /9aKX7oKI9Shy7eB72Zh0w03pAVA9CVlmurErvgqjX9yNvyWcMZQRD4dYRwD8MmubZ
+	 vRPt4q+c6lBNg==
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7abbdf3c476so1376349a34.1
+        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 02:45:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV7jQFxFBFXE75rpSYAR0nrtTiLHSaaV3xr9As4nNnM/CHE6P6VUQN8+SOY1lOIKU5J1u0yjus=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy70a+3tY5W7j0HfnlZQxTwOrXgUyr+fdJ6t/y4pfKt/BRh3UP3
+	dp+ADcq0v/6vea9kaBnIAShqyQOXUbSrIyCGG1y57LUIOMhcEXyboKQm94V0/8/2V+Sp+dGHBoq
+	wjb+H7+2pnoowWXjAjFZ3d0UM+FWqqME=
+X-Google-Smtp-Source: AGHT+IH4eFtUZLBxcwh2xQ/mf6nJ2K1x5Ot8Mr4XTPJHIaP3cRmxN8m7Qjq/x+6o55VptzdO3OZu5M8S/8tYsiUSlRE=
+X-Received: by 2002:a05:6808:6d82:b0:441:c8af:291d with SMTP id
+ 5614622812f47-443a30953d3mr1270420b6e.42.1760694326867; Fri, 17 Oct 2025
+ 02:45:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251017-imx219-1080p-v1-1-9173d5a47a0c@ideasonboard.com>
+References: <20251016155335.1.I60a53c170a8596661883bd2b4ef475155c7aa72b@changeid>
+In-Reply-To: <20251016155335.1.I60a53c170a8596661883bd2b4ef475155c7aa72b@changeid>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 17 Oct 2025 11:45:14 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iFa3_UFkA920Ogn0YAYLq4CjnAD_VjLsmxQxrfm5HEBw@mail.gmail.com>
+X-Gm-Features: AS18NWAfxBP4Jux50tLr0QwuvERSlU0IAnFqGNafXGnfCBKno1UvlTv43pvyLKQ
+Message-ID: <CAJZ5v0iFa3_UFkA920Ogn0YAYLq4CjnAD_VjLsmxQxrfm5HEBw@mail.gmail.com>
+Subject: Re: [PATCH] PCI/PM: Prevent runtime suspend before devices are fully initialized
+To: Brian Norris <briannorris@chromium.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Lukas Wunner <lukas@wunner.de>, linux-pci@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jai
-
-On Fri, Oct 17, 2025 at 01:43:49PM +0530, Jai Luthra wrote:
-> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+On Fri, Oct 17, 2025 at 1:28=E2=80=AFAM Brian Norris <briannorris@chromium.=
+org> wrote:
 >
-> Commit 0af46fbc333d ("media: i2c: imx219: Calculate crop rectangle
-> dynamically") meant that the 1920x1080 mode switched from using no
-> binning to using vertical binning but no horizontal binning, which
-> resulted in stretched pixels.
+> PCI devices are created via pci_scan_slot() and similar, and are
+> promptly configured for runtime PM (pci_pm_init()). They are initially
+> prevented from suspending by way of pm_runtime_forbid(); however, it's
+> expected that user space may override this via sysfs [1].
 >
-> Until proper controls are available to independently select horizontal
-> and vertical binning, restore the original 1:1 pixel aspect ratio by
-> forcing binning to be uniform in both directions.
-
-I think it makes sense and I wonder if binning in one direction and
-not in the other will ever be needed in the general case.
-
-For this driver indeed, this fixes a visible regression
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-
-Thanks
-  j
+> Now, sometime after initial scan, a PCI device receives its BAR
+> configuration (pci_assign_unassigned_bus_resources(), etc.).
 >
-> Cc: stable@vger.kernel.org
-> Fixes: 0af46fbc333d ("media: i2c: imx219: Calculate crop rectangle dynamically")
-> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> [Add comment & reword commit message]
-> Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
+> If a PCI device is allowed to suspend between pci_scan_slot() and
+> pci_assign_unassigned_bus_resources(), then pci-driver.c will
+> save/restore incorrect BAR configuration for the device, and the device
+> may cease to function.
+>
+> This behavior races with user space, since user space may enable runtime
+> PM [1] as soon as it sees the device, which may be before BAR
+> configuration.
+>
+> Prevent suspending in this intermediate state by holding a runtime PM
+> reference until the device is fully initialized and ready for probe().
+>
+> [1] echo auto > /sys/bus/pci/devices/.../power/control
+>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Brian Norris <briannorris@chromium.org>
 > ---
->  drivers/media/i2c/imx219.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
-> index c680aa6c3a55a9d865e79ad337b258cb681f98fe..300935b1ef2497050fe2808e4ceedda389a75b50 100644
-> --- a/drivers/media/i2c/imx219.c
-> +++ b/drivers/media/i2c/imx219.c
-> @@ -856,7 +856,7 @@ static int imx219_set_pad_format(struct v4l2_subdev *sd,
->  	const struct imx219_mode *mode;
->  	struct v4l2_mbus_framefmt *format;
->  	struct v4l2_rect *crop;
-> -	u8 bin_h, bin_v;
-> +	u8 bin_h, bin_v, binning;
->  	u32 prev_line_len;
+>  drivers/pci/bus.c | 7 +++++++
+>  drivers/pci/pci.c | 6 ++++++
+>  2 files changed, 13 insertions(+)
 >
->  	format = v4l2_subdev_state_get_format(state, 0);
-> @@ -877,9 +877,12 @@ static int imx219_set_pad_format(struct v4l2_subdev *sd,
->  	bin_h = min(IMX219_PIXEL_ARRAY_WIDTH / format->width, 2U);
->  	bin_v = min(IMX219_PIXEL_ARRAY_HEIGHT / format->height, 2U);
+> diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+> index f26aec6ff588..227a8898acac 100644
+> --- a/drivers/pci/bus.c
+> +++ b/drivers/pci/bus.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/of.h>
+>  #include <linux/of_platform.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/pm_runtime.h>
+>  #include <linux/proc_fs.h>
+>  #include <linux/slab.h>
 >
-> +	/* Ensure bin_h and bin_v are same to avoid 1:2 or 2:1 stretching */
-> +	binning = min(bin_h, bin_v);
+> @@ -375,6 +376,12 @@ void pci_bus_add_device(struct pci_dev *dev)
+>                 put_device(&pdev->dev);
+>         }
+>
+> +       /*
+> +        * Now that resources are assigned, drop the reference we grabbed=
+ in
+> +        * pci_pm_init().
+> +        */
+> +       pm_runtime_put_noidle(&dev->dev);
 > +
->  	crop = v4l2_subdev_state_get_crop(state, 0);
-> -	crop->width = format->width * bin_h;
-> -	crop->height = format->height * bin_v;
-> +	crop->width = format->width * binning;
-> +	crop->height = format->height * binning;
->  	crop->left = (IMX219_NATIVE_WIDTH - crop->width) / 2;
->  	crop->top = (IMX219_NATIVE_HEIGHT - crop->height) / 2;
+>         if (!dn || of_device_is_available(dn))
+>                 pci_dev_allow_binding(dev);
 >
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index b14dd064006c..06a901214f2c 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -3226,6 +3226,12 @@ void pci_pm_init(struct pci_dev *dev)
+>         pci_pm_power_up_and_verify_state(dev);
+>         pm_runtime_forbid(&dev->dev);
+>         pm_runtime_set_active(&dev->dev);
+> +       /*
+> +        * We cannot allow a device to suspend before its resources are
+> +        * configured. Otherwise, we may allow saving/restoring unexpecte=
+d BAR
+> +        * configuration.
+> +        */
+> +       pm_runtime_get_noresume(&dev->dev);
+>         pm_runtime_enable(&dev->dev);
+
+So runtime PM should not be enabled here, should it?
+
+>  }
 >
 > --
-> 2.51.0
->
 
