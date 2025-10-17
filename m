@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854FFBEA50A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:06 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDCABE9C36
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7A8FE5A2D59
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:50:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2532835E090
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C36B2E11DD;
-	Fri, 17 Oct 2025 15:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F5132E121;
+	Fri, 17 Oct 2025 15:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gi4qo1Gg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H86zWnOu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC06F2F12A7;
-	Fri, 17 Oct 2025 15:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA386217722;
+	Fri, 17 Oct 2025 15:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716225; cv=none; b=Ocy4PnQoF9Y9IXZVttgP4igguRhC8Oe29O8dP5tDe/FVAlQDiI2i7mMZjYqlGKtQJpSE7jCq0Yog66EKs0HOacEpV5CHX180nj5HuXp+f6YP0DrAf0sT/ATqyuhAatQgFCD4572jfdwcTw2vTSiUhJHKB14G3H6yWSFRGdQVptU=
+	t=1760714611; cv=none; b=EcvOUtQgO2sqT+i2dkR8bwEUpCY7UBWr6PaYnPw4utjvItgWhOcSOY0D/xQuw4UdQlmp3QcQbVWjpMwscXesTrv6BCEGpE+nup4i2LqeONEt/hPrPftDQEJo8Y2ymdLSW8UInLqs48S2wSaNygM4amy9glnCyG5e7zr672PA5dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716225; c=relaxed/simple;
-	bh=xw/AAb0DOkt14d+/tDZ39rJimsOWXaq184yIIzFC14g=;
+	s=arc-20240116; t=1760714611; c=relaxed/simple;
+	bh=1YvF/OkCqQzO+BiTpKaPvb3000KCsi3DJ6c2Lmf/Qbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIaIubh5XEO36aVqeDVv9YwGSy9tO8/6t9MMAKF2nzLBN5H6qvbx3XyjC2bDPyh+6TyTGWrtoL7f+dPcpH/9TIYbxYstbRwEG1HZerwe6KRb6iG11oZA1qbFVqKDsW+md5gSUa+QKdieqnq+DbvOHLcM98QDo/8BVkK93JvLkXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gi4qo1Gg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D47EC4CEE7;
-	Fri, 17 Oct 2025 15:50:23 +0000 (UTC)
+	 MIME-Version; b=X9/pH2hdR7gGpDHeBknKcX84VGZV1ZfPqOi3HSwFe6njd93EzgVYYT5S2CBBcm56uRPvF5OgGYcnESk9dnBxQ5tK1GBkT6/ZSdeGHqEeX47yUeZiUdGWh4PZDknDrwVFU85/IGo6jTvTeYI1c8tzZl5+9cEiX+0iSrjXhk6hoMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H86zWnOu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C97DC4CEE7;
+	Fri, 17 Oct 2025 15:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716224;
-	bh=xw/AAb0DOkt14d+/tDZ39rJimsOWXaq184yIIzFC14g=;
+	s=korg; t=1760714611;
+	bh=1YvF/OkCqQzO+BiTpKaPvb3000KCsi3DJ6c2Lmf/Qbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gi4qo1GgjOhSUCiCwIxRNNLDsNFZ/VODHmLt2lnclZVcHHVdjt2lMDa5VAkw3R2oz
-	 lZY/HURghUxDav3eo5g4Co+AHThid3lNdtHYOMVjNt8dL9h/3h3OUapgrJVwX3psid
-	 hW179ngTJfu0GEwCsxT7lJ+7K0jpM+6NiRHeVRbE=
+	b=H86zWnOu3fsoqZg1HgBBlgReekxyU7rNjcHDtMDGGUAO0IG506jYX2/hNC9Y2s87I
+	 7glI9yaPOrw0hEBWILlU6YzBlKbo+hJ/MchbppYqVLJYE0cEYm6HVbK4tBJAi8DNQe
+	 QXx1ICgt5NtDuMPvLnagOM9+vPzt5sK1B/wV/NtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.15 117/276] pinctrl: check the return value of pinmux_ops::get_function_name()
-Date: Fri, 17 Oct 2025 16:53:30 +0200
-Message-ID: <20251017145146.748713293@linuxfoundation.org>
+	Autumn Dececco <autumndececco@gmail.com>,
+	Nick Morrow <morrownr@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 204/277] wifi: mt76: mt7921u: Add VID/PID for Netgear A7500
+Date: Fri, 17 Oct 2025 16:53:31 +0200
+Message-ID: <20251017145154.572193102@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Nick Morrow <morrownr@gmail.com>
 
-commit 4002ee98c022d671ecc1e4a84029e9ae7d8a5603 upstream.
+commit fc6627ca8a5f811b601aea74e934cf8a048c88ac upstream.
 
-While the API contract in docs doesn't specify it explicitly, the
-generic implementation of the get_function_name() callback from struct
-pinmux_ops - pinmux_generic_get_function_name() - can fail and return
-NULL. This is already checked in pinmux_check_ops() so add a similar
-check in pinmux_func_name_to_selector() instead of passing the returned
-pointer right down to strcmp() where the NULL can get dereferenced. This
-is normal operation when adding new pinfunctions.
+Add VID/PID 0846/9065 for Netgear A7500.
 
+Reported-by: Autumn Dececco <autumndececco@gmail.com>
+Tested-by: Autumn Dececco <autumndececco@gmail.com>
+Signed-off-by: Nick Morrow <morrownr@gmail.com>
 Cc: stable@vger.kernel.org
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/80bacfd6-6073-4ce5-be32-ae9580832337@gmail.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinmux.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/usb.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pinctrl/pinmux.c
-+++ b/drivers/pinctrl/pinmux.c
-@@ -328,7 +328,7 @@ static int pinmux_func_name_to_selector(
- 	while (selector < nfuncs) {
- 		const char *fname = ops->get_function_name(pctldev, selector);
- 
--		if (!strcmp(function, fname))
-+		if (fname && !strcmp(function, fname))
- 			return selector;
- 
- 		selector++;
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -21,6 +21,9 @@ static const struct usb_device_id mt7921
+ 	/* Netgear, Inc. [A8000,AXE3000] */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9060, 0xff, 0xff, 0xff),
+ 		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
++	/* Netgear, Inc. A7500 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9065, 0xff, 0xff, 0xff),
++		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+ 	/* TP-Link TXE50UH */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0107, 0xff, 0xff, 0xff),
+ 		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
 
 
 
