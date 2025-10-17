@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304F9BE9D05
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDBDBE9960
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0E0518903B2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08EA518926EB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A430B2F690F;
-	Fri, 17 Oct 2025 15:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F582F12DB;
+	Fri, 17 Oct 2025 15:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zt1Gvmfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gEf7F6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F87D337110;
-	Fri, 17 Oct 2025 15:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C981C45C0B;
+	Fri, 17 Oct 2025 15:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714603; cv=none; b=dJi7F2BKy3DxxT0eb5r4qZMeroYiNsSWwGjxk5DoUOnX1YNki7J/C7399AvcPhGf+Ue3nKOQbrxArvrF5PV51lgeVeFpKAPJxmDx1wuthL2n4JGIN8GWeH5qyMoJGcdR/1Z1jmXkiU/wXLIUBVPF34UaqVHfST9mwGjD9Fky/B8=
+	t=1760713870; cv=none; b=eXfAtkkU2nXfcm6uDZAeshaDZvbn6Plli/3StkK45xDspnW2sJhJbRAll344L5TxiJ+7mIDx9BRYwOBXzxS7claFWOcQAXJuCC2QqKxRbifbzkltPtjGL90+8i0wXc2JBKRoyFwKpMsPq2VG9cR4yQQ4r5iSqG6ioKkvkaLzOcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714603; c=relaxed/simple;
-	bh=40NYl5lw9oto3GjV7Y7g1QwZswWVTGx0s2a8EjBV1vs=;
+	s=arc-20240116; t=1760713870; c=relaxed/simple;
+	bh=lnnlrMXfTjWD4MG89bpEVS4l7d0hGpFoPrrMQjYnIgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgwOhxrPOpiho2x4V9rMdNWsxDTCLocW/aq2L+tEtDgzRzTtQHdmMgcic3fUQrCvlGMgsQLjJ9vARVy4Kw0ecl/9DUmHY+tA2tRcv8xA7CGcA4OfoKdNvPWw0KasqJk0QfxRLqiWOcFC0A2f873ld9jCjwU1feROpIWadJav4EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zt1Gvmfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9EFC4CEFE;
-	Fri, 17 Oct 2025 15:23:22 +0000 (UTC)
+	 MIME-Version; b=R4w5Ov8jSbgSr38CVLDMEq1l2OAfCuaVBUZyoTQrhyxQxAwqBB7v7+UxWvQV0py3SmjlpYpi3uB9sMY7kNeBBvUrY0I70Avnkt+H14oEPqTJ5VsW3Jva481p+9G8OOCnrwKj9+Fks5iw7H9bsthkArxx2omVDw8quL9xUKSqWpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gEf7F6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52AA8C4CEFE;
+	Fri, 17 Oct 2025 15:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714603;
-	bh=40NYl5lw9oto3GjV7Y7g1QwZswWVTGx0s2a8EjBV1vs=;
+	s=korg; t=1760713870;
+	bh=lnnlrMXfTjWD4MG89bpEVS4l7d0hGpFoPrrMQjYnIgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zt1GvmfjgWWC8CQ+sRiBrRl9lsvZ0/JiODo7ePqiC01h1LEoTbwNJBr4eyU+TNAn6
-	 IH83SEr1L5idjH9g5gfZyVtrLTeCXiJvfRPWXNNY3cd7uWUpuJdqMazuEBp1curfxS
-	 1znj5XN4eJnxrEFKzj39/H4jAvSlpsBl/V7ZHVZY=
+	b=2gEf7F6DPTUTjshWAd/bN2Vc3ajhWx1J5Euj26RSyM4FEZOzsdtC3rTIJqOlrz+3o
+	 2+o0FHGDKttEZiydoPSrhwed57V1bQ0syseI03Z8vmTuJ2PEgImcp+xKVr7X+7uoDj
+	 JuKYUOfDAylh2xWYkdxM8WcJsAdElY+SKDX/UTi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.12 201/277] slab: mark slab->obj_exts allocation failures unconditionally
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 147/201] nfsd: nfserr_jukebox in nlm_fopen should lead to a retry
 Date: Fri, 17 Oct 2025 16:53:28 +0200
-Message-ID: <20251017145154.460960900@linuxfoundation.org>
+Message-ID: <20251017145140.133902644@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-commit f7381b9116407ba2a429977c80ff8df953ea9354 upstream.
+commit a082e4b4d08a4a0e656d90c2c05da85f23e6d0c9 upstream.
 
-alloc_slab_obj_exts() should mark failed obj_exts vector allocations
-independent on whether the vector is being allocated for a new or an
-existing slab. Current implementation skips doing this for existing
-slabs. Fix this by marking failed allocations unconditionally.
+When v3 NLM request finds a conflicting delegation, it triggers
+a delegation recall and nfsd_open fails with EAGAIN. nfsd_open
+then translates EAGAIN into nfserr_jukebox. In nlm_fopen, instead
+of returning nlm_failed for when there is a conflicting delegation,
+drop this NLM request so that the client retries. Once delegation
+is recalled and if a local lock is claimed, a retry would lead to
+nfsd returning a nlm_lck_blocked error or a successful nlm lock.
 
-Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to mark failed slab_ext allocations")
-Reported-by: Shakeel Butt <shakeel.butt@linux.dev>
-Closes: https://lore.kernel.org/all/avhakjldsgczmq356gkwmvfilyvf7o6temvcmtt5lqd4fhp5rk@47gp2ropyixg/
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: stable@vger.kernel.org # v6.10+
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Fixes: d343fce148a4 ("[PATCH] knfsd: Allow lockd to drop replies as appropriate")
+Cc: stable@vger.kernel.org # v6.6
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/nfsd/lockd.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -1999,8 +1999,7 @@ int alloc_slab_obj_exts(struct slab *sla
- 			   slab_nid(slab));
- 	if (!vec) {
- 		/* Mark vectors which failed to allocate */
--		if (new_slab)
--			mark_failed_objexts_alloc(slab);
-+		mark_failed_objexts_alloc(slab);
- 
- 		return -ENOMEM;
- 	}
+--- a/fs/nfsd/lockd.c
++++ b/fs/nfsd/lockd.c
+@@ -48,6 +48,21 @@ nlm_fopen(struct svc_rqst *rqstp, struct
+ 	switch (nfserr) {
+ 	case nfs_ok:
+ 		return 0;
++	case nfserr_jukebox:
++		/* this error can indicate a presence of a conflicting
++		 * delegation to an NLM lock request. Options are:
++		 * (1) For now, drop this request and make the client
++		 * retry. When delegation is returned, client's lock retry
++		 * will complete.
++		 * (2) NLM4_DENIED as per "spec" signals to the client
++		 * that the lock is unavailable now but client can retry.
++		 * Linux client implementation does not. It treats
++		 * NLM4_DENIED same as NLM4_FAILED and errors the request.
++		 * (3) For the future, treat this as blocked lock and try
++		 * to callback when the delegation is returned but might
++		 * not have a proper lock request to block on.
++		 */
++		fallthrough;
+ 	case nfserr_dropit:
+ 		return nlm_drop_reply;
+ 	case nfserr_stale:
 
 
 
