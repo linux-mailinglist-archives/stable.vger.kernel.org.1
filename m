@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FF5BEA0D1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:55 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08105BEA350
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26269742C50
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C56115A2DBD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184D22F690F;
-	Fri, 17 Oct 2025 15:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCB5336EE0;
+	Fri, 17 Oct 2025 15:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpCJ3xLN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqICAKgc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F18289811;
-	Fri, 17 Oct 2025 15:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B93D32E150;
+	Fri, 17 Oct 2025 15:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714247; cv=none; b=BUcT+65sx89noKT0jNRRhvGQodRRZJivdbd6xYFbuhx5p62WBQcET8KmNfIAenkLZORqx/rNY/dq7ye4bXpBc4I5C4mm3Tc5MpxmS2XRLAooF5I1QzA+9lMRKf0KAygPDjXnUevKCoWMwQiGiyu0u1gL2uIizQhRdamdRnZ8j7I=
+	t=1760715142; cv=none; b=foxA/h7f7aX7+H2keW+1n2I23oZbyyEJUpMgTNvUM2f4MPSLynYSXx77DEAM8maJNCWLMDvaAu4rTJl6zEiMUZuuRMcfrrlBtyqWb2Ev5FsHL/sadxZ/MoiySkkEl0uUi6qa35TPtXx1pwyt5dRob/2s6kDv3u1VLGVXuqhJvts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714247; c=relaxed/simple;
-	bh=PObRQY1DI4rYFluVzHUidWLnY+7lSO1A5m1h/qMeQRw=;
+	s=arc-20240116; t=1760715142; c=relaxed/simple;
+	bh=FURlJWp7mWNwOANSWC8i6bjpHscoUENNlUQK+3SPsss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=htNvPccPioUggbQ+F+NR9pq74zhPKsmyVSOSeFarQ8dSnK7Tms2PO/mIYoIV2aHPST5GIPRb+SGlN0q88LV0lvIok2lWBpmclfkEgYHK6Tc1yI50XSlwMPOl+ZRkZ6kEJTp83lYkAekZm9+v0mf25Sj0F/ijaKrzdDi6LhW0Hgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpCJ3xLN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC6FC4CEE7;
-	Fri, 17 Oct 2025 15:17:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ip+XoDHIF9dbD77SG/a7zQfUE2UxhzzBO/k2Dtc8RUGuj5oprhhUo9AOPtL9DRI7qEvJ4Z0nYk7QhFgIxlg30wSbQJ3nWe5MNVtntBGfkfBugM1ULAWCi4b3FtI/7HNUBPXcQOvsdgeQZKL2wFMHkpJGJjgEO2k/df8/Yg/rYOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqICAKgc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D837C113D0;
+	Fri, 17 Oct 2025 15:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714247;
-	bh=PObRQY1DI4rYFluVzHUidWLnY+7lSO1A5m1h/qMeQRw=;
+	s=korg; t=1760715141;
+	bh=FURlJWp7mWNwOANSWC8i6bjpHscoUENNlUQK+3SPsss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpCJ3xLNKsWRw0hBj0KT/mXRLpeZg5JiXh9nCNilDoD3txj4MvYODWxzvxIUTpN20
-	 B1geANhcJ3woevNwA5ojw5QrD50gKbIzBRzepNuFrD0qngCIygxLuCmHdDEcCNKHv5
-	 e3MKBhQlyWgeLTdnmx310tgK3/38FT7b/iGEjlm4=
+	b=fqICAKgcCV8aK6IAJQYU9h4XhoTwcbzCuZXicI2m2g2V48qbK0tJ5gLTW+64qYJTN
+	 IcZZFst2KsZ0dUMwXTlbpVcu6G7vs/LIoiaWUeFsalP4Uxqtq22Htdv+T29AkUX2Uj
+	 kkZybon8E1zbROShzV3YabKaRUx6HdvyQDevr9YU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/277] cifs: Query EA $LXMOD in cifs_query_path_info() for WSL reparse points
-Date: Fri, 17 Oct 2025 16:51:26 +0200
-Message-ID: <20251017145150.021310148@linuxfoundation.org>
+Subject: [PATCH 6.17 112/371] drm/amd/display: Disable scaling on DCE6 for now
+Date: Fri, 17 Oct 2025 16:51:27 +0200
+Message-ID: <20251017145205.990894323@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +63,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 057ac50638bcece64b3b436d3a61b70ed6c01a34 ]
+[ Upstream commit 0e190a0446ec517666dab4691b296a9b758e590f ]
 
-EA $LXMOD is required for WSL non-symlink reparse points.
+Scaling doesn't work on DCE6 at the moment, the current
+register programming produces incorrect output when using
+fractional scaling (between 100-200%) on resolutions higher
+than 1080p.
 
-Fixes: ef86ab131d91 ("cifs: Fix querying of WSL CHR and BLK reparse points over SMB1")
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Disable it until we figure out how to program it properly.
+
+Fixes: 7c15fd86aaec ("drm/amd/display: dc/dce: add initial DCE6 support (v10)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb1ops.c | 62 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 60 insertions(+), 2 deletions(-)
+ .../gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c    | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
-index 0385a514f59e9..4670c3e451a75 100644
---- a/fs/smb/client/smb1ops.c
-+++ b/fs/smb/client/smb1ops.c
-@@ -671,14 +671,72 @@ static int cifs_query_path_info(const unsigned int xid,
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+index 53b60044653f8..f887d59da7c6f 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+@@ -403,13 +403,13 @@ static const struct dc_plane_cap plane_cap = {
+ 	},
+ 
+ 	.max_upscale_factor = {
+-			.argb8888 = 16000,
++			.argb8888 = 1,
+ 			.nv12 = 1,
+ 			.fp16 = 1
+ 	},
+ 
+ 	.max_downscale_factor = {
+-			.argb8888 = 250,
++			.argb8888 = 1,
+ 			.nv12 = 1,
+ 			.fp16 = 1
  	}
- 
- #ifdef CONFIG_CIFS_XATTR
-+	/*
-+	 * For non-symlink WSL reparse points it is required to fetch
-+	 * EA $LXMOD which contains in its S_DT part the mandatory file type.
-+	 */
-+	if (!rc && data->reparse_point) {
-+		struct smb2_file_full_ea_info *ea;
-+		u32 next = 0;
-+
-+		ea = (struct smb2_file_full_ea_info *)data->wsl.eas;
-+		do {
-+			ea = (void *)((u8 *)ea + next);
-+			next = le32_to_cpu(ea->next_entry_offset);
-+		} while (next);
-+		if (le16_to_cpu(ea->ea_value_length)) {
-+			ea->next_entry_offset = cpu_to_le32(ALIGN(sizeof(*ea) +
-+						ea->ea_name_length + 1 +
-+						le16_to_cpu(ea->ea_value_length), 4));
-+			ea = (void *)((u8 *)ea + le32_to_cpu(ea->next_entry_offset));
-+		}
-+
-+		rc = CIFSSMBQAllEAs(xid, tcon, full_path, SMB2_WSL_XATTR_MODE,
-+				    &ea->ea_data[SMB2_WSL_XATTR_NAME_LEN + 1],
-+				    SMB2_WSL_XATTR_MODE_SIZE, cifs_sb);
-+		if (rc == SMB2_WSL_XATTR_MODE_SIZE) {
-+			ea->next_entry_offset = cpu_to_le32(0);
-+			ea->flags = 0;
-+			ea->ea_name_length = SMB2_WSL_XATTR_NAME_LEN;
-+			ea->ea_value_length = cpu_to_le16(SMB2_WSL_XATTR_MODE_SIZE);
-+			memcpy(&ea->ea_data[0], SMB2_WSL_XATTR_MODE, SMB2_WSL_XATTR_NAME_LEN + 1);
-+			data->wsl.eas_len += ALIGN(sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
-+						   SMB2_WSL_XATTR_MODE_SIZE, 4);
-+			rc = 0;
-+		} else if (rc >= 0) {
-+			/* It is an error if EA $LXMOD has wrong size. */
-+			rc = -EINVAL;
-+		} else {
-+			/*
-+			 * In all other cases ignore error if fetching
-+			 * of EA $LXMOD failed. It is needed only for
-+			 * non-symlink WSL reparse points and wsl_to_fattr()
-+			 * handle the case when EA is missing.
-+			 */
-+			rc = 0;
-+		}
-+	}
-+
- 	/*
- 	 * For WSL CHR and BLK reparse points it is required to fetch
- 	 * EA $LXDEV which contains major and minor device numbers.
- 	 */
- 	if (!rc && data->reparse_point) {
- 		struct smb2_file_full_ea_info *ea;
-+		u32 next = 0;
- 
- 		ea = (struct smb2_file_full_ea_info *)data->wsl.eas;
-+		do {
-+			ea = (void *)((u8 *)ea + next);
-+			next = le32_to_cpu(ea->next_entry_offset);
-+		} while (next);
-+		if (le16_to_cpu(ea->ea_value_length)) {
-+			ea->next_entry_offset = cpu_to_le32(ALIGN(sizeof(*ea) +
-+						ea->ea_name_length + 1 +
-+						le16_to_cpu(ea->ea_value_length), 4));
-+			ea = (void *)((u8 *)ea + le32_to_cpu(ea->next_entry_offset));
-+		}
-+
- 		rc = CIFSSMBQAllEAs(xid, tcon, full_path, SMB2_WSL_XATTR_DEV,
- 				    &ea->ea_data[SMB2_WSL_XATTR_NAME_LEN + 1],
- 				    SMB2_WSL_XATTR_DEV_SIZE, cifs_sb);
-@@ -688,8 +746,8 @@ static int cifs_query_path_info(const unsigned int xid,
- 			ea->ea_name_length = SMB2_WSL_XATTR_NAME_LEN;
- 			ea->ea_value_length = cpu_to_le16(SMB2_WSL_XATTR_DEV_SIZE);
- 			memcpy(&ea->ea_data[0], SMB2_WSL_XATTR_DEV, SMB2_WSL_XATTR_NAME_LEN + 1);
--			data->wsl.eas_len = sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
--					    SMB2_WSL_XATTR_DEV_SIZE;
-+			data->wsl.eas_len += ALIGN(sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
-+						   SMB2_WSL_XATTR_MODE_SIZE, 4);
- 			rc = 0;
- 		} else if (rc >= 0) {
- 			/* It is an error if EA $LXDEV has wrong size. */
 -- 
 2.51.0
 
