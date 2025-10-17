@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D6FBE9F99
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43FC0BEA425
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0531D747DFE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1172F1AE4E5B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433FE332902;
-	Fri, 17 Oct 2025 15:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0287330B2E;
+	Fri, 17 Oct 2025 15:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btQBqURJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYT9HqBw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E282264A7;
-	Fri, 17 Oct 2025 15:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB84330B04;
+	Fri, 17 Oct 2025 15:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713750; cv=none; b=jyRV8D8g1+09coWRhRCSWp/4CNcqXcq82Vdrywoh7JmrGWlnBROyNW/yFkDZ8R6c3nAqmWe9r5bXQG9Ic9Xbpsf6f3YxgJumDs9UbtF2yxe47pWVks/Oqva6aV5atidO2y50ONKRgWeJvmY2dPF1Kqv114mh/WaLfZLjWY3AIEw=
+	t=1760716152; cv=none; b=TstOTQzSjLMl8L+IKXhJNqRN8G+mm8AJfIgeXPssihwGLso19wvLqoi0HSBd/ipAIo108KTF79Ag6pgYoComlzwYneT4AJ32BtSB15rLe7A+taEuCTSp/qFU8wezLAUEiU5C/Dv1Vpg7f+OpgTH8SPEj/XhiOAupM2Xw6qSFbw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713750; c=relaxed/simple;
-	bh=GOYAwrAGKigJHJYYBfEWAEHi2PQPqAuo219GMzhAAWg=;
+	s=arc-20240116; t=1760716152; c=relaxed/simple;
+	bh=0DPAEYtiAP4JPcM9PJkIbchTvTr6vXQ0hm+2+PHHep0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfeRE+7Kie/AMVfOWdMxcWMTeP7ybyQ1LpKthzPODrNcVedS+6rsjQ69i2KOKVjO+B1cdC9ROgjQqI1oe0xKmXJsHXLRKch/Wv8qk6lK8epaGj29GqatzATtiwfi82wC1Yk5DKZjKyg5aheo7KoZJtr0j68YNWTTfFPneaK6IYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btQBqURJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655EAC4CEF9;
-	Fri, 17 Oct 2025 15:09:09 +0000 (UTC)
+	 MIME-Version; b=UItDGjH1KBvB16pf1Q466TlwHT+cvfTBa0lmjQ/xhLh4bd4CMh552JQc2txR8hXd0NGMfQPF7rbvpnJnOQv6RB6LPpvNS9/I1rsRhgwgxHFBK+f2axr6CiBre3/EYA01Zt7m0J9GHT1Gh6DnwhQ1vvBIx67V674c63NyQL+TcFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYT9HqBw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D48C4CEE7;
+	Fri, 17 Oct 2025 15:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713749;
-	bh=GOYAwrAGKigJHJYYBfEWAEHi2PQPqAuo219GMzhAAWg=;
+	s=korg; t=1760716152;
+	bh=0DPAEYtiAP4JPcM9PJkIbchTvTr6vXQ0hm+2+PHHep0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=btQBqURJaU0a+YnMnehPP3WuYBOfqFfJN0L12OuaP/uga31dRFcG6br65Kwijid1Q
-	 dWquCRyGSfvgqgkdZoxPDEkvOb37DQZLU3riZJEvzsPHzPNakFoEdBlU65eS1j3Pdp
-	 Fg6w1qFOfiKBGYzMWUWEHoXXCte+3we9rB3EEmew=
+	b=sYT9HqBwxQxIw22j9coE4XCUHh3S8v6RuXC6qFwhQbZ7owRFkd4exxJt2lIDYkRcV
+	 GjqYGM+MHT9KpPfn+EYvWTU1z84YKw07I/u6lo/Zt4xl4TW1dvDm8gBDytSsXIXr2t
+	 li/OBOAPTEW2gGaO0rzF556YQzpd7SDH6eVWtyNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.6 106/201] nvme-pci: Add TUXEDO IBS Gen8 to Samsung sleep quirk
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 074/276] watchdog: mpc8xxx_wdt: Reload the watchdog timer when enabling the watchdog
 Date: Fri, 17 Oct 2025 16:52:47 +0200
-Message-ID: <20251017145138.639540709@linuxfoundation.org>
+Message-ID: <20251017145145.189034603@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georg Gottleuber <ggo@tuxedocomputers.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit eeaed48980a7aeb0d3d8b438185d4b5a66154ff9 upstream.
+[ Upstream commit 7dfd80f70ef00d871df5af7c391133f7ba61ad9b ]
 
-On the TUXEDO InfinityBook S Gen8, a Samsung 990 Evo NVMe leads to
-a high power consumption in s2idle sleep (3.5 watts).
+When the watchdog gets enabled with this driver, it leaves enough time
+for the core watchdog subsystem to start pinging it. But when the
+watchdog is already started by hardware or by the boot loader, little
+time remains before it fires and it happens that the core watchdog
+subsystem doesn't have time to start pinging it.
 
-This patch applies 'Force No Simple Suspend' quirk to achieve a sleep with
-a lower power consumption, typically around 1 watts.
+Until commit 19ce9490aa84 ("watchdog: mpc8xxx: use the core worker
+function") pinging was managed by the driver itself and the watchdog
+was immediately pinged by setting the timer expiry to 0.
 
-Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So restore similar behaviour by pinging it when enabling it so that
+if it was already enabled the watchdog timer counter is reloaded.
+
+Fixes: 19ce9490aa84 ("watchdog: mpc8xxx: use the core worker function")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c |    2 ++
+ drivers/watchdog/mpc8xxx_wdt.c | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2986,10 +2986,12 @@ static unsigned long check_vendor_combin
- 		 * Exclude Samsung 990 Evo from NVME_QUIRK_SIMPLE_SUSPEND
- 		 * because of high power consumption (> 2 Watt) in s2idle
- 		 * sleep. Only some boards with Intel CPU are affected.
-+		 * (Note for testing: Samsung 990 Evo Plus has same PCI ID)
- 		 */
- 		if (dmi_match(DMI_BOARD_NAME, "DN50Z-140HC-YD") ||
- 		    dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
- 		    dmi_match(DMI_BOARD_NAME, "GXxMRXx") ||
-+		    dmi_match(DMI_BOARD_NAME, "NS5X_NS7XAU") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PG31") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH6PG01_PH6PG71"))
+diff --git a/drivers/watchdog/mpc8xxx_wdt.c b/drivers/watchdog/mpc8xxx_wdt.c
+index 1c569be72ea29..15644ae2387fd 100644
+--- a/drivers/watchdog/mpc8xxx_wdt.c
++++ b/drivers/watchdog/mpc8xxx_wdt.c
+@@ -100,6 +100,8 @@ static int mpc8xxx_wdt_start(struct watchdog_device *w)
+ 	ddata->swtc = tmp >> 16;
+ 	set_bit(WDOG_HW_RUNNING, &ddata->wdd.status);
+ 
++	mpc8xxx_wdt_keepalive(ddata);
++
+ 	return 0;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
