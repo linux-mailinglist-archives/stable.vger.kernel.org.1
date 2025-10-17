@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32765BE9DE1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BF4BE9E46
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A85C1585BDB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74C856E4F95
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D6B32E135;
-	Fri, 17 Oct 2025 15:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C887A36999C;
+	Fri, 17 Oct 2025 15:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+jU5Y5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAiAn/Fv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAAF32E15D;
-	Fri, 17 Oct 2025 15:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FAF369985;
+	Fri, 17 Oct 2025 15:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714407; cv=none; b=oDyVQIBpj88gEQNu0gHpoZT1MbZboMVVOj4P5qrHzYJFhFq1CILwJAhDTiRVfP37DU4fme2fHi8SYlmv74Teh8r3qAwi6+T7SEUuWvzK+EzdCu7EP2agXdZJ/wmDCI5jl3YpIlO1PTQEQH/vZpE7iDJCzykgkfIYP06dYGJNhdY=
+	t=1760713724; cv=none; b=JB64s9IYXKb4OMSvh9EMRa3LAZl5Q/YQ4VQ8/CbjsIdnqxc5O58jgyNolDDlX8mSridxUQXuljnGLh6n0VaOTQkFXoCTbX8f3GrNMietO44E7lESTGD6oYyi02rGU3CmFWF+S+qNoYI01xAYe9IXB3YrroZZfHhWxxOek5IFWtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714407; c=relaxed/simple;
-	bh=vMs9PYzS+aiHnquPePHMMkPtTPmzSpGH9a74U1NcWvg=;
+	s=arc-20240116; t=1760713724; c=relaxed/simple;
+	bh=LWuxLdyMCdsgCgIN32Yv9/0I81MIDjsLi4fFOUyhyk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pn+v/RJntuC/cBhkSEcV24SxLQ/g9CaxGWPqcK01T7+p7fab+jfb2RYLaeHFOWGhy9iDOAP8SqSMjJCbiRIcsMXErlB7oUvrAmFtktZAyahuq06tSTdwv6YdLaD4CNSB+J9aw6aJ31Gl8nM1uQp/tWKnJhHESwGZ4ctJg3UXn8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+jU5Y5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB46AC4CEE7;
-	Fri, 17 Oct 2025 15:20:06 +0000 (UTC)
+	 MIME-Version; b=VwN1Ecw/e9gxk3ADdJyKoUCYLdtuZAgnZiFMTzpSkbU58NO6f2dMmuGnldNMwyy3tm14qvAKL1+e5TkseU8DThzlo6z5XKUPXbIebmcDb87FIUPU0k2nQzZKy6SlhoyBbaO7/yVqkFOXK+8ggoUAJAaPHguf37r6U5M3yJA78F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAiAn/Fv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C73C4CEF9;
+	Fri, 17 Oct 2025 15:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714407;
-	bh=vMs9PYzS+aiHnquPePHMMkPtTPmzSpGH9a74U1NcWvg=;
+	s=korg; t=1760713724;
+	bh=LWuxLdyMCdsgCgIN32Yv9/0I81MIDjsLi4fFOUyhyk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+jU5Y5lha4q/0KQ7BvjPrbsQTjWYRKu2lG6c/oQqMBcpk3F8vKPYlSEOo19pvIET
-	 OT2oC6cW0fLYc/VvQ6B+WnA4ugeLphFy0x9yH+QDvazvbz3fl9QGXKETYFhj4d1JtN
-	 KemxyIroVbhsTLJ8h+8ELFPkfYe5CVsdIJfsZSOU=
+	b=SAiAn/Fv60fOogo8neKugqmZxv0BJUqKMZqOjhxC2+j13XRp0jgc+A1A6nvtygnyx
+	 4qJ11am1I3PE6JUlpEjNqvBEmWVd3ANgVTe3QTLVH+O1yop7Ss9hjJTLvs+YBpWyN+
+	 uXoS5WmMMPZ1hymoNdT4pgL6tOHQVO+vQfBKb9a8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shashank A P <shashank.ap@samsung.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.12 133/277] fs: quota: create dedicated workqueue for quota_release_work
-Date: Fri, 17 Oct 2025 16:52:20 +0200
-Message-ID: <20251017145151.981394004@linuxfoundation.org>
+	Yu Kuai <yukuai3@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 080/201] blk-crypto: fix missing blktrace bio split events
+Date: Fri, 17 Oct 2025 16:52:21 +0200
+Message-ID: <20251017145137.694188183@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shashank A P <shashank.ap@samsung.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 72b7ceca857f38a8ca7c5629feffc63769638974 upstream.
+commit 06d712d297649f48ebf1381d19bd24e942813b37 upstream.
 
-There is a kernel panic due to WARN_ONCE when panic_on_warn is set.
+trace_block_split() is missing, resulting in blktrace inability to catch
+BIO split events and making it harder to analyze the BIO sequence.
 
-This issue occurs when writeback is triggered due to sync call for an
-opened file(ie, writeback reason is WB_REASON_SYNC). When f2fs balance
-is needed at sync path, flush for quota_release_work is triggered.
-By default quota_release_work is queued to "events_unbound" queue which
-does not have WQ_MEM_RECLAIM flag. During f2fs balance "writeback"
-workqueue tries to flush quota_release_work causing kernel panic due to
-MEM_RECLAIM flag mismatch errors.
-
-This patch creates dedicated workqueue with WQ_MEM_RECLAIM flag
-for work quota_release_work.
-
-------------[ cut here ]------------
-WARNING: CPU: 4 PID: 14867 at kernel/workqueue.c:3721 check_flush_dependency+0x13c/0x148
-Call trace:
- check_flush_dependency+0x13c/0x148
- __flush_work+0xd0/0x398
- flush_delayed_work+0x44/0x5c
- dquot_writeback_dquots+0x54/0x318
- f2fs_do_quota_sync+0xb8/0x1a8
- f2fs_write_checkpoint+0x3cc/0x99c
- f2fs_gc+0x190/0x750
- f2fs_balance_fs+0x110/0x168
- f2fs_write_single_data_page+0x474/0x7dc
- f2fs_write_data_pages+0x7d0/0xd0c
- do_writepages+0xe0/0x2f4
- __writeback_single_inode+0x44/0x4ac
- writeback_sb_inodes+0x30c/0x538
- wb_writeback+0xf4/0x440
- wb_workfn+0x128/0x5d4
- process_scheduled_works+0x1c4/0x45c
- worker_thread+0x32c/0x3e8
- kthread+0x11c/0x1b0
- ret_from_fork+0x10/0x20
-Kernel panic - not syncing: kernel: panic_on_warn set ...
-
-Fixes: ac6f420291b3 ("quota: flush quota_release_work upon quota writeback")
-CC: stable@vger.kernel.org
-Signed-off-by: Shashank A P <shashank.ap@samsung.com>
-Link: https://patch.msgid.link/20250901092905.2115-1-shashank.ap@samsung.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Cc: stable@vger.kernel.org
+Fixes: 488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ block/blk-crypto-fallback.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -163,6 +163,9 @@ static struct quota_module_name module_n
- /* SLAB cache for dquot structures */
- static struct kmem_cache *dquot_cachep;
+--- a/block/blk-crypto-fallback.c
++++ b/block/blk-crypto-fallback.c
+@@ -18,6 +18,7 @@
+ #include <linux/module.h>
+ #include <linux/random.h>
+ #include <linux/scatterlist.h>
++#include <trace/events/block.h>
  
-+/* workqueue for work quota_release_work*/
-+static struct workqueue_struct *quota_unbound_wq;
+ #include "blk-cgroup.h"
+ #include "blk-crypto-internal.h"
+@@ -229,7 +230,9 @@ static bool blk_crypto_fallback_split_bi
+ 			bio->bi_status = BLK_STS_RESOURCE;
+ 			return false;
+ 		}
 +
- void register_quota_format(struct quota_format_type *fmt)
- {
- 	spin_lock(&dq_list_lock);
-@@ -882,7 +885,7 @@ void dqput(struct dquot *dquot)
- 	put_releasing_dquots(dquot);
- 	atomic_dec(&dquot->dq_count);
- 	spin_unlock(&dq_list_lock);
--	queue_delayed_work(system_unbound_wq, &quota_release_work, 1);
-+	queue_delayed_work(quota_unbound_wq, &quota_release_work, 1);
- }
- EXPORT_SYMBOL(dqput);
- 
-@@ -3042,6 +3045,11 @@ static int __init dquot_init(void)
- 
- 	shrinker_register(dqcache_shrinker);
- 
-+	quota_unbound_wq = alloc_workqueue("quota_events_unbound",
-+					   WQ_UNBOUND | WQ_MEM_RECLAIM, WQ_MAX_ACTIVE);
-+	if (!quota_unbound_wq)
-+		panic("Cannot create quota_unbound_wq\n");
-+
- 	return 0;
- }
- fs_initcall(dquot_init);
+ 		bio_chain(split_bio, bio);
++		trace_block_split(split_bio, bio->bi_iter.bi_sector);
+ 		submit_bio_noacct(bio);
+ 		*bio_ptr = split_bio;
+ 	}
 
 
 
