@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9CBBE9823
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:50 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7A3BE9AF9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D00A1AA48C4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9BB1235D860
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F164632C937;
-	Fri, 17 Oct 2025 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36BD3336ED9;
+	Fri, 17 Oct 2025 15:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLLRQu9u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8o4w5NG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7861D5CE0;
-	Fri, 17 Oct 2025 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B92336ECB;
+	Fri, 17 Oct 2025 15:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713627; cv=none; b=Ru7uYVttn5FgL3OI2w7ld0rbmUsMFaCTH1C3NXIDEbWi8/jgdnbsoyVmP03H2y9yJ0ueMHYdcxoLMoIE3YDUu7qLHDRPjsOHjutjRWyg8liAJjNGi4mN8IbKSmaygKu830f39OCo+l70pvewnlzxkZSG1xHw4MTutWhVkMDmiYE=
+	t=1760714356; cv=none; b=pYHNx6vkeuXF6xhoHkGS20AGmHlQ0YoqZkljJbfIAfmNfLDI+CZ2IScaxmsAWCIBovoX6VxW9UdwNk7wMdfN+v7XApM2s/ofJmftaurjQKCX7vntvNkn2EJD3hnxTbVirz0eBV8OEPgroVsppd6vKTq+bl3JxB5DN26CcNiaHhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713627; c=relaxed/simple;
-	bh=H1wo4fbzk4Al9NUN7YnivCvI1PFWPyWAb8sD/J1LXsI=;
+	s=arc-20240116; t=1760714356; c=relaxed/simple;
+	bh=zTnJD+cEhzz+//T9vaX/l8zJRIyBnZDdlSCG+3UCR9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpZ0yTg9pZown37+Kwu24mZMx2GimacWMVVt5SdV7E5zBwwUuSDpq9FkUFse2BNB45GceojNR30KdVVZk1f1Op5NtNcVORvEQMjzN7/5/tWDSlD+6iPAMhd3N3LWuIa9O3p2KQhDMzmLchRyI6urTUZE+8ZrJ+gwGrXrXbfgka4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLLRQu9u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0BBC4CEE7;
-	Fri, 17 Oct 2025 15:07:07 +0000 (UTC)
+	 MIME-Version; b=XQ+psiepvauFsrBx4j5b3q22+7H/+VMiViQ+Hpw9IFuH4WRZQLW5tOjvNfGsvXZnsH7sEQeGP/Q0rh0cq6xjan69QQ3TxOyyALdbr38kCE/C4KX2JwdiyOyMZMLdBXxd4Gc58tpl9a6uZqDY7OlCcu9qcTtzFpJhqQ6qQO2KS8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8o4w5NG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A6CC116B1;
+	Fri, 17 Oct 2025 15:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713627;
-	bh=H1wo4fbzk4Al9NUN7YnivCvI1PFWPyWAb8sD/J1LXsI=;
+	s=korg; t=1760714355;
+	bh=zTnJD+cEhzz+//T9vaX/l8zJRIyBnZDdlSCG+3UCR9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sLLRQu9ucEes+Mv1x9pKjpxpS2J1Y2uwwfYtk1u1i2JhKCNr4ZvXjy2m/4NnsAktg
-	 lZwxAtm1NfBYRu2pvd16pq3EmZarafmrhmMqhZrKdHoJPU3QvqNczKzKghVcOgj5YY
-	 CJXWgtrVB8e8BpFdbOX4ofJbu2Oih9cmyT9zx/p4=
+	b=Z8o4w5NGf8D+B6wALnCL9LYCU9BHRSsvs1iEAPPBn1KlyU8ecquCAD+BzCeJImJm2
+	 xmAQWCqe/l3k7915cAy7i5+aTJxwfGZgTDls1BqawMNJiNFMxUQIZQfvTN5kHM3wp5
+	 1ywDkyRea5N+zFPv5xSdcvtgvwAe1ZJAV3ITA9F4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 063/201] arm64: dts: qcom: sdm845: Fix slimbam num-channels/ees
+	Petr Vorel <pvorel@suse.cz>,
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.12 117/277] drm/nouveau: fix bad ret code in nouveau_bo_move_prep
 Date: Fri, 17 Oct 2025 16:52:04 +0200
-Message-ID: <20251017145137.066049492@linuxfoundation.org>
+Message-ID: <20251017145151.397818059@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-commit 316294bb6695a43a9181973ecd4e6fb3e576a9f7 upstream.
+commit e4bea919584ff292c9156cf7d641a2ab3cbe27b0 upstream.
 
-Reading the hardware registers of the &slimbam on RB3 reveals that the BAM
-supports only 23 pipes (channels) and supports 4 EEs instead of 2. This
-hasn't caused problems so far since nothing is using the extra channels,
-but attempting to use them would lead to crashes.
-
-The bam_dma driver might warn in the future if the num-channels in the DT
-are wrong, so correct the properties in the DT to avoid future regressions.
+In `nouveau_bo_move_prep`, if `nouveau_mem_map` fails, an error code
+should be returned. Currently, it returns zero even if vmm addr is not
+correctly mapped.
 
 Cc: stable@vger.kernel.org
-Fixes: 27ca1de07dc3 ("arm64: dts: qcom: sdm845: add slimbus nodes")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250821-sdm845-slimbam-channels-v1-1-498f7d46b9ee@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Fixes: 9ce523cc3bf2 ("drm/nouveau: separate buffer object backing memory from nvkm structures")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_bo.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -5208,11 +5208,11 @@
- 			compatible = "qcom,bam-v1.7.4", "qcom,bam-v1.7.0";
- 			qcom,controlled-remotely;
- 			reg = <0 0x17184000 0 0x2a000>;
--			num-channels = <31>;
-+			num-channels = <23>;
- 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
- 			#dma-cells = <1>;
- 			qcom,ee = <1>;
--			qcom,num-ees = <2>;
-+			qcom,num-ees = <4>;
- 			iommus = <&apps_smmu 0x1806 0x0>;
- 		};
+--- a/drivers/gpu/drm/nouveau/nouveau_bo.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
+@@ -852,7 +852,7 @@ done:
+ 		nvif_vmm_put(vmm, &old_mem->vma[1]);
+ 		nvif_vmm_put(vmm, &old_mem->vma[0]);
+ 	}
+-	return 0;
++	return ret;
+ }
  
+ static int
 
 
 
