@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58B8BE9D6B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D173CBEA1D6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 04B965878DA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F9841A65469
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC6C23EABB;
-	Fri, 17 Oct 2025 15:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D052E330B11;
+	Fri, 17 Oct 2025 15:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGFzR9la"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpPvY1lE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB7C337118;
-	Fri, 17 Oct 2025 15:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897E1335091;
+	Fri, 17 Oct 2025 15:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714037; cv=none; b=JYLPWsVH6Bol7pis+dCq7+XSDbctnrs135xj4ICn38evrqY2gcs4s7+frlUqGju58Tz+Q4x+9Y9IEccUaWxUEr6NO0di+iGTmYj1CTh40CjC21IqEJypTezvJnj2vNkdMcYdofpzvVLNBBrQ9TaZLZKkw7pNGInq42DwoItvBvc=
+	t=1760715617; cv=none; b=pmzBcryjD/9lvrPcfwlysCzEQZL1+M1YbbsX5DwFx43Zl2+xsBcDoRBgwc8Xm2yAbGP7KPz7N/krzfNF24xSzMWmdMmCS3QQm5Mo8k4JPRYujNIBXOaDTsP4ynn5yFOp7QNToZUj4YKRFZIV/wzKgz0bAoEu9hfaKTkIxmC4nxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714037; c=relaxed/simple;
-	bh=zfiQTIBWAdHbVTDdR/7/BZIbx8I6hk8plFgCfaHdK3c=;
+	s=arc-20240116; t=1760715617; c=relaxed/simple;
+	bh=fQrM4HQNX2RGu9gbDSZ1C6xB1qZZNy9T3jmI+RwZmEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZIwiC0rXyDV+oR4N8lmdl1u1gieCEnaJ+Woi3rXKA+lZVggHt2FQVmt882bJjy2hpOqvqD7RCIf72RD7tDQizhCn0fOe8sGJPRbVVGTCPloKAwPVmAfJuY1N/smKm5o80OTrLRWbRyRdQgIpsKB/ZxSaRbKn1kSHl6k9HO0I9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGFzR9la; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96855C4CEE7;
-	Fri, 17 Oct 2025 15:13:56 +0000 (UTC)
+	 MIME-Version; b=S74G165QNH1blGv70tnSu4covl85EcgIFRXbLdy6BouPdofZ1HQGAi4B0CHC1FH9X9sKq1UtC9z2HpdxW5Rpoq6BIZSnUAnhc1UCQlktINk6iWkgFyWDzuL2gbSINNWSwzL3IjdILmrjLCIwGXetOD9IsQ9l9YayNk/olljTXs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpPvY1lE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E629C4CEE7;
+	Fri, 17 Oct 2025 15:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714037;
-	bh=zfiQTIBWAdHbVTDdR/7/BZIbx8I6hk8plFgCfaHdK3c=;
+	s=korg; t=1760715617;
+	bh=fQrM4HQNX2RGu9gbDSZ1C6xB1qZZNy9T3jmI+RwZmEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bGFzR9la/G+bCdf1GTr1nwmUsLrA6Y2Dko/aN9RqUO0PNQczNKdFpls5ljsUv+EBX
-	 +ZvDKJwNGxGEoZzHorICIkuEafHFRqUgVPrAQJz8y0KDO+Wrl/3NqCxOsHX7QLZh4n
-	 UI166PjoFo27cNl+P1By/XPsms665zlhgZ0VdOB0=
+	b=KpPvY1lE4NMW/cDyTDoi40rrgKiEjVgAHQpMT2G2z/dHNo1avOBJYyqAiDSCdyhqR
+	 KTYiWG31KEYpimh3tQnbWSfLv7iBzjrXNn+fCSwybka/YQRtWN7cGEpIzhWCq9tLOS
+	 wG3ALrXC+dRs37b+C1UaYsYSFwQk+xDOcstb88GU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 192/201] irqchip/sifive-plic: Make use of __assign_bit()
-Date: Fri, 17 Oct 2025 16:54:13 +0200
-Message-ID: <20251017145141.814354804@linuxfoundation.org>
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: [PATCH 6.17 279/371] PCI/AER: Support errors introduced by PCIe r6.0
+Date: Fri, 17 Oct 2025 16:54:14 +0200
+Message-ID: <20251017145212.169741172@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongbo Li <lihongbo22@huawei.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 40d7af5375a4e27d8576d9d11954ac213d06f09e ]
+commit 6633875250b38b18b8638cf01e695de031c71f02 upstream.
 
-Replace the open coded
+PCIe r6.0 defined five additional errors in the Uncorrectable Error
+Status, Mask and Severity Registers (PCIe r7.0 sec 7.8.4.2ff).
 
-if (foo)
-        __set_bit(n, bar);
-    else
-        __clear_bit(n, bar);
+lspci has been supporting them since commit 144b0911cc0b ("ls-ecaps:
+extend decode support for more fields for AER CE and UE status"):
 
-with __assign_bit(). No functional change intended.
+  https://git.kernel.org/pub/scm/utils/pciutils/pciutils.git/commit/?id=144b0911cc0b
 
-Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-Link: https://lore.kernel.org/all/20240902130824.2878644-1-lihongbo22@huawei.com
-Stable-dep-of: f75e07bf5226 ("irqchip/sifive-plic: Avoid interrupt ID 0 handling during suspend/resume")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Amend the AER driver to recognize them as well, instead of logging them as
+"Unknown Error Bit".
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/21f1875b18d4078c99353378f37dcd6b994f6d4e.1756301211.git.lukas@wunner.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-sifive-plic.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/pci/pcie/aer.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-index 5728996691549..0fcd37108b67e 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -248,11 +248,10 @@ static int plic_irq_suspend(void)
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -43,7 +43,7 @@
+ #define AER_ERROR_SOURCES_MAX		128
  
- 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
+ #define AER_MAX_TYPEOF_COR_ERRS		16	/* as per PCI_ERR_COR_STATUS */
+-#define AER_MAX_TYPEOF_UNCOR_ERRS	27	/* as per PCI_ERR_UNCOR_STATUS*/
++#define AER_MAX_TYPEOF_UNCOR_ERRS	32	/* as per PCI_ERR_UNCOR_STATUS*/
  
--	for (i = 0; i < priv->nr_irqs; i++)
--		if (readl(priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID))
--			__set_bit(i, priv->prio_save);
--		else
--			__clear_bit(i, priv->prio_save);
-+	for (i = 0; i < priv->nr_irqs; i++) {
-+		__assign_bit(i, priv->prio_save,
-+			     readl(priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID));
-+	}
+ struct aer_err_source {
+ 	u32 status;			/* PCI_ERR_ROOT_STATUS */
+@@ -525,11 +525,11 @@ static const char *aer_uncorrectable_err
+ 	"AtomicOpBlocked",		/* Bit Position 24	*/
+ 	"TLPBlockedErr",		/* Bit Position 25	*/
+ 	"PoisonTLPBlocked",		/* Bit Position 26	*/
+-	NULL,				/* Bit Position 27	*/
+-	NULL,				/* Bit Position 28	*/
+-	NULL,				/* Bit Position 29	*/
+-	NULL,				/* Bit Position 30	*/
+-	NULL,				/* Bit Position 31	*/
++	"DMWrReqBlocked",		/* Bit Position 27	*/
++	"IDECheck",			/* Bit Position 28	*/
++	"MisIDETLP",			/* Bit Position 29	*/
++	"PCRC_CHECK",			/* Bit Position 30	*/
++	"TLPXlatBlocked",		/* Bit Position 31	*/
+ };
  
- 	for_each_cpu(cpu, cpu_present_mask) {
- 		struct plic_handler *handler = per_cpu_ptr(&plic_handlers, cpu);
--- 
-2.51.0
-
+ static const char *aer_agent_string[] = {
 
 
 
