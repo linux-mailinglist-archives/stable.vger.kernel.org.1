@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CF3BEACB9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B14BEA86B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F569622348
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5000E9455BB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BB72F12C6;
-	Fri, 17 Oct 2025 15:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFAB33506F;
+	Fri, 17 Oct 2025 15:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q71EZOb3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ss6p7e3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D874330B3A;
-	Fri, 17 Oct 2025 15:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4F2335060;
+	Fri, 17 Oct 2025 15:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716345; cv=none; b=bo3gKllZ8r7mDTzi0CsCnvFsetdoHf7SBZXyX8PRdWSI58ShbStZzwwCdR5MAQxz0raDpv2qDpocs3T1J1NejFcjto9IW1D/oQK/UE1YshvsXDtzIAxKHLLgESNM9Ob1zzx4lWda0tAj+6eKxPE6Cr5IrnPa4/y+WnpiRsJ2j8U=
+	t=1760715615; cv=none; b=UJdBTmntsEysL/L6KQ6q7oo5lL0loj6qMNk8YYcyl/65eezlMlOCSn12AFFxeaojrAH604Hgz8cSrmK/dToOOPwezYA3eNc40vN9ttfAV1ZlIzk5OhOTpDdjjtNmAcUMRe9vTbk9YHO5pHRn3O0jY5pQw1ikEaF8quKcPBYk/Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716345; c=relaxed/simple;
-	bh=xh55j4MmUntYzSgYZdsMKZUENnQnI3trpzA4uklDYXw=;
+	s=arc-20240116; t=1760715615; c=relaxed/simple;
+	bh=pAc5hxjrvgx6th/pR6Oj54E/SPgxcH3/ivxD3ZGX340=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i/VwL0T+Kz5JYxjP3/0maWBcigijrGQIaMHRMNB1+diIMq7GcqfqrJlYpY6BX5fGlanz92CezjYbs7UzEpCOtC7p+Pn7z9a7L52Uocg1yJ8ecYnj0SrfS4pYVwavcuGGJxlkBdtqaIlC6v/ng1MSysUKMRtJauNA/5rb9j4fBRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q71EZOb3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99192C4CEFE;
-	Fri, 17 Oct 2025 15:52:24 +0000 (UTC)
+	 MIME-Version; b=oLv9t3crwXPy4DvuTUDRxajnDQtSwV9ZN7QO7dw1Q5Zz758j0CtbZUnVsr+1nMpkoYBg6n8BVwrFv11z/QZiYgij8AeeE2kUuBonKHPleapZQLchiuWwp8T3nFwxy8kylflHVtaaEIXE1Jo+MujIz8iG4UtD8rV2RAzZwAHXHgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ss6p7e3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED12C4CEFE;
+	Fri, 17 Oct 2025 15:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716345;
-	bh=xh55j4MmUntYzSgYZdsMKZUENnQnI3trpzA4uklDYXw=;
+	s=korg; t=1760715614;
+	bh=pAc5hxjrvgx6th/pR6Oj54E/SPgxcH3/ivxD3ZGX340=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q71EZOb3Rd+aBYjxafRvRjfclONc8tkmEMAIxLiwNxM/5loK+LAgrEKFd38PeELRw
-	 n1wJZXHpFaE+A7o9VCA9lNju+ZDB2SSRFFMnHGd7x317JU6f9BrgEDPY2BWU06+uXL
-	 pKeoKiQR6lzGW+6/TtrUCLHsJhlM+XYbkYW4PR2w=
+	b=ss6p7e3Nqrezg7AJmKOdoR4PtlSl6MDXL+qQRHhMf7evBB+P/8TiLFiARuXB6Gvne
+	 Ye/MyPhNT4TKwgagLkr9zc5fDjVFGVC9BiWGoOKw7Na/nzCroNpCWjrYXsuUmuDs4Q
+	 02KAw8O5fLIP5+nzcSqVEEAL48GUwHWZB58GQ4b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 159/276] drm/amd/display: Properly disable scaling on DCE6
-Date: Fri, 17 Oct 2025 16:54:12 +0200
-Message-ID: <20251017145148.279662293@linuxfoundation.org>
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH 6.17 278/371] PCI/AER: Fix missing uevent on recovery when a reset is requested
+Date: Fri, 17 Oct 2025 16:54:13 +0200
+Message-ID: <20251017145212.132657907@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,106 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit a7dc87f3448bea5ebe054f14e861074b9c289c65 ]
+commit bbf7d0468d0da71d76cc6ec9bc8a224325d07b6b upstream.
 
-SCL_SCALER_ENABLE can be used to enable/disable the scaler
-on DCE6. Program it to 0 when scaling isn't used, 1 when used.
-Additionally, clear some other registers when scaling is
-disabled and program the SCL_UPDATE register as recommended.
+Since commit 7b42d97e99d3 ("PCI/ERR: Always report current recovery
+status for udev") AER uses the result of error_detected() as parameter
+to pci_uevent_ers(). As pci_uevent_ers() however does not handle
+PCI_ERS_RESULT_NEED_RESET this results in a missing uevent for the
+beginning of recovery if drivers request a reset. Fix this by treating
+PCI_ERS_RESULT_NEED_RESET as beginning recovery.
 
-This fixes visible glitches for users whose BIOS sets up a
-mode with scaling at boot, which DC was unable to clean up.
-
-Fixes: b70aaf5586f2 ("drm/amd/display: dce_transform: add DCE6 specific macros,functions")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7b42d97e99d3 ("PCI/ERR: Always report current recovery status for udev")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250807-add_err_uevents-v5-1-adf85b0620b0@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/display/dc/dce/dce_transform.c    | 15 +++++++++++----
- .../gpu/drm/amd/display/dc/dce/dce_transform.h    |  2 ++
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/pci/pci-driver.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-index b761dda491d54..f97c182677082 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-@@ -154,10 +154,13 @@ static bool dce60_setup_scaling_configuration(
- 	REG_SET(SCL_BYPASS_CONTROL, 0, SCL_BYPASS_MODE, 0);
- 
- 	if (data->taps.h_taps + data->taps.v_taps <= 2) {
--		/* Set bypass */
--
--		/* DCE6 has no SCL_MODE register, skip scale mode programming */
-+		/* Disable scaler functionality */
-+		REG_WRITE(SCL_SCALER_ENABLE, 0);
- 
-+		/* Clear registers that can cause glitches even when the scaler is off */
-+		REG_WRITE(SCL_TAP_CONTROL, 0);
-+		REG_WRITE(SCL_AUTOMATIC_MODE_CONTROL, 0);
-+		REG_WRITE(SCL_F_SHARP_CONTROL, 0);
- 		return false;
- 	}
- 
-@@ -165,7 +168,7 @@ static bool dce60_setup_scaling_configuration(
- 			SCL_H_NUM_OF_TAPS, data->taps.h_taps - 1,
- 			SCL_V_NUM_OF_TAPS, data->taps.v_taps - 1);
- 
--	/* DCE6 has no SCL_MODE register, skip scale mode programming */
-+	REG_WRITE(SCL_SCALER_ENABLE, 1);
- 
- 	/* DCE6 has no SCL_BOUNDARY_MODE bit, skip replace out of bound pixels */
- 
-@@ -502,6 +505,8 @@ static void dce60_transform_set_scaler(
- 	REG_SET(DC_LB_MEM_SIZE, 0,
- 		DC_LB_MEM_SIZE, xfm_dce->lb_memory_size);
- 
-+	REG_WRITE(SCL_UPDATE, 0x00010000);
-+
- 	/* Clear SCL_F_SHARP_CONTROL value to 0 */
- 	REG_WRITE(SCL_F_SHARP_CONTROL, 0);
- 
-@@ -564,6 +569,8 @@ static void dce60_transform_set_scaler(
- 	/* DCE6 has no SCL_COEF_UPDATE_COMPLETE bit to flip to new coefficient memory */
- 
- 	/* DCE6 DATA_FORMAT register does not support ALPHA_EN */
-+
-+	REG_WRITE(SCL_UPDATE, 0);
- }
- #endif
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-index ff746fba850bc..eb716e8337e23 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-@@ -155,6 +155,7 @@
- 	SRI(SCL_COEF_RAM_TAP_DATA, SCL, id), \
- 	SRI(VIEWPORT_START, SCL, id), \
- 	SRI(VIEWPORT_SIZE, SCL, id), \
-+	SRI(SCL_SCALER_ENABLE, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_INIT_RGB_LUMA, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_INIT_CHROMA, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_SCALE_RATIO, SCL, id), \
-@@ -592,6 +593,7 @@ struct dce_transform_registers {
- 	uint32_t SCL_VERT_FILTER_SCALE_RATIO;
- 	uint32_t SCL_HORZ_FILTER_INIT;
- #if defined(CONFIG_DRM_AMD_DC_SI)
-+	uint32_t SCL_SCALER_ENABLE;
- 	uint32_t SCL_HORZ_FILTER_INIT_RGB_LUMA;
- 	uint32_t SCL_HORZ_FILTER_INIT_CHROMA;
- #endif
--- 
-2.51.0
-
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -1596,6 +1596,7 @@ void pci_uevent_ers(struct pci_dev *pdev
+ 	switch (err_type) {
+ 	case PCI_ERS_RESULT_NONE:
+ 	case PCI_ERS_RESULT_CAN_RECOVER:
++	case PCI_ERS_RESULT_NEED_RESET:
+ 		envp[idx++] = "ERROR_EVENT=BEGIN_RECOVERY";
+ 		envp[idx++] = "DEVICE_ONLINE=0";
+ 		break;
 
 
 
