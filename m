@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-187001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AFEBE9DC2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D6ABE9D20
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7E0F1892703
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:27:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FF16745919
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969CA258ECA;
-	Fri, 17 Oct 2025 15:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5175533507D;
+	Fri, 17 Oct 2025 15:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+71AX0E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeoZD7UF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E283208;
-	Fri, 17 Oct 2025 15:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E35C2F12CF;
+	Fri, 17 Oct 2025 15:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714839; cv=none; b=fHvZwuqj9y4Rlm9zWCikJXnK0yaRxOSZysNUhhPBVSpO19+b3FYYOkaU2ZPYzu+sgBTKCltB+V00oKoUbqOvOOT4KWfo/3Qf4qxVsPHVeEfoOqZKWkR6YcfcK8QpgWzv0Q8csXITTk7c9MFU6uPQHvVDnVvAmHoAbO5fgqk6TCc=
+	t=1760714023; cv=none; b=Dd8Oq0am9hingm29hl/r7J/yop4liyA55beHSE6l9ecHYWVYnrDTLmvqQw3lwvliW6JdSpO9nwCW8OmAvumBvJvifpbT6+g1W6mu11kaqDhRJmZIyQtcizirlutBMDwOxxhggQIi6rLzohhBjd/EAcnCqxOs8ExlttzSt8CkkN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714839; c=relaxed/simple;
-	bh=AJS9zLQ++ZztkhWHrsC9s0I/Zy4+YFRcsoIf6U3NyGk=;
+	s=arc-20240116; t=1760714023; c=relaxed/simple;
+	bh=sqRLk5+OCJwO7l1weCccojd91xIERHWYsIBqF5LVXkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=svpVdYxu+P3KtBCheKPQ7ji2HLKwNUbNZH2jSMSb7PlSHESzklfx4oSFOlUyYMwxgmet9gKac0oa6M3uR2AQT6Mh2QVMQNWOTBeuIz2fXeJgIMTotD1QNvTryYd3j2qxqzSfcQTjeCMBlIg6ze8XqpFbUUYH3VywMUlM/+8blxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+71AX0E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB83C113D0;
-	Fri, 17 Oct 2025 15:27:18 +0000 (UTC)
+	 MIME-Version; b=hvzHd1SGd95YffpLgqZ8Dgph6GvBj6aMxzND2NfK63ur0PWF+WlZqUo7EhkvYbEi98FE3jLFarST0k8TUSlZpuprBIOXKGMWNi1MIYk6e3BR7wM94X8LgTt5QrQrqGDDxBfNOhCown+wIPfNH+xUouegk9lXLgg8znS+RDmJ+ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeoZD7UF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C69DC4CEE7;
+	Fri, 17 Oct 2025 15:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714839;
-	bh=AJS9zLQ++ZztkhWHrsC9s0I/Zy4+YFRcsoIf6U3NyGk=;
+	s=korg; t=1760714022;
+	bh=sqRLk5+OCJwO7l1weCccojd91xIERHWYsIBqF5LVXkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0+71AX0EnAEi0pAqtWWGy9PMsFP+MC1SNKNe6NhmWGE8ScOp5dTpjByieLP/aXUbU
-	 KJm+wLYJUZWxL2gSk1kwmhQSyUv4OfSvPxRRLBFVeYyoka4iY87KxpxKKRx5hA/h/t
-	 NeVj6NDf5cUfOiVAwWfByFGHIWwXGW7FKcXztysY=
+	b=MeoZD7UFiCd8OcmNq/oTqXP/QLUkmOWPkmFnDeT4pYvzg3wodaC9KeJYYkmAiks2P
+	 KwPqwtaJQ/A1bG+m3XDlgVeqomtsdbwOEUCA1Rq2od9r0ZSeqOAkuABhCikSqQrU9+
+	 t2l84T7z6WsHosrGHGsNgrDu9VttoqwfcrJHO5UM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 241/277] x86/mtrr: Rename mtrr_overwrite_state() to guest_force_mtrr_state()
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 187/201] s390/bpf: Describe the frame using a struct instead of constants
 Date: Fri, 17 Oct 2025 16:54:08 +0200
-Message-ID: <20251017145155.942091472@linuxfoundation.org>
+Message-ID: <20251017145141.628939808@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,134 +61,262 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit 6a5abeea9c72e1d2c538622b4cf66c80cc816fd3 ]
+commit e26d523edf2a62b142d2dd2dd9b87f61ed92f33a upstream.
 
-Rename the helper to better reflect its function.
+Currently the caller-allocated portion of the stack frame is described
+using constants, hardcoded values, and an ASCII drawing, making it
+harder than necessary to ensure that everything is in sync.
 
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Link: https://lore.kernel.org/all/20241202073139.448208-1-kirill.shutemov%40linux.intel.com
-Stable-dep-of: 0dccbc75e18d ("x86/kvm: Force legacy PCI hole to UC when overriding MTRRs for TDX/SNP")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Declare a struct and use offsetof() and offsetofend() macros to refer
+to various values stored within the frame.
+
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250624121501.50536-3-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/hyperv/ivm.c              |    2 +-
- arch/x86/include/asm/mtrr.h        |   10 +++++-----
- arch/x86/kernel/cpu/mtrr/generic.c |    6 +++---
- arch/x86/kernel/cpu/mtrr/mtrr.c    |    2 +-
- arch/x86/kernel/kvm.c              |    2 +-
- arch/x86/xen/enlighten_pv.c        |    4 ++--
- 6 files changed, 13 insertions(+), 13 deletions(-)
+ arch/s390/net/bpf_jit.h      |   55 ----------------------------------
+ arch/s390/net/bpf_jit_comp.c |   69 +++++++++++++++++++++++++++++--------------
+ 2 files changed, 47 insertions(+), 77 deletions(-)
+ delete mode 100644 arch/s390/net/bpf_jit.h
 
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -681,7 +681,7 @@ void __init hv_vtom_init(void)
- 	x86_platform.guest.enc_status_change_finish = hv_vtom_set_host_visibility;
+--- a/arch/s390/net/bpf_jit.h
++++ /dev/null
+@@ -1,55 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * BPF Jit compiler defines
+- *
+- * Copyright IBM Corp. 2012,2015
+- *
+- * Author(s): Martin Schwidefsky <schwidefsky@de.ibm.com>
+- *	      Michael Holzheu <holzheu@linux.vnet.ibm.com>
+- */
+-
+-#ifndef __ARCH_S390_NET_BPF_JIT_H
+-#define __ARCH_S390_NET_BPF_JIT_H
+-
+-#ifndef __ASSEMBLY__
+-
+-#include <linux/filter.h>
+-#include <linux/types.h>
+-
+-#endif /* __ASSEMBLY__ */
+-
+-/*
+- * Stackframe layout (packed stack):
+- *
+- *				    ^ high
+- *	      +---------------+     |
+- *	      | old backchain |     |
+- *	      +---------------+     |
+- *	      |   r15 - r6    |     |
+- *	      +---------------+     |
+- *	      | 4 byte align  |     |
+- *	      | tail_call_cnt |     |
+- * BFP	   -> +===============+     |
+- *	      |		      |     |
+- *	      |   BPF stack   |     |
+- *	      |		      |     |
+- * R15+160 -> +---------------+     |
+- *	      | new backchain |     |
+- * R15+152 -> +---------------+     |
+- *	      | + 152 byte SA |     |
+- * R15	   -> +---------------+     + low
+- *
+- * We get 160 bytes stack space from calling function, but only use
+- * 12 * 8 byte for old backchain, r15..r6, and tail_call_cnt.
+- *
+- * The stack size used by the BPF program ("BPF stack" above) is passed
+- * via "aux->stack_depth".
+- */
+-#define STK_SPACE_ADD	(160)
+-#define STK_160_UNUSED	(160 - 12 * 8)
+-#define STK_OFF		(STK_SPACE_ADD - STK_160_UNUSED)
+-
+-#define STK_OFF_R6	(160 - 11 * 8)	/* Offset of r6 on stack */
+-#define STK_OFF_TCCNT	(160 - 12 * 8)	/* Offset of tail_call_cnt on stack */
+-
+-#endif /* __ARCH_S390_NET_BPF_JIT_H */
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -31,7 +31,6 @@
+ #include <asm/nospec-branch.h>
+ #include <asm/set_memory.h>
+ #include <asm/text-patching.h>
+-#include "bpf_jit.h"
  
- 	/* Set WB as the default cache mode. */
--	mtrr_overwrite_state(NULL, 0, MTRR_TYPE_WRBACK);
-+	guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
+ struct bpf_jit {
+ 	u32 seen;		/* Flags to remember seen eBPF instructions */
+@@ -53,7 +52,7 @@ struct bpf_jit {
+ 	int excnt;		/* Number of exception table entries */
+ 	int prologue_plt_ret;	/* Return address for prologue hotpatch PLT */
+ 	int prologue_plt;	/* Start of prologue hotpatch PLT */
+-	u32 frame_off;		/* Offset of frame from %r15 */
++	u32 frame_off;		/* Offset of struct bpf_prog from %r15 */
+ };
+ 
+ #define SEEN_MEM	BIT(0)		/* use mem[] for temporary storage */
+@@ -400,11 +399,25 @@ static void jit_fill_hole(void *area, un
  }
  
- #endif /* defined(CONFIG_AMD_MEM_ENCRYPT) || defined(CONFIG_INTEL_TDX_GUEST) */
---- a/arch/x86/include/asm/mtrr.h
-+++ b/arch/x86/include/asm/mtrr.h
-@@ -58,8 +58,8 @@ struct mtrr_state_type {
+ /*
++ * Caller-allocated part of the frame.
++ * Thanks to packed stack, its otherwise unused initial part can be used for
++ * the BPF stack and for the next frame.
++ */
++struct prog_frame {
++	u64 unused[8];
++	/* BPF stack starts here and grows towards 0 */
++	u32 tail_call_cnt;
++	u32 pad;
++	u64 r6[10];  /* r6 - r15 */
++	u64 backchain;
++} __packed;
++
++/*
+  * Save registers from "rs" (register start) to "re" (register end) on stack
   */
- # ifdef CONFIG_MTRR
- void mtrr_bp_init(void);
--void mtrr_overwrite_state(struct mtrr_var_range *var, unsigned int num_var,
--			  mtrr_type def_type);
-+void guest_force_mtrr_state(struct mtrr_var_range *var, unsigned int num_var,
-+			    mtrr_type def_type);
- extern u8 mtrr_type_lookup(u64 addr, u64 end, u8 *uniform);
- extern void mtrr_save_fixed_ranges(void *);
- extern void mtrr_save_state(void);
-@@ -75,9 +75,9 @@ void mtrr_disable(void);
- void mtrr_enable(void);
- void mtrr_generic_set_state(void);
- #  else
--static inline void mtrr_overwrite_state(struct mtrr_var_range *var,
--					unsigned int num_var,
--					mtrr_type def_type)
-+static inline void guest_force_mtrr_state(struct mtrr_var_range *var,
-+					  unsigned int num_var,
-+					  mtrr_type def_type)
+ static void save_regs(struct bpf_jit *jit, u32 rs, u32 re)
  {
- }
+-	u32 off = STK_OFF_R6 + (rs - 6) * 8;
++	u32 off = offsetof(struct prog_frame, r6) + (rs - 6) * 8;
  
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -423,7 +423,7 @@ void __init mtrr_copy_map(void)
- }
+ 	if (rs == re)
+ 		/* stg %rs,off(%r15) */
+@@ -419,7 +432,7 @@ static void save_regs(struct bpf_jit *ji
+  */
+ static void restore_regs(struct bpf_jit *jit, u32 rs, u32 re)
+ {
+-	u32 off = jit->frame_off + STK_OFF_R6 + (rs - 6) * 8;
++	u32 off = jit->frame_off + offsetof(struct prog_frame, r6) + (rs - 6) * 8;
  
- /**
-- * mtrr_overwrite_state - set static MTRR state
-+ * guest_force_mtrr_state - set static MTRR state for a guest
+ 	if (rs == re)
+ 		/* lg %rs,off(%r15) */
+@@ -551,10 +564,12 @@ static void bpf_jit_plt(struct bpf_plt *
+  * Emit function prologue
   *
-  * Used to set MTRR state via different means (e.g. with data obtained from
-  * a hypervisor).
-@@ -436,8 +436,8 @@ void __init mtrr_copy_map(void)
-  * @num_var: length of the @var array
-  * @def_type: default caching type
+  * Save registers and create stack frame if necessary.
+- * See stack frame layout description in "bpf_jit.h"!
++ * Stack frame layout is described by struct prog_frame.
   */
--void mtrr_overwrite_state(struct mtrr_var_range *var, unsigned int num_var,
--			  mtrr_type def_type)
-+void guest_force_mtrr_state(struct mtrr_var_range *var, unsigned int num_var,
-+			    mtrr_type def_type)
+ static void bpf_jit_prologue(struct bpf_jit *jit, struct bpf_prog *fp)
  {
- 	unsigned int i;
++	BUILD_BUG_ON(sizeof(struct prog_frame) != STACK_FRAME_OVERHEAD);
++
+ 	/* No-op for hotpatching */
+ 	/* brcl 0,prologue_plt */
+ 	EMIT6_PCREL_RILC(0xc0040000, 0, jit->prologue_plt);
+@@ -562,8 +577,9 @@ static void bpf_jit_prologue(struct bpf_
  
---- a/arch/x86/kernel/cpu/mtrr/mtrr.c
-+++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
-@@ -625,7 +625,7 @@ void mtrr_save_state(void)
- static int __init mtrr_init_finalize(void)
- {
- 	/*
--	 * Map might exist if mtrr_overwrite_state() has been called or if
-+	 * Map might exist if guest_force_mtrr_state() has been called or if
- 	 * mtrr_enabled() returns true.
- 	 */
- 	mtrr_copy_map();
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -983,7 +983,7 @@ static void __init kvm_init_platform(voi
- 	x86_platform.apic_post_init = kvm_apic_init;
- 
- 	/* Set WB as the default cache mode for SEV-SNP and TDX */
--	mtrr_overwrite_state(NULL, 0, MTRR_TYPE_WRBACK);
-+	guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
+ 	if (fp->aux->func_idx == 0) {
+ 		/* Initialize the tail call counter in the main program. */
+-		/* xc STK_OFF_TCCNT(4,%r15),STK_OFF_TCCNT(%r15) */
+-		_EMIT6(0xd703f000 | STK_OFF_TCCNT, 0xf000 | STK_OFF_TCCNT);
++		/* xc tail_call_cnt(4,%r15),tail_call_cnt(%r15) */
++		_EMIT6(0xd703f000 | offsetof(struct prog_frame, tail_call_cnt),
++		       0xf000 | offsetof(struct prog_frame, tail_call_cnt));
+ 	} else {
+ 		/*
+ 		 * Skip the tail call counter initialization in subprograms.
+@@ -593,13 +609,15 @@ static void bpf_jit_prologue(struct bpf_
+ 	if (is_first_pass(jit) || (jit->seen & SEEN_STACK)) {
+ 		/* lgr %w1,%r15 (backchain) */
+ 		EMIT4(0xb9040000, REG_W1, REG_15);
+-		/* la %bfp,STK_160_UNUSED(%r15) (BPF frame pointer) */
+-		EMIT4_DISP(0x41000000, BPF_REG_FP, REG_15, STK_160_UNUSED);
++		/* la %bfp,unused_end(%r15) (BPF frame pointer) */
++		EMIT4_DISP(0x41000000, BPF_REG_FP, REG_15,
++			   offsetofend(struct prog_frame, unused));
+ 		/* aghi %r15,-frame_off */
+ 		EMIT4_IMM(0xa70b0000, REG_15, -jit->frame_off);
+-		/* stg %w1,152(%r15) (backchain) */
++		/* stg %w1,backchain(%r15) */
+ 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_W1, REG_0,
+-			      REG_15, 152);
++			      REG_15,
++			      offsetof(struct prog_frame, backchain));
+ 	}
  }
  
- #if defined(CONFIG_AMD_MEM_ENCRYPT)
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -171,7 +171,7 @@ static void __init xen_set_mtrr_data(voi
+@@ -1429,9 +1447,10 @@ static noinline int bpf_jit_insn(struct
+ 		 * Note 2: We assume that the verifier does not let us call the
+ 		 * main program, which clears the tail call counter on entry.
+ 		 */
+-		/* mvc STK_OFF_TCCNT(4,%r15),frame_off+STK_OFF_TCCNT(%r15) */
+-		_EMIT6(0xd203f000 | STK_OFF_TCCNT,
+-		       0xf000 | (jit->frame_off + STK_OFF_TCCNT));
++		/* mvc tail_call_cnt(4,%r15),frame_off+tail_call_cnt(%r15) */
++		_EMIT6(0xd203f000 | offsetof(struct prog_frame, tail_call_cnt),
++		       0xf000 | (jit->frame_off +
++				 offsetof(struct prog_frame, tail_call_cnt)));
  
- 	/* Only overwrite MTRR state if any MTRR could be got from Xen. */
- 	if (reg)
--		mtrr_overwrite_state(var, reg, MTRR_TYPE_UNCACHABLE);
-+		guest_force_mtrr_state(var, reg, MTRR_TYPE_UNCACHABLE);
- #endif
- }
+ 		/* Sign-extend the kfunc arguments. */
+ 		if (insn->src_reg == BPF_PSEUDO_KFUNC_CALL) {
+@@ -1482,7 +1501,8 @@ static noinline int bpf_jit_insn(struct
+ 		 *         goto out;
+ 		 */
  
-@@ -195,7 +195,7 @@ static void __init xen_pv_init_platform(
- 	if (xen_initial_domain())
- 		xen_set_mtrr_data();
+-		off = jit->frame_off + STK_OFF_TCCNT;
++		off = jit->frame_off +
++		      offsetof(struct prog_frame, tail_call_cnt);
+ 		/* lhi %w0,1 */
+ 		EMIT4_IMM(0xa7080000, REG_W0, 1);
+ 		/* laal %w1,%w0,off(%r15) */
+@@ -1824,7 +1844,9 @@ static int bpf_jit_prog(struct bpf_jit *
+ 	jit->prg = 0;
+ 	jit->excnt = 0;
+ 	if (is_first_pass(jit) || (jit->seen & SEEN_STACK))
+-		jit->frame_off = STK_OFF + round_up(fp->aux->stack_depth, 8);
++		jit->frame_off = sizeof(struct prog_frame) -
++				 offsetofend(struct prog_frame, unused) +
++				 round_up(fp->aux->stack_depth, 8);
  	else
--		mtrr_overwrite_state(NULL, 0, MTRR_TYPE_WRBACK);
-+		guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
+ 		jit->frame_off = 0;
  
- 	/* Adjust nr_cpu_ids before "enumeration" happens */
- 	xen_smp_count_cpus();
+@@ -2281,9 +2303,10 @@ static int __arch_prepare_bpf_trampoline
+ 	/* stg %r1,backchain_off(%r15) */
+ 	EMIT6_DISP_LH(0xe3000000, 0x0024, REG_1, REG_0, REG_15,
+ 		      tjit->backchain_off);
+-	/* mvc tccnt_off(4,%r15),stack_size+STK_OFF_TCCNT(%r15) */
++	/* mvc tccnt_off(4,%r15),stack_size+tail_call_cnt(%r15) */
+ 	_EMIT6(0xd203f000 | tjit->tccnt_off,
+-	       0xf000 | (tjit->stack_size + STK_OFF_TCCNT));
++	       0xf000 | (tjit->stack_size +
++			 offsetof(struct prog_frame, tail_call_cnt)));
+ 	/* stmg %r2,%rN,fwd_reg_args_off(%r15) */
+ 	if (nr_reg_args)
+ 		EMIT6_DISP_LH(0xeb000000, 0x0024, REG_2,
+@@ -2420,8 +2443,9 @@ static int __arch_prepare_bpf_trampoline
+ 				       (nr_stack_args * sizeof(u64) - 1) << 16 |
+ 				       tjit->stack_args_off,
+ 			       0xf000 | tjit->orig_stack_args_off);
+-		/* mvc STK_OFF_TCCNT(4,%r15),tccnt_off(%r15) */
+-		_EMIT6(0xd203f000 | STK_OFF_TCCNT, 0xf000 | tjit->tccnt_off);
++		/* mvc tail_call_cnt(4,%r15),tccnt_off(%r15) */
++		_EMIT6(0xd203f000 | offsetof(struct prog_frame, tail_call_cnt),
++		       0xf000 | tjit->tccnt_off);
+ 		/* lgr %r1,%r8 */
+ 		EMIT4(0xb9040000, REG_1, REG_8);
+ 		/* %r1() */
+@@ -2478,8 +2502,9 @@ static int __arch_prepare_bpf_trampoline
+ 	if (flags & (BPF_TRAMP_F_CALL_ORIG | BPF_TRAMP_F_RET_FENTRY_RET))
+ 		EMIT6_DISP_LH(0xe3000000, 0x0004, REG_2, REG_0, REG_15,
+ 			      tjit->retval_off);
+-	/* mvc stack_size+STK_OFF_TCCNT(4,%r15),tccnt_off(%r15) */
+-	_EMIT6(0xd203f000 | (tjit->stack_size + STK_OFF_TCCNT),
++	/* mvc stack_size+tail_call_cnt(4,%r15),tccnt_off(%r15) */
++	_EMIT6(0xd203f000 | (tjit->stack_size +
++			     offsetof(struct prog_frame, tail_call_cnt)),
+ 	       0xf000 | tjit->tccnt_off);
+ 	/* aghi %r15,stack_size */
+ 	EMIT4_IMM(0xa70b0000, REG_15, tjit->stack_size);
 
 
 
