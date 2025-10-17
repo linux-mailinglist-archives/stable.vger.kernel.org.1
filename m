@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-187132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AC8BEA369
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:20 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1EBBE9B83
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4D8D746368
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 56DC435DA56
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31DC533508D;
-	Fri, 17 Oct 2025 15:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF38331A7C;
+	Fri, 17 Oct 2025 15:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3sIavGX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lroPbDl+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BFF2F12C0;
-	Fri, 17 Oct 2025 15:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC90289811;
+	Fri, 17 Oct 2025 15:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715205; cv=none; b=YHAcxMmEOIh5AyULdFDMaJmGDmkNV33asYpd3PwOqdbLK42WLjjwYtnU9N21VXF1fPeM0UyOThQsGS4aN5LAUCTESBigWYp2B8fbCz+IcZMnTrpkevOOY9w6nSnduCktNIhA4dO37Wr656V556QSYAjiqZJsEn9xdZxRnM1KtJk=
+	t=1760714413; cv=none; b=uVuZu/CL6kVCEgDs4cAZHf7o6tVL708Qusreo0O3vO+2/zHUpnIIqub0DHDW9501gvJtjk+LkovewS+k021oTRoqkfjeJRRKyVgb7jC26kkfuHlfWbd3bhLrfBm6a4U7zx6CwRoGSryOJntdl78TtUFWAStEGolg0QT2Da5GeTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715205; c=relaxed/simple;
-	bh=obwvhDHNc4m4mr9S94Ua6TgvDxrpWAo0Vs4gD91uYFI=;
+	s=arc-20240116; t=1760714413; c=relaxed/simple;
+	bh=2SZ7uF8tmn4AoNitW1Va88hcl9D33RKuxgKkFscxFlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2kAvIq5Bhia1AkhsuJoPDhcUoWU8c+bRfw5B0m/a26Yph3NEQ6Ax/iZIKUgWcKgjXrSauXpAxxWX551LLpvPFQ6cR5feTIimkchMKvDCvihM2amObCyMLK4bxTEyjMxpNk7SwHuT0mQEW2qRgJZGrkOldafq8MfQLgxV8savUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3sIavGX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C971C4CEE7;
-	Fri, 17 Oct 2025 15:33:24 +0000 (UTC)
+	 MIME-Version; b=h5Fts02lNK1uIljo4z9JF+aEwWPS3ZPqgcW7Z+JSyXSa7CNiyo+acTfm+/UKufr8wbt+IsWnClbBM7zx8ubyjcr08Rhwp5/3QXB0LygkjLR7IZZSyq5stLR0Vm+bnAD3knc+rzg65IAsSteQr3bCIzSjbZDPk4lRORW1mIo1nyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lroPbDl+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABEAC4CEE7;
+	Fri, 17 Oct 2025 15:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715204;
-	bh=obwvhDHNc4m4mr9S94Ua6TgvDxrpWAo0Vs4gD91uYFI=;
+	s=korg; t=1760714412;
+	bh=2SZ7uF8tmn4AoNitW1Va88hcl9D33RKuxgKkFscxFlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3sIavGXKIFZbin4YHK3JSqaF5iCGor/UE2NFc7mBN6JBuNp3X/Z61DlKe19USMxf
-	 Vr6DODcD7OKqBq3LDgyyWTM2+rCL8+D2KkktdnNFpsXT3dhZUAsNrP/KT9AI7oaciB
-	 TkfDsHvISTgUQEqpiSzQmP0FQ2SOnGaz/fk8dsBk=
+	b=lroPbDl+LJwwkmg6KCKCiQ3mgXea2eLPNO/uxOkjvZZz77WIdHVXpign9ZKSxnFCN
+	 i3jnzraWzJcsthOAit36ggcoXPoAuJeJdbGAWyhlsNA0saIBglR6cx156vwc81EjGa
+	 kL+oc4fqc5DkJQOmvMZnj1wJCubpAYNOLvqugOrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexey Gladkov <legion@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 135/371] s390/vmlinux.lds.S: Move .vmlinux.info to end of allocatable sections
+	Randy Dunlap <rdunlap@infradead.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 103/277] media: cec: extron-da-hd-4k-plus: drop external-module make commands
 Date: Fri, 17 Oct 2025 16:51:50 +0200
-Message-ID: <20251017145206.812949226@linuxfoundation.org>
+Message-ID: <20251017145150.892331494@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 9338d660b79a0dfe4eb3fe9bd748054cded87d4f ]
+commit d5d12cc03e501c38925e544abe44d5bfe23dc930 upstream.
 
-When building s390 defconfig with binutils older than 2.32, there are
-several warnings during the final linking stage:
+Delete the external-module style Makefile commands. They are not needed
+for in-tree modules.
 
-  s390-linux-ld: .tmp_vmlinux1: warning: allocated section `.got.plt' not in segment
-  s390-linux-ld: .tmp_vmlinux2: warning: allocated section `.got.plt' not in segment
-  s390-linux-ld: vmlinux.unstripped: warning: allocated section `.got.plt' not in segment
-  s390-linux-objcopy: vmlinux: warning: allocated section `.got.plt' not in segment
-  s390-linux-objcopy: st7afZyb: warning: allocated section `.got.plt' not in segment
+This is the only Makefile in the kernel tree (aside from tools/ and
+samples/) that uses this Makefile style.
 
-binutils commit afca762f598 ("S/390: Improve partial relro support for
-64 bit") [1] in 2.32 changed where .got.plt is emitted, avoiding the
-warning.
+The same files are built with or without this patch.
 
-The :NONE in the .vmlinux.info output section description changes the
-segment for subsequent allocated sections. Move .vmlinux.info right
-above the discards section to place all other sections in the previously
-defined segment, .data.
-
-Fixes: 30226853d6ec ("s390: vmlinux.lds.S: explicitly handle '.got' and '.plt' sections")
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=afca762f598d453c563f244cd3777715b1a0cb72 [1]
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Acked-by: Alexey Gladkov <legion@kernel.org>
-Acked-by: Nicolas Schier <nsc@kernel.org>
-Link: https://patch.msgid.link/20251008-kbuild-fix-modinfo-regressions-v1-3-9fc776c5887c@kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 056f2821b631 ("media: cec: extron-da-hd-4k-plus: add the Extron DA HD 4K Plus CEC driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/vmlinux.lds.S | 44 +++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/media/cec/usb/extron-da-hd-4k-plus/Makefile | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
-index feecf1a6ddb44..d74d4c52ccd05 100644
---- a/arch/s390/kernel/vmlinux.lds.S
-+++ b/arch/s390/kernel/vmlinux.lds.S
-@@ -214,6 +214,28 @@ SECTIONS
- 	DWARF_DEBUG
- 	ELF_DETAILS
- 
-+	/*
-+	 * Make sure that the .got.plt is either completely empty or it
-+	 * contains only the three reserved double words.
-+	 */
-+	.got.plt : {
-+		*(.got.plt)
-+	}
-+	ASSERT(SIZEOF(.got.plt) == 0 || SIZEOF(.got.plt) == 0x18, "Unexpected GOT/PLT entries detected!")
-+
-+	/*
-+	 * Sections that should stay zero sized, which is safer to
-+	 * explicitly check instead of blindly discarding.
-+	 */
-+	.plt : {
-+		*(.plt) *(.plt.*) *(.iplt) *(.igot .igot.plt)
-+	}
-+	ASSERT(SIZEOF(.plt) == 0, "Unexpected run-time procedure linkages detected!")
-+	.rela.dyn : {
-+		*(.rela.*) *(.rela_*)
-+	}
-+	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
-+
- 	/*
- 	 * uncompressed image info used by the decompressor
- 	 * it should match struct vmlinux_info
-@@ -244,28 +266,6 @@ SECTIONS
- #endif
- 	} :NONE
- 
--	/*
--	 * Make sure that the .got.plt is either completely empty or it
--	 * contains only the three reserved double words.
--	 */
--	.got.plt : {
--		*(.got.plt)
--	}
--	ASSERT(SIZEOF(.got.plt) == 0 || SIZEOF(.got.plt) == 0x18, "Unexpected GOT/PLT entries detected!")
+diff --git a/drivers/media/cec/usb/extron-da-hd-4k-plus/Makefile b/drivers/media/cec/usb/extron-da-hd-4k-plus/Makefile
+index 2e8f7f60263f..08d58524419f 100644
+--- a/drivers/media/cec/usb/extron-da-hd-4k-plus/Makefile
++++ b/drivers/media/cec/usb/extron-da-hd-4k-plus/Makefile
+@@ -1,8 +1,2 @@
+ extron-da-hd-4k-plus-cec-objs := extron-da-hd-4k-plus.o cec-splitter.o
+ obj-$(CONFIG_USB_EXTRON_DA_HD_4K_PLUS_CEC) := extron-da-hd-4k-plus-cec.o
 -
--	/*
--	 * Sections that should stay zero sized, which is safer to
--	 * explicitly check instead of blindly discarding.
--	 */
--	.plt : {
--		*(.plt) *(.plt.*) *(.iplt) *(.igot .igot.plt)
--	}
--	ASSERT(SIZEOF(.plt) == 0, "Unexpected run-time procedure linkages detected!")
--	.rela.dyn : {
--		*(.rela.*) *(.rela_*)
--	}
--	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
+-all:
+-	$(MAKE) -C $(KDIR) M=$(shell pwd) modules
 -
- 	/* Sections to be discarded */
- 	DISCARDS
- 	/DISCARD/ : {
+-install:
+-	$(MAKE) -C $(KDIR) M=$(shell pwd) modules_install
 -- 
 2.51.0
 
