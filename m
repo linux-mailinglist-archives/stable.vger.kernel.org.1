@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-187578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9797ABEA5A2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5348EBEA377
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D9D0188AEDA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01F7F94695E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E2E330B35;
-	Fri, 17 Oct 2025 15:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EB3332EDB;
+	Fri, 17 Oct 2025 15:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sS4TKjt4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQ9Dazzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14956330B00;
-	Fri, 17 Oct 2025 15:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCD533291C;
+	Fri, 17 Oct 2025 15:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716475; cv=none; b=hxY+4h5t8H+WQqU7La5Cl796nsWqNEdYYbRq1ls19Ki8o441V7CVgMscRGsrAXbU7xxCMTyihMyNLON17FiTQqDZ7bFJpOz4gCPLnk6z62dsCAFd+S+qFKjlhvH9ixbGprTO0RcN+vOpk9xpdQpdJBX14ZzyPVexFtCqNsEZ398=
+	t=1760715739; cv=none; b=TJ79qGH6Jd9Ot1ZibeCK+ognmWZiO1dJmf4tCY76vcZGScbGsvJb9dsaoKX1Dv5+QYGBi8EukzjtrnAi4whE8IwHEPiPoTNICDaUxlXIvd9/fGxyd7KGHWtC5CIA0xxoEb8Q5RDv5jx3Z2G/W0bjNKgtHh6DXnixh6jIgSJW21Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716475; c=relaxed/simple;
-	bh=kHvgyH9hG29mmLXti7jhfo+LoHAkEvALoASPOXQEEuA=;
+	s=arc-20240116; t=1760715739; c=relaxed/simple;
+	bh=EObr8jGvdhvF7lDY78KXHNKiZkk5OXt3Txq2xzcoj78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+axDe1JpwX4QCwkU7sw5xyJsdEVRtNTnt7k3KWQaVcuxxErOGX+v6GpycfEDuoFlio2cLMYhECvnlgoMGLmwOW3UiBJbRbUWbVva7WqNv4Ov7EgMY+xlPL2ac6TGnrqrfqlrvjwO+kXnO+TsPTyEkYXKmwEPu2F+4AKsvMOwLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sS4TKjt4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B541C4CEE7;
-	Fri, 17 Oct 2025 15:54:34 +0000 (UTC)
+	 MIME-Version; b=nobuJ3DIn5nvN3ceFX4Gota/R2Mt6xdgnjyItk7vwEIhj8bqvEpq/7HlMHUlC/WtSYJ9j0Ih0riYgutCoqg2Lj2W0CDu37thS6b4Jlx/GXpcTn7lQT9jhttIXthMuTzQ9RLFZNHBsgW4s7yOLmnvADujutbzLF2ulDQlFh/pRio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQ9Dazzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A52C116C6;
+	Fri, 17 Oct 2025 15:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716474;
-	bh=kHvgyH9hG29mmLXti7jhfo+LoHAkEvALoASPOXQEEuA=;
+	s=korg; t=1760715738;
+	bh=EObr8jGvdhvF7lDY78KXHNKiZkk5OXt3Txq2xzcoj78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sS4TKjt42VRPwSs2j8SDnwBeDu8HE7VQaXeCbiExZPeA2bSv3Ks8GnSutTCNAiDnT
-	 u7x6qjhOEZ0Jgkwynqd8y9i14SBbU90VpmW+4p78bEjCtsuF8lwFoM9K3QUvt5lztE
-	 p9xTqvOdI1ttxD+KONjUq/K7fZUcgclUpUGFGduc=
+	b=lQ9DazznaXtk4ZfpcACaFBjGIt5wfWUbpmB/AP3nCTq8j18SG8httJqcBRkAIC337
+	 qn1DFyT14ksCCe7svc9Ebpzq8U1DIpMxf5qs/YmB7DiCIZ+ljc3C/Ori6jJeLLvNUD
+	 71oYDsD+oGtIiqHjxzbJXfg/lN8wexjCGI58LpxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Esben Haabendal <esben@geanix.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 203/276] rtc: interface: Fix long-standing race when setting alarm
+	Scott Mayhew <smayhew@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.17 321/371] nfsd: decouple the xprtsec policy check from check_nfsd_access()
 Date: Fri, 17 Oct 2025 16:54:56 +0200
-Message-ID: <20251017145149.879224571@linuxfoundation.org>
+Message-ID: <20251017145213.691579127@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,227 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-commit 795cda8338eab036013314dbc0b04aae728880ab upstream.
+commit e4f574ca9c6dfa66695bb054ff5df43ecea873ec upstream.
 
-As described in the old comment dating back to
-commit 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
-from 2010, we have been living with a race window when setting alarm
-with an expiry in the near future (i.e. next second).
-With 1 second resolution, it can happen that the second ticks after the
-check for the timer having expired, but before the alarm is actually set.
-When this happen, no alarm IRQ is generated, at least not with some RTC
-chips (isl12022 is an example of this).
+A while back I had reported that an NFSv3 client could successfully
+mount using '-o xprtsec=none' an export that had been exported with
+'xprtsec=tls:mtls'.  By "successfully" I mean that the mount command
+would succeed and the mount would show up in /proc/mount.  Attempting
+to do anything futher with the mount would be met with NFS3ERR_ACCES.
 
-With UIE RTC timer being implemented on top of alarm irq, being re-armed
-every second, UIE will occasionally fail to work, as an alarm irq lost
-due to this race will stop the re-arming loop.
+This was fixed (albeit accidentally) by commit bb4f07f2409c ("nfsd:
+Fix NFSD_MAY_BYPASS_GSS and NFSD_MAY_BYPASS_GSS_ON_ROOT") and was
+subsequently re-broken by commit 0813c5f01249 ("nfsd: fix access
+checking for NLM under XPRTSEC policies").
 
-For now, I have limited the additional expiry check to only be done for
-alarms set to next seconds. I expect it should be good enough, although I
-don't know if we can now for sure that systems with loads could end up
-causing the same problems for alarms set 2 seconds or even longer in the
-future.
+Transport Layer Security isn't an RPC security flavor or pseudo-flavor,
+so we shouldn't be conflating them when determining whether the access
+checks can be bypassed.  Split check_nfsd_access() into two helpers, and
+have __fh_verify() call the helpers directly since __fh_verify() has
+logic that allows one or both of the checks to be skipped.  All other
+sites will continue to call check_nfsd_access().
 
-I haven't been able to reproduce the problem with this check in place.
-
+Link: https://lore.kernel.org/linux-nfs/ZjO3Qwf_G87yNXb2@aion/
+Fixes: 9280c5774314 ("NFSD: Handle new xprtsec= export option")
 Cc: stable@vger.kernel.org
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Link: https://lore.kernel.org/r/20250516-rtc-uie-irq-fixes-v2-1-3de8e530a39e@geanix.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/interface.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ fs/nfsd/export.c |   82 ++++++++++++++++++++++++++++++++++++++-----------------
+ fs/nfsd/export.h |    3 ++
+ fs/nfsd/nfsfh.c  |   24 +++++++++++++++-
+ 3 files changed, 83 insertions(+), 26 deletions(-)
 
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -442,6 +442,29 @@ static int __rtc_set_alarm(struct rtc_de
- 	else
- 		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1082,50 +1082,62 @@ static struct svc_export *exp_find(struc
+ }
+ 
+ /**
+- * check_nfsd_access - check if access to export is allowed.
++ * check_xprtsec_policy - check if access to export is allowed by the
++ *			  xprtsec policy
+  * @exp: svc_export that is being accessed.
+- * @rqstp: svc_rqst attempting to access @exp (will be NULL for LOCALIO).
+- * @may_bypass_gss: reduce strictness of authorization check
++ * @rqstp: svc_rqst attempting to access @exp.
++ *
++ * Helper function for check_nfsd_access().  Note that callers should be
++ * using check_nfsd_access() instead of calling this function directly.  The
++ * one exception is __fh_verify() since it has logic that may result in one
++ * or both of the helpers being skipped.
+  *
+  * Return values:
+  *   %nfs_ok if access is granted, or
+  *   %nfserr_wrongsec if access is denied
+  */
+-__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
+-			 bool may_bypass_gss)
++__be32 check_xprtsec_policy(struct svc_export *exp, struct svc_rqst *rqstp)
+ {
+-	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
+-	struct svc_xprt *xprt;
+-
+-	/*
+-	 * If rqstp is NULL, this is a LOCALIO request which will only
+-	 * ever use a filehandle/credential pair for which access has
+-	 * been affirmed (by ACCESS or OPEN NFS requests) over the
+-	 * wire. So there is no need for further checks here.
+-	 */
+-	if (!rqstp)
+-		return nfs_ok;
+-
+-	xprt = rqstp->rq_xprt;
++	struct svc_xprt *xprt = rqstp->rq_xprt;
+ 
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_NONE) {
+ 		if (!test_bit(XPT_TLS_SESSION, &xprt->xpt_flags))
+-			goto ok;
++			return nfs_ok;
+ 	}
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_TLS) {
+ 		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
+ 		    !test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
+-			goto ok;
++			return nfs_ok;
+ 	}
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_MTLS) {
+ 		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
+ 		    test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
+-			goto ok;
++			return nfs_ok;
+ 	}
+-	if (!may_bypass_gss)
+-		goto denied;
++	return nfserr_wrongsec;
++}
++
++/**
++ * check_security_flavor - check if access to export is allowed by the
++ *			   security flavor
++ * @exp: svc_export that is being accessed.
++ * @rqstp: svc_rqst attempting to access @exp.
++ * @may_bypass_gss: reduce strictness of authorization check
++ *
++ * Helper function for check_nfsd_access().  Note that callers should be
++ * using check_nfsd_access() instead of calling this function directly.  The
++ * one exception is __fh_verify() since it has logic that may result in one
++ * or both of the helpers being skipped.
++ *
++ * Return values:
++ *   %nfs_ok if access is granted, or
++ *   %nfserr_wrongsec if access is denied
++ */
++__be32 check_security_flavor(struct svc_export *exp, struct svc_rqst *rqstp,
++			     bool may_bypass_gss)
++{
++	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
+ 
+-ok:
+ 	/* legacy gss-only clients are always OK: */
+ 	if (exp->ex_client == rqstp->rq_gssclient)
+ 		return nfs_ok;
+@@ -1167,10 +1179,30 @@ ok:
+ 		}
+ 	}
+ 
+-denied:
+ 	return nfserr_wrongsec;
+ }
+ 
++/**
++ * check_nfsd_access - check if access to export is allowed.
++ * @exp: svc_export that is being accessed.
++ * @rqstp: svc_rqst attempting to access @exp.
++ * @may_bypass_gss: reduce strictness of authorization check
++ *
++ * Return values:
++ *   %nfs_ok if access is granted, or
++ *   %nfserr_wrongsec if access is denied
++ */
++__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
++			 bool may_bypass_gss)
++{
++	__be32 status;
++
++	status = check_xprtsec_policy(exp, rqstp);
++	if (status != nfs_ok)
++		return status;
++	return check_security_flavor(exp, rqstp, may_bypass_gss);
++}
++
+ /*
+  * Uses rq_client and rq_gssclient to find an export; uses rq_client (an
+  * auth_unix client) if it's available and has secinfo information;
+--- a/fs/nfsd/export.h
++++ b/fs/nfsd/export.h
+@@ -101,6 +101,9 @@ struct svc_expkey {
+ 
+ struct svc_cred;
+ int nfsexp_flags(struct svc_cred *cred, struct svc_export *exp);
++__be32 check_xprtsec_policy(struct svc_export *exp, struct svc_rqst *rqstp);
++__be32 check_security_flavor(struct svc_export *exp, struct svc_rqst *rqstp,
++			     bool may_bypass_gss);
+ __be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
+ 			 bool may_bypass_gss);
+ 
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -364,10 +364,30 @@ __fh_verify(struct svc_rqst *rqstp,
+ 	if (error)
+ 		goto out;
  
 +	/*
-+	 * Check for potential race described above. If the waiting for next
-+	 * second, and the second just ticked since the check above, either
-+	 *
-+	 * 1) It ticked after the alarm was set, and an alarm irq should be
-+	 *    generated.
-+	 *
-+	 * 2) It ticked before the alarm was set, and alarm irq most likely will
-+	 * not be generated.
-+	 *
-+	 * While we cannot easily check for which of these two scenarios we
-+	 * are in, we can return -ETIME to signal that the timer has already
-+	 * expired, which is true in both cases.
++	 * If rqstp is NULL, this is a LOCALIO request which will only
++	 * ever use a filehandle/credential pair for which access has
++	 * been affirmed (by ACCESS or OPEN NFS requests) over the
++	 * wire.  Skip both the xprtsec policy and the security flavor
++	 * checks.
 +	 */
-+	if ((scheduled - now) <= 1) {
-+		err = __rtc_read_time(rtc, &tm);
-+		if (err)
-+			return err;
-+		now = rtc_tm_to_time64(&tm);
-+		if (scheduled <= now)
-+			return -ETIME;
++	if (!rqstp)
++		goto check_permissions;
++
+ 	if ((access & NFSD_MAY_NLM) && (exp->ex_flags & NFSEXP_NOAUTHNLM))
+ 		/* NLM is allowed to fully bypass authentication */
+ 		goto out;
+ 
++	/*
++	 * NLM is allowed to bypass the xprtsec policy check because lockd
++	 * doesn't support xprtsec.
++	 */
++	if (!(access & NFSD_MAY_NLM)) {
++		error = check_xprtsec_policy(exp, rqstp);
++		if (error)
++			goto out;
 +	}
 +
- 	trace_rtc_set_alarm(rtc_tm_to_time64(&alarm->time), err);
- 	return err;
- }
+ 	if (access & NFSD_MAY_BYPASS_GSS)
+ 		may_bypass_gss = true;
+ 	/*
+@@ -379,13 +399,15 @@ __fh_verify(struct svc_rqst *rqstp,
+ 			&& exp->ex_path.dentry == dentry)
+ 		may_bypass_gss = true;
+ 
+-	error = check_nfsd_access(exp, rqstp, may_bypass_gss);
++	error = check_security_flavor(exp, rqstp, may_bypass_gss);
+ 	if (error)
+ 		goto out;
++
+ 	/* During LOCALIO call to fh_verify will be called with a NULL rqstp */
+ 	if (rqstp)
+ 		svc_xprt_set_valid(rqstp->rq_xprt);
+ 
++check_permissions:
+ 	/* Finally, check access permissions. */
+ 	error = nfsd_permission(cred, exp, dentry, access);
+ out:
 
 
 
