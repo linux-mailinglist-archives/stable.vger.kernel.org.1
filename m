@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D73BEA041
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:39:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F03C8BEA37D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 64574586758
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B8AD94519B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEC632C946;
-	Fri, 17 Oct 2025 15:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F7432C944;
+	Fri, 17 Oct 2025 15:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGGn6vpB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THQayXcO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2652745E;
-	Fri, 17 Oct 2025 15:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D043277A9;
+	Fri, 17 Oct 2025 15:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714696; cv=none; b=SS5sXDH7lu59raevuB+aU1TjhnKkFxLKDwo901yxyJZoY+yPkSycaOs0B9lZZD9bcqnqwAeL7a7FvUmffwv2LxrBKn1U07o+Ffb0jAs7kPV6L2hdwXObAM5JJQmCSKRhOnMjGYTjbXbsyQ+ppO53pTDZWxogS5cnZ2JCgW539SA=
+	t=1760715585; cv=none; b=cUHOnv0q9DkLrRKYU/BszxK9bLWgadGLGQCgAz4J9ZZ9caaBbLNH9a/BAkx1QJ9TzT4s84vvbaywOrMtaQJVfinCeTfJm54HG/Rd4SpwhouTSDrFaC6b1v1U0XwaPeF/j2M7fMvTgxyLqtBzwAgqc39QWwIQ7ci5oM855nvhPxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714696; c=relaxed/simple;
-	bh=oWO2t0xyUS48mRVDDHKXTeMfg4wRHJQnxvRCrdIyKxs=;
+	s=arc-20240116; t=1760715585; c=relaxed/simple;
+	bh=4zdpdPRCqq7CZdYwpS6UvU5dUA8aktcfgard61GO3ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ijuU9c//BvSrDgQm3/l7xAX6ADovH1w4BbeO5PaFvEk2vGbcS33pojFWhtNJV0WZuF4rQruJ9FP39WrvMwHDe0vpXo0dmsIiuDvX3r1JHf4ewY+6yNpfYSlUJilOYn0I9jcknfX8yENpwyPW4lNRRhVhjCE0/8QxieWH7xwBx+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGGn6vpB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EA9C4CEE7;
-	Fri, 17 Oct 2025 15:24:55 +0000 (UTC)
+	 MIME-Version; b=tVAnbmfusl8UH5ZcR7R0V849920bscOtlENv2KN7xGUnKgP01EIxKofheprX4Kb7sl+8vLntMXQq03k2pPcNploPFxzi4xr7n3I/QRct1hGXHwHyPspvoRbdWKYjtU/PGQ2DZq+0Hm960g2pvS2wmIr08uskgiVWZcAI4bvaER4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THQayXcO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6389C4CEE7;
+	Fri, 17 Oct 2025 15:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714696;
-	bh=oWO2t0xyUS48mRVDDHKXTeMfg4wRHJQnxvRCrdIyKxs=;
+	s=korg; t=1760715585;
+	bh=4zdpdPRCqq7CZdYwpS6UvU5dUA8aktcfgard61GO3ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGGn6vpBEcNOReJ6HlC1b35vKL7p171v3KITgvfO8prVcK6I2xpyuYTDIEhgHcQ79
-	 mh2EVBNZcmW+Fwk+F8uBn7MfG7uYbhKehz6nf3qBUlNYtLyQthgi+jI0MLZ35ZTrZb
-	 Nglzq1p0trZdsbqkoHus5q1dCH3IRZfHCkl0Gp5s=
+	b=THQayXcOs+PNuhADrZnG4Ti9LQRJVQGHOKKpJVLhi2UPBqOKW2/1eiiljQtXAg5Ke
+	 yRfr6jaJFhPh00DaucJoRxpJ3D3Jk2P8KpftgD2nWN3TO8vGrQBmRb9fpdeXXaRlwx
+	 xISg+jX7jmM8Mn3/SS+i5/gniX1J7fHFMpzXSJHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 234/277] mfd: intel_soc_pmic_chtdc_ti: Drop unneeded assignment for cache_type
+	Rex Chen <rex.chen_1@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.17 266/371] mmc: core: SPI mode remove cmd7
 Date: Fri, 17 Oct 2025 16:54:01 +0200
-Message-ID: <20251017145155.681348525@linuxfoundation.org>
+Message-ID: <20251017145211.702201309@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Rex Chen <rex.chen_1@nxp.com>
 
-[ Upstream commit 9eb99c08508714906db078b5efbe075329a3fb06 ]
+commit fec40f44afdabcbc4a7748e4278f30737b54bb1a upstream.
 
-REGCACHE_NONE is the default type of the cache when not provided.
-Drop unneeded explicit assignment to it.
+SPI mode doesn't support cmd7, so remove it in mmc_sdio_alive() and
+confirm if sdio is active by checking CCCR register value is available
+or not.
 
-Note, it's defined to 0, and if ever be redefined, it will break
-literally a lot of the drivers, so it very unlikely to happen.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20250129152823.1802273-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: 64e0d839c589 ("mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Rex Chen <rex.chen_1@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250728082230.1037917-2-rex.chen_1@nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/intel_soc_pmic_chtdc_ti.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/mmc/core/sdio.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-+++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-@@ -82,7 +82,6 @@ static const struct regmap_config chtdc_
- 	.reg_bits = 8,
- 	.val_bits = 8,
- 	.max_register = 0xff,
--	.cache_type = REGCACHE_NONE,
- };
+--- a/drivers/mmc/core/sdio.c
++++ b/drivers/mmc/core/sdio.c
+@@ -945,7 +945,11 @@ static void mmc_sdio_remove(struct mmc_h
+  */
+ static int mmc_sdio_alive(struct mmc_host *host)
+ {
+-	return mmc_select_card(host->card);
++	if (!mmc_host_is_spi(host))
++		return mmc_select_card(host->card);
++	else
++		return mmc_io_rw_direct(host->card, 0, 0, SDIO_CCCR_CCCR, 0,
++					NULL);
+ }
  
- static const struct regmap_irq chtdc_ti_irqs[] = {
+ /*
 
 
 
