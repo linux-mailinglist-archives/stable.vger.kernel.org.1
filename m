@@ -1,53 +1,60 @@
-Return-Path: <stable+bounces-186731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E32DBBE9E3A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D26BE9A33
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D8677442A5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA14D1883E5E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01F733711F;
-	Fri, 17 Oct 2025 15:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6D43328E1;
+	Fri, 17 Oct 2025 15:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+yTd3Yv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heiGLIv6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9586A3370FE;
-	Fri, 17 Oct 2025 15:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA7932F743;
+	Fri, 17 Oct 2025 15:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714076; cv=none; b=OdcIEzhzdTSTQFFIxzqF/ogVwXRfkH15JMS2x1w0YuDVzs0jVSe/LPFaTAhQytRRIA99AwxDTEtRzX8QuZas4b+wYjqvsWk35StXCGuPztCypc+YiitS7eSLtFNJtS1HxZ6uLMw6T9snq71p5qEktA0J61Z3V4UTZoKD3kCVzyE=
+	t=1760714082; cv=none; b=g1gxGVIOVInG3bF0jsmZEglqugman23F1z1IIx8ibGuX5Dkw0bflKyA3126QDKwiUvRT94yjQdjfVnAOMmxKnaphZoEI6TCEqM9zrPOSnYKBuQaGsf3kipXNEvB+jf3TZQzUdhRz1us+MxocCmedvydkfC/MkNkBF9l3QxH1Mok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714076; c=relaxed/simple;
-	bh=5KdrJOStEEvYcaBJCd8YBKarSJJkSoCExirv0A+Ds+o=;
+	s=arc-20240116; t=1760714082; c=relaxed/simple;
+	bh=sq1aeEF8PN1g+1pOYSEqyHV/V0JqRhDmn2cS8nktt6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WjoaOe++7mYlZKx0U+Nz5Tkt+YpmeZdQMHXm5Ibj6YNOBaEm0fPvu6VVfbLj0xfHLMNEvNILg6CS9aCPaYWCUzyeo33aHEsKUFDifLVgpTUZae9iPgrtP56HbnziPi/MJTKtjqDE/hWQiBHNi1xHIrZquTLZeLgUnm+7tfUaIk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+yTd3Yv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD7EC116B1;
-	Fri, 17 Oct 2025 15:14:35 +0000 (UTC)
+	 MIME-Version; b=LNfyI2IcLXwjiKKM9VZFQdi8gLzzKmWC1tuASbtgBRKHskvz/JVKSE2VlPmDkN4iw3mSxE0+QsR0zsA0UuyRn2LjW97N58mLYeu8EFhXUpGCNVJMpvfDkn9fbNWX/BEMnTht3qmr5Fwu6jOl1BHTtlLNuPmlMPRgcW4PfOTgBbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heiGLIv6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BFBC116B1;
+	Fri, 17 Oct 2025 15:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714076;
-	bh=5KdrJOStEEvYcaBJCd8YBKarSJJkSoCExirv0A+Ds+o=;
+	s=korg; t=1760714082;
+	bh=sq1aeEF8PN1g+1pOYSEqyHV/V0JqRhDmn2cS8nktt6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+yTd3YvZjkrg37blRmJDXV9Yw7JnaSztaoEg0a/2gujQFGmEcfN59qZb3TIyHX7B
-	 sk5H8ZGxOl8DJ8aZFw20OuB72ibblBVPeWpcbEJ22+QlplDLiYneM+qP8gjDv6ypf9
-	 9vj8UA/J/VTnagh6+nRhowmuE2yJVNxk4EhCZlhU=
+	b=heiGLIv6tn9FVcuY2TE9VV2IRCKZZT5BBlGd8l8GKIZbdn3a8P5O4A97OltPb0MPt
+	 bkbwhsYIldsYz/Uq/3ZM3HDs3sdn0ItMiDOmhHrG5fD0Gff4GlhYhZO27761p9TDhF
+	 C3HDi85J6D0nyarRroM4+mM4T6/jvGlJqtAVw5jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan CHen <chenyuan@kylinos.cn>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ian Rogers <irogers@google.com>,
+	Yunseong Kim <ysk@kzalloc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/277] clk: renesas: cpg-mssr: Fix memory leak in cpg_mssr_reserved_init()
-Date: Fri, 17 Oct 2025 16:50:26 +0200
-Message-ID: <20251017145147.849665107@linuxfoundation.org>
+Subject: [PATCH 6.12 020/277] perf util: Fix compression checks returning -1 as bool
+Date: Fri, 17 Oct 2025 16:50:27 +0200
+Message-ID: <20251017145147.885374080@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
 References: <20251017145147.138822285@linuxfoundation.org>
@@ -66,52 +73,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yuan CHen <chenyuan@kylinos.cn>
+From: Yunseong Kim <ysk@kzalloc.com>
 
-[ Upstream commit cc55fc58fc1b7f405003fd2ecf79e74653461f0b ]
+[ Upstream commit 43fa1141e2c1af79c91aaa4df03e436c415a6fc3 ]
 
-In case of krealloc_array() failure, the current error handling just
-returns from the function without freeing the original array.
-Fix this memory leak by freeing the original array.
+The lzma_is_compressed and gzip_is_compressed functions are declared
+to return a "bool" type, but in case of an error (e.g., file open
+failure), they incorrectly returned -1.
 
-Fixes: 6aa1754764901668 ("clk: renesas: cpg-mssr: Ignore all clocks assigned to non-Linux system")
-Signed-off-by: Yuan CHen <chenyuan@kylinos.cn>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20250908012810.4767-1-chenyuan_fl@163.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+A bool type is a boolean value that is either true or false.
+Returning -1 for a bool return type can lead to unexpected behavior
+and may violate strict type-checking in some compilers.
+
+Fix the return value to be false in error cases, ensuring the function
+adheres to its declared return type improves for preventing potential
+bugs related to type mismatch.
+
+Fixes: 4b57fd44b61beb51 ("perf tools: Add lzma_is_compressed function")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Stephen Brennan <stephen.s.brennan@oracle.com>
+Link: https://lore.kernel.org/r/20250822162506.316844-3-ysk@kzalloc.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/renesas-cpg-mssr.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/perf/util/lzma.c | 2 +-
+ tools/perf/util/zlib.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
-index 0f27c33192e10..112ed81f648ee 100644
---- a/drivers/clk/renesas/renesas-cpg-mssr.c
-+++ b/drivers/clk/renesas/renesas-cpg-mssr.c
-@@ -1012,6 +1012,7 @@ static int __init cpg_mssr_reserved_init(struct cpg_mssr_priv *priv,
+diff --git a/tools/perf/util/lzma.c b/tools/perf/util/lzma.c
+index af9a97612f9df..f61574d1581e3 100644
+--- a/tools/perf/util/lzma.c
++++ b/tools/perf/util/lzma.c
+@@ -113,7 +113,7 @@ bool lzma_is_compressed(const char *input)
+ 	ssize_t rc;
  
- 		of_for_each_phandle(&it, rc, node, "clocks", "#clock-cells", -1) {
- 			int idx;
-+			unsigned int *new_ids;
+ 	if (fd < 0)
+-		return -1;
++		return false;
  
- 			if (it.node != priv->np)
- 				continue;
-@@ -1022,11 +1023,13 @@ static int __init cpg_mssr_reserved_init(struct cpg_mssr_priv *priv,
- 			if (args[0] != CPG_MOD)
- 				continue;
+ 	rc = read(fd, buf, sizeof(buf));
+ 	close(fd);
+diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
+index 78d2297c1b674..1f7c065230599 100644
+--- a/tools/perf/util/zlib.c
++++ b/tools/perf/util/zlib.c
+@@ -88,7 +88,7 @@ bool gzip_is_compressed(const char *input)
+ 	ssize_t rc;
  
--			ids = krealloc_array(ids, (num + 1), sizeof(*ids), GFP_KERNEL);
--			if (!ids) {
-+			new_ids = krealloc_array(ids, (num + 1), sizeof(*ids), GFP_KERNEL);
-+			if (!new_ids) {
- 				of_node_put(it.node);
-+				kfree(ids);
- 				return -ENOMEM;
- 			}
-+			ids = new_ids;
+ 	if (fd < 0)
+-		return -1;
++		return false;
  
- 			if (priv->reg_layout == CLK_REG_LAYOUT_RZ_A)
- 				idx = MOD_CLK_PACK_10(args[1]);	/* for DEF_MOD_STB() */
+ 	rc = read(fd, buf, sizeof(buf));
+ 	close(fd);
 -- 
 2.51.0
 
