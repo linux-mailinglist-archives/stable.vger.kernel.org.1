@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80385BE9C57
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:09 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07ACABEA6A8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6CF8C35E1A3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 40EE7584328
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6B23328EC;
-	Fri, 17 Oct 2025 15:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B4A330B0F;
+	Fri, 17 Oct 2025 15:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZ9MCONP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+Ske+by"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F5732E151;
-	Fri, 17 Oct 2025 15:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50E1330B00;
+	Fri, 17 Oct 2025 15:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714649; cv=none; b=I8LT+D+xHFYMs23AZ6eXB6uhxIK12Bkor+tNJfUJOV1OPn5cVZJW74Mxnya5vBXRKMil0X3+Al3wzNlat9cUko5LCE7nx/asRfbcuqfgCu9ZqcYQ/pqQvD7jkldx/ogUh6I5isdwlVSdqjTWm7EhER/7bZ0F5o/R0a/+yj96VQs=
+	t=1760716273; cv=none; b=VdD8AOUoZQtaSQiUi0oYTiD888u2Ikhkbm/RJ25DttC/RQKiLtJxkTANOWIERGmA/9aY1npjCdG12l1RgcwMgpnHDXMSHt6kJvNWAaR3b3PkBnrh/sdH1KEBNkPC3lGMoSZIV9/T466CPQ8/pDps5U6ZzlVBU7lt2hzcYXVTCaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714649; c=relaxed/simple;
-	bh=so+B3lgiDklxtuEC4TgL96xxlKg3N3L2NRg9FAVf7a4=;
+	s=arc-20240116; t=1760716273; c=relaxed/simple;
+	bh=pvR+TlwFMRHgvKKBBLFoF47oognW0qNhbRAEBADr3kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gMO7OHxTSbj+POONVe25maMAY0CfNfdp9ilakGdRY59BGzBvu2PQeHWtbl01gXlI0cMK3LYMstxbC5zzRLN9y6RtgAfHOukWlu7jLhzz6mr17P+Y1iTpu0A8n0Hu+BWxUmMbc+8owXDy9lYF8NOx7Lwm20EsGkbWkk8NKsVS5Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZ9MCONP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8834C4CEFE;
-	Fri, 17 Oct 2025 15:24:08 +0000 (UTC)
+	 MIME-Version; b=ipOt0JPaLRfyko4/z4YEKrilVSU+z+3Bw58c7RhhRQxxXSX1hjdvbwyO+ARGXxXzqYnOmRb44tWvOQGBN7ItjtqLEbgE38wZF51BKqaFsSdDXDJhsllWX/6VFNHvuNMmqYaxgaxi5jCfv+SHd6uOS1IXLm7ps8lVsQ740uvt8CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+Ske+by; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A04C4CEE7;
+	Fri, 17 Oct 2025 15:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714649;
-	bh=so+B3lgiDklxtuEC4TgL96xxlKg3N3L2NRg9FAVf7a4=;
+	s=korg; t=1760716272;
+	bh=pvR+TlwFMRHgvKKBBLFoF47oognW0qNhbRAEBADr3kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZ9MCONPXQQ9xH5dC4/2bhamNl1Aefu2QbJioRMf/vj2759GlScMUgZAgovOH1eVB
-	 16O0rQgl54S4au7hgQCFQ0TL8QLQ1XA83pVrZWm3X74nXMblMZOa8JBD0IEdoYJ2Gd
-	 BAy/SivD/JAZwfE+CaZVU1X8YhNU45NhUq3Oavvc=
+	b=R+Ske+byOd566oIY9augRF6n+VZ0m5lTbGJMomgtinVvLYYDKM8nxhvd8rzSUjEU1
+	 v6aomYECpXAI/7Qq0IeSfk77Fm0gnTApEPEcu4NuT0vbgEWicLYwZujD4X91CmIQN6
+	 KyLkxOHv/8TV1TuUytKGLsq0bYLmVf5tBUAe/bjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>,
-	syzbot+4c9d23743a2409b80293@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: [PATCH 6.12 219/277] ext4: validate ea_ino and size in check_xattrs
+	Leo Yan <leo.yan@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 133/276] perf arm-spe: Rename the common data source encoding
 Date: Fri, 17 Oct 2025 16:53:46 +0200
-Message-ID: <20251017145155.124197555@linuxfoundation.org>
+Message-ID: <20251017145147.338331585@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Leo Yan <leo.yan@arm.com>
 
-commit 44d2a72f4d64655f906ba47a5e108733f59e6f28 upstream.
+[ Upstream commit 50b8f1d5bf4ad7f09ef8012ccf5f94f741df827b ]
 
-During xattr block validation, check_xattrs() processes xattr entries
-without validating that entries claiming to use EA inodes have non-zero
-sizes. Corrupted filesystems may contain xattr entries where e_value_size
-is zero but e_value_inum is non-zero, indicating invalid xattr data.
+The Neoverse CPUs follow the common data source encoding, and other
+CPU variants can share the same format.
 
-Add validation in check_xattrs() to detect this corruption pattern early
-and return -EFSCORRUPTED, preventing invalid xattr entries from causing
-issues throughout the ext4 codebase.
+Rename the CPU list and data source definitions as common data source
+names. This change prepares for appending more CPU variants.
 
-Cc: stable@kernel.org
-Suggested-by: Theodore Ts'o <tytso@mit.edu>
-Reported-by: syzbot+4c9d23743a2409b80293@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=4c9d23743a2409b80293
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Message-ID: <20250923133245.1091761-1-kartikey406@gmail.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Link: https://lore.kernel.org/r/20241003185322.192357-3-leo.yan@arm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Stable-dep-of: cb300e351505 ("perf arm_spe: Correct memory level for remote access")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ .../util/arm-spe-decoder/arm-spe-decoder.h    | 18 ++++++------
+ tools/perf/util/arm-spe.c                     | 28 +++++++++----------
+ 2 files changed, 23 insertions(+), 23 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -251,6 +251,10 @@ check_xattrs(struct inode *inode, struct
- 			err_str = "invalid ea_ino";
- 			goto errout;
- 		}
-+		if (ea_ino && !size) {
-+			err_str = "invalid size in ea xattr";
-+			goto errout;
-+		}
- 		if (size > EXT4_XATTR_SIZE_MAX) {
- 			err_str = "e_value size too large";
- 			goto errout;
+diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-decoder.h b/tools/perf/util/arm-spe-decoder/arm-spe-decoder.h
+index fa269c9c53b33..d9166794e527f 100644
+--- a/tools/perf/util/arm-spe-decoder/arm-spe-decoder.h
++++ b/tools/perf/util/arm-spe-decoder/arm-spe-decoder.h
+@@ -56,15 +56,15 @@ enum arm_spe_op_type {
+ 	ARM_SPE_OP_BR_INDIRECT	= 1 << 17,
+ };
+ 
+-enum arm_spe_neoverse_data_source {
+-	ARM_SPE_NV_L1D		 = 0x0,
+-	ARM_SPE_NV_L2		 = 0x8,
+-	ARM_SPE_NV_PEER_CORE	 = 0x9,
+-	ARM_SPE_NV_LOCAL_CLUSTER = 0xa,
+-	ARM_SPE_NV_SYS_CACHE	 = 0xb,
+-	ARM_SPE_NV_PEER_CLUSTER	 = 0xc,
+-	ARM_SPE_NV_REMOTE	 = 0xd,
+-	ARM_SPE_NV_DRAM		 = 0xe,
++enum arm_spe_common_data_source {
++	ARM_SPE_COMMON_DS_L1D		= 0x0,
++	ARM_SPE_COMMON_DS_L2		= 0x8,
++	ARM_SPE_COMMON_DS_PEER_CORE	= 0x9,
++	ARM_SPE_COMMON_DS_LOCAL_CLUSTER = 0xa,
++	ARM_SPE_COMMON_DS_SYS_CACHE	= 0xb,
++	ARM_SPE_COMMON_DS_PEER_CLUSTER	= 0xc,
++	ARM_SPE_COMMON_DS_REMOTE	= 0xd,
++	ARM_SPE_COMMON_DS_DRAM		= 0xe,
+ };
+ 
+ struct arm_spe_record {
+diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
+index c86e60b5954c5..68445c1e1db3b 100644
+--- a/tools/perf/util/arm-spe.c
++++ b/tools/perf/util/arm-spe.c
+@@ -314,15 +314,15 @@ static int arm_spe__synth_branch_sample(struct arm_spe_queue *speq,
+ 	return arm_spe_deliver_synth_event(spe, speq, event, &sample);
+ }
+ 
+-static const struct midr_range neoverse_spe[] = {
++static const struct midr_range common_ds_encoding_cpus[] = {
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+ 	{},
+ };
+ 
+-static void arm_spe__synth_data_source_neoverse(const struct arm_spe_record *record,
+-						union perf_mem_data_src *data_src)
++static void arm_spe__synth_data_source_common(const struct arm_spe_record *record,
++					      union perf_mem_data_src *data_src)
+ {
+ 	/*
+ 	 * Even though four levels of cache hierarchy are possible, no known
+@@ -344,17 +344,17 @@ static void arm_spe__synth_data_source_neoverse(const struct arm_spe_record *rec
+ 	}
+ 
+ 	switch (record->source) {
+-	case ARM_SPE_NV_L1D:
++	case ARM_SPE_COMMON_DS_L1D:
+ 		data_src->mem_lvl = PERF_MEM_LVL_L1 | PERF_MEM_LVL_HIT;
+ 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_L1;
+ 		data_src->mem_snoop = PERF_MEM_SNOOP_NONE;
+ 		break;
+-	case ARM_SPE_NV_L2:
++	case ARM_SPE_COMMON_DS_L2:
+ 		data_src->mem_lvl = PERF_MEM_LVL_L2 | PERF_MEM_LVL_HIT;
+ 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_L2;
+ 		data_src->mem_snoop = PERF_MEM_SNOOP_NONE;
+ 		break;
+-	case ARM_SPE_NV_PEER_CORE:
++	case ARM_SPE_COMMON_DS_PEER_CORE:
+ 		data_src->mem_lvl = PERF_MEM_LVL_L2 | PERF_MEM_LVL_HIT;
+ 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_L2;
+ 		data_src->mem_snoopx = PERF_MEM_SNOOPX_PEER;
+@@ -363,8 +363,8 @@ static void arm_spe__synth_data_source_neoverse(const struct arm_spe_record *rec
+ 	 * We don't know if this is L1, L2 but we do know it was a cache-2-cache
+ 	 * transfer, so set SNOOPX_PEER
+ 	 */
+-	case ARM_SPE_NV_LOCAL_CLUSTER:
+-	case ARM_SPE_NV_PEER_CLUSTER:
++	case ARM_SPE_COMMON_DS_LOCAL_CLUSTER:
++	case ARM_SPE_COMMON_DS_PEER_CLUSTER:
+ 		data_src->mem_lvl = PERF_MEM_LVL_L3 | PERF_MEM_LVL_HIT;
+ 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_L3;
+ 		data_src->mem_snoopx = PERF_MEM_SNOOPX_PEER;
+@@ -372,7 +372,7 @@ static void arm_spe__synth_data_source_neoverse(const struct arm_spe_record *rec
+ 	/*
+ 	 * System cache is assumed to be L3
+ 	 */
+-	case ARM_SPE_NV_SYS_CACHE:
++	case ARM_SPE_COMMON_DS_SYS_CACHE:
+ 		data_src->mem_lvl = PERF_MEM_LVL_L3 | PERF_MEM_LVL_HIT;
+ 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_L3;
+ 		data_src->mem_snoop = PERF_MEM_SNOOP_HIT;
+@@ -381,13 +381,13 @@ static void arm_spe__synth_data_source_neoverse(const struct arm_spe_record *rec
+ 	 * We don't know what level it hit in, except it came from the other
+ 	 * socket
+ 	 */
+-	case ARM_SPE_NV_REMOTE:
++	case ARM_SPE_COMMON_DS_REMOTE:
+ 		data_src->mem_lvl = PERF_MEM_LVL_REM_CCE1;
+ 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_ANY_CACHE;
+ 		data_src->mem_remote = PERF_MEM_REMOTE_REMOTE;
+ 		data_src->mem_snoopx = PERF_MEM_SNOOPX_PEER;
+ 		break;
+-	case ARM_SPE_NV_DRAM:
++	case ARM_SPE_COMMON_DS_DRAM:
+ 		data_src->mem_lvl = PERF_MEM_LVL_LOC_RAM | PERF_MEM_LVL_HIT;
+ 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_RAM;
+ 		data_src->mem_snoop = PERF_MEM_SNOOP_NONE;
+@@ -423,7 +423,7 @@ static void arm_spe__synth_data_source_generic(const struct arm_spe_record *reco
+ static u64 arm_spe__synth_data_source(const struct arm_spe_record *record, u64 midr)
+ {
+ 	union perf_mem_data_src	data_src = { .mem_op = PERF_MEM_OP_NA };
+-	bool is_neoverse = is_midr_in_range_list(midr, neoverse_spe);
++	bool is_common = is_midr_in_range_list(midr, common_ds_encoding_cpus);
+ 
+ 	if (record->op & ARM_SPE_OP_LD)
+ 		data_src.mem_op = PERF_MEM_OP_LOAD;
+@@ -432,8 +432,8 @@ static u64 arm_spe__synth_data_source(const struct arm_spe_record *record, u64 m
+ 	else
+ 		return 0;
+ 
+-	if (is_neoverse)
+-		arm_spe__synth_data_source_neoverse(record, &data_src);
++	if (is_common)
++		arm_spe__synth_data_source_common(record, &data_src);
+ 	else
+ 		arm_spe__synth_data_source_generic(record, &data_src);
+ 
+-- 
+2.51.0
+
 
 
 
