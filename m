@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5C3BE9F0F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:59 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B646BBE9AC6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8661D5A0F58
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:23:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 41596585882
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D90F2F12BE;
-	Fri, 17 Oct 2025 15:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C27632C94C;
+	Fri, 17 Oct 2025 15:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCqm00yy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+rSXsvA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591FC3328EC;
-	Fri, 17 Oct 2025 15:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F8C32C94E;
+	Fri, 17 Oct 2025 15:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714542; cv=none; b=hSMKeNmMUheDMEYEj67Z1f2ikGIrDaTtr6eHnR/4kiqxwGhRLGMlDCzBDmBZwzn025mRbJHQMaa+xtIyO6qDGnkcwUtjy8TAxlyZTfT5L+LnQpmLZFOKQ50mS/y9iOatovYAy/nN75Ui6U/ldcDqpUkE5h3qQuQkRfVv+N8neEY=
+	t=1760713809; cv=none; b=GnlL35wod8Ab0NhbEEz+2y2XbtkuqK/dHsG3XZqGAuIWAhUkAqxrNEL1WUyDXySGJhR6qgIcCg2dawyDZrKOZwL67O/9usObOmu/zMtJWAhJGUiqwgsyG0VuVvj2frxoxZpaJ7ea4WPC3aOTzlLQv/dsCVElV/8wGMOakqXaGKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714542; c=relaxed/simple;
-	bh=eD+hD/awVNVP61Ad//xgSneMCc8Uz8msrCTQhF1Xowo=;
+	s=arc-20240116; t=1760713809; c=relaxed/simple;
+	bh=mdqvXTuO29B7LluOqvIApCMvQdrpmRRKcA1W8YS5e70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sW30QbpxbbeyAEsw8lZTGSamyJuMYs4Cs55P/xCgEAOaYuyixyJMbmxtiSEEHuE4APnBxKr0y3IdLT0ZsCNFefvfVuFi6iV3h1giSVx8E2YZ5MdeQEab9ZEMJ3c7AEYlPBHmrpdGLpvQIK12l8lOx5m6y4KuPU/CfFqY9umXVwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCqm00yy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2591C113D0;
-	Fri, 17 Oct 2025 15:22:21 +0000 (UTC)
+	 MIME-Version; b=U7cxqdfA3LaKMFpcPWBmUSjg1s9+O+9duNfbxJuiumdb1ZOfxoAGawmAPoS05wwvbkoLB55hZLhEKoMtlrssJY2zADsFzkRHx69wkeYw9VXvHJH/GMbAuGuQ/BTXaKFyLcfPVyUSR4cjfvwrtCMPLtUQHnmA7sIR1Nymy0icOyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+rSXsvA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5744C4CEF9;
+	Fri, 17 Oct 2025 15:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714542;
-	bh=eD+hD/awVNVP61Ad//xgSneMCc8Uz8msrCTQhF1Xowo=;
+	s=korg; t=1760713809;
+	bh=mdqvXTuO29B7LluOqvIApCMvQdrpmRRKcA1W8YS5e70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCqm00yyYna1QIy9XwJgB9EHL+68R7FDh6s+08FsrQqJSdbAHoL7cr+4Lld/HPujS
-	 SeLXpI5hs499PKmv9RPAMSTy17O3F6kenmx0oBZFtBJTHlktJfMtXBhx6Flxec3bpD
-	 JwHwo6039fY4D/KB2RABcm3T8ubyKom3Su3z6ejc=
+	b=1+rSXsvAj+fvF72dvyvA6m9OgDOGcWW77X3LRRBA+q8CsK9cZVS0EoNJjEW0S2Xrm
+	 RwtvBlmgdsf2iEsYLlmLtL8eo7pnZV4ChlUEeHxTteUZXBd1Ky44rKyEro6iq+S+RP
+	 EED1ksK4x/jukufSf6aOM9oYvipL1UGUqeb4mBk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Manivannan Sadhasivam <mani@kernel.org>
-Subject: [PATCH 6.12 182/277] PCI: j721e: Fix programming sequence of "strap" settings
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.6 128/201] PCI/ERR: Fix uevent on failure to recover
 Date: Fri, 17 Oct 2025 16:53:09 +0200
-Message-ID: <20251017145153.771720546@linuxfoundation.org>
+Message-ID: <20251017145139.442170723@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit f842d3313ba179d4005096357289c7ad09cec575 upstream.
+commit 1cbc5e25fb70e942a7a735a1f3d6dd391afc9b29 upstream.
 
-The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
-Root-Complex and Endpoint modes of operation. The Glue Layer allows
-"strapping" the Mode of operation of the Controller, the Link Speed
-and the Link Width. This is enabled by programming the "PCIEn_CTRL"
-register (n corresponds to the PCIe instance) within the CTRL_MMR
-memory-mapped register space. The "reset-values" of the registers are
-also different depending on the mode of operation.
+Upon failure to recover from a PCIe error through AER, DPC or EDR, a
+uevent is sent to inform user space about disconnection of the bridge
+whose subordinate devices failed to recover.
 
-Since the PCIe Controller latches onto the "reset-values" immediately
-after being powered on, if the Glue Layer configuration is not done while
-the PCIe Controller is off, it will result in the PCIe Controller latching
-onto the wrong "reset-values". In practice, this will show up as a wrong
-representation of the PCIe Controller's capability structures in the PCIe
-Configuration Space. Some such capabilities which are supported by the PCIe
-Controller in the Root-Complex mode but are incorrectly latched onto as
-being unsupported are:
-- Link Bandwidth Notification
-- Alternate Routing ID (ARI) Forwarding Support
-- Next capability offset within Advanced Error Reporting (AER) capability
+However the bridge itself is not disconnected.  Instead, a uevent should
+be sent for each of the subordinate devices.
 
-Fix this by powering off the PCIe Controller before programming the "strap"
-settings and powering it on after that. The runtime PM APIs namely
-pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
-increment the usage counter respectively, causing GENPD to power off and
-power on the PCIe Controller.
+Only if the "bridge" happens to be a Root Complex Event Collector or
+Integrated Endpoint does it make sense to send a uevent for it (because
+there are no subordinate devices).
 
-Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250908120828.1471776-1-s-vadapalli@ti.com
+Right now if there is a mix of subordinate devices with and without
+pci_error_handlers, a BEGIN_RECOVERY event is sent for those with
+pci_error_handlers but no FAILED_RECOVERY event is ever sent for them
+afterwards.  Fix it.
+
+Fixes: 856e1eb9bdd4 ("PCI/AER: Add uevents in AER and EEH error/resume")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org  # v4.16+
+Link: https://patch.msgid.link/68fc527a380821b5d861dd554d2ce42cb739591c.1755008151.git.lukas@wunner.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/cadence/pci-j721e.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/pci/pcie/err.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -277,6 +277,25 @@ static int j721e_pcie_ctrl_init(struct j
- 	if (!ret)
- 		offset = args.args[0];
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -108,6 +108,12 @@ static int report_normal_detected(struct
+ 	return report_error_detected(dev, pci_channel_io_normal, data);
+ }
  
-+	/*
-+	 * The PCIe Controller's registers have different "reset-values"
-+	 * depending on the "strap" settings programmed into the PCIEn_CTRL
-+	 * register within the CTRL_MMR memory-mapped register space.
-+	 * The registers latch onto a "reset-value" based on the "strap"
-+	 * settings sampled after the PCIe Controller is powered on.
-+	 * To ensure that the "reset-values" are sampled accurately, power
-+	 * off the PCIe Controller before programming the "strap" settings
-+	 * and power it on after that. The runtime PM APIs namely
-+	 * pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
-+	 * increment the usage counter respectively, causing GENPD to power off
-+	 * and power on the PCIe Controller.
-+	 */
-+	ret = pm_runtime_put_sync(dev);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to power off PCIe Controller\n");
-+		return ret;
-+	}
++static int report_perm_failure_detected(struct pci_dev *dev, void *data)
++{
++	pci_uevent_ers(dev, PCI_ERS_RESULT_DISCONNECT);
++	return 0;
++}
 +
- 	ret = j721e_pcie_set_mode(pcie, syscon, offset);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to set pci mode\n");
-@@ -295,6 +314,12 @@ static int j721e_pcie_ctrl_init(struct j
- 		return ret;
- 	}
+ static int report_mmio_enabled(struct pci_dev *dev, void *data)
+ {
+ 	struct pci_driver *pdrv;
+@@ -275,7 +281,7 @@ pci_ers_result_t pcie_do_recovery(struct
+ failed:
+ 	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
  
-+	ret = pm_runtime_get_sync(dev);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to power on PCIe Controller\n");
-+		return ret;
-+	}
-+
- 	/* Enable ACSPCIE refclk output if the optional property exists */
- 	syscon = syscon_regmap_lookup_by_phandle_optional(node,
- 						"ti,syscon-acspcie-proxy-ctrl");
+-	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
++	pci_walk_bridge(bridge, report_perm_failure_detected, NULL);
+ 
+ 	/* TODO: Should kernel panic here? */
+ 	pci_info(bridge, "device recovery failed\n");
 
 
 
