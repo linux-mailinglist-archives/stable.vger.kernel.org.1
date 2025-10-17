@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 818E6BE9BC4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:04 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF019BE9ACF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EFE63AF052
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A12F935D7CE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A441E32E141;
-	Fri, 17 Oct 2025 15:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04683289811;
+	Fri, 17 Oct 2025 15:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmYE3KTH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNjj/Tbu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CEC33711D;
-	Fri, 17 Oct 2025 15:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E942F12D9;
+	Fri, 17 Oct 2025 15:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713613; cv=none; b=oIc7eebLQI7T2+wNgQF3b9Qf7oPRfFez/ybY8AsoAw/nnkJd2GwVnCwBzpWdpkJXr7gho2kwVQz64TyBFKFpBLDEQYC0IcGtcJdkjFR7uGdVaPKYbdBA6agjusC9qJnko6vDyIBQ+C6mUKnI+TBjBvor+CjoILKyZuBVfYCyLOM=
+	t=1760714347; cv=none; b=FJ+XQNuEVT+1cW6uEBSj80p34YTIpxqikohqNkklfzxwr8CuFbES2HzOH5uchY8RMZ2nzwOqJCOs3GznvTzNocGW7bZf5ppdD9VNv6FXmZ37d30GnvN2qRY9g2hSm7FgyE9i4kURyC+aZvxAaNPb2oJLeIG9EL+5gLMwWuICrC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713613; c=relaxed/simple;
-	bh=hyncnS0saCEBj6QBS9C/zBbSkyLmF9am9VtIusJwQ3A=;
+	s=arc-20240116; t=1760714347; c=relaxed/simple;
+	bh=LsZg75N0lA+uEXJfVm+PXgAOkF9h9qlh3FJWbpu9ED4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B8PxM469tDy+G8IYkGRXNJfazMdhqL8QVgROIPhjhWS8OVsycVdvp61JGBi04tilzTRA2mj+VuviectIIt/epI1iQOvArl1bi/95QT3iJYkYHazkM0mrBZw/9V9AiRXL0TBVnUQEc+NB+8gDAZyw8E21JVLJfKTXjzm5gBDTuBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmYE3KTH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4181C4CEFE;
-	Fri, 17 Oct 2025 15:06:52 +0000 (UTC)
+	 MIME-Version; b=BAMXBNBiM8PnSV2U4gIdTCOYeFZ4om8ks9UQkNIi8VDxk7Yhgts3kcSJ2+tCjxG24MBdkrARArJC+wQcoErfEjaUCJ+LLiWrk4qTJY6Tez0tbfdWW39vfDT1qREaMoqNvc4KZSq+QhQ/xL5D7dLTOy6xOIq+7Q3v9gmvoDS8jNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNjj/Tbu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4C7C4CEE7;
+	Fri, 17 Oct 2025 15:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713613;
-	bh=hyncnS0saCEBj6QBS9C/zBbSkyLmF9am9VtIusJwQ3A=;
+	s=korg; t=1760714347;
+	bh=LsZg75N0lA+uEXJfVm+PXgAOkF9h9qlh3FJWbpu9ED4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmYE3KTHy26VRGDvIMhCRrikMxtEhY7fd7DgT0+vONiGvwlSpEMiHqd7GLsjaHwHM
-	 e8OAcLMiEV9hqdMPUXJUeAQbe1uL9jIxy4QK4QLmT3hq9B5Gyj0MRIu8izGnSrroYG
-	 2WmP4W6xziU8QqWVFALP+13Z2UyQIHMLCQoF3OSI=
+	b=sNjj/TbuoSmfaYCsqQKPhOK3R1ioBj2xykLC5a6lY/qeGuJkv+zg2S1ddLprgp4Xn
+	 +x+EtjbgncE2lFs0SeS88Ye4h2dPe8PkL3rmA2x2Oqd0VDSNECxJ91X9Y843tr/0dl
+	 n+XhQoPqJjWkdlt8f5oLpxV4nx8nW4bLFe/Rg+Ws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Tang <danielzgtg.opensource@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 059/201] ACPI: TAD: Add missing sysfs_remove_group() for ACPI_TAD_RT
-Date: Fri, 17 Oct 2025 16:52:00 +0200
-Message-ID: <20251017145136.913907035@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 114/277] media: lirc: Fix error handling in lirc_register()
+Date: Fri, 17 Oct 2025 16:52:01 +0200
+Message-ID: <20251017145151.290069704@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Tang <danielzgtg.opensource@gmail.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 4aac453deca0d9c61df18d968f8864c3ae7d3d8d upstream.
+commit 4f4098c57e139ad972154077fb45c3e3141555dd upstream.
 
-Previously, after `rmmod acpi_tad`, `modprobe acpi_tad` would fail
-with this dmesg:
+When cdev_device_add() failed, calling put_device() to explicitly
+release dev->lirc_dev. Otherwise, it could cause the fault of the
+reference count.
 
-sysfs: cannot create duplicate filename '/devices/platform/ACPI000E:00/time'
-Call Trace:
- <TASK>
- dump_stack_lvl+0x6c/0x90
- dump_stack+0x10/0x20
- sysfs_warn_dup+0x8b/0xa0
- sysfs_add_file_mode_ns+0x122/0x130
- internal_create_group+0x1dd/0x4c0
- sysfs_create_group+0x13/0x20
- acpi_tad_probe+0x147/0x1f0 [acpi_tad]
- platform_probe+0x42/0xb0
- </TASK>
-acpi-tad ACPI000E:00: probe with driver acpi-tad failed with error -17
+Found by code review.
 
-Fixes: 3230b2b3c1ab ("ACPI: TAD: Add low-level support for real time capability")
-Signed-off-by: Daniel Tang <danielzgtg.opensource@gmail.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/2881298.hMirdbgypa@daniel-desktop3
-Cc: 5.2+ <stable@vger.kernel.org> # 5.2+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: a6ddd4fecbb0 ("media: lirc: remove last remnants of lirc kapi")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_tad.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/rc/lirc_dev.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/acpi_tad.c
-+++ b/drivers/acpi/acpi_tad.c
-@@ -564,6 +564,9 @@ static int acpi_tad_remove(struct platfo
+--- a/drivers/media/rc/lirc_dev.c
++++ b/drivers/media/rc/lirc_dev.c
+@@ -736,11 +736,11 @@ int lirc_register(struct rc_dev *dev)
  
- 	pm_runtime_get_sync(dev);
+ 	cdev_init(&dev->lirc_cdev, &lirc_fops);
  
-+	if (dd->capabilities & ACPI_TAD_RT)
-+		sysfs_remove_group(&dev->kobj, &acpi_tad_time_attr_group);
++	get_device(&dev->dev);
 +
- 	if (dd->capabilities & ACPI_TAD_DC_WAKE)
- 		sysfs_remove_group(&dev->kobj, &acpi_tad_dc_attr_group);
+ 	err = cdev_device_add(&dev->lirc_cdev, &dev->lirc_dev);
+ 	if (err)
+-		goto out_ida;
+-
+-	get_device(&dev->dev);
++		goto out_put_device;
  
+ 	switch (dev->driver_type) {
+ 	case RC_DRIVER_SCANCODE:
+@@ -764,7 +764,8 @@ int lirc_register(struct rc_dev *dev)
+ 
+ 	return 0;
+ 
+-out_ida:
++out_put_device:
++	put_device(&dev->lirc_dev);
+ 	ida_free(&lirc_ida, minor);
+ 	return err;
+ }
 
 
 
