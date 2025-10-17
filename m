@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-187107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12128BEA95B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:16:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71677BEA9C8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:19:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ED217C6CE5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:33:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ED197C735A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F92336EC9;
-	Fri, 17 Oct 2025 15:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6C332E159;
+	Fri, 17 Oct 2025 15:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZsoQV65"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAEwRtCZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFFB336EC2;
-	Fri, 17 Oct 2025 15:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6EE32C92F;
+	Fri, 17 Oct 2025 15:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715139; cv=none; b=YyaauoxZ1qfgSExFv++KoK85kF4K3H2DGIBwtjhAEnaA42qhidPgrZ7VLCMx9XQpCe+JHhItOk+bj0LxVe6ozLuKn5+tbXpxa67r3dyx1OhivKNnA5lXf4Rn0gzaMEVzjdkufKHW67fGOPodsQyXSxRJZHR91xeeAmLPtuRcsm0=
+	t=1760715147; cv=none; b=MbchUsNr1JLd42afqDsuC+LP27Ft3cO50KOl+mG3nVxZTxf2gatur0Y6sGD+KuxTt0sV7J8PyvmL9KtEcn6W3M9DhWZB2xlyi9E9pJJvAFI/UC2SqTleJkDeMAVB7ik+RwNWeyhWIDWkkZreEMoIt2xQOCIBpXKr7C76EqE4Ly0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715139; c=relaxed/simple;
-	bh=yBV1SL2TL4T+cNtRSkbXKJKGsKNmxzQil7oqwyFDDio=;
+	s=arc-20240116; t=1760715147; c=relaxed/simple;
+	bh=zOhXh2co1OyPz0ab8Hzo/orzDS4dOMFK88kZp0vsBw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FtlQrAn/aWlVHPRX0YdRMylxDY1UDB+lEL5E/MNjXZ3RyOjfUVreKLAF/iap9StMQOAU4UfFWuk/ZEczv2pWdgolCeJTaXo7RBTw7rN/n0Vj7Tx7IFrPGxLTPssCN4g7NRPHInTr04ZZVSNgicRpgafFVCw8hV7Pe3y2Y0bbd00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZsoQV65; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D04C4CEFE;
-	Fri, 17 Oct 2025 15:32:18 +0000 (UTC)
+	 MIME-Version; b=iU6Rt6mmelLTtdpo+v7f78ZdajD6lDqcuvrL7LNWkyrpYueDTOUcvlZ3hfvzqva956Xpn7H3KDZhBD/b8bPc4j6QI+C7c3CuAgbTTrWwYl7UEke6Xc0Z/TzIh95bJ5Fkh5pQ4N+66wq6Ik4RnqWXbMZ82vxbvTpAThu2XYAkIo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAEwRtCZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A231C19421;
+	Fri, 17 Oct 2025 15:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715138;
-	bh=yBV1SL2TL4T+cNtRSkbXKJKGsKNmxzQil7oqwyFDDio=;
+	s=korg; t=1760715147;
+	bh=zOhXh2co1OyPz0ab8Hzo/orzDS4dOMFK88kZp0vsBw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZsoQV65uHivyK1w0fO8mLO+SJ/nKhJN+IFByhgNZd+Oa1Dd85F5B+t/nATJ6/3hv
-	 pHh7rkW7Kp83Ze1MKQJJg0pJFyU+PfJt4qtcWiFVYDgU6ISeAaMyCgjUdnEH8mEPcY
-	 UC7jsVXGMsg0z8iFjgOns3w84P8EHseVwc9/SlGg=
+	b=UAEwRtCZ875SX7ae5SIUzoieMyZpR7/dc81sgim6WGe++NHtY+lpifaOfMFFr7apz
+	 tvAW4eOj+ZQ7yhvHNFevFoBfPS606oltgROIbBC8Qu4PEWciC+uMwky6MshJq1Lm0B
+	 CgrPj7w9Kx2TQdfXjhbHQJqv0Slf9CPH7P9oFZhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Thomas Wismer <thomas.wismer@scs.ch>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 111/371] drm/amd/display: Properly disable scaling on DCE6
-Date: Fri, 17 Oct 2025 16:51:26 +0200
-Message-ID: <20251017145205.954590564@linuxfoundation.org>
+Subject: [PATCH 6.17 114/371] net: pse-pd: tps23881: Fix current measurement scaling
+Date: Fri, 17 Oct 2025 16:51:29 +0200
+Message-ID: <20251017145206.061457266@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -60,103 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Thomas Wismer <thomas.wismer@scs.ch>
 
-[ Upstream commit a7dc87f3448bea5ebe054f14e861074b9c289c65 ]
+[ Upstream commit 2c95a756e0cfc19af6d0b32b0c6cf3bada334998 ]
 
-SCL_SCALER_ENABLE can be used to enable/disable the scaler
-on DCE6. Program it to 0 when scaling isn't used, 1 when used.
-Additionally, clear some other registers when scaling is
-disabled and program the SCL_UPDATE register as recommended.
+The TPS23881 improves on the TPS23880 with current sense resistors reduced
+from 255 mOhm to 200 mOhm. This has a direct impact on the scaling of the
+current measurement. However, the latest TPS23881 data sheet from May 2023
+still shows the scaling of the TPS23880 model.
 
-This fixes visible glitches for users whose BIOS sets up a
-mode with scaling at boot, which DC was unable to clean up.
-
-Fixes: b70aaf5586f2 ("drm/amd/display: dce_transform: add DCE6 specific macros,functions")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 7f076ce3f1733 ("net: pse-pd: tps23881: Add support for power limit and measurement features")
+Signed-off-by: Thomas Wismer <thomas.wismer@scs.ch>
+Acked-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/20251006204029.7169-2-thomas@wismer.xyz
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/dce/dce_transform.c    | 15 +++++++++++----
- .../gpu/drm/amd/display/dc/dce/dce_transform.h    |  2 ++
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/net/pse-pd/tps23881.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-index e5c2fb134d14d..1ab5ae9b5ea51 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-@@ -154,10 +154,13 @@ static bool dce60_setup_scaling_configuration(
- 	REG_SET(SCL_BYPASS_CONTROL, 0, SCL_BYPASS_MODE, 0);
+diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
+index 63f8f43062bce..b724b222ab44c 100644
+--- a/drivers/net/pse-pd/tps23881.c
++++ b/drivers/net/pse-pd/tps23881.c
+@@ -62,7 +62,7 @@
+ #define TPS23881_REG_SRAM_DATA	0x61
  
- 	if (data->taps.h_taps + data->taps.v_taps <= 2) {
--		/* Set bypass */
--
--		/* DCE6 has no SCL_MODE register, skip scale mode programming */
-+		/* Disable scaler functionality */
-+		REG_WRITE(SCL_SCALER_ENABLE, 0);
+ #define TPS23881_UV_STEP	3662
+-#define TPS23881_NA_STEP	70190
++#define TPS23881_NA_STEP	89500
+ #define TPS23881_MW_STEP	500
+ #define TPS23881_MIN_PI_PW_LIMIT_MW	2000
  
-+		/* Clear registers that can cause glitches even when the scaler is off */
-+		REG_WRITE(SCL_TAP_CONTROL, 0);
-+		REG_WRITE(SCL_AUTOMATIC_MODE_CONTROL, 0);
-+		REG_WRITE(SCL_F_SHARP_CONTROL, 0);
- 		return false;
- 	}
- 
-@@ -165,7 +168,7 @@ static bool dce60_setup_scaling_configuration(
- 			SCL_H_NUM_OF_TAPS, data->taps.h_taps - 1,
- 			SCL_V_NUM_OF_TAPS, data->taps.v_taps - 1);
- 
--	/* DCE6 has no SCL_MODE register, skip scale mode programming */
-+	REG_WRITE(SCL_SCALER_ENABLE, 1);
- 
- 	/* DCE6 has no SCL_BOUNDARY_MODE bit, skip replace out of bound pixels */
- 
-@@ -502,6 +505,8 @@ static void dce60_transform_set_scaler(
- 	REG_SET(DC_LB_MEM_SIZE, 0,
- 		DC_LB_MEM_SIZE, xfm_dce->lb_memory_size);
- 
-+	REG_WRITE(SCL_UPDATE, 0x00010000);
-+
- 	/* Clear SCL_F_SHARP_CONTROL value to 0 */
- 	REG_WRITE(SCL_F_SHARP_CONTROL, 0);
- 
-@@ -564,6 +569,8 @@ static void dce60_transform_set_scaler(
- 	/* DCE6 has no SCL_COEF_UPDATE_COMPLETE bit to flip to new coefficient memory */
- 
- 	/* DCE6 DATA_FORMAT register does not support ALPHA_EN */
-+
-+	REG_WRITE(SCL_UPDATE, 0);
- }
- #endif
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-index ff746fba850bc..eb716e8337e23 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-@@ -155,6 +155,7 @@
- 	SRI(SCL_COEF_RAM_TAP_DATA, SCL, id), \
- 	SRI(VIEWPORT_START, SCL, id), \
- 	SRI(VIEWPORT_SIZE, SCL, id), \
-+	SRI(SCL_SCALER_ENABLE, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_INIT_RGB_LUMA, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_INIT_CHROMA, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_SCALE_RATIO, SCL, id), \
-@@ -592,6 +593,7 @@ struct dce_transform_registers {
- 	uint32_t SCL_VERT_FILTER_SCALE_RATIO;
- 	uint32_t SCL_HORZ_FILTER_INIT;
- #if defined(CONFIG_DRM_AMD_DC_SI)
-+	uint32_t SCL_SCALER_ENABLE;
- 	uint32_t SCL_HORZ_FILTER_INIT_RGB_LUMA;
- 	uint32_t SCL_HORZ_FILTER_INIT_CHROMA;
- #endif
 -- 
 2.51.0
 
