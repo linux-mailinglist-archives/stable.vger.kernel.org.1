@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-187371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF179BEA2CD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04EBDBEA401
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 115EC1886FE0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B00937416C1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CD3330B31;
-	Fri, 17 Oct 2025 15:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F9E330B19;
+	Fri, 17 Oct 2025 15:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUii8c0a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFXGU1ee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F746330B24;
-	Fri, 17 Oct 2025 15:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808AB330B0C;
+	Fri, 17 Oct 2025 15:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715881; cv=none; b=Bn5MzzJs1RVufdx8WUBaYket2cHPgiRUKk91cgC/L+/j35trbgm1+mzVVudIBAaQYqFJQ8kUMS2TX+j2vwCTTSnYZyvPJ6AbX3VpZ1j295UhL2A+ET1aCA4U9zgst96sJtzgjpZDHEIW0cu2B3KLUHut3HYcOUWy9bCkGiz9TlA=
+	t=1760715892; cv=none; b=S84s2ete6Usy4Ig/DjfoVLzxEc9q5yRbCF6JbbGeYUgF1/0HCexZ7lydK9A3SPmc4X3VXyYGrBnwd6H9gKZ7qpPc1HnP15z9L3ObOI3lPrUzqG0VymKvQ6UYO7ZqBhsxpUy/mBTZmd27cVTdbGhhgjjD6lBi+No9Tqg9LSWDJ+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715881; c=relaxed/simple;
-	bh=nQzHJ31iIRhHMqIFuxDWSQtUrTs90ANnC4Ex4xUgsGA=;
+	s=arc-20240116; t=1760715892; c=relaxed/simple;
+	bh=13osy5OuIN9wROrH3u5QoCJ8O+XCKY8gGb5LtXm9+a8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kjc+fXuBQS/HfCYu7+eG0cOqODGmpa1M56iYMRlXXN6J0PhzG/MJAEnWvrI4UKDyzltqoCFg31iVpSUwklnWGID6llavss6nfY3tpf8kT99k0dVgW1+5VJGdiT7cCx5xw0gKCXhPZNhJduibw7qhHvLJEyHN4MyGCPtHNVWvKpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUii8c0a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77273C4CEE7;
-	Fri, 17 Oct 2025 15:44:40 +0000 (UTC)
+	 MIME-Version; b=O8A5P5VPC1c8N1NYUMOcFkEW3zDwq161uDMZYMc+00UOoIWPJc0paWNVK72ebIBYFq/Tlso7DS6dQkJveBDfJph2eLqdLH5l0gAWzx+sX8JVzLIl/5cuP8t4bLJC1Vidr1heVv0C3ywzkDUQ2ajqU9XC4Kxs0366ADP4jB7WsCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFXGU1ee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B98C113D0;
+	Fri, 17 Oct 2025 15:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715880;
-	bh=nQzHJ31iIRhHMqIFuxDWSQtUrTs90ANnC4Ex4xUgsGA=;
+	s=korg; t=1760715892;
+	bh=13osy5OuIN9wROrH3u5QoCJ8O+XCKY8gGb5LtXm9+a8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUii8c0a2pqiii7lsOnVW3PoQPytthpV0475U4TVU2BXW0D+ny7GVMpaBN1009mCd
-	 8tuWHFWD944IieScT1ky41fdI1roUtWpbzKUtOoVg/TBSFQ7mMENeTb6WeYg0dKfNJ
-	 FkGutuslxCsee1bTfkxgQlZvMHGq3D/Z8UO0GUVc=
+	b=WFXGU1eepqgUJcoQAA+NEtGmz6Fe0PqtPCoYt30SsFHr9vOAfS1RpVYJS0g4jLqkw
+	 fYVHyAMDxBtFs39xqMye9rIy72Mt2ePvsL1/X6ObFwOu/1e42tRdzn20ffAlrhuf73
+	 Ff4NqMGCXwi00w/BUsiYZBFc5tWSwuYikWC5S79c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	stable@kernel.org,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Jan Kara <jack@suse.cz>,
+	"Darrick J. Wong" <djwong@kernel.org>,
 	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.17 342/371] ext4: correctly handle queries for metadata mappings
-Date: Fri, 17 Oct 2025 16:55:17 +0200
-Message-ID: <20251017145214.455177917@linuxfoundation.org>
+Subject: [PATCH 6.17 343/371] ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()
+Date: Fri, 17 Oct 2025 16:55:18 +0200
+Message-ID: <20251017145214.490866811@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -67,99 +66,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 46c22a8bb4cb03211da1100d7ee4a2005bf77c70 upstream.
+commit 8ecb790ea8c3fc69e77bace57f14cf0d7c177bd8 upstream.
 
-Currently, our handling of metadata is _ambiguous_ in some scenarios,
-that is, we end up returning unknown if the range only covers the
-mapping partially.
+Unlike other strings in the ext4 superblock, we rely on tune2fs to
+make sure s_mount_opts is NUL terminated.  Harden
+parse_apply_sb_mount_options() by treating s_mount_opts as a potential
+__nonstring.
 
-For example, in the following case:
-
-$ xfs_io -c fsmap -d
-
-  0: 254:16 [0..7]: static fs metadata 8
-  1: 254:16 [8..15]: special 102:1 8
-  2: 254:16 [16..5127]: special 102:2 5112
-  3: 254:16 [5128..5255]: special 102:3 128
-  4: 254:16 [5256..5383]: special 102:4 128
-  5: 254:16 [5384..70919]: inodes 65536
-  6: 254:16 [70920..70967]: unknown 48
-  ...
-
-$ xfs_io -c fsmap -d 24 33
-
-  0: 254:16 [24..39]: unknown 16  <--- incomplete reporting
-
-$ xfs_io -c fsmap -d 24 33  (With patch)
-
-    0: 254:16 [16..5127]: special 102:2 5112
-
-This is because earlier in ext4_getfsmap_meta_helper, we end up ignoring
-any extent that starts before our queried range, but overlaps it. While
-the man page [1] is a bit ambiguous on this, this fix makes the output
-make more sense since we are anyways returning an "unknown" extent. This
-is also consistent to how XFS does it:
-
-$ xfs_io -c fsmap -d
-
-  ...
-  6: 254:16 [104..127]: free space 24
-  7: 254:16 [128..191]: inodes 64
-  ...
-
-$ xfs_io -c fsmap -d 137 150
-
-  0: 254:16 [128..191]: inodes 64   <-- full extent returned
-
- [1] https://man7.org/linux/man-pages/man2/ioctl_getfsmap.2.html
-
-Reported-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: stable@kernel.org
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Message-ID: <023f37e35ee280cd9baac0296cbadcbe10995cab.1757058211.git.ojaswin@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Fixes: 8b67f04ab9de ("ext4: Add mount options in superblock")
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Message-ID: <20250916-tune2fs-v2-1-d594dc7486f0@mit.edu>
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fsmap.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ fs/ext4/super.c |   17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -74,7 +74,8 @@ static int ext4_getfsmap_dev_compare(con
- static bool ext4_getfsmap_rec_before_low_key(struct ext4_getfsmap_info *info,
- 					     struct ext4_fsmap *rec)
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2469,7 +2469,7 @@ static int parse_apply_sb_mount_options(
+ 					struct ext4_fs_context *m_ctx)
  {
--	return rec->fmr_physical < info->gfi_low.fmr_physical;
-+	return rec->fmr_physical + rec->fmr_length <=
-+	       info->gfi_low.fmr_physical;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	char *s_mount_opts = NULL;
++	char s_mount_opts[65];
+ 	struct ext4_fs_context *s_ctx = NULL;
+ 	struct fs_context *fc = NULL;
+ 	int ret = -ENOMEM;
+@@ -2477,15 +2477,11 @@ static int parse_apply_sb_mount_options(
+ 	if (!sbi->s_es->s_mount_opts[0])
+ 		return 0;
+ 
+-	s_mount_opts = kstrndup(sbi->s_es->s_mount_opts,
+-				sizeof(sbi->s_es->s_mount_opts),
+-				GFP_KERNEL);
+-	if (!s_mount_opts)
+-		return ret;
++	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts);
+ 
+ 	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
+ 	if (!fc)
+-		goto out_free;
++		return -ENOMEM;
+ 
+ 	s_ctx = kzalloc(sizeof(struct ext4_fs_context), GFP_KERNEL);
+ 	if (!s_ctx)
+@@ -2517,11 +2513,8 @@ parse_failed:
+ 	ret = 0;
+ 
+ out_free:
+-	if (fc) {
+-		ext4_fc_free(fc);
+-		kfree(fc);
+-	}
+-	kfree(s_mount_opts);
++	ext4_fc_free(fc);
++	kfree(fc);
+ 	return ret;
  }
  
- /*
-@@ -200,15 +201,18 @@ static int ext4_getfsmap_meta_helper(str
- 			  ext4_group_first_block_no(sb, agno));
- 	fs_end = fs_start + EXT4_C2B(sbi, len);
- 
--	/* Return relevant extents from the meta_list */
-+	/*
-+	 * Return relevant extents from the meta_list. We emit all extents that
-+	 * partially/fully overlap with the query range
-+	 */
- 	list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
--		if (p->fmr_physical < info->gfi_next_fsblk) {
-+		if (p->fmr_physical + p->fmr_length <= info->gfi_next_fsblk) {
- 			list_del(&p->fmr_list);
- 			kfree(p);
- 			continue;
- 		}
--		if (p->fmr_physical <= fs_start ||
--		    p->fmr_physical + p->fmr_length <= fs_end) {
-+		if (p->fmr_physical <= fs_end &&
-+		    p->fmr_physical + p->fmr_length > fs_start) {
- 			/* Emit the retained free extent record if present */
- 			if (info->gfi_lastfree.fmr_owner) {
- 				error = ext4_getfsmap_helper(sb, info,
 
 
 
