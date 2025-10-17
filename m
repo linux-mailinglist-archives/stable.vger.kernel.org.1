@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330FEBEA578
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C482ABEA6B1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B91BF188B15F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14ADD6210EB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7672B330B1E;
-	Fri, 17 Oct 2025 15:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07115332912;
+	Fri, 17 Oct 2025 15:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCMXggS0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ldn704uU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7CF330B26;
-	Fri, 17 Oct 2025 15:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D5533290B;
+	Fri, 17 Oct 2025 15:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716417; cv=none; b=OjmcbKIlJl6fOJrBUPsLJY2DK0oOksn/pGmI0GJF/RPCesrtbd14Tdw5fkwr0GLwommlBf6GU1UvfMZH7FT9WyMWeSfchyQlSodtRaEt+Nq/kR0zTRnudmDGIY6dakTvPpBj1aSA52idtkAzLszvzyQzZ/N95PIGWAV9uW6Cj5A=
+	t=1760715611; cv=none; b=qN0M3FGEsPJwZIERLepWxr2zLMXpE8LsEZ3Wj7/AOapIL9kLPlFggiVPzqW2SgYalvRIPH3pAcp8cqGJrhKOjLHcd8UKGcyZgFB2pCqut45/eRfAc6HmPb5tyM730oA4woebxZTFQrvSu+ICvjuIOr6SOud+fOcGiLgMfcnyp9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716417; c=relaxed/simple;
-	bh=JFLzFNlxbsQpCbCIxt4FiBE/fBGp918Jsg491B86ANQ=;
+	s=arc-20240116; t=1760715611; c=relaxed/simple;
+	bh=1A2S8ghDJ8TW+ZRqaSS27HQUcka5Nny7bzp2xI/ujtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8kXAUWJ3dyWHKlMSsoEqLTJ+l2Vli5pr1kvq/x3b9YxwCwVXjxGInP0qn45T9VVA4WGCud7pXAEIvNAPblbtFawPzd5DDZuaY0IFBY52YqkPfDk+VZqKGsrhTiP+RPrDSYql06Gg9wFYPmhbR6+mV3DmkDJnThCx1i2Xb35grQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCMXggS0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DD3C4CEE7;
-	Fri, 17 Oct 2025 15:53:36 +0000 (UTC)
+	 MIME-Version; b=lKxc6SJA9d/zYsVBQWOye7iJi3CVRhvel+plcYJTG+rMNW50iBYiOLUcbZ+EnQHBBk4U4TcmTW5/ygSdtqYL3rOEiiBUVCEqnqQ867m5E6olsnAC/F5YanupHk2WT9XzxEATTPiDoLCoNXwnAhKl5hBn7le5g/dbXfgORnT8yuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ldn704uU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA30C4CEE7;
+	Fri, 17 Oct 2025 15:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716417;
-	bh=JFLzFNlxbsQpCbCIxt4FiBE/fBGp918Jsg491B86ANQ=;
+	s=korg; t=1760715611;
+	bh=1A2S8ghDJ8TW+ZRqaSS27HQUcka5Nny7bzp2xI/ujtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCMXggS0Gh792NGySLpiut3drMABqslMHX+V3VLXh05y3Cvbyjf4dHk7EZ2EidBhJ
-	 ZASlWQpWz9RwdBU7+V12KHpowpq57e+4qp7901LKRQsGq+Gl6fLTo0a7ht27V8Mv1f
-	 er0czuNrc29LheiexSjoZ8y5a3f1hXCo+boxVOdo=
+	b=Ldn704uUWAu0MxwLhg8Mi8FDPi8t9bUpVmdnBUmZqEW1dr0/FYpNAO8hpgrtAVxfm
+	 YYppBoSWhs28GzQXD4yAJltMgep5bwgHTrWoW8RXRXCdpld86BMyogp4BWuyoBYdLb
+	 cH8Gd1ycERY3tTOneEdlqF+amRJxJGANBm951Mqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Karanja <karanja99erick@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 151/276] net: fsl_pq_mdio: Fix device node reference leak in fsl_pq_mdio_probe
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.17 269/371] memory: stm32_omm: Fix req2ack update test
 Date: Fri, 17 Oct 2025 16:54:04 +0200
-Message-ID: <20251017145147.991161149@linuxfoundation.org>
+Message-ID: <20251017145211.809442628@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Karanja <karanja99erick@gmail.com>
+From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-[ Upstream commit 521405cb54cd2812bbb6dedd5afc14bca1e7e98a ]
+commit d140f3ba76ac98faad7f9b37ef5a3dcbd57f59e2 upstream.
 
-Add missing of_node_put call to release device node tbi obtained
-via for_each_child_of_node.
+If "st,omm-req2ack-ns" property is found and its value is not 0,
+the current test doesn't allow to compute and set req2ack value,
+Fix this test.
 
-Fixes: afae5ad78b342 ("net/fsl_pq_mdio: streamline probing of MDIO nodes")
-Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
-Link: https://patch.msgid.link/20251002174617.960521-1-karanja99erick@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8181d061dcff ("memory: Add STM32 Octo Memory Manager driver")
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Link: https://lore.kernel.org/r/20250807-upstream_omm_fix_req2ack_test_condition-v2-1-d7df4af2b48b@foss.st.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fsl_pq_mdio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/memory/stm32_omm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fsl_pq_mdio.c b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
-index 9d58d83344670..ea49b0df397e5 100644
---- a/drivers/net/ethernet/freescale/fsl_pq_mdio.c
-+++ b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
-@@ -482,10 +482,12 @@ static int fsl_pq_mdio_probe(struct platform_device *pdev)
- 					"missing 'reg' property in node %pOF\n",
- 					tbi);
- 				err = -EBUSY;
-+				of_node_put(tbi);
- 				goto error;
- 			}
- 			set_tbipa(*prop, pdev,
- 				  data->get_tbipa, priv->map, &res);
-+			of_node_put(tbi);
- 		}
- 	}
+diff --git a/drivers/memory/stm32_omm.c b/drivers/memory/stm32_omm.c
+index bee2ecc8c2b9..5d06623f3f68 100644
+--- a/drivers/memory/stm32_omm.c
++++ b/drivers/memory/stm32_omm.c
+@@ -238,7 +238,7 @@ static int stm32_omm_configure(struct device *dev)
+ 		if (mux & CR_MUXEN) {
+ 			ret = of_property_read_u32(dev->of_node, "st,omm-req2ack-ns",
+ 						   &req2ack);
+-			if (!ret && !req2ack) {
++			if (!ret && req2ack) {
+ 				req2ack = DIV_ROUND_UP(req2ack, NSEC_PER_SEC / clk_rate_max) - 1;
  
+ 				if (req2ack > 256)
 -- 
 2.51.0
 
