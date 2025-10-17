@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C26BEA3C5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:17 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA5EBE9F9F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D8176587623
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 029DF566094
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8BC3328EC;
-	Fri, 17 Oct 2025 15:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEED3208;
+	Fri, 17 Oct 2025 15:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eM3M+6Xz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7axWOmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365A132E131;
-	Fri, 17 Oct 2025 15:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292953BB5A;
+	Fri, 17 Oct 2025 15:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715658; cv=none; b=je8j6PemQpc6A5VrE0wXCs7GVkAqUh3YraIYJlHQyvETb9kfVtM11iMW1nUG0SVArvtYVvXp3xd3fRcutITKjKGFwW4H954LCzPFlDqHChvmn3ha6DIrnxxpV/ZP1DCYF7whVRpe9sEuCvgE2ZNyGkpJkdd2FUG3ngYJvN1nRB8=
+	t=1760714774; cv=none; b=nhD2RS9iujRfot1HvSycQCNEMEqMFk1DYpR+UC6QdOT+Eo5m5LU11iHmGk0G8UWEWedOlR5Oy+/JKyr6pusCWs8f9NatHX2QdJVutr6prYLrwE9BOA9qTgCCIuts4aG+xC/k6jXslzDUOSdgTnjITFlh7Uquq5hsMgBong+arwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715658; c=relaxed/simple;
-	bh=aeYQ5Xg5F6RWwuGYjypHMKFyTJNw6OFo2JyGfVxTvH0=;
+	s=arc-20240116; t=1760714774; c=relaxed/simple;
+	bh=Uk1tJ1do6LXFJdqvJtZHXw66C6akSoIpJEDY2sELd3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sar8Ue04ZTLYFjiB6KVtakf+CMVv+DAUwotjPUxJLnGeWH/WKWkLVjNlZGCvf51HRcEaMOL3stIjrLGqBDtzOSmY7tW4/8IuRV6NI/97dDkj0HupVHWy6AKcwWXGpCgE2X+CZCiKxbN05R5LwiCntDzksbbEjzErTwFjFYLHT+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eM3M+6Xz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC6DC4CEFE;
-	Fri, 17 Oct 2025 15:40:57 +0000 (UTC)
+	 MIME-Version; b=T9FMManmHPQNg/5h06Ya9P+IqBBjx3Om0a9xr6SNcO/GnTdrfW9/w6/0myXzmndlp+c9Cpo/fOSxtgt++lo4AJHlGzIC73wUYlQdtMzlc8OggJlI5UhGVfwGvK+Z0KEreTQXzhZgsVQd3tdtspT6RRaTFRU5LCzkJSltYk+IkV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7axWOmN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77DBC4CEE7;
+	Fri, 17 Oct 2025 15:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715657;
-	bh=aeYQ5Xg5F6RWwuGYjypHMKFyTJNw6OFo2JyGfVxTvH0=;
+	s=korg; t=1760714774;
+	bh=Uk1tJ1do6LXFJdqvJtZHXw66C6akSoIpJEDY2sELd3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eM3M+6XzGz1kLuX27zmswgogWsltvtLQ0fwn/GsTVbrOINPABqzFK0l0+h7G69Ibv
-	 OGD6sxur3ROa5sG4MtV4KvAkYoUE/Ii755CtVlWfpOs5xa00J3TVwY6JYKnEpqKnd2
-	 jl25E66rJoCS9Y8GVuFjp25y/Uq+00nfflWv9+VE=
+	b=r7axWOmNZIlNgl54uR9GqYKBYUzhrd0KdP8U8EYqPYCYAaeZuOPykBAeyJ7jAZV3q
+	 xUGjjA9EJrTHluaW5KnqnXzpWony98JpTnEAgeOOwJ3otg8GigW7Lln+bZLSyYoyjv
+	 S62jsUUm8W2ffbFohCKRljXHnUb67+ev++tPnltM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <mani@kernel.org>
-Subject: [PATCH 6.17 292/371] PCI/pwrctrl: Fix device and OF node leak at bus scan
-Date: Fri, 17 Oct 2025 16:54:27 +0200
-Message-ID: <20251017145212.635350657@linuxfoundation.org>
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Subject: [PATCH 6.12 261/277] s390/bpf: Write back tail call counter for BPF_PSEUDO_CALL
+Date: Fri, 17 Oct 2025 16:54:28 +0200
+Message-ID: <20251017145156.690461709@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-commit e24bbbe0780262a21fc8619fe99078a5b8d64b18 upstream.
+commit c861a6b147137d10b5ff88a2c492ba376cd1b8b0 upstream.
 
-Make sure to drop the references to the pwrctrl OF node and device taken by
-of_pci_find_child_device() and of_find_device_by_node() respectively when
-scanning the bus.
+The tailcall_bpf2bpf_hierarchy_1 test hangs on s390. Its call graph is
+as follows:
 
-Fixes: 957f40d039a9 ("PCI/pwrctrl: Move creation of pwrctrl devices to pci_scan_device()")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Cc: stable@vger.kernel.org	# v6.15
-Link: https://patch.msgid.link/20250721153609.8611-3-johan+linaro@kernel.org
+  entry()
+    subprog_tail()
+      bpf_tail_call_static(0) -> entry + tail_call_start
+    subprog_tail()
+      bpf_tail_call_static(0) -> entry + tail_call_start
+
+entry() copies its tail call counter to the subprog_tail()'s frame,
+which then increments it. However, the incremented result is discarded,
+leading to an astronomically large number of tail calls.
+
+Fix by writing the incremented counter back to the entry()'s frame.
+
+Fixes: dd691e847d28 ("s390/bpf: Implement bpf_jit_supports_subprog_tailcalls()")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20250813121016.163375-3-iii@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/probe.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ arch/s390/net/bpf_jit_comp.c |   23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index f41128f91ca7..a56dfa1c9b6f 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2516,9 +2516,15 @@ static struct platform_device *pci_pwrctrl_create_device(struct pci_bus *bus, in
- 	struct device_node *np;
- 
- 	np = of_pci_find_child_device(dev_of_node(&bus->dev), devfn);
--	if (!np || of_find_device_by_node(np))
-+	if (!np)
- 		return NULL;
- 
-+	pdev = of_find_device_by_node(np);
-+	if (pdev) {
-+		put_device(&pdev->dev);
-+		goto err_put_of_node;
-+	}
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -1789,13 +1789,6 @@ static noinline int bpf_jit_insn(struct
+ 		jit->seen |= SEEN_FUNC;
+ 		/*
+ 		 * Copy the tail call counter to where the callee expects it.
+-		 *
+-		 * Note 1: The callee can increment the tail call counter, but
+-		 * we do not load it back, since the x86 JIT does not do this
+-		 * either.
+-		 *
+-		 * Note 2: We assume that the verifier does not let us call the
+-		 * main program, which clears the tail call counter on entry.
+ 		 */
+ 		/* mvc tail_call_cnt(4,%r15),frame_off+tail_call_cnt(%r15) */
+ 		_EMIT6(0xd203f000 | offsetof(struct prog_frame, tail_call_cnt),
+@@ -1822,6 +1815,22 @@ static noinline int bpf_jit_insn(struct
+ 		call_r1(jit);
+ 		/* lgr %b0,%r2: load return value into %b0 */
+ 		EMIT4(0xb9040000, BPF_REG_0, REG_2);
 +
- 	/*
- 	 * First check whether the pwrctrl device really needs to be created or
- 	 * not. This is decided based on at least one of the power supplies
-@@ -2526,17 +2532,24 @@ static struct platform_device *pci_pwrctrl_create_device(struct pci_bus *bus, in
- 	 */
- 	if (!of_pci_supply_present(np)) {
- 		pr_debug("PCI/pwrctrl: Skipping OF node: %s\n", np->name);
--		return NULL;
-+		goto err_put_of_node;
++		/*
++		 * Copy the potentially updated tail call counter back.
++		 */
++
++		if (insn->src_reg == BPF_PSEUDO_CALL)
++			/*
++			 * mvc frame_off+tail_call_cnt(%r15),
++			 *     tail_call_cnt(4,%r15)
++			 */
++			_EMIT6(0xd203f000 | (jit->frame_off +
++					     offsetof(struct prog_frame,
++						      tail_call_cnt)),
++			       0xf000 | offsetof(struct prog_frame,
++						 tail_call_cnt));
++
+ 		break;
  	}
- 
- 	/* Now create the pwrctrl device */
- 	pdev = of_platform_device_create(np, NULL, &host->dev);
- 	if (!pdev) {
- 		pr_err("PCI/pwrctrl: Failed to create pwrctrl device for node: %s\n", np->name);
--		return NULL;
-+		goto err_put_of_node;
- 	}
- 
-+	of_node_put(np);
-+
- 	return pdev;
-+
-+err_put_of_node:
-+	of_node_put(np);
-+
-+	return NULL;
- }
- #else
- static struct platform_device *pci_pwrctrl_create_device(struct pci_bus *bus, int devfn)
--- 
-2.51.0
-
+ 	case BPF_JMP | BPF_TAIL_CALL: {
 
 
 
