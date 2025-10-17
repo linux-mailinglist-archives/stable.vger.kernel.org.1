@@ -1,68 +1,75 @@
-Return-Path: <stable+bounces-187042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA46FBE9E2E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA814BE9C0A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C46B188C38C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:29:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 15251583671
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A8F1D5CE0;
-	Fri, 17 Oct 2025 15:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5DCE32E140;
+	Fri, 17 Oct 2025 15:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3oIJtcN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlXFC9Or"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FAF337110;
-	Fri, 17 Oct 2025 15:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822B232C93E;
+	Fri, 17 Oct 2025 15:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714957; cv=none; b=WJLhm0B+mpHa8ORRKKFy3LI8wWew/b+oXG+8iltd+uLqE8O6s8q1Rk1sxz6ejIz5PNVx7bmeyC6cWi0jz9E1t/xMJbn1WpDl3O3irnpGNxhswOMdVFaL9/9miG8N3oYmWkcqGAdp51PKJPWskkuhcdBmj626jw+IykU1qMysFxg=
+	t=1760714065; cv=none; b=UpPQKwt0iz9KjwLxRoJY70zzR2yPnfz0Eb0sXB5RnAPvm4RcpCWGGXHHEj+/I/+IqVE5O40CtZvMOyJf1GsDGfcy3vIOTaVJW2qF3yYtRe2rd7ffYBvewZjThh23jn/vIBJBQTPq487wyku+PPrSTriINqMBgeIUyZbyS9cLTA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714957; c=relaxed/simple;
-	bh=6Fnne7VHaWH9/VTe5Fze+2Jc2HXqu0ZZtKiNCluX6ak=;
+	s=arc-20240116; t=1760714065; c=relaxed/simple;
+	bh=/qG9wSyuKR7mxl3fE5+5Cf0PIs8T2VfkZbZNWTzfrbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vErul7glYemtAYkcVimUFjO6dPtuCWA0ZxowZb7h8WtQdClsGjlUGrGs5rY4s+c6Wn80ZpJa7mUm6kR6i8a31FziReXblEMe1jepz0GsfXjGiPfb0FSPebAFGosIj81zzJdgnMa/FXhd0cTYBvShXpU3GOpTHA4j5ePTcD9h+Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3oIJtcN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C23FC4CEE7;
-	Fri, 17 Oct 2025 15:29:16 +0000 (UTC)
+	 MIME-Version; b=ZOoWwgld1YedLc3BoKuQz+jvNk88m9VIK4Qh4YUol0Qi9VREiviEx55id2Id6TW8bRb/jY+2OVjw6+u9c37GFZxtJvwBLgZDVaoXGi6zgpgCc26xpLhCuLZuM7QyFRf2zEqO3BjoKfNr9r25ZPagloq6bTAiuqpPRDgFnq6werY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlXFC9Or; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BFFC4CEF9;
+	Fri, 17 Oct 2025 15:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714957;
-	bh=6Fnne7VHaWH9/VTe5Fze+2Jc2HXqu0ZZtKiNCluX6ak=;
+	s=korg; t=1760714065;
+	bh=/qG9wSyuKR7mxl3fE5+5Cf0PIs8T2VfkZbZNWTzfrbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s3oIJtcN2zSz1F25Yg6/vpxRzm1NyVenLT/RajFKCHjdI2flvtS+xRvBnxcvz0Nyq
-	 hyhPFtA8BUYwD2o7EOgtt/kCmkzG1KS+UMbXnkrUL7w1VztrXF5M/fS2jsk4BZ98pa
-	 49b35k07oF2Cm5Mj3WN4cYrS4tT8t7G/aHdmpDo0=
+	b=RlXFC9OrdzbtiqY9d+YF7vcSH6/DKJstJhjl1lIcpSEdlK7MyW9ouhqjjzpP0N1Ur
+	 rF6je+z90q8Hh04eApvZGgC5cnjXjz54TIcYP+lcJWXaWDp7hJMAGO7ZAt2Kqzo07o
+	 vFh0A6E7lDEYeNnla1QoZ70fdd0gRhUWoXDDGAyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	James Clark <james.clark@linaro.org>,
 	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
 	Athira Rajeev <atrajeev@linux.ibm.com>,
+	Blake Jones <blakejones@google.com>,
 	Chun-Tse Shao <ctshao@google.com>,
+	Collin Funk <collin.funk1@gmail.com>,
 	Howard Chu <howardchu95@gmail.com>,
 	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
+	Jan Polensky <japo@linux.ibm.com>,
 	Jiri Olsa <jolsa@kernel.org>,
 	Kan Liang <kan.liang@linux.intel.com>,
+	Li Huafei <lihuafei1@huawei.com>,
 	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Nam Cao <namcao@linutronix.de>,
 	Peter Zijlstra <peterz@infradead.org>,
+	"Steinar H. Gunderson" <sesse@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 047/371] perf evsel: Fix uniquification when PMU given without suffix
+Subject: [PATCH 6.12 015/277] perf evsel: Avoid container_of on a NULL leader
 Date: Fri, 17 Oct 2025 16:50:22 +0200
-Message-ID: <20251017145203.502501600@linuxfoundation.org>
+Message-ID: <20251017145147.703847776@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,119 +81,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 693101792e45eefc888c7ba10b91108047399f5d ]
+[ Upstream commit 2354479026d726954ff86ce82f4b649637319661 ]
 
-The PMU name is appearing twice in:
-```
-$ perf stat -e uncore_imc_free_running/data_total/ -A true
+An evsel should typically have a leader of itself, however, in tests
+like 'Sample parsing' a NULL leader may occur and the container_of
+will return a corrupt pointer.
 
- Performance counter stats for 'system wide':
+Avoid this with an explicit NULL test.
 
-CPU0                 1.57 MiB  uncore_imc_free_running_0/uncore_imc_free_running,data_total/
-CPU0                 1.58 MiB  uncore_imc_free_running_1/uncore_imc_free_running,data_total/
-       0.000892376 seconds time elapsed
-```
-
-Use the pmu_name_len_no_suffix to avoid this problem.
-
-Committer testing:
-
-After this patch:
-
-  root@x1:~# perf stat -e uncore_imc_free_running/data_total/ -A true
-
-   Performance counter stats for 'system wide':
-
-  CPU0                 1.69 MiB  uncore_imc_free_running_0/data_total/
-  CPU0                 1.68 MiB  uncore_imc_free_running_1/data_total/
-
-         0.002141605 seconds time elapsed
-
-  root@x1:~#
-
-Fixes: 7d45f402d3117e0b ("perf evlist: Make uniquifying counter names consistent")
+Fixes: fba7c86601e2e42d ("libperf: Move 'leader' from tools/perf to perf_evsel::leader")
+Reviewed-by: James Clark <james.clark@linaro.org>
 Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Athira Rajeev <atrajeev@linux.ibm.com>
+Cc: Blake Jones <blakejones@google.com>
 Cc: Chun-Tse Shao <ctshao@google.com>
+Cc: Collin Funk <collin.funk1@gmail.com>
 Cc: Howard Chu <howardchu95@gmail.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
+Cc: Jan Polensky <japo@linux.ibm.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Li Huafei <lihuafei1@huawei.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nam Cao <namcao@linutronix.de>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steinar H. Gunderson <sesse@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20250821163820.1132977-4-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evsel.c | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ tools/perf/util/evsel.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index 496f42434327b..9c086d743d344 100644
+index 6d7249cc1a993..b3de8ce559998 100644
 --- a/tools/perf/util/evsel.c
 +++ b/tools/perf/util/evsel.c
-@@ -4050,9 +4050,9 @@ bool evsel__set_needs_uniquify(struct evsel *counter, const struct perf_stat_con
+@@ -3497,6 +3497,8 @@ bool evsel__is_hybrid(const struct evsel *evsel)
  
- void evsel__uniquify_counter(struct evsel *counter)
+ struct evsel *evsel__leader(const struct evsel *evsel)
  {
--	const char *name, *pmu_name;
--	char *new_name, *config;
--	int ret;
-+	const char *name, *pmu_name, *config;
-+	char *new_name;
-+	int len, ret;
++	if (evsel->core.leader == NULL)
++		return NULL;
+ 	return container_of(evsel->core.leader, struct evsel, core);
+ }
  
- 	/* No uniquification necessary. */
- 	if (!counter->needs_uniquify)
-@@ -4066,15 +4066,23 @@ void evsel__uniquify_counter(struct evsel *counter)
- 	counter->uniquified_name = true;
- 
- 	name = evsel__name(counter);
-+	config = strchr(name, '/');
- 	pmu_name = counter->pmu->name;
--	/* Already prefixed by the PMU name. */
--	if (!strncmp(name, pmu_name, strlen(pmu_name)))
--		return;
- 
--	config = strchr(name, '/');
--	if (config) {
--		int len = config - name;
-+	/* Already prefixed by the PMU name? */
-+	len = pmu_name_len_no_suffix(pmu_name);
-+
-+	if (!strncmp(name, pmu_name, len)) {
-+		/*
-+		 * If the PMU name is there, then there is no sense in not
-+		 * having a slash. Do this for robustness.
-+		 */
-+		if (config == NULL)
-+			config = name - 1;
- 
-+		ret = asprintf(&new_name, "%s/%s", pmu_name, config + 1);
-+	} else if (config) {
-+		len = config - name;
- 		if (config[1] == '/') {
- 			/* case: event// */
- 			ret = asprintf(&new_name, "%s/%.*s/%s", pmu_name, len, name, config + 2);
-@@ -4086,7 +4094,7 @@ void evsel__uniquify_counter(struct evsel *counter)
- 		config = strchr(name, ':');
- 		if (config) {
- 			/* case: event:.. */
--			int len = config - name;
-+			len = config - name;
- 
- 			ret = asprintf(&new_name, "%s/%.*s/%s", pmu_name, len, name, config + 1);
- 		} else {
 -- 
 2.51.0
 
