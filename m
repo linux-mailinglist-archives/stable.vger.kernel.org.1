@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-186824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DB2BE9BCA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13056BE9668
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EBD21AE19B5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB5464E5B85
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2C53328F5;
-	Fri, 17 Oct 2025 15:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FE5239591;
+	Fri, 17 Oct 2025 14:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzAfAw1L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6Km38xp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3332F12B0;
-	Fri, 17 Oct 2025 15:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C535695;
+	Fri, 17 Oct 2025 14:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714342; cv=none; b=VSfOqJTN38V1TFy6jpmp1U4U3pIpKYRRXrifLTgVZAlIcXgPRiJb6dnbRyuTegMje/dDz4uihF9/RrQl7Fetbcb4si9lxr2EQTn24hW2hznNTQZZdr8Xero3C19+0C2/YxmKDkTdm5CBuIKJ5TkaHaUyP6y9lxBglWxx83Y2YgQ=
+	t=1760713079; cv=none; b=Cf/3Ey2s7f4w3UKS54itTj5f+0ZmKkCtXUsPzQfBOVQ1+ICMXaXlDv9t44wv5UvQWpf5idrzY9hgxsDJgUbd4okscGB7JUfyfTyL+82u7w3AvHQmvHFU8cuhI8SrmEkR6IPW+X7J2BSJbuX2x9cNZhmCy6B+q8xljBp+rH/76x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714342; c=relaxed/simple;
-	bh=RkN7GpYe6IGbmLlDkqsLIIAzZtOeY8yECppyaMErkwM=;
+	s=arc-20240116; t=1760713079; c=relaxed/simple;
+	bh=o/pBk419bMk325HUtPYwd9VOYA/8mV4BT2dmqyId+W8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EP57Re+BUKWE/zXa+6nQ/ysqocCCqUmDy8Y2vpyvGUmirPliNAypmboxtgmmHWQ14j8k1TqdoaE0XZLy2kq5/1XDEcQJgXx0hfTL0jXdBmc1WQ/VHf1qQKu3tbjdWs7q3O/bzy4yAzJBzfK6eTdXfkCufcp5uwAOvEilwE7UdSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzAfAw1L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94ADEC4CEE7;
-	Fri, 17 Oct 2025 15:19:01 +0000 (UTC)
+	 MIME-Version; b=UqZPYZqdM5FTqFkUcqlMUOP2Wafn9MlT4eXzVK1nLa+O7sUJS78b5tUn07EzgcQZcQk7GkThG7M4hMY1MAECSukceYnFU2GnmhJOwRZvBRd4/4ZRqNuLIV6OT7xfLG+8O7bZ6mFHsbr6NlRDahJh0gjNAzB8X/bO/nteI1VTAKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6Km38xp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D673C4CEF9;
+	Fri, 17 Oct 2025 14:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714342;
-	bh=RkN7GpYe6IGbmLlDkqsLIIAzZtOeY8yECppyaMErkwM=;
+	s=korg; t=1760713079;
+	bh=o/pBk419bMk325HUtPYwd9VOYA/8mV4BT2dmqyId+W8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzAfAw1LYH/LzPSUNL9qc6DpFsMFXoGxcpIXiXTaJXe8FC7mIJQ7Vn7EEn2EbHXll
-	 t/oOqmP1S5mYDZ/mnotEQ79IsX0YlDEEqi7ZsXEMWIw9R2yr06JOZEKeHaA2uukRES
-	 fuuFrol4C2tiSHeo9+a5Gc5zgmyGKaEtiCR3T+Tc=
+	b=x6Km38xpYSFSBHsttXTsE/m8SSMk3PHtFJgbBhVqwH9zwUczHFiIWqgpfyoxaquX/
+	 RtdHe8ZnFtwvEod21IKM27WI4bwWwODkCmjEvSppYJe2yi8X4tBmcnkDY/Qo0kiPSS
+	 29Zue49aNdWXkmUlsdUOuAwlsvoeLO4gszZbAfKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Subject: [PATCH 6.12 112/277] media: ti: j721e-csi2rx: Use devm_of_platform_populate
+	Yusuke Suzuki <yusuke.suzuki@isovalent.com>,
+	Julian Wiedmann <jwi@isovalent.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jordan Rife <jrife@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 040/168] bpf: Fix metadata_dst leak __bpf_redirect_neigh_v{4,6}
 Date: Fri, 17 Oct 2025 16:51:59 +0200
-Message-ID: <20251017145151.215451991@linuxfoundation.org>
+Message-ID: <20251017145130.494123226@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +68,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jai Luthra <jai.luthra@ideasonboard.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 072799db233f9de90a62be54c1e59275c2db3969 upstream.
+[ Upstream commit 23f3770e1a53e6c7a553135011f547209e141e72 ]
 
-Ensure that we clean up the platform bus when we remove this driver.
+Cilium has a BPF egress gateway feature which forces outgoing K8s Pod
+traffic to pass through dedicated egress gateways which then SNAT the
+traffic in order to interact with stable IPs outside the cluster.
 
-This fixes a crash seen when reloading the module for the child device
-with the parent not yet reloaded.
+The traffic is directed to the gateway via vxlan tunnel in collect md
+mode. A recent BPF change utilized the bpf_redirect_neigh() helper to
+forward packets after the arrival and decap on vxlan, which turned out
+over time that the kmalloc-256 slab usage in kernel was ever-increasing.
 
-Fixes: b4a3d877dc92 ("media: ti: Add CSI2RX support for J721E")
-Cc: stable@vger.kernel.org
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Tested-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com> (on SK-AM68)
-Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The issue was that vxlan allocates the metadata_dst object and attaches
+it through a fake dst entry to the skb. The latter was never released
+though given bpf_redirect_neigh() was merely setting the new dst entry
+via skb_dst_set() without dropping an existing one first.
+
+Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
+Reported-by: Yusuke Suzuki <yusuke.suzuki@isovalent.com>
+Reported-by: Julian Wiedmann <jwi@isovalent.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Jordan Rife <jrife@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20251003073418.291171-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/filter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
-+++ b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
-@@ -1121,7 +1121,7 @@ static int ti_csi2rx_probe(struct platfo
- 	if (ret)
- 		goto err_vb2q;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 183ede9345e61..9b4254feefccd 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2266,6 +2266,7 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
+ 		if (IS_ERR(dst))
+ 			goto out_drop;
  
--	ret = of_platform_populate(csi->dev->of_node, NULL, NULL, csi->dev);
-+	ret = devm_of_platform_populate(csi->dev);
- 	if (ret) {
- 		dev_err(csi->dev, "Failed to create children: %d\n", ret);
- 		goto err_subdev;
++		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 	} else if (nh->nh_family != AF_INET6) {
+ 		goto out_drop;
+@@ -2375,6 +2376,7 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
+ 			goto out_drop;
+ 		}
+ 
++		skb_dst_drop(skb);
+ 		skb_dst_set(skb, &rt->dst);
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
