@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-186363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1875BE9605
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:36 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10CFBEA1CD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A97F24FB1E4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 097555A2F0C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C166219E7F7;
-	Fri, 17 Oct 2025 14:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C54336EFE;
+	Fri, 17 Oct 2025 15:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZTgU+nZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Szq5Tn0u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC20337117;
-	Fri, 17 Oct 2025 14:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB812336EF8;
+	Fri, 17 Oct 2025 15:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713028; cv=none; b=ehciOrTYrPl4dBzsRTUc6+nVNFiycZ+dCeA2ZUXErpCLgZfacOGlQnM7oiAMhrksuELoOFPNMYDPTFpsxmBt+YnaAfOTkz8ld04GlCSYsTPJmnm3cWNbioQKN9G0ymq4xsgceOo7grRaif2vE4zgvb7fZgczx+ln6As9D69+yXg=
+	t=1760715144; cv=none; b=W2c+K2YX0+jq+azwpUFp9oXLr8TgJQUTpmQ0GQWhteF01jtRD6xxMHYuI7u4Kspq1TH2AG0UHfTNeC6G2LLJDj73LKTCHjgIxBXTiDr3FsnDPI2dXLI561qfpLRKBH3LxLuzFkecBNU7ewu7C5SBUOf20ZeW5pXyUEBw+LYSvRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713028; c=relaxed/simple;
-	bh=fRGmflm5x2eZPUL1W4sUMco93sIcB1/g+kcYlL0FJiQ=;
+	s=arc-20240116; t=1760715144; c=relaxed/simple;
+	bh=BetPScECIQ+oQz0LT8K+T5dNNGkVdwPasqGeL6hVhLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u/2mYGb6+ZXwe7cGwdhkCUoVDJ0g6rbY/gmf1bSi5JxGzn+XVsoF9eUPSDPnhHBJuDMU7kFFFsBc34grgXuUOM56jAhep+z7viNLr7JzrAzGCNeZktGgGwHp5iNEpDM1N3dO8jZHIRWspCKnovpbsPftY5vb48TcOZdSuE1YXac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZTgU+nZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C6DC4CEE7;
-	Fri, 17 Oct 2025 14:57:07 +0000 (UTC)
+	 MIME-Version; b=FBAdJnsZuUNJvhUmi65x26UgccWNLK/EzmxTT4OSH9f+1b5NuwvRPFjB4aK1LXiYQdUJmcmZQ8WPj7qDnVLtzH5zAKaIvp21QPs6ETQiv3IooTakcUKlmdvl7OTM4HjFDRmBc1rx++SzdagYo7jwOF+wJjHRLlzMJ+oKeE4WuOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Szq5Tn0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51563C4CEE7;
+	Fri, 17 Oct 2025 15:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713028;
-	bh=fRGmflm5x2eZPUL1W4sUMco93sIcB1/g+kcYlL0FJiQ=;
+	s=korg; t=1760715144;
+	bh=BetPScECIQ+oQz0LT8K+T5dNNGkVdwPasqGeL6hVhLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zZTgU+nZGjDXGdppfgUXYmjBxytWUs+ZNVaSmezNbRJV2N7yr147NbGvcOE3/OpYp
-	 hol/fdioDpbGVQuKH7E3yMGGK82Da5H4ifa9fkhaNkThQ84AJMfXzoh6TWp7LZOrrM
-	 bqw86lkxzpyTBNshwtdPaRafVnjc9E2C5O0jsc5o=
+	b=Szq5Tn0u9bafAdk3JAhdkpFpm0QUSaKkEAPnMReXG68k9h4FtW59w/+epSr5WK3pA
+	 KbSByKDieaAIBb554xeUXXEgLdvJgw6ND3TPxPCx1sl/3LrwpQTgMEkocYyKixnmKC
+	 /MzZ1APQcKS8dNi0rOrtkEJpUGhXqgedNFyLEJy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yunseong Kim <ysk@kzalloc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/168] perf util: Fix compression checks returning -1 as bool
+Subject: [PATCH 6.17 113/371] drm/amdkfd: Fix kfd process ref leaking when userptr unmapping
 Date: Fri, 17 Oct 2025 16:51:28 +0200
-Message-ID: <20251017145129.356867164@linuxfoundation.org>
+Message-ID: <20251017145206.026023560@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,69 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunseong Kim <ysk@kzalloc.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 43fa1141e2c1af79c91aaa4df03e436c415a6fc3 ]
+[ Upstream commit 58e6fc2fb94f0f409447e5d46cf6a417b6397fbc ]
 
-The lzma_is_compressed and gzip_is_compressed functions are declared
-to return a "bool" type, but in case of an error (e.g., file open
-failure), they incorrectly returned -1.
+kfd_lookup_process_by_pid hold the kfd process reference to ensure it
+doesn't get destroyed while sending the segfault event to user space.
 
-A bool type is a boolean value that is either true or false.
-Returning -1 for a bool return type can lead to unexpected behavior
-and may violate strict type-checking in some compilers.
+Calling kfd_lookup_process_by_pid as function parameter leaks the kfd
+process refcount and miss the NULL pointer check if app process is
+already destroyed.
 
-Fix the return value to be false in error cases, ensuring the function
-adheres to its declared return type improves for preventing potential
-bugs related to type mismatch.
-
-Fixes: 4b57fd44b61beb51 ("perf tools: Add lzma_is_compressed function")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Stephen Brennan <stephen.s.brennan@oracle.com>
-Link: https://lore.kernel.org/r/20250822162506.316844-3-ysk@kzalloc.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 2d274bf7099b ("amd/amdkfd: Trigger segfault for early userptr unmmapping")
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/lzma.c | 2 +-
- tools/perf/util/zlib.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/lzma.c b/tools/perf/util/lzma.c
-index 51424cdc3b682..aa9a0ebc1f937 100644
---- a/tools/perf/util/lzma.c
-+++ b/tools/perf/util/lzma.c
-@@ -115,7 +115,7 @@ bool lzma_is_compressed(const char *input)
- 	ssize_t rc;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index b16cce7c22c37..d5f9d48bf8842 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -2583,12 +2583,17 @@ static int update_invalid_user_pages(struct amdkfd_process_info *process_info,
+ 			 * from the KFD, trigger a segmentation fault in VM debug mode.
+ 			 */
+ 			if (amdgpu_ttm_adev(bo->tbo.bdev)->debug_vm_userptr) {
++				struct kfd_process *p;
++
+ 				pr_err("Pid %d unmapped memory before destroying userptr at GPU addr 0x%llx\n",
+ 								pid_nr(process_info->pid), mem->va);
  
- 	if (fd < 0)
--		return -1;
-+		return false;
+ 				// Send GPU VM fault to user space
+-				kfd_signal_vm_fault_event_with_userptr(kfd_lookup_process_by_pid(process_info->pid),
+-								mem->va);
++				p = kfd_lookup_process_by_pid(process_info->pid);
++				if (p) {
++					kfd_signal_vm_fault_event_with_userptr(p, mem->va);
++					kfd_unref_process(p);
++				}
+ 			}
  
- 	rc = read(fd, buf, sizeof(buf));
- 	close(fd);
-diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
-index 78d2297c1b674..1f7c065230599 100644
---- a/tools/perf/util/zlib.c
-+++ b/tools/perf/util/zlib.c
-@@ -88,7 +88,7 @@ bool gzip_is_compressed(const char *input)
- 	ssize_t rc;
- 
- 	if (fd < 0)
--		return -1;
-+		return false;
- 
- 	rc = read(fd, buf, sizeof(buf));
- 	close(fd);
+ 			ret = 0;
 -- 
 2.51.0
 
