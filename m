@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-187592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21BDBEA6D5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:03:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A954EBE9DA4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C7836583D1D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DC72188C225
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ABA330B3A;
-	Fri, 17 Oct 2025 15:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2A7231C9F;
+	Fri, 17 Oct 2025 15:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NcnD08TI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/HMSPj0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8616330B2D;
-	Fri, 17 Oct 2025 15:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68723337100;
+	Fri, 17 Oct 2025 15:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716515; cv=none; b=ZAr6SKmKEITW2x69XoYsYChqxjrjiR8L4xLEDQTx4XmwavMTCR7rzqF3FkV5++xfrXwqJrTRII0N9ekC6JzkbTJcH/7EUGMGkZGFjnVN+puXY1SKNM2JcJsIx/uY/Ybayn2N05oSOvO94aTAJig77binXiiP7RhTWOghySb2plE=
+	t=1760714805; cv=none; b=Xtby9Z43lzfT77ASv/dv9iJdW+kwrMU3dfr6p7feIZWuhIxFwlTwt+JrO4GdCWcGkhgz7KykXhfYTAY9ElhWdYcvwfEol9OqpZRnEDyZz3QkCwtuHjBw6MgK5uv87d3CUVB9GmQsiU/zON+IHtzeJ/hgEDv+kK2o9/kbrQjcrKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716515; c=relaxed/simple;
-	bh=FzBh9kPQ9R60WhjFCvJ3Huqd+HH8TSIglRsOtSousgA=;
+	s=arc-20240116; t=1760714805; c=relaxed/simple;
+	bh=rDfxg2ZNLXHTgaFTkHp+8eYzskVn3z8W5IVDalR8C2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qsKw9WT288xOWYQQ/AgiGQ/ZiC5xbjlydsiXWonNDZMxGevhdmLsW7aOE/6NFURPgep9/KkmurgANyLPKhFd5qjjGuEsQhFR1moyPm8obe3niASVcdDgA0jI/66nZTPxQYk46ur28EDGcQsc+0/ThLHpmvXZ/z2BkYd02KNbrOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NcnD08TI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4D9C4CEE7;
-	Fri, 17 Oct 2025 15:55:14 +0000 (UTC)
+	 MIME-Version; b=fYgJEAjnpAjLKOv0QseRdTZ5+TlzBnY6Ksviwcd1PB/g8RyGDUQ/4ND7aFxuMmrA9fS+F6xhiPHOHQXOia5t3AsWllUhy5nL6eZjfMsSILLeBrd67gISk0ZXDuuXlHlLlsQw43WcNylsclafot6gfr3oVFwI3URhxnU2ZellNZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/HMSPj0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF787C4CEE7;
+	Fri, 17 Oct 2025 15:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716515;
-	bh=FzBh9kPQ9R60WhjFCvJ3Huqd+HH8TSIglRsOtSousgA=;
+	s=korg; t=1760714805;
+	bh=rDfxg2ZNLXHTgaFTkHp+8eYzskVn3z8W5IVDalR8C2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NcnD08TIXnJYEZNBXsX6BltF7MjSwxYTfsZY2xlMfo5+2OtOeM+wp89BplmVAQIiP
-	 1mzmUu/Wix+cBxYqYuUaeEg3qQjdXf9tF01naa4LabnbetO4f80eRUIklcyIFlgaot
-	 Qmrz54iiwGcPe6nwENDQm22zVks4ZAYCix1lfBRE=
+	b=J/HMSPj0VCmSrQC7iVYNHKLiNiUYTEbIWwN5NewNVu+3BF43Ad+iD2QINouNJtix8
+	 DzlCHcUpYmZaHevYE2Q6HHdGDzlOMaMo1sUl+YvQV5q+Ptya5YaE8yPctv98AvfEbk
+	 DWGG2QL01l9KN1YtNdYTLaxqKMR+1/wSIYKfJkWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
 	Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 184/276] init: handle bootloader identifier in kernel parameters
-Date: Fri, 17 Oct 2025 16:54:37 +0200
-Message-ID: <20251017145149.190998360@linuxfoundation.org>
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 271/277] writeback: Avoid softlockup when switching many inodes
+Date: Fri, 17 Oct 2025 16:54:38 +0200
+Message-ID: <20251017145157.054321145@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Jan Kara <jack@suse.cz>
 
-commit e416f0ed3c500c05c55fb62ee62662717b1c7f71 upstream.
+[ Upstream commit 66c14dccd810d42ec5c73bb8a9177489dfd62278 ]
 
-BootLoaders (Grub, LILO, etc) may pass an identifier such as "BOOT_IMAGE=
-/boot/vmlinuz-x.y.z" to kernel parameters.  But these identifiers are not
-recognized by the kernel itself so will be passed to userspace.  However
-user space init program also don't recognize it.
+process_inode_switch_wbs_work() can be switching over 100 inodes to a
+different cgroup. Since switching an inode requires counting all dirty &
+under-writeback pages in the address space of each inode, this can take
+a significant amount of time. Add a possibility to reschedule after
+processing each inode to avoid softlockups.
 
-KEXEC/KDUMP (kexec-tools) may also pass an identifier such as "kexec" on
-some architectures.
-
-We cannot change BootLoader's behavior, because this behavior exists for
-many years, and there are already user space programs search BOOT_IMAGE=
-in /proc/cmdline to obtain the kernel image locations:
-
-https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.go
-(search getBootOptions)
-https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.go
-(search getKernelReleaseWithBootOption) So the the best way is handle
-(ignore) it by the kernel itself, which can avoid such boot warnings (if
-we use something like init=/bin/bash, bootloader identifier can even cause
-a crash):
-
-Kernel command line: BOOT_IMAGE=(hd0,1)/vmlinuz-6.x root=/dev/sda3 ro console=tty
-Unknown kernel command line parameters "BOOT_IMAGE=(hd0,1)/vmlinuz-6.x", will be passed to user space.
-
-[chenhuacai@loongson.cn: use strstarts()]
-  Link: https://lkml.kernel.org/r/20250815090120.1569947-1-chenhuacai@loongson.cn
-Link: https://lkml.kernel.org/r/20250721101343.3283480-1-chenhuacai@loongson.cn
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/main.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ fs/fs-writeback.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/init/main.c
-+++ b/init/main.c
-@@ -540,6 +540,14 @@ static int __init unknown_bootoption(cha
- 				     const char *unused, void *arg)
- {
- 	size_t len = strlen(param);
-+	int i;
-+
-+	/*
-+	 * Well-known bootloader identifiers:
-+	 * 1. LILO/Grub pass "BOOT_IMAGE=...";
-+	 * 2. kexec/kdump (kexec-tools) pass "kexec".
-+	 */
-+	const char *bootloader[] = { "BOOT_IMAGE=", "kexec", NULL };
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 4ae226778d646..eff778dc0386c 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -503,6 +503,7 @@ static void inode_switch_wbs_work_fn(struct work_struct *work)
+ 	 */
+ 	down_read(&bdi->wb_switch_rwsem);
  
- 	/* Handle params aliased to sysctls */
- 	if (sysctl_is_alias(param))
-@@ -547,6 +555,12 @@ static int __init unknown_bootoption(cha
++	inodep = isw->inodes;
+ 	/*
+ 	 * By the time control reaches here, RCU grace period has passed
+ 	 * since I_WB_SWITCH assertion and all wb stat update transactions
+@@ -513,6 +514,7 @@ static void inode_switch_wbs_work_fn(struct work_struct *work)
+ 	 * gives us exclusion against all wb related operations on @inode
+ 	 * including IO list manipulations and stat updates.
+ 	 */
++relock:
+ 	if (old_wb < new_wb) {
+ 		spin_lock(&old_wb->list_lock);
+ 		spin_lock_nested(&new_wb->list_lock, SINGLE_DEPTH_NESTING);
+@@ -521,10 +523,17 @@ static void inode_switch_wbs_work_fn(struct work_struct *work)
+ 		spin_lock_nested(&old_wb->list_lock, SINGLE_DEPTH_NESTING);
+ 	}
  
- 	repair_env_string(param, val);
+-	for (inodep = isw->inodes; *inodep; inodep++) {
++	while (*inodep) {
+ 		WARN_ON_ONCE((*inodep)->i_wb != old_wb);
+ 		if (inode_do_switch_wbs(*inodep, old_wb, new_wb))
+ 			nr_switched++;
++		inodep++;
++		if (*inodep && need_resched()) {
++			spin_unlock(&new_wb->list_lock);
++			spin_unlock(&old_wb->list_lock);
++			cond_resched();
++			goto relock;
++		}
+ 	}
  
-+	/* Handle bootloader identifier */
-+	for (i = 0; bootloader[i]; i++) {
-+		if (strstarts(param, bootloader[i]))
-+			return 0;
-+	}
-+
- 	/* Handle obsolete-style parameters */
- 	if (obsolete_checksetup(param))
- 		return 0;
+ 	spin_unlock(&new_wb->list_lock);
+-- 
+2.51.0
+
 
 
 
