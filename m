@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058B2BE99E1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2206BEA61E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5DC91884C1E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 30E915087D4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F382D32E13B;
-	Fri, 17 Oct 2025 15:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16921A9FB7;
+	Fri, 17 Oct 2025 15:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnRYOwb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrZmYE70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD4F337112;
-	Fri, 17 Oct 2025 15:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09CF20C00A;
+	Fri, 17 Oct 2025 15:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714005; cv=none; b=kQP8cTPz3nPbf3t+7zGUselGTdEUjKeuV5ufv3VuY0l8djjLJXqro4/Xk7D6H/zLHSvYMfOrhbx0NoA4bRklNRGDhII+DH2zNYsfYb4eU4/t0ffRCDg7uuhWMjA2/67v/oo5QWk61dyMVJ+9C8nyyjw063YiMkfJWjyLn23JrJs=
+	t=1760716362; cv=none; b=UDAgrBNLMCozUwodmoNDBEJbnmgN3cajy2iCZAAeXjANdCvtpLNhkiz+EWpagkw0h4H/J7alwqc8nMERHudJ2gvM7mi0P0yr/A6FSBiL0nIa1IogkMbxmFLS/UhmOBUY5fCLCRPKudghY6vNwM1A1xT6NqeVU0yTWuSDLPVmA1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714005; c=relaxed/simple;
-	bh=nqbwf+Asf1bGfsVeCFSWkNN8RkWSflRkiYdUerboK+4=;
+	s=arc-20240116; t=1760716362; c=relaxed/simple;
+	bh=z1IbArqWg876BwSlV4P05W2DgCHHrd9leCRNKmQVtwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UYvR0QkSJn6lk/C0pFWqB5PHeIsEN1+KMpizM8pFwNaKmYmCKMTpFG1hEmlA44SzPPwepBw5Yy6yFIeY+yAS2z7rvv3zTfVE8hs1zxZSuCRf9tsMIF72YTiL6buY6vr6eeTEHlWhMxfnzn3Mi1NpL1d0Ta3ULoekDpXEMVGjMoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnRYOwb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A514C4CEE7;
-	Fri, 17 Oct 2025 15:13:25 +0000 (UTC)
+	 MIME-Version; b=I22B/hNHUm3Ub/3BuEZzt6R27od6BlsVQdVjT93D0DnJxoOsxVXwRxeynxyEevTxU+lsZEw1A8hLZOCPiuqUn8MHgU+CYB0uzEPBPcsnVxetKn/URlnustr3+JfIJcUna+02Isi/UTnnc511jr+HbpQ9ORGB5ghjB4gZTiPbq3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrZmYE70; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269F1C4CEE7;
+	Fri, 17 Oct 2025 15:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714005;
-	bh=nqbwf+Asf1bGfsVeCFSWkNN8RkWSflRkiYdUerboK+4=;
+	s=korg; t=1760716362;
+	bh=z1IbArqWg876BwSlV4P05W2DgCHHrd9leCRNKmQVtwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OnRYOwb97A9H3ZCcjVE84d7tWeTWBTa3nkfYkKod36EbfuRZaIdjOvD67TSYnHNh2
-	 Dvw5FHsSVaKNf46aY0xXIS1SWI12CMT4srpyKK+FUfZ+BxVsQBmkvIcEZH+3kT6sSj
-	 ojzsh2VkVaRdxLQklQ9NnYFsEkPkQLPoCnjXmy9U=
+	b=vrZmYE709q6V+zlwKSRdQB/4EsF1suFiQWMnMk+mGixEAUWcsHfulrOV1GrEG2G+D
+	 XD7eAR3dm4NpoATKAvuznq4m7f+SaC5v/PRLvzIevG7RyOuoPn028r/9b93I5gnKic
+	 6vw0EFqbDWs8pkB51wzDXFj+Uv63o7R6a/yyn1Ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	=?UTF-8?q?=E9=AB=98=E7=BF=94?= <gaoxiang17@xiaomi.com>
-Subject: [PATCH 6.6 196/201] pid: make __task_pid_nr_ns(ns => NULL) safe for zombie callers
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 164/276] gpio: wcd934x: mark the GPIO controller as sleeping
 Date: Fri, 17 Oct 2025 16:54:17 +0200
-Message-ID: <20251017145141.961492076@linuxfoundation.org>
+Message-ID: <20251017145148.458658966@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit abdfd4948e45c51b19162cf8b3f5003f8f53c9b9 ]
+[ Upstream commit b5f8aa8d4bde0cf3e4595af5a536da337e5f1c78 ]
 
-task_pid_vnr(another_task) will crash if the caller was already reaped.
-The pid_alive(current) check can't really help, the parent/debugger can
-call release_task() right after this check.
+The slimbus regmap passed to the GPIO driver down from MFD does not use
+fast_io. This means a mutex is used for locking and thus this GPIO chip
+must not be used in atomic context. Change the can_sleep switch in
+struct gpio_chip to true.
 
-This also means that even task_ppid_nr_ns(current, NULL) is not safe,
-pid_alive() only ensures that it is safe to dereference ->real_parent.
-
-Change __task_pid_nr_ns() to ensure ns != NULL.
-
-Originally-by: 高翔 <gaoxiang17@xiaomi.com>
-Link: https://lore.kernel.org/all/20250802022123.3536934-1-gxxa03070307@gmail.com/
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/20250810173604.GA19991@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 59c324683400 ("gpio: wcd934x: Add support to wcd934x gpio controller")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/pid.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-wcd934x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/pid.c b/kernel/pid.c
-index e57adc00cb779..69922b2e7ed15 100644
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -500,7 +500,8 @@ pid_t __task_pid_nr_ns(struct task_struct *task, enum pid_type type,
- 	rcu_read_lock();
- 	if (!ns)
- 		ns = task_active_pid_ns(current);
--	nr = pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);
-+	if (ns)
-+		nr = pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);
- 	rcu_read_unlock();
+diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
+index cbbbd105a5a7b..26d70ac90933c 100644
+--- a/drivers/gpio/gpio-wcd934x.c
++++ b/drivers/gpio/gpio-wcd934x.c
+@@ -101,7 +101,7 @@ static int wcd_gpio_probe(struct platform_device *pdev)
+ 	chip->base = -1;
+ 	chip->ngpio = WCD934X_NPINS;
+ 	chip->label = dev_name(dev);
+-	chip->can_sleep = false;
++	chip->can_sleep = true;
  
- 	return nr;
+ 	return devm_gpiochip_add_data(dev, chip, data);
+ }
 -- 
 2.51.0
 
