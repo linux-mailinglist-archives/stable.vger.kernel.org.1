@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD45BEA3AA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:02 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE1ABE9FEA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44493942CAE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DDFAF5810A8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E5E332914;
-	Fri, 17 Oct 2025 15:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB7D332EC9;
+	Fri, 17 Oct 2025 15:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iq93XGLN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCeEj/Vp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2FE32C93E;
-	Fri, 17 Oct 2025 15:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FA023EA9E;
+	Fri, 17 Oct 2025 15:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715390; cv=none; b=TPGwt/guK3QmylOnn8VGlC1wgZALxmqyvkK9pXw4tgePQdb2wGa6jEFqzlClIsn6ARkEFptxfPTQBWLiqChLnBQUjCBiizmc5iz6DAzDmyrXs0eC+Kzn6ACG+hHoHxPoe33BzVo5wTF6k9GI1aalfhauVrruV0dYEDtaCUCL7oM=
+	t=1760714430; cv=none; b=V7AvBJjJ0mWnVW2sDx7jLJOx5YlrtgvvAyNFfGK8CrJ2zrpXsvwj4DVNhVsobhCeyJmfTR+7uUMMzEiUGeaFkWvzIMm/7LWrLG4wQxPmnK/e56E/+dikg9V3HQ+jnp23pqOaB1sQAHE0tjpzNUbzc463sYjFZo3ll5D7FQ+v1wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715390; c=relaxed/simple;
-	bh=Fcxc3hYLMEWtBCTynYoltiNTZdJ8EY8lwEPzcYAR9+o=;
+	s=arc-20240116; t=1760714430; c=relaxed/simple;
+	bh=ouyqoDJyH9KYNnlGTURUv15nbIUTogEAtqIPv4O+BIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQU9Sdvl6OUzcWqD+3KVDGdq1zag6MUXVOKj6ZDcwLAMRg2kV/0FLpplfYGM1XMF44cJAZeE/iqvPoOhrvfAbMQpR8rV/qGgeI/bVXHZICDR7jDLn3GX4Jrftt6nA+BYPEBPAd8j7wenzMtNuLC9VBBhNo/lPMtOTbnjOEL77SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iq93XGLN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECE8C4CEE7;
-	Fri, 17 Oct 2025 15:36:29 +0000 (UTC)
+	 MIME-Version; b=QNDaurw/gDuYXBPuMnUfwm9larfMxlQrrkRHIdvA16cz/4p65jjVPpYrWgD9suLApmrTV3SqbM4c8+KS2b9QNVDGJg9bt0MwHXNG0PSX8cNQTAuA7IVivk1p4vrLPaXvTKEzdXBOna4O9T0quDQnFcjgzsZZqaIoACOxT2Y2H0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCeEj/Vp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9772AC4CEE7;
+	Fri, 17 Oct 2025 15:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715390;
-	bh=Fcxc3hYLMEWtBCTynYoltiNTZdJ8EY8lwEPzcYAR9+o=;
+	s=korg; t=1760714430;
+	bh=ouyqoDJyH9KYNnlGTURUv15nbIUTogEAtqIPv4O+BIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iq93XGLNnfrtKCkedrd/NyRZilFgsx6zQV5KzsLLjKXpTIjG+uwq3KcUtH+KZzh3Y
-	 eqiT7Nrd2uJ8vQiVTuYQwXoTLO2JEbh+bPt0WS9EdQO67Y7dCvewEFgd4JGHnvt3Tn
-	 xcLxh5wwM1iXfmCbvLP2RWWa3LzYNbH0GSKF85Ro=
+	b=mCeEj/VpDF9YyaNIHkJ+EdDXrbz9NzK2YvO2o8va3N/W6gVQcSV4WLnKCpi3DKkZM
+	 iqNjgMLu4ICvfV8wseS6A+d/M2+VejBxiEQB9Zq1Pv3ptNlyutj85+qAJVGQ0h38ES
+	 jgifKgI2PPC5eV8+7/0nmODZR781TbD+q/oBsWIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.17 166/371] firmware: exynos-acpm: fix PMIC returned errno
-Date: Fri, 17 Oct 2025 16:52:21 +0200
-Message-ID: <20251017145207.937066273@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.12 135/277] fuse: fix livelock in synchronous file put from fuseblk workers
+Date: Fri, 17 Oct 2025 16:52:22 +0200
+Message-ID: <20251017145152.055195153@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 1da4cbefed4a2e69ebad81fc9b356cd9b807f380 upstream.
+commit 26e5c67deb2e1f42a951f022fdf5b9f7eb747b01 upstream.
 
-ACPM PMIC command handlers returned a u8 value when they should
-have returned either zero or negative error codes.
-Translate the APM PMIC errno to linux errno.
+I observed a hang when running generic/323 against a fuseblk server.
+This test opens a file, initiates a lot of AIO writes to that file
+descriptor, and closes the file descriptor before the writes complete.
+Unsurprisingly, the AIO exerciser threads are mostly stuck waiting for
+responses from the fuseblk server:
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-input/aElHlTApXj-W_o1r@stanley.mountain/
-Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+# cat /proc/372265/task/372313/stack
+[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
+[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
+[<0>] fuse_do_getattr+0xfc/0x1f0 [fuse]
+[<0>] fuse_file_read_iter+0xbe/0x1c0 [fuse]
+[<0>] aio_read+0x130/0x1e0
+[<0>] io_submit_one+0x542/0x860
+[<0>] __x64_sys_io_submit+0x98/0x1a0
+[<0>] do_syscall_64+0x37/0xf0
+[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+But the /weird/ part is that the fuseblk server threads are waiting for
+responses from itself:
+
+# cat /proc/372210/task/372232/stack
+[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
+[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
+[<0>] fuse_file_put+0x9a/0xd0 [fuse]
+[<0>] fuse_release+0x36/0x50 [fuse]
+[<0>] __fput+0xec/0x2b0
+[<0>] task_work_run+0x55/0x90
+[<0>] syscall_exit_to_user_mode+0xe9/0x100
+[<0>] do_syscall_64+0x43/0xf0
+[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+The fuseblk server is fuse2fs so there's nothing all that exciting in
+the server itself.  So why is the fuse server calling fuse_file_put?
+The commit message for the fstest sheds some light on that:
+
+"By closing the file descriptor before calling io_destroy, you pretty
+much guarantee that the last put on the ioctx will be done in interrupt
+context (during I/O completion).
+
+Aha.  AIO fgets a new struct file from the fd when it queues the ioctx.
+The completion of the FUSE_WRITE command from userspace causes the fuse
+server to call the AIO completion function.  The completion puts the
+struct file, queuing a delayed fput to the fuse server task.  When the
+fuse server task returns to userspace, it has to run the delayed fput,
+which in the case of a fuseblk server, it does synchronously.
+
+Sending the FUSE_RELEASE command sychronously from fuse server threads
+is a bad idea because a client program can initiate enough simultaneous
+AIOs such that all the fuse server threads end up in delayed_fput, and
+now there aren't any threads left to handle the queued fuse commands.
+
+Fix this by only using asynchronous fputs when closing files, and leave
+a comment explaining why.
+
+Cc: stable@vger.kernel.org # v2.6.38
+Fixes: 5a18ec176c934c ("fuse: fix hang of single threaded fuseblk filesystem")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/samsung/exynos-acpm-pmic.c | 25 ++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ fs/fuse/file.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/samsung/exynos-acpm-pmic.c b/drivers/firmware/samsung/exynos-acpm-pmic.c
-index 39b33a356ebd..961d7599e422 100644
---- a/drivers/firmware/samsung/exynos-acpm-pmic.c
-+++ b/drivers/firmware/samsung/exynos-acpm-pmic.c
-@@ -4,7 +4,9 @@
-  * Copyright 2020 Google LLC.
-  * Copyright 2024 Linaro Ltd.
-  */
-+#include <linux/array_size.h>
- #include <linux/bitfield.h>
-+#include <linux/errno.h>
- #include <linux/firmware/samsung/exynos-acpm-protocol.h>
- #include <linux/ktime.h>
- #include <linux/types.h>
-@@ -33,6 +35,19 @@ enum exynos_acpm_pmic_func {
- 	ACPM_PMIC_BULK_WRITE,
- };
- 
-+static const int acpm_pmic_linux_errmap[] = {
-+	[0] = 0, /* ACPM_PMIC_SUCCESS */
-+	[1] = -EACCES, /* Read register can't be accessed or issues to access it. */
-+	[2] = -EACCES, /* Write register can't be accessed or issues to access it. */
-+};
-+
-+static int acpm_pmic_to_linux_err(int err)
-+{
-+	if (err >= 0 && err < ARRAY_SIZE(acpm_pmic_linux_errmap))
-+		return acpm_pmic_linux_errmap[err];
-+	return -EIO;
-+}
-+
- static inline u32 acpm_pmic_set_bulk(u32 data, unsigned int i)
- {
- 	return (data & ACPM_PMIC_BULK_MASK) << (ACPM_PMIC_BULK_SHIFT * i);
-@@ -79,7 +94,7 @@ int acpm_pmic_read_reg(const struct acpm_handle *handle,
- 
- 	*buf = FIELD_GET(ACPM_PMIC_VALUE, xfer.rxd[1]);
- 
--	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
-+	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -355,8 +355,14 @@ void fuse_file_release(struct inode *ino
+ 	 * Make the release synchronous if this is a fuseblk mount,
+ 	 * synchronous RELEASE is allowed (and desirable) in this case
+ 	 * because the server can be trusted not to screw up.
++	 *
++	 * Always use the asynchronous file put because the current thread
++	 * might be the fuse server.  This can happen if a process starts some
++	 * aio and closes the fd before the aio completes.  Since aio takes its
++	 * own ref to the file, the IO completion has to drop the ref, which is
++	 * how the fuse server can end up closing its clients' files.
+ 	 */
+-	fuse_file_put(ff, ff->fm->fc->destroy);
++	fuse_file_put(ff, false);
  }
  
- static void acpm_pmic_init_bulk_read_cmd(u32 cmd[4], u8 type, u8 reg, u8 chan,
-@@ -110,7 +125,7 @@ int acpm_pmic_bulk_read(const struct acpm_handle *handle,
- 	if (ret)
- 		return ret;
- 
--	ret = FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
-+	ret = acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
- 	if (ret)
- 		return ret;
- 
-@@ -150,7 +165,7 @@ int acpm_pmic_write_reg(const struct acpm_handle *handle,
- 	if (ret)
- 		return ret;
- 
--	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
-+	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
- }
- 
- static void acpm_pmic_init_bulk_write_cmd(u32 cmd[4], u8 type, u8 reg, u8 chan,
-@@ -190,7 +205,7 @@ int acpm_pmic_bulk_write(const struct acpm_handle *handle,
- 	if (ret)
- 		return ret;
- 
--	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
-+	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
- }
- 
- static void acpm_pmic_init_update_cmd(u32 cmd[4], u8 type, u8 reg, u8 chan,
-@@ -220,5 +235,5 @@ int acpm_pmic_update_reg(const struct acpm_handle *handle,
- 	if (ret)
- 		return ret;
- 
--	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
-+	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
- }
--- 
-2.51.0
-
+ void fuse_release_common(struct file *file, bool isdir)
 
 
 
