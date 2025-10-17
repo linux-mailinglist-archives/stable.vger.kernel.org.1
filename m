@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17597BE97DE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:08:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BC6BE9F85
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7BEF3565E50
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:02:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC64874148E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E641D5CE0;
-	Fri, 17 Oct 2025 15:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A86A335089;
+	Fri, 17 Oct 2025 15:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVHEzuVs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0TUt0nq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6683370FF;
-	Fri, 17 Oct 2025 15:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388FD337100;
+	Fri, 17 Oct 2025 15:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713303; cv=none; b=RxqsEZ/gbGeuXyyRO9saQc5jRNGwLiaftn3wvPCLIyafMkNb9sOpAO7Pyvl44BtgZPJ0SofSCwo+LFQILmH+kW7KmokdimAOS7AUpWDeU4gBya1qyOluPIc9iYL4knn3AgI1b1NHnn6zdk6bAvc8wxEVTKMuef515VtsCwn686I=
+	t=1760714490; cv=none; b=U5fWd2s/Pxt+Ggiu7fWFqdaYOim7qusLkYHd8CeichuDIk2A0tLmTw+NnS6fvzsegyVcNQs7Ag1MWuTgV1SAwhxv6Nmjli5JKohiOoJs2BiW87PEzpwoy43bgitMbirhr/fHVLVFhwI3W1W7GcTKSJ/vzk4cTBayli/apzFrz3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713303; c=relaxed/simple;
-	bh=GNIHHK0FDP3GAGWT1yXjP+7RjtCSWjXJny+xI9qZPFA=;
+	s=arc-20240116; t=1760714490; c=relaxed/simple;
+	bh=a0funOSoeVxYu9JmkiPPFrFkTmMyqLil6mVhWf2TqLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mp8UKzo/ih67waGe0HLIbk/eEljHl6siKBbwTb9kbPtnbBvFVTqKnC4298ZKW/pweu8tXIhAtgVX+EXhnUWN1OU/Shu2HkGsMmF25GlF6jnp5jmOwh9Ohx5LxbtgdqWd3DH3rWqqnSKa4IbnJu58TXDaiTUyr67NcvHCFap2pkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVHEzuVs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E465DC4CEE7;
-	Fri, 17 Oct 2025 15:01:42 +0000 (UTC)
+	 MIME-Version; b=rMxbOlVGI7YSVlFr9sK6phD30oKNNVBlYjVy6HicLPbsObyzDhK+GlFuIb/gRs0eWRKcyzYamKlWZ7+ISEvbZNTTum5B75OPIcuYkqUhaZV4d/n8dMOg+4n7sBJ19UVW9LRNcTEbUnF6Y9gRcWCxfoDHl9ugaF+jyrsolWTJubc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0TUt0nq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B235FC4CEE7;
+	Fri, 17 Oct 2025 15:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713303;
-	bh=GNIHHK0FDP3GAGWT1yXjP+7RjtCSWjXJny+xI9qZPFA=;
+	s=korg; t=1760714490;
+	bh=a0funOSoeVxYu9JmkiPPFrFkTmMyqLil6mVhWf2TqLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sVHEzuVs/IVKcJmkiaYrP0awSCwGTHSbAISahE1yC0bGk4LZ8prexa31f1g0wFB9b
-	 zz9WRGxoNCsUNZYB76385ovwl9GD1aupbYbuC/n3B4rXczqU1QwwdjE79CodGKtjJR
-	 WZLEnM7g5WdiHz8k38bOZeQ3U71fkNeupC0h4Kco=
+	b=o0TUt0nqDeOLoe6dB5By+LGmCAl0m89BL3z+KoKS9aLztlX03agfIJwO03iqouUiK
+	 8zI5mPgNDa2FDM21v+KigjFsTPxtTPLIusXxnJqN84efRQV5o9rpoNtEdNtJjCmgHP
+	 ChwUfdhOSqeGJpJCAuX2uTpeBVgUbd9qh/bc/oCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.1 091/168] nvme-pci: Add TUXEDO IBS Gen8 to Samsung sleep quirk
+	Eric Biggers <ebiggers@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 163/277] sctp: Fix MAC comparison to be constant-time
 Date: Fri, 17 Oct 2025 16:52:50 +0200
-Message-ID: <20251017145132.381214044@linuxfoundation.org>
+Message-ID: <20251017145153.078609107@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georg Gottleuber <ggo@tuxedocomputers.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit eeaed48980a7aeb0d3d8b438185d4b5a66154ff9 upstream.
+commit dd91c79e4f58fbe2898dac84858033700e0e99fb upstream.
 
-On the TUXEDO InfinityBook S Gen8, a Samsung 990 Evo NVMe leads to
-a high power consumption in s2idle sleep (3.5 watts).
+To prevent timing attacks, MACs need to be compared in constant time.
+Use the appropriate helper function for this.
 
-This patch applies 'Force No Simple Suspend' quirk to achieve a sleep with
-a lower power consumption, typically around 1 watts.
-
-Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Fixes: bbd0d59809f9 ("[SCTP]: Implement the receive and verification of AUTH chunk")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://patch.msgid.link/20250818205426.30222-3-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/sctp/sm_make_chunk.c |    3 ++-
+ net/sctp/sm_statefuns.c  |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3109,10 +3109,12 @@ static unsigned long check_vendor_combin
- 		 * Exclude Samsung 990 Evo from NVME_QUIRK_SIMPLE_SUSPEND
- 		 * because of high power consumption (> 2 Watt) in s2idle
- 		 * sleep. Only some boards with Intel CPU are affected.
-+		 * (Note for testing: Samsung 990 Evo Plus has same PCI ID)
- 		 */
- 		if (dmi_match(DMI_BOARD_NAME, "DN50Z-140HC-YD") ||
- 		    dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
- 		    dmi_match(DMI_BOARD_NAME, "GXxMRXx") ||
-+		    dmi_match(DMI_BOARD_NAME, "NS5X_NS7XAU") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PG31") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH6PG01_PH6PG71"))
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -31,6 +31,7 @@
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include <crypto/hash.h>
++#include <crypto/utils.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/ip.h>
+@@ -1796,7 +1797,7 @@ struct sctp_association *sctp_unpack_coo
+ 		}
+ 	}
+ 
+-	if (memcmp(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
++	if (crypto_memneq(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
+ 		*error = -SCTP_IERROR_BAD_SIG;
+ 		goto fail;
+ 	}
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -30,6 +30,7 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <crypto/utils.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/ip.h>
+@@ -4417,7 +4418,7 @@ static enum sctp_ierror sctp_sf_authenti
+ 				 sh_key, GFP_ATOMIC);
+ 
+ 	/* Discard the packet if the digests do not match */
+-	if (memcmp(save_digest, digest, sig_len)) {
++	if (crypto_memneq(save_digest, digest, sig_len)) {
+ 		kfree(save_digest);
+ 		return SCTP_IERROR_BAD_SIG;
+ 	}
 
 
 
