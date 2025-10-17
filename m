@@ -1,56 +1,74 @@
-Return-Path: <stable+bounces-186696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF292BE9D56
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FC9BEA509
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A56F583297
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 006711AE5ABB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA552264A7;
-	Fri, 17 Oct 2025 15:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A4E2745E;
+	Fri, 17 Oct 2025 15:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hh0/RpJc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLE88u86"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2188D3208;
-	Fri, 17 Oct 2025 15:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A16330B00;
+	Fri, 17 Oct 2025 15:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713977; cv=none; b=Z9v9gXjFFKkZ+5UF4fSUhfH4I//P52oiTcFxb8jNooUa/saEbw9xYugmn5XGc06ZzjPtl3OK1YCxOouZMXLMxe+zBN0ifM+KtrutpQW6u6yIauaK/RmPd5PqV1+5bwbziNuWQ5et+m/XGzOpG0FoBNpUSmrsB9u8XSviRxItbeg=
+	t=1760716325; cv=none; b=fYfX1ghdC7lyxMSMUnThebpjKnJdOmoci+BT4tr0OT1W2PA1PAale3vA03od79aY7eoFVPGB+uII/u0xit8k+zJX5hKfCTVGEzu0Qpnx5dvKXwnSKr4cpoCNGAddQa1mAZowUd/Sgesuq3c5SJPVh82Fy2FdwqA6WDTB6tuqPNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713977; c=relaxed/simple;
-	bh=sugkaHs4Bwqls/NsrBDORKt5GtaPw82Yhv6SoFbrL+c=;
+	s=arc-20240116; t=1760716325; c=relaxed/simple;
+	bh=exOzAKYyZqWdz3l/rN4xuKsrpx1NjgptUR/yfAc9w/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sPcd3r/f20gyB3ZMj2fp3kgS12lk2deqoE3R6shWTWOGEmT2hlJx0BOFzOyoLS3Uk4GnhA7f7etO/T0vDU0WQi2jh3cCvoro8+1QkWSw+u7Tl+vS1OtZjb1rk1fSv/PNKtg65CvIUDIdCgVn9/Dvow+8VjT9ZatuBB61XNH4U+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hh0/RpJc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B507C4CEE7;
-	Fri, 17 Oct 2025 15:12:56 +0000 (UTC)
+	 MIME-Version; b=rvqq7aWOtwXh8VeyZ2Nhx4hSAOddtHzjfRkwgcXtXWCQG6VL4d/W/eyr3KwSeA/HQp8zDuqEjW7890U64rJYtopQKgUjG/qVy3kzfkGGsCHO7QEAitox3qYSrmntg7mZaQb72pw4uRRgZQRpyGjylXuwyrqdC9e+sDJ/ZPWD3JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLE88u86; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5444CC116B1;
+	Fri, 17 Oct 2025 15:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713977;
-	bh=sugkaHs4Bwqls/NsrBDORKt5GtaPw82Yhv6SoFbrL+c=;
+	s=korg; t=1760716324;
+	bh=exOzAKYyZqWdz3l/rN4xuKsrpx1NjgptUR/yfAc9w/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hh0/RpJcY2kI0VPfsOuK/2HgbhyAe8PAAZmJK+vwL3oSZUhEduYRqKeoN+HUKkYOW
-	 /bXzN0Xq0mV33MR0ZpMy23beV5quHkRvKTttJ26HpsoHZKLuitVJ4vrDdmefiCj73S
-	 gyyH7KvpUxdtVlN+323B9VKcjsR/MpqF8C5qyiCg=
+	b=oLE88u86G77oJrcRTZwIecPAKmfrB6e9/tRB1tYMLffW9mPUH4RJqJ1WVwaSJFkXt
+	 nGPmwQs1QjumTeLc1rs0NjnkmhRfKwU4pxwRTW2JFYpTibuLzbogPnUT9sXgSExHoQ
+	 1CyvTft/pwR1LmSoVXthVo4ck0GfuE2xx2a1NW9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	linux-riscv@lists.infradead.org,
+	llvm@lists.linux.dev,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/201] ACPI: property: Do not pass NULL handles to acpi_attach_data()
+Subject: [PATCH 5.15 152/276] tools build: Align warning options with perf
 Date: Fri, 17 Oct 2025 16:54:05 +0200
-Message-ID: <20251017145141.516734994@linuxfoundation.org>
+Message-ID: <20251017145148.027432958@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +80,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit baf60d5cb8bc6b85511c5df5f0ad7620bb66d23c ]
+[ Upstream commit 53d067feb8c4f16d1f24ce3f4df4450bb18c555f ]
 
-In certain circumstances, the ACPI handle of a data-only node may be
-NULL, in which case it does not make sense to attempt to attach that
-node to an ACPI namespace object, so update the code to avoid attempts
-to do so.
+The feature test programs are built without enabling '-Wall -Werror'
+options. As a result, a feature may appear to be available, but later
+building in perf can fail with stricter checks.
 
-This prevents confusing and unuseful error messages from being printed.
+Make the feature test program use the same warning options as perf.
 
-Also document the fact that the ACPI handle of a data-only node may be
-NULL and when that happens in a code comment.  In addition, make
-acpi_add_nondev_subnodes() print a diagnostic message for each data-only
-node with an unknown ACPI namespace scope.
-
-Fixes: 1d52f10917a7 ("ACPI: property: Tie data nodes to acpi handles")
-Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fixes: 1925459b4d92 ("tools build: Fix feature Makefile issues with 'O='")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20251006-perf_build_android_ndk-v3-1-4305590795b2@arm.com
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: James Clark <james.clark@linaro.org>
+Cc: linux-riscv@lists.infradead.org
+Cc: llvm@lists.linux.dev
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-perf-users@vger.kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/property.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/build/feature/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -112,6 +112,10 @@ static bool acpi_nondev_subnode_extract(
- 		result = true;
+diff --git a/tools/build/feature/Makefile b/tools/build/feature/Makefile
+index aa3b0d75e44b7..37aa85a81e0a0 100644
+--- a/tools/build/feature/Makefile
++++ b/tools/build/feature/Makefile
+@@ -268,10 +268,10 @@ $(OUTPUT)test-libbabeltrace.bin:
+ 	$(BUILD) # -lbabeltrace provided by $(FEATURE_CHECK_LDFLAGS-libbabeltrace)
  
- 	if (result) {
-+		/*
-+		 * This will be NULL if the desc package is embedded in an outer
-+		 * _DSD-equivalent package and its scope cannot be determined.
-+		 */
- 		dn->handle = handle;
- 		dn->data.pointer = desc;
- 		list_add_tail(&dn->sibling, list);
-@@ -212,6 +216,8 @@ static bool acpi_add_nondev_subnodes(acp
- 			 * strings because there is no way to build full
- 			 * pathnames out of them.
- 			 */
-+			acpi_handle_debug(scope, "subnode %s: Unknown scope\n",
-+					  link->package.elements[0].string.pointer);
- 			desc = &link->package.elements[1];
- 			result = acpi_nondev_subnode_extract(desc, NULL, link,
- 							     list, parent);
-@@ -384,6 +390,9 @@ static void acpi_untie_nondev_subnodes(s
- 	struct acpi_data_node *dn;
+ $(OUTPUT)test-compile-32.bin:
+-	$(CC) -m32 -o $@ test-compile.c
++	$(CC) -m32 -Wall -Werror -o $@ test-compile.c
  
- 	list_for_each_entry(dn, &data->subnodes, sibling) {
-+		if (!dn->handle)
-+			continue;
-+
- 		acpi_detach_data(dn->handle, acpi_nondev_subnode_tag);
+ $(OUTPUT)test-compile-x32.bin:
+-	$(CC) -mx32 -o $@ test-compile.c
++	$(CC) -mx32 -Wall -Werror -o $@ test-compile.c
  
- 		acpi_untie_nondev_subnodes(&dn->data);
-@@ -398,6 +407,9 @@ static bool acpi_tie_nondev_subnodes(str
- 		acpi_status status;
- 		bool ret;
- 
-+		if (!dn->handle)
-+			continue;
-+
- 		status = acpi_attach_data(dn->handle, acpi_nondev_subnode_tag, dn);
- 		if (ACPI_FAILURE(status) && status != AE_ALREADY_EXISTS) {
- 			acpi_handle_err(dn->handle, "Can't tag data node\n");
+ $(OUTPUT)test-zlib.bin:
+ 	$(BUILD) -lz
+-- 
+2.51.0
+
 
 
 
