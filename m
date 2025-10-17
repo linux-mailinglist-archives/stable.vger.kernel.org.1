@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-186678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC04ABE9CC3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:08 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 186C1BEA684
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D24346E6CA6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A014A50957B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A34D32E14F;
-	Fri, 17 Oct 2025 15:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED578330B20;
+	Fri, 17 Oct 2025 15:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2s7dHa0m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNODGOQs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B2E32C92D;
-	Fri, 17 Oct 2025 15:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83F8330B17;
+	Fri, 17 Oct 2025 15:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713925; cv=none; b=MmDboCEwsM+Q9SJpbWs+Dr72XLHEPSZiE9pbjg1BL+nv7LSBKMbtivgtHr37BU8rmLfOjM9pncvVBcGvfeVHD+DNxsvRauLX3BblElI19smPQTz/JptgsOMqw3VMY7sxZrxPIf29iOPO8kMRwzh2uPxbFvERVoSQ6Z/KRoanA90=
+	t=1760716281; cv=none; b=UHOm/BUEINImdi9nOtkxHJrFP01HSL6HxwP5f4Htw2ArKM4l14LfRZt5jkhjhYFKjYHhTAIUlAEauAhCw4ylQaineGd3a3KH83tAMfg0Hbwbfnco5bxRNRBk34YDJBYxz3bTnBi3TA603ejX8Au1JsTRhSmba7CblLo0GhJb9pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713925; c=relaxed/simple;
-	bh=T02zDQ3A4c8fhUZY9wUZ2oJ8eQG976sjgC/daC2lWlc=;
+	s=arc-20240116; t=1760716281; c=relaxed/simple;
+	bh=So/p1SbtBgXV4xqINdRsJ4+T82XnKlysSTPk49p3Zt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7MZoJwCFC+uHIOXCCVDk56XdpzWfxeDwk+YVxSgwvxV/KLWKV3J7/i7Ji853+Ar7AIcVneQ68zrGM3FGqUzPe0q0fmUlx0zwggF2eSi/f/L9dcuHkFpzHCSfY4kKH5Ll0tuzEs0LnBwqW3VhNYFv9iOG1sFFI9oG3lgZAP8L8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2s7dHa0m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE84FC4CEE7;
-	Fri, 17 Oct 2025 15:12:04 +0000 (UTC)
+	 MIME-Version; b=bhI2kLlx3oXxdpHm2LrTtGrnmyx/2+HJ+RfxHR5rcb4DqYT84rykfrXXbLSkVaHDvNlHX9hdQW76bOdpM7x/uzx9XNWwbeEyfZYtMZ9+ztpKcCO9mGOS/dd2mKLxmrq03g9I24mYNCGEgdUeGTVq8Soj3O9uD/Rgn2AJRQtm21A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNODGOQs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89BBC4CEFE;
+	Fri, 17 Oct 2025 15:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713925;
-	bh=T02zDQ3A4c8fhUZY9wUZ2oJ8eQG976sjgC/daC2lWlc=;
+	s=korg; t=1760716281;
+	bh=So/p1SbtBgXV4xqINdRsJ4+T82XnKlysSTPk49p3Zt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2s7dHa0mLCxtrUpdzzWCMvbcylooJOYIO5r0A0HK0pw2ntsPZLH/o74J7ll1W12u0
-	 k977KGJNtdpWaZhCnw0l/EPQRRjEN+RWtswJ4jfO8PrBNzzOPPqzicyxsuCdVlpQyU
-	 6CjUOgPPn9e7ZnVZ//wDp2KUrZDzpC5EfpoJ0E1U=
+	b=rNODGOQs+glT8b/v+k0Rq1AgL250EDXJHP3mkYDFCU2xPcA4PlOnBdwQknwC8H3as
+	 npiUI0lo+dUbP8zyQNnod1zMGrv/UnKOQJw2Q9+a/Y2dbJ1GwnADMUVG/aKI1RPyJS
+	 FBQ/5dMu/uXVA+7UqFeSv9XKsxdGmyBI4U05JV24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
-	Ling Xu <quic_lxu5@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.ibm.com>,
+	Chun-Tse Shao <ctshao@google.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/201] misc: fastrpc: Save actual DMA size in fastrpc_map structure
+Subject: [PATCH 5.15 136/276] perf test: Dont leak workload gopipe in PERF_RECORD_*
 Date: Fri, 17 Oct 2025 16:53:49 +0200
-Message-ID: <20251017145140.911068396@linuxfoundation.org>
+Message-ID: <20251017145147.447011793@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,118 +74,207 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ling Xu <quic_lxu5@quicinc.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 8b5b456222fd604079b5cf2af1f25ad690f54a25 ]
+[ Upstream commit 48918cacefd226af44373e914e63304927c0e7dc ]
 
-For user passed fd buffer, map is created using DMA calls. The
-map related information is stored in fastrpc_map structure. The
-actual DMA size is not stored in the structure. Store the actual
-size of buffer and check it against the user passed size.
+The test starts a workload and then opens events. If the events fail
+to open, for example because of perf_event_paranoid, the gopipe of the
+workload is leaked and the file descriptor leak check fails when the
+test exits. To avoid this cancel the workload when opening the events
+fails.
 
-Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
-Cc: stable@kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250912131236.303102-2-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Before:
+```
+$ perf test -vv 7
+  7: PERF_RECORD_* events & perf_sample fields:
+ --- start ---
+test child forked, pid 1189568
+Using CPUID GenuineIntel-6-B7-1
+ ------------------------------------------------------------
+perf_event_attr:
+  type                    	   0 (PERF_TYPE_HARDWARE)
+  config                  	   0xa00000000 (cpu_atom/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                	   1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8
+sys_perf_event_open failed, error -13
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             0 (PERF_TYPE_HARDWARE)
+  config                           0xa00000000 (cpu_atom/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                         1
+  exclude_kernel                   1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 3
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             0 (PERF_TYPE_HARDWARE)
+  config                           0x400000000 (cpu_core/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                         1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8
+sys_perf_event_open failed, error -13
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             0 (PERF_TYPE_HARDWARE)
+  config                           0x400000000 (cpu_core/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                         1
+  exclude_kernel                   1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 3
+Attempt to add: software/cpu-clock/
+..after resolving event: software/config=0/
+cpu-clock -> software/cpu-clock/
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             1 (PERF_TYPE_SOFTWARE)
+  size                             136
+  config                           0x9 (PERF_COUNT_SW_DUMMY)
+  sample_type                      IP|TID|TIME|CPU
+  read_format                      ID|LOST
+  disabled                         1
+  inherit                          1
+  mmap                             1
+  comm                             1
+  enable_on_exec                   1
+  task                             1
+  sample_id_all                    1
+  mmap2                            1
+  comm_exec                        1
+  ksymbol                          1
+  bpf_event                        1
+  { wakeup_events, wakeup_watermark } 1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 1189569  cpu 0  group_fd -1  flags 0x8
+sys_perf_event_open failed, error -13
+perf_evlist__open: Permission denied
+ ---- end(-2) ----
+Leak of file descriptor 6 that opened: 'pipe:[14200347]'
+ ---- unexpected signal (6) ----
+iFailed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+    #0 0x565358f6666e in child_test_sig_handler builtin-test.c:311
+    #1 0x7f29ce849df0 in __restore_rt libc_sigaction.c:0
+    #2 0x7f29ce89e95c in __pthread_kill_implementation pthread_kill.c:44
+    #3 0x7f29ce849cc2 in raise raise.c:27
+    #4 0x7f29ce8324ac in abort abort.c:81
+    #5 0x565358f662d4 in check_leaks builtin-test.c:226
+    #6 0x565358f6682e in run_test_child builtin-test.c:344
+    #7 0x565358ef7121 in start_command run-command.c:128
+    #8 0x565358f67273 in start_test builtin-test.c:545
+    #9 0x565358f6771d in __cmd_test builtin-test.c:647
+    #10 0x565358f682bd in cmd_test builtin-test.c:849
+    #11 0x565358ee5ded in run_builtin perf.c:349
+    #12 0x565358ee6085 in handle_internal_command perf.c:401
+    #13 0x565358ee61de in run_argv perf.c:448
+    #14 0x565358ee6527 in main perf.c:555
+    #15 0x7f29ce833ca8 in __libc_start_call_main libc_start_call_main.h:74
+    #16 0x7f29ce833d65 in __libc_start_main@@GLIBC_2.34 libc-start.c:128
+    #17 0x565358e391c1 in _start perf[851c1]
+  7: PERF_RECORD_* events & perf_sample fields                       : FAILED!
+```
+
+After:
+```
+$ perf test 7
+  7: PERF_RECORD_* events & perf_sample fields                       : Skip (permissions)
+```
+
+Fixes: 16d00fee703866c6 ("perf tests: Move test__PERF_RECORD into separate object")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.ibm.com>
+Cc: Chun-Tse Shao <ctshao@google.com>
+Cc: Howard Chu <howardchu95@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |   27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ tools/perf/tests/perf-record.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -322,11 +322,11 @@ static void fastrpc_free_map(struct kref
- 
- 			perm.vmid = QCOM_SCM_VMID_HLOS;
- 			perm.perm = QCOM_SCM_PERM_RWX;
--			err = qcom_scm_assign_mem(map->phys, map->size,
-+			err = qcom_scm_assign_mem(map->phys, map->len,
- 				&src_perms, &perm, 1);
- 			if (err) {
- 				dev_err(map->fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d\n",
--						map->phys, map->size, err);
-+						map->phys, map->len, err);
- 				return;
- 			}
- 		}
-@@ -752,7 +752,8 @@ static int fastrpc_map_attach(struct fas
- 	struct fastrpc_session_ctx *sess = fl->sctx;
- 	struct fastrpc_map *map = NULL;
- 	struct sg_table *table;
--	int err = 0;
-+	struct scatterlist *sgl = NULL;
-+	int err = 0, sgl_index = 0;
- 
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
- 	if (!map)
-@@ -789,7 +790,15 @@ static int fastrpc_map_attach(struct fas
- 		map->phys = sg_dma_address(map->table->sgl);
- 		map->phys += ((u64)fl->sctx->sid << 32);
- 	}
--	map->size = len;
-+	for_each_sg(map->table->sgl, sgl, map->table->nents,
-+		sgl_index)
-+		map->size += sg_dma_len(sgl);
-+	if (len > map->size) {
-+		dev_dbg(sess->dev, "Bad size passed len 0x%llx map size 0x%llx\n",
-+				len, map->size);
-+		err = -EINVAL;
-+		goto map_err;
-+	}
- 	map->va = sg_virt(map->table->sgl);
- 	map->len = len;
- 
-@@ -806,10 +815,10 @@ static int fastrpc_map_attach(struct fas
- 		dst_perms[1].vmid = fl->cctx->vmperms[0].vmid;
- 		dst_perms[1].perm = QCOM_SCM_PERM_RWX;
- 		map->attr = attr;
--		err = qcom_scm_assign_mem(map->phys, (u64)map->size, &src_perms, dst_perms, 2);
-+		err = qcom_scm_assign_mem(map->phys, (u64)map->len, &src_perms, dst_perms, 2);
- 		if (err) {
- 			dev_err(sess->dev, "Failed to assign memory with phys 0x%llx size 0x%llx err %d\n",
--					map->phys, map->size, err);
-+					map->phys, map->len, err);
- 			goto map_err;
- 		}
- 	}
-@@ -2063,7 +2072,7 @@ static int fastrpc_req_mem_map(struct fa
- 	args[0].length = sizeof(req_msg);
- 
- 	pages.addr = map->phys;
--	pages.size = map->size;
-+	pages.size = map->len;
- 
- 	args[1].ptr = (u64) (uintptr_t) &pages;
- 	args[1].length = sizeof(pages);
-@@ -2078,7 +2087,7 @@ static int fastrpc_req_mem_map(struct fa
- 	err = fastrpc_internal_invoke(fl, true, FASTRPC_INIT_HANDLE, sc, &args[0]);
- 	if (err) {
- 		dev_err(dev, "mem mmap error, fd %d, vaddr %llx, size %lld\n",
--			req.fd, req.vaddrin, map->size);
-+			req.fd, req.vaddrin, map->len);
- 		goto err_invoke;
+diff --git a/tools/perf/tests/perf-record.c b/tools/perf/tests/perf-record.c
+index 0df471bf1590e..b215e89b65f7d 100644
+--- a/tools/perf/tests/perf-record.c
++++ b/tools/perf/tests/perf-record.c
+@@ -115,6 +115,7 @@ int test__PERF_RECORD(struct test *test __maybe_unused, int subtest __maybe_unus
+ 	if (err < 0) {
+ 		pr_debug("sched__get_first_possible_cpu: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
  	}
  
-@@ -2091,7 +2100,7 @@ static int fastrpc_req_mem_map(struct fa
- 	if (copy_to_user((void __user *)argp, &req, sizeof(req))) {
- 		/* unmap the memory and release the buffer */
- 		req_unmap.vaddr = (uintptr_t) rsp_msg.vaddr;
--		req_unmap.length = map->size;
-+		req_unmap.length = map->len;
- 		fastrpc_req_mem_unmap_impl(fl, &req_unmap);
- 		return -EFAULT;
+@@ -126,6 +127,7 @@ int test__PERF_RECORD(struct test *test __maybe_unused, int subtest __maybe_unus
+ 	if (sched_setaffinity(evlist->workload.pid, cpu_mask_size, &cpu_mask) < 0) {
+ 		pr_debug("sched_setaffinity: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
  	}
+ 
+@@ -137,6 +139,7 @@ int test__PERF_RECORD(struct test *test __maybe_unused, int subtest __maybe_unus
+ 	if (err < 0) {
+ 		pr_debug("perf_evlist__open: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
+ 	}
+ 
+@@ -149,6 +152,7 @@ int test__PERF_RECORD(struct test *test __maybe_unused, int subtest __maybe_unus
+ 	if (err < 0) {
+ 		pr_debug("evlist__mmap: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
