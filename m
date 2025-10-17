@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-187011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C620BE9DE7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E00E8BEA1B5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 307911897F92
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:28:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 22F9D583D8C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478DA258ECA;
-	Fri, 17 Oct 2025 15:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC35F3208;
+	Fri, 17 Oct 2025 15:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Liarbc+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBn/gi/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047EA19DF9A;
-	Fri, 17 Oct 2025 15:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656AC242935;
+	Fri, 17 Oct 2025 15:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714868; cv=none; b=f3a421cBEXcYm3IRVFca1Qcub+OEb08At4lDQUKKOPIzSD2mOfh/NOXg7CP4aT5E770rk0YUf8MwUio7HqYs5RODAbp3e80l9oCWO5nEbTj3sVfnWNV7XtxPN5wGBBCJ8GGTj0yI/Zx35h6Ziq9jkBL6zRBsD6oXavfNlcl7jN4=
+	t=1760714993; cv=none; b=XPadyDnfoZ+rjTkhCFwtmabL8DE6OZ20k1M6Ww7klbN13LCDqhp/ncnaC5sYB5F+8y9t+XLsvuSl+o736TIGULvIcrjgaQMrw1+lNh8UJYFz6RFGgTlQTVHzmFwFjyxpy96PvIK/vIXtZE8bJnRXA3JgLleJT+Cqjn0eQiMMed4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714868; c=relaxed/simple;
-	bh=CiUMNU3zgVSOJeYjssTPEHXpLWdXOD7sJPRLK1J7fVA=;
+	s=arc-20240116; t=1760714993; c=relaxed/simple;
+	bh=tbtvYNubnUSgwexitRY0qKQAmDqVCV6s/CHSXkzSO/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oHWKoesx0FC9GYKTWbXer7NVP3gPvoWQhrRYFwHz1uBWPBwvY21iKkLeM1qTwNm+IypOxV44AvKScbBox5cAQJYnBImRg9OigfCpSFWHgqUObON9GJk7p6uD5obJVmQypywQWfeRwDN1LxTxk5XB7zq/VffbsGwN7S4S1ykeayY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Liarbc+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8033FC4CEE7;
-	Fri, 17 Oct 2025 15:27:47 +0000 (UTC)
+	 MIME-Version; b=gOl7R2Kk9IMF9fCYqGtGceJBL3bs06/bYr+U/KVZz5Oo9kZF0wg36pHZfO+ur7lkF0vhhU5GoH3UOcI3Ft3kWoTqQq0qik7mmyFi+9PiLCiHHIiGJnlcU+8le0EnWeAE1fKBwwGrnG6c73V8JrrYBz2upBebBKI27T8Eqm91ctw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBn/gi/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE060C113D0;
+	Fri, 17 Oct 2025 15:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714867;
-	bh=CiUMNU3zgVSOJeYjssTPEHXpLWdXOD7sJPRLK1J7fVA=;
+	s=korg; t=1760714993;
+	bh=tbtvYNubnUSgwexitRY0qKQAmDqVCV6s/CHSXkzSO/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Liarbc+1Q/EXDS2t3nz6gIG++9ZD1IKPtwlQulBtuYF/d14D+jaU8jk9Q12/Yi1ND
-	 FL19QpTjEYl2LoUuXss/+WGzrwki/0Xj7xP/m6g9/o4dn0aSOydYNFQRqXFnwfhglB
-	 RCp71F0OktDzLJ7ulQOdF/IvWv2B4+X5Jvq9IwOI=
+	b=NBn/gi/cKdueU4SJmpn0TCVHekPZ3/SeMXg7EPVwS7SoT7y+8GnQ/xOjnAsc4YI6s
+	 CKN/ZIoh6iOZmNaSJGWznzCgw3Z+L98cnbff+93pfQRw16TzwLQEhvVaGvjSS3mXwI
+	 qT1Kogow9zE0YtaLtZzkElvSGwox9JnzxzKmoNR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 017/371] iio: frequency: adf4350: Fix ADF4350_REG3_12BIT_CLKDIV_MODE
-Date: Fri, 17 Oct 2025 16:49:52 +0200
-Message-ID: <20251017145202.421490638@linuxfoundation.org>
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.17 018/371] media: v4l2-subdev: Fix alloc failure check in v4l2_subdev_call_state_try()
+Date: Fri, 17 Oct 2025 16:49:53 +0200
+Message-ID: <20251017145202.458877260@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -61,42 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Hennerich <michael.hennerich@analog.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 1d8fdabe19267338f29b58f968499e5b55e6a3b6 upstream.
+commit f37df9a0eb5e43fcfe02cbaef076123dc0d79c7e upstream.
 
-The clk div bits (2 bits wide) do not start in bit 16 but in bit 15. Fix it
-accordingly.
+v4l2_subdev_call_state_try() macro allocates a subdev state with
+__v4l2_subdev_state_alloc(), but does not check the returned value. If
+__v4l2_subdev_state_alloc fails, it returns an ERR_PTR, and that would
+cause v4l2_subdev_call_state_try() to crash.
 
-Fixes: e31166f0fd48 ("iio: frequency: New driver for Analog Devices ADF4350/ADF4351 Wideband Synthesizers")
-Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250829-adf4350-fix-v2-2-0bf543ba797d@analog.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Add proper error handling to v4l2_subdev_call_state_try().
+
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: 982c0487185b ("media: subdev: Add v4l2_subdev_call_state_try() macro")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/aJTNtpDUbTz7eyJc%40stanley.mountain/
+Cc: stable@vger.kernel.org
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/iio/frequency/adf4350.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/media/v4l2-subdev.h |   30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
---- a/include/linux/iio/frequency/adf4350.h
-+++ b/include/linux/iio/frequency/adf4350.h
-@@ -51,7 +51,7 @@
+--- a/include/media/v4l2-subdev.h
++++ b/include/media/v4l2-subdev.h
+@@ -1962,19 +1962,23 @@ extern const struct v4l2_subdev_ops v4l2
+  *
+  * Note: only legacy non-MC drivers may need this macro.
+  */
+-#define v4l2_subdev_call_state_try(sd, o, f, args...)                 \
+-	({                                                            \
+-		int __result;                                         \
+-		static struct lock_class_key __key;                   \
+-		const char *name = KBUILD_BASENAME                    \
+-			":" __stringify(__LINE__) ":state->lock";     \
+-		struct v4l2_subdev_state *state =                     \
+-			__v4l2_subdev_state_alloc(sd, name, &__key);  \
+-		v4l2_subdev_lock_state(state);                        \
+-		__result = v4l2_subdev_call(sd, o, f, state, ##args); \
+-		v4l2_subdev_unlock_state(state);                      \
+-		__v4l2_subdev_state_free(state);                      \
+-		__result;                                             \
++#define v4l2_subdev_call_state_try(sd, o, f, args...)                         \
++	({                                                                    \
++		int __result;                                                 \
++		static struct lock_class_key __key;                           \
++		const char *name = KBUILD_BASENAME                            \
++			":" __stringify(__LINE__) ":state->lock";             \
++		struct v4l2_subdev_state *state =                             \
++			__v4l2_subdev_state_alloc(sd, name, &__key);          \
++		if (IS_ERR(state)) {                                          \
++			__result = PTR_ERR(state);                            \
++		} else {                                                      \
++			v4l2_subdev_lock_state(state);                        \
++			__result = v4l2_subdev_call(sd, o, f, state, ##args); \
++			v4l2_subdev_unlock_state(state);                      \
++			__v4l2_subdev_state_free(state);                      \
++		}                                                             \
++		__result;                                                     \
+ 	})
  
- /* REG3 Bit Definitions */
- #define ADF4350_REG3_12BIT_CLKDIV(x)		((x) << 3)
--#define ADF4350_REG3_12BIT_CLKDIV_MODE(x)	((x) << 16)
-+#define ADF4350_REG3_12BIT_CLKDIV_MODE(x)	((x) << 15)
- #define ADF4350_REG3_12BIT_CSR_EN		(1 << 18)
- #define ADF4351_REG3_CHARGE_CANCELLATION_EN	(1 << 21)
- #define ADF4351_REG3_ANTI_BACKLASH_3ns_EN	(1 << 22)
+ /**
 
 
 
