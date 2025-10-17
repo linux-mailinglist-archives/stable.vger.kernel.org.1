@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-187294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB766BEA218
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6E85BEA17C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D849188192C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 92EE65685BE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83A6330B17;
-	Fri, 17 Oct 2025 15:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7FF1D5CE0;
+	Fri, 17 Oct 2025 15:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8nwqm73"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huPOKEIB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CC9330B0F;
-	Fri, 17 Oct 2025 15:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B862F231C9F;
+	Fri, 17 Oct 2025 15:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715669; cv=none; b=kfyM2qEVaDyr5Xa7xPKsi1mitoyWahU2ebSsY92wWdLSdH7+IzZxYuQsSKBN1wLyzPH3xeTzm6kbuFqrMwtQjjtczZCgIzgZUDFuuMzfIso67e+18EZOqLkYd0YUjOZmRd7iO+7VEtndM/8OtRUnPZSVp39l8hHkUrMIoVBmn3Y=
+	t=1760714782; cv=none; b=ZGXmOCQokbfLxeXFoKgs1IKRltXH4boUEfDV1VAuQHk+LX2ln1TszspVvcVeKDPkAmGQJzbAm8OsjwysHnMRK3KsFjzemIeinKe01Bi5G/ib1vBnNKfF82uPZyZUHg3556Qwjt1fRjlkctOFO7tiYPspZqS2BSia3rhU0htkcP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715669; c=relaxed/simple;
-	bh=R59IotaoH+w3l/RqawE2jH+p8vj73VWN+R3I3or9MMM=;
+	s=arc-20240116; t=1760714782; c=relaxed/simple;
+	bh=X2JLOnXs/xG6zFKj51jawaReg7XrqZhPBumDsesmTBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NbrqcbBQjF0gAjDmuq4xNINVndZFeUUhcdKy9QUxjuPnTgu9ryXBx3HaeVwZW374Psc0ud3gq6iCfBKiDOpmmRnxgRdCkO1DpgCsONriYtaw2jM0i/gVAkJ7udZ5RnNOqbqYvO4JNfgrfJof9QGB1gnpBG4s2eXD/8mRCOX0vxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8nwqm73; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E180BC4CEFE;
-	Fri, 17 Oct 2025 15:41:08 +0000 (UTC)
+	 MIME-Version; b=aOiCKYgNHsJFsLYYz+wp/nmEGl7wpBuJqoUQ3cjq6SVJw0Qdyg3rM7KJq/cmtEMd88Qfpc1BxVsTbXNh3mqo/XPX2jqcARg4Vc+7wHhUQ9iaVIu2is3YCHH+Kqa94Nb85gf0kP3PxqryXjMy2qsaQ/cBnrxddSDfm9SGerqGMhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huPOKEIB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41681C4CEE7;
+	Fri, 17 Oct 2025 15:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715669;
-	bh=R59IotaoH+w3l/RqawE2jH+p8vj73VWN+R3I3or9MMM=;
+	s=korg; t=1760714782;
+	bh=X2JLOnXs/xG6zFKj51jawaReg7XrqZhPBumDsesmTBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P8nwqm73Pju3zVEpq5xUa0NjkZEGdpQw1eaPjMYWv2JiEqoZFUu7jBiEF9LN0NIIo
-	 gJf6gGJ2Ra6vPXJ1ChT/yCfCHfnzLkCe0wlaqX9ZXFKqZOh67pn1q/rELSrDytp/Xf
-	 +G2U/RpbG9EGlj9YmyzCqrdU1gSB/3qrsSfqF/hg=
+	b=huPOKEIBYzHe13NBKRhFWCBLFuekzClklU+NxFGTqlyfutqIRYtxcXASwJKdK94mW
+	 NoOc5F5/IwYavkdaEgOzTx8aw5nxGnsxEM6F637R9w6XawItONwHeRHaF6jxfyAUvn
+	 OAJl9J+w6wp5yZQWnM//yQWsiXgPH9X7aTR/5g+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pratyush Yadav <pratyush@kernel.org>,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Santhosh Kumar K <s-k6@ti.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.17 296/371] spi: cadence-quadspi: Fix cqspi_setup_flash()
+	Jia Wang <wangjia@ultrarisc.com>,
+	Charles Mirabile <cmirabil@redhat.com>,
+	Lucas Zampieri <lzampier@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 264/277] irqchip/sifive-plic: Avoid interrupt ID 0 handling during suspend/resume
 Date: Fri, 17 Oct 2025 16:54:31 +0200
-Message-ID: <20251017145212.783076698@linuxfoundation.org>
+Message-ID: <20251017145156.801310033@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Santhosh Kumar K <s-k6@ti.com>
+From: Lucas Zampieri <lzampier@redhat.com>
 
-commit 858d4d9e0a9d6b64160ef3c824f428c9742172c4 upstream.
+[ Upstream commit f75e07bf5226da640fa99a0594687c780d9bace4 ]
 
-The 'max_cs' stores the largest chip select number. It should only
-be updated when the current 'cs' is greater than existing 'max_cs'. So,
-fix the condition accordingly.
+According to the PLIC specification[1], global interrupt sources are
+assigned small unsigned integer identifiers beginning at the value 1.
+An interrupt ID of 0 is reserved to mean "no interrupt".
 
-Also, return failure if there are no flash device declared.
+The current plic_irq_resume() and plic_irq_suspend() functions incorrectly
+start the loop from index 0, which accesses the register space for the
+reserved interrupt ID 0.
 
-Fixes: 0f3841a5e115 ("spi: cadence-qspi: report correct number of chip-select")
-CC: stable@vger.kernel.org
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
-Message-ID: <20250905185958.3575037-4-s-k6@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Change the loop to start from index 1, skipping the reserved
+interrupt ID 0 as per the PLIC specification.
+
+This prevents potential undefined behavior when accessing the reserved
+register space during suspend/resume cycles.
+
+Fixes: e80f0b6a2cf3 ("irqchip/irq-sifive-plic: Add syscore callbacks for hibernation")
+Co-developed-by: Jia Wang <wangjia@ultrarisc.com>
+Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
+Co-developed-by: Charles Mirabile <cmirabil@redhat.com>
+Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
+Signed-off-by: Lucas Zampieri <lzampier@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://github.com/riscv/riscv-plic-spec/releases/tag/1.0.0
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-sifive-plic.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1727,12 +1727,10 @@ static const struct spi_controller_mem_c
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index bf69a4802b71e..9c4af7d588463 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -252,7 +252,8 @@ static int plic_irq_suspend(void)
  
- static int cqspi_setup_flash(struct cqspi_st *cqspi)
- {
--	unsigned int max_cs = cqspi->num_chipselect - 1;
- 	struct platform_device *pdev = cqspi->pdev;
- 	struct device *dev = &pdev->dev;
- 	struct cqspi_flash_pdata *f_pdata;
--	unsigned int cs;
--	int ret;
-+	int ret, cs, max_cs = -1;
+ 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
  
- 	/* Get flash device data */
- 	for_each_available_child_of_node_scoped(dev->of_node, np) {
-@@ -1745,10 +1743,10 @@ static int cqspi_setup_flash(struct cqsp
- 		if (cs >= cqspi->num_chipselect) {
- 			dev_err(dev, "Chip select %d out of range.\n", cs);
- 			return -EINVAL;
--		} else if (cs < max_cs) {
--			max_cs = cs;
- 		}
- 
-+		max_cs = max_t(int, cs, max_cs);
-+
- 		f_pdata = &cqspi->f_pdata[cs];
- 		f_pdata->cqspi = cqspi;
- 		f_pdata->cs = cs;
-@@ -1758,6 +1756,11 @@ static int cqspi_setup_flash(struct cqsp
- 			return ret;
+-	for (i = 0; i < priv->nr_irqs; i++) {
++	/* irq ID 0 is reserved */
++	for (i = 1; i < priv->nr_irqs; i++) {
+ 		__assign_bit(i, priv->prio_save,
+ 			     readl(priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID));
  	}
+@@ -283,7 +284,8 @@ static void plic_irq_resume(void)
  
-+	if (max_cs < 0) {
-+		dev_err(dev, "No flash device declared\n");
-+		return -ENODEV;
-+	}
-+
- 	cqspi->num_chipselect = max_cs + 1;
- 	return 0;
- }
+ 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
+ 
+-	for (i = 0; i < priv->nr_irqs; i++) {
++	/* irq ID 0 is reserved */
++	for (i = 1; i < priv->nr_irqs; i++) {
+ 		index = BIT_WORD(i);
+ 		writel((priv->prio_save[index] & BIT_MASK(i)) ? 1 : 0,
+ 		       priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID);
+-- 
+2.51.0
+
 
 
 
