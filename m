@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-187240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C882BEAB62
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0748BEAA31
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:22:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9455F94494B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74DF4944A97
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E3A32F778;
-	Fri, 17 Oct 2025 15:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276072F12D9;
+	Fri, 17 Oct 2025 15:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1sN99LL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoAaUJmY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519C232C946;
-	Fri, 17 Oct 2025 15:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81743328EA;
+	Fri, 17 Oct 2025 15:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715513; cv=none; b=hZDeCwJz2aaMm4UU7eqry/zzGJHDU8Xu0Dy4pbxkOhQ/8mQHRVpK2ncCtAMxxcEGMYseG6P/Vd44C5WRwMFTh/RaXmXgd0LMS39e6sfQOXM3d0SMP2TQ7BTyF35vecDfyC9jNZvkHLm5q+YFIkHafXFNphZNdcQF0EV0v7CScPA=
+	t=1760715518; cv=none; b=PU8KfpOGeM1VSbawpB9B7+IeBejnQYH7jJJCXRKeWBVjNnGgOhaSBNtTEzk/GP3iUxXRxE/85iF33ypYSihcyp5RRZNsQhUh+tVNzlvMbiDpAK5I0BbkPdmAZuOMWlt3QiShhXGXJhPAveeHXKw57YmOh5nSJP7AFDmk656PlSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715513; c=relaxed/simple;
-	bh=cB+5/1upxyuunge0WMXYdB6G5KgnSFYHHl8l8AgC0bQ=;
+	s=arc-20240116; t=1760715518; c=relaxed/simple;
+	bh=ouaEqCDwMMj6teC84ThAPmd5HMKz2FeDb+ab2Yk+Bkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUEz8kV+qT8g5LGH7uKc1B4a0+hxJpFDUYIpnGp10oV9KXGbGecHU/F8sgn7MQOzFRQjEqFzrc7D+YYpZgLxU/f9dTPuBAeTjii13UnuDsfOzlmmjoqDE60RTBm+sofrIzAPeZdKFnGRGjl5kZ7QW9KGMuMIwOCymEgMBdwJGyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1sN99LL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDAEC4CEE7;
-	Fri, 17 Oct 2025 15:38:32 +0000 (UTC)
+	 MIME-Version; b=UaOTgRhv6yFlYulsbkh+LAe0xuwvMHU5OZIbN5jRMUFdj3n+g6yHIidwvHq27u22KjLE64Zo31ceqIvAC06XZhj92Y1THU9xbxXkBdL8UFN7tSMWGjpuKB17uGWtR68qZpZnn8wW2ZVgWtT7Wf06kDpft042weBP8ESjB6ZVb1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoAaUJmY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C71FC4CEE7;
+	Fri, 17 Oct 2025 15:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715513;
-	bh=cB+5/1upxyuunge0WMXYdB6G5KgnSFYHHl8l8AgC0bQ=;
+	s=korg; t=1760715518;
+	bh=ouaEqCDwMMj6teC84ThAPmd5HMKz2FeDb+ab2Yk+Bkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1sN99LLT5IjvINBONCE2SObcVZB4jAP6FUYs25lIzTrQ8/o/Jjqy0jj384xpYt4j
-	 fm2jadOtlyP7RmdHle+QAoJDmDZQicL8TdrcG90u82op6yTPrxcrtlHhz+adXfH3xe
-	 fI5+b5v9g0Db7YZ6boSLkbCYn+F3/18SFGmfE0V0=
+	b=LoAaUJmYxXh3h0t2hk+QjrbqV8lG2efsB6DoWM+fOGPiP/PrjIOLVVmuh2Lw+OJV9
+	 1Ztbh1zEaZqSiimMbIrs94j/h55pHkCrc01JV7OnBRY6DYyQ39tcycLPUX86yYf7HI
+	 zjm5QGyptmEFgc2+piycUdvc1PrYpZGf+8TnZpW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.17 243/371] nvme-pci: Add TUXEDO IBS Gen8 to Samsung sleep quirk
-Date: Fri, 17 Oct 2025 16:53:38 +0200
-Message-ID: <20251017145210.870512219@linuxfoundation.org>
+	Kenneth Crudup <kenneth.crudup@gmail.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.17 245/371] PM: EM: Fix late boot with holes in CPU topology
+Date: Fri, 17 Oct 2025 16:53:40 +0200
+Message-ID: <20251017145210.942982380@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -66,40 +66,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Georg Gottleuber <ggo@tuxedocomputers.com>
+From: Christian Loehle <christian.loehle@arm.com>
 
-commit eeaed48980a7aeb0d3d8b438185d4b5a66154ff9 upstream.
+commit 1ebe8f7e782523e62cd1fa8237f7afba5d1dae83 upstream.
 
-On the TUXEDO InfinityBook S Gen8, a Samsung 990 Evo NVMe leads to
-a high power consumption in s2idle sleep (3.5 watts).
+Commit e3f1164fc9ee ("PM: EM: Support late CPUs booting and capacity
+adjustment") added a mechanism to handle CPUs that come up late by
+retrying when any of the `cpufreq_cpu_get()` call fails.
 
-This patch applies 'Force No Simple Suspend' quirk to achieve a sleep with
-a lower power consumption, typically around 1 watts.
+However, if there are holes in the CPU topology (offline CPUs, e.g.
+nosmt), the first missing CPU causes the loop to break, preventing
+subsequent online CPUs from being updated.
 
-Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Instead of aborting on the first missing CPU policy, loop through all
+and retry if any were missing.
+
+Fixes: e3f1164fc9ee ("PM: EM: Support late CPUs booting and capacity adjustment")
+Suggested-by: Kenneth Crudup <kenneth.crudup@gmail.com>
+Reported-by: Kenneth Crudup <kenneth.crudup@gmail.com>
+Link: https://lore.kernel.org/linux-pm/40212796-734c-4140-8a85-854f72b8144d@panix.com/
+Cc: 6.9+ <stable@vger.kernel.org> # 6.9+
+Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/20250831214357.2020076-1-christian.loehle@arm.com
+[ rjw: Drop the new pr_debug() message which is not very useful ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/power/energy_model.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3324,10 +3324,12 @@ static unsigned long check_vendor_combin
- 		 * Exclude Samsung 990 Evo from NVME_QUIRK_SIMPLE_SUSPEND
- 		 * because of high power consumption (> 2 Watt) in s2idle
- 		 * sleep. Only some boards with Intel CPU are affected.
-+		 * (Note for testing: Samsung 990 Evo Plus has same PCI ID)
- 		 */
- 		if (dmi_match(DMI_BOARD_NAME, "DN50Z-140HC-YD") ||
- 		    dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
- 		    dmi_match(DMI_BOARD_NAME, "GXxMRXx") ||
-+		    dmi_match(DMI_BOARD_NAME, "NS5X_NS7XAU") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PG31") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH6PG01_PH6PG71"))
+--- a/kernel/power/energy_model.c
++++ b/kernel/power/energy_model.c
+@@ -799,7 +799,7 @@ void em_adjust_cpu_capacity(unsigned int
+ static void em_check_capacity_update(void)
+ {
+ 	cpumask_var_t cpu_done_mask;
+-	int cpu;
++	int cpu, failed_cpus = 0;
+ 
+ 	if (!zalloc_cpumask_var(&cpu_done_mask, GFP_KERNEL)) {
+ 		pr_warn("no free memory\n");
+@@ -817,10 +817,8 @@ static void em_check_capacity_update(voi
+ 
+ 		policy = cpufreq_cpu_get(cpu);
+ 		if (!policy) {
+-			pr_debug("Accessing cpu%d policy failed\n", cpu);
+-			schedule_delayed_work(&em_update_work,
+-					      msecs_to_jiffies(1000));
+-			break;
++			failed_cpus++;
++			continue;
+ 		}
+ 		cpufreq_cpu_put(policy);
+ 
+@@ -835,6 +833,9 @@ static void em_check_capacity_update(voi
+ 		em_adjust_new_capacity(cpu, dev, pd);
+ 	}
+ 
++	if (failed_cpus)
++		schedule_delayed_work(&em_update_work, msecs_to_jiffies(1000));
++
+ 	free_cpumask_var(cpu_done_mask);
+ }
+ 
 
 
 
