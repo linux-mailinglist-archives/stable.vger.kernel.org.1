@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-187196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F018BEA0DD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F02BEA485
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E905E189566F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D1F37C505B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851AB332ECA;
-	Fri, 17 Oct 2025 15:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D92330B2E;
+	Fri, 17 Oct 2025 15:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Daq/qc8i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahRDjOvu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4047B32C93E;
-	Fri, 17 Oct 2025 15:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3AA330B1F;
+	Fri, 17 Oct 2025 15:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715387; cv=none; b=YIbv55Ik8wArAsvR/8Iha399x6SiJrorJJ0qGR5Z7hAM6KhjiwBVeXjKSDVa+1A2ds7ERDgG9Azpgb1wOkwraisA0Lcrp6+3l7rKztH1kDCpVPYDqP91eUGqAmA+uvC/sGqieJKFZeIsi54IFfT82dCg4BZEH3A68XM/ivsUGpM=
+	t=1760716023; cv=none; b=Aqzhlgt0Mi5M+AZBAfQSunhKrhT1dJZw67+ba8reozdOxrcB+F23bXAdVN/ysrjVKdfNLf7QHBhQQU4ColFxABFqnX0ZXnNX5I4op2cXNYGIgfIzvPXHYOwAmWDxhw6EGdsKOOHLQECu6Kh67IKHfiozE7/WC47mBwQ0zhcmzm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715387; c=relaxed/simple;
-	bh=OQj3VvYD+jfU5vx6rBdrprPybVpRnfGPEfds1koGKMc=;
+	s=arc-20240116; t=1760716023; c=relaxed/simple;
+	bh=3jRmJsvtxEUnlSOgRktLEU6yS52gv5LNy/g+Hk/PRTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uL7nw+hui9EZqk0bbjDwbdbXg9twnX6GjCwrneTiifSNsg36aefcw/IZ3XigDV72zJOolrV9KPEqQmJRDF5QHePIGf6JFAcv5OE1Koq49sqhX8wFlttX8pmRJo0sP7La8fr7X7M+JoRgdLLEYyH9R6WI9lH5fHUBgd/0PpSxn2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Daq/qc8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF866C4CEE7;
-	Fri, 17 Oct 2025 15:36:26 +0000 (UTC)
+	 MIME-Version; b=XTnnH3Mhgn7zGEyOIFXmF+ijlrLSr/zwMDsfFpWHmWTSAw7wkK7clNbZLmawnRLzFXgtfViplCcl3nPWMx8nGu9cVX0yugnWLEEsI7mJSYah9pReqGc1K794tN3JS2yZttp6RimoCgH+fR3p+gfuKQeUi52A6UZd2zX5k3/QNgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahRDjOvu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78813C116B1;
+	Fri, 17 Oct 2025 15:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715387;
-	bh=OQj3VvYD+jfU5vx6rBdrprPybVpRnfGPEfds1koGKMc=;
+	s=korg; t=1760716022;
+	bh=3jRmJsvtxEUnlSOgRktLEU6yS52gv5LNy/g+Hk/PRTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Daq/qc8igr/l7Cd9GvqQkmXKMUCL+kHcl7jzvziFd+Zg8SdONwlivGutROTwIOJF/
-	 63RjSBOlvWg1WXMzyPEbk3GwPaJHTjrrS6MBUw1BQmWiudd48b/DtlMAUgckbuyhEP
-	 0mPhAuvBtow/LLbea0c6DDl5oJaSFoqmNKwX18qA=
+	b=ahRDjOvuJIngTWn3n2UZErrHJQBmmMXNT61+iDPhcGcQlyJ6EqriYHcCPlpLyjdYg
+	 FnLzX+wdwt8MLX0JLkbVYcCOsP/LoGVPrbgxwXqGh8sAVMobcZEAvn5YoitlYiZ8Rb
+	 sWsqwFVx1i78akmQPUXUK3fg4sO4Tt/V33DZ338Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.17 165/371] xen/events: Update virq_to_irq on migration
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 047/276] smp: Fix up and expand the smp_call_function_many() kerneldoc
 Date: Fri, 17 Oct 2025 16:52:20 +0200
-Message-ID: <20251017145207.901715097@linuxfoundation.org>
+Message-ID: <20251017145144.120339077@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 3fcc8e146935415d69ffabb5df40ecf50e106131 upstream.
+[ Upstream commit ccf09357ffef2ab472369ab9cdf470c9bc9b821a ]
 
-VIRQs come in 3 flavors, per-VPU, per-domain, and global, and the VIRQs
-are tracked in per-cpu virq_to_irq arrays.
+The smp_call_function_many() kerneldoc comment got out of sync with the
+function definition (bool parameter "wait" is incorrectly described as a
+bitmask in it), so fix it up by copying the "wait" description from the
+smp_call_function() kerneldoc and add information regarding the handling
+of the local CPU to it.
 
-Per-domain and global VIRQs must be bound on CPU 0, and
-bind_virq_to_irq() sets the per_cpu virq_to_irq at registration time
-Later, the interrupt can migrate, and info->cpu is updated.  When
-calling __unbind_from_irq(), the per-cpu virq_to_irq is cleared for a
-different cpu.  If bind_virq_to_irq() is called again with CPU 0, the
-stale irq is returned.  There won't be any irq_info for the irq, so
-things break.
-
-Make xen_rebind_evtchn_to_cpu() update the per_cpu virq_to_irq mappings
-to keep them update to date with the current cpu.  This ensures the
-correct virq_to_irq is cleared in __unbind_from_irq().
-
-Fixes: e46cdb66c8fc ("xen: event channels")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250828003604.8949-4-jason.andryuk@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 49b3bd213a9f ("smp: Fix all kernel-doc warnings")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ kernel/smp.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -1797,9 +1797,20 @@ static int xen_rebind_evtchn_to_cpu(stru
- 	 * virq or IPI channel, which don't actually need to be rebound. Ignore
- 	 * it, but don't do the xenlinux-level rebind in that case.
- 	 */
--	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0)
-+	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0) {
-+		int old_cpu = info->cpu;
-+
- 		bind_evtchn_to_cpu(info, tcpu, false);
- 
-+		if (info->type == IRQT_VIRQ) {
-+			int virq = info->u.virq;
-+			int irq = per_cpu(virq_to_irq, old_cpu)[virq];
-+
-+			per_cpu(virq_to_irq, old_cpu)[virq] = -1;
-+			per_cpu(virq_to_irq, tcpu)[virq] = irq;
-+		}
-+	}
-+
- 	do_unmask(info, EVT_MASK_REASON_TEMPORARY);
- 
- 	return 0;
+diff --git a/kernel/smp.c b/kernel/smp.c
+index b60525b34ab05..387df30ca5609 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -976,16 +976,15 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
+  * @mask: The set of cpus to run on (only runs on online subset).
+  * @func: The function to run. This must be fast and non-blocking.
+  * @info: An arbitrary pointer to pass to the function.
+- * @wait: Bitmask that controls the operation. If %SCF_WAIT is set, wait
+- *        (atomically) until function has completed on other CPUs. If
+- *        %SCF_RUN_LOCAL is set, the function will also be run locally
+- *        if the local CPU is set in the @cpumask.
+- *
+- * If @wait is true, then returns once @func has returned.
++ * @wait: If true, wait (atomically) until function has completed
++ *        on other CPUs.
+  *
+  * You must not call this function with disabled interrupts or from a
+  * hardware interrupt handler or from a bottom half handler. Preemption
+  * must be disabled when calling this function.
++ *
++ * @func is not called on the local CPU even if @mask contains it.  Consider
++ * using on_each_cpu_cond_mask() instead if this is not desirable.
+  */
+ void smp_call_function_many(const struct cpumask *mask,
+ 			    smp_call_func_t func, void *info, bool wait)
+-- 
+2.51.0
+
 
 
 
