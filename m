@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-187362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA529BEAAF3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:27:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F529BEA843
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2C026E697F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 594285A1734
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B40D330B1D;
-	Fri, 17 Oct 2025 15:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0935E2DECBC;
+	Fri, 17 Oct 2025 15:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4faZ3pu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6umg6M/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E135D28935A;
-	Fri, 17 Oct 2025 15:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA297330B06;
+	Fri, 17 Oct 2025 15:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715855; cv=none; b=RxmrxR5ExMpUInYYN6K37edcIwHPwFCFiLucTwJ+RzFPPSkUBfxcE/stlzv+ctTDGhpkyu/9mhYPu3PEpHQtjGKA/alxd1vFFaHNyATJa+kA4kMqZuEJeKpcV2CEZVCf5tHj8O+RvChATzZNgB1x3sZl3e62tpPN3YWvhzENaTg=
+	t=1760716597; cv=none; b=GAbvQz0AkiQtH7He5y/xas0JmTGfAsnpPfJ0LQrmYjL7b2MwV6FdSXBniDUMqDyhponWoqHJOMud4blPQGH6u/n9Wis+eoKLUaw80xEf9OdPBsTmsLqpCepXI74DRVuA2UrBGHlyPNXZ2/CJ/hi8AXbzFs7kiLQGpEyvKT2NZcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715855; c=relaxed/simple;
-	bh=BqFOVS9nlOgYj/3aibV3raqXR/TgZuDvtvQQ6WQLNx4=;
+	s=arc-20240116; t=1760716597; c=relaxed/simple;
+	bh=ojb+U8mhCPRDLG5cfS33kBomnvGztpbH3WoSxpBQPU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUoHaxzMAaHosDI3yJoZjnk4u5a5g3W8ozuSfsaNRrpr680v0s4ZJ0HNKndKu2CJmBaDfMs9bNqGxE8IxMXayf9jF3LxVA9b2XWysd4ET8wP/nw3lCsdxbbYNAVrfM9c0RNfXnyjN+M9Mgd9V2vPQO/nthyCuEKXN9tolt58+3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4faZ3pu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8D6C4CEE7;
-	Fri, 17 Oct 2025 15:44:14 +0000 (UTC)
+	 MIME-Version; b=ZNKQIiCT8QV5iDgKOpSnXO2g9+pDDLxK2kzvCR2ldZ/PjAzCIqDEQzu8bIQtcaULrf5ZkSEZSCfrqV8xlAXDOvG2O9g7xnKAqf3Zoxw0SSDydwc/4NhtuwrP6bU1b6gyjTz08o7pwPPN4EDqATOWIKDweH9IcN4J64VZc7LJNi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6umg6M/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D59EC4CEE7;
+	Fri, 17 Oct 2025 15:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715854;
-	bh=BqFOVS9nlOgYj/3aibV3raqXR/TgZuDvtvQQ6WQLNx4=;
+	s=korg; t=1760716597;
+	bh=ojb+U8mhCPRDLG5cfS33kBomnvGztpbH3WoSxpBQPU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4faZ3puoOgM8azPEdHkCcgB7jbMKcktIB8ZDGUQIevujqhGdJoeWAMwSuEet3Oah
-	 hRVNJ7JVcGRh5r6lqpSeEyzzbUsaIvwuV/qWWM16UV+2DAo9S6i+eG6v1VPIECWgu5
-	 MXUgnBwAUTxiwHXSl6nYe3+VuJBS5C+2pJaPdK0g=
+	b=G6umg6M/qjZQPixYlpKZULiD2za7/iv5Z1qrrcfsBSCEaQeeUeBWq3lOG57OI2QCR
+	 YKIV80TlPgIHKNF3JJbWFEYtxSWRp13ZBiqbhacuvSYXCcxg1vyzYqRON6sxW2MoAo
+	 oQWINtTRfPc6nuPzO2IQ/jTH+ciG8NtD3FPdfVTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 360/371] minixfs: Verify inode mode when loading from disk
-Date: Fri, 17 Oct 2025 16:55:35 +0200
-Message-ID: <20251017145215.112519780@linuxfoundation.org>
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.15 244/276] minmax: fix indentation of __cmp_once() and __clamp_once()
+Date: Fri, 17 Oct 2025 16:55:37 +0200
+Message-ID: <20251017145151.380536149@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +67,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 73861970938ad1323eb02bbbc87f6fbd1e5bacca ]
+[ Upstream commit f4b84b2ff851f01d0fac619eadef47eb41648534 ]
 
-The inode mode loaded from corrupted disk can be invalid. Do like what
-commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
-does.
+Remove the extra indentation and align continuation markers.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/ec982681-84b8-4624-94fa-8af15b77cbd2@I-love.SAKURA.ne.jp
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/bed41317a05c498ea0209eafbcab45a5@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/minix/inode.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/linux/minmax.h |   30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/fs/minix/inode.c b/fs/minix/inode.c
-index df9d11479caf1..32db676127a9e 100644
---- a/fs/minix/inode.c
-+++ b/fs/minix/inode.c
-@@ -492,8 +492,14 @@ void minix_set_inode(struct inode *inode, dev_t rdev)
- 		inode->i_op = &minix_symlink_inode_operations;
- 		inode_nohighmem(inode);
- 		inode->i_mapping->a_ops = &minix_aops;
--	} else
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		init_special_inode(inode, inode->i_mode, rdev);
-+	} else {
-+		printk(KERN_DEBUG "MINIX-fs: Invalid file type 0%04o for inode %lu.\n",
-+		       inode->i_mode, inode->i_ino);
-+		make_bad_inode(inode);
-+	}
- }
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -46,11 +46,11 @@
+ #define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
  
- /*
--- 
-2.51.0
-
+ #define __cmp_once(op, x, y, unique_x, unique_y) ({	\
+-		typeof(x) unique_x = (x);		\
+-		typeof(y) unique_y = (y);		\
+-		static_assert(__types_ok(x, y),		\
+-			#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
+-		__cmp(op, unique_x, unique_y); })
++	typeof(x) unique_x = (x);			\
++	typeof(y) unique_y = (y);			\
++	static_assert(__types_ok(x, y),			\
++		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
++	__cmp(op, unique_x, unique_y); })
+ 
+ #define __careful_cmp(op, x, y)					\
+ 	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
+@@ -60,16 +60,16 @@
+ #define __clamp(val, lo, hi)	\
+ 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+ 
+-#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
+-		typeof(val) unique_val = (val);				\
+-		typeof(lo) unique_lo = (lo);				\
+-		typeof(hi) unique_hi = (hi);				\
+-		static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+-				(lo) <= (hi), true),					\
+-			"clamp() low limit " #lo " greater than high limit " #hi);	\
+-		static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
+-		static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
+-		__clamp(unique_val, unique_lo, unique_hi); })
++#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({		\
++	typeof(val) unique_val = (val);						\
++	typeof(lo) unique_lo = (lo);						\
++	typeof(hi) unique_hi = (hi);						\
++	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
++			(lo) <= (hi), true),					\
++		"clamp() low limit " #lo " greater than high limit " #hi);	\
++	static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
++	static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
++	__clamp(unique_val, unique_lo, unique_hi); })
+ 
+ #define __careful_clamp(val, lo, hi) ({					\
+ 	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
 
 
 
