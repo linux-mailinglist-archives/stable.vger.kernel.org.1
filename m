@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-187322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45993BEA254
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:47:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E492BEA25A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:47:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75F31189EB45
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 393F41891142
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5BF33328E1;
-	Fri, 17 Oct 2025 15:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C84A32F778;
+	Fri, 17 Oct 2025 15:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oS5nTDNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0t916Edo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D4F330B1D;
-	Fri, 17 Oct 2025 15:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3A0330B1D;
+	Fri, 17 Oct 2025 15:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715750; cv=none; b=emou6QwqkKZjmKRzQHs1AjG/VNisSkQ6SooDliAz/3yYrmAL3vSlcThJV3xtF6Kba27svP7Fi+h0PIQ7AbWlfdjxCMfYjSm0bcah02RYMOKfWbgSpQ5R8tEOrV7oa9PG4owaxs3DLMk7DgPoY0EK2V4MItPPlaoQnqL1TEJd060=
+	t=1760715756; cv=none; b=alQPZ5+K16KzhC7lM4GfOG+EHFV3Qeqbi2USphZLCQk/BJR23K0HPUmqbGkUB0jHCjqwfNts1Cbg9mwed22N7lN9Aj07eON/OFl9t9lj5nIAmS3HZdzKDWTatlIkOqjvdD7hut3S61jbcADqo+grblRPB5RFn2Rf/LhY8mQuUJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715750; c=relaxed/simple;
-	bh=/aUdL+2AV1gHbAoH3g5q8JpNs7ZF4edgjOLSRaO/QKA=;
+	s=arc-20240116; t=1760715756; c=relaxed/simple;
+	bh=9rRvqXIorU9r5l7Yo2rWEEaW3ES64D1CKcmKEwWR6S0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQYzFsNMdaw1dISgH/WLfpRKNKDjKc+GHiWHCWO/wEJTvjw5wNbOpcQ0IeTTTJNGUX+0StS9WXlkEgGw8dntJUWUcelY/9Vi4GN9RQyt2TfHLyfMmj9xS/c67rIRz4MbMmyWK+BGEeoovSAZ8w5/Wqo3z42N1LZooSnRbP8m9Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oS5nTDNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06DBC4CEE7;
-	Fri, 17 Oct 2025 15:42:29 +0000 (UTC)
+	 MIME-Version; b=HRDljCiJDAo3C0DVgCWSYrKoXPk1MnxVIDRVlLWJRK3qy3NulHlBndUp/hUIH3jSoRpzqu2oxY+l07Ao6a0WQmIUvO0EyrIIrYJs7JmXvgVwXYQ8iimwDXgScMbtPyYFmJr37z3ojHeBF1haMcFRK9DBDKvebGCV4MJaijIv6Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0t916Edo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3285EC4CEE7;
+	Fri, 17 Oct 2025 15:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715750;
-	bh=/aUdL+2AV1gHbAoH3g5q8JpNs7ZF4edgjOLSRaO/QKA=;
+	s=korg; t=1760715756;
+	bh=9rRvqXIorU9r5l7Yo2rWEEaW3ES64D1CKcmKEwWR6S0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oS5nTDNn4LNf5SMeEAgmmpcIJe0hkrHWaw6koWkCaTA7pbsSSBtP4UHd4bDHgaWna
-	 L6dGEchi5ssBuDcM7V4jBtEI6UHX+32lPfaKqIuUVcFxaH6YyZDT6eYU9GPrLxzKdZ
-	 O2T+cNcJrnmI9LjijJBzCFo83t2nzil9h7ZIHoHA=
+	b=0t916EdoqreF1URd9+zfNnWPsuef4cmTnTTcm4RkGJVWn+Cyd+bG7yf3wBNdjLDL2
+	 tJsD60rpVKj5Pt95LPy3k57KXwDl9nfMPtuHUvNGydqh24dySslkCOK5lGdJ35Bav7
+	 3QzDDUTehOWMRBmfof0CgszIUZhyPORo5be6hJac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
 	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Bryan ODonoghue <bod@kernel.org>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.17 324/371] media: iris: Call correct power off callback in cleanup path
-Date: Fri, 17 Oct 2025 16:54:59 +0200
-Message-ID: <20251017145213.799830149@linuxfoundation.org>
+Subject: [PATCH 6.17 326/371] media: iris: fix module removal if firmware download failed
+Date: Fri, 17 Oct 2025 16:55:01 +0200
+Message-ID: <20251017145213.871152658@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -68,52 +68,136 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-commit 2fbb823a0744665fe6015bd03d435bd334ccecf7 upstream.
+commit fde38008fc4f43db8c17869491870df24b501543 upstream.
 
-Driver implements different callbacks for the power off controller
-(.power_off_controller):
+Fix remove if firmware failed to load:
+qcom-iris aa00000.video-codec: Direct firmware load for qcom/vpu/vpu33_p4.mbn failed with error -2
+qcom-iris aa00000.video-codec: firmware download failed
+qcom-iris aa00000.video-codec: core init failed
 
- - iris_vpu_power_off_controller,
- - iris_vpu33_power_off_controller,
+then:
+$ echo aa00000.video-codec > /sys/bus/platform/drivers/qcom-iris/unbind
 
-The generic wrapper for handling power off - iris_vpu_power_off() -
-calls them via 'iris_platform_data->vpu_ops', so shall the cleanup code
-in iris_vpu_power_on().
+Triggers:
+genpd genpd:1:aa00000.video-codec: Runtime PM usage count underflow!
+------------[ cut here ]------------
+video_cc_mvs0_clk already disabled
+WARNING: drivers/clk/clk.c:1206 at clk_core_disable+0xa4/0xac, CPU#1: sh/542
+<snip>
+pc : clk_core_disable+0xa4/0xac
+lr : clk_core_disable+0xa4/0xac
+<snip>
+Call trace:
+ clk_core_disable+0xa4/0xac (P)
+ clk_disable+0x30/0x4c
+ iris_disable_unprepare_clock+0x20/0x48 [qcom_iris]
+ iris_vpu_power_off_hw+0x48/0x58 [qcom_iris]
+ iris_vpu33_power_off_hardware+0x44/0x230 [qcom_iris]
+ iris_vpu_power_off+0x34/0x84 [qcom_iris]
+ iris_core_deinit+0x44/0xc8 [qcom_iris]
+ iris_remove+0x20/0x48 [qcom_iris]
+ platform_remove+0x20/0x30
+ device_remove+0x4c/0x80
+<snip>
+---[ end trace 0000000000000000 ]---
+------------[ cut here ]------------
+video_cc_mvs0_clk already unprepared
+WARNING: drivers/clk/clk.c:1065 at clk_core_unprepare+0xf0/0x110, CPU#2: sh/542
+<snip>
+pc : clk_core_unprepare+0xf0/0x110
+lr : clk_core_unprepare+0xf0/0x110
+<snip>
+Call trace:
+ clk_core_unprepare+0xf0/0x110 (P)
+ clk_unprepare+0x2c/0x44
+ iris_disable_unprepare_clock+0x28/0x48 [qcom_iris]
+ iris_vpu_power_off_hw+0x48/0x58 [qcom_iris]
+ iris_vpu33_power_off_hardware+0x44/0x230 [qcom_iris]
+ iris_vpu_power_off+0x34/0x84 [qcom_iris]
+ iris_core_deinit+0x44/0xc8 [qcom_iris]
+ iris_remove+0x20/0x48 [qcom_iris]
+ platform_remove+0x20/0x30
+ device_remove+0x4c/0x80
+<snip>
+---[ end trace 0000000000000000 ]---
+genpd genpd:0:aa00000.video-codec: Runtime PM usage count underflow!
+------------[ cut here ]------------
+gcc_video_axi0_clk already disabled
+WARNING: drivers/clk/clk.c:1206 at clk_core_disable+0xa4/0xac, CPU#4: sh/542
+<snip>
+pc : clk_core_disable+0xa4/0xac
+lr : clk_core_disable+0xa4/0xac
+<snip>
+Call trace:
+ clk_core_disable+0xa4/0xac (P)
+ clk_disable+0x30/0x4c
+ iris_disable_unprepare_clock+0x20/0x48 [qcom_iris]
+ iris_vpu33_power_off_controller+0x17c/0x428 [qcom_iris]
+ iris_vpu_power_off+0x48/0x84 [qcom_iris]
+ iris_core_deinit+0x44/0xc8 [qcom_iris]
+ iris_remove+0x20/0x48 [qcom_iris]
+ platform_remove+0x20/0x30
+ device_remove+0x4c/0x80
+<snip>
+------------[ cut here ]------------
+gcc_video_axi0_clk already unprepared
+WARNING: drivers/clk/clk.c:1065 at clk_core_unprepare+0xf0/0x110, CPU#4: sh/542
+<snip>
+pc : clk_core_unprepare+0xf0/0x110
+lr : clk_core_unprepare+0xf0/0x110
+<snip>
+Call trace:
+ clk_core_unprepare+0xf0/0x110 (P)
+ clk_unprepare+0x2c/0x44
+ iris_disable_unprepare_clock+0x28/0x48 [qcom_iris]
+ iris_vpu33_power_off_controller+0x17c/0x428 [qcom_iris]
+ iris_vpu_power_off+0x48/0x84 [qcom_iris]
+ iris_core_deinit+0x44/0xc8 [qcom_iris]
+ iris_remove+0x20/0x48 [qcom_iris]
+ platform_remove+0x20/0x30
+ device_remove+0x4c/0x80
+<snip>
+---[ end trace 0000000000000000 ]---
 
-This makes also sense if looking at caller of iris_vpu_power_on(), which
-unwinds also with the wrapper calling respective platfortm code (unwinds
-with iris_vpu_power_off()).
+Skip deinit if initialization never succeeded.
 
-Otherwise power off sequence on the newer VPU3.3 in error path is not
-complete.
-
-Fixes: c69df5de4ac3 ("media: platform: qcom/iris: add power_off_controller to vpu_ops")
+Fixes: d7378f84e94e ("media: iris: introduce iris core state management with shared queues")
+Fixes: d19b163356b8 ("media: iris: implement video firmware load/unload")
+Fixes: bb8a95aa038e ("media: iris: implement power management")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
 Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/iris/iris_vpu_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/iris/iris_core.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/iris/iris_vpu_common.c b/drivers/media/platform/qcom/iris/iris_vpu_common.c
-index 268e45acaa7c..42a7c53ce48e 100644
---- a/drivers/media/platform/qcom/iris/iris_vpu_common.c
-+++ b/drivers/media/platform/qcom/iris/iris_vpu_common.c
-@@ -359,7 +359,7 @@ int iris_vpu_power_on(struct iris_core *core)
- 	return 0;
+diff --git a/drivers/media/platform/qcom/iris/iris_core.c b/drivers/media/platform/qcom/iris/iris_core.c
+index 0fa0a3b549a2..8406c48d635b 100644
+--- a/drivers/media/platform/qcom/iris/iris_core.c
++++ b/drivers/media/platform/qcom/iris/iris_core.c
+@@ -15,10 +15,12 @@ void iris_core_deinit(struct iris_core *core)
+ 	pm_runtime_resume_and_get(core->dev);
  
- err_power_off_ctrl:
--	iris_vpu_power_off_controller(core);
-+	core->iris_platform_data->vpu_ops->power_off_controller(core);
- err_unvote_icc:
- 	iris_unset_icc_bw(core);
- err:
+ 	mutex_lock(&core->lock);
+-	iris_fw_unload(core);
+-	iris_vpu_power_off(core);
+-	iris_hfi_queues_deinit(core);
+-	core->state = IRIS_CORE_DEINIT;
++	if (core->state != IRIS_CORE_DEINIT) {
++		iris_fw_unload(core);
++		iris_vpu_power_off(core);
++		iris_hfi_queues_deinit(core);
++		core->state = IRIS_CORE_DEINIT;
++	}
+ 	mutex_unlock(&core->lock);
+ 
+ 	pm_runtime_put_sync(core->dev);
 -- 
 2.51.0
 
