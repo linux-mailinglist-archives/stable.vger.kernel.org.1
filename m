@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-187568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE4FEBEA593
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A29F1BEA599
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED068188BFDC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC742188A459
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77C7330B3C;
-	Fri, 17 Oct 2025 15:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54605330B36;
+	Fri, 17 Oct 2025 15:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5iZehwb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iG5nSQre"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6369C330B00;
-	Fri, 17 Oct 2025 15:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1116A330B0F;
+	Fri, 17 Oct 2025 15:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716446; cv=none; b=AmVt4CFN54dKbDt8u5RCfUB9ZaPCoiCwKB2WEa21zr7D9XkwsUvKPM2P8lqmEXvoauRuzDKYpm0nhUfK2210GC8yVzSfA5mnhOzQmG0lMvKzk5KoKnqzOZ7E0q0AbVEWwQl+2zWIS6X4kbfnexnOWCOzNefLdM6elF8lEvR5HBo=
+	t=1760716452; cv=none; b=H+XaP1X+EkoJSp1rk7IpjYGOeuzSMEiiaDw3c2As9TUQ2UQBkRiTNCABKyHGVzLhwFEtQo1z4f9lwE8ttcoG0IqkkSQxt0O7gnkHG4n3U8M/rn74Mc5UJriVYu9oZ7JF2lBdv1zzW74QXbyWbSqJA3HVsl7YYQAc1KSXFKYY6Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716446; c=relaxed/simple;
-	bh=7GSQWtf527WDldCRWmHn7gf6Xs3ADvLjcFyudGSOBtU=;
+	s=arc-20240116; t=1760716452; c=relaxed/simple;
+	bh=NNd0+VY8KRnIq8xyvv4/0kp1XR89rQB09tDYcb482dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ps8hj1kHvwOIiWZmCuwjG5DmHuS9KHWa0wypi3xU3FlOlM0HNLXhoWVedCmLXIwGq/KOyN9Fd0qQz1FC3Uo+cMbqjUJBAfr6L/JOnFkmEcA/Tjfw5V2jlowHEVjOcizyMAImN5dFqDOra1M9cNWE78NaSEW9pNKJLugiDGkpx8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5iZehwb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD70DC4CEE7;
-	Fri, 17 Oct 2025 15:54:05 +0000 (UTC)
+	 MIME-Version; b=ckA/hawMHANpyjQ6eWI3/rK1ftaqCGvloK8YFno+1x+ibDed6GLscK16qfNXCcoqgo/K5uuGeqkz5bpBRmYbLslNAj088YmRZ2ZezWgi9JeV4V/e765yXoGIbf2CBmv/9d+f/BL9OuCAKo0ugx8bt6hwQlGLS+y3rso7zekhYnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iG5nSQre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6D6C4CEE7;
+	Fri, 17 Oct 2025 15:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716446;
-	bh=7GSQWtf527WDldCRWmHn7gf6Xs3ADvLjcFyudGSOBtU=;
+	s=korg; t=1760716451;
+	bh=NNd0+VY8KRnIq8xyvv4/0kp1XR89rQB09tDYcb482dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5iZehwbhYu4EJyGUzMVuq9GJdzkqjYjwmCE0sMviQfTJQL8gp1crPhWVth9vNSQ8
-	 PuYhbWDhHD0IyCHwoi5a4hJBuLVzfeZNvafIMq6TyHm7P+EejcUYqZt3NgDuUD/OuC
-	 OBeZzafAjayz2/HOFHyvwS7v0XfGbSKKJw0bdArE=
+	b=iG5nSQreSJwpGYdci18/0HEN1xdpYQY1EGEB2vYZ8Fv2HO2yc52HannQsf9tZSQ+C
+	 9bg+6eDovApa4z+/9mIoMzKlx6AUE91PkNygJvPloUjPLqZiIMbew5dCbMGxRuW2tF
+	 x+KaNdcsTbXypiU/mgz+9dMwAmBTqndXYu/ShXuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 5.15 194/276] pwm: berlin: Fix wrong register in suspend/resume
-Date: Fri, 17 Oct 2025 16:54:47 +0200
-Message-ID: <20251017145149.552499500@linuxfoundation.org>
+	Eric Biggers <ebiggers@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 196/276] sctp: Fix MAC comparison to be constant-time
+Date: Fri, 17 Oct 2025 16:54:49 +0200
+Message-ID: <20251017145149.626675018@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -59,51 +59,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 3a4b9d027e4061766f618292df91760ea64a1fcc upstream.
+commit dd91c79e4f58fbe2898dac84858033700e0e99fb upstream.
 
-The 'enable' register should be BERLIN_PWM_EN rather than
-BERLIN_PWM_ENABLE, otherwise, the driver accesses wrong address, there
-will be cpu exception then kernel panic during suspend/resume.
+To prevent timing attacks, MACs need to be compared in constant time.
+Use the appropriate helper function for this.
 
-Fixes: bbf0722c1c66 ("pwm: berlin: Add suspend/resume support")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://lore.kernel.org/r/20250819114224.31825-1-jszhang@kernel.org
+Fixes: bbd0d59809f9 ("[SCTP]: Implement the receive and verification of AUTH chunk")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://patch.msgid.link/20250818205426.30222-3-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-berlin.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sctp/sm_make_chunk.c |    3 ++-
+ net/sctp/sm_statefuns.c  |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/pwm/pwm-berlin.c
-+++ b/drivers/pwm/pwm-berlin.c
-@@ -274,7 +274,7 @@ static int berlin_pwm_suspend(struct dev
- 		if (!channel)
- 			continue;
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -31,6 +31,7 @@
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
--		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_ENABLE);
-+		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_EN);
- 		channel->ctrl = berlin_pwm_readl(bpc, i, BERLIN_PWM_CONTROL);
- 		channel->duty = berlin_pwm_readl(bpc, i, BERLIN_PWM_DUTY);
- 		channel->tcnt = berlin_pwm_readl(bpc, i, BERLIN_PWM_TCNT);
-@@ -305,7 +305,7 @@ static int berlin_pwm_resume(struct devi
- 		berlin_pwm_writel(bpc, i, channel->ctrl, BERLIN_PWM_CONTROL);
- 		berlin_pwm_writel(bpc, i, channel->duty, BERLIN_PWM_DUTY);
- 		berlin_pwm_writel(bpc, i, channel->tcnt, BERLIN_PWM_TCNT);
--		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_ENABLE);
-+		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_EN);
+ #include <crypto/hash.h>
++#include <crypto/algapi.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/ip.h>
+@@ -1796,7 +1797,7 @@ struct sctp_association *sctp_unpack_coo
+ 		}
  	}
  
- 	return 0;
+-	if (memcmp(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
++	if (crypto_memneq(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
+ 		*error = -SCTP_IERROR_BAD_SIG;
+ 		goto fail;
+ 	}
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -30,6 +30,7 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <crypto/algapi.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/ip.h>
+@@ -4402,7 +4403,7 @@ static enum sctp_ierror sctp_sf_authenti
+ 				 sh_key, GFP_ATOMIC);
+ 
+ 	/* Discard the packet if the digests do not match */
+-	if (memcmp(save_digest, digest, sig_len)) {
++	if (crypto_memneq(save_digest, digest, sig_len)) {
+ 		kfree(save_digest);
+ 		return SCTP_IERROR_BAD_SIG;
+ 	}
 
 
 
