@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-187250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F067BEA356
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:10 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D508EBE9C5A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCB8E944C94
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D51C835E139
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8B6330B16;
-	Fri, 17 Oct 2025 15:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1FE2F12D0;
+	Fri, 17 Oct 2025 15:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZ+iWgVE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbaQVM46"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C0C330B08;
-	Fri, 17 Oct 2025 15:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386B9217722;
+	Fri, 17 Oct 2025 15:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715542; cv=none; b=Qz6gPiNoISZ+5wjzi6xxjfQDNQfiianBblTLjw5anTCzklq1u2yAElLmKs/fOO4vuZ0+E3ndn6IECosU2dXwlDqw/pnBSCxOe8vxt+fHXRpr0pn0a86AGnWJzyfnjKNhzXS9e3XtQcDpL46jnU3udIcEMggojsd+XYOAUtbKaVc=
+	t=1760714652; cv=none; b=cTxfejlOHBupors5H1iCxPiNVat5nnyv1ljJw82v9Uiwx+SyZlNEzwuozoArgoqUi4Di0XAf2uGLAyMUiz+j02cH+f0oiB8tVsBoiU/8c0e6rKzdDLysA3gLN/9/T0gDYRFoIupYmsHIE757NyfTTdoA0xgxazOiVMX/QHXMUvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715542; c=relaxed/simple;
-	bh=P0zpcXLWbbsM0qI/ChZKnF0NR0eFHJaKdztxZbp+6cw=;
+	s=arc-20240116; t=1760714652; c=relaxed/simple;
+	bh=zPXGAcY6anWoC9YtcCHQCiNwX0GN+hqNcy2A48x+O60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J/CvjC8oMiiTnjUXPRLngziulBoN+DcAiIt1rmYNrMdqkZbZ/p+TuV8dg6y+8L6jjrzsivvtIZ4ZCzc/w15+vyKqUN2O5Qq6cDYArssFoJmclebGEqTu5ph3BHAogcd1RUHek1e5xtyNy3hxHOgHbGX8pIHn/HotsRMDm8cm70U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZ+iWgVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B6EC4CEE7;
-	Fri, 17 Oct 2025 15:39:01 +0000 (UTC)
+	 MIME-Version; b=YQGKX/3q3uIHixjoZd7H8dMoxkS74XdBSWMlzdY3zoDNYJxvTsPnPSWCn+3nQNtQVibs+3EjcSz9SOmNlMT4DW6WxB6Apq87CX//L8OnYp9OF1iG64X77ZuEusmm4IT8Uizu/S9GP+Evx2txZ2W4IUVvZYMEFTOGkDQV74WGOmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbaQVM46; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEC6C4CEFE;
+	Fri, 17 Oct 2025 15:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715541;
-	bh=P0zpcXLWbbsM0qI/ChZKnF0NR0eFHJaKdztxZbp+6cw=;
+	s=korg; t=1760714652;
+	bh=zPXGAcY6anWoC9YtcCHQCiNwX0GN+hqNcy2A48x+O60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZ+iWgVEhv3qwxOPjTxKKWildir7xFdXYGOv60dLqooV6gRtNIOo1VR8BilhvIb3q
-	 NJLsM9/sXcaXYl7JHraj8EbGv2mYGcm+vH2OcONakDMPOxwVyNDV4zKvcgopAFg9OE
-	 sJDy/L1RzwJ4eLfWDjWxx9+hw3PrkxC6eW8QdBlc=
+	b=dbaQVM46O/RJ1vuwHsqxTtGz8x3UlPROuBZW5acU5iM8KEnaoXPR5MxW2vXRfo/a7
+	 T756LglcI+h4n7jBKQ0Tu/9OyF+nLCORg6AvRQziDDAlTyD165JwaQ+DB875z9Uw4x
+	 VD+ErI+PjA51mX+y45jgjTQwevomPk9bfllqpBrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.17 252/371] pwm: Fix incorrect variable used in error message
+	Huacai Chen <chenhuacai@loongson.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Huacai Chen <chenhuacai@kernel.org>
+Subject: [PATCH 6.12 220/277] ACPICA: Allow to skip Global Lock initialization
 Date: Fri, 17 Oct 2025 16:53:47 +0200
-Message-ID: <20251017145211.197159025@linuxfoundation.org>
+Message-ID: <20251017145155.160486435@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit afe872274edc7da46719a2029bfa4eab142b15f6 upstream.
+commit feb8ae81b2378b75a99c81d315602ac8918ed382 upstream.
 
-The dev_err message is reporting the incorrect return value ret_tohw,
-it should be reporting the value in ret_fromhw. Fix this by using
-ret_fromhw instead of ret_tohw.
+Introduce acpi_gbl_use_global_lock, which allows to skip the Global Lock
+initialization. This is useful for systems without Global Lock (such as
+loong_arch), so as to avoid error messages during boot phase:
 
-Fixes: 6c5126c6406d ("pwm: Provide new consumer API functions for waveforms")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://lore.kernel.org/r/20250902130348.2630053-1-colin.i.king@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+ ACPI Error: Could not enable global_lock event (20240827/evxfevnt-182)
+ ACPI Error: No response from Global Lock hardware, disabling lock (20240827/evglock-59)
+
+Link: https://github.com/acpica/acpica/commit/463cb0fe
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/evglock.c |    4 ++++
+ include/acpi/acpixf.h         |    6 ++++++
+ 2 files changed, 10 insertions(+)
 
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -276,7 +276,7 @@ int pwm_round_waveform_might_sleep(struc
+--- a/drivers/acpi/acpica/evglock.c
++++ b/drivers/acpi/acpica/evglock.c
+@@ -42,6 +42,10 @@ acpi_status acpi_ev_init_global_lock_han
+ 		return_ACPI_STATUS(AE_OK);
+ 	}
  
- 	if (IS_ENABLED(CONFIG_PWM_DEBUG) && ret_fromhw > 0)
- 		dev_err(&chip->dev, "Unexpected return value from __pwm_round_waveform_fromhw: requested %llu/%llu [+%llu], return value %d\n",
--			wf_req.duty_length_ns, wf_req.period_length_ns, wf_req.duty_offset_ns, ret_tohw);
-+			wf_req.duty_length_ns, wf_req.period_length_ns, wf_req.duty_offset_ns, ret_fromhw);
++	if (!acpi_gbl_use_global_lock) {
++		return_ACPI_STATUS(AE_OK);
++	}
++
+ 	/* Attempt installation of the global lock handler */
  
- 	if (IS_ENABLED(CONFIG_PWM_DEBUG) &&
- 	    (ret_tohw == 0) != pwm_check_rounding(&wf_req, wf))
+ 	status = acpi_install_fixed_event_handler(ACPI_EVENT_GLOBAL,
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -214,6 +214,12 @@ ACPI_INIT_GLOBAL(u8, acpi_gbl_osi_data,
+ ACPI_INIT_GLOBAL(u8, acpi_gbl_reduced_hardware, FALSE);
+ 
+ /*
++ * ACPI Global Lock is mainly used for systems with SMM, so no-SMM systems
++ * (such as loong_arch) may not have and not use Global Lock.
++ */
++ACPI_INIT_GLOBAL(u8, acpi_gbl_use_global_lock, TRUE);
++
++/*
+  * Maximum timeout for While() loop iterations before forced method abort.
+  * This mechanism is intended to prevent infinite loops during interpreter
+  * execution within a host kernel.
 
 
 
