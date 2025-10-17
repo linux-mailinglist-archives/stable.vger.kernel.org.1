@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-186748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB1ABE9EDC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 919FCBEA047
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:39:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D2C95583858
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 053EC7448ED
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88CD3328F6;
-	Fri, 17 Oct 2025 15:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971CD2F692A;
+	Fri, 17 Oct 2025 15:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qH5bgA72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qS/LjPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838702F12BE;
-	Fri, 17 Oct 2025 15:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5532C337110;
+	Fri, 17 Oct 2025 15:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714124; cv=none; b=uIRTMGPat44kLtWKU4Q+PcZSbXtLL41WQBECxOtAEfUAkRwRlTeHQDfZMpVKUu3+9GJe8oryrqcXP1ETrPEdeQt56IGno5wEKFy5N0OrAdqRQ2iECGdxMmwfhx5AFTIkRf/YvFRm4rIWaHc7u02gO/+p1pAYH4DHDdebmg5AnjM=
+	t=1760715087; cv=none; b=iFemKBEnyAa5OLc401diPhDhUgouLRUKs9h9HDXv2tYtVsviGo1aZ3C+XmfeMVi7zvfix/So40Cu3OHDI4MpNRsgXnJGXaJ/lJnbfjHnKCPM21OjIq5vxDUj6+6Km5Q0T6wxjIeD12eBusOC96xU1jB+2oC3qiX4mo82cZ9a0YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714124; c=relaxed/simple;
-	bh=L00Dx/A4cjInJ9BK6MsY3I+D9YH/5aUTzKqjXVV65XI=;
+	s=arc-20240116; t=1760715087; c=relaxed/simple;
+	bh=/Kl12LFaVYTekF0XGPW2RV3ezwq+AuHoXuWYKZkqaqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMUygIXbmigRs/B3surlZEcChuXYM0Ue9uptX/JdbeV6O2cIUXpfLcdoua4B9+Xao+i0hPH6BaJ+kk7+pEAhYLrVOfQimlBAoYvZNWl7aJHRfPSCkE+sYp+fDMZpOyMVK1/okhfEbBsPfZIgbg3SOapt1Hwr42H1Fjx765SgkKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qH5bgA72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32E2C4CEE7;
-	Fri, 17 Oct 2025 15:15:23 +0000 (UTC)
+	 MIME-Version; b=VIxtml7gPsFFcjUZZESED4yIiuMRyiWI4574x/F8dPvA67r6n4nEJYCQ8XYybBnsURmPYmVDgmimgBG7r6p/rGpSyJiZk7mOwWbpb30SFQ0QcAioDhGX9Aa5gvQNyePFQD2C9beq/wyTZl5hpIQ5Gp0PE/VSl1dCNYLoEdG7Hv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qS/LjPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F81C4CEFE;
+	Fri, 17 Oct 2025 15:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714124;
-	bh=L00Dx/A4cjInJ9BK6MsY3I+D9YH/5aUTzKqjXVV65XI=;
+	s=korg; t=1760715087;
+	bh=/Kl12LFaVYTekF0XGPW2RV3ezwq+AuHoXuWYKZkqaqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qH5bgA72k2yv3Z/rZzhPQCc6v1uF/72mEPD/FzRAlFrFYYOaP8F6scVRZr0ZPf24B
-	 5om3E6d+AVmE7TR3yO3AsKyBgvQ4/y5ac0zAkASGwM1VU0Y7t64IUUemQ1/OKPJZ2e
-	 2t738ZGwtueLGZmyZbSqWzQxHLk3D9p4Fy7Qnhec=
+	b=2qS/LjPrdCAWn0CCoHVeC25wgQyVPufaN2suTRiNx48G8Nf4NcySWRD0m9FSqxnep
+	 pIS4HxgX51GtBVsMSw8MsaK+nEQ1wesZ2wqMi2xiMfxIHz6A/KoUrYLWGc4Zpe0hP2
+	 dxFQa0bPItTmkX2qIRs1PkAL/La7BD308BWcOMwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Chun-Tse Shao <ctshao@google.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/277] perf test shell lbr: Avoid failures with perf event paranoia
+Subject: [PATCH 6.17 060/371] nfsd: track original timestamps in nfs4_delegation
 Date: Fri, 17 Oct 2025 16:50:35 +0200
-Message-ID: <20251017145148.175738822@linuxfoundation.org>
+Message-ID: <20251017145203.971106193@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,115 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 48314d20fe467d6653783cbf5536cb2fcc9bdd7c ]
+[ Upstream commit 7663e963a51122792811811c8119fd55c9ab254a ]
 
-When not running as root and with higher perf event paranoia values
-the perf record LBR tests could fail rather than skipping the
-problematic tests.
+As Trond points out [1], the "original time" mentioned in RFC 9754
+refers to the timestamps on the files at the time that the delegation
+was granted, and not the current timestamp of the file on the server.
 
-Add the sensitivity to the test and confirm it passes with paranoia
-values from -1 to 2.
+Store the current timestamps for the file in the nfs4_delegation when
+granting one. Add STATX_ATIME and STATX_MTIME to the request mask in
+nfs4_delegation_stat(). When granting OPEN_DELEGATE_READ_ATTRS_DELEG, do
+a nfs4_delegation_stat() and save the correct atime. If the stat() fails
+for any reason, fall back to granting a normal read deleg.
 
-Committer testing:
+[1]: https://lore.kernel.org/linux-nfs/47a4e40310e797f21b5137e847b06bb203d99e66.camel@kernel.org/
 
-Testing with '$ perf test -vv lbr', i.e. as non root, and then comparing
-the output shows the mentioned errors before this patch:
-
-  acme@x1:~$ grep -m1 "model name" /proc/cpuinfo
-  model name	: 13th Gen Intel(R) Core(TM) i7-1365U
-  acme@x1:~$
-
-Before:
-
- 132: perf record LBR tests            : Skip
-
-After:
-
- 132: perf record LBR tests            : Ok
-
-Fixes: 32559b99e0f59070 ("perf test: Add set of perf record LBR tests")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Chun-Tse Shao <ctshao@google.com>
-Cc: Howard Chu <howardchu95@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 7e13f4f8d27d ("nfsd: handle delegated timestamps in SETATTR")
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/record_lbr.sh | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ fs/nfsd/nfs4state.c | 11 ++++++++---
+ fs/nfsd/state.h     |  5 +++++
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/tests/shell/record_lbr.sh b/tools/perf/tests/shell/record_lbr.sh
-index ab6f2825f7903..5984ca9b78f8a 100755
---- a/tools/perf/tests/shell/record_lbr.sh
-+++ b/tools/perf/tests/shell/record_lbr.sh
-@@ -4,6 +4,10 @@
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 77eea2ad93cc0..8737b721daf34 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -6157,7 +6157,8 @@ nfs4_delegation_stat(struct nfs4_delegation *dp, struct svc_fh *currentfh,
+ 	path.dentry = file_dentry(nf->nf_file);
  
- set -e
+ 	rc = vfs_getattr(&path, stat,
+-			 (STATX_MODE | STATX_SIZE | STATX_CTIME | STATX_CHANGE_COOKIE),
++			 STATX_MODE | STATX_SIZE | STATX_ATIME |
++			 STATX_MTIME | STATX_CTIME | STATX_CHANGE_COOKIE,
+ 			 AT_STATX_SYNC_AS_STAT);
  
-+ParanoidAndNotRoot() {
-+  [ "$(id -u)" != 0 ] && [ "$(cat /proc/sys/kernel/perf_event_paranoid)" -gt $1 ]
-+}
+ 	nfsd_file_put(nf);
+@@ -6274,10 +6275,14 @@ nfs4_open_delegation(struct svc_rqst *rqstp, struct nfsd4_open *open,
+ 						    OPEN_DELEGATE_WRITE;
+ 		dp->dl_cb_fattr.ncf_cur_fsize = stat.size;
+ 		dp->dl_cb_fattr.ncf_initial_cinfo = nfsd4_change_attribute(&stat);
++		dp->dl_atime = stat.atime;
++		dp->dl_ctime = stat.ctime;
++		dp->dl_mtime = stat.mtime;
+ 		trace_nfsd_deleg_write(&dp->dl_stid.sc_stateid);
+ 	} else {
+-		open->op_delegate_type = deleg_ts ? OPEN_DELEGATE_READ_ATTRS_DELEG :
+-						    OPEN_DELEGATE_READ;
++		open->op_delegate_type = deleg_ts && nfs4_delegation_stat(dp, currentfh, &stat) ?
++					 OPEN_DELEGATE_READ_ATTRS_DELEG : OPEN_DELEGATE_READ;
++		dp->dl_atime = stat.atime;
+ 		trace_nfsd_deleg_read(&dp->dl_stid.sc_stateid);
+ 	}
+ 	nfs4_put_stid(&dp->dl_stid);
+diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
+index 8adc2550129e6..ce7c0d129ba33 100644
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -224,6 +224,11 @@ struct nfs4_delegation {
+ 
+ 	/* for CB_GETATTR */
+ 	struct nfs4_cb_fattr    dl_cb_fattr;
 +
- if [ ! -f /sys/bus/event_source/devices/cpu/caps/branches ] &&
-    [ ! -f /sys/bus/event_source/devices/cpu_core/caps/branches ]
- then
-@@ -23,6 +27,7 @@ cleanup() {
- }
++	/* For delegated timestamps */
++	struct timespec64	dl_atime;
++	struct timespec64	dl_mtime;
++	struct timespec64	dl_ctime;
+ };
  
- trap_cleanup() {
-+  echo "Unexpected signal in ${FUNCNAME[1]}"
-   cleanup
-   exit 1
- }
-@@ -123,8 +128,11 @@ lbr_test "-j ind_call" "any indirect call" 2
- lbr_test "-j ind_jmp" "any indirect jump" 100
- lbr_test "-j call" "direct calls" 2
- lbr_test "-j ind_call,u" "any indirect user call" 100
--lbr_test "-a -b" "system wide any branch" 2
--lbr_test "-a -j any_call" "system wide any call" 2
-+if ! ParanoidAndNotRoot 1
-+then
-+  lbr_test "-a -b" "system wide any branch" 2
-+  lbr_test "-a -j any_call" "system wide any call" 2
-+fi
- 
- # Parallel
- parallel_lbr_test "-b" "parallel any branch" 100 &
-@@ -141,10 +149,16 @@ parallel_lbr_test "-j call" "parallel direct calls" 100 &
- pid6=$!
- parallel_lbr_test "-j ind_call,u" "parallel any indirect user call" 100 &
- pid7=$!
--parallel_lbr_test "-a -b" "parallel system wide any branch" 100 &
--pid8=$!
--parallel_lbr_test "-a -j any_call" "parallel system wide any call" 100 &
--pid9=$!
-+if ParanoidAndNotRoot 1
-+then
-+  pid8=
-+  pid9=
-+else
-+  parallel_lbr_test "-a -b" "parallel system wide any branch" 100 &
-+  pid8=$!
-+  parallel_lbr_test "-a -j any_call" "parallel system wide any call" 100 &
-+  pid9=$!
-+fi
- 
- for pid in $pid1 $pid2 $pid3 $pid4 $pid5 $pid6 $pid7 $pid8 $pid9
- do
+ static inline bool deleg_is_read(u32 dl_type)
 -- 
 2.51.0
 
