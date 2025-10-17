@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA8DBE9948
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD2DBEA155
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB70D5690DC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 594885A4124
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F66D3370FB;
-	Fri, 17 Oct 2025 15:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7922F12DE;
+	Fri, 17 Oct 2025 15:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfTBoZiU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMkc/YGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEC233711D;
-	Fri, 17 Oct 2025 15:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EA220C00A;
+	Fri, 17 Oct 2025 15:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713616; cv=none; b=jz0v850moxLXKFlXdwhIwXjGR+Y6roMLK4VLZhL1I4jGcNQr1HL6w7c6eY/5tGU6+WBAFq+Ff92MEVcYic8PWwodXXlFutJh0Vs2Yf0OgkjeQgx644Z9fmYUw4ZWWlN2Mjq91tm5oSwITMNXAWDOJq37HMMAJ+S8NJO3zN/yaEs=
+	t=1760715239; cv=none; b=AoOG6siyl+gfV5WM2Ju//igR94/mTF1TmdNXt0vmP388WYf4KjGtelhDqgzHSoNuNGWnAVCY0z0E1wHHbJdXN4wXPQgP2tjbGExzU85gMwqPa+FEgCVgLJ/OS73T/JoYgEIlMbq64qN5SboC+wF4gelwii+IS+adrWozm9l+k5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713616; c=relaxed/simple;
-	bh=MuOG8TFeYHRWNJsu6IeKMjqo0ELjlMGIgWuNgTpbFVM=;
+	s=arc-20240116; t=1760715239; c=relaxed/simple;
+	bh=xdjgqEEj0vlczWQF61oB6MHJ+F21styJLUwD/yAhjQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4qGTuU3awWUl4PyjnQ0wa1LGkEaeAXX/bRGWWfTqPWqn5fjNJgfbhbGmWga9Uq4Dc0IFeCd5VuHZ2AXt+2UgJ4saAywAO4/H6Ng/aHYtRsiu5sEtlFzJ36rFsXy/KxUwC9hR9XQ9uySfBPjDeTCoVMkzzpNx12M9gv/9GpaVYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfTBoZiU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F31C4CEF9;
-	Fri, 17 Oct 2025 15:06:55 +0000 (UTC)
+	 MIME-Version; b=HnT9da7u0psbPzvZu15kVX7hugVz9zUSXdHNkARdDNzdTexiNJ/IjqIeC/Fj/t48HQROMCZ1KF3G5c2IasHwU4F4VqXqnL1WfPrA3P3u3mJ3WcFqbyhIJyrqkA9a69mE86FI2gAkT6VpPQU5Q77YoHS3k5pyQwsb4GWK23ooYeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMkc/YGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DA7C4CEE7;
+	Fri, 17 Oct 2025 15:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713616;
-	bh=MuOG8TFeYHRWNJsu6IeKMjqo0ELjlMGIgWuNgTpbFVM=;
+	s=korg; t=1760715238;
+	bh=xdjgqEEj0vlczWQF61oB6MHJ+F21styJLUwD/yAhjQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfTBoZiUUXXA3J8+OuAEBMfYIOYdUkCN/CY48J+9eUBFIKzvANWnjV2MfW1/K+iYG
-	 ktaUhvK+GzbjzdLipGThmqLKpycQKE860CZXb7vZ5zGYHjw56VSemqlCIUTwByw8zZ
-	 Yy7DqcrlVRu9zaAwSVZ2soSrQz7n7iV51KGUQklw=
+	b=RMkc/YGDnU5T8/t+ZXRwTvwBGBAsvn7zcCt+0LtQ2Y4sBw8m0tq+TMPEquk1d/xQV
+	 sVULe5MZF0Lwex0snRGSj4e2Z221cBcACW2dr+pLys9E2OGDLFW5D/kZcn022AfJxu
+	 4euFQYbFWgT1LKU45PEFg8sNXpJWY/VzMdc7yBUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 060/201] ACPI: debug: fix signedness issues in read/write helpers
+	Vibhore Vardhan <vibhore@ti.com>,
+	Paresh Bhagat <p-bhagat@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.17 146/371] arm64: dts: ti: k3-am62a-main: Fix main padcfg length
 Date: Fri, 17 Oct 2025 16:52:01 +0200
-Message-ID: <20251017145136.952935455@linuxfoundation.org>
+Message-ID: <20251017145207.217185675@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+From: Vibhore Vardhan <vibhore@ti.com>
 
-commit 496f9372eae14775e0524e83e952814691fe850a upstream.
+commit 4c4e48afb6d85c1a8f9fdbae1fdf17ceef4a6f5b upstream.
 
-In the ACPI debugger interface, the helper functions for read and write
-operations use "int" as the length parameter data type. When a large
-"size_t count" is passed from the file operations, this cast to "int"
-results in truncation and a negative value due to signed integer
-representation.
+The main pad configuration register region starts with the register
+MAIN_PADCFG_CTRL_MMR_CFG0_PADCONFIG0 with address 0x000f4000 and ends
+with the MAIN_PADCFG_CTRL_MMR_CFG0_PADCONFIG150 register with address
+0x000f4258, as a result of which, total size of the region is 0x25c
+instead of 0x2ac.
 
-Logically, this negative number propagates to the min() calculation,
-where it is selected over the positive buffer space value, leading to
-unexpected behavior. Subsequently, when this negative value is used in
-copy_to_user() or copy_from_user(), it is interpreted as a large positive
-value due to the unsigned nature of the size parameter in these functions,
-causing the copy operations to attempt handling sizes far beyond the
-intended buffer limits.
+Reference Docs
+TRM (AM62A) - https://www.ti.com/lit/ug/spruj16b/spruj16b.pdf
+TRM (AM62D) - https://www.ti.com/lit/ug/sprujd4/sprujd4.pdf
 
-Address the issue by:
- - Changing the length parameters in acpi_aml_read_user() and
-   acpi_aml_write_user() from "int" to "size_t", aligning with the
-   expected unsigned size semantics.
- - Updating return types and local variables in acpi_aml_read() and
-   acpi_aml_write() to "ssize_t" for consistency with kernel file
-   operation conventions.
- - Using "size_t" for the "n" variable to ensure calculations remain
-   unsigned.
- - Using min_t() for circ_count_to_end() and circ_space_to_end() to
-   ensure type-safe comparisons and prevent integer overflow.
-
-Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
-Link: https://patch.msgid.link/20250923013113.20615-1-a.jahangirzad@gmail.com
-[ rjw: Changelog tweaks, local variable definitions ordering adjustments ]
-Fixes: 8cfb0cdf07e2 ("ACPI / debugger: Add IO interface to access debugger functionalities")
-Cc: 4.5+ <stable@vger.kernel.org> # 4.5+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 5fc6b1b62639c ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vibhore Vardhan <vibhore@ti.com>
+Signed-off-by: Paresh Bhagat <p-bhagat@ti.com>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://patch.msgid.link/20250903062513.813925-2-p-bhagat@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_dbg.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/acpi_dbg.c
-+++ b/drivers/acpi/acpi_dbg.c
-@@ -569,11 +569,11 @@ static int acpi_aml_release(struct inode
- 	return 0;
- }
+--- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+@@ -267,7 +267,7 @@
  
--static int acpi_aml_read_user(char __user *buf, int len)
-+static ssize_t acpi_aml_read_user(char __user *buf, size_t len)
- {
--	int ret;
- 	struct circ_buf *crc = &acpi_aml_io.out_crc;
--	int n;
-+	ssize_t ret;
-+	size_t n;
- 	char *p;
- 
- 	ret = acpi_aml_lock_read(crc, ACPI_AML_OUT_USER);
-@@ -582,7 +582,7 @@ static int acpi_aml_read_user(char __use
- 	/* sync head before removing logs */
- 	smp_rmb();
- 	p = &crc->buf[crc->tail];
--	n = min(len, circ_count_to_end(crc));
-+	n = min_t(size_t, len, circ_count_to_end(crc));
- 	if (copy_to_user(buf, p, n)) {
- 		ret = -EFAULT;
- 		goto out;
-@@ -599,8 +599,8 @@ out:
- static ssize_t acpi_aml_read(struct file *file, char __user *buf,
- 			     size_t count, loff_t *ppos)
- {
--	int ret = 0;
--	int size = 0;
-+	ssize_t ret = 0;
-+	ssize_t size = 0;
- 
- 	if (!count)
- 		return 0;
-@@ -639,11 +639,11 @@ again:
- 	return size > 0 ? size : ret;
- }
- 
--static int acpi_aml_write_user(const char __user *buf, int len)
-+static ssize_t acpi_aml_write_user(const char __user *buf, size_t len)
- {
--	int ret;
- 	struct circ_buf *crc = &acpi_aml_io.in_crc;
--	int n;
-+	ssize_t ret;
-+	size_t n;
- 	char *p;
- 
- 	ret = acpi_aml_lock_write(crc, ACPI_AML_IN_USER);
-@@ -652,7 +652,7 @@ static int acpi_aml_write_user(const cha
- 	/* sync tail before inserting cmds */
- 	smp_mb();
- 	p = &crc->buf[crc->head];
--	n = min(len, circ_space_to_end(crc));
-+	n = min_t(size_t, len, circ_space_to_end(crc));
- 	if (copy_from_user(p, buf, n)) {
- 		ret = -EFAULT;
- 		goto out;
-@@ -663,14 +663,14 @@ static int acpi_aml_write_user(const cha
- 	ret = n;
- out:
- 	acpi_aml_unlock_fifo(ACPI_AML_IN_USER, ret >= 0);
--	return n;
-+	return ret;
- }
- 
- static ssize_t acpi_aml_write(struct file *file, const char __user *buf,
- 			      size_t count, loff_t *ppos)
- {
--	int ret = 0;
--	int size = 0;
-+	ssize_t ret = 0;
-+	ssize_t size = 0;
- 
- 	if (!count)
- 		return 0;
+ 	main_pmx0: pinctrl@f4000 {
+ 		compatible = "pinctrl-single";
+-		reg = <0x00 0xf4000 0x00 0x2ac>;
++		reg = <0x00 0xf4000 0x00 0x25c>;
+ 		#pinctrl-cells = <1>;
+ 		pinctrl-single,register-width = <32>;
+ 		pinctrl-single,function-mask = <0xffffffff>;
 
 
 
