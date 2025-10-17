@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCE9BE982F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:10:03 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE37BEA032
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D609D7410A5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:01:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0597A586E04
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C82132C93E;
-	Fri, 17 Oct 2025 15:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBA43328EA;
+	Fri, 17 Oct 2025 15:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9lLSabu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rk25VaA7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6443208;
-	Fri, 17 Oct 2025 15:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B93B3370FB;
+	Fri, 17 Oct 2025 15:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713254; cv=none; b=eD8JZPEaQwUtCv0IyOX1L/05afPIRapxgSyZ/s783Mn6cux/ZoO9qrGgJVyVMPH/QwWkcj6/rpz6fp54WrECn60f8b4KtdIGjTiSJd2BZ1E2bRvnEFnUpJuRrM2GAoEURx4D/DUXjuqI5GTBD0YaF+DrQOv+Hj0KKq5l4zMg9GY=
+	t=1760714617; cv=none; b=hQtDlaXuCl0DTvVvxSqJsPk6Ml2/tcfvWIW2ynQ8HIoK5K6/l6TugZHdLw5BRB7ks81l9WcVeCxCULv+IdEBBzk9XUIg9iSE1/KNb9FkDUeBcfHTawuejK5NAl9t51ErBw63WC05mtsJ+WUTLrtd7VIFB9olp2AIVqPqPusWfng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713254; c=relaxed/simple;
-	bh=bXFEJrj7rmBkJtipbwAPysAKbqQl6dr5/CE9QKvy8jg=;
+	s=arc-20240116; t=1760714617; c=relaxed/simple;
+	bh=2ps53R5i75+ppRhNaIPxyvMl9I7E3xRL/5OjIZRrqGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBzPAjAoVxtdyVNbAFH90PywptoFONo1RV+3qErDoZaZg8OmfWEhKjiBFP4FerdXxRtqlILqGUkCf9tArtzykR1B4H+MbOBTvRKFYA70vc2d6GxhkilEMXxK7RpEYB5YC6Lu7lwgYmiPuZUsTn5b9VYK3sbc35Vna9OmQL8JdB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9lLSabu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A170C4CEE7;
-	Fri, 17 Oct 2025 15:00:54 +0000 (UTC)
+	 MIME-Version; b=hy9npUWOCvSUa9DyRnBKc9zInwrQQ16XHmWcsEK7ZgJwP6Dq75DlTQVMG6sVeFzRjLHz8H87OQnLmf/Iqu6krNNAzBM9KgWzLK/rWWDIR/gMPmHuzfwY3xTzDRCt8D94f8nJxMRS4P3etsJOiHHAMrdVDGEDHtUdMfH1FqhyREg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rk25VaA7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D791FC4CEE7;
+	Fri, 17 Oct 2025 15:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713254;
-	bh=bXFEJrj7rmBkJtipbwAPysAKbqQl6dr5/CE9QKvy8jg=;
+	s=korg; t=1760714617;
+	bh=2ps53R5i75+ppRhNaIPxyvMl9I7E3xRL/5OjIZRrqGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9lLSabubPU7HAUZBxosva7HV0Y0N8Y0d5Ig1boVr6GB/S9mJeyCZkPGrX3d3LB3g
-	 thH8nUdJeixtqDHja9iwNWW0VE7gTB635AgJXhlBRX14zQ9uugeU7gfy6QwkIvr/E2
-	 Ltpfmj4ZXye7MJ9n1LXo8JXQdViR0sEy2t8o6Mt0=
+	b=Rk25VaA7gSWxwBMuoBV9q6JR2SzWtH4JOuNrV+ssRrx6Ttp7mwS+QKQJbRUn3AmTv
+	 jxz0qu/hEw/+r7VDKbFKF48usqQNnp7rqBpmNM2cBdxdNl/Bsu2q/zsLqI50Dj3e4X
+	 PDRKwgM5c73zTp38gJzxtE39GHVoSrVyVYTU5aMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 102/168] mtd: rawnand: fsmc: Default to autodetect buswidth
-Date: Fri, 17 Oct 2025 16:53:01 +0200
-Message-ID: <20251017145132.784784949@linuxfoundation.org>
+	Jani Nurminen <jani.nurminen@windriver.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.12 175/277] PCI: xilinx-nwl: Fix ECAM programming
+Date: Fri, 17 Oct 2025 16:53:02 +0200
+Message-ID: <20251017145153.518444156@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Jani Nurminen <jani.nurminen@windriver.com>
 
-commit b8df622cf7f6808c85764e681847150ed6d85f3d upstream.
+commit 98a4f5b7359205ced1b6a626df3963bf7c5e5052 upstream.
 
-If you don't specify buswidth 2 (16 bits) in the device
-tree, FSMC doesn't even probe anymore:
+When PCIe has been set up by the bootloader, the ecam_size field in the
+E_ECAM_CONTROL register already contains a value.
 
-fsmc-nand 10100000.flash: FSMC device partno 090,
-  manufacturer 80, revision 00, config 00
-nand: device found, Manufacturer ID: 0x20, Chip ID: 0xb1
-nand: ST Micro 10100000.flash
-nand: bus width 8 instead of 16 bits
-nand: No NAND device found
-fsmc-nand 10100000.flash: probe with driver fsmc-nand failed
-  with error -22
+The driver previously programmed it to 0xc (for 16 busses; 16 MB), but
+bumped to 0x10 (for 256 busses; 256 MB) by the commit 2fccd11518f1 ("PCI:
+xilinx-nwl: Modify ECAM size to enable support for 256 buses").
 
-With this patch to use autodetection unless buswidth is
-specified, the device is properly detected again:
+Regardless of what the bootloader has programmed, the driver ORs in a
+new maximal value without doing a proper RMW sequence. This can lead to
+problems.
 
-fsmc-nand 10100000.flash: FSMC device partno 090,
-  manufacturer 80, revision 00, config 00
-nand: device found, Manufacturer ID: 0x20, Chip ID: 0xb1
-nand: ST Micro NAND 128MiB 1,8V 16-bit
-nand: 128 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
-fsmc-nand 10100000.flash: Using 1-bit HW ECC scheme
-Scanning device for bad blocks
+For example, if the bootloader programs in 0xc and the driver uses 0x10,
+the ORed result is 0x1c, which is beyond the ecam_max_size limit of 0x10
+(from E_ECAM_CAPABILITIES).
 
-I don't know where or how this happened, I think some change
-in the nand core.
+Avoid the problems by doing a proper RMW.
 
+Fixes: 2fccd11518f1 ("PCI: xilinx-nwl: Modify ECAM size to enable support for 256 buses")
+Signed-off-by: Jani Nurminen <jani.nurminen@windriver.com>
+[mani: added stable tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/e83a2af2-af0b-4670-bcf5-ad408571c2b0@windriver.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/fsmc_nand.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pci/controller/pcie-xilinx-nwl.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/mtd/nand/raw/fsmc_nand.c
-+++ b/drivers/mtd/nand/raw/fsmc_nand.c
-@@ -876,10 +876,14 @@ static int fsmc_nand_probe_config_dt(str
- 	if (!of_property_read_u32(np, "bank-width", &val)) {
- 		if (val == 2) {
- 			nand->options |= NAND_BUSWIDTH_16;
--		} else if (val != 1) {
-+		} else if (val == 1) {
-+			nand->options |= NAND_BUSWIDTH_AUTO;
-+		} else {
- 			dev_err(&pdev->dev, "invalid bank-width %u\n", val);
- 			return -EINVAL;
- 		}
-+	} else {
-+		nand->options |= NAND_BUSWIDTH_AUTO;
- 	}
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -721,9 +721,10 @@ static int nwl_pcie_bridge_init(struct n
+ 	nwl_bridge_writel(pcie, nwl_bridge_readl(pcie, E_ECAM_CONTROL) |
+ 			  E_ECAM_CR_ENABLE, E_ECAM_CONTROL);
  
- 	if (of_get_property(np, "nand-skip-bbtscan", NULL))
+-	nwl_bridge_writel(pcie, nwl_bridge_readl(pcie, E_ECAM_CONTROL) |
+-			  (NWL_ECAM_MAX_SIZE << E_ECAM_SIZE_SHIFT),
+-			  E_ECAM_CONTROL);
++	ecam_val = nwl_bridge_readl(pcie, E_ECAM_CONTROL);
++	ecam_val &= ~E_ECAM_SIZE_LOC;
++	ecam_val |= NWL_ECAM_MAX_SIZE << E_ECAM_SIZE_SHIFT;
++	nwl_bridge_writel(pcie, ecam_val, E_ECAM_CONTROL);
+ 
+ 	nwl_bridge_writel(pcie, lower_32_bits(pcie->phys_ecam_base),
+ 			  E_ECAM_BASE_LO);
 
 
 
