@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37296BE98A1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:12:00 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A502BEA081
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B0341580A79
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC0D75A1FAC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D81336EDB;
-	Fri, 17 Oct 2025 15:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB50833711F;
+	Fri, 17 Oct 2025 15:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOellr08"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ui89dojH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B688C336ED0;
-	Fri, 17 Oct 2025 15:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999752D7D3A;
+	Fri, 17 Oct 2025 15:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713471; cv=none; b=WLtvtITuqpj7Xav1oz3xmSDwwj1xYGSDdMeQdtX+tYgSTIw9SbeaiQn6K/+3Hj8MHJaJfnEkvdsGkq9ymtx5aqcRmjN/+oipJ6zlAIpnxU7T7EGlwd9TnGISJWcn6s1uP94eNOKsxOFc3m5jxvNe3P28BcJUTadl2J882Yn7Q44=
+	t=1760715074; cv=none; b=YNYdKmjSCHww+P2AJ9e8jY+EZCE7ElrpQ+HPo9UA/NI383WeHOmZB1CV84s5jjviuHuzh24B/muyBjdot2TwnAjHU6ubauuATOPeqQ2adLOHSSCqoCKKCYEyBkMBeg2mZWth1xBDmvZFxzlUhkWP52hHxCf43lRw3PtjKuvY9lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713471; c=relaxed/simple;
-	bh=BHqOVC2/MqJallzAxxAGEpYH3OiXJiPBbOuGrprf8FM=;
+	s=arc-20240116; t=1760715074; c=relaxed/simple;
+	bh=bQ9Ip8OMrzWXaCCNueT+VYbztdbJuMkPjljbB0TVol4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=parHQOVg/xABCYymkS0ZtQNU4kDgWD4YLkD8vXdMU369ED+db8xlAkduIhkakiv99Ii5Hm5Jly4EK6nwSjr8ahEgwVkkWGH0QywYTcX8bpmfmvdwV3JBCHRZ40Uid2ugbG0COdhTsvJlXoh4CQm2VALKRYHNOAeE8Dt49NUmj/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOellr08; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AF6C4CEFE;
-	Fri, 17 Oct 2025 15:04:31 +0000 (UTC)
+	 MIME-Version; b=iDOR2gqjKebSWhT6yIS6gvtkGv/ql8/Uzoykyqun+1cQM7VFElp7HpN/ZnK0qYpYbX5P4iM/6W+GfWzVQd20cmQM6arDA0GjafybXJhYLXHYW9FwVyHssZTkN8w00VhX4RD31vKEGQMS6rAqy75K1xMzb/phsJ3EdTCOBVMUfsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ui89dojH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C0CC4CEE7;
+	Fri, 17 Oct 2025 15:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713471;
-	bh=BHqOVC2/MqJallzAxxAGEpYH3OiXJiPBbOuGrprf8FM=;
+	s=korg; t=1760715073;
+	bh=bQ9Ip8OMrzWXaCCNueT+VYbztdbJuMkPjljbB0TVol4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOellr08vsQMVw0uG9xaqWJqxm1n/xjsZYCzwNSI1py3j6+3UXcW67GWg3o4FIYih
-	 8HfuXeFwck7rfJSkVm9WHqYaI4jXSVRo9m8eSjUPhLfuXpEf3VsFwfo25drjfS5rQM
-	 5zRVSuQxP21etVFASPmcDsj/DzaxKXuhvX5rsh1I=
+	b=Ui89dojH+3GqHIshqco1Sr/EkfM1vvQqltc1RfTInHEzd3EXuoGu2wgUbe4d4VgZv
+	 R21unleg2HOprR12F5WYCyGPnhzjlJuR0ErMEH5aY5yHt0c38syNSe0Y8Z5bu2juTx
+	 Zw23VfNZZBk9bSQi047OTuQ6ArVG14bSQsSSsxUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 001/201] fs: always return zero on success from replace_fd()
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 087/371] drm/vmwgfx: Fix copy-paste typo in validation
 Date: Fri, 17 Oct 2025 16:51:02 +0200
-Message-ID: <20251017145134.770244268@linuxfoundation.org>
+Message-ID: <20251017145205.087024385@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit 708c04a5c2b78e22f56e2350de41feba74dfccd9 upstream.
+[ Upstream commit 228c5d44dffe8c293cd2d2f0e7ea45e64565b1c4 ]
 
-replace_fd() returns the number of the new file descriptor through the
-return value of do_dup2(). However its callers never care about the
-specific returned number. In fact the caller in receive_fd_replace() treats
-any non-zero return value as an error and therefore never calls
-__receive_sock() for most file descriptors, which is a bug.
+'entry' should be 'val' which is the loop iterator.
 
-To fix the bug in receive_fd_replace() and to avoid the same issue
-happening in future callers, signal success through a plain zero.
-
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Link: https://lore.kernel.org/lkml/20250801220215.GS222315@ZenIV/
-Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
-Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/20250805-fix-receive_fd_replace-v3-1-b72ba8b34bac@linutronix.de
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9e931f2e0970 ("drm/vmwgfx: Refactor resource validation hashtable to use linux/hashtable implementation.")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://lore.kernel.org/r/20250926195427.1405237-2-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_validation.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -1138,7 +1138,10 @@ int replace_fd(unsigned fd, struct file
- 	err = expand_files(files, fd);
- 	if (unlikely(err < 0))
- 		goto out_unlock;
--	return do_dup2(files, file, fd, flags);
-+	err = do_dup2(files, file, fd, flags);
-+	if (err < 0)
-+		return err;
-+	return 0;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+index 4d0fb71f62111..35dc94c3db399 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+@@ -638,7 +638,7 @@ void vmw_validation_drop_ht(struct vmw_validation_context *ctx)
+ 		hash_del_rcu(&val->hash.head);
  
- out_unlock:
- 	spin_unlock(&files->file_lock);
+ 	list_for_each_entry(val, &ctx->resource_ctx_list, head)
+-		hash_del_rcu(&entry->hash.head);
++		hash_del_rcu(&val->hash.head);
+ 
+ 	ctx->sw_context = NULL;
+ }
+-- 
+2.51.0
+
 
 
 
