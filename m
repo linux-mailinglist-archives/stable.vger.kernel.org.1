@@ -1,61 +1,76 @@
-Return-Path: <stable+bounces-187040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3188BBEA0B3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EE7BEA1C1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 62DEB587A2E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:29:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABC58742EE9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67FA22A7E4;
-	Fri, 17 Oct 2025 15:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B0232C951;
+	Fri, 17 Oct 2025 15:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZCtP+H5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDEz/bqv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B38B2F12A5;
-	Fri, 17 Oct 2025 15:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A572F12CC;
+	Fri, 17 Oct 2025 15:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714951; cv=none; b=qdfNSKXyDx5ccginof/Y7FCHQhL+Fg88CrVCi/s2e2BSTWeoTbtBkOq21OluW/C7lhTgp8fOW4LpDxmvRWYGu37My9A4xf66GPoX0jNdFVIauMrHVkSNxy3aXwyZkwGdV+H7sys2xloQQVobMaPoKkLrNalOdfha6xrqSIeY1S8=
+	t=1760714059; cv=none; b=HC6q9zJ0BrdKlkvYjaY0P+jWKJkMNw5AJTV3pVPGZb60sQz9gyojFPCislYIn2cuKjrCNZUvs7/4aSj4fSMAcX+/RS3c1hqGNFG4g7kmVjnc5QQEMdx9O1ZRK1NZF7NUvv449eVbGShChuu7GSYkknXZAFEWGWwAFoYQkgqtQf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714951; c=relaxed/simple;
-	bh=oSEGq3qMdf21pQUAwSKzj48o/aOmZftmsE2JKRtGzdA=;
+	s=arc-20240116; t=1760714059; c=relaxed/simple;
+	bh=wdPHeJwkV2LUPgv+UxSZl8zVKk8ilA2HRBMCsj5hiKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qwnd/Rl85k4Ds1ywS1oxQkas+QU6dJxWbs1WZUgS2R7mKzs3gnd3xPe4dUJkvMM8IYw5SVHdiQWZDm7NlHqFsQVGz8pVrqbFiAPs+tWqrdonv1fkdOkw4mm3QfZyC7eRmSFTRDpapRCcX8wtskTjklT4shJ75mU7chDwXyS0dGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZCtP+H5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068CFC4CEE7;
-	Fri, 17 Oct 2025 15:29:10 +0000 (UTC)
+	 MIME-Version; b=tsrudNY/ArhAJnJRMq3HWbS569jVs2vBe9R/zTRslmLih//Ea6xC88/yYM4OAm3pshgOS4Wwu4za7pkXr+z/v9tXhPwoflNzY9oOfjtBh5u1RZNAlZv+53CKGsl3zO8RSGyfXUPgDfUpzjcN4t9otPjWrZhV0MgfyYu0rIF7Xy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDEz/bqv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B77C4CEE7;
+	Fri, 17 Oct 2025 15:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714951;
-	bh=oSEGq3qMdf21pQUAwSKzj48o/aOmZftmsE2JKRtGzdA=;
+	s=korg; t=1760714059;
+	bh=wdPHeJwkV2LUPgv+UxSZl8zVKk8ilA2HRBMCsj5hiKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZCtP+H5TveMmZyMTXSUrhNeCUey8TfkoXOZaZYprdK/9dcM46C7WgZFZMc6T6rht
-	 OuOinIWs2IvxiF3felo3Soh6h5Oa1a1/kWIJAbav2bj27UqSLQjFm3espnfAaN5SxX
-	 XaUFx0l29v8EihPVXQ2ntz52m8blWoZWfsaaWWfU=
+	b=kDEz/bqvqMTyZSjU47gS0lEB5Z08e7BxA75Mrj1+xNm9ggE2dkSoYpL7zuJH9tF53
+	 M4V+qWmmA+00O7bo0n7ZDB7Qcep8qd65Bql/jQUzFvwByBUXW2HtVkO/xO57ze1/Tw
+	 Fnl957jLN6zP6kXME7T3oV082Ag8FXZ0ovyhH6Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamas Zsoldos <tamas.zsoldos@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
+	Collin Funk <collin.funk1@gmail.com>,
+	James Clark <james.clark@linaro.org>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Ian Rogers <irogers@google.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.ibm.com>,
+	Blake Jones <blakejones@google.com>,
+	Chun-Tse Shao <ctshao@google.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jan Polensky <japo@linux.ibm.com>,
 	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Li Huafei <lihuafei1@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Nam Cao <namcao@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Steinar H. Gunderson" <sesse@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 045/371] perf session: Fix handling when buffer exceeds 2 GiB
+Subject: [PATCH 6.12 013/277] perf disasm: Avoid undefined behavior in incrementing NULL
 Date: Fri, 17 Oct 2025 16:50:20 +0200
-Message-ID: <20251017145203.430963055@linuxfoundation.org>
+Message-ID: <20251017145147.630060397@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +80,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit c17dda8013495d8132c976cbf349be9949d0fbd1 ]
+[ Upstream commit 78d853512d6f979cf0cc41566e4f6cd82995ff34 ]
 
-If a user specifies an AUX buffer larger than 2 GiB, the returned size
-may exceed 0x80000000. Since the err variable is defined as a signed
-32-bit integer, such a value overflows and becomes negative.
+Incrementing NULL is undefined behavior and triggers ubsan during the
+perf annotate test.
 
-As a result, the perf record command reports an error:
+Split a compound statement over two lines to avoid this.
 
-  0x146e8 [0x30]: failed to process type: 71 [Unknown error 183711232]
-
-Change the type of the err variable to a signed 64-bit integer to
-accommodate large buffer sizes correctly.
-
-Fixes: d5652d865ea734a1 ("perf session: Add ability to skip 4GiB or more")
-Reported-by: Tamas Zsoldos <tamas.zsoldos@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
+Fixes: 98f69a573c668a18 ("perf annotate: Split out util/disasm.c")
+Reviewed-by: Collin Funk <collin.funk1@gmail.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
 Acked-by: Namhyung Kim <namhyung@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.ibm.com>
+Cc: Blake Jones <blakejones@google.com>
+Cc: Chun-Tse Shao <ctshao@google.com>
+Cc: Howard Chu <howardchu95@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jan Polensky <japo@linux.ibm.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20250808-perf_fix_big_buffer_size-v1-1-45f45444a9a4@arm.com
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Li Huafei <lihuafei1@huawei.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Nam Cao <namcao@linutronix.de>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steinar H. Gunderson <sesse@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20250821163820.1132977-2-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/session.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/disasm.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
-index 26ae078278cd6..09af486c83e4f 100644
---- a/tools/perf/util/session.c
-+++ b/tools/perf/util/session.c
-@@ -1402,7 +1402,7 @@ static s64 perf_session__process_user_event(struct perf_session *session,
- 	const struct perf_tool *tool = session->tool;
- 	struct perf_sample sample;
- 	int fd = perf_data__fd(session->data);
--	int err;
-+	s64 err;
- 
- 	perf_sample__init(&sample, /*all=*/true);
- 	if ((event->header.type != PERF_RECORD_COMPRESSED &&
+diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+index 648e8d87ef194..a228a7ba30caa 100644
+--- a/tools/perf/util/disasm.c
++++ b/tools/perf/util/disasm.c
+@@ -389,13 +389,16 @@ static int jump__parse(struct arch *arch, struct ins_operands *ops, struct map_s
+ 	 * skip over possible up to 2 operands to get to address, e.g.:
+ 	 * tbnz	 w0, #26, ffff0000083cd190 <security_file_permission+0xd0>
+ 	 */
+-	if (c++ != NULL) {
++	if (c != NULL) {
++		c++;
+ 		ops->target.addr = strtoull(c, NULL, 16);
+ 		if (!ops->target.addr) {
+ 			c = strchr(c, ',');
+ 			c = validate_comma(c, ops);
+-			if (c++ != NULL)
++			if (c != NULL) {
++				c++;
+ 				ops->target.addr = strtoull(c, NULL, 16);
++			}
+ 		}
+ 	} else {
+ 		ops->target.addr = strtoull(ops->raw, NULL, 16);
 -- 
 2.51.0
 
