@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5C0BEA33B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A21CBE9F0C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06E3B19C1749
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 294FD747131
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5C9330B04;
-	Fri, 17 Oct 2025 15:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F053328EC;
+	Fri, 17 Oct 2025 15:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwZf4NUS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFvOFd+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7796D330B06;
-	Fri, 17 Oct 2025 15:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF0B3370F7;
+	Fri, 17 Oct 2025 15:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715979; cv=none; b=Wv6Fg0+UzEyS1Q1tOmRfRZs8PJ3KVrDj8i3wlPVG1tCvyx9N3Dh+yzYNPwkYp32UwaN5YmVt6RW3aKsLj8JntqIV/T49cIzVnlcNYsZ3gJeX43eGNR6IhWteJNxrfnWGp9QoSkuZzyWmgdMJRV0WN4rT1h2/UcPN4yTmtNr5240=
+	t=1760714353; cv=none; b=ZGHPMLrTOJdynDBTSChPXgb7cQXW+2g5WVJinCVvcnG5eEs+6SmNK9nAwFEEIES0yNs7Ccd1Dw6mQj7U4v5Imp7U4HyOVdW00CPC2xlNHD5yANiiMkQwKym5K2fXTr4yboGL1Zgqupkx17bQyAyMqEqhoWYHaAr8atSGxxn/3yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715979; c=relaxed/simple;
-	bh=+tyhZkuijTbvjsjVwP0lpg5DitBOCUHA0iNQDJUNclQ=;
+	s=arc-20240116; t=1760714353; c=relaxed/simple;
+	bh=+p/0l4ZSn8r95uBqFh8vPL6yk/4DrmXIPbXV9mHSACQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2bK23cQSW5S7r8ZgmomSmUGr3+r786M3Rve8gOe2ghxDqC316dVL/rsW1PYGmw6DzWKWHKyksDojZ7zoVK0/dJW9x35H1kaq7SvF5FdKEODLTrJvSV8n4pAqidPw+rEo0ki2l/2brB5V/DApT9MBbJ6w3M5g8FOny3m+EzGKSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwZf4NUS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE8FC113D0;
-	Fri, 17 Oct 2025 15:46:18 +0000 (UTC)
+	 MIME-Version; b=ZbCNnZRstOgqRtU1e/ipGveuxY0dcW8FOk6LNtPA+dy+ZCo/NOvqblSIs2jj140hxbykZSVWz9ff9DZR4QsuG6YHWghOLog9WT4CcbRoUUue+C7oKL0DI28OIM/3SL4zCQuvvv4GraLae71EFpc0QTIQIchlxmYtPVk2Ys08+tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFvOFd+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80D0C4CEE7;
+	Fri, 17 Oct 2025 15:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715979;
-	bh=+tyhZkuijTbvjsjVwP0lpg5DitBOCUHA0iNQDJUNclQ=;
+	s=korg; t=1760714353;
+	bh=+p/0l4ZSn8r95uBqFh8vPL6yk/4DrmXIPbXV9mHSACQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OwZf4NUS0fK39+3Ls7UGBqBD2E5e59OmvIdyzjIlfmiSybJs38Gs9qtd/EejgvM85
-	 YNlHddbbpqHWqVOacDVJM7W7ujdkyowH/pKESkHPaJo2Iws0jNPdf0edL19/gAI4TW
-	 5wYbfJ8p48H8AQEtyxgR6QIHDEFHOvrk3vyDDJ1w=
+	b=XFvOFd+EBGTULPMsCxjTQH4heU2SqfYO1o/phPYZ4k2gk2CblWO0fpvFqqx86n1MU
+	 oDiEAfV9E+fxFcleS8LNO2FTj3Fm27ZxT/UczEDFYangZlNPBtwpsgCwMDpAd0P6C+
+	 QbHgLXW852PYs7CRUIuM4GCayNaxjK0eh7hAc5Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 030/276] cpufreq: scmi: Account for malformed DT in scmi_dev_used_by_cpus()
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 6.12 116/277] drm/rcar-du: dsi: Fix 1/2/3 lane support
 Date: Fri, 17 Oct 2025 16:52:03 +0200
-Message-ID: <20251017145143.503809753@linuxfoundation.org>
+Message-ID: <20251017145151.361297822@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit cd5d4621ba846dad9b2e6b0c2d1518d083fcfa13 ]
+commit d83f1d19c898ac1b54ae64d1c950f5beff801982 upstream.
 
-Broadcom STB platforms were early adopters (2017) of the SCMI framework and as
-a result, not all deployed systems have a Device Tree entry where SCMI
-protocol 0x13 (PERFORMANCE) is declared as a clock provider, nor are the
-CPU Device Tree node(s) referencing protocol 0x13 as their clock
-provider. This was clarified in commit e11c480b6df1 ("dt-bindings:
-firmware: arm,scmi: Extend bindings for protocol@13") in 2023.
+Remove fixed PPI lane count setup. The R-Car DSI host is capable
+of operating in 1..4 DSI lane mode. Remove the hard-coded 4-lane
+configuration from PPI register settings and instead configure
+the PPI lane count according to lane count information already
+obtained by this driver instance.
 
-For those platforms, we allow the checks done by scmi_dev_used_by_cpus()
-to continue, and in the event of not having done an early return, we key
-off the documented compatible string and give them a pass to continue to
-use scmi-cpufreq.
+Configure TXSETR register to match PPI lane count. The R-Car V4H
+Reference Manual R19UH0186EJ0121 Rev.1.21 section 67.2.2.3 Tx Set
+Register (TXSETR), field LANECNT description indicates that the
+TXSETR register LANECNT bitfield lane count must be configured
+such, that it matches lane count configuration in PPISETR register
+DLEN bitfield. Make sure the LANECNT and DLEN bitfields are
+configured to match.
 
-Fixes: 6c9bb8692272 ("cpufreq: scmi: Skip SCMI devices that aren't used by the CPUs")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250813210840.97621-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/scmi-cpufreq.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c      |    5 ++++-
+ drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h |    8 ++++----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index 1f12109526fa6..35287ab0148a2 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -15,6 +15,7 @@
- #include <linux/energy_model.h>
- #include <linux/export.h>
- #include <linux/module.h>
-+#include <linux/of.h>
- #include <linux/pm_opp.h>
- #include <linux/slab.h>
- #include <linux/scmi_protocol.h>
-@@ -319,6 +320,15 @@ static bool scmi_dev_used_by_cpus(struct device *scmi_dev)
- 			return true;
- 	}
+--- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
++++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
+@@ -576,7 +576,10 @@ static int rcar_mipi_dsi_startup(struct
+ 	udelay(10);
+ 	rcar_mipi_dsi_clr(dsi, CLOCKSET1, CLOCKSET1_UPDATEPLL);
  
-+	/*
-+	 * Older Broadcom STB chips had a "clocks" property for CPU node(s)
-+	 * that did not match the SCMI performance protocol node, if we got
-+	 * there, it means we had such an older Device Tree, therefore return
-+	 * true to preserve backwards compatibility.
-+	 */
-+	if (of_machine_is_compatible("brcm,brcmstb"))
-+		return true;
+-	ppisetr = PPISETR_DLEN_3 | PPISETR_CLEN;
++	rcar_mipi_dsi_clr(dsi, TXSETR, TXSETR_LANECNT_MASK);
++	rcar_mipi_dsi_set(dsi, TXSETR, dsi->lanes - 1);
 +
- 	return false;
- }
++	ppisetr = ((BIT(dsi->lanes) - 1) & PPISETR_DLEN_MASK) | PPISETR_CLEN;
+ 	rcar_mipi_dsi_write(dsi, PPISETR, ppisetr);
  
--- 
-2.51.0
-
+ 	rcar_mipi_dsi_set(dsi, PHYSETUP, PHYSETUP_SHUTDOWNZ);
+--- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
++++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
+@@ -12,6 +12,9 @@
+ #define LINKSR_LPBUSY			(1 << 1)
+ #define LINKSR_HSBUSY			(1 << 0)
+ 
++#define TXSETR				0x100
++#define TXSETR_LANECNT_MASK		(0x3 << 0)
++
+ /*
+  * Video Mode Register
+  */
+@@ -80,10 +83,7 @@
+  * PHY-Protocol Interface (PPI) Registers
+  */
+ #define PPISETR				0x700
+-#define PPISETR_DLEN_0			(0x1 << 0)
+-#define PPISETR_DLEN_1			(0x3 << 0)
+-#define PPISETR_DLEN_2			(0x7 << 0)
+-#define PPISETR_DLEN_3			(0xf << 0)
++#define PPISETR_DLEN_MASK		(0xf << 0)
+ #define PPISETR_CLEN			(1 << 8)
+ 
+ #define PPICLCR				0x710
 
 
 
