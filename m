@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-187276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D173CBEA1D6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64065BE9A12
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F9841A65469
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 128B41AE07E6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D052E330B11;
-	Fri, 17 Oct 2025 15:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F005258ECA;
+	Fri, 17 Oct 2025 15:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpPvY1lE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgMd2Y0q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897E1335091;
-	Fri, 17 Oct 2025 15:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B2F19E7F7;
+	Fri, 17 Oct 2025 15:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715617; cv=none; b=pmzBcryjD/9lvrPcfwlysCzEQZL1+M1YbbsX5DwFx43Zl2+xsBcDoRBgwc8Xm2yAbGP7KPz7N/krzfNF24xSzMWmdMmCS3QQm5Mo8k4JPRYujNIBXOaDTsP4ynn5yFOp7QNToZUj4YKRFZIV/wzKgz0bAoEu9hfaKTkIxmC4nxQ=
+	t=1760714040; cv=none; b=dcFsJ3VQuYqfC040Q/vufRmrwN6E4uHBJ5pBLhSy0PN/14lvHTr9l91rk++LOCDrLmplw1VSa8FLuZNEVaWyjuBMuU4MDN5E97S83toQx337hgthOcTJ2wkFJ7T6plzd+kRgPmOwXD4/04G4KklgirsKay8yoYLUNv7UoszZDDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715617; c=relaxed/simple;
-	bh=fQrM4HQNX2RGu9gbDSZ1C6xB1qZZNy9T3jmI+RwZmEg=;
+	s=arc-20240116; t=1760714040; c=relaxed/simple;
+	bh=NtfdWc/t5G5zsII2aKcMdpADG8OdsaTLE8P6kS9+qTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S74G165QNH1blGv70tnSu4covl85EcgIFRXbLdy6BouPdofZ1HQGAi4B0CHC1FH9X9sKq1UtC9z2HpdxW5Rpoq6BIZSnUAnhc1UCQlktINk6iWkgFyWDzuL2gbSINNWSwzL3IjdILmrjLCIwGXetOD9IsQ9l9YayNk/olljTXs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpPvY1lE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E629C4CEE7;
-	Fri, 17 Oct 2025 15:40:16 +0000 (UTC)
+	 MIME-Version; b=TMA0qZGi+HW/oA7MPrJQu46BVvKLToHxElvILzsNHJ0cit2iaYfpdebz+EcH2KkaqCpualys/mt6RcC65jAHIvgPa7LCc2v3NCHrkW85QNJK9AN6Yo2l3bE3T3IExcjqkatSy42Df+ffs2kDOyPpjDO9hXgdeK6Htprwb2XXe1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgMd2Y0q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B01AC4CEE7;
+	Fri, 17 Oct 2025 15:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715617;
-	bh=fQrM4HQNX2RGu9gbDSZ1C6xB1qZZNy9T3jmI+RwZmEg=;
+	s=korg; t=1760714039;
+	bh=NtfdWc/t5G5zsII2aKcMdpADG8OdsaTLE8P6kS9+qTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KpPvY1lE4NMW/cDyTDoi40rrgKiEjVgAHQpMT2G2z/dHNo1avOBJYyqAiDSCdyhqR
-	 KTYiWG31KEYpimh3tQnbWSfLv7iBzjrXNn+fCSwybka/YQRtWN7cGEpIzhWCq9tLOS
-	 wG3ALrXC+dRs37b+C1UaYsYSFwQk+xDOcstb88GU=
+	b=LgMd2Y0qfvOUeMdonAJCoaIurReSva0PRtWKeDO+1cwpG0Nqw3++qyatqzO+yHNbJ
+	 gCeXystcD4gZWY83tt+QHn4LMHwVefQFYqYx6Mh/E2wNHi/35+UT0H4GVG2qJzCJsi
+	 Dm5tVSfdu8YkJBVx1Dwo1hykKbE+3GC7aXbHbu5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH 6.17 279/371] PCI/AER: Support errors introduced by PCIe r6.0
+	Jia Wang <wangjia@ultrarisc.com>,
+	Charles Mirabile <cmirabil@redhat.com>,
+	Lucas Zampieri <lzampier@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 193/201] irqchip/sifive-plic: Avoid interrupt ID 0 handling during suspend/resume
 Date: Fri, 17 Oct 2025 16:54:14 +0200
-Message-ID: <20251017145212.169741172@linuxfoundation.org>
+Message-ID: <20251017145141.851091130@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Lucas Zampieri <lzampier@redhat.com>
 
-commit 6633875250b38b18b8638cf01e695de031c71f02 upstream.
+[ Upstream commit f75e07bf5226da640fa99a0594687c780d9bace4 ]
 
-PCIe r6.0 defined five additional errors in the Uncorrectable Error
-Status, Mask and Severity Registers (PCIe r7.0 sec 7.8.4.2ff).
+According to the PLIC specification[1], global interrupt sources are
+assigned small unsigned integer identifiers beginning at the value 1.
+An interrupt ID of 0 is reserved to mean "no interrupt".
 
-lspci has been supporting them since commit 144b0911cc0b ("ls-ecaps:
-extend decode support for more fields for AER CE and UE status"):
+The current plic_irq_resume() and plic_irq_suspend() functions incorrectly
+start the loop from index 0, which accesses the register space for the
+reserved interrupt ID 0.
 
-  https://git.kernel.org/pub/scm/utils/pciutils/pciutils.git/commit/?id=144b0911cc0b
+Change the loop to start from index 1, skipping the reserved
+interrupt ID 0 as per the PLIC specification.
 
-Amend the AER driver to recognize them as well, instead of logging them as
-"Unknown Error Bit".
+This prevents potential undefined behavior when accessing the reserved
+register space during suspend/resume cycles.
 
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/21f1875b18d4078c99353378f37dcd6b994f6d4e.1756301211.git.lukas@wunner.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e80f0b6a2cf3 ("irqchip/irq-sifive-plic: Add syscore callbacks for hibernation")
+Co-developed-by: Jia Wang <wangjia@ultrarisc.com>
+Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
+Co-developed-by: Charles Mirabile <cmirabil@redhat.com>
+Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
+Signed-off-by: Lucas Zampieri <lzampier@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://github.com/riscv/riscv-plic-spec/releases/tag/1.0.0
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aer.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/irqchip/irq-sifive-plic.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -43,7 +43,7 @@
- #define AER_ERROR_SOURCES_MAX		128
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index 0fcd37108b67e..2d20cf9d84cea 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -248,7 +248,8 @@ static int plic_irq_suspend(void)
  
- #define AER_MAX_TYPEOF_COR_ERRS		16	/* as per PCI_ERR_COR_STATUS */
--#define AER_MAX_TYPEOF_UNCOR_ERRS	27	/* as per PCI_ERR_UNCOR_STATUS*/
-+#define AER_MAX_TYPEOF_UNCOR_ERRS	32	/* as per PCI_ERR_UNCOR_STATUS*/
+ 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
  
- struct aer_err_source {
- 	u32 status;			/* PCI_ERR_ROOT_STATUS */
-@@ -525,11 +525,11 @@ static const char *aer_uncorrectable_err
- 	"AtomicOpBlocked",		/* Bit Position 24	*/
- 	"TLPBlockedErr",		/* Bit Position 25	*/
- 	"PoisonTLPBlocked",		/* Bit Position 26	*/
--	NULL,				/* Bit Position 27	*/
--	NULL,				/* Bit Position 28	*/
--	NULL,				/* Bit Position 29	*/
--	NULL,				/* Bit Position 30	*/
--	NULL,				/* Bit Position 31	*/
-+	"DMWrReqBlocked",		/* Bit Position 27	*/
-+	"IDECheck",			/* Bit Position 28	*/
-+	"MisIDETLP",			/* Bit Position 29	*/
-+	"PCRC_CHECK",			/* Bit Position 30	*/
-+	"TLPXlatBlocked",		/* Bit Position 31	*/
- };
+-	for (i = 0; i < priv->nr_irqs; i++) {
++	/* irq ID 0 is reserved */
++	for (i = 1; i < priv->nr_irqs; i++) {
+ 		__assign_bit(i, priv->prio_save,
+ 			     readl(priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID));
+ 	}
+@@ -278,7 +279,8 @@ static void plic_irq_resume(void)
  
- static const char *aer_agent_string[] = {
+ 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
+ 
+-	for (i = 0; i < priv->nr_irqs; i++) {
++	/* irq ID 0 is reserved */
++	for (i = 1; i < priv->nr_irqs; i++) {
+ 		index = BIT_WORD(i);
+ 		writel((priv->prio_save[index] & BIT_MASK(i)) ? 1 : 0,
+ 		       priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID);
+-- 
+2.51.0
+
 
 
 
