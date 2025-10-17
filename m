@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6847CBEA062
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F20B6BEA627
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1362535E45E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B8DF7C4396
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826BB36CE08;
-	Fri, 17 Oct 2025 15:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB4C2F12D1;
+	Fri, 17 Oct 2025 15:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OcrUECr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eI8VSxHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB69336ECE;
-	Fri, 17 Oct 2025 15:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78EC23EA9E;
+	Fri, 17 Oct 2025 15:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715470; cv=none; b=KaWPqKF4yHzGnim+iHgMSMx39LxSe7fn/swv49ViFZHR37t+1kojirgQBQCd9iO/XcA+rpz856DtGWTRd8cgYLCix2cse/w+luvKtV/ijczRAMJfGpkO/ogU7tpawIGkOdTgwNCrQXKUMGBADJUgjUquk+Q8tlpTn+LkzEptVjw=
+	t=1760714579; cv=none; b=fj9Tg1bYprOk03BiA26TRPPYs700NHfvI+rXamIkjziudsSnOOJ8/NP7KqKKFSwZ4LQGW3lMFdg2NIwQllHVi6mFXtNsg8y3nkzdBnE3lpSIo1B5Bms78Lid0XdGi9ykbHxwDEJKQPRjdVc4gywhTfe1CKk8TtKfYWe4AhENOkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715470; c=relaxed/simple;
-	bh=GWPVB25TSSu6OYOkxr8F3/sitRvoz1sv+mq7/I5ejlg=;
+	s=arc-20240116; t=1760714579; c=relaxed/simple;
+	bh=+P3+/LSxenvSyjWk2ZLyFlXLMh81Jx6M3gCB8bYOPmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzWjlqzkHmMw307BdZyNAawQQcw8DNdfltTFPUXXdSblHMnn/4iAzOC3Lfwx94qgH+PwEVlheSchF9md44Z+jmGQcAGYPUdOybrRxVcDnw5aIADrjbDCjUauXioCb0PT5hO3QGL0gTUG4yoSnTl9vM+St2k9bJNEuHfxBY5c1VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OcrUECr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B836AC116B1;
-	Fri, 17 Oct 2025 15:37:49 +0000 (UTC)
+	 MIME-Version; b=KQJZK+fzNJfLsFi/D7vbwFigfrOgJnLDI/DCPWaxQxPe4ADCofJZcuj9yzCKvDFmxvYrLKrGyE2gQTyxw1bjk9nu3Ipdxit35+nqlzj3YotuU8hMhniyZcFZbEKpxiZ9n44kOag1GJ2sZcLmu+qZOVIPYSNOdw2+2FFzbhC/sBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eI8VSxHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE48C4CEFE;
+	Fri, 17 Oct 2025 15:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715470;
-	bh=GWPVB25TSSu6OYOkxr8F3/sitRvoz1sv+mq7/I5ejlg=;
+	s=korg; t=1760714579;
+	bh=+P3+/LSxenvSyjWk2ZLyFlXLMh81Jx6M3gCB8bYOPmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1OcrUECrjdFko1OaA8Q3mT9vVsvOibxnKp0EjvTG12DwUfKuA6krnkMQfiIw1Hkqn
-	 jRc5umr9soVdKIMbJg49J5V3kXD0k+BsTfY4nMNxvorpWhE4OUcSm/GN5f3G1FT3Dx
-	 CFr4e2C4Cy4mmsyxM1JKtT1PgnK2PWx4DInBcxXQ=
+	b=eI8VSxHPBjT6ix/bAmO0Wt7KcKzGoDUL0prD4T588UGauzHHm4qApgVI0ZanCjC09
+	 bBjQ5b9hfkQnXo46TMXmewC6fiiAa1FdIBd/sLtIuaw9ev5AqZIUnW1NpvrX6uzEU+
+	 iWeZJ38n4kfebXS30dtvKXRchozoCbQyg5DbvZDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 226/371] iio: imu: inv_icm42600: Simplify pm_runtime setup
+	Dan Snyder <dansnyder@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.12 194/277] x86/umip: Check that the instruction opcode is at least two bytes
 Date: Fri, 17 Oct 2025 16:53:21 +0200
-Message-ID: <20251017145210.262652976@linuxfoundation.org>
+Message-ID: <20251017145154.204953080@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 0792c1984a45ccd7a296d6b8cb78088bc99a212e upstream.
+commit 32278c677947ae2f042c9535674a7fff9a245dd3 upstream.
 
-Rework the power management in inv_icm42600_core_probe() to use
-devm_pm_runtime_set_active_enabled(), which simplifies the runtime PM
-setup by handling activation and enabling in one step.
-Remove the separate inv_icm42600_disable_pm callback, as it's no longer
-needed with the devm-managed approach.
-Using devm_pm_runtime_enable() also fixes the missing disable of
-autosuspend.
-Update inv_icm42600_disable_vddio_reg() to only disable the regulator if
-the device is not suspended i.e. powered-down, preventing unbalanced
-disables.
-Also remove redundant error msg on regulator_disable(), the regulator
-framework already emits an error message when regulator_disable() fails.
+When checking for a potential UMIP violation on #GP, verify the decoder found
+at least two opcode bytes to avoid false positives when the kernel encounters
+an unknown instruction that starts with 0f.  Because the array of opcode.bytes
+is zero-initialized by insn_init(), peeking at bytes[1] will misinterpret
+garbage as a potential SLDT or STR instruction, and can incorrectly trigger
+emulation.
 
-This simplifies the PM setup and avoids manipulating the usage counter
-unnecessarily.
+E.g. if a VPALIGNR instruction
 
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-1-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+   62 83 c5 05 0f 08 ff     vpalignr xmm17{k5},xmm23,XMMWORD PTR [r8],0xff
+
+hits a #GP, the kernel emulates it as STR and squashes the #GP (and corrupts
+the userspace code stream).
+
+Arguably the check should look for exactly two bytes, but no three byte
+opcodes use '0f 00 xx' or '0f 01 xx' as an escape, i.e. it should be
+impossible to get a false positive if the first two opcode bytes match '0f 00'
+or '0f 01'.  Go with a more conservative check with respect to the existing
+code to minimize the chances of breaking userspace, e.g. due to decoder
+weirdness.
+
+Analyzed by Nick Bray <ncbray@google.com>.
+
+Fixes: 1e5db223696a ("x86/umip: Add emulation code for UMIP instructions")
+Reported-by: Dan Snyder <dansnyder@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   24 ++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+ arch/x86/kernel/umip.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -711,20 +711,12 @@ static void inv_icm42600_disable_vdd_reg
- static void inv_icm42600_disable_vddio_reg(void *_data)
- {
- 	struct inv_icm42600_state *st = _data;
--	const struct device *dev = regmap_get_device(st->map);
--	int ret;
--
--	ret = regulator_disable(st->vddio_supply);
--	if (ret)
--		dev_err(dev, "failed to disable vddio error %d\n", ret);
--}
-+	struct device *dev = regmap_get_device(st->map);
+--- a/arch/x86/kernel/umip.c
++++ b/arch/x86/kernel/umip.c
+@@ -156,8 +156,8 @@ static int identify_insn(struct insn *in
+ 	if (!insn->modrm.nbytes)
+ 		return -EINVAL;
  
--static void inv_icm42600_disable_pm(void *_data)
--{
--	struct device *dev = _data;
-+	if (pm_runtime_status_suspended(dev))
-+		return;
+-	/* All the instructions of interest start with 0x0f. */
+-	if (insn->opcode.bytes[0] != 0xf)
++	/* The instructions of interest have 2-byte opcodes: 0F 00 or 0F 01. */
++	if (insn->opcode.nbytes < 2 || insn->opcode.bytes[0] != 0xf)
+ 		return -EINVAL;
  
--	pm_runtime_put_sync(dev);
--	pm_runtime_disable(dev);
-+	regulator_disable(st->vddio_supply);
- }
- 
- int inv_icm42600_core_probe(struct regmap *regmap, int chip,
-@@ -824,16 +816,14 @@ int inv_icm42600_core_probe(struct regma
- 		return ret;
- 
- 	/* setup runtime power management */
--	ret = pm_runtime_set_active(dev);
-+	ret = devm_pm_runtime_set_active_enabled(dev);
- 	if (ret)
- 		return ret;
--	pm_runtime_get_noresume(dev);
--	pm_runtime_enable(dev);
-+
- 	pm_runtime_set_autosuspend_delay(dev, INV_ICM42600_SUSPEND_DELAY_MS);
- 	pm_runtime_use_autosuspend(dev);
--	pm_runtime_put(dev);
- 
--	return devm_add_action_or_reset(dev, inv_icm42600_disable_pm, dev);
-+	return ret;
- }
- EXPORT_SYMBOL_NS_GPL(inv_icm42600_core_probe, "IIO_ICM42600");
- 
+ 	if (insn->opcode.bytes[1] == 0x1) {
 
 
 
