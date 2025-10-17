@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93F8BE9A63
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:18:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04463BEA305
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 224A6623D91
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 386EE189622E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3722933711F;
-	Fri, 17 Oct 2025 15:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EC01946C8;
+	Fri, 17 Oct 2025 15:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcji2Mgq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Po+lhMcl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B7F32E14F;
-	Fri, 17 Oct 2025 15:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF00330B2E;
+	Fri, 17 Oct 2025 15:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713688; cv=none; b=VAG9uMwupNpuRuIgYlPHRc0r0wn/fB5xQ40tJB3trc9F/DdieLcm5cjs1Rg4G2fGva76cnfczgjuk9atCh5uAS+fTZmYE9PFwjuoASr+B62FrgkKNd5KXLRwxQNFMLgoens6fOxPLEUsTSE0w9BBnxlDSIeVCRYhoblzvAsc7kU=
+	t=1760715942; cv=none; b=Wvxmku8EwyYs83sWa/7dNKJZ2VCi8ge8QPoc2bwE9VNlR8cpWsXdu6Q7GFdMGSCYSdOLnYUU8LruT4czUuSDNbIX9lSjqGfB6aoZUWZM5Cw9nRgdyyGSEVBgiKGj1ozPnBI5Qj5nDZg3X1G2U7aq++eSEI6zcoGEAjhZQ/KvFs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713688; c=relaxed/simple;
-	bh=Iwv6qradxyLqU/p6IbgDgiR60ynA0hYbbmT5V9czOTw=;
+	s=arc-20240116; t=1760715942; c=relaxed/simple;
+	bh=5cgFEaNm7+GC14hGZJXy4jGYVDTSpFXizv/Soej44HA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dBMY3IUAakwzUiVDQly41Z5n+zB9MopRUTKhm+72VzrXkTS+dM7UB8lVWW8mGDmV0GJS26wF3enQGdIl9WftladbBJot1zUvS95HTpkeqCiSZ8V9VEC59sjnfIAjntV1yUgc1AP00TtWysZNuBM/ilx/AyG25/7foVy9Hx4hPU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcji2Mgq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64D2C4CEF9;
-	Fri, 17 Oct 2025 15:08:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iZ9T/Ffho/hXSQnabzEuEXUi6gKxIP54gC4oAumPM5x4Wjv8NAp9PXBm6UzB4E7N8n76i9eWENH0i9JBMrupTMVP2Q4EWKsJmeDGPDYAjQkATBzf0kp1jWDmE9thFmDZUmdqNsGSc5R8mFyRLsc0oUurynabyh++eRMksVVsB+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Po+lhMcl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6641C4CEE7;
+	Fri, 17 Oct 2025 15:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713687;
-	bh=Iwv6qradxyLqU/p6IbgDgiR60ynA0hYbbmT5V9czOTw=;
+	s=korg; t=1760715942;
+	bh=5cgFEaNm7+GC14hGZJXy4jGYVDTSpFXizv/Soej44HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcji2Mgqni7m8pp7PgvO4EQUm2Iu6G9cqxig41Uy2GFKs4K3NeSQfGQsGGGQGWVxv
-	 EvSEsME2TiWT+ZVhM1qzS81mgoiDtzE6r02OOxoB6Rim9BFpud7VPlDEtIt/QBdMN2
-	 nGLSlKOoGHuJ9/NbQ8zSwX2VDZGyC2kLYFBGtLUE=
+	b=Po+lhMclS4erVVxmsWlYK5Jk3fiARtqknodW87wWQ4ZtYhzRoYIC9DhHZ5rrWBHO5
+	 evRecCjaYp5CTZ1J3EBABdiFs+UGrCdb95nTxqqC4+HGuGgvZ/JgYZtBsLxliSa+2F
+	 Xg6dQ/pni0GUwPXqr4xIbyX1snzeGPQbMlFMydTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/201] bridge: br_vlan_fill_forward_path_pvid: use br_vlan_group_rcu()
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Nobuhiro Iwamatsu (CIP)" <nobuhiro.iwamatsu.x90@mail.toshiba>
+Subject: [PATCH 5.15 019/276] platform/x86: int3472: Check for adev == NULL
 Date: Fri, 17 Oct 2025 16:51:52 +0200
-Message-ID: <20251017145136.619664443@linuxfoundation.org>
+Message-ID: <20251017145143.103424643@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Woudstra <ericwouds@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit bbf0c98b3ad9edaea1f982de6c199cc11d3b7705 ]
+commit cd2fd6eab480dfc247b737cf7a3d6b009c4d0f1c upstream.
 
-net/bridge/br_private.h:1627 suspicious rcu_dereference_protected() usage!
-other info that might help us debug this:
+Not all devices have an ACPI companion fwnode, so adev might be NULL. This
+can e.g. (theoretically) happen when a user manually binds one of
+the int3472 drivers to another i2c/platform device through sysfs.
 
-rcu_scheduler_active = 2, debug_locks = 1
-7 locks held by socat/410:
- #0: ffff88800d7a9c90 (sk_lock-AF_INET){+.+.}-{0:0}, at: inet_stream_connect+0x43/0xa0
- #1: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: __ip_queue_xmit+0x62/0x1830
- [..]
- #6: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: nf_hook.constprop.0+0x8a/0x440
+Add a check for adev not being set and return -ENODEV in that case to
+avoid a possible NULL pointer deref in skl_int3472_get_acpi_buffer().
 
-Call Trace:
- lockdep_rcu_suspicious.cold+0x4f/0xb1
- br_vlan_fill_forward_path_pvid+0x32c/0x410 [bridge]
- br_fill_forward_path+0x7a/0x4d0 [bridge]
-
-Use to correct helper, non _rcu variant requires RTNL mutex.
-
-Fixes: bcf2766b1377 ("net: bridge: resolve forwarding path for VLAN tag actions in bridge devices")
-Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241209220522.25288-1-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+[iwamatsu: adjusted context]
+Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro.iwamatsu.x90@mail.toshiba>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_vlan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/int3472/discrete.c |    3 +++
+ drivers/platform/x86/intel/int3472/tps68470.c |    3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-index a1c22eab71ffe..cc54b8267bcc7 100644
---- a/net/bridge/br_vlan.c
-+++ b/net/bridge/br_vlan.c
-@@ -1455,7 +1455,7 @@ void br_vlan_fill_forward_path_pvid(struct net_bridge *br,
- 	if (!br_opt_get(br, BROPT_VLAN_ENABLED))
- 		return;
+--- a/drivers/platform/x86/intel/int3472/discrete.c
++++ b/drivers/platform/x86/intel/int3472/discrete.c
+@@ -345,6 +345,9 @@ static int skl_int3472_discrete_probe(st
+ 	struct int3472_cldb cldb;
+ 	int ret;
  
--	vg = br_vlan_group(br);
-+	vg = br_vlan_group_rcu(br);
++	if (!adev)
++		return -ENODEV;
++
+ 	ret = skl_int3472_fill_cldb(adev, &cldb);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Couldn't fill CLDB structure\n");
+--- a/drivers/platform/x86/intel/int3472/tps68470.c
++++ b/drivers/platform/x86/intel/int3472/tps68470.c
+@@ -102,6 +102,9 @@ static int skl_int3472_tps68470_probe(st
+ 	int device_type;
+ 	int ret;
  
- 	if (idx >= 0 &&
- 	    ctx->vlan[idx].proto == br->vlan_proto) {
--- 
-2.51.0
-
++	if (!adev)
++		return -ENODEV;
++
+ 	regmap = devm_regmap_init_i2c(client, &tps68470_regmap_config);
+ 	if (IS_ERR(regmap)) {
+ 		dev_err(&client->dev, "Failed to create regmap: %ld\n", PTR_ERR(regmap));
 
 
 
