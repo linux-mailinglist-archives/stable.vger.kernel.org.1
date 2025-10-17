@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-186543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC972BE9900
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1600BE95F0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1EBC15812D4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36D26424CDA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3392E332903;
-	Fri, 17 Oct 2025 15:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D366337111;
+	Fri, 17 Oct 2025 14:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0o+jHnQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+U8yHVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18A12F12D2;
-	Fri, 17 Oct 2025 15:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67D93370FB;
+	Fri, 17 Oct 2025 14:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713540; cv=none; b=BVtEs3sjEjqBMfMoRdlVR0pckmdIe8S7vEhOmPz4rrj7tLKLy+XQbNKY6ErbBlHteK7HKOe2N/A4v0mX9n1c+3gmS4zBtG9/xz6C4tKKXliQfloKgXecruSFaqwY0Lq9psoo//ZZ5adXhcR/ZECxmEcPIRhItntZkijZ8PbQdmk=
+	t=1760713005; cv=none; b=V1SUV80Jyu924/c4E43y3x34BefnG+QlO8VmglMnWKODi1Ch9xd/Wnzz6qOumS2KEbrzoirULHhX4eOcedq+DcA4p58w6jeaYfzi/Ql8edtdxv4swDlbc7vmjavophar7G0dSLAwC8OCzeB6/8HMXGEPZZhSA3DsA1jRAFE3xSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713540; c=relaxed/simple;
-	bh=wvgLntdA80+sTfwPMpjlVd6/XG0S/nproutMjPZHBso=;
+	s=arc-20240116; t=1760713005; c=relaxed/simple;
+	bh=Nu2SbYrFE3e2j13BEo5K5xNU1WE36qb8Dp1V3F0NNi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SQVtJ+0EY2tIdzZhvCC5kbohvifR5zAD5eBpCMdnbaYd1GR4tCAM8CHOIVgJPNn9P5crCgw+yrJCDFV2/VCvk7rK8E69uudU5JQAcxQHOBE8tNapDIs6P6R38FH8M7Zey42OOlCi4KEyxKXQ8LytijErINgYCh5KAgp/ZNEmbIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0o+jHnQU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C247C4CEE7;
-	Fri, 17 Oct 2025 15:05:39 +0000 (UTC)
+	 MIME-Version; b=Yt8VcW7YNXG9aEqQqmrEHAATXvofTnJ+fyvmfNJA9W69Hu4ErkrXY3mMbaKp2I9Za4KPmyxRydmsJl018eMu+Tp7Ii1XfyR3499Z5a/36bRNxhMO4JdEvVjRK5SloTW5Gyc9qsYNAc5/hW+FBilu4hyKhfveahVNVE2h7K4Vzj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+U8yHVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9644C4CEE7;
+	Fri, 17 Oct 2025 14:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713539;
-	bh=wvgLntdA80+sTfwPMpjlVd6/XG0S/nproutMjPZHBso=;
+	s=korg; t=1760713005;
+	bh=Nu2SbYrFE3e2j13BEo5K5xNU1WE36qb8Dp1V3F0NNi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0o+jHnQUoZq78LA3K4888Ds/u5Qo3QuWgJ4PbOShosffk/LWJk6S8BRcAtHnNwQcx
-	 cvg+a7xAEEYS983KrhDYlkTDeZ0UOmHjg/QVwTQ9P7Ih35/8HHb+E8A541O10fU+iy
-	 Wg+5xwSTjDzTYOcmdT8IA3mWMtEbZQZ0N3a2NBAc=
+	b=B+U8yHVJ5s3ZrpLfJ0q2nhLP0JKo+zWdfrPc4K0ZFIhF+u3fadQOwdZ8wp/6Cs1Ek
+	 CxzGy71qHTbDoViipXFrpr1JppKQZEvMMkQgeEdC562sznafBLy8ZDoVawk/+g2cQB
+	 brpObrADLD6ycG5htFmyeFSdFB7jpdzKd82zZMt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ali Saidi <alisaidi@amazon.com>,
+	German Gomez <german.gomez@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/201] s390/cio: Update purge function to unregister the unused subchannels
-Date: Fri, 17 Oct 2025 16:51:33 +0200
-Message-ID: <20251017145135.923131975@linuxfoundation.org>
+Subject: [PATCH 6.1 015/168] perf arm_spe: Correct memory level for remote access
+Date: Fri, 17 Oct 2025 16:51:34 +0200
+Message-ID: <20251017145129.577402367@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +72,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vineeth Vijayan <vneethv@linux.ibm.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 9daa5a8795865f9a3c93d8d1066785b07ded6073 ]
+[ Upstream commit cb300e3515057fb555983ce47e8acc86a5c69c3c ]
 
-Starting with 'commit 2297791c92d0 ("s390/cio: dont unregister
-subchannel from child-drivers")', cio no longer unregisters
-subchannels when the attached device is invalid or unavailable.
+For remote accesses, the data source packet does not contain information
+about the memory level. To avoid misinformation, set the memory level to
+NA (Not Available).
 
-As an unintended side-effect, the cio_ignore purge function no longer
-removes subchannels for devices on the cio_ignore list if no CCW device
-is attached. This situation occurs when a CCW device is non-operational
-or unavailable
-
-To ensure the same outcome of the purge function as when the
-current cio_ignore list had been active during boot, update the purge
-function to remove I/O subchannels without working CCW devices if the
-associated device number is found on the cio_ignore list.
-
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Suggested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 4e6430cbb1a9f1dc ("perf arm-spe: Use SPE data source for neoverse cores")
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ali Saidi <alisaidi@amazon.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/device.c | 37 ++++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ tools/perf/util/arm-spe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
-index 6b374026cd4f4..31f46b56e049d 100644
---- a/drivers/s390/cio/device.c
-+++ b/drivers/s390/cio/device.c
-@@ -1318,23 +1318,34 @@ void ccw_device_schedule_recovery(void)
- 	spin_unlock_irqrestore(&recovery_lock, flags);
- }
- 
--static int purge_fn(struct device *dev, void *data)
-+static int purge_fn(struct subchannel *sch, void *data)
- {
--	struct ccw_device *cdev = to_ccwdev(dev);
--	struct ccw_dev_id *id = &cdev->private->dev_id;
--	struct subchannel *sch = to_subchannel(cdev->dev.parent);
-+	struct ccw_device *cdev;
- 
--	spin_lock_irq(cdev->ccwlock);
--	if (is_blacklisted(id->ssid, id->devno) &&
--	    (cdev->private->state == DEV_STATE_OFFLINE) &&
--	    (atomic_cmpxchg(&cdev->private->onoff, 0, 1) == 0)) {
--		CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x\n", id->ssid,
--			      id->devno);
-+	spin_lock_irq(&sch->lock);
-+	if (sch->st != SUBCHANNEL_TYPE_IO || !sch->schib.pmcw.dnv)
-+		goto unlock;
-+
-+	if (!is_blacklisted(sch->schid.ssid, sch->schib.pmcw.dev))
-+		goto unlock;
-+
-+	cdev = sch_get_cdev(sch);
-+	if (cdev) {
-+		if (cdev->private->state != DEV_STATE_OFFLINE)
-+			goto unlock;
-+
-+		if (atomic_cmpxchg(&cdev->private->onoff, 0, 1) != 0)
-+			goto unlock;
- 		ccw_device_sched_todo(cdev, CDEV_TODO_UNREG);
--		css_sched_sch_todo(sch, SCH_TODO_UNREG);
- 		atomic_set(&cdev->private->onoff, 0);
- 	}
--	spin_unlock_irq(cdev->ccwlock);
-+
-+	css_sched_sch_todo(sch, SCH_TODO_UNREG);
-+	CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x%s\n", sch->schid.ssid,
-+		      sch->schib.pmcw.dev, cdev ? "" : " (no cdev)");
-+
-+unlock:
-+	spin_unlock_irq(&sch->lock);
- 	/* Abort loop in case of pending signal. */
- 	if (signal_pending(current))
- 		return -EINTR;
-@@ -1350,7 +1361,7 @@ static int purge_fn(struct device *dev, void *data)
- int ccw_purge_blacklisted(void)
- {
- 	CIO_MSG_EVENT(2, "ccw: purging blacklisted devices\n");
--	bus_for_each_dev(&ccw_bus_type, NULL, NULL, purge_fn);
-+	for_each_subchannel_staged(purge_fn, NULL, NULL);
- 	return 0;
- }
- 
+diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
+index 36f03d532d5bc..383eda614f5c4 100644
+--- a/tools/perf/util/arm-spe.c
++++ b/tools/perf/util/arm-spe.c
+@@ -457,8 +457,8 @@ static void arm_spe__synth_data_source_common(const struct arm_spe_record *recor
+ 	 * socket
+ 	 */
+ 	case ARM_SPE_COMMON_DS_REMOTE:
+-		data_src->mem_lvl = PERF_MEM_LVL_REM_CCE1;
+-		data_src->mem_lvl_num = PERF_MEM_LVLNUM_ANY_CACHE;
++		data_src->mem_lvl = PERF_MEM_LVL_NA;
++		data_src->mem_lvl_num = PERF_MEM_LVLNUM_NA;
+ 		data_src->mem_remote = PERF_MEM_REMOTE_REMOTE;
+ 		data_src->mem_snoopx = PERF_MEM_SNOOPX_PEER;
+ 		break;
 -- 
 2.51.0
 
