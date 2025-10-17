@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-186572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0652FBE997B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:12 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 963F2BEA3CE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F4F96208D1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E00B588971
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF2E3370FE;
-	Fri, 17 Oct 2025 15:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81943330B06;
+	Fri, 17 Oct 2025 15:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZV3cgwPu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFHP96M1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF24A3208;
-	Fri, 17 Oct 2025 15:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D675330B11;
+	Fri, 17 Oct 2025 15:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713622; cv=none; b=Di/bBYDU+EcTSkMgFm5qbmZ0X1NYpAF4Hu3BVSyg1b9YkuVJTbh6GqMsnHYI93fYnPlNOkvy/C4RoxX8aixrSqqxs/OjTKXQGiwDXFYoMzHM15126R9KE4Sf1eZLDRA1ZqWpfrUU/QoNQkSwZij4XPsjSaKU+yPxFj7UL+ayBPA=
+	t=1760715922; cv=none; b=mjwfk2Eknl2G5mZdHihPVnv8xzYkYK1yBIJ4hXaQR3e4I7pVYAEFi3d69hc26jhW6ghTCSRsY2i4PNNePrcyfz9yw0CzxWJ+6ULSWZohTVWCtBM3aycg6N4/4OcUM3DlfY/OpXxKmYjFWK0yhfX+W8TSj4/3ydi9JRop2dpFErc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713622; c=relaxed/simple;
-	bh=yXb/BSDe4yBwg21WWsS7bnInceZUudNj2w5v4K5ZkDA=;
+	s=arc-20240116; t=1760715922; c=relaxed/simple;
+	bh=6H2oVpAt4wx4iP5PzFnL4qDiKTfIzGVeVrdnmslJnms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/Tb/0S9nG3QdPBzBa8ONiVs3hpwkHLbifN+ehkQSlo6d+zYfN4210xiWuyvc9PgJrzHsgoFO602Ym7J+d52sXCbxUd2Qh8iAU70XLAx/3izEJBIBJrPcrML1//tpYfUeYBXZiwPdBLo6T26iaRyw0fbUXxs4u61N6RVyLv0X28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZV3cgwPu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D772C4CEE7;
-	Fri, 17 Oct 2025 15:07:01 +0000 (UTC)
+	 MIME-Version; b=N8CnARZZtgrNeupHBFDkMottHgGiMNqpOLvgChzTMH+evxME6HLSQf3YG6aKRvigeMNLkttIHZLuPznpr2BnaWuqKfzAyRdZFfDdssHvfyW4a22ir/gLgJiAiCNtIKkFFUYa8xXPHw0ETbwJDuQ5OxBoZWhKCsgXCFqwEgpqdTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFHP96M1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B392EC4CEE7;
+	Fri, 17 Oct 2025 15:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713621;
-	bh=yXb/BSDe4yBwg21WWsS7bnInceZUudNj2w5v4K5ZkDA=;
+	s=korg; t=1760715922;
+	bh=6H2oVpAt4wx4iP5PzFnL4qDiKTfIzGVeVrdnmslJnms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZV3cgwPugVPecarL+6zD0Aj8ocNK3DZl7mCBr8m7tCHwpxmpBCcZDA22Rh8JgeJkw
-	 J+wl+sqQVdpREihcbSazIxrHpR/tbOZ+14F19e7oHtkP0XAMerG7cDPDDY6Bm9/oZ+
-	 IeTwy8qnzonNwNp9b4p56HGIgGwYFEzmwPDcZMjI=
+	b=CFHP96M1BlfVmAWIB2/0t+VK6HlTrA2+sA7BbySec+2wpQs6Lg4vcIqnulyZsR8SH
+	 ET8F3yhNXcYtB6HpIFKXlZ7i/8XtenD2FVDWi2r2rGX9eUxNoD4al+w7nnh5RD03Gc
+	 gYTSc7Y190P0YfH8GnVROitp43ymehf77rQOO2Ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yusuke Suzuki <yusuke.suzuki@isovalent.com>,
-	Julian Wiedmann <jwi@isovalent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jordan Rife <jrife@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/201] bpf: Fix metadata_dst leak __bpf_redirect_neigh_v{4,6}
+Subject: [PATCH 5.15 012/276] dm-integrity: limit MAX_TAG_SIZE to 255
 Date: Fri, 17 Oct 2025 16:51:45 +0200
-Message-ID: <20251017145136.365862500@linuxfoundation.org>
+Message-ID: <20251017145142.848258339@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,65 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 23f3770e1a53e6c7a553135011f547209e141e72 ]
+[ Upstream commit 77b8e6fbf9848d651f5cb7508f18ad0971f3ffdb ]
 
-Cilium has a BPF egress gateway feature which forces outgoing K8s Pod
-traffic to pass through dedicated egress gateways which then SNAT the
-traffic in order to interact with stable IPs outside the cluster.
+MAX_TAG_SIZE was 0x1a8 and it may be truncated in the "bi->metadata_size
+= ic->tag_size" assignment. We need to limit it to 255.
 
-The traffic is directed to the gateway via vxlan tunnel in collect md
-mode. A recent BPF change utilized the bpf_redirect_neigh() helper to
-forward packets after the arrival and decap on vxlan, which turned out
-over time that the kmalloc-256 slab usage in kernel was ever-increasing.
-
-The issue was that vxlan allocates the metadata_dst object and attaches
-it through a fake dst entry to the skb. The latter was never released
-though given bpf_redirect_neigh() was merely setting the new dst entry
-via skb_dst_set() without dropping an existing one first.
-
-Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
-Reported-by: Yusuke Suzuki <yusuke.suzuki@isovalent.com>
-Reported-by: Julian Wiedmann <jwi@isovalent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jordan Rife <jrife@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jordan Rife <jrife@google.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20251003073418.291171-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/dm-integrity.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b6dbcef649654..c2e888ea54abb 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2273,6 +2273,7 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
- 		if (IS_ERR(dst))
- 			goto out_drop;
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index e9d553eea9cd4..8b8babed11f5f 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -124,7 +124,7 @@ struct journal_sector {
+ 	commit_id_t commit_id;
+ };
  
-+		skb_dst_drop(skb);
- 		skb_dst_set(skb, dst);
- 	} else if (nh->nh_family != AF_INET6) {
- 		goto out_drop;
-@@ -2382,6 +2383,7 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
- 			goto out_drop;
- 		}
+-#define MAX_TAG_SIZE			(JOURNAL_SECTOR_DATA - JOURNAL_MAC_PER_SECTOR - offsetof(struct journal_entry, last_bytes[MAX_SECTORS_PER_BLOCK]))
++#define MAX_TAG_SIZE			255
  
-+		skb_dst_drop(skb);
- 		skb_dst_set(skb, &rt->dst);
- 	}
+ #define METADATA_PADDING_SECTORS	8
  
 -- 
 2.51.0
