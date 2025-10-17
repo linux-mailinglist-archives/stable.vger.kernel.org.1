@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B8ABE9BC7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:05 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D42ABEA416
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B4B718927B4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A7431588C5D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6777233507C;
-	Fri, 17 Oct 2025 15:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77ED3330B0D;
+	Fri, 17 Oct 2025 15:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWqXzjbN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCWKSyY8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A55332909;
-	Fri, 17 Oct 2025 15:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337B6330B1F;
+	Fri, 17 Oct 2025 15:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714339; cv=none; b=DT5w216JLkBi49ofF+3m0mdKB9QzGlXbVuWD5PjxVe4CeV7KPCyEeuKCc3Cl0CwdOOTl9z9XjObtwo/nVpmAxOB6KAMpVFCK6kHKaerOtTtlwS2Uzx8ya2g6/8hX2neV0kgVUEbRgupQRvpgCDavh0q3koAjNvPgA516Vf8lric=
+	t=1760715965; cv=none; b=aBp8/QKTblaba7q2loMk87xjAo/X9xJ2MZq8MJ1waaTxzGfEMuifLTKbAOvWRxJq4aTeMoH3lgczPV0wr6xwEfD+LwwocbaYb3eJlM27+tL4bnmYNiG39zPFqOMR5SLk6h9Ole7EKaNzQr7vL4ha3m6jTAYIoxIZO1sRFIYZQ+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714339; c=relaxed/simple;
-	bh=RdHLbeC5K4TyEc14wkePHdOJ/P9tZH7QVig7VueiOQo=;
+	s=arc-20240116; t=1760715965; c=relaxed/simple;
+	bh=JUp+PfV1F/fIaXZVgRuD4jgH23zZE7XmPqHIxsWz4C0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBxJaHdt/1RoGNKf/dPMg2EOVyWs0zoMtDzETXDJsWQgoOpMe2ce3CjiMbkSZNSoWeOOsh1EWDrXvQSRh9FUFqj9FDOtihZK3+9DuUVOTcp4yrmk4zq6JN4nNWPtanrTKvV6EJIX9P08vpq+cZwePAqXOkF12W6SuDVjHzymthU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWqXzjbN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A280AC4CEE7;
-	Fri, 17 Oct 2025 15:18:58 +0000 (UTC)
+	 MIME-Version; b=ZBxUWthA0IA8FZcuxJ5RXgnSlAWW9Er+XojlRAL0WwOeilyF/03P7h8h10Dd2/4ZCseiDeiPWZD6P3Vg7Ejg+Hp7SDLtTZRVZ2UqVjpM+yQTKBmM4eYRMpevNEbU0GZHnx/7SiTMj7KXbnc+8+lKh0+pPEieFpFW/suJ1ujhWOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCWKSyY8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBB0C4CEE7;
+	Fri, 17 Oct 2025 15:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714339;
-	bh=RdHLbeC5K4TyEc14wkePHdOJ/P9tZH7QVig7VueiOQo=;
+	s=korg; t=1760715965;
+	bh=JUp+PfV1F/fIaXZVgRuD4jgH23zZE7XmPqHIxsWz4C0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yWqXzjbNshVsxlyR4Li0RHAKwEXcx/GkwF5JZ8TzfwKz7jHI1mdPYO8wrsirlNsJd
-	 VhXgWvhCdYlNXozdDPTPgPsrBX74Vb07x+tmAKcdUZ4mB3SYrjcamtszQsbUcZf13e
-	 yiAO9SQZOZ9ZI2r+/KQ710+JIfq2gx21n8H4oDTc=
+	b=MCWKSyY8ILqG/O30nZ/qgSVF2VK2DYjyx7B2hrsoA2bWn96z7GWBuchW865QVyiJH
+	 Qf8jXN+T0G49pHMUyYnqNwdjaaedkQTzEJWGGj/zAA926jGquckCt4SHtgwvtTvI9i
+	 IPvOjDoGfIErljtDDaOu+IfUrcCAag+9ztAR1LKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.12 111/277] media: vivid: fix disappearing <Vendor Command With ID> messages
-Date: Fri, 17 Oct 2025 16:51:58 +0200
-Message-ID: <20251017145151.180119544@linuxfoundation.org>
+	Leo Yan <leo.yan@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 026/276] perf: arm_spe: Prevent overflow in PERF_IDX2OFF()
+Date: Fri, 17 Oct 2025 16:51:59 +0200
+Message-ID: <20251017145143.358092111@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil+cisco@kernel.org>
+From: Leo Yan <leo.yan@arm.com>
 
-commit 4bd8a6147645480d550242ff816b4c7ba160e5b7 upstream.
+[ Upstream commit a29fea30dd93da16652930162b177941abd8c75e ]
 
-The vivid driver supports the <Vendor Command With ID> message,
-but if the Vendor ID of the received message didn't match the Vendor ID
-of the CEC Adapter, then it ignores it (good) and returns 0 (bad).
+Cast nr_pages to unsigned long to avoid overflow when handling large
+AUX buffer sizes (>= 2 GiB).
 
-It should return -ENOMSG to indicate that other followers should be
-asked to handle it. Return code 0 means that the driver handled it,
-which is wrong in this case.
-
-As a result, userspace followers never get the chance to process such a
-message.
-
-Refactor the code a bit to have the function return -ENOMSG at the end,
-drop the default case, and ensure that the message handlers return 0.
-
-That way 0 is only returned if the message is actually handled in the
-vivid_received() function.
-
-Fixes: 812765cd6954 ("media: vivid: add <Vendor Command With ID> support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d5d9696b0380 ("drivers/perf: Add support for ARMv8.2 Statistical Profiling Extension")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vivid/vivid-cec.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/perf/arm_spe_pmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-cec.c b/drivers/media/test-drivers/vivid/vivid-cec.c
-index 356a988dd6a1..2d15fdd5d999 100644
---- a/drivers/media/test-drivers/vivid/vivid-cec.c
-+++ b/drivers/media/test-drivers/vivid/vivid-cec.c
-@@ -327,7 +327,7 @@ static int vivid_received(struct cec_adapter *adap, struct cec_msg *msg)
- 		char osd[14];
+diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
+index cd5945e17fdf7..5ba677353d040 100644
+--- a/drivers/perf/arm_spe_pmu.c
++++ b/drivers/perf/arm_spe_pmu.c
+@@ -93,7 +93,8 @@ struct arm_spe_pmu {
+ #define to_spe_pmu(p) (container_of(p, struct arm_spe_pmu, pmu))
  
- 		if (!cec_is_sink(adap))
--			return -ENOMSG;
-+			break;
- 		cec_ops_set_osd_string(msg, &disp_ctl, osd);
- 		switch (disp_ctl) {
- 		case CEC_OP_DISP_CTL_DEFAULT:
-@@ -348,7 +348,7 @@ static int vivid_received(struct cec_adapter *adap, struct cec_msg *msg)
- 			cec_transmit_msg(adap, &reply, false);
- 			break;
- 		}
--		break;
-+		return 0;
- 	}
- 	case CEC_MSG_VENDOR_COMMAND_WITH_ID: {
- 		u32 vendor_id;
-@@ -379,7 +379,7 @@ static int vivid_received(struct cec_adapter *adap, struct cec_msg *msg)
- 		if (size == 1) {
- 			// Ignore even op values
- 			if (!(vendor_cmd[0] & 1))
--				break;
-+				return 0;
- 			reply.len = msg->len;
- 			memcpy(reply.msg + 1, msg->msg + 1, msg->len - 1);
- 			reply.msg[msg->len - 1]++;
-@@ -388,12 +388,10 @@ static int vivid_received(struct cec_adapter *adap, struct cec_msg *msg)
- 					      CEC_OP_ABORT_INVALID_OP);
- 		}
- 		cec_transmit_msg(adap, &reply, false);
--		break;
-+		return 0;
- 	}
--	default:
--		return -ENOMSG;
- 	}
--	return 0;
-+	return -ENOMSG;
- }
+ /* Convert a free-running index from perf into an SPE buffer offset */
+-#define PERF_IDX2OFF(idx, buf)	((idx) % ((buf)->nr_pages << PAGE_SHIFT))
++#define PERF_IDX2OFF(idx, buf) \
++	((idx) % ((unsigned long)(buf)->nr_pages << PAGE_SHIFT))
  
- static const struct cec_adap_ops vivid_cec_adap_ops = {
+ /* Keep track of our dynamic hotplug state */
+ static enum cpuhp_state arm_spe_pmu_online;
 -- 
 2.51.0
 
