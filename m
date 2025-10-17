@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC11BE8F85
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776A6BE9123
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE73B3AC8C6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 13:41:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2CCA19A51B2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 13:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0703D2F6917;
-	Fri, 17 Oct 2025 13:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588DD350D6D;
+	Fri, 17 Oct 2025 13:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tmfphyMC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OqWO7E0j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4AF2F6903
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 13:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17450231C9F
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 13:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760708480; cv=none; b=iaNQzlaubEq4Unxn31Ip8cWYi6DiPhZRX1qDv9MBNjPMsbn8W67ao7RzFQ0p7Fb3c5TITfubdCdypcv6tFC4RAP+w14DeDZLNQwHyBjQOHhLuIA7VZHDfSxyEtNEO+GdwqFGVfamwYpqoBNizEZz9KZMg+kMxMc9mfVRYm3XhiU=
+	t=1760709342; cv=none; b=uXRP6PZj3QKgh2WuNZFftrUNi/3RpeIYpPLl+dQDnrAl75BcHYSivv6DmPVTGe/gYlA45P7fpXz9DWScylawRJ8STl1aU/nnAKVWn6JkIzWu5s5lgj99y85qO/N1rXURRi/wGJ8M1wIimOZ3KLSEhxJETW/mAXck3g2TF11bjjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760708480; c=relaxed/simple;
-	bh=JhKM1twmyGRUlGozf7ey04Kx16HnuDL7crp/4UbnO7U=;
+	s=arc-20240116; t=1760709342; c=relaxed/simple;
+	bh=sd2km+7BP8WkoxfL2nECXgNvS9LYvCn7i2puj3KCEPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cp43WP2cIN6KHe3SuyZK5fUTBqLjUCIZIwMqmzAAwqH+8UxB6tt1R07l2E476pxAVAM46fcLVbomKZZ796YIRJofK2nt/5TeTQexPwEyqn+Z8TyIxnl5XO4b6x45aWidREjEcUHC5+R9CktrJvFZV5WBgMtmzKdIaCjSicGFjTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tmfphyMC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C98C4CEE7;
-	Fri, 17 Oct 2025 13:41:19 +0000 (UTC)
+	 MIME-Version; b=RYJJXV++9eHbs8BjTyGFuTlZPSqVxyZD3/n8fMspec6UfzlvkvyvpPiFFQ/IK0SvfR4fh+cf6oVlbHPGndPyW/xvcToO24GWMmdBjlZ9eo6c/dzqLuJYFdLeiXsDZOXS+rrvYKqs0mgz4N0babD57tlC0mDORYvxBsyiMYbdMvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OqWO7E0j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BDAC4CEE7;
+	Fri, 17 Oct 2025 13:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760708480;
-	bh=JhKM1twmyGRUlGozf7ey04Kx16HnuDL7crp/4UbnO7U=;
+	s=k20201202; t=1760709341;
+	bh=sd2km+7BP8WkoxfL2nECXgNvS9LYvCn7i2puj3KCEPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmfphyMC7io14BvHzY6i3nwKbOcfA//t4VtB6ZZDeLyP+jmsRT+D4llPGGyb80XV6
-	 PwAOgmTkM+q2uAR6Zsobauo3ISt8S7ffqmFyqhxcRi9mGUbMgz+I6dxp2FiqPzWKzJ
-	 EjJaiyuLw9IdG+nchTq2ebTni02XYbpURjcJuQFjHzRmfBbAOXNjBhxXX4SURDj6WV
-	 ijxvQaUUYCBXtyqT10FDMZR/UcuSbhygmI+4NWx+MK5C9imvypj/GS+JtjOfP1HFfT
-	 b+2Q8ndxrGF5HbIeaZG7AobxTWSpsYfkn1sGPepDWvwH0ZnRuFv+/DMwVm85RDLfX8
-	 kJTWIDzAR+fKQ==
+	b=OqWO7E0jo9FZwNMZZp7yXtKfNTXHpZMcGpiuWAE5siXCUaGszgQlQId1UbVlu6jF8
+	 XNaK1tov3FaXvcssdT7oiuU7fx/odnEefjlgF9ciNn2mjOsv8FYEgRhr+pk4PKVxUY
+	 n3ehp19V5mRmeNA3sXsv13ORtUElek49tnclhnYeWi3icNvTG9lzYlmMmnSu+QnFJy
+	 3kRQsvF6J8kI1OB87jU6DDqrFHyREqQUZLZ13HMpw6Md2q2MpwMKa2fQVL3Z/e4dLX
+	 EUfCPpgPwHnqhfXaNRCnJtgV3jFfBKcnwdJHbw5PDW5Tr36BuhmzjvyH2as+ttVRYn
+	 81cqRpiZF58Jw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jason Andryuk <jason.andryuk@amd.com>,
-	Juergen Gross <jgross@suse.com>,
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] xen/events: Update virq_to_irq on migration
-Date: Fri, 17 Oct 2025 09:41:17 -0400
-Message-ID: <20251017134117.3957210-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y] media: cx18: Add missing check after DMA map
+Date: Fri, 17 Oct 2025 09:55:39 -0400
+Message-ID: <20251017135539.3964005-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101617-tadpole-sneer-4143@gregkh>
-References: <2025101617-tadpole-sneer-4143@gregkh>
+In-Reply-To: <2025101641-palpitate-pesticide-3ad4@gregkh>
+References: <2025101641-palpitate-pesticide-3ad4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,63 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 3fcc8e146935415d69ffabb5df40ecf50e106131 ]
+[ Upstream commit 23b53639a793477326fd57ed103823a8ab63084f ]
 
-VIRQs come in 3 flavors, per-VPU, per-domain, and global, and the VIRQs
-are tracked in per-cpu virq_to_irq arrays.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, dealloc buffers, and return.
 
-Per-domain and global VIRQs must be bound on CPU 0, and
-bind_virq_to_irq() sets the per_cpu virq_to_irq at registration time
-Later, the interrupt can migrate, and info->cpu is updated.  When
-calling __unbind_from_irq(), the per-cpu virq_to_irq is cleared for a
-different cpu.  If bind_virq_to_irq() is called again with CPU 0, the
-stale irq is returned.  There won't be any irq_info for the irq, so
-things break.
-
-Make xen_rebind_evtchn_to_cpu() update the per_cpu virq_to_irq mappings
-to keep them update to date with the current cpu.  This ensures the
-correct virq_to_irq is cleared in __unbind_from_irq().
-
-Fixes: e46cdb66c8fc ("xen: event channels")
+Fixes: 1c1e45d17b66 ("V4L/DVB (7786): cx18: new driver for the Conexant CX23418 MPEG encoder chip")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250828003604.8949-4-jason.andryuk@amd.com>
-[ Adjust context ]
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ removed pci_map_single() replaced by dma_map_single() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/media/pci/cx18/cx18-queue.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index 96b96516c9806..93b09fd1fabfb 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -1806,9 +1806,20 @@ static int xen_rebind_evtchn_to_cpu(struct irq_info *info, unsigned int tcpu)
- 	 * virq or IPI channel, which don't actually need to be rebound. Ignore
- 	 * it, but don't do the xenlinux-level rebind in that case.
- 	 */
--	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0)
-+	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0) {
-+		int old_cpu = info->cpu;
-+
- 		bind_evtchn_to_cpu(evtchn, tcpu, false);
+diff --git a/drivers/media/pci/cx18/cx18-queue.c b/drivers/media/pci/cx18/cx18-queue.c
+index 2f5df471dada6..9b247ecf48d5c 100644
+--- a/drivers/media/pci/cx18/cx18-queue.c
++++ b/drivers/media/pci/cx18/cx18-queue.c
+@@ -379,14 +379,22 @@ int cx18_stream_alloc(struct cx18_stream *s)
+ 			break;
+ 		}
  
-+		if (info->type == IRQT_VIRQ) {
-+			int virq = info->u.virq;
-+			int irq = per_cpu(virq_to_irq, old_cpu)[virq];
-+
-+			per_cpu(virq_to_irq, old_cpu)[virq] = -1;
-+			per_cpu(virq_to_irq, tcpu)[virq] = irq;
++		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
++						 buf->buf, s->buf_size,
++						 s->dma);
++		if (dma_mapping_error(&s->cx->pci_dev->dev, buf->dma_handle)) {
++			kfree(buf->buf);
++			kfree(mdl);
++			kfree(buf);
++			break;
 +		}
-+	}
 +
- 	do_unmask(info, EVT_MASK_REASON_TEMPORARY);
+ 		INIT_LIST_HEAD(&mdl->list);
+ 		INIT_LIST_HEAD(&mdl->buf_list);
+ 		mdl->id = s->mdl_base_idx; /* a somewhat safe value */
+ 		cx18_enqueue(s, mdl, &s->q_idle);
  
- 	return 0;
+ 		INIT_LIST_HEAD(&buf->list);
+-		buf->dma_handle = pci_map_single(s->cx->pci_dev,
+-				buf->buf, s->buf_size, s->dma);
+ 		cx18_buf_sync_for_cpu(s, buf);
+ 		list_add_tail(&buf->list, &s->buf_pool);
+ 	}
 -- 
 2.51.0
 
