@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-187248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20ACBEA18E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DFDBBE9C24
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC3291A622CD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4363B3A8C81
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7169B330B12;
-	Fri, 17 Oct 2025 15:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0EF32C931;
+	Fri, 17 Oct 2025 15:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znAxQYds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0Mw8ggj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D62E330B09;
-	Fri, 17 Oct 2025 15:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F24032C92D;
+	Fri, 17 Oct 2025 15:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715536; cv=none; b=OfKrrSpPwzKISmVOKBwX1IdSgIlYunfzGs1mmF5mDTTVOpU0zvOPhB+PEUIjCDFfT1cUGPmLSGfgUaBOW4ZsoFShD8rDWyUSJXuwwZTuCNOS9ELBsPdmjp9cqqhgbTSnlZ0Y/z/7gGYN3x+dv1QqaTrAZggmqot5frj5mwk9Pmw=
+	t=1760713916; cv=none; b=fqEcEf1Fwz/vhgs/14/Ut7e6gjUtuyVTBvxrpk2TLjlZeXGKc/Rf3GuWVaRaMBzbvLjFADv4dCPwjiVzfpV6slB1Lzy7vUEAXfkyuWfZSjEibEiMVoBnLfymJnKwkRfoeUQeISHZglCa4t/jN2DV5wvi10Ihi6FftsSf35/myTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715536; c=relaxed/simple;
-	bh=mU01hixpbzMCd+o7HqdgnHIttFYd0x7u3LH2fVUUO00=;
+	s=arc-20240116; t=1760713916; c=relaxed/simple;
+	bh=WeBzTB8+8Nv70qD+ppIaaYM2ncGVkx/8m4bfnievdCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uO70GDmnJabugOll4wEGvMeS94JX3caXATqBzwg28oHLTVmFNETd/JaxHUebfBYU5X6P/FoHQPa64pWBSTSM+d0EC1yzsS1YNVeef5EWxovx3tpO4MMJxlyHe4fxRi6tJp3wZUX5zCRc1hlcmWio9ScZ6/8HrnGHYPMM3zoOLsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znAxQYds; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9203FC4CEE7;
-	Fri, 17 Oct 2025 15:38:55 +0000 (UTC)
+	 MIME-Version; b=tn1PXuzhtikJQbt/iPEl05/ARdrjUU2lw1offVNJgWkrtbSiNSUnB4BQLsccG5XiAXpBm/0+oHszVjTSE8Qknh8Dcm/uPUFpV9Qq5oMFC1itpGhI951Kz9nmY4/CMyk695+6ugS69kGeifm7GkXEsiknRQvckNPqT7tuaCpnLFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0Mw8ggj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F2DC4CEE7;
+	Fri, 17 Oct 2025 15:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715536;
-	bh=mU01hixpbzMCd+o7HqdgnHIttFYd0x7u3LH2fVUUO00=;
+	s=korg; t=1760713916;
+	bh=WeBzTB8+8Nv70qD+ppIaaYM2ncGVkx/8m4bfnievdCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=znAxQYdsbfneVifqaZ6j5Ks5BlnzpMw4NCvlt3jF3RDoNfEbHqcZLcnRRI71q/khW
-	 4QKhNZZ5meZsba6J5jlSVgJ+XGx27v1oWz23Rka1Bg7u6x7S/GxkAfrxMRUFVLwwC9
-	 Rxk/FaUuvjKiQ/EL5B94EUI6wCHGsexnWnEj6LhE=
+	b=H0Mw8ggjJffG3gBYKFTgqy5eGQ5E1l8tlqFgtBOOp3QdQYGkiXqAmVHhgeYQQ4XGi
+	 pNp1Ud+mQ0qzcFaiC+KxR8puGEiS9CNs2aRTWVwCOTpG+aNaCf8P3cOJMDgCXZjmr5
+	 7nqTCZ0l4pfdC84qEvprmIhCdBONSRI+m6pCOs3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.17 251/371] pwm: berlin: Fix wrong register in suspend/resume
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 165/201] KVM: SVM: Skip fastpath emulation on VM-Exit if next RIP isnt valid
 Date: Fri, 17 Oct 2025 16:53:46 +0200
-Message-ID: <20251017145211.160945335@linuxfoundation.org>
+Message-ID: <20251017145140.797556732@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +59,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 3a4b9d027e4061766f618292df91760ea64a1fcc upstream.
+[ Upstream commit 0910dd7c9ad45a2605c45fd2bf3d1bcac087687c ]
 
-The 'enable' register should be BERLIN_PWM_EN rather than
-BERLIN_PWM_ENABLE, otherwise, the driver accesses wrong address, there
-will be cpu exception then kernel panic during suspend/resume.
+Skip the WRMSR and HLT fastpaths in SVM's VM-Exit handler if the next RIP
+isn't valid, e.g. because KVM is running with nrips=false.  SVM must
+decode and emulate to skip the instruction if the CPU doesn't provide the
+next RIP, and getting the instruction bytes to decode requires reading
+guest memory.  Reading guest memory through the emulator can fault, i.e.
+can sleep, which is disallowed since the fastpath handlers run with IRQs
+disabled.
 
-Fixes: bbf0722c1c66 ("pwm: berlin: Add suspend/resume support")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://lore.kernel.org/r/20250819114224.31825-1-jszhang@kernel.org
+ BUG: sleeping function called from invalid context at ./include/linux/uaccess.h:106
+ in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 32611, name: qemu
+ preempt_count: 1, expected: 0
+ INFO: lockdep is turned off.
+ irq event stamp: 30580
+ hardirqs last  enabled at (30579): [<ffffffffc08b2527>] vcpu_run+0x1787/0x1db0 [kvm]
+ hardirqs last disabled at (30580): [<ffffffffb4f62e32>] __schedule+0x1e2/0xed0
+ softirqs last  enabled at (30570): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
+ softirqs last disabled at (30568): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
+ CPU: 298 UID: 0 PID: 32611 Comm: qemu Tainted: G     U              6.16.0-smp--e6c618b51cfe-sleep #782 NONE
+ Tainted: [U]=USER
+ Hardware name: Google Astoria-Turin/astoria, BIOS 0.20241223.2-0 01/17/2025
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x7d/0xb0
+  __might_resched+0x271/0x290
+  __might_fault+0x28/0x80
+  kvm_vcpu_read_guest_page+0x8d/0xc0 [kvm]
+  kvm_fetch_guest_virt+0x92/0xc0 [kvm]
+  __do_insn_fetch_bytes+0xf3/0x1e0 [kvm]
+  x86_decode_insn+0xd1/0x1010 [kvm]
+  x86_emulate_instruction+0x105/0x810 [kvm]
+  __svm_skip_emulated_instruction+0xc4/0x140 [kvm_amd]
+  handle_fastpath_invd+0xc4/0x1a0 [kvm]
+  vcpu_run+0x11a1/0x1db0 [kvm]
+  kvm_arch_vcpu_ioctl_run+0x5cc/0x730 [kvm]
+  kvm_vcpu_ioctl+0x578/0x6a0 [kvm]
+  __se_sys_ioctl+0x6d/0xb0
+  do_syscall_64+0x8a/0x2c0
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ RIP: 0033:0x7f479d57a94b
+  </TASK>
+
+Note, this is essentially a reapply of commit 5c30e8101e8d ("KVM: SVM:
+Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"), but with
+different justification (KVM now grabs SRCU when skipping the instruction
+for other reasons).
+
+Fixes: b439eb8ab578 ("Revert "KVM: SVM: Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"")
 Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Link: https://lore.kernel.org/r/20250805190526.1453366-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ adapted switch-based MSR/HLT fastpath to if-based MSR-only check ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-berlin.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/svm.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/pwm/pwm-berlin.c
-+++ b/drivers/pwm/pwm-berlin.c
-@@ -234,7 +234,7 @@ static int berlin_pwm_suspend(struct dev
- 	for (i = 0; i < chip->npwm; i++) {
- 		struct berlin_pwm_channel *channel = &bpc->channel[i];
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4156,11 +4156,20 @@ static int svm_vcpu_pre_run(struct kvm_v
  
--		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_ENABLE);
-+		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_EN);
- 		channel->ctrl = berlin_pwm_readl(bpc, i, BERLIN_PWM_CONTROL);
- 		channel->duty = berlin_pwm_readl(bpc, i, BERLIN_PWM_DUTY);
- 		channel->tcnt = berlin_pwm_readl(bpc, i, BERLIN_PWM_TCNT);
-@@ -262,7 +262,7 @@ static int berlin_pwm_resume(struct devi
- 		berlin_pwm_writel(bpc, i, channel->ctrl, BERLIN_PWM_CONTROL);
- 		berlin_pwm_writel(bpc, i, channel->duty, BERLIN_PWM_DUTY);
- 		berlin_pwm_writel(bpc, i, channel->tcnt, BERLIN_PWM_TCNT);
--		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_ENABLE);
-+		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_EN);
- 	}
+ static fastpath_t svm_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
+ {
++	struct vcpu_svm *svm = to_svm(vcpu);
++
++	/*
++	 * Next RIP must be provided as IRQs are disabled, and accessing guest
++	 * memory to decode the instruction might fault, i.e. might sleep.
++	 */
++	if (!nrips || !svm->vmcb->control.next_rip)
++		return EXIT_FASTPATH_NONE;
++
+ 	if (is_guest_mode(vcpu))
+ 		return EXIT_FASTPATH_NONE;
  
- 	return 0;
+-	if (to_svm(vcpu)->vmcb->control.exit_code == SVM_EXIT_MSR &&
+-	    to_svm(vcpu)->vmcb->control.exit_info_1)
++	if (svm->vmcb->control.exit_code == SVM_EXIT_MSR &&
++	    svm->vmcb->control.exit_info_1)
+ 		return handle_fastpath_set_msr_irqoff(vcpu);
+ 
+ 	return EXIT_FASTPATH_NONE;
 
 
 
