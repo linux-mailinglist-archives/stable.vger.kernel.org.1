@@ -1,217 +1,170 @@
-Return-Path: <stable+bounces-187690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9BFBEB282
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 20:09:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7436BEB2A6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 20:13:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 329E24E951C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:09:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A4BB4E6C3B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8821306B2D;
-	Fri, 17 Oct 2025 18:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E419032E13C;
+	Fri, 17 Oct 2025 18:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=raptorengineering.com header.i=@raptorengineering.com header.b="IZQylD0q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGszDg6H"
 X-Original-To: stable@vger.kernel.org
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E157229D28A
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 18:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.155.224.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4182F12CC;
+	Fri, 17 Oct 2025 18:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760724576; cv=none; b=LycDXz5I3q1Vz+829X+EjTexWXV00SR0wLOF2EaKVhtgif71o/UR45Ty85YS5FHPLSTTkQY7a8duIjuBgA2bnYf1kClg1oNrqLY/VcTextdhz0BF2XUOVHLTxsKTxy0grJwKp0BdLwk6PIyTkVUlcOKkOKu5+GydQAhn9IFLmqk=
+	t=1760724812; cv=none; b=dPXLTtR8NAzKofYIqt+4RoPPA5sw+gJXGg8PZeBi3MZA2S61Yht0hBbYkQxHG53dveGNxObOe7sA3I9WwSEqvqywUVp6ZBD7oYgdK9jWX+K/M/i1CHDN3H0XY45g2vpywwyvLaLq3GvCp11E3QN6+7xjMbFm/XpVcCHSByQeW6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760724576; c=relaxed/simple;
-	bh=nb+5bT25d1M9YxzxnP1Qd1sMOEccv9bzgw8JCRyZ0Ro=;
-	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type; b=R0sIOA2/ZaWgLfNzQWlhhhmQIGqykwJvt4WgCl1ig2Oho8XYJVMHngcP9n/C0to3hIn5juzpNNfL8hQaGmMbC0LRRZBGB8op1oHvgovv1CrBkgBOOgWN00cyeRWr44biwF3k3cmi0FC/dbrcvfsrS+0QkyT1R108KcgkID3sbbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com; spf=pass smtp.mailfrom=raptorengineering.com; dkim=pass (1024-bit key) header.d=raptorengineering.com header.i=@raptorengineering.com header.b=IZQylD0q; arc=none smtp.client-ip=23.155.224.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raptorengineering.com
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 9E12B8286998
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 13:01:17 -0500 (CDT)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id njEdSF89wSn9 for <stable@vger.kernel.org>;
-	Fri, 17 Oct 2025 13:01:12 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 6FB208286BDC
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 13:01:12 -0500 (CDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 6FB208286BDC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1760724072; bh=DWT98stRyE0j6pKGK0uEgmxY8foVUYb5iTU+NrF8sxA=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=IZQylD0qJB0EQIgt3nKs7HL/h4ksiJt6TZeo1X+DRKoHJz8uZCWTCaOAGY9hPSfof
-	 c+ZQmFKk47hoYFM/cqaOpbtUf+MXVEGplpk6ok6EM3BQX6LNf4vRVBd3P7JmxAMgLK
-	 8HN0lCrm75wVUKs7r+vwlu8U67J5EMmWTETg03c8=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 9aZfqIyhPt-h for <stable@vger.kernel.org>;
-	Fri, 17 Oct 2025 13:01:12 -0500 (CDT)
-Received: from vali.starlink.edu (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 386CA8286998
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 13:01:12 -0500 (CDT)
-Date: Fri, 17 Oct 2025 13:01:12 -0500 (CDT)
-From: Timothy Pearson <tpearson@raptorengineering.com>
-To: stable <stable@vger.kernel.org>
-Message-ID: <389171823.1798956.1760724071998.JavaMail.zimbra@raptorengineeringinc.com>
-Subject: [PATCH 6.12.y] drm/amd/display: fix dmub access race condition
+	s=arc-20240116; t=1760724812; c=relaxed/simple;
+	bh=w/2f7neCy8EQ3khWSiuS8p5i3pLzZ9Rif/t6cUjTySw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c7OT7ANdVD+m0LAik7D3eThLysQhzw03wMl3QRGxHIoHi1gDNSJZuws7yAMWEN84ocVd8j53X+nxIOFxuqEGmxNv2yABeXk7dk7Lvw0D7e6f1I02VIxuLyN1VroL8Zt1y2kHJ6uimJmH9eCxYTsH2twoplk03iQatyuo1Y6tqB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gGszDg6H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1D9C4CEE7;
+	Fri, 17 Oct 2025 18:13:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760724812;
+	bh=w/2f7neCy8EQ3khWSiuS8p5i3pLzZ9Rif/t6cUjTySw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gGszDg6HhVzJ8o5cAQZ+Rz3ryijC7GUmfoS1SZ8XM/inJz5cx3SEQnOQdNg18ZdOX
+	 MwMoa5/OgQQNCRKZcKx43F78ATwmOChuL8uA9RCVkMQl4Je/A+x8NENcavNM/G5AuV
+	 L+ZANAe8xccyUAvPRpR91OncdmGEVvdVbsRWb2e6Eqy+G149RpApK284p9Wrwe3cGA
+	 KNOMD8C9q4HyHFwPOKqrYaGp3y22UrKDaPcJv+vw60Xd5Gu8XStv1Fy074ma0N4HyX
+	 8HkuFGy76j4fq1gtAnz0mL0xasugtnGsfMxl8cKn/z2AMiiLcdS7kVt9wxKGOxfywS
+	 mDtEDMnxnULWg==
+Message-ID: <ad3fbd1a-2226-40fa-97be-f5364aa917d1@kernel.org>
+Date: Fri, 17 Oct 2025 20:13:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC141 (Linux)/8.5.0_GA_3042)
-Thread-Index: MpjRvMaKmQgq+hPtkdVc5Jvx6rcWug==
-Thread-Topic: drm/amd/display: fix dmub access race condition
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.17 254/371] riscv: use an atomic xchg in
+ pudp_huge_get_and_clear()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Alexandre Ghiti <alexghiti@rivosinc.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
+ <20251017145211.272190287@linuxfoundation.org>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
+ rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
+ rSD5CwQl19fm4AJCS6A9GJtOoiLpWn2/IbogPc71jQVrupZYYx51rAaHZ0D2KYK/uhfc6neJ
+ i0WqPlbtIlIrpvWxckucNu6ZwXjFY0f3qIRg3Vqh5QxPkojGsq9tXVFVLEkSVz6FoqCHrUTx
+ wr+aw6qqQVgvT/McQtsI0S66uIkQjzPUrgAEtWUv76rM4ekqL9stHyvTGw0Fjsualwb0Gwdx
+ ReTZzMgheAyoy/umIOKrSEpWouVoBt5FFSZUyjuDdlPPYyPav+hpI6ggmCTld3u2hyiHji2H
+ cDpcLM2LMhlHBipu80s9anNeZhCANDhbC5E+NZmuwgzHBcan8WC7xsPXPaiZSIm7TKaVoOcL
+ 9tE5aN3jQmIlrT7ZUX52Ff/hSdx/JKDP3YMNtt4B0cH6ejIjtqTd+Ge8sSttsnNM0CQUkXps
+ w98jwz+Lxw/bKMr3NSnnFpUZaxwji3BC9vYyxKMAwNelBCHEgS/OAa3EJoTfuYOK6wT6nadm
+ YqYjwYbZE5V/SwzMbpWu7Jwlvuwyfo5mh7w5iMfnZE+vHFwp/wARAQABzSFKaXJpIFNsYWJ5
+ IDxqaXJpc2xhYnlAa2VybmVsLm9yZz7CwXcEEwEIACEFAlW3RUwCGwMFCwkIBwIGFQgJCgsC
+ BBYCAwECHgECF4AACgkQvSWxBAa0cEnVTg//TQpdIAr8Tn0VAeUjdVIH9XCFw+cPSU+zMSCH
+ eCZoA/N6gitEcnvHoFVVM7b3hK2HgoFUNbmYC0RdcSc80pOF5gCnACSP9XWHGWzeKCARRcQR
+ 4s5YD8I4VV5hqXcKo2DFAtIOVbHDW+0okOzcecdasCakUTr7s2fXz97uuoc2gIBB7bmHUGAH
+ XQXHvdnCLjDjR+eJN+zrtbqZKYSfj89s/ZHn5Slug6w8qOPT1sVNGG+eWPlc5s7XYhT9z66E
+ l5C0rG35JE4PhC+tl7BaE5IwjJlBMHf/cMJxNHAYoQ1hWQCKOfMDQ6bsEr++kGUCbHkrEFwD
+ UVA72iLnnnlZCMevwE4hc0zVhseWhPc/KMYObU1sDGqaCesRLkE3tiE7X2cikmj/qH0CoMWe
+ gjnwnQ2qVJcaPSzJ4QITvchEQ+tbuVAyvn9H+9MkdT7b7b2OaqYsUP8rn/2k1Td5zknUz7iF
+ oJ0Z9wPTl6tDfF8phaMIPISYrhceVOIoL+rWfaikhBulZTIT5ihieY9nQOw6vhOfWkYvv0Dl
+ o4GRnb2ybPQpfEs7WtetOsUgiUbfljTgILFw3CsPW8JESOGQc0Pv8ieznIighqPPFz9g+zSu
+ Ss/rpcsqag5n9rQp/H3WW5zKUpeYcKGaPDp/vSUovMcjp8USIhzBBrmI7UWAtuedG9prjqfO
+ wU0ETpLnhgEQAM+cDWLL+Wvc9cLhA2OXZ/gMmu7NbYKjfth1UyOuBd5emIO+d4RfFM02XFTI
+ t4MxwhAryhsKQQcA4iQNldkbyeviYrPKWjLTjRXT5cD2lpWzr+Jx7mX7InV5JOz1Qq+P+nJW
+ YIBjUKhI03ux89p58CYil24Zpyn2F5cX7U+inY8lJIBwLPBnc9Z0An/DVnUOD+0wIcYVnZAK
+ DiIXODkGqTg3fhZwbbi+KAhtHPFM2fGw2VTUf62IHzV+eBSnamzPOBc1XsJYKRo3FHNeLuS8
+ f4wUe7bWb9O66PPFK/RkeqNX6akkFBf9VfrZ1rTEKAyJ2uqf1EI1olYnENk4+00IBa+BavGQ
+ 8UW9dGW3nbPrfuOV5UUvbnsSQwj67pSdrBQqilr5N/5H9z7VCDQ0dhuJNtvDSlTf2iUFBqgk
+ 3smln31PUYiVPrMP0V4ja0i9qtO/TB01rTfTyXTRtqz53qO5dGsYiliJO5aUmh8swVpotgK4
+ /57h3zGsaXO9PGgnnAdqeKVITaFTLY1ISg+Ptb4KoliiOjrBMmQUSJVtkUXMrCMCeuPDGHo7
+ 39Xc75lcHlGuM3yEB//htKjyprbLeLf1y4xPyTeeF5zg/0ztRZNKZicgEmxyUNBHHnBKHQxz
+ 1j+mzH0HjZZtXjGu2KLJ18G07q0fpz2ZPk2D53Ww39VNI/J9ABEBAAHCwV8EGAECAAkFAk6S
+ 54YCGwwACgkQvSWxBAa0cEk3tRAAgO+DFpbyIa4RlnfpcW17AfnpZi9VR5+zr496n2jH/1ld
+ wRO/S+QNSA8qdABqMb9WI4BNaoANgcg0AS429Mq0taaWKkAjkkGAT7mD1Q5PiLr06Y/+Kzdr
+ 90eUVneqM2TUQQbK+Kh7JwmGVrRGNqQrDk+gRNvKnGwFNeTkTKtJ0P8jYd7P1gZb9Fwj9YLx
+ jhn/sVIhNmEBLBoI7PL+9fbILqJPHgAwW35rpnq4f/EYTykbk1sa13Tav6btJ+4QOgbcezWI
+ wZ5w/JVfEJW9JXp3BFAVzRQ5nVrrLDAJZ8Y5ioWcm99JtSIIxXxt9FJaGc1Bgsi5K/+dyTKL
+ wLMJgiBzbVx8G+fCJJ9YtlNOPWhbKPlrQ8+AY52Aagi9WNhe6XfJdh5g6ptiOILm330mkR4g
+ W6nEgZVyIyTq3ekOuruftWL99qpP5zi+eNrMmLRQx9iecDNgFr342R9bTDlb1TLuRb+/tJ98
+ f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
+ DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
+ S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
+In-Reply-To: <20251017145211.272190287@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+On 17. 10. 25, 16:53, Greg Kroah-Hartman wrote:
+> 6.17-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Alexandre Ghiti <alexghiti@rivosinc.com>
+> 
+> commit 668208b161a0b679427e7d0f34c0a65fd7d23979 upstream.
+> 
+> Make sure we return the right pud value and not a value that could have
+> been overwritten in between by a different core.
+> 
+> Link: https://lkml.kernel.org/r/20250814-dev-alex-thp_pud_xchg-v1-1-b4704dfae206@rivosinc.com
+> Fixes: c3cc2a4a3a23 ("riscv: Add support for PUD THP")
+> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> Cc: Andrew Donnellan <ajd@linux.ibm.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>   arch/riscv/include/asm/pgtable.h |   11 +++++++++++
+>   1 file changed, 11 insertions(+)
+> 
+> --- a/arch/riscv/include/asm/pgtable.h
+> +++ b/arch/riscv/include/asm/pgtable.h
+> @@ -959,6 +959,17 @@ static inline pud_t pudp_huge_get_and_cl
+>   	return pud;
+>   }
+>   
+> +#define __HAVE_ARCH_PUDP_HUGE_GET_AND_CLEAR
+> +static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
+> +					    unsigned long address, pud_t *pudp)
+> +{
+> +	pud_t pud = __pud(atomic_long_xchg((atomic_long_t *)pudp, 0));
+> +
+> +	page_table_check_pud_clear(mm, pud);
+> +
+> +	return pud;
+> +}
 
-Justificiation:
-This fixes DisplayPort lockups on Polaris GPUs during DPMS transitions,
-which have been a major headache on our POWER9 platforms.  Backport to
-Debian stable kernel version.
+With the above, I see:
+[  321s] In file included from ../include/linux/pgtable.h:6,
+[  321s]                  from ../include/linux/mm.h:31,
+[  321s]                  from ../arch/riscv/kernel/asm-offsets.c:8:
+[  321s] ../arch/riscv/include/asm/pgtable.h:963:21: error: redefinition 
+of ‘pudp_huge_get_and_clear’
+[  321s]   963 | static inline pud_t pudp_huge_get_and_clear(struct 
+mm_struct *mm,
+[  321s]       |                     ^~~~~~~~~~~~~~~~~~~~~~~
+[  321s] ../arch/riscv/include/asm/pgtable.h:946:21: note: previous 
+definition of ‘pudp_huge_get_and_clear’ with type ‘pud_t(struct 
+mm_struct *, long unsigned int,  pud_t *)’
+[  321s]   946 | static inline pud_t pudp_huge_get_and_clear(struct 
+mm_struct *mm,
+[  321s]       |                     ^~~~~~~~~~~~~~~~~~~~~~~
 
-[ Upstream commit c210b757b400959577a5a17b783b5959b82baed8 ]
-
-Accessing DC from amdgpu_dm is usually preceded by acquisition of
-dc_lock mutex. Most of the DC API that DM calls are under a DC lock.
-However, there are a few that are not. Some DC API called from interrupt
-context end up sending DMUB commands via a DC API, while other threads were
-using DMUB. This was apparent from a race between calls for setting idle
-optimization enable/disable and the DC API to set vmin/vmax.
-
-Offload the call to dc_stream_adjust_vmin_vmax() to a thread instead
-of directly calling them from the interrupt handler such that it waits
-for dc_lock.
-
-[Timothy Pearson]
-
-Modified header file patch to apply to 6.12
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
----
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 55 +++++++++++++++++--
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h | 14 +++++
- 2 files changed, 63 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index b02ff92bae0b..fd6d66832ccf 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -533,6 +533,50 @@ static void dm_pflip_high_irq(void *interrupt_params)
- 		      amdgpu_crtc->crtc_id, amdgpu_crtc, vrr_active, (int)!e);
- }
- 
-+static void dm_handle_vmin_vmax_update(struct work_struct *offload_work)
-+{
-+	struct vupdate_offload_work *work = container_of(offload_work, struct vupdate_offload_work, work);
-+	struct amdgpu_device *adev = work->adev;
-+	struct dc_stream_state *stream = work->stream;
-+	struct dc_crtc_timing_adjust *adjust = work->adjust;
-+
-+	mutex_lock(&adev->dm.dc_lock);
-+	dc_stream_adjust_vmin_vmax(adev->dm.dc, stream, adjust);
-+	mutex_unlock(&adev->dm.dc_lock);
-+
-+	dc_stream_release(stream);
-+	kfree(work->adjust);
-+	kfree(work);
-+}
-+
-+static void schedule_dc_vmin_vmax(struct amdgpu_device *adev,
-+	struct dc_stream_state *stream,
-+	struct dc_crtc_timing_adjust *adjust)
-+{
-+	struct vupdate_offload_work *offload_work = kzalloc(sizeof(*offload_work), GFP_KERNEL);
-+	if (!offload_work) {
-+		drm_dbg_driver(adev_to_drm(adev), "Failed to allocate vupdate_offload_work\n");
-+		return;
-+	}
-+
-+	struct dc_crtc_timing_adjust *adjust_copy = kzalloc(sizeof(*adjust_copy), GFP_KERNEL);
-+	if (!adjust_copy) {
-+		drm_dbg_driver(adev_to_drm(adev), "Failed to allocate adjust_copy\n");
-+		kfree(offload_work);
-+		return;
-+	}
-+
-+	dc_stream_retain(stream);
-+	memcpy(adjust_copy, adjust, sizeof(*adjust_copy));
-+
-+	INIT_WORK(&offload_work->work, dm_handle_vmin_vmax_update);
-+	offload_work->adev = adev;
-+	offload_work->stream = stream;
-+	offload_work->adjust = adjust_copy;
-+
-+	queue_work(system_wq, &offload_work->work);
-+}
-+
- static void dm_vupdate_high_irq(void *interrupt_params)
- {
- 	struct common_irq_params *irq_params = interrupt_params;
-@@ -582,10 +626,9 @@ static void dm_vupdate_high_irq(void *interrupt_params)
- 				    acrtc->dm_irq_params.stream,
- 				    &acrtc->dm_irq_params.vrr_params);
- 
--				dc_stream_adjust_vmin_vmax(
--				    adev->dm.dc,
--				    acrtc->dm_irq_params.stream,
--				    &acrtc->dm_irq_params.vrr_params.adjust);
-+				schedule_dc_vmin_vmax(adev,
-+					acrtc->dm_irq_params.stream,
-+					&acrtc->dm_irq_params.vrr_params.adjust);
- 				spin_unlock_irqrestore(&adev_to_drm(adev)->event_lock, flags);
- 			}
- 		}
-@@ -675,8 +718,8 @@ static void dm_crtc_high_irq(void *interrupt_params)
- 					     acrtc->dm_irq_params.stream,
- 					     &acrtc->dm_irq_params.vrr_params);
- 
--		dc_stream_adjust_vmin_vmax(adev->dm.dc, acrtc->dm_irq_params.stream,
--					   &acrtc->dm_irq_params.vrr_params.adjust);
-+		schedule_dc_vmin_vmax(adev, acrtc->dm_irq_params.stream,
-+				&acrtc->dm_irq_params.vrr_params.adjust);
- 	}
- 
- 	/*
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-index 9603352ee094..aa99e226a381 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-@@ -1012,4 +1012,18 @@ void dm_free_gpu_mem(struct amdgpu_device *adev,
- 
- bool amdgpu_dm_is_headless(struct amdgpu_device *adev);
- 
-+/**
-+ * struct dm_vupdate_work - Work data for periodic action in idle
-+ * @work: Kernel work data for the work event
-+ * @adev: amdgpu_device back pointer
-+ * @stream: DC stream associated with the crtc
-+ * @adjust: DC CRTC timing adjust to be applied to the crtc
-+ */
-+struct vupdate_offload_work {
-+       struct work_struct work;
-+       struct amdgpu_device *adev;
-+       struct dc_stream_state *stream;
-+       struct dc_crtc_timing_adjust *adjust;
-+};
-+
- #endif /* __AMDGPU_DM_H__ */
+thanks,
 -- 
-2.47.2
+js
+suse labs
 
 
