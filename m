@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE26BE9BBB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E565BEA0EC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1E4C1585612
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A2AF1886BD4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD8D2E1F08;
-	Fri, 17 Oct 2025 15:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D38335060;
+	Fri, 17 Oct 2025 15:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vk+4SBap"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhGS2B3M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7623C3370FB;
-	Fri, 17 Oct 2025 15:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DEC332907;
+	Fri, 17 Oct 2025 15:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713778; cv=none; b=TwZG8vtRw9Zt3gMugq8z+6wOIqFub0hNnQk4YI2eNxEugstg1XV1B2c/vvxxwTgHIpYyonf7mA78ca90TgriChgOHRaSATcVYMbpQhFy7bE+v0kifEJmD0sdASwVJmNsz3TiANcrXrNm8hinySEVpabR2wEpgkkKj9PmNqF3T30=
+	t=1760715398; cv=none; b=mQBLQeE5A6y2KLRLe7O2y73NfJLozzg/FjmIPrS5jfZuH+7sMsMjZL/A5AbK1001Jy4wwsfqcxBYprwny5CWOa3oACtTFkyxZCaFHxzLGuSEbuTEg34o6JuNmpwg/iZvcUijtcTPOr8LE+n2fKGmD+09sZb7PUbj/dhoQcjUr7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713778; c=relaxed/simple;
-	bh=J8hgi1dpJH06b0/LTrhimD62AnZze/hUoa9f8IC7skM=;
+	s=arc-20240116; t=1760715398; c=relaxed/simple;
+	bh=iIFdI1EqcUfODXdCOM/mDp966i/1RfG2kK/vklta/fI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POsJrQsVCNxW26AyhESTSe/VWNrhNgdZZTcoq7tojzr9Vj74D6BMI1ocUyZ/Ois4bvawzkYTLqpmYSVdrawNU+A9bqVPl70IBiIGVZep/lU1cMcqwJPluvBxsNlYxilYnXXJIf8G7qgjlV/Sb+rNftrOYGtB1sEsYWLdMJlqa5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vk+4SBap; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6827C4CEE7;
-	Fri, 17 Oct 2025 15:09:37 +0000 (UTC)
+	 MIME-Version; b=SM0JbezPmiqofgSHdWaBRdCbKFtz5/lecJAvirga3HGzHCpy0HVI6hkBZ442FqZjsxLXSP9iRCBDEZm0ew1/BwEzYTIfw9cJj1iHkzWG1hC5BeWAqFarjkB4cEHeQOMsvnQayyf2AEqvYNbN094p7mweiofpLo7RUC621yEqLyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhGS2B3M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F423C4CEE7;
+	Fri, 17 Oct 2025 15:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713778;
-	bh=J8hgi1dpJH06b0/LTrhimD62AnZze/hUoa9f8IC7skM=;
+	s=korg; t=1760715398;
+	bh=iIFdI1EqcUfODXdCOM/mDp966i/1RfG2kK/vklta/fI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vk+4SBapnmsHPOsF/9WGUD3hHkUB4uSluO0zeTOIzigH6WgxZFlgYyJa2Y3fNU4N5
-	 y/BV7+GIybVUbqWnuzZ+XP1JijC3yYYc7iaV8exDQs63F2JghprGTZ4XQ3pvou1KAG
-	 dBXsg1SkjVPa8ph93Gs6Wpzj4dLvw4/KwZ35wG1c=
+	b=rhGS2B3MJjSDwAcX/Szq9Y1HOwuwe5ikmIha4mBDO8/IbIRN2IyGYk5VfXTu3KDjO
+	 8zOfzygaGtxuvRnEqJdQSbolCe76OGVYjeF+L02B0UC11alzRSDu26CIQoicNJl/vk
+	 PCL5CTuf/swYLwCpgw2VMO/b2TFVUpR2PMW87NfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Xue <zxue@semtech.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: [PATCH 6.6 083/201] bus: mhi: host: Do not use uninitialized dev pointer in mhi_init_irq_setup()
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.17 169/371] media: cx18: Add missing check after DMA map
 Date: Fri, 17 Oct 2025 16:52:24 +0200
-Message-ID: <20251017145137.803781665@linuxfoundation.org>
+Message-ID: <20251017145208.046113950@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Xue <zxue@semtech.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit d0856a6dff57f95cc5d2d74e50880f01697d0cc4 upstream.
+commit 23b53639a793477326fd57ed103823a8ab63084f upstream.
 
-In mhi_init_irq_setup, the device pointer used for dev_err() was not
-initialized. Use the pointer from mhi_cntrl instead.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, dealloc buffers, and return.
 
-Fixes: b0fc0167f254 ("bus: mhi: core: Allow shared IRQ for event rings")
-Fixes: 3000f85b8f47 ("bus: mhi: core: Add support for basic PM operations")
-Signed-off-by: Adam Xue <zxue@semtech.com>
-[mani: reworded subject/description and CCed stable]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Fixes: 1c1e45d17b66 ("V4L/DVB (7786): cx18: new driver for the Conexant CX23418 MPEG encoder chip")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250905174118.38512-1-zxue@semtech.com
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/init.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/media/pci/cx18/cx18-queue.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/bus/mhi/host/init.c
-+++ b/drivers/bus/mhi/host/init.c
-@@ -164,7 +164,6 @@ void mhi_deinit_free_irq(struct mhi_cont
- int mhi_init_irq_setup(struct mhi_controller *mhi_cntrl)
- {
- 	struct mhi_event *mhi_event = mhi_cntrl->mhi_event;
--	struct device *dev = &mhi_cntrl->mhi_dev->dev;
- 	unsigned long irq_flags = IRQF_SHARED | IRQF_NO_SUSPEND;
- 	int i, ret;
- 
-@@ -191,7 +190,7 @@ int mhi_init_irq_setup(struct mhi_contro
- 			continue;
- 
- 		if (mhi_event->irq >= mhi_cntrl->nr_irqs) {
--			dev_err(dev, "irq %d not available for event ring\n",
-+			dev_err(mhi_cntrl->cntrl_dev, "irq %d not available for event ring\n",
- 				mhi_event->irq);
- 			ret = -EINVAL;
- 			goto error_request;
-@@ -202,7 +201,7 @@ int mhi_init_irq_setup(struct mhi_contro
- 				  irq_flags,
- 				  "mhi", mhi_event);
- 		if (ret) {
--			dev_err(dev, "Error requesting irq:%d for ev:%d\n",
-+			dev_err(mhi_cntrl->cntrl_dev, "Error requesting irq:%d for ev:%d\n",
- 				mhi_cntrl->irq[mhi_event->irq], i);
- 			goto error_request;
+--- a/drivers/media/pci/cx18/cx18-queue.c
++++ b/drivers/media/pci/cx18/cx18-queue.c
+@@ -379,15 +379,22 @@ int cx18_stream_alloc(struct cx18_stream
+ 			break;
  		}
+ 
++		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
++						 buf->buf, s->buf_size,
++						 s->dma);
++		if (dma_mapping_error(&s->cx->pci_dev->dev, buf->dma_handle)) {
++			kfree(buf->buf);
++			kfree(mdl);
++			kfree(buf);
++			break;
++		}
++
+ 		INIT_LIST_HEAD(&mdl->list);
+ 		INIT_LIST_HEAD(&mdl->buf_list);
+ 		mdl->id = s->mdl_base_idx; /* a somewhat safe value */
+ 		cx18_enqueue(s, mdl, &s->q_idle);
+ 
+ 		INIT_LIST_HEAD(&buf->list);
+-		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
+-						 buf->buf, s->buf_size,
+-						 s->dma);
+ 		cx18_buf_sync_for_cpu(s, buf);
+ 		list_add_tail(&buf->list, &s->buf_pool);
+ 	}
 
 
 
