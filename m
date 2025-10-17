@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA202BEA783
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:07:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B8ABEA702
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:04:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C4F6B5875AF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0E8D74629C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E592F12A0;
-	Fri, 17 Oct 2025 15:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54BD27FB03;
+	Fri, 17 Oct 2025 15:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czhrkZrk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oq45rbwb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27C71A0728;
-	Fri, 17 Oct 2025 15:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F7F3BB5A;
+	Fri, 17 Oct 2025 15:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716350; cv=none; b=giVTNxc2P+EjYN4kzEtduxgwv8nuY9CWm1A+xKQ7p81WD9dB8j2z4FeHcFnzmxUBjfPGECaNtzS+aMlDJyDivdF3mPXCx+5IEnZIs9/jggQitqZa+Cim96Ptr3Xf+TlypqZ23WwV52Tv70cR/EVFlCpjsmLcewX9PHXtYesuJDM=
+	t=1760714829; cv=none; b=tY3FJGfWcPcHpKqhJYKMS5O6wzGGJtvOtke2UKA4K+QM1Lfdo5kvuD6KZ0Z26ve0m0C78XNdDN2TzX0BEPU72WRSuN74d6Gdi6nFeKqXnA5wra+/Xdcv44WiC+fl73+FnSscge13NgedfJsSIKNcpoDXB8SBBcoudTbd1ZLh0OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716350; c=relaxed/simple;
-	bh=p4ghoImUWmuIFTgI7f95GO4qfQWBFOYMJHrua2Q/csc=;
+	s=arc-20240116; t=1760714829; c=relaxed/simple;
+	bh=O24pZQQJ7dzUdHQMc/tZezxU6vpssh/sR5KDZXj//Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2Uj/RKllXtH2PseqW3mDIbFVqoXgBoHOTSlGYkvrvBI9WiY+glXU2qdI3nQmXmVQAMmPrIpWc/ZRo/MFR2nGzbKoRAEl1WIWdMXL8YK71NB+GZVUIEs5z2mfvpJrzfDqHLYvNLcVs0Vl3Me46blf5n8SbPMogr9rXi+bqWTRvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czhrkZrk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37386C4CEE7;
-	Fri, 17 Oct 2025 15:52:30 +0000 (UTC)
+	 MIME-Version; b=D2pNQHi6tTF7DTyvUjE2dCswdv9s62rwWisH09YevhmELhCWllUmyqg6Qk16CIV8MxRg3d00h35FWwyB3jYAm4xy0htOI0zE17TgNelY29257H6Ks59SMDGNjCVqnfRRIOLU+SXF8Tz+mojFzikzFxCbSYkqaQGiooyq3QqIQrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oq45rbwb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94350C113D0;
+	Fri, 17 Oct 2025 15:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716350;
-	bh=p4ghoImUWmuIFTgI7f95GO4qfQWBFOYMJHrua2Q/csc=;
+	s=korg; t=1760714828;
+	bh=O24pZQQJ7dzUdHQMc/tZezxU6vpssh/sR5KDZXj//Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=czhrkZrkcAnxsQftj5ay3u4sE1wztM7Zljj2+o4fwygq5weySAogvI9QqQZsXyOSk
-	 wTkYUQCkGCiro7h0v0gtemlvYB+X7xL41hknmqJT3p9+dNO4VDwnBNrqxW16P+0kXR
-	 EkR4F5tRSnyUqM9uw26evjD7CWypW6ohVTK88lZI=
+	b=oq45rbwb8kSUqshPkPdIoxGemDazCkiFIt3q473q5k2Pc0sVSY/iNvipfwdlIh6Tf
+	 YE4+HraREIHJkUQ3Ydrz0xGD2JgkM8DxNf/CWACMgmpaaom3CsOv3lDAQmFMQAHDmE
+	 PIdtj2nsGu6+zdhrH4rmRlPAEylw9MtyQgQ5VeY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 161/276] crypto: essiv - Check ssize for decryption and in-place encryption
+Subject: [PATCH 6.12 247/277] nfsd: unregister with rpcbind when deleting a transport
 Date: Fri, 17 Oct 2025 16:54:14 +0200
-Message-ID: <20251017145148.351152499@linuxfoundation.org>
+Message-ID: <20251017145156.168026730@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit 6bb73db6948c2de23e407fe1b7ef94bf02b7529f ]
+[ Upstream commit 898374fdd7f06fa4c4a66e8be3135efeae6128d5 ]
 
-Move the ssize check to the start in essiv_aead_crypt so that
-it's also checked for decryption and in-place encryption.
+When a listener is added, a part of creation of transport also registers
+program/port with rpcbind. However, when the listener is removed,
+while transport goes away, rpcbind still has the entry for that
+port/type.
 
-Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Fixes: be1eb7f78aa8 ("crypto: essiv - create wrapper template for ESSIV generation")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+When deleting the transport, unregister with rpcbind when appropriate.
+
+---v2 created a new xpt_flag XPT_RPCB_UNREG to mark TCP and UDP
+transport and at xprt destroy send rpcbind unregister if flag set.
+
+Suggested-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: d093c9089260 ("nfsd: fix management of listener transports")
+Cc: stable@vger.kernel.org
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/essiv.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ include/linux/sunrpc/svc_xprt.h |    3 +++
+ net/sunrpc/svc_xprt.c           |   13 +++++++++++++
+ net/sunrpc/svcsock.c            |    2 ++
+ 3 files changed, 18 insertions(+)
 
-diff --git a/crypto/essiv.c b/crypto/essiv.c
-index 3505b071e6471..365f3082ea041 100644
---- a/crypto/essiv.c
-+++ b/crypto/essiv.c
-@@ -186,9 +186,14 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
- 	const struct essiv_tfm_ctx *tctx = crypto_aead_ctx(tfm);
- 	struct essiv_aead_request_ctx *rctx = aead_request_ctx(req);
- 	struct aead_request *subreq = &rctx->aead_req;
-+	int ivsize = crypto_aead_ivsize(tfm);
-+	int ssize = req->assoclen - ivsize;
- 	struct scatterlist *src = req->src;
- 	int err;
+--- a/include/linux/sunrpc/svc_xprt.h
++++ b/include/linux/sunrpc/svc_xprt.h
+@@ -103,6 +103,9 @@ enum {
+ 				 * it has access to.  It is NOT counted
+ 				 * in ->sv_tmpcnt.
+ 				 */
++	XPT_RPCB_UNREG,		/* transport that needs unregistering
++				 * with rpcbind (TCP, UDP) on destroy
++				 */
+ };
  
-+	if (ssize < 0)
-+		return -EINVAL;
+ static inline void svc_xprt_set_valid(struct svc_xprt *xpt)
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -1028,6 +1028,19 @@ static void svc_delete_xprt(struct svc_x
+ 	struct svc_serv	*serv = xprt->xpt_server;
+ 	struct svc_deferred_req *dr;
+ 
++	/* unregister with rpcbind for when transport type is TCP or UDP.
++	 */
++	if (test_bit(XPT_RPCB_UNREG, &xprt->xpt_flags)) {
++		struct svc_sock *svsk = container_of(xprt, struct svc_sock,
++						     sk_xprt);
++		struct socket *sock = svsk->sk_sock;
 +
- 	crypto_cipher_encrypt_one(tctx->essiv_cipher, req->iv, req->iv);
++		if (svc_register(serv, xprt->xpt_net, sock->sk->sk_family,
++				 sock->sk->sk_protocol, 0) < 0)
++			pr_warn("failed to unregister %s with rpcbind\n",
++				xprt->xpt_class->xcl_name);
++	}
++
+ 	if (test_and_set_bit(XPT_DEAD, &xprt->xpt_flags))
+ 		return;
  
- 	/*
-@@ -198,19 +203,12 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
- 	 */
- 	rctx->assoc = NULL;
- 	if (req->src == req->dst || !enc) {
--		scatterwalk_map_and_copy(req->iv, req->dst,
--					 req->assoclen - crypto_aead_ivsize(tfm),
--					 crypto_aead_ivsize(tfm), 1);
-+		scatterwalk_map_and_copy(req->iv, req->dst, ssize, ivsize, 1);
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -837,6 +837,7 @@ static void svc_udp_init(struct svc_sock
+ 	/* data might have come in before data_ready set up */
+ 	set_bit(XPT_DATA, &svsk->sk_xprt.xpt_flags);
+ 	set_bit(XPT_CHNGBUF, &svsk->sk_xprt.xpt_flags);
++	set_bit(XPT_RPCB_UNREG, &svsk->sk_xprt.xpt_flags);
+ 
+ 	/* make sure we get destination address info */
+ 	switch (svsk->sk_sk->sk_family) {
+@@ -1357,6 +1358,7 @@ static void svc_tcp_init(struct svc_sock
+ 	if (sk->sk_state == TCP_LISTEN) {
+ 		strcpy(svsk->sk_xprt.xpt_remotebuf, "listener");
+ 		set_bit(XPT_LISTENER, &svsk->sk_xprt.xpt_flags);
++		set_bit(XPT_RPCB_UNREG, &svsk->sk_xprt.xpt_flags);
+ 		sk->sk_data_ready = svc_tcp_listen_data_ready;
+ 		set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
  	} else {
- 		u8 *iv = (u8 *)aead_request_ctx(req) + tctx->ivoffset;
--		int ivsize = crypto_aead_ivsize(tfm);
--		int ssize = req->assoclen - ivsize;
- 		struct scatterlist *sg;
- 		int nents;
- 
--		if (ssize < 0)
--			return -EINVAL;
--
- 		nents = sg_nents_for_len(req->src, ssize);
- 		if (nents < 0)
- 			return -EINVAL;
--- 
-2.51.0
-
 
 
 
