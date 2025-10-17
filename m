@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-186514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF8CBE9793
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:06:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 330FEBEA578
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C93101A67A89
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B91BF188B15F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DAC332912;
-	Fri, 17 Oct 2025 15:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7672B330B1E;
+	Fri, 17 Oct 2025 15:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/HDa13Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCMXggS0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD3E2F692A;
-	Fri, 17 Oct 2025 15:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7CF330B26;
+	Fri, 17 Oct 2025 15:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713457; cv=none; b=tezYr9Ejzt9eRFZsHRMHdjpH2HMa7VZ2Xmaf0+pywlpn00bcbC2oFKIuqSe43A10fkMGppa/czpzZFoy1q9qWxzYSBnm6wp/sRIPxeQ+wfnebiYjPt/O0aW1QUBYDy+oV5lFCw2JOXqE1zCGnYU9nAASWbhWwEUJ16RVbv7sYM4=
+	t=1760716417; cv=none; b=OjmcbKIlJl6fOJrBUPsLJY2DK0oOksn/pGmI0GJF/RPCesrtbd14Tdw5fkwr0GLwommlBf6GU1UvfMZH7FT9WyMWeSfchyQlSodtRaEt+Nq/kR0zTRnudmDGIY6dakTvPpBj1aSA52idtkAzLszvzyQzZ/N95PIGWAV9uW6Cj5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713457; c=relaxed/simple;
-	bh=PQEZccgGy071jIsXefEyVtn2JibVLm4abhIWzg/FRfE=;
+	s=arc-20240116; t=1760716417; c=relaxed/simple;
+	bh=JFLzFNlxbsQpCbCIxt4FiBE/fBGp918Jsg491B86ANQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AdrKJ6q0J1cofO8nSC9rORKaOurm5vaaexCOb7j6kIdYaLSzeh3MqRCy0MGlFiQdQXQk9BRJvjrYe/INaIwwY15dFNaZ1vpRIHGIqo7wr3QpQol6u0iGq61uVFi+34zTnyC2AYRC7Iyu0OikGc3xk1EGYSYh6b208fhd9aLHFq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/HDa13Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12731C4CEF9;
-	Fri, 17 Oct 2025 15:04:16 +0000 (UTC)
+	 MIME-Version; b=L8kXAUWJ3dyWHKlMSsoEqLTJ+l2Vli5pr1kvq/x3b9YxwCwVXjxGInP0qn45T9VVA4WGCud7pXAEIvNAPblbtFawPzd5DDZuaY0IFBY52YqkPfDk+VZqKGsrhTiP+RPrDSYql06Gg9wFYPmhbR6+mV3DmkDJnThCx1i2Xb35grQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCMXggS0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DD3C4CEE7;
+	Fri, 17 Oct 2025 15:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713457;
-	bh=PQEZccgGy071jIsXefEyVtn2JibVLm4abhIWzg/FRfE=;
+	s=korg; t=1760716417;
+	bh=JFLzFNlxbsQpCbCIxt4FiBE/fBGp918Jsg491B86ANQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1/HDa13YIFVzc/Mw8tXGgb1zc0BEq5ZuJIWGadwoEx452dXcVjZ+TRiDoJ2wr9FKN
-	 kzl0hPdg5LmVoNPkGm92dyqXFmV9cQC0uv6UT2AXd3mL/Ui6Vvbah0HVc5odxZKAgn
-	 RgYD4dZK4MBohUnrldpmAF0a0esBKDdE2Oe2GQeE=
+	b=MCMXggS0Gh792NGySLpiut3drMABqslMHX+V3VLXh05y3Cvbyjf4dHk7EZ2EidBhJ
+	 ZASlWQpWz9RwdBU7+V12KHpowpq57e+4qp7901LKRQsGq+Gl6fLTo0a7ht27V8Mv1f
+	 er0czuNrc29LheiexSjoZ8y5a3f1hXCo+boxVOdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Nicolas Pitre <nico@fluxnic.net>,
-	Christian Brauner <brauner@kernel.org>,
+	Erick Karanja <karanja99erick@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 165/168] cramfs: Verify inode mode when loading from disk
+Subject: [PATCH 5.15 151/276] net: fsl_pq_mdio: Fix device node reference leak in fsl_pq_mdio_probe
 Date: Fri, 17 Oct 2025 16:54:04 +0200
-Message-ID: <20251017145135.127436525@linuxfoundation.org>
+Message-ID: <20251017145147.991161149@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Erick Karanja <karanja99erick@gmail.com>
 
-[ Upstream commit 7f9d34b0a7cb93d678ee7207f0634dbf79e47fe5 ]
+[ Upstream commit 521405cb54cd2812bbb6dedd5afc14bca1e7e98a ]
 
-The inode mode loaded from corrupted disk can be invalid. Do like what
-commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
-does.
+Add missing of_node_put call to release device node tbi obtained
+via for_each_child_of_node.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/429b3ef1-13de-4310-9a8e-c2dc9a36234a@I-love.SAKURA.ne.jp
-Acked-by: Nicolas Pitre <nico@fluxnic.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: afae5ad78b342 ("net/fsl_pq_mdio: streamline probing of MDIO nodes")
+Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
+Link: https://patch.msgid.link/20251002174617.960521-1-karanja99erick@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cramfs/inode.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fsl_pq_mdio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
-index 6dae27d6f553f..9979187a4b3c5 100644
---- a/fs/cramfs/inode.c
-+++ b/fs/cramfs/inode.c
-@@ -117,9 +117,18 @@ static struct inode *get_cramfs_inode(struct super_block *sb,
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &cramfs_aops;
- 		break;
--	default:
-+	case S_IFCHR:
-+	case S_IFBLK:
-+	case S_IFIFO:
-+	case S_IFSOCK:
- 		init_special_inode(inode, cramfs_inode->mode,
- 				old_decode_dev(cramfs_inode->size));
-+		break;
-+	default:
-+		printk(KERN_DEBUG "CRAMFS: Invalid file type 0%04o for inode %lu.\n",
-+		       inode->i_mode, inode->i_ino);
-+		iget_failed(inode);
-+		return ERR_PTR(-EIO);
+diff --git a/drivers/net/ethernet/freescale/fsl_pq_mdio.c b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
+index 9d58d83344670..ea49b0df397e5 100644
+--- a/drivers/net/ethernet/freescale/fsl_pq_mdio.c
++++ b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
+@@ -482,10 +482,12 @@ static int fsl_pq_mdio_probe(struct platform_device *pdev)
+ 					"missing 'reg' property in node %pOF\n",
+ 					tbi);
+ 				err = -EBUSY;
++				of_node_put(tbi);
+ 				goto error;
+ 			}
+ 			set_tbipa(*prop, pdev,
+ 				  data->get_tbipa, priv->map, &res);
++			of_node_put(tbi);
+ 		}
  	}
  
- 	inode->i_mode = cramfs_inode->mode;
 -- 
 2.51.0
 
