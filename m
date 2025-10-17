@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC541BEA443
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02849BE979F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:06:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3498318890D0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C324F58106F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9B3330B1E;
-	Fri, 17 Oct 2025 15:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B3632C95E;
+	Fri, 17 Oct 2025 15:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5BrTuBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLhoZ1Dv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCF7330B00;
-	Fri, 17 Oct 2025 15:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9B432C95F;
+	Fri, 17 Oct 2025 15:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716158; cv=none; b=MoB8qtijGE9YYOWxc+Ox1Hyk8HDcRGFswltGJEAThXqs5gt7F91dR38CQDRbKIGXiTRKEkGrzHyVYrPqiJUe7mcnk/2Ox5i2idkL8Wv8Mnzmgns6ygh7GVYOKreDJCX27PgUJTrvtijGPpGkCtuMghDGhH2C0im8qrvmIH30Ma4=
+	t=1760713269; cv=none; b=MRwV5Wcu9DsGO6lH+NFNBlbuBd9XA0RX5FapxC8KNCq6SRpiBudLGOGU2pF+iBbDvAFr39UG3m2fhcFZ6lIQcAk63Dmr1bD0E89aO0IoFYnRmbBWgD/WtJTKWGCcKDDK3CX5N8RrYMIaLFB8CqHraXsaCp35uIn6wWWGSlwU5bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716158; c=relaxed/simple;
-	bh=1hZQixbteK3ubhgYYiT9HP5c84k7BxU1qd/PhuwMM8Q=;
+	s=arc-20240116; t=1760713269; c=relaxed/simple;
+	bh=jw/AbJxykaJO4Tk6qygruA4e5gLqIewdkxjIjkvNcQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukFbTRs+K+P5ltIxW6RA60OA8dbO0SbM16DyrsYPMhW9Hob57EeR7ZHgSP7h3gVF5W9zm06V84N/jjaIEwglLO/HioWGvxXbAoKgybjB6jlGCzw+bi1fKleiTwhUMCIGiNbc2EXJ0vRWQYCxBmWrJLYCtkA3RApO9ynXguT2Mw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5BrTuBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA697C4CEE7;
-	Fri, 17 Oct 2025 15:49:17 +0000 (UTC)
+	 MIME-Version; b=H6eTd55q43+1tpOHY0ah/VuiWIzhQ8UI4cJUeVPYLz9gSRmgdzXb6Jvh2QGha9rMNZr93nyXknd8noasFIzdx5I9e7C727PzakKyb+14eAivPwj8f47+gRKSpZ0Addps6rsHK/IIszpAprgRCkXuHERRzR2ZBwVMyhmasRBk1KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLhoZ1Dv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB6AC116D0;
+	Fri, 17 Oct 2025 15:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716158;
-	bh=1hZQixbteK3ubhgYYiT9HP5c84k7BxU1qd/PhuwMM8Q=;
+	s=korg; t=1760713268;
+	bh=jw/AbJxykaJO4Tk6qygruA4e5gLqIewdkxjIjkvNcQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5BrTuBJPkSgDW8Qr04OoqW+W5exRd2OlUuHV6wAu4Ec7AEHgPofAa13G0Pri5QK9
-	 7ENWZKYZ8SCR+eXzy6sR1uBOisUTm70UDrT1RqCr5V3Ob2lEJiSHL9tBBUh3KZA1DL
-	 ozGwCf+/QMccFBz7YjJlMhyE7C5d6slQyK40WI9Y=
+	b=oLhoZ1DvR6id3T2uu5weKuz2N+/zgeeutjT2ZIb9u1aUBz+CLWw/80blJZckl2AO1
+	 ohCyaNbnDuLJnNURI/TJoEB3OlAAZ1k7vtTguvjGw5D+z4DzyWDhRk99dIJcH+Ceb7
+	 BrLS9OOFkatsHrCS7tn76AAqvblJeJm6M3rluxsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Iliopoulos <ailiop@suse.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 093/276] NFSv4.1: fix backchannel max_resp_sz verification check
+	Thomas Gleixner <tglx@linutronix.de>,
+	Florian Weimer <fweimer@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: [PATCH 6.1 107/168] rseq/selftests: Use weak symbol reference, not definition, to link with glibc
 Date: Fri, 17 Oct 2025 16:53:06 +0200
-Message-ID: <20251017145145.881839010@linuxfoundation.org>
+Message-ID: <20251017145132.967404353@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Iliopoulos <ailiop@suse.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 191512355e520dfc45c8bc3b56d4de59c3ade33e ]
+commit a001cd248ab244633c5fabe4f7c707e13fc1d1cc upstream.
 
-When the client max_resp_sz is larger than what the server encodes in
-its reply, the nfs4_verify_back_channel_attrs() check fails and this
-causes nfs4_proc_create_session() to fail, in cases where the client
-page size is larger than that of the server and the server does not want
-to negotiate upwards.
+Add "extern" to the glibc-defined weak rseq symbols to convert the rseq
+selftest's usage from weak symbol definitions to weak symbol _references_.
+Effectively re-defining the glibc symbols wreaks havoc when building with
+-fno-common, e.g. generates segfaults when running multi-threaded programs,
+as dynamically linked applications end up with multiple versions of the
+symbols.
 
-While this is not a problem with the linux nfs server that will reflect
-the proposed value in its reply irrespective of the local page size,
-other nfs server implementations may insist on their own max_resp_sz
-value, which could be smaller.
+Building with -fcommon, which until recently has the been the default for
+GCC and clang, papers over the bug by allowing the linker to resolve the
+weak/tentative definition to glibc's "real" definition.
 
-Fix this by accepting smaller max_resp_sz values from the server, as
-this does not violate the protocol. The server is allowed to decrease
-but not increase proposed the size, and as such values smaller than the
-client-proposed ones are valid.
+Note, the symbol itself (or rather its address), not the value of the
+symbol, is set to 0/NULL for unresolved weak symbol references, as the
+symbol doesn't exist and thus can't have a value.  Check for a NULL rseq
+size pointer to handle the scenario where the test is statically linked
+against a libc that doesn't support rseq in any capacity.
 
-Fixes: 43c2e885be25 ("nfs4: fix channel attribute sanity-checks")
-Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3bcbc20942db ("selftests/rseq: Play nice with binaries statically linked against glibc 2.35+")
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Suggested-by: Florian Weimer <fweimer@redhat.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/87frdoybk4.ffs@tglx
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/rseq/rseq.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 3d854e2537bc2..a98b10c85b700 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -9117,7 +9117,7 @@ static int nfs4_verify_back_channel_attrs(struct nfs41_create_session_args *args
- 		goto out;
- 	if (rcvd->max_rqst_sz > sent->max_rqst_sz)
- 		return -EINVAL;
--	if (rcvd->max_resp_sz < sent->max_resp_sz)
-+	if (rcvd->max_resp_sz > sent->max_resp_sz)
- 		return -EINVAL;
- 	if (rcvd->max_resp_sz_cached > sent->max_resp_sz_cached)
- 		return -EINVAL;
--- 
-2.51.0
-
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -38,9 +38,9 @@
+  * Define weak versions to play nice with binaries that are statically linked
+  * against a libc that doesn't support registering its own rseq.
+  */
+-__weak ptrdiff_t __rseq_offset;
+-__weak unsigned int __rseq_size;
+-__weak unsigned int __rseq_flags;
++extern __weak ptrdiff_t __rseq_offset;
++extern __weak unsigned int __rseq_size;
++extern __weak unsigned int __rseq_flags;
+ 
+ static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
+ static const unsigned int *libc_rseq_size_p = &__rseq_size;
+@@ -124,7 +124,7 @@ void rseq_init(void)
+ 	 * libc not having registered a restartable sequence.  Try to find the
+ 	 * symbols if that's the case.
+ 	 */
+-	if (!*libc_rseq_size_p) {
++	if (!libc_rseq_size_p || !*libc_rseq_size_p) {
+ 		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
+ 		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
+ 		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
 
 
 
