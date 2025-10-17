@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8267BE998B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D043BEA41F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5FB3A58397B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EA021AE4B96
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D723232E14C;
-	Fri, 17 Oct 2025 15:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3CC2E716A;
+	Fri, 17 Oct 2025 15:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFLYVR1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7iqFI+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BFD33711C;
-	Fri, 17 Oct 2025 15:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F37330B06;
+	Fri, 17 Oct 2025 15:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713642; cv=none; b=ii4YU6ro2EtkZfTOd7aRSZc8ya7v0LAyYL4TvQ7xzRgq2B/TMJqqkLF4Hhd97oqodRUgnXK6b/2ae6t6a0ElxXNyB41taleDSbvhz3eK/w13/nyNnGs0Qdi396rb8W7CA10U1iBBs53h5OghkHkY5DuLVfjNIeZqp5OKm1mENbs=
+	t=1760716118; cv=none; b=HCgO10zSyNV3qt4QgaToJb4q29FzqY7nq8pWFVA02MpciWNNIQMZQcBwS5o+C2mYVnfCZWuvjHHzohWwNUR7m1VBR4RsONrnQEPdjW5Oj7/GuDF7TL3Suw1OSbNchxlxBKUSCtjgj9+MhW9TjQOB7g8aodZHv6bq/fz8IyBJ534=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713642; c=relaxed/simple;
-	bh=8Nv8PBKdCZ/hcOYKbN+Uy1tGDye53o1F5ecwryY0pCw=;
+	s=arc-20240116; t=1760716118; c=relaxed/simple;
+	bh=PG0ZqXrF5GWH85BsXMtgF1id3vvt/07sF2AI6pG1PaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tm44x5UGN2zZx7mSzBlkipSvr7Vji8V+sUUkkjwiamV/qtKA4fyeUc4PJL0+cOzsAV4XeY+2wtcc0trzbr27dOKEgfI7Sm+RWPtm2LfJzmPyfrhq/cqryjPJWT+9TxgIgvmQsbIWeFyCWdBF4C0oftRyuXGsjx4DXwMaDB1jYP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFLYVR1a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29ACC4CEF9;
-	Fri, 17 Oct 2025 15:07:21 +0000 (UTC)
+	 MIME-Version; b=k16QIsb4idVxnTOM2yS5+ajkWSSlhJZNVpWROimdSLBLcX05rjrmq+rMngumh5b8wCqrAXNjQukfgPS0L2MYqDtIy/DdWJkGsTUb6DGgPEgvU887yfT+3KI0bO8ODFwrbVCt+J4sY9lnR3uyE8SQlEEWQ1K1nrIzxp5R+2P8SIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7iqFI+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D38C4CEE7;
+	Fri, 17 Oct 2025 15:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713642;
-	bh=8Nv8PBKdCZ/hcOYKbN+Uy1tGDye53o1F5ecwryY0pCw=;
+	s=korg; t=1760716117;
+	bh=PG0ZqXrF5GWH85BsXMtgF1id3vvt/07sF2AI6pG1PaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aFLYVR1aT0ISycJ4joxh/Uz86L7wx8MKebjCgWNURjAGc9vYXMSLEFEnu3n4ZtmYp
-	 BSx+I+T1zF4SzCoIjEVsAFH/Us97nwqWHR0vDXETjyb4I2F4TvaeLJYRlAQzNzIS9F
-	 WMMtR9vgZJ1t8FKc+ovie99iDAP22l+8zjLVgZR8=
+	b=r7iqFI+9RmO/5aCxJO85KvcfTaF/4KWzoCOBnQBLOjWNZSnKCKhRtiGmgWz8V7Lgu
+	 71vbfAO8pjBWFR/oWbzqUQespWm6B0F8F6MJvoSerWF7UYQWDUEH4dlk/C4frGQKHj
+	 h66YJLCzWwH1JnWWGlQR5cUlPsqD0emv/Hpdnw5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.6 068/201] xen/manage: Fix suspend error path
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 036/276] regulator: scmi: Use int type to store negative error codes
 Date: Fri, 17 Oct 2025 16:52:09 +0200
-Message-ID: <20251017145137.250496195@linuxfoundation.org>
+Message-ID: <20251017145143.723643422@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-commit f770c3d858687252f1270265ba152d5c622e793f upstream.
+[ Upstream commit 9d35d068fb138160709e04e3ee97fe29a6f8615b ]
 
-The device power management API has the following asymmetry:
-* dpm_suspend_start() does not clean up on failure
-  (it requires a call to dpm_resume_end())
-* dpm_suspend_end() does clean up on failure
-  (it does not require a call to dpm_resume_start())
+Change the 'ret' variable from u32 to int to store negative error codes or
+zero returned by of_property_read_u32().
 
-The asymmetry was introduced by commit d8f3de0d2412 ("Suspend-related
-patches for 2.6.27") in June 2008:  It removed a call to device_resume()
-from device_suspend() (which was later renamed to dpm_suspend_start()).
+Storing the negative error codes in unsigned type, doesn't cause an issue
+at runtime but it's ugly as pants. Additionally, assigning negative error
+codes to unsigned type may trigger a GCC warning when the -Wsign-conversion
+flag is enabled.
 
-When Xen began using the device power management API in May 2008 with
-commit 0e91398f2a5d ("xen: implement save/restore"), the asymmetry did
-not yet exist.  But since it was introduced, a call to dpm_resume_end()
-is missing in the error path of dpm_suspend_start().  Fix it.
+No effect on runtime.
 
-Fixes: d8f3de0d2412 ("Suspend-related patches for 2.6.27")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org  # v2.6.27
-Reviewed-by: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <22453676d1ddcebbe81641bb68ddf587fee7e21e.1756990799.git.lukas@wunner.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 0fbeae70ee7c ("regulator: add SCMI driver")
+Link: https://patch.msgid.link/20250829101411.625214-1-rongqianfeng@vivo.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/manage.c |    3 ++-
+ drivers/regulator/scmi-regulator.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/xen/manage.c
-+++ b/drivers/xen/manage.c
-@@ -116,7 +116,7 @@ static void do_suspend(void)
- 	err = dpm_suspend_start(PMSG_FREEZE);
- 	if (err) {
- 		pr_err("%s: dpm_suspend_start %d\n", __func__, err);
--		goto out_thaw;
-+		goto out_resume_end;
- 	}
+diff --git a/drivers/regulator/scmi-regulator.c b/drivers/regulator/scmi-regulator.c
+index 41ae7ac27ff6a..7c0d29c7856bb 100644
+--- a/drivers/regulator/scmi-regulator.c
++++ b/drivers/regulator/scmi-regulator.c
+@@ -257,7 +257,8 @@ static int process_scmi_regulator_of_node(struct scmi_device *sdev,
+ 					  struct device_node *np,
+ 					  struct scmi_regulator_info *rinfo)
+ {
+-	u32 dom, ret;
++	u32 dom;
++	int ret;
  
- 	printk(KERN_DEBUG "suspending xenstore...\n");
-@@ -156,6 +156,7 @@ out_resume:
- 	else
- 		xs_suspend_cancel();
- 
-+out_resume_end:
- 	dpm_resume_end(si.cancelled ? PMSG_THAW : PMSG_RESTORE);
- 
- out_thaw:
+ 	ret = of_property_read_u32(np, "reg", &dom);
+ 	if (ret)
+-- 
+2.51.0
+
 
 
 
