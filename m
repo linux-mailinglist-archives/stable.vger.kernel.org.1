@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-187045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F61BEA281
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5230BE9CE4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 64197582BA8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:29:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C9E07583882
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113D8258ECA;
-	Fri, 17 Oct 2025 15:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0D332E12D;
+	Fri, 17 Oct 2025 15:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovBkiHyh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLKm18rw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C104C3208;
-	Fri, 17 Oct 2025 15:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CC1337109;
+	Fri, 17 Oct 2025 15:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714965; cv=none; b=sCsQVPMsdPrsD1xGa5l38zdbQBwy1Pxm3YP4zn7ANNkvRQE5VoXY+liHH136OVLxL5vXBJAP3O/ZGyjLu3MMg6E8lPvpYusFzLg7h7pzYHEYVEcA1vmu2eLniz7Y/Vv9qn3eUtxv8XVpoqXuQSQjjIUWUxIn54CQ73Pg3cJVthc=
+	t=1760714071; cv=none; b=umbyrxnoIoUX0bUE5fLXHDBnTIXZcbJEcjdkcRtQBbYnu8ToPsQvwhptcpREWG9Eb5378HCApLAp7pYmLAP0ozdUMVXw8tgq8oMYreL0z1pH2tK1ReaTvKhw9ywy2WaK3qcpz63LeAnaYJxUk7GaO/hMo/VJdkrSxoxOa/rqdjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714965; c=relaxed/simple;
-	bh=8ySNtICvVZNY53qoOGa8lQGGvr7wsJaH+tHbrAfS7C4=;
+	s=arc-20240116; t=1760714071; c=relaxed/simple;
+	bh=ElAQBsbhrFchuyneKsBJ7eXnvkM7kXvHrCwh2ZuLPvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRUgndA5ams8ctvU3SlDBRT0anwMGURNHS8ac8ddGdtVxQUaNr8I20ra5N8/RTSvru5z5rzLjGzeHAyTuY2/AQD181fXvPD4z9cbFo+/bhgXQbaMVlbqp941xltrpOV6np1Qsw4NdmbyB0iM174k7f2PjfnxjT6w1YcHc6Gdets=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovBkiHyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F73C4CEE7;
-	Fri, 17 Oct 2025 15:29:25 +0000 (UTC)
+	 MIME-Version; b=Ls7YDV7z+WfqibFhQDqciEDFPu0gR7kYxzERmeoL+JrjgABen2nbe71EDG8THfHRawA4hA/Rzz3PKHK4A0N6+weKdomTDdAIk0LtNrMbBzNkUzzGR0NwP3VP3YAa9lSIvD9NzEZYOD+6nJq/zqVdwtqpxvmr3bPikJ7RBStWkgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLKm18rw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1F4C4CEE7;
+	Fri, 17 Oct 2025 15:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714965;
-	bh=8ySNtICvVZNY53qoOGa8lQGGvr7wsJaH+tHbrAfS7C4=;
+	s=korg; t=1760714071;
+	bh=ElAQBsbhrFchuyneKsBJ7eXnvkM7kXvHrCwh2ZuLPvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ovBkiHyhJDHcPhnfCXFUyV1JYDNg3eiDe2dz9c2NojJTHXEK0eBQ1SM8DTOXZ1ED7
-	 8XKkXwfuhOnwbIzUhIWG0IaxEh5CdSRcioYYx2XiSEF9r0JAStkooJiqwJzv4sV2bC
-	 FFQxUGPwid0uXkXJmRe3S4SOrNAmFJj+AgyzO054=
+	b=sLKm18rwWzMPtcasmcKuhaaBaBEdzV5flXPVfVVPAYRtEzWqBaO+Y+O1m8Ert8BgZ
+	 buvpv58MgThoeCzqU4pCr7/qCZ6kYhK8WBmmn+gfhmP7NTlUdBvBqEDaqKccDcK4xT
+	 LRTydqgZpXzlPYKzsCnJgEi+g/sya5Szp1KhbMvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 049/371] perf evsel: Ensure the fallback message is always written to
+Subject: [PATCH 6.12 017/277] clk: qcom: common: Fix NULL vs IS_ERR() check in qcom_cc_icc_register()
 Date: Fri, 17 Oct 2025 16:50:24 +0200
-Message-ID: <20251017145203.575834814@linuxfoundation.org>
+Message-ID: <20251017145147.778050933@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,83 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 24937ee839e4bbc097acde73eeed67812bad2d99 ]
+[ Upstream commit 1e50f5c9965252ed6657b8692cd7366784d60616 ]
 
-The fallback message is unconditionally printed in places like
-record__open().
+The devm_clk_hw_get_clk() function doesn't return NULL, it returns error
+pointers.  Update the checking to match.
 
-If no fallback is attempted this can lead to printing uninitialized
-data, crashes, etc.
-
-Fixes: c0a54341c0e89333 ("perf evsel: Introduce event fallback method")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Howard Chu <howardchu95@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 8737ec830ee3 ("clk: qcom: common: Add interconnect clocks support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/aLaPwL2gFS85WsfD@stanley.mountain
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evsel.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/clk/qcom/common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index 9c086d743d344..5df59812b80ca 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -3562,7 +3562,7 @@ bool evsel__fallback(struct evsel *evsel, struct target *target, int err,
- 
- 		/* If event has exclude user then don't exclude kernel. */
- 		if (evsel->core.attr.exclude_user)
--			return false;
-+			goto no_fallback;
- 
- 		/* Is there already the separator in the name. */
- 		if (strchr(name, '/') ||
-@@ -3570,7 +3570,7 @@ bool evsel__fallback(struct evsel *evsel, struct target *target, int err,
- 			sep = "";
- 
- 		if (asprintf(&new_name, "%s%su", name, sep) < 0)
--			return false;
-+			goto no_fallback;
- 
- 		free(evsel->name);
- 		evsel->name = new_name;
-@@ -3593,17 +3593,19 @@ bool evsel__fallback(struct evsel *evsel, struct target *target, int err,
- 			sep = "";
- 
- 		if (asprintf(&new_name, "%s%sH", name, sep) < 0)
--			return false;
-+			goto no_fallback;
- 
- 		free(evsel->name);
- 		evsel->name = new_name;
- 		/* Apple M1 requires exclude_guest */
--		scnprintf(msg, msgsize, "trying to fall back to excluding guest samples");
-+		scnprintf(msg, msgsize, "Trying to fall back to excluding guest samples");
- 		evsel->core.attr.exclude_guest = 1;
- 
- 		return true;
+diff --git a/drivers/clk/qcom/common.c b/drivers/clk/qcom/common.c
+index 33cc1f73c69d1..cab2dbb7a8d49 100644
+--- a/drivers/clk/qcom/common.c
++++ b/drivers/clk/qcom/common.c
+@@ -273,8 +273,8 @@ static int qcom_cc_icc_register(struct device *dev,
+ 		icd[i].slave_id = desc->icc_hws[i].slave_id;
+ 		hws = &desc->clks[desc->icc_hws[i].clk_id]->hw;
+ 		icd[i].clk = devm_clk_hw_get_clk(dev, hws, "icc");
+-		if (!icd[i].clk)
+-			return dev_err_probe(dev, -ENOENT,
++		if (IS_ERR(icd[i].clk))
++			return dev_err_probe(dev, PTR_ERR(icd[i].clk),
+ 					     "(%d) clock entry is null\n", i);
+ 		icd[i].name = clk_hw_get_name(hws);
  	}
--
-+no_fallback:
-+	scnprintf(msg, msgsize, "No fallback found for '%s' for error %d",
-+		  evsel__name(evsel), err);
- 	return false;
- }
- 
 -- 
 2.51.0
 
