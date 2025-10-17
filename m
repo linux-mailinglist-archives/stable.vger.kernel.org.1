@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD138BEA657
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ECC0BE9ACA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EE40740997
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFD55189290D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A21C3370FB;
-	Fri, 17 Oct 2025 15:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F582F12B4;
+	Fri, 17 Oct 2025 15:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPtlUO7y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tG8nEktX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E812F12DF;
-	Fri, 17 Oct 2025 15:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5191217722;
+	Fri, 17 Oct 2025 15:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715064; cv=none; b=iBOP94uQlq1qRcg3VBmGrUadVLFNEAGz+2E8qULmJjgpQ3fsyxyQgvWj8OGHpfjC8D2Hcho97jX9un24n9RaTlaq0EUm8WWcXp+3g4TkA1/Oh4Qb4NZcwE/5LWePw3tDR5wYY9KCE/8yDsSEbGgGFkzLIvYDLTy750u4pd6tTrQ=
+	t=1760714175; cv=none; b=X5Euwv4/EmW0eH6mfJAxZBoiq64/mXORGte2bHwp1XEjuw4OrYaE7POCszUeppFqWvqbc9hjMzEGQ/fMtdbcGChPc9+uUXOTdQ+zlKjzM9Jr9xitkBMufxM/JNgjAGySmniqbaz6IpnNoBiJZrYVXHFuJd/PaphZdem3d32ky5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715064; c=relaxed/simple;
-	bh=1iTeAn21jE+BRKYiwzCKwbM2uDUKHsZQXfWaLuHJFYk=;
+	s=arc-20240116; t=1760714175; c=relaxed/simple;
+	bh=dpolJf5m9SOkZtsIF6eK2aQnwdMAoCJwNCsy37Xbrzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhYoHvkTigg9fk0HPsuWIJNHqM7Hebhhulrq/Ez/b3uspiVj2t7OUlY+EPOTX78iqQaLXkeiroxdSm8Ndk4i7twHRp0nyAXhXpvrLerGONhj+S5r0EyEQYzs/AVIBdwFWorARkj4zs9SugbzN5OUpv2DU7j1/KOq4DHKoEObCbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPtlUO7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD87FC4CEE7;
-	Fri, 17 Oct 2025 15:31:03 +0000 (UTC)
+	 MIME-Version; b=oPo5MllmF1hzRdwBvX8aYBR7eSnzmSFj+fJLgbE2Klgf6k4ME2L2/l+UpOGa0FveCoEH8KpK3WHFRW02xYn1aizkCtXfk+xa0NMSbCuOjfqBa6mhB6rhh7Phl47aTB946BzybpiugONfuQJ2sqkuo8zzvGzdc7dH2T62CWB/VCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tG8nEktX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3037FC4CEE7;
+	Fri, 17 Oct 2025 15:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715064;
-	bh=1iTeAn21jE+BRKYiwzCKwbM2uDUKHsZQXfWaLuHJFYk=;
+	s=korg; t=1760714175;
+	bh=dpolJf5m9SOkZtsIF6eK2aQnwdMAoCJwNCsy37Xbrzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPtlUO7ybSk79hGoSwSVRoESXOHrXyFTyaXGuKTHVi5OavJkd9zdquy46Z0SIwbXY
-	 T1pkRe5PaTJFtsr46tOOlM0bxw0owuxZu1+r/2yGldYIok4YcbvwOKLkxaMm31GeFr
-	 7V1xeyeeEwIk5tewG851Itp0soj/CdJIxQXNmMjc=
+	b=tG8nEktXpEmJ+h7FXYDJjmI/50GWZOK5d2MJ+5qQwwxiQ8y3iYH/9P6zy0jxaM14t
+	 eDb1L6mcV3y+m9fnFdz3XMK6rWRauimfJx+4dUwPBjIohztqRYVUTDhUPW93fXcvfX
+	 V7DQ4Fg/OJs4SM7pM4buCSfQ8V4qWtRjD/9QQaE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Alexandr Sapozhnikov <alsp705@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 084/371] s390/cio: Update purge function to unregister the unused subchannels
-Date: Fri, 17 Oct 2025 16:50:59 +0200
-Message-ID: <20251017145204.978297717@linuxfoundation.org>
+Subject: [PATCH 6.12 053/277] net/sctp: fix a null dereference in sctp_disposition sctp_sf_do_5_1D_ce()
+Date: Fri, 17 Oct 2025 16:51:00 +0200
+Message-ID: <20251017145149.082730939@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vineeth Vijayan <vneethv@linux.ibm.com>
+From: Alexandr Sapozhnikov <alsp705@gmail.com>
 
-[ Upstream commit 9daa5a8795865f9a3c93d8d1066785b07ded6073 ]
+[ Upstream commit 2f3119686ef50319490ccaec81a575973da98815 ]
 
-Starting with 'commit 2297791c92d0 ("s390/cio: dont unregister
-subchannel from child-drivers")', cio no longer unregisters
-subchannels when the attached device is invalid or unavailable.
+If new_asoc->peer.adaptation_ind=0 and sctp_ulpevent_make_authkey=0
+and sctp_ulpevent_make_authkey() returns 0, then the variable
+ai_ev remains zero and the zero will be dereferenced
+in the sctp_ulpevent_free() function.
 
-As an unintended side-effect, the cio_ignore purge function no longer
-removes subchannels for devices on the cio_ignore list if no CCW device
-is attached. This situation occurs when a CCW device is non-operational
-or unavailable
-
-To ensure the same outcome of the purge function as when the
-current cio_ignore list had been active during boot, update the purge
-function to remove I/O subchannels without working CCW devices if the
-associated device number is found on the cio_ignore list.
-
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Suggested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexandr Sapozhnikov <alsp705@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Fixes: 30f6ebf65bc4 ("sctp: add SCTP_AUTH_NO_AUTH type for AUTHENTICATION_EVENT")
+Link: https://patch.msgid.link/20251002091448.11-1-alsp705@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/device.c | 37 ++++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ net/sctp/sm_statefuns.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
-index fb2c07cb4d3dd..4b2dae6eb3760 100644
---- a/drivers/s390/cio/device.c
-+++ b/drivers/s390/cio/device.c
-@@ -1316,23 +1316,34 @@ void ccw_device_schedule_recovery(void)
- 	spin_unlock_irqrestore(&recovery_lock, flags);
- }
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index a0524ba8d7878..93cac73472c79 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -885,7 +885,8 @@ enum sctp_disposition sctp_sf_do_5_1D_ce(struct net *net,
+ 	return SCTP_DISPOSITION_CONSUME;
  
--static int purge_fn(struct device *dev, void *data)
-+static int purge_fn(struct subchannel *sch, void *data)
- {
--	struct ccw_device *cdev = to_ccwdev(dev);
--	struct ccw_dev_id *id = &cdev->private->dev_id;
--	struct subchannel *sch = to_subchannel(cdev->dev.parent);
-+	struct ccw_device *cdev;
- 
--	spin_lock_irq(cdev->ccwlock);
--	if (is_blacklisted(id->ssid, id->devno) &&
--	    (cdev->private->state == DEV_STATE_OFFLINE) &&
--	    (atomic_cmpxchg(&cdev->private->onoff, 0, 1) == 0)) {
--		CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x\n", id->ssid,
--			      id->devno);
-+	spin_lock_irq(&sch->lock);
-+	if (sch->st != SUBCHANNEL_TYPE_IO || !sch->schib.pmcw.dnv)
-+		goto unlock;
-+
-+	if (!is_blacklisted(sch->schid.ssid, sch->schib.pmcw.dev))
-+		goto unlock;
-+
-+	cdev = sch_get_cdev(sch);
-+	if (cdev) {
-+		if (cdev->private->state != DEV_STATE_OFFLINE)
-+			goto unlock;
-+
-+		if (atomic_cmpxchg(&cdev->private->onoff, 0, 1) != 0)
-+			goto unlock;
- 		ccw_device_sched_todo(cdev, CDEV_TODO_UNREG);
--		css_sched_sch_todo(sch, SCH_TODO_UNREG);
- 		atomic_set(&cdev->private->onoff, 0);
- 	}
--	spin_unlock_irq(cdev->ccwlock);
-+
-+	css_sched_sch_todo(sch, SCH_TODO_UNREG);
-+	CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x%s\n", sch->schid.ssid,
-+		      sch->schib.pmcw.dev, cdev ? "" : " (no cdev)");
-+
-+unlock:
-+	spin_unlock_irq(&sch->lock);
- 	/* Abort loop in case of pending signal. */
- 	if (signal_pending(current))
- 		return -EINTR;
-@@ -1348,7 +1359,7 @@ static int purge_fn(struct device *dev, void *data)
- int ccw_purge_blacklisted(void)
- {
- 	CIO_MSG_EVENT(2, "ccw: purging blacklisted devices\n");
--	bus_for_each_dev(&ccw_bus_type, NULL, NULL, purge_fn);
-+	for_each_subchannel_staged(purge_fn, NULL, NULL);
- 	return 0;
- }
- 
+ nomem_authev:
+-	sctp_ulpevent_free(ai_ev);
++	if (ai_ev)
++		sctp_ulpevent_free(ai_ev);
+ nomem_aiev:
+ 	sctp_ulpevent_free(ev);
+ nomem_ev:
 -- 
 2.51.0
 
