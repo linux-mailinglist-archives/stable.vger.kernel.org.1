@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-187617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9C8BEAB68
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:30:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA529BEAAF3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:27:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E227960E0A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2C026E697F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634F4330B3A;
-	Fri, 17 Oct 2025 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B40D330B1D;
+	Fri, 17 Oct 2025 15:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TE3v9Av8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4faZ3pu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20133330B06;
-	Fri, 17 Oct 2025 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E135D28935A;
+	Fri, 17 Oct 2025 15:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716589; cv=none; b=pi6HYafQwRa8A4CHC0bvAzQPdbD2gHyp8ABeO3kRE6996yqyruoLwRTI4ha/p4C84PQRRITq3rC7c+j9f8/BUOC+Y049aw1DSp7JKQ4PBbqWq8DxC3ShLiFfm1NoAhLveJaOCHcXLLrsfJHIqUq8IPdtv1AK4dm5PX2QABlTz5A=
+	t=1760715855; cv=none; b=RxmrxR5ExMpUInYYN6K37edcIwHPwFCFiLucTwJ+RzFPPSkUBfxcE/stlzv+ctTDGhpkyu/9mhYPu3PEpHQtjGKA/alxd1vFFaHNyATJa+kA4kMqZuEJeKpcV2CEZVCf5tHj8O+RvChATzZNgB1x3sZl3e62tpPN3YWvhzENaTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716589; c=relaxed/simple;
-	bh=WVbKPuTkozrrmukC0DFBvdWwFXegxLb6bj8EzCYSFR8=;
+	s=arc-20240116; t=1760715855; c=relaxed/simple;
+	bh=BqFOVS9nlOgYj/3aibV3raqXR/TgZuDvtvQQ6WQLNx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eppMOxpyc1Md5mXxVHwWhmQ7zAzBbonUKRKRUFJZBqBkzIeMPZ/NwDrt63jhYvSNNfhvR+KGNOl0lTIIX1g5m6yidwh5OLUxKEWzyHm/mFiChj3lYOmqosN4UdiguDTY31kfiOFzyZC2uPqHn2lWtf6FmR2X8d6bW24YThI6Ywc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TE3v9Av8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A91C4CEE7;
-	Fri, 17 Oct 2025 15:56:28 +0000 (UTC)
+	 MIME-Version; b=AUoHaxzMAaHosDI3yJoZjnk4u5a5g3W8ozuSfsaNRrpr680v0s4ZJ0HNKndKu2CJmBaDfMs9bNqGxE8IxMXayf9jF3LxVA9b2XWysd4ET8wP/nw3lCsdxbbYNAVrfM9c0RNfXnyjN+M9Mgd9V2vPQO/nthyCuEKXN9tolt58+3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4faZ3pu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8D6C4CEE7;
+	Fri, 17 Oct 2025 15:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716589;
-	bh=WVbKPuTkozrrmukC0DFBvdWwFXegxLb6bj8EzCYSFR8=;
+	s=korg; t=1760715854;
+	bh=BqFOVS9nlOgYj/3aibV3raqXR/TgZuDvtvQQ6WQLNx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TE3v9Av8gN8JuIC9FMbWFAkaYdZQ1CqMAVaDR6DC4YnmczzTXJfP5ytjA96k/jM+0
-	 lC2YsZSmqenrGI1NJiq86uTdO1+epxQARs8H/wgagqJoiLfZdgxszGhrZzngFNNgPx
-	 9S/B3mP20coOtFsHL37RcK8pGPTEIx1/lemZCnZs=
+	b=S4faZ3puoOgM8azPEdHkCcgB7jbMKcktIB8ZDGUQIevujqhGdJoeWAMwSuEet3Oah
+	 hRVNJ7JVcGRh5r6lqpSeEyzzbUsaIvwuV/qWWM16UV+2DAo9S6i+eG6v1VPIECWgu5
+	 MXUgnBwAUTxiwHXSl6nYe3+VuJBS5C+2pJaPdK0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Mark Brown <broonie@kernel.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 5.15 242/276] minmax: Introduce {min,max}_array()
+	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 360/371] minixfs: Verify inode mode when loading from disk
 Date: Fri, 17 Oct 2025 16:55:35 +0200
-Message-ID: <20251017145151.307428414@linuxfoundation.org>
+Message-ID: <20251017145215.112519780@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit c952c748c7a983a8bda9112984e6f2c1f6e441a5 ]
+[ Upstream commit 73861970938ad1323eb02bbbc87f6fbd1e5bacca ]
 
-Introduce min_array() (resp max_array()) in order to get the
-minimal (resp maximum) of values present in an array.
+The inode mode loaded from corrupted disk can be invalid. Do like what
+commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
+does.
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/20230623085830.749991-8-herve.codina@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/ec982681-84b8-4624-94fa-8af15b77cbd2@I-love.SAKURA.ne.jp
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   64 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+ fs/minix/inode.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -168,6 +168,70 @@
-  */
- #define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
+diff --git a/fs/minix/inode.c b/fs/minix/inode.c
+index df9d11479caf1..32db676127a9e 100644
+--- a/fs/minix/inode.c
++++ b/fs/minix/inode.c
+@@ -492,8 +492,14 @@ void minix_set_inode(struct inode *inode, dev_t rdev)
+ 		inode->i_op = &minix_symlink_inode_operations;
+ 		inode_nohighmem(inode);
+ 		inode->i_mapping->a_ops = &minix_aops;
+-	} else
++	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
++		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
+ 		init_special_inode(inode, inode->i_mode, rdev);
++	} else {
++		printk(KERN_DEBUG "MINIX-fs: Invalid file type 0%04o for inode %lu.\n",
++		       inode->i_mode, inode->i_ino);
++		make_bad_inode(inode);
++	}
+ }
  
-+/*
-+ * Remove a const qualifier from integer types
-+ * _Generic(foo, type-name: association, ..., default: association) performs a
-+ * comparison against the foo type (not the qualified type).
-+ * Do not use the const keyword in the type-name as it will not match the
-+ * unqualified type of foo.
-+ */
-+#define __unconst_integer_type_cases(type)	\
-+	unsigned type:  (unsigned type)0,	\
-+	signed type:    (signed type)0
-+
-+#define __unconst_integer_typeof(x) typeof(			\
-+	_Generic((x),						\
-+		char: (char)0,					\
-+		__unconst_integer_type_cases(char),		\
-+		__unconst_integer_type_cases(short),		\
-+		__unconst_integer_type_cases(int),		\
-+		__unconst_integer_type_cases(long),		\
-+		__unconst_integer_type_cases(long long),	\
-+		default: (x)))
-+
-+/*
-+ * Do not check the array parameter using __must_be_array().
-+ * In the following legit use-case where the "array" passed is a simple pointer,
-+ * __must_be_array() will return a failure.
-+ * --- 8< ---
-+ * int *buff
-+ * ...
-+ * min = min_array(buff, nb_items);
-+ * --- 8< ---
-+ *
-+ * The first typeof(&(array)[0]) is needed in order to support arrays of both
-+ * 'int *buff' and 'int buff[N]' types.
-+ *
-+ * The array can be an array of const items.
-+ * typeof() keeps the const qualifier. Use __unconst_integer_typeof() in order
-+ * to discard the const qualifier for the __element variable.
-+ */
-+#define __minmax_array(op, array, len) ({				\
-+	typeof(&(array)[0]) __array = (array);				\
-+	typeof(len) __len = (len);					\
-+	__unconst_integer_typeof(__array[0]) __element = __array[--__len]; \
-+	while (__len--)							\
-+		__element = op(__element, __array[__len]);		\
-+	__element; })
-+
-+/**
-+ * min_array - return minimum of values present in an array
-+ * @array: array
-+ * @len: array length
-+ *
-+ * Note that @len must not be zero (empty array).
-+ */
-+#define min_array(array, len) __minmax_array(min, array, len)
-+
-+/**
-+ * max_array - return maximum of values present in an array
-+ * @array: array
-+ * @len: array length
-+ *
-+ * Note that @len must not be zero (empty array).
-+ */
-+#define max_array(array, len) __minmax_array(max, array, len)
-+
- /**
-  * clamp_t - return a value clamped to a given range using a given type
-  * @type: the type of variable to use
+ /*
+-- 
+2.51.0
+
 
 
 
