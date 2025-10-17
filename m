@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7963CBE9F00
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D486BBE962A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90EC9744986
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0FCA4565AA9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC55433291A;
-	Fri, 17 Oct 2025 15:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C213833711A;
+	Fri, 17 Oct 2025 14:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pr8xCgw4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzO1z5zI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890BE2F12D9;
-	Fri, 17 Oct 2025 15:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7811A2459E1;
+	Fri, 17 Oct 2025 14:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714427; cv=none; b=n/AbwJz2uk+t9qh+vYcQFni4gQXDCrMVifu7Ly+F/xKkUSKhRQ4B/FcRCQYhMR+YGrzyDspB+qzfgZ3wvgF4cSg73fVk6bF4xxU8tzvd9/xu2fCEeMghSu6DyHBpbEFVcj8zDk0rNBNVW9/yYwMAL2bJ4JwRWItDqlHk9p3sRn0=
+	t=1760713037; cv=none; b=Ta5vYu4AxeWDCmE5MxhZdb3lcKbK1E327q3IS2tQoFR6Cki9iuT1NyO8fRbb2dQcCJNwHfk0Lsi/E6Jmqp53iYQQQVqZkloxn01Yh12z97+/sAhfK/eYhoudT2/OeTRRhIzDkV+hVCxvlo2HZnCDuyx1/8O7NTKhPXhI0BzgZEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714427; c=relaxed/simple;
-	bh=juKTQ9g9JoW9rF94aPnJJqC3Jy7T0Rr0xcJ0KiQOC4U=;
+	s=arc-20240116; t=1760713037; c=relaxed/simple;
+	bh=Rm6kYJ2vwMQI/tO+DssJgGSmi2kQKVFJu0E5b2uraQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dlZDlRQix4pvE0L0imB25ut076om93TvMbTcaNiG3XuON57JsjThxEsMAWlYPGen5rEEV1jpoou6Galnxj3QiSHnqhfY7iT8UJjDeMvaEIfN1HH6L4OKmWi9dcrdwY9cVnOr5zC5qrF0DRNxV2va8/RquVdNSConwPm+JA9btlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pr8xCgw4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD324C4CEE7;
-	Fri, 17 Oct 2025 15:20:26 +0000 (UTC)
+	 MIME-Version; b=nzTgWzmIcmnzBW9QTdwZCzkwPXjuLA2dhJpKQSBqbzMjTVxJ0OXh3NVg7ig8F+Pb+YUdJBYTfQbi6p0IbvFQVskzv44zOneK2BGdbKbuhbIzqGiibfslICyyH2aPeGALYhgLmsMCcad5HlXmGbAiz2lE9BWn32g0ICbFo1a4uhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzO1z5zI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAABDC4CEF9;
+	Fri, 17 Oct 2025 14:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714427;
-	bh=juKTQ9g9JoW9rF94aPnJJqC3Jy7T0Rr0xcJ0KiQOC4U=;
+	s=korg; t=1760713037;
+	bh=Rm6kYJ2vwMQI/tO+DssJgGSmi2kQKVFJu0E5b2uraQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pr8xCgw4cm2eoMHZNXhp2l7N79HmG1Bk4G7lyUgg4PZQQxAP+xvW1EVpb5+nFnRcr
-	 sj3dNn01tCq8zNRpWSXsTahjErOyAu+VHB/0MbpKa5/w9+Zf013mrIDIc6nJigRkQS
-	 IERZAC7+aqI+ppaCFBBr5VGOo+V7QCSdHI7pyyOg=
+	b=CzO1z5zIa9mCQcs/cfoF0jEh5MiVArC44h7fVZElBFNh2glnFrce3k9HKyWAcqLZ9
+	 qR0iRCtoYJV+KPvADJcyAzVzWB5zSvPrXm9uAyzOEZcepE7G2KtHv1fn3pn+T8oAj5
+	 4JvKAwGpDYxX2XfsVTU+5oq/y+ABNomh1sfyDnuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.12 098/277] xen/events: Cleanup find_virq() return codes
+	John Garry <john.garry@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 026/168] scsi: mvsas: Use sas_task_find_rq() for tagging
 Date: Fri, 17 Oct 2025 16:51:45 +0200
-Message-ID: <20251017145150.710093924@linuxfoundation.org>
+Message-ID: <20251017145129.983413703@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,206 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: John Garry <john.garry@huawei.com>
 
-commit 08df2d7dd4ab2db8a172d824cda7872d5eca460a upstream.
+[ Upstream commit 2acf97f199f9eba8321390325519e9b6bff60108 ]
 
-rc is overwritten by the evtchn_status hypercall in each iteration, so
-the return value will be whatever the last iteration is.  This could
-incorrectly return success even if the event channel was not found.
-Change to an explicit -ENOENT for an un-found virq and return 0 on a
-successful match.
+The request associated with a SCSI command coming from the block layer has
+a unique tag, so use that when possible for getting a slot.
 
-Fixes: 62cc5fc7b2e0 ("xen/pv-on-hvm kexec: rebind virqs to existing eventchannel ports")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250828003604.8949-2-jason.andryuk@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Unfortunately we don't support reserved commands in the SCSI midlayer yet.
+As such, SMP tasks - as an example - will not have a request associated, so
+in the interim continue to manage those tags for that type of sas_task
+internally.
+
+We reserve an arbitrary 4 tags for these internal tags. Indeed, we already
+decrement MVS_RSVD_SLOTS by 2 for the shost can_queue when flag
+MVF_FLAG_SOC is set. This change was made in commit 20b09c2992fe ("[SCSI]
+mvsas: add support for 94xx; layout change; bug fixes"), but what those 2
+slots are used for is not obvious.
+
+Also make the tag management functions static, where possible.
+
+Signed-off-by: John Garry <john.garry@huawei.com>
+Link: https://lore.kernel.org/r/1666091763-11023-8-git-send-email-john.garry@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 60cd16a3b743 ("scsi: mvsas: Fix use-after-free bugs in mvs_work_queue")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/scsi/mvsas/mv_defs.h |  1 +
+ drivers/scsi/mvsas/mv_init.c |  9 +++++----
+ drivers/scsi/mvsas/mv_sas.c  | 35 ++++++++++++++++++++++-------------
+ drivers/scsi/mvsas/mv_sas.h  |  7 +------
+ 4 files changed, 29 insertions(+), 23 deletions(-)
 
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -1324,10 +1324,11 @@ static int find_virq(unsigned int virq,
- {
- 	struct evtchn_status status;
- 	evtchn_port_t port;
--	int rc = -ENOENT;
+diff --git a/drivers/scsi/mvsas/mv_defs.h b/drivers/scsi/mvsas/mv_defs.h
+index 7123a2efbf583..8ef174cd4d374 100644
+--- a/drivers/scsi/mvsas/mv_defs.h
++++ b/drivers/scsi/mvsas/mv_defs.h
+@@ -40,6 +40,7 @@ enum driver_configuration {
+ 	MVS_ATA_CMD_SZ		= 96,	/* SATA command table buffer size */
+ 	MVS_OAF_SZ		= 64,	/* Open address frame buffer size */
+ 	MVS_QUEUE_SIZE		= 64,	/* Support Queue depth */
++	MVS_RSVD_SLOTS		= 4,
+ 	MVS_SOC_CAN_QUEUE	= MVS_SOC_SLOTS - 2,
+ };
  
- 	memset(&status, 0, sizeof(status));
- 	for (port = 0; port < xen_evtchn_max_channels(); port++) {
-+		int rc;
-+
- 		status.dom = DOMID_SELF;
- 		status.port = port;
- 		rc = HYPERVISOR_event_channel_op(EVTCHNOP_status, &status);
-@@ -1337,10 +1338,10 @@ static int find_virq(unsigned int virq,
- 			continue;
- 		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu)) {
- 			*evtchn = port;
--			break;
-+			return 0;
- 		}
- 	}
--	return rc;
-+	return -ENOENT;
+diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
+index c85fb812ad437..cfe84473a5153 100644
+--- a/drivers/scsi/mvsas/mv_init.c
++++ b/drivers/scsi/mvsas/mv_init.c
+@@ -142,7 +142,7 @@ static void mvs_free(struct mvs_info *mvi)
+ 		scsi_host_put(mvi->shost);
+ 	list_for_each_entry(mwq, &mvi->wq_list, entry)
+ 		cancel_delayed_work(&mwq->work_q);
+-	kfree(mvi->tags);
++	kfree(mvi->rsvd_tags);
+ 	kfree(mvi);
  }
  
- /**
+@@ -284,7 +284,6 @@ static int mvs_alloc(struct mvs_info *mvi, struct Scsi_Host *shost)
+ 			printk(KERN_DEBUG "failed to create dma pool %s.\n", pool_name);
+ 			goto err_out;
+ 	}
+-	mvi->tags_num = slot_nr;
+ 
+ 	return 0;
+ err_out:
+@@ -367,8 +366,8 @@ static struct mvs_info *mvs_pci_alloc(struct pci_dev *pdev,
+ 	mvi->sas = sha;
+ 	mvi->shost = shost;
+ 
+-	mvi->tags = kzalloc(MVS_CHIP_SLOT_SZ>>3, GFP_KERNEL);
+-	if (!mvi->tags)
++	mvi->rsvd_tags = bitmap_zalloc(MVS_RSVD_SLOTS, GFP_KERNEL);
++	if (!mvi->rsvd_tags)
+ 		goto err_out;
+ 
+ 	if (MVS_CHIP_DISP->chip_ioremap(mvi))
+@@ -469,6 +468,8 @@ static void  mvs_post_sas_ha_init(struct Scsi_Host *shost,
+ 	else
+ 		can_queue = MVS_CHIP_SLOT_SZ;
+ 
++	can_queue -= MVS_RSVD_SLOTS;
++
+ 	shost->sg_tablesize = min_t(u16, SG_ALL, MVS_MAX_SG);
+ 	shost->can_queue = can_queue;
+ 	mvi->shost->cmd_per_lun = MVS_QUEUE_SIZE;
+diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
+index 82a308840b117..fd73fcf71bd1d 100644
+--- a/drivers/scsi/mvsas/mv_sas.c
++++ b/drivers/scsi/mvsas/mv_sas.c
+@@ -20,31 +20,34 @@ static int mvs_find_tag(struct mvs_info *mvi, struct sas_task *task, u32 *tag)
+ 	return 0;
+ }
+ 
+-void mvs_tag_clear(struct mvs_info *mvi, u32 tag)
++static void mvs_tag_clear(struct mvs_info *mvi, u32 tag)
+ {
+-	void *bitmap = mvi->tags;
++	void *bitmap = mvi->rsvd_tags;
+ 	clear_bit(tag, bitmap);
+ }
+ 
+-void mvs_tag_free(struct mvs_info *mvi, u32 tag)
++static void mvs_tag_free(struct mvs_info *mvi, u32 tag)
+ {
++	if (tag >= MVS_RSVD_SLOTS)
++		return;
++
+ 	mvs_tag_clear(mvi, tag);
+ }
+ 
+-void mvs_tag_set(struct mvs_info *mvi, unsigned int tag)
++static void mvs_tag_set(struct mvs_info *mvi, unsigned int tag)
+ {
+-	void *bitmap = mvi->tags;
++	void *bitmap = mvi->rsvd_tags;
+ 	set_bit(tag, bitmap);
+ }
+ 
+-inline int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out)
++static int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out)
+ {
+ 	unsigned int index, tag;
+-	void *bitmap = mvi->tags;
++	void *bitmap = mvi->rsvd_tags;
+ 
+-	index = find_first_zero_bit(bitmap, mvi->tags_num);
++	index = find_first_zero_bit(bitmap, MVS_RSVD_SLOTS);
+ 	tag = index;
+-	if (tag >= mvi->tags_num)
++	if (tag >= MVS_RSVD_SLOTS)
+ 		return -SAS_QUEUE_FULL;
+ 	mvs_tag_set(mvi, tag);
+ 	*tag_out = tag;
+@@ -696,6 +699,7 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
+ 	struct mvs_task_exec_info tei;
+ 	struct mvs_slot_info *slot;
+ 	u32 tag = 0xdeadbeef, n_elem = 0;
++	struct request *rq;
+ 	int rc = 0;
+ 
+ 	if (!dev->port) {
+@@ -760,9 +764,14 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
+ 		n_elem = task->num_scatter;
+ 	}
+ 
+-	rc = mvs_tag_alloc(mvi, &tag);
+-	if (rc)
+-		goto err_out;
++	rq = sas_task_find_rq(task);
++	if (rq) {
++		tag = rq->tag + MVS_RSVD_SLOTS;
++	} else {
++		rc = mvs_tag_alloc(mvi, &tag);
++		if (rc)
++			goto err_out;
++	}
+ 
+ 	slot = &mvi->slot_info[tag];
+ 
+@@ -857,7 +866,7 @@ int mvs_queue_command(struct sas_task *task, gfp_t gfp_flags)
+ static void mvs_slot_free(struct mvs_info *mvi, u32 rx_desc)
+ {
+ 	u32 slot_idx = rx_desc & RXQ_SLOT_MASK;
+-	mvs_tag_clear(mvi, slot_idx);
++	mvs_tag_free(mvi, slot_idx);
+ }
+ 
+ static void mvs_slot_task_free(struct mvs_info *mvi, struct sas_task *task,
+diff --git a/drivers/scsi/mvsas/mv_sas.h b/drivers/scsi/mvsas/mv_sas.h
+index fe57665bdb505..68df771e29759 100644
+--- a/drivers/scsi/mvsas/mv_sas.h
++++ b/drivers/scsi/mvsas/mv_sas.h
+@@ -370,8 +370,7 @@ struct mvs_info {
+ 	u32 chip_id;
+ 	const struct mvs_chip_info *chip;
+ 
+-	int tags_num;
+-	unsigned long *tags;
++	unsigned long *rsvd_tags;
+ 	/* further per-slot information */
+ 	struct mvs_phy phy[MVS_MAX_PHYS];
+ 	struct mvs_port port[MVS_MAX_PHYS];
+@@ -424,10 +423,6 @@ struct mvs_task_exec_info {
+ 
+ /******************** function prototype *********************/
+ void mvs_get_sas_addr(void *buf, u32 buflen);
+-void mvs_tag_clear(struct mvs_info *mvi, u32 tag);
+-void mvs_tag_free(struct mvs_info *mvi, u32 tag);
+-void mvs_tag_set(struct mvs_info *mvi, unsigned int tag);
+-int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out);
+ void mvs_iounmap(void __iomem *regs);
+ int mvs_ioremap(struct mvs_info *mvi, int bar, int bar_ex);
+ void mvs_phys_reset(struct mvs_info *mvi, u32 phy_mask, int hard);
+-- 
+2.51.0
+
 
 
 
