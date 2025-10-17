@@ -1,74 +1,56 @@
-Return-Path: <stable+bounces-187526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FC9BEA509
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8A2BE9E94
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:32:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 006711AE5ABB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 39918587CD2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A4E2745E;
-	Fri, 17 Oct 2025 15:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445A732C944;
+	Fri, 17 Oct 2025 15:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLE88u86"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a63jTBl5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A16330B00;
-	Fri, 17 Oct 2025 15:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F226520C00A;
+	Fri, 17 Oct 2025 15:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716325; cv=none; b=fYfX1ghdC7lyxMSMUnThebpjKnJdOmoci+BT4tr0OT1W2PA1PAale3vA03od79aY7eoFVPGB+uII/u0xit8k+zJX5hKfCTVGEzu0Qpnx5dvKXwnSKr4cpoCNGAddQa1mAZowUd/Sgesuq3c5SJPVh82Fy2FdwqA6WDTB6tuqPNQ=
+	t=1760714711; cv=none; b=fBfMURqTwevMVBqZoSE9fEtBs+fnXWdnekX5b0SRQ/Ms0q5na16LMi9S7qvSUch41nV01Kd7CjTKl+fCwE9Ye3dx+w20omm041Mzf5hRA6giup4MSpKm7yuVe5u0nCGdcMYZ8PlpzICpWtUo6C49sAq77EXhOXqE8HJjeArQ66c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716325; c=relaxed/simple;
-	bh=exOzAKYyZqWdz3l/rN4xuKsrpx1NjgptUR/yfAc9w/0=;
+	s=arc-20240116; t=1760714711; c=relaxed/simple;
+	bh=fJCLxE255BPNnpZJST0VdkcP1I/EmBrUTPDGQqG+M7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvqq7aWOtwXh8VeyZ2Nhx4hSAOddtHzjfRkwgcXtXWCQG6VL4d/W/eyr3KwSeA/HQp8zDuqEjW7890U64rJYtopQKgUjG/qVy3kzfkGGsCHO7QEAitox3qYSrmntg7mZaQb72pw4uRRgZQRpyGjylXuwyrqdC9e+sDJ/ZPWD3JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLE88u86; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5444CC116B1;
-	Fri, 17 Oct 2025 15:52:04 +0000 (UTC)
+	 MIME-Version; b=s036Fp9p9KxyTW87laiO/7lIeP8YPLjFADDZGbfYwlSnlTbOsc9+avqn8B4pMH/YM6MH8tKFTr+YPTVlrvxCPvbBLXBnPMaagN2oFxbhY+9RYnkXmjckieHp+IU+YyklEV68iocgHdDK6mEaVlZq2/TRtmol4cxKyskFtRF42gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a63jTBl5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB69C4CEE7;
+	Fri, 17 Oct 2025 15:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716324;
-	bh=exOzAKYyZqWdz3l/rN4xuKsrpx1NjgptUR/yfAc9w/0=;
+	s=korg; t=1760714710;
+	bh=fJCLxE255BPNnpZJST0VdkcP1I/EmBrUTPDGQqG+M7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oLE88u86G77oJrcRTZwIecPAKmfrB6e9/tRB1tYMLffW9mPUH4RJqJ1WVwaSJFkXt
-	 nGPmwQs1QjumTeLc1rs0NjnkmhRfKwU4pxwRTW2JFYpTibuLzbogPnUT9sXgSExHoQ
-	 1CyvTft/pwR1LmSoVXthVo4ck0GfuE2xx2a1NW9I=
+	b=a63jTBl5A4hinjJf0cQEBB9RboJRI3brCPZ5Srn1gf8EHgl7EQDffHVI2smVDlen6
+	 8yqthpTo2ErY1rqLVTjhvy3E+A7/iYJ1tG4dXwz12nU6600Cc0l22twq4xM5PV4IQ0
+	 Nl9k5h9gOCMVJkeVmxqsXWFS3qSoIypGv2wLo43k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	James Clark <james.clark@linaro.org>,
-	linux-riscv@lists.infradead.org,
-	llvm@lists.linux.dev,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 152/276] tools build: Align warning options with perf
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12 238/277] KVM: x86: Advertise SRSO_USER_KERNEL_NO to userspace
 Date: Fri, 17 Oct 2025 16:54:05 +0200
-Message-ID: <20251017145148.027432958@linuxfoundation.org>
+Message-ID: <20251017145155.829311022@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,67 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-[ Upstream commit 53d067feb8c4f16d1f24ce3f4df4450bb18c555f ]
+[ Upstream commit 716f86b523d8ec3c17015ee0b03135c7aa6f2f08 ]
 
-The feature test programs are built without enabling '-Wall -Werror'
-options. As a result, a feature may appear to be available, but later
-building in perf can fail with stricter checks.
+SRSO_USER_KERNEL_NO denotes whether the CPU is affected by SRSO across
+user/kernel boundaries. Advertise it to guest userspace.
 
-Make the feature test program use the same warning options as perf.
-
-Fixes: 1925459b4d92 ("tools build: Fix feature Makefile issues with 'O='")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20251006-perf_build_android_ndk-v3-1-4305590795b2@arm.com
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: James Clark <james.clark@linaro.org>
-Cc: linux-riscv@lists.infradead.org
-Cc: llvm@lists.linux.dev
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-perf-users@vger.kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://lore.kernel.org/r/20241202120416.6054-3-bp@kernel.org
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/build/feature/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Boris Ostrovsky suggested that we backport this commit to 6.12.y as we
+have commit: 6f0f23ef76be ("KVM: x86: Add IBPB_BRTYPE support") in 6.12.y
 
-diff --git a/tools/build/feature/Makefile b/tools/build/feature/Makefile
-index aa3b0d75e44b7..37aa85a81e0a0 100644
---- a/tools/build/feature/Makefile
-+++ b/tools/build/feature/Makefile
-@@ -268,10 +268,10 @@ $(OUTPUT)test-libbabeltrace.bin:
- 	$(BUILD) # -lbabeltrace provided by $(FEATURE_CHECK_LDFLAGS-libbabeltrace)
- 
- $(OUTPUT)test-compile-32.bin:
--	$(CC) -m32 -o $@ test-compile.c
-+	$(CC) -m32 -Wall -Werror -o $@ test-compile.c
- 
- $(OUTPUT)test-compile-x32.bin:
--	$(CC) -mx32 -o $@ test-compile.c
-+	$(CC) -mx32 -Wall -Werror -o $@ test-compile.c
- 
- $(OUTPUT)test-zlib.bin:
- 	$(BUILD) -lz
--- 
-2.51.0
+Hi borislav: Can you please ACK before stable maintainers pick this ?
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/x86/kvm/cpuid.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -816,7 +816,7 @@ void kvm_set_cpu_caps(void)
+ 		F(NO_NESTED_DATA_BP) | F(LFENCE_RDTSC) | 0 /* SmmPgCfgLock */ |
+ 		F(VERW_CLEAR) |
+ 		F(NULL_SEL_CLR_BASE) | F(AUTOIBRS) | 0 /* PrefetchCtlMsr */ |
+-		F(WRMSR_XX_BASE_NS)
++		F(WRMSR_XX_BASE_NS) | F(SRSO_USER_KERNEL_NO)
+ 	);
+ 
+ 	kvm_cpu_cap_check_and_set(X86_FEATURE_SBPB);
 
 
 
