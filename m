@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624F8BEA801
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:10:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FF8BEAB95
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A0357C786C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:34:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 840C47C559E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624093570CC;
-	Fri, 17 Oct 2025 15:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA55330B1B;
+	Fri, 17 Oct 2025 15:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7AJRz5X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNQlkKNF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D65A34F466;
-	Fri, 17 Oct 2025 15:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A86C330B04;
+	Fri, 17 Oct 2025 15:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715165; cv=none; b=DbUjSCDsmTmDM5ztMTD+T6sRwUwT/aKQzCZAtfjxSFAUQlqw0xvS3z/a4I1YQlbcd4Lco2Q7R6+3qMbAOlB9otLLvt7F5MR9WegnyPV3Kkq7sod0dPNQVlzp1+OaHkcFzmT9VmM8/tj44PP99cOjW+g67KPYzceExdJpCaFrFgQ=
+	t=1760715976; cv=none; b=dwR+/LRIBi9hZ6kDNB2rKkTlJjl/0m6F26afSoaEhbCYwrzrLYfeov+Px//eozlKikph7GYP9dWm22gUvLYO1gepVeF8bz2BBNG7MgnhuP8sB0jl0AuKd8drQAqY2K2EYLMbOPe2sQD1a289qNeftcsNXv94nVAt0VAhmya1tME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715165; c=relaxed/simple;
-	bh=dVhfVNGUHqfqqPbq/vsSYH9O1xMADlYVbqiIBdjLbA4=;
+	s=arc-20240116; t=1760715976; c=relaxed/simple;
+	bh=OOsaA/vgM0jz7AGXq0owAAYKy8dPKoTZEDSO5zG97Ek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8exuk+6jbCdqzrIzCGo4GAFmWSh4V5MBYvV0w63DfiytnAWtLDx/XN3MOv7x995jgrWb3c9ak3g4EtJ4szbG6m1hGWuSJdteDXZX3nfwyjiBM3So5mEsg92L3SGy203pISj168cL+Uu4f2gVoXX0armwVz3+7yf8T2PaWK+iQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7AJRz5X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12AEC4CEE7;
-	Fri, 17 Oct 2025 15:32:44 +0000 (UTC)
+	 MIME-Version; b=HuFKdl2+vVtuSEpmSqcdrFHHqqeJs/2aw2vmBxHrABf/cQAoZoLqh45ZqarSHgX5VmWoxH/MKWuRhvtPbBwhDvMIyXJsjBBVCWghtacohhyj+pw8tq9JRaTeTWg/ElLC0sPBIeUpr8EWzP5I3DqUVtkmRFSS5aL8fP3bdcPDVZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNQlkKNF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FEBC4CEE7;
+	Fri, 17 Oct 2025 15:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715165;
-	bh=dVhfVNGUHqfqqPbq/vsSYH9O1xMADlYVbqiIBdjLbA4=;
+	s=korg; t=1760715976;
+	bh=OOsaA/vgM0jz7AGXq0owAAYKy8dPKoTZEDSO5zG97Ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7AJRz5XeAFYdS5vEjElGHy0lSkwaCGMfWGZWXpeeONw2NuUqO6XTkSP7CiskgcH8
-	 w/5IIlCz2MKbmztFRH2YH7FRRPnfEDTTJnJ6auLMYrx0tulkjzUNh/jb8TNRwfE1j/
-	 FkZVJI2CmNClWFrYyppdo6+OA9nn35zuQ0ZH2R8M=
+	b=SNQlkKNFDp8j+4QtcMCR8Qk3Rxke/fjeyFufOEENsHqOzANg+AUlzmkitCo9TaaZB
+	 +o3s2GpzPUzuKBP3svGb1pVD4rD1vQWY+HTt/wBqVALi1ParTF8450/MqtPB59Ds0t
+	 EymNeRTjhngqIlg4Jc3IKrZf9OqY6x2nobYDcu+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 119/371] selftests: netfilter: query conntrack state to check for port clash resolution
-Date: Fri, 17 Oct 2025 16:51:34 +0200
-Message-ID: <20251017145206.241544932@linuxfoundation.org>
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.15 003/276] media: b2c2: Fix use-after-free causing by irq_check_work in flexcop_pci_remove
+Date: Fri, 17 Oct 2025 16:51:36 +0200
+Message-ID: <20251017145142.513842954@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +61,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit e84945bdc619ed4243ba4298dbb8ca2062026474 ]
+commit 01e03fb7db419d39e18d6090d4873c1bff103914 upstream.
 
-Jakub reported this self test flaking occasionally (fails, but passes on
-re-run) on debug kernels.
+The original code uses cancel_delayed_work() in flexcop_pci_remove(), which
+does not guarantee that the delayed work item irq_check_work has fully
+completed if it was already running. This leads to use-after-free scenarios
+where flexcop_pci_remove() may free the flexcop_device while irq_check_work
+is still active and attempts to dereference the device.
 
-This is because the test checks for elapsed time to determine if both
-connections were established in parallel.
+A typical race condition is illustrated below:
 
-Rework this to no longer depend on timing.
-Use busywait helper to check that both sockets have moved to established
-state and then query the conntrack engine for the two entries.
+CPU 0 (remove)                         | CPU 1 (delayed work callback)
+flexcop_pci_remove()                   | flexcop_pci_irq_check_work()
+  cancel_delayed_work()                |
+  flexcop_device_kfree(fc_pci->fc_dev) |
+                                       |   fc = fc_pci->fc_dev; // UAF
 
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/netfilter-devel/20250926163318.40d1a502@kernel.org/
-Fixes: 117e149e26d1 ("selftests: netfilter: test nat source port clash resolution interaction with tcp early demux")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is confirmed by a KASAN report:
+
+==================================================================
+BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
+Write of size 8 at addr ffff8880093aa8c8 by task bash/135
+...
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x55/0x70
+ print_report+0xcf/0x610
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ kasan_report+0xb8/0xf0
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ __run_timer_base.part.0+0x7d7/0x8c0
+ ? __pfx___run_timer_base.part.0+0x10/0x10
+ ? __pfx_read_tsc+0x10/0x10
+ ? ktime_get+0x60/0x140
+ ? lapic_next_event+0x11/0x20
+ ? clockevents_program_event+0x1d4/0x2a0
+ run_timer_softirq+0xd1/0x190
+ handle_softirqs+0x16a/0x550
+ irq_exit_rcu+0xaf/0xe0
+ sysvec_apic_timer_interrupt+0x70/0x80
+ </IRQ>
+...
+
+Allocated by task 1:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x7f/0x90
+ __kmalloc_noprof+0x1be/0x460
+ flexcop_device_kmalloc+0x54/0xe0
+ flexcop_pci_probe+0x1f/0x9d0
+ local_pci_probe+0xdc/0x190
+ pci_device_probe+0x2fe/0x470
+ really_probe+0x1ca/0x5c0
+ __driver_probe_device+0x248/0x310
+ driver_probe_device+0x44/0x120
+ __driver_attach+0xd2/0x310
+ bus_for_each_dev+0xed/0x170
+ bus_add_driver+0x208/0x500
+ driver_register+0x132/0x460
+ do_one_initcall+0x89/0x300
+ kernel_init_freeable+0x40d/0x720
+ kernel_init+0x1a/0x150
+ ret_from_fork+0x10c/0x1a0
+ ret_from_fork_asm+0x1a/0x30
+
+Freed by task 135:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3a/0x60
+ __kasan_slab_free+0x3f/0x50
+ kfree+0x137/0x370
+ flexcop_device_kfree+0x32/0x50
+ pci_device_remove+0xa6/0x1d0
+ device_release_driver_internal+0xf8/0x210
+ pci_stop_bus_device+0x105/0x150
+ pci_stop_and_remove_bus_device_locked+0x15/0x30
+ remove_store+0xcc/0xe0
+ kernfs_fop_write_iter+0x2c3/0x440
+ vfs_write+0x871/0xd70
+ ksys_write+0xee/0x1c0
+ do_syscall_64+0xac/0x280
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the delayed work item is properly canceled and any executing delayed
+work has finished before the device memory is deallocated.
+
+This bug was initially identified through static analysis. To reproduce
+and test it, I simulated the B2C2 FlexCop PCI device in QEMU and introduced
+artificial delays within the flexcop_pci_irq_check_work() function to
+increase the likelihood of triggering the bug.
+
+Fixes: 382c5546d618 ("V4L/DVB (10694): [PATCH] software IRQ watchdog for Flexcop B2C2 DVB PCI cards")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../selftests/net/netfilter/nf_nat_edemux.sh  | 58 +++++++++++++------
- 1 file changed, 41 insertions(+), 17 deletions(-)
+ drivers/media/pci/b2c2/flexcop-pci.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/netfilter/nf_nat_edemux.sh b/tools/testing/selftests/net/netfilter/nf_nat_edemux.sh
-index 1014551dd7694..6731fe1eaf2e9 100755
---- a/tools/testing/selftests/net/netfilter/nf_nat_edemux.sh
-+++ b/tools/testing/selftests/net/netfilter/nf_nat_edemux.sh
-@@ -17,9 +17,31 @@ cleanup()
+--- a/drivers/media/pci/b2c2/flexcop-pci.c
++++ b/drivers/media/pci/b2c2/flexcop-pci.c
+@@ -411,7 +411,7 @@ static void flexcop_pci_remove(struct pc
+ 	struct flexcop_pci *fc_pci = pci_get_drvdata(pdev);
  
- checktool "socat -h" "run test without socat"
- checktool "iptables --version" "run test without iptables"
-+checktool "conntrack --version" "run test without conntrack"
+ 	if (irq_chk_intv > 0)
+-		cancel_delayed_work(&fc_pci->irq_check_work);
++		cancel_delayed_work_sync(&fc_pci->irq_check_work);
  
- trap cleanup EXIT
- 
-+connect_done()
-+{
-+	local ns="$1"
-+	local port="$2"
-+
-+	ip netns exec "$ns" ss -nt -o state established "dport = :$port" | grep -q "$port"
-+}
-+
-+check_ctstate()
-+{
-+	local ns="$1"
-+	local dp="$2"
-+
-+	if ! ip netns exec "$ns" conntrack --get -s 192.168.1.2 -d 192.168.1.1 -p tcp \
-+	     --sport 10000 --dport "$dp" --state ESTABLISHED > /dev/null 2>&1;then
-+		echo "FAIL: Did not find expected state for dport $2"
-+		ip netns exec "$ns" bash -c 'conntrack -L; conntrack -S; ss -nt'
-+		ret=1
-+	fi
-+}
-+
- setup_ns ns1 ns2
- 
- # Connect the namespaces using a veth pair
-@@ -44,15 +66,18 @@ socatpid=$!
- ip netns exec "$ns2" sysctl -q net.ipv4.ip_local_port_range="10000 10000"
- 
- # add a virtual IP using DNAT
--ip netns exec "$ns2" iptables -t nat -A OUTPUT -d 10.96.0.1/32 -p tcp --dport 443 -j DNAT --to-destination 192.168.1.1:5201
-+ip netns exec "$ns2" iptables -t nat -A OUTPUT -d 10.96.0.1/32 -p tcp --dport 443 -j DNAT --to-destination 192.168.1.1:5201 || exit 1
- 
- # ... and route it to the other namespace
- ip netns exec "$ns2" ip route add 10.96.0.1 via 192.168.1.1
- 
--# add a persistent connection from the other namespace
--ip netns exec "$ns2" socat -t 10 - TCP:192.168.1.1:5201 > /dev/null &
-+# listener should be up by now, wait if it isn't yet.
-+wait_local_port_listen "$ns1" 5201 tcp
- 
--sleep 1
-+# add a persistent connection from the other namespace
-+sleep 10 | ip netns exec "$ns2" socat -t 10 - TCP:192.168.1.1:5201 > /dev/null &
-+cpid0=$!
-+busywait "$BUSYWAIT_TIMEOUT" connect_done "$ns2" "5201"
- 
- # ip daddr:dport will be rewritten to 192.168.1.1 5201
- # NAT must reallocate source port 10000 because
-@@ -71,26 +96,25 @@ fi
- ip netns exec "$ns1" iptables -t nat -A PREROUTING -p tcp --dport 5202 -j REDIRECT --to-ports 5201
- ip netns exec "$ns1" iptables -t nat -A PREROUTING -p tcp --dport 5203 -j REDIRECT --to-ports 5201
- 
--sleep 5 | ip netns exec "$ns2" socat -t 5 -u STDIN TCP:192.168.1.1:5202,connect-timeout=5 >/dev/null &
-+sleep 5 | ip netns exec "$ns2" socat -T 5 -u STDIN TCP:192.168.1.1:5202,connect-timeout=5 >/dev/null &
-+cpid1=$!
- 
--# if connect succeeds, client closes instantly due to EOF on stdin.
--# if connect hangs, it will time out after 5s.
--echo | ip netns exec "$ns2" socat -t 3 -u STDIN TCP:192.168.1.1:5203,connect-timeout=5 >/dev/null &
-+sleep 5 | ip netns exec "$ns2" socat -T 5 -u STDIN TCP:192.168.1.1:5203,connect-timeout=5 >/dev/null &
- cpid2=$!
- 
--time_then=$(date +%s)
--wait $cpid2
--rv=$?
--time_now=$(date +%s)
-+busywait "$BUSYWAIT_TIMEOUT" connect_done "$ns2" 5202
-+busywait "$BUSYWAIT_TIMEOUT" connect_done "$ns2" 5203
- 
--# Check how much time has elapsed, expectation is for
--# 'cpid2' to connect and then exit (and no connect delay).
--delta=$((time_now - time_then))
-+check_ctstate "$ns1" 5202
-+check_ctstate "$ns1" 5203
- 
--if [ $delta -lt 2 ] && [ $rv -eq 0 ]; then
-+kill $socatpid $cpid0 $cpid1 $cpid2
-+socatpid=0
-+
-+if [ $ret -eq 0 ]; then
- 	echo "PASS: could connect to service via redirected ports"
- else
--	echo "FAIL: socat cannot connect to service via redirect ($delta seconds elapsed, returned $rv)"
-+	echo "FAIL: socat cannot connect to service via redirect"
- 	ret=1
- fi
- 
--- 
-2.51.0
-
+ 	flexcop_pci_dma_exit(fc_pci);
+ 	flexcop_device_exit(fc_pci->fc_dev);
 
 
 
