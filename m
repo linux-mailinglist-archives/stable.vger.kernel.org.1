@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5C1BE96D6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDC5BE9A09
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:17:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CEC5E4FD89E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A8F4583CEC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B4760DCF;
-	Fri, 17 Oct 2025 14:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F89D2F12B8;
+	Fri, 17 Oct 2025 15:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9XVsPjQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/txWX3o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47045695;
-	Fri, 17 Oct 2025 14:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF16F337118;
+	Fri, 17 Oct 2025 15:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713162; cv=none; b=e9rPAjrPQIs7dJKnNTY2VGra7iWdpZwdDBBbPI3skJlF8plFhDIqx32VHsl+kH0BiwKmxXB5vqAFnryX7ElSFHnGMpAi9lbPoM2464SkMl4j0nv971rRi/lSX7e/Lx/898obeenk1NRBmf5C4BM1B1PhyoTfJlNsojYeHXjWcg8=
+	t=1760713695; cv=none; b=PuIhb9yNoPlXrIvUp9Tb0/mY5jdLrjuPGxa97bpPPh6Sb3OsiIPysccdY9tEAFkeCibADQ3gwl6SYFQMDFH70gmP7ZVFA4F4yppUX1RnuHcfn0We7UOWaNWEmlTngA73YPAXklXDnk+ZJeO5uuwkNcXAJpY/dOYSyTqIIN2VKKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713162; c=relaxed/simple;
-	bh=5TymUXYqxcAsBNTqfVBwqoyYM1T6m5zKW+aTptWe9y8=;
+	s=arc-20240116; t=1760713695; c=relaxed/simple;
+	bh=8/vFm+4geDf4sEQmidFeqZq71TW6BTkUZbrjrJryh78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TSKwl6rjrJKM3gaxxGxbiee+nggfOewTof2QMOEjfKxUnhybBMRDRQpW/ewrtLFwJkQdk5nf9Wbcsw1bq6z8/+rjFV9WzJP7PBw/00QVenieW/apRnGr6jKdgoHwrP4Bay9R95MukqNO62819DuS5ublf+BDxtYCn7ZEsh2d8ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9XVsPjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D97C4CEE7;
-	Fri, 17 Oct 2025 14:59:22 +0000 (UTC)
+	 MIME-Version; b=LLEKZ1zxV/poGVRXOgR9nw2TYoYswIE9tAjwh/rFg6tpAkfTokkkh4eIM4c+qDAn1lp1DFXAsoNyC79WkA5J2XJsGHdXhLNnA8Fol3RNMervxWnrbiM0BB7w1yvddKCa31Tc5t8iejLihUqhoeZIkojazB34krOwR6N8WaFYkBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/txWX3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B43C4CEF9;
+	Fri, 17 Oct 2025 15:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713162;
-	bh=5TymUXYqxcAsBNTqfVBwqoyYM1T6m5zKW+aTptWe9y8=;
+	s=korg; t=1760713695;
+	bh=8/vFm+4geDf4sEQmidFeqZq71TW6BTkUZbrjrJryh78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A9XVsPjQhlzCg657MEjl73ddfjgBTKO08Co6IhtbDbItD0pWXCVFDeea3qTCp4kbC
-	 1JXIDs0f6FPq0vDjwegU5fVnJ+WJGn1jv57/J1UGb3V/v9yq7VibjarBY2OtoMUV3p
-	 hzv+qgKVpNL1kdcquwMNMjiJ3jFGu2pdGJkw8ZqI=
+	b=t/txWX3o2lyW+aMsD7AmyhZW558LftjXgIV1OT0YWjhc5L9bmIsUhK/7Mf3pdzoFK
+	 Vjl36FldxSPbGZZJz8nldyRNQeYAvOUd6OUHGOcnhuhLIVCl+9n8shErxAEFafeTsS
+	 PFdnK0VcTXlfNjeCSd2p3/XeVM8sfB36i+DLU/pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 070/168] btrfs: avoid potential out-of-bounds in btrfs_encode_fh()
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 088/201] crypto: rockchip - Fix dma_unmap_sg() nents value
 Date: Fri, 17 Oct 2025 16:52:29 +0200
-Message-ID: <20251017145131.605203939@linuxfoundation.org>
+Message-ID: <20251017145137.987975519@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit dff4f9ff5d7f289e4545cc936362e01ed3252742 upstream.
+commit 21140e5caf019e4a24e1ceabcaaa16bd693b393f upstream.
 
-The function btrfs_encode_fh() does not properly account for the three
-cases it handles.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Before writing to the file handle (fh), the function only returns to the
-user BTRFS_FID_SIZE_NON_CONNECTABLE (5 dwords, 20 bytes) or
-BTRFS_FID_SIZE_CONNECTABLE (8 dwords, 32 bytes).
-
-However, when a parent exists and the root ID of the parent and the
-inode are different, the function writes BTRFS_FID_SIZE_CONNECTABLE_ROOT
-(10 dwords, 40 bytes).
-
-If *max_len is not large enough, this write goes out of bounds because
-BTRFS_FID_SIZE_CONNECTABLE_ROOT is greater than
-BTRFS_FID_SIZE_CONNECTABLE originally returned.
-
-This results in an 8-byte out-of-bounds write at
-fid->parent_root_objectid = parent_root_id.
-
-A previous attempt to fix this issue was made but was lost.
-
-https://lore.kernel.org/all/4CADAEEC020000780001B32C@vpn.id2.novell.com/
-
-Although this issue does not seem to be easily triggerable, it is a
-potential memory corruption bug that should be fixed. This patch
-resolves the issue by ensuring the function returns the appropriate size
-for all three cases and validates that *max_len is large enough before
-writing any data.
-
-Fixes: be6e8dc0ba84 ("NFS support for btrfs - v3")
-CC: stable@vger.kernel.org # 3.0+
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 57d67c6e8219 ("crypto: rockchip - rework by using crypto_engine")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/export.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/crypto/rockchip/rk3288_crypto_ahash.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/export.c
-+++ b/fs/btrfs/export.c
-@@ -22,7 +22,11 @@ static int btrfs_encode_fh(struct inode
- 	int type;
+--- a/drivers/crypto/rockchip/rk3288_crypto_ahash.c
++++ b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
+@@ -252,7 +252,7 @@ static void rk_hash_unprepare(struct cry
+ 	struct rk_ahash_rctx *rctx = ahash_request_ctx(areq);
+ 	struct rk_crypto_info *rkc = rctx->dev;
  
- 	if (parent && (len < BTRFS_FID_SIZE_CONNECTABLE)) {
--		*max_len = BTRFS_FID_SIZE_CONNECTABLE;
-+		if (btrfs_root_id(BTRFS_I(inode)->root) !=
-+		    btrfs_root_id(BTRFS_I(parent)->root))
-+			*max_len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
-+		else
-+			*max_len = BTRFS_FID_SIZE_CONNECTABLE;
- 		return FILEID_INVALID;
- 	} else if (len < BTRFS_FID_SIZE_NON_CONNECTABLE) {
- 		*max_len = BTRFS_FID_SIZE_NON_CONNECTABLE;
-@@ -44,6 +48,8 @@ static int btrfs_encode_fh(struct inode
- 		parent_root_id = BTRFS_I(parent)->root->root_key.objectid;
+-	dma_unmap_sg(rkc->dev, areq->src, rctx->nrsg, DMA_TO_DEVICE);
++	dma_unmap_sg(rkc->dev, areq->src, sg_nents(areq->src), DMA_TO_DEVICE);
+ }
  
- 		if (parent_root_id != fid->root_objectid) {
-+			if (*max_len < BTRFS_FID_SIZE_CONNECTABLE_ROOT)
-+				return FILEID_INVALID;
- 			fid->parent_root_objectid = parent_root_id;
- 			len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
- 			type = FILEID_BTRFS_WITH_PARENT_ROOT;
+ static int rk_hash_run(struct crypto_engine *engine, void *breq)
 
 
 
