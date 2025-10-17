@@ -1,98 +1,98 @@
-Return-Path: <stable+bounces-186261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D4BBE74C6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 10:55:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 282B8BE74E7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 10:56:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EEE6E5623BB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 08:52:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7529622441
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 08:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD5223BF91;
-	Fri, 17 Oct 2025 08:51:34 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07292C0F7C;
+	Fri, 17 Oct 2025 08:56:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SDgeaNcx"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142602D3220
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 08:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F12D29AAFA
+	for <Stable@vger.kernel.org>; Fri, 17 Oct 2025 08:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760691094; cv=none; b=sOf+Mzdw+qkBmm/G2+6EqPzpC0fmzgOZC42HzN21WJ2h5vCbsjs2LaIYF3kO4M+uWPPBz1tjQjAPzlr2XJrf0PRnRB+GMn2FQhrC8ajQTtcTpHg5J9g8qNxecQ03DF0Tt6CKtVMOF3ZjzfrF+kk+oWvF5B5PYeVrGzudnSmch3o=
+	t=1760691385; cv=none; b=t52DhDotmpOfKX6uvPKQYRQj4FRBm2zTnX2BPW3+qsEY4s+fJuNVtazZ5W1aFtIH+r2rtGR7jhYviB5gNKb9U90H+F/Jbc0ZOe2r15OW4NM4E3kU+4nkZ+qrs7PyvrNDhcQvYPlW457yLYIQEORIx1kPm8w0Y+cOSZeh2CSDrFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760691094; c=relaxed/simple;
-	bh=x0ANs7TTnv4RJZFb7FFAd7nTMDHb0Oxx9yGqmnxwVto=;
+	s=arc-20240116; t=1760691385; c=relaxed/simple;
+	bh=ENO3YSOfTnciWFB7PA21ZeJ+n8gziqAO4GtBW3dwPPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EdUL3AtifYOjH8Mx37W4NnkUG90RvDtINSMGruvIXflHiSVCtCyfwYuwNSrmfcdv/e9ByM6+TCs8Zo9eCqIo6g/wOQkGMj7XWsseNTxNqYVnQei0Wc2H44Gl34sM3cUDijifGMdFL5Y9RBjx1/j78hMQ0K2WkpVF1F7w8pxvgZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4711f156326so2884575e9.1
-        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 01:51:30 -0700 (PDT)
+	 MIME-Version; b=B8oSrpr+ac5TGvoK7ECpq1Y7L2AqCuiAcqrlsOEI0uaqXZ5SVLj305DXYsb+AizoVND9+euRi9rnyn+HadWqY8lZwHJUMtkysYw8R2bPP8OJCjkKWxqW1uFP2tSy1AMv4RrJdBoyjCx45cuGQjbEL9CrsKD6UqUTg3I1r1XRT70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SDgeaNcx; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59H8DvOw020342
+	for <Stable@vger.kernel.org>; Fri, 17 Oct 2025 08:56:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=2qk5/cDXnMl
+	tBmhvmLVh3pUHcYmEfXQKc8nHF57WqJ4=; b=SDgeaNcxQnseZaDUnIlewILulX1
+	e3ImkJv5NOHHSQxWYsdl4vaZtvuXLh0CHik8QqjWWgDWTlWiqJvKjmMFqyQTj8uL
+	hj6A7dWvEm1JPhuI9YIy9czvFKSHi4jwePTo5Qy1XywqaVD02RFAkMffN3VHz+W/
+	fDlOEtq9TTlRFz3hMk5dvbhK3c24Mgkfoes2eG3bTZ4kw+MbfEuWZRCpwJ2r+eSf
+	v4qjg32mGj7QyXrB4mANy0VCqt9MDOyeXjknhjwRPbG1VHYUYl4CfBBErUK+LXig
+	nbcYb/qBA0vLEA75gz6OoWSWDYosJJ8S0tMsD2ZIUvBBkvPvQctauw4s2ZA==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49tqvpmyex-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <Stable@vger.kernel.org>; Fri, 17 Oct 2025 08:56:23 +0000 (GMT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-87c08308d26so59424866d6.1
+        for <Stable@vger.kernel.org>; Fri, 17 Oct 2025 01:56:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760691089; x=1761295889;
+        d=1e100.net; s=20230601; t=1760691382; x=1761296182;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=U4VzTJGwFWfbLsxw+5xqIYuZUN7cDkULCnpZc07/OhM=;
-        b=md/20aIOIAU7BGKpS1aacsPPkqzkhxeVYHXgNr/VRo21oMcvQSAK76RZCBXV1yUb4j
-         mf8dBURJBpZ2z65jzipoiiTEkNWRYQXKlizeYVaGkU3dDh+g5BZLq3+RZ38GV9y7kuKG
-         KoM+SKYBE9fCEGag5mwcM88XVrEG6ZoRfYLIqwdJ5aDmq6KKW4V0SgLmGVVq5TCblg+O
-         ZWGeKYWodGhTISXD0j10CiLSw16Iy2XoQP2KFGdeM4YFjmIeEWF/FFB7I1QunKoCco4a
-         v1FI3pXfyEqCVH/C0oOwtWu0xLM2ig6LMFdA5pz33WtJ8sgtHQxbJPUOic3N3Slvl9LT
-         EgMg==
-X-Gm-Message-State: AOJu0Ywz6cp4DBruJy7ElINkLRMtW2LRrOvCUh04Iai7APWJIH8Vn4cD
-	yBy4A+DCq/abIdZsM+DiB7E2u2TprHDDAOmysuVOX5NBcVAWQIm/JEoPLThsPFFM
-X-Gm-Gg: ASbGncvHN+af4DSOAqsjoMuUDXHONREOo4+rSVH6UQ8uDsD8dYGKnzyDoORXAh7KRDD
-	ygSjgvIuVL+ov5JFmErm3m+Gu/R/u6f+EWqvkw+FKAJTyf1jPBBZz2wdP0MVUWpKD6y+p4/2bJe
-	pzUE0VnG2/ZaLZxXB4gksKmUkgAttaez95hogB+v5nN6Te91t3QOdye0ZCizLGJ6Xxu4hZBZAIB
-	zsB0FeH4CBPATWgadMFzonxuOtPAQ6/8He8fdduCCJZuzM2enNoirPmdyBjDDU6DOnQwbydaUiI
-	VD38mHxe8Wrirv5pSeIlr2DOZT7yYyb69HQ4fyHSt0iuwg5sIEisW8rDa4s/II3UHKgvy8aFpv7
-	GbMzRGta3ju0M35hpQdRAnWKxskwrGr2+qdmfdfFR4IE+JFbeiH2ZmWgli+KCkHqEaA==
-X-Google-Smtp-Source: AGHT+IEtQYJdK32nJhSmhKG1JaCoJOb22CNUuwkNfOdw4OZKvioNrRCDXGO5fiUSFcuRhqULndiX3g==
-X-Received: by 2002:a05:600c:6290:b0:46e:2cfe:971c with SMTP id 5b1f17b1804b1-471177c0f91mr21229275e9.0.1760691088976;
-        Fri, 17 Oct 2025 01:51:28 -0700 (PDT)
-Received: from EBJ9932692.tcent.cn ([2a09:0:1:2::3086])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-471144516fasm76080615e9.16.2025.10.17.01.51.21
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 17 Oct 2025 01:51:28 -0700 (PDT)
-From: Lance Yang <lance.yang@linux.dev>
-To: stable@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	ioworker0@gmail.com,
-	Lance Yang <lance.yang@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Zi Yan <ziy@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Jann Horn <jannh@google.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mariano Pache <npache@redhat.com>,
-	Mathew Brost <matthew.brost@intel.com>,
-	Peter Xu <peterx@redhat.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Rik van Riel <riel@surriel.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12.y 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
-Date: Fri, 17 Oct 2025 16:51:06 +0800
-Message-ID: <20251017085106.16330-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <2025101627-shortage-author-7f5b@gregkh>
-References: <2025101627-shortage-author-7f5b@gregkh>
+        bh=2qk5/cDXnMltBmhvmLVh3pUHcYmEfXQKc8nHF57WqJ4=;
+        b=lm5sd0ipUjP5VWQxZyXOiJLLIgNF7WtFAIw4BCejg5UCBqqtkIpq/yFjg5w0+ho6Th
+         HfmF1qykiz58Mp3LdkKHaDR4ay7aa2HxlNC+mKKCcg/8vbuuYJSXm+tsqwfzAYwvzIho
+         6+O26ZHQMzeqOGl5cGvnSLJSBvyd6N8FJzSt4SEoJ+bVXGHD8vx0EHBzinMJqyIp1uGi
+         aPuAKKh24pR7Ym0QNiaPLAz9VWe60DwwU8YTtZd0DYipHiXuSgzAT1mlr3fxf3MObEMp
+         /TaEgyESBI9WSECpP9HdK7rqwqXBEo0FcNjCihgqAjvuF6xDDxkayuSanJvBgnSBuQUL
+         2KaA==
+X-Forwarded-Encrypted: i=1; AJvYcCWe4Vbc5kpoimod0S/1WUQJazuGPwVFDeSsTmkEBMdmGNSlBXnCtVKktLFiLx94cC/AbzM6c48=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyjpGbruk3WZOsmy6IvUnukTeyz0faAWwW+CudFWMrpezJuiGq
+	ZhZu9FV4rg+tRLI27XZ4idb23fiO28EI+T60IkVKUmINauhGc7gwicEIGdMF0xWiEAW+essEmqD
+	VLYBjg9yKjS6eRqyO5sPMKPRYw9ZVuY5Mmh7ewpTCRX6yGwnzrIeoPOxu3UY=
+X-Gm-Gg: ASbGncu7zuk0w6Cyon8eNYAxIP5WFKVTweUAnLre4VzYaLcUSQcE+eZDEyuvKm16mWP
+	OHZzy0mbZr/UKVaIv3zQZyKNZTC4aVKclWCyf6jxwy88gqx33XK3EIb+4v5so3WAzYBcfUvdVI3
+	05TgGgbvEN6q7NWo0QkswUPD/fHTzKMg59/rqboqhZXRmt6AX+G3l75FimDyXdez1d4bPpnzX0j
+	JEIZ/wEzezQZF8UVeBw/Rk5nLE4SpL9XjZ42dXUAYBRrjWpkh7biyFxdBxiFU+spaG2KMcRR25F
+	oCrIk3wjq+oIQcQTzMbpKkcXBvhWpi/r+YPPB5JPaIxnvsWJsyBpwNV7kbtWRI3hj9WxriYAz0W
+	xpyv1HSNAEBpJ
+X-Received: by 2002:a05:622a:310:b0:4e8:9c58:3282 with SMTP id d75a77b69052e-4e89d28b3cfmr45995091cf.29.1760691382175;
+        Fri, 17 Oct 2025 01:56:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGXmaWELNHeA4YfO9bK7KKaN2PbiUIZEHrtDSzzKi76qlVj6r6Tyv+8YGZWV56bOI27CdHbfA==
+X-Received: by 2002:a05:622a:310:b0:4e8:9c58:3282 with SMTP id d75a77b69052e-4e89d28b3cfmr45994871cf.29.1760691381758;
+        Fri, 17 Oct 2025 01:56:21 -0700 (PDT)
+Received: from debian ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4711444d919sm70764985e9.14.2025.10.17.01.56.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Oct 2025 01:56:21 -0700 (PDT)
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+To: broonie@kernel.org
+Cc: perex@perex.cz, tiwai@suse.com, srini@kernel.org, alexey.klimov@linaro.org,
+        linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+        Stable@vger.kernel.org
+Subject: [PATCH 01/12] ASoC: qdsp6: q6asm: do not sleep while atomic
+Date: Fri, 17 Oct 2025 09:52:56 +0100
+Message-ID: <20251017085307.4325-2-srinivas.kandagatla@oss.qualcomm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251017085307.4325-1-srinivas.kandagatla@oss.qualcomm.com>
+References: <20251017085307.4325-1-srinivas.kandagatla@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,113 +100,56 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=aPD9aL9m c=1 sm=1 tr=0 ts=68f204b7 cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=cAUPnWn_dBUFebge008A:9 a=1HOtulTD9v-eNWfpl4qZ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE2MDAxNyBTYWx0ZWRfX0Mqw9jax/kfU
+ rPl901nOjwWkS4jWhN9zSVBMwPhbewE2iAoAw4i0s4vdDa1uD/4D8vAzzwxYVIL5LyVWcbMoeP7
+ 8Kg1ha4iiYiBvHYN5yYrl21HkNx2HKV3lo8hIkiQZOWEFP+NBB1QRQ+z3VfbIGmi0R649VwgFZN
+ h6LrfZ/cReMtsmbWCjXElbJFozWW/+/IrHEf05ye0F5H0HF7B2k+7mIppUOeoHj6CVoV6g2ivFe
+ iwsnCV6z3/pyrOZSrmpm4dovc3xk374enGvicyZgBDyE+sLWLAcKgXPx/NmRXQiksqyp6k0wXA0
+ 0efyO4lEoWa71shaGk8YE78WLvIadyPVB2050ZFQNuEKFIXl92YeueZ4gIybsYwXA49tIrveCx4
+ 4sbA6Cx07DXu9jWMVZLj65YftBtFYg==
+X-Proofpoint-ORIG-GUID: YIdrjIUQ0mvJOE5yicQI6cWp1ZXRfAyG
+X-Proofpoint-GUID: YIdrjIUQ0mvJOE5yicQI6cWp1ZXRfAyG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-17_03,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1015
+ bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510160017
 
-From: Lance Yang <lance.yang@linux.dev>
+For some reason we ended up kfree between spinlock lock and unlock,
+which can sleep.
 
-When splitting an mTHP and replacing a zero-filled subpage with the shared
-zeropage, try_to_map_unused_to_zeropage() currently drops several
-important PTE bits.
+move the kfree out of spinlock section.
 
-For userspace tools like CRIU, which rely on the soft-dirty mechanism for
-incremental snapshots, losing the soft-dirty bit means modified pages are
-missed, leading to inconsistent memory state after restore.
-
-As pointed out by David, the more critical uffd-wp bit is also dropped.
-This breaks the userfaultfd write-protection mechanism, causing writes to
-be silently missed by monitoring applications, which can lead to data
-corruption.
-
-Preserve both the soft-dirty and uffd-wp bits from the old PTE when
-creating the new zeropage mapping to ensure they are correctly tracked.
-
-Link: https://lkml.kernel.org/r/20250930081040.80926-1-lance.yang@linux.dev
-Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Suggested-by: Dev Jain <dev.jain@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mariano Pache <npache@redhat.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 9658d698a8a83540bf6a6c80d13c9a61590ee985)
+Fixes: a2a5d30218fd ("ASoC: qdsp6: q6asm: Add support to memory map and unmap")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 ---
- mm/migrate.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ sound/soc/qcom/qdsp6/q6asm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 8619aa884eaa..603330ad8e0b 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -198,8 +198,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list)
+diff --git a/sound/soc/qcom/qdsp6/q6asm.c b/sound/soc/qcom/qdsp6/q6asm.c
+index 06a802f9dba5..67e9ca18883c 100644
+--- a/sound/soc/qcom/qdsp6/q6asm.c
++++ b/sound/soc/qcom/qdsp6/q6asm.c
+@@ -377,9 +377,9 @@ static void q6asm_audio_client_free_buf(struct audio_client *ac,
+ 
+ 	spin_lock_irqsave(&ac->lock, flags);
+ 	port->num_periods = 0;
++	spin_unlock_irqrestore(&ac->lock, flags);
+ 	kfree(port->buf);
+ 	port->buf = NULL;
+-	spin_unlock_irqrestore(&ac->lock, flags);
  }
  
- static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
--					  struct folio *folio,
--					  unsigned long idx)
-+		struct folio *folio, pte_t old_pte, unsigned long idx)
- {
- 	struct page *page = folio_page(folio, idx);
- 	bool contains_data;
-@@ -210,7 +209,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 		return false;
- 	VM_BUG_ON_PAGE(!PageAnon(page), page);
- 	VM_BUG_ON_PAGE(!PageLocked(page), page);
--	VM_BUG_ON_PAGE(pte_present(*pvmw->pte), page);
-+	VM_BUG_ON_PAGE(pte_present(old_pte), page);
- 
- 	if (folio_test_mlocked(folio) || (pvmw->vma->vm_flags & VM_LOCKED) ||
- 	    mm_forbids_zeropage(pvmw->vma->vm_mm))
-@@ -230,6 +229,12 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 
- 	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
- 					pvmw->vma->vm_page_prot));
-+
-+	if (pte_swp_soft_dirty(old_pte))
-+		newpte = pte_mksoft_dirty(newpte);
-+	if (pte_swp_uffd_wp(old_pte))
-+		newpte = pte_mkuffd_wp(newpte);
-+
- 	set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
- 
- 	dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
-@@ -272,13 +277,13 @@ static bool remove_migration_pte(struct folio *folio,
- 			continue;
- 		}
- #endif
-+		old_pte = ptep_get(pvmw.pte);
- 		if (rmap_walk_arg->map_unused_to_zeropage &&
--		    try_to_map_unused_to_zeropage(&pvmw, folio, idx))
-+		    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
- 			continue;
- 
- 		folio_get(folio);
- 		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
--		old_pte = ptep_get(pvmw.pte);
- 
- 		entry = pte_to_swp_entry(old_pte);
- 		if (!is_migration_entry_young(entry))
+ /**
 -- 
-2.49.0
+2.51.0
 
 
