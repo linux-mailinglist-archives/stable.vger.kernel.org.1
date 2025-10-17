@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-187199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDD4BEA0E3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B74BEA38F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21E4A188411C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5355C1AE3C2E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2F3336EF2;
-	Fri, 17 Oct 2025 15:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA70330B1C;
+	Fri, 17 Oct 2025 15:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/60ykfY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2MVqOVjQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4C232C931;
-	Fri, 17 Oct 2025 15:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC02C330B00;
+	Fri, 17 Oct 2025 15:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715396; cv=none; b=bKWJ0lBSoHmF5vzx+275QEpqACrVdULPDElpOJh5c1u0r8umigxxLmZ3ZfZbSOcQPTYqqWppml2sQgfiUAbAwIitrCwiXJrULtxUYuBFHsskhi+aCrHjz/gF6sho+XZJkoI8TKNIc1iqbh0OqFNIhfVlaxrnqu82X8SRJFB4+dM=
+	t=1760716032; cv=none; b=iDpEX+dYijhVjTpRBJdhsLHxybjpzLbpWLkABkzNSvR6Y13Er0MQHdWDd5HUazk20J4RimtcU9BrACBmOg/frdQzFM7fX/SdhDjGUGCwx35T0kZnv50ns9GQRYH1tLizqkEk7eOk22iCiyGSpUSaJ4l1Ep1CnbZgvF3mUtPPt4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715396; c=relaxed/simple;
-	bh=1RBgBjGESXyPbFHih0+6Wm7ubliVLyFhA/lie/xG3nY=;
+	s=arc-20240116; t=1760716032; c=relaxed/simple;
+	bh=cme9UmgvngKn8YowYd3wbBG9V+P4/Fl1bv1RD9kjmQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1qe+Bd2ULuClHUdc4yfbpOdtU5QdOSmFZxfAQZyAP7icknLstcemgzS5Ijc4vp/mwacWN+6JWb+vOveNO5UkIUPNXd2Gb4jLhg0FRMJZygQ+7NS9KAgF8TRZwE3tIRVIJWDP3PVpZnf/ufHzOpr1+U6fhWCvZWpNnNhanjPVY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/60ykfY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B585C4CEE7;
-	Fri, 17 Oct 2025 15:36:35 +0000 (UTC)
+	 MIME-Version; b=XHd2LkOQWxl+na1BSFMJlHb28BQRZ64v6xhnjAyU2G4y8SpmBufCJmvnSrcpCngP2GKEpEk3VSDoL7F/vbVdb1hLUIbeOlSc4VHMNmA9DmIQcAfUAV1V1egaF9lgTSFJgxjYjCVpZ7IGFutoCzk+RLMG8u58ciq8z0vylXrQ9SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2MVqOVjQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5C2C4CEFE;
+	Fri, 17 Oct 2025 15:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715395;
-	bh=1RBgBjGESXyPbFHih0+6Wm7ubliVLyFhA/lie/xG3nY=;
+	s=korg; t=1760716031;
+	bh=cme9UmgvngKn8YowYd3wbBG9V+P4/Fl1bv1RD9kjmQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/60ykfY3rtjvLSfwK0kbNQsCkw5EpR5wb6Nj2iKBRi5TJLanqgsCS1DTmkEuZqEV
-	 +O6wDH2AFLLRx0kkai2G2v4tQYx2ecWL8wj2lVu18E0V/YSREcod1zR0nXdEKyWeJd
-	 bKxJ9pN/5HFP0IpxXDR9702g1Tua6AhYwxhnkKkg=
+	b=2MVqOVjQ5mQmMxDpqxhh9risAziy9ew4H4mfZX68VYknsi4Tx/nF3EEnedyPjZu7D
+	 Du4Pd6rf5oh5i9vjoWVNoy6Tfw2PNtOGVaYPkXZ3ohyr5Bg2tp/zo8tvk0IT9CYeww
+	 xK8T5jKV0e+OsgzfaLD80YK6VZEpJonPZX1ZEYcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.17 168/371] media: cec: extron-da-hd-4k-plus: drop external-module make commands
+	kernel test robot <lkp@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 050/276] thermal/drivers/qcom/lmh: Add missing IRQ includes
 Date: Fri, 17 Oct 2025 16:52:23 +0200
-Message-ID: <20251017145208.011029132@linuxfoundation.org>
+Message-ID: <20251017145144.315970683@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-commit d5d12cc03e501c38925e544abe44d5bfe23dc930 upstream.
+[ Upstream commit b50b2c53f98fcdb6957e184eb488c16502db9575 ]
 
-Delete the external-module style Makefile commands. They are not needed
-for in-tree modules.
+As reported by LKP, the Qualcomm LMH driver needs to include several
+IRQ-related headers, which decrlare necessary IRQ functionality.
+Currently driver builds on ARM64 platforms, where the headers are pulled
+in implicitly by other headers, but fails to build on other platforms.
 
-This is the only Makefile in the kernel tree (aside from tools/ and
-samples/) that uses this Makefile style.
-
-The same files are built with or without this patch.
-
-Fixes: 056f2821b631 ("media: cec: extron-da-hd-4k-plus: add the Extron DA HD 4K Plus CEC driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507270042.KdK0KKht-lkp@intel.com/
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20250728-lmh-scm-v2-2-33bc58388ca5@oss.qualcomm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/usb/extron-da-hd-4k-plus/Makefile |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/thermal/qcom/lmh.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/cec/usb/extron-da-hd-4k-plus/Makefile
-+++ b/drivers/media/cec/usb/extron-da-hd-4k-plus/Makefile
-@@ -1,8 +1,2 @@
- extron-da-hd-4k-plus-cec-objs := extron-da-hd-4k-plus.o cec-splitter.o
- obj-$(CONFIG_USB_EXTRON_DA_HD_4K_PLUS_CEC) := extron-da-hd-4k-plus-cec.o
--
--all:
--	$(MAKE) -C $(KDIR) M=$(shell pwd) modules
--
--install:
--	$(MAKE) -C $(KDIR) M=$(shell pwd) modules_install
+diff --git a/drivers/thermal/qcom/lmh.c b/drivers/thermal/qcom/lmh.c
+index 9006e01e18c20..62c20d5c2a66a 100644
+--- a/drivers/thermal/qcom/lmh.c
++++ b/drivers/thermal/qcom/lmh.c
+@@ -5,6 +5,8 @@
+  */
+ #include <linux/module.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
++#include <linux/irqdesc.h>
+ #include <linux/irqdomain.h>
+ #include <linux/err.h>
+ #include <linux/platform_device.h>
+-- 
+2.51.0
+
 
 
 
