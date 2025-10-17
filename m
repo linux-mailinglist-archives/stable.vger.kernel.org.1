@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6041BEA221
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF23BBE9C9F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FDEB1AE2965
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8B159581B9E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1285330B08;
-	Fri, 17 Oct 2025 15:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE4E32E151;
+	Fri, 17 Oct 2025 15:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Y6qk6L/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvuHoPue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D415330B30;
-	Fri, 17 Oct 2025 15:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57217337110;
+	Fri, 17 Oct 2025 15:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715695; cv=none; b=NBBx/2yU7QYS2tz2sTGFn9wqAToVBXpOFBWTZyvHeFM8UaN6awjp0Q9sckkFGpgE/QjCyRSYlfGAlBTwNsFeFb+CMcpESEywTRSI/HFXf59vqQmbW1CnMQv2IRG2a2Qa/dvT2pDx6fUKQV99kwzPdeDJV4vBueHJYNxhhzusPAU=
+	t=1760714026; cv=none; b=LtmJYHESmLtHJ7TF43mPbHx80S/l4nMmGdcGHzYk5hoAiZXNerGnx2DQnxtaN+IeS+NypUDNuytrtas9BLfoacScE9HeR0oNWcgCLwbwwHt4Khw5Kh8NVBvS7nmhrU0lJWo3jtAURNaQzcKpJtfexXGxaSMqj45NTP6W2zJR04c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715695; c=relaxed/simple;
-	bh=1Htt8wIo7DV7bUp68eZLEe2kyhvnehkKs/ezxOb6MFs=;
+	s=arc-20240116; t=1760714026; c=relaxed/simple;
+	bh=PphMDok1d8hd6YBKDNY7uMSrt9S4mXbYc4+FKEt7bZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ex8YR7n7TP2Z/ZOIDOZmhOyQqKAht75m/nTDLpM7Rbr4JVNCoY4GJb/roJ5Y0WMs1dSTBMdysyklIILh6pEEcZnZgBDOO+66SHOOgs99or6GTQg2j5vUfh0Os5WSV0GWZPWgWH2M2gnYk42LJUaLux3avRXjXOs1zA3WPgtKgFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Y6qk6L/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FAEC4CEE7;
-	Fri, 17 Oct 2025 15:41:34 +0000 (UTC)
+	 MIME-Version; b=SgVr2NmiG5pKmbGTaBJGjqTIFL/j9jPEP12+d2tzNv2MqiRWhlciQIyu9qO3zyGlulz46E8itgFcTdtFbLK0UkE0Xz96rRJZsqQ/soyHqUSwNhSa0Z+0CLNB8X7QQyhzssFRDNePks/hGdp7lJEGnB8pe4GCM9WgMpiZC2Sov5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvuHoPue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A14CC116D0;
+	Fri, 17 Oct 2025 15:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715695;
-	bh=1Htt8wIo7DV7bUp68eZLEe2kyhvnehkKs/ezxOb6MFs=;
+	s=korg; t=1760714025;
+	bh=PphMDok1d8hd6YBKDNY7uMSrt9S4mXbYc4+FKEt7bZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Y6qk6L/CBzhFoYXKE1xLM/apIGWzIlPL0ljR7EgQ8TTS8p9OCdnwQBZiiNRdAFiC
-	 yL2isvIhjoqJuOn4wsqjaHFz0erw4kdPJE5jD3RZn/oUDuVeVCEGGMU09FQXLqeR/4
-	 lsimwJPRh2vaEzzZbTHbaeUZgxbqeXOt+VhIy3sg=
+	b=VvuHoPueAgrRHl6q4feDk6wf7JQx4disavPSCdAj2x5CemvLDGOG/W4zmO12VYXnO
+	 xAWr93GycSmcw7VEjcnNo8pvMKFDPZcuid23K1meJnmqeKdVibctO20jvXbtTxIZmW
+	 hBU81HAKS06iZ0MUzRxyOOocL/py1Bm9TwiFQs6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nurminen <jani.nurminen@windriver.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.17 273/371] PCI: xilinx-nwl: Fix ECAM programming
-Date: Fri, 17 Oct 2025 16:54:08 +0200
-Message-ID: <20251017145211.951542077@linuxfoundation.org>
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Subject: [PATCH 6.6 188/201] s390/bpf: Write back tail call counter for BPF_PSEUDO_CALL
+Date: Fri, 17 Oct 2025 16:54:09 +0200
+Message-ID: <20251017145141.666381128@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nurminen <jani.nurminen@windriver.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-commit 98a4f5b7359205ced1b6a626df3963bf7c5e5052 upstream.
+commit c861a6b147137d10b5ff88a2c492ba376cd1b8b0 upstream.
 
-When PCIe has been set up by the bootloader, the ecam_size field in the
-E_ECAM_CONTROL register already contains a value.
+The tailcall_bpf2bpf_hierarchy_1 test hangs on s390. Its call graph is
+as follows:
 
-The driver previously programmed it to 0xc (for 16 busses; 16 MB), but
-bumped to 0x10 (for 256 busses; 256 MB) by the commit 2fccd11518f1 ("PCI:
-xilinx-nwl: Modify ECAM size to enable support for 256 buses").
+  entry()
+    subprog_tail()
+      bpf_tail_call_static(0) -> entry + tail_call_start
+    subprog_tail()
+      bpf_tail_call_static(0) -> entry + tail_call_start
 
-Regardless of what the bootloader has programmed, the driver ORs in a
-new maximal value without doing a proper RMW sequence. This can lead to
-problems.
+entry() copies its tail call counter to the subprog_tail()'s frame,
+which then increments it. However, the incremented result is discarded,
+leading to an astronomically large number of tail calls.
 
-For example, if the bootloader programs in 0xc and the driver uses 0x10,
-the ORed result is 0x1c, which is beyond the ecam_max_size limit of 0x10
-(from E_ECAM_CAPABILITIES).
+Fix by writing the incremented counter back to the entry()'s frame.
 
-Avoid the problems by doing a proper RMW.
-
-Fixes: 2fccd11518f1 ("PCI: xilinx-nwl: Modify ECAM size to enable support for 256 buses")
-Signed-off-by: Jani Nurminen <jani.nurminen@windriver.com>
-[mani: added stable tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/e83a2af2-af0b-4670-bcf5-ad408571c2b0@windriver.com
+Fixes: dd691e847d28 ("s390/bpf: Implement bpf_jit_supports_subprog_tailcalls()")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20250813121016.163375-3-iii@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-xilinx-nwl.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/s390/net/bpf_jit_comp.c |   23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/drivers/pci/controller/pcie-xilinx-nwl.c
-+++ b/drivers/pci/controller/pcie-xilinx-nwl.c
-@@ -718,9 +718,10 @@ static int nwl_pcie_bridge_init(struct n
- 	nwl_bridge_writel(pcie, nwl_bridge_readl(pcie, E_ECAM_CONTROL) |
- 			  E_ECAM_CR_ENABLE, E_ECAM_CONTROL);
- 
--	nwl_bridge_writel(pcie, nwl_bridge_readl(pcie, E_ECAM_CONTROL) |
--			  (NWL_ECAM_MAX_SIZE << E_ECAM_SIZE_SHIFT),
--			  E_ECAM_CONTROL);
-+	ecam_val = nwl_bridge_readl(pcie, E_ECAM_CONTROL);
-+	ecam_val &= ~E_ECAM_SIZE_LOC;
-+	ecam_val |= NWL_ECAM_MAX_SIZE << E_ECAM_SIZE_SHIFT;
-+	nwl_bridge_writel(pcie, ecam_val, E_ECAM_CONTROL);
- 
- 	nwl_bridge_writel(pcie, lower_32_bits(pcie->phys_ecam_base),
- 			  E_ECAM_BASE_LO);
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -1439,13 +1439,6 @@ static noinline int bpf_jit_insn(struct
+ 		jit->seen |= SEEN_FUNC;
+ 		/*
+ 		 * Copy the tail call counter to where the callee expects it.
+-		 *
+-		 * Note 1: The callee can increment the tail call counter, but
+-		 * we do not load it back, since the x86 JIT does not do this
+-		 * either.
+-		 *
+-		 * Note 2: We assume that the verifier does not let us call the
+-		 * main program, which clears the tail call counter on entry.
+ 		 */
+ 		/* mvc tail_call_cnt(4,%r15),frame_off+tail_call_cnt(%r15) */
+ 		_EMIT6(0xd203f000 | offsetof(struct prog_frame, tail_call_cnt),
+@@ -1472,6 +1465,22 @@ static noinline int bpf_jit_insn(struct
+ 		call_r1(jit);
+ 		/* lgr %b0,%r2: load return value into %b0 */
+ 		EMIT4(0xb9040000, BPF_REG_0, REG_2);
++
++		/*
++		 * Copy the potentially updated tail call counter back.
++		 */
++
++		if (insn->src_reg == BPF_PSEUDO_CALL)
++			/*
++			 * mvc frame_off+tail_call_cnt(%r15),
++			 *     tail_call_cnt(4,%r15)
++			 */
++			_EMIT6(0xd203f000 | (jit->frame_off +
++					     offsetof(struct prog_frame,
++						      tail_call_cnt)),
++			       0xf000 | offsetof(struct prog_frame,
++						 tail_call_cnt));
++
+ 		break;
+ 	}
+ 	case BPF_JMP | BPF_TAIL_CALL: {
 
 
 
