@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-187181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48CE7BEA08C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F93BEA188
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5FF91885CE9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F0FB626BA3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76019335082;
-	Fri, 17 Oct 2025 15:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4093D33507C;
+	Fri, 17 Oct 2025 15:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uW6hzAlt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWXkCJWm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD241946C8;
-	Fri, 17 Oct 2025 15:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE48F335071;
+	Fri, 17 Oct 2025 15:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715344; cv=none; b=bQjNy0s82TjDZUA6FoEAON6A0RfBKJRitT2IImkFiigMQJJxwRFwRltJ8RU51enxFH//PTsz1KjuwbyRFeMvyaMTU4O2XfAYkoy8USpLYGVA9babGFrco6TKELJ1975NXZ6mggO32cOdVd6MSyUW3Er0ifHzrEhWc8GuycmLVmg=
+	t=1760714453; cv=none; b=BQ+eB0NUpVNF5lI8xd0b1EFk+y5pOULhxpcf+Tq7/0f3ltgkNWvAafP7wIGaKwxo7NgsJDtLRBNoUdnNBjNz8OeMkd/Itfu1HMDQ5yndw6xGKseY3qdT0u8Avf1otI69Njr3ZuVQAUDMEL5UExMIFIlthhehhb4/L5oUfWy2Ns0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715344; c=relaxed/simple;
-	bh=oZwjs8oCnX1stmBu0y+wdGBeNX6zR+0fRf5FuKquTfg=;
+	s=arc-20240116; t=1760714453; c=relaxed/simple;
+	bh=bUsv7tOELlYNq8WjUxJfuKlKB3GhTLa8ECMaHLMltxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SM+1rxJGaMOHEVCDFuzO/WURIgbmwBOwydVrp0UQa1pl7wtnnB1KjdsJi3MSLqsTyhs8G1kwdrSt3diHaBSGafrdro2tIR0Pm1yZSTLX/dAt0KLWOOuz5h08lkcCuQ0gHWsSW1cqljqUwIxwhZ6VNSse4PzkavGjWe8yGL9awRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uW6hzAlt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE9AC4CEE7;
-	Fri, 17 Oct 2025 15:35:43 +0000 (UTC)
+	 MIME-Version; b=cI8WI2azb8Q5mOXhkOUOy84+9gLTOaFglWDxFb5yLaIfcIQTf9DqmElCJuOf4KqECdT4nD90APfiwyJQzp1kEKjeDkkkUxF2VU8iEG3z4vuE262M5x+QwpL8Vg0C+0SuJ3/WzbweWXd7L3MqZ5byRv6h9EC33dNXI1EOU4gYbFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWXkCJWm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6857DC4CEE7;
+	Fri, 17 Oct 2025 15:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715344;
-	bh=oZwjs8oCnX1stmBu0y+wdGBeNX6zR+0fRf5FuKquTfg=;
+	s=korg; t=1760714452;
+	bh=bUsv7tOELlYNq8WjUxJfuKlKB3GhTLa8ECMaHLMltxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uW6hzAlt1WHaIyD2pIPmdfYEp5uqFjpxDVUTZVEXA8H/Z4QI8z408Q6WBaUX9u7G+
-	 vw9eKoVhjUs9czhPZivSTvrjyrDEusrSu7R/ioP9r7vP19OyitUn4ndOAB3sm7eOYM
-	 /EvvfiEOdm7B6yuOB0B2YW9LfiMpE0jVQ0WzIY0g=
+	b=dWXkCJWmKSuzs+hH3t/CJaZJQKU9lgxcADz6B7mrs+et7rcbms0a0ZZPpqRNweZDK
+	 d7T9JNu/72fEufWluJQn/79AQSfhykNqszqxIJ+epxFnvu8Y6YzVBO3a0CdrZca5m9
+	 xM5nlciAoQXZN/tykBOffXyuQ3qv77lWn23/Ly8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Subject: [PATCH 6.17 183/371] media: ti: j721e-csi2rx: Use devm_of_platform_populate
+	Sam James <sam@gentoo.org>,
+	Helge Deller <deller@gmx.de>,
+	Stian Halseth <stian@itx.no>
+Subject: [PATCH 6.12 151/277] parisc: dont reference obsolete termio struct for TC* constants
 Date: Fri, 17 Oct 2025 16:52:38 +0200
-Message-ID: <20251017145208.546122548@linuxfoundation.org>
+Message-ID: <20251017145152.637650326@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jai Luthra <jai.luthra@ideasonboard.com>
+From: Sam James <sam@gentoo.org>
 
-commit 072799db233f9de90a62be54c1e59275c2db3969 upstream.
+commit 8ec5a066f88f89bd52094ba18792b34c49dcd55a upstream.
 
-Ensure that we clean up the platform bus when we remove this driver.
+Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
+drops the legacy termio struct, but the ioctls.h header still defines some
+TC* constants in terms of termio (via sizeof). Hardcode the values instead.
 
-This fixes a crash seen when reloading the module for the child device
-with the parent not yet reloaded.
+This fixes building Python for example, which falls over like:
+  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
 
-Fixes: b4a3d877dc92 ("media: ti: Add CSI2RX support for J721E")
+Link: https://bugs.gentoo.org/961769
+Link: https://bugs.gentoo.org/962600
+Co-authored-by: Stian Halseth <stian@itx.no>
 Cc: stable@vger.kernel.org
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Tested-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com> (on SK-AM68)
-Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Sam James <sam@gentoo.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/include/uapi/asm/ioctls.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
-+++ b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
-@@ -1120,7 +1120,7 @@ static int ti_csi2rx_probe(struct platfo
- 	if (ret)
- 		goto err_vb2q;
- 
--	ret = of_platform_populate(csi->dev->of_node, NULL, NULL, csi->dev);
-+	ret = devm_of_platform_populate(csi->dev);
- 	if (ret) {
- 		dev_err(csi->dev, "Failed to create children: %d\n", ret);
- 		goto err_subdev;
+--- a/arch/parisc/include/uapi/asm/ioctls.h
++++ b/arch/parisc/include/uapi/asm/ioctls.h
+@@ -10,10 +10,10 @@
+ #define TCSETS		_IOW('T', 17, struct termios) /* TCSETATTR */
+ #define TCSETSW		_IOW('T', 18, struct termios) /* TCSETATTRD */
+ #define TCSETSF		_IOW('T', 19, struct termios) /* TCSETATTRF */
+-#define TCGETA		_IOR('T', 1, struct termio)
+-#define TCSETA		_IOW('T', 2, struct termio)
+-#define TCSETAW		_IOW('T', 3, struct termio)
+-#define TCSETAF		_IOW('T', 4, struct termio)
++#define TCGETA          0x40125401
++#define TCSETA          0x80125402
++#define TCSETAW         0x80125403
++#define TCSETAF         0x80125404
+ #define TCSBRK		_IO('T', 5)
+ #define TCXONC		_IO('T', 6)
+ #define TCFLSH		_IO('T', 7)
 
 
 
