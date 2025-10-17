@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B14BEA86B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:12:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA202BEA783
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:07:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5000E9455BB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C4F6B5875AF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFAB33506F;
-	Fri, 17 Oct 2025 15:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E592F12A0;
+	Fri, 17 Oct 2025 15:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ss6p7e3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czhrkZrk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4F2335060;
-	Fri, 17 Oct 2025 15:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27C71A0728;
+	Fri, 17 Oct 2025 15:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715615; cv=none; b=UJdBTmntsEysL/L6KQ6q7oo5lL0loj6qMNk8YYcyl/65eezlMlOCSn12AFFxeaojrAH604Hgz8cSrmK/dToOOPwezYA3eNc40vN9ttfAV1ZlIzk5OhOTpDdjjtNmAcUMRe9vTbk9YHO5pHRn3O0jY5pQw1ikEaF8quKcPBYk/Fc=
+	t=1760716350; cv=none; b=giVTNxc2P+EjYN4kzEtduxgwv8nuY9CWm1A+xKQ7p81WD9dB8j2z4FeHcFnzmxUBjfPGECaNtzS+aMlDJyDivdF3mPXCx+5IEnZIs9/jggQitqZa+Cim96Ptr3Xf+TlypqZ23WwV52Tv70cR/EVFlCpjsmLcewX9PHXtYesuJDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715615; c=relaxed/simple;
-	bh=pAc5hxjrvgx6th/pR6Oj54E/SPgxcH3/ivxD3ZGX340=;
+	s=arc-20240116; t=1760716350; c=relaxed/simple;
+	bh=p4ghoImUWmuIFTgI7f95GO4qfQWBFOYMJHrua2Q/csc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLv9t3crwXPy4DvuTUDRxajnDQtSwV9ZN7QO7dw1Q5Zz758j0CtbZUnVsr+1nMpkoYBg6n8BVwrFv11z/QZiYgij8AeeE2kUuBonKHPleapZQLchiuWwp8T3nFwxy8kylflHVtaaEIXE1Jo+MujIz8iG4UtD8rV2RAzZwAHXHgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ss6p7e3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED12C4CEFE;
-	Fri, 17 Oct 2025 15:40:13 +0000 (UTC)
+	 MIME-Version; b=f2Uj/RKllXtH2PseqW3mDIbFVqoXgBoHOTSlGYkvrvBI9WiY+glXU2qdI3nQmXmVQAMmPrIpWc/ZRo/MFR2nGzbKoRAEl1WIWdMXL8YK71NB+GZVUIEs5z2mfvpJrzfDqHLYvNLcVs0Vl3Me46blf5n8SbPMogr9rXi+bqWTRvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czhrkZrk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37386C4CEE7;
+	Fri, 17 Oct 2025 15:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715614;
-	bh=pAc5hxjrvgx6th/pR6Oj54E/SPgxcH3/ivxD3ZGX340=;
+	s=korg; t=1760716350;
+	bh=p4ghoImUWmuIFTgI7f95GO4qfQWBFOYMJHrua2Q/csc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ss6p7e3Nqrezg7AJmKOdoR4PtlSl6MDXL+qQRHhMf7evBB+P/8TiLFiARuXB6Gvne
-	 Ye/MyPhNT4TKwgagLkr9zc5fDjVFGVC9BiWGoOKw7Na/nzCroNpCWjrYXsuUmuDs4Q
-	 02KAw8O5fLIP5+nzcSqVEEAL48GUwHWZB58GQ4b0=
+	b=czhrkZrkcAnxsQftj5ay3u4sE1wztM7Zljj2+o4fwygq5weySAogvI9QqQZsXyOSk
+	 wTkYUQCkGCiro7h0v0gtemlvYB+X7xL41hknmqJT3p9+dNO4VDwnBNrqxW16P+0kXR
+	 EkR4F5tRSnyUqM9uw26evjD7CWypW6ohVTK88lZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 6.17 278/371] PCI/AER: Fix missing uevent on recovery when a reset is requested
-Date: Fri, 17 Oct 2025 16:54:13 +0200
-Message-ID: <20251017145212.132657907@linuxfoundation.org>
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 161/276] crypto: essiv - Check ssize for decryption and in-place encryption
+Date: Fri, 17 Oct 2025 16:54:14 +0200
+Message-ID: <20251017145148.351152499@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit bbf7d0468d0da71d76cc6ec9bc8a224325d07b6b upstream.
+[ Upstream commit 6bb73db6948c2de23e407fe1b7ef94bf02b7529f ]
 
-Since commit 7b42d97e99d3 ("PCI/ERR: Always report current recovery
-status for udev") AER uses the result of error_detected() as parameter
-to pci_uevent_ers(). As pci_uevent_ers() however does not handle
-PCI_ERS_RESULT_NEED_RESET this results in a missing uevent for the
-beginning of recovery if drivers request a reset. Fix this by treating
-PCI_ERS_RESULT_NEED_RESET as beginning recovery.
+Move the ssize check to the start in essiv_aead_crypt so that
+it's also checked for decryption and in-place encryption.
 
-Fixes: 7b42d97e99d3 ("PCI/ERR: Always report current recovery status for udev")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250807-add_err_uevents-v5-1-adf85b0620b0@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Fixes: be1eb7f78aa8 ("crypto: essiv - create wrapper template for ESSIV generation")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-driver.c |    1 +
- 1 file changed, 1 insertion(+)
+ crypto/essiv.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -1596,6 +1596,7 @@ void pci_uevent_ers(struct pci_dev *pdev
- 	switch (err_type) {
- 	case PCI_ERS_RESULT_NONE:
- 	case PCI_ERS_RESULT_CAN_RECOVER:
-+	case PCI_ERS_RESULT_NEED_RESET:
- 		envp[idx++] = "ERROR_EVENT=BEGIN_RECOVERY";
- 		envp[idx++] = "DEVICE_ONLINE=0";
- 		break;
+diff --git a/crypto/essiv.c b/crypto/essiv.c
+index 3505b071e6471..365f3082ea041 100644
+--- a/crypto/essiv.c
++++ b/crypto/essiv.c
+@@ -186,9 +186,14 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	const struct essiv_tfm_ctx *tctx = crypto_aead_ctx(tfm);
+ 	struct essiv_aead_request_ctx *rctx = aead_request_ctx(req);
+ 	struct aead_request *subreq = &rctx->aead_req;
++	int ivsize = crypto_aead_ivsize(tfm);
++	int ssize = req->assoclen - ivsize;
+ 	struct scatterlist *src = req->src;
+ 	int err;
+ 
++	if (ssize < 0)
++		return -EINVAL;
++
+ 	crypto_cipher_encrypt_one(tctx->essiv_cipher, req->iv, req->iv);
+ 
+ 	/*
+@@ -198,19 +203,12 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	 */
+ 	rctx->assoc = NULL;
+ 	if (req->src == req->dst || !enc) {
+-		scatterwalk_map_and_copy(req->iv, req->dst,
+-					 req->assoclen - crypto_aead_ivsize(tfm),
+-					 crypto_aead_ivsize(tfm), 1);
++		scatterwalk_map_and_copy(req->iv, req->dst, ssize, ivsize, 1);
+ 	} else {
+ 		u8 *iv = (u8 *)aead_request_ctx(req) + tctx->ivoffset;
+-		int ivsize = crypto_aead_ivsize(tfm);
+-		int ssize = req->assoclen - ivsize;
+ 		struct scatterlist *sg;
+ 		int nents;
+ 
+-		if (ssize < 0)
+-			return -EINVAL;
+-
+ 		nents = sg_nents_for_len(req->src, ssize);
+ 		if (nents < 0)
+ 			return -EINVAL;
+-- 
+2.51.0
+
 
 
 
