@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E0F9BE99BD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF151BE96DC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8776A4FDFBB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4BAAA565F88
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B6432E159;
-	Fri, 17 Oct 2025 15:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E47337100;
+	Fri, 17 Oct 2025 14:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjWPgWz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRb/Kfbt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BC83370FA;
-	Fri, 17 Oct 2025 15:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422045695;
+	Fri, 17 Oct 2025 14:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713656; cv=none; b=IbjwUQYDevlGzP+D1FxdlrvW2jyHICghNKrVG2Y3vFUXlx4UU6Pb2+cpobHrTAf4hI0vuINR31jsE2xEa4govfKAhHn/L+2AfWSI/c9xgOhj5TT4hBAlVPMiYsmy37TegBsUEGL5i34gk0WGrRYqWKryP4mSWgmkpVheXYPM50w=
+	t=1760713168; cv=none; b=OOHcNzro2BUbrNdKAw8DTVWrtArU6ewPzUibUSYah+D4+al5ofqMBpftqRgb4jnGUXyz6MGcAyQB8GPuwgbj0yofeBu1ceSsaGixpTINWzY43FSJD8o7alsGapFDDhSiojL2/VfChbf8nxc36aZRoH7PKOQhthVQaWDtIGBsubE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713656; c=relaxed/simple;
-	bh=UUhodY3zxHQ4gxuIxgj61kBAp3jtUOkkS8rpFFefqfE=;
+	s=arc-20240116; t=1760713168; c=relaxed/simple;
+	bh=NO/FbR5icyynHgNN9Oj0tVLGm89oIdB+8PUYOOH0Smk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKpbgYVznoNRAEU1r4PGcakTMcjffMnhU2ySlcC0VDiBLDJwmmtgLr+IRdijU9OlywvcUMArlsKMC//DjQdBzFklmUaXRExgpX2pmisiMJvDxs2/7EqtvNeLxztN1xpZ9tSofZ1Rbsxs22srmv/yFJYick3lBMmcvoy8yk9WP74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjWPgWz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF50C4CEE7;
-	Fri, 17 Oct 2025 15:07:35 +0000 (UTC)
+	 MIME-Version; b=R1PgZVeyuPrpD6qjFftTXFBZ2I3i/tF0bsfnKHmcINg30eCaJIkS/fm+0MvhW+zlnlIGyyAz7mRwor0GRebrLGxYmcj6wxZaAjnf7eHETxJ08qjkItWHqE6Nl6un3ZP0exB3HNUqM5HaWW83PbMm1njrgnh5bgeL5+2QoVE/5YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRb/Kfbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB22C4CEE7;
+	Fri, 17 Oct 2025 14:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713655;
-	bh=UUhodY3zxHQ4gxuIxgj61kBAp3jtUOkkS8rpFFefqfE=;
+	s=korg; t=1760713168;
+	bh=NO/FbR5icyynHgNN9Oj0tVLGm89oIdB+8PUYOOH0Smk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjWPgWz1wuQwhEpzEl+yOVxX9Ur5AcwgE7KSG/CxosXkfskWpMYoDpEBOtItIgZdM
-	 q3WKcqRGK/JRflZh4qSKQ2o0alhDOvl4iQkPpIUSxczZAMSJYRZurMku/UOcmWHE8K
-	 oeOtp4txb/S/OfO0H/kL6MSUj+wI8OwsPdK01sec=
+	b=DRb/KfbtT9Ave2gMUHUiCULXrzkXhh6qipcQCXtpIqemWBOR3Io5zrv+xUEyUCyPF
+	 9hd6qAp3KGC3A7pb0/vA6TmicOSTYKgh7G3+u0470sXJ8kcUgaavrz/WSN3ebGdYEN
+	 xcEHDVH2VBX6l1T5OLBWrnPIyI3ORdhaoy1zgAkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.6 072/201] media: cx18: Add missing check after DMA map
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 054/168] arm64: dts: qcom: msm8916: Add missing MDSS reset
 Date: Fri, 17 Oct 2025 16:52:13 +0200
-Message-ID: <20251017145137.401685168@linuxfoundation.org>
+Message-ID: <20251017145131.011637550@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 23b53639a793477326fd57ed103823a8ab63084f upstream.
+commit 99b78773c2ae55dcc01025f94eae8ce9700ae985 upstream.
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, dealloc buffers, and return.
+On most MSM8916 devices (aside from the DragonBoard 410c), the bootloader
+already initializes the display to show the boot splash screen. In this
+situation, MDSS is already configured and left running when starting Linux.
+To avoid side effects from the bootloader configuration, the MDSS reset can
+be specified in the device tree to start again with a clean hardware state.
 
-Fixes: 1c1e45d17b66 ("V4L/DVB (7786): cx18: new driver for the Conexant CX23418 MPEG encoder chip")
+The reset for MDSS is currently missing in msm8916.dtsi, which causes
+errors when the MDSS driver tries to re-initialize the registers:
+
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ ...
+
+It turns out that we have always indirectly worked around this by building
+the MDSS driver as a module. Before v6.17, the power domain was temporarily
+turned off until the module was loaded, long enough to clear the register
+contents. In v6.17, power domains are not turned off during boot until
+sync_state() happens, so this is no longer working. Even before v6.17 this
+resulted in broken behavior, but notably only when the MDSS driver was
+built-in instead of a module.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 305410ffd1b2 ("arm64: dts: msm8916: Add display support")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-1-a5c705df0c45@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/cx18/cx18-queue.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8916.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/pci/cx18/cx18-queue.c
-+++ b/drivers/media/pci/cx18/cx18-queue.c
-@@ -379,15 +379,22 @@ int cx18_stream_alloc(struct cx18_stream
- 			break;
- 		}
+--- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+@@ -981,6 +981,8 @@
  
-+		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
-+						 buf->buf, s->buf_size,
-+						 s->dma);
-+		if (dma_mapping_error(&s->cx->pci_dev->dev, buf->dma_handle)) {
-+			kfree(buf->buf);
-+			kfree(mdl);
-+			kfree(buf);
-+			break;
-+		}
+ 			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+ 
++			resets = <&gcc GCC_MDSS_BCR>;
 +
- 		INIT_LIST_HEAD(&mdl->list);
- 		INIT_LIST_HEAD(&mdl->buf_list);
- 		mdl->id = s->mdl_base_idx; /* a somewhat safe value */
- 		cx18_enqueue(s, mdl, &s->q_idle);
+ 			interrupt-controller;
+ 			#interrupt-cells = <1>;
  
- 		INIT_LIST_HEAD(&buf->list);
--		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
--						 buf->buf, s->buf_size,
--						 s->dma);
- 		cx18_buf_sync_for_cpu(s, buf);
- 		list_add_tail(&buf->list, &s->buf_pool);
- 	}
 
 
 
