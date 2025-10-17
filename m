@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FEBBE9FF3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1673DBEA62A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 900C235DCE5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8CB2D5A22D7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B2633CEB5;
-	Fri, 17 Oct 2025 15:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0D31946C8;
+	Fri, 17 Oct 2025 15:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hs9mqbm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIaeGvvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443E4332ED8;
-	Fri, 17 Oct 2025 15:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE4A330B30;
+	Fri, 17 Oct 2025 15:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715404; cv=none; b=X0T3t3u8lIKhfQrbd/D7lRcXWhuZ8NFUWeaPE9goOOJ5GqguZcLUvJm/qqqOE4B3D+X4HK+G/RoKqCRYiq23cGAj6el/rQAPA60rbaSps5tI+YJA2cHAMHtfezpYy8iScVxD9Vl7Zhasa6cnJCbHZj1zGsKj/ltkd+HJhbPzXSc=
+	t=1760716210; cv=none; b=c0LqLs4QBvc6LohuGLm8zUhKAVvRlbYfkRwFMoC/igpbGCIGBKjFTHtyGUCEbLMzwrtTGvk88Tn/J4WQDUw2CpA7+1IxwVXzVeNJAa3j/OJB92SJ8Ieh12xstRlF5YUXsksrTGThMZi3MY4e7FtH6rXgJ/0RNtNt+i88MwNb1PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715404; c=relaxed/simple;
-	bh=h2/ptWU9cY+AVSeEUUg76ozXCV0Q0Bv9qB5ILYuWZJs=;
+	s=arc-20240116; t=1760716210; c=relaxed/simple;
+	bh=UYtnd2OKhOq1zXXzIPcAsN/JFO5Z20hAEtmxiEfs9is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GarDm2QSKxUDnCOVM3JAsCKCjjZxUfhX7B+SVXMiQbA9KWut9gv0y6VhvmE9a2ArXqcJjQqwuCgQIbJMXwxWTxJsXyc846j7cbBWjtDPs3wlQUrYP7FPCcqDRCNIPRaeI4EgePwateEPNh9H/WtlEfhu5eWAOw0QqW5PoQ5k//0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hs9mqbm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73E6C4CEE7;
-	Fri, 17 Oct 2025 15:36:43 +0000 (UTC)
+	 MIME-Version; b=GEXi48Yv2ByrZUiQhrdB3T9m7uVN3k/j5Didl/M5so9yyv7vw3R6jclQeF1SZFKiiXP3fpiFrSJmZyJGRvfu8Y4OLig+dPl2ZxzO7uLQOPHQMhXs+8qPsSMNYGMTekjDrZzbmqVJosbg2zsFl+aNSaOSF4rPjPmFr2rFL7KJ0Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIaeGvvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75316C113D0;
+	Fri, 17 Oct 2025 15:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715404;
-	bh=h2/ptWU9cY+AVSeEUUg76ozXCV0Q0Bv9qB5ILYuWZJs=;
+	s=korg; t=1760716209;
+	bh=UYtnd2OKhOq1zXXzIPcAsN/JFO5Z20hAEtmxiEfs9is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hs9mqbm0IkACgN+UvE1uwHXqYwM58kkOuM7VYIehpQrlsYZ/Ol4dD4hoRv0CaiUBz
-	 JIJoVnPdanQQ/jTYz61nnxlSeH6KoB3Dr8akUM31OzfE+vmJN6OQ8ccXB2kP0bOUgc
-	 V7vTVio7z2zwHHbDTDlAwqFhgZlXmQhgDmiIyZK0=
+	b=qIaeGvvqzgBZmij1i9EA+ELa3uwdMLXbKnKllNfb2DLuAO/yLnmBlU0OeSqWGQ4e2
+	 Bjjg/roqExH3PRC3pB6Oj+rJEhV1T5F1v4wbXMOmBH5DU2QUbHnMaNqj8gvNtnGgqU
+	 LYw8LZkERo2GbapBVToTImDid5WedCxt7lIMvt8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil Vinod <akhil.vinod@oss.qualcomm.com>,
-	Sumit Kumar <sumit.kumar@oss.qualcomm.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: [PATCH 6.17 197/371] bus: mhi: ep: Fix chained transfer handling in read path
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 079/276] scsi: qla2xxx: edif: Fix incorrect sign of error code
 Date: Fri, 17 Oct 2025 16:52:52 +0200
-Message-ID: <20251017145209.054631977@linuxfoundation.org>
+Message-ID: <20251017145145.372200366@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-commit f5225a34bd8f9f64eec37f6ae1461289aaa3eb86 upstream.
+[ Upstream commit 066b8f3fa85c1be7fb7dbae202231e131d38f7bc ]
 
-The mhi_ep_read_channel function incorrectly assumes the End of Transfer
-(EOT) bit is present for each packet in a chained transactions, causing
-it to advance mhi_chan->rd_offset beyond wr_offset during host-to-device
-transfers when EOT has not yet arrived. This leads to access of unmapped
-host memory, causing IOMMU faults and processing of stale TREs.
+Change the error code EAGAIN to -EAGAIN in qla24xx_sadb_update() and
+qla_edif_process_els() to align with qla2x00_start_sp() returning
+negative error codes or QLA_SUCCESS, preventing logical errors.
 
-Modify the loop condition to ensure mhi_queue is not empty, allowing the
-function to process only valid TREs up to the current write pointer to
-prevent premature reads and ensure safe traversal of chained TREs.
-
-Due to this change, buf_left needs to be removed from the while loop
-condition to avoid exiting prematurely before reading the ring completely,
-and also remove write_offset since it will always be zero because the new
-cache buffer is allocated every time.
-
-Fixes: 5301258899773 ("bus: mhi: ep: Add support for reading from the host")
-Co-developed-by: Akhil Vinod <akhil.vinod@oss.qualcomm.com>
-Signed-off-by: Akhil Vinod <akhil.vinod@oss.qualcomm.com>
-Signed-off-by: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
-[mani: reworded description slightly]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250910-final_chained-v3-1-ec77c9d88ace@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0b3f3143d473 ("scsi: qla2xxx: edif: Add retry for ELS passthrough")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Message-ID: <20250905075446.381139-2-rongqianfeng@vivo.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/ep/main.c |   37 ++++++++++++-------------------------
- 1 file changed, 12 insertions(+), 25 deletions(-)
+ drivers/scsi/qla2xxx/qla_edif.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/bus/mhi/ep/main.c
-+++ b/drivers/bus/mhi/ep/main.c
-@@ -403,17 +403,13 @@ static int mhi_ep_read_channel(struct mh
- {
- 	struct mhi_ep_chan *mhi_chan = &mhi_cntrl->mhi_chan[ring->ch_id];
- 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
--	size_t tr_len, read_offset, write_offset;
-+	size_t tr_len, read_offset;
- 	struct mhi_ep_buf_info buf_info = {};
- 	u32 len = MHI_EP_DEFAULT_MTU;
- 	struct mhi_ring_element *el;
--	bool tr_done = false;
- 	void *buf_addr;
--	u32 buf_left;
- 	int ret;
- 
--	buf_left = len;
--
- 	do {
- 		/* Don't process the transfer ring if the channel is not in RUNNING state */
- 		if (mhi_chan->state != MHI_CH_STATE_RUNNING) {
-@@ -426,24 +422,23 @@ static int mhi_ep_read_channel(struct mh
- 		/* Check if there is data pending to be read from previous read operation */
- 		if (mhi_chan->tre_bytes_left) {
- 			dev_dbg(dev, "TRE bytes remaining: %u\n", mhi_chan->tre_bytes_left);
--			tr_len = min(buf_left, mhi_chan->tre_bytes_left);
-+			tr_len = min(len, mhi_chan->tre_bytes_left);
- 		} else {
- 			mhi_chan->tre_loc = MHI_TRE_DATA_GET_PTR(el);
- 			mhi_chan->tre_size = MHI_TRE_DATA_GET_LEN(el);
- 			mhi_chan->tre_bytes_left = mhi_chan->tre_size;
- 
--			tr_len = min(buf_left, mhi_chan->tre_size);
-+			tr_len = min(len, mhi_chan->tre_size);
- 		}
- 
- 		read_offset = mhi_chan->tre_size - mhi_chan->tre_bytes_left;
--		write_offset = len - buf_left;
- 
- 		buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL);
- 		if (!buf_addr)
- 			return -ENOMEM;
- 
- 		buf_info.host_addr = mhi_chan->tre_loc + read_offset;
--		buf_info.dev_addr = buf_addr + write_offset;
-+		buf_info.dev_addr = buf_addr;
- 		buf_info.size = tr_len;
- 		buf_info.cb = mhi_ep_read_completion;
- 		buf_info.cb_buf = buf_addr;
-@@ -459,16 +454,12 @@ static int mhi_ep_read_channel(struct mh
- 			goto err_free_buf_addr;
- 		}
- 
--		buf_left -= tr_len;
- 		mhi_chan->tre_bytes_left -= tr_len;
- 
--		if (!mhi_chan->tre_bytes_left) {
--			if (MHI_TRE_DATA_GET_IEOT(el))
--				tr_done = true;
--
-+		if (!mhi_chan->tre_bytes_left)
- 			mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
--		}
--	} while (buf_left && !tr_done);
-+	/* Read until the some buffer is left or the ring becomes not empty */
-+	} while (!mhi_ep_queue_is_empty(mhi_chan->mhi_dev, DMA_TO_DEVICE));
- 
- 	return 0;
- 
-@@ -502,15 +493,11 @@ static int mhi_ep_process_ch_ring(struct
- 		mhi_chan->xfer_cb(mhi_chan->mhi_dev, &result);
- 	} else {
- 		/* UL channel */
--		do {
--			ret = mhi_ep_read_channel(mhi_cntrl, ring);
--			if (ret < 0) {
--				dev_err(&mhi_chan->mhi_dev->dev, "Failed to read channel\n");
--				return ret;
--			}
--
--			/* Read until the ring becomes empty */
--		} while (!mhi_ep_queue_is_empty(mhi_chan->mhi_dev, DMA_TO_DEVICE));
-+		ret = mhi_ep_read_channel(mhi_cntrl, ring);
-+		if (ret < 0) {
-+			dev_err(&mhi_chan->mhi_dev->dev, "Failed to read channel\n");
-+			return ret;
-+		}
- 	}
- 
- 	return 0;
+diff --git a/drivers/scsi/qla2xxx/qla_edif.c b/drivers/scsi/qla2xxx/qla_edif.c
+index ac702f74dd984..dfc7bff420cda 100644
+--- a/drivers/scsi/qla2xxx/qla_edif.c
++++ b/drivers/scsi/qla2xxx/qla_edif.c
+@@ -1539,7 +1539,7 @@ qla24xx_sadb_update(struct bsg_job *bsg_job)
+ 	switch (rval) {
+ 	case QLA_SUCCESS:
+ 		break;
+-	case EAGAIN:
++	case -EAGAIN:
+ 		msleep(EDIF_MSLEEP_INTERVAL);
+ 		cnt++;
+ 		if (cnt < EDIF_RETRY_COUNT)
+@@ -3525,7 +3525,7 @@ int qla_edif_process_els(scsi_qla_host_t *vha, struct bsg_job *bsg_job)
+ 		       p->e.extra_rx_xchg_address, p->e.extra_control_flags,
+ 		       sp->handle, sp->remap.req.len, bsg_job);
+ 		break;
+-	case EAGAIN:
++	case -EAGAIN:
+ 		msleep(EDIF_MSLEEP_INTERVAL);
+ 		cnt++;
+ 		if (cnt < EDIF_RETRY_COUNT)
+-- 
+2.51.0
+
 
 
 
