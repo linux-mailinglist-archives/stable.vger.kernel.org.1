@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-187462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397E5BEA650
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCDABEA4E5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 81BB65A216F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D5957C450A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D77330B20;
-	Fri, 17 Oct 2025 15:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B994A32C95E;
+	Fri, 17 Oct 2025 15:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHX1yVXm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxkfEbS8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53F6330B1F;
-	Fri, 17 Oct 2025 15:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FE732C928;
+	Fri, 17 Oct 2025 15:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716140; cv=none; b=cfyv3hj++HgV/fsHDt7rU+vZpWqnLb5xTCwHHdl3Qi6KoCj5lcV3481VdX8qNzNcQKiOZTx2ggQ3pPj5EbKVXKeLIg+S108/ExS9OCVCMWGJ6o630ArZRBT6ZMjKOScahF5XaflLKK0ZBXtQVUGGlKaAcWTBxKLbCMXU7veB9dE=
+	t=1760714614; cv=none; b=reT/JWiP9QDf2WOdoDNJdZDz8ReRESlr7qKQZaYD0H58HYDY3RCUA8hj5dtPh+MeA3aMq99AjJu/BLa+KA5GrJEnZ4IKMa9jecGj7dA9uC+OUbOEu5IJni5dnihIw4hCiicPLZlQPo/cxk6XH4W4xUgZLbnT7fA9PXyfWrdP8us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716140; c=relaxed/simple;
-	bh=G80rEcyY9JD3+ZtRGaSh3wrz3q7CdX1FriyBqCIKXrw=;
+	s=arc-20240116; t=1760714614; c=relaxed/simple;
+	bh=Yb8jkMOsyZ5+WSIJb1opEdICDiNOi5pe9kqUA0ggC/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mkez7LL3LFFPE1KLDLbWBB/TVftjfGFBVc7Cc4QMUglc9F1CrY5U1U/9/EMM6JPO7pNZu3AYpxRcctQe46rL7uOcnYY/hJ9FMNzlgRyyS04iYU1Pn2jTB00yuRx6LBVj36BWF0VKx+oi23jvk2nk7DJlAz6KTPZzSrHzgVHOGw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHX1yVXm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245DFC4CEE7;
-	Fri, 17 Oct 2025 15:48:59 +0000 (UTC)
+	 MIME-Version; b=lCoxWR/QUmhpTSW0PBaqVNMKxicz+VayO5HBwd8UaZoBoqy6CkMDaZvX0Ovs4sr2Vvxi57BmGeIctqHcYTXb0XLBnIlgezyNV1F3cE7/sofpoODLXKx1P4+Foh0lV/0mzyyrMrF7Kw0FvQS0Woy6vBLEp56cbmzt+HVBwNPmDl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxkfEbS8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032DBC113D0;
+	Fri, 17 Oct 2025 15:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716140;
-	bh=G80rEcyY9JD3+ZtRGaSh3wrz3q7CdX1FriyBqCIKXrw=;
+	s=korg; t=1760714614;
+	bh=Yb8jkMOsyZ5+WSIJb1opEdICDiNOi5pe9kqUA0ggC/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GHX1yVXm2zTR73rjrc4CUFXeGytfp5xs2OgfNcRtDJvGeVQyQG/ALtX+mgfjUOUCm
-	 qwR4O8WH5OiXiFwwYrB1sDUemnM0k5lIvsfpO30G74Ti9oN/Cj+cYuCuFFRkxywAoI
-	 PUBB6EHCihQhDZ/2mFJMnyRp03uOs9vWNFE2QhXI=
+	b=lxkfEbS8t7PJJZjnN3nqBB3fkrdZNnoLKsDU0hdtJGcZbU1V/KdG+qCUMOG2p6jsY
+	 Co+IBgwR0TD2b3LRrzjoELZ36r4MLZYef05x6xbjkIbAaGm/AYDqMiMCnMHFKCbxp8
+	 tkyblA9WaDaD2TPXKXf++Ja/2UtUC/G+ycSKauRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Ethan Hawke <ehawk@ember.systems>,
-	Ken Link <iissmart@numberzero.org>
-Subject: [PATCH 5.15 088/276] sparc: fix accurate exception reporting in copy_{from_to}_user for Niagara
+	Thomas Gleixner <tglx@linutronix.de>,
+	Florian Weimer <fweimer@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: [PATCH 6.12 174/277] rseq/selftests: Use weak symbol reference, not definition, to link with glibc
 Date: Fri, 17 Oct 2025 16:53:01 +0200
-Message-ID: <20251017145145.698633347@linuxfoundation.org>
+Message-ID: <20251017145153.482123368@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,115 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 0b67c8fc10b13a9090340c5f8a37d308f4e1571c ]
+commit a001cd248ab244633c5fabe4f7c707e13fc1d1cc upstream.
 
-The referenced commit introduced exception handlers on user-space memory
-references in copy_from_user and copy_to_user. These handlers return from
-the respective function and calculate the remaining bytes left to copy
-using the current register contents. This commit fixes a couple of bad
-calculations and a broken epilogue in the exception handlers. This will
-prevent crashes and ensure correct return values of copy_from_user and
-copy_to_user in the faulting case. The behaviour of memcpy stays unchanged.
+Add "extern" to the glibc-defined weak rseq symbols to convert the rseq
+selftest's usage from weak symbol definitions to weak symbol _references_.
+Effectively re-defining the glibc symbols wreaks havoc when building with
+-fno-common, e.g. generates segfaults when running multi-threaded programs,
+as dynamically linked applications end up with multiple versions of the
+symbols.
 
-Fixes: 7ae3aaf53f16 ("sparc64: Convert NGcopy_{from,to}_user to accurate exception reporting.")
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on SPARC T4 with modified kernel to use Niagara 1 code
-Tested-by: Magnus Lindholm <linmag7@gmail.com> # on Sun Fire T2000
-Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
-Tested-by: Ethan Hawke <ehawk@ember.systems> # on Sun Fire T2000
-Tested-by: Ken Link <iissmart@numberzero.org> # on Sun Fire T1000
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-3-1ca72dda195b@mkarcher.dialup.fu-berlin.de
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Building with -fcommon, which until recently has the been the default for
+GCC and clang, papers over the bug by allowing the linker to resolve the
+weak/tentative definition to glibc's "real" definition.
+
+Note, the symbol itself (or rather its address), not the value of the
+symbol, is set to 0/NULL for unresolved weak symbol references, as the
+symbol doesn't exist and thus can't have a value.  Check for a NULL rseq
+size pointer to handle the scenario where the test is statically linked
+against a libc that doesn't support rseq in any capacity.
+
+Fixes: 3bcbc20942db ("selftests/rseq: Play nice with binaries statically linked against glibc 2.35+")
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Suggested-by: Florian Weimer <fweimer@redhat.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/87frdoybk4.ffs@tglx
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/lib/NGmemcpy.S | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ tools/testing/selftests/rseq/rseq.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/sparc/lib/NGmemcpy.S b/arch/sparc/lib/NGmemcpy.S
-index 8e4d22a6ba0b2..846a8c4ea394f 100644
---- a/arch/sparc/lib/NGmemcpy.S
-+++ b/arch/sparc/lib/NGmemcpy.S
-@@ -80,8 +80,8 @@
- #ifndef EX_RETVAL
- #define EX_RETVAL(x)	x
- __restore_asi:
--	ret
- 	wr	%g0, ASI_AIUS, %asi
-+	ret
- 	 restore
- ENTRY(NG_ret_i2_plus_i4_plus_1)
- 	ba,pt	%xcc, __restore_asi
-@@ -126,15 +126,16 @@ ENTRY(NG_ret_i2_plus_g1_minus_56)
- 	ba,pt	%xcc, __restore_asi
- 	 add	%i2, %g1, %i0
- ENDPROC(NG_ret_i2_plus_g1_minus_56)
--ENTRY(NG_ret_i2_plus_i4)
-+ENTRY(NG_ret_i2_plus_i4_plus_16)
-+        add     %i4, 16, %i4
- 	ba,pt	%xcc, __restore_asi
- 	 add	%i2, %i4, %i0
--ENDPROC(NG_ret_i2_plus_i4)
--ENTRY(NG_ret_i2_plus_i4_minus_8)
--	sub	%i4, 8, %i4
-+ENDPROC(NG_ret_i2_plus_i4_plus_16)
-+ENTRY(NG_ret_i2_plus_i4_plus_8)
-+	add	%i4, 8, %i4
- 	ba,pt	%xcc, __restore_asi
- 	 add	%i2, %i4, %i0
--ENDPROC(NG_ret_i2_plus_i4_minus_8)
-+ENDPROC(NG_ret_i2_plus_i4_plus_8)
- ENTRY(NG_ret_i2_plus_8)
- 	ba,pt	%xcc, __restore_asi
- 	 add	%i2, 8, %i0
-@@ -161,6 +162,12 @@ ENTRY(NG_ret_i2_and_7_plus_i4)
- 	ba,pt	%xcc, __restore_asi
- 	 add	%i2, %i4, %i0
- ENDPROC(NG_ret_i2_and_7_plus_i4)
-+ENTRY(NG_ret_i2_and_7_plus_i4_plus_8)
-+	and	%i2, 7, %i2
-+	add	%i4, 8, %i4
-+	ba,pt	%xcc, __restore_asi
-+	 add	%i2, %i4, %i0
-+ENDPROC(NG_ret_i2_and_7_plus_i4)
- #endif
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -40,9 +40,9 @@
+  * Define weak versions to play nice with binaries that are statically linked
+  * against a libc that doesn't support registering its own rseq.
+  */
+-__weak ptrdiff_t __rseq_offset;
+-__weak unsigned int __rseq_size;
+-__weak unsigned int __rseq_flags;
++extern __weak ptrdiff_t __rseq_offset;
++extern __weak unsigned int __rseq_size;
++extern __weak unsigned int __rseq_flags;
  
- 	.align		64
-@@ -406,13 +413,13 @@ FUNC_NAME:	/* %i0=dst, %i1=src, %i2=len */
- 	andn		%i2, 0xf, %i4
- 	and		%i2, 0xf, %i2
- 1:	subcc		%i4, 0x10, %i4
--	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4)
-+	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4_plus_16)
- 	add		%i1, 0x08, %i1
--	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4)
-+	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4_plus_16)
- 	sub		%i1, 0x08, %i1
--	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4)
-+	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4_plus_16)
- 	add		%i1, 0x8, %i1
--	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_minus_8)
-+	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_plus_8)
- 	bgu,pt		%XCC, 1b
- 	 add		%i1, 0x8, %i1
- 73:	andcc		%i2, 0x8, %g0
-@@ -469,7 +476,7 @@ FUNC_NAME:	/* %i0=dst, %i1=src, %i2=len */
- 	subcc		%i4, 0x8, %i4
- 	srlx		%g3, %i3, %i5
- 	or		%i5, %g2, %i5
--	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4)
-+	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4_plus_8)
- 	add		%o0, 0x8, %o0
- 	bgu,pt		%icc, 1b
- 	 sllx		%g3, %g1, %g2
--- 
-2.51.0
-
+ static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
+ static const unsigned int *libc_rseq_size_p = &__rseq_size;
+@@ -198,7 +198,7 @@ void rseq_init(void)
+ 	 * libc not having registered a restartable sequence.  Try to find the
+ 	 * symbols if that's the case.
+ 	 */
+-	if (!*libc_rseq_size_p) {
++	if (!libc_rseq_size_p || !*libc_rseq_size_p) {
+ 		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
+ 		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
+ 		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
 
 
 
