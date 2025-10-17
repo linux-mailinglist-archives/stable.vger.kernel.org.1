@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B057BE9CD2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A71DBE9F2D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 78C135837D9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5F9E2582DDD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9560A3328E6;
-	Fri, 17 Oct 2025 15:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954C6337110;
+	Fri, 17 Oct 2025 15:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVg++CK+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzN5+Ali"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411D8332909;
-	Fri, 17 Oct 2025 15:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7CA3208;
+	Fri, 17 Oct 2025 15:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714014; cv=none; b=tt+O0NZd/XBUMZNdZHMUtmtERqgqdM0nMsP7G4LhDHcyB6m9CJJPVigHeN3oSY0izN8VNNzdU7NLfj9eorMXa+tBxlkwvtNY2+vZXMvnAJWJwtQsMVNo4dG4r20nP8/dwiK5lYwcBssqKHTXf1Xfe2enE31eIhruEG/whKGwkoU=
+	t=1760714748; cv=none; b=LhDmEkbY2YWrZih07dVjVQyrJf4JSTOaWn1C9YIxQL8t82IzkkKy47/Bnc4BYrSbhn7yhi9OHre1RxtVfEN8Zi5m364M7n09NOUgee3HncnmAevgNStfSkZhgQOGu2MEyv7lh9m8C17MitJtEMd2SnX1gGOeC5JxL/00HwtY/OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714014; c=relaxed/simple;
-	bh=Tnks1huSEwz0MnqUlfdV/bDB+tuHdByTW6UK3h875iI=;
+	s=arc-20240116; t=1760714748; c=relaxed/simple;
+	bh=lt2E2fr4KxVTYgQYztMkrv/Ug+Dd3rilvd4qXmsrYV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Px/JCd/TOPFBvOu8quTIF/b2+W685eoOD5nR0CC/7UoeZQNIoGdD7rA+eVBVXwerS5uGX5H6sd8T8QAfldeKs7IrV7mSwEMHZGgiYJrIoBAM1DgqVPfOzOoDX4rn0gR7iZOCL51fbFvl5HtVgc4gfWDLoEHggj8LyycT/QUBs/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVg++CK+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA49C4CEE7;
-	Fri, 17 Oct 2025 15:13:33 +0000 (UTC)
+	 MIME-Version; b=QqitFKo0oN4kBsc/kLVgZVz5PkUKLa9NjEh5MoQSJAI7gkSniYjQuPJnlM9Hwx73CvuEZ9//U3yw0wTfYVf06oZbWzD4lBQApUFbM7KKcBEM4o+FFaGk8GEiEW+eyAoz3FeAT2KfI9LuEwuS5cVcn5McQYJUZGcw08WLlU0VC5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzN5+Ali; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9D9C4CEE7;
+	Fri, 17 Oct 2025 15:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714014;
-	bh=Tnks1huSEwz0MnqUlfdV/bDB+tuHdByTW6UK3h875iI=;
+	s=korg; t=1760714748;
+	bh=lt2E2fr4KxVTYgQYztMkrv/Ug+Dd3rilvd4qXmsrYV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NVg++CK+F5xaIsXJNpeX6F/ow2HkmyqzgKx1U5XkUMkHMGanKKZ7J2hOSJ1g/HIcw
-	 AHOT8dYbsPXsyZmlKCVemUZ6hP/afntfvDTJYdzcBJOhc3d32MaWF/tPBh3spT2+2b
-	 xGJNVxmgEaITHmc4DmszLmwfq9gcWIgrPV42n6QM=
+	b=SzN5+AlipJGQ+NtwsnvmRuwl4st43EVzKgBtPl9VOobLcX8u4JA6XZzKVNhDkG7Pf
+	 VcnzkfbBoE2e7GeiOsQlpzcktOz6J+dhLe/45KH3zAO7A+Wf1hmG7Fj7fdaKXpNws0
+	 Q1Ouk12ER6xkR3mbtxg704bX/QkVGmQ+ny+FN81M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 199/201] writeback: Avoid softlockup when switching many inodes
+Subject: [PATCH 6.12 253/277] ACPI: property: Add code comments explaining what is going on
 Date: Fri, 17 Oct 2025 16:54:20 +0200
-Message-ID: <20251017145142.070450352@linuxfoundation.org>
+Message-ID: <20251017145156.391079849@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 66c14dccd810d42ec5c73bb8a9177489dfd62278 ]
+[ Upstream commit 737c3a09dcf69ba2814f3674947ccaec1861c985 ]
 
-process_inode_switch_wbs_work() can be switching over 100 inodes to a
-different cgroup. Since switching an inode requires counting all dirty &
-under-writeback pages in the address space of each inode, this can take
-a significant amount of time. Add a possibility to reschedule after
-processing each inode to avoid softlockups.
+In some places in the ACPI device properties handling code, it is
+unclear why the code is what it is.  Some assumptions are not documented
+and some pieces of code are based on knowledge that is not mentioned
+anywhere.
 
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Add code comments explaining these things.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Stable-dep-of: baf60d5cb8bc ("ACPI: property: Do not pass NULL handles to acpi_attach_data()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fs-writeback.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/acpi/property.c |   46 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index ed110568d6127..0454a1f0fc636 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -479,6 +479,7 @@ static void inode_switch_wbs_work_fn(struct work_struct *work)
- 	 */
- 	down_read(&bdi->wb_switch_rwsem);
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -108,7 +108,18 @@ static bool acpi_nondev_subnode_extract(
+ 	if (handle)
+ 		acpi_get_parent(handle, &scope);
  
-+	inodep = isw->inodes;
- 	/*
- 	 * By the time control reaches here, RCU grace period has passed
- 	 * since I_WB_SWITCH assertion and all wb stat update transactions
-@@ -489,6 +490,7 @@ static void inode_switch_wbs_work_fn(struct work_struct *work)
- 	 * gives us exclusion against all wb related operations on @inode
- 	 * including IO list manipulations and stat updates.
- 	 */
-+relock:
- 	if (old_wb < new_wb) {
- 		spin_lock(&old_wb->list_lock);
- 		spin_lock_nested(&new_wb->list_lock, SINGLE_DEPTH_NESTING);
-@@ -497,10 +499,17 @@ static void inode_switch_wbs_work_fn(struct work_struct *work)
- 		spin_lock_nested(&old_wb->list_lock, SINGLE_DEPTH_NESTING);
- 	}
++	/*
++	 * Extract properties from the _DSD-equivalent package pointed to by
++	 * desc and use scope (if not NULL) for the completion of relative
++	 * pathname segments.
++	 *
++	 * The extracted properties will be held in the new data node dn.
++	 */
+ 	result = acpi_extract_properties(scope, desc, &dn->data);
++	/*
++	 * Look for subnodes in the _DSD-equivalent package pointed to by desc
++	 * and create child nodes of dn if there are any.
++	 */
+ 	if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->fwnode))
+ 		result = true;
  
--	for (inodep = isw->inodes; *inodep; inodep++) {
-+	while (*inodep) {
- 		WARN_ON_ONCE((*inodep)->i_wb != old_wb);
- 		if (inode_do_switch_wbs(*inodep, old_wb, new_wb))
- 			nr_switched++;
-+		inodep++;
-+		if (*inodep && need_resched()) {
-+			spin_unlock(&new_wb->list_lock);
-+			spin_unlock(&old_wb->list_lock);
-+			cond_resched();
-+			goto relock;
-+		}
- 	}
+@@ -133,6 +144,12 @@ static bool acpi_nondev_subnode_ok(acpi_
+ 	acpi_handle handle;
+ 	acpi_status status;
  
- 	spin_unlock(&new_wb->list_lock);
--- 
-2.51.0
-
++	/*
++	 * If the scope is unknown, the _DSD-equivalent package being parsed
++	 * was embedded in an outer _DSD-equivalent package as a result of
++	 * direct evaluation of an object pointed to by a reference.  In that
++	 * case, using a pathname as the target object pointer is invalid.
++	 */
+ 	if (!scope)
+ 		return false;
+ 
+@@ -162,6 +179,10 @@ static bool acpi_add_nondev_subnodes(acp
+ 	bool ret = false;
+ 	int i;
+ 
++	/*
++	 * Every element in the links package is expected to represent a link
++	 * to a non-device node in a tree containing device-specific data.
++	 */
+ 	for (i = 0; i < links->package.count; i++) {
+ 		union acpi_object *link, *desc;
+ 		bool result;
+@@ -171,17 +192,38 @@ static bool acpi_add_nondev_subnodes(acp
+ 		if (link->package.count != 2)
+ 			continue;
+ 
+-		/* The first one must be a string. */
++		/* The first one (the key) must be a string. */
+ 		if (link->package.elements[0].type != ACPI_TYPE_STRING)
+ 			continue;
+ 
+-		/* The second one may be a string or a package. */
++		/* The second one (the target) may be a string or a package. */
+ 		switch (link->package.elements[1].type) {
+ 		case ACPI_TYPE_STRING:
++			/*
++			 * The string is expected to be a full pathname or a
++			 * pathname segment relative to the given scope.  That
++			 * pathname is expected to point to an object returning
++			 * a package that contains _DSD-equivalent information.
++			 */
+ 			result = acpi_nondev_subnode_ok(scope, link, list,
+ 							 parent);
+ 			break;
+ 		case ACPI_TYPE_PACKAGE:
++			/*
++			 * This happens when a reference is used in AML to
++			 * point to the target.  Since the target is expected
++			 * to be a named object, a reference to it will cause it
++			 * to be avaluated in place and its return package will
++			 * be embedded in the links package at the location of
++			 * the reference.
++			 *
++			 * The target package is expected to contain _DSD-
++			 * equivalent information, but the scope in which it
++			 * is located in the original AML is unknown.  Thus
++			 * it cannot contain pathname segments represented as
++			 * strings because there is no way to build full
++			 * pathnames out of them.
++			 */
+ 			desc = &link->package.elements[1];
+ 			result = acpi_nondev_subnode_extract(desc, NULL, link,
+ 							     list, parent);
 
 
 
