@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADB06BE9A3F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2A0BE9E64
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72CF31AE0643
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 946EE1AE2813
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFCA33291B;
-	Fri, 17 Oct 2025 15:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E802DAFD8;
+	Fri, 17 Oct 2025 15:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypAq8MTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgGZQJW2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC09C33290A;
-	Fri, 17 Oct 2025 15:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83983BB5A;
+	Fri, 17 Oct 2025 15:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714087; cv=none; b=TOcKIun2OcIXC8B8uEJgrwIsAbNyLDfkPktvAX/4gZTpG9/RnwtQA0zu4cq/pHQnvVpP5ROS97P8xdZPaM6zL+qGmZC8Jbfsmiasvk24EiK5dJRZ5ncbidRQYxHjTJBYjkhbg/1KFQ0v564zoANHAEicHeNbPtq1Fzo6DUOo4wI=
+	t=1760714996; cv=none; b=G5PQ3tox3MGGwzywhsuDymYLifIuYwQReCAqORovHYJoVSN+DGU4BIKvpXm0kVl+iuiNDGYkkjF69tlybA79nPFaxcCK/DDTeHzWpkGNwm0ulUtaEj2eLi4XeU9YTPhlF4HbGzO91aWWaO0VPu3uZCjww8KsWpBWO/2y6/ZRASs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714087; c=relaxed/simple;
-	bh=9o8onKy85djYA8fQ28dNnqKWHTDZcHUi6Wawh2p3XSY=;
+	s=arc-20240116; t=1760714996; c=relaxed/simple;
+	bh=4c8DG67dUV6cbjG5kCICuIE6p9OaFv6rZLsHF+zQdKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ErK+FSgzOG+GW5SwoVkj0hf3aYRyVFENt39XraUUX+p69a/Az41IQVlyEn5kLgkHdteY7x7b/8ZLapDy8oNJMIeWxBIwrUWq3yd2CKMYJwuQj1aAa6PdWe40JklWnBCGQBt4GsTflYdrNZp5B8ODOAH0j9z+IY1BOybP9rxBrIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypAq8MTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38DF4C113D0;
-	Fri, 17 Oct 2025 15:14:47 +0000 (UTC)
+	 MIME-Version; b=FFmz+bsHgBYE4JGBsdWAL/6MjPUlje2aL9WAygi5wO4zLEslYDG/qyeodu5hQtpxnfhcMKxEGNIc9vXnpUDvKuAsjZ/gds5f0mMVTxVQCxuTVGVeOXcCWZdj7pcb7YO0+B8YHB6xnsCOR8YKqSf/0mqsVE62JFts1R2B1+TxlNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgGZQJW2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B517C4CEE7;
+	Fri, 17 Oct 2025 15:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714087;
-	bh=9o8onKy85djYA8fQ28dNnqKWHTDZcHUi6Wawh2p3XSY=;
+	s=korg; t=1760714995;
+	bh=4c8DG67dUV6cbjG5kCICuIE6p9OaFv6rZLsHF+zQdKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ypAq8MTLTHW5U/J9kmgxoul/qv7U5NUQuZZP9TMyGWtOJZA9q5DXsoQ/Ed1zoAmyZ
-	 LTyRjwMVY25IQrq4pPxE6sJTq9bMW4YjVg+7oZQ/4qWyXV6zxaYAS233lg7549ZBxi
-	 DuAnSWnLvjCEdqq7fnWGoJfgNlxPdH0mtU1G1RdY=
+	b=vgGZQJW2TxA8DRPP/xmYQ2HyCe5ekWEQbbk64nyvTEMSOhZnXlQNIu6nhkUlPQsxU
+	 fPsZe3ee9mvOm+EYqEt84VFKJIk0Mvgt47iCrojM4/bys4Rq4PeBTvzhDFRsj1fa8M
+	 9wV+GPeQrrM7lzUvl46aBErlTCz1agxZnpKlNbc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20Le=20Goffic?= <clement.legoffic@foss.st.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/277] rtc: optee: fix memory leak on driver removal
+Subject: [PATCH 6.17 054/371] clk: nxp: Fix pll0 rate check condition in LPC18xx CGU driver
 Date: Fri, 17 Oct 2025 16:50:29 +0200
-Message-ID: <20251017145147.959460208@linuxfoundation.org>
+Message-ID: <20251017145203.755537723@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Le Goffic <clement.legoffic@foss.st.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit a531350d2fe58f7fc4516e555f22391dee94efd9 ]
+[ Upstream commit 1624dead9a4d288a594fdf19735ebfe4bb567cb8 ]
 
-Fix a memory leak in case of driver removal.
-Free the shared memory used for arguments exchanges between kernel and
-OP-TEE RTC PTA.
+The conditional check for the PLL0 multiplier 'm' used a logical AND
+instead of OR, making the range check ineffective. This patch replaces
+&& with || to correctly reject invalid values of 'm' that are either
+less than or equal to 0 or greater than LPC18XX_PLL0_MSEL_MAX.
 
-Fixes: 81c2f059ab90 ("rtc: optee: add RTC driver for OP-TEE RTC PTA")
-Signed-off-by: Clément Le Goffic <clement.legoffic@foss.st.com>
-Link: https://lore.kernel.org/r/20250715-upstream-optee-rtc-v1-1-e0fdf8aae545@foss.st.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+This ensures proper bounds checking during clk rate setting and rounding.
+
+Fixes: b04e0b8fd544 ("clk: add lpc18xx cgu clk driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+[sboyd@kernel.org: 'm' is unsigned so remove < condition]
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-optee.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/nxp/clk-lpc18xx-cgu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-optee.c b/drivers/rtc/rtc-optee.c
-index 9f8b5d4a8f6b6..6b77c122fdc10 100644
---- a/drivers/rtc/rtc-optee.c
-+++ b/drivers/rtc/rtc-optee.c
-@@ -320,6 +320,7 @@ static int optee_rtc_remove(struct device *dev)
- {
- 	struct optee_rtc *priv = dev_get_drvdata(dev);
+diff --git a/drivers/clk/nxp/clk-lpc18xx-cgu.c b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+index 30e0b283ca608..b9e204d63a972 100644
+--- a/drivers/clk/nxp/clk-lpc18xx-cgu.c
++++ b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+@@ -381,7 +381,7 @@ static int lpc18xx_pll0_determine_rate(struct clk_hw *hw,
+ 	}
  
-+	tee_shm_free(priv->shm);
- 	tee_client_close_session(priv->ctx, priv->session_id);
- 	tee_client_close_context(priv->ctx);
+ 	m = DIV_ROUND_UP_ULL(req->best_parent_rate, req->rate * 2);
+-	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
++	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
+ 		pr_warn("%s: unable to support rate %lu\n", __func__, req->rate);
+ 		return -EINVAL;
+ 	}
+@@ -404,7 +404,7 @@ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	}
  
+ 	m = DIV_ROUND_UP_ULL(parent_rate, rate * 2);
+-	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
++	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
+ 		pr_warn("%s: unable to support rate %lu\n", __func__, rate);
+ 		return -EINVAL;
+ 	}
 -- 
 2.51.0
 
