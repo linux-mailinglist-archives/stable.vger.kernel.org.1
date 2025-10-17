@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95DBCBE980E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:25 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7595BEA20C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A41731AA7A79
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 835F935ED61
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4775F32E14F;
-	Fri, 17 Oct 2025 15:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528082F12A0;
+	Fri, 17 Oct 2025 15:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZjiWJ/l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoF0VEZy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4022F12BA;
-	Fri, 17 Oct 2025 15:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03478330B11;
+	Fri, 17 Oct 2025 15:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713594; cv=none; b=iDGLAVeH0hMKWqyehHjxWtBtAKAr9MleDuRD9GtCiuzvxsyGiJCRdD3t6c3PIc9qHiiJyrtZAYFKgXiHGJgPPLmi873t9arYvo2hUW7D9ArM0yuRIE93fYR5k3zihETOBwA4yN2aZocUK/fmBQzgN2G9Xeg0ZBX/E4mRB5pyCUU=
+	t=1760715948; cv=none; b=LaqlNKtV1nVG70ae/ehnIAl7QtIIWhG7S6y0yH0VPnFVMOVcvmoQFBpz6oxA/H8iwqe/0SRgb4jHVUs9ho3akXcQKCyXi1VF7+3QBZYLqyld51Sf1EKN9pGRCZ2PouMED4MmkmfL48Q73XknCLEv0l4ZJR8sp4HBsavEh8CEKuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713594; c=relaxed/simple;
-	bh=CE0p/PJBwjeqbTzsjxIFCYBCzR5nL8HYYt6SsDuv6D8=;
+	s=arc-20240116; t=1760715948; c=relaxed/simple;
+	bh=XMRetHSpKS/R1jWK1QRQZRzQOufJb4COPQ4mIMbcV/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYpddePj4BYBYVHALPTvO0wwtk9h2Li+fi1jxw+rsfLdVsB836r9ck7dxVgLjul9folEP9n5HIzm8nxlOSStpwGw+lQyDBtfo5iJfDSyrV/TmJ++RpMr9zDxAm1v96C+x3IRWJgUuCMpQeHUFovVaRetyiqF3nkXG2S2IA1Fztg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZjiWJ/l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAAFC4CEE7;
-	Fri, 17 Oct 2025 15:06:33 +0000 (UTC)
+	 MIME-Version; b=k/7EjB5YC3+V2cyBz5PI9Y3TFhMOE/zaOW9qKOELssZBkzSGlTUfoPWl0TSjf6nZFjA+5LhPinJwP59pBhH4OhPXa79FXOv8MnReCVWy/EmI2AMlsC25izrnVJhzJ7HUgu8R52NotKJPUEZ2TW5RbPCbs0T5lfM3cxVaC69mlSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoF0VEZy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E50C4CEE7;
+	Fri, 17 Oct 2025 15:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713593;
-	bh=CE0p/PJBwjeqbTzsjxIFCYBCzR5nL8HYYt6SsDuv6D8=;
+	s=korg; t=1760715947;
+	bh=XMRetHSpKS/R1jWK1QRQZRzQOufJb4COPQ4mIMbcV/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZjiWJ/l0J+afi4OLyDazwFlbtJnzGcVtI0j1tKLx3DrrsCqHinmGQJyN+a/Iu9ap
-	 6NgI3hAYpAwQZVmtKnss1DB9v8r2VDGXlmxPWkC5oqCl29FqOTYJGAe97ozxw9VSM1
-	 fD/Qy0rNzCXnfEe9aUOlQ8oQ4SdJShklWypwSpkE=
+	b=AoF0VEZy4fnpMA3fpLmd6bwba1v0YRNamj/SWSp5Ob9APH48ev27GdNca3COY4Mh/
+	 w6Q3snq2g/fzvlAgpKGCNeXZ0m2LFPxFNf8L3YXZ9wZXJwE7FdnlEFeVZ0roz+rSIr
+	 VNU5Uaq0ykFslNgaJ1fmzqvGcblqI1lpra5rVjVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/201] crypto: essiv - Check ssize for decryption and in-place encryption
+	Yiqi Sun <sunyiqixm@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 020/276] crypto: rng - Ensure set_ent is always present
 Date: Fri, 17 Oct 2025 16:51:53 +0200
-Message-ID: <20251017145136.656692687@linuxfoundation.org>
+Message-ID: <20251017145143.138615380@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 6bb73db6948c2de23e407fe1b7ef94bf02b7529f ]
+commit c0d36727bf39bb16ef0a67ed608e279535ebf0da upstream.
 
-Move the ssize check to the start in essiv_aead_crypt so that
-it's also checked for decryption and in-place encryption.
+Ensure that set_ent is always set since only drbg provides it.
 
-Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Fixes: be1eb7f78aa8 ("crypto: essiv - create wrapper template for ESSIV generation")
+Fixes: 77ebdabe8de7 ("crypto: af_alg - add extra parameters for DRBG interface")
+Reported-by: Yiqi Sun <sunyiqixm@gmail.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/essiv.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ crypto/rng.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/crypto/essiv.c b/crypto/essiv.c
-index f7d4ef4837e54..4dbec116ddc3e 100644
---- a/crypto/essiv.c
-+++ b/crypto/essiv.c
-@@ -186,9 +186,14 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
- 	const struct essiv_tfm_ctx *tctx = crypto_aead_ctx(tfm);
- 	struct essiv_aead_request_ctx *rctx = aead_request_ctx(req);
- 	struct aead_request *subreq = &rctx->aead_req;
-+	int ivsize = crypto_aead_ivsize(tfm);
-+	int ssize = req->assoclen - ivsize;
- 	struct scatterlist *src = req->src;
- 	int err;
+--- a/crypto/rng.c
++++ b/crypto/rng.c
+@@ -174,6 +174,11 @@ out:
+ EXPORT_SYMBOL_GPL(crypto_del_default_rng);
+ #endif
  
-+	if (ssize < 0)
-+		return -EINVAL;
++static void rng_default_set_ent(struct crypto_rng *tfm, const u8 *data,
++				unsigned int len)
++{
++}
 +
- 	crypto_cipher_encrypt_one(tctx->essiv_cipher, req->iv, req->iv);
+ int crypto_register_rng(struct rng_alg *alg)
+ {
+ 	struct crypto_alg *base = &alg->base;
+@@ -185,6 +190,9 @@ int crypto_register_rng(struct rng_alg *
+ 	base->cra_flags &= ~CRYPTO_ALG_TYPE_MASK;
+ 	base->cra_flags |= CRYPTO_ALG_TYPE_RNG;
  
- 	/*
-@@ -198,19 +203,12 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
- 	 */
- 	rctx->assoc = NULL;
- 	if (req->src == req->dst || !enc) {
--		scatterwalk_map_and_copy(req->iv, req->dst,
--					 req->assoclen - crypto_aead_ivsize(tfm),
--					 crypto_aead_ivsize(tfm), 1);
-+		scatterwalk_map_and_copy(req->iv, req->dst, ssize, ivsize, 1);
- 	} else {
- 		u8 *iv = (u8 *)aead_request_ctx(req) + tctx->ivoffset;
--		int ivsize = crypto_aead_ivsize(tfm);
--		int ssize = req->assoclen - ivsize;
- 		struct scatterlist *sg;
- 		int nents;
- 
--		if (ssize < 0)
--			return -EINVAL;
--
- 		nents = sg_nents_for_len(req->src, ssize);
- 		if (nents < 0)
- 			return -EINVAL;
--- 
-2.51.0
-
++	if (!alg->set_ent)
++		alg->set_ent = rng_default_set_ent;
++
+ 	return crypto_register_alg(base);
+ }
+ EXPORT_SYMBOL_GPL(crypto_register_rng);
 
 
 
