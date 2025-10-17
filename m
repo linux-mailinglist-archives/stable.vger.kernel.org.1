@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-186580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7ACBE9C33
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08CDFBEA4E8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C113746B06
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7DDC65696E8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3C62F12D2;
-	Fri, 17 Oct 2025 15:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A80330B11;
+	Fri, 17 Oct 2025 15:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZf7jWTo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGeClg0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155E32F12BE;
-	Fri, 17 Oct 2025 15:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655F7330B20;
+	Fri, 17 Oct 2025 15:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713645; cv=none; b=l5+8OExAmi0mgbnsoUr1D8tQy5WOH9l2pY9/CGtVu+y7aCP+6gKeV23a99IMepYd68DGz1Ir1EoNgNac//sl/Ozz3AMrH+Pd3SyQQc2DXXkD9Crf7FLuRebmucPM4+g8JUlTYgQDHubdqNqNSmiWznf+2vpMJfg5z0F78h0wLKg=
+	t=1760716017; cv=none; b=WtGB5uOPubDPTkU7kpzIWyg1bNWBtGr4A1e1C2U/UfO1eGjyPYnqfBmYmdGE6jdNnGJtA2kGtc6raIiwA8auqtIbQIR10dzuCB1teoxLV+irEEmDt2E5wphGyLCZBXw6vpGcl4Iduf9QIdWMm0Qrps2Tt0582poLK/LqOa81vcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713645; c=relaxed/simple;
-	bh=999Ikb1mVyCBWZrN2E6S0e+ZvCjzDU6hZpN/Ov5IGgo=;
+	s=arc-20240116; t=1760716017; c=relaxed/simple;
+	bh=k2SjGE6iKzhyR2kcXkO4SS63Qym/CCwHBZx2DS4oDRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AChDcWzmMNWbWUlxhpGufZTc9eQdqtmRmBEdXbrNoaZSPV/0O45f0h3ggqMtLZpOnZOprsFlcgIVKdPIFSs88VJ70u5BQaHdDeZBNWvKIGcyfUG+00bd+E8yjqZXotOLfx0W70ysgkThlol53VvgYqqzghSAwnXTWQjJhwn7qbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZf7jWTo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D24FC4CEE7;
-	Fri, 17 Oct 2025 15:07:24 +0000 (UTC)
+	 MIME-Version; b=ocNqoDcOY4mRZZpDl82hQ6y3Cwo3Qe+Wol+2YIzfdICNHlLc9GOw0H9qSV5qUCOnnVgnobgCdX+vyPMrjPCrZXLy9obv7gFlzVFVkPeY23b6Y/a0fICcGTRe7asxNnrKslGLm7Mn9CVWvoknjFhucEM+DPwQP4dCli+vG/NzIbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGeClg0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99147C4CEE7;
+	Fri, 17 Oct 2025 15:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713644;
-	bh=999Ikb1mVyCBWZrN2E6S0e+ZvCjzDU6hZpN/Ov5IGgo=;
+	s=korg; t=1760716017;
+	bh=k2SjGE6iKzhyR2kcXkO4SS63Qym/CCwHBZx2DS4oDRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZf7jWToO5hcMg0ruaXYkohcck/nTBl7SHJv3E+r9VICc/ta+r00Dy/ZSmsk0F8Jz
-	 b2wIKjnE6z46oXOdp/HPr+PnwkNMcjd3+O74rDiBtO3JfTZQ8D4tawdivhhaX4+fOk
-	 YwMt3oQKGNGmTf8g3BPqXPum8EipiJjhUXIv3WJQ=
+	b=JGeClg0TBwv5lthX5KxYCtpnQgHpgbFqBDylhLzp6kKEH0P+Xe3qxyqpYXdECO0YE
+	 5alUV7nOf9yigf/IMymq0Gn305hvIlvrvZhI5GuDDv0iGtgdEfIrdeCKI6+17naDX3
+	 7ocJJOfudTv7xJV0dNMJQmSKpHWRqlpVfi/YbTnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.6 069/201] xen/events: Return -EEXIST for bound VIRQs
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 037/276] block: use int to store blk_stack_limits() return value
 Date: Fri, 17 Oct 2025 16:52:10 +0200
-Message-ID: <20251017145137.288417082@linuxfoundation.org>
+Message-ID: <20251017145143.759438894@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-commit 07ce121d93a5e5fb2440a24da3dbf408fcee978e upstream.
+[ Upstream commit b0b4518c992eb5f316c6e40ff186cbb7a5009518 ]
 
-Change find_virq() to return -EEXIST when a VIRQ is bound to a
-different CPU than the one passed in.  With that, remove the BUG_ON()
-from bind_virq_to_irq() to propogate the error upwards.
+Change the 'ret' variable in blk_stack_limits() from unsigned int to int,
+as it needs to store negative value -1.
 
-Some VIRQs are per-cpu, but others are per-domain or global.  Those must
-be bound to CPU0 and can then migrate elsewhere.  The lookup for
-per-domain and global will probably fail when migrated off CPU 0,
-especially when the current CPU is tracked.  This now returns -EEXIST
-instead of BUG_ON().
+Storing the negative error codes in unsigned type, or performing equality
+comparisons (e.g., ret == -1), doesn't cause an issue at runtime [1] but
+can be confusing.  Additionally, assigning negative error codes to unsigned
+type may trigger a GCC warning when the -Wsign-conversion flag is enabled.
 
-A second call to bind a per-domain or global VIRQ is not expected, but
-make it non-fatal to avoid trying to look up the irq, since we don't
-know which per_cpu(virq_to_irq) it will be in.
+No effect on runtime.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250828003604.8949-3-jason.andryuk@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/x3wogjf6vgpkisdhg3abzrx7v7zktmdnfmqeih5kosszmagqfs@oh3qxrgzkikf/ #1
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Fixes: fe0b393f2c0a ("block: Correct handling of bottom device misaligment")
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250902130930.68317-1-rongqianfeng@vivo.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ block/blk-settings.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -1326,10 +1326,12 @@ int bind_interdomain_evtchn_to_irq_latee
- }
- EXPORT_SYMBOL_GPL(bind_interdomain_evtchn_to_irq_lateeoi);
- 
--static int find_virq(unsigned int virq, unsigned int cpu, evtchn_port_t *evtchn)
-+static int find_virq(unsigned int virq, unsigned int cpu, evtchn_port_t *evtchn,
-+		     bool percpu)
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index d501084bab4a4..85346a6f1c773 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -514,7 +514,8 @@ static unsigned int blk_round_down_sectors(unsigned int sectors, unsigned int lb
+ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
+ 		     sector_t start)
  {
- 	struct evtchn_status status;
- 	evtchn_port_t port;
-+	bool exists = false;
+-	unsigned int top, bottom, alignment, ret = 0;
++	unsigned int top, bottom, alignment;
++	int ret = 0;
  
- 	memset(&status, 0, sizeof(status));
- 	for (port = 0; port < xen_evtchn_max_channels(); port++) {
-@@ -1342,12 +1344,16 @@ static int find_virq(unsigned int virq,
- 			continue;
- 		if (status.status != EVTCHNSTAT_virq)
- 			continue;
--		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu)) {
-+		if (status.u.virq != virq)
-+			continue;
-+		if (status.vcpu == xen_vcpu_nr(cpu)) {
- 			*evtchn = port;
- 			return 0;
-+		} else if (!percpu) {
-+			exists = true;
- 		}
- 	}
--	return -ENOENT;
-+	return exists ? -EEXIST : -ENOENT;
- }
- 
- /**
-@@ -1394,8 +1400,11 @@ int bind_virq_to_irq(unsigned int virq,
- 			evtchn = bind_virq.port;
- 		else {
- 			if (ret == -EEXIST)
--				ret = find_virq(virq, cpu, &evtchn);
--			BUG_ON(ret < 0);
-+				ret = find_virq(virq, cpu, &evtchn, percpu);
-+			if (ret) {
-+				__unbind_from_irq(info, info->irq);
-+				goto out;
-+			}
- 		}
- 
- 		ret = xen_irq_info_virq_setup(info, cpu, evtchn, virq);
+ 	t->max_sectors = min_not_zero(t->max_sectors, b->max_sectors);
+ 	t->max_hw_sectors = min_not_zero(t->max_hw_sectors, b->max_hw_sectors);
+-- 
+2.51.0
+
 
 
 
