@@ -1,75 +1,55 @@
-Return-Path: <stable+bounces-187498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5200DBEA530
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F6DCBEA335
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1648B585BB5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:50:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 195127C48F2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D931C330B30;
-	Fri, 17 Oct 2025 15:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C887932C92F;
+	Fri, 17 Oct 2025 15:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yn9D3Oqf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/7Fc5p6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BA4330B17;
-	Fri, 17 Oct 2025 15:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E15332903;
+	Fri, 17 Oct 2025 15:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716244; cv=none; b=B90/zOt3OiZagwNUszpcyZX/BTbKPjzCMaxna0BZr3jDpeVhyGFqDHE/0+1yGbdkBidJWZ+8kwjw0oIuGotjB046oW7wH8PAKJ/u2CLeJmjrJMuKmK1ratTHqBfpxjgsIKS0izSEaghEmsC/osAESdeXOM2SbGOaoLh3Fw2WXAg=
+	t=1760715510; cv=none; b=qKhLtzhPIoFg2ppPMo5jbet1U2Xl9BUFjYHPfoAsV3BVz3FDECmteD6aES/iW/N9phbR7HwQoCSdxzJcjwSl2R0LlHw/r+Ksdg8EWmyaFmCTUQ3h/Hj4SLg10LwZcyUiKr5xu6P5msj/7YrvDpvzc/DLOjs+kZfd4rdczrXJG6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716244; c=relaxed/simple;
-	bh=ol6rMaWelqdOn7ooNngXAXOwqTegJlq38kO2w/VAnlo=;
+	s=arc-20240116; t=1760715510; c=relaxed/simple;
+	bh=Rx58Q4Bzprceacy6NkF2dZ9eM+lHff+vYo6f+Mh3TJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7+h8LH+zeqSsfvFOFyhQWTNIQDtfle6/amTqfQ5k19Tvj9EGuCT2aIzO2nI2XooJzKTA4iKDXqiZVvM9r9Bk1kp8tBrmCTYQXQvcrvcRRsUl6yUsY+qdaQrQ3A8Qed2xPRb9P3d/b3DUJcbPWBMGfL/4SxGpZvjA7kmYglNorc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yn9D3Oqf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7142C4CEE7;
-	Fri, 17 Oct 2025 15:50:43 +0000 (UTC)
+	 MIME-Version; b=lzAd29zsu/CHUwKW/BXNz8kJt6hzmz4eAWqMhSef7aUd5XxNo5BtbQaOzm0FdnccdEopx0KJCTS/c90Wp9+rkJPe1gWDZyyj8vbshAyt5oDCx+wbK2Uw95A1Hfok+6GLgRkTK32/Xj0pBRchmV0WgNc5VsIGtP6XgWzTHtAERPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/7Fc5p6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EDFC4CEE7;
+	Fri, 17 Oct 2025 15:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716244;
-	bh=ol6rMaWelqdOn7ooNngXAXOwqTegJlq38kO2w/VAnlo=;
+	s=korg; t=1760715510;
+	bh=Rx58Q4Bzprceacy6NkF2dZ9eM+lHff+vYo6f+Mh3TJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yn9D3Oqfwu7r5MEx7YSeitLSo3tX0CArD3eah6eyzRRacihYMmU4yQGJYnqmFsXYv
-	 d1rcBZiTxzuby8sbg788YDtaxlkTk2ZOWVQXw7xN5daa4xfTSWQx4V3Jns6O+1TUEb
-	 DXZ0sjI7xG8DIUw7+PvOge8NcXH33BJxM8bmKB7A=
+	b=G/7Fc5p6DpWGiXncSmBOR3zH/2UdhtRobfyB2BAfIBRCt8b9/XwZ2mBDKFQw0WrCW
+	 2WXAFO9BO9GFATtuNxJXbGFwhxK7mr5w9m6sO9YbXiDLhp1/fniV22K3YICqPoqGqR
+	 FQ5jO2hr/SciMdTwevVqSLOWkyoaOot7mruKpOsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.ibm.com>,
-	Blake Jones <blakejones@google.com>,
-	Chun-Tse Shao <ctshao@google.com>,
-	Collin Funk <collin.funk1@gmail.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jan Polensky <japo@linux.ibm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Li Huafei <lihuafei1@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Nam Cao <namcao@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Steinar H. Gunderson" <sesse@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 124/276] libperf event: Ensure tracing data is multiple of 8 sized
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.17 242/371] parisc: Remove spurious if statement from raw_copy_from_user()
 Date: Fri, 17 Oct 2025 16:53:37 +0200
-Message-ID: <20251017145147.005782915@linuxfoundation.org>
+Message-ID: <20251017145210.833546625@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,64 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-[ Upstream commit b39c915a4f365cce6bdc0e538ed95d31823aea8f ]
+commit 16794e524d310780163fdd49d0bf7fac30f8dbc8 upstream.
 
-Perf's synthetic-events.c will ensure 8-byte alignment of tracing
-data, writing it after a perf_record_header_tracing_data event.
+Accidently introduced in commit 91428ca9320e.
 
-Add padding to struct perf_record_header_tracing_data to make it 16-byte
-rather than 12-byte sized.
-
-Fixes: 055c67ed39887c55 ("perf tools: Move event synthesizing routines to separate .c file")
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.ibm.com>
-Cc: Blake Jones <blakejones@google.com>
-Cc: Chun-Tse Shao <ctshao@google.com>
-Cc: Collin Funk <collin.funk1@gmail.com>
-Cc: Howard Chu <howardchu95@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jan Polensky <japo@linux.ibm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Li Huafei <lihuafei1@huawei.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Nam Cao <namcao@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steinar H. Gunderson <sesse@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250821163820.1132977-6-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 91428ca9320e ("parisc: Check region is readable by user in raw_copy_from_user()")
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/perf/include/perf/event.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/parisc/lib/memcpy.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/lib/perf/include/perf/event.h b/tools/lib/perf/include/perf/event.h
-index 4d0c02ba3f7d3..1187415e26990 100644
---- a/tools/lib/perf/include/perf/event.h
-+++ b/tools/lib/perf/include/perf/event.h
-@@ -211,6 +211,7 @@ struct perf_record_header_event_type {
- struct perf_record_header_tracing_data {
- 	struct perf_event_header header;
- 	__u32			 size;
-+	__u32			 pad;
- };
+--- a/arch/parisc/lib/memcpy.c
++++ b/arch/parisc/lib/memcpy.c
+@@ -41,7 +41,6 @@ unsigned long raw_copy_from_user(void *d
+ 	mtsp(get_kernel_space(), SR_TEMP2);
  
- #define PERF_RECORD_MISC_BUILD_ID_SIZE (1 << 15)
--- 
-2.51.0
-
+ 	/* Check region is user accessible */
+-	if (start)
+ 	while (start < end) {
+ 		if (!prober_user(SR_TEMP1, start)) {
+ 			newlen = (start - (unsigned long) src);
 
 
 
