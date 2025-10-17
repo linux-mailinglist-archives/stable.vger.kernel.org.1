@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-187545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99336BEA9DD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:20:16 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 569F9BEA760
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:07:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD09696041C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E35D45A47F6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E83330B3C;
-	Fri, 17 Oct 2025 15:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80783330B1E;
+	Fri, 17 Oct 2025 15:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KItJLihZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GaKW6y8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D0D330B1E;
-	Fri, 17 Oct 2025 15:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C762330B2E;
+	Fri, 17 Oct 2025 15:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716381; cv=none; b=nSX6ZNBg5hdz3e38f1KPgkHkX/hgxalAYT++eU/BI2Iga8QTp39SnaSsm9AEnzuLS8itQWZyJxFFncovG2lHAF/C96yVmE4tKzMM0hq8pv8Fcmo+XgdFEmPEbdp3BQAOUqTZSKXz6+skPLJijlBz2rvmqLBuMUVx2trhyl7A9kg=
+	t=1760716388; cv=none; b=OiEtSFT0F/ikpB59K/qnF/0YmXpQWBCLRQqw291O7K/gBMSsJ8KvayZ1LMZRFrWhsYYL8vvcRRf8+a545MYTF9pwZ+KxRiUD/QGv0Q63rO9eiByZguHq6DM2j1oiqzEcrb9wV02sWD9VdbUYJygB9Inb9vK2f0otnmxEJ5bHN6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716381; c=relaxed/simple;
-	bh=QPBj88U6r+yN+vUKWdJMa4fdeRJQ1FGbMsukZ0Wgw6A=;
+	s=arc-20240116; t=1760716388; c=relaxed/simple;
+	bh=lEC1f3AhIhNqmgXiR/J54P0djRE4HniWO02qaV0kSPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oa6tZLO57zgtzrW32p4TVfQ/wVjsXiSKT34efHNmFSgqXIo60AkPh08ipeLCBpGuqneGYd0QKfB2FcXptFvSm/39Kpt1OnRnR48hUMB720ieG4H8/t7JU1QlvGOfF+VP8GjV8T+ssREkg9Dooq8835+6YvCcmo0k/+mz3fYCFBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KItJLihZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C37C4CEE7;
-	Fri, 17 Oct 2025 15:52:58 +0000 (UTC)
+	 MIME-Version; b=SHfHCgp5QemwvS0BgxhRlYnJxZj66Zt13L/UT0YZHuq1L5RWd8YhVSJG1FC21yazQsR4EsLbCT/94uuk3CCQ3vAVLrE+i5oZ6vz+ejcVCcgNjJBXhU7xWhXjfRj9ZtcVE6IGefoVLEOIadoqi8pS8M2V9Uxwz+xJCABCtdgX56c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GaKW6y8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17AFC4CEE7;
+	Fri, 17 Oct 2025 15:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716379;
-	bh=QPBj88U6r+yN+vUKWdJMa4fdeRJQ1FGbMsukZ0Wgw6A=;
+	s=korg; t=1760716388;
+	bh=lEC1f3AhIhNqmgXiR/J54P0djRE4HniWO02qaV0kSPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KItJLihZ6c9WQOkOK2N77t3uKpa0h3RI/6ihH0XQ+hR0P+EYl5tz7q9WRE4fOGGjX
-	 Q+pVc3QQYlfZIyco/qx+yjwNSDjsh2+9Y237Te/D30V6SihAn/edu+Abd5Ag1bmw2K
-	 jorAzECpoNtZxqR9YpT544D1whMYF4YOWVBRTK4E=
+	b=GaKW6y8xANQTWlNjftugjKcNaXqIT3jag1Tkd027/ojc01kH2syA0twQaiXHsTz/d
+	 6nURYGVMtU6u0jCKcWdIeS39/cuxUpp1YO4dL2RmXM2HDrl4M8m1CaILhYGqVDuKcg
+	 P8jkBAZlpw8licZ32PWtGZ5dUM2SmLTc/mPUlgd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.15 170/276] xen/events: Cleanup find_virq() return codes
-Date: Fri, 17 Oct 2025 16:54:23 +0200
-Message-ID: <20251017145148.677668300@linuxfoundation.org>
+	Carlo Caione <ccaione@baylibre.com>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 5.15 172/276] firmware: meson_sm: fix device leak at probe
+Date: Fri, 17 Oct 2025 16:54:25 +0200
+Message-ID: <20251017145148.751839918@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -66,56 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 08df2d7dd4ab2db8a172d824cda7872d5eca460a upstream.
+commit 8ece3173f87df03935906d0c612c2aeda9db92ca upstream.
 
-rc is overwritten by the evtchn_status hypercall in each iteration, so
-the return value will be whatever the last iteration is.  This could
-incorrectly return success even if the event channel was not found.
-Change to an explicit -ENOENT for an un-found virq and return 0 on a
-successful match.
+Make sure to drop the reference to the secure monitor device taken by
+of_find_device_by_node() when looking up its driver data on behalf of
+other drivers (e.g. during probe).
 
-Fixes: 62cc5fc7b2e0 ("xen/pv-on-hvm kexec: rebind virqs to existing eventchannel ports")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250828003604.8949-2-jason.andryuk@amd.com>
+Note that holding a reference to the platform device does not prevent
+its driver data from going away so there is no point in keeping the
+reference after the helper returns.
+
+Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
+Cc: stable@vger.kernel.org	# 5.5
+Cc: Carlo Caione <ccaione@baylibre.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250725074019.8765-1-johan@kernel.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/events/events_base.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/firmware/meson/meson_sm.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -1331,10 +1331,11 @@ static int find_virq(unsigned int virq,
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -225,11 +225,16 @@ EXPORT_SYMBOL(meson_sm_call_write);
+ struct meson_sm_firmware *meson_sm_get(struct device_node *sm_node)
  {
- 	struct evtchn_status status;
- 	evtchn_port_t port;
--	int rc = -ENOENT;
+ 	struct platform_device *pdev = of_find_device_by_node(sm_node);
++	struct meson_sm_firmware *fw;
  
- 	memset(&status, 0, sizeof(status));
- 	for (port = 0; port < xen_evtchn_max_channels(); port++) {
-+		int rc;
+ 	if (!pdev)
+ 		return NULL;
+ 
+-	return platform_get_drvdata(pdev);
++	fw = platform_get_drvdata(pdev);
 +
- 		status.dom = DOMID_SELF;
- 		status.port = port;
- 		rc = HYPERVISOR_event_channel_op(EVTCHNOP_status, &status);
-@@ -1344,10 +1345,10 @@ static int find_virq(unsigned int virq,
- 			continue;
- 		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu)) {
- 			*evtchn = port;
--			break;
-+			return 0;
- 		}
- 	}
--	return rc;
-+	return -ENOENT;
++	put_device(&pdev->dev);
++
++	return fw;
  }
+ EXPORT_SYMBOL_GPL(meson_sm_get);
  
- /**
 
 
 
