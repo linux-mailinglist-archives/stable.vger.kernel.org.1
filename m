@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-187609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5ABBEA732
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:06:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B08BEA89A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96A6294253D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15FCA626E5F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3F02F12D9;
-	Fri, 17 Oct 2025 15:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95D5330B26;
+	Fri, 17 Oct 2025 15:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyb0kn+8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvkEhSah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FE5330B26;
-	Fri, 17 Oct 2025 15:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8626B330B06;
+	Fri, 17 Oct 2025 15:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716564; cv=none; b=kFwsvd6OQ31FnR+MWyCXAGmOfgIjhWUKMoYllIT+ZlKkJNHJXDhnveViW045kaOGhl5aXX+TQFBc2IyE3uMkLQiSJqN0RoczuV6BxF8BHpHxiv0utYHMy3Ueyl2/Cl3RoCEugyn34JflJZkDy1mEWXr5GxgSkBrdGBbw9GEpKNM=
+	t=1760715829; cv=none; b=XEZr5nitCuoe+H/aT5SSehccrU6wM9jlcN9qFYa2E0dji7l+1rH0Birl4QNWKl4pSn8cbwwn+f2LK95w5SmrD7+w7dQ4bHZrGy6NhDMJAsqE2ASrWzQV6DErLJT+jaLq7s1loppkXXfOLJi3rytlARqfezbjqXAfbFNryi3ybKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716564; c=relaxed/simple;
-	bh=13J0qMG8ZcpM0B+wcVvZJGJDrkAvEl6+fgUl6nahBpg=;
+	s=arc-20240116; t=1760715829; c=relaxed/simple;
+	bh=3CEnRYP7QFo231K8F26IIGE/yH7agaoo6tLnET3HbYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bkYTlJb3hYjcDKfQuBUS4iyXGmtule4WTBUyzkEs3OxgXowsnrIGw9l7QpNdz3nmHSM426bfj5se8R+rtMoeRiBstdvm1Paqpckm9GGy1hAuNjoc7moRz4x1s9aTXG4JQpCJheBWKLI4Od06BCqN9wksiW+Lbqoal43+fz77ags=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oyb0kn+8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D4EC4CEE7;
-	Fri, 17 Oct 2025 15:56:03 +0000 (UTC)
+	 MIME-Version; b=lKus3gMzIHABw0oI7E5MjLnZJP7EBTRlF+nJh8OS3zAiMfYI28QWlqmzO57NMldaZ0whEeg2crvgaUZsa8hGVlpchxDR6u5GNikDiPNciSVTpN4kE6OaDPvfjh5EyxZ3+iN+DTGtiAT5YF+92FV0rdYsYPB+0gYaNWYuRV+DtiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvkEhSah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB086C4CEE7;
+	Fri, 17 Oct 2025 15:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716563;
-	bh=13J0qMG8ZcpM0B+wcVvZJGJDrkAvEl6+fgUl6nahBpg=;
+	s=korg; t=1760715829;
+	bh=3CEnRYP7QFo231K8F26IIGE/yH7agaoo6tLnET3HbYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oyb0kn+824GGNt+hAqGViBQLUUZGHSftbM1MgD5C/BMrvUk4zBuKd2sn+YgdUlHjC
-	 n071e5ztqW2+QW9UDov1y6OINEWIFf53nwMFNkQnczgb0ZGhiWewurZr944lRCpQlX
-	 yxMrcRdwjaS2vdk7rjMrSJVRLGJ0CggL6tB4KN8M=
+	b=AvkEhSahJHfwzIUsfvzZzCJIcv9UpH3Nofz7mT1WCnV5GCCXgQT6cvthzsr1pABN2
+	 CChheCMk2Nlf2jHMNHEH3ferLY1pDMP6n7qIyQqLDJsZYbtcv8azyfrzJahRakK4os
+	 RurD0rauQ16Y97V1O0VuKCE1aPOetm0eSqKxBtwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 234/276] net: usb: asix: hold PM usage ref to avoid PM/MDIO + RTNL deadlock
+Subject: [PATCH 6.17 352/371] mm/ksm: fix incorrect KSM counter handling in mm_struct during fork
 Date: Fri, 17 Oct 2025 16:55:27 +0200
-Message-ID: <20251017145151.009921072@linuxfoundation.org>
+Message-ID: <20251017145214.818337701@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +66,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit 3d3c4cd5c62f24bb3cb4511b7a95df707635e00a ]
+[ Upstream commit 4d6fc29f36341d7795db1d1819b4c15fe9be7b23 ]
 
-Prevent USB runtime PM (autosuspend) for AX88772* in bind.
+Patch series "mm/ksm: Fix incorrect accounting of KSM counters during
+fork", v3.
 
-usbnet enables runtime PM (autosuspend) by default, so disabling it via
-the usb_driver flag is ineffective. On AX88772B, autosuspend shows no
-measurable power saving with current driver (no link partner, admin
-up/down). The ~0.453 W -> ~0.248 W drop on v6.1 comes from phylib powering
-the PHY off on admin-down, not from USB autosuspend.
+The first patch in this series fixes the incorrect accounting of KSM
+counters such as ksm_merging_pages, ksm_rmap_items, and the global
+ksm_zero_pages during fork.
 
-The real hazard is that with runtime PM enabled, ndo_open() (under RTNL)
-may synchronously trigger autoresume (usb_autopm_get_interface()) into
-asix_resume() while the USB PM lock is held. Resume paths then invoke
-phylink/phylib and MDIO, which also expect RTNL, leading to possible
-deadlocks or PM lock vs MDIO wake issues.
+The following patch add a selftest to verify the ksm_merging_pages counter
+was updated correctly during fork.
 
-To avoid this, keep the device runtime-PM active by taking a usage
-reference in ax88772_bind() and dropping it in unbind(). A non-zero PM
-usage count blocks runtime suspend regardless of userspace policy
-(.../power/control - pm_runtime_allow/forbid), making this approach
-robust against sysfs overrides.
+Test Results
+============
+Without the first patch
+-----------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ not ok 10 ksm_merging_page in child: 32
 
-Holding a runtime-PM usage ref does not affect system-wide suspend;
-system sleep/resume callbacks continue to run as before.
+With the first patch
+--------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ ok 10 ksm_merging_pages is not inherited after fork
 
-Fixes: 4a2c7217cd5a ("net: usb: asix: ax88772: manage PHY PM from MAC")
-Reported-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
-Closes: https://lore.kernel.org/all/DCGHG5UJT9G3.2K1GHFZ3H87T0@gmail.com
-Tested-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20251005081203.3067982-1-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ adapted to phylib-only ]
+This patch (of 2):
+
+Currently, the KSM-related counters in `mm_struct`, such as
+`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are inherited
+by the child process during fork.  This results in inconsistent
+accounting.
+
+When a process uses KSM, identical pages are merged and an rmap item is
+created for each merged page.  The `ksm_merging_pages` and
+`ksm_rmap_items` counters are updated accordingly.  However, after a fork,
+these counters are copied to the child while the corresponding rmap items
+are not.  As a result, when the child later triggers an unmerge, there are
+no rmap items present in the child, so the counters remain stale, leading
+to incorrect accounting.
+
+A similar issue exists with `ksm_zero_pages`, which maintains both a
+global counter and a per-process counter.  During fork, the per-process
+counter is inherited by the child, but the global counter is not
+incremented.  Since the child also references zero pages, the global
+counter should be updated as well.  Otherwise, during zero-page unmerge,
+both the global and per-process counters are decremented, causing the
+global counter to become inconsistent.
+
+To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0 during
+fork, and the global ksm_zero_pages counter is updated with the
+per-process ksm_zero_pages value inherited by the child.  This ensures
+that KSM statistics remain accurate and reflect the activity of each
+process correctly.
+
+Link: https://lkml.kernel.org/r/cover.1758648700.git.donettom@linux.ibm.com
+Link: https://lkml.kernel.org/r/7b9870eb67ccc0d79593940d9dbd4a0b39b5d396.1758648700.git.donettom@linux.ibm.com
+Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
+Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
+Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ replaced mm_flags_test() calls with test_bit() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/asix_devices.c |   35 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+ include/linux/ksm.h |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -608,6 +608,21 @@ static void ax88772_suspend(struct usbne
- 		   asix_read_medium_status(dev, 1));
- }
- 
-+/* Notes on PM callbacks and locking context:
-+ *
-+ * - asix_suspend()/asix_resume() are invoked for both runtime PM and
-+ *   system-wide suspend/resume. For struct usb_driver the ->resume()
-+ *   callback does not receive pm_message_t, so the resume type cannot
-+ *   be distinguished here.
-+ *
-+ * - The MAC driver must hold RTNL when calling phylink interfaces such as
-+ *   phylink_suspend()/resume(). Those calls will also perform MDIO I/O.
-+ *
-+ * - Taking RTNL and doing MDIO from a runtime-PM resume callback (while
-+ *   the USB PM lock is held) is fragile. Since autosuspend brings no
-+ *   measurable power saving here, we block it by holding a PM usage
-+ *   reference in ax88772_bind().
-+ */
- static int asix_suspend(struct usb_interface *intf, pm_message_t message)
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -56,8 +56,14 @@ static inline long mm_ksm_zero_pages(str
+ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
  {
- 	struct usbnet *dev = usb_get_intfdata(intf);
-@@ -809,7 +824,18 @@ static int ax88772_bind(struct usbnet *d
- 	if (ret)
- 		return ret;
- 
--	return ax88772_init_phy(dev);
-+	ret = ax88772_init_phy(dev);
-+	if (ret)
-+		return ret;
+ 	/* Adding mm to ksm is best effort on fork. */
+-	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags))
++	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags)) {
++		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
 +
-+	/* Keep this interface runtime-PM active by taking a usage ref.
-+	 * Prevents runtime suspend while bound and avoids resume paths
-+	 * that could deadlock (autoresume under RTNL while USB PM lock
-+	 * is held, phylink/MDIO wants RTNL).
-+	 */
-+	pm_runtime_get_noresume(&intf->dev);
-+
-+	return 0;
++		mm->ksm_merging_pages = 0;
++		mm->ksm_rmap_items = 0;
++		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
+ 		__ksm_enter(mm);
++	}
  }
  
- static int ax88772_stop(struct usbnet *dev)
-@@ -827,6 +853,8 @@ static void ax88772_unbind(struct usbnet
- 
- 	phy_disconnect(priv->phydev);
- 	asix_rx_fixup_common_free(dev->driver_priv);
-+	/* Drop the PM usage ref taken in bind() */
-+	pm_runtime_put(&intf->dev);
- }
- 
- static void ax88178_unbind(struct usbnet *dev, struct usb_interface *intf)
-@@ -1452,6 +1480,11 @@ static struct usb_driver asix_driver = {
- 	.resume =	asix_resume,
- 	.reset_resume =	asix_resume,
- 	.disconnect =	usbnet_disconnect,
-+	/* usbnet enables autosuspend by default (supports_autosuspend=1).
-+	 * We keep runtime-PM active for AX88772* by taking a PM usage
-+	 * reference in ax88772_bind() (pm_runtime_get_noresume()) and
-+	 * dropping it in unbind(), which effectively blocks autosuspend.
-+	 */
- 	.supports_autosuspend = 1,
- 	.disable_hub_initiated_lpm = 1,
- };
+ static inline int ksm_execve(struct mm_struct *mm)
 
 
 
