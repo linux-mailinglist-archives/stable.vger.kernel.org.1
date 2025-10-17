@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-187359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5DEBEA197
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01266BEA63F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C814F35EAF1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FB471AE2C63
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFC3330B33;
-	Fri, 17 Oct 2025 15:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAA7330B2B;
+	Fri, 17 Oct 2025 15:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbsKz/ES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqFse60V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C72330B3A;
-	Fri, 17 Oct 2025 15:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56144330B2D;
+	Fri, 17 Oct 2025 15:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715846; cv=none; b=LY3Cgt+XyjfNmh8qw98zsuzNB97s6DUA8vleihQ3wpSuOrj/1+/DBeO7zxp+Qjf4ydWkOanPJpUxTr2Vehb68wFcrmHsbw/OhYKfSM3N0zuM6GwI5SzhV+u/BbrznMxb5jzbnCq7l0QKyByFj1COUdzA1EqpxfbdP5jryIzhtso=
+	t=1760716583; cv=none; b=vCGXA9veYwyaxL44MzMq8iYdDJwlve1+i4cUmn4tjfiVBST0Pe12S1WPCjgLrSOLXOfvjCIR19rr+5VdAdAXpstSDiC9gdMAA9L8KcMTlYueUGc6mp37nlnzwxxSOJoyuZivPZZA+0tbRg1eK3NnHy167vcqFIVr4cpvRRAaxZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715846; c=relaxed/simple;
-	bh=ugJV6zFScW+SJJetd5EjTISELp5gmMJRBoDCJwS8BRg=;
+	s=arc-20240116; t=1760716583; c=relaxed/simple;
+	bh=66YS9PCK0aaIP+YNtH1ke7OG9iyhksEiAdDTCXfNjbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PM1Vc4+pgPszDQXW5RMhKXoGEQoL6diUQKSp3ZscxX7BJOUgasbt03eyZuCIYTLyfbxTnYJzPj+ucOyIOL4NhDb/t8LUaVlDtlZFBiyrAUwS7tIJHrxyAEhnLg2Nb4S24EBjhfUJ69oiECYxdwHmgaDrDUA5faRMOzYAZPMUQgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbsKz/ES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FBCC113D0;
-	Fri, 17 Oct 2025 15:44:05 +0000 (UTC)
+	 MIME-Version; b=oB2H4clDtLfuLnSh5krmMNNY9J4CmQ8bmhKgAMTUlVjrHqAF/Y5vItMNE3hcuprCqe10HFlxMMOr97Ef76aN18u4oHSZ+SlZGyLjEDm/mFzkS5WHi+FTtHuU3S4jth2HAakjtv78gOGqMsCv56svoVCVzPUd3hFyAI5llVvKYLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqFse60V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE1EC4CEE7;
+	Fri, 17 Oct 2025 15:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715846;
-	bh=ugJV6zFScW+SJJetd5EjTISELp5gmMJRBoDCJwS8BRg=;
+	s=korg; t=1760716583;
+	bh=66YS9PCK0aaIP+YNtH1ke7OG9iyhksEiAdDTCXfNjbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UbsKz/ESqe/F3tzTDiNGzQZqFmnbEeKrNNQ4T+xCz231bw5ZXDuSHdhi5sExQaTmH
-	 TES85SZkyjGVN45nSpXLaNP7eVelH0FNpufRMKjFkJJBQEH6ioHu7go8pabCd4sBly
-	 Jgr8Aq5IqarhSnGylj7g8yQtKI1YQiN6F59RMQa4=
+	b=oqFse60V3DaCepBaUws55oya2YAEIZWiLx5rBGUBRmz5wK6dh0htrSGyJyhG9iJNh
+	 LHfMSJ8dFfe79eHDlxSZjaN+RfH2qd0k4p5DBZlO31tYldanJA5meW67iyVlIvFttz
+	 zKa9+Bq5SGchMfDVwbvRaYc9lFI/YB56C7HOaUWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jia Wang <wangjia@ultrarisc.com>,
-	Charles Mirabile <cmirabil@redhat.com>,
-	Lucas Zampieri <lzampier@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 358/371] irqchip/sifive-plic: Avoid interrupt ID 0 handling during suspend/resume
+Subject: [PATCH 5.15 240/276] btrfs: fix the incorrect max_bytes value for find_lock_delalloc_range()
 Date: Fri, 17 Oct 2025 16:55:33 +0200
-Message-ID: <20251017145215.041008613@linuxfoundation.org>
+Message-ID: <20251017145151.232962239@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Zampieri <lzampier@redhat.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit f75e07bf5226da640fa99a0594687c780d9bace4 ]
+[ Upstream commit 7b26da407420e5054e3f06c5d13271697add9423 ]
 
-According to the PLIC specification[1], global interrupt sources are
-assigned small unsigned integer identifiers beginning at the value 1.
-An interrupt ID of 0 is reserved to mean "no interrupt".
+[BUG]
+With my local branch to enable bs > ps support for btrfs, sometimes I
+hit the following ASSERT() inside submit_one_sector():
 
-The current plic_irq_resume() and plic_irq_suspend() functions incorrectly
-start the loop from index 0, which accesses the register space for the
-reserved interrupt ID 0.
+	ASSERT(block_start != EXTENT_MAP_HOLE);
 
-Change the loop to start from index 1, skipping the reserved
-interrupt ID 0 as per the PLIC specification.
+Please note that it's not yet possible to hit this ASSERT() in the wild
+yet, as it requires btrfs bs > ps support, which is not even in the
+development branch.
 
-This prevents potential undefined behavior when accessing the reserved
-register space during suspend/resume cycles.
+But on the other hand, there is also a very low chance to hit above
+ASSERT() with bs < ps cases, so this is an existing bug affect not only
+the incoming bs > ps support but also the existing bs < ps support.
 
-Fixes: e80f0b6a2cf3 ("irqchip/irq-sifive-plic: Add syscore callbacks for hibernation")
-Co-developed-by: Jia Wang <wangjia@ultrarisc.com>
-Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
-Co-developed-by: Charles Mirabile <cmirabil@redhat.com>
-Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
-Signed-off-by: Lucas Zampieri <lzampier@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://github.com/riscv/riscv-plic-spec/releases/tag/1.0.0
+[CAUSE]
+Firstly that ASSERT() means we're trying to submit a dirty block but
+without a real extent map nor ordered extent map backing it.
+
+Furthermore with extra debugging, the folio triggering such ASSERT() is
+always larger than the fs block size in my bs > ps case.
+(8K block size, 4K page size)
+
+After some more debugging, the ASSERT() is trigger by the following
+sequence:
+
+ extent_writepage()
+ |  We got a 32K folio (4 fs blocks) at file offset 0, and the fs block
+ |  size is 8K, page size is 4K.
+ |  And there is another 8K folio at file offset 32K, which is also
+ |  dirty.
+ |  So the filemap layout looks like the following:
+ |
+ |  "||" is the filio boundary in the filemap.
+ |  "//| is the dirty range.
+ |
+ |  0        8K       16K        24K         32K       40K
+ |  |////////|        |//////////////////////||////////|
+ |
+ |- writepage_delalloc()
+ |  |- find_lock_delalloc_range() for [0, 8K)
+ |  |  Now range [0, 8K) is properly locked.
+ |  |
+ |  |- find_lock_delalloc_range() for [16K, 40K)
+ |  |  |- btrfs_find_delalloc_range() returned range [16K, 40K)
+ |  |  |- lock_delalloc_folios() locked folio 0 successfully
+ |  |  |
+ |  |  |  The filemap range [32K, 40K) got dropped from filemap.
+ |  |  |
+ |  |  |- lock_delalloc_folios() failed with -EAGAIN on folio 32K
+ |  |  |  As the folio at 32K is dropped.
+ |  |  |
+ |  |  |- loops = 1;
+ |  |  |- max_bytes = PAGE_SIZE;
+ |  |  |- goto again;
+ |  |  |  This will re-do the lookup for dirty delalloc ranges.
+ |  |  |
+ |  |  |- btrfs_find_delalloc_range() called with @max_bytes == 4K
+ |  |  |  This is smaller than block size, so
+ |  |  |  btrfs_find_delalloc_range() is unable to return any range.
+ |  |  \- return false;
+ |  |
+ |  \- Now only range [0, 8K) has an OE for it, but for dirty range
+ |     [16K, 32K) it's dirty without an OE.
+ |     This breaks the assumption that writepage_delalloc() will find
+ |     and lock all dirty ranges inside the folio.
+ |
+ |- extent_writepage_io()
+    |- submit_one_sector() for [0, 8K)
+    |  Succeeded
+    |
+    |- submit_one_sector() for [16K, 24K)
+       Triggering the ASSERT(), as there is no OE, and the original
+       extent map is a hole.
+
+Please note that, this also exposed the same problem for bs < ps
+support. E.g. with 64K page size and 4K block size.
+
+If we failed to lock a folio, and falls back into the "loops = 1;"
+branch, we will re-do the search using 64K as max_bytes.
+Which may fail again to lock the next folio, and exit early without
+handling all dirty blocks inside the folio.
+
+[FIX]
+Instead of using the fixed size PAGE_SIZE as @max_bytes, use
+@sectorsize, so that we are ensured to find and lock any remaining
+blocks inside the folio.
+
+And since we're here, add an extra ASSERT() to
+before calling btrfs_find_delalloc_range() to make sure the @max_bytes is
+at least no smaller than a block to avoid false negative.
+
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ adapted folio terminology and API calls to page-based equivalents ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-sifive-plic.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/btrfs/extent_io.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-index bf69a4802b71e..9c4af7d588463 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -252,7 +252,8 @@ static int plic_irq_suspend(void)
- 
- 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
- 
--	for (i = 0; i < priv->nr_irqs; i++) {
-+	/* irq ID 0 is reserved */
-+	for (i = 1; i < priv->nr_irqs; i++) {
- 		__assign_bit(i, priv->prio_save,
- 			     readl(priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID));
- 	}
-@@ -283,7 +284,8 @@ static void plic_irq_resume(void)
- 
- 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
- 
--	for (i = 0; i < priv->nr_irqs; i++) {
-+	/* irq ID 0 is reserved */
-+	for (i = 1; i < priv->nr_irqs; i++) {
- 		index = BIT_WORD(i);
- 		writel((priv->prio_save[index] & BIT_MASK(i)) ? 1 : 0,
- 		       priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID);
--- 
-2.51.0
-
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2000,6 +2000,13 @@ again:
+ 	/* step one, find a bunch of delalloc bytes starting at start */
+ 	delalloc_start = *start;
+ 	delalloc_end = 0;
++
++	/*
++	 * If @max_bytes is smaller than a block, btrfs_find_delalloc_range() can
++	 * return early without handling any dirty ranges.
++	 */
++	ASSERT(max_bytes >= fs_info->sectorsize);
++
+ 	found = btrfs_find_delalloc_range(tree, &delalloc_start, &delalloc_end,
+ 					  max_bytes, &cached_state);
+ 	if (!found || delalloc_end <= *start) {
+@@ -2028,13 +2035,14 @@ again:
+ 				  delalloc_start, delalloc_end);
+ 	ASSERT(!ret || ret == -EAGAIN);
+ 	if (ret == -EAGAIN) {
+-		/* some of the pages are gone, lets avoid looping by
+-		 * shortening the size of the delalloc range we're searching
++		/*
++		 * Some of the pages are gone, lets avoid looping by
++		 * shortening the size of the delalloc range we're searching.
+ 		 */
+ 		free_extent_state(cached_state);
+ 		cached_state = NULL;
+ 		if (!loops) {
+-			max_bytes = PAGE_SIZE;
++			max_bytes = fs_info->sectorsize;
+ 			loops = 1;
+ 			goto again;
+ 		} else {
 
 
 
