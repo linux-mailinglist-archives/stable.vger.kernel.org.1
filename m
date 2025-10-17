@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-186967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D877FBE9D51
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D92BEA543
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 821BB1AE26C5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 184771AE468D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFE75695;
-	Fri, 17 Oct 2025 15:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFDB20C00A;
+	Fri, 17 Oct 2025 15:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+gmTOyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBBbZbYt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF6D2745E;
-	Fri, 17 Oct 2025 15:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67533330B1F;
+	Fri, 17 Oct 2025 15:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714742; cv=none; b=brfzoHLmEpQ1VecSC723s6usXor7H0eZjDuB+lbn90LwmbLfPH8khkTXrBHBozGKPlY+npfJl7jK/mPSb4W4YT87JYWUmaurUzoiQ5u6Q2Ief601Dhap8CQRBmB7Un9O6gzo6zYAs+Cy3e7c9lLfJ7Q7+A6QkRm7N3sF55o5SLY=
+	t=1760716365; cv=none; b=DyiRXcWhQmls6b81sNM342Mj5Gc2hJrU3H97U22ehv5MLVBpSQsv3D8AySI1KNrV+J+5xAQ0S/RJo2gFt/x2JLcxxE6ohFd/t6hwc0m2wY2hGFmvScgvSXpFU/MfINS16l2Kl3gMwZk9HHVWkdzyISv/RQtwvZY2jYau+O6KCtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714742; c=relaxed/simple;
-	bh=IT6ch72AK/M0hGNW12mBy/P3vgIpD5lDkYY/7qWb5Gw=;
+	s=arc-20240116; t=1760716365; c=relaxed/simple;
+	bh=MkfHuoZ1Aydnak6eHjGmwCdSPcNpAyw+Ppd6RNH/qWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qWufuHExQx79v0kY1U3KwWIMlqKNZNrsA/vD4fDK/UMcYSObWAPiR9romNNpN+/3UkZqXAW1Pn0500XV5DEvwmDNxlLd9NPJBYkFIsow5gkyPND8WytQCGP32B5wMimHzc4hivDvsTeCnuIrOYd36letBFhuzas4zMPzPAXgb9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+gmTOyw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027B7C4CEE7;
-	Fri, 17 Oct 2025 15:25:41 +0000 (UTC)
+	 MIME-Version; b=Q8ZFV91tTSVFz6zDDQPHn6b8n/HUlp5uzYIULDMhJca7deXl4yLR/Oy/hqw08hPYOWZBbIlUT41ZGFLq9moDMxCJ8yR4nJaWCUCPyZkg+GNYGiNp3rIzKP521e0r9EB7BRSiGzvFRM94O5ootMzssS0yBBk1mtqCNrh+nvVX9kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBBbZbYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C7EC4CEE7;
+	Fri, 17 Oct 2025 15:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714742;
-	bh=IT6ch72AK/M0hGNW12mBy/P3vgIpD5lDkYY/7qWb5Gw=;
+	s=korg; t=1760716365;
+	bh=MkfHuoZ1Aydnak6eHjGmwCdSPcNpAyw+Ppd6RNH/qWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+gmTOywu/nS6z3NiY0QlfZNkFAqAsW8wS3457lNjS1dlNCVHATpY148nxHX8YVz1
-	 oKBnmJnkhYhx//ioC4rjkbGZ6g+ihjWOlFpX5/AFtFOJu+sCseVGv+vcLvD8djb66y
-	 wmcivVcXSucPnaMTc6AdgCqPfoZxuS4j/54XNA0o=
+	b=LBBbZbYt0F3sFLane102BQrv9iRuUlRDA/b//9X6N5v53RCEHPm60ELLKX3xjMq80
+	 MOoOlb0c7hqwDStx8tx3ufKHceNP6rlo2Hy81e5BJtbuOOn7BlAIwGWs/kydbvVB7o
+	 kwOMLB/DAWb7BmCM/m4ZTyyA57cwT6MMPVj0tLc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GuangFei Luo <luogf2025@163.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Le Chen <tom2cat@sjtu.edu.cn>,
+	Alexei Starovoitov <ast@kernel.org>,
+	KaFai Wan <kafai.wan@linux.dev>,
+	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 251/277] ACPI: battery: Add synchronization between interface updates
+Subject: [PATCH 5.15 165/276] bpf: Avoid RCU context warning when unpinning htab with internal structs
 Date: Fri, 17 Oct 2025 16:54:18 +0200
-Message-ID: <20251017145156.316690893@linuxfoundation.org>
+Message-ID: <20251017145148.495226202@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,219 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: KaFai Wan <kafai.wan@linux.dev>
 
-[ Upstream commit 399dbcadc01ebf0035f325eaa8c264f8b5cd0a14 ]
+[ Upstream commit 4f375ade6aa9f37fd72d7a78682f639772089eed ]
 
-There is no synchronization between different code paths in the ACPI
-battery driver that update its sysfs interface or its power supply
-class device interface.  In some cases this results to functional
-failures due to race conditions.
+When unpinning a BPF hash table (htab or htab_lru) that contains internal
+structures (timer, workqueue, or task_work) in its values, a BUG warning
+is triggered:
+ BUG: sleeping function called from invalid context at kernel/bpf/hashtab.c:244
+ in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 14, name: ksoftirqd/0
+ ...
 
-One example of this is when two ACPI notifications:
+The issue arises from the interaction between BPF object unpinning and
+RCU callback mechanisms:
+1. BPF object unpinning uses ->free_inode() which schedules cleanup via
+   call_rcu(), deferring the actual freeing to an RCU callback that
+   executes within the RCU_SOFTIRQ context.
+2. During cleanup of hash tables containing internal structures,
+   htab_map_free_internal_structs() is invoked, which includes
+   cond_resched() or cond_resched_rcu() calls to yield the CPU during
+   potentially long operations.
 
-  - ACPI_BATTERY_NOTIFY_STATUS (0x80)
-  - ACPI_BATTERY_NOTIFY_INFO   (0x81)
+However, cond_resched() or cond_resched_rcu() cannot be safely called from
+atomic RCU softirq context, leading to the BUG warning when attempting
+to reschedule.
 
-are triggered (by the platform firmware) in a row with a little delay
-in between after removing and reinserting a laptop battery.  Both
-notifications cause acpi_battery_update() to be called and if the delay
-between them is sufficiently small, sysfs_add_battery() can be re-entered
-before battery->bat is set which leads to a duplicate sysfs entry error:
+Fix this by changing from ->free_inode() to ->destroy_inode() and rename
+bpf_free_inode() to bpf_destroy_inode() for BPF objects (prog, map, link).
+This allows direct inode freeing without RCU callback scheduling,
+avoiding the invalid context warning.
 
- sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
- CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
- Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
- Workqueue: kacpi_notify acpi_os_execute_deferred
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x5d/0x80
-  sysfs_warn_dup.cold+0x17/0x23
-  sysfs_create_dir_ns+0xce/0xe0
-  kobject_add_internal+0xba/0x250
-  kobject_add+0x96/0xc0
-  ? get_device_parent+0xde/0x1e0
-  device_add+0xe2/0x870
-  __power_supply_register.part.0+0x20f/0x3f0
-  ? wake_up_q+0x4e/0x90
-  sysfs_add_battery+0xa4/0x1d0 [battery]
-  acpi_battery_update+0x19e/0x290 [battery]
-  acpi_battery_notify+0x50/0x120 [battery]
-  acpi_ev_notify_dispatch+0x49/0x70
-  acpi_os_execute_deferred+0x1a/0x30
-  process_one_work+0x177/0x330
-  worker_thread+0x251/0x390
-  ? __pfx_worker_thread+0x10/0x10
-  kthread+0xd2/0x100
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x34/0x50
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
-
-There are also other scenarios in which analogous issues may occur.
-
-Address this by using a common lock in all of the code paths leading
-to updates of driver interfaces: ACPI Notify () handler, system resume
-callback and post-resume notification, device addition and removal.
-
-This new lock replaces sysfs_lock that has been used only in
-sysfs_remove_battery() which now is going to be always called under
-the new lock, so it doesn't need any internal locking any more.
-
-Fixes: 10666251554c ("ACPI: battery: Install Notify() handler directly")
-Closes: https://lore.kernel.org/linux-acpi/20250910142653.313360-1-luogf2025@163.com/
-Reported-by: GuangFei Luo <luogf2025@163.com>
-Tested-by: GuangFei Luo <luogf2025@163.com>
-Cc: 6.6+ <stable@vger.kernel.org> # 6.6+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Le Chen <tom2cat@sjtu.edu.cn>
+Closes: https://lore.kernel.org/all/1444123482.1827743.1750996347470.JavaMail.zimbra@sjtu.edu.cn/
+Fixes: 68134668c17f ("bpf: Add map side support for bpf timers.")
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: KaFai Wan <kafai.wan@linux.dev>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20251008102628.808045-2-kafai.wan@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c |   43 +++++++++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 14 deletions(-)
+ kernel/bpf/inode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -92,7 +92,7 @@ enum {
- 
- struct acpi_battery {
- 	struct mutex lock;
--	struct mutex sysfs_lock;
-+	struct mutex update_lock;
- 	struct power_supply *bat;
- 	struct power_supply_desc bat_desc;
- 	struct acpi_device *device;
-@@ -903,15 +903,12 @@ static int sysfs_add_battery(struct acpi
- 
- static void sysfs_remove_battery(struct acpi_battery *battery)
- {
--	mutex_lock(&battery->sysfs_lock);
--	if (!battery->bat) {
--		mutex_unlock(&battery->sysfs_lock);
-+	if (!battery->bat)
- 		return;
--	}
-+
- 	battery_hook_remove_battery(battery);
- 	power_supply_unregister(battery->bat);
- 	battery->bat = NULL;
--	mutex_unlock(&battery->sysfs_lock);
- }
- 
- static void find_battery(const struct dmi_header *dm, void *private)
-@@ -1071,6 +1068,9 @@ static void acpi_battery_notify(acpi_han
- 
- 	if (!battery)
- 		return;
-+
-+	guard(mutex)(&battery->update_lock);
-+
- 	old = battery->bat;
- 	/*
- 	 * On Acer Aspire V5-573G notifications are sometimes triggered too
-@@ -1093,21 +1093,22 @@ static void acpi_battery_notify(acpi_han
- }
- 
- static int battery_notify(struct notifier_block *nb,
--			       unsigned long mode, void *_unused)
-+			  unsigned long mode, void *_unused)
- {
- 	struct acpi_battery *battery = container_of(nb, struct acpi_battery,
- 						    pm_nb);
--	int result;
- 
--	switch (mode) {
--	case PM_POST_HIBERNATION:
--	case PM_POST_SUSPEND:
-+	if (mode == PM_POST_SUSPEND || mode == PM_POST_HIBERNATION) {
-+		guard(mutex)(&battery->update_lock);
-+
- 		if (!acpi_battery_present(battery))
- 			return 0;
- 
- 		if (battery->bat) {
- 			acpi_battery_refresh(battery);
- 		} else {
-+			int result;
-+
- 			result = acpi_battery_get_info(battery);
- 			if (result)
- 				return result;
-@@ -1119,7 +1120,6 @@ static int battery_notify(struct notifie
- 
- 		acpi_battery_init_alarm(battery);
- 		acpi_battery_get_state(battery);
--		break;
- 	}
- 
- 	return 0;
-@@ -1197,6 +1197,8 @@ static int acpi_battery_update_retry(str
- {
- 	int retry, ret;
- 
-+	guard(mutex)(&battery->update_lock);
-+
- 	for (retry = 5; retry; retry--) {
- 		ret = acpi_battery_update(battery, false);
- 		if (!ret)
-@@ -1207,6 +1209,13 @@ static int acpi_battery_update_retry(str
- 	return ret;
- }
- 
-+static void sysfs_battery_cleanup(struct acpi_battery *battery)
-+{
-+	guard(mutex)(&battery->update_lock);
-+
-+	sysfs_remove_battery(battery);
-+}
-+
- static int acpi_battery_add(struct acpi_device *device)
- {
- 	int result = 0;
-@@ -1229,7 +1238,7 @@ static int acpi_battery_add(struct acpi_
- 	if (result)
- 		return result;
- 
--	result = devm_mutex_init(&device->dev, &battery->sysfs_lock);
-+	result = devm_mutex_init(&device->dev, &battery->update_lock);
- 	if (result)
- 		return result;
- 
-@@ -1259,7 +1268,7 @@ fail_pm:
- 	device_init_wakeup(&device->dev, 0);
- 	unregister_pm_notifier(&battery->pm_nb);
- fail:
--	sysfs_remove_battery(battery);
-+	sysfs_battery_cleanup(battery);
- 
- 	return result;
- }
-@@ -1278,6 +1287,9 @@ static void acpi_battery_remove(struct a
- 
- 	device_init_wakeup(&device->dev, 0);
- 	unregister_pm_notifier(&battery->pm_nb);
-+
-+	guard(mutex)(&battery->update_lock);
-+
- 	sysfs_remove_battery(battery);
- }
- 
-@@ -1295,6 +1307,9 @@ static int acpi_battery_resume(struct de
- 		return -EINVAL;
- 
- 	battery->update_time = 0;
-+
-+	guard(mutex)(&battery->update_lock);
-+
- 	acpi_battery_update(battery, true);
+diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
+index 5a8d9f7467bf4..849df8268af57 100644
+--- a/kernel/bpf/inode.c
++++ b/kernel/bpf/inode.c
+@@ -610,7 +610,7 @@ static int bpf_show_options(struct seq_file *m, struct dentry *root)
  	return 0;
  }
+ 
+-static void bpf_free_inode(struct inode *inode)
++static void bpf_destroy_inode(struct inode *inode)
+ {
+ 	enum bpf_type type;
+ 
+@@ -625,7 +625,7 @@ static const struct super_operations bpf_super_ops = {
+ 	.statfs		= simple_statfs,
+ 	.drop_inode	= generic_delete_inode,
+ 	.show_options	= bpf_show_options,
+-	.free_inode	= bpf_free_inode,
++	.destroy_inode	= bpf_destroy_inode,
+ };
+ 
+ enum {
+-- 
+2.51.0
+
 
 
 
