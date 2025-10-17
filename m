@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04D0BE9F84
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF9DBE99AB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 56A825A06B4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:21:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0AD7058396C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEF33396E8;
-	Fri, 17 Oct 2025 15:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54034330315;
+	Fri, 17 Oct 2025 15:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wT/4Ez0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhOxi4CH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A100336EF2;
-	Fri, 17 Oct 2025 15:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109FC2F12DB;
+	Fri, 17 Oct 2025 15:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714370; cv=none; b=RjO39d83JWaUh40+T7IPs9nJ3VUH6Z8wQ4TuzzY+jfyiX/FSQWlx6mUsjXohQgNZZYxFJx3mywe89Oz6u8X3H+AXi0wmwDbAyWT/+EhVVtJcU78bkm02TJ//K4Ajc1HL7lWzU5/8gV+Hbw9NQ/PkYc7WGoWY8QjZlR1ec2w/pm0=
+	t=1760713639; cv=none; b=fwv+S2QQwmml9wPJe8I+wg/RtyWjl3K4dEKC455y9sGWqQtTQRG3uik9nStIRQ4whFd/Lc3cM5SDHedu5bZG+z+Yi5cfsD7o4popwUmQu152EqNBa0lZrDz4u7CJwciiM8v3Q3S+eiZA4TA4qe9hg1Ev9B5FXjig1fhnsJBG0Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714370; c=relaxed/simple;
-	bh=paOije8csh3MN959o43H3mDO+0wFlV/ZOG1T09IgxZA=;
+	s=arc-20240116; t=1760713639; c=relaxed/simple;
+	bh=DuVIPxYxzG/64stHdtG1wHzM3Yux7+9/dMnJMFN04Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgGfwEU+QwMUzIefFJIMiIihsSZPr0am9noJTx+X3A32B8VEIkVHsO2DIeXE6t12z2dDmjwQv2PwsBZeIVLW2D9NqC63ll2qk43JaC4yyAEMI7BIiX41qBJiJ4TZS8kKxlTbDtgm1gclQxw2aZJz9lAQRg8kyrVosDUOQY0h7PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wT/4Ez0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BB2C4CEE7;
-	Fri, 17 Oct 2025 15:19:29 +0000 (UTC)
+	 MIME-Version; b=uaoJekgoPFtqMyeTMNT5KJYOeawQfP5+LFWRjPOjJD01ysbgOBkQbYn/SaTH9uRW5pNEsoyTDhThxqwmWrE82xQ88B+XoF1HOI6xlpdGnh4iO7NeDebNsPxREKQlbb239hkrSPcQwy8Uy11EwHyqTCihJ7AkaL8b65Z2yoHxqXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhOxi4CH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC5CC4CEFE;
+	Fri, 17 Oct 2025 15:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714370;
-	bh=paOije8csh3MN959o43H3mDO+0wFlV/ZOG1T09IgxZA=;
+	s=korg; t=1760713638;
+	bh=DuVIPxYxzG/64stHdtG1wHzM3Yux7+9/dMnJMFN04Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wT/4Ez0IitTUbbuTJIDJ6Dk7wvnEB+acf3I+C9QJsekdPk1OsV3sz4dc9Q52BOROT
-	 /ZojIE5oWvDAGy72P9loPI7A+ZaOqHGtCk6RA1NmuM6d77ZaOZlvmZzAd7k1vLCjPW
-	 V1WJvO1ZkZeljVDN3k0U6Mc6ZkapQrwZ5wbWsSSo=
+	b=DhOxi4CHOPQYTHi+nDZiWTPz2NmVPRJmfmWgWh2UhHMd8SjQjbhMDZ2zWMxz1qcwg
+	 t3Oua+4aHYtYqpDUmuY7NNSh9e6EKsBU0yzEnGOtQxCdcONzPCN89mqFoIrP8KgIL9
+	 Gx6xSCy1aXgBerpw8tvQdA4lPc//Msz4Tsdb4iHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 121/277] btrfs: avoid potential out-of-bounds in btrfs_encode_fh()
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 067/201] xen/events: Cleanup find_virq() return codes
 Date: Fri, 17 Oct 2025 16:52:08 +0200
-Message-ID: <20251017145151.542851547@linuxfoundation.org>
+Message-ID: <20251017145137.213656740@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-commit dff4f9ff5d7f289e4545cc936362e01ed3252742 upstream.
+commit 08df2d7dd4ab2db8a172d824cda7872d5eca460a upstream.
 
-The function btrfs_encode_fh() does not properly account for the three
-cases it handles.
+rc is overwritten by the evtchn_status hypercall in each iteration, so
+the return value will be whatever the last iteration is.  This could
+incorrectly return success even if the event channel was not found.
+Change to an explicit -ENOENT for an un-found virq and return 0 on a
+successful match.
 
-Before writing to the file handle (fh), the function only returns to the
-user BTRFS_FID_SIZE_NON_CONNECTABLE (5 dwords, 20 bytes) or
-BTRFS_FID_SIZE_CONNECTABLE (8 dwords, 32 bytes).
-
-However, when a parent exists and the root ID of the parent and the
-inode are different, the function writes BTRFS_FID_SIZE_CONNECTABLE_ROOT
-(10 dwords, 40 bytes).
-
-If *max_len is not large enough, this write goes out of bounds because
-BTRFS_FID_SIZE_CONNECTABLE_ROOT is greater than
-BTRFS_FID_SIZE_CONNECTABLE originally returned.
-
-This results in an 8-byte out-of-bounds write at
-fid->parent_root_objectid = parent_root_id.
-
-A previous attempt to fix this issue was made but was lost.
-
-https://lore.kernel.org/all/4CADAEEC020000780001B32C@vpn.id2.novell.com/
-
-Although this issue does not seem to be easily triggerable, it is a
-potential memory corruption bug that should be fixed. This patch
-resolves the issue by ensuring the function returns the appropriate size
-for all three cases and validates that *max_len is large enough before
-writing any data.
-
-Fixes: be6e8dc0ba84 ("NFS support for btrfs - v3")
-CC: stable@vger.kernel.org # 3.0+
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 62cc5fc7b2e0 ("xen/pv-on-hvm kexec: rebind virqs to existing eventchannel ports")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250828003604.8949-2-jason.andryuk@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/export.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/xen/events/events_base.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/export.c
-+++ b/fs/btrfs/export.c
-@@ -23,7 +23,11 @@ static int btrfs_encode_fh(struct inode
- 	int type;
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1330,10 +1330,11 @@ static int find_virq(unsigned int virq,
+ {
+ 	struct evtchn_status status;
+ 	evtchn_port_t port;
+-	int rc = -ENOENT;
  
- 	if (parent && (len < BTRFS_FID_SIZE_CONNECTABLE)) {
--		*max_len = BTRFS_FID_SIZE_CONNECTABLE;
-+		if (btrfs_root_id(BTRFS_I(inode)->root) !=
-+		    btrfs_root_id(BTRFS_I(parent)->root))
-+			*max_len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
-+		else
-+			*max_len = BTRFS_FID_SIZE_CONNECTABLE;
- 		return FILEID_INVALID;
- 	} else if (len < BTRFS_FID_SIZE_NON_CONNECTABLE) {
- 		*max_len = BTRFS_FID_SIZE_NON_CONNECTABLE;
-@@ -45,6 +49,8 @@ static int btrfs_encode_fh(struct inode
- 		parent_root_id = btrfs_root_id(BTRFS_I(parent)->root);
+ 	memset(&status, 0, sizeof(status));
+ 	for (port = 0; port < xen_evtchn_max_channels(); port++) {
++		int rc;
++
+ 		status.dom = DOMID_SELF;
+ 		status.port = port;
+ 		rc = HYPERVISOR_event_channel_op(EVTCHNOP_status, &status);
+@@ -1343,10 +1344,10 @@ static int find_virq(unsigned int virq,
+ 			continue;
+ 		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu)) {
+ 			*evtchn = port;
+-			break;
++			return 0;
+ 		}
+ 	}
+-	return rc;
++	return -ENOENT;
+ }
  
- 		if (parent_root_id != fid->root_objectid) {
-+			if (*max_len < BTRFS_FID_SIZE_CONNECTABLE_ROOT)
-+				return FILEID_INVALID;
- 			fid->parent_root_objectid = parent_root_id;
- 			len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
- 			type = FILEID_BTRFS_WITH_PARENT_ROOT;
+ /**
 
 
 
