@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D98BEA074
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98750BE9736
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:05:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CE67188530D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CBE03B2CBC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1315B3277A9;
-	Fri, 17 Oct 2025 15:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC1222A7E4;
+	Fri, 17 Oct 2025 14:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oC5TMBEW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGRTfEk8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D112036E9;
-	Fri, 17 Oct 2025 15:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAA833711A;
+	Fri, 17 Oct 2025 14:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715318; cv=none; b=Us15kj4S/WDFn6qdZwgnrpYWxbooO3czj912l2/T2BgyzqlOEpFN7xye3muiklOkjOcuXDBCQ67cX4/4BsY60igyt3vOjJan4vzlBIRR4hGCYZYAT+hT3rirxlyTYVT277FK4dogaO9IuQrmeaOmYYBQULUwqvCn4rCt4Jigmx4=
+	t=1760713165; cv=none; b=WjdQQ6ce3Cy+4dsXLZfX7XxumueLewcplYFlpzSWT27Jxvtm48M88dM7KqBU6iJWHVUeV4VYQOX5JtFPPMOpG1iLEFHC0aDc7FQlnSk+RbDLOEnbyJYUSlJjurLFGWAST21PJ4KkvxEyJgSxJhxzv/OJJhqLLp/QRBKLXNZzAXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715318; c=relaxed/simple;
-	bh=sNfk25xPdowTHFQkpp6qUX3CRe0G7HCDYr8MSauWpXo=;
+	s=arc-20240116; t=1760713165; c=relaxed/simple;
+	bh=Y3zYmgeecGehMD8y8dTuSI9erRGfJnfgOK8Rx5TUZOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lu4K6LxW6co6COsSqdpkVYb/UpfYoBIg8BXhAaJPVCF3fjLopMiEH7TgdGu+PadyqYEFwM5+oZtNWYkMChwUBwSW9PQsg5F9h4Fgm70edLI6vYMYmMCgvz8KVMCkNT/ATxR/uW2X3z1QVkipR3xzMgbz09kpxB2gvtzk4aLEaKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oC5TMBEW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D347C4CEE7;
-	Fri, 17 Oct 2025 15:35:18 +0000 (UTC)
+	 MIME-Version; b=VKNwg+bsWm+NqiHNME9IWdJzCxpFXG7367Pekvt73bswiDAAtyX5Ax0zneYPBfsQc5/8+dzhH41JrhMDioMJHTFghMzK1Tq0NcwT8bnSKSNq/NxFJic7QI7kkKUt/4nc1r/IwvONOthvgFYqEf0YqnHd4XgT5p/efSadL9rim6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGRTfEk8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBBDC4CEF9;
+	Fri, 17 Oct 2025 14:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715318;
-	bh=sNfk25xPdowTHFQkpp6qUX3CRe0G7HCDYr8MSauWpXo=;
+	s=korg; t=1760713165;
+	bh=Y3zYmgeecGehMD8y8dTuSI9erRGfJnfgOK8Rx5TUZOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oC5TMBEWkaZMYBNFBsALmWRZruAXTuoDnq9zi1ZZYU6IpjtcD5dxd21Or9HPtzoZs
-	 eH0ClxudOr2uGUiRIBzi+D99wNjhP5FNeYKg4RBI+Zc99soJQHUM9tYTwCpAr0z0Ud
-	 NzoAXMvlY4KCGcZQPMjZNiP43xr4gBHDFJ7Cp3Fk=
+	b=uGRTfEk8mKDcerc5G49SxYPrKH8PrxtD7/vIxpi3eO9UctvJggqa6CPb8+7YacHRD
+	 3JkAQMXKuLsivrahqW7Y9sP3ndmns1yZrXqH6rmHJaIVt7Vz0JsWypLodpI18291TB
+	 shNqitC2a+I/Zzb1C4+UTndr3KqOzBwSotFJxjLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.17 175/371] media: platform: mtk-mdp3: Add missing MT8188 compatible to comp_dt_ids
+	Adam Xue <zxue@semtech.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Subject: [PATCH 6.1 071/168] bus: mhi: host: Do not use uninitialized dev pointer in mhi_init_irq_setup()
 Date: Fri, 17 Oct 2025 16:52:30 +0200
-Message-ID: <20251017145208.261800231@linuxfoundation.org>
+Message-ID: <20251017145131.642574510@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Adam Xue <zxue@semtech.com>
 
-commit bbcc6d16dea4b5c878d56a8d25daf996c6b8a1d4 upstream.
+commit d0856a6dff57f95cc5d2d74e50880f01697d0cc4 upstream.
 
-Commit 4a81656c8eaa ("arm64: dts: mediatek: mt8188: Address binding
-warnings for MDP3 nodes") caused a regression on the MDP functionality
-when it removed the MT8195 compatibles from the MDP3 nodes, since the
-MT8188 compatible was not yet listed as a possible MDP component
-compatible in mdp_comp_dt_ids. This resulted in an empty output
-bitstream when using the MDP from userspace, as well as the following
-errors:
+In mhi_init_irq_setup, the device pointer used for dev_err() was not
+initialized. Use the pointer from mhi_cntrl instead.
 
-  mtk-mdp3 14001000.dma-controller: Uninit component inner id 4
-  mtk-mdp3 14001000.dma-controller: mdp_path_ctx_init error 0
-  mtk-mdp3 14001000.dma-controller: CMDQ sendtask failed: -22
-
-Add the missing compatible to the array to restore functionality.
-
-Fixes: 4a81656c8eaa ("arm64: dts: mediatek: mt8188: Address binding warnings for MDP3 nodes")
+Fixes: b0fc0167f254 ("bus: mhi: core: Allow shared IRQ for event rings")
+Fixes: 3000f85b8f47 ("bus: mhi: core: Add support for basic PM operations")
+Signed-off-by: Adam Xue <zxue@semtech.com>
+[mani: reworded subject/description and CCed stable]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Link: https://patch.msgid.link/20250905174118.38512-1-zxue@semtech.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/mdp3/mtk-mdp3-comp.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/bus/mhi/host/init.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-comp.c
-+++ b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-comp.c
-@@ -1530,6 +1530,9 @@ static const struct of_device_id mdp_com
- 	}, {
- 		.compatible = "mediatek,mt8195-mdp3-tcc",
- 		.data = (void *)MDP_COMP_TYPE_TCC,
-+	}, {
-+		.compatible = "mediatek,mt8188-mdp3-rdma",
-+		.data = (void *)MDP_COMP_TYPE_RDMA,
- 	},
- 	{}
- };
+--- a/drivers/bus/mhi/host/init.c
++++ b/drivers/bus/mhi/host/init.c
+@@ -164,7 +164,6 @@ void mhi_deinit_free_irq(struct mhi_cont
+ int mhi_init_irq_setup(struct mhi_controller *mhi_cntrl)
+ {
+ 	struct mhi_event *mhi_event = mhi_cntrl->mhi_event;
+-	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+ 	unsigned long irq_flags = IRQF_SHARED | IRQF_NO_SUSPEND;
+ 	int i, ret;
+ 
+@@ -191,7 +190,7 @@ int mhi_init_irq_setup(struct mhi_contro
+ 			continue;
+ 
+ 		if (mhi_event->irq >= mhi_cntrl->nr_irqs) {
+-			dev_err(dev, "irq %d not available for event ring\n",
++			dev_err(mhi_cntrl->cntrl_dev, "irq %d not available for event ring\n",
+ 				mhi_event->irq);
+ 			ret = -EINVAL;
+ 			goto error_request;
+@@ -202,7 +201,7 @@ int mhi_init_irq_setup(struct mhi_contro
+ 				  irq_flags,
+ 				  "mhi", mhi_event);
+ 		if (ret) {
+-			dev_err(dev, "Error requesting irq:%d for ev:%d\n",
++			dev_err(mhi_cntrl->cntrl_dev, "Error requesting irq:%d for ev:%d\n",
+ 				mhi_cntrl->irq[mhi_event->irq], i);
+ 			goto error_request;
+ 		}
 
 
 
