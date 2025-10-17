@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-187523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DBABEA507
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:56:58 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFC1BE9E3D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B1F81AE3BBD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7DC29582745
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BCB257437;
-	Fri, 17 Oct 2025 15:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5279D32C940;
+	Fri, 17 Oct 2025 15:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvgzt3tO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/wnVjXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74813330B00;
-	Fri, 17 Oct 2025 15:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E56F337110;
+	Fri, 17 Oct 2025 15:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716316; cv=none; b=giIPXvdQo71Z1bLFwKx5VQ023hWoZiSJ6nky1sUP7uDlZtvUQY6swY8M7IdhkY8EnELQf1TKqwCf53yKWQVMfJZHRAIgvPveHi4MIx53O3/DrdvlZ4i/44FTqd54bXDjEevQn/dqpgZpIeRsFbnlo5XayCcPM1UH8HozdgVDDrY=
+	t=1760714606; cv=none; b=RjR2QFhqRMSRRg3e6FkzwkwSKUwTDn07nhHTN2FdBoY+SxewzMp8FjHhyoEUL9Z3qYLAj/PtsjNhOh2kzW4tjQH8OKaxGRrLkhdp8tb0F/3epRp28OySsa18OC827V2GCKYltXNwB52t1cXC5HmMXl7ThtpBhd6nbU1I6UTm6UY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716316; c=relaxed/simple;
-	bh=dM7wZMLBGA632tBXlln4Z9GSGYlNYGrdUTF50y/koe8=;
+	s=arc-20240116; t=1760714606; c=relaxed/simple;
+	bh=zSPtZNhnul48c8ht9cHCYD81VtrWAqZnnhrR7YbuheA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIbJYOzDtZNCAmyTRS5AVu8rtT246nz0BRaw2KxFp7ay3IkUscHfy21CWCq2kZSzILGqXTiNC8GSPUkt6QZIsKa9mxxnVPRhBI/fk+2JSNgHHJcNMK+g5RT5KKDQfEVnNG1LkUHVMZnUia1t4MUie2fe/+2xdcYlr1SRAmwvO2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvgzt3tO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D94A7C4CEE7;
-	Fri, 17 Oct 2025 15:51:55 +0000 (UTC)
+	 MIME-Version; b=L+AqJ7OH5+6YmvXpSM/z73zSCJDdxf06W4fwHast4JXEc15o093uKy4qeVBZQueNQM3bWY9F1KGbpJ6393NoEj2vDULEDNAl0/xo4//lJa1iJCRh92xtfsFxMsmyTjqnb5yVZBs43nSyGwibU6feiDOjsOMH1bG8z00sjMyD1a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/wnVjXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB01C4CEE7;
+	Fri, 17 Oct 2025 15:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716316;
-	bh=dM7wZMLBGA632tBXlln4Z9GSGYlNYGrdUTF50y/koe8=;
+	s=korg; t=1760714605;
+	bh=zSPtZNhnul48c8ht9cHCYD81VtrWAqZnnhrR7YbuheA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yvgzt3tOz9d7H7o2pIEXR7YccFactZTZ9j8t+AsmNhHwJAaPt1t8eaWzBKH8JAel6
-	 /prDFz48Fko3kVLOa9FtRDbkYlCAdbx2FMJBagsr2PRUmSmte3fD92desvwZFy7c1J
-	 zT5J4yNsAv8tr6IF9uJgxIsNPmb/W5Ijea1GQJvA=
+	b=S/wnVjXBXOg3I/tyMaep4kFMJfZ9UejWuRKBlC1ri6WZVMJxaoyPOMO7qrA8xpTIx
+	 jnDeyCkMwlR7pUPpX3N7/RgIWlZ8JG6uDA6qz26mEVmnWoubsMqxqcCgPe5Htlcpd7
+	 XvnlY7MiI2DFYIiwmwgiXq15aDkSAA1Kx8MuMDQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.15 116/276] Input: uinput - zero-initialize uinput_ff_upload_compat to avoid info leak
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.12 202/277] wifi: ath11k: HAL SRNG: dont deinitialize and re-initialize again
 Date: Fri, 17 Oct 2025 16:53:29 +0200
-Message-ID: <20251017145146.712460044@linuxfoundation.org>
+Message-ID: <20251017145154.498397922@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit d3366a04770eea807f2826cbdb96934dd8c9bf79 upstream.
+commit 32be3ca4cf78b309dfe7ba52fe2d7cc3c23c5634 upstream.
 
-Struct ff_effect_compat is embedded twice inside
-uinput_ff_upload_compat, contains internal padding. In particular, there
-is a hole after struct ff_replay to satisfy alignment requirements for
-the following union member. Without clearing the structure,
-copy_to_user() may leak stack data to userspace.
+Don't deinitialize and reinitialize the HAL helpers. The dma memory is
+deallocated and there is high possibility that we'll not be able to get
+the same memory allocated from dma when there is high memory pressure.
 
-Initialize ff_up_compat to zero before filling valid fields.
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
 
-Fixes: 2d56f3a32c0e ("Input: refactor evdev 32bit compat to be shareable with uinput")
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Link: https://lore.kernel.org/r/20250928063737.74590-1-zhen.ni@easystack.cn
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://patch.msgid.link/20250722053121.1145001-1-usama.anjum@collabora.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/uinput.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath11k/core.c |    6 +-----
+ drivers/net/wireless/ath/ath11k/hal.c  |   16 ++++++++++++++++
+ drivers/net/wireless/ath/ath11k/hal.h  |    1 +
+ 3 files changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/input/misc/uinput.c
-+++ b/drivers/input/misc/uinput.c
-@@ -741,6 +741,7 @@ static int uinput_ff_upload_to_user(char
- 	if (in_compat_syscall()) {
- 		struct uinput_ff_upload_compat ff_up_compat;
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1936,14 +1936,10 @@ static int ath11k_core_reconfigure_on_cr
+ 	mutex_unlock(&ab->core_lock);
  
-+		memset(&ff_up_compat, 0, sizeof(ff_up_compat));
- 		ff_up_compat.request_id = ff_up->request_id;
- 		ff_up_compat.retval = ff_up->retval;
- 		/*
+ 	ath11k_dp_free(ab);
+-	ath11k_hal_srng_deinit(ab);
++	ath11k_hal_srng_clear(ab);
+ 
+ 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
+ 
+-	ret = ath11k_hal_srng_init(ab);
+-	if (ret)
+-		return ret;
+-
+ 	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
+ 
+ 	ret = ath11k_core_qmi_firmware_ready(ab);
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -1383,6 +1383,22 @@ void ath11k_hal_srng_deinit(struct ath11
+ }
+ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
+ 
++void ath11k_hal_srng_clear(struct ath11k_base *ab)
++{
++	/* No need to memset rdp and wrp memory since each individual
++	 * segment would get cleared in ath11k_hal_srng_src_hw_init()
++	 * and ath11k_hal_srng_dst_hw_init().
++	 */
++	memset(ab->hal.srng_list, 0,
++	       sizeof(ab->hal.srng_list));
++	memset(ab->hal.shadow_reg_addr, 0,
++	       sizeof(ab->hal.shadow_reg_addr));
++	ab->hal.avail_blk_resource = 0;
++	ab->hal.current_blk_index = 0;
++	ab->hal.num_shadow_reg_configured = 0;
++}
++EXPORT_SYMBOL(ath11k_hal_srng_clear);
++
+ void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
+ {
+ 	struct hal_srng *srng;
+--- a/drivers/net/wireless/ath/ath11k/hal.h
++++ b/drivers/net/wireless/ath/ath11k/hal.h
+@@ -965,6 +965,7 @@ int ath11k_hal_srng_setup(struct ath11k_
+ 			  struct hal_srng_params *params);
+ int ath11k_hal_srng_init(struct ath11k_base *ath11k);
+ void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
++void ath11k_hal_srng_clear(struct ath11k_base *ab);
+ void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
+ void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
+ 				       u32 **cfg, u32 *len);
 
 
 
