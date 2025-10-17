@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-186400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09E7EBE96B2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:02:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571F1BE9F8A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4973356867E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E77F188448B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C3A239591;
-	Fri, 17 Oct 2025 14:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F0C33290F;
+	Fri, 17 Oct 2025 15:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSoMzOa/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQ8TNWZI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDFA21C9EA;
-	Fri, 17 Oct 2025 14:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C0D332914;
+	Fri, 17 Oct 2025 15:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713134; cv=none; b=jjDi/EAtw3xt4x6Q+ogSrpkgDBhQZgNQ3IeQ3R4rWT4FoEG61FbKwjBFrrGxbffRL/fyuOUc3lWD/Fqiksu/sM7Mfs2aWU0tOgRoShYBkaeK5ODyqpfNZgX9Tiewp0tf0aj8M+QSsAWC3se5VmlMJUEAVMLYqTonr8QGX+7U7Qw=
+	t=1760715168; cv=none; b=TJxJtpxOk3hxV/etOwM1siguAP5XXD7flixPRMeQ4k7O8HcyLJawO2nf/dDhrcde9HP3tlbfWqGU24mu2HeyDpI2PNhkWrt43f7Tlk++TRsbQZ715c5T2MYJqloBZTJWP8MRVPqYrt32XkOlMwle1h2d870rH76COV5bcCMa2dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713134; c=relaxed/simple;
-	bh=0s6657QeaQuP0ls9llG7qaJMiD9EoS+RAnoFHtkQDrk=;
+	s=arc-20240116; t=1760715168; c=relaxed/simple;
+	bh=pS6SaHVJzV5iXS/V77q7xTh0MqlWIEVDizkKYdR4pzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nwdZBgM1l6RXgyhGiPx8pl/7+O73irGOMg1iWmj23/DmPRbi132vG8REz7+YDv6YEceVUZLqKEJzGmmhvq/7GQuTFPGATzHt9Qvg9JN01+A3IWQTu/R/lTM4gw0S6z1yDc0NC51dQnbGGCTYPhKJvKLYKddWeMAymavF5yAPAZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSoMzOa/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA525C4CEE7;
-	Fri, 17 Oct 2025 14:58:53 +0000 (UTC)
+	 MIME-Version; b=mnLXmaHYaFqWpfCzG2ssXVqeP44n0qIAqLLT4jg7rfxDeyaq1d2Jgxb+JhGNa2dEH0WEdH40wURu2kT1LgmFHCsl5jPEX7+8BK2DoESg82nu/nt2Wm9Y0BmXoLSa9X/0gGene3m7TDK4r2X+MzFF29p2N179U8Z01ePyY+zmAB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQ8TNWZI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9142BC4CEE7;
+	Fri, 17 Oct 2025 15:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713134;
-	bh=0s6657QeaQuP0ls9llG7qaJMiD9EoS+RAnoFHtkQDrk=;
+	s=korg; t=1760715168;
+	bh=pS6SaHVJzV5iXS/V77q7xTh0MqlWIEVDizkKYdR4pzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSoMzOa/7BEUP8Q8hCXD3djfg9IGoUxYWco3W7j5xwiKyTB/NnYk1nWh3U2sLosr5
-	 /EXjMIdbJANEtTmvb25Qe9nN8cqJTqXIuo+WwSjWRp2hdJjlvjuwZXEzScTLHlH+li
-	 AHnSNDXgWqbOARwsw+EJK37vL58U3nk6Fo8dKzB4=
+	b=OQ8TNWZIMBUJGTCpJifUzRjP1iadNVJfG7IlWJTwQ3oRpQZZtJtsDrgKdPCx94A2s
+	 z8WIgD/1Wno2xR+6ZPNSxi+B/7texkwEH2dfe0ZjM+rJXdY1mf9b0M71/OJrQM7LlS
+	 b00QOg8azghQlO9tXR/ZlejHwJ+NVFtniDz8FF64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamas Zsoldos <tamas.zsoldos@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/168] perf session: Fix handling when buffer exceeds 2 GiB
+Subject: [PATCH 6.17 120/371] io_uring/zcrx: increment fallback loop src offset
 Date: Fri, 17 Oct 2025 16:51:35 +0200
-Message-ID: <20251017145129.614633589@linuxfoundation.org>
+Message-ID: <20251017145206.276956328@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit c17dda8013495d8132c976cbf349be9949d0fbd1 ]
+[ Upstream commit e9a9dcb4ccb32446165800a9d83058e95c4833d2 ]
 
-If a user specifies an AUX buffer larger than 2 GiB, the returned size
-may exceed 0x80000000. Since the err variable is defined as a signed
-32-bit integer, such a value overflows and becomes negative.
+Don't forget to adjust the source offset in io_copy_page(), otherwise
+it'll be copying into the same location in some cases for highmem
+setups.
 
-As a result, the perf record command reports an error:
-
-  0x146e8 [0x30]: failed to process type: 71 [Unknown error 183711232]
-
-Change the type of the err variable to a signed 64-bit integer to
-accommodate large buffer sizes correctly.
-
-Fixes: d5652d865ea734a1 ("perf session: Add ability to skip 4GiB or more")
-Reported-by: Tamas Zsoldos <tamas.zsoldos@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20250808-perf_fix_big_buffer_size-v1-1-45f45444a9a4@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: e67645bb7f3f4 ("io_uring/zcrx: prepare fallback for larger pages")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/session.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/zcrx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
-index c8f7634f9846c..1c4d124b10531 100644
---- a/tools/perf/util/session.c
-+++ b/tools/perf/util/session.c
-@@ -1658,7 +1658,7 @@ static s64 perf_session__process_user_event(struct perf_session *session,
- 	struct perf_tool *tool = session->tool;
- 	struct perf_sample sample = { .time = 0, };
- 	int fd = perf_data__fd(session->data);
--	int err;
-+	s64 err;
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index 643a69f9ffe2a..2035c77a16357 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -993,6 +993,7 @@ static ssize_t io_copy_page(struct io_copy_cache *cc, struct page *src_page,
  
- 	if (event->header.type != PERF_RECORD_COMPRESSED ||
- 	    tool->compressed == perf_session__process_compressed_event_stub)
+ 		cc->size -= n;
+ 		cc->offset += n;
++		src_offset += n;
+ 		len -= n;
+ 		copied += n;
+ 	}
 -- 
 2.51.0
 
