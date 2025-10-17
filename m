@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A96BE98F1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE1CBEA17F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB746509441
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14EBF744C85
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E9C32C94B;
-	Fri, 17 Oct 2025 15:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22EA132C931;
+	Fri, 17 Oct 2025 15:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atAWsymP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/ZJ3X5l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F82C3370FA;
-	Fri, 17 Oct 2025 15:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10B432E13C;
+	Fri, 17 Oct 2025 15:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713523; cv=none; b=cqvgCXGma/M9rFPNtjt2E4AcXrhttKUPl93yGnPMAJVFMSyAUGk4E2eVoWMbIUu0M5mqOhEPcCyziSSBB1MXEn80fgPmSv7yDefrClSv6caf5Kk4xCszHkwXgiAN9QSh06I7IAEcG3aHunyl02b/XYxsggfunhPycyIwguzobFE=
+	t=1760714224; cv=none; b=cKj3i+S//kvlW+6D7ioRrSRpXTvRNB9wpqDCokCih5vwsFd6knr0Ms0y5IiGTnu1cNhph/19lg4CzwcxlSDz9xRTwE2j4KkLDR3ETjsaDZjdQ+V83mhX22v5wRHxuJpmB0Th7wxIpTtaG8z4/ycQVOHAE/p1PK/WLZ0R2Rdd73Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713523; c=relaxed/simple;
-	bh=oht9A9jOBn81Fytxk43u3sIJEAdJJSJWkyxJSR+kgao=;
+	s=arc-20240116; t=1760714224; c=relaxed/simple;
+	bh=WBnkIiEbGbssaWzKTCswtW93IqRnrUlvdswIFUhiM5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p038LgHaaINnUJk8jBEPSU7uU/vwnL8kubHTKue2VWJ+zvFYfcHmDY0JAMNoobXVqQbgQB3E41C5HnUO7fYwy98xcP945PiTNia+1rOX+LTL3ZxaMACZV0UrEQf6DndDEKC7HCYTdmFNktCZH5Tppb+p8vaqgmAH6fq28QPQ8bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atAWsymP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8473EC4CEE7;
-	Fri, 17 Oct 2025 15:05:22 +0000 (UTC)
+	 MIME-Version; b=EFird6QCYQ26ZExXNPCCVs7gz+77Qv4CUl+rcKYqpHtN6OBh7OnmD03suD/oN3osMyThOgl6d53Q/g8dALNDngxDv8VxE5lHHEOjusIyrjPqgABmSDGNl3BSB1Pgj9x5lHJXQO2Qn1j9+1wKTGfU7EXbZJtkwqqOOTk9Lr21xvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/ZJ3X5l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C5B5C4CEE7;
+	Fri, 17 Oct 2025 15:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713522;
-	bh=oht9A9jOBn81Fytxk43u3sIJEAdJJSJWkyxJSR+kgao=;
+	s=korg; t=1760714224;
+	bh=WBnkIiEbGbssaWzKTCswtW93IqRnrUlvdswIFUhiM5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=atAWsymPqhE5pDgXtJMKd+KNu8xfpqwgkvUJbrynYTk5mi8nax0HarmAbBhwGM/Dr
-	 CIRYNLYwsugQplixd7WUvOtlD9xsKQFZv4Mdolo9OM+b1hdt+H3QIA9ECpOKwVB6bM
-	 TNI7G8J50NF0WQ3TvQxTbXrAkRcHgmff+1euu+dU=
+	b=e/ZJ3X5lrKn6S+DAEwT1TeBBdXS11XrXCVJbqK/Djh9ErwIVrwkhMYhm7ldzn/3h0
+	 6w7b9jWyEmuyT9j9bc8v01gbcV3oscKpHYxBLV9oAZNRDwDz6ZfLrOXQ8kYo2I+Jx7
+	 pUKvncOTQVzEzWqKcYMbd7B1YaCszn1lUtGQGX1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Brian Masney <bmasney@redhat.com>,
+	Harini T <harini.t@amd.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/201] clk: at91: peripheral: fix return value
+Subject: [PATCH 6.12 063/277] mailbox: zynqmp-ipi: Fix out-of-bounds access in mailbox cleanup loop
 Date: Fri, 17 Oct 2025 16:51:10 +0200
-Message-ID: <20251017145135.072205818@linuxfoundation.org>
+Message-ID: <20251017145149.445233912@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Harini T <harini.t@amd.com>
 
-[ Upstream commit 47b13635dabc14f1c2fdcaa5468b47ddadbdd1b5 ]
+[ Upstream commit 0aead8197fc1a85b0a89646e418feb49a564b029 ]
 
-determine_rate() is expected to return an error code, or 0 on success.
-clk_sam9x5_peripheral_determine_rate() has a branch that returns the
-parent rate on a certain case. This is the behavior of round_rate(),
-so let's go ahead and fix this by setting req->rate.
+The cleanup loop was starting at the wrong array index, causing
+out-of-bounds access.
+Start the loop at the correct index for zero-indexed arrays to prevent
+accessing memory beyond the allocated array bounds.
 
-Fixes: b4c115c76184f ("clk: at91: clk-peripheral: add support for changeable parent rate")
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
+Signed-off-by: Harini T <harini.t@amd.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/at91/clk-peripheral.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/mailbox/zynqmp-ipi-mailbox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/at91/clk-peripheral.c b/drivers/clk/at91/clk-peripheral.c
-index c173a44c800aa..629f050a855aa 100644
---- a/drivers/clk/at91/clk-peripheral.c
-+++ b/drivers/clk/at91/clk-peripheral.c
-@@ -279,8 +279,11 @@ static int clk_sam9x5_peripheral_determine_rate(struct clk_hw *hw,
- 	long best_diff = LONG_MIN;
- 	u32 shift;
+diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
+index 411bbc10edeaf..fab897b5724c1 100644
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -890,7 +890,7 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
+ 	if (pdata->irq < MAX_SGI)
+ 		xlnx_mbox_cleanup_sgi(pdata);
  
--	if (periph->id < PERIPHERAL_ID_MIN || !periph->range.max)
--		return parent_rate;
-+	if (periph->id < PERIPHERAL_ID_MIN || !periph->range.max) {
-+		req->rate = parent_rate;
-+
-+		return 0;
-+	}
- 
- 	/* Fist step: check the available dividers. */
- 	for (shift = 0; shift <= PERIPHERAL_MAX_SHIFT; shift++) {
+-	i = pdata->num_mboxes;
++	i = pdata->num_mboxes - 1;
+ 	for (; i >= 0; i--) {
+ 		ipi_mbox = &pdata->ipi_mboxes[i];
+ 		if (device_is_registered(&ipi_mbox->dev))
 -- 
 2.51.0
 
