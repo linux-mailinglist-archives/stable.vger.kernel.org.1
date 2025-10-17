@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-187159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07478BEA05C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 000B9BEA12C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBCBB18933FF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98A533B3558
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B1F330B0E;
-	Fri, 17 Oct 2025 15:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A03732E14C;
+	Fri, 17 Oct 2025 15:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFq+VefN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSyqI6Dj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506FD330B08;
-	Fri, 17 Oct 2025 15:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060163370F7;
+	Fri, 17 Oct 2025 15:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715281; cv=none; b=AsFOB8UWigbUHD7sZrryk27NVxsEsBJG8akUofLtU5PCYwmC0bPMaBBKVUMyh5Ef+EB+Gn3P6ZwNotkBkQeX6ipvWUqRd47ICnMy6TQci4f7GdMdSOiG/5CiV/stSNDL8fSrIYcd+/leqd/nRjKf0QLRkRKrVQcUUaj15tzDQZw=
+	t=1760714302; cv=none; b=mVAUmrnx8Yl1mpxhhkcK4wN2HQzSm+j5iNicqB/ZPXcZp8ysfKAVhlPLTmocPrrTn8Wt+Ant0EXK0cKaVPkjeyjlS4cduWx20FZjNQaoKggGExLN4QDMTX7e1a1lWK5h6244euDEqPl/r5UL74kyOMmFszzWQNw90dWa8/tFoXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715281; c=relaxed/simple;
-	bh=3v0iIOgjeLj6wXUIlaJP0Bo+PX8Kllf8I5EA1vQIJOM=;
+	s=arc-20240116; t=1760714302; c=relaxed/simple;
+	bh=5uhLQ5Nt/VnCtgVAHDGaJkj0jSzARwBKSFQAANPVt6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4feIi07hh8LBCQ1tV8AxnPjPGCeG58//fEdIOfigZkxRN2vWUAaiatjYgDjt0stAaLC7eanxi/W6RizLc+4jW/lzQkt6GY9TnGEldx88rpdMPVzGFv3mw4BBU/HGp5WVF3yAlkDl1vQkh2ThEURhGsKbe9xzIXDsJQ2QT2eKBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFq+VefN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED4DC4CEE7;
-	Fri, 17 Oct 2025 15:34:40 +0000 (UTC)
+	 MIME-Version; b=RG42h2OFX83L12k5T0YT+qP8AvY12JIwmfgrJlHCqvzU1dM1UY8SwFsnpdIcUQoFfhC8dTCxa1N7DdfVfK3JaZu0Gytn+uy8pq40lJeMIVK5lPQO41j8eZadlxgYMlfpVNfqjI7MQIKUI3DGyF7imHQxs7cMV5JzcZg++qP5LMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSyqI6Dj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEDAC113D0;
+	Fri, 17 Oct 2025 15:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715281;
-	bh=3v0iIOgjeLj6wXUIlaJP0Bo+PX8Kllf8I5EA1vQIJOM=;
+	s=korg; t=1760714301;
+	bh=5uhLQ5Nt/VnCtgVAHDGaJkj0jSzARwBKSFQAANPVt6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qFq+VefNlpPbO4JNRT2kZzQkRGBYYeSKrziZspjcKmuL5b6AD8B6u+cMecAdx3t1N
-	 PNfjrLcZxIucVg0+7vrI8Ik2lfZx38S45hRYJM8sLn76loT+6WW/hgdFUV3l9o/YAh
-	 d8ZO99qzfR1JTUUOuJNTFPMj5w5UDcvRQV6YlmVw=
+	b=uSyqI6DjY/uJ29rJ07iPKy2HsbZ2Lu9JZGtd08o6699v9V198UNiFY6uBh9Ym14cp
+	 DWCNQi5DIZwHzxa5iNUOXq/lOV4sMut2kx69Odr8IzEjI07VrGGT9nTkS5fcJDr6Yy
+	 4+Av07XktgbxeEbWDrDOtIDRvujtankPjM4KGbyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 128/371] gpio: wcd934x: mark the GPIO controller as sleeping
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.12 096/277] perf/arm-cmn: Fix CMN S3 DTM offset
 Date: Fri, 17 Oct 2025 16:51:43 +0200
-Message-ID: <20251017145206.563184631@linuxfoundation.org>
+Message-ID: <20251017145150.638418680@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit b5f8aa8d4bde0cf3e4595af5a536da337e5f1c78 ]
+commit b3fe1c83a56f3cb7c475747ee1c6ec5a9dd5f60e upstream.
 
-The slimbus regmap passed to the GPIO driver down from MFD does not use
-fast_io. This means a mutex is used for locking and thus this GPIO chip
-must not be used in atomic context. Change the can_sleep switch in
-struct gpio_chip to true.
+CMN S3's DTM offset is different between r0px and r1p0, and it
+turns out this was not a error in the earlier documentation, but
+does actually exist in the design. Lovely.
 
-Fixes: 59c324683400 ("gpio: wcd934x: Add support to wcd934x gpio controller")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0dc2f4963f7e ("perf/arm-cmn: Support CMN S3")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-wcd934x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/perf/arm-cmn.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
-index 4af504c23e6ff..572b85e773700 100644
---- a/drivers/gpio/gpio-wcd934x.c
-+++ b/drivers/gpio/gpio-wcd934x.c
-@@ -103,7 +103,7 @@ static int wcd_gpio_probe(struct platform_device *pdev)
- 	chip->base = -1;
- 	chip->ngpio = WCD934X_NPINS;
- 	chip->label = dev_name(dev);
--	chip->can_sleep = false;
-+	chip->can_sleep = true;
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -65,7 +65,7 @@
+ /* PMU registers occupy the 3rd 4KB page of each node's region */
+ #define CMN_PMU_OFFSET			0x2000
+ /* ...except when they don't :( */
+-#define CMN_S3_DTM_OFFSET		0xa000
++#define CMN_S3_R1_DTM_OFFSET		0xa000
+ #define CMN_S3_PMU_OFFSET		0xd900
  
- 	return devm_gpiochip_add_data(dev, chip, data);
- }
--- 
-2.51.0
-
+ /* For most nodes, this is all there is */
+@@ -233,6 +233,9 @@ enum cmn_revision {
+ 	REV_CMN700_R1P0,
+ 	REV_CMN700_R2P0,
+ 	REV_CMN700_R3P0,
++	REV_CMNS3_R0P0 = 0,
++	REV_CMNS3_R0P1,
++	REV_CMNS3_R1P0,
+ 	REV_CI700_R0P0 = 0,
+ 	REV_CI700_R1P0,
+ 	REV_CI700_R2P0,
+@@ -425,8 +428,8 @@ static enum cmn_model arm_cmn_model(cons
+ static int arm_cmn_pmu_offset(const struct arm_cmn *cmn, const struct arm_cmn_node *dn)
+ {
+ 	if (cmn->part == PART_CMN_S3) {
+-		if (dn->type == CMN_TYPE_XP)
+-			return CMN_S3_DTM_OFFSET;
++		if (cmn->rev >= REV_CMNS3_R1P0 && dn->type == CMN_TYPE_XP)
++			return CMN_S3_R1_DTM_OFFSET;
+ 		return CMN_S3_PMU_OFFSET;
+ 	}
+ 	return CMN_PMU_OFFSET;
 
 
 
