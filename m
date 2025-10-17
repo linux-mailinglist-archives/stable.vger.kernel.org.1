@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-187625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3974BEAA43
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:22:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6472CBEACB6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:38:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BFF6960F5E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEF0F7C1F2B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5857A217722;
-	Fri, 17 Oct 2025 15:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB102330B2E;
+	Fri, 17 Oct 2025 15:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zykGtYa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ca1xOpw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A91330B0F;
-	Fri, 17 Oct 2025 15:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97071330B00;
+	Fri, 17 Oct 2025 15:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716612; cv=none; b=FcXV2rz6lqE6BiRAei2MhLqNam5z0rqBH7FsPmzzsZP7r4ZE5Q/TCO37UBLDz5SWq/Rw2V/pLmRxfEfw8eb+7Wb2/tfMVSPpNVO2gsVhuJKChTNFzmbZhEwAhiVKUGexxT5Dva0KCQxzfViVFfn8UbzUundFs7/EnkMzIutscNw=
+	t=1760715785; cv=none; b=OyAChrOb3Co0iomL3ubGFfSyk61UpsfAWvI1v7QlvkEPKmmcfzLvB5XuSy0mfIULg6vYARhlkkkSE7AOlYvflMTQ1YYdyT25ge5aRTAgc6h5bIo/jia02ZweD2Y2I0ZKzsl0eoDWeqSEpVdCAvL2KrLrbInWhzk3yNkQfQNzAQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716612; c=relaxed/simple;
-	bh=ZFc3S19sSIeN+2xhZDaq4WreA90qOmFBd4BzcBZhzNc=;
+	s=arc-20240116; t=1760715785; c=relaxed/simple;
+	bh=sxlcdors31Uz2Q5KBbHhHzEdvG+c69bTWeezF0cDpVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=foTcJBMr5Hb3n1zQIwtsyAk44c5QDnAg7nkCqmh87Ij2f2+FcH7Kn6PEphuXpzcmMhCkYoMT5o956QOr6FQbjheWh6d2X4RqTKtYq32KGyGmz5Npv0VWcvvRDIGtYw8LE7RwbfclGPgYrdOBcvlHXFAPxeMX3n+gUWAMfOd+8tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zykGtYa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FDCC4CEE7;
-	Fri, 17 Oct 2025 15:56:51 +0000 (UTC)
+	 MIME-Version; b=dXfyTkQc8hPTk2reSo0BB5mag1PKXqKn5hUth0Q5AWfw+1+1A2Dk1pxblT4NFbmwi+rRIYQiwzu2+ZmnodrMIk71/low+ikFgTUBagQEyifdnv7c5D1c/7brcpRja7vz499iPpBHJbz1Y4l2lw5jjlwmcLvFSIDe8SjicyEQoW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ca1xOpw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDAAC4CEE7;
+	Fri, 17 Oct 2025 15:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716612;
-	bh=ZFc3S19sSIeN+2xhZDaq4WreA90qOmFBd4BzcBZhzNc=;
+	s=korg; t=1760715785;
+	bh=sxlcdors31Uz2Q5KBbHhHzEdvG+c69bTWeezF0cDpVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0zykGtYauAFO+yRJxTf1ZOciO8Yi4OF2+6sVsu87yJuQpepVnHkJMybdFJjqwVqJA
-	 cTnAZXsINJZ+7eqJJrx1a+0mk8HyY+uhsqwQfi99yZ78furS7h3M2MOCIed1qs4VQY
-	 0XXO3M880SlxGFuPZ/AnegLrJgnoyw+knT1t31Rw=
+	b=ca1xOpw6EN8DayZzvkVMOY4afs1hhB3mKN5ZQvi2n9QyfN28k217/T78rtee9vvYE
+	 q6iOaXhm3u9MFK7QmSGXWwi0UIO/4dAuEtYg0PrKRLLnWa3A95F35Etdoz8N9uOhEH
+	 Gf8oXuuSbJ7wrgO9eGo44Y8OXP9u30I5Xu1Txj+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 217/276] NFSD: Fix destination buffer size in nfsd4_ssc_setup_dul()
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.17 335/371] media: iris: Fix missing LAST flag handling during drain
 Date: Fri, 17 Oct 2025 16:55:10 +0200
-Message-ID: <20251017145150.385082282@linuxfoundation.org>
+Message-ID: <20251017145214.202673260@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +65,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-commit ab1c282c010c4f327bd7addc3c0035fd8e3c1721 upstream.
+commit 8172f57746d68e5c3c743f725435d75c5a4db1ac upstream.
 
-Commit 5304877936c0 ("NFSD: Fix strncpy() fortify warning") replaced
-strncpy(,, sizeof(..)) with strlcpy(,, sizeof(..) - 1), but strlcpy()
-already guaranteed NUL-termination of the destination buffer and
-subtracting one byte potentially truncated the source string.
+Improve drain handling by ensuring the LAST flag is attached to final
+capture buffer when drain response is received from the firmware.
 
-The incorrect size was then carried over in commit 72f78ae00a8e ("NFSD:
-move from strlcpy with unused retval to strscpy") when switching from
-strlcpy() to strscpy().
+Previously, the driver failed to attach the V4L2_BUF_FLAG_LAST flag when
+a drain response was received from the firmware, relying on userspace to
+mark the next queued buffer as LAST. This update fixes the issue by
+checking the pending drain status, attaching the LAST flag to the
+capture buffer received from the firmware (with EOS attached), and
+returning it to the V4L2 layer correctly.
 
-Fix this off-by-one error by using the full size of the destination
-buffer again.
-
+Fixes: d09100763bed ("media: iris: add support for drain sequence")
 Cc: stable@vger.kernel.org
-Fixes: 5304877936c0 ("NFSD: Fix strncpy() fortify warning")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # X1E80100
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c | 4 +---
+ drivers/media/platform/qcom/iris/iris_state.c             | 2 +-
+ drivers/media/platform/qcom/iris/iris_state.h             | 1 +
+ 3 files changed, 3 insertions(+), 4 deletions(-)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1335,7 +1335,7 @@ try_again:
- 		return 0;
+diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c b/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
+index 8d1ce8a19a45..2a9645883383 100644
+--- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
++++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
+@@ -416,8 +416,6 @@ static void iris_hfi_gen1_session_ftb_done(struct iris_inst *inst, void *packet)
+ 			inst->flush_responses_pending++;
+ 
+ 		iris_inst_sub_state_change_drain_last(inst);
+-
+-		return;
  	}
- 	if (work) {
--		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr) - 1);
-+		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr));
- 		refcount_set(&work->nsui_refcnt, 2);
- 		work->nsui_busy = true;
- 		list_add_tail(&work->nsui_list, &nn->nfsd_ssc_mount_list);
+ 
+ 	if (iris_split_mode_enabled(inst) && pkt->stream_id == 0) {
+@@ -462,7 +460,7 @@ static void iris_hfi_gen1_session_ftb_done(struct iris_inst *inst, void *packet)
+ 		timestamp_us = (timestamp_us << 32) | timestamp_lo;
+ 	} else {
+ 		if (pkt->stream_id == 1 && !inst->last_buffer_dequeued) {
+-			if (iris_drc_pending(inst)) {
++			if (iris_drc_pending(inst) || iris_drain_pending(inst)) {
+ 				flags |= V4L2_BUF_FLAG_LAST;
+ 				inst->last_buffer_dequeued = true;
+ 			}
+diff --git a/drivers/media/platform/qcom/iris/iris_state.c b/drivers/media/platform/qcom/iris/iris_state.c
+index a21238d2818f..d1dc1a863da0 100644
+--- a/drivers/media/platform/qcom/iris/iris_state.c
++++ b/drivers/media/platform/qcom/iris/iris_state.c
+@@ -252,7 +252,7 @@ bool iris_drc_pending(struct iris_inst *inst)
+ 		inst->sub_state & IRIS_INST_SUB_DRC_LAST;
+ }
+ 
+-static inline bool iris_drain_pending(struct iris_inst *inst)
++bool iris_drain_pending(struct iris_inst *inst)
+ {
+ 	return inst->sub_state & IRIS_INST_SUB_DRAIN &&
+ 		inst->sub_state & IRIS_INST_SUB_DRAIN_LAST;
+diff --git a/drivers/media/platform/qcom/iris/iris_state.h b/drivers/media/platform/qcom/iris/iris_state.h
+index e718386dbe04..b09fa54cf17e 100644
+--- a/drivers/media/platform/qcom/iris/iris_state.h
++++ b/drivers/media/platform/qcom/iris/iris_state.h
+@@ -141,5 +141,6 @@ int iris_inst_sub_state_change_drc_last(struct iris_inst *inst);
+ int iris_inst_sub_state_change_pause(struct iris_inst *inst, u32 plane);
+ bool iris_allow_cmd(struct iris_inst *inst, u32 cmd);
+ bool iris_drc_pending(struct iris_inst *inst);
++bool iris_drain_pending(struct iris_inst *inst);
+ 
+ #endif
+-- 
+2.51.0
+
 
 
 
