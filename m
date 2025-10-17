@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-187171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE95BEA2C9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:14 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2727BEA43D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F973627C06
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B320758665A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5212A32E143;
-	Fri, 17 Oct 2025 15:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180B4330B1E;
+	Fri, 17 Oct 2025 15:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPGfA2tj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnEdY4+3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5D72F12D1;
-	Fri, 17 Oct 2025 15:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4D1330B0C;
+	Fri, 17 Oct 2025 15:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715316; cv=none; b=bPj38Rd+pDngsbV7jB2uxXFlWerunaXZnjoxPsK5NggXi43I4E1KkY5+STRrhBsdYCzpNvSGShft4XlfOn6ZU1D9VUbeBIiNoL4P4bjxU03Dp4RkMgXe5wn7oQtsoSdeltZ0U985qy0ZFSQD8TBvbmwreMH15UxDUSwecJeYBPw=
+	t=1760716054; cv=none; b=l2pkIot7rM6gYG0msxViYhI+hv6XNRdhgJgrFaBZdfj27JnahiWDmk5QCdjPgpJspnfS1/HT9Gt1f7Z2q8wl4AmZjqEpEGpFxwGRI8yEyzrRWt+RhLMfE81c6UBfd3MZ+A7NKE6Hn0U2SRwSCTJ/4RCpVZuq0Kz9Esb57zDX8GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715316; c=relaxed/simple;
-	bh=ay2TSw3HC/SUGTmT6eV6o+yno0VajNsBXhziLCx1o+4=;
+	s=arc-20240116; t=1760716054; c=relaxed/simple;
+	bh=r53XnDQ/vZFzZLmm9omsC5dtMt7WTA46wEVZCTFB438=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YTCLaSkb8HbpDlvvLY8AD0w1VgusoOgkqz4W7zFNgQMA1QgZfgsheqkfV3kR3MFYb9M83b5AkM8S/XEyKit/pmzEkyUTJb+2dpRsFqwwUkwhATbxSAWDB13AbNn1oho7uabH7s1mD33yE+hPkEnzbv8LSWOM8BGCC7vtJJnvVaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPGfA2tj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D57C113D0;
-	Fri, 17 Oct 2025 15:35:15 +0000 (UTC)
+	 MIME-Version; b=jM/aW6Tl5zeVJdTFYrpqKIrJsVZpktGPiZ1gOTOlCgra3BS/UHjjoF00pVdSkEPuBYnV67arvD7KTlZkZ7ZSRzHKUUCFXrDIRYNe5mz4B/OoQwz7Lq7PrDZFSFodlWorPOZ4T6uebffGBA6oG2WhXpxwTu8AQXyK9PgCPmFZxmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnEdY4+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C0EC4CEE7;
+	Fri, 17 Oct 2025 15:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715315;
-	bh=ay2TSw3HC/SUGTmT6eV6o+yno0VajNsBXhziLCx1o+4=;
+	s=korg; t=1760716054;
+	bh=r53XnDQ/vZFzZLmm9omsC5dtMt7WTA46wEVZCTFB438=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dPGfA2tjhRwrI0ho8cZGrZZzYlr0FmmUe6LEc0TbWGGehGgcCH8Qd7Z2Ey+JXRqmq
-	 Ze3OieczR6o2QNlz02jesawghspCgmNdFAa7Tl3ublNhXaqW3ag8SAoQ4mBYqY1ble
-	 JvOJ2B7IZeHGzdVUoWQhiPLrgDDHMspWJTpsXpSc=
+	b=lnEdY4+3kc7AUuvAHWI0SkZurNFuEligEAEnIPXd0cwDxZXrLzBFW6WCrHtEwnpVw
+	 rqtHatAdJRQlLbOswqnCqaJHmPng0CPFPDfZTLDX/bYchJz1qTOb6ZgO9bcMmBFW60
+	 wKqs1VIhF6qqV1+fhZm6s/FwzZXCOBAEsJUYH5SU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.17 174/371] media: pci: mg4b: fix uninitialized iio scan data
-Date: Fri, 17 Oct 2025 16:52:29 +0200
-Message-ID: <20251017145208.226033658@linuxfoundation.org>
+	Zhang Shurong <zhang_shurong@foxmail.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 057/276] media: rj54n1cb0c: Fix memleak in rj54n1_probe()
+Date: Fri, 17 Oct 2025 16:52:30 +0200
+Message-ID: <20251017145144.570160235@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit c0d3f6969bb4d72476cfe7ea9263831f1c283704 upstream.
+[ Upstream commit fda55673ecdabf25f5ecc61b5ab17239257ac252 ]
 
-Fix potential leak of uninitialized stack data to userspace by ensuring
-that the `scan` structure is zeroed before use.
+rj54n1_probe() won't clean all the allocated resources in fail
+path, which may causes the memleaks. Add v4l2_ctrl_handler_free() to
+prevent memleak.
 
-Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Fixes: f187352dcd45 ("media: i2c: Copy rj54n1cb0c soc_camera sensor driver")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/mgb4/mgb4_trigger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/rj54n1cb0c.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/media/pci/mgb4/mgb4_trigger.c
-+++ b/drivers/media/pci/mgb4/mgb4_trigger.c
-@@ -91,7 +91,7 @@ static irqreturn_t trigger_handler(int i
- 	struct {
- 		u32 data;
- 		s64 ts __aligned(8);
--	} scan;
-+	} scan = { };
+diff --git a/drivers/media/i2c/rj54n1cb0c.c b/drivers/media/i2c/rj54n1cb0c.c
+index 2e4018c269124..f1953c819666b 100644
+--- a/drivers/media/i2c/rj54n1cb0c.c
++++ b/drivers/media/i2c/rj54n1cb0c.c
+@@ -1332,10 +1332,13 @@ static int rj54n1_probe(struct i2c_client *client,
+ 			V4L2_CID_GAIN, 0, 127, 1, 66);
+ 	v4l2_ctrl_new_std(&rj54n1->hdl, &rj54n1_ctrl_ops,
+ 			V4L2_CID_AUTO_WHITE_BALANCE, 0, 1, 1, 1);
+-	rj54n1->subdev.ctrl_handler = &rj54n1->hdl;
+-	if (rj54n1->hdl.error)
+-		return rj54n1->hdl.error;
  
- 	scan.data = mgb4_read_reg(&st->mgbdev->video, 0xA0);
- 	mgb4_write_reg(&st->mgbdev->video, 0xA0, scan.data);
++	if (rj54n1->hdl.error) {
++		ret = rj54n1->hdl.error;
++		goto err_free_ctrl;
++	}
++
++	rj54n1->subdev.ctrl_handler = &rj54n1->hdl;
+ 	rj54n1->clk_div		= clk_div;
+ 	rj54n1->rect.left	= RJ54N1_COLUMN_SKIP;
+ 	rj54n1->rect.top	= RJ54N1_ROW_SKIP;
+-- 
+2.51.0
+
 
 
 
