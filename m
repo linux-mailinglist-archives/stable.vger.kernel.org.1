@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-187542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122B9BEA93F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:16:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB283BEA9C2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF416946A1D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 628FA945D36
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD6B2F12B5;
-	Fri, 17 Oct 2025 15:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0125E3328E6;
+	Fri, 17 Oct 2025 15:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fg3LCRIE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHt0+Bev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01165330B1F;
-	Fri, 17 Oct 2025 15:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3310330B29;
+	Fri, 17 Oct 2025 15:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716371; cv=none; b=mJyZ41GZ/MEFyz0cbL6cQo3ZRRl6jXhptJi+Ur0mIUSMqLoYQRDYYtzUX5TiwU+J9ACifuZUdwdESveLQVzsMJ4DdTJ9u3xIE9QpMsrPGizCwv/PO6WUSx3DwrErwNqnZk6+w4UCNy4wAeSKym2IAhX/W7uK/tvlHt//PFS3T5s=
+	t=1760715637; cv=none; b=VA+gRIHA5YgA42j0ezKekuidJcJZudiu01hNbGoJTOvj6X46fpabpW2OqitkXnQaDENR78dRaV2eTvhoP0EwZEdCj+MZBOeA9yP2WhBKQzfwJc0UG+N778f8/c1tMXGbiMgJKX3f6HNZaEpKoNR+8UEwt4gtqIgOEeZd56BD+Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716371; c=relaxed/simple;
-	bh=qRlhtJHt0GHfrmCxNKQdgteESyBndpw4WjysVAk3i18=;
+	s=arc-20240116; t=1760715637; c=relaxed/simple;
+	bh=eQk7TefUpLWE8n3XqNAmjiHXMyvNTo0TKa89NP94Fdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ni/pBAPx0DAIFfCeIhVuQoTUGbvbwLFeJemhAlwBNQUGyUU+9hN4G9PyRc083pANG5poQoq6ApiNoD9UXcu1wuzPNfhsEfW0PZWxG5Huk/UBcM7CiH+VXfDaCuvn5mkqlR1zsKMRG+RTRqu1U6ReoMLs0M/nh6wuvYGG9xlugg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fg3LCRIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D298C4CEE7;
-	Fri, 17 Oct 2025 15:52:50 +0000 (UTC)
+	 MIME-Version; b=XNJfFHgQedy1srnSfOCFt4jL91agueMpjeAGUIz628irovDqViskKIkfQO3xxrpxKMrNjv4CaIos0+ZBhOUIvtPsQUfmtt2d/Oz6H02oqb9T4t7jPBVE40Yq2zO8I29g9sTpHwF3iOX81Zh6JO9EWqi8P03lOhG8jVvLXBhmNfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHt0+Bev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34726C4CEE7;
+	Fri, 17 Oct 2025 15:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716370;
-	bh=qRlhtJHt0GHfrmCxNKQdgteESyBndpw4WjysVAk3i18=;
+	s=korg; t=1760715637;
+	bh=eQk7TefUpLWE8n3XqNAmjiHXMyvNTo0TKa89NP94Fdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fg3LCRIEB1dbxKmcVjUJ39tfDaaxpdB0AMUJaUb+N4wdJHxz2h1xajJ5rmsczuz/F
-	 u2tadhOX6ncNHbgr4lHZPehB3/GFemVFwSGOpV86qmaFCt2Qjas4MWdCqS0kY/oOqc
-	 qzfu3V8QU97gHzU0T/C18dbXxW7RMYFDdabo/Q3Y=
+	b=cHt0+Bevk4SGXMR2gvMHonpKNibM6xGIx+2o5Bcx/a0xZsKUVYoPngjqTEl6zYLzE
+	 q3QaSjm9iBrmleoMsG7hPh3dzJ07PT5KeIg8P/AjJ8AL44mVMqalSNdRR8D1oQ4UA8
+	 laXdjHuUCvZlv3Gco8jRhAsuEE8791AnVcE4W2lE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 167/276] ACPI: debug: fix signedness issues in read/write helpers
-Date: Fri, 17 Oct 2025 16:54:20 +0200
-Message-ID: <20251017145148.569189971@linuxfoundation.org>
+	Duy Nguyen <duy.nguyen.rh@renesas.com>,
+	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 6.17 286/371] PCI: rcar-host: Drop PMSR spinlock
+Date: Fri, 17 Oct 2025 16:54:21 +0200
+Message-ID: <20251017145212.421674942@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-commit 496f9372eae14775e0524e83e952814691fe850a upstream.
+commit 0a8f173d9dad13930d5888505dc4c4fd6a1d4262 upstream.
 
-In the ACPI debugger interface, the helper functions for read and write
-operations use "int" as the length parameter data type. When a large
-"size_t count" is passed from the file operations, this cast to "int"
-results in truncation and a negative value due to signed integer
-representation.
+The pmsr_lock spinlock used to be necessary to synchronize access to the
+PMSR register, because that access could have been triggered from either
+config space access in rcar_pcie_config_access() or an exception handler
+rcar_pcie_aarch32_abort_handler().
 
-Logically, this negative number propagates to the min() calculation,
-where it is selected over the positive buffer space value, leading to
-unexpected behavior. Subsequently, when this negative value is used in
-copy_to_user() or copy_from_user(), it is interpreted as a large positive
-value due to the unsigned nature of the size parameter in these functions,
-causing the copy operations to attempt handling sizes far beyond the
-intended buffer limits.
+The rcar_pcie_aarch32_abort_handler() case is no longer applicable since
+commit 6e36203bc14c ("PCI: rcar: Use PCI_SET_ERROR_RESPONSE after read
+which triggered an exception"), which performs more accurate, controlled
+invocation of the exception, and a fixup.
 
-Address the issue by:
- - Changing the length parameters in acpi_aml_read_user() and
-   acpi_aml_write_user() from "int" to "size_t", aligning with the
-   expected unsigned size semantics.
- - Updating return types and local variables in acpi_aml_read() and
-   acpi_aml_write() to "ssize_t" for consistency with kernel file
-   operation conventions.
- - Using "size_t" for the "n" variable to ensure calculations remain
-   unsigned.
- - Using min_t() for circ_count_to_end() and circ_space_to_end() to
-   ensure type-safe comparisons and prevent integer overflow.
+This leaves rcar_pcie_config_access() as the only call site from which
+rcar_pcie_wakeup() is called. The rcar_pcie_config_access() can only be
+called from the controller struct pci_ops .read and .write callbacks,
+and those are serialized in drivers/pci/access.c using raw spinlock
+'pci_lock' . It should be noted that CONFIG_PCI_LOCKLESS_CONFIG is never
+set on this platform.
 
-Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
-Link: https://patch.msgid.link/20250923013113.20615-1-a.jahangirzad@gmail.com
-[ rjw: Changelog tweaks, local variable definitions ordering adjustments ]
-Fixes: 8cfb0cdf07e2 ("ACPI / debugger: Add IO interface to access debugger functionalities")
-Cc: 4.5+ <stable@vger.kernel.org> # 4.5+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Since the 'pci_lock' is a raw spinlock , and the 'pmsr_lock' is not a
+raw spinlock, this constellation triggers 'BUG: Invalid wait context'
+with CONFIG_PROVE_RAW_LOCK_NESTING=y .
+
+Remove the pmsr_lock to fix the locking.
+
+Fixes: a115b1bd3af0 ("PCI: rcar: Add L1 link state fix into data abort hook")
+Reported-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+Reported-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250909162707.13927-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_dbg.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/pci/controller/pcie-rcar-host.c |   13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
---- a/drivers/acpi/acpi_dbg.c
-+++ b/drivers/acpi/acpi_dbg.c
-@@ -569,11 +569,11 @@ static int acpi_aml_release(struct inode
- 	return 0;
+--- a/drivers/pci/controller/pcie-rcar-host.c
++++ b/drivers/pci/controller/pcie-rcar-host.c
+@@ -52,20 +52,13 @@ struct rcar_pcie_host {
+ 	int			(*phy_init_fn)(struct rcar_pcie_host *host);
+ };
+ 
+-static DEFINE_SPINLOCK(pmsr_lock);
+-
+ static int rcar_pcie_wakeup(struct device *pcie_dev, void __iomem *pcie_base)
+ {
+-	unsigned long flags;
+ 	u32 pmsr, val;
+ 	int ret = 0;
+ 
+-	spin_lock_irqsave(&pmsr_lock, flags);
+-
+-	if (!pcie_base || pm_runtime_suspended(pcie_dev)) {
+-		ret = -EINVAL;
+-		goto unlock_exit;
+-	}
++	if (!pcie_base || pm_runtime_suspended(pcie_dev))
++		return -EINVAL;
+ 
+ 	pmsr = readl(pcie_base + PMSR);
+ 
+@@ -87,8 +80,6 @@ static int rcar_pcie_wakeup(struct devic
+ 		writel(L1FAEG | PMEL1RX, pcie_base + PMSR);
+ 	}
+ 
+-unlock_exit:
+-	spin_unlock_irqrestore(&pmsr_lock, flags);
+ 	return ret;
  }
  
--static int acpi_aml_read_user(char __user *buf, int len)
-+static ssize_t acpi_aml_read_user(char __user *buf, size_t len)
- {
--	int ret;
- 	struct circ_buf *crc = &acpi_aml_io.out_crc;
--	int n;
-+	ssize_t ret;
-+	size_t n;
- 	char *p;
- 
- 	ret = acpi_aml_lock_read(crc, ACPI_AML_OUT_USER);
-@@ -582,7 +582,7 @@ static int acpi_aml_read_user(char __use
- 	/* sync head before removing logs */
- 	smp_rmb();
- 	p = &crc->buf[crc->tail];
--	n = min(len, circ_count_to_end(crc));
-+	n = min_t(size_t, len, circ_count_to_end(crc));
- 	if (copy_to_user(buf, p, n)) {
- 		ret = -EFAULT;
- 		goto out;
-@@ -599,8 +599,8 @@ out:
- static ssize_t acpi_aml_read(struct file *file, char __user *buf,
- 			     size_t count, loff_t *ppos)
- {
--	int ret = 0;
--	int size = 0;
-+	ssize_t ret = 0;
-+	ssize_t size = 0;
- 
- 	if (!count)
- 		return 0;
-@@ -639,11 +639,11 @@ again:
- 	return size > 0 ? size : ret;
- }
- 
--static int acpi_aml_write_user(const char __user *buf, int len)
-+static ssize_t acpi_aml_write_user(const char __user *buf, size_t len)
- {
--	int ret;
- 	struct circ_buf *crc = &acpi_aml_io.in_crc;
--	int n;
-+	ssize_t ret;
-+	size_t n;
- 	char *p;
- 
- 	ret = acpi_aml_lock_write(crc, ACPI_AML_IN_USER);
-@@ -652,7 +652,7 @@ static int acpi_aml_write_user(const cha
- 	/* sync tail before inserting cmds */
- 	smp_mb();
- 	p = &crc->buf[crc->head];
--	n = min(len, circ_space_to_end(crc));
-+	n = min_t(size_t, len, circ_space_to_end(crc));
- 	if (copy_from_user(p, buf, n)) {
- 		ret = -EFAULT;
- 		goto out;
-@@ -663,14 +663,14 @@ static int acpi_aml_write_user(const cha
- 	ret = n;
- out:
- 	acpi_aml_unlock_fifo(ACPI_AML_IN_USER, ret >= 0);
--	return n;
-+	return ret;
- }
- 
- static ssize_t acpi_aml_write(struct file *file, const char __user *buf,
- 			      size_t count, loff_t *ppos)
- {
--	int ret = 0;
--	int size = 0;
-+	ssize_t ret = 0;
-+	ssize_t size = 0;
- 
- 	if (!count)
- 		return 0;
 
 
 
