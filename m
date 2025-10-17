@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-186539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD3CBE97ED
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:08:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35555BE95D9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C440E1880512
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5EC640493F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0983632C94A;
-	Fri, 17 Oct 2025 15:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C0022D4F6;
+	Fri, 17 Oct 2025 14:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lt+/8jQ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7DviAir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE1932E151;
-	Fri, 17 Oct 2025 15:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C88B3370EE;
+	Fri, 17 Oct 2025 14:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713528; cv=none; b=WyYuS1lNWE731qejTgchmth54rGe3ptb68oTLu4JrqmhM4dAIfZmFhStTskee6HjHsjsSAJ60Pt2iCcoutN27j9ro4SQjoUiNYDgLHcfO19/xxWCgHBvFitKAElzesER8lq1l13n1ReNM6OwiU3mQSXUa8G7oQQUOGkmLHcQZjg=
+	t=1760712991; cv=none; b=IEQpcKwboEi+ptOtHb0LG3YrpW+pKtXJ6Gd9YpBuxN32rIwDOgsal1G/WnXQykYV5PxsqUFXSoN7GMLQaQ5v7guM/lJzM72l1DQQjQzBpskclagRqlOD3heKJNUsyARwhPras8Enz6kVzUcGV2/2UkX4pggCDRw4xqvxgeVix5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713528; c=relaxed/simple;
-	bh=DRNRSHc4iBCHGmq+dMOu8qvIuH0mm7jNIPtwbA0XPHY=;
+	s=arc-20240116; t=1760712991; c=relaxed/simple;
+	bh=8GHkwGehUtouf9lr/gRi6dbaF60iuRIXUitRfueV2Ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m241/oaf93IeYqJNMzN5266iHPIc0vRH693NEslVhF4k8anCHf6OP35Ld51efM5djTLdF3PNOQ1LfeIBA1lnFgiyUbN0r89kYS5V3AtMSiTgSDpPNnmZSs1ecSkOKPLSiHY7NtcFFRnA7mHafFG2NMfuhUHtyncEtBcCSKHm2Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lt+/8jQ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D7EC4CEE7;
-	Fri, 17 Oct 2025 15:05:28 +0000 (UTC)
+	 MIME-Version; b=jGpNIZK1tvQytfomRrdIqNAgfrXdLJlrWjsnYA9cRkuosuuvo0b1glpVZ5U1Hh0eNzUNNZhYkInRhXsuRdOfhGxTuQ4hEQT3pPd3TmSq3QatncJN0VmPjXpsb/XUNnui6SAcGdxcRLU5YHG00Fu5ucrv4jWAfU4ebpeORKS8FUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7DviAir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C375C4CEE7;
+	Fri, 17 Oct 2025 14:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713528;
-	bh=DRNRSHc4iBCHGmq+dMOu8qvIuH0mm7jNIPtwbA0XPHY=;
+	s=korg; t=1760712990;
+	bh=8GHkwGehUtouf9lr/gRi6dbaF60iuRIXUitRfueV2Ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lt+/8jQ8CQ2EJFVCRgQfoYcVLRsTxCHLH9xQ5tshiWVBjbeUpxlxxubDZppKRKws+
-	 lnnAE2Zp4bw7OaD86xyPCgDUd5W03P4XqW5UZsaMvCahiPEgx35CyZrEDaPi3mC0OK
-	 LX6xDvaXPRGSrW3rJtIp5jjeQfCDzsD+SlwrddZU=
+	b=P7DviAirxMxQ/QrLagDiorKqYUM+tDxJobVe62mYh3onGF575Za/6UWCbr1AV0OoJ
+	 tiLBydRflE0yRE9LUBtLjlAt85spx3q8bXxgHZbpG/8fy8PHi91MxzLcexOSWIzbuh
+	 62B5QmhXZGCKN6SfXjD5Gd+64A72YsLW4UqdQnWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/201] ASoC: SOF: ipc4-topology: Correct the minimum host DMA buffer size
+Subject: [PATCH 6.1 010/168] rtc: x1205: Fix Xicor X1205 vendor prefix
 Date: Fri, 17 Oct 2025 16:51:29 +0200
-Message-ID: <20251017145135.778888014@linuxfoundation.org>
+Message-ID: <20251017145129.393436810@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit a7fe5ff832d61d9393095bc3dd5f06f4af7da3c1 ]
+[ Upstream commit 606d19ee37de3a72f1b6e95a4ea544f6f20dbb46 ]
 
-The firmware has changed the minimum host buffer size from 2 periods to
-4 periods (1 period is 1ms) which was missed by the kernel side.
+The vendor for the X1205 RTC is not Xircom, but Xicor which was acquired
+by Intersil. Since the I2C subsystem drops the vendor prefix for driver
+matching, the vendor prefix hasn't mattered.
 
-Adjust the SOF_IPC4_MIN_DMA_BUFFER_SIZE to 4 ms to align with firmware.
-
-Link: https://github.com/thesofproject/sof/commit/f0a14a3f410735db18a79eb7a5f40dc49fdee7a7
-Fixes: 594c1bb9ff73 ("ASoC: SOF: ipc4-topology: Do not parse the DMA_BUFFER_SIZE token")
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20251002135752.2430-2-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 6875404fdb44 ("rtc: x1205: Add DT probing support")
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250821215703.869628-2-robh@kernel.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc4-topology.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-x1205.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/ipc4-topology.h b/sound/soc/sof/ipc4-topology.h
-index 0fb759c6eeaf9..07bd84204baa7 100644
---- a/sound/soc/sof/ipc4-topology.h
-+++ b/sound/soc/sof/ipc4-topology.h
-@@ -59,8 +59,8 @@
+diff --git a/drivers/rtc/rtc-x1205.c b/drivers/rtc/rtc-x1205.c
+index f587afa843573..6ae7b6f1f3167 100644
+--- a/drivers/rtc/rtc-x1205.c
++++ b/drivers/rtc/rtc-x1205.c
+@@ -669,7 +669,7 @@ static const struct i2c_device_id x1205_id[] = {
+ MODULE_DEVICE_TABLE(i2c, x1205_id);
  
- #define SOF_IPC4_INVALID_NODE_ID	0xffffffff
- 
--/* FW requires minimum 2ms DMA buffer size */
--#define SOF_IPC4_MIN_DMA_BUFFER_SIZE	2
-+/* FW requires minimum 4ms DMA buffer size */
-+#define SOF_IPC4_MIN_DMA_BUFFER_SIZE	4
- 
- /*
-  * The base of multi-gateways. Multi-gateways addressing starts from
+ static const struct of_device_id x1205_dt_ids[] = {
+-	{ .compatible = "xircom,x1205", },
++	{ .compatible = "xicor,x1205", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, x1205_dt_ids);
 -- 
 2.51.0
 
