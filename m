@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-187152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D9DBEA64E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3319ABE9AAC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81CF0940B76
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 203583AFD0A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18DE3328EF;
-	Fri, 17 Oct 2025 15:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3A7335097;
+	Fri, 17 Oct 2025 15:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tId/1dRK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4miB3w6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAD232C93E;
-	Fri, 17 Oct 2025 15:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D905335092;
+	Fri, 17 Oct 2025 15:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715261; cv=none; b=bbRsrDku8a+gJhzlS037EZHG+r7BAzKX6nI5pjr6oynOy+c1UNKPpvVittvUhE11KBIJPHOJPos6wJ3fOT3LzK87qeqYaaWYRvyqm60DZVBbnCpSPOSDeVStDypV1KKE1vLozBs/QLdDRdT7rRMH98VnCTHcE62J+mjH/bSSyw4=
+	t=1760713568; cv=none; b=PQp8CPDWa2MxIBXfsQWpLmOY9qrIv1O2ZJqmUhDn0oQZsOmn1l2Z4cSuH3kvp5zQ8oU03T/3TMK0Ra5MK8ghycoijGMKkXja9VyyhI5LzQbnXghMHAAXU4JDCIyvrQWLjM0frK6pXFRUbu+60Z0iSkKlF7cq8q5JyMFaY5afNvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715261; c=relaxed/simple;
-	bh=vyg+jOriZ6ashjFAkExDWCqMJKboJZqZ7t/hzCqe02Q=;
+	s=arc-20240116; t=1760713568; c=relaxed/simple;
+	bh=/NIMGXhwKXG8KO8Ia6nMbUyf7Fg9KzBX7OKshaOWILs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdlGSNHrcGLl+ZKTwMjtPV1hRJgftTjwkQJUBbucv8uqf5PCXMhvnbKKSFMp2r8NRuAH4OZtOIsWUeqs7S1fBZxAuCVVo6R1eJNd1BKhQXMRTdV3+YBCt/cFAwjsqHAzeokValVVV17QnuPcIFSUxF968g3LfqCb0HDj5fcGEuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tId/1dRK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22547C113D0;
-	Fri, 17 Oct 2025 15:34:20 +0000 (UTC)
+	 MIME-Version; b=OZejQtd3AUUxvlCQWaoHPCSRyFyssyvo+UfWrWFWnvPfD9hE1NYvh2zTRVv08Ywb3mQxE2Pl0uuV6v8k/DFP95HNUZoIoQxh9ZxaqlI6NIcJnaLGOVF5lJudJOZPDjjMet4hffCbCWn4sF3E+vmL00ukD0dvw1QUwSyVMg6yaF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4miB3w6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF65C4CEE7;
+	Fri, 17 Oct 2025 15:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715261;
-	bh=vyg+jOriZ6ashjFAkExDWCqMJKboJZqZ7t/hzCqe02Q=;
+	s=korg; t=1760713568;
+	bh=/NIMGXhwKXG8KO8Ia6nMbUyf7Fg9KzBX7OKshaOWILs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tId/1dRKcTtojzmZgwGv7s+TInE83d9LV+3sgk7cVRGxGKjOp7iLLdkTIpYXJupPx
-	 c09gZKNTI46ceFMGNoz3BaiUPuV3v5N85yq8HiYzi2SsPtiO/avcp+ma26uNN+b6lq
-	 2q3a1KtENNCknlijuAiNmawLcNNnuiKGtrPREuUA=
+	b=Q4miB3w6mUOLRx9JJ+epeWBkzPfv/XHJmCEG7QqdtwkSM0VeV5twlbXuTyg27hfWJ
+	 cP2EkbaBepBROOkcczFjXdVE3Bu8k2dKe0+g0joNPeDy+dGnCwUv5+4tVqJffmM3Q4
+	 R8sibAacg0GKY9tlx91xeCcKO34+ueIIOaJTI4kM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
-	Justinien Bouron <jbouron@amazon.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 127/371] tpm_tis: Fix incorrect arguments in tpm_tis_probe_irq_single
+Subject: [PATCH 6.6 041/201] tcp: take care of zero tp->window_clamp in tcp_set_rcvlowat()
 Date: Fri, 17 Oct 2025 16:51:42 +0200
-Message-ID: <20251017145206.527712096@linuxfoundation.org>
+Message-ID: <20251017145136.255774022@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gunnar Kudrjavets <gunnarku@amazon.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8a81236f2cb0882c7ea6c621ce357f7f3f601fe5 ]
+[ Upstream commit 21b29e74ffe5a6c851c235bb80bf5ee26292c67b ]
 
-The tpm_tis_write8() call specifies arguments in wrong order. Should be
-(data, addr, value) not (data, value, addr). The initial correct order
-was changed during the major refactoring when the code was split.
+Some applications (like selftests/net/tcp_mmap.c) call SO_RCVLOWAT
+on their listener, before accept().
 
-Fixes: 41a5e1cf1fe1 ("tpm/tpm_tis: Split tpm_tis driver into a core and TCG TIS compliant phy")
-Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Reviewed-by: Justinien Bouron <jbouron@amazon.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+This has an unfortunate effect on wscale selection in
+tcp_select_initial_window() during 3WHS.
+
+For instance, tcp_mmap was negotiating wscale 4, regardless
+of tcp_rmem[2] and sysctl_rmem_max.
+
+Do not change tp->window_clamp if it is zero
+or bigger than our computed value.
+
+Zero value is special, it allows tcp_select_initial_window()
+to enable autotuning.
+
+Note that SO_RCVLOWAT use on listener is probably not wise,
+because tp->scaling_ratio has a default value, possibly wrong.
+
+Fixes: d1361840f8c5 ("tcp: fix SO_RCVLOWAT and RCVBUF autotuning")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Link: https://patch.msgid.link/20251003184119.2526655-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 4b12c4b9da8be..8954a8660ffc5 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -978,8 +978,8 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 	 * will call disable_irq which undoes all of the above.
- 	 */
- 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
--		tpm_tis_write8(priv, original_int_vec,
--			       TPM_INT_VECTOR(priv->locality));
-+		tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality),
-+			       original_int_vec);
- 		rc = -1;
- 	}
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 7d824578f217a..5dde0aed31440 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1724,6 +1724,7 @@ EXPORT_SYMBOL(tcp_peek_len);
+ /* Make sure sk_rcvbuf is big enough to satisfy SO_RCVLOWAT hint */
+ int tcp_set_rcvlowat(struct sock *sk, int val)
+ {
++	struct tcp_sock *tp = tcp_sk(sk);
+ 	int space, cap;
  
+ 	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK)
+@@ -1742,7 +1743,9 @@ int tcp_set_rcvlowat(struct sock *sk, int val)
+ 	space = tcp_space_from_win(sk, val);
+ 	if (space > sk->sk_rcvbuf) {
+ 		WRITE_ONCE(sk->sk_rcvbuf, space);
+-		WRITE_ONCE(tcp_sk(sk)->window_clamp, val);
++
++		if (tp->window_clamp && tp->window_clamp < val)
++			WRITE_ONCE(tp->window_clamp, val);
+ 	}
+ 	return 0;
+ }
 -- 
 2.51.0
 
