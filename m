@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557F0BE9993
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:28 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 089A7BE9FA2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA512622567
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A193C5829B0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D9632C944;
-	Fri, 17 Oct 2025 15:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C283B2F690F;
+	Fri, 17 Oct 2025 15:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHP9N9d7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSSf78Uc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9311D2F12CF;
-	Fri, 17 Oct 2025 15:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807D32F12D0;
+	Fri, 17 Oct 2025 15:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713650; cv=none; b=ELZl5h/dF3uQ6qiRV59lVYlT/Qyj6wEMT1uzW3kLIcnpGeabADg4ZqVDHohnIAfObvKEPQtqlwtIHz6o4QWqXsL3Xycm3XPba7wfijswpJURhu3v9j0NjeBUrOAG4jKE1zZmC23VD7+e+lAHXXcD/4vUrsxIkrcq9IAt0ckyuUg=
+	t=1760714384; cv=none; b=LwLyFrlhqtd3/0f5krE3ddVlTc6ERPIilgmGnHk8lzubWfYFnHelnL/P2l1QdmJ+cMq8nzKGILVGaifhMsRGsOWT8ngfRgeXvJFeAuUvZ/ZkEkro0dZaslCDH/5TJklFcgDuUItzXkwnr74tVPvxoUJCAFBTZRqo9k5aa85y6Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713650; c=relaxed/simple;
-	bh=aoUIbxMLVO8vYgv9TlhT5UAy9HkDh3oC4NLL6er0hxM=;
+	s=arc-20240116; t=1760714384; c=relaxed/simple;
+	bh=K74L/tsCExi+efd/7e42CmQu4g3mWwH/lk08+Qc36WE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlB80caU1dJlvaCB5KW6dH0v+r3uF7cgORDkeOij0BfhP+vXwlh1PcvwHbnHhr3mLmpNbu1oxmMB/1qu1UJFc7eyO5H77Bn+sSyzLNgsTnT2GYd3xNZpDRKxXXOGklDYx3TsTgKjLQeu6/s14VW1rV4V/oNrQx3u82FjDcn0caU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHP9N9d7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17827C4CEE7;
-	Fri, 17 Oct 2025 15:07:29 +0000 (UTC)
+	 MIME-Version; b=tk9sRncPV1HNVGwwUpsKMVx3rIO3ZnJKx6G54ixZomg2F6pCf3s8MIvZCGvf0LAd6hzw8bi+AzYHFTqqTvK2R+sOuhveHokI8RfjXHYN1fhduWOp6iNcXeZRnb/wcZIJCVxcc//FPWd/8efQMNtO7aHwcIRU5hOEovZbIAKT73g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSSf78Uc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064E9C4CEE7;
+	Fri, 17 Oct 2025 15:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713650;
-	bh=aoUIbxMLVO8vYgv9TlhT5UAy9HkDh3oC4NLL6er0hxM=;
+	s=korg; t=1760714384;
+	bh=K74L/tsCExi+efd/7e42CmQu4g3mWwH/lk08+Qc36WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PHP9N9d7LEzaYRDYHrRJ1vPjx6z0QTuMFjUYvll0Fsx9w+BF9jY/94HP50DXVavfQ
-	 OWkPwz24qgt0t74Uni/TAYF0G1AN555etrZxQH5vyyPu3VvGVWac2BihrbBRwBq8io
-	 UhXySXZZ+GWjUR2g1NoAK/5CYeJCDrztgCbY1pC8=
+	b=YSSf78Uc4GT4MwbiJy2JL3RnpECVXn/OlEUNV91WoVuOBZAvhneN8SK8+UFaOaDy3
+	 MbdgVpA9eAdciJE7xa+nDRIaRvSD8mTPXSAQ+NREEIQDnHQuFu8XEKmBxBJA+SyQZd
+	 hzKCYkkuIHKCF5oXV7wVLBL4B5XTWfWCebr8GV1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlo Caione <ccaione@baylibre.com>,
-	Johan Hovold <johan@kernel.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.6 071/201] firmware: meson_sm: fix device leak at probe
-Date: Fri, 17 Oct 2025 16:52:12 +0200
-Message-ID: <20251017145137.363160886@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Zihuan Zhang <zhangzihuan@kylinos.cn>
+Subject: [PATCH 6.12 126/277] cpufreq: intel_pstate: Fix object lifecycle issue in update_qos_request()
+Date: Fri, 17 Oct 2025 16:52:13 +0200
+Message-ID: <20251017145151.727808267@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 8ece3173f87df03935906d0c612c2aeda9db92ca upstream.
+commit 69e5d50fcf4093fb3f9f41c4f931f12c2ca8c467 upstream.
 
-Make sure to drop the reference to the secure monitor device taken by
-of_find_device_by_node() when looking up its driver data on behalf of
-other drivers (e.g. during probe).
+The cpufreq_cpu_put() call in update_qos_request() takes place too early
+because the latter subsequently calls freq_qos_update_request() that
+indirectly accesses the policy object in question through the QoS request
+object passed to it.
 
-Note that holding a reference to the platform device does not prevent
-its driver data from going away so there is no point in keeping the
-reference after the helper returns.
+Fortunately, update_qos_request() is called under intel_pstate_driver_lock,
+so this issue does not matter for changing the intel_pstate operation
+mode, but it theoretically can cause a crash to occur on CPU device hot
+removal (which currently can only happen in virt, but it is formally
+supported nevertheless).
 
-Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
-Cc: stable@vger.kernel.org	# 5.5
-Cc: Carlo Caione <ccaione@baylibre.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250725074019.8765-1-johan@kernel.org
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Address this issue by modifying update_qos_request() to drop the
+reference to the policy later.
+
+Fixes: da5c504c7aae ("cpufreq: intel_pstate: Implement QoS supported freq constraints")
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Link: https://patch.msgid.link/2255671.irdbgypaU6@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/meson/meson_sm.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/cpufreq/intel_pstate.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/firmware/meson/meson_sm.c
-+++ b/drivers/firmware/meson/meson_sm.c
-@@ -225,11 +225,16 @@ EXPORT_SYMBOL(meson_sm_call_write);
- struct meson_sm_firmware *meson_sm_get(struct device_node *sm_node)
- {
- 	struct platform_device *pdev = of_find_device_by_node(sm_node);
-+	struct meson_sm_firmware *fw;
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -1582,10 +1582,10 @@ static void update_qos_request(enum freq
+ 			continue;
  
- 	if (!pdev)
- 		return NULL;
+ 		req = policy->driver_data;
+-		cpufreq_cpu_put(policy);
+-
+-		if (!req)
++		if (!req) {
++			cpufreq_cpu_put(policy);
+ 			continue;
++		}
  
--	return platform_get_drvdata(pdev);
-+	fw = platform_get_drvdata(pdev);
+ 		if (hwp_active)
+ 			intel_pstate_get_hwp_cap(cpu);
+@@ -1601,6 +1601,8 @@ static void update_qos_request(enum freq
+ 
+ 		if (freq_qos_update_request(req, freq) < 0)
+ 			pr_warn("Failed to update freq constraint: CPU%d\n", i);
 +
-+	put_device(&pdev->dev);
-+
-+	return fw;
++		cpufreq_cpu_put(policy);
+ 	}
  }
- EXPORT_SYMBOL_GPL(meson_sm_get);
  
 
 
