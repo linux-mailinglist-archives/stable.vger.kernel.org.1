@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-187634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A866CBEA66F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37072BEA678
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9FC01893B92
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28D10188769C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893CA1A9FB7;
-	Fri, 17 Oct 2025 15:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFAA21C9EA;
+	Fri, 17 Oct 2025 15:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0Lwk9ZJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+GnDgFt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455FF330B1F;
-	Fri, 17 Oct 2025 15:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A73330B1F;
+	Fri, 17 Oct 2025 15:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716638; cv=none; b=QAf5u8j5UXW64+RUvYnVJKNmlzacFkXP7TkC5y9zF7R3FNLLxtXXLOSYm1k3Lym8NpmODbE/imcI8gNIP4fEdbNGDp1ETkM9d1CUlAnKD2RNe8mEZ+4M3sKvUUMRvEPuf/aIsHotj5957EaDO7ZfU3SGmDkY5hjMPyzSIphEpvU=
+	t=1760716652; cv=none; b=ijstlaDGGx6iMGiA7E2x6+PvueRsFcOErVpdxQj6OWFD2It32Ttvtor4fDXxQhNWzuwIAcgGLas+gSkbfe1cZXDOSXPR3y151td0MslmbRkgKSFCoh5YWxK6Z47I7byOWgTNwqS4vuEt7GVZ548CVr3T+P0ln/8TaKchO94x7uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716638; c=relaxed/simple;
-	bh=chYDtbYQrCFwWVwdTxRpNYfkOth8G1nsRUhBJt67QCw=;
+	s=arc-20240116; t=1760716652; c=relaxed/simple;
+	bh=tmJYkGOGGK8lAO7YpGXW1HK0eSpFAOoXsDLF3TwGqTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qm+SgCMSPt6Xam7/ThXe6MS4JtfwEyA/s6oHeZNGxpN/UIy1BkJMC8xgdIJYxf2wvVkSbEkGjbcRXu7nnDyv7f/8zpAwdkV5EMZbNuf8hTCqwEyDx+V38v1QSjEGyiAcN2U1cN496bE1kkv41rqq4AZ1bS/5H7evOKq/giRoZP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w0Lwk9ZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01C3C4CEE7;
-	Fri, 17 Oct 2025 15:57:17 +0000 (UTC)
+	 MIME-Version; b=esvB5CGV4ivO6Qhc7EH3A/gk99DzjcTJrB1fEdE0umghCRKuC6OmEDHB2C3UyKJtXtuViTYvTtnsDG3kR875Dge5WyB0d4reDERpdOZ3U+xbC7cQ+Rqil41ELgnGiN7L2dMRucyslEyl1pKSVPUrIbxUmKwdvr/mHdZ/zOkK7LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+GnDgFt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC9FC4CEE7;
+	Fri, 17 Oct 2025 15:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716638;
-	bh=chYDtbYQrCFwWVwdTxRpNYfkOth8G1nsRUhBJt67QCw=;
+	s=korg; t=1760716652;
+	bh=tmJYkGOGGK8lAO7YpGXW1HK0eSpFAOoXsDLF3TwGqTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w0Lwk9ZJOs6rW/hEuXhGWOofUlJhGxatAMVEpFJ+TGUUDy91HVMXO51AyveNSGJCA
-	 rid/F08vj33oeEgpN9dJahNOm+PJ1V004xt3jEVpwGLO+bfGBUuQHsvf87yKGJRWsC
-	 CsOG7bIICBLCaYPschjyzFUWRKytal6JD1PN4Lws=
+	b=G+GnDgFtzh0coWYVtlosAzXu99h9PdVqWMhbLeoNW3PRcEMgTuxhRghMREBg7AMu8
+	 727AzwlzqBIbyyYGLr05hYzVK4dDeotQsN/hubvFQwSBa08FFulDqWiVzpnw/7C4Cd
+	 toFN9P5GNee6A1lQAJxxgD0x9G47TrEhs5r4zZ4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Tejun Heo <tj@kernel.org>,
+	Jan Kara <jack@suse.cz>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 260/276] minixfs: Verify inode mode when loading from disk
-Date: Fri, 17 Oct 2025 16:55:53 +0200
-Message-ID: <20251017145151.978675212@linuxfoundation.org>
+Subject: [PATCH 5.15 265/276] writeback: Avoid softlockup when switching many inodes
+Date: Fri, 17 Oct 2025 16:55:58 +0200
+Message-ID: <20251017145152.158660488@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -67,44 +67,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 73861970938ad1323eb02bbbc87f6fbd1e5bacca ]
+[ Upstream commit 66c14dccd810d42ec5c73bb8a9177489dfd62278 ]
 
-The inode mode loaded from corrupted disk can be invalid. Do like what
-commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
-does.
+process_inode_switch_wbs_work() can be switching over 100 inodes to a
+different cgroup. Since switching an inode requires counting all dirty &
+under-writeback pages in the address space of each inode, this can take
+a significant amount of time. Add a possibility to reschedule after
+processing each inode to avoid softlockups.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/ec982681-84b8-4624-94fa-8af15b77cbd2@I-love.SAKURA.ne.jp
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/minix/inode.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/fs-writeback.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/fs/minix/inode.c b/fs/minix/inode.c
-index d4bd94234ef73..807ae40b64b06 100644
---- a/fs/minix/inode.c
-+++ b/fs/minix/inode.c
-@@ -470,8 +470,14 @@ void minix_set_inode(struct inode *inode, dev_t rdev)
- 		inode->i_op = &minix_symlink_inode_operations;
- 		inode_nohighmem(inode);
- 		inode->i_mapping->a_ops = &minix_aops;
--	} else
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		init_special_inode(inode, inode->i_mode, rdev);
-+	} else {
-+		printk(KERN_DEBUG "MINIX-fs: Invalid file type 0%04o for inode %lu.\n",
-+		       inode->i_mode, inode->i_ino);
-+		make_bad_inode(inode);
-+	}
- }
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index cb3f1790a296e..3b002ac407434 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -475,6 +475,7 @@ static void inode_switch_wbs_work_fn(struct work_struct *work)
+ 	 */
+ 	down_read(&bdi->wb_switch_rwsem);
  
- /*
++	inodep = isw->inodes;
+ 	/*
+ 	 * By the time control reaches here, RCU grace period has passed
+ 	 * since I_WB_SWITCH assertion and all wb stat update transactions
+@@ -485,6 +486,7 @@ static void inode_switch_wbs_work_fn(struct work_struct *work)
+ 	 * gives us exclusion against all wb related operations on @inode
+ 	 * including IO list manipulations and stat updates.
+ 	 */
++relock:
+ 	if (old_wb < new_wb) {
+ 		spin_lock(&old_wb->list_lock);
+ 		spin_lock_nested(&new_wb->list_lock, SINGLE_DEPTH_NESTING);
+@@ -493,10 +495,17 @@ static void inode_switch_wbs_work_fn(struct work_struct *work)
+ 		spin_lock_nested(&old_wb->list_lock, SINGLE_DEPTH_NESTING);
+ 	}
+ 
+-	for (inodep = isw->inodes; *inodep; inodep++) {
++	while (*inodep) {
+ 		WARN_ON_ONCE((*inodep)->i_wb != old_wb);
+ 		if (inode_do_switch_wbs(*inodep, old_wb, new_wb))
+ 			nr_switched++;
++		inodep++;
++		if (*inodep && need_resched()) {
++			spin_unlock(&new_wb->list_lock);
++			spin_unlock(&old_wb->list_lock);
++			cond_resched();
++			goto relock;
++		}
+ 	}
+ 
+ 	spin_unlock(&new_wb->list_lock);
 -- 
 2.51.0
 
