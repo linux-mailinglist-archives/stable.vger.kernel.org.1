@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-187253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C628BEA3A7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:01 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47DFABE9C60
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F500582D3A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9D00135E12F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB461330B1F;
-	Fri, 17 Oct 2025 15:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7E31D5CE0;
+	Fri, 17 Oct 2025 15:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJEhaIVd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dF6nBZ7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8528330B08;
-	Fri, 17 Oct 2025 15:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE942F12BA;
+	Fri, 17 Oct 2025 15:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715550; cv=none; b=gEqOigQdQ6SKGZXX6l+AxqO5MiaR6ye9rBqW1FgRMgj3pYhMJ0yKQ1taoVc2732iw/GGSjjI6YqlpyivP2K75c5Rj/8Hmcew59/0SWqVvi3RhUHs9BH0ipCruFiiqdT0/0cOBOv2PEppZNtlgHi6IkHs4TnvnZS7tU92NDDitu0=
+	t=1760714661; cv=none; b=mjuoBdQtqxDzjUj7oH/FOe8iQr3eGlI6St4asuauN6fxx7iR3WQiHo1j0HWX2WEePw61u02iqmPYbQCcwerMp3+9fHxdDewE/b0PXjKrBi5gw7u5jhT5Szer7n7/OeSqNmRojQ91omx41rX+aYLsF6/aX4J0KLICt4P0PxPTrMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715550; c=relaxed/simple;
-	bh=89SgChmy7vN+/msLHJ90G+XgfyPa71jUndCb7EajY7w=;
+	s=arc-20240116; t=1760714661; c=relaxed/simple;
+	bh=8mhqw500W8xTzndSLjdXE5UZD5MndbMNsf47AeVTcBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGbG3OMqaHlmy11/SDUIXg2aG2Hh/v6vW2sGgPpsIDar51UQZXBey0FNmPuucgzJeaVXzjBAGRoTgSI647z02CbERnH6hjNjmeTOG+FApraI8PZBjxzTjEp9ZWaQtKow75ZnSbeFnoWIn2bmdStx7YBxvr2BZQ5bjlfLqZ/cxys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJEhaIVd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F70C4CEE7;
-	Fri, 17 Oct 2025 15:39:10 +0000 (UTC)
+	 MIME-Version; b=hU4LdlmNjydMHPyDcaJ5AMaFw9OzKD72fn9eg+F4RbeUFaQfmU9onMguZqvnQYJolDQyZsW5QkvjscPeOqJMRSUu5loSdan8z2TjwAdwQj3vei9Y3RpJv5lHdU1ndGY7wltA42q7XhW63lcVd61KSK1PmiOuTr4dn7lj+lOhwnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dF6nBZ7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F58C4CEFE;
+	Fri, 17 Oct 2025 15:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715550;
-	bh=89SgChmy7vN+/msLHJ90G+XgfyPa71jUndCb7EajY7w=;
+	s=korg; t=1760714660;
+	bh=8mhqw500W8xTzndSLjdXE5UZD5MndbMNsf47AeVTcBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJEhaIVddZDOr24Vi9bDtqopkxgTufoe+8gMuQc87Aziw8yULrJGJ5pHE5dX58IUC
-	 1PshWlqx/vdScn8vBDb1qLgeRLkMVUfULBTMsRqyz7BNRA4eE3JkhFJDQRUPBWSWY4
-	 B5iQ4pjjwZI2seY07/foQ6HrJSOA/bN5VqKBtvNE=
+	b=dF6nBZ7S6V6Etqbsxd++ft28wbyx+dEChnQujWWPyklXZfXOYRzyRtBNxJl0L2/pC
+	 mXxoCZpkAGsa+TlJYbhCvk1rWHtUvIGhi8wYz6+QBz9IFQhpcU5vEavg12FkubZPIB
+	 gH1npXtEOydWzLSf20CYutkVgdtuYdLUYhqGLMyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Agarwal <harshit@nutanix.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>
-Subject: [PATCH 6.17 255/371] sched/deadline: Fix race in push_dl_task()
+	Lance Yang <lance.yang@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Gabriel Krisman Bertazi <krisman@collabora.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 223/277] selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled
 Date: Fri, 17 Oct 2025 16:53:50 +0200
-Message-ID: <20251017145211.308907504@linuxfoundation.org>
+Message-ID: <20251017145155.269342912@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,143 +65,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Agarwal <harshit@nutanix.com>
+From: Lance Yang <lance.yang@linux.dev>
 
-commit 8fd5485fb4f3d9da3977fd783fcb8e5452463420 upstream.
+commit 0389c305ef56cbadca4cbef44affc0ec3213ed30 upstream.
 
-When a CPU chooses to call push_dl_task and picks a task to push to
-another CPU's runqueue then it will call find_lock_later_rq method
-which would take a double lock on both CPUs' runqueues. If one of the
-locks aren't readily available, it may lead to dropping the current
-runqueue lock and reacquiring both the locks at once. During this window
-it is possible that the task is already migrated and is running on some
-other CPU. These cases are already handled. However, if the task is
-migrated and has already been executed and another CPU is now trying to
-wake it up (ttwu) such that it is queued again on the runqeue
-(on_rq is 1) and also if the task was run by the same CPU, then the
-current checks will pass even though the task was migrated out and is no
-longer in the pushable tasks list.
-Please go through the original rt change for more details on the issue.
+The madv_populate and soft-dirty kselftests currently fail on systems
+where CONFIG_MEM_SOFT_DIRTY is disabled.
 
-To fix this, after the lock is obtained inside the find_lock_later_rq,
-it ensures that the task is still at the head of pushable tasks list.
-Also removed some checks that are no longer needed with the addition of
-this new check.
-However, the new check of pushable tasks list only applies when
-find_lock_later_rq is called by push_dl_task. For the other caller i.e.
-dl_task_offline_migration, existing checks are used.
+Introduce a new helper softdirty_supported() into vm_util.c/h to ensure
+tests are properly skipped when the feature is not enabled.
 
-Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250408045021.3283624-1-harshit@nutanix.com
+Link: https://lkml.kernel.org/r/20250917133137.62802-1-lance.yang@linux.dev
+Fixes: 9f3265db6ae8 ("selftests: vm: add test for Soft-Dirty PTE bit")
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Gabriel Krisman Bertazi <krisman@collabora.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/deadline.c |   73 ++++++++++++++++++++++++++++++++----------------
- 1 file changed, 49 insertions(+), 24 deletions(-)
+ tools/testing/selftests/mm/madv_populate.c |   21 -------
+ tools/testing/selftests/mm/soft-dirty.c    |    5 +
+ tools/testing/selftests/mm/vm_util.c       |   77 +++++++++++++++++++++++++++++
+ tools/testing/selftests/mm/vm_util.h       |    1 
+ 4 files changed, 84 insertions(+), 20 deletions(-)
 
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2551,6 +2551,25 @@ static int find_later_rq(struct task_str
- 	return -1;
+--- a/tools/testing/selftests/mm/madv_populate.c
++++ b/tools/testing/selftests/mm/madv_populate.c
+@@ -264,23 +264,6 @@ static void test_softdirty(void)
+ 	munmap(addr, SIZE);
  }
  
-+static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
-+{
-+	struct task_struct *p;
-+
-+	if (!has_pushable_dl_tasks(rq))
-+		return NULL;
-+
-+	p = __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
-+
-+	WARN_ON_ONCE(rq->cpu != task_cpu(p));
-+	WARN_ON_ONCE(task_current(rq, p));
-+	WARN_ON_ONCE(p->nr_cpus_allowed <= 1);
-+
-+	WARN_ON_ONCE(!task_on_rq_queued(p));
-+	WARN_ON_ONCE(!dl_task(p));
-+
-+	return p;
-+}
-+
- /* Locks the rq it finds */
- static struct rq *find_lock_later_rq(struct task_struct *task, struct rq *rq)
- {
-@@ -2578,12 +2597,37 @@ static struct rq *find_lock_later_rq(str
- 
- 		/* Retry if something changed. */
- 		if (double_lock_balance(rq, later_rq)) {
--			if (unlikely(task_rq(task) != rq ||
-+			/*
-+			 * double_lock_balance had to release rq->lock, in the
-+			 * meantime, task may no longer be fit to be migrated.
-+			 * Check the following to ensure that the task is
-+			 * still suitable for migration:
-+			 * 1. It is possible the task was scheduled,
-+			 *    migrate_disabled was set and then got preempted,
-+			 *    so we must check the task migration disable
-+			 *    flag.
-+			 * 2. The CPU picked is in the task's affinity.
-+			 * 3. For throttled task (dl_task_offline_migration),
-+			 *    check the following:
-+			 *    - the task is not on the rq anymore (it was
-+			 *      migrated)
-+			 *    - the task is not on CPU anymore
-+			 *    - the task is still a dl task
-+			 *    - the task is not queued on the rq anymore
-+			 * 4. For the non-throttled task (push_dl_task), the
-+			 *    check to ensure that this task is still at the
-+			 *    head of the pushable tasks list is enough.
-+			 */
-+			if (unlikely(is_migration_disabled(task) ||
- 				     !cpumask_test_cpu(later_rq->cpu, &task->cpus_mask) ||
--				     task_on_cpu(rq, task) ||
--				     !dl_task(task) ||
--				     is_migration_disabled(task) ||
--				     !task_on_rq_queued(task))) {
-+				     (task->dl.dl_throttled &&
-+				      (task_rq(task) != rq ||
-+				       task_on_cpu(rq, task) ||
-+				       !dl_task(task) ||
-+				       !task_on_rq_queued(task))) ||
-+				     (!task->dl.dl_throttled &&
-+				      task != pick_next_pushable_dl_task(rq)))) {
-+
- 				double_unlock_balance(rq, later_rq);
- 				later_rq = NULL;
- 				break;
-@@ -2606,25 +2650,6 @@ static struct rq *find_lock_later_rq(str
- 	return later_rq;
- }
- 
--static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
+-static int system_has_softdirty(void)
 -{
--	struct task_struct *p;
--
--	if (!has_pushable_dl_tasks(rq))
--		return NULL;
--
--	p = __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
--
--	WARN_ON_ONCE(rq->cpu != task_cpu(p));
--	WARN_ON_ONCE(task_current(rq, p));
--	WARN_ON_ONCE(p->nr_cpus_allowed <= 1);
--
--	WARN_ON_ONCE(!task_on_rq_queued(p));
--	WARN_ON_ONCE(!dl_task(p));
--
--	return p;
+-	/*
+-	 * There is no way to check if the kernel supports soft-dirty, other
+-	 * than by writing to a page and seeing if the bit was set. But the
+-	 * tests are intended to check that the bit gets set when it should, so
+-	 * doing that check would turn a potentially legitimate fail into a
+-	 * skip. Fortunately, we know for sure that arm64 does not support
+-	 * soft-dirty. So for now, let's just use the arch as a corse guide.
+-	 */
+-#if defined(__aarch64__)
+-	return 0;
+-#else
+-	return 1;
+-#endif
 -}
 -
+ int main(int argc, char **argv)
+ {
+ 	int nr_tests = 16;
+@@ -288,7 +271,7 @@ int main(int argc, char **argv)
+ 
+ 	pagesize = getpagesize();
+ 
+-	if (system_has_softdirty())
++	if (softdirty_supported())
+ 		nr_tests += 5;
+ 
+ 	ksft_print_header();
+@@ -300,7 +283,7 @@ int main(int argc, char **argv)
+ 	test_holes();
+ 	test_populate_read();
+ 	test_populate_write();
+-	if (system_has_softdirty())
++	if (softdirty_supported())
+ 		test_softdirty();
+ 
+ 	err = ksft_get_fail_cnt();
+--- a/tools/testing/selftests/mm/soft-dirty.c
++++ b/tools/testing/selftests/mm/soft-dirty.c
+@@ -193,8 +193,11 @@ int main(int argc, char **argv)
+ 	int pagesize;
+ 
+ 	ksft_print_header();
+-	ksft_set_plan(15);
+ 
++	if (!softdirty_supported())
++		ksft_exit_skip("soft-dirty is not support\n");
++
++	ksft_set_plan(15);
+ 	pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
+ 	if (pagemap_fd < 0)
+ 		ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
+--- a/tools/testing/selftests/mm/vm_util.c
++++ b/tools/testing/selftests/mm/vm_util.c
+@@ -193,6 +193,42 @@ err_out:
+ 	return rss_anon;
+ }
+ 
++char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
++{
++	int ret;
++	FILE *fp;
++	char *entry = NULL;
++	char addr_pattern[MAX_LINE_LENGTH];
++
++	ret = snprintf(addr_pattern, MAX_LINE_LENGTH, "%08lx-",
++		       (unsigned long)addr);
++	if (ret >= MAX_LINE_LENGTH)
++		ksft_exit_fail_msg("%s: Pattern is too long\n", __func__);
++
++	fp = fopen(SMAP_FILE_PATH, "r");
++	if (!fp)
++		ksft_exit_fail_msg("%s: Failed to open file %s\n", __func__,
++				   SMAP_FILE_PATH);
++
++	if (!check_for_pattern(fp, addr_pattern, buf, len))
++		goto err_out;
++
++	/* Fetch the pattern in the same block */
++	if (!check_for_pattern(fp, pattern, buf, len))
++		goto err_out;
++
++	/* Trim trailing newline */
++	entry = strchr(buf, '\n');
++	if (entry)
++		*entry = '\0';
++
++	entry = buf + strlen(pattern);
++
++err_out:
++	fclose(fp);
++	return entry;
++}
++
+ bool __check_huge(void *addr, char *pattern, int nr_hpages,
+ 		  uint64_t hpage_size)
+ {
+@@ -384,3 +420,44 @@ unsigned long get_free_hugepages(void)
+ 	fclose(f);
+ 	return fhp;
+ }
++
++static bool check_vmflag(void *addr, const char *flag)
++{
++	char buffer[MAX_LINE_LENGTH];
++	const char *flags;
++	size_t flaglen;
++
++	flags = __get_smap_entry(addr, "VmFlags:", buffer, sizeof(buffer));
++	if (!flags)
++		ksft_exit_fail_msg("%s: No VmFlags for %p\n", __func__, addr);
++
++	while (true) {
++		flags += strspn(flags, " ");
++
++		flaglen = strcspn(flags, " ");
++		if (!flaglen)
++			return false;
++
++		if (flaglen == strlen(flag) && !memcmp(flags, flag, flaglen))
++			return true;
++
++		flags += flaglen;
++	}
++}
++
++bool softdirty_supported(void)
++{
++	char *addr;
++	bool supported = false;
++	const size_t pagesize = getpagesize();
++
++	/* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
++	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
++		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
++	if (!addr)
++		ksft_exit_fail_msg("mmap failed\n");
++
++	supported = check_vmflag(addr, "sd");
++	munmap(addr, pagesize);
++	return supported;
++}
+--- a/tools/testing/selftests/mm/vm_util.h
++++ b/tools/testing/selftests/mm/vm_util.h
+@@ -53,6 +53,7 @@ int uffd_unregister(int uffd, void *addr
+ int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
+ 			      bool miss, bool wp, bool minor, uint64_t *ioctls);
+ unsigned long get_free_hugepages(void);
++bool softdirty_supported(void);
+ 
  /*
-  * See if the non running -deadline tasks on this rq
-  * can be sent to some other CPU where they can preempt
+  * On ppc64 this will only work with radix 2M hugepage size
 
 
 
