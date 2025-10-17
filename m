@@ -1,243 +1,194 @@
-Return-Path: <stable+bounces-187332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313A3BEA888
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:13:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E40FBEA87C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:13:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 553DB946EA6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9594C947BE9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF59E330B27;
-	Fri, 17 Oct 2025 15:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCED1330B0D;
+	Fri, 17 Oct 2025 15:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="zQn6Mxt/";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="y5GTdQNY";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="s9/zEObj";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="kiH01kA7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gm5/02Kd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB78F330B00
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 15:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE00330B06
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 15:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715778; cv=none; b=cOaqhFvaGGY0Prl/U9lnrU3lhVzG4ZisFZPsS0Pp1upcXf/4Mb6V3yj24n3pC4d0jpzaBIpZDbk2lZw/YaSN8EQhGdsIYVwn9IlYbryAKxGIB3Y4l7v5lPh1pFXcndxreROLXf6PTg25Ob27u2NsWBIQd62jOG8NyVJoCMOAwck=
+	t=1760715886; cv=none; b=snNoV1bkBtiKyDEwKIoFyqU4z+ei2/r5edC0ZGPfYQJJ05S/Jvxe3PxvpRVz6erRi6ZlJNLtgkT/qTxLzRjcj2yGgnkGDO+0KrMLFHmD+ZNn7GPSCVCrd1yP6ADnqYIdt8hPajNIPAQeV0VsNCYcp9cQGKTCNQ8WArYap+H6BeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715778; c=relaxed/simple;
-	bh=7pilBphE6MFK54HtMTZcIhLQoQNGtgEVHLrkJWRLKMs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GH6MUr5LFHMxHahd9zGwmnVxj56RMavR3SsGPQhtHsEav2Or/upOpLC4dtKiOGm5AJ5bhoyzQlBeKaRPcovOlafQZyV6QvO2HH33O3UIDyaX/WWNEzNr4bWTd9w8S59BDX0HrMnQGxPkiRFQ7jbVy6e9tPl7p9/YY8ZfRLpFnWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=zQn6Mxt/; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=y5GTdQNY; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=s9/zEObj; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=kiH01kA7; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 074202174D;
-	Fri, 17 Oct 2025 15:42:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760715775;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7UlrgCueMrXsssLTpqaM53BC4RlHReGuzAJkL1XtptE=;
-	b=zQn6Mxt/2ZQK+hcSVldGxfoirXOvX8KxoIJYb+DZTcrp4ifNnGapML1eWqq2EFAtgy77FA
-	WxqGE8/N0SUmu8Nj95g0wN/ZdbRoQ8iSbH4qkdYNMSp9gZwhwaqw19XRrIGjE3sZJNulc3
-	NTQ+sY9G5SHRPgGhcLBb/1GQ/mNG8pA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760715775;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7UlrgCueMrXsssLTpqaM53BC4RlHReGuzAJkL1XtptE=;
-	b=y5GTdQNYzGohjDmbG9TvSdhL01fJO5Xq6AXtJUzdlXOVkno83U9p/PaoDtoYoQhsJ7z+b7
-	PHCejtu2CaAwJzAw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760715774;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7UlrgCueMrXsssLTpqaM53BC4RlHReGuzAJkL1XtptE=;
-	b=s9/zEObjO9gK/tI8tM1qpbnZvbrBunimfFCH7iAmUGdBPSk0b59f1X6+qdeSNsQj1HfmQj
-	3U+CjYqGY91AQXg5Jx0ns3fu1BNL7Ad0SpbNJUdYExHzCxsgB9cEPNRgrhH0IxMaKTfeFz
-	YPgW6FknpS2JCxauZRNvXXnIirORY9o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760715774;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7UlrgCueMrXsssLTpqaM53BC4RlHReGuzAJkL1XtptE=;
-	b=kiH01kA7bbOBSOmsviqftDXbU9a7bx4XbjnHiSK5B76TipJWyZ8zpSYexozhD5i0lfopLv
-	ijyDQwO/wUjId4Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E0FF5136C6;
-	Fri, 17 Oct 2025 15:42:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6km9Nv1j8mj3IQAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Fri, 17 Oct 2025 15:42:53 +0000
-Date: Fri, 17 Oct 2025 17:42:48 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>
-Subject: Re: [PATCH 6.17 003/371] btrfs: fix the incorrect max_bytes value
- for find_lock_delalloc_range()
-Message-ID: <20251017154248.GK13776@suse.cz>
-Reply-To: dsterba@suse.cz
-References: <20251017145201.780251198@linuxfoundation.org>
- <20251017145201.913683496@linuxfoundation.org>
+	s=arc-20240116; t=1760715886; c=relaxed/simple;
+	bh=FejHJB5bTLCKMaVE2Q8+6k/9eSyGBUHoqQJnAkwAgEs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qEa9stGeL48HgMZJTyOiWhxnDdSHAOirjFDxTepZdKWe5yfPDQvMMi2bIXlR8RMtXsmuF/h5FG+jyJf59Sxms9p7H/s71rfrJxHuZiHRHfajDNZNIl1Cw/cWdr6LnQMXPquPI+rs15wsh2jvsDI0R2gHlnhv1zgVdiDxe/P3iGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gm5/02Kd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBD2C4CEE7;
+	Fri, 17 Oct 2025 15:44:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760715886;
+	bh=FejHJB5bTLCKMaVE2Q8+6k/9eSyGBUHoqQJnAkwAgEs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Gm5/02KduO8qrRr880d51TkkO0t8D0Vf9Tm8XMYlxhPUrtnGSisEzmSimpHfxOGmH
+	 /1Eg4g64YTSpXW2vGaKb7OjRSZuIYFvdH9Pn24nc/oO+bny6nwAFvKgQEFkv4Bc8CQ
+	 hzOTAKM4zl+HyctJgKb0XgZhAyyLjS76f/4UB60in6voIhVVLFJ9rfByUdYVFYSevw
+	 2UWyr0f8GFkgcrkf4Qcnd2Aaq2awf9YR4offEmjngs7HATtOYSJZwgaHncwBAPBhgX
+	 dBa3ASODaapS1JL9GjPr0sqbXrVTEQOZ40/dYGSA8XtLWYM9Jq2n0M27MPUEKiHavn
+	 pyVtMGZGB3/3Q==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] media: s5p-mfc: remove an unused/uninitialized variable
+Date: Fri, 17 Oct 2025 11:44:44 -0400
+Message-ID: <20251017154444.4040031-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101647-cinch-municipal-4665@gregkh>
+References: <2025101647-cinch-municipal-4665@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251017145201.913683496@linuxfoundation.org>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,suse.com:email];
-	RCVD_COUNT_TWO(0.00)[2];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 17, 2025 at 04:49:38PM +0200, Greg Kroah-Hartman wrote:
-> 6.17-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Qu Wenruo <wqu@suse.com>
-> 
-> commit 7b26da407420e5054e3f06c5d13271697add9423 upstream.
-> 
-> [BUG]
-> With my local branch to enable bs > ps support for btrfs, sometimes I
-> hit the following ASSERT() inside submit_one_sector():
-> 
-> 	ASSERT(block_start != EXTENT_MAP_HOLE);
-> 
-> Please note that it's not yet possible to hit this ASSERT() in the wild
-> yet, as it requires btrfs bs > ps support, which is not even in the
-> development branch.
-> 
-> But on the other hand, there is also a very low chance to hit above
-> ASSERT() with bs < ps cases, so this is an existing bug affect not only
-> the incoming bs > ps support but also the existing bs < ps support.
-> 
-> [CAUSE]
-> Firstly that ASSERT() means we're trying to submit a dirty block but
-> without a real extent map nor ordered extent map backing it.
-> 
-> Furthermore with extra debugging, the folio triggering such ASSERT() is
-> always larger than the fs block size in my bs > ps case.
-> (8K block size, 4K page size)
-> 
-> After some more debugging, the ASSERT() is trigger by the following
-> sequence:
-> 
->  extent_writepage()
->  |  We got a 32K folio (4 fs blocks) at file offset 0, and the fs block
->  |  size is 8K, page size is 4K.
->  |  And there is another 8K folio at file offset 32K, which is also
->  |  dirty.
->  |  So the filemap layout looks like the following:
->  |
->  |  "||" is the filio boundary in the filemap.
->  |  "//| is the dirty range.
->  |
->  |  0        8K       16K        24K         32K       40K
->  |  |////////|        |//////////////////////||////////|
->  |
->  |- writepage_delalloc()
->  |  |- find_lock_delalloc_range() for [0, 8K)
->  |  |  Now range [0, 8K) is properly locked.
->  |  |
->  |  |- find_lock_delalloc_range() for [16K, 40K)
->  |  |  |- btrfs_find_delalloc_range() returned range [16K, 40K)
->  |  |  |- lock_delalloc_folios() locked folio 0 successfully
->  |  |  |
->  |  |  |  The filemap range [32K, 40K) got dropped from filemap.
->  |  |  |
->  |  |  |- lock_delalloc_folios() failed with -EAGAIN on folio 32K
->  |  |  |  As the folio at 32K is dropped.
->  |  |  |
->  |  |  |- loops = 1;
->  |  |  |- max_bytes = PAGE_SIZE;
->  |  |  |- goto again;
->  |  |  |  This will re-do the lookup for dirty delalloc ranges.
->  |  |  |
->  |  |  |- btrfs_find_delalloc_range() called with @max_bytes == 4K
->  |  |  |  This is smaller than block size, so
->  |  |  |  btrfs_find_delalloc_range() is unable to return any range.
->  |  |  \- return false;
->  |  |
->  |  \- Now only range [0, 8K) has an OE for it, but for dirty range
->  |     [16K, 32K) it's dirty without an OE.
->  |     This breaks the assumption that writepage_delalloc() will find
->  |     and lock all dirty ranges inside the folio.
->  |
->  |- extent_writepage_io()
->     |- submit_one_sector() for [0, 8K)
->     |  Succeeded
->     |
->     |- submit_one_sector() for [16K, 24K)
->        Triggering the ASSERT(), as there is no OE, and the original
->        extent map is a hole.
-> 
-> Please note that, this also exposed the same problem for bs < ps
-> support. E.g. with 64K page size and 4K block size.
-> 
-> If we failed to lock a folio, and falls back into the "loops = 1;"
-> branch, we will re-do the search using 64K as max_bytes.
-> Which may fail again to lock the next folio, and exit early without
-> handling all dirty blocks inside the folio.
-> 
-> [FIX]
-> Instead of using the fixed size PAGE_SIZE as @max_bytes, use
-> @sectorsize, so that we are ensured to find and lock any remaining
-> blocks inside the folio.
-> 
-> And since we're here, add an extra ASSERT() to
-> before calling btrfs_find_delalloc_range() to make sure the @max_bytes is
-> at least no smaller than a block to avoid false negative.
-> 
-> Cc: stable@vger.kernel.org # 5.15+
-> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-Please drop this patch from all stable branch, this is for an unfinished
-feature and not available in any release.
+[ Upstream commit 7fa37ba25a1dfc084e24ea9acc14bf1fad8af14c ]
+
+The s5p_mfc_cmd_args structure in the v6 driver is never used, not
+initialized to anything other than zero, but as of clang-21 this
+causes a warning:
+
+drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:45:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   45 |                                         &h2r_args);
+      |                                          ^~~~~~~~
+
+Just remove this for simplicity. Since the function is also called
+through a callback, this does require adding a trivial wrapper with
+the correct prototype.
+
+Fixes: f96f3cfa0bb8 ("[media] s5p-mfc: Update MFC v4l2 driver to support MFC6.x")
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ .../media/platform/s5p-mfc/s5p_mfc_cmd_v6.c   | 35 +++++++------------
+ 1 file changed, 13 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/media/platform/s5p-mfc/s5p_mfc_cmd_v6.c b/drivers/media/platform/s5p-mfc/s5p_mfc_cmd_v6.c
+index 1f42130cc8658..23c47d92c0717 100644
+--- a/drivers/media/platform/s5p-mfc/s5p_mfc_cmd_v6.c
++++ b/drivers/media/platform/s5p-mfc/s5p_mfc_cmd_v6.c
+@@ -14,8 +14,7 @@
+ #include "s5p_mfc_opr.h"
+ #include "s5p_mfc_cmd_v6.h"
+ 
+-static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
+-				struct s5p_mfc_cmd_args *args)
++static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd)
+ {
+ 	mfc_debug(2, "Issue the command: %d\n", cmd);
+ 
+@@ -31,7 +30,6 @@ static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
+ 
+ static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
+ 	int ret;
+ 
+@@ -41,33 +39,23 @@ static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
+ 
+ 	mfc_write(dev, dev->ctx_buf.dma, S5P_FIMV_CONTEXT_MEM_ADDR_V6);
+ 	mfc_write(dev, buf_size->dev_ctx, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6);
+ }
+ 
+ static int s5p_mfc_sleep_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6,
+-			&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6);
+ }
+ 
+ static int s5p_mfc_wakeup_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6);
+ }
+ 
+ /* Open a new instance and get its number */
+ static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int codec_type;
+ 
+ 	mfc_debug(2, "Requested codec mode: %d\n", ctx->codec_mode);
+@@ -129,23 +117,20 @@ static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ 	mfc_write(dev, ctx->ctx.size, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+ 	mfc_write(dev, 0, S5P_FIMV_D_CRC_CTRL_V6); /* no crc */
+ 
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6);
+ }
+ 
+ /* Close instance */
+ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int ret = 0;
+ 
+ 	dev->curr_ctx = ctx->num;
+ 	if (ctx->state != MFCINST_FREE) {
+ 		mfc_write(dev, ctx->inst_no, S5P_FIMV_INSTANCE_ID_V6);
+ 		ret = s5p_mfc_cmd_host2risc_v6(dev,
+-					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6,
+-					&h2r_args);
++					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6);
+ 	} else {
+ 		ret = -EINVAL;
+ 	}
+@@ -153,9 +138,15 @@ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ 	return ret;
+ }
+ 
++static int s5p_mfc_cmd_host2risc_v6_args(struct s5p_mfc_dev *dev, int cmd,
++				    struct s5p_mfc_cmd_args *ignored)
++{
++	return s5p_mfc_cmd_host2risc_v6(dev, cmd);
++}
++
+ /* Initialize cmd function pointers for MFC v6 */
+ static struct s5p_mfc_hw_cmds s5p_mfc_cmds_v6 = {
+-	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6,
++	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6_args,
+ 	.sys_init_cmd = s5p_mfc_sys_init_cmd_v6,
+ 	.sleep_cmd = s5p_mfc_sleep_cmd_v6,
+ 	.wakeup_cmd = s5p_mfc_wakeup_cmd_v6,
+-- 
+2.51.0
+
 
