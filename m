@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121CDBE99D8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B1DBEA168
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C3CC3B3C25
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DBDD7C0E09
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A06E33509A;
-	Fri, 17 Oct 2025 15:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F745335084;
+	Fri, 17 Oct 2025 15:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFlMbPp7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANaiT67Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3578A335092;
-	Fri, 17 Oct 2025 15:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA062F12D2;
+	Fri, 17 Oct 2025 15:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713571; cv=none; b=IZGlRQ5JgSEEbt/r8gZfByvAUs/QuCHLAYhsdzyHDOt9Mi3GqT36PP0ADwtTY/U8Z6JdGPGLaoArWVg7F0AO6pS82GB1GWILACe9CeMedeiQknCes2N/4pQRlzkgJ61ANg8Ta8PZ28KWjX/f00aU/FkxbNc+sew6sEs5sIb1s54=
+	t=1760715193; cv=none; b=d/f18cDmKpDEGzEY0u3gtSPnodIxJEXc9LOvXk9bHS22ISui4F2aikvCbOqQvsgvYcXgHMnSKEBbmUr1i5h1YiR/2+bxpkVG1BYOGkosEqocNzsWJdIUj/dNmA345Ew5bxYUJnlUADvf15htT4G8DFsPM8dssIS8dySDlJPQDP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713571; c=relaxed/simple;
-	bh=nvbpSpt8ZF+xWjMZgItCQ8xbtdbAIJLN4W+3yiKc/Ug=;
+	s=arc-20240116; t=1760715193; c=relaxed/simple;
+	bh=prZ+SxKAALX0E7j5/RDaUmxdKGieSF4xl9NMJd+Wwcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0ru8gN3ztE6OfTelBHGRyVq2zRYVcqoR/rB7p4Xv+wiWxh5Njd0YPTXcOxE2j685cMBUiwuyEkGAVaoAWwNVtCvHA/2kfcbK4vgVU+B1Fx2y3C9kDkC8wZWG0W6JCRv+CHUxKojy//mGulgwrAql5/CsMAY/i8vCQ89t51w6aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFlMbPp7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2987C4CEF9;
-	Fri, 17 Oct 2025 15:06:10 +0000 (UTC)
+	 MIME-Version; b=RtqRSY+7HjUeGaNdYxVOkgU3sHTE2I+muxw6hHaba81fyU2EE2cRUtRY21GIm2rRkU00ab0MbYz2wN3X+JPMvU/YE0VSUhK97BVYmFtrIULLwO9Y39P9i9tQPgz36i1Cjt0dkJC6+pfWgj9e3ywkLg9gHSoBysxtmh/UXAn6Qjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANaiT67Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D2CC4CEE7;
+	Fri, 17 Oct 2025 15:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713571;
-	bh=nvbpSpt8ZF+xWjMZgItCQ8xbtdbAIJLN4W+3yiKc/Ug=;
+	s=korg; t=1760715193;
+	bh=prZ+SxKAALX0E7j5/RDaUmxdKGieSF4xl9NMJd+Wwcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kFlMbPp7Bp9RQA8q8zVf7l/bUD3rgH/OV442tZ9cBDPfW8TgZTRliADg7RgaaUtHf
-	 B676NWKXoxN3QzSzKcPUDhKn7s5ug2ZTj3Qn0rhFsRomUqq1Aa6xG6Fiw3aOfGezJB
-	 r/ThKIMx0MU+j1KeuRAM/93A0PxZ5KEBKujEzwhA=
+	b=ANaiT67YXMcFTEJVSAxtoZBbH9gNo/5z2cE9ZuwsYTtYC+E38F2wC1hbQ+c8/jkOP
+	 NMqH4eIc03xjmG2iOhjmTJNj5jkygD9UGyCHl1bSB2jQQidNkE8rS+CihJbZHjtAXK
+	 zIsoXr6D8KRJrHEWQPDjqXMF3KY4Xx/1iJRcDZX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Harini T <harini.t@amd.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/201] rtc: x1205: Fix Xicor X1205 vendor prefix
-Date: Fri, 17 Oct 2025 16:51:12 +0200
-Message-ID: <20251017145135.147426877@linuxfoundation.org>
+Subject: [PATCH 6.17 098/371] mailbox: zynqmp-ipi: Remove redundant mbox_controller_unregister() call
+Date: Fri, 17 Oct 2025 16:51:13 +0200
+Message-ID: <20251017145205.487641679@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Harini T <harini.t@amd.com>
 
-[ Upstream commit 606d19ee37de3a72f1b6e95a4ea544f6f20dbb46 ]
+[ Upstream commit 341867f730d3d3bb54491ee64e8b1a0c446656e7 ]
 
-The vendor for the X1205 RTC is not Xircom, but Xicor which was acquired
-by Intersil. Since the I2C subsystem drops the vendor prefix for driver
-matching, the vendor prefix hasn't mattered.
+The controller is registered using the device-managed function
+'devm_mbox_controller_register()'. As documented in mailbox.c, this
+ensures the devres framework automatically calls
+mbox_controller_unregister() when device_unregister() is invoked, making
+the explicit call unnecessary.
 
-Fixes: 6875404fdb44 ("rtc: x1205: Add DT probing support")
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250821215703.869628-2-robh@kernel.org
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Remove redundant mbox_controller_unregister() call as
+device_unregister() handles controller cleanup.
+
+Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
+Signed-off-by: Harini T <harini.t@amd.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-x1205.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mailbox/zynqmp-ipi-mailbox.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-x1205.c b/drivers/rtc/rtc-x1205.c
-index 807f953ae0aed..b7a7ea036f7ad 100644
---- a/drivers/rtc/rtc-x1205.c
-+++ b/drivers/rtc/rtc-x1205.c
-@@ -669,7 +669,7 @@ static const struct i2c_device_id x1205_id[] = {
- MODULE_DEVICE_TABLE(i2c, x1205_id);
- 
- static const struct of_device_id x1205_dt_ids[] = {
--	{ .compatible = "xircom,x1205", },
-+	{ .compatible = "xicor,x1205", },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, x1205_dt_ids);
+diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
+index 0c143beaafda6..263a3413a8c7f 100644
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -894,7 +894,6 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
+ 	for (; i >= 0; i--) {
+ 		ipi_mbox = &pdata->ipi_mboxes[i];
+ 		if (ipi_mbox->dev.parent) {
+-			mbox_controller_unregister(&ipi_mbox->mbox);
+ 			if (device_is_registered(&ipi_mbox->dev))
+ 				device_unregister(&ipi_mbox->dev);
+ 		}
 -- 
 2.51.0
 
