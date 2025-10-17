@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-187241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E310FBEA33F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4674BEA0AA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F02A29449D8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C203E5E700A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63AC63328EF;
-	Fri, 17 Oct 2025 15:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD852745E;
+	Fri, 17 Oct 2025 15:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGrjXVzp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlMaE8x6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA062F12D9;
-	Fri, 17 Oct 2025 15:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287C6337100;
+	Fri, 17 Oct 2025 15:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715516; cv=none; b=tRv+x5DGoD3BTDpptvBnjFhxREJ4bu+gCfZ4E1jSBqHLdO/gOOekf7hwe15oiEOVx4lHUkDW/TyFPOUEiQyMNGj5BXZlcINbwoLPnr0mXyCTMUqzaMNAVllK9DVzDWSYNwsbVkW3G+bu2uy7mEzIZkglVenUCHIv9VYfwpiTIes=
+	t=1760714728; cv=none; b=IetdXyhWbWgAPywIhFKpBKhpHqWHgvTKVY8iiiTRlUlPGLZ65cQmMZ8FRRTVHy9ggW6RPVj039n+1bWWAJAZ1LTK7JJ79PZFrJFXkSRMcN6vpa7I0f0C6p/G/RbvOF8Uxj7GnA1o/SaYxi6P2oclLm76no15B5mlbZvyOSbwKdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715516; c=relaxed/simple;
-	bh=2aYo0gI6H5lQjZeDpx/4uw1Y0LIm1YH9Ca9UPRnFfE4=;
+	s=arc-20240116; t=1760714728; c=relaxed/simple;
+	bh=+MHn9iKl5bBnlnY5NUh0yE7FzfUwXpME39CZDDBex/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buBegB7Nj0AEH/9PXf1Y5sDXDZPQx3xGL66hHoyFRm+p/TV8crPgmtAnM0zSLJXit48KNF2EWvGUh00ELY1ljNr85FQY7YpJ3uU0cFVhL3gEoJhYWj+3uCxgnfGF+p0ooYZShJNbAtoR7fEAN+KGByYOuDYmNYIXIEb1AIbzloY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGrjXVzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993F6C4CEE7;
-	Fri, 17 Oct 2025 15:38:35 +0000 (UTC)
+	 MIME-Version; b=Q01/GB0J+kt6LkzkCSd9A1ak4g+SMaGT/SFsObK4oHrxod5tgyFhXklul8YnAo8Tncu2nYlKnDvteeevFctFxcHOqep+xOiIWXGwnhB/85/CHWBs6MUyFya6yXSZMNX9feet4eSwwq6WYKjIP2cjFA5/9tJIppRfjM4Uix2DEvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlMaE8x6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C7EC4CEE7;
+	Fri, 17 Oct 2025 15:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715516;
-	bh=2aYo0gI6H5lQjZeDpx/4uw1Y0LIm1YH9Ca9UPRnFfE4=;
+	s=korg; t=1760714728;
+	bh=+MHn9iKl5bBnlnY5NUh0yE7FzfUwXpME39CZDDBex/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lGrjXVzpb+oirAaAD5M4Plie0HYExtRS0SKRnRf2UVeagOr8gm4PVyYUtRVv1yIIe
-	 kh6MVFz0SVC2VTcFwUarYcZLvM6whFOSuUo7b5eZkTR1xgO4rcn64W0OvubchIH8iN
-	 JM4bEOHOlUOMkgzWnZBt/I+DqjUgfZBhaosCEuSE=
+	b=YlMaE8x6cOqGW8EoLiSh+bNhM0KqBuGu+ACCw1RS9Va4g0QSFB1jMxv9I30GcmIPl
+	 +Wd6mEERsE3QFXLJWb4F5ua9w5dQswrLpUZwzE360hFD578pHLZQIcPAMKd6I6Vuc/
+	 INuUlh5/b/f7f0HvDXi77QuMLtROwHCZ23xCFFyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.17 244/371] pinctrl: samsung: Drop unused S3C24xx driver data
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.12 212/277] ext4: add ext4_sb_bread_nofail() helper function for ext4_free_branches()
 Date: Fri, 17 Oct 2025 16:53:39 +0200
-Message-ID: <20251017145210.906088624@linuxfoundation.org>
+Message-ID: <20251017145154.872325487@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 358253fa8179ab4217ac283b56adde0174186f87 upstream.
+commit d8b90e6387a74bcb1714c8d1e6a782ff709de9a9 upstream.
 
-Drop unused declarations after S3C24xx SoC family removal in the commit
-61b7f8920b17 ("ARM: s3c: remove all s3c24xx support").
+The implicit __GFP_NOFAIL flag in ext4_sb_bread() was removed in commit
+8a83ac54940d ("ext4: call bdev_getblk() from sb_getblk_gfp()"), meaning
+the function can now fail under memory pressure.
 
-Fixes: 1ea35b355722 ("ARM: s3c: remove s3c24xx specific hacks")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250830111657.126190-3-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Most callers of ext4_sb_bread() propagate the error to userspace and do not
+remount the filesystem read-only. However, ext4_free_branches() handles
+ext4_sb_bread() failure by remounting the filesystem read-only.
+
+This implies that an ext3 filesystem (mounted via the ext4 driver) could be
+forcibly remounted read-only due to a transient page allocation failure,
+which is unacceptable.
+
+To mitigate this, introduce a new helper function, ext4_sb_bread_nofail(),
+which explicitly uses __GFP_NOFAIL, and use it in ext4_free_branches().
+
+Fixes: 8a83ac54940d ("ext4: call bdev_getblk() from sb_getblk_gfp()")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/samsung/pinctrl-samsung.h |    4 ----
- 1 file changed, 4 deletions(-)
+ fs/ext4/ext4.h     |    2 ++
+ fs/ext4/indirect.c |    2 +-
+ fs/ext4/super.c    |    9 +++++++++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/pinctrl/samsung/pinctrl-samsung.h
-+++ b/drivers/pinctrl/samsung/pinctrl-samsung.h
-@@ -402,10 +402,6 @@ extern const struct samsung_pinctrl_of_m
- extern const struct samsung_pinctrl_of_match_data fsd_of_data;
- extern const struct samsung_pinctrl_of_match_data gs101_of_data;
- extern const struct samsung_pinctrl_of_match_data s3c64xx_of_data;
--extern const struct samsung_pinctrl_of_match_data s3c2412_of_data;
--extern const struct samsung_pinctrl_of_match_data s3c2416_of_data;
--extern const struct samsung_pinctrl_of_match_data s3c2440_of_data;
--extern const struct samsung_pinctrl_of_match_data s3c2450_of_data;
- extern const struct samsung_pinctrl_of_match_data s5pv210_of_data;
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3107,6 +3107,8 @@ extern struct buffer_head *ext4_sb_bread
+ 					 sector_t block, blk_opf_t op_flags);
+ extern struct buffer_head *ext4_sb_bread_unmovable(struct super_block *sb,
+ 						   sector_t block);
++extern struct buffer_head *ext4_sb_bread_nofail(struct super_block *sb,
++						sector_t block);
+ extern void ext4_read_bh_nowait(struct buffer_head *bh, blk_opf_t op_flags,
+ 				bh_end_io_t *end_io, bool simu_fail);
+ extern int ext4_read_bh(struct buffer_head *bh, blk_opf_t op_flags,
+--- a/fs/ext4/indirect.c
++++ b/fs/ext4/indirect.c
+@@ -1025,7 +1025,7 @@ static void ext4_free_branches(handle_t
+ 			}
  
- #endif /* __PINCTRL_SAMSUNG_H */
+ 			/* Go read the buffer for the next level down */
+-			bh = ext4_sb_bread(inode->i_sb, nr, 0);
++			bh = ext4_sb_bread_nofail(inode->i_sb, nr);
+ 
+ 			/*
+ 			 * A read failure? Report error and clear slot
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -266,6 +266,15 @@ struct buffer_head *ext4_sb_bread_unmova
+ 	return __ext4_sb_bread_gfp(sb, block, 0, gfp);
+ }
+ 
++struct buffer_head *ext4_sb_bread_nofail(struct super_block *sb,
++					 sector_t block)
++{
++	gfp_t gfp = mapping_gfp_constraint(sb->s_bdev->bd_mapping,
++			~__GFP_FS) | __GFP_MOVABLE | __GFP_NOFAIL;
++
++	return __ext4_sb_bread_gfp(sb, block, 0, gfp);
++}
++
+ void ext4_sb_breadahead_unmovable(struct super_block *sb, sector_t block)
+ {
+ 	struct buffer_head *bh = bdev_getblk(sb->s_bdev, block,
 
 
 
