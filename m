@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC1CBEA609
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:00:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D296BE9EFA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16A1B94438D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 796655A1154
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A66336ED6;
-	Fri, 17 Oct 2025 15:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9D420C00A;
+	Fri, 17 Oct 2025 15:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMNEkzBZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WiHmb6+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE50C33507C;
-	Fri, 17 Oct 2025 15:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FD42745E;
+	Fri, 17 Oct 2025 15:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715479; cv=none; b=oVWPTEkjJD6z0WBm436kEaKo7VVXcpT17yFswkbSaRz68QVnOX3WflNmAxF3uy7HllNTWM/zGhGW2Rb9XCM0z8zhwV7bvlRf2IKDL+1Fl7KOyrLoOpS6A3X/bNO+5Nv6HYaqWxdvn9d9I8MKUr2H9S4Jj74kheKhccA1X5N2tR4=
+	t=1760714589; cv=none; b=o55xHxQpx7WBN8tpRZM60TYJBt/HzjT53qfBUFB56yxlrhAc3oHnpzo66paB6//ppGnXShyMR6yGnhEQLvCfg7ATXoAV/Udbf8Ajl9Nj2hTIdWZH9Og23w/+WJv54U8YaSB7jnwoGS3Pl2LuKzLia6BKnTucM+DOQv0LdX0bhig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715479; c=relaxed/simple;
-	bh=f+NLP2SmMtqLG8jKqx/PIMHU59QShw6d01h2xFLlGB0=;
+	s=arc-20240116; t=1760714589; c=relaxed/simple;
+	bh=lIjRt/ZenAZ6zc6vE26sBj2CU1hiN9aj3DDAhniwphE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukh9LJDD8U0ius2IPSuVXsSJNhCUsrerwxahnkP/jCNN2KFT9LVeGQwRVlglYnW7FU9AcvXHVEl1XeCzFQtlg1tWKFb6tHNnCpacdQ87+cg9MBaNNuOCKlNEg6trI+tE/Gr19wGMF0cX/IffsPJ3msZYxipfTKuBdIpz2sq5gY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMNEkzBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7A6C4CEFE;
-	Fri, 17 Oct 2025 15:37:58 +0000 (UTC)
+	 MIME-Version; b=dLn0/DLvxs1LaptRJcyCRgTMWp7pZ8bQdzZgtj7z89cMB49IFcf/umlUw81yt7PBsSyyphI1hSebnszid43FEQB1kSHdCEytbXk/EdFgTDu4gSuBtL8sDUrMevj4yn6vbOX2mycl/CAIuYSPb/JGWNStH8e++dN3sVbK35E6SWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WiHmb6+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425C6C4CEE7;
+	Fri, 17 Oct 2025 15:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715478;
-	bh=f+NLP2SmMtqLG8jKqx/PIMHU59QShw6d01h2xFLlGB0=;
+	s=korg; t=1760714588;
+	bh=lIjRt/ZenAZ6zc6vE26sBj2CU1hiN9aj3DDAhniwphE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMNEkzBZu5fBGU58p1JyJRN5Pka7g5G2COnmH+9zAcwZjJ7XO6hw939yLdQVy/3Ht
-	 FH6kgKelwVG4vOPsokQhYgYBuK5RoIYZq+TkN6z7vNEZA6/gtkgc4hl2Ppm4U9Xdkf
-	 q+MU81eQzj7GYop77mFneb5li4fyGfXmJniTszog=
+	b=WiHmb6+Dk5bI3o6wq27+fIrV9zkCk/BL3jxt61UWIDsmT7Ki145fj4+F11rTde+qK
+	 iK+jqO156Dv33/YNRtmBA+FfnsT0T0ircVQVBPlK3jEho8rCjRB3jHP6T6eFzRNDjP
+	 eaHvKWKVZoEs5OV9vQN5oIqkX+WOG7M2tZVMx0cA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Granados <joel.granados@kernel.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.17 229/371] iommu/vt-d: PRS isnt usable if PDS isnt supported
+	Stefan Haberland <sth@linux.ibm.com>,
+	Jaehoon Kim <jhkim@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 197/277] s390/dasd: enforce dma_alignment to ensure proper buffer validation
 Date: Fri, 17 Oct 2025 16:53:24 +0200
-Message-ID: <20251017145210.369055451@linuxfoundation.org>
+Message-ID: <20251017145154.312286599@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Jaehoon Kim <jhkim@linux.ibm.com>
 
-commit 5ef7e24c742038a5d8c626fdc0e3a21834358341 upstream.
+commit 130e6de62107116eba124647116276266be0f84c upstream.
 
-The specification, Section 7.10, "Software Steps to Drain Page Requests &
-Responses," requires software to submit an Invalidation Wait Descriptor
-(inv_wait_dsc) with the Page-request Drain (PD=1) flag set, along with
-the Invalidation Wait Completion Status Write flag (SW=1). It then waits
-for the Invalidation Wait Descriptor's completion.
+The block layer validates buffer alignment using the device's
+dma_alignment value. If dma_alignment is smaller than
+logical_block_size(bp_block) -1, misaligned buffer incorrectly pass
+validation and propagate to the lower-level driver.
 
-However, the PD field in the Invalidation Wait Descriptor is optional, as
-stated in Section 6.5.2.9, "Invalidation Wait Descriptor":
+This patch adjusts dma_alignment to be at least logical_block_size -1,
+ensuring that misalignment buffers are properly rejected at the block
+layer and do not reach the DASD driver unnecessarily.
 
-"Page-request Drain (PD): Remapping hardware implementations reporting
- Page-request draining as not supported (PDS = 0 in ECAP_REG) treat this
- field as reserved."
-
-This implies that if the IOMMU doesn't support the PDS capability, software
-can't drain page requests and group responses as expected.
-
-Do not enable PCI/PRI if the IOMMU doesn't support PDS.
-
-Reported-by: Joel Granados <joel.granados@kernel.org>
-Closes: https://lore.kernel.org/r/20250909-jag-pds-v1-1-ad8cba0e494e@kernel.org
-Fixes: 66ac4db36f4c ("iommu/vt-d: Add page request draining support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20250915062946.120196-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Fixes: 2a07bb64d801 ("s390/dasd: Remove DMA alignment")
+Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
+Cc: stable@vger.kernel.org #6.11+
+Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/block/dasd.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -3817,7 +3817,7 @@ static struct iommu_device *intel_iommu_
- 			}
+--- a/drivers/s390/block/dasd.c
++++ b/drivers/s390/block/dasd.c
+@@ -332,6 +332,11 @@ static int dasd_state_basic_to_ready(str
+ 	lim.max_dev_sectors = device->discipline->max_sectors(block);
+ 	lim.max_hw_sectors = lim.max_dev_sectors;
+ 	lim.logical_block_size = block->bp_block;
++	/*
++	 * Adjust dma_alignment to match block_size - 1
++	 * to ensure proper buffer alignment checks in the block layer.
++	 */
++	lim.dma_alignment = lim.logical_block_size - 1;
  
- 			if (info->ats_supported && ecap_prs(iommu->ecap) &&
--			    pci_pri_supported(pdev))
-+			    ecap_pds(iommu->ecap) && pci_pri_supported(pdev))
- 				info->pri_supported = 1;
- 		}
- 	}
+ 	if (device->discipline->has_discard) {
+ 		unsigned int max_bytes;
 
 
 
