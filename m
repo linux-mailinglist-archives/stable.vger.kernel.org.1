@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0F1BE9E01
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:30:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4FCBEA410
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 178C0189D739
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:28:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3978C7C4CFB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D1A2F12A5;
-	Fri, 17 Oct 2025 15:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DBE2F12BA;
+	Fri, 17 Oct 2025 15:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcWuR2D1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/wcH4Mz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F102745E;
-	Fri, 17 Oct 2025 15:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F31A2F12A0;
+	Fri, 17 Oct 2025 15:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714902; cv=none; b=KPeCSHHvveoJhphd2KNZ+refPxrJqwF3aOXnF29aYy9su3ycd7z69yVUe9Cr6uOqy0nkPaQPu2mcYspPkkDienexOaSH/a22S01jYi9kytn7fObjeaRyE1Y+lih1l7SEWEP14CBkxrvhir9kjr2NB/XG13CXoUj88UPhsmZKXes=
+	t=1760714905; cv=none; b=sazHTe6Le9YTwhqafWZkFOlc7VXV8UL5GQaeYRndN3+jCQefU/SH470XQxW6U4TJ/NzEhnyUZkYQk+el0uy/B88kr+GQ6GeAS+MoE5cTwu2ivM2mDofZHYs+LWpPiloNo/QxAYtmmRwLiiJBeirBqV0m2ZOvD1pRUQaMQtCvVPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714902; c=relaxed/simple;
-	bh=fz1w7WldEuTez6ZhOi+Y4mgsqjwyrhRhXZcY64ezjxU=;
+	s=arc-20240116; t=1760714905; c=relaxed/simple;
+	bh=UjAJWDzIWrEo74hC2I35yrY0OMunZKQtv7oYvOWqdtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5GSbCiNpJOdmsqO+TWv9djXLUdyEvzml5fUF0k9sNE1+2LR8/Ikv5QO1ErpqNIV5pmEGjMH4vCYzWzgXUk6Qngte+HSgwIngpZ6ZTgkm1Ln3sdAZTerSq2FA0lfnTnntLvR+mt0hrRV6UP5NFsy5ZKkkUjxE19SvSnuKJrNuxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcWuR2D1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6C9C113D0;
-	Fri, 17 Oct 2025 15:28:22 +0000 (UTC)
+	 MIME-Version; b=cSdJtClBE2SioI3ZBrJwB1N6LNJB9kfCY8/+cSx24e4/8E2vpH8grvi/gwVbHOdwtGhG9XfzfDRJ9ZBWhJYJfAkEt52p6Nvih6LSTPRaWRAdhTrdyDNt9F9hG0hXIOfEkQxD2PUIHXnRSJQvRve5jkZ/MmbtQyyCihImQVHNZwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/wcH4Mz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B69AC4CEE7;
+	Fri, 17 Oct 2025 15:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714902;
-	bh=fz1w7WldEuTez6ZhOi+Y4mgsqjwyrhRhXZcY64ezjxU=;
+	s=korg; t=1760714905;
+	bh=UjAJWDzIWrEo74hC2I35yrY0OMunZKQtv7oYvOWqdtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PcWuR2D13KjooxtBvo7rcfUwETAQ8JZzpV5nf9IYHyMUytUxMVNr6uKNyu4FeER6j
-	 o/g7Qj6wP4eX62XhOV/li5EA6siG7UYtyVwf2S+pTSZSG7FnfOat+HrupLFZ3t4IBq
-	 jo7q6AEJjTAKnHAvIMAoxm2/pn05pOMY/DTMdzu8=
+	b=S/wcH4Mz5uZiyi3byTklDeLWZp9ewFrs6s+20imYt9rsdfurvMh3T2b9R+oKiKFtn
+	 xsCHDQDiH9+ajzndirshKmsdSrOzvRPcQORE97h9bwr7C33A526veVQDF/ntoXDdY+
+	 DzkqysQ4K0KKtY1qErAxmuAf47uo73tagQL+vGY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
 	Imran Shaik <imran.shaik@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 029/371] clk: qcom: common: Fix NULL vs IS_ERR() check in qcom_cc_icc_register()
-Date: Fri, 17 Oct 2025 16:50:04 +0200
-Message-ID: <20251017145202.854009220@linuxfoundation.org>
+Subject: [PATCH 6.17 030/371] clk: qcom: Select the intended config in QCS_DISPCC_615
+Date: Fri, 17 Oct 2025 16:50:05 +0200
+Message-ID: <20251017145202.889495825@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -69,40 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-[ Upstream commit 1e50f5c9965252ed6657b8692cd7366784d60616 ]
+[ Upstream commit 9524f95c4042545ee8fc3191b9b89c61a1aca6fb ]
 
-The devm_clk_hw_get_clk() function doesn't return NULL, it returns error
-pointers.  Update the checking to match.
+Commit 9b47105f5434 ("clk: qcom: dispcc-qcs615: Add QCS615 display clock
+controller driver") adds the config QCS_DISPCC_615, which selects the
+non-existing config QCM_GCC_615. Probably, this is just a three-letter
+abbreviation mix-up here, though. There is a config named QCS_GCC_615,
+and the related config QCS_CAMCC_615 selects that config.
 
-Fixes: 8737ec830ee3 ("clk: qcom: common: Add interconnect clocks support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fix the typo and use the intended config name in the select command.
+
+Fixes: 9b47105f5434 ("clk: qcom: dispcc-qcs615: Add QCS615 display clock controller driver")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/aLaPwL2gFS85WsfD@stanley.mountain
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250902121754.277452-1-lukas.bulwahn@redhat.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/common.c b/drivers/clk/qcom/common.c
-index 37c3008e6c1be..1215918867741 100644
---- a/drivers/clk/qcom/common.c
-+++ b/drivers/clk/qcom/common.c
-@@ -277,8 +277,8 @@ static int qcom_cc_icc_register(struct device *dev,
- 		icd[i].slave_id = desc->icc_hws[i].slave_id;
- 		hws = &desc->clks[desc->icc_hws[i].clk_id]->hw;
- 		icd[i].clk = devm_clk_hw_get_clk(dev, hws, "icc");
--		if (!icd[i].clk)
--			return dev_err_probe(dev, -ENOENT,
-+		if (IS_ERR(icd[i].clk))
-+			return dev_err_probe(dev, PTR_ERR(icd[i].clk),
- 					     "(%d) clock entry is null\n", i);
- 		icd[i].name = clk_hw_get_name(hws);
- 	}
+diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
+index 6cb6cd3e1778a..e721b23234ddd 100644
+--- a/drivers/clk/qcom/Kconfig
++++ b/drivers/clk/qcom/Kconfig
+@@ -495,7 +495,7 @@ config QCM_DISPCC_2290
+ 
+ config QCS_DISPCC_615
+ 	tristate "QCS615 Display Clock Controller"
+-	select QCM_GCC_615
++	select QCS_GCC_615
+ 	help
+ 	  Support for the display clock controller on Qualcomm Technologies, Inc
+ 	  QCS615 devices.
 -- 
 2.51.0
 
