@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-187353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997F9BEA9A2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:18:37 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F1EBEA780
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 769377414A2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 021FB509795
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F367330B27;
-	Fri, 17 Oct 2025 15:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA0B32C94F;
+	Fri, 17 Oct 2025 15:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y51KM4BM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPS6uNCp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0EC330B03;
-	Fri, 17 Oct 2025 15:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BE632C93B;
+	Fri, 17 Oct 2025 15:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715832; cv=none; b=odnvecv/1WutdVwwbj3mLVEczMe64kOYUt31YniRjzZ17BrJwAZaXg5ktcNfXhKjgsZcjkUQh+3BE+P1109EEuWMO8KjBCgZfnIdis72xtRAeUY3SeyHyOkN1DsD/z3mJedTYnnLiQkOktmUd6vxlWn75ExAtQbJU7n5aZV/OME=
+	t=1760716570; cv=none; b=mDoUfTgX+zCkt4ZnsRLr/+N9ptrxeLFrfmMqg6TMh9HG0Nn5TU11g99SNhEGevhGPFUhnexWSHTb5UR6C/eGeYfgjDuCWOlEbbcz5hURBy/VBRJJ8Nu1owjLhf9AUYG9TBxC27GY3AFsZNAriPjaKvO/yWNyEgk8Cm+RCAMw5jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715832; c=relaxed/simple;
-	bh=Xp/yCJnO1q4mvyMEzqfIDrln5bgSpv3TOub/ChXHYOY=;
+	s=arc-20240116; t=1760716570; c=relaxed/simple;
+	bh=MezhuLhtOaIf4qITO7mRovPxY0ZoZ17RKAXgRGnwrmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4jtN+iS6BhgZLtkcsFg/oD8A+7wLvY+Tl7vm3LRjvwCyY95XvygesO9Y5eU/AayHdGXj5z1VsyQt2Ux5c0y64xkAOJ6FaQPRyGyMi7RaBrszBAQTddF6UcAu8vnU/KFJG10AS3TtwfAvEiOCiJud2gfRjN+RBlWHKR0K6d/Qn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y51KM4BM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8519AC4CEE7;
-	Fri, 17 Oct 2025 15:43:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rQXdjOK/RQOY1Zq95gLPL4UhyH9BY9aYR4y74T7MIQ17TMMk8jokKkLoVfLf8aroa3+4X7oCLZrX/HUBuqzGJhIM+TSQ0njMIh8GxAgE1uJq1C5kZ5V8vY08DCd6jpS+kdg1NtcgswWmfOl82C/7uviAMuWM3bkLyyw/oSKVlhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPS6uNCp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16774C113D0;
+	Fri, 17 Oct 2025 15:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715831;
-	bh=Xp/yCJnO1q4mvyMEzqfIDrln5bgSpv3TOub/ChXHYOY=;
+	s=korg; t=1760716570;
+	bh=MezhuLhtOaIf4qITO7mRovPxY0ZoZ17RKAXgRGnwrmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y51KM4BMdtL8XIkBORxWbPiKdOjIOMehafj0bpRPzZW7llxRE9E5xBKIBrpvSZQFp
-	 Zc1Q33tvSu5urKoZ832l2qP+rC512RzXo9InRKiSFfRivYJfcm/nBh0UtJ40TqYaPW
-	 fXg1fQ9E1lm+ac+28xSTiz2lapGzI+zijDPFSLqE=
+	b=VPS6uNCpIpYODNEn21RPnfp+PQsYjjPn+zuqP8McMsD/Wl5nsC1NEneixyVhLaTH+
+	 +0JsPv03ynkgZaOOHIdXitUUL9W4TB+WVtHrNnoVsosQk1LG3U3RjJ4Gx6sJF3P54v
+	 o4iLPgMCOcObDOS6p7BmhfKFdJ7TEyW1IUH2EE0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 353/371] media: mc: Clear minor number before put device
-Date: Fri, 17 Oct 2025 16:55:28 +0200
-Message-ID: <20251017145214.856658637@linuxfoundation.org>
+Subject: [PATCH 5.15 236/276] tracing: Fix race condition in kprobe initialization causing NULL pointer dereference
+Date: Fri, 17 Oct 2025 16:55:29 +0200
+Message-ID: <20251017145151.084051469@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,244 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit 8cfc8cec1b4da88a47c243a11f384baefd092a50 ]
+[ Upstream commit 9cf9aa7b0acfde7545c1a1d912576e9bab28dc6f ]
 
-The device minor should not be cleared after the device is released.
+There is a critical race condition in kprobe initialization that can lead to
+NULL pointer dereference and kernel crash.
 
-Fixes: 9e14868dc952 ("media: mc: Clear minor number reservation at unregistration time")
+[1135630.084782] Unable to handle kernel paging request at virtual address 0000710a04630000
+...
+[1135630.260314] pstate: 404003c9 (nZcv DAIF +PAN -UAO)
+[1135630.269239] pc : kprobe_perf_func+0x30/0x260
+[1135630.277643] lr : kprobe_dispatcher+0x44/0x60
+[1135630.286041] sp : ffffaeff4977fa40
+[1135630.293441] x29: ffffaeff4977fa40 x28: ffffaf015340e400
+[1135630.302837] x27: 0000000000000000 x26: 0000000000000000
+[1135630.312257] x25: ffffaf029ed108a8 x24: ffffaf015340e528
+[1135630.321705] x23: ffffaeff4977fc50 x22: ffffaeff4977fc50
+[1135630.331154] x21: 0000000000000000 x20: ffffaeff4977fc50
+[1135630.340586] x19: ffffaf015340e400 x18: 0000000000000000
+[1135630.349985] x17: 0000000000000000 x16: 0000000000000000
+[1135630.359285] x15: 0000000000000000 x14: 0000000000000000
+[1135630.368445] x13: 0000000000000000 x12: 0000000000000000
+[1135630.377473] x11: 0000000000000000 x10: 0000000000000000
+[1135630.386411] x9 : 0000000000000000 x8 : 0000000000000000
+[1135630.395252] x7 : 0000000000000000 x6 : 0000000000000000
+[1135630.403963] x5 : 0000000000000000 x4 : 0000000000000000
+[1135630.412545] x3 : 0000710a04630000 x2 : 0000000000000006
+[1135630.421021] x1 : ffffaeff4977fc50 x0 : 0000710a04630000
+[1135630.429410] Call trace:
+[1135630.434828]  kprobe_perf_func+0x30/0x260
+[1135630.441661]  kprobe_dispatcher+0x44/0x60
+[1135630.448396]  aggr_pre_handler+0x70/0xc8
+[1135630.454959]  kprobe_breakpoint_handler+0x140/0x1e0
+[1135630.462435]  brk_handler+0xbc/0xd8
+[1135630.468437]  do_debug_exception+0x84/0x138
+[1135630.475074]  el1_dbg+0x18/0x8c
+[1135630.480582]  security_file_permission+0x0/0xd0
+[1135630.487426]  vfs_write+0x70/0x1c0
+[1135630.493059]  ksys_write+0x5c/0xc8
+[1135630.498638]  __arm64_sys_write+0x24/0x30
+[1135630.504821]  el0_svc_common+0x78/0x130
+[1135630.510838]  el0_svc_handler+0x38/0x78
+[1135630.516834]  el0_svc+0x8/0x1b0
+
+kernel/trace/trace_kprobe.c: 1308
+0xffff3df8995039ec <kprobe_perf_func+0x2c>:     ldr     x21, [x24,#120]
+include/linux/compiler.h: 294
+0xffff3df8995039f0 <kprobe_perf_func+0x30>:     ldr     x1, [x21,x0]
+
+kernel/trace/trace_kprobe.c
+1308: head = this_cpu_ptr(call->perf_events);
+1309: if (hlist_empty(head))
+1310: 	return 0;
+
+crash> struct trace_event_call -o
+struct trace_event_call {
+  ...
+  [120] struct hlist_head *perf_events;  //(call->perf_event)
+  ...
+}
+
+crash> struct trace_event_call ffffaf015340e528
+struct trace_event_call {
+  ...
+  perf_events = 0xffff0ad5fa89f088, //this value is correct, but x21 = 0
+  ...
+}
+
+Race Condition Analysis:
+
+The race occurs between kprobe activation and perf_events initialization:
+
+  CPU0                                    CPU1
+  ====                                    ====
+  perf_kprobe_init
+    perf_trace_event_init
+      tp_event->perf_events = list;(1)
+      tp_event->class->reg (2)← KPROBE ACTIVE
+                                          Debug exception triggers
+                                          ...
+                                          kprobe_dispatcher
+                                            kprobe_perf_func (tk->tp.flags & TP_FLAG_PROFILE)
+                                              head = this_cpu_ptr(call->perf_events)(3)
+                                              (perf_events is still NULL)
+
+Problem:
+1. CPU0 executes (1) assigning tp_event->perf_events = list
+2. CPU0 executes (2) enabling kprobe functionality via class->reg()
+3. CPU1 triggers and reaches kprobe_dispatcher
+4. CPU1 checks TP_FLAG_PROFILE - condition passes (step 2 completed)
+5. CPU1 calls kprobe_perf_func() and crashes at (3) because
+   call->perf_events is still NULL
+
+CPU1 sees that kprobe functionality is enabled but does not see that
+perf_events has been assigned.
+
+Add pairing read and write memory barriers to guarantee that if CPU1
+sees that kprobe functionality is enabled, it must also see that
+perf_events has been assigned.
+
+Link: https://lore.kernel.org/all/20251001022025.44626-1-chenyuan_fl@163.com/
+
+Fixes: 50d780560785 ("tracing/kprobes: Add probe handler dispatcher to support perf and ftrace concurrent use")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=031d0cfd7c362817963f
-Tested-by: syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ moved clear_bit from media_devnode_release callback to media_devnode_unregister before put_device ]
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+[ Drop fprobe changes + context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/mc/mc-devnode.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ kernel/trace/trace_kprobe.c |   11 +++++++----
+ kernel/trace/trace_probe.h  |    9 +++++++--
+ kernel/trace/trace_uprobe.c |   12 ++++++++----
+ 3 files changed, 22 insertions(+), 10 deletions(-)
 
---- a/drivers/media/mc/mc-devnode.c
-+++ b/drivers/media/mc/mc-devnode.c
-@@ -50,11 +50,6 @@ static void media_devnode_release(struct
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -1722,14 +1722,15 @@ static int kprobe_register(struct trace_
+ static int kprobe_dispatcher(struct kprobe *kp, struct pt_regs *regs)
  {
- 	struct media_devnode *devnode = to_media_devnode(cd);
+ 	struct trace_kprobe *tk = container_of(kp, struct trace_kprobe, rp.kp);
++	unsigned int flags = trace_probe_load_flag(&tk->tp);
+ 	int ret = 0;
  
--	mutex_lock(&media_devnode_lock);
--	/* Mark device node number as free */
--	clear_bit(devnode->minor, media_devnode_nums);
--	mutex_unlock(&media_devnode_lock);
--
- 	/* Release media_devnode and perform other cleanups as needed. */
- 	if (devnode->release)
- 		devnode->release(devnode);
-@@ -281,6 +276,7 @@ void media_devnode_unregister(struct med
- 	/* Delete the cdev on this minor as well */
- 	cdev_device_del(&devnode->cdev, &devnode->dev);
- 	devnode->media_dev = NULL;
-+	clear_bit(devnode->minor, media_devnode_nums);
- 	mutex_unlock(&media_devnode_lock);
+ 	raw_cpu_inc(*tk->nhit);
  
- 	put_device(&devnode->dev);
+-	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
++	if (flags & TP_FLAG_TRACE)
+ 		kprobe_trace_func(tk, regs);
+ #ifdef CONFIG_PERF_EVENTS
+-	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
++	if (flags & TP_FLAG_PROFILE)
+ 		ret = kprobe_perf_func(tk, regs);
+ #endif
+ 	return ret;
+@@ -1741,6 +1742,7 @@ kretprobe_dispatcher(struct kretprobe_in
+ {
+ 	struct kretprobe *rp = get_kretprobe(ri);
+ 	struct trace_kprobe *tk;
++	unsigned int flags;
+ 
+ 	/*
+ 	 * There is a small chance that get_kretprobe(ri) returns NULL when
+@@ -1753,10 +1755,11 @@ kretprobe_dispatcher(struct kretprobe_in
+ 	tk = container_of(rp, struct trace_kprobe, rp);
+ 	raw_cpu_inc(*tk->nhit);
+ 
+-	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
++	flags = trace_probe_load_flag(&tk->tp);
++	if (flags & TP_FLAG_TRACE)
+ 		kretprobe_trace_func(tk, ri, regs);
+ #ifdef CONFIG_PERF_EVENTS
+-	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
++	if (flags & TP_FLAG_PROFILE)
+ 		kretprobe_perf_func(tk, ri, regs);
+ #endif
+ 	return 0;	/* We don't tweak kernel, so just return 0 */
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -258,16 +258,21 @@ struct event_file_link {
+ 	struct list_head		list;
+ };
+ 
++static inline unsigned int trace_probe_load_flag(struct trace_probe *tp)
++{
++	return smp_load_acquire(&tp->event->flags);
++}
++
+ static inline bool trace_probe_test_flag(struct trace_probe *tp,
+ 					 unsigned int flag)
+ {
+-	return !!(tp->event->flags & flag);
++	return !!(trace_probe_load_flag(tp) & flag);
+ }
+ 
+ static inline void trace_probe_set_flag(struct trace_probe *tp,
+ 					unsigned int flag)
+ {
+-	tp->event->flags |= flag;
++	smp_store_release(&tp->event->flags, tp->event->flags | flag);
+ }
+ 
+ static inline void trace_probe_clear_flag(struct trace_probe *tp,
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -1485,6 +1485,7 @@ static int uprobe_dispatcher(struct upro
+ 	struct uprobe_dispatch_data udd;
+ 	struct uprobe_cpu_buffer *ucb;
+ 	int dsize, esize;
++	unsigned int flags;
+ 	int ret = 0;
+ 
+ 
+@@ -1505,11 +1506,12 @@ static int uprobe_dispatcher(struct upro
+ 	ucb = uprobe_buffer_get();
+ 	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
+ 
+-	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
++	flags = trace_probe_load_flag(&tu->tp);
++	if (flags & TP_FLAG_TRACE)
+ 		ret |= uprobe_trace_func(tu, regs, ucb, dsize);
+ 
+ #ifdef CONFIG_PERF_EVENTS
+-	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
++	if (flags & TP_FLAG_PROFILE)
+ 		ret |= uprobe_perf_func(tu, regs, ucb, dsize);
+ #endif
+ 	uprobe_buffer_put(ucb);
+@@ -1523,6 +1525,7 @@ static int uretprobe_dispatcher(struct u
+ 	struct uprobe_dispatch_data udd;
+ 	struct uprobe_cpu_buffer *ucb;
+ 	int dsize, esize;
++	unsigned int flags;
+ 
+ 	tu = container_of(con, struct trace_uprobe, consumer);
+ 
+@@ -1540,11 +1543,12 @@ static int uretprobe_dispatcher(struct u
+ 	ucb = uprobe_buffer_get();
+ 	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
+ 
+-	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
++	flags = trace_probe_load_flag(&tu->tp);
++	if (flags & TP_FLAG_TRACE)
+ 		uretprobe_trace_func(tu, func, regs, ucb, dsize);
+ 
+ #ifdef CONFIG_PERF_EVENTS
+-	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
++	if (flags & TP_FLAG_PROFILE)
+ 		uretprobe_perf_func(tu, func, regs, ucb, dsize);
+ #endif
+ 	uprobe_buffer_put(ucb);
 
 
 
