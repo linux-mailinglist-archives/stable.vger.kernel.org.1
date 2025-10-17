@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B4ABE9E6E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:32:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB86BE97F3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BCE8B567A12
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 551D91882F42
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504A83346B0;
-	Fri, 17 Oct 2025 15:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B614E32E143;
+	Fri, 17 Oct 2025 15:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKHr5es8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oL8Mswp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A24E32E12D;
-	Fri, 17 Oct 2025 15:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731BF3370FA;
+	Fri, 17 Oct 2025 15:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714279; cv=none; b=tlrwrVI6qeKDiP3Ioib7YMGROC1rxgWmGSzuoUcE9L9eRnY5nTaUVqdeMXU5HA8CAyELKefJc0o/bfyZ8KkIjWNo6ozU2dZAfX3UX9efwYe5v3I+wsQSsHfYsDIwnZxCR2tN3rPu4nV8Otwp4FfiZgIV9qhEZzHbXssIDCggBrw=
+	t=1760713548; cv=none; b=F14u50VdP2LCGHIvT5hfhZOswJ8Gwlbj91+45Y/noDMw77ioCFpG/NsyAb3lD66nsNTaYcGPAFWbfbZnsyyIFvE8YJG0236btfN1RWU7F4wzPOK9M+d3lZS83jgmp0/uvG9KP942epLdq9NbOi2uq0vprdmEaIolJakEIXe47Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714279; c=relaxed/simple;
-	bh=EhoK69NpJJviJNdJPrnaz1bXPq9UtjF5kBpYKLSr5GY=;
+	s=arc-20240116; t=1760713548; c=relaxed/simple;
+	bh=3WmymcjWFrYxK58FQhjgUH3ixEOzZt+lshKSw+ReDPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y3zPahjgGJU5QUf1EFLrpHSoxRYFflO/RyeC1PlmMbLERdMVSNSnvMdQtSHokUZDULw0nxZF1D8jHGfMPplx0nyCOfQZHNMou9rOx2EhCWeTJ+P3eZ5OYYDw6ZY+MEpZMXFldo1HwK5GzTfGvJyxEAIhMEjztiJqN7x/5g5hOQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKHr5es8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89391C4CEE7;
-	Fri, 17 Oct 2025 15:17:58 +0000 (UTC)
+	 MIME-Version; b=YFx/ZubSWgZM3HRHiSQi3uNV9dh46ZyQ+oFzeiC9ir/5asYyyYnk9JcONB7Jx27L5/7oHU1Ody82X66sY6QntXVzeTShRX4KSGZ66R3nlRY0x9lRbzijNuZF6NF0GqXD6hOPwLUOdZEoEKxecUIaJM6mCtQ47eVuWGX/qNbbvWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oL8Mswp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26BDC4CEF9;
+	Fri, 17 Oct 2025 15:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714278;
-	bh=EhoK69NpJJviJNdJPrnaz1bXPq9UtjF5kBpYKLSr5GY=;
+	s=korg; t=1760713548;
+	bh=3WmymcjWFrYxK58FQhjgUH3ixEOzZt+lshKSw+ReDPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKHr5es8PIdOsUJglRyqcpyUBot65UHIwTC6zIZnvfg1Q6IVEbx6Cv83L7c0kO7eB
-	 2cE7DiP1Lb17H+hznDm68j77WmpYnA85IMXm4GHpGeH0ducf2iIsOXXGs570pIBeAW
-	 BHDYPswADFomwAoQrbnSercwtWEl8eJcgz7mbakw=
+	b=0oL8Mswpf9HzTXFjo+WZBHCMexa2W6hBkXzIalqOv4J4mw3Kb/s/Ka2tQhJNkHqIT
+	 y1xy/sRQWbn/yH8Zr2XKulLMTkxfEjWnlrysAHUH4IkmdYF3xVDeePFQ/3+76Dg0z+
+	 8BXPsN9/dZPrESgM3ZXzxJIuOCYs6+ETYpH8oefQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 089/277] arm64: dts: qcom: msm8939: Add missing MDSS reset
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 035/201] drm/vmwgfx: Fix copy-paste typo in validation
 Date: Fri, 17 Oct 2025 16:51:36 +0200
-Message-ID: <20251017145150.385283801@linuxfoundation.org>
+Message-ID: <20251017145136.034187286@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit f73c82c855e186e9b67125e3eee743960320e43c upstream.
+[ Upstream commit 228c5d44dffe8c293cd2d2f0e7ea45e64565b1c4 ]
 
-On most MSM8939 devices, the bootloader already initializes the display to
-show the boot splash screen. In this situation, MDSS is already configured
-and left running when starting Linux. To avoid side effects from the
-bootloader configuration, the MDSS reset can be specified in the device
-tree to start again with a clean hardware state.
+'entry' should be 'val' which is the loop iterator.
 
-The reset for MDSS is currently missing in msm8939.dtsi, which causes
-errors when the MDSS driver tries to re-initialize the registers:
-
- dsi_err_worker: status=6
- dsi_err_worker: status=6
- dsi_err_worker: status=6
- ...
-
-It turns out that we have always indirectly worked around this by building
-the MDSS driver as a module. Before v6.17, the power domain was temporarily
-turned off until the module was loaded, long enough to clear the register
-contents. In v6.17, power domains are not turned off during boot until
-sync_state() happens, so this is no longer working. Even before v6.17 this
-resulted in broken behavior, but notably only when the MDSS driver was
-built-in instead of a module.
-
-Cc: stable@vger.kernel.org
-Fixes: 61550c6c156c ("arm64: dts: qcom: Add msm8939 SoC")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-2-a5c705df0c45@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9e931f2e0970 ("drm/vmwgfx: Refactor resource validation hashtable to use linux/hashtable implementation.")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://lore.kernel.org/r/20250926195427.1405237-2-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8939.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/vmwgfx/vmwgfx_validation.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-@@ -1218,6 +1218,8 @@
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+index a4a11e725d183..946f166d6fc76 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+@@ -656,7 +656,7 @@ void vmw_validation_drop_ht(struct vmw_validation_context *ctx)
+ 		hash_del_rcu(&val->hash.head);
  
- 			power-domains = <&gcc MDSS_GDSC>;
+ 	list_for_each_entry(val, &ctx->resource_ctx_list, head)
+-		hash_del_rcu(&entry->hash.head);
++		hash_del_rcu(&val->hash.head);
  
-+			resets = <&gcc GCC_MDSS_BCR>;
-+
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			#interrupt-cells = <1>;
+ 	ctx->sw_context = NULL;
+ }
+-- 
+2.51.0
+
 
 
 
