@@ -1,175 +1,139 @@
-Return-Path: <stable+bounces-187670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AB2BEAE3C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:52:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF30EBEAF45
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 19:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 32D115696A9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:46:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DECA742DE7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49052E0B5D;
-	Fri, 17 Oct 2025 16:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3592EB85D;
+	Fri, 17 Oct 2025 16:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q1Y+SVCH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PhFcFPPu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8182DF3FD;
-	Fri, 17 Oct 2025 16:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F842EB5D4;
+	Fri, 17 Oct 2025 16:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760719560; cv=none; b=TvrCl2xZJcRDI9QifQ8RImm03dn0Yk1CLOUzdfjYHlsBM2MTRcv2PY+K6lV1GZyKTsr5rPDEv0/noXEHkdeS00zAfkiorHCLXJpom/tZkBrRHaItoXWqJuco6KEHnb5cph9sKb3ZQgsRNbfAT5E2L7JreFTBZsGb4GgLat3BqIY=
+	t=1760720029; cv=none; b=HWerQlJ2Dfli+wm4vWtL3gL9tA+8jgad0FlDlKCrxQsMJrbae8x5r1YqfypmRxz9uMNjZmeTIj6FLd23GsWvopM/g70NSkKZ+FiOTa8AHP8mW5IV4naK7SD/PRUXSBLDXpNwUGSetTIOH8hUdcbytlvNu8OoR/KWUTHoRh3k9xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760719560; c=relaxed/simple;
-	bh=h08opjvAv8/xQo7w63XSdz3MO0fB63xMecJbpuPxEA8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=oCVMC55fmBzYOaGek/W0/CI6StuCNLyx7xHiLZ1TYknnrQsddnX7Oi+3VaGl8rkMjFM91crQTf/iZIMaAy8wjHEpEcx0MaFxmZI6DAeVZJigupEa3tlO/RUkwwavDqcCJU6IvTYbj7lvI5mriA1TyYEnNFWzpCW193j0o3Ht1i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q1Y+SVCH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E8BC4CEE7;
-	Fri, 17 Oct 2025 16:45:59 +0000 (UTC)
+	s=arc-20240116; t=1760720029; c=relaxed/simple;
+	bh=4A/Gom1S5Sj6N0gvANEskHHVlTQ6OjuhoCGjWOpny8o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YYWv/fhGInKovXLpRNnF0M8vZGBAVWzJPhZK1QtH1e3sZWRZGLrtlS+4RnwfuW8HF+oeqgJ4maf4bo0Ci56fFA5Rj3hVXBwgmkwq4RchsM13ibq4IskMF6I8eYE5iqgG7jvy9o+ingcC9HlkRVUTJVxdFRok3Uj9atdD3QeJFpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PhFcFPPu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58273C4CEE7;
+	Fri, 17 Oct 2025 16:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760719560;
-	bh=h08opjvAv8/xQo7w63XSdz3MO0fB63xMecJbpuPxEA8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=q1Y+SVCHTzDrmoW2qRAb6zFIadjOKdsDbR8JKZ2gD3h8bYtt3wiqJKMhrjREHnDbW
-	 5mA42qA94tol3Ub4cYxKNUjwi2nVNZld535l/Y4+Q1ekr/r780LFdm5LRNk9Bn185N
-	 peLLCqcRx1Tl7ewnpgeOevUX3uygIIHa3mxslR+docEKkatTZaz12dhCc1jK9Y8b8D
-	 KMAsLQ5/F2laMwfOgUcEpeeIfCZqSvRKW5CaaGKdJD7GH3mKrwXe1iT8/nIN4NSil4
-	 fiyC76ZMOqbXLBgdTuHSxNEFbZ3mvyUXH4q6sKyIOSmz9/tuP7KLrx8veMx05oS2Kh
-	 OCHBzteTI9+mw==
-Date: Fri, 17 Oct 2025 11:45:58 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	Simon Xue <xxm@rock-chips.com>, Damien Le Moal <dlemoal@kernel.org>,
-	Dragan Simic <dsimic@manjaro.org>, FUKAUMI Naoki <naoki@radxa.com>,
-	Diederik de Haas <diederik@cknow-tech.com>, stable@vger.kernel.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v3] PCI: dw-rockchip: Prevent advertising L1 Substates
- support
-Message-ID: <20251017164558.GA1034609@bhelgaas>
+	s=k20201202; t=1760720029;
+	bh=4A/Gom1S5Sj6N0gvANEskHHVlTQ6OjuhoCGjWOpny8o=;
+	h=From:Subject:Date:To:Cc:From;
+	b=PhFcFPPuWpArYs2fd8b6H1rSW+ftbvDWdHwUJaENOBuyTn6SwCJLlDS08yLnnQEme
+	 rWX8T/hJ2lnGtRy/R5d6GlNqchNhmjWQ+4qikYHuV27NBO31J75YpD4pI84yAIUL7p
+	 P9fGsNFuwx7RxKi6HWquXHloTdpTwDafDFWSjomL1COL7Cm12FSTQY6bl4dUj7kzfj
+	 is63CifcoVuMrWZcQ8ZZscFw/8fMQNfn8VCCuRmjsINjTyek/UTMAamNB+0EM5jTlW
+	 dmJ5hnZhf3mss1Glf0LSdpuVT5UO9jzFGIPlcTQgat7A2o5MYinKqkqlIw/Z1eEjDM
+	 9p1AfukaLIXkw==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.10.y 0/3] v5.10: fix build with GCC 15
+Date: Fri, 17 Oct 2025 18:53:24 +0200
+Message-Id: <20251017-v5-10-gcc-15-v1-0-cdbbfe1a2100@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251017163252.598812-2-cassel@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIR08mgC/x2MQQqAMAzAviI9W2mHY+JXxMOYnfaisoEo4t+dH
+ hNIbsiSVDL01Q1JDs26rQW4riAsfp0FdSoMhoxlYoeHRSacQ0C26KfPRte10UFJ9iRRz383gG2
+ YmgvG53kBqftayGYAAAA=
+X-Change-ID: 20251017-v5-10-gcc-15-ad2510f784f7
+To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Sasha Levin <sashal@kernel.org>
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ Alexey Dobriyan <adobriyan@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
+ "H. Peter Anvin (Intel)" <hpa@zytor.com>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, Ard Biesheuvel <ardb@kernel.org>, 
+ Arnd Bergmann <arnd@arndb.de>, Douglas Raillard <douglas.raillard@arm.com>, 
+ "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, 
+ "Steven Rostedt (Google)" <rostedt@goodmis.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2473; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=4A/Gom1S5Sj6N0gvANEskHHVlTQ6OjuhoCGjWOpny8o=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDI+lUzNDq7cGut28RjXrPXOlyqZV/24/uVafmECY9KOO
+ 6vi72uVdpSyMIhxMciKKbJIt0Xmz3xexVvi5WcBM4eVCWQIAxenAEzEaD8jw2bG1oh7uaUeHTdq
+ qy6qykws7pVujD6mWua93FG5TPzvDkaGjweyF/h9nzo7rPiFXUfP5e/mhvtls5MEG747C4aw7pn
+ DCQA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-On Fri, Oct 17, 2025 at 06:32:53PM +0200, Niklas Cassel wrote:
-> The L1 substates support requires additional steps to work, namely:
-> -Proper handling of the CLKREQ# sideband signal. (It is mostly handled by
->  hardware, but software still needs to set the clkreq fields in the
->  PCIE_CLIENT_POWER_CON register to match the hardware implementation.)
-> -Program the frequency of the aux clock into the
->  DSP_PCIE_PL_AUX_CLK_FREQ_OFF register. (During L1 substates the core_clk
->  is turned off and the aux_clk is used instead.)
-> 
-> These steps are currently missing from the driver.
-> 
-> For more details, see section '18.6.6.4 L1 Substate' in the RK3658 TRM 1.1
-> Part 2, or section '11.6.6.4 L1 Substate' in the RK3588 TRM 1.0 Part2.
-> 
-> While this has always been a problem when using e.g.
-> CONFIG_PCIEASPM_POWER_SUPERSAVE=y, or when modifying
-> /sys/bus/pci/devices/.../link/l1_2_aspm, the lacking driver support for L1
-> substates became more apparent after commit f3ac2ff14834 ("PCI/ASPM:
-> Enable all ClockPM and ASPM states for devicetree platforms"), which
-> enabled ASPM also for CONFIG_PCIEASPM_DEFAULT=y.
-> 
-> When using e.g. an NVMe drive connected to the PCIe controller, the
-> problem will be seen as:
-> nvme nvme0: controller is down; will reset: CSTS=0xffffffff, PCI_STATUS=0x10
-> nvme nvme0: Does your device have a faulty power saving mode enabled?
-> nvme nvme0: Try "nvme_core.default_ps_max_latency_us=0 pcie_aspm=off pcie_port_pm=off" and report a bug
-> 
-> Thus, prevent advertising L1 Substates support until proper driver support
-> is added.
+This kernel version doesn't build with GCC 15:
 
-I think Mani is planning a change so we don't try to enable L1
-Substates by default, which should avoid the regression even without a
-patch like this.
+  In file included from include/uapi/linux/posix_types.h:5,
+                   from include/uapi/linux/types.h:14,
+                   from include/linux/types.h:6,
+                   from arch/x86/realmode/rm/wakeup.h:11,
+                   from arch/x86/realmode/rm/wakemain.c:2:
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:30:33: error: 'bool' cannot be defined via 'typedef'
+     30 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:30:33: note: 'bool' is a keyword with '-std=c23' onwards
+  include/linux/types.h:30:1: warning: useless type name in empty declaration
+     30 | typedef _Bool                   bool;
+        | ^~~~~~~
 
-That will still leave the existing CONFIG_PCIEASPM_POWER_SUPERSAVE=y
-and sysfs l1_1_aspm problems.
+I initially fixed this by adding -std=gnu11 in arch/x86/Makefile, then I
+realised this fix was already done in an upstream commit, created before
+the GCC 15 release and not mentioning the error I had. This is the first
+patch.
 
-And we'll need to figure out a way to allow L1.x to be enabled based
-on 'supports-clkreq' and possibly other info.  That would likely be
-v6.19 material since it's new functionality.
+When I was investigating my error, I noticed other commits were already
+backported to stable versions. They were all adding -std=gnu11 in
+different Makefiles. In their commit message, they were mentioning
+'gnu11' was picked to use the same as the one from the main Makefile.
+But this is not the case in this kernel version. Patch 2 fixes that.
 
-> Cc: stable@vger.kernel.org
-> Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
-> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
-> Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
-> ---
-> Changes since v2:
-> -Improve commit message (Bjorn)
-> 
->  drivers/pci/controller/dwc/pcie-dw-rockchip.c | 21 +++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> index 3e2752c7dd09..84f882abbca5 100644
-> --- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> +++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> @@ -200,6 +200,25 @@ static bool rockchip_pcie_link_up(struct dw_pcie *pci)
->  	return FIELD_GET(PCIE_LINKUP_MASK, val) == PCIE_LINKUP;
->  }
->  
-> +/*
-> + * See e.g. section '11.6.6.4 L1 Substate' in the RK3588 TRM V1.0 for the steps
-> + * needed to support L1 substates. Currently, not a single rockchip platform
-> + * performs these steps, so disable L1 substates until there is proper support.
-> + */
-> +static void rockchip_pcie_disable_l1sub(struct dw_pcie *pci)
-> +{
-> +	u32 cap, l1subcap;
-> +
-> +	cap = dw_pcie_find_ext_capability(pci, PCI_EXT_CAP_ID_L1SS);
-> +	if (cap) {
-> +		l1subcap = dw_pcie_readl_dbi(pci, cap + PCI_L1SS_CAP);
-> +		l1subcap &= ~(PCI_L1SS_CAP_L1_PM_SS | PCI_L1SS_CAP_ASPM_L1_1 |
-> +			      PCI_L1SS_CAP_ASPM_L1_2 | PCI_L1SS_CAP_PCIPM_L1_1 |
-> +			      PCI_L1SS_CAP_PCIPM_L1_2);
-> +		dw_pcie_writel_dbi(pci, cap + PCI_L1SS_CAP, l1subcap);
-> +	}
-> +}
-> +
->  static void rockchip_pcie_enable_l0s(struct dw_pcie *pci)
->  {
->  	u32 cap, lnkcap;
-> @@ -264,6 +283,7 @@ static int rockchip_pcie_host_init(struct dw_pcie_rp *pp)
->  	irq_set_chained_handler_and_data(irq, rockchip_pcie_intx_handler,
->  					 rockchip);
->  
-> +	rockchip_pcie_disable_l1sub(pci);
->  	rockchip_pcie_enable_l0s(pci);
->  
->  	return 0;
-> @@ -301,6 +321,7 @@ static void rockchip_pcie_ep_init(struct dw_pcie_ep *ep)
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
->  	enum pci_barno bar;
->  
-> +	rockchip_pcie_disable_l1sub(pci);
->  	rockchip_pcie_enable_l0s(pci);
->  	rockchip_pcie_ep_hide_broken_ats_cap_rk3588(ep);
->  
-> -- 
-> 2.51.0
-> 
+Finally, I noticed an extra warning that I didn't have in v5.15. Patch 3
+fixes that.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Alexey Dobriyan (1):
+      x86/boot: Compile boot code with -std=gnu11 too
+
+Matthieu Baerts (NGI0) (2):
+      arch: back to -std=gnu89 in < v5.18
+      tracing: fix declaration-after-statement warning
+
+ arch/parisc/boot/compressed/Makefile  | 2 +-
+ arch/s390/Makefile                    | 2 +-
+ arch/s390/purgatory/Makefile          | 2 +-
+ arch/x86/Makefile                     | 2 +-
+ arch/x86/boot/compressed/Makefile     | 2 +-
+ drivers/firmware/efi/libstub/Makefile | 2 +-
+ kernel/trace/trace_events_synth.c     | 3 ++-
+ 7 files changed, 8 insertions(+), 7 deletions(-)
+---
+base-commit: a32db271d59d9f35f3a937ac27fcc2db1e029cdc
+change-id: 20251017-v5-10-gcc-15-ad2510f784f7
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
