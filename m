@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668B3BE9B89
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D877FBE9D51
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3C7CE5871D5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 821BB1AE26C5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C5232E141;
-	Fri, 17 Oct 2025 15:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFE75695;
+	Fri, 17 Oct 2025 15:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGdfVGv/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+gmTOyw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9496033711F;
-	Fri, 17 Oct 2025 15:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF6D2745E;
+	Fri, 17 Oct 2025 15:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714008; cv=none; b=VYvaQSm0n1LYD8BXTqDJmC4Vv4neTj0TNwP2e5ru6E25ZAfwJOwDqKxcPsNVdGfizOICsQjQpJELBmMQCT/bw/GvhxKNbMHQ9xBPL8vq6WgCJWPqnelz+zDAXetSLc9+f//rITXbyCL/l0sANWMzlVM74pincUZwIIkFjoox37w=
+	t=1760714742; cv=none; b=brfzoHLmEpQ1VecSC723s6usXor7H0eZjDuB+lbn90LwmbLfPH8khkTXrBHBozGKPlY+npfJl7jK/mPSb4W4YT87JYWUmaurUzoiQ5u6Q2Ief601Dhap8CQRBmB7Un9O6gzo6zYAs+Cy3e7c9lLfJ7Q7+A6QkRm7N3sF55o5SLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714008; c=relaxed/simple;
-	bh=SkkR5XJjAMLu1AcBgcuk07V5A/Rg2H3h4egqb2ZC6F8=;
+	s=arc-20240116; t=1760714742; c=relaxed/simple;
+	bh=IT6ch72AK/M0hGNW12mBy/P3vgIpD5lDkYY/7qWb5Gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hk75V+uoVhXwEplufbNYukA0yGvzyEvl8bZodWLcysD083UypMNb/CSBTs9UFw7inhukUcgCtqG1a23jt71E1nRpdnzsCyUb0tPvE9BStjrcn1hbD/gy3UKlrld0mRSxZ2gyTPAkU2biph99VvWrjjdAnIMxa2x1zVT5aMp299k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGdfVGv/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D5DC4CEE7;
-	Fri, 17 Oct 2025 15:13:27 +0000 (UTC)
+	 MIME-Version; b=qWufuHExQx79v0kY1U3KwWIMlqKNZNrsA/vD4fDK/UMcYSObWAPiR9romNNpN+/3UkZqXAW1Pn0500XV5DEvwmDNxlLd9NPJBYkFIsow5gkyPND8WytQCGP32B5wMimHzc4hivDvsTeCnuIrOYd36letBFhuzas4zMPzPAXgb9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+gmTOyw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027B7C4CEE7;
+	Fri, 17 Oct 2025 15:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714008;
-	bh=SkkR5XJjAMLu1AcBgcuk07V5A/Rg2H3h4egqb2ZC6F8=;
+	s=korg; t=1760714742;
+	bh=IT6ch72AK/M0hGNW12mBy/P3vgIpD5lDkYY/7qWb5Gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGdfVGv/20SITej/q5TTff9wslGqKPqI0pUkqpIRjAQoL6F6XrOibVGAMQdpBqNXf
-	 nPhXKgGH5riaKJnHDLqKTLjX1Ue+z5oRD8Dxs7DXxMUt/6gmkm2VRC+RHKk3tBU3PF
-	 XTNAy8+WhuIIdj708csTBYmASUpmeQoqDdB56kUM=
+	b=l+gmTOywu/nS6z3NiY0QlfZNkFAqAsW8wS3457lNjS1dlNCVHATpY148nxHX8YVz1
+	 oKBnmJnkhYhx//ioC4rjkbGZ6g+ihjWOlFpX5/AFtFOJu+sCseVGv+vcLvD8djb66y
+	 wmcivVcXSucPnaMTc6AdgCqPfoZxuS4j/54XNA0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lichen Liu <lichliu@redhat.com>,
-	Rob Landley <rob@landley.net>,
-	Christian Brauner <brauner@kernel.org>,
+	GuangFei Luo <luogf2025@163.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 197/201] fs: Add initramfs_options to set initramfs mount options
+Subject: [PATCH 6.12 251/277] ACPI: battery: Add synchronization between interface updates
 Date: Fri, 17 Oct 2025 16:54:18 +0200
-Message-ID: <20251017145141.998232581@linuxfoundation.org>
+Message-ID: <20251017145156.316690893@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +60,221 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lichen Liu <lichliu@redhat.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 278033a225e13ec21900f0a92b8351658f5377f2 ]
+[ Upstream commit 399dbcadc01ebf0035f325eaa8c264f8b5cd0a14 ]
 
-When CONFIG_TMPFS is enabled, the initial root filesystem is a tmpfs.
-By default, a tmpfs mount is limited to using 50% of the available RAM
-for its content. This can be problematic in memory-constrained
-environments, particularly during a kdump capture.
+There is no synchronization between different code paths in the ACPI
+battery driver that update its sysfs interface or its power supply
+class device interface.  In some cases this results to functional
+failures due to race conditions.
 
-In a kdump scenario, the capture kernel boots with a limited amount of
-memory specified by the 'crashkernel' parameter. If the initramfs is
-large, it may fail to unpack into the tmpfs rootfs due to insufficient
-space. This is because to get X MB of usable space in tmpfs, 2*X MB of
-memory must be available for the mount. This leads to an OOM failure
-during the early boot process, preventing a successful crash dump.
+One example of this is when two ACPI notifications:
 
-This patch introduces a new kernel command-line parameter,
-initramfs_options, which allows passing specific mount options directly
-to the rootfs when it is first mounted. This gives users control over
-the rootfs behavior.
+  - ACPI_BATTERY_NOTIFY_STATUS (0x80)
+  - ACPI_BATTERY_NOTIFY_INFO   (0x81)
 
-For example, a user can now specify initramfs_options=size=75% to allow
-the tmpfs to use up to 75% of the available memory. This can
-significantly reduce the memory pressure for kdump.
+are triggered (by the platform firmware) in a row with a little delay
+in between after removing and reinserting a laptop battery.  Both
+notifications cause acpi_battery_update() to be called and if the delay
+between them is sufficiently small, sysfs_add_battery() can be re-entered
+before battery->bat is set which leads to a duplicate sysfs entry error:
 
-Consider a practical example:
+ sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
+ CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
+ Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
+ Workqueue: kacpi_notify acpi_os_execute_deferred
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x5d/0x80
+  sysfs_warn_dup.cold+0x17/0x23
+  sysfs_create_dir_ns+0xce/0xe0
+  kobject_add_internal+0xba/0x250
+  kobject_add+0x96/0xc0
+  ? get_device_parent+0xde/0x1e0
+  device_add+0xe2/0x870
+  __power_supply_register.part.0+0x20f/0x3f0
+  ? wake_up_q+0x4e/0x90
+  sysfs_add_battery+0xa4/0x1d0 [battery]
+  acpi_battery_update+0x19e/0x290 [battery]
+  acpi_battery_notify+0x50/0x120 [battery]
+  acpi_ev_notify_dispatch+0x49/0x70
+  acpi_os_execute_deferred+0x1a/0x30
+  process_one_work+0x177/0x330
+  worker_thread+0x251/0x390
+  ? __pfx_worker_thread+0x10/0x10
+  kthread+0xd2/0x100
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x34/0x50
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
 
-To unpack a 48MB initramfs, the tmpfs needs 48MB of usable space. With
-the default 50% limit, this requires a memory pool of 96MB to be
-available for the tmpfs mount. The total memory requirement is therefore
-approximately: 16MB (vmlinuz) + 48MB (loaded initramfs) + 48MB (unpacked
-kernel) + 96MB (for tmpfs) + 12MB (runtime overhead) ≈ 220MB.
+There are also other scenarios in which analogous issues may occur.
 
-By using initramfs_options=size=75%, the memory pool required for the
-48MB tmpfs is reduced to 48MB / 0.75 = 64MB. This reduces the total
-memory requirement by 32MB (96MB - 64MB), allowing the kdump to succeed
-with a smaller crashkernel size, such as 192MB.
+Address this by using a common lock in all of the code paths leading
+to updates of driver interfaces: ACPI Notify () handler, system resume
+callback and post-resume notification, device addition and removal.
 
-An alternative approach of reusing the existing rootflags parameter was
-considered. However, a new, dedicated initramfs_options parameter was
-chosen to avoid altering the current behavior of rootflags (which
-applies to the final root filesystem) and to prevent any potential
-regressions.
+This new lock replaces sysfs_lock that has been used only in
+sysfs_remove_battery() which now is going to be always called under
+the new lock, so it doesn't need any internal locking any more.
 
-Also add documentation for the new kernel parameter "initramfs_options"
-
-This approach is inspired by prior discussions and patches on the topic.
-Ref: https://www.lightofdawn.org/blog/?viewDetailed=00128
-Ref: https://landley.net/notes-2015.html#01-01-2015
-Ref: https://lkml.org/lkml/2021/6/29/783
-Ref: https://www.kernel.org/doc/html/latest/filesystems/ramfs-rootfs-initramfs.html#what-is-rootfs
-
-Signed-off-by: Lichen Liu <lichliu@redhat.com>
-Link: https://lore.kernel.org/20250815121459.3391223-1-lichliu@redhat.com
-Tested-by: Rob Landley <rob@landley.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 10666251554c ("ACPI: battery: Install Notify() handler directly")
+Closes: https://lore.kernel.org/linux-acpi/20250910142653.313360-1-luogf2025@163.com/
+Reported-by: GuangFei Luo <luogf2025@163.com>
+Tested-by: GuangFei Luo <luogf2025@163.com>
+Cc: 6.6+ <stable@vger.kernel.org> # 6.6+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  3 +++
- fs/namespace.c                                  | 11 ++++++++++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/acpi/battery.c |   43 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 29 insertions(+), 14 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 60d48ebbc2cb0..fff3ca50c6c26 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5638,6 +5638,9 @@
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -92,7 +92,7 @@ enum {
  
- 	rootflags=	[KNL] Set root filesystem mount option string
+ struct acpi_battery {
+ 	struct mutex lock;
+-	struct mutex sysfs_lock;
++	struct mutex update_lock;
+ 	struct power_supply *bat;
+ 	struct power_supply_desc bat_desc;
+ 	struct acpi_device *device;
+@@ -903,15 +903,12 @@ static int sysfs_add_battery(struct acpi
  
-+	initramfs_options= [KNL]
-+                        Specify mount options for for the initramfs mount.
+ static void sysfs_remove_battery(struct acpi_battery *battery)
+ {
+-	mutex_lock(&battery->sysfs_lock);
+-	if (!battery->bat) {
+-		mutex_unlock(&battery->sysfs_lock);
++	if (!battery->bat)
+ 		return;
+-	}
 +
- 	rootfstype=	[KNL] Set root filesystem type
- 
- 	rootwait	[KNL] Wait (indefinitely) for root device to show up.
-diff --git a/fs/namespace.c b/fs/namespace.c
-index f79226472251b..646d9e7d41ee8 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -64,6 +64,15 @@ static int __init set_mphash_entries(char *str)
+ 	battery_hook_remove_battery(battery);
+ 	power_supply_unregister(battery->bat);
+ 	battery->bat = NULL;
+-	mutex_unlock(&battery->sysfs_lock);
  }
- __setup("mphash_entries=", set_mphash_entries);
  
-+static char * __initdata initramfs_options;
-+static int __init initramfs_options_setup(char *str)
+ static void find_battery(const struct dmi_header *dm, void *private)
+@@ -1071,6 +1068,9 @@ static void acpi_battery_notify(acpi_han
+ 
+ 	if (!battery)
+ 		return;
++
++	guard(mutex)(&battery->update_lock);
++
+ 	old = battery->bat;
+ 	/*
+ 	 * On Acer Aspire V5-573G notifications are sometimes triggered too
+@@ -1093,21 +1093,22 @@ static void acpi_battery_notify(acpi_han
+ }
+ 
+ static int battery_notify(struct notifier_block *nb,
+-			       unsigned long mode, void *_unused)
++			  unsigned long mode, void *_unused)
+ {
+ 	struct acpi_battery *battery = container_of(nb, struct acpi_battery,
+ 						    pm_nb);
+-	int result;
+ 
+-	switch (mode) {
+-	case PM_POST_HIBERNATION:
+-	case PM_POST_SUSPEND:
++	if (mode == PM_POST_SUSPEND || mode == PM_POST_HIBERNATION) {
++		guard(mutex)(&battery->update_lock);
++
+ 		if (!acpi_battery_present(battery))
+ 			return 0;
+ 
+ 		if (battery->bat) {
+ 			acpi_battery_refresh(battery);
+ 		} else {
++			int result;
++
+ 			result = acpi_battery_get_info(battery);
+ 			if (result)
+ 				return result;
+@@ -1119,7 +1120,6 @@ static int battery_notify(struct notifie
+ 
+ 		acpi_battery_init_alarm(battery);
+ 		acpi_battery_get_state(battery);
+-		break;
+ 	}
+ 
+ 	return 0;
+@@ -1197,6 +1197,8 @@ static int acpi_battery_update_retry(str
+ {
+ 	int retry, ret;
+ 
++	guard(mutex)(&battery->update_lock);
++
+ 	for (retry = 5; retry; retry--) {
+ 		ret = acpi_battery_update(battery, false);
+ 		if (!ret)
+@@ -1207,6 +1209,13 @@ static int acpi_battery_update_retry(str
+ 	return ret;
+ }
+ 
++static void sysfs_battery_cleanup(struct acpi_battery *battery)
 +{
-+	initramfs_options = str;
-+	return 1;
++	guard(mutex)(&battery->update_lock);
++
++	sysfs_remove_battery(battery);
 +}
 +
-+__setup("initramfs_options=", initramfs_options_setup);
+ static int acpi_battery_add(struct acpi_device *device)
+ {
+ 	int result = 0;
+@@ -1229,7 +1238,7 @@ static int acpi_battery_add(struct acpi_
+ 	if (result)
+ 		return result;
+ 
+-	result = devm_mutex_init(&device->dev, &battery->sysfs_lock);
++	result = devm_mutex_init(&device->dev, &battery->update_lock);
+ 	if (result)
+ 		return result;
+ 
+@@ -1259,7 +1268,7 @@ fail_pm:
+ 	device_init_wakeup(&device->dev, 0);
+ 	unregister_pm_notifier(&battery->pm_nb);
+ fail:
+-	sysfs_remove_battery(battery);
++	sysfs_battery_cleanup(battery);
+ 
+ 	return result;
+ }
+@@ -1278,6 +1287,9 @@ static void acpi_battery_remove(struct a
+ 
+ 	device_init_wakeup(&device->dev, 0);
+ 	unregister_pm_notifier(&battery->pm_nb);
 +
- static u64 event;
- static DEFINE_IDA(mnt_id_ida);
- static DEFINE_IDA(mnt_group_ida);
-@@ -4728,7 +4737,7 @@ static void __init init_mount_tree(void)
- 	struct mnt_namespace *ns;
- 	struct path root;
++	guard(mutex)(&battery->update_lock);
++
+ 	sysfs_remove_battery(battery);
+ }
  
--	mnt = vfs_kern_mount(&rootfs_fs_type, 0, "rootfs", NULL);
-+	mnt = vfs_kern_mount(&rootfs_fs_type, 0, "rootfs", initramfs_options);
- 	if (IS_ERR(mnt))
- 		panic("Can't create rootfs");
+@@ -1295,6 +1307,9 @@ static int acpi_battery_resume(struct de
+ 		return -EINVAL;
  
--- 
-2.51.0
-
+ 	battery->update_time = 0;
++
++	guard(mutex)(&battery->update_lock);
++
+ 	acpi_battery_update(battery, true);
+ 	return 0;
+ }
 
 
 
