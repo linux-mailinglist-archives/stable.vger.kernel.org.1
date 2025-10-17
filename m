@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-186567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B43BE9D14
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8A9BE961A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0BA53B141B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A7411890BAF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3849632C930;
-	Fri, 17 Oct 2025 15:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2B723EA9E;
+	Fri, 17 Oct 2025 14:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBR3ddUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtN/93Ne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF682F6932;
-	Fri, 17 Oct 2025 15:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2CA60DCF;
+	Fri, 17 Oct 2025 14:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713608; cv=none; b=TZ4M4jERPtvzytNms85zgTZpXWGYOpPO/egRJAikW1eyEldbiIR1IPh+DZRNstxwjsWPrm8G4ruOUoP0JjnhfE0z9Js1D1tCJwrvI//wrBm4i/CwnGUVeA0PyyvkfS6ysLTexBKgakyqUqg0ZtxN0xJypGAzCK2TRf1SbXn4zco=
+	t=1760713077; cv=none; b=QlzVEWo+6caOrtJo/EMbLVnAX9+Nsxzzxt0pKtsqWvff/eaPq/dGaFuMPaJTv6vDvUemdJUT1TARawHHWk0cPr/Tx5UGZHIMyxX/pz+hmhVgtwlvo7XpwY6Sc0xXe7E8L4ytON4xuMN8E8ar+Y4cSCyHSx/nnOwXFY+qLHRhDL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713608; c=relaxed/simple;
-	bh=/vJR0gDiwgAyETcdfmtgWBt/zXy9Q6NKAs91LKOgoxk=;
+	s=arc-20240116; t=1760713077; c=relaxed/simple;
+	bh=zTMz+VEPO0Yh/GOYti26W0P5e9hAo6wN+rKUy1bk+0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b04upBc55XJcHn4gU++r5N0j358MjoeokGcfQW8+psTwiJ7HwJtd+IyZL6LvYBK8Ashy3gHNKeAldiOaUSZzt1NNFhBAVKkod3c2EH29EakYHZEs7lJnPvQrGfO9m50ygBE63jgXq0I3IyChSJLgTHDnLZ2esus0cjUmt/rSI4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBR3ddUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57101C4CEE7;
-	Fri, 17 Oct 2025 15:06:47 +0000 (UTC)
+	 MIME-Version; b=Srra2iSjNyEPyT1or9iVA4LK4MrQssi4txhBri9JYmLyq/xi7w7yefi660iyK924yZvXoKP0dEu5wwzfCCOenI/TQQkKjS0VpIP04BbhNQ3Mwp7Yx7v5swO0TEATBrjRg5btn79zXQEn+VFEQ/MYFrM5IOElKekAuT5XFhTym7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtN/93Ne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684FFC4CEF9;
+	Fri, 17 Oct 2025 14:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713607;
-	bh=/vJR0gDiwgAyETcdfmtgWBt/zXy9Q6NKAs91LKOgoxk=;
+	s=korg; t=1760713076;
+	bh=zTMz+VEPO0Yh/GOYti26W0P5e9hAo6wN+rKUy1bk+0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBR3ddUjFV2J/u0ELy/f172PuVu2arLjqAcsID6/w7/uxU3ZNDBR0C+1BL6V3M3sE
-	 zxpv2Mq+w93tOGKexD777mx/zcRIdwp96aitUunQKPwHS5U/fcJflRhg3g1usV9TBr
-	 +I2//cz0HEvVC1iOHd2jPmd2ZdgnsfMl2p7J+VTE=
+	b=HtN/93NeqzR1njbuDeTpHPXlpHYNJfcL0AfU/RP/Z9y45FZpKTPFcRDqW54IReWhT
+	 REVuIn0J99tTVPjSyyFgkWlK2Q3e6Ixzmhfoy5R8zlj4vOqD72mS3TnY6mWIn/jJ6o
+	 RQ3VyIZ3apgC1BJY3rRXR6cPn1T/bhNNYvLdhG3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Le Chen <tom2cat@sjtu.edu.cn>,
-	Alexei Starovoitov <ast@kernel.org>,
-	KaFai Wan <kafai.wan@linux.dev>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	Harini T <harini.t@amd.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/201] bpf: Avoid RCU context warning when unpinning htab with internal structs
+Subject: [PATCH 6.1 039/168] mailbox: zynqmp-ipi: Remove dev.parent check in zynqmp_ipi_free_mboxes
 Date: Fri, 17 Oct 2025 16:51:58 +0200
-Message-ID: <20251017145136.838531747@linuxfoundation.org>
+Message-ID: <20251017145130.458405973@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: KaFai Wan <kafai.wan@linux.dev>
+From: Harini T <harini.t@amd.com>
 
-[ Upstream commit 4f375ade6aa9f37fd72d7a78682f639772089eed ]
+[ Upstream commit 019e3f4550fc7d319a7fd03eff487255f8e8aecd ]
 
-When unpinning a BPF hash table (htab or htab_lru) that contains internal
-structures (timer, workqueue, or task_work) in its values, a BUG warning
-is triggered:
- BUG: sleeping function called from invalid context at kernel/bpf/hashtab.c:244
- in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 14, name: ksoftirqd/0
- ...
+The ipi_mbox->dev.parent check is unreliable proxy for registration
+status as it fails to protect against probe failures that occur after
+the parent is assigned but before device_register() completes.
 
-The issue arises from the interaction between BPF object unpinning and
-RCU callback mechanisms:
-1. BPF object unpinning uses ->free_inode() which schedules cleanup via
-   call_rcu(), deferring the actual freeing to an RCU callback that
-   executes within the RCU_SOFTIRQ context.
-2. During cleanup of hash tables containing internal structures,
-   htab_map_free_internal_structs() is invoked, which includes
-   cond_resched() or cond_resched_rcu() calls to yield the CPU during
-   potentially long operations.
+device_is_registered() is the canonical and robust method to verify the
+registration status.
 
-However, cond_resched() or cond_resched_rcu() cannot be safely called from
-atomic RCU softirq context, leading to the BUG warning when attempting
-to reschedule.
+Remove ipi_mbox->dev.parent check in zynqmp_ipi_free_mboxes().
 
-Fix this by changing from ->free_inode() to ->destroy_inode() and rename
-bpf_free_inode() to bpf_destroy_inode() for BPF objects (prog, map, link).
-This allows direct inode freeing without RCU callback scheduling,
-avoiding the invalid context warning.
-
-Reported-by: Le Chen <tom2cat@sjtu.edu.cn>
-Closes: https://lore.kernel.org/all/1444123482.1827743.1750996347470.JavaMail.zimbra@sjtu.edu.cn/
-Fixes: 68134668c17f ("bpf: Add map side support for bpf timers.")
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: KaFai Wan <kafai.wan@linux.dev>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20251008102628.808045-2-kafai.wan@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
+Signed-off-by: Harini T <harini.t@amd.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/inode.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mailbox/zynqmp-ipi-mailbox.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
-index 99d0625b6c828..9a9630adcba4f 100644
---- a/kernel/bpf/inode.c
-+++ b/kernel/bpf/inode.c
-@@ -607,7 +607,7 @@ static int bpf_show_options(struct seq_file *m, struct dentry *root)
- 	return 0;
+diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
+index 406821a78d510..6a48b832950db 100644
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -618,10 +618,8 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
+ 	i = pdata->num_mboxes;
+ 	for (; i >= 0; i--) {
+ 		ipi_mbox = &pdata->ipi_mboxes[i];
+-		if (ipi_mbox->dev.parent) {
+-			if (device_is_registered(&ipi_mbox->dev))
+-				device_unregister(&ipi_mbox->dev);
+-		}
++		if (device_is_registered(&ipi_mbox->dev))
++			device_unregister(&ipi_mbox->dev);
+ 	}
  }
  
--static void bpf_free_inode(struct inode *inode)
-+static void bpf_destroy_inode(struct inode *inode)
- {
- 	enum bpf_type type;
- 
-@@ -622,7 +622,7 @@ static const struct super_operations bpf_super_ops = {
- 	.statfs		= simple_statfs,
- 	.drop_inode	= generic_delete_inode,
- 	.show_options	= bpf_show_options,
--	.free_inode	= bpf_free_inode,
-+	.destroy_inode	= bpf_destroy_inode,
- };
- 
- enum {
 -- 
 2.51.0
 
