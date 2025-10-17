@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-187588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62E3BEACD4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:39:19 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 860FCBEA7DD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 765D87C55BB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5735B5A5109
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68761330B35;
-	Fri, 17 Oct 2025 15:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979C02F12D2;
+	Fri, 17 Oct 2025 15:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxr3eUHn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lnc+0s0x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272F6330B2E;
-	Fri, 17 Oct 2025 15:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508DD2F12A7;
+	Fri, 17 Oct 2025 15:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716504; cv=none; b=uYtQ49EaVZsdEETRb5OrUpSpqcAiDQl1eXk7DEJ30fBHe9yZskhkSj9xIzfgVAqQZL7ynxnZAFF8/EvsbEbf1bvn2IOTc2Tfa9SNo1tbfu7MSHSO4WOlEZ0vEHReQVtnZHCCOJ1O67TgRCEx9BpKYvrw6i0JdxDrRpKqS+WPEDg=
+	t=1760716527; cv=none; b=IlnRCBDmHJVDi4jAOhhX15L3ZYgW/YrZrjtH/Z4HO0Ylk4qFy5Uz8MXYBrkZWxhZmylUr45X+DXrptxs7rintEOvxTDUj30dvm5hinW4ClU0CHfnJqPaXGSsRstlzEjB0/p70s2IxE8BHXTs1b+PucUmnjqgU/BdhdVqB7K0llU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716504; c=relaxed/simple;
-	bh=G6jyDXm09ma55RMnvWp4wfuPzomf4M3W9lRKTBtV4PM=;
+	s=arc-20240116; t=1760716527; c=relaxed/simple;
+	bh=pT2o1lYYVNQGnR+9MMOC/XH9xi9zs74gQs+XcYqMHTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYKJWThPf06VRYoJxt3eoOaReDPVwdvtCkchKbvWgQRzGmJyO6UJ1ZhrOCzQk7tR7TYjIKf4Yr6wzho1c0gmrnlw9QD4hmtGgwLstsRs/0CJvBHOtL831EAZTkGOFoQWghUDvpb8p4JI0bCuxjgCn4uPRWu3N7GGMb5i1OE6QZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxr3eUHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A001BC113D0;
-	Fri, 17 Oct 2025 15:55:03 +0000 (UTC)
+	 MIME-Version; b=jsJAnsV7hDLClyOlpT6xtMwK2MsJfgmG8327qHYeNLaOPv9Y/8FtZhr/IQoDAiwEXgAua/svCrEk6+cml11YP1GejmP6W8xSdP7tYtyT7pJ5kcZWvuI54D0jZEE4hM1sVqyE+AVcpoukEhLxnd6hxpp5XVryX6g5Q2VDWraD8nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lnc+0s0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81079C4CEFE;
+	Fri, 17 Oct 2025 15:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716504;
-	bh=G6jyDXm09ma55RMnvWp4wfuPzomf4M3W9lRKTBtV4PM=;
+	s=korg; t=1760716526;
+	bh=pT2o1lYYVNQGnR+9MMOC/XH9xi9zs74gQs+XcYqMHTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gxr3eUHnssTg1s/Gwq88rzJfiHk42yJkqqDX0l9U3PhGFjL9Vs4JZOqtj8129YdkX
-	 nrQe2F5JOSjyxe+srcfyA3/myE3/Ym3/dF7o4FXCdIg0487Vyvsh3LOuaucx4Q9gor
-	 28yRVjMAN/PnjbCbB5rl1W1hR0aNRs+4rWrsD4+I=
+	b=Lnc+0s0xq4wlEMxV6TH3NouVJuQFwU69S3TyNUQFIIli8FJQMgUqDPO4DBQUa0Yoq
+	 0Pnwpx1vc4en61Ou93SCfrMNlbslLX643T3qd3LXntgT8QqEr9Bv5qOKFWSlrKbD0/
+	 GUpIinXejxNpXSNOFgCNWz8OZLVZo+uMfFEvPOds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Santhosh Kumar K <s-k6@ti.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 212/276] spi: cadence-quadspi: Flush posted register writes before INDAC access
-Date: Fri, 17 Oct 2025 16:55:05 +0200
-Message-ID: <20251017145150.203042791@linuxfoundation.org>
+	Dan Snyder <dansnyder@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.15 214/276] x86/umip: Check that the instruction opcode is at least two bytes
+Date: Fri, 17 Oct 2025 16:55:07 +0200
+Message-ID: <20251017145150.274356748@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -66,53 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pratyush Yadav <pratyush@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 29e0b471ccbd674d20d4bbddea1a51e7105212c5 upstream.
+commit 32278c677947ae2f042c9535674a7fff9a245dd3 upstream.
 
-cqspi_indirect_read_execute() and cqspi_indirect_write_execute() first
-set the enable bit on APB region and then start reading/writing to the
-AHB region. On TI K3 SoCs these regions lie on different endpoints. This
-means that the order of the two operations is not guaranteed, and they
-might be reordered at the interconnect level.
+When checking for a potential UMIP violation on #GP, verify the decoder found
+at least two opcode bytes to avoid false positives when the kernel encounters
+an unknown instruction that starts with 0f.  Because the array of opcode.bytes
+is zero-initialized by insn_init(), peeking at bytes[1] will misinterpret
+garbage as a potential SLDT or STR instruction, and can incorrectly trigger
+emulation.
 
-It is possible for the AHB write to be executed before the APB write to
-enable the indirect controller, causing the transaction to be invalid
-and the write erroring out. Read back the APB region write before
-accessing the AHB region to make sure the write got flushed and the race
-condition is eliminated.
+E.g. if a VPALIGNR instruction
 
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-CC: stable@vger.kernel.org
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
-Message-ID: <20250905185958.3575037-2-s-k6@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+   62 83 c5 05 0f 08 ff     vpalignr xmm17{k5},xmm23,XMMWORD PTR [r8],0xff
+
+hits a #GP, the kernel emulates it as STR and squashes the #GP (and corrupts
+the userspace code stream).
+
+Arguably the check should look for exactly two bytes, but no three byte
+opcodes use '0f 00 xx' or '0f 01 xx' as an escape, i.e. it should be
+impossible to get a false positive if the first two opcode bytes match '0f 00'
+or '0f 01'.  Go with a more conservative check with respect to the existing
+code to minimize the chances of breaking userspace, e.g. due to decoder
+weirdness.
+
+Analyzed by Nick Bray <ncbray@google.com>.
+
+Fixes: 1e5db223696a ("x86/umip: Add emulation code for UMIP instructions")
+Reported-by: Dan Snyder <dansnyder@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/umip.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -694,6 +694,7 @@ static int cqspi_indirect_read_execute(s
- 	reinit_completion(&cqspi->transfer_complete);
- 	writel(CQSPI_REG_INDIRECTRD_START_MASK,
- 	       reg_base + CQSPI_REG_INDIRECTRD);
-+	readl(reg_base + CQSPI_REG_INDIRECTRD); /* Flush posted write. */
+--- a/arch/x86/kernel/umip.c
++++ b/arch/x86/kernel/umip.c
+@@ -156,8 +156,8 @@ static int identify_insn(struct insn *in
+ 	if (!insn->modrm.nbytes)
+ 		return -EINVAL;
  
- 	while (remaining > 0) {
- 		if (!wait_for_completion_timeout(&cqspi->transfer_complete,
-@@ -834,6 +835,8 @@ static int cqspi_indirect_write_execute(
- 	reinit_completion(&cqspi->transfer_complete);
- 	writel(CQSPI_REG_INDIRECTWR_START_MASK,
- 	       reg_base + CQSPI_REG_INDIRECTWR);
-+	readl(reg_base + CQSPI_REG_INDIRECTWR); /* Flush posted write. */
-+
- 	/*
- 	 * As per 66AK2G02 TRM SPRUHY8F section 11.15.5.3 Indirect Access
- 	 * Controller programming sequence, couple of cycles of
+-	/* All the instructions of interest start with 0x0f. */
+-	if (insn->opcode.bytes[0] != 0xf)
++	/* The instructions of interest have 2-byte opcodes: 0F 00 or 0F 01. */
++	if (insn->opcode.nbytes < 2 || insn->opcode.bytes[0] != 0xf)
+ 		return -EINVAL;
+ 
+ 	if (insn->opcode.bytes[1] == 0x1) {
 
 
 
