@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D31FBE9FFF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 733D4BEA4D0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B9A07587F36
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70B501AE5A50
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDBA32E135;
-	Fri, 17 Oct 2025 15:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3BB330B2D;
+	Fri, 17 Oct 2025 15:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/pOTOo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSuQES1N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EAE2F12BD;
-	Fri, 17 Oct 2025 15:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BE5330B0C;
+	Fri, 17 Oct 2025 15:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714583; cv=none; b=CUT5dVpX46Z3rRFJk/qeL0IKtYECkxmIhmgF0JME7FwBpXxDSMCzOEeB3im74sGEyKl1q+4eFp8fA5NtVQJ0HCD7Ciw3oNc0izjhiQ5n0KmyFPYWj1IKUJb3XkfQIuHu7AYXQfu3FxJ74vHrhFC/Ptbdk+TT//Rf7mnlBEawdeU=
+	t=1760716253; cv=none; b=YU+CR8p4h7rc4RUKJe0s/h7kwEvX5lHcgl65tr96RoDFrvH8Hwm5Cw8lUaF/ccfOqzl5H+uCLTyTJPYaN30rq+haI4/7XwE4TtaEmD+H8a4Z24KgqeODW8uBLCV2g+FD5g5jWHr/XLaRVqJNStVpVZrodPISvlWMp2h6E4DmYCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714583; c=relaxed/simple;
-	bh=qylcD1/d+vX06zSW5+MZmqd6544unN+SV2/ZMXKQzks=;
+	s=arc-20240116; t=1760716253; c=relaxed/simple;
+	bh=81R5L6WD3deupGjV5E4/iOlw/VUk+GBaTmxDxWLnp80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5LN3AjfzAW/KqgBbaLAXfCJSm9O30eIz01w126rriCBNdEIfwfdLOzF2RYynyOasfvXpailt7FNew3DLbDAhScHFzeeo4HR7hZAlD6UjTzxw0CoJfkHy53uhynCIalsL7Adao3+uwZymgj14StqDzpMhctNspTxu7Yi1j2iwpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/pOTOo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77396C4CEE7;
-	Fri, 17 Oct 2025 15:23:02 +0000 (UTC)
+	 MIME-Version; b=qCG1Ksbs/nd8ZQR/LNvIyI2beEGLfOfQ2UCSJPeUHHMAy4wbAaWEpfe4JEbBTzlE/qGeuNbKfv6skZCZl3z7hyPBpaFRo17hBK2ee1N5dL04WUjJsLfLcoSHYrbgshsdmSvngmYpDMaR6PTTApXLabcwv+eYp5P3UnCtUAKaHmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSuQES1N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850D2C4CEE7;
+	Fri, 17 Oct 2025 15:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714582;
-	bh=qylcD1/d+vX06zSW5+MZmqd6544unN+SV2/ZMXKQzks=;
+	s=korg; t=1760716252;
+	bh=81R5L6WD3deupGjV5E4/iOlw/VUk+GBaTmxDxWLnp80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/pOTOo+9f9mc966ToJCFQg3Of9Taj1IlFxIbhvEZDAi5RH8b9teYM4tbSlHfUjTR
-	 XPZBJlMSWpm0l4zyXTtnvUITDN2R4saxMGiUo5UrHe5FbttwZKQGtq5lnNaEiamDUl
-	 wUJ/037bMvkCUGh22QgtQ8kMdAAVohf6u7t9AOQQ=
+	b=HSuQES1NumGfvskK0cJaVnTHju20VUxnjY5Zlo7MNIPOczCy6TEGYi3hrLMQ/zCWb
+	 LdQNw4tsWzpOjrx9nt2A5x77V2LjjCrNooINS4C+aWFJrQyaEaR6ol8MVLx4aXnXAF
+	 4LGlK21cdmgoSOMFzqHfidszrLahf1RkrD/u9Nu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.12 195/277] x86/umip: Fix decoding of register forms of 0F 01 (SGDT and SIDT aliases)
+	syzbot+8743fca924afed42f93e@syzkaller.appspotmail.com,
+	Larshin Sergey <Sergey.Larshin@kaspersky.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.15 109/276] fs: udf: fix OOB read in lengthAllocDescs handling
 Date: Fri, 17 Oct 2025 16:53:22 +0200
-Message-ID: <20251017145154.241414888@linuxfoundation.org>
+Message-ID: <20251017145146.459286365@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Larshin Sergey <Sergey.Larshin@kaspersky.com>
 
-commit 27b1fd62012dfe9d3eb8ecde344d7aa673695ecf upstream.
+commit 3bd5e45c2ce30e239d596becd5db720f7eb83c99 upstream.
 
-Filter out the register forms of 0F 01 when determining whether or not to
-emulate in response to a potential UMIP violation #GP, as SGDT and SIDT only
-accept memory operands.  The register variants of 0F 01 are used to encode
-instructions for things like VMX and SGX, i.e. not checking the Mod field
-would cause the kernel to incorrectly emulate on #GP, e.g. due to a CPL
-violation on VMLAUNCH.
+When parsing Allocation Extent Descriptor, lengthAllocDescs comes from
+on-disk data and must be validated against the block size. Crafted or
+corrupted images may set lengthAllocDescs so that the total descriptor
+length (sizeof(allocExtDesc) + lengthAllocDescs) exceeds the buffer,
+leading udf_update_tag() to call crc_itu_t() on out-of-bounds memory and
+trigger a KASAN use-after-free read.
 
-Fixes: 1e5db223696a ("x86/umip: Add emulation code for UMIP instructions")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+BUG: KASAN: use-after-free in crc_itu_t+0x1d5/0x2b0 lib/crc-itu-t.c:60
+Read of size 1 at addr ffff888041e7d000 by task syz-executor317/5309
+
+CPU: 0 UID: 0 PID: 5309 Comm: syz-executor317 Not tainted 6.12.0-rc4-syzkaller-00261-g850925a8133c #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ crc_itu_t+0x1d5/0x2b0 lib/crc-itu-t.c:60
+ udf_update_tag+0x70/0x6a0 fs/udf/misc.c:261
+ udf_write_aext+0x4d8/0x7b0 fs/udf/inode.c:2179
+ extent_trunc+0x2f7/0x4a0 fs/udf/truncate.c:46
+ udf_truncate_tail_extent+0x527/0x7e0 fs/udf/truncate.c:106
+ udf_release_file+0xc1/0x120 fs/udf/file.c:185
+ __fput+0x23f/0x880 fs/file_table.c:431
+ task_work_run+0x24f/0x310 kernel/task_work.c:239
+ exit_task_work include/linux/task_work.h:43 [inline]
+ do_exit+0xa2f/0x28e0 kernel/exit.c:939
+ do_group_exit+0x207/0x2c0 kernel/exit.c:1088
+ __do_sys_exit_group kernel/exit.c:1099 [inline]
+ __se_sys_exit_group kernel/exit.c:1097 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1097
+ x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+Validate the computed total length against epos->bh->b_size.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Reported-by: syzbot+8743fca924afed42f93e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8743fca924afed42f93e
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
+Signed-off-by: Larshin Sergey <Sergey.Larshin@kaspersky.com>
+Link: https://patch.msgid.link/20250922131358.745579-1-Sergey.Larshin@kaspersky.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/umip.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/udf/inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/kernel/umip.c
-+++ b/arch/x86/kernel/umip.c
-@@ -163,8 +163,19 @@ static int identify_insn(struct insn *in
- 	if (insn->opcode.bytes[1] == 0x1) {
- 		switch (X86_MODRM_REG(insn->modrm.value)) {
- 		case 0:
-+			/* The reg form of 0F 01 /0 encodes VMX instructions. */
-+			if (X86_MODRM_MOD(insn->modrm.value) == 3)
-+				return -EINVAL;
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -2109,6 +2109,9 @@ int8_t udf_current_aext(struct inode *in
+ 		if (check_add_overflow(sizeof(struct allocExtDesc),
+ 				le32_to_cpu(header->lengthAllocDescs), &alen))
+ 			return -1;
 +
- 			return UMIP_INST_SGDT;
- 		case 1:
-+			/*
-+			 * The reg form of 0F 01 /1 encodes MONITOR/MWAIT,
-+			 * STAC/CLAC, and ENCLS.
-+			 */
-+			if (X86_MODRM_MOD(insn->modrm.value) == 3)
-+				return -EINVAL;
-+
- 			return UMIP_INST_SIDT;
- 		case 4:
- 			return UMIP_INST_SMSW;
++		if (alen > epos->bh->b_size)
++			return -1;
+ 	}
+ 
+ 	switch (iinfo->i_alloc_type) {
 
 
 
