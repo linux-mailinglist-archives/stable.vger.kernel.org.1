@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-187456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42DDFBEA5C3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:59:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23802BE9CCC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EF9385A1F9C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32F3219A5D79
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC0A2F12C0;
-	Fri, 17 Oct 2025 15:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AF32F12C5;
+	Fri, 17 Oct 2025 15:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZG7PcSAJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szm/LXnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9821C330B04;
-	Fri, 17 Oct 2025 15:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C0F3BB5A;
+	Fri, 17 Oct 2025 15:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716123; cv=none; b=lOCN2z5UNUB+5YrP6V80psAC/t8x5YNRS49iYXulyN7zC9Uuj53LmtAeD7S5Tn9gATXnqEJxENVU17FP4KEIllCAk7C0hRVJJP+1c8TDEBU+FMeCm3bU/f3HjAiDnvbRIOCSohA9slRX8nxZc6ej7M9MbA6kdYLqlx97CusiVD4=
+	t=1760714507; cv=none; b=fTuYPaE+F+91C/KtWa5gvGu+HPOMG7yNFzl+W8yVOya2xlTN+CSIhVSRL5Y3vUWfLSLoYEp5/E/AAjwEV1kCESfZzWHyiGrFFbB2Pvlssfsi6IEsy8lTyBBAEd46hM6Kbj2nH1N8u7xGg2jvNhC/l4dJOxekdfooNHI8UJvHqME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716123; c=relaxed/simple;
-	bh=BW3AY1/dQAgIsCvZA2aXCMNixQTTNFHLMKloLetnrgg=;
+	s=arc-20240116; t=1760714507; c=relaxed/simple;
+	bh=6m16LFR3Icu5YkTJaUKqzEg+RHG9Hp7VfcyRp/t8OZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M83yGvYg8aA1rVmqneROKEYh0s6tx/5fnYAqgAKwLKSlEt1oO5EO3MsuAXUNEgDBJIIwop0nvc/GRZCRKDBA+fTqpDtwU8j5oUsuLsqDGkD2G/zu2vvvbgkBKHWO2pi2ZuGm4CODaYTKXHIGOtaezRvtskYU/AKTS1zYsoKQR2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZG7PcSAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFF9C4CEE7;
-	Fri, 17 Oct 2025 15:48:42 +0000 (UTC)
+	 MIME-Version; b=MqQAhM2R9hKkIumKYmVCNoXlsb9Narui476zA85MMwqJqMkceCBGtCdZXS0qzH9lzMtM3PYF801oYdCDvveHu0Jv7onC9BhaswZ4aVqCLupnsSECjK2qb2byMPaYVcQZFK08T9vkvYQ5Xdil4V8fIIV+KwS7k3eMUcQt/tutm5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szm/LXnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F6DC4CEE7;
+	Fri, 17 Oct 2025 15:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716123;
-	bh=BW3AY1/dQAgIsCvZA2aXCMNixQTTNFHLMKloLetnrgg=;
+	s=korg; t=1760714507;
+	bh=6m16LFR3Icu5YkTJaUKqzEg+RHG9Hp7VfcyRp/t8OZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZG7PcSAJr2bmyFXaEr2Qo+xqguB9YIPYjlSmB0JcB1LJbp4qUSN1fDMjE2KyhnqbZ
-	 n3Yh8KBsOAWx1G6W3U1J8WR9CZGV45Fp0u3Mk2caT7afqJRrN9edahNquR5zHlOooo
-	 YtYuubIw5S/61nbQgg7gmiL24EEASGdZYx0PY4es=
+	b=szm/LXnN7sj12rX1ddOVnlhP0SCqrOv3Z1i+sWUqbLAxtwGyGljofS70Jtwtz3o8y
+	 goqMFS6fc+qmyN1t4M8aJduNUxsuCyH2cr+72RXHEPA3B+Tot5Z5BZDzwRYfpFes4m
+	 lgsA58quySjvBsqEgnEPOrZzdGjyakJk+XDjJhVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parav Pandit <parav@nvidia.com>,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/276] RDMA/core: Resolve MAC of next-hop device without ARP support
+	Linus Walleij <linus.walleij@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.12 168/277] mtd: rawnand: fsmc: Default to autodetect buswidth
 Date: Fri, 17 Oct 2025 16:52:55 +0200
-Message-ID: <20251017145145.480158309@linuxfoundation.org>
+Message-ID: <20251017145153.263599998@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parav Pandit <parav@nvidia.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 200651b9b8aadfbbec852f0e5d042d9abe75e2ab ]
+commit b8df622cf7f6808c85764e681847150ed6d85f3d upstream.
 
-Currently, if the next-hop netdevice does not support ARP resolution,
-the destination MAC address is silently set to zero without reporting
-an error. This leads to incorrect behavior and may result in packet
-transmission failures.
+If you don't specify buswidth 2 (16 bits) in the device
+tree, FSMC doesn't even probe anymore:
 
-Fix this by deferring MAC resolution to the IP stack via neighbour
-lookup, allowing proper resolution or error reporting as appropriate.
+fsmc-nand 10100000.flash: FSMC device partno 090,
+  manufacturer 80, revision 00, config 00
+nand: device found, Manufacturer ID: 0x20, Chip ID: 0xb1
+nand: ST Micro 10100000.flash
+nand: bus width 8 instead of 16 bits
+nand: No NAND device found
+fsmc-nand 10100000.flash: probe with driver fsmc-nand failed
+  with error -22
 
-Fixes: 7025fcd36bd6 ("IB: address translation to map IP toIB addresses (GIDs)")
-Signed-off-by: Parav Pandit <parav@nvidia.com>
-Reviewed-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Link: https://patch.msgid.link/20250916111103.84069-3-edwards@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With this patch to use autodetection unless buswidth is
+specified, the device is properly detected again:
+
+fsmc-nand 10100000.flash: FSMC device partno 090,
+  manufacturer 80, revision 00, config 00
+nand: device found, Manufacturer ID: 0x20, Chip ID: 0xb1
+nand: ST Micro NAND 128MiB 1,8V 16-bit
+nand: 128 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
+fsmc-nand 10100000.flash: Using 1-bit HW ECC scheme
+Scanning device for bad blocks
+
+I don't know where or how this happened, I think some change
+in the nand core.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/addr.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/mtd/nand/raw/fsmc_nand.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/addr.c b/drivers/infiniband/core/addr.c
-index 65e3e7df8a4b0..779e9af479fdd 100644
---- a/drivers/infiniband/core/addr.c
-+++ b/drivers/infiniband/core/addr.c
-@@ -461,14 +461,10 @@ static int addr_resolve_neigh(const struct dst_entry *dst,
- {
- 	int ret = 0;
+--- a/drivers/mtd/nand/raw/fsmc_nand.c
++++ b/drivers/mtd/nand/raw/fsmc_nand.c
+@@ -876,10 +876,14 @@ static int fsmc_nand_probe_config_dt(str
+ 	if (!of_property_read_u32(np, "bank-width", &val)) {
+ 		if (val == 2) {
+ 			nand->options |= NAND_BUSWIDTH_16;
+-		} else if (val != 1) {
++		} else if (val == 1) {
++			nand->options |= NAND_BUSWIDTH_AUTO;
++		} else {
+ 			dev_err(&pdev->dev, "invalid bank-width %u\n", val);
+ 			return -EINVAL;
+ 		}
++	} else {
++		nand->options |= NAND_BUSWIDTH_AUTO;
+ 	}
  
--	if (ndev_flags & IFF_LOOPBACK) {
-+	if (ndev_flags & IFF_LOOPBACK)
- 		memcpy(addr->dst_dev_addr, addr->src_dev_addr, MAX_ADDR_LEN);
--	} else {
--		if (!(ndev_flags & IFF_NOARP)) {
--			/* If the device doesn't do ARP internally */
--			ret = fetch_ha(dst, addr, dst_in, seq);
--		}
--	}
-+	else
-+		ret = fetch_ha(dst, addr, dst_in, seq);
- 	return ret;
- }
- 
--- 
-2.51.0
-
+ 	if (of_property_read_bool(np, "nand-skip-bbtscan"))
 
 
 
