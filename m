@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-187169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF75BE9F93
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0F1BEA395
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 67E3035E0D8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59C4B1898E51
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BE83314B3;
-	Fri, 17 Oct 2025 15:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DFC330B0D;
+	Fri, 17 Oct 2025 15:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KLSUuqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvCX7tK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1CF2F12D2;
-	Fri, 17 Oct 2025 15:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FB4330B00;
+	Fri, 17 Oct 2025 15:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715310; cv=none; b=tXqYjTWY5CoHe4SCto0VXkvCWQEnAGY6FfqFnn0/0yk3mH2egOSXFs2atPMKHorNffk/xNJRMJe/6Ysf/tjqA+F9N6CWaSC1UefxbYq5h3HaSip2pZ0BxY5vQUqPj6O/Sd/WYTp6+GYFlK5yl9S8COELERLccZrpjD3h/O177qs=
+	t=1760716043; cv=none; b=B/ZwRVRGrgZ/sEa2jokrf4ZCEpV/9KlzfTThBCowN1VvIVts+ugdF3mQAPv1CpNNWtsxD3gO5Ox50UhCwEF3/+o6Hm3ga5SvvYFFAic+qQTl+TeXw3x6Gw3rPzwDYLK+a3yTmlN2xQTbsSugCHgWHE/jUNEDEcq7uKcR4yUCCms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715310; c=relaxed/simple;
-	bh=QwGCUbYA1GGMuuu2m6o4+5W0u5aitfUUpfeqZK727y8=;
+	s=arc-20240116; t=1760716043; c=relaxed/simple;
+	bh=h1lK8tOEGtxRnQ+iqg23CK/rU8PxEWc3Hvnq08gWsx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QP7rQpWv0vRNT8dzneMYVBAdbcYTuEKsYZgfiTF8qcan0Pt9JLwsDSVasH7wifI842G+5XyuQhs5sZq+Ow+vmWS7sWw0uChbSfjYUazIHhx3S5KDmuO+fev3SjsVCExR/ZNSIBLTdpS8N1v5v8dSavJO4lSV9iryCP94RZb9kuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KLSUuqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB185C4CEE7;
-	Fri, 17 Oct 2025 15:35:09 +0000 (UTC)
+	 MIME-Version; b=G74LW8gqm69s98/RvzcxW7A5KvvCRyzCAXF0gPBv78zio1vQRWryh9hf2UYHIgFFiBRx46/35as0rpSLaE1dcSgxe/uT4nuGexqQHyN8Za/pmfzUQIDiPDQiYubvCJkttTA/0h7OuOwgeBSQUom437huD+d+FH+JLUqb7Zuc6F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvCX7tK7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEF2C4CEE7;
+	Fri, 17 Oct 2025 15:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715310;
-	bh=QwGCUbYA1GGMuuu2m6o4+5W0u5aitfUUpfeqZK727y8=;
+	s=korg; t=1760716043;
+	bh=h1lK8tOEGtxRnQ+iqg23CK/rU8PxEWc3Hvnq08gWsx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2KLSUuqKGDgU8J+K5JZQX1XTLv0WNr+F7PiqQCJhbgPAC3YqH2P3isYXr1ik8BpXf
-	 LI54vy6RzHveG4axBLiZS4DSeRRlR03C60Ho5luwlXE5Y6TXDVzuwzNG0eQWN+vLzg
-	 Njaar1puSH0xqfQaMVmvk8sgKYiSgevtoKp2rJDI=
+	b=QvCX7tK7zKu0fh8oO9jJAHpVhma2UjlUcBWFQcxiBjOBi0cmFGYCkByjZyQ5nFaAH
+	 jCpuZEfQhj2O1TBDm5K8dHudd4W1hDeYC0NqcDFndg/3bHTHK4I9uw6Peg6PZ7gga6
+	 guBLN9JnQnU94BXy5j7vuk7fZ3uPiAqF416oaPc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Kepplinger-Novakovi=C4=87?= <martink@posteo.de>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.17 172/371] media: mc: Fix MUST_CONNECT handling for pads with no links
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 054/276] usb: host: max3421-hcd: Fix error pointer dereference in probe cleanup
 Date: Fri, 17 Oct 2025 16:52:27 +0200
-Message-ID: <20251017145208.152203548@linuxfoundation.org>
+Message-ID: <20251017145144.460768352@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit eec81250219a209b863f11d02128ec1dd8e20877 upstream.
+[ Upstream commit 186e8f2bdba551f3ae23396caccd452d985c23e3 ]
 
-Commit b3decc5ce7d7 ("media: mc: Expand MUST_CONNECT flag to always
-require an enabled link") expanded the meaning of the MUST_CONNECT flag
-to require an enabled link in all cases. To do so, the link exploration
-code was expanded to cover unconnected pads, in order to reject those
-that have the MUST_CONNECT flag set. The implementation was however
-incorrect, ignoring unconnected pads instead of ignoring connected pads.
-Fix it.
+The kthread_run() function returns error pointers so the
+max3421_hcd->spi_thread pointer can be either error pointers or NULL.
+Check for both before dereferencing it.
 
-Reported-by: Martin Kepplinger-Novaković <martink@posteo.de>
-Closes: https://lore.kernel.org/linux-media/20250205172957.182362-1-martink@posteo.de
-Reported-by: Maud Spierings <maudspierings@gocontroll.com>
-Closes: https://lore.kernel.org/linux-media/20250818-imx8_isi-v1-1-e9cfe994c435@gocontroll.com
-Fixes: b3decc5ce7d7 ("media: mc: Expand MUST_CONNECT flag to always require an enabled link")
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Tested-by: Maud Spierings <maudspierings@gocontroll.com>
-Tested-by: Martin Kepplinger-Novaković <martink@posteo.de>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 05dfa5c9bc37 ("usb: host: max3421-hcd: fix "spi_rd8" uses dynamic stack allocation warning")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aJTMVAPtRe5H6jug@stanley.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/mc/mc-entity.c |    2 +-
+ drivers/usb/host/max3421-hcd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/mc/mc-entity.c
-+++ b/drivers/media/mc/mc-entity.c
-@@ -691,7 +691,7 @@ done:
- 		 * (already discovered through iterating over links) and pads
- 		 * not internally connected.
- 		 */
--		if (origin == local || !local->num_links ||
-+		if (origin == local || local->num_links ||
- 		    !media_entity_has_pad_interdep(origin->entity, origin->index,
- 						   local->index))
- 			continue;
+diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
+index 37a5914f79871..b2641009519b5 100644
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -1925,7 +1925,7 @@ max3421_probe(struct spi_device *spi)
+ 	if (hcd) {
+ 		kfree(max3421_hcd->tx);
+ 		kfree(max3421_hcd->rx);
+-		if (max3421_hcd->spi_thread)
++		if (!IS_ERR_OR_NULL(max3421_hcd->spi_thread))
+ 			kthread_stop(max3421_hcd->spi_thread);
+ 		usb_put_hcd(hcd);
+ 	}
+-- 
+2.51.0
+
 
 
 
