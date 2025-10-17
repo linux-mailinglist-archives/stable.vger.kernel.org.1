@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-186222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68307BE5E01
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 02:24:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61CC9BE5E16
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 02:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 197EA5451DA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 00:24:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9CB319C29DC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 00:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F21D1FCF41;
-	Fri, 17 Oct 2025 00:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87985201004;
+	Fri, 17 Oct 2025 00:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b="tAkh1p4W"
+	dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b="HDZBJ0Mv"
 X-Original-To: stable@vger.kernel.org
 Received: from mailbackend.panix.com (mailbackend.panix.com [166.84.1.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E7219D08F;
-	Fri, 17 Oct 2025 00:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE30C1C2BD;
+	Fri, 17 Oct 2025 00:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.84.1.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760660673; cv=none; b=VclBg3HVaH916+mh30qj0nwTvkSsNlH5MKphw13S7WgPyZsE87w75xLxz007Zq3C3bwFahh2vsYovdmmYm1ZoUX35pYnhOaqLax+ZiwYfCtqggL4k2p6dfJGmcalmuVpAKboqbcLAHrNQnZ2LZGwhrcSQ9BBz8cayYXS/WsLCnw=
+	t=1760660805; cv=none; b=ShzDfYRMhgs1lcA2o4NX+TeK3uTDpyKCp1/+i0cU8dkQJGCrC3jwGfmshrUR4EVNskFHG8Ywk9k8tccsnkQpgDRGdEtgONutDRra/GMXFCxQ4aco4rJGwWfr+PtmcUAvqonbv8v2Q2Q3eJEPZ7JgoYp0IbPiaqrGbOJ5HrZvmy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760660673; c=relaxed/simple;
-	bh=+tngxAwMJmyPy9uijR+ZE4dvzpgm5DRP2pbvKBo3Gno=;
+	s=arc-20240116; t=1760660805; c=relaxed/simple;
+	bh=bS2nfkUCKwHusOOJ1srrBeWgUmOfQacxcVsdDNaH8zs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XdB952hfCItjmFgIfVzettidpi7GMEjqwChp1gtyXuofxVUfYwKYkVOb0qY4Sk8xytJHsEfxFd18N6AOoSdsJvnObcjuFH9F6irJ6dpi89xyluN1iQSZGIEjMmGnSiKa5RUOvep69FjQ5xxom4YV3mxxXZZ12JaHFH4tnfdaEWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=panix.com; spf=pass smtp.mailfrom=panix.com; dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b=tAkh1p4W; arc=none smtp.client-ip=166.84.1.89
+	 In-Reply-To:Content-Type; b=YXZuA5z9Jzy2x4oKEA2RFu8g3Jp3NYUBFBxFpq5NTLMhFbYi5SLEsKpJBglTzVX2KYJiBrkHAHkYI4ZXlZM8YEaXKTrjBIuDEkgJ+dLBSarggSdKEhglwq/jjWT8GhNMraMB3WJNZA/X9ndQ607EDzAWtOpu4PuKCVB9r07F/8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=panix.com; spf=pass smtp.mailfrom=panix.com; dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b=HDZBJ0Mv; arc=none smtp.client-ip=166.84.1.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=panix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=panix.com
 Received: from [10.50.4.39] (45-31-46-51.lightspeed.sndgca.sbcglobal.net [45.31.46.51])
-	by mailbackend.panix.com (Postfix) with ESMTPSA id 4cnlv10qqWz4G78;
-	Thu, 16 Oct 2025 20:24:29 -0400 (EDT)
+	by mailbackend.panix.com (Postfix) with ESMTPSA id 4cnlxY5N9cz4G72;
+	Thu, 16 Oct 2025 20:26:41 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=panix.com; s=panix;
-	t=1760660670; bh=+tngxAwMJmyPy9uijR+ZE4dvzpgm5DRP2pbvKBo3Gno=;
+	t=1760660802; bh=bS2nfkUCKwHusOOJ1srrBeWgUmOfQacxcVsdDNaH8zs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=tAkh1p4Wp0gKs07wSxXkIYNJazUOHIuO41jTgAL8MbIgSYiQwT9ZBlC3TA44vOtS9
-	 ZY1ctialnzbqbizJ2BwdtBQ56rcR+5hDE1xxPVd6JMyRuzXTSBwue7ovDgMf+P4wA5
-	 B80CWi/Zfu+WJ8b9saFgTKwXTocuNTvufgWT4VlA=
-Message-ID: <25d9d483-3447-41c8-826a-8c71af737868@panix.com>
-Date: Thu, 16 Oct 2025 17:24:27 -0700
+	b=HDZBJ0MvKyEn2s4RMGFEQqb9EYxrZZJIxiWG4UfGA3lKFQXvh6CDqXgKpmces9zao
+	 7lozrWMVgHLAXgc940LtYjZz4DVBhohz8D6+Hq+YYKWr8Kb1eFrroK76SzrNo2fGzR
+	 7rn/XVwAe4QsLvVtsz+ZWdCR2AS+G2TAUKPDv23w=
+Message-ID: <abd715e2-6edd-4f35-a308-d2ee9a5ca334@panix.com>
+Date: Thu, 16 Oct 2025 17:26:40 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,7 +66,11 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
-Tested-By: Kenneth R. Crudup <kenny@panix.com>
+I wonder if this is the reason my (Kubuntu 25.04, FWIW) system will 
+sometimes show the battery icon as "Charging" even when it's discharging 
+(or nothing is plugged into either USB-C port)?
+
+-Kenny
 
 On 10/16/25 17:00, Jameson Thies wrote:
 > The ucsi_psy_get_current_max function defaults to 0.1A when it is not
