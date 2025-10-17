@@ -1,126 +1,133 @@
-Return-Path: <stable+bounces-187713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE34BEBED0
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:31:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD69BEBF6C
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:58:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DBC82354527
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 22:31:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35A6D401E62
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 22:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1563E2D8DCA;
-	Fri, 17 Oct 2025 22:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CE02D4B57;
+	Fri, 17 Oct 2025 22:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="is6msNhq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dmIUIpQX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7056A1FECBA
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 22:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8B723BD06
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 22:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760740259; cv=none; b=spYHSsVKJn9y8PEg1cknHodcJBfyqMNL1aED12LgPqgei3awmQPhK8n5LK5Fbaef4NcGSG5M4sbUyKESjkoZYVKxh6cLJuN9hs4Yp8G/4cKXPdV6cwbHYchlHDGhxm8VFkQkHeeLGus2J7iXIUDiBQfgabCt90+TrWoo8kdniC8=
+	t=1760741881; cv=none; b=UG5m5RvwiE6oTzWD95L+I/KVexpTfwAajbvQWxKzD437Nqz3MLN9UFN5ES+iuzx05410H2SEomJObOsyoKnj2n3hQYEauaBVJTk+Yu8ytWwQTZHulZQvRKr9dV2zyJAZm29PVgEAoulMuHNr1w5qcKcp5zAZQcYkW+T0u4XVI5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760740259; c=relaxed/simple;
-	bh=coMsoCZvoHbuI23XThH1BMIfJtV8x1r7cZz+hCzRR5I=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=PU3aHzxfJwTOnzDCy+xyI7rSEQGqQuB0vtXwZ7jE4m+BVYLNN7SBufAw00+d0qexpZCMP3Bl/G8JA1MheU0PjWnvGc8MnPfX+YwowUcQmfDhMidn9beKccrPaVIcxfjrKImE/TaWpr/mrjhNXZ2VgW+Yt91oR5gIX93/0xPFGWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthies.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=is6msNhq; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthies.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-290cd61855eso14698455ad.1
-        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 15:30:57 -0700 (PDT)
+	s=arc-20240116; t=1760741881; c=relaxed/simple;
+	bh=TVTG+O8iKJqOlsONKOctFtR5vUb2qk74Xxw1eeL6LKs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tP+t6it0duJLJHOqIroh5PKpe1YVj+HUp0otD3jr30gVT4BFe5SkwhgH54yvlqgbZs+4ykDyBnMnp6zxipm7G/jdRWyGOUigFWu/tKhmaWwbjuw880HcteitsAv+WtqTKGqOpZd1UvmDksdc2EZ0mETUqKgShFPZ9v7Uydo/MxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dmIUIpQX; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-87c1f607e72so31614466d6.0
+        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 15:57:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760740257; x=1761345057; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1aGvnCfkCxuG7nRHD5qS3K0Ns2/mfOtufedzaaye1sE=;
-        b=is6msNhqyFq7lsWi2gi9bkEIarskO6dC2FOUHkmGJcw4/fe+R2PL7Wht2cCSCDcw0S
-         6DXYysCHLmnENIQwYxuRAiKvtb7Qcj+2lQQYLapYocBCyyOTkPUw5F3bWIBOo6y32Fdj
-         nKJx7G10osH3l7YdE5SV5MuIZJGsI3twYkUBkILz+MiZ2MU27SC5En72SHPLtUA3IbhM
-         8PR6aOVILGRNk8iLORtzIXd52X2CJSt7VQMJ8X5BiDFbpKbEoZxMGSO/+j2rz5g3BR2N
-         9CktZnTvI5hQ+rasVFPGEFODcsTMBf/HnCwEr3jZTI5NGZiPMrgUGs0wYcb7luRjH+11
-         TY6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760740257; x=1761345057;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+        d=gmail.com; s=20230601; t=1760741878; x=1761346678; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1aGvnCfkCxuG7nRHD5qS3K0Ns2/mfOtufedzaaye1sE=;
-        b=KiQhN+FCuivI3lYzY9zwwIETAJFGpjGGA+bJ/U2D7EXsNLSZZDijYSQGXBtGLWVsD4
-         WGyWHrhsIOXup3M1OzVNNqdOyuVrBKEJC5H9p5TnPOHOBJU0WXFTYXMoFGk5c/RzzOGy
-         N5leEHAEXH43oOzO3c1ATy3FYSjetkXpZUoDhzMBLwmq9cczExrVhJHeJAkTHgbdjNdx
-         FAYqDvOrtBFMbz28dWoY769N7FSsGOaZShVU2WuES6Ac/lm5A527YoWwrMXuCOlkuAdI
-         /oJSsLzu9QAsdpdDbO9RKbTN8Mpu/Y3sOAcKGz0UTTER9rGAkSdsi2mGY+2nSIbp7OVw
-         2koA==
-X-Forwarded-Encrypted: i=1; AJvYcCWHst6U3nf3l+nSFngEk5Z3FcZk+NkUip/f0laStKvpdHBnbAEtgSxgahVzG2V/Re6CyBhXvXs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yym2eS0S5cGnhWEpxtQN+lCAm1qsaYScSlzzFZXc8dT9eoyPQRB
-	sI7+5xRBAEvN0He+QqAQb40s8Xu2PLEMm/OkBKZDs5lqBK9evQTCJtO9dGOwNdqwedPVd9Ir1ly
-	ooo3SRQ==
-X-Google-Smtp-Source: AGHT+IHuhlr6TeDMM+a8D4kE0RCHmOBllgF8IF7LrOLrHYShECDzzqQ+4s+GJlaM19IdbjQW26f4OH4XTqk=
-X-Received: from plho8.prod.google.com ([2002:a17:903:23c8:b0:290:d4c5:90ad])
- (user=jthies job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d485:b0:28e:c75e:61d9
- with SMTP id d9443c01a7336-290caf83210mr63165865ad.38.1760740256772; Fri, 17
- Oct 2025 15:30:56 -0700 (PDT)
-Date: Fri, 17 Oct 2025 22:30:53 +0000
+        bh=pucK7w/tDLEJVDkMQTugbZEqJtDfp6Kr9NZGNFPGjzE=;
+        b=dmIUIpQXyJE7vaib1KTjgDTMCehBQyWB66399yNETJS9oaRz/JQgo57uFbRnszFgYS
+         pZi/NUbm9pu3jA3aNTjQmOp0RkXx8AOBbZd7n/pKNjPhQmYtSH64TYP4TskGmifTG3Cf
+         Mt9vEaS2z5sha9BwVw+oWj69PSMjL3+OT4OjG0Xw3xQzm5JBGIAhxxnaMfdL1fbVJsb+
+         HaN+6Bhk4f2BkeqNPtam1kCWAHCmtGncr2ViRAZqfqSVVEV5EpjM5uUR9kZkK9oeOm3s
+         GQXrPqVjzh9pNF78nntfLuWLJKyuu9C9l60ocIKF4q3ndyNodH52eG1AISLlTb44DlC4
+         hhWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760741878; x=1761346678;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pucK7w/tDLEJVDkMQTugbZEqJtDfp6Kr9NZGNFPGjzE=;
+        b=O+P24fAKwgjKqtaUam5HGtRYEPOt3Gb5G6jii+UW2g/Uuzd+JrMRhZ8RcjlehBuHu5
+         SLbpdkAokUBEK/ulOiepqWhnyvRPAZ5xuljveT0dEZVdIe/BuZWjICkuYc75iK89uB40
+         yS9dk0TuS72VwlDASRWZyOKtbro6ooGerdDW6cZN11exD/tpJ7vocugIdWoomreCUJv2
+         AU0roFyfBYYlnUdLqsKzcmhbfZQ9/7nZrfFtLAOsrg0lA1YbCy3MXdTl5+QzjxPrR9ZB
+         MOKUm4mo27RQW0K9cpQioDQjDmxk5TF9RaFtQh4lnmv9qER1KUY54Mghc7MUiNNZ5jS4
+         FtKw==
+X-Forwarded-Encrypted: i=1; AJvYcCXTeP17EGDn0EVhfFRnk6UAbgEpNIuFxnowsn/84SDzUyl0OaUMqZnnxqAfm+gXQxiD9qGIDdA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywgcio1po8sgt5X23mV+knjrYP7s+NyfFp2yJtu5Lxz0AWNabcQ
+	TacYP+lCglIX2bhx9zEMMSizPLK88vNwN9TOZDvmdlZKunwyS0Aihx4P
+X-Gm-Gg: ASbGncvQEXaryPi5rSKsLd80ljLFXslMTkN6Lw2zVQqjmJRfEBl1K70d5MyzZn8du9x
+	Whk/fcE+GYFokeOQqilFhF4Z2vp07AqSJ48LzpginTtHDYpywQgN10f+98skIm0c3gQKeK90vD+
+	a+QBO1jlBBrteOYJUdAbMI55GmAjk5H0MqSW44eYv6vx9AqU3aAm0HQg39c9EJYx0O5dFOe6TBb
+	3O5F/x1eOuyKNBIW/mY5OgQuCO+Btg8qyPC7EEHg6bs0BV5mb/I732tREjXmWKTB3cZj2dH9Hv9
+	MCL2Izbbr9KiEv9A4AvmyceHqUYDEv3FIx0Y2LP1ZqUHVlJM9Mtw8/c4DTBtqG3zRGF/KgDOd3v
+	lV+DhtQaiiRzd1pTiYR/iPqxMGEFiZWnd6gX2kbaHHt3uMf48jhU6cCfo1PdNNPrrsBj4qobOZf
+	PoRNCs03/lYUIsvw1+uHApea+N0xQ=
+X-Google-Smtp-Source: AGHT+IFtOTk+TeUWYZvFwbJ/WtL4J7f8SdXdsAQcBbwmd+vwHRetDEZvhB/XNjVaLuhKRvl+qTdF4g==
+X-Received: by 2002:a05:6214:518c:b0:87c:2095:c582 with SMTP id 6a1803df08f44-87c2095cb68mr80609666d6.18.1760741877657;
+        Fri, 17 Oct 2025 15:57:57 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87ce9d474fdsm6863656d6.0.2025.10.17.15.57.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Oct 2025 15:57:57 -0700 (PDT)
+Message-ID: <c1b098d5-3499-4e24-aff9-6e5a293b4b1b@gmail.com>
+Date: Fri, 17 Oct 2025 15:57:53 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <20251017223053.2415243-1-jthies@google.com>
-Subject: [PATCH v2] usb: typec: ucsi: psy: Set max current to zero when disconnected
-From: Jameson Thies <jthies@google.com>
-To: heikki.krogerus@linux.intel.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Cc: dmitry.baryshkov@oss.qualcomm.com, bleung@chromium.org, 
-	gregkh@linuxfoundation.org, akuchynski@chromium.org, 
-	abhishekpandit@chromium.org, sebastian.reichel@collabora.com, kenny@panix.com, 
-	linux-pm@vger.kernel.org, stable@vger.kernel.org, 
-	Jameson Thies <jthies@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/276] 5.15.195-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20251017145142.382145055@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The ucsi_psy_get_current_max function defaults to 0.1A when it is not
-clear how much current the partner device can support. But this does
-not check the port is connected, and will report 0.1A max current when
-nothing is connected. Update ucsi_psy_get_current_max to report 0A when
-there is no connection.
+On 10/17/25 07:51, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.195 release.
+> There are 276 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 19 Oct 2025 14:50:59 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.195-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-v2 changes:
-- added cc stable tag to commit message
+perf fails to build on ARM, ARM64 and MIPS with:
 
-Fixes: af833e7f7db3 ("usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jameson Thies <jthies@google.com>
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Kenneth R. Crudup <kenny@panix.com>
----
- drivers/usb/typec/ucsi/psy.c | 5 +++++
- 1 file changed, 5 insertions(+)
+In file included from util/arm-spe.c:37:
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/include/../../arch/arm64/include/asm/cputype.h:198:10: 
+fatal error: asm/sysreg.h: No such file or directory
+   198 | #include <asm/sysreg.h>
+       |          ^~~~~~~~~~~~~~
+compilation terminated.
 
-diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
-index 62a9d68bb66d..8ae900c8c132 100644
---- a/drivers/usb/typec/ucsi/psy.c
-+++ b/drivers/usb/typec/ucsi/psy.c
-@@ -145,6 +145,11 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
- {
- 	u32 pdo;
- 
-+	if (!UCSI_CONSTAT(con, CONNECTED)) {
-+		val->intval = 0;
-+		return 0;
-+	}
-+
- 	switch (UCSI_CONSTAT(con, PWR_OPMODE)) {
- 	case UCSI_CONSTAT_PWR_OPMODE_PD:
- 		if (con->num_pdos > 0) {
-
-base-commit: e40b984b6c4ce3f80814f39f86f87b2a48f2e662
+I was not able to run a bisection but will attempt to do that later 
+during the weekend.
 -- 
-2.51.0.858.gf9c4a03a3a-goog
-
+Florian
 
