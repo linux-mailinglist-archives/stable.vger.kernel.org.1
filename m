@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-187145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88502BEA21E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA670BEA336
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A6B7D585812
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 110821AE28BD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F6E3328E6;
-	Fri, 17 Oct 2025 15:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA78330B17;
+	Fri, 17 Oct 2025 15:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwljKspH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqkA3dcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B802232F75D;
-	Fri, 17 Oct 2025 15:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C001E330B1B;
+	Fri, 17 Oct 2025 15:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715241; cv=none; b=buQl1BQMh7pR4SALAQ6ewBcujDwWJ6EO5UDtvyl7GTqW9BuC4h91kuZrKmhFMLfQOEQzmAOU7dE9vEK6ecmzFLb378rET9cjl1biObIvY6QFWHP8PpdURx7GoRDOnEDYd9aHy6ArcpWw8QaL3OmsU/zMpEffIsc/8cVF/jKKlpM=
+	t=1760715973; cv=none; b=GKYPudhjMrHg8LMSK8tNKFf8VZhqWEcZakw48kL/ItwWfbNhC6e+pLZKrD3UgWz2ij8yGSTGI7jxdAR8Ui5PpRMNKjmVb5cP4CKGIZu6X9ErfOfE1pp6/z1FirYAxGxY5C8jOyjeXnhojPngj6vMWNIOxYF5uUqGU49xU8AcxpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715241; c=relaxed/simple;
-	bh=Qaeo/fvPJKc02q7jW+RtjiEypdW3Ah1iCgS1j9yo6kY=;
+	s=arc-20240116; t=1760715973; c=relaxed/simple;
+	bh=rntNi5MerU1VNUz5Dp54ibXFiZQTt1r54WxOG/WgcnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIl/5jar4JrBvQFu1I7ePBMQKItpjzZy435JKBFFVqWGwOqYzCGc77le8ztsDd8T6nrSXpLdt1uHTfYrZxPB0ahGknwgz2DkmvmRR2ki+ErmNmdRonqT+Cm1hoMfgpK17Tmait+eg/Rekv3Fyu4pIEI3K8EPNA9Dgj1jSZPP/D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwljKspH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42642C4CEE7;
-	Fri, 17 Oct 2025 15:34:01 +0000 (UTC)
+	 MIME-Version; b=cYFyrjb948Fw/IWe+04r6bVohzinbwPBbaofJhdSjxWNgE1SJSEmk3LCFYRS56mfKsvWKZajGlHidJ78uBr70NDi3QKiQ/tklLYA8H5rLS9OBjqUXueDxH/7acwGAqSBeFbutDj28CfkO5ETXa760/J90oXeyDDLAtdJxrQf1kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqkA3dcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A26EC4CEE7;
+	Fri, 17 Oct 2025 15:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715241;
-	bh=Qaeo/fvPJKc02q7jW+RtjiEypdW3Ah1iCgS1j9yo6kY=;
+	s=korg; t=1760715973;
+	bh=rntNi5MerU1VNUz5Dp54ibXFiZQTt1r54WxOG/WgcnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwljKspHJcQ4wQaC8D/w6LpmPjyzmEOs2yUSkiHYETwXADUSY9SsAZdr7ckHvzk+h
-	 lWfEMlq/7ZrrNIVAUu5A+jnjXKGcP7wqIpGteN0estlP6mLTJOyfC6kpH7BGGjDRyk
-	 lH+wmiPd30xu7UTtQd/veyBjqKcs7HV+6W9RXQo4=
+	b=XqkA3dcSiMasqgkWWrWaKFd1SXyMkYPqBc+ZT8/C+PQhZDwFISexEjmclWRmVAXu9
+	 FShBTJaquhAskCKw0UFdsrc0HcPJ6r0j2WCu4GhRa+hQg1GQgZ6VJKNCz+DWWM/j5h
+	 opco6xq3HeMh6OXlzZ+mAyXot5KxuhyIrsfpgedQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.17 147/371] arm64: dts: ti: k3-am62p: Fix supported hardware for 1GHz OPP
+	Yureka Lilian <yuka@yuka.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 029/276] libbpf: Fix reuse of DEVMAP
 Date: Fri, 17 Oct 2025 16:52:02 +0200
-Message-ID: <20251017145207.252899698@linuxfoundation.org>
+Message-ID: <20251017145143.467458345@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Yureka Lilian <yuka@yuka.dev>
 
-commit f434ec2200667d5362bd19f93a498d9b3f121588 upstream.
+[ Upstream commit 6c6b4146deb12d20f42490d5013f2043df942161 ]
 
-The 1GHz OPP is supported on speed grade "O" as well according to the
-device datasheet [0], so fix the opp-supported-hw property to support
-this speed grade for 1GHz OPP.
+Previously, re-using pinned DEVMAP maps would always fail, because
+get_map_info on a DEVMAP always returns flags with BPF_F_RDONLY_PROG set,
+but BPF_F_RDONLY_PROG being set on a map during creation is invalid.
 
-[0] https://www.ti.com/lit/gpn/am62p
-Fixes: 76d855f05801 ("arm64: dts: ti: k3-am62p: add opp frequencies")
-Cc: stable@vger.kernel.org
-Signed-off-by: Judith Mendez <jm@ti.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thus, ignore the BPF_F_RDONLY_PROG flag in the flags returned from
+get_map_info when checking for compatibility with an existing DEVMAP.
+
+The same problem is handled in a third-party ebpf library:
+- https://github.com/cilium/ebpf/issues/925
+- https://github.com/cilium/ebpf/pull/930
+
+Fixes: 0cdbb4b09a06 ("devmap: Allow map lookups from eBPF")
+Signed-off-by: Yureka Lilian <yuka@yuka.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250814180113.1245565-3-yuka@yuka.dev
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62p5.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/bpf/libbpf.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/arch/arm64/boot/dts/ti/k3-am62p5.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62p5.dtsi
-@@ -135,7 +135,7 @@
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 13dea519e59f2..d9589c92e05d2 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -4485,6 +4485,16 @@ static bool map_is_reuse_compat(const struct bpf_map *map, int map_fd)
+ 		return false;
+ 	}
  
- 		opp-1000000000 {
- 			opp-hz = /bits/ 64 <1000000000>;
--			opp-supported-hw = <0x01 0x0006>;
-+			opp-supported-hw = <0x01 0x0007>;
- 			clock-latency-ns = <6000000>;
- 		};
- 
++	/*
++	 * bpf_get_map_info_by_fd() for DEVMAP will always return flags with
++	 * BPF_F_RDONLY_PROG set, but it generally is not set at map creation time.
++	 * Thus, ignore the BPF_F_RDONLY_PROG flag in the flags returned from
++	 * bpf_get_map_info_by_fd() when checking for compatibility with an
++	 * existing DEVMAP.
++	 */
++	if (map->def.type == BPF_MAP_TYPE_DEVMAP || map->def.type == BPF_MAP_TYPE_DEVMAP_HASH)
++		map_info.map_flags &= ~BPF_F_RDONLY_PROG;
++
+ 	return (map_info.type == map->def.type &&
+ 		map_info.key_size == map->def.key_size &&
+ 		map_info.value_size == map->def.value_size &&
+-- 
+2.51.0
+
 
 
 
