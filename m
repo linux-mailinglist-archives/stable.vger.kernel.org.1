@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00862BE978A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:06:15 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4C4BEA699
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD8F61A66472
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F23475A4902
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9397B335078;
-	Fri, 17 Oct 2025 15:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7133320C00A;
+	Fri, 17 Oct 2025 15:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2HBTEVC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9glP2LH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6F233711F;
-	Fri, 17 Oct 2025 15:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C092330B26;
+	Fri, 17 Oct 2025 15:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713446; cv=none; b=HTTrfHe6lVrxvg+ms1xWrc3OS16+pLYfqVaeWDq+l6QP8MalkkSKHSTLMAQ6f4uGRNRJwlaZAcFvwRCkwNdpRimSaioLSc0e02/xiPBLQa8o2L2P68frYh/gGt6U8nKNWKJJQ/xvnOOc/P/fWFNIFHdQfjzk5mZln0fWeDtssuo=
+	t=1760716408; cv=none; b=ujhSjXH8i0Mip2Jg+igkLy7R/7H7aoRJaHU5pkgJnmqbcmHp0sJmrPaNL46TGxQZmLAjOJmUZO5AAlsY6zVaWOXbc1ywo8X1+7j24UAtRAFwv6ixnhXYp2KF9EIV4hMUI7qRzOrHxvn6DnxZkFMB/tWOSY9AnKRK2j/twqwdVeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713446; c=relaxed/simple;
-	bh=45o7xz+O4+HlcxcXpB9uzFJ/cOrfV2gnQYFogqGlXpo=;
+	s=arc-20240116; t=1760716408; c=relaxed/simple;
+	bh=46o7K7f1sdce3gE2ddfG7LmANUWVysKZkkSTBcKdn0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2JGkINxgG8nAN6z4SxiN3/ksx/7LfmDvrgQMwXdyyEasbjLL406JztlkuwpqocDexUMJ/joZmqZ78XdpM9787EGG0Q7wnbxxrSpI24rbZLPGHNn6Ci1LauRBWh/wF8hZWA0oqyERjPJNhvRI147JZVIgpZj1hwMDHOTwUO4yWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2HBTEVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF15EC4CEE7;
-	Fri, 17 Oct 2025 15:04:05 +0000 (UTC)
+	 MIME-Version; b=dhMdvdrNPtan09vhDzr5mD5Yw5p8er4AhYHMc6ybV6wA5Wcg5v8aLEgFx8UG1N9DcENbQwCnA0wZW1Q+2CbmKtFPlgBcN6lIz9dXr9wTvNtogSiFoO6Ax8tG+cim1T2wxFpjFX5ZNQqbhbyg2m1ZNCWQcYtyMODRm1Sge7nwI5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9glP2LH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB591C4CEE7;
+	Fri, 17 Oct 2025 15:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713446;
-	bh=45o7xz+O4+HlcxcXpB9uzFJ/cOrfV2gnQYFogqGlXpo=;
+	s=korg; t=1760716408;
+	bh=46o7K7f1sdce3gE2ddfG7LmANUWVysKZkkSTBcKdn0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2HBTEVCof0ZoMZgfxGk357dNkcVrgYO7DpWVTkiNL6Yb5mA6lV6So5MGgfsHflrg
-	 20ImyTPtEXIOiNLRvS4KT+Xd2G+bt2Wl1cyjQkh2519lfhgo3wEcqac9lzY2NVZbxb
-	 g1mp2PeRhR0siZ5l0Sz/vmsiq9nTgE+GTtWSzAIQ=
+	b=T9glP2LHDilPp5zdvGSbxGjwBTw7KSwXKvxuB92WyfHe5gngPrPNUGAJfR05eP05+
+	 gGfTSZOgnEwBVNOHKoev+l8CR9lypUNaWTZHMoHZ7mCZLLkrAPr7FUGvPzCUjAyYvs
+	 kQnY659H0HfMbHNAZFah2CYDAM4plQOPojKOyj9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Christian Brauner <brauner@kernel.org>,
+	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/168] minixfs: Verify inode mode when loading from disk
-Date: Fri, 17 Oct 2025 16:54:00 +0200
-Message-ID: <20251017145134.980113135@linuxfoundation.org>
+Subject: [PATCH 5.15 148/276] drm/vmwgfx: Fix Use-after-free in validation
+Date: Fri, 17 Oct 2025 16:54:01 +0200
+Message-ID: <20251017145147.883882121@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 73861970938ad1323eb02bbbc87f6fbd1e5bacca ]
+[ Upstream commit dfe1323ab3c8a4dd5625ebfdba44dc47df84512a ]
 
-The inode mode loaded from corrupted disk can be invalid. Do like what
-commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
-does.
+Nodes stored in the validation duplicates hashtable come from an arena
+allocator that is cleared at the end of vmw_execbuf_process. All nodes
+are expected to be cleared in vmw_validation_drop_ht but this node escaped
+because its resource was destroyed prematurely.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/ec982681-84b8-4624-94fa-8af15b77cbd2@I-love.SAKURA.ne.jp
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 64ad2abfe9a6 ("drm/vmwgfx: Adapt validation code for reference-free lookups")
+Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://lore.kernel.org/r/20250926195427.1405237-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/minix/inode.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_validation.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/minix/inode.c b/fs/minix/inode.c
-index da8bdd1712a70..9da6903e306c6 100644
---- a/fs/minix/inode.c
-+++ b/fs/minix/inode.c
-@@ -470,8 +470,14 @@ void minix_set_inode(struct inode *inode, dev_t rdev)
- 		inode->i_op = &minix_symlink_inode_operations;
- 		inode_nohighmem(inode);
- 		inode->i_mapping->a_ops = &minix_aops;
--	} else
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		init_special_inode(inode, inode->i_mode, rdev);
-+	} else {
-+		printk(KERN_DEBUG "MINIX-fs: Invalid file type 0%04o for inode %lu.\n",
-+		       inode->i_mode, inode->i_ino);
-+		make_bad_inode(inode);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+index 41b7417cb5d3d..4633bd3081852 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+@@ -343,8 +343,10 @@ int vmw_validation_add_resource(struct vmw_validation_context *ctx,
+ 		}
+ 	}
+ 	node->res = vmw_resource_reference_unless_doomed(res);
+-	if (!node->res)
++	if (!node->res) {
++		hash_del_rcu(&node->hash.head);
+ 		return -ESRCH;
 +	}
- }
  
- /*
+ 	node->first_usage = 1;
+ 	if (!res->dev_priv->has_mob) {
 -- 
 2.51.0
 
