@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-187580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47E4BEA5AE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:59:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45993BEA254
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:47:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33E31880957
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75F31189EB45
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118D41A0728;
-	Fri, 17 Oct 2025 15:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5BF33328E1;
+	Fri, 17 Oct 2025 15:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gxd3N7RW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oS5nTDNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FA8330B36;
-	Fri, 17 Oct 2025 15:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D4F330B1D;
+	Fri, 17 Oct 2025 15:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716480; cv=none; b=Du0IFjd8guLlAFg8CbVJLas0bNnZESjoPNwGAqIfBwmscgTiPUZkCo2/u0Y/nq2OcXZ+Xk0Ty19HH3M5UmkbMxH9EDSLI/t+7/EQN3W8Cpa8jcUtFXjMN47mRQpoRAOEJnHjrO/gr5PIjVU++6+xgeP1mX5BASJ8ZIk3iCyOuyM=
+	t=1760715750; cv=none; b=emou6QwqkKZjmKRzQHs1AjG/VNisSkQ6SooDliAz/3yYrmAL3vSlcThJV3xtF6Kba27svP7Fi+h0PIQ7AbWlfdjxCMfYjSm0bcah02RYMOKfWbgSpQ5R8tEOrV7oa9PG4owaxs3DLMk7DgPoY0EK2V4MItPPlaoQnqL1TEJd060=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716480; c=relaxed/simple;
-	bh=Ldjva8os5Bl8fvi9s5PVCNkanHlAbEETM7iX1ZY5iiA=;
+	s=arc-20240116; t=1760715750; c=relaxed/simple;
+	bh=/aUdL+2AV1gHbAoH3g5q8JpNs7ZF4edgjOLSRaO/QKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLsvwF7rU1A+YjoVJd2HanTiiMMkJqJnmRv7AquC/r7/n9Dwza7EVOoamsYwvuvBO1wiFviPO1osA/7GrTj8J6+dG3tNO9mr6LWR6PsOlW9eMlOYqxVvtPMv191PzJ2n3CPTL3OtBoUp6oXiv4YyhuLeJr1JJLvzdeqbHfDES20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gxd3N7RW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40032C4CEFE;
-	Fri, 17 Oct 2025 15:54:40 +0000 (UTC)
+	 MIME-Version; b=pQYzFsNMdaw1dISgH/WLfpRKNKDjKc+GHiWHCWO/wEJTvjw5wNbOpcQ0IeTTTJNGUX+0StS9WXlkEgGw8dntJUWUcelY/9Vi4GN9RQyt2TfHLyfMmj9xS/c67rIRz4MbMmyWK+BGEeoovSAZ8w5/Wqo3z42N1LZooSnRbP8m9Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oS5nTDNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06DBC4CEE7;
+	Fri, 17 Oct 2025 15:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716480;
-	bh=Ldjva8os5Bl8fvi9s5PVCNkanHlAbEETM7iX1ZY5iiA=;
+	s=korg; t=1760715750;
+	bh=/aUdL+2AV1gHbAoH3g5q8JpNs7ZF4edgjOLSRaO/QKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gxd3N7RWQb+d1px3uNylte2LszneaVMMpcl/QXca/AHxKqwa6So6R1+9notCd7JrJ
-	 5LVv0t78ZjMqUFBuJZw2qzYvyHLUw/hyo3gh5EkVLaITk2pwO4foZwYUuDrDVgJb8n
-	 SufcvpLMN3mNbTnBEHGINbAXp8lcvfu6WhFFSMWY=
+	b=oS5nTDNn4LNf5SMeEAgmmpcIJe0hkrHWaw6koWkCaTA7pbsSSBtP4UHd4bDHgaWna
+	 L6dGEchi5ssBuDcM7V4jBtEI6UHX+32lPfaKqIuUVcFxaH6YyZDT6eYU9GPrLxzKdZ
+	 O2T+cNcJrnmI9LjijJBzCFo83t2nzil9h7ZIHoHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Norris <briannorris@google.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.15 205/276] PCI/sysfs: Ensure devices are powered for config reads
-Date: Fri, 17 Oct 2025 16:54:58 +0200
-Message-ID: <20251017145149.950432268@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.17 324/371] media: iris: Call correct power off callback in cleanup path
+Date: Fri, 17 Oct 2025 16:54:59 +0200
+Message-ID: <20251017145213.799830149@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Norris <briannorris@google.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 48991e4935078b05f80616c75d1ee2ea3ae18e58 upstream.
+commit 2fbb823a0744665fe6015bd03d435bd334ccecf7 upstream.
 
-The "max_link_width", "current_link_speed", "current_link_width",
-"secondary_bus_number", and "subordinate_bus_number" sysfs files all access
-config registers, but they don't check the runtime PM state. If the device
-is in D3cold or a parent bridge is suspended, we may see -EINVAL, bogus
-values, or worse, depending on implementation details.
+Driver implements different callbacks for the power off controller
+(.power_off_controller):
 
-Wrap these access in pci_config_pm_runtime_{get,put}() like most of the
-rest of the similar sysfs attributes.
+ - iris_vpu_power_off_controller,
+ - iris_vpu33_power_off_controller,
 
-Notably, "max_link_speed" does not access config registers; it returns a
-cached value since d2bd39c0456b ("PCI: Store all PCIe Supported Link
-Speeds").
+The generic wrapper for handling power off - iris_vpu_power_off() -
+calls them via 'iris_platform_data->vpu_ops', so shall the cleanup code
+in iris_vpu_power_on().
 
-Fixes: 56c1af4606f0 ("PCI: Add sysfs max_link_speed/width, current_link_speed/width, etc")
-Signed-off-by: Brian Norris <briannorris@google.com>
-Signed-off-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+This makes also sense if looking at caller of iris_vpu_power_on(), which
+unwinds also with the wrapper calling respective platfortm code (unwinds
+with iris_vpu_power_off()).
+
+Otherwise power off sequence on the newer VPU3.3 in error path is not
+complete.
+
+Fixes: c69df5de4ac3 ("media: platform: qcom/iris: add power_off_controller to vpu_ops")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250924095711.v2.1.Ibb5b6ca1e2c059e04ec53140cd98a44f2684c668@changeid
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-sysfs.c |   20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/iris/iris_vpu_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -174,8 +174,14 @@ static ssize_t max_link_width_show(struc
- 				   struct device_attribute *attr, char *buf)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
-+	ssize_t ret;
+diff --git a/drivers/media/platform/qcom/iris/iris_vpu_common.c b/drivers/media/platform/qcom/iris/iris_vpu_common.c
+index 268e45acaa7c..42a7c53ce48e 100644
+--- a/drivers/media/platform/qcom/iris/iris_vpu_common.c
++++ b/drivers/media/platform/qcom/iris/iris_vpu_common.c
+@@ -359,7 +359,7 @@ int iris_vpu_power_on(struct iris_core *core)
+ 	return 0;
  
--	return sysfs_emit(buf, "%u\n", pcie_get_width_cap(pdev));
-+	/* We read PCI_EXP_LNKCAP, so we need the device to be accessible. */
-+	pci_config_pm_runtime_get(pdev);
-+	ret = sysfs_emit(buf, "%u\n", pcie_get_width_cap(pdev));
-+	pci_config_pm_runtime_put(pdev);
-+
-+	return ret;
- }
- static DEVICE_ATTR_RO(max_link_width);
- 
-@@ -187,7 +193,10 @@ static ssize_t current_link_speed_show(s
- 	int err;
- 	enum pci_bus_speed speed;
- 
-+	pci_config_pm_runtime_get(pci_dev);
- 	err = pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &linkstat);
-+	pci_config_pm_runtime_put(pci_dev);
-+
- 	if (err)
- 		return -EINVAL;
- 
-@@ -204,7 +213,10 @@ static ssize_t current_link_width_show(s
- 	u16 linkstat;
- 	int err;
- 
-+	pci_config_pm_runtime_get(pci_dev);
- 	err = pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &linkstat);
-+	pci_config_pm_runtime_put(pci_dev);
-+
- 	if (err)
- 		return -EINVAL;
- 
-@@ -220,7 +232,10 @@ static ssize_t secondary_bus_number_show
- 	u8 sec_bus;
- 	int err;
- 
-+	pci_config_pm_runtime_get(pci_dev);
- 	err = pci_read_config_byte(pci_dev, PCI_SECONDARY_BUS, &sec_bus);
-+	pci_config_pm_runtime_put(pci_dev);
-+
- 	if (err)
- 		return -EINVAL;
- 
-@@ -236,7 +251,10 @@ static ssize_t subordinate_bus_number_sh
- 	u8 sub_bus;
- 	int err;
- 
-+	pci_config_pm_runtime_get(pci_dev);
- 	err = pci_read_config_byte(pci_dev, PCI_SUBORDINATE_BUS, &sub_bus);
-+	pci_config_pm_runtime_put(pci_dev);
-+
- 	if (err)
- 		return -EINVAL;
- 
+ err_power_off_ctrl:
+-	iris_vpu_power_off_controller(core);
++	core->iris_platform_data->vpu_ops->power_off_controller(core);
+ err_unvote_icc:
+ 	iris_unset_icc_bw(core);
+ err:
+-- 
+2.51.0
+
 
 
 
