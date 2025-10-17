@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF04BE9BEE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:27 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D50BE9C9C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4E59650952D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:11 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 95F8135E2D1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4435332C929;
-	Fri, 17 Oct 2025 15:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C5B2F12BD;
+	Fri, 17 Oct 2025 15:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIlD8uR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiRCJF+U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009F83370FB;
-	Fri, 17 Oct 2025 15:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619B822A7E4;
+	Fri, 17 Oct 2025 15:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713989; cv=none; b=Y3tmpq0USaESO+0Buh6j8sgJdaovlDB0DH2xy9vh+8PjziMGTzhZVGJlzKoP60vznlabNbM7nP7Wfxqzwv9oiOuLp/1vGT3ggcKc72KqIUo9ZKhfsQLO5gtH6ecHblwA1w9C1U3wsoeAjOiFNQopyvJz1ikXohMjxX1qA3bvEkI=
+	t=1760714725; cv=none; b=gdG7O/Yusx+Qh1CFC5L40LuLPfWe2zeNfXSyL0Q51kjSVpi7NqfRd9W8I8pDjIK4sGl1PJ/Box/PhpeME/zTB6G8laNjIqf+Hci4/ygatetGxDu4cNxlgCKdipmkgNJlF63oqjvVbyIZJxQtqcSqPnG7ZkGmbvRDy7sxS9LmXhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713989; c=relaxed/simple;
-	bh=gzjY3xcN7URYxPrGSWSr3N3FPMbNdqQcRZ0JnsCkX/E=;
+	s=arc-20240116; t=1760714725; c=relaxed/simple;
+	bh=X0T0dD3LsHigZvWLZViZHT8o4yGWA5W/pMe9hiqrytQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PV7a15wA2tAWsCxIXzje+Y0d2+EijhPCt6Cr956kuv9JGCeGLCJL2WQvFNOP71sCFQ+S3kFymURcK5z7B04loyaaeIocoFwp4nT3g6tt75u1FMkr2u8jlEPvM/Hjs9erhG2zCJVoXeWd+/lO1iyeUqeCH1uc3Tnd7I0V4MegH3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIlD8uR1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B31C4CEE7;
-	Fri, 17 Oct 2025 15:13:07 +0000 (UTC)
+	 MIME-Version; b=Ybg9k6+zt5hvImP3JClLpeh4XJxVTyJ7oTQd8ihaCCcJhH8EU/b2QaFWCW4/Kln3cCtJcpJgQ+5eoLNvk3Ffrh3X4p54UXrbjJmGIwRgitCFaGnOvZl2MgkAJvmlx0XZWldWknL1Hhko373sbE3RhCwKir9fXOgxikh24otQj24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiRCJF+U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D05C4CEE7;
+	Fri, 17 Oct 2025 15:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713988;
-	bh=gzjY3xcN7URYxPrGSWSr3N3FPMbNdqQcRZ0JnsCkX/E=;
+	s=korg; t=1760714725;
+	bh=X0T0dD3LsHigZvWLZViZHT8o4yGWA5W/pMe9hiqrytQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIlD8uR1XNSC19Z+kQcFekoUxSZsPq+dj7ISzfAVamCSrJipUYXmfSZeUCn2u8DJc
-	 DEwucKKD/+Ng0UCRjD9It1a2IiNAClCOfOGA8YiFG4H8g5ZzfJhkBeOp19QBMoUwFL
-	 ZWeXMBfWvzDNWRLQFaVyYN0yNYfQ0nNjudE59oWo=
+	b=BiRCJF+UYFeL1gN+BImOEuOinvWXUZe9wcOdnu93s517hwVGtAIIzPx1WkgjeJHE7
+	 u3ZcUIuaP/+Hijs6AQmuRcjwEktCvDIznEFCeoCDl0twupaYr277PxbiePxNAzLMDv
+	 LwZvQIBF6ypOHcUsFv7XV37XZqPMkmClS9WWyRYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/201] Squashfs: add additional inode sanity checking
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 211/277] nfsd: nfserr_jukebox in nlm_fopen should lead to a retry
 Date: Fri, 17 Oct 2025 16:53:38 +0200
-Message-ID: <20251017145140.497440368@linuxfoundation.org>
+Message-ID: <20251017145154.833282216@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit 9ee94bfbe930a1b39df53fa2d7b31141b780eb5a ]
+commit a082e4b4d08a4a0e656d90c2c05da85f23e6d0c9 upstream.
 
-Patch series "Squashfs: performance improvement and a sanity check".
+When v3 NLM request finds a conflicting delegation, it triggers
+a delegation recall and nfsd_open fails with EAGAIN. nfsd_open
+then translates EAGAIN into nfserr_jukebox. In nlm_fopen, instead
+of returning nlm_failed for when there is a conflicting delegation,
+drop this NLM request so that the client retries. Once delegation
+is recalled and if a local lock is claimed, a retry would lead to
+nfsd returning a nlm_lck_blocked error or a successful nlm lock.
 
-This patchset adds an additional sanity check when reading regular file
-inodes, and adds support for SEEK_DATA/SEEK_HOLE lseek() whence values.
-
-This patch (of 2):
-
-Add an additional sanity check when reading regular file inodes.
-
-A regular file if the file size is an exact multiple of the filesystem
-block size cannot have a fragment.  This is because by definition a
-fragment block stores tailends which are not a whole block in size.
-
-Link: https://lkml.kernel.org/r/20250923220652.568416-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20250923220652.568416-2-phillip@squashfs.org.uk
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 9f1c14c1de1b ("Squashfs: reject negative file sizes in squashfs_read_inode()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d343fce148a4 ("[PATCH] knfsd: Allow lockd to drop replies as appropriate")
+Cc: stable@vger.kernel.org # v6.6
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ fs/nfsd/lockd.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -140,8 +140,17 @@ int squashfs_read_inode(struct inode *in
- 		if (err < 0)
- 			goto failed_read;
- 
-+		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
- 		frag = le32_to_cpu(sqsh_ino->fragment);
- 		if (frag != SQUASHFS_INVALID_FRAG) {
-+			/*
-+			 * the file cannot have a fragment (tailend) and have a
-+			 * file size a multiple of the block size
-+			 */
-+			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
-+				err = -EINVAL;
-+				goto failed_read;
-+			}
- 			frag_offset = le32_to_cpu(sqsh_ino->offset);
- 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
- 			if (frag_size < 0) {
-@@ -155,7 +164,6 @@ int squashfs_read_inode(struct inode *in
- 		}
- 
- 		set_nlink(inode, 1);
--		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
- 		inode->i_fop = &generic_ro_fops;
- 		inode->i_mode |= S_IFREG;
- 		inode->i_blocks = ((inode->i_size - 1) >> 9) + 1;
-@@ -184,8 +192,17 @@ int squashfs_read_inode(struct inode *in
- 		if (err < 0)
- 			goto failed_read;
- 
-+		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
- 		frag = le32_to_cpu(sqsh_ino->fragment);
- 		if (frag != SQUASHFS_INVALID_FRAG) {
-+			/*
-+			 * the file cannot have a fragment (tailend) and have a
-+			 * file size a multiple of the block size
-+			 */
-+			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
-+				err = -EINVAL;
-+				goto failed_read;
-+			}
- 			frag_offset = le32_to_cpu(sqsh_ino->offset);
- 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
- 			if (frag_size < 0) {
-@@ -200,7 +217,6 @@ int squashfs_read_inode(struct inode *in
- 
- 		xattr_id = le32_to_cpu(sqsh_ino->xattr);
- 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
--		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
- 		inode->i_op = &squashfs_inode_ops;
- 		inode->i_fop = &generic_ro_fops;
- 		inode->i_mode |= S_IFREG;
+--- a/fs/nfsd/lockd.c
++++ b/fs/nfsd/lockd.c
+@@ -48,6 +48,21 @@ nlm_fopen(struct svc_rqst *rqstp, struct
+ 	switch (nfserr) {
+ 	case nfs_ok:
+ 		return 0;
++	case nfserr_jukebox:
++		/* this error can indicate a presence of a conflicting
++		 * delegation to an NLM lock request. Options are:
++		 * (1) For now, drop this request and make the client
++		 * retry. When delegation is returned, client's lock retry
++		 * will complete.
++		 * (2) NLM4_DENIED as per "spec" signals to the client
++		 * that the lock is unavailable now but client can retry.
++		 * Linux client implementation does not. It treats
++		 * NLM4_DENIED same as NLM4_FAILED and errors the request.
++		 * (3) For the future, treat this as blocked lock and try
++		 * to callback when the delegation is returned but might
++		 * not have a proper lock request to block on.
++		 */
++		fallthrough;
+ 	case nfserr_dropit:
+ 		return nlm_drop_reply;
+ 	case nfserr_stale:
 
 
 
