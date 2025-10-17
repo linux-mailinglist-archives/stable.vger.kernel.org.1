@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-187078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79234BE9ED0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:33:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FB9BEA236
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64BBD1882C24
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4D405A23D5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CCA2F692A;
-	Fri, 17 Oct 2025 15:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2867632E13E;
+	Fri, 17 Oct 2025 15:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4bSaVj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J9Efp/i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5C12F12B0;
-	Fri, 17 Oct 2025 15:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA24533291C;
+	Fri, 17 Oct 2025 15:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715058; cv=none; b=Sx2UUhqT9FaFuTFcJ7INCHlOuK4O71CyiYuNm1lBfzphI+lFit8Dd0D/GwaS2ZIREEZZoVkJalKGLmRCO8h/g/4Nl4m6yixaHOdpqSpVVS2jxDfrtTmFID6TX9LE4NbT7892jt7TlXExiZTtp14xiyMmLhg/n2Qg2CdOIugnN1k=
+	t=1760715078; cv=none; b=nS50jAf+KqkFIEfz6EQPxOWy0TtsUO69SC8NQDHHH7Ku9EbtSmmM1vYdsENcxNwZ8op/x3SThqxnaIZy/tnkMEnh9q37Ve/oKQeUdpuH0IeceYFxSeD8DIR6KkXQoILGE65aUkUF6yOptLZrpzT417qW8P70kV6t1zIdqFKcaFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715058; c=relaxed/simple;
-	bh=7QVYlt5+IpthiKEMyRUImFvAaA0nA/mi4e+5oHYajLc=;
+	s=arc-20240116; t=1760715078; c=relaxed/simple;
+	bh=Xmz8CAKjnqrgMpLfWTPb9To6bjhr6uiTAmEkjZ6mj38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HN2OHSC9s1IMxfuYqK8PonSAjYR6wvTFOLNyxiuZZ9zfXI8UPwgbRUl1EV7ubJGI+/9sRfhfjdjOBnPU77QEOHzGp1gU2PlC/6QXma2cJSeofshdc4HtJWGgg2FLjnvRr3/ScGbNK7Sv7P4zhRW98cTql+JQ4C8QtqLfEuhRZp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4bSaVj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D89C4CEE7;
-	Fri, 17 Oct 2025 15:30:57 +0000 (UTC)
+	 MIME-Version; b=FZbdia9foNukHp2F7c0LgpR6PjQASwD2Z7L6Kosg0GBMIW2RkJb5HuKT0lR/BhBNhWuSzrHWrZLIFEW/TAK3CnEHbG2CmH4+p5NtqH5UPtj36E3xm5trv2jBOqY7RRi55/gYSAA0ns8U+LgqPrLHi7bZ6dWPrH5kcW27pLBQqUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J9Efp/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542BEC4CEFE;
+	Fri, 17 Oct 2025 15:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715058;
-	bh=7QVYlt5+IpthiKEMyRUImFvAaA0nA/mi4e+5oHYajLc=;
+	s=korg; t=1760715078;
+	bh=Xmz8CAKjnqrgMpLfWTPb9To6bjhr6uiTAmEkjZ6mj38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4bSaVj//HvQQCqY4hR8qPdjVPvWMMnDEElkQ/32VlqtNUcP363rvDIwvul6TxTuR
-	 z1OjyjZpjpqCpkfmc5vlxgBHOvTVvLYHUI7dt6fB1Vxa4K6gMBMRwo8xO7q423IAgu
-	 Qc+lr53H/zBzsHhynt8R7FxaX4J4Yp1n5XNaFxoE=
+	b=1J9Efp/ioHUcblhbU0WPZBjr7VtGPBB/VnvMxQDRi3BLXvDcXbbN7TC40An77j+cd
+	 9ASALmDRkeTPGMLLGwB96wWIAJZcfjgWSrAZY+S0BV64wXJR7eRH7hddYEEoeNdhHZ
+	 luPezuBePlNmbCD7fxYBgXMf6VPfgXtygOAaGpfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 056/371] nfsd: fix assignment of ia_ctime.tv_nsec on delegated mtime update
-Date: Fri, 17 Oct 2025 16:50:31 +0200
-Message-ID: <20251017145203.826414293@linuxfoundation.org>
+Subject: [PATCH 6.17 057/371] nfsd: ignore ATTR_DELEG when checking ia_valid before notify_change()
+Date: Fri, 17 Oct 2025 16:50:32 +0200
+Message-ID: <20251017145203.862034497@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -68,31 +68,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 2990b5a47984c27873d165de9e88099deee95c8d ]
+[ Upstream commit 5affb498e70bba3053b835c478a199bf92c99c4d ]
 
-The ia_ctime.tv_nsec field should be set to modify.nseconds.
+If the only flag left is ATTR_DELEG, then there are no changes to be
+made.
 
 Fixes: 7e13f4f8d27d ("nfsd: handle delegated timestamps in SETATTR")
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 2 +-
+ fs/nfsd/vfs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index ea91bad4eee2c..1f3a20360d0c2 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -538,7 +538,7 @@ nfsd4_decode_fattr4(struct nfsd4_compoundargs *argp, u32 *bmval, u32 bmlen,
- 		iattr->ia_mtime.tv_sec = modify.seconds;
- 		iattr->ia_mtime.tv_nsec = modify.nseconds;
- 		iattr->ia_ctime.tv_sec = modify.seconds;
--		iattr->ia_ctime.tv_nsec = modify.seconds;
-+		iattr->ia_ctime.tv_nsec = modify.nseconds;
- 		iattr->ia_valid |= ATTR_CTIME | ATTR_MTIME | ATTR_MTIME_SET | ATTR_DELEG;
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index edf050766e570..3cd3b9e069f4a 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -467,7 +467,7 @@ static int __nfsd_setattr(struct dentry *dentry, struct iattr *iap)
+ 			return 0;
  	}
  
+-	if (!iap->ia_valid)
++	if ((iap->ia_valid & ~ATTR_DELEG) == 0)
+ 		return 0;
+ 
+ 	/*
 -- 
 2.51.0
 
