@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-187304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248F5BEA224
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9563BE9D4D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EC1318948BB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 064811AE269C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B1F330B38;
-	Fri, 17 Oct 2025 15:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB00A2F12BD;
+	Fri, 17 Oct 2025 15:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7cKfe+p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGqfreku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE7B330B2E;
-	Fri, 17 Oct 2025 15:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817BB27FB03;
+	Fri, 17 Oct 2025 15:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715698; cv=none; b=Z03hfsgbE/x6KGbnTuJqNitOIw7Y01A4OL0frArZA6yvAXnQDzJqyVaWhy3gw7QhfD545M0dNzb0bGTDC+/WoxWlxS0mCL+oxFw3hdUm0cuQCJwnV5SPPw4k0/+vaGZ2Yqtsw3bUbbvZF7QWawfnC3DyhHN55jkvjKxBTaXYMFQ=
+	t=1760714739; cv=none; b=XrABuO0ZDZWJ/x8+G4uX8F+Kp1P0Nl0G7dcYaesJN4wHQlz7v6x5BV9CTd/b0zo4cBbz5MkHcp4X5T62vW4ZH7QYOnp1j0xKawM5L3oSs2DnYz8XF29o9WeIszH2STWFpEn6Kzt1zPUYo01iVKruGvd+OngPTgqJbUhOpuamd0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715698; c=relaxed/simple;
-	bh=HItOEV4Mk2D804bfq/n05PvAJIl/wO/lzA9bfNQ2yXA=;
+	s=arc-20240116; t=1760714739; c=relaxed/simple;
+	bh=ckTQYzHvxLVr+VNpYm/gB1eHeJ6q/M5SO1+3Su+DTrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRPknAp9f1/Eq14Y5wqne+khK+rQTDSD2wXxOxrBWL7NTz+4MXGsjf8ptLtahO5qv8F4Gi1C0YEnPbYsUxdh4TK7Qnp2bi343bfI990w2vIqUnjT0v1K/LWfx03HfJr1melN6kCzk0ZPeZldn1MkprB5OlRC6Zx9t2EwylsLLu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7cKfe+p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC05BC4CEE7;
-	Fri, 17 Oct 2025 15:41:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YjB9Ggou1IxZImRPFDqI+frxKyqZBaeBDu++uADIZKz6uaxEqfZRDb4/nh2s6toEGMXuwYbb/h/3B4yZZMKwh4EJCpgYDDLgLDi2OuXQSlr50KI4R8btoibdmwZwMHK9pBmunWJPmf2LjmDfYkHVRG0K9btAXEgBLwCU6yDMNj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGqfreku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06577C4CEE7;
+	Fri, 17 Oct 2025 15:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715698;
-	bh=HItOEV4Mk2D804bfq/n05PvAJIl/wO/lzA9bfNQ2yXA=;
+	s=korg; t=1760714739;
+	bh=ckTQYzHvxLVr+VNpYm/gB1eHeJ6q/M5SO1+3Su+DTrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7cKfe+pv8W5ZzRyAgEtNlF2TwMgb5JHmS25KWeeReJXZgdn7SOKqq4POSaycDSCm
-	 a1OMfRXPN9I+9RK+Io5QqETjZdvKXpH+GosMJnMBfYTWeLEqvfaQZHxTxy1o3vjvdk
-	 jMeawL1ocU5zFZGYghjn7J7araxlcWN6MUI66mSg=
+	b=BGqfrekuNZbuglB8HXMwQJVg/2QUO/2WKBRnfbKZ2C88+xuYB0mTiaJ7c0QXE+BOQ
+	 jHUvg83XtM3fzNtXDIRVV+bwKA1BjFhAy7Sz7ohZAQzY61VjVkVVNu1USB47OxYKuK
+	 pkaHi5bqqdQN2ZHcEsgWzrJPjpg2uvRNtbPyoZ24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.17 274/371] PCI: tegra: Convert struct tegra_msi mask_lock into raw spinlock
+	Peter Gonda <pgonda@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	=?UTF-8?q?J=C3=BCrgen=20Gro=C3=9F?= <jgross@suse.com>,
+	Korakit Seemakhupt <korakit@google.com>,
+	Jianxiong Gao <jxgao@google.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 242/277] x86/kvm: Force legacy PCI hole to UC when overriding MTRRs for TDX/SNP
 Date: Fri, 17 Oct 2025 16:54:09 +0200
-Message-ID: <20251017145211.987869337@linuxfoundation.org>
+Message-ID: <20251017145155.979733982@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +67,204 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 26fda92d3b56bf44a02bcb4001c5a5548e0ae8ee upstream.
+[ Upstream commit 0dccbc75e18df85399a71933d60b97494110f559 ]
 
-The tegra_msi_irq_unmask() function may be called from a PCI driver
-request_threaded_irq() function. This triggers kernel/irq/manage.c
-__setup_irq() which locks raw spinlock &desc->lock descriptor lock
-and with that descriptor lock held, calls tegra_msi_irq_unmask().
+When running as an SNP or TDX guest under KVM, force the legacy PCI hole,
+i.e. memory between Top of Lower Usable DRAM and 4GiB, to be mapped as UC
+via a forced variable MTRR range.
 
-Since the &desc->lock descriptor lock is a raw spinlock, and the tegra_msi
-.mask_lock is not a raw spinlock, this setup triggers 'BUG: Invalid wait
-context' with CONFIG_PROVE_RAW_LOCK_NESTING=y.
+In most KVM-based setups, legacy devices such as the HPET and TPM are
+enumerated via ACPI.  ACPI enumeration includes a Memory32Fixed entry, and
+optionally a SystemMemory descriptor for an OperationRegion, e.g. if the
+device needs to be accessed via a Control Method.
 
-Use scoped_guard() to simplify the locking.
+If a SystemMemory entry is present, then the kernel's ACPI driver will
+auto-ioremap the region so that it can be accessed at will.  However, the
+ACPI spec doesn't provide a way to enumerate the memory type of
+SystemMemory regions, i.e. there's no way to tell software that a region
+must be mapped as UC vs. WB, etc.  As a result, Linux's ACPI driver always
+maps SystemMemory regions using ioremap_cache(), i.e. as WB on x86.
 
-Fixes: 2c99e55f7955 ("PCI: tegra: Convert to MSI domains")
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Closes: https://patchwork.kernel.org/project/linux-pci/patch/20250909162707.13927-2-marek.vasut+renesas@mailbox.org/#26574451
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+The dedicated device drivers however, e.g. the HPET driver and TPM driver,
+want to map their associated memory as UC or WC, as accessing PCI devices
+using WB is unsupported.
+
+On bare metal and non-CoCO, the conflicting requirements "work" as firmware
+configures the PCI hole (and other device memory) to be UC in the MTRRs.
+So even though the ACPI mappings request WB, they are forced to UC- in the
+kernel's tracking due to the kernel properly handling the MTRR overrides,
+and thus are compatible with the drivers' requested WC/UC-.
+
+With force WB MTRRs on SNP and TDX guests, the ACPI mappings get their
+requested WB if the ACPI mappings are established before the dedicated
+driver code attempts to initialize the device.  E.g. if acpi_init()
+runs before the corresponding device driver is probed, ACPI's WB mapping
+will "win", and result in the driver's ioremap() failing because the
+existing WB mapping isn't compatible with the requested WC/UC-.
+
+E.g. when a TPM is emulated by the hypervisor (ignoring the security
+implications of relying on what is allegedly an untrusted entity to store
+measurements), the TPM driver will request UC and fail:
+
+  [  1.730459] ioremap error for 0xfed40000-0xfed45000, requested 0x2, got 0x0
+  [  1.732780] tpm_tis MSFT0101:00: probe with driver tpm_tis failed with error -12
+
+Note, the '0x2' and '0x0' values refer to "enum page_cache_mode", not x86's
+memtypes (which frustratingly are an almost pure inversion; 2 == WB, 0 == UC).
+E.g. tracing mapping requests for TPM TIS yields:
+
+ Mapping TPM TIS with req_type = 0
+ WARNING: CPU: 22 PID: 1 at arch/x86/mm/pat/memtype.c:530 memtype_reserve+0x2ab/0x460
+ Modules linked in:
+ CPU: 22 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.16.0-rc7+ #2 VOLUNTARY
+ Tainted: [W]=WARN
+ Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/29/2025
+ RIP: 0010:memtype_reserve+0x2ab/0x460
+  __ioremap_caller+0x16d/0x3d0
+  ioremap_cache+0x17/0x30
+  x86_acpi_os_ioremap+0xe/0x20
+  acpi_os_map_iomem+0x1f3/0x240
+  acpi_os_map_memory+0xe/0x20
+  acpi_ex_system_memory_space_handler+0x273/0x440
+  acpi_ev_address_space_dispatch+0x176/0x4c0
+  acpi_ex_access_region+0x2ad/0x530
+  acpi_ex_field_datum_io+0xa2/0x4f0
+  acpi_ex_extract_from_field+0x296/0x3e0
+  acpi_ex_read_data_from_field+0xd1/0x460
+  acpi_ex_resolve_node_to_value+0x2ee/0x530
+  acpi_ex_resolve_to_value+0x1f2/0x540
+  acpi_ds_evaluate_name_path+0x11b/0x190
+  acpi_ds_exec_end_op+0x456/0x960
+  acpi_ps_parse_loop+0x27a/0xa50
+  acpi_ps_parse_aml+0x226/0x600
+  acpi_ps_execute_method+0x172/0x3e0
+  acpi_ns_evaluate+0x175/0x5f0
+  acpi_evaluate_object+0x213/0x490
+  acpi_evaluate_integer+0x6d/0x140
+  acpi_bus_get_status+0x93/0x150
+  acpi_add_single_object+0x43a/0x7c0
+  acpi_bus_check_add+0x149/0x3a0
+  acpi_bus_check_add_1+0x16/0x30
+  acpi_ns_walk_namespace+0x22c/0x360
+  acpi_walk_namespace+0x15c/0x170
+  acpi_bus_scan+0x1dd/0x200
+  acpi_scan_init+0xe5/0x2b0
+  acpi_init+0x264/0x5b0
+  do_one_initcall+0x5a/0x310
+  kernel_init_freeable+0x34f/0x4f0
+  kernel_init+0x1b/0x200
+  ret_from_fork+0x186/0x1b0
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+
+The above traces are from a Google-VMM based VM, but the same behavior
+happens with a QEMU based VM that is modified to add a SystemMemory range
+for the TPM TIS address space.
+
+The only reason this doesn't cause problems for HPET, which appears to
+require a SystemMemory region, is because HPET gets special treatment via
+x86_init.timers.timer_init(), and so gets a chance to create its UC-
+mapping before acpi_init() clobbers things.  Disabling the early call to
+hpet_time_init() yields the same behavior for HPET:
+
+  [  0.318264] ioremap error for 0xfed00000-0xfed01000, requested 0x2, got 0x0
+
+Hack around the ACPI gap by forcing the legacy PCI hole to UC when
+overriding the (virtual) MTRRs for CoCo guest, so that ioremap handling
+of MTRRs naturally kicks in and forces the ACPI mappings to be UC.
+
+Note, the requested/mapped memtype doesn't actually matter in terms of
+accessing the device.  In practically every setup, legacy PCI devices are
+emulated by the hypervisor, and accesses are intercepted and handled as
+emulated MMIO, i.e. never access physical memory and thus don't have an
+effective memtype.
+
+Even in a theoretical setup where such devices are passed through by the
+host, i.e. point at real MMIO memory, it is KVM's (as the hypervisor)
+responsibility to force the memory to be WC/UC, e.g. via EPT memtype
+under TDX or real hardware MTRRs under SNP.  Not doing so cannot work,
+and the hypervisor is highly motivated to do the right thing as letting
+the guest access hardware MMIO with WB would likely result in a variety
+of fatal #MCs.
+
+In other words, forcing the range to be UC is all about coercing the
+kernel's tracking into thinking that it has established UC mappings, so
+that the ioremap code doesn't reject mappings from e.g. the TPM driver and
+thus prevent the driver from loading and the device from functioning.
+
+Note #2, relying on guest firmware to handle this scenario, e.g. by setting
+virtual MTRRs and then consuming them in Linux, is not a viable option, as
+the virtual MTRR state is managed by the untrusted hypervisor, and because
+OVMF at least has stopped programming virtual MTRRs when running as a TDX
+guest.
+
+Link: https://lore.kernel.org/all/8137d98e-8825-415b-9282-1d2a115bb51a@linux.intel.com
+Fixes: 8e690b817e38 ("x86/kvm: Override default caching mode for SEV-SNP and TDX")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250922150811.88450-1-marek.vasut+renesas@mailbox.org
+Cc: Peter Gonda <pgonda@google.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Jürgen Groß <jgross@suse.com>
+Cc: Korakit Seemakhupt <korakit@google.com>
+Cc: Jianxiong Gao <jxgao@google.com>
+Cc: Nikolay Borisov <nik.borisov@suse.com>
+Suggested-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Tested-by: Korakit Seemakhupt <korakit@google.com>
+Link: https://lore.kernel.org/r/20250828005249.39339-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-tegra.c |   27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ arch/x86/kernel/kvm.c |   21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/controller/pci-tegra.c
-+++ b/drivers/pci/controller/pci-tegra.c
-@@ -14,6 +14,7 @@
-  */
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -933,6 +933,19 @@ static void kvm_sev_hc_page_enc_status(u
  
- #include <linux/clk.h>
-+#include <linux/cleanup.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
- #include <linux/export.h>
-@@ -270,7 +271,7 @@ struct tegra_msi {
- 	DECLARE_BITMAP(used, INT_PCI_MSI_NR);
- 	struct irq_domain *domain;
- 	struct mutex map_lock;
--	spinlock_t mask_lock;
-+	raw_spinlock_t mask_lock;
- 	void *virt;
- 	dma_addr_t phys;
- 	int irq;
-@@ -1581,14 +1582,13 @@ static void tegra_msi_irq_mask(struct ir
- 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
- 	struct tegra_pcie *pcie = msi_to_pcie(msi);
- 	unsigned int index = d->hwirq / 32;
--	unsigned long flags;
- 	u32 value;
+ static void __init kvm_init_platform(void)
+ {
++	u64 tolud = PFN_PHYS(e820__end_of_low_ram_pfn());
++	/*
++	 * Note, hardware requires variable MTRR ranges to be power-of-2 sized
++	 * and naturally aligned.  But when forcing guest MTRR state, Linux
++	 * doesn't program the forced ranges into hardware.  Don't bother doing
++	 * the math to generate a technically-legal range.
++	 */
++	struct mtrr_var_range pci_hole = {
++		.base_lo = tolud | X86_MEMTYPE_UC,
++		.mask_lo = (u32)(~(SZ_4G - tolud - 1)) | MTRR_PHYSMASK_V,
++		.mask_hi = (BIT_ULL(boot_cpu_data.x86_phys_bits) - 1) >> 32,
++	};
++
+ 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) &&
+ 	    kvm_para_has_feature(KVM_FEATURE_MIGRATION_CONTROL)) {
+ 		unsigned long nr_pages;
+@@ -982,8 +995,12 @@ static void __init kvm_init_platform(voi
+ 	kvmclock_init();
+ 	x86_platform.apic_post_init = kvm_apic_init;
  
--	spin_lock_irqsave(&msi->mask_lock, flags);
--	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
--	value &= ~BIT(d->hwirq % 32);
--	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
-+		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
-+		value &= ~BIT(d->hwirq % 32);
-+		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
-+	}
+-	/* Set WB as the default cache mode for SEV-SNP and TDX */
+-	guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
++	/*
++	 * Set WB as the default cache mode for SEV-SNP and TDX, with a single
++	 * UC range for the legacy PCI hole, e.g. so that devices that expect
++	 * to get UC/WC mappings don't get surprised with WB.
++	 */
++	guest_force_mtrr_state(&pci_hole, 1, MTRR_TYPE_WRBACK);
  }
  
- static void tegra_msi_irq_unmask(struct irq_data *d)
-@@ -1596,14 +1596,13 @@ static void tegra_msi_irq_unmask(struct
- 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
- 	struct tegra_pcie *pcie = msi_to_pcie(msi);
- 	unsigned int index = d->hwirq / 32;
--	unsigned long flags;
- 	u32 value;
- 
--	spin_lock_irqsave(&msi->mask_lock, flags);
--	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
--	value |= BIT(d->hwirq % 32);
--	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
-+		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
-+		value |= BIT(d->hwirq % 32);
-+		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
-+	}
- }
- 
- static void tegra_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
-@@ -1711,7 +1710,7 @@ static int tegra_pcie_msi_setup(struct t
- 	int err;
- 
- 	mutex_init(&msi->map_lock);
--	spin_lock_init(&msi->mask_lock);
-+	raw_spin_lock_init(&msi->mask_lock);
- 
- 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
- 		err = tegra_allocate_domains(msi);
+ #if defined(CONFIG_AMD_MEM_ENCRYPT)
 
 
 
