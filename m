@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-186303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B770CBE804D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 12:18:17 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5079BE8086
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 12:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4EA925093F5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 10:13:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5CD7D4E5845
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 10:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F2D313264;
-	Fri, 17 Oct 2025 10:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B3D2E5B21;
+	Fri, 17 Oct 2025 10:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZMpLtkNV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tWYmU8eC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DEA3128D6;
-	Fri, 17 Oct 2025 10:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0613128DC;
+	Fri, 17 Oct 2025 10:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760695997; cv=none; b=qAIdqTIABomsCVK6C3hc+HB7JLom1QCUjcmTcxxl55ev+xhcHGckoc47AK+/u5UlGkVlN1lbEbGEk2gnc4tXlprYutEVJYjRv+SsX01IbTHbTS3FbmI7Jf2/AVesSQZJy9gVyNUnlS5gUybCT7Eaqd10pHLGXtnK0sjgqusbrkE=
+	t=1760696220; cv=none; b=P7x7q+5giWXISk/oOHuvQKD0WJJBU+BYxcsgoa4qp8r+DmzLLIvA31dViI2ieJIwJC5ocXejJkeeG6lPUhQUPqdItEoPMTvRz95R+MD95+HXRsQda6Jdgdlwq45HvaP2OA51fyjcy7efalK6g78auP/QCRGlJCcifkMMqgpPCVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760695997; c=relaxed/simple;
-	bh=v2k8lU/SLG9IREpfIPwTrc5rYYB6unnxpeareIxSmFM=;
+	s=arc-20240116; t=1760696220; c=relaxed/simple;
+	bh=HEvsTmBdoMA6jo0eB7i8NFRx5Ung7hua9prVQC9QyiM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G+ah6/gx5xGUmzJiqI0eLi8wKqmcjr35IVKsESyf0uDNXnIyFW9DQCf1HPn8Xsi0i6YrBEMAX/Rzd/KkXRCXQoNLSRql2T/FVSCtwxGSEdBYW6d+dPykzOSlbt4f95TObRUXRunb/lTWAPfy5C0dIMZv0TQ81uC4GenS06D/O0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZMpLtkNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C146C4CEE7;
-	Fri, 17 Oct 2025 10:13:15 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=gLoN6Oo6GaLD1WX603CERP8g+7qDEbBdqQCFVFFpULlDzCgMkzDSoDgYNu0K9ZWKUAgtotG5hstyoShcPBPFjsfhDYt9dwdzgq3EMv69VxkQl8hUmxxpl+M0gUTMykADVJD7/tpsg/YtHrxEzrUsDFWsrTXi2MoD9U6+PnuVZ4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tWYmU8eC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46CFC4CEFE;
+	Fri, 17 Oct 2025 10:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760695996;
-	bh=v2k8lU/SLG9IREpfIPwTrc5rYYB6unnxpeareIxSmFM=;
+	s=k20201202; t=1760696219;
+	bh=HEvsTmBdoMA6jo0eB7i8NFRx5Ung7hua9prVQC9QyiM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZMpLtkNVxH2zBkDY369i0cvyIVQdMoZ8Lf7NYUizvvXz8V5jEBO1Udr5pEhcj8YFv
-	 Ti7SE/fniihEvfnqI9tWsr36sr8QRzUXd22J1KIwOJx5lWaRkKFqrEcIPwRrrYFcch
-	 C2GZ2b49LRtu414kdRMH72s342yMooLUxXjAirtTWwKvadzPc8Z+j/SnpU4itD4n2C
-	 mHxj/usdHfizaHyOWJDqw5YS89cAFa3wj3xVVBDwg+d4Ydim82WfWyBUlseOQ8ECJl
-	 pDJcs1bZFflYWtj8D/CGHMuAeKQK5YbwOBBq+Dcb3kLBiHNTHx5X7uEu1pHqk2Crlu
-	 cGKooyG42Ykbw==
-Message-ID: <04422a9f-64fb-418d-817f-e36ac0601ad3@kernel.org>
-Date: Fri, 17 Oct 2025 12:13:12 +0200
+	b=tWYmU8eCwBJV0VoptKBN28V1LkVemEWeMk0TyV7hJVnaFikwiLX5GBJw6Y59FM5Z6
+	 RP0tlKqcg+QN5ubPi+cJO+dV7whcJo/2FQSlnVwCKkM/sZ/Fdx948AnEBmXTSZmvDf
+	 RBgxJWAbiSrCykcDgjnTYZKNA2gCGDCHgzoSrSxZ9jEBWIqI5pT9T+6oXTAfoIhQ0P
+	 2ojaMMblpouUm4mnrzdrhP4fUfCWHoojvHnzejSqVdDUbQo/vujnCQEDklhtiOcNHB
+	 n3NCG/0vn6yVkl7yC3YsEpnHUIY3RhNFDZML58c3PYQQR3zQ4xCt7etap75/PCzCVI
+	 Jwy5MY+iAG0EQ==
+Message-ID: <03816237-f54d-4483-a8d4-98bf12e0ac00@kernel.org>
+Date: Fri, 17 Oct 2025 12:16:56 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,12 +51,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: Patch "selftests: mptcp: join: validate C-flag + def limit" has
- been added to the 5.10-stable tree
+ been added to the 5.15-stable tree
 Content-Language: en-GB, fr-BE
 To: gregkh@linuxfoundation.org
 Cc: stable-commits@vger.kernel.org, geliang@kernel.org, kuba@kernel.org,
- Stable <stable@vger.kernel.org>
-References: <2025101603-liftoff-spew-4e3a@gregkh>
+ stable@vger.kernel.org
+References: <2025101612-civic-donated-16c8@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -102,7 +102,7 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2025101603-liftoff-spew-4e3a@gregkh>
+In-Reply-To: <2025101612-civic-donated-16c8@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -114,49 +114,21 @@ On 16/10/2025 15:25, gregkh@linuxfoundation.org wrote:
 > 
 >     selftests: mptcp: join: validate C-flag + def limit
 > 
-> to the 5.10-stable tree which can be found at:
+> to the 5.15-stable tree which can be found at:
 >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 > 
 > The filename of the patch is:
 >      selftests-mptcp-join-validate-c-flag-def-limit.patch
-> and it can be found in the queue-5.10 subdirectory.
+> and it can be found in the queue-5.15 subdirectory.
 > 
 > If you, or anyone else, feels it should not be added to the stable tree,
 > please let <stable@vger.kernel.org> know about it.
 
-I do! :)
-> From 008385efd05e04d8dff299382df2e8be0f91d8a0 Mon Sep 17 00:00:00 2001
-> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> Date: Thu, 25 Sep 2025 12:32:37 +0200
-> Subject: selftests: mptcp: join: validate C-flag + def limit
-> 
-> From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> 
-> commit 008385efd05e04d8dff299382df2e8be0f91d8a0 upstream.
-> 
-> The previous commit adds an exception for the C-flag case. The
-> 'mptcp_join.sh' selftest is extended to validate this case.
-> 
-> In this subtest, there is a typical CDN deployment with a client where
-> MPTCP endpoints have been 'automatically' configured:
-> 
-> - the server set net.mptcp.allow_join_initial_addr_port=0
-> 
-> - the client has multiple 'subflow' endpoints, and the default limits:
->   not accepting ADD_ADDRs.
-> 
-> Without the parent patch, the client is not able to establish new
-> subflows using its 'subflow' endpoints. The parent commit fixes that.
-> 
-> The 'Fixes' tag here below is the same as the one from the previous
-> commit: this patch here is not fixing anything wrong in the selftests,
-> but it validates the previous fix for an issue introduced by this commit
-> ID.
-> 
-> Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
+It looks like this patch was applied at the wrong place, and further
+adaptations are needed to work in v5.15. Do you mind dropping it from
+the v5.15 tree, please?
 
-This commit has been introduced in v5.14, and not backported before. Do
-you mind dropping it from v5.10 please? :)
+I will send a newer version later on.
 
 Cheers,
 Matt
