@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-187147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6CDBEA30E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9CBBE9823
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B57455A4190
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D00A1AA48C4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53263328E8;
-	Fri, 17 Oct 2025 15:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F164632C937;
+	Fri, 17 Oct 2025 15:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ug4Y9UTh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLLRQu9u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912ED2F12D9;
-	Fri, 17 Oct 2025 15:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7861D5CE0;
+	Fri, 17 Oct 2025 15:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715247; cv=none; b=qeA7Jo2TLcevJ7prekWPrgqHWOqhmnmaiV56KI15A261+Xaey5sEybmdnaxt9kiw6+Xv2BDLXaXNe+FXiOO1/66Znj/6Q7NMkDIKTaK/6QNBfavnC2EGdiikl2c/Fc7zOjdlzljkYcCyodl8gx71dRvQ57rKVbMJFQtP2XF5NZw=
+	t=1760713627; cv=none; b=Ru7uYVttn5FgL3OI2w7ld0rbmUsMFaCTH1C3NXIDEbWi8/jgdnbsoyVmP03H2y9yJ0ueMHYdcxoLMoIE3YDUu7qLHDRPjsOHjutjRWyg8liAJjNGi4mN8IbKSmaygKu830f39OCo+l70pvewnlzxkZSG1xHw4MTutWhVkMDmiYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715247; c=relaxed/simple;
-	bh=JItUip/RIjVrd+bZ1GCz8iJN/eUDL5oBNlofZLwxu4c=;
+	s=arc-20240116; t=1760713627; c=relaxed/simple;
+	bh=H1wo4fbzk4Al9NUN7YnivCvI1PFWPyWAb8sD/J1LXsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oAw2N5v3QBcLvi6tycM+Qnz+W+Ijs/iZG8dNfwE9e6Q+BUROFp6AaPuRjE9UH7bZq2jJHbzqNU34okQYYwpB6cmwTW9clVhtlAwNOzN/hSzZ9rqnUNdPWnohx+TB31XMEIu7wVFNiXVv4wg7FZNmOCQRcPcpqgYA50iYNkDH//A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ug4Y9UTh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152A0C4CEE7;
-	Fri, 17 Oct 2025 15:34:06 +0000 (UTC)
+	 MIME-Version; b=WpZ0yTg9pZown37+Kwu24mZMx2GimacWMVVt5SdV7E5zBwwUuSDpq9FkUFse2BNB45GceojNR30KdVVZk1f1Op5NtNcVORvEQMjzN7/5/tWDSlD+6iPAMhd3N3LWuIa9O3p2KQhDMzmLchRyI6urTUZE+8ZrJ+gwGrXrXbfgka4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLLRQu9u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0BBC4CEE7;
+	Fri, 17 Oct 2025 15:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715247;
-	bh=JItUip/RIjVrd+bZ1GCz8iJN/eUDL5oBNlofZLwxu4c=;
+	s=korg; t=1760713627;
+	bh=H1wo4fbzk4Al9NUN7YnivCvI1PFWPyWAb8sD/J1LXsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ug4Y9UThyPmtOOIn6Jhez2pIDud/jKCX8J6JhMo9ncMDi2Py2ls3TT05vJiuhGfVW
-	 +S4fxpcFURA8Oals0raPoYG6vVP5CiLsp6ChBxXOzoDVAbrla21Qgz3E5/X4CCIBJH
-	 fPky22u7qdPX1T7EOSVV0PGOftOySUYxNa+bk3MM=
+	b=sLLRQu9ucEes+Mv1x9pKjpxpS2J1Y2uwwfYtk1u1i2JhKCNr4ZvXjy2m/4NnsAktg
+	 lZwxAtm1NfBYRu2pvd16pq3EmZarafmrhmMqhZrKdHoJPU3QvqNczKzKghVcOgj5YY
+	 CJXWgtrVB8e8BpFdbOX4ofJbu2Oih9cmyT9zx/p4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Gergely Kovacs <Gergely.Kovacs2@arm.com>,
-	Will Deacon <will@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 6.17 149/371] arm64: mte: Do not flag the zero page as PG_mte_tagged
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 063/201] arm64: dts: qcom: sdm845: Fix slimbam num-channels/ees
 Date: Fri, 17 Oct 2025 16:52:04 +0200
-Message-ID: <20251017145207.324564133@linuxfoundation.org>
+Message-ID: <20251017145137.066049492@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit f620d66af3165838bfa845dcf9f5f9b4089bf508 upstream.
+commit 316294bb6695a43a9181973ecd4e6fb3e576a9f7 upstream.
 
-Commit 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the
-zero page") attempted to fix ptrace() reading of tags from the zero page
-by marking it as PG_mte_tagged during cpu_enable_mte(). The same commit
-also changed the ptrace() tag access permission check to the VM_MTE vma
-flag while turning the page flag test into a WARN_ON_ONCE().
+Reading the hardware registers of the &slimbam on RB3 reveals that the BAM
+supports only 23 pipes (channels) and supports 4 EEs instead of 2. This
+hasn't caused problems so far since nothing is using the extra channels,
+but attempting to use them would lead to crashes.
 
-Attempting to set the PG_mte_tagged flag early with
-CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled may either hang (after commit
-d77e59a8fccd "arm64: mte: Lock a page for MTE tag initialisation") or
-have the flags cleared later during page_alloc_init_late(). In addition,
-pages_identical() -> memcmp_pages() will reject any comparison with the
-zero page as it is marked as tagged.
+The bam_dma driver might warn in the future if the num-channels in the DT
+are wrong, so correct the properties in the DT to avoid future regressions.
 
-Partially revert the above commit to avoid setting PG_mte_tagged on the
-zero page. Update the __access_remote_tags() warning on untagged pages
-to ignore the zero page since it is known to have the tags initialised.
-
-Note that all user mapping of the zero page are marked as pte_special().
-The arm64 set_pte_at() will not call mte_sync_tags() on such pages, so
-PG_mte_tagged will remain cleared.
-
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Fixes: 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the zero page")
-Reported-by: Gergely Kovacs <Gergely.Kovacs2@arm.com>
-Cc: stable@vger.kernel.org # 5.10.x
-Cc: Will Deacon <will@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Acked-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: Will Deacon <will@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 27ca1de07dc3 ("arm64: dts: qcom: sdm845: add slimbus nodes")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250821-sdm845-slimbam-channels-v1-1-498f7d46b9ee@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/cpufeature.c |   10 +++++++---
- arch/arm64/kernel/mte.c        |    2 +-
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -2408,17 +2408,21 @@ static void bti_enable(const struct arm6
- #ifdef CONFIG_ARM64_MTE
- static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
- {
-+	static bool cleared_zero_page = false;
-+
- 	sysreg_clear_set(sctlr_el1, 0, SCTLR_ELx_ATA | SCTLR_EL1_ATA0);
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -5208,11 +5208,11 @@
+ 			compatible = "qcom,bam-v1.7.4", "qcom,bam-v1.7.0";
+ 			qcom,controlled-remotely;
+ 			reg = <0 0x17184000 0 0x2a000>;
+-			num-channels = <31>;
++			num-channels = <23>;
+ 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
+ 			#dma-cells = <1>;
+ 			qcom,ee = <1>;
+-			qcom,num-ees = <2>;
++			qcom,num-ees = <4>;
+ 			iommus = <&apps_smmu 0x1806 0x0>;
+ 		};
  
- 	mte_cpu_setup();
- 
- 	/*
- 	 * Clear the tags in the zero page. This needs to be done via the
--	 * linear map which has the Tagged attribute.
-+	 * linear map which has the Tagged attribute. Since this page is
-+	 * always mapped as pte_special(), set_pte_at() will not attempt to
-+	 * clear the tags or set PG_mte_tagged.
- 	 */
--	if (try_page_mte_tagging(ZERO_PAGE(0))) {
-+	if (!cleared_zero_page) {
-+		cleared_zero_page = true;
- 		mte_clear_page_tags(lm_alias(empty_zero_page));
--		set_page_mte_tagged(ZERO_PAGE(0));
- 	}
- 
- 	kasan_init_hw_tags_cpu();
---- a/arch/arm64/kernel/mte.c
-+++ b/arch/arm64/kernel/mte.c
-@@ -460,7 +460,7 @@ static int __access_remote_tags(struct m
- 		if (folio_test_hugetlb(folio))
- 			WARN_ON_ONCE(!folio_test_hugetlb_mte_tagged(folio));
- 		else
--			WARN_ON_ONCE(!page_mte_tagged(page));
-+			WARN_ON_ONCE(!page_mte_tagged(page) && !is_zero_page(page));
- 
- 		/* limit access to the end of the page */
- 		offset = offset_in_page(addr);
 
 
 
