@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-186754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84542BE9CFC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF58BE9EA3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AD561588BD1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C7BE1AE2AAB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6483328E7;
-	Fri, 17 Oct 2025 15:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C695132C944;
+	Fri, 17 Oct 2025 15:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbtJuUaM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hI6GXLbi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FE932C931;
-	Fri, 17 Oct 2025 15:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A48232C931;
+	Fri, 17 Oct 2025 15:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714141; cv=none; b=sYJpTmgU1TpJo1bOTRfHW2C2iR3ejtrQrXBSuJGYx1taErBgxCzDVEghTlYRt4rpY6U1zA21u0NZO4rpMtN5CgsTKxqruh3eFDzvwGYmnVmhYDzEELABlbquaR+9/OgwuCFituyTqDVzCcLzPo0VBe4mHl9H9Hnb/Gs0593I6Ns=
+	t=1760715035; cv=none; b=F3EfYzkr3dwOHi+QiT3r+QIClYWmFphQhA13A0sdL2HxnoVzmBOZIrfwxrVwC4Heyi+pwkXgxk2wv8Zx1IDU/fVnhtxL9Wlp495FItFbZA4L2LJU5RjKAy8vSNXtp/LTUJe635fM69nrPBPA8YOZk+ccJzmveywnmgVL5asnF1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714141; c=relaxed/simple;
-	bh=z/V7Sct8Qk7OL4ZRYIC8XB4tx6tuFvWSRLr2K5/2H30=;
+	s=arc-20240116; t=1760715035; c=relaxed/simple;
+	bh=bwc3G50cKu/JTMUlHirkApVl7Ubfxu6Q9lGt47t02+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OvCD7scmDfVj1P1B4tMnCsNUzWkDrwP775ZnXhK+UyA/SBzkRmyNNPULfyhufP4jNaRWpJIYaUxnjOb8Nj+eTOwQAEx+WrZ3EQKvPyzbf91wX/WyQjREtqDKtUREkoqWNUn2bn7tJ7gGUcsMvGZ1ouV6qtYKsYXKIk/3ISl8r74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbtJuUaM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2699C4CEE7;
-	Fri, 17 Oct 2025 15:15:40 +0000 (UTC)
+	 MIME-Version; b=p9A6v3pSZ85qU7P+Tl1tUEk5KzCwsKRBoxjvyLKnrJYYKKs7f3/zyPGl9jXlD6E6U+9vKq2J07+qh/vY8PdtQVv6ps5dzroPXTD/ZMu07C/Y2Wks74o1wyaKlmO2k3hK3s0lkwLJMWoBw28StS9PQy2um/aWo1VecLEXyWj50tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hI6GXLbi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07826C4CEFE;
+	Fri, 17 Oct 2025 15:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714141;
-	bh=z/V7Sct8Qk7OL4ZRYIC8XB4tx6tuFvWSRLr2K5/2H30=;
+	s=korg; t=1760715035;
+	bh=bwc3G50cKu/JTMUlHirkApVl7Ubfxu6Q9lGt47t02+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tbtJuUaMedO3POZk2LnpwHtavzBkj9E1/DTg42vwKFrqydVGRZhZtjihFtk2e+MwI
-	 BdABNUyFsgGwuQBRzOIshSVlvfqHr9HerQD7LHEcmVUhxWgvLpRFpHzPnpFsKdldxj
-	 DVtrk+DEqcmMwciuzO7brNvcCfFSITMOhgILDt58=
+	b=hI6GXLbiPKZzPPhWMTmtqqoBsDu4EqEuxREUCiRfo+9WzXk83nK1ikYD9HSva7xZe
+	 5hBb7+A93ij+pfFAZGxzbkI6qsyPUmUZ0Y9ST9wH95bjgbqy58kuYXhZFNLoIleWYg
+	 634rECeZtY8MLNXulSF8g8AU1sbUFDD7aTrJM7iM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/277] ASoC: SOF: ipc4-topology: Account for different ChainDMA host buffer size
-Date: Fri, 17 Oct 2025 16:50:49 +0200
-Message-ID: <20251017145148.681720663@linuxfoundation.org>
+Subject: [PATCH 6.17 075/371] ASoC: SOF: Intel: hda-pcm: Place the constraint on period time instead of buffer time
+Date: Fri, 17 Oct 2025 16:50:50 +0200
+Message-ID: <20251017145204.654432874@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +65,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 3dcf683bf1062d69014fe81b90d285c7eb85ca8a ]
+[ Upstream commit 45ad27d9a6f7c620d8bbc80be3bab1faf37dfa0a ]
 
-For ChainDMA the firmware allocates 5ms host buffer instead of the standard
-4ms which should be taken into account when setting the constraint on the
-buffer size.
+Instead of constraining the ALSA buffer time to be double of the firmware
+host buffer size, it is better to set it for the period time.
+This will implicitly constrain the buffer time to a safe value
+(num_periods is at least 2) and prohibits applications to set smaller
+period size than what will be covered by the initial DMA burst.
 
-Fixes: 842bb8b62cc6 ("ASoC: SOF: ipc4-topology: Save the DMA maximum burst size for PCMs")
+Fixes: fe76d2e75a6d ("ASoC: SOF: Intel: hda-pcm: Use dsp_max_burst_size_in_ms to place constraint")
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20251002135752.2430-3-peter.ujfalusi@linux.intel.com
+Link: https://patch.msgid.link/20251002135752.2430-4-peter.ujfalusi@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc4-topology.c | 9 +++++++--
- sound/soc/sof/ipc4-topology.h | 3 +++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ sound/soc/sof/intel/hda-pcm.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
-index f82db7f2a6b7e..ac836d0d20de0 100644
---- a/sound/soc/sof/ipc4-topology.c
-+++ b/sound/soc/sof/ipc4-topology.c
-@@ -519,8 +519,13 @@ static int sof_ipc4_widget_setup_pcm(struct snd_sof_widget *swidget)
- 				      swidget->tuples,
- 				      swidget->num_tuples, sizeof(u32), 1);
- 		/* Set default DMA buffer size if it is not specified in topology */
--		if (!sps->dsp_max_burst_size_in_ms)
--			sps->dsp_max_burst_size_in_ms = SOF_IPC4_MIN_DMA_BUFFER_SIZE;
-+		if (!sps->dsp_max_burst_size_in_ms) {
-+			struct snd_sof_widget *pipe_widget = swidget->spipe->pipe_widget;
-+			struct sof_ipc4_pipeline *pipeline = pipe_widget->private;
-+
-+			sps->dsp_max_burst_size_in_ms = pipeline->use_chain_dma ?
-+				SOF_IPC4_CHAIN_DMA_BUFFER_SIZE : SOF_IPC4_MIN_DMA_BUFFER_SIZE;
-+		}
- 	} else {
- 		/* Capture data is copied from DSP to host in 1ms bursts */
- 		spcm->stream[dir].dsp_max_burst_size_in_ms = 1;
-diff --git a/sound/soc/sof/ipc4-topology.h b/sound/soc/sof/ipc4-topology.h
-index 187e186ba4f8f..adb52a1eff85f 100644
---- a/sound/soc/sof/ipc4-topology.h
-+++ b/sound/soc/sof/ipc4-topology.h
-@@ -63,6 +63,9 @@
- /* FW requires minimum 4ms DMA buffer size */
- #define SOF_IPC4_MIN_DMA_BUFFER_SIZE	4
+diff --git a/sound/soc/sof/intel/hda-pcm.c b/sound/soc/sof/intel/hda-pcm.c
+index 1dd8d2092c3b4..da6c1e7263cde 100644
+--- a/sound/soc/sof/intel/hda-pcm.c
++++ b/sound/soc/sof/intel/hda-pcm.c
+@@ -29,6 +29,8 @@
+ #define SDnFMT_BITS(x)	((x) << 4)
+ #define SDnFMT_CHAN(x)	((x) << 0)
  
-+/* ChainDMA in fw uses 5ms DMA buffer */
-+#define SOF_IPC4_CHAIN_DMA_BUFFER_SIZE	5
++#define HDA_MAX_PERIOD_TIME_HEADROOM	10
 +
- /*
-  * The base of multi-gateways. Multi-gateways addressing starts from
-  * ALH_MULTI_GTW_BASE and there are ALH_MULTI_GTW_COUNT multi-sources
+ static bool hda_always_enable_dmi_l1;
+ module_param_named(always_enable_dmi_l1, hda_always_enable_dmi_l1, bool, 0444);
+ MODULE_PARM_DESC(always_enable_dmi_l1, "SOF HDA always enable DMI l1");
+@@ -291,19 +293,30 @@ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
+ 	 * On playback start the DMA will transfer dsp_max_burst_size_in_ms
+ 	 * amount of data in one initial burst to fill up the host DMA buffer.
+ 	 * Consequent DMA burst sizes are shorter and their length can vary.
+-	 * To make sure that userspace allocate large enough ALSA buffer we need
+-	 * to place a constraint on the buffer time.
++	 * To avoid immediate xrun by the initial burst we need to place
++	 * constraint on the period size (via PERIOD_TIME) to cover the size of
++	 * the host buffer.
++	 * We need to add headroom of max 10ms as the firmware needs time to
++	 * settle to the 1ms pacing and initially it can run faster for few
++	 * internal periods.
+ 	 *
+ 	 * On capture the DMA will transfer 1ms chunks.
+-	 *
+-	 * Exact dsp_max_burst_size_in_ms constraint is racy, so set the
+-	 * constraint to a minimum of 2x dsp_max_burst_size_in_ms.
+ 	 */
+-	if (spcm->stream[direction].dsp_max_burst_size_in_ms)
++	if (spcm->stream[direction].dsp_max_burst_size_in_ms) {
++		unsigned int period_time = spcm->stream[direction].dsp_max_burst_size_in_ms;
++
++		/*
++		 * add headroom over the maximum burst size to cover the time
++		 * needed for the DMA pace to settle.
++		 * Limit the headroom time to HDA_MAX_PERIOD_TIME_HEADROOM
++		 */
++		period_time += min(period_time, HDA_MAX_PERIOD_TIME_HEADROOM);
++
+ 		snd_pcm_hw_constraint_minmax(substream->runtime,
+-			SNDRV_PCM_HW_PARAM_BUFFER_TIME,
+-			spcm->stream[direction].dsp_max_burst_size_in_ms * USEC_PER_MSEC * 2,
++			SNDRV_PCM_HW_PARAM_PERIOD_TIME,
++			period_time * USEC_PER_MSEC,
+ 			UINT_MAX);
++	}
+ 
+ 	/* binding pcm substream to hda stream */
+ 	substream->runtime->private_data = &dsp_stream->hstream;
 -- 
 2.51.0
 
