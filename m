@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD2DBEA155
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31015BEA332
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 594885A4124
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B811AE327C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7922F12DE;
-	Fri, 17 Oct 2025 15:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4822C330B1F;
+	Fri, 17 Oct 2025 15:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMkc/YGD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IO6TthJI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EA220C00A;
-	Fri, 17 Oct 2025 15:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D2C330B3C;
+	Fri, 17 Oct 2025 15:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715239; cv=none; b=AoOG6siyl+gfV5WM2Ju//igR94/mTF1TmdNXt0vmP388WYf4KjGtelhDqgzHSoNuNGWnAVCY0z0E1wHHbJdXN4wXPQgP2tjbGExzU85gMwqPa+FEgCVgLJ/OS73T/JoYgEIlMbq64qN5SboC+wF4gelwii+IS+adrWozm9l+k5s=
+	t=1760715971; cv=none; b=Qaswhv4IG7+dQ5C3f8MbXF+xRfRU1qiO/jEmMW0nLkrebR9klvXBUn1PNYGeymEpySC8voFydp6kGLexlKG5S6Y4KbuB47bIohAAaYdImVD61Zj7H80UJyVcBH4O79E+GWBntOFg88hj227qIyzHmPnkSvELRhz/gDPwxQzRmtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715239; c=relaxed/simple;
-	bh=xdjgqEEj0vlczWQF61oB6MHJ+F21styJLUwD/yAhjQM=;
+	s=arc-20240116; t=1760715971; c=relaxed/simple;
+	bh=7yUBZFzdl0E1dQmioxozpJtxQqJ3562WOq78yinS/eI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HnT9da7u0psbPzvZu15kVX7hugVz9zUSXdHNkARdDNzdTexiNJ/IjqIeC/Fj/t48HQROMCZ1KF3G5c2IasHwU4F4VqXqnL1WfPrA3P3u3mJ3WcFqbyhIJyrqkA9a69mE86FI2gAkT6VpPQU5Q77YoHS3k5pyQwsb4GWK23ooYeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMkc/YGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DA7C4CEE7;
-	Fri, 17 Oct 2025 15:33:58 +0000 (UTC)
+	 MIME-Version; b=WbiyAurh5ram2bTLnPVRWqN7UGzGJg0yea8V3gu9H1fGAYqAK5VnzSMiroIR1776WyqaWI0uyvbvm81hg/hNH9GomF30jBiDocXMXvNCIoszYen3wMYgZpTbCVXFnykJKLmaU/u5a+RNHP+VCLiUSKvc7yuN90A2sV7fc5ZRs9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IO6TthJI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AFEC4CEFE;
+	Fri, 17 Oct 2025 15:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715238;
-	bh=xdjgqEEj0vlczWQF61oB6MHJ+F21styJLUwD/yAhjQM=;
+	s=korg; t=1760715970;
+	bh=7yUBZFzdl0E1dQmioxozpJtxQqJ3562WOq78yinS/eI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMkc/YGDnU5T8/t+ZXRwTvwBGBAsvn7zcCt+0LtQ2Y4sBw8m0tq+TMPEquk1d/xQV
-	 sVULe5MZF0Lwex0snRGSj4e2Z221cBcACW2dr+pLys9E2OGDLFW5D/kZcn022AfJxu
-	 4euFQYbFWgT1LKU45PEFg8sNXpJWY/VzMdc7yBUo=
+	b=IO6TthJILbt4poJrkouUPhQ9fbvPT3WZlmdJ47Mm1wQ+A6CXVSWuSZMnlAEN6pOJC
+	 ZNlQ8MNTfVisclOCx/x8PqehVzq8k9jHrwM7NJ6GxqF7QERCAILVwrCcoGmRWF8DiE
+	 73H8kjZdZaBwwHFXvqo3ZyW4wqcsJ12ojA1WOMAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vibhore Vardhan <vibhore@ti.com>,
-	Paresh Bhagat <p-bhagat@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.17 146/371] arm64: dts: ti: k3-am62a-main: Fix main padcfg length
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 028/276] regmap: Remove superfluous check for !config in __regmap_init()
 Date: Fri, 17 Oct 2025 16:52:01 +0200
-Message-ID: <20251017145207.217185675@linuxfoundation.org>
+Message-ID: <20251017145143.431205915@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vibhore Vardhan <vibhore@ti.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 4c4e48afb6d85c1a8f9fdbae1fdf17ceef4a6f5b upstream.
+[ Upstream commit 5c36b86d2bf68fbcad16169983ef7ee8c537db59 ]
 
-The main pad configuration register region starts with the register
-MAIN_PADCFG_CTRL_MMR_CFG0_PADCONFIG0 with address 0x000f4000 and ends
-with the MAIN_PADCFG_CTRL_MMR_CFG0_PADCONFIG150 register with address
-0x000f4258, as a result of which, total size of the region is 0x25c
-instead of 0x2ac.
+The first thing __regmap_init() do is check if config is non-NULL,
+so there is no need to check for this again later.
 
-Reference Docs
-TRM (AM62A) - https://www.ti.com/lit/ug/spruj16b/spruj16b.pdf
-TRM (AM62D) - https://www.ti.com/lit/ug/sprujd4/sprujd4.pdf
-
-Fixes: 5fc6b1b62639c ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vibhore Vardhan <vibhore@ti.com>
-Signed-off-by: Paresh Bhagat <p-bhagat@ti.com>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://patch.msgid.link/20250903062513.813925-2-p-bhagat@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d77e745613680c54 ("regmap: Add bulk read/write callbacks into regmap_config")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/a154d9db0f290dda96b48bd817eb743773e846e1.1755090330.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62a-main.dtsi |    2 +-
+ drivers/base/regmap/regmap.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-@@ -267,7 +267,7 @@
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index ebddc69bc969c..35cfbec6bf9ac 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -888,7 +888,7 @@ struct regmap *__regmap_init(struct device *dev,
+ 		map->read_flag_mask = bus->read_flag_mask;
+ 	}
  
- 	main_pmx0: pinctrl@f4000 {
- 		compatible = "pinctrl-single";
--		reg = <0x00 0xf4000 0x00 0x2ac>;
-+		reg = <0x00 0xf4000 0x00 0x25c>;
- 		#pinctrl-cells = <1>;
- 		pinctrl-single,register-width = <32>;
- 		pinctrl-single,function-mask = <0xffffffff>;
+-	if (config && config->read && config->write) {
++	if (config->read && config->write) {
+ 		map->reg_read  = _regmap_bus_read;
+ 
+ 		/* Bulk read/write */
+-- 
+2.51.0
+
 
 
 
