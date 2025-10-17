@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-187560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BDFBEA57B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 893E9BE9D8F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8721C1894566
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8B5D188456A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467D0330B3A;
-	Fri, 17 Oct 2025 15:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36413208;
+	Fri, 17 Oct 2025 15:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9h+zVMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzfZjL3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01069330B1E;
-	Fri, 17 Oct 2025 15:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00C03370FB;
+	Fri, 17 Oct 2025 15:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716423; cv=none; b=sqNwW02nSrWjApvuA0apsJeY6XLlHBn1SAtlvu7E6UlA+aLBnd/1XuQVjU5Hx9j9C77qVL5jZ02U+ehMp7aJykrYCq5WFjEGFdZAAt5NSFj95HNbb+6fFZ6Wds5jTfQ+zN6GTwHpbZP6aHi6NHawa/NJaiNCVY3HnF4PAQm8c0E=
+	t=1760714785; cv=none; b=adIdMqTomo3rXPDO/uihwnN8yViZoUjFnPHJDcEc3OtwGBpS75sm8Q4RK0KenhPGdShf4rRIR+2lQS9+B6TqG4ejbN9lhAEoXGkxWeh3sKrbPs0So90EGt2ESI0zp0XzdrEDjcNSwV1st9FDzEIuGAwYZ/UOS9Q73hEEtsOYNgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716423; c=relaxed/simple;
-	bh=k563CMuYSM/A0GodW9u8VvWAFpHI6rZmmZuwinTZXKY=;
+	s=arc-20240116; t=1760714785; c=relaxed/simple;
+	bh=n064FghE/YJcXQsO0Dptzg4W58l/xKqUpuKy3gX2KZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=syz7cNCDXgUxc5r2LGzGgIpoB0y7lnI+QH7oNjpAZQ2lLhZrQAu1Z9zXS66NevpbpIGFbLQ+25SjTdH0xwF2OzA/I7ovgFJNvUrbTQaZHp6lLVqCsd+j4hZpU5WOWMqthOoTjN99nmhKBoGf0SIsfD5wmZFjMLbOypnB4OvHfIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9h+zVMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACD7C4CEE7;
-	Fri, 17 Oct 2025 15:53:42 +0000 (UTC)
+	 MIME-Version; b=aM0eIeh2dTfBtjyQNK1DEQmu12uRRwLcHfQVXyBwYRwKE/grNbzG53gr9/cSwQq31kAQEA5GlWEKRYKCLXzJ+s9L5ABIjIw63t93U1Y2flhP+7lm8u3GNxPFqMsfGRNs08rdext9Cmzsg22s6pnU9VukSzDyImDqmcKToDVZIS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzfZjL3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 333B4C4CEE7;
+	Fri, 17 Oct 2025 15:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716422;
-	bh=k563CMuYSM/A0GodW9u8VvWAFpHI6rZmmZuwinTZXKY=;
+	s=korg; t=1760714785;
+	bh=n064FghE/YJcXQsO0Dptzg4W58l/xKqUpuKy3gX2KZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9h+zVMAUjAlM2eQbzXBN8yzk3G4bBwrTd31Hof/7hO9jziMVc5Ys+rCaAOQhggyN
-	 RLQJYsANaoO2GwEEUkdBgCaeX3+vJJYB+lDGVmgFCplNB7mCZ11D9OPElo/fcNXG9E
-	 uU0IjX5D/cAICpKD4gFnSuJYQ5FM0PoLN/W71YU8=
+	b=MzfZjL3yO/rFS+nORY7rnQoE571WhrbU4ohkOF8vPJXJw5UU46MGBsVXtNcwGJb/l
+	 b+jsz8NAyXqho4OsDmmuj7P8v3JCWyXJm+sPoAseJ9YR0l89DKgdlPpUEpzMCc9QB2
+	 ZzEGcCB/g3onwk/Udv7sgL02ExR1qysIZ5Vb8SCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH 5.15 178/276] cpufreq: intel_pstate: Fix object lifecycle issue in update_qos_request()
-Date: Fri, 17 Oct 2025 16:54:31 +0200
-Message-ID: <20251017145148.974165070@linuxfoundation.org>
+	Florian Weimer <fweimer@redhat.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 265/277] copy_file_range: limit size if in compat mode
+Date: Fri, 17 Oct 2025 16:54:32 +0200
+Message-ID: <20251017145156.837321304@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit 69e5d50fcf4093fb3f9f41c4f931f12c2ca8c467 upstream.
+[ Upstream commit f8f59a2c05dc16d19432e3154a9ac7bc385f4b92 ]
 
-The cpufreq_cpu_put() call in update_qos_request() takes place too early
-because the latter subsequently calls freq_qos_update_request() that
-indirectly accesses the policy object in question through the QoS request
-object passed to it.
+If the process runs in 32-bit compat mode, copy_file_range results can be
+in the in-band error range.  In this case limit copy length to MAX_RW_COUNT
+to prevent a signed overflow.
 
-Fortunately, update_qos_request() is called under intel_pstate_driver_lock,
-so this issue does not matter for changing the intel_pstate operation
-mode, but it theoretically can cause a crash to occur on CPU device hot
-removal (which currently can only happen in virt, but it is formally
-supported nevertheless).
-
-Address this issue by modifying update_qos_request() to drop the
-reference to the policy later.
-
-Fixes: da5c504c7aae ("cpufreq: intel_pstate: Implement QoS supported freq constraints")
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Link: https://patch.msgid.link/2255671.irdbgypaU6@rafael.j.wysocki
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Florian Weimer <fweimer@redhat.com>
+Closes: https://lore.kernel.org/all/lhuh5ynl8z5.fsf@oldenburg.str.redhat.com/
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://lore.kernel.org/20250813151107.99856-1-mszeredi@redhat.com
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/read_write.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -1307,10 +1307,10 @@ static void update_qos_request(enum freq
- 			continue;
+diff --git a/fs/read_write.c b/fs/read_write.c
+index befec0b5c537a..46408bab92385 100644
+--- a/fs/read_write.c
++++ b/fs/read_write.c
+@@ -1600,6 +1600,13 @@ ssize_t vfs_copy_file_range(struct file *file_in, loff_t pos_in,
+ 	if (len == 0)
+ 		return 0;
  
- 		req = policy->driver_data;
--		cpufreq_cpu_put(policy);
--
--		if (!req)
-+		if (!req) {
-+			cpufreq_cpu_put(policy);
- 			continue;
-+		}
- 
- 		if (hwp_active)
- 			intel_pstate_get_hwp_cap(cpu);
-@@ -1326,6 +1326,8 @@ static void update_qos_request(enum freq
- 
- 		if (freq_qos_update_request(req, freq) < 0)
- 			pr_warn("Failed to update freq constraint: CPU%d\n", i);
++	/*
++	 * Make sure return value doesn't overflow in 32bit compat mode.  Also
++	 * limit the size for all cases except when calling ->copy_file_range().
++	 */
++	if (splice || !file_out->f_op->copy_file_range || in_compat_syscall())
++		len = min_t(size_t, MAX_RW_COUNT, len);
 +
-+		cpufreq_cpu_put(policy);
- 	}
- }
+ 	file_start_write(file_out);
  
+ 	/*
+@@ -1613,9 +1620,7 @@ ssize_t vfs_copy_file_range(struct file *file_in, loff_t pos_in,
+ 						      len, flags);
+ 	} else if (!splice && file_in->f_op->remap_file_range && samesb) {
+ 		ret = file_in->f_op->remap_file_range(file_in, pos_in,
+-				file_out, pos_out,
+-				min_t(loff_t, MAX_RW_COUNT, len),
+-				REMAP_FILE_CAN_SHORTEN);
++				file_out, pos_out, len, REMAP_FILE_CAN_SHORTEN);
+ 		/* fallback to splice */
+ 		if (ret <= 0)
+ 			splice = true;
+@@ -1648,8 +1653,7 @@ ssize_t vfs_copy_file_range(struct file *file_in, loff_t pos_in,
+ 	 * to splicing from input file, while file_start_write() is held on
+ 	 * the output file on a different sb.
+ 	 */
+-	ret = do_splice_direct(file_in, &pos_in, file_out, &pos_out,
+-			       min_t(size_t, len, MAX_RW_COUNT), 0);
++	ret = do_splice_direct(file_in, &pos_in, file_out, &pos_out, len, 0);
+ done:
+ 	if (ret > 0) {
+ 		fsnotify_access(file_in);
+-- 
+2.51.0
+
 
 
 
