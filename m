@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D6ABE9D20
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6041BEA221
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FF16745919
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FDEB1AE2965
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5175533507D;
-	Fri, 17 Oct 2025 15:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1285330B08;
+	Fri, 17 Oct 2025 15:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeoZD7UF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Y6qk6L/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E35C2F12CF;
-	Fri, 17 Oct 2025 15:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D415330B30;
+	Fri, 17 Oct 2025 15:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714023; cv=none; b=Dd8Oq0am9hingm29hl/r7J/yop4liyA55beHSE6l9ecHYWVYnrDTLmvqQw3lwvliW6JdSpO9nwCW8OmAvumBvJvifpbT6+g1W6mu11kaqDhRJmZIyQtcizirlutBMDwOxxhggQIi6rLzohhBjd/EAcnCqxOs8ExlttzSt8CkkN0=
+	t=1760715695; cv=none; b=NBBx/2yU7QYS2tz2sTGFn9wqAToVBXpOFBWTZyvHeFM8UaN6awjp0Q9sckkFGpgE/QjCyRSYlfGAlBTwNsFeFb+CMcpESEywTRSI/HFXf59vqQmbW1CnMQv2IRG2a2Qa/dvT2pDx6fUKQV99kwzPdeDJV4vBueHJYNxhhzusPAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714023; c=relaxed/simple;
-	bh=sqRLk5+OCJwO7l1weCccojd91xIERHWYsIBqF5LVXkM=;
+	s=arc-20240116; t=1760715695; c=relaxed/simple;
+	bh=1Htt8wIo7DV7bUp68eZLEe2kyhvnehkKs/ezxOb6MFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hvzHd1SGd95YffpLgqZ8Dgph6GvBj6aMxzND2NfK63ur0PWF+WlZqUo7EhkvYbEi98FE3jLFarST0k8TUSlZpuprBIOXKGMWNi1MIYk6e3BR7wM94X8LgTt5QrQrqGDDxBfNOhCown+wIPfNH+xUouegk9lXLgg8znS+RDmJ+ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeoZD7UF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C69DC4CEE7;
-	Fri, 17 Oct 2025 15:13:42 +0000 (UTC)
+	 MIME-Version; b=Ex8YR7n7TP2Z/ZOIDOZmhOyQqKAht75m/nTDLpM7Rbr4JVNCoY4GJb/roJ5Y0WMs1dSTBMdysyklIILh6pEEcZnZgBDOO+66SHOOgs99or6GTQg2j5vUfh0Os5WSV0GWZPWgWH2M2gnYk42LJUaLux3avRXjXOs1zA3WPgtKgFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Y6qk6L/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FAEC4CEE7;
+	Fri, 17 Oct 2025 15:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714022;
-	bh=sqRLk5+OCJwO7l1weCccojd91xIERHWYsIBqF5LVXkM=;
+	s=korg; t=1760715695;
+	bh=1Htt8wIo7DV7bUp68eZLEe2kyhvnehkKs/ezxOb6MFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MeoZD7UFiCd8OcmNq/oTqXP/QLUkmOWPkmFnDeT4pYvzg3wodaC9KeJYYkmAiks2P
-	 KwPqwtaJQ/A1bG+m3XDlgVeqomtsdbwOEUCA1Rq2od9r0ZSeqOAkuABhCikSqQrU9+
-	 t2l84T7z6WsHosrGHGsNgrDu9VttoqwfcrJHO5UM=
+	b=1Y6qk6L/CBzhFoYXKE1xLM/apIGWzIlPL0ljR7EgQ8TTS8p9OCdnwQBZiiNRdAFiC
+	 yL2isvIhjoqJuOn4wsqjaHFz0erw4kdPJE5jD3RZn/oUDuVeVCEGGMU09FQXLqeR/4
+	 lsimwJPRh2vaEzzZbTHbaeUZgxbqeXOt+VhIy3sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 187/201] s390/bpf: Describe the frame using a struct instead of constants
+	Jani Nurminen <jani.nurminen@windriver.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.17 273/371] PCI: xilinx-nwl: Fix ECAM programming
 Date: Fri, 17 Oct 2025 16:54:08 +0200
-Message-ID: <20251017145141.628939808@linuxfoundation.org>
+Message-ID: <20251017145211.951542077@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,262 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Jani Nurminen <jani.nurminen@windriver.com>
 
-commit e26d523edf2a62b142d2dd2dd9b87f61ed92f33a upstream.
+commit 98a4f5b7359205ced1b6a626df3963bf7c5e5052 upstream.
 
-Currently the caller-allocated portion of the stack frame is described
-using constants, hardcoded values, and an ASCII drawing, making it
-harder than necessary to ensure that everything is in sync.
+When PCIe has been set up by the bootloader, the ecam_size field in the
+E_ECAM_CONTROL register already contains a value.
 
-Declare a struct and use offsetof() and offsetofend() macros to refer
-to various values stored within the frame.
+The driver previously programmed it to 0xc (for 16 busses; 16 MB), but
+bumped to 0x10 (for 256 busses; 256 MB) by the commit 2fccd11518f1 ("PCI:
+xilinx-nwl: Modify ECAM size to enable support for 256 buses").
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250624121501.50536-3-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Regardless of what the bootloader has programmed, the driver ORs in a
+new maximal value without doing a proper RMW sequence. This can lead to
+problems.
+
+For example, if the bootloader programs in 0xc and the driver uses 0x10,
+the ORed result is 0x1c, which is beyond the ecam_max_size limit of 0x10
+(from E_ECAM_CAPABILITIES).
+
+Avoid the problems by doing a proper RMW.
+
+Fixes: 2fccd11518f1 ("PCI: xilinx-nwl: Modify ECAM size to enable support for 256 buses")
+Signed-off-by: Jani Nurminen <jani.nurminen@windriver.com>
+[mani: added stable tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/e83a2af2-af0b-4670-bcf5-ad408571c2b0@windriver.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/net/bpf_jit.h      |   55 ----------------------------------
- arch/s390/net/bpf_jit_comp.c |   69 +++++++++++++++++++++++++++++--------------
- 2 files changed, 47 insertions(+), 77 deletions(-)
- delete mode 100644 arch/s390/net/bpf_jit.h
+ drivers/pci/controller/pcie-xilinx-nwl.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/s390/net/bpf_jit.h
-+++ /dev/null
-@@ -1,55 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * BPF Jit compiler defines
-- *
-- * Copyright IBM Corp. 2012,2015
-- *
-- * Author(s): Martin Schwidefsky <schwidefsky@de.ibm.com>
-- *	      Michael Holzheu <holzheu@linux.vnet.ibm.com>
-- */
--
--#ifndef __ARCH_S390_NET_BPF_JIT_H
--#define __ARCH_S390_NET_BPF_JIT_H
--
--#ifndef __ASSEMBLY__
--
--#include <linux/filter.h>
--#include <linux/types.h>
--
--#endif /* __ASSEMBLY__ */
--
--/*
-- * Stackframe layout (packed stack):
-- *
-- *				    ^ high
-- *	      +---------------+     |
-- *	      | old backchain |     |
-- *	      +---------------+     |
-- *	      |   r15 - r6    |     |
-- *	      +---------------+     |
-- *	      | 4 byte align  |     |
-- *	      | tail_call_cnt |     |
-- * BFP	   -> +===============+     |
-- *	      |		      |     |
-- *	      |   BPF stack   |     |
-- *	      |		      |     |
-- * R15+160 -> +---------------+     |
-- *	      | new backchain |     |
-- * R15+152 -> +---------------+     |
-- *	      | + 152 byte SA |     |
-- * R15	   -> +---------------+     + low
-- *
-- * We get 160 bytes stack space from calling function, but only use
-- * 12 * 8 byte for old backchain, r15..r6, and tail_call_cnt.
-- *
-- * The stack size used by the BPF program ("BPF stack" above) is passed
-- * via "aux->stack_depth".
-- */
--#define STK_SPACE_ADD	(160)
--#define STK_160_UNUSED	(160 - 12 * 8)
--#define STK_OFF		(STK_SPACE_ADD - STK_160_UNUSED)
--
--#define STK_OFF_R6	(160 - 11 * 8)	/* Offset of r6 on stack */
--#define STK_OFF_TCCNT	(160 - 12 * 8)	/* Offset of tail_call_cnt on stack */
--
--#endif /* __ARCH_S390_NET_BPF_JIT_H */
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -31,7 +31,6 @@
- #include <asm/nospec-branch.h>
- #include <asm/set_memory.h>
- #include <asm/text-patching.h>
--#include "bpf_jit.h"
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -718,9 +718,10 @@ static int nwl_pcie_bridge_init(struct n
+ 	nwl_bridge_writel(pcie, nwl_bridge_readl(pcie, E_ECAM_CONTROL) |
+ 			  E_ECAM_CR_ENABLE, E_ECAM_CONTROL);
  
- struct bpf_jit {
- 	u32 seen;		/* Flags to remember seen eBPF instructions */
-@@ -53,7 +52,7 @@ struct bpf_jit {
- 	int excnt;		/* Number of exception table entries */
- 	int prologue_plt_ret;	/* Return address for prologue hotpatch PLT */
- 	int prologue_plt;	/* Start of prologue hotpatch PLT */
--	u32 frame_off;		/* Offset of frame from %r15 */
-+	u32 frame_off;		/* Offset of struct bpf_prog from %r15 */
- };
+-	nwl_bridge_writel(pcie, nwl_bridge_readl(pcie, E_ECAM_CONTROL) |
+-			  (NWL_ECAM_MAX_SIZE << E_ECAM_SIZE_SHIFT),
+-			  E_ECAM_CONTROL);
++	ecam_val = nwl_bridge_readl(pcie, E_ECAM_CONTROL);
++	ecam_val &= ~E_ECAM_SIZE_LOC;
++	ecam_val |= NWL_ECAM_MAX_SIZE << E_ECAM_SIZE_SHIFT;
++	nwl_bridge_writel(pcie, ecam_val, E_ECAM_CONTROL);
  
- #define SEEN_MEM	BIT(0)		/* use mem[] for temporary storage */
-@@ -400,11 +399,25 @@ static void jit_fill_hole(void *area, un
- }
- 
- /*
-+ * Caller-allocated part of the frame.
-+ * Thanks to packed stack, its otherwise unused initial part can be used for
-+ * the BPF stack and for the next frame.
-+ */
-+struct prog_frame {
-+	u64 unused[8];
-+	/* BPF stack starts here and grows towards 0 */
-+	u32 tail_call_cnt;
-+	u32 pad;
-+	u64 r6[10];  /* r6 - r15 */
-+	u64 backchain;
-+} __packed;
-+
-+/*
-  * Save registers from "rs" (register start) to "re" (register end) on stack
-  */
- static void save_regs(struct bpf_jit *jit, u32 rs, u32 re)
- {
--	u32 off = STK_OFF_R6 + (rs - 6) * 8;
-+	u32 off = offsetof(struct prog_frame, r6) + (rs - 6) * 8;
- 
- 	if (rs == re)
- 		/* stg %rs,off(%r15) */
-@@ -419,7 +432,7 @@ static void save_regs(struct bpf_jit *ji
-  */
- static void restore_regs(struct bpf_jit *jit, u32 rs, u32 re)
- {
--	u32 off = jit->frame_off + STK_OFF_R6 + (rs - 6) * 8;
-+	u32 off = jit->frame_off + offsetof(struct prog_frame, r6) + (rs - 6) * 8;
- 
- 	if (rs == re)
- 		/* lg %rs,off(%r15) */
-@@ -551,10 +564,12 @@ static void bpf_jit_plt(struct bpf_plt *
-  * Emit function prologue
-  *
-  * Save registers and create stack frame if necessary.
-- * See stack frame layout description in "bpf_jit.h"!
-+ * Stack frame layout is described by struct prog_frame.
-  */
- static void bpf_jit_prologue(struct bpf_jit *jit, struct bpf_prog *fp)
- {
-+	BUILD_BUG_ON(sizeof(struct prog_frame) != STACK_FRAME_OVERHEAD);
-+
- 	/* No-op for hotpatching */
- 	/* brcl 0,prologue_plt */
- 	EMIT6_PCREL_RILC(0xc0040000, 0, jit->prologue_plt);
-@@ -562,8 +577,9 @@ static void bpf_jit_prologue(struct bpf_
- 
- 	if (fp->aux->func_idx == 0) {
- 		/* Initialize the tail call counter in the main program. */
--		/* xc STK_OFF_TCCNT(4,%r15),STK_OFF_TCCNT(%r15) */
--		_EMIT6(0xd703f000 | STK_OFF_TCCNT, 0xf000 | STK_OFF_TCCNT);
-+		/* xc tail_call_cnt(4,%r15),tail_call_cnt(%r15) */
-+		_EMIT6(0xd703f000 | offsetof(struct prog_frame, tail_call_cnt),
-+		       0xf000 | offsetof(struct prog_frame, tail_call_cnt));
- 	} else {
- 		/*
- 		 * Skip the tail call counter initialization in subprograms.
-@@ -593,13 +609,15 @@ static void bpf_jit_prologue(struct bpf_
- 	if (is_first_pass(jit) || (jit->seen & SEEN_STACK)) {
- 		/* lgr %w1,%r15 (backchain) */
- 		EMIT4(0xb9040000, REG_W1, REG_15);
--		/* la %bfp,STK_160_UNUSED(%r15) (BPF frame pointer) */
--		EMIT4_DISP(0x41000000, BPF_REG_FP, REG_15, STK_160_UNUSED);
-+		/* la %bfp,unused_end(%r15) (BPF frame pointer) */
-+		EMIT4_DISP(0x41000000, BPF_REG_FP, REG_15,
-+			   offsetofend(struct prog_frame, unused));
- 		/* aghi %r15,-frame_off */
- 		EMIT4_IMM(0xa70b0000, REG_15, -jit->frame_off);
--		/* stg %w1,152(%r15) (backchain) */
-+		/* stg %w1,backchain(%r15) */
- 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_W1, REG_0,
--			      REG_15, 152);
-+			      REG_15,
-+			      offsetof(struct prog_frame, backchain));
- 	}
- }
- 
-@@ -1429,9 +1447,10 @@ static noinline int bpf_jit_insn(struct
- 		 * Note 2: We assume that the verifier does not let us call the
- 		 * main program, which clears the tail call counter on entry.
- 		 */
--		/* mvc STK_OFF_TCCNT(4,%r15),frame_off+STK_OFF_TCCNT(%r15) */
--		_EMIT6(0xd203f000 | STK_OFF_TCCNT,
--		       0xf000 | (jit->frame_off + STK_OFF_TCCNT));
-+		/* mvc tail_call_cnt(4,%r15),frame_off+tail_call_cnt(%r15) */
-+		_EMIT6(0xd203f000 | offsetof(struct prog_frame, tail_call_cnt),
-+		       0xf000 | (jit->frame_off +
-+				 offsetof(struct prog_frame, tail_call_cnt)));
- 
- 		/* Sign-extend the kfunc arguments. */
- 		if (insn->src_reg == BPF_PSEUDO_KFUNC_CALL) {
-@@ -1482,7 +1501,8 @@ static noinline int bpf_jit_insn(struct
- 		 *         goto out;
- 		 */
- 
--		off = jit->frame_off + STK_OFF_TCCNT;
-+		off = jit->frame_off +
-+		      offsetof(struct prog_frame, tail_call_cnt);
- 		/* lhi %w0,1 */
- 		EMIT4_IMM(0xa7080000, REG_W0, 1);
- 		/* laal %w1,%w0,off(%r15) */
-@@ -1824,7 +1844,9 @@ static int bpf_jit_prog(struct bpf_jit *
- 	jit->prg = 0;
- 	jit->excnt = 0;
- 	if (is_first_pass(jit) || (jit->seen & SEEN_STACK))
--		jit->frame_off = STK_OFF + round_up(fp->aux->stack_depth, 8);
-+		jit->frame_off = sizeof(struct prog_frame) -
-+				 offsetofend(struct prog_frame, unused) +
-+				 round_up(fp->aux->stack_depth, 8);
- 	else
- 		jit->frame_off = 0;
- 
-@@ -2281,9 +2303,10 @@ static int __arch_prepare_bpf_trampoline
- 	/* stg %r1,backchain_off(%r15) */
- 	EMIT6_DISP_LH(0xe3000000, 0x0024, REG_1, REG_0, REG_15,
- 		      tjit->backchain_off);
--	/* mvc tccnt_off(4,%r15),stack_size+STK_OFF_TCCNT(%r15) */
-+	/* mvc tccnt_off(4,%r15),stack_size+tail_call_cnt(%r15) */
- 	_EMIT6(0xd203f000 | tjit->tccnt_off,
--	       0xf000 | (tjit->stack_size + STK_OFF_TCCNT));
-+	       0xf000 | (tjit->stack_size +
-+			 offsetof(struct prog_frame, tail_call_cnt)));
- 	/* stmg %r2,%rN,fwd_reg_args_off(%r15) */
- 	if (nr_reg_args)
- 		EMIT6_DISP_LH(0xeb000000, 0x0024, REG_2,
-@@ -2420,8 +2443,9 @@ static int __arch_prepare_bpf_trampoline
- 				       (nr_stack_args * sizeof(u64) - 1) << 16 |
- 				       tjit->stack_args_off,
- 			       0xf000 | tjit->orig_stack_args_off);
--		/* mvc STK_OFF_TCCNT(4,%r15),tccnt_off(%r15) */
--		_EMIT6(0xd203f000 | STK_OFF_TCCNT, 0xf000 | tjit->tccnt_off);
-+		/* mvc tail_call_cnt(4,%r15),tccnt_off(%r15) */
-+		_EMIT6(0xd203f000 | offsetof(struct prog_frame, tail_call_cnt),
-+		       0xf000 | tjit->tccnt_off);
- 		/* lgr %r1,%r8 */
- 		EMIT4(0xb9040000, REG_1, REG_8);
- 		/* %r1() */
-@@ -2478,8 +2502,9 @@ static int __arch_prepare_bpf_trampoline
- 	if (flags & (BPF_TRAMP_F_CALL_ORIG | BPF_TRAMP_F_RET_FENTRY_RET))
- 		EMIT6_DISP_LH(0xe3000000, 0x0004, REG_2, REG_0, REG_15,
- 			      tjit->retval_off);
--	/* mvc stack_size+STK_OFF_TCCNT(4,%r15),tccnt_off(%r15) */
--	_EMIT6(0xd203f000 | (tjit->stack_size + STK_OFF_TCCNT),
-+	/* mvc stack_size+tail_call_cnt(4,%r15),tccnt_off(%r15) */
-+	_EMIT6(0xd203f000 | (tjit->stack_size +
-+			     offsetof(struct prog_frame, tail_call_cnt)),
- 	       0xf000 | tjit->tccnt_off);
- 	/* aghi %r15,stack_size */
- 	EMIT4_IMM(0xa70b0000, REG_15, tjit->stack_size);
+ 	nwl_bridge_writel(pcie, lower_32_bits(pcie->phys_ecam_base),
+ 			  E_ECAM_BASE_LO);
 
 
 
