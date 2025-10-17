@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C8ABE9C99
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35B6DBE9C2D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 31C5F35E2A3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 07936586FCE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE3C2F12A5;
-	Fri, 17 Oct 2025 15:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759B8332902;
+	Fri, 17 Oct 2025 15:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/K1vbwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dBM7CWv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6546A337110;
-	Fri, 17 Oct 2025 15:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD8033710E;
+	Fri, 17 Oct 2025 15:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714722; cv=none; b=V81VBVZwL5ceSvbai3Z56NZ6bOMJBV7yfp3H7uvIQKUvp0Rw0Xi+Gigf7ZMHUfTYUe76Gs/NGNL4t1QrX84+OeXPLLKmdQ5U2TisGhvKkzP/YY9FK/g80IaR8PmTNKiKZR5KbSPYnU4v4cQMRUQvAvv4jsd2yAVXzPjn94JfN9g=
+	t=1760713986; cv=none; b=OfWKFUUYe5Aaqzj6whxbY3mYvzkhmxmBHIfFzKEOTkt3CaFsLv9TTdwvNBkLJvPtO5nEYr1szakjCbBoXSNf5Bixfct1upBDXontpzJSWitlYYgIGUdJj3AebCCoeNPqQne9pXZF/0ICK3RTDALG31L6cxlIXB/TBJnXeoZKId0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714722; c=relaxed/simple;
-	bh=OlTtjqTaPmvhKNBWSGqvoAqZ9UFqbxikzS+H/h0Dfu8=;
+	s=arc-20240116; t=1760713986; c=relaxed/simple;
+	bh=ON9TYnYHrCBRwb+Dt4OfnrQS2Rt3NH/96SbSeV3ZdfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJe1pbDki/f1yD2H/nmCBFysu8e3hCaMWkJxes3BvHhJKTIUTmd6qPmVa2fD6aLD0izJAgQWPMqAOmeJRh3lVTk9WyZIgaa25h969Lte6WjV+EwB+EDzIuiAdVEkuo458wYzDY43aU6CQripdilwK+7JhA4lIeZNq+Q00FGZgTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/K1vbwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80DBC4CEE7;
-	Fri, 17 Oct 2025 15:25:21 +0000 (UTC)
+	 MIME-Version; b=OqPs3v3XqS0sbdGwQyyMbduSqEdfMvz8fv3/xpE7iGrHvQCt1CswDBZ3ILYNkwJeLg4NrMhGR54xNVr4KSPY//AnB5T24lwM0KqkoYNXgNKBjKwu42USNW4dtIdvT1VqMPQefl4SmnGtyA9RrNHGnQqPh1IpbXLNa85iRp1ORhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dBM7CWv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BEDC4CEE7;
+	Fri, 17 Oct 2025 15:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714722;
-	bh=OlTtjqTaPmvhKNBWSGqvoAqZ9UFqbxikzS+H/h0Dfu8=;
+	s=korg; t=1760713985;
+	bh=ON9TYnYHrCBRwb+Dt4OfnrQS2Rt3NH/96SbSeV3ZdfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x/K1vbwYb/l8n63hCIluwPrj2EqgWcM6kIVRbwMp9DCXH8PL8rTB0rv/7DrpupVYx
-	 UGPa2oj+gJBOyM1LtVYV5lI1Y5RxjZXKZrCA9PG0ybsPRpkHh6mLWt9WCUnA/RguWv
-	 ZJrcatAcP1H+KPkjp+tXWx4FBeBHB1pYtK4mSnpg=
+	b=1dBM7CWvjgfIRZJ3udHbbDfj5V1I+uZvbYTAB5atLeNpkERVNEYs2xLYolZwi9OeW
+	 d2Qd/6Oeod5dNpRfL+Ks7ebUc+AVfokMvF4Vu3V2sVTWkkVNyFJ8WOEB87d1QUiZ9V
+	 dIylGLAFw4ndl2lObL7r/LtP2Rm6hlZ+BUIwoKc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 210/277] NFSD: Fix destination buffer size in nfsd4_ssc_setup_dul()
+	Nathan Chancellor <nathan@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@google.com>
+Subject: [PATCH 6.6 156/201] lib/crypto/curve25519-hacl64: Disable KASAN with clang-17 and older
 Date: Fri, 17 Oct 2025 16:53:37 +0200
-Message-ID: <20251017145154.796372612@linuxfoundation.org>
+Message-ID: <20251017145140.461086600@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit ab1c282c010c4f327bd7addc3c0035fd8e3c1721 upstream.
+commit 2f13daee2a72bb962f5fd356c3a263a6f16da965 upstream.
 
-Commit 5304877936c0 ("NFSD: Fix strncpy() fortify warning") replaced
-strncpy(,, sizeof(..)) with strlcpy(,, sizeof(..) - 1), but strlcpy()
-already guaranteed NUL-termination of the destination buffer and
-subtracting one byte potentially truncated the source string.
+After commit 6f110a5e4f99 ("Disable SLUB_TINY for build testing"), which
+causes CONFIG_KASAN to be enabled in allmodconfig again, arm64
+allmodconfig builds with clang-17 and older show an instance of
+-Wframe-larger-than (which breaks the build with CONFIG_WERROR=y):
 
-The incorrect size was then carried over in commit 72f78ae00a8e ("NFSD:
-move from strlcpy with unused retval to strscpy") when switching from
-strlcpy() to strscpy().
+  lib/crypto/curve25519-hacl64.c:757:6: error: stack frame size (2336) exceeds limit (2048) in 'curve25519_generic' [-Werror,-Wframe-larger-than]
+    757 | void curve25519_generic(u8 mypublic[CURVE25519_KEY_SIZE],
+        |      ^
 
-Fix this off-by-one error by using the full size of the destination
-buffer again.
+When KASAN is disabled, the stack usage is roughly quartered:
 
-Cc: stable@vger.kernel.org
-Fixes: 5304877936c0 ("NFSD: Fix strncpy() fortify warning")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+  lib/crypto/curve25519-hacl64.c:757:6: error: stack frame size (608) exceeds limit (128) in 'curve25519_generic' [-Werror,-Wframe-larger-than]
+    757 | void curve25519_generic(u8 mypublic[CURVE25519_KEY_SIZE],
+        |      ^
+
+Using '-Rpass-analysis=stack-frame-layout' shows the following variables
+and many, many 8-byte spills when KASAN is enabled:
+
+  Offset: [SP-144], Type: Variable, Align: 8, Size: 40
+  Offset: [SP-464], Type: Variable, Align: 8, Size: 320
+  Offset: [SP-784], Type: Variable, Align: 8, Size: 320
+  Offset: [SP-864], Type: Variable, Align: 32, Size: 80
+  Offset: [SP-896], Type: Variable, Align: 32, Size: 32
+  Offset: [SP-1016], Type: Variable, Align: 8, Size: 120
+
+When KASAN is disabled, there are still spills but not at many and the
+variables list is smaller:
+
+  Offset: [SP-192], Type: Variable, Align: 32, Size: 80
+  Offset: [SP-224], Type: Variable, Align: 32, Size: 32
+  Offset: [SP-344], Type: Variable, Align: 8, Size: 120
+
+Disable KASAN for this file when using clang-17 or older to avoid
+blowing out the stack, clearing up the warning.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250609-curve25519-hacl64-disable-kasan-clang-v1-1-08ea0ac5ccff@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/crypto/Makefile |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1372,7 +1372,7 @@ try_again:
- 		return 0;
- 	}
- 	if (work) {
--		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr) - 1);
-+		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr));
- 		refcount_set(&work->nsui_refcnt, 2);
- 		work->nsui_busy = true;
- 		list_add_tail(&work->nsui_list, &nn->nfsd_ssc_mount_list);
+--- a/lib/crypto/Makefile
++++ b/lib/crypto/Makefile
+@@ -30,6 +30,10 @@ obj-$(CONFIG_CRYPTO_LIB_CURVE25519_GENER
+ libcurve25519-generic-y				:= curve25519-fiat32.o
+ libcurve25519-generic-$(CONFIG_ARCH_SUPPORTS_INT128)	:= curve25519-hacl64.o
+ libcurve25519-generic-y				+= curve25519-generic.o
++# clang versions prior to 18 may blow out the stack with KASAN
++ifeq ($(call clang-min-version, 180000),)
++KASAN_SANITIZE_curve25519-hacl64.o := n
++endif
+ 
+ obj-$(CONFIG_CRYPTO_LIB_CURVE25519)		+= libcurve25519.o
+ libcurve25519-y					+= curve25519.o
 
 
 
