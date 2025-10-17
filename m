@@ -1,136 +1,141 @@
-Return-Path: <stable+bounces-187709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD08BEBE0E
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:02:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3CDBEBE11
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:04:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7D3E04E1172
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 22:02:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2E64074F9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 22:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF315238149;
-	Fri, 17 Oct 2025 22:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF1B2417F2;
+	Fri, 17 Oct 2025 22:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ys7APltD"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DSkXZbu4"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E74C1EC01B
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 22:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1498523BD06
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 22:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760738570; cv=none; b=iwoAa4cWch1SXEzIPyf0m9LFVXtHIid5ruuhmkbUr4SbgwOdxp+saQ9e4KrrJvIHUNRFSMA2/FWbfADqAnLW4fSE+9cUgslnBcllJxYlXBnDjbq+YIdCc5O1RpQpPHgpshC/CiaN/TdmnP9Mp6s/TpqJp4fT/qBaSUA14Qg2Nj0=
+	t=1760738684; cv=none; b=ij9LC8C+fESZqo4vOy/91sAkX4WmmIhjexTcPpTQXsCObnbpaf8o6OR/F5n9ZCucCIl008Z8LtLOIODyJqfnox4Z1gx7jWcaYoCCvWAv0v//CEBb5VieSPLm5AV0+rEFiBQH891vk+xdm/iz9rpjk5S3tuICb95Dv7AlohU7xAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760738570; c=relaxed/simple;
-	bh=zrSQsqa6fbhkcRzMSQ7ZfLBWUQjK9ZrUpN1wpbtVZO0=;
+	s=arc-20240116; t=1760738684; c=relaxed/simple;
+	bh=+D0WFDTbOoCfDuT9kqkzxZeqg8IoPJHI1/rV8hFUq3Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gLI8w+JFA6bSg/ZSq3i9Bf7nLlE5lixx0h5EZ3TqRZiIRdFgXHLGjNGiJaFpodJAGBqMkTFD4YkBgvaKSDrWCeZeqfy61vSiab+lKmz7gJ4lAmJ6Kb3HoTIZsYfVRGbpE/PyxsIg3vxkkO1UOa+lmzx5rIEkJiefkaeTbNgtklI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ys7APltD; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=dx2FQ5Ts+dl6Hc4k+/T0e9Z/FsylQvI3yxJ/84naWmZ9L8//n0DeXYVmPMrl6wkQ7DklLjHIw+YTa5gOjgN97UETQVdeETF99bajBT+F2eCUgDLC84oitj/3wAaVQ7t/i0ucoM+3IBYFViIlRrCDHWcPOqb17n2j1YiM3fpGX0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DSkXZbu4; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33428befbbaso2874982a91.0
-        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 15:02:48 -0700 (PDT)
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32eb18b5500so3987028a91.2
+        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 15:04:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760738568; x=1761343368; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1760738682; x=1761343482; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PKOmtt7Mf9tDnVN7q1LflXVYO3MInlOr39kg7gjuFdo=;
-        b=Ys7APltDpHz0Sqnl3wqkA/iKwv5JxK/wadt+Z2jq2eoTxjmDWEA+vbkFElZRsbXIbY
-         lHZSa/aWpPyGcecicllCWpMjJt66hMROsUSt6Pl+UTsBiQ5BotKuZxC9H0T886pLBF12
-         2w+1HBZ1/IIwHqr4fmNNhgIYrsrHmN48/x72uI7QfRiN/v2C2oXkuKzHayoXaoBcsMPv
-         6oBmGnjGyMKP+g22J+Z0B2UM7xZGSo66BmtM9wRRrD8/yWT7doCXbyj26ztzNtoa05Xx
-         NDy650ogtHsQbR1H7nx+pP+k7Fa00YQDBcjklPGjnvFSNf4YUKVn3XIYE0nAk7qP0WZr
-         GaPg==
+        bh=/pquawVenh2yObWMCdYlmJCyEx8E9Qmy2FfwsOPd2Cw=;
+        b=DSkXZbu432vuMRbRa7ZsoA1TAB8N/0aRvKyKS22V0FhhQxeaH1RnycRpP5rFqk38y4
+         hy6fAfB6bV1euf4aa2arl4fhxtbLyVaubEjqJayWuSp8inwb9CChooH7pjBJ7H7IBl2o
+         cw2sinB9hXNK6svPsWey6BEMVnIByZkMnqiJWFGvRAIo0w0sPovaRbWUGXH9xjaxunbc
+         GAjrdEKe4b/6bd3S2zYeFOZpVtwSC86xLL7WIlULqREsHFwAGKCDK9uMdNaTbLrMxl9y
+         QpMZ7geDfPQN86dE8wKomlSGTuAFzaM3SY8xQmEWlK3TtxTVtSt/qVEozKkByXCz2sHM
+         ElUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760738568; x=1761343368;
+        d=1e100.net; s=20230601; t=1760738682; x=1761343482;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PKOmtt7Mf9tDnVN7q1LflXVYO3MInlOr39kg7gjuFdo=;
-        b=ABWVRNXylU2uxbOnWfMbT0g5Oa6JG6sUryrPNjIc0FGN9oy79zAZaKc96LVY43RmGn
-         A3x/3CfEI8tA0sHS+UcCWzw5G3sofhBx0PAnZNa00VxB6tEMt6s66YCAgqgdVHOC1eDd
-         fO8yMwTDR+XfC0Acnuc0NGi2chwZNkOYJma7e7kMjZUjRXhV9iMsq865znP+q1UoQIHP
-         4vv1X/EcCT6mvGG2BKbqCxuSrPksz+vwdtiFojd66Hjx72W8+ewlhw/U8nfYwOod0icp
-         hJRig2GgiGnwwEFD+bmYGBHK9RZ4xH5C5qciiiXvWi94+x+l2AAZbRItZjnRaRZAsc6W
-         VKng==
-X-Gm-Message-State: AOJu0Yy1r3Pi9RCVvlXkL+XpqQLDFKIudyKvwq/QD4cJBojyV5Zb1V/m
-	cRyHAeMOvqu7aySn7MVr/UBgW9r5PUpkfuQMpHOkB+cnUs7nHSWyjWOMLaUAS2v+TKuSVJSvRlr
-	YkmI1TA==
-X-Google-Smtp-Source: AGHT+IEqNWdXzNk/KDLDn7xg0AWjfUXE2wME3nO15sIHSSZyZ+ZTJzw22U6UWVqANPMIpLn7PqEvjvHRCxU=
-X-Received: from pjbdy13.prod.google.com ([2002:a17:90b:6cd:b0:33b:ce80:9efc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e43:b0:339:cece:a99
- with SMTP id 98e67ed59e1d1-33bcf86c699mr7105186a91.13.1760738568449; Fri, 17
- Oct 2025 15:02:48 -0700 (PDT)
-Date: Fri, 17 Oct 2025 15:02:46 -0700
-In-Reply-To: <20251013173641.3404405-1-sashal@kernel.org>
+        bh=/pquawVenh2yObWMCdYlmJCyEx8E9Qmy2FfwsOPd2Cw=;
+        b=QMzqYjkxrbvJzXDYStI6HxKE9H6vOf87CBDZ8qPjOC3NhQh7GqGyalpX5HqJJixyXA
+         sa/0E7ewjAC6VU1219WEo57qGQSm8oIFwYgUIxKGR4K3PEHRC/uMb5hwjcyVAdcFYqb5
+         Byg5Kwtev5w+Lp9dsry1sGi6Mdaobb/ZMrmEM9Y6ujhVXFfpIuDuKLvkngDlpkTiGTkF
+         m0zLD6vCsSTAsQNnNXzCI+JpFI2Cys5jTHQj1P8O7EE89xGJzPsCSkSEGaKDvgztBRXI
+         nhj6iTw4tBDiRRZzyJ5aYf3VZNhReIfZ10Ryj9FMMsMXKDnt82t11CriRX8XCEHWCps3
+         lSUA==
+X-Gm-Message-State: AOJu0YzYp8bpb678Q19nTme3A2idfDyRexuYxrwkSLm5bSkabF8eoGKY
+	ki+q2PrkHkcp00IAC+U39aE7wQ9F8QRq2hGQvraPvYiLP0rOrgHYOIP6gxQp8pLdrhdNemiW7fp
+	v7K57OA==
+X-Google-Smtp-Source: AGHT+IHKNEI5UhYONgQQr7lc7J9Wdz7i3sPtzbO1UteCFOQUPzQfdoviyIHwQWiI5KnomwvqaxCYuU58PNs=
+X-Received: from pjbfa18.prod.google.com ([2002:a17:90a:f0d2:b0:33b:51fe:1a94])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:ec8b:b0:32e:9a24:2df9
+ with SMTP id 98e67ed59e1d1-33bcf86c09emr5643461a91.14.1760738682476; Fri, 17
+ Oct 2025 15:04:42 -0700 (PDT)
+Date: Fri, 17 Oct 2025 15:04:40 -0700
+In-Reply-To: <20251014144851.94249-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <2025101006-moonwalk-smilingly-3725@gregkh> <20251013173641.3404405-1-sashal@kernel.org>
-Message-ID: <aPK9BiJidshyt0ib@google.com>
-Subject: Re: [PATCH 5.15.y] KVM: x86: Don't (re)check L1 intercepts when
- completing userspace I/O
+References: <2025101348-gigahertz-cauterize-0303@gregkh> <20251014144851.94249-1-sashal@kernel.org>
+Message-ID: <aPK9eFfTBgM7Qxwm@google.com>
+Subject: Re: [PATCH 6.6.y] KVM: SVM: Skip fastpath emulation on VM-Exit if
+ next RIP isn't valid
 From: Sean Christopherson <seanjc@google.com>
 To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, 
-	syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com, 
-	Jim Mattson <jmattson@google.com>
+Cc: stable@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Oct 13, 2025, Sasha Levin wrote:
+On Tue, Oct 14, 2025, Sasha Levin wrote:
 > From: Sean Christopherson <seanjc@google.com>
 > 
-> [ Upstream commit e750f85391286a4c8100275516973324b621a269 ]
+> [ Upstream commit 0910dd7c9ad45a2605c45fd2bf3d1bcac087687c ]
 > 
-> When completing emulation of instruction that generated a userspace exit
-> for I/O, don't recheck L1 intercepts as KVM has already finished that
-> phase of instruction execution, i.e. has already committed to allowing L2
-> to perform I/O.  If L1 (or host userspace) modifies the I/O permission
-> bitmaps during the exit to userspace,  KVM will treat the access as being
-> intercepted despite already having emulated the I/O access.
+> Skip the WRMSR and HLT fastpaths in SVM's VM-Exit handler if the next RIP
+> isn't valid, e.g. because KVM is running with nrips=false.  SVM must
+> decode and emulate to skip the instruction if the CPU doesn't provide the
+> next RIP, and getting the instruction bytes to decode requires reading
+> guest memory.  Reading guest memory through the emulator can fault, i.e.
+> can sleep, which is disallowed since the fastpath handlers run with IRQs
+> disabled.
 > 
-> Pivot on EMULTYPE_NO_DECODE to detect that KVM is completing emulation.
-> Of the three users of EMULTYPE_NO_DECODE, only complete_emulated_io() (the
-> intended "recipient") can reach the code in question.  gp_interception()'s
-> use is mutually exclusive with is_guest_mode(), and
-> complete_emulated_insn_gp() unconditionally pairs EMULTYPE_NO_DECODE with
-> EMULTYPE_SKIP.
+>  BUG: sleeping function called from invalid context at ./include/linux/uaccess.h:106
+>  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 32611, name: qemu
+>  preempt_count: 1, expected: 0
+>  INFO: lockdep is turned off.
+>  irq event stamp: 30580
+>  hardirqs last  enabled at (30579): [<ffffffffc08b2527>] vcpu_run+0x1787/0x1db0 [kvm]
+>  hardirqs last disabled at (30580): [<ffffffffb4f62e32>] __schedule+0x1e2/0xed0
+>  softirqs last  enabled at (30570): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
+>  softirqs last disabled at (30568): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
+>  CPU: 298 UID: 0 PID: 32611 Comm: qemu Tainted: G     U              6.16.0-smp--e6c618b51cfe-sleep #782 NONE
+>  Tainted: [U]=USER
+>  Hardware name: Google Astoria-Turin/astoria, BIOS 0.20241223.2-0 01/17/2025
+>  Call Trace:
+>   <TASK>
+>   dump_stack_lvl+0x7d/0xb0
+>   __might_resched+0x271/0x290
+>   __might_fault+0x28/0x80
+>   kvm_vcpu_read_guest_page+0x8d/0xc0 [kvm]
+>   kvm_fetch_guest_virt+0x92/0xc0 [kvm]
+>   __do_insn_fetch_bytes+0xf3/0x1e0 [kvm]
+>   x86_decode_insn+0xd1/0x1010 [kvm]
+>   x86_emulate_instruction+0x105/0x810 [kvm]
+>   __svm_skip_emulated_instruction+0xc4/0x140 [kvm_amd]
+>   handle_fastpath_invd+0xc4/0x1a0 [kvm]
+>   vcpu_run+0x11a1/0x1db0 [kvm]
+>   kvm_arch_vcpu_ioctl_run+0x5cc/0x730 [kvm]
+>   kvm_vcpu_ioctl+0x578/0x6a0 [kvm]
+>   __se_sys_ioctl+0x6d/0xb0
+>   do_syscall_64+0x8a/0x2c0
+>   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+>  RIP: 0033:0x7f479d57a94b
+>   </TASK>
 > 
-> The bad behavior was detected by a syzkaller program that toggles port I/O
-> interception during the userspace I/O exit, ultimately resulting in a WARN
-> on vcpu->arch.pio.count being non-zero due to KVM no completing emulation
-> of the I/O instruction.
+> Note, this is essentially a reapply of commit 5c30e8101e8d ("KVM: SVM:
+> Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"), but with
+> different justification (KVM now grabs SRCU when skipping the instruction
+> for other reasons).
 > 
->   WARNING: CPU: 23 PID: 1083 at arch/x86/kvm/x86.c:8039 emulator_pio_in_out+0x154/0x170 [kvm]
->   Modules linked in: kvm_intel kvm irqbypass
->   CPU: 23 UID: 1000 PID: 1083 Comm: repro Not tainted 6.16.0-rc5-c1610d2d66b1-next-vm #74 NONE
->   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
->   RIP: 0010:emulator_pio_in_out+0x154/0x170 [kvm]
->   PKRU: 55555554
->   Call Trace:
->    <TASK>
->    kvm_fast_pio+0xd6/0x1d0 [kvm]
->    vmx_handle_exit+0x149/0x610 [kvm_intel]
->    kvm_arch_vcpu_ioctl_run+0xda8/0x1ac0 [kvm]
->    kvm_vcpu_ioctl+0x244/0x8c0 [kvm]
->    __x64_sys_ioctl+0x8a/0xd0
->    do_syscall_64+0x5d/0xc60
->    entry_SYSCALL_64_after_hwframe+0x4b/0x53
->    </TASK>
-> 
-> Reported-by: syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/68790db4.a00a0220.3af5df.0020.GAE@google.com
-> Fixes: 8a76d7f25f8f ("KVM: x86: Add x86 callback for intercept check")
+> Fixes: b439eb8ab578 ("Revert "KVM: SVM: Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"")
 > Cc: stable@vger.kernel.org
-> Cc: Jim Mattson <jmattson@google.com>
-> Link: https://lore.kernel.org/r/20250715190638.1899116-1-seanjc@google.com
+> Link: https://lore.kernel.org/r/20250805190526.1453366-2-seanjc@google.com
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> [ is_guest_mode() was open coded ]
+> [ adapted switch-based MSR/HLT fastpath to if-based MSR-only check ]
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
 
