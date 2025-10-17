@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-186492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51970BE98CB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC04ABE9CC3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82F343BC7E5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D24346E6CA6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359D7335064;
-	Fri, 17 Oct 2025 15:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A34D32E14F;
+	Fri, 17 Oct 2025 15:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPfNAtsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2s7dHa0m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5242212575;
-	Fri, 17 Oct 2025 15:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B2E32C92D;
+	Fri, 17 Oct 2025 15:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713395; cv=none; b=cClSFkqM7fd47xraDc254FeEeW7WAuhLlQuCof40ZB5jhZwxaTJRsaROk3gBLRrhG5bR2AewQ2jfP9Ay+t760L1m+YhxGgkbpQFdXRqQFaMeSHxZH5njBGjTkEInQzJq9XqsjJgGIfSbTXHiERb4uU1jzAb0kEncTTweM32/6lM=
+	t=1760713925; cv=none; b=MmDboCEwsM+Q9SJpbWs+Dr72XLHEPSZiE9pbjg1BL+nv7LSBKMbtivgtHr37BU8rmLfOjM9pncvVBcGvfeVHD+DNxsvRauLX3BblElI19smPQTz/JptgsOMqw3VMY7sxZrxPIf29iOPO8kMRwzh2uPxbFvERVoSQ6Z/KRoanA90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713395; c=relaxed/simple;
-	bh=Lk+EiBZIaJ9u6cdDSIfdn5iqL/URGPK0X4uOTAPGIII=;
+	s=arc-20240116; t=1760713925; c=relaxed/simple;
+	bh=T02zDQ3A4c8fhUZY9wUZ2oJ8eQG976sjgC/daC2lWlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxxbJuMSR+MgI4TTCMsLR9p7zFbpIWduQzyRbXDwwxNqF4MxiJWrwxIpqb5GycEC+wEm4PVZJrB1az/4TGZD4VA1kBkzUoIJ30JrgFGRq/3LhDBC8s+qYtcfVaZ2ndImfLF3v3QPIPOv9RR05JNGD9KtyPJlDYz7Bny1elX9tT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPfNAtsR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6566CC4CEE7;
-	Fri, 17 Oct 2025 15:03:14 +0000 (UTC)
+	 MIME-Version; b=e7MZoJwCFC+uHIOXCCVDk56XdpzWfxeDwk+YVxSgwvxV/KLWKV3J7/i7Ji853+Ar7AIcVneQ68zrGM3FGqUzPe0q0fmUlx0zwggF2eSi/f/L9dcuHkFpzHCSfY4kKH5Ll0tuzEs0LnBwqW3VhNYFv9iOG1sFFI9oG3lgZAP8L8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2s7dHa0m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE84FC4CEE7;
+	Fri, 17 Oct 2025 15:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713394;
-	bh=Lk+EiBZIaJ9u6cdDSIfdn5iqL/URGPK0X4uOTAPGIII=;
+	s=korg; t=1760713925;
+	bh=T02zDQ3A4c8fhUZY9wUZ2oJ8eQG976sjgC/daC2lWlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPfNAtsRqxh819t6Bp2xrU3zllP0t0wrh5SryubFb+jD/OGsI1Bu9TVmN2bvsEeqG
-	 OCGvDJ7fI8CBGtJjN7n7UkJZVEflFv3jLs9hEwBeWaQfkvLHttMUNTvfy/qg8jIVbF
-	 OjaN0JY6VwN6rOJiqqWzKU3U5+tA85rzjAhBlEkg=
+	b=2s7dHa0mLCxtrUpdzzWCMvbcylooJOYIO5r0A0HK0pw2ntsPZLH/o74J7ll1W12u0
+	 k977KGJNtdpWaZhCnw0l/EPQRRjEN+RWtswJ4jfO8PrBNzzOPPqzicyxsuCdVlpQyU
+	 6CjUOgPPn9e7ZnVZ//wDp2KUrZDzpC5EfpoJ0E1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	stable@kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
+	Ling Xu <quic_lxu5@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 150/168] rseq: Protect event mask against membarrier IPI
+Subject: [PATCH 6.6 168/201] misc: fastrpc: Save actual DMA size in fastrpc_map structure
 Date: Fri, 17 Oct 2025 16:53:49 +0200
-Message-ID: <20251017145134.566530000@linuxfoundation.org>
+Message-ID: <20251017145140.911068396@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +66,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Ling Xu <quic_lxu5@quicinc.com>
 
-[ Upstream commit 6eb350a2233100a283f882c023e5ad426d0ed63b ]
+[ Upstream commit 8b5b456222fd604079b5cf2af1f25ad690f54a25 ]
 
-rseq_need_restart() reads and clears task::rseq_event_mask with preemption
-disabled to guard against the scheduler.
+For user passed fd buffer, map is created using DMA calls. The
+map related information is stored in fastrpc_map structure. The
+actual DMA size is not stored in the structure. Store the actual
+size of buffer and check it against the user passed size.
 
-But membarrier() uses an IPI and sets the PREEMPT bit in the event mask
-from the IPI, which leaves that RMW operation unprotected.
-
-Use guard(irq) if CONFIG_MEMBARRIER is enabled to fix that.
-
-Fixes: 2a36ab717e8f ("rseq/membarrier: Add MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: stable@vger.kernel.org
-[ Applied changes to include/linux/sched.h instead of include/linux/rseq.h ]
+Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
+Cc: stable@kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Co-developed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250912131236.303102-2-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched.h |   11 ++++++++---
- kernel/rseq.c         |   10 +++++-----
- 2 files changed, 13 insertions(+), 8 deletions(-)
+ drivers/misc/fastrpc.c |   27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2313,6 +2313,12 @@ enum rseq_event_mask {
- 	RSEQ_EVENT_MIGRATE	= (1U << RSEQ_EVENT_MIGRATE_BIT),
- };
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -322,11 +322,11 @@ static void fastrpc_free_map(struct kref
  
-+#ifdef CONFIG_MEMBARRIER
-+# define RSEQ_EVENT_GUARD	irq
-+#else
-+# define RSEQ_EVENT_GUARD	preempt
-+#endif
-+
- static inline void rseq_set_notify_resume(struct task_struct *t)
- {
- 	if (t->rseq)
-@@ -2331,9 +2337,8 @@ static inline void rseq_handle_notify_re
- static inline void rseq_signal_deliver(struct ksignal *ksig,
- 				       struct pt_regs *regs)
- {
--	preempt_disable();
--	__set_bit(RSEQ_EVENT_SIGNAL_BIT, &current->rseq_event_mask);
--	preempt_enable();
-+	scoped_guard(RSEQ_EVENT_GUARD)
-+		__set_bit(RSEQ_EVENT_SIGNAL_BIT, &current->rseq_event_mask);
- 	rseq_handle_notify_resume(ksig, regs);
- }
+ 			perm.vmid = QCOM_SCM_VMID_HLOS;
+ 			perm.perm = QCOM_SCM_PERM_RWX;
+-			err = qcom_scm_assign_mem(map->phys, map->size,
++			err = qcom_scm_assign_mem(map->phys, map->len,
+ 				&src_perms, &perm, 1);
+ 			if (err) {
+ 				dev_err(map->fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d\n",
+-						map->phys, map->size, err);
++						map->phys, map->len, err);
+ 				return;
+ 			}
+ 		}
+@@ -752,7 +752,8 @@ static int fastrpc_map_attach(struct fas
+ 	struct fastrpc_session_ctx *sess = fl->sctx;
+ 	struct fastrpc_map *map = NULL;
+ 	struct sg_table *table;
+-	int err = 0;
++	struct scatterlist *sgl = NULL;
++	int err = 0, sgl_index = 0;
  
---- a/kernel/rseq.c
-+++ b/kernel/rseq.c
-@@ -226,12 +226,12 @@ static int rseq_need_restart(struct task
- 
- 	/*
- 	 * Load and clear event mask atomically with respect to
--	 * scheduler preemption.
-+	 * scheduler preemption and membarrier IPIs.
- 	 */
--	preempt_disable();
--	event_mask = t->rseq_event_mask;
--	t->rseq_event_mask = 0;
--	preempt_enable();
-+	scoped_guard(RSEQ_EVENT_GUARD) {
-+		event_mask = t->rseq_event_mask;
-+		t->rseq_event_mask = 0;
+ 	map = kzalloc(sizeof(*map), GFP_KERNEL);
+ 	if (!map)
+@@ -789,7 +790,15 @@ static int fastrpc_map_attach(struct fas
+ 		map->phys = sg_dma_address(map->table->sgl);
+ 		map->phys += ((u64)fl->sctx->sid << 32);
+ 	}
+-	map->size = len;
++	for_each_sg(map->table->sgl, sgl, map->table->nents,
++		sgl_index)
++		map->size += sg_dma_len(sgl);
++	if (len > map->size) {
++		dev_dbg(sess->dev, "Bad size passed len 0x%llx map size 0x%llx\n",
++				len, map->size);
++		err = -EINVAL;
++		goto map_err;
 +	}
+ 	map->va = sg_virt(map->table->sgl);
+ 	map->len = len;
  
- 	return !!event_mask;
- }
+@@ -806,10 +815,10 @@ static int fastrpc_map_attach(struct fas
+ 		dst_perms[1].vmid = fl->cctx->vmperms[0].vmid;
+ 		dst_perms[1].perm = QCOM_SCM_PERM_RWX;
+ 		map->attr = attr;
+-		err = qcom_scm_assign_mem(map->phys, (u64)map->size, &src_perms, dst_perms, 2);
++		err = qcom_scm_assign_mem(map->phys, (u64)map->len, &src_perms, dst_perms, 2);
+ 		if (err) {
+ 			dev_err(sess->dev, "Failed to assign memory with phys 0x%llx size 0x%llx err %d\n",
+-					map->phys, map->size, err);
++					map->phys, map->len, err);
+ 			goto map_err;
+ 		}
+ 	}
+@@ -2063,7 +2072,7 @@ static int fastrpc_req_mem_map(struct fa
+ 	args[0].length = sizeof(req_msg);
+ 
+ 	pages.addr = map->phys;
+-	pages.size = map->size;
++	pages.size = map->len;
+ 
+ 	args[1].ptr = (u64) (uintptr_t) &pages;
+ 	args[1].length = sizeof(pages);
+@@ -2078,7 +2087,7 @@ static int fastrpc_req_mem_map(struct fa
+ 	err = fastrpc_internal_invoke(fl, true, FASTRPC_INIT_HANDLE, sc, &args[0]);
+ 	if (err) {
+ 		dev_err(dev, "mem mmap error, fd %d, vaddr %llx, size %lld\n",
+-			req.fd, req.vaddrin, map->size);
++			req.fd, req.vaddrin, map->len);
+ 		goto err_invoke;
+ 	}
+ 
+@@ -2091,7 +2100,7 @@ static int fastrpc_req_mem_map(struct fa
+ 	if (copy_to_user((void __user *)argp, &req, sizeof(req))) {
+ 		/* unmap the memory and release the buffer */
+ 		req_unmap.vaddr = (uintptr_t) rsp_msg.vaddr;
+-		req_unmap.length = map->size;
++		req_unmap.length = map->len;
+ 		fastrpc_req_mem_unmap_impl(fl, &req_unmap);
+ 		return -EFAULT;
+ 	}
 
 
 
