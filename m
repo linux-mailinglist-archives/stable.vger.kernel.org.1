@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-187019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA58BE9DFB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:30:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CFEBE9DD4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 642A4188A56E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:28:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1D1C1887F5E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B656A23EA9E;
-	Fri, 17 Oct 2025 15:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED7132C938;
+	Fri, 17 Oct 2025 15:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7tPAKZg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hClHPAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7545A2745E;
-	Fri, 17 Oct 2025 15:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE5B32C92B;
+	Fri, 17 Oct 2025 15:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714891; cv=none; b=qkg4LEvBZ7Ij+JF8QN+m/olOCKUfWJYBxz3s/7yyyPLeP8eaSssHQo2U6yGlvwkLBeqb636Ftf8SiB23fklebqg24cADu+weuki+RDDdwoVaOBuO8pILNoTneE8g9HzCRROii3x7NaAz/Vz+FqVUs83pMPsSwL3NjqYG2Pd8N7s=
+	t=1760714848; cv=none; b=outuiDTP8Ex/nOsymq8vweaYT8IFUskgZcLyhX6/xbdObnouLWdpwXK9i3DBfhuFyY9Qi+oPYcBdOYQ+o4oNUJEZi9NC7r86YnuYQqB2PdjyAKU+TLa6k/qWzR66CGmC/nz/BjBE3e42MNqMLfanuaRbzEgND7GOX9ngRpJHZ2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714891; c=relaxed/simple;
-	bh=XnHKnIONnC705uLyKpf9r7GD7wrV177b7NPopHnPJTA=;
+	s=arc-20240116; t=1760714848; c=relaxed/simple;
+	bh=PclOt5ajjnOK1R7IRthKaWHIgVBWXJiwJiRf74qCCT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqHv5GobIKaDMaRdnM13O10hxRPy2QQLE+wM0fdxOBtqTT4UrSZp9XF6sRRb3UIkTS02mot9D+uXSmCWK+7HerY7RR1Zon1kRB7CPCgdJba/tDa1xl+CUdXr7UyE0jfaFrj601BbJDTBOIPakUwDa8EsEqSBMs8Tx6AFSa3AYq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7tPAKZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D128C4CEE7;
-	Fri, 17 Oct 2025 15:28:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cAa+rJyCMvUm8/j1XrwJtu9FdsZcc/rc53Nzs/tXTsraqKOx3TugyuuqPEF2Da9BZaI3hntuyuKgndpaA7MsSfI/oi+NvO4MgZMrDwMDH7j7TJoVROFYgdGOi60fYCCbNxyOhsMEnKm7A3MQc/pcEuNFg4aHMSRRpoQUXQ4ZHqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hClHPAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876D6C116B1;
+	Fri, 17 Oct 2025 15:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714891;
-	bh=XnHKnIONnC705uLyKpf9r7GD7wrV177b7NPopHnPJTA=;
+	s=korg; t=1760714847;
+	bh=PclOt5ajjnOK1R7IRthKaWHIgVBWXJiwJiRf74qCCT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R7tPAKZgzH9tr6ZXKIFY34ISbk8ZVgH/sfTY0mO/dJk35Lvs7xGbLxj1se8DX2Yum
-	 FoNst19Yk/szyBWKUanFYUPW71spF0bEnoPx6A+y0J72rBW7dbGsOFcWykInXknJZi
-	 OWBbwO3RR50l1drDFSUdrvqyOlaSv/mZUYudg66Y=
+	b=0hClHPAABQIPpJlDuEOH8/SBhvzaq5qIw007ysLhoGQ+//jZHVhjSDqmDPgviM0s7
+	 qUktmU+mj2I4IzmfFJrguubt1ZxyFhrNpgQTBDV1+BpQ/NGNSN2YylwcnUghFUTM2+
+	 AibwX9S4DoyKAJrak4I6W8mvmULOjuJu2xDg4TJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@suse.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Peilin Ye <yepeilin@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 009/371] memcg: skip cgroup_file_notify if spinning is not allowed
-Date: Fri, 17 Oct 2025 16:49:44 +0200
-Message-ID: <20251017145202.132070328@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 010/371] page_pool: Fix PP_MAGIC_MASK to avoid crashing on some 32-bit arches
+Date: Fri, 17 Oct 2025 16:49:45 +0200
+Message-ID: <20251017145202.167778211@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -67,140 +61,217 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-commit fcc0669c5aa681994c507b50f1c706c969d99730 upstream.
+commit 95920c2ed02bde551ab654e9749c2ca7bc3100e0 upstream.
 
-Generally memcg charging is allowed from all the contexts including NMI
-where even spinning on spinlock can cause locking issues.  However one
-call chain was missed during the addition of memcg charging from any
-context support.  That is try_charge_memcg() -> memcg_memory_event() ->
-cgroup_file_notify().
+Helge reported that the introduction of PP_MAGIC_MASK let to crashes on
+boot on his 32-bit parisc machine. The cause of this is the mask is set
+too wide, so the page_pool_page_is_pp() incurs false positives which
+crashes the machine.
 
-The possible function call tree under cgroup_file_notify() can acquire
-many different spin locks in spinning mode.  Some of them are
-cgroup_file_kn_lock, kernfs_notify_lock, pool_workqeue's lock.  So, let's
-just skip cgroup_file_notify() from memcg charging if the context does not
-allow spinning.
+Just disabling the check in page_pool_is_pp() will lead to the page_pool
+code itself malfunctioning; so instead of doing this, this patch changes
+the define for PP_DMA_INDEX_BITS to avoid mistaking arbitrary kernel
+pointers for page_pool-tagged pages.
 
-Alternative approach was also explored where instead of skipping
-cgroup_file_notify(), we defer the memcg event processing to irq_work [1].
-However it adds complexity and it was decided to keep things simple until
-we need more memcg events with !allow_spinning requirement.
+The fix relies on the kernel pointers that alias with the pp_magic field
+always being above PAGE_OFFSET. With this assumption, we can use the
+lowest bit of the value of PAGE_OFFSET as the upper bound of the
+PP_DMA_INDEX_MASK, which should avoid the false positives.
 
-Link: https://lore.kernel.org/all/5qi2llyzf7gklncflo6gxoozljbm4h3tpnuv4u4ej4ztysvi6f@x44v7nz2wdzd/ [1]
-Link: https://lkml.kernel.org/r/20250922220203.261714-1-shakeel.butt@linux.dev
-Fixes: 3ac4638a734a ("memcg: make memcg_rstat_updated nmi safe")
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Closes: https://lore.kernel.org/all/20250905061919.439648-1-yepeilin@google.com/
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Peilin Ye <yepeilin@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Because we cannot rely on PAGE_OFFSET always being a compile-time
+constant, nor on it always being >0, we fall back to disabling the
+dma_index storage when there are not enough bits available. This leaves
+us in the situation we were in before the patch in the Fixes tag, but
+only on a subset of architecture configurations. This seems to be the
+best we can do until the transition to page types in complete for
+page_pool pages.
+
+v2:
+- Make sure there's at least 8 bits available and that the PAGE_OFFSET
+  bit calculation doesn't wrap
+
+Link: https://lore.kernel.org/all/aMNJMFa5fDalFmtn@p100/
+Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
+Cc: stable@vger.kernel.org # 6.15+
+Tested-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Tested-by: Helge Deller <deller@gmx.de>
+Link: https://patch.msgid.link/20250930114331.675412-1-toke@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/memcontrol.h |   26 +++++++++++++++++++-------
- mm/memcontrol.c            |    7 ++++---
- 2 files changed, 23 insertions(+), 10 deletions(-)
+ include/linux/mm.h   |   22 ++++++++------
+ net/core/page_pool.c |   76 +++++++++++++++++++++++++++++++++++----------------
+ 2 files changed, 66 insertions(+), 32 deletions(-)
 
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -987,22 +987,28 @@ static inline void count_memcg_event_mm(
- 	count_memcg_events_mm(mm, idx, 1);
- }
- 
--static inline void memcg_memory_event(struct mem_cgroup *memcg,
--				      enum memcg_memory_event event)
-+static inline void __memcg_memory_event(struct mem_cgroup *memcg,
-+					enum memcg_memory_event event,
-+					bool allow_spinning)
- {
- 	bool swap_event = event == MEMCG_SWAP_HIGH || event == MEMCG_SWAP_MAX ||
- 			  event == MEMCG_SWAP_FAIL;
- 
-+	/* For now only MEMCG_MAX can happen with !allow_spinning context. */
-+	VM_WARN_ON_ONCE(!allow_spinning && event != MEMCG_MAX);
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4159,14 +4159,13 @@ int arch_lock_shadow_stack_status(struct
+  * since this value becomes part of PP_SIGNATURE; meaning we can just use the
+  * space between the PP_SIGNATURE value (without POISON_POINTER_DELTA), and the
+  * lowest bits of POISON_POINTER_DELTA. On arches where POISON_POINTER_DELTA is
+- * 0, we make sure that we leave the two topmost bits empty, as that guarantees
+- * we won't mistake a valid kernel pointer for a value we set, regardless of the
+- * VMSPLIT setting.
++ * 0, we use the lowest bit of PAGE_OFFSET as the boundary if that value is
++ * known at compile-time.
+  *
+- * Altogether, this means that the number of bits available is constrained by
+- * the size of an unsigned long (at the upper end, subtracting two bits per the
+- * above), and the definition of PP_SIGNATURE (with or without
+- * POISON_POINTER_DELTA).
++ * If the value of PAGE_OFFSET is not known at compile time, or if it is too
++ * small to leave at least 8 bits available above PP_SIGNATURE, we define the
++ * number of bits to be 0, which turns off the DMA index tracking altogether
++ * (see page_pool_register_dma_index()).
+  */
+ #define PP_DMA_INDEX_SHIFT (1 + __fls(PP_SIGNATURE - POISON_POINTER_DELTA))
+ #if POISON_POINTER_DELTA > 0
+@@ -4175,8 +4174,13 @@ int arch_lock_shadow_stack_status(struct
+  */
+ #define PP_DMA_INDEX_BITS MIN(32, __ffs(POISON_POINTER_DELTA) - PP_DMA_INDEX_SHIFT)
+ #else
+-/* Always leave out the topmost two; see above. */
+-#define PP_DMA_INDEX_BITS MIN(32, BITS_PER_LONG - PP_DMA_INDEX_SHIFT - 2)
++/* Use the lowest bit of PAGE_OFFSET if there's at least 8 bits available; see above */
++#define PP_DMA_INDEX_MIN_OFFSET (1 << (PP_DMA_INDEX_SHIFT + 8))
++#define PP_DMA_INDEX_BITS ((__builtin_constant_p(PAGE_OFFSET) && \
++			    PAGE_OFFSET >= PP_DMA_INDEX_MIN_OFFSET && \
++			    !(PAGE_OFFSET & (PP_DMA_INDEX_MIN_OFFSET - 1))) ? \
++			      MIN(32, __ffs(PAGE_OFFSET) - PP_DMA_INDEX_SHIFT) : 0)
 +
- 	atomic_long_inc(&memcg->memory_events_local[event]);
--	if (!swap_event)
-+	if (!swap_event && allow_spinning)
- 		cgroup_file_notify(&memcg->events_local_file);
+ #endif
  
- 	do {
- 		atomic_long_inc(&memcg->memory_events[event]);
--		if (swap_event)
--			cgroup_file_notify(&memcg->swap_events_file);
--		else
--			cgroup_file_notify(&memcg->events_file);
-+		if (allow_spinning) {
-+			if (swap_event)
-+				cgroup_file_notify(&memcg->swap_events_file);
-+			else
-+				cgroup_file_notify(&memcg->events_file);
-+		}
- 
- 		if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
- 			break;
-@@ -1012,6 +1018,12 @@ static inline void memcg_memory_event(st
- 		 !mem_cgroup_is_root(memcg));
+ #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -472,11 +472,60 @@ page_pool_dma_sync_for_device(const stru
+ 	}
  }
  
-+static inline void memcg_memory_event(struct mem_cgroup *memcg,
-+				      enum memcg_memory_event event)
++static int page_pool_register_dma_index(struct page_pool *pool,
++					netmem_ref netmem, gfp_t gfp)
 +{
-+	__memcg_memory_event(memcg, event, true);
++	int err = 0;
++	u32 id;
++
++	if (unlikely(!PP_DMA_INDEX_BITS))
++		goto out;
++
++	if (in_softirq())
++		err = xa_alloc(&pool->dma_mapped, &id, netmem_to_page(netmem),
++			       PP_DMA_INDEX_LIMIT, gfp);
++	else
++		err = xa_alloc_bh(&pool->dma_mapped, &id, netmem_to_page(netmem),
++				  PP_DMA_INDEX_LIMIT, gfp);
++	if (err) {
++		WARN_ONCE(err != -ENOMEM, "couldn't track DMA mapping, please report to netdev@");
++		goto out;
++	}
++
++	netmem_set_dma_index(netmem, id);
++out:
++	return err;
 +}
 +
- static inline void memcg_memory_event_mm(struct mm_struct *mm,
- 					 enum memcg_memory_event event)
++static int page_pool_release_dma_index(struct page_pool *pool,
++				       netmem_ref netmem)
++{
++	struct page *old, *page = netmem_to_page(netmem);
++	unsigned long id;
++
++	if (unlikely(!PP_DMA_INDEX_BITS))
++		return 0;
++
++	id = netmem_get_dma_index(netmem);
++	if (!id)
++		return -1;
++
++	if (in_softirq())
++		old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
++	else
++		old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
++	if (old != page)
++		return -1;
++
++	netmem_set_dma_index(netmem, 0);
++
++	return 0;
++}
++
+ static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t gfp)
  {
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2309,12 +2309,13 @@ static int try_charge_memcg(struct mem_c
- 	bool drained = false;
- 	bool raised_max_event = false;
- 	unsigned long pflags;
-+	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
+ 	dma_addr_t dma;
+ 	int err;
+-	u32 id;
  
- retry:
- 	if (consume_stock(memcg, nr_pages))
- 		return 0;
+ 	/* Setup DMA mapping: use 'struct page' area for storing DMA-addr
+ 	 * since dma_addr_t can be either 32 or 64 bits and does not always fit
+@@ -495,18 +544,10 @@ static bool page_pool_dma_map(struct pag
+ 		goto unmap_failed;
+ 	}
  
--	if (!gfpflags_allow_spinning(gfp_mask))
-+	if (!allow_spinning)
- 		/* Avoid the refill and flush of the older stock */
- 		batch = nr_pages;
+-	if (in_softirq())
+-		err = xa_alloc(&pool->dma_mapped, &id, netmem_to_page(netmem),
+-			       PP_DMA_INDEX_LIMIT, gfp);
+-	else
+-		err = xa_alloc_bh(&pool->dma_mapped, &id, netmem_to_page(netmem),
+-				  PP_DMA_INDEX_LIMIT, gfp);
+-	if (err) {
+-		WARN_ONCE(err != -ENOMEM, "couldn't track DMA mapping, please report to netdev@");
++	err = page_pool_register_dma_index(pool, netmem, gfp);
++	if (err)
+ 		goto unset_failed;
+-	}
  
-@@ -2350,7 +2351,7 @@ retry:
- 	if (!gfpflags_allow_blocking(gfp_mask))
- 		goto nomem;
+-	netmem_set_dma_index(netmem, id);
+ 	page_pool_dma_sync_for_device(pool, netmem, pool->p.max_len);
  
--	memcg_memory_event(mem_over_limit, MEMCG_MAX);
-+	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
- 	raised_max_event = true;
+ 	return true;
+@@ -678,8 +719,6 @@ void page_pool_clear_pp_info(netmem_ref
+ static __always_inline void __page_pool_release_netmem_dma(struct page_pool *pool,
+ 							   netmem_ref netmem)
+ {
+-	struct page *old, *page = netmem_to_page(netmem);
+-	unsigned long id;
+ 	dma_addr_t dma;
  
- 	psi_memstall_enter(&pflags);
-@@ -2417,7 +2418,7 @@ force:
- 	 * a MEMCG_MAX event.
- 	 */
- 	if (!raised_max_event)
--		memcg_memory_event(mem_over_limit, MEMCG_MAX);
-+		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+ 	if (!pool->dma_map)
+@@ -688,15 +727,7 @@ static __always_inline void __page_pool_
+ 		 */
+ 		return;
  
- 	/*
- 	 * The allocation either can't fail or will lead to more memory
+-	id = netmem_get_dma_index(netmem);
+-	if (!id)
+-		return;
+-
+-	if (in_softirq())
+-		old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
+-	else
+-		old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
+-	if (old != page)
++	if (page_pool_release_dma_index(pool, netmem))
+ 		return;
+ 
+ 	dma = page_pool_get_dma_addr_netmem(netmem);
+@@ -706,7 +737,6 @@ static __always_inline void __page_pool_
+ 			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
+ 			     DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
+ 	page_pool_set_dma_addr_netmem(netmem, 0);
+-	netmem_set_dma_index(netmem, 0);
+ }
+ 
+ /* Disconnects a page (from a page_pool).  API users can have a need
 
 
 
