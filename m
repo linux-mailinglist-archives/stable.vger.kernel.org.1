@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-187203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545A5BE9FF9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 397E5BEA650
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F3EAD35A683
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 81BB65A216F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A9433291F;
-	Fri, 17 Oct 2025 15:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D77330B20;
+	Fri, 17 Oct 2025 15:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBM4EtAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHX1yVXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30245339717;
-	Fri, 17 Oct 2025 15:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53F6330B1F;
+	Fri, 17 Oct 2025 15:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715407; cv=none; b=YX2sb//YGwKOzCLEoT383kwGGIAeuEBjrAIHX5vxbUqW1G0XXUofZuE9k5TmOIiEgruozjggCpb8YlrVM5qVEapGwT9yH8WJK71FfBSI1o9KOWVcHWy2GHw8jDPgM+gLc+fsJ2nvdGoSb3eusDCk5iF6FvZ9mDTdfMFJvZfuMH8=
+	t=1760716140; cv=none; b=cfyv3hj++HgV/fsHDt7rU+vZpWqnLb5xTCwHHdl3Qi6KoCj5lcV3481VdX8qNzNcQKiOZTx2ggQ3pPj5EbKVXKeLIg+S108/ExS9OCVCMWGJ6o630ArZRBT6ZMjKOScahF5XaflLKK0ZBXtQVUGGlKaAcWTBxKLbCMXU7veB9dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715407; c=relaxed/simple;
-	bh=8w6DjhsfDrc9tgYKKDym2U6zAu/ee7/anxzR7lHwhRA=;
+	s=arc-20240116; t=1760716140; c=relaxed/simple;
+	bh=G80rEcyY9JD3+ZtRGaSh3wrz3q7CdX1FriyBqCIKXrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t89asaUwrnVxkJqbFKHS7jizBfuBseA+N3MEUR1bK1lSvPRsUKEg7WWj9r0i0OZbUdO3Xooi45FdGcPhJ8SRWR6wLUp4fkfBLLpI5ujf6Rbukmt7MGhd2FInFM8og1RYCgwkJLHLtQJ2FzaCvL7ghl8mfveFfUq1i10nVzIXqtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBM4EtAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E9BC4CEE7;
-	Fri, 17 Oct 2025 15:36:46 +0000 (UTC)
+	 MIME-Version; b=Mkez7LL3LFFPE1KLDLbWBB/TVftjfGFBVc7Cc4QMUglc9F1CrY5U1U/9/EMM6JPO7pNZu3AYpxRcctQe46rL7uOcnYY/hJ9FMNzlgRyyS04iYU1Pn2jTB00yuRx6LBVj36BWF0VKx+oi23jvk2nk7DJlAz6KTPZzSrHzgVHOGw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHX1yVXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245DFC4CEE7;
+	Fri, 17 Oct 2025 15:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715407;
-	bh=8w6DjhsfDrc9tgYKKDym2U6zAu/ee7/anxzR7lHwhRA=;
+	s=korg; t=1760716140;
+	bh=G80rEcyY9JD3+ZtRGaSh3wrz3q7CdX1FriyBqCIKXrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBM4EtAqw1RW0BYQZEO3USrFJ/o+tsHVkIko4BiKnK6sM+V7rLDYRZb201w6m2mpE
-	 ojxaVOb75SsMpX2fjPquxG33XnBJ8fkJmWHf7ffIg9o9gXo8LdyJ3A4OaSzXZ/0ng0
-	 fxcbJdaBoNx2HtGRi5aqnrICJWDzTIHhlRNsM33M=
+	b=GHX1yVXm2zTR73rjrc4CUFXeGytfp5xs2OgfNcRtDJvGeVQyQG/ALtX+mgfjUOUCm
+	 qwR4O8WH5OiXiFwwYrB1sDUemnM0k5lIvsfpO30G74Ti9oN/Cj+cYuCuFFRkxywAoI
+	 PUBB6EHCihQhDZ/2mFJMnyRp03uOs9vWNFE2QhXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH 6.17 206/371] cpufreq: intel_pstate: Fix object lifecycle issue in update_qos_request()
+	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Sasha Levin <sashal@kernel.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Ethan Hawke <ehawk@ember.systems>,
+	Ken Link <iissmart@numberzero.org>
+Subject: [PATCH 5.15 088/276] sparc: fix accurate exception reporting in copy_{from_to}_user for Niagara
 Date: Fri, 17 Oct 2025 16:53:01 +0200
-Message-ID: <20251017145209.543335182@linuxfoundation.org>
+Message-ID: <20251017145145.698633347@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +66,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
 
-commit 69e5d50fcf4093fb3f9f41c4f931f12c2ca8c467 upstream.
+[ Upstream commit 0b67c8fc10b13a9090340c5f8a37d308f4e1571c ]
 
-The cpufreq_cpu_put() call in update_qos_request() takes place too early
-because the latter subsequently calls freq_qos_update_request() that
-indirectly accesses the policy object in question through the QoS request
-object passed to it.
+The referenced commit introduced exception handlers on user-space memory
+references in copy_from_user and copy_to_user. These handlers return from
+the respective function and calculate the remaining bytes left to copy
+using the current register contents. This commit fixes a couple of bad
+calculations and a broken epilogue in the exception handlers. This will
+prevent crashes and ensure correct return values of copy_from_user and
+copy_to_user in the faulting case. The behaviour of memcpy stays unchanged.
 
-Fortunately, update_qos_request() is called under intel_pstate_driver_lock,
-so this issue does not matter for changing the intel_pstate operation
-mode, but it theoretically can cause a crash to occur on CPU device hot
-removal (which currently can only happen in virt, but it is formally
-supported nevertheless).
-
-Address this issue by modifying update_qos_request() to drop the
-reference to the policy later.
-
-Fixes: da5c504c7aae ("cpufreq: intel_pstate: Implement QoS supported freq constraints")
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Link: https://patch.msgid.link/2255671.irdbgypaU6@rafael.j.wysocki
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7ae3aaf53f16 ("sparc64: Convert NGcopy_{from,to}_user to accurate exception reporting.")
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> # on SPARC T4 with modified kernel to use Niagara 1 code
+Tested-by: Magnus Lindholm <linmag7@gmail.com> # on Sun Fire T2000
+Signed-off-by: Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>
+Tested-by: Ethan Hawke <ehawk@ember.systems> # on Sun Fire T2000
+Tested-by: Ken Link <iissmart@numberzero.org> # on Sun Fire T1000
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20250905-memcpy_series-v4-3-1ca72dda195b@mkarcher.dialup.fu-berlin.de
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/sparc/lib/NGmemcpy.S | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -1710,10 +1710,10 @@ static void update_qos_request(enum freq
- 			continue;
+diff --git a/arch/sparc/lib/NGmemcpy.S b/arch/sparc/lib/NGmemcpy.S
+index 8e4d22a6ba0b2..846a8c4ea394f 100644
+--- a/arch/sparc/lib/NGmemcpy.S
++++ b/arch/sparc/lib/NGmemcpy.S
+@@ -80,8 +80,8 @@
+ #ifndef EX_RETVAL
+ #define EX_RETVAL(x)	x
+ __restore_asi:
+-	ret
+ 	wr	%g0, ASI_AIUS, %asi
++	ret
+ 	 restore
+ ENTRY(NG_ret_i2_plus_i4_plus_1)
+ 	ba,pt	%xcc, __restore_asi
+@@ -126,15 +126,16 @@ ENTRY(NG_ret_i2_plus_g1_minus_56)
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %g1, %i0
+ ENDPROC(NG_ret_i2_plus_g1_minus_56)
+-ENTRY(NG_ret_i2_plus_i4)
++ENTRY(NG_ret_i2_plus_i4_plus_16)
++        add     %i4, 16, %i4
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %i4, %i0
+-ENDPROC(NG_ret_i2_plus_i4)
+-ENTRY(NG_ret_i2_plus_i4_minus_8)
+-	sub	%i4, 8, %i4
++ENDPROC(NG_ret_i2_plus_i4_plus_16)
++ENTRY(NG_ret_i2_plus_i4_plus_8)
++	add	%i4, 8, %i4
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %i4, %i0
+-ENDPROC(NG_ret_i2_plus_i4_minus_8)
++ENDPROC(NG_ret_i2_plus_i4_plus_8)
+ ENTRY(NG_ret_i2_plus_8)
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, 8, %i0
+@@ -161,6 +162,12 @@ ENTRY(NG_ret_i2_and_7_plus_i4)
+ 	ba,pt	%xcc, __restore_asi
+ 	 add	%i2, %i4, %i0
+ ENDPROC(NG_ret_i2_and_7_plus_i4)
++ENTRY(NG_ret_i2_and_7_plus_i4_plus_8)
++	and	%i2, 7, %i2
++	add	%i4, 8, %i4
++	ba,pt	%xcc, __restore_asi
++	 add	%i2, %i4, %i0
++ENDPROC(NG_ret_i2_and_7_plus_i4)
+ #endif
  
- 		req = policy->driver_data;
--		cpufreq_cpu_put(policy);
--
--		if (!req)
-+		if (!req) {
-+			cpufreq_cpu_put(policy);
- 			continue;
-+		}
- 
- 		if (hwp_active)
- 			intel_pstate_get_hwp_cap(cpu);
-@@ -1729,6 +1729,8 @@ static void update_qos_request(enum freq
- 
- 		if (freq_qos_update_request(req, freq) < 0)
- 			pr_warn("Failed to update freq constraint: CPU%d\n", i);
-+
-+		cpufreq_cpu_put(policy);
- 	}
- }
- 
+ 	.align		64
+@@ -406,13 +413,13 @@ FUNC_NAME:	/* %i0=dst, %i1=src, %i2=len */
+ 	andn		%i2, 0xf, %i4
+ 	and		%i2, 0xf, %i2
+ 1:	subcc		%i4, 0x10, %i4
+-	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4)
++	EX_LD(LOAD(ldx, %i1, %o4), NG_ret_i2_plus_i4_plus_16)
+ 	add		%i1, 0x08, %i1
+-	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4)
++	EX_LD(LOAD(ldx, %i1, %g1), NG_ret_i2_plus_i4_plus_16)
+ 	sub		%i1, 0x08, %i1
+-	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4)
++	EX_ST(STORE(stx, %o4, %i1 + %i3), NG_ret_i2_plus_i4_plus_16)
+ 	add		%i1, 0x8, %i1
+-	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_minus_8)
++	EX_ST(STORE(stx, %g1, %i1 + %i3), NG_ret_i2_plus_i4_plus_8)
+ 	bgu,pt		%XCC, 1b
+ 	 add		%i1, 0x8, %i1
+ 73:	andcc		%i2, 0x8, %g0
+@@ -469,7 +476,7 @@ FUNC_NAME:	/* %i0=dst, %i1=src, %i2=len */
+ 	subcc		%i4, 0x8, %i4
+ 	srlx		%g3, %i3, %i5
+ 	or		%i5, %g2, %i5
+-	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4)
++	EX_ST(STORE(stx, %i5, %o0), NG_ret_i2_and_7_plus_i4_plus_8)
+ 	add		%o0, 0x8, %o0
+ 	bgu,pt		%icc, 1b
+ 	 sllx		%g3, %g1, %g2
+-- 
+2.51.0
+
 
 
 
