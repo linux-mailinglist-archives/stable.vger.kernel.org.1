@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5270CBE9F51
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:36:13 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 606DEBE9BE8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 466AC5A143B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1F104582A88
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E2328935A;
-	Fri, 17 Oct 2025 15:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135BE2F12AF;
+	Fri, 17 Oct 2025 15:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYYxrEWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwub+gvI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DFB337100;
-	Fri, 17 Oct 2025 15:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40C833710E;
+	Fri, 17 Oct 2025 15:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714731; cv=none; b=sG3Es/CrZLMrG8cecx+IFUlwA1JGO9VWvqNPb1EGrZnBpdTojyww3VE2OaYRx5sH0lGgPjaIOb4AZoBIkv4nRzuOUEnIa4EqQaRFSJaq/1DouORXFbxjxWY1c4ZCd7EMyBWrQm4DgsblThFhtiT5sBvUCWZuEL/bg5A55+uOcxY=
+	t=1760713901; cv=none; b=misnEpoUlgp3Uxh9c0dxIbPNGnlr+eKt8Llljn2aSoKKN9PZKKSTIVB2oLDLED6DzUzl2fcN0AFzqobukTeT0tiSUqUEeCkVdT0vJm+vvw/91qC1GTrvTbDOWjuRXtX5pLmQNn56qam1febXm2LXGlhcQBmlaSw4WdZBnd8FPdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714731; c=relaxed/simple;
-	bh=kh0A6W5dwL9TnkVg8F+79Q5GWB39+Lu7BfIYpdy8ub8=;
+	s=arc-20240116; t=1760713901; c=relaxed/simple;
+	bh=peoe9B7WYcNMtdm2s5hciWTIqlLKEWoKufNhahhiHug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0g9vNlPCSc7RxZmT2YI60flqTMccS23gRQYoMwaoK2CPJrgjKoXlhxu4qAeUkTNdVjsz03KsiNi3kdSHZb2uk1T6qM8DcplfuA4fBNDKtIAD4AykiBWa1DRbscefegGXAtaIaV5NVJ6pQOMlbEol85G3YT4aYs+1jNcZUBrhcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYYxrEWG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71078C4CEE7;
-	Fri, 17 Oct 2025 15:25:30 +0000 (UTC)
+	 MIME-Version; b=Cg27LqEBZSwpF4Qha6lf9hQ3/98LC8ZrCM120sK1Wpoux2mMtSE8qGglixYiocBwRo2RxGB4ZUDZVw/NopjTS5lISQx+3t/1MPPBqOQpwmb451PC06Ii0w78KwYdmNr5mdzdMvlCEhiT11PztG4ABaAuaIFm8TQlFFsuPngDxL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwub+gvI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C64C4CEE7;
+	Fri, 17 Oct 2025 15:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714730;
-	bh=kh0A6W5dwL9TnkVg8F+79Q5GWB39+Lu7BfIYpdy8ub8=;
+	s=korg; t=1760713901;
+	bh=peoe9B7WYcNMtdm2s5hciWTIqlLKEWoKufNhahhiHug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYYxrEWGK/hlfdx93Vs9QYqCpocrHohLVK3HCUq+oxb0Ij92mplMDGGSJpqRovTpG
-	 epgxB+ez8L4BSDZSTnFLtXPEa5uxp9LaZo9VQcayP9XmsvzplUl7NK8VSCZVv2IFas
-	 1psQH87WBf8hMBz8OtlztGZMFqabE0Cr9H6GW8Sk=
+	b=hwub+gvIK97Z9zvCBHYpauCd4Ol10pXowGGx996B88mnbvTNraekoFEdY6ydjjr06
+	 Jq7y25nU5HfVcQigtEE8pmv+uPPo4DfPuvgjIyHCX0o0GCPCFUZkR8n4CL0uNzt00H
+	 KnWtrEoV8XgFbMb5H9Nq5xdryveM2P5/Xlpn7vRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0b92850d68d9b12934f5@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 213/277] ext4: verify orphan file size is not too big
-Date: Fri, 17 Oct 2025 16:53:40 +0200
-Message-ID: <20251017145154.909026163@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 160/201] mfd: intel_soc_pmic_chtdc_ti: Fix invalid regmap-config max_register value
+Date: Fri, 17 Oct 2025 16:53:41 +0200
+Message-ID: <20251017145140.610060169@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 0a6ce20c156442a4ce2a404747bb0fb05d54eeb3 upstream.
+[ Upstream commit 70e997e0107e5ed85c1a3ef2adfccbe351c29d71 ]
 
-In principle orphan file can be arbitrarily large. However orphan replay
-needs to traverse it all and we also pin all its buffers in memory. Thus
-filesystems with absurdly large orphan files can lead to big amounts of
-memory consumed. Limit orphan file size to a sane value and also use
-kvmalloc() for allocating array of block descriptor structures to avoid
-large order allocations for sane but large orphan files.
+The max_register = 128 setting in the regmap config is not valid.
 
-Reported-by: syzbot+0b92850d68d9b12934f5@syzkaller.appspotmail.com
-Fixes: 02f310fcf47f ("ext4: Speedup ext4 orphan inode handling")
-Cc: stable@kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-ID: <20250909112206.10459-2-jack@suse.cz>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+The Intel Dollar Cove TI PMIC has an eeprom unlock register at address 0x88
+and a number of EEPROM registers at 0xF?. Increase max_register to 0xff so
+that these registers can be accessed.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20241208150028.325349-1-hdegoede@redhat.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: 64e0d839c589 ("mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/orphan.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/mfd/intel_soc_pmic_chtdc_ti.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/orphan.c
-+++ b/fs/ext4/orphan.c
-@@ -584,9 +584,20 @@ int ext4_init_orphan_info(struct super_b
- 		ext4_msg(sb, KERN_ERR, "get orphan inode failed");
- 		return PTR_ERR(inode);
- 	}
-+	/*
-+	 * This is just an artificial limit to prevent corrupted fs from
-+	 * consuming absurd amounts of memory when pinning blocks of orphan
-+	 * file in memory.
-+	 */
-+	if (inode->i_size > 8 << 20) {
-+		ext4_msg(sb, KERN_ERR, "orphan file too big: %llu",
-+			 (unsigned long long)inode->i_size);
-+		ret = -EFSCORRUPTED;
-+		goto out_put;
-+	}
- 	oi->of_blocks = inode->i_size >> sb->s_blocksize_bits;
- 	oi->of_csum_seed = EXT4_I(inode)->i_csum_seed;
--	oi->of_binfo = kmalloc_array(oi->of_blocks,
-+	oi->of_binfo = kvmalloc_array(oi->of_blocks,
- 				     sizeof(struct ext4_orphan_block),
- 				     GFP_KERNEL);
- 	if (!oi->of_binfo) {
+--- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
++++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+@@ -81,7 +81,7 @@ static struct mfd_cell chtdc_ti_dev[] =
+ static const struct regmap_config chtdc_ti_regmap_config = {
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+-	.max_register = 128,
++	.max_register = 0xff,
+ 	.cache_type = REGCACHE_NONE,
+ };
+ 
 
 
 
