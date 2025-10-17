@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADB0BE9D5F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A23BBEA2F9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 834556E78E1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 996A27C3AE0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E654632E150;
-	Fri, 17 Oct 2025 15:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA80335079;
+	Fri, 17 Oct 2025 15:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZS9S8hxV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jK97BcEz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE142F12DD;
-	Fri, 17 Oct 2025 15:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEDF32C93E;
+	Fri, 17 Oct 2025 15:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713735; cv=none; b=uRMmRvqLFIG394TUpXg2R9x28bxElutWIJKSvH+dcFhXbZlfCf3n6JdePHijj0wQLXs8/5nlWOkGzry41OKIX1DoFGCw/1GDym9ku/n/srodQpBXYBQcHiF6Qz6lay2YWLz2z54K4GgOdU4cTo/wVQGdbXykDewzocVgSbgL3QI=
+	t=1760714467; cv=none; b=SnCorGir1nyJX0efa9Sn78ZqSBXzqtqYjuK0klDVdOl0y/tBI3bPlCOF4jgBrLBhCD+ueWmy/wF38rKE9VeWUXjT3fM9UPWqrIj6vie+B5FyyHkOjOH8BTa8ValpwFu3uPEA1jZEVaOKyrYSHtGzJnSOpciTFcLgQkefvZvDjvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713735; c=relaxed/simple;
-	bh=fRselGrkgSb4tIu2huIn5vHNrlm7PXCn3gEJ9SrcgUQ=;
+	s=arc-20240116; t=1760714467; c=relaxed/simple;
+	bh=G5+UexOKeF9gTUKO+hzf0ja7aMbKnSXhcEFV3VZaCO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8Ejwzzhna6ZJ9ikuZddMfqOWmYbG2OfGEBsRwytkY28cCCMcroAg/8iTSXOO8WKSa9protmwbFLp+GlCQdPmng9jJ5Nc+MRtXNSIg2JhGrDg0UUwjvaC1oWQJzW2pX/XsqFOKgYU7W0aJtVROzUZez/LVqYWDdQFZpTHDBYrGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZS9S8hxV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F72C4CEFE;
-	Fri, 17 Oct 2025 15:08:54 +0000 (UTC)
+	 MIME-Version; b=Xemz7ByzyR+Z/28mkfxpuZQOY9NFSWaADlnEzyz3yJGTsB7aodPaLXkkaurkNVtveyTMKWOUC7vNrPdOgDIKwajIkEWOC8FrPk2N4uWsslL0xDyFfeXVQ4C1XavABVotpEWEWtDf3jTtjUpGggTv18LB42hPqnEEWFQbTAUJ0/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jK97BcEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D73C4CEE7;
+	Fri, 17 Oct 2025 15:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713735;
-	bh=fRselGrkgSb4tIu2huIn5vHNrlm7PXCn3gEJ9SrcgUQ=;
+	s=korg; t=1760714466;
+	bh=G5+UexOKeF9gTUKO+hzf0ja7aMbKnSXhcEFV3VZaCO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZS9S8hxVX3j1ikVv01c2+rLhe/qqzPI9XDytzLmTxofYyhyFX1NVSQlTbL20j63AY
-	 1Gan89tG9feXt6Y3miB8Dp980XLccAGhyVDpQZm+7yawAwk7EPFZi0M32xFWf+wscH
-	 sOMGWip2erSYTeUH91kOi5llX6JtDfHWemZgbV4k=
+	b=jK97BcEzG7DifD3k9h5colVOs+6IWsAYPjYLQlSu+XI85d78XCWMXFIsDXUmhJt5d
+	 EYpLQdyikM04Imxzt58h/DuyyYxHX1i1jHyaqtjBiuSaD6PGNfXzyXeKE8NIO1FrDU
+	 /dFQ/F7JrzTsuHyunRK1tn40PO915L3mBOmwVmwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 101/201] lib/genalloc: fix device leak in of_gen_pool_get()
+	Dzmitry Sankouski <dsankouski@gmail.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.12 155/277] power: supply: max77976_charger: fix constant current reporting
 Date: Fri, 17 Oct 2025 16:52:42 +0200
-Message-ID: <20251017145138.458067055@linuxfoundation.org>
+Message-ID: <20251017145152.784895548@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Dzmitry Sankouski <dsankouski@gmail.com>
 
-commit 1260cbcffa608219fc9188a6cbe9c45a300ef8b5 upstream.
+commit ee6cd8f3e28ee5a929c3b67c01a350f550f9b73a upstream.
 
-Make sure to drop the reference taken when looking up the genpool platform
-device in of_gen_pool_get() before returning the pool.
+CHARGE_CONTROL_LIMIT is a wrong property to report charge current limit,
+because `CHARGE_*` attributes represents capacity, not current. The
+correct attribute to report and set charge current limit is
+CONSTANT_CHARGE_CURRENT.
 
-Note that holding a reference to a device does typically not prevent its
-devres managed resources from being released so there is no point in
-keeping the reference.
+Rename CHARGE_CONTROL_LIMIT to CONSTANT_CHARGE_CURRENT.
 
-Link: https://lkml.kernel.org/r/20250924080207.18006-1-johan@kernel.org
-Fixes: 9375db07adea ("genalloc: add devres support, allow to find a managed pool by device")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Vladimir Zapolskiy <vz@mleia.com>
-Cc: <stable@vger.kernel.org>	[3.10+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 715ecbc10d6a ("power: supply: max77976: add Maxim MAX77976 charger driver")
+Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/genalloc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/power/supply/max77976_charger.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/lib/genalloc.c
-+++ b/lib/genalloc.c
-@@ -899,8 +899,11 @@ struct gen_pool *of_gen_pool_get(struct
- 		if (!name)
- 			name = of_node_full_name(np_pool);
- 	}
--	if (pdev)
-+	if (pdev) {
- 		pool = gen_pool_get(&pdev->dev, name);
-+		put_device(&pdev->dev);
-+	}
-+
- 	of_node_put(np_pool);
+--- a/drivers/power/supply/max77976_charger.c
++++ b/drivers/power/supply/max77976_charger.c
+@@ -292,10 +292,10 @@ static int max77976_get_property(struct
+ 	case POWER_SUPPLY_PROP_ONLINE:
+ 		err = max77976_get_online(chg, &val->intval);
+ 		break;
+-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX:
++	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+ 		val->intval = MAX77976_CHG_CC_MAX;
+ 		break;
+-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
++	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+ 		err = max77976_get_integer(chg, CHG_CC,
+ 					   MAX77976_CHG_CC_MIN,
+ 					   MAX77976_CHG_CC_MAX,
+@@ -330,7 +330,7 @@ static int max77976_set_property(struct
+ 	int err = 0;
  
- 	return pool;
+ 	switch (psp) {
+-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
++	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+ 		err = max77976_set_integer(chg, CHG_CC,
+ 					   MAX77976_CHG_CC_MIN,
+ 					   MAX77976_CHG_CC_MAX,
+@@ -355,7 +355,7 @@ static int max77976_property_is_writeabl
+ 					  enum power_supply_property psp)
+ {
+ 	switch (psp) {
+-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
++	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+ 	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+ 		return true;
+ 	default:
+@@ -368,8 +368,8 @@ static enum power_supply_property max779
+ 	POWER_SUPPLY_PROP_CHARGE_TYPE,
+ 	POWER_SUPPLY_PROP_HEALTH,
+ 	POWER_SUPPLY_PROP_ONLINE,
+-	POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT,
+-	POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX,
++	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
++	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+ 	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
+ 	POWER_SUPPLY_PROP_MODEL_NAME,
+ 	POWER_SUPPLY_PROP_MANUFACTURER,
 
 
 
