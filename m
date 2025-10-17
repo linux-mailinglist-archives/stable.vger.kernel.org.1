@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D74BEA69F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD439BE96D9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:02:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24EDF6E6C2A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4D3A188F218
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9570B330B17;
-	Fri, 17 Oct 2025 15:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4332F12D2;
+	Fri, 17 Oct 2025 15:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGksfvKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OT79YolG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506D6330B0C;
-	Fri, 17 Oct 2025 15:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982293370FF;
+	Fri, 17 Oct 2025 15:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716190; cv=none; b=q8E9wkicuZJHtJh0VHaE0ck9HENzyLI1tNVQtoJdV3/3PyQwCafsbrypDJJObo2aiP9elCuU6UBegrrW5c3tzQn3u6gc7hSTpUH/LEzwM+dK8OjRNt8a00bZMh3J62QQU4RV45fKQsKt17+QlsEqKFjiJISxOiLAM5St4ho7H/A=
+	t=1760713300; cv=none; b=g9UZFIOe4kqDtbR5lp3BRUIDXSTkoEHDi7/7eqxzJ/p1pu/6PI/IwR9uSLY3goeKc7V2SZXhro1rSxgI8oRPr18nFrsQUAHja2Drq/sWfY59b+/iey3zVEEDdsYCdEZJsg7zDlms3eqqzPt1npFJm2R+xSmMDyWdPygQNzl11Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716190; c=relaxed/simple;
-	bh=Lg24jYjGcYiW52gvO1Js1eHN9qYsgTzknbIRHYWbQkQ=;
+	s=arc-20240116; t=1760713300; c=relaxed/simple;
+	bh=EslSBIqLlzGKT+xeGGneK0+RPOmJvOoj6YHPa8MFRt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ab4cmfows46dKT3zauR1CSsOkkYn8SgUPuYDmHEKAEf+Wg5IAUnFydQJ1YpD/rLsca/8V1vJ+QpZ7kK+hrflBq/VgaPYVL7VBVLktA8lDaX+nfePBCg/Pla4ieMS2YZr0wIw3QlwDwvznJ6B0Er0ODQVNRxl/nFOhkeFIKOdS5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGksfvKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697F9C4CEE7;
-	Fri, 17 Oct 2025 15:49:49 +0000 (UTC)
+	 MIME-Version; b=Ja6nWI6/FeOYucrgSwIwQpPCPo7MWSg+4H8FK7uaSVMQJXLvT2T76u90+kOhlnoPCcSMxGsVSTD3vIvzmuxZNz0saDSX35HvbHLLOlpfJcrI7TY6hgXYGjezdI2l6rfpuluEd1VgDmBzDoH5VX2d9B8z84dJfA0yQW6rdfPvtVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OT79YolG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6CBC4CEE7;
+	Fri, 17 Oct 2025 15:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716189;
-	bh=Lg24jYjGcYiW52gvO1Js1eHN9qYsgTzknbIRHYWbQkQ=;
+	s=korg; t=1760713300;
+	bh=EslSBIqLlzGKT+xeGGneK0+RPOmJvOoj6YHPa8MFRt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGksfvKca3fVNqK8wp5h8xcNjEPbpmPlWBlejAh188BHS1ubNlCQXI68/hdMB4TzZ
-	 uyjjWiM0BZAlTRalwueqh0WjgzNiDkX18HxApyBh/8qV2hUkdtIet2XvKUp9t8LYpM
-	 SOnJ6/wjMV9JKcQ8VCH5VmtQQrjQI/KubLQrcu7s=
+	b=OT79YolGkM3G5FYuoA2AD6u7xJZT5fS4IA4s2C9TCIvKDXDTl9JBFV+tJcYv3sbpJ
+	 mSdb/4vTyHtb2PpJDtx6F6NSJTCKmd5YTFgF1rnr/MDMT1yspwQNrVB6Tcnig06t26
+	 pcAw7dQO0F0ICO3WcoNWpKLQFeJHKmpif3PyPenk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 103/276] nfp: fix RSS hash key size when RSS is not supported
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>
+Subject: [PATCH 6.1 117/168] PCI: tegra194: Fix broken tegra_pcie_ep_raise_msi_irq()
 Date: Fri, 17 Oct 2025 16:53:16 +0200
-Message-ID: <20251017145146.243503738@linuxfoundation.org>
+Message-ID: <20251017145133.334964269@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 8425161ac1204d2185e0a10f5ae652bae75d2451 ]
+commit b640d42a6ac9ba01abe65ec34f7c73aaf6758ab8 upstream.
 
-The nfp_net_get_rxfh_key_size() function returns -EOPNOTSUPP when
-devices don't support RSS, and callers treat the negative value as a
-large positive value since the return type is u32.
+The pci_epc_raise_irq() supplies a MSI or MSI-X interrupt number in range
+(1-N), as per the pci_epc_raise_irq() kdoc, where N is 32 for MSI.
 
-Return 0 when devices don't support RSS, aligning with the ethtool
-interface .get_rxfh_key_size() that requires returning 0 in such cases.
+But tegra_pcie_ep_raise_msi_irq() incorrectly uses the interrupt number as
+the MSI vector. This causes wrong MSI vector to be triggered, leading to
+the failure of PCI endpoint Kselftest MSI_TEST test case.
 
-Fixes: 9ff304bfaf58 ("nfp: add support for reporting CRC32 hash function")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Link: https://patch.msgid.link/20250929054230.68120-1-enjuk@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To fix this issue, convert the interrupt number to MSI vector.
+
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250922140822.519796-6-cassel@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-index d295942968f33..160f853e93adc 100644
---- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-@@ -1001,7 +1001,7 @@ static u32 nfp_net_get_rxfh_key_size(struct net_device *netdev)
- 	struct nfp_net *nn = netdev_priv(netdev);
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1949,10 +1949,10 @@ static int tegra_pcie_ep_raise_legacy_ir
  
- 	if (!(nn->cap & NFP_NET_CFG_CTRL_RSS_ANY))
--		return -EOPNOTSUPP;
-+		return 0;
+ static int tegra_pcie_ep_raise_msi_irq(struct tegra_pcie_dw *pcie, u16 irq)
+ {
+-	if (unlikely(irq > 31))
++	if (unlikely(irq > 32))
+ 		return -EINVAL;
  
- 	return nfp_net_rss_key_sz(nn);
+-	appl_writel(pcie, BIT(irq), APPL_MSI_CTRL_1);
++	appl_writel(pcie, BIT(irq - 1), APPL_MSI_CTRL_1);
+ 
+ 	return 0;
  }
--- 
-2.51.0
-
 
 
 
