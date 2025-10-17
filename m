@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-187607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7378DBEA89D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:14:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3974BEAA43
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1B6995A5BFD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BFF6960F5E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5399E330B2E;
-	Fri, 17 Oct 2025 15:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5857A217722;
+	Fri, 17 Oct 2025 15:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IL04oPFl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zykGtYa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B7D330B26;
-	Fri, 17 Oct 2025 15:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A91330B0F;
+	Fri, 17 Oct 2025 15:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716558; cv=none; b=go7Parh+M7P4H7fWudlpuJheWO9b23CRNpVPmFI3gn6e0mn/tV/YkxkHhHh6fLtpkatUwG3AewbqQfoneZhIdTipc9B3JpGalQ3yWjnd2Hj32LHD1H0wzhE9eJ6qwaaX+y0SBrtTl92HUqlBiirGtUynbsmqsh0jz06NPD66FOM=
+	t=1760716612; cv=none; b=FcXV2rz6lqE6BiRAei2MhLqNam5z0rqBH7FsPmzzsZP7r4ZE5Q/TCO37UBLDz5SWq/Rw2V/pLmRxfEfw8eb+7Wb2/tfMVSPpNVO2gsVhuJKChTNFzmbZhEwAhiVKUGexxT5Dva0KCQxzfViVFfn8UbzUundFs7/EnkMzIutscNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716558; c=relaxed/simple;
-	bh=uEkR7L9fteXpRDclGfc8eemi5Jc7Ts1de9MDjyfkHXM=;
+	s=arc-20240116; t=1760716612; c=relaxed/simple;
+	bh=ZFc3S19sSIeN+2xhZDaq4WreA90qOmFBd4BzcBZhzNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eR+2dnXphVGLX+7QnIhsYwD/3+Yk8RhZN5btIAZqcJD8q1xTZigf5bFS62vNvM48rELyA6NjOt74TvoEP77KAIgkCWVR3cQ30yctrusWYejPCeuEN2ghYsANu69GIch/rjONhgYa33TsMf2uXMb4NKirwHiGHpNs3jS6hwPKyTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IL04oPFl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F149C4CEE7;
-	Fri, 17 Oct 2025 15:55:57 +0000 (UTC)
+	 MIME-Version; b=foTcJBMr5Hb3n1zQIwtsyAk44c5QDnAg7nkCqmh87Ij2f2+FcH7Kn6PEphuXpzcmMhCkYoMT5o956QOr6FQbjheWh6d2X4RqTKtYq32KGyGmz5Npv0VWcvvRDIGtYw8LE7RwbfclGPgYrdOBcvlHXFAPxeMX3n+gUWAMfOd+8tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zykGtYa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FDCC4CEE7;
+	Fri, 17 Oct 2025 15:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716557;
-	bh=uEkR7L9fteXpRDclGfc8eemi5Jc7Ts1de9MDjyfkHXM=;
+	s=korg; t=1760716612;
+	bh=ZFc3S19sSIeN+2xhZDaq4WreA90qOmFBd4BzcBZhzNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IL04oPFlEZXC7M/BWBY5Q52Dtw6u6sv3we5M7SJ8LbUY8FsqIoiSjVinh8fx0vNax
-	 Y0bEwLsxjm/d6A6vK+1O6AfwW8ShzJjN/4CoOukNVOsXj95MQRG6PMGJdezqxEg4F5
-	 nDouqSptONfYxdachy+J0tMGAKCaI3elfDuh+2Xs=
+	b=0zykGtYauAFO+yRJxTf1ZOciO8Yi4OF2+6sVsu87yJuQpepVnHkJMybdFJjqwVqJA
+	 cTnAZXsINJZ+7eqJJrx1a+0mk8HyY+uhsqwQfi99yZ78furS7h3M2MOCIed1qs4VQY
+	 0XXO3M880SlxGFuPZ/AnegLrJgnoyw+knT1t31Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.15 215/276] x86/umip: Fix decoding of register forms of 0F 01 (SGDT and SIDT aliases)
-Date: Fri, 17 Oct 2025 16:55:08 +0200
-Message-ID: <20251017145150.312095517@linuxfoundation.org>
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 217/276] NFSD: Fix destination buffer size in nfsd4_ssc_setup_dul()
+Date: Fri, 17 Oct 2025 16:55:10 +0200
+Message-ID: <20251017145150.385082282@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -66,49 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 27b1fd62012dfe9d3eb8ecde344d7aa673695ecf upstream.
+commit ab1c282c010c4f327bd7addc3c0035fd8e3c1721 upstream.
 
-Filter out the register forms of 0F 01 when determining whether or not to
-emulate in response to a potential UMIP violation #GP, as SGDT and SIDT only
-accept memory operands.  The register variants of 0F 01 are used to encode
-instructions for things like VMX and SGX, i.e. not checking the Mod field
-would cause the kernel to incorrectly emulate on #GP, e.g. due to a CPL
-violation on VMLAUNCH.
+Commit 5304877936c0 ("NFSD: Fix strncpy() fortify warning") replaced
+strncpy(,, sizeof(..)) with strlcpy(,, sizeof(..) - 1), but strlcpy()
+already guaranteed NUL-termination of the destination buffer and
+subtracting one byte potentially truncated the source string.
 
-Fixes: 1e5db223696a ("x86/umip: Add emulation code for UMIP instructions")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+The incorrect size was then carried over in commit 72f78ae00a8e ("NFSD:
+move from strlcpy with unused retval to strscpy") when switching from
+strlcpy() to strscpy().
+
+Fix this off-by-one error by using the full size of the destination
+buffer again.
+
 Cc: stable@vger.kernel.org
+Fixes: 5304877936c0 ("NFSD: Fix strncpy() fortify warning")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/umip.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/nfsd/nfs4proc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/umip.c
-+++ b/arch/x86/kernel/umip.c
-@@ -163,8 +163,19 @@ static int identify_insn(struct insn *in
- 	if (insn->opcode.bytes[1] == 0x1) {
- 		switch (X86_MODRM_REG(insn->modrm.value)) {
- 		case 0:
-+			/* The reg form of 0F 01 /0 encodes VMX instructions. */
-+			if (X86_MODRM_MOD(insn->modrm.value) == 3)
-+				return -EINVAL;
-+
- 			return UMIP_INST_SGDT;
- 		case 1:
-+			/*
-+			 * The reg form of 0F 01 /1 encodes MONITOR/MWAIT,
-+			 * STAC/CLAC, and ENCLS.
-+			 */
-+			if (X86_MODRM_MOD(insn->modrm.value) == 3)
-+				return -EINVAL;
-+
- 			return UMIP_INST_SIDT;
- 		case 4:
- 			return UMIP_INST_SMSW;
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1335,7 +1335,7 @@ try_again:
+ 		return 0;
+ 	}
+ 	if (work) {
+-		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr) - 1);
++		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr));
+ 		refcount_set(&work->nsui_refcnt, 2);
+ 		work->nsui_busy = true;
+ 		list_add_tail(&work->nsui_list, &nn->nfsd_ssc_mount_list);
 
 
 
