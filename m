@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-187065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65AD6BE9E89
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:32:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB939BE9A75
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:18:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D01A189C585
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E229F18855EC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF28D2F12BF;
-	Fri, 17 Oct 2025 15:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB84332ED8;
+	Fri, 17 Oct 2025 15:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dg9BD3JT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7bphFsq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4C21946C8;
-	Fri, 17 Oct 2025 15:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B2E32C946;
+	Fri, 17 Oct 2025 15:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715021; cv=none; b=Po1h8AB8qzyMC3/SOx3TS49KAEVYJVOlAbDUNbYNQOdPVCevphSOX3VrLMK2bV9sc4aYC1A7I6gbi/hCIl3H/kloeZ5VPkWtS3Yqd7xVpO2Dpox+NMQZajF3qVj1b4V5OfvpG6I48LrF7J110UIU9IIRRXydcD8SmpUc/xl0+Ls=
+	t=1760714133; cv=none; b=oJQAk+M38WlE8GWfVzjuaAA6Tb8QSgRhczglEYgTWEgrltxbKhVRpmbuTmhaxACRCXd/WJTiYGMCAUIc4bhBRlX1IqrTWHpEt4gxqpgOXAigRXhPidZ9wKKRGoLit70TsxlJFSZCIGHGkSGnMCSerjOXSwiBXPdeBltDKeEXoC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715021; c=relaxed/simple;
-	bh=jxHojnc0PKg2DXSGtq+XPhLpH1PnAiHKm4gz1Hu2wm0=;
+	s=arc-20240116; t=1760714133; c=relaxed/simple;
+	bh=yZqJuFpXp5MpyIyNHFmxUhzFKgc7WLglqAwOW0f2Z1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s7m9eqg3wqDrBoiJ2e338QA2jIlQSoLKlRz1m1y4wOKrQ+7oS/howlHTUaAPrwMAY+1OXyVw1b9MzJwr1HdZ7m/qPYg4UL1sdi7KFR1F1VOQlaZXFWndFEGMc6/bpSXkP3s806cn39ljZtVB3TGaZ0IwaFqtyQbIaEQVopt+4J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dg9BD3JT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FFBC4CEE7;
-	Fri, 17 Oct 2025 15:30:20 +0000 (UTC)
+	 MIME-Version; b=FjuINW8GqU6fKeeqEER7kHOIUCynnzouVQa35YMagcr0hgkjZLtdt7eCNj1CZ6WZeMnRf5q0pzpg/0jVUA6Xr+P6zb+dHD6NFBthcN4L15wkSg2oFgyq4C3Mv6xkvk4jtS9kxqvWyr4pSUruanxc/kHdZIqimEiYPj8/98GvZFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7bphFsq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70931C4CEE7;
+	Fri, 17 Oct 2025 15:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715021;
-	bh=jxHojnc0PKg2DXSGtq+XPhLpH1PnAiHKm4gz1Hu2wm0=;
+	s=korg; t=1760714132;
+	bh=yZqJuFpXp5MpyIyNHFmxUhzFKgc7WLglqAwOW0f2Z1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dg9BD3JTr8Da3tgSzCNBIiScDOJUSZUdg7iwQwX5erOn5hyOm0N2D7Z6qcojEZvVY
-	 FPsFhVIi2MYpAsl18dPcxz7HXc2ecO1i1KQtVUgqUgASKAqMJD8jsniOwoZ20FxhJ/
-	 aAtaeQKI3riputzWFj8Ea2Rje6jzwrE9S9HHX+2E=
+	b=P7bphFsqGY41SkhRFOk/8LQxcoEMgxaXAW669G+DU3CbIW9LTeU4zQ/qWWnpPW03j
+	 NWg4bqvW1zspuzwDdouHVOlyYneZNmRvta1Es3YwbDAR5+GOVuq4V7EetRBkzS7jQv
+	 9N4cLCH6hwPHFNJg9nIrXoYhGkxqwHlY1lbuPSkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
-	Mukesh R <mrathor@linux.microsoft.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 071/371] mshv: Handle NEED_RESCHED_LAZY before transferring to guest
+Subject: [PATCH 6.12 039/277] cpufreq: tegra186: Set target frequency for all cpus in policy
 Date: Fri, 17 Oct 2025 16:50:46 +0200
-Message-ID: <20251017145204.510871335@linuxfoundation.org>
+Message-ID: <20251017145148.574561153@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 0ebac01a00be972020c002a7fe0bb6b6fca8410f ]
+[ Upstream commit 0b1bb980fd7cae126ee3d59f817068a13e321b07 ]
 
-Check for NEED_RESCHED_LAZY, not just NEED_RESCHED, prior to transferring
-control to a guest.  Failure to check for lazy resched can unnecessarily
-delay rescheduling until the next tick when using a lazy preemption model.
+The original commit set all cores in a cluster to a shared policy, but
+did not update set_target to apply a frequency change to all cores for
+the policy. This caused most cores to remain stuck at their boot
+frequency.
 
-Note, ideally both the checking and processing of TIF bits would be handled
-in common code, to avoid having to keep three separate paths synchronized,
-but defer such cleanups to the future to keep the fix as standalone as
-possible.
-
-Cc: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-Cc: Mukesh R <mrathor@linux.microsoft.com>
-Fixes: 621191d709b1 ("Drivers: hv: Introduce mshv_root module to expose /dev/mshv to VMMs")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-Reviewed-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Fixes: be4ae8c19492 ("cpufreq: tegra186: Share policy per cluster")
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/mshv_common.c    | 2 +-
- drivers/hv/mshv_root_main.c | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/cpufreq/tegra186-cpufreq.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hv/mshv_common.c b/drivers/hv/mshv_common.c
-index 6f227a8a5af71..eb3df3e296bbe 100644
---- a/drivers/hv/mshv_common.c
-+++ b/drivers/hv/mshv_common.c
-@@ -151,7 +151,7 @@ int mshv_do_pre_guest_mode_work(ulong th_flags)
- 	if (th_flags & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL))
- 		return -EINTR;
- 
--	if (th_flags & _TIF_NEED_RESCHED)
-+	if (th_flags & (_TIF_NEED_RESCHED | _TIF_NEED_RESCHED_LAZY))
- 		schedule();
- 
- 	if (th_flags & _TIF_NOTIFY_RESUME)
-diff --git a/drivers/hv/mshv_root_main.c b/drivers/hv/mshv_root_main.c
-index 72df774e410ab..cad09ff5f94dc 100644
---- a/drivers/hv/mshv_root_main.c
-+++ b/drivers/hv/mshv_root_main.c
-@@ -490,7 +490,8 @@ mshv_vp_wait_for_hv_kick(struct mshv_vp *vp)
- static int mshv_pre_guest_mode_work(struct mshv_vp *vp)
+diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
+index 7b8fcfa55038b..39186008afbfd 100644
+--- a/drivers/cpufreq/tegra186-cpufreq.c
++++ b/drivers/cpufreq/tegra186-cpufreq.c
+@@ -86,10 +86,14 @@ static int tegra186_cpufreq_set_target(struct cpufreq_policy *policy,
  {
- 	const ulong work_flags = _TIF_NOTIFY_SIGNAL | _TIF_SIGPENDING |
--				 _TIF_NEED_RESCHED  | _TIF_NOTIFY_RESUME;
-+				 _TIF_NEED_RESCHED  | _TIF_NEED_RESCHED_LAZY |
-+				 _TIF_NOTIFY_RESUME;
- 	ulong th_flags;
+ 	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
+ 	struct cpufreq_frequency_table *tbl = policy->freq_table + index;
+-	unsigned int edvd_offset = data->cpus[policy->cpu].edvd_offset;
++	unsigned int edvd_offset;
+ 	u32 edvd_val = tbl->driver_data;
++	u32 cpu;
  
- 	th_flags = read_thread_flags();
+-	writel(edvd_val, data->regs + edvd_offset);
++	for_each_cpu(cpu, policy->cpus) {
++		edvd_offset = data->cpus[cpu].edvd_offset;
++		writel(edvd_val, data->regs + edvd_offset);
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
