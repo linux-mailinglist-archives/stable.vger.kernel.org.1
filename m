@@ -1,126 +1,100 @@
-Return-Path: <stable+bounces-186292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E571BE7B7B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 11:29:50 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6984CBE7CAF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 11:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08C904201A9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 09:27:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB68E56703B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 09:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B045A343D62;
-	Fri, 17 Oct 2025 09:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A82C2D948D;
+	Fri, 17 Oct 2025 09:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="bJS3ICkf"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Rkw+aW7A";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cXKVN2f5";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zNEvMPwa";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3cccOi7S"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61062D5C61;
-	Fri, 17 Oct 2025 09:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.12.53.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FB52DAFB0
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 09:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760692439; cv=none; b=IlotQHUxK8JFOw7wo2R9RioC8VuM4MBkv3dNpwy9S8sVw0Q/9Bg6K9Gx5zXnNUQzMaTrko02/nVuWZNjgWSPR95a3j0dQLovm9sxaOqCWrqQD2JeE6WO1dvdMi1J+msFZUysZ99gQPD58UnDz1R9J8C/M2aWRiMVGJpnQeYBVb4=
+	t=1760692481; cv=none; b=DfTcw1WktfLicwAznv32Dph4QVKSYoeJkCB9h+fCw+BUMZU4+tpD6Utn/1we/rGywfVyadDaMbE5796NoPYueTWcqagAPMDRIK7N1PqrMk/VHNJJcxHV4K+JQ4CzpY+LmIthH6ow+n3Z5fQli1o1dgoWDeT9KBUvOykqFtVt/BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760692439; c=relaxed/simple;
-	bh=V2L3IilwofpV6SrsfVTvut5ipDXkokIOm+dTBT4i7eQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lTPQYymuzYxTI6aUIqLNn3C7DWqhHhv+yoldiyMM8P6cN7tmPggW6jZVoXmAIV1J9/uZDuHAr65iaGbD8JAt1xdyydf0nXZXfTmH1Z0+S+fk248PIj0/ZQ6UmHO6vxBXeXE/rKf+VXLdxhBCsJuBgCSWTf0Y0va0V5X6NmK9YKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=bJS3ICkf; arc=none smtp.client-ip=52.12.53.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1760692437; x=1792228437;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=k0dUe76w+6n5/NfsPbyefGVCom+xh3GGcFcV3Olhmks=;
-  b=bJS3ICkfgFedWl5t3te0XuFgDXWz8nBqHQTRTXEmWIJKuL6qSBM8S6lo
-   qWlp8IVFhGYjuCljEi8GOfcSbqH+tmKEEZvbtP9V9wWtn/s5gI8gv7//Y
-   zdnpZRxAiJ8nFsb7eC7GNe9Gm8l5PF74pM1VygYGU+pIPA6e11ygckgM+
-   gEApLlTUZ6QclTdRegSo2bp6laPl8PmAE7Cl5kNabPBce5Sboj/z22O+k
-   J+7XV0D5JnsdfIKqakhgqjO4qtfEpn5U89qoIbQeK6i3YQvX0obdlg2UM
-   pKCy7KqUeL7mvB26xraicOcxVnM+0ZFcv0+KspA0RfR1N8nH756RouAHI
-   w==;
-X-CSE-ConnectionGUID: RXTPyYArTMCGpEZ+E8Xbcw==
-X-CSE-MsgGUID: BWj3QBi9SQOiPxp1KjHzOA==
-X-IronPort-AV: E=Sophos;i="6.19,236,1754956800"; 
-   d="scan'208";a="4952411"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:13:57 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.234:21527]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.17.61:2525] with esmtp (Farcaster)
- id 6e4c0a13-2687-46e7-b791-5c0ff5190e98; Fri, 17 Oct 2025 09:13:57 +0000 (UTC)
-X-Farcaster-Flow-ID: 6e4c0a13-2687-46e7-b791-5c0ff5190e98
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 17 Oct 2025 09:13:56 +0000
-Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
- (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 17 Oct 2025
- 09:13:41 +0000
-From: Eliav Farber <farbere@amazon.com>
-To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
-	<linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
-	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
-	<luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>,
-	<tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>,
-	<james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>,
-	<sunpeng.li@amd.com>, <alexander.deucher@amd.com>,
-	<christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
-	<evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>,
-	<mihail.atanassov@arm.com>, <brian.starkey@arm.com>,
-	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
-	<tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>,
-	<jdelvare@suse.com>, <linux@roeck-us.net>, <fery@cypress.com>,
-	<dmitry.torokhov@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>,
-	<dm-devel@redhat.com>, <rajur@chelsio.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>,
-	<joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <malattia@linux.it>,
-	<hdegoede@redhat.com>, <mgross@linux.intel.com>, <intel-linux-scu@intel.com>,
-	<artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>,
-	<martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <clm@fb.com>,
-	<josef@toxicpanda.com>, <dsterba@suse.com>, <xiang@kernel.org>,
-	<chao@kernel.org>, <jack@suse.com>, <tytso@mit.edu>,
-	<adilger.kernel@dilger.ca>, <dushistov@mail.ru>,
-	<luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>,
-	<sergey.senozhatsky@gmail.com>, <andriy.shevchenko@linux.intel.com>,
-	<linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>,
-	<akpm@linux-foundation.org>, <kuznet@ms2.inr.ac.ru>,
-	<yoshfuji@linux-ipv6.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>,
-	<fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>,
-	<willy@infradead.org>, <farbere@amazon.com>, <sashal@kernel.org>,
-	<ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>,
-	<herve.codina@bootlin.com>, <Jason@zx2c4.com>, <keescook@chromium.org>,
-	<kbusch@kernel.org>, <nathan@kernel.org>, <bvanassche@acm.org>,
-	<ndesaulniers@google.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>,
-	<linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>,
-	<freedreno@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>,
-	<linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-	<linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>,
-	<linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>,
-	<linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>,
-	<netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
-	<tipc-discussion@lists.sourceforge.net>
-CC: Arnd Bergmann <arnd@kernel.org>, Christoph Hellwig <hch@infradead.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>, Jens Axboe <axboe@kernel.dk>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mateusz Guzik
-	<mjguzik@gmail.com>, Pedro Falcato <pedro.falcato@gmail.com>
-Subject: [PATCH v2 27/27 5.10.y] minmax.h: remove some #defines that are only expanded once
-Date: Fri, 17 Oct 2025 09:05:19 +0000
-Message-ID: <20251017090519.46992-28-farbere@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251017090519.46992-1-farbere@amazon.com>
-References: <20251017090519.46992-1-farbere@amazon.com>
+	s=arc-20240116; t=1760692481; c=relaxed/simple;
+	bh=bAa+mMZTmx+4SgiaonrJcxnSweykd8qU53iG4ZeZ9O0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r0bguZyNWwSWLFj0EjybC2mR2a4d7a7XKlsqsgysh4pzqcJoj75bKBePjDXIM4uyaWh7gX9M0M03RdhGArc8PDr47j+bSw8pe6b2dddjC/oLuL766AmYvTCqZbCD1WAzfjbEWUKf7Gt2KFw3753gzzFNfM3sEZAI5sJll17cI9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Rkw+aW7A; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cXKVN2f5; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zNEvMPwa; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3cccOi7S; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 778B21FDA5;
+	Fri, 17 Oct 2025 09:14:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760692471; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=egR68WOBdN0W8u3ajdVB9thBdUoNK1gk7j1Qfvg/J44=;
+	b=Rkw+aW7AtXqLIlYa44B2nUpLQCY+IU73qsnlIsUrIpdVFjFOPT6xI2M8kfPbQ5iKiqA5Eo
+	/R0js+i6r3GL2XGNyevKmfsiqzEGjgsV4yLs3DTB4P/K9bZQJig2XZtNqvTmcWHrBfN7yI
+	dyEhULDBjpQ3lGAyuLly0g/iKCN/X5o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760692471;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=egR68WOBdN0W8u3ajdVB9thBdUoNK1gk7j1Qfvg/J44=;
+	b=cXKVN2f5f1XP9+bn5BbImzy+O8CM1ZrwuQkbZm8AlpzdAoyj3FoPfn7gDiyKAhGmoedNwu
+	dV/SmAXyKpwMz5AA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zNEvMPwa;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3cccOi7S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760692470; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=egR68WOBdN0W8u3ajdVB9thBdUoNK1gk7j1Qfvg/J44=;
+	b=zNEvMPwaTz0KYPOPx3M1/vPOBtCWODHw+fxjcl6KKR8wLDFma1KD47FmLlkIUq8xc1n2Ow
+	3r07oF4yXK0ztDezcifP5YsESavko0GJsZItHEKWcCeU5EP3vPJrThUKYEdpBjvqcbF2SV
+	sM5BtPtGhZWmvXs81KKJNG7h4da5cEk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760692470;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=egR68WOBdN0W8u3ajdVB9thBdUoNK1gk7j1Qfvg/J44=;
+	b=3cccOi7S02Hi26NWpcyBMFT5vDrZCl/wkGFcmR3ycnrfzUq1v26XIU/HDs4CdYsNH/Daj+
+	P7TO9diHU4gFfNBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2C8C713A71;
+	Fri, 17 Oct 2025 09:14:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FXxyCfYI8mhUIQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 17 Oct 2025 09:14:30 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	dan.carpenter@linaro.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org
+Cc: dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Melissa Wen <melissa.srw@gmail.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/sysfb: Do not dereference NULL pointer in plane reset
+Date: Fri, 17 Oct 2025 11:13:36 +0200
+Message-ID: <20251017091407.58488-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -128,86 +102,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D040UWA001.ant.amazon.com (10.13.139.22) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 778B21FDA5
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-1.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,ffwll.ch:email,suse.de:dkim,suse.de:mid,suse.de:email,intel.com:email,lists.freedesktop.org:email];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,suse.de,gmail.com,ffwll.ch,vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Score: -1.51
 
-From: David Laight <David.Laight@ACULAB.COM>
+The plane state in __drm_gem_reset_shadow_plane) can be NULL. Do not
+deref that pointer, but forward NULL to the other plane-reset helpers.
+Clears plane->state to NULL.
 
-[ Upstream commit 2b97aaf74ed534fb838d09867d09a3ca5d795208 ]
-
-The bodies of __signed_type_use() and __unsigned_type_use() are much the
-same size as their names - so put the bodies in the only line that expands
-them.
-
-Similarly __signed_type() is defined separately for 64bit and then used
-exactly once just below.
-
-Change the test for __signed_type from CONFIG_64BIT to one based on gcc
-defined macros so that the code is valid if it gets used outside of a
-kernel build.
-
-Link: https://lkml.kernel.org/r/9386d1ebb8974fbabbed2635160c3975@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: b71565022031 ("drm/gem: Export implementation of shadow-plane helpers")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/dri-devel/aPIDAsHIUHp_qSW4@stanley.mountain/
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Melissa Wen <melissa.srw@gmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.15+
 ---
- include/linux/minmax.h | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/drm_gem_atomic_helper.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 2bbdd5b5e07e..eaaf5c008e4d 100644
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -46,10 +46,8 @@
-  * comparison, and these expressions only need to be careful to not cause
-  * warnings for pointer use.
-  */
--#define __signed_type_use(ux) (2 + __is_nonneg(ux))
--#define __unsigned_type_use(ux) (1 + 2 * (sizeof(ux) < 4))
- #define __sign_use(ux) (is_signed_type(typeof(ux)) ? \
--	__signed_type_use(ux) : __unsigned_type_use(ux))
-+	(2 + __is_nonneg(ux)) : (1 + 2 * (sizeof(ux) < 4)))
+diff --git a/drivers/gpu/drm/drm_gem_atomic_helper.c b/drivers/gpu/drm/drm_gem_atomic_helper.c
+index ebf305fb24f0..6fb55601252f 100644
+--- a/drivers/gpu/drm/drm_gem_atomic_helper.c
++++ b/drivers/gpu/drm/drm_gem_atomic_helper.c
+@@ -310,8 +310,12 @@ EXPORT_SYMBOL(drm_gem_destroy_shadow_plane_state);
+ void __drm_gem_reset_shadow_plane(struct drm_plane *plane,
+ 				  struct drm_shadow_plane_state *shadow_plane_state)
+ {
+-	__drm_atomic_helper_plane_reset(plane, &shadow_plane_state->base);
+-	drm_format_conv_state_init(&shadow_plane_state->fmtcnv_state);
++	if (shadow_plane_state) {
++		__drm_atomic_helper_plane_reset(plane, &shadow_plane_state->base);
++		drm_format_conv_state_init(&shadow_plane_state->fmtcnv_state);
++	} else {
++		__drm_atomic_helper_plane_reset(plane, NULL);
++	}
+ }
+ EXPORT_SYMBOL(__drm_gem_reset_shadow_plane);
  
- /*
-  * Check whether a signed value is always non-negative.
-@@ -57,7 +55,7 @@
-  * A cast is needed to avoid any warnings from values that aren't signed
-  * integer types (in which case the result doesn't matter).
-  *
-- * On 64-bit any integer or pointer type can safely be cast to 'long'.
-+ * On 64-bit any integer or pointer type can safely be cast to 'long long'.
-  * But on 32-bit we need to avoid warnings about casting pointers to integers
-  * of different sizes without truncating 64-bit values so 'long' or 'long long'
-  * must be used depending on the size of the value.
-@@ -66,12 +64,12 @@
-  * them, but we do not use s128 types in the kernel (we do use 'u128',
-  * but they are handled by the !is_signed_type() case).
-  */
--#ifdef CONFIG_64BIT
--  #define __signed_type(ux) long
-+#if __SIZEOF_POINTER__ == __SIZEOF_LONG_LONG__
-+#define __is_nonneg(ux) statically_true((long long)(ux) >= 0)
- #else
--  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
-+#define __is_nonneg(ux) statically_true( \
-+	(typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L)))(ux) >= 0)
- #endif
--#define __is_nonneg(ux) statically_true((__signed_type(ux))(ux) >= 0)
- 
- #define __types_ok(ux, uy) \
- 	(__sign_use(ux) & __sign_use(uy))
 -- 
-2.47.3
+2.51.0
 
 
