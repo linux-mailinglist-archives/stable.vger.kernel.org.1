@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-187419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CDFBEA4E8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:56:26 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B801FBE9B3E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7DDC65696E8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:00 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 56BF735D946
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A80330B11;
-	Fri, 17 Oct 2025 15:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616573570CC;
+	Fri, 17 Oct 2025 15:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGeClg0T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRaHIdZf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655F7330B20;
-	Fri, 17 Oct 2025 15:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCC82F12A5;
+	Fri, 17 Oct 2025 15:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716017; cv=none; b=WtGB5uOPubDPTkU7kpzIWyg1bNWBtGr4A1e1C2U/UfO1eGjyPYnqfBmYmdGE6jdNnGJtA2kGtc6raIiwA8auqtIbQIR10dzuCB1teoxLV+irEEmDt2E5wphGyLCZBXw6vpGcl4Iduf9QIdWMm0Qrps2Tt0582poLK/LqOa81vcA=
+	t=1760714379; cv=none; b=mfIkvWMEfXeaoNWb5tRv4+t4+TatFnOMfLL6qIZsv7vZtHXSC+0XEcyoyLftzw78FOsCFXSr+4Cp8v0+uCNBt08ffPPUKcKTe+fwKvWkqjWrIV3cHtZhj1xY9v/hZt7uzHFMke3fA3zt8c4buBO1YgpxCaBVwJQnxvPS/i50pDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716017; c=relaxed/simple;
-	bh=k2SjGE6iKzhyR2kcXkO4SS63Qym/CCwHBZx2DS4oDRo=;
+	s=arc-20240116; t=1760714379; c=relaxed/simple;
+	bh=1bMu4CiifytBfQ2Dziwi/wgTsRq73sfg1Q1uPsdoQ4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocNqoDcOY4mRZZpDl82hQ6y3Cwo3Qe+Wol+2YIzfdICNHlLc9GOw0H9qSV5qUCOnnVgnobgCdX+vyPMrjPCrZXLy9obv7gFlzVFVkPeY23b6Y/a0fICcGTRe7asxNnrKslGLm7Mn9CVWvoknjFhucEM+DPwQP4dCli+vG/NzIbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGeClg0T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99147C4CEE7;
-	Fri, 17 Oct 2025 15:46:56 +0000 (UTC)
+	 MIME-Version; b=kn/53DAYLBrAg0s4LeCOplFmUdEVKorK+Ko1VJhUKhHP6gQ9Ta6mBNMGxyuwiIHemqrqUl1mpR1JkZXz6yzr7oGEaGzqUfTSNqI6IxR6znlzLCdAt74YqpKXpVyWHdiIIfLMD6ryHgPNsJz8i/0YsTJEiq1cFjTo6ccCEXlUZ44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRaHIdZf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C394C4CEE7;
+	Fri, 17 Oct 2025 15:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716017;
-	bh=k2SjGE6iKzhyR2kcXkO4SS63Qym/CCwHBZx2DS4oDRo=;
+	s=korg; t=1760714378;
+	bh=1bMu4CiifytBfQ2Dziwi/wgTsRq73sfg1Q1uPsdoQ4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGeClg0TBwv5lthX5KxYCtpnQgHpgbFqBDylhLzp6kKEH0P+Xe3qxyqpYXdECO0YE
-	 5alUV7nOf9yigf/IMymq0Gn305hvIlvrvZhI5GuDDv0iGtgdEfIrdeCKI6+17naDX3
-	 7ocJJOfudTv7xJV0dNMJQmSKpHWRqlpVfi/YbTnU=
+	b=hRaHIdZfnH6+YvOMfdXKcRxwlXLHSubNzysBBqiUa3At0sfoblBuHaOCH2itJf2SE
+	 Ww1YmN86wTZN6vkTbRV8V7sS6bZzlQHPpQ18lJNeEFC/H8+c4IbvGX3UtbZq/fva7F
+	 U0xpwEeMs5LnJp2a+UOCTotHYwGfi48VIndo8t68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 037/276] block: use int to store blk_stack_limits() return value
-Date: Fri, 17 Oct 2025 16:52:10 +0200
-Message-ID: <20251017145143.759438894@linuxfoundation.org>
+	Abel Vesa <abel.vesa@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 124/277] clk: qcom: tcsrcc-x1e80100: Set the bi_tcxo as parent to eDP refclk
+Date: Fri, 17 Oct 2025 16:52:11 +0200
+Message-ID: <20251017145151.652280269@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit b0b4518c992eb5f316c6e40ff186cbb7a5009518 ]
+commit 57c8e9da3dfe606b918d8f193837ebf2213a9545 upstream.
 
-Change the 'ret' variable in blk_stack_limits() from unsigned int to int,
-as it needs to store negative value -1.
+All the other ref clocks provided by this driver have the bi_tcxo
+as parent. The eDP refclk is the only one without a parent, leading
+to reporting its rate as 0. So set its parent to bi_tcxo, just like
+the rest of the refclks.
 
-Storing the negative error codes in unsigned type, or performing equality
-comparisons (e.g., ret == -1), doesn't cause an issue at runtime [1] but
-can be confusing.  Additionally, assigning negative error codes to unsigned
-type may trigger a GCC warning when the -Wsign-conversion flag is enabled.
-
-No effect on runtime.
-
-Link: https://lore.kernel.org/all/x3wogjf6vgpkisdhg3abzrx7v7zktmdnfmqeih5kosszmagqfs@oh3qxrgzkikf/ #1
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Fixes: fe0b393f2c0a ("block: Correct handling of bottom device misaligment")
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20250902130930.68317-1-rongqianfeng@vivo.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v6.9
+Fixes: 06aff116199c ("clk: qcom: Add TCSR clock driver for x1e80100")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250730-clk-qcom-tcsrcc-x1e80100-parent-edp-refclk-v1-1-7a36ef06e045@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-settings.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/tcsrcc-x1e80100.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index d501084bab4a4..85346a6f1c773 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -514,7 +514,8 @@ static unsigned int blk_round_down_sectors(unsigned int sectors, unsigned int lb
- int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
- 		     sector_t start)
- {
--	unsigned int top, bottom, alignment, ret = 0;
-+	unsigned int top, bottom, alignment;
-+	int ret = 0;
- 
- 	t->max_sectors = min_not_zero(t->max_sectors, b->max_sectors);
- 	t->max_hw_sectors = min_not_zero(t->max_hw_sectors, b->max_hw_sectors);
--- 
-2.51.0
-
+--- a/drivers/clk/qcom/tcsrcc-x1e80100.c
++++ b/drivers/clk/qcom/tcsrcc-x1e80100.c
+@@ -29,6 +29,10 @@ static struct clk_branch tcsr_edp_clkref
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data) {
+ 			.name = "tcsr_edp_clkref_en",
++			.parent_data = &(const struct clk_parent_data){
++				.index = DT_BI_TCXO_PAD,
++			},
++			.num_parents = 1,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
 
 
 
