@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CBD0BEAD85
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D18F9BEABC6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12EC47C5CE0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3890174828B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5DC2E716A;
-	Fri, 17 Oct 2025 15:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6715330B1B;
+	Fri, 17 Oct 2025 15:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="goZmdCKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OhzLm48Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7713821C9EA;
-	Fri, 17 Oct 2025 15:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909432F12D2;
+	Fri, 17 Oct 2025 15:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716552; cv=none; b=oZhgvrhy1KTtV2S2tbqf1fG6N2QATaT3UCOr7C3K8GDuvp7e/E8K/v64W1FoB6qluGqzm+y/JEjyYba0IMGws4jXsQEfmjp+JC+hLnas6nwYBAC/KX8x5+/EKqsU9pMV+y/SCH6NRArvpIZtnZ0iaK3RSTsWoukdlxcTToE8BKk=
+	t=1760715820; cv=none; b=HmoXItEb4RHRJrAV/1uCey42a6oc6O9P2oJ4iBUJT8oUC2gX2goLUQJfmqYDdfX9T+4173NQx+krxwhCWITRZCbtT9z5gXixyesiieeWBzBoZy+gCHdG8eYAeI3oTbtPqWgAW7yWDyrvO75M6LbaFKcHgH+9SyrIMHb+YH/tz+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716552; c=relaxed/simple;
-	bh=yeehZaaUJRXmuAPgfkHUI2i9fAMy2V6HZ+lrwl1BdhE=;
+	s=arc-20240116; t=1760715820; c=relaxed/simple;
+	bh=WXD8xMZtBMTcYcTj7YdIzzK53GB44W8bUWdOLD4qPwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUS1SwV8BpcPKLUUX9J4ArfKYo0d+PhYx0hhFvoSh0CkxrsJiXTFqSjgDYRS3oz0exb0WXkXCG/hDONv313kN7qj9IhjThUBc09eicwroFIC3cbFT+rXMpv+f3GCSU+ehoDxQdmvmw2ZwZj8EneRuCccCqTX160n83D4g404WK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=goZmdCKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF203C4CEE7;
-	Fri, 17 Oct 2025 15:55:51 +0000 (UTC)
+	 MIME-Version; b=g1iqi/7HiTHLt+jErFK0wrXoMZIBj++fK3QG+bkyIw6Z/FmfNQBLso36kcu5XimA8BjH/3qjMfoe3zmu1a34ERPzPyUyeSasvUYBldbBGzd9esm8/hde3X82DX+uWKf0yZPxuOWC8dcFhyU6OftlE8ap+wzsffDcak9qskG3nBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OhzLm48Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9C0C116B1;
+	Fri, 17 Oct 2025 15:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716552;
-	bh=yeehZaaUJRXmuAPgfkHUI2i9fAMy2V6HZ+lrwl1BdhE=;
+	s=korg; t=1760715820;
+	bh=WXD8xMZtBMTcYcTj7YdIzzK53GB44W8bUWdOLD4qPwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=goZmdCKE/1c+BvaWrKgE2lrd414XsoltW6I6dPmC7b+k8M1A4YaARFQxHx+LoAsPB
-	 UxVfBYgju7E2Ue2HiS79noN1FWFAV3zKc8L4AlO1Jz9kpq/at+oV9xomgW2EXHdiZ6
-	 D4j1VMhmK5qc2g8IS/AVmMRO/5uspXd7h4JuK848=
+	b=OhzLm48Zf6MAtHzY1P+uZumc+nY5Hty9aq5yCT+InhZIMN60UWqDUOQKXMCDSSYut
+	 uirca99rQ55KAwOpQwhZZvRftG3wqFzpiFzIyirFrblAwD7Md6+CXFzfcF6XA3CuGm
+	 s6w4u+ksV/i9HlNXtLYgel7auyTzp+wbVMfKEamM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 231/276] mfd: intel_soc_pmic_chtdc_ti: Fix invalid regmap-config max_register value
+	Eric Dumazet <edumazet@google.com>,
+	Greg Thelen <gthelen@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.17 349/371] ipmi: Fix handling of messages with provided receive message pointer
 Date: Fri, 17 Oct 2025 16:55:24 +0200
-Message-ID: <20251017145150.899417555@linuxfoundation.org>
+Message-ID: <20251017145214.706522652@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 70e997e0107e5ed85c1a3ef2adfccbe351c29d71 ]
+commit e2c69490dda5d4c9f1bfbb2898989c8f3530e354 upstream.
 
-The max_register = 128 setting in the regmap config is not valid.
+Prior to commit b52da4054ee0 ("ipmi: Rework user message limit handling"),
+i_ipmi_request() used to increase the user reference counter if the receive
+message is provided by the caller of IPMI API functions. This is no longer
+the case. However, ipmi_free_recv_msg() is still called and decreases the
+reference counter. This results in the reference counter reaching zero,
+the user data pointer is released, and all kinds of interesting crashes are
+seen.
 
-The Intel Dollar Cove TI PMIC has an eeprom unlock register at address 0x88
-and a number of EEPROM registers at 0xF?. Increase max_register to 0xff so
-that these registers can be accessed.
+Fix the problem by increasing user reference counter if the receive message
+has been provided by the caller.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20241208150028.325349-1-hdegoede@redhat.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: 64e0d839c589 ("mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b52da4054ee0 ("ipmi: Rework user message limit handling")
+Reported-by: Eric Dumazet <edumazet@google.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Greg Thelen <gthelen@google.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Message-ID: <20251006201857.3433837-1-linux@roeck-us.net>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/intel_soc_pmic_chtdc_ti.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/ipmi/ipmi_msghandler.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-+++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-@@ -81,7 +81,7 @@ static struct mfd_cell chtdc_ti_dev[] =
- static const struct regmap_config chtdc_ti_regmap_config = {
- 	.reg_bits = 8,
- 	.val_bits = 8,
--	.max_register = 128,
-+	.max_register = 0xff,
- 	.cache_type = REGCACHE_NONE,
- };
- 
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -2280,8 +2280,11 @@ static int i_ipmi_request(struct ipmi_us
+ 	if (supplied_recv) {
+ 		recv_msg = supplied_recv;
+ 		recv_msg->user = user;
+-		if (user)
++		if (user) {
+ 			atomic_inc(&user->nr_msgs);
++			/* The put happens when the message is freed. */
++			kref_get(&user->refcount);
++		}
+ 	} else {
+ 		recv_msg = ipmi_alloc_recv_msg(user);
+ 		if (IS_ERR(recv_msg))
 
 
 
