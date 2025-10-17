@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44D1BE9B92
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EEEBEA35C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27118188F7D9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A12C8189FB03
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4696330333;
-	Fri, 17 Oct 2025 15:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3B2330B1E;
+	Fri, 17 Oct 2025 15:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9Njr69J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQdcKsLj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610DA19DF9A;
-	Fri, 17 Oct 2025 15:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17655330B0E;
+	Fri, 17 Oct 2025 15:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714300; cv=none; b=gqvkGcslX/rgtUkpc2zEDb4IpTYjws3QMbSx7kVxGr3OI+kHUZQXqcSdk8ibt99akFsSgv/+BIjjGpRL/csNjemYpvwl0URyUsicfKjwHTIccBThb9QGse+yXT7iwxR53iARDTJXmdZma2h0WnXir1LMnsmz9dKb7KwqKZd0mu0=
+	t=1760716011; cv=none; b=UQNfbpJ9Os6q355uXMKixB0jeo6CMYz9uJJNv1vvukt7Ey6PcxAyxuH2SqRVLypgYbIdV2DUejSB3TGwzYdeW2FmgnJFXtFU4vkmPJUGtvRqVQWF9vrtRk4c+azCBa2D28QuBPgdClvdDjr61XOPbTQwsT8Hzr8Xkk9cNylEjVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714300; c=relaxed/simple;
-	bh=lGdiwp+KL+Ij/OCu9PTf+8mY7PfbzHkwjs7fhU92Wx4=;
+	s=arc-20240116; t=1760716011; c=relaxed/simple;
+	bh=Wstz3W/IeVe7IIIdUgA3D81IrmINddSGw7y2bc7U+Ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QyWeu6kHEwsDZ1XxVYdHLC5tNgS2R4eSLqUb5tJ43+iuXpybAw18LaH4wsyYy+VW18C7jrejVVHxLkYnJ1gm2jHZmRk8+0F90wSHGl5EK+8bjHzegqQH1NtJjDwI2oZS9neuSpu5Zco+/Qc3xwXLkdmrBq6JQ9gpQioCWi7iRus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9Njr69J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C49C4CEE7;
-	Fri, 17 Oct 2025 15:18:18 +0000 (UTC)
+	 MIME-Version; b=PmGhWChDgVgOojsleSH6hVTWVFeD7H0BBZREkz+l04tE0SncPNMhQzzdd1cuS82uibA2YBgJZvXvy0tlVuvBP4gWDCYQfgEhPZeGStZDFo9MVS6JNIIkJfJlwSMHi2YxGBnQARwBr5aZpXxCAVi8LEib3wZQpXMMsiXWSh58JsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQdcKsLj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB7DC4CEE7;
+	Fri, 17 Oct 2025 15:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714298;
-	bh=lGdiwp+KL+Ij/OCu9PTf+8mY7PfbzHkwjs7fhU92Wx4=;
+	s=korg; t=1760716010;
+	bh=Wstz3W/IeVe7IIIdUgA3D81IrmINddSGw7y2bc7U+Ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9Njr69JMy0H3KmTCOsbUzofpf3pD9GCLKYJVme6Pnr6W8wWM5Y4UwIp/p/V/GpXa
-	 jDDIgyESJ5qVzcFVHVHnU/IdckVOaSwG3cFr7By6Yeta3xYnQfSTCvV7EeaPubSrcM
-	 psAk3Sfibx47yjji1mrXzXXOr3NWpK5j17aZcJY0=
+	b=QQdcKsLjqCfZs4NMA6N8/ze+pe8+Wpc0m79m8cdD3lKxRqy+Aog4fonbZ9ZfMESXQ
+	 Q0DfqdOusRiSwf3+SyoShN0/qXJ3+zC0yIWJ/2nbCc5jeDalx5spUIPSQdb6xv11t7
+	 fYSMcjlxvVKxVrOydAnMH7OSONdHKFdkKr2fIOcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>
-Subject: [PATCH 6.12 095/277] ARM: OMAP2+: pm33xx-core: ix device node reference leaks in amx3_idle_init
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 009/276] media: i2c: tc358743: Fix use-after-free bugs caused by orphan timer in probe
 Date: Fri, 17 Oct 2025 16:51:42 +0200
-Message-ID: <20251017145150.602215871@linuxfoundation.org>
+Message-ID: <20251017145142.736313583@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit 74139a64e8cedb6d971c78d5d17384efeced1725 upstream.
+[ Upstream commit 79d10f4f21a92e459b2276a77be62c59c1502c9d ]
 
-Add missing of_node_put() calls to release
-device node references obtained via of_parse_phandle().
+The state->timer is a cyclic timer that schedules work_i2c_poll and
+delayed_work_enable_hotplug, while rearming itself. Using timer_delete()
+fails to guarantee the timer isn't still running when destroyed, similarly
+cancel_delayed_work() cannot ensure delayed_work_enable_hotplug has
+terminated if already executing. During probe failure after timer
+initialization, these may continue running as orphans and reference the
+already-freed tc358743_state object through tc358743_irq_poll_timer.
 
-Fixes: 06ee7a950b6a ("ARM: OMAP2+: pm33xx-core: Add cpuidle_ops for am335x/am437x")
+The following is the trace captured by KASAN.
+
+BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
+Write of size 8 at addr ffff88800ded83c8 by task swapper/1/0
+...
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x55/0x70
+ print_report+0xcf/0x610
+ ? __pfx_sched_balance_find_src_group+0x10/0x10
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ kasan_report+0xb8/0xf0
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ __run_timer_base.part.0+0x7d7/0x8c0
+ ? rcu_sched_clock_irq+0xb06/0x27d0
+ ? __pfx___run_timer_base.part.0+0x10/0x10
+ ? try_to_wake_up+0xb15/0x1960
+ ? tmigr_update_events+0x280/0x740
+ ? _raw_spin_lock_irq+0x80/0xe0
+ ? __pfx__raw_spin_lock_irq+0x10/0x10
+ tmigr_handle_remote_up+0x603/0x7e0
+ ? __pfx_tmigr_handle_remote_up+0x10/0x10
+ ? sched_balance_trigger+0x98/0x9f0
+ ? sched_tick+0x221/0x5a0
+ ? _raw_spin_lock_irq+0x80/0xe0
+ ? __pfx__raw_spin_lock_irq+0x10/0x10
+ ? tick_nohz_handler+0x339/0x440
+ ? __pfx_tmigr_handle_remote_up+0x10/0x10
+ __walk_groups.isra.0+0x42/0x150
+ tmigr_handle_remote+0x1f4/0x2e0
+ ? __pfx_tmigr_handle_remote+0x10/0x10
+ ? ktime_get+0x60/0x140
+ ? lapic_next_event+0x11/0x20
+ ? clockevents_program_event+0x1d4/0x2a0
+ ? hrtimer_interrupt+0x322/0x780
+ handle_softirqs+0x16a/0x550
+ irq_exit_rcu+0xaf/0xe0
+ sysvec_apic_timer_interrupt+0x70/0x80
+ </IRQ>
+...
+
+Allocated by task 141:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x7f/0x90
+ __kmalloc_node_track_caller_noprof+0x198/0x430
+ devm_kmalloc+0x7b/0x1e0
+ tc358743_probe+0xb7/0x610  i2c_device_probe+0x51d/0x880
+ really_probe+0x1ca/0x5c0
+ __driver_probe_device+0x248/0x310
+ driver_probe_device+0x44/0x120
+ __device_attach_driver+0x174/0x220
+ bus_for_each_drv+0x100/0x190
+ __device_attach+0x206/0x370
+ bus_probe_device+0x123/0x170
+ device_add+0xd25/0x1470
+ i2c_new_client_device+0x7a0/0xcd0
+ do_one_initcall+0x89/0x300
+ do_init_module+0x29d/0x7f0
+ load_module+0x4f48/0x69e0
+ init_module_from_file+0xe4/0x150
+ idempotent_init_module+0x320/0x670
+ __x64_sys_finit_module+0xbd/0x120
+ do_syscall_64+0xac/0x280
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 141:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3a/0x60
+ __kasan_slab_free+0x3f/0x50
+ kfree+0x137/0x370
+ release_nodes+0xa4/0x100
+ devres_release_group+0x1b2/0x380
+ i2c_device_probe+0x694/0x880
+ really_probe+0x1ca/0x5c0
+ __driver_probe_device+0x248/0x310
+ driver_probe_device+0x44/0x120
+ __device_attach_driver+0x174/0x220
+ bus_for_each_drv+0x100/0x190
+ __device_attach+0x206/0x370
+ bus_probe_device+0x123/0x170
+ device_add+0xd25/0x1470
+ i2c_new_client_device+0x7a0/0xcd0
+ do_one_initcall+0x89/0x300
+ do_init_module+0x29d/0x7f0
+ load_module+0x4f48/0x69e0
+ init_module_from_file+0xe4/0x150
+ idempotent_init_module+0x320/0x670
+ __x64_sys_finit_module+0xbd/0x120
+ do_syscall_64+0xac/0x280
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+
+Replace timer_delete() with timer_delete_sync() and cancel_delayed_work()
+with cancel_delayed_work_sync() to ensure proper termination of timer and
+work items before resource cleanup.
+
+This bug was initially identified through static analysis. For reproduction
+and testing, I created a functional emulation of the tc358743 device via a
+kernel module and introduced faults through the debugfs interface.
+
+Fixes: 869f38ae07f7 ("media: i2c: tc358743: Fix crash in the probe error path when using polling")
+Fixes: d32d98642de6 ("[media] Driver for Toshiba TC358743 HDMI to CSI-2 bridge")
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20250902075943.2408832-1-linmq006@gmail.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ replaced del_timer() instead of timer_delete() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-omap2/pm33xx-core.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/i2c/tc358743.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm/mach-omap2/pm33xx-core.c
-+++ b/arch/arm/mach-omap2/pm33xx-core.c
-@@ -388,12 +388,15 @@ static int __init amx3_idle_init(struct
- 		if (!state_node)
- 			break;
- 
--		if (!of_device_is_available(state_node))
-+		if (!of_device_is_available(state_node)) {
-+			of_node_put(state_node);
- 			continue;
-+		}
- 
- 		if (i == CPUIDLE_STATE_MAX) {
- 			pr_warn("%s: cpuidle states reached max possible\n",
- 				__func__);
-+			of_node_put(state_node);
- 			break;
- 		}
- 
-@@ -403,6 +406,7 @@ static int __init amx3_idle_init(struct
- 			states[state_count].wfi_flags |= WFI_FLAG_WAKE_M3 |
- 							 WFI_FLAG_FLUSH_CACHE;
- 
-+		of_node_put(state_node);
- 		state_count++;
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -2201,10 +2201,10 @@ static int tc358743_probe(struct i2c_cli
+ err_work_queues:
+ 	cec_unregister_adapter(state->cec_adap);
+ 	if (!state->i2c_client->irq) {
+-		del_timer(&state->timer);
++		timer_delete_sync(&state->timer);
+ 		flush_work(&state->work_i2c_poll);
  	}
- 
+-	cancel_delayed_work(&state->delayed_work_enable_hotplug);
++	cancel_delayed_work_sync(&state->delayed_work_enable_hotplug);
+ 	mutex_destroy(&state->confctl_mutex);
+ err_hdl:
+ 	media_entity_cleanup(&sd->entity);
 
 
 
