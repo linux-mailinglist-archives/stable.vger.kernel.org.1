@@ -1,78 +1,79 @@
-Return-Path: <stable+bounces-186298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AFEEBE7CD6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 11:37:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29FBABE7E1A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 11:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1720D6E0DFA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 09:32:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 95291562510
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 09:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BAB2DAFAC;
-	Fri, 17 Oct 2025 09:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A0A2BEC41;
+	Fri, 17 Oct 2025 09:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="X0F5MJf+"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IPdHAK+z"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3892DA77E
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 09:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3322D543A
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 09:43:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760693168; cv=none; b=OWSQVRlbcxxQpOOETaRq+U+nlTMXPNC6omf9bLx9o5nkn3zs7nV76UQyAuekJIvJovchvZfZZQRPjoypP+ryCcP9ocxj+PJqaA3I2+D9hgNVflE8q+29wxHjTYzlSG9JNQmMy6wXoV3IKm59K36P4dGS31gR7Q8d3Smw8bOH6lA=
+	t=1760694239; cv=none; b=OYd2XhTWe6w83rsG+1wvdLLlm2gdtAL2lkTnif0A+4igFQgBxW9IJnjw0CZBn74LJa6Q+P8OW6zZqu1kMhFwQpFDf4vEgYhou2SjnEfw/19EeOjyyGt6n+1LW72iA9UJo8Dng8m6s7HvGZrS//i546F5AuDPmSslKs4BjsmlmG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760693168; c=relaxed/simple;
-	bh=uK8CT6Vtk7EM3juCVV9IQyJLTizkUdRPcRxKJl8rc8o=;
+	s=arc-20240116; t=1760694239; c=relaxed/simple;
+	bh=6PkDFxe8zKXwy0VI2jBrzAFnpqbybRSK21U6OveUuI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXi5mn5ZOoBJ2qoGyl5/m83PZqIBmUuJjxpwfS4Qb9SASKbrLcFnaSdviajlnndNzHinghmLkXNlKceypE6bUsiVqL/JWOTOCpJVtWa2PnkRC83/D/vEdz3K6do8vci1sftNOuKUM8oBjYTHIGiQgIBzxY1Fu4kYV5stsl25KYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=X0F5MJf+; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=hv1HD8PXAhYOJp2YkHFhUOXQp1bSTqFb8dis5HYCuclPKz2+PrhieNNGNdCIz3uoCDyBf5vKrdFQFrZ1AMQ2TFYV3kr6Kv43bK3Oxg7uLXJZ+deH9Ik5YRqnWQVzlrifnKGN2soyXRW8jaGe+vHD8F455Kpl9SNcE1W8TiLJfSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IPdHAK+z; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59H90qM0023890;
-	Fri, 17 Oct 2025 09:25:57 GMT
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59H7xd9q010057;
+	Fri, 17 Oct 2025 09:43:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=es5OFE4WLy+Y442hy
-	O450IIERonRTam9O5GoGNo1c34=; b=X0F5MJf++0oU7qHYr44jL6RzyAyHWIGG8
-	9Cs4nCwgNFZT005kbRcFUMW+bfCAawQ6HREApUip3AuhN0Ugzr0xecHW2BKDBUxe
-	cewD5Jp5PXb58JctEfw5B4G1UOOYME6uxlx+vMCYCUl8EkTZbU0F29NDfGBMklvb
-	OFIJnmZuaUky+SxdCD6STSaOeefiBxW7z0oABGrBGf/1j2leSm/ijGhQJm+Rkk39
-	0jFr/WBlYPKQSvu4cVH4XfA1F39O/fzQtzfyj8FUmHQx4js3jgf8ST1/rt9NRk/9
-	QUNSdXoYgB9bWwNGxEfMNkLZ3YLZ/YXNuAdLr9bTxflSrqqxlQDIA==
+	:mime-version:references:subject:to; s=pp1; bh=vAyAFnCsM1FfSZHDd
+	N7i+ce8i8HQuiJ08xgY6DxSPYE=; b=IPdHAK+zKGsQyBgrzujA1PT2/QdFCUsb6
+	UaoqMZvc80RAOIgrpZlggoayvZMF9z+SbflLDLPaw95LpK+I2xACXAK1+pKiocMm
+	Mbad0KDkgsFBZGd7gQS2gdvsksmEFvP4/AJVrdwBQNXQLBdmdLXQQU5H81tOGP0t
+	gdYKkFhlOlaBO5J4vFtHCynRzja1YRaups/G0nzmBS0syBoNfvvGz+Oxb2EyMvGc
+	NuzUvMZZRriAizjE0qD0vjisGFSciOMz/qQJdcb9niTYOYfH3hjDyGz35IKN7yBz
+	9DEV0vbV0MR8IXmWgqisQ+Fx2ubANcvfwNk/ilUzuSbn1rLy3Z44A==
 Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49tfxpu7nw-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qewuhvhm-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Oct 2025 09:25:57 +0000 (GMT)
+	Fri, 17 Oct 2025 09:43:46 +0000 (GMT)
 Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59H9DAEN015207;
-	Fri, 17 Oct 2025 09:25:56 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49r1jsmnwn-1
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59H9CRBV015178;
+	Fri, 17 Oct 2025 09:43:45 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49r1jsmu2v-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Oct 2025 09:25:56 +0000
+	Fri, 17 Oct 2025 09:43:45 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59H9PqMe16843218
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59H9heVi40960446
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Oct 2025 09:25:52 GMT
+	Fri, 17 Oct 2025 09:43:40 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A16772023B;
+	by IMSVA (Postfix) with ESMTP id F11D32023B;
 	Fri, 17 Oct 2025 09:25:52 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 64DF22023D;
+	by IMSVA (Postfix) with ESMTP id B4D252023C;
 	Fri, 17 Oct 2025 09:25:52 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.111.58.138])
 	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
 	Fri, 17 Oct 2025 09:25:52 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: stable@vger.kernel.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.12.y 2/4] s390/bpf: Describe the frame using a struct instead of constants
-Date: Fri, 17 Oct 2025 11:19:05 +0200
-Message-ID: <20251017092550.88640-3-iii@linux.ibm.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
+        Daniel Borkmann <daniel@iogearbox.net>
+Subject: [PATCH 6.12.y 3/4] s390/bpf: Write back tail call counter for BPF_PSEUDO_CALL
+Date: Fri, 17 Oct 2025 11:19:06 +0200
+Message-ID: <20251017092550.88640-4-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017092550.88640-1-iii@linux.ibm.com>
 References: <20251017092550.88640-1-iii@linux.ibm.com>
@@ -84,283 +85,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: y-bnoUtseG6qrPt3udQs8xPvv5lMbFl0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE1MDEyNSBTYWx0ZWRfX3vqgmsCpWn9m
- C/oPH44TZe+dTj6fzE/qLmBcx2en6HfSQkt9GqM9VLJijphpKjVFvG4KNbNQpnvkbNzsDpf/d3Z
- +LC1ruRPt+KHNEm9J9cQnuka/2cQeVuhZNhNExpZhJlJ86Enj7m6iIExiQyr9Bl44A+syloomuQ
- RyUf9ncFge7o6VC0xRFzKFaCzH8LACNbddy6AlYyYBWsoXRhCxFNoiSLNNE1Qju0Indfh5ySTfv
- ama2EMorbDlO1bYrfp4OnCDtfZlWaQ4vLRugARqNitjuaSA0yWHTdeqIbfdpdx2AsbfhjI57Ccv
- ZQEgl1NFSYH4B3Y7d8Ohbwuw0g0/vDLx3x9Zi4VTNy9F7+2T+rNWyiHvgKlCGxTlYckiV7k1+8d
- vu866e8rBW8IZ1lwORMf9ndbtE7MOw==
-X-Authority-Analysis: v=2.4 cv=R+wO2NRX c=1 sm=1 tr=0 ts=68f20ba5 cx=c_pps
+X-Proofpoint-GUID: L_QEla509dS6WzR6VwN4Wj_BcKjnWbg2
+X-Authority-Analysis: v=2.4 cv=Kr1AGGWN c=1 sm=1 tr=0 ts=68f20fd2 cx=c_pps
  a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=04KB4t3DcwN-hSm8:21 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=3Mzdi6lvbL40coBWrpEA:9
-X-Proofpoint-ORIG-GUID: y-bnoUtseG6qrPt3udQs8xPvv5lMbFl0
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=hWMQpYRtAAAA:8 a=pAWVCH5PS7jakKlMGnsA:9 a=KCsI-UfzjElwHeZNREa_:22
+X-Proofpoint-ORIG-GUID: L_QEla509dS6WzR6VwN4Wj_BcKjnWbg2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfXzqKPtSwMEWKq
+ ktB0WS0Mu/PFab4TEY9F2fAgFaKm3rV9uf8AaePRTP3sFZ8tH7Z15NDYlWbBZXlCWfVatyVuZvB
+ rt/5FZmuo33DfMxpqHS/4g9+AC8nKhUh2TsDRKjYT0/s1Kc+Wh1UOH9JRXqXulgXUqwljQr3ial
+ 9KDVTuG6HK0JSKRPnqpgsRlHiWj3vwxADRTGx7JPq3xL8PWlbMkcKkTnwIo1r3bVLRK1kcH94ds
+ eijG/HfF3eGKqwS3VnwWwe4XpN19knzCKgf97xC1tQRU0tAX1hUZGwhiptl3vqUyWwQ9a+CtEIE
+ CZxtGi9U+1nFF8kB5sIUzvSGUGg3HeN2zaiU2TztxZrV0CHK8PbS3fLMmsFz35gJtLJr+6gwsJ0
+ Kv5Q3c6/os2NkgVtb4iEjNvr3Dg9oA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-17_03,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0 clxscore=1015
- priorityscore=1501 adultscore=0 spamscore=0 impostorscore=0 malwarescore=0
+ spamscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0
+ phishscore=0 suspectscore=0 malwarescore=0 clxscore=1015 impostorscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510150125
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
 
-commit e26d523edf2a62b142d2dd2dd9b87f61ed92f33a upstream.
+commit c861a6b147137d10b5ff88a2c492ba376cd1b8b0 upstream.
 
-Currently the caller-allocated portion of the stack frame is described
-using constants, hardcoded values, and an ASCII drawing, making it
-harder than necessary to ensure that everything is in sync.
+The tailcall_bpf2bpf_hierarchy_1 test hangs on s390. Its call graph is
+as follows:
 
-Declare a struct and use offsetof() and offsetofend() macros to refer
-to various values stored within the frame.
+  entry()
+    subprog_tail()
+      bpf_tail_call_static(0) -> entry + tail_call_start
+    subprog_tail()
+      bpf_tail_call_static(0) -> entry + tail_call_start
 
+entry() copies its tail call counter to the subprog_tail()'s frame,
+which then increments it. However, the incremented result is discarded,
+leading to an astronomically large number of tail calls.
+
+Fix by writing the incremented counter back to the entry()'s frame.
+
+Fixes: dd691e847d28 ("s390/bpf: Implement bpf_jit_supports_subprog_tailcalls()")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250624121501.50536-3-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20250813121016.163375-3-iii@linux.ibm.com
 ---
- arch/s390/net/bpf_jit.h      | 55 ----------------------------
- arch/s390/net/bpf_jit_comp.c | 69 ++++++++++++++++++++++++------------
- 2 files changed, 47 insertions(+), 77 deletions(-)
- delete mode 100644 arch/s390/net/bpf_jit.h
+ arch/s390/net/bpf_jit_comp.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/arch/s390/net/bpf_jit.h b/arch/s390/net/bpf_jit.h
-deleted file mode 100644
-index 7822ea92e54af..0000000000000
---- a/arch/s390/net/bpf_jit.h
-+++ /dev/null
-@@ -1,55 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * BPF Jit compiler defines
-- *
-- * Copyright IBM Corp. 2012,2015
-- *
-- * Author(s): Martin Schwidefsky <schwidefsky@de.ibm.com>
-- *	      Michael Holzheu <holzheu@linux.vnet.ibm.com>
-- */
--
--#ifndef __ARCH_S390_NET_BPF_JIT_H
--#define __ARCH_S390_NET_BPF_JIT_H
--
--#ifndef __ASSEMBLY__
--
--#include <linux/filter.h>
--#include <linux/types.h>
--
--#endif /* __ASSEMBLY__ */
--
--/*
-- * Stackframe layout (packed stack):
-- *
-- *				    ^ high
-- *	      +---------------+     |
-- *	      | old backchain |     |
-- *	      +---------------+     |
-- *	      |   r15 - r6    |     |
-- *	      +---------------+     |
-- *	      | 4 byte align  |     |
-- *	      | tail_call_cnt |     |
-- * BFP	   -> +===============+     |
-- *	      |		      |     |
-- *	      |   BPF stack   |     |
-- *	      |		      |     |
-- * R15+160 -> +---------------+     |
-- *	      | new backchain |     |
-- * R15+152 -> +---------------+     |
-- *	      | + 152 byte SA |     |
-- * R15	   -> +---------------+     + low
-- *
-- * We get 160 bytes stack space from calling function, but only use
-- * 12 * 8 byte for old backchain, r15..r6, and tail_call_cnt.
-- *
-- * The stack size used by the BPF program ("BPF stack" above) is passed
-- * via "aux->stack_depth".
-- */
--#define STK_SPACE_ADD	(160)
--#define STK_160_UNUSED	(160 - 12 * 8)
--#define STK_OFF		(STK_SPACE_ADD - STK_160_UNUSED)
--
--#define STK_OFF_R6	(160 - 11 * 8)	/* Offset of r6 on stack */
--#define STK_OFF_TCCNT	(160 - 12 * 8)	/* Offset of tail_call_cnt on stack */
--
--#endif /* __ARCH_S390_NET_BPF_JIT_H */
 diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index 12fda05aadf61..7907c3f9b59ab 100644
+index 7907c3f9b59ab..2526a3d53fadb 100644
 --- a/arch/s390/net/bpf_jit_comp.c
 +++ b/arch/s390/net/bpf_jit_comp.c
-@@ -32,7 +32,6 @@
- #include <asm/set_memory.h>
- #include <asm/text-patching.h>
- #include <asm/unwind.h>
--#include "bpf_jit.h"
- 
- struct bpf_jit {
- 	u32 seen;		/* Flags to remember seen eBPF instructions */
-@@ -56,7 +55,7 @@ struct bpf_jit {
- 	int prologue_plt;	/* Start of prologue hotpatch PLT */
- 	int kern_arena;		/* Pool offset of kernel arena address */
- 	u64 user_arena;		/* User arena address */
--	u32 frame_off;		/* Offset of frame from %r15 */
-+	u32 frame_off;		/* Offset of struct bpf_prog from %r15 */
- };
- 
- #define SEEN_MEM	BIT(0)		/* use mem[] for temporary storage */
-@@ -404,12 +403,26 @@ static void jit_fill_hole(void *area, unsigned int size)
- 	memset(area, 0, size);
- }
- 
-+/*
-+ * Caller-allocated part of the frame.
-+ * Thanks to packed stack, its otherwise unused initial part can be used for
-+ * the BPF stack and for the next frame.
-+ */
-+struct prog_frame {
-+	u64 unused[8];
-+	/* BPF stack starts here and grows towards 0 */
-+	u32 tail_call_cnt;
-+	u32 pad;
-+	u64 r6[10];  /* r6 - r15 */
-+	u64 backchain;
-+} __packed;
-+
- /*
-  * Save registers from "rs" (register start) to "re" (register end) on stack
-  */
- static void save_regs(struct bpf_jit *jit, u32 rs, u32 re)
- {
--	u32 off = STK_OFF_R6 + (rs - 6) * 8;
-+	u32 off = offsetof(struct prog_frame, r6) + (rs - 6) * 8;
- 
- 	if (rs == re)
- 		/* stg %rs,off(%r15) */
-@@ -424,7 +437,7 @@ static void save_regs(struct bpf_jit *jit, u32 rs, u32 re)
-  */
- static void restore_regs(struct bpf_jit *jit, u32 rs, u32 re)
- {
--	u32 off = jit->frame_off + STK_OFF_R6 + (rs - 6) * 8;
-+	u32 off = jit->frame_off + offsetof(struct prog_frame, r6) + (rs - 6) * 8;
- 
- 	if (rs == re)
- 		/* lg %rs,off(%r15) */
-@@ -556,10 +569,12 @@ static void bpf_jit_plt(struct bpf_plt *plt, void *ret, void *target)
-  * Emit function prologue
-  *
-  * Save registers and create stack frame if necessary.
-- * See stack frame layout description in "bpf_jit.h"!
-+ * Stack frame layout is described by struct prog_frame.
-  */
- static void bpf_jit_prologue(struct bpf_jit *jit, struct bpf_prog *fp)
- {
-+	BUILD_BUG_ON(sizeof(struct prog_frame) != STACK_FRAME_OVERHEAD);
-+
- 	/* No-op for hotpatching */
- 	/* brcl 0,prologue_plt */
- 	EMIT6_PCREL_RILC(0xc0040000, 0, jit->prologue_plt);
-@@ -567,8 +582,9 @@ static void bpf_jit_prologue(struct bpf_jit *jit, struct bpf_prog *fp)
- 
- 	if (!bpf_is_subprog(fp)) {
- 		/* Initialize the tail call counter in the main program. */
--		/* xc STK_OFF_TCCNT(4,%r15),STK_OFF_TCCNT(%r15) */
--		_EMIT6(0xd703f000 | STK_OFF_TCCNT, 0xf000 | STK_OFF_TCCNT);
-+		/* xc tail_call_cnt(4,%r15),tail_call_cnt(%r15) */
-+		_EMIT6(0xd703f000 | offsetof(struct prog_frame, tail_call_cnt),
-+		       0xf000 | offsetof(struct prog_frame, tail_call_cnt));
- 	} else {
+@@ -1789,13 +1789,6 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 		jit->seen |= SEEN_FUNC;
  		/*
- 		 * Skip the tail call counter initialization in subprograms.
-@@ -611,13 +627,15 @@ static void bpf_jit_prologue(struct bpf_jit *jit, struct bpf_prog *fp)
- 	if (is_first_pass(jit) || (jit->seen & SEEN_STACK)) {
- 		/* lgr %w1,%r15 (backchain) */
- 		EMIT4(0xb9040000, REG_W1, REG_15);
--		/* la %bfp,STK_160_UNUSED(%r15) (BPF frame pointer) */
--		EMIT4_DISP(0x41000000, BPF_REG_FP, REG_15, STK_160_UNUSED);
-+		/* la %bfp,unused_end(%r15) (BPF frame pointer) */
-+		EMIT4_DISP(0x41000000, BPF_REG_FP, REG_15,
-+			   offsetofend(struct prog_frame, unused));
- 		/* aghi %r15,-frame_off */
- 		EMIT4_IMM(0xa70b0000, REG_15, -jit->frame_off);
--		/* stg %w1,152(%r15) (backchain) */
-+		/* stg %w1,backchain(%r15) */
- 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_W1, REG_0,
--			      REG_15, 152);
-+			      REG_15,
-+			      offsetof(struct prog_frame, backchain));
+ 		 * Copy the tail call counter to where the callee expects it.
+-		 *
+-		 * Note 1: The callee can increment the tail call counter, but
+-		 * we do not load it back, since the x86 JIT does not do this
+-		 * either.
+-		 *
+-		 * Note 2: We assume that the verifier does not let us call the
+-		 * main program, which clears the tail call counter on entry.
+ 		 */
+ 		/* mvc tail_call_cnt(4,%r15),frame_off+tail_call_cnt(%r15) */
+ 		_EMIT6(0xd203f000 | offsetof(struct prog_frame, tail_call_cnt),
+@@ -1822,6 +1815,22 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 		call_r1(jit);
+ 		/* lgr %b0,%r2: load return value into %b0 */
+ 		EMIT4(0xb9040000, BPF_REG_0, REG_2);
++
++		/*
++		 * Copy the potentially updated tail call counter back.
++		 */
++
++		if (insn->src_reg == BPF_PSEUDO_CALL)
++			/*
++			 * mvc frame_off+tail_call_cnt(%r15),
++			 *     tail_call_cnt(4,%r15)
++			 */
++			_EMIT6(0xd203f000 | (jit->frame_off +
++					     offsetof(struct prog_frame,
++						      tail_call_cnt)),
++			       0xf000 | offsetof(struct prog_frame,
++						 tail_call_cnt));
++
+ 		break;
  	}
- }
- 
-@@ -1779,9 +1797,10 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
- 		 * Note 2: We assume that the verifier does not let us call the
- 		 * main program, which clears the tail call counter on entry.
- 		 */
--		/* mvc STK_OFF_TCCNT(4,%r15),frame_off+STK_OFF_TCCNT(%r15) */
--		_EMIT6(0xd203f000 | STK_OFF_TCCNT,
--		       0xf000 | (jit->frame_off + STK_OFF_TCCNT));
-+		/* mvc tail_call_cnt(4,%r15),frame_off+tail_call_cnt(%r15) */
-+		_EMIT6(0xd203f000 | offsetof(struct prog_frame, tail_call_cnt),
-+		       0xf000 | (jit->frame_off +
-+				 offsetof(struct prog_frame, tail_call_cnt)));
- 
- 		/* Sign-extend the kfunc arguments. */
- 		if (insn->src_reg == BPF_PSEUDO_KFUNC_CALL) {
-@@ -1832,7 +1851,8 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
- 		 *         goto out;
- 		 */
- 
--		off = jit->frame_off + STK_OFF_TCCNT;
-+		off = jit->frame_off +
-+		      offsetof(struct prog_frame, tail_call_cnt);
- 		/* lhi %w0,1 */
- 		EMIT4_IMM(0xa7080000, REG_W0, 1);
- 		/* laal %w1,%w0,off(%r15) */
-@@ -2164,7 +2184,9 @@ static int bpf_jit_prog(struct bpf_jit *jit, struct bpf_prog *fp,
- 	jit->prg = 0;
- 	jit->excnt = 0;
- 	if (is_first_pass(jit) || (jit->seen & SEEN_STACK))
--		jit->frame_off = STK_OFF + round_up(fp->aux->stack_depth, 8);
-+		jit->frame_off = sizeof(struct prog_frame) -
-+				 offsetofend(struct prog_frame, unused) +
-+				 round_up(fp->aux->stack_depth, 8);
- 	else
- 		jit->frame_off = 0;
- 
-@@ -2647,9 +2669,10 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
- 	/* stg %r1,backchain_off(%r15) */
- 	EMIT6_DISP_LH(0xe3000000, 0x0024, REG_1, REG_0, REG_15,
- 		      tjit->backchain_off);
--	/* mvc tccnt_off(4,%r15),stack_size+STK_OFF_TCCNT(%r15) */
-+	/* mvc tccnt_off(4,%r15),stack_size+tail_call_cnt(%r15) */
- 	_EMIT6(0xd203f000 | tjit->tccnt_off,
--	       0xf000 | (tjit->stack_size + STK_OFF_TCCNT));
-+	       0xf000 | (tjit->stack_size +
-+			 offsetof(struct prog_frame, tail_call_cnt)));
- 	/* stmg %r2,%rN,fwd_reg_args_off(%r15) */
- 	if (nr_reg_args)
- 		EMIT6_DISP_LH(0xeb000000, 0x0024, REG_2,
-@@ -2786,8 +2809,9 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
- 				       (nr_stack_args * sizeof(u64) - 1) << 16 |
- 				       tjit->stack_args_off,
- 			       0xf000 | tjit->orig_stack_args_off);
--		/* mvc STK_OFF_TCCNT(4,%r15),tccnt_off(%r15) */
--		_EMIT6(0xd203f000 | STK_OFF_TCCNT, 0xf000 | tjit->tccnt_off);
-+		/* mvc tail_call_cnt(4,%r15),tccnt_off(%r15) */
-+		_EMIT6(0xd203f000 | offsetof(struct prog_frame, tail_call_cnt),
-+		       0xf000 | tjit->tccnt_off);
- 		/* lgr %r1,%r8 */
- 		EMIT4(0xb9040000, REG_1, REG_8);
- 		/* %r1() */
-@@ -2844,8 +2868,9 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
- 	if (flags & (BPF_TRAMP_F_CALL_ORIG | BPF_TRAMP_F_RET_FENTRY_RET))
- 		EMIT6_DISP_LH(0xe3000000, 0x0004, REG_2, REG_0, REG_15,
- 			      tjit->retval_off);
--	/* mvc stack_size+STK_OFF_TCCNT(4,%r15),tccnt_off(%r15) */
--	_EMIT6(0xd203f000 | (tjit->stack_size + STK_OFF_TCCNT),
-+	/* mvc stack_size+tail_call_cnt(4,%r15),tccnt_off(%r15) */
-+	_EMIT6(0xd203f000 | (tjit->stack_size +
-+			     offsetof(struct prog_frame, tail_call_cnt)),
- 	       0xf000 | tjit->tccnt_off);
- 	/* aghi %r15,stack_size */
- 	EMIT4_IMM(0xa70b0000, REG_15, tjit->stack_size);
+ 	case BPF_JMP | BPF_TAIL_CALL: {
 -- 
 2.51.0
 
