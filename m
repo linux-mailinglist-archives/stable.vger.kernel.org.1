@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFEDBE9EE5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5296BBE9DBD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B77B6E6E6A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1B8618914B1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0DB25B1DA;
-	Fri, 17 Oct 2025 15:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7392DAFD8;
+	Fri, 17 Oct 2025 15:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wn3m5McH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeCRxkHv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC29B337118;
-	Fri, 17 Oct 2025 15:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB4D2745E;
+	Fri, 17 Oct 2025 15:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714043; cv=none; b=u9jYijFYRSyd9x7u1t3f0sgC+/aesUHSA307km3RLilt8LVLkkQ1neEFcXovKzt0FaybWCws7Uge4KlUUtgD0kBadk0OAyySzCwsHpllB+JMY8+yaHNPQLnpnliKE32Y92cy7qgQsA189+WcQLfcKzDzk4ForlF9D4D3yG7rcxE=
+	t=1760714833; cv=none; b=aRyc96hbB8/Huab6u9EchBSKCKP79mxL8XlIJ8uMXteZscGRhre3V4VKRuoPblW/9ticlVQwdM64ajM7xhskzOt8C4zjup/IyN96NgGA7sVs7QUdPs9J1qcH7isDpz0HeZB65hLxkyJlffyGMj2nJeSKvB1U5ak6ccxBBCgSPlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714043; c=relaxed/simple;
-	bh=f7oaQo76WgpZqUSYWr1UQsE7xqc/JxuQgxVvCbEVnIQ=;
+	s=arc-20240116; t=1760714833; c=relaxed/simple;
+	bh=EPc0ZpYJRTxYexr2ZL7eU3Y+ZScFXlgiDf/AY5kss14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDU+7VKaVyrCNKmr1HOFh4Bq4BF7Fc63heodncYj404uShbBBoeeq9MnVUMbmgUxn4+6Osch/lFTPhd6sUnmpVUf/93r/ddlyeQLDeKrPOw929HU6/xdDDv2uk5/zVl2X/uPv6NYD2/uQ27wIyCBFCWAUwwnUC9y9fBX7kEuH/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wn3m5McH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B8BC4CEE7;
-	Fri, 17 Oct 2025 15:14:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mzHVTfcgdGvb8MUXrqxvzZ8We6fQmXcWFoyVV4GnmgVEP0EQR5RH40o2N9K3oNwPIneWAifzHR4r/fWGdsES+kc42NBEOcs7KFtcpGCkuXI1G/a1ORU5heOSB9aM1fbtPoeZt+przEsMYluu6CjStqo666JZoC79SfVNfZPlX4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeCRxkHv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC61C4CEE7;
+	Fri, 17 Oct 2025 15:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714042;
-	bh=f7oaQo76WgpZqUSYWr1UQsE7xqc/JxuQgxVvCbEVnIQ=;
+	s=korg; t=1760714833;
+	bh=EPc0ZpYJRTxYexr2ZL7eU3Y+ZScFXlgiDf/AY5kss14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wn3m5McHTx1MZ6cq+NiTnL2oFMpRgJFeLkIqLl4cMQ+4Nm4gg7i1bCbUaCcEFkVju
-	 oNLEPDjVENtYoTPH/NZTEXN01rkEAnDn4xq9RWKLrZrgBo2pRPLhiXnOAsUvQVY7vB
-	 XOgiQG6k5qGlyahpBJjUVmcX3rAx/w9mg0ApXdNA=
+	b=WeCRxkHvZMcL4/WVQraghffXapBTfP3X9g/juuXrxy4n/+FwSnL0xDBo0U8LWgeJ9
+	 zRxm4WN3W69Tnq1a5BitQUyBSas9WlNm2R6LO9DVWrmUJ0FO8soTrijQUBsY2SCJye
+	 JC1kGjlmgTMoCLfGYzS6DZmmxXjlnZIqBETvE3/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Christian Brauner <brauner@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/201] minixfs: Verify inode mode when loading from disk
-Date: Fri, 17 Oct 2025 16:54:15 +0200
-Message-ID: <20251017145141.887729117@linuxfoundation.org>
+Subject: [PATCH 6.12 249/277] ACPI: battery: initialize mutexes through devm_ APIs
+Date: Fri, 17 Oct 2025 16:54:16 +0200
+Message-ID: <20251017145156.242602725@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 73861970938ad1323eb02bbbc87f6fbd1e5bacca ]
+[ Upstream commit 0710c1ce50455ed0db91bffa0eebbaa4f69b1773 ]
 
-The inode mode loaded from corrupted disk can be invalid. Do like what
-commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
-does.
+Simplify the cleanup logic a bit.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/ec982681-84b8-4624-94fa-8af15b77cbd2@I-love.SAKURA.ne.jp
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20240904-acpi-battery-cleanups-v1-3-a3bf74f22d40@weissschuh.net
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 399dbcadc01e ("ACPI: battery: Add synchronization between interface updates")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/minix/inode.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/acpi/battery.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/fs/minix/inode.c b/fs/minix/inode.c
-index df575473c1cc0..ee8a6fe360e72 100644
---- a/fs/minix/inode.c
-+++ b/fs/minix/inode.c
-@@ -470,8 +470,14 @@ void minix_set_inode(struct inode *inode, dev_t rdev)
- 		inode->i_op = &minix_symlink_inode_operations;
- 		inode_nohighmem(inode);
- 		inode->i_mapping->a_ops = &minix_aops;
--	} else
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		init_special_inode(inode, inode->i_mode, rdev);
-+	} else {
-+		printk(KERN_DEBUG "MINIX-fs: Invalid file type 0%04o for inode %lu.\n",
-+		       inode->i_mode, inode->i_ino);
-+		make_bad_inode(inode);
-+	}
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -1225,8 +1225,8 @@ static int acpi_battery_add(struct acpi_
+ 	strscpy(acpi_device_name(device), ACPI_BATTERY_DEVICE_NAME);
+ 	strscpy(acpi_device_class(device), ACPI_BATTERY_CLASS);
+ 	device->driver_data = battery;
+-	mutex_init(&battery->lock);
+-	mutex_init(&battery->sysfs_lock);
++	devm_mutex_init(&device->dev, &battery->lock);
++	devm_mutex_init(&device->dev, &battery->sysfs_lock);
+ 	if (acpi_has_method(battery->device->handle, "_BIX"))
+ 		set_bit(ACPI_BATTERY_XINFO_PRESENT, &battery->flags);
+ 
+@@ -1254,8 +1254,6 @@ fail_pm:
+ 	unregister_pm_notifier(&battery->pm_nb);
+ fail:
+ 	sysfs_remove_battery(battery);
+-	mutex_destroy(&battery->lock);
+-	mutex_destroy(&battery->sysfs_lock);
+ 
+ 	return result;
+ }
+@@ -1275,9 +1273,6 @@ static void acpi_battery_remove(struct a
+ 	device_init_wakeup(&device->dev, 0);
+ 	unregister_pm_notifier(&battery->pm_nb);
+ 	sysfs_remove_battery(battery);
+-
+-	mutex_destroy(&battery->lock);
+-	mutex_destroy(&battery->sysfs_lock);
  }
  
- /*
--- 
-2.51.0
-
+ #ifdef CONFIG_PM_SLEEP
 
 
 
