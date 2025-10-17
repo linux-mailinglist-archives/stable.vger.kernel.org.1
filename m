@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77A4BE95F6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7792CBE97E4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:08:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5FDBE4E6274
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7E7C1A67D28
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFEA45C0B;
-	Fri, 17 Oct 2025 14:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6BF32E121;
+	Fri, 17 Oct 2025 15:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ywe6w+2h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ns0pfFtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674D8337117;
-	Fri, 17 Oct 2025 14:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2251F337110;
+	Fri, 17 Oct 2025 15:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713017; cv=none; b=SpgTL7/IFANs5sNTxR1ZPKeEY0ywrDpXLXTKE46UQfF9NT85Xi+VN9xdVM9hO/qfasxA+z9veY9KC4R9K8h7K08dRT9fjSrncVH6S7TuEEWw5nR4SQDNrjFtQmary7wFfJQc4OpKRB79/RFrPR2f2f3tBitkKRcjFC4ZEsyKil8=
+	t=1760713512; cv=none; b=aUDI1BsEE4/+aF9uQSohUaBw7PySNPHG4vklLD1Fb6aJW2H4Pr/3dLPp3ci1GXGs7hqdkGYKFGMFk4P3xgUL5HHJR2hOCSXKCbkaPtXxYExmk9O8psG2BqaYbauwUiJGkYac/tp/rGHScGZSvGHRQaQ5OaUhS/UFibZ0cJ2zTTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713017; c=relaxed/simple;
-	bh=+OWJRoDtwYuF1nxhauEPqh0WNNzCasibDT5TWC44oaE=;
+	s=arc-20240116; t=1760713512; c=relaxed/simple;
+	bh=76XB8R0TCs8+lWlpfEavYdKn75mxS58H8MIC/XGIxwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abZhYxjWhOEmnvTzVxRk0Uj1bgyXKua3XEegrr05JJV1HEr9zSC2O0wV12qgWf/qkBjeP1L4fqhirIRYchdm6w46/iV7hJCUkkfNGedecefhSZ7kdarZ9hWdT+SbsVMlejY9q1U4Tz/7z5vGK5HGeFYn2v4s0dJ38Bp2SnlIkkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ywe6w+2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77441C4CEE7;
-	Fri, 17 Oct 2025 14:56:56 +0000 (UTC)
+	 MIME-Version; b=CYV/TAq5G4EcfTG6kzropO+MOu28B0fOZE+sBrg4ufgL4wZ1FsIqb4IJtMX+BPaqbVuoDyVR9B3RTLVbs+Ot+AgaRasJ8m97kFKSOj6IeP4GFYFbzPu6syUdiJ1CV3WhWjewSjSK256TQr+BP1OlqUhRHMjKF1oMTakhbt2NVMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ns0pfFtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E15CC4CEE7;
+	Fri, 17 Oct 2025 15:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713017;
-	bh=+OWJRoDtwYuF1nxhauEPqh0WNNzCasibDT5TWC44oaE=;
+	s=korg; t=1760713511;
+	bh=76XB8R0TCs8+lWlpfEavYdKn75mxS58H8MIC/XGIxwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ywe6w+2h1Xw5deeX+anQR87GCwxhkMn3EknUcFaU+HxCpQtMJj/el9cu56nLtWhTn
-	 c9/5DfzLkubsFDhrRnwT9AYFiHYb7oTeftmgagPK2smm3WktGAQE06kiOrfWkLhu7f
-	 8TZtKzAtAwgXb2r+SBBhaXg9CTYjJcP9pcDA1Mbk=
+	b=Ns0pfFtDE92sdigcEkIKB7FP30s/O6PXo8CVScQpdecKRrNyQaQLLND1dCvFR3yDE
+	 owCpBA/UZ8MU/6PLAg3zGbCYK1Ka+3IFjPML218HRnSxJUVf2NRBIoSNR7/GJkQZTS
+	 a7EYRtGY4NM4Wl/ymlLrpAorDl12Je4kugV9aod8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 005/168] media: v4l2-subdev: Fix alloc failure check in v4l2_subdev_call_state_try()
+	Brian Masney <bmasney@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 023/201] clk: nxp: lpc18xx-cgu: convert from round_rate() to determine_rate()
 Date: Fri, 17 Oct 2025 16:51:24 +0200
-Message-ID: <20251017145129.207517879@linuxfoundation.org>
+Message-ID: <20251017145135.596310378@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Brian Masney <bmasney@redhat.com>
 
-commit f37df9a0eb5e43fcfe02cbaef076123dc0d79c7e upstream.
+[ Upstream commit b46a3d323a5b7942e65025254c13801d0f475f02 ]
 
-v4l2_subdev_call_state_try() macro allocates a subdev state with
-__v4l2_subdev_state_alloc(), but does not check the returned value. If
-__v4l2_subdev_state_alloc fails, it returns an ERR_PTR, and that would
-cause v4l2_subdev_call_state_try() to crash.
+The round_rate() clk ops is deprecated, so migrate this driver from
+round_rate() to determine_rate() using the Coccinelle semantic patch
+on the cover letter of this series.
 
-Add proper error handling to v4l2_subdev_call_state_try().
-
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Fixes: 982c0487185b ("media: subdev: Add v4l2_subdev_call_state_try() macro")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/aJTNtpDUbTz7eyJc%40stanley.mountain/
-Cc: stable@vger.kernel.org
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Stable-dep-of: 1624dead9a4d ("clk: nxp: Fix pll0 rate check condition in LPC18xx CGU driver")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/media/v4l2-subdev.h |   30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ drivers/clk/nxp/clk-lpc18xx-cgu.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/include/media/v4l2-subdev.h
-+++ b/include/media/v4l2-subdev.h
-@@ -1462,19 +1462,23 @@ extern const struct v4l2_subdev_ops v4l2
-  *
-  * Note: only legacy non-MC drivers may need this macro.
-  */
--#define v4l2_subdev_call_state_try(sd, o, f, args...)                 \
--	({                                                            \
--		int __result;                                         \
--		static struct lock_class_key __key;                   \
--		const char *name = KBUILD_BASENAME                    \
--			":" __stringify(__LINE__) ":state->lock";     \
--		struct v4l2_subdev_state *state =                     \
--			__v4l2_subdev_state_alloc(sd, name, &__key);  \
--		v4l2_subdev_lock_state(state);                        \
--		__result = v4l2_subdev_call(sd, o, f, state, ##args); \
--		v4l2_subdev_unlock_state(state);                      \
--		__v4l2_subdev_state_free(state);                      \
--		__result;                                             \
-+#define v4l2_subdev_call_state_try(sd, o, f, args...)                         \
-+	({                                                                    \
-+		int __result;                                                 \
-+		static struct lock_class_key __key;                           \
-+		const char *name = KBUILD_BASENAME                            \
-+			":" __stringify(__LINE__) ":state->lock";             \
-+		struct v4l2_subdev_state *state =                             \
-+			__v4l2_subdev_state_alloc(sd, name, &__key);          \
-+		if (IS_ERR(state)) {                                          \
-+			__result = PTR_ERR(state);                            \
-+		} else {                                                      \
-+			v4l2_subdev_lock_state(state);                        \
-+			__result = v4l2_subdev_call(sd, o, f, state, ##args); \
-+			v4l2_subdev_unlock_state(state);                      \
-+			__v4l2_subdev_state_free(state);                      \
-+		}                                                             \
-+		__result;                                                     \
- 	})
+diff --git a/drivers/clk/nxp/clk-lpc18xx-cgu.c b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+index 69ebf65081b81..821155f79b015 100644
+--- a/drivers/clk/nxp/clk-lpc18xx-cgu.c
++++ b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+@@ -371,23 +371,25 @@ static unsigned long lpc18xx_pll0_recalc_rate(struct clk_hw *hw,
+ 	return 0;
+ }
  
- /**
+-static long lpc18xx_pll0_round_rate(struct clk_hw *hw, unsigned long rate,
+-				    unsigned long *prate)
++static int lpc18xx_pll0_determine_rate(struct clk_hw *hw,
++				       struct clk_rate_request *req)
+ {
+ 	unsigned long m;
+ 
+-	if (*prate < rate) {
++	if (req->best_parent_rate < req->rate) {
+ 		pr_warn("%s: pll dividers not supported\n", __func__);
+ 		return -EINVAL;
+ 	}
+ 
+-	m = DIV_ROUND_UP_ULL(*prate, rate * 2);
++	m = DIV_ROUND_UP_ULL(req->best_parent_rate, req->rate * 2);
+ 	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
+-		pr_warn("%s: unable to support rate %lu\n", __func__, rate);
++		pr_warn("%s: unable to support rate %lu\n", __func__, req->rate);
+ 		return -EINVAL;
+ 	}
+ 
+-	return 2 * *prate * m;
++	req->rate = 2 * req->best_parent_rate * m;
++
++	return 0;
+ }
+ 
+ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
+@@ -444,7 +446,7 @@ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
+ 
+ static const struct clk_ops lpc18xx_pll0_ops = {
+ 	.recalc_rate	= lpc18xx_pll0_recalc_rate,
+-	.round_rate	= lpc18xx_pll0_round_rate,
++	.determine_rate = lpc18xx_pll0_determine_rate,
+ 	.set_rate	= lpc18xx_pll0_set_rate,
+ };
+ 
+-- 
+2.51.0
+
 
 
 
