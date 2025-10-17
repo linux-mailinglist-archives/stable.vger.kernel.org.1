@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-187447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F85BEA40A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF683BE970F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE5BE1A606D4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3F555562925
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AA4330B3A;
-	Fri, 17 Oct 2025 15:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B57432C94C;
+	Fri, 17 Oct 2025 15:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1feZ3om"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhUbgmZj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E68A257437;
-	Fri, 17 Oct 2025 15:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F248032C947;
+	Fri, 17 Oct 2025 15:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716098; cv=none; b=eZr96WcEHV4YdptJGO5iPIdy/m5KgoSwAqRFwDPrDMkmzSsknD8zAz3/Rysz87isCoL0RVrGgKJdpePwLOgzbQJsmDYbhScszBvpzqAKgGaz58a2Abg5KHXfV2LNle1lF2Dzr9HuX/t9nj3i93KZ8VMKgFZ3cg5sERw0b8RGK9A=
+	t=1760713212; cv=none; b=TfbAg3Luh8LTGwPtI/MLeVknBMFhwZb1XI7z7Kunzmb7whuxcX2R8cZ1n8c+3fWGeYyTs/IkxFsCuRYFbvlcXW9FbC6QWRWzfQgerHYP0id7KrZXTpsnFr6IC02CJlWCa+AVUsziuJx4WKTnaZkv+1fAVlDZ6UqBiJw+CjupudM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716098; c=relaxed/simple;
-	bh=iERE1/Jb2HJn4+EENqyhvOBZ9nwmQjC9I6rgC6hLOFo=;
+	s=arc-20240116; t=1760713212; c=relaxed/simple;
+	bh=tFPAXpamyVNeYeiuId5mFXOBw+P2Ske5PAuMPQGUl9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxBPSIU/GzwFN+VBnPwGiptnuycYcAyTfRKfMU7rhx8Zk7yeuaDakDVXE141WtrPcQZJsfS2TGZ+e6nTrFEeZE7UYnhJRfxlB77aw02xwh01RDorsV+ai7G7U9G+2LIgvhszlzmgvpJcWQ9TJVAL1i7RwlAWni+sYjQmFtY4n30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1feZ3om; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD95C113D0;
-	Fri, 17 Oct 2025 15:48:17 +0000 (UTC)
+	 MIME-Version; b=N5Ty+403Ai0Vh+o+YTdDgBDY8v6ogBUAI3WzdislpZgYoETB7C7RDMZZn4VcPKwqangJuKXwDOP89CCzFkjG0hZM8bPk5bY/QqhbjhUIw9fu8NGHLFEAKNDUey7xCxjJYr3AZVu6wMBLqG//ExAW839EKVy/4ZzhM0XdMk9zb8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhUbgmZj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7512FC4CEE7;
+	Fri, 17 Oct 2025 15:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716097;
-	bh=iERE1/Jb2HJn4+EENqyhvOBZ9nwmQjC9I6rgC6hLOFo=;
+	s=korg; t=1760713211;
+	bh=tFPAXpamyVNeYeiuId5mFXOBw+P2Ske5PAuMPQGUl9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1feZ3omm6dq33wMVrFJ+CGhUXpflEC6L7TDI6X2QcC0b6j04kW32NiXtJt3xA+8H
-	 /5zCMjBwFIOh2c625qU5a+tmpUZ9NwGn7n2M6ywXL+u04E6oLdREpO7oHHoqG51vRe
-	 5hF8w1kYshGMkkdSAJdRaCHo4+K7LbYsgMiz7k1o=
+	b=bhUbgmZjfR0EfKjMJperYUT4Arw6cnz0GFRZemJzrlXFlkZpmaMQAYutLdS7O1Lqe
+	 qF+OpHKYuhVryWSbUH2MCk4Gsv9GBj8uncZnD6JXDhXOcdoHtlBkcrhsuoyXCsW4oH
+	 BGidhFOtgRy/dZPQ/lQTEZG3CkFlAIjGcmDogn8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/276] fs: ntfs3: Fix integer overflow in run_unpack()
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 085/168] kernel/sys.c: fix the racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths
 Date: Fri, 17 Oct 2025 16:52:44 +0200
-Message-ID: <20251017145145.078427558@linuxfoundation.org>
+Message-ID: <20251017145132.156987307@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 736fc7bf5f68f6b74a0925b7e072c571838657d2 ]
+commit a15f37a40145c986cdf289a4b88390f35efdecc4 upstream.
 
-The MFT record relative to the file being opened contains its runlist,
-an array containing information about the file's location on the physical
-disk. Analysis of all Call Stack paths showed that the values of the
-runlist array, from which LCNs are calculated, are not validated before
-run_unpack function.
+The usage of task_lock(tsk->group_leader) in sys_prlimit64()->do_prlimit()
+path is very broken.
 
-The run_unpack function decodes the compressed runlist data format
-from MFT attributes (for example, $DATA), converting them into a runs_tree
-structure, which describes the mapping of virtual clusters (VCN) to
-logical clusters (LCN). The NTFS3 subsystem also has a shortcut for
-deleting files from MFT records - in this case, the RUN_DEALLOCATE
-command is sent to the run_unpack input, and the function logic
-provides that all data transferred to the runlist about file or
-directory is deleted without creating a runs_tree structure.
+sys_prlimit64() does get_task_struct(tsk) but this only protects task_struct
+itself. If tsk != current and tsk is not a leader, this process can exit/exec
+and task_lock(tsk->group_leader) may use the already freed task_struct.
 
-Substituting the runlist in the $DATA attribute of the MFT record for an
-arbitrary file can lead either to access to arbitrary data on the disk
-bypassing access checks to them (since the inode access check
-occurs above) or to destruction of arbitrary data on the disk.
+Another problem is that sys_prlimit64() can race with mt-exec which changes
+->group_leader. In this case do_prlimit() may take the wrong lock, or (worse)
+->group_leader may change between task_lock() and task_unlock().
 
-Add overflow check for addition operation.
+Change sys_prlimit64() to take tasklist_lock when necessary. This is not
+nice, but I don't see a better fix for -stable.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Vitaly Grigoryev <Vitaly.Grigoryev@kaspersky.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250915120917.GA27702@redhat.com
+Fixes: 18c91bb2d872 ("prlimit: do not grab the tasklist_lock")
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/run.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ kernel/sys.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/run.c b/fs/ntfs3/run.c
-index 6940ee5432ba3..52ce16218b299 100644
---- a/fs/ntfs3/run.c
-+++ b/fs/ntfs3/run.c
-@@ -9,6 +9,7 @@
- #include <linux/blkdev.h>
- #include <linux/fs.h>
- #include <linux/log2.h>
-+#include <linux/overflow.h>
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -1682,6 +1682,7 @@ SYSCALL_DEFINE4(prlimit64, pid_t, pid, u
+ 	struct rlimit old, new;
+ 	struct task_struct *tsk;
+ 	unsigned int checkflags = 0;
++	bool need_tasklist;
+ 	int ret;
  
- #include "debug.h"
- #include "ntfs.h"
-@@ -935,12 +936,16 @@ int run_unpack(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
+ 	if (old_rlim)
+@@ -1708,8 +1709,25 @@ SYSCALL_DEFINE4(prlimit64, pid_t, pid, u
+ 	get_task_struct(tsk);
+ 	rcu_read_unlock();
  
- 			if (!dlcn)
- 				return -EINVAL;
--			lcn = prev_lcn + dlcn;
+-	ret = do_prlimit(tsk, resource, new_rlim ? &new : NULL,
+-			old_rlim ? &old : NULL);
++	need_tasklist = !same_thread_group(tsk, current);
++	if (need_tasklist) {
++		/*
++		 * Ensure we can't race with group exit or de_thread(),
++		 * so tsk->group_leader can't be freed or changed until
++		 * read_unlock(tasklist_lock) below.
++		 */
++		read_lock(&tasklist_lock);
++		if (!pid_alive(tsk))
++			ret = -ESRCH;
++	}
 +
-+			if (check_add_overflow(prev_lcn, dlcn, &lcn))
-+				return -EINVAL;
- 			prev_lcn = lcn;
- 		} else
- 			return -EINVAL;
- 
--		next_vcn = vcn64 + len;
-+		if (check_add_overflow(vcn64, len, &next_vcn))
-+			return -EINVAL;
++	if (!ret) {
++		ret = do_prlimit(tsk, resource, new_rlim ? &new : NULL,
++				old_rlim ? &old : NULL);
++	}
 +
- 		/* Check boundary. */
- 		if (next_vcn > evcn + 1)
- 			return -EINVAL;
-@@ -1101,7 +1106,8 @@ int run_get_highest_vcn(CLST vcn, const u8 *run_buf, u64 *highest_vcn)
- 			return -EINVAL;
++	if (need_tasklist)
++		read_unlock(&tasklist_lock);
  
- 		run_buf += size_size + offset_size;
--		vcn64 += len;
-+		if (check_add_overflow(vcn64, len, &vcn64))
-+			return -EINVAL;
- 
- #ifndef CONFIG_NTFS3_64BIT_CLUSTER
- 		if (vcn64 > 0x100000000ull)
--- 
-2.51.0
-
+ 	if (!ret && old_rlim) {
+ 		rlim_to_rlim64(&old, &old64);
 
 
 
