@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C0ABEA5FD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:00:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8552DBE9CB4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 976E2581FE2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41D9974831D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369C8330B1C;
-	Fri, 17 Oct 2025 15:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFCB32E12B;
+	Fri, 17 Oct 2025 15:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFNguUM0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kO/1d31g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C99330B06;
-	Fri, 17 Oct 2025 15:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4D732C931;
+	Fri, 17 Oct 2025 15:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716170; cv=none; b=lK0JHfu40MgIwF92Uote1yAM1YPSXpM5T4jT/INA0IwX+bj8ypsIy9Q+7kwx64XwSAS0vW+GkhFfVgsMvi5BSV2gnmMk6qeUtP17MIcBgu4uXvsudJLYbAzrcZnvXGUtkiZV+LsYjmXVPiybEwmb1uZ8bWGh1/0KeFVnY4vMhYM=
+	t=1760713811; cv=none; b=nD40RwJNNDpmDqwF/TFSSaREKYcPzzBxVx4U+1YPDHA0Em8vInvsvK01v88SfrefLbsNy2Fh++K2iNm+tYkJRSs2zb6PHjq18Mwr8/gN4FygG62ipW6hjKZk8/xKVUDk/vSmewLWL/rg7wracJsqGaDDfn78fHJdoPQ2Gfre6wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716170; c=relaxed/simple;
-	bh=oTkmZl95nz+1+FqKAW5uMzhzju4vpOOUkHdaaiodkxs=;
+	s=arc-20240116; t=1760713811; c=relaxed/simple;
+	bh=QEWQq3tH6RaKFAZehKi0pinYMw8u6UF0tNxba3hOEV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hv3VQ82A81UcluqDbSLnFukard4l8aGZRwjdWSqFFtZ/+uK5PF8uGJBAqC1vmVvZP28EI6pWvwyT/ChSyOP/3Zk+WfYZp+eVp4rg4aPNZV0AoJHLTzxUIgHSm6bbJpArWq29Uyh3ta5QZGKJ9xEjY6triGdzjnYnm7B0WE7HeA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFNguUM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4ECC4CEE7;
-	Fri, 17 Oct 2025 15:49:28 +0000 (UTC)
+	 MIME-Version; b=BrTnWd4V90Va027SoXR4edNvVr99EbWAw+2mHDKlEMGceRnjhrV7w+OhIPjONDt5W/HXfaQB2FsmBQEN1YSHgC8m//HYTWJYKNNzsNIPYyuY/1h17f5l1HFDGJu9hRQ+xI8bv7pCAcENXDRgmqBvO7y/5Bx95STvvCEXIDucX+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kO/1d31g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658E9C4CEE7;
+	Fri, 17 Oct 2025 15:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716169;
-	bh=oTkmZl95nz+1+FqKAW5uMzhzju4vpOOUkHdaaiodkxs=;
+	s=korg; t=1760713811;
+	bh=QEWQq3tH6RaKFAZehKi0pinYMw8u6UF0tNxba3hOEV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFNguUM0RjYq5xugEV32finOSRh5voswgoZhk4aVk4CBkMhrpK6W58qxNj/w9YORb
-	 v6A+c13kJ58jRykv3uBJ+Y8Onv/6sz7xedElcVvhqhvJIMSk3Y8MLDuis0O8+gQqSI
-	 1x5tfpCxCjZvRFI4t/C4rFGFpJv901iIYlZkWUtU=
+	b=kO/1d31gCd6HzwbjQy/7pEEI4mZvoPosUUbmW+mXZRueMmVNtxAdHt0QuT9HfZ0ZR
+	 X0b8ZOO0yVYG7qXmQsBaAHiEylW3chcY6xxRayKsSLCSr+UP7whi4Y6EQV/4pIynXj
+	 ENAAc+8twZseWGexHAEiQnkG21QrIiOllS0rz4Lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	Bernard Metzler <bernard.metzler@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/276] RDMA/siw: Always report immediate post SQ errors
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH 6.6 129/201] PCI/AER: Fix missing uevent on recovery when a reset is requested
 Date: Fri, 17 Oct 2025 16:53:10 +0200
-Message-ID: <20251017145146.026002493@linuxfoundation.org>
+Message-ID: <20251017145139.479827212@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernard Metzler <bernard.metzler@linux.dev>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit fdd0fe94d68649322e391c5c27dd9f436b4e955e ]
+commit bbf7d0468d0da71d76cc6ec9bc8a224325d07b6b upstream.
 
-In siw_post_send(), any immediate error encountered during processing of
-the work request list must be reported to the caller, even if previous
-work requests in that list were just accepted and added to the send queue.
+Since commit 7b42d97e99d3 ("PCI/ERR: Always report current recovery
+status for udev") AER uses the result of error_detected() as parameter
+to pci_uevent_ers(). As pci_uevent_ers() however does not handle
+PCI_ERS_RESULT_NEED_RESET this results in a missing uevent for the
+beginning of recovery if drivers request a reset. Fix this by treating
+PCI_ERS_RESULT_NEED_RESET as beginning recovery.
 
-Not reporting those errors confuses the caller, which would wait
-indefinitely for the failing and potentially subsequently aborted work
-requests completion.
-
-This fixes a case where immediate errors were overwritten by subsequent
-code in siw_post_send().
-
-Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
-Link: https://patch.msgid.link/r/20250923144536.103825-1-bernard.metzler@linux.dev
-Suggested-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Bernard Metzler <bernard.metzler@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7b42d97e99d3 ("PCI/ERR: Always report current recovery status for udev")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250807-add_err_uevents-v5-1-adf85b0620b0@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/siw/siw_verbs.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/pci/pci-driver.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
-index 124242e387a59..c83701d04c955 100644
---- a/drivers/infiniband/sw/siw/siw_verbs.c
-+++ b/drivers/infiniband/sw/siw/siw_verbs.c
-@@ -759,7 +759,7 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 	struct siw_wqe *wqe = tx_wqe(qp);
- 
- 	unsigned long flags;
--	int rv = 0;
-+	int rv = 0, imm_err = 0;
- 
- 	if (wr && !rdma_is_kernel_res(&qp->base_qp.res)) {
- 		siw_dbg_qp(qp, "wr must be empty for user mapped sq\n");
-@@ -945,9 +945,17 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 	 * Send directly if SQ processing is not in progress.
- 	 * Eventual immediate errors (rv < 0) do not affect the involved
- 	 * RI resources (Verbs, 8.3.1) and thus do not prevent from SQ
--	 * processing, if new work is already pending. But rv must be passed
--	 * to caller.
-+	 * processing, if new work is already pending. But rv and pointer
-+	 * to failed work request must be passed to caller.
- 	 */
-+	if (unlikely(rv < 0)) {
-+		/*
-+		 * Immediate error
-+		 */
-+		siw_dbg_qp(qp, "Immediate error %d\n", rv);
-+		imm_err = rv;
-+		*bad_wr = wr;
-+	}
- 	if (wqe->wr_status != SIW_WR_IDLE) {
- 		spin_unlock_irqrestore(&qp->sq_lock, flags);
- 		goto skip_direct_sending;
-@@ -972,15 +980,10 @@ int siw_post_send(struct ib_qp *base_qp, const struct ib_send_wr *wr,
- 
- 	up_read(&qp->state_lock);
- 
--	if (rv >= 0)
--		return 0;
--	/*
--	 * Immediate error
--	 */
--	siw_dbg_qp(qp, "error %d\n", rv);
-+	if (unlikely(imm_err))
-+		return imm_err;
- 
--	*bad_wr = wr;
--	return rv;
-+	return (rv >= 0) ? 0 : rv;
- }
- 
- /*
--- 
-2.51.0
-
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -1612,6 +1612,7 @@ void pci_uevent_ers(struct pci_dev *pdev
+ 	switch (err_type) {
+ 	case PCI_ERS_RESULT_NONE:
+ 	case PCI_ERS_RESULT_CAN_RECOVER:
++	case PCI_ERS_RESULT_NEED_RESET:
+ 		envp[idx++] = "ERROR_EVENT=BEGIN_RECOVERY";
+ 		envp[idx++] = "DEVICE_ONLINE=0";
+ 		break;
 
 
 
