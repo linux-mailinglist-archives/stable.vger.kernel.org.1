@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-186346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77958BE9548
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:51:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F0DBE9572
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 231CC35BE23
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:51:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F77E188BE4B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176F4337114;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5484337118;
 	Fri, 17 Oct 2025 14:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+GXsLho"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G9YnrywQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC00D3370F7
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 14:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9549D3370FC
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 14:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760712546; cv=none; b=qZmTpBwi6GoctoqorLZFtuAU1lA/UdtnxbiLR2GH2+abitaKsUZb9zJ7nxIBTdXiB6IgswlanH4OrT6jr0yzOMMQJatbrTaKIdjAowqe8UlyMQg0hoLDuC8ublXcqCD6MXUWk9SGVblPnKXuoix7oJY5gnOHm6JBxfXbzw9zG+c=
+	t=1760712547; cv=none; b=UzrVq5rtnTRb63e2278F0ipax3UYJOyCZlymLueAVo22V8pNlsEMGUw9cb7KpfQ8b2CJ07RSbIE063pz2tx0TyrW5B7AsSHWzbAMHoLsCB5qCGai657lae6C4MOH1SQteeyRou3v5ZujdZ/r46gdnbpGYI9b4mo74upsgKx6uRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760712546; c=relaxed/simple;
-	bh=lxsVBPBK5V5pV/MIPH6K+Hht2y7s1aoX2EouEfpfoTc=;
+	s=arc-20240116; t=1760712547; c=relaxed/simple;
+	bh=owJEC+KXxcYs9fftef0a8EHfJzTn13Nt37Dd44MP+AQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9pu131Ktgf/wQJKuWoBb38VrbuNwUCCmpA3vA5sXAi/TVPZ5BNn3tfojbxYQjWE8LE1chZ07IWw8yjzqlJ5CV3rPuSd4iphHiAsC0+k6agvrbZ5WcObixCwhPX2RZiqVciJFNxYDMYzB0/3FI+JtpcxuLfX1ee1bAGOCCEWf+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+GXsLho; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DAEC4CEF9;
-	Fri, 17 Oct 2025 14:49:05 +0000 (UTC)
+	 MIME-Version; b=UKthmPMwfi0Esp6mMUuXtTWMe5lDFW9EDgMiX7r+KCihQLlA2vt5LF5XOWCy1pYVSjHvLRVulQfiRRBNY3HU/PRxz8aBwyjm7IBgpVj43BKHCDdhFMHisp7KgcInO4m2DDnmM4ISHK4zczCjn19l2rcMqyPgYPcCGILXjpdCHbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G9YnrywQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E74C113D0;
+	Fri, 17 Oct 2025 14:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760712546;
-	bh=lxsVBPBK5V5pV/MIPH6K+Hht2y7s1aoX2EouEfpfoTc=;
+	s=k20201202; t=1760712547;
+	bh=owJEC+KXxcYs9fftef0a8EHfJzTn13Nt37Dd44MP+AQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+GXsLhoJ1LgP9qaGSQ4annXPWgDUfZ0N01JJK1ZiaoFyodhOHz/eNm5lv55zQ3M1
-	 zF2fYi+FLOnls2OJ3JpCe2pbdv5UnfMenPfaRM9EgDlbtwLDoxPlYks9VWncuA1UH5
-	 LpKphz5sW0ZqTHRkTVk2YC4Ohad8R7LQeC+KEhMkY1ylj1F/F1UDtFEpNSxF9rQ1qi
-	 3TG8VBNJB4lrFckOqzIX5so/wV0ZYsHlodrCNk1CxvDPMbPRglMGeNZOZDjalALKNe
-	 AA06MwfSwsWzzSzzQWxTF4rVpwmAc1Nvx5wlLRF4DiLgij9Gg0LmiYbcDgJqDtA1U8
-	 8CCiyKqMAJi1A==
+	b=G9YnrywQ7Ubq0T0zMKii4Ftnv0sTsJ035Hj0I8chFeMp0dLsFnNFloNcxtRIaU1f3
+	 XxKMAQXfkrupK2GGKRm6psNm127HvO3T5V9pxkZLff9zKyThzogAkdytza9iDTdYqK
+	 +WgEq5HKAPyfL0a+4lJ7ExrJxmgHy1jqA+LQeVIsZwWou846yXpehKvEul2Qq2jh28
+	 Pct3h0dCdddeEkuwifmWP4HuFqhhxE3Kl0/fJjs7gHQ8knBThFB+buuUPCTsitYA3c
+	 hwGNwYMnR2Eau+V3xKTkg2LaW32ff0wYjcVpj0ap4J6yHeF2ljOwjYAS+0sH+bkqmG
+	 2YESVln343ftw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 4/5] media: s5p-mfc: constify pointers to s5p_mfc_cmd_args
-Date: Fri, 17 Oct 2025 10:48:59 -0400
-Message-ID: <20251017144900.4007781-4-sashal@kernel.org>
+Subject: [PATCH 6.1.y 5/5] media: s5p-mfc: remove an unused/uninitialized variable
+Date: Fri, 17 Oct 2025 10:49:00 -0400
+Message-ID: <20251017144900.4007781-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017144900.4007781-1-sashal@kernel.org>
 References: <2025101646-overtake-starch-c0ab@gregkh>
@@ -61,63 +61,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 60a2a86fb8277ba2b8d26cd49222e92fea36a196 ]
+[ Upstream commit 7fa37ba25a1dfc084e24ea9acc14bf1fad8af14c ]
 
-In few places functions do not modify pointed "struct
-s5p_mfc_cmd_args", thus the pointer can point to const data for
-additional safety and self-documenting intention of the function.
+The s5p_mfc_cmd_args structure in the v6 driver is never used, not
+initialized to anything other than zero, but as of clang-21 this
+causes a warning:
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: 7fa37ba25a1d ("media: s5p-mfc: remove an unused/uninitialized variable")
+drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:45:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   45 |                                         &h2r_args);
+      |                                          ^~~~~~~~
+
+Just remove this for simplicity. Since the function is also called
+through a callback, this does require adding a trivial wrapper with
+the correct prototype.
+
+Fixes: f96f3cfa0bb8 ("[media] s5p-mfc: Update MFC v4l2 driver to support MFC6.x")
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd.h    | 2 +-
- drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.c | 2 +-
- drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ .../platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c | 35 +++++++------------
+ 1 file changed, 13 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd.h b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd.h
-index 945d12fdceb7d..172c5a63b58ea 100644
---- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd.h
-+++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd.h
-@@ -19,7 +19,7 @@ struct s5p_mfc_cmd_args {
- 
- struct s5p_mfc_hw_cmds {
- 	int (*cmd_host2risc)(struct s5p_mfc_dev *dev, int cmd,
--				struct s5p_mfc_cmd_args *args);
-+			     const struct s5p_mfc_cmd_args *args);
- 	int (*sys_init_cmd)(struct s5p_mfc_dev *dev);
- 	int (*sleep_cmd)(struct s5p_mfc_dev *dev);
- 	int (*wakeup_cmd)(struct s5p_mfc_dev *dev);
-diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.c
-index 1fbf7ed5d4cca..82ee6d300c738 100644
---- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.c
-+++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.c
-@@ -14,7 +14,7 @@
- 
- /* This function is used to send a command to the MFC */
- static int s5p_mfc_cmd_host2risc_v5(struct s5p_mfc_dev *dev, int cmd,
--				struct s5p_mfc_cmd_args *args)
-+				    const struct s5p_mfc_cmd_args *args)
- {
- 	int cur_cmd;
- 	unsigned long timeout;
 diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
-index 740aa4dfae579..47bc3014b5d8b 100644
+index 47bc3014b5d8b..f7c682fca6459 100644
 --- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
 +++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
-@@ -15,7 +15,7 @@
+@@ -14,8 +14,7 @@
+ #include "s5p_mfc_opr.h"
  #include "s5p_mfc_cmd_v6.h"
  
- static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
--				struct s5p_mfc_cmd_args *args)
-+				    const struct s5p_mfc_cmd_args *args)
+-static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
+-				    const struct s5p_mfc_cmd_args *args)
++static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd)
  {
  	mfc_debug(2, "Issue the command: %d\n", cmd);
  
+@@ -31,7 +30,6 @@ static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
+ 
+ static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	const struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
+ 	int ret;
+ 
+@@ -41,33 +39,23 @@ static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
+ 
+ 	mfc_write(dev, dev->ctx_buf.dma, S5P_FIMV_CONTEXT_MEM_ADDR_V6);
+ 	mfc_write(dev, buf_size->dev_ctx, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6);
+ }
+ 
+ static int s5p_mfc_sleep_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6,
+-			&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6);
+ }
+ 
+ static int s5p_mfc_wakeup_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6);
+ }
+ 
+ /* Open a new instance and get its number */
+ static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int codec_type;
+ 
+ 	mfc_debug(2, "Requested codec mode: %d\n", ctx->codec_mode);
+@@ -129,23 +117,20 @@ static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ 	mfc_write(dev, ctx->ctx.size, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+ 	mfc_write(dev, 0, S5P_FIMV_D_CRC_CTRL_V6); /* no crc */
+ 
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6);
+ }
+ 
+ /* Close instance */
+ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int ret = 0;
+ 
+ 	dev->curr_ctx = ctx->num;
+ 	if (ctx->state != MFCINST_FREE) {
+ 		mfc_write(dev, ctx->inst_no, S5P_FIMV_INSTANCE_ID_V6);
+ 		ret = s5p_mfc_cmd_host2risc_v6(dev,
+-					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6,
+-					&h2r_args);
++					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6);
+ 	} else {
+ 		ret = -EINVAL;
+ 	}
+@@ -153,9 +138,15 @@ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ 	return ret;
+ }
+ 
++static int s5p_mfc_cmd_host2risc_v6_args(struct s5p_mfc_dev *dev, int cmd,
++				    const struct s5p_mfc_cmd_args *ignored)
++{
++	return s5p_mfc_cmd_host2risc_v6(dev, cmd);
++}
++
+ /* Initialize cmd function pointers for MFC v6 */
+ static const struct s5p_mfc_hw_cmds s5p_mfc_cmds_v6 = {
+-	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6,
++	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6_args,
+ 	.sys_init_cmd = s5p_mfc_sys_init_cmd_v6,
+ 	.sleep_cmd = s5p_mfc_sleep_cmd_v6,
+ 	.wakeup_cmd = s5p_mfc_wakeup_cmd_v6,
 -- 
 2.51.0
 
