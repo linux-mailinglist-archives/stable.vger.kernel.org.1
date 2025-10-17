@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F492BEA2DE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41FABE9D92
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 863A8583DF5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 143DF1886A5B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF13330B1F;
-	Fri, 17 Oct 2025 15:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960542745E;
+	Fri, 17 Oct 2025 15:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucTXtQ83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Le9gUQq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2108C330B06;
-	Fri, 17 Oct 2025 15:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5188F337110;
+	Fri, 17 Oct 2025 15:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715678; cv=none; b=IxC22YUA67QwLWeFktcK/TdIMm7syGIEmoG2nImVlWawDFJOYlTPTr3iDAEOo4mEcjdv56ffkEkOjqfyQ58qF1zhkvZm7qlQpPqr9iswoi0DsV7R377t2QKNTa5hvuAAzXNsEq9MO3xIKF5h1MBLB0gOpjxjvq9aEXNS+fJ/72M=
+	t=1760714791; cv=none; b=OxS6OpPKtHWrj0z3NKiJI3o6Imj1MCivrUVqonod9mxt9+1UX1nTDaWq/BKHYTsARW7jafuliE5osi0o9MENLBwvZelw6+1PuR23TcqjqYRw/0Ih00ONoD/DBBOhgRuHBB1kStfZpFSO9F+I3hEPOQb9k5opdVIE+XTM3JTVPw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715678; c=relaxed/simple;
-	bh=gm3asZE8nE2joJ8b+a8+KJJcPQLb+Qo9RDE2yoFm6qo=;
+	s=arc-20240116; t=1760714791; c=relaxed/simple;
+	bh=7hGzwisyvJvaN7atvN6Hzrnneu3nG3ZHJAdSzIfmgrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EWzDF2S8qkus+8lelFyIVZaMHdyS23LzKwaw3uhV/GFQ7iqxwr8m1IxgxgeTyXgFDXTj+CaJ0sHPusU9c99Kcd3d66iW6j/AoVXsaFf/L3N0AyiR2ZLs3v99Cu8Jjd/8cxNmgp8ipcg+Wop7GpqSvVTkRDviP/3Q5eLooZgw/vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucTXtQ83; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD57C4CEE7;
-	Fri, 17 Oct 2025 15:41:17 +0000 (UTC)
+	 MIME-Version; b=T/+whHwXlGxbzHd4WNaCOJL4vfaUw8QRiL5rdNqBBhJOPJ8SOtPDXVwBakEO3iY9pCkIogIMX7Ca4tsw7+/aa/pglbuq6EuChlHXHj9FRLE0CNg33Y8Q1ToEB+QH/L9ZHJ0TBSB9eLyOB0bQmDAAiXrLvc1kffMKpebYqqkmgUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Le9gUQq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23C7C4CEE7;
+	Fri, 17 Oct 2025 15:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715678;
-	bh=gm3asZE8nE2joJ8b+a8+KJJcPQLb+Qo9RDE2yoFm6qo=;
+	s=korg; t=1760714791;
+	bh=7hGzwisyvJvaN7atvN6Hzrnneu3nG3ZHJAdSzIfmgrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ucTXtQ83iJTw8PRjR3O9HhLAskfzg9kkO0gdUtz3FTJNvpKh4+vC1nVp/lN2fHykV
-	 GJvpPKlulrUwjv9U/VefREx2894bro8gjjvZ3Nj/eE1BWpQRp7ku/ZkUAmI+pWlwgR
-	 +5th4OczlpizlECuEaXZASHudFXB0bx3o/nJ2QtU=
+	b=Le9gUQq41nkltwHYlGGu6Qj5udkmLlgvTtC0E4ygxp6HcS2piXfriTWorqOvEg3tp
+	 1h+anzscqKfHZjtDxEMTZjF6jJkh3qxuWVSzTWv5E4Ql0K8j1953G8eLaCLudl1OSf
+	 QU4o8Loc864hwgr0wdgoDqCyG6vOkm2xrB/YRjfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Xin Li (Intel)" <xin@zytor.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>
-Subject: [PATCH 6.17 298/371] x86/fred: Remove ENDBR64 from FRED entry points
-Date: Fri, 17 Oct 2025 16:54:33 +0200
-Message-ID: <20251017145212.856174683@linuxfoundation.org>
+	gaoxiang17 <gaoxiang17@xiaomi.com>,
+	Baoquan He <bhe@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 267/277] pid: Add a judgment for ns null in pid_nr_ns
+Date: Fri, 17 Oct 2025 16:54:34 +0200
+Message-ID: <20251017145156.910600268@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Li (Intel) <xin@zytor.com>
+From: gaoxiang17 <gaoxiang17@xiaomi.com>
 
-commit 3da01ffe1aeaa0d427ab5235ba735226670a80d9 upstream.
+[ Upstream commit 006568ab4c5ca2309ceb36fa553e390b4aa9c0c7 ]
 
-The FRED specification has been changed in v9.0 to state that there
-is no need for FRED event handlers to begin with ENDBR64, because
-in the presence of supervisor indirect branch tracking, FRED event
-delivery does not enter the WAIT_FOR_ENDBRANCH state.
+__task_pid_nr_ns
+        ns = task_active_pid_ns(current);
+        pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);
+                if (pid && ns->level <= pid->level) {
 
-As a result, remove ENDBR64 from FRED entry points.
+Sometimes null is returned for task_active_pid_ns. Then it will trigger kernel panic in pid_nr_ns.
 
-Then add ANNOTATE_NOENDBR to indicate that FRED entry points will
-never be used for indirect calls to suppress an objtool warning.
+For example:
+	Unable to handle kernel NULL pointer dereference at virtual address 0000000000000058
+	Mem abort info:
+	ESR = 0x0000000096000007
+	EC = 0x25: DABT (current EL), IL = 32 bits
+	SET = 0, FnV = 0
+	EA = 0, S1PTW = 0
+	FSC = 0x07: level 3 translation fault
+	Data abort info:
+	ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
+	CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+	GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+	user pgtable: 4k pages, 39-bit VAs, pgdp=00000002175aa000
+	[0000000000000058] pgd=08000002175ab003, p4d=08000002175ab003, pud=08000002175ab003, pmd=08000002175be003, pte=0000000000000000
+	pstate: 834000c5 (Nzcv daIF +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+	pc : __task_pid_nr_ns+0x74/0xd0
+	lr : __task_pid_nr_ns+0x24/0xd0
+	sp : ffffffc08001bd10
+	x29: ffffffc08001bd10 x28: ffffffd4422b2000 x27: 0000000000000001
+	x26: ffffffd442821168 x25: ffffffd442821000 x24: 00000f89492eab31
+	x23: 00000000000000c0 x22: ffffff806f5693c0 x21: ffffff806f5693c0
+	x20: 0000000000000001 x19: 0000000000000000 x18: 0000000000000000
+	x17: 00000000529c6ef0 x16: 00000000529c6ef0 x15: 00000000023a1adc
+	x14: 0000000000000003 x13: 00000000007ef6d8 x12: 001167c391c78800
+	x11: 00ffffffffffffff x10: 0000000000000000 x9 : 0000000000000001
+	x8 : ffffff80816fa3c0 x7 : 0000000000000000 x6 : 49534d702d535449
+	x5 : ffffffc080c4c2c0 x4 : ffffffd43ee128c8 x3 : ffffffd43ee124dc
+	x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffffff806f5693c0
+	Call trace:
+	__task_pid_nr_ns+0x74/0xd0
+	...
+	__handle_irq_event_percpu+0xd4/0x284
+	handle_irq_event+0x48/0xb0
+	handle_fasteoi_irq+0x160/0x2d8
+	generic_handle_domain_irq+0x44/0x60
+	gic_handle_irq+0x4c/0x114
+	call_on_irq_stack+0x3c/0x74
+	do_interrupt_handler+0x4c/0x84
+	el1_interrupt+0x34/0x58
+	el1h_64_irq_handler+0x18/0x24
+	el1h_64_irq+0x68/0x6c
+	account_kernel_stack+0x60/0x144
+	exit_task_stack_account+0x1c/0x80
+	do_exit+0x7e4/0xaf8
+	...
+	get_signal+0x7bc/0x8d8
+	do_notify_resume+0x128/0x828
+	el0_svc+0x6c/0x70
+	el0t_64_sync_handler+0x68/0xbc
+	el0t_64_sync+0x1a8/0x1ac
+	Code: 35fffe54 911a02a8 f9400108 b4000128 (b9405a69)
+	---[ end trace 0000000000000000 ]---
+	Kernel panic - not syncing: Oops: Fatal exception in interrupt
 
-This change implies that any indirect CALL/JMP to FRED entry points
-causes #CP in the presence of supervisor indirect branch tracking.
-
-Credit goes to Jennifer Miller <jmill@asu.edu> and other contributors
-from Arizona State University whose research shows that placing ENDBR
-at entry points has negative value thus led to this change.
-
-Note: This is obviously an incompatible change to the FRED
-architecture.  But, it's OK because there no FRED systems out in the
-wild today. All production hardware and late pre-production hardware
-will follow the FRED v9 spec and be compatible with this approach.
-
-[ dhansen: add note to changelog about incompatibility ]
-
-Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Link: https://lore.kernel.org/linux-hardening/Z60NwR4w%2F28Z7XUa@ubun/
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250716063320.1337818-1-xin%40zytor.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: gaoxiang17 <gaoxiang17@xiaomi.com>
+Link: https://lore.kernel.org/20250802022123.3536934-1-gxxa03070307@gmail.com
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/entry/entry_64_fred.S |    2 +-
+ kernel/pid.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/entry/entry_64_fred.S
-+++ b/arch/x86/entry/entry_64_fred.S
-@@ -16,7 +16,7 @@
+diff --git a/kernel/pid.c b/kernel/pid.c
+index 2715afb77eab8..b80c3bfb58d07 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -487,7 +487,7 @@ pid_t pid_nr_ns(struct pid *pid, struct pid_namespace *ns)
+ 	struct upid *upid;
+ 	pid_t nr = 0;
  
- .macro FRED_ENTER
- 	UNWIND_HINT_END_OF_STACK
--	ENDBR
-+	ANNOTATE_NOENDBR
- 	PUSH_AND_CLEAR_REGS
- 	movq	%rsp, %rdi	/* %rdi -> pt_regs */
- .endm
+-	if (pid && ns->level <= pid->level) {
++	if (pid && ns && ns->level <= pid->level) {
+ 		upid = &pid->numbers[ns->level];
+ 		if (upid->ns == ns)
+ 			nr = upid->nr;
+-- 
+2.51.0
+
 
 
 
