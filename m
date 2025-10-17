@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-187097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2DFFBEA1D3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:23 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FAC2BE9AB1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81875741956
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2BA0835D6D4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D5732E13C;
-	Fri, 17 Oct 2025 15:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6612745E;
+	Fri, 17 Oct 2025 15:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cI9C46DE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGEW3jWU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D60323EA9E;
-	Fri, 17 Oct 2025 15:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEFA231C9F;
+	Fri, 17 Oct 2025 15:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715110; cv=none; b=B05ubAk3L4VDKu2zZjfZKOBFnuCxQ4CBch7koOPDfr9WYGzyDEeooaLfnBwZhPveDz6bscgoyeG4xyPypM8j1ZJWwsMIApbfXKQnIWkW0FKkgVGojcTq+kzHU9/7HlKvLLxJeWJXb4gUDcGp7Y/nHR8cCfU1lhOvVSN34zFKRtI=
+	t=1760714319; cv=none; b=R0HRJkKT5zkTHClY58gKd/ksL1fU0O/gtCpG9/qgGSkgrbCmp7yBF7HIbYAr+Bb2z6bFG6vyYbascKH6GbLEp4Gwv7fBcg783lrs9L3je3uwhvTfWltO5O7PTklaaKt0WejNXg1yuzutSbRo9pj+hnefdbV3paiHE/7L1eBldK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715110; c=relaxed/simple;
-	bh=yoPgXsbvlUIBu3QnWUMtqxhokOgAUV6VI+4h4UzYF2o=;
+	s=arc-20240116; t=1760714319; c=relaxed/simple;
+	bh=lbKk6LnfqpIPH19BZaIRYZ5klqmBbaD22e+VlOFNb8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZMKbMw4LAtNGX5JWdmqzeylNXsM/roKTtQ1nF1aNJs99Cdk4RipFoKEahYZ7xLhOQMF0iEwHE5halUTIQWIGt4NqeRkeb569gu86LmUkGe9F8tTH+MRzI2GVdkG7VWdIDLH2a8tUlB5wnt3QSajU0ZQrj3wgnicUdRsR17OG54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cI9C46DE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC97C4CEE7;
-	Fri, 17 Oct 2025 15:31:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uOtBoIOgi/zPFwVAgujecYNTxBRSQd95xxUaMjkTKI8uc20gR+/uMHnieH1wJrau2ivcDqj+dYja8s8mhr572o/4iZmi42DuU9JSdcMzSkJdYywzuPOXKwHdVpajxIE+JrSqHF68dppt+3wU52nBbh6y5HkIf5db63Y2GxSxPRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGEW3jWU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC00CC4CEE7;
+	Fri, 17 Oct 2025 15:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715110;
-	bh=yoPgXsbvlUIBu3QnWUMtqxhokOgAUV6VI+4h4UzYF2o=;
+	s=korg; t=1760714319;
+	bh=lbKk6LnfqpIPH19BZaIRYZ5klqmBbaD22e+VlOFNb8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cI9C46DEzccEjoM5XY7dnIKT4CUl5kMWXGlJMCOmdM6KsZF5um9aPAYuQms6GEtZQ
-	 6gDQsOMhlH7SSopWEF0upDkM0nXRTWPTEr8GloiVacuLvo5QDT2Df3ACOCGklnx1bF
-	 eNZpgVSFwlLoqz9A336Tp6ZdIoI8IymAeJNGYQZg=
+	b=mGEW3jWUbVdA6RMGppBxQMCTvdp2LBCPuxvXGarRKCLl/YCvRHhIEDzik/MV/f/rT
+	 hJwl1t/Pou+UqBHoQf6bjui8fdPwQjbhmTYTCDhI6mi124cNF9DOJiMbnD1x3/k3JQ
+	 cRN6SYyUuxc5wDSCxaiBj6zt61hvWyaSUhLvBhcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yusuke Suzuki <yusuke.suzuki@isovalent.com>,
-	Julian Wiedmann <jwi@isovalent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jordan Rife <jrife@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 102/371] bpf: Fix metadata_dst leak __bpf_redirect_neigh_v{4,6}
+Subject: [PATCH 6.12 070/277] drm/amd/display: Add missing DCE6 SCL_HORZ_FILTER_INIT* SRIs
 Date: Fri, 17 Oct 2025 16:51:17 +0200
-Message-ID: <20251017145205.631191487@linuxfoundation.org>
+Message-ID: <20251017145149.697986104@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,68 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 23f3770e1a53e6c7a553135011f547209e141e72 ]
+[ Upstream commit d60f9c45d1bff7e20ecd57492ef7a5e33c94a37c ]
 
-Cilium has a BPF egress gateway feature which forces outgoing K8s Pod
-traffic to pass through dedicated egress gateways which then SNAT the
-traffic in order to interact with stable IPs outside the cluster.
+Without these, it's impossible to program these registers.
 
-The traffic is directed to the gateway via vxlan tunnel in collect md
-mode. A recent BPF change utilized the bpf_redirect_neigh() helper to
-forward packets after the arrival and decap on vxlan, which turned out
-over time that the kmalloc-256 slab usage in kernel was ever-increasing.
-
-The issue was that vxlan allocates the metadata_dst object and attaches
-it through a fake dst entry to the skb. The latter was never released
-though given bpf_redirect_neigh() was merely setting the new dst entry
-via skb_dst_set() without dropping an existing one first.
-
-Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
-Reported-by: Yusuke Suzuki <yusuke.suzuki@isovalent.com>
-Reported-by: Julian Wiedmann <jwi@isovalent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jordan Rife <jrife@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jordan Rife <jrife@google.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20251003073418.291171-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 102b2f587ac8 ("drm/amd/display: dce_transform: DCE6 Scaling Horizontal Filter Init (v2)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 2 ++
+ drivers/gpu/drm/amd/display/dc/dce/dce_transform.h | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 2d326d35c3871..c5cdf3b08341a 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2281,6 +2281,7 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
- 		if (IS_ERR(dst))
- 			goto out_drop;
- 
-+		skb_dst_drop(skb);
- 		skb_dst_set(skb, dst);
- 	} else if (nh->nh_family != AF_INET6) {
- 		goto out_drop;
-@@ -2389,6 +2390,7 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
- 			goto out_drop;
- 		}
- 
-+		skb_dst_drop(skb);
- 		skb_dst_set(skb, &rt->dst);
- 	}
- 
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
+index cbce194ec7b82..ff746fba850bc 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
+@@ -155,6 +155,8 @@
+ 	SRI(SCL_COEF_RAM_TAP_DATA, SCL, id), \
+ 	SRI(VIEWPORT_START, SCL, id), \
+ 	SRI(VIEWPORT_SIZE, SCL, id), \
++	SRI(SCL_HORZ_FILTER_INIT_RGB_LUMA, SCL, id), \
++	SRI(SCL_HORZ_FILTER_INIT_CHROMA, SCL, id), \
+ 	SRI(SCL_HORZ_FILTER_SCALE_RATIO, SCL, id), \
+ 	SRI(SCL_VERT_FILTER_SCALE_RATIO, SCL, id), \
+ 	SRI(SCL_VERT_FILTER_INIT, SCL, id), \
 -- 
 2.51.0
 
