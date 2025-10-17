@@ -1,56 +1,68 @@
-Return-Path: <stable+bounces-186817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A1CBE9FD2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9FABE98C5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76A5B7C2C56
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CA9F9581185
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525582F12A9;
-	Fri, 17 Oct 2025 15:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64B7339711;
+	Fri, 17 Oct 2025 15:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4oDZyiA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NubfD+rb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EAB33370F7;
-	Fri, 17 Oct 2025 15:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAC4336EFB;
+	Fri, 17 Oct 2025 15:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714322; cv=none; b=LBNlRrs/muGhHSIzfCjfJ/86AGEJwtRlzjs8atc2nnyk42p4whowrw+tfXg64mPpGTFp6utVxtqsWPWN1Nc+vdEeuZBmIx4k2erEv6dUfwn4JK5yRm9oQ5y7uFMZPHLb3V7UHtS5hK51X12jNEBwf6tNC1jq5OHTSNS1+bkfJ+8=
+	t=1760713494; cv=none; b=HjeC34B/o3ZUCMtOr5arAf7ECXNDvMhnfCPkafbKzDhwX+XxfUoAALbN05f1yPxjHpSUZLvQxo96T52v7Ko84+58Ti2Xg1finaMUUWSWOtf3qfz+OTSfPcWGUEhEVQxSHHUR9/ZtTQJM69vVIPQXttFhKXwG/ZaPPPa5tUpCB5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714322; c=relaxed/simple;
-	bh=OTWiNS7NCp/NPya3o2EbZSj1oJ6CE3WKEVhCPMrmMKg=;
+	s=arc-20240116; t=1760713494; c=relaxed/simple;
+	bh=/WMDMeoYCqBhqKesin2Sw2hEfs+JSq02kaiOJQAsv1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o4yq7Z6jop2IILHdsaeEV3nDlJpyo3/i6vJ2Zhld8ZWOeZGEyJVFDNVvOMwyd5u+qO/7a3C68qxWNl+nILUtj82K7reUP0uUH0Un3o/V6VMkqVBAwPaBoo1D82uwR4wCbFUI3d90Qejo4GZUWrTV4KKLekw7fXodR2MOzrz14Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4oDZyiA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C92CC4CEE7;
-	Fri, 17 Oct 2025 15:18:41 +0000 (UTC)
+	 MIME-Version; b=GdPBWUNdsrdaFsxOf5RLrj9pb7L8jn5QecHNaKKnXQugicav+pzicr0+oB5JpyAYPxxM3S06rjnnvgK9YCm+UEoC8/KBIx1HEkpTaG0v8GiYN7h2MHwphRQPMW/u+SksGhqJ0btJYOzkxu11DAn5QcCcN06XKYPr3gnnPwQVmoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NubfD+rb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BE7C4CEE7;
+	Fri, 17 Oct 2025 15:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714321;
-	bh=OTWiNS7NCp/NPya3o2EbZSj1oJ6CE3WKEVhCPMrmMKg=;
+	s=korg; t=1760713494;
+	bh=/WMDMeoYCqBhqKesin2Sw2hEfs+JSq02kaiOJQAsv1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4oDZyiAuxFT7nsICfsm/XODkaKzdJVuD1fOeRQ93XYcRMl9yvIOsqjkf4nUGpXpy
-	 J/rxJVAYy0xVNwA9b90W15yBjC1qrMAmCBkeJVZO1nr4Sym5XuuhdyUdtIZ92rU9wh
-	 /k3gxeL4CuE1n8tbZMdv001dU5vHe6us/FeRgqn8=
+	b=NubfD+rbeo2LjWJeZfP4cOYb40sjh0i/2KupEfRx9mnpHvbj+b77FtK1pv5sHjGoA
+	 OxBaq75Ap+aoxKWqKXjNE00juLsHg1XazNv48f4oETF/Xmk/BR7ITNMOHLgS/sdzdk
+	 aVI4es8m6yQYk2Bk0wioheU5wcnCJGK9iswrtwbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.ibm.com>,
+	Chun-Tse Shao <ctshao@google.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/277] drm/amd/display: Properly clear SCL_*_FILTER_CONTROL on DCE6
+Subject: [PATCH 6.6 017/201] perf test: Dont leak workload gopipe in PERF_RECORD_*
 Date: Fri, 17 Oct 2025 16:51:18 +0200
-Message-ID: <20251017145149.734068364@linuxfoundation.org>
+Message-ID: <20251017145135.368414497@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +72,206 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit c0aa7cf49dd6cb302fe28e7183992b772cb7420c ]
+[ Upstream commit 48918cacefd226af44373e914e63304927c0e7dc ]
 
-Previously, the code would set a bit field which didn't exist
-on DCE6 so it would be effectively a no-op.
+The test starts a workload and then opens events. If the events fail
+to open, for example because of perf_event_paranoid, the gopipe of the
+workload is leaked and the file descriptor leak check fails when the
+test exits. To avoid this cancel the workload when opening the events
+fails.
 
-Fixes: b70aaf5586f2 ("drm/amd/display: dce_transform: add DCE6 specific macros,functions")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Before:
+```
+$ perf test -vv 7
+  7: PERF_RECORD_* events & perf_sample fields:
+ --- start ---
+test child forked, pid 1189568
+Using CPUID GenuineIntel-6-B7-1
+ ------------------------------------------------------------
+perf_event_attr:
+  type                    	   0 (PERF_TYPE_HARDWARE)
+  config                  	   0xa00000000 (cpu_atom/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                	   1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8
+sys_perf_event_open failed, error -13
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             0 (PERF_TYPE_HARDWARE)
+  config                           0xa00000000 (cpu_atom/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                         1
+  exclude_kernel                   1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 3
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             0 (PERF_TYPE_HARDWARE)
+  config                           0x400000000 (cpu_core/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                         1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8
+sys_perf_event_open failed, error -13
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             0 (PERF_TYPE_HARDWARE)
+  config                           0x400000000 (cpu_core/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                         1
+  exclude_kernel                   1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 3
+Attempt to add: software/cpu-clock/
+..after resolving event: software/config=0/
+cpu-clock -> software/cpu-clock/
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             1 (PERF_TYPE_SOFTWARE)
+  size                             136
+  config                           0x9 (PERF_COUNT_SW_DUMMY)
+  sample_type                      IP|TID|TIME|CPU
+  read_format                      ID|LOST
+  disabled                         1
+  inherit                          1
+  mmap                             1
+  comm                             1
+  enable_on_exec                   1
+  task                             1
+  sample_id_all                    1
+  mmap2                            1
+  comm_exec                        1
+  ksymbol                          1
+  bpf_event                        1
+  { wakeup_events, wakeup_watermark } 1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 1189569  cpu 0  group_fd -1  flags 0x8
+sys_perf_event_open failed, error -13
+perf_evlist__open: Permission denied
+ ---- end(-2) ----
+Leak of file descriptor 6 that opened: 'pipe:[14200347]'
+ ---- unexpected signal (6) ----
+iFailed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+    #0 0x565358f6666e in child_test_sig_handler builtin-test.c:311
+    #1 0x7f29ce849df0 in __restore_rt libc_sigaction.c:0
+    #2 0x7f29ce89e95c in __pthread_kill_implementation pthread_kill.c:44
+    #3 0x7f29ce849cc2 in raise raise.c:27
+    #4 0x7f29ce8324ac in abort abort.c:81
+    #5 0x565358f662d4 in check_leaks builtin-test.c:226
+    #6 0x565358f6682e in run_test_child builtin-test.c:344
+    #7 0x565358ef7121 in start_command run-command.c:128
+    #8 0x565358f67273 in start_test builtin-test.c:545
+    #9 0x565358f6771d in __cmd_test builtin-test.c:647
+    #10 0x565358f682bd in cmd_test builtin-test.c:849
+    #11 0x565358ee5ded in run_builtin perf.c:349
+    #12 0x565358ee6085 in handle_internal_command perf.c:401
+    #13 0x565358ee61de in run_argv perf.c:448
+    #14 0x565358ee6527 in main perf.c:555
+    #15 0x7f29ce833ca8 in __libc_start_call_main libc_start_call_main.h:74
+    #16 0x7f29ce833d65 in __libc_start_main@@GLIBC_2.34 libc-start.c:128
+    #17 0x565358e391c1 in _start perf[851c1]
+  7: PERF_RECORD_* events & perf_sample fields                       : FAILED!
+```
+
+After:
+```
+$ perf test 7
+  7: PERF_RECORD_* events & perf_sample fields                       : Skip (permissions)
+```
+
+Fixes: 16d00fee703866c6 ("perf tests: Move test__PERF_RECORD into separate object")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.ibm.com>
+Cc: Chun-Tse Shao <ctshao@google.com>
+Cc: Howard Chu <howardchu95@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dce_transform.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ tools/perf/tests/perf-record.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-index 2b1673d69ea83..e5c2fb134d14d 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-@@ -527,8 +527,7 @@ static void dce60_transform_set_scaler(
- 		if (coeffs_v != xfm_dce->filter_v || coeffs_h != xfm_dce->filter_h) {
- 			/* 4. Program vertical filters */
- 			if (xfm_dce->filter_v == NULL)
--				REG_SET(SCL_VERT_FILTER_CONTROL, 0,
--						SCL_V_2TAP_HARDCODE_COEF_EN, 0);
-+				REG_WRITE(SCL_VERT_FILTER_CONTROL, 0);
- 			program_multi_taps_filter(
- 					xfm_dce,
- 					data->taps.v_taps,
-@@ -542,8 +541,7 @@ static void dce60_transform_set_scaler(
+diff --git a/tools/perf/tests/perf-record.c b/tools/perf/tests/perf-record.c
+index 1c4feec1adff1..6e7f053006b4f 100644
+--- a/tools/perf/tests/perf-record.c
++++ b/tools/perf/tests/perf-record.c
+@@ -115,6 +115,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
+ 	if (err < 0) {
+ 		pr_debug("sched__get_first_possible_cpu: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
+ 	}
  
- 			/* 5. Program horizontal filters */
- 			if (xfm_dce->filter_h == NULL)
--				REG_SET(SCL_HORZ_FILTER_CONTROL, 0,
--						SCL_H_2TAP_HARDCODE_COEF_EN, 0);
-+				REG_WRITE(SCL_HORZ_FILTER_CONTROL, 0);
- 			program_multi_taps_filter(
- 					xfm_dce,
- 					data->taps.h_taps,
+@@ -126,6 +127,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
+ 	if (sched_setaffinity(evlist->workload.pid, cpu_mask_size, &cpu_mask) < 0) {
+ 		pr_debug("sched_setaffinity: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
+ 	}
+ 
+@@ -137,6 +139,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
+ 	if (err < 0) {
+ 		pr_debug("perf_evlist__open: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
+ 	}
+ 
+@@ -149,6 +152,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
+ 	if (err < 0) {
+ 		pr_debug("evlist__mmap: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
+ 	}
+ 
 -- 
 2.51.0
 
