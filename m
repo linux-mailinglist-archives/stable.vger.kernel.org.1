@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B67BEA2AE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A03BEA636
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3956D18866DB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 025501AE2427
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D65E330B2F;
-	Fri, 17 Oct 2025 15:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B043328E8;
+	Fri, 17 Oct 2025 15:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxKPKIUQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bwqu40WV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD206330B06;
-	Fri, 17 Oct 2025 15:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6342F12A1;
+	Fri, 17 Oct 2025 15:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715838; cv=none; b=GcQMHnYLbIOS2vTJMQJNTHOVODhe1qrYB371lbzdBf6AN3AjIljIJm28rYE/f/SuTYPxuRJawvHDeCrTD42IiBucvAMajqQAKRhK59s6w0gRSW/EvIv5rt8Q+oWWw5vYo0J8qE0BXdiKxq1Uk/feJjVX4tOeTJHkvsG5GWqtJR4=
+	t=1760716573; cv=none; b=VkxpdBFvis4MtWTjIw4UXK/hqP3dateLNR99YNdy/032R7uDq2es+p5rrbjU36oiyzTjax1UDCO6fD6fMMBr0fuwKw0PwV7j/3U4AY7cnjnZ+g2gBKhq8aXQcbtX1BDCkyxbCV+qCgLQ/QtpK6zdU41NG49KY3xRnwX1x/dG2Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715838; c=relaxed/simple;
-	bh=8S9AXY9TcTbSnt0L16Az4kGduXx/xmN417LkeNq2uaI=;
+	s=arc-20240116; t=1760716573; c=relaxed/simple;
+	bh=qZRhbz5DNvRSj1dlADyDQSdzqph/zq8mQESxejHnAuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rV5Z5ZhQf81fo1CdIFVqQuJ5N5/WmMKZbdwILoMZ3qqh0dJLSANdsCu+TKINIckh3p/UGu8S/8+iHvRJjBpYYhbw6vp3b7vkX9GSoq4dupI+pRfUOw5/DclR1xzESQty/meeKJKDm9JPXVzQuF9jShqqrGbAnJzSHzI5DKEqEA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxKPKIUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64751C4CEE7;
-	Fri, 17 Oct 2025 15:43:57 +0000 (UTC)
+	 MIME-Version; b=F2+L5/GbOY2I3LlKuQz/KPezY0wnO5Gv1jAnlZLmXE31sY5jVtB4zdER3XZev/163P8lWL2trrCeoFLR5NpyfsPyCr5iEY1TARgNiQhzEltkjQsIT03STihhFQPFbOH5HTtVSTsobo1Vj/UF2NQROzc045SCtyfy4YVYfpZv/fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bwqu40WV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D26C4CEE7;
+	Fri, 17 Oct 2025 15:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715837;
-	bh=8S9AXY9TcTbSnt0L16Az4kGduXx/xmN417LkeNq2uaI=;
+	s=korg; t=1760716573;
+	bh=qZRhbz5DNvRSj1dlADyDQSdzqph/zq8mQESxejHnAuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NxKPKIUQn+6uaO/s5/b3Vc5NwSQNKmF0Otuz8iAmX68z2nQxskOsZ5cIbpoWztPr9
-	 DRPLQWEdFCPHR7jMbNRmWJrEFa/x8uCduXZY9a/L5ybCsvyXG6g3JwAfmecvopJIZ3
-	 wXc6I4j63z183D1/jHKmWCAuG33y9vV4Pb4brsNI=
+	b=bwqu40WVo3Zgl1YhGbSp09hOCuYgANUF7/Jgo7c4SewuSvymY5p+kPQiXOGGBtTWb
+	 fqi994D8AEWI9ymhyFNPLPW6e7JnETd2shlhJVSovM8aBcfEFy1+bC1vJPCmLBe0jt
+	 TzdvB/LXJ+JmpM6X8Zn0bFBULXx+hEamLeLxOXLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 355/371] ACPI: property: Disregard references in data-only subnode lists
+Subject: [PATCH 5.15 237/276] dm: fix NULL pointer dereference in __dm_suspend()
 Date: Fri, 17 Oct 2025 16:55:30 +0200
-Message-ID: <20251017145214.930217678@linuxfoundation.org>
+Message-ID: <20251017145151.121430460@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit d06118fe9b03426484980ed4c189a8c7b99fa631 ]
+[ Upstream commit 8d33a030c566e1f105cd5bf27f37940b6367f3be ]
 
-Data-only subnode links following the ACPI data subnode GUID in a _DSD
-package are expected to point to named objects returning _DSD-equivalent
-packages.  If a reference to such an object is used in the target field
-of any of those links, that object will be evaluated in place (as a
-named object) and its return data will be embedded in the outer _DSD
-package.
+There is a race condition between dm device suspend and table load that
+can lead to null pointer dereference. The issue occurs when suspend is
+invoked before table load completes:
 
-For this reason, it is not expected to see a subnode link with the
-target field containing a local reference (that would mean pointing
-to a device or another object that cannot be evaluated in place and
-therefore cannot return a _DSD-equivalent package).
+BUG: kernel NULL pointer dereference, address: 0000000000000054
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
+RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
+Call Trace:
+  <TASK>
+  blk_mq_quiesce_queue+0x2c/0x50
+  dm_stop_queue+0xd/0x20
+  __dm_suspend+0x130/0x330
+  dm_suspend+0x11a/0x180
+  dev_suspend+0x27e/0x560
+  ctl_ioctl+0x4cf/0x850
+  dm_ctl_ioctl+0xd/0x20
+  vfs_ioctl+0x1d/0x50
+  __se_sys_ioctl+0x9b/0xc0
+  __x64_sys_ioctl+0x19/0x30
+  x64_sys_call+0x2c4a/0x4620
+  do_syscall_64+0x9e/0x1b0
 
-Accordingly, simplify the code parsing data-only subnode links to
-simply print a message when it encounters a local reference in the
-target field of one of those links.
+The issue can be triggered as below:
 
-Moreover, since acpi_nondev_subnode_data_ok() would only have one
-caller after the change above, fold it into that caller.
+T1 						T2
+dm_suspend					table_load
+__dm_suspend					dm_setup_md_queue
+						dm_mq_init_request_queue
+						blk_mq_init_allocated_queue
+						=> q->mq_ops = set->ops; (1)
+dm_stop_queue / dm_wait_for_completion
+=> q->tag_set NULL pointer!	(2)
+						=> q->tag_set = set; (3)
 
-Link: https://lore.kernel.org/linux-acpi/CAJZ5v0jVeSrDO6hrZhKgRZrH=FpGD4vNUjFD8hV9WwN9TLHjzQ@mail.gmail.com/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Stable-dep-of: baf60d5cb8bc ("ACPI: property: Do not pass NULL handles to acpi_attach_data()")
+Fix this by checking if a valid table (map) exists before performing
+request-based suspend and waiting for target I/O. When map is NULL,
+skip these table-dependent suspend steps.
+
+Even when map is NULL, no I/O can reach any target because there is
+no table loaded; I/O submitted in this state will fail early in the
+DM layer. Skipping the table-dependent suspend logic in this case
+is safe and avoids NULL pointer dereferences.
+
+Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+[ omitted DMF_QUEUE_STOPPED flag setting and braces absent in 5.15 ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/property.c |   51 ++++++++++++++++++++----------------------------
- 1 file changed, 22 insertions(+), 29 deletions(-)
+ drivers/md/dm.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -124,32 +124,12 @@ static bool acpi_nondev_subnode_extract(
- 	return false;
- }
- 
--static bool acpi_nondev_subnode_data_ok(acpi_handle handle,
--					const union acpi_object *link,
--					struct list_head *list,
--					struct fwnode_handle *parent)
--{
--	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
--	acpi_status status;
--
--	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
--					    ACPI_TYPE_PACKAGE);
--	if (ACPI_FAILURE(status))
--		return false;
--
--	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
--					parent))
--		return true;
--
--	ACPI_FREE(buf.pointer);
--	return false;
--}
--
- static bool acpi_nondev_subnode_ok(acpi_handle scope,
- 				   const union acpi_object *link,
- 				   struct list_head *list,
- 				   struct fwnode_handle *parent)
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2406,7 +2406,7 @@ static int __dm_suspend(struct mapped_de
  {
-+	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
- 	acpi_handle handle;
- 	acpi_status status;
+ 	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
+ 	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
+-	int r;
++	int r = 0;
  
-@@ -161,7 +141,17 @@ static bool acpi_nondev_subnode_ok(acpi_
- 	if (ACPI_FAILURE(status))
- 		return false;
+ 	lockdep_assert_held(&md->suspend_lock);
  
--	return acpi_nondev_subnode_data_ok(handle, link, list, parent);
-+	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
-+					    ACPI_TYPE_PACKAGE);
-+	if (ACPI_FAILURE(status))
-+		return false;
-+
-+	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
-+					parent))
-+		return true;
-+
-+	ACPI_FREE(buf.pointer);
-+	return false;
- }
+@@ -2458,7 +2458,7 @@ static int __dm_suspend(struct mapped_de
+ 	 * Stop md->queue before flushing md->wq in case request-based
+ 	 * dm defers requests to md->wq from md->queue.
+ 	 */
+-	if (dm_request_based(md))
++	if (map && dm_request_based(md))
+ 		dm_stop_queue(md->queue);
  
- static bool acpi_add_nondev_subnodes(acpi_handle scope,
-@@ -174,7 +164,6 @@ static bool acpi_add_nondev_subnodes(acp
+ 	flush_workqueue(md->wq);
+@@ -2468,7 +2468,8 @@ static int __dm_suspend(struct mapped_de
+ 	 * We call dm_wait_for_completion to wait for all existing requests
+ 	 * to finish.
+ 	 */
+-	r = dm_wait_for_completion(md, task_state);
++	if (map)
++		r = dm_wait_for_completion(md, task_state);
+ 	if (!r)
+ 		set_bit(dmf_suspended_flag, &md->flags);
  
- 	for (i = 0; i < links->package.count; i++) {
- 		union acpi_object *link, *desc;
--		acpi_handle handle;
- 		bool result;
- 
- 		link = &links->package.elements[i];
-@@ -186,22 +175,26 @@ static bool acpi_add_nondev_subnodes(acp
- 		if (link->package.elements[0].type != ACPI_TYPE_STRING)
- 			continue;
- 
--		/* The second one may be a string, a reference or a package. */
-+		/* The second one may be a string or a package. */
- 		switch (link->package.elements[1].type) {
- 		case ACPI_TYPE_STRING:
- 			result = acpi_nondev_subnode_ok(scope, link, list,
- 							 parent);
- 			break;
--		case ACPI_TYPE_LOCAL_REFERENCE:
--			handle = link->package.elements[1].reference.handle;
--			result = acpi_nondev_subnode_data_ok(handle, link, list,
--							     parent);
--			break;
- 		case ACPI_TYPE_PACKAGE:
- 			desc = &link->package.elements[1];
- 			result = acpi_nondev_subnode_extract(desc, NULL, link,
- 							     list, parent);
- 			break;
-+		case ACPI_TYPE_LOCAL_REFERENCE:
-+			/*
-+			 * It is not expected to see any local references in
-+			 * the links package because referencing a named object
-+			 * should cause it to be evaluated in place.
-+			 */
-+			acpi_handle_info(scope, "subnode %s: Unexpected reference\n",
-+					 link->package.elements[0].string.pointer);
-+			fallthrough;
- 		default:
- 			result = false;
- 			break;
 
 
 
