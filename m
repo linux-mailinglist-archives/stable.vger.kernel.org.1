@@ -1,109 +1,109 @@
-Return-Path: <stable+bounces-186221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0438FBE5DC1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 02:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68307BE5E01
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 02:24:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B63A4405C59
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 00:11:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 197EA5451DA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 00:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2331C2BD;
-	Fri, 17 Oct 2025 00:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F21D1FCF41;
+	Fri, 17 Oct 2025 00:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a5MQpUeg"
+	dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b="tAkh1p4W"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailbackend.panix.com (mailbackend.panix.com [166.84.1.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB603208
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 00:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E7219D08F;
+	Fri, 17 Oct 2025 00:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.84.1.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760659867; cv=none; b=sL+tDBmuQF+KpD9t9mH6rbXBVIfA+dX1JqoVysAMysnqJBgdXzKQPRyiljdwwletHdlyzp4w1q+zZVgygz5MHhdstn/RasoNB2opeOh1JkU2rGr4Vw9LLZA424GfF4M4Zq0/DpD4kJcR4yPqO1ZP2d7Mc1lAbq9p8dmT4pbTJaQ=
+	t=1760660673; cv=none; b=VclBg3HVaH916+mh30qj0nwTvkSsNlH5MKphw13S7WgPyZsE87w75xLxz007Zq3C3bwFahh2vsYovdmmYm1ZoUX35pYnhOaqLax+ZiwYfCtqggL4k2p6dfJGmcalmuVpAKboqbcLAHrNQnZ2LZGwhrcSQ9BBz8cayYXS/WsLCnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760659867; c=relaxed/simple;
-	bh=zUiMqPo81Qrg1s61sUYVHbTXfdbpWEJSeOnsH3GF/kk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5A7BdxfoOqjd3AngsYSDbkpQ2qeuqf40XgZxLTvc79LgnztI8vd/rMXa+h20Uvv7Fb9PAi6+OgFTiyoQrlA819vmjwW1IErZ8GmCJERy3kOReBkNN4qZRAVJj4euO9S/jqWqMqB/WPidmquOaLojxF7DXvgUNtBuA7rEex3zwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a5MQpUeg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8A5C4CEF1;
-	Fri, 17 Oct 2025 00:11:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760659865;
-	bh=zUiMqPo81Qrg1s61sUYVHbTXfdbpWEJSeOnsH3GF/kk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5MQpUeg5bhEF6Uy2RbJDqsDN2gHoH0jBgmssjy8ZEMeoXGAE3hVzMw9r6CGHFwW+
-	 9c3kjkm3t5oTGztXOWMJ4b1IJj73uP/SBEKgrO+31Cn+QGJ621cs+2qWe8rLgUelxZ
-	 WLky3RqMdxxMP0s8foLHjTRi4TQGeRp+VzCqQLxHD6mbOaFvf+oY/qCV58398+fVCw
-	 97MOwSjzU+ZZxIibnaCSD6UHdvEBMDWfz5Dl2Kt2tP5R44Z+sYPwOVaeD2Lp7Ff0Y/
-	 d95jc3Y55ICbJy6NtOBCe4g0OSFXuK8KsAN//h53k77xZna4gyW9rGwHK103OMiFQj
-	 Dbz20xF/0hxDw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] arm64: dts: qcom: sdm845: Fix slimbam num-channels/ees
-Date: Thu, 16 Oct 2025 20:11:02 -0400
-Message-ID: <20251017001102.3477703-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101653-armory-oxygen-af78@gregkh>
-References: <2025101653-armory-oxygen-af78@gregkh>
+	s=arc-20240116; t=1760660673; c=relaxed/simple;
+	bh=+tngxAwMJmyPy9uijR+ZE4dvzpgm5DRP2pbvKBo3Gno=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XdB952hfCItjmFgIfVzettidpi7GMEjqwChp1gtyXuofxVUfYwKYkVOb0qY4Sk8xytJHsEfxFd18N6AOoSdsJvnObcjuFH9F6irJ6dpi89xyluN1iQSZGIEjMmGnSiKa5RUOvep69FjQ5xxom4YV3mxxXZZ12JaHFH4tnfdaEWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=panix.com; spf=pass smtp.mailfrom=panix.com; dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b=tAkh1p4W; arc=none smtp.client-ip=166.84.1.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=panix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=panix.com
+Received: from [10.50.4.39] (45-31-46-51.lightspeed.sndgca.sbcglobal.net [45.31.46.51])
+	by mailbackend.panix.com (Postfix) with ESMTPSA id 4cnlv10qqWz4G78;
+	Thu, 16 Oct 2025 20:24:29 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=panix.com; s=panix;
+	t=1760660670; bh=+tngxAwMJmyPy9uijR+ZE4dvzpgm5DRP2pbvKBo3Gno=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=tAkh1p4Wp0gKs07wSxXkIYNJazUOHIuO41jTgAL8MbIgSYiQwT9ZBlC3TA44vOtS9
+	 ZY1ctialnzbqbizJ2BwdtBQ56rcR+5hDE1xxPVd6JMyRuzXTSBwue7ovDgMf+P4wA5
+	 B80CWi/Zfu+WJ8b9saFgTKwXTocuNTvufgWT4VlA=
+Message-ID: <25d9d483-3447-41c8-826a-8c71af737868@panix.com>
+Date: Thu, 16 Oct 2025 17:24:27 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: typec: ucsi: psy: Set max current to zero when
+ disconnected
+To: Jameson Thies <jthies@google.com>, heikki.krogerus@linux.intel.com,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Kenneth C <kenny@panix.com>
+Cc: dmitry.baryshkov@oss.qualcomm.com, bleung@chromium.org,
+ gregkh@linuxfoundation.org, akuchynski@chromium.org,
+ abhishekpandit@chromium.org, sebastian.reichel@collabora.com,
+ linux-pm@vger.kernel.org, stable@vger.kernel.org
+References: <20251017000051.2094101-1-jthies@google.com>
+Content-Language: en-US
+From: Kenneth Crudup <kenny@panix.com>
+In-Reply-To: <20251017000051.2094101-1-jthies@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 316294bb6695a43a9181973ecd4e6fb3e576a9f7 ]
+Tested-By: Kenneth R. Crudup <kenny@panix.com>
 
-Reading the hardware registers of the &slimbam on RB3 reveals that the BAM
-supports only 23 pipes (channels) and supports 4 EEs instead of 2. This
-hasn't caused problems so far since nothing is using the extra channels,
-but attempting to use them would lead to crashes.
+On 10/16/25 17:00, Jameson Thies wrote:
+> The ucsi_psy_get_current_max function defaults to 0.1A when it is not
+> clear how much current the partner device can support. But this does
+> not check the port is connected, and will report 0.1A max current when
+> nothing is connected. Update ucsi_psy_get_current_max to report 0A when
+> there is no connection.
+> 
+> Fixes: af833e7f7db3 ("usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default")
+> Signed-off-by: Jameson Thies <jthies@google.com>
+> Reviewed-by: Benson Leung <bleung@chromium.org>
+> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> ---
+>   drivers/usb/typec/ucsi/psy.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
+> index 62a9d68bb66d..8ae900c8c132 100644
+> --- a/drivers/usb/typec/ucsi/psy.c
+> +++ b/drivers/usb/typec/ucsi/psy.c
+> @@ -145,6 +145,11 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
+>   {
+>   	u32 pdo;
+>   
+> +	if (!UCSI_CONSTAT(con, CONNECTED)) {
+> +		val->intval = 0;
+> +		return 0;
+> +	}
+> +
+>   	switch (UCSI_CONSTAT(con, PWR_OPMODE)) {
+>   	case UCSI_CONSTAT_PWR_OPMODE_PD:
+>   		if (con->num_pdos > 0) {
+> 
+> base-commit: e40b984b6c4ce3f80814f39f86f87b2a48f2e662
 
-The bam_dma driver might warn in the future if the num-channels in the DT
-are wrong, so correct the properties in the DT to avoid future regressions.
-
-Cc: stable@vger.kernel.org
-Fixes: 27ca1de07dc3 ("arm64: dts: qcom: sdm845: add slimbus nodes")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250821-sdm845-slimbam-channels-v1-1-498f7d46b9ee@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index da48ae60155af..4422392fb60e0 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4492,11 +4492,11 @@ slimbam: dma@17184000 {
- 			compatible = "qcom,bam-v1.7.0";
- 			qcom,controlled-remotely;
- 			reg = <0 0x17184000 0 0x2a000>;
--			num-channels  = <31>;
-+			num-channels = <23>;
- 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
- 			#dma-cells = <1>;
- 			qcom,ee = <1>;
--			qcom,num-ees = <2>;
-+			qcom,num-ees = <4>;
- 			iommus = <&apps_smmu 0x1806 0x0>;
- 		};
- 
 -- 
-2.51.0
+Kenneth R. Crudup / Sr. SW Engineer, Scott County Consulting, Orange 
+County CA
 
 
