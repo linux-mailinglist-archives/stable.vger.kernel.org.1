@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-186502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DD8BE9766
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:05:41 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50CE1BE9C84
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9210835CF6D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:40 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0834135E150
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A7633508F;
-	Fri, 17 Oct 2025 15:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36C92F12A5;
+	Fri, 17 Oct 2025 15:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGJixTdr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uduyNG6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8F92F12DD;
-	Fri, 17 Oct 2025 15:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903D92745E;
+	Fri, 17 Oct 2025 15:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713423; cv=none; b=Snrj2+YmMGlenrUJqJtWwQQlyhTByAdNaGvcWhwRvWOmo/B4PdGmgYsZc4h3oATYm6bphJy7NmJAxwRnUWA5R5w1HAzB37n8S15HBXfKtjXRwxa53KyqO62Yo7pUOqhK9pV6ChZ6JAxyal8pdVHDzMxLSuQmZFLmmvQb40Xdf4k=
+	t=1760714687; cv=none; b=NlxUfiQ2JYc941GEHzlMpbk7gzvk7Ag4S3CtfU5aUM47//AVM8QGXDmociqIj4/Llt4fMLI7L8f84ajMUTG36bWi34DJ9aGB9ihCcfNAA/wph11VoI6gevsnU9BH3ZMzPi0VTMR0/NiO3pN15SNKiz8EA/Py6D8wrjPOALByh14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713423; c=relaxed/simple;
-	bh=GP6GRF+EUTBsmpYDR7VMoT5Q16JGL338WpNpbLI3x7g=;
+	s=arc-20240116; t=1760714687; c=relaxed/simple;
+	bh=KAIkPGwoOks6SiiPxXVts4GZuTJFEUBwW7iGHzexJyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxO9dWYS31xYpl+WD1j6lPvWyt7Be9M/W5Z/STuva8GpzdCBYgU+M37J6KqUpR7laTRk8fKxdU0ivzqNaduXw9sOeyjXH1MZdZyATF4w+KQFi+mEtbq26UWbvMw7fZCZwtd6JiwB1o9qmi/rYBkTjRDkh27Rdga/kqqvGAhThA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGJixTdr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA0BC4CEE7;
-	Fri, 17 Oct 2025 15:03:42 +0000 (UTC)
+	 MIME-Version; b=uyyvpHUVx3suqiD+SfnGr5R+Wbtc95hr9wXkzmhKIJQzjTPAYlTi6vQvhTA+D3BE4PWBEiPUDqv2U8pr8VqRpA8J7ODAa//+o5Mkl4Oyl3IGPkXES6/OlPDDEmDKarkifIg8rZszxc6v1DpEGb7Ql03k0hZIFcS0ug16se0uLMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uduyNG6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4618C4CEE7;
+	Fri, 17 Oct 2025 15:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713423;
-	bh=GP6GRF+EUTBsmpYDR7VMoT5Q16JGL338WpNpbLI3x7g=;
+	s=korg; t=1760714687;
+	bh=KAIkPGwoOks6SiiPxXVts4GZuTJFEUBwW7iGHzexJyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XGJixTdrYOL27TUH1Mv5Vz6CCbVTZELj6Ml/+O7fOlXbJ9+56MJhRLGyQUNJRwWm9
-	 AII/60zQtCjlmVY8ePcZtnpaJjlpjsEag+RDyfvnUcG+FMJ8s5xgzFCq9aK9j+Ypke
-	 yAiU+z2sQWfhS8z0JTIKN2bvxzEdpFq3txaeg9g8=
+	b=uduyNG6rLAj3G9Ub4opxbxVQIajGmzdmVlACnZC0rPC0wS+fp8Zu6gCY8FgWUZxZB
+	 HgPPSkVJsh055fyrbp0BI0CNXX0gvWQyXuq7wromQeIzRzEAZt5o3H+pv0+NdUNwV7
+	 AtLEPjzc0AtnMemhf/VWry5HglQ/pOVPOPWZK5+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Varad Gautam <varadgautam@google.com>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 159/168] asm-generic/io.h: Skip trace helpers if rwmmio events are disabled
+Subject: [PATCH 6.12 231/277] ASoC: SOF: ipc4-pcm: Enable delay reporting for ChainDMA streams
 Date: Fri, 17 Oct 2025 16:53:58 +0200
-Message-ID: <20251017145134.905978349@linuxfoundation.org>
+Message-ID: <20251017145155.569825456@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,292 +65,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Varad Gautam <varadgautam@google.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 8327bd4fcb6c1dab01ce5c6ff00b42496836dcd2 ]
+[ Upstream commit a1d203d390e04798ccc1c3c06019cd4411885d6d ]
 
-With `CONFIG_TRACE_MMIO_ACCESS=y`, the `{read,write}{b,w,l,q}{_relaxed}()`
-mmio accessors unconditionally call `log_{post_}{read,write}_mmio()`
-helpers, which in turn call the ftrace ops for `rwmmio` trace events
+All streams (currently) which is configured to use ChainDMA can only work
+on Link/host DMA pairs where the link side position can be access via host
+registers (like HDA on CAVS 2.5 platforms).
 
-This adds a performance penalty per mmio accessor call, even when
-`rwmmio` events are disabled at runtime (~80% overhead on local
-measurement).
+Since the firmware does not provide time_info for ChainDMA, unlike for HDA
+stream, the kernel should calculate the start and end offsets that is
+needed for the delay calculation.
 
-Guard these with `tracepoint_enabled()`.
+With this small change we can report accurate delays when the stream is
+configured to use ChainDMA.
 
-Signed-off-by: Varad Gautam <varadgautam@google.com>
-Fixes: 210031971cdd ("asm-generic/io: Add logging support for MMIO accessors")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://patch.msgid.link/20250619102848.12389-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: bcd1383516bb ("ASoC: SOF: ipc4-pcm: fix delay calculation when DSP resamples")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/asm-generic/io.h |   98 +++++++++++++++++++++++++++++++----------------
- 1 file changed, 66 insertions(+), 32 deletions(-)
+ sound/soc/sof/ipc4-pcm.c      |   49 ++++++++++++++++++++++++++++++++++++++----
+ sound/soc/sof/ipc4-topology.c |    6 ++---
+ sound/soc/sof/ipc4-topology.h |    1 
+ 3 files changed, 49 insertions(+), 7 deletions(-)
 
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -74,6 +74,7 @@
- #if IS_ENABLED(CONFIG_TRACE_MMIO_ACCESS) && !(defined(__DISABLE_TRACE_MMIO__))
- #include <linux/tracepoint-defs.h>
+--- a/sound/soc/sof/ipc4-pcm.c
++++ b/sound/soc/sof/ipc4-pcm.c
+@@ -409,9 +409,33 @@ static int sof_ipc4_trigger_pipelines(st
+ 	 * If use_chain_dma attribute is set we proceed to chained DMA
+ 	 * trigger function that handles the rest for the substream.
+ 	 */
+-	if (pipeline->use_chain_dma)
+-		return sof_ipc4_chain_dma_trigger(sdev, spcm, substream->stream,
+-						  pipeline_list, state, cmd);
++	if (pipeline->use_chain_dma) {
++		struct sof_ipc4_timestamp_info *time_info;
++
++		time_info = sof_ipc4_sps_to_time_info(&spcm->stream[substream->stream]);
++
++		ret = sof_ipc4_chain_dma_trigger(sdev, spcm, substream->stream,
++						 pipeline_list, state, cmd);
++		if (ret || !time_info)
++			return ret;
++
++		if (state == SOF_IPC4_PIPE_PAUSED) {
++			/*
++			 * Record the DAI position for delay reporting
++			 * To handle multiple pause/resume/xrun we need to add
++			 * the positions to simulate how the firmware behaves
++			 */
++			u64 pos = snd_sof_pcm_get_dai_frame_counter(sdev, component,
++								    substream);
++
++			time_info->stream_end_offset += pos;
++		} else if (state == SOF_IPC4_PIPE_RESET) {
++			/* Reset the end offset as the stream is stopped */
++			time_info->stream_end_offset = 0;
++		}
++
++		return 0;
++	}
  
-+#define rwmmio_tracepoint_enabled(tracepoint) tracepoint_enabled(tracepoint)
- DECLARE_TRACEPOINT(rwmmio_write);
- DECLARE_TRACEPOINT(rwmmio_post_write);
- DECLARE_TRACEPOINT(rwmmio_read);
-@@ -90,6 +91,7 @@ void log_post_read_mmio(u64 val, u8 widt
+ 	/* allocate memory for the pipeline data */
+ 	trigger_list = kzalloc(struct_size(trigger_list, pipeline_instance_ids,
+@@ -924,8 +948,24 @@ static int sof_ipc4_get_stream_start_off
+ 	if (!host_copier || !dai_copier)
+ 		return -EINVAL;
  
- #else
+-	if (host_copier->data.gtw_cfg.node_id == SOF_IPC4_INVALID_NODE_ID)
++	if (host_copier->data.gtw_cfg.node_id == SOF_IPC4_INVALID_NODE_ID) {
+ 		return -EINVAL;
++	} else if (host_copier->data.gtw_cfg.node_id == SOF_IPC4_CHAIN_DMA_NODE_ID) {
++		/*
++		 * While the firmware does not supports time_info reporting for
++		 * streams using ChainDMA, it is granted that ChainDMA can only
++		 * be used on Host+Link pairs where the link position is
++		 * accessible from the host side.
++		 *
++		 * Enable delay calculation in case of ChainDMA via host
++		 * accessible registers.
++		 *
++		 * The ChainDMA uses 2x 1ms ping-pong buffer, dai side starts
++		 * when 1ms data is available
++		 */
++		time_info->stream_start_offset = substream->runtime->rate / MSEC_PER_SEC;
++		goto out;
++	}
  
-+#define rwmmio_tracepoint_enabled(tracepoint) false
- static inline void log_write_mmio(u64 val, u8 width, volatile void __iomem *addr,
- 				  unsigned long caller_addr, unsigned long caller_addr0) {}
- static inline void log_post_write_mmio(u64 val, u8 width, volatile void __iomem *addr,
-@@ -188,11 +190,13 @@ static inline u8 readb(const volatile vo
- {
- 	u8 val;
+ 	node_index = SOF_IPC4_NODE_INDEX(host_copier->data.gtw_cfg.node_id);
+ 	offset = offsetof(struct sof_ipc4_fw_registers, pipeline_regs) + node_index * sizeof(ppl_reg);
+@@ -943,6 +983,7 @@ static int sof_ipc4_get_stream_start_off
+ 	time_info->stream_end_offset = ppl_reg.stream_end_offset;
+ 	do_div(time_info->stream_end_offset, dai_sample_size);
  
--	log_read_mmio(8, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_read))
-+		log_read_mmio(8, addr, _THIS_IP_, _RET_IP_);
- 	__io_br();
- 	val = __raw_readb(addr);
- 	__io_ar(val);
--	log_post_read_mmio(val, 8, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-+		log_post_read_mmio(val, 8, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
- #endif
-@@ -203,11 +207,13 @@ static inline u16 readw(const volatile v
- {
- 	u16 val;
++out:
+ 	/*
+ 	 * Calculate the wrap boundary need to be used for delay calculation
+ 	 * The host counter is in bytes, it will wrap earlier than the frames
+--- a/sound/soc/sof/ipc4-topology.c
++++ b/sound/soc/sof/ipc4-topology.c
+@@ -1782,10 +1782,10 @@ sof_ipc4_prepare_copier_module(struct sn
+ 			pipeline->msg.extension |= SOF_IPC4_GLB_EXT_CHAIN_DMA_FIFO_SIZE(fifo_size);
  
--	log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_read))
-+		log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
- 	__io_br();
- 	val = __le16_to_cpu((__le16 __force)__raw_readw(addr));
- 	__io_ar(val);
--	log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-+		log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
- #endif
-@@ -218,11 +224,13 @@ static inline u32 readl(const volatile v
- {
- 	u32 val;
+ 			/*
+-			 * Chain DMA does not support stream timestamping, set node_id to invalid
+-			 * to skip the code in sof_ipc4_get_stream_start_offset().
++			 * Chain DMA does not support stream timestamping, but it
++			 * can use the host side registers for delay calculation.
+ 			 */
+-			copier_data->gtw_cfg.node_id = SOF_IPC4_INVALID_NODE_ID;
++			copier_data->gtw_cfg.node_id = SOF_IPC4_CHAIN_DMA_NODE_ID;
  
--	log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_read))
-+		log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
- 	__io_br();
- 	val = __le32_to_cpu((__le32 __force)__raw_readl(addr));
- 	__io_ar(val);
--	log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-+		log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
- #endif
-@@ -234,11 +242,13 @@ static inline u64 readq(const volatile v
- {
- 	u64 val;
+ 			return 0;
+ 		}
+--- a/sound/soc/sof/ipc4-topology.h
++++ b/sound/soc/sof/ipc4-topology.h
+@@ -58,6 +58,7 @@
  
--	log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_read))
-+		log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
- 	__io_br();
- 	val = __le64_to_cpu((__le64 __force)__raw_readq(addr));
- 	__io_ar(val);
--	log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-+		log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
- #endif
-@@ -248,11 +258,13 @@ static inline u64 readq(const volatile v
- #define writeb writeb
- static inline void writeb(u8 value, volatile void __iomem *addr)
- {
--	log_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_write))
-+		log_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
- 	__io_bw();
- 	__raw_writeb(value, addr);
- 	__io_aw();
--	log_post_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-+		log_post_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
+ #define SOF_IPC4_DMA_DEVICE_MAX_COUNT 16
  
-@@ -260,11 +272,13 @@ static inline void writeb(u8 value, vola
- #define writew writew
- static inline void writew(u16 value, volatile void __iomem *addr)
- {
--	log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_write))
-+		log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
- 	__io_bw();
- 	__raw_writew((u16 __force)cpu_to_le16(value), addr);
- 	__io_aw();
--	log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-+		log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
++#define SOF_IPC4_CHAIN_DMA_NODE_ID	0x7fffffff
+ #define SOF_IPC4_INVALID_NODE_ID	0xffffffff
  
-@@ -272,11 +286,13 @@ static inline void writew(u16 value, vol
- #define writel writel
- static inline void writel(u32 value, volatile void __iomem *addr)
- {
--	log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_write))
-+		log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
- 	__io_bw();
- 	__raw_writel((u32 __force)__cpu_to_le32(value), addr);
- 	__io_aw();
--	log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-+		log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
- 
-@@ -285,11 +301,13 @@ static inline void writel(u32 value, vol
- #define writeq writeq
- static inline void writeq(u64 value, volatile void __iomem *addr)
- {
--	log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_write))
-+		log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
- 	__io_bw();
- 	__raw_writeq((u64 __force)__cpu_to_le64(value), addr);
- 	__io_aw();
--	log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-+		log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
- #endif /* CONFIG_64BIT */
-@@ -305,9 +323,11 @@ static inline u8 readb_relaxed(const vol
- {
- 	u8 val;
- 
--	log_read_mmio(8, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_read))
-+		log_read_mmio(8, addr, _THIS_IP_, _RET_IP_);
- 	val = __raw_readb(addr);
--	log_post_read_mmio(val, 8, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-+		log_post_read_mmio(val, 8, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
- #endif
-@@ -318,9 +338,11 @@ static inline u16 readw_relaxed(const vo
- {
- 	u16 val;
- 
--	log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_read))
-+		log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
- 	val = __le16_to_cpu((__le16 __force)__raw_readw(addr));
--	log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-+		log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
- #endif
-@@ -331,9 +353,11 @@ static inline u32 readl_relaxed(const vo
- {
- 	u32 val;
- 
--	log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_read))
-+		log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
- 	val = __le32_to_cpu((__le32 __force)__raw_readl(addr));
--	log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-+		log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
- #endif
-@@ -344,9 +368,11 @@ static inline u64 readq_relaxed(const vo
- {
- 	u64 val;
- 
--	log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_read))
-+		log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
- 	val = __le64_to_cpu((__le64 __force)__raw_readq(addr));
--	log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-+		log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
- #endif
-@@ -355,9 +381,11 @@ static inline u64 readq_relaxed(const vo
- #define writeb_relaxed writeb_relaxed
- static inline void writeb_relaxed(u8 value, volatile void __iomem *addr)
- {
--	log_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_write))
-+		log_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
- 	__raw_writeb(value, addr);
--	log_post_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-+		log_post_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
- 
-@@ -365,9 +393,11 @@ static inline void writeb_relaxed(u8 val
- #define writew_relaxed writew_relaxed
- static inline void writew_relaxed(u16 value, volatile void __iomem *addr)
- {
--	log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_write))
-+		log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
- 	__raw_writew((u16 __force)cpu_to_le16(value), addr);
--	log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-+		log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
- 
-@@ -375,9 +405,11 @@ static inline void writew_relaxed(u16 va
- #define writel_relaxed writel_relaxed
- static inline void writel_relaxed(u32 value, volatile void __iomem *addr)
- {
--	log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_write))
-+		log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
- 	__raw_writel((u32 __force)__cpu_to_le32(value), addr);
--	log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-+		log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
- 
-@@ -385,9 +417,11 @@ static inline void writel_relaxed(u32 va
- #define writeq_relaxed writeq_relaxed
- static inline void writeq_relaxed(u64 value, volatile void __iomem *addr)
- {
--	log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_write))
-+		log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
- 	__raw_writeq((u64 __force)__cpu_to_le64(value), addr);
--	log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-+	if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-+		log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
- 
+ /* FW requires minimum 4ms DMA buffer size */
 
 
 
