@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-187721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DF9BEBFBE
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 01:19:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A470BEBFFA
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 01:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5E1DD4E3A5A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 23:19:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 186ED1AA665C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 23:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AC824886E;
-	Fri, 17 Oct 2025 23:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589522641FB;
+	Fri, 17 Oct 2025 23:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lAlD/jVT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LGYchrFA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611D4354AE7
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 23:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1844E1A2C11
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 23:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760743160; cv=none; b=tfSTkxxvZMTMmdukn/Z13KW8yx/EVj7eaubJzNDS1oHj5cZnyUXynPT5tUEq9z3c3EmnhbJL1CrZTCIDiar80jXiXhTmxjadbkjIwKq5FGWSOxpU5Zi08ZG7qMLJSXsNSdU5+8iTpWSzXUTtiCAeksBBzAR3ZILLD9EgGnIocas=
+	t=1760743912; cv=none; b=GE/rwgqzjDnMfo5C5R60B9aedhvaCl7XmDnlpYM0XP9YOg2cnXBdj0QkVvUzo+c1BF+tkX5XERIp88p2mUqrCn7P695wVFr3BMvM6mDmeH0DJukOCsvfP4PUtOl41YbC2HdwBQTek3GVK1Klimg7wcRR24/JREubww1FuBTJSt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760743160; c=relaxed/simple;
-	bh=3CXLDZiXYkaQF3CV8YpNh/W6pbjAv9B+pDwZXX7m9aU=;
+	s=arc-20240116; t=1760743912; c=relaxed/simple;
+	bh=FejHJB5bTLCKMaVE2Q8+6k/9eSyGBUHoqQJnAkwAgEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zx/nZSyCAoNs5IN55CsGiC0mdRzVxa05BlBTUJFJKngIRl7hXDvYWMGxAyIF+s8uweJosKnnuV+6qWPJbRGwBN8q+ONf8ysvD6GUUwce+wrh7XOJWhiWkAgAXkBu5XnSaQBdVYW7hlOjtmLYg0SOaAAZDA7VXd5hkYRfQVawmO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lAlD/jVT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3287FC113D0;
-	Fri, 17 Oct 2025 23:19:19 +0000 (UTC)
+	 MIME-Version; b=tbMMGIiO0k8TwX7YOfNqYb60qm1NiEm5j32MxseCrIYCTMIL+VL71rbr57uTvwR5tWe/nnR4THfje/Q1/FogLY6SNCiAJ1q8ilRUcCYqgu8WellSAR8JGZT9Hcqt2EeoO37sepFDPw2/VK1QDmr+6QmZrT8Tq5bEm+kZni++OdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LGYchrFA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F49C4CEE7;
+	Fri, 17 Oct 2025 23:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760743159;
-	bh=3CXLDZiXYkaQF3CV8YpNh/W6pbjAv9B+pDwZXX7m9aU=;
+	s=k20201202; t=1760743912;
+	bh=FejHJB5bTLCKMaVE2Q8+6k/9eSyGBUHoqQJnAkwAgEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lAlD/jVTDu/BnEkpMGjMa73unhKd2dDjT8MX9Ve8ytZSOPDvHeeU3nc/07ZdbPs5c
-	 9F+0f+9J6Gtp29uLnurkKB4I5iR4Kf8n151kdmMcA2A/2FG5xkTFc/HmU4d8vvlNKx
-	 URJ68WeaXX5+FCMUcUho2hTj/4uVGV38o49rnWuaSvhho7ahJPgwFSr/jg+Lp8xZEY
-	 WKotSSfqE/0eDtQQP+Iqe05q7zuKklJrGGYPejNjrnK4kyVmQHAwYCP6Hmb0qukE3Z
-	 GPFloe/5RFDRxrVbAmxvfNwud5hQXxWU5tqN132mDbMM9BnNvdMncT20hubSnmShUd
-	 HSgJo4l9+lU9A==
+	b=LGYchrFAPaWP+rIN3CVm846hrjx4SjnTvFE6rNFlm5lQ+s1INcY+jMYJdyay+0Mzw
+	 w1W+Hr7DDwRnUXPmof4hmqz5zc2GOoG/AjIJeG5SFZjK7xKHHNyfEqTGYFOQKd09TQ
+	 vpy6Fe/8KlSeUr+LvUOKg1qeoXXV60K9O7j177eZseHcZ2NwJMMt6e/niKpZOjZlLG
+	 I+U/s8cncq/GbY8yF6NJ8WvC9YBZFjCv/pOoJi9+knbpiXUDIVaYwRt+Yc/O/ZC6y6
+	 wJKmMxdQX5ApbXRcLIEWKW7J+zq+mgmueSOkNUyetWagbBjFHo8upnQqfTFX8E4Muo
+	 zvgtjX3U8QdNQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Guoniu Zhou <guoniu.zhou@nxp.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Frank Li <Frank.Li@nxp.com>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] media: nxp: imx8-isi: m2m: Fix streaming cleanup on release
-Date: Fri, 17 Oct 2025 19:19:14 -0400
-Message-ID: <20251017231915.30718-2-sashal@kernel.org>
+Subject: [PATCH 5.4.y] media: s5p-mfc: remove an unused/uninitialized variable
+Date: Fri, 17 Oct 2025 19:31:49 -0400
+Message-ID: <20251017233149.37893-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017231915.30718-1-sashal@kernel.org>
-References: <2025101654-uninstall-elevation-901e@gregkh>
- <20251017231915.30718-1-sashal@kernel.org>
+In-Reply-To: <2025101648-overripe-deserving-c54c@gregkh>
+References: <2025101648-overripe-deserving-c54c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,343 +60,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Guoniu Zhou <guoniu.zhou@nxp.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 178aa3360220231dd91e7dbc2eb984525886c9c1 ]
+[ Upstream commit 7fa37ba25a1dfc084e24ea9acc14bf1fad8af14c ]
 
-If streamon/streamoff calls are imbalanced, such as when exiting an
-application with Ctrl+C when streaming, the m2m usage_count will never
-reach zero and the ISI channel won't be freed. Besides from that, if the
-input line width is more than 2K, it will trigger a WARN_ON():
+The s5p_mfc_cmd_args structure in the v6 driver is never used, not
+initialized to anything other than zero, but as of clang-21 this
+causes a warning:
 
-[ 59.222120] ------------[ cut here ]------------
-[ 59.226758] WARNING: drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c:631 at mxc_isi_channel_chain+0xa4/0x120, CPU#4: v4l2-ctl/654
-[ 59.238569] Modules linked in: ap1302
-[ 59.242231] CPU: 4 UID: 0 PID: 654 Comm: v4l2-ctl Not tainted 6.16.0-rc4-next-20250704-06511-gff0e002d480a-dirty #258 PREEMPT
-[ 59.253597] Hardware name: NXP i.MX95 15X15 board (DT)
-[ 59.258720] pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[ 59.265669] pc : mxc_isi_channel_chain+0xa4/0x120
-[ 59.270358] lr : mxc_isi_channel_chain+0x44/0x120
-[ 59.275047] sp : ffff8000848c3b40
-[ 59.278348] x29: ffff8000848c3b40 x28: ffff0000859b4c98 x27: ffff800081939f00
-[ 59.285472] x26: 000000000000000a x25: ffff0000859b4cb8 x24: 0000000000000001
-[ 59.292597] x23: ffff0000816f4760 x22: ffff0000816f4258 x21: ffff000084ceb780
-[ 59.299720] x20: ffff000084342ff8 x19: ffff000084340000 x18: 0000000000000000
-[ 59.306845] x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffffdb369e1c
-[ 59.313969] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-[ 59.321093] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-[ 59.328217] x8 : ffff8000848c3d48 x7 : ffff800081930b30 x6 : ffff800081930b30
-[ 59.335340] x5 : ffff0000859b6000 x4 : ffff80008193ae80 x3 : ffff800081022420
-[ 59.342464] x2 : ffff0000852f6900 x1 : 0000000000000001 x0 : ffff000084341000
-[ 59.349590] Call trace:
-[ 59.352025]  mxc_isi_channel_chain+0xa4/0x120 (P)
-[ 59.356722]  mxc_isi_m2m_streamon+0x160/0x20c
-[ 59.361072]  v4l_streamon+0x24/0x30
-[ 59.364556]  __video_do_ioctl+0x40c/0x4a0
-[ 59.368560]  video_usercopy+0x2bc/0x690
-[ 59.372382]  video_ioctl2+0x18/0x24
-[ 59.375857]  v4l2_ioctl+0x40/0x60
-[ 59.379168]  __arm64_sys_ioctl+0xac/0x104
-[ 59.383172]  invoke_syscall+0x48/0x104
-[ 59.386916]  el0_svc_common.constprop.0+0xc0/0xe0
-[ 59.391613]  do_el0_svc+0x1c/0x28
-[ 59.394915]  el0_svc+0x34/0xf4
-[ 59.397966]  el0t_64_sync_handler+0xa0/0xe4
-[ 59.402143]  el0t_64_sync+0x198/0x19c
-[ 59.405801] ---[ end trace 0000000000000000 ]---
+drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:45:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   45 |                                         &h2r_args);
+      |                                          ^~~~~~~~
 
-Address this issue by moving the streaming preparation and cleanup to
-the vb2 .prepare_streaming() and .unprepare_streaming() operations. This
-also simplifies the driver by allowing direct usage of the
-v4l2_m2m_ioctl_streamon() and v4l2_m2m_ioctl_streamoff() helpers.
+Just remove this for simplicity. Since the function is also called
+through a callback, this does require adding a trivial wrapper with
+the correct prototype.
 
-Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+Fixes: f96f3cfa0bb8 ("[media] s5p-mfc: Update MFC v4l2 driver to support MFC6.x")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250821135123.29462-1-laurent.pinchart@ideasonboard.com
-Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-Co-developed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Tested-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 [ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/nxp/imx8-isi/imx8-isi-m2m.c      | 224 +++++++-----------
- 1 file changed, 92 insertions(+), 132 deletions(-)
+ .../media/platform/s5p-mfc/s5p_mfc_cmd_v6.c   | 35 +++++++------------
+ 1 file changed, 13 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-index 7a9bc6fda3f81..81223d28ee56e 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-@@ -43,7 +43,6 @@ struct mxc_isi_m2m_ctx_queue_data {
- 	struct v4l2_pix_format_mplane format;
- 	const struct mxc_isi_format_info *info;
- 	u32 sequence;
--	bool streaming;
- };
+diff --git a/drivers/media/platform/s5p-mfc/s5p_mfc_cmd_v6.c b/drivers/media/platform/s5p-mfc/s5p_mfc_cmd_v6.c
+index 1f42130cc8658..23c47d92c0717 100644
+--- a/drivers/media/platform/s5p-mfc/s5p_mfc_cmd_v6.c
++++ b/drivers/media/platform/s5p-mfc/s5p_mfc_cmd_v6.c
+@@ -14,8 +14,7 @@
+ #include "s5p_mfc_opr.h"
+ #include "s5p_mfc_cmd_v6.h"
  
- struct mxc_isi_m2m_ctx {
-@@ -236,6 +235,65 @@ static void mxc_isi_m2m_vb2_buffer_queue(struct vb2_buffer *vb2)
- 	v4l2_m2m_buf_queue(ctx->fh.m2m_ctx, vbuf);
- }
- 
-+static int mxc_isi_m2m_vb2_prepare_streaming(struct vb2_queue *q)
-+{
-+	struct mxc_isi_m2m_ctx *ctx = vb2_get_drv_priv(q);
-+	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
-+	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
-+	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
-+	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
-+	struct mxc_isi_m2m *m2m = ctx->m2m;
-+	int ret;
-+
-+	guard(mutex)(&m2m->lock);
-+
-+	if (m2m->usage_count == INT_MAX)
-+		return -EOVERFLOW;
-+
-+	/*
-+	 * Acquire the pipe and initialize the channel with the first user of
-+	 * the M2M device.
-+	 */
-+	if (m2m->usage_count == 0) {
-+		bool bypass = cap_pix->width == out_pix->width &&
-+			      cap_pix->height == out_pix->height &&
-+			      cap_info->encoding == out_info->encoding;
-+
-+		ret = mxc_isi_channel_acquire(m2m->pipe,
-+					      &mxc_isi_m2m_frame_write_done,
-+					      bypass);
-+		if (ret)
-+			return ret;
-+
-+		mxc_isi_channel_get(m2m->pipe);
-+	}
-+
-+	m2m->usage_count++;
-+
-+	/*
-+	 * Allocate resources for the channel, counting how many users require
-+	 * buffer chaining.
-+	 */
-+	if (!ctx->chained && out_pix->width > MXC_ISI_MAX_WIDTH_UNCHAINED) {
-+		ret = mxc_isi_channel_chain(m2m->pipe);
-+		if (ret)
-+			goto err_deinit;
-+
-+		m2m->chained_count++;
-+		ctx->chained = true;
-+	}
-+
-+	return 0;
-+
-+err_deinit:
-+	if (--m2m->usage_count == 0) {
-+		mxc_isi_channel_put(m2m->pipe);
-+		mxc_isi_channel_release(m2m->pipe);
-+	}
-+
-+	return ret;
-+}
-+
- static int mxc_isi_m2m_vb2_start_streaming(struct vb2_queue *q,
- 					   unsigned int count)
+-static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
+-				struct s5p_mfc_cmd_args *args)
++static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd)
  {
-@@ -265,6 +323,35 @@ static void mxc_isi_m2m_vb2_stop_streaming(struct vb2_queue *q)
- 	}
+ 	mfc_debug(2, "Issue the command: %d\n", cmd);
+ 
+@@ -31,7 +30,6 @@ static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
+ 
+ static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
+ 	int ret;
+ 
+@@ -41,33 +39,23 @@ static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
+ 
+ 	mfc_write(dev, dev->ctx_buf.dma, S5P_FIMV_CONTEXT_MEM_ADDR_V6);
+ 	mfc_write(dev, buf_size->dev_ctx, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6);
  }
  
-+static void mxc_isi_m2m_vb2_unprepare_streaming(struct vb2_queue *q)
+ static int s5p_mfc_sleep_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6,
+-			&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6);
+ }
+ 
+ static int s5p_mfc_wakeup_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6);
+ }
+ 
+ /* Open a new instance and get its number */
+ static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int codec_type;
+ 
+ 	mfc_debug(2, "Requested codec mode: %d\n", ctx->codec_mode);
+@@ -129,23 +117,20 @@ static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ 	mfc_write(dev, ctx->ctx.size, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+ 	mfc_write(dev, 0, S5P_FIMV_D_CRC_CTRL_V6); /* no crc */
+ 
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6);
+ }
+ 
+ /* Close instance */
+ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int ret = 0;
+ 
+ 	dev->curr_ctx = ctx->num;
+ 	if (ctx->state != MFCINST_FREE) {
+ 		mfc_write(dev, ctx->inst_no, S5P_FIMV_INSTANCE_ID_V6);
+ 		ret = s5p_mfc_cmd_host2risc_v6(dev,
+-					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6,
+-					&h2r_args);
++					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6);
+ 	} else {
+ 		ret = -EINVAL;
+ 	}
+@@ -153,9 +138,15 @@ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ 	return ret;
+ }
+ 
++static int s5p_mfc_cmd_host2risc_v6_args(struct s5p_mfc_dev *dev, int cmd,
++				    struct s5p_mfc_cmd_args *ignored)
 +{
-+	struct mxc_isi_m2m_ctx *ctx = vb2_get_drv_priv(q);
-+	struct mxc_isi_m2m *m2m = ctx->m2m;
-+
-+	guard(mutex)(&m2m->lock);
-+
-+	/*
-+	 * If the last context is this one, reset it to make sure the device
-+	 * will be reconfigured when streaming is restarted.
-+	 */
-+	if (m2m->last_ctx == ctx)
-+		m2m->last_ctx = NULL;
-+
-+	/* Free the channel resources if this is the last chained context. */
-+	if (ctx->chained && --m2m->chained_count == 0)
-+		mxc_isi_channel_unchain(m2m->pipe);
-+	ctx->chained = false;
-+
-+	/* Turn off the light with the last user. */
-+	if (--m2m->usage_count == 0) {
-+		mxc_isi_channel_disable(m2m->pipe);
-+		mxc_isi_channel_put(m2m->pipe);
-+		mxc_isi_channel_release(m2m->pipe);
-+	}
-+
-+	WARN_ON(m2m->usage_count < 0);
++	return s5p_mfc_cmd_host2risc_v6(dev, cmd);
 +}
 +
- static const struct vb2_ops mxc_isi_m2m_vb2_qops = {
- 	.queue_setup		= mxc_isi_m2m_vb2_queue_setup,
- 	.buf_init		= mxc_isi_m2m_vb2_buffer_init,
-@@ -272,8 +359,10 @@ static const struct vb2_ops mxc_isi_m2m_vb2_qops = {
- 	.buf_queue		= mxc_isi_m2m_vb2_buffer_queue,
- 	.wait_prepare		= vb2_ops_wait_prepare,
- 	.wait_finish		= vb2_ops_wait_finish,
-+	.prepare_streaming	= mxc_isi_m2m_vb2_prepare_streaming,
- 	.start_streaming	= mxc_isi_m2m_vb2_start_streaming,
- 	.stop_streaming		= mxc_isi_m2m_vb2_stop_streaming,
-+	.unprepare_streaming	= mxc_isi_m2m_vb2_unprepare_streaming,
- };
- 
- static int mxc_isi_m2m_queue_init(void *priv, struct vb2_queue *src_vq,
-@@ -483,135 +572,6 @@ static int mxc_isi_m2m_s_fmt_vid(struct file *file, void *fh,
- 	return 0;
- }
- 
--static int mxc_isi_m2m_streamon(struct file *file, void *fh,
--				enum v4l2_buf_type type)
--{
--	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
--	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
--	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
--	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
--	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
--	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
--	struct mxc_isi_m2m *m2m = ctx->m2m;
--	int ret;
--
--	if (q->streaming)
--		return 0;
--
--	mutex_lock(&m2m->lock);
--
--	if (m2m->usage_count == INT_MAX) {
--		ret = -EOVERFLOW;
--		goto unlock;
--	}
--
--	/*
--	 * Acquire the pipe and initialize the channel with the first user of
--	 * the M2M device.
--	 */
--	if (m2m->usage_count == 0) {
--		bool bypass = cap_pix->width == out_pix->width &&
--			      cap_pix->height == out_pix->height &&
--			      cap_info->encoding == out_info->encoding;
--
--		ret = mxc_isi_channel_acquire(m2m->pipe,
--					      &mxc_isi_m2m_frame_write_done,
--					      bypass);
--		if (ret)
--			goto unlock;
--
--		mxc_isi_channel_get(m2m->pipe);
--	}
--
--	m2m->usage_count++;
--
--	/*
--	 * Allocate resources for the channel, counting how many users require
--	 * buffer chaining.
--	 */
--	if (!ctx->chained && out_pix->width > MXC_ISI_MAX_WIDTH_UNCHAINED) {
--		ret = mxc_isi_channel_chain(m2m->pipe);
--		if (ret)
--			goto deinit;
--
--		m2m->chained_count++;
--		ctx->chained = true;
--	}
--
--	/*
--	 * Drop the lock to start the stream, as the .device_run() operation
--	 * needs to acquire it.
--	 */
--	mutex_unlock(&m2m->lock);
--	ret = v4l2_m2m_ioctl_streamon(file, fh, type);
--	if (ret) {
--		/* Reacquire the lock for the cleanup path. */
--		mutex_lock(&m2m->lock);
--		goto unchain;
--	}
--
--	q->streaming = true;
--
--	return 0;
--
--unchain:
--	if (ctx->chained && --m2m->chained_count == 0)
--		mxc_isi_channel_unchain(m2m->pipe);
--	ctx->chained = false;
--
--deinit:
--	if (--m2m->usage_count == 0) {
--		mxc_isi_channel_put(m2m->pipe);
--		mxc_isi_channel_release(m2m->pipe);
--	}
--
--unlock:
--	mutex_unlock(&m2m->lock);
--	return ret;
--}
--
--static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
--				 enum v4l2_buf_type type)
--{
--	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
--	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
--	struct mxc_isi_m2m *m2m = ctx->m2m;
--
--	v4l2_m2m_ioctl_streamoff(file, fh, type);
--
--	if (!q->streaming)
--		return 0;
--
--	mutex_lock(&m2m->lock);
--
--	/*
--	 * If the last context is this one, reset it to make sure the device
--	 * will be reconfigured when streaming is restarted.
--	 */
--	if (m2m->last_ctx == ctx)
--		m2m->last_ctx = NULL;
--
--	/* Free the channel resources if this is the last chained context. */
--	if (ctx->chained && --m2m->chained_count == 0)
--		mxc_isi_channel_unchain(m2m->pipe);
--	ctx->chained = false;
--
--	/* Turn off the light with the last user. */
--	if (--m2m->usage_count == 0) {
--		mxc_isi_channel_disable(m2m->pipe);
--		mxc_isi_channel_put(m2m->pipe);
--		mxc_isi_channel_release(m2m->pipe);
--	}
--
--	WARN_ON(m2m->usage_count < 0);
--
--	mutex_unlock(&m2m->lock);
--
--	q->streaming = false;
--
--	return 0;
--}
--
- static const struct v4l2_ioctl_ops mxc_isi_m2m_ioctl_ops = {
- 	.vidioc_querycap		= mxc_isi_m2m_querycap,
- 
-@@ -632,8 +592,8 @@ static const struct v4l2_ioctl_ops mxc_isi_m2m_ioctl_ops = {
- 	.vidioc_prepare_buf		= v4l2_m2m_ioctl_prepare_buf,
- 	.vidioc_create_bufs		= v4l2_m2m_ioctl_create_bufs,
- 
--	.vidioc_streamon		= mxc_isi_m2m_streamon,
--	.vidioc_streamoff		= mxc_isi_m2m_streamoff,
-+	.vidioc_streamon		= v4l2_m2m_ioctl_streamon,
-+	.vidioc_streamoff		= v4l2_m2m_ioctl_streamoff,
- 
- 	.vidioc_subscribe_event		= v4l2_ctrl_subscribe_event,
- 	.vidioc_unsubscribe_event	= v4l2_event_unsubscribe,
+ /* Initialize cmd function pointers for MFC v6 */
+ static struct s5p_mfc_hw_cmds s5p_mfc_cmds_v6 = {
+-	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6,
++	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6_args,
+ 	.sys_init_cmd = s5p_mfc_sys_init_cmd_v6,
+ 	.sleep_cmd = s5p_mfc_sleep_cmd_v6,
+ 	.wakeup_cmd = s5p_mfc_wakeup_cmd_v6,
 -- 
 2.51.0
 
