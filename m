@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01266BEA63F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 178A6BEA2B4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FB471AE2C63
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315CF1894673
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAA7330B2B;
-	Fri, 17 Oct 2025 15:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E927F330B0D;
+	Fri, 17 Oct 2025 15:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqFse60V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFUUCmFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56144330B2D;
-	Fri, 17 Oct 2025 15:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FA020C00A;
+	Fri, 17 Oct 2025 15:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716583; cv=none; b=vCGXA9veYwyaxL44MzMq8iYdDJwlve1+i4cUmn4tjfiVBST0Pe12S1WPCjgLrSOLXOfvjCIR19rr+5VdAdAXpstSDiC9gdMAA9L8KcMTlYueUGc6mp37nlnzwxxSOJoyuZivPZZA+0tbRg1eK3NnHy167vcqFIVr4cpvRRAaxZE=
+	t=1760715857; cv=none; b=WT8fd9zw25thrG/c/s/YEVgksx695JIyVXAY6uBujBB0ha/PiRUVWqcHZPCxAmdina4/t1nIppY6Jzl5lshCH1r0/ng87BNlBqZktiFufzEExCJa5DLuCgy/LYaYNT7yP0frDnB2hla0PhOrJhmAIo6QUyxU8pyJL+N0wOEbhQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716583; c=relaxed/simple;
-	bh=66YS9PCK0aaIP+YNtH1ke7OG9iyhksEiAdDTCXfNjbs=;
+	s=arc-20240116; t=1760715857; c=relaxed/simple;
+	bh=xbtNezG51RR146oDMa1m0EmqIIkDcPcnNURFHymMh+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oB2H4clDtLfuLnSh5krmMNNY9J4CmQ8bmhKgAMTUlVjrHqAF/Y5vItMNE3hcuprCqe10HFlxMMOr97Ef76aN18u4oHSZ+SlZGyLjEDm/mFzkS5WHi+FTtHuU3S4jth2HAakjtv78gOGqMsCv56svoVCVzPUd3hFyAI5llVvKYLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqFse60V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE1EC4CEE7;
-	Fri, 17 Oct 2025 15:56:22 +0000 (UTC)
+	 MIME-Version; b=F/jzPRGQpj1igQpNgnLeecKGGVPukHAwKjNbbr2UB6tjJ8jOJWb8Zchk1TjU8nQj2SIZLcdB9qIBuHsgRCDTjwpZbGG+vc3mB0djDB/nDK8iBzJgrjWOOehQSnrFdo+MwFlVrr7dkI4T9xfKsjxc725uwqi4gJXEHfOHboDj9vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFUUCmFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBBBC4CEE7;
+	Fri, 17 Oct 2025 15:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716583;
-	bh=66YS9PCK0aaIP+YNtH1ke7OG9iyhksEiAdDTCXfNjbs=;
+	s=korg; t=1760715857;
+	bh=xbtNezG51RR146oDMa1m0EmqIIkDcPcnNURFHymMh+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqFse60V3DaCepBaUws55oya2YAEIZWiLx5rBGUBRmz5wK6dh0htrSGyJyhG9iJNh
-	 LHfMSJ8dFfe79eHDlxSZjaN+RfH2qd0k4p5DBZlO31tYldanJA5meW67iyVlIvFttz
-	 zKa9+Bq5SGchMfDVwbvRaYc9lFI/YB56C7HOaUWs=
+	b=EFUUCmFvZ7Rr8SYmpw1omGO4JabSyKh9Lff5QCwwxieESO/3s8Lc/Jct2OWc+WiOx
+	 jEv4MbOQHwXcP3cTGMOku1blDmzUSz1lePwt1U+XhUVS4bZ1RMUKQ3bloq5/V+IS89
+	 zq7N6gS0+RL9Fj6cB3UkSl4N3m/63RZlDoAJHt2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	gaoxiang17 <gaoxiang17@xiaomi.com>,
+	Baoquan He <bhe@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 240/276] btrfs: fix the incorrect max_bytes value for find_lock_delalloc_range()
-Date: Fri, 17 Oct 2025 16:55:33 +0200
-Message-ID: <20251017145151.232962239@linuxfoundation.org>
+Subject: [PATCH 6.17 361/371] pid: Add a judgment for ns null in pid_nr_ns
+Date: Fri, 17 Oct 2025 16:55:36 +0200
+Message-ID: <20251017145215.150977965@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,149 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: gaoxiang17 <gaoxiang17@xiaomi.com>
 
-[ Upstream commit 7b26da407420e5054e3f06c5d13271697add9423 ]
+[ Upstream commit 006568ab4c5ca2309ceb36fa553e390b4aa9c0c7 ]
 
-[BUG]
-With my local branch to enable bs > ps support for btrfs, sometimes I
-hit the following ASSERT() inside submit_one_sector():
+__task_pid_nr_ns
+        ns = task_active_pid_ns(current);
+        pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);
+                if (pid && ns->level <= pid->level) {
 
-	ASSERT(block_start != EXTENT_MAP_HOLE);
+Sometimes null is returned for task_active_pid_ns. Then it will trigger kernel panic in pid_nr_ns.
 
-Please note that it's not yet possible to hit this ASSERT() in the wild
-yet, as it requires btrfs bs > ps support, which is not even in the
-development branch.
+For example:
+	Unable to handle kernel NULL pointer dereference at virtual address 0000000000000058
+	Mem abort info:
+	ESR = 0x0000000096000007
+	EC = 0x25: DABT (current EL), IL = 32 bits
+	SET = 0, FnV = 0
+	EA = 0, S1PTW = 0
+	FSC = 0x07: level 3 translation fault
+	Data abort info:
+	ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
+	CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+	GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+	user pgtable: 4k pages, 39-bit VAs, pgdp=00000002175aa000
+	[0000000000000058] pgd=08000002175ab003, p4d=08000002175ab003, pud=08000002175ab003, pmd=08000002175be003, pte=0000000000000000
+	pstate: 834000c5 (Nzcv daIF +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+	pc : __task_pid_nr_ns+0x74/0xd0
+	lr : __task_pid_nr_ns+0x24/0xd0
+	sp : ffffffc08001bd10
+	x29: ffffffc08001bd10 x28: ffffffd4422b2000 x27: 0000000000000001
+	x26: ffffffd442821168 x25: ffffffd442821000 x24: 00000f89492eab31
+	x23: 00000000000000c0 x22: ffffff806f5693c0 x21: ffffff806f5693c0
+	x20: 0000000000000001 x19: 0000000000000000 x18: 0000000000000000
+	x17: 00000000529c6ef0 x16: 00000000529c6ef0 x15: 00000000023a1adc
+	x14: 0000000000000003 x13: 00000000007ef6d8 x12: 001167c391c78800
+	x11: 00ffffffffffffff x10: 0000000000000000 x9 : 0000000000000001
+	x8 : ffffff80816fa3c0 x7 : 0000000000000000 x6 : 49534d702d535449
+	x5 : ffffffc080c4c2c0 x4 : ffffffd43ee128c8 x3 : ffffffd43ee124dc
+	x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffffff806f5693c0
+	Call trace:
+	__task_pid_nr_ns+0x74/0xd0
+	...
+	__handle_irq_event_percpu+0xd4/0x284
+	handle_irq_event+0x48/0xb0
+	handle_fasteoi_irq+0x160/0x2d8
+	generic_handle_domain_irq+0x44/0x60
+	gic_handle_irq+0x4c/0x114
+	call_on_irq_stack+0x3c/0x74
+	do_interrupt_handler+0x4c/0x84
+	el1_interrupt+0x34/0x58
+	el1h_64_irq_handler+0x18/0x24
+	el1h_64_irq+0x68/0x6c
+	account_kernel_stack+0x60/0x144
+	exit_task_stack_account+0x1c/0x80
+	do_exit+0x7e4/0xaf8
+	...
+	get_signal+0x7bc/0x8d8
+	do_notify_resume+0x128/0x828
+	el0_svc+0x6c/0x70
+	el0t_64_sync_handler+0x68/0xbc
+	el0t_64_sync+0x1a8/0x1ac
+	Code: 35fffe54 911a02a8 f9400108 b4000128 (b9405a69)
+	---[ end trace 0000000000000000 ]---
+	Kernel panic - not syncing: Oops: Fatal exception in interrupt
 
-But on the other hand, there is also a very low chance to hit above
-ASSERT() with bs < ps cases, so this is an existing bug affect not only
-the incoming bs > ps support but also the existing bs < ps support.
-
-[CAUSE]
-Firstly that ASSERT() means we're trying to submit a dirty block but
-without a real extent map nor ordered extent map backing it.
-
-Furthermore with extra debugging, the folio triggering such ASSERT() is
-always larger than the fs block size in my bs > ps case.
-(8K block size, 4K page size)
-
-After some more debugging, the ASSERT() is trigger by the following
-sequence:
-
- extent_writepage()
- |  We got a 32K folio (4 fs blocks) at file offset 0, and the fs block
- |  size is 8K, page size is 4K.
- |  And there is another 8K folio at file offset 32K, which is also
- |  dirty.
- |  So the filemap layout looks like the following:
- |
- |  "||" is the filio boundary in the filemap.
- |  "//| is the dirty range.
- |
- |  0        8K       16K        24K         32K       40K
- |  |////////|        |//////////////////////||////////|
- |
- |- writepage_delalloc()
- |  |- find_lock_delalloc_range() for [0, 8K)
- |  |  Now range [0, 8K) is properly locked.
- |  |
- |  |- find_lock_delalloc_range() for [16K, 40K)
- |  |  |- btrfs_find_delalloc_range() returned range [16K, 40K)
- |  |  |- lock_delalloc_folios() locked folio 0 successfully
- |  |  |
- |  |  |  The filemap range [32K, 40K) got dropped from filemap.
- |  |  |
- |  |  |- lock_delalloc_folios() failed with -EAGAIN on folio 32K
- |  |  |  As the folio at 32K is dropped.
- |  |  |
- |  |  |- loops = 1;
- |  |  |- max_bytes = PAGE_SIZE;
- |  |  |- goto again;
- |  |  |  This will re-do the lookup for dirty delalloc ranges.
- |  |  |
- |  |  |- btrfs_find_delalloc_range() called with @max_bytes == 4K
- |  |  |  This is smaller than block size, so
- |  |  |  btrfs_find_delalloc_range() is unable to return any range.
- |  |  \- return false;
- |  |
- |  \- Now only range [0, 8K) has an OE for it, but for dirty range
- |     [16K, 32K) it's dirty without an OE.
- |     This breaks the assumption that writepage_delalloc() will find
- |     and lock all dirty ranges inside the folio.
- |
- |- extent_writepage_io()
-    |- submit_one_sector() for [0, 8K)
-    |  Succeeded
-    |
-    |- submit_one_sector() for [16K, 24K)
-       Triggering the ASSERT(), as there is no OE, and the original
-       extent map is a hole.
-
-Please note that, this also exposed the same problem for bs < ps
-support. E.g. with 64K page size and 4K block size.
-
-If we failed to lock a folio, and falls back into the "loops = 1;"
-branch, we will re-do the search using 64K as max_bytes.
-Which may fail again to lock the next folio, and exit early without
-handling all dirty blocks inside the folio.
-
-[FIX]
-Instead of using the fixed size PAGE_SIZE as @max_bytes, use
-@sectorsize, so that we are ensured to find and lock any remaining
-blocks inside the folio.
-
-And since we're here, add an extra ASSERT() to
-before calling btrfs_find_delalloc_range() to make sure the @max_bytes is
-at least no smaller than a block to avoid false negative.
-
-Cc: stable@vger.kernel.org # 5.15+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ adapted folio terminology and API calls to page-based equivalents ]
+Signed-off-by: gaoxiang17 <gaoxiang17@xiaomi.com>
+Link: https://lore.kernel.org/20250802022123.3536934-1-gxxa03070307@gmail.com
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ kernel/pid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2000,6 +2000,13 @@ again:
- 	/* step one, find a bunch of delalloc bytes starting at start */
- 	delalloc_start = *start;
- 	delalloc_end = 0;
-+
-+	/*
-+	 * If @max_bytes is smaller than a block, btrfs_find_delalloc_range() can
-+	 * return early without handling any dirty ranges.
-+	 */
-+	ASSERT(max_bytes >= fs_info->sectorsize);
-+
- 	found = btrfs_find_delalloc_range(tree, &delalloc_start, &delalloc_end,
- 					  max_bytes, &cached_state);
- 	if (!found || delalloc_end <= *start) {
-@@ -2028,13 +2035,14 @@ again:
- 				  delalloc_start, delalloc_end);
- 	ASSERT(!ret || ret == -EAGAIN);
- 	if (ret == -EAGAIN) {
--		/* some of the pages are gone, lets avoid looping by
--		 * shortening the size of the delalloc range we're searching
-+		/*
-+		 * Some of the pages are gone, lets avoid looping by
-+		 * shortening the size of the delalloc range we're searching.
- 		 */
- 		free_extent_state(cached_state);
- 		cached_state = NULL;
- 		if (!loops) {
--			max_bytes = PAGE_SIZE;
-+			max_bytes = fs_info->sectorsize;
- 			loops = 1;
- 			goto again;
- 		} else {
+diff --git a/kernel/pid.c b/kernel/pid.c
+index d94ce02505012..296cd04c24bae 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -491,7 +491,7 @@ pid_t pid_nr_ns(struct pid *pid, struct pid_namespace *ns)
+ 	struct upid *upid;
+ 	pid_t nr = 0;
+ 
+-	if (pid && ns->level <= pid->level) {
++	if (pid && ns && ns->level <= pid->level) {
+ 		upid = &pid->numbers[ns->level];
+ 		if (upid->ns == ns)
+ 			nr = upid->nr;
+-- 
+2.51.0
+
 
 
 
