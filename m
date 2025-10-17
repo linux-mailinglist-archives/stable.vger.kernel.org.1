@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A482BE9FD8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93ECBBE9E43
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8254B585E14
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:28:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A285B744484
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8711337110;
-	Fri, 17 Oct 2025 15:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69828217722;
+	Fri, 17 Oct 2025 15:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SR+TSRNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnWvh5zI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E3320A5E5;
-	Fri, 17 Oct 2025 15:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246A12F12A5;
+	Fri, 17 Oct 2025 15:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714931; cv=none; b=syXW2DHmYkrkktYqVQfuKDdmleyFpLo556mfs7YX4ABqADyUR8/8XPyLKCb90Lq7T96DPcwRsxePJlwwXYnuT6KsKPMQe1JVy5Csmj3tas7YXGYWRx0mcpgzlws5P7luq4FcNiRRrVpmumnGaaDbabwyx7ZPcGytsg9p20zIy6M=
+	t=1760714113; cv=none; b=sps/x1VSeOmWWeqhn5naFIzJZvzcG6+2OZFHc3ly5BCQjnnMTj+55B2NMyE82oIp8x4LujADbvLztM/57BZzlL+1gxc6aItqO1LeK4a0mTgDGvbDkpS3/tVRqWWQFQjVoUcNzLC4P8hhoWyokc5th/320lKztjKVymzGPDuEzcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714931; c=relaxed/simple;
-	bh=Sm9J04WPl+9X9m7pKUxKHneXEDfsF+VfHWa+Wh7/Kcs=;
+	s=arc-20240116; t=1760714113; c=relaxed/simple;
+	bh=ICL6BZv/6n3CxWWo7DUy6tg5RGOSMVZRZ/BtgusWHyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qHtBpMCKZuSBlUqQz9d6MHsxVltnH1g+MzClH3t5gFujc28Yd9IHENsadgDzp7evrucT4fk5dBg+xqkV38l7Z12dRAGZJrDtngai/GwIte8HGq9a6ozKW47++EtUtk68Liuj2KwqaSt+Ax9dUYenoYfwsmPblnAVCkOmzgbhMXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SR+TSRNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6840C4CEE7;
-	Fri, 17 Oct 2025 15:28:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jn3zBT15kuoXTFU0+l3HzUxBOQvb0MajlbrojcwdWnoNS2u9imV1pkISQ8PgA5HacLaj29ndI77UlyGI3eDt/5I+k1bgErdi6qhqF8BieKm49y6kePG/y7ozsmXnOJ8MxGYo+VQe8AqR3GwOahZdXVi77vaYc5MIp6I9umqZ26g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnWvh5zI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66ADC4CEE7;
+	Fri, 17 Oct 2025 15:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714931;
-	bh=Sm9J04WPl+9X9m7pKUxKHneXEDfsF+VfHWa+Wh7/Kcs=;
+	s=korg; t=1760714113;
+	bh=ICL6BZv/6n3CxWWo7DUy6tg5RGOSMVZRZ/BtgusWHyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SR+TSRNIFTz4GCjmg0B6m875IHJol77TB4/Gow5rrLxhjZYGTgrIN3YluxbEde42l
-	 vuDLXre0QrGaP1PEdCH4aJhKrRmnNAHDHmjWup63SBnRw+Ht6acUh0bBYHiaBGty1K
-	 ycOZc4C4R1YRHU295xoDV4xTsV0TGdEuMWpX4ghY=
+	b=rnWvh5zIzA8HyzboF649wRzcbytEYr9VNX064gj4AMwWHr021m1f6r9yacaDoZEV+
+	 ZceH4bdjYTKvoH+TgyrALFLP8qqsrzIoJPycfXPDj10++V+PkxLommrXC0/M6yqkpP
+	 ma/Af9tveAiESrS06TEHiDFOqVCNdFIo+H6g573w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20Le=20Goffic?= <clement.legoffic@foss.st.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 038/371] rtc: optee: fix memory leak on driver removal
-Date: Fri, 17 Oct 2025 16:50:13 +0200
-Message-ID: <20251017145203.178537568@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 007/277] page_pool: Fix PP_MAGIC_MASK to avoid crashing on some 32-bit arches
+Date: Fri, 17 Oct 2025 16:50:14 +0200
+Message-ID: <20251017145147.414183999@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,214 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Le Goffic <clement.legoffic@foss.st.com>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-[ Upstream commit a531350d2fe58f7fc4516e555f22391dee94efd9 ]
+commit 95920c2ed02bde551ab654e9749c2ca7bc3100e0 upstream.
 
-Fix a memory leak in case of driver removal.
-Free the shared memory used for arguments exchanges between kernel and
-OP-TEE RTC PTA.
+Helge reported that the introduction of PP_MAGIC_MASK let to crashes on
+boot on his 32-bit parisc machine. The cause of this is the mask is set
+too wide, so the page_pool_page_is_pp() incurs false positives which
+crashes the machine.
 
-Fixes: 81c2f059ab90 ("rtc: optee: add RTC driver for OP-TEE RTC PTA")
-Signed-off-by: Clément Le Goffic <clement.legoffic@foss.st.com>
-Link: https://lore.kernel.org/r/20250715-upstream-optee-rtc-v1-1-e0fdf8aae545@foss.st.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Just disabling the check in page_pool_is_pp() will lead to the page_pool
+code itself malfunctioning; so instead of doing this, this patch changes
+the define for PP_DMA_INDEX_BITS to avoid mistaking arbitrary kernel
+pointers for page_pool-tagged pages.
+
+The fix relies on the kernel pointers that alias with the pp_magic field
+always being above PAGE_OFFSET. With this assumption, we can use the
+lowest bit of the value of PAGE_OFFSET as the upper bound of the
+PP_DMA_INDEX_MASK, which should avoid the false positives.
+
+Because we cannot rely on PAGE_OFFSET always being a compile-time
+constant, nor on it always being >0, we fall back to disabling the
+dma_index storage when there are not enough bits available. This leaves
+us in the situation we were in before the patch in the Fixes tag, but
+only on a subset of architecture configurations. This seems to be the
+best we can do until the transition to page types in complete for
+page_pool pages.
+
+v2:
+- Make sure there's at least 8 bits available and that the PAGE_OFFSET
+  bit calculation doesn't wrap
+
+Link: https://lore.kernel.org/all/aMNJMFa5fDalFmtn@p100/
+Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
+Cc: stable@vger.kernel.org # 6.15+
+Tested-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Tested-by: Helge Deller <deller@gmx.de>
+Link: https://patch.msgid.link/20250930114331.675412-1-toke@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-optee.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/mm.h   |   22 ++++++++------
+ net/core/page_pool.c |   76 +++++++++++++++++++++++++++++++++++----------------
+ 2 files changed, 66 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/rtc/rtc-optee.c b/drivers/rtc/rtc-optee.c
-index 9f8b5d4a8f6b6..6b77c122fdc10 100644
---- a/drivers/rtc/rtc-optee.c
-+++ b/drivers/rtc/rtc-optee.c
-@@ -320,6 +320,7 @@ static int optee_rtc_remove(struct device *dev)
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4318,14 +4318,13 @@ static inline void pgalloc_tag_copy(stru
+  * since this value becomes part of PP_SIGNATURE; meaning we can just use the
+  * space between the PP_SIGNATURE value (without POISON_POINTER_DELTA), and the
+  * lowest bits of POISON_POINTER_DELTA. On arches where POISON_POINTER_DELTA is
+- * 0, we make sure that we leave the two topmost bits empty, as that guarantees
+- * we won't mistake a valid kernel pointer for a value we set, regardless of the
+- * VMSPLIT setting.
++ * 0, we use the lowest bit of PAGE_OFFSET as the boundary if that value is
++ * known at compile-time.
+  *
+- * Altogether, this means that the number of bits available is constrained by
+- * the size of an unsigned long (at the upper end, subtracting two bits per the
+- * above), and the definition of PP_SIGNATURE (with or without
+- * POISON_POINTER_DELTA).
++ * If the value of PAGE_OFFSET is not known at compile time, or if it is too
++ * small to leave at least 8 bits available above PP_SIGNATURE, we define the
++ * number of bits to be 0, which turns off the DMA index tracking altogether
++ * (see page_pool_register_dma_index()).
+  */
+ #define PP_DMA_INDEX_SHIFT (1 + __fls(PP_SIGNATURE - POISON_POINTER_DELTA))
+ #if POISON_POINTER_DELTA > 0
+@@ -4334,8 +4333,13 @@ static inline void pgalloc_tag_copy(stru
+  */
+ #define PP_DMA_INDEX_BITS MIN(32, __ffs(POISON_POINTER_DELTA) - PP_DMA_INDEX_SHIFT)
+ #else
+-/* Always leave out the topmost two; see above. */
+-#define PP_DMA_INDEX_BITS MIN(32, BITS_PER_LONG - PP_DMA_INDEX_SHIFT - 2)
++/* Use the lowest bit of PAGE_OFFSET if there's at least 8 bits available; see above */
++#define PP_DMA_INDEX_MIN_OFFSET (1 << (PP_DMA_INDEX_SHIFT + 8))
++#define PP_DMA_INDEX_BITS ((__builtin_constant_p(PAGE_OFFSET) && \
++			    PAGE_OFFSET >= PP_DMA_INDEX_MIN_OFFSET && \
++			    !(PAGE_OFFSET & (PP_DMA_INDEX_MIN_OFFSET - 1))) ? \
++			      MIN(32, __ffs(PAGE_OFFSET) - PP_DMA_INDEX_SHIFT) : 0)
++
+ #endif
+ 
+ #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -462,11 +462,60 @@ page_pool_dma_sync_for_device(const stru
+ 	}
+ }
+ 
++static int page_pool_register_dma_index(struct page_pool *pool,
++					netmem_ref netmem, gfp_t gfp)
++{
++	int err = 0;
++	u32 id;
++
++	if (unlikely(!PP_DMA_INDEX_BITS))
++		goto out;
++
++	if (in_softirq())
++		err = xa_alloc(&pool->dma_mapped, &id, netmem_to_page(netmem),
++			       PP_DMA_INDEX_LIMIT, gfp);
++	else
++		err = xa_alloc_bh(&pool->dma_mapped, &id, netmem_to_page(netmem),
++				  PP_DMA_INDEX_LIMIT, gfp);
++	if (err) {
++		WARN_ONCE(err != -ENOMEM, "couldn't track DMA mapping, please report to netdev@");
++		goto out;
++	}
++
++	netmem_set_dma_index(netmem, id);
++out:
++	return err;
++}
++
++static int page_pool_release_dma_index(struct page_pool *pool,
++				       netmem_ref netmem)
++{
++	struct page *old, *page = netmem_to_page(netmem);
++	unsigned long id;
++
++	if (unlikely(!PP_DMA_INDEX_BITS))
++		return 0;
++
++	id = netmem_get_dma_index(netmem);
++	if (!id)
++		return -1;
++
++	if (in_softirq())
++		old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
++	else
++		old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
++	if (old != page)
++		return -1;
++
++	netmem_set_dma_index(netmem, 0);
++
++	return 0;
++}
++
+ static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t gfp)
  {
- 	struct optee_rtc *priv = dev_get_drvdata(dev);
+ 	dma_addr_t dma;
+ 	int err;
+-	u32 id;
  
-+	tee_shm_free(priv->shm);
- 	tee_client_close_session(priv->ctx, priv->session_id);
- 	tee_client_close_context(priv->ctx);
+ 	/* Setup DMA mapping: use 'struct page' area for storing DMA-addr
+ 	 * since dma_addr_t can be either 32 or 64 bits and does not always fit
+@@ -485,18 +534,10 @@ static bool page_pool_dma_map(struct pag
+ 		goto unmap_failed;
+ 	}
  
--- 
-2.51.0
-
+-	if (in_softirq())
+-		err = xa_alloc(&pool->dma_mapped, &id, netmem_to_page(netmem),
+-			       PP_DMA_INDEX_LIMIT, gfp);
+-	else
+-		err = xa_alloc_bh(&pool->dma_mapped, &id, netmem_to_page(netmem),
+-				  PP_DMA_INDEX_LIMIT, gfp);
+-	if (err) {
+-		WARN_ONCE(err != -ENOMEM, "couldn't track DMA mapping, please report to netdev@");
++	err = page_pool_register_dma_index(pool, netmem, gfp);
++	if (err)
+ 		goto unset_failed;
+-	}
+ 
+-	netmem_set_dma_index(netmem, id);
+ 	page_pool_dma_sync_for_device(pool, netmem, pool->p.max_len);
+ 
+ 	return true;
+@@ -669,8 +710,6 @@ void page_pool_clear_pp_info(netmem_ref
+ static __always_inline void __page_pool_release_page_dma(struct page_pool *pool,
+ 							 netmem_ref netmem)
+ {
+-	struct page *old, *page = netmem_to_page(netmem);
+-	unsigned long id;
+ 	dma_addr_t dma;
+ 
+ 	if (!pool->dma_map)
+@@ -679,15 +718,7 @@ static __always_inline void __page_pool_
+ 		 */
+ 		return;
+ 
+-	id = netmem_get_dma_index(netmem);
+-	if (!id)
+-		return;
+-
+-	if (in_softirq())
+-		old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
+-	else
+-		old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
+-	if (old != page)
++	if (page_pool_release_dma_index(pool, netmem))
+ 		return;
+ 
+ 	dma = page_pool_get_dma_addr_netmem(netmem);
+@@ -697,7 +728,6 @@ static __always_inline void __page_pool_
+ 			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
+ 			     DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING);
+ 	page_pool_set_dma_addr_netmem(netmem, 0);
+-	netmem_set_dma_index(netmem, 0);
+ }
+ 
+ /* Disconnects a page (from a page_pool).  API users can have a need
 
 
 
