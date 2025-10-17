@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-186890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E43BE9F6C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:36:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9ADBE9730
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2FDB05095B3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:23:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65EBF3AC51F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489CB336EE7;
-	Fri, 17 Oct 2025 15:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55103370FB;
+	Fri, 17 Oct 2025 14:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzZQ0qH/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sfmz/4Dd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041FE336EEB;
-	Fri, 17 Oct 2025 15:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B1E337111;
+	Fri, 17 Oct 2025 14:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714519; cv=none; b=qIPkrx5IdBThV4/VcB1S+4DDquEM2fP2quyizukzj1qijLiDzcZFVzBO8WYa9BMS+n7GId8gV9/mOL2k4fBfJGnHvCMX9Ukoj28qdPUXDTKeui+o6F0fjn9NfsrMT0s26LfOS+GamhuwVvBoS1TiLoSkADkBmucW3EBEH+9YnV4=
+	t=1760713156; cv=none; b=mZFIUGuQ3a1w23PEBACZJMaf/HUzvbE98wb3cQirCmmNtE+YnfRAU4+zzyTcJLUTnJxpJr3NvkYe7gxUsGAspj1qPTpVoBMKPaQaawloO8dgaETjDsP0EzJWIzic34fjemRrXC9bLb2Rm7jRQJzRJlTTUbn2posVrei+3HhANT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714519; c=relaxed/simple;
-	bh=dKpb3rb6cFJoqRmIBtrzmhnY7jTKDTD1tldgka6JAvU=;
+	s=arc-20240116; t=1760713156; c=relaxed/simple;
+	bh=s6thaIzg5p5A4r3x9uJktkJxbpbMCC8GCdOx86vGtpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nor0lYrhBklHxX7Do+kHRc7GfIeL/K2XexgfdZ21tul8GORhD1Lk1bPDmyGmJIRkqBcS+URFsEFrYj/fMkUUYoJ7jCmRE+I1cApg4XDDKW5mjXhmvzQ9qKSvusOJ0pI0RwwR58gNdtCn4hzCPRLbqVxSMGPnX7+NxEi6Is05pvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzZQ0qH/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73814C4CEE7;
-	Fri, 17 Oct 2025 15:21:58 +0000 (UTC)
+	 MIME-Version; b=IJt2dlpDc7dVXdg3YR82fnVM7QgGeMLzOdaBRClyDABuNVY4A6zPqXs/kLX0aKrZto2UvLHVpmBOXgu9sLJw1GMt0be6uNd1uHl+222NYG1wzozIJtSnWoUxeHCtsnYNzZObeGMeERYGcjKC2LFr+4KQ5DquaXD6eXIeYu7AO90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sfmz/4Dd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153D9C4CEFE;
+	Fri, 17 Oct 2025 14:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714518;
-	bh=dKpb3rb6cFJoqRmIBtrzmhnY7jTKDTD1tldgka6JAvU=;
+	s=korg; t=1760713156;
+	bh=s6thaIzg5p5A4r3x9uJktkJxbpbMCC8GCdOx86vGtpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gzZQ0qH/YFpiwzcmWN1GPux9p4RdmkbuSCJ5d0z7DKNUxow4A2gQhjl5GntUULGwt
-	 H1oE83/kujqmx3bioQX944wD0p+mHP/Iea8BOGxlIWWQI2TkUX7cmahCiOVwq+F/zr
-	 dmfwy3VHP80Ejz5BCnjLCyWlIwA+XR8ONzyc3v8s=
+	b=Sfmz/4DdgUObAIUR4sXtsMn1tuqsQc5Tqg4nr01XKuhc9jd04Ek2QlxTFcfC6d2S7
+	 QQ6SGmyaKtq656TPaHIfzWGQ/62BAHlwB7xn8ccmasUWa5S2MsXfmsOKMNO7QEP0Iq
+	 W7MfbIDaaU8Bo3yO7TkBlMTlpK0ciIOtIlde0UEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	"OGriofa, Conall" <conall.ogriofa@amd.com>,
-	"Erim, Salih" <Salih.Erim@amd.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 140/277] iio: xilinx-ams: Fix AMS_ALARM_THR_DIRECT_MASK
+	Petr Vorel <pvorel@suse.cz>,
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.1 068/168] drm/nouveau: fix bad ret code in nouveau_bo_move_prep
 Date: Fri, 17 Oct 2025 16:52:27 +0200
-Message-ID: <20251017145152.237283565@linuxfoundation.org>
+Message-ID: <20251017145131.531405490@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-commit 1315cc2dbd5034f566e20ddce4d675cb9e6d4ddd upstream.
+commit e4bea919584ff292c9156cf7d641a2ab3cbe27b0 upstream.
 
-AMS_ALARM_THR_DIRECT_MASK should be bit 0, not bit 1. This would cause
-hysteresis to be enabled with a lower threshold of -28C. The temperature
-alarm would never deassert even if the temperature dropped below the
-upper threshold.
+In `nouveau_bo_move_prep`, if `nouveau_mem_map` fails, an error code
+should be returned. Currently, it returns zero even if vmm addr is not
+correctly mapped.
 
-Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: O'Griofa, Conall <conall.ogriofa@amd.com>
-Tested-by: Erim, Salih <Salih.Erim@amd.com>
-Acked-by: Erim, Salih <Salih.Erim@amd.com>
-Link: https://patch.msgid.link/20250715003058.2035656-1-sean.anderson@linux.dev
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Fixes: 9ce523cc3bf2 ("drm/nouveau: separate buffer object backing memory from nvkm structures")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/xilinx-ams.c |    2 +-
+ drivers/gpu/drm/nouveau/nouveau_bo.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/xilinx-ams.c
-+++ b/drivers/iio/adc/xilinx-ams.c
-@@ -118,7 +118,7 @@
- #define AMS_ALARM_THRESHOLD_OFF_10	0x10
- #define AMS_ALARM_THRESHOLD_OFF_20	0x20
+--- a/drivers/gpu/drm/nouveau/nouveau_bo.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
+@@ -791,7 +791,7 @@ done:
+ 		nvif_vmm_put(vmm, &old_mem->vma[1]);
+ 		nvif_vmm_put(vmm, &old_mem->vma[0]);
+ 	}
+-	return 0;
++	return ret;
+ }
  
--#define AMS_ALARM_THR_DIRECT_MASK	BIT(1)
-+#define AMS_ALARM_THR_DIRECT_MASK	BIT(0)
- #define AMS_ALARM_THR_MIN		0x0000
- #define AMS_ALARM_THR_MAX		(BIT(16) - 1)
- 
+ static int
 
 
 
