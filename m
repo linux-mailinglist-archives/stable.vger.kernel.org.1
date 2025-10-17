@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F02BEA485
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:58 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32765BE9DE1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D1F37C505B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A85C1585BDB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D92330B2E;
-	Fri, 17 Oct 2025 15:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D6B32E135;
+	Fri, 17 Oct 2025 15:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahRDjOvu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+jU5Y5l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3AA330B1F;
-	Fri, 17 Oct 2025 15:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAAF32E15D;
+	Fri, 17 Oct 2025 15:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716023; cv=none; b=Aqzhlgt0Mi5M+AZBAfQSunhKrhT1dJZw67+ba8reozdOxrcB+F23bXAdVN/ysrjVKdfNLf7QHBhQQU4ColFxABFqnX0ZXnNX5I4op2cXNYGIgfIzvPXHYOwAmWDxhw6EGdsKOOHLQECu6Kh67IKHfiozE7/WC47mBwQ0zhcmzm8=
+	t=1760714407; cv=none; b=oDyVQIBpj88gEQNu0gHpoZT1MbZboMVVOj4P5qrHzYJFhFq1CILwJAhDTiRVfP37DU4fme2fHi8SYlmv74Teh8r3qAwi6+T7SEUuWvzK+EzdCu7EP2agXdZJ/wmDCI5jl3YpIlO1PTQEQH/vZpE7iDJCzykgkfIYP06dYGJNhdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716023; c=relaxed/simple;
-	bh=3jRmJsvtxEUnlSOgRktLEU6yS52gv5LNy/g+Hk/PRTM=;
+	s=arc-20240116; t=1760714407; c=relaxed/simple;
+	bh=vMs9PYzS+aiHnquPePHMMkPtTPmzSpGH9a74U1NcWvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XTnnH3Mhgn7zGEyOIFXmF+ijlrLSr/zwMDsfFpWHmWTSAw7wkK7clNbZLmawnRLzFXgtfViplCcl3nPWMx8nGu9cVX0yugnWLEEsI7mJSYah9pReqGc1K794tN3JS2yZttp6RimoCgH+fR3p+gfuKQeUi52A6UZd2zX5k3/QNgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahRDjOvu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78813C116B1;
-	Fri, 17 Oct 2025 15:47:02 +0000 (UTC)
+	 MIME-Version; b=pn+v/RJntuC/cBhkSEcV24SxLQ/g9CaxGWPqcK01T7+p7fab+jfb2RYLaeHFOWGhy9iDOAP8SqSMjJCbiRIcsMXErlB7oUvrAmFtktZAyahuq06tSTdwv6YdLaD4CNSB+J9aw6aJ31Gl8nM1uQp/tWKnJhHESwGZ4ctJg3UXn8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+jU5Y5l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB46AC4CEE7;
+	Fri, 17 Oct 2025 15:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716022;
-	bh=3jRmJsvtxEUnlSOgRktLEU6yS52gv5LNy/g+Hk/PRTM=;
+	s=korg; t=1760714407;
+	bh=vMs9PYzS+aiHnquPePHMMkPtTPmzSpGH9a74U1NcWvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahRDjOvuJIngTWn3n2UZErrHJQBmmMXNT61+iDPhcGcQlyJ6EqriYHcCPlpLyjdYg
-	 FnLzX+wdwt8MLX0JLkbVYcCOsP/LoGVPrbgxwXqGh8sAVMobcZEAvn5YoitlYiZ8Rb
-	 sWsqwFVx1i78akmQPUXUK3fg4sO4Tt/V33DZ338Y=
+	b=v+jU5Y5lha4q/0KQ7BvjPrbsQTjWYRKu2lG6c/oQqMBcpk3F8vKPYlSEOo19pvIET
+	 OT2oC6cW0fLYc/VvQ6B+WnA4ugeLphFy0x9yH+QDvazvbz3fl9QGXKETYFhj4d1JtN
+	 KemxyIroVbhsTLJ8h+8ELFPkfYe5CVsdIJfsZSOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 047/276] smp: Fix up and expand the smp_call_function_many() kerneldoc
+	Shashank A P <shashank.ap@samsung.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.12 133/277] fs: quota: create dedicated workqueue for quota_release_work
 Date: Fri, 17 Oct 2025 16:52:20 +0200
-Message-ID: <20251017145144.120339077@linuxfoundation.org>
+Message-ID: <20251017145151.981394004@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Shashank A P <shashank.ap@samsung.com>
 
-[ Upstream commit ccf09357ffef2ab472369ab9cdf470c9bc9b821a ]
+commit 72b7ceca857f38a8ca7c5629feffc63769638974 upstream.
 
-The smp_call_function_many() kerneldoc comment got out of sync with the
-function definition (bool parameter "wait" is incorrectly described as a
-bitmask in it), so fix it up by copying the "wait" description from the
-smp_call_function() kerneldoc and add information regarding the handling
-of the local CPU to it.
+There is a kernel panic due to WARN_ONCE when panic_on_warn is set.
 
-Fixes: 49b3bd213a9f ("smp: Fix all kernel-doc warnings")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue occurs when writeback is triggered due to sync call for an
+opened file(ie, writeback reason is WB_REASON_SYNC). When f2fs balance
+is needed at sync path, flush for quota_release_work is triggered.
+By default quota_release_work is queued to "events_unbound" queue which
+does not have WQ_MEM_RECLAIM flag. During f2fs balance "writeback"
+workqueue tries to flush quota_release_work causing kernel panic due to
+MEM_RECLAIM flag mismatch errors.
+
+This patch creates dedicated workqueue with WQ_MEM_RECLAIM flag
+for work quota_release_work.
+
+------------[ cut here ]------------
+WARNING: CPU: 4 PID: 14867 at kernel/workqueue.c:3721 check_flush_dependency+0x13c/0x148
+Call trace:
+ check_flush_dependency+0x13c/0x148
+ __flush_work+0xd0/0x398
+ flush_delayed_work+0x44/0x5c
+ dquot_writeback_dquots+0x54/0x318
+ f2fs_do_quota_sync+0xb8/0x1a8
+ f2fs_write_checkpoint+0x3cc/0x99c
+ f2fs_gc+0x190/0x750
+ f2fs_balance_fs+0x110/0x168
+ f2fs_write_single_data_page+0x474/0x7dc
+ f2fs_write_data_pages+0x7d0/0xd0c
+ do_writepages+0xe0/0x2f4
+ __writeback_single_inode+0x44/0x4ac
+ writeback_sb_inodes+0x30c/0x538
+ wb_writeback+0xf4/0x440
+ wb_workfn+0x128/0x5d4
+ process_scheduled_works+0x1c4/0x45c
+ worker_thread+0x32c/0x3e8
+ kthread+0x11c/0x1b0
+ ret_from_fork+0x10/0x20
+Kernel panic - not syncing: kernel: panic_on_warn set ...
+
+Fixes: ac6f420291b3 ("quota: flush quota_release_work upon quota writeback")
+CC: stable@vger.kernel.org
+Signed-off-by: Shashank A P <shashank.ap@samsung.com>
+Link: https://patch.msgid.link/20250901092905.2115-1-shashank.ap@samsung.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/smp.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ fs/quota/dquot.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index b60525b34ab05..387df30ca5609 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -976,16 +976,15 @@ static void smp_call_function_many_cond(const struct cpumask *mask,
-  * @mask: The set of cpus to run on (only runs on online subset).
-  * @func: The function to run. This must be fast and non-blocking.
-  * @info: An arbitrary pointer to pass to the function.
-- * @wait: Bitmask that controls the operation. If %SCF_WAIT is set, wait
-- *        (atomically) until function has completed on other CPUs. If
-- *        %SCF_RUN_LOCAL is set, the function will also be run locally
-- *        if the local CPU is set in the @cpumask.
-- *
-- * If @wait is true, then returns once @func has returned.
-+ * @wait: If true, wait (atomically) until function has completed
-+ *        on other CPUs.
-  *
-  * You must not call this function with disabled interrupts or from a
-  * hardware interrupt handler or from a bottom half handler. Preemption
-  * must be disabled when calling this function.
-+ *
-+ * @func is not called on the local CPU even if @mask contains it.  Consider
-+ * using on_each_cpu_cond_mask() instead if this is not desirable.
-  */
- void smp_call_function_many(const struct cpumask *mask,
- 			    smp_call_func_t func, void *info, bool wait)
--- 
-2.51.0
-
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -163,6 +163,9 @@ static struct quota_module_name module_n
+ /* SLAB cache for dquot structures */
+ static struct kmem_cache *dquot_cachep;
+ 
++/* workqueue for work quota_release_work*/
++static struct workqueue_struct *quota_unbound_wq;
++
+ void register_quota_format(struct quota_format_type *fmt)
+ {
+ 	spin_lock(&dq_list_lock);
+@@ -882,7 +885,7 @@ void dqput(struct dquot *dquot)
+ 	put_releasing_dquots(dquot);
+ 	atomic_dec(&dquot->dq_count);
+ 	spin_unlock(&dq_list_lock);
+-	queue_delayed_work(system_unbound_wq, &quota_release_work, 1);
++	queue_delayed_work(quota_unbound_wq, &quota_release_work, 1);
+ }
+ EXPORT_SYMBOL(dqput);
+ 
+@@ -3042,6 +3045,11 @@ static int __init dquot_init(void)
+ 
+ 	shrinker_register(dqcache_shrinker);
+ 
++	quota_unbound_wq = alloc_workqueue("quota_events_unbound",
++					   WQ_UNBOUND | WQ_MEM_RECLAIM, WQ_MAX_ACTIVE);
++	if (!quota_unbound_wq)
++		panic("Cannot create quota_unbound_wq\n");
++
+ 	return 0;
+ }
+ fs_initcall(dquot_init);
 
 
 
