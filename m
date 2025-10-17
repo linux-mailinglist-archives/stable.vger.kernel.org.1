@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA65FBE99FF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:59 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECFE9BE9644
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93FE8745AC1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B4AF8508414
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3E12F12BE;
-	Fri, 17 Oct 2025 15:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598AB337107;
+	Fri, 17 Oct 2025 14:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ViBkbGvM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4+x9aPK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659FF3370FA;
-	Fri, 17 Oct 2025 15:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F5E3370F6;
+	Fri, 17 Oct 2025 14:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713551; cv=none; b=ehmeadCqURv9s1+/kyBSfbmXQGGwjccFHI+90PdzBpcWcwStYU8Q/IqRqQp50kPvnGqsVe8r2caOCEFbS/dnguYiJn6GAevwd95jcHkDgKa+1jDUDaRKv7Fp+SHGPwFpEa8J84+BatA7SYAd2zTNiRGQD6XIm5FVuODNQD0Q8v0=
+	t=1760713066; cv=none; b=sYfLv/qXrPscqpHmMnm58j0LmIcF0SLXO3By35ET9uFGnA8DAJIjglZG9d9tzR6R7uRH3h/kSjBL2luEKPlFKvJWIAheC16yOzpi3X1STovnEEpnfE4EOK4sXVLc9gpjSieEJzc/zcf7mOkSSzUcRyCf5dAbvZx5AO70pMATSLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713551; c=relaxed/simple;
-	bh=HAI53zNoauSK+A7Ksj8f4xci7hjOrPVa1limhPQYn6Y=;
+	s=arc-20240116; t=1760713066; c=relaxed/simple;
+	bh=smz7diFiyEc2LJ6HvOb3raVh6rpzwfoWWsah7muajvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1A/0MWBzWahnR9PnfzEtRorjYQghvRElN4iVKOOoeZmeWBbFm3AlM+1wEIu+j3ADOe39ur4hSDdvLAawcyUuGg74tj4sQ+gY8fLYP4/ZgNHFXnBNszq9PXSr591sh4C83fXclVQ29SLD07ghODw2QanaN7a6hftR6VTsVOFJxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ViBkbGvM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD466C4CEE7;
-	Fri, 17 Oct 2025 15:05:50 +0000 (UTC)
+	 MIME-Version; b=royxkC+P1dkYkkOo5y6BRsjOZdYRnFb+eMAaQ6k61iCcqiS2vHTcKQPvEzBLq0wEp1Y0fzEx/ngFF09WRYscgrDhNSwny2dxDBtJNQ6eRdiTB1VnPaZbGV5N8YcOOlsR6WyhMHbKrFWusDWBV8LbHZpxojKrDd44JoJ+yoNGcDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4+x9aPK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F21C4CEE7;
+	Fri, 17 Oct 2025 14:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713551;
-	bh=HAI53zNoauSK+A7Ksj8f4xci7hjOrPVa1limhPQYn6Y=;
+	s=korg; t=1760713065;
+	bh=smz7diFiyEc2LJ6HvOb3raVh6rpzwfoWWsah7muajvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ViBkbGvM9ucSu2odQVe00veMCYmszwdk1DWDU/9Ypw4pobvloMj6AvcTqiANso5AC
-	 VbPdPFVy8dTVApUuWKV3LE8kbJO6W6rnG/TyDuf4uT62DXYHq4Ch85vDe+wLFFQJk8
-	 J49JuqremVBxG/EtDqEKCCCn5YFydH4iNK0HJEQA=
+	b=w4+x9aPKB0Tla08ULIWBs+DOjzd6y65mWmT+XIvce+HwEshuzx6WeWVkfTr8p4KCE
+	 Yb4x86qOmLFyUeyi00TUwgHlgnW9cPshSgtdZyv1vJqB3SQQYdwfDsrCjnLpGqs/Qk
+	 VhuPExRWqee9O4/+tH0xeu5Va9GXfYs5PlJnAd3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandr Sapozhnikov <alsp705@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/201] net/sctp: fix a null dereference in sctp_disposition sctp_sf_do_5_1D_ce()
+Subject: [PATCH 6.1 018/168] clk: mediatek: mt8195-infra_ao: Fix parent for infra_ao_hdmi_26m
 Date: Fri, 17 Oct 2025 16:51:37 +0200
-Message-ID: <20251017145136.070047258@linuxfoundation.org>
+Message-ID: <20251017145129.689873888@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandr Sapozhnikov <alsp705@gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 2f3119686ef50319490ccaec81a575973da98815 ]
+[ Upstream commit 6c4c26b624790098988c1034541087e3e5ed5bed ]
 
-If new_asoc->peer.adaptation_ind=0 and sctp_ulpevent_make_authkey=0
-and sctp_ulpevent_make_authkey() returns 0, then the variable
-ai_ev remains zero and the zero will be dereferenced
-in the sctp_ulpevent_free() function.
+The infrastructure gate for the HDMI specific crystal needs the
+top_hdmi_xtal clock to be configured in order to ungate the 26m
+clock to the HDMI IP, and it wouldn't work without.
 
-Signed-off-by: Alexandr Sapozhnikov <alsp705@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Fixes: 30f6ebf65bc4 ("sctp: add SCTP_AUTH_NO_AUTH type for AUTHENTICATION_EVENT")
-Link: https://patch.msgid.link/20251002091448.11-1-alsp705@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reparent the infra_ao_hdmi_26m clock to top_hdmi_xtal to fix that.
+
+Fixes: e2edf59dec0b ("clk: mediatek: Add MT8195 infrastructure clock support")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_statefuns.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/mediatek/clk-mt8195-infra_ao.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 808863e047e0c..2d88654e8d8e7 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -884,7 +884,8 @@ enum sctp_disposition sctp_sf_do_5_1D_ce(struct net *net,
- 	return SCTP_DISPOSITION_CONSUME;
- 
- nomem_authev:
--	sctp_ulpevent_free(ai_ev);
-+	if (ai_ev)
-+		sctp_ulpevent_free(ai_ev);
- nomem_aiev:
- 	sctp_ulpevent_free(ev);
- nomem_ev:
+diff --git a/drivers/clk/mediatek/clk-mt8195-infra_ao.c b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
+index fcd410461d3bb..516b5830f16e1 100644
+--- a/drivers/clk/mediatek/clk-mt8195-infra_ao.c
++++ b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
+@@ -103,7 +103,7 @@ static const struct mtk_gate infra_ao_clks[] = {
+ 	GATE_INFRA_AO0(CLK_INFRA_AO_CQ_DMA_FPC, "infra_ao_cq_dma_fpc", "fpc", 28),
+ 	GATE_INFRA_AO0(CLK_INFRA_AO_UART5, "infra_ao_uart5", "top_uart", 29),
+ 	/* INFRA_AO1 */
+-	GATE_INFRA_AO1(CLK_INFRA_AO_HDMI_26M, "infra_ao_hdmi_26m", "clk26m", 0),
++	GATE_INFRA_AO1(CLK_INFRA_AO_HDMI_26M, "infra_ao_hdmi_26m", "top_hdmi_xtal", 0),
+ 	GATE_INFRA_AO1(CLK_INFRA_AO_SPI0, "infra_ao_spi0", "top_spi", 1),
+ 	GATE_INFRA_AO1(CLK_INFRA_AO_MSDC0, "infra_ao_msdc0", "top_msdc50_0_hclk", 2),
+ 	GATE_INFRA_AO1(CLK_INFRA_AO_MSDC1, "infra_ao_msdc1", "top_axi", 4),
 -- 
 2.51.0
 
