@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80674BE9943
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:31 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C8ABE9C99
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A850743050
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:04:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 31C5F35E2A3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038E43328EF;
-	Fri, 17 Oct 2025 15:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE3C2F12A5;
+	Fri, 17 Oct 2025 15:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajo/hapA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/K1vbwY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B203432E152;
-	Fri, 17 Oct 2025 15:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6546A337110;
+	Fri, 17 Oct 2025 15:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713354; cv=none; b=N9X0U8ZYeg3w7G48ZwBxvKZBSUsO5zlPCqMTOBAD57DrI1St3F5Y6Zk5P/h6j2fzS/cPaP6F/yljGJmQp7cxgHfFSvjUg4PDGe58teiPIqNIm2ErIcllktvnA0nPEw08/OOP1aBhXRem5U7kaX9YCR5Z/J0DcTowWZ5T/EG+Zso=
+	t=1760714722; cv=none; b=V81VBVZwL5ceSvbai3Z56NZ6bOMJBV7yfp3H7uvIQKUvp0Rw0Xi+Gigf7ZMHUfTYUe76Gs/NGNL4t1QrX84+OeXPLLKmdQ5U2TisGhvKkzP/YY9FK/g80IaR8PmTNKiKZR5KbSPYnU4v4cQMRUQvAvv4jsd2yAVXzPjn94JfN9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713354; c=relaxed/simple;
-	bh=43ZwOiEDigqrLYW0kvBPYns961Lhlc9eVMMgUrHEMTw=;
+	s=arc-20240116; t=1760714722; c=relaxed/simple;
+	bh=OlTtjqTaPmvhKNBWSGqvoAqZ9UFqbxikzS+H/h0Dfu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csl6Dh0QZxTsnJPWX9Ll146x4476H15R7R0930GetIX13bKNwzhDNlSt3BQQXQNy1+DI7IYED1jLuAm3OKFo3MP5wFrP76RSiJJ2RCBUajbXDsHMbFCoPJwIxg6noz4TUsor/NCULDhXTmh6YIQm+fYawX5O+KsNsYm6v/Mw8c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajo/hapA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9ECC4CEE7;
-	Fri, 17 Oct 2025 15:02:34 +0000 (UTC)
+	 MIME-Version; b=UJe1pbDki/f1yD2H/nmCBFysu8e3hCaMWkJxes3BvHhJKTIUTmd6qPmVa2fD6aLD0izJAgQWPMqAOmeJRh3lVTk9WyZIgaa25h969Lte6WjV+EwB+EDzIuiAdVEkuo458wYzDY43aU6CQripdilwK+7JhA4lIeZNq+Q00FGZgTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/K1vbwY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80DBC4CEE7;
+	Fri, 17 Oct 2025 15:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713354;
-	bh=43ZwOiEDigqrLYW0kvBPYns961Lhlc9eVMMgUrHEMTw=;
+	s=korg; t=1760714722;
+	bh=OlTtjqTaPmvhKNBWSGqvoAqZ9UFqbxikzS+H/h0Dfu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajo/hapABpXIozr6KNDPCNSirJdafuEMYOwzjZF3Mz8gx7m90PBDBNOAVZ82Y8F+y
-	 FMFCeqEVgGkML6/JqfzynVwXXjCfx1/rQtq7olu/ZBDKECqRFEEJqPxKLCRuos5S1w
-	 JE8IxwBLlvAFKcI4zL4x2uQJFH7pBCVjH360AWBs=
+	b=x/K1vbwYb/l8n63hCIluwPrj2EqgWcM6kIVRbwMp9DCXH8PL8rTB0rv/7DrpupVYx
+	 UGPa2oj+gJBOyM1LtVYV5lI1Y5RxjZXKZrCA9PG0ybsPRpkHh6mLWt9WCUnA/RguWv
+	 ZJrcatAcP1H+KPkjp+tXWx4FBeBHB1pYtK4mSnpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/168] ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()
-Date: Fri, 17 Oct 2025 16:53:36 +0200
-Message-ID: <20251017145134.074232828@linuxfoundation.org>
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 210/277] NFSD: Fix destination buffer size in nfsd4_ssc_setup_dul()
+Date: Fri, 17 Oct 2025 16:53:37 +0200
+Message-ID: <20251017145154.796372612@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 4e65bda8273c938039403144730923e77916a3d7 ]
+commit ab1c282c010c4f327bd7addc3c0035fd8e3c1721 upstream.
 
-wcd934x_codec_parse_data() contains a device reference count leak in
-of_slim_get_device() where device_find_child() increases the reference
-count of the device but this reference is not properly decreased in
-the success path. Add put_device() in wcd934x_codec_parse_data() and
-add devm_add_action_or_reset() in the probe function, which ensures
-that the reference count of the device is correctly managed.
+Commit 5304877936c0 ("NFSD: Fix strncpy() fortify warning") replaced
+strncpy(,, sizeof(..)) with strlcpy(,, sizeof(..) - 1), but strlcpy()
+already guaranteed NUL-termination of the destination buffer and
+subtracting one byte potentially truncated the source string.
 
-Memory leak in regmap_init_slimbus() as the allocated regmap is not
-released when the device is removed. Using devm_regmap_init_slimbus()
-instead of regmap_init_slimbus() to ensure automatic regmap cleanup on
-device removal.
+The incorrect size was then carried over in commit 72f78ae00a8e ("NFSD:
+move from strlcpy with unused retval to strscpy") when switching from
+strlcpy() to strscpy().
 
-Calling path: of_slim_get_device() -> of_find_slim_device() ->
-device_find_child(). As comment of device_find_child() says, 'NOTE:
-you will need to drop the reference with put_device() after use.'.
-
-Found by code review.
+Fix this off-by-one error by using the full size of the destination
+buffer again.
 
 Cc: stable@vger.kernel.org
-Fixes: a61f3b4f476e ("ASoC: wcd934x: add support to wcd9340/wcd9341 codec")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250923065212.26660-1-make24@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5304877936c0 ("NFSD: Fix strncpy() fortify warning")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wcd934x.c |   17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4proc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/codecs/wcd934x.c
-+++ b/sound/soc/codecs/wcd934x.c
-@@ -5862,6 +5862,13 @@ static const struct snd_soc_component_dr
- 	.endianness = 1,
- };
- 
-+static void wcd934x_put_device_action(void *data)
-+{
-+	struct device *dev = data;
-+
-+	put_device(dev);
-+}
-+
- static int wcd934x_codec_parse_data(struct wcd934x_codec *wcd)
- {
- 	struct device *dev = &wcd->sdev->dev;
-@@ -5882,11 +5889,13 @@ static int wcd934x_codec_parse_data(stru
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1372,7 +1372,7 @@ try_again:
+ 		return 0;
  	}
- 
- 	slim_get_logical_addr(wcd->sidev);
--	wcd->if_regmap = regmap_init_slimbus(wcd->sidev,
-+	wcd->if_regmap = devm_regmap_init_slimbus(wcd->sidev,
- 				  &wcd934x_ifc_regmap_config);
--	if (IS_ERR(wcd->if_regmap))
-+	if (IS_ERR(wcd->if_regmap)) {
-+		put_device(&wcd->sidev->dev);
- 		return dev_err_probe(dev, PTR_ERR(wcd->if_regmap),
- 				     "Failed to allocate ifc register map\n");
-+	}
- 
- 	of_property_read_u32(dev->parent->of_node, "qcom,dmic-sample-rate",
- 			     &wcd->dmic_sample_rate);
-@@ -5930,6 +5939,10 @@ static int wcd934x_codec_probe(struct pl
- 		return ret;
- 	}
- 
-+	ret = devm_add_action_or_reset(dev, wcd934x_put_device_action, &wcd->sidev->dev);
-+	if (ret)
-+		return ret;
-+
- 	/* set default rate 9P6MHz */
- 	regmap_update_bits(wcd->regmap, WCD934X_CODEC_RPM_CLK_MCLK_CFG,
- 			   WCD934X_CODEC_RPM_CLK_MCLK_CFG_MCLK_MASK,
+ 	if (work) {
+-		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr) - 1);
++		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr));
+ 		refcount_set(&work->nsui_refcnt, 2);
+ 		work->nsui_busy = true;
+ 		list_add_tail(&work->nsui_list, &nn->nfsd_ssc_mount_list);
 
 
 
