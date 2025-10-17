@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF56BE9EDF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD45BEA3AA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1888C587B96
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:23:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44493942CAE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C15333CEB5;
-	Fri, 17 Oct 2025 15:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E5E332914;
+	Fri, 17 Oct 2025 15:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJBk3XeI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iq93XGLN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8133396E5;
-	Fri, 17 Oct 2025 15:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2FE32C93E;
+	Fri, 17 Oct 2025 15:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714530; cv=none; b=mkGzLcBvqlfzdiN4+WpPRzUYzSt933UTqPMW2MyS7fAh31NGcCJ3cF8Gi7+JW8hq7Va3A9omQUtsw7K7R2fwGP4st64YYQugQrRjdfFqFXHUo1Yvod607eiTpTz9DUwYdr4UBzHLNpz2LslTqga6UZTwIHCYob8GwaHXJREXN94=
+	t=1760715390; cv=none; b=TPGwt/guK3QmylOnn8VGlC1wgZALxmqyvkK9pXw4tgePQdb2wGa6jEFqzlClIsn6ARkEFptxfPTQBWLiqChLnBQUjCBiizmc5iz6DAzDmyrXs0eC+Kzn6ACG+hHoHxPoe33BzVo5wTF6k9GI1aalfhauVrruV0dYEDtaCUCL7oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714530; c=relaxed/simple;
-	bh=jA03EU3MjkqZYH22oeTDOHTUoxykLYjT/mltUs+kA6E=;
+	s=arc-20240116; t=1760715390; c=relaxed/simple;
+	bh=Fcxc3hYLMEWtBCTynYoltiNTZdJ8EY8lwEPzcYAR9+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okbwmBnWDxWCm1phfGSLYf9dT6p4wP+o64JrjioSM66L608/Ve5TKL80EvPDc6CqMUJ25dIaUM7818KBh3d4vh0ADkJsdujgHneI/MV3P6hfEt4O3+n2NYHncGYabyGD5YXQuV5u6f+Qszu7L5b1fGTQ4zD2YcaoYcJz8Zi3tyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJBk3XeI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF48C4CEE7;
-	Fri, 17 Oct 2025 15:22:10 +0000 (UTC)
+	 MIME-Version; b=HQU9Sdvl6OUzcWqD+3KVDGdq1zag6MUXVOKj6ZDcwLAMRg2kV/0FLpplfYGM1XMF44cJAZeE/iqvPoOhrvfAbMQpR8rV/qGgeI/bVXHZICDR7jDLn3GX4Jrftt6nA+BYPEBPAd8j7wenzMtNuLC9VBBhNo/lPMtOTbnjOEL77SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iq93XGLN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECE8C4CEE7;
+	Fri, 17 Oct 2025 15:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714530;
-	bh=jA03EU3MjkqZYH22oeTDOHTUoxykLYjT/mltUs+kA6E=;
+	s=korg; t=1760715390;
+	bh=Fcxc3hYLMEWtBCTynYoltiNTZdJ8EY8lwEPzcYAR9+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJBk3XeIxZKKHN7XSG+WfGmo70BtlwFd7nZzM8DjSTJvOnOAyJK0ZjmeFFvlyfEkB
-	 l5xowcXBaFBhKgQyQIlqIRMqBce4XuMVrXS/aOHE7K1JpmOjBwXCeXAinvyV/+DFdg
-	 6+iJvj0EIV1md3GfHQ744dReciKOFDQizY47lfRE=
+	b=iq93XGLNnfrtKCkedrd/NyRZilFgsx6zQV5KzsLLjKXpTIjG+uwq3KcUtH+KZzh3Y
+	 eqiT7Nrd2uJ8vQiVTuYQwXoTLO2JEbh+bPt0WS9EdQO67Y7dCvewEFgd4JGHnvt3Tn
+	 xcLxh5wwM1iXfmCbvLP2RWWa3LzYNbH0GSKF85Ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.12 134/277] fuse: fix possibly missing fuse_copy_finish() call in fuse_notify()
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.17 166/371] firmware: exynos-acpm: fix PMIC returned errno
 Date: Fri, 17 Oct 2025 16:52:21 +0200
-Message-ID: <20251017145152.018618756@linuxfoundation.org>
+Message-ID: <20251017145207.937066273@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-commit 0b563aad1c0a05dc7d123f68a9f82f79de206dad upstream.
+commit 1da4cbefed4a2e69ebad81fc9b356cd9b807f380 upstream.
 
-In case of FUSE_NOTIFY_RESEND and FUSE_NOTIFY_INC_EPOCH fuse_copy_finish()
-isn't called.
+ACPM PMIC command handlers returned a u8 value when they should
+have returned either zero or negative error codes.
+Translate the APM PMIC errno to linux errno.
 
-Fix by always calling fuse_copy_finish() after fuse_notify().  It's a no-op
-if called a second time.
-
-Fixes: 760eac73f9f6 ("fuse: Introduce a new notification type for resend pending requests")
-Fixes: 2396356a945b ("fuse: add more control over cache invalidation behaviour")
-Cc: <stable@vger.kernel.org> # v6.9
-Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-input/aElHlTApXj-W_o1r@stanley.mountain/
+Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/dev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/samsung/exynos-acpm-pmic.c | 25 ++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -1989,7 +1989,7 @@ static ssize_t fuse_dev_do_write(struct
- 	 */
- 	if (!oh.unique) {
- 		err = fuse_notify(fc, oh.error, nbytes - sizeof(oh), cs);
--		goto out;
-+		goto copy_finish;
- 	}
+diff --git a/drivers/firmware/samsung/exynos-acpm-pmic.c b/drivers/firmware/samsung/exynos-acpm-pmic.c
+index 39b33a356ebd..961d7599e422 100644
+--- a/drivers/firmware/samsung/exynos-acpm-pmic.c
++++ b/drivers/firmware/samsung/exynos-acpm-pmic.c
+@@ -4,7 +4,9 @@
+  * Copyright 2020 Google LLC.
+  * Copyright 2024 Linaro Ltd.
+  */
++#include <linux/array_size.h>
+ #include <linux/bitfield.h>
++#include <linux/errno.h>
+ #include <linux/firmware/samsung/exynos-acpm-protocol.h>
+ #include <linux/ktime.h>
+ #include <linux/types.h>
+@@ -33,6 +35,19 @@ enum exynos_acpm_pmic_func {
+ 	ACPM_PMIC_BULK_WRITE,
+ };
  
- 	err = -EINVAL;
++static const int acpm_pmic_linux_errmap[] = {
++	[0] = 0, /* ACPM_PMIC_SUCCESS */
++	[1] = -EACCES, /* Read register can't be accessed or issues to access it. */
++	[2] = -EACCES, /* Write register can't be accessed or issues to access it. */
++};
++
++static int acpm_pmic_to_linux_err(int err)
++{
++	if (err >= 0 && err < ARRAY_SIZE(acpm_pmic_linux_errmap))
++		return acpm_pmic_linux_errmap[err];
++	return -EIO;
++}
++
+ static inline u32 acpm_pmic_set_bulk(u32 data, unsigned int i)
+ {
+ 	return (data & ACPM_PMIC_BULK_MASK) << (ACPM_PMIC_BULK_SHIFT * i);
+@@ -79,7 +94,7 @@ int acpm_pmic_read_reg(const struct acpm_handle *handle,
+ 
+ 	*buf = FIELD_GET(ACPM_PMIC_VALUE, xfer.rxd[1]);
+ 
+-	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
++	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
+ }
+ 
+ static void acpm_pmic_init_bulk_read_cmd(u32 cmd[4], u8 type, u8 reg, u8 chan,
+@@ -110,7 +125,7 @@ int acpm_pmic_bulk_read(const struct acpm_handle *handle,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
++	ret = acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -150,7 +165,7 @@ int acpm_pmic_write_reg(const struct acpm_handle *handle,
+ 	if (ret)
+ 		return ret;
+ 
+-	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
++	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
+ }
+ 
+ static void acpm_pmic_init_bulk_write_cmd(u32 cmd[4], u8 type, u8 reg, u8 chan,
+@@ -190,7 +205,7 @@ int acpm_pmic_bulk_write(const struct acpm_handle *handle,
+ 	if (ret)
+ 		return ret;
+ 
+-	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
++	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
+ }
+ 
+ static void acpm_pmic_init_update_cmd(u32 cmd[4], u8 type, u8 reg, u8 chan,
+@@ -220,5 +235,5 @@ int acpm_pmic_update_reg(const struct acpm_handle *handle,
+ 	if (ret)
+ 		return ret;
+ 
+-	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
++	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
+ }
+-- 
+2.51.0
+
 
 
 
