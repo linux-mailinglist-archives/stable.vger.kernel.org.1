@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02615BE9DB6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E9BBEA365
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB73C585979
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:21:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98FBE9413FA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD66732C928;
-	Fri, 17 Oct 2025 15:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D07330B0A;
+	Fri, 17 Oct 2025 15:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8i42/Zr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0hn+4E7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777AC2F12D0;
-	Fri, 17 Oct 2025 15:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAD3330B04;
+	Fri, 17 Oct 2025 15:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714388; cv=none; b=kAk0aQdkRZN3aE5vvMUL5nivKyBUxaCD2+pirfiMyk2tugOhg7aDzpBbQQQFjGyv/VKy7ZvevT92AaX6H1pDXIlTX9GaOD2lNjMhlmAgojtZCr5+WKxtDpZaaVOpVlgxvA9hrD4ift8zC9Y6rVCSDLNcYCHVg8iWdymCccKupHM=
+	t=1760715278; cv=none; b=kiOgqXj0SCV/SSfqM+mdy5g0kGa8p1D0IxKCjpkokkBCwMLkoeAbpSbEyUHtaacr/7cCRWVeDAJMs89YXj6nhCLH3XcK2htvozOSzjY+NqUW5M80NO/3S0vvEC1Ky7PYfSNIyt0R2ULTlgqY/CeWNsQbTx4nVxlyoiRPSfU5asI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714388; c=relaxed/simple;
-	bh=S/MXThZFr5NvVqMRt9V1ubHqakFOoL3t7qLKEKEAoDk=;
+	s=arc-20240116; t=1760715278; c=relaxed/simple;
+	bh=ARXmK2ldV2BwMGHZNaJxHRyhMdmdcvAHkaWO22VtKdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JKpW2HKDOqIVX9yp5es5jphCWnB1IkCJl2Q/RNf0F0SJZHXuUcmw3LsBMd5WnTd7KBSxH2DLnPnrUlmcBpdoKcI3g7dHD4QgqdjJUa6A86G76XG+oMC3MzG3ngpab6sHj0JYVF1CIdcJFe7iDqkcU1Csf1dZNZXTQFBs0NMn3B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8i42/Zr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC888C4CEE7;
-	Fri, 17 Oct 2025 15:19:46 +0000 (UTC)
+	 MIME-Version; b=Qjxe+W8mglZhbEzd8IVryvsjxQNzueFVDfmPBLovBxMxbcZXFxLgCiNHn4PsmRQmj5nKLeSJsOc668/uMhuavQDNGw7AcUJAjCrw7Kxu5bBV8kyFX247xv3i3p8Vr0Ff/qAEkHTDbB2l3GbtHKMxyb6RTKtO4OXng6K65L0R1fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0hn+4E7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E344C4CEE7;
+	Fri, 17 Oct 2025 15:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714387;
-	bh=S/MXThZFr5NvVqMRt9V1ubHqakFOoL3t7qLKEKEAoDk=;
+	s=korg; t=1760715278;
+	bh=ARXmK2ldV2BwMGHZNaJxHRyhMdmdcvAHkaWO22VtKdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K8i42/ZrgY2MlzsGVqxAZpUUmxyJV3hiK36HBfJBgmgVcBAVE/L3SiusciudVEA//
-	 X7e564i8f7fLPhTz31sMJ6Hx/VlJ5In9qF1ES2dkOS+l/BfiL+8xGqEv0A19Gx5uai
-	 hx8jwZN5tYFgMrNug2AUzjn0+Lm+D8c9ljXhu4W8=
+	b=g0hn+4E7tf56CeBVrm79Dp4ykhfW7HIiTSwMKU+vF8fP1VkfOFv8PZ+08gq0Agv8s
+	 JqhzJppE9KH0v7Vk/u4XpvpBG4q7I8uglspjWWYjGQoXlFqu7WI6QYNeRZnMSU4lGX
+	 DmEMR2zVZBc18g8dV0k6o73e37mfkXeuy8ZraACM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 127/277] crypto: aspeed - Fix dma_unmap_sg() direction
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Kai Huang <kai.huang@intel.com>,
+	Tony Lindgren <tony.lindgren@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.17 159/371] KVM: TDX: Fix uninitialized error code for __tdx_bringup()
 Date: Fri, 17 Oct 2025 16:52:14 +0200
-Message-ID: <20251017145151.765147109@linuxfoundation.org>
+Message-ID: <20251017145207.685746269@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
 
-commit 838d2d51513e6d2504a678e906823cfd2ecaaa22 upstream.
+commit 510c47f165f0c1f0b57329a30a9a797795519831 upstream.
 
-It seems like everywhere in this file, when the request is not
-bidirectionala, req->src is mapped with DMA_TO_DEVICE and req->dst is
-mapped with DMA_FROM_DEVICE.
+Fix a Smatch static checker warning reported by Dan:
 
-Fixes: 62f58b1637b7 ("crypto: aspeed - add HACE crypto driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+	arch/x86/kvm/vmx/tdx.c:3464 __tdx_bringup()
+	warn: missing error code 'r'
+
+Initialize r to -EINVAL before tdx_get_sysinfo() to simplify the code and
+to prevent similar issues from sneaking in later on as suggested by Kai.
+
+Cc: stable@vger.kernel.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 61bb28279623 ("KVM: TDX: Get system-wide info about TDX module on initialization")
+Suggested-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Link: https://lore.kernel.org/r/20250918053226.802204-1-tony.lindgren@linux.intel.com
+[sean: tag for stable]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/aspeed/aspeed-hace-crypto.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/vmx/tdx.c |   10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
---- a/drivers/crypto/aspeed/aspeed-hace-crypto.c
-+++ b/drivers/crypto/aspeed/aspeed-hace-crypto.c
-@@ -346,7 +346,7 @@ free_req:
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -3457,12 +3457,11 @@ static int __init __tdx_bringup(void)
+ 	if (r)
+ 		goto tdx_bringup_err;
  
- 	} else {
- 		dma_unmap_sg(hace_dev->dev, req->dst, rctx->dst_nents,
--			     DMA_TO_DEVICE);
-+			     DMA_FROM_DEVICE);
- 		dma_unmap_sg(hace_dev->dev, req->src, rctx->src_nents,
- 			     DMA_TO_DEVICE);
++	r = -EINVAL;
+ 	/* Get TDX global information for later use */
+ 	tdx_sysinfo = tdx_get_sysinfo();
+-	if (WARN_ON_ONCE(!tdx_sysinfo)) {
+-		r = -EINVAL;
++	if (WARN_ON_ONCE(!tdx_sysinfo))
+ 		goto get_sysinfo_err;
+-	}
+ 
+ 	/* Check TDX module and KVM capabilities */
+ 	if (!tdx_get_supported_attrs(&tdx_sysinfo->td_conf) ||
+@@ -3505,14 +3504,11 @@ static int __init __tdx_bringup(void)
+ 	if (td_conf->max_vcpus_per_td < num_present_cpus()) {
+ 		pr_err("Disable TDX: MAX_VCPU_PER_TD (%u) smaller than number of logical CPUs (%u).\n",
+ 				td_conf->max_vcpus_per_td, num_present_cpus());
+-		r = -EINVAL;
+ 		goto get_sysinfo_err;
  	}
+ 
+-	if (misc_cg_set_capacity(MISC_CG_RES_TDX, tdx_get_nr_guest_keyids())) {
+-		r = -EINVAL;
++	if (misc_cg_set_capacity(MISC_CG_RES_TDX, tdx_get_nr_guest_keyids()))
+ 		goto get_sysinfo_err;
+-	}
+ 
+ 	/*
+ 	 * Leave hardware virtualization enabled after TDX is enabled
 
 
 
