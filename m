@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-186565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56AABE9951
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C27FDBEA323
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 337B6504FEF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F1021AE3097
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C96219A7A;
-	Fri, 17 Oct 2025 15:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F89330B29;
+	Fri, 17 Oct 2025 15:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8y7TNZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9UCs+Po"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0203370E1;
-	Fri, 17 Oct 2025 15:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E3C330B17;
+	Fri, 17 Oct 2025 15:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713602; cv=none; b=X0JXOrfJiPM4A6uQVy8yhiRrZi7+85CFntjeJDNxCM+OUoovUSkbSnLmDVD3bRDXASNg2LTGU8sYnyx74kV+fxzVV1GDZH2xTBXQElJ8iXWiYf0xATwmXEYFXfo1NFJpJNTPHT1LCbtBxkftePYaw8ySEAA7TqVwKBojMQNs5TM=
+	t=1760715956; cv=none; b=ehlZBJQsZkp3taJ6FW9K1vWCU8ZK2lCV5Aj2YPD7lQmXzCZAiTft8+BRZLrWfXuJTx9qYiuDCzV/C9snHjGnPH+eW128xuEPdy5HrRlsBnQRgCJH0xx+m+HgU4//48jNEjsDnQXj3iFyv8BeyUiYLkGrId5CXJRXmixAFlpUmoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713602; c=relaxed/simple;
-	bh=2BKOXm6h4zi4sVsm7QVLj2FSh7Oyn2U59cwXnVRorXM=;
+	s=arc-20240116; t=1760715956; c=relaxed/simple;
+	bh=hu59CXuBHq/wOcdBzC2bWJw093lLqps8jTnxEMl0m8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dZXbtDfeXNZ8aawRbZd4LlmN+423eFl4fu6bg/10v8ndG/t8x1PShv+peCe9Rpf1/hxZFPJ57wqX7ZaMH5qmWI6SnvjMwzSjT555zyEnjDRBDKK53/eybqiATy97loWi+/L61/RIetCIEJILT+92/+ONnsq47aWvOiaaqvcJc9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8y7TNZO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDF1C4CEE7;
-	Fri, 17 Oct 2025 15:06:41 +0000 (UTC)
+	 MIME-Version; b=vAsQuxtSUNNA4lCSfjEtZDQlWvEjChEGkikYf/OIkBCwNlcrTinzqU7BzKv3q8kfCUUDaiMQ2j8j0JxN3F3ko22XAUdcjgqfzs8gFMSuqxdPC+djOefMatv8WABGPw4+VKjoXsyHjGY6BtVbGKZ6vBebyyePVxcoQdieYh019Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9UCs+Po; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D36AC4CEE7;
+	Fri, 17 Oct 2025 15:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713602;
-	bh=2BKOXm6h4zi4sVsm7QVLj2FSh7Oyn2U59cwXnVRorXM=;
+	s=korg; t=1760715956;
+	bh=hu59CXuBHq/wOcdBzC2bWJw093lLqps8jTnxEMl0m8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8y7TNZOPjNswBCv5qgQuCuN0+ku1+blIgi51AuJnKB6wejt9SaWnx52/TJErVach
-	 ITUdC4FMorwiXC2p3mY6zf63bt7YooKUbMuHpOCT15AWnXAshaKcBVikrThYvatQfq
-	 GQVV32EOXpWvGZAqDBcvZeDTEJxxfPdkuVU88JX4=
+	b=H9UCs+Pod8/zFVKRwcOxYb9h5bwkgK5sXqv5B1gGwOLePoIEA4W4bdvI55cgmy0p2
+	 6APdmRQacDxbLHP8uSyH+qwTxh8xZeG63dkWGEdYxI8BpfjUoxsuthBkW4giJ4YuLV
+	 vxB2mrgvk03vtkTsok85IvVHU6ZVDuDquSySaQBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
-	Justinien Bouron <jbouron@amazon.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/201] tpm_tis: Fix incorrect arguments in tpm_tis_probe_irq_single
+Subject: [PATCH 5.15 023/276] filelock: add FL_RECLAIM to show_fl_flags() macro
 Date: Fri, 17 Oct 2025 16:51:56 +0200
-Message-ID: <20251017145136.766610345@linuxfoundation.org>
+Message-ID: <20251017145143.250453617@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gunnar Kudrjavets <gunnarku@amazon.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 8a81236f2cb0882c7ea6c621ce357f7f3f601fe5 ]
+[ Upstream commit c593b9d6c446510684da400833f9d632651942f0 ]
 
-The tpm_tis_write8() call specifies arguments in wrong order. Should be
-(data, addr, value) not (data, value, addr). The initial correct order
-was changed during the major refactoring when the code was split.
+Show the FL_RECLAIM flag symbolically in tracepoints.
 
-Fixes: 41a5e1cf1fe1 ("tpm/tpm_tis: Split tpm_tis driver into a core and TCG TIS compliant phy")
-Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Reviewed-by: Justinien Bouron <jbouron@amazon.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: bb0a55bb7148 ("nfs: don't allow reexport reclaims")
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/20250903-filelock-v1-1-f2926902962d@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/trace/events/filelock.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index c71e61ccb95a2..5e6ee5b82b8ff 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -977,8 +977,8 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 	 * will call disable_irq which undoes all of the above.
- 	 */
- 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
--		tpm_tis_write8(priv, original_int_vec,
--			       TPM_INT_VECTOR(priv->locality));
-+		tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality),
-+			       original_int_vec);
- 		rc = -1;
- 	}
+diff --git a/include/trace/events/filelock.h b/include/trace/events/filelock.h
+index 1646dadd7f37c..3b1c8d93b2654 100644
+--- a/include/trace/events/filelock.h
++++ b/include/trace/events/filelock.h
+@@ -27,7 +27,8 @@
+ 		{ FL_SLEEP,		"FL_SLEEP" },			\
+ 		{ FL_DOWNGRADE_PENDING,	"FL_DOWNGRADE_PENDING" },	\
+ 		{ FL_UNLOCK_PENDING,	"FL_UNLOCK_PENDING" },		\
+-		{ FL_OFDLCK,		"FL_OFDLCK" })
++		{ FL_OFDLCK,		"FL_OFDLCK" },			\
++		{ FL_RECLAIM,		"FL_RECLAIM"})
  
+ #define show_fl_type(val)				\
+ 	__print_symbolic(val,				\
 -- 
 2.51.0
 
