@@ -1,208 +1,539 @@
-Return-Path: <stable+bounces-186235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23F5BE62B6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 04:55:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F65BE662D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 07:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 43B954F1256
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 02:55:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FCD71A61672
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 05:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1965724E4C4;
-	Fri, 17 Oct 2025 02:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oEqgy0Ul"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C7A29DB6E;
+	Fri, 17 Oct 2025 05:15:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010007.outbound.protection.outlook.com [52.101.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C912475CB;
-	Fri, 17 Oct 2025 02:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760669714; cv=fail; b=hEU6HEyiyvqFp/j3culDHcDEL+lj6HL8FUqbMCc9ndPRD9RxPm7Hg0T5dovKD/PO7BWXx9ZILvVZXd60hG26lNVmOoRncrYBYUl1mTlweHm5anmFhenSz7bgRcOck8gzr7GphGH+CfXnannQ9MXk/ZNylvnFDlYX1CsyG8DbY80=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760669714; c=relaxed/simple;
-	bh=6pa8zTLSip30RmHol0NPC1dcgsp3Dop+7YYguCQSDgI=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=XsDy/SNkG6bPgS2i39JkbKGZVu2s9gLRGn/riYggsjVIiuSo5fyRfMbKOO94jb5iqMpga/CKTydddt5RtW2QNH/RAaZVbJD24Q/fK8Y+IARsoX/dDeL+xdLkV5FvrGTo5NcHqtepbLtzvYcHgxLWpABTIBirAhko9UJ4N1HoZ9c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oEqgy0Ul; arc=fail smtp.client-ip=52.101.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CCg3mtUrpGJjJjL0kBXLHc6cUUEMkrJDGQ8e+50aMBbithj/APMy7YMbM2PR3Np1jW5kXeOR/LdHg+OZX4MHhZQt9bT2q+lDtlPDY22+zexChh12kwXILvi8IO0dTGJ14xSb4EW5utpjr3uH9hWtskbw6wYGK33x0GsCdRPxrsVeRTJ4S7MHaidtmujaFuAkvPt1MMkTekabpDMQGrcIxUWDJS6vxcOywKM8VfkbUf4BFhh91LfYU7rxAUyZdYMcsSt6KtgrIujmY9qfc56Vf1tlsyrKbVYtLjxZK4NTwi5F/DWpBk+gtXeYWl8bguX34RgercRR7GXnkfle5Uik7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NoRUccZSkwxxYlljr2re2n1JC7BvQOokD+u4y2bsxfE=;
- b=Bwe7GlSS0xcDSSDxzP52l9vQ4u8TBphHX4YnKRuIZ6vqlXBjabL7oA8ZnM0RPHI6BmLCEDxG/rONYw9gOjrdW80hWkon3k9aM+K2ZBIT1IRrvSDzu7Bk58n3Z4kNTrinSkNqLTPT4RIzufA3L5VIAX5B7ddzp9iooz9OXf2y8louuqmUx9t5EbKRRLMkqXK0eNE9IuGvoe6DeE31ffeEqqwtk3arVfMwaWtWTq6AVN8seh+cDqSSIHjYj8p31IFJqNRUc+ZOquVdcoe3Nqac3Ts0sOKuuqLavHc5aEhhdCjtOjhDsI1BCQv8RXcEoODQE+md4ZuHcDl6mVL0I1tmyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NoRUccZSkwxxYlljr2re2n1JC7BvQOokD+u4y2bsxfE=;
- b=oEqgy0UlS1hHWqEGXRc+wNPfM0ej/uf3D9HUSMJUbE5JDr7mzyCgFnBg6hmnPr8sEFsqgCol8tYSgVG1blpS1abuTnS7i3/MTLa9CKyfKVEBTBjrslVjjSIzo2D67lxrHG6PtWPVhENG1HhGx2Y1QN1SgH1/sQXJTowhYlISQWDrF/qJRqZt5OzAGONbMnqVDIArF2jf95KLMV3nKxvtxvVAkqkswK5aO5CLHMf7HyBDGWAfRqnw3VlG546Fgd0XPJ8WNfthMBMZl/gZkbMV1BwGt7XhIhqysmWZes4DI/S/2B2eiAghuuotTNOoWy4/XwDNsqZHB8lwOx9I/UNJ4Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DS7PR12MB5814.namprd12.prod.outlook.com (2603:10b6:8:76::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9228.12; Fri, 17 Oct 2025 02:55:10 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9228.010; Fri, 17 Oct 2025
- 02:55:10 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 17 Oct 2025 11:55:07 +0900
-Message-Id: <DDK9BL9MOTUI.359BJBMHFTFXU@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <david.m.ertman@intel.com>, <ira.weiny@intel.com>,
- <leon@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH] rust: device: fix device context of Device::parent()
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251016133251.31018-1-dakr@kernel.org>
-In-Reply-To: <20251016133251.31018-1-dakr@kernel.org>
-X-ClientProxiedBy: OS3P286CA0057.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:200::14) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434C330E0E1;
+	Fri, 17 Oct 2025 05:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760678102; cv=none; b=OdQXs7fUGRHJM5f89jfgAxgjYGqfqcgDTdUHmK/yUwRFZuSz13ZQUAUs0zE+yg+Vc+2GWwr4hy7tpgId2sslpFEzTgeIVi97ZG/lgcaHKUZL90kNvPmvWhN8z1rSf5jTH3GOBC3t+QRpSaO9Dth+UULxfaOfDTCxTyXqVPPWS+o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760678102; c=relaxed/simple;
+	bh=fXpfQTZoChKYEVrBfBhSKXybxx61BKc5RlXsFk3Piw4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ikrCh5eJKwby6miQ0Jj75f+FUARYjm4Lc5O+oJCbcBN7eEFPhw9KmWvSLWvk+cMnqw2iRxFfyqqgKGxz77WF+rBIXws2ykoPqPKd+Xc0v8ba8GacYlVNY70YFVXYoAyiKV1WQhD3X372byPMzApSMjEHcc4JVRqnzKbIrTb3Bkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6CD0D153B;
+	Thu, 16 Oct 2025 22:14:51 -0700 (PDT)
+Received: from a079125.blr.arm.com (a079125.arm.com [10.164.21.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AEBFB3F66E;
+	Thu, 16 Oct 2025 22:14:54 -0700 (PDT)
+From: Linu Cherian <linu.cherian@arm.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
+	stable@vger.kernel.org,
+	Linu Cherian <linu.cherian@arm.com>
+Subject: [PATCH v4 1/2] arm64/mm: Allow __create_pgd_mapping() to propagate pgtable_alloc() errors
+Date: Fri, 17 Oct 2025 10:44:36 +0530
+Message-ID: <20251017051437.2836080-2-linu.cherian@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251017051437.2836080-1-linu.cherian@arm.com>
+References: <20251017051437.2836080-1-linu.cherian@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS7PR12MB5814:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5bb85fe8-3986-42af-8b93-08de0d289633
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|10070799003|1800799024|366016|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NzVJcEZwQmYzWlBNRkI4ZVB6WlhtbDZPYU9Da2ZhbitiOUV5UElNazBvK3pa?=
- =?utf-8?B?N3BLMTdYTFV1RHBwTVBqOVQ1TkdVY1RzTiswbnhFb00zY0RCTU5aRERoenJO?=
- =?utf-8?B?bzltdzBmRzl6ckI4ckY2cHhhUmFVUkk5UW1Lb0ZEWkZVVU85bXpIU3VJUm11?=
- =?utf-8?B?ZmVkemJkUTZDQ3VyTUhvQ0liVVRyS3B0QzVKVDdmcGtoNmh3V1pnNkFXZGE1?=
- =?utf-8?B?RW9tVjhJUGJ3U0tvVzgyd2JocHA3dmJyd1o1b2tCeWdrUTJtL1EwNWZ5Yjk4?=
- =?utf-8?B?M0Q1dkR3Q1FmVlViOTFlN3R0bTBXZ3BmTitkUXZiNmxLOXJhaDI2Nks0SDlw?=
- =?utf-8?B?MVVYeWMrUFJLWkRMZzRmSUFKVXJtcTk1VXJqU3k3c05sZ0VxbXBwaEdna2JW?=
- =?utf-8?B?b2FFekhHRFpKbVV1dTZvQTR2S016TmRqNmN1a2FXUHV1cGlYOGpCei9iRlRi?=
- =?utf-8?B?OTVkbmI5U3llNjV6MTl4a3VrZkJTSEh4bytjeDFuREIzdE9IRzlyOXp0L1Zn?=
- =?utf-8?B?aUZtd0VYTnJsUVdYdHhoTUp4VkZyS3MrcVpya29kWHVxUE5oVUgrZE14RXBx?=
- =?utf-8?B?TG5lanNEcDU0WmpMR01LRlptM0NPT3RXZkFWYU5KeEY3ZExFblFaT2dwMGdI?=
- =?utf-8?B?Vm42N2VoeTZSUEU3UW5LTnlrUk00Y0FxeTJCcHJFTFBoM0lHY21DQ29ualdZ?=
- =?utf-8?B?ZS9BaUhHOVZxeG5Uc0RrZGg4N05Jd2pPM1Jic2t1c2w0MGxzYVRlQmQvYjk0?=
- =?utf-8?B?bDdjVkJWTDJoMnA2ZjNBcktuS1V0YVVDcDhsbktVVUo0dW9mclpWRzdiZk1i?=
- =?utf-8?B?ZWtZRUgrVnR1YVMwQmtYVE1KZFIySEhPWGN4d2hQZ2s3czhSSmliaHovR1lz?=
- =?utf-8?B?NjlZRTVyRDd1SEpiNmxETkFYZzdnV3VxYzUwZzJHd2ZYdVhxMFE1QktPc25i?=
- =?utf-8?B?c1ZFWXRCMGM3OTJvVDNRMlR5VzBzV0xYK1BvZmNDZ0MyUkxTVjIzbFV1ZlNT?=
- =?utf-8?B?QksvSmVyaGloaXRDdGRiU3dzbjlYeS9YRVJ3QnpDb0xIU3g2SHIwNTdsSXYv?=
- =?utf-8?B?OW9pL0N0Y0xlak0wN1ZZTjIwWkFBK29wSnZCQzNLeDVGRFFGaFNmS1ZjbUVF?=
- =?utf-8?B?bWZOZ21VZXl0MUpmVnkvOEtmZFJuUlVuRkFjMHJ3a2YrUWxMVDN6bjVaanlJ?=
- =?utf-8?B?QlhEbXFrTDI0K2x6SHRYeG1ybThURnlYNVdjWnViQ1NxV1pEMmxScWk5RUUv?=
- =?utf-8?B?ZkNzVmxGSlZBQjJhNlhvYUFpeXhBc3ExaGVRY2p1cjhoUDZJOVl0M1lUcFhT?=
- =?utf-8?B?UE04Y1pIT2J2UkhpbkVXR3lDNGNJYm9rYjRLVlFJWHB3QU9saElISVNhdURp?=
- =?utf-8?B?UThwSDZaRXZOQXhtS2FlZlFPVUtTaUdpUnFtUThoLzNRWHUyOUoyS3JvV2M5?=
- =?utf-8?B?cnRiTzMyMWZ6YytWcmhqWTlwNWJGVFNDWDVVZlIyL05WOHo0ZGQreDZsOEtE?=
- =?utf-8?B?S0lQbU1IQkRscjZWWlF3czVmTmVGT3lMZ25LcXlWaDFna3BnSW4vVXVJT0hB?=
- =?utf-8?B?NUFqVDBGTWU4NSs5dVY3cGVKS3RpbjRJT0xKN2dCTlVmNXNwUHFWb1M1NkNW?=
- =?utf-8?B?NWhqaUVOTFFZN296SlJkRWF0eks2NEZrU1VuMmpqbG1uZnV2OHBzaXZBZXUy?=
- =?utf-8?B?bnRpRGMvcURyMWVoUEYzenZ0Skg3TUZ6TEFmQzRNY2FwbGsvbGRSeDhQbTJZ?=
- =?utf-8?B?MkFHOWc3WWVhQjFmaDRublIvRlViR2hPQXRtRkdkV1RxWHdZKzdJbmJuODJ5?=
- =?utf-8?B?b0hrMlVQSTBLaXNnSWxPeHR1WXgyNmJNS2hGSlVtZWhyNCt4ckdaeWtrMjF2?=
- =?utf-8?B?THlROHNiMnNQYzBXYWJWOXJzT2hiNW0rSzBZSndab3NnSk03V28zZHVmMHZF?=
- =?utf-8?B?K3o0UkZzYVhHcGp2bW9tb3QxREE0bEdPZ3kxTGNwcWZ2amtaWUc4enEzT1dY?=
- =?utf-8?Q?i/0Y6E1D4IOvTL8QP9hGNUXUQkyDOI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(1800799024)(366016)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZWRMTlJPTkZtQk0yeXduanFTYnJFb2trdlNsTlI2a0V1NlpBKzNkUEVJeDZ5?=
- =?utf-8?B?NHIxZ0F6aldlaUdZUjlIclVCYjRmSmQyejVtZnhtVGhwaXUzeFZpSnhKWjE2?=
- =?utf-8?B?UTFLeUtSNllFckREZTUxcWduNncvMlpXeVpTK1VEQlM1cEtyT1ZHWmtmem81?=
- =?utf-8?B?QVY0ZEFQTXp3dUNobmdMbURCSi9pTm1YMVltT3Q4dFF4WGo3azVXN2ZYQlU5?=
- =?utf-8?B?V29WTEVoUSs0TUIyd2d0eFR4NTBzdzUrQTJwMVV5eGtBdGdEUjJ1NnNybWdH?=
- =?utf-8?B?YjlBVU9MYVhROElWUWZYRmNBVFRqQktyR0hDZXIxelVBMnJLY3BhcllLWEhL?=
- =?utf-8?B?UE5GZE5EVjRCOGJ1Y0ZWbFlsak0wdlA5ck1zUjNNRlQ5RWtwK0hSS2dwenJN?=
- =?utf-8?B?bEw0YXFFc2lTMjJqT2Q5cjY0V2dZTExqMFJ5elVSMm0rdHN4TU92YkFFN3lr?=
- =?utf-8?B?L0JDT2VkWFFNdlEzd3QwNm1Ga2VadE5MUzVJQ2dlcDk5TC85K0NyTmpkOVkz?=
- =?utf-8?B?Smt4TVBOWDA4MlZMUVltVEIvbzJQQ2U4V3pnVWZRMnJIYy9KQjhVcDlDdWl1?=
- =?utf-8?B?SFVLb2VTY1BuWm1IN2lYZXpQMnZ5YVNhWU8zOVUzWXpvWDVVOURralRaMUdT?=
- =?utf-8?B?cEJEZmN0UG1OWmhPaWtJTzROZWwyRFF1RUUvYmc0SllQd0RxT3pLelZSbkpU?=
- =?utf-8?B?eldnM1BHNWxwZEdTRWQzNysxZm1zZkJGZFpob0hualI3WnBtUWRZMHdtb0Fx?=
- =?utf-8?B?YS9qRG81RHNOR2F2RGk4ZGlZRDB1VHRvTEF1cVFlT0tBS2FNYkViVlhJL1BQ?=
- =?utf-8?B?VHJiQllhU2Y3Wi9xRTZUOFZvcWFvQ2RJUklKZXZUd2x5ck1VVlhqNnhuVksy?=
- =?utf-8?B?N2dqWm5oSHJhaHJiL1VJOTk0OG9aV2xkdW1PQnRtQ0xuYzRNZ3dpTi9nZDM5?=
- =?utf-8?B?UXlUMHF2cUxaR0VBNmRrRDhoNUEydFNreXF3cjRic2JWY2o5TEs2K2gwSDhz?=
- =?utf-8?B?WWd1TGZlQkZkMlBqeTZ4aFkrRXJKaWd2WXYyN2dRRU1qeGZMcjA3aDdwam5r?=
- =?utf-8?B?NFZyT250US9rcHQ5ckxZYmpqT0IwZkJCc3o4MmRuenRVaVY1VGhIS2YrZXF3?=
- =?utf-8?B?MDlFZENsZHJqdElxTVo0aTlXbkVxKy9ydGNuRTBRUjlzSXZlT09DMEFZNW5h?=
- =?utf-8?B?cVVkRldTem5BT3loejBNMTFsRURpWmNVYVFQVVMyMndQSHdTandPL0dMa2w4?=
- =?utf-8?B?TC83T3EvdGNscVk0SGM2UVZ1WnpEaURkbDhPWDZodUhsdXFRYzBQNm5yY0p3?=
- =?utf-8?B?YjJyVFp6VUNoemp0RnZLQlN5aUVxbWFXemxVcU1hMWZreWMxZFhRdnZ0THcr?=
- =?utf-8?B?SFRMeC9QSUhUUjZ6eHN1ZVovSzc0WG5SU0hnM0VqTnplMEMycTQvS2duMU9U?=
- =?utf-8?B?d05OYmx2Z3hDVU95akUyZmRmRzJmK0V5aTZxRmRpaGpHWWlRdmd4dG9vNTRk?=
- =?utf-8?B?cG5vd3NmRytZUkM2VytQSXE3QmkrM0ZTRFVRU3A2UFlzMGJNTnJqK3JJdk5H?=
- =?utf-8?B?RWo3Y0haTGxWc0hiV0VBUEtOcEJ2a1Q5YjZpVFJFMm9iZS9KMFRCUnAwUHMx?=
- =?utf-8?B?QXk3dUY1S2JBVCtheDlXc0QvRmhmaVdoWUwwQ1BhSjZtRTRMYWk0MnExZ0Z4?=
- =?utf-8?B?d1pPUTlhWWJJQlYwTFkxbnNFWVdvcG5XMjJJSmRvOXMvTFhUNUZnUUNud0Vq?=
- =?utf-8?B?UTVIdlEwMDFieE9XaDgyM3lPUTRKd2h2MEU4YjVOM1Rzb2Y2R2dPN0dMR3Vw?=
- =?utf-8?B?Zkc4S29IVXNWd2M3QU9jSUZjczNwVGVYY3hXWlV0ZWtSb0U2bndRMnJIVTBU?=
- =?utf-8?B?M0Q1eVlPakhEbUJnNko5T29kU3FwZlJBRHJjcVZTSzVWemo5OVF2eXhEUlVQ?=
- =?utf-8?B?Z0JFQ1V4eVV5alVyT3BtMC93NmdHaDg3TjlGc0RlT1Y3WXhPcktybVpxUE1k?=
- =?utf-8?B?VUp4dGorajl5OWZ2blBoTG5MRjR1SkpCaXc0Q3k3Z01vSGtTRUc4OWE1WHp0?=
- =?utf-8?B?Q3B0b3Foa2w2MVZlZDZpNVRUenE5OWhHb2ZGVmZBTUVXOFdvYzhTdFJGN1Qx?=
- =?utf-8?B?ZENwdzZUQVhlRVdWcUIrRXIzY0IrVUJzSXZrS092RFB5b2VyMHZYYk5jQncr?=
- =?utf-8?Q?wOBXvxG/a+qJotHXWWTUNDG7wlXlHh+XbtvpGRFEXZg8?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5bb85fe8-3986-42af-8b93-08de0d289633
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 02:55:10.6189
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rohG/ery3bAr+W4frVppEu6ERNv+FttaZyZ6YJ2sVcoq5FxATwSK5J8/Cbc98TMZUrR4SENfw+u/vG7IfPJf/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5814
+Content-Transfer-Encoding: 8bit
 
-On Thu Oct 16, 2025 at 10:31 PM JST, Danilo Krummrich wrote:
-> Regardless of the DeviceContext of a device, we can't give any
-> guarantees about the DeviceContext of its parent device.
->
-> This is very subtle, since it's only caused by a simple typo, i.e.
->
-> 	 Self::from_raw(parent)
->
-> which preserves the DeviceContext in this case, vs.
->
-> 	 Device::from_raw(parent)
->
-> which discards the DeviceContext.
->
-> (I should have noticed it doing the correct thing in auxiliary::Device
-> subsequently, but somehow missed it.)
->
-> Hence, fix both Device::parent() and auxiliary::Device::parent().
->
-> Cc: stable@vger.kernel.org
-> Fixes: a4c9f71e3440 ("rust: device: implement Device::parent()")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+From: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
 
-Ouch, that will make me think twice the next time I consider using
-`Self` for convenience... :)
+arch_add_memory() is used to hotplug memory into a system but as a part
+of its implementation it calls __create_pgd_mapping(), which uses
+pgtable_alloc() in order to build intermediate page tables. As this path
+was initally only used during early boot pgtable_alloc() is designed to
+BUG_ON() on failure. However, in the event that memory hotplug is
+attempted when the system's memory is extremely tight and the allocation
+were to fail, it would lead to panicking the system, which is not
+desirable. Hence update __create_pgd_mapping and all it's callers to be
+non void and propagate -ENOMEM on allocation failure to allow system to
+fail gracefully.
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+But during early boot if there is an allocation failure, we want the
+system to panic, hence create a wrapper around __create_pgd_mapping()
+called early_create_pgd_mapping() which is designed to panic, if ret
+is non zero value. All the init calls are updated to use this wrapper
+rather than the modified __create_pgd_mapping() to restore
+functionality.
+
+Fixes: 4ab215061554 ("arm64: Add memory hotplug support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Signed-off-by: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
+Signed-off-by: Linu Cherian <linu.cherian@arm.com>
+---
+Changelog:
+v4:
+* Few trivial code readability improvements
+
+ arch/arm64/mm/mmu.c | 214 ++++++++++++++++++++++++++++----------------
+ 1 file changed, 136 insertions(+), 78 deletions(-)
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index b8d37eb037fc..99555ebbab38 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -49,6 +49,8 @@
+ #define NO_CONT_MAPPINGS	BIT(1)
+ #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
+ 
++#define INVALID_PHYS_ADDR	(-1ULL)
++
+ DEFINE_STATIC_KEY_FALSE(arm64_ptdump_lock_key);
+ 
+ u64 kimage_voffset __ro_after_init;
+@@ -194,11 +196,11 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
+ 	} while (ptep++, addr += PAGE_SIZE, addr != end);
+ }
+ 
+-static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+-				unsigned long end, phys_addr_t phys,
+-				pgprot_t prot,
+-				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-				int flags)
++static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
++			       unsigned long end, phys_addr_t phys,
++			       pgprot_t prot,
++			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++			       int flags)
+ {
+ 	unsigned long next;
+ 	pmd_t pmd = READ_ONCE(*pmdp);
+@@ -213,6 +215,8 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+ 			pmdval |= PMD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+ 		pte_phys = pgtable_alloc(TABLE_PTE);
++		if (pte_phys == INVALID_PHYS_ADDR)
++			return -ENOMEM;
+ 		ptep = pte_set_fixmap(pte_phys);
+ 		init_clear_pgtable(ptep);
+ 		ptep += pte_index(addr);
+@@ -244,11 +248,13 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+ 	 * walker.
+ 	 */
+ 	pte_clear_fixmap();
++
++	return 0;
+ }
+ 
+-static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+-		     phys_addr_t phys, pgprot_t prot,
+-		     phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
++static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
++		    phys_addr_t phys, pgprot_t prot,
++		    phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
+ {
+ 	unsigned long next;
+ 
+@@ -269,22 +275,29 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
+ 						      READ_ONCE(pmd_val(*pmdp))));
+ 		} else {
+-			alloc_init_cont_pte(pmdp, addr, next, phys, prot,
+-					    pgtable_alloc, flags);
++			int ret;
++
++			ret = alloc_init_cont_pte(pmdp, addr, next, phys, prot,
++						  pgtable_alloc, flags);
++			if (ret)
++				return ret;
+ 
+ 			BUG_ON(pmd_val(old_pmd) != 0 &&
+ 			       pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
+ 		}
+ 		phys += next - addr;
+ 	} while (pmdp++, addr = next, addr != end);
++
++	return 0;
+ }
+ 
+-static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+-				unsigned long end, phys_addr_t phys,
+-				pgprot_t prot,
+-				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-				int flags)
++static int alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
++			       unsigned long end, phys_addr_t phys,
++			       pgprot_t prot,
++			       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++			       int flags)
+ {
++	int ret;
+ 	unsigned long next;
+ 	pud_t pud = READ_ONCE(*pudp);
+ 	pmd_t *pmdp;
+@@ -301,6 +314,8 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+ 			pudval |= PUD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+ 		pmd_phys = pgtable_alloc(TABLE_PMD);
++		if (pmd_phys == INVALID_PHYS_ADDR)
++			return -ENOMEM;
+ 		pmdp = pmd_set_fixmap(pmd_phys);
+ 		init_clear_pgtable(pmdp);
+ 		pmdp += pmd_index(addr);
+@@ -320,20 +335,26 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+ 		    (flags & NO_CONT_MAPPINGS) == 0)
+ 			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
+ 
+-		init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
++		ret = init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
++		if (ret)
++			goto out;
+ 
+ 		pmdp += pmd_index(next) - pmd_index(addr);
+ 		phys += next - addr;
+ 	} while (addr = next, addr != end);
+ 
++out:
+ 	pmd_clear_fixmap();
++
++	return ret;
+ }
+ 
+-static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+-			   phys_addr_t phys, pgprot_t prot,
+-			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-			   int flags)
++static int alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
++			  phys_addr_t phys, pgprot_t prot,
++			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++			  int flags)
+ {
++	int ret = 0;
+ 	unsigned long next;
+ 	p4d_t p4d = READ_ONCE(*p4dp);
+ 	pud_t *pudp;
+@@ -346,6 +367,8 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+ 			p4dval |= P4D_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+ 		pud_phys = pgtable_alloc(TABLE_PUD);
++		if (pud_phys == INVALID_PHYS_ADDR)
++			return -ENOMEM;
+ 		pudp = pud_set_fixmap(pud_phys);
+ 		init_clear_pgtable(pudp);
+ 		pudp += pud_index(addr);
+@@ -375,8 +398,10 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+ 			BUG_ON(!pgattr_change_is_safe(pud_val(old_pud),
+ 						      READ_ONCE(pud_val(*pudp))));
+ 		} else {
+-			alloc_init_cont_pmd(pudp, addr, next, phys, prot,
+-					    pgtable_alloc, flags);
++			ret = alloc_init_cont_pmd(pudp, addr, next, phys, prot,
++						  pgtable_alloc, flags);
++			if (ret)
++				goto out;
+ 
+ 			BUG_ON(pud_val(old_pud) != 0 &&
+ 			       pud_val(old_pud) != READ_ONCE(pud_val(*pudp)));
+@@ -384,14 +409,18 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+ 		phys += next - addr;
+ 	} while (pudp++, addr = next, addr != end);
+ 
++out:
+ 	pud_clear_fixmap();
++
++	return ret;
+ }
+ 
+-static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+-			   phys_addr_t phys, pgprot_t prot,
+-			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-			   int flags)
++static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
++			  phys_addr_t phys, pgprot_t prot,
++			  phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++			  int flags)
+ {
++	int ret;
+ 	unsigned long next;
+ 	pgd_t pgd = READ_ONCE(*pgdp);
+ 	p4d_t *p4dp;
+@@ -404,6 +433,8 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+ 			pgdval |= PGD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+ 		p4d_phys = pgtable_alloc(TABLE_P4D);
++		if (p4d_phys == INVALID_PHYS_ADDR)
++			return -ENOMEM;
+ 		p4dp = p4d_set_fixmap(p4d_phys);
+ 		init_clear_pgtable(p4dp);
+ 		p4dp += p4d_index(addr);
+@@ -418,8 +449,10 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+ 
+ 		next = p4d_addr_end(addr, end);
+ 
+-		alloc_init_pud(p4dp, addr, next, phys, prot,
+-			       pgtable_alloc, flags);
++		ret = alloc_init_pud(p4dp, addr, next, phys, prot,
++				     pgtable_alloc, flags);
++		if (ret)
++			goto out;
+ 
+ 		BUG_ON(p4d_val(old_p4d) != 0 &&
+ 		       p4d_val(old_p4d) != READ_ONCE(p4d_val(*p4dp)));
+@@ -427,15 +460,19 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+ 		phys += next - addr;
+ 	} while (p4dp++, addr = next, addr != end);
+ 
++out:
+ 	p4d_clear_fixmap();
++
++	return ret;
+ }
+ 
+-static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+-					unsigned long virt, phys_addr_t size,
+-					pgprot_t prot,
+-					phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-					int flags)
++static int __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
++				       unsigned long virt, phys_addr_t size,
++				       pgprot_t prot,
++				       phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++				       int flags)
+ {
++	int ret;
+ 	unsigned long addr, end, next;
+ 	pgd_t *pgdp = pgd_offset_pgd(pgdir, virt);
+ 
+@@ -444,7 +481,7 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+ 	 * within a page, we cannot map the region as the caller expects.
+ 	 */
+ 	if (WARN_ON((phys ^ virt) & ~PAGE_MASK))
+-		return;
++		return -EINVAL;
+ 
+ 	phys &= PAGE_MASK;
+ 	addr = virt & PAGE_MASK;
+@@ -452,25 +489,45 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+ 
+ 	do {
+ 		next = pgd_addr_end(addr, end);
+-		alloc_init_p4d(pgdp, addr, next, phys, prot, pgtable_alloc,
+-			       flags);
++		ret = alloc_init_p4d(pgdp, addr, next, phys, prot, pgtable_alloc,
++				     flags);
++		if (ret)
++			return ret;
+ 		phys += next - addr;
+ 	} while (pgdp++, addr = next, addr != end);
++
++	return 0;
+ }
+ 
+-static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
+-				 unsigned long virt, phys_addr_t size,
+-				 pgprot_t prot,
+-				 phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+-				 int flags)
++static int __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
++				unsigned long virt, phys_addr_t size,
++				pgprot_t prot,
++				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++				int flags)
+ {
++	int ret;
++
+ 	mutex_lock(&fixmap_lock);
+-	__create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
+-				    pgtable_alloc, flags);
++	ret = __create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
++					  pgtable_alloc, flags);
+ 	mutex_unlock(&fixmap_lock);
++
++	return ret;
+ }
+ 
+-#define INVALID_PHYS_ADDR	(-1ULL)
++static void early_create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
++				     unsigned long virt, phys_addr_t size,
++				     pgprot_t prot,
++				     phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++				     int flags)
++{
++	int ret;
++
++	ret = __create_pgd_mapping(pgdir, phys, virt, size, prot, pgtable_alloc,
++				   flags);
++	if (ret)
++		panic("Failed to create page tables\n");
++}
+ 
+ static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm, gfp_t gfp,
+ 				       enum pgtable_type pgtable_type)
+@@ -511,21 +568,13 @@ try_pgd_pgtable_alloc_init_mm(enum pgtable_type pgtable_type, gfp_t gfp)
+ static phys_addr_t __maybe_unused
+ pgd_pgtable_alloc_init_mm(enum pgtable_type pgtable_type)
+ {
+-	phys_addr_t pa;
+-
+-	pa = __pgd_pgtable_alloc(&init_mm, GFP_PGTABLE_KERNEL, pgtable_type);
+-	BUG_ON(pa == INVALID_PHYS_ADDR);
+-	return pa;
++	return __pgd_pgtable_alloc(&init_mm, GFP_PGTABLE_KERNEL, pgtable_type);
+ }
+ 
+ static phys_addr_t
+ pgd_pgtable_alloc_special_mm(enum pgtable_type pgtable_type)
+ {
+-	phys_addr_t pa;
+-
+-	pa = __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_type);
+-	BUG_ON(pa == INVALID_PHYS_ADDR);
+-	return pa;
++	return  __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_type);
+ }
+ 
+ static void split_contpte(pte_t *ptep)
+@@ -903,8 +952,8 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
+ 			&phys, virt);
+ 		return;
+ 	}
+-	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+-			     NO_CONT_MAPPINGS);
++	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
++				 NO_CONT_MAPPINGS);
+ }
+ 
+ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
+@@ -918,8 +967,8 @@ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
+ 	if (page_mappings_only)
+ 		flags = NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+ 
+-	__create_pgd_mapping(mm->pgd, phys, virt, size, prot,
+-			     pgd_pgtable_alloc_special_mm, flags);
++	early_create_pgd_mapping(mm->pgd, phys, virt, size, prot,
++				 pgd_pgtable_alloc_special_mm, flags);
+ }
+ 
+ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+@@ -931,8 +980,8 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+ 		return;
+ 	}
+ 
+-	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
+-			     NO_CONT_MAPPINGS);
++	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
++				 NO_CONT_MAPPINGS);
+ 
+ 	/* flush the TLBs after updating live kernel mappings */
+ 	flush_tlb_kernel_range(virt, virt + size);
+@@ -941,8 +990,8 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+ static void __init __map_memblock(pgd_t *pgdp, phys_addr_t start,
+ 				  phys_addr_t end, pgprot_t prot, int flags)
+ {
+-	__create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
+-			     prot, early_pgtable_alloc, flags);
++	early_create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
++				 prot, early_pgtable_alloc, flags);
+ }
+ 
+ void __init mark_linear_text_alias_ro(void)
+@@ -1158,6 +1207,8 @@ static int __init __kpti_install_ng_mappings(void *__unused)
+ 	remap_fn = (void *)__pa_symbol(idmap_kpti_install_ng_mappings);
+ 
+ 	if (!cpu) {
++		int ret;
++
+ 		alloc = __get_free_pages(GFP_ATOMIC | __GFP_ZERO, order);
+ 		kpti_ng_temp_pgd = (pgd_t *)(alloc + (levels - 1) * PAGE_SIZE);
+ 		kpti_ng_temp_alloc = kpti_ng_temp_pgd_pa = __pa(kpti_ng_temp_pgd);
+@@ -1178,9 +1229,11 @@ static int __init __kpti_install_ng_mappings(void *__unused)
+ 		// covers the PTE[] page itself, the remaining entries are free
+ 		// to be used as a ad-hoc fixmap.
+ 		//
+-		__create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
+-					    KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
+-					    kpti_ng_pgd_alloc, 0);
++		ret = __create_pgd_mapping_locked(kpti_ng_temp_pgd, __pa(alloc),
++						  KPTI_NG_TEMP_VA, PAGE_SIZE, PAGE_KERNEL,
++						  kpti_ng_pgd_alloc, 0);
++		if (ret)
++			panic("Failed to create page tables\n");
+ 	}
+ 
+ 	cpu_install_idmap();
+@@ -1233,9 +1286,9 @@ static int __init map_entry_trampoline(void)
+ 
+ 	/* Map only the text into the trampoline page table */
+ 	memset(tramp_pg_dir, 0, PGD_SIZE);
+-	__create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
+-			     entry_tramp_text_size(), prot,
+-			     pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
++	early_create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
++				 entry_tramp_text_size(), prot,
++				 pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
+ 
+ 	/* Map both the text and data into the kernel page table */
+ 	for (i = 0; i < DIV_ROUND_UP(entry_tramp_text_size(), PAGE_SIZE); i++)
+@@ -1877,23 +1930,28 @@ int arch_add_memory(int nid, u64 start, u64 size,
+ 	if (force_pte_mapping())
+ 		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+ 
+-	__create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
+-			     size, params->pgprot, pgd_pgtable_alloc_init_mm,
+-			     flags);
++	ret = __create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
++				   size, params->pgprot, pgd_pgtable_alloc_init_mm,
++				   flags);
++	if (ret)
++		goto err;
+ 
+ 	memblock_clear_nomap(start, size);
+ 
+ 	ret = __add_pages(nid, start >> PAGE_SHIFT, size >> PAGE_SHIFT,
+ 			   params);
+ 	if (ret)
+-		__remove_pgd_mapping(swapper_pg_dir,
+-				     __phys_to_virt(start), size);
+-	else {
+-		/* Address of hotplugged memory can be smaller */
+-		max_pfn = max(max_pfn, PFN_UP(start + size));
+-		max_low_pfn = max_pfn;
+-	}
++		goto err;
++
++	/* Address of hotplugged memory can be smaller */
++	max_pfn = max(max_pfn, PFN_UP(start + size));
++	max_low_pfn = max_pfn;
++
++	return 0;
+ 
++err:
++	__remove_pgd_mapping(swapper_pg_dir,
++			     __phys_to_virt(start), size);
+ 	return ret;
+ }
+ 
+-- 
+2.43.0
 
 
