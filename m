@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-186355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1600BE95F0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07DEFBE9B7D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36D26424CDA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:56:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1172E745886
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D366337111;
-	Fri, 17 Oct 2025 14:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A66332ECA;
+	Fri, 17 Oct 2025 15:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+U8yHVJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHxYZTvF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67D93370FB;
-	Fri, 17 Oct 2025 14:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E199033711C;
+	Fri, 17 Oct 2025 15:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713005; cv=none; b=V1SUV80Jyu924/c4E43y3x34BefnG+QlO8VmglMnWKODi1Ch9xd/Wnzz6qOumS2KEbrzoirULHhX4eOcedq+DcA4p58w6jeaYfzi/Ql8edtdxv4swDlbc7vmjavophar7G0dSLAwC8OCzeB6/8HMXGEPZZhSA3DsA1jRAFE3xSI=
+	t=1760713543; cv=none; b=D0u6NjPmfHFv/meQ4+Fkq8AXouTSi0XpxX0oFixUeFct2c2lwxj/emdfO+z3w8LR/tXbe3jtHzYf0iUmuxROn0IJ8BfX+tpdEP73xSo+520vgQ11yeRF6UKRfeeCWh+rrirVAieLTclzLfQ4QHcwQh0RxGvPWMwrXHL+L95yXuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713005; c=relaxed/simple;
-	bh=Nu2SbYrFE3e2j13BEo5K5xNU1WE36qb8Dp1V3F0NNi4=;
+	s=arc-20240116; t=1760713543; c=relaxed/simple;
+	bh=jd2Oz//zHIxBpGFXepWRdskcnPG6U7GEtIK76+QESCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yt8VcW7YNXG9aEqQqmrEHAATXvofTnJ+fyvmfNJA9W69Hu4ErkrXY3mMbaKp2I9Za4KPmyxRydmsJl018eMu+Tp7Ii1XfyR3499Z5a/36bRNxhMO4JdEvVjRK5SloTW5Gyc9qsYNAc5/hW+FBilu4hyKhfveahVNVE2h7K4Vzj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+U8yHVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9644C4CEE7;
-	Fri, 17 Oct 2025 14:56:44 +0000 (UTC)
+	 MIME-Version; b=uu/2IsAguv7VZ7s+BXicISvLpgNJoJ+KI8Dw0pathpl6EPABrIeZcPz/k8iGb9hzy/j5GapgZ99CbAHA5ghLyV66CpwvqgeQmhUAFZP9Il2fR+teQzMJ8O/v8EZefOJlRSGTALhzMYC1r+L9U9jkjcuG2kj5w/iuBlWhUmdy/W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHxYZTvF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F015C4CEE7;
+	Fri, 17 Oct 2025 15:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713005;
-	bh=Nu2SbYrFE3e2j13BEo5K5xNU1WE36qb8Dp1V3F0NNi4=;
+	s=korg; t=1760713542;
+	bh=jd2Oz//zHIxBpGFXepWRdskcnPG6U7GEtIK76+QESCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B+U8yHVJ5s3ZrpLfJ0q2nhLP0JKo+zWdfrPc4K0ZFIhF+u3fadQOwdZ8wp/6Cs1Ek
-	 CxzGy71qHTbDoViipXFrpr1JppKQZEvMMkQgeEdC562sznafBLy8ZDoVawk/+g2cQB
-	 brpObrADLD6ycG5htFmyeFSdFB7jpdzKd82zZMt4=
+	b=kHxYZTvFLiZNn4iJRPnYJzc895Hhh9m31REP7yKsAoaAGpGpjfG6w/lGnQXGvJSoa
+	 POrPPnXQObj7rwadO5ZpLAfVRQWN8ekPr2v4nYk824dYm2njkgOLiqy2cgxCtjT9Xl
+	 kvDEqeacj6UFWWnRjx0a1sF6uDmq05zArWbtAYog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ali Saidi <alisaidi@amazon.com>,
-	German Gomez <german.gomez@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Ian Forbes <ian.forbes@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 015/168] perf arm_spe: Correct memory level for remote access
+Subject: [PATCH 6.6 033/201] drm/vmwgfx: Fix a null-ptr access in the cursor snooper
 Date: Fri, 17 Oct 2025 16:51:34 +0200
-Message-ID: <20251017145129.577402367@linuxfoundation.org>
+Message-ID: <20251017145135.961739138@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,51 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit cb300e3515057fb555983ce47e8acc86a5c69c3c ]
+[ Upstream commit 5ac2c0279053a2c5265d46903432fb26ae2d0da2 ]
 
-For remote accesses, the data source packet does not contain information
-about the memory level. To avoid misinformation, set the memory level to
-NA (Not Available).
+Check that the resource which is converted to a surface exists before
+trying to use the cursor snooper on it.
 
-Fixes: 4e6430cbb1a9f1dc ("perf arm-spe: Use SPE data source for neoverse cores")
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ali Saidi <alisaidi@amazon.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+vmw_cmd_res_check allows explicit invalid (SVGA3D_INVALID_ID) identifiers
+because some svga commands accept SVGA3D_INVALID_ID to mean "no surface",
+unfortunately functions that accept the actual surfaces as objects might
+(and in case of the cursor snooper, do not) be able to handle null
+objects. Make sure that we validate not only the identifier (via the
+vmw_cmd_res_check) but also check that the actual resource exists before
+trying to do something with it.
+
+Fixes unchecked null-ptr reference in the snooping code.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: c0951b797e7d ("drm/vmwgfx: Refactor resource management")
+Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
+Link: https://lore.kernel.org/r/20250917153655.1968583-1-zack.rusin@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/arm-spe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
-index 36f03d532d5bc..383eda614f5c4 100644
---- a/tools/perf/util/arm-spe.c
-+++ b/tools/perf/util/arm-spe.c
-@@ -457,8 +457,8 @@ static void arm_spe__synth_data_source_common(const struct arm_spe_record *recor
- 	 * socket
- 	 */
- 	case ARM_SPE_COMMON_DS_REMOTE:
--		data_src->mem_lvl = PERF_MEM_LVL_REM_CCE1;
--		data_src->mem_lvl_num = PERF_MEM_LVLNUM_ANY_CACHE;
-+		data_src->mem_lvl = PERF_MEM_LVL_NA;
-+		data_src->mem_lvl_num = PERF_MEM_LVLNUM_NA;
- 		data_src->mem_remote = PERF_MEM_REMOTE_REMOTE;
- 		data_src->mem_snoopx = PERF_MEM_SNOOPX_PEER;
- 		break;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index b129ce873af3f..b235e7cc41f3f 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1514,6 +1514,7 @@ static int vmw_cmd_dma(struct vmw_private *dev_priv,
+ 		       SVGA3dCmdHeader *header)
+ {
+ 	struct vmw_bo *vmw_bo = NULL;
++	struct vmw_resource *res;
+ 	struct vmw_surface *srf = NULL;
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdSurfaceDMA);
+ 	int ret;
+@@ -1549,18 +1550,24 @@ static int vmw_cmd_dma(struct vmw_private *dev_priv,
+ 
+ 	dirty = (cmd->body.transfer == SVGA3D_WRITE_HOST_VRAM) ?
+ 		VMW_RES_DIRTY_SET : 0;
+-	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface,
+-				dirty, user_surface_converter,
+-				&cmd->body.host.sid, NULL);
++	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface, dirty,
++				user_surface_converter, &cmd->body.host.sid,
++				NULL);
+ 	if (unlikely(ret != 0)) {
+ 		if (unlikely(ret != -ERESTARTSYS))
+ 			VMW_DEBUG_USER("could not find surface for DMA.\n");
+ 		return ret;
+ 	}
+ 
+-	srf = vmw_res_to_srf(sw_context->res_cache[vmw_res_surface].res);
++	res = sw_context->res_cache[vmw_res_surface].res;
++	if (!res) {
++		VMW_DEBUG_USER("Invalid DMA surface.\n");
++		return -EINVAL;
++	}
+ 
+-	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->tbo, header);
++	srf = vmw_res_to_srf(res);
++	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->tbo,
++			     header);
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
