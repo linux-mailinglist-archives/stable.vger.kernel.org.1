@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31015BEA332
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5ABBE9623
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B811AE327C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A8E11896D5B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4822C330B1F;
-	Fri, 17 Oct 2025 15:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A78160DCF;
+	Fri, 17 Oct 2025 14:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IO6TthJI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PgAX1qff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D2C330B3C;
-	Fri, 17 Oct 2025 15:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE5F5695;
+	Fri, 17 Oct 2025 14:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715971; cv=none; b=Qaswhv4IG7+dQ5C3f8MbXF+xRfRU1qiO/jEmMW0nLkrebR9klvXBUn1PNYGeymEpySC8voFydp6kGLexlKG5S6Y4KbuB47bIohAAaYdImVD61Zj7H80UJyVcBH4O79E+GWBntOFg88hj227qIyzHmPnkSvELRhz/gDPwxQzRmtg=
+	t=1760713085; cv=none; b=KXrBuBkS5hdSEyI32whb6aA+9HX1/RxItH0e9yeCk7IpOEQKY6oVN/uPrUKtrP+WsGcm9E3NTvSpCwOB/mr8J8E2gq9X8RTkdPXSb1BFSb7TgMWAOPeUFX6sMpiNCL1U26uDDnVyt6TZwCsphmskicMwMSf8TCtYrmJW3YIsT2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715971; c=relaxed/simple;
-	bh=7yUBZFzdl0E1dQmioxozpJtxQqJ3562WOq78yinS/eI=;
+	s=arc-20240116; t=1760713085; c=relaxed/simple;
+	bh=7F5IIJ99fyiv4PlZHk/bictfujfLw6g1FB6XEVowUW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WbiyAurh5ram2bTLnPVRWqN7UGzGJg0yea8V3gu9H1fGAYqAK5VnzSMiroIR1776WyqaWI0uyvbvm81hg/hNH9GomF30jBiDocXMXvNCIoszYen3wMYgZpTbCVXFnykJKLmaU/u5a+RNHP+VCLiUSKvc7yuN90A2sV7fc5ZRs9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IO6TthJI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AFEC4CEFE;
-	Fri, 17 Oct 2025 15:46:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Gb++Cex4WSLLYl4DBYqeJUbGjDYxl+9U2v5/nPHjSqvs0FHdOstOscAIOq/Vw+qa7hJKlwkG5QRKlum3EYXzEQEw+I82NJcv0/RjA+ZbPJ5qBvxPsFEZv8hGhN89NwlnfoC1yrGCNdCs2GOI/WOg5UYUCsfyalNp5btPC8Sdjys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgAX1qff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4D2C4CEE7;
+	Fri, 17 Oct 2025 14:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715970;
-	bh=7yUBZFzdl0E1dQmioxozpJtxQqJ3562WOq78yinS/eI=;
+	s=korg; t=1760713085;
+	bh=7F5IIJ99fyiv4PlZHk/bictfujfLw6g1FB6XEVowUW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IO6TthJILbt4poJrkouUPhQ9fbvPT3WZlmdJ47Mm1wQ+A6CXVSWuSZMnlAEN6pOJC
-	 ZNlQ8MNTfVisclOCx/x8PqehVzq8k9jHrwM7NJ6GxqF7QERCAILVwrCcoGmRWF8DiE
-	 73H8kjZdZaBwwHFXvqo3ZyW4wqcsJ12ojA1WOMAU=
+	b=PgAX1qffxwxPCVRdMnoIa3HnANjxhToPLCQr1KD8Gq8W4b8c60bfg4gBQTY7/zyan
+	 QtPn1pczX+saXUyvEYIks35rIjPnvVe49JK8y1RN8X2SIEkZMCZ6Z3rA1L7GU2V+q+
+	 a7oFL9PKsMNYCIyJXQ55X/KvxEHXD/FS+MjSPd/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 028/276] regmap: Remove superfluous check for !config in __regmap_init()
+Subject: [PATCH 6.1 042/168] drm/amd/display: Add missing DCE6 SCL_HORZ_FILTER_INIT* SRIs
 Date: Fri, 17 Oct 2025 16:52:01 +0200
-Message-ID: <20251017145143.431205915@linuxfoundation.org>
+Message-ID: <20251017145130.567452777@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 5c36b86d2bf68fbcad16169983ef7ee8c537db59 ]
+[ Upstream commit d60f9c45d1bff7e20ecd57492ef7a5e33c94a37c ]
 
-The first thing __regmap_init() do is check if config is non-NULL,
-so there is no need to check for this again later.
+Without these, it's impossible to program these registers.
 
-Fixes: d77e745613680c54 ("regmap: Add bulk read/write callbacks into regmap_config")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/a154d9db0f290dda96b48bd817eb743773e846e1.1755090330.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 102b2f587ac8 ("drm/amd/display: dce_transform: DCE6 Scaling Horizontal Filter Init (v2)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_transform.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index ebddc69bc969c..35cfbec6bf9ac 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -888,7 +888,7 @@ struct regmap *__regmap_init(struct device *dev,
- 		map->read_flag_mask = bus->read_flag_mask;
- 	}
- 
--	if (config && config->read && config->write) {
-+	if (config->read && config->write) {
- 		map->reg_read  = _regmap_bus_read;
- 
- 		/* Bulk read/write */
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
+index cbce194ec7b82..ff746fba850bc 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
+@@ -155,6 +155,8 @@
+ 	SRI(SCL_COEF_RAM_TAP_DATA, SCL, id), \
+ 	SRI(VIEWPORT_START, SCL, id), \
+ 	SRI(VIEWPORT_SIZE, SCL, id), \
++	SRI(SCL_HORZ_FILTER_INIT_RGB_LUMA, SCL, id), \
++	SRI(SCL_HORZ_FILTER_INIT_CHROMA, SCL, id), \
+ 	SRI(SCL_HORZ_FILTER_SCALE_RATIO, SCL, id), \
+ 	SRI(SCL_VERT_FILTER_SCALE_RATIO, SCL, id), \
+ 	SRI(SCL_VERT_FILTER_INIT, SCL, id), \
 -- 
 2.51.0
 
