@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17924BE98D1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:08 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 382B7BE9FC3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21B631A675BC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A8AF435E218
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345BB258ECA;
-	Fri, 17 Oct 2025 15:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE73336EDD;
+	Fri, 17 Oct 2025 15:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JqA38vMP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z2+PiHSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F6F2F12CF;
-	Fri, 17 Oct 2025 15:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49BF336EDB;
+	Fri, 17 Oct 2025 15:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713733; cv=none; b=rMC0Sw9306N+cECpMGXt/SwkPk3Blw5wrHdFT0MwUYzoiDRgH7qw3wq1HG3gnBvzreCefMGFO7H37kaTcm7aBqydK2IKvs9lhZjOPKUsGbCkW1BmCZDdanW3po9TEGLLalQebTCH5EoYJ0O8qge39qztQCldniHwtjtP4UrLKus=
+	t=1760715352; cv=none; b=dNZfRjtU+othSpR5N0faFmG7Fx3YLNeC9rLxRgmlxSQ3D9Kzvb3glGwq4tBUNSF0+2VOZM7hUMzy2g4JvwduSND949qXPocT+Lgoh7erhvWIErsitzvIN9f/LWiOZD3/9uu0/8jyaym413KgtaFEAWBiYVAMLaiWjPa/TeO7z6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713733; c=relaxed/simple;
-	bh=lPZX5sjQJpdTQVB9Nm5Fs8NXQMGULBe02bEOnopEsPs=;
+	s=arc-20240116; t=1760715352; c=relaxed/simple;
+	bh=KKcSrJ0SkdiDYWTwP8eHtpy0/hLJ7ngSol1+jW+V8ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WkGt+ptc6qLYzLkXKo9nbYNFDm4fCMY7o7x44QCBgvrbpYZ9jsnc+KgXWyeSypCtgdCxoF0c8IjPMZgurmubNxaZnTGWAgEM2kuBG86LBmpU/pU3rPrSfJzoCZQPWoHTvph6UD0GCPl9IDjSqFa1bVy9WIlo+EtxKzxmWxbUYQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JqA38vMP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 368CBC4CEE7;
-	Fri, 17 Oct 2025 15:08:52 +0000 (UTC)
+	 MIME-Version; b=UcrfcpTUtnxNpzRb9bA5by6g5Wit1isWElEet1auxdpbIdLW8t5GNFGZshmU8fzlg6puMlXrEs9hX9bcngULoaVhhiNqN/qV/w9181zPJPc+l/OUj5nXzbtg2DdCPvWSWHZcK/ocHd62vWGi+f55p11Tj/H+VgDrtx2zgfCIzQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2+PiHSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3007EC4CEE7;
+	Fri, 17 Oct 2025 15:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713732;
-	bh=lPZX5sjQJpdTQVB9Nm5Fs8NXQMGULBe02bEOnopEsPs=;
+	s=korg; t=1760715352;
+	bh=KKcSrJ0SkdiDYWTwP8eHtpy0/hLJ7ngSol1+jW+V8ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JqA38vMP1vcMnNj/EiiMfnXWI9tqXKahoe9RHzjWWCzzu/15POr7/eihWrRMCfj0I
-	 12Ra/880rSejjEgiD5sPvrAgh+nm43Dyw4Fp77rqFobUj17JX8R2SkpgQIiiAYW24q
-	 d9KcFaDKzIRCfF/YrS7rDLT3KlDOe8eModK4wqUQ=
+	b=z2+PiHSatZ91HOlIqd+0lnc3Q+o17Fx4wAh9nf2ETPdFYSjvsvYK4h7IpYc0bXvS6
+	 Fixt90cGDVUKMqPOvO2a8i30faoDXsVa8WEnktrPjLgYcmrpfNBKSFX/fuDdz1+1K4
+	 mJlUoNli/YGJodieCPErpHe6z1tXbHT1bLRNfWJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.6 100/201] KEYS: trusted_tpm1: Compare HMAC values in constant time
+	Inki Dae <inki.dae@samsung.com>,
+	Kaustabh Chakraborty <kauschluss@disroot.org>
+Subject: [PATCH 6.17 186/371] drm/exynos: exynos7_drm_decon: remove ctx->suspended
 Date: Fri, 17 Oct 2025 16:52:41 +0200
-Message-ID: <20251017145138.422343992@linuxfoundation.org>
+Message-ID: <20251017145208.653903544@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-commit eed0e3d305530066b4fc5370107cff8ef1a0d229 upstream.
+commit e1361a4f1be9cb69a662c6d7b5ce218007d6e82b upstream.
 
-To prevent timing attacks, HMAC value comparison needs to be constant
-time.  Replace the memcmp() with the correct function, crypto_memneq().
+Condition guards are found to be redundant, as the call flow is properly
+managed now, as also observed in the Exynos5433 DECON driver. Since
+state checking is no longer necessary, remove it.
 
-[For the Fixes commit I used the commit that introduced the memcmp().
-It predates the introduction of crypto_memneq(), but it was still a bug
-at the time even though a helper function didn't exist yet.]
+This also fixes an issue which prevented decon_commit() from
+decon_atomic_enable() due to an incorrect state change setting.
 
-Fixes: d00a1c72f7f4 ("keys: add new trusted key-type")
+Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Suggested-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/keys/trusted-keys/trusted_tpm1.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c |   36 -----------------------------
+ 1 file changed, 36 deletions(-)
 
---- a/security/keys/trusted-keys/trusted_tpm1.c
-+++ b/security/keys/trusted-keys/trusted_tpm1.c
-@@ -7,6 +7,7 @@
-  */
+--- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+@@ -69,7 +69,6 @@ struct decon_context {
+ 	void __iomem			*regs;
+ 	unsigned long			irq_flags;
+ 	bool				i80_if;
+-	bool				suspended;
+ 	wait_queue_head_t		wait_vsync_queue;
+ 	atomic_t			wait_vsync_event;
  
- #include <crypto/hash_info.h>
-+#include <crypto/utils.h>
- #include <linux/init.h>
- #include <linux/slab.h>
- #include <linux/parser.h>
-@@ -241,7 +242,7 @@ int TSS_checkhmac1(unsigned char *buffer
- 	if (ret < 0)
- 		goto out;
+@@ -132,9 +131,6 @@ static void decon_shadow_protect_win(str
  
--	if (memcmp(testhmac, authdata, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac, authdata, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
-@@ -334,7 +335,7 @@ static int TSS_checkhmac2(unsigned char
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag1, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
-+	if (crypto_memneq(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -343,7 +344,7 @@ static int TSS_checkhmac2(unsigned char
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag2, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac2, authdata2, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac2, authdata2, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
+ static void decon_wait_for_vblank(struct decon_context *ctx)
+ {
+-	if (ctx->suspended)
+-		return;
+-
+ 	atomic_set(&ctx->wait_vsync_event, 1);
+ 
+ 	/*
+@@ -210,9 +206,6 @@ static void decon_commit(struct exynos_d
+ 	struct drm_display_mode *mode = &crtc->base.state->adjusted_mode;
+ 	u32 val, clkdiv;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/* nothing to do if we haven't set the mode yet */
+ 	if (mode->htotal == 0 || mode->vtotal == 0)
+ 		return;
+@@ -274,9 +267,6 @@ static int decon_enable_vblank(struct ex
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return -EPERM;
+-
+ 	if (!test_and_set_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
+ 
+@@ -299,9 +289,6 @@ static void decon_disable_vblank(struct
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	if (test_and_clear_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
+ 
+@@ -404,9 +391,6 @@ static void decon_atomic_begin(struct ex
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, true);
+ }
+@@ -427,9 +411,6 @@ static void decon_update_plane(struct ex
+ 	unsigned int pitch = fb->pitches[0];
+ 	unsigned int vidw_addr0_base = ctx->data->vidw_buf_start_base;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/*
+ 	 * SHADOWCON/PRTCON register is used for enabling timing.
+ 	 *
+@@ -517,9 +498,6 @@ static void decon_disable_plane(struct e
+ 	unsigned int win = plane->index;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/* protect windows */
+ 	decon_shadow_protect_win(ctx, win, true);
+ 
+@@ -538,9 +516,6 @@ static void decon_atomic_flush(struct ex
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, false);
+ 	exynos_crtc_handle_event(crtc);
+@@ -568,9 +543,6 @@ static void decon_atomic_enable(struct e
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int ret;
+ 
+-	if (!ctx->suspended)
+-		return;
+-
+ 	ret = pm_runtime_resume_and_get(ctx->dev);
+ 	if (ret < 0) {
+ 		DRM_DEV_ERROR(ctx->dev, "failed to enable DECON device.\n");
+@@ -584,8 +556,6 @@ static void decon_atomic_enable(struct e
+ 		decon_enable_vblank(ctx->crtc);
+ 
+ 	decon_commit(ctx->crtc);
+-
+-	ctx->suspended = false;
+ }
+ 
+ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+@@ -593,9 +563,6 @@ static void decon_atomic_disable(struct
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/*
+ 	 * We need to make sure that all windows are disabled before we
+ 	 * suspend that connector. Otherwise we might try to scan from
+@@ -605,8 +572,6 @@ static void decon_atomic_disable(struct
+ 		decon_disable_plane(crtc, &ctx->planes[i]);
+ 
+ 	pm_runtime_put_sync(ctx->dev);
+-
+-	ctx->suspended = true;
+ }
+ 
+ static const struct exynos_drm_crtc_ops decon_crtc_ops = {
+@@ -727,7 +692,6 @@ static int decon_probe(struct platform_d
+ 		return -ENOMEM;
+ 
+ 	ctx->dev = dev;
+-	ctx->suspended = true;
+ 	ctx->data = of_device_get_match_data(dev);
+ 
+ 	i80_if_timings = of_get_child_by_name(dev->of_node, "i80-if-timings");
 
 
 
