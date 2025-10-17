@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-187218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAF9BEA11B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:55 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9C9BEA631
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802CB1899F5F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C48525A1D3B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3026026B96A;
-	Fri, 17 Oct 2025 15:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3864F330B1C;
+	Fri, 17 Oct 2025 15:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xblBvOvW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qww30YVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44D723EA9E;
-	Fri, 17 Oct 2025 15:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CE8330B0C;
+	Fri, 17 Oct 2025 15:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715449; cv=none; b=TvFJZrEbKwmtSM2QF49rMSarGSvvcTpQIvbx6SYdybKjPOnefei4DJaBeW0AvunNlisaPS47qSWTvMa/V/xxH1yE/OlyQBPJBvtQ7vbY3tt2qeheSBD+c0wM1WZXH5BfWYDN3z8cFWfNLSbpIG4eAYAStyx26+tChqxrEh9hMgQ=
+	t=1760716187; cv=none; b=u5FyOsp5wqvIft6SpyldRliTAj0nWwIuyM5bLtpiC0XW+5PWllsa0p7THmW8WjS0vcsmiyW3YORaVcM8KzerfaC/9SWMh3SzGKwCyWVsf4Zw4zRL2utf2u66Gzkipr77kn+JYTMOg38Taqk9B1DRuqYte0hes6MDwZH82QCtqWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715449; c=relaxed/simple;
-	bh=nalsKtvlhvib+SYWpzmEiWiQlF64MOUdee+Dj3jci+M=;
+	s=arc-20240116; t=1760716187; c=relaxed/simple;
+	bh=OVOqxp1cMTcc5HlCBCB8KfaCwNZA6e37XMq3PQ5cEns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ekDcNl5Dc1jiDJhGHChnIchqQ916A5mQD5x7Hr/Z8gHICt4bFZWzmmTblW2eYBJUQia291hlGVPyp4XbZy5mlqjkf4RYrX5ziCyetZNcqBT55a/XGnJ2sS2+fvpStkIRhw/P2NiPahbhEgFpyVnHA68BtwOKTJ4Crz7hDcClmWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xblBvOvW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611D2C4CEE7;
-	Fri, 17 Oct 2025 15:37:29 +0000 (UTC)
+	 MIME-Version; b=n/NKSbx6Hba9hmRVjlcrKVAO/ybVgWMVb1ixFjv7ITov1FbPXZOKcl+6QUUIK651sknjT6Z7gohiXDwgfFFWrOl4phMfJeV10IgEcegga3FYSCTwwBTDCAPlNtwL27uF9K6O2kmWpe+VNFh/bWKncRPB4k7Mk1P2pUf0kIxNKB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qww30YVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9A1C4CEE7;
+	Fri, 17 Oct 2025 15:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715449;
-	bh=nalsKtvlhvib+SYWpzmEiWiQlF64MOUdee+Dj3jci+M=;
+	s=korg; t=1760716186;
+	bh=OVOqxp1cMTcc5HlCBCB8KfaCwNZA6e37XMq3PQ5cEns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xblBvOvWCYRukiq0LSiLoiPJasrydDoQS9MzWf+f8af5KKPvLHInkWXcwTuO7zNC7
-	 Nz9zT8P95dh30oaiOd4onyWyBbAVlRf0lB+6Eoj0tbU3POSYd3kLEurAeYo9gcb/DM
-	 otaIOz6FiNy7r7FiXPyTEnSoAseWr/l9AOMZkXCU=
+	b=Qww30YVkghUtJrGCkmnWDYq4RFd+fYIscu8hJRvmJ8sDcH+o3tU7ul+mDFKS5YmD9
+	 tOO9yjXdD2JsntNCw8qABr4AXQoFCuwh93LEmIRruT2AgoZ8QWormblgiMCbEw+YiM
+	 bEQx7OpyBUs6OAVNkHIXzh0T6bWwk2v1SmJsAb+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 220/371] iio: dac: ad5360: use int type to store negative error codes
+	Donet Tom <donettom@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Chris Mason <clm@meta.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 102/276] drivers/base/node: fix double free in register_one_node()
 Date: Fri, 17 Oct 2025 16:53:15 +0200
-Message-ID: <20251017145210.047753550@linuxfoundation.org>
+Message-ID: <20251017145146.206288366@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +73,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Donet Tom <donettom@linux.ibm.com>
 
-commit f9381ece76de999a2065d5b4fdd87fa17883978c upstream.
+[ Upstream commit 0efdedfa537eb534c251a5b4794caaf72cc55869 ]
 
-Change the 'ret' variable in ad5360_update_ctrl() from unsigned int to
-int, as it needs to store either negative error codes or zero returned
-by ad5360_write_unlocked().
+When device_register() fails in register_node(), it calls
+put_device(&node->dev).  This triggers node_device_release(), which calls
+kfree(to_node(dev)), thereby freeing the entire node structure.
 
-Fixes: a3e2940c24d3 ("staging:iio:dac: Add AD5360 driver")
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Link: https://patch.msgid.link/20250901135726.17601-2-rongqianfeng@vivo.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a result, when register_node() returns an error, the node memory has
+already been freed.  Calling kfree(node) again in register_one_node()
+leads to a double free.
+
+This patch removes the redundant kfree(node) from register_one_node() to
+prevent the double free.
+
+Link: https://lkml.kernel.org/r/20250918054144.58980-1-donettom@linux.ibm.com
+Fixes: 786eb990cfb7 ("drivers/base/node: handle error properly in register_one_node()")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Chris Mason <clm@meta.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hiroyouki Kamezawa <kamezawa.hiroyu@jp.fujitsu.com>
+Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Yury Norov (NVIDIA) <yury.norov@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/dac/ad5360.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/node.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/iio/dac/ad5360.c
-+++ b/drivers/iio/dac/ad5360.c
-@@ -262,7 +262,7 @@ static int ad5360_update_ctrl(struct iio
- 	unsigned int clr)
- {
- 	struct ad5360_state *st = iio_priv(indio_dev);
--	unsigned int ret;
-+	int ret;
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 0e3bae3b877df..dd8c8fdfd158a 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -985,7 +985,6 @@ int __register_one_node(int nid)
+ 	error = register_node(node_devices[nid], nid);
+ 	if (error) {
+ 		node_devices[nid] = NULL;
+-		kfree(node);
+ 		return error;
+ 	}
  
- 	mutex_lock(&st->lock);
- 
+-- 
+2.51.0
+
 
 
 
