@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000B9BEA12C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DE1BE99E4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98A533B3558
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 536C774705F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A03732E14C;
-	Fri, 17 Oct 2025 15:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3F323EA9E;
+	Fri, 17 Oct 2025 15:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSyqI6Dj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZnYK4ad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060163370F7;
-	Fri, 17 Oct 2025 15:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3712E1F08;
+	Fri, 17 Oct 2025 15:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714302; cv=none; b=mVAUmrnx8Yl1mpxhhkcK4wN2HQzSm+j5iNicqB/ZPXcZp8ysfKAVhlPLTmocPrrTn8Wt+Ant0EXK0cKaVPkjeyjlS4cduWx20FZjNQaoKggGExLN4QDMTX7e1a1lWK5h6244euDEqPl/r5UL74kyOMmFszzWQNw90dWa8/tFoXo=
+	t=1760713690; cv=none; b=Qf4uu/50nni1Kn8mxRD268KdJHn1AhyiCVrTqrIGTakhypPypsQtwEOFRjrASJoTA0lqcN3Tlr0tFyQ9vRkP1Tsz+alXK5uRksjKqOpPTQjxHKy2cNgSJXBFQCJdUESmEXC20BLdi/l5dPYpvC4Dxq2PkchRQMM3XO4Dqg82Zu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714302; c=relaxed/simple;
-	bh=5uhLQ5Nt/VnCtgVAHDGaJkj0jSzARwBKSFQAANPVt6U=;
+	s=arc-20240116; t=1760713690; c=relaxed/simple;
+	bh=OGp2OfnRaFvRRnxNjX/WbWkUK8F2MBZ/KhCrNteqz+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RG42h2OFX83L12k5T0YT+qP8AvY12JIwmfgrJlHCqvzU1dM1UY8SwFsnpdIcUQoFfhC8dTCxa1N7DdfVfK3JaZu0Gytn+uy8pq40lJeMIVK5lPQO41j8eZadlxgYMlfpVNfqjI7MQIKUI3DGyF7imHQxs7cMV5JzcZg++qP5LMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSyqI6Dj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEDAC113D0;
-	Fri, 17 Oct 2025 15:18:21 +0000 (UTC)
+	 MIME-Version; b=O0FNVkDxZLqW3nIB/EKjcMLo2cj7dPN+1sIseR6odsrHpYbyUvjeoB8YOl/zBvR5A5X02l4jOIYIaFw0prDYLLNTj0sceqCPT9vl6ek7Z5uOoKnqPnfBrxnynslAhGGP0wqNJIvQXiR2vtW4fcL3FckjBJUWePMznWC+eKl3Rqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZnYK4ad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72265C4CEF9;
+	Fri, 17 Oct 2025 15:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714301;
-	bh=5uhLQ5Nt/VnCtgVAHDGaJkj0jSzARwBKSFQAANPVt6U=;
+	s=korg; t=1760713689;
+	bh=OGp2OfnRaFvRRnxNjX/WbWkUK8F2MBZ/KhCrNteqz+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uSyqI6DjY/uJ29rJ07iPKy2HsbZ2Lu9JZGtd08o6699v9V198UNiFY6uBh9Ym14cp
-	 DWCNQi5DIZwHzxa5iNUOXq/lOV4sMut2kx69Odr8IzEjI07VrGGT9nTkS5fcJDr6Yy
-	 4+Av07XktgbxeEbWDrDOtIDRvujtankPjM4KGbyU=
+	b=XZnYK4adiuhMS5kbOBBS58QPWEYnoUd+fPAHv1S7jhgQW0VAbNZ5wLIEaYwd1yL0Y
+	 vdqzwn4ETOzdloED3KUUMqTBt49syZmP5YsDm3+PCrSWfqa+Jm3I6/aiNSYC7pwWjH
+	 mOAzA2M6QS1b1+Co5o3eGgee7nPAf3gxLNVqH1cA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.12 096/277] perf/arm-cmn: Fix CMN S3 DTM offset
+	Harini T <harini.t@amd.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 042/201] mailbox: zynqmp-ipi: Remove redundant mbox_controller_unregister() call
 Date: Fri, 17 Oct 2025 16:51:43 +0200
-Message-ID: <20251017145150.638418680@linuxfoundation.org>
+Message-ID: <20251017145136.292391748@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Harini T <harini.t@amd.com>
 
-commit b3fe1c83a56f3cb7c475747ee1c6ec5a9dd5f60e upstream.
+[ Upstream commit 341867f730d3d3bb54491ee64e8b1a0c446656e7 ]
 
-CMN S3's DTM offset is different between r0px and r1p0, and it
-turns out this was not a error in the earlier documentation, but
-does actually exist in the design. Lovely.
+The controller is registered using the device-managed function
+'devm_mbox_controller_register()'. As documented in mailbox.c, this
+ensures the devres framework automatically calls
+mbox_controller_unregister() when device_unregister() is invoked, making
+the explicit call unnecessary.
 
-Cc: stable@vger.kernel.org
-Fixes: 0dc2f4963f7e ("perf/arm-cmn: Support CMN S3")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Remove redundant mbox_controller_unregister() call as
+device_unregister() handles controller cleanup.
+
+Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
+Signed-off-by: Harini T <harini.t@amd.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-cmn.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/mailbox/zynqmp-ipi-mailbox.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -65,7 +65,7 @@
- /* PMU registers occupy the 3rd 4KB page of each node's region */
- #define CMN_PMU_OFFSET			0x2000
- /* ...except when they don't :( */
--#define CMN_S3_DTM_OFFSET		0xa000
-+#define CMN_S3_R1_DTM_OFFSET		0xa000
- #define CMN_S3_PMU_OFFSET		0xd900
- 
- /* For most nodes, this is all there is */
-@@ -233,6 +233,9 @@ enum cmn_revision {
- 	REV_CMN700_R1P0,
- 	REV_CMN700_R2P0,
- 	REV_CMN700_R3P0,
-+	REV_CMNS3_R0P0 = 0,
-+	REV_CMNS3_R0P1,
-+	REV_CMNS3_R1P0,
- 	REV_CI700_R0P0 = 0,
- 	REV_CI700_R1P0,
- 	REV_CI700_R2P0,
-@@ -425,8 +428,8 @@ static enum cmn_model arm_cmn_model(cons
- static int arm_cmn_pmu_offset(const struct arm_cmn *cmn, const struct arm_cmn_node *dn)
- {
- 	if (cmn->part == PART_CMN_S3) {
--		if (dn->type == CMN_TYPE_XP)
--			return CMN_S3_DTM_OFFSET;
-+		if (cmn->rev >= REV_CMNS3_R1P0 && dn->type == CMN_TYPE_XP)
-+			return CMN_S3_R1_DTM_OFFSET;
- 		return CMN_S3_PMU_OFFSET;
- 	}
- 	return CMN_PMU_OFFSET;
+diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
+index e4fcac97dbfaa..06529dc0daf3f 100644
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -617,7 +617,6 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
+ 	for (; i >= 0; i--) {
+ 		ipi_mbox = &pdata->ipi_mboxes[i];
+ 		if (ipi_mbox->dev.parent) {
+-			mbox_controller_unregister(&ipi_mbox->mbox);
+ 			if (device_is_registered(&ipi_mbox->dev))
+ 				device_unregister(&ipi_mbox->dev);
+ 		}
+-- 
+2.51.0
+
 
 
 
