@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-187243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71637BEA8DC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EFF5BEAA7F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:23:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AA89944AD3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09F16747B3F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D39432E159;
-	Fri, 17 Oct 2025 15:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06311A9FB7;
+	Fri, 17 Oct 2025 15:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FViVXBzO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EobsqMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6BF32C946;
-	Fri, 17 Oct 2025 15:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD20330B20;
+	Fri, 17 Oct 2025 15:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715521; cv=none; b=m5etz/5RF6UuRXgnCjqrkci1cYUmLLyBBumQXUVJgjVN6tyya7JPoiZwElkWlmciqej66pz0ThN2ki3rvM3zzmN0cvkdliqvub7p6fUllGFsniEwZZrvnQbwkFKrzQT2u7FsdO33yocchdI+84nkRN81oKXlIKg8xfg+0Mqu3ws=
+	t=1760716264; cv=none; b=ekIGakj1A99BUqykImXQSLRn1Bj50C6QMakT/9gCMb8LEhZTFnLzq1ucGMsGnijrSBZtmTTkv8iH/ug1eVB/l5Xs2NE5sS/xdUIvW9AArYRTPNG8qc+K0OKIGjgfcG2eYuPZeBcAXx8hJdy7bGxAhKVKwzj3n75tH3u8QxCiiIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715521; c=relaxed/simple;
-	bh=7CWQcc11qa+fWcom4jAC+eQ/e131CH5Ts2ehnOc5zpg=;
+	s=arc-20240116; t=1760716264; c=relaxed/simple;
+	bh=lFWowcWNwKepT+xT7JGSXJ7z4LAWoWhO3de49c2bAzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owNy4SkqQxwvDTBpXrtqVCgbIU1zMhnRPvFOdmK4rPJoiD6BvGZCmNs8KZG8hhPnh4meKR01jV4gDHsM6KVZdJHih0nYcfFdeeedBtWc3QnH2v9aCuUp1nRd8e14uCKs/VNV84OKY6hWtO/5T3uEaF59NjZekqe/b1LKu6vjPks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FViVXBzO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44698C4CEE7;
-	Fri, 17 Oct 2025 15:38:41 +0000 (UTC)
+	 MIME-Version; b=Gyg1rThfxd0Y59lbYFZ55kpJXvOhlCUO+kbIYnh8WW6X/X+AqLUPXwnBpVJrkBeYt/zpTy+zf5lO6S6XPC3LsuFGAyFm9j3/ZT70myAL2XbueP19q6VWOq3NRefakTsVuTGudyvRj8JB6tkDMaapxg4GKs6p7BLlg9r9eq0o5II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0EobsqMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14FDC4CEFE;
+	Fri, 17 Oct 2025 15:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715521;
-	bh=7CWQcc11qa+fWcom4jAC+eQ/e131CH5Ts2ehnOc5zpg=;
+	s=korg; t=1760716264;
+	bh=lFWowcWNwKepT+xT7JGSXJ7z4LAWoWhO3de49c2bAzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FViVXBzOE2Li9tXbX4w2gNrp0RW5IEL53BRyW+uPX3X2O/NZvUeAY+aRxwaciQ1rr
-	 /IfkFUZ3oDYrnIaHyku0oDu+9vLHxR+B4xMZ3fYWoAFVauqYYRqFY2JN5cg+mKi2wJ
-	 oy2wjy7y5SZH2sY3yQuETqq1OOfKv2bx69S5hzQE=
+	b=0EobsqMdhrMSNf+OS3HqqTfgrlX8iavRYaAS6zbcWd8wkl11qmbKwVYOeLCLp2AaC
+	 Uam43QGGSR3X0ZJ0qmyTH0P0DfvjDPL6JImkq02gp9Rv/QmHM6q3knY0hB1H08oFr7
+	 sjf3beVeEXjhuRckHZn13jETTCMxYRzXhvlRXeE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ionut Nechita <ionut_n2001@yahoo.com>,
-	Kenneth Crudup <kenny@panix.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.17 246/371] PM: hibernate: Fix hybrid-sleep
-Date: Fri, 17 Oct 2025 16:53:41 +0200
-Message-ID: <20251017145210.979235509@linuxfoundation.org>
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ali Saidi <alisaidi@amazon.com>,
+	German Gomez <german.gomez@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 130/276] perf arm_spe: Correct setting remote access
+Date: Fri, 17 Oct 2025 16:53:43 +0200
+Message-ID: <20251017145147.228493085@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +72,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Leo Yan <leo.yan@arm.com>
 
-commit 469d80a3712c66a00b5bb888e62e809db8887ba7 upstream.
+[ Upstream commit 039fd0634a0629132432632d7ac9a14915406b5c ]
 
-Hybrid sleep will hibernate the system followed by running through
-the suspend routine.  Since both the hibernate and the suspend routine
-will call pm_restrict_gfp_mask(), pm_restore_gfp_mask() must be called
-before starting the suspend sequence.
+Set the mem_remote field for a remote access to appropriately represent
+the event.
 
-Add an explicit call to pm_restore_gfp_mask() to power_down() before
-the suspend sequence starts. Add an extra call for pm_restrict_gfp_mask()
-when exiting suspend so that the pm_restore_gfp_mask() call in hibernate()
-is balanced.
-
-Reported-by: Ionut Nechita <ionut_n2001@yahoo.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4573
-Tested-by: Ionut Nechita <ionut_n2001@yahoo.com>
-Fixes: 12ffc3b1513eb ("PM: Restrict swap use to later in the suspend sequence")
-Tested-by: Kenneth Crudup <kenny@panix.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20250925185108.2968494-2-superm1@kernel.org
-[ rjw: Add comment explainig the new pm_restrict_gfp_mask() call purpose ]
-Cc: 6.16+ <stable@vger.kernel.org> # 6.16+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a89dbc9b988f3ba8 ("perf arm-spe: Set sample's data source field")
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ali Saidi <alisaidi@amazon.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/hibernate.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ tools/perf/util/arm-spe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/power/hibernate.c
-+++ b/kernel/power/hibernate.c
-@@ -695,12 +695,16 @@ static void power_down(void)
+diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
+index 7b16898af4e7f..9e7e56596c60e 100644
+--- a/tools/perf/util/arm-spe.c
++++ b/tools/perf/util/arm-spe.c
+@@ -417,7 +417,7 @@ static void arm_spe__synth_data_source_generic(const struct arm_spe_record *reco
+ 	}
  
- #ifdef CONFIG_SUSPEND
- 	if (hibernation_mode == HIBERNATION_SUSPEND) {
-+		pm_restore_gfp_mask();
- 		error = suspend_devices_and_enter(mem_sleep_current);
- 		if (error) {
- 			hibernation_mode = hibernation_ops ?
- 						HIBERNATION_PLATFORM :
- 						HIBERNATION_SHUTDOWN;
- 		} else {
-+			/* Match pm_restore_gfp_mask() call in hibernate() */
-+			pm_restrict_gfp_mask();
-+
- 			/* Restore swap signature. */
- 			error = swsusp_unmark();
- 			if (error)
+ 	if (record->type & ARM_SPE_REMOTE_ACCESS)
+-		data_src->mem_lvl |= PERF_MEM_LVL_REM_CCE1;
++		data_src->mem_remote = PERF_MEM_REMOTE_REMOTE;
+ }
+ 
+ static u64 arm_spe__synth_data_source(const struct arm_spe_record *record, u64 midr)
+-- 
+2.51.0
+
 
 
 
