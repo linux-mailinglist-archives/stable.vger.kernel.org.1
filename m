@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB9FBE9F03
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32647BEA011
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74CE41886771
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B28A7C26DD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CC832C95D;
-	Fri, 17 Oct 2025 15:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5686F2745E;
+	Fri, 17 Oct 2025 15:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN+MXaaJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0ZSDEre"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6E420C00A;
-	Fri, 17 Oct 2025 15:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11812337110;
+	Fri, 17 Oct 2025 15:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715124; cv=none; b=H5Wekgh5OdEDkjJKCH5WuOQSN/mL9E2Dt+KwfmwPgMTPqHy3Du+X3JqIXvwoVTwsmO/8BGqEUAoFC3yVi4kD1jiKyMeFSrfbV2wBBJQHwjHsfdoC71YNp4KNnL+fnWjaEiLIgYf7/0VNuq/wkdQXr82fQrvpHi3FrsFKtwvXtfE=
+	t=1760714239; cv=none; b=dfp2ANczKkg0VkbOFq7PGp2Vmr48HkmI8+3aGvTeomUKln28JjMGABGmZC1ZhVqAbuUrnNfzz0l1F9gzLikwaJB+4e8kdPcmk8aLOzTgov9FY2mg4NCQpXL/OtjNSK6TXGUZs6HQrW/xJpC3P7jtrxLyIKN1Fy0hoYTSUhnXkXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715124; c=relaxed/simple;
-	bh=PYw/WFpiBa79VFOE/hVw4ugWN30ABgTLMyItF9Bm67I=;
+	s=arc-20240116; t=1760714239; c=relaxed/simple;
+	bh=BXjdk4BLCZi/rZIfHbZ+FlW49/xvup9c44uEdZZYOyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDmMoc7MJBlL4RUSURzEyrkwIrfrWZRlqBu4cu/L4pmFM3ptieXTtUbAF6c1V6KxzgZLE6VyEcUT/9UncnC3VJFn8IYZduUEVO43JhZ37r85xJuyjBlCDIkvR/IFhlG1BOqW3UcIZquwGlrEfNjTP49gsG9+pFD9Jo9WfsNoTss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN+MXaaJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B8EC116B1;
-	Fri, 17 Oct 2025 15:32:03 +0000 (UTC)
+	 MIME-Version; b=R1ricB4UhKXwhZZtgKREsVH4xpz25oUyZLDdG6EbJkmF/KvYUkxFdbhBs5jqG1EEvhOzJMheLwrtS/PnXlQiUz01s+EDNl/dCTYQHqymkbS6HTrcrG5OnJcg0ylycouwjPFIEcPaWmkXzmCpydvavXMIDLt4hLUiVimt2rw1oIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0ZSDEre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C90C4CEE7;
+	Fri, 17 Oct 2025 15:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715124;
-	bh=PYw/WFpiBa79VFOE/hVw4ugWN30ABgTLMyItF9Bm67I=;
+	s=korg; t=1760714238;
+	bh=BXjdk4BLCZi/rZIfHbZ+FlW49/xvup9c44uEdZZYOyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZN+MXaaJBlZ7T9P1yNvfe2pqonx0NODrqUPkNIASrbkk9cFp6EoouFRaQEW0pW5Ou
-	 KgrS+G5PqHNg5J8Bb5o9NgPvhVzHEaHGF5H/j6bxDu8TVABW0MRSVTJ6fC8AVFb7Xv
-	 J00q2qWg0F1iM1l5jvz/Q3OoyZn+Gk8KxsC9E4Po=
+	b=E0ZSDEre3c3mHiO91BapXBTsp6nuGiLgtc7+z48pwS3HtUzcYKDign+BWTUQBHheD
+	 U2syBTZaG+zxdC2mdvINEpxsig04VQQ1PXF7dEYsr7GJLGZQSAK+r7Sa+1vzSobLHP
+	 dKnHfQ1WUGCGuoiaTKV+8xzEURSNn0WPN4Z7XEaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason-JH Lin <jason-jh.lin@mediatek.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 107/371] mailbox: mtk-cmdq: Remove pm_runtime APIs from cmdq_mbox_send_data()
-Date: Fri, 17 Oct 2025 16:51:22 +0200
-Message-ID: <20251017145205.808799131@linuxfoundation.org>
+Subject: [PATCH 6.12 076/277] crypto: essiv - Check ssize for decryption and in-place encryption
+Date: Fri, 17 Oct 2025 16:51:23 +0200
+Message-ID: <20251017145149.913648752@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH Lin <jason-jh.lin@mediatek.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 3f39f56520374cf56872644acf9afcc618a4b674 ]
+[ Upstream commit 6bb73db6948c2de23e407fe1b7ef94bf02b7529f ]
 
-pm_runtime_get_sync() and pm_runtime_put_autosuspend() were previously
-called in cmdq_mbox_send_data(), which is under a spinlock in msg_submit()
-(mailbox.c). This caused lockdep warnings such as "sleeping function
-called from invalid context" when running with lockdebug enabled.
+Move the ssize check to the start in essiv_aead_crypt so that
+it's also checked for decryption and in-place encryption.
 
-The BUG report:
-  BUG: sleeping function called from invalid context at drivers/base/power/runtime.c:1164
-  in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 3616, name: kworker/u17:3
-    preempt_count: 1, expected: 0
-    RCU nest depth: 0, expected: 0
-    INFO: lockdep is turned off.
-    irq event stamp: 0
-    CPU: 1 PID: 3616 Comm: kworker/u17:3 Not tainted 6.1.87-lockdep-14133-g26e933aca785 #1
-    Hardware name: Google Ciri sku0/unprovisioned board (DT)
-    Workqueue: imgsys_runner imgsys_runner_func
-    Call trace:
-     dump_backtrace+0x100/0x120
-     show_stack+0x20/0x2c
-     dump_stack_lvl+0x84/0xb4
-     dump_stack+0x18/0x48
-     __might_resched+0x354/0x4c0
-     __might_sleep+0x98/0xe4
-     __pm_runtime_resume+0x70/0x124
-     cmdq_mbox_send_data+0xe4/0xb1c
-     msg_submit+0x194/0x2dc
-     mbox_send_message+0x190/0x330
-     imgsys_cmdq_sendtask+0x1618/0x2224
-     imgsys_runner_func+0xac/0x11c
-     process_one_work+0x638/0xf84
-     worker_thread+0x808/0xcd0
-     kthread+0x24c/0x324
-     ret_from_fork+0x10/0x20
-
-Additionally, pm_runtime_put_autosuspend() should be invoked from the
-GCE IRQ handler to ensure the hardware has actually completed its work.
-
-To resolve these issues, remove the pm_runtime calls from
-cmdq_mbox_send_data() and delegate power management responsibilities
-to the client driver.
-
-Fixes: 8afe816b0c99 ("mailbox: mtk-cmdq-mailbox: Implement Runtime PM with autosuspend")
-Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Fixes: be1eb7f78aa8 ("crypto: essiv - create wrapper template for ESSIV generation")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mtk-cmdq-mailbox.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ crypto/essiv.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
-index 532929916e998..654a60f63756a 100644
---- a/drivers/mailbox/mtk-cmdq-mailbox.c
-+++ b/drivers/mailbox/mtk-cmdq-mailbox.c
-@@ -379,20 +379,13 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
- 	struct cmdq *cmdq = dev_get_drvdata(chan->mbox->dev);
- 	struct cmdq_task *task;
- 	unsigned long curr_pa, end_pa;
--	int ret;
+diff --git a/crypto/essiv.c b/crypto/essiv.c
+index e63fc6442e320..aa7ebc1235274 100644
+--- a/crypto/essiv.c
++++ b/crypto/essiv.c
+@@ -186,9 +186,14 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	const struct essiv_tfm_ctx *tctx = crypto_aead_ctx(tfm);
+ 	struct essiv_aead_request_ctx *rctx = aead_request_ctx(req);
+ 	struct aead_request *subreq = &rctx->aead_req;
++	int ivsize = crypto_aead_ivsize(tfm);
++	int ssize = req->assoclen - ivsize;
+ 	struct scatterlist *src = req->src;
+ 	int err;
  
- 	/* Client should not flush new tasks if suspended. */
- 	WARN_ON(cmdq->suspended);
++	if (ssize < 0)
++		return -EINVAL;
++
+ 	crypto_cipher_encrypt_one(tctx->essiv_cipher, req->iv, req->iv);
  
--	ret = pm_runtime_get_sync(cmdq->mbox.dev);
--	if (ret < 0)
--		return ret;
+ 	/*
+@@ -198,19 +203,12 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	 */
+ 	rctx->assoc = NULL;
+ 	if (req->src == req->dst || !enc) {
+-		scatterwalk_map_and_copy(req->iv, req->dst,
+-					 req->assoclen - crypto_aead_ivsize(tfm),
+-					 crypto_aead_ivsize(tfm), 1);
++		scatterwalk_map_and_copy(req->iv, req->dst, ssize, ivsize, 1);
+ 	} else {
+ 		u8 *iv = (u8 *)aead_request_ctx(req) + tctx->ivoffset;
+-		int ivsize = crypto_aead_ivsize(tfm);
+-		int ssize = req->assoclen - ivsize;
+ 		struct scatterlist *sg;
+ 		int nents;
+ 
+-		if (ssize < 0)
+-			return -EINVAL;
 -
- 	task = kzalloc(sizeof(*task), GFP_ATOMIC);
--	if (!task) {
--		pm_runtime_put_autosuspend(cmdq->mbox.dev);
-+	if (!task)
- 		return -ENOMEM;
--	}
- 
- 	task->cmdq = cmdq;
- 	INIT_LIST_HEAD(&task->list_entry);
-@@ -439,9 +432,6 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
- 	}
- 	list_move_tail(&task->list_entry, &thread->task_busy_list);
- 
--	pm_runtime_mark_last_busy(cmdq->mbox.dev);
--	pm_runtime_put_autosuspend(cmdq->mbox.dev);
--
- 	return 0;
- }
- 
+ 		nents = sg_nents_for_len(req->src, ssize);
+ 		if (nents < 0)
+ 			return -EINVAL;
 -- 
 2.51.0
 
