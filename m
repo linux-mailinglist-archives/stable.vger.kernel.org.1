@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E17BE9B47
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:36 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D76BBE9AAB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A46D83B61BB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CE27635D710
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D56C336EC5;
-	Fri, 17 Oct 2025 15:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63EB219A7A;
+	Fri, 17 Oct 2025 15:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fP/Vr7Mc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykkAr6kG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD765335084;
-	Fri, 17 Oct 2025 15:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B3D2F692B;
+	Fri, 17 Oct 2025 15:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713579; cv=none; b=eoD890/Ba6eh4k4Wn3RFB6/pxqiamlH/LKem0LCwCc9+VNw5JuwkRVO3yZ7m1DdwNwUUDtTLlFUVCTYbC39ZCIS4Dwojvnu2TBp+r1M9ezTAy96JzvTVmXUfi/8wv8iZM+Ym3ZIxVock63sXyYC5+9s5tJXufCnK0r5i8WsB44E=
+	t=1760714316; cv=none; b=fv8Djjoddv20zgZY55UT2nIF1CihujlcCJIa/ic+1UVilrSJDHiUKjCarVBu4owqjxouRNbfqQZvxHWESMKxENHxE0kQNXvHJEYdjVyNzgeehFWE/rLefWsOYU32vxdsTC48lcOQ423wIQOt2bxq6ekNn3WGsL8NC3pvjTDh9rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713579; c=relaxed/simple;
-	bh=eNVxKSghsH2a3/fRYmV988+vWclesZT9w1GP2h3S4sU=;
+	s=arc-20240116; t=1760714316; c=relaxed/simple;
+	bh=V2E117DJH8GqbrSKTrBrtsyd4P0xerVZzQmJAkJAxgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPCH+FWm9HSvJvtSaZpi2uo5cdh76G5YyjMQs71Ql7LuEP2qIl24YT9Y66R5Me9hmMKxQv2u/GB0Bn0V3RzOOB3TYOCG7HmR7fu17FKw7K/9JDejl+HyMs8kT0bwUurIhfCPSjsl4A6oM25XnH2LzsNW3jA5kfIE06t9ht6q2xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fP/Vr7Mc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EDEC4CEF9;
-	Fri, 17 Oct 2025 15:06:19 +0000 (UTC)
+	 MIME-Version; b=iCF7JHIk0MSm0rmHEdViRvV5B7VI5kIX0jjBhNyAbmXrBHbG0obnYckEaaUBLGyFmoWWPH+abBMoxK4uySDuWAd+YdBBJkEbw/5mh8/XC7AL6nruf/CrXq+C1oXMSwG2THzXhNBKir+tWPtgcFXMh3KUht0djVMMT2yFjn+SmFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykkAr6kG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08064C4CEE7;
+	Fri, 17 Oct 2025 15:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713579;
-	bh=eNVxKSghsH2a3/fRYmV988+vWclesZT9w1GP2h3S4sU=;
+	s=korg; t=1760714316;
+	bh=V2E117DJH8GqbrSKTrBrtsyd4P0xerVZzQmJAkJAxgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fP/Vr7Mcx8/3AWob0Yb/zR2NYI6h4RCKg/Jw4Q+y7Ojw4xBGIvS+iWz7MpnqMKC5u
-	 wmsJ4EdJxXUXNJay4UFuyndbjG8cnZd0QW45Aid9gjxoQpDy/Jkr2pFYoQrUf3y4ae
-	 PCbhkM39Wx3Qr+NlDpYiOmOgThZj1bEkGQSAOqlY=
+	b=ykkAr6kGH8xOu6jNhRYfXKw8oSXtExQe9cT6hK0aM3fDOtJafsKp0FYTc7Aw9RXf7
+	 WGfYIhq8+JN9WqzMtvQzTka5DYjrT5P9cTLipvM+tvhLTXWmCKXXq2/q+4XAU1EdhQ
+	 JhLvnBJmCFuinO7imsB2CW0NhDKX+GA+M6+7u+bQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/201] perf arm-spe: Rename the common data source encoding
-Date: Fri, 17 Oct 2025 16:51:15 +0200
-Message-ID: <20251017145135.258012761@linuxfoundation.org>
+Subject: [PATCH 6.12 069/277] drm/amdgpu: Add additional DCE6 SCL registers
+Date: Fri, 17 Oct 2025 16:51:16 +0200
+Message-ID: <20251017145149.662142032@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,160 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 50b8f1d5bf4ad7f09ef8012ccf5f94f741df827b ]
+[ Upstream commit 507296328b36ffd00ec1f4fde5b8acafb7222ec7 ]
 
-The Neoverse CPUs follow the common data source encoding, and other
-CPU variants can share the same format.
-
-Rename the CPU list and data source definitions as common data source
-names. This change prepares for appending more CPU variants.
-
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20241003185322.192357-3-leo.yan@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Stable-dep-of: cb300e351505 ("perf arm_spe: Correct memory level for remote access")
+Fixes: 102b2f587ac8 ("drm/amd/display: dce_transform: DCE6 Scaling Horizontal Filter Init (v2)")
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../util/arm-spe-decoder/arm-spe-decoder.h    | 18 ++++++------
- tools/perf/util/arm-spe.c                     | 28 +++++++++----------
- 2 files changed, 23 insertions(+), 23 deletions(-)
+ drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h       | 7 +++++++
+ drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h | 2 ++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-decoder.h b/tools/perf/util/arm-spe-decoder/arm-spe-decoder.h
-index 1443c28545a94..358c611eeddbb 100644
---- a/tools/perf/util/arm-spe-decoder/arm-spe-decoder.h
-+++ b/tools/perf/util/arm-spe-decoder/arm-spe-decoder.h
-@@ -56,15 +56,15 @@ enum arm_spe_op_type {
- 	ARM_SPE_OP_BR_INDIRECT	= 1 << 17,
- };
- 
--enum arm_spe_neoverse_data_source {
--	ARM_SPE_NV_L1D		 = 0x0,
--	ARM_SPE_NV_L2		 = 0x8,
--	ARM_SPE_NV_PEER_CORE	 = 0x9,
--	ARM_SPE_NV_LOCAL_CLUSTER = 0xa,
--	ARM_SPE_NV_SYS_CACHE	 = 0xb,
--	ARM_SPE_NV_PEER_CLUSTER	 = 0xc,
--	ARM_SPE_NV_REMOTE	 = 0xd,
--	ARM_SPE_NV_DRAM		 = 0xe,
-+enum arm_spe_common_data_source {
-+	ARM_SPE_COMMON_DS_L1D		= 0x0,
-+	ARM_SPE_COMMON_DS_L2		= 0x8,
-+	ARM_SPE_COMMON_DS_PEER_CORE	= 0x9,
-+	ARM_SPE_COMMON_DS_LOCAL_CLUSTER = 0xa,
-+	ARM_SPE_COMMON_DS_SYS_CACHE	= 0xb,
-+	ARM_SPE_COMMON_DS_PEER_CLUSTER	= 0xc,
-+	ARM_SPE_COMMON_DS_REMOTE	= 0xd,
-+	ARM_SPE_COMMON_DS_DRAM		= 0xe,
- };
- 
- struct arm_spe_record {
-diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
-index 0faa4cfaf1f91..ba83cd13ff756 100644
---- a/tools/perf/util/arm-spe.c
-+++ b/tools/perf/util/arm-spe.c
-@@ -411,15 +411,15 @@ static int arm_spe__synth_instruction_sample(struct arm_spe_queue *speq,
- 	return arm_spe_deliver_synth_event(spe, speq, event, &sample);
- }
- 
--static const struct midr_range neoverse_spe[] = {
-+static const struct midr_range common_ds_encoding_cpus[] = {
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
- 	{},
- };
- 
--static void arm_spe__synth_data_source_neoverse(const struct arm_spe_record *record,
--						union perf_mem_data_src *data_src)
-+static void arm_spe__synth_data_source_common(const struct arm_spe_record *record,
-+					      union perf_mem_data_src *data_src)
- {
- 	/*
- 	 * Even though four levels of cache hierarchy are possible, no known
-@@ -441,17 +441,17 @@ static void arm_spe__synth_data_source_neoverse(const struct arm_spe_record *rec
- 	}
- 
- 	switch (record->source) {
--	case ARM_SPE_NV_L1D:
-+	case ARM_SPE_COMMON_DS_L1D:
- 		data_src->mem_lvl = PERF_MEM_LVL_L1 | PERF_MEM_LVL_HIT;
- 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_L1;
- 		data_src->mem_snoop = PERF_MEM_SNOOP_NONE;
- 		break;
--	case ARM_SPE_NV_L2:
-+	case ARM_SPE_COMMON_DS_L2:
- 		data_src->mem_lvl = PERF_MEM_LVL_L2 | PERF_MEM_LVL_HIT;
- 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_L2;
- 		data_src->mem_snoop = PERF_MEM_SNOOP_NONE;
- 		break;
--	case ARM_SPE_NV_PEER_CORE:
-+	case ARM_SPE_COMMON_DS_PEER_CORE:
- 		data_src->mem_lvl = PERF_MEM_LVL_L2 | PERF_MEM_LVL_HIT;
- 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_L2;
- 		data_src->mem_snoopx = PERF_MEM_SNOOPX_PEER;
-@@ -460,8 +460,8 @@ static void arm_spe__synth_data_source_neoverse(const struct arm_spe_record *rec
- 	 * We don't know if this is L1, L2 but we do know it was a cache-2-cache
- 	 * transfer, so set SNOOPX_PEER
- 	 */
--	case ARM_SPE_NV_LOCAL_CLUSTER:
--	case ARM_SPE_NV_PEER_CLUSTER:
-+	case ARM_SPE_COMMON_DS_LOCAL_CLUSTER:
-+	case ARM_SPE_COMMON_DS_PEER_CLUSTER:
- 		data_src->mem_lvl = PERF_MEM_LVL_L3 | PERF_MEM_LVL_HIT;
- 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_L3;
- 		data_src->mem_snoopx = PERF_MEM_SNOOPX_PEER;
-@@ -469,7 +469,7 @@ static void arm_spe__synth_data_source_neoverse(const struct arm_spe_record *rec
- 	/*
- 	 * System cache is assumed to be L3
- 	 */
--	case ARM_SPE_NV_SYS_CACHE:
-+	case ARM_SPE_COMMON_DS_SYS_CACHE:
- 		data_src->mem_lvl = PERF_MEM_LVL_L3 | PERF_MEM_LVL_HIT;
- 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_L3;
- 		data_src->mem_snoop = PERF_MEM_SNOOP_HIT;
-@@ -478,13 +478,13 @@ static void arm_spe__synth_data_source_neoverse(const struct arm_spe_record *rec
- 	 * We don't know what level it hit in, except it came from the other
- 	 * socket
- 	 */
--	case ARM_SPE_NV_REMOTE:
-+	case ARM_SPE_COMMON_DS_REMOTE:
- 		data_src->mem_lvl = PERF_MEM_LVL_REM_CCE1;
- 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_ANY_CACHE;
- 		data_src->mem_remote = PERF_MEM_REMOTE_REMOTE;
- 		data_src->mem_snoopx = PERF_MEM_SNOOPX_PEER;
- 		break;
--	case ARM_SPE_NV_DRAM:
-+	case ARM_SPE_COMMON_DS_DRAM:
- 		data_src->mem_lvl = PERF_MEM_LVL_LOC_RAM | PERF_MEM_LVL_HIT;
- 		data_src->mem_lvl_num = PERF_MEM_LVLNUM_RAM;
- 		data_src->mem_snoop = PERF_MEM_SNOOP_NONE;
-@@ -520,7 +520,7 @@ static void arm_spe__synth_data_source_generic(const struct arm_spe_record *reco
- static u64 arm_spe__synth_data_source(const struct arm_spe_record *record, u64 midr)
- {
- 	union perf_mem_data_src	data_src = { .mem_op = PERF_MEM_OP_NA };
--	bool is_neoverse = is_midr_in_range_list(midr, neoverse_spe);
-+	bool is_common = is_midr_in_range_list(midr, common_ds_encoding_cpus);
- 
- 	/* Only synthesize data source for LDST operations */
- 	if (!is_ldst_op(record->op))
-@@ -533,8 +533,8 @@ static u64 arm_spe__synth_data_source(const struct arm_spe_record *record, u64 m
- 	else
- 		return 0;
- 
--	if (is_neoverse)
--		arm_spe__synth_data_source_neoverse(record, &data_src);
-+	if (is_common)
-+		arm_spe__synth_data_source_common(record, &data_src);
- 	else
- 		arm_spe__synth_data_source_generic(record, &data_src);
- 
+diff --git a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
+index 9de01ae574c03..067eddd9c62d8 100644
+--- a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
++++ b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
+@@ -4115,6 +4115,7 @@
+ #define mmSCL0_SCL_COEF_RAM_CONFLICT_STATUS 0x1B55
+ #define mmSCL0_SCL_COEF_RAM_SELECT 0x1B40
+ #define mmSCL0_SCL_COEF_RAM_TAP_DATA 0x1B41
++#define mmSCL0_SCL_SCALER_ENABLE 0x1B42
+ #define mmSCL0_SCL_CONTROL 0x1B44
+ #define mmSCL0_SCL_DEBUG 0x1B6A
+ #define mmSCL0_SCL_DEBUG2 0x1B69
+@@ -4144,6 +4145,7 @@
+ #define mmSCL1_SCL_COEF_RAM_CONFLICT_STATUS 0x1E55
+ #define mmSCL1_SCL_COEF_RAM_SELECT 0x1E40
+ #define mmSCL1_SCL_COEF_RAM_TAP_DATA 0x1E41
++#define mmSCL1_SCL_SCALER_ENABLE 0x1E42
+ #define mmSCL1_SCL_CONTROL 0x1E44
+ #define mmSCL1_SCL_DEBUG 0x1E6A
+ #define mmSCL1_SCL_DEBUG2 0x1E69
+@@ -4173,6 +4175,7 @@
+ #define mmSCL2_SCL_COEF_RAM_CONFLICT_STATUS 0x4155
+ #define mmSCL2_SCL_COEF_RAM_SELECT 0x4140
+ #define mmSCL2_SCL_COEF_RAM_TAP_DATA 0x4141
++#define mmSCL2_SCL_SCALER_ENABLE 0x4142
+ #define mmSCL2_SCL_CONTROL 0x4144
+ #define mmSCL2_SCL_DEBUG 0x416A
+ #define mmSCL2_SCL_DEBUG2 0x4169
+@@ -4202,6 +4205,7 @@
+ #define mmSCL3_SCL_COEF_RAM_CONFLICT_STATUS 0x4455
+ #define mmSCL3_SCL_COEF_RAM_SELECT 0x4440
+ #define mmSCL3_SCL_COEF_RAM_TAP_DATA 0x4441
++#define mmSCL3_SCL_SCALER_ENABLE 0x4442
+ #define mmSCL3_SCL_CONTROL 0x4444
+ #define mmSCL3_SCL_DEBUG 0x446A
+ #define mmSCL3_SCL_DEBUG2 0x4469
+@@ -4231,6 +4235,7 @@
+ #define mmSCL4_SCL_COEF_RAM_CONFLICT_STATUS 0x4755
+ #define mmSCL4_SCL_COEF_RAM_SELECT 0x4740
+ #define mmSCL4_SCL_COEF_RAM_TAP_DATA 0x4741
++#define mmSCL4_SCL_SCALER_ENABLE 0x4742
+ #define mmSCL4_SCL_CONTROL 0x4744
+ #define mmSCL4_SCL_DEBUG 0x476A
+ #define mmSCL4_SCL_DEBUG2 0x4769
+@@ -4260,6 +4265,7 @@
+ #define mmSCL5_SCL_COEF_RAM_CONFLICT_STATUS 0x4A55
+ #define mmSCL5_SCL_COEF_RAM_SELECT 0x4A40
+ #define mmSCL5_SCL_COEF_RAM_TAP_DATA 0x4A41
++#define mmSCL5_SCL_SCALER_ENABLE 0x4A42
+ #define mmSCL5_SCL_CONTROL 0x4A44
+ #define mmSCL5_SCL_DEBUG 0x4A6A
+ #define mmSCL5_SCL_DEBUG2 0x4A69
+@@ -4287,6 +4293,7 @@
+ #define mmSCL_COEF_RAM_CONFLICT_STATUS 0x1B55
+ #define mmSCL_COEF_RAM_SELECT 0x1B40
+ #define mmSCL_COEF_RAM_TAP_DATA 0x1B41
++#define mmSCL_SCALER_ENABLE 0x1B42
+ #define mmSCL_CONTROL 0x1B44
+ #define mmSCL_DEBUG 0x1B6A
+ #define mmSCL_DEBUG2 0x1B69
+diff --git a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
+index bd8085ec54ed5..da5596fbfdcb3 100644
+--- a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
++++ b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
+@@ -8648,6 +8648,8 @@
+ #define REGAMMA_LUT_INDEX__REGAMMA_LUT_INDEX__SHIFT 0x00000000
+ #define REGAMMA_LUT_WRITE_EN_MASK__REGAMMA_LUT_WRITE_EN_MASK_MASK 0x00000007L
+ #define REGAMMA_LUT_WRITE_EN_MASK__REGAMMA_LUT_WRITE_EN_MASK__SHIFT 0x00000000
++#define SCL_SCALER_ENABLE__SCL_SCALE_EN_MASK 0x00000001L
++#define SCL_SCALER_ENABLE__SCL_SCALE_EN__SHIFT 0x00000000
+ #define SCL_ALU_CONTROL__SCL_ALU_DISABLE_MASK 0x00000001L
+ #define SCL_ALU_CONTROL__SCL_ALU_DISABLE__SHIFT 0x00000000
+ #define SCL_BYPASS_CONTROL__SCL_BYPASS_MODE_MASK 0x00000003L
 -- 
 2.51.0
 
