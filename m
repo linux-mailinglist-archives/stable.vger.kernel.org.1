@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 517C0BEA675
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 753E1BE969D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:01:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54E4B5E7252
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85690188BE08
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5613335071;
-	Fri, 17 Oct 2025 15:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9102F2F12CC;
+	Fri, 17 Oct 2025 15:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+6s8VMK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmQsExGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F002745E;
-	Fri, 17 Oct 2025 15:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED803208;
+	Fri, 17 Oct 2025 15:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714597; cv=none; b=bM4rAemoNa73OG0MCUKhmIvQ6Hz/7eA6OFd1p4cux6UNatx7DcLvYsMAizI3Do1Sqx/tqyT3Nf5Y2CVqhd5pJgX8SaYhFn3eP624yPMQmCjOd+rNTwamBmehIJkwQH0khE2QZtqGfLJV4Q2oruXjENwTglQLJj4JBTUb92SnX4U=
+	t=1760713252; cv=none; b=tLTz+nMHXZ8JgHak98ymRbzmRVEZzqVJAmOTxSQgEJu8ztcfk+ad7PqvW3oULVED4nPL9vG0GU9FBOgOvlqE8bx9/MKtvwxzeHD8TbxnzT3S8HmPGK2fTayOy5MiQ7756eLCs4KszF50a45pxRTRKOTFST0kkafRa9YTLzGDyvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714597; c=relaxed/simple;
-	bh=bme+BhO+x9d2wELrVtxwzUsZO9mDNOB7TzQIT0tgwic=;
+	s=arc-20240116; t=1760713252; c=relaxed/simple;
+	bh=KC8eNRwoxffuhmjraUco0GipfPAxIut0LTle8JWlOp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBsbWDAelLNK43ax9HIe6zf6WZNCn8Ok6M3k9VpgfHeL/Kph9IvROZF5UQb3Kt+ZM6y2izKSp89w8bz6vU2yzFsQ7wdmAeAW3B/SrQdwyPtx31wvyqy8SngXuTcD2m68ztUS+WykflR0IcsOiKi7ALBpWiV6KGtZmHgFKbM93J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+6s8VMK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7DFC4CEE7;
-	Fri, 17 Oct 2025 15:23:16 +0000 (UTC)
+	 MIME-Version; b=jyHZ6r6syxuJ+2mTGCWVKT2oPkZ76T6HpjVNn/QqCxSs6cYXZAd0Z18tTlIXQSsCxqTxSG76ksYHzjfwTUJtp9W+p+K/vGqOx8RuniU88WCLNXfK+EFFOhM9l4aEIyG9gjVUYCoeDZJweSBxsMG0RhWKzfVlVYEmpGoUrTALVDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmQsExGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98350C4CEE7;
+	Fri, 17 Oct 2025 15:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714597;
-	bh=bme+BhO+x9d2wELrVtxwzUsZO9mDNOB7TzQIT0tgwic=;
+	s=korg; t=1760713252;
+	bh=KC8eNRwoxffuhmjraUco0GipfPAxIut0LTle8JWlOp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+6s8VMKZ34iTEFKV5ksBtGEcjKO6ZhrpVC6U3jv34RT1DHU4QH7rdBvJFa1D9nyu
-	 i7EX3XbU5d7fRZ2sqnSNhZh78HR/vY687RREjT65Ctqy1nJXRIUN0Mr9+4aZOwz6Qw
-	 Yia/vIbMZqglQwag6eb0MMa1VvijBj3mjMMht4ZI=
+	b=XmQsExGf4paYOcodljP1qZCyeJjx6T7qxIk0zL5LVlteSZleS4mxwEMbVI1zw9Bjl
+	 u7L6F0lKhk8VHr8YBXwfGOXb4l+YRFMMVvIyQRIkFoTvZ6TaIWZnPHyj6/ml6Z64ot
+	 yyU8+0CN454c7If1jwxkk7C0OjcxqqTE9+v0E3tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Esben Haabendal <esben@geanix.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.12 173/277] rtc: interface: Fix long-standing race when setting alarm
+	Miaoqian Lin <linmq006@gmail.com>,
+	Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH 6.1 101/168] xtensa: simdisk: add input size check in proc_write_simdisk
 Date: Fri, 17 Oct 2025 16:53:00 +0200
-Message-ID: <20251017145153.445500780@linuxfoundation.org>
+Message-ID: <20251017145132.748421001@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 795cda8338eab036013314dbc0b04aae728880ab upstream.
+commit 5d5f08fd0cd970184376bee07d59f635c8403f63 upstream.
 
-As described in the old comment dating back to
-commit 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
-from 2010, we have been living with a race window when setting alarm
-with an expiry in the near future (i.e. next second).
-With 1 second resolution, it can happen that the second ticks after the
-check for the timer having expired, but before the alarm is actually set.
-When this happen, no alarm IRQ is generated, at least not with some RTC
-chips (isl12022 is an example of this).
+A malicious user could pass an arbitrarily bad value
+to memdup_user_nul(), potentially causing kernel crash.
 
-With UIE RTC timer being implemented on top of alarm irq, being re-armed
-every second, UIE will occasionally fail to work, as an alarm irq lost
-due to this race will stop the re-arming loop.
+This follows the same pattern as commit ee76746387f6
+("netdevsim: prevent bad user input in nsim_dev_health_break_write()")
 
-For now, I have limited the additional expiry check to only be done for
-alarms set to next seconds. I expect it should be good enough, although I
-don't know if we can now for sure that systems with loads could end up
-causing the same problems for alarms set 2 seconds or even longer in the
-future.
-
-I haven't been able to reproduce the problem with this check in place.
-
+Fixes: b6c7e873daf7 ("xtensa: ISS: add host file-based simulated disk")
+Fixes: 16e5c1fc3604 ("convert a bunch of open-coded instances of memdup_user_nul()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Link: https://lore.kernel.org/r/20250516-rtc-uie-irq-fixes-v2-1-3de8e530a39e@geanix.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Message-Id: <20250829083015.1992751-1-linmq006@gmail.com>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/interface.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ arch/xtensa/platforms/iss/simdisk.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -443,6 +443,29 @@ static int __rtc_set_alarm(struct rtc_de
- 	else
- 		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
+--- a/arch/xtensa/platforms/iss/simdisk.c
++++ b/arch/xtensa/platforms/iss/simdisk.c
+@@ -230,10 +230,14 @@ static ssize_t proc_read_simdisk(struct
+ static ssize_t proc_write_simdisk(struct file *file, const char __user *buf,
+ 			size_t count, loff_t *ppos)
+ {
+-	char *tmp = memdup_user_nul(buf, count);
++	char *tmp;
+ 	struct simdisk *dev = pde_data(file_inode(file));
+ 	int err;
  
-+	/*
-+	 * Check for potential race described above. If the waiting for next
-+	 * second, and the second just ticked since the check above, either
-+	 *
-+	 * 1) It ticked after the alarm was set, and an alarm irq should be
-+	 *    generated.
-+	 *
-+	 * 2) It ticked before the alarm was set, and alarm irq most likely will
-+	 * not be generated.
-+	 *
-+	 * While we cannot easily check for which of these two scenarios we
-+	 * are in, we can return -ETIME to signal that the timer has already
-+	 * expired, which is true in both cases.
-+	 */
-+	if ((scheduled - now) <= 1) {
-+		err = __rtc_read_time(rtc, &tm);
-+		if (err)
-+			return err;
-+		now = rtc_tm_to_time64(&tm);
-+		if (scheduled <= now)
-+			return -ETIME;
-+	}
++	if (count == 0 || count > PAGE_SIZE)
++		return -EINVAL;
 +
- 	trace_rtc_set_alarm(rtc_tm_to_time64(&alarm->time), err);
- 	return err;
- }
++	tmp = memdup_user_nul(buf, count);
+ 	if (IS_ERR(tmp))
+ 		return PTR_ERR(tmp);
+ 
 
 
 
