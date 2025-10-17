@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7A3BE9AF9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67245BE967D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:01:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9BB1235D860
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AFDAB563E59
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36BD3336ED9;
-	Fri, 17 Oct 2025 15:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1454D60DCF;
+	Fri, 17 Oct 2025 14:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8o4w5NG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cv6zqgjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B92336ECB;
-	Fri, 17 Oct 2025 15:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EB33370F6;
+	Fri, 17 Oct 2025 14:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714356; cv=none; b=pYHNx6vkeuXF6xhoHkGS20AGmHlQ0YoqZkljJbfIAfmNfLDI+CZ2IScaxmsAWCIBovoX6VxW9UdwNk7wMdfN+v7XApM2s/ofJmftaurjQKCX7vntvNkn2EJD3hnxTbVirz0eBV8OEPgroVsppd6vKTq+bl3JxB5DN26CcNiaHhI=
+	t=1760713099; cv=none; b=lSZstrVtdNgy2qdcRHhQscDcF27ufOrUIWTU2hAERPxII9/YqFqjVmWNIEzAZdaDu7XY/NL36Z0AP340hfw1Mf9nQ60byi016bTUkKWY3h1VoL5G74SfU8T12Vdf3Cas24G2F4lO7ERYV7DGAY6gjTbpTUVR+O+qUM54TvrEXT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714356; c=relaxed/simple;
-	bh=zTnJD+cEhzz+//T9vaX/l8zJRIyBnZDdlSCG+3UCR9Q=;
+	s=arc-20240116; t=1760713099; c=relaxed/simple;
+	bh=9XEr9q9pd6ILc+htHPKGz9rAKQ+x6E8MrrRwhD/uLSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQ+psiepvauFsrBx4j5b3q22+7H/+VMiViQ+Hpw9IFuH4WRZQLW5tOjvNfGsvXZnsH7sEQeGP/Q0rh0cq6xjan69QQ3TxOyyALdbr38kCE/C4KX2JwdiyOyMZMLdBXxd4Gc58tpl9a6uZqDY7OlCcu9qcTtzFpJhqQ6qQO2KS8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8o4w5NG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A6CC116B1;
-	Fri, 17 Oct 2025 15:19:15 +0000 (UTC)
+	 MIME-Version; b=bdqkKOkB7bHodwsO9EXxnx4B6058+L3R0xAEejiRJeukyRsYdmtF826Q9lrWFiDxo3tiI1jxOle6coB18phdj/GyXz5Ic/tSjrd2XNCoxQ/+MBDV+4vaFygN1asFCFdlKehinQkYN5oZY+kUu6UEGEGkCOmA1syq/r8aVN0sLUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cv6zqgjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AB8C4CEE7;
+	Fri, 17 Oct 2025 14:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714355;
-	bh=zTnJD+cEhzz+//T9vaX/l8zJRIyBnZDdlSCG+3UCR9Q=;
+	s=korg; t=1760713099;
+	bh=9XEr9q9pd6ILc+htHPKGz9rAKQ+x6E8MrrRwhD/uLSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8o4w5NGf8D+B6wALnCL9LYCU9BHRSsvs1iEAPPBn1KlyU8ecquCAD+BzCeJImJm2
-	 xmAQWCqe/l3k7915cAy7i5+aTJxwfGZgTDls1BqawMNJiNFMxUQIZQfvTN5kHM3wp5
-	 1ywDkyRea5N+zFPv5xSdcvtgvwAe1ZJAV3ITA9F4=
+	b=Cv6zqgjjoxP0O04LYT979E1jvnp4h7eHXA1clx2sO93iYDjQvkO8O4vax0pYANMtg
+	 2utssLD6sl/aRoMAMxoPoW5A8E6mR571sq7Uh+W39r7p8JCPN1J/9dTiRYgnUqB6tJ
+	 SrDPpqXTeP8+C2rExnZJGXNrtWJKe1AmOTaxpvbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Vorel <pvorel@suse.cz>,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.12 117/277] drm/nouveau: fix bad ret code in nouveau_bo_move_prep
-Date: Fri, 17 Oct 2025 16:52:04 +0200
-Message-ID: <20251017145151.397818059@linuxfoundation.org>
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 046/168] crypto: essiv - Check ssize for decryption and in-place encryption
+Date: Fri, 17 Oct 2025 16:52:05 +0200
+Message-ID: <20251017145130.714686868@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuhao Fu <sfual@cse.ust.hk>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit e4bea919584ff292c9156cf7d641a2ab3cbe27b0 upstream.
+[ Upstream commit 6bb73db6948c2de23e407fe1b7ef94bf02b7529f ]
 
-In `nouveau_bo_move_prep`, if `nouveau_mem_map` fails, an error code
-should be returned. Currently, it returns zero even if vmm addr is not
-correctly mapped.
+Move the ssize check to the start in essiv_aead_crypt so that
+it's also checked for decryption and in-place encryption.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
-Fixes: 9ce523cc3bf2 ("drm/nouveau: separate buffer object backing memory from nvkm structures")
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Fixes: be1eb7f78aa8 ("crypto: essiv - create wrapper template for ESSIV generation")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/essiv.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_bo.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
-@@ -852,7 +852,7 @@ done:
- 		nvif_vmm_put(vmm, &old_mem->vma[1]);
- 		nvif_vmm_put(vmm, &old_mem->vma[0]);
- 	}
--	return 0;
-+	return ret;
- }
+diff --git a/crypto/essiv.c b/crypto/essiv.c
+index 307eba74b901e..9aa8603fcf63b 100644
+--- a/crypto/essiv.c
++++ b/crypto/essiv.c
+@@ -186,9 +186,14 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	const struct essiv_tfm_ctx *tctx = crypto_aead_ctx(tfm);
+ 	struct essiv_aead_request_ctx *rctx = aead_request_ctx(req);
+ 	struct aead_request *subreq = &rctx->aead_req;
++	int ivsize = crypto_aead_ivsize(tfm);
++	int ssize = req->assoclen - ivsize;
+ 	struct scatterlist *src = req->src;
+ 	int err;
  
- static int
++	if (ssize < 0)
++		return -EINVAL;
++
+ 	crypto_cipher_encrypt_one(tctx->essiv_cipher, req->iv, req->iv);
+ 
+ 	/*
+@@ -198,19 +203,12 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	 */
+ 	rctx->assoc = NULL;
+ 	if (req->src == req->dst || !enc) {
+-		scatterwalk_map_and_copy(req->iv, req->dst,
+-					 req->assoclen - crypto_aead_ivsize(tfm),
+-					 crypto_aead_ivsize(tfm), 1);
++		scatterwalk_map_and_copy(req->iv, req->dst, ssize, ivsize, 1);
+ 	} else {
+ 		u8 *iv = (u8 *)aead_request_ctx(req) + tctx->ivoffset;
+-		int ivsize = crypto_aead_ivsize(tfm);
+-		int ssize = req->assoclen - ivsize;
+ 		struct scatterlist *sg;
+ 		int nents;
+ 
+-		if (ssize < 0)
+-			return -EINVAL;
+-
+ 		nents = sg_nents_for_len(req->src, ssize);
+ 		if (nents < 0)
+ 			return -EINVAL;
+-- 
+2.51.0
+
 
 
 
