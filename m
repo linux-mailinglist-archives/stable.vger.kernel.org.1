@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-186401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12F8BE96B5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9DDBE9FB7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1623A5686FA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DFF955A0916
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353FB258ECA;
-	Fri, 17 Oct 2025 14:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E722F12B4;
+	Fri, 17 Oct 2025 15:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCMpIJqO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dF5Dq8Bm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54A621C9EA;
-	Fri, 17 Oct 2025 14:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9412136999B;
+	Fri, 17 Oct 2025 15:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713137; cv=none; b=DW3CeA36bafq5h2PHyWwSVVxajnJOtEJrouTCYNDJx2yUUwYvr4gwIe/3JFWxXi2fDt2xSmtAqpeWTyaq7UukVEHE4hiH8Ta3ZWGvqZW2gDh013NVOvb/fwPTZAcCj0cz/cCVq0mgovoycXMUwq+CF85guX6sAG6t31BYNIsbT8=
+	t=1760714381; cv=none; b=CWsR2LmdvlgZ/XHFJvfr+FRJaSH50GrRCEsRqsWITiBiqAj9089rZEYUHeSB6LU93gYy4pznhP/W63+VyRPXP2p5NfkjR2LjCY8QPMEfqylN88AU48FG+/Vn/HdHzvU4wgHQkzSUFuK1SOGw1LlXodz9mHjqPrwCUpbrPkuhEJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713137; c=relaxed/simple;
-	bh=rmStUZ6Fbsa7wqUeiDRjDZqC3y+70ifs02TQzQoZng0=;
+	s=arc-20240116; t=1760714381; c=relaxed/simple;
+	bh=459XRJ9mMy02BKe/1n7MR4p1B0CSo9Ze00MlnLCUxN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZdBb8SymNsYNzxNyX/fWGE+Oh1ZGKmLmLfdP9ayT5GvIbE6Ajb4DII7ls5oShx6nuMSgUkO4vvlvNFxksrSp6OzsBmQmei1k7eEBp7jyj1BW4NrkjFpLWexQum/7Vzcy5meiGL8fSQqPbW9Uvoq//k8bBQAij25qrOASfGUgS9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCMpIJqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F719C4CEE7;
-	Fri, 17 Oct 2025 14:58:56 +0000 (UTC)
+	 MIME-Version; b=G1jWG54l4n8gMZJs+wlGE6YXAFkIXpyxfW+FwnlhYSeAR8uDqgXSQQnNFe9IpPsnqdacOyAxTh4dAa+hR336hyK52910jl9KnUnVbLCa6/nYmHXv8yecgaLYqyipsB/AnHjPZdAanrSwQMPAkSiv72yMBU3b+96knKhZHz3aZRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dF5Dq8Bm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F619C4CEE7;
+	Fri, 17 Oct 2025 15:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713136;
-	bh=rmStUZ6Fbsa7wqUeiDRjDZqC3y+70ifs02TQzQoZng0=;
+	s=korg; t=1760714381;
+	bh=459XRJ9mMy02BKe/1n7MR4p1B0CSo9Ze00MlnLCUxN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OCMpIJqObjfkd6robzScBEqVbfN9vmZNtnBbNC1xdHAg1tvasM2nC3STyZTOi8mLX
-	 BCbqlDlS2Hmap0tSXzymrVKNjYZDyU7QqKAIbk8TAdyqVXO2ow5Yn/OJmLgwfptJ+t
-	 aj9+TCnIqVj7elvZ6zz2MobObC+EspY+/+fDgaY0=
+	b=dF5Dq8Bmagw+ifNeJLg5WHIOmFk3nR5ALcFje+ejiUEjGs+nCZ7Uca5rmyIVk0bjx
+	 HftMsH57xJ4VKMwR1AuNFvLLkCG7ThzSMH/eet73PcsvozWgBlji7a84qYKsyxOWrp
+	 tX50w3gwImFOmO4BkT++pGF28VhF70WmeqOeUy5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 053/168] ACPI: debug: fix signedness issues in read/write helpers
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 125/277] copy_sighand: Handle architectures where sizeof(unsigned long) < sizeof(u64)
 Date: Fri, 17 Oct 2025 16:52:12 +0200
-Message-ID: <20251017145130.973306286@linuxfoundation.org>
+Message-ID: <20251017145151.690032768@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+From: Simon Schuster <schuster.simon@siemens-energy.com>
 
-commit 496f9372eae14775e0524e83e952814691fe850a upstream.
+commit 04ff48239f46e8b493571e260bd0e6c3a6400371 upstream.
 
-In the ACPI debugger interface, the helper functions for read and write
-operations use "int" as the length parameter data type. When a large
-"size_t count" is passed from the file operations, this cast to "int"
-results in truncation and a negative value due to signed integer
-representation.
+With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
+clone3") the effective bit width of clone_flags on all architectures was
+increased from 32-bit to 64-bit. However, the signature of the copy_*
+helper functions (e.g., copy_sighand) used by copy_process was not
+adapted.
 
-Logically, this negative number propagates to the min() calculation,
-where it is selected over the positive buffer space value, leading to
-unexpected behavior. Subsequently, when this negative value is used in
-copy_to_user() or copy_from_user(), it is interpreted as a large positive
-value due to the unsigned nature of the size parameter in these functions,
-causing the copy operations to attempt handling sizes far beyond the
-intended buffer limits.
+As such, they truncate the flags on any 32-bit architectures that
+supports clone3 (arc, arm, csky, m68k, microblaze, mips32, openrisc,
+parisc32, powerpc32, riscv32, x86-32 and xtensa).
 
-Address the issue by:
- - Changing the length parameters in acpi_aml_read_user() and
-   acpi_aml_write_user() from "int" to "size_t", aligning with the
-   expected unsigned size semantics.
- - Updating return types and local variables in acpi_aml_read() and
-   acpi_aml_write() to "ssize_t" for consistency with kernel file
-   operation conventions.
- - Using "size_t" for the "n" variable to ensure calculations remain
-   unsigned.
- - Using min_t() for circ_count_to_end() and circ_space_to_end() to
-   ensure type-safe comparisons and prevent integer overflow.
+For copy_sighand with CLONE_CLEAR_SIGHAND being an actual u64
+constant, this triggers an observable bug in kernel selftest
+clone3_clear_sighand:
 
-Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
-Link: https://patch.msgid.link/20250923013113.20615-1-a.jahangirzad@gmail.com
-[ rjw: Changelog tweaks, local variable definitions ordering adjustments ]
-Fixes: 8cfb0cdf07e2 ("ACPI / debugger: Add IO interface to access debugger functionalities")
-Cc: 4.5+ <stable@vger.kernel.org> # 4.5+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+        if (clone_flags & CLONE_CLEAR_SIGHAND)
+
+in function copy_sighand within fork.c will always fail given:
+
+        unsigned long /* == uint32_t */ clone_flags
+        #define CLONE_CLEAR_SIGHAND 0x100000000ULL
+
+This commit fixes the bug by always passing clone_flags to copy_sighand
+via their declared u64 type, invariant of architecture-dependent integer
+sizes.
+
+Fixes: b612e5df4587 ("clone3: add CLONE_CLEAR_SIGHAND")
+Cc: stable@vger.kernel.org # linux-5.5+
+Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+Link: https://lore.kernel.org/20250901-nios2-implement-clone3-v2-1-53fcf5577d57@siemens-energy.com
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_dbg.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ kernel/fork.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/acpi_dbg.c
-+++ b/drivers/acpi/acpi_dbg.c
-@@ -569,11 +569,11 @@ static int acpi_aml_release(struct inode
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1807,7 +1807,7 @@ static int copy_files(unsigned long clon
  	return 0;
  }
  
--static int acpi_aml_read_user(char __user *buf, int len)
-+static ssize_t acpi_aml_read_user(char __user *buf, size_t len)
+-static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
++static int copy_sighand(u64 clone_flags, struct task_struct *tsk)
  {
--	int ret;
- 	struct circ_buf *crc = &acpi_aml_io.out_crc;
--	int n;
-+	ssize_t ret;
-+	size_t n;
- 	char *p;
+ 	struct sighand_struct *sig;
  
- 	ret = acpi_aml_lock_read(crc, ACPI_AML_OUT_USER);
-@@ -582,7 +582,7 @@ static int acpi_aml_read_user(char __use
- 	/* sync head before removing logs */
- 	smp_rmb();
- 	p = &crc->buf[crc->tail];
--	n = min(len, circ_count_to_end(crc));
-+	n = min_t(size_t, len, circ_count_to_end(crc));
- 	if (copy_to_user(buf, p, n)) {
- 		ret = -EFAULT;
- 		goto out;
-@@ -599,8 +599,8 @@ out:
- static ssize_t acpi_aml_read(struct file *file, char __user *buf,
- 			     size_t count, loff_t *ppos)
- {
--	int ret = 0;
--	int size = 0;
-+	ssize_t ret = 0;
-+	ssize_t size = 0;
- 
- 	if (!count)
- 		return 0;
-@@ -639,11 +639,11 @@ again:
- 	return size > 0 ? size : ret;
- }
- 
--static int acpi_aml_write_user(const char __user *buf, int len)
-+static ssize_t acpi_aml_write_user(const char __user *buf, size_t len)
- {
--	int ret;
- 	struct circ_buf *crc = &acpi_aml_io.in_crc;
--	int n;
-+	ssize_t ret;
-+	size_t n;
- 	char *p;
- 
- 	ret = acpi_aml_lock_write(crc, ACPI_AML_IN_USER);
-@@ -652,7 +652,7 @@ static int acpi_aml_write_user(const cha
- 	/* sync tail before inserting cmds */
- 	smp_mb();
- 	p = &crc->buf[crc->head];
--	n = min(len, circ_space_to_end(crc));
-+	n = min_t(size_t, len, circ_space_to_end(crc));
- 	if (copy_from_user(p, buf, n)) {
- 		ret = -EFAULT;
- 		goto out;
-@@ -663,14 +663,14 @@ static int acpi_aml_write_user(const cha
- 	ret = n;
- out:
- 	acpi_aml_unlock_fifo(ACPI_AML_IN_USER, ret >= 0);
--	return n;
-+	return ret;
- }
- 
- static ssize_t acpi_aml_write(struct file *file, const char __user *buf,
- 			      size_t count, loff_t *ppos)
- {
--	int ret = 0;
--	int size = 0;
-+	ssize_t ret = 0;
-+	ssize_t size = 0;
- 
- 	if (!count)
- 		return 0;
 
 
 
