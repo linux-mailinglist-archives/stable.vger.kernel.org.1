@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-187160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A226BEA05F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7963CBE9F00
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 170A51893591
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90EC9744986
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921B9330B15;
-	Fri, 17 Oct 2025 15:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC55433291A;
+	Fri, 17 Oct 2025 15:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swSfT7FU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pr8xCgw4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41250330B0D;
-	Fri, 17 Oct 2025 15:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890BE2F12D9;
+	Fri, 17 Oct 2025 15:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715284; cv=none; b=G64imBh8Z+8lpw+qChxMRxcm71jVVvRNdkCkq0WXGDJPaUb++xfduJftFEqXD6mJU+FGeXIKbMiBvHVYyjunLeegCMsS9Wg4U4BEJSeN4yb8t60QhhhNtuTBIvtfj9wkHFp1XmCIV9e+aDzPfXXnq24i+NWRm5/dYtOptxYd7js=
+	t=1760714427; cv=none; b=n/AbwJz2uk+t9qh+vYcQFni4gQXDCrMVifu7Ly+F/xKkUSKhRQ4B/FcRCQYhMR+YGrzyDspB+qzfgZ3wvgF4cSg73fVk6bF4xxU8tzvd9/xu2fCEeMghSu6DyHBpbEFVcj8zDk0rNBNVW9/yYwMAL2bJ4JwRWItDqlHk9p3sRn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715284; c=relaxed/simple;
-	bh=iNWtDeNwNxqpfMITqTLlRKVobpLrb+vKgSY44xCj0Ls=;
+	s=arc-20240116; t=1760714427; c=relaxed/simple;
+	bh=juKTQ9g9JoW9rF94aPnJJqC3Jy7T0Rr0xcJ0KiQOC4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBR5h+cZX2hgWyP3U86GYl76iqiezQtdxhOg6xe+zMY/U//8ngU5waHdtu2xi6vTwl1e7TVfEfuIQO4hC2z4ArsKXSvQxBxwphwZvkevAKXCBf9sVRUCxe37r5wCXGCvzwKibN4xpBFQZ08aRo73K6D49mdMLbGCVVfbqwiwNW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swSfT7FU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF71C4CEE7;
-	Fri, 17 Oct 2025 15:34:43 +0000 (UTC)
+	 MIME-Version; b=dlZDlRQix4pvE0L0imB25ut076om93TvMbTcaNiG3XuON57JsjThxEsMAWlYPGen5rEEV1jpoou6Galnxj3QiSHnqhfY7iT8UJjDeMvaEIfN1HH6L4OKmWi9dcrdwY9cVnOr5zC5qrF0DRNxV2va8/RquVdNSConwPm+JA9btlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pr8xCgw4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD324C4CEE7;
+	Fri, 17 Oct 2025 15:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715284;
-	bh=iNWtDeNwNxqpfMITqTLlRKVobpLrb+vKgSY44xCj0Ls=;
+	s=korg; t=1760714427;
+	bh=juKTQ9g9JoW9rF94aPnJJqC3Jy7T0Rr0xcJ0KiQOC4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swSfT7FU4wfde4d9iebIhrW6E6cGPJR90snqxJs/krZAxWW8/ytn0lNBtpk5c/eZj
-	 NQKQumIlq+bqVzGBSjGvOzrLgjZTl0gX4q+9FdUzVk60KIBs/9r3d/GuRRaVkUrlVJ
-	 4FCU8QlWC/y1IvXw0Oig7szMuCNRMAR61zg1rKDk=
+	b=Pr8xCgw4cm2eoMHZNXhp2l7N79HmG1Bk4G7lyUgg4PZQQxAP+xvW1EVpb5+nFnRcr
+	 sj3dNn01tCq8zNRpWSXsTahjErOyAu+VHB/0MbpKa5/w9+Zf013mrIDIc6nJigRkQS
+	 IERZAC7+aqI+ppaCFBBr5VGOo+V7QCSdHI7pyyOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Le Chen <tom2cat@sjtu.edu.cn>,
-	Alexei Starovoitov <ast@kernel.org>,
-	KaFai Wan <kafai.wan@linux.dev>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 129/371] bpf: Avoid RCU context warning when unpinning htab with internal structs
-Date: Fri, 17 Oct 2025 16:51:44 +0200
-Message-ID: <20251017145206.599214662@linuxfoundation.org>
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.12 098/277] xen/events: Cleanup find_virq() return codes
+Date: Fri, 17 Oct 2025 16:51:45 +0200
+Message-ID: <20251017145150.710093924@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: KaFai Wan <kafai.wan@linux.dev>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-[ Upstream commit 4f375ade6aa9f37fd72d7a78682f639772089eed ]
+commit 08df2d7dd4ab2db8a172d824cda7872d5eca460a upstream.
 
-When unpinning a BPF hash table (htab or htab_lru) that contains internal
-structures (timer, workqueue, or task_work) in its values, a BUG warning
-is triggered:
- BUG: sleeping function called from invalid context at kernel/bpf/hashtab.c:244
- in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 14, name: ksoftirqd/0
- ...
+rc is overwritten by the evtchn_status hypercall in each iteration, so
+the return value will be whatever the last iteration is.  This could
+incorrectly return success even if the event channel was not found.
+Change to an explicit -ENOENT for an un-found virq and return 0 on a
+successful match.
 
-The issue arises from the interaction between BPF object unpinning and
-RCU callback mechanisms:
-1. BPF object unpinning uses ->free_inode() which schedules cleanup via
-   call_rcu(), deferring the actual freeing to an RCU callback that
-   executes within the RCU_SOFTIRQ context.
-2. During cleanup of hash tables containing internal structures,
-   htab_map_free_internal_structs() is invoked, which includes
-   cond_resched() or cond_resched_rcu() calls to yield the CPU during
-   potentially long operations.
-
-However, cond_resched() or cond_resched_rcu() cannot be safely called from
-atomic RCU softirq context, leading to the BUG warning when attempting
-to reschedule.
-
-Fix this by changing from ->free_inode() to ->destroy_inode() and rename
-bpf_free_inode() to bpf_destroy_inode() for BPF objects (prog, map, link).
-This allows direct inode freeing without RCU callback scheduling,
-avoiding the invalid context warning.
-
-Reported-by: Le Chen <tom2cat@sjtu.edu.cn>
-Closes: https://lore.kernel.org/all/1444123482.1827743.1750996347470.JavaMail.zimbra@sjtu.edu.cn/
-Fixes: 68134668c17f ("bpf: Add map side support for bpf timers.")
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: KaFai Wan <kafai.wan@linux.dev>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20251008102628.808045-2-kafai.wan@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 62cc5fc7b2e0 ("xen/pv-on-hvm kexec: rebind virqs to existing eventchannel ports")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250828003604.8949-2-jason.andryuk@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/inode.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/xen/events/events_base.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
-index 5c2e96b19392a..1a31c87234877 100644
---- a/kernel/bpf/inode.c
-+++ b/kernel/bpf/inode.c
-@@ -775,7 +775,7 @@ static int bpf_show_options(struct seq_file *m, struct dentry *root)
- 	return 0;
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1324,10 +1324,11 @@ static int find_virq(unsigned int virq,
+ {
+ 	struct evtchn_status status;
+ 	evtchn_port_t port;
+-	int rc = -ENOENT;
+ 
+ 	memset(&status, 0, sizeof(status));
+ 	for (port = 0; port < xen_evtchn_max_channels(); port++) {
++		int rc;
++
+ 		status.dom = DOMID_SELF;
+ 		status.port = port;
+ 		rc = HYPERVISOR_event_channel_op(EVTCHNOP_status, &status);
+@@ -1337,10 +1338,10 @@ static int find_virq(unsigned int virq,
+ 			continue;
+ 		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu)) {
+ 			*evtchn = port;
+-			break;
++			return 0;
+ 		}
+ 	}
+-	return rc;
++	return -ENOENT;
  }
  
--static void bpf_free_inode(struct inode *inode)
-+static void bpf_destroy_inode(struct inode *inode)
- {
- 	enum bpf_type type;
- 
-@@ -790,7 +790,7 @@ const struct super_operations bpf_super_ops = {
- 	.statfs		= simple_statfs,
- 	.drop_inode	= generic_delete_inode,
- 	.show_options	= bpf_show_options,
--	.free_inode	= bpf_free_inode,
-+	.destroy_inode	= bpf_destroy_inode,
- };
- 
- enum {
--- 
-2.51.0
-
+ /**
 
 
 
