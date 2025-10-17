@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3532EBE9D23
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B02FBE9850
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:10:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C09C1AE23CB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 26486565587
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCEF332903;
-	Fri, 17 Oct 2025 15:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D77B332EDB;
+	Fri, 17 Oct 2025 15:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFIeVWGw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBLlViGo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDFB3328F5;
-	Fri, 17 Oct 2025 15:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A30332ECA;
+	Fri, 17 Oct 2025 15:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714640; cv=none; b=NrYtarA5JUuEDCqNoxUGTxDtb0/LYftvMFxPM/c6xD55+kas/k2cyJf1jaY+TmCT+8XxOUojYaIa2wjarpLtibi5yfjjjlOfqG+NijborakSOULiMIgqcV0BV+YPKz6TdaSwmNzc8Vf0x1OG7DG/gvlbOfx3Z77bRrf7ZucgdfY=
+	t=1760713377; cv=none; b=bd9Oo+kbxCNtNw9BYRfjU8SE1ANNaHCR4MVAUOnhRswHABl6tdy07HiuJkiRvZqK2Yj8krXAVvpu3U6UFkKaIZZ/yHBESAe1E2pCXWb/xbiNDC44aHT7oVYjbVlrOe1p0gpA4f7/3X0+4T3ZLQA8gOlACtMcSBwU0/kFRRQbDcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714640; c=relaxed/simple;
-	bh=8VpkkCZutAVLxCL4Fq6u5hokSDgeidODHFtUktqSbSs=;
+	s=arc-20240116; t=1760713377; c=relaxed/simple;
+	bh=ojFIkIltbPl7DyamFJN7vCV6sXhpqMREfMQXSVNpHhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VEbNd4QAT87FpVlZTFuoY8afg/SLFI9wAwkpWxEwTyWrlFDH8k4+idWFmlX56SKOl63jEQYSM4chB126nqx5dG5GZJ6XVsqhdA+qh005nB6/GCo7ELWFyt0W6eOU7p9Uggi1mRJi/QyOcBmwGgg2zqBkc5PJCaC7trmCLB8p+Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFIeVWGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29247C4CEE7;
-	Fri, 17 Oct 2025 15:23:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tgF/qhlvLgmmhB8GJ0pjsFDffSoR89BLh/lOnbHxxrdk/+erpOM3kYFZx+Oekw6Vhh5rzLCYKt2eFTYAyMeNzXNPFA1iv53ldeX6XUt+gW8WTBEnwbF4z4+5f59wnWZsY2UN8p++PjWVHjcAGwG02qPR06GvhHLBsoLfW2SjV4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBLlViGo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44789C4CEE7;
+	Fri, 17 Oct 2025 15:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714640;
-	bh=8VpkkCZutAVLxCL4Fq6u5hokSDgeidODHFtUktqSbSs=;
+	s=korg; t=1760713377;
+	bh=ojFIkIltbPl7DyamFJN7vCV6sXhpqMREfMQXSVNpHhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BFIeVWGwEOdsaFGu4lrgkcOVACAJrPPIK4mdSkiqo4z7ef7bQouWA2te6vv/l2UDT
-	 TD7F4OmwIBwDw0LCq/GUDiUGFVAvUXvMnHmReKtLcfRUk7WQSHGzMNVGHZuicTAthY
-	 /STQbxTGKq9p/gL78H8kXYM+gFqtF/I2a6HjIlVY=
+	b=fBLlViGoukZhhyTuB/al/Kduu+WWnyltDQudhUBjBe53eEFdoYJt48mRmWLE2zzGC
+	 EZ4UCg70GulVaV9TI0eB+imlTO5DLbet9jFklZ4vYEDf1nlCEHZx9G0hOfiTIexYPi
+	 uJek3he8aY3DX8uaE2xMOsbXrOk+y3xBqh4oxCZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 216/277] ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()
+	Wang Jiang <jiangwang@kylinos.cn>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 144/168] PCI: endpoint: Remove surplus return statement from pci_epf_test_clean_dma_chan()
 Date: Fri, 17 Oct 2025 16:53:43 +0200
-Message-ID: <20251017145155.017120126@linuxfoundation.org>
+Message-ID: <20251017145134.339335782@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Wang Jiang <jiangwang@kylinos.cn>
 
-commit 8ecb790ea8c3fc69e77bace57f14cf0d7c177bd8 upstream.
+[ Upstream commit 9b80bdb10aee04ce7289896e6bdad13e33972636 ]
 
-Unlike other strings in the ext4 superblock, we rely on tune2fs to
-make sure s_mount_opts is NUL terminated.  Harden
-parse_apply_sb_mount_options() by treating s_mount_opts as a potential
-__nonstring.
+Remove a surplus return statement from the void function that has been
+added in the commit commit 8353813c88ef ("PCI: endpoint: Enable DMA
+tests for endpoints with DMA capabilities").
 
-Cc: stable@vger.kernel.org
-Fixes: 8b67f04ab9de ("ext4: Add mount options in superblock")
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Message-ID: <20250916-tune2fs-v2-1-d594dc7486f0@mit.edu>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Especially, as an empty return statements at the end of a void functions
+serve little purpose.
+
+This fixes the following checkpatch.pl script warning:
+
+  WARNING: void function return statements are not generally useful
+  #296: FILE: drivers/pci/endpoint/functions/pci-epf-test.c:296:
+  +     return;
+  +}
+
+Link: https://lore.kernel.org/r/tencent_F250BEE2A65745A524E2EFE70CF615CA8F06@qq.com
+Signed-off-by: Wang Jiang <jiangwang@kylinos.cn>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Stable-dep-of: 85afa9ea122d ("PCI: endpoint: pci-epf-test: Add NULL check for DMA channels before release")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |   17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -2493,7 +2493,7 @@ static int parse_apply_sb_mount_options(
- 					struct ext4_fs_context *m_ctx)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
--	char *s_mount_opts = NULL;
-+	char s_mount_opts[65];
- 	struct ext4_fs_context *s_ctx = NULL;
- 	struct fs_context *fc = NULL;
- 	int ret = -ENOMEM;
-@@ -2501,15 +2501,11 @@ static int parse_apply_sb_mount_options(
- 	if (!sbi->s_es->s_mount_opts[0])
- 		return 0;
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -291,8 +291,6 @@ static void pci_epf_test_clean_dma_chan(
  
--	s_mount_opts = kstrndup(sbi->s_es->s_mount_opts,
--				sizeof(sbi->s_es->s_mount_opts),
--				GFP_KERNEL);
--	if (!s_mount_opts)
--		return ret;
-+	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts);
- 
- 	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
- 	if (!fc)
--		goto out_free;
-+		return -ENOMEM;
- 
- 	s_ctx = kzalloc(sizeof(struct ext4_fs_context), GFP_KERNEL);
- 	if (!s_ctx)
-@@ -2541,11 +2537,8 @@ parse_failed:
- 	ret = 0;
- 
- out_free:
--	if (fc) {
--		ext4_fc_free(fc);
--		kfree(fc);
--	}
--	kfree(s_mount_opts);
-+	ext4_fc_free(fc);
-+	kfree(fc);
- 	return ret;
+ 	dma_release_channel(epf_test->dma_chan_rx);
+ 	epf_test->dma_chan_rx = NULL;
+-
+-	return;
  }
  
+ static void pci_epf_test_print_rate(const char *ops, u64 size,
 
 
 
