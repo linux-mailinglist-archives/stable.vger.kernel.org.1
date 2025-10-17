@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-186669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8AEBEA013
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5600BEA4AC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D2987C0478
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB90C1887E25
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515252F12A0;
-	Fri, 17 Oct 2025 15:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604E9322C88;
+	Fri, 17 Oct 2025 15:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxJzHuBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSFmCvGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D11F337110;
-	Fri, 17 Oct 2025 15:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD9E2D6E40;
+	Fri, 17 Oct 2025 15:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713899; cv=none; b=gVg93dozuYSXXjvKQs69vpJp3zfTQiKJhF99eJeMgZi0WWAqy++X8ZzTcY3fkIEUveHnkuJeJ4kklo+UYymCR66YPtt/qOiq/0DjCPmmU8GFQD0zZgt+Qc0p1EkvG3lmWixTMDOPvhmkktk2hqSC30fTM/kYLIeV5CodzT0cxMY=
+	t=1760716230; cv=none; b=X/4o1tS1Ha5Y6I74Q+M1SZN4ieFSECZUl5vuocX9EO7P3YZucTG9epUAxdETRS3EHpgwZU4T4LgzMIVqF1+YC+qxEfXa1Z1y/az1RUBnDRkJ2iE6mIlRpjxKUXM+UqSWg98A6SabjtaltZaM9fpvPQgJHmCo03rEsuNkoPCJI5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713899; c=relaxed/simple;
-	bh=brsEMo2Qb9mYTX86VLstFPzczHOpyMvZKEolEg3CDCQ=;
+	s=arc-20240116; t=1760716230; c=relaxed/simple;
+	bh=yGXoHX4Hg7kdxVJrmWm2WaIqovPeQqtYxJFrzsAiZHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8C8gQGdoo9A7+fIXmh3IFoRReLJvIxYZmoYJTiQ0Is1D1eNcdGm5XdyYoqHJZZlUq/dIbeITwXi5ijt1F7dYOU32ObQeHQGn+GZhg4M+57PkG4mK3GjEajMwXOB1wCJO/+aM3tZAR4FuOaR4UUkM4OyH73twEoDEqL3rEQD/lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxJzHuBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E466C4CEE7;
-	Fri, 17 Oct 2025 15:11:38 +0000 (UTC)
+	 MIME-Version; b=oyTjqedp6iYuHCeFjuYuXjscwqEw2SqN0V0UVAOkBFut6hg0yg+McI7hcXRf+px9QzNZrtqxm65ycDH+9RJFFIRCBH3+cs8xDnv4vx1IzcAI2azIUFL2mDLrpXyj01Vu3cl2htNybh61pV1pq+UeEWlPpW0754guVoVCRxcdQTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSFmCvGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983B1C113D0;
+	Fri, 17 Oct 2025 15:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713898;
-	bh=brsEMo2Qb9mYTX86VLstFPzczHOpyMvZKEolEg3CDCQ=;
+	s=korg; t=1760716230;
+	bh=yGXoHX4Hg7kdxVJrmWm2WaIqovPeQqtYxJFrzsAiZHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WxJzHuBJF4WSs1fv/3dJchjm7y/bPpyICwr9PORqsJ5+18U6gkI2HOQBKSWEy3akM
-	 tjSDP/79OaqIXK2s3I2GukQ1jSDgiyvBm+vD243iHs783WkLckuLDR24kg56T3PXms
-	 QT4kg2P/IGVnb4dmiYx4ex+iHAKhzXsVEiq+ihDk=
+	b=HSFmCvGmdkmcqYxQT/nBnVkJtnhrZA2IbaXGaF4pUT2BS/G/qSCzP9fSOXTYCv/yp
+	 umw5Q1I2XxBSI3un1BkyYhndUE6ztZFwOGk65s53C5zgHO4XRbWDos9HWEW/gCf0XF
+	 OmQ1QwmwmrFJ9zHy0VZMtyqakhFCIIoUUnHQ54nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 151/201] ext4: fix an off-by-one issue during moving extents
+	Miaoqian Lin <linmq006@gmail.com>
+Subject: [PATCH 5.15 119/276] usb: cdns3: cdnsp-pci: remove redundant pci_disable_device() call
 Date: Fri, 17 Oct 2025 16:53:32 +0200
-Message-ID: <20251017145140.280016363@linuxfoundation.org>
+Message-ID: <20251017145146.822069265@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 12e803c8827d049ae8f2c743ef66ab87ae898375 upstream.
+commit e9c206324eeb213957a567a9d066bdeb355c7491 upstream.
 
-During the movement of a written extent, mext_page_mkuptodate() is
-called to read data in the range [from, to) into the page cache and to
-update the corresponding buffers. Therefore, we should not wait on any
-buffer whose start offset is >= 'to'. Otherwise, it will return -EIO and
-fail the extents movement.
+The cdnsp-pci driver uses pcim_enable_device() to enable a PCI device,
+which means the device will be automatically disabled on driver detach
+through the managed device framework. The manual pci_disable_device()
+call in the error path is therefore redundant.
 
- $ for i in `seq 3 -1 0`; \
-   do xfs_io -fs -c "pwrite -b 1024 $((i * 1024)) 1024" /mnt/foo; \
-   done
- $ umount /mnt && mount /dev/pmem1s /mnt  # drop cache
- $ e4defrag /mnt/foo
-   e4defrag 1.47.0 (5-Feb-2023)
-   ext4 defragmentation for /mnt/foo
-   [1/1]/mnt/foo:    0%    [ NG ]
-   Success:                       [0/1]
+Found via static anlaysis and this is similar to commit 99ca0b57e49f
+("thermal: intel: int340x: processor: Fix warning during module unload").
 
-Cc: stable@kernel.org
-Fixes: a40759fb16ae ("ext4: remove array of buffer_heads from mext_page_mkuptodate()")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20250912105841.1886799-1-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20250903141613.2535472-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/move_extent.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/cdns3/cdnsp-pci.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
-index adae3caf175a..4b091c21908f 100644
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -225,7 +225,7 @@ static int mext_page_mkuptodate(struct folio *folio, size_t from, size_t to)
- 	do {
- 		if (bh_offset(bh) + blocksize <= from)
- 			continue;
--		if (bh_offset(bh) > to)
-+		if (bh_offset(bh) >= to)
- 			break;
- 		wait_on_buffer(bh);
- 		if (buffer_uptodate(bh))
--- 
-2.51.0
-
+--- a/drivers/usb/cdns3/cdnsp-pci.c
++++ b/drivers/usb/cdns3/cdnsp-pci.c
+@@ -90,7 +90,7 @@ static int cdnsp_pci_probe(struct pci_de
+ 		cdnsp = kzalloc(sizeof(*cdnsp), GFP_KERNEL);
+ 		if (!cdnsp) {
+ 			ret = -ENOMEM;
+-			goto disable_pci;
++			goto put_pci;
+ 		}
+ 	}
+ 
+@@ -173,9 +173,6 @@ free_cdnsp:
+ 	if (!pci_is_enabled(func))
+ 		kfree(cdnsp);
+ 
+-disable_pci:
+-	pci_disable_device(pdev);
+-
+ put_pci:
+ 	pci_dev_put(func);
+ 
 
 
 
