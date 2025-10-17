@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AEE7BE9CF0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D73BEA041
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19D947C0B86
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 64574586758
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEB32F12BC;
-	Fri, 17 Oct 2025 15:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEC632C946;
+	Fri, 17 Oct 2025 15:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tg9N2dzn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGGn6vpB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABF53370FA;
-	Fri, 17 Oct 2025 15:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2652745E;
+	Fri, 17 Oct 2025 15:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713965; cv=none; b=tHd9SJz+5O3w1uV+ktjs6S3yQ/8XN5FVmjLZfAfMEarj/Ge7QNWPaOP2sB8zceNFFNNw2bgNF2BU+Y+pKPReyFZtW7TACtfd8avvxQnkqQugmdMwDRBmtN/q6PtislpIY82H2neusUNGuVje0mu/E4KBrtHP3kwi6yk6WWMJQ/A=
+	t=1760714696; cv=none; b=SS5sXDH7lu59raevuB+aU1TjhnKkFxLKDwo901yxyJZoY+yPkSycaOs0B9lZZD9bcqnqwAeL7a7FvUmffwv2LxrBKn1U07o+Ffb0jAs7kPV6L2hdwXObAM5JJQmCSKRhOnMjGYTjbXbsyQ+ppO53pTDZWxogS5cnZ2JCgW539SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713965; c=relaxed/simple;
-	bh=veubsG0v8Ee0KhDu03uZtTFolSsEvyaZVlLZe8GFDiQ=;
+	s=arc-20240116; t=1760714696; c=relaxed/simple;
+	bh=oWO2t0xyUS48mRVDDHKXTeMfg4wRHJQnxvRCrdIyKxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qtOBBG4tIFIgnb9vVLeOvH01rpUPoOrjum7TCS2jIS7uj7rXFpql7KXyRHqR9hJBGnUMxpe8T7NFJZmummJV8ltDKKRJSrZk5eZMhiymcJQCdIrEQQz59UBPQ5vPS9duvfUC+dV9yCbBHOfGDygPEq3LTBZDT/aXrH8i12SfqZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tg9N2dzn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203F8C4CEE7;
-	Fri, 17 Oct 2025 15:12:44 +0000 (UTC)
+	 MIME-Version; b=ijuU9c//BvSrDgQm3/l7xAX6ADovH1w4BbeO5PaFvEk2vGbcS33pojFWhtNJV0WZuF4rQruJ9FP39WrvMwHDe0vpXo0dmsIiuDvX3r1JHf4ewY+6yNpfYSlUJilOYn0I9jcknfX8yENpwyPW4lNRRhVhjCE0/8QxieWH7xwBx+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGGn6vpB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EA9C4CEE7;
+	Fri, 17 Oct 2025 15:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713965;
-	bh=veubsG0v8Ee0KhDu03uZtTFolSsEvyaZVlLZe8GFDiQ=;
+	s=korg; t=1760714696;
+	bh=oWO2t0xyUS48mRVDDHKXTeMfg4wRHJQnxvRCrdIyKxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tg9N2dznV0b3Hd3fyAp/Jmh4aV+TIMLzrGK5XlOMVawaEt5Oq2mIJmHAeIQd1gRty
-	 uTViREGOtOhqK4nr2gPJySLJdgw644+PrMcxBYkUy+GZ5OW2MBBtfP/XZA0GJJyos8
-	 Tn7t9HQ1ismNjAvui+SMQTPdXZfwSN8aEgOHz92g=
+	b=HGGn6vpBEcNOReJ6HlC1b35vKL7p171v3KITgvfO8prVcK6I2xpyuYTDIEhgHcQ79
+	 mh2EVBNZcmW+Fwk+F8uBn7MfG7uYbhKehz6nf3qBUlNYtLyQthgi+jI0MLZ35ZTrZb
+	 Nglzq1p0trZdsbqkoHus5q1dCH3IRZfHCkl0Gp5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/201] ACPI: battery: Check for error code from devm_mutex_init() call
+Subject: [PATCH 6.12 234/277] mfd: intel_soc_pmic_chtdc_ti: Drop unneeded assignment for cache_type
 Date: Fri, 17 Oct 2025 16:54:01 +0200
-Message-ID: <20251017145141.367650146@linuxfoundation.org>
+Message-ID: <20251017145155.681348525@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 815daedc318b2f9f1b956d0631377619a0d69d96 ]
+[ Upstream commit 9eb99c08508714906db078b5efbe075329a3fb06 ]
 
-Even if it's not critical, the avoidance of checking the error code
-from devm_mutex_init() call today diminishes the point of using devm
-variant of it. Tomorrow it may even leak something. Add the missed
-check.
+REGCACHE_NONE is the default type of the cache when not provided.
+Drop unneeded explicit assignment to it.
 
-Fixes: 0710c1ce5045 ("ACPI: battery: initialize mutexes through devm_ APIs")
+Note, it's defined to 0, and if ever be redefined, it will break
+literally a lot of the drivers, so it very unlikely to happen.
+
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://patch.msgid.link/20241030162754.2110946-1-andriy.shevchenko@linux.intel.com
-[ rjw: Added 2 empty code lines ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 399dbcadc01e ("ACPI: battery: Add synchronization between interface updates")
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250129152823.1802273-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: 64e0d839c589 ("mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/mfd/intel_soc_pmic_chtdc_ti.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -1210,8 +1210,14 @@ static int acpi_battery_add(struct acpi_
- 	strcpy(acpi_device_name(device), ACPI_BATTERY_DEVICE_NAME);
- 	strcpy(acpi_device_class(device), ACPI_BATTERY_CLASS);
- 	device->driver_data = battery;
--	devm_mutex_init(&device->dev, &battery->lock);
--	devm_mutex_init(&device->dev, &battery->sysfs_lock);
-+	result = devm_mutex_init(&device->dev, &battery->lock);
-+	if (result)
-+		return result;
-+
-+	result = devm_mutex_init(&device->dev, &battery->sysfs_lock);
-+	if (result)
-+		return result;
-+
- 	if (acpi_has_method(battery->device->handle, "_BIX"))
- 		set_bit(ACPI_BATTERY_XINFO_PRESENT, &battery->flags);
+--- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
++++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+@@ -82,7 +82,6 @@ static const struct regmap_config chtdc_
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+ 	.max_register = 0xff,
+-	.cache_type = REGCACHE_NONE,
+ };
  
+ static const struct regmap_irq chtdc_ti_irqs[] = {
 
 
 
