@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B220BEA140
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD6BBEA6B4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 42CB434937B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0EA02587E61
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1370330B1A;
-	Fri, 17 Oct 2025 15:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443D3330B3C;
+	Fri, 17 Oct 2025 15:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Si6RaHAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMwsBdWT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE75330B28;
-	Fri, 17 Oct 2025 15:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B92330B0F;
+	Fri, 17 Oct 2025 15:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715718; cv=none; b=n7CgZfSEH3JYuipfpiDPcIV+864346mASphcj45+n0ohCWvGDnrcqgdFta3N2LlZ8MEJr2TkXFOm2KoCBuVBC+mtF5AFskhhiVxBRU8enZ54++A/UYpFlWmB/VGwsNcA/6rlCW0FyEmppbLg0UX7l8A7djxSjQyM0HSBkKFp1f0=
+	t=1760716458; cv=none; b=uqSyLNAJDBhaCnY769eXtrlugVX9/9S4YUH/uMKOxEzSvy+1bpMDwS8ep6K7ayGMOcERL1NkS/jpWBiqqZiiGTic9XrVvibnkyRm4kUPRzrvVZ7uciSui1Vg5NopDETjxxzZvW74pCPBDSZ9Iw4JeuFlEwcABOfydDFlFvS/pCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715718; c=relaxed/simple;
-	bh=W4P4e0cOybGOGr9sRUWbeiZ0gm1pe13bfcIX8cEpcRI=;
+	s=arc-20240116; t=1760716458; c=relaxed/simple;
+	bh=VjVQ5xHGxjcrODH+GZKuoBznlXD3U6AZ9Yj7a+G9rvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRumhO39baHlxhPtLHLvl/0i1k+Bk6oR2GioYH5zZqwhd6Fq9IxyrNxB+lludpBIXBjWNDoptGXIHAvaTgIxTJYGDyEE/LclhS9c/47+j2fTrMUxxQh2gqKIKaMkvk7CbCwo0oVRBnQAad0KhSuv2Oatyp7iQD+tvdKb546KKaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Si6RaHAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2F5C4CEE7;
-	Fri, 17 Oct 2025 15:41:57 +0000 (UTC)
+	 MIME-Version; b=cKXA3ApS2rJFfCOK9+cYD+ebQV5a5ZyGVayOJjOd16s79E13YY1IrYgHDn/1xVTWMc0vDYvWj3HyG1S7ULmpUr4lE+RxqSeDn21fp33UEiJPGcadUc6+ehJ9aaUz39upprp9K4PrhCH9b0c32D3dHfCuO/Sp+dR7SwXJwu5syPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMwsBdWT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D6AC4CEFE;
+	Fri, 17 Oct 2025 15:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715718;
-	bh=W4P4e0cOybGOGr9sRUWbeiZ0gm1pe13bfcIX8cEpcRI=;
+	s=korg; t=1760716457;
+	bh=VjVQ5xHGxjcrODH+GZKuoBznlXD3U6AZ9Yj7a+G9rvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Si6RaHAvunKks8b+mqfvK3SjIJtx1k+l+hS4ueVygpbDyqgrS7o767pOOIzHWdyWQ
-	 q7oVzNKD/tlmyUef7wSLbexoQogCckRS96PBUvHP1rzUpKJhHMxmYtz7bY/CS11jOK
-	 FtKij/nLzV9zw5wWgJQut2VSclOS86DaelMv4uH8=
+	b=gMwsBdWTJvdQYEzPdxTV6tEXXxEp0GWk3U1g/uKJiCsjUjSdLrlPBcoxjRMlbEvPj
+	 opbCO2SgQJJ2absJEWQIkuWwsC4qDTuBWMtX8pcWrML762P6hps/Y5dIjpQVE+WCi6
+	 AusmwWO/lG4UYpPezVuUB2vX4aCiUfK8zxV3XLfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Autumn Dececco <autumndececco@gmail.com>,
-	Nick Morrow <morrownr@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.17 314/371] wifi: mt76: mt7921u: Add VID/PID for Netgear A7500
-Date: Fri, 17 Oct 2025 16:54:49 +0200
-Message-ID: <20251017145213.435786733@linuxfoundation.org>
+	Anthony Yznaga <anthony.yznaga@oracle.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Andreas Larsson <andreas@gaisler.com>
+Subject: [PATCH 5.15 197/276] sparc64: fix hugetlb for sun4u
+Date: Fri, 17 Oct 2025 16:54:50 +0200
+Message-ID: <20251017145149.662777737@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Morrow <morrownr@gmail.com>
+From: Anthony Yznaga <anthony.yznaga@oracle.com>
 
-commit fc6627ca8a5f811b601aea74e934cf8a048c88ac upstream.
+commit 6fd44a481b3c6111e4801cec964627791d0f3ec5 upstream.
 
-Add VID/PID 0846/9065 for Netgear A7500.
+An attempt to exercise sparc hugetlb code in a sun4u-based guest
+running under qemu results in the guest hanging due to being stuck
+in a trap loop. This is due to invalid hugetlb TTEs being installed
+that do not have the expected _PAGE_PMD_HUGE and page size bits set.
+Although the breakage has gone apparently unnoticed for several years,
+fix it now so there is the option to exercise sparc hugetlb code under
+qemu. This can be useful because sun4v support in qemu does not support
+linux guests currently and sun4v-based hardware resources may not be
+readily available.
 
-Reported-by: Autumn Dececco <autumndececco@gmail.com>
-Tested-by: Autumn Dececco <autumndececco@gmail.com>
-Signed-off-by: Nick Morrow <morrownr@gmail.com>
+Fix tested with a 6.15.2 and 6.16-rc6 kernels by running libhugetlbfs
+tests on a qemu guest running Debian 13.
+
+Fixes: c7d9f77d33a7 ("sparc64: Multi-page size support")
 Cc: stable@vger.kernel.org
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/80bacfd6-6073-4ce5-be32-ae9580832337@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20250716012446.10357-1-anthony.yznaga@oracle.com
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/usb.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/sparc/mm/hugetlbpage.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-@@ -21,6 +21,9 @@ static const struct usb_device_id mt7921
- 	/* Netgear, Inc. [A8000,AXE3000] */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9060, 0xff, 0xff, 0xff),
- 		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
-+	/* Netgear, Inc. A7500 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9065, 0xff, 0xff, 0xff),
-+		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
- 	/* TP-Link TXE50UH */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0107, 0xff, 0xff, 0xff),
- 		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+--- a/arch/sparc/mm/hugetlbpage.c
++++ b/arch/sparc/mm/hugetlbpage.c
+@@ -133,6 +133,26 @@ hugetlb_get_unmapped_area(struct file *f
+ 
+ static pte_t sun4u_hugepage_shift_to_tte(pte_t entry, unsigned int shift)
+ {
++	unsigned long hugepage_size = _PAGE_SZ4MB_4U;
++
++	pte_val(entry) = pte_val(entry) & ~_PAGE_SZALL_4U;
++
++	switch (shift) {
++	case HPAGE_256MB_SHIFT:
++		hugepage_size = _PAGE_SZ256MB_4U;
++		pte_val(entry) |= _PAGE_PMD_HUGE;
++		break;
++	case HPAGE_SHIFT:
++		pte_val(entry) |= _PAGE_PMD_HUGE;
++		break;
++	case HPAGE_64K_SHIFT:
++		hugepage_size = _PAGE_SZ64K_4U;
++		break;
++	default:
++		WARN_ONCE(1, "unsupported hugepage shift=%u\n", shift);
++	}
++
++	pte_val(entry) = pte_val(entry) | hugepage_size;
+ 	return entry;
+ }
+ 
 
 
 
