@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E095CBE9BEB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BCDCBE9A0F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 58AF7587115
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2603574414D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8208632C95F;
-	Fri, 17 Oct 2025 15:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA4033509C;
+	Fri, 17 Oct 2025 15:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1Y29mJt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1RQ8Ga2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E79C32C938;
-	Fri, 17 Oct 2025 15:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083AE3370E0;
+	Fri, 17 Oct 2025 15:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714000; cv=none; b=YfS3v/5zrE+7t4GJWR8dYYv2oL3YaSYsP7jqKwamM/USYIHBmwZdIS5CpNL7LESKFdfb4sqa1uWcGJ03Q7ECttlWayI1ZxQBB6iufwfeita7xBBv+bo14jK0JXTKlsTl/yDVe2nhk8Um0JczM8+kN/Mhz8iurgh9E7FaAmjXp7A=
+	t=1760713466; cv=none; b=a/kyv9hICza7/wXcXfmBP25pJzR03QurS0eZ1FSeMAO79MPbkxNDFFmXF5HxkLwKPSZuf5JyTHm4WEoTlAmnSrq43SNq5PsJ8K4WKC/4IOCaZ41wkolQW31jDa79n9gY6B6cjC1aA7DPrQXpUmrG5H3JOXOEpwiKxaFvsR8NRuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714000; c=relaxed/simple;
-	bh=KGm7f+2Gq7caK3b/BZLIEoCz1mcu2RD/KL2iRiAOPbI=;
+	s=arc-20240116; t=1760713466; c=relaxed/simple;
+	bh=Ksaj29e7ukRdwI/4YED/DS1263Tm1zOvOHKxN93CF+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7D3Enq6vmy+E0qcReeBTnqnEhE18VJjxSDX8ShD+TpMmj2vqAdR1l4rWpXAF8rwwbJGivmnaltm4sMTSY3HiFS6L8tyuONeT9QU0qynww0DfiGQEUaCCb9KcCS7wQvbxrZz4bOEXpXGZAWff6xsoBvhV2OI+NWJS/OIj0kumnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1Y29mJt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6D3C4CEE7;
-	Fri, 17 Oct 2025 15:13:19 +0000 (UTC)
+	 MIME-Version; b=PBmip53OuvyecOHIDzikOo77z2qbveUv/Bar5l0HvaxPs6wCHRdiIeyYsdi6p7JSmXf3wWNnjV3mmWQwwus3Ipmf3VZzh9Omdcpheh4pUs/HT8nBV4NGZyQhHNhSRQ93Ay7G8/8eBqnD4/vgdkLHwSBl8og9+zBBhCLLgxU3p7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1RQ8Ga2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CE5C4CEE7;
+	Fri, 17 Oct 2025 15:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713999;
-	bh=KGm7f+2Gq7caK3b/BZLIEoCz1mcu2RD/KL2iRiAOPbI=;
+	s=korg; t=1760713465;
+	bh=Ksaj29e7ukRdwI/4YED/DS1263Tm1zOvOHKxN93CF+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1Y29mJtcysIzr2JDYuYOBOHR9FTa+u59olZ/DaqrQnxMPKTRfdsQmCEuozVbQO31
-	 DiJj8sryHSEu+lETk7WOSJEK5h/h08sWk5YwOpA6Mh4cp7WPc4lQri8ZLaBzdVZloP
-	 QXJjf8scBeEJ4lBHGxLdLs2xMAc3GDfrMJw7bPgw=
+	b=M1RQ8Ga2ReaJI555NsYyXemGZqdSEgmMk+M0QpSwMQi3His3Fcm7FVT67Bv9ZYhzj
+	 NxpHfVULWtxFRW1xZqh5qJ77CCpaJF5jFa62YCJjvDSFcNmTG1gGWy8dnpynVpDiqb
+	 MK7ZzPpKKLzlg1fkIVbh4m/cIbUFN5VKxUCajax8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 186/201] s390/bpf: Centralize frame offset calculations
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Juergen Gross <jgross@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 168/168] xen/events: Update virq_to_irq on migration
 Date: Fri, 17 Oct 2025 16:54:07 +0200
-Message-ID: <20251017145141.591513037@linuxfoundation.org>
+Message-ID: <20251017145135.239013772@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,223 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-commit b2268d550d20ff860bddfe3a91b1aec00414689a upstream.
+[ Upstream commit 3fcc8e146935415d69ffabb5df40ecf50e106131 ]
 
-The calculation of the distance from %r15 to the caller-allocated
-portion of the stack frame is copy-pasted into multiple places in the
-JIT code.
+VIRQs come in 3 flavors, per-VPU, per-domain, and global, and the VIRQs
+are tracked in per-cpu virq_to_irq arrays.
 
-Move it to bpf_jit_prog() and save the result into bpf_jit::frame_off,
-so that the other parts of the JIT can use it.
+Per-domain and global VIRQs must be bound on CPU 0, and
+bind_virq_to_irq() sets the per_cpu virq_to_irq at registration time
+Later, the interrupt can migrate, and info->cpu is updated.  When
+calling __unbind_from_irq(), the per-cpu virq_to_irq is cleared for a
+different cpu.  If bind_virq_to_irq() is called again with CPU 0, the
+stale irq is returned.  There won't be any irq_info for the irq, so
+things break.
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250624121501.50536-2-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Make xen_rebind_evtchn_to_cpu() update the per_cpu virq_to_irq mappings
+to keep them update to date with the current cpu.  This ensures the
+correct virq_to_irq is cleared in __unbind_from_irq().
+
+Fixes: e46cdb66c8fc ("xen: event channels")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250828003604.8949-4-jason.andryuk@amd.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/net/bpf_jit_comp.c |   56 +++++++++++++++++++------------------------
- 1 file changed, 26 insertions(+), 30 deletions(-)
+ drivers/xen/events/events_base.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -53,6 +53,7 @@ struct bpf_jit {
- 	int excnt;		/* Number of exception table entries */
- 	int prologue_plt_ret;	/* Return address for prologue hotpatch PLT */
- 	int prologue_plt;	/* Start of prologue hotpatch PLT */
-+	u32 frame_off;		/* Offset of frame from %r15 */
- };
- 
- #define SEEN_MEM	BIT(0)		/* use mem[] for temporary storage */
-@@ -416,12 +417,9 @@ static void save_regs(struct bpf_jit *ji
- /*
-  * Restore registers from "rs" (register start) to "re" (register end) on stack
-  */
--static void restore_regs(struct bpf_jit *jit, u32 rs, u32 re, u32 stack_depth)
-+static void restore_regs(struct bpf_jit *jit, u32 rs, u32 re)
- {
--	u32 off = STK_OFF_R6 + (rs - 6) * 8;
--
--	if (jit->seen & SEEN_STACK)
--		off += STK_OFF + stack_depth;
-+	u32 off = jit->frame_off + STK_OFF_R6 + (rs - 6) * 8;
- 
- 	if (rs == re)
- 		/* lg %rs,off(%r15) */
-@@ -465,8 +463,7 @@ static int get_end(u16 seen_regs, int st
-  * Save and restore clobbered registers (6-15) on stack.
-  * We save/restore registers in chunks with gap >= 2 registers.
-  */
--static void save_restore_regs(struct bpf_jit *jit, int op, u32 stack_depth,
--			      u16 extra_regs)
-+static void save_restore_regs(struct bpf_jit *jit, int op, u16 extra_regs)
- {
- 	u16 seen_regs = jit->seen_regs | extra_regs;
- 	const int last = 15, save_restore_size = 6;
-@@ -489,7 +486,7 @@ static void save_restore_regs(struct bpf
- 		if (op == REGS_SAVE)
- 			save_regs(jit, rs, re);
- 		else
--			restore_regs(jit, rs, re, stack_depth);
-+			restore_regs(jit, rs, re);
- 		re++;
- 	} while (re <= last);
- }
-@@ -556,8 +553,7 @@ static void bpf_jit_plt(struct bpf_plt *
-  * Save registers and create stack frame if necessary.
-  * See stack frame layout description in "bpf_jit.h"!
-  */
--static void bpf_jit_prologue(struct bpf_jit *jit, struct bpf_prog *fp,
--			     u32 stack_depth)
-+static void bpf_jit_prologue(struct bpf_jit *jit, struct bpf_prog *fp)
- {
- 	/* No-op for hotpatching */
- 	/* brcl 0,prologue_plt */
-@@ -579,7 +575,7 @@ static void bpf_jit_prologue(struct bpf_
- 	/* Tail calls have to skip above initialization */
- 	jit->tail_call_start = jit->prg;
- 	/* Save registers */
--	save_restore_regs(jit, REGS_SAVE, stack_depth, 0);
-+	save_restore_regs(jit, REGS_SAVE, 0);
- 	/* Setup literal pool */
- 	if (is_first_pass(jit) || (jit->seen & SEEN_LITERAL)) {
- 		if (!is_first_pass(jit) &&
-@@ -599,8 +595,8 @@ static void bpf_jit_prologue(struct bpf_
- 		EMIT4(0xb9040000, REG_W1, REG_15);
- 		/* la %bfp,STK_160_UNUSED(%r15) (BPF frame pointer) */
- 		EMIT4_DISP(0x41000000, BPF_REG_FP, REG_15, STK_160_UNUSED);
--		/* aghi %r15,-STK_OFF */
--		EMIT4_IMM(0xa70b0000, REG_15, -(STK_OFF + stack_depth));
-+		/* aghi %r15,-frame_off */
-+		EMIT4_IMM(0xa70b0000, REG_15, -jit->frame_off);
- 		/* stg %w1,152(%r15) (backchain) */
- 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_W1, REG_0,
- 			      REG_15, 152);
-@@ -647,13 +643,13 @@ static void call_r1(struct bpf_jit *jit)
- /*
-  * Function epilogue
-  */
--static void bpf_jit_epilogue(struct bpf_jit *jit, u32 stack_depth)
-+static void bpf_jit_epilogue(struct bpf_jit *jit)
- {
- 	jit->exit_ip = jit->prg;
- 	/* Load exit code: lgr %r2,%b0 */
- 	EMIT4(0xb9040000, REG_2, BPF_REG_0);
- 	/* Restore registers */
--	save_restore_regs(jit, REGS_RESTORE, stack_depth, 0);
-+	save_restore_regs(jit, REGS_RESTORE, 0);
- 	if (nospec_uses_trampoline()) {
- 		jit->r14_thunk_ip = jit->prg;
- 		/* Generate __s390_indirect_jump_r14 thunk */
-@@ -779,7 +775,7 @@ static int sign_extend(struct bpf_jit *j
-  * stack space for the large switch statement.
-  */
- static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
--				 int i, bool extra_pass, u32 stack_depth)
-+				 int i, bool extra_pass)
- {
- 	struct bpf_insn *insn = &fp->insnsi[i];
- 	u32 dst_reg = insn->dst_reg;
-@@ -1433,9 +1429,9 @@ static noinline int bpf_jit_insn(struct
- 		 * Note 2: We assume that the verifier does not let us call the
- 		 * main program, which clears the tail call counter on entry.
- 		 */
--		/* mvc STK_OFF_TCCNT(4,%r15),N(%r15) */
-+		/* mvc STK_OFF_TCCNT(4,%r15),frame_off+STK_OFF_TCCNT(%r15) */
- 		_EMIT6(0xd203f000 | STK_OFF_TCCNT,
--		       0xf000 | (STK_OFF_TCCNT + STK_OFF + stack_depth));
-+		       0xf000 | (jit->frame_off + STK_OFF_TCCNT));
- 
- 		/* Sign-extend the kfunc arguments. */
- 		if (insn->src_reg == BPF_PSEUDO_KFUNC_CALL) {
-@@ -1486,10 +1482,7 @@ static noinline int bpf_jit_insn(struct
- 		 *         goto out;
- 		 */
- 
--		if (jit->seen & SEEN_STACK)
--			off = STK_OFF_TCCNT + STK_OFF + stack_depth;
--		else
--			off = STK_OFF_TCCNT;
-+		off = jit->frame_off + STK_OFF_TCCNT;
- 		/* lhi %w0,1 */
- 		EMIT4_IMM(0xa7080000, REG_W0, 1);
- 		/* laal %w1,%w0,off(%r15) */
-@@ -1519,7 +1512,7 @@ static noinline int bpf_jit_insn(struct
- 		/*
- 		 * Restore registers before calling function
- 		 */
--		save_restore_regs(jit, REGS_RESTORE, stack_depth, 0);
-+		save_restore_regs(jit, REGS_RESTORE, 0);
- 
- 		/*
- 		 * goto *(prog->bpf_func + tail_call_start);
-@@ -1822,7 +1815,7 @@ static int bpf_set_addr(struct bpf_jit *
-  * Compile eBPF program into s390x code
-  */
- static int bpf_jit_prog(struct bpf_jit *jit, struct bpf_prog *fp,
--			bool extra_pass, u32 stack_depth)
-+			bool extra_pass)
- {
- 	int i, insn_count, lit32_size, lit64_size;
- 
-@@ -1830,19 +1823,23 @@ static int bpf_jit_prog(struct bpf_jit *
- 	jit->lit64 = jit->lit64_start;
- 	jit->prg = 0;
- 	jit->excnt = 0;
-+	if (is_first_pass(jit) || (jit->seen & SEEN_STACK))
-+		jit->frame_off = STK_OFF + round_up(fp->aux->stack_depth, 8);
-+	else
-+		jit->frame_off = 0;
- 
--	bpf_jit_prologue(jit, fp, stack_depth);
-+	bpf_jit_prologue(jit, fp);
- 	if (bpf_set_addr(jit, 0) < 0)
- 		return -1;
- 	for (i = 0; i < fp->len; i += insn_count) {
--		insn_count = bpf_jit_insn(jit, fp, i, extra_pass, stack_depth);
-+		insn_count = bpf_jit_insn(jit, fp, i, extra_pass);
- 		if (insn_count < 0)
- 			return -1;
- 		/* Next instruction address */
- 		if (bpf_set_addr(jit, i + insn_count) < 0)
- 			return -1;
- 	}
--	bpf_jit_epilogue(jit, stack_depth);
-+	bpf_jit_epilogue(jit);
- 
- 	lit32_size = jit->lit32 - jit->lit32_start;
- 	lit64_size = jit->lit64 - jit->lit64_start;
-@@ -1902,7 +1899,6 @@ static struct bpf_binary_header *bpf_jit
-  */
- struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- {
--	u32 stack_depth = round_up(fp->aux->stack_depth, 8);
- 	struct bpf_prog *tmp, *orig_fp = fp;
- 	struct bpf_binary_header *header;
- 	struct s390_jit_data *jit_data;
-@@ -1955,7 +1951,7 @@ struct bpf_prog *bpf_int_jit_compile(str
- 	 *   - 3:   Calculate program size and addrs array
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1807,9 +1807,20 @@ static int xen_rebind_evtchn_to_cpu(stru
+ 	 * virq or IPI channel, which don't actually need to be rebound. Ignore
+ 	 * it, but don't do the xenlinux-level rebind in that case.
  	 */
- 	for (pass = 1; pass <= 3; pass++) {
--		if (bpf_jit_prog(&jit, fp, extra_pass, stack_depth)) {
-+		if (bpf_jit_prog(&jit, fp, extra_pass)) {
- 			fp = orig_fp;
- 			goto free_addrs;
- 		}
-@@ -1969,7 +1965,7 @@ struct bpf_prog *bpf_int_jit_compile(str
- 		goto free_addrs;
- 	}
- skip_init_ctx:
--	if (bpf_jit_prog(&jit, fp, extra_pass, stack_depth)) {
-+	if (bpf_jit_prog(&jit, fp, extra_pass)) {
- 		bpf_jit_binary_free(header);
- 		fp = orig_fp;
- 		goto free_addrs;
+-	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0)
++	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0) {
++		int old_cpu = info->cpu;
++
+ 		bind_evtchn_to_cpu(evtchn, tcpu, false);
+ 
++		if (info->type == IRQT_VIRQ) {
++			int virq = info->u.virq;
++			int irq = per_cpu(virq_to_irq, old_cpu)[virq];
++
++			per_cpu(virq_to_irq, old_cpu)[virq] = -1;
++			per_cpu(virq_to_irq, tcpu)[virq] = irq;
++		}
++	}
++
+ 	do_unmask(info, EVT_MASK_REASON_TEMPORARY);
+ 
+ 	return 0;
 
 
 
