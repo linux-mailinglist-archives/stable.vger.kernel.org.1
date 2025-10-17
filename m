@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C044BEA53C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90549BE97B1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3649D5A1D1B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:48:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4DFA740F3D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DAA257437;
-	Fri, 17 Oct 2025 15:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590163208;
+	Fri, 17 Oct 2025 15:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ABtTKiK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6Vxuwvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91308330B04;
-	Fri, 17 Oct 2025 15:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F0F2F12DB;
+	Fri, 17 Oct 2025 15:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716106; cv=none; b=oYFzX3RGSwV4QoFOMxD+zOwkj6d3pXQKJ/L4Jrd5Q3e6O9wJ4Sz5svsB7TAR+xF2NIpNQqZ6HDVRWvep+ASJyKb4NF4W2U8f9oExgAHpGUH5ZQ2j4GKAQibTLMJ4Y5dzHuOrE9d/8fVc3/Gkn44lSrOXmtxJpExsbxgub1yzlEg=
+	t=1760713221; cv=none; b=Suq7lfIgykev/GpesYtgnUlEQ8bIkfoYbnh9vJqR6mtu44wmxWQzkygDTq8/CHW6Ro+Il0FQT9yfFKe5HwPlZR+Q6JvF9gq9bOglPZbiADYlpiKQUVseZJbb59iNDHh23eR7t2m9rmpwlcJ7AhV14YMrcObcUSSs0KiKpW4NkDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716106; c=relaxed/simple;
-	bh=3cbZ8CzGijzoRf7Y3hGGchQx2S5YyH0CMLCJ5UitXDI=;
+	s=arc-20240116; t=1760713221; c=relaxed/simple;
+	bh=AISeejv4wpXVz4V2T8EcC3q1Zi4FIalDx+CehiTRYh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mt1C0sTJqrO+z/oapw8eFD2RPsq/949JeoEsTzpl2PbptrB1dWg2c+wAKKWks6OBDFbxUKNPxFx0zq3Q2KoQxpdhbKaymWG02XB64bdBsxaGvz27SKZ9xWuykTm6jp2L9c65WZHZ/oVBBkmGTIbvJwMQsKLau+YVgS3zl7CKoGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ABtTKiK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6EFC4CEE7;
-	Fri, 17 Oct 2025 15:48:25 +0000 (UTC)
+	 MIME-Version; b=H5lPlsYiaNeIm8X0lzVoqSvDIQ7wRRMTO1AnOJGLmA/n8oug7bJfOrlaggCeuubaLpTuKo7SQHUJe7LONbB7kdctCcsSmqPGGztpUSatc1uJfYLam/QIvVRo1rb5n/9PD55chVDeDJLt8ooXtcyeGQvC+dkdKueUBm/OHz+CNY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6Vxuwvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F61BC113D0;
+	Fri, 17 Oct 2025 15:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716106;
-	bh=3cbZ8CzGijzoRf7Y3hGGchQx2S5YyH0CMLCJ5UitXDI=;
+	s=korg; t=1760713220;
+	bh=AISeejv4wpXVz4V2T8EcC3q1Zi4FIalDx+CehiTRYh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ABtTKiKWbOFYrhS7cpG9nrdZCigzc021gdzm+zqX8CKBKRyDnOIGxHd1Rv0pQbOe
-	 fLnzobgqvy9OYSgfUj8RDICLMIeMa+45lO61L+8xt274iVoxgkwfFPuKbg+nslPUjy
-	 aaA+UDNeFFac4zk3KuRj2/X8s4R3DfG+OJzw7tWs=
+	b=j6VxuwvhpRClpa7HtEjp6dqSWwhQKKbtofT3QFPW3fg615pa9xMH7QkS9zaIaGxWm
+	 GjOZXSQjQm6a5HUbK6Mn8sxMBDqIUcXE11+DSFtfHAmZug8lcqtnY7v08JHANq9q7S
+	 3pNNRVr/CgvlVbuTROKPxhmIoNPoLTg5rr0dQc+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/276] pwm: tiehrpwm: Fix corner case in clock divisor calculation
+	Vibhore Vardhan <vibhore@ti.com>,
+	Paresh Bhagat <p-bhagat@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.1 056/168] arm64: dts: ti: k3-am62a-main: Fix main padcfg length
 Date: Fri, 17 Oct 2025 16:52:15 +0200
-Message-ID: <20251017145143.941220897@linuxfoundation.org>
+Message-ID: <20251017145131.085808997@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Vibhore Vardhan <vibhore@ti.com>
 
-[ Upstream commit 00f83f0e07e44e2f1fb94b223e77ab7b18ee2d7d ]
+commit 4c4e48afb6d85c1a8f9fdbae1fdf17ceef4a6f5b upstream.
 
-The function set_prescale_div() is responsible for calculating the clock
-divisor settings such that the input clock rate is divided down such that
-the required period length is at most 0x10000 clock ticks. If period_cycles
-is an integer multiple of 0x10000, the divisor period_cycles / 0x10000 is
-good enough. So round up in the calculation of the required divisor and
-compare it using >= instead of >.
+The main pad configuration register region starts with the register
+MAIN_PADCFG_CTRL_MMR_CFG0_PADCONFIG0 with address 0x000f4000 and ends
+with the MAIN_PADCFG_CTRL_MMR_CFG0_PADCONFIG150 register with address
+0x000f4258, as a result of which, total size of the region is 0x25c
+instead of 0x2ac.
 
-Fixes: 19891b20e7c2 ("pwm: pwm-tiehrpwm: PWM driver support for EHRPWM")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/85488616d7bfcd9c32717651d0be7e330e761b9c.1754927682.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reference Docs
+TRM (AM62A) - https://www.ti.com/lit/ug/spruj16b/spruj16b.pdf
+TRM (AM62D) - https://www.ti.com/lit/ug/sprujd4/sprujd4.pdf
+
+Fixes: 5fc6b1b62639c ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vibhore Vardhan <vibhore@ti.com>
+Signed-off-by: Paresh Bhagat <p-bhagat@ti.com>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://patch.msgid.link/20250903062513.813925-2-p-bhagat@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-tiehrpwm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-tiehrpwm.c b/drivers/pwm/pwm-tiehrpwm.c
-index 5b723a48c5f1d..3fef7d7987736 100644
---- a/drivers/pwm/pwm-tiehrpwm.c
-+++ b/drivers/pwm/pwm-tiehrpwm.c
-@@ -167,7 +167,7 @@ static int set_prescale_div(unsigned long rqst_prescaler, u16 *prescale_div,
+--- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+@@ -97,7 +97,7 @@
  
- 			*prescale_div = (1 << clkdiv) *
- 					(hspclkdiv ? (hspclkdiv * 2) : 1);
--			if (*prescale_div > rqst_prescaler) {
-+			if (*prescale_div >= rqst_prescaler) {
- 				*tb_clk_div = (clkdiv << TBCTL_CLKDIV_SHIFT) |
- 					(hspclkdiv << TBCTL_HSPCLKDIV_SHIFT);
- 				return 0;
-@@ -266,7 +266,7 @@ static int ehrpwm_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	pc->period_cycles[pwm->hwpwm] = period_cycles;
- 
- 	/* Configure clock prescaler to support Low frequency PWM wave */
--	if (set_prescale_div(period_cycles/PERIOD_MAX, &ps_divval,
-+	if (set_prescale_div(DIV_ROUND_UP(period_cycles, PERIOD_MAX), &ps_divval,
- 			     &tb_divval)) {
- 		dev_err(chip->dev, "Unsupported values\n");
- 		return -EINVAL;
--- 
-2.51.0
-
+ 	main_pmx0: pinctrl@f4000 {
+ 		compatible = "pinctrl-single";
+-		reg = <0x00 0xf4000 0x00 0x2ac>;
++		reg = <0x00 0xf4000 0x00 0x25c>;
+ 		#pinctrl-cells = <1>;
+ 		pinctrl-single,register-width = <32>;
+ 		pinctrl-single,function-mask = <0xffffffff>;
 
 
 
