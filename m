@@ -1,160 +1,148 @@
-Return-Path: <stable+bounces-186243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72EABE6BAE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 08:40:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 399C6BE6BD2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 08:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D120C621118
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 06:32:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 024454EBA55
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 06:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389A93090C7;
-	Fri, 17 Oct 2025 06:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD1530F94B;
+	Fri, 17 Oct 2025 06:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EV5sMN6i"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="WokAg896"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1F01922FB
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 06:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9B730DD3F
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 06:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760682769; cv=none; b=aX3f4NPRzGj2zojy/kWgsVFVknKU8sez0HBAVhh+MbIc0GNHxpsR8JjYDxehmft4oJKRI9YH3lBilH3EpVnhnhkOyYTQyCFgCyWobwrBkw172CzcAqX4Gsu5gVSAKJOUzJJMuAalZ/z5VQHy/PhZQZhfDuPAsZL6vIjKG1h031Q=
+	t=1760683416; cv=none; b=Dgk2O52Ry5jHKUec97Ipd4Es8V9Q8MTxNc4agvzxdAigR/RqxKmgMdxlVLW0qzu6Rc8GqAYUcrWd7bBrjwy6qA2a2khSrTQDZgf3rCQSGAxorlfn1CCy5rVrK9NKgT4rm65fEpQteKpZSapIx3nIbwCTyOzRUzkLvY4s9TzW1kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760682769; c=relaxed/simple;
-	bh=kxWb2v3kc92Dzy3+joMpABr5I3NLk5PWsLbNzW+zSXk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lFGjkOsaMt4jAXcqx5rwsB10RB6ug46/YgC67Fh2tOC7OqUVHC6uA4z503ocgpxI9xX+qWMbcVzConjZwjKkeQzAloNU0T2tJvS8fi/TURoyysXSQtmbOGkFRyPQhEHvTI5gp9i3SjNlb2bQ8jnPSRh/34CyyMEffwkjfGSHzBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EV5sMN6i; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 5B8FBC041DB;
-	Fri, 17 Oct 2025 06:32:24 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 91211606DB;
-	Fri, 17 Oct 2025 06:32:43 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DE510102F22FF;
-	Fri, 17 Oct 2025 08:32:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760682762; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Yfh8KNtPJgL5dEOBYcZ+FOqECZ1ufTn2Q+8/o1+dnNU=;
-	b=EV5sMN6iU4XCN0aL+jp41FSTSRIKiBGUfkWtao0P+0srDp3W2VmOkkY4uZN4NahTNNaQJk
-	YPqJb+trP2jIT68qeWbJwojXn99WyoqqidKisnc6Q0rlgWQky2eQ3iKEVMBmUr+QgS8iUg
-	O4PNT7CIipL4qQZ5dv7e9bbZcIuriy+R1hVGPD+coPCMWYW3PhbZ+N6WolmwEw2pRibZMn
-	Y/9xhUQKVSaRqZukJX9wztATTWLwsSQy2G2STtBV6Xabvuv3sb4bTFWbl2rpvp8Zoc4mmf
-	piHedWYoNwcasNLj/217UwGApttb6xmMck4DyAnIuMwG9pxiab19Z5v9lca/Lw==
-Date: Fri, 17 Oct 2025 08:32:32 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Cc: David Rhodes	 <david.rhodes@cirrus.com>, Richard Fitzgerald
- <rf@opensource.cirrus.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski	
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jaroslav Kysela	
- <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Nikita Shubin	
- <nikita.shubin@maquefel.me>, Axel Lin <axel.lin@ingics.com>, Brian Austin	
- <brian.austin@cirrus.com>, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Thomas Petazzoni 
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] ASoC: cs4271: Fix cs4271 I2C and SPI drivers
- automatic module loading
-Message-ID: <20251017083232.31e53478@bootlin.com>
-In-Reply-To: <60fbaaef249e6f5af602fe4087eab31cd70905de.camel@gmail.com>
-References: <20251016130340.1442090-1-herve.codina@bootlin.com>
-	<20251016130340.1442090-2-herve.codina@bootlin.com>
-	<60fbaaef249e6f5af602fe4087eab31cd70905de.camel@gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1760683416; c=relaxed/simple;
+	bh=goiNe26JI97XimIaJqB0nQh2LC62mtWHX8LAPMghZtc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=LcoPEKDBAIxbg9Z7blhZojC2rcWVbDcFfJejz27aNy0ohWSYTTzT9kciDacpvOXYVme5oiad9eDIz/SIb/d9uOwvfylftu/BGpxcwrB1lXafth4SklJMduTYdH+bCpNUQLxgHhfko5F05HH0+A9abcSGiCZgk1jILUZTcy9hELc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=WokAg896; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251017064327euoutp0187491ce268557908cc5cc1ae2364a12f~vNDsMrbNa3250732507euoutp01V
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 06:43:27 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251017064327euoutp0187491ce268557908cc5cc1ae2364a12f~vNDsMrbNa3250732507euoutp01V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1760683407;
+	bh=pmOERI3SUEXraCgPIeHw+QXcfM6eSSu/gHX94UGDCzg=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=WokAg896tCCv63IRBiccsVar42fKcVYzFnOA+JFwG5K7FKWRIYNZZQonCiKxs0uq6
+	 Q3HXOXddKG6MYJL9GkAUI+7PeTOk69m0xIFW1kjpd1kLduazEoiyVrEwE+7VhyrFrQ
+	 iUy4xUJnQ63u9uz54QPWZkDuZ/oHClyNGxJIUWFU=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20251017064327eucas1p29f30c1de202c52dc09548aa9fc6f54b7~vNDrsbPeZ1312513125eucas1p2d;
+	Fri, 17 Oct 2025 06:43:27 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20251017064324eusmtip201695dfb1cec04fbd125e4f2c643fd35~vNDpvJ8tS0730207302eusmtip2G;
+	Fri, 17 Oct 2025 06:43:24 +0000 (GMT)
+Message-ID: <1731abfc-c7e4-4ff0-a1b3-7d86c8025866@samsung.com>
+Date: Fri, 17 Oct 2025 08:43:24 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v3 00/10] pmdomain: samsung: add supoort for Google
+ GS101
+To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, Krzysztof
+	Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, Rob
+	Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Krzysztof
+	Kozlowski <krzk+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Peter Griffin <peter.griffin@linaro.org>, Tudor Ambarus
+	<tudor.ambarus@linaro.org>, Will McVicker <willmcvicker@google.com>,
+	kernel-team@android.com, linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	stable@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20251016-gs101-pd-v3-0-7b30797396e7@linaro.org>
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-CMS-MailID: 20251017064327eucas1p29f30c1de202c52dc09548aa9fc6f54b7
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251016155848eucas1p193debe70e38b1694bfb250d748f4aa14
+X-EPHeader: CA
+X-CMS-RootMailID: 20251016155848eucas1p193debe70e38b1694bfb250d748f4aa14
+References: <CGME20251016155848eucas1p193debe70e38b1694bfb250d748f4aa14@eucas1p1.samsung.com>
+	<20251016-gs101-pd-v3-0-7b30797396e7@linaro.org>
 
-Hi Alexander,
+On 16.10.2025 17:58, André Draszik wrote:
+> This series adds support for the power domains on Google GS101. It's
+> fairly similar to SoCs already supported by this driver, except that
+> register acces does not work via plain ioremap() / readl() / writel().
+> Instead, the regmap created by the PMU driver must be used (which uses
+> Arm SMCC calls under the hood).
+>
+> The DT update to add the new required properties on gs101 will be
+> posted separately.
+>
+> Signed-off-by: André Draszik <andre.draszik@linaro.org>
 
-On Thu, 16 Oct 2025 20:40:34 +0200
-Alexander Sverdlin <alexander.sverdlin@gmail.com> wrote:
+Works fine on existing Exynos based boards.
 
-...
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
 
-> > In order to have the I2C or the SPI module loaded automatically, move
-> > the MODULE_DEVICE_TABLE(of, ...) the core to I2C and SPI parts.
-> > Also move cs4271_dt_ids itself from the core part to I2C and SPI parts
-> > as both the call to MODULE_DEVICE_TABLE(of, ...) and the cs4271_dt_ids
-> > table itself need to be in the same file.  
-> 
-> I'm a bit confused by this change.
-> What do you have in SYSFS "uevent" entry for the real device?
+> ---
+> Changes in v3:
+> - use additionalProperties, not unevaluatedProperties in patch 2
+> - fix path in $id in patch 2 (Rob)
+> - drop comment around 'select' in patch 2 (Rob)
+> - collect tags
+> - Link to v2: https://lore.kernel.org/r/20251009-gs101-pd-v2-0-3f4a6db2af39@linaro.org
+>
+> Changes in v2:
+> - Krzysztof:
+>    - move google,gs101-pmu binding into separate file
+>    - mark devm_kstrdup_const() patch as fix
+>    - use bool for need_early_sync_state
+>    - merge patches 8 and 10 from v1 series into one patch
+> - collect tags
+> - Link to v1: https://lore.kernel.org/r/20251006-gs101-pd-v1-0-f0cb0c01ea7b@linaro.org
+>
+> ---
+> André Draszik (10):
+>        dt-bindings: power: samsung: add google,gs101-pd
+>        dt-bindings: soc: samsung: exynos-pmu: move gs101-pmu into separate binding
+>        dt-bindings: soc: samsung: gs101-pmu: allow power domains as children
+>        pmdomain: samsung: plug potential memleak during probe
+>        pmdomain: samsung: convert to using regmap
+>        pmdomain: samsung: convert to regmap_read_poll_timeout()
+>        pmdomain: samsung: don't hardcode offset for registers to 0 and 4
+>        pmdomain: samsung: selectively handle enforced sync_state
+>        pmdomain: samsung: add support for google,gs101-pd
+>        pmdomain: samsung: use dev_err() instead of pr_err()
+>
+>   .../devicetree/bindings/power/pd-samsung.yaml      |   1 +
+>   .../bindings/soc/google/google,gs101-pmu.yaml      | 106 +++++++++++++++++
+>   .../bindings/soc/samsung/exynos-pmu.yaml           |  20 ----
+>   MAINTAINERS                                        |   1 +
+>   drivers/pmdomain/samsung/exynos-pm-domains.c       | 126 +++++++++++++++------
+>   5 files changed, 200 insertions(+), 54 deletions(-)
+> ---
+> base-commit: 58e817956925fdc12c61f1cb86915b82ae1603c1
+> change-id: 20251001-gs101-pd-d4dc97d70a84
 
-Here is my uevent content:
---- 8<---
-# cat /sys/bus/i2c/devices/3-0010/uevent 
-DRIVER=cs4271
-OF_NAME=cs4271
-OF_FULLNAME=/i2c@ff130000/cs4271@10
-OF_COMPATIBLE_0=cirrus,cs4271
-OF_COMPATIBLE_N=1
-MODALIAS=of:Ncs4271T(null)Ccirrus,cs4271
-# 
---- 8< ---
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-> 
-> If you consider spi_uevent() and i2c_device_uevent(), "MODALIAS=" in the
-> "uevent" should be prefixed with either "spi:" or "i2c:".
-> And this isn't what you adress in your patch.
-> 
-> You provide [identical] "of:" prefixed modalias to two different modules
-> (not sure, how this should work), but cs4271 is not an MMIO device,
-> so it should not generate an "of:" prefixed uevent.
-> 
-> Could you please show the relevant DT snippet for the affected HW?
-
-And this is the related DT part:
---- 8< ---
-&i2c3 {
-	status = "okay";
-
-	cs4271@10 {
-		compatible = "cirrus,cs4271";
-		reg = <0x10>;
-		clocks = <&cru SCLK_I2S_8CH_OUT>;
-		clock-names = "mclk";
-
-		...
-	};
-};
---- 8< ---
-
-i2c3 is the following node:
-https://elixir.bootlin.com/linux/v6.17.1/source/arch/arm64/boot/dts/rockchip/rk3399-base.dtsi#L732
-
-About the related module, I have the following:
---- 8< ---
-# modinfo snd_soc_cs4271_i2c
-filename:       /lib/modules/6.18.0-rc1xxxx-00050-g4fa36970abe5-dirty/kernel/sound/soc/codecs/snd-soc-cs4271-i2c.ko
-license:        GPL
-author:         Alexander Sverdlin <subaparts@yandex.ru>
-description:    ASoC CS4271 I2C Driver
-alias:          i2c:cs4271
-alias:          of:N*T*Ccirrus,cs4271C*
-alias:          of:N*T*Ccirrus,cs4271
-depends:        snd-soc-cs4271
-intree:         Y
-name:           snd_soc_cs4271_i2c
-vermagic:       6.18.0-rc1xxxx-00050-g4fa36970abe5-dirty SMP preempt mod_unload aarch64
-# 
---- 8< ---
-
-Best regards,
-Hervé
 
