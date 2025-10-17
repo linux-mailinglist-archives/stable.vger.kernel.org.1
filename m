@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02849BE979F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:06:31 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC06BEA008
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C324F58106F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:01:45 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1A38535E2A3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B3632C95E;
-	Fri, 17 Oct 2025 15:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A4D330B12;
+	Fri, 17 Oct 2025 15:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLhoZ1Dv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MB5jSUvC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9B432C95F;
-	Fri, 17 Oct 2025 15:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836AF330B04;
+	Fri, 17 Oct 2025 15:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713269; cv=none; b=MRwV5Wcu9DsGO6lH+NFNBlbuBd9XA0RX5FapxC8KNCq6SRpiBudLGOGU2pF+iBbDvAFr39UG3m2fhcFZ6lIQcAk63Dmr1bD0E89aO0IoFYnRmbBWgD/WtJTKWGCcKDDK3CX5N8RrYMIaLFB8CqHraXsaCp35uIn6wWWGSlwU5bQ=
+	t=1760715421; cv=none; b=UzS63eAZoPIWrWXTwbNuGCrXdmXFRxwHJ+NUysZzNfaxm555Il6nPFmsavCl9+hoyOc+hReRp2qo0UEzVjv3kP2nmTQp9J93KEBIPu+t3f9FIxupX37rD9vlj+zd/ifUEwzHMDwRV7UhnVFxk4nh8TNA5x47YA7pUukUowkdEcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713269; c=relaxed/simple;
-	bh=jw/AbJxykaJO4Tk6qygruA4e5gLqIewdkxjIjkvNcQg=;
+	s=arc-20240116; t=1760715421; c=relaxed/simple;
+	bh=qoJNz5YFHr+yleqPvAZkPFwRUR/3I/tjgtAjDdQ+fbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6eTd55q43+1tpOHY0ah/VuiWIzhQ8UI4cJUeVPYLz9gSRmgdzXb6Jvh2QGha9rMNZr93nyXknd8noasFIzdx5I9e7C727PzakKyb+14eAivPwj8f47+gRKSpZ0Addps6rsHK/IIszpAprgRCkXuHERRzR2ZBwVMyhmasRBk1KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLhoZ1Dv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB6AC116D0;
-	Fri, 17 Oct 2025 15:01:08 +0000 (UTC)
+	 MIME-Version; b=ekLPAKgQi7IStoscvS+1kFmLNbQ/cXkHmFKSsGlp8snDSi7ehGRfFrNDLmfopF2btyyw2bDrP1jOhw2ylKHqIRMuofsXvY/fnDZqzVE2LDvikuUfItSDf6hXae5pD/83lth0Zh9a3rv1esUtvJL2bdSYJNGkm8+1LAefDvbA/RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MB5jSUvC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE613C4CEE7;
+	Fri, 17 Oct 2025 15:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713268;
-	bh=jw/AbJxykaJO4Tk6qygruA4e5gLqIewdkxjIjkvNcQg=;
+	s=korg; t=1760715421;
+	bh=qoJNz5YFHr+yleqPvAZkPFwRUR/3I/tjgtAjDdQ+fbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oLhoZ1DvR6id3T2uu5weKuz2N+/zgeeutjT2ZIb9u1aUBz+CLWw/80blJZckl2AO1
-	 ohCyaNbnDuLJnNURI/TJoEB3OlAAZ1k7vtTguvjGw5D+z4DzyWDhRk99dIJcH+Ceb7
-	 BrLS9OOFkatsHrCS7tn76AAqvblJeJm6M3rluxsk=
+	b=MB5jSUvCBhwusAzB0LYjCprFHmmWhHe4tIEs0vKYTQ8iFG6WzVkiHjuja8+w48/1s
+	 keNRa5uxSiKyPDkj7xv5LvlpS3z7aJ3Ldqql3zeKe5dTkzSvvDojC5gDCirTwNSr2L
+	 /NXBCINVhdsrc3Mu/VF4nZAHiCWiKcC2gz9pKyB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Florian Weimer <fweimer@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Subject: [PATCH 6.1 107/168] rseq/selftests: Use weak symbol reference, not definition, to link with glibc
+	Finn Thain <fthain@linux-m68k.org>,
+	Helge Deller <deller@gmx.de>,
+	Stan Johnson <userm57@yahoo.com>
+Subject: [PATCH 6.17 211/371] fbdev: Fix logic error in "offb" name match
 Date: Fri, 17 Oct 2025 16:53:06 +0200
-Message-ID: <20251017145132.967404353@linuxfoundation.org>
+Message-ID: <20251017145209.721068845@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-commit a001cd248ab244633c5fabe4f7c707e13fc1d1cc upstream.
+commit 15df28699b28d6b49dc305040c4e26a9553df07a upstream.
 
-Add "extern" to the glibc-defined weak rseq symbols to convert the rseq
-selftest's usage from weak symbol definitions to weak symbol _references_.
-Effectively re-defining the glibc symbols wreaks havoc when building with
--fno-common, e.g. generates segfaults when running multi-threaded programs,
-as dynamically linked applications end up with multiple versions of the
-symbols.
+A regression was reported to me recently whereby /dev/fb0 had disappeared
+from a PowerBook G3 Series "Wallstreet". The problem shows up when the
+"video=ofonly" parameter is passed to the kernel, which is what the
+bootloader does when "no video driver" is selected. The cause of the
+problem is the "offb" string comparison, which got mangled when it got
+refactored. Fix it.
 
-Building with -fcommon, which until recently has the been the default for
-GCC and clang, papers over the bug by allowing the linker to resolve the
-weak/tentative definition to glibc's "real" definition.
-
-Note, the symbol itself (or rather its address), not the value of the
-symbol, is set to 0/NULL for unresolved weak symbol references, as the
-symbol doesn't exist and thus can't have a value.  Check for a NULL rseq
-size pointer to handle the scenario where the test is statically linked
-against a libc that doesn't support rseq in any capacity.
-
-Fixes: 3bcbc20942db ("selftests/rseq: Play nice with binaries statically linked against glibc 2.35+")
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
-Suggested-by: Florian Weimer <fweimer@redhat.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/87frdoybk4.ffs@tglx
+Fixes: 93604a5ade3a ("fbdev: Handle video= parameter in video/cmdline.c")
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/rseq/rseq.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/core/fb_cmdline.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/rseq/rseq.c
-+++ b/tools/testing/selftests/rseq/rseq.c
-@@ -38,9 +38,9 @@
-  * Define weak versions to play nice with binaries that are statically linked
-  * against a libc that doesn't support registering its own rseq.
-  */
--__weak ptrdiff_t __rseq_offset;
--__weak unsigned int __rseq_size;
--__weak unsigned int __rseq_flags;
-+extern __weak ptrdiff_t __rseq_offset;
-+extern __weak unsigned int __rseq_size;
-+extern __weak unsigned int __rseq_flags;
+--- a/drivers/video/fbdev/core/fb_cmdline.c
++++ b/drivers/video/fbdev/core/fb_cmdline.c
+@@ -40,7 +40,7 @@ int fb_get_options(const char *name, cha
+ 	bool enabled;
  
- static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
- static const unsigned int *libc_rseq_size_p = &__rseq_size;
-@@ -124,7 +124,7 @@ void rseq_init(void)
- 	 * libc not having registered a restartable sequence.  Try to find the
- 	 * symbols if that's the case.
- 	 */
--	if (!*libc_rseq_size_p) {
-+	if (!libc_rseq_size_p || !*libc_rseq_size_p) {
- 		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
- 		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
- 		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
+ 	if (name)
+-		is_of = strncmp(name, "offb", 4);
++		is_of = !strncmp(name, "offb", 4);
+ 
+ 	enabled = __video_get_options(name, &options, is_of);
+ 
 
 
 
