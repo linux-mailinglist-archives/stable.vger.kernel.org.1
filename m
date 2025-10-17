@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-187473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66016BEA452
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27298BEA4D6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43F6E1AA2F8A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8C2D6E606B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0EF7330B22;
-	Fri, 17 Oct 2025 15:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC75330B38;
+	Fri, 17 Oct 2025 15:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyI2ISIy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQL/h/P+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC738330B06;
-	Fri, 17 Oct 2025 15:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864DC330B34;
+	Fri, 17 Oct 2025 15:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716172; cv=none; b=KU0+xtsBMGrMu/fdgG54/ilcPb6YDY6J2T14UeR5GUShABSF+NjwSwTxpFArfJc9mT7s5k2TPSyT8kXVvB9bgkBsFNyKDYcjl4PtvqzyucSl+28Zm+wA7MIq7iFBw2F3+K5tYY2EBcaLBy1sAsU/OHALJZ5iKF5XvmE6jILdk8Q=
+	t=1760715438; cv=none; b=PxpHJRCmao6RIvzIQCCJNC5vZawLN6W1SFTZuJhWbcS734AfZ0oLmV8el7HS524+IOtVpCcHhLIdB4UB/G1cuSBSPARELLipqMacKD3EyRZzNZJPIC6YMR0jQt47SieDh0L3aCdM1csG7Dy7oJUjysEUdtAn/N5Lmm6sQigYNIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716172; c=relaxed/simple;
-	bh=sXfDcwLhw769KilH1g1N7WbwSySDn6QfV05P8hqYNps=;
+	s=arc-20240116; t=1760715438; c=relaxed/simple;
+	bh=1fKaLqJ6eZX3ovi/mgkbC73Ha8q2vEtZcgGGF/NYx0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovXF6uFsWO9zV901PKsw4agwbtsb/dYDbMO3o7tjbi0SBKgDt+MvwYoJiexHbslc/6kPj0Z6mwwIN7y4iX7wm/JTjogK/CCK8XPDZCt+l28JWN4ifXmkGCv/sqQzXLIabeDZ7/NXG98d19NugfxUjE+++J6mFDdlwI49Qv5yO0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyI2ISIy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD82C4CEE7;
-	Fri, 17 Oct 2025 15:49:31 +0000 (UTC)
+	 MIME-Version; b=BBLMJdBakWzIgLYRHmhulYD+qtDMod3MRkBHvuPiybbFK00fMuTEinc5GKoTbrlq2DR4cZUdjmWpWUgimCockwPmU722Xg34q7eWic4g3/i//jvH7/fk0qKcalMv94XrV+ez78Q5y7RU2i6Z8Dbn4kyVGwl7aHXzQzAlh55UVrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQL/h/P+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F90FC113D0;
+	Fri, 17 Oct 2025 15:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716172;
-	bh=sXfDcwLhw769KilH1g1N7WbwSySDn6QfV05P8hqYNps=;
+	s=korg; t=1760715438;
+	bh=1fKaLqJ6eZX3ovi/mgkbC73Ha8q2vEtZcgGGF/NYx0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyI2ISIyJhSh1bvrS357ztGW54hdRrasN6IDHsLniDoC1VjiDcvdZFBtw/t3MmR1+
-	 ur+6JsCVdffSsqUckw6cUiJZYAkdtQDx9CruLFvgq/c87/gqL4jilJbSgcq/JhSMCW
-	 n2WKBoW/w4iCgDAylSHCNRyxFHFEFgt9WhdyEqoU=
+	b=UQL/h/P+ofIJKyZLfSdjooU61Cgi91Ig3+ZjR1OXWslS2NbQn3mVPJXW5PZi0gpM/
+	 duBDYH5sc3vN/MdgYVAE3mxdWGc6TTWjDs7huDJrNHuWvAUEI+/l1qOBUEoLTV+5g8
+	 tnSCOkOKVYHh+T4Q7myNXsGk+CzxAzTFcTwRjv8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	I Viswanath <viswanathiyyappan@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 098/276] net: usb: Remove disruptive netif_wake_queue in rtl8150_set_multicast
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.17 216/371] fuse: fix livelock in synchronous file put from fuseblk workers
 Date: Fri, 17 Oct 2025 16:53:11 +0200
-Message-ID: <20251017145146.061805565@linuxfoundation.org>
+Message-ID: <20251017145209.902491583@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Viswanath <viswanathiyyappan@gmail.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 958baf5eaee394e5fd976979b0791a875f14a179 ]
+commit 26e5c67deb2e1f42a951f022fdf5b9f7eb747b01 upstream.
 
-syzbot reported WARNING in rtl8150_start_xmit/usb_submit_urb.
-This is the sequence of events that leads to the warning:
+I observed a hang when running generic/323 against a fuseblk server.
+This test opens a file, initiates a lot of AIO writes to that file
+descriptor, and closes the file descriptor before the writes complete.
+Unsurprisingly, the AIO exerciser threads are mostly stuck waiting for
+responses from the fuseblk server:
 
-rtl8150_start_xmit() {
-	netif_stop_queue();
-	usb_submit_urb(dev->tx_urb);
-}
+# cat /proc/372265/task/372313/stack
+[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
+[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
+[<0>] fuse_do_getattr+0xfc/0x1f0 [fuse]
+[<0>] fuse_file_read_iter+0xbe/0x1c0 [fuse]
+[<0>] aio_read+0x130/0x1e0
+[<0>] io_submit_one+0x542/0x860
+[<0>] __x64_sys_io_submit+0x98/0x1a0
+[<0>] do_syscall_64+0x37/0xf0
+[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-rtl8150_set_multicast() {
-	netif_stop_queue();
-	netif_wake_queue();		<-- wakes up TX queue before URB is done
-}
+But the /weird/ part is that the fuseblk server threads are waiting for
+responses from itself:
 
-rtl8150_start_xmit() {
-	netif_stop_queue();
-	usb_submit_urb(dev->tx_urb);	<-- double submission
-}
+# cat /proc/372210/task/372232/stack
+[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
+[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
+[<0>] fuse_file_put+0x9a/0xd0 [fuse]
+[<0>] fuse_release+0x36/0x50 [fuse]
+[<0>] __fput+0xec/0x2b0
+[<0>] task_work_run+0x55/0x90
+[<0>] syscall_exit_to_user_mode+0xe9/0x100
+[<0>] do_syscall_64+0x43/0xf0
+[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-rtl8150_set_multicast being the ndo_set_rx_mode callback should not be
-calling netif_stop_queue and notif_start_queue as these handle
-TX queue synchronization.
+The fuseblk server is fuse2fs so there's nothing all that exciting in
+the server itself.  So why is the fuse server calling fuse_file_put?
+The commit message for the fstest sheds some light on that:
 
-The net core function dev_set_rx_mode handles the synchronization
-for rtl8150_set_multicast making it safe to remove these locks.
+"By closing the file descriptor before calling io_destroy, you pretty
+much guarantee that the last put on the ioctx will be done in interrupt
+context (during I/O completion).
 
-Reported-and-tested-by: syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=78cae3f37c62ad092caa
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Tested-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
-Link: https://patch.msgid.link/20250924134350.264597-1-viswanathiyyappan@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Aha.  AIO fgets a new struct file from the fd when it queues the ioctx.
+The completion of the FUSE_WRITE command from userspace causes the fuse
+server to call the AIO completion function.  The completion puts the
+struct file, queuing a delayed fput to the fuse server task.  When the
+fuse server task returns to userspace, it has to run the delayed fput,
+which in the case of a fuseblk server, it does synchronously.
+
+Sending the FUSE_RELEASE command sychronously from fuse server threads
+is a bad idea because a client program can initiate enough simultaneous
+AIOs such that all the fuse server threads end up in delayed_fput, and
+now there aren't any threads left to handle the queued fuse commands.
+
+Fix this by only using asynchronous fputs when closing files, and leave
+a comment explaining why.
+
+Cc: stable@vger.kernel.org # v2.6.38
+Fixes: 5a18ec176c934c ("fuse: fix hang of single threaded fuseblk filesystem")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/rtl8150.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/fuse/file.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index d5aa92660217c..324bec0c22fb4 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -664,7 +664,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
- 	rtl8150_t *dev = netdev_priv(netdev);
- 	u16 rx_creg = 0x9e;
- 
--	netif_stop_queue(netdev);
- 	if (netdev->flags & IFF_PROMISC) {
- 		rx_creg |= 0x0001;
- 		dev_info(&netdev->dev, "%s: promiscuous mode\n", netdev->name);
-@@ -678,7 +677,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
- 		rx_creg &= 0x00fc;
- 	}
- 	async_set_registers(dev, RCR, sizeof(rx_creg), rx_creg);
--	netif_wake_queue(netdev);
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -356,8 +356,14 @@ void fuse_file_release(struct inode *ino
+ 	 * Make the release synchronous if this is a fuseblk mount,
+ 	 * synchronous RELEASE is allowed (and desirable) in this case
+ 	 * because the server can be trusted not to screw up.
++	 *
++	 * Always use the asynchronous file put because the current thread
++	 * might be the fuse server.  This can happen if a process starts some
++	 * aio and closes the fd before the aio completes.  Since aio takes its
++	 * own ref to the file, the IO completion has to drop the ref, which is
++	 * how the fuse server can end up closing its clients' files.
+ 	 */
+-	fuse_file_put(ff, ff->fm->fc->destroy);
++	fuse_file_put(ff, false);
  }
  
- static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
--- 
-2.51.0
-
+ void fuse_release_common(struct file *file, bool isdir)
 
 
 
