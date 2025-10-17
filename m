@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-187571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53EAEBEA813
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:11:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F53BEA6FA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 24C57583D60
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F3E87462C5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A62330B2E;
-	Fri, 17 Oct 2025 15:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB493330B0E;
+	Fri, 17 Oct 2025 15:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtN7L3Pn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xkql3PP2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C60C330B00;
-	Fri, 17 Oct 2025 15:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76390330B0C;
+	Fri, 17 Oct 2025 15:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716455; cv=none; b=sPjP+wh+lfUlt9GBC05z1KLolKJpCukSgZNzg4ddm7cLVS016jN4hycLGDfYa2umO+hDHclhnWY8uM+1wRg24y7fZSm3II7KbZt1sn/Wlvr6bnudId4OitVOVmoFE+HamufB+XsxVD53JbumU1Yvu3DX7DNsg9b4SvCxgkU+Dco=
+	t=1760715672; cv=none; b=u8msVgyWQWXBSuldEPM6MOHo3p1O87IzI6dYp7mpbsRY2TRTDQeA1sSG9BOrri1DLyfFmon3heU0ud5IviH2AQH0eVK1IeR2nCyhNt2jfBX0+trFd/VcJmd2AP5tGN7l10ago1e7L6X1fJIyhxLgejznfZRy7rsyxenxzH7U1q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716455; c=relaxed/simple;
-	bh=oNSPWQqraW0BYvJ6kB6GYvTPd8Md4ut/OF0bfZIiEp0=;
+	s=arc-20240116; t=1760715672; c=relaxed/simple;
+	bh=nfgApfVrZIZtXGZuBZXScDN2+q9eT5KWTBnqpEYMVAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lTiUFtCWMb2A01oJ52DfbSgcQ8Wx++mvUQKLweWZkb3mAqur/wvU8MXR4oSVqNDMngCMLQCmNOLYRTv7azgZ5I7M1wE6aWQ+tzaK8Ec+VhJNKvN5u27ED+uA4eNVLUzdLOzc4lL658GC+llh3/jAOkeCVQrNrd4joV+eo0jDKB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtN7L3Pn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9BDC4CEE7;
-	Fri, 17 Oct 2025 15:54:14 +0000 (UTC)
+	 MIME-Version; b=cjL3Opw6ZDo8WK9G3WLVMJav2lm6WDHromBEQFqyUZ3zAFOk51fmUTJWd1hmOY2eZRnsf7e3wf1R8YRJIhTxoCAGs1/pB7vZVQzsdtAu5dRePneG3Jg7rt2XpwNHSf0d9wbg8oVGhLpJtgTuHIiwOOgXruVYK261Myr77ymjomw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xkql3PP2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F21C4CEE7;
+	Fri, 17 Oct 2025 15:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716454;
-	bh=oNSPWQqraW0BYvJ6kB6GYvTPd8Md4ut/OF0bfZIiEp0=;
+	s=korg; t=1760715672;
+	bh=nfgApfVrZIZtXGZuBZXScDN2+q9eT5KWTBnqpEYMVAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vtN7L3PnAat0kKWzwe4lsHtbSTtuilKBJBPz14o7fbQVnp9wuOQN9iBsPwZcnOM8Y
-	 qfZxj1mISXogMKs2emuazasy1tcI5Y0+ZNafTb7597w1rNAvo7ckhgzu4Dhhdt5xzw
-	 +tKCSyk42rkkSPbbTsb0f1GPzo/xqPIRs4i2syHI=
+	b=Xkql3PP2Ib+vLkndxNwI4sc6imz8ZXybiXZOk70Gm60HyRkeZFbbtMXll9tKbUTpV
+	 /YzZJ7GpqzOQWnIHRk5R5lesyAtv99I7Wj4beG45Q6fCHBHUMyMrCPtjCVmV0DSwWu
+	 68RhHmYJ1S4XvnO5/uZgz3N68ngOv/g/6E952+ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 179/276] crypto: atmel - Fix dma_unmap_sg() direction
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.17 297/371] xfs: use deferred intent items for reaping crosslinked blocks
 Date: Fri, 17 Oct 2025 16:54:32 +0200
-Message-ID: <20251017145149.011250233@linuxfoundation.org>
+Message-ID: <20251017145212.818685612@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit f5d643156ef62216955c119216d2f3815bd51cb1 upstream.
+commit cd32a0c0dcdf634f2e0e71f41c272e19dece6264 upstream.
 
-It seems like everywhere in this file, dd->in_sg is mapped with
-DMA_TO_DEVICE and dd->out_sg is mapped with DMA_FROM_DEVICE.
+When we're removing rmap records for crosslinked blocks, use deferred
+intent items so that we can try to free/unmap as many of the old data
+structure's blocks as we can in the same transaction as the commit.
 
-Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: <stable@vger.kernel.org> # v6.6
+Fixes: 1c7ce115e52106 ("xfs: reap large AG metadata extents when possible")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-tdes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/scrub/reap.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/crypto/atmel-tdes.c
-+++ b/drivers/crypto/atmel-tdes.c
-@@ -548,7 +548,7 @@ static int atmel_tdes_crypt_start(struct
+--- a/fs/xfs/scrub/reap.c
++++ b/fs/xfs/scrub/reap.c
+@@ -416,8 +416,6 @@ xreap_agextent_iter(
+ 		trace_xreap_dispose_unmap_extent(pag_group(sc->sa.pag), agbno,
+ 				*aglenp);
  
- 	if (err && (dd->flags & TDES_FLAGS_FAST)) {
- 		dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
--		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_TO_DEVICE);
-+		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
+-		rs->force_roll = true;
+-
+ 		if (rs->oinfo == &XFS_RMAP_OINFO_COW) {
+ 			/*
+ 			 * If we're unmapping CoW staging extents, remove the
+@@ -426,11 +424,14 @@ xreap_agextent_iter(
+ 			 */
+ 			xfs_refcount_free_cow_extent(sc->tp, false, fsbno,
+ 					*aglenp);
++			rs->force_roll = true;
+ 			return 0;
+ 		}
+ 
+-		return xfs_rmap_free(sc->tp, sc->sa.agf_bp, sc->sa.pag, agbno,
+-				*aglenp, rs->oinfo);
++		xfs_rmap_free_extent(sc->tp, false, fsbno, *aglenp,
++				rs->oinfo->oi_owner);
++		rs->deferred++;
++		return 0;
  	}
  
- 	return err;
+ 	trace_xreap_dispose_free_extent(pag_group(sc->sa.pag), agbno, *aglenp);
 
 
 
