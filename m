@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DFDBBE9C24
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F83BE9931
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4363B3A8C81
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04CC874360D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0EF32C931;
-	Fri, 17 Oct 2025 15:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B705E32E14D;
+	Fri, 17 Oct 2025 15:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0Mw8ggj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVR/aJrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F24032C92D;
-	Fri, 17 Oct 2025 15:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718422F12D2;
+	Fri, 17 Oct 2025 15:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713916; cv=none; b=fqEcEf1Fwz/vhgs/14/Ut7e6gjUtuyVTBvxrpk2TLjlZeXGKc/Rf3GuWVaRaMBzbvLjFADv4dCPwjiVzfpV6slB1Lzy7vUEAXfkyuWfZSjEibEiMVoBnLfymJnKwkRfoeUQeISHZglCa4t/jN2DV5wvi10Ihi6FftsSf35/myTo=
+	t=1760713386; cv=none; b=JaJpMf0Q8jiVF6szh2hP0sUwWVyhhp7wTBqZOF6euAT+01Rrs56iVnaX9BfJxu+oTO4DsSFzOidhArPHNNEyT60z/gfQ8Muaq1UW5a21d4aYqs9+t0Lf9hyVu3cPx7m/YhPzyocXZGjB+oAB7KnHe1ewM2Tawg6f7z4P6q2TL3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713916; c=relaxed/simple;
-	bh=WeBzTB8+8Nv70qD+ppIaaYM2ncGVkx/8m4bfnievdCA=;
+	s=arc-20240116; t=1760713386; c=relaxed/simple;
+	bh=g/RhqVah9/7xyPd22QjjzwQW0Ysp174ZJxG8S0ftzq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tn1PXuzhtikJQbt/iPEl05/ARdrjUU2lw1offVNJgWkrtbSiNSUnB4BQLsccG5XiAXpBm/0+oHszVjTSE8Qknh8Dcm/uPUFpV9Qq5oMFC1itpGhI951Kz9nmY4/CMyk695+6ugS69kGeifm7GkXEsiknRQvckNPqT7tuaCpnLFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0Mw8ggj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F2DC4CEE7;
-	Fri, 17 Oct 2025 15:11:55 +0000 (UTC)
+	 MIME-Version; b=WJ2sy4lkPd/DumzJXwdRmwu18Cw/dkEeWBx6P3TjnK1yppRxJDa+dQvG5I9PiC9l/e5b0US7mbuuzPTqLx3CWdU/NzkPv7SZcph0hR1HrG5k//ibH43NRUf7+wDbZBxxZO92RiwAwiM0xWqB4svaE+NwHEzPwZ5PVr6em5CIClY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVR/aJrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E06C4CEE7;
+	Fri, 17 Oct 2025 15:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713916;
-	bh=WeBzTB8+8Nv70qD+ppIaaYM2ncGVkx/8m4bfnievdCA=;
+	s=korg; t=1760713386;
+	bh=g/RhqVah9/7xyPd22QjjzwQW0Ysp174ZJxG8S0ftzq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0Mw8ggjJffG3gBYKFTgqy5eGQ5E1l8tlqFgtBOOp3QdQYGkiXqAmVHhgeYQQ4XGi
-	 pNp1Ud+mQ0qzcFaiC+KxR8puGEiS9CNs2aRTWVwCOTpG+aNaCf8P3cOJMDgCXZjmr5
-	 7nqTCZ0l4pfdC84qEvprmIhCdBONSRI+m6pCOs3M=
+	b=RVR/aJrWnVa7rwfnqM8dl8q9CJmIa/7/eOfA9H80ueZ/LQIqepaapz6l9Nm38L9ai
+	 ecR7nU44APg4BD55uQ9Z9mDCX/oEMXi3HOTIxznTopcUvPfujZpW2rdcZ9jDZ+Nhir
+	 5tohEV2QzSQHbFU2aZkSAZZ0tkbB+Tv5RjqGS+OQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 165/201] KVM: SVM: Skip fastpath emulation on VM-Exit if next RIP isnt valid
+Subject: [PATCH 6.1 147/168] mfd: intel_soc_pmic_chtdc_ti: Drop unneeded assignment for cache_type
 Date: Fri, 17 Oct 2025 16:53:46 +0200
-Message-ID: <20251017145140.797556732@linuxfoundation.org>
+Message-ID: <20251017145134.452744967@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 0910dd7c9ad45a2605c45fd2bf3d1bcac087687c ]
+[ Upstream commit 9eb99c08508714906db078b5efbe075329a3fb06 ]
 
-Skip the WRMSR and HLT fastpaths in SVM's VM-Exit handler if the next RIP
-isn't valid, e.g. because KVM is running with nrips=false.  SVM must
-decode and emulate to skip the instruction if the CPU doesn't provide the
-next RIP, and getting the instruction bytes to decode requires reading
-guest memory.  Reading guest memory through the emulator can fault, i.e.
-can sleep, which is disallowed since the fastpath handlers run with IRQs
-disabled.
+REGCACHE_NONE is the default type of the cache when not provided.
+Drop unneeded explicit assignment to it.
 
- BUG: sleeping function called from invalid context at ./include/linux/uaccess.h:106
- in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 32611, name: qemu
- preempt_count: 1, expected: 0
- INFO: lockdep is turned off.
- irq event stamp: 30580
- hardirqs last  enabled at (30579): [<ffffffffc08b2527>] vcpu_run+0x1787/0x1db0 [kvm]
- hardirqs last disabled at (30580): [<ffffffffb4f62e32>] __schedule+0x1e2/0xed0
- softirqs last  enabled at (30570): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
- softirqs last disabled at (30568): [<ffffffffb4247a64>] fpu_swap_kvm_fpstate+0x44/0x210
- CPU: 298 UID: 0 PID: 32611 Comm: qemu Tainted: G     U              6.16.0-smp--e6c618b51cfe-sleep #782 NONE
- Tainted: [U]=USER
- Hardware name: Google Astoria-Turin/astoria, BIOS 0.20241223.2-0 01/17/2025
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x7d/0xb0
-  __might_resched+0x271/0x290
-  __might_fault+0x28/0x80
-  kvm_vcpu_read_guest_page+0x8d/0xc0 [kvm]
-  kvm_fetch_guest_virt+0x92/0xc0 [kvm]
-  __do_insn_fetch_bytes+0xf3/0x1e0 [kvm]
-  x86_decode_insn+0xd1/0x1010 [kvm]
-  x86_emulate_instruction+0x105/0x810 [kvm]
-  __svm_skip_emulated_instruction+0xc4/0x140 [kvm_amd]
-  handle_fastpath_invd+0xc4/0x1a0 [kvm]
-  vcpu_run+0x11a1/0x1db0 [kvm]
-  kvm_arch_vcpu_ioctl_run+0x5cc/0x730 [kvm]
-  kvm_vcpu_ioctl+0x578/0x6a0 [kvm]
-  __se_sys_ioctl+0x6d/0xb0
-  do_syscall_64+0x8a/0x2c0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7f479d57a94b
-  </TASK>
+Note, it's defined to 0, and if ever be redefined, it will break
+literally a lot of the drivers, so it very unlikely to happen.
 
-Note, this is essentially a reapply of commit 5c30e8101e8d ("KVM: SVM:
-Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"), but with
-different justification (KVM now grabs SRCU when skipping the instruction
-for other reasons).
-
-Fixes: b439eb8ab578 ("Revert "KVM: SVM: Skip WRMSR fastpath on VM-Exit if next RIP isn't valid"")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250805190526.1453366-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ adapted switch-based MSR/HLT fastpath to if-based MSR-only check ]
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250129152823.1802273-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: 64e0d839c589 ("mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/mfd/intel_soc_pmic_chtdc_ti.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4156,11 +4156,20 @@ static int svm_vcpu_pre_run(struct kvm_v
+--- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
++++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+@@ -82,7 +82,6 @@ static const struct regmap_config chtdc_
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+ 	.max_register = 0xff,
+-	.cache_type = REGCACHE_NONE,
+ };
  
- static fastpath_t svm_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
- {
-+	struct vcpu_svm *svm = to_svm(vcpu);
-+
-+	/*
-+	 * Next RIP must be provided as IRQs are disabled, and accessing guest
-+	 * memory to decode the instruction might fault, i.e. might sleep.
-+	 */
-+	if (!nrips || !svm->vmcb->control.next_rip)
-+		return EXIT_FASTPATH_NONE;
-+
- 	if (is_guest_mode(vcpu))
- 		return EXIT_FASTPATH_NONE;
- 
--	if (to_svm(vcpu)->vmcb->control.exit_code == SVM_EXIT_MSR &&
--	    to_svm(vcpu)->vmcb->control.exit_info_1)
-+	if (svm->vmcb->control.exit_code == SVM_EXIT_MSR &&
-+	    svm->vmcb->control.exit_info_1)
- 		return handle_fastpath_set_msr_irqoff(vcpu);
- 
- 	return EXIT_FASTPATH_NONE;
+ static const struct regmap_irq chtdc_ti_irqs[] = {
 
 
 
