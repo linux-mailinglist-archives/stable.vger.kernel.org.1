@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-186947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D0FBE9F06
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C797BEA6A5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D4A595A1390
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 282005A44F8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC6232C93A;
-	Fri, 17 Oct 2025 15:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F111F217722;
+	Fri, 17 Oct 2025 15:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzZ6S3Rg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b81CnMkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3222F12A5;
-	Fri, 17 Oct 2025 15:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6A12F12B8;
+	Fri, 17 Oct 2025 15:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714684; cv=none; b=V3OYZKQXUtE4adC8bRUeKwmSDkA3KeXcgLrKCc4gbR5x2Qf2YCo+eOwEZyl1J203LOqr+M4CdZdEs7EFk18UJMCaROO+Pi75msOcqTO4m2IpMvCudsi+mJG7eP8+RFIp1iGKXowHc+6pLK4pIn5U+HLJfzgPijIVRT/hItOoh3Y=
+	t=1760716353; cv=none; b=pkQCDX7wroYbvFDU1X89A+FKO3f8rR+78NY1/eYTjytfN9BZMRyakDAq3xcYjiqXiDeYz0GxT2tLw3dnikV5PUHrdoC/Vm3DeU+ps/shbrLC8pFtZau1qHG9hC6rZPcCPQZaD524dzlz3fcmd5aaKhJWb89mBa4zwVTsLEf3az8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714684; c=relaxed/simple;
-	bh=XHlBTjrMRiokzcz0YCKL4ryJZYJdrklWaOB+x2P4+MY=;
+	s=arc-20240116; t=1760716353; c=relaxed/simple;
+	bh=F4+pRdxydbv57tiO2ExAKXXoxD3Vo8DCfYXItxJ0Jos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fy43d6dt/zT3BZB5ScNYFE6kz5IcLTcV3QD8dT2qVbiZJOc+b3yQsAMo76JuO756pirBlmaMaJDHGKS4j/c9mnz7i2U/FE4C/VnDn0HtEH7w5D7zD4pJrAUZL4Zp2dVum/FGDu65av1s0nptp75llFqyXDpSP/2ZOW5Upo3CaAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzZ6S3Rg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72FCC4CEE7;
-	Fri, 17 Oct 2025 15:24:43 +0000 (UTC)
+	 MIME-Version; b=dltnsv8jLIn6WK3pMwfjyQCibD8gMdBheuiPvtrZ3nVVZPpK/qCFlq1QJXQlosVvw86mNySv0VFdaKfN/XIH5P7NFIV1x3Z6u7ouGpsbyCOnZAsSpHZ3mQyxMMIGPPPqDkaXJLopolhUBP/Tmkuaz0QVbXLeCHlqSJAZIYSXw38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b81CnMkW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D00C4CEE7;
+	Fri, 17 Oct 2025 15:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714684;
-	bh=XHlBTjrMRiokzcz0YCKL4ryJZYJdrklWaOB+x2P4+MY=;
+	s=korg; t=1760716353;
+	bh=F4+pRdxydbv57tiO2ExAKXXoxD3Vo8DCfYXItxJ0Jos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VzZ6S3RgRlN4PksEU0jAnlssg3uMVY/MCJdQv7doqYGNIRxFdpW95YsSFfmN3jMMy
-	 jpmx7v+b1WCS7dq3H2uVRkRsalzPglio4+98IFzzsTQ32uiCxzub3dw58zyTXPIq66
-	 myu64WEUEvV8doq2zCnTYRhk+riP5q5lsorvifNw=
+	b=b81CnMkWpLRZ5l1sD0DgQhrQONnWWZZAnSKuq2H6osJ2ea8nDqr9lX7ZicxLWkAHf
+	 YpBe87hXysCmsHTNf8oP9Jido6YdC7ymc4+5DL57I3yMJORwWPdTUsrTVa8n6kjtEA
+	 6F0lqiRS4IftzUjg7OXAVrXVYzjy4th0z6/Gq1u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 230/277] PCI: endpoint: pci-epf-test: Add NULL check for DMA channels before release
+Subject: [PATCH 5.15 144/276] net/mlx4: prevent potential use after free in mlx4_en_do_uc_filter()
 Date: Fri, 17 Oct 2025 16:53:57 +0200
-Message-ID: <20251017145155.532113056@linuxfoundation.org>
+Message-ID: <20251017145147.738734095@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 85afa9ea122dd9d4a2ead104a951d318975dcd25 ]
+[ Upstream commit 4f0d91ba72811fd5dd577bcdccd7fed649aae62c ]
 
-The fields dma_chan_tx and dma_chan_rx of the struct pci_epf_test can be
-NULL even after EPF initialization. Then it is prudent to check that
-they have non-NULL values before releasing the channels. Add the checks
-in pci_epf_test_clean_dma_chan().
+Print "entry->mac" before freeing "entry".  The "entry" pointer is
+freed with kfree_rcu() so it's unlikely that we would trigger this
+in real life, but it's safer to re-order it.
 
-Without the checks, NULL pointer dereferences happen and they can lead
-to a kernel panic in some cases:
-
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000050
-  Call trace:
-   dma_release_channel+0x2c/0x120 (P)
-   pci_epf_test_epc_deinit+0x94/0xc0 [pci_epf_test]
-   pci_epc_deinit_notify+0x74/0xc0
-   tegra_pcie_ep_pex_rst_irq+0x250/0x5d8
-   irq_thread_fn+0x34/0xb8
-   irq_thread+0x18c/0x2e8
-   kthread+0x14c/0x210
-   ret_from_fork+0x10/0x20
-
-Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
-Fixes: 5ebf3fc59bd2 ("PCI: endpoint: functions/pci-epf-test: Add DMA support to transfer data")
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-[mani: trimmed the stack trace]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250916025756.34807-1-shinichiro.kawasaki@wdc.com
+Fixes: cc5387f7346a ("net/mlx4_en: Add unicast MAC filtering")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/aNvMHX4g8RksFFvV@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-test.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/en_netdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -282,15 +282,20 @@ static void pci_epf_test_clean_dma_chan(
- 	if (!epf_test->dma_supported)
- 		return;
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
+index 3bd3603873e32..efbb01460f4ba 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
+@@ -1176,9 +1176,9 @@ static void mlx4_en_do_uc_filter(struct mlx4_en_priv *priv,
+ 				mlx4_unregister_mac(mdev->dev, priv->port, mac);
  
--	dma_release_channel(epf_test->dma_chan_tx);
--	if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
-+	if (epf_test->dma_chan_tx) {
-+		dma_release_channel(epf_test->dma_chan_tx);
-+		if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
-+			epf_test->dma_chan_tx = NULL;
-+			epf_test->dma_chan_rx = NULL;
-+			return;
-+		}
- 		epf_test->dma_chan_tx = NULL;
--		epf_test->dma_chan_rx = NULL;
--		return;
- 	}
- 
--	dma_release_channel(epf_test->dma_chan_rx);
--	epf_test->dma_chan_rx = NULL;
-+	if (epf_test->dma_chan_rx) {
-+		dma_release_channel(epf_test->dma_chan_rx);
-+		epf_test->dma_chan_rx = NULL;
-+	}
- }
- 
- static void pci_epf_test_print_rate(struct pci_epf_test *epf_test,
+ 				hlist_del_rcu(&entry->hlist);
+-				kfree_rcu(entry, rcu);
+ 				en_dbg(DRV, priv, "Removed MAC %pM on port:%d\n",
+ 				       entry->mac, priv->port);
++				kfree_rcu(entry, rcu);
+ 				++removed;
+ 			}
+ 		}
+-- 
+2.51.0
+
 
 
 
