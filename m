@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 947AABE991B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04933BE96D3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5FE5188912E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0279F565E35
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9691A2F12BD;
-	Fri, 17 Oct 2025 15:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4867D241663;
+	Fri, 17 Oct 2025 14:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbX8Sa4U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wmrcn+R+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538093370FB;
-	Fri, 17 Oct 2025 15:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0CA5695;
+	Fri, 17 Oct 2025 14:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713789; cv=none; b=CZz4wEXFhAo7af+nxrDGr1HunXj2FnouZBIMW8eN2MABmiPDKTad5/jyUzJ7yvBFVaNInMmcGHM/TJGUvB+kQi4oVe7/rhZCMCJl5mGzWKA6aYV1ZRa+foWE11IBpa7w/anAx81Hd/WctJPjdQlbXmaMkpB5CHr0YxI7o2oRg7k=
+	t=1760713160; cv=none; b=HzgJXk2nM+vze4YoUTbaA02Ha+bl2Zu9CDI1VIwL6lrGyqEMCPH4wBTsoXZBGqisqYoD8dSp9uksgsURWcPwCNQgKJa3qVBgSKTyf8yQTBkCphg8lX7Z0zk91wfBMwaoWkfdVjSHMiFy/p7OrvmYyxB61wZZj8e3+k7qxmDysCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713789; c=relaxed/simple;
-	bh=o8PWin9pbMfYgueoFJxAdqsZ/9DN8J6PQBCB8BHtVS8=;
+	s=arc-20240116; t=1760713160; c=relaxed/simple;
+	bh=bH3as0UNH5PJOeRDqVnPD2oLwMCitTUXAp2mWuSJ+OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzOqvYZRGG8eIcGkg0yMlN/T/a8x2CkVM2YhQPm5gIprp9ekXWoe9Qn3sndI4C+vJr/hl7lbl3pzzG0+MhIGg7MIz765qqYiBZd+HLVf7f6ZgATBulmE1q0HhrqagL3LEsRDFPvjuja4xTc0bH17BW6PLh8P0dQl6zqeotDqN68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbX8Sa4U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38EFC4CEE7;
-	Fri, 17 Oct 2025 15:09:48 +0000 (UTC)
+	 MIME-Version; b=f5eMpOBkFKBVp7PRgt+ImHRqamryjywaLqvZf0BnIei+wdEb7oY18PCCarn7Uv0C7pxTPpYbR7m8afKvTaYi0n07YsTLzF8rJzcePSCG5P+FeSx1WxifNqS2g96L2Kcol80H3JGw/LL5i610lw/tx2sYE9hd1EO30dlwZv9IJak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wmrcn+R+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083A5C4CEE7;
+	Fri, 17 Oct 2025 14:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713789;
-	bh=o8PWin9pbMfYgueoFJxAdqsZ/9DN8J6PQBCB8BHtVS8=;
+	s=korg; t=1760713159;
+	bh=bH3as0UNH5PJOeRDqVnPD2oLwMCitTUXAp2mWuSJ+OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EbX8Sa4UY9LRAlspzqzvDJM1jkHWG8dY8BV2TyTLHvNwb7MwALZhdHq40ZVrKO5Ck
-	 wyarL4Koez+Fbp2TWw2aGXcT/p0c8RO1Qt52JKIfvp8Mgf/zoDBxkI+Lu7Kfpv+dW5
-	 YIiCn7r6nrwAvKKVo0jKi6HabcTTTLvRQgMeu56g=
+	b=Wmrcn+R+8oeqOUIe5X8F6ekT+MNTcJF9Dj/ydIPMEFsH+KZkOch8TQu9z9/GTWeIE
+	 FMaSQbWQ8OLbAf0HGcrvPDmGRWjg3H1CS/B0JrKlxEb+yxyNxHlp1QxVDQ9GUjqcia
+	 ZJRiyyAt+yAg+8Pf8feGKJqe0bHNQdTySM+s4M0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 087/201] crypto: atmel - Fix dma_unmap_sg() direction
+	Yu Kuai <yukuai3@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 069/168] blk-crypto: fix missing blktrace bio split events
 Date: Fri, 17 Oct 2025 16:52:28 +0200
-Message-ID: <20251017145137.951636771@linuxfoundation.org>
+Message-ID: <20251017145131.568184445@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit f5d643156ef62216955c119216d2f3815bd51cb1 upstream.
+commit 06d712d297649f48ebf1381d19bd24e942813b37 upstream.
 
-It seems like everywhere in this file, dd->in_sg is mapped with
-DMA_TO_DEVICE and dd->out_sg is mapped with DMA_FROM_DEVICE.
+trace_block_split() is missing, resulting in blktrace inability to catch
+BIO split events and making it harder to analyze the BIO sequence.
 
-Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: stable@vger.kernel.org
+Fixes: 488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-tdes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-crypto-fallback.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/crypto/atmel-tdes.c
-+++ b/drivers/crypto/atmel-tdes.c
-@@ -548,7 +548,7 @@ static int atmel_tdes_crypt_start(struct
+--- a/block/blk-crypto-fallback.c
++++ b/block/blk-crypto-fallback.c
+@@ -18,6 +18,7 @@
+ #include <linux/module.h>
+ #include <linux/random.h>
+ #include <linux/scatterlist.h>
++#include <trace/events/block.h>
  
- 	if (err && (dd->flags & TDES_FLAGS_FAST)) {
- 		dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
--		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_TO_DEVICE);
-+		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
+ #include "blk-cgroup.h"
+ #include "blk-crypto-internal.h"
+@@ -229,7 +230,9 @@ static bool blk_crypto_fallback_split_bi
+ 			bio->bi_status = BLK_STS_RESOURCE;
+ 			return false;
+ 		}
++
+ 		bio_chain(split_bio, bio);
++		trace_block_split(split_bio, bio->bi_iter.bi_sector);
+ 		submit_bio_noacct(bio);
+ 		*bio_ptr = split_bio;
  	}
- 
- 	return err;
 
 
 
