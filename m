@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-186530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D093BE9ADB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE0EBE9B41
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 165BD744DBA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23A811AE08F9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471A823EABB;
-	Fri, 17 Oct 2025 15:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC302472B0;
+	Fri, 17 Oct 2025 15:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdUakwgK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/nGsSYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0201132C94B;
-	Fri, 17 Oct 2025 15:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F07242935;
+	Fri, 17 Oct 2025 15:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713503; cv=none; b=OsQQ+HkC6J0ajUHmQPxShhuuUNzIT3kFTcj0cuj2oAhuoG6k5IpeYhZUtwGXKni0SVrtnDv7Yiv/YHbVBEy5Mbl3uFlUfaDU0v0O0SxeqYkWEByVS9A/yxk6h7Oz6vS6PZ2wjKoPN4L8YVqntC3J547xdKeNOsQ3Li5V2iKxw9E=
+	t=1760714233; cv=none; b=F37lyIu/ItzNdvurUSN5LCMCImcvCzD+ENApqjpvzwuSgWtczfSzUk85B/QDJ70J8ZyRP8XXldvOGba/FY0+v2JUVqfaJCpKwky19G5TNfX7VSrKV7TxLgqeDhhiJJczanxr2MiHvjaub6Qrwv/3xb0cEZO555uPkC0VQWCK8iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713503; c=relaxed/simple;
-	bh=skU+c5AFMCd6Dqu/JSgcNngGb1rms81PvLYepvu9HGA=;
+	s=arc-20240116; t=1760714233; c=relaxed/simple;
+	bh=Yuf2+TiE8+jXWYl39TGWsLfqRsBUuADy5rEIbVeGu/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Os5cn3GkFxP9DlDfAdV+9Mmyq3iHKJyNRfUjNgo4HfmhHL7vhpK4FtKYgWv1gavHUY7RaUjn5rxznKpYizkPScONC+xjKt67eOo1KrUjFPsf+Hg/w9aHa13uJCA0Yw4fxQ0rZPp3hrCNU17RkrWMEmANYnrca3YWjEch3c9sPzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdUakwgK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5756AC4CEE7;
-	Fri, 17 Oct 2025 15:05:02 +0000 (UTC)
+	 MIME-Version; b=PTG4BbUHF/yd6Ozqm8tdbCjPF/q9gXhu++kt8AO4DDA4XDKohJWpVHu63rV/UNcOAyPH/pPGEJ8lnZGcxdINMQbB2FDrfuF5Fjx2gzKQpI3vbZAm6o+OrxL4NBpPDq1NZTWW6ieC8h9uxbSe9QODv88U1HeqVIz5SBebCjkUhBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/nGsSYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB68C4CEE7;
+	Fri, 17 Oct 2025 15:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713502;
-	bh=skU+c5AFMCd6Dqu/JSgcNngGb1rms81PvLYepvu9HGA=;
+	s=korg; t=1760714233;
+	bh=Yuf2+TiE8+jXWYl39TGWsLfqRsBUuADy5rEIbVeGu/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SdUakwgKszQINMVQHXm7x+SPdxwZKLOd3V25zi4X6X/LmV4BpfnccW3DKS6rFRO0W
-	 E659LlgpM6TnZpXq5WM33j+tlhXlmDL88wIYiKj7Mvtt+uc08Ka8/KWzc0yZ6DCX/E
-	 kNewj93SoBk4qUTrbCbuzSrDX71GpWrLie7wAGIQ=
+	b=x/nGsSYiNH45r0KwEMDiZ7qWP3Sp6HB3NfozOzxUheSsA/6FPyQ2oit3Jf2vXZcBa
+	 DUXPCuSvekGcD9Rl9XpJlOmEeQcmYCrHjaW7FCfdmHRwpm4xW8xgDwWtMJ5kJVaJlG
+	 JYGvJX7jAxiGESejISyDCn7eAL3tnQ6ZmfTfHwBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/201] perf evsel: Ensure the fallback message is always written to
+Subject: [PATCH 6.12 074/277] bridge: br_vlan_fill_forward_path_pvid: use br_vlan_group_rcu()
 Date: Fri, 17 Oct 2025 16:51:21 +0200
-Message-ID: <20251017145135.480803208@linuxfoundation.org>
+Message-ID: <20251017145149.841901979@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,83 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Eric Woudstra <ericwouds@gmail.com>
 
-[ Upstream commit 24937ee839e4bbc097acde73eeed67812bad2d99 ]
+[ Upstream commit bbf0c98b3ad9edaea1f982de6c199cc11d3b7705 ]
 
-The fallback message is unconditionally printed in places like
-record__open().
+net/bridge/br_private.h:1627 suspicious rcu_dereference_protected() usage!
+other info that might help us debug this:
 
-If no fallback is attempted this can lead to printing uninitialized
-data, crashes, etc.
+rcu_scheduler_active = 2, debug_locks = 1
+7 locks held by socat/410:
+ #0: ffff88800d7a9c90 (sk_lock-AF_INET){+.+.}-{0:0}, at: inet_stream_connect+0x43/0xa0
+ #1: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: __ip_queue_xmit+0x62/0x1830
+ [..]
+ #6: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: nf_hook.constprop.0+0x8a/0x440
 
-Fixes: c0a54341c0e89333 ("perf evsel: Introduce event fallback method")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Howard Chu <howardchu95@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Call Trace:
+ lockdep_rcu_suspicious.cold+0x4f/0xb1
+ br_vlan_fill_forward_path_pvid+0x32c/0x410 [bridge]
+ br_fill_forward_path+0x7a/0x4d0 [bridge]
+
+Use to correct helper, non _rcu variant requires RTNL mutex.
+
+Fixes: bcf2766b1377 ("net: bridge: resolve forwarding path for VLAN tag actions in bridge devices")
+Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evsel.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/bridge/br_vlan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index c37faef63df99..6d1327f8c6043 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -2874,7 +2874,7 @@ bool evsel__fallback(struct evsel *evsel, int err, char *msg, size_t msgsize)
+diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
+index f2efb58d152bc..13d6c3f51c29d 100644
+--- a/net/bridge/br_vlan.c
++++ b/net/bridge/br_vlan.c
+@@ -1455,7 +1455,7 @@ void br_vlan_fill_forward_path_pvid(struct net_bridge *br,
+ 	if (!br_opt_get(br, BROPT_VLAN_ENABLED))
+ 		return;
  
- 		/* If event has exclude user then don't exclude kernel. */
- 		if (evsel->core.attr.exclude_user)
--			return false;
-+			goto no_fallback;
+-	vg = br_vlan_group(br);
++	vg = br_vlan_group_rcu(br);
  
- 		/* Is there already the separator in the name. */
- 		if (strchr(name, '/') ||
-@@ -2882,7 +2882,7 @@ bool evsel__fallback(struct evsel *evsel, int err, char *msg, size_t msgsize)
- 			sep = "";
- 
- 		if (asprintf(&new_name, "%s%su", name, sep) < 0)
--			return false;
-+			goto no_fallback;
- 
- 		free(evsel->name);
- 		evsel->name = new_name;
-@@ -2905,17 +2905,19 @@ bool evsel__fallback(struct evsel *evsel, int err, char *msg, size_t msgsize)
- 			sep = "";
- 
- 		if (asprintf(&new_name, "%s%sH", name, sep) < 0)
--			return false;
-+			goto no_fallback;
- 
- 		free(evsel->name);
- 		evsel->name = new_name;
- 		/* Apple M1 requires exclude_guest */
--		scnprintf(msg, msgsize, "trying to fall back to excluding guest samples");
-+		scnprintf(msg, msgsize, "Trying to fall back to excluding guest samples");
- 		evsel->core.attr.exclude_guest = 1;
- 
- 		return true;
- 	}
--
-+no_fallback:
-+	scnprintf(msg, msgsize, "No fallback found for '%s' for error %d",
-+		  evsel__name(evsel), err);
- 	return false;
- }
- 
+ 	if (idx >= 0 &&
+ 	    ctx->vlan[idx].proto == br->vlan_proto) {
 -- 
 2.51.0
 
