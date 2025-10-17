@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-186438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1297BE9851
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:10:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CA3BEA413
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB93E6232F1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:01:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 931A21886E98
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE493328F4;
-	Fri, 17 Oct 2025 15:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E022F12C6;
+	Fri, 17 Oct 2025 15:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PofqZSf6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDF20iM/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0E932C928;
-	Fri, 17 Oct 2025 15:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64532E11DD;
+	Fri, 17 Oct 2025 15:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713243; cv=none; b=b76gqPrVIZqkHxLtiQ3/EztApFrzLexXDU88jXbqIbSf1+6PqYuClnwIsW9UHRhzJ8uIzEBG2K1iP9d3IJClkZWrmdMhXetMKynpo68bj9e6M4qOe+g4KWt2j8L1lRzYsTYynx1UQz8mr5xAed9ADWWLn3PXxIx6EOLxAcTL+Mc=
+	t=1760716132; cv=none; b=TQeUEwXjcgnDZkMZbjFkPKq92USNrO76Mup+FPR2BKZS+ahXfebvDgbYa4LOWLaudb9dfaFLvl34aNzSmIzw+OGDSbourMlZUqtZlC1AhKgPAG/51Y/tdbtTUAfGQM86fob/I3EkDbVeuFvMuTzm2VBgYKi5vjYoNOaFX8ZkhVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713243; c=relaxed/simple;
-	bh=raonOP+7J0NoKdfl8JtMkHFPUU4KY3Izu6ik9DmYGqY=;
+	s=arc-20240116; t=1760716132; c=relaxed/simple;
+	bh=MNQ384jIRqrZbaa2YLJFkO0cTVYjq+1yBJfRoEc143Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELMjxISEXVRotgr3trVWtb0CBGcY2nJ54p9o2zIlfxiYxQoSwvnQ2Q9jZDcTzfM7qFuzzggMMTmrx7raCxQwWGL8INp3lrM6S2cbJisoXBzoSfPQbo8FOKXU8+8/LhOf3UQOK/2CgWgx4ifSEqk8FR8sl7sMaMdmoQQv16k/zcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PofqZSf6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA624C4CEFE;
-	Fri, 17 Oct 2025 15:00:42 +0000 (UTC)
+	 MIME-Version; b=iaXbf5Sv6hl2jsQNF3FPkMdnz7gErS/PYaK8CA0byzch2B9y3sqv+8lYZ2X6/P+HzmMRuL3dbnJ0cTpZxcDQslIvI/hRTNhcg0PZAT0hH2nel/A0L2MeTMn6pGstjNCgcGOS8vqjhoyC9JimEAOABhg/bjSvj4+xmOuTznWWiWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDF20iM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726E7C4CEE7;
+	Fri, 17 Oct 2025 15:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713243;
-	bh=raonOP+7J0NoKdfl8JtMkHFPUU4KY3Izu6ik9DmYGqY=;
+	s=korg; t=1760716131;
+	bh=MNQ384jIRqrZbaa2YLJFkO0cTVYjq+1yBJfRoEc143Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PofqZSf6nkDjyPnm2D+sAG2gpMHoFM64emKjlVj0uIKAuR/estYiewHeoGxZiBkRr
-	 eetWyl+96FQ8lQJg0tYgEPDbT+E2Mdg7vMJF0Qeei2eeWTIPc1YPLA4hvYTjNPG10p
-	 Q2+CBF3jWmvkpbMvCOBtJuIFiNFHRbOcacHeFxdY=
+	b=YDF20iM/Jbg+7uaoktL4vCpIAUz/H4eE3n2+SLiMDqRZgjbHlcJFOvX//U08ohjMv
+	 xxQZ6ISl/gBUfeTBw8mxYfzqM6fEMN5CLJnTfpp7Sf1kmHf0z8pna0mxU209E7kpiC
+	 zYD1u5M/avIF2gxzTM41OkcX9v2/i2FN5VewqOIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 098/168] sctp: Fix MAC comparison to be constant-time
-Date: Fri, 17 Oct 2025 16:52:57 +0200
-Message-ID: <20251017145132.638082525@linuxfoundation.org>
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 085/276] wifi: ath10k: avoid unnecessary wait for service ready message
+Date: Fri, 17 Oct 2025 16:52:58 +0200
+Message-ID: <20251017145145.588677068@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-commit dd91c79e4f58fbe2898dac84858033700e0e99fb upstream.
+[ Upstream commit 51a73f1b2e56b0324b4a3bb8cebc4221b5be4c7a ]
 
-To prevent timing attacks, MACs need to be compared in constant time.
-Use the appropriate helper function for this.
+Commit e57b7d62a1b2 ("wifi: ath10k: poll service ready message before
+failing") works around the failure in waiting for the service ready
+message by active polling. Note the polling is triggered after initial
+wait timeout, which means that the wait-till-timeout can not be avoided
+even the message is ready.
 
-Fixes: bbd0d59809f9 ("[SCTP]: Implement the receive and verification of AUTH chunk")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://patch.msgid.link/20250818205426.30222-3-ebiggers@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A possible fix is to do polling once before wait as well, however this
+can not handle the race that the message arrives right after polling.
+So the solution is to do periodic polling until timeout.
+
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
+
+Fixes: e57b7d62a1b2 ("wifi: ath10k: poll service ready message before failing")
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/all/97a15967-5518-4731-a8ff-d43ff7f437b0@molgen.mpg.de
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250811-ath10k-avoid-unnecessary-wait-v1-1-db2deb87c39b@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_make_chunk.c |    3 ++-
- net/sctp/sm_statefuns.c  |    3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c | 39 +++++++++++++--------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
---- a/net/sctp/sm_make_chunk.c
-+++ b/net/sctp/sm_make_chunk.c
-@@ -31,6 +31,7 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 572aabc0541c5..5817501b0c3fe 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1762,33 +1762,32 @@ void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
  
- #include <crypto/hash.h>
-+#include <crypto/algapi.h>
- #include <linux/types.h>
- #include <linux/kernel.h>
- #include <linux/ip.h>
-@@ -1796,7 +1797,7 @@ struct sctp_association *sctp_unpack_coo
- 		}
- 	}
+ int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
+ {
++	unsigned long timeout = jiffies + WMI_SERVICE_READY_TIMEOUT_HZ;
+ 	unsigned long time_left, i;
  
--	if (memcmp(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
-+	if (crypto_memneq(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
- 		*error = -SCTP_IERROR_BAD_SIG;
- 		goto fail;
- 	}
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -30,6 +30,7 @@
+-	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+-						WMI_SERVICE_READY_TIMEOUT_HZ);
+-	if (!time_left) {
+-		/* Sometimes the PCI HIF doesn't receive interrupt
+-		 * for the service ready message even if the buffer
+-		 * was completed. PCIe sniffer shows that it's
+-		 * because the corresponding CE ring doesn't fires
+-		 * it. Workaround here by polling CE rings once.
+-		 */
+-		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
+-
++	/* Sometimes the PCI HIF doesn't receive interrupt
++	 * for the service ready message even if the buffer
++	 * was completed. PCIe sniffer shows that it's
++	 * because the corresponding CE ring doesn't fires
++	 * it. Workaround here by polling CE rings. Since
++	 * the message could arrive at any time, continue
++	 * polling until timeout.
++	 */
++	do {
+ 		for (i = 0; i < CE_COUNT; i++)
+ 			ath10k_hif_send_complete_check(ar, i, 1);
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++		/* The 100 ms granularity is a tradeoff considering scheduler
++		 * overhead and response latency
++		 */
+ 		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+-							WMI_SERVICE_READY_TIMEOUT_HZ);
+-		if (!time_left) {
+-			ath10k_warn(ar, "polling timed out\n");
+-			return -ETIMEDOUT;
+-		}
+-
+-		ath10k_warn(ar, "service ready completion received, continuing normally\n");
+-	}
++							msecs_to_jiffies(100));
++		if (time_left)
++			return 0;
++	} while (time_before(jiffies, timeout));
  
-+#include <crypto/algapi.h>
- #include <linux/types.h>
- #include <linux/kernel.h>
- #include <linux/ip.h>
-@@ -4418,7 +4419,7 @@ static enum sctp_ierror sctp_sf_authenti
- 				 sh_key, GFP_ATOMIC);
+-	return 0;
++	ath10k_warn(ar, "failed to receive service ready completion\n");
++	return -ETIMEDOUT;
+ }
  
- 	/* Discard the packet if the digests do not match */
--	if (memcmp(save_digest, digest, sig_len)) {
-+	if (crypto_memneq(save_digest, digest, sig_len)) {
- 		kfree(save_digest);
- 		return SCTP_IERROR_BAD_SIG;
- 	}
+ int ath10k_wmi_wait_for_unified_ready(struct ath10k *ar)
+-- 
+2.51.0
+
 
 
 
