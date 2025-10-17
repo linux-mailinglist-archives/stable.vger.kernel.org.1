@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-187361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9902BEAA85
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:24:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9C8BEAB68
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CA6C947795
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E227960E0A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F422472B0;
-	Fri, 17 Oct 2025 15:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634F4330B3A;
+	Fri, 17 Oct 2025 15:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Id72Ligv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TE3v9Av8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147BA330B28;
-	Fri, 17 Oct 2025 15:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20133330B06;
+	Fri, 17 Oct 2025 15:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715852; cv=none; b=rFzwoLUQiinqIRH/jW4gtggaH7tXOXc7/paQ0ixbHYbeGZCZsnOSn3HY7lkP1UwDhGI7Mg0PyeskyB5WVp47fVY32BOHzchQvpk3qnUz0Rn97JnH5NUp2yMYr3Ul1ftiqYeWOayiGa7ev75tBYgZ4z4ihsL5HuxcB/ZVIn6xPpQ=
+	t=1760716589; cv=none; b=pi6HYafQwRa8A4CHC0bvAzQPdbD2gHyp8ABeO3kRE6996yqyruoLwRTI4ha/p4C84PQRRITq3rC7c+j9f8/BUOC+Y049aw1DSp7JKQ4PBbqWq8DxC3ShLiFfm1NoAhLveJaOCHcXLLrsfJHIqUq8IPdtv1AK4dm5PX2QABlTz5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715852; c=relaxed/simple;
-	bh=cazlg7xiAYvneiHJXyMG6pfAsAfaUyvXPcYH5zrteeE=;
+	s=arc-20240116; t=1760716589; c=relaxed/simple;
+	bh=WVbKPuTkozrrmukC0DFBvdWwFXegxLb6bj8EzCYSFR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ElijljNuq7ZViFrl28DaRoLlRcSwKWIhvc2jndEpzSg9O5qxAQVVrFwMQ7a5Zne3wvpBXXDgBnoHVnzSxQsjdLAFKmQfbAyrCstFr6S5JVjOBO7hASGAhqnhZmbmcUs8qcmC5hTMy7kePl7bvRlqVJ8rcNbQA3VAgyDPlso9png=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Id72Ligv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D88BC4CEE7;
-	Fri, 17 Oct 2025 15:44:11 +0000 (UTC)
+	 MIME-Version; b=eppMOxpyc1Md5mXxVHwWhmQ7zAzBbonUKRKRUFJZBqBkzIeMPZ/NwDrt63jhYvSNNfhvR+KGNOl0lTIIX1g5m6yidwh5OLUxKEWzyHm/mFiChj3lYOmqosN4UdiguDTY31kfiOFzyZC2uPqHn2lWtf6FmR2X8d6bW24YThI6Ywc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TE3v9Av8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A91C4CEE7;
+	Fri, 17 Oct 2025 15:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715852;
-	bh=cazlg7xiAYvneiHJXyMG6pfAsAfaUyvXPcYH5zrteeE=;
+	s=korg; t=1760716589;
+	bh=WVbKPuTkozrrmukC0DFBvdWwFXegxLb6bj8EzCYSFR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Id72Ligvd6a67sEZeSm2b3dRw+ROVAdqmn1HVloxiCGLULXcO+q4kmvSt83gO65Bb
-	 kC9LnyQk8jlhZtv7cLhPaH9XOBd+wWyGrjmZzxOTRJXtYL04tRzPfju4llpIPMEtIz
-	 eHXiFJLVoZ9OxS3FQLjgIlgkyh2sjhRt0Z2XDoO8=
+	b=TE3v9Av8gN8JuIC9FMbWFAkaYdZQ1CqMAVaDR6DC4YnmczzTXJfP5ytjA96k/jM+0
+	 lC2YsZSmqenrGI1NJiq86uTdO1+epxQARs8H/wgagqJoiLfZdgxszGhrZzngFNNgPx
+	 9S/B3mP20coOtFsHL37RcK8pGPTEIx1/lemZCnZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Weimer <fweimer@redhat.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 359/371] copy_file_range: limit size if in compat mode
-Date: Fri, 17 Oct 2025 16:55:34 +0200
-Message-ID: <20251017145215.076250110@linuxfoundation.org>
+	Herve Codina <herve.codina@bootlin.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Mark Brown <broonie@kernel.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.15 242/276] minmax: Introduce {min,max}_array()
+Date: Fri, 17 Oct 2025 16:55:35 +0200
+Message-ID: <20251017145151.307428414@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit f8f59a2c05dc16d19432e3154a9ac7bc385f4b92 ]
+[ Upstream commit c952c748c7a983a8bda9112984e6f2c1f6e441a5 ]
 
-If the process runs in 32-bit compat mode, copy_file_range results can be
-in the in-band error range.  In this case limit copy length to MAX_RW_COUNT
-to prevent a signed overflow.
+Introduce min_array() (resp max_array()) in order to get the
+minimal (resp maximum) of values present in an array.
 
-Reported-by: Florian Weimer <fweimer@redhat.com>
-Closes: https://lore.kernel.org/all/lhuh5ynl8z5.fsf@oldenburg.str.redhat.com/
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://lore.kernel.org/20250813151107.99856-1-mszeredi@redhat.com
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/20230623085830.749991-8-herve.codina@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/read_write.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ include/linux/minmax.h |   64 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 64 insertions(+)
 
-diff --git a/fs/read_write.c b/fs/read_write.c
-index c5b6265d984ba..833bae068770a 100644
---- a/fs/read_write.c
-+++ b/fs/read_write.c
-@@ -1576,6 +1576,13 @@ ssize_t vfs_copy_file_range(struct file *file_in, loff_t pos_in,
- 	if (len == 0)
- 		return 0;
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -168,6 +168,70 @@
+  */
+ #define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
  
-+	/*
-+	 * Make sure return value doesn't overflow in 32bit compat mode.  Also
-+	 * limit the size for all cases except when calling ->copy_file_range().
-+	 */
-+	if (splice || !file_out->f_op->copy_file_range || in_compat_syscall())
-+		len = min_t(size_t, MAX_RW_COUNT, len);
++/*
++ * Remove a const qualifier from integer types
++ * _Generic(foo, type-name: association, ..., default: association) performs a
++ * comparison against the foo type (not the qualified type).
++ * Do not use the const keyword in the type-name as it will not match the
++ * unqualified type of foo.
++ */
++#define __unconst_integer_type_cases(type)	\
++	unsigned type:  (unsigned type)0,	\
++	signed type:    (signed type)0
 +
- 	file_start_write(file_out);
- 
- 	/*
-@@ -1589,9 +1596,7 @@ ssize_t vfs_copy_file_range(struct file *file_in, loff_t pos_in,
- 						      len, flags);
- 	} else if (!splice && file_in->f_op->remap_file_range && samesb) {
- 		ret = file_in->f_op->remap_file_range(file_in, pos_in,
--				file_out, pos_out,
--				min_t(loff_t, MAX_RW_COUNT, len),
--				REMAP_FILE_CAN_SHORTEN);
-+				file_out, pos_out, len, REMAP_FILE_CAN_SHORTEN);
- 		/* fallback to splice */
- 		if (ret <= 0)
- 			splice = true;
-@@ -1624,8 +1629,7 @@ ssize_t vfs_copy_file_range(struct file *file_in, loff_t pos_in,
- 	 * to splicing from input file, while file_start_write() is held on
- 	 * the output file on a different sb.
- 	 */
--	ret = do_splice_direct(file_in, &pos_in, file_out, &pos_out,
--			       min_t(size_t, len, MAX_RW_COUNT), 0);
-+	ret = do_splice_direct(file_in, &pos_in, file_out, &pos_out, len, 0);
- done:
- 	if (ret > 0) {
- 		fsnotify_access(file_in);
--- 
-2.51.0
-
++#define __unconst_integer_typeof(x) typeof(			\
++	_Generic((x),						\
++		char: (char)0,					\
++		__unconst_integer_type_cases(char),		\
++		__unconst_integer_type_cases(short),		\
++		__unconst_integer_type_cases(int),		\
++		__unconst_integer_type_cases(long),		\
++		__unconst_integer_type_cases(long long),	\
++		default: (x)))
++
++/*
++ * Do not check the array parameter using __must_be_array().
++ * In the following legit use-case where the "array" passed is a simple pointer,
++ * __must_be_array() will return a failure.
++ * --- 8< ---
++ * int *buff
++ * ...
++ * min = min_array(buff, nb_items);
++ * --- 8< ---
++ *
++ * The first typeof(&(array)[0]) is needed in order to support arrays of both
++ * 'int *buff' and 'int buff[N]' types.
++ *
++ * The array can be an array of const items.
++ * typeof() keeps the const qualifier. Use __unconst_integer_typeof() in order
++ * to discard the const qualifier for the __element variable.
++ */
++#define __minmax_array(op, array, len) ({				\
++	typeof(&(array)[0]) __array = (array);				\
++	typeof(len) __len = (len);					\
++	__unconst_integer_typeof(__array[0]) __element = __array[--__len]; \
++	while (__len--)							\
++		__element = op(__element, __array[__len]);		\
++	__element; })
++
++/**
++ * min_array - return minimum of values present in an array
++ * @array: array
++ * @len: array length
++ *
++ * Note that @len must not be zero (empty array).
++ */
++#define min_array(array, len) __minmax_array(min, array, len)
++
++/**
++ * max_array - return maximum of values present in an array
++ * @array: array
++ * @len: array length
++ *
++ * Note that @len must not be zero (empty array).
++ */
++#define max_array(array, len) __minmax_array(max, array, len)
++
+ /**
+  * clamp_t - return a value clamped to a given range using a given type
+  * @type: the type of variable to use
 
 
 
