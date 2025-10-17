@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-186958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0E0BEA06E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21AFEBE9DC2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CFC67582A61
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7E0F1892703
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCA5D231C9F;
-	Fri, 17 Oct 2025 15:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969CA258ECA;
+	Fri, 17 Oct 2025 15:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IewGnttY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+71AX0E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883251D5CE0;
-	Fri, 17 Oct 2025 15:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E283208;
+	Fri, 17 Oct 2025 15:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714716; cv=none; b=PzsxAEr7Bb8ru4IaMjXfQOhmbCpncv6tIKnccRsVBYA8cZxnlVm0D44Ijp3lBhfj2PZS2XM/C6H4fFrrtnN/Va2BZ9rpY/7DtaOtJjnvQmNF7kukSrY/sku/gEN7Nf6XwfZ2kp1QRZRKTfARYBYawSL4FtgDbA4t+9104CrA0rE=
+	t=1760714839; cv=none; b=fHvZwuqj9y4Rlm9zWCikJXnK0yaRxOSZysNUhhPBVSpO19+b3FYYOkaU2ZPYzu+sgBTKCltB+V00oKoUbqOvOOT4KWfo/3Qf4qxVsPHVeEfoOqZKWkR6YcfcK8QpgWzv0Q8csXITTk7c9MFU6uPQHvVDnVvAmHoAbO5fgqk6TCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714716; c=relaxed/simple;
-	bh=phZjkMTMNIuu2rvIAppSZFtPYvM+zE8o861Vh2ffQVY=;
+	s=arc-20240116; t=1760714839; c=relaxed/simple;
+	bh=AJS9zLQ++ZztkhWHrsC9s0I/Zy4+YFRcsoIf6U3NyGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IM78mkTRTmSxYtdTtubOfDWcQvWsa/92FDpfYbgf5+zSu2nSGNBLuoqFsuI+ZxzLpuSUQRhHuNWc1X4xyPOh05sEzjNvmv7bZY2AMpXx90vxfVv9m3JpTh7zoThGRYNtr3cxJU8AwCe3OWHCdOPz6IKS1qOTq+MmJt9iEKPL1H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IewGnttY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7EDC4CEE7;
-	Fri, 17 Oct 2025 15:25:15 +0000 (UTC)
+	 MIME-Version; b=svpVdYxu+P3KtBCheKPQ7ji2HLKwNUbNZH2jSMSb7PlSHESzklfx4oSFOlUyYMwxgmet9gKac0oa6M3uR2AQT6Mh2QVMQNWOTBeuIz2fXeJgIMTotD1QNvTryYd3j2qxqzSfcQTjeCMBlIg6ze8XqpFbUUYH3VywMUlM/+8blxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+71AX0E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB83C113D0;
+	Fri, 17 Oct 2025 15:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714716;
-	bh=phZjkMTMNIuu2rvIAppSZFtPYvM+zE8o861Vh2ffQVY=;
+	s=korg; t=1760714839;
+	bh=AJS9zLQ++ZztkhWHrsC9s0I/Zy4+YFRcsoIf6U3NyGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IewGnttYZzFRPrC7yQqACBRKAFkF/0Ftb6nlEstoHdPmg2XOjHV+cgIqfjlaFpMeb
-	 Iw4A8sKd0sMy5DKJrtpQ8XlAJuDzXNnIZ4zHCICVxT3GTvkb1UnmzQOdMYgrVFzpw8
-	 3UvdSMKmjyG6ysNPUhYJOzBCq3mk6AeCvFaAq7h4=
+	b=0+71AX0EnAEi0pAqtWWGy9PMsFP+MC1SNKNe6NhmWGE8ScOp5dTpjByieLP/aXUbU
+	 KJm+wLYJUZWxL2gSk1kwmhQSyUv4OfSvPxRRLBFVeYyoka4iY87KxpxKKRx5hA/h/t
+	 NeVj6NDf5cUfOiVAwWfByFGHIWwXGW7FKcXztysY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Gergely Kovacs <Gergely.Kovacs2@arm.com>,
-	Will Deacon <will@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lance Yang <lance.yang@linux.dev>,
+	Dave Hansen <dave.hansen@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 240/277] arm64: mte: Do not flag the zero page as PG_mte_tagged
-Date: Fri, 17 Oct 2025 16:54:07 +0200
-Message-ID: <20251017145155.903523909@linuxfoundation.org>
+Subject: [PATCH 6.12 241/277] x86/mtrr: Rename mtrr_overwrite_state() to guest_force_mtrr_state()
+Date: Fri, 17 Oct 2025 16:54:08 +0200
+Message-ID: <20251017145155.942091472@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
 References: <20251017145147.138822285@linuxfoundation.org>
@@ -69,89 +67,130 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit f620d66af3165838bfa845dcf9f5f9b4089bf508 ]
+[ Upstream commit 6a5abeea9c72e1d2c538622b4cf66c80cc816fd3 ]
 
-Commit 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the
-zero page") attempted to fix ptrace() reading of tags from the zero page
-by marking it as PG_mte_tagged during cpu_enable_mte(). The same commit
-also changed the ptrace() tag access permission check to the VM_MTE vma
-flag while turning the page flag test into a WARN_ON_ONCE().
+Rename the helper to better reflect its function.
 
-Attempting to set the PG_mte_tagged flag early with
-CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled may either hang (after commit
-d77e59a8fccd "arm64: mte: Lock a page for MTE tag initialisation") or
-have the flags cleared later during page_alloc_init_late(). In addition,
-pages_identical() -> memcmp_pages() will reject any comparison with the
-zero page as it is marked as tagged.
-
-Partially revert the above commit to avoid setting PG_mte_tagged on the
-zero page. Update the __access_remote_tags() warning on untagged pages
-to ignore the zero page since it is known to have the tags initialised.
-
-Note that all user mapping of the zero page are marked as pte_special().
-The arm64 set_pte_at() will not call mte_sync_tags() on such pages, so
-PG_mte_tagged will remain cleared.
-
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Fixes: 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the zero page")
-Reported-by: Gergely Kovacs <Gergely.Kovacs2@arm.com>
-Cc: stable@vger.kernel.org # 5.10.x
-Cc: Will Deacon <will@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Acked-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Adjust context ]
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Dave Hansen <dave.hansen@intel.com>
+Link: https://lore.kernel.org/all/20241202073139.448208-1-kirill.shutemov%40linux.intel.com
+Stable-dep-of: 0dccbc75e18d ("x86/kvm: Force legacy PCI hole to UC when overriding MTRRs for TDX/SNP")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/cpufeature.c |   10 +++++++---
- arch/arm64/kernel/mte.c        |    3 ++-
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ arch/x86/hyperv/ivm.c              |    2 +-
+ arch/x86/include/asm/mtrr.h        |   10 +++++-----
+ arch/x86/kernel/cpu/mtrr/generic.c |    6 +++---
+ arch/x86/kernel/cpu/mtrr/mtrr.c    |    2 +-
+ arch/x86/kernel/kvm.c              |    2 +-
+ arch/x86/xen/enlighten_pv.c        |    4 ++--
+ 6 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -2279,17 +2279,21 @@ static void bti_enable(const struct arm6
- #ifdef CONFIG_ARM64_MTE
- static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -681,7 +681,7 @@ void __init hv_vtom_init(void)
+ 	x86_platform.guest.enc_status_change_finish = hv_vtom_set_host_visibility;
+ 
+ 	/* Set WB as the default cache mode. */
+-	mtrr_overwrite_state(NULL, 0, MTRR_TYPE_WRBACK);
++	guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
+ }
+ 
+ #endif /* defined(CONFIG_AMD_MEM_ENCRYPT) || defined(CONFIG_INTEL_TDX_GUEST) */
+--- a/arch/x86/include/asm/mtrr.h
++++ b/arch/x86/include/asm/mtrr.h
+@@ -58,8 +58,8 @@ struct mtrr_state_type {
+  */
+ # ifdef CONFIG_MTRR
+ void mtrr_bp_init(void);
+-void mtrr_overwrite_state(struct mtrr_var_range *var, unsigned int num_var,
+-			  mtrr_type def_type);
++void guest_force_mtrr_state(struct mtrr_var_range *var, unsigned int num_var,
++			    mtrr_type def_type);
+ extern u8 mtrr_type_lookup(u64 addr, u64 end, u8 *uniform);
+ extern void mtrr_save_fixed_ranges(void *);
+ extern void mtrr_save_state(void);
+@@ -75,9 +75,9 @@ void mtrr_disable(void);
+ void mtrr_enable(void);
+ void mtrr_generic_set_state(void);
+ #  else
+-static inline void mtrr_overwrite_state(struct mtrr_var_range *var,
+-					unsigned int num_var,
+-					mtrr_type def_type)
++static inline void guest_force_mtrr_state(struct mtrr_var_range *var,
++					  unsigned int num_var,
++					  mtrr_type def_type)
  {
-+	static bool cleared_zero_page = false;
-+
- 	sysreg_clear_set(sctlr_el1, 0, SCTLR_ELx_ATA | SCTLR_EL1_ATA0);
+ }
  
- 	mte_cpu_setup();
+--- a/arch/x86/kernel/cpu/mtrr/generic.c
++++ b/arch/x86/kernel/cpu/mtrr/generic.c
+@@ -423,7 +423,7 @@ void __init mtrr_copy_map(void)
+ }
  
+ /**
+- * mtrr_overwrite_state - set static MTRR state
++ * guest_force_mtrr_state - set static MTRR state for a guest
+  *
+  * Used to set MTRR state via different means (e.g. with data obtained from
+  * a hypervisor).
+@@ -436,8 +436,8 @@ void __init mtrr_copy_map(void)
+  * @num_var: length of the @var array
+  * @def_type: default caching type
+  */
+-void mtrr_overwrite_state(struct mtrr_var_range *var, unsigned int num_var,
+-			  mtrr_type def_type)
++void guest_force_mtrr_state(struct mtrr_var_range *var, unsigned int num_var,
++			    mtrr_type def_type)
+ {
+ 	unsigned int i;
+ 
+--- a/arch/x86/kernel/cpu/mtrr/mtrr.c
++++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
+@@ -625,7 +625,7 @@ void mtrr_save_state(void)
+ static int __init mtrr_init_finalize(void)
+ {
  	/*
- 	 * Clear the tags in the zero page. This needs to be done via the
--	 * linear map which has the Tagged attribute.
-+	 * linear map which has the Tagged attribute. Since this page is
-+	 * always mapped as pte_special(), set_pte_at() will not attempt to
-+	 * clear the tags or set PG_mte_tagged.
+-	 * Map might exist if mtrr_overwrite_state() has been called or if
++	 * Map might exist if guest_force_mtrr_state() has been called or if
+ 	 * mtrr_enabled() returns true.
  	 */
--	if (try_page_mte_tagging(ZERO_PAGE(0))) {
-+	if (!cleared_zero_page) {
-+		cleared_zero_page = true;
- 		mte_clear_page_tags(lm_alias(empty_zero_page));
--		set_page_mte_tagged(ZERO_PAGE(0));
- 	}
+ 	mtrr_copy_map();
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -983,7 +983,7 @@ static void __init kvm_init_platform(voi
+ 	x86_platform.apic_post_init = kvm_apic_init;
  
- 	kasan_init_hw_tags_cpu();
---- a/arch/arm64/kernel/mte.c
-+++ b/arch/arm64/kernel/mte.c
-@@ -428,7 +428,8 @@ static int __access_remote_tags(struct m
- 			put_page(page);
- 			break;
- 		}
--		WARN_ON_ONCE(!page_mte_tagged(page));
-+
-+		WARN_ON_ONCE(!page_mte_tagged(page) && !is_zero_page(page));
+ 	/* Set WB as the default cache mode for SEV-SNP and TDX */
+-	mtrr_overwrite_state(NULL, 0, MTRR_TYPE_WRBACK);
++	guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
+ }
  
- 		/* limit access to the end of the page */
- 		offset = offset_in_page(addr);
+ #if defined(CONFIG_AMD_MEM_ENCRYPT)
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -171,7 +171,7 @@ static void __init xen_set_mtrr_data(voi
+ 
+ 	/* Only overwrite MTRR state if any MTRR could be got from Xen. */
+ 	if (reg)
+-		mtrr_overwrite_state(var, reg, MTRR_TYPE_UNCACHABLE);
++		guest_force_mtrr_state(var, reg, MTRR_TYPE_UNCACHABLE);
+ #endif
+ }
+ 
+@@ -195,7 +195,7 @@ static void __init xen_pv_init_platform(
+ 	if (xen_initial_domain())
+ 		xen_set_mtrr_data();
+ 	else
+-		mtrr_overwrite_state(NULL, 0, MTRR_TYPE_WRBACK);
++		guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
+ 
+ 	/* Adjust nr_cpu_ids before "enumeration" happens */
+ 	xen_smp_count_cpus();
 
 
 
