@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-186981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E85BEA17C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BDFBEA57B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 92EE65685BE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8721C1894566
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7FF1D5CE0;
-	Fri, 17 Oct 2025 15:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467D0330B3A;
+	Fri, 17 Oct 2025 15:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huPOKEIB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9h+zVMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B862F231C9F;
-	Fri, 17 Oct 2025 15:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01069330B1E;
+	Fri, 17 Oct 2025 15:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714782; cv=none; b=ZGXmOCQokbfLxeXFoKgs1IKRltXH4boUEfDV1VAuQHk+LX2ln1TszspVvcVeKDPkAmGQJzbAm8OsjwysHnMRK3KsFjzemIeinKe01Bi5G/ib1vBnNKfF82uPZyZUHg3556Qwjt1fRjlkctOFO7tiYPspZqS2BSia3rhU0htkcP8=
+	t=1760716423; cv=none; b=sqNwW02nSrWjApvuA0apsJeY6XLlHBn1SAtlvu7E6UlA+aLBnd/1XuQVjU5Hx9j9C77qVL5jZ02U+ehMp7aJykrYCq5WFjEGFdZAAt5NSFj95HNbb+6fFZ6Wds5jTfQ+zN6GTwHpbZP6aHi6NHawa/NJaiNCVY3HnF4PAQm8c0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714782; c=relaxed/simple;
-	bh=X2JLOnXs/xG6zFKj51jawaReg7XrqZhPBumDsesmTBQ=;
+	s=arc-20240116; t=1760716423; c=relaxed/simple;
+	bh=k563CMuYSM/A0GodW9u8VvWAFpHI6rZmmZuwinTZXKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOiCKYgNHsJFsLYYz+wp/nmEGl7wpBuJqoUQ3cjq6SVJw0Qdyg3rM7KJq/cmtEMd88Qfpc1BxVsTbXNh3mqo/XPX2jqcARg4Vc+7wHhUQ9iaVIu2is3YCHH+Kqa94Nb85gf0kP3PxqryXjMy2qsaQ/cBnrxddSDfm9SGerqGMhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huPOKEIB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41681C4CEE7;
-	Fri, 17 Oct 2025 15:26:22 +0000 (UTC)
+	 MIME-Version; b=syz7cNCDXgUxc5r2LGzGgIpoB0y7lnI+QH7oNjpAZQ2lLhZrQAu1Z9zXS66NevpbpIGFbLQ+25SjTdH0xwF2OzA/I7ovgFJNvUrbTQaZHp6lLVqCsd+j4hZpU5WOWMqthOoTjN99nmhKBoGf0SIsfD5wmZFjMLbOypnB4OvHfIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9h+zVMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACD7C4CEE7;
+	Fri, 17 Oct 2025 15:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714782;
-	bh=X2JLOnXs/xG6zFKj51jawaReg7XrqZhPBumDsesmTBQ=;
+	s=korg; t=1760716422;
+	bh=k563CMuYSM/A0GodW9u8VvWAFpHI6rZmmZuwinTZXKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=huPOKEIBYzHe13NBKRhFWCBLFuekzClklU+NxFGTqlyfutqIRYtxcXASwJKdK94mW
-	 NoOc5F5/IwYavkdaEgOzTx8aw5nxGnsxEM6F637R9w6XawItONwHeRHaF6jxfyAUvn
-	 OAJl9J+w6wp5yZQWnM//yQWsiXgPH9X7aTR/5g+c=
+	b=N9h+zVMAUjAlM2eQbzXBN8yzk3G4bBwrTd31Hof/7hO9jziMVc5Ys+rCaAOQhggyN
+	 RLQJYsANaoO2GwEEUkdBgCaeX3+vJJYB+lDGVmgFCplNB7mCZ11D9OPElo/fcNXG9E
+	 uU0IjX5D/cAICpKD4gFnSuJYQ5FM0PoLN/W71YU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jia Wang <wangjia@ultrarisc.com>,
-	Charles Mirabile <cmirabil@redhat.com>,
-	Lucas Zampieri <lzampier@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 264/277] irqchip/sifive-plic: Avoid interrupt ID 0 handling during suspend/resume
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Zihuan Zhang <zhangzihuan@kylinos.cn>
+Subject: [PATCH 5.15 178/276] cpufreq: intel_pstate: Fix object lifecycle issue in update_qos_request()
 Date: Fri, 17 Oct 2025 16:54:31 +0200
-Message-ID: <20251017145156.801310033@linuxfoundation.org>
+Message-ID: <20251017145148.974165070@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Zampieri <lzampier@redhat.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit f75e07bf5226da640fa99a0594687c780d9bace4 ]
+commit 69e5d50fcf4093fb3f9f41c4f931f12c2ca8c467 upstream.
 
-According to the PLIC specification[1], global interrupt sources are
-assigned small unsigned integer identifiers beginning at the value 1.
-An interrupt ID of 0 is reserved to mean "no interrupt".
+The cpufreq_cpu_put() call in update_qos_request() takes place too early
+because the latter subsequently calls freq_qos_update_request() that
+indirectly accesses the policy object in question through the QoS request
+object passed to it.
 
-The current plic_irq_resume() and plic_irq_suspend() functions incorrectly
-start the loop from index 0, which accesses the register space for the
-reserved interrupt ID 0.
+Fortunately, update_qos_request() is called under intel_pstate_driver_lock,
+so this issue does not matter for changing the intel_pstate operation
+mode, but it theoretically can cause a crash to occur on CPU device hot
+removal (which currently can only happen in virt, but it is formally
+supported nevertheless).
 
-Change the loop to start from index 1, skipping the reserved
-interrupt ID 0 as per the PLIC specification.
+Address this issue by modifying update_qos_request() to drop the
+reference to the policy later.
 
-This prevents potential undefined behavior when accessing the reserved
-register space during suspend/resume cycles.
-
-Fixes: e80f0b6a2cf3 ("irqchip/irq-sifive-plic: Add syscore callbacks for hibernation")
-Co-developed-by: Jia Wang <wangjia@ultrarisc.com>
-Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
-Co-developed-by: Charles Mirabile <cmirabil@redhat.com>
-Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
-Signed-off-by: Lucas Zampieri <lzampier@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://github.com/riscv/riscv-plic-spec/releases/tag/1.0.0
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: da5c504c7aae ("cpufreq: intel_pstate: Implement QoS supported freq constraints")
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Link: https://patch.msgid.link/2255671.irdbgypaU6@rafael.j.wysocki
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-sifive-plic.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/cpufreq/intel_pstate.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-index bf69a4802b71e..9c4af7d588463 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -252,7 +252,8 @@ static int plic_irq_suspend(void)
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -1307,10 +1307,10 @@ static void update_qos_request(enum freq
+ 			continue;
  
- 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
+ 		req = policy->driver_data;
+-		cpufreq_cpu_put(policy);
+-
+-		if (!req)
++		if (!req) {
++			cpufreq_cpu_put(policy);
+ 			continue;
++		}
  
--	for (i = 0; i < priv->nr_irqs; i++) {
-+	/* irq ID 0 is reserved */
-+	for (i = 1; i < priv->nr_irqs; i++) {
- 		__assign_bit(i, priv->prio_save,
- 			     readl(priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID));
+ 		if (hwp_active)
+ 			intel_pstate_get_hwp_cap(cpu);
+@@ -1326,6 +1326,8 @@ static void update_qos_request(enum freq
+ 
+ 		if (freq_qos_update_request(req, freq) < 0)
+ 			pr_warn("Failed to update freq constraint: CPU%d\n", i);
++
++		cpufreq_cpu_put(policy);
  	}
-@@ -283,7 +284,8 @@ static void plic_irq_resume(void)
+ }
  
- 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
- 
--	for (i = 0; i < priv->nr_irqs; i++) {
-+	/* irq ID 0 is reserved */
-+	for (i = 1; i < priv->nr_irqs; i++) {
- 		index = BIT_WORD(i);
- 		writel((priv->prio_save[index] & BIT_MASK(i)) ? 1 : 0,
- 		       priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID);
--- 
-2.51.0
-
 
 
 
