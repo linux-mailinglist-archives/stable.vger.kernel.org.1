@@ -1,56 +1,74 @@
-Return-Path: <stable+bounces-187104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6011BEA2F3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:54 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D52BE9A27
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56DFD74429C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 726AF35D45E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732D032C92F;
-	Fri, 17 Oct 2025 15:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2716732E135;
+	Fri, 17 Oct 2025 15:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDz7N9uy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwqyoWRU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4AC337110;
-	Fri, 17 Oct 2025 15:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA474332ED8;
+	Fri, 17 Oct 2025 15:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715130; cv=none; b=P8sHyUASSXnwVnUQ9BePXYSMOsSzGWQQh0DP2iHY/sknzWOnmxW3yQNloYA+ttAUoSoO2Ux+9vL2IEYZyQmysbtKWhKLQnJ0k3bUi141LVhD3UFngOtvrq6wCP9bMlV6Fw0esu3zjPujKAeZ36vV0hnrHCHQGrS/dEJ+2CMlGsM=
+	t=1760714195; cv=none; b=UqSJQZM6u1Qyf7NPJcfhS+R/z0OcwRvDxVTqdAWvKSGXSYOrRgExXj6uaMpYZJYSOvQUv1+kx+Xx563eAkpuf5vsT8ARdD7NClmMI/oRqiPtSunyzUpd27UWScChDk5J0DNs2QF86VNPSA1AsMJJvcTvOOb5ibgFDLV23Z1VY18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715130; c=relaxed/simple;
-	bh=I6UdUe3hAhWw+v5Z40zd7X3tRWAuz49JUc+tIxr6nB4=;
+	s=arc-20240116; t=1760714195; c=relaxed/simple;
+	bh=zB6NQKAjEfE6ojK2N7oLUveOdqM4KiUuJTG2WkOexVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGKpniNzG7FuO+BWNAt7rSp6ZvXO/udWkD7I5SIAIHAk7xiIM1hENJ6kU21Qgamf8g/ilhLBkGk71EaWcw2usenR+kC9Zg4LKA1PJhtoVB5RUYEwM1o/qXXtakvAa96DWb+/SA6r0Ewmaw1hD0laXQKjO5r1sZSpZftOcmKJ2Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDz7N9uy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2DBC4CEE7;
-	Fri, 17 Oct 2025 15:32:09 +0000 (UTC)
+	 MIME-Version; b=jfY/cc7zCVvWFJ6ehnWY1ExQ0Dpy8EcqFMuHb4J0wndoEW6CExJSN68UtVxSnDUgAFdrKHtWWrfow0meOJGH3/hd4+b/Y80x8fOrAwzPvQURAHTdTKpobWsiODO/AQiS8jzVGS4KwVTLph0mjCsqxaq3W9ZN5gDcpg41bnS37oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwqyoWRU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288B2C4CEF9;
+	Fri, 17 Oct 2025 15:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715130;
-	bh=I6UdUe3hAhWw+v5Z40zd7X3tRWAuz49JUc+tIxr6nB4=;
+	s=korg; t=1760714195;
+	bh=zB6NQKAjEfE6ojK2N7oLUveOdqM4KiUuJTG2WkOexVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XDz7N9uyMR+/zlCDcTU5em9qwKljGRmcKwxbbtBvDVKngFtHhDqA/B5uIjXj33mMs
-	 IqcheiUbpYV4TSsfxZ2Lptc21kEzFu301cC6+2hsefdDYTii8OYJHP10D7WTpYCK7I
-	 /ry9b05LaYkVupyhMqacaOvUj9ce1GcC8vFW1d5U=
+	b=jwqyoWRUMorT8ndxQ9T5UQLPX9mS25FifV2NDrMmc5f+wFxKC1nd+t+OV4ErMOEtY
+	 umgmMR3Mi2jLuxxFqMq/Hagt/rP1leKHQZ0KkhrljGx+4Qhw+odXCPCS+o0/OUobYb
+	 bqn6wlZV2GlJcfKFwG/HoSEPBzovfAuYaSBcdT8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sidharth Seela <sidharthseela@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	linux-riscv@lists.infradead.org,
+	llvm@lists.linux.dev,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 091/371] selftest: net: ovpn: Fix uninit return values
+Subject: [PATCH 6.12 059/277] perf python: split Clang options when invoking Popen
 Date: Fri, 17 Oct 2025 16:51:06 +0200
-Message-ID: <20251017145205.231379238@linuxfoundation.org>
+Message-ID: <20251017145149.299711559@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +80,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sidharth Seela <sidharthseela@gmail.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 7fc25c5a5ae6230d14b4c088fc94dbd58b2a9f3a ]
+[ Upstream commit c6a43bc3e8f6102a47da0d2e53428d08f00172fb ]
 
-Fix functions that return undefined values. These issues were caught by
-running clang using LLVM=1 option.
+When passing a list to subprocess.Popen, each element maps to one argv
+token. Current code bundles multiple Clang flags into a single element,
+something like:
 
-Clang warnings are as follows:
-ovpn-cli.c:1587:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
- 1587 |         if (!sock) {
-      |             ^~~~~
-ovpn-cli.c:1635:9: note: uninitialized use occurs here
- 1635 |         return ret;
-      |                ^~~
-ovpn-cli.c:1587:2: note: remove the 'if' if its condition is always false
- 1587 |         if (!sock) {
-      |         ^~~~~~~~~~~~
- 1588 |                 fprintf(stderr, "cannot allocate netlink socket\n");
-      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 1589 |                 goto err_free;
-      |                 ~~~~~~~~~~~~~~
- 1590 |         }
-      |         ~
-ovpn-cli.c:1584:15: note: initialize the variable 'ret' to silence this warning
- 1584 |         int mcid, ret;
-      |                      ^
-      |                       = 0
-ovpn-cli.c:2107:7: warning: variable 'ret' is used uninitialized whenever switch case is taken [-Wsometimes-uninitialized]
- 2107 |         case CMD_INVALID:
-      |              ^~~~~~~~~~~
-ovpn-cli.c:2111:9: note: uninitialized use occurs here
- 2111 |         return ret;
-      |                ^~~
-ovpn-cli.c:1939:12: note: initialize the variable 'ret' to silence this warning
- 1939 |         int n, ret;
-      |                   ^
-      |
+  cmd = ['clang',
+         '--target=x86_64-linux-gnu -fintegrated-as -Wno-cast-function-type-mismatch',
+	 'test-hello.c']
 
-Fixes: 959bc330a439 ("testing/selftests: add test tool and scripts for ovpn module")
-Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
-Link: https://patch.msgid.link/20251001123107.96244-2-sidharthseela@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+So Clang only sees one long, invalid option instead of separate flags,
+as a result, the script cannot capture any log via PIPE.
+
+Fix this by using shlex.split() to separate the string so each option
+becomes its own argv element. The fixed list will be:
+
+  cmd = ['clang',
+         '--target=x86_64-linux-gnu',
+	 '-fintegrated-as',
+	 '-Wno-cast-function-type-mismatch',
+	 'test-hello.c']
+
+Fixes: 09e6f9f98370 ("perf python: Fix splitting CC into compiler and options")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20251006-perf_build_android_ndk-v3-2-4305590795b2@arm.com
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: James Clark <james.clark@linaro.org>
+Cc: linux-riscv@lists.infradead.org
+Cc: llvm@lists.linux.dev
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-perf-users@vger.kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/ovpn/ovpn-cli.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/util/setup.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/ovpn/ovpn-cli.c b/tools/testing/selftests/net/ovpn/ovpn-cli.c
-index 9201f2905f2ce..8d0f2f61923c9 100644
---- a/tools/testing/selftests/net/ovpn/ovpn-cli.c
-+++ b/tools/testing/selftests/net/ovpn/ovpn-cli.c
-@@ -1586,6 +1586,7 @@ static int ovpn_listen_mcast(void)
- 	sock = nl_socket_alloc();
- 	if (!sock) {
- 		fprintf(stderr, "cannot allocate netlink socket\n");
-+		ret = -ENOMEM;
- 		goto err_free;
- 	}
+diff --git a/tools/perf/util/setup.py b/tools/perf/util/setup.py
+index 649550e9b7aa8..abb567de3e8a9 100644
+--- a/tools/perf/util/setup.py
++++ b/tools/perf/util/setup.py
+@@ -1,6 +1,7 @@
+ from os import getenv, path
+ from subprocess import Popen, PIPE
+ from re import sub
++import shlex
  
-@@ -2105,6 +2106,7 @@ static int ovpn_run_cmd(struct ovpn_ctx *ovpn)
- 		ret = ovpn_listen_mcast();
- 		break;
- 	case CMD_INVALID:
-+		ret = -EINVAL;
- 		break;
- 	}
+ cc = getenv("CC")
  
+@@ -16,7 +17,9 @@ cc_is_clang = b"clang version" in Popen([cc, "-v"], stderr=PIPE).stderr.readline
+ src_feature_tests  = getenv('srctree') + '/tools/build/feature'
+ 
+ def clang_has_option(option):
+-    cc_output = Popen([cc, cc_options + option, path.join(src_feature_tests, "test-hello.c") ], stderr=PIPE).stderr.readlines()
++    cmd = shlex.split(f"{cc} {cc_options} {option}")
++    cmd.append(path.join(src_feature_tests, "test-hello.c"))
++    cc_output = Popen(cmd, stderr=PIPE).stderr.readlines()
+     return [o for o in cc_output if ((b"unknown argument" in o) or (b"is not supported" in o) or (b"unknown warning option" in o))] == [ ]
+ 
+ if cc_is_clang:
 -- 
 2.51.0
 
