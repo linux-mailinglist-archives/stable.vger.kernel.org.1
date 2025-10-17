@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4F4BE9F2E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BAABEA639
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7BD8C5883FC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A2267C55F5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9ADB23EA9E;
-	Fri, 17 Oct 2025 15:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD898330B31;
+	Fri, 17 Oct 2025 15:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLR/B4BR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpY7lZ88"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BDE3BB5A;
-	Fri, 17 Oct 2025 15:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B0D330B0F;
+	Fri, 17 Oct 2025 15:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714713; cv=none; b=S4eV3mI0ZRUKDm4fs8WsrRTYaUba2gbwQJJWSJqRJLl747zAVMAic4WaiN2WU2+sIY1R9+DXx+TFjEOx0qnLimtFAzzZ3oamFcibzELIGr/UQ7u/m2gqD9INUDODiN9hVRSO4Iw0dD1lcGexyAHIJi7hp09XSoXIvwIOJ7S1Jb4=
+	t=1760715692; cv=none; b=US1AwGLyh/9b6VB8gcOw4n+FEWhokBftb3YFYzkBc8LZyDByvm+tqTagyuDhMZlWNSvSBw/c5vvBxwAdyMYBQVC41dS8nbJVjud7hp5IenAkIJ1276B3KrmPOLsUnACKHIQHw800sUfMW7SWLTfNH02wAoxBoop2gfhzu9ip/1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714713; c=relaxed/simple;
-	bh=3RxEu7DDMPfuMkWehCivwr0elPmhhu1nM/hE5oH9JOU=;
+	s=arc-20240116; t=1760715692; c=relaxed/simple;
+	bh=t7ii8yKltPIRiVdnhXHYrrpdh+0PDXUc/hvq0ek4jrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prysiITo4R2Bgbo3G7hKvtB1wX5ZDNy+xyRrCcP3mZ5acxjBAE8WE6cRYqO/2DmTbTOoAm6p6CrF62/Y1SOn78VOqp+Izau2KES3VoVqokVVtiqPvg8TVpHHmBGjcI2jMncnlyVpGs4SnCiE37VPg+QOJ10/Rd8073VNggcr+yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLR/B4BR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0980DC4CEE7;
-	Fri, 17 Oct 2025 15:25:12 +0000 (UTC)
+	 MIME-Version; b=ENH1sboXTThtghf/1OJmbRcpaAKIpgR2a3FaNvX+cSkUIx7gz7d05BFyPqqeE4zYJdLylK9RtxoZyrjp5uNhPWBg5bqHzXC/bbxLmmZoFMJyN0cxVt6GsQ3ssR0sopXwI3ixAC/ciGH9c+Jxw+Qnac3G5K0fOTF0QpaVGL3Dt98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpY7lZ88; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B259CC113D0;
+	Fri, 17 Oct 2025 15:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714713;
-	bh=3RxEu7DDMPfuMkWehCivwr0elPmhhu1nM/hE5oH9JOU=;
+	s=korg; t=1760715692;
+	bh=t7ii8yKltPIRiVdnhXHYrrpdh+0PDXUc/hvq0ek4jrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLR/B4BR+7Tk/5/9nGNuF50ZM8tkJABxJEca8uq5i79WQKf8qctRvOKoSZRPNQTJt
-	 eZzCZFigUqloOSwpxD106FrYur7lty7JRZuncGVBVqHtLVsxTw7NT8JnTRnERsoWxx
-	 J8ejSG4QvWI62hsIgtucRXJwJqvG+vRe80tcgsJI=
+	b=bpY7lZ88BKKCGoyoHXQBv9/CloXiuTdTL0xQs0at6offMNY0qa6twMvvLqo8B9HaQ
+	 DHIbINhTJqOj7xr6GF/2Iu+2BJetM3doG1EEPeIXXN/++THvlzinerkPc0SkzdQvWx
+	 9sQtzFKTOJMYNKPL1nvkaMdyL9raZBS1vPfT5g2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 239/277] statmount: dont call path_put() under namespace semaphore
-Date: Fri, 17 Oct 2025 16:54:06 +0200
-Message-ID: <20251017145155.866547084@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	Florian Weimer <fweimer@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: [PATCH 6.17 272/371] rseq/selftests: Use weak symbol reference, not definition, to link with glibc
+Date: Fri, 17 Oct 2025 16:54:07 +0200
+Message-ID: <20251017145211.915818304@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit e8c84e2082e69335f66c8ade4895e80ec270d7c4 ]
+commit a001cd248ab244633c5fabe4f7c707e13fc1d1cc upstream.
 
-Massage statmount() and make sure we don't call path_put() under the
-namespace semaphore. If we put the last reference we're fscked.
+Add "extern" to the glibc-defined weak rseq symbols to convert the rseq
+selftest's usage from weak symbol definitions to weak symbol _references_.
+Effectively re-defining the glibc symbols wreaks havoc when building with
+-fno-common, e.g. generates segfaults when running multi-threaded programs,
+as dynamically linked applications end up with multiple versions of the
+symbols.
 
-Fixes: 46eae99ef733 ("add statmount(2) syscall")
-Cc: stable@vger.kernel.org # v6.8+
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Building with -fcommon, which until recently has the been the default for
+GCC and clang, papers over the bug by allowing the linker to resolve the
+weak/tentative definition to glibc's "real" definition.
+
+Note, the symbol itself (or rather its address), not the value of the
+symbol, is set to 0/NULL for unresolved weak symbol references, as the
+symbol doesn't exist and thus can't have a value.  Check for a NULL rseq
+size pointer to handle the scenario where the test is statically linked
+against a libc that doesn't support rseq in any capacity.
+
+Fixes: 3bcbc20942db ("selftests/rseq: Play nice with binaries statically linked against glibc 2.35+")
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Suggested-by: Florian Weimer <fweimer@redhat.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/87frdoybk4.ffs@tglx
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namespace.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ tools/testing/selftests/rseq/rseq.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -5200,7 +5200,6 @@ static int grab_requested_root(struct mn
- static int do_statmount(struct kstatmount *s, u64 mnt_id, u64 mnt_ns_id,
- 			struct mnt_namespace *ns)
- {
--	struct path root __free(path_put) = {};
- 	struct mount *m;
- 	int err;
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -40,9 +40,9 @@
+  * Define weak versions to play nice with binaries that are statically linked
+  * against a libc that doesn't support registering its own rseq.
+  */
+-__weak ptrdiff_t __rseq_offset;
+-__weak unsigned int __rseq_size;
+-__weak unsigned int __rseq_flags;
++extern __weak ptrdiff_t __rseq_offset;
++extern __weak unsigned int __rseq_size;
++extern __weak unsigned int __rseq_flags;
  
-@@ -5212,7 +5211,7 @@ static int do_statmount(struct kstatmoun
- 	if (!s->mnt)
- 		return -ENOENT;
- 
--	err = grab_requested_root(ns, &root);
-+	err = grab_requested_root(ns, &s->root);
- 	if (err)
- 		return err;
- 
-@@ -5221,15 +5220,13 @@ static int do_statmount(struct kstatmoun
- 	 * mounts to show users.
+ static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
+ static const unsigned int *libc_rseq_size_p = &__rseq_size;
+@@ -209,7 +209,7 @@ void rseq_init(void)
+ 	 * libc not having registered a restartable sequence.  Try to find the
+ 	 * symbols if that's the case.
  	 */
- 	m = real_mount(s->mnt);
--	if (!is_path_reachable(m, m->mnt.mnt_root, &root) &&
-+	if (!is_path_reachable(m, m->mnt.mnt_root, &s->root) &&
- 	    !ns_capable_noaudit(ns->user_ns, CAP_SYS_ADMIN))
- 		return -EPERM;
- 
- 	err = security_sb_statfs(s->mnt->mnt_root);
- 	if (err)
- 		return err;
--
--	s->root = root;
- 	if (s->mask & STATMOUNT_SB_BASIC)
- 		statmount_sb_basic(s);
- 
-@@ -5406,6 +5403,7 @@ retry:
- 	if (!ret)
- 		ret = copy_statmount_to_user(ks);
- 	kvfree(ks->seq.buf);
-+	path_put(&ks->root);
- 	if (retry_statmount(ret, &seq_size))
- 		goto retry;
- 	return ret;
+-	if (!*libc_rseq_size_p) {
++	if (!libc_rseq_size_p || !*libc_rseq_size_p) {
+ 		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
+ 		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
+ 		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
 
 
 
