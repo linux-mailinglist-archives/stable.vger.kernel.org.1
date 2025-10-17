@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8A2BE9E94
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:32:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF469BE98C9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 39918587CD2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A071744067
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445A732C944;
-	Fri, 17 Oct 2025 15:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84171336EC2;
+	Fri, 17 Oct 2025 15:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a63jTBl5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDfQPgSL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F226520C00A;
-	Fri, 17 Oct 2025 15:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA073370E0;
+	Fri, 17 Oct 2025 15:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714711; cv=none; b=fBfMURqTwevMVBqZoSE9fEtBs+fnXWdnekX5b0SRQ/Ms0q5na16LMi9S7qvSUch41nV01Kd7CjTKl+fCwE9Ye3dx+w20omm041Mzf5hRA6giup4MSpKm7yuVe5u0nCGdcMYZ8PlpzICpWtUo6C49sAq77EXhOXqE8HJjeArQ66c=
+	t=1760713463; cv=none; b=tDrL1X3XGN8Peatgme+1YWhrnMmhXRC136FcQuwiVBRFu9FF2c3GmuEQqNaz7KMlxhA3hD52vv8pGBGmsSLhpn8wlGsZJNCvXiKUev9rfgGNT4BcmDsnZvqIZEwxcjj3omRfcTbtI758vnsKiWd4yjalkEMVDCursqZ59jg4iHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714711; c=relaxed/simple;
-	bh=fJCLxE255BPNnpZJST0VdkcP1I/EmBrUTPDGQqG+M7c=;
+	s=arc-20240116; t=1760713463; c=relaxed/simple;
+	bh=6ZtGpPSkDMbMz4+B3QDBWf4UTaeN3T497z+F2A3AoWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s036Fp9p9KxyTW87laiO/7lIeP8YPLjFADDZGbfYwlSnlTbOsc9+avqn8B4pMH/YM6MH8tKFTr+YPTVlrvxCPvbBLXBnPMaagN2oFxbhY+9RYnkXmjckieHp+IU+YyklEV68iocgHdDK6mEaVlZq2/TRtmol4cxKyskFtRF42gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a63jTBl5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB69C4CEE7;
-	Fri, 17 Oct 2025 15:25:09 +0000 (UTC)
+	 MIME-Version; b=U9rBseWPIp/7KnXuc4o/XU3QiuOg8oJ1Qg8tW7oUkpBoozcHHqigRu0tgC3flzbysgt2jp4PMxmPpb3RNxavWNafhrE7T81SoPwMBXSfnBJDj/5WVmpIejnljaT8DbEbyJggC/eOqk8VtZkQw6XLNPiqFkocbNh3AGnBS2rf/T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDfQPgSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48BCC4CEF9;
+	Fri, 17 Oct 2025 15:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714710;
-	bh=fJCLxE255BPNnpZJST0VdkcP1I/EmBrUTPDGQqG+M7c=;
+	s=korg; t=1760713463;
+	bh=6ZtGpPSkDMbMz4+B3QDBWf4UTaeN3T497z+F2A3AoWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a63jTBl5A4hinjJf0cQEBB9RboJRI3brCPZ5Srn1gf8EHgl7EQDffHVI2smVDlen6
-	 8yqthpTo2ErY1rqLVTjhvy3E+A7/iYJ1tG4dXwz12nU6600Cc0l22twq4xM5PV4IQ0
-	 Nl9k5h9gOCMVJkeVmxqsXWFS3qSoIypGv2wLo43k=
+	b=kDfQPgSLkr9S7DdZYgKy3atHve/NyuqqE61b1pi2zIbWr0yIUoW4BaFeXKWvn0RYZ
+	 SQdGzZZPTg3cZ5tOD/UHAM8d4V55POW4Kr90k7xZua0vh7Lo9dejqi5VJp3gfEMY88
+	 7aQHNGLImBY9XjGZXNjvXyd1fECgK67fr0lFtYY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 238/277] KVM: x86: Advertise SRSO_USER_KERNEL_NO to userspace
-Date: Fri, 17 Oct 2025 16:54:05 +0200
-Message-ID: <20251017145155.829311022@linuxfoundation.org>
+	Tejun Heo <tj@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 167/168] writeback: Avoid excessively long inode switching times
+Date: Fri, 17 Oct 2025 16:54:06 +0200
+Message-ID: <20251017145135.203307180@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 716f86b523d8ec3c17015ee0b03135c7aa6f2f08 ]
+[ Upstream commit 9a6ebbdbd41235ea3bc0c4f39e2076599b8113cc ]
 
-SRSO_USER_KERNEL_NO denotes whether the CPU is affected by SRSO across
-user/kernel boundaries. Advertise it to guest userspace.
+With lazytime mount option enabled we can be switching many dirty inodes
+on cgroup exit to the parent cgroup. The numbers observed in practice
+when systemd slice of a large cron job exits can easily reach hundreds
+of thousands or millions. The logic in inode_do_switch_wbs() which sorts
+the inode into appropriate place in b_dirty list of the target wb
+however has linear complexity in the number of dirty inodes thus overall
+time complexity of switching all the inodes is quadratic leading to
+workers being pegged for hours consuming 100% of the CPU and switching
+inodes to the parent wb.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/r/20241202120416.6054-3-bp@kernel.org
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Simple reproducer of the issue:
+  FILES=10000
+  # Filesystem mounted with lazytime mount option
+  MNT=/mnt/
+  echo "Creating files and switching timestamps"
+  for (( j = 0; j < 50; j ++ )); do
+      mkdir $MNT/dir$j
+      for (( i = 0; i < $FILES; i++ )); do
+          echo "foo" >$MNT/dir$j/file$i
+      done
+      touch -a -t 202501010000 $MNT/dir$j/file*
+  done
+  wait
+  echo "Syncing and flushing"
+  sync
+  echo 3 >/proc/sys/vm/drop_caches
+
+  echo "Reading all files from a cgroup"
+  mkdir /sys/fs/cgroup/unified/mycg1 || exit
+  echo $$ >/sys/fs/cgroup/unified/mycg1/cgroup.procs || exit
+  for (( j = 0; j < 50; j ++ )); do
+      cat /mnt/dir$j/file* >/dev/null &
+  done
+  wait
+  echo "Switching wbs"
+  # Now rmdir the cgroup after the script exits
+
+We need to maintain b_dirty list ordering to keep writeback happy so
+instead of sorting inode into appropriate place just append it at the
+end of the list and clobber dirtied_time_when. This may result in inode
+writeback starting later after cgroup switch however cgroup switches are
+rare so it shouldn't matter much. Since the cgroup had write access to
+the inode, there are no practical concerns of the possible DoS issues.
+
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Boris Ostrovsky suggested that we backport this commit to 6.12.y as we
-have commit: 6f0f23ef76be ("KVM: x86: Add IBPB_BRTYPE support") in 6.12.y
+ fs/fs-writeback.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-Hi borislav: Can you please ACK before stable maintainers pick this ?
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/x86/kvm/cpuid.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -816,7 +816,7 @@ void kvm_set_cpu_caps(void)
- 		F(NO_NESTED_DATA_BP) | F(LFENCE_RDTSC) | 0 /* SmmPgCfgLock */ |
- 		F(VERW_CLEAR) |
- 		F(NULL_SEL_CLR_BASE) | F(AUTOIBRS) | 0 /* PrefetchCtlMsr */ |
--		F(WRMSR_XX_BASE_NS)
-+		F(WRMSR_XX_BASE_NS) | F(SRSO_USER_KERNEL_NO)
- 	);
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 07473cf2a7c9b..75e8c102c5eef 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -420,22 +420,23 @@ static bool inode_do_switch_wbs(struct inode *inode,
+ 	 * Transfer to @new_wb's IO list if necessary.  If the @inode is dirty,
+ 	 * the specific list @inode was on is ignored and the @inode is put on
+ 	 * ->b_dirty which is always correct including from ->b_dirty_time.
+-	 * The transfer preserves @inode->dirtied_when ordering.  If the @inode
+-	 * was clean, it means it was on the b_attached list, so move it onto
+-	 * the b_attached list of @new_wb.
++	 * If the @inode was clean, it means it was on the b_attached list, so
++	 * move it onto the b_attached list of @new_wb.
+ 	 */
+ 	if (!list_empty(&inode->i_io_list)) {
+ 		inode->i_wb = new_wb;
  
- 	kvm_cpu_cap_check_and_set(X86_FEATURE_SBPB);
+ 		if (inode->i_state & I_DIRTY_ALL) {
+-			struct inode *pos;
+-
+-			list_for_each_entry(pos, &new_wb->b_dirty, i_io_list)
+-				if (time_after_eq(inode->dirtied_when,
+-						  pos->dirtied_when))
+-					break;
++			/*
++			 * We need to keep b_dirty list sorted by
++			 * dirtied_time_when. However properly sorting the
++			 * inode in the list gets too expensive when switching
++			 * many inodes. So just attach inode at the end of the
++			 * dirty list and clobber the dirtied_time_when.
++			 */
++			inode->dirtied_time_when = jiffies;
+ 			inode_io_list_move_locked(inode, new_wb,
+-						  pos->i_io_list.prev);
++						  &new_wb->b_dirty);
+ 		} else {
+ 			inode_cgwb_move_to_attached(inode, new_wb);
+ 		}
+-- 
+2.51.0
+
 
 
 
