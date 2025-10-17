@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-187513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0EDBEA60F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:00:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0470BE9D17
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 768375A2D78
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F43F743670
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD17E330B30;
-	Fri, 17 Oct 2025 15:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A94D3328E6;
+	Fri, 17 Oct 2025 15:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mb5LDI/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFku7WN1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BE1330B17;
-	Fri, 17 Oct 2025 15:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DDF32C92D;
+	Fri, 17 Oct 2025 15:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716287; cv=none; b=uiqaJm223c9STmi93+vuQN6jlK6pdjfUNkJTHK/rnX2dEOTwkuva28F+9q+03SizZu131ztEVezcFWL9MepJ9IQSaq/nUZZyODLSO59UB+9vHa64kwPDntXvq69R5+SUAf7p81ZSIctduemN/oSte4HnS232RZy0DEtESFKlOy0=
+	t=1760713928; cv=none; b=CcA0rZ1ynWLHqpjQJSs01hJBLBa8w29w+9UAOA+fHO94VdjRHNPsuea21TixFbVdy5OM+d3kzVeohg4EKvktzdYpHzsAxAlDljza7hra9j/qxm2sQPI1mUlGAInx/rzzTFSXNBBCDhp/7gQC3u2df40b7rrGgA+67pLm1n3+tUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716287; c=relaxed/simple;
-	bh=yICCwW4j3tnPLLWi6r9JW0nu/ARFV20zQPbosPSv8Cg=;
+	s=arc-20240116; t=1760713928; c=relaxed/simple;
+	bh=aA1gD+eUIZuQGfShKMoVYXE2rzV59d892hfGXJN0ET0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNB1Si9CPB4Em0MS7uCkw8YQGghMGEgPEyEc1+Kz94VEe+mgMI2z/GTYARs6ALMfRUn/oZi4A9HSHS/PZSPgjpLRrSK52g/nn3kmnys0yElFxE5kKDdHbLZRjTg9tcb2Cb8NhHQYCp9FPuMtY2KCQvfepysft70d/bV/qXZWJYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mb5LDI/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DC0C116B1;
-	Fri, 17 Oct 2025 15:51:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W/1BmGmRtj/70qdVHlv8NJpA5UzrcPsKJZ2W0X1Kq/tu/cIq+Whd4ys76BD9Z+0VnNh7sAK1SrWEQC4UccC53uPhFhJ7ChWIOUTqfvqe2BD7O9bepV6/+Clphzu1+LQsVtsgD7w5V3WoLoiWxUcB+7aw3vek7Q5qrWdnAXDR8tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFku7WN1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882A2C4CEE7;
+	Fri, 17 Oct 2025 15:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716287;
-	bh=yICCwW4j3tnPLLWi6r9JW0nu/ARFV20zQPbosPSv8Cg=;
+	s=korg; t=1760713927;
+	bh=aA1gD+eUIZuQGfShKMoVYXE2rzV59d892hfGXJN0ET0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mb5LDI/K4jVgMiyOxPUCAXoJwZvcSm2KgrFZtWtHtpwqzdZyADUrXPnWKSAOyEqW7
-	 g7Hl/dXtcxnad5x7qQfEJLQ6r/j1vDK8BFPilLkvX8PTN1RwAvXahfQpV4qO7RANya
-	 HFKyJKJETwDFYx5ZJ2djkMXNvizwxysNZ5WeofvM=
+	b=BFku7WN1W9VVubOSR0/5lsAFqcOQ2dSarZ7+GtYf2XKOLNcYElSgnc6G9XvHN1QT6
+	 qrrJkNc2bY8falZTlUWb2BjZOZ41hoiWAZmxOXUs+YXlkun7/8dr99NzYBhyLwHgnc
+	 nIKUTWzGUHW4ZvldbHEkVfLJdJ5wY4kD1F1Fd6I0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
+	Wang Jiang <jiangwang@kylinos.cn>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 137/276] clk: nxp: lpc18xx-cgu: convert from round_rate() to determine_rate()
+Subject: [PATCH 6.6 169/201] PCI: endpoint: Remove surplus return statement from pci_epf_test_clean_dma_chan()
 Date: Fri, 17 Oct 2025 16:53:50 +0200
-Message-ID: <20251017145147.484487053@linuxfoundation.org>
+Message-ID: <20251017145140.948222358@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,75 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Wang Jiang <jiangwang@kylinos.cn>
 
-[ Upstream commit b46a3d323a5b7942e65025254c13801d0f475f02 ]
+[ Upstream commit 9b80bdb10aee04ce7289896e6bdad13e33972636 ]
 
-The round_rate() clk ops is deprecated, so migrate this driver from
-round_rate() to determine_rate() using the Coccinelle semantic patch
-on the cover letter of this series.
+Remove a surplus return statement from the void function that has been
+added in the commit commit 8353813c88ef ("PCI: endpoint: Enable DMA
+tests for endpoints with DMA capabilities").
 
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Stable-dep-of: 1624dead9a4d ("clk: nxp: Fix pll0 rate check condition in LPC18xx CGU driver")
+Especially, as an empty return statements at the end of a void functions
+serve little purpose.
+
+This fixes the following checkpatch.pl script warning:
+
+  WARNING: void function return statements are not generally useful
+  #296: FILE: drivers/pci/endpoint/functions/pci-epf-test.c:296:
+  +     return;
+  +}
+
+Link: https://lore.kernel.org/r/tencent_F250BEE2A65745A524E2EFE70CF615CA8F06@qq.com
+Signed-off-by: Wang Jiang <jiangwang@kylinos.cn>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Stable-dep-of: 85afa9ea122d ("PCI: endpoint: pci-epf-test: Add NULL check for DMA channels before release")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/nxp/clk-lpc18xx-cgu.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/clk/nxp/clk-lpc18xx-cgu.c b/drivers/clk/nxp/clk-lpc18xx-cgu.c
-index 8b686da5577b3..44e07a3c253b9 100644
---- a/drivers/clk/nxp/clk-lpc18xx-cgu.c
-+++ b/drivers/clk/nxp/clk-lpc18xx-cgu.c
-@@ -374,23 +374,25 @@ static unsigned long lpc18xx_pll0_recalc_rate(struct clk_hw *hw,
- 	return 0;
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -291,8 +291,6 @@ static void pci_epf_test_clean_dma_chan(
+ 
+ 	dma_release_channel(epf_test->dma_chan_rx);
+ 	epf_test->dma_chan_rx = NULL;
+-
+-	return;
  }
  
--static long lpc18xx_pll0_round_rate(struct clk_hw *hw, unsigned long rate,
--				    unsigned long *prate)
-+static int lpc18xx_pll0_determine_rate(struct clk_hw *hw,
-+				       struct clk_rate_request *req)
- {
- 	unsigned long m;
- 
--	if (*prate < rate) {
-+	if (req->best_parent_rate < req->rate) {
- 		pr_warn("%s: pll dividers not supported\n", __func__);
- 		return -EINVAL;
- 	}
- 
--	m = DIV_ROUND_UP_ULL(*prate, rate * 2);
-+	m = DIV_ROUND_UP_ULL(req->best_parent_rate, req->rate * 2);
- 	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
--		pr_warn("%s: unable to support rate %lu\n", __func__, rate);
-+		pr_warn("%s: unable to support rate %lu\n", __func__, req->rate);
- 		return -EINVAL;
- 	}
- 
--	return 2 * *prate * m;
-+	req->rate = 2 * req->best_parent_rate * m;
-+
-+	return 0;
- }
- 
- static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
-@@ -447,7 +449,7 @@ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
- 
- static const struct clk_ops lpc18xx_pll0_ops = {
- 	.recalc_rate	= lpc18xx_pll0_recalc_rate,
--	.round_rate	= lpc18xx_pll0_round_rate,
-+	.determine_rate = lpc18xx_pll0_determine_rate,
- 	.set_rate	= lpc18xx_pll0_set_rate,
- };
- 
--- 
-2.51.0
-
+ static void pci_epf_test_print_rate(struct pci_epf_test *epf_test,
 
 
 
