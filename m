@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E7DBEA645
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE66DBEA455
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A23B11884934
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95DD3947846
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0855F257437;
-	Fri, 17 Oct 2025 15:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F213F330B17;
+	Fri, 17 Oct 2025 15:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsZ7jZU+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7WACyvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6123330B06;
-	Fri, 17 Oct 2025 15:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB23330B1C;
+	Fri, 17 Oct 2025 15:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716594; cv=none; b=jN0jtZrl1Llbk5FtTsDObeJqrWuGyUJKanHqULUzl2UxXbSOEMaxsbiCuEU1v+15vCQRRvkwUHae6F+aqbgIr7ki9D5h3FteimSDgSlz8WjghofD1ecYYSegKpQ2QeMlg9okt1909TZufPt/XBhLM3fCA/pY1lX4rj+c6KF2VJQ=
+	t=1760715860; cv=none; b=ZlzEuojB37D21bl9xu4J50TN+a/vtX4vec6dQ+LetehIpP7fYgFABFxEOmvoKAkk7zVjG5qe8y+DKYbCq1+GW38E75+H1m/lgVtS66QgMwTJN9mR3nG09I8akCjr/Hd+NBSbT4OSndn4EJKbZR80z+S7IC0u97RaMKj1FRuokUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716594; c=relaxed/simple;
-	bh=xlbISFRy47Kr18mKHyeTbDS9WSnonMQNt6r8ms5FbGE=;
+	s=arc-20240116; t=1760715860; c=relaxed/simple;
+	bh=vDJAGuVwZHZLaBj4WYi1NhP7g3g9hQoQRqimx7yBkl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=THw6wOGuVHcp7KyF6q58+iSOoMbHR7lxhEsKqUSiuFaIqGcL2Sw72iYJf3ZSWyCQQSXGAfiNGFGTWIczOup8v+MjilgjDaJehTPzDelpW5eK0qgFna2QpfuNE3p0559K7sm/bV1depaXl6iCpuJGa91n4rNygkB4AKB+kDcFjEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsZ7jZU+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBD5C4CEE7;
-	Fri, 17 Oct 2025 15:56:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ii2iatD83mdRyyeLcJ9Jmm6TgUCgumo7/VqJGy44+UOheQ0KglUoQG/1hAKq3A9u+YMW+wYCe9+GHepSzbK+rm0TG1mosaINsmhqe9m86xLXc1tGLZl03vsCtAQAxMoD47VM+UP5yEIzaVJjsoYlTtR33aSonWxHCmBU5Ei+yMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7WACyvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269F7C4CEE7;
+	Fri, 17 Oct 2025 15:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716594;
-	bh=xlbISFRy47Kr18mKHyeTbDS9WSnonMQNt6r8ms5FbGE=;
+	s=korg; t=1760715860;
+	bh=vDJAGuVwZHZLaBj4WYi1NhP7g3g9hQoQRqimx7yBkl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BsZ7jZU+uTLyhmvwsPzDgFHRnnfJ8bu5JF6PWJHkYXlgj+ezCprfOx7tv9uAaFr6/
-	 Cr3kJ9WrcUwHeXOBUZaADNf4pYAFPcRTZGT7CBfa3FfaYjyI0Acez9rdSDeRVzSS8A
-	 2N8X2cuhYYF5wtkrZl7BUSewfqREO18OwfErI74M=
+	b=m7WACyvYwhfAAlnOzRMMGwVJwYIe+jg9DQC9UjN6g/adltoVf8b4N2g31glB7Yo5+
+	 wdy4xE9qPyo7IGjTjq6p1kEPmDDJcNtmR+G3zxDqz59dgFDGmuO6p4BbEKherZBdf3
+	 wlUEfv+do/kap65H2VdbI9+WHvh/pRJa++/Cv6fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 5.15 243/276] minmax: deduplicate __unconst_integer_typeof()
-Date: Fri, 17 Oct 2025 16:55:36 +0200
-Message-ID: <20251017145151.344343479@linuxfoundation.org>
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	=?UTF-8?q?=E9=AB=98=E7=BF=94?= <gaoxiang17@xiaomi.com>
+Subject: [PATCH 6.17 362/371] pid: make __task_pid_nr_ns(ns => NULL) safe for zombie callers
+Date: Fri, 17 Oct 2025 16:55:37 +0200
+Message-ID: <20251017145215.186698508@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 5e57418a2031cd5e1863efdf3d7447a16a368172 ]
+[ Upstream commit abdfd4948e45c51b19162cf8b3f5003f8f53c9b9 ]
 
-It appears that compiler_types.h already have an implementation of the
-__unconst_integer_typeof() called __unqual_scalar_typeof().  Use it
-instead of the copy.
+task_pid_vnr(another_task) will crash if the caller was already reaped.
+The pid_alive(current) check can't really help, the parent/debugger can
+call release_task() right after this check.
 
-Link: https://lkml.kernel.org/r/20230911154913.4176033-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This also means that even task_ppid_nr_ns(current, NULL) is not safe,
+pid_alive() only ensures that it is safe to dereference ->real_parent.
+
+Change __task_pid_nr_ns() to ensure ns != NULL.
+
+Originally-by: 高翔 <gaoxiang17@xiaomi.com>
+Link: https://lore.kernel.org/all/20250802022123.3536934-1-gxxa03070307@gmail.com/
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/20250810173604.GA19991@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ kernel/pid.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -169,27 +169,6 @@
- #define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
+diff --git a/kernel/pid.c b/kernel/pid.c
+index 296cd04c24bae..2dbcc4dd90cc0 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -514,7 +514,8 @@ pid_t __task_pid_nr_ns(struct task_struct *task, enum pid_type type,
+ 	rcu_read_lock();
+ 	if (!ns)
+ 		ns = task_active_pid_ns(current);
+-	nr = pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);
++	if (ns)
++		nr = pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);
+ 	rcu_read_unlock();
  
- /*
-- * Remove a const qualifier from integer types
-- * _Generic(foo, type-name: association, ..., default: association) performs a
-- * comparison against the foo type (not the qualified type).
-- * Do not use the const keyword in the type-name as it will not match the
-- * unqualified type of foo.
-- */
--#define __unconst_integer_type_cases(type)	\
--	unsigned type:  (unsigned type)0,	\
--	signed type:    (signed type)0
--
--#define __unconst_integer_typeof(x) typeof(			\
--	_Generic((x),						\
--		char: (char)0,					\
--		__unconst_integer_type_cases(char),		\
--		__unconst_integer_type_cases(short),		\
--		__unconst_integer_type_cases(int),		\
--		__unconst_integer_type_cases(long),		\
--		__unconst_integer_type_cases(long long),	\
--		default: (x)))
--
--/*
-  * Do not check the array parameter using __must_be_array().
-  * In the following legit use-case where the "array" passed is a simple pointer,
-  * __must_be_array() will return a failure.
-@@ -203,13 +182,13 @@
-  * 'int *buff' and 'int buff[N]' types.
-  *
-  * The array can be an array of const items.
-- * typeof() keeps the const qualifier. Use __unconst_integer_typeof() in order
-+ * typeof() keeps the const qualifier. Use __unqual_scalar_typeof() in order
-  * to discard the const qualifier for the __element variable.
-  */
- #define __minmax_array(op, array, len) ({				\
- 	typeof(&(array)[0]) __array = (array);				\
- 	typeof(len) __len = (len);					\
--	__unconst_integer_typeof(__array[0]) __element = __array[--__len]; \
-+	__unqual_scalar_typeof(__array[0]) __element = __array[--__len];\
- 	while (__len--)							\
- 		__element = op(__element, __array[__len]);		\
- 	__element; })
+ 	return nr;
+-- 
+2.51.0
+
 
 
 
