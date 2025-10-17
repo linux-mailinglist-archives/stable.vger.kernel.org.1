@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-187352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B08BEA89A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:14:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8503BEADCD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15FCA626E5F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9DE8960ADB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95D5330B26;
-	Fri, 17 Oct 2025 15:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0932F12A0;
+	Fri, 17 Oct 2025 15:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvkEhSah"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTKtEhvj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8626B330B06;
-	Fri, 17 Oct 2025 15:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4640330B06;
+	Fri, 17 Oct 2025 15:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715829; cv=none; b=XEZr5nitCuoe+H/aT5SSehccrU6wM9jlcN9qFYa2E0dji7l+1rH0Birl4QNWKl4pSn8cbwwn+f2LK95w5SmrD7+w7dQ4bHZrGy6NhDMJAsqE2ASrWzQV6DErLJT+jaLq7s1loppkXXfOLJi3rytlARqfezbjqXAfbFNryi3ybKs=
+	t=1760716567; cv=none; b=rt5JxOz5G0dowY7x5GL+VvIgrJip4+XBOewl4PuOQHPlk3Fp5A9G+6pVwFojKcrUR9TU4KjvljF15Itn81rAIonU4dciwT5PFTP61tIOefCBy8F9wWPNJgknT3G/zcLXaqhlkP2AUCiOHagA9meSue2aUiNPrZ9dH/1Gvy9vUAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715829; c=relaxed/simple;
-	bh=3CEnRYP7QFo231K8F26IIGE/yH7agaoo6tLnET3HbYo=;
+	s=arc-20240116; t=1760716567; c=relaxed/simple;
+	bh=7x9QzPtvqOEK93ueLpz6jfyNAxoiadqxq9dxi5giihg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKus3gMzIHABw0oI7E5MjLnZJP7EBTRlF+nJh8OS3zAiMfYI28QWlqmzO57NMldaZ0whEeg2crvgaUZsa8hGVlpchxDR6u5GNikDiPNciSVTpN4kE6OaDPvfjh5EyxZ3+iN+DTGtiAT5YF+92FV0rdYsYPB+0gYaNWYuRV+DtiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvkEhSah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB086C4CEE7;
-	Fri, 17 Oct 2025 15:43:48 +0000 (UTC)
+	 MIME-Version; b=D/KKCWs1D9CS+NIKFexU2dOOzRfd5xs7O14l/XXxZotvbVimixKE2bn/hic03yW5jWdIC0QJTr/olP/0Ls6u1DMCe9oEwn1iJktNBqtGu0wRVqhefpDyD2nqbPJ9ayh/NuWl+G46Lo+a+drmle/KZIcczlBxAhUWW0c4ZR10k8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTKtEhvj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB53C4CEFE;
+	Fri, 17 Oct 2025 15:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715829;
-	bh=3CEnRYP7QFo231K8F26IIGE/yH7agaoo6tLnET3HbYo=;
+	s=korg; t=1760716567;
+	bh=7x9QzPtvqOEK93ueLpz6jfyNAxoiadqxq9dxi5giihg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvkEhSahJHfwzIUsfvzZzCJIcv9UpH3Nofz7mT1WCnV5GCCXgQT6cvthzsr1pABN2
-	 CChheCMk2Nlf2jHMNHEH3ferLY1pDMP6n7qIyQqLDJsZYbtcv8azyfrzJahRakK4os
-	 RurD0rauQ16Y97V1O0VuKCE1aPOetm0eSqKxBtwc=
+	b=mTKtEhvjaOsGPTko5AmqXYkvPmIB3PoL/XekyqeZwKctk/cs7OCnRC2WHo6SCLJcd
+	 dMCxsiScHcVf5eLoDFL1f/DRRPn+ffq9zjm5ZO8TgwIiZqzW38Lk45O5tWnFz2S5y0
+	 tLe8vhYp8L0uROKbjdsHXmXY8hGLi5iec6X/j2Iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Matvey Kovalev <matvey.kovalev@ispras.ru>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 352/371] mm/ksm: fix incorrect KSM counter handling in mm_struct during fork
-Date: Fri, 17 Oct 2025 16:55:27 +0200
-Message-ID: <20251017145214.818337701@linuxfoundation.org>
+Subject: [PATCH 5.15 235/276] ksmbd: fix error code overwriting in smb2_get_info_filesystem()
+Date: Fri, 17 Oct 2025 16:55:28 +0200
+Message-ID: <20251017145151.046730557@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,106 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Matvey Kovalev <matvey.kovalev@ispras.ru>
 
-[ Upstream commit 4d6fc29f36341d7795db1d1819b4c15fe9be7b23 ]
+[ Upstream commit 88daf2f448aad05a2e6df738d66fe8b0cf85cee0 ]
 
-Patch series "mm/ksm: Fix incorrect accounting of KSM counters during
-fork", v3.
+If client doesn't negotiate with SMB3.1.1 POSIX Extensions,
+then proper error code won't be returned due to overwriting.
 
-The first patch in this series fixes the incorrect accounting of KSM
-counters such as ksm_merging_pages, ksm_rmap_items, and the global
-ksm_zero_pages during fork.
+Return error immediately.
 
-The following patch add a selftest to verify the ksm_merging_pages counter
-was updated correctly during fork.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Test Results
-============
-Without the first patch
------------------------
- # [RUN] test_fork_ksm_merging_page_count
- not ok 10 ksm_merging_page in child: 32
-
-With the first patch
---------------------
- # [RUN] test_fork_ksm_merging_page_count
- ok 10 ksm_merging_pages is not inherited after fork
-
-This patch (of 2):
-
-Currently, the KSM-related counters in `mm_struct`, such as
-`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are inherited
-by the child process during fork.  This results in inconsistent
-accounting.
-
-When a process uses KSM, identical pages are merged and an rmap item is
-created for each merged page.  The `ksm_merging_pages` and
-`ksm_rmap_items` counters are updated accordingly.  However, after a fork,
-these counters are copied to the child while the corresponding rmap items
-are not.  As a result, when the child later triggers an unmerge, there are
-no rmap items present in the child, so the counters remain stale, leading
-to incorrect accounting.
-
-A similar issue exists with `ksm_zero_pages`, which maintains both a
-global counter and a per-process counter.  During fork, the per-process
-counter is inherited by the child, but the global counter is not
-incremented.  Since the child also references zero pages, the global
-counter should be updated as well.  Otherwise, during zero-page unmerge,
-both the global and per-process counters are decremented, causing the
-global counter to become inconsistent.
-
-To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0 during
-fork, and the global ksm_zero_pages counter is updated with the
-per-process ksm_zero_pages value inherited by the child.  This ensures
-that KSM statistics remain accurate and reflect the activity of each
-process correctly.
-
-Link: https://lkml.kernel.org/r/cover.1758648700.git.donettom@linux.ibm.com
-Link: https://lkml.kernel.org/r/7b9870eb67ccc0d79593940d9dbd4a0b39b5d396.1758648700.git.donettom@linux.ibm.com
-Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
-Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
-Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: <stable@vger.kernel.org>	[6.6+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ replaced mm_flags_test() calls with test_bit() ]
+Fixes: e2f34481b24db ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matvey Kovalev <matvey.kovalev@ispras.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adjusted file path from fs/smb/server/smb2pdu.c to fs/ksmbd/smb2pdu.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/ksm.h |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/ksmbd/smb2pdu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/ksm.h
-+++ b/include/linux/ksm.h
-@@ -56,8 +56,14 @@ static inline long mm_ksm_zero_pages(str
- static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
- {
- 	/* Adding mm to ksm is best effort on fork. */
--	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags))
-+	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags)) {
-+		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
-+
-+		mm->ksm_merging_pages = 0;
-+		mm->ksm_rmap_items = 0;
-+		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
- 		__ksm_enter(mm);
-+	}
- }
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -5204,7 +5204,8 @@ static int smb2_get_info_filesystem(stru
  
- static inline int ksm_execve(struct mm_struct *mm)
+ 		if (!work->tcon->posix_extensions) {
+ 			pr_err("client doesn't negotiate with SMB3.1.1 POSIX Extensions\n");
+-			rc = -EOPNOTSUPP;
++			path_put(&path);
++			return -EOPNOTSUPP;
+ 		} else {
+ 			info = (struct filesystem_posix_info *)(rsp->Buffer);
+ 			info->OptimalTransferSize = cpu_to_le32(stfs.f_bsize);
 
 
 
