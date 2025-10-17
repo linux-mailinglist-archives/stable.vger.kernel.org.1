@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79CCBEA572
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0891BE99C0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D57B21882757
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B4951881E5B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D8A330B1F;
-	Fri, 17 Oct 2025 15:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64652D8795;
+	Fri, 17 Oct 2025 15:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuAX2l0v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pv3rdi3O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514A5330B2D;
-	Fri, 17 Oct 2025 15:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602203208;
+	Fri, 17 Oct 2025 15:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716414; cv=none; b=X1UoqZTdScFtKJapYgO33nvymj5QO7sqXnV9YDqinsbC2dIoGEFVVQygj9jtEHnTFFgqw4mHEOYn/J4jR2N5MzE+HMeRHXEc2aRLPw7YQx6fHAX6EyKLvfz3VJignXG/JdP2p4ZVOLoE/kZE4wjyxcSMSse0pfuOE5CN60/jhRM=
+	t=1760713971; cv=none; b=X0Vt9RQU50mRzd8dQfXF2l/1vvxiOVF0BsTzPpkG+LLMlfbhfl22cjPhOA7rfuAWioX5l6o0YRFAFkLE5ZCMOd/5PLh9W5pEw4FNNG8hkSFdUGriZl1RsLrAlFGwO8iwjmOn6dvcbWv2GDhnpW9s2VPeDYPx1fTvlzjJeHoahdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716414; c=relaxed/simple;
-	bh=5DqIMIlzfYJ4srFBuM7FaCGxLMb2HAmVIIAud92B2iM=;
+	s=arc-20240116; t=1760713971; c=relaxed/simple;
+	bh=HL4+Ca/PeN1WnfhQkau516IfN84GScMUB/u0XNGTEwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CoN8mJiYbGZH1kqLhC6doL/t+JSUCEvsLNVwI2uX3MjdVYezdWH+cjX5aU2HnFFRVpcb7v87iV9BEB1dWpiBn4HpO/wz2tMHLA1GTnkmFAzCAZ27EiUsKZApyEIqSnIPKvzLiQMs/G2X/pBQdP4JVtbLlZc9oSJBvRiyPRmTIaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuAX2l0v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF72C4CEE7;
-	Fri, 17 Oct 2025 15:53:33 +0000 (UTC)
+	 MIME-Version; b=otRcIw0Vz345s0Lrd4j4AnyS20zI9wAdwJCt/HbEhiJvW2tW3orDzBOjy1dhox4G34+qRvFOTXs+dpZ7ju16nJ3Ptd2yTGtngaq4BaVIZo5CaRTsYWUNME3vwflH3uxpvzdI4GzuaxGtLyGg0gn7sQMSXpT66JtqkfANdLSiKgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pv3rdi3O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF91C4CEE7;
+	Fri, 17 Oct 2025 15:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716414;
-	bh=5DqIMIlzfYJ4srFBuM7FaCGxLMb2HAmVIIAud92B2iM=;
+	s=korg; t=1760713971;
+	bh=HL4+Ca/PeN1WnfhQkau516IfN84GScMUB/u0XNGTEwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TuAX2l0vcL+aCQSRoNcbPU2YresCn0hYz/7RXBJ9aMd9uvVvDMoQ5SkD+or8YjToa
-	 cXxCqkSidoBVe9rwWFspbBp37AbfFYaLtbxJ71uuCa7szg9HWOPvaYEqGFvbRZY1bs
-	 Ht/khbHC7PPCfh4x09n9LMo/aG+vPKoyIN2zkiJw=
+	b=Pv3rdi3Ob40KVmV/F1qJGl4IvujcXWeo07bail5EUYFHDlpWeZ16hhYpESoDOLGaK
+	 5iGxAeIVZarcR88UddwzFKkB144TqKQ9wo8+OA5qOvlbnUbXc8RvFAreZojYtXA2Mk
+	 2Pf5Z57LwCWglFl5KjwTQmGvrDOl52rEIrMXZ3sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/276] tcp: Dont call reqsk_fastopen_remove() in tcp_conn_request().
+Subject: [PATCH 6.6 182/201] ACPI: property: Disregard references in data-only subnode lists
 Date: Fri, 17 Oct 2025 16:54:03 +0200
-Message-ID: <20251017145147.955382336@linuxfoundation.org>
+Message-ID: <20251017145141.442060081@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 2e7cbbbe3d61c63606994b7ff73c72537afe2e1c ]
+[ Upstream commit d06118fe9b03426484980ed4c189a8c7b99fa631 ]
 
-syzbot reported the splat below in tcp_conn_request(). [0]
+Data-only subnode links following the ACPI data subnode GUID in a _DSD
+package are expected to point to named objects returning _DSD-equivalent
+packages.  If a reference to such an object is used in the target field
+of any of those links, that object will be evaluated in place (as a
+named object) and its return data will be embedded in the outer _DSD
+package.
 
-If a listener is close()d while a TFO socket is being processed in
-tcp_conn_request(), inet_csk_reqsk_queue_add() does not set reqsk->sk
-and calls inet_child_forget(), which calls tcp_disconnect() for the
-TFO socket.
+For this reason, it is not expected to see a subnode link with the
+target field containing a local reference (that would mean pointing
+to a device or another object that cannot be evaluated in place and
+therefore cannot return a _DSD-equivalent package).
 
-After the cited commit, tcp_disconnect() calls reqsk_fastopen_remove(),
-where reqsk_put() is called due to !reqsk->sk.
+Accordingly, simplify the code parsing data-only subnode links to
+simply print a message when it encounters a local reference in the
+target field of one of those links.
 
-Then, reqsk_fastopen_remove() in tcp_conn_request() decrements the
-last req->rsk_refcnt and frees reqsk, and __reqsk_free() at the
-drop_and_free label causes the refcount underflow for the listener
-and double-free of the reqsk.
+Moreover, since acpi_nondev_subnode_data_ok() would only have one
+caller after the change above, fold it into that caller.
 
-Let's remove reqsk_fastopen_remove() in tcp_conn_request().
-
-Note that other callers make sure tp->fastopen_rsk is not NULL.
-
-[0]:
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 12 PID: 5563 at lib/refcount.c:28 refcount_warn_saturate (lib/refcount.c:28)
-Modules linked in:
-CPU: 12 UID: 0 PID: 5563 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:refcount_warn_saturate (lib/refcount.c:28)
-Code: ab e8 8e b4 98 ff 0f 0b c3 cc cc cc cc cc 80 3d a4 e4 d6 01 00 75 9c c6 05 9b e4 d6 01 01 48 c7 c7 e8 df fb ab e8 6a b4 98 ff <0f> 0b e9 03 5b 76 00 cc 80 3d 7d e4 d6 01 00 0f 85 74 ff ff ff c6
-RSP: 0018:ffffa79fc0304a98 EFLAGS: 00010246
-RAX: d83af4db1c6b3900 RBX: ffff9f65c7a69020 RCX: d83af4db1c6b3900
-RDX: 0000000000000000 RSI: 00000000ffff7fff RDI: ffffffffac78a280
-RBP: 000000009d781b60 R08: 0000000000007fff R09: ffffffffac6ca280
-R10: 0000000000017ffd R11: 0000000000000004 R12: ffff9f65c7b4f100
-R13: ffff9f65c7d23c00 R14: ffff9f65c7d26000 R15: ffff9f65c7a64ef8
-FS:  00007f9f962176c0(0000) GS:ffff9f65fcf00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000000180 CR3: 000000000dbbe006 CR4: 0000000000372ef0
-Call Trace:
- <IRQ>
- tcp_conn_request (./include/linux/refcount.h:400 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 ./include/net/sock.h:1965 ./include/net/request_sock.h:131 net/ipv4/tcp_input.c:7301)
- tcp_rcv_state_process (net/ipv4/tcp_input.c:6708)
- tcp_v6_do_rcv (net/ipv6/tcp_ipv6.c:1670)
- tcp_v6_rcv (net/ipv6/tcp_ipv6.c:1906)
- ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:438)
- ip6_input (net/ipv6/ip6_input.c:500)
- ipv6_rcv (net/ipv6/ip6_input.c:311)
- __netif_receive_skb (net/core/dev.c:6104)
- process_backlog (net/core/dev.c:6456)
- __napi_poll (net/core/dev.c:7506)
- net_rx_action (net/core/dev.c:7569 net/core/dev.c:7696)
- handle_softirqs (kernel/softirq.c:579)
- do_softirq (kernel/softirq.c:480)
- </IRQ>
-
-Fixes: 45c8a6cc2bcd ("tcp: Clear tcp_sk(sk)->fastopen_rsk in tcp_disconnect().")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20251001233755.1340927-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/linux-acpi/CAJZ5v0jVeSrDO6hrZhKgRZrH=FpGD4vNUjFD8hV9WwN9TLHjzQ@mail.gmail.com/
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Stable-dep-of: baf60d5cb8bc ("ACPI: property: Do not pass NULL handles to acpi_attach_data()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/acpi/property.c |   51 ++++++++++++++++++++----------------------------
+ 1 file changed, 22 insertions(+), 29 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index fea019cc92d3c..15548dc3cc5c5 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -7060,7 +7060,6 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
- 				    &foc, TCP_SYNACK_FASTOPEN, skb);
- 		/* Add the child socket directly into the accept queue */
- 		if (!inet_csk_reqsk_queue_add(sk, req, fastopen_sk)) {
--			reqsk_fastopen_remove(fastopen_sk, req, false);
- 			bh_unlock_sock(fastopen_sk);
- 			sock_put(fastopen_sk);
- 			goto drop_and_free;
--- 
-2.51.0
-
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -112,32 +112,12 @@ static bool acpi_nondev_subnode_extract(
+ 	return false;
+ }
+ 
+-static bool acpi_nondev_subnode_data_ok(acpi_handle handle,
+-					const union acpi_object *link,
+-					struct list_head *list,
+-					struct fwnode_handle *parent)
+-{
+-	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
+-	acpi_status status;
+-
+-	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
+-					    ACPI_TYPE_PACKAGE);
+-	if (ACPI_FAILURE(status))
+-		return false;
+-
+-	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
+-					parent))
+-		return true;
+-
+-	ACPI_FREE(buf.pointer);
+-	return false;
+-}
+-
+ static bool acpi_nondev_subnode_ok(acpi_handle scope,
+ 				   const union acpi_object *link,
+ 				   struct list_head *list,
+ 				   struct fwnode_handle *parent)
+ {
++	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
+ 	acpi_handle handle;
+ 	acpi_status status;
+ 
+@@ -149,7 +129,17 @@ static bool acpi_nondev_subnode_ok(acpi_
+ 	if (ACPI_FAILURE(status))
+ 		return false;
+ 
+-	return acpi_nondev_subnode_data_ok(handle, link, list, parent);
++	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
++					    ACPI_TYPE_PACKAGE);
++	if (ACPI_FAILURE(status))
++		return false;
++
++	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
++					parent))
++		return true;
++
++	ACPI_FREE(buf.pointer);
++	return false;
+ }
+ 
+ static bool acpi_add_nondev_subnodes(acpi_handle scope,
+@@ -162,7 +152,6 @@ static bool acpi_add_nondev_subnodes(acp
+ 
+ 	for (i = 0; i < links->package.count; i++) {
+ 		union acpi_object *link, *desc;
+-		acpi_handle handle;
+ 		bool result;
+ 
+ 		link = &links->package.elements[i];
+@@ -174,22 +163,26 @@ static bool acpi_add_nondev_subnodes(acp
+ 		if (link->package.elements[0].type != ACPI_TYPE_STRING)
+ 			continue;
+ 
+-		/* The second one may be a string, a reference or a package. */
++		/* The second one may be a string or a package. */
+ 		switch (link->package.elements[1].type) {
+ 		case ACPI_TYPE_STRING:
+ 			result = acpi_nondev_subnode_ok(scope, link, list,
+ 							 parent);
+ 			break;
+-		case ACPI_TYPE_LOCAL_REFERENCE:
+-			handle = link->package.elements[1].reference.handle;
+-			result = acpi_nondev_subnode_data_ok(handle, link, list,
+-							     parent);
+-			break;
+ 		case ACPI_TYPE_PACKAGE:
+ 			desc = &link->package.elements[1];
+ 			result = acpi_nondev_subnode_extract(desc, NULL, link,
+ 							     list, parent);
+ 			break;
++		case ACPI_TYPE_LOCAL_REFERENCE:
++			/*
++			 * It is not expected to see any local references in
++			 * the links package because referencing a named object
++			 * should cause it to be evaluated in place.
++			 */
++			acpi_handle_info(scope, "subnode %s: Unexpected reference\n",
++					 link->package.elements[0].string.pointer);
++			fallthrough;
+ 		default:
+ 			result = false;
+ 			break;
 
 
 
