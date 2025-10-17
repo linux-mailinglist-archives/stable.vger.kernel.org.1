@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-186987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E42BEA098
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C21BDBEA6D5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 86A72568F6D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C7836583D1D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18FE242935;
-	Fri, 17 Oct 2025 15:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ABA330B3A;
+	Fri, 17 Oct 2025 15:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wi8tAOv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NcnD08TI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8A0219A7A;
-	Fri, 17 Oct 2025 15:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8616330B2D;
+	Fri, 17 Oct 2025 15:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714799; cv=none; b=RopvEySNs/qk56s3Erh8W+6fy/u8oLxxdOtihswAnVPjCyyzVnsIV/m/ZpuRFnEFgH2aauYAw5YxRtUHYWlpF6ceoU138vaoaePzbXm7c0CF+sPsWb5gsBw0MWPpVhU274iWlloE//sQ80u2jhWrAdESDbVeuUpZtNXNt6b88kI=
+	t=1760716515; cv=none; b=ZAr6SKmKEITW2x69XoYsYChqxjrjiR8L4xLEDQTx4XmwavMTCR7rzqF3FkV5++xfrXwqJrTRII0N9ekC6JzkbTJcH/7EUGMGkZGFjnVN+puXY1SKNM2JcJsIx/uY/Ybayn2N05oSOvO94aTAJig77binXiiP7RhTWOghySb2plE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714799; c=relaxed/simple;
-	bh=3SggVsFRTWoeUwNrpk3dydAfc2Oi1zorwmQxAmLmofA=;
+	s=arc-20240116; t=1760716515; c=relaxed/simple;
+	bh=FzBh9kPQ9R60WhjFCvJ3Huqd+HH8TSIglRsOtSousgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AudAdgj6KElKHXYDNsVMFcLAQBcGoT4JShlJkDC5BACtjVI7q9uFPjXGtLxK18baCSQHDFnmjVCUN/eNDjbhHhedewYU/j4jFV0v1ZtUJxoaI77TAQJKRakDWCXjisOzHz+RU+XjgI4G8ljUsQnjHhE0U84oJ2qR7TE8o57Ip2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wi8tAOv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D0CC4CEE7;
-	Fri, 17 Oct 2025 15:26:39 +0000 (UTC)
+	 MIME-Version; b=qsKw9WT288xOWYQQ/AgiGQ/ZiC5xbjlydsiXWonNDZMxGevhdmLsW7aOE/6NFURPgep9/KkmurgANyLPKhFd5qjjGuEsQhFR1moyPm8obe3niASVcdDgA0jI/66nZTPxQYk46ur28EDGcQsc+0/ThLHpmvXZ/z2BkYd02KNbrOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NcnD08TI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4D9C4CEE7;
+	Fri, 17 Oct 2025 15:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714799;
-	bh=3SggVsFRTWoeUwNrpk3dydAfc2Oi1zorwmQxAmLmofA=;
+	s=korg; t=1760716515;
+	bh=FzBh9kPQ9R60WhjFCvJ3Huqd+HH8TSIglRsOtSousgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wi8tAOv5cWCfI3z8Lo6VwnDMtEBabfGo6kwJN3NkCxETruRZYnvruyjAO1BQpYZ+s
-	 lJ+4qHi+p98OKMWUwdKARtPU9rLk8FztZAJHecHOsYWQz8tRcuz2LVEQ86l6k2ho/E
-	 zeJ2iutc0zq11Zl6poexRfedC5URYgYpD66mrFBs=
+	b=NcnD08TIXnJYEZNBXsX6BltF7MjSwxYTfsZY2xlMfo5+2OtOeM+wp89BplmVAQIiP
+	 1mzmUu/Wix+cBxYqYuUaeEg3qQjdXf9tF01naa4LabnbetO4f80eRUIklcyIFlgaot
+	 Qmrz54iiwGcPe6nwENDQm22zVks4ZAYCix1lfBRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Nicolas Pitre <nico@fluxnic.net>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 270/277] cramfs: Verify inode mode when loading from disk
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 184/276] init: handle bootloader identifier in kernel parameters
 Date: Fri, 17 Oct 2025 16:54:37 +0200
-Message-ID: <20251017145157.018683701@linuxfoundation.org>
+Message-ID: <20251017145149.190998360@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 7f9d34b0a7cb93d678ee7207f0634dbf79e47fe5 ]
+commit e416f0ed3c500c05c55fb62ee62662717b1c7f71 upstream.
 
-The inode mode loaded from corrupted disk can be invalid. Do like what
-commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
-does.
+BootLoaders (Grub, LILO, etc) may pass an identifier such as "BOOT_IMAGE=
+/boot/vmlinuz-x.y.z" to kernel parameters.  But these identifiers are not
+recognized by the kernel itself so will be passed to userspace.  However
+user space init program also don't recognize it.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/429b3ef1-13de-4310-9a8e-c2dc9a36234a@I-love.SAKURA.ne.jp
-Acked-by: Nicolas Pitre <nico@fluxnic.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+KEXEC/KDUMP (kexec-tools) may also pass an identifier such as "kexec" on
+some architectures.
+
+We cannot change BootLoader's behavior, because this behavior exists for
+many years, and there are already user space programs search BOOT_IMAGE=
+in /proc/cmdline to obtain the kernel image locations:
+
+https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.go
+(search getBootOptions)
+https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.go
+(search getKernelReleaseWithBootOption) So the the best way is handle
+(ignore) it by the kernel itself, which can avoid such boot warnings (if
+we use something like init=/bin/bash, bootloader identifier can even cause
+a crash):
+
+Kernel command line: BOOT_IMAGE=(hd0,1)/vmlinuz-6.x root=/dev/sda3 ro console=tty
+Unknown kernel command line parameters "BOOT_IMAGE=(hd0,1)/vmlinuz-6.x", will be passed to user space.
+
+[chenhuacai@loongson.cn: use strstarts()]
+  Link: https://lkml.kernel.org/r/20250815090120.1569947-1-chenhuacai@loongson.cn
+Link: https://lkml.kernel.org/r/20250721101343.3283480-1-chenhuacai@loongson.cn
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cramfs/inode.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ init/main.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
-index b84d1747a0205..e7d192f7ab3b4 100644
---- a/fs/cramfs/inode.c
-+++ b/fs/cramfs/inode.c
-@@ -117,9 +117,18 @@ static struct inode *get_cramfs_inode(struct super_block *sb,
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &cramfs_aops;
- 		break;
--	default:
-+	case S_IFCHR:
-+	case S_IFBLK:
-+	case S_IFIFO:
-+	case S_IFSOCK:
- 		init_special_inode(inode, cramfs_inode->mode,
- 				old_decode_dev(cramfs_inode->size));
-+		break;
-+	default:
-+		printk(KERN_DEBUG "CRAMFS: Invalid file type 0%04o for inode %lu.\n",
-+		       inode->i_mode, inode->i_ino);
-+		iget_failed(inode);
-+		return ERR_PTR(-EIO);
- 	}
+--- a/init/main.c
++++ b/init/main.c
+@@ -540,6 +540,14 @@ static int __init unknown_bootoption(cha
+ 				     const char *unused, void *arg)
+ {
+ 	size_t len = strlen(param);
++	int i;
++
++	/*
++	 * Well-known bootloader identifiers:
++	 * 1. LILO/Grub pass "BOOT_IMAGE=...";
++	 * 2. kexec/kdump (kexec-tools) pass "kexec".
++	 */
++	const char *bootloader[] = { "BOOT_IMAGE=", "kexec", NULL };
  
- 	inode->i_mode = cramfs_inode->mode;
--- 
-2.51.0
-
+ 	/* Handle params aliased to sysctls */
+ 	if (sysctl_is_alias(param))
+@@ -547,6 +555,12 @@ static int __init unknown_bootoption(cha
+ 
+ 	repair_env_string(param, val);
+ 
++	/* Handle bootloader identifier */
++	for (i = 0; bootloader[i]; i++) {
++		if (strstarts(param, bootloader[i]))
++			return 0;
++	}
++
+ 	/* Handle obsolete-style parameters */
+ 	if (obsolete_checksetup(param))
+ 		return 0;
 
 
 
