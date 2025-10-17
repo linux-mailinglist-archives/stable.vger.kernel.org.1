@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-187247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D48EBEA2A8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1055BEA3F5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA345747468
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19950741359
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86200330B0C;
-	Fri, 17 Oct 2025 15:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C1A331A7C;
+	Fri, 17 Oct 2025 15:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swDCT4yS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjHc6fml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44743330B03;
-	Fri, 17 Oct 2025 15:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879053370F7;
+	Fri, 17 Oct 2025 15:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715535; cv=none; b=tZns76am+40D3xhR4GkN1ANg9trDqUGdNUT4yYXjZQBX/R0LgopyxrhtCnBUDq5lQRv5m8VA4rZd1MtEBJKn1kisPXjA3Jj+0e3ZKCAHi/k6KGeHv42bErTL1NJrrEG6kPmEX0xuWR0/dsiMu5r4n2zGLrVn40PLXLv4vGAAIYA=
+	t=1760714646; cv=none; b=nwp9qs2fIbEEhRc0KWRBO117RCcDHdgUanufYb8/DP9lK9KssUWuw1B0G7Qwa6A3RR/jRFw+zytFpYVRexeuv7saZm66CxUcOytEncnm3HhcO28zwMipvqsr0fZriIR+yqnwp6gRyWGpwjDRv1hUQER1F42x38QGHoJaYliK91s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715535; c=relaxed/simple;
-	bh=6/wdtpnUJS52HS3Xwl3o74Hk195620gLHf1bH6OMY14=;
+	s=arc-20240116; t=1760714646; c=relaxed/simple;
+	bh=Lu6PT5L16LBH2hF0Q6RONR9NCdxdaFkN6hshw4PuwRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fU9y4w8CJltF6xq+xOSREh+0PDfAw7ILTFr5gP3IyNI4pMhO1IlRau1yl06v+31IrqIFZ/Z+rZ0Zh4AouAkmsqDUyWg4hE0El+8sLhNVw3kptInRBmyE8YUMpRmSNkzxx/j+Qev7Ft+6ciechPUZdvXwkUx/FQs6OFHQkOwPS+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swDCT4yS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90B6C4CEE7;
-	Fri, 17 Oct 2025 15:38:52 +0000 (UTC)
+	 MIME-Version; b=LFyP8ZObYHLw/ONJIupHygjhEiLelyk4OwtMy2umNBGz6m/gr/k8IqWBbTGRxp14sVJruEZX6TXMWBjRWePnFlzQanfcLNydcLGi/SJCuqe59+3Cfle8eLmeuA+1qs+MF95+oM3PdcDer0w4va5czZWBFIPa+IXXuEcekpBSOEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjHc6fml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133B2C4CEE7;
+	Fri, 17 Oct 2025 15:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715533;
-	bh=6/wdtpnUJS52HS3Xwl3o74Hk195620gLHf1bH6OMY14=;
+	s=korg; t=1760714646;
+	bh=Lu6PT5L16LBH2hF0Q6RONR9NCdxdaFkN6hshw4PuwRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swDCT4ySx/v/YOmq8UZruUzXeNHeDTq1hrCmWcRV0x0hc5XtgBrYs6aUWrFuOQdSP
-	 KSkZqHY5bI4pN2g4/exZdiD+jR+Di58akN0EmJeo+omfk6khPeWDEyv9cjS2eexFrf
-	 gJU4Vc1bzeHOw0OjkZroD/SodJMHXu13mdmztn40=
+	b=mjHc6fml3DZIUrl3B9DQFhozF2aFrbEe4hwMHnYHFF9OP6dPqKjG2qNDdfp3CS83u
+	 i98pF9SlPXrpHUh50jCqtju++8w4FnvM58O98qTcc+ouHkx6vCXHkNtv4DmAvEIsvU
+	 s1E5mJS4jple3e8OrQdVeG3Nq3vokRCVYjzNt39g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.17 250/371] powerpc/pseries/msi: Fix potential underflow and leak issue
+	syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
+	Ahmet Eray Karadag <eraykrdg1@gmail.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.12 218/277] ext4: guard against EA inode refcount underflow in xattr update
 Date: Fri, 17 Oct 2025 16:53:45 +0200
-Message-ID: <20251017145211.125296391@linuxfoundation.org>
+Message-ID: <20251017145155.088395913@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Ahmet Eray Karadag <eraykrdg1@gmail.com>
 
-commit 3443ff3be6e59b80d74036bb39f5b6409eb23cc9 upstream.
+commit 57295e835408d8d425bef58da5253465db3d6888 upstream.
 
-pseries_irq_domain_alloc() allocates interrupts at parent's interrupt
-domain. If it fails in the progress, all allocated interrupts are
-freed.
+syzkaller found a path where ext4_xattr_inode_update_ref() reads an EA
+inode refcount that is already <= 0 and then applies ref_change (often
+-1). That lets the refcount underflow and we proceed with a bogus value,
+triggering errors like:
 
-The number of successfully allocated interrupts so far is stored
-"i". However, "i - 1" interrupts are freed. This is broken:
+  EXT4-fs error: EA inode <n> ref underflow: ref_count=-1 ref_change=-1
+  EXT4-fs warning: ea_inode dec ref err=-117
 
-  - One interrupt is not be freed
+Make the invariant explicit: if the current refcount is non-positive,
+treat this as on-disk corruption, emit ext4_error_inode(), and fail the
+operation with -EFSCORRUPTED instead of updating the refcount. Delete the
+WARN_ONCE() as negative refcounts are now impossible; keep error reporting
+in ext4_error_inode().
 
-  - If "i" is zero, "i - 1" wraps around
+This prevents the underflow and the follow-on orphan/cleanup churn.
 
-Correct the number of freed interrupts to 'i'.
-
-Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/a980067f2b256bf716b4cd713bc1095966eed8cd.1754300646.git.namcao@linutronix.de
+Reported-by: syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com
+Fixes: https://syzbot.org/bug?extid=0be4f339a8218d2a5bb1
+Cc: stable@kernel.org
+Co-developed-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+Signed-off-by: Ahmet Eray Karadag <eraykrdg1@gmail.com>
+Message-ID: <20250920021342.45575-1-eraykrdg1@gmail.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/msi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/xattr.c |   15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -593,7 +593,7 @@ static int pseries_irq_domain_alloc(stru
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1036,7 +1036,7 @@ static int ext4_xattr_inode_update_ref(h
+ 				       int ref_change)
+ {
+ 	struct ext4_iloc iloc;
+-	s64 ref_count;
++	u64 ref_count;
+ 	int ret;
  
- out:
- 	/* TODO: handle RTAS cleanup in ->msi_finish() ? */
--	irq_domain_free_irqs_parent(domain, virq, i - 1);
-+	irq_domain_free_irqs_parent(domain, virq, i);
- 	return ret;
- }
+ 	inode_lock_nested(ea_inode, I_MUTEX_XATTR);
+@@ -1046,13 +1046,17 @@ static int ext4_xattr_inode_update_ref(h
+ 		goto out;
  
+ 	ref_count = ext4_xattr_inode_get_ref(ea_inode);
++	if ((ref_count == 0 && ref_change < 0) || (ref_count == U64_MAX && ref_change > 0)) {
++		ext4_error_inode(ea_inode, __func__, __LINE__, 0,
++			"EA inode %lu ref wraparound: ref_count=%lld ref_change=%d",
++			ea_inode->i_ino, ref_count, ref_change);
++		ret = -EFSCORRUPTED;
++		goto out;
++	}
+ 	ref_count += ref_change;
+ 	ext4_xattr_inode_set_ref(ea_inode, ref_count);
+ 
+ 	if (ref_change > 0) {
+-		WARN_ONCE(ref_count <= 0, "EA inode %lu ref_count=%lld",
+-			  ea_inode->i_ino, ref_count);
+-
+ 		if (ref_count == 1) {
+ 			WARN_ONCE(ea_inode->i_nlink, "EA inode %lu i_nlink=%u",
+ 				  ea_inode->i_ino, ea_inode->i_nlink);
+@@ -1061,9 +1065,6 @@ static int ext4_xattr_inode_update_ref(h
+ 			ext4_orphan_del(handle, ea_inode);
+ 		}
+ 	} else {
+-		WARN_ONCE(ref_count < 0, "EA inode %lu ref_count=%lld",
+-			  ea_inode->i_ino, ref_count);
+-
+ 		if (ref_count == 0) {
+ 			WARN_ONCE(ea_inode->i_nlink != 1,
+ 				  "EA inode %lu i_nlink=%u",
 
 
 
