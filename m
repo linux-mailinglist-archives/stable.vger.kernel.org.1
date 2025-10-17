@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3853BEA549
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:06 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B17BE9CB1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 214181884E03
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 94B0835E2A3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56A31A9FB7;
-	Fri, 17 Oct 2025 15:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7933370FB;
+	Fri, 17 Oct 2025 15:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JXAWjQy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GN3ck8FW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633A2330B1E;
-	Fri, 17 Oct 2025 15:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2F720C00A;
+	Fri, 17 Oct 2025 15:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716382; cv=none; b=E1HTdsdpdLiOkOVMswd+cKg9YNRYkY7GYvTxj/4L3BDbssW8cwoltb5pkug1b5IlPUiWldknLVOSLXaiB6AmnZHd19kbIxxRGoayEgluRIekeXxIDDsBJYeKe26DaYWUkGtPpMGcQBObtOpdsDkjRN/DbCsakeVZJuoc3ls43rg=
+	t=1760714760; cv=none; b=X2OZ6qnMAgHdtSfUymp2bMOszVZNOi2tiSTHNPkC35qJZOmagG9wWKO5I9vQFk34pjZvQ1A3wHtEt0dy9KfIdxl7c4GHCj5sqUhtmzB4mwlLEtzFRq6wBoeR8eLF1Tt1KTSnyUBjXJkog3J22Fgx/pg3dah7PPK32N7NH4lYnUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716382; c=relaxed/simple;
-	bh=rsqAAjT3XsIbOnYuzWFjmVU1RM8DIx2934+/gQdI2S4=;
+	s=arc-20240116; t=1760714760; c=relaxed/simple;
+	bh=/e8gAzqpTxnYrEoHZLyZ/87BpMd2R0yL9ya5X/WdGFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVZcSrMo8+l7mTWSdykK47u7JYQHIZtU2cCxjFdzQNnPR5qJKhawM/9SPu8Ow/TFsyJ63VrKtt9cnqgJnzPHdJiYnRLGIVxS3brsfgBF0ATOmPTrN1uOwee2zu788B/MRnLqxd2PefRF8jGD6CPnbaoNtmK3LsIEE9WIGUSVRRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JXAWjQy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1104C4CEE7;
-	Fri, 17 Oct 2025 15:53:01 +0000 (UTC)
+	 MIME-Version; b=ZfPB+9H0mapOKgg6imqGNHY0SOOJIlowPE+b0crcGXS+0hCHf7qdNyl6jZ8WjjdtTSplNMZPDEE2JWyKKCG5nNAd5R03OiPLnjO7DEoH3qhVS+ptkGdABymmttLg3U84YjR7tzjkJNTIH+2BsxhTWwRq8C1vc7nICIBHN6W/QfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GN3ck8FW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73769C4CEE7;
+	Fri, 17 Oct 2025 15:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716382;
-	bh=rsqAAjT3XsIbOnYuzWFjmVU1RM8DIx2934+/gQdI2S4=;
+	s=korg; t=1760714759;
+	bh=/e8gAzqpTxnYrEoHZLyZ/87BpMd2R0yL9ya5X/WdGFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2JXAWjQyJ6Ad7mfOYmcs+HLaz1Jsz+ljFZ9rSRwcUjCaaw4ATshVaXfxejkO/SQ6v
-	 mo9ULtSPb1b4jqujTJ6iQ3CuI4TgKk8CXEnxC7QsW6ius4vDVuzd3lEfDEFu04k/i5
-	 Z9RBkODDPqGW0p+W2lKi+Gm+7GbdTyYnVHZHTtlk=
+	b=GN3ck8FWvGwF4GBlsOQDia+7EOWySWlUAuGCMUHursDl9qpkNXg8ug6igOdxHNZou
+	 TJrvfg4Gl2YRVO7yzIRdzRtRJRxFpF0xMvcdCbIGcVmKIwcWBDTCCZA3usm7gzpqY9
+	 aSyLzRfW7zmxDZq2tplfxfAfrB1Ae3jOQSlePOJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.15 171/276] xen/manage: Fix suspend error path
+	Eric Dumazet <edumazet@google.com>,
+	Greg Thelen <gthelen@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.12 257/277] ipmi: Fix handling of messages with provided receive message pointer
 Date: Fri, 17 Oct 2025 16:54:24 +0200
-Message-ID: <20251017145148.714572775@linuxfoundation.org>
+Message-ID: <20251017145156.540311898@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit f770c3d858687252f1270265ba152d5c622e793f upstream.
+commit e2c69490dda5d4c9f1bfbb2898989c8f3530e354 upstream
 
-The device power management API has the following asymmetry:
-* dpm_suspend_start() does not clean up on failure
-  (it requires a call to dpm_resume_end())
-* dpm_suspend_end() does clean up on failure
-  (it does not require a call to dpm_resume_start())
+Prior to commit b52da4054ee0 ("ipmi: Rework user message limit handling"),
+i_ipmi_request() used to increase the user reference counter if the receive
+message is provided by the caller of IPMI API functions. This is no longer
+the case. However, ipmi_free_recv_msg() is still called and decreases the
+reference counter. This results in the reference counter reaching zero,
+the user data pointer is released, and all kinds of interesting crashes are
+seen.
 
-The asymmetry was introduced by commit d8f3de0d2412 ("Suspend-related
-patches for 2.6.27") in June 2008:  It removed a call to device_resume()
-from device_suspend() (which was later renamed to dpm_suspend_start()).
+Fix the problem by increasing user reference counter if the receive message
+has been provided by the caller.
 
-When Xen began using the device power management API in May 2008 with
-commit 0e91398f2a5d ("xen: implement save/restore"), the asymmetry did
-not yet exist.  But since it was introduced, a call to dpm_resume_end()
-is missing in the error path of dpm_suspend_start().  Fix it.
-
-Fixes: d8f3de0d2412 ("Suspend-related patches for 2.6.27")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org  # v2.6.27
-Reviewed-by: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <22453676d1ddcebbe81641bb68ddf587fee7e21e.1756990799.git.lukas@wunner.de>
+Fixes: b52da4054ee0 ("ipmi: Rework user message limit handling")
+Reported-by: Eric Dumazet <edumazet@google.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Greg Thelen <gthelen@google.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Message-ID: <20251006201857.3433837-1-linux@roeck-us.net>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/manage.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/char/ipmi/ipmi_msghandler.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/xen/manage.c
-+++ b/drivers/xen/manage.c
-@@ -116,7 +116,7 @@ static void do_suspend(void)
- 	err = dpm_suspend_start(PMSG_FREEZE);
- 	if (err) {
- 		pr_err("%s: dpm_suspend_start %d\n", __func__, err);
--		goto out_thaw;
-+		goto out_resume_end;
- 	}
- 
- 	printk(KERN_DEBUG "suspending xenstore...\n");
-@@ -156,6 +156,7 @@ out_resume:
- 	else
- 		xs_suspend_cancel();
- 
-+out_resume_end:
- 	dpm_resume_end(si.cancelled ? PMSG_THAW : PMSG_RESTORE);
- 
- out_thaw:
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -2311,8 +2311,11 @@ static int i_ipmi_request(struct ipmi_us
+ 	if (supplied_recv) {
+ 		recv_msg = supplied_recv;
+ 		recv_msg->user = user;
+-		if (user)
++		if (user) {
+ 			atomic_inc(&user->nr_msgs);
++			/* The put happens when the message is freed. */
++			kref_get(&user->refcount);
++		}
+ 	} else {
+ 		recv_msg = ipmi_alloc_recv_msg(user);
+ 		if (IS_ERR(recv_msg))
 
 
 
