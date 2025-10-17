@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-187069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE19BEA2CC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:15 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84542BE9CFC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AEB16E6512
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AD561588BD1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1C42F12D2;
-	Fri, 17 Oct 2025 15:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6483328E7;
+	Fri, 17 Oct 2025 15:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajeUQcpf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbtJuUaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14651946C8;
-	Fri, 17 Oct 2025 15:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FE932C931;
+	Fri, 17 Oct 2025 15:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715032; cv=none; b=KhkcFM7BMsQf/yDBGjzRSYmcCU6lOTaWsfQU1aOIs6c+qdFVRlb5ue0kD8cR4xhUutiC1hJhfsGCHGSyNStfDYDSrSbxrjhNY3xxElSB+alAldF5vrpT11yQUF6nlEc4HKAJM8jXb/VnqpXLheC9+ug7a/gujQZU9AK30Lch4CY=
+	t=1760714141; cv=none; b=sYJpTmgU1TpJo1bOTRfHW2C2iR3ejtrQrXBSuJGYx1taErBgxCzDVEghTlYRt4rpY6U1zA21u0NZO4rpMtN5CgsTKxqruh3eFDzvwGYmnVmhYDzEELABlbquaR+9/OgwuCFituyTqDVzCcLzPo0VBe4mHl9H9Hnb/Gs0593I6Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715032; c=relaxed/simple;
-	bh=jXvPw7X0f4jKwWlVhsVpvx8V3u0L8yXL1poCKCQtXws=;
+	s=arc-20240116; t=1760714141; c=relaxed/simple;
+	bh=z/V7Sct8Qk7OL4ZRYIC8XB4tx6tuFvWSRLr2K5/2H30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZmkGOw8B+M9B6jhVsO9J7I42+gZd0VQPLY33IgxTjF+TGQM/q0FP2YKGrHS9cxK1yETIBV3Aw9wp3lvbroU7hXxepjm3PxaV1ndA8p8IgM/fxfZ0T2KiNbm22kABuUCKTmGfFncINFYM318ru0B2vI6EuREs6VKDBP4wfA9aog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajeUQcpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5430BC4CEE7;
-	Fri, 17 Oct 2025 15:30:32 +0000 (UTC)
+	 MIME-Version; b=OvCD7scmDfVj1P1B4tMnCsNUzWkDrwP775ZnXhK+UyA/SBzkRmyNNPULfyhufP4jNaRWpJIYaUxnjOb8Nj+eTOwQAEx+WrZ3EQKvPyzbf91wX/WyQjREtqDKtUREkoqWNUn2bn7tJ7gGUcsMvGZ1ouV6qtYKsYXKIk/3ISl8r74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbtJuUaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2699C4CEE7;
+	Fri, 17 Oct 2025 15:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715032;
-	bh=jXvPw7X0f4jKwWlVhsVpvx8V3u0L8yXL1poCKCQtXws=;
+	s=korg; t=1760714141;
+	bh=z/V7Sct8Qk7OL4ZRYIC8XB4tx6tuFvWSRLr2K5/2H30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajeUQcpf2pXEYSvdR2KnAoWW+EPt1EAQaziY/yRKwmLHcOwzLR2mpm1jnBx71blxk
-	 MH8JWUYRhpFZCcWKkti9jFejADaYRRHZxxrXpXENrPBkXFQdOueqXYsYkdLt4AkoD1
-	 ezxhkFH6lLvhfXIgrnQA3pZ6PnTDRSToW6baP6Kg=
+	b=tbtJuUaMedO3POZk2LnpwHtavzBkj9E1/DTg42vwKFrqydVGRZhZtjihFtk2e+MwI
+	 BdABNUyFsgGwuQBRzOIshSVlvfqHr9HerQD7LHEcmVUhxWgvLpRFpHzPnpFsKdldxj
+	 DVtrk+DEqcmMwciuzO7brNvcCfFSITMOhgILDt58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 074/371] ASoC: SOF: ipc4-topology: Account for different ChainDMA host buffer size
+Subject: [PATCH 6.12 042/277] ASoC: SOF: ipc4-topology: Account for different ChainDMA host buffer size
 Date: Fri, 17 Oct 2025 16:50:49 +0200
-Message-ID: <20251017145204.618816210@linuxfoundation.org>
+Message-ID: <20251017145148.681720663@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
-index c93db452bbc07..16053d224dcdb 100644
+index f82db7f2a6b7e..ac836d0d20de0 100644
 --- a/sound/soc/sof/ipc4-topology.c
 +++ b/sound/soc/sof/ipc4-topology.c
-@@ -623,8 +623,13 @@ static int sof_ipc4_widget_setup_pcm(struct snd_sof_widget *swidget)
+@@ -519,8 +519,13 @@ static int sof_ipc4_widget_setup_pcm(struct snd_sof_widget *swidget)
  				      swidget->tuples,
  				      swidget->num_tuples, sizeof(u32), 1);
  		/* Set default DMA buffer size if it is not specified in topology */
@@ -111,10 +111,10 @@ index c93db452bbc07..16053d224dcdb 100644
  		/* Capture data is copied from DSP to host in 1ms bursts */
  		spcm->stream[dir].dsp_max_burst_size_in_ms = 1;
 diff --git a/sound/soc/sof/ipc4-topology.h b/sound/soc/sof/ipc4-topology.h
-index ce5c69cb9ea4e..2a2afd0e83338 100644
+index 187e186ba4f8f..adb52a1eff85f 100644
 --- a/sound/soc/sof/ipc4-topology.h
 +++ b/sound/soc/sof/ipc4-topology.h
-@@ -64,6 +64,9 @@
+@@ -63,6 +63,9 @@
  /* FW requires minimum 4ms DMA buffer size */
  #define SOF_IPC4_MIN_DMA_BUFFER_SIZE	4
  
