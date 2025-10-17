@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04463BEA305
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E7FBE9608
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 386EE189622E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5A911883474
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EC01946C8;
-	Fri, 17 Oct 2025 15:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95F222A7E4;
+	Fri, 17 Oct 2025 14:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Po+lhMcl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN/9ph89"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF00330B2E;
-	Fri, 17 Oct 2025 15:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A0C3370F6;
+	Fri, 17 Oct 2025 14:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715942; cv=none; b=Wvxmku8EwyYs83sWa/7dNKJZ2VCi8ge8QPoc2bwE9VNlR8cpWsXdu6Q7GFdMGSCYSdOLnYUU8LruT4czUuSDNbIX9lSjqGfB6aoZUWZM5Cw9nRgdyyGSEVBgiKGj1ozPnBI5Qj5nDZg3X1G2U7aq++eSEI6zcoGEAjhZQ/KvFs0=
+	t=1760713057; cv=none; b=AXCG+K441oGnnU3Z2ABh5roZ6WPcTlZPZoxXiK4z88O0eKISzaiNLGbpkOdGkvqCvd50lAiJQcA4uKBuuvVPawUULDqJLJwimp+fnYL1mieHoTGB5rf5nCfRJoO8PY48RGymc+BJOpiX0B6LF7chFgDpwikmamtmu1FZFni11E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715942; c=relaxed/simple;
-	bh=5cgFEaNm7+GC14hGZJXy4jGYVDTSpFXizv/Soej44HA=;
+	s=arc-20240116; t=1760713057; c=relaxed/simple;
+	bh=ccxUa492ijo0pcI1M0muyHOHsNnBCm7tiktwjC3KqrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iZ9T/Ffho/hXSQnabzEuEXUi6gKxIP54gC4oAumPM5x4Wjv8NAp9PXBm6UzB4E7N8n76i9eWENH0i9JBMrupTMVP2Q4EWKsJmeDGPDYAjQkATBzf0kp1jWDmE9thFmDZUmdqNsGSc5R8mFyRLsc0oUurynabyh++eRMksVVsB+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Po+lhMcl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6641C4CEE7;
-	Fri, 17 Oct 2025 15:45:41 +0000 (UTC)
+	 MIME-Version; b=ExpIiJ9K1CUxLDL9f6oh2AaH6cnUWrxTLa8DZUSaRcS4MMTel/bNmGo4bqoRNVQ/HzRsOnwPhK6KziJR+cjfWNgmShXYBNDgL5diFLPvS73MkHTH5sUNrwenRNERhcQjnlv/Ax333YKEBzxmbT2O9Gjsl9T16xmsMcmKZBMX68Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kN/9ph89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC98CC4CEE7;
+	Fri, 17 Oct 2025 14:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715942;
-	bh=5cgFEaNm7+GC14hGZJXy4jGYVDTSpFXizv/Soej44HA=;
+	s=korg; t=1760713057;
+	bh=ccxUa492ijo0pcI1M0muyHOHsNnBCm7tiktwjC3KqrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Po+lhMclS4erVVxmsWlYK5Jk3fiARtqknodW87wWQ4ZtYhzRoYIC9DhHZ5rrWBHO5
-	 evRecCjaYp5CTZ1J3EBABdiFs+UGrCdb95nTxqqC4+HGuGgvZ/JgYZtBsLxliSa+2F
-	 Xg6dQ/pni0GUwPXqr4xIbyX1snzeGPQbMlFMydTA=
+	b=kN/9ph89BHcMLLoAahNhI4AQBGd9oHM/e8Wpx74AdZIJZxuR14O76cEMxnLpYb+eV
+	 2SiKGpOaGTuOPDfc4dpbvr3564WekZXxhBczymErYINuq1FpMS5+6LXIaZH5z0ukuy
+	 kEL+FQlocNwS7B2l4mDGQhSLj5vwrMarKTD8o0CM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Nobuhiro Iwamatsu (CIP)" <nobuhiro.iwamatsu.x90@mail.toshiba>
-Subject: [PATCH 5.15 019/276] platform/x86: int3472: Check for adev == NULL
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 033/168] drm/vmwgfx: Fix copy-paste typo in validation
 Date: Fri, 17 Oct 2025 16:51:52 +0200
-Message-ID: <20251017145143.103424643@linuxfoundation.org>
+Message-ID: <20251017145130.239105722@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit cd2fd6eab480dfc247b737cf7a3d6b009c4d0f1c upstream.
+[ Upstream commit 228c5d44dffe8c293cd2d2f0e7ea45e64565b1c4 ]
 
-Not all devices have an ACPI companion fwnode, so adev might be NULL. This
-can e.g. (theoretically) happen when a user manually binds one of
-the int3472 drivers to another i2c/platform device through sysfs.
+'entry' should be 'val' which is the loop iterator.
 
-Add a check for adev not being set and return -ENODEV in that case to
-avoid a possible NULL pointer deref in skl_int3472_get_acpi_buffer().
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241209220522.25288-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-[iwamatsu: adjusted context]
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro.iwamatsu.x90@mail.toshiba>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9e931f2e0970 ("drm/vmwgfx: Refactor resource validation hashtable to use linux/hashtable implementation.")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://lore.kernel.org/r/20250926195427.1405237-2-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/int3472/discrete.c |    3 +++
- drivers/platform/x86/intel/int3472/tps68470.c |    3 +++
- 2 files changed, 6 insertions(+)
+ drivers/gpu/drm/vmwgfx/vmwgfx_validation.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/x86/intel/int3472/discrete.c
-+++ b/drivers/platform/x86/intel/int3472/discrete.c
-@@ -345,6 +345,9 @@ static int skl_int3472_discrete_probe(st
- 	struct int3472_cldb cldb;
- 	int ret;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+index d37cf22e9caeb..27f33297fcf3e 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+@@ -692,7 +692,7 @@ void vmw_validation_drop_ht(struct vmw_validation_context *ctx)
+ 		hash_del_rcu(&val->hash.head);
  
-+	if (!adev)
-+		return -ENODEV;
-+
- 	ret = skl_int3472_fill_cldb(adev, &cldb);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Couldn't fill CLDB structure\n");
---- a/drivers/platform/x86/intel/int3472/tps68470.c
-+++ b/drivers/platform/x86/intel/int3472/tps68470.c
-@@ -102,6 +102,9 @@ static int skl_int3472_tps68470_probe(st
- 	int device_type;
- 	int ret;
+ 	list_for_each_entry(val, &ctx->resource_ctx_list, head)
+-		hash_del_rcu(&entry->hash.head);
++		hash_del_rcu(&val->hash.head);
  
-+	if (!adev)
-+		return -ENODEV;
-+
- 	regmap = devm_regmap_init_i2c(client, &tps68470_regmap_config);
- 	if (IS_ERR(regmap)) {
- 		dev_err(&client->dev, "Failed to create regmap: %ld\n", PTR_ERR(regmap));
+ 	ctx->sw_context = NULL;
+ }
+-- 
+2.51.0
+
 
 
 
