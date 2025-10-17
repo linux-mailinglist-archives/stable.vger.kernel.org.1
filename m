@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-187435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12BD1BEA3AD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0382CBE9648
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4839C1A63C0A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:48:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6531B188EFEC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04348330B00;
-	Fri, 17 Oct 2025 15:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1ED92F12BB;
+	Fri, 17 Oct 2025 14:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBqcgy5x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/RNOWxZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F11330B1C;
-	Fri, 17 Oct 2025 15:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1C32F12B9;
+	Fri, 17 Oct 2025 14:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716063; cv=none; b=K19rpjnbSaFrUPdcEpeeeBpS6ZVSYvST8Y8Cfc2lFb5TBvF4IvYuNIQxwQQ0j4cQewAbfDmxpd+VqkjLNDrj1I08HYIm74wcc4CH1veNLb3xOHT3kGVuXaMjLtkBb4fvknFDV4m3pUoodA0KWwaKwpjTq5wqW3T7sS4gNOe3f8M=
+	t=1760713177; cv=none; b=S2HzXPmUwIVRLvUndIwjhwgFHXPd2V4tsy6vMK94WKxiLYlDhmDzbBY9jPqG+mkuy6gjZgViNbTdyf+Yx2NR8P7if2u47ytuZP6sNtlMCjGQzhCwozAIDcn3vxgO6fRvyxi1QcCc6NMpU6Ad88+o1FX+HdqEye8oh2IpvYLgW3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716063; c=relaxed/simple;
-	bh=91vXonBSQQyLT2dbHxndQMIrzqldcs/cNACB2HUnTOs=;
+	s=arc-20240116; t=1760713177; c=relaxed/simple;
+	bh=ilp1mUPNqHCCRBjx5FgMYUH34hI3cdsF8h3WXFRuapM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQCh5uo7GJHtseIbXi9NJ1qDyODiLKZ/nDORJqsU/FNLYB09yem4ut4CffZo2yAdU16ExXlScormsfadCPmwylk2KMgKbSaAfxW53oUTWQ29oeudUDzHlUsjIOwlioFVdycL2D/n5Zz07R8jXKFRSJoCSOtWRx0ry6l41ebBk7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBqcgy5x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36065C4CEE7;
-	Fri, 17 Oct 2025 15:47:43 +0000 (UTC)
+	 MIME-Version; b=fooxAl1K7mRCajTdgk9O5hxzEJwwavcW9Jkfx3Dgy9TWE3pqDzvL9m+ZGEd1X8fGbaieS/M0wEl/5ZmelKqKqq9yb2ZeFxPkI8QOYpnBszbS4FSOfk+nfrn3upGtCAjLpCx4Vibv8PMKUbzF5oZt7oMv5oFTtmQG1BqOcOXyy5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/RNOWxZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7BCC4CEF9;
+	Fri, 17 Oct 2025 14:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716063;
-	bh=91vXonBSQQyLT2dbHxndQMIrzqldcs/cNACB2HUnTOs=;
+	s=korg; t=1760713176;
+	bh=ilp1mUPNqHCCRBjx5FgMYUH34hI3cdsF8h3WXFRuapM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBqcgy5xiTKRm/lppd3XW+nq4R4eKqCBcb96VGzubp4BVmqmBgy1CLeRQS+3COMvL
-	 XjFV8sewJ/rU8uw3dgBewPARQD1tX5JLXpdJiZfj0E36gQD7R0Rve/MyB4i6fyH5PF
-	 BGCkI5DmuzrrrXIkKWTAdvZRw3ZvbFOS5Q8JJkF0=
+	b=O/RNOWxZTWUZYpvSw6Z6DqOMSH5G6eqsBxegm+GFRwY2W/TZO90JIk0UHJN7HDMtU
+	 n8eX6cwfgZ5kjlZXo/1FnLwemR7cuaBqbAawJT+cCod306lNK1Ws7WGqodU+Hf2oGd
+	 PjSG1b9ZOOej/YWaI+raq6R+ag2RE11iAHuZIkec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Kerkmann <s.kerkmann@pengutronix.de>,
-	Jeff Chen <jeff.chen_1@nxp.con>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 060/276] wifi: mwifiex: send world regulatory domain to driver
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.1 074/168] crypto: aspeed - Fix dma_unmap_sg() direction
 Date: Fri, 17 Oct 2025 16:52:33 +0200
-Message-ID: <20251017145144.679342889@linuxfoundation.org>
+Message-ID: <20251017145131.754703464@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 56819d00bc2ebaa6308913c28680da5d896852b8 ]
+commit 838d2d51513e6d2504a678e906823cfd2ecaaa22 upstream.
 
-The world regulatory domain is a restrictive subset of channel
-configurations which allows legal operation of the adapter all over the
-world. Changing to this domain should not be prevented.
+It seems like everywhere in this file, when the request is not
+bidirectionala, req->src is mapped with DMA_TO_DEVICE and req->dst is
+mapped with DMA_FROM_DEVICE.
 
-Fixes: dd4a9ac05c8e1 ("mwifiex: send regulatory domain info to firmware only if alpha2 changed") changed
-Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Reviewed-by: Jeff Chen <jeff.chen_1@nxp.con>
-Link: https://patch.msgid.link/20250804-fix-mwifiex-regulatory-domain-v1-1-e4715c770c4d@pengutronix.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 62f58b1637b7 ("crypto: aspeed - add HACE crypto driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/crypto/aspeed/aspeed-hace-crypto.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index d76a8523ef1d3..8978f18d98de4 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -663,10 +663,9 @@ static void mwifiex_reg_notifier(struct wiphy *wiphy,
- 		return;
- 	}
+--- a/drivers/crypto/aspeed/aspeed-hace-crypto.c
++++ b/drivers/crypto/aspeed/aspeed-hace-crypto.c
+@@ -335,7 +335,7 @@ free_req:
  
--	/* Don't send world or same regdom info to firmware */
--	if (strncmp(request->alpha2, "00", 2) &&
--	    strncmp(request->alpha2, adapter->country_code,
--		    sizeof(request->alpha2))) {
-+	/* Don't send same regdom info to firmware */
-+	if (strncmp(request->alpha2, adapter->country_code,
-+		    sizeof(request->alpha2)) != 0) {
- 		memcpy(adapter->country_code, request->alpha2,
- 		       sizeof(request->alpha2));
- 		mwifiex_send_domain_info_cmd_fw(wiphy);
--- 
-2.51.0
-
+ 	} else {
+ 		dma_unmap_sg(hace_dev->dev, req->dst, rctx->dst_nents,
+-			     DMA_TO_DEVICE);
++			     DMA_FROM_DEVICE);
+ 		dma_unmap_sg(hace_dev->dev, req->src, rctx->src_nents,
+ 			     DMA_TO_DEVICE);
+ 	}
 
 
 
