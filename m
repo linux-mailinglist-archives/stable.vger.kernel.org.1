@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C90BEA2EA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B4ABE9E6E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 30476585F4C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:34:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BCE8B567A12
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61224332909;
-	Fri, 17 Oct 2025 15:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504A83346B0;
+	Fri, 17 Oct 2025 15:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGd2VemZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKHr5es8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD4F332914;
-	Fri, 17 Oct 2025 15:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A24E32E12D;
+	Fri, 17 Oct 2025 15:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715171; cv=none; b=g8yFw3LJPrDCTkJSn4Xuu/NfKi9PN62C/UUjC9Uc9ATMoZGuFMTQ1hK3Axv9agaAfY5urGVRyZ9NKst/Lh4hTaWqixZ2hRlOhlQPifjaDErziHoNJ7GVS/s9vyvVr84vK+quCxFqf9HL3Quh+tZkIGQIg5sKtnqOK5rXIAfDrB0=
+	t=1760714279; cv=none; b=tlrwrVI6qeKDiP3Ioib7YMGROC1rxgWmGSzuoUcE9L9eRnY5nTaUVqdeMXU5HA8CAyELKefJc0o/bfyZ8KkIjWNo6ozU2dZAfX3UX9efwYe5v3I+wsQSsHfYsDIwnZxCR2tN3rPu4nV8Otwp4FfiZgIV9qhEZzHbXssIDCggBrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715171; c=relaxed/simple;
-	bh=bcUW84U/bK9ys2SDFyF+U4o2PopTMsr41ajvXEDgb9o=;
+	s=arc-20240116; t=1760714279; c=relaxed/simple;
+	bh=EhoK69NpJJviJNdJPrnaz1bXPq9UtjF5kBpYKLSr5GY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYolOb6vqpBfNDIRDHwl/A56j1NFXEdpNpD1CvEohyyhTkdwaQU2XWrQkFV3a/jpkNeWrzEOWyFnGhZbEqXjdeyVMxq0FGaDHLG/7XBVO/KXtZ7NYnA2zZhsez1ZaJYcu5PPIobO7oTGefJrMYP32PMQgbrPx28Mc1NT7te6jsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGd2VemZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E6CC4CEE7;
-	Fri, 17 Oct 2025 15:32:50 +0000 (UTC)
+	 MIME-Version; b=Y3zPahjgGJU5QUf1EFLrpHSoxRYFflO/RyeC1PlmMbLERdMVSNSnvMdQtSHokUZDULw0nxZF1D8jHGfMPplx0nyCOfQZHNMou9rOx2EhCWeTJ+P3eZ5OYYDw6ZY+MEpZMXFldo1HwK5GzTfGvJyxEAIhMEjztiJqN7x/5g5hOQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKHr5es8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89391C4CEE7;
+	Fri, 17 Oct 2025 15:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715171;
-	bh=bcUW84U/bK9ys2SDFyF+U4o2PopTMsr41ajvXEDgb9o=;
+	s=korg; t=1760714278;
+	bh=EhoK69NpJJviJNdJPrnaz1bXPq9UtjF5kBpYKLSr5GY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EGd2VemZoF0l8t3SKsDxKTFZhf0bZRtq8/XLXt5Ic42i9nmNX3XWxy4cVP4FUWY8B
-	 RdVWVNLWoTgieDMUtKtswzShtTZ7TPLVYkGfLh5nruWOgQQyTV1kHV9ZfoOK3QgJRO
-	 nIVRLNK7c3khh/3YyzQDAgidjBeY5X1eoLRaaFYI=
+	b=jKHr5es8PIdOsUJglRyqcpyUBot65UHIwTC6zIZnvfg1Q6IVEbx6Cv83L7c0kO7eB
+	 2cE7DiP1Lb17H+hznDm68j77WmpYnA85IMXm4GHpGeH0ducf2iIsOXXGs570pIBeAW
+	 BHDYPswADFomwAoQrbnSercwtWEl8eJcgz7mbakw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 121/371] crypto: essiv - Check ssize for decryption and in-place encryption
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 089/277] arm64: dts: qcom: msm8939: Add missing MDSS reset
 Date: Fri, 17 Oct 2025 16:51:36 +0200
-Message-ID: <20251017145206.312401153@linuxfoundation.org>
+Message-ID: <20251017145150.385283801@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 6bb73db6948c2de23e407fe1b7ef94bf02b7529f ]
+commit f73c82c855e186e9b67125e3eee743960320e43c upstream.
 
-Move the ssize check to the start in essiv_aead_crypt so that
-it's also checked for decryption and in-place encryption.
+On most MSM8939 devices, the bootloader already initializes the display to
+show the boot splash screen. In this situation, MDSS is already configured
+and left running when starting Linux. To avoid side effects from the
+bootloader configuration, the MDSS reset can be specified in the device
+tree to start again with a clean hardware state.
 
-Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Fixes: be1eb7f78aa8 ("crypto: essiv - create wrapper template for ESSIV generation")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reset for MDSS is currently missing in msm8939.dtsi, which causes
+errors when the MDSS driver tries to re-initialize the registers:
+
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ ...
+
+It turns out that we have always indirectly worked around this by building
+the MDSS driver as a module. Before v6.17, the power domain was temporarily
+turned off until the module was loaded, long enough to clear the register
+contents. In v6.17, power domains are not turned off during boot until
+sync_state() happens, so this is no longer working. Even before v6.17 this
+resulted in broken behavior, but notably only when the MDSS driver was
+built-in instead of a module.
+
+Cc: stable@vger.kernel.org
+Fixes: 61550c6c156c ("arm64: dts: qcom: Add msm8939 SoC")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-2-a5c705df0c45@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/essiv.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8939.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/crypto/essiv.c b/crypto/essiv.c
-index d003b78fcd855..a47a3eab69351 100644
---- a/crypto/essiv.c
-+++ b/crypto/essiv.c
-@@ -186,9 +186,14 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
- 	const struct essiv_tfm_ctx *tctx = crypto_aead_ctx(tfm);
- 	struct essiv_aead_request_ctx *rctx = aead_request_ctx(req);
- 	struct aead_request *subreq = &rctx->aead_req;
-+	int ivsize = crypto_aead_ivsize(tfm);
-+	int ssize = req->assoclen - ivsize;
- 	struct scatterlist *src = req->src;
- 	int err;
+--- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
+@@ -1218,6 +1218,8 @@
  
-+	if (ssize < 0)
-+		return -EINVAL;
+ 			power-domains = <&gcc MDSS_GDSC>;
+ 
++			resets = <&gcc GCC_MDSS_BCR>;
 +
- 	crypto_cipher_encrypt_one(tctx->essiv_cipher, req->iv, req->iv);
- 
- 	/*
-@@ -198,19 +203,12 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
- 	 */
- 	rctx->assoc = NULL;
- 	if (req->src == req->dst || !enc) {
--		scatterwalk_map_and_copy(req->iv, req->dst,
--					 req->assoclen - crypto_aead_ivsize(tfm),
--					 crypto_aead_ivsize(tfm), 1);
-+		scatterwalk_map_and_copy(req->iv, req->dst, ssize, ivsize, 1);
- 	} else {
- 		u8 *iv = (u8 *)aead_request_ctx(req) + tctx->ivoffset;
--		int ivsize = crypto_aead_ivsize(tfm);
--		int ssize = req->assoclen - ivsize;
- 		struct scatterlist *sg;
- 		int nents;
- 
--		if (ssize < 0)
--			return -EINVAL;
--
- 		nents = sg_nents_for_len(req->src, ssize);
- 		if (nents < 0)
- 			return -EINVAL;
--- 
-2.51.0
-
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			#interrupt-cells = <1>;
 
 
 
