@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAD9BEA32C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8838BE9FFC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00F2019A5DC0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CE86188A674
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3475330B1D;
-	Fri, 17 Oct 2025 15:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C315336EFA;
+	Fri, 17 Oct 2025 15:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWZOgULf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIF/bK0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF21330B0D;
-	Fri, 17 Oct 2025 15:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063AE2F12D9;
+	Fri, 17 Oct 2025 15:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715962; cv=none; b=iERjISUxKMk+9WbZcccp8Uk9tdtCqpv+/98Lcp9xPHmxzC9oB20HOdwQD/hdTfVxOvsGaVVTORg6SLuZo+SMrrGiMBpXVjbFik7WuyIaiugp4c9xZDIkjBUnLLPnc31vBvUL5iZ41tEgnx2IFdmLczbUK9a4YFaEI9Fr2fLFeb4=
+	t=1760715229; cv=none; b=uTGdXH7VNrwyDDi1kUNiNP7aHgM1d8Magdm6bw6IY/owLlfntpbEwXQ3vzpkQGuItx1Rx75J3eGg7wxJ51XclLo6sfKzgkvoB3C154bNlEl/9tHE5x6HN+OLYyBL5VyNeOes6EhA1MxOjVCkpH+/0JvVj1QmBdBfHSXt+mwmJKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715962; c=relaxed/simple;
-	bh=uzKTT9ZASGcoxm9n+Y+S55pCC235yl1Z7zc/iEYd2X8=;
+	s=arc-20240116; t=1760715229; c=relaxed/simple;
+	bh=UG42y1ktzQdfwF5MSQL2BEUijxJY504B8wQ8FA4CLKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fb4CLzyGXZnJdVyFsyrYk479JemO6P7j0+3px3RNds5fqrJ8WJXtOBOSdseAKKWoZBsPkkqstDj0axe6xuDC42oZQ1TCry7NyEB6KpFictQnjh/XjHu5WiipT/U44OCNCOs+Emj2s4PeBxb7KigbV5asBGUFph9GVB1GGolc0tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWZOgULf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FBDC4CEE7;
-	Fri, 17 Oct 2025 15:46:01 +0000 (UTC)
+	 MIME-Version; b=UbNVaJq2RLYc03KM0LhBQOEWnKdAhA7+N6zVdOJlbF3zyaaNJmSMBUo7iY5Bt2eazVlzYqtC841aqxHkXodqlyV77HisdVF6N6QWTdTTZyfLdMtpTfGCQ9PJadRUAsXavV4OoiBCMkz0NmtWxME5B/wbLK/XmvCmfkwT/N/OD1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIF/bK0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BEBC4CEE7;
+	Fri, 17 Oct 2025 15:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715962;
-	bh=uzKTT9ZASGcoxm9n+Y+S55pCC235yl1Z7zc/iEYd2X8=;
+	s=korg; t=1760715227;
+	bh=UG42y1ktzQdfwF5MSQL2BEUijxJY504B8wQ8FA4CLKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWZOgULfp3G5++OCGvK1ElkiTwYtpJ4Hv1yroHEe0NWzlFkiDDzrzugjzA0TAQkpS
-	 wROjTFbx+NQLfWHgXy7tp9TsCTtQejt1OVtBq9RDA8rx8be17r/Y6yxb2PPkpLXsi5
-	 duCFZ1SldU8wPZo+d16NJkT80WSV99svXeiARJZY=
+	b=xIF/bK0AjmpEMx57BuXWuPZsnZQqXhH47ZaNEZeFHN8qGqAxYreY9t57ScG+gbwhj
+	 13uHBNsXqTa0ewxe0SKwlfFZCLgHp08TJRNQZI/LOs69MDO+EWKkN1m59AqwRuPXrm
+	 7DmjlCVfmlWaljxHyOgdUJB5l449lKv9VmvcD9ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 025/276] coresight: trbe: Prevent overflow in PERF_IDX2OFF()
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.17 143/371] arm64: dts: qcom: msm8939: Add missing MDSS reset
 Date: Fri, 17 Oct 2025 16:51:58 +0200
-Message-ID: <20251017145143.322726616@linuxfoundation.org>
+Message-ID: <20251017145207.109815946@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 105f56877f2d5f82d71e20b45eb7be7c24c3d908 ]
+commit f73c82c855e186e9b67125e3eee743960320e43c upstream.
 
-Cast nr_pages to unsigned long to avoid overflow when handling large
-AUX buffer sizes (>= 2 GiB).
+On most MSM8939 devices, the bootloader already initializes the display to
+show the boot splash screen. In this situation, MDSS is already configured
+and left running when starting Linux. To avoid side effects from the
+bootloader configuration, the MDSS reset can be specified in the device
+tree to start again with a clean hardware state.
 
-Fixes: 3fbf7f011f24 ("coresight: sink: Add TRBE driver")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reset for MDSS is currently missing in msm8939.dtsi, which causes
+errors when the MDSS driver tries to re-initialize the registers:
+
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ ...
+
+It turns out that we have always indirectly worked around this by building
+the MDSS driver as a module. Before v6.17, the power domain was temporarily
+turned off until the module was loaded, long enough to clear the register
+contents. In v6.17, power domains are not turned off during boot until
+sync_state() happens, so this is no longer working. Even before v6.17 this
+resulted in broken behavior, but notably only when the MDSS driver was
+built-in instead of a module.
+
+Cc: stable@vger.kernel.org
+Fixes: 61550c6c156c ("arm64: dts: qcom: Add msm8939 SoC")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-2-a5c705df0c45@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/coresight/coresight-trbe.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8939.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
-index fac63d092c7be..732a4bed3f207 100644
---- a/drivers/hwtracing/coresight/coresight-trbe.c
-+++ b/drivers/hwtracing/coresight/coresight-trbe.c
-@@ -18,7 +18,8 @@
- #include <asm/barrier.h>
- #include "coresight-trbe.h"
+--- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
+@@ -1249,6 +1249,8 @@
  
--#define PERF_IDX2OFF(idx, buf) ((idx) % ((buf)->nr_pages << PAGE_SHIFT))
-+#define PERF_IDX2OFF(idx, buf) \
-+	((idx) % ((unsigned long)(buf)->nr_pages << PAGE_SHIFT))
+ 			power-domains = <&gcc MDSS_GDSC>;
  
- /*
-  * A padding packet that will help the user space tools
--- 
-2.51.0
-
++			resets = <&gcc GCC_MDSS_BCR>;
++
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			#interrupt-cells = <1>;
 
 
 
