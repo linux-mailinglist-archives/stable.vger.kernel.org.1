@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E77BBEA45E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:29 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE43BEA40D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D82B6940833
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8C2175A0100
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C755C2F12C2;
-	Fri, 17 Oct 2025 15:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9039D330B11;
+	Fri, 17 Oct 2025 15:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gB7zr3Yr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/nqtmy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B34339711;
-	Fri, 17 Oct 2025 15:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471BF330B0E;
+	Fri, 17 Oct 2025 15:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715230; cv=none; b=ho3IH8Sy5mUBv1MKXrE7VnbyRGPIOYH9yKE53YdANAJnz69WG3plXWoxseFJsY1b3nselYkGfr/wGtO6dInKzO+tWRqfy1Fbkb7EyJ6oPkxlb/CVUaMaXtK7uEwH+y/nPjf0Ow8xO6nh/NUUF1YUJuOW0o79kef5V8V/Eo2zLJc=
+	t=1760716008; cv=none; b=SpsDcM54X2btkRGmp542De1Kc315FLwq0iqRlLg6mnxAa49lDGJYFQBqPmAFbDHOIYU2tMidDUBaNWR61/F/II38GS6AZDHl8QlhlUWLxC528+K8iMHimldde1mRgV/STKa6tJWeRP4qHxQ2pHkyjoBQnwSm5XyYRCiVDgbOTpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715230; c=relaxed/simple;
-	bh=0Os194jqDh01CVkU7lL1yuZzeYVaphZBGWwHiVi/OIY=;
+	s=arc-20240116; t=1760716008; c=relaxed/simple;
+	bh=dIUnaJLC8H3yjUcrs8GXpp97iu0iqiMKTKR0+EMQ+0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n2XBKmfdM7brk2z5ZA3t93Fi3mGRxT4WMz8EWkCDOFzVzUl8PAoqa3Mp50awVosL59WhhF5RMfaWQldMtH1J5GUPcJ60DKAPIkE6tTIft9K4relx/JkNmdV/64E8fDmU0lAGgvjJQf+jYbnaioI+1bVyeN8kgfChlxL6vWbuCqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gB7zr3Yr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0993BC4CEE7;
-	Fri, 17 Oct 2025 15:33:49 +0000 (UTC)
+	 MIME-Version; b=mDM7GpkhBXbbNtEGpcwUqn8mmeJNlRLVSErAvqvrgGg+N5fy/BR5Tstx4CugeoK4Y4XIv//adR21NnBASq/YroAeP2ta/J7oLz2iAYZS9r9MppFnitGHh14utSf5mUIqF1BWQyimGS/B62VJYWyZz2UtwJdbo6anZD/ym1xszgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/nqtmy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A894C4CEE7;
+	Fri, 17 Oct 2025 15:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715230;
-	bh=0Os194jqDh01CVkU7lL1yuZzeYVaphZBGWwHiVi/OIY=;
+	s=korg; t=1760716008;
+	bh=dIUnaJLC8H3yjUcrs8GXpp97iu0iqiMKTKR0+EMQ+0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gB7zr3Yr39K2fSlBc+xpJbSJmI/uccqRdpZZ2zKud60dQ/bTC/VC6lFkaO3rv4Shn
-	 AUQQDBUUgR+DiejnxPjbkIE6rlfMOV0Snogl6j1kjEPzzg+VIs78zjL3o6aD/cnArH
-	 7hgF9kYDH/KqOfm8laelpHLmqd0lOsqILoCviPEs=
+	b=Z/nqtmy13ZOys31L3lTgE4E81tY99sMZxXNyFI5TefjdxvV5WjK24g9lHLbzoWjIg
+	 aZs0vrsC1U8inVP527BXl+4u/1Xe0LQGnVEUW8CDW60p/4LqIdSPrfoWdgG2mrAIwk
+	 GFvPMaaTpq3S0f3eJ7twPC7+XgB7uAHPT4xh0Avs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 126/371] cifs: Query EA $LXMOD in cifs_query_path_info() for WSL reparse points
+Subject: [PATCH 5.15 008/276] media: tuner: xc5000: Fix use-after-free in xc5000_release
 Date: Fri, 17 Oct 2025 16:51:41 +0200
-Message-ID: <20251017145206.492397359@linuxfoundation.org>
+Message-ID: <20251017145142.698925043@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,118 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 057ac50638bcece64b3b436d3a61b70ed6c01a34 ]
+[ Upstream commit 40b7a19f321e65789612ebaca966472055dab48c ]
 
-EA $LXMOD is required for WSL non-symlink reparse points.
+The original code uses cancel_delayed_work() in xc5000_release(), which
+does not guarantee that the delayed work item timer_sleep has fully
+completed if it was already running. This leads to use-after-free scenarios
+where xc5000_release() may free the xc5000_priv while timer_sleep is still
+active and attempts to dereference the xc5000_priv.
 
-Fixes: ef86ab131d91 ("cifs: Fix querying of WSL CHR and BLK reparse points over SMB1")
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+A typical race condition is illustrated below:
+
+CPU 0 (release thread)                 | CPU 1 (delayed work callback)
+xc5000_release()                       | xc5000_do_timer_sleep()
+  cancel_delayed_work()                |
+  hybrid_tuner_release_state(priv)     |
+    kfree(priv)                        |
+                                       |   priv = container_of() // UAF
+
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the timer_sleep is properly canceled before the xc5000_priv memory
+is deallocated.
+
+A deadlock concern was considered: xc5000_release() is called in a process
+context and is not holding any locks that the timer_sleep work item might
+also need. Therefore, the use of the _sync() variant is safe here.
+
+This bug was initially identified through static analysis.
+
+Fixes: f7a27ff1fb77 ("[media] xc5000: delay tuner sleep to 5 seconds")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[hverkuil: fix typo in Subject: tunner -> tuner]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb1ops.c | 62 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 60 insertions(+), 2 deletions(-)
+ drivers/media/tuners/xc5000.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
-index a02d41d1ce4a3..3fdbb71036cff 100644
---- a/fs/smb/client/smb1ops.c
-+++ b/fs/smb/client/smb1ops.c
-@@ -651,14 +651,72 @@ static int cifs_query_path_info(const unsigned int xid,
+--- a/drivers/media/tuners/xc5000.c
++++ b/drivers/media/tuners/xc5000.c
+@@ -1304,7 +1304,7 @@ static void xc5000_release(struct dvb_fr
+ 	mutex_lock(&xc5000_list_mutex);
+ 
+ 	if (priv) {
+-		cancel_delayed_work(&priv->timer_sleep);
++		cancel_delayed_work_sync(&priv->timer_sleep);
+ 		hybrid_tuner_release_state(priv);
  	}
  
- #ifdef CONFIG_CIFS_XATTR
-+	/*
-+	 * For non-symlink WSL reparse points it is required to fetch
-+	 * EA $LXMOD which contains in its S_DT part the mandatory file type.
-+	 */
-+	if (!rc && data->reparse_point) {
-+		struct smb2_file_full_ea_info *ea;
-+		u32 next = 0;
-+
-+		ea = (struct smb2_file_full_ea_info *)data->wsl.eas;
-+		do {
-+			ea = (void *)((u8 *)ea + next);
-+			next = le32_to_cpu(ea->next_entry_offset);
-+		} while (next);
-+		if (le16_to_cpu(ea->ea_value_length)) {
-+			ea->next_entry_offset = cpu_to_le32(ALIGN(sizeof(*ea) +
-+						ea->ea_name_length + 1 +
-+						le16_to_cpu(ea->ea_value_length), 4));
-+			ea = (void *)((u8 *)ea + le32_to_cpu(ea->next_entry_offset));
-+		}
-+
-+		rc = CIFSSMBQAllEAs(xid, tcon, full_path, SMB2_WSL_XATTR_MODE,
-+				    &ea->ea_data[SMB2_WSL_XATTR_NAME_LEN + 1],
-+				    SMB2_WSL_XATTR_MODE_SIZE, cifs_sb);
-+		if (rc == SMB2_WSL_XATTR_MODE_SIZE) {
-+			ea->next_entry_offset = cpu_to_le32(0);
-+			ea->flags = 0;
-+			ea->ea_name_length = SMB2_WSL_XATTR_NAME_LEN;
-+			ea->ea_value_length = cpu_to_le16(SMB2_WSL_XATTR_MODE_SIZE);
-+			memcpy(&ea->ea_data[0], SMB2_WSL_XATTR_MODE, SMB2_WSL_XATTR_NAME_LEN + 1);
-+			data->wsl.eas_len += ALIGN(sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
-+						   SMB2_WSL_XATTR_MODE_SIZE, 4);
-+			rc = 0;
-+		} else if (rc >= 0) {
-+			/* It is an error if EA $LXMOD has wrong size. */
-+			rc = -EINVAL;
-+		} else {
-+			/*
-+			 * In all other cases ignore error if fetching
-+			 * of EA $LXMOD failed. It is needed only for
-+			 * non-symlink WSL reparse points and wsl_to_fattr()
-+			 * handle the case when EA is missing.
-+			 */
-+			rc = 0;
-+		}
-+	}
-+
- 	/*
- 	 * For WSL CHR and BLK reparse points it is required to fetch
- 	 * EA $LXDEV which contains major and minor device numbers.
- 	 */
- 	if (!rc && data->reparse_point) {
- 		struct smb2_file_full_ea_info *ea;
-+		u32 next = 0;
- 
- 		ea = (struct smb2_file_full_ea_info *)data->wsl.eas;
-+		do {
-+			ea = (void *)((u8 *)ea + next);
-+			next = le32_to_cpu(ea->next_entry_offset);
-+		} while (next);
-+		if (le16_to_cpu(ea->ea_value_length)) {
-+			ea->next_entry_offset = cpu_to_le32(ALIGN(sizeof(*ea) +
-+						ea->ea_name_length + 1 +
-+						le16_to_cpu(ea->ea_value_length), 4));
-+			ea = (void *)((u8 *)ea + le32_to_cpu(ea->next_entry_offset));
-+		}
-+
- 		rc = CIFSSMBQAllEAs(xid, tcon, full_path, SMB2_WSL_XATTR_DEV,
- 				    &ea->ea_data[SMB2_WSL_XATTR_NAME_LEN + 1],
- 				    SMB2_WSL_XATTR_DEV_SIZE, cifs_sb);
-@@ -668,8 +726,8 @@ static int cifs_query_path_info(const unsigned int xid,
- 			ea->ea_name_length = SMB2_WSL_XATTR_NAME_LEN;
- 			ea->ea_value_length = cpu_to_le16(SMB2_WSL_XATTR_DEV_SIZE);
- 			memcpy(&ea->ea_data[0], SMB2_WSL_XATTR_DEV, SMB2_WSL_XATTR_NAME_LEN + 1);
--			data->wsl.eas_len = sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
--					    SMB2_WSL_XATTR_DEV_SIZE;
-+			data->wsl.eas_len += ALIGN(sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
-+						   SMB2_WSL_XATTR_MODE_SIZE, 4);
- 			rc = 0;
- 		} else if (rc >= 0) {
- 			/* It is an error if EA $LXDEV has wrong size. */
--- 
-2.51.0
-
 
 
 
