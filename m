@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-186520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C697BE98B0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:12:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06037BE9AD2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D82856816B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FE951892FBD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01E4336EFA;
-	Fri, 17 Oct 2025 15:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F4A2F12BE;
+	Fri, 17 Oct 2025 15:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeJiCM7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QDm6RM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4993328E5;
-	Fri, 17 Oct 2025 15:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB851D5CE0;
+	Fri, 17 Oct 2025 15:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713474; cv=none; b=Mvn7pfefWLE1l/O2uNoqtii+hoPDpdKStYwLCDbDjWigGOWyVXRI8F0wB62P9EQUWC1va9Tr7k0NKnB27hLD8NFWupzIhX5C1Xl1bfG9oMKLLRF8AoVouemdk+PpH8LjufV1C9jLxhTEZcMhosHrGbfXKBhl6cPpqSZ0dtvPqRU=
+	t=1760714184; cv=none; b=SRKgwRqJTK6BdMuekl5rJtTZuB6HzIuvv3Qc6UzpLX54g7x5vUjGqJOvDojDmk74Oe+XM1QLZczhy1mufpAneAsVfCPc759si/FC/zIqHLCzaU4ZYcyLVCDezbDCe1KMZuoj0Asg00w0S1SIHXURN8SrtyRFxfHenROpvqT8cAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713474; c=relaxed/simple;
-	bh=nYTdEQhJEjNzZA4sad1XXL5PWk5lAMlwa2Hxfjf95u4=;
+	s=arc-20240116; t=1760714184; c=relaxed/simple;
+	bh=jkQnQLqC9lBrrKnHylJ7OmwcTDjm0wLdxr2y78mnXzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D5MBinyQfFLwYOzermJc+oBdIpBnZIHJJdY+x2r9V35rwyXuTHpScoVcbS2PAfZpwdr8qeCMVPZDAKTfXLFXpVFbLpepuyK+hCAbusjfDjQlNd80n4Kbt57/QKuFyY4LBcw6ty3XMwaEUyraLk6uOjFg5JqLuzB8blcLaNA7Hq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeJiCM7n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC1BC4CEE7;
-	Fri, 17 Oct 2025 15:04:33 +0000 (UTC)
+	 MIME-Version; b=aSg8Wf6hwKY7dPt76yCRFOO/rWiln1BeHzHT8qkTCkRzLdilrert3i4iI7Pnc1vHdA+EDXPtv+cprNvqYcJwmeRV05qRf5/6MccuuigwF4kD+Uz265TIIuR4lvh1y78MGjuivA9Ii25L/e8A4t5+NY4p6xy4LNEeVFcMfggvRBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QDm6RM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC138C4CEE7;
+	Fri, 17 Oct 2025 15:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713474;
-	bh=nYTdEQhJEjNzZA4sad1XXL5PWk5lAMlwa2Hxfjf95u4=;
+	s=korg; t=1760714184;
+	bh=jkQnQLqC9lBrrKnHylJ7OmwcTDjm0wLdxr2y78mnXzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HeJiCM7nXyhbll8TniAxcRcnu17ve97ZMqYcatvUnSt8ZkH5IHdgzToT6JNye2sQ8
-	 wI0SdaOlxfgSMMAX7madRZFakb3godINtdz00t63z9EHL7R24JJvjKyzjeZjJoMooz
-	 wYP4BpDibRkxv1FhkofgMz4gyTPi8eOHhM4oPI0A=
+	b=2QDm6RM9DKNXVewfsCQ2KXFQv17mxLRREZvpgx1DH7eRD66vWM6MA03hcyQ/ZTw5c
+	 Mub4PmuE7kibbJzTSEXKNN0ibiA9XbswaDrg6EK2W6cFuzNfOUii2nEva3OS4LnxWy
+	 9duoeJLnxJGKhujDSXFZKm9KLSNlHwY54UHMEOwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 002/201] fscontext: do not consume log entries when returning -EMSGSIZE
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 056/277] ice: ice_adapter: release xa entry on adapter allocation failure
 Date: Fri, 17 Oct 2025 16:51:03 +0200
-Message-ID: <20251017145134.813046013@linuxfoundation.org>
+Message-ID: <20251017145149.191065190@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Sarai <cyphar@cyphar.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 72d271a7baa7062cb27e774ac37c5459c6d20e22 upstream.
+[ Upstream commit 2db687f3469dbc5c59bc53d55acafd75d530b497 ]
 
-Userspace generally expects APIs that return -EMSGSIZE to allow for them
-to adjust their buffer size and retry the operation. However, the
-fscontext log would previously clear the message even in the -EMSGSIZE
-case.
+When ice_adapter_new() fails, the reserved XArray entry created by
+xa_insert() is not released. This causes subsequent insertions at
+the same index to return -EBUSY, potentially leading to
+NULL pointer dereferences.
 
-Given that it is very cheap for us to check whether the buffer is too
-small before we remove the message from the ring buffer, let's just do
-that instead. While we're at it, refactor some fscontext_read() into a
-separate helper to make the ring buffer logic a bit easier to read.
+Reorder the operations as suggested by Przemek Kitszel:
+1. Check if adapter already exists (xa_load)
+2. Reserve the XArray slot (xa_reserve)
+3. Allocate the adapter (ice_adapter_new)
+4. Store the adapter (xa_store)
 
-Fixes: 007ec26cdc9f ("vfs: Implement logging through fs_context")
-Cc: David Howells <dhowells@redhat.com>
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-Link: https://lore.kernel.org/20250807-fscontext-log-cleanups-v3-1-8d91d6242dc3@cyphar.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0f0023c649c7 ("ice: do not init struct ice_adapter more times than needed")
+Suggested-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20251001115336.1707-1-vulab@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fsopen.c |   70 ++++++++++++++++++++++++++++++++----------------------------
- 1 file changed, 38 insertions(+), 32 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_adapter.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/fs/fsopen.c
-+++ b/fs/fsopen.c
-@@ -18,50 +18,56 @@
- #include "internal.h"
- #include "mount.h"
+diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c b/drivers/net/ethernet/intel/ice/ice_adapter.c
+index 10285995c9edd..cc4798026182e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_adapter.c
++++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
+@@ -98,19 +98,21 @@ struct ice_adapter *ice_adapter_get(struct pci_dev *pdev)
  
-+static inline const char *fetch_message_locked(struct fc_log *log, size_t len,
-+					       bool *need_free)
-+{
-+	const char *p;
-+	int index;
-+
-+	if (unlikely(log->head == log->tail))
-+		return ERR_PTR(-ENODATA);
-+
-+	index = log->tail & (ARRAY_SIZE(log->buffer) - 1);
-+	p = log->buffer[index];
-+	if (unlikely(strlen(p) > len))
-+		return ERR_PTR(-EMSGSIZE);
-+
-+	log->buffer[index] = NULL;
-+	*need_free = log->need_free & (1 << index);
-+	log->need_free &= ~(1 << index);
-+	log->tail++;
-+
-+	return p;
-+}
-+
- /*
-  * Allow the user to read back any error, warning or informational messages.
-+ * Only one message is returned for each read(2) call.
-  */
- static ssize_t fscontext_read(struct file *file,
- 			      char __user *_buf, size_t len, loff_t *pos)
- {
- 	struct fs_context *fc = file->private_data;
--	struct fc_log *log = fc->log.log;
--	unsigned int logsize = ARRAY_SIZE(log->buffer);
--	ssize_t ret;
--	char *p;
-+	ssize_t err;
-+	const char *p __free(kfree) = NULL, *message;
- 	bool need_free;
--	int index, n;
--
--	ret = mutex_lock_interruptible(&fc->uapi_mutex);
--	if (ret < 0)
--		return ret;
--
--	if (log->head == log->tail) {
--		mutex_unlock(&fc->uapi_mutex);
--		return -ENODATA;
--	}
-+	int n;
+ 	index = ice_adapter_xa_index(pdev);
+ 	scoped_guard(mutex, &ice_adapters_mutex) {
+-		err = xa_insert(&ice_adapters, index, NULL, GFP_KERNEL);
+-		if (err == -EBUSY) {
+-			adapter = xa_load(&ice_adapters, index);
++		adapter = xa_load(&ice_adapters, index);
++		if (adapter) {
+ 			refcount_inc(&adapter->refcount);
+ 			WARN_ON_ONCE(adapter->index != ice_adapter_index(pdev));
+ 			return adapter;
+ 		}
++		err = xa_reserve(&ice_adapters, index, GFP_KERNEL);
+ 		if (err)
+ 			return ERR_PTR(err);
  
--	index = log->tail & (logsize - 1);
--	p = log->buffer[index];
--	need_free = log->need_free & (1 << index);
--	log->buffer[index] = NULL;
--	log->need_free &= ~(1 << index);
--	log->tail++;
-+	err = mutex_lock_interruptible(&fc->uapi_mutex);
-+	if (err < 0)
-+		return err;
-+	message = fetch_message_locked(fc->log.log, len, &need_free);
- 	mutex_unlock(&fc->uapi_mutex);
-+	if (IS_ERR(message))
-+		return PTR_ERR(message);
- 
--	ret = -EMSGSIZE;
--	n = strlen(p);
--	if (n > len)
--		goto err_free;
--	ret = -EFAULT;
--	if (copy_to_user(_buf, p, n) != 0)
--		goto err_free;
--	ret = n;
--
--err_free:
- 	if (need_free)
--		kfree(p);
--	return ret;
-+		p = message;
-+
-+	n = strlen(message);
-+	if (copy_to_user(_buf, message, n))
-+		return -EFAULT;
-+	return n;
- }
- 
- static int fscontext_release(struct inode *inode, struct file *file)
+ 		adapter = ice_adapter_new(pdev);
+-		if (!adapter)
++		if (!adapter) {
++			xa_release(&ice_adapters, index);
+ 			return ERR_PTR(-ENOMEM);
++		}
+ 		xa_store(&ice_adapters, index, adapter, GFP_KERNEL);
+ 	}
+ 	return adapter;
+-- 
+2.51.0
+
 
 
 
