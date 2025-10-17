@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-187408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8934EBEA9EF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE108BEAC92
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A62A47443E5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DD999603D1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C92A330B2D;
-	Fri, 17 Oct 2025 15:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60409330B20;
+	Fri, 17 Oct 2025 15:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSxEotS3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtNX6Mjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B6B330B1C;
-	Fri, 17 Oct 2025 15:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C728330B00;
+	Fri, 17 Oct 2025 15:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715985; cv=none; b=CzlRMLrmIZQHhG6btqiQOGVp/7ugugLUPAg8tlOOMdV06zPJw3Mz10/2PHWgqgvYBpkKQmitLr8Jh8PwcGRYo2+c0nRsHzkei0YB/4hTr7rv9zXouXCmeRt51kp1Ccmse6LUSdp8sdXEfxplQkq3s4569MNsdXz53JSyZJMNyL4=
+	t=1760715991; cv=none; b=tRBwkk6p+yxwitl61IvvYGD+A8tnUiK+rnNV1Fo5Co3NDCLWNaZhw4uLtBn62tQeQyh+Umo1lVF97W/vSN6XZC5rQOJk7F0EQLmAcdIJCAjpMuN5b2ZiSuviTfkS35Ux70HqCIJcNqFhmktchBLBe1fIW5l9tr38vv2q0fqdsU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715985; c=relaxed/simple;
-	bh=3rWlyWEyQLjjcLU1n/Lw/96I/AsKqiUHx+5h7595jso=;
+	s=arc-20240116; t=1760715991; c=relaxed/simple;
+	bh=rqg6dxBrtjgUZEk7TatVRlSUd5+2HExAyVRrGYTmGQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gV7klninXJ5S8vDxAg+5JjO//9L1/6Dstg2SYIIOaxVlQfUzv1wdojLpj/RtIa3xcLPIXBrkETBSL+SF/NdHlX4iNGzjZvEozoODz+b+404+4gbqrOa/m1gHyhTGdXGvL8Eko0LxRsiNYdWFFhxkn7gA21G9jiE1D3NLZvW28v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSxEotS3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D74C4CEE7;
-	Fri, 17 Oct 2025 15:46:24 +0000 (UTC)
+	 MIME-Version; b=XyE98zC1ln5taF9G83yMAREmnjQW0b526taRNlLvjcbiv7vHbSXbBvYKuo/BppIv5bp8mHNbbCKy7bgySKoAh4ZLAf6LXOVkx3qUXg63oF5Re2+MljRwERecESH+ZnpmBLWQePriDZlT2c0B6aM27wUF+OV3+Tpe7NmvWvMUxKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtNX6Mjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B91C4CEE7;
+	Fri, 17 Oct 2025 15:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715985;
-	bh=3rWlyWEyQLjjcLU1n/Lw/96I/AsKqiUHx+5h7595jso=;
+	s=korg; t=1760715991;
+	bh=rqg6dxBrtjgUZEk7TatVRlSUd5+2HExAyVRrGYTmGQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSxEotS37T9DiVZ87+dPskuR6kWKReIGKfSyG8LD4JTc3iC5OJXr9j246OgOJJvbs
-	 2i0bh9jX1OKPU8exzfq/m6mTabjr6mcGbfm8Cf6MPfwn220EFFYZCfKtTtO5C2Zy2D
-	 0pauOsPEh/jkC1TkotKznNxAZXp3PUYi3WFFKePs=
+	b=WtNX6MjjezfDa+CY/BerbtwgP45sR05Shrdqf7SsuBNsDWvgOTjOCDIlwKASOXk+N
+	 zgHbhSZvf7sHPDM2lk76v8QAALkijXj7iAcqMMKF/0NQzAlNDRAA/YXtVsZzfkvW5+
+	 JE7a/DupXffiF8eHji/ymahEr/eR+TzXJOToXkCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sneh Mankad <sneh.mankad@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/276] soc: qcom: rpmh-rsc: Unconditionally clear _TRIGGER bit for TCS
-Date: Fri, 17 Oct 2025 16:52:05 +0200
-Message-ID: <20251017145143.577773352@linuxfoundation.org>
+Subject: [PATCH 5.15 034/276] blk-mq: check kobject state_in_sysfs before deleting in blk_mq_unregister_hctx
+Date: Fri, 17 Oct 2025 16:52:07 +0200
+Message-ID: <20251017145143.650715577@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -66,48 +67,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit f87412d18edb5b8393eb8cb1c2d4a54f90185a21 ]
+[ Upstream commit 4c7ef92f6d4d08a27d676e4c348f4e2922cab3ed ]
 
-Unconditionally clear the TCS_AMC_MODE_TRIGGER bit when a
-transaction completes. Previously this bit was only cleared when
-a wake TCS was borrowed as an AMC TCS but not for dedicated
-AMC TCS. Leaving this bit set for AMC TCS and entering deeper low
-power modes can generate a false completion IRQ.
+In __blk_mq_update_nr_hw_queues() the return value of
+blk_mq_sysfs_register_hctxs() is not checked. If sysfs creation for hctx
+fails, later changing the number of hw_queues or removing disk will
+trigger the following warning:
 
-Prevent this scenario by always clearing the TCS_AMC_MODE_TRIGGER
-bit upon receiving a completion IRQ.
+  kernfs: can not remove 'nr_tags', no directory
+  WARNING: CPU: 2 PID: 637 at fs/kernfs/dir.c:1707 kernfs_remove_by_name_ns+0x13f/0x160
+  Call Trace:
+   remove_files.isra.1+0x38/0xb0
+   sysfs_remove_group+0x4d/0x100
+   sysfs_remove_groups+0x31/0x60
+   __kobject_del+0x23/0xf0
+   kobject_del+0x17/0x40
+   blk_mq_unregister_hctx+0x5d/0x80
+   blk_mq_sysfs_unregister_hctxs+0x94/0xd0
+   blk_mq_update_nr_hw_queues+0x124/0x760
+   nullb_update_nr_hw_queues+0x71/0xf0 [null_blk]
+   nullb_device_submit_queues_store+0x92/0x120 [null_blk]
 
-Fixes: 15b3bf61b8d4 ("soc: qcom: rpmh-rsc: Clear active mode configuration for wake TCS")
-Signed-off-by: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250825-rpmh_rsc_change-v1-1-138202c31bf6@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+kobjct_del() was called unconditionally even if sysfs creation failed.
+Fix it by checkig the kobject creation statusbefore deleting it.
+
+Fixes: 477e19dedc9d ("blk-mq: adjust debugfs and sysfs register when updating nr_hw_queues")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250826084854.1030545-1-linan666@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/rpmh-rsc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ block/blk-mq-sysfs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
-index 4c9400cf6686b..5dc60ee0b07a1 100644
---- a/drivers/soc/qcom/rpmh-rsc.c
-+++ b/drivers/soc/qcom/rpmh-rsc.c
-@@ -415,13 +415,10 @@ static irqreturn_t tcs_tx_done(int irq, void *p)
+diff --git a/block/blk-mq-sysfs.c b/block/blk-mq-sysfs.c
+index 7074ce8d2d03f..09f4faca338a2 100644
+--- a/block/blk-mq-sysfs.c
++++ b/block/blk-mq-sysfs.c
+@@ -178,9 +178,11 @@ static void blk_mq_unregister_hctx(struct blk_mq_hw_ctx *hctx)
+ 		return;
  
- 		trace_rpmh_tx_done(drv, i, req, err);
+ 	hctx_for_each_ctx(hctx, ctx, i)
+-		kobject_del(&ctx->kobj);
++		if (ctx->kobj.state_in_sysfs)
++			kobject_del(&ctx->kobj);
  
--		/*
--		 * If wake tcs was re-purposed for sending active
--		 * votes, clear AMC trigger & enable modes and
-+		/* Clear AMC trigger & enable modes and
- 		 * disable interrupt for this TCS
- 		 */
--		if (!drv->tcs[ACTIVE_TCS].num_tcs)
--			__tcs_set_trigger(drv, i, false);
-+		__tcs_set_trigger(drv, i, false);
- skip:
- 		/* Reclaim the TCS */
- 		write_tcs_reg(drv, RSC_DRV_CMD_ENABLE, i, 0);
+-	kobject_del(&hctx->kobj);
++	if (hctx->kobj.state_in_sysfs)
++		kobject_del(&hctx->kobj);
+ }
+ 
+ static int blk_mq_register_hctx(struct blk_mq_hw_ctx *hctx)
 -- 
 2.51.0
 
