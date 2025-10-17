@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BE2BE9D98
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:59 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303D3BEA117
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A6FF188786B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:27:02 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6879535E918
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9F33208;
-	Fri, 17 Oct 2025 15:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CF3330B26;
+	Fri, 17 Oct 2025 15:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLBGSHd6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFSLxNd2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF707337110;
-	Fri, 17 Oct 2025 15:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDFC330B16;
+	Fri, 17 Oct 2025 15:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714797; cv=none; b=UN/quEfRto6ZXg9pqKrkIuwmUVCsA2/5SXoz0MfqsrsndZ9P57qs96xfLNJSsG4nEM4PII3Riwmi08Mhst/75L9Axke1CFLdwT2s2f5Qk5pWmoSd+MWwLl0bxILvHPxiktLNBa3sf2s6CzFloJ6V5VhvDaieHjF2QZcQLuUKJCU=
+	t=1760715686; cv=none; b=hFFsYtJJzZC5oGl8Hw4zCHTxY0X8OcRKkjiv6l7VtqoKSgtSA16bEZtEkN2AZRxkOggeS8rkXlA5mGJIxeMzGZ/jo0ChkR8radHAZDM5D2t8LwdjALU/24rfA0pJFejKqC0NsC2oxkbye+KPgpjq9kVC9FLqQCIK/AHvChqNjww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714797; c=relaxed/simple;
-	bh=ddqsJBPH6g5pPMmTgk2CxoRuBKb+X9mQxnEIbjBR0dQ=;
+	s=arc-20240116; t=1760715686; c=relaxed/simple;
+	bh=HgF5lQYWif1C0P2RHRtCoMMAlW6Cncxen6hEqYa09Hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FLMR5HeFAzXB6rrCCNDSrheE63XYK5HyehQMu/aZTEh27hy5wxK96/sbsslAfl6QAXRbfnatV6tKEcISyPrJvMLikaCnaENz77M00Wu0XiCIcUoPU3x4uLvSgPxE1goci8Sl307oSkAt2TNUsJe3uyAIrygNFSsuxSKo7q9U0zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLBGSHd6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CE3C4CEE7;
-	Fri, 17 Oct 2025 15:26:36 +0000 (UTC)
+	 MIME-Version; b=VgAAyx87mtcWhUm9nqoNstccfStCiqZkuB7bX339hnFKFpQjH4lbdXemHd2Q6Inuq0tYINohrt42nhh/M1HD8pTaO7UTHvsDXxgEPqAk1NKypWa7BSio4zFWcfut4RCyNn4XtyRkoJeiB34j+1Hfu45/K7CKbF1aaobjmOo2ldM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFSLxNd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5E6C4CEFE;
+	Fri, 17 Oct 2025 15:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714796;
-	bh=ddqsJBPH6g5pPMmTgk2CxoRuBKb+X9mQxnEIbjBR0dQ=;
+	s=korg; t=1760715686;
+	bh=HgF5lQYWif1C0P2RHRtCoMMAlW6Cncxen6hEqYa09Hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLBGSHd6+WV/mFYNPCAI7ymEN8x+8nfnlO7CcEWM6TQXEhWnhNgJ9LWZUiXhCDxW2
-	 jy2cEi3m+27MJLJGEmMkdCbcHYWK/KGrhvlrzXS4lCcNHmBJxrYsxWxPxJ3oSU9U87
-	 pusTH7dhhDFxGFM+C0qUrNrY2vk7hk+P6CLiLs9Y=
+	b=RFSLxNd2iRKRUI6j6Xgd94NVqV76mVQptU4zQjBsGzHF2mk7soKz2tBvkG7j42+WM
+	 Q2yy+jQnaBjMHChVi9UZ8Vup27GmoexHVXVx7KYjSykB36XBlhNj7DzwF0qy3XsstW
+	 2Dof2gHanxNWIJSir/33hFrWiGYKPFvXHQscvIkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lichen Liu <lichliu@redhat.com>,
-	Rob Landley <rob@landley.net>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 269/277] fs: Add initramfs_options to set initramfs mount options
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 301/371] mptcp: pm: in-kernel: usable client side with C-flag
 Date: Fri, 17 Oct 2025 16:54:36 +0200
-Message-ID: <20251017145156.982626860@linuxfoundation.org>
+Message-ID: <20251017145212.965197021@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +60,171 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lichen Liu <lichliu@redhat.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 278033a225e13ec21900f0a92b8351658f5377f2 ]
+commit 4b1ff850e0c1aacc23e923ed22989b827b9808f9 upstream.
 
-When CONFIG_TMPFS is enabled, the initial root filesystem is a tmpfs.
-By default, a tmpfs mount is limited to using 50% of the available RAM
-for its content. This can be problematic in memory-constrained
-environments, particularly during a kdump capture.
+When servers set the C-flag in their MP_CAPABLE to tell clients not to
+create subflows to the initial address and port, clients will likely not
+use their other endpoints. That's because the in-kernel path-manager
+uses the 'subflow' endpoints to create subflows only to the initial
+address and port.
 
-In a kdump scenario, the capture kernel boots with a limited amount of
-memory specified by the 'crashkernel' parameter. If the initramfs is
-large, it may fail to unpack into the tmpfs rootfs due to insufficient
-space. This is because to get X MB of usable space in tmpfs, 2*X MB of
-memory must be available for the mount. This leads to an OOM failure
-during the early boot process, preventing a successful crash dump.
+If the limits have not been modified to accept ADD_ADDR, the client
+doesn't try to establish new subflows. If the limits accept ADD_ADDR,
+the routing routes will be used to select the source IP.
 
-This patch introduces a new kernel command-line parameter,
-initramfs_options, which allows passing specific mount options directly
-to the rootfs when it is first mounted. This gives users control over
-the rootfs behavior.
+The C-flag is typically set when the server is operating behind a legacy
+Layer 4 load balancer, or using anycast IP address. Clients having their
+different 'subflow' endpoints setup, don't end up creating multiple
+subflows as expected, and causing some deployment issues.
 
-For example, a user can now specify initramfs_options=size=75% to allow
-the tmpfs to use up to 75% of the available memory. This can
-significantly reduce the memory pressure for kdump.
+A special case is then added here: when servers set the C-flag in the
+MPC and directly sends an ADD_ADDR, this single ADD_ADDR is accepted.
+The 'subflows' endpoints will then be used with this new remote IP and
+port. This exception is only allowed when the ADD_ADDR is sent
+immediately after the 3WHS, and makes the client switching to the 'fully
+established' mode. After that, 'select_local_address()' will not be able
+to find any subflows, because 'id_avail_bitmap' will be filled in
+mptcp_pm_create_subflow_or_signal_addr(), when switching to 'fully
+established' mode.
 
-Consider a practical example:
-
-To unpack a 48MB initramfs, the tmpfs needs 48MB of usable space. With
-the default 50% limit, this requires a memory pool of 96MB to be
-available for the tmpfs mount. The total memory requirement is therefore
-approximately: 16MB (vmlinuz) + 48MB (loaded initramfs) + 48MB (unpacked
-kernel) + 96MB (for tmpfs) + 12MB (runtime overhead) ≈ 220MB.
-
-By using initramfs_options=size=75%, the memory pool required for the
-48MB tmpfs is reduced to 48MB / 0.75 = 64MB. This reduces the total
-memory requirement by 32MB (96MB - 64MB), allowing the kdump to succeed
-with a smaller crashkernel size, such as 192MB.
-
-An alternative approach of reusing the existing rootflags parameter was
-considered. However, a new, dedicated initramfs_options parameter was
-chosen to avoid altering the current behavior of rootflags (which
-applies to the final root filesystem) and to prevent any potential
-regressions.
-
-Also add documentation for the new kernel parameter "initramfs_options"
-
-This approach is inspired by prior discussions and patches on the topic.
-Ref: https://www.lightofdawn.org/blog/?viewDetailed=00128
-Ref: https://landley.net/notes-2015.html#01-01-2015
-Ref: https://lkml.org/lkml/2021/6/29/783
-Ref: https://www.kernel.org/doc/html/latest/filesystems/ramfs-rootfs-initramfs.html#what-is-rootfs
-
-Signed-off-by: Lichen Liu <lichliu@redhat.com>
-Link: https://lore.kernel.org/20250815121459.3391223-1-lichliu@redhat.com
-Tested-by: Rob Landley <rob@landley.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/536
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250925-net-next-mptcp-c-flag-laminar-v1-1-ad126cc47c6b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  3 +++
- fs/namespace.c                                  | 11 ++++++++++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ net/mptcp/pm.c        |    7 +++++--
+ net/mptcp/pm_kernel.c |   50 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ net/mptcp/protocol.h  |    8 ++++++++
+ 3 files changed, 62 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 8724c2c580b88..e88505e945d52 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5923,6 +5923,9 @@
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -617,9 +617,12 @@ void mptcp_pm_add_addr_received(const st
+ 		} else {
+ 			__MPTCP_INC_STATS(sock_net((struct sock *)msk), MPTCP_MIB_ADDADDRDROP);
+ 		}
+-	/* id0 should not have a different address */
++	/* - id0 should not have a different address
++	 * - special case for C-flag: linked to fill_local_addresses_vec()
++	 */
+ 	} else if ((addr->id == 0 && !mptcp_pm_is_init_remote_addr(msk, addr)) ||
+-		   (addr->id > 0 && !READ_ONCE(pm->accept_addr))) {
++		   (addr->id > 0 && !READ_ONCE(pm->accept_addr) &&
++		    !mptcp_pm_add_addr_c_flag_case(msk))) {
+ 		mptcp_pm_announce_addr(msk, addr, true);
+ 		mptcp_pm_add_addr_send_ack(msk);
+ 	} else if (mptcp_pm_schedule_work(msk, MPTCP_PM_ADD_ADDR_RECEIVED)) {
+--- a/net/mptcp/pm_kernel.c
++++ b/net/mptcp/pm_kernel.c
+@@ -389,10 +389,12 @@ static unsigned int fill_local_addresses
+ 	struct mptcp_addr_info mpc_addr;
+ 	struct pm_nl_pernet *pernet;
+ 	unsigned int subflows_max;
++	bool c_flag_case;
+ 	int i = 0;
  
- 	rootflags=	[KNL] Set root filesystem mount option string
+ 	pernet = pm_nl_get_pernet_from_msk(msk);
+ 	subflows_max = mptcp_pm_get_subflows_max(msk);
++	c_flag_case = remote->id && mptcp_pm_add_addr_c_flag_case(msk);
  
-+	initramfs_options= [KNL]
-+                        Specify mount options for for the initramfs mount.
+ 	mptcp_local_address((struct sock_common *)msk, &mpc_addr);
+ 
+@@ -405,12 +407,27 @@ static unsigned int fill_local_addresses
+ 			continue;
+ 
+ 		if (msk->pm.subflows < subflows_max) {
++			bool is_id0;
 +
- 	rootfstype=	[KNL] Set root filesystem type
+ 			locals[i].addr = entry->addr;
+ 			locals[i].flags = entry->flags;
+ 			locals[i].ifindex = entry->ifindex;
  
- 	rootwait	[KNL] Wait (indefinitely) for root device to show up.
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 7606969412493..f5e46c2595b11 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -65,6 +65,15 @@ static int __init set_mphash_entries(char *str)
++			is_id0 = mptcp_addresses_equal(&locals[i].addr,
++						       &mpc_addr,
++						       locals[i].addr.port);
++
++			if (c_flag_case &&
++			    (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW)) {
++				__clear_bit(locals[i].addr.id,
++					    msk->pm.id_avail_bitmap);
++
++				if (!is_id0)
++					msk->pm.local_addr_used++;
++			}
++
+ 			/* Special case for ID0: set the correct ID */
+-			if (mptcp_addresses_equal(&locals[i].addr, &mpc_addr, locals[i].addr.port))
++			if (is_id0)
+ 				locals[i].addr.id = 0;
+ 
+ 			msk->pm.subflows++;
+@@ -419,6 +436,37 @@ static unsigned int fill_local_addresses
+ 	}
+ 	rcu_read_unlock();
+ 
++	/* Special case: peer sets the C flag, accept one ADD_ADDR if default
++	 * limits are used -- accepting no ADD_ADDR -- and use subflow endpoints
++	 */
++	if (!i && c_flag_case) {
++		unsigned int local_addr_max = mptcp_pm_get_local_addr_max(msk);
++
++		while (msk->pm.local_addr_used < local_addr_max &&
++		       msk->pm.subflows < subflows_max) {
++			struct mptcp_pm_local *local = &locals[i];
++
++			if (!select_local_address(pernet, msk, local))
++				break;
++
++			__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
++
++			if (!mptcp_pm_addr_families_match(sk, &local->addr,
++							  remote))
++				continue;
++
++			if (mptcp_addresses_equal(&local->addr, &mpc_addr,
++						  local->addr.port))
++				continue;
++
++			msk->pm.local_addr_used++;
++			msk->pm.subflows++;
++			i++;
++		}
++
++		return i;
++	}
++
+ 	/* If the array is empty, fill in the single
+ 	 * 'IPADDRANY' local address
+ 	 */
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1201,6 +1201,14 @@ static inline void mptcp_pm_close_subflo
+ 	spin_unlock_bh(&msk->pm.lock);
  }
- __setup("mphash_entries=", set_mphash_entries);
  
-+static char * __initdata initramfs_options;
-+static int __init initramfs_options_setup(char *str)
++static inline bool mptcp_pm_add_addr_c_flag_case(struct mptcp_sock *msk)
 +{
-+	initramfs_options = str;
-+	return 1;
++	return READ_ONCE(msk->pm.remote_deny_join_id0) &&
++	       msk->pm.local_addr_used == 0 &&
++	       mptcp_pm_get_add_addr_accept_max(msk) == 0 &&
++	       msk->pm.subflows < mptcp_pm_get_subflows_max(msk);
 +}
 +
-+__setup("initramfs_options=", initramfs_options_setup);
-+
- static u64 event;
- static DEFINE_IDA(mnt_id_ida);
- static DEFINE_IDA(mnt_group_ida);
-@@ -5566,7 +5575,7 @@ static void __init init_mount_tree(void)
- 	struct mnt_namespace *ns;
- 	struct path root;
+ void mptcp_sockopt_sync_locked(struct mptcp_sock *msk, struct sock *ssk);
  
--	mnt = vfs_kern_mount(&rootfs_fs_type, 0, "rootfs", NULL);
-+	mnt = vfs_kern_mount(&rootfs_fs_type, 0, "rootfs", initramfs_options);
- 	if (IS_ERR(mnt))
- 		panic("Can't create rootfs");
- 
--- 
-2.51.0
-
+ static inline struct mptcp_ext *mptcp_get_ext(const struct sk_buff *skb)
 
 
 
