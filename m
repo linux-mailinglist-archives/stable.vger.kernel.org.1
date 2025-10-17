@@ -1,113 +1,106 @@
-Return-Path: <stable+bounces-186223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61CC9BE5E16
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 02:26:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE2BBE5FF6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 02:58:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9CB319C29DC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 00:27:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6AE35E6BA1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 00:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87985201004;
-	Fri, 17 Oct 2025 00:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE8E19ADBA;
+	Fri, 17 Oct 2025 00:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b="HDZBJ0Mv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6k4geBv"
 X-Original-To: stable@vger.kernel.org
-Received: from mailbackend.panix.com (mailbackend.panix.com [166.84.1.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE30C1C2BD;
-	Fri, 17 Oct 2025 00:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.84.1.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBFD288D0;
+	Fri, 17 Oct 2025 00:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760660805; cv=none; b=ShzDfYRMhgs1lcA2o4NX+TeK3uTDpyKCp1/+i0cU8dkQJGCrC3jwGfmshrUR4EVNskFHG8Ywk9k8tccsnkQpgDRGdEtgONutDRra/GMXFCxQ4aco4rJGwWfr+PtmcUAvqonbv8v2Q2Q3eJEPZ7JgoYp0IbPiaqrGbOJ5HrZvmy8=
+	t=1760662699; cv=none; b=OUhyNRL7vbqb+90ccAMu+uSHMHw+jZXre0IOj7noIxdQxiqcH8bUJWL9rR/uRuuU1NglKxCsppuhMIhZaiKN7eQ67b6Tev2Hcz3LoLTU9PMjmkRHEKiyy277yanzUG7LP85LNH69GxcF0EhunnjCITULrPn4mNZA6SZDoW3B6bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760660805; c=relaxed/simple;
-	bh=bS2nfkUCKwHusOOJ1srrBeWgUmOfQacxcVsdDNaH8zs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YXZuA5z9Jzy2x4oKEA2RFu8g3Jp3NYUBFBxFpq5NTLMhFbYi5SLEsKpJBglTzVX2KYJiBrkHAHkYI4ZXlZM8YEaXKTrjBIuDEkgJ+dLBSarggSdKEhglwq/jjWT8GhNMraMB3WJNZA/X9ndQ607EDzAWtOpu4PuKCVB9r07F/8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=panix.com; spf=pass smtp.mailfrom=panix.com; dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b=HDZBJ0Mv; arc=none smtp.client-ip=166.84.1.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=panix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=panix.com
-Received: from [10.50.4.39] (45-31-46-51.lightspeed.sndgca.sbcglobal.net [45.31.46.51])
-	by mailbackend.panix.com (Postfix) with ESMTPSA id 4cnlxY5N9cz4G72;
-	Thu, 16 Oct 2025 20:26:41 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=panix.com; s=panix;
-	t=1760660802; bh=bS2nfkUCKwHusOOJ1srrBeWgUmOfQacxcVsdDNaH8zs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HDZBJ0MvKyEn2s4RMGFEQqb9EYxrZZJIxiWG4UfGA3lKFQXvh6CDqXgKpmces9zao
-	 7lozrWMVgHLAXgc940LtYjZz4DVBhohz8D6+Hq+YYKWr8Kb1eFrroK76SzrNo2fGzR
-	 7rn/XVwAe4QsLvVtsz+ZWdCR2AS+G2TAUKPDv23w=
-Message-ID: <abd715e2-6edd-4f35-a308-d2ee9a5ca334@panix.com>
-Date: Thu, 16 Oct 2025 17:26:40 -0700
+	s=arc-20240116; t=1760662699; c=relaxed/simple;
+	bh=ukvOLIWMm0r8vNuROHP6LgTgsINp016v4Eb8vsfzs5Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=r2Ugm+dIiVS3RVD/2q2PnbgxcqqVX40sSYebCRU/VUaWlRFLDFFO3tOD73jig+qwTuWQP8g92mIzZ7l1mRcAKGkyUJrghJhv03VJUEeLq/0VcYHkKPu/bIY/5kBtYKs16Jd/m/b3uSNk1LYZNk0TTvuGba1sORtw30we5RV9YeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6k4geBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C8DC4CEF1;
+	Fri, 17 Oct 2025 00:58:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760662698;
+	bh=ukvOLIWMm0r8vNuROHP6LgTgsINp016v4Eb8vsfzs5Q=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Q6k4geBvVd5BcSJZ07QpZniRdo3Z+2WAUYjOHpD+4Mee/IT1AD7SNQg9EUGv3DU+D
+	 gwgyn8z7bfIPog1aWQ1+u9/EwgJC88TcWy9p/hNVSHNInn1b1EOj7OoK41moTgKzDM
+	 GxHlCCILC09aH7P9Gwg7HzPrb9FZdFfFstwiGWrLH9ksZdPp8TEZwnw1BYVZWuID6b
+	 +gbe9mck292ydNl309Q3zJkBBhuqWJPdS28oQMIcsCR/gYJnCF+1zgwQUNSW4B4nqm
+	 Nu1wxv4NIkufoPyt2UnO4cwyYh0XFs0B+lfJgid8bo/7LPydqFikopPggKYCS3F1TP
+	 wE6g4SIZVIksg==
+From: William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 0/3] gpio: idio-16: Fix regmap initialization errors
+Date: Fri, 17 Oct 2025 09:58:00 +0900
+Message-Id: <20251017-fix-gpio-idio-16-regmap-v1-0-a7c71080f740@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: typec: ucsi: psy: Set max current to zero when
- disconnected
-To: Jameson Thies <jthies@google.com>, heikki.krogerus@linux.intel.com,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- Kenneth C <kenny@panix.com>
-Cc: dmitry.baryshkov@oss.qualcomm.com, bleung@chromium.org,
- gregkh@linuxfoundation.org, akuchynski@chromium.org,
- abhishekpandit@chromium.org, sebastian.reichel@collabora.com,
- linux-pm@vger.kernel.org, stable@vger.kernel.org
-References: <20251017000051.2094101-1-jthies@google.com>
-Content-Language: en-US
-From: Kenneth Crudup <kenny@panix.com>
-In-Reply-To: <20251017000051.2094101-1-jthies@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJiU8WgC/y2NTQqDQAyFryJZGzADau1ViothjNMs1GmmloJ4d
+ 4O6efA93s8GmVU4w7PYQPknWZbZgMoCwtvPkVEGY3CVq6miFkf5Y0yymG9CDSrHySck93BhCHX
+ jqQNrJ2WLnsuv/mLlz2oH39vc9wP4qstLfgAAAA==
+X-Change-ID: 20251017-fix-gpio-idio-16-regmap-1282cdc56a19
+To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+ Linus Walleij <linus.walleij@linaro.org>
+Cc: Michael Walle <mwalle@kernel.org>, 
+ Ioana Ciornei <ioana.ciornei@nxp.com>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, William Breathitt Gray <wbg@kernel.org>, 
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1266; i=wbg@kernel.org;
+ h=from:subject:message-id; bh=ukvOLIWMm0r8vNuROHP6LgTgsINp016v4Eb8vsfzs5Q=;
+ b=owGbwMvMwCW21SPs1D4hZW3G02pJDBkfp6zkTDjQv8Bzpr5Q6G/rV8yKl4r4e8pPH/zuZlk8i
+ /Pr/pkLO0pZGMS4GGTFFFl6zc/efXBJVePHi/nbYOawMoEMYeDiFICJ3DBi+MORPVfteM2DE7Wa
+ KSsuZimcvH37h7VRvTqXYWbpjtdHlp1k+B8WVf30p+BSXi6LpZ+qFde9C1qRftj549+2vt16WXc
+ 01jIBAA==
+X-Developer-Key: i=wbg@kernel.org; a=openpgp;
+ fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
 
+The migration of IDIO-16 GPIO drivers to the regmap API resulted in some
+regressions to the gpio-104-idio-16, gpio-pci-idio-16, and gpio-idio-16
+modules. Specifically, the 104-idio-16 and pci-idio-16 GPIO drivers
+utilize regmap caching and thus must set max_register for their
+regmap_config, while gpio-idio-16 requires fixed_direction_output to
+represent the fixed direction of the IDIO-16 GPIO lines. Fixes for these
+regressions are provided by this series.
 
-I wonder if this is the reason my (Kubuntu 25.04, FWIW) system will 
-sometimes show the battery icon as "Charging" even when it's discharging 
-(or nothing is plugged into either USB-C port)?
+Link: https://lore.kernel.org/r/cover.1680618405.git.william.gray@linaro.org
+Link: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+---
+William Breathitt Gray (3):
+      gpio: 104-idio-16: Define maximum valid register address offset
+      gpio: pci-idio-16: Define maximum valid register address offset
+      gpio: idio-16: Define fixed direction of the GPIO lines
 
--Kenny
+ drivers/gpio/gpio-104-idio-16.c | 1 +
+ drivers/gpio/gpio-idio-16.c     | 5 +++++
+ drivers/gpio/gpio-pci-idio-16.c | 1 +
+ 3 files changed, 7 insertions(+)
+---
+base-commit: eba11116f39533d2e38cc5898014f2c95f32d23a
+change-id: 20251017-fix-gpio-idio-16-regmap-1282cdc56a19
 
-On 10/16/25 17:00, Jameson Thies wrote:
-> The ucsi_psy_get_current_max function defaults to 0.1A when it is not
-> clear how much current the partner device can support. But this does
-> not check the port is connected, and will report 0.1A max current when
-> nothing is connected. Update ucsi_psy_get_current_max to report 0A when
-> there is no connection.
-> 
-> Fixes: af833e7f7db3 ("usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default")
-> Signed-off-by: Jameson Thies <jthies@google.com>
-> Reviewed-by: Benson Leung <bleung@chromium.org>
-> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> ---
->   drivers/usb/typec/ucsi/psy.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
-> index 62a9d68bb66d..8ae900c8c132 100644
-> --- a/drivers/usb/typec/ucsi/psy.c
-> +++ b/drivers/usb/typec/ucsi/psy.c
-> @@ -145,6 +145,11 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
->   {
->   	u32 pdo;
->   
-> +	if (!UCSI_CONSTAT(con, CONNECTED)) {
-> +		val->intval = 0;
-> +		return 0;
-> +	}
-> +
->   	switch (UCSI_CONSTAT(con, PWR_OPMODE)) {
->   	case UCSI_CONSTAT_PWR_OPMODE_PD:
->   		if (con->num_pdos > 0) {
-> 
-> base-commit: e40b984b6c4ce3f80814f39f86f87b2a48f2e662
-
+Best regards,
 -- 
-Kenneth R. Crudup / Sr. SW Engineer, Scott County Consulting, Orange 
-County CA
+William Breathitt Gray <wbg@kernel.org>
 
 
