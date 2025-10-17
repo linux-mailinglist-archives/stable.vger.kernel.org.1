@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-186453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1654BE97B7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:06:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66016BEA452
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D510E5686FC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:02:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43F6E1AA2F8A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904D332E157;
-	Fri, 17 Oct 2025 15:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0EF7330B22;
+	Fri, 17 Oct 2025 15:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vX8UBPPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyI2ISIy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF0632C920;
-	Fri, 17 Oct 2025 15:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC738330B06;
+	Fri, 17 Oct 2025 15:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713286; cv=none; b=GSDlcs+tb/v6SmV2zHUF1UeYcA8s+8jB4TStn+/FLk8BVVdpTRo3UKeW30aYDZHziwb4sHqjHiMEhY8LPECU5Qx3rXCrzPlVMl7ysv0zXiVR3Zp7Yz8GzKECt/lMxR0FxZxwRmizvi146coqgifn2ITa7VUntCxjTA3SOu6uF8k=
+	t=1760716172; cv=none; b=KU0+xtsBMGrMu/fdgG54/ilcPb6YDY6J2T14UeR5GUShABSF+NjwSwTxpFArfJc9mT7s5k2TPSyT8kXVvB9bgkBsFNyKDYcjl4PtvqzyucSl+28Zm+wA7MIq7iFBw2F3+K5tYY2EBcaLBy1sAsU/OHALJZ5iKF5XvmE6jILdk8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713286; c=relaxed/simple;
-	bh=Hndrek22NALvuXAjZLvecLHK7l2nF8aPwQ/0VkLiEcg=;
+	s=arc-20240116; t=1760716172; c=relaxed/simple;
+	bh=sXfDcwLhw769KilH1g1N7WbwSySDn6QfV05P8hqYNps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHzQZuo6UApx4IWcp9kzd6YOd+7z1aT35au2k8NfOC/sCeSmoHDHFR29A354pInNDBjLR5otdpXTV3maGyBmPN1HTGzUgCpktMj7PZOsAgwV+prKIN9D7/Dr8AZIsiSMOLAK236RmXkKTN+Bme2Q1sDs2Gp7yITnpo43uKydp6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vX8UBPPk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59C7C4CEF9;
-	Fri, 17 Oct 2025 15:01:25 +0000 (UTC)
+	 MIME-Version; b=ovXF6uFsWO9zV901PKsw4agwbtsb/dYDbMO3o7tjbi0SBKgDt+MvwYoJiexHbslc/6kPj0Z6mwwIN7y4iX7wm/JTjogK/CCK8XPDZCt+l28JWN4ifXmkGCv/sqQzXLIabeDZ7/NXG98d19NugfxUjE+++J6mFDdlwI49Qv5yO0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyI2ISIy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD82C4CEE7;
+	Fri, 17 Oct 2025 15:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713286;
-	bh=Hndrek22NALvuXAjZLvecLHK7l2nF8aPwQ/0VkLiEcg=;
+	s=korg; t=1760716172;
+	bh=sXfDcwLhw769KilH1g1N7WbwSySDn6QfV05P8hqYNps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vX8UBPPkKlu//HzVmpokvqSJWJlK2RjkruTMQlV9AylrXdDLxjgQD7a8YTQkLSKNq
-	 8l6x3V/v1M36nmLd2Aye0GDD6/nTmqTtUzsXNNJdtv89n1WN/uJPulfZl7+X13KVuN
-	 /3i3TLme2b4VhURI+eVTED5ezNE8N3xj/Q3uwDVg=
+	b=fyI2ISIyJhSh1bvrS357ztGW54hdRrasN6IDHsLniDoC1VjiDcvdZFBtw/t3MmR1+
+	 ur+6JsCVdffSsqUckw6cUiJZYAkdtQDx9CruLFvgq/c87/gqL4jilJbSgcq/JhSMCW
+	 n2WKBoW/w4iCgDAylSHCNRyxFHFEFgt9WhdyEqoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 6.1 112/168] PCI/AER: Fix missing uevent on recovery when a reset is requested
+	Michal Pecio <michal.pecio@gmail.com>,
+	I Viswanath <viswanathiyyappan@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 098/276] net: usb: Remove disruptive netif_wake_queue in rtl8150_set_multicast
 Date: Fri, 17 Oct 2025 16:53:11 +0200
-Message-ID: <20251017145133.151191201@linuxfoundation.org>
+Message-ID: <20251017145146.061805565@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: I Viswanath <viswanathiyyappan@gmail.com>
 
-commit bbf7d0468d0da71d76cc6ec9bc8a224325d07b6b upstream.
+[ Upstream commit 958baf5eaee394e5fd976979b0791a875f14a179 ]
 
-Since commit 7b42d97e99d3 ("PCI/ERR: Always report current recovery
-status for udev") AER uses the result of error_detected() as parameter
-to pci_uevent_ers(). As pci_uevent_ers() however does not handle
-PCI_ERS_RESULT_NEED_RESET this results in a missing uevent for the
-beginning of recovery if drivers request a reset. Fix this by treating
-PCI_ERS_RESULT_NEED_RESET as beginning recovery.
+syzbot reported WARNING in rtl8150_start_xmit/usb_submit_urb.
+This is the sequence of events that leads to the warning:
 
-Fixes: 7b42d97e99d3 ("PCI/ERR: Always report current recovery status for udev")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250807-add_err_uevents-v5-1-adf85b0620b0@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+rtl8150_start_xmit() {
+	netif_stop_queue();
+	usb_submit_urb(dev->tx_urb);
+}
+
+rtl8150_set_multicast() {
+	netif_stop_queue();
+	netif_wake_queue();		<-- wakes up TX queue before URB is done
+}
+
+rtl8150_start_xmit() {
+	netif_stop_queue();
+	usb_submit_urb(dev->tx_urb);	<-- double submission
+}
+
+rtl8150_set_multicast being the ndo_set_rx_mode callback should not be
+calling netif_stop_queue and notif_start_queue as these handle
+TX queue synchronization.
+
+The net core function dev_set_rx_mode handles the synchronization
+for rtl8150_set_multicast making it safe to remove these locks.
+
+Reported-and-tested-by: syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=78cae3f37c62ad092caa
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Tested-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
+Link: https://patch.msgid.link/20250924134350.264597-1-viswanathiyyappan@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-driver.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/rtl8150.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -1611,6 +1611,7 @@ void pci_uevent_ers(struct pci_dev *pdev
- 	switch (err_type) {
- 	case PCI_ERS_RESULT_NONE:
- 	case PCI_ERS_RESULT_CAN_RECOVER:
-+	case PCI_ERS_RESULT_NEED_RESET:
- 		envp[idx++] = "ERROR_EVENT=BEGIN_RECOVERY";
- 		envp[idx++] = "DEVICE_ONLINE=0";
- 		break;
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index d5aa92660217c..324bec0c22fb4 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -664,7 +664,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	u16 rx_creg = 0x9e;
+ 
+-	netif_stop_queue(netdev);
+ 	if (netdev->flags & IFF_PROMISC) {
+ 		rx_creg |= 0x0001;
+ 		dev_info(&netdev->dev, "%s: promiscuous mode\n", netdev->name);
+@@ -678,7 +677,6 @@ static void rtl8150_set_multicast(struct net_device *netdev)
+ 		rx_creg &= 0x00fc;
+ 	}
+ 	async_set_registers(dev, RCR, sizeof(rx_creg), rx_creg);
+-	netif_wake_queue(netdev);
+ }
+ 
+ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
+-- 
+2.51.0
+
 
 
 
