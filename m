@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E02BE9A69
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:18:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3070CBEA230
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26000745526
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9C4155A07FE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF005332914;
-	Fri, 17 Oct 2025 15:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F407F32E157;
+	Fri, 17 Oct 2025 15:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQ7SKd2L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YD2CW8xF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA282F12D2;
-	Fri, 17 Oct 2025 15:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EBE32C92F;
+	Fri, 17 Oct 2025 15:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713531; cv=none; b=deK1p9+WG5P6Rf6V1e8LDFM35mi9+bwUcZLjQlkO99ZBZadxwvs+WrvS14ABmJobAKZNbYaCoQAqZoIQEPZkmpDCs4N2vTQWMWqtUO6KK+N6GcPtB3WOIRs4mNUrQLjbDExq3qgA2Zjq2A9w0iiVeyXoIexBp/C0tEIVMDzvqB4=
+	t=1760715150; cv=none; b=sgo4lJhrcabOOjC59sluHfY1t4qa/u7idhWCKDpXHdchJyI60QILzh63wLlrdDbQXpU7X587D5g9VP4pCrzQlfxQz1g3CWLKQ6W77x+uBgoFx7LjpIco4BcTOe5EE6UackS75MYKditNQsvXt2Xl0DvbEico0KOYuLOz/HTZ9ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713531; c=relaxed/simple;
-	bh=4IMXBrYcG2BBxxlPBqefevzgE3uQekDmwm0nfJE1a+g=;
+	s=arc-20240116; t=1760715150; c=relaxed/simple;
+	bh=psbUfIyhL647v7u7+iAdVKmRMR7etGqegPGP3VQRFps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/ley7SwL3SOx3tTOIvSs1ChF2V+/T4Fwgg5a/LtJBtGqqsakSaDXvF0EZID9TOESPPH+ZiHs5pMwamj0wXGqQA5wIWWHAA+ivkJWafyMc3pHPRjdnA6m7TLQkppsB4R6CMkiRFmTFBS9p5vLAFpJJlEFbhiqS/ebaKt55fvSss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQ7SKd2L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A35C4CEE7;
-	Fri, 17 Oct 2025 15:05:30 +0000 (UTC)
+	 MIME-Version; b=AyDPt5AYP92uxd/jCfjn65EyqNkvNar/xaCBZmWxH7hL5tJ30OV9Cm5yiS+QiMVksltr6pG8tan06o437EAp3wZit8hyumJZeTVUSEVxQP0wkrZo3JnJQZsppwH16vNCpTSnHu0iWhiOmChArwLrYBR32wnHIR9e0idIpVYh+MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YD2CW8xF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30384C113D0;
+	Fri, 17 Oct 2025 15:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713531;
-	bh=4IMXBrYcG2BBxxlPBqefevzgE3uQekDmwm0nfJE1a+g=;
+	s=korg; t=1760715150;
+	bh=psbUfIyhL647v7u7+iAdVKmRMR7etGqegPGP3VQRFps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQ7SKd2LgvvGla4VbcHXXJyfm3n3MshjBRmdMiE3z15q2aN9Qiv6tlRZ/2LsqRGQ2
-	 Qp2FGE7xGkPYh/GlmsgG/poyegqGXfIZ4Pt7+Y1FQctWhYHhbuwvUOsiPTABhehrzb
-	 PO3w7byL/YFPcx7T1RDdLtH6MTy/iGfxRhqlLqf4=
+	b=YD2CW8xFxNgtZTXU5hIxsf7mcnHpVwUEFezXs1obIYvLJMvYB9QrjEhFcrkxoN0vT
+	 HkHeFs5SHtIzYqSboVmR/0nqNsmGJG7rA9ctRMlTlnZg1vBDBBf9CpXDPCzPVfHpaD
+	 KdPFCBLfJExdWp77z21zuYfElU6r2qm2cxYvcYxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	T Pratham <t-pratham@ti.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 029/201] LoongArch: Remove CONFIG_ACPI_TABLE_UPGRADE in platform_init()
+Subject: [PATCH 6.17 115/371] crypto: skcipher - Fix reqsize handling
 Date: Fri, 17 Oct 2025 16:51:30 +0200
-Message-ID: <20251017145135.814998054@linuxfoundation.org>
+Message-ID: <20251017145206.097092869@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: T Pratham <t-pratham@ti.com>
 
-[ Upstream commit 6c3ca6654a74dd396bc477839ba8d9792eced441 ]
+[ Upstream commit 229c586b5e86979badb7cb0d38717b88a9e95ddd ]
 
-Both acpi_table_upgrade() and acpi_boot_table_init() are defined as
-empty functions under !CONFIG_ACPI_TABLE_UPGRADE and !CONFIG_ACPI in
-include/linux/acpi.h, there are no implicit declaration errors with
-various configs.
+Commit afddce13ce81d ("crypto: api - Add reqsize to crypto_alg")
+introduced cra_reqsize field in crypto_alg struct to replace type
+specific reqsize fields. It looks like this was introduced specifically
+for ahash and acomp from the commit description as subsequent commits
+add necessary changes in these alg frameworks.
 
-  #ifdef CONFIG_ACPI_TABLE_UPGRADE
-  void acpi_table_upgrade(void);
-  #else
-  static inline void acpi_table_upgrade(void) { }
-  #endif
+However, this is being recommended for use in all crypto algs [1]
+instead of setting reqsize using crypto_*_set_reqsize(). Using
+cra_reqsize in skcipher algorithms, hence, causes memory
+corruptions and crashes as the underlying functions in the algorithm
+framework have not been updated to set the reqsize properly from
+cra_reqsize. [2]
 
-  #ifdef	CONFIG_ACPI
-  ...
-  void acpi_boot_table_init (void);
-  ...
-  #else	/* !CONFIG_ACPI */
-  ...
-  static inline void acpi_boot_table_init(void)
-  {
-  }
-  ...
-  #endif	/* !CONFIG_ACPI */
+Add proper set_reqsize calls in the skcipher init function to
+properly initialize reqsize for these algorithms in the framework.
 
-As Huacai suggested, CONFIG_ACPI_TABLE_UPGRADE is ugly and not necessary
-here, just remove it. At the same time, just keep CONFIG_ACPI to prevent
-potential build errors in future, and give a signal to indicate the code
-is ACPI-specific. For the same reason, we also put acpi_table_upgrade()
-under CONFIG_ACPI.
+[1]: https://lore.kernel.org/linux-crypto/aCL8BxpHr5OpT04k@gondor.apana.org.au/
+[2]: https://gist.github.com/Pratham-T/24247446f1faf4b7843e4014d5089f6b
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Stable-dep-of: 98662be7ef20 ("LoongArch: Init acpi_gbl_use_global_lock to false")
+Fixes: afddce13ce81d ("crypto: api - Add reqsize to crypto_alg")
+Fixes: 52f641bc63a4 ("crypto: ti - Add driver for DTHE V2 AES Engine (ECB, CBC)")
+Signed-off-by: T Pratham <t-pratham@ti.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/setup.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ crypto/skcipher.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-index 655dc2b1616f2..a494b13c9e90c 100644
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -363,10 +363,8 @@ void __init platform_init(void)
- 	arch_reserve_vmcore();
- 	arch_parse_crashkernel();
+diff --git a/crypto/skcipher.c b/crypto/skcipher.c
+index de5fc91bba267..8fa5d9686d085 100644
+--- a/crypto/skcipher.c
++++ b/crypto/skcipher.c
+@@ -294,6 +294,8 @@ static int crypto_skcipher_init_tfm(struct crypto_tfm *tfm)
+ 		return crypto_init_lskcipher_ops_sg(tfm);
+ 	}
  
--#ifdef CONFIG_ACPI_TABLE_UPGRADE
--	acpi_table_upgrade();
--#endif
- #ifdef CONFIG_ACPI
-+	acpi_table_upgrade();
- 	acpi_gbl_use_default_register_widths = false;
- 	acpi_boot_table_init();
- #endif
++	crypto_skcipher_set_reqsize(skcipher, crypto_tfm_alg_reqsize(tfm));
++
+ 	if (alg->exit)
+ 		skcipher->base.exit = crypto_skcipher_exit_tfm;
+ 
 -- 
 2.51.0
 
