@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-186721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E384BE9DA7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63EDFBE9E0A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 921295879BF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21FCB19C2F1E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AAD2F12B2;
-	Fri, 17 Oct 2025 15:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A58219A7A;
+	Fri, 17 Oct 2025 15:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dx+aa6zP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7YOWhSF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D88337117;
-	Fri, 17 Oct 2025 15:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A4D337109;
+	Fri, 17 Oct 2025 15:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714048; cv=none; b=dJSraOhihU9/OHAdu5C+/RNHjVu16sxO06z1QMglanZy7GZUyc5MdPZe2BYH9HLDKK8NzuoKMcHpS0hsBrcViXq6D0tHMboBUMK3o1QFmKscoLwsIypj8GX2eL6ijfe/xbYD2M2oU91+ieSvr7TLs68G3fMwj08MgMW7HSsGVBs=
+	t=1760714917; cv=none; b=heXUiMxHFyOkeCfEPVGf6Uqfuky1HPxvp+QRLEAqJC5dFMedMUegqC2Xzd6/Z1AMnakSdNzLfodGIDtu3tjcN6lGDIXnbZLuiwaafptuXc4yeI3sOza+XS/KFTV//S1LQdwQg5g80CImZTyKd/ZD7slwWPICKSb/8kVdqNfWEN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714048; c=relaxed/simple;
-	bh=DAXRcqHSHD62BS2uHbN2Gl1CC5gm0Yjl9ONZ6ZZqJ8o=;
+	s=arc-20240116; t=1760714917; c=relaxed/simple;
+	bh=8ikhfVYaTjmVLu7pfRYMde6jyNUCApdorKsWmNmDA2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L2GLZPyXlMclTz6zD5QdAxOJTd2R7FvrxFxIM+Jlb6H7ub3X8HmKcgxHrH0MD+jjcWZTcEz8dziEGMCH6vFvTobZb5AytztYTYDxR9dxlVQ7vT7gIyLHliCWAi5okp9ssZrXSmq/J5Yh8sFvZhGi7s42oWjqf56EyapGNXN33vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dx+aa6zP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E7FC4CEE7;
-	Fri, 17 Oct 2025 15:14:07 +0000 (UTC)
+	 MIME-Version; b=eLK5MuHhiyVehMknraiyqxWlfXH6wvTLYzVgr2J6egY2YrtUsSwdOt2G0fk+RWLWyxZtXZqCYYC1boX1Sgfct2iEWzfYOx/SsEGsTqn2/oDysyGVkpmUjCygMP/huh08fPh6qqhOvVAqc8AxmKdtAciAopl8uSl7XO8sZ3JAKww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7YOWhSF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D70C4CEE7;
+	Fri, 17 Oct 2025 15:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714048;
-	bh=DAXRcqHSHD62BS2uHbN2Gl1CC5gm0Yjl9ONZ6ZZqJ8o=;
+	s=korg; t=1760714916;
+	bh=8ikhfVYaTjmVLu7pfRYMde6jyNUCApdorKsWmNmDA2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dx+aa6zPCbUw8b/PbkUCuXHZDfOgRUWh7kmADJIE9GaBHTYrrxdljLsTUfHb0+yR8
-	 VpFN4ScEghLaGspjk+hqJYgVqB7/voiTWp0VudRhuIHRxj+bzIHux1R6DxUQmpEP+8
-	 n/N1jEmiqfC3yHehgrhjuR72CWBvvd8pd53/5Q+k=
+	b=f7YOWhSFnpFJdTSToQcgiyRt0Rr1wsQNUfNDoF5wxB8rEAnoW8orGaj7X3WmQzWuM
+	 IJwoq6ul/b5h/rlwqCxXvWMVX3dc8h8EPFWB4LPO5QqPhnNi6w04RGP5NaSbQ9T+h5
+	 yCbRSePgYgGDYyhSh9sIcxYVwsr2/gO8qwUzlAX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 001/277] fs: always return zero on success from replace_fd()
-Date: Fri, 17 Oct 2025 16:50:08 +0200
-Message-ID: <20251017145147.197046032@linuxfoundation.org>
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 034/371] perf: Completely remove possibility to override MAX_NR_CPUS
+Date: Fri, 17 Oct 2025 16:50:09 +0200
+Message-ID: <20251017145203.035099069@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +70,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit 708c04a5c2b78e22f56e2350de41feba74dfccd9 upstream.
+[ Upstream commit 6f8fb022ef2c6694e47f6e2f5676eb63be66c208 ]
 
-replace_fd() returns the number of the new file descriptor through the
-return value of do_dup2(). However its callers never care about the
-specific returned number. In fact the caller in receive_fd_replace() treats
-any non-zero return value as an error and therefore never calls
-__receive_sock() for most file descriptors, which is a bug.
+Commit 21b8732eb447 ("perf tools: Allow overriding MAX_NR_CPUS at
+compile time") added the capability to override MAX_NR_CPUS. At
+that time it was necessary to reduce the huge amount of RAM used
+by static stats variables.
 
-To fix the bug in receive_fd_replace() and to avoid the same issue
-happening in future callers, signal success through a plain zero.
+But this has been unnecessary since commit 6a1e2c5c2673 ("perf stat:
+Remove a set of shadow stats static variables"), and
+commit e8399d34d568 ("libperf cpumap: Hide/reduce scope of
+MAX_NR_CPUS") broke the build in that case because it failed to
+add the guard around the new definition of MAX_NR_CPUS.
 
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Link: https://lore.kernel.org/lkml/20250801220215.GS222315@ZenIV/
-Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
-Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/20250805-fix-receive_fd_replace-v3-1-b72ba8b34bac@linutronix.de
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So cleanup things and remove guards completely to officialise it
+is not necessary anymore to override MAX_NR_CPUS.
+
+Fixes: e8399d34d568d61c ("libperf cpumap: Hide/reduce scope of MAX_NR_CPUS")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/all/8c8553387ebf904a9e5a93eaf643cb01164d9fb3.1736188471.git.christophe.leroy@csgroup.eu/
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/perf/perf.h                        | 2 --
+ tools/perf/util/bpf_skel/kwork_top.bpf.c | 2 --
+ 2 files changed, 4 deletions(-)
 
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -1262,7 +1262,10 @@ int replace_fd(unsigned fd, struct file
- 	err = expand_files(files, fd);
- 	if (unlikely(err < 0))
- 		goto out_unlock;
--	return do_dup2(files, file, fd, flags);
-+	err = do_dup2(files, file, fd, flags);
-+	if (err < 0)
-+		return err;
-+	return 0;
+diff --git a/tools/perf/perf.h b/tools/perf/perf.h
+index 3cb40965549f5..e004178472d9e 100644
+--- a/tools/perf/perf.h
++++ b/tools/perf/perf.h
+@@ -2,9 +2,7 @@
+ #ifndef _PERF_PERF_H
+ #define _PERF_PERF_H
  
- out_unlock:
- 	spin_unlock(&files->file_lock);
+-#ifndef MAX_NR_CPUS
+ #define MAX_NR_CPUS			4096
+-#endif
+ 
+ enum perf_affinity {
+ 	PERF_AFFINITY_SYS = 0,
+diff --git a/tools/perf/util/bpf_skel/kwork_top.bpf.c b/tools/perf/util/bpf_skel/kwork_top.bpf.c
+index 73e32e0630301..6673386302e2f 100644
+--- a/tools/perf/util/bpf_skel/kwork_top.bpf.c
++++ b/tools/perf/util/bpf_skel/kwork_top.bpf.c
+@@ -18,9 +18,7 @@ enum kwork_class_type {
+ };
+ 
+ #define MAX_ENTRIES     102400
+-#ifndef MAX_NR_CPUS
+ #define MAX_NR_CPUS     4096
+-#endif
+ #define PF_KTHREAD      0x00200000
+ #define MAX_COMMAND_LEN 16
+ 
+-- 
+2.51.0
+
 
 
 
