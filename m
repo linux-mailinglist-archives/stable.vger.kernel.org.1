@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98750BE9736
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:05:03 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 036B3BE9A22
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CBE03B2CBC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6C87A583D11
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC1222A7E4;
-	Fri, 17 Oct 2025 14:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA8A2F12B7;
+	Fri, 17 Oct 2025 15:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGRTfEk8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5m+dwFH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAA833711A;
-	Fri, 17 Oct 2025 14:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A8733710B;
+	Fri, 17 Oct 2025 15:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713165; cv=none; b=WjdQQ6ce3Cy+4dsXLZfX7XxumueLewcplYFlpzSWT27Jxvtm48M88dM7KqBU6iJWHVUeV4VYQOX5JtFPPMOpG1iLEFHC0aDc7FQlnSk+RbDLOEnbyJYUSlJjurLFGWAST21PJ4KkvxEyJgSxJhxzv/OJJhqLLp/QRBKLXNZzAXA=
+	t=1760713698; cv=none; b=KZO1n2lJzUmUVkKHqo6K5UIusMZR58HEJyyglpxQw9UzeVA9bMHs/Uak1hajg9imVb1zIi8XgBmbKP/SiQx/h7uTOG+bJMgkalrjv2SVwHWcQrOBnvxaJxObHuSBuSJC+JfuQpU3WyKc/jsMn/qx3ImysU7PbXkAZoVMWLGIdp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713165; c=relaxed/simple;
-	bh=Y3zYmgeecGehMD8y8dTuSI9erRGfJnfgOK8Rx5TUZOM=;
+	s=arc-20240116; t=1760713698; c=relaxed/simple;
+	bh=YqqUF7mOXSq2i9MHC8pdri52zk1jgCLmp/qmCfgEKQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKNwg+bsWm+NqiHNME9IWdJzCxpFXG7367Pekvt73bswiDAAtyX5Ax0zneYPBfsQc5/8+dzhH41JrhMDioMJHTFghMzK1Tq0NcwT8bnSKSNq/NxFJic7QI7kkKUt/4nc1r/IwvONOthvgFYqEf0YqnHd4XgT5p/efSadL9rim6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGRTfEk8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBBDC4CEF9;
-	Fri, 17 Oct 2025 14:59:24 +0000 (UTC)
+	 MIME-Version; b=oN9NCQLxna7Ncp/htVNRKXFvoCrxW2bTM/XjU4gFmcYOacXtdriQWXaGlJ9NacbpctF5tRyvuiv/gbg3xP2RgJqOYUQaQIhRyzFgbbywaTo0mvxlJcEKMZFUh81tWS0ScW/Os+1i5h8scL5zzYwVsN+eR4SqfwfkoHeUB3SYly4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5m+dwFH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2DDC4CEE7;
+	Fri, 17 Oct 2025 15:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713165;
-	bh=Y3zYmgeecGehMD8y8dTuSI9erRGfJnfgOK8Rx5TUZOM=;
+	s=korg; t=1760713698;
+	bh=YqqUF7mOXSq2i9MHC8pdri52zk1jgCLmp/qmCfgEKQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uGRTfEk8mKDcerc5G49SxYPrKH8PrxtD7/vIxpi3eO9UctvJggqa6CPb8+7YacHRD
-	 3JkAQMXKuLsivrahqW7Y9sP3ndmns1yZrXqH6rmHJaIVt7Vz0JsWypLodpI18291TB
-	 shNqitC2a+I/Zzb1C4+UTndr3KqOzBwSotFJxjLQ=
+	b=G5m+dwFH5BNUrC7xH4rrIdAjLWI9zHTCAR1eRRlMOC7LMMscGlZw481mypGvZsuKl
+	 xUbZ2q3UMX4+mL6++bC72hgXAg/IozBdv8cKbI0uzpR069RxBU3CbtmFMNl6eodrQX
+	 d4AeXFVz7xswWoX2I2KMzXy31E7BX7jrKpgJZiPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Xue <zxue@semtech.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: [PATCH 6.1 071/168] bus: mhi: host: Do not use uninitialized dev pointer in mhi_init_irq_setup()
+	Finn Thain <fthain@linux-m68k.org>,
+	Helge Deller <deller@gmx.de>,
+	Stan Johnson <userm57@yahoo.com>
+Subject: [PATCH 6.6 089/201] fbdev: Fix logic error in "offb" name match
 Date: Fri, 17 Oct 2025 16:52:30 +0200
-Message-ID: <20251017145131.642574510@linuxfoundation.org>
+Message-ID: <20251017145138.024228938@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Xue <zxue@semtech.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-commit d0856a6dff57f95cc5d2d74e50880f01697d0cc4 upstream.
+commit 15df28699b28d6b49dc305040c4e26a9553df07a upstream.
 
-In mhi_init_irq_setup, the device pointer used for dev_err() was not
-initialized. Use the pointer from mhi_cntrl instead.
+A regression was reported to me recently whereby /dev/fb0 had disappeared
+from a PowerBook G3 Series "Wallstreet". The problem shows up when the
+"video=ofonly" parameter is passed to the kernel, which is what the
+bootloader does when "no video driver" is selected. The cause of the
+problem is the "offb" string comparison, which got mangled when it got
+refactored. Fix it.
 
-Fixes: b0fc0167f254 ("bus: mhi: core: Allow shared IRQ for event rings")
-Fixes: 3000f85b8f47 ("bus: mhi: core: Add support for basic PM operations")
-Signed-off-by: Adam Xue <zxue@semtech.com>
-[mani: reworded subject/description and CCed stable]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250905174118.38512-1-zxue@semtech.com
+Fixes: 93604a5ade3a ("fbdev: Handle video= parameter in video/cmdline.c")
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/init.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/core/fb_cmdline.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bus/mhi/host/init.c
-+++ b/drivers/bus/mhi/host/init.c
-@@ -164,7 +164,6 @@ void mhi_deinit_free_irq(struct mhi_cont
- int mhi_init_irq_setup(struct mhi_controller *mhi_cntrl)
- {
- 	struct mhi_event *mhi_event = mhi_cntrl->mhi_event;
--	struct device *dev = &mhi_cntrl->mhi_dev->dev;
- 	unsigned long irq_flags = IRQF_SHARED | IRQF_NO_SUSPEND;
- 	int i, ret;
+diff --git a/drivers/video/fbdev/core/fb_cmdline.c b/drivers/video/fbdev/core/fb_cmdline.c
+index 4d1634c492ec..594b60424d1c 100644
+--- a/drivers/video/fbdev/core/fb_cmdline.c
++++ b/drivers/video/fbdev/core/fb_cmdline.c
+@@ -40,7 +40,7 @@ int fb_get_options(const char *name, char **option)
+ 	bool enabled;
  
-@@ -191,7 +190,7 @@ int mhi_init_irq_setup(struct mhi_contro
- 			continue;
+ 	if (name)
+-		is_of = strncmp(name, "offb", 4);
++		is_of = !strncmp(name, "offb", 4);
  
- 		if (mhi_event->irq >= mhi_cntrl->nr_irqs) {
--			dev_err(dev, "irq %d not available for event ring\n",
-+			dev_err(mhi_cntrl->cntrl_dev, "irq %d not available for event ring\n",
- 				mhi_event->irq);
- 			ret = -EINVAL;
- 			goto error_request;
-@@ -202,7 +201,7 @@ int mhi_init_irq_setup(struct mhi_contro
- 				  irq_flags,
- 				  "mhi", mhi_event);
- 		if (ret) {
--			dev_err(dev, "Error requesting irq:%d for ev:%d\n",
-+			dev_err(mhi_cntrl->cntrl_dev, "Error requesting irq:%d for ev:%d\n",
- 				mhi_cntrl->irq[mhi_event->irq], i);
- 			goto error_request;
- 		}
+ 	enabled = __video_get_options(name, &options, is_of);
+ 
+-- 
+2.51.0
+
 
 
 
