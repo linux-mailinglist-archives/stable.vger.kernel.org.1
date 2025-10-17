@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-186654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5B5BEA03E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:39:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A872BEA68E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57922742229
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48B58745835
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B8D330333;
-	Fri, 17 Oct 2025 15:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC058330B1F;
+	Fri, 17 Oct 2025 15:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYm151Qn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmU1E2xt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B323E2F12B0;
-	Fri, 17 Oct 2025 15:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7874C330B00;
+	Fri, 17 Oct 2025 15:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713854; cv=none; b=rLs3lL3v+n5RDZAW7SDQclZ8ykt4jDcMl2aZ1IJddNnWRWdfNWuNrCDl4U3mrN9Kpo4WpjxfRIGAURI4beo3lorc+nhchfuxhkxOGJN1GOpKXglOSA2LDtxNVbT+6pKN6Lw70urR3cPHaz9VtFtZorZBPlGjyQjDEciCUrrsROY=
+	t=1760716302; cv=none; b=o1taiMVjQNVjFtZyyx5JXp5S8ZyTMvQWhu6VXdZUQBr/cyGf/ig4mLeI90pEcOYJHuWq+GajQOBQVijivVoufpzVUvp6fwDxNJUCk7aOxh47kawk/KsLHibpEe8e5rXrPLLBXd6S+m8ivEZcFCcHpT/VIKDj4OnidtQy4dECgwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713854; c=relaxed/simple;
-	bh=qbTbmOaRuktCsq7mBpIWy2T+r0ue7K2I+QF63H/6+Sc=;
+	s=arc-20240116; t=1760716302; c=relaxed/simple;
+	bh=i9Ayl5CAVvpTPwUZLDwwDvNLOeTXYkrjOEW+OOQ5Wqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opkVYvEnjTEKjlhiUkciS9cBjWRzQzRprLkCkc27LJPGiMx/uf+mSSy+mnZOSpr47cZ6KTmzzDrKnnGOIsh7fFbqvuuhgo8whWvot9LorkkV1+4VCeSWzQMwqm1mPa/7pLGD9y65nAdIPE+jrfsF5yNWInrJoWc+Qduf/ain25c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYm151Qn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A60C4CEE7;
-	Fri, 17 Oct 2025 15:10:53 +0000 (UTC)
+	 MIME-Version; b=YNkfdivMAMwZp8iED329EOUzctyysjKq+xD4jacKyECzBQCDDg5sPFSG+QIX3fBxr5FFTeh3oAXq8kT1dl8VNvxmN6KSn8ovnhzO33PZsSJERMS36Ibi6XEtOfUTMEMOQV8gEeqrM2bhKVP23WrTuyAeBKkDImvHWQ+IyQ8kHPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmU1E2xt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0A5C4CEE7;
+	Fri, 17 Oct 2025 15:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713854;
-	bh=qbTbmOaRuktCsq7mBpIWy2T+r0ue7K2I+QF63H/6+Sc=;
+	s=korg; t=1760716302;
+	bh=i9Ayl5CAVvpTPwUZLDwwDvNLOeTXYkrjOEW+OOQ5Wqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYm151Qn5/O2fTN2EbwZ97eckgHOwzJVtJeC+c56w/e7PR6DqXiziaGDbRyHYN/Cc
-	 1ET9ksEu8I6299IaGJHY4WBYoV8VZ9PtMdaLpe7I+ns2ybKTzUj5hrBT1ngnnQW6Rj
-	 AaXp5K+L9OIWrGWqtCN/AI2J0tL+EHx9kAZM0DR8=
+	b=nmU1E2xt+KyqnwrUUpGY9R2dEFgrBuz7Dsl3FHQNoxngmI0znngNj4V/s6glliO02
+	 Jfyu2TFVC7mLvAhMTaZIAHAGYjYJ9vO81MTSLqUGSaGgByfRpDEDgOuHjL+aQZUine
+	 taC7WZKabZjlBE5666SQjsGO6hWfSw0gpLin5tio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Helen Koike <koike@igalia.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Matthew Wilcox <willy@infradead.org>,
-	NeilBrown <neilb@suse.de>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 143/201] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH allocations
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.15 111/276] mfd: vexpress-sysreg: Check the return value of devm_gpiochip_add_data()
 Date: Fri, 17 Oct 2025 16:53:24 +0200
-Message-ID: <20251017145139.986882932@linuxfoundation.org>
+Message-ID: <20251017145146.530857380@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,78 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 6a204d4b14c99232e05d35305c27ebce1c009840 upstream.
+commit 1efbee6852f1ff698a9981bd731308dd027189fb upstream.
 
-Commit 524c48072e56 ("mm/page_alloc: rename ALLOC_HIGH to
-ALLOC_MIN_RESERVE") is the start of a series that explains how __GFP_HIGH,
-which implies ALLOC_MIN_RESERVE, is going to be used instead of
-__GFP_ATOMIC for high atomic reserves.
+Commit 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+removed the return value check from the call to gpiochip_add_data() (or
+rather gpiochip_add() back then and later converted to devres) with no
+explanation. This function however can still fail, so check the return
+value and bail-out if it does.
 
-Commit eb2e2b425c69 ("mm/page_alloc: explicitly record high-order atomic
-allocations in alloc_flags") introduced ALLOC_HIGHATOMIC for such
-allocations of order higher than 0.  It still used __GFP_ATOMIC, though.
-
-Then, commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how
-__GFP_HIGH non-blocking allocations accesses reserves") just turned that
-check for !__GFP_DIRECT_RECLAIM, ignoring that high atomic reserves were
-expected to test for __GFP_HIGH.
-
-This leads to high atomic reserves being added for high-order GFP_NOWAIT
-allocations and others that clear __GFP_DIRECT_RECLAIM, which is
-unexpected.  Later, those reserves lead to 0-order allocations going to
-the slow path and starting reclaim.
-
->From /proc/pagetypeinfo, without the patch:
-
-Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-Node    0, zone    DMA32, type   HighAtomic      1      8     10      9      7      3      0      0      0      0      0
-Node    0, zone   Normal, type   HighAtomic     64     20     12      5      0      0      0      0      0      0      0
-
-With the patch:
-
-Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-Node    0, zone    DMA32, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-Node    0, zone   Normal, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-
-Link: https://lkml.kernel.org/r/20250814172245.1259625-1-cascardo@igalia.com
-Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Tested-by: Helen Koike <koike@igalia.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: NeilBrown <neilb@suse.de>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250811-gpio-mmio-mfd-conv-v1-1-68c5c958cf80@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/vexpress-sysreg.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3738,7 +3738,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsig
- 		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
- 			alloc_flags |= ALLOC_NON_BLOCK;
+--- a/drivers/mfd/vexpress-sysreg.c
++++ b/drivers/mfd/vexpress-sysreg.c
+@@ -98,6 +98,7 @@ static int vexpress_sysreg_probe(struct
+ 	struct resource *mem;
+ 	void __iomem *base;
+ 	struct gpio_chip *mmc_gpio_chip;
++	int ret;
  
--			if (order > 0)
-+			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
- 				alloc_flags |= ALLOC_HIGHATOMIC;
- 		}
+ 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!mem)
+@@ -118,7 +119,10 @@ static int vexpress_sysreg_probe(struct
+ 	bgpio_init(mmc_gpio_chip, &pdev->dev, 0x4, base + SYS_MCI,
+ 			NULL, NULL, NULL, NULL, 0);
+ 	mmc_gpio_chip->ngpio = 2;
+-	devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
++
++	ret = devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
++	if (ret)
++		return ret;
  
+ 	return devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_AUTO,
+ 			vexpress_sysreg_cells,
 
 
 
