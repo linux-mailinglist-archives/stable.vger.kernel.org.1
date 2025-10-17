@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-186714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8B8BE9C81
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53209BEA227
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DD1EA58781B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 477771AE2A55
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4FD335063;
-	Fri, 17 Oct 2025 15:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B2A330B06;
+	Fri, 17 Oct 2025 15:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJuZegS8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0hqC8Kx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAC12F12D2;
-	Fri, 17 Oct 2025 15:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D382330B39;
+	Fri, 17 Oct 2025 15:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714028; cv=none; b=KfNKt3BspBN08TQwSLzIG6AEBpMKcDgiWzjQis7Nba3QFhm/0ye2g+tzhEpeftFAwHu5Ls7jHwM4YD+D1eIit39cfHhf4czUyZR1MfK3bsAv0U33LygMAoXiGlVn5l3yJjZ/hXkrPHDgn8C6soMJx+1n+psaoNljjVO33tclTnQ=
+	t=1760715704; cv=none; b=Umk6UvT1DbSSCC90L62Dc74b+lXIObl97SdyPKRATzCeuIBR44ics4wTsReevghHE4Gfpjw9BSVpeFfctXo7JcZug2AWYZdKwrNV0uS3/bS2cXYPcplhJYIAiqaOOhJSct3N+hI03163oj6ZhySfzr4sAFki2RmrmpIKFkoWkO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714028; c=relaxed/simple;
-	bh=ItwNxCZ4k6W4Al/UKxHmb11K6ndvXeBoyI3IOtiVIlQ=;
+	s=arc-20240116; t=1760715704; c=relaxed/simple;
+	bh=6kdjiKEr2EAHHB6ZD9FKke5+CsYfXUe4k1Isg1k+J0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgqE034yZBFK0n+I3xwtcbSC7qEP8/OcgaqPosbSku0+ehjP+Xd9XxnKS7j1xkPYQ5Knp3X91WhMMoRGH3rhua/otgwq9tl3d9q55p6+tpzLlAy+j2cZyN8krobyXSuaidfDP+/SqLTGGEpBho91OkZyenYfzNHiYz8QI93m790=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJuZegS8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C469C4CEE7;
-	Fri, 17 Oct 2025 15:13:48 +0000 (UTC)
+	 MIME-Version; b=fT/0DVOz/ZrSfQMDFoz7KfX83HOPq+Mbw7eZOM0oGtaTmUN7PXXpcCsSNZkHWYnoDXwulCK1mMKSCv9VQzt0AW0t8d/6NDCcizEE1ocSvAbYHyFzQc+m++m2Z6LLqtlc86ShlKW4+DXrMZ9u0+tCGN7oPNhyLq9DMdknTsMsA8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0hqC8Kx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9432C4CEE7;
+	Fri, 17 Oct 2025 15:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714028;
-	bh=ItwNxCZ4k6W4Al/UKxHmb11K6ndvXeBoyI3IOtiVIlQ=;
+	s=korg; t=1760715704;
+	bh=6kdjiKEr2EAHHB6ZD9FKke5+CsYfXUe4k1Isg1k+J0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJuZegS8rt9yrWyfXBQSOXNOLQRpmXoaWCDF/hiFL3ZBfTmwHondo+zySopVLfQHS
-	 14NVY79hFGJD+ZgVPpmrDDLtATNmUZ1N22NiQEhZu9VZRiFFKJ/xrGAuj3tWXppqEI
-	 M88ahe2Guot7lPzwSdTX0muF/Rk4NOkk5KT0i3Ak=
+	b=P0hqC8Kx08OKPzpnmDG3U9Oq9fd1kQ4/oZzEol0HVx0BYGydXeheDz40yq+cuYxuz
+	 eFMMKObO3r/ubkZm+eXJcpeiww55vlLRUm0DQ2IW9Zjo7S54desPnWSJh8BOJEwH/5
+	 Jv2HxKgaNNPJk+imo0EofI0HNs1lP8QSNC5QEYI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 6.6 189/201] s390/bpf: Write back tail call counter for BPF_TRAMP_F_CALL_ORIG
-Date: Fri, 17 Oct 2025 16:54:10 +0200
-Message-ID: <20251017145141.704309856@linuxfoundation.org>
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Benjamin Block <bblock@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Julian Ruess <julianr@linux.ibm.com>
+Subject: [PATCH 6.17 276/371] PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV
+Date: Fri, 17 Oct 2025 16:54:11 +0200
+Message-ID: <20251017145212.060118508@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-commit bc3905a71f02511607d3ccf732360580209cac4c upstream.
+commit 05703271c3cdcc0f2a8cf6ebdc45892b8ca83520 upstream.
 
-The tailcall_bpf2bpf_hierarchy_fentry test hangs on s390. Its call
-graph is as follows:
+Before disabling SR-IOV via config space accesses to the parent PF,
+sriov_disable() first removes the PCI devices representing the VFs.
 
-  entry()
-    subprog_tail()
-      trampoline()
-        fentry()
-        the rest of subprog_tail()  # via BPF_TRAMP_F_CALL_ORIG
-        return to entry()
+Since commit 9d16947b7583 ("PCI: Add global pci_lock_rescan_remove()")
+such removal operations are serialized against concurrent remove and
+rescan using the pci_rescan_remove_lock. No such locking was ever added
+in sriov_disable() however. In particular when commit 18f9e9d150fc
+("PCI/IOV: Factor out sriov_add_vfs()") factored out the PCI device
+removal into sriov_del_vfs() there was still no locking around the
+pci_iov_remove_virtfn() calls.
 
-The problem is that the rest of subprog_tail() increments the tail call
-counter, but the trampoline discards the incremented value. This
-results in an astronomically large number of tail calls.
+On s390 the lack of serialization in sriov_disable() may cause double
+remove and list corruption with the below (amended) trace being observed:
 
-Fix by making the trampoline write the incremented tail call counter
-back.
+  PSW:  0704c00180000000 0000000c914e4b38 (klist_put+56)
+  GPRS: 000003800313fb48 0000000000000000 0000000100000001 0000000000000001
+	00000000f9b520a8 0000000000000000 0000000000002fbd 00000000f4cc9480
+	0000000000000001 0000000000000000 0000000000000000 0000000180692828
+	00000000818e8000 000003800313fe2c 000003800313fb20 000003800313fad8
+  #0 [3800313fb20] device_del at c9158ad5c
+  #1 [3800313fb88] pci_remove_bus_device at c915105ba
+  #2 [3800313fbd0] pci_iov_remove_virtfn at c9152f198
+  #3 [3800313fc28] zpci_iov_remove_virtfn at c90fb67c0
+  #4 [3800313fc60] zpci_bus_remove_device at c90fb6104
+  #5 [3800313fca0] __zpci_event_availability at c90fb3dca
+  #6 [3800313fd08] chsc_process_sei_nt0 at c918fe4a2
+  #7 [3800313fd60] crw_collect_info at c91905822
+  #8 [3800313fe10] kthread at c90feb390
+  #9 [3800313fe68] __ret_from_fork at c90f6aa64
+  #10 [3800313fe98] ret_from_fork at c9194f3f2.
 
-Fixes: 528eb2cb87bc ("s390/bpf: Implement arch_prepare_bpf_trampoline()")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20250813121016.163375-4-iii@linux.ibm.com
+This is because in addition to sriov_disable() removing the VFs, the
+platform also generates hot-unplug events for the VFs. This being the
+reverse operation to the hotplug events generated by sriov_enable() and
+handled via pdev->no_vf_scan. And while the event processing takes
+pci_rescan_remove_lock and checks whether the struct pci_dev still exists,
+the lack of synchronization makes this checking racy.
+
+Other races may also be possible of course though given that this lack of
+locking persisted so long observable races seem very rare. Even on s390 the
+list corruption was only observed with certain devices since the platform
+events are only triggered by config accesses after the removal, so as long
+as the removal finished synchronously they would not race. Either way the
+locking is missing so fix this by adding it to the sriov_del_vfs() helper.
+
+Just like PCI rescan-remove, locking is also missing in sriov_add_vfs()
+including for the error case where pci_stop_and_remove_bus_device() is
+called without the PCI rescan-remove lock being held. Even in the non-error
+case, adding new PCI devices and buses should be serialized via the PCI
+rescan-remove lock. Add the necessary locking.
+
+Fixes: 18f9e9d150fc ("PCI/IOV: Factor out sriov_add_vfs()")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250826-pci_fix_sriov_disable-v1-1-2d0bc938f2a3@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/net/bpf_jit_comp.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/iov.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -2462,6 +2462,9 @@ static int __arch_prepare_bpf_trampoline
- 		/* stg %r2,retval_off(%r15) */
- 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_2, REG_0, REG_15,
- 			      tjit->retval_off);
-+		/* mvc tccnt_off(%r15),tail_call_cnt(4,%r15) */
-+		_EMIT6(0xd203f000 | tjit->tccnt_off,
-+		       0xf000 | offsetof(struct prog_frame, tail_call_cnt));
+--- a/drivers/pci/iov.c
++++ b/drivers/pci/iov.c
+@@ -629,15 +629,18 @@ static int sriov_add_vfs(struct pci_dev
+ 	if (dev->no_vf_scan)
+ 		return 0;
  
- 		im->ip_after_call = jit->prg_buf + jit->prg;
++	pci_lock_rescan_remove();
+ 	for (i = 0; i < num_vfs; i++) {
+ 		rc = pci_iov_add_virtfn(dev, i);
+ 		if (rc)
+ 			goto failed;
+ 	}
++	pci_unlock_rescan_remove();
+ 	return 0;
+ failed:
+ 	while (i--)
+ 		pci_iov_remove_virtfn(dev, i);
++	pci_unlock_rescan_remove();
  
+ 	return rc;
+ }
+@@ -762,8 +765,10 @@ static void sriov_del_vfs(struct pci_dev
+ 	struct pci_sriov *iov = dev->sriov;
+ 	int i;
+ 
++	pci_lock_rescan_remove();
+ 	for (i = 0; i < iov->num_VFs; i++)
+ 		pci_iov_remove_virtfn(dev, i);
++	pci_unlock_rescan_remove();
+ }
+ 
+ static void sriov_disable(struct pci_dev *dev)
 
 
 
