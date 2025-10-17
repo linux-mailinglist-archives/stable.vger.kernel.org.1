@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-187238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3427EBEA07A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:53 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A28BEA5D2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AEFDD35E565
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0BC834E8F8E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110C7339714;
-	Fri, 17 Oct 2025 15:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10136330B3C;
+	Fri, 17 Oct 2025 15:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETZPqQdd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9Vc8oCp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06CA32C946;
-	Fri, 17 Oct 2025 15:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EDD330B04;
+	Fri, 17 Oct 2025 15:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715507; cv=none; b=Gp8wDvZDjh5I7uxGpC0+DeLhl9yZdKoIkN+CMYKVuaEnCkMEemcVYIqDd3C1rmdFNktwLhdAHHxpCwx9etmE6b0lulayRsV+k9tQOzdnmGLr5jxCb8zbiS2ZlQYAnfaZSx9O8rTuRuc7LuQFptCLUB9Gck+7NNOfXR9sQE9ozUc=
+	t=1760716313; cv=none; b=hQlqC7ZuDAr4Nt1bZoZ4seG8MpM++O9PLyNucbDm3N4TVqA2Cdfd/WmYrv9ehpVjleytqfBh5gxqV92arYZdvINIu67Brx/H0jnkiMYp82DrZ2svUMCUIiNCxiAUky7Jy2a2dxEIVXZ5gARfuySG7mmQsEQA9Z7+jmGULnVovaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715507; c=relaxed/simple;
-	bh=OuQ4+1FCCUBVSz1eROIkM+eRG+gwF2zPRzO6f/uGHf8=;
+	s=arc-20240116; t=1760716313; c=relaxed/simple;
+	bh=WRn28P7wpQKxh70++wg2Q83Hl33Zbo8eQlLGVV6H1zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2NsrcfCYSbittoapDg255IM6pBvH/RlaOKV0G8WK+bFrpsUNlilFMl2DCCar7KSOXNueohfnGhkh+snvzuYIbEwPI0+ixcemK9byEfnLnUXJPsACJ3re8cZ8LqiA/qCBiQVgTrcIhDco6SDpMLd24UT0ZiWoMGQ7RqPNRafgD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETZPqQdd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0647CC4CEE7;
-	Fri, 17 Oct 2025 15:38:26 +0000 (UTC)
+	 MIME-Version; b=e23xHRgFL+AjK7xySVnYKVCSrahQXmVJWPjt83JhnpTC4YsLhBx5P+NK87SmOXhpIFaCy62XI1kUhCVJiIs1OQk6R0pfh99rbM4+C7cOahpNfg3JHZZZO+tx8O1vO1cbm9OQX2CdlnpJAeeILdhynSG2W5aS22ygIVVwMOET/hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9Vc8oCp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1826DC4CEE7;
+	Fri, 17 Oct 2025 15:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715507;
-	bh=OuQ4+1FCCUBVSz1eROIkM+eRG+gwF2zPRzO6f/uGHf8=;
+	s=korg; t=1760716313;
+	bh=WRn28P7wpQKxh70++wg2Q83Hl33Zbo8eQlLGVV6H1zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ETZPqQddl/XCkLntsNtV+tJyMnekqY8n00yMdSS+fR5CjKoap2Vr0QSHQzz7eJ7dK
-	 H5C10TVJcZwlYTaHHTA9hx2ft/Cdje7u1pwhJLGATUh30hGv1n8F0ibcuX3CFsR5Yf
-	 OFeCDcqhS06+OKWid2tzPZ3HUiQ2AqHsGzztihZQ=
+	b=t9Vc8oCpaJrZh9hnbMsxuBeYSDhmFefZY9/TJpgVEMitMOISMgiXctQeYT6qQHvHb
+	 HVakWEyTHJljB9+2a/t4/i8qFHNTurciHRSQGPXfNMJnG6jVRHMlrVBiKoigiX+iso
+	 8LwUEZ/WwS79jX59k/nitI5CrTFCygU0+AEaFaDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.17 233/371] KEYS: trusted_tpm1: Compare HMAC values in constant time
+	Marek Vasut <marek.vasut@mailbox.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 115/276] Input: atmel_mxt_ts - allow reset GPIO to sleep
 Date: Fri, 17 Oct 2025 16:53:28 +0200
-Message-ID: <20251017145210.513772383@linuxfoundation.org>
+Message-ID: <20251017145146.676785391@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Marek Vasut <marek.vasut@mailbox.org>
 
-commit eed0e3d305530066b4fc5370107cff8ef1a0d229 upstream.
+commit c7866ee0a9ddd9789faadf58cdac6abd7aabf045 upstream.
 
-To prevent timing attacks, HMAC value comparison needs to be constant
-time.  Replace the memcmp() with the correct function, crypto_memneq().
+The reset GPIO is not toggled in any critical section where it couldn't
+sleep, allow the reset GPIO to sleep. This allows the driver to operate
+reset GPIOs connected to I2C GPIO expanders.
 
-[For the Fixes commit I used the commit that introduced the memcmp().
-It predates the introduction of crypto_memneq(), but it was still a bug
-at the time even though a helper function didn't exist yet.]
-
-Fixes: d00a1c72f7f4 ("keys: add new trusted key-type")
+Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+Link: https://lore.kernel.org/r/20251005023335.166483-1-marek.vasut@mailbox.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/keys/trusted-keys/trusted_tpm1.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/input/touchscreen/atmel_mxt_ts.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/security/keys/trusted-keys/trusted_tpm1.c
-+++ b/security/keys/trusted-keys/trusted_tpm1.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <crypto/hash_info.h>
-+#include <crypto/utils.h>
- #include <linux/init.h>
- #include <linux/slab.h>
- #include <linux/parser.h>
-@@ -241,7 +242,7 @@ int TSS_checkhmac1(unsigned char *buffer
- 	if (ret < 0)
- 		goto out;
- 
--	if (memcmp(testhmac, authdata, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac, authdata, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
-@@ -334,7 +335,7 @@ static int TSS_checkhmac2(unsigned char
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag1, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
-+	if (crypto_memneq(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
- 		ret = -EINVAL;
- 		goto out;
+--- a/drivers/input/touchscreen/atmel_mxt_ts.c
++++ b/drivers/input/touchscreen/atmel_mxt_ts.c
+@@ -3239,7 +3239,7 @@ static int mxt_probe(struct i2c_client *
+ 	if (data->reset_gpio) {
+ 		/* Wait a while and then de-assert the RESET GPIO line */
+ 		msleep(MXT_RESET_GPIO_TIME);
+-		gpiod_set_value(data->reset_gpio, 0);
++		gpiod_set_value_cansleep(data->reset_gpio, 0);
+ 		msleep(MXT_RESET_INVALID_CHG);
  	}
-@@ -343,7 +344,7 @@ static int TSS_checkhmac2(unsigned char
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag2, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac2, authdata2, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac2, authdata2, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
+ 
 
 
 
