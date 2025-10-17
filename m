@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-186758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7A7BE9AA3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:31 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2E7BEA012
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6B27189032F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 31A9A587521
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63BFE32E14C;
-	Fri, 17 Oct 2025 15:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE1B2F12D1;
+	Fri, 17 Oct 2025 15:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ML7RZo+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCPOqKYo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F114337100;
-	Fri, 17 Oct 2025 15:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2652F12DE;
+	Fri, 17 Oct 2025 15:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714153; cv=none; b=RvvWw9N2PWR+3WE0K6UORboadHqgZFpmSxxSMMIWwnBr1nMep4MtAhJW+wusgixqeo4gitB+9JnP20kXtF5aqbNoy1R43Ne4BHlPOZ+G7Sm9UCb5J+c8XZkl9C4Bhrinl1DKgZCNHJdGXNCJDK8DBgwEyq0jDP8PoVkPntrANrQ=
+	t=1760715044; cv=none; b=UvZOJpvI10/VRWp4p5gHInPX010MowjbEGcPLo+5BvZQ/YNuQIrdulInTTQ6qcBrTkTtw4SgopQW/3EHiW5hfCq4YlwtVtdopvrT/NBs2Hog/lYBSr37b5aih0BQfLYKMw2QvSJgmVWxXT5vWtstkRvLswJa0p0CH8g1L9ScsoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714153; c=relaxed/simple;
-	bh=wOU0Q5zgN9byrUNazrGz5SYppVyGu69bhA/0BvJVJwY=;
+	s=arc-20240116; t=1760715044; c=relaxed/simple;
+	bh=rtzKmJEidc5FKwD84nh9Gh/ZXmuGnY0wuVTcnti0Fk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e8wmrOBJzlrdCfYA+YKFj8vmt03Smb4/3a2BJ5QBiTCmP4WCQXkT5gkmSgmfcnt7pSVXmcuF2yVO3JSS0moPgd8+eoZhXNh7xqUm66HpCDnNdTss6d+FL3YWhHZyc61yr1fJdezsr+MJGV/+9DvL5urwsI+bGfyAT2Ao5pidBCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ML7RZo+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91504C4CEE7;
-	Fri, 17 Oct 2025 15:15:52 +0000 (UTC)
+	 MIME-Version; b=QIiVOVb50MgiKy4i/KaBNSLh5onhGSHPUSO/d8OQpEGUb/PERSe3UygJthqGojnLbwxvYIZR71CxlaeOHEvwVIzdXZPT83xQ3f+nUJsEU4uawaRWl5i7tLzyZLj83taJgSojaq8ZxV2f+YGwDllUb+osDbcJfB1tri8BdDBETGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCPOqKYo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9779AC4CEE7;
+	Fri, 17 Oct 2025 15:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714153;
-	bh=wOU0Q5zgN9byrUNazrGz5SYppVyGu69bhA/0BvJVJwY=;
+	s=korg; t=1760715044;
+	bh=rtzKmJEidc5FKwD84nh9Gh/ZXmuGnY0wuVTcnti0Fk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ML7RZo+FtD9n6aMPvOI76m+iSl5bVVGhonfil4yOUwBfdrBQ38HAExfluvJCg3Ct7
-	 8nDFfIOm18DtXK8XdE2YZA/gw2TKlMm7b6f23OR9QmF5vGWS21JZhM8nGuORbWlHBn
-	 GRy2gmBYjBRcqyRwXZlGGaNIM1PxNjeGoqTIlRsc=
+	b=fCPOqKYo2Ima03MGG5wtXobkUwtCuJQtPQ25dtLKaF7xqEkif1XUrRDzTwypYimEH
+	 GavIFu7dityif8llSUCpQlKJzyFWS6P40VAtY5XdWUWZYKYWkGb0xxCfLglX4up7Px
+	 Wi5WVgmQA9ZbUxeFWvAEjZKq4/0enYVT1uV1BmPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/277] ASoC: SOF: Intel: Read the LLP via the associated Link DMA channel
+Subject: [PATCH 6.17 078/371] LoongArch: Init acpi_gbl_use_global_lock to false
 Date: Fri, 17 Oct 2025 16:50:53 +0200
-Message-ID: <20251017145148.828961594@linuxfoundation.org>
+Message-ID: <20251017145204.762992603@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit aaab61de1f1e44a2ab527e935474e2e03a0f6b08 ]
+[ Upstream commit 98662be7ef20d2b88b598f72e7ce9b6ac26a40f9 ]
 
-It is allowed to mix Link and Host DMA channels in a way that their index
-is different. In this case we would read the LLP from a channel which is
-not used or used for other operation.
+Init acpi_gbl_use_global_lock to false, in order to void error messages
+during boot phase:
 
-Such case can be reproduced on cAVS2.5 or ACE1 platforms with soundwire
-configuration:
-playback to SDW would take Host channel 0 (stream_tag 1) and no Link DMA
-used
-Second playback to HDMI (HDA) would use Host channel 1 (stream_tag 2) and
-Link channel 0 (stream_tag 1).
+ ACPI Error: Could not enable GlobalLock event (20240827/evxfevnt-182)
+ ACPI Error: No response from Global Lock hardware, disabling lock (20240827/evglock-59)
 
-In this case reading the LLP from channel 2 is incorrect as that is not the
-Link channel used for the HDMI playback.
-
-To correct this, we should look up the BE and get the channel used on the
-Link side.
-
-Fixes: 67b182bea08a ("ASoC: SOF: Intel: hda: Implement get_stream_position (Linear Link Position)")
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://patch.msgid.link/20251002074719.2084-6-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 628c3bb40e9a8cefc0a6 ("LoongArch: Add boot and setup routines")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-stream.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ arch/loongarch/kernel/setup.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
-index 24f3cc7676142..2be0d02f9cf9b 100644
---- a/sound/soc/sof/intel/hda-stream.c
-+++ b/sound/soc/sof/intel/hda-stream.c
-@@ -1103,10 +1103,35 @@ u64 hda_dsp_get_stream_llp(struct snd_sof_dev *sdev,
- 			   struct snd_soc_component *component,
- 			   struct snd_pcm_substream *substream)
- {
--	struct hdac_stream *hstream = substream->runtime->private_data;
--	struct hdac_ext_stream *hext_stream = stream_to_hdac_ext_stream(hstream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *be_rtd = NULL;
-+	struct hdac_ext_stream *hext_stream;
-+	struct snd_soc_dai *cpu_dai;
-+	struct snd_soc_dpcm *dpcm;
- 	u32 llp_l, llp_u;
+diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+index 075b79b2c1d39..69c17d162fff3 100644
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -355,6 +355,7 @@ void __init platform_init(void)
  
-+	/*
-+	 * The LLP needs to be read from the Link DMA used for this FE as it is
-+	 * allowed to use any combination of Link and Host channels
-+	 */
-+	for_each_dpcm_be(rtd, substream->stream, dpcm) {
-+		if (dpcm->fe != rtd)
-+			continue;
-+
-+		be_rtd = dpcm->be;
-+	}
-+
-+	if (!be_rtd)
-+		return 0;
-+
-+	cpu_dai = snd_soc_rtd_to_cpu(be_rtd, 0);
-+	if (!cpu_dai)
-+		return 0;
-+
-+	hext_stream = snd_soc_dai_get_dma_data(cpu_dai, substream);
-+	if (!hext_stream)
-+		return 0;
-+
- 	/*
- 	 * The pplc_addr have been calculated during probe in
- 	 * hda_dsp_stream_init():
+ #ifdef CONFIG_ACPI
+ 	acpi_table_upgrade();
++	acpi_gbl_use_global_lock = false;
+ 	acpi_gbl_use_default_register_widths = false;
+ 	acpi_boot_table_init();
+ #endif
 -- 
 2.51.0
 
