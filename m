@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-187436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB68BEA3B4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8436BBE964D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0694519A53EC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:48:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 145C6188652D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB69B330B0C;
-	Fri, 17 Oct 2025 15:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EA4246783;
+	Fri, 17 Oct 2025 14:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7mT87PW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MklOybAW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78514330B0D;
-	Fri, 17 Oct 2025 15:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D667241663;
+	Fri, 17 Oct 2025 14:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716066; cv=none; b=ukogNzfVLJWWWhuDZAs3QnP4545YCYJFjzAZfyKphcqV/iVkeDSK+qduA4tsLeDQjAhg5n6MOkEUgmYPSPyQ9JUzcCkYcBIgsWYiPiRYfb2gbir3F18CIcQGnLp5BulwflaUdu9yb9bKV7sNE7f6QUsZT9mhdZDvpQl5bXxIaR4=
+	t=1760713180; cv=none; b=P67OYhh8ai8c9+pqu4PX019duhirsFMZmj5PqlMojiZmUJyoVYoRdfweIykd0HHlHVqdXTwCp4G6pOyB5FU1CNe3+zlbymsUrxZU3hdKTdCZZNbwZRNfXwRdgOhkSW6Um7RynI5kyHvjoGlkNej7HyGbYH3K8SFW10JTLAHLpSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716066; c=relaxed/simple;
-	bh=7j9cXqXjRGcQbxT06AwoaITjiJgs/jjW1xcitYaXcc8=;
+	s=arc-20240116; t=1760713180; c=relaxed/simple;
+	bh=P9TDXo4S5F4Ya9tQTTkxLtD+PE5l63nYm1LJUy3l9Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jOvtF1P6PtNmr6FokhWXEcPhHThN8ZFoFHiuGEhXlBgXPXvCqN9BCUQbfNVx81Xw43LipBYyMKwEdV7qrC+rEJxx9jC7VCR3niZVRjMmqUa2gWaRFF/fDyPxJopy/heDZ5obZ26FVwlw+QUFUHwW7K9qbwSMbnxCRnHXBjkD6vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7mT87PW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0275FC4CEE7;
-	Fri, 17 Oct 2025 15:47:45 +0000 (UTC)
+	 MIME-Version; b=taDBIqjao4Y2H5XzRY/Yghwpiy91x61bDvuCY5BJzKVlSErXslTJHSiqohU2LdZmfDHT7Ri2J5HvBsnAFgl6xBhxmp62HMch7KKakTb8wyX3kwa/IwOaum0yDnIzFZOrvSBvmDJALEZiizLyNaJipPpl+g0xiBKGF0Gm1g5jc2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MklOybAW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AAC3C4CEE7;
+	Fri, 17 Oct 2025 14:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716066;
-	bh=7j9cXqXjRGcQbxT06AwoaITjiJgs/jjW1xcitYaXcc8=;
+	s=korg; t=1760713179;
+	bh=P9TDXo4S5F4Ya9tQTTkxLtD+PE5l63nYm1LJUy3l9Nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7mT87PW90JGATKeIrK6hzVZaUkpdYbcwr9x6H81xGqhrndSMIRZeXmpM8Ef9o/O4
-	 zca4Hp+nFghhjkl+5enalHMODb9Dcfi+vH7EA5oKsrntG0uLzal5Gxyqj+yxbK8FaT
-	 xozqSp9WzQsR6AkLLukP5/P4wVEuSwciRZRHUI6A=
+	b=MklOybAWVHQB9fjnunewoHryGoDZnkA3yJIY1WhvofqcY/BBBiQhD5z6exeYM8zOx
+	 R1ADwVM7nRzo3yvoHQu4qUC/21PSq4bRj/P34xDGQXlbBJSv4oVS2D9lLEewGy8v+S
+	 YIpLJhp/M7MNJS/uDXY57EBQjYu+o5PlzSLi7xwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/276] PCI: tegra: Fix devm_kcalloc() argument order for port->phys allocation
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.1 075/168] crypto: atmel - Fix dma_unmap_sg() direction
 Date: Fri, 17 Oct 2025 16:52:34 +0200
-Message-ID: <20251017145144.716295704@linuxfoundation.org>
+Message-ID: <20251017145131.791101591@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit e1a8805e5d263453ad76a4f50ab3b1c18ea07560 ]
+commit f5d643156ef62216955c119216d2f3815bd51cb1 upstream.
 
-Fix incorrect argument order in devm_kcalloc() when allocating port->phys.
-The original call used sizeof(phy) as the number of elements and
-port->lanes as the element size, which is reversed.  While this happens to
-produce the correct total allocation size with current pointer size and
-lane counts, the argument order is wrong.
+It seems like everywhere in this file, dd->in_sg is mapped with
+DMA_TO_DEVICE and dd->out_sg is mapped with DMA_FROM_DEVICE.
 
-Fixes: 6fe7c187e026 ("PCI: tegra: Support per-lane PHYs")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-[mani: added Fixes tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20250819150436.3105973-1-alok.a.tiwari@oracle.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-tegra.c | 2 +-
+ drivers/crypto/atmel-tdes.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pci-tegra.c b/drivers/pci/controller/pci-tegra.c
-index cb0aa65d6934a..30d63ae20d8b7 100644
---- a/drivers/pci/controller/pci-tegra.c
-+++ b/drivers/pci/controller/pci-tegra.c
-@@ -1346,7 +1346,7 @@ static int tegra_pcie_port_get_phys(struct tegra_pcie_port *port)
- 	unsigned int i;
- 	int err;
+--- a/drivers/crypto/atmel-tdes.c
++++ b/drivers/crypto/atmel-tdes.c
+@@ -548,7 +548,7 @@ static int atmel_tdes_crypt_start(struct
  
--	port->phys = devm_kcalloc(dev, sizeof(phy), port->lanes, GFP_KERNEL);
-+	port->phys = devm_kcalloc(dev, port->lanes, sizeof(phy), GFP_KERNEL);
- 	if (!port->phys)
- 		return -ENOMEM;
+ 	if (err && (dd->flags & TDES_FLAGS_FAST)) {
+ 		dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
+-		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_TO_DEVICE);
++		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
+ 	}
  
--- 
-2.51.0
-
+ 	return err;
 
 
 
