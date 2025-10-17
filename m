@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F9ABE9FC9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 121CDBE99D8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D34561A636A7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C3CC3B3C25
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3FB393DCB;
-	Fri, 17 Oct 2025 15:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A06E33509A;
+	Fri, 17 Oct 2025 15:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHnkF0yx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFlMbPp7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A44B2745E;
-	Fri, 17 Oct 2025 15:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3578A335092;
+	Fri, 17 Oct 2025 15:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715190; cv=none; b=RICNOFv6ES2rWPJHTsJQt3M6vkCX4kC6iWCiPdWf/XnvQ8FMWGs/zPFVIn8Zqp40Mn4rdXygTr6qdt49GZ8DcJr+2Ise9RPiy9rcuthMiN0vhKoYYQdeCm0O35vwdrQVyHSa0lMG0XI+uwIvg0kM6e4rNZ3Spu/SIodWDxsLHGs=
+	t=1760713571; cv=none; b=IZGlRQ5JgSEEbt/r8gZfByvAUs/QuCHLAYhsdzyHDOt9Mi3GqT36PP0ADwtTY/U8Z6JdGPGLaoArWVg7F0AO6pS82GB1GWILACe9CeMedeiQknCes2N/4pQRlzkgJ61ANg8Ta8PZ28KWjX/f00aU/FkxbNc+sew6sEs5sIb1s54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715190; c=relaxed/simple;
-	bh=iu8fcFo2tPu44R+hm7aNJFVNMhne7iClZZCj73upYVI=;
+	s=arc-20240116; t=1760713571; c=relaxed/simple;
+	bh=nvbpSpt8ZF+xWjMZgItCQ8xbtdbAIJLN4W+3yiKc/Ug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sagcU+UB73k+PjdkukRQ3vaDWQ9yWcYAAQE1kb9d3kiBpVnDDP1iysQa9dwzVu4riuDJsY+/ZgaBdg2bFK1oarnuOeCmuF0xyE10nGUj3comNAlBG/sn6yIdWFKHxfJ5OPSVApinLWGP7qaZcvACctIpJupACF2shoqYQPfwypQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHnkF0yx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14015C4CEE7;
-	Fri, 17 Oct 2025 15:33:09 +0000 (UTC)
+	 MIME-Version; b=e0ru8gN3ztE6OfTelBHGRyVq2zRYVcqoR/rB7p4Xv+wiWxh5Njd0YPTXcOxE2j685cMBUiwuyEkGAVaoAWwNVtCvHA/2kfcbK4vgVU+B1Fx2y3C9kDkC8wZWG0W6JCRv+CHUxKojy//mGulgwrAql5/CsMAY/i8vCQ89t51w6aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFlMbPp7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2987C4CEF9;
+	Fri, 17 Oct 2025 15:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715190;
-	bh=iu8fcFo2tPu44R+hm7aNJFVNMhne7iClZZCj73upYVI=;
+	s=korg; t=1760713571;
+	bh=nvbpSpt8ZF+xWjMZgItCQ8xbtdbAIJLN4W+3yiKc/Ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AHnkF0yxAKIR74FmHMwnhYITQrm0V9qoFgFt4D+ghrnfe8txlbmLtstY1S7szMk8B
-	 fFeRp43gsmZXLxE5Nnbw5YWi+e8r9UxMv9UfXquMX/ndpHsMa0uH4NV2g+PTmqO9B0
-	 yR5MU3XD311gAiVh1M+ImoCJ8Yf7lhLRTcu8YiyY=
+	b=kFlMbPp7Bp9RQA8q8zVf7l/bUD3rgH/OV442tZ9cBDPfW8TgZTRliADg7RgaaUtHf
+	 B676NWKXoxN3QzSzKcPUDhKn7s5ug2ZTj3Qn0rhFsRomUqq1Aa6xG6Fiw3aOfGezJB
+	 r/ThKIMx0MU+j1KeuRAM/93A0PxZ5KEBKujEzwhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Vincent Minet <v.minet@criteo.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 097/371] perf tools: Fix arm64 libjvmti build by generating unistd_64.h
+Subject: [PATCH 6.6 011/201] rtc: x1205: Fix Xicor X1205 vendor prefix
 Date: Fri, 17 Oct 2025 16:51:12 +0200
-Message-ID: <20251017145205.451062252@linuxfoundation.org>
+Message-ID: <20251017145135.147426877@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Minet <v.minet@criteo.com>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit f3b601f900902ab80902c44f820a8985384ac021 ]
+[ Upstream commit 606d19ee37de3a72f1b6e95a4ea544f6f20dbb46 ]
 
-Since commit 22f72088ffe6 ("tools headers: Update the syscall table with
-the kernel sources") the arm64 syscall header is generated at build
-time. Later, commit bfb713ea53c7 ("perf tools: Fix arm64 build by
-generating unistd_64.h") added a dependency to libperf to guarantee that
-this header was created before building libperf or perf itself.
+The vendor for the X1205 RTC is not Xircom, but Xicor which was acquired
+by Intersil. Since the I2C subsystem drops the vendor prefix for driver
+matching, the vendor prefix hasn't mattered.
 
-However, libjvmti also requires this header but does not depend on
-libperf, leading to build failures such as:
-
-  In file included from /usr/include/sys/syscall.h:24,
-                   from /usr/include/syscall.h:1,
-                   from jvmti/jvmti_agent.c:36:
-  tools/arch/arm64/include/uapi/asm/unistd.h:2:10: fatal error: asm/unistd_64.h: No such file or directory
-      2 | #include <asm/unistd_64.h>
-
-Fix this by ensuring that libperf is built before libjvmti, so that
-unistd_64.h is always available.
-
-Fixes: 22f72088ffe69a37 ("tools headers: Update the syscall table with the kernel sources")
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Vincent Minet <v.minet@criteo.com>
-Link: https://lore.kernel.org/r/20250922053702.2688374-1-v.minet@criteo.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 6875404fdb44 ("rtc: x1205: Add DT probing support")
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250821215703.869628-2-robh@kernel.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Makefile.perf | 2 +-
+ drivers/rtc/rtc-x1205.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index e2150acc2c133..f561025d4085e 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -941,7 +941,7 @@ $(OUTPUT)dlfilters/%.so: $(OUTPUT)dlfilters/%.o
- ifndef NO_JVMTI
- LIBJVMTI_IN := $(OUTPUT)jvmti/jvmti-in.o
+diff --git a/drivers/rtc/rtc-x1205.c b/drivers/rtc/rtc-x1205.c
+index 807f953ae0aed..b7a7ea036f7ad 100644
+--- a/drivers/rtc/rtc-x1205.c
++++ b/drivers/rtc/rtc-x1205.c
+@@ -669,7 +669,7 @@ static const struct i2c_device_id x1205_id[] = {
+ MODULE_DEVICE_TABLE(i2c, x1205_id);
  
--$(LIBJVMTI_IN): FORCE
-+$(LIBJVMTI_IN): prepare FORCE
- 	$(Q)$(MAKE) -f $(srctree)/tools/build/Makefile.build dir=jvmti obj=jvmti
- 
- $(OUTPUT)$(LIBJVMTI): $(LIBJVMTI_IN)
+ static const struct of_device_id x1205_dt_ids[] = {
+-	{ .compatible = "xircom,x1205", },
++	{ .compatible = "xicor,x1205", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, x1205_dt_ids);
 -- 
 2.51.0
 
