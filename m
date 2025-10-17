@@ -1,74 +1,56 @@
-Return-Path: <stable+bounces-186552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E1BBE9808
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:05 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 394C4BE960E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2E6F1AA6D9A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D94C335BE1A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A5D33507A;
-	Fri, 17 Oct 2025 15:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E715A3370FB;
+	Fri, 17 Oct 2025 14:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcZqJ3dO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DISOHp+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC0933506D;
-	Fri, 17 Oct 2025 15:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A253B337114;
+	Fri, 17 Oct 2025 14:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713565; cv=none; b=khLUDSxVEKKPzV+0eekrFvCue7KjrdPvqBenqTXvWY4HBw7USn4s7fsVYPQcD3jdrlP6zlo2U02EKdAMq0dZ0EFeT+4EXiup2kkNFWcsuZObL9dTeCrdHSqy/cDsj7Xndw5owpoh5A8FN6Zj/6jck0fIyB3asiuVmR6f2dRJZpg=
+	t=1760713122; cv=none; b=GFwjVs31aGH0LWW5JPvjpe+zLqMNTsf2MNnbsMkosNGK8bIf0RIOCYb70OW883TQLdQLliCsVZcgQH97ZwB5jOmf5Kxdp3QiqTs3cmfFJG9MXTAJmxz7/Rlgm8A15eEGCMVc2xKvyKW/+rXIWTmgeTN+xfxp0GunX4gqUwbZbwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713565; c=relaxed/simple;
-	bh=3YuaHOx6tgDqROUEaCIuQM36pFPLpmVA70sUlwRWeOQ=;
+	s=arc-20240116; t=1760713122; c=relaxed/simple;
+	bh=hmdmdGWbCCCmmSCPSJl7WvU0FSDmRWPLTjVjYGMyUYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kgeca6zE0ogaro16XFvAeq+N60/hvxyc5nZX194VlWk5fU7eN879P6GnhLSSTkLcVpPHXzzozaMTRMHYnwBhFm11XKsumn7nuQ/Y8YFBoD7JqpJsIU+Q8IhsshDnXmE/5ksWswT29ZUcp3wsjQ09nNxJfRHXkA2fwAELJRHft30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcZqJ3dO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0202CC4CEE7;
-	Fri, 17 Oct 2025 15:06:05 +0000 (UTC)
+	 MIME-Version; b=FsnHETDG+1gfjsfaFqi84R2ZP31YF1Im8WxoSIB6UbZ2Vn/TWk5MQqK44ZZYYZIe4Q6H+0IH3QiBeJ5dgyrw/dkJV8JShIhjKJVKOxs830/Jk7+BUskN3DbTROuZu5WEwYwvdZ2u4zTLXSv0nN8tZW1nukisp6CchjJo36fb33s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DISOHp+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C726C4CEE7;
+	Fri, 17 Oct 2025 14:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713565;
-	bh=3YuaHOx6tgDqROUEaCIuQM36pFPLpmVA70sUlwRWeOQ=;
+	s=korg; t=1760713122;
+	bh=hmdmdGWbCCCmmSCPSJl7WvU0FSDmRWPLTjVjYGMyUYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcZqJ3dOyJDUA98Lg3+fpOExaF4SVSrVBoFAWxCllEWGJyaPwmJiDIlEz0c/CwXVs
-	 yOe3Fa42iL3R/QeiQ+dOwW4/DKnGPkgRKAVOjSsG2gzMobhVtCaFfVs8RurhCRDDIj
-	 PNDFtErml6PMsRp31JE6FQK3QwoF8o77lxuJ4CRU=
+	b=DISOHp+unhNVfwuLJybtNEfkUGqKIFTH0U8Nzc4fc0K6SsVhcUnF6gw9frcMua1DY
+	 f2Y8yuxWjRCFmYBsLJW/vjjqdMCOQZ2Wp+asilhtNSQ31MEFkViyb7kjT39SKOumor
+	 DbJTSMQrZ2C7RKIHnfpBVzPx+pHBIKSbe6opICJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	James Clark <james.clark@linaro.org>,
-	linux-riscv@lists.infradead.org,
-	llvm@lists.linux.dev,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/201] perf python: split Clang options when invoking Popen
+Subject: [PATCH 6.1 022/168] clk: tegra: do not overallocate memory for bpmp clocks
 Date: Fri, 17 Oct 2025 16:51:41 +0200
-Message-ID: <20251017145136.218481580@linuxfoundation.org>
+Message-ID: <20251017145129.836622970@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,84 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit c6a43bc3e8f6102a47da0d2e53428d08f00172fb ]
+[ Upstream commit 49ef6491106209c595476fc122c3922dfd03253f ]
 
-When passing a list to subprocess.Popen, each element maps to one argv
-token. Current code bundles multiple Clang flags into a single element,
-something like:
+struct tegra_bpmp::clocks is a pointer to a dynamically allocated array
+of pointers to 'struct tegra_bpmp_clk'.
 
-  cmd = ['clang',
-         '--target=x86_64-linux-gnu -fintegrated-as -Wno-cast-function-type-mismatch',
-	 'test-hello.c']
+But the size of the allocated area is calculated like it is an array
+containing actual 'struct tegra_bpmp_clk' objects - it's not true, there
+are just pointers.
 
-So Clang only sees one long, invalid option instead of separate flags,
-as a result, the script cannot capture any log via PIPE.
+Found by Linux Verification Center (linuxtesting.org) with Svace static
+analysis tool.
 
-Fix this by using shlex.split() to separate the string so each option
-becomes its own argv element. The fixed list will be:
-
-  cmd = ['clang',
-         '--target=x86_64-linux-gnu',
-	 '-fintegrated-as',
-	 '-Wno-cast-function-type-mismatch',
-	 'test-hello.c']
-
-Fixes: 09e6f9f98370 ("perf python: Fix splitting CC into compiler and options")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20251006-perf_build_android_ndk-v3-2-4305590795b2@arm.com
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: James Clark <james.clark@linaro.org>
-Cc: linux-riscv@lists.infradead.org
-Cc: llvm@lists.linux.dev
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-perf-users@vger.kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 2db12b15c6f3 ("clk: tegra: Register clocks from root to leaf")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/setup.py | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/clk/tegra/clk-bpmp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/setup.py b/tools/perf/util/setup.py
-index e837132d5031b..eecb462c021cd 100644
---- a/tools/perf/util/setup.py
-+++ b/tools/perf/util/setup.py
-@@ -1,6 +1,7 @@
- from os import getenv, path
- from subprocess import Popen, PIPE
- from re import sub
-+import shlex
+diff --git a/drivers/clk/tegra/clk-bpmp.c b/drivers/clk/tegra/clk-bpmp.c
+index 39241662a412a..3bc56a3c6b240 100644
+--- a/drivers/clk/tegra/clk-bpmp.c
++++ b/drivers/clk/tegra/clk-bpmp.c
+@@ -603,7 +603,7 @@ static int tegra_bpmp_register_clocks(struct tegra_bpmp *bpmp,
  
- cc = getenv("CC")
+ 	bpmp->num_clocks = count;
  
-@@ -16,7 +17,9 @@ cc_is_clang = b"clang version" in Popen([cc, "-v"], stderr=PIPE).stderr.readline
- src_feature_tests  = getenv('srctree') + '/tools/build/feature'
+-	bpmp->clocks = devm_kcalloc(bpmp->dev, count, sizeof(struct tegra_bpmp_clk), GFP_KERNEL);
++	bpmp->clocks = devm_kcalloc(bpmp->dev, count, sizeof(*bpmp->clocks), GFP_KERNEL);
+ 	if (!bpmp->clocks)
+ 		return -ENOMEM;
  
- def clang_has_option(option):
--    cc_output = Popen([cc, cc_options + option, path.join(src_feature_tests, "test-hello.c") ], stderr=PIPE).stderr.readlines()
-+    cmd = shlex.split(f"{cc} {cc_options} {option}")
-+    cmd.append(path.join(src_feature_tests, "test-hello.c"))
-+    cc_output = Popen(cmd, stderr=PIPE).stderr.readlines()
-     return [o for o in cc_output if ((b"unknown argument" in o) or (b"is not supported" in o) or (b"unknown warning option" in o))] == [ ]
- 
- if cc_is_clang:
 -- 
 2.51.0
 
