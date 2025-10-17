@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1C8BEA33E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F492BEA2DE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A6A574472F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 863A8583DF5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BD53BB5A;
-	Fri, 17 Oct 2025 15:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF13330B1F;
+	Fri, 17 Oct 2025 15:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRkc6+mk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucTXtQ83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D830217722;
-	Fri, 17 Oct 2025 15:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2108C330B06;
+	Fri, 17 Oct 2025 15:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714788; cv=none; b=DgdkajLPPsJgYMhAH11ufYA4EAl2POVUbDvX0T7etn0npeiF04SFcoFp+r88c10ePy9Gt+52xh7at6xO2URpVXfcGHDdSNK6R22PFWMCEbQI0/x5zT2qyPHjBh7Cc8tCif76hQJ+0aXuE86jfWu0zZwNWnYXg6i/0RQExns0lZA=
+	t=1760715678; cv=none; b=IxC22YUA67QwLWeFktcK/TdIMm7syGIEmoG2nImVlWawDFJOYlTPTr3iDAEOo4mEcjdv56ffkEkOjqfyQ58qF1zhkvZm7qlQpPqr9iswoi0DsV7R377t2QKNTa5hvuAAzXNsEq9MO3xIKF5h1MBLB0gOpjxjvq9aEXNS+fJ/72M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714788; c=relaxed/simple;
-	bh=RbDeQX5EkfLsPjlFOvk7my6V4Kyycgf4ASkjnASx0GI=;
+	s=arc-20240116; t=1760715678; c=relaxed/simple;
+	bh=gm3asZE8nE2joJ8b+a8+KJJcPQLb+Qo9RDE2yoFm6qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRSVHvj4ZJb27lDVK3Fj5TeDBfSXGGac2KwYZKuhIoZsjcYuAK6MSjOTWC5W6VfntH5PZGC+wa3m5FJN9sgDYJ6nzR/pehUoCHHwVqxsKKl7q2f/clgMDJHVb8wxDuhrkdnUoAs6wM70ShocV6PI+L2eKvATyh9d3Jhd1JeOeSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRkc6+mk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096D0C4CEE7;
-	Fri, 17 Oct 2025 15:26:27 +0000 (UTC)
+	 MIME-Version; b=EWzDF2S8qkus+8lelFyIVZaMHdyS23LzKwaw3uhV/GFQ7iqxwr8m1IxgxgeTyXgFDXTj+CaJ0sHPusU9c99Kcd3d66iW6j/AoVXsaFf/L3N0AyiR2ZLs3v99Cu8Jjd/8cxNmgp8ipcg+Wop7GpqSvVTkRDviP/3Q5eLooZgw/vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucTXtQ83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD57C4CEE7;
+	Fri, 17 Oct 2025 15:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714788;
-	bh=RbDeQX5EkfLsPjlFOvk7my6V4Kyycgf4ASkjnASx0GI=;
+	s=korg; t=1760715678;
+	bh=gm3asZE8nE2joJ8b+a8+KJJcPQLb+Qo9RDE2yoFm6qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TRkc6+mkaM9fBhNTZH4KmLWPoTJtMQEPZ0h5/Pb0coeYXepl7R0v4qfNo/1uH2Wg8
-	 XbbA2V9qc30XnZb3bt4jNWLXCx+fRzZ28L0zEniCKXvhQ0UEnjPr6vFXql3qEj7Zgm
-	 9onalC0eHXrjZzf9CeZb0iS16WvkuS7TZKOQXwoI=
+	b=ucTXtQ83iJTw8PRjR3O9HhLAskfzg9kkO0gdUtz3FTJNvpKh4+vC1nVp/lN2fHykV
+	 GJvpPKlulrUwjv9U/VefREx2894bro8gjjvZ3Nj/eE1BWpQRp7ku/ZkUAmI+pWlwgR
+	 +5th4OczlpizlECuEaXZASHudFXB0bx3o/nJ2QtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 266/277] minixfs: Verify inode mode when loading from disk
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>
+Subject: [PATCH 6.17 298/371] x86/fred: Remove ENDBR64 from FRED entry points
 Date: Fri, 17 Oct 2025 16:54:33 +0200
-Message-ID: <20251017145156.873842352@linuxfoundation.org>
+Message-ID: <20251017145212.856174683@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Xin Li (Intel) <xin@zytor.com>
 
-[ Upstream commit 73861970938ad1323eb02bbbc87f6fbd1e5bacca ]
+commit 3da01ffe1aeaa0d427ab5235ba735226670a80d9 upstream.
 
-The inode mode loaded from corrupted disk can be invalid. Do like what
-commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
-does.
+The FRED specification has been changed in v9.0 to state that there
+is no need for FRED event handlers to begin with ENDBR64, because
+in the presence of supervisor indirect branch tracking, FRED event
+delivery does not enter the WAIT_FOR_ENDBRANCH state.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/ec982681-84b8-4624-94fa-8af15b77cbd2@I-love.SAKURA.ne.jp
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As a result, remove ENDBR64 from FRED entry points.
+
+Then add ANNOTATE_NOENDBR to indicate that FRED entry points will
+never be used for indirect calls to suppress an objtool warning.
+
+This change implies that any indirect CALL/JMP to FRED entry points
+causes #CP in the presence of supervisor indirect branch tracking.
+
+Credit goes to Jennifer Miller <jmill@asu.edu> and other contributors
+from Arizona State University whose research shows that placing ENDBR
+at entry points has negative value thus led to this change.
+
+Note: This is obviously an incompatible change to the FRED
+architecture.  But, it's OK because there no FRED systems out in the
+wild today. All production hardware and late pre-production hardware
+will follow the FRED v9 spec and be compatible with this approach.
+
+[ dhansen: add note to changelog about incompatibility ]
+
+Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Link: https://lore.kernel.org/linux-hardening/Z60NwR4w%2F28Z7XUa@ubun/
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250716063320.1337818-1-xin%40zytor.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/minix/inode.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/entry/entry_64_fred.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/minix/inode.c b/fs/minix/inode.c
-index f007e389d5d29..fc01f9dc8c391 100644
---- a/fs/minix/inode.c
-+++ b/fs/minix/inode.c
-@@ -491,8 +491,14 @@ void minix_set_inode(struct inode *inode, dev_t rdev)
- 		inode->i_op = &minix_symlink_inode_operations;
- 		inode_nohighmem(inode);
- 		inode->i_mapping->a_ops = &minix_aops;
--	} else
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		init_special_inode(inode, inode->i_mode, rdev);
-+	} else {
-+		printk(KERN_DEBUG "MINIX-fs: Invalid file type 0%04o for inode %lu.\n",
-+		       inode->i_mode, inode->i_ino);
-+		make_bad_inode(inode);
-+	}
- }
+--- a/arch/x86/entry/entry_64_fred.S
++++ b/arch/x86/entry/entry_64_fred.S
+@@ -16,7 +16,7 @@
  
- /*
--- 
-2.51.0
-
+ .macro FRED_ENTER
+ 	UNWIND_HINT_END_OF_STACK
+-	ENDBR
++	ANNOTATE_NOENDBR
+ 	PUSH_AND_CLEAR_REGS
+ 	movq	%rsp, %rdi	/* %rdi -> pt_regs */
+ .endm
 
 
 
