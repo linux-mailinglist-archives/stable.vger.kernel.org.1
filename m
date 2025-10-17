@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-187641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DD2BEA7A1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:08:27 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0906BEA7C5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 69A7C5A17D3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A7605A1095
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6C4330B2D;
-	Fri, 17 Oct 2025 15:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5218932C928;
+	Fri, 17 Oct 2025 15:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fz8NrBrE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKTWsuOJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5962B330B2B;
-	Fri, 17 Oct 2025 15:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00907330B2E;
+	Fri, 17 Oct 2025 15:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716658; cv=none; b=C/0hWmVEhA+4LCrsOUc8129HNehujTgcpBLUUgPuilZS9ORq5MJNUSuwm/PwOFsXTpHbL343zb7j+4hF4G6HQh7NvbdiUnKsL7k2XKyVytfDKVSoTh/75psOYN8X4D+4hyDvRuMI+RLmr2CDRY3r83E3kBTbJZcKT7+2JIJZw2s=
+	t=1760716670; cv=none; b=LUEuD7XnjrS7E9SDs+Dsb+osVAEKqK5HCKRC5B6flza8ck6GxXYWQbsTKEKayuqk/QkuvK1spDe6SBNVehpeVr3FEGDk53wzeyuMacdxHG6qaz4aSO7GyaG+sQWNYIEVgxz4phzV917omo9Fld08DtIez00nXEGdeW8biDoPiAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716658; c=relaxed/simple;
-	bh=qYFQM8I9FlncEhkurtsNGyAZy/cmg5EUyUO4XTtQWW8=;
+	s=arc-20240116; t=1760716670; c=relaxed/simple;
+	bh=CSzLmSFy+xtAfbGKhsnk39/uTSoPwWYKOE+qan/PBd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0C4MeiksxSpEKlGtrt+1+NJfuCLgTu3yuR0c5DAM/bguHKpEN8Rg3j2ALlFrJP3fVdIOu1MnVR3u7L9owV7EQ6IWlpNmEqlWC4Z25q5juxamu2tRPkfCieQZkALnrN82JtnLJtZ/Wk5MyeReL5biU8wBCWwF4LL0AJh2K7iPjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fz8NrBrE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD53CC4CEE7;
-	Fri, 17 Oct 2025 15:57:37 +0000 (UTC)
+	 MIME-Version; b=clcgoKmQMe+UGOXlGGvArLUEb9bYWJdD2+L/JkftEsXVUkBWmFOijV4ILBl31FTlaBpp5KRkooZGOYXMOBefag4Y/jWNvarfr0IFnNTwmH5Dph6O5kCtJIS8R7itod/LCfrXa+DVJsPmnQZzPr05ZDaSo43zaTWsrQ3AfZCI57Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKTWsuOJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0BDC4CEE7;
+	Fri, 17 Oct 2025 15:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716658;
-	bh=qYFQM8I9FlncEhkurtsNGyAZy/cmg5EUyUO4XTtQWW8=;
+	s=korg; t=1760716669;
+	bh=CSzLmSFy+xtAfbGKhsnk39/uTSoPwWYKOE+qan/PBd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fz8NrBrEYrcRG6VrEENn5NKNw+IkidGJCSy5PHLMj9GeQ2oSgjIox17grK4yiOSby
-	 gm1ML3t51gvTeFb+zqKGMMPIh83QwHmQ1BpLfukVWAxQ69baRocQ0hPRw1ubiYNg1l
-	 evnOpfabZALFUFg1vUT4fCZuj94SENsT/+R26BHE=
+	b=gKTWsuOJAHLqK/dGv7OdsSVls1xD7Mc59hfcouLKH7pw51l4vbj+cH7qcqphL/Fj8
+	 po3V7rfZpl1fvduN3phJOIBziy2US3uwwTFSqEiyC33fF90hn+fMy8QBPQH/VN8QoK
+	 iatelp4sxaeVxMWLmqTJMvf9Kuf7zZw0g5qTWkYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Akihiro Tsukada <tskd08@gmail.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 267/276] media: switch from pci_ to dma_ API
-Date: Fri, 17 Oct 2025 16:56:00 +0200
-Message-ID: <20251017145152.231536604@linuxfoundation.org>
+Subject: [PATCH 5.15 270/276] media: pci/ivtv: switch from pci_ to dma_ API
+Date: Fri, 17 Oct 2025 16:56:03 +0200
+Message-ID: <20251017145152.344764631@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -71,31 +69,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 887069f424550ebdcb411166733e1d05002b58e4 ]
+[ Upstream commit 1932dc2f4cf6ac23e48e5fcc24d21adbe35691d1 ]
 
 The wrappers in include/linux/pci-dma-compat.h should go away.
 
 The patch has been generated with the coccinelle script below.
-
 It has been compile tested.
 
-@@
-@@
+No memory allocation in involved in this patch, so no GFP_ tweak is needed.
+
+@@ @@
 -    PCI_DMA_BIDIRECTIONAL
 +    DMA_BIDIRECTIONAL
 
-@@
-@@
+@@ @@
 -    PCI_DMA_TODEVICE
 +    DMA_TO_DEVICE
 
-@@
-@@
+@@ @@
 -    PCI_DMA_FROMDEVICE
 +    DMA_FROM_DEVICE
 
-@@
-@@
+@@ @@
 -    PCI_DMA_NONE
 +    DMA_NONE
 
@@ -196,261 +191,267 @@ expression e1, e2;
 +    dma_set_coherent_mask(&e1->dev, e2)
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Akihiro Tsukada <tskd08@gmail.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 23b53639a793 ("media: cx18: Add missing check after DMA map")
+Stable-dep-of: 1069a4fe637d ("media: pci: ivtv: Add missing check after DMA map")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/cobalt/cobalt-driver.c           |    4 ++--
- drivers/media/pci/cx18/cx18-driver.c               |    2 +-
- drivers/media/pci/cx18/cx18-queue.c                |   13 +++++++------
- drivers/media/pci/cx18/cx18-streams.c              |   16 ++++++++--------
- drivers/media/pci/ddbridge/ddbridge-main.c         |    4 ++--
- drivers/media/pci/intel/ipu3/ipu3-cio2-main.c      |    2 +-
- drivers/media/pci/netup_unidvb/netup_unidvb_core.c |    2 +-
- drivers/media/pci/pluto2/pluto2.c                  |   20 ++++++++++----------
- drivers/media/pci/pt1/pt1.c                        |    2 +-
- drivers/media/pci/tw5864/tw5864-core.c             |    2 +-
- 10 files changed, 34 insertions(+), 33 deletions(-)
+ drivers/media/pci/ivtv/ivtv-driver.c  |    2 +-
+ drivers/media/pci/ivtv/ivtv-queue.c   |   18 ++++++++++--------
+ drivers/media/pci/ivtv/ivtv-streams.c |   22 +++++++++++-----------
+ drivers/media/pci/ivtv/ivtv-udma.c    |   19 ++++++++++++-------
+ drivers/media/pci/ivtv/ivtv-yuv.c     |   10 +++++++---
+ 5 files changed, 41 insertions(+), 30 deletions(-)
 
---- a/drivers/media/pci/cobalt/cobalt-driver.c
-+++ b/drivers/media/pci/cobalt/cobalt-driver.c
-@@ -333,8 +333,8 @@ static int cobalt_setup_pci(struct cobal
+--- a/drivers/media/pci/ivtv/ivtv-driver.c
++++ b/drivers/media/pci/ivtv/ivtv-driver.c
+@@ -837,7 +837,7 @@ static int ivtv_setup_pci(struct ivtv *i
+ 		IVTV_ERR("Can't enable device!\n");
+ 		return -EIO;
+ 	}
+-	if (pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) {
++	if (dma_set_mask(&pdev->dev, DMA_BIT_MASK(32))) {
+ 		IVTV_ERR("No suitable DMA available.\n");
+ 		return -EIO;
+ 	}
+--- a/drivers/media/pci/ivtv/ivtv-queue.c
++++ b/drivers/media/pci/ivtv/ivtv-queue.c
+@@ -188,7 +188,7 @@ int ivtv_stream_alloc(struct ivtv_stream
+ 		return 0;
+ 
+ 	IVTV_DEBUG_INFO("Allocate %s%s stream: %d x %d buffers (%dkB total)\n",
+-		s->dma != PCI_DMA_NONE ? "DMA " : "",
++		s->dma != DMA_NONE ? "DMA " : "",
+ 		s->name, s->buffers, s->buf_size, s->buffers * s->buf_size / 1024);
+ 
+ 	s->sg_pending = kzalloc(SGsize, GFP_KERNEL|__GFP_NOWARN);
+@@ -218,8 +218,9 @@ int ivtv_stream_alloc(struct ivtv_stream
+ 		return -ENOMEM;
+ 	}
+ 	if (ivtv_might_use_dma(s)) {
+-		s->sg_handle = pci_map_single(itv->pdev, s->sg_dma,
+-				sizeof(struct ivtv_sg_element), PCI_DMA_TODEVICE);
++		s->sg_handle = dma_map_single(&itv->pdev->dev, s->sg_dma,
++					      sizeof(struct ivtv_sg_element),
++					      DMA_TO_DEVICE);
+ 		ivtv_stream_sync_for_cpu(s);
+ 	}
+ 
+@@ -237,7 +238,7 @@ int ivtv_stream_alloc(struct ivtv_stream
  		}
- 	}
- 
--	if (pci_set_dma_mask(pci_dev, DMA_BIT_MASK(64))) {
--		ret = pci_set_dma_mask(pci_dev, DMA_BIT_MASK(32));
-+	if (dma_set_mask(&pci_dev->dev, DMA_BIT_MASK(64))) {
-+		ret = dma_set_mask(&pci_dev->dev, DMA_BIT_MASK(32));
- 		if (ret) {
- 			cobalt_err("no suitable DMA available\n");
- 			goto err_disable;
---- a/drivers/media/pci/cx18/cx18-driver.c
-+++ b/drivers/media/pci/cx18/cx18-driver.c
-@@ -804,7 +804,7 @@ static int cx18_setup_pci(struct cx18 *c
- 		CX18_ERR("Can't enable device %d!\n", cx->instance);
- 		return -EIO;
- 	}
--	if (pci_set_dma_mask(pci_dev, DMA_BIT_MASK(32))) {
-+	if (dma_set_mask(&pci_dev->dev, DMA_BIT_MASK(32))) {
- 		CX18_ERR("No suitable DMA available, card %d\n", cx->instance);
- 		return -EIO;
- 	}
---- a/drivers/media/pci/cx18/cx18-queue.c
-+++ b/drivers/media/pci/cx18/cx18-queue.c
-@@ -325,8 +325,8 @@ void _cx18_mdl_sync_for_device(struct cx
- 	struct cx18_buffer *buf;
- 
- 	list_for_each_entry(buf, &mdl->buf_list, list)
--		pci_dma_sync_single_for_device(pci_dev, buf->dma_handle,
--					       buf_size, dma);
-+		dma_sync_single_for_device(&pci_dev->dev, buf->dma_handle,
-+					   buf_size, dma);
- }
- 
- int cx18_stream_alloc(struct cx18_stream *s)
-@@ -385,8 +385,9 @@ int cx18_stream_alloc(struct cx18_stream
- 		cx18_enqueue(s, mdl, &s->q_idle);
- 
  		INIT_LIST_HEAD(&buf->list);
--		buf->dma_handle = pci_map_single(s->cx->pci_dev,
--				buf->buf, s->buf_size, s->dma);
-+		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
-+						 buf->buf, s->buf_size,
-+						 s->dma);
- 		cx18_buf_sync_for_cpu(s, buf);
- 		list_add_tail(&buf->list, &s->buf_pool);
- 	}
-@@ -419,8 +420,8 @@ void cx18_stream_free(struct cx18_stream
- 		buf = list_first_entry(&s->buf_pool, struct cx18_buffer, list);
- 		list_del_init(&buf->list);
- 
--		pci_unmap_single(s->cx->pci_dev, buf->dma_handle,
--				s->buf_size, s->dma);
-+		dma_unmap_single(&s->cx->pci_dev->dev, buf->dma_handle,
-+				 s->buf_size, s->dma);
+ 		if (ivtv_might_use_dma(s)) {
+-			buf->dma_handle = pci_map_single(s->itv->pdev,
++			buf->dma_handle = dma_map_single(&s->itv->pdev->dev,
+ 				buf->buf, s->buf_size + 256, s->dma);
+ 			ivtv_buf_sync_for_cpu(s, buf);
+ 		}
+@@ -260,8 +261,8 @@ void ivtv_stream_free(struct ivtv_stream
+ 	/* empty q_free */
+ 	while ((buf = ivtv_dequeue(s, &s->q_free))) {
+ 		if (ivtv_might_use_dma(s))
+-			pci_unmap_single(s->itv->pdev, buf->dma_handle,
+-				s->buf_size + 256, s->dma);
++			dma_unmap_single(&s->itv->pdev->dev, buf->dma_handle,
++					 s->buf_size + 256, s->dma);
  		kfree(buf->buf);
  		kfree(buf);
  	}
---- a/drivers/media/pci/cx18/cx18-streams.c
-+++ b/drivers/media/pci/cx18/cx18-streams.c
-@@ -49,44 +49,44 @@ static struct {
- 	{	/* CX18_ENC_STREAM_TYPE_MPG */
- 		"encoder MPEG",
+@@ -269,8 +270,9 @@ void ivtv_stream_free(struct ivtv_stream
+ 	/* Free SG Array/Lists */
+ 	if (s->sg_dma != NULL) {
+ 		if (s->sg_handle != IVTV_DMA_UNMAPPED) {
+-			pci_unmap_single(s->itv->pdev, s->sg_handle,
+-				 sizeof(struct ivtv_sg_element), PCI_DMA_TODEVICE);
++			dma_unmap_single(&s->itv->pdev->dev, s->sg_handle,
++					 sizeof(struct ivtv_sg_element),
++					 DMA_TO_DEVICE);
+ 			s->sg_handle = IVTV_DMA_UNMAPPED;
+ 		}
+ 		kfree(s->sg_pending);
+--- a/drivers/media/pci/ivtv/ivtv-streams.c
++++ b/drivers/media/pci/ivtv/ivtv-streams.c
+@@ -100,7 +100,7 @@ static struct {
+ 	{	/* IVTV_ENC_STREAM_TYPE_MPG */
+ 		"encoder MPG",
  		VFL_TYPE_VIDEO, 0,
--		PCI_DMA_FROMDEVICE,
-+		DMA_FROM_DEVICE,
- 		V4L2_CAP_VIDEO_CAPTURE | V4L2_CAP_READWRITE |
- 		V4L2_CAP_AUDIO | V4L2_CAP_TUNER
- 	},
- 	{	/* CX18_ENC_STREAM_TYPE_TS */
- 		"TS",
- 		VFL_TYPE_VIDEO, -1,
--		PCI_DMA_FROMDEVICE,
-+		DMA_FROM_DEVICE,
- 	},
- 	{	/* CX18_ENC_STREAM_TYPE_YUV */
+-		PCI_DMA_FROMDEVICE, 0,
++		DMA_FROM_DEVICE, 0,
+ 		V4L2_CAP_VIDEO_CAPTURE | V4L2_CAP_TUNER |
+ 			V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_enc_fops
+@@ -108,7 +108,7 @@ static struct {
+ 	{	/* IVTV_ENC_STREAM_TYPE_YUV */
  		"encoder YUV",
- 		VFL_TYPE_VIDEO, CX18_V4L2_ENC_YUV_OFFSET,
--		PCI_DMA_FROMDEVICE,
-+		DMA_FROM_DEVICE,
- 		V4L2_CAP_VIDEO_CAPTURE | V4L2_CAP_READWRITE |
- 		V4L2_CAP_STREAMING | V4L2_CAP_AUDIO | V4L2_CAP_TUNER
- 	},
- 	{	/* CX18_ENC_STREAM_TYPE_VBI */
+ 		VFL_TYPE_VIDEO, IVTV_V4L2_ENC_YUV_OFFSET,
+-		PCI_DMA_FROMDEVICE, 0,
++		DMA_FROM_DEVICE, 0,
+ 		V4L2_CAP_VIDEO_CAPTURE | V4L2_CAP_TUNER |
+ 			V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_enc_fops
+@@ -116,7 +116,7 @@ static struct {
+ 	{	/* IVTV_ENC_STREAM_TYPE_VBI */
  		"encoder VBI",
  		VFL_TYPE_VBI, 0,
--		PCI_DMA_FROMDEVICE,
-+		DMA_FROM_DEVICE,
- 		V4L2_CAP_VBI_CAPTURE | V4L2_CAP_SLICED_VBI_CAPTURE |
- 		V4L2_CAP_READWRITE | V4L2_CAP_TUNER
- 	},
- 	{	/* CX18_ENC_STREAM_TYPE_PCM */
- 		"encoder PCM audio",
- 		VFL_TYPE_VIDEO, CX18_V4L2_ENC_PCM_OFFSET,
--		PCI_DMA_FROMDEVICE,
-+		DMA_FROM_DEVICE,
+-		PCI_DMA_FROMDEVICE, 0,
++		DMA_FROM_DEVICE, 0,
+ 		V4L2_CAP_VBI_CAPTURE | V4L2_CAP_SLICED_VBI_CAPTURE | V4L2_CAP_TUNER |
+ 			V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_enc_fops
+@@ -124,42 +124,42 @@ static struct {
+ 	{	/* IVTV_ENC_STREAM_TYPE_PCM */
+ 		"encoder PCM",
+ 		VFL_TYPE_VIDEO, IVTV_V4L2_ENC_PCM_OFFSET,
+-		PCI_DMA_FROMDEVICE, 0,
++		DMA_FROM_DEVICE, 0,
  		V4L2_CAP_TUNER | V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_enc_fops
  	},
- 	{	/* CX18_ENC_STREAM_TYPE_IDX */
- 		"encoder IDX",
- 		VFL_TYPE_VIDEO, -1,
--		PCI_DMA_FROMDEVICE,
-+		DMA_FROM_DEVICE,
- 	},
- 	{	/* CX18_ENC_STREAM_TYPE_RAD */
+ 	{	/* IVTV_ENC_STREAM_TYPE_RAD */
  		"encoder radio",
  		VFL_TYPE_RADIO, 0,
--		PCI_DMA_NONE,
-+		DMA_NONE,
- 		V4L2_CAP_RADIO | V4L2_CAP_TUNER
+-		PCI_DMA_NONE, 1,
++		DMA_NONE, 1,
+ 		V4L2_CAP_RADIO | V4L2_CAP_TUNER,
+ 		&ivtv_v4l2_radio_fops
  	},
- };
-@@ -324,7 +324,7 @@ static int cx18_prep_dev(struct cx18 *cx
+ 	{	/* IVTV_DEC_STREAM_TYPE_MPG */
+ 		"decoder MPG",
+ 		VFL_TYPE_VIDEO, IVTV_V4L2_DEC_MPG_OFFSET,
+-		PCI_DMA_TODEVICE, 0,
++		DMA_TO_DEVICE, 0,
+ 		V4L2_CAP_VIDEO_OUTPUT | V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_dec_fops
+ 	},
+ 	{	/* IVTV_DEC_STREAM_TYPE_VBI */
+ 		"decoder VBI",
+ 		VFL_TYPE_VBI, IVTV_V4L2_DEC_VBI_OFFSET,
+-		PCI_DMA_NONE, 1,
++		DMA_NONE, 1,
+ 		V4L2_CAP_SLICED_VBI_CAPTURE | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_enc_fops
+ 	},
+ 	{	/* IVTV_DEC_STREAM_TYPE_VOUT */
+ 		"decoder VOUT",
+ 		VFL_TYPE_VBI, IVTV_V4L2_DEC_VOUT_OFFSET,
+-		PCI_DMA_NONE, 1,
++		DMA_NONE, 1,
+ 		V4L2_CAP_SLICED_VBI_OUTPUT | V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_dec_fops
+ 	},
+ 	{	/* IVTV_DEC_STREAM_TYPE_YUV */
+ 		"decoder YUV",
+ 		VFL_TYPE_VIDEO, IVTV_V4L2_DEC_YUV_OFFSET,
+-		PCI_DMA_TODEVICE, 0,
++		DMA_TO_DEVICE, 0,
+ 		V4L2_CAP_VIDEO_OUTPUT | V4L2_CAP_AUDIO | V4L2_CAP_READWRITE,
+ 		&ivtv_v4l2_dec_fops
+ 	}
+@@ -179,7 +179,7 @@ static void ivtv_stream_init(struct ivtv
+ 	s->vdev.device_caps = ivtv_stream_info[type].v4l2_caps;
+ 
+ 	if (ivtv_stream_info[type].pio)
+-		s->dma = PCI_DMA_NONE;
++		s->dma = DMA_NONE;
+ 	else
+ 		s->dma = ivtv_stream_info[type].dma;
+ 	s->buf_size = itv->stream_buf_size[type];
+@@ -217,7 +217,7 @@ static int ivtv_prep_dev(struct ivtv *it
  
  	/* User explicitly selected 0 buffers for these streams, so don't
  	   create them. */
--	if (cx18_stream_info[type].dma != PCI_DMA_NONE &&
-+	if (cx18_stream_info[type].dma != DMA_NONE &&
- 	    cx->stream_buffers[type] == 0) {
- 		CX18_INFO("Disabled %s device\n", cx18_stream_info[type].name);
+-	if (ivtv_stream_info[type].dma != PCI_DMA_NONE &&
++	if (ivtv_stream_info[type].dma != DMA_NONE &&
+ 	    itv->options.kilobytes[type] == 0) {
+ 		IVTV_INFO("Disabled %s device\n", ivtv_stream_info[type].name);
  		return 0;
---- a/drivers/media/pci/ddbridge/ddbridge-main.c
-+++ b/drivers/media/pci/ddbridge/ddbridge-main.c
-@@ -180,8 +180,8 @@ static int ddb_probe(struct pci_dev *pde
- 
- 	pci_set_master(pdev);
- 
--	if (pci_set_dma_mask(pdev, DMA_BIT_MASK(64)))
--		if (pci_set_dma_mask(pdev, DMA_BIT_MASK(32)))
-+	if (dma_set_mask(&pdev->dev, DMA_BIT_MASK(64)))
-+		if (dma_set_mask(&pdev->dev, DMA_BIT_MASK(32)))
- 			return -ENODEV;
- 
- 	dev = vzalloc(sizeof(*dev));
---- a/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
-+++ b/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
-@@ -1760,7 +1760,7 @@ static int cio2_pci_probe(struct pci_dev
- 
- 	pci_set_master(pci_dev);
- 
--	r = pci_set_dma_mask(pci_dev, CIO2_DMA_MASK);
-+	r = dma_set_mask(&pci_dev->dev, CIO2_DMA_MASK);
- 	if (r) {
- 		dev_err(dev, "failed to set DMA mask (%d)\n", r);
- 		return -ENODEV;
---- a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-+++ b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-@@ -846,7 +846,7 @@ static int netup_unidvb_initdev(struct p
- 		"%s(): board vendor 0x%x, revision 0x%x\n",
- 		__func__, board_vendor, board_revision);
- 	pci_set_master(pci_dev);
--	if (pci_set_dma_mask(pci_dev, 0xffffffff) < 0) {
-+	if (dma_set_mask(&pci_dev->dev, 0xffffffff) < 0) {
- 		dev_err(&pci_dev->dev,
- 			"%s(): 32bit PCI DMA is not supported\n", __func__);
- 		goto pci_detect_err;
---- a/drivers/media/pci/pluto2/pluto2.c
-+++ b/drivers/media/pci/pluto2/pluto2.c
-@@ -228,16 +228,16 @@ static void pluto_set_dma_addr(struct pl
- 
- static int pluto_dma_map(struct pluto *pluto)
+--- a/drivers/media/pci/ivtv/ivtv-udma.c
++++ b/drivers/media/pci/ivtv/ivtv-udma.c
+@@ -81,8 +81,10 @@ void ivtv_udma_alloc(struct ivtv *itv)
  {
--	pluto->dma_addr = pci_map_single(pluto->pdev, pluto->dma_buf,
--			TS_DMA_BYTES, PCI_DMA_FROMDEVICE);
-+	pluto->dma_addr = dma_map_single(&pluto->pdev->dev, pluto->dma_buf,
-+					 TS_DMA_BYTES, DMA_FROM_DEVICE);
- 
--	return pci_dma_mapping_error(pluto->pdev, pluto->dma_addr);
-+	return dma_mapping_error(&pluto->pdev->dev, pluto->dma_addr);
+ 	if (itv->udma.SG_handle == 0) {
+ 		/* Map DMA Page Array Buffer */
+-		itv->udma.SG_handle = pci_map_single(itv->pdev, itv->udma.SGarray,
+-			   sizeof(itv->udma.SGarray), PCI_DMA_TODEVICE);
++		itv->udma.SG_handle = dma_map_single(&itv->pdev->dev,
++						     itv->udma.SGarray,
++						     sizeof(itv->udma.SGarray),
++						     DMA_TO_DEVICE);
+ 		ivtv_udma_sync_for_cpu(itv);
+ 	}
  }
+@@ -135,7 +137,8 @@ int ivtv_udma_setup(struct ivtv *itv, un
+ 	}
  
- static void pluto_dma_unmap(struct pluto *pluto)
- {
--	pci_unmap_single(pluto->pdev, pluto->dma_addr,
--			TS_DMA_BYTES, PCI_DMA_FROMDEVICE);
-+	dma_unmap_single(&pluto->pdev->dev, pluto->dma_addr, TS_DMA_BYTES,
-+			 DMA_FROM_DEVICE);
- }
+ 	/* Map SG List */
+-	dma->SG_length = pci_map_sg(itv->pdev, dma->SGlist, dma->page_count, PCI_DMA_TODEVICE);
++	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
++				    dma->page_count, DMA_TO_DEVICE);
  
- static int pluto_start_feed(struct dvb_demux_feed *f)
-@@ -276,8 +276,8 @@ static void pluto_dma_end(struct pluto *
- {
- 	/* synchronize the DMA transfer with the CPU
- 	 * first so that we see updated contents. */
--	pci_dma_sync_single_for_cpu(pluto->pdev, pluto->dma_addr,
--			TS_DMA_BYTES, PCI_DMA_FROMDEVICE);
-+	dma_sync_single_for_cpu(&pluto->pdev->dev, pluto->dma_addr,
-+				TS_DMA_BYTES, DMA_FROM_DEVICE);
+ 	/* Fill SG Array with new values */
+ 	ivtv_udma_fill_sg_array (dma, ivtv_dest_addr, 0, -1);
+@@ -159,7 +162,8 @@ void ivtv_udma_unmap(struct ivtv *itv)
  
- 	/* Workaround for broken hardware:
- 	 * [1] On startup NBPACKETS seems to contain an uninitialized value,
-@@ -310,8 +310,8 @@ static void pluto_dma_end(struct pluto *
- 	pluto_set_dma_addr(pluto);
+ 	/* Unmap Scatterlist */
+ 	if (dma->SG_length) {
+-		pci_unmap_sg(itv->pdev, dma->SGlist, dma->page_count, PCI_DMA_TODEVICE);
++		dma_unmap_sg(&itv->pdev->dev, dma->SGlist, dma->page_count,
++			     DMA_TO_DEVICE);
+ 		dma->SG_length = 0;
+ 	}
+ 	/* sync DMA */
+@@ -175,13 +179,14 @@ void ivtv_udma_free(struct ivtv *itv)
  
- 	/* sync the buffer and give it back to the card */
--	pci_dma_sync_single_for_device(pluto->pdev, pluto->dma_addr,
--			TS_DMA_BYTES, PCI_DMA_FROMDEVICE);
-+	dma_sync_single_for_device(&pluto->pdev->dev, pluto->dma_addr,
-+				   TS_DMA_BYTES, DMA_FROM_DEVICE);
- }
+ 	/* Unmap SG Array */
+ 	if (itv->udma.SG_handle) {
+-		pci_unmap_single(itv->pdev, itv->udma.SG_handle,
+-			 sizeof(itv->udma.SGarray), PCI_DMA_TODEVICE);
++		dma_unmap_single(&itv->pdev->dev, itv->udma.SG_handle,
++				 sizeof(itv->udma.SGarray), DMA_TO_DEVICE);
+ 	}
  
- static irqreturn_t pluto_irq(int irq, void *dev_id)
-@@ -595,7 +595,7 @@ static int pluto2_probe(struct pci_dev *
- 	/* enable interrupts */
- 	pci_write_config_dword(pdev, 0x6c, 0x8000);
+ 	/* Unmap Scatterlist */
+ 	if (itv->udma.SG_length) {
+-		pci_unmap_sg(itv->pdev, itv->udma.SGlist, itv->udma.page_count, PCI_DMA_TODEVICE);
++		dma_unmap_sg(&itv->pdev->dev, itv->udma.SGlist,
++			     itv->udma.page_count, DMA_TO_DEVICE);
+ 	}
  
--	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
-+	ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (ret < 0)
- 		goto err_pci_disable_device;
+ 	for (i = 0; i < IVTV_DMA_SG_OSD_ENT; i++) {
+--- a/drivers/media/pci/ivtv/ivtv-yuv.c
++++ b/drivers/media/pci/ivtv/ivtv-yuv.c
+@@ -113,7 +113,8 @@ static int ivtv_yuv_prep_user_dma(struct
+ 		dma->page_count = 0;
+ 		return -ENOMEM;
+ 	}
+-	dma->SG_length = pci_map_sg(itv->pdev, dma->SGlist, dma->page_count, PCI_DMA_TODEVICE);
++	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
++				    dma->page_count, DMA_TO_DEVICE);
  
---- a/drivers/media/pci/pt1/pt1.c
-+++ b/drivers/media/pci/pt1/pt1.c
-@@ -1340,7 +1340,7 @@ static int pt1_probe(struct pci_dev *pde
- 	if (ret < 0)
- 		goto err;
+ 	/* Fill SG Array with new values */
+ 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
+@@ -920,7 +921,9 @@ static void ivtv_yuv_init(struct ivtv *i
+ 	/* We need a buffer for blanking when Y plane is offset - non-fatal if we can't get one */
+ 	yi->blanking_ptr = kzalloc(720 * 16, GFP_ATOMIC|__GFP_NOWARN);
+ 	if (yi->blanking_ptr) {
+-		yi->blanking_dmaptr = pci_map_single(itv->pdev, yi->blanking_ptr, 720*16, PCI_DMA_TODEVICE);
++		yi->blanking_dmaptr = dma_map_single(&itv->pdev->dev,
++						     yi->blanking_ptr,
++						     720 * 16, DMA_TO_DEVICE);
+ 	} else {
+ 		yi->blanking_dmaptr = 0;
+ 		IVTV_DEBUG_WARN("Failed to allocate yuv blanking buffer\n");
+@@ -1264,7 +1267,8 @@ void ivtv_yuv_close(struct ivtv *itv)
+ 	if (yi->blanking_ptr) {
+ 		kfree(yi->blanking_ptr);
+ 		yi->blanking_ptr = NULL;
+-		pci_unmap_single(itv->pdev, yi->blanking_dmaptr, 720*16, PCI_DMA_TODEVICE);
++		dma_unmap_single(&itv->pdev->dev, yi->blanking_dmaptr,
++				 720 * 16, DMA_TO_DEVICE);
+ 	}
  
--	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
-+	ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (ret < 0)
- 		goto err_pci_disable_device;
- 
---- a/drivers/media/pci/tw5864/tw5864-core.c
-+++ b/drivers/media/pci/tw5864/tw5864-core.c
-@@ -262,7 +262,7 @@ static int tw5864_initdev(struct pci_dev
- 
- 	pci_set_master(pci_dev);
- 
--	err = pci_set_dma_mask(pci_dev, DMA_BIT_MASK(32));
-+	err = dma_set_mask(&pci_dev->dev, DMA_BIT_MASK(32));
- 	if (err) {
- 		dev_err(&dev->pci->dev, "32 bit PCI DMA is not supported\n");
- 		goto disable_pci;
+ 	/* Invalidate the old dimension information */
 
 
 
