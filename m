@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C653DBEA215
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D35BE9D83
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B11718968FD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D28081881FE8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48AE3328E8;
-	Fri, 17 Oct 2025 15:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F96A20C00A;
+	Fri, 17 Oct 2025 15:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jax33NX0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIBoiSqE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C9332E131;
-	Fri, 17 Oct 2025 15:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5DD337100;
+	Fri, 17 Oct 2025 15:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715663; cv=none; b=fI6/Cd/WpPHQUZ0U20enMbSSRFcSZJBUd3QmXa6CFSzImpm6i0V7kP3g0vTiREtNF0NpPff6ytSNqITJioclP1/atvLyaGjTfVc+aVGNWO2/PP8x5akLLebOVIp5/1HhiAwo8xbhsI5WRJGknRIHXezK8l2WOZUAiLcLxvuXiC4=
+	t=1760714777; cv=none; b=WSnfVxqklCx2Z46CXQx1PYYjIi+94/SVQYbO5HjpstPPDFm8KOpkPCyEjKJQxXCMyqcxsZA3RK6NRETDh4tXmCEvjJNbM9tfeyEAsnlCKpVs14bNQqIbLeCnPD/98X+QDNpn9JADCF4s55+aWrqsqQQCmwmxnq1AlQLJvFFk94A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715663; c=relaxed/simple;
-	bh=xEb4Top02BHayfDpvkUJlmx8J9dbrV62n5Tbx/gZdUA=;
+	s=arc-20240116; t=1760714777; c=relaxed/simple;
+	bh=Y4mtJT0F198aOUGe/KHcUdOUCGbNgc4VouaCQrh7v+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gLm7n81f3jJw9AVqH7r46D9U3ZfzdI6spc8VdQNwbw/e7FZ9A5OjrRP4+3ay7e/OQcgD0IatSeVpRdUyQdlzIVSb+oX7M8EOBczJsH1VAtkda4146orahiTPerBs34ZUKoPedduCQFQIhfZR7sJh+sbToy6YjTPO+/7zbP1fdRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jax33NX0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD82C4CEE7;
-	Fri, 17 Oct 2025 15:41:03 +0000 (UTC)
+	 MIME-Version; b=R7Xz6/hg13iHYluadn9CA94L1X4+BkqoWB4FhiHEIERQM0FeOYHJAS2US++8utiMF4YA/JHNWtBxDnPQSLX0qHmQnLBt8eoeD87mBxr1Xvx3P0mkaeVT0QFki0zafbzAQCuPPAAsEUVFV/uqSmL9xWCJX1RP/9hOJSPeI5pGAI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIBoiSqE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99871C4CEE7;
+	Fri, 17 Oct 2025 15:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715663;
-	bh=xEb4Top02BHayfDpvkUJlmx8J9dbrV62n5Tbx/gZdUA=;
+	s=korg; t=1760714777;
+	bh=Y4mtJT0F198aOUGe/KHcUdOUCGbNgc4VouaCQrh7v+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jax33NX00TVGI3DO/Wzj2Ltx7vpnAuSGkU7HaCkNPcZ3mQ184uMgiMSjz+LBUYNrx
-	 zJ8moV6CLR1LLFepkHrbPvgV0y+fDvUz7aO7x6Dpk5ln5r977zJQxY9Lqyd5p5FOOB
-	 MrpvkWT1dPK52LB0H30FiP9gVJO5/nZ6H7abbdQQ=
+	b=hIBoiSqEs9NOptEm1Z31TuzJtDbqW3TZXRAECzTcXFSZRsXFX56YLSg/jtXv5sAQt
+	 s0TiawhWxqEheufumTQ3SccEYDGTu6+5J3LjOA5cpEsAu0ao2bIOlnMJeMfbU3TVkM
+	 E4b0ZzZMEKsyUa2GZaN7X/urDi1SlF2k5S0X/Y8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Santhosh Kumar K <s-k6@ti.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.17 294/371] spi: cadence-quadspi: Flush posted register writes before INDAC access
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Subject: [PATCH 6.12 262/277] s390/bpf: Write back tail call counter for BPF_TRAMP_F_CALL_ORIG
 Date: Fri, 17 Oct 2025 16:54:29 +0200
-Message-ID: <20251017145212.710564848@linuxfoundation.org>
+Message-ID: <20251017145156.727976700@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratyush Yadav <pratyush@kernel.org>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-commit 29e0b471ccbd674d20d4bbddea1a51e7105212c5 upstream.
+commit bc3905a71f02511607d3ccf732360580209cac4c upstream.
 
-cqspi_indirect_read_execute() and cqspi_indirect_write_execute() first
-set the enable bit on APB region and then start reading/writing to the
-AHB region. On TI K3 SoCs these regions lie on different endpoints. This
-means that the order of the two operations is not guaranteed, and they
-might be reordered at the interconnect level.
+The tailcall_bpf2bpf_hierarchy_fentry test hangs on s390. Its call
+graph is as follows:
 
-It is possible for the AHB write to be executed before the APB write to
-enable the indirect controller, causing the transaction to be invalid
-and the write erroring out. Read back the APB region write before
-accessing the AHB region to make sure the write got flushed and the race
-condition is eliminated.
+  entry()
+    subprog_tail()
+      trampoline()
+        fentry()
+        the rest of subprog_tail()  # via BPF_TRAMP_F_CALL_ORIG
+        return to entry()
 
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-CC: stable@vger.kernel.org
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
-Message-ID: <20250905185958.3575037-2-s-k6@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The problem is that the rest of subprog_tail() increments the tail call
+counter, but the trampoline discards the incremented value. This
+results in an astronomically large number of tail calls.
+
+Fix by making the trampoline write the incremented tail call counter
+back.
+
+Fixes: 528eb2cb87bc ("s390/bpf: Implement arch_prepare_bpf_trampoline()")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20250813121016.163375-4-iii@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    3 +++
+ arch/s390/net/bpf_jit_comp.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -765,6 +765,7 @@ static int cqspi_indirect_read_execute(s
- 	reinit_completion(&cqspi->transfer_complete);
- 	writel(CQSPI_REG_INDIRECTRD_START_MASK,
- 	       reg_base + CQSPI_REG_INDIRECTRD);
-+	readl(reg_base + CQSPI_REG_INDIRECTRD); /* Flush posted write. */
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -2828,6 +2828,9 @@ static int __arch_prepare_bpf_trampoline
+ 		/* stg %r2,retval_off(%r15) */
+ 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_2, REG_0, REG_15,
+ 			      tjit->retval_off);
++		/* mvc tccnt_off(%r15),tail_call_cnt(4,%r15) */
++		_EMIT6(0xd203f000 | tjit->tccnt_off,
++		       0xf000 | offsetof(struct prog_frame, tail_call_cnt));
  
- 	while (remaining > 0) {
- 		if (use_irq &&
-@@ -1091,6 +1092,8 @@ static int cqspi_indirect_write_execute(
- 	reinit_completion(&cqspi->transfer_complete);
- 	writel(CQSPI_REG_INDIRECTWR_START_MASK,
- 	       reg_base + CQSPI_REG_INDIRECTWR);
-+	readl(reg_base + CQSPI_REG_INDIRECTWR); /* Flush posted write. */
-+
- 	/*
- 	 * As per 66AK2G02 TRM SPRUHY8F section 11.15.5.3 Indirect Access
- 	 * Controller programming sequence, couple of cycles of
+ 		im->ip_after_call = jit->prg_buf + jit->prg;
+ 
 
 
 
