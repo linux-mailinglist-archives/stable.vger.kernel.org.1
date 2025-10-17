@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-187269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C01BEAADD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 628AEBEA753
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04524945343
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E65A94548A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6595132E151;
-	Fri, 17 Oct 2025 15:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDB13328FF;
+	Fri, 17 Oct 2025 15:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQttGrSr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/1iSD9F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2126232C957;
-	Fri, 17 Oct 2025 15:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE37330B01;
+	Fri, 17 Oct 2025 15:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715597; cv=none; b=lq+DGXOERDnPhBnugAlkch2EoZvO9Mz55/urTfAXpOUtFA8ignhu3Rd7vrw6q/8X5uPguzx4OnZ4rbEEslLhONFB7HLmDlxvDQiCED8wwAjddpsgDonHj4Pg/JdMaz9cOWqt5DGCrpFGXMZ6t1cagPfLToW7QY6t7NNer77wEHw=
+	t=1760715607; cv=none; b=lVXjjY8LSpQeODwgVfc9vD2fjGXkVpYqe7rFTdo0mS4lvCGJEa1FJ2bektOiQZQDw1tTNEh4qli8wDDvIf7zKTYsQ9U3L7WDSz+ywhDDqNx3zRr7L/N/vqccV8HZ5yTtW4wSZzmYN3p1D30tiSfNc8l+bpFj6F6066BXOzew9hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715597; c=relaxed/simple;
-	bh=3LRvCAdJA1flSoPZchJ6I7GvKBCXO/DULXN7xkY0bVs=;
+	s=arc-20240116; t=1760715607; c=relaxed/simple;
+	bh=RVFl/Wdg0DPDvYx4wTIiWH+FksbBaW8fsq3sfM9Yofk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abapoLldn6sScpWqKJS52ZeauwWI3aVJngxn/dSe65hkl07HfeZxkeIK17TQs0VVwV1WMCXX9aaw84byhJ9pu1QUXoPUs0m59FN2YteHAhNynwICF/Ngporv/4x+PfxIDvjALt7ZpS3Kovy+H/KjyxsAu0SvvP6sQv8YkzpjP+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQttGrSr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E044C4CEE7;
-	Fri, 17 Oct 2025 15:39:56 +0000 (UTC)
+	 MIME-Version; b=dAGVICAvZUWBg1BCF+tc01BOpHnbVYA9U9Hf6BMRp/wOoP5xqrkz/qs1ls3B3LlxLIg2dK7FvP1kdaf8RDprfnufYLpLi511hZ7sSJJemzFqnKfyL4LLzb2rHZYZ+hRh085sYdk9n6ajUM5bCQOiTerl/JgTNCYzKYipBNsAURE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/1iSD9F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D91C4CEE7;
+	Fri, 17 Oct 2025 15:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715596;
-	bh=3LRvCAdJA1flSoPZchJ6I7GvKBCXO/DULXN7xkY0bVs=;
+	s=korg; t=1760715605;
+	bh=RVFl/Wdg0DPDvYx4wTIiWH+FksbBaW8fsq3sfM9Yofk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VQttGrSrAtbPomZz/CD0tjMbZLqhh6qCzKA3RCRVFMSSSOx8FLO907RpjPLKCI4Vm
-	 l5UmukhV66/V/DOnsJdAzXWq0Gg+asEh40c2k2yZS19nL/Gg68WcmIm8AHDwuAQnu4
-	 jDp3hE48hJUGfhulERaSOMKk/5hlsMuR22IM1rqg=
+	b=o/1iSD9FsYyjqC/eBGHwPsouZ1T0IVRI6oHD7teQ3oKf4bN69IcsuxtXFDRRNJ1pa
+	 7frtA0TJknYH/7x847+d0lVt4Wt9KDgFwaaOzu5LEMcMhpeySrx+ZQyQtgSFwD4fqj
+	 N4WTGY4hUnzJ9IuSLpRyIS6Tz641LoGRtyfbCEDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.17 238/371] of: unittest: Fix device reference count leak in of_unittest_pci_node_verify
-Date: Fri, 17 Oct 2025 16:53:33 +0200
-Message-ID: <20251017145210.691376277@linuxfoundation.org>
+	Sam James <sam@gentoo.org>,
+	Helge Deller <deller@gmx.de>,
+	Stian Halseth <stian@itx.no>
+Subject: [PATCH 6.17 241/371] parisc: dont reference obsolete termio struct for TC* constants
+Date: Fri, 17 Oct 2025 16:53:36 +0200
+Message-ID: <20251017145210.798178549@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -65,42 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Sam James <sam@gentoo.org>
 
-commit a8de554774ae48efbe48ace79f8badae2daa2bf1 upstream.
+commit 8ec5a066f88f89bd52094ba18792b34c49dcd55a upstream.
 
-In of_unittest_pci_node_verify(), when the add parameter is false,
-device_find_any_child() obtains a reference to a child device. This
-function implicitly calls get_device() to increment the device's
-reference count before returning the pointer. However, the caller
-fails to properly release this reference by calling put_device(),
-leading to a device reference count leak. Add put_device() in the else
-branch immediately after child_dev is no longer needed.
+Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
+drops the legacy termio struct, but the ioctls.h header still defines some
+TC* constants in terms of termio (via sizeof). Hardcode the values instead.
 
-As the comment of device_find_any_child states: "NOTE: you will need
-to drop the reference with put_device() after use".
+This fixes building Python for example, which falls over like:
+  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
 
-Found by code review.
-
+Link: https://bugs.gentoo.org/961769
+Link: https://bugs.gentoo.org/962600
+Co-authored-by: Stian Halseth <stian@itx.no>
 Cc: stable@vger.kernel.org
-Fixes: 26409dd04589 ("of: unittest: Add pci_dt_testdrv pci driver")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Sam James <sam@gentoo.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/unittest.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/parisc/include/uapi/asm/ioctls.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -4300,6 +4300,7 @@ static int of_unittest_pci_node_verify(s
- 		unittest(!np, "Child device tree node is not removed\n");
- 		child_dev = device_find_any_child(&pdev->dev);
- 		unittest(!child_dev, "Child device is not removed\n");
-+		put_device(child_dev);
- 	}
- 
- failed:
+--- a/arch/parisc/include/uapi/asm/ioctls.h
++++ b/arch/parisc/include/uapi/asm/ioctls.h
+@@ -10,10 +10,10 @@
+ #define TCSETS		_IOW('T', 17, struct termios) /* TCSETATTR */
+ #define TCSETSW		_IOW('T', 18, struct termios) /* TCSETATTRD */
+ #define TCSETSF		_IOW('T', 19, struct termios) /* TCSETATTRF */
+-#define TCGETA		_IOR('T', 1, struct termio)
+-#define TCSETA		_IOW('T', 2, struct termio)
+-#define TCSETAW		_IOW('T', 3, struct termio)
+-#define TCSETAF		_IOW('T', 4, struct termio)
++#define TCGETA          0x40125401
++#define TCSETA          0x80125402
++#define TCSETAW         0x80125403
++#define TCSETAF         0x80125404
+ #define TCSBRK		_IO('T', 5)
+ #define TCXONC		_IO('T', 6)
+ #define TCFLSH		_IO('T', 7)
 
 
 
