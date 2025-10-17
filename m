@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1629BE9B5C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF417BEA23C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 48B7435D986
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:21:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5CF51567FEA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2168732C940;
-	Fri, 17 Oct 2025 15:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1E7330B3C;
+	Fri, 17 Oct 2025 15:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNMf7zND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YntX9UUZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22082F12D0;
-	Fri, 17 Oct 2025 15:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97D3330B00;
+	Fri, 17 Oct 2025 15:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714392; cv=none; b=d4nmwuOvQ0AHO46yxcpu5HV+7xLw6+DLCsg+eWVpPkMcN1mmcHgUkPKz8M4n8ngZ2mD8Nnot3fuih0u12mcrgzIDzH57Gbc1Ima4bG6oJ/dn/gMpFg1TC0IFZeIewCKk8ZCu4Pdbfpofo1OdROm9xkkTnae633bL3ELE3/N7dgE=
+	t=1760715302; cv=none; b=GspYp4g2vEqt4KZ72p8xSjeyF48oWhnEJvh8Iifabogdk9xb5NIxuqvSk86bNA2KzGKWUDr/GqjkPOf+ZoM3/FLFAXsRNTqBko7mPPt36MXLA/FUwFluRv9JGPKE8VDKOKYq+ljVTyzuhce2eFffYU19V2ES1sEwNETG8c8vOtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714392; c=relaxed/simple;
-	bh=nLY3efeGIhLj+aGRzrzsixXrncuFqa/wpBe259jJoR4=;
+	s=arc-20240116; t=1760715302; c=relaxed/simple;
+	bh=KGi12mQzl5Nbxic9SstdI0k+nC2rqA3l9JUn0BMtF80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mX45ZRMs4JZjheLFLrWy9DcG02wbUL046TORSXQv1RuPRQ6Rn+uAez02iVoFQqcS8CS1QqrYNeWceYsAiPx7oOIb4bwUfr81un0CK0F638fSV1gpKIfha2GjBPtJSDD4KdJgE8kKcnSprMeU4F2weKtaXYzIzvAUrwBHRzfN5dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNMf7zND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56951C4CEE7;
-	Fri, 17 Oct 2025 15:19:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hgl26K4PhM4uttxd/ggKTOHe4D9mtm5fft5E7VJFYHBb2LQ+BIv135MKvPW+xsRQ4jAnBR8AsUXYe+EXdtuX+PKBSg6rwcR6R5sqVe+yHylKUMCwcsI19OnxK6LKmvDusjBnszygCw/tKrMqBFXPfSwGXdL414EFOIlioVo5VQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YntX9UUZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD70C4CEFE;
+	Fri, 17 Oct 2025 15:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714392;
-	bh=nLY3efeGIhLj+aGRzrzsixXrncuFqa/wpBe259jJoR4=;
+	s=korg; t=1760715301;
+	bh=KGi12mQzl5Nbxic9SstdI0k+nC2rqA3l9JUn0BMtF80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VNMf7zNDV4Evw3R/dPqAMXIgczIVxkJEpRcJzqm6EUhYlfZ81kVcyCcn1Rft+hBpw
-	 2hbCu5dAjY3/DyHQSianTHwzMGJtnaGfGnFqb+Bi0UUNRsmQLNqffuol46H3/y3YQY
-	 2HvsjAXhHV8oWGydPBZmVpE+sTeHR8cnzYZGGWP0=
+	b=YntX9UUZTINL6S1nbNhepi1jzoeeilfoCA9XqzZJAunjt7X/PpSgHCYAAEYJ39ZOb
+	 Hg9+SDpEkwL6zYIexKHNPsevByFhATnpDQPoP5H3YP63H4ZmpomhTkaCSL/YcJozw8
+	 JCLs08JvQDaOifgGafr4irwM8bc3OaJiM5VAkvqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 128/277] crypto: atmel - Fix dma_unmap_sg() direction
-Date: Fri, 17 Oct 2025 16:52:15 +0200
-Message-ID: <20251017145151.801056331@linuxfoundation.org>
+	=?UTF-8?q?J=C3=BCrgen=20Gro=C3=9F?= <jgross@suse.com>,
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+Subject: [PATCH 6.17 161/371] xen: take system_transition_mutex on suspend
+Date: Fri, 17 Oct 2025 16:52:16 +0200
+Message-ID: <20251017145207.758066930@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +59,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
 
-commit f5d643156ef62216955c119216d2f3815bd51cb1 upstream.
+commit 9d52b0b41be5b932a0a929c10038f1bb04af4ca5 upstream.
 
-It seems like everywhere in this file, dd->in_sg is mapped with
-DMA_TO_DEVICE and dd->out_sg is mapped with DMA_FROM_DEVICE.
+Xen's do_suspend() calls dpm_suspend_start() without taking required
+system_transition_mutex. Since 12ffc3b1513eb moved the
+pm_restrict_gfp_mask() call, not taking that mutex results in a WARN.
 
-Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Take the mutex in do_suspend(), and use mutex_trylock() to follow
+how enter_state() does this.
+
+Suggested-by: Jürgen Groß <jgross@suse.com>
+Fixes: 12ffc3b1513eb "PM: Restrict swap use to later in the suspend sequence"
+Link: https://lore.kernel.org/xen-devel/aKiBJeqsYx_4Top5@mail-itl/
+Signed-off-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Cc: stable@vger.kernel.org # v6.16+
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250921162853.223116-1-marmarek@invisiblethingslab.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-tdes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/xen/manage.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/crypto/atmel-tdes.c
-+++ b/drivers/crypto/atmel-tdes.c
-@@ -512,7 +512,7 @@ static int atmel_tdes_crypt_start(struct
+--- a/drivers/xen/manage.c
++++ b/drivers/xen/manage.c
+@@ -11,6 +11,7 @@
+ #include <linux/reboot.h>
+ #include <linux/sysrq.h>
+ #include <linux/stop_machine.h>
++#include <linux/suspend.h>
+ #include <linux/freezer.h>
+ #include <linux/syscore_ops.h>
+ #include <linux/export.h>
+@@ -95,10 +96,16 @@ static void do_suspend(void)
  
- 	if (err && (dd->flags & TDES_FLAGS_FAST)) {
- 		dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
--		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_TO_DEVICE);
-+		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
+ 	shutting_down = SHUTDOWN_SUSPEND;
+ 
++	if (!mutex_trylock(&system_transition_mutex))
++	{
++		pr_err("%s: failed to take system_transition_mutex\n", __func__);
++		goto out;
++	}
++
+ 	err = freeze_processes();
+ 	if (err) {
+ 		pr_err("%s: freeze processes failed %d\n", __func__, err);
+-		goto out;
++		goto out_unlock;
  	}
  
- 	return err;
+ 	err = freeze_kernel_threads();
+@@ -154,6 +161,8 @@ out_resume:
+ 
+ out_thaw:
+ 	thaw_processes();
++out_unlock:
++	mutex_unlock(&system_transition_mutex);
+ out:
+ 	shutting_down = SHUTDOWN_INVALID;
+ }
 
 
 
