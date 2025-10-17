@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-187630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178D1BEA945
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:16:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C447ABEADBB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CEE5D588C0D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48FDC7C49B2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F15E330B26;
-	Fri, 17 Oct 2025 15:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC3932E14C;
+	Fri, 17 Oct 2025 15:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKMa45Qy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1oLz075"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1EA330B06;
-	Fri, 17 Oct 2025 15:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBE032C94E;
+	Fri, 17 Oct 2025 15:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716629; cv=none; b=ngZpaHT3GzK7TNBXGghGyHqWYNX3FjXuvb7Y3mUdZSvZBm7osBRFWZfuU5S5+giC/vzBeGIDIxMIpFwABwxMZrppMOCXaoB7RxYfHxVNhnOBxMEmRfYJBIGpbxR4eSNekcmrDB/MxauvUUPEAERaCnepI1TPGxORguRq1rrL5Wk=
+	t=1760716532; cv=none; b=SF6ibcpPBh8sowLcDiiDCLLG+ZgDt+qI3qewOo7tbTFgGKzJfxNAO1xbLh9nF+nQ1U6Cn3AwCzVd0vI2S4+G5PjN3LaIWOQMXtf404J+Eq9SUS+oGTXwrjU0yX6QDTlCVl9YelvVqQvlcF+DdDjLKolI8emL4rPsgAllyIam8ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716629; c=relaxed/simple;
-	bh=dWTt1jFUvSrvSiM5+2q0qng0lWpbinsN4cJDSnFmHCw=;
+	s=arc-20240116; t=1760716532; c=relaxed/simple;
+	bh=oEr7nJSW8okq/rclu+bAgF/a/IMzs99kafGgJBatybg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQUnCG/v9G8qFBAynGjdCiKEBg0tWt1vNhl1n4phoAiiZsu82u/UiJjan26cVVb/4DBWueu0hmhuBUN8Hg8kBVgOtr4eXWmjJt4rmA+hRc2pHJsb5gf1ekSITneTtpgoxUhrTYCRh1qiIuWp2NUZL/eVia5V8d+KYA4mXkGG2Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKMa45Qy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270BAC4CEE7;
-	Fri, 17 Oct 2025 15:57:05 +0000 (UTC)
+	 MIME-Version; b=jLXHCVyocx9m87bFt9YRSyDjLA5C1mu04BjlorfShlYpyCVh/Fi+sVpa28TKhG3v8eG0fpfTl1cw3LAZh63gfPQBMDgVTPD32xVU7h8Zgnn+m3YIrtTP4Nm3zdPI8LrCoXFO7P1yzctQYQc4MiXNMBueI3YB/96+wP6baWLMZh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1oLz075; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC25C4CEE7;
+	Fri, 17 Oct 2025 15:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716626;
-	bh=dWTt1jFUvSrvSiM5+2q0qng0lWpbinsN4cJDSnFmHCw=;
+	s=korg; t=1760716532;
+	bh=oEr7nJSW8okq/rclu+bAgF/a/IMzs99kafGgJBatybg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKMa45QyI1v8YiH2EKRhKb3R3APT/TLCOQebJ1E6oncu6sRuHF5P2BK31fzIu5z7g
-	 YaUlqKXGiRgwSGdVPWJ78Y/9QG+fWyA/SMTQ8hDQfCrKJVXKJug661+88pkykSgohg
-	 ajHCHOfMqAYV9SXYpg1Ja9z4BUE2KjwkxI1WHtrE=
+	b=I1oLz075hwsRBy8ngIehZly0FBzOweR2Q6vfcZghSr9od6jdZL6jVnJ91gb9HJGCs
+	 vq30WR6geOnYgtbCd5M7b6Cd85pf/lnJj3pYNIjm6u3EGjB3PsNU2ZwUOjTZ/yMbEg
+	 Fi2xbM9UDjBu/LoqvxKJlMy+6b480TrG5cwRDB38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
-	Ahmet Eray Karadag <eraykrdg1@gmail.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 222/276] ext4: guard against EA inode refcount underflow in xattr update
-Date: Fri, 17 Oct 2025 16:55:15 +0200
-Message-ID: <20251017145150.566786515@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@google.com>
+Subject: [PATCH 5.15 224/276] lib/crypto/curve25519-hacl64: Disable KASAN with clang-17 and older
+Date: Fri, 17 Oct 2025 16:55:17 +0200
+Message-ID: <20251017145150.638823297@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -68,81 +67,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ahmet Eray Karadag <eraykrdg1@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 57295e835408d8d425bef58da5253465db3d6888 upstream.
+commit 2f13daee2a72bb962f5fd356c3a263a6f16da965 upstream.
 
-syzkaller found a path where ext4_xattr_inode_update_ref() reads an EA
-inode refcount that is already <= 0 and then applies ref_change (often
--1). That lets the refcount underflow and we proceed with a bogus value,
-triggering errors like:
+After commit 6f110a5e4f99 ("Disable SLUB_TINY for build testing"), which
+causes CONFIG_KASAN to be enabled in allmodconfig again, arm64
+allmodconfig builds with clang-17 and older show an instance of
+-Wframe-larger-than (which breaks the build with CONFIG_WERROR=y):
 
-  EXT4-fs error: EA inode <n> ref underflow: ref_count=-1 ref_change=-1
-  EXT4-fs warning: ea_inode dec ref err=-117
+  lib/crypto/curve25519-hacl64.c:757:6: error: stack frame size (2336) exceeds limit (2048) in 'curve25519_generic' [-Werror,-Wframe-larger-than]
+    757 | void curve25519_generic(u8 mypublic[CURVE25519_KEY_SIZE],
+        |      ^
 
-Make the invariant explicit: if the current refcount is non-positive,
-treat this as on-disk corruption, emit ext4_error_inode(), and fail the
-operation with -EFSCORRUPTED instead of updating the refcount. Delete the
-WARN_ONCE() as negative refcounts are now impossible; keep error reporting
-in ext4_error_inode().
+When KASAN is disabled, the stack usage is roughly quartered:
 
-This prevents the underflow and the follow-on orphan/cleanup churn.
+  lib/crypto/curve25519-hacl64.c:757:6: error: stack frame size (608) exceeds limit (128) in 'curve25519_generic' [-Werror,-Wframe-larger-than]
+    757 | void curve25519_generic(u8 mypublic[CURVE25519_KEY_SIZE],
+        |      ^
 
-Reported-by: syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com
-Fixes: https://syzbot.org/bug?extid=0be4f339a8218d2a5bb1
-Cc: stable@kernel.org
-Co-developed-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Ahmet Eray Karadag <eraykrdg1@gmail.com>
-Message-ID: <20250920021342.45575-1-eraykrdg1@gmail.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Using '-Rpass-analysis=stack-frame-layout' shows the following variables
+and many, many 8-byte spills when KASAN is enabled:
+
+  Offset: [SP-144], Type: Variable, Align: 8, Size: 40
+  Offset: [SP-464], Type: Variable, Align: 8, Size: 320
+  Offset: [SP-784], Type: Variable, Align: 8, Size: 320
+  Offset: [SP-864], Type: Variable, Align: 32, Size: 80
+  Offset: [SP-896], Type: Variable, Align: 32, Size: 32
+  Offset: [SP-1016], Type: Variable, Align: 8, Size: 120
+
+When KASAN is disabled, there are still spills but not at many and the
+variables list is smaller:
+
+  Offset: [SP-192], Type: Variable, Align: 32, Size: 80
+  Offset: [SP-224], Type: Variable, Align: 32, Size: 32
+  Offset: [SP-344], Type: Variable, Align: 8, Size: 120
+
+Disable KASAN for this file when using clang-17 or older to avoid
+blowing out the stack, clearing up the warning.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250609-curve25519-hacl64-disable-kasan-clang-v1-1-08ea0ac5ccff@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ lib/crypto/Makefile |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -987,7 +987,7 @@ static int ext4_xattr_inode_update_ref(h
- 				       int ref_change)
- {
- 	struct ext4_iloc iloc;
--	s64 ref_count;
-+	u64 ref_count;
- 	int ret;
+--- a/lib/crypto/Makefile
++++ b/lib/crypto/Makefile
+@@ -22,6 +22,10 @@ obj-$(CONFIG_CRYPTO_LIB_CURVE25519_GENER
+ libcurve25519-generic-y				:= curve25519-fiat32.o
+ libcurve25519-generic-$(CONFIG_ARCH_SUPPORTS_INT128)	:= curve25519-hacl64.o
+ libcurve25519-generic-y				+= curve25519-generic.o
++# clang versions prior to 18 may blow out the stack with KASAN
++ifeq ($(call clang-min-version, 180000),)
++KASAN_SANITIZE_curve25519-hacl64.o := n
++endif
  
- 	inode_lock_nested(ea_inode, I_MUTEX_XATTR);
-@@ -997,13 +997,17 @@ static int ext4_xattr_inode_update_ref(h
- 		goto out;
- 
- 	ref_count = ext4_xattr_inode_get_ref(ea_inode);
-+	if ((ref_count == 0 && ref_change < 0) || (ref_count == U64_MAX && ref_change > 0)) {
-+		ext4_error_inode(ea_inode, __func__, __LINE__, 0,
-+			"EA inode %lu ref wraparound: ref_count=%lld ref_change=%d",
-+			ea_inode->i_ino, ref_count, ref_change);
-+		ret = -EFSCORRUPTED;
-+		goto out;
-+	}
- 	ref_count += ref_change;
- 	ext4_xattr_inode_set_ref(ea_inode, ref_count);
- 
- 	if (ref_change > 0) {
--		WARN_ONCE(ref_count <= 0, "EA inode %lu ref_count=%lld",
--			  ea_inode->i_ino, ref_count);
--
- 		if (ref_count == 1) {
- 			WARN_ONCE(ea_inode->i_nlink, "EA inode %lu i_nlink=%u",
- 				  ea_inode->i_ino, ea_inode->i_nlink);
-@@ -1012,9 +1016,6 @@ static int ext4_xattr_inode_update_ref(h
- 			ext4_orphan_del(handle, ea_inode);
- 		}
- 	} else {
--		WARN_ONCE(ref_count < 0, "EA inode %lu ref_count=%lld",
--			  ea_inode->i_ino, ref_count);
--
- 		if (ref_count == 0) {
- 			WARN_ONCE(ea_inode->i_nlink != 1,
- 				  "EA inode %lu i_nlink=%u",
+ obj-$(CONFIG_CRYPTO_LIB_CURVE25519)		+= libcurve25519.o
+ libcurve25519-y					+= curve25519.o
 
 
 
