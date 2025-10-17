@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BF7BEA488
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DEABE990F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0361C1AE2E53
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:50:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0482318864A7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1F82F12A0;
-	Fri, 17 Oct 2025 15:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075893370E2;
+	Fri, 17 Oct 2025 15:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OF1CWtIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZgwbN8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBD9330B0F;
-	Fri, 17 Oct 2025 15:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B569D33710E;
+	Fri, 17 Oct 2025 15:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716213; cv=none; b=Ppt+5RD/IjpanySgScyAuRPqij4fWAW6zQsXfLHDiU+JLWicYStmOKb/GmLgfUNEpy5LWgoulMLEXO51mEOiKTVaV5r3ywZWgcXgV0CCW42EurZ1WvUsP6iBYSAkxcCIK8G1pk5DH6rE+Ytwpt0+or7gh4g0370PrAIAAoWtxPs=
+	t=1760713769; cv=none; b=ksNie6zP2rOqaSqXkdVWeqWyqIA1cqa2usxudzd2ZeojPeuVhyA6pv2CZ5dnBxVOtpNfVysyCgCI48Ao24jSwz2+B0lv22FO5F5lpzLcVx19m9X/M0tvlcADqcxAZuSk88eTY9u4oPRJSmhLBjPybBJJSbcNsFonfh3alwvxitc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716213; c=relaxed/simple;
-	bh=GhrSGDCL9SJP+EfT7xugyPPQSvYQQVjQmvRW2QHwVX4=;
+	s=arc-20240116; t=1760713769; c=relaxed/simple;
+	bh=rZetgPl2iOaakPEVE3voEZDH8baDKCbLLDpYwgiCF5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7VBgfO1yr6rIUx9T/mQo6dYJx2fbUNZXeN/JVBm0WW2g9mTY8PKJzzo0x5ChMlaqWO/vrJSqeZCI+SCUDEkYRwJ0FDdW09l8eJWjdsThGeO9Hctinf6o6AO1dolvy9mXvewXQl39PWtdn2k/33feKj/hmazI3hqhGMsnB6myh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OF1CWtIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F74C113D0;
-	Fri, 17 Oct 2025 15:50:12 +0000 (UTC)
+	 MIME-Version; b=MW3PJVIr1wZd2DTYNqv+afXc1PY+kfC/YVZoLcKW72lyfj/41MY9sUPA9dt2FxqBeyltPD4ZFMcqQKucfoR53P85K33eeWncFLLwFpB5OkP171gtWP713bUX1IFmmUP+uIt7dJtj1xPbxsOCL/AXmmgN0AEOJiIR8qZFOvcJL6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZgwbN8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC36C4CEE7;
+	Fri, 17 Oct 2025 15:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716212;
-	bh=GhrSGDCL9SJP+EfT7xugyPPQSvYQQVjQmvRW2QHwVX4=;
+	s=korg; t=1760713769;
+	bh=rZetgPl2iOaakPEVE3voEZDH8baDKCbLLDpYwgiCF5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OF1CWtIfcwlkhYDpltr8+C73+jcmF5SYR4ZL3N4ohT4N2KhsFi9XZv53zC/+hCIKq
-	 24UNfrPvx/WDfedzmgisHMGl0mygJhkOM0S03tHOT5tlPcjmoEQQ+BncDOEU9EUzLp
-	 uJWdq8qcTDNNQ13YB7JY6nAiR9WvS3xfnVQLBpMc=
+	b=mZgwbN8O6pzZJY/3yftmDxYLVsmEztvnBdEj0dtORmxzgK2u5vEHP8hfmTbXhCDB0
+	 tuAy4Wx8s1vRcAJy0fazGo14pGKgvxccHF1crgWjVzhbsfEX06zwBEz1ubPWvDrGAC
+	 qB/ieeuOcYI6STv9LhrE1Y509OVsL+ePm0qyS368=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 080/276] scsi: qla2xxx: Fix incorrect sign of error code in START_SP_W_RETRIES()
+	Corey Minyard <corey@minyard.net>,
+	Eric Hagberg <ehagberg@janestreet.com>
+Subject: [PATCH 6.6 112/201] Revert "ipmi: fix msg stack when IPMI is disconnected"
 Date: Fri, 17 Oct 2025 16:52:53 +0200
-Message-ID: <20251017145145.407961339@linuxfoundation.org>
+Message-ID: <20251017145138.858185915@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Corey Minyard <corey@minyard.net>
 
-[ Upstream commit 1f037e3acda79639a78f096355f2c308a3d45492 ]
+commit 5d09ee1bec870263f4ace439402ea840503b503b upstream.
 
-Change the error code EAGAIN to -EAGAIN in START_SP_W_RETRIES() to align
-with qla2x00_start_sp() returning negative error codes or QLA_SUCCESS,
-preventing logical errors.  Additionally, the '_rval' variable should
-store negative error codes to conform to Linux kernel error code
-conventions.
+This reverts commit c608966f3f9c2dca596967501d00753282b395fc.
 
-Fixes: 9803fb5d2759 ("scsi: qla2xxx: Fix task management cmd failure")
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Message-ID: <20250905075446.381139-3-rongqianfeng@vivo.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch has a subtle bug that can cause the IPMI driver to go into an
+infinite loop if the BMC misbehaves in a certain way.  Apparently
+certain BMCs do misbehave this way because several reports have come in
+recently about this.
+
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Tested-by: Eric Hagberg <ehagberg@janestreet.com>
+Cc: <stable@vger.kernel.org> # 6.2
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/ipmi/ipmi_kcs_sm.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index 2053c560b580c..5f3593680c953 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -2061,11 +2061,11 @@ static void qla_marker_sp_done(srb_t *sp, int res)
- 	int cnt = 5; \
- 	do { \
- 		if (_chip_gen != sp->vha->hw->chip_reset || _login_gen != sp->fcport->login_gen) {\
--			_rval = EINVAL; \
-+			_rval = -EINVAL; \
- 			break; \
- 		} \
- 		_rval = qla2x00_start_sp(_sp); \
--		if (_rval == EAGAIN) \
-+		if (_rval == -EAGAIN) \
- 			msleep(1); \
- 		else \
- 			break; \
+diff --git a/drivers/char/ipmi/ipmi_kcs_sm.c b/drivers/char/ipmi/ipmi_kcs_sm.c
+index ecfcb50302f6..efda90dcf5b3 100644
+--- a/drivers/char/ipmi/ipmi_kcs_sm.c
++++ b/drivers/char/ipmi/ipmi_kcs_sm.c
+@@ -122,10 +122,10 @@ struct si_sm_data {
+ 	unsigned long  error0_timeout;
+ };
+ 
+-static unsigned int init_kcs_data_with_state(struct si_sm_data *kcs,
+-				  struct si_sm_io *io, enum kcs_states state)
++static unsigned int init_kcs_data(struct si_sm_data *kcs,
++				  struct si_sm_io *io)
+ {
+-	kcs->state = state;
++	kcs->state = KCS_IDLE;
+ 	kcs->io = io;
+ 	kcs->write_pos = 0;
+ 	kcs->write_count = 0;
+@@ -140,12 +140,6 @@ static unsigned int init_kcs_data_with_state(struct si_sm_data *kcs,
+ 	return 2;
+ }
+ 
+-static unsigned int init_kcs_data(struct si_sm_data *kcs,
+-				  struct si_sm_io *io)
+-{
+-	return init_kcs_data_with_state(kcs, io, KCS_IDLE);
+-}
+-
+ static inline unsigned char read_status(struct si_sm_data *kcs)
+ {
+ 	return kcs->io->inputb(kcs->io, 1);
+@@ -276,7 +270,7 @@ static int start_kcs_transaction(struct si_sm_data *kcs, unsigned char *data,
+ 	if (size > MAX_KCS_WRITE_SIZE)
+ 		return IPMI_REQ_LEN_EXCEEDED_ERR;
+ 
+-	if (kcs->state != KCS_IDLE) {
++	if ((kcs->state != KCS_IDLE) && (kcs->state != KCS_HOSED)) {
+ 		dev_warn(kcs->io->dev, "KCS in invalid state %d\n", kcs->state);
+ 		return IPMI_NOT_IN_MY_STATE_ERR;
+ 	}
+@@ -501,7 +495,7 @@ static enum si_sm_result kcs_event(struct si_sm_data *kcs, long time)
+ 	}
+ 
+ 	if (kcs->state == KCS_HOSED) {
+-		init_kcs_data_with_state(kcs, kcs->io, KCS_ERROR0);
++		init_kcs_data(kcs, kcs->io);
+ 		return SI_SM_HOSED;
+ 	}
+ 
 -- 
 2.51.0
 
