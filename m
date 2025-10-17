@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28BF4BE9E46
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A79BEA389
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74C856E4F95
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:10:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C8671AE2BEB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C887A36999C;
-	Fri, 17 Oct 2025 15:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D052745E;
+	Fri, 17 Oct 2025 15:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAiAn/Fv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcndKALe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FAF369985;
-	Fri, 17 Oct 2025 15:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCA4330B22;
+	Fri, 17 Oct 2025 15:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713724; cv=none; b=JB64s9IYXKb4OMSvh9EMRa3LAZl5Q/YQ4VQ8/CbjsIdnqxc5O58jgyNolDDlX8mSridxUQXuljnGLh6n0VaOTQkFXoCTbX8f3GrNMietO44E7lESTGD6oYyi02rGU3CmFWF+S+qNoYI01xAYe9IXB3YrroZZfHhWxxOek5IFWtI=
+	t=1760716026; cv=none; b=U8/8A9ylOXQE7MjSvY0OMV8pYo8DRQ+AW3/QoE88PLOQJiCdXac7PAecOuDMXiavdkIvx5/octEKP2hS+VO6WEs/sEJFA2IHjsfxdqzyCrF3JnF9eb9e/4pytqU0wDEu6eUsshMjCbu8XvXHu6PO0VU0TQKZp9yuqLht9mywgYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713724; c=relaxed/simple;
-	bh=LWuxLdyMCdsgCgIN32Yv9/0I81MIDjsLi4fFOUyhyk4=;
+	s=arc-20240116; t=1760716026; c=relaxed/simple;
+	bh=XnTYSbfaRh81eelLoCN2sW7wVngYccgxsRBDV8C660g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VwN1Ecw/e9gxk3ADdJyKoUCYLdtuZAgnZiFMTzpSkbU58NO6f2dMmuGnldNMwyy3tm14qvAKL1+e5TkseU8DThzlo6z5XKUPXbIebmcDb87FIUPU0k2nQzZKy6SlhoyBbaO7/yVqkFOXK+8ggoUAJAaPHguf37r6U5M3yJA78F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAiAn/Fv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C73C4CEF9;
-	Fri, 17 Oct 2025 15:08:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=neyj1mAnBAlpzFYNx/M4w/Is4XrseUNmGiEpiR5QgbJxY21kXZX7jPm4LvH+/3p83UV5xgTZHqUuvhcjxH9FmIb6lZwgQWuzwwFzNQNNjPkVsz+yW5fe1GABNLO2WBhCOKHc+gDfQ1O8FDVJtlnwTgwfjNA2uGPCCSN97ETAd1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcndKALe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A6BC4CEE7;
+	Fri, 17 Oct 2025 15:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713724;
-	bh=LWuxLdyMCdsgCgIN32Yv9/0I81MIDjsLi4fFOUyhyk4=;
+	s=korg; t=1760716025;
+	bh=XnTYSbfaRh81eelLoCN2sW7wVngYccgxsRBDV8C660g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SAiAn/Fv60fOogo8neKugqmZxv0BJUqKMZqOjhxC2+j13XRp0jgc+A1A6nvtygnyx
-	 4qJ11am1I3PE6JUlpEjNqvBEmWVd3ANgVTe3QTLVH+O1yop7Ss9hjJTLvs+YBpWyN+
-	 uXoS5WmMMPZ1hymoNdT4pgL6tOHQVO+vQfBKb9a8=
+	b=kcndKALeUfd8FLZBT45CC5gYckiZUd6IIobw66z20V36YmISZGBf47HxOdCBkXyHm
+	 bcmZA2Z2DY+vF46fhzxozCe7PH49OcLtr38ZPm7nb8vaHYDvldtuQAnLSAN3iYEAQD
+	 CTXMO0+QqGioIBJVXu5srMC/IxkGVfsSB9JfvKiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 080/201] blk-crypto: fix missing blktrace bio split events
+	Zhouyi Zhou <zhouzhouyi@gmail.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 048/276] tools/nolibc: make time_t robust if __kernel_old_time_t is missing in host headers
 Date: Fri, 17 Oct 2025 16:52:21 +0200
-Message-ID: <20251017145137.694188183@linuxfoundation.org>
+Message-ID: <20251017145144.157184772@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Zhouyi Zhou <zhouzhouyi@gmail.com>
 
-commit 06d712d297649f48ebf1381d19bd24e942813b37 upstream.
+[ Upstream commit 0ff52df6b32a6b04a7c9dfe3d7a387aff215b482 ]
 
-trace_block_split() is missing, resulting in blktrace inability to catch
-BIO split events and making it harder to analyze the BIO sequence.
+Commit d5094bcb5bfd ("tools/nolibc: define time_t in terms of
+__kernel_old_time_t") made nolibc use the kernel's time type so that
+`time_t` matches `timespec::tv_sec` on all ABIs (notably x32).
 
-Cc: stable@vger.kernel.org
-Fixes: 488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+But since __kernel_old_time_t is fairly new, notably from 2020 in commit
+94c467ddb273 ("y2038: add __kernel_old_timespec and __kernel_old_time_t"),
+nolibc builds that rely on host headers may fail.
+
+Switch to __kernel_time_t, which is the same as __kernel_old_time_t and
+has existed for longer.
+
+Tested in PPC VM of Open Source Lab of Oregon State University
+(./tools/testing/selftests/rcutorture/bin/mkinitrd.sh)
+
+Fixes: d5094bcb5bfd ("tools/nolibc: define time_t in terms of __kernel_old_time_t")
+Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+[Thomas: Reformat commit and its message a bit]
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-crypto-fallback.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/include/nolibc/std.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/blk-crypto-fallback.c
-+++ b/block/blk-crypto-fallback.c
-@@ -18,6 +18,7 @@
- #include <linux/module.h>
- #include <linux/random.h>
- #include <linux/scatterlist.h>
-+#include <trace/events/block.h>
+diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
+index a0ea830e1ba17..f9eccd40c221f 100644
+--- a/tools/include/nolibc/std.h
++++ b/tools/include/nolibc/std.h
+@@ -46,6 +46,6 @@ typedef unsigned long       nlink_t;
+ typedef   signed long         off_t;
+ typedef   signed long     blksize_t;
+ typedef   signed long      blkcnt_t;
+-typedef __kernel_old_time_t  time_t;
++typedef __kernel_time_t      time_t;
  
- #include "blk-cgroup.h"
- #include "blk-crypto-internal.h"
-@@ -229,7 +230,9 @@ static bool blk_crypto_fallback_split_bi
- 			bio->bi_status = BLK_STS_RESOURCE;
- 			return false;
- 		}
-+
- 		bio_chain(split_bio, bio);
-+		trace_block_split(split_bio, bio->bi_iter.bi_sector);
- 		submit_bio_noacct(bio);
- 		*bio_ptr = split_bio;
- 	}
+ #endif /* _NOLIBC_STD_H */
+-- 
+2.51.0
+
 
 
 
