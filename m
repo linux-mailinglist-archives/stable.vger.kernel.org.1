@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-187205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6C4BEA6D2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:03:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CF9BE9859
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF3883B5FD4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D1DF741110
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2F6330B05;
-	Fri, 17 Oct 2025 15:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0E132C94C;
+	Fri, 17 Oct 2025 15:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14/kVah6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQsvZdZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC530330B03;
-	Fri, 17 Oct 2025 15:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1772F12DD;
+	Fri, 17 Oct 2025 15:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715412; cv=none; b=gtxIld7F1gLBGuh/R8aNAzOuVqj2jKvphRw58CC3wzLA3bHgN84QgK28ID06gbWQH8Lrq17qU8XoUbGXWdHhqaDTcOmLBY/+577KkuTmka9waSSekwJDcHoE8vBTr2j6rcC0NLcN/3YdssaSQ4D/rNrDWRtISH6+IdctTQ68mG4=
+	t=1760713260; cv=none; b=AKOLRIKHfaaC4espolFNhxVMfHWcjj39hsUohQtN2cckhq8Tsh7DUsVPTFEQXOHcnW0yZGhDIM8b294s7wUJb6FI5VEBByxoV3veBbDe95mAHzaVk5mUC2rY+OqDwPY/sK41b2oMmz5xHc11qLoN2cvs6GNjat/Lqt8s+7KD1no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715412; c=relaxed/simple;
-	bh=pqTMl/WYknTCVMtumIDzQIaLRnfS+c+t65QRGOTruKI=;
+	s=arc-20240116; t=1760713260; c=relaxed/simple;
+	bh=e03P0yfc0AHMPo1VqLmHiq86qES0NFJ5pc5xyFNyU9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QrWm6X8g7ecO1ZvJOkHikiYQFPsm+W1PJtr+lEEysSGU66+0jEX8Lz95JSAR43x45RpFxmLjYcJSvLlZ8ejL8LxzcFzEL71U9PQ9JqOjVKEuDzD/OlNG39c/+QO76YQbouFim8n7qCU5KyG6WfWPTFTkH7tpkKzOIWnRDUBgGK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14/kVah6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 399EEC4CEE7;
-	Fri, 17 Oct 2025 15:36:52 +0000 (UTC)
+	 MIME-Version; b=cBhou4WhuhEct2+1nH5u4GXDcIsCPO0Nab/aqhuDP05ejkUD5aAlSE2qf30FPtOmPRLIRU16sV8ntepvzvuttEHpivVHV9wO2ilxpfkuqRHjnA7FN/I54slRPBMlxCKxufFhK++S5nGdl5myZRxsqL1CJ+W4k/vlcuj+NoWC5Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQsvZdZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CAFC4CEF9;
+	Fri, 17 Oct 2025 15:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715412;
-	bh=pqTMl/WYknTCVMtumIDzQIaLRnfS+c+t65QRGOTruKI=;
+	s=korg; t=1760713260;
+	bh=e03P0yfc0AHMPo1VqLmHiq86qES0NFJ5pc5xyFNyU9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=14/kVah6p37IENVztT9Pa0uMNV1gW7XbiPAAE49MUPEeVYN21u8SyZDHwhippKz7N
-	 rtKosrvErsjJpbPU4bTYXZdIKwMoWLMADK3AbHwr1ElLuPtMmOf7epzRJfILfHNr0a
-	 +ibyJ4H+JXkS8hEr/Cz0qC+pkWtWka8EqKEP0iwU=
+	b=sQsvZdZ1bbv/79T4gIrFA7Mbb7siqqY8Q74JqZFVYaLNWBKGsDaTX4W0BKtDh3fvV
+	 EI/0zB+bnOVI+8qBss2M+Wz25HFMl0Rtn/BUi4fN6lxsHq/GDx3+A7ci6y+jJiBV0P
+	 7jQPcXvkM457XaiD4BetWXcCCN7zmMtB8wXXokVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.17 208/371] crypto: atmel - Fix dma_unmap_sg() direction
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.1 104/168] memory: samsung: exynos-srom: Fix of_iomap leak in exynos_srom_probe
 Date: Fri, 17 Oct 2025 16:53:03 +0200
-Message-ID: <20251017145209.615637884@linuxfoundation.org>
+Message-ID: <20251017145132.858343449@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-commit f5d643156ef62216955c119216d2f3815bd51cb1 upstream.
+commit 6744085079e785dae5f7a2239456135407c58b25 upstream.
 
-It seems like everywhere in this file, dd->in_sg is mapped with
-DMA_TO_DEVICE and dd->out_sg is mapped with DMA_FROM_DEVICE.
+The of_platform_populate() call at the end of the function has a
+possible failure path, causing a resource leak.
 
-Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Replace of_iomap() with devm_platform_ioremap_resource() to ensure
+automatic cleanup of srom->reg_base.
+
+This issue was detected by smatch static analysis:
+drivers/memory/samsung/exynos-srom.c:155 exynos_srom_probe()warn:
+'srom->reg_base' from of_iomap() not released on lines: 155.
+
+Fixes: 8ac2266d8831 ("memory: samsung: exynos-srom: Add support for bank configuration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Link: https://lore.kernel.org/r/20250806025538.306593-1-zhen.ni@easystack.cn
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-tdes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/memory/samsung/exynos-srom.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/crypto/atmel-tdes.c
-+++ b/drivers/crypto/atmel-tdes.c
-@@ -512,7 +512,7 @@ static int atmel_tdes_crypt_start(struct
+--- a/drivers/memory/samsung/exynos-srom.c
++++ b/drivers/memory/samsung/exynos-srom.c
+@@ -121,20 +121,18 @@ static int exynos_srom_probe(struct plat
+ 		return -ENOMEM;
  
- 	if (err && (dd->flags & TDES_FLAGS_FAST)) {
- 		dma_unmap_sg(dd->dev, dd->in_sg, 1, DMA_TO_DEVICE);
--		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_TO_DEVICE);
-+		dma_unmap_sg(dd->dev, dd->out_sg, 1, DMA_FROM_DEVICE);
+ 	srom->dev = dev;
+-	srom->reg_base = of_iomap(np, 0);
+-	if (!srom->reg_base) {
++	srom->reg_base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(srom->reg_base)) {
+ 		dev_err(&pdev->dev, "iomap of exynos srom controller failed\n");
+-		return -ENOMEM;
++		return PTR_ERR(srom->reg_base);
  	}
  
- 	return err;
+ 	platform_set_drvdata(pdev, srom);
+ 
+ 	srom->reg_offset = exynos_srom_alloc_reg_dump(exynos_srom_offsets,
+ 						      ARRAY_SIZE(exynos_srom_offsets));
+-	if (!srom->reg_offset) {
+-		iounmap(srom->reg_base);
++	if (!srom->reg_offset)
+ 		return -ENOMEM;
+-	}
+ 
+ 	for_each_child_of_node(np, child) {
+ 		if (exynos_srom_configure_bank(srom, child)) {
 
 
 
