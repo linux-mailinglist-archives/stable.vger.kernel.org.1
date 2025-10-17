@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-187387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2801EBEACE9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DFCBBEA7BF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:09:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BC39948349
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD8769416B3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC62D330B17;
-	Fri, 17 Oct 2025 15:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466FB330B1B;
+	Fri, 17 Oct 2025 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDNAl7VA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/Lnjw54"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B64330B00;
-	Fri, 17 Oct 2025 15:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40D9330B18;
+	Fri, 17 Oct 2025 15:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715925; cv=none; b=LoaSKgMw7MK1CPH6BY8YSWXxrVxUY4Gc4JIgU8bd9FJ5Lg7JdzsgA8tLUtt1wU6XgnfaEwXwkYdaoQwwvEaiQThwplFA6NIKSs+eeHG8tSa6L5P6+TH2VLKKap2c75Qcl5SlQPpbT2t10uq02pgN4I0UAUTsS0i0oon22SpQPBg=
+	t=1760715293; cv=none; b=GmRRc87QNwWV3w2KplcPUh8JJx+OlUZd2FoiDpxF3PLWnz0VoP+Ukn/dooR6taz+XUpg/FcZwwebKZZwLJakk3iGZRmaanetQTC1kTuPzGh7nKIONds9nyXxj38bJSgoUgx/0fluh7KgV1993RSx18ue6aMleeKlXXvgOqj5aRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715925; c=relaxed/simple;
-	bh=Uw7qoxz+AOJ63hesYAdCv+BbJgAjPeFOl63Uj0FNZ3w=;
+	s=arc-20240116; t=1760715293; c=relaxed/simple;
+	bh=BvXKYQ3z1FQ8ccm1BspOZPEEl9fLa7p+hViOc5QD2Qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1dL2+BwYQGOQ5Dc4zvgrgV45NwNOGuwHAY+oN8JcrUgSBuLWxjSLJ9i1dckCaxHAPqsIxQlU05JTxJTTy4OO0HsJKPsCX61llwjlZQTJzndz2eldW4z8O5wVBEj8zB3SkJlsNWW+Ub/s3rErSPxnQ2kYh5WotJ0GHyIUv8ns+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDNAl7VA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A1FC4CEE7;
-	Fri, 17 Oct 2025 15:45:24 +0000 (UTC)
+	 MIME-Version; b=VNzy2N3Cl/l60KPj5Y4b1BDFkKdFtvVeLmW6hCr0dNXJah3mZUDWe7xQCdJEk2/DnS0FgFLbIlnxBF/4cBLehgf9UksMhs+qhCUmemQE37R2ukQtvaQeq+tnMyNHHTDT19Tzth+FkFGJgO5k08lsujRCk/x9l0ip/lSP1ksyurw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/Lnjw54; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C552C4CEE7;
+	Fri, 17 Oct 2025 15:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715924;
-	bh=Uw7qoxz+AOJ63hesYAdCv+BbJgAjPeFOl63Uj0FNZ3w=;
+	s=korg; t=1760715292;
+	bh=BvXKYQ3z1FQ8ccm1BspOZPEEl9fLa7p+hViOc5QD2Qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BDNAl7VA0uA3gE52BbW429llql17ijQ69lYHxcvAT7QgJG6bONvWMTwTftnHdopXX
-	 icLNX47bkvhBZXbVjhmrzKeoUlrP3nwGCgCDMPlyINbutNUlq9Ift9vzdEy1WB2+3r
-	 aPdsKbXUMaFVmCr/Kz8ZQAmrJTQ4IVpwaXkm40YU=
+	b=r/Lnjw54LPJQ8kCBB7/V1iLqfOKYEdeWUV169WLOswHvzFaETJsH7mnNjpBq9f2ps
+	 VXBMgERusnjYyBQEOHHBVHAP5LY9jM6JM88RdWGlzinClfMTR5ERu21bfF2x5mhiOz
+	 W+fPJpGIIMvBgdiYKyqRwm/fZohx1lBSropcd5rY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hupu <hupu.gm@gmail.com>,
-	Guilherme Amadio <amadio@gentoo.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Alexey Gladkov <legion@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 013/276] perf subcmd: avoid crash in exclude_cmds when excludes is empty
-Date: Fri, 17 Oct 2025 16:51:46 +0200
-Message-ID: <20251017145142.884260760@linuxfoundation.org>
+Subject: [PATCH 6.17 132/371] kbuild: Restore pattern to avoid stripping .rela.dyn from vmlinux
+Date: Fri, 17 Oct 2025 16:51:47 +0200
+Message-ID: <20251017145206.705974245@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hupu <hupu.gm@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit a5edf3550f4260504b7e0ab3d40d13ffe924b773 ]
+[ Upstream commit 4b47a3aefb29c523ca66f0d28de8db15a10f9352 ]
 
-When cross-compiling the perf tool for ARM64, `perf help` may crash
-with the following assertion failure:
+Commit 0ce5139fd96e ("kbuild: always create intermediate
+vmlinux.unstripped") removed the pattern to avoid stripping .rela.dyn
+sections added by commit e9d86b8e17e7 ("scripts: Do not strip .rela.dyn
+section"). Restore it so that .rela.dyn sections remain in the final
+vmlinux.
 
-  help.c:122: exclude_cmds: Assertion `cmds->names[ci] == NULL' failed.
-
-This happens when the perf binary is not named exactly "perf" or when
-multiple "perf-*" binaries exist in the same directory. In such cases,
-the `excludes` command list can be empty, which leads to the final
-assertion in exclude_cmds() being triggered.
-
-Add a simple guard at the beginning of exclude_cmds() to return early
-if excludes->cnt is zero, preventing the crash.
-
-Signed-off-by: hupu <hupu.gm@gmail.com>
-Reported-by: Guilherme Amadio <amadio@gentoo.org>
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20250909094953.106706-1-amadio@gentoo.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 0ce5139fd96e ("kbuild: always create intermediate vmlinux.unstripped")
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Acked-by: Alexey Gladkov <legion@kernel.org>
+Acked-by: Nicolas Schier <nsc@kernel.org>
+Link: https://patch.msgid.link/20251008-kbuild-fix-modinfo-regressions-v1-1-9fc776c5887c@kernel.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Stable-dep-of: 8ec3af916fe3 ("kbuild: Add '.rel.*' strip pattern for vmlinux")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/subcmd/help.c | 3 +++
- 1 file changed, 3 insertions(+)
+ scripts/Makefile.vmlinux | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
-index 42f57b640f119..687307f2fe0f7 100644
---- a/tools/lib/subcmd/help.c
-+++ b/tools/lib/subcmd/help.c
-@@ -72,6 +72,9 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
- 	size_t ci, cj, ei;
- 	int cmp;
+diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
+index 70856dab0f541..7c6f0e882eabb 100644
+--- a/scripts/Makefile.vmlinux
++++ b/scripts/Makefile.vmlinux
+@@ -87,7 +87,7 @@ endif
+ # ---------------------------------------------------------------------------
  
-+	if (!excludes->cnt)
-+		return;
-+
- 	ci = cj = ei = 0;
- 	while (ci < cmds->cnt && ei < excludes->cnt) {
- 		cmp = strcmp(cmds->names[ci]->name, excludes->names[ei]->name);
+ remove-section-y                                   := .modinfo
+-remove-section-$(CONFIG_ARCH_VMLINUX_NEEDS_RELOCS) += '.rel*'
++remove-section-$(CONFIG_ARCH_VMLINUX_NEEDS_RELOCS) += '.rel*' '!.rel*.dyn'
+ 
+ # To avoid warnings: "empty loadable segment detected at ..." from GNU objcopy,
+ # it is necessary to remove the PT_LOAD flag from the segment.
 -- 
 2.51.0
 
