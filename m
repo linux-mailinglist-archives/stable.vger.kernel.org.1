@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-187544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6800BEA548
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D98BEA43A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 529B81AE480E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4928956949E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FCD2472B0;
-	Fri, 17 Oct 2025 15:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEF5336EE0;
+	Fri, 17 Oct 2025 15:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQ32dEjz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+z4vlHD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB114330B30;
-	Fri, 17 Oct 2025 15:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8FA3321C5;
+	Fri, 17 Oct 2025 15:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716376; cv=none; b=M7PgH/11p0UmRqz1z6H8sPbS4oYcUtnnDXJYlrGzVUfHyVkEkOcG/em/jSKR8aAEDbc9ppJvbJMDPQDvfJecd+taPhKMY8KKIWx1Rqiem/r9tw9CEXi9Q+yi/5BEAaCsMB+S00vgYy4cW+QhIOo6AQTh6uhZsuuz5gGeGBl+7rs=
+	t=1760715646; cv=none; b=EdOh++ZqoH6ssGJc7ZVXsGf9+Es8zRzcgY6fBPYwB9YZaj3UCe1gku72+Ta13khNRNycMJNnb4FDpVGTEfwz8w4M6qZJDg4mdfMICq11yz0tRc7ulP1q7IoIBgsjzz5bv8Rh12ukd60j4J1riTjvdHO+PvzqVPBFJldZJg+ujcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716376; c=relaxed/simple;
-	bh=onRzFKT+3+DqkA8JYz65sao8+SU7sh0B6NXYk4SWCpA=;
+	s=arc-20240116; t=1760715646; c=relaxed/simple;
+	bh=nfISmVc063pBvm9eoShwBRDyLVu00CbxGlTiUlzaRJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aKBzNoDqU5mZLatyhhKDhSTM4AidltXdhLIe+nBf8v0/eQWONXgjVNmBiBwPlBW6tuVjofFmSQKuJLk4q4u1E0tfuxp24V2OBsvwMMM7IS/4SgANqzMPkiyOLE/FtlnhCb0sls9QjmCAPpY6MQg96cHftvetG0bPaWJhvhxL5no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQ32dEjz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5062BC4CEE7;
-	Fri, 17 Oct 2025 15:52:56 +0000 (UTC)
+	 MIME-Version; b=WOnKJ4v2hvDxgJCBcy5mHthitIF64JSROZQVpDQzgicFTTAPR7hW84SHRqr1lnhzupsfHBc2fU8SITl/yC4TxGd8QwkWvYKyMfvsy7nvp1SRDIO14OeBMx94do5ySR491eK3iBf9dCqLk+A66NT6LXJjGxQE3M61Mm7FKdRwU7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+z4vlHD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2EFC4CEE7;
+	Fri, 17 Oct 2025 15:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716376;
-	bh=onRzFKT+3+DqkA8JYz65sao8+SU7sh0B6NXYk4SWCpA=;
+	s=korg; t=1760715645;
+	bh=nfISmVc063pBvm9eoShwBRDyLVu00CbxGlTiUlzaRJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQ32dEjzEFALzAn7plxqICbGLY6vuxYdLMU2EGWZWzoef/6IvsiHl+cL3AXCqrbYZ
-	 Lo+7wxyOFTXpnrXlIcwys89fzGKImiQiCtlbW4Ui3PKt0IjXFQNvI9KDTKuPwJ5Yd6
-	 GCTCR5rc1C3sLGa//70uiNJMeU+8FX24OSUdjICw=
+	b=j+z4vlHDhqP+SBJxjL0S82HyT0vErzb7Dtb+DQ0fcTGtv8hYtrr+o1wJQmhTJliyd
+	 olss8wc3PkMs0E0mrMcWq7bZTY+4E4C/t4qMO3Hwu5F71UjHmS+EYlJseBDz8j8Lf/
+	 ZkXhfEZaDEL2OEQdy3F0ZG9LUCJRJCzCWjEC8snY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>
-Subject: [PATCH 5.15 169/276] ARM: OMAP2+: pm33xx-core: ix device node reference leaks in amx3_idle_init
-Date: Fri, 17 Oct 2025 16:54:22 +0200
-Message-ID: <20251017145148.642085017@linuxfoundation.org>
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>
+Subject: [PATCH 6.17 288/371] PCI: tegra194: Fix broken tegra_pcie_ep_raise_msi_irq()
+Date: Fri, 17 Oct 2025 16:54:23 +0200
+Message-ID: <20251017145212.492875421@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 74139a64e8cedb6d971c78d5d17384efeced1725 upstream.
+commit b640d42a6ac9ba01abe65ec34f7c73aaf6758ab8 upstream.
 
-Add missing of_node_put() calls to release
-device node references obtained via of_parse_phandle().
+The pci_epc_raise_irq() supplies a MSI or MSI-X interrupt number in range
+(1-N), as per the pci_epc_raise_irq() kdoc, where N is 32 for MSI.
 
-Fixes: 06ee7a950b6a ("ARM: OMAP2+: pm33xx-core: Add cpuidle_ops for am335x/am437x")
+But tegra_pcie_ep_raise_msi_irq() incorrectly uses the interrupt number as
+the MSI vector. This causes wrong MSI vector to be triggered, leading to
+the failure of PCI endpoint Kselftest MSI_TEST test case.
+
+To fix this issue, convert the interrupt number to MSI vector.
+
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20250902075943.2408832-1-linmq006@gmail.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://patch.msgid.link/20250922140822.519796-6-cassel@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-omap2/pm33xx-core.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm/mach-omap2/pm33xx-core.c
-+++ b/arch/arm/mach-omap2/pm33xx-core.c
-@@ -393,12 +393,15 @@ static int __init amx3_idle_init(struct
- 		if (!state_node)
- 			break;
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1955,10 +1955,10 @@ static int tegra_pcie_ep_raise_intx_irq(
  
--		if (!of_device_is_available(state_node))
-+		if (!of_device_is_available(state_node)) {
-+			of_node_put(state_node);
- 			continue;
-+		}
+ static int tegra_pcie_ep_raise_msi_irq(struct tegra_pcie_dw *pcie, u16 irq)
+ {
+-	if (unlikely(irq > 31))
++	if (unlikely(irq > 32))
+ 		return -EINVAL;
  
- 		if (i == CPUIDLE_STATE_MAX) {
- 			pr_warn("%s: cpuidle states reached max possible\n",
- 				__func__);
-+			of_node_put(state_node);
- 			break;
- 		}
+-	appl_writel(pcie, BIT(irq), APPL_MSI_CTRL_1);
++	appl_writel(pcie, BIT(irq - 1), APPL_MSI_CTRL_1);
  
-@@ -408,6 +411,7 @@ static int __init amx3_idle_init(struct
- 			states[state_count].wfi_flags |= WFI_FLAG_WAKE_M3 |
- 							 WFI_FLAG_FLUSH_CACHE;
- 
-+		of_node_put(state_node);
- 		state_count++;
- 	}
- 
+ 	return 0;
+ }
 
 
 
