@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-187616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7BE8BEAD09
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9902BEAA85
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B65D7960DA2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CA6C947795
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895982472B0;
-	Fri, 17 Oct 2025 15:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F422472B0;
+	Fri, 17 Oct 2025 15:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyZzSQhs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Id72Ligv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451E121C9EA;
-	Fri, 17 Oct 2025 15:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147BA330B28;
+	Fri, 17 Oct 2025 15:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716586; cv=none; b=K7/w3RaSw7LkTP9EDe99yq18ilq3NG9M1ryCqINx4hp4Wny86svlimE6XPKugPxVEzU3wE4ibmlEpv9XZmIxdpBA61bsmZq75sA1jMulNmm9vh38mE6kGTlTo3UhDS271LAT52FaGlqQoVOMEO70TpMCZmCdTnefz2BFraNMwiU=
+	t=1760715852; cv=none; b=rFzwoLUQiinqIRH/jW4gtggaH7tXOXc7/paQ0ixbHYbeGZCZsnOSn3HY7lkP1UwDhGI7Mg0PyeskyB5WVp47fVY32BOHzchQvpk3qnUz0Rn97JnH5NUp2yMYr3Ul1ftiqYeWOayiGa7ev75tBYgZ4z4ihsL5HuxcB/ZVIn6xPpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716586; c=relaxed/simple;
-	bh=QbAwGDAedkg68d5zy06yFYsWongnZkcUfLTYAB2/kZc=;
+	s=arc-20240116; t=1760715852; c=relaxed/simple;
+	bh=cazlg7xiAYvneiHJXyMG6pfAsAfaUyvXPcYH5zrteeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iGYEGHjcoUWsBLbHIUZ5Yg2EfWMM3IO462RV+bZS1w914NELuGk3OryKwgsk9CyIean/vtyuQOK8XPKJ+OZfGdmH9fWRfHiy2RvbQFuxne9/xE980rDecF2Cw58n5GdNn+rJBH5s3WDJq2IcHs2b8/2w+hcH7Gj7nOrjhgB8o04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyZzSQhs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7EE3C4CEE7;
-	Fri, 17 Oct 2025 15:56:25 +0000 (UTC)
+	 MIME-Version; b=ElijljNuq7ZViFrl28DaRoLlRcSwKWIhvc2jndEpzSg9O5qxAQVVrFwMQ7a5Zne3wvpBXXDgBnoHVnzSxQsjdLAFKmQfbAyrCstFr6S5JVjOBO7hASGAhqnhZmbmcUs8qcmC5hTMy7kePl7bvRlqVJ8rcNbQA3VAgyDPlso9png=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Id72Ligv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D88BC4CEE7;
+	Fri, 17 Oct 2025 15:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716586;
-	bh=QbAwGDAedkg68d5zy06yFYsWongnZkcUfLTYAB2/kZc=;
+	s=korg; t=1760715852;
+	bh=cazlg7xiAYvneiHJXyMG6pfAsAfaUyvXPcYH5zrteeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WyZzSQhsRJE+yEJH0t3wZ8hadvK95QaIlvFF7E5dBvaMkonYkmwPQy1289M4r5FcW
-	 cW5qr2H/yoEzdPdTz+1A+LI78tKWduVkanVZQsFK/Gz3br2lWe4bDnZKeKj4xZLjaP
-	 b+Xiqq9VoZwQvMpipojPCBcblRa9cJBM9ZEtNv3I=
+	b=Id72Ligvd6a67sEZeSm2b3dRw+ROVAdqmn1HVloxiCGLULXcO+q4kmvSt83gO65Bb
+	 kC9LnyQk8jlhZtv7cLhPaH9XOBd+wWyGrjmZzxOTRJXtYL04tRzPfju4llpIPMEtIz
+	 eHXiFJLVoZ9OxS3FQLjgIlgkyh2sjhRt0Z2XDoO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Florian Weimer <fweimer@redhat.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 241/276] arm64: dts: qcom: sdm845: Fix slimbam num-channels/ees
+Subject: [PATCH 6.17 359/371] copy_file_range: limit size if in compat mode
 Date: Fri, 17 Oct 2025 16:55:34 +0200
-Message-ID: <20251017145151.270159081@linuxfoundation.org>
+Message-ID: <20251017145215.076250110@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 316294bb6695a43a9181973ecd4e6fb3e576a9f7 ]
+[ Upstream commit f8f59a2c05dc16d19432e3154a9ac7bc385f4b92 ]
 
-Reading the hardware registers of the &slimbam on RB3 reveals that the BAM
-supports only 23 pipes (channels) and supports 4 EEs instead of 2. This
-hasn't caused problems so far since nothing is using the extra channels,
-but attempting to use them would lead to crashes.
+If the process runs in 32-bit compat mode, copy_file_range results can be
+in the in-band error range.  In this case limit copy length to MAX_RW_COUNT
+to prevent a signed overflow.
 
-The bam_dma driver might warn in the future if the num-channels in the DT
-are wrong, so correct the properties in the DT to avoid future regressions.
-
-Cc: stable@vger.kernel.org
-Fixes: 27ca1de07dc3 ("arm64: dts: qcom: sdm845: add slimbus nodes")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250821-sdm845-slimbam-channels-v1-1-498f7d46b9ee@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-[ Adjust context ]
+Reported-by: Florian Weimer <fweimer@redhat.com>
+Closes: https://lore.kernel.org/all/lhuh5ynl8z5.fsf@oldenburg.str.redhat.com/
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://lore.kernel.org/20250813151107.99856-1-mszeredi@redhat.com
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/read_write.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4839,11 +4839,11 @@
- 			compatible = "qcom,bam-v1.7.0";
- 			qcom,controlled-remotely;
- 			reg = <0 0x17184000 0 0x2a000>;
--			num-channels  = <31>;
-+			num-channels = <23>;
- 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
- 			#dma-cells = <1>;
- 			qcom,ee = <1>;
--			qcom,num-ees = <2>;
-+			qcom,num-ees = <4>;
- 			iommus = <&apps_smmu 0x1806 0x0>;
- 		};
+diff --git a/fs/read_write.c b/fs/read_write.c
+index c5b6265d984ba..833bae068770a 100644
+--- a/fs/read_write.c
++++ b/fs/read_write.c
+@@ -1576,6 +1576,13 @@ ssize_t vfs_copy_file_range(struct file *file_in, loff_t pos_in,
+ 	if (len == 0)
+ 		return 0;
  
++	/*
++	 * Make sure return value doesn't overflow in 32bit compat mode.  Also
++	 * limit the size for all cases except when calling ->copy_file_range().
++	 */
++	if (splice || !file_out->f_op->copy_file_range || in_compat_syscall())
++		len = min_t(size_t, MAX_RW_COUNT, len);
++
+ 	file_start_write(file_out);
+ 
+ 	/*
+@@ -1589,9 +1596,7 @@ ssize_t vfs_copy_file_range(struct file *file_in, loff_t pos_in,
+ 						      len, flags);
+ 	} else if (!splice && file_in->f_op->remap_file_range && samesb) {
+ 		ret = file_in->f_op->remap_file_range(file_in, pos_in,
+-				file_out, pos_out,
+-				min_t(loff_t, MAX_RW_COUNT, len),
+-				REMAP_FILE_CAN_SHORTEN);
++				file_out, pos_out, len, REMAP_FILE_CAN_SHORTEN);
+ 		/* fallback to splice */
+ 		if (ret <= 0)
+ 			splice = true;
+@@ -1624,8 +1629,7 @@ ssize_t vfs_copy_file_range(struct file *file_in, loff_t pos_in,
+ 	 * to splicing from input file, while file_start_write() is held on
+ 	 * the output file on a different sb.
+ 	 */
+-	ret = do_splice_direct(file_in, &pos_in, file_out, &pos_out,
+-			       min_t(size_t, len, MAX_RW_COUNT), 0);
++	ret = do_splice_direct(file_in, &pos_in, file_out, &pos_out, len, 0);
+ done:
+ 	if (ret > 0) {
+ 		fsnotify_access(file_in);
+-- 
+2.51.0
+
 
 
 
