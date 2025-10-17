@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538EEBEA368
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D74BEA69F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DEF89436CD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24EDF6E6C2A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD4632E142;
-	Fri, 17 Oct 2025 15:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9570B330B17;
+	Fri, 17 Oct 2025 15:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJ0sDplL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGksfvKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF1D32C957;
-	Fri, 17 Oct 2025 15:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506D6330B0C;
+	Fri, 17 Oct 2025 15:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715453; cv=none; b=SjvfL/By+5OzkagGMfetna72lITGHYriphneDP39h1b81tABtf381015gMwaeRxDMo8Smr2SPhZC9M8kZviH5lixto6/Tbk4dT2NJGTW+dzBy9V1ZvKVOeR/0LzGkhVMYDOH4pb7IgUZqBuoFmwTcPwtnoGYULaj01qi15w8U0E=
+	t=1760716190; cv=none; b=q8E9wkicuZJHtJh0VHaE0ck9HENzyLI1tNVQtoJdV3/3PyQwCafsbrypDJJObo2aiP9elCuU6UBegrrW5c3tzQn3u6gc7hSTpUH/LEzwM+dK8OjRNt8a00bZMh3J62QQU4RV45fKQsKt17+QlsEqKFjiJISxOiLAM5St4ho7H/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715453; c=relaxed/simple;
-	bh=jAOCkGS4FbCFgCCWWPgLwvYvTKMpPSJJzwY3PxRtE/8=;
+	s=arc-20240116; t=1760716190; c=relaxed/simple;
+	bh=Lg24jYjGcYiW52gvO1Js1eHN9qYsgTzknbIRHYWbQkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NI56/K+/xzSkIHWqVyq3l9WyWUECXXDC5FkmOmwrGm1oYKYiFB5WYYqsJK/O2nPcOgoVfZ2q0oT23Ui4C4OeVmjkA5AJ9ndlzkz16hBqF2RuI1aWE038YsbHi5f1OUq3v1L7p20DR8R9ZaJGzlqIhD38yGICkUwx/mc+YDbNdxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJ0sDplL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2978FC4CEE7;
-	Fri, 17 Oct 2025 15:37:31 +0000 (UTC)
+	 MIME-Version; b=Ab4cmfows46dKT3zauR1CSsOkkYn8SgUPuYDmHEKAEf+Wg5IAUnFydQJ1YpD/rLsca/8V1vJ+QpZ7kK+hrflBq/VgaPYVL7VBVLktA8lDaX+nfePBCg/Pla4ieMS2YZr0wIw3QlwDwvznJ6B0Er0ODQVNRxl/nFOhkeFIKOdS5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGksfvKc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697F9C4CEE7;
+	Fri, 17 Oct 2025 15:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715452;
-	bh=jAOCkGS4FbCFgCCWWPgLwvYvTKMpPSJJzwY3PxRtE/8=;
+	s=korg; t=1760716189;
+	bh=Lg24jYjGcYiW52gvO1Js1eHN9qYsgTzknbIRHYWbQkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJ0sDplLJlk5zWu75OV7PFJhm/fjEbXNAoD8jb2pnb2tlCgTMJufVKbkw0SeDTwla
-	 sySaIIF8AMZmbGCFGhdDetQGrdAqj/ex0APMo5orgmTR4M7vPr8WfbmSfpa2l8P4X7
-	 iLpxtKKPRvG360d7zLoehGPXXWxT1ia66UIe1n7k=
+	b=TGksfvKca3fVNqK8wp5h8xcNjEPbpmPlWBlejAh188BHS1ubNlCQXI68/hdMB4TzZ
+	 uyjjWiM0BZAlTRalwueqh0WjgzNiDkX18HxApyBh/8qV2hUkdtIet2XvKUp9t8LYpM
+	 SOnJ6/wjMV9JKcQ8VCH5VmtQQrjQI/KubLQrcu7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 221/371] iio: dac: ad5421: use int type to store negative error codes
+	Kohei Enju <enjuk@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 103/276] nfp: fix RSS hash key size when RSS is not supported
 Date: Fri, 17 Oct 2025 16:53:16 +0200
-Message-ID: <20251017145210.082606919@linuxfoundation.org>
+Message-ID: <20251017145146.243503738@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-commit 3379c900320954d768ed9903691fb2520926bbe3 upstream.
+[ Upstream commit 8425161ac1204d2185e0a10f5ae652bae75d2451 ]
 
-Change the 'ret' variable in ad5421_update_ctrl() from unsigned int to
-int, as it needs to store either negative error codes or zero returned
-by ad5421_write_unlocked().
+The nfp_net_get_rxfh_key_size() function returns -EOPNOTSUPP when
+devices don't support RSS, and callers treat the negative value as a
+large positive value since the return type is u32.
 
-Fixes: 5691b23489db ("staging:iio:dac: Add AD5421 driver")
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Link: https://patch.msgid.link/20250901135726.17601-3-rongqianfeng@vivo.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Return 0 when devices don't support RSS, aligning with the ethtool
+interface .get_rxfh_key_size() that requires returning 0 in such cases.
+
+Fixes: 9ff304bfaf58 ("nfp: add support for reporting CRC32 hash function")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Link: https://patch.msgid.link/20250929054230.68120-1-enjuk@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/dac/ad5421.c |    2 +-
+ drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/dac/ad5421.c
-+++ b/drivers/iio/dac/ad5421.c
-@@ -186,7 +186,7 @@ static int ad5421_update_ctrl(struct iio
- 	unsigned int clr)
- {
- 	struct ad5421_state *st = iio_priv(indio_dev);
--	unsigned int ret;
-+	int ret;
+diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
+index d295942968f33..160f853e93adc 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
+@@ -1001,7 +1001,7 @@ static u32 nfp_net_get_rxfh_key_size(struct net_device *netdev)
+ 	struct nfp_net *nn = netdev_priv(netdev);
  
- 	mutex_lock(&st->lock);
+ 	if (!(nn->cap & NFP_NET_CFG_CTRL_RSS_ANY))
+-		return -EOPNOTSUPP;
++		return 0;
  
+ 	return nfp_net_rss_key_sz(nn);
+ }
+-- 
+2.51.0
+
 
 
 
