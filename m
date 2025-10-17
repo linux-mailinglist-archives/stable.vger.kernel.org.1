@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-187274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C482ABEA6B1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:55 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6040FBE9CDB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14ADD6210EB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 11CEA4F9F28
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07115332912;
-	Fri, 17 Oct 2025 15:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8CB337118;
+	Fri, 17 Oct 2025 15:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ldn704uU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvCUFEx2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D5533290B;
-	Fri, 17 Oct 2025 15:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB3C3370FA;
+	Fri, 17 Oct 2025 15:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715611; cv=none; b=qN0M3FGEsPJwZIERLepWxr2zLMXpE8LsEZ3Wj7/AOapIL9kLPlFggiVPzqW2SgYalvRIPH3pAcp8cqGJrhKOjLHcd8UKGcyZgFB2pCqut45/eRfAc6HmPb5tyM730oA4woebxZTFQrvSu+ICvjuIOr6SOud+fOcGiLgMfcnyp9A=
+	t=1760713974; cv=none; b=jJVvGoufHY3pqIoxjjN2PlZmikNYcry7YZPZRB4fUgyui4FDIDffVNDs3H23cNLxbovICdc9R/oUQhaS81bBU2nPQ+1ItGFn6ZavXcVT4nQHVMmIYhlQ76o9TCiKzvWCWVc0QzPyUXbgBtn+r5BHmZygRJQunUA61203yfAxRX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715611; c=relaxed/simple;
-	bh=1A2S8ghDJ8TW+ZRqaSS27HQUcka5Nny7bzp2xI/ujtU=;
+	s=arc-20240116; t=1760713974; c=relaxed/simple;
+	bh=dUZKMQc3r766lIMHleDVAsVcwxu5LuRVP1bcf2pripA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKxc6SJA9d/zYsVBQWOye7iJi3CVRhvel+plcYJTG+rMNW50iBYiOLUcbZ+EnQHBBk4U4TcmTW5/ygSdtqYL3rOEiiBUVCEqnqQ867m5E6olsnAC/F5YanupHk2WT9XzxEATTPiDoLCoNXwnAhKl5hBn7le5g/dbXfgORnT8yuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ldn704uU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA30C4CEE7;
-	Fri, 17 Oct 2025 15:40:11 +0000 (UTC)
+	 MIME-Version; b=OqvHE1f/B6tmyI98D8SzuYc/RIPalJnNeLxE4kRbvyHQBF4qdmExAVcM/MVxMpqDNSwDE64yut36dlUuUFv2iq2SPoqg1quoy/+iwrWQXdjNlX90bvlgwx6JkVbqAW59QoAiYBdHOZypInrKnwTdyVatpewi2pAWQDpuynT+LlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvCUFEx2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9EBC4CEE7;
+	Fri, 17 Oct 2025 15:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715611;
-	bh=1A2S8ghDJ8TW+ZRqaSS27HQUcka5Nny7bzp2xI/ujtU=;
+	s=korg; t=1760713974;
+	bh=dUZKMQc3r766lIMHleDVAsVcwxu5LuRVP1bcf2pripA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ldn704uUWAu0MxwLhg8Mi8FDPi8t9bUpVmdnBUmZqEW1dr0/FYpNAO8hpgrtAVxfm
-	 YYppBoSWhs28GzQXD4yAJltMgep5bwgHTrWoW8RXRXCdpld86BMyogp4BWuyoBYdLb
-	 cH8Gd1ycERY3tTOneEdlqF+amRJxJGANBm951Mqc=
+	b=UvCUFEx223XrkrtYLRvXScrgetTcRykKuxYQAahlE1hSirCiLyxn94CwsYYJOHz++
+	 8VSACZVfOIuoVqbwrHdGU5A61hI2ukI4aLPgmUS3GUB6aSsxrER0tVL/2BKILghYAE
+	 7WwdsTcyPxo1LLS2IxNSdpDxlI93HRpwwHqiMstg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.17 269/371] memory: stm32_omm: Fix req2ack update test
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 183/201] ACPI: property: Add code comments explaining what is going on
 Date: Fri, 17 Oct 2025 16:54:04 +0200
-Message-ID: <20251017145211.809442628@linuxfoundation.org>
+Message-ID: <20251017145141.479859629@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrice Chotard <patrice.chotard@foss.st.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-commit d140f3ba76ac98faad7f9b37ef5a3dcbd57f59e2 upstream.
+[ Upstream commit 737c3a09dcf69ba2814f3674947ccaec1861c985 ]
 
-If "st,omm-req2ack-ns" property is found and its value is not 0,
-the current test doesn't allow to compute and set req2ack value,
-Fix this test.
+In some places in the ACPI device properties handling code, it is
+unclear why the code is what it is.  Some assumptions are not documented
+and some pieces of code are based on knowledge that is not mentioned
+anywhere.
 
-Fixes: 8181d061dcff ("memory: Add STM32 Octo Memory Manager driver")
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Link: https://lore.kernel.org/r/20250807-upstream_omm_fix_req2ack_test_condition-v2-1-d7df4af2b48b@foss.st.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Add code comments explaining these things.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Stable-dep-of: baf60d5cb8bc ("ACPI: property: Do not pass NULL handles to acpi_attach_data()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/memory/stm32_omm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/property.c |   46 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/memory/stm32_omm.c b/drivers/memory/stm32_omm.c
-index bee2ecc8c2b9..5d06623f3f68 100644
---- a/drivers/memory/stm32_omm.c
-+++ b/drivers/memory/stm32_omm.c
-@@ -238,7 +238,7 @@ static int stm32_omm_configure(struct device *dev)
- 		if (mux & CR_MUXEN) {
- 			ret = of_property_read_u32(dev->of_node, "st,omm-req2ack-ns",
- 						   &req2ack);
--			if (!ret && !req2ack) {
-+			if (!ret && req2ack) {
- 				req2ack = DIV_ROUND_UP(req2ack, NSEC_PER_SEC / clk_rate_max) - 1;
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -96,7 +96,18 @@ static bool acpi_nondev_subnode_extract(
+ 	if (handle)
+ 		acpi_get_parent(handle, &scope);
  
- 				if (req2ack > 256)
--- 
-2.51.0
-
++	/*
++	 * Extract properties from the _DSD-equivalent package pointed to by
++	 * desc and use scope (if not NULL) for the completion of relative
++	 * pathname segments.
++	 *
++	 * The extracted properties will be held in the new data node dn.
++	 */
+ 	result = acpi_extract_properties(scope, desc, &dn->data);
++	/*
++	 * Look for subnodes in the _DSD-equivalent package pointed to by desc
++	 * and create child nodes of dn if there are any.
++	 */
+ 	if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->fwnode))
+ 		result = true;
+ 
+@@ -121,6 +132,12 @@ static bool acpi_nondev_subnode_ok(acpi_
+ 	acpi_handle handle;
+ 	acpi_status status;
+ 
++	/*
++	 * If the scope is unknown, the _DSD-equivalent package being parsed
++	 * was embedded in an outer _DSD-equivalent package as a result of
++	 * direct evaluation of an object pointed to by a reference.  In that
++	 * case, using a pathname as the target object pointer is invalid.
++	 */
+ 	if (!scope)
+ 		return false;
+ 
+@@ -150,6 +167,10 @@ static bool acpi_add_nondev_subnodes(acp
+ 	bool ret = false;
+ 	int i;
+ 
++	/*
++	 * Every element in the links package is expected to represent a link
++	 * to a non-device node in a tree containing device-specific data.
++	 */
+ 	for (i = 0; i < links->package.count; i++) {
+ 		union acpi_object *link, *desc;
+ 		bool result;
+@@ -159,17 +180,38 @@ static bool acpi_add_nondev_subnodes(acp
+ 		if (link->package.count != 2)
+ 			continue;
+ 
+-		/* The first one must be a string. */
++		/* The first one (the key) must be a string. */
+ 		if (link->package.elements[0].type != ACPI_TYPE_STRING)
+ 			continue;
+ 
+-		/* The second one may be a string or a package. */
++		/* The second one (the target) may be a string or a package. */
+ 		switch (link->package.elements[1].type) {
+ 		case ACPI_TYPE_STRING:
++			/*
++			 * The string is expected to be a full pathname or a
++			 * pathname segment relative to the given scope.  That
++			 * pathname is expected to point to an object returning
++			 * a package that contains _DSD-equivalent information.
++			 */
+ 			result = acpi_nondev_subnode_ok(scope, link, list,
+ 							 parent);
+ 			break;
+ 		case ACPI_TYPE_PACKAGE:
++			/*
++			 * This happens when a reference is used in AML to
++			 * point to the target.  Since the target is expected
++			 * to be a named object, a reference to it will cause it
++			 * to be avaluated in place and its return package will
++			 * be embedded in the links package at the location of
++			 * the reference.
++			 *
++			 * The target package is expected to contain _DSD-
++			 * equivalent information, but the scope in which it
++			 * is located in the original AML is unknown.  Thus
++			 * it cannot contain pathname segments represented as
++			 * strings because there is no way to build full
++			 * pathnames out of them.
++			 */
+ 			desc = &link->package.elements[1];
+ 			result = acpi_nondev_subnode_extract(desc, NULL, link,
+ 							     list, parent);
 
 
 
