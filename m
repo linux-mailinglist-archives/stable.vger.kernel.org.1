@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-186381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13056BE9668
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD56DBE99A2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB5464E5B85
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3BE9746720
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FE5239591;
-	Fri, 17 Oct 2025 14:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78C62F12B7;
+	Fri, 17 Oct 2025 15:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6Km38xp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIZo1nDJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C535695;
-	Fri, 17 Oct 2025 14:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854D82F6932;
+	Fri, 17 Oct 2025 15:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713079; cv=none; b=Cf/3Ey2s7f4w3UKS54itTj5f+0ZmKkCtXUsPzQfBOVQ1+ICMXaXlDv9t44wv5UvQWpf5idrzY9hgxsDJgUbd4okscGB7JUfyfTyL+82u7w3AvHQmvHFU8cuhI8SrmEkR6IPW+X7J2BSJbuX2x9cNZhmCy6B+q8xljBp+rH/76x4=
+	t=1760713610; cv=none; b=U90HqMj0QEV+GNZ0QZWAdmVHyNwZ9PPV0RTzq7WN06m4Ix9Nb8S7R/J7dppkdPyrNwdJ+erdYIMoJFNXSjwSJqOMhwnLV/Sd1yQDML0zSzyoqd9z9lCJ/EXBJ+S+/vsJqZlHDeSe/ToPQ8FwMVXijUc7+zopq/K4/3yjKi++puw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713079; c=relaxed/simple;
-	bh=o/pBk419bMk325HUtPYwd9VOYA/8mV4BT2dmqyId+W8=;
+	s=arc-20240116; t=1760713610; c=relaxed/simple;
+	bh=026bJqazZrqd93QictfX8f8c8HV3EURvg71LcdWrCeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqZPYZqdM5FTqFkUcqlMUOP2Wafn9MlT4eXzVK1nLa+O7sUJS78b5tUn07EzgcQZcQk7GkThG7M4hMY1MAECSukceYnFU2GnmhJOwRZvBRd4/4ZRqNuLIV6OT7xfLG+8O7bZ6mFHsbr6NlRDahJh0gjNAzB8X/bO/nteI1VTAKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6Km38xp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D673C4CEF9;
-	Fri, 17 Oct 2025 14:57:59 +0000 (UTC)
+	 MIME-Version; b=pwOAW3rQUYkYGalkpN+HAzj7QsVgBS39TeEsoIImN+Y8Ae4Zs+CjTpIZtrgrl9q1MkfT2eeFlDzFaaUxtUSWkG3wsnTjOWenJKlp7lUXfVR3H1Kxh9o0QpdlswKrukTjPISDEetSf5stKRLDWSpT7u0EzUIt+XhpDoSnxkIORn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIZo1nDJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13774C4CEE7;
+	Fri, 17 Oct 2025 15:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713079;
-	bh=o/pBk419bMk325HUtPYwd9VOYA/8mV4BT2dmqyId+W8=;
+	s=korg; t=1760713610;
+	bh=026bJqazZrqd93QictfX8f8c8HV3EURvg71LcdWrCeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6Km38xpYSFSBHsttXTsE/m8SSMk3PHtFJgbBhVqwH9zwUczHFiIWqgpfyoxaquX/
-	 RtdHe8ZnFtwvEod21IKM27WI4bwWwODkCmjEvSppYJe2yi8X4tBmcnkDY/Qo0kiPSS
-	 29Zue49aNdWXkmUlsdUOuAwlsvoeLO4gszZbAfKs=
+	b=CIZo1nDJ/T1VB8o0TuenL3q7qaEeNQr1jzX/SJdFj1UgWlAIraDvdfuY0J51Jwzqh
+	 vkR09muujdI0bP57PEiw75QUpldS71JZxBOkqMph3H6XR6xeC1/4h6hY1z6/1UNFJD
+	 8etAp/mhemxRCEupWbj8tsMaxVBOBU1Ij8gY49Jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yusuke Suzuki <yusuke.suzuki@isovalent.com>,
-	Julian Wiedmann <jwi@isovalent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jordan Rife <jrife@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/168] bpf: Fix metadata_dst leak __bpf_redirect_neigh_v{4,6}
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.6 058/201] ACPI: property: Fix buffer properties extraction for subnodes
 Date: Fri, 17 Oct 2025 16:51:59 +0200
-Message-ID: <20251017145130.494123226@linuxfoundation.org>
+Message-ID: <20251017145136.874853226@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,69 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 23f3770e1a53e6c7a553135011f547209e141e72 ]
+commit d0759b10989c5c5aae3d455458c9fc4e8cc694f7 upstream.
 
-Cilium has a BPF egress gateway feature which forces outgoing K8s Pod
-traffic to pass through dedicated egress gateways which then SNAT the
-traffic in order to interact with stable IPs outside the cluster.
+The ACPI handle passed to acpi_extract_properties() as the first
+argument represents the ACPI namespace scope in which to look for
+objects returning buffers associated with buffer properties.
 
-The traffic is directed to the gateway via vxlan tunnel in collect md
-mode. A recent BPF change utilized the bpf_redirect_neigh() helper to
-forward packets after the arrival and decap on vxlan, which turned out
-over time that the kmalloc-256 slab usage in kernel was ever-increasing.
+For _DSD objects located immediately under ACPI devices, this handle is
+the same as the handle of the device object holding the _DSD, but for
+data-only subnodes it is not so.
 
-The issue was that vxlan allocates the metadata_dst object and attaches
-it through a fake dst entry to the skb. The latter was never released
-though given bpf_redirect_neigh() was merely setting the new dst entry
-via skb_dst_set() without dropping an existing one first.
+First of all, data-only subnodes are represented by objects that
+cannot hold other objects in their scopes (like control methods).
+Therefore a data-only subnode handle cannot be used for completing
+relative pathname segments, so the current code in
+in acpi_nondev_subnode_extract() passing a data-only subnode handle
+to acpi_extract_properties() is invalid.
 
-Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
-Reported-by: Yusuke Suzuki <yusuke.suzuki@isovalent.com>
-Reported-by: Julian Wiedmann <jwi@isovalent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jordan Rife <jrife@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jordan Rife <jrife@google.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20251003073418.291171-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Moreover, a data-only subnode of device A may be represented by an
+object located in the scope of device B (which kind of makes sense,
+for instance, if A is a B's child).  In that case, the scope in
+question would be the one of device B.  In other words, the scope
+mentioned above is the same as the scope used for subnode object
+lookup in acpi_nondev_subnode_extract().
+
+Accordingly, rearrange that function to use the same scope for the
+extraction of properties and subnode object lookup.
+
+Fixes: 103e10c69c61 ("ACPI: property: Add support for parsing buffer property UUID")
+Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/property.c |   30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 183ede9345e61..9b4254feefccd 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2266,6 +2266,7 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
- 		if (IS_ERR(dst))
- 			goto out_drop;
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -74,6 +74,7 @@ static bool acpi_nondev_subnode_extract(
+ 					struct fwnode_handle *parent)
+ {
+ 	struct acpi_data_node *dn;
++	acpi_handle scope = NULL;
+ 	bool result;
  
-+		skb_dst_drop(skb);
- 		skb_dst_set(skb, dst);
- 	} else if (nh->nh_family != AF_INET6) {
- 		goto out_drop;
-@@ -2375,6 +2376,7 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
- 			goto out_drop;
- 		}
+ 	dn = kzalloc(sizeof(*dn), GFP_KERNEL);
+@@ -86,27 +87,18 @@ static bool acpi_nondev_subnode_extract(
+ 	INIT_LIST_HEAD(&dn->data.properties);
+ 	INIT_LIST_HEAD(&dn->data.subnodes);
  
-+		skb_dst_drop(skb);
- 		skb_dst_set(skb, &rt->dst);
- 	}
+-	result = acpi_extract_properties(handle, desc, &dn->data);
++	/*
++	 * The scope for the completion of relative pathname segments and
++	 * subnode object lookup is the one of the namespace node (device)
++	 * containing the object that has returned the package.  That is, it's
++	 * the scope of that object's parent device.
++	 */
++	if (handle)
++		acpi_get_parent(handle, &scope);
  
--- 
-2.51.0
-
+-	if (handle) {
+-		acpi_handle scope;
+-		acpi_status status;
+-
+-		/*
+-		 * The scope for the subnode object lookup is the one of the
+-		 * namespace node (device) containing the object that has
+-		 * returned the package.  That is, it's the scope of that
+-		 * object's parent.
+-		 */
+-		status = acpi_get_parent(handle, &scope);
+-		if (ACPI_SUCCESS(status)
+-		    && acpi_enumerate_nondev_subnodes(scope, desc, &dn->data,
+-						      &dn->fwnode))
+-			result = true;
+-	} else if (acpi_enumerate_nondev_subnodes(NULL, desc, &dn->data,
+-						  &dn->fwnode)) {
++	result = acpi_extract_properties(scope, desc, &dn->data);
++	if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->fwnode))
+ 		result = true;
+-	}
+ 
+ 	if (result) {
+ 		dn->handle = handle;
 
 
 
