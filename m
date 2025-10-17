@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-187561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D279CBEA57E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:30 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCCFBE9FE1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C20918879FF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 56DDC5678FD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F56330B36;
-	Fri, 17 Oct 2025 15:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C021D231C9F;
+	Fri, 17 Oct 2025 15:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjln1DzL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0vYVcAl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F9E330B2D;
-	Fri, 17 Oct 2025 15:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE863208;
+	Fri, 17 Oct 2025 15:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716425; cv=none; b=EagPoHNUQnRkPrMGobKe/xZREWVGk4DOH5DIruilHSL5aCTBLPSJd2A5JiJCFFDWOs4y88hUbyJ/2LZKeukbwYa6+rAn6vZ9FzzpCG2g9en9u8mqYkOwA6ZVf4RzADbviT6Ohbj5iursRssAKVf1W277INDhPkYr1/EH6psdVrY=
+	t=1760714811; cv=none; b=P5HjeTZ3sdIT03+s4KubAf6vgcSA2WfxhAfhwO1LYYkAa8cEjpfn+0e2Ojs1YRUVe3cQTSGZqPsUjSTgCdYYqDd+zkDgJOPWHmmbccavZle31kqrgPw4+njnzzv6sQnNJspZzfe0m3+V1Jyz69E/b6oWNuMW5Vv7i839qKrYz5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716425; c=relaxed/simple;
-	bh=yPeBbmUN45EpIBGWzOpqqPTc3GEoz8TOYgcEMz/uj80=;
+	s=arc-20240116; t=1760714811; c=relaxed/simple;
+	bh=wehrLgD8sP54/zBNoz7FHq47fIOfp8ZhH8gY7QvWX3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUAkks37+Mac55+qyKrsAbaLDoLvpD8ReHk6yY1FMKryw6PZ6pgyqrjXD8MrSAXLmxEmJlQ9sP+s0c1FH1cUOPw27/dYflVCe4EpLlBVTVtSl9FL1iB0YwrrNPumU0F4yjPWa9vdVCuSht8bAYh6OOD7+ttCCPwB0+viZgs3z4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjln1DzL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5248FC4CEE7;
-	Fri, 17 Oct 2025 15:53:45 +0000 (UTC)
+	 MIME-Version; b=qUiepeh0tiDMTbDnNrxKQB2sz6vTHjPPLKfxchYimi/XDmVGhZa1i8vh/9YiF1HxAuPy1Czx7iB7QxdhPmScim9uLaNdQmEzLYMn4E42cytKC3f7KGxzI/YiKsE8mPBJcjRFEZ8unSx/nKyr8H8xvRkCgKJDsAUn3/Z1znowxOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0vYVcAl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F7BC4CEFE;
+	Fri, 17 Oct 2025 15:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716425;
-	bh=yPeBbmUN45EpIBGWzOpqqPTc3GEoz8TOYgcEMz/uj80=;
+	s=korg; t=1760714811;
+	bh=wehrLgD8sP54/zBNoz7FHq47fIOfp8ZhH8gY7QvWX3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fjln1DzLpV0pE57wYzvd336bemn/zPEDu+BNc0l9E2DHgkxkRYwAgtwVETv2GX/Bu
-	 bXUAjngBVlpm1xWRBWzp56UPYKom6lK3bdcwAxoh+IQLC4Qu9gnCFRoH6cKHLKaFp9
-	 /a5qCX8pUCq18Jb+xj3si3Az6IOtlegqOctLbKHY=
+	b=S0vYVcAlAASIGBHBF5Rhhe1dnfa272AdCA4ipEz4zQv88Y1A4BSx+vxLHOE95t/z8
+	 HY3WJgNsXdsLUMtI9SDG+E/bVtwvwTjPYjVtxnB/affNXrMts89INS8Brv3jP4HNie
+	 GL7M5eW0u94o2HhUffl5nnnGD78fi60IjHA/Pe8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 5.15 187/276] KEYS: trusted_tpm1: Compare HMAC values in constant time
+	Matt Fleming <matt@readmodwrite.com>,
+	Matt Fleming <mfleming@cloudflare.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: [PATCH 6.12 273/277] sched/fair: Block delayed tasks on throttled hierarchy during dequeue
 Date: Fri, 17 Oct 2025 16:54:40 +0200
-Message-ID: <20251017145149.298937964@linuxfoundation.org>
+Message-ID: <20251017145157.126995883@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-commit eed0e3d305530066b4fc5370107cff8ef1a0d229 upstream.
+Dequeuing a fair task on a throttled hierarchy returns early on
+encountering a throttled cfs_rq since the throttle path has already
+dequeued the hierarchy above and has adjusted the h_nr_* accounting till
+the root cfs_rq.
 
-To prevent timing attacks, HMAC value comparison needs to be constant
-time.  Replace the memcmp() with the correct function, crypto_memneq().
+dequeue_entities() crucially misses calling __block_task() for delayed
+tasks being dequeued on the throttled hierarchies, but this was mostly
+harmless until commit b7ca5743a260 ("sched/core: Tweak
+wait_task_inactive() to force dequeue sched_delayed tasks") since all
+existing cases would re-enqueue the task if task_on_rq_queued() returned
+true and the task would eventually be blocked at pick after the
+hierarchy was unthrottled.
 
-[For the Fixes commit I used the commit that introduced the memcmp().
-It predates the introduction of crypto_memneq(), but it was still a bug
-at the time even though a helper function didn't exist yet.]
+wait_task_inactive() is special as it expects the delayed task on
+throttled hierarchy to reach the blocked state on dequeue but since
+__block_task() is never called, task_on_rq_queued() continues to return
+true. Furthermore, since the task is now off the hierarchy, the pick
+never reaches it to fully block the task even after unthrottle leading
+to wait_task_inactive() looping endlessly.
 
-Fixes: d00a1c72f7f4 ("keys: add new trusted key-type")
+Remedy this by calling __block_task() if a delayed task is being
+dequeued on a throttled hierarchy.
+
+This fix is only required for stabled kernels implementing delay dequeue
+(>= v6.12) before v6.18 since upstream commit e1fad12dcb66 ("sched/fair:
+Switch to task based throttle model") indirectly fixes this by removing
+the early return conditions in dequeue_entities() as part of the per-task
+throttle feature.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reported-by: Matt Fleming <matt@readmodwrite.com>
+Closes: https://lore.kernel.org/all/20250925133310.1843863-1-matt@readmodwrite.com/
+Fixes: b7ca5743a260 ("sched/core: Tweak wait_task_inactive() to force dequeue sched_delayed tasks")
+Tested-by: Matt Fleming <mfleming@cloudflare.com>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/keys/trusted-keys/trusted_tpm1.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/security/keys/trusted-keys/trusted_tpm1.c
-+++ b/security/keys/trusted-keys/trusted_tpm1.c
-@@ -7,6 +7,7 @@
-  */
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -7187,6 +7187,7 @@ static int dequeue_entities(struct rq *r
+ 	int h_nr_delayed = 0;
+ 	struct cfs_rq *cfs_rq;
+ 	u64 slice = 0;
++	int ret = 0;
  
- #include <crypto/hash_info.h>
-+#include <crypto/algapi.h>
- #include <linux/init.h>
- #include <linux/slab.h>
- #include <linux/parser.h>
-@@ -241,7 +242,7 @@ int TSS_checkhmac1(unsigned char *buffer
- 	if (ret < 0)
- 		goto out;
+ 	if (entity_is_task(se)) {
+ 		p = task_of(se);
+@@ -7218,7 +7219,7 @@ static int dequeue_entities(struct rq *r
  
--	if (memcmp(testhmac, authdata, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac, authdata, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
-@@ -334,7 +335,7 @@ static int TSS_checkhmac2(unsigned char
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag1, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
-+	if (crypto_memneq(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
- 		ret = -EINVAL;
- 		goto out;
+ 		/* end evaluation on encountering a throttled cfs_rq */
+ 		if (cfs_rq_throttled(cfs_rq))
+-			return 0;
++			goto out;
+ 
+ 		/* Don't dequeue parent if it has other entities besides us */
+ 		if (cfs_rq->load.weight) {
+@@ -7261,7 +7262,7 @@ static int dequeue_entities(struct rq *r
+ 
+ 		/* end evaluation on encountering a throttled cfs_rq */
+ 		if (cfs_rq_throttled(cfs_rq))
+-			return 0;
++			goto out;
  	}
-@@ -343,7 +344,7 @@ static int TSS_checkhmac2(unsigned char
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag2, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac2, authdata2, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac2, authdata2, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
+ 
+ 	sub_nr_running(rq, h_nr_queued);
+@@ -7273,6 +7274,8 @@ static int dequeue_entities(struct rq *r
+ 	if (unlikely(!was_sched_idle && sched_idle_rq(rq)))
+ 		rq->next_balance = jiffies;
+ 
++	ret = 1;
++out:
+ 	if (p && task_delayed) {
+ 		SCHED_WARN_ON(!task_sleep);
+ 		SCHED_WARN_ON(p->on_rq != 1);
+@@ -7288,7 +7291,7 @@ static int dequeue_entities(struct rq *r
+ 		__block_task(rq, p);
+ 	}
+ 
+-	return 1;
++	return ret;
+ }
+ 
+ /*
 
 
 
