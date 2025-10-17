@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3BEBE9970
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4F4BE9F2E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 06CC835D1A3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7BD8C5883FC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2036523EA9E;
-	Fri, 17 Oct 2025 15:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9ADB23EA9E;
+	Fri, 17 Oct 2025 15:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eE2pF+a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLR/B4BR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DA01D5CE0;
-	Fri, 17 Oct 2025 15:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BDE3BB5A;
+	Fri, 17 Oct 2025 15:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714045; cv=none; b=EDuM0jCqVkvOoxAbv5rF5uyHcvzxLdSx4jmUSJLHDrqskeeXRF9cp6qA3wBpPilgQNh7fgph3MYQUGD/y8sZU9llPbstKYX9DKUEhDnYOIDO8SSEEVDYpcfSLNkziJTG3MubLWlU6szDU8t+/QCv8dy3V031dT94Gl9xdyjrd2o=
+	t=1760714713; cv=none; b=S4eV3mI0ZRUKDm4fs8WsrRTYaUba2gbwQJJWSJqRJLl747zAVMAic4WaiN2WU2+sIY1R9+DXx+TFjEOx0qnLimtFAzzZ3oamFcibzELIGr/UQ7u/m2gqD9INUDODiN9hVRSO4Iw0dD1lcGexyAHIJi7hp09XSoXIvwIOJ7S1Jb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714045; c=relaxed/simple;
-	bh=/PnmzpY02QJavIIz1eY1cBbKGIXnyc41endqCBVTPPo=;
+	s=arc-20240116; t=1760714713; c=relaxed/simple;
+	bh=3RxEu7DDMPfuMkWehCivwr0elPmhhu1nM/hE5oH9JOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHjc5FNqqtRYTJi8/GXiqL2DFEZOfSLR+VoSJQsS/A8LmBa4bV1Ea4FLVnbzb0/iiJcZYwmbKvxr4zOlfl7CCT8H/VNJm+kdF7FFdZUYBqd+uD5V4rWdFDrNXKI4/0JYGUuLN/cqzi+obspA2UVybkQb6ODj/bQI4I3R4+BtDrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eE2pF+a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5666DC4CEE7;
-	Fri, 17 Oct 2025 15:14:05 +0000 (UTC)
+	 MIME-Version; b=prysiITo4R2Bgbo3G7hKvtB1wX5ZDNy+xyRrCcP3mZ5acxjBAE8WE6cRYqO/2DmTbTOoAm6p6CrF62/Y1SOn78VOqp+Izau2KES3VoVqokVVtiqPvg8TVpHHmBGjcI2jMncnlyVpGs4SnCiE37VPg+QOJ10/Rd8073VNggcr+yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLR/B4BR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0980DC4CEE7;
+	Fri, 17 Oct 2025 15:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714045;
-	bh=/PnmzpY02QJavIIz1eY1cBbKGIXnyc41endqCBVTPPo=;
+	s=korg; t=1760714713;
+	bh=3RxEu7DDMPfuMkWehCivwr0elPmhhu1nM/hE5oH9JOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1eE2pF+aPT0MsjR+pFIgwJ2C8jrNF5754UHdm9AGUG0Jlwe19tg4tUkShqNwGmvTk
-	 y+TbEVWBTbGWWwrWHx3TrDFFhtNS26a0Z+V1LPQZwuVls8LwE/UseuOKcrftw7hC+i
-	 u7FmKA651FvtCCa2P1QnvdYEimWbhfaxzCau+xMw=
+	b=pLR/B4BR+7Tk/5/9nGNuF50ZM8tkJABxJEca8uq5i79WQKf8qctRvOKoSZRPNQTJt
+	 eZzCZFigUqloOSwpxD106FrYur7lty7JRZuncGVBVqHtLVsxTw7NT8JnTRnERsoWxx
+	 J8ejSG4QvWI62hsIgtucRXJwJqvG+vRe80tcgsJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 6.6 185/201] s390/bpf: Change seen_reg to a mask
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 239/277] statmount: dont call path_put() under namespace semaphore
 Date: Fri, 17 Oct 2025 16:54:06 +0200
-Message-ID: <20251017145141.554488973@linuxfoundation.org>
+Message-ID: <20251017145155.866547084@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,143 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 7ba4f43e16de351fe9821de80e15d88c884b2967 upstream.
+[ Upstream commit e8c84e2082e69335f66c8ade4895e80ec270d7c4 ]
 
-Using a mask instead of an array saves a small amount of memory and
-allows marking multiple registers as seen with a simple "or". Another
-positive side-effect is that it speeds up verification with jitterbug.
+Massage statmount() and make sure we don't call path_put() under the
+namespace semaphore. If we put the last reference we're fscked.
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240703005047.40915-2-iii@linux.ibm.com
+Fixes: 46eae99ef733 ("add statmount(2) syscall")
+Cc: stable@vger.kernel.org # v6.8+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/net/bpf_jit_comp.c |   32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ fs/namespace.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -35,7 +35,7 @@
- 
- struct bpf_jit {
- 	u32 seen;		/* Flags to remember seen eBPF instructions */
--	u32 seen_reg[16];	/* Array to remember which registers are used */
-+	u16 seen_regs;		/* Mask to remember which registers are used */
- 	u32 *addrs;		/* Array with relative instruction addresses */
- 	u8 *prg_buf;		/* Start of program */
- 	int size;		/* Size of program and literal pool */
-@@ -118,8 +118,8 @@ static inline void reg_set_seen(struct b
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -5200,7 +5200,6 @@ static int grab_requested_root(struct mn
+ static int do_statmount(struct kstatmount *s, u64 mnt_id, u64 mnt_ns_id,
+ 			struct mnt_namespace *ns)
  {
- 	u32 r1 = reg2hex[b1];
+-	struct path root __free(path_put) = {};
+ 	struct mount *m;
+ 	int err;
  
--	if (r1 >= 6 && r1 <= 15 && !jit->seen_reg[r1])
--		jit->seen_reg[r1] = 1;
-+	if (r1 >= 6 && r1 <= 15)
-+		jit->seen_regs |= (1 << r1);
- }
+@@ -5212,7 +5211,7 @@ static int do_statmount(struct kstatmoun
+ 	if (!s->mnt)
+ 		return -ENOENT;
  
- #define REG_SET_SEEN(b1)					\
-@@ -127,8 +127,6 @@ static inline void reg_set_seen(struct b
- 	reg_set_seen(jit, b1);					\
- })
+-	err = grab_requested_root(ns, &root);
++	err = grab_requested_root(ns, &s->root);
+ 	if (err)
+ 		return err;
  
--#define REG_SEEN(b1) jit->seen_reg[reg2hex[(b1)]]
+@@ -5221,15 +5220,13 @@ static int do_statmount(struct kstatmoun
+ 	 * mounts to show users.
+ 	 */
+ 	m = real_mount(s->mnt);
+-	if (!is_path_reachable(m, m->mnt.mnt_root, &root) &&
++	if (!is_path_reachable(m, m->mnt.mnt_root, &s->root) &&
+ 	    !ns_capable_noaudit(ns->user_ns, CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
+ 	err = security_sb_statfs(s->mnt->mnt_root);
+ 	if (err)
+ 		return err;
 -
- /*
-  * EMIT macros for code generation
-  */
-@@ -436,12 +434,12 @@ static void restore_regs(struct bpf_jit
- /*
-  * Return first seen register (from start)
-  */
--static int get_start(struct bpf_jit *jit, int start)
-+static int get_start(u16 seen_regs, int start)
- {
- 	int i;
+-	s->root = root;
+ 	if (s->mask & STATMOUNT_SB_BASIC)
+ 		statmount_sb_basic(s);
  
- 	for (i = start; i <= 15; i++) {
--		if (jit->seen_reg[i])
-+		if (seen_regs & (1 << i))
- 			return i;
- 	}
- 	return 0;
-@@ -450,15 +448,15 @@ static int get_start(struct bpf_jit *jit
- /*
-  * Return last seen register (from start) (gap >= 2)
-  */
--static int get_end(struct bpf_jit *jit, int start)
-+static int get_end(u16 seen_regs, int start)
- {
- 	int i;
- 
- 	for (i = start; i < 15; i++) {
--		if (!jit->seen_reg[i] && !jit->seen_reg[i + 1])
-+		if (!(seen_regs & (3 << i)))
- 			return i - 1;
- 	}
--	return jit->seen_reg[15] ? 15 : 14;
-+	return (seen_regs & (1 << 15)) ? 15 : 14;
- }
- 
- #define REGS_SAVE	1
-@@ -467,8 +465,10 @@ static int get_end(struct bpf_jit *jit,
-  * Save and restore clobbered registers (6-15) on stack.
-  * We save/restore registers in chunks with gap >= 2 registers.
-  */
--static void save_restore_regs(struct bpf_jit *jit, int op, u32 stack_depth)
-+static void save_restore_regs(struct bpf_jit *jit, int op, u32 stack_depth,
-+			      u16 extra_regs)
- {
-+	u16 seen_regs = jit->seen_regs | extra_regs;
- 	const int last = 15, save_restore_size = 6;
- 	int re = 6, rs;
- 
-@@ -482,10 +482,10 @@ static void save_restore_regs(struct bpf
- 	}
- 
- 	do {
--		rs = get_start(jit, re);
-+		rs = get_start(seen_regs, re);
- 		if (!rs)
- 			break;
--		re = get_end(jit, rs + 1);
-+		re = get_end(seen_regs, rs + 1);
- 		if (op == REGS_SAVE)
- 			save_regs(jit, rs, re);
- 		else
-@@ -579,7 +579,7 @@ static void bpf_jit_prologue(struct bpf_
- 	/* Tail calls have to skip above initialization */
- 	jit->tail_call_start = jit->prg;
- 	/* Save registers */
--	save_restore_regs(jit, REGS_SAVE, stack_depth);
-+	save_restore_regs(jit, REGS_SAVE, stack_depth, 0);
- 	/* Setup literal pool */
- 	if (is_first_pass(jit) || (jit->seen & SEEN_LITERAL)) {
- 		if (!is_first_pass(jit) &&
-@@ -653,7 +653,7 @@ static void bpf_jit_epilogue(struct bpf_
- 	/* Load exit code: lgr %r2,%b0 */
- 	EMIT4(0xb9040000, REG_2, BPF_REG_0);
- 	/* Restore registers */
--	save_restore_regs(jit, REGS_RESTORE, stack_depth);
-+	save_restore_regs(jit, REGS_RESTORE, stack_depth, 0);
- 	if (nospec_uses_trampoline()) {
- 		jit->r14_thunk_ip = jit->prg;
- 		/* Generate __s390_indirect_jump_r14 thunk */
-@@ -1519,7 +1519,7 @@ static noinline int bpf_jit_insn(struct
- 		/*
- 		 * Restore registers before calling function
- 		 */
--		save_restore_regs(jit, REGS_RESTORE, stack_depth);
-+		save_restore_regs(jit, REGS_RESTORE, stack_depth, 0);
- 
- 		/*
- 		 * goto *(prog->bpf_func + tail_call_start);
+@@ -5406,6 +5403,7 @@ retry:
+ 	if (!ret)
+ 		ret = copy_statmount_to_user(ks);
+ 	kvfree(ks->seq.buf);
++	path_put(&ks->root);
+ 	if (retry_statmount(ret, &seq_size))
+ 		goto retry;
+ 	return ret;
 
 
 
