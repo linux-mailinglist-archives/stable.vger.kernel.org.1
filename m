@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC06BEA008
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:55 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D91EBE9AEA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1A38535E2A3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 603F0580A0A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A4D330B12;
-	Fri, 17 Oct 2025 15:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E0232C93A;
+	Fri, 17 Oct 2025 15:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MB5jSUvC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6Iehm/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836AF330B04;
-	Fri, 17 Oct 2025 15:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F6332C937;
+	Fri, 17 Oct 2025 15:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715421; cv=none; b=UzS63eAZoPIWrWXTwbNuGCrXdmXFRxwHJ+NUysZzNfaxm555Il6nPFmsavCl9+hoyOc+hReRp2qo0UEzVjv3kP2nmTQp9J93KEBIPu+t3f9FIxupX37rD9vlj+zd/ifUEwzHMDwRV7UhnVFxk4nh8TNA5x47YA7pUukUowkdEcU=
+	t=1760713800; cv=none; b=MQZ+OqhbfPOMvtKRYE9F6TW96u92OFsweoeGwYyBPwoUxr8FcgNhcvOAsrInRUsAo9DGyJe6OilEqHT0xvc6fsEN45sMmo3BAt4WUdoMKEqIgVykvlhsbdNku9wxUnQXxu5aXoCzi4xrzm2HSeQ7jrAfosCVv3FF2r/owMdvDpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715421; c=relaxed/simple;
-	bh=qoJNz5YFHr+yleqPvAZkPFwRUR/3I/tjgtAjDdQ+fbQ=;
+	s=arc-20240116; t=1760713800; c=relaxed/simple;
+	bh=dWH0NZNJmQJ7Aq5HQ2drt7jVg+OJWzXB+sSFdpIMaSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ekLPAKgQi7IStoscvS+1kFmLNbQ/cXkHmFKSsGlp8snDSi7ehGRfFrNDLmfopF2btyyw2bDrP1jOhw2ylKHqIRMuofsXvY/fnDZqzVE2LDvikuUfItSDf6hXae5pD/83lth0Zh9a3rv1esUtvJL2bdSYJNGkm8+1LAefDvbA/RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MB5jSUvC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE613C4CEE7;
-	Fri, 17 Oct 2025 15:37:00 +0000 (UTC)
+	 MIME-Version; b=Fg5sC47uSdsp7g0EIOQ0+m/FJkCoDuV1qWt8alECHTc+KtjFxHwkzr7wo9Zly7LkyCwWeW/PIIWHakDOzWSV6tFhGKI1B09dV2a2O87ZdzDB+dByhlRJoFPP/UCvA7I99ZsgBWRDaLnJPIs4Ky31bDuAaotcamuBRQpemgfzJSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6Iehm/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21378C4CEE7;
+	Fri, 17 Oct 2025 15:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715421;
-	bh=qoJNz5YFHr+yleqPvAZkPFwRUR/3I/tjgtAjDdQ+fbQ=;
+	s=korg; t=1760713800;
+	bh=dWH0NZNJmQJ7Aq5HQ2drt7jVg+OJWzXB+sSFdpIMaSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MB5jSUvCBhwusAzB0LYjCprFHmmWhHe4tIEs0vKYTQ8iFG6WzVkiHjuja8+w48/1s
-	 keNRa5uxSiKyPDkj7xv5LvlpS3z7aJ3Ldqql3zeKe5dTkzSvvDojC5gDCirTwNSr2L
-	 /NXBCINVhdsrc3Mu/VF4nZAHiCWiKcC2gz9pKyB0=
+	b=x6Iehm/Ir4w0JdFWxem+lo2LcKO99csrlQHVXMqBAcJEGNPf6l5MBZx9xkS6jMJ0A
+	 h7a1D0m+uhIax2+knvSEGknUHpDJ2Qa70Qw5ixGg4RqFXHt4kPJ2T8EQFi2tD8LBDZ
+	 ciFa37ObC/VZA/Rgt5wuYy0wR+uaqqoSzt9Pfbao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Helge Deller <deller@gmx.de>,
-	Stan Johnson <userm57@yahoo.com>
-Subject: [PATCH 6.17 211/371] fbdev: Fix logic error in "offb" name match
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.6 125/201] PCI: tegra: Convert struct tegra_msi mask_lock into raw spinlock
 Date: Fri, 17 Oct 2025 16:53:06 +0200
-Message-ID: <20251017145209.721068845@linuxfoundation.org>
+Message-ID: <20251017145139.333268096@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-commit 15df28699b28d6b49dc305040c4e26a9553df07a upstream.
+commit 26fda92d3b56bf44a02bcb4001c5a5548e0ae8ee upstream.
 
-A regression was reported to me recently whereby /dev/fb0 had disappeared
-from a PowerBook G3 Series "Wallstreet". The problem shows up when the
-"video=ofonly" parameter is passed to the kernel, which is what the
-bootloader does when "no video driver" is selected. The cause of the
-problem is the "offb" string comparison, which got mangled when it got
-refactored. Fix it.
+The tegra_msi_irq_unmask() function may be called from a PCI driver
+request_threaded_irq() function. This triggers kernel/irq/manage.c
+__setup_irq() which locks raw spinlock &desc->lock descriptor lock
+and with that descriptor lock held, calls tegra_msi_irq_unmask().
 
+Since the &desc->lock descriptor lock is a raw spinlock, and the tegra_msi
+.mask_lock is not a raw spinlock, this setup triggers 'BUG: Invalid wait
+context' with CONFIG_PROVE_RAW_LOCK_NESTING=y.
+
+Use scoped_guard() to simplify the locking.
+
+Fixes: 2c99e55f7955 ("PCI: tegra: Convert to MSI domains")
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Closes: https://patchwork.kernel.org/project/linux-pci/patch/20250909162707.13927-2-marek.vasut+renesas@mailbox.org/#26574451
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
-Fixes: 93604a5ade3a ("fbdev: Handle video= parameter in video/cmdline.c")
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Link: https://patch.msgid.link/20250922150811.88450-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fb_cmdline.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/pci-tegra.c |   27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
---- a/drivers/video/fbdev/core/fb_cmdline.c
-+++ b/drivers/video/fbdev/core/fb_cmdline.c
-@@ -40,7 +40,7 @@ int fb_get_options(const char *name, cha
- 	bool enabled;
+--- a/drivers/pci/controller/pci-tegra.c
++++ b/drivers/pci/controller/pci-tegra.c
+@@ -14,6 +14,7 @@
+  */
  
- 	if (name)
--		is_of = strncmp(name, "offb", 4);
-+		is_of = !strncmp(name, "offb", 4);
+ #include <linux/clk.h>
++#include <linux/cleanup.h>
+ #include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/export.h>
+@@ -269,7 +270,7 @@ struct tegra_msi {
+ 	DECLARE_BITMAP(used, INT_PCI_MSI_NR);
+ 	struct irq_domain *domain;
+ 	struct mutex map_lock;
+-	spinlock_t mask_lock;
++	raw_spinlock_t mask_lock;
+ 	void *virt;
+ 	dma_addr_t phys;
+ 	int irq;
+@@ -1604,14 +1605,13 @@ static void tegra_msi_irq_mask(struct ir
+ 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
+ 	struct tegra_pcie *pcie = msi_to_pcie(msi);
+ 	unsigned int index = d->hwirq / 32;
+-	unsigned long flags;
+ 	u32 value;
  
- 	enabled = __video_get_options(name, &options, is_of);
+-	spin_lock_irqsave(&msi->mask_lock, flags);
+-	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
+-	value &= ~BIT(d->hwirq % 32);
+-	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
+-	spin_unlock_irqrestore(&msi->mask_lock, flags);
++	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
++		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
++		value &= ~BIT(d->hwirq % 32);
++		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
++	}
+ }
  
+ static void tegra_msi_irq_unmask(struct irq_data *d)
+@@ -1619,14 +1619,13 @@ static void tegra_msi_irq_unmask(struct
+ 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
+ 	struct tegra_pcie *pcie = msi_to_pcie(msi);
+ 	unsigned int index = d->hwirq / 32;
+-	unsigned long flags;
+ 	u32 value;
+ 
+-	spin_lock_irqsave(&msi->mask_lock, flags);
+-	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
+-	value |= BIT(d->hwirq % 32);
+-	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
+-	spin_unlock_irqrestore(&msi->mask_lock, flags);
++	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
++		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
++		value |= BIT(d->hwirq % 32);
++		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
++	}
+ }
+ 
+ static int tegra_msi_set_affinity(struct irq_data *d, const struct cpumask *mask, bool force)
+@@ -1742,7 +1741,7 @@ static int tegra_pcie_msi_setup(struct t
+ 	int err;
+ 
+ 	mutex_init(&msi->map_lock);
+-	spin_lock_init(&msi->mask_lock);
++	raw_spin_lock_init(&msi->mask_lock);
+ 
+ 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+ 		err = tegra_allocate_domains(msi);
 
 
 
