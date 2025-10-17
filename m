@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32647BEA011
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F4DBE9F24
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B28A7C26DD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7A411887C65
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5686F2745E;
-	Fri, 17 Oct 2025 15:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43EE2F12D9;
+	Fri, 17 Oct 2025 15:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0ZSDEre"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qKZjz5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11812337110;
-	Fri, 17 Oct 2025 15:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EAD1946C8;
+	Fri, 17 Oct 2025 15:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714239; cv=none; b=dfp2ANczKkg0VkbOFq7PGp2Vmr48HkmI8+3aGvTeomUKln28JjMGABGmZC1ZhVqAbuUrnNfzz0l1F9gzLikwaJB+4e8kdPcmk8aLOzTgov9FY2mg4NCQpXL/OtjNSK6TXGUZs6HQrW/xJpC3P7jtrxLyIKN1Fy0hoYTSUhnXkXM=
+	t=1760715127; cv=none; b=PjmsMKrAeA9Dmx7XmW/8XtJo3+1eZVDpR13GVdTQk5pRek6k3L7cKee77dT3/ZO4PQY/PjjSK49vZzUJGT+f/QgRMlbFkiRM2QIyQh1HVAUDyqgJv9cymve9UBJEbXTIB4ITqhZX9lNEuAMQmWNJt/0MCmk5ImiREJv7MDF5yYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714239; c=relaxed/simple;
-	bh=BXjdk4BLCZi/rZIfHbZ+FlW49/xvup9c44uEdZZYOyY=;
+	s=arc-20240116; t=1760715127; c=relaxed/simple;
+	bh=R2M/gSkmiWqCWWG3E/WpjzdZ25fr5c/7OLMfBja34Pw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1ricB4UhKXwhZZtgKREsVH4xpz25oUyZLDdG6EbJkmF/KvYUkxFdbhBs5jqG1EEvhOzJMheLwrtS/PnXlQiUz01s+EDNl/dCTYQHqymkbS6HTrcrG5OnJcg0ylycouwjPFIEcPaWmkXzmCpydvavXMIDLt4hLUiVimt2rw1oIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0ZSDEre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C90C4CEE7;
-	Fri, 17 Oct 2025 15:17:18 +0000 (UTC)
+	 MIME-Version; b=eUhjk5wLdTIx9mtrKnx1x/Yt7tvOvmzGsKBxB4J58hL+Xqptg4WVPbZVrE2aahaGRo8k+2cJlJHeJ8FNG6oL3vfNp6cOD0MwJc6BzXGkNaYbTvS8hWTbcVuY8y8flFBIFFk9TPON1no2jnO2ZePUZgCreuPf7JmfInNRNTCLqD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qKZjz5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E356DC113D0;
+	Fri, 17 Oct 2025 15:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714238;
-	bh=BXjdk4BLCZi/rZIfHbZ+FlW49/xvup9c44uEdZZYOyY=;
+	s=korg; t=1760715127;
+	bh=R2M/gSkmiWqCWWG3E/WpjzdZ25fr5c/7OLMfBja34Pw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0ZSDEre3c3mHiO91BapXBTsp6nuGiLgtc7+z48pwS3HtUzcYKDign+BWTUQBHheD
-	 U2syBTZaG+zxdC2mdvINEpxsig04VQQ1PXF7dEYsr7GJLGZQSAK+r7Sa+1vzSobLHP
-	 dKnHfQ1WUGCGuoiaTKV+8xzEURSNn0WPN4Z7XEaE=
+	b=2qKZjz5q0OVRhCEniTtcHsyGwRn5RfqhS0YmYcUADEWw+VwYGDu3NdclyGISEV+vt
+	 7EiqRaB/Pg7Xrpf+DifNzgT+ipfTh/EIUbl/ihIDrS25MCHZ7Sl75s7q7s7lJSo3KD
+	 I88NmcGEGVsH6onihFdRa+sNxW4BB/vFjsX9mMB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/277] crypto: essiv - Check ssize for decryption and in-place encryption
+Subject: [PATCH 6.17 108/371] drm/amdgpu: Add additional DCE6 SCL registers
 Date: Fri, 17 Oct 2025 16:51:23 +0200
-Message-ID: <20251017145149.913648752@linuxfoundation.org>
+Message-ID: <20251017145205.844121287@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 6bb73db6948c2de23e407fe1b7ef94bf02b7529f ]
+[ Upstream commit 507296328b36ffd00ec1f4fde5b8acafb7222ec7 ]
 
-Move the ssize check to the start in essiv_aead_crypt so that
-it's also checked for decryption and in-place encryption.
-
-Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Fixes: be1eb7f78aa8 ("crypto: essiv - create wrapper template for ESSIV generation")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 102b2f587ac8 ("drm/amd/display: dce_transform: DCE6 Scaling Horizontal Filter Init (v2)")
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/essiv.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h       | 7 +++++++
+ drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h | 2 ++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/crypto/essiv.c b/crypto/essiv.c
-index e63fc6442e320..aa7ebc1235274 100644
---- a/crypto/essiv.c
-+++ b/crypto/essiv.c
-@@ -186,9 +186,14 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
- 	const struct essiv_tfm_ctx *tctx = crypto_aead_ctx(tfm);
- 	struct essiv_aead_request_ctx *rctx = aead_request_ctx(req);
- 	struct aead_request *subreq = &rctx->aead_req;
-+	int ivsize = crypto_aead_ivsize(tfm);
-+	int ssize = req->assoclen - ivsize;
- 	struct scatterlist *src = req->src;
- 	int err;
- 
-+	if (ssize < 0)
-+		return -EINVAL;
-+
- 	crypto_cipher_encrypt_one(tctx->essiv_cipher, req->iv, req->iv);
- 
- 	/*
-@@ -198,19 +203,12 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
- 	 */
- 	rctx->assoc = NULL;
- 	if (req->src == req->dst || !enc) {
--		scatterwalk_map_and_copy(req->iv, req->dst,
--					 req->assoclen - crypto_aead_ivsize(tfm),
--					 crypto_aead_ivsize(tfm), 1);
-+		scatterwalk_map_and_copy(req->iv, req->dst, ssize, ivsize, 1);
- 	} else {
- 		u8 *iv = (u8 *)aead_request_ctx(req) + tctx->ivoffset;
--		int ivsize = crypto_aead_ivsize(tfm);
--		int ssize = req->assoclen - ivsize;
- 		struct scatterlist *sg;
- 		int nents;
- 
--		if (ssize < 0)
--			return -EINVAL;
--
- 		nents = sg_nents_for_len(req->src, ssize);
- 		if (nents < 0)
- 			return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
+index 9de01ae574c03..067eddd9c62d8 100644
+--- a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
++++ b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
+@@ -4115,6 +4115,7 @@
+ #define mmSCL0_SCL_COEF_RAM_CONFLICT_STATUS 0x1B55
+ #define mmSCL0_SCL_COEF_RAM_SELECT 0x1B40
+ #define mmSCL0_SCL_COEF_RAM_TAP_DATA 0x1B41
++#define mmSCL0_SCL_SCALER_ENABLE 0x1B42
+ #define mmSCL0_SCL_CONTROL 0x1B44
+ #define mmSCL0_SCL_DEBUG 0x1B6A
+ #define mmSCL0_SCL_DEBUG2 0x1B69
+@@ -4144,6 +4145,7 @@
+ #define mmSCL1_SCL_COEF_RAM_CONFLICT_STATUS 0x1E55
+ #define mmSCL1_SCL_COEF_RAM_SELECT 0x1E40
+ #define mmSCL1_SCL_COEF_RAM_TAP_DATA 0x1E41
++#define mmSCL1_SCL_SCALER_ENABLE 0x1E42
+ #define mmSCL1_SCL_CONTROL 0x1E44
+ #define mmSCL1_SCL_DEBUG 0x1E6A
+ #define mmSCL1_SCL_DEBUG2 0x1E69
+@@ -4173,6 +4175,7 @@
+ #define mmSCL2_SCL_COEF_RAM_CONFLICT_STATUS 0x4155
+ #define mmSCL2_SCL_COEF_RAM_SELECT 0x4140
+ #define mmSCL2_SCL_COEF_RAM_TAP_DATA 0x4141
++#define mmSCL2_SCL_SCALER_ENABLE 0x4142
+ #define mmSCL2_SCL_CONTROL 0x4144
+ #define mmSCL2_SCL_DEBUG 0x416A
+ #define mmSCL2_SCL_DEBUG2 0x4169
+@@ -4202,6 +4205,7 @@
+ #define mmSCL3_SCL_COEF_RAM_CONFLICT_STATUS 0x4455
+ #define mmSCL3_SCL_COEF_RAM_SELECT 0x4440
+ #define mmSCL3_SCL_COEF_RAM_TAP_DATA 0x4441
++#define mmSCL3_SCL_SCALER_ENABLE 0x4442
+ #define mmSCL3_SCL_CONTROL 0x4444
+ #define mmSCL3_SCL_DEBUG 0x446A
+ #define mmSCL3_SCL_DEBUG2 0x4469
+@@ -4231,6 +4235,7 @@
+ #define mmSCL4_SCL_COEF_RAM_CONFLICT_STATUS 0x4755
+ #define mmSCL4_SCL_COEF_RAM_SELECT 0x4740
+ #define mmSCL4_SCL_COEF_RAM_TAP_DATA 0x4741
++#define mmSCL4_SCL_SCALER_ENABLE 0x4742
+ #define mmSCL4_SCL_CONTROL 0x4744
+ #define mmSCL4_SCL_DEBUG 0x476A
+ #define mmSCL4_SCL_DEBUG2 0x4769
+@@ -4260,6 +4265,7 @@
+ #define mmSCL5_SCL_COEF_RAM_CONFLICT_STATUS 0x4A55
+ #define mmSCL5_SCL_COEF_RAM_SELECT 0x4A40
+ #define mmSCL5_SCL_COEF_RAM_TAP_DATA 0x4A41
++#define mmSCL5_SCL_SCALER_ENABLE 0x4A42
+ #define mmSCL5_SCL_CONTROL 0x4A44
+ #define mmSCL5_SCL_DEBUG 0x4A6A
+ #define mmSCL5_SCL_DEBUG2 0x4A69
+@@ -4287,6 +4293,7 @@
+ #define mmSCL_COEF_RAM_CONFLICT_STATUS 0x1B55
+ #define mmSCL_COEF_RAM_SELECT 0x1B40
+ #define mmSCL_COEF_RAM_TAP_DATA 0x1B41
++#define mmSCL_SCALER_ENABLE 0x1B42
+ #define mmSCL_CONTROL 0x1B44
+ #define mmSCL_DEBUG 0x1B6A
+ #define mmSCL_DEBUG2 0x1B69
+diff --git a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
+index 2d6a598a6c25c..9317a7afa6211 100644
+--- a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
++++ b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
+@@ -8650,6 +8650,8 @@
+ #define REGAMMA_LUT_INDEX__REGAMMA_LUT_INDEX__SHIFT 0x00000000
+ #define REGAMMA_LUT_WRITE_EN_MASK__REGAMMA_LUT_WRITE_EN_MASK_MASK 0x00000007L
+ #define REGAMMA_LUT_WRITE_EN_MASK__REGAMMA_LUT_WRITE_EN_MASK__SHIFT 0x00000000
++#define SCL_SCALER_ENABLE__SCL_SCALE_EN_MASK 0x00000001L
++#define SCL_SCALER_ENABLE__SCL_SCALE_EN__SHIFT 0x00000000
+ #define SCL_ALU_CONTROL__SCL_ALU_DISABLE_MASK 0x00000001L
+ #define SCL_ALU_CONTROL__SCL_ALU_DISABLE__SHIFT 0x00000000
+ #define SCL_BYPASS_CONTROL__SCL_BYPASS_MODE_MASK 0x00000003L
 -- 
 2.51.0
 
