@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E58BEA2A3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A42ABEA1EB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F317E7C2262
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3D6A55A356F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFAB335064;
-	Fri, 17 Oct 2025 15:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A0F36999F;
+	Fri, 17 Oct 2025 15:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fiUSla4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxBufGVM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F90219A7A;
-	Fri, 17 Oct 2025 15:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0633C335071;
+	Fri, 17 Oct 2025 15:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714201; cv=none; b=iT/hxQIVUUFD91XGjCU+2vn7CEeGJkvYtu3SpETPDOZTCqaskc3Z9AePdi55Bqc0nhLO+BZPItvFJpnJR4AAsEYN3q0x9WEy9EjqqluoK79+CsS4P68LWrJeeA72VNY3GmfD6qlIIQx8NlZ75rysGFzJlqXpakVUQrO+A0N4y90=
+	t=1760715180; cv=none; b=SQlvAjkDt20j6PywVXR7UVBUu2Xt6vNS5iidJakxqCyKl5tzxx9Kvndhl9h+gy8Lqngb8tQhtAP1JFbkzFUgnubnhup6hikYAvjGfgYUdb0240ZqR70j9Ke3cYgV4YhwL9Ot7fs/zw4Fpk2+jGH7Z7QjuTPnJ7PPzXRdMSQCJxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714201; c=relaxed/simple;
-	bh=qbgzpyLeW7/4Tw5LRdDx9rAjsNBzfPFceB9c8se9xI0=;
+	s=arc-20240116; t=1760715180; c=relaxed/simple;
+	bh=dWZD5t5X4ZSAX+5wJYeGZYkmazQrqkZKHIDxBVnC7Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZosGEYovpneDzdgv0SKUO5aINuaERbiouk16yietpSe3wFvxeoyUQVphonsWJXkqy0fvbepjSas4dB/venxCW73GaNVKMpAOJNHznd441w7U8EIzxd8IsaNrxjI7MDJf2LXvuFZaYmch5VzYWV9aDf/Nq/MsrrbnLMuh+EX45uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fiUSla4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA46C4CEE7;
-	Fri, 17 Oct 2025 15:16:40 +0000 (UTC)
+	 MIME-Version; b=R/KgOMzyBUOTR0vj83OmpOLbkXwJ2uTZNew1TUWVjFPHaALMvGc7bWsc+ANo2KoGkKBOXpdAjerUYukP4qa1+V6cq9Fa1xhvsYPeObT/nfWNbVHkfgcuCLWImvNv/Kou/RJ3UNrp+qw7rAWbrguGr9pqF6m2sWOs4M5Nvx+WX8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxBufGVM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7B2C4CEE7;
+	Fri, 17 Oct 2025 15:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714201;
-	bh=qbgzpyLeW7/4Tw5LRdDx9rAjsNBzfPFceB9c8se9xI0=;
+	s=korg; t=1760715179;
+	bh=dWZD5t5X4ZSAX+5wJYeGZYkmazQrqkZKHIDxBVnC7Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1fiUSla4dlb9Bk1apHPtvEnJJt5ZdUGcrpmRz6+9yarWWSfhc53BuJCro1gzUCTfz
-	 jWpit5mOVYZWvJfid5B/4P9aVy+j8eHdlVln9r/0HveCHS8asUtYz+tpYf3uu74llY
-	 ECaYKC0yPbYUdVc1+c80VtGqIeLM+wgIK5c4OfnA=
+	b=DxBufGVMBla2QpVZyaq14rAUhy4vCaDqG69IW7q6Jjd5Qu76CBK9+Z4+ipZpcXgJj
+	 unoWN162kF+qLTW9GGS5cWArfB7eykYP0dlzhWgwifEced0DmXDx7Vhk7z+Kq3TnB1
+	 NukcAHLIRREDEky473juCzoud+NqxXMUlOt+sovs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harini T <harini.t@amd.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Erick Karanja <karanja99erick@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/277] mailbox: zynqmp-ipi: Remove redundant mbox_controller_unregister() call
+Subject: [PATCH 6.17 093/371] net: fsl_pq_mdio: Fix device node reference leak in fsl_pq_mdio_probe
 Date: Fri, 17 Oct 2025 16:51:08 +0200
-Message-ID: <20251017145149.374247512@linuxfoundation.org>
+Message-ID: <20251017145205.304020467@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harini T <harini.t@amd.com>
+From: Erick Karanja <karanja99erick@gmail.com>
 
-[ Upstream commit 341867f730d3d3bb54491ee64e8b1a0c446656e7 ]
+[ Upstream commit 521405cb54cd2812bbb6dedd5afc14bca1e7e98a ]
 
-The controller is registered using the device-managed function
-'devm_mbox_controller_register()'. As documented in mailbox.c, this
-ensures the devres framework automatically calls
-mbox_controller_unregister() when device_unregister() is invoked, making
-the explicit call unnecessary.
+Add missing of_node_put call to release device node tbi obtained
+via for_each_child_of_node.
 
-Remove redundant mbox_controller_unregister() call as
-device_unregister() handles controller cleanup.
-
-Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
-Signed-off-by: Harini T <harini.t@amd.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Fixes: afae5ad78b342 ("net/fsl_pq_mdio: streamline probing of MDIO nodes")
+Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
+Link: https://patch.msgid.link/20251002174617.960521-1-karanja99erick@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/zynqmp-ipi-mailbox.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/freescale/fsl_pq_mdio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
-index d59fcb74b3479..388f418aebb72 100644
---- a/drivers/mailbox/zynqmp-ipi-mailbox.c
-+++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
-@@ -894,7 +894,6 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
- 	for (; i >= 0; i--) {
- 		ipi_mbox = &pdata->ipi_mboxes[i];
- 		if (ipi_mbox->dev.parent) {
--			mbox_controller_unregister(&ipi_mbox->mbox);
- 			if (device_is_registered(&ipi_mbox->dev))
- 				device_unregister(&ipi_mbox->dev);
+diff --git a/drivers/net/ethernet/freescale/fsl_pq_mdio.c b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
+index 577f9b1780ad6..de88776dd2a20 100644
+--- a/drivers/net/ethernet/freescale/fsl_pq_mdio.c
++++ b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
+@@ -479,10 +479,12 @@ static int fsl_pq_mdio_probe(struct platform_device *pdev)
+ 					"missing 'reg' property in node %pOF\n",
+ 					tbi);
+ 				err = -EBUSY;
++				of_node_put(tbi);
+ 				goto error;
+ 			}
+ 			set_tbipa(*prop, pdev,
+ 				  data->get_tbipa, priv->map, &res);
++			of_node_put(tbi);
  		}
+ 	}
+ 
 -- 
 2.51.0
 
