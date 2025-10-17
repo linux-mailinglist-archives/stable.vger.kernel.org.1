@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-187638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02F8BEA9B6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:18:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 648B6BEA7E9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DE3B7C4528
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3772A5A1604
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B1E231C9F;
-	Fri, 17 Oct 2025 15:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E06217722;
+	Fri, 17 Oct 2025 15:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIGd6Vbq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bnr2Eh6j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9F121C9EA;
-	Fri, 17 Oct 2025 15:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E8A330B2D;
+	Fri, 17 Oct 2025 15:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716649; cv=none; b=qRfzpZ07u0a9HPzQQB9srveBJ7hkKP83Sn3oSlnzONnb2AtPDfFkX+azHQGlcVFAKtOoYCsHGQ3q/60Vz39oqcWstMWNWAkz/kkTd3YCGpWzYwxhxx80JZu/LXcbLurHy0ipHidIGarjSlu6J6hV8BE7OxOwNdsei4M1OwzOIXY=
+	t=1760716655; cv=none; b=TEvfaU8EoAptBxtbUhoUwwYumL0Gbc7tRd0TKeqeNbo95+WwrK7fVZdOB0bieRig55cZv6d4jSJYL4cPSzpJfgnZKhLbzfaJTyck+FKZBNEHmwB/WBn5i9BBtlzPyIz9SVEp4XLVEW54cxEprws6wDvXqwSDq/f7soAljotPlaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716649; c=relaxed/simple;
-	bh=+L08JIUTUPZkDvgIEczCGeb0NhUqaxzima7JcAYHlMU=;
+	s=arc-20240116; t=1760716655; c=relaxed/simple;
+	bh=i7fr1IX+ByOZ08Y+tEB01hRyl/05NZ2tEZZMEuhi2Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E46N0cXtKHUJuttrR5GgD826xLVIk/VB3uPceq1ntcCTVwKad0Jz1I7WHdv6PQTi/ehKqcO95or71MrTM0NwD7H83rw9Ypfu9yUKzw2qR3FjY9FJV3FVMT4fRUDXd9XD7V88EDWA/Sk8H6CPf1zJPnLKZPxzeUVo6t02tjY+R+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIGd6Vbq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D0BC4CEE7;
-	Fri, 17 Oct 2025 15:57:29 +0000 (UTC)
+	 MIME-Version; b=GxeL3ss4tovoVXqA1T7X9BQ4xiMQBzAOH3WvvPMI3g6DKUCIznGEmH3uPOINaq3sEpGnRw/SD9gBHuUodn5XVTH1hhDzb3IsnyR5i0BbXZMmMgFKbH5CZw1NkAagrfBMsCOu5dB9yj8n3ITNZjVR4udf54LXJURhJJwr/ejVHs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bnr2Eh6j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CE9C4CEE7;
+	Fri, 17 Oct 2025 15:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716649;
-	bh=+L08JIUTUPZkDvgIEczCGeb0NhUqaxzima7JcAYHlMU=;
+	s=korg; t=1760716655;
+	bh=i7fr1IX+ByOZ08Y+tEB01hRyl/05NZ2tEZZMEuhi2Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIGd6VbqAGr/1hxFs6D0r+2uHHBi3uRF3y3mNyLpH5dfcSQ1ht89eWqEDuGmxv+wB
-	 wilcfbol2UNL/RTxbYIu/BIgzK57kkaLp60JPSY5GAUeOoqjmsJkbbavXVP4hyic6v
-	 CRLj9tvBlhlX49Yr0jnLKLfBzv4a9EN9eONWFqhI=
+	b=Bnr2Eh6jhcOw1/a3caSPgQWi+hhbhAdxpLvBvyuIvbuM5sjKw4OL+DbtFNAFJ7f0g
+	 2XE9ikSaZaozaeKDGjVihFtkYSUkdmJvTDvUHjkK+vuO7dXRMoNla8aRLQJt3fcRWm
+	 1T5mKg0dhtmoKrfSrzK58SzjeGlnheOYIvoTvXsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Nicolas Pitre <nico@fluxnic.net>,
+	Tejun Heo <tj@kernel.org>,
+	Jan Kara <jack@suse.cz>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 264/276] cramfs: Verify inode mode when loading from disk
-Date: Fri, 17 Oct 2025 16:55:57 +0200
-Message-ID: <20251017145152.122609277@linuxfoundation.org>
+Subject: [PATCH 5.15 266/276] writeback: Avoid excessively long inode switching times
+Date: Fri, 17 Oct 2025 16:55:59 +0200
+Message-ID: <20251017145152.195076096@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -68,49 +67,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 7f9d34b0a7cb93d678ee7207f0634dbf79e47fe5 ]
+[ Upstream commit 9a6ebbdbd41235ea3bc0c4f39e2076599b8113cc ]
 
-The inode mode loaded from corrupted disk can be invalid. Do like what
-commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
-does.
+With lazytime mount option enabled we can be switching many dirty inodes
+on cgroup exit to the parent cgroup. The numbers observed in practice
+when systemd slice of a large cron job exits can easily reach hundreds
+of thousands or millions. The logic in inode_do_switch_wbs() which sorts
+the inode into appropriate place in b_dirty list of the target wb
+however has linear complexity in the number of dirty inodes thus overall
+time complexity of switching all the inodes is quadratic leading to
+workers being pegged for hours consuming 100% of the CPU and switching
+inodes to the parent wb.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/429b3ef1-13de-4310-9a8e-c2dc9a36234a@I-love.SAKURA.ne.jp
-Acked-by: Nicolas Pitre <nico@fluxnic.net>
+Simple reproducer of the issue:
+  FILES=10000
+  # Filesystem mounted with lazytime mount option
+  MNT=/mnt/
+  echo "Creating files and switching timestamps"
+  for (( j = 0; j < 50; j ++ )); do
+      mkdir $MNT/dir$j
+      for (( i = 0; i < $FILES; i++ )); do
+          echo "foo" >$MNT/dir$j/file$i
+      done
+      touch -a -t 202501010000 $MNT/dir$j/file*
+  done
+  wait
+  echo "Syncing and flushing"
+  sync
+  echo 3 >/proc/sys/vm/drop_caches
+
+  echo "Reading all files from a cgroup"
+  mkdir /sys/fs/cgroup/unified/mycg1 || exit
+  echo $$ >/sys/fs/cgroup/unified/mycg1/cgroup.procs || exit
+  for (( j = 0; j < 50; j ++ )); do
+      cat /mnt/dir$j/file* >/dev/null &
+  done
+  wait
+  echo "Switching wbs"
+  # Now rmdir the cgroup after the script exits
+
+We need to maintain b_dirty list ordering to keep writeback happy so
+instead of sorting inode into appropriate place just append it at the
+end of the list and clobber dirtied_time_when. This may result in inode
+writeback starting later after cgroup switch however cgroup switches are
+rare so it shouldn't matter much. Since the cgroup had write access to
+the inode, there are no practical concerns of the possible DoS issues.
+
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cramfs/inode.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/fs-writeback.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
-index 2be65269a987c..c893066e77ab4 100644
---- a/fs/cramfs/inode.c
-+++ b/fs/cramfs/inode.c
-@@ -117,9 +117,18 @@ static struct inode *get_cramfs_inode(struct super_block *sb,
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &cramfs_aops;
- 		break;
--	default:
-+	case S_IFCHR:
-+	case S_IFBLK:
-+	case S_IFIFO:
-+	case S_IFSOCK:
- 		init_special_inode(inode, cramfs_inode->mode,
- 				old_decode_dev(cramfs_inode->size));
-+		break;
-+	default:
-+		printk(KERN_DEBUG "CRAMFS: Invalid file type 0%04o for inode %lu.\n",
-+		       inode->i_mode, inode->i_ino);
-+		iget_failed(inode);
-+		return ERR_PTR(-EIO);
- 	}
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 3b002ac407434..095eaa896cbe2 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -418,22 +418,23 @@ static bool inode_do_switch_wbs(struct inode *inode,
+ 	 * Transfer to @new_wb's IO list if necessary.  If the @inode is dirty,
+ 	 * the specific list @inode was on is ignored and the @inode is put on
+ 	 * ->b_dirty which is always correct including from ->b_dirty_time.
+-	 * The transfer preserves @inode->dirtied_when ordering.  If the @inode
+-	 * was clean, it means it was on the b_attached list, so move it onto
+-	 * the b_attached list of @new_wb.
++	 * If the @inode was clean, it means it was on the b_attached list, so
++	 * move it onto the b_attached list of @new_wb.
+ 	 */
+ 	if (!list_empty(&inode->i_io_list)) {
+ 		inode->i_wb = new_wb;
  
- 	inode->i_mode = cramfs_inode->mode;
+ 		if (inode->i_state & I_DIRTY_ALL) {
+-			struct inode *pos;
+-
+-			list_for_each_entry(pos, &new_wb->b_dirty, i_io_list)
+-				if (time_after_eq(inode->dirtied_when,
+-						  pos->dirtied_when))
+-					break;
++			/*
++			 * We need to keep b_dirty list sorted by
++			 * dirtied_time_when. However properly sorting the
++			 * inode in the list gets too expensive when switching
++			 * many inodes. So just attach inode at the end of the
++			 * dirty list and clobber the dirtied_time_when.
++			 */
++			inode->dirtied_time_when = jiffies;
+ 			inode_io_list_move_locked(inode, new_wb,
+-						  pos->i_io_list.prev);
++						  &new_wb->b_dirty);
+ 		} else {
+ 			inode_cgwb_move_to_attached(inode, new_wb);
+ 		}
 -- 
 2.51.0
 
