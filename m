@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-187516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88269BEAB71
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:30:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD325BEAA58
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30D706E7C09
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0608944EA1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B69330B3A;
-	Fri, 17 Oct 2025 15:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90635330B04;
+	Fri, 17 Oct 2025 15:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKR65x/k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhtfiW/F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D3E330B1F;
-	Fri, 17 Oct 2025 15:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF36330B03;
+	Fri, 17 Oct 2025 15:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716296; cv=none; b=ok/aHzfKJEl0heQKu4CEqsZHSA1wJ9z3UWyaQBJ6r46RD39LMyT7YrfuqQqfqj2Y/PwA9qQHPfe1MbEtKgu0WoZFVboIfq0Dk5kVDCqDSbOgzJLTVpjgscgE89zgQ8vN3b0Wbk16YImwx7kwSnmb2XG2cfAC20BFW2fjlvz6UEY=
+	t=1760715559; cv=none; b=osEXM+ZfIE+VA/GwQhZoZahIGJurJg1JCfhJbMsFO1I73c/CUoQIdQ1dB84kFG4tg7xodxjg7MlUa78ZawtBdwwytaFLuaIF4engkgoFyIZU75HIxfBdeYnHO0szN87DwR99sZGNcOp1oG43Rll1rJo2mSAuZVig/TC1j6o+haQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716296; c=relaxed/simple;
-	bh=wkQ1hH3uGWjCIojGmHGVNmmng3yTJf8TCy60i+Xck74=;
+	s=arc-20240116; t=1760715559; c=relaxed/simple;
+	bh=qLBpOGM8PE+HnQmlEp0zIGoaGFwubDq7C3oVTGtlBV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nk1al+V+sh90D9+EBko/2Q6A9UIQAsWSym/Y9nCEjL/xynZQSIc6UiHa3pxuKSzX1iVTHcNcD1lPtgOVC2KfcWENDmAvk1s4a2YXqjiZLfom+0SMoScu4Df9w8gQHMp4htTz7Us7m09UPmpPb7Nsb4hZIp5mQ/Dqib4xPZYPj+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKR65x/k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5215C4CEE7;
-	Fri, 17 Oct 2025 15:51:35 +0000 (UTC)
+	 MIME-Version; b=pDW4c4zOGOIIHGpMakwOiC1WTYLTJLAZSHXRbqCgc6Kfq/JFuCj1skPV76VPag7y2YanF1Kp9FPBD6NPKQkXHK8x1nGnPF/3djo/jbrVC+1rNwpdMVShCrmGGca5tGYciyzJHGTirzZxwWAeHQwL78NUu22xPm3Sjs3xCekbWtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhtfiW/F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1890C4CEE7;
+	Fri, 17 Oct 2025 15:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716296;
-	bh=wkQ1hH3uGWjCIojGmHGVNmmng3yTJf8TCy60i+Xck74=;
+	s=korg; t=1760715559;
+	bh=qLBpOGM8PE+HnQmlEp0zIGoaGFwubDq7C3oVTGtlBV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yKR65x/kfBqCasgtFv0nL+Pk0TaawQ0stIHQeIHDGjNmHVL7cuMHZZGJr7hvq5o3L
-	 8mjxUT1c2XaZBfr0R7IUC9WxkA46bLffP0KnBBzfxzbPrw8b3qUCaLLEF7bxNwvy76
-	 WntKSpGcv3R2+z7zR19buEYGHov8PYh/s+9COk+k=
+	b=jhtfiW/F4gY/ZYtM/6e+ewWSxDuSi3ngNSmUs5Q2zY2SkdWjPOh03rm60FVrVdihv
+	 9pitxfH3yePRsZrG/ZafpjuFo03/DaBhwT4qAYMX06T54svTxr5z7eoP04N3wjoZ4j
+	 DBCrhppHMGeP4szXIvHPKoJ9/G0CD/tA3NpBQ12w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.garry@huawei.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 140/276] scsi: libsas: Add sas_task_find_rq()
+	Eric Biggers <ebiggers@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 258/371] sctp: Fix MAC comparison to be constant-time
 Date: Fri, 17 Oct 2025 16:53:53 +0200
-Message-ID: <20251017145147.593341781@linuxfoundation.org>
+Message-ID: <20251017145211.416720409@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit a9ee3f840646e2ec419c734e592ffe997195435e ]
+commit dd91c79e4f58fbe2898dac84858033700e0e99fb upstream.
 
-blk-mq already provides a unique tag per request. Some libsas LLDDs - like
-hisi_sas - already use this tag as the unique per-I/O HW tag.
+To prevent timing attacks, MACs need to be compared in constant time.
+Use the appropriate helper function for this.
 
-Add a common function to provide the request associated with a sas_task for
-all libsas LLDDs.
-
-Signed-off-by: John Garry <john.garry@huawei.com>
-Link: https://lore.kernel.org/r/1666091763-11023-2-git-send-email-john.garry@huawei.com
-Reviewed-by: Jack Wang <jinpu.wang@ionos.com>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 60cd16a3b743 ("scsi: mvsas: Fix use-after-free bugs in mvs_work_queue")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bbd0d59809f9 ("[SCTP]: Implement the receive and verification of AUTH chunk")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://patch.msgid.link/20250818205426.30222-3-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/scsi/libsas.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ net/sctp/sm_make_chunk.c |    3 ++-
+ net/sctp/sm_statefuns.c  |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/scsi/libsas.h b/include/scsi/libsas.h
-index 306005b3b60f3..97e99385f70ce 100644
---- a/include/scsi/libsas.h
-+++ b/include/scsi/libsas.h
-@@ -631,6 +631,24 @@ extern struct sas_task *sas_alloc_task(gfp_t flags);
- extern struct sas_task *sas_alloc_slow_task(gfp_t flags);
- extern void sas_free_task(struct sas_task *task);
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -31,6 +31,7 @@
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
-+static inline struct request *sas_task_find_rq(struct sas_task *task)
-+{
-+	struct scsi_cmnd *scmd;
-+
-+	if (task->task_proto & SAS_PROTOCOL_STP_ALL) {
-+		struct ata_queued_cmd *qc = task->uldd_task;
-+
-+		scmd = qc ? qc->scsicmd : NULL;
-+	} else {
-+		scmd = task->uldd_task;
-+	}
-+
-+	if (!scmd)
-+		return NULL;
-+
-+	return scsi_cmd_to_rq(scmd);
-+}
-+
- struct sas_domain_function_template {
- 	/* The class calls these to notify the LLDD of an event. */
- 	void (*lldd_port_formed)(struct asd_sas_phy *);
--- 
-2.51.0
-
+ #include <crypto/hash.h>
++#include <crypto/utils.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/ip.h>
+@@ -1788,7 +1789,7 @@ struct sctp_association *sctp_unpack_coo
+ 		}
+ 	}
+ 
+-	if (memcmp(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
++	if (crypto_memneq(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
+ 		*error = -SCTP_IERROR_BAD_SIG;
+ 		goto fail;
+ 	}
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -30,6 +30,7 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <crypto/utils.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/ip.h>
+@@ -4417,7 +4418,7 @@ static enum sctp_ierror sctp_sf_authenti
+ 				 sh_key, GFP_ATOMIC);
+ 
+ 	/* Discard the packet if the digests do not match */
+-	if (memcmp(save_digest, digest, sig_len)) {
++	if (crypto_memneq(save_digest, digest, sig_len)) {
+ 		kfree(save_digest);
+ 		return SCTP_IERROR_BAD_SIG;
+ 	}
 
 
 
