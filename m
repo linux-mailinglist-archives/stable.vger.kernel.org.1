@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FB9BE9BD6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6525BEA185
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E0609582893
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 037BF19C70A1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8666336ECB;
-	Fri, 17 Oct 2025 15:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7BE393DC0;
+	Fri, 17 Oct 2025 15:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5JsxBNJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTiOZC9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE7D336EC4;
-	Fri, 17 Oct 2025 15:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2F8336EED;
+	Fri, 17 Oct 2025 15:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713857; cv=none; b=N4BfV4+E2DrbWmM37e+Wosf4eo1YwsOGLpPHdZjBx5bQjiykd1AEO0oYnBg25RtqoU9a4qVHDENBKbBdnhULHazQx1VEMp4BH5l1VdZtI5TAS14qySHitu6nnx/uZNt5o3qclU60E4QmyT8Vi8BZYGMYyyNtMad7pdfjJ/a/RS0=
+	t=1760715495; cv=none; b=YwXnyLRzjsIirf8r42Iu1dMhRmFrAJfgXmRJJbeFbAhqPDt4gaw+l/4tTIuPu8mu39UAx5n65/Muv7hLgjywZybbPBNun0q0eiocw4WlQH7DFx0GDUwFvIOx3A1H+WwERmhp9YfXVvu/UiG2Ddcw/IAjXKP0YCEGMN6YYgBlBeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713857; c=relaxed/simple;
-	bh=E5YWFcEzkZ79NpfMPtO3gLRJjh6WmK8AZVBfBH9v5YU=;
+	s=arc-20240116; t=1760715495; c=relaxed/simple;
+	bh=RvEN6HU7flbAb0rFWyByz4NSjcAZLHennl9CfnlmyKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hXvijWzQva6mJ+rBGITrJ+cAaar9vdlYnNz5FwB+COj/9zJfpOv3C09B6brvNyq87MTwnIHIoeataR6YaJRomJKOBCeuqcm7lC83tDHjRpL7iyK6YYvgKGEbExqcc4XI13ljUS9qQCxzLaq4f/09pgM7rJXCaxAfTgrBYwoXBPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5JsxBNJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19E2C4CEE7;
-	Fri, 17 Oct 2025 15:10:56 +0000 (UTC)
+	 MIME-Version; b=HMXYiJ8hUQxSDngfYiKwCAxLvAn6kE1kn8JP27Y0mEVIsevS1vsjOrDGZVsnc+mRX/E2bAG+33ndGkua61bYYrD462qAaI9A+QL40CQ2bKgAjiBAoHCETu2vKHh5+CSObzaA7vr6XThuuym7g9GsgtEZ+RO8GNSWwPFOea0VdLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTiOZC9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58236C4CEE7;
+	Fri, 17 Oct 2025 15:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713857;
-	bh=E5YWFcEzkZ79NpfMPtO3gLRJjh6WmK8AZVBfBH9v5YU=;
+	s=korg; t=1760715495;
+	bh=RvEN6HU7flbAb0rFWyByz4NSjcAZLHennl9CfnlmyKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5JsxBNJIxz7ZM01yV9TvDMpEQVK7frQiFnN0+wZN7+okZp/oc+oBadlqjnPadMp0
-	 /wlVB6C7ELRIIw9dgfiQdZq2I5qeemZ6jBwvldwJxZWcOUtbg2Zdr+OTbfnGnWnPRx
-	 yuiAKnhLJX6rt3axCPJyUA1ITw1+CAwTHpkaUENo=
+	b=pTiOZC9swQN2jfvl7rDiqKhu69qkdD/x5xYUZ0ikGNDSrYwue8ZdRJ0XNNYpknplv
+	 mcbItECtTd/m29f5TO6wHI3k4Gm4uDOH90V64hmxLR6HWxplypVS2XszIG5hCk0lFC
+	 7r8sFPGsK1y9P8DTpcztZt6d1ATs85EzwIGHzlDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH 6.6 117/201] sparc: fix error handling in scan_one_device()
+	Denzeel Oliva <wachiturroxd150@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.17 203/371] clk: samsung: exynos990: Replace bogus divs with fixed-factor clocks
 Date: Fri, 17 Oct 2025 16:52:58 +0200
-Message-ID: <20251017145139.042848887@linuxfoundation.org>
+Message-ID: <20251017145209.433672640@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Denzeel Oliva <wachiturroxd150@gmail.com>
 
-commit 302c04110f0ce70d25add2496b521132548cd408 upstream.
+commit a66dabcd2cb8389fd73cab8896fd727fa2ea8d8b upstream.
 
-Once of_device_register() failed, we should call put_device() to
-decrement reference count for cleanup. Or it could cause memory leak.
-So fix this by calling put_device(), then the name can be freed in
-kobject_cleanup().
+HSI1/2 PCIe and HSI0 USBDP debug outputs are fixed divide-by-8.
+OTP also uses 1/8 from oscclk. Replace incorrect div clocks with
+fixed-factor clocks to reflect hardware.
 
-Calling path: of_device_register() -> of_device_add() -> device_add().
-As comment of device_add() says, 'if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count'.
-
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: cf44bbc26cf1 ("[SPARC]: Beginnings of generic of_device framework.")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Fixes: bdd03ebf721f ("clk: samsung: Introduce Exynos990 clock controller driver")
+Signed-off-by: Denzeel Oliva <wachiturroxd150@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20250830-fix-cmu-top-v5-3-7c62f608309e@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/kernel/of_device_32.c |    1 +
- arch/sparc/kernel/of_device_64.c |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/clk/samsung/clk-exynos990.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/arch/sparc/kernel/of_device_32.c
-+++ b/arch/sparc/kernel/of_device_32.c
-@@ -387,6 +387,7 @@ static struct platform_device * __init s
+diff --git a/drivers/clk/samsung/clk-exynos990.c b/drivers/clk/samsung/clk-exynos990.c
+index 385f1d972667..8571c225d090 100644
+--- a/drivers/clk/samsung/clk-exynos990.c
++++ b/drivers/clk/samsung/clk-exynos990.c
+@@ -931,16 +931,11 @@ static const struct samsung_div_clock top_div_clks[] __initconst = {
+ 	    CLK_CON_DIV_CLKCMU_HSI0_DPGTC, 0, 3),
+ 	DIV(CLK_DOUT_CMU_HSI0_USB31DRD, "dout_cmu_hsi0_usb31drd",
+ 	    "gout_cmu_hsi0_usb31drd", CLK_CON_DIV_CLKCMU_HSI0_USB31DRD, 0, 4),
+-	DIV(CLK_DOUT_CMU_HSI0_USBDP_DEBUG, "dout_cmu_hsi0_usbdp_debug",
+-	    "gout_cmu_hsi0_usbdp_debug", CLK_CON_DIV_CLKCMU_HSI0_USBDP_DEBUG,
+-	    0, 4),
+ 	DIV(CLK_DOUT_CMU_HSI1_BUS, "dout_cmu_hsi1_bus", "gout_cmu_hsi1_bus",
+ 	    CLK_CON_DIV_CLKCMU_HSI1_BUS, 0, 3),
+ 	DIV(CLK_DOUT_CMU_HSI1_MMC_CARD, "dout_cmu_hsi1_mmc_card",
+ 	    "gout_cmu_hsi1_mmc_card", CLK_CON_DIV_CLKCMU_HSI1_MMC_CARD,
+ 	    0, 9),
+-	DIV(CLK_DOUT_CMU_HSI1_PCIE, "dout_cmu_hsi1_pcie", "gout_cmu_hsi1_pcie",
+-	    CLK_CON_DIV_CLKCMU_HSI1_PCIE, 0, 7),
+ 	DIV(CLK_DOUT_CMU_HSI1_UFS_CARD, "dout_cmu_hsi1_ufs_card",
+ 	    "gout_cmu_hsi1_ufs_card", CLK_CON_DIV_CLKCMU_HSI1_UFS_CARD,
+ 	    0, 3),
+@@ -949,8 +944,6 @@ static const struct samsung_div_clock top_div_clks[] __initconst = {
+ 	    0, 3),
+ 	DIV(CLK_DOUT_CMU_HSI2_BUS, "dout_cmu_hsi2_bus", "gout_cmu_hsi2_bus",
+ 	    CLK_CON_DIV_CLKCMU_HSI2_BUS, 0, 4),
+-	DIV(CLK_DOUT_CMU_HSI2_PCIE, "dout_cmu_hsi2_pcie", "gout_cmu_hsi2_pcie",
+-	    CLK_CON_DIV_CLKCMU_HSI2_PCIE, 0, 7),
+ 	DIV(CLK_DOUT_CMU_IPP_BUS, "dout_cmu_ipp_bus", "gout_cmu_ipp_bus",
+ 	    CLK_CON_DIV_CLKCMU_IPP_BUS, 0, 4),
+ 	DIV(CLK_DOUT_CMU_ITP_BUS, "dout_cmu_itp_bus", "gout_cmu_itp_bus",
+@@ -990,6 +983,16 @@ static const struct samsung_div_clock top_div_clks[] __initconst = {
+ 	    CLK_CON_DIV_DIV_CLKCMU_DPU, 0, 3),
+ };
  
- 	if (of_device_register(op)) {
- 		printk("%pOF: Could not register of device.\n", dp);
-+		put_device(&op->dev);
- 		kfree(op);
- 		op = NULL;
- 	}
---- a/arch/sparc/kernel/of_device_64.c
-+++ b/arch/sparc/kernel/of_device_64.c
-@@ -680,6 +680,7 @@ static struct platform_device * __init s
- 
- 	if (of_device_register(op)) {
- 		printk("%pOF: Could not register of device.\n", dp);
-+		put_device(&op->dev);
- 		kfree(op);
- 		op = NULL;
- 	}
++static const struct samsung_fixed_factor_clock cmu_top_ffactor[] __initconst = {
++	FFACTOR(CLK_DOUT_CMU_HSI1_PCIE, "dout_cmu_hsi1_pcie",
++		"gout_cmu_hsi1_pcie", 1, 8, 0),
++	FFACTOR(CLK_DOUT_CMU_OTP, "dout_cmu_otp", "oscclk", 1, 8, 0),
++	FFACTOR(CLK_DOUT_CMU_HSI0_USBDP_DEBUG, "dout_cmu_hsi0_usbdp_debug",
++		"gout_cmu_hsi0_usbdp_debug", 1, 8, 0),
++	FFACTOR(CLK_DOUT_CMU_HSI2_PCIE, "dout_cmu_hsi2_pcie",
++		"gout_cmu_hsi2_pcie", 1, 8, 0),
++};
++
+ static const struct samsung_gate_clock top_gate_clks[] __initconst = {
+ 	GATE(CLK_GOUT_CMU_APM_BUS, "gout_cmu_apm_bus", "mout_cmu_apm_bus",
+ 	     CLK_CON_GAT_GATE_CLKCMU_APM_BUS, 21, CLK_IGNORE_UNUSED, 0),
+@@ -1133,6 +1136,8 @@ static const struct samsung_cmu_info top_cmu_info __initconst = {
+ 	.nr_mux_clks = ARRAY_SIZE(top_mux_clks),
+ 	.div_clks = top_div_clks,
+ 	.nr_div_clks = ARRAY_SIZE(top_div_clks),
++	.fixed_factor_clks = cmu_top_ffactor,
++	.nr_fixed_factor_clks = ARRAY_SIZE(cmu_top_ffactor),
+ 	.gate_clks = top_gate_clks,
+ 	.nr_gate_clks = ARRAY_SIZE(top_gate_clks),
+ 	.nr_clk_ids = CLKS_NR_TOP,
+-- 
+2.51.0
+
 
 
 
