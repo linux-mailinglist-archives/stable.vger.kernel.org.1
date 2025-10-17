@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-187329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE4DBEA50C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7380CBEA669
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A11A946D70
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FE4A18938A7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7050330B19;
-	Fri, 17 Oct 2025 15:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED00330B2B;
+	Fri, 17 Oct 2025 15:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tO/9wTRe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wamz2mFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A9D330B04;
-	Fri, 17 Oct 2025 15:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738FD330B2E;
+	Fri, 17 Oct 2025 15:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715771; cv=none; b=i9M1OJi8zUD22ZRn++W4GOBHeEfpfIdOpPfBzXvONRxZGobfzY8QUI3QP4EchKnnO09UwsH8g+GVqveGUy0wSumlDlekiBTJy6ccUGEGcqP/Fe63z74XCUvXeWM1j25N9v94XnrUFWgCuWn0r3VTkyNLOJ5hNq+6zF0fpCxGtqk=
+	t=1760716629; cv=none; b=Dt7hgiV4D7IxeEqIeT6qOHbwckfWK6M7voVC0Nn1QVhkPLtPJ9xEZ65yLT8phtR6yOVo92Lwvpl1aFhxn0WlxmIBDCkbdKDQM34fdH6+a5wcLJeP6W1Sda2YVPqITw73INO6k7dF7LMpwenR85i6FkOhxbAXIEbQBup2qZSu10w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715771; c=relaxed/simple;
-	bh=zn+toRlQdtHXAI/D1RT3MOSbz/82/4YGn0V6tZ4nT7A=;
+	s=arc-20240116; t=1760716629; c=relaxed/simple;
+	bh=2f8Vsg9XE0Rb2Y0VNB9Idl2MGmXzVk26P4wyJUEFOhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=heXVuwgi0lErXbSYWXwRVp44+nRMpEmsFanlIPf2iCYUvVTokXoPwY/QmiPDvUAa0f7Tf6dFQayRUJtZiPLX0EFmhjdBW6GXN8CIMeHT1JLyoMouWRl6kNbVWaxE8d5g9mMwoz5+9MdSjzEoxsJpRLTXc4Mr/Pdv1AToLaHDH5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tO/9wTRe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E98C4CEE7;
-	Fri, 17 Oct 2025 15:42:50 +0000 (UTC)
+	 MIME-Version; b=NNMawlmMplR2FYbO3nF1th3iJSHKzbB46fnql3SsR+ZJ27ofXIGJAj0Ya8pLSwNCVqwkaKKtJ5oejuXPPpz0TeI1NkksZB95njDMjYK39kyC9Q/IOg00jRlnKre/jY2NtpINCdPNuuzYbB1zuu/3pQlhC650tAFu2BAIm9Yy6yA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wamz2mFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F266DC4CEFE;
+	Fri, 17 Oct 2025 15:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715770;
-	bh=zn+toRlQdtHXAI/D1RT3MOSbz/82/4YGn0V6tZ4nT7A=;
+	s=korg; t=1760716629;
+	bh=2f8Vsg9XE0Rb2Y0VNB9Idl2MGmXzVk26P4wyJUEFOhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tO/9wTReyHQpOF+fKgGYDir6kC6WSAUnviafrDsVHSUOlqqVfbb+VDJfSa8+HThW1
-	 isg119ebWPcfg6Q7RCEwymicIX7uEyFGAnWmOkihzQ9X+R7ciX5gRkrRefANXjMHdo
-	 pWO9UYEPSFOkvN6MokvSjl0Zk0wGXhKFhRn2XaLo=
+	b=wamz2mFnOL5SQ14IIs/b/SxyU1lrp/ODaAts0GPOxagyF8ckxEJhwlv2/tw4OJuKF
+	 Isf9lnxt5TfxeHAAWQeD1dKXhhbQ6tKuS+nkllBztT8W4kuKwaUxL75hlTP55luy1X
+	 qf7ayQd1pPRZcjaZTRA+jPUSoh4Bg+wN5qQe3zOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.17 331/371] media: iris: Always destroy internal buffers on firmware release response
+	Pratyush Yadav <pratyush@kernel.org>,
+	Santhosh Kumar K <s-k6@ti.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 213/276] spi: cadence-quadspi: Flush posted register writes before DAC access
 Date: Fri, 17 Oct 2025 16:55:06 +0200
-Message-ID: <20251017145214.054317834@linuxfoundation.org>
+Message-ID: <20251017145150.238666805@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Pratyush Yadav <pratyush@kernel.org>
 
-commit 9cae3619e465dd1cdaa5a5ffbbaf4f41338b0022 upstream.
+commit 1ad55767e77a853c98752ed1e33b68049a243bd7 upstream.
 
-Currently, internal buffers are destroyed only if 'PENDING_RELEASE' flag
-is set when a release response is received from the firmware, which is
-incorrect. Internal buffers should always be destroyed when the firmware
-explicitly releases it, regardless of whether the 'PENDING_RELEASE' flag
-was set by the driver. This is specially important during force-stop
-scenarios, where the firmware may release buffers without driver marking
-them for release.
-Fix this by removing the incorrect check and ensuring all buffers are
-properly cleaned up.
+cqspi_read_setup() and cqspi_write_setup() program the address width as
+the last step in the setup. This is likely to be immediately followed by
+a DAC region read/write. On TI K3 SoCs the DAC region is on a different
+endpoint from the register region. This means that the order of the two
+operations is not guaranteed, and they might be reordered at the
+interconnect level. It is possible that the DAC read/write goes through
+before the address width update goes through. In this situation if the
+previous command used a different address width the OSPI command is sent
+with the wrong number of address bytes, resulting in an invalid command
+and undefined behavior.
 
-Fixes: 73702f45db81 ("media: iris: allocate, initialize and queue internal buffers")
-Cc: stable@vger.kernel.org
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # X1E80100
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Read back the size register to make sure the write gets flushed before
+accessing the DAC region.
+
+Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
+CC: stable@vger.kernel.org
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+Message-ID: <20250905185958.3575037-3-s-k6@ti.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-index a8c30fc5c0d0..dda775d463e9 100644
---- a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-+++ b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-@@ -424,7 +424,6 @@ static int iris_hfi_gen2_handle_release_internal_buffer(struct iris_inst *inst,
- 	struct iris_buffers *buffers = &inst->buffers[buf_type];
- 	struct iris_buffer *buf, *iter;
- 	bool found = false;
--	int ret = 0;
- 
- 	list_for_each_entry(iter, &buffers->list, list) {
- 		if (iter->device_addr == buffer->base_address) {
-@@ -437,10 +436,8 @@ static int iris_hfi_gen2_handle_release_internal_buffer(struct iris_inst *inst,
- 		return -EINVAL;
- 
- 	buf->attr &= ~BUF_ATTR_QUEUED;
--	if (buf->attr & BUF_ATTR_PENDING_RELEASE)
--		ret = iris_destroy_internal_buffer(inst, buf);
- 
--	return ret;
-+	return iris_destroy_internal_buffer(inst, buf);
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -666,6 +666,7 @@ static int cqspi_read_setup(struct cqspi
+ 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
+ 	reg |= (op->addr.nbytes - 1);
+ 	writel(reg, reg_base + CQSPI_REG_SIZE);
++	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
+ 	return 0;
  }
  
- static int iris_hfi_gen2_handle_session_stop(struct iris_inst *inst,
--- 
-2.51.0
-
+@@ -810,6 +811,7 @@ static int cqspi_write_setup(struct cqsp
+ 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
+ 	reg |= (op->addr.nbytes - 1);
+ 	writel(reg, reg_base + CQSPI_REG_SIZE);
++	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
+ 	return 0;
+ }
+ 
 
 
 
