@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-186341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01228BE93EC
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA85BE93EF
 	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:42:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1A3A189C4FE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:42:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 537945E6AD8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E716532E143;
-	Fri, 17 Oct 2025 14:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B8732E154;
+	Fri, 17 Oct 2025 14:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ne5/1SNV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpYBHmde"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983B02E091E;
-	Fri, 17 Oct 2025 14:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CC01D554;
+	Fri, 17 Oct 2025 14:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760712132; cv=none; b=rdvOEyvfk1I+TY2GAcj/T+IvMUoZe7k5J0C80iUKuaw6l9RdBYMDceA+dLfA4q0Ramysec7uugBcRpZn6Ji8Do3uNV6RVBySccmRZTo3tQi+XKoyraBeBYc7C4JODIrYn4knNKmW/vdy4XNSjYQfPpGKadrtzrk4HbMCvwc49Bw=
+	t=1760712134; cv=none; b=mdoY6pC01raNAUKWO7kjmtZYEuW/ZLvSdNyy6WzSWSqDPhxI7I4bXikJQx2b8qd8VqznK9bteLDZZ8JQZLvdxnCP+riTy6y1s8rHU1eZ9r+3aQo7oLqKZbyKDk2iL8UktvMxNv3dAe8M01IJshp7Aio8KwXZh/0r/9xgxEDJL1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760712132; c=relaxed/simple;
-	bh=PT+Q+rTJZe7i71rG0HVDaIMaB59mBx87VhMGd8QEjPw=;
+	s=arc-20240116; t=1760712134; c=relaxed/simple;
+	bh=eXk9QGfEQ4kWsV/vhIbDLldj4voccGNnwfBObLBtEPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Txc4LIxxJpBGrSFz1Qhn+Cia8VKjhE+Rrqb3e/AL/ObiE0QLv+DFVJl3s7ndFFkF1tRQSCTXsUL0KddoR89zvxQiyS/DDnq57mOXzuLwdQj2Ihu388XQ1MmjM6RFfyRZJRehMuFhW3DrskoYR7KeFHVmRacLgDrdnHepFOL2pVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ne5/1SNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A28C4CEE7;
-	Fri, 17 Oct 2025 14:42:10 +0000 (UTC)
+	 MIME-Version; b=l6uGHHAXUy3k3tvYEPMxH1bu5K7vq3WJCWLAszwnAuvhnE43SS29AN3yTirT4ZL8szmosjXaYAZTKDSK8FAxDpIbxhKTsKxs9qjDZkgj5rltdwAgWkJg7lbR5ifrjEl35OLmnN3o+9b1RVq5GxBO2UVREabSNNbSJfpFqTbovaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpYBHmde; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3124C4CEE7;
+	Fri, 17 Oct 2025 14:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760712132;
-	bh=PT+Q+rTJZe7i71rG0HVDaIMaB59mBx87VhMGd8QEjPw=;
+	s=k20201202; t=1760712134;
+	bh=eXk9QGfEQ4kWsV/vhIbDLldj4voccGNnwfBObLBtEPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ne5/1SNVucH/Yl9HvtyIZqotcZwdbHK9gRrWRnUkQSfj1011lTZXNQPv1p3MpJoae
-	 MvqVawk0P862sqSm3uvrkrl5av+I/NM5f6Oxtrp/jXGKZzfk4P6j9CFxylT1x+rKS2
-	 kuU9bSPweV10hquUkbF8FECirK0gbN85J9gOvqeSGevT80cPhnLhtbojtLItDS7Bjr
-	 /YXFWkJfhZr1pQPSRHjhAPSROAVzN+ZXYa1N/xt0R9oMnStHo2Prj8eZAFOJUVKblA
-	 uJLgJlAKILeu0Wdq2WKM7sxDFVZo7VeSISbTo7t9ETR3/pf1t6HmABQezShVikUolc
-	 gM9r9g9dJUBGg==
+	b=HpYBHmde3XAc10/wJBXnD/yfWSoqyyBgE0t+Fpu7SiEy9ropFi3IHkdfRkT7sEHxb
+	 we8wVPFHubFMXfrQJCdgGsqm/+QPb45BxaCD0zCm35pO7dO6CZjNj382tuD0+IsQrq
+	 KWhESvQ5Ojh/Vak1Gcnmce7H6jz51tT404IaKttaq3VrJyf3baJGdgjnZ2eeJPuPN5
+	 X46cQyiBG3andXBPNP7G1Yv4Q1K6x+3U9+daxFT/jnKk89fCTQizOc3Aj3z0DOrUSk
+	 0AYNNk0SgzlLIY4AOz4pewcGohMgMoOtb0V6MfMilf+vUkVZjqwvNZHHyMJ8TPkIQF
+	 UyKjNWic/1LTQ==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
@@ -49,9 +49,9 @@ Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	sashal@kernel.org,
 	Geliang Tang <geliang@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15.y 1/2] mptcp: pm: in-kernel: usable client side with C-flag
-Date: Fri, 17 Oct 2025 16:39:51 +0200
-Message-ID: <20251017143949.2844546-5-matttbe@kernel.org>
+Subject: [PATCH 5.15.y 2/2] selftests: mptcp: join: validate C-flag + def limit
+Date: Fri, 17 Oct 2025 16:39:52 +0200
+Message-ID: <20251017143949.2844546-6-matttbe@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <2025101658-underwire-colonize-b998@gregkh>
 References: <2025101658-underwire-colonize-b998@gregkh>
@@ -61,213 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8944; i=matttbe@kernel.org; h=from:subject; bh=PT+Q+rTJZe7i71rG0HVDaIMaB59mBx87VhMGd8QEjPw=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDI+hZrbeEo8tt9/9H8iT5nq7jXmirlbXWv8NP4f+BJfn 2+dfEWxo5SFQYyLQVZMkUW6LTJ/5vMq3hIvPwuYOaxMIEMYuDgFYCKxzQz/MxmFullnPT1/5KRX tJiAdOqssLJlO43flfcLFX+d1fVIk5FhauY+n9spWfUzo66Y/b1jeKhBZ8uh6X1XlrtlHjdgu+3 FBQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2688; i=matttbe@kernel.org; h=from:subject; bh=eXk9QGfEQ4kWsV/vhIbDLldj4voccGNnwfBObLBtEPM=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDI+hVpuqvyxyZnF7LuVg8pnlTkWl+b3rG1uP9g1b8+Th oZItriUjlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIkkFjD8r923dNL9vWuE2q1W vr9jsCzi6MI3D/o0zK+VT57AWfTH9RfDb3YX9741xx+4aiycMamP42HeCgVrF8bSeOvre0TMwhL cuAE=
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-commit 4b1ff850e0c1aacc23e923ed22989b827b9808f9 upstream.
+commit 008385efd05e04d8dff299382df2e8be0f91d8a0 upstream.
 
-When servers set the C-flag in their MP_CAPABLE to tell clients not to
-create subflows to the initial address and port, clients will likely not
-use their other endpoints. That's because the in-kernel path-manager
-uses the 'subflow' endpoints to create subflows only to the initial
-address and port.
+The previous commit adds an exception for the C-flag case. The
+'mptcp_join.sh' selftest is extended to validate this case.
 
-If the limits have not been modified to accept ADD_ADDR, the client
-doesn't try to establish new subflows. If the limits accept ADD_ADDR,
-the routing routes will be used to select the source IP.
+In this subtest, there is a typical CDN deployment with a client where
+MPTCP endpoints have been 'automatically' configured:
 
-The C-flag is typically set when the server is operating behind a legacy
-Layer 4 load balancer, or using anycast IP address. Clients having their
-different 'subflow' endpoints setup, don't end up creating multiple
-subflows as expected, and causing some deployment issues.
+- the server set net.mptcp.allow_join_initial_addr_port=0
 
-A special case is then added here: when servers set the C-flag in the
-MPC and directly sends an ADD_ADDR, this single ADD_ADDR is accepted.
-The 'subflows' endpoints will then be used with this new remote IP and
-port. This exception is only allowed when the ADD_ADDR is sent
-immediately after the 3WHS, and makes the client switching to the 'fully
-established' mode. After that, 'select_local_address()' will not be able
-to find any subflows, because 'id_avail_bitmap' will be filled in
-mptcp_pm_create_subflow_or_signal_addr(), when switching to 'fully
-established' mode.
+- the client has multiple 'subflow' endpoints, and the default limits:
+  not accepting ADD_ADDRs.
+
+Without the parent patch, the client is not able to establish new
+subflows using its 'subflow' endpoints. The parent commit fixes that.
+
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
 Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/536
 Reviewed-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250925-net-next-mptcp-c-flag-laminar-v1-1-ad126cc47c6b@kernel.org
+Link: https://patch.msgid.link/20250925-net-next-mptcp-c-flag-laminar-v1-2-ad126cc47c6b@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflict in pm.c, because commit 498d7d8b75f1 ("mptcp: pm: remove
-  '_nl' from mptcp_pm_nl_is_init_remote_addr") renamed an helper in the
-  context, and it is not in this version. The same new code can be
-  applied at the same place.
-  Another conflict in pm.c, because commit 4d25247d3ae4 ("mptcp: bypass
-  in-kernel PM restrictions for non-kernel PMs") switched the modified
-  'if' statement to an 'else if', and is not in this version. The same
-  modification can still be applied.
-  Conflict in pm_kernel.c, because the modified code has been moved from
-  pm_netlink.c to pm_kernel.c in commit 8617e85e04bd ("mptcp: pm: split
-  in-kernel PM specific code"), which is not in this version. The
-  resolution is easy: simply by applying the patch where 'pm_kernel.c'
-  has been replaced 'pm_netlink.c'.
-  Conflict in pm_netlink.c, because commit b83fbca1b4c9 ("mptcp: pm:
-  reduce entries iterations on connect") is not in this version. Instead
-  of using the 'locals' variable (struct mptcp_pm_local *) from the new
-  version and embedding a "struct mptcp_addr_info", we can simply
-  continue to use the 'addrs' variable (struct mptcp_addr_info *).
-  Because commit b9d69db87fb7 ("mptcp: let the in-kernel PM use mixed
-  IPv4 and IPv6 addresses") is not in this version, it is also required
-  to pass an extra parameter to fill_local_addresses_vec(): struct
-  mptcp_addr_info *remote, which is available from the caller side.
-  Same with commit 4638de5aefe5 ("mptcp: handle local addrs announced by
-  userspace PMs") adding the 'mptcp_' prefix to addresses_equal().
-  Conflict in protocol.h, because commit af3dc0ad3167 ("mptcp: Remove
-  unused declaration mptcp_sockopt_sync()") is not in this version and
-  it removed one line in the context. The resolution is easy because the
-  new function can still be added at the same place. A similar conflict
-  has been resolved due to commit 95d686517884 ("mptcp: fix subflow
-  accounting on close"). ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-
+[ Conflicts in mptcp_join.sh, because many different helpers have been
+  modified in newer kernel versions, e.g. in commit 03668c65d153
+  ("selftests: mptcp: join: rework detailed report"), or commit
+  985de45923e2 ("selftests: mptcp: centralize stats dumping"), etc.
+  Adaptations have been made to use the old way, similar to what is done
+  just above. ]
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/pm.c         |  7 ++++--
- net/mptcp/pm_netlink.c | 49 +++++++++++++++++++++++++++++++++++++++++-
- net/mptcp/protocol.h   |  8 +++++++
- 3 files changed, 61 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
-index 4fa31301fe84..737643e84ed1 100644
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -189,9 +189,12 @@ void mptcp_pm_add_addr_received(struct mptcp_sock *msk,
- 
- 	spin_lock_bh(&pm->lock);
- 
--	/* id0 should not have a different address */
-+	/* - id0 should not have a different address
-+	 * - special case for C-flag: linked to fill_local_addresses_vec()
-+	 */
- 	if ((addr->id == 0 && !mptcp_pm_nl_is_init_remote_addr(msk, addr)) ||
--	    (addr->id > 0 && !READ_ONCE(pm->accept_addr))) {
-+	    (addr->id > 0 && !READ_ONCE(pm->accept_addr) &&
-+	     !mptcp_pm_add_addr_c_flag_case(msk))) {
- 		mptcp_pm_announce_addr(msk, addr, true);
- 		mptcp_pm_add_addr_send_ack(msk);
- 	} else if (mptcp_pm_schedule_work(msk, MPTCP_PM_ADD_ADDR_RECEIVED)) {
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index f9839980fcaf..df46ca14ce23 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -571,6 +571,7 @@ static void mptcp_pm_nl_subflow_established(struct mptcp_sock *msk)
-  * and return the array size.
-  */
- static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
-+					     struct mptcp_addr_info *remote,
- 					     struct mptcp_addr_info *addrs)
- {
- 	struct sock *sk = (struct sock *)msk;
-@@ -578,10 +579,12 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
- 	struct mptcp_addr_info mpc_addr;
- 	struct pm_nl_pernet *pernet;
- 	unsigned int subflows_max;
-+	bool c_flag_case;
- 	int i = 0;
- 
- 	pernet = net_generic(sock_net(sk), pm_nl_pernet_id);
- 	subflows_max = mptcp_pm_get_subflows_max(msk);
-+	c_flag_case = remote->id && mptcp_pm_add_addr_c_flag_case(msk);
- 
- 	mptcp_local_address((struct sock_common *)msk, &mpc_addr);
- 
-@@ -605,6 +608,10 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
- 			msk->pm.subflows++;
- 			addrs[i] = entry->addr;
- 
-+			if (c_flag_case &&
-+			    (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW))
-+				msk->pm.local_addr_used++;
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 06634417e3c4..2cf9bb39b22b 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -1826,6 +1826,16 @@ deny_join_id0_tests()
+ 	ip netns exec $ns2 ./pm_nl_ctl add 10.0.3.2 flags subflow
+ 	run_tests $ns1 $ns2 10.0.1.1
+ 	chk_join_nr "subflow and address allow join id0 2" 1 1 1
 +
- 			/* Special case for ID0: set the correct ID */
- 			if (addresses_equal(&entry->addr, &mpc_addr, entry->addr.port))
- 				addrs[i].id = 0;
-@@ -614,6 +621,46 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
- 	}
- 	rcu_read_unlock();
++	# default limits, server deny join id 0 + signal
++	reset_with_allow_join_id0 0 1
++	ip netns exec $ns1 ./pm_nl_ctl limits 0 2
++	ip netns exec $ns2 ./pm_nl_ctl limits 0 2
++	ip netns exec $ns1 ./pm_nl_ctl add 10.0.2.1 flags signal
++	ip netns exec $ns2 ./pm_nl_ctl add 10.0.3.2 flags subflow
++	ip netns exec $ns2 ./pm_nl_ctl add 10.0.4.2 flags subflow
++	run_tests $ns1 $ns2 10.0.1.1
++	chk_join_nr "default limits, server deny join id 0" 2 2 2
+ }
  
-+	/* Special case: peer sets the C flag, accept one ADD_ADDR if default
-+	 * limits are used -- accepting no ADD_ADDR -- and use subflow endpoints
-+	 */
-+	if (!i && c_flag_case) {
-+		unsigned int local_addr_max = mptcp_pm_get_local_addr_max(msk);
-+
-+		rcu_read_lock();
-+		__mptcp_flush_join_list(msk);
-+		list_for_each_entry_rcu(entry, &pernet->local_addr_list, list) {
-+			if (!(entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW))
-+				continue;
-+
-+			if (entry->addr.family != sk->sk_family) {
-+#if IS_ENABLED(CONFIG_MPTCP_IPV6)
-+				if ((entry->addr.family == AF_INET &&
-+				     !ipv6_addr_v4mapped(&sk->sk_v6_daddr)) ||
-+				    (sk->sk_family == AF_INET &&
-+				     !ipv6_addr_v4mapped(&entry->addr.addr6)))
-+#endif
-+					continue;
-+			}
-+
-+			/* avoid any address already in use by subflows and
-+			 * pending join
-+			 */
-+			if (!lookup_subflow_by_saddr(&msk->conn_list, &entry->addr) &&
-+			    msk->pm.local_addr_used < local_addr_max &&
-+			    msk->pm.subflows < subflows_max) {
-+				addrs[i] = entry->addr;
-+
-+				msk->pm.local_addr_used++;
-+				msk->pm.subflows++;
-+				i++;
-+			}
-+		}
-+		rcu_read_unlock();
-+
-+		return i;
-+	}
-+
- 	/* If the array is empty, fill in the single
- 	 * 'IPADDRANY' local address
- 	 */
-@@ -661,7 +708,7 @@ static void mptcp_pm_nl_add_addr_received(struct mptcp_sock *msk)
- 	/* connect to the specified remote address, using whatever
- 	 * local address the routing configuration will pick.
- 	 */
--	nr = fill_local_addresses_vec(msk, addrs);
-+	nr = fill_local_addresses_vec(msk, &remote, addrs);
- 
- 	spin_unlock_bh(&msk->pm.lock);
- 	for (i = 0; i < nr; i++)
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 8d05fb205a31..c93399d11650 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -846,6 +846,14 @@ unsigned int mptcp_pm_get_add_addr_accept_max(const struct mptcp_sock *msk);
- unsigned int mptcp_pm_get_subflows_max(const struct mptcp_sock *msk);
- unsigned int mptcp_pm_get_local_addr_max(const struct mptcp_sock *msk);
- 
-+static inline bool mptcp_pm_add_addr_c_flag_case(struct mptcp_sock *msk)
-+{
-+	return READ_ONCE(msk->pm.remote_deny_join_id0) &&
-+	       msk->pm.local_addr_used == 0 &&
-+	       mptcp_pm_get_add_addr_accept_max(msk) == 0 &&
-+	       msk->pm.subflows < mptcp_pm_get_subflows_max(msk);
-+}
-+
- void mptcp_sockopt_sync(struct mptcp_sock *msk, struct sock *ssk);
- void mptcp_sockopt_sync_all(struct mptcp_sock *msk);
- 
+ fullmesh_tests()
 -- 
 2.51.0
 
