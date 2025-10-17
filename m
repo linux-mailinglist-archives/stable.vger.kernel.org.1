@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8552DBE9CB4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52EBBEA107
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41D9974831D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7140A1896676
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFCB32E12B;
-	Fri, 17 Oct 2025 15:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BCAA330B1F;
+	Fri, 17 Oct 2025 15:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kO/1d31g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEdNlIHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4D732C931;
-	Fri, 17 Oct 2025 15:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BE9330B2C;
+	Fri, 17 Oct 2025 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713811; cv=none; b=nD40RwJNNDpmDqwF/TFSSaREKYcPzzBxVx4U+1YPDHA0Em8vInvsvK01v88SfrefLbsNy2Fh++K2iNm+tYkJRSs2zb6PHjq18Mwr8/gN4FygG62ipW6hjKZk8/xKVUDk/vSmewLWL/rg7wracJsqGaDDfn78fHJdoPQ2Gfre6wA=
+	t=1760715433; cv=none; b=dJB6uroIP9Gi716tTFnqO0OnCCh6TEYFgqkp5Oocj56fj4yhmKWxSyPNY6qKbEN5dCwFiilfTYXtyh5hAkrApo/3BFEufzBySLGVdOu18OqF+SlZwiZ2GggACWIflyk0q9BlEl/SpVhO6ZrO1SSSy7eYy2UJmN+VTLvdB2mgK9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713811; c=relaxed/simple;
-	bh=QEWQq3tH6RaKFAZehKi0pinYMw8u6UF0tNxba3hOEV0=;
+	s=arc-20240116; t=1760715433; c=relaxed/simple;
+	bh=sYk3+N2MFqYTa0WYMfyzgnRz+leoYQIcAciH2CYRwn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BrTnWd4V90Va027SoXR4edNvVr99EbWAw+2mHDKlEMGceRnjhrV7w+OhIPjONDt5W/HXfaQB2FsmBQEN1YSHgC8m//HYTWJYKNNzsNIPYyuY/1h17f5l1HFDGJu9hRQ+xI8bv7pCAcENXDRgmqBvO7y/5Bx95STvvCEXIDucX+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kO/1d31g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658E9C4CEE7;
-	Fri, 17 Oct 2025 15:10:11 +0000 (UTC)
+	 MIME-Version; b=GebFrGcEq15Q1q7K10N6ykrNUQeOxOkw6ZZb8jTaTUP7jXEgmAJl9bfaFO3oMTTECUT5s28CAWbA8ROT6OVHIis1T5HSgj3VWHDcFTcUTed7NNjX1zpMSJacKYFc65LahhyqPGxZimE72PmbfZ9BESjiYahj8bkP43D8BS/77zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEdNlIHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386D3C4CEE7;
+	Fri, 17 Oct 2025 15:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713811;
-	bh=QEWQq3tH6RaKFAZehKi0pinYMw8u6UF0tNxba3hOEV0=;
+	s=korg; t=1760715432;
+	bh=sYk3+N2MFqYTa0WYMfyzgnRz+leoYQIcAciH2CYRwn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kO/1d31gCd6HzwbjQy/7pEEI4mZvoPosUUbmW+mXZRueMmVNtxAdHt0QuT9HfZ0ZR
-	 X0b8ZOO0yVYG7qXmQsBaAHiEylW3chcY6xxRayKsSLCSr+UP7whi4Y6EQV/4pIynXj
-	 ENAAc+8twZseWGexHAEiQnkG21QrIiOllS0rz4Lo=
+	b=HEdNlIHBBTpwINPdFc6wr5DK1YvNm+/+DSJA+TRyBce4RJCZDNYhRdgdmsasJ29ct
+	 PllwXoyKEnq+8CzglynxRnXAO6t1E68XtRkv+No69U9Ebvc/ht4AffH9Wst70EeCwY
+	 0qynMkY9JHPn1+dalUt/teQh3o57pJqTiw6IIDm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 6.6 129/201] PCI/AER: Fix missing uevent on recovery when a reset is requested
+	Joanne Koong <joannelkoong@gmail.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.17 215/371] fuse: fix possibly missing fuse_copy_finish() call in fuse_notify()
 Date: Fri, 17 Oct 2025 16:53:10 +0200
-Message-ID: <20251017145139.479827212@linuxfoundation.org>
+Message-ID: <20251017145209.864773733@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit bbf7d0468d0da71d76cc6ec9bc8a224325d07b6b upstream.
+commit 0b563aad1c0a05dc7d123f68a9f82f79de206dad upstream.
 
-Since commit 7b42d97e99d3 ("PCI/ERR: Always report current recovery
-status for udev") AER uses the result of error_detected() as parameter
-to pci_uevent_ers(). As pci_uevent_ers() however does not handle
-PCI_ERS_RESULT_NEED_RESET this results in a missing uevent for the
-beginning of recovery if drivers request a reset. Fix this by treating
-PCI_ERS_RESULT_NEED_RESET as beginning recovery.
+In case of FUSE_NOTIFY_RESEND and FUSE_NOTIFY_INC_EPOCH fuse_copy_finish()
+isn't called.
 
-Fixes: 7b42d97e99d3 ("PCI/ERR: Always report current recovery status for udev")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250807-add_err_uevents-v5-1-adf85b0620b0@linux.ibm.com
+Fix by always calling fuse_copy_finish() after fuse_notify().  It's a no-op
+if called a second time.
+
+Fixes: 760eac73f9f6 ("fuse: Introduce a new notification type for resend pending requests")
+Fixes: 2396356a945b ("fuse: add more control over cache invalidation behaviour")
+Cc: <stable@vger.kernel.org> # v6.9
+Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-driver.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/fuse/dev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -1612,6 +1612,7 @@ void pci_uevent_ers(struct pci_dev *pdev
- 	switch (err_type) {
- 	case PCI_ERS_RESULT_NONE:
- 	case PCI_ERS_RESULT_CAN_RECOVER:
-+	case PCI_ERS_RESULT_NEED_RESET:
- 		envp[idx++] = "ERROR_EVENT=BEGIN_RECOVERY";
- 		envp[idx++] = "DEVICE_ONLINE=0";
- 		break;
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -2156,7 +2156,7 @@ static ssize_t fuse_dev_do_write(struct
+ 	 */
+ 	if (!oh.unique) {
+ 		err = fuse_notify(fc, oh.error, nbytes - sizeof(oh), cs);
+-		goto out;
++		goto copy_finish;
+ 	}
+ 
+ 	err = -EINVAL;
 
 
 
