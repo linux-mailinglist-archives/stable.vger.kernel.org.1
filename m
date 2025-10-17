@@ -1,53 +1,64 @@
-Return-Path: <stable+bounces-186509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D61BBE9785
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:06:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C84BE9727
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57DAB1A67850
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 007491A66747
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C70332904;
-	Fri, 17 Oct 2025 15:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0FE3328E8;
+	Fri, 17 Oct 2025 15:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JheWecW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4vMWGp1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A413328FF;
-	Fri, 17 Oct 2025 15:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805472F12DC;
+	Fri, 17 Oct 2025 15:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713443; cv=none; b=q2nA7wpcDYcL6pVHlRIWPAZ7HRqmNIRNBG4Wj9br21hGWBqTZE/o6Jewi+WIUnWQoc+nn0BjhStb7KMe1DTFsiGiCzR8+Uv/+tPHqpgYMoc5qHE5BMroR3kyao5mK6nVEGSBxAjcSr7JKJLLfKM8pUi0L/nLvbh33LjYWMygMJ0=
+	t=1760713343; cv=none; b=GroFtmFVYDPGy21SJk6odZInweSvIx024ewfhEI0a+Y9GDicaaWQiKN9u5KRlKXG5GXawE9dRF9JuPWrf03L/Yq+SU7qAhIPGFAEfiy5mNNw+Sk/AfMljVQuMEKlSNnHoKhP4Qpbrsjv6ovkL1PiEj8oOQGqMVusbeUNQG1w6Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713443; c=relaxed/simple;
-	bh=L4MBiwTYQAuXSjfc5wNJ/SEQXMTaMFWW0k8eRJn7bsI=;
+	s=arc-20240116; t=1760713343; c=relaxed/simple;
+	bh=eh/QN2iPgnO9fiJsOt8VSzgvowb7gZeJCE5sZRLwNsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZbpncQYPvvwVgBMIlOnEwFN/xaMzg/3bmCz53AWm6ev53heOVN5cS+UqNSpELG0Hb0Bkxrrg0qGMqRut1HNdE2TtCDpUJzF3YPVu6tArSDO2YDX+ecda0Skins8ylCOfsVJhqWtM0DcZLREBbtSD92fWoogyhOyiyz9/4mT450=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JheWecW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03791C4CEF9;
-	Fri, 17 Oct 2025 15:04:02 +0000 (UTC)
+	 MIME-Version; b=FVkHNTu3m579vQjIPLMNutiIVgQJuR1mfgf3ENGwfDlfNcPPDfc3K87tie/cUPkvhAhpHso2T/FgtfOjLV6P2aZ7PHmOjbT3DGxoUCRQSR7qjbp7kIrSwWYR7ccB0gqXOwZFIrYEg7lyKI2fXPu+i67/VRP7ZIgPqxxrytR2wYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4vMWGp1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8385C4CEE7;
+	Fri, 17 Oct 2025 15:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713443;
-	bh=L4MBiwTYQAuXSjfc5wNJ/SEQXMTaMFWW0k8eRJn7bsI=;
+	s=korg; t=1760713343;
+	bh=eh/QN2iPgnO9fiJsOt8VSzgvowb7gZeJCE5sZRLwNsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JheWecW69Gyoy+f6NtbLh4NexVYWc/5z3yq6ojCF/k3TBkPeIdMJ+VOwQozJVFLEL
-	 8waPtd1vt7UFzxSov/oD83Nte+PkEjC2x6iRmJnaeeWUMKyrgPa+lp6Hpk4SVQ4nEc
-	 FAG22CS1wm+WYAA0siSGYq2keBWWryjuTl9ZuXKw=
+	b=q4vMWGp1H2mW1bn6aK+T1xVpz05md6763r5UJSIHK29ul8cvR8+RnlQIO4beyTC/o
+	 948VqPFKQmLtyzwjjjjzeKKbW6FZKCdIfZinteI2oY8JiL7fjLVNgwKf2e5EEQMC2a
+	 h5kEaV6mCEjj/KsXpt8ULCIszaKvSSr8yj8E9ceo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.1 124/168] wifi: ath11k: HAL SRNG: dont deinitialize and re-initialize again
-Date: Fri, 17 Oct 2025 16:53:23 +0200
-Message-ID: <20251017145133.592189507@linuxfoundation.org>
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Helen Koike <koike@igalia.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Matthew Wilcox <willy@infradead.org>,
+	NeilBrown <neilb@suse.de>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 125/168] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH allocations
+Date: Fri, 17 Oct 2025 16:53:24 +0200
+Message-ID: <20251017145133.628886233@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
 References: <20251017145129.000176255@linuxfoundation.org>
@@ -66,83 +77,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit 32be3ca4cf78b309dfe7ba52fe2d7cc3c23c5634 upstream.
+commit 6a204d4b14c99232e05d35305c27ebce1c009840 upstream.
 
-Don't deinitialize and reinitialize the HAL helpers. The dma memory is
-deallocated and there is high possibility that we'll not be able to get
-the same memory allocated from dma when there is high memory pressure.
+Commit 524c48072e56 ("mm/page_alloc: rename ALLOC_HIGH to
+ALLOC_MIN_RESERVE") is the start of a series that explains how __GFP_HIGH,
+which implies ALLOC_MIN_RESERVE, is going to be used instead of
+__GFP_ATOMIC for high atomic reserves.
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+Commit eb2e2b425c69 ("mm/page_alloc: explicitly record high-order atomic
+allocations in alloc_flags") introduced ALLOC_HIGHATOMIC for such
+allocations of order higher than 0.  It still used __GFP_ATOMIC, though.
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org
-Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://patch.msgid.link/20250722053121.1145001-1-usama.anjum@collabora.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Then, commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how
+__GFP_HIGH non-blocking allocations accesses reserves") just turned that
+check for !__GFP_DIRECT_RECLAIM, ignoring that high atomic reserves were
+expected to test for __GFP_HIGH.
+
+This leads to high atomic reserves being added for high-order GFP_NOWAIT
+allocations and others that clear __GFP_DIRECT_RECLAIM, which is
+unexpected.  Later, those reserves lead to 0-order allocations going to
+the slow path and starting reclaim.
+
+>From /proc/pagetypeinfo, without the patch:
+
+Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+Node    0, zone    DMA32, type   HighAtomic      1      8     10      9      7      3      0      0      0      0      0
+Node    0, zone   Normal, type   HighAtomic     64     20     12      5      0      0      0      0      0      0      0
+
+With the patch:
+
+Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+Node    0, zone    DMA32, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+Node    0, zone   Normal, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+
+Link: https://lkml.kernel.org/r/20250814172245.1259625-1-cascardo@igalia.com
+Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Tested-by: Helen Koike <koike@igalia.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: NeilBrown <neilb@suse.de>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c |    6 +-----
- drivers/net/wireless/ath/ath11k/hal.c  |   16 ++++++++++++++++
- drivers/net/wireless/ath/ath11k/hal.h  |    1 +
- 3 files changed, 18 insertions(+), 5 deletions(-)
+ mm/page_alloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -1596,14 +1596,10 @@ static int ath11k_core_reconfigure_on_cr
- 	mutex_unlock(&ab->core_lock);
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4887,7 +4887,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsig
+ 		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
+ 			alloc_flags |= ALLOC_NON_BLOCK;
  
- 	ath11k_dp_free(ab);
--	ath11k_hal_srng_deinit(ab);
-+	ath11k_hal_srng_clear(ab);
+-			if (order > 0)
++			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
+ 				alloc_flags |= ALLOC_HIGHATOMIC;
+ 		}
  
- 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
- 
--	ret = ath11k_hal_srng_init(ab);
--	if (ret)
--		return ret;
--
- 	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
- 
- 	ret = ath11k_core_qmi_firmware_ready(ab);
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1351,6 +1351,22 @@ void ath11k_hal_srng_deinit(struct ath11
- }
- EXPORT_SYMBOL(ath11k_hal_srng_deinit);
- 
-+void ath11k_hal_srng_clear(struct ath11k_base *ab)
-+{
-+	/* No need to memset rdp and wrp memory since each individual
-+	 * segment would get cleared in ath11k_hal_srng_src_hw_init()
-+	 * and ath11k_hal_srng_dst_hw_init().
-+	 */
-+	memset(ab->hal.srng_list, 0,
-+	       sizeof(ab->hal.srng_list));
-+	memset(ab->hal.shadow_reg_addr, 0,
-+	       sizeof(ab->hal.shadow_reg_addr));
-+	ab->hal.avail_blk_resource = 0;
-+	ab->hal.current_blk_index = 0;
-+	ab->hal.num_shadow_reg_configured = 0;
-+}
-+EXPORT_SYMBOL(ath11k_hal_srng_clear);
-+
- void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
- {
- 	struct hal_srng *srng;
---- a/drivers/net/wireless/ath/ath11k/hal.h
-+++ b/drivers/net/wireless/ath/ath11k/hal.h
-@@ -957,6 +957,7 @@ int ath11k_hal_srng_setup(struct ath11k_
- 			  struct hal_srng_params *params);
- int ath11k_hal_srng_init(struct ath11k_base *ath11k);
- void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
-+void ath11k_hal_srng_clear(struct ath11k_base *ab);
- void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
- void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
- 				       u32 **cfg, u32 *len);
 
 
 
