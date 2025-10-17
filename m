@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECFE9BE9644
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AE9BEA4A0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B4AF8508414
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 997366E719C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598AB337107;
-	Fri, 17 Oct 2025 14:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319CF3570CF;
+	Fri, 17 Oct 2025 15:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4+x9aPK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kY62XCAZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F5E3370F6;
-	Fri, 17 Oct 2025 14:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6046332ECA;
+	Fri, 17 Oct 2025 15:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713066; cv=none; b=sYfLv/qXrPscqpHmMnm58j0LmIcF0SLXO3By35ET9uFGnA8DAJIjglZG9d9tzR6R7uRH3h/kSjBL2luEKPlFKvJWIAheC16yOzpi3X1STovnEEpnfE4EOK4sXVLc9gpjSieEJzc/zcf7mOkSSzUcRyCf5dAbvZx5AO70pMATSLY=
+	t=1760715173; cv=none; b=WxziAO4gX0gSqI25k8d5o6gY2trod0M5lvsg2+4t6mloHlb6b1zc2ar+lT4xFA8X4GBkN0BswKbYuD0awK7NFPCgVg9dcHMKUxVyzaHtlV/BjvsjJwg4enqqtTDXWJPGUPQOmi3nu07HSb9fDlwTt+92t6rFl6MFsEBSmMmdme0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713066; c=relaxed/simple;
-	bh=smz7diFiyEc2LJ6HvOb3raVh6rpzwfoWWsah7muajvk=;
+	s=arc-20240116; t=1760715173; c=relaxed/simple;
+	bh=MTLs49ZwJCoX9jBOxPcsYNNDz6qxAwSXyX2qPv+NRSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=royxkC+P1dkYkkOo5y6BRsjOZdYRnFb+eMAaQ6k61iCcqiS2vHTcKQPvEzBLq0wEp1Y0fzEx/ngFF09WRYscgrDhNSwny2dxDBtJNQ6eRdiTB1VnPaZbGV5N8YcOOlsR6WyhMHbKrFWusDWBV8LbHZpxojKrDd44JoJ+yoNGcDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4+x9aPK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F21C4CEE7;
-	Fri, 17 Oct 2025 14:57:45 +0000 (UTC)
+	 MIME-Version; b=Out2nKstrVFSEJp47JHBndJlNALS6jt6L77tmddUvTPhbFlQnDNnQ4vwdeLlq4ejxRGKiLLMQIors/pY2KNSO/RorrqaRXBZBdtsemZySzXO5odP0XqxDkuPIO6EB0gqBi+voIHjjsI1PSCo9j9W0Z47y3nCEGNf5EUCiIOt1M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kY62XCAZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F1AC4CEFE;
+	Fri, 17 Oct 2025 15:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713065;
-	bh=smz7diFiyEc2LJ6HvOb3raVh6rpzwfoWWsah7muajvk=;
+	s=korg; t=1760715173;
+	bh=MTLs49ZwJCoX9jBOxPcsYNNDz6qxAwSXyX2qPv+NRSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w4+x9aPKB0Tla08ULIWBs+DOjzd6y65mWmT+XIvce+HwEshuzx6WeWVkfTr8p4KCE
-	 Yb4x86qOmLFyUeyi00TUwgHlgnW9cPshSgtdZyv1vJqB3SQQYdwfDsrCjnLpGqs/Qk
-	 VhuPExRWqee9O4/+tH0xeu5Va9GXfYs5PlJnAd3Y=
+	b=kY62XCAZUPeAouk6sT+ySKDiAo/+E4gCNk4pMgrlX4KxC+TVg/lIkyOiLMLJS0hqF
+	 6pRgtLh1iNuMjeIEGZs7OR+dsL/U/AHgA9rBSHgy4TURujct/jxHkyaz4orMAtz30h
+	 r8BMwOaSa0xyIAcNk1+pyipbnvK0uPTWezGwrd1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/168] clk: mediatek: mt8195-infra_ao: Fix parent for infra_ao_hdmi_26m
+Subject: [PATCH 6.17 122/371] net: airoha: Fix loopback mode configuration for GDM2 port
 Date: Fri, 17 Oct 2025 16:51:37 +0200
-Message-ID: <20251017145129.689873888@linuxfoundation.org>
+Message-ID: <20251017145206.348122356@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 6c4c26b624790098988c1034541087e3e5ed5bed ]
+[ Upstream commit fea8cdf6738a8b25fccbb7b109b440795a0892cb ]
 
-The infrastructure gate for the HDMI specific crystal needs the
-top_hdmi_xtal clock to be configured in order to ungate the 26m
-clock to the HDMI IP, and it wouldn't work without.
+Add missing configuration for loopback mode in airhoha_set_gdm2_loopback
+routine.
 
-Reparent the infra_ao_hdmi_26m clock to top_hdmi_xtal to fix that.
-
-Fixes: e2edf59dec0b ("clk: mediatek: Add MT8195 infrastructure clock support")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 9cd451d414f6e ("net: airoha: Add loopback support for GDM2")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20251008-airoha-loopback-mode-fix-v2-1-045694fe7f60@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt8195-infra_ao.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/airoha/airoha_eth.c  | 4 +++-
+ drivers/net/ethernet/airoha/airoha_regs.h | 3 +++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt8195-infra_ao.c b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-index fcd410461d3bb..516b5830f16e1 100644
---- a/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-+++ b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-@@ -103,7 +103,7 @@ static const struct mtk_gate infra_ao_clks[] = {
- 	GATE_INFRA_AO0(CLK_INFRA_AO_CQ_DMA_FPC, "infra_ao_cq_dma_fpc", "fpc", 28),
- 	GATE_INFRA_AO0(CLK_INFRA_AO_UART5, "infra_ao_uart5", "top_uart", 29),
- 	/* INFRA_AO1 */
--	GATE_INFRA_AO1(CLK_INFRA_AO_HDMI_26M, "infra_ao_hdmi_26m", "clk26m", 0),
-+	GATE_INFRA_AO1(CLK_INFRA_AO_HDMI_26M, "infra_ao_hdmi_26m", "top_hdmi_xtal", 0),
- 	GATE_INFRA_AO1(CLK_INFRA_AO_SPI0, "infra_ao_spi0", "top_spi", 1),
- 	GATE_INFRA_AO1(CLK_INFRA_AO_MSDC0, "infra_ao_msdc0", "top_msdc50_0_hclk", 2),
- 	GATE_INFRA_AO1(CLK_INFRA_AO_MSDC1, "infra_ao_msdc1", "top_axi", 4),
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index e6b802e3d8449..6d23c5c049b9a 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -1709,7 +1709,9 @@ static void airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
+ 	airoha_fe_wr(eth, REG_GDM_RXCHN_EN(2), 0xffff);
+ 	airoha_fe_rmw(eth, REG_GDM_LPBK_CFG(2),
+ 		      LPBK_CHAN_MASK | LPBK_MODE_MASK | LPBK_EN_MASK,
+-		      FIELD_PREP(LPBK_CHAN_MASK, chan) | LPBK_EN_MASK);
++		      FIELD_PREP(LPBK_CHAN_MASK, chan) |
++		      LBK_GAP_MODE_MASK | LBK_LEN_MODE_MASK |
++		      LBK_CHAN_MODE_MASK | LPBK_EN_MASK);
+ 	airoha_fe_rmw(eth, REG_GDM_LEN_CFG(2),
+ 		      GDM_SHORT_LEN_MASK | GDM_LONG_LEN_MASK,
+ 		      FIELD_PREP(GDM_SHORT_LEN_MASK, 60) |
+diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethernet/airoha/airoha_regs.h
+index 150c85995cc1a..0c8f61081699c 100644
+--- a/drivers/net/ethernet/airoha/airoha_regs.h
++++ b/drivers/net/ethernet/airoha/airoha_regs.h
+@@ -151,6 +151,9 @@
+ #define LPBK_LEN_MASK			GENMASK(23, 10)
+ #define LPBK_CHAN_MASK			GENMASK(8, 4)
+ #define LPBK_MODE_MASK			GENMASK(3, 1)
++#define LBK_GAP_MODE_MASK		BIT(3)
++#define LBK_LEN_MODE_MASK		BIT(2)
++#define LBK_CHAN_MODE_MASK		BIT(1)
+ #define LPBK_EN_MASK			BIT(0)
+ 
+ #define REG_GDM_TXCHN_EN(_n)		(GDM_BASE(_n) + 0x24)
 -- 
 2.51.0
 
