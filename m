@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6BDBBE9AED
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D61BBE9785
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:06:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 462866E78AE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57DAB1A67850
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D48336EC6;
-	Fri, 17 Oct 2025 15:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C70332904;
+	Fri, 17 Oct 2025 15:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHUgOPHG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JheWecW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB596336EC2;
-	Fri, 17 Oct 2025 15:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A413328FF;
+	Fri, 17 Oct 2025 15:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713851; cv=none; b=hV8/2oaqEtyAFFeBUMkUnwpkRlyE/zpw0p9dCw5q1o8s4yDx0r3oMp+4rTRGdj+pM9T/vSCLyDHwt0Cw3ar5ebD/YKCo3JVuLr8zomMNCbby/yqT+IdCKa/SDRmG5DlYvOv43u5jqix9V67/yT07rXxu71eHMc7T30LBtMjFlnI=
+	t=1760713443; cv=none; b=q2nA7wpcDYcL6pVHlRIWPAZ7HRqmNIRNBG4Wj9br21hGWBqTZE/o6Jewi+WIUnWQoc+nn0BjhStb7KMe1DTFsiGiCzR8+Uv/+tPHqpgYMoc5qHE5BMroR3kyao5mK6nVEGSBxAjcSr7JKJLLfKM8pUi0L/nLvbh33LjYWMygMJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713851; c=relaxed/simple;
-	bh=znz6ppy9Idt5WffpUI+QzPw4/qWysPZzzbcfsve3UMI=;
+	s=arc-20240116; t=1760713443; c=relaxed/simple;
+	bh=L4MBiwTYQAuXSjfc5wNJ/SEQXMTaMFWW0k8eRJn7bsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b79QbZH6wjHvIEKDy6pp0/LqN8AbafT/rnucMFmNNlafEuJ04vlxxUdboY5NPJbz1jYJBzmqasxFpqW3xrDEx/2QUQ0pLbcyYUwBwsHFLNmnVkQtPYPQvtAdBtXv1F0cXg2e2bdULRLHMbBrAtNx/TCEELl2Jxc0OgB71QzFpuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHUgOPHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F93C4CEE7;
-	Fri, 17 Oct 2025 15:10:51 +0000 (UTC)
+	 MIME-Version; b=gZbpncQYPvvwVgBMIlOnEwFN/xaMzg/3bmCz53AWm6ev53heOVN5cS+UqNSpELG0Hb0Bkxrrg0qGMqRut1HNdE2TtCDpUJzF3YPVu6tArSDO2YDX+ecda0Skins8ylCOfsVJhqWtM0DcZLREBbtSD92fWoogyhOyiyz9/4mT450=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JheWecW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03791C4CEF9;
+	Fri, 17 Oct 2025 15:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713851;
-	bh=znz6ppy9Idt5WffpUI+QzPw4/qWysPZzzbcfsve3UMI=;
+	s=korg; t=1760713443;
+	bh=L4MBiwTYQAuXSjfc5wNJ/SEQXMTaMFWW0k8eRJn7bsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHUgOPHGJ3d+q++0LbeKx15zAxuPf7crUMc19PkGSmLmP0lRSpsC4N91qtRpR61+X
-	 /SHk3+P597PVj4U05RydRQieeOOvnhdysjmX1EbG0jbzT32SbLDxblIE9UY7hFAvn4
-	 EPCjAtefWbhT1U7CWEi7q8Hqx+emBUTKfjXlkttI=
+	b=JheWecW69Gyoy+f6NtbLh4NexVYWc/5z3yq6ojCF/k3TBkPeIdMJ+VOwQozJVFLEL
+	 8waPtd1vt7UFzxSov/oD83Nte+PkEjC2x6iRmJnaeeWUMKyrgPa+lp6Hpk4SVQ4nEc
+	 FAG22CS1wm+WYAA0siSGYq2keBWWryjuTl9ZuXKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Autumn Dececco <autumndececco@gmail.com>,
-	Nick Morrow <morrownr@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.6 142/201] wifi: mt76: mt7921u: Add VID/PID for Netgear A7500
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.1 124/168] wifi: ath11k: HAL SRNG: dont deinitialize and re-initialize again
 Date: Fri, 17 Oct 2025 16:53:23 +0200
-Message-ID: <20251017145139.950663633@linuxfoundation.org>
+Message-ID: <20251017145133.592189507@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Morrow <morrownr@gmail.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit fc6627ca8a5f811b601aea74e934cf8a048c88ac upstream.
+commit 32be3ca4cf78b309dfe7ba52fe2d7cc3c23c5634 upstream.
 
-Add VID/PID 0846/9065 for Netgear A7500.
+Don't deinitialize and reinitialize the HAL helpers. The dma memory is
+deallocated and there is high possibility that we'll not be able to get
+the same memory allocated from dma when there is high memory pressure.
 
-Reported-by: Autumn Dececco <autumndececco@gmail.com>
-Tested-by: Autumn Dececco <autumndececco@gmail.com>
-Signed-off-by: Nick Morrow <morrownr@gmail.com>
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
 Cc: stable@vger.kernel.org
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/80bacfd6-6073-4ce5-be32-ae9580832337@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://patch.msgid.link/20250722053121.1145001-1-usama.anjum@collabora.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/usb.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath11k/core.c |    6 +-----
+ drivers/net/wireless/ath/ath11k/hal.c  |   16 ++++++++++++++++
+ drivers/net/wireless/ath/ath11k/hal.h  |    1 +
+ 3 files changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-@@ -21,6 +21,9 @@ static const struct usb_device_id mt7921
- 	/* Netgear, Inc. [A8000,AXE3000] */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9060, 0xff, 0xff, 0xff),
- 		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
-+	/* Netgear, Inc. A7500 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9065, 0xff, 0xff, 0xff),
-+		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
- 	/* TP-Link TXE50UH */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0107, 0xff, 0xff, 0xff),
- 		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1596,14 +1596,10 @@ static int ath11k_core_reconfigure_on_cr
+ 	mutex_unlock(&ab->core_lock);
+ 
+ 	ath11k_dp_free(ab);
+-	ath11k_hal_srng_deinit(ab);
++	ath11k_hal_srng_clear(ab);
+ 
+ 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
+ 
+-	ret = ath11k_hal_srng_init(ab);
+-	if (ret)
+-		return ret;
+-
+ 	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
+ 
+ 	ret = ath11k_core_qmi_firmware_ready(ab);
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -1351,6 +1351,22 @@ void ath11k_hal_srng_deinit(struct ath11
+ }
+ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
+ 
++void ath11k_hal_srng_clear(struct ath11k_base *ab)
++{
++	/* No need to memset rdp and wrp memory since each individual
++	 * segment would get cleared in ath11k_hal_srng_src_hw_init()
++	 * and ath11k_hal_srng_dst_hw_init().
++	 */
++	memset(ab->hal.srng_list, 0,
++	       sizeof(ab->hal.srng_list));
++	memset(ab->hal.shadow_reg_addr, 0,
++	       sizeof(ab->hal.shadow_reg_addr));
++	ab->hal.avail_blk_resource = 0;
++	ab->hal.current_blk_index = 0;
++	ab->hal.num_shadow_reg_configured = 0;
++}
++EXPORT_SYMBOL(ath11k_hal_srng_clear);
++
+ void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
+ {
+ 	struct hal_srng *srng;
+--- a/drivers/net/wireless/ath/ath11k/hal.h
++++ b/drivers/net/wireless/ath/ath11k/hal.h
+@@ -957,6 +957,7 @@ int ath11k_hal_srng_setup(struct ath11k_
+ 			  struct hal_srng_params *params);
+ int ath11k_hal_srng_init(struct ath11k_base *ath11k);
+ void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
++void ath11k_hal_srng_clear(struct ath11k_base *ab);
+ void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
+ void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
+ 				       u32 **cfg, u32 *len);
 
 
 
