@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-186966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9563BE9D4D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB23BEA5ED
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:00:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 064811AE269C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 303DA6E6481
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB00A2F12BD;
-	Fri, 17 Oct 2025 15:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB35B231C9F;
+	Fri, 17 Oct 2025 15:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGqfreku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hgckip5a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817BB27FB03;
-	Fri, 17 Oct 2025 15:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777153370FB;
+	Fri, 17 Oct 2025 15:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714739; cv=none; b=XrABuO0ZDZWJ/x8+G4uX8F+Kp1P0Nl0G7dcYaesJN4wHQlz7v6x5BV9CTd/b0zo4cBbz5MkHcp4X5T62vW4ZH7QYOnp1j0xKawM5L3oSs2DnYz8XF29o9WeIszH2STWFpEn6Kzt1zPUYo01iVKruGvd+OngPTgqJbUhOpuamd0I=
+	t=1760714771; cv=none; b=AmBIyE8FCMZgdR6eAprAahp6N8GQ5oosWMQbmx9fP6Tfc1I6pJP93zNBiVl1beeIxd5RalneVgx2JuE3FhZ4Vu+M1hOZbWyU+Nv/hFV7aK4vJQSa6hh+HcN1cbePbJ4WRiyMU6GKRV5fBTh8jWVK7yom1DxikfwG03uYPNn5iiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714739; c=relaxed/simple;
-	bh=ckTQYzHvxLVr+VNpYm/gB1eHeJ6q/M5SO1+3Su+DTrA=;
+	s=arc-20240116; t=1760714771; c=relaxed/simple;
+	bh=EvbPkAKtNth04i8mVyKqS01f7wE0SdnkIYWNyFxeuAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YjB9Ggou1IxZImRPFDqI+frxKyqZBaeBDu++uADIZKz6uaxEqfZRDb4/nh2s6toEGMXuwYbb/h/3B4yZZMKwh4EJCpgYDDLgLDi2OuXQSlr50KI4R8btoibdmwZwMHK9pBmunWJPmf2LjmDfYkHVRG0K9btAXEgBLwCU6yDMNj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGqfreku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06577C4CEE7;
-	Fri, 17 Oct 2025 15:25:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ugvo1QiD131/htGkpLkPbsufTsOXLPD0G+YcXYUYh+V0OZVGOvBkcY/IagItAbQdO9Vkj3domEowUcN7UM83eLpmo4kpGmJmxjyiB306gt6QgjGR80tqKMAIqp1ll8B8x3qK7Jr17lSZ9xujwTyImwmdCPAJglZFNw1sSJ415Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hgckip5a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01265C4CEFE;
+	Fri, 17 Oct 2025 15:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714739;
-	bh=ckTQYzHvxLVr+VNpYm/gB1eHeJ6q/M5SO1+3Su+DTrA=;
+	s=korg; t=1760714771;
+	bh=EvbPkAKtNth04i8mVyKqS01f7wE0SdnkIYWNyFxeuAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGqfrekuNZbuglB8HXMwQJVg/2QUO/2WKBRnfbKZ2C88+xuYB0mTiaJ7c0QXE+BOQ
-	 jHUvg83XtM3fzNtXDIRVV+bwKA1BjFhAy7Sz7ohZAQzY61VjVkVVNu1USB47OxYKuK
-	 pkaHi5bqqdQN2ZHcEsgWzrJPjpg2uvRNtbPyoZ24=
+	b=Hgckip5autjf2jH89DV1SFqXUi5SiOHmUUV4SEC/f2GSkfY/ITAMCOJz/H+KYkORC
+	 cCZNvvcDXw59gR2Gq3KjXGX6AWRMyYt2E7KtkYKSw/WE8kN0J707JIuqePnl6yv5Cq
+	 YW69v84UrlKE3Eyf7ZzhjmcaAP+UjrpTCrLdzKgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Gonda <pgonda@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	=?UTF-8?q?J=C3=BCrgen=20Gro=C3=9F?= <jgross@suse.com>,
-	Korakit Seemakhupt <korakit@google.com>,
-	Jianxiong Gao <jxgao@google.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 242/277] x86/kvm: Force legacy PCI hole to UC when overriding MTRRs for TDX/SNP
-Date: Fri, 17 Oct 2025 16:54:09 +0200
-Message-ID: <20251017145155.979733982@linuxfoundation.org>
+Subject: [PATCH 6.12 243/277] nfsd: Fix NFSD_MAY_BYPASS_GSS and NFSD_MAY_BYPASS_GSS_ON_ROOT
+Date: Fri, 17 Oct 2025 16:54:10 +0200
+Message-ID: <20251017145156.017494561@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
 References: <20251017145147.138822285@linuxfoundation.org>
@@ -74,197 +68,177 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 0dccbc75e18df85399a71933d60b97494110f559 ]
+[ Upstream commit bb4f07f2409c26c01e97e6f9b432545f353e3b66 ]
 
-When running as an SNP or TDX guest under KVM, force the legacy PCI hole,
-i.e. memory between Top of Lower Usable DRAM and 4GiB, to be mapped as UC
-via a forced variable MTRR range.
+Currently NFSD_MAY_BYPASS_GSS and NFSD_MAY_BYPASS_GSS_ON_ROOT do not bypass
+only GSS, but bypass any method. This is a problem specially for NFS3
+AUTH_NULL-only exports.
 
-In most KVM-based setups, legacy devices such as the HPET and TPM are
-enumerated via ACPI.  ACPI enumeration includes a Memory32Fixed entry, and
-optionally a SystemMemory descriptor for an OperationRegion, e.g. if the
-device needs to be accessed via a Control Method.
+The purpose of NFSD_MAY_BYPASS_GSS_ON_ROOT is described in RFC 2623,
+section 2.3.2, to allow mounting NFS2/3 GSS-only export without
+authentication. So few procedures which do not expose security risk used
+during mount time can be called also with AUTH_NONE or AUTH_SYS, to allow
+client mount operation to finish successfully.
 
-If a SystemMemory entry is present, then the kernel's ACPI driver will
-auto-ioremap the region so that it can be accessed at will.  However, the
-ACPI spec doesn't provide a way to enumerate the memory type of
-SystemMemory regions, i.e. there's no way to tell software that a region
-must be mapped as UC vs. WB, etc.  As a result, Linux's ACPI driver always
-maps SystemMemory regions using ioremap_cache(), i.e. as WB on x86.
+The problem with current implementation is that for AUTH_NULL-only exports,
+the NFSD_MAY_BYPASS_GSS_ON_ROOT is active also for NFS3 AUTH_UNIX mount
+attempts which confuse NFS3 clients, and make them think that AUTH_UNIX is
+enabled and is working. Linux NFS3 client never switches from AUTH_UNIX to
+AUTH_NONE on active mount, which makes the mount inaccessible.
 
-The dedicated device drivers however, e.g. the HPET driver and TPM driver,
-want to map their associated memory as UC or WC, as accessing PCI devices
-using WB is unsupported.
+Fix the NFSD_MAY_BYPASS_GSS and NFSD_MAY_BYPASS_GSS_ON_ROOT implementation
+and really allow to bypass only exports which have enabled some real
+authentication (GSS, TLS, or any other).
 
-On bare metal and non-CoCO, the conflicting requirements "work" as firmware
-configures the PCI hole (and other device memory) to be UC in the MTRRs.
-So even though the ACPI mappings request WB, they are forced to UC- in the
-kernel's tracking due to the kernel properly handling the MTRR overrides,
-and thus are compatible with the drivers' requested WC/UC-.
+The result would be: For AUTH_NULL-only export if client attempts to do
+mount with AUTH_UNIX flavor then it will receive access errors, which
+instruct client that AUTH_UNIX flavor is not usable and will either try
+other auth flavor (AUTH_NULL if enabled) or fails mount procedure.
+Similarly if client attempt to do mount with AUTH_NULL flavor and only
+AUTH_UNIX flavor is enabled then the client will receive access error.
 
-With force WB MTRRs on SNP and TDX guests, the ACPI mappings get their
-requested WB if the ACPI mappings are established before the dedicated
-driver code attempts to initialize the device.  E.g. if acpi_init()
-runs before the corresponding device driver is probed, ACPI's WB mapping
-will "win", and result in the driver's ioremap() failing because the
-existing WB mapping isn't compatible with the requested WC/UC-.
+This should fix problems with AUTH_NULL-only or AUTH_UNIX-only exports if
+client attempts to mount it with other auth flavor (e.g. with AUTH_NULL for
+AUTH_UNIX-only export, or with AUTH_UNIX for AUTH_NULL-only export).
 
-E.g. when a TPM is emulated by the hypervisor (ignoring the security
-implications of relying on what is allegedly an untrusted entity to store
-measurements), the TPM driver will request UC and fail:
-
-  [  1.730459] ioremap error for 0xfed40000-0xfed45000, requested 0x2, got 0x0
-  [  1.732780] tpm_tis MSFT0101:00: probe with driver tpm_tis failed with error -12
-
-Note, the '0x2' and '0x0' values refer to "enum page_cache_mode", not x86's
-memtypes (which frustratingly are an almost pure inversion; 2 == WB, 0 == UC).
-E.g. tracing mapping requests for TPM TIS yields:
-
- Mapping TPM TIS with req_type = 0
- WARNING: CPU: 22 PID: 1 at arch/x86/mm/pat/memtype.c:530 memtype_reserve+0x2ab/0x460
- Modules linked in:
- CPU: 22 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.16.0-rc7+ #2 VOLUNTARY
- Tainted: [W]=WARN
- Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/29/2025
- RIP: 0010:memtype_reserve+0x2ab/0x460
-  __ioremap_caller+0x16d/0x3d0
-  ioremap_cache+0x17/0x30
-  x86_acpi_os_ioremap+0xe/0x20
-  acpi_os_map_iomem+0x1f3/0x240
-  acpi_os_map_memory+0xe/0x20
-  acpi_ex_system_memory_space_handler+0x273/0x440
-  acpi_ev_address_space_dispatch+0x176/0x4c0
-  acpi_ex_access_region+0x2ad/0x530
-  acpi_ex_field_datum_io+0xa2/0x4f0
-  acpi_ex_extract_from_field+0x296/0x3e0
-  acpi_ex_read_data_from_field+0xd1/0x460
-  acpi_ex_resolve_node_to_value+0x2ee/0x530
-  acpi_ex_resolve_to_value+0x1f2/0x540
-  acpi_ds_evaluate_name_path+0x11b/0x190
-  acpi_ds_exec_end_op+0x456/0x960
-  acpi_ps_parse_loop+0x27a/0xa50
-  acpi_ps_parse_aml+0x226/0x600
-  acpi_ps_execute_method+0x172/0x3e0
-  acpi_ns_evaluate+0x175/0x5f0
-  acpi_evaluate_object+0x213/0x490
-  acpi_evaluate_integer+0x6d/0x140
-  acpi_bus_get_status+0x93/0x150
-  acpi_add_single_object+0x43a/0x7c0
-  acpi_bus_check_add+0x149/0x3a0
-  acpi_bus_check_add_1+0x16/0x30
-  acpi_ns_walk_namespace+0x22c/0x360
-  acpi_walk_namespace+0x15c/0x170
-  acpi_bus_scan+0x1dd/0x200
-  acpi_scan_init+0xe5/0x2b0
-  acpi_init+0x264/0x5b0
-  do_one_initcall+0x5a/0x310
-  kernel_init_freeable+0x34f/0x4f0
-  kernel_init+0x1b/0x200
-  ret_from_fork+0x186/0x1b0
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
-
-The above traces are from a Google-VMM based VM, but the same behavior
-happens with a QEMU based VM that is modified to add a SystemMemory range
-for the TPM TIS address space.
-
-The only reason this doesn't cause problems for HPET, which appears to
-require a SystemMemory region, is because HPET gets special treatment via
-x86_init.timers.timer_init(), and so gets a chance to create its UC-
-mapping before acpi_init() clobbers things.  Disabling the early call to
-hpet_time_init() yields the same behavior for HPET:
-
-  [  0.318264] ioremap error for 0xfed00000-0xfed01000, requested 0x2, got 0x0
-
-Hack around the ACPI gap by forcing the legacy PCI hole to UC when
-overriding the (virtual) MTRRs for CoCo guest, so that ioremap handling
-of MTRRs naturally kicks in and forces the ACPI mappings to be UC.
-
-Note, the requested/mapped memtype doesn't actually matter in terms of
-accessing the device.  In practically every setup, legacy PCI devices are
-emulated by the hypervisor, and accesses are intercepted and handled as
-emulated MMIO, i.e. never access physical memory and thus don't have an
-effective memtype.
-
-Even in a theoretical setup where such devices are passed through by the
-host, i.e. point at real MMIO memory, it is KVM's (as the hypervisor)
-responsibility to force the memory to be WC/UC, e.g. via EPT memtype
-under TDX or real hardware MTRRs under SNP.  Not doing so cannot work,
-and the hypervisor is highly motivated to do the right thing as letting
-the guest access hardware MMIO with WB would likely result in a variety
-of fatal #MCs.
-
-In other words, forcing the range to be UC is all about coercing the
-kernel's tracking into thinking that it has established UC mappings, so
-that the ioremap code doesn't reject mappings from e.g. the TPM driver and
-thus prevent the driver from loading and the device from functioning.
-
-Note #2, relying on guest firmware to handle this scenario, e.g. by setting
-virtual MTRRs and then consuming them in Linux, is not a viable option, as
-the virtual MTRR state is managed by the untrusted hypervisor, and because
-OVMF at least has stopped programming virtual MTRRs when running as a TDX
-guest.
-
-Link: https://lore.kernel.org/all/8137d98e-8825-415b-9282-1d2a115bb51a@linux.intel.com
-Fixes: 8e690b817e38 ("x86/kvm: Override default caching mode for SEV-SNP and TDX")
-Cc: stable@vger.kernel.org
-Cc: Peter Gonda <pgonda@google.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Jürgen Groß <jgross@suse.com>
-Cc: Korakit Seemakhupt <korakit@google.com>
-Cc: Jianxiong Gao <jxgao@google.com>
-Cc: Nikolay Borisov <nik.borisov@suse.com>
-Suggested-by: Binbin Wu <binbin.wu@linux.intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Tested-by: Korakit Seemakhupt <korakit@google.com>
-Link: https://lore.kernel.org/r/20250828005249.39339-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: 898374fdd7f0 ("nfsd: unregister with rpcbind when deleting a transport")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/kvm.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ fs/nfsd/export.c   |   21 ++++++++++++++++++++-
+ fs/nfsd/export.h   |    3 ++-
+ fs/nfsd/nfs4proc.c |    2 +-
+ fs/nfsd/nfs4xdr.c  |    2 +-
+ fs/nfsd/nfsfh.c    |    9 ++++++---
+ fs/nfsd/vfs.c      |    2 +-
+ 6 files changed, 31 insertions(+), 8 deletions(-)
 
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -933,6 +933,19 @@ static void kvm_sev_hc_page_enc_status(u
- 
- static void __init kvm_init_platform(void)
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1078,12 +1078,14 @@ static struct svc_export *exp_find(struc
+  * check_nfsd_access - check if access to export is allowed.
+  * @exp: svc_export that is being accessed.
+  * @rqstp: svc_rqst attempting to access @exp (will be NULL for LOCALIO).
++ * @may_bypass_gss: reduce strictness of authorization check
+  *
+  * Return values:
+  *   %nfs_ok if access is granted, or
+  *   %nfserr_wrongsec if access is denied
+  */
+-__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp)
++__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
++			 bool may_bypass_gss)
  {
-+	u64 tolud = PFN_PHYS(e820__end_of_low_ram_pfn());
-+	/*
-+	 * Note, hardware requires variable MTRR ranges to be power-of-2 sized
-+	 * and naturally aligned.  But when forcing guest MTRR state, Linux
-+	 * doesn't program the forced ranges into hardware.  Don't bother doing
-+	 * the math to generate a technically-legal range.
+ 	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
+ 	struct svc_xprt *xprt;
+@@ -1140,6 +1142,23 @@ ok:
+ 	if (nfsd4_spo_must_allow(rqstp))
+ 		return nfs_ok;
+ 
++	/* Some calls may be processed without authentication
++	 * on GSS exports. For example NFS2/3 calls on root
++	 * directory, see section 2.3.2 of rfc 2623.
++	 * For "may_bypass_gss" check that export has really
++	 * enabled some flavor with authentication (GSS or any
++	 * other) and also check that the used auth flavor is
++	 * without authentication (none or sys).
 +	 */
-+	struct mtrr_var_range pci_hole = {
-+		.base_lo = tolud | X86_MEMTYPE_UC,
-+		.mask_lo = (u32)(~(SZ_4G - tolud - 1)) | MTRR_PHYSMASK_V,
-+		.mask_hi = (BIT_ULL(boot_cpu_data.x86_phys_bits) - 1) >> 32,
-+	};
++	if (may_bypass_gss && (
++	     rqstp->rq_cred.cr_flavor == RPC_AUTH_NULL ||
++	     rqstp->rq_cred.cr_flavor == RPC_AUTH_UNIX)) {
++		for (f = exp->ex_flavors; f < end; f++) {
++			if (f->pseudoflavor >= RPC_AUTH_DES)
++				return 0;
++		}
++	}
 +
- 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) &&
- 	    kvm_para_has_feature(KVM_FEATURE_MIGRATION_CONTROL)) {
- 		unsigned long nr_pages;
-@@ -982,8 +995,12 @@ static void __init kvm_init_platform(voi
- 	kvmclock_init();
- 	x86_platform.apic_post_init = kvm_apic_init;
- 
--	/* Set WB as the default cache mode for SEV-SNP and TDX */
--	guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
-+	/*
-+	 * Set WB as the default cache mode for SEV-SNP and TDX, with a single
-+	 * UC range for the legacy PCI hole, e.g. so that devices that expect
-+	 * to get UC/WC mappings don't get surprised with WB.
-+	 */
-+	guest_force_mtrr_state(&pci_hole, 1, MTRR_TYPE_WRBACK);
+ denied:
+ 	return nfserr_wrongsec;
  }
+--- a/fs/nfsd/export.h
++++ b/fs/nfsd/export.h
+@@ -101,7 +101,8 @@ struct svc_expkey {
  
- #if defined(CONFIG_AMD_MEM_ENCRYPT)
+ struct svc_cred;
+ int nfsexp_flags(struct svc_cred *cred, struct svc_export *exp);
+-__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp);
++__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp,
++			 bool may_bypass_gss);
+ 
+ /*
+  * Function declarations
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -2799,7 +2799,7 @@ nfsd4_proc_compound(struct svc_rqst *rqs
+ 
+ 			if (current_fh->fh_export &&
+ 					need_wrongsec_check(rqstp))
+-				op->status = check_nfsd_access(current_fh->fh_export, rqstp);
++				op->status = check_nfsd_access(current_fh->fh_export, rqstp, false);
+ 		}
+ encode_op:
+ 		if (op->status == nfserr_replay_me) {
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3784,7 +3784,7 @@ nfsd4_encode_entry4_fattr(struct nfsd4_r
+ 			nfserr = nfserrno(err);
+ 			goto out_put;
+ 		}
+-		nfserr = check_nfsd_access(exp, cd->rd_rqstp);
++		nfserr = check_nfsd_access(exp, cd->rd_rqstp, false);
+ 		if (nfserr)
+ 			goto out_put;
+ 
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -320,6 +320,7 @@ __fh_verify(struct svc_rqst *rqstp,
+ {
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+ 	struct svc_export *exp = NULL;
++	bool may_bypass_gss = false;
+ 	struct dentry	*dentry;
+ 	__be32		error;
+ 
+@@ -367,8 +368,10 @@ __fh_verify(struct svc_rqst *rqstp,
+ 	 * which clients virtually always use auth_sys for,
+ 	 * even while using RPCSEC_GSS for NFS.
+ 	 */
+-	if (access & NFSD_MAY_LOCK || access & NFSD_MAY_BYPASS_GSS)
++	if (access & NFSD_MAY_LOCK)
+ 		goto skip_pseudoflavor_check;
++	if (access & NFSD_MAY_BYPASS_GSS)
++		may_bypass_gss = true;
+ 	/*
+ 	 * Clients may expect to be able to use auth_sys during mount,
+ 	 * even if they use gss for everything else; see section 2.3.2
+@@ -376,9 +379,9 @@ __fh_verify(struct svc_rqst *rqstp,
+ 	 */
+ 	if (access & NFSD_MAY_BYPASS_GSS_ON_ROOT
+ 			&& exp->ex_path.dentry == dentry)
+-		goto skip_pseudoflavor_check;
++		may_bypass_gss = true;
+ 
+-	error = check_nfsd_access(exp, rqstp);
++	error = check_nfsd_access(exp, rqstp, may_bypass_gss);
+ 	if (error)
+ 		goto out;
+ 
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -321,7 +321,7 @@ nfsd_lookup(struct svc_rqst *rqstp, stru
+ 	err = nfsd_lookup_dentry(rqstp, fhp, name, len, &exp, &dentry);
+ 	if (err)
+ 		return err;
+-	err = check_nfsd_access(exp, rqstp);
++	err = check_nfsd_access(exp, rqstp, false);
+ 	if (err)
+ 		goto out;
+ 	/*
 
 
 
