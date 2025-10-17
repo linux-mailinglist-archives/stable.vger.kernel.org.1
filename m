@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-187260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC1DBEA855
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:12:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C36B2BEAA9E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:24:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86F3740587E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F7B1945285
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14512330B39;
-	Fri, 17 Oct 2025 15:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9725E330B30;
+	Fri, 17 Oct 2025 15:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CURUhsR+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeF6k1sv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4478330B2E;
-	Fri, 17 Oct 2025 15:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507413277A9;
+	Fri, 17 Oct 2025 15:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715570; cv=none; b=NDj91v/HpkORsVvlpoHc3myi0FrsQh193X3k3qilJjEvNaRqCJ5/ZIYPRRwvupV69HGvsCD9mVzhZkb+mVvBev09EW2ltGajKRanAJsrWm4QJg2undDBcP8wdoQ3WBgVOkPuKcpcl/5yRIuM3rBn+iHpKTUAOoEevlP+EzolWIs=
+	t=1760715591; cv=none; b=kszdD2qzP9AWPqPaopCDeMM6z3NJBB/qTSZsyQWjzbvF805N/S7xcXIWzdGzJmEYayoH3FGMOPfiD0k4ze+fsjh9lvSJyaXmuH8R1C2lMYIdnfjehAl8jHVTFkTa/btQvQMiinPSDcReSSegQ1McmELiaWeQnQwZcDFqusy+nMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715570; c=relaxed/simple;
-	bh=iCzwsPQUy7D4TG/BLfVcrFRcIRqO8cqeBX6vWKMvR80=;
+	s=arc-20240116; t=1760715591; c=relaxed/simple;
+	bh=WttkTSmx6mpQQG21urS5YNukrnKUgEEQ5wyTduzazKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UiJsxl+PYZypx6fdZt0qwnu9yU0OqLdLcuQTVoLod7+PwUz2I72FxusSlkvpj0hes5z0QhmZCPm+cfPXU8Yaern2Yu/aj04rX7vs09dWqu5UozbkfJVolUWa1D5FdzIxPY2d+RO+3b6hhj+jfwqcFuod0TX03Hlut57Kyzxca0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CURUhsR+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23369C4CEE7;
-	Fri, 17 Oct 2025 15:39:29 +0000 (UTC)
+	 MIME-Version; b=ZAPjDfkPYELr5fHdGA9AIgqAuHkZ5T0fQ/WvkXMD1c4iIzU4UXiGMsj8Nx0ZPi2mGNgsJzFRfJnnwROUElJt7C737NR0UEuxIQHJ+ZqnxxAc4NY5ICRTP5vxlZ5x2JH9zwiTGCxjBqvrFvFjlCeGXlg4taxjDIwhfucZ2iNWu5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeF6k1sv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C852BC4CEE7;
+	Fri, 17 Oct 2025 15:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715570;
-	bh=iCzwsPQUy7D4TG/BLfVcrFRcIRqO8cqeBX6vWKMvR80=;
+	s=korg; t=1760715591;
+	bh=WttkTSmx6mpQQG21urS5YNukrnKUgEEQ5wyTduzazKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CURUhsR+YYz85COx65HidnvUnSl/Joax16OyDmQmjkcpL/rqi349qAhOxBiEWqoMQ
-	 /KyEqdTyAF2+9led4eSVs+6byVViJP6ohmIthOTr4doquIXQJQ60hU9gI5PHJBIWYG
-	 0GRqMCvXP+NJ8VnEq0pRBgqdFKnCY27cnBlJO94E=
+	b=BeF6k1svjWI/1s0P62VvJ1PXMyOltiyczA9p9BlbCTwjiGfn7QHoAdmoVEskyXp8u
+	 fwnFUjMZkXPd+Bcg6Jvpnt6U/5rMUMWBV4CaWRDrZdASPwrtMKoswlE0iBF2dn2UAC
+	 0XQakyi/SHUFwjLsB57IT5PKex36PWENnn91hL5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 235/371] lib/genalloc: fix device leak in of_gen_pool_get()
-Date: Fri, 17 Oct 2025 16:53:30 +0200
-Message-ID: <20251017145210.584391425@linuxfoundation.org>
+	Markus Elfring <Markus.Elfring@web.de>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Yu Kuai <yukuai1@huaweicloud.com>,
+	Li Chen <chenl311@chinatelecom.cn>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.17 236/371] loop: fix backing file reference leak on validation error
+Date: Fri, 17 Oct 2025 16:53:31 +0200
+Message-ID: <20251017145210.620461106@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -67,44 +69,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Li Chen <me@linux.beauty>
 
-commit 1260cbcffa608219fc9188a6cbe9c45a300ef8b5 upstream.
+commit 98b7bf54338b797e3a11e8178ce0e806060d8fa3 upstream.
 
-Make sure to drop the reference taken when looking up the genpool platform
-device in of_gen_pool_get() before returning the pool.
+loop_change_fd() and loop_configure() call loop_check_backing_file()
+to validate the new backing file. If validation fails, the reference
+acquired by fget() was not dropped, leaking a file reference.
 
-Note that holding a reference to a device does typically not prevent its
-devres managed resources from being released so there is no point in
-keeping the reference.
+Fix this by calling fput(file) before returning the error.
 
-Link: https://lkml.kernel.org/r/20250924080207.18006-1-johan@kernel.org
-Fixes: 9375db07adea ("genalloc: add devres support, allow to find a managed pool by device")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Vladimir Zapolskiy <vz@mleia.com>
-Cc: <stable@vger.kernel.org>	[3.10+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Cc: Markus Elfring <Markus.Elfring@web.de>
+CC: Yang Erkun <yangerkun@huawei.com>
+Cc: Ming Lei <ming.lei@redhat.com>
+Cc: Yu Kuai <yukuai1@huaweicloud.com>
+Fixes: f5c84eff634b ("loop: Add sanity check for read/write_iter")
+Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/genalloc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/block/loop.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/lib/genalloc.c
-+++ b/lib/genalloc.c
-@@ -899,8 +899,11 @@ struct gen_pool *of_gen_pool_get(struct
- 		if (!name)
- 			name = of_node_full_name(np_pool);
- 	}
--	if (pdev)
-+	if (pdev) {
- 		pool = gen_pool_get(&pdev->dev, name);
-+		put_device(&pdev->dev);
-+	}
-+
- 	of_node_put(np_pool);
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -551,8 +551,10 @@ static int loop_change_fd(struct loop_de
+ 		return -EBADF;
  
- 	return pool;
+ 	error = loop_check_backing_file(file);
+-	if (error)
++	if (error) {
++		fput(file);
+ 		return error;
++	}
+ 
+ 	/* suppress uevents while reconfiguring the device */
+ 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 1);
+@@ -993,8 +995,10 @@ static int loop_configure(struct loop_de
+ 		return -EBADF;
+ 
+ 	error = loop_check_backing_file(file);
+-	if (error)
++	if (error) {
++		fput(file);
+ 		return error;
++	}
+ 
+ 	is_loop = is_loop_device(file);
+ 
 
 
 
