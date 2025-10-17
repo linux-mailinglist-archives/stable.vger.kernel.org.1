@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF29BE988C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:11:31 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35886BE9C30
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 111D14E6A72
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:45 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A42DB35E074
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489362F12CF;
-	Fri, 17 Oct 2025 15:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDA032C931;
+	Fri, 17 Oct 2025 15:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOqWxdm5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHLKwWzO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F82335086;
-	Fri, 17 Oct 2025 15:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB960217722;
+	Fri, 17 Oct 2025 15:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713435; cv=none; b=Z9hPh/PJytD+0T5hDhRhnHOSocnc7oK0FNcB0mha6kA0kJUBiQE/XMwSD1j3xyWbPGlvcW1a59VEGSnaCfm0hKJf8TSeQzSisC49EPkM8MgPMYhSpDDRa1pNFz7GWwMxxqrRRgMB4/roktPr6qF7ba5emR8ma+5RsFsWBS3Vetw=
+	t=1760714608; cv=none; b=d6hTiRi6n03x5HbPpM1wpjReTg+c9XqUfGNtZx0FKaGlmQ/B5uCnnVmTWDEUEjw5yzoN5K8XExZntJORFP9C2z1T+4/ZNCzOQNUYxzWCZPLrpyi9odwi79qxPzQJ9NkGcdd6wE6C+x3u1j4YyWGp1SMMnFkp0ZsUlaw8kXny5UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713435; c=relaxed/simple;
-	bh=BylwX1voFGhef7PzssjVFsbxPftXOKuSvkzdhNg6RV8=;
+	s=arc-20240116; t=1760714608; c=relaxed/simple;
+	bh=5bPAKVlUCU2QoUIehdc5YwOKV2EIInZ4XUQjDawJTHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRKGxsFhQTM+5sFlNT8JtPKJUz26CVbpjFb1o6IIhdKcdTZZhABOXD0Ey173ER6UokrC+8dvKqaN7MG7HwSzou/dA26m/OhzDyvdKsJTgJYrzNwXgFJuw3w2J1zk90jWlXLZtssnKfwH9LtQv7ESzfHyjrIbQSvbM+9X4CKHbRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOqWxdm5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABDDC4CEE7;
-	Fri, 17 Oct 2025 15:03:54 +0000 (UTC)
+	 MIME-Version; b=ke/s+c5KeZmjGRhSoPmtSZx+q1m+MQMn580RY6ey8FfEgj0gSkyv59sYRkgiViUKYrx14M6zjwGPsvsfGoa7OVYeSF8IqRUEEVfOw2FDff/JGmOp5dOWoKavqssk2tVQXggPjYN/DfzEEuubAjvg1UA4tTdFOJo1TSKrkRiPB/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHLKwWzO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A50C4CEE7;
+	Fri, 17 Oct 2025 15:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713434;
-	bh=BylwX1voFGhef7PzssjVFsbxPftXOKuSvkzdhNg6RV8=;
+	s=korg; t=1760714608;
+	bh=5bPAKVlUCU2QoUIehdc5YwOKV2EIInZ4XUQjDawJTHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOqWxdm5IjuwGUblLBbZ5SiZZQHZAUJHGFL/2dg0v470dJdfxPoQvp8+fcEMGPtBh
-	 4UNAGJnOZCwxzLv29A8WfJpjp2T9BV3LlFUhC2bXYH5+yLR0mKR/bDimPj2wmh3ME/
-	 v981t000w/5gXDsuxP2UcGQmhxxz6Sfjrmv/JkAE=
+	b=aHLKwWzOvfb622RJKBOj2bhcBfv+lxbm37vQQ4XqoZkf4vYWvFTskRHnhv7I9Z7Ql
+	 gxvHMocHLmUbwQ5c2QF1GRKkVfpiP0pARx2SBh1fZBtN8dubp35dxs+wrxqFqkAy2Z
+	 AcFxUZYP2288srYdYKkgRRiGsc3trGjXcNGHYqT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	stable@kernel.org,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 131/168] ext4: correctly handle queries for metadata mappings
+	Nick Morrow <morrownr@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 203/277] wifi: mt76: mt7925u: Add VID/PID for Netgear A9000
 Date: Fri, 17 Oct 2025 16:53:30 +0200
-Message-ID: <20251017145133.851668990@linuxfoundation.org>
+Message-ID: <20251017145154.534810770@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Nick Morrow <morrownr@gmail.com>
 
-commit 46c22a8bb4cb03211da1100d7ee4a2005bf77c70 upstream.
+commit f6159b2051e157550d7609e19d04471609c6050b upstream.
 
-Currently, our handling of metadata is _ambiguous_ in some scenarios,
-that is, we end up returning unknown if the range only covers the
-mapping partially.
+Add VID/PID 0846/9072 for recently released Netgear A9000.
 
-For example, in the following case:
-
-$ xfs_io -c fsmap -d
-
-  0: 254:16 [0..7]: static fs metadata 8
-  1: 254:16 [8..15]: special 102:1 8
-  2: 254:16 [16..5127]: special 102:2 5112
-  3: 254:16 [5128..5255]: special 102:3 128
-  4: 254:16 [5256..5383]: special 102:4 128
-  5: 254:16 [5384..70919]: inodes 65536
-  6: 254:16 [70920..70967]: unknown 48
-  ...
-
-$ xfs_io -c fsmap -d 24 33
-
-  0: 254:16 [24..39]: unknown 16  <--- incomplete reporting
-
-$ xfs_io -c fsmap -d 24 33  (With patch)
-
-    0: 254:16 [16..5127]: special 102:2 5112
-
-This is because earlier in ext4_getfsmap_meta_helper, we end up ignoring
-any extent that starts before our queried range, but overlaps it. While
-the man page [1] is a bit ambiguous on this, this fix makes the output
-make more sense since we are anyways returning an "unknown" extent. This
-is also consistent to how XFS does it:
-
-$ xfs_io -c fsmap -d
-
-  ...
-  6: 254:16 [104..127]: free space 24
-  7: 254:16 [128..191]: inodes 64
-  ...
-
-$ xfs_io -c fsmap -d 137 150
-
-  0: 254:16 [128..191]: inodes 64   <-- full extent returned
-
- [1] https://man7.org/linux/man-pages/man2/ioctl_getfsmap.2.html
-
-Reported-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: stable@kernel.org
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Message-ID: <023f37e35ee280cd9baac0296cbadcbe10995cab.1757058211.git.ojaswin@linux.ibm.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Nick Morrow <morrownr@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/7afd3c3c-e7cf-4bd9-801d-bdfc76def506@gmail.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fsmap.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/usb.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -74,7 +74,8 @@ static int ext4_getfsmap_dev_compare(con
- static bool ext4_getfsmap_rec_before_low_key(struct ext4_getfsmap_info *info,
- 					     struct ext4_fsmap *rec)
- {
--	return rec->fmr_physical < info->gfi_low.fmr_physical;
-+	return rec->fmr_physical + rec->fmr_length <=
-+	       info->gfi_low.fmr_physical;
- }
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+@@ -12,6 +12,9 @@
+ static const struct usb_device_id mt7925u_device_table[] = {
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0e8d, 0x7925, 0xff, 0xff, 0xff),
+ 		.driver_info = (kernel_ulong_t)MT7925_FIRMWARE_WM },
++	/* Netgear, Inc. A9000 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9072, 0xff, 0xff, 0xff),
++		.driver_info = (kernel_ulong_t)MT7925_FIRMWARE_WM },
+ 	{ },
+ };
  
- /*
-@@ -200,15 +201,18 @@ static int ext4_getfsmap_meta_helper(str
- 			  ext4_group_first_block_no(sb, agno));
- 	fs_end = fs_start + EXT4_C2B(sbi, len);
- 
--	/* Return relevant extents from the meta_list */
-+	/*
-+	 * Return relevant extents from the meta_list. We emit all extents that
-+	 * partially/fully overlap with the query range
-+	 */
- 	list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
--		if (p->fmr_physical < info->gfi_next_fsblk) {
-+		if (p->fmr_physical + p->fmr_length <= info->gfi_next_fsblk) {
- 			list_del(&p->fmr_list);
- 			kfree(p);
- 			continue;
- 		}
--		if (p->fmr_physical <= fs_start ||
--		    p->fmr_physical + p->fmr_length <= fs_end) {
-+		if (p->fmr_physical <= fs_end &&
-+		    p->fmr_physical + p->fmr_length > fs_start) {
- 			/* Emit the retained free extent record if present */
- 			if (info->gfi_lastfree.fmr_owner) {
- 				error = ext4_getfsmap_helper(sb, info,
 
 
 
