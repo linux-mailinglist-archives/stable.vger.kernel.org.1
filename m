@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5728ABE9811
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:29 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F1EBE9AB7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C1D51AA7B95
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:34 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 177BA35D762
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C3A2F12B8;
-	Fri, 17 Oct 2025 15:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F0B2F6932;
+	Fri, 17 Oct 2025 15:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJbHdzZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9yoRX2R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D542D33710B;
-	Fri, 17 Oct 2025 15:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6402F12D4;
+	Fri, 17 Oct 2025 15:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713599; cv=none; b=qoRzgc+eNY8q4yNcRyLB1pFRd+kncBywVmgemt1xBWVbNRybtcumHMta6miDOQcJ71sITr35fu0kPTS8qwrMMvytFz4YF8e1kAehvE/LCw/WlcUiQOYd/8xv2wJAjW5GfUgUMLj7V2PmhHS1YEKb+k+2e804/tGPRJbI21iP/9s=
+	t=1760714334; cv=none; b=Zj7dNyF+y7gEKPUuUT2hdZyDkqTmQ9XC2PDp8xmjFG+VcZHycGjjl5DolT/o4bDl6GUcAvjT9iI0ynWbSrl/Hrl1svHJGlmaE7d5OjZwHaDHkji98gFoV3hiH8/4gmayktzcjCFUxhbhqtWAZY6YcUP381x1Vr8cig1O+khW/BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713599; c=relaxed/simple;
-	bh=BUWWshCflVdtBP4ul4FBcOuDWRkVCiRiG61TN5GgtPk=;
+	s=arc-20240116; t=1760714334; c=relaxed/simple;
+	bh=bjGl0sFJURQzzfReBcwrljt7wEHNuda61o/6pdJZbCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FXRA3httmvsdAHFuVkv/AIHJHPulvrkI6ARpSEerdoPrBQ/SUAPUj+4C8DXPoWJOzTVrFfPRdF69XBaTKPWwqQARiarunnWmz8j7GLCPqWCKVTfopaDB24d6eEmJkeYSmDw4UoxS1RcQ81d6sZ/MtAwsHZL21jQHzptEDj4Z2Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJbHdzZ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187F3C4CEE7;
-	Fri, 17 Oct 2025 15:06:38 +0000 (UTC)
+	 MIME-Version; b=h16PcHmowK2beBigCMOVzO3eZa59BLWEx8Fz1cbXJrh/tiVGrjd5sKIQzMTs/Yuv1XG9wUnmgmgGEgVSx2aobqZuEhwvKjMEv/21fkaFo7KX4k9Jvx+qm2yyH+3OMUrdQmtXf0fnAo26/uiMG+Itr21slMhGVYXxDywdMwY+0iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9yoRX2R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA2FC4CEE7;
+	Fri, 17 Oct 2025 15:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713599;
-	bh=BUWWshCflVdtBP4ul4FBcOuDWRkVCiRiG61TN5GgtPk=;
+	s=korg; t=1760714333;
+	bh=bjGl0sFJURQzzfReBcwrljt7wEHNuda61o/6pdJZbCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bJbHdzZ4kMfpOwTQk/Me3f2WEVVGmPrnWqs+5Y4JWgGZ7hELhxe9n394ivHttq/gM
-	 dm0pqj49aPumC1E4ks/VX6SytUesQoVAfZZGl1XqCoOOnQPeY/lts3pzuBJoAyCKvu
-	 BYbvfLXTWYGMcYQDYDwp3nndOK++mppcIzmncmak=
+	b=t9yoRX2RUOgHka/kGv6Mbh8nKE0h+dXa/Le61hcSnhrmGxFh5/2AN84/885eWoz/J
+	 5UT9hTfo8ThSBasgh/cs52+dHHCgg28kwAt/x57WVaGTqf2hVoR33O8nkijIgVvY93
+	 e+sptkycOvUQTP+vCMMrXQv8Q/KoJkeNC29bVs6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/201] cifs: Query EA $LXMOD in cifs_query_path_info() for WSL reparse points
-Date: Fri, 17 Oct 2025 16:51:55 +0200
-Message-ID: <20251017145136.729616361@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 109/277] media: s5p-mfc: remove an unused/uninitialized variable
+Date: Fri, 17 Oct 2025 16:51:56 +0200
+Message-ID: <20251017145151.107611445@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,118 +59,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 057ac50638bcece64b3b436d3a61b70ed6c01a34 ]
+commit 7fa37ba25a1dfc084e24ea9acc14bf1fad8af14c upstream.
 
-EA $LXMOD is required for WSL non-symlink reparse points.
+The s5p_mfc_cmd_args structure in the v6 driver is never used, not
+initialized to anything other than zero, but as of clang-21 this
+causes a warning:
 
-Fixes: ef86ab131d91 ("cifs: Fix querying of WSL CHR and BLK reparse points over SMB1")
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:45:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   45 |                                         &h2r_args);
+      |                                          ^~~~~~~~
+
+Just remove this for simplicity. Since the function is also called
+through a callback, this does require adding a trivial wrapper with
+the correct prototype.
+
+Fixes: f96f3cfa0bb8 ("[media] s5p-mfc: Update MFC v4l2 driver to support MFC6.x")
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb1ops.c | 62 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 60 insertions(+), 2 deletions(-)
+ drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c |   35 +++++-----------
+ 1 file changed, 13 insertions(+), 22 deletions(-)
 
-diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
-index e62d9cc592e0c..c80b291a14a57 100644
---- a/fs/smb/client/smb1ops.c
-+++ b/fs/smb/client/smb1ops.c
-@@ -671,14 +671,72 @@ static int cifs_query_path_info(const unsigned int xid,
+--- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
++++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
+@@ -14,8 +14,7 @@
+ #include "s5p_mfc_opr.h"
+ #include "s5p_mfc_cmd_v6.h"
+ 
+-static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
+-				    const struct s5p_mfc_cmd_args *args)
++static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd)
+ {
+ 	mfc_debug(2, "Issue the command: %d\n", cmd);
+ 
+@@ -31,7 +30,6 @@ static int s5p_mfc_cmd_host2risc_v6(stru
+ 
+ static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	const struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
+ 	int ret;
+ 
+@@ -41,33 +39,23 @@ static int s5p_mfc_sys_init_cmd_v6(struc
+ 
+ 	mfc_write(dev, dev->ctx_buf.dma, S5P_FIMV_CONTEXT_MEM_ADDR_V6);
+ 	mfc_write(dev, buf_size->dev_ctx, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6);
+ }
+ 
+ static int s5p_mfc_sleep_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6,
+-			&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6);
+ }
+ 
+ static int s5p_mfc_wakeup_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6);
+ }
+ 
+ /* Open a new instance and get its number */
+ static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int codec_type;
+ 
+ 	mfc_debug(2, "Requested codec mode: %d\n", ctx->codec_mode);
+@@ -129,23 +117,20 @@ static int s5p_mfc_open_inst_cmd_v6(stru
+ 	mfc_write(dev, ctx->ctx.size, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+ 	mfc_write(dev, 0, S5P_FIMV_D_CRC_CTRL_V6); /* no crc */
+ 
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6);
+ }
+ 
+ /* Close instance */
+ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int ret = 0;
+ 
+ 	dev->curr_ctx = ctx->num;
+ 	if (ctx->state != MFCINST_FREE) {
+ 		mfc_write(dev, ctx->inst_no, S5P_FIMV_INSTANCE_ID_V6);
+ 		ret = s5p_mfc_cmd_host2risc_v6(dev,
+-					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6,
+-					&h2r_args);
++					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6);
+ 	} else {
+ 		ret = -EINVAL;
  	}
+@@ -153,9 +138,15 @@ static int s5p_mfc_close_inst_cmd_v6(str
+ 	return ret;
+ }
  
- #ifdef CONFIG_CIFS_XATTR
-+	/*
-+	 * For non-symlink WSL reparse points it is required to fetch
-+	 * EA $LXMOD which contains in its S_DT part the mandatory file type.
-+	 */
-+	if (!rc && data->reparse_point) {
-+		struct smb2_file_full_ea_info *ea;
-+		u32 next = 0;
++static int s5p_mfc_cmd_host2risc_v6_args(struct s5p_mfc_dev *dev, int cmd,
++				    const struct s5p_mfc_cmd_args *ignored)
++{
++	return s5p_mfc_cmd_host2risc_v6(dev, cmd);
++}
 +
-+		ea = (struct smb2_file_full_ea_info *)data->wsl.eas;
-+		do {
-+			ea = (void *)((u8 *)ea + next);
-+			next = le32_to_cpu(ea->next_entry_offset);
-+		} while (next);
-+		if (le16_to_cpu(ea->ea_value_length)) {
-+			ea->next_entry_offset = cpu_to_le32(ALIGN(sizeof(*ea) +
-+						ea->ea_name_length + 1 +
-+						le16_to_cpu(ea->ea_value_length), 4));
-+			ea = (void *)((u8 *)ea + le32_to_cpu(ea->next_entry_offset));
-+		}
-+
-+		rc = CIFSSMBQAllEAs(xid, tcon, full_path, SMB2_WSL_XATTR_MODE,
-+				    &ea->ea_data[SMB2_WSL_XATTR_NAME_LEN + 1],
-+				    SMB2_WSL_XATTR_MODE_SIZE, cifs_sb);
-+		if (rc == SMB2_WSL_XATTR_MODE_SIZE) {
-+			ea->next_entry_offset = cpu_to_le32(0);
-+			ea->flags = 0;
-+			ea->ea_name_length = SMB2_WSL_XATTR_NAME_LEN;
-+			ea->ea_value_length = cpu_to_le16(SMB2_WSL_XATTR_MODE_SIZE);
-+			memcpy(&ea->ea_data[0], SMB2_WSL_XATTR_MODE, SMB2_WSL_XATTR_NAME_LEN + 1);
-+			data->wsl.eas_len += ALIGN(sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
-+						   SMB2_WSL_XATTR_MODE_SIZE, 4);
-+			rc = 0;
-+		} else if (rc >= 0) {
-+			/* It is an error if EA $LXMOD has wrong size. */
-+			rc = -EINVAL;
-+		} else {
-+			/*
-+			 * In all other cases ignore error if fetching
-+			 * of EA $LXMOD failed. It is needed only for
-+			 * non-symlink WSL reparse points and wsl_to_fattr()
-+			 * handle the case when EA is missing.
-+			 */
-+			rc = 0;
-+		}
-+	}
-+
- 	/*
- 	 * For WSL CHR and BLK reparse points it is required to fetch
- 	 * EA $LXDEV which contains major and minor device numbers.
- 	 */
- 	if (!rc && data->reparse_point) {
- 		struct smb2_file_full_ea_info *ea;
-+		u32 next = 0;
- 
- 		ea = (struct smb2_file_full_ea_info *)data->wsl.eas;
-+		do {
-+			ea = (void *)((u8 *)ea + next);
-+			next = le32_to_cpu(ea->next_entry_offset);
-+		} while (next);
-+		if (le16_to_cpu(ea->ea_value_length)) {
-+			ea->next_entry_offset = cpu_to_le32(ALIGN(sizeof(*ea) +
-+						ea->ea_name_length + 1 +
-+						le16_to_cpu(ea->ea_value_length), 4));
-+			ea = (void *)((u8 *)ea + le32_to_cpu(ea->next_entry_offset));
-+		}
-+
- 		rc = CIFSSMBQAllEAs(xid, tcon, full_path, SMB2_WSL_XATTR_DEV,
- 				    &ea->ea_data[SMB2_WSL_XATTR_NAME_LEN + 1],
- 				    SMB2_WSL_XATTR_DEV_SIZE, cifs_sb);
-@@ -688,8 +746,8 @@ static int cifs_query_path_info(const unsigned int xid,
- 			ea->ea_name_length = SMB2_WSL_XATTR_NAME_LEN;
- 			ea->ea_value_length = cpu_to_le16(SMB2_WSL_XATTR_DEV_SIZE);
- 			memcpy(&ea->ea_data[0], SMB2_WSL_XATTR_DEV, SMB2_WSL_XATTR_NAME_LEN + 1);
--			data->wsl.eas_len = sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
--					    SMB2_WSL_XATTR_DEV_SIZE;
-+			data->wsl.eas_len += ALIGN(sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
-+						   SMB2_WSL_XATTR_MODE_SIZE, 4);
- 			rc = 0;
- 		} else if (rc >= 0) {
- 			/* It is an error if EA $LXDEV has wrong size. */
--- 
-2.51.0
-
+ /* Initialize cmd function pointers for MFC v6 */
+ static const struct s5p_mfc_hw_cmds s5p_mfc_cmds_v6 = {
+-	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6,
++	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6_args,
+ 	.sys_init_cmd = s5p_mfc_sys_init_cmd_v6,
+ 	.sleep_cmd = s5p_mfc_sleep_cmd_v6,
+ 	.wakeup_cmd = s5p_mfc_wakeup_cmd_v6,
 
 
 
