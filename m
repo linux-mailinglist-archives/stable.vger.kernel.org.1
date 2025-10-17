@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-187627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4C8BEACF3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:41:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E45CBEAA82
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0644960FCA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C1A17C4722
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E5E330B35;
-	Fri, 17 Oct 2025 15:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26193330B38;
+	Fri, 17 Oct 2025 15:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTb598jF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRTbzuX0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0672E330B2B;
-	Fri, 17 Oct 2025 15:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D628A330B04;
+	Fri, 17 Oct 2025 15:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716618; cv=none; b=NPpdIsoUsvClrLhjh013wrVoSz5bHVnLgShtydgCmyNAQp1pa13SU+/L3ge1du8R0vQiVOap6py3+bLTpaMNp/xUtOkJSGGA7xwH2tQVdUfX0uMTH2Y6v5eJj++o6JVWpSYrvTDKG48ndnHYSTzR0+eM7h/DZc9bm8se3xAfGkE=
+	t=1760715791; cv=none; b=s7U+Ah7VovJeq7aNspgjdlW8YoZF1WQ7NbGpauygTxGzApW0F7R3a0VIK9D2Mh3lTWZVhAToEgJTJ9PEWlGK2vjohEEzhFU2xVUzFJzjbTGuYm/CISiEhXuFQ2UDPpxNkVfG9gIvQaQw6/WoSb6Cce7IRgnNHBYTlc3p4gwP5nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716618; c=relaxed/simple;
-	bh=xTZVvGMi4Rks5HTYdVCTEvt4C3FoevR8I1gnCyrUpQk=;
+	s=arc-20240116; t=1760715791; c=relaxed/simple;
+	bh=dib6tAuKu4wS+x37ZT9c016cVyi42HeUihF0DXzCCTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGt2i58dpjwle6D5ZnyJjPr/amxvROQKWGGHu6yI/EM8PldNXPGkW9ZUqu86yBnEqN1gE1ObmQu49vJdLlMri1k6V9PpbQ/MvVCeKj0A7WFoPRm1p/lV0B4BDpgiNWpzlb8O26V9c0BocluG09wIRJgn04gY9DBYzJZE8wpVNVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTb598jF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882D5C4CEE7;
-	Fri, 17 Oct 2025 15:56:57 +0000 (UTC)
+	 MIME-Version; b=fmGiDrqLNKrQZCxh1h7hDWy1V7gAlElS37o2ZKHKRxDY5HHYOgG58sFfGby91DIDwAbtPWqLtCIVk0c/oX1ux2T/CWVCf4mdphlA2e+HfyzIhaCgt3qReLAzVPFdqeOay36Th+SST53nRCE2yNkjgiGW2kWe/duanBfeE14OCNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRTbzuX0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC00C4CEE7;
+	Fri, 17 Oct 2025 15:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716617;
-	bh=xTZVvGMi4Rks5HTYdVCTEvt4C3FoevR8I1gnCyrUpQk=;
+	s=korg; t=1760715791;
+	bh=dib6tAuKu4wS+x37ZT9c016cVyi42HeUihF0DXzCCTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TTb598jFc1W6y/DyzdXW6rHYQ+XV6sKUvOX+7SHXu83a8cX0w1NCbAxmj8nPyvnO8
-	 DkWVFp+h9rarV5fQircPgt9iu2ChsqT3VYoi6WwEseUnKKhkPkMWVKMrmeS+zHtlXb
-	 tiXLpfqETmfDZ2wxStuj47QG+LuFynf30vr8t2SA=
+	b=eRTbzuX0sNO1iXqdyER0WYUv9x8sP/sj104Nn1cKfD+qeOz3NgfV4hGSW5mLQeiKm
+	 o2M2Tj2RmzCCN/tOPGkZMILY3GR/fnlbUgTKZ101OVK96Hs7csTjyImzIA6ieOxmq0
+	 PfruMHw1jG4/W0YWKNyrAjPuf09C7BwycAQZdqw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0b92850d68d9b12934f5@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 219/276] ext4: verify orphan file size is not too big
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH 6.17 337/371] media: iris: Allow stop on firmware only if start was issued.
 Date: Fri, 17 Oct 2025 16:55:12 +0200
-Message-ID: <20251017145150.458385666@linuxfoundation.org>
+Message-ID: <20251017145214.275771195@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-commit 0a6ce20c156442a4ce2a404747bb0fb05d54eeb3 upstream.
+commit 56a2d85ee8f9b994e5cd17039133218c57c5902b upstream.
 
-In principle orphan file can be arbitrarily large. However orphan replay
-needs to traverse it all and we also pin all its buffers in memory. Thus
-filesystems with absurdly large orphan files can lead to big amounts of
-memory consumed. Limit orphan file size to a sane value and also use
-kvmalloc() for allocating array of block descriptor structures to avoid
-large order allocations for sane but large orphan files.
+For HFI Gen1, the instances substate is changed to LOAD_RESOURCES only
+when a START command is issues to the firmware. If STOP is called
+without a prior START, the firmware may reject the command and throw
+some erros.
+Handle this by adding a substate check before issuing STOP command to
+the firmware.
 
-Reported-by: syzbot+0b92850d68d9b12934f5@syzkaller.appspotmail.com
-Fixes: 02f310fcf47f ("ext4: Speedup ext4 orphan inode handling")
-Cc: stable@kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-ID: <20250909112206.10459-2-jack@suse.cz>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 11712ce70f8e ("media: iris: implement vb2 streaming ops")
+Cc: stable@vger.kernel.org
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # X1E80100
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/orphan.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/orphan.c
-+++ b/fs/ext4/orphan.c
-@@ -584,9 +584,20 @@ int ext4_init_orphan_info(struct super_b
- 		ext4_msg(sb, KERN_ERR, "get orphan inode failed");
- 		return PTR_ERR(inode);
- 	}
-+	/*
-+	 * This is just an artificial limit to prevent corrupted fs from
-+	 * consuming absurd amounts of memory when pinning blocks of orphan
-+	 * file in memory.
-+	 */
-+	if (inode->i_size > 8 << 20) {
-+		ext4_msg(sb, KERN_ERR, "orphan file too big: %llu",
-+			 (unsigned long long)inode->i_size);
-+		ret = -EFSCORRUPTED;
-+		goto out_put;
-+	}
- 	oi->of_blocks = inode->i_size >> sb->s_blocksize_bits;
- 	oi->of_csum_seed = EXT4_I(inode)->i_csum_seed;
--	oi->of_binfo = kmalloc_array(oi->of_blocks,
-+	oi->of_binfo = kvmalloc_array(oi->of_blocks,
- 				     sizeof(struct ext4_orphan_block),
- 				     GFP_KERNEL);
- 	if (!oi->of_binfo) {
+diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
+index 3e41c8cb620e..a3461ccf170a 100644
+--- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
++++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
+@@ -202,7 +202,7 @@ static int iris_hfi_gen1_session_stop(struct iris_inst *inst, u32 plane)
+ 			inst->flush_responses_pending++;
+ 			ret = iris_wait_for_session_response(inst, true);
+ 		}
+-	} else {
++	} else if (inst->sub_state & IRIS_INST_SUB_LOAD_RESOURCES) {
+ 		reinit_completion(&inst->completion);
+ 		iris_hfi_gen1_packet_session_cmd(inst, &pkt, HFI_CMD_SESSION_STOP);
+ 		ret = iris_hfi_queue_cmd_write(core, &pkt, pkt.shdr.hdr.size);
+-- 
+2.51.0
+
 
 
 
