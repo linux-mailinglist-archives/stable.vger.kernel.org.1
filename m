@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8038ABE968F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:01:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B54D2BE9F12
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 36FFE4FC4A0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 365A47419C0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2A5337114;
-	Fri, 17 Oct 2025 14:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5044335077;
+	Fri, 17 Oct 2025 15:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrkJcjba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jd+8AJHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EDE337100;
-	Fri, 17 Oct 2025 14:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3A43370E2;
+	Fri, 17 Oct 2025 15:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713117; cv=none; b=PMXGg02dND1Uit6tfM2Effl9lhGvgFd1/COBOy57I1H4nZhM5hm4aR13ovWfOwxbbzri9XpjBcnRezbCt/Eheu+oHShH9G335cKbV0Ivp+4Fwi0WjM98CeWfu+rqSCOlbRD8zUNK4wJSEVqSnSRWZ7b+JQarACk34vdmR0twyOc=
+	t=1760714290; cv=none; b=V6Egt8LrkXjmOzgBnvgo/C3Z6XnsbmLqKKw2kz+l0QOhvSa157qa7S69o/J53kqiSaAnHwuLmKX2FFwuY+W5u74lv+92qbiJq7bnCac5xFp4VjxiaH+8D5OGFyh74Da9MdY1yMr3OzIaNeXHe/kQDyg08RyyWhK6VUxuRa4sC9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713117; c=relaxed/simple;
-	bh=8XIcjDTpwWtUowTtMMhMRxcnzUe2E+03RXfBQFuW7Ts=;
+	s=arc-20240116; t=1760714290; c=relaxed/simple;
+	bh=lEGocmwRBWzHdbsD892R8uQesxRwjUqj/SAhKHB7GUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MezD/EgrKXwlxZBTm48Oa8lA00jCEsy3JJP4u8cWf1ulNm88+6FXl656KuXxZLIFTCF1vXoqLezTmSKCKIyXiXy97cbR+JfqT0Oah39F2nQGLsPirP5SUaRSEl6MubliUnNBeIaWTgNh947HekBQ1Vkn+wPCkn1vGcsZ9Llfx3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrkJcjba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923CBC113D0;
-	Fri, 17 Oct 2025 14:58:36 +0000 (UTC)
+	 MIME-Version; b=AMUlB+his3Jqv+1nm/hnPPqhE/FH7xSKuZEKZMnZnG6UddvmYihUxlkZPDOwzWnq66tfXT69HKqNaMIEcKT2HEKKbrHmrFKSxvij8bZsrlW5CFpKmsFp3lPlo238x0CFiF9und5BOmnWeh4yr+1SKNaBIkuuhfEXFxMSMccxL7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jd+8AJHc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179C0C4CEE7;
+	Fri, 17 Oct 2025 15:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713116;
-	bh=8XIcjDTpwWtUowTtMMhMRxcnzUe2E+03RXfBQFuW7Ts=;
+	s=korg; t=1760714290;
+	bh=lEGocmwRBWzHdbsD892R8uQesxRwjUqj/SAhKHB7GUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RrkJcjbadK/v+NFwbYW/K9GWA1MV1XYQ2b8pl3pgc4QpXhnoa4RSQ4uzDTgdTinlf
-	 /Ts9gAZXSTTbhBrID4zEThQz8cmnvz9+Dd2bWYkUy4XRtYrdKi9mOrD4mku8nfi59Z
-	 Bw2wIe9sciF+475v/EBp4ZuKDJtjXQkZV8no7Mk8=
+	b=jd+8AJHcYIchsA6LntvbGaI3Xj1SGMtp7ARUFX5esb3ZjFNJ+K1Lb2iUm6Rnrt/VS
+	 3eiSQds8Vmqh1rG0/sAxL8kOGW9YILTcRZU6W9HOBoG08DjkhAy2Nwcnw+rMIOpmpd
+	 HIk5jO/j46D4cMLnva6iJiGgxYPCVYov9L2Poqa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/168] clk: nxp: lpc18xx-cgu: convert from round_rate() to determine_rate()
+	Vibhore Vardhan <vibhore@ti.com>,
+	Paresh Bhagat <p-bhagat@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.12 092/277] arm64: dts: ti: k3-am62a-main: Fix main padcfg length
 Date: Fri, 17 Oct 2025 16:51:39 +0200
-Message-ID: <20251017145129.764001504@linuxfoundation.org>
+Message-ID: <20251017145150.493765750@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Vibhore Vardhan <vibhore@ti.com>
 
-[ Upstream commit b46a3d323a5b7942e65025254c13801d0f475f02 ]
+commit 4c4e48afb6d85c1a8f9fdbae1fdf17ceef4a6f5b upstream.
 
-The round_rate() clk ops is deprecated, so migrate this driver from
-round_rate() to determine_rate() using the Coccinelle semantic patch
-on the cover letter of this series.
+The main pad configuration register region starts with the register
+MAIN_PADCFG_CTRL_MMR_CFG0_PADCONFIG0 with address 0x000f4000 and ends
+with the MAIN_PADCFG_CTRL_MMR_CFG0_PADCONFIG150 register with address
+0x000f4258, as a result of which, total size of the region is 0x25c
+instead of 0x2ac.
 
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Stable-dep-of: 1624dead9a4d ("clk: nxp: Fix pll0 rate check condition in LPC18xx CGU driver")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reference Docs
+TRM (AM62A) - https://www.ti.com/lit/ug/spruj16b/spruj16b.pdf
+TRM (AM62D) - https://www.ti.com/lit/ug/sprujd4/sprujd4.pdf
+
+Fixes: 5fc6b1b62639c ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vibhore Vardhan <vibhore@ti.com>
+Signed-off-by: Paresh Bhagat <p-bhagat@ti.com>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://patch.msgid.link/20250903062513.813925-2-p-bhagat@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/nxp/clk-lpc18xx-cgu.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/nxp/clk-lpc18xx-cgu.c b/drivers/clk/nxp/clk-lpc18xx-cgu.c
-index 69ebf65081b81..821155f79b015 100644
---- a/drivers/clk/nxp/clk-lpc18xx-cgu.c
-+++ b/drivers/clk/nxp/clk-lpc18xx-cgu.c
-@@ -371,23 +371,25 @@ static unsigned long lpc18xx_pll0_recalc_rate(struct clk_hw *hw,
- 	return 0;
- }
+--- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+@@ -258,7 +258,7 @@
  
--static long lpc18xx_pll0_round_rate(struct clk_hw *hw, unsigned long rate,
--				    unsigned long *prate)
-+static int lpc18xx_pll0_determine_rate(struct clk_hw *hw,
-+				       struct clk_rate_request *req)
- {
- 	unsigned long m;
- 
--	if (*prate < rate) {
-+	if (req->best_parent_rate < req->rate) {
- 		pr_warn("%s: pll dividers not supported\n", __func__);
- 		return -EINVAL;
- 	}
- 
--	m = DIV_ROUND_UP_ULL(*prate, rate * 2);
-+	m = DIV_ROUND_UP_ULL(req->best_parent_rate, req->rate * 2);
- 	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
--		pr_warn("%s: unable to support rate %lu\n", __func__, rate);
-+		pr_warn("%s: unable to support rate %lu\n", __func__, req->rate);
- 		return -EINVAL;
- 	}
- 
--	return 2 * *prate * m;
-+	req->rate = 2 * req->best_parent_rate * m;
-+
-+	return 0;
- }
- 
- static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
-@@ -444,7 +446,7 @@ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
- 
- static const struct clk_ops lpc18xx_pll0_ops = {
- 	.recalc_rate	= lpc18xx_pll0_recalc_rate,
--	.round_rate	= lpc18xx_pll0_round_rate,
-+	.determine_rate = lpc18xx_pll0_determine_rate,
- 	.set_rate	= lpc18xx_pll0_set_rate,
- };
- 
--- 
-2.51.0
-
+ 	main_pmx0: pinctrl@f4000 {
+ 		compatible = "pinctrl-single";
+-		reg = <0x00 0xf4000 0x00 0x2ac>;
++		reg = <0x00 0xf4000 0x00 0x25c>;
+ 		#pinctrl-cells = <1>;
+ 		pinctrl-single,register-width = <32>;
+ 		pinctrl-single,function-mask = <0xffffffff>;
 
 
 
