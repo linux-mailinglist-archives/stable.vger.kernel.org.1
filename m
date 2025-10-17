@@ -1,75 +1,68 @@
-Return-Path: <stable+bounces-186726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9830BE9D7A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBC8BEA266
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 23E3A583566
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3E0D95836F2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057E532C95F;
-	Fri, 17 Oct 2025 15:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1BA42F12A5;
+	Fri, 17 Oct 2025 15:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCWWLmR8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iX3pdH/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EB432C948;
-	Fri, 17 Oct 2025 15:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEF020A5E5;
+	Fri, 17 Oct 2025 15:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714062; cv=none; b=NwNoz/O+U9Ht7Yx4v34VHYHKeSJy07ENatZ1guwQqhvjJnPD9QrE7PzawJfJewGAV1HrCV44rfNJgIW6yoNlKuSrnhSZdSo+gigJIfXJGgC8Bc52Y+WWDflAtNJXZMnY5GvLvHd/BaLBFCdd/tDXRG+h80UQ/njE/aXwKJRJ9r4=
+	t=1760714954; cv=none; b=uO3wCzNMnpj2Qv0cqMrKz6l/1lUO0aKeVa72L0ylNFsK1iqcrvmJjMusSiiEIayaqfgc7Xt+4RuQGSyTQ+NpUpobgx8hPjLD+ehwv3fDI5A8c/h1D+Zig1MKcLgzcMKRgCjIlRZ9pV0M6RcyoGgzmateuHmCakvJnhWbI0AWHAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714062; c=relaxed/simple;
-	bh=EsrURoOsmOvnnU5qqPBDULxUJI8Jb/M0L6Op87zu9lw=;
+	s=arc-20240116; t=1760714954; c=relaxed/simple;
+	bh=9NJupjVmVP0sbru65WuuVAKjdMmjQGvaZwSYaiwK+Y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMhWuz5KVo6AluFaeVwSg2g8wJedLBVZO4cXogVLRfuVcN2ki7bH/eEQXoe9ezBjF86f3BeaTRujfVnyC6Sv9AE5yA33AIM4UOd5X5WD5xoDO9o1gpJAguHYMLMXh+AjhWS6rEHbKioS7d1aU4EORl8BxLWINUrGV+HvgTWzIes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCWWLmR8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6D6C4CEE7;
-	Fri, 17 Oct 2025 15:14:21 +0000 (UTC)
+	 MIME-Version; b=pqBSxakkaWGkaat9y40m6PLHEJhUIVSllzq5hKbsvoUsD/5qWLMGr5op3XShTi5wnxSNKXHrbr7fJmpqYv1d9UD/ahC/UdcI9JUsV6ysJHn0GH+dhHpYhodYuUNvDA0mCuWL9gemtijdeFeOVdL5u4lOcBzQXihs+WxDZEr6+vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iX3pdH/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7DAC4CEE7;
+	Fri, 17 Oct 2025 15:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714062;
-	bh=EsrURoOsmOvnnU5qqPBDULxUJI8Jb/M0L6Op87zu9lw=;
+	s=korg; t=1760714954;
+	bh=9NJupjVmVP0sbru65WuuVAKjdMmjQGvaZwSYaiwK+Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCWWLmR8fcoPMVXmmbZlTDaGeS4y3dc5ChcTKxkl6NwaOLYvNd4kPz8xsWjoJyQo+
-	 sKahr54UNuCjH6LCNUavAZ6pxZw3LHSO0QBrIP6olZmDSFzk5yqtiJcCpYrhCoN9NQ
-	 +//DgceGDp2DKKfgl+9+io6hvURvVB8Kf0K33W+k=
+	b=iX3pdH/PCil5P0HDz3l+HVwcWSePhOhlQbFm/9JkV4ASgY6TccKP+fmMK2pvgwd8U
+	 lAMWdYU0bIWL/c4li0BPwOvtRjn8HhjdgPUBcSOkgFJn66Fec8In9WWtkZjrc2v6On
+	 edbyYSCKJS5K4lIYQocp2RRDrJiempFnJXlH90Xc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
 	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
 	Athira Rajeev <atrajeev@linux.ibm.com>,
-	Blake Jones <blakejones@google.com>,
 	Chun-Tse Shao <ctshao@google.com>,
-	Collin Funk <collin.funk1@gmail.com>,
 	Howard Chu <howardchu95@gmail.com>,
 	Ingo Molnar <mingo@redhat.com>,
-	Jan Polensky <japo@linux.ibm.com>,
+	James Clark <james.clark@linaro.org>,
 	Jiri Olsa <jolsa@kernel.org>,
 	Kan Liang <kan.liang@linux.intel.com>,
-	Li Huafei <lihuafei1@huawei.com>,
 	Mark Rutland <mark.rutland@arm.com>,
-	Nam Cao <namcao@linutronix.de>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
-	"Steinar H. Gunderson" <sesse@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/277] perf test trace_btf_enum: Skip if permissions are insufficient
+Subject: [PATCH 6.17 046/371] perf test: Dont leak workload gopipe in PERF_RECORD_*
 Date: Fri, 17 Oct 2025 16:50:21 +0200
-Message-ID: <20251017145147.667254199@linuxfoundation.org>
+Message-ID: <20251017145203.466941157@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,74 +74,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 4bd5bd8dbd41a208fb73afb65bda6f38e2b5a637 ]
+[ Upstream commit 48918cacefd226af44373e914e63304927c0e7dc ]
 
-Modify test behavior to skip if BPF calls fail with "Operation not
-permitted".
+The test starts a workload and then opens events. If the events fail
+to open, for example because of perf_event_paranoid, the gopipe of the
+workload is leaked and the file descriptor leak check fails when the
+test exits. To avoid this cancel the workload when opening the events
+fails.
 
-Fixes: d66763fed30f0bd8 ("perf test trace_btf_enum: Add regression test for the BTF augmentation of enums in 'perf trace'")
-Reviewed-by: James Clark <james.clark@linaro.org>
+Before:
+```
+$ perf test -vv 7
+  7: PERF_RECORD_* events & perf_sample fields:
+ --- start ---
+test child forked, pid 1189568
+Using CPUID GenuineIntel-6-B7-1
+ ------------------------------------------------------------
+perf_event_attr:
+  type                    	   0 (PERF_TYPE_HARDWARE)
+  config                  	   0xa00000000 (cpu_atom/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                	   1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8
+sys_perf_event_open failed, error -13
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             0 (PERF_TYPE_HARDWARE)
+  config                           0xa00000000 (cpu_atom/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                         1
+  exclude_kernel                   1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 3
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             0 (PERF_TYPE_HARDWARE)
+  config                           0x400000000 (cpu_core/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                         1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8
+sys_perf_event_open failed, error -13
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             0 (PERF_TYPE_HARDWARE)
+  config                           0x400000000 (cpu_core/PERF_COUNT_HW_CPU_CYCLES/)
+  disabled                         1
+  exclude_kernel                   1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 3
+Attempt to add: software/cpu-clock/
+..after resolving event: software/config=0/
+cpu-clock -> software/cpu-clock/
+ ------------------------------------------------------------
+perf_event_attr:
+  type                             1 (PERF_TYPE_SOFTWARE)
+  size                             136
+  config                           0x9 (PERF_COUNT_SW_DUMMY)
+  sample_type                      IP|TID|TIME|CPU
+  read_format                      ID|LOST
+  disabled                         1
+  inherit                          1
+  mmap                             1
+  comm                             1
+  enable_on_exec                   1
+  task                             1
+  sample_id_all                    1
+  mmap2                            1
+  comm_exec                        1
+  ksymbol                          1
+  bpf_event                        1
+  { wakeup_events, wakeup_watermark } 1
+ ------------------------------------------------------------
+sys_perf_event_open: pid 1189569  cpu 0  group_fd -1  flags 0x8
+sys_perf_event_open failed, error -13
+perf_evlist__open: Permission denied
+ ---- end(-2) ----
+Leak of file descriptor 6 that opened: 'pipe:[14200347]'
+ ---- unexpected signal (6) ----
+iFailed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+Failed to read build ID for //anon
+    #0 0x565358f6666e in child_test_sig_handler builtin-test.c:311
+    #1 0x7f29ce849df0 in __restore_rt libc_sigaction.c:0
+    #2 0x7f29ce89e95c in __pthread_kill_implementation pthread_kill.c:44
+    #3 0x7f29ce849cc2 in raise raise.c:27
+    #4 0x7f29ce8324ac in abort abort.c:81
+    #5 0x565358f662d4 in check_leaks builtin-test.c:226
+    #6 0x565358f6682e in run_test_child builtin-test.c:344
+    #7 0x565358ef7121 in start_command run-command.c:128
+    #8 0x565358f67273 in start_test builtin-test.c:545
+    #9 0x565358f6771d in __cmd_test builtin-test.c:647
+    #10 0x565358f682bd in cmd_test builtin-test.c:849
+    #11 0x565358ee5ded in run_builtin perf.c:349
+    #12 0x565358ee6085 in handle_internal_command perf.c:401
+    #13 0x565358ee61de in run_argv perf.c:448
+    #14 0x565358ee6527 in main perf.c:555
+    #15 0x7f29ce833ca8 in __libc_start_call_main libc_start_call_main.h:74
+    #16 0x7f29ce833d65 in __libc_start_main@@GLIBC_2.34 libc-start.c:128
+    #17 0x565358e391c1 in _start perf[851c1]
+  7: PERF_RECORD_* events & perf_sample fields                       : FAILED!
+```
+
+After:
+```
+$ perf test 7
+  7: PERF_RECORD_* events & perf_sample fields                       : Skip (permissions)
+```
+
+Fixes: 16d00fee703866c6 ("perf tests: Move test__PERF_RECORD into separate object")
 Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Athira Rajeev <atrajeev@linux.ibm.com>
-Cc: Blake Jones <blakejones@google.com>
 Cc: Chun-Tse Shao <ctshao@google.com>
-Cc: Collin Funk <collin.funk1@gmail.com>
 Cc: Howard Chu <howardchu95@gmail.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jan Polensky <japo@linux.ibm.com>
+Cc: James Clark <james.clark@linaro.org>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Li Huafei <lihuafei1@huawei.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Nam Cao <namcao@linutronix.de>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steinar H. Gunderson <sesse@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250821163820.1132977-3-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/trace_btf_enum.sh | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/perf/tests/perf-record.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/perf/tests/shell/trace_btf_enum.sh b/tools/perf/tests/shell/trace_btf_enum.sh
-index 8d1e6bbeac906..1447d7425f381 100755
---- a/tools/perf/tests/shell/trace_btf_enum.sh
-+++ b/tools/perf/tests/shell/trace_btf_enum.sh
-@@ -23,6 +23,14 @@ check_vmlinux() {
-   fi
- }
+diff --git a/tools/perf/tests/perf-record.c b/tools/perf/tests/perf-record.c
+index 0b3c37e668717..8c79b5166a058 100644
+--- a/tools/perf/tests/perf-record.c
++++ b/tools/perf/tests/perf-record.c
+@@ -115,6 +115,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
+ 	if (err < 0) {
+ 		pr_debug("sched__get_first_possible_cpu: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
+ 	}
  
-+check_permissions() {
-+  if perf trace -e $syscall $TESTPROG 2>&1 | grep -q "Operation not permitted"
-+  then
-+    echo "trace+enum test [Skipped permissions]"
-+    err=2
-+  fi
-+}
-+
- trace_landlock() {
-   echo "Tracing syscall ${syscall}"
+@@ -126,6 +127,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
+ 	if (sched_setaffinity(evlist->workload.pid, cpu_mask_size, &cpu_mask) < 0) {
+ 		pr_debug("sched_setaffinity: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
+ 	}
  
-@@ -54,6 +62,9 @@ trace_non_syscall() {
- }
+@@ -137,6 +139,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
+ 	if (err < 0) {
+ 		pr_debug("perf_evlist__open: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
+ 	}
  
- check_vmlinux
-+if [ $err = 0 ]; then
-+  check_permissions
-+fi
+@@ -149,6 +152,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
+ 	if (err < 0) {
+ 		pr_debug("evlist__mmap: %s\n",
+ 			 str_error_r(errno, sbuf, sizeof(sbuf)));
++		evlist__cancel_workload(evlist);
+ 		goto out_delete_evlist;
+ 	}
  
- if [ $err = 0 ]; then
-   trace_landlock
 -- 
 2.51.0
 
