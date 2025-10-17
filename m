@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-187143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E28BEA002
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:52 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EEAFBEA440
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00193188AE40
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C9DE8588D11
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7FC330315;
-	Fri, 17 Oct 2025 15:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E77330B37;
+	Fri, 17 Oct 2025 15:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKEFsQ6f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMxIvTVu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B20F30CD9F;
-	Fri, 17 Oct 2025 15:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBC4330B1B;
+	Fri, 17 Oct 2025 15:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715236; cv=none; b=jxL+S+0s5OaxsnwHHBoaUdkX9yZ7tnE3gKmDj/NCjhQ/IxUqGP/slEJ2eNLGHxBpqNMKQnG7lLPsPmbbX6NY4M+vAHMwVUolDRxUpqssVjNk6zzIouL34J2Q9iX8r/CV1ct2B9uBKzVk7DUWJBdwZx+FKUVrbMFPLu4tNE6HFQs=
+	t=1760715968; cv=none; b=Syt3PsbBVSiill2+K5NVtcfbDHlJ6VRXBQPBGedQlCB3IbwbiESbhrLkgU8Mbvy5g6cBub7tuWawaH6R3Lrf4miQ8Iyds0sWN4lsX10xT8wJnzmW5VrpYNCr1itj6kU6mO2jsTruXXEEn3Q8UECBT73JOyyRozBar71dZbgdPhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715236; c=relaxed/simple;
-	bh=b3DxJHtjV8jf8EgGqEUY/vSoA7DrNj/nvfv0Ker0gsE=;
+	s=arc-20240116; t=1760715968; c=relaxed/simple;
+	bh=PSpaqQTwrWmcMFpJi6yRdxdxCC0vKGWzOs1MTZ6HEvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NLIGv5fY7lNPXIOwHKG6SdVdhZyAOqYTPh7cjQIks1y7r3xWJ0sBV32It0LkeqWM6JcPLW963Dwt+hMJF6qGHc5tpUAsXEKS59+0/+NxKSxwFnCHeY+BJXkkpts/rFX/fdqP/KvnHMvcyHZiSDbDJZtSM9Qn3sOTKNdNZCfnLxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKEFsQ6f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88705C113D0;
-	Fri, 17 Oct 2025 15:33:55 +0000 (UTC)
+	 MIME-Version; b=chAiL7RJ+SEiW7SvjuqDtUVBIJZTwCe33RF/RKMYQIPvqxutcQANbQxQ8ts6UacdqkePfzTG/gNkE4OMwOkLn0jnojQGwV5dageHlwSsw7xRXXDk5KYaYud0LftmQWyan4DnlQ7/z3qVcv/q+R7YXrUbn13DQ+XfEaZuUop+koo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMxIvTVu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F3BC4CEE7;
+	Fri, 17 Oct 2025 15:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715235;
-	bh=b3DxJHtjV8jf8EgGqEUY/vSoA7DrNj/nvfv0Ker0gsE=;
+	s=korg; t=1760715967;
+	bh=PSpaqQTwrWmcMFpJi6yRdxdxCC0vKGWzOs1MTZ6HEvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKEFsQ6fGiixXKdftvWuqQkg3ZqZA13HXnKxhggS6wfIMy1xrizyHfHObkIFdTsni
-	 ES/PL/hNwLA/fp6dOzkiZUm48b23Wcvc9ztiBYsrMerKICdEeF5GB0+QHwEaKiT9Bo
-	 JsulBpcI5rUs12n8uFCT3BPymZSMSd/af6Z5qeM8=
+	b=QMxIvTVuoGGRs9vyBLE0cLXC8j7y/TpWRGzu08bFQOeC2aYceZ8Lz+Y/bcsoy0RnT
+	 mXOEq+kaAw7ZNE4OKxC+c31aJCZyKES5WuA281DBdEcPUgICD55fKU5GK/IPZGagKj
+	 TphY0moPhTcoozyb2M5dGpNmAe1VNe+Lm/qMkrm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.17 145/371] arm64: dts: qcom: x1e80100-pmics: Disable pm8010 by default
+	Uros Bizjak <ubizjak@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 027/276] x86/vdso: Fix output operand size of RDPID
 Date: Fri, 17 Oct 2025 16:52:00 +0200
-Message-ID: <20251017145207.180859045@linuxfoundation.org>
+Message-ID: <20251017145143.394143202@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-commit b9a185198f96259311543b30d884d8c01da913f7 upstream.
+[ Upstream commit ac9c408ed19d535289ca59200dd6a44a6a2d6036 ]
 
-pm8010 is a camera specific PMIC, and may not be present on some
-devices. These may instead use a dedicated vreg for this purpose (Dell
-XPS 9345, Dell Inspiron..) or use USB webcam instead of a MIPI one
-alltogether (Lenovo Thinbook 16, Lenovo Yoga..).
+RDPID instruction outputs to a word-sized register (64-bit on x86_64 and
+32-bit on x86_32). Use an unsigned long variable to store the correct size.
 
-Disable pm8010 by default, let platforms that actually have one onboard
-enable it instead.
+LSL outputs to 32-bit register, use %k operand prefix to always print the
+32-bit name of the register.
 
-Cc: stable@vger.kernel.org
-Fixes: 2559e61e7ef4 ("arm64: dts: qcom: x1e80100-pmics: Add the missing PMICs")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
-Link: https://lore.kernel.org/r/20250701183625.1968246-2-alex.vinarskis@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use RDPID insn mnemonic while at it as the minimum binutils version of
+2.30 supports it.
+
+  [ bp: Merge two patches touching the same function into a single one. ]
+
+Fixes: ffebbaedc861 ("x86/vdso: Introduce helper functions for CPU and node number")
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250616095315.230620-1-ubizjak@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-pmics.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/segment.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-pmics.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-pmics.dtsi
-@@ -475,6 +475,8 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
+diff --git a/arch/x86/include/asm/segment.h b/arch/x86/include/asm/segment.h
+index 8dd8e8ec9fa55..879be4ffa06c7 100644
+--- a/arch/x86/include/asm/segment.h
++++ b/arch/x86/include/asm/segment.h
+@@ -242,7 +242,7 @@ static inline unsigned long vdso_encode_cpunode(int cpu, unsigned long node)
  
-+		status = "disabled";
-+
- 		pm8010_temp_alarm: temp-alarm@2400 {
- 			compatible = "qcom,spmi-temp-alarm";
- 			reg = <0x2400>;
+ static inline void vdso_read_cpunode(unsigned *cpu, unsigned *node)
+ {
+-	unsigned int p;
++	unsigned long p;
+ 
+ 	/*
+ 	 * Load CPU and node number from the GDT.  LSL is faster than RDTSCP
+@@ -252,10 +252,10 @@ static inline void vdso_read_cpunode(unsigned *cpu, unsigned *node)
+ 	 *
+ 	 * If RDPID is available, use it.
+ 	 */
+-	alternative_io ("lsl %[seg],%[p]",
+-			".byte 0xf3,0x0f,0xc7,0xf8", /* RDPID %eax/rax */
++	alternative_io ("lsl %[seg],%k[p]",
++			"rdpid %[p]",
+ 			X86_FEATURE_RDPID,
+-			[p] "=a" (p), [seg] "r" (__CPUNODE_SEG));
++			[p] "=r" (p), [seg] "r" (__CPUNODE_SEG));
+ 
+ 	if (cpu)
+ 		*cpu = (p & VDSO_CPUNODE_MASK);
+-- 
+2.51.0
+
 
 
 
