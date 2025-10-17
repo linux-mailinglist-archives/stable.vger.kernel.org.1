@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-187210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DFABEA648
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:28 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5C3BE9F0F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 161CE746D21
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8661D5A0F58
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440D7330B22;
-	Fri, 17 Oct 2025 15:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D90F2F12BE;
+	Fri, 17 Oct 2025 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoFJewwJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCqm00yy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C4E330B19;
-	Fri, 17 Oct 2025 15:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591FC3328EC;
+	Fri, 17 Oct 2025 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715427; cv=none; b=ssa/mu78t1gyL1RCzcD7hvHEBBVMbBfS8BmH7gwLKfFmOzxt2Gm/Uaernu72Tl0AEd4nVDkyhkBuBiGax8ryvF871k43Wy078CQEaIHIYObq3B7lN9ip9ZJesN3hfaO3SwGiwYUVBIMtcjmo7ydURUQHIN3hgDB+SReo1uIa9RI=
+	t=1760714542; cv=none; b=hSMKeNmMUheDMEYEj67Z1f2ikGIrDaTtr6eHnR/4kiqxwGhRLGMlDCzBDmBZwzn025mRbJHQMaa+xtIyO6qDGnkcwUtjy8TAxlyZTfT5L+LnQpmLZFOKQ50mS/y9iOatovYAy/nN75Ui6U/ldcDqpUkE5h3qQuQkRfVv+N8neEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715427; c=relaxed/simple;
-	bh=Hls5LdZKP0uex+iOdGiigvm+3J/hFvy4YsjBNyg9/wA=;
+	s=arc-20240116; t=1760714542; c=relaxed/simple;
+	bh=eD+hD/awVNVP61Ad//xgSneMCc8Uz8msrCTQhF1Xowo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2sM+cV+maH/mTiFyViyH4par+17OjlufdFk3s5s03g0zCFGOQO/hUXqEC2etIJLiGz0U4GzZxsJRCyo55EAvFYxqQVhOVMhq87ZPdBajt7oaR8LFx8rlHcX9iG3q06Ti50QgEx/E0nZ5xkCO4cwx/QvTkTbbigN6LW/qOgu+aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoFJewwJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEE2C4CEFE;
-	Fri, 17 Oct 2025 15:37:06 +0000 (UTC)
+	 MIME-Version; b=sW30QbpxbbeyAEsw8lZTGSamyJuMYs4Cs55P/xCgEAOaYuyixyJMbmxtiSEEHuE4APnBxKr0y3IdLT0ZsCNFefvfVuFi6iV3h1giSVx8E2YZ5MdeQEab9ZEMJ3c7AEYlPBHmrpdGLpvQIK12l8lOx5m6y4KuPU/CfFqY9umXVwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCqm00yy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2591C113D0;
+	Fri, 17 Oct 2025 15:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715426;
-	bh=Hls5LdZKP0uex+iOdGiigvm+3J/hFvy4YsjBNyg9/wA=;
+	s=korg; t=1760714542;
+	bh=eD+hD/awVNVP61Ad//xgSneMCc8Uz8msrCTQhF1Xowo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eoFJewwJIc+9TTMQHwh7aEz6v0hQxjDrBssQwk5II3hrIpOhc6k8v8bI287H+KBUf
-	 uxL2+FUdosqGYxytPRYaMFORwdh9115uWIONYV1F1aWVlNvnwPrkk0lmzs8/HaDExy
-	 W+v6wguES1Sfi0pfqNZSRN2GAV6zZHBoohTQveu8=
+	b=rCqm00yyYna1QIy9XwJgB9EHL+68R7FDh6s+08FsrQqJSdbAHoL7cr+4Lld/HPujS
+	 SeLXpI5hs499PKmv9RPAMSTy17O3F6kenmx0oBZFtBJTHlktJfMtXBhx6Flxec3bpD
+	 JwHwo6039fY4D/KB2RABcm3T8ubyKom3Su3z6ejc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shashank A P <shashank.ap@samsung.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.17 213/371] fs: quota: create dedicated workqueue for quota_release_work
-Date: Fri, 17 Oct 2025 16:53:08 +0200
-Message-ID: <20251017145209.792838461@linuxfoundation.org>
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Manivannan Sadhasivam <mani@kernel.org>
+Subject: [PATCH 6.12 182/277] PCI: j721e: Fix programming sequence of "strap" settings
+Date: Fri, 17 Oct 2025 16:53:09 +0200
+Message-ID: <20251017145153.771720546@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shashank A P <shashank.ap@samsung.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 72b7ceca857f38a8ca7c5629feffc63769638974 upstream.
+commit f842d3313ba179d4005096357289c7ad09cec575 upstream.
 
-There is a kernel panic due to WARN_ONCE when panic_on_warn is set.
+The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
+Root-Complex and Endpoint modes of operation. The Glue Layer allows
+"strapping" the Mode of operation of the Controller, the Link Speed
+and the Link Width. This is enabled by programming the "PCIEn_CTRL"
+register (n corresponds to the PCIe instance) within the CTRL_MMR
+memory-mapped register space. The "reset-values" of the registers are
+also different depending on the mode of operation.
 
-This issue occurs when writeback is triggered due to sync call for an
-opened file(ie, writeback reason is WB_REASON_SYNC). When f2fs balance
-is needed at sync path, flush for quota_release_work is triggered.
-By default quota_release_work is queued to "events_unbound" queue which
-does not have WQ_MEM_RECLAIM flag. During f2fs balance "writeback"
-workqueue tries to flush quota_release_work causing kernel panic due to
-MEM_RECLAIM flag mismatch errors.
+Since the PCIe Controller latches onto the "reset-values" immediately
+after being powered on, if the Glue Layer configuration is not done while
+the PCIe Controller is off, it will result in the PCIe Controller latching
+onto the wrong "reset-values". In practice, this will show up as a wrong
+representation of the PCIe Controller's capability structures in the PCIe
+Configuration Space. Some such capabilities which are supported by the PCIe
+Controller in the Root-Complex mode but are incorrectly latched onto as
+being unsupported are:
+- Link Bandwidth Notification
+- Alternate Routing ID (ARI) Forwarding Support
+- Next capability offset within Advanced Error Reporting (AER) capability
 
-This patch creates dedicated workqueue with WQ_MEM_RECLAIM flag
-for work quota_release_work.
+Fix this by powering off the PCIe Controller before programming the "strap"
+settings and powering it on after that. The runtime PM APIs namely
+pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
+increment the usage counter respectively, causing GENPD to power off and
+power on the PCIe Controller.
 
-------------[ cut here ]------------
-WARNING: CPU: 4 PID: 14867 at kernel/workqueue.c:3721 check_flush_dependency+0x13c/0x148
-Call trace:
- check_flush_dependency+0x13c/0x148
- __flush_work+0xd0/0x398
- flush_delayed_work+0x44/0x5c
- dquot_writeback_dquots+0x54/0x318
- f2fs_do_quota_sync+0xb8/0x1a8
- f2fs_write_checkpoint+0x3cc/0x99c
- f2fs_gc+0x190/0x750
- f2fs_balance_fs+0x110/0x168
- f2fs_write_single_data_page+0x474/0x7dc
- f2fs_write_data_pages+0x7d0/0xd0c
- do_writepages+0xe0/0x2f4
- __writeback_single_inode+0x44/0x4ac
- writeback_sb_inodes+0x30c/0x538
- wb_writeback+0xf4/0x440
- wb_workfn+0x128/0x5d4
- process_scheduled_works+0x1c4/0x45c
- worker_thread+0x32c/0x3e8
- kthread+0x11c/0x1b0
- ret_from_fork+0x10/0x20
-Kernel panic - not syncing: kernel: panic_on_warn set ...
-
-Fixes: ac6f420291b3 ("quota: flush quota_release_work upon quota writeback")
-CC: stable@vger.kernel.org
-Signed-off-by: Shashank A P <shashank.ap@samsung.com>
-Link: https://patch.msgid.link/20250901092905.2115-1-shashank.ap@samsung.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250908120828.1471776-1-s-vadapalli@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/pci/controller/cadence/pci-j721e.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -162,6 +162,9 @@ static struct quota_module_name module_n
- /* SLAB cache for dquot structures */
- static struct kmem_cache *dquot_cachep;
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -277,6 +277,25 @@ static int j721e_pcie_ctrl_init(struct j
+ 	if (!ret)
+ 		offset = args.args[0];
  
-+/* workqueue for work quota_release_work*/
-+static struct workqueue_struct *quota_unbound_wq;
++	/*
++	 * The PCIe Controller's registers have different "reset-values"
++	 * depending on the "strap" settings programmed into the PCIEn_CTRL
++	 * register within the CTRL_MMR memory-mapped register space.
++	 * The registers latch onto a "reset-value" based on the "strap"
++	 * settings sampled after the PCIe Controller is powered on.
++	 * To ensure that the "reset-values" are sampled accurately, power
++	 * off the PCIe Controller before programming the "strap" settings
++	 * and power it on after that. The runtime PM APIs namely
++	 * pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
++	 * increment the usage counter respectively, causing GENPD to power off
++	 * and power on the PCIe Controller.
++	 */
++	ret = pm_runtime_put_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power off PCIe Controller\n");
++		return ret;
++	}
 +
- void register_quota_format(struct quota_format_type *fmt)
- {
- 	spin_lock(&dq_list_lock);
-@@ -881,7 +884,7 @@ void dqput(struct dquot *dquot)
- 	put_releasing_dquots(dquot);
- 	atomic_dec(&dquot->dq_count);
- 	spin_unlock(&dq_list_lock);
--	queue_delayed_work(system_unbound_wq, &quota_release_work, 1);
-+	queue_delayed_work(quota_unbound_wq, &quota_release_work, 1);
- }
- EXPORT_SYMBOL(dqput);
+ 	ret = j721e_pcie_set_mode(pcie, syscon, offset);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to set pci mode\n");
+@@ -295,6 +314,12 @@ static int j721e_pcie_ctrl_init(struct j
+ 		return ret;
+ 	}
  
-@@ -3041,6 +3044,11 @@ static int __init dquot_init(void)
- 
- 	shrinker_register(dqcache_shrinker);
- 
-+	quota_unbound_wq = alloc_workqueue("quota_events_unbound",
-+					   WQ_UNBOUND | WQ_MEM_RECLAIM, WQ_MAX_ACTIVE);
-+	if (!quota_unbound_wq)
-+		panic("Cannot create quota_unbound_wq\n");
++	ret = pm_runtime_get_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power on PCIe Controller\n");
++		return ret;
++	}
 +
- 	return 0;
- }
- fs_initcall(dquot_init);
+ 	/* Enable ACSPCIE refclk output if the optional property exists */
+ 	syscon = syscon_regmap_lookup_by_phandle_optional(node,
+ 						"ti,syscon-acspcie-proxy-ctrl");
 
 
 
