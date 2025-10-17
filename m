@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CF9BE9859
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:10:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BA0BE9D0F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D1DF741110
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:01:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A18F18947D9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0E132C94C;
-	Fri, 17 Oct 2025 15:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F349932C952;
+	Fri, 17 Oct 2025 15:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQsvZdZ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/U2W6Fj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1772F12DD;
-	Fri, 17 Oct 2025 15:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B049F3370FB;
+	Fri, 17 Oct 2025 15:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713260; cv=none; b=AKOLRIKHfaaC4espolFNhxVMfHWcjj39hsUohQtN2cckhq8Tsh7DUsVPTFEQXOHcnW0yZGhDIM8b294s7wUJb6FI5VEBByxoV3veBbDe95mAHzaVk5mUC2rY+OqDwPY/sK41b2oMmz5xHc11qLoN2cvs6GNjat/Lqt8s+7KD1no=
+	t=1760714620; cv=none; b=Le6X+2ngGqnHZzURWANTj0AD3niFEQNFZEcDuuUgO+Rd1Gdelri08/TfquHBBd/oX2Ls/3heVWyGbbwLuaikTK4a81t46x0aHrsvY4LkzqGpC1fFAzvK6ACwnV2szkTgiu7C2jvU+LVnFv/h85OYHTXhSxo6WgW5y8pTaBVV9ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713260; c=relaxed/simple;
-	bh=e03P0yfc0AHMPo1VqLmHiq86qES0NFJ5pc5xyFNyU9g=;
+	s=arc-20240116; t=1760714620; c=relaxed/simple;
+	bh=nsXaArORiI62BJOV4PWFgEt3jB+IQ6gddjX7qFrNJCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBhou4WhuhEct2+1nH5u4GXDcIsCPO0Nab/aqhuDP05ejkUD5aAlSE2qf30FPtOmPRLIRU16sV8ntepvzvuttEHpivVHV9wO2ilxpfkuqRHjnA7FN/I54slRPBMlxCKxufFhK++S5nGdl5myZRxsqL1CJ+W4k/vlcuj+NoWC5Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQsvZdZ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CAFC4CEF9;
-	Fri, 17 Oct 2025 15:00:59 +0000 (UTC)
+	 MIME-Version; b=HiHOoOXjtpjy+3iZE3lURN7ht4DkRg/iRGnVe/IbBpuMvR1jEJN9UXnjCYIUi7up9r2yxLZzh+cZB8iPmCxcpaEIBBhMkhiR/BRgaRhM2PBMZYAU6ZAvLY16qutRllEZzPFeASEA8GcJlWahGH/g9GN4iCoU/k7x8/QrqfvL9ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/U2W6Fj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7964C4CEE7;
+	Fri, 17 Oct 2025 15:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713260;
-	bh=e03P0yfc0AHMPo1VqLmHiq86qES0NFJ5pc5xyFNyU9g=;
+	s=korg; t=1760714620;
+	bh=nsXaArORiI62BJOV4PWFgEt3jB+IQ6gddjX7qFrNJCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQsvZdZ1bbv/79T4gIrFA7Mbb7siqqY8Q74JqZFVYaLNWBKGsDaTX4W0BKtDh3fvV
-	 EI/0zB+bnOVI+8qBss2M+Wz25HFMl0Rtn/BUi4fN6lxsHq/GDx3+A7ci6y+jJiBV0P
-	 7jQPcXvkM457XaiD4BetWXcCCN7zmMtB8wXXokVQ=
+	b=o/U2W6FjTK9wcabS3CPcoDgy1Gav5gSXpLbK/sjCe0o8ex6CHx4rdiVHwD5dg0rLg
+	 FDSbcCk4R2h0C2UULH4gtv9/DJGmSvP3X8QoNdixMJS3Rol1md+QPagw+ZxYRnSZmz
+	 diWvuozBlxPmF4JXU4S0OR27nfKkOo8lpk9ejI1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.1 104/168] memory: samsung: exynos-srom: Fix of_iomap leak in exynos_srom_probe
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.12 176/277] PCI: tegra: Convert struct tegra_msi mask_lock into raw spinlock
 Date: Fri, 17 Oct 2025 16:53:03 +0200
-Message-ID: <20251017145132.858343449@linuxfoundation.org>
+Message-ID: <20251017145153.553948841@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-commit 6744085079e785dae5f7a2239456135407c58b25 upstream.
+commit 26fda92d3b56bf44a02bcb4001c5a5548e0ae8ee upstream.
 
-The of_platform_populate() call at the end of the function has a
-possible failure path, causing a resource leak.
+The tegra_msi_irq_unmask() function may be called from a PCI driver
+request_threaded_irq() function. This triggers kernel/irq/manage.c
+__setup_irq() which locks raw spinlock &desc->lock descriptor lock
+and with that descriptor lock held, calls tegra_msi_irq_unmask().
 
-Replace of_iomap() with devm_platform_ioremap_resource() to ensure
-automatic cleanup of srom->reg_base.
+Since the &desc->lock descriptor lock is a raw spinlock, and the tegra_msi
+.mask_lock is not a raw spinlock, this setup triggers 'BUG: Invalid wait
+context' with CONFIG_PROVE_RAW_LOCK_NESTING=y.
 
-This issue was detected by smatch static analysis:
-drivers/memory/samsung/exynos-srom.c:155 exynos_srom_probe()warn:
-'srom->reg_base' from of_iomap() not released on lines: 155.
+Use scoped_guard() to simplify the locking.
 
-Fixes: 8ac2266d8831 ("memory: samsung: exynos-srom: Add support for bank configuration")
+Fixes: 2c99e55f7955 ("PCI: tegra: Convert to MSI domains")
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Closes: https://patchwork.kernel.org/project/linux-pci/patch/20250909162707.13927-2-marek.vasut+renesas@mailbox.org/#26574451
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Link: https://lore.kernel.org/r/20250806025538.306593-1-zhen.ni@easystack.cn
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20250922150811.88450-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/memory/samsung/exynos-srom.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/pci/controller/pci-tegra.c |   27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
---- a/drivers/memory/samsung/exynos-srom.c
-+++ b/drivers/memory/samsung/exynos-srom.c
-@@ -121,20 +121,18 @@ static int exynos_srom_probe(struct plat
- 		return -ENOMEM;
+--- a/drivers/pci/controller/pci-tegra.c
++++ b/drivers/pci/controller/pci-tegra.c
+@@ -14,6 +14,7 @@
+  */
  
- 	srom->dev = dev;
--	srom->reg_base = of_iomap(np, 0);
--	if (!srom->reg_base) {
-+	srom->reg_base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(srom->reg_base)) {
- 		dev_err(&pdev->dev, "iomap of exynos srom controller failed\n");
--		return -ENOMEM;
-+		return PTR_ERR(srom->reg_base);
- 	}
+ #include <linux/clk.h>
++#include <linux/cleanup.h>
+ #include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/export.h>
+@@ -269,7 +270,7 @@ struct tegra_msi {
+ 	DECLARE_BITMAP(used, INT_PCI_MSI_NR);
+ 	struct irq_domain *domain;
+ 	struct mutex map_lock;
+-	spinlock_t mask_lock;
++	raw_spinlock_t mask_lock;
+ 	void *virt;
+ 	dma_addr_t phys;
+ 	int irq;
+@@ -1604,14 +1605,13 @@ static void tegra_msi_irq_mask(struct ir
+ 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
+ 	struct tegra_pcie *pcie = msi_to_pcie(msi);
+ 	unsigned int index = d->hwirq / 32;
+-	unsigned long flags;
+ 	u32 value;
  
- 	platform_set_drvdata(pdev, srom);
+-	spin_lock_irqsave(&msi->mask_lock, flags);
+-	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
+-	value &= ~BIT(d->hwirq % 32);
+-	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
+-	spin_unlock_irqrestore(&msi->mask_lock, flags);
++	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
++		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
++		value &= ~BIT(d->hwirq % 32);
++		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
++	}
+ }
  
- 	srom->reg_offset = exynos_srom_alloc_reg_dump(exynos_srom_offsets,
- 						      ARRAY_SIZE(exynos_srom_offsets));
--	if (!srom->reg_offset) {
--		iounmap(srom->reg_base);
-+	if (!srom->reg_offset)
- 		return -ENOMEM;
--	}
+ static void tegra_msi_irq_unmask(struct irq_data *d)
+@@ -1619,14 +1619,13 @@ static void tegra_msi_irq_unmask(struct
+ 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
+ 	struct tegra_pcie *pcie = msi_to_pcie(msi);
+ 	unsigned int index = d->hwirq / 32;
+-	unsigned long flags;
+ 	u32 value;
  
- 	for_each_child_of_node(np, child) {
- 		if (exynos_srom_configure_bank(srom, child)) {
+-	spin_lock_irqsave(&msi->mask_lock, flags);
+-	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
+-	value |= BIT(d->hwirq % 32);
+-	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
+-	spin_unlock_irqrestore(&msi->mask_lock, flags);
++	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
++		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
++		value |= BIT(d->hwirq % 32);
++		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
++	}
+ }
+ 
+ static void tegra_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
+@@ -1736,7 +1735,7 @@ static int tegra_pcie_msi_setup(struct t
+ 	int err;
+ 
+ 	mutex_init(&msi->map_lock);
+-	spin_lock_init(&msi->mask_lock);
++	raw_spin_lock_init(&msi->mask_lock);
+ 
+ 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+ 		err = tegra_allocate_domains(msi);
 
 
 
