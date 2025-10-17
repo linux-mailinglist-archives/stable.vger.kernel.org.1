@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-186811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2911BE9B98
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B47BE970C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8633188FD9D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45915583792
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A56032E159;
-	Fri, 17 Oct 2025 15:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DCD337100;
+	Fri, 17 Oct 2025 14:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LDMoIIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCBIUeHC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70173370F7;
-	Fri, 17 Oct 2025 15:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40E460DCF;
+	Fri, 17 Oct 2025 14:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714304; cv=none; b=Oiob6yZrdx+6DUOg/nYVyVb83skMJvqmdRtb9GzY1xSALCxXLNPzcHtVs/iKZBe20DOgemJOMlxaPqWaUEHzs5BIxwPBXE94Fx1kDed2C+EUoOKzE7iD2PKiaUd92/tpzTzTlpf0sKr8ZhcgLVYKkb1seCj58xqdfcYX3/owxxc=
+	t=1760713131; cv=none; b=pumR3yzv1PzkUMdrd6d/t+SyR3KrrMj89fN/N3fx9aPf6y29UPZHyp+GUPC3m+HDJ80iEO3IuD+bmM3P2HiG5uDZCfwrGzGCnoxdzXpuqWHH/YEwTqnVeAwRbx9gzCLsF9/ygmEVDw7BrctpKXOTqAd95Q5fPwSPnrK4gcCD+W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714304; c=relaxed/simple;
-	bh=UPm6lNSD51aJiDUdmdHAJlA1x81kKGWBd+VnIgGngSQ=;
+	s=arc-20240116; t=1760713131; c=relaxed/simple;
+	bh=TVK7QLnMrEeWUKB/NUvYhEhCv2pzgxPk0FlT8t2GZYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/GDFw7ZEIUl93yXfu9gRllRnuFZn2hMQN5J5MhBO0x7ACwaNRsgPsqBknYfjfPwdqFfauvgXbpWvwqDwRzJtbiazICWpRPk9vWlxF3o5ozcK0n+MmMtMo/vixRi8vQX3AQZi0PKG+LrfXiqtK868BteCJaHcuvfEXkFyD0YyAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LDMoIIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F44C4CEE7;
-	Fri, 17 Oct 2025 15:18:24 +0000 (UTC)
+	 MIME-Version; b=UJhwJiQj3hOvhYmiM55utCKpdA6k4N0gLKfa0QrE+73fYMQ7W60uMDI4iFg/7pNWI1SuPWeVlWNIXJAxUrzOthDmVjFiBonUdL2R9GQlr63aqL4Ayz9+Ao8M+p6xNYTFjasGBkUqP3XwMzg4sUyy8LhBqS+IKS+H7aNOHwTuCBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCBIUeHC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8195C4CEE7;
+	Fri, 17 Oct 2025 14:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714304;
-	bh=UPm6lNSD51aJiDUdmdHAJlA1x81kKGWBd+VnIgGngSQ=;
+	s=korg; t=1760713131;
+	bh=TVK7QLnMrEeWUKB/NUvYhEhCv2pzgxPk0FlT8t2GZYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LDMoIIfUYBGAHkWegJ0RyTUL/L49jkt8XM+CVSWIwK/G1nKC+iBkQetdPAU/NfXa
-	 2KqSYFvVa05Uhjc9mdFO8KCh+lkwlPhLBKPmCAD816r8kD757wYJvofAJJ0CVbwpvf
-	 067k4KunLzuTY99LwrdU6hAcXuAi8253BDj/vbrc=
+	b=HCBIUeHCaEReHOAh4Trl5b9CEuDKPKe55/5GsZi5I6bUhxqFi28hqWpXS67U0RLbO
+	 1azePozHWBgwA+1qkYb1+B3lG2V/Z6GGphiCM1kEUlWupcTdE0swrSV6X8unK32KO3
+	 2OHNbp4YBk9LNTNELlFwnszcQQ9vS1/Fs/8oX0Ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 097/277] dt-bindings: phy: rockchip-inno-csi-dphy: make power-domains non-required
+	John Garry <john.garry@huawei.com>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 025/168] scsi: mvsas: Delete mvs_tag_init()
 Date: Fri, 17 Oct 2025 16:51:44 +0200
-Message-ID: <20251017145150.674452651@linuxfoundation.org>
+Message-ID: <20251017145129.946011722@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Riesch <michael.riesch@collabora.com>
+From: John Garry <john.garry@huawei.com>
 
-commit c254815b02673cc77a84103c4c0d6197bd90c0ef upstream.
+[ Upstream commit ffc9f9bf3f14876d019f67ef17d41138802529a8 ]
 
-There are variants of the Rockchip Innosilicon CSI DPHY (e.g., the RK3568
-variant) that are powered on by default as they are part of the ALIVE power
-domain.
-Remove 'power-domains' from the required properties in order to avoid false
-positives.
+All mvs_tag_init() does is zero the tag bitmap, but this is already done
+with the kzalloc() call to alloc the tags, so delete this unneeded
+function.
 
-Fixes: 22c8e0a69b7f ("dt-bindings: phy: add compatible for rk356x to rockchip-inno-csi-dphy")
-Cc: stable@kernel.org
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
-Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-2-a4f340a7f0cf@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: John Garry <john.garry@huawei.com>
+Link: https://lore.kernel.org/r/1666091763-11023-7-git-send-email-john.garry@huawei.com
+Reviewed-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 60cd16a3b743 ("scsi: mvsas: Fix use-after-free bugs in mvs_work_queue")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml |   15 +++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/scsi/mvsas/mv_init.c | 2 --
+ drivers/scsi/mvsas/mv_sas.c  | 7 -------
+ drivers/scsi/mvsas/mv_sas.h  | 1 -
+ 3 files changed, 10 deletions(-)
 
---- a/Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml
-+++ b/Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml
-@@ -57,11 +57,24 @@ required:
-   - clocks
-   - clock-names
-   - '#phy-cells'
--  - power-domains
-   - resets
-   - reset-names
-   - rockchip,grf
+diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
+index 2fde496fff5f7..c85fb812ad437 100644
+--- a/drivers/scsi/mvsas/mv_init.c
++++ b/drivers/scsi/mvsas/mv_init.c
+@@ -286,8 +286,6 @@ static int mvs_alloc(struct mvs_info *mvi, struct Scsi_Host *shost)
+ 	}
+ 	mvi->tags_num = slot_nr;
  
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - rockchip,px30-csi-dphy
-+              - rockchip,rk1808-csi-dphy
-+              - rockchip,rk3326-csi-dphy
-+              - rockchip,rk3368-csi-dphy
-+    then:
-+      required:
-+        - power-domains
-+
- additionalProperties: false
+-	/* Initialize tags */
+-	mvs_tag_init(mvi);
+ 	return 0;
+ err_out:
+ 	return 1;
+diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
+index 1275f3be530f7..82a308840b117 100644
+--- a/drivers/scsi/mvsas/mv_sas.c
++++ b/drivers/scsi/mvsas/mv_sas.c
+@@ -51,13 +51,6 @@ inline int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out)
+ 	return 0;
+ }
  
- examples:
+-void mvs_tag_init(struct mvs_info *mvi)
+-{
+-	int i;
+-	for (i = 0; i < mvi->tags_num; ++i)
+-		mvs_tag_clear(mvi, i);
+-}
+-
+ static struct mvs_info *mvs_find_dev_mvi(struct domain_device *dev)
+ {
+ 	unsigned long i = 0, j = 0, hi = 0;
+diff --git a/drivers/scsi/mvsas/mv_sas.h b/drivers/scsi/mvsas/mv_sas.h
+index 509d8f32a04ff..fe57665bdb505 100644
+--- a/drivers/scsi/mvsas/mv_sas.h
++++ b/drivers/scsi/mvsas/mv_sas.h
+@@ -428,7 +428,6 @@ void mvs_tag_clear(struct mvs_info *mvi, u32 tag);
+ void mvs_tag_free(struct mvs_info *mvi, u32 tag);
+ void mvs_tag_set(struct mvs_info *mvi, unsigned int tag);
+ int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out);
+-void mvs_tag_init(struct mvs_info *mvi);
+ void mvs_iounmap(void __iomem *regs);
+ int mvs_ioremap(struct mvs_info *mvi, int bar, int bar_ex);
+ void mvs_phys_reset(struct mvs_info *mvi, u32 phy_mask, int hard);
+-- 
+2.51.0
+
 
 
 
