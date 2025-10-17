@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71CBEBE9838
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:10:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A787BE9C4B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08FFF1AA59F3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 039FD189B2D2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C222E32E15E;
-	Fri, 17 Oct 2025 15:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB33632C958;
+	Fri, 17 Oct 2025 15:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSursvJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5XnmSIu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5A83370E2;
-	Fri, 17 Oct 2025 15:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE7F36CDEC;
+	Fri, 17 Oct 2025 15:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713664; cv=none; b=Yn3Heo+cPJVQpslXDZBOcFyMxmXRye6bdVO8rIwp5s0NJYBHJNm9Nubd+zKSOh0iwp6zsxJhBFxhxBRxYjUyrPKAT/3BFhkSDpWkcGiP1ZG65G0RfORXx3X4bKi0MGWUgixqmDzQoDNl0EndlRmSv6eue+vK06DvgsttVMKuDMM=
+	t=1760714395; cv=none; b=EPsbuhX+88QGHWFzNr4eMK/7sxuaMcDRC2qhrQpkEyoiwmn3X5LF1cmI5edgYREzKYUV6djTtMfJpbF1j0bBerWbgbLxCt2RN3Z9rzmU4MxGWffamPaFQGLlGpyzKW0MfMWA1wo14RTWxLtwS0VHC44wSYbkGztuROHGTtlB7r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713664; c=relaxed/simple;
-	bh=g7Y+eVu8EBol/M8v2riz0368d3neVMzMTOMyo40ns94=;
+	s=arc-20240116; t=1760714395; c=relaxed/simple;
+	bh=xFWPzTwwf9VW9ZTqoSxSm0UlmC/0m8FLvqqdL3nxtEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OGrSS840oRF/vyzuzrBpzmAEzkpZzPte8odqyC7QPh1nNRdbMKZKER6F89VUt2d3wSiW3MLy7gAY4BiDINKk4BNxQHn2kTOVU7ZKotwgfgXTXfVcOvj0j9RZL266L3csytu2zY25Ec8ZoPPXrAFa9yuT6Ktyo9mEndTSnNsVDKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSursvJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC83C4CEE7;
-	Fri, 17 Oct 2025 15:07:43 +0000 (UTC)
+	 MIME-Version; b=MWoWCDrHF1ge+pKhskSzh9UA0cTW0uZQcSMU9sLhd9X7m2avYpfta64EEmSZNYND4OtHG/d+I+zvQKhq47PuGQwpgUDoS761mzSUoJYpm7ymbPxuI8tZoQcCdfWTyS8cXu77fMRz8cdhr6JNTeuImmAodFyIoCB5NBty/IFBRxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5XnmSIu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4DFC4CEFE;
+	Fri, 17 Oct 2025 15:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713664;
-	bh=g7Y+eVu8EBol/M8v2riz0368d3neVMzMTOMyo40ns94=;
+	s=korg; t=1760714395;
+	bh=xFWPzTwwf9VW9ZTqoSxSm0UlmC/0m8FLvqqdL3nxtEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSursvJT0VusE+xCXAsTzB21tY+rlXwId8krmhh23WSAumdDZ/MttqMVL5XSZUlw/
-	 AOOX8fPBC6O1aR0PSGZ8te7SLWrC5et8NSm2mv0s/pdNOiAq6FKtXmDqPFwVRsN5RF
-	 iOn6e2IDE1zAsRg72AH+T00/1J/4DqqiU7Jax8gw=
+	b=K5XnmSIuiVC32azxFppeZhBf83G58OVo4uN0gNF71N+qi06Xv6n6LLN54J2QNjCuJ
+	 Q0YFYYymbhPKF+aECUaQe3R4naCvwy+4ZBX2g/gQYeQDjl3dJzpF+VnLth3kzPXF6Z
+	 zr0V/1XU2epKBh3zxukUrUwdq1vsNSO7fi3ptfNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Thomas Fourier <fourier.thomas@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.6 075/201] media: pci: ivtv: Add missing check after DMA map
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 129/277] crypto: rockchip - Fix dma_unmap_sg() nents value
 Date: Fri, 17 Oct 2025 16:52:16 +0200
-Message-ID: <20251017145137.512232883@linuxfoundation.org>
+Message-ID: <20251017145151.837000412@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 1069a4fe637d0e3e4c163e3f8df9be306cc299b4 upstream.
+commit 21140e5caf019e4a24e1ceabcaaa16bd693b393f upstream.
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, free blanking_ptr and set it to 0.  As 0 is a
-valid DMA address, use blanking_ptr to test if the DMA address
-is set.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Fixes: 1a0adaf37c30 ("V4L/DVB (5345): ivtv driver for Conexant cx23416/cx23415 MPEG encoder/decoder")
-Cc: stable@vger.kernel.org
+Fixes: 57d67c6e8219 ("crypto: rockchip - rework by using crypto_engine")
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/ivtv/ivtv-irq.c |    2 +-
- drivers/media/pci/ivtv/ivtv-yuv.c |    8 +++++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/crypto/rockchip/rk3288_crypto_ahash.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/pci/ivtv/ivtv-irq.c
-+++ b/drivers/media/pci/ivtv/ivtv-irq.c
-@@ -351,7 +351,7 @@ void ivtv_dma_stream_dec_prepare(struct
+--- a/drivers/crypto/rockchip/rk3288_crypto_ahash.c
++++ b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
+@@ -252,7 +252,7 @@ static void rk_hash_unprepare(struct cry
+ 	struct rk_ahash_rctx *rctx = ahash_request_ctx(areq);
+ 	struct rk_crypto_info *rkc = rctx->dev;
  
- 	/* Insert buffer block for YUV if needed */
- 	if (s->type == IVTV_DEC_STREAM_TYPE_YUV && f->offset_y) {
--		if (yi->blanking_dmaptr) {
-+		if (yi->blanking_ptr) {
- 			s->sg_pending[idx].src = yi->blanking_dmaptr;
- 			s->sg_pending[idx].dst = offset;
- 			s->sg_pending[idx].size = 720 * 16;
---- a/drivers/media/pci/ivtv/ivtv-yuv.c
-+++ b/drivers/media/pci/ivtv/ivtv-yuv.c
-@@ -125,7 +125,7 @@ static int ivtv_yuv_prep_user_dma(struct
- 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
+-	dma_unmap_sg(rkc->dev, areq->src, rctx->nrsg, DMA_TO_DEVICE);
++	dma_unmap_sg(rkc->dev, areq->src, sg_nents(areq->src), DMA_TO_DEVICE);
+ }
  
- 	/* If we've offset the y plane, ensure top area is blanked */
--	if (f->offset_y && yi->blanking_dmaptr) {
-+	if (f->offset_y && yi->blanking_ptr) {
- 		dma->SGarray[dma->SG_length].size = cpu_to_le32(720*16);
- 		dma->SGarray[dma->SG_length].src = cpu_to_le32(yi->blanking_dmaptr);
- 		dma->SGarray[dma->SG_length].dst = cpu_to_le32(IVTV_DECODER_OFFSET + yuv_offset[frame]);
-@@ -929,6 +929,12 @@ static void ivtv_yuv_init(struct ivtv *i
- 		yi->blanking_dmaptr = dma_map_single(&itv->pdev->dev,
- 						     yi->blanking_ptr,
- 						     720 * 16, DMA_TO_DEVICE);
-+		if (dma_mapping_error(&itv->pdev->dev, yi->blanking_dmaptr)) {
-+			kfree(yi->blanking_ptr);
-+			yi->blanking_ptr = NULL;
-+			yi->blanking_dmaptr = 0;
-+			IVTV_DEBUG_WARN("Failed to dma_map yuv blanking buffer\n");
-+		}
- 	} else {
- 		yi->blanking_dmaptr = 0;
- 		IVTV_DEBUG_WARN("Failed to allocate yuv blanking buffer\n");
+ static int rk_hash_run(struct crypto_engine *engine, void *breq)
 
 
 
