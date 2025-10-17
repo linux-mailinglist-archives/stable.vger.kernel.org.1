@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DC9BE9660
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3A0BEA422
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60CFB1884D83
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0B5F1AE4B01
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266232F12BE;
-	Fri, 17 Oct 2025 15:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE9A330B26;
+	Fri, 17 Oct 2025 15:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e41jb9yO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftrKlxeN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E572F12BD;
-	Fri, 17 Oct 2025 15:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E31330B06;
+	Fri, 17 Oct 2025 15:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713226; cv=none; b=rVly0BwoK5XKqdhNW6JOyKQ4UItDs5ICQwsMM5avzkAzsvgUv7bjY1aW4+XCsacKlYZB3gx55VFM6Oxrs9hhpTG2VFZ4jN57QsR5X4aOCshQw+C3sc218jyYvsfeEJV6AivwxyNWaMeQuwR2oTxS42ArfGBCT2eiJJfufbXIPOs=
+	t=1760716112; cv=none; b=QPO1GrEdWNNFIyEBRZXBbPTI4gvdFEkDoPALfrNl2kdEZ5D+A6536TzBEEabn36ApAzI2nfoC8rPoX0LgeSWY5wdrXKGC61EeWYBqJWld7WNetrWoietywtHT3kOjS/yqjnOFSkKbNnXsllBLPmXiErhpAACT/Qe1nAWkUfyqhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713226; c=relaxed/simple;
-	bh=W6LB7OF3g7aQMEV4iuow7VRvPG1xN2/11AyS7rgoY3o=;
+	s=arc-20240116; t=1760716112; c=relaxed/simple;
+	bh=4sVGd3Jdt+rkzPAbxGzCP5CE2LaT7aH8VG2lclmtuGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DzqbW/SRqUM5wpqsZlyuSv8IolMBqpAIgiuuGaxCVNN7x8AiHWqJ2dswn7WixxstCIR918PdzfR9SZvDZpbh8pMdxedHzOeu2ZiTjWzqBNryttW6XIkIwB3nlGB+UjYvty78oYiOlcYQBesEnhlKRiY5YNG0jAC98pmmHaNmeUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e41jb9yO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F80C113D0;
-	Fri, 17 Oct 2025 15:00:25 +0000 (UTC)
+	 MIME-Version; b=MngdmyC75U+l4P80CsE0cfoMw7BbbigPlK0r2OUmVVfqWmBRbuus4P0loGXhyHxrSpguQgO6i8u0FbPr4x76Qc5WDXukOOFraWIH92kxwOun0SEFJ2pB4aQQxwx35wXUpANd/HBDeIEeIZdC9VWM6iIqJsHrqrc4GGOThE4FWu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftrKlxeN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66DEC4CEE7;
+	Fri, 17 Oct 2025 15:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713226;
-	bh=W6LB7OF3g7aQMEV4iuow7VRvPG1xN2/11AyS7rgoY3o=;
+	s=korg; t=1760716112;
+	bh=4sVGd3Jdt+rkzPAbxGzCP5CE2LaT7aH8VG2lclmtuGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e41jb9yObWFmWpSc/WgC8/9iCQgtrLYTk9UlwklfKg+zWCl8Gu+MyJuWObaEj9FjK
-	 wLURwY51hQJ7zslQ5yyBYSVxPW8T3RvYokh2A93k88/n8uXG/yPBsNZiIqUEgWyUCU
-	 b6akLLEZWH3JKdCAZQScRuG+fQhvgaUh4tfe3114=
+	b=ftrKlxeNqia0jDS5MmSmq2ZXyFtnW8Td5j16pJys1XwxdHNrVI+ydrldG+YH0prIx
+	 QF/oHyPRoqUI57SlHuD6atQKDdAljVsaqaS3VE/6k7vQgTtomTLNuAxr2kBE6gnnB7
+	 uhq5NDPoG7Hd2XTK7yd8nzwzMbQWzg9iLt6vBxvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 6.1 058/168] cpuidle: governors: menu: Avoid using invalid recent intervals data
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 044/276] i3c: master: svc: Recycle unused IBI slot
 Date: Fri, 17 Oct 2025 16:52:17 +0200
-Message-ID: <20251017145131.158452573@linuxfoundation.org>
+Message-ID: <20251017145144.013335898@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Stanley Chu <stanley.chuys@gmail.com>
 
-commit fa3fa55de0d6177fdcaf6fc254f13cc8f33c3eed upstream.
+[ Upstream commit 3448a934ba6f803911ac084d05a2ffce507ea6c6 ]
 
-Marc has reported that commit 85975daeaa4d ("cpuidle: menu: Avoid
-discarding useful information") caused the number of wakeup interrupts
-to increase on an idle system [1], which was not expected to happen
-after merely allowing shallower idle states to be selected by the
-governor in some cases.
+In svc_i3c_master_handle_ibi(), an IBI slot is fetched from the pool
+to store the IBI payload. However, when an error condition is encountered,
+the function returns without recycling the IBI slot, resulting in an IBI
+slot leak.
 
-However, on the system in question, all of the idle states deeper than
-WFI are rejected by the driver due to a firmware issue [2].  This causes
-the governor to only consider the recent interval duriation data
-corresponding to attempts to enter WFI that are successful and the
-recent invervals table is filled with values lower than the scheduler
-tick period.  Consequently, the governor predicts an idle duration
-below the scheduler tick period length and avoids stopping the tick
-more often which leads to the observed symptom.
-
-Address it by modifying the governor to update the recent intervals
-table also when entering the previously selected idle state fails, so
-it knows that the short idle intervals might have been the minority
-had the selected idle states been actually entered every time.
-
-Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
-Link: https://lore.kernel.org/linux-pm/86o6sv6n94.wl-maz@kernel.org/ [1]
-Link: https://lore.kernel.org/linux-pm/7ffcb716-9a1b-48c2-aaa4-469d0df7c792@arm.com/ [2]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/2793874.mvXUDI8C0e@rafael.j.wysocki
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c85e209b799f ("i3c: master: svc: fix ibi may not return mandatory data byte")
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250829012309.3562585-3-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/governors/menu.c |   21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -158,6 +158,14 @@ static inline int performance_multiplier
- 
- static DEFINE_PER_CPU(struct menu_device, menu_devices);
- 
-+static void menu_update_intervals(struct menu_device *data, unsigned int interval_us)
-+{
-+	/* Update the repeating-pattern data. */
-+	data->intervals[data->interval_ptr++] = interval_us;
-+	if (data->interval_ptr >= INTERVALS)
-+		data->interval_ptr = 0;
-+}
-+
- static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev);
- 
- /*
-@@ -288,6 +296,14 @@ static int menu_select(struct cpuidle_dr
- 	if (data->needs_update) {
- 		menu_update(drv, dev);
- 		data->needs_update = 0;
-+	} else if (!dev->last_residency_ns) {
-+		/*
-+		 * This happens when the driver rejects the previously selected
-+		 * idle state and returns an error, so update the recent
-+		 * intervals table to prevent invalid information from being
-+		 * used going forward.
-+		 */
-+		menu_update_intervals(data, UINT_MAX);
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 62a4d06bcfb5d..27f55b5e388d9 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -308,6 +308,7 @@ static int svc_i3c_master_handle_ibi(struct svc_i3c_master *master,
+ 						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
+ 	if (ret) {
+ 		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
++		i3c_generic_ibi_recycle_slot(data->ibi_pool, slot);
+ 		return ret;
  	}
  
- 	/* determine the expected residency time, round up */
-@@ -542,10 +558,7 @@ static void menu_update(struct cpuidle_d
- 
- 	data->correction_factor[data->bucket] = new_factor;
- 
--	/* update the repeating-pattern data */
--	data->intervals[data->interval_ptr++] = ktime_to_us(measured_ns);
--	if (data->interval_ptr >= INTERVALS)
--		data->interval_ptr = 0;
-+	menu_update_intervals(data, ktime_to_us(measured_ns));
- }
- 
- /**
+-- 
+2.51.0
+
 
 
 
