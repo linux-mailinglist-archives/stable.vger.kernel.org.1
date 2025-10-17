@@ -1,151 +1,207 @@
-Return-Path: <stable+bounces-186322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943D1BE8C69
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:00 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB77BE8CCF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2884A1AA384B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 13:15:24 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7275535C042
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 13:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9774E343210;
-	Fri, 17 Oct 2025 13:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B88350D58;
+	Fri, 17 Oct 2025 13:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpr6CbEa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WO0rcs1L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544092367CF
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 13:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB83934F46B;
+	Fri, 17 Oct 2025 13:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760706896; cv=none; b=WTVTk1new9jvCsh9iY4d+twxhWGo/SO086/WrFxTdn/21AvomnfPXRp687sf7B7TPqtWBxgV9kTvu9wjSdVPuzvA4PMZ4r1t2qhvvORT5ys1GQQKG3K2B5fvVLrgvp8P6NN2dqWEyP2ci3PMYlPoEuRzzp7FQ2oVlavR1LUS/QU=
+	t=1760707283; cv=none; b=l0DiRWROyC2ScmHyeTVAtQ9CvoonrJY9AykH3wAFpWho0KLYluwZbCjfB5m50x6xqg75/iSEJR+h+/ztNLb17RcxMRWo9Zltof8yC1ijvNAxc6vzbHwycGY3DJpKdk9rfTjyCEv4+/+nR5Mhy0zHeMHNQmQYRV4StTIMJmppsPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760706896; c=relaxed/simple;
-	bh=UBbC0wc4pvdUEyUzce8F9owMM0msyl5fzogt69edCfQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atTYsx9ImQlIplkUMnxsUVgb2qjqdmLtDili1tVyLIe6dUDdsmbjapw2cpHeFAVKvWelf6p2pla0kqTzgshOMPjp5oWB3GaDFCysBKT5Ehc2vIJA6kuND/FeOfPRyyZrVNy1St/Q1Hvou8npxy09IOqh7Yu0aP8Yah47Z/cLQMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpr6CbEa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED87CC4CEE7;
-	Fri, 17 Oct 2025 13:14:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760706895;
-	bh=UBbC0wc4pvdUEyUzce8F9owMM0msyl5fzogt69edCfQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gpr6CbEa12WYPt3Qf+HhLvxPkcoI35ZHit46C9BAuChnY9IMeXRA8jvc6xB4WGO3n
-	 ttEkj9OMxY3DULjg2xxAGiNY9e/CgcOfMaP96Tkkk78Sz9H4FP1CRpjQVWszBW/XXX
-	 pkrQLZxHUKr8zDn4NlfS34PJwlQ9Gk9X/uGtT85DcZseTTVvuzmjvg3ahkXVM6N8/D
-	 wT6f9vhriHhEtKbVM+2h8Y/0KMfDiHfDsx0lN215fq1pR8LnhnT5RNO07foSYn0dMa
-	 wUd64vuuy1z9fyZUqYGMxyJW7r52Kc8cGAY/xj1mQAzB8lge0EfPGOhPJ+pBcJr/KM
-	 yWHKMN80AklqA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Gergely Kovacs <Gergely.Kovacs2@arm.com>,
-	Will Deacon <will@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] arm64: mte: Do not flag the zero page as PG_mte_tagged
-Date: Fri, 17 Oct 2025 09:14:53 -0400
-Message-ID: <20251017131453.3942800-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101648-stimulate-stallion-5b49@gregkh>
-References: <2025101648-stimulate-stallion-5b49@gregkh>
+	s=arc-20240116; t=1760707283; c=relaxed/simple;
+	bh=TsK5Tt2ouVurdxip4F9N9xRTQrAAUe+nydbZDh4kkR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jXovPer1XGE9i0oWcEKkKPE9H45oERvcGMttqIX3lysyrlYiLhCgjvj94GlHc9Z9HLMtsocHGpP6+x3pCDjfLMQcfu1CZVYUF/LXetWft0/CdKTRT4Sbl3PM/WYzgNf3YpCSPP8mRcDi1U0sSw3KI4y8BcxTPxbCIwyywRP0Azo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WO0rcs1L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD3EC4CEE7;
+	Fri, 17 Oct 2025 13:21:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760707282;
+	bh=TsK5Tt2ouVurdxip4F9N9xRTQrAAUe+nydbZDh4kkR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WO0rcs1LB08EtrlI4UYOZp3vA2LU4PF6GUqMUMIpmEXqmoXG3Qcm749CWSEMtRx21
+	 yd1cGcnjGwOdTi+mZWhyxu/7KjiFh8ulKGdwL02YJnjsySVFFQu9HMse0CT5qdfDbQ
+	 MZ11xTjtf2Wz3cpg9lhgccKHoyKXK7QAQW5csdhc=
+Date: Fri, 17 Oct 2025 15:21:18 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Farber, Eliav" <farbere@amazon.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"jdike@addtoit.com" <jdike@addtoit.com>,
+	"richard@nod.at" <richard@nod.at>,
+	"anton.ivanov@cambridgegreys.com" <anton.ivanov@cambridgegreys.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"luto@kernel.org" <luto@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"qiuxu.zhuo@intel.com" <qiuxu.zhuo@intel.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"rric@kernel.org" <rric@kernel.org>,
+	"harry.wentland@amd.com" <harry.wentland@amd.com>,
+	"sunpeng.li@amd.com" <sunpeng.li@amd.com>,
+	"alexander.deucher@amd.com" <alexander.deucher@amd.com>,
+	"christian.koenig@amd.com" <christian.koenig@amd.com>,
+	"airlied@linux.ie" <airlied@linux.ie>,
+	"daniel@ffwll.ch" <daniel@ffwll.ch>,
+	"evan.quan@amd.com" <evan.quan@amd.com>,
+	"james.qian.wang@arm.com" <james.qian.wang@arm.com>,
+	"liviu.dudau@arm.com" <liviu.dudau@arm.com>,
+	"mihail.atanassov@arm.com" <mihail.atanassov@arm.com>,
+	"brian.starkey@arm.com" <brian.starkey@arm.com>,
+	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+	"mripard@kernel.org" <mripard@kernel.org>,
+	"tzimmermann@suse.de" <tzimmermann@suse.de>,
+	"robdclark@gmail.com" <robdclark@gmail.com>,
+	"sean@poorly.run" <sean@poorly.run>,
+	"jdelvare@suse.com" <jdelvare@suse.com>,
+	"linux@roeck-us.net" <linux@roeck-us.net>,
+	"fery@cypress.com" <fery@cypress.com>,
+	"dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+	"agk@redhat.com" <agk@redhat.com>,
+	"snitzer@redhat.com" <snitzer@redhat.com>,
+	"dm-devel@redhat.com" <dm-devel@redhat.com>,
+	"rajur@chelsio.com" <rajur@chelsio.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"peppe.cavallaro@st.com" <peppe.cavallaro@st.com>,
+	"alexandre.torgue@st.com" <alexandre.torgue@st.com>,
+	"joabreu@synopsys.com" <joabreu@synopsys.com>,
+	"mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
+	"malattia@linux.it" <malattia@linux.it>,
+	"hdegoede@redhat.com" <hdegoede@redhat.com>,
+	"mgross@linux.intel.com" <mgross@linux.intel.com>,
+	"intel-linux-scu@intel.com" <intel-linux-scu@intel.com>,
+	"artur.paszkiewicz@intel.com" <artur.paszkiewicz@intel.com>,
+	"jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+	"sakari.ailus@linux.intel.com" <sakari.ailus@linux.intel.com>,
+	"clm@fb.com" <clm@fb.com>,
+	"josef@toxicpanda.com" <josef@toxicpanda.com>,
+	"dsterba@suse.com" <dsterba@suse.com>,
+	"xiang@kernel.org" <xiang@kernel.org>,
+	"chao@kernel.org" <chao@kernel.org>,
+	"jack@suse.com" <jack@suse.com>, "tytso@mit.edu" <tytso@mit.edu>,
+	"adilger.kernel@dilger.ca" <adilger.kernel@dilger.ca>,
+	"dushistov@mail.ru" <dushistov@mail.ru>,
+	"luc.vanoostenryck@gmail.com" <luc.vanoostenryck@gmail.com>,
+	"rostedt@goodmis.org" <rostedt@goodmis.org>,
+	"pmladek@suse.com" <pmladek@suse.com>,
+	"sergey.senozhatsky@gmail.com" <sergey.senozhatsky@gmail.com>,
+	"andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
+	"linux@rasmusvillemoes.dk" <linux@rasmusvillemoes.dk>,
+	"minchan@kernel.org" <minchan@kernel.org>,
+	"ngupta@vflare.org" <ngupta@vflare.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"kuznet@ms2.inr.ac.ru" <kuznet@ms2.inr.ac.ru>,
+	"yoshfuji@linux-ipv6.org" <yoshfuji@linux-ipv6.org>,
+	"pablo@netfilter.org" <pablo@netfilter.org>,
+	"kadlec@netfilter.org" <kadlec@netfilter.org>,
+	"fw@strlen.de" <fw@strlen.de>,
+	"jmaloy@redhat.com" <jmaloy@redhat.com>,
+	"ying.xue@windriver.com" <ying.xue@windriver.com>,
+	"willy@infradead.org" <willy@infradead.org>,
+	"sashal@kernel.org" <sashal@kernel.org>,
+	"ruanjinjie@huawei.com" <ruanjinjie@huawei.com>,
+	"David.Laight@aculab.com" <David.Laight@aculab.com>,
+	"herve.codina@bootlin.com" <herve.codina@bootlin.com>,
+	"Jason@zx2c4.com" <Jason@zx2c4.com>,
+	"keescook@chromium.org" <keescook@chromium.org>,
+	"kbusch@kernel.org" <kbusch@kernel.org>,
+	"nathan@kernel.org" <nathan@kernel.org>,
+	"bvanassche@acm.org" <bvanassche@acm.org>,
+	"ndesaulniers@google.com" <ndesaulniers@google.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+	"freedreno@lists.freedesktop.org" <freedreno@lists.freedesktop.org>,
+	"linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
+	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
+	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+	"linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
+	"linux-erofs@lists.ozlabs.org" <linux-erofs@lists.ozlabs.org>,
+	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
+	"linux-sparse@vger.kernel.org" <linux-sparse@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
+	"coreteam@netfilter.org" <coreteam@netfilter.org>,
+	"tipc-discussion@lists.sourceforge.net" <tipc-discussion@lists.sourceforge.net>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Isabella Basso <isabbasso@riseup.net>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Sander Vanheule <sander@svanheule.net>,
+	Vlastimil Babka <vbabka@suse.cz>, Yury Norov <yury.norov@gmail.com>
+Subject: Re: [PATCH v2 01/27 5.10.y] overflow, tracing: Define the
+ is_signed_type() macro once
+Message-ID: <2025101740-scion-flavoring-3a21@gregkh>
+References: <20251017090519.46992-1-farbere@amazon.com>
+ <20251017090519.46992-2-farbere@amazon.com>
+ <2025101708-obtuse-ellipse-e355@gregkh>
+ <CH0PR18MB54337BD648C23CBE40C1060CC6F6A@CH0PR18MB5433.namprd18.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CH0PR18MB54337BD648C23CBE40C1060CC6F6A@CH0PR18MB5433.namprd18.prod.outlook.com>
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+On Fri, Oct 17, 2025 at 12:16:27PM +0000, Farber, Eliav wrote:
+> > On Fri, Oct 17, 2025 at 09:04:53AM +0000, Eliav Farber wrote:
+> > > From: Bart Van Assche <bvanassche@acm.org>
+> > >
+> > > [ Upstream commit 92d23c6e94157739b997cacce151586a0d07bb8a ]
+> >
+> > This isn't in 5.15.y, why is it needed in 5.10.y?
+> 
+> This is the mainline commit:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/linux/overflow.h?h=v6.18-rc1&id=92d23c6e94157739b997cacce151586a0d07bb8a
+> 
+> The commit hash is 92d23c6e94157739b997cacce151586a0d07bb8a, which is
+> the one I used for the backport.
+> 
+> And here is the corresponding commit in the 5.15.y branch:
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/include/linux/overflow.h?h=v5.15.194&id=ed6e37e30826b12572636c6bbfe6319233690c90
+> However, the commit message there references a different hash:
+> a49a64b5bf195381c09202c524f0f84b5f3e816f.
 
-[ Upstream commit f620d66af3165838bfa845dcf9f5f9b4089bf508 ]
+Ugh, that hash is invalid, I missed that :(
 
-Commit 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the
-zero page") attempted to fix ptrace() reading of tags from the zero page
-by marking it as PG_mte_tagged during cpu_enable_mte(). The same commit
-also changed the ptrace() tag access permission check to the VM_MTE vma
-flag while turning the page flag test into a WARN_ON_ONCE().
+Thanks for the info, I'll go work on queueing these up.
 
-Attempting to set the PG_mte_tagged flag early with
-CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled may either hang (after commit
-d77e59a8fccd "arm64: mte: Lock a page for MTE tag initialisation") or
-have the flags cleared later during page_alloc_init_late(). In addition,
-pages_identical() -> memcmp_pages() will reject any comparison with the
-zero page as it is marked as tagged.
-
-Partially revert the above commit to avoid setting PG_mte_tagged on the
-zero page. Update the __access_remote_tags() warning on untagged pages
-to ignore the zero page since it is known to have the tags initialised.
-
-Note that all user mapping of the zero page are marked as pte_special().
-The arm64 set_pte_at() will not call mte_sync_tags() on such pages, so
-PG_mte_tagged will remain cleared.
-
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Fixes: 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the zero page")
-Reported-by: Gergely Kovacs <Gergely.Kovacs2@arm.com>
-Cc: stable@vger.kernel.org # 5.10.x
-Cc: Will Deacon <will@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Acked-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: Will Deacon <will@kernel.org>
-[ replaced is_zero_page() with is_zero_pfn(page_to_pfn()) and folio APIs with page APIs ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm64/kernel/cpufeature.c | 10 ++++++++--
- arch/arm64/kernel/mte.c        |  3 ++-
- 2 files changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 2dc269b865de2..e055ec3a5cfb8 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -1768,12 +1768,18 @@ static void bti_enable(const struct arm64_cpu_capabilities *__unused)
- #ifdef CONFIG_ARM64_MTE
- static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
- {
-+	static bool cleared_zero_page = false;
-+
- 	/*
- 	 * Clear the tags in the zero page. This needs to be done via the
--	 * linear map which has the Tagged attribute.
-+	 * linear map which has the Tagged attribute. Since this page is
-+	 * always mapped as pte_special(), set_pte_at() will not attempt to
-+	 * clear the tags or set PG_mte_tagged.
- 	 */
--	if (!test_and_set_bit(PG_mte_tagged, &ZERO_PAGE(0)->flags))
-+	if (!cleared_zero_page) {
-+		cleared_zero_page = true;
- 		mte_clear_page_tags(lm_alias(empty_zero_page));
-+	}
- }
- #endif /* CONFIG_ARM64_MTE */
- 
-diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
-index 4a069f85bd91b..2a8c011dc9cdf 100644
---- a/arch/arm64/kernel/mte.c
-+++ b/arch/arm64/kernel/mte.c
-@@ -247,7 +247,8 @@ static int __access_remote_tags(struct mm_struct *mm, unsigned long addr,
- 			put_page(page);
- 			break;
- 		}
--		WARN_ON_ONCE(!test_bit(PG_mte_tagged, &page->flags));
-+		WARN_ON_ONCE(!test_bit(PG_mte_tagged, &page->flags) &&
-+			     !is_zero_pfn(page_to_pfn(page)));
- 
- 		/* limit access to the end of the page */
- 		offset = offset_in_page(addr);
--- 
-2.51.0
-
+greg k-h
 
