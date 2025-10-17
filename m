@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-187522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A28BEA5D2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:59:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87850BE9984
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0BC834E8F8E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0319D743CA5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10136330B3C;
-	Fri, 17 Oct 2025 15:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8AD33509A;
+	Fri, 17 Oct 2025 15:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9Vc8oCp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWv8cU6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EDD330B04;
-	Fri, 17 Oct 2025 15:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E6A337112;
+	Fri, 17 Oct 2025 15:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716313; cv=none; b=hQlqC7ZuDAr4Nt1bZoZ4seG8MpM++O9PLyNucbDm3N4TVqA2Cdfd/WmYrv9ehpVjleytqfBh5gxqV92arYZdvINIu67Brx/H0jnkiMYp82DrZ2svUMCUIiNCxiAUky7Jy2a2dxEIVXZ5gARfuySG7mmQsEQA9Z7+jmGULnVovaE=
+	t=1760713429; cv=none; b=bhPNTEz2Zd1qHdml5NwfCXJDbZxehzHYeeDKbAj7nIEX+B6x8GwPi4pKVtpf13XxWmd8HKO8AlhIog0Bm2SR35aDTzFod9xLiG9xmNRdHy5FVa1Aho5VZ0vm10wwcnScwy1BQftGG7PKm7y2N30KZsIv3/vKeKD1ky2rMXaa5JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716313; c=relaxed/simple;
-	bh=WRn28P7wpQKxh70++wg2Q83Hl33Zbo8eQlLGVV6H1zo=;
+	s=arc-20240116; t=1760713429; c=relaxed/simple;
+	bh=0vtEGiGWf2RPW0PRVYilbQBrSFKicYnuPgNrwSIXDaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e23xHRgFL+AjK7xySVnYKVCSrahQXmVJWPjt83JhnpTC4YsLhBx5P+NK87SmOXhpIFaCy62XI1kUhCVJiIs1OQk6R0pfh99rbM4+C7cOahpNfg3JHZZZO+tx8O1vO1cbm9OQX2CdlnpJAeeILdhynSG2W5aS22ygIVVwMOET/hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9Vc8oCp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1826DC4CEE7;
-	Fri, 17 Oct 2025 15:51:52 +0000 (UTC)
+	 MIME-Version; b=X+CfW3leYNRYdsDLwARwnUlK4Rsl0OxVQDk7uxghl7FQ5zcsIuDZqZvi5MepWoueyak+EKf7UaUV7dk29xTLyZhp4r8avJtICzPpwP6Sg3KqKfbSJ++sCF2OdlLJC8uShdSHiC8qKnAdaAY0AR/kT/zGvV1smNrVvR5GlIdy8KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWv8cU6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C37C4CEE7;
+	Fri, 17 Oct 2025 15:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716313;
-	bh=WRn28P7wpQKxh70++wg2Q83Hl33Zbo8eQlLGVV6H1zo=;
+	s=korg; t=1760713428;
+	bh=0vtEGiGWf2RPW0PRVYilbQBrSFKicYnuPgNrwSIXDaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t9Vc8oCpaJrZh9hnbMsxuBeYSDhmFefZY9/TJpgVEMitMOISMgiXctQeYT6qQHvHb
-	 HVakWEyTHJljB9+2a/t4/i8qFHNTurciHRSQGPXfNMJnG6jVRHMlrVBiKoigiX+iso
-	 8LwUEZ/WwS79jX59k/nitI5CrTFCygU0+AEaFaDM=
+	b=oWv8cU6Df/h2SnX3ba/8dOpUaIKJg0oj4pHQtlQNpdTWx1rKkcrH/w0mrDB7K1Eo6
+	 YHyMqhhJ07tqcPb0dmL8oTsxhXLcvEcOmoR5SFvHdcyy4kmVHmn20k1WvBcvbu9s3c
+	 SIhlueuh9s4eQUj7XG2iGiCqyiLwgi2DAyXcpfu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.15 115/276] Input: atmel_mxt_ts - allow reset GPIO to sleep
+	syzbot+0b92850d68d9b12934f5@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 129/168] ext4: verify orphan file size is not too big
 Date: Fri, 17 Oct 2025 16:53:28 +0200
-Message-ID: <20251017145146.676785391@linuxfoundation.org>
+Message-ID: <20251017145133.778223878@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut@mailbox.org>
+From: Jan Kara <jack@suse.cz>
 
-commit c7866ee0a9ddd9789faadf58cdac6abd7aabf045 upstream.
+commit 0a6ce20c156442a4ce2a404747bb0fb05d54eeb3 upstream.
 
-The reset GPIO is not toggled in any critical section where it couldn't
-sleep, allow the reset GPIO to sleep. This allows the driver to operate
-reset GPIOs connected to I2C GPIO expanders.
+In principle orphan file can be arbitrarily large. However orphan replay
+needs to traverse it all and we also pin all its buffers in memory. Thus
+filesystems with absurdly large orphan files can lead to big amounts of
+memory consumed. Limit orphan file size to a sane value and also use
+kvmalloc() for allocating array of block descriptor structures to avoid
+large order allocations for sane but large orphan files.
 
-Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-Link: https://lore.kernel.org/r/20251005023335.166483-1-marek.vasut@mailbox.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reported-by: syzbot+0b92850d68d9b12934f5@syzkaller.appspotmail.com
+Fixes: 02f310fcf47f ("ext4: Speedup ext4 orphan inode handling")
+Cc: stable@kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-ID: <20250909112206.10459-2-jack@suse.cz>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/atmel_mxt_ts.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/orphan.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/input/touchscreen/atmel_mxt_ts.c
-+++ b/drivers/input/touchscreen/atmel_mxt_ts.c
-@@ -3239,7 +3239,7 @@ static int mxt_probe(struct i2c_client *
- 	if (data->reset_gpio) {
- 		/* Wait a while and then de-assert the RESET GPIO line */
- 		msleep(MXT_RESET_GPIO_TIME);
--		gpiod_set_value(data->reset_gpio, 0);
-+		gpiod_set_value_cansleep(data->reset_gpio, 0);
- 		msleep(MXT_RESET_INVALID_CHG);
+--- a/fs/ext4/orphan.c
++++ b/fs/ext4/orphan.c
+@@ -584,9 +584,20 @@ int ext4_init_orphan_info(struct super_b
+ 		ext4_msg(sb, KERN_ERR, "get orphan inode failed");
+ 		return PTR_ERR(inode);
  	}
- 
++	/*
++	 * This is just an artificial limit to prevent corrupted fs from
++	 * consuming absurd amounts of memory when pinning blocks of orphan
++	 * file in memory.
++	 */
++	if (inode->i_size > 8 << 20) {
++		ext4_msg(sb, KERN_ERR, "orphan file too big: %llu",
++			 (unsigned long long)inode->i_size);
++		ret = -EFSCORRUPTED;
++		goto out_put;
++	}
+ 	oi->of_blocks = inode->i_size >> sb->s_blocksize_bits;
+ 	oi->of_csum_seed = EXT4_I(inode)->i_csum_seed;
+-	oi->of_binfo = kmalloc_array(oi->of_blocks,
++	oi->of_binfo = kvmalloc_array(oi->of_blocks,
+ 				     sizeof(struct ext4_orphan_block),
+ 				     GFP_KERNEL);
+ 	if (!oi->of_binfo) {
 
 
 
