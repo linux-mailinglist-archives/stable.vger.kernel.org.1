@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5364ABEA4CB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:42 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF04BE9BEE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6DC218863AE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4E59650952D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC812F12C2;
-	Fri, 17 Oct 2025 15:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4435332C929;
+	Fri, 17 Oct 2025 15:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8rHVrwH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIlD8uR1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506DE257437;
-	Fri, 17 Oct 2025 15:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009F83370FB;
+	Fri, 17 Oct 2025 15:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716247; cv=none; b=rwkSeCxa1QH2dxyq0V1M94eUwdEGikfHDJj+/NibWmdhVAqWLjGTaM6hCTsX1e6qtc6xgamFQWsKOVhq5CqwQiQn9vFDby+2zbU/i3P8K6yBUi+oNNzfh/Td6ndDqeoH+o+AT8cdvey7NY9zFlGWJGVZZSWrLRedMEVu/7N5AMQ=
+	t=1760713989; cv=none; b=Y3tmpq0USaESO+0Buh6j8sgJdaovlDB0DH2xy9vh+8PjziMGTzhZVGJlzKoP60vznlabNbM7nP7Wfxqzwv9oiOuLp/1vGT3ggcKc72KqIUo9ZKhfsQLO5gtH6ecHblwA1w9C1U3wsoeAjOiFNQopyvJz1ikXohMjxX1qA3bvEkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716247; c=relaxed/simple;
-	bh=I1TaytGV5QJX2+8NcXEtp+PJw9OzDX8kslkSDxO5UBk=;
+	s=arc-20240116; t=1760713989; c=relaxed/simple;
+	bh=gzjY3xcN7URYxPrGSWSr3N3FPMbNdqQcRZ0JnsCkX/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFWMeKOWZgAMAPH1lY6fKaYexRTWq/JmNTqFGAkLVhQSTYzzHzfb8LVWLXUxzRRNRXRjETiwEeumihFnZiOTfPWzgN7dAcyO8XVqKvgrcS0l99ESJJ83dqp9ZOTJ7wYabWw1prc8auXsz52lRIoDRWQ9P6I8RM0tAQMnYLOW690=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8rHVrwH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFA5C4CEE7;
-	Fri, 17 Oct 2025 15:50:46 +0000 (UTC)
+	 MIME-Version; b=PV7a15wA2tAWsCxIXzje+Y0d2+EijhPCt6Cr956kuv9JGCeGLCJL2WQvFNOP71sCFQ+S3kFymURcK5z7B04loyaaeIocoFwp4nT3g6tt75u1FMkr2u8jlEPvM/Hjs9erhG2zCJVoXeWd+/lO1iyeUqeCH1uc3Tnd7I0V4MegH3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIlD8uR1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B31C4CEE7;
+	Fri, 17 Oct 2025 15:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716247;
-	bh=I1TaytGV5QJX2+8NcXEtp+PJw9OzDX8kslkSDxO5UBk=;
+	s=korg; t=1760713988;
+	bh=gzjY3xcN7URYxPrGSWSr3N3FPMbNdqQcRZ0JnsCkX/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8rHVrwHYZRx/OTqmgxL1KiHtMQ+lbWmjGjUqZRuLBFC0+XPeyrsdTSVqFrQtN5IE
-	 O8ahYA1brI9jo5qDlfo7LrljtdUkTdJCqMf1ah01uwaccXLhBtcAAvLO3o19BIaLR3
-	 TSmd/KyIZm3DmebmTbb+/s6mJip4nW7jevv5QbWI=
+	b=UIlD8uR1XNSC19Z+kQcFekoUxSZsPq+dj7ISzfAVamCSrJipUYXmfSZeUCn2u8DJc
+	 DEwucKKD/+Ng0UCRjD9It1a2IiNAClCOfOGA8YiFG4H8g5ZzfJhkBeOp19QBMoUwFL
+	 ZWeXMBfWvzDNWRLQFaVyYN0yNYfQ0nNjudE59oWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Brian Masney <bmasney@redhat.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 125/276] clk: at91: peripheral: fix return value
+Subject: [PATCH 6.6 157/201] Squashfs: add additional inode sanity checking
 Date: Fri, 17 Oct 2025 16:53:38 +0200
-Message-ID: <20251017145147.044245739@linuxfoundation.org>
+Message-ID: <20251017145140.497440368@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit 47b13635dabc14f1c2fdcaa5468b47ddadbdd1b5 ]
+[ Upstream commit 9ee94bfbe930a1b39df53fa2d7b31141b780eb5a ]
 
-determine_rate() is expected to return an error code, or 0 on success.
-clk_sam9x5_peripheral_determine_rate() has a branch that returns the
-parent rate on a certain case. This is the behavior of round_rate(),
-so let's go ahead and fix this by setting req->rate.
+Patch series "Squashfs: performance improvement and a sanity check".
 
-Fixes: b4c115c76184f ("clk: at91: clk-peripheral: add support for changeable parent rate")
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+This patchset adds an additional sanity check when reading regular file
+inodes, and adds support for SEEK_DATA/SEEK_HOLE lseek() whence values.
+
+This patch (of 2):
+
+Add an additional sanity check when reading regular file inodes.
+
+A regular file if the file size is an exact multiple of the filesystem
+block size cannot have a fragment.  This is because by definition a
+fragment block stores tailends which are not a whole block in size.
+
+Link: https://lkml.kernel.org/r/20250923220652.568416-1-phillip@squashfs.org.uk
+Link: https://lkml.kernel.org/r/20250923220652.568416-2-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 9f1c14c1de1b ("Squashfs: reject negative file sizes in squashfs_read_inode()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/at91/clk-peripheral.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/squashfs/inode.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/at91/clk-peripheral.c b/drivers/clk/at91/clk-peripheral.c
-index 7a27ba8e05779..7605ab23dc8ed 100644
---- a/drivers/clk/at91/clk-peripheral.c
-+++ b/drivers/clk/at91/clk-peripheral.c
-@@ -268,8 +268,11 @@ static int clk_sam9x5_peripheral_determine_rate(struct clk_hw *hw,
- 	long best_diff = LONG_MIN;
- 	u32 shift;
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -140,8 +140,17 @@ int squashfs_read_inode(struct inode *in
+ 		if (err < 0)
+ 			goto failed_read;
  
--	if (periph->id < PERIPHERAL_ID_MIN || !periph->range.max)
--		return parent_rate;
-+	if (periph->id < PERIPHERAL_ID_MIN || !periph->range.max) {
-+		req->rate = parent_rate;
-+
-+		return 0;
-+	}
++		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
++			/*
++			 * the file cannot have a fragment (tailend) and have a
++			 * file size a multiple of the block size
++			 */
++			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
++				err = -EINVAL;
++				goto failed_read;
++			}
+ 			frag_offset = le32_to_cpu(sqsh_ino->offset);
+ 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
+ 			if (frag_size < 0) {
+@@ -155,7 +164,6 @@ int squashfs_read_inode(struct inode *in
+ 		}
  
- 	/* Fist step: check the available dividers. */
- 	for (shift = 0; shift <= PERIPHERAL_MAX_SHIFT; shift++) {
--- 
-2.51.0
-
+ 		set_nlink(inode, 1);
+-		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		inode->i_fop = &generic_ro_fops;
+ 		inode->i_mode |= S_IFREG;
+ 		inode->i_blocks = ((inode->i_size - 1) >> 9) + 1;
+@@ -184,8 +192,17 @@ int squashfs_read_inode(struct inode *in
+ 		if (err < 0)
+ 			goto failed_read;
+ 
++		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
++			/*
++			 * the file cannot have a fragment (tailend) and have a
++			 * file size a multiple of the block size
++			 */
++			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
++				err = -EINVAL;
++				goto failed_read;
++			}
+ 			frag_offset = le32_to_cpu(sqsh_ino->offset);
+ 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
+ 			if (frag_size < 0) {
+@@ -200,7 +217,6 @@ int squashfs_read_inode(struct inode *in
+ 
+ 		xattr_id = le32_to_cpu(sqsh_ino->xattr);
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+-		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
+ 		inode->i_op = &squashfs_inode_ops;
+ 		inode->i_fop = &generic_ro_fops;
+ 		inode->i_mode |= S_IFREG;
 
 
 
