@@ -1,133 +1,160 @@
-Return-Path: <stable+bounces-186242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA988BE6AB5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 08:28:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72EABE6BAE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 08:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9267B354623
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 06:28:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D120C621118
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 06:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEC830CD9F;
-	Fri, 17 Oct 2025 06:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389A93090C7;
+	Fri, 17 Oct 2025 06:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="a5o1/U7m"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EV5sMN6i"
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192CB30F529;
-	Fri, 17 Oct 2025 06:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1F01922FB
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 06:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760682524; cv=none; b=TX+hkRF826XI/jH+C7amjbCFGfnHDfJ5mB1a1ncIAb8W8HIbGdf8zwr8cd8Tm6XCXTc98jD+g2cFD3TABdWNNEQD2WlFg8cNujS75YT1BYap/MwYu2zwM2A+I+Hp1+NwaQZf/Y0EYbOZkCgcNLQmTip7Ups7QyV2sTIWgMjvi1s=
+	t=1760682769; cv=none; b=aX3f4NPRzGj2zojy/kWgsVFVknKU8sez0HBAVhh+MbIc0GNHxpsR8JjYDxehmft4oJKRI9YH3lBilH3EpVnhnhkOyYTQyCFgCyWobwrBkw172CzcAqX4Gsu5gVSAKJOUzJJMuAalZ/z5VQHy/PhZQZhfDuPAsZL6vIjKG1h031Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760682524; c=relaxed/simple;
-	bh=5q8sjs9dcsbZK0iWASKvemxXFRLIMsHSBbtjDlZFGDI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UC4KVtZNc7Y4HFLpp95ecpaenUWtLvf68Q+4t8/dSMvaC2GJ0bxXiskfvN7dU7P9j4/akXBpZr3AeBBcK33+8QAaOtz0jDO8NGaN2Y/2N/f96egKhFiPbEV55k2MCe3hwA8fR1Y4GmKgaFz6BqPN0ko0kG9KWk3QzIMWfYKwghM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=a5o1/U7m; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=EariMdmxqMUoT2CmPJ9Fw37Rbcsk5MNlNnkFbFt8+Hg=;
-	b=a5o1/U7mqaMy8Ypr05HmPHeSWzMjrzj3E2/1qGDmHHeGo34F0oGY2cyJaq/FkBDnZKL4O8eHN
-	/Nfbwn1hoAXly9Eq7c99PYANeDqWRvJiE+1Z7xfdblSY3PDuPEpEuUKn7amT97ravHb2Do/Xvn+
-	W7IX+5wpIU5Bf2xU+wsS8LI=
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4cnvyH0FQYz1T4G8;
-	Fri, 17 Oct 2025 14:27:51 +0800 (CST)
-Received: from kwepemk200016.china.huawei.com (unknown [7.202.194.82])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1F94D180464;
-	Fri, 17 Oct 2025 14:28:38 +0800 (CST)
-Received: from huawei.com (10.67.174.78) by kwepemk200016.china.huawei.com
- (7.202.194.82) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 17 Oct
- 2025 14:28:37 +0800
-From: Yi Yang <yiyang13@huawei.com>
-To: Alexey Dobriyan <adobriyan@sw.ru>, Andrew Morton
-	<akpm@linux-foundation.org>
-CC: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-	<lujialin4@huawei.com>
-Subject: [PATCH stable] notifiers: Add oops check in blocking_notifier_call_chain()
-Date: Fri, 17 Oct 2025 06:17:40 +0000
-Message-ID: <20251017061740.59843-1-yiyang13@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1760682769; c=relaxed/simple;
+	bh=kxWb2v3kc92Dzy3+joMpABr5I3NLk5PWsLbNzW+zSXk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lFGjkOsaMt4jAXcqx5rwsB10RB6ug46/YgC67Fh2tOC7OqUVHC6uA4z503ocgpxI9xX+qWMbcVzConjZwjKkeQzAloNU0T2tJvS8fi/TURoyysXSQtmbOGkFRyPQhEHvTI5gp9i3SjNlb2bQ8jnPSRh/34CyyMEffwkjfGSHzBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EV5sMN6i; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 5B8FBC041DB;
+	Fri, 17 Oct 2025 06:32:24 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 91211606DB;
+	Fri, 17 Oct 2025 06:32:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DE510102F22FF;
+	Fri, 17 Oct 2025 08:32:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760682762; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Yfh8KNtPJgL5dEOBYcZ+FOqECZ1ufTn2Q+8/o1+dnNU=;
+	b=EV5sMN6iU4XCN0aL+jp41FSTSRIKiBGUfkWtao0P+0srDp3W2VmOkkY4uZN4NahTNNaQJk
+	YPqJb+trP2jIT68qeWbJwojXn99WyoqqidKisnc6Q0rlgWQky2eQ3iKEVMBmUr+QgS8iUg
+	O4PNT7CIipL4qQZ5dv7e9bbZcIuriy+R1hVGPD+coPCMWYW3PhbZ+N6WolmwEw2pRibZMn
+	Y/9xhUQKVSaRqZukJX9wztATTWLwsSQy2G2STtBV6Xabvuv3sb4bTFWbl2rpvp8Zoc4mmf
+	piHedWYoNwcasNLj/217UwGApttb6xmMck4DyAnIuMwG9pxiab19Z5v9lca/Lw==
+Date: Fri, 17 Oct 2025 08:32:32 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Cc: David Rhodes	 <david.rhodes@cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+ <broonie@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski	
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jaroslav Kysela	
+ <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Nikita Shubin	
+ <nikita.shubin@maquefel.me>, Axel Lin <axel.lin@ingics.com>, Brian Austin	
+ <brian.austin@cirrus.com>, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Thomas Petazzoni 
+ <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] ASoC: cs4271: Fix cs4271 I2C and SPI drivers
+ automatic module loading
+Message-ID: <20251017083232.31e53478@bootlin.com>
+In-Reply-To: <60fbaaef249e6f5af602fe4087eab31cd70905de.camel@gmail.com>
+References: <20251016130340.1442090-1-herve.codina@bootlin.com>
+	<20251016130340.1442090-2-herve.codina@bootlin.com>
+	<60fbaaef249e6f5af602fe4087eab31cd70905de.camel@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemk200016.china.huawei.com (7.202.194.82)
+X-Last-TLS-Session-Version: TLSv1.3
 
-In hrtimer_interrupt(), interrupts are disabled when acquiring a spinlock,
-which subsequently triggers an oops. During the oops call chain,
-blocking_notifier_call_chain() invokes _cond_resched, ultimately leading
-to a hard lockup.
+Hi Alexander,
 
-Call Stack:
-hrtimer_interrupt//raw_spin_lock_irqsave
-__hrtimer_run_queues
-page_fault
-do_page_fault
-bad_area_nosemaphore
-no_context
-oops_end
-bust_spinlocks
-unblank_screen
-do_unblank_screen
-fbcon_blank
-fb_notifier_call_chain
-blocking_notifier_call_chain
-down_read
-_cond_resched
+On Thu, 16 Oct 2025 20:40:34 +0200
+Alexander Sverdlin <alexander.sverdlin@gmail.com> wrote:
 
-If the system is in an oops state, use down_read_trylock instead of a
-blocking lock acquisition. If the trylock fails, skip executing the
-notifier callbacks to avoid potential deadlocks or unsafe operations
-during the oops handling process.
+...
 
-Cc: stable@vger.kernel.org      # 6.6
-Fixes: fe9d4f576324 ("Add kernel/notifier.c")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
----
- kernel/notifier.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+> > In order to have the I2C or the SPI module loaded automatically, move
+> > the MODULE_DEVICE_TABLE(of, ...) the core to I2C and SPI parts.
+> > Also move cs4271_dt_ids itself from the core part to I2C and SPI parts
+> > as both the call to MODULE_DEVICE_TABLE(of, ...) and the cs4271_dt_ids
+> > table itself need to be in the same file.  
+> 
+> I'm a bit confused by this change.
+> What do you have in SYSFS "uevent" entry for the real device?
 
-diff --git a/kernel/notifier.c b/kernel/notifier.c
-index b3ce28f39eb6..ebff2315fac2 100644
---- a/kernel/notifier.c
-+++ b/kernel/notifier.c
-@@ -384,9 +384,18 @@ int blocking_notifier_call_chain(struct blocking_notifier_head *nh,
- 	 * is, we re-check the list after having taken the lock anyway:
- 	 */
- 	if (rcu_access_pointer(nh->head)) {
--		down_read(&nh->rwsem);
--		ret = notifier_call_chain(&nh->head, val, v, -1, NULL);
--		up_read(&nh->rwsem);
-+		if (!oops_in_progress) {
-+			down_read(&nh->rwsem);
-+			ret = notifier_call_chain(&nh->head, val, v, -1, NULL);
-+			up_read(&nh->rwsem);
-+		} else {
-+			if (down_read_trylock(&nh->rwsem)) {
-+				ret = notifier_call_chain(&nh->head, val, v, -1, NULL);
-+				up_read(&nh->rwsem);
-+			} else {
-+				ret = NOTIFY_BAD;
-+			}
-+		}
- 	}
- 	return ret;
- }
--- 
-2.25.1
+Here is my uevent content:
+--- 8<---
+# cat /sys/bus/i2c/devices/3-0010/uevent 
+DRIVER=cs4271
+OF_NAME=cs4271
+OF_FULLNAME=/i2c@ff130000/cs4271@10
+OF_COMPATIBLE_0=cirrus,cs4271
+OF_COMPATIBLE_N=1
+MODALIAS=of:Ncs4271T(null)Ccirrus,cs4271
+# 
+--- 8< ---
 
+> 
+> If you consider spi_uevent() and i2c_device_uevent(), "MODALIAS=" in the
+> "uevent" should be prefixed with either "spi:" or "i2c:".
+> And this isn't what you adress in your patch.
+> 
+> You provide [identical] "of:" prefixed modalias to two different modules
+> (not sure, how this should work), but cs4271 is not an MMIO device,
+> so it should not generate an "of:" prefixed uevent.
+> 
+> Could you please show the relevant DT snippet for the affected HW?
+
+And this is the related DT part:
+--- 8< ---
+&i2c3 {
+	status = "okay";
+
+	cs4271@10 {
+		compatible = "cirrus,cs4271";
+		reg = <0x10>;
+		clocks = <&cru SCLK_I2S_8CH_OUT>;
+		clock-names = "mclk";
+
+		...
+	};
+};
+--- 8< ---
+
+i2c3 is the following node:
+https://elixir.bootlin.com/linux/v6.17.1/source/arch/arm64/boot/dts/rockchip/rk3399-base.dtsi#L732
+
+About the related module, I have the following:
+--- 8< ---
+# modinfo snd_soc_cs4271_i2c
+filename:       /lib/modules/6.18.0-rc1xxxx-00050-g4fa36970abe5-dirty/kernel/sound/soc/codecs/snd-soc-cs4271-i2c.ko
+license:        GPL
+author:         Alexander Sverdlin <subaparts@yandex.ru>
+description:    ASoC CS4271 I2C Driver
+alias:          i2c:cs4271
+alias:          of:N*T*Ccirrus,cs4271C*
+alias:          of:N*T*Ccirrus,cs4271
+depends:        snd-soc-cs4271
+intree:         Y
+name:           snd_soc_cs4271_i2c
+vermagic:       6.18.0-rc1xxxx-00050-g4fa36970abe5-dirty SMP preempt mod_unload aarch64
+# 
+--- 8< ---
+
+Best regards,
+Hervé
 
