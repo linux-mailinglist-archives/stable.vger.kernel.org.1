@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-187058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF7DBEA194
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7983FBE9B1D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E0995585856
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319641887910
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7132F12BA;
-	Fri, 17 Oct 2025 15:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41180336EC9;
+	Fri, 17 Oct 2025 15:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLHvaBkv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abArV4Ky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3B422A7E4;
-	Fri, 17 Oct 2025 15:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F803370F7;
+	Fri, 17 Oct 2025 15:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715001; cv=none; b=D4v8XQm1HKOu1uXYH0MVaRwBFOedW3OkwCn1ZmlBZoPkI26AywVlVauYu56yTxwq+XH4hVE8kkzzix1cu84m2Jqxv4+NQ3InJ7p4VeQcscb5EjiqepaOxc3Gc2igjG61Tmv/DCnT+LPECfdPryfF3s4j2Ng3kW2qFkltSTvdE0Q=
+	t=1760714208; cv=none; b=QR5PjoI+MNzeghxjaBsH7FTUvCBsYmkp/KoNUepilR21lOb7XyjPaNdfvIUPklKEJZkhe09UKQXRszi6GIX+SW+TWNvc+gJYW6Zf7pEDSZljOrQonSdCRqf7NRI7tePzFZsjLv2ySxqfL87gXY/zOImybPSA+8VOKsE0L4zoWgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715001; c=relaxed/simple;
-	bh=Yy14t1/ZEAYQB0vU7g/w/tmmJk4B+wonItZ9DiY5xjA=;
+	s=arc-20240116; t=1760714208; c=relaxed/simple;
+	bh=R6NCgdkiEt5TcDbGKA96MtJ2gi0ornyGddmGwE5DMvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=egpZ1rd3j9p9duR9BCWfYMueBaQhUy0FdZPfuZi1O2VV2w0tPk3NH+nvVHqKpIScD0P+7pgBS56m5J4isaShsjUpozSPCX5uSDPLGtaj7UP7Zp+bN5MeAE71YSJ+tA0VCIlGVnJcGqWginfKR2wcZYp3QcGXhkNkxrnNv+tMkvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLHvaBkv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44888C4CEE7;
-	Fri, 17 Oct 2025 15:30:01 +0000 (UTC)
+	 MIME-Version; b=FiLT1s2coumqCyQTST+0q7jnLrDCUnWTxzm4xG2z8vd4IZjg12xFbe3YKLQim51zQQ8N3GhOEDB85AISBJsVZwY6Eqi39w978O/F1H8ApBUG5JWYfb4tqM7/6CMHsaTc1tT/x6WFUTT3culSH8yYIUaWxfT2aiNDX292qMwYKdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abArV4Ky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A1EC4CEF9;
+	Fri, 17 Oct 2025 15:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715001;
-	bh=Yy14t1/ZEAYQB0vU7g/w/tmmJk4B+wonItZ9DiY5xjA=;
+	s=korg; t=1760714207;
+	bh=R6NCgdkiEt5TcDbGKA96MtJ2gi0ornyGddmGwE5DMvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLHvaBkvUA0eOSBMVrNdB9SmCF8sbZ92WtXvsD26fEmfWEmv36RfPwtqdnkxbxm/0
-	 lTQkw2MFltp2CeVvITknSfyzIxSvaN4jSJIwGoE2U+mkOtL034ZsdjrMD/a45aWoII
-	 nbXkuUUgZKnnAnnLDcc0l21J0xK8yrkLnBAaS2Os=
+	b=abArV4KyCyJnXmzu4r4VRzcLdsqxfu+RjgZz6tX+P0rU8OxkFHa4qQKvxwuxqM5R7
+	 t1//fujYhMiPwpdup3GgTKYfneEdhv5WrusJkR01rXyZaQ49CS74h6zMfa3R/6nkNy
+	 PPLFiUvmuokPaU0ka0MyxpPtzvcUkPeA2Y//B0Wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	James Clark <james.clark@arm.com>,
+	Atish Patra <atishp@atishpatra.org>,
+	Mingwei Zhang <mizhang@google.com>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 064/371] PM: core: Annotate loops walking device links as _srcu
+Subject: [PATCH 6.12 032/277] perf tools: Add fallback for exclude_guest
 Date: Fri, 17 Oct 2025 16:50:39 +0200
-Message-ID: <20251017145204.116186411@linuxfoundation.org>
+Message-ID: <20251017145148.321034957@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +71,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit fdd9ae23bb989fa9ed1beebba7d3e0c82c7c81ae ]
+[ Upstream commit bb6e7cb11d97ce1957894d30d13bfad3e8bfefe9 ]
 
-Since SRCU is used for the protection of device link lists, the loops
-over device link lists in multiple places in drivers/base/power/main.c
-and in pm_runtime_get_suppliers() should be annotated as _srcu rather
-than as _rcu which is the case currently.
+Commit 7b100989b4f6bce70 ("perf evlist: Remove __evlist__add_default")
+changed to parse "cycles:P" event instead of creating a new cycles
+event for perf record.  But it also changed the way how modifiers are
+handled so it doesn't set the exclude_guest bit by default.
 
-Change the annotations accordingly.
+It seems Apple M1 PMU requires exclude_guest set and returns EOPNOTSUPP
+if not.  Let's add a fallback so that it can work with default events.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2393512.ElGaqSPkdT@rafael.j.wysocki
-Stable-dep-of: 632d31067be2 ("PM: sleep: Do not wait on SYNC_STATE_ONLY device links")
+Also update perf stat hybrid tests to handle possible u or H modifiers.
+
+Reviewed-by: Ian Rogers <irogers@google.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Acked-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Atish Patra <atishp@atishpatra.org>
+Cc: Mingwei Zhang <mizhang@google.com>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lore.kernel.org/r/20241016062359.264929-2-namhyung@kernel.org
+Fixes: 7b100989b4f6bce70 ("perf evlist: Remove __evlist__add_default")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Stable-dep-of: 24937ee839e4 ("perf evsel: Ensure the fallback message is always written to")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c    | 18 +++++++++---------
- drivers/base/power/runtime.c |  4 ++--
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ tools/perf/builtin-stat.c      | 18 +++++++++++++++---
+ tools/perf/tests/shell/stat.sh |  2 +-
+ tools/perf/util/evsel.c        | 21 +++++++++++++++++++++
+ 3 files changed, 37 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index c883b01ffbddc..b6ab41265d7a3 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -40,8 +40,8 @@
- 
- typedef int (*pm_callback_t)(struct device *);
- 
--#define list_for_each_entry_rcu_locked(pos, head, member) \
--	list_for_each_entry_rcu(pos, head, member, \
-+#define list_for_each_entry_srcu_locked(pos, head, member) \
-+	list_for_each_entry_srcu(pos, head, member, \
- 			device_links_read_lock_held())
- 
- /*
-@@ -281,7 +281,7 @@ static void dpm_wait_for_suppliers(struct device *dev, bool async)
- 	 * callbacks freeing the link objects for the links in the list we're
- 	 * walking.
+diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
+index 628c61397d2d3..b578930ed76a4 100644
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -639,8 +639,7 @@ static enum counter_recovery stat_handle_error(struct evsel *counter)
+ 	 * (behavior changed with commit b0a873e).
  	 */
--	list_for_each_entry_rcu_locked(link, &dev->links.suppliers, c_node)
-+	list_for_each_entry_srcu_locked(link, &dev->links.suppliers, c_node)
- 		if (READ_ONCE(link->status) != DL_STATE_DORMANT)
- 			dpm_wait(link->supplier, async);
+ 	if (errno == EINVAL || errno == ENOSYS ||
+-	    errno == ENOENT || errno == EOPNOTSUPP ||
+-	    errno == ENXIO) {
++	    errno == ENOENT || errno == ENXIO) {
+ 		if (verbose > 0)
+ 			ui__warning("%s event is not supported by the kernel.\n",
+ 				    evsel__name(counter));
+@@ -658,7 +657,7 @@ static enum counter_recovery stat_handle_error(struct evsel *counter)
+ 		if (verbose > 0)
+ 			ui__warning("%s\n", msg);
+ 		return COUNTER_RETRY;
+-	} else if (target__has_per_thread(&target) &&
++	} else if (target__has_per_thread(&target) && errno != EOPNOTSUPP &&
+ 		   evsel_list->core.threads &&
+ 		   evsel_list->core.threads->err_thread != -1) {
+ 		/*
+@@ -679,6 +678,19 @@ static enum counter_recovery stat_handle_error(struct evsel *counter)
+ 		return COUNTER_SKIP;
+ 	}
  
-@@ -338,7 +338,7 @@ static void dpm_wait_for_consumers(struct device *dev, bool async)
- 	 * continue instead of trying to continue in parallel with its
- 	 * unregistration).
- 	 */
--	list_for_each_entry_rcu_locked(link, &dev->links.consumers, s_node)
-+	list_for_each_entry_srcu_locked(link, &dev->links.consumers, s_node)
- 		if (READ_ONCE(link->status) != DL_STATE_DORMANT)
- 			dpm_wait(link->consumer, async);
++	if (errno == EOPNOTSUPP) {
++		if (verbose > 0) {
++			ui__warning("%s event is not supported by the kernel.\n",
++				    evsel__name(counter));
++		}
++		counter->supported = false;
++		counter->errored = true;
++
++		if ((evsel__leader(counter) != counter) ||
++		    !(counter->core.leader->nr_members > 1))
++			return COUNTER_SKIP;
++	}
++
+ 	evsel__open_strerror(counter, &target, errno, msg, sizeof(msg));
+ 	ui__error("%s\n", msg);
  
-@@ -675,7 +675,7 @@ static void dpm_async_resume_subordinate(struct device *dev, async_func_t func)
- 	idx = device_links_read_lock();
+diff --git a/tools/perf/tests/shell/stat.sh b/tools/perf/tests/shell/stat.sh
+index c6df7eec96b98..c4bef71568970 100755
+--- a/tools/perf/tests/shell/stat.sh
++++ b/tools/perf/tests/shell/stat.sh
+@@ -159,7 +159,7 @@ test_hybrid() {
+   fi
  
- 	/* Start processing the device's "async" consumers. */
--	list_for_each_entry_rcu_locked(link, &dev->links.consumers, s_node)
-+	list_for_each_entry_srcu_locked(link, &dev->links.consumers, s_node)
- 		if (READ_ONCE(link->status) != DL_STATE_DORMANT)
- 			dpm_async_with_cleanup(link->consumer, func);
+   # Run default Perf stat
+-  cycles_events=$(perf stat -- true 2>&1 | grep -E "/cycles/|  cycles  " | wc -l)
++  cycles_events=$(perf stat -- true 2>&1 | grep -E "/cycles/[uH]*|  cycles[:uH]*  " -c)
  
-@@ -1342,7 +1342,7 @@ static void dpm_async_suspend_superior(struct device *dev, async_func_t func)
- 	idx = device_links_read_lock();
+   if [ "$pmus" -ne "$cycles_events" ]
+   then
+diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
+index b3de8ce559998..70c4e06da7a03 100644
+--- a/tools/perf/util/evsel.c
++++ b/tools/perf/util/evsel.c
+@@ -3255,6 +3255,27 @@ bool evsel__fallback(struct evsel *evsel, struct target *target, int err,
+ 		evsel->core.attr.exclude_kernel = 1;
+ 		evsel->core.attr.exclude_hv     = 1;
  
- 	/* Start processing the device's "async" suppliers. */
--	list_for_each_entry_rcu_locked(link, &dev->links.suppliers, c_node)
-+	list_for_each_entry_srcu_locked(link, &dev->links.suppliers, c_node)
- 		if (READ_ONCE(link->status) != DL_STATE_DORMANT)
- 			dpm_async_with_cleanup(link->supplier, func);
++		return true;
++	} else if (err == EOPNOTSUPP && !evsel->core.attr.exclude_guest &&
++		   !evsel->exclude_GH) {
++		const char *name = evsel__name(evsel);
++		char *new_name;
++		const char *sep = ":";
++
++		/* Is there already the separator in the name. */
++		if (strchr(name, '/') ||
++		    (strchr(name, ':') && !evsel->is_libpfm_event))
++			sep = "";
++
++		if (asprintf(&new_name, "%s%sH", name, sep) < 0)
++			return false;
++
++		free(evsel->name);
++		evsel->name = new_name;
++		/* Apple M1 requires exclude_guest */
++		scnprintf(msg, msgsize, "trying to fall back to excluding guest samples");
++		evsel->core.attr.exclude_guest = 1;
++
+ 		return true;
+ 	}
  
-@@ -1396,7 +1396,7 @@ static void dpm_superior_set_must_resume(struct device *dev)
- 
- 	idx = device_links_read_lock();
- 
--	list_for_each_entry_rcu_locked(link, &dev->links.suppliers, c_node)
-+	list_for_each_entry_srcu_locked(link, &dev->links.suppliers, c_node)
- 		link->supplier->power.must_resume = true;
- 
- 	device_links_read_unlock(idx);
-@@ -1825,7 +1825,7 @@ static void dpm_clear_superiors_direct_complete(struct device *dev)
- 
- 	idx = device_links_read_lock();
- 
--	list_for_each_entry_rcu_locked(link, &dev->links.suppliers, c_node) {
-+	list_for_each_entry_srcu_locked(link, &dev->links.suppliers, c_node) {
- 		spin_lock_irq(&link->supplier->power.lock);
- 		link->supplier->power.direct_complete = false;
- 		spin_unlock_irq(&link->supplier->power.lock);
-@@ -2077,7 +2077,7 @@ static bool device_prepare_smart_suspend(struct device *dev)
- 
- 	idx = device_links_read_lock();
- 
--	list_for_each_entry_rcu_locked(link, &dev->links.suppliers, c_node) {
-+	list_for_each_entry_srcu_locked(link, &dev->links.suppliers, c_node) {
- 		if (!device_link_test(link, DL_FLAG_PM_RUNTIME))
- 			continue;
- 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 3e84dc4122def..8c23a11e80176 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1903,8 +1903,8 @@ void pm_runtime_get_suppliers(struct device *dev)
- 
- 	idx = device_links_read_lock();
- 
--	list_for_each_entry_rcu(link, &dev->links.suppliers, c_node,
--				device_links_read_lock_held())
-+	list_for_each_entry_srcu(link, &dev->links.suppliers, c_node,
-+				 device_links_read_lock_held())
- 		if (device_link_test(link, DL_FLAG_PM_RUNTIME)) {
- 			link->supplier_preactivated = true;
- 			pm_runtime_get_sync(link->supplier);
 -- 
 2.51.0
 
