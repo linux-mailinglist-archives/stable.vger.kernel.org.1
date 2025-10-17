@@ -1,53 +1,63 @@
-Return-Path: <stable+bounces-187051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0BB3BEA84F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0D8BEA876
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA7667C4FC4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:29:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 555B274696D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1E1219A7A;
-	Fri, 17 Oct 2025 15:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BE127FB03;
+	Fri, 17 Oct 2025 15:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qp3t2McX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZtln1Fk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A43428935A;
-	Fri, 17 Oct 2025 15:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6B0219A7A;
+	Fri, 17 Oct 2025 15:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714982; cv=none; b=H8b6FxfvInob6ynixqWSa2NcjBCZpCbNbQX1XLc9PIxNN22GO+3japPiNKwB7AthZWKdA4MRFUqA9ofpF9oaQElyUPXYT71mTWCzuuX3G9Ox1zFbt+VvcLXsUGYQUtZPdUgXllfQw6CGVuSGpC+3vK1Ok5nRCOaSuLxqdNUuPSo=
+	t=1760714934; cv=none; b=Dzbw6pdTCIV/a5rtmb3on4rVCM8iGhwkuux0N5/Z6AJkb58V6LMJC85Re6PC3nOvxAwEJb45GV7AGmxXAjsHxftHgj4j7YdMr/N60pu2zE2lcyJjTp6OAH3wanBLkLZq2gxEy6tdxq9YIRp7c/SAsR2nrgqnlXZnpmW+Ljc4fKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714982; c=relaxed/simple;
-	bh=csSFrZl2c745TdFuy74QEw1pQaBoSPE+T9AcPK6cjjU=;
+	s=arc-20240116; t=1760714934; c=relaxed/simple;
+	bh=wjkd/Q6hi8joFYdH8VAUSx75W5wpjf3bc1ervLnRfzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sm8HiQWdmGkni4fEmnSUXWH61clr5e0JcbBWMICu3hZQ4Zn1fStnURXyovoh7T3PeLJ/lsXEidLmnPHzk0rkDvlV62G1Qun0LQA0IWHIubOzOFAfctgSol/80hmdfEv+WnkzFkh1kqGNNyWlLshYPYLWYLTsm5WyTQA1aZHIOV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qp3t2McX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8DEFC4CEFE;
-	Fri, 17 Oct 2025 15:29:41 +0000 (UTC)
+	 MIME-Version; b=SbTDQkLH0tYjiam8sfilJtXe1ZrBr4hdsRI/58e1p67FEGCStvrq0ITk9r8WYtV2GP+pMskx4xTLHt1Nxt9UbEYluuTM56RSUESRt9ajrWXLqNCWyQ5lerplI9BUnlCW/Sk0RayALOwJ1f7mnLz1eZawQxV+s/8uH4BSRXzA1Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZtln1Fk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A191DC4CEE7;
+	Fri, 17 Oct 2025 15:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714982;
-	bh=csSFrZl2c745TdFuy74QEw1pQaBoSPE+T9AcPK6cjjU=;
+	s=korg; t=1760714934;
+	bh=wjkd/Q6hi8joFYdH8VAUSx75W5wpjf3bc1ervLnRfzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qp3t2McXR6QeNYBvgWa2dJwcY/DBW6/LasrpzGDOkaXcai/gk1WfCQGmfnhrBxxff
-	 NeOk9GsyCCzhhvgCaVnAQ5pe6zTmwQGJc7KOX72zz1RiQVkpxSMzLegaYLjIqgw0q+
-	 ZOgonh3wjbPbciWkKgb4UU/wwfs+csAGsNCHQzSc=
+	b=cZtln1FkbNm5JyDMve0IuccIvZx8ng+/4IuTaVwNAko/GYKKBHLVL2Zt5XYXfhvjI
+	 CtqFPwmJ/5rEcKiQyUHjewzgkYrJKF7ze/rjz4u/BlPzoJYX8gBef92MeQ0rmkNqxA
+	 /7jH+l/0cKpLcWQusUux+yoJjtfvE3aOQsXA3lCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ali Saidi <alisaidi@amazon.com>,
+	German Gomez <german.gomez@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 024/371] clk: renesas: r9a08g045: Add MSTOP for GPIO
-Date: Fri, 17 Oct 2025 16:49:59 +0200
-Message-ID: <20251017145202.672200256@linuxfoundation.org>
+Subject: [PATCH 6.17 039/371] perf arm_spe: Correct setting remote access
+Date: Fri, 17 Oct 2025 16:50:14 +0200
+Message-ID: <20251017145203.214810538@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -66,37 +76,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit f0cb3463d0244765ab66792a88dc5e2152c130e1 ]
+[ Upstream commit 039fd0634a0629132432632d7ac9a14915406b5c ]
 
-The GPIO module also supports MSTOP. Add it in the description of the gpio
-clock.
+Set the mem_remote field for a remote access to appropriately represent
+the event.
 
-Fixes: c49695952746 ("clk: renesas: r9a08g045: Drop power domain instantiation")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250806092129.621194-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: a89dbc9b988f3ba8 ("perf arm-spe: Set sample's data source field")
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ali Saidi <alisaidi@amazon.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a08g045-cpg.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/perf/util/arm-spe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/renesas/r9a08g045-cpg.c b/drivers/clk/renesas/r9a08g045-cpg.c
-index ed0661997928b..3b28edfabc34e 100644
---- a/drivers/clk/renesas/r9a08g045-cpg.c
-+++ b/drivers/clk/renesas/r9a08g045-cpg.c
-@@ -284,7 +284,8 @@ static const struct rzg2l_mod_clk r9a08g045_mod_clks[] = {
- 					MSTOP(BUS_MCPU2, BIT(5))),
- 	DEF_MOD("scif5_clk_pck",	R9A08G045_SCIF5_CLK_PCK, R9A08G045_CLK_P0, 0x584, 5,
- 					MSTOP(BUS_MCPU3, BIT(4))),
--	DEF_MOD("gpio_hclk",		R9A08G045_GPIO_HCLK, R9A08G045_OSCCLK, 0x598, 0, 0),
-+	DEF_MOD("gpio_hclk",		R9A08G045_GPIO_HCLK, R9A08G045_OSCCLK, 0x598, 0,
-+					MSTOP(BUS_PERI_CPU, BIT(6))),
- 	DEF_MOD("adc_adclk",		R9A08G045_ADC_ADCLK, R9A08G045_CLK_TSU, 0x5a8, 0,
- 					MSTOP(BUS_MCPU2, BIT(14))),
- 	DEF_MOD("adc_pclk",		R9A08G045_ADC_PCLK, R9A08G045_CLK_TSU, 0x5a8, 1,
+diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
+index 8942fa598a84f..8ecf7142dcd87 100644
+--- a/tools/perf/util/arm-spe.c
++++ b/tools/perf/util/arm-spe.c
+@@ -839,7 +839,7 @@ static void arm_spe__synth_memory_level(const struct arm_spe_record *record,
+ 	}
+ 
+ 	if (record->type & ARM_SPE_REMOTE_ACCESS)
+-		data_src->mem_lvl |= PERF_MEM_LVL_REM_CCE1;
++		data_src->mem_remote = PERF_MEM_REMOTE_REMOTE;
+ }
+ 
+ static bool arm_spe__synth_ds(struct arm_spe_queue *speq,
 -- 
 2.51.0
 
