@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BEEBE9DC5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6812BE9602
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A35637C31D4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8541887D01
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8DA335071;
-	Fri, 17 Oct 2025 15:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061E05695;
+	Fri, 17 Oct 2025 14:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4hsfSn8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLYQVWJI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A58E336EE7;
-	Fri, 17 Oct 2025 15:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FCF3370F6;
+	Fri, 17 Oct 2025 14:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714359; cv=none; b=MvnfrmVdyVpE6esbM4Cbje0+P2xGwiT/stRzI43nQTTdUAjW5ryR872lKyRPC2PfUvhNEjFztni5QaUKMglzBafAaV84OKojyNWYifPnoHWCBMf/AJh8vG/fQiW3hQC8zjPkHn1a62yu55UMPkny06aaAOqi/TpdkzebBjYwICE=
+	t=1760713043; cv=none; b=taUjQbW2m8odkhN+/YUiI3jDbMZ3cOcLzB9fPcmS3Q8ST0YnV2Je0OoVcDj14sUCbk1Nx6XjZPMB6qtr6pxepeQD+GessMwmOl6cuc2ml5wl5GSQnE/apCsfMrkCOvtwXvW8zQY1GDxqCI4z3D+XEo0gh/f0ATlGc9mzaEg3mD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714359; c=relaxed/simple;
-	bh=J9bOhnmP6KQ0U61OpFGGcoIlKIuwxpNrHERRAPDmH/M=;
+	s=arc-20240116; t=1760713043; c=relaxed/simple;
+	bh=sFS22HaoMVKkPGkOEdJy6n9N/szY2RZmKHP5++O75cQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ic/2zNhPkxVzGfbNSjE6kRgFmaza49yVo4YXHFllJq+IB6mW4umB/d/rSXyYL6uZiiLUsYDF4SV46c4mGmP7uE5Jd8SB6X18jS0jjmN7FKmZDJZHV4abRmkcKEdmbNzD5JXjjBYjMPgVg7UJY9CILfDnS58Fc0dUUraR2XOFxMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4hsfSn8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEAAC4CEE7;
-	Fri, 17 Oct 2025 15:19:18 +0000 (UTC)
+	 MIME-Version; b=RE6LD5nwSqgtunFvLprJGJjXt+1et/VaD7x76zgUKtqW/1GsLgfq2HqtBi5t9VO91Y2Ag0vf7DiBcVCjXFQOlKGVxkpynwJMZx8vmaUfDGpfa7MwCfjhxmsV+T/K45vMT1BM6gMs2VivCr5ycNm5hV1kS/lyVA2tygoLOVfUR2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLYQVWJI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E1DC4CEE7;
+	Fri, 17 Oct 2025 14:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714358;
-	bh=J9bOhnmP6KQ0U61OpFGGcoIlKIuwxpNrHERRAPDmH/M=;
+	s=korg; t=1760713043;
+	bh=sFS22HaoMVKkPGkOEdJy6n9N/szY2RZmKHP5++O75cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4hsfSn8/vO2NOBtflsPVS1Ln5KjDuTR6nLB7rZozWkune+lgScNV+R/H060tFWQI
-	 OJngY7J3g4rwNwS1/2SL0h5ClFOU9N2pRP8ljdEsoUjosYeW8bVofwUTuce/qAvXWe
-	 5qjz/9eWPTGoikRCdPfe/+9GATNI8rVPru37GfBY=
+	b=MLYQVWJI4O2CsVitXY47y70NQz9JI5hD6rrxLt7kjPCA9gtJVWbcjwbyJDaU/LQfs
+	 FxukvVyfwSHXHca/C8hFEguKu/xUAWsqbiUssfHvoo+HzG48mNgjP6KYUDB8OBtYjn
+	 yM3+zv3Fm4SxJW+nztMRNIn5n2j2PJWLP+YRL0LE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.12 100/277] xen/events: Return -EEXIST for bound VIRQs
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 028/168] LoongArch: Remove CONFIG_ACPI_TABLE_UPGRADE in platform_init()
 Date: Fri, 17 Oct 2025 16:51:47 +0200
-Message-ID: <20251017145150.782545874@linuxfoundation.org>
+Message-ID: <20251017145130.056309599@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 07ce121d93a5e5fb2440a24da3dbf408fcee978e upstream.
+[ Upstream commit 6c3ca6654a74dd396bc477839ba8d9792eced441 ]
 
-Change find_virq() to return -EEXIST when a VIRQ is bound to a
-different CPU than the one passed in.  With that, remove the BUG_ON()
-from bind_virq_to_irq() to propogate the error upwards.
+Both acpi_table_upgrade() and acpi_boot_table_init() are defined as
+empty functions under !CONFIG_ACPI_TABLE_UPGRADE and !CONFIG_ACPI in
+include/linux/acpi.h, there are no implicit declaration errors with
+various configs.
 
-Some VIRQs are per-cpu, but others are per-domain or global.  Those must
-be bound to CPU0 and can then migrate elsewhere.  The lookup for
-per-domain and global will probably fail when migrated off CPU 0,
-especially when the current CPU is tracked.  This now returns -EEXIST
-instead of BUG_ON().
+  #ifdef CONFIG_ACPI_TABLE_UPGRADE
+  void acpi_table_upgrade(void);
+  #else
+  static inline void acpi_table_upgrade(void) { }
+  #endif
 
-A second call to bind a per-domain or global VIRQ is not expected, but
-make it non-fatal to avoid trying to look up the irq, since we don't
-know which per_cpu(virq_to_irq) it will be in.
+  #ifdef	CONFIG_ACPI
+  ...
+  void acpi_boot_table_init (void);
+  ...
+  #else	/* !CONFIG_ACPI */
+  ...
+  static inline void acpi_boot_table_init(void)
+  {
+  }
+  ...
+  #endif	/* !CONFIG_ACPI */
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250828003604.8949-3-jason.andryuk@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As Huacai suggested, CONFIG_ACPI_TABLE_UPGRADE is ugly and not necessary
+here, just remove it. At the same time, just keep CONFIG_ACPI to prevent
+potential build errors in future, and give a signal to indicate the code
+is ACPI-specific. For the same reason, we also put acpi_table_upgrade()
+under CONFIG_ACPI.
+
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Stable-dep-of: 98662be7ef20 ("LoongArch: Init acpi_gbl_use_global_lock to false")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ arch/loongarch/kernel/setup.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -1320,10 +1320,12 @@ int bind_interdomain_evtchn_to_irq_latee
- }
- EXPORT_SYMBOL_GPL(bind_interdomain_evtchn_to_irq_lateeoi);
+diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+index b00e885d98458..55efe2f5fa1c3 100644
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -252,10 +252,8 @@ void __init platform_init(void)
+ 	arch_reserve_vmcore();
+ 	arch_parse_crashkernel();
  
--static int find_virq(unsigned int virq, unsigned int cpu, evtchn_port_t *evtchn)
-+static int find_virq(unsigned int virq, unsigned int cpu, evtchn_port_t *evtchn,
-+		     bool percpu)
- {
- 	struct evtchn_status status;
- 	evtchn_port_t port;
-+	bool exists = false;
- 
- 	memset(&status, 0, sizeof(status));
- 	for (port = 0; port < xen_evtchn_max_channels(); port++) {
-@@ -1336,12 +1338,16 @@ static int find_virq(unsigned int virq,
- 			continue;
- 		if (status.status != EVTCHNSTAT_virq)
- 			continue;
--		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu)) {
-+		if (status.u.virq != virq)
-+			continue;
-+		if (status.vcpu == xen_vcpu_nr(cpu)) {
- 			*evtchn = port;
- 			return 0;
-+		} else if (!percpu) {
-+			exists = true;
- 		}
- 	}
--	return -ENOENT;
-+	return exists ? -EEXIST : -ENOENT;
- }
- 
- /**
-@@ -1388,8 +1394,11 @@ int bind_virq_to_irq(unsigned int virq,
- 			evtchn = bind_virq.port;
- 		else {
- 			if (ret == -EEXIST)
--				ret = find_virq(virq, cpu, &evtchn);
--			BUG_ON(ret < 0);
-+				ret = find_virq(virq, cpu, &evtchn, percpu);
-+			if (ret) {
-+				__unbind_from_irq(info, info->irq);
-+				goto out;
-+			}
- 		}
- 
- 		ret = xen_irq_info_virq_setup(info, cpu, evtchn, virq);
+-#ifdef CONFIG_ACPI_TABLE_UPGRADE
+-	acpi_table_upgrade();
+-#endif
+ #ifdef CONFIG_ACPI
++	acpi_table_upgrade();
+ 	acpi_gbl_use_default_register_widths = false;
+ 	acpi_boot_table_init();
+ #endif
+-- 
+2.51.0
+
 
 
 
