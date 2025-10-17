@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-187576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71569BEA6AB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFEF2BEA23D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E71FF5A012B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2794C189CA62
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6731C330B3A;
-	Fri, 17 Oct 2025 15:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C56E32C952;
+	Fri, 17 Oct 2025 15:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOGXknH6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kluJVNKG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238B9330B00;
-	Fri, 17 Oct 2025 15:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1844E330B2C;
+	Fri, 17 Oct 2025 15:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716469; cv=none; b=Trd7+TwSTrcFjzyIup8cRWNOeuIYmtifxUQcpylMFuLNHJddIL1jkchPdQqXcKWjAm4P78Dpl97f2ytsLjE6utzEyzgm0ZZz/lxutuIf6TeN2YZnfiST7vW0EvO1pLQ5JrbamW0ytbpuPMIw8jlL1D7OnjuR+R22vd0Nk0/SZlE=
+	t=1760715733; cv=none; b=o+KWBtpQ2v6g8yGHItuydP9DrKeiuLJ8PpV53hKK43VjIubWtkfQFuYfrxg1b52H+97jSeqHUBr/NWcGH0/21HWQC2tjQckschmcRFS8qm0afZ7FFMREIVAEDVvXe/MXabsoHTt6y9YebO7G9KT4/hRl8CxNX5RKRAMeL/sMZBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716469; c=relaxed/simple;
-	bh=T1EyJ+iEYDRszEU4RT0XMuYCnGds6OTmMhW4i2zYozE=;
+	s=arc-20240116; t=1760715733; c=relaxed/simple;
+	bh=PaSwmobchi2WalGveLap8xWHNQjiuncQmze/JEsdUP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghpZMDzRhyLxa3971eb3Luo1Yvxb3onbLd4hhh4WrFJ40cfulMlbF3qF6l5ugyspiS7yodCvm+jVKlTdHA5YoO4hKpf/r7oQuqXv0GtGoxQJ/iIBH5anGNdBzno7rd9nN0i+dpNqygDi9pUAJIB4AkXDaICw4Jqj462fIHhOR8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOGXknH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A175AC4CEE7;
-	Fri, 17 Oct 2025 15:54:28 +0000 (UTC)
+	 MIME-Version; b=mOYEdBONyhWIsMoiV461X6J7rhwxrqsnqMokjnROhT+wOfwl/t2tJks+WtZqoMMDs9VzIHf3nA8ZmugHWqFezHYQycHGOuZJDWPOIqX8BH7IhAQrIFY1fhPzP190wqqIvjKU5SIRgcI0VlT4jjR8LXpHFcOoYHP6e4CQXqR5O3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kluJVNKG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D152C116C6;
+	Fri, 17 Oct 2025 15:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716469;
-	bh=T1EyJ+iEYDRszEU4RT0XMuYCnGds6OTmMhW4i2zYozE=;
+	s=korg; t=1760715733;
+	bh=PaSwmobchi2WalGveLap8xWHNQjiuncQmze/JEsdUP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OOGXknH67AbDJhrjxCFUkp9TatL1/FyJDqZotqtyAwljCmRuAzQimrZZLCX2iutF0
-	 uDcCS5SyCjOVJpR4qg038dBATxxlng2d9n8RiNZJLf9KpA3zRKSYOx6epYlsCYBe8R
-	 y43KNjBwsw7EHdUECw7ODM6fiE5G2hAMzBWUupl8=
+	b=kluJVNKGvdptHDEX3U3GoSSPwRjI3h3tyz2fWIglE54kq2C/Pn2XchW32q1RUeJcQ
+	 ZgDDOmbSnsPD47ImsfOJZ755hw47O0WF0YVGcYJwxoY0cS7ksdapkR8O4Tf/M1Bcgn
+	 e5xBVi9Va6iCfqHfx7yrmxmX27ir7iinzC6DjoUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 5.15 201/276] memory: samsung: exynos-srom: Fix of_iomap leak in exynos_srom_probe
+	SeongJae Park <sj@kernel.org>,
+	Xinyu Zheng <zhengxinyu6@huawei.com>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.17 319/371] mm/damon/vaddr: do not repeat pte_offset_map_lock() until success
 Date: Fri, 17 Oct 2025 16:54:54 +0200
-Message-ID: <20251017145149.806689942@linuxfoundation.org>
+Message-ID: <20251017145213.617618688@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: SeongJae Park <sj@kernel.org>
 
-commit 6744085079e785dae5f7a2239456135407c58b25 upstream.
+commit b93af2cc8e036754c0d9970d9ddc47f43cc94b9f upstream.
 
-The of_platform_populate() call at the end of the function has a
-possible failure path, causing a resource leak.
+DAMON's virtual address space operation set implementation (vaddr) calls
+pte_offset_map_lock() inside the page table walk callback function.  This
+is for reading and writing page table accessed bits.  If
+pte_offset_map_lock() fails, it retries by returning the page table walk
+callback function with ACTION_AGAIN.
 
-Replace of_iomap() with devm_platform_ioremap_resource() to ensure
-automatic cleanup of srom->reg_base.
+pte_offset_map_lock() can continuously fail if the target is a pmd
+migration entry, though.  Hence it could cause an infinite page table walk
+if the migration cannot be done until the page table walk is finished.
+This indeed caused a soft lockup when CPU hotplugging and DAMON were
+running in parallel.
 
-This issue was detected by smatch static analysis:
-drivers/memory/samsung/exynos-srom.c:155 exynos_srom_probe()warn:
-'srom->reg_base' from of_iomap() not released on lines: 155.
+Avoid the infinite loop by simply not retrying the page table walk.  DAMON
+is promising only a best-effort accuracy, so missing access to such pages
+is no problem.
 
-Fixes: 8ac2266d8831 ("memory: samsung: exynos-srom: Add support for bank configuration")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Link: https://lore.kernel.org/r/20250806025538.306593-1-zhen.ni@easystack.cn
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lkml.kernel.org/r/20250930004410.55228-1-sj@kernel.org
+Fixes: 7780d04046a2 ("mm/pagewalkers: ACTION_AGAIN if pte_offset_map_lock() fails")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: Xinyu Zheng <zhengxinyu6@huawei.com>
+Closes: https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
+Acked-by: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>	[6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/memory/samsung/exynos-srom.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ mm/damon/vaddr.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/memory/samsung/exynos-srom.c
-+++ b/drivers/memory/samsung/exynos-srom.c
-@@ -121,20 +121,18 @@ static int exynos_srom_probe(struct plat
- 		return -ENOMEM;
- 
- 	srom->dev = dev;
--	srom->reg_base = of_iomap(np, 0);
--	if (!srom->reg_base) {
-+	srom->reg_base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(srom->reg_base)) {
- 		dev_err(&pdev->dev, "iomap of exynos srom controller failed\n");
--		return -ENOMEM;
-+		return PTR_ERR(srom->reg_base);
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -328,10 +328,8 @@ static int damon_mkold_pmd_entry(pmd_t *
  	}
  
- 	platform_set_drvdata(pdev, srom);
- 
- 	srom->reg_offset = exynos_srom_alloc_reg_dump(exynos_srom_offsets,
- 						      ARRAY_SIZE(exynos_srom_offsets));
--	if (!srom->reg_offset) {
--		iounmap(srom->reg_base);
-+	if (!srom->reg_offset)
- 		return -ENOMEM;
+ 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+-	if (!pte) {
+-		walk->action = ACTION_AGAIN;
++	if (!pte)
+ 		return 0;
 -	}
+ 	if (!pte_present(ptep_get(pte)))
+ 		goto out;
+ 	damon_ptep_mkold(pte, walk->vma, addr);
+@@ -481,10 +479,8 @@ regular_page:
+ #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
  
- 	for_each_child_of_node(np, child) {
- 		if (exynos_srom_configure_bank(srom, child)) {
+ 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+-	if (!pte) {
+-		walk->action = ACTION_AGAIN;
++	if (!pte)
+ 		return 0;
+-	}
+ 	ptent = ptep_get(pte);
+ 	if (!pte_present(ptent))
+ 		goto out;
 
 
 
