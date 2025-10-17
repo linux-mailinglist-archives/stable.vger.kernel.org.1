@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-187339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E45CBEAA82
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3635DBEA8C2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:14:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C1A17C4722
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 669897C558C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26193330B38;
-	Fri, 17 Oct 2025 15:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBB72F12BB;
+	Fri, 17 Oct 2025 15:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRTbzuX0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNk79abc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D628A330B04;
-	Fri, 17 Oct 2025 15:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADCF1A0728;
+	Fri, 17 Oct 2025 15:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715791; cv=none; b=s7U+Ah7VovJeq7aNspgjdlW8YoZF1WQ7NbGpauygTxGzApW0F7R3a0VIK9D2Mh3lTWZVhAToEgJTJ9PEWlGK2vjohEEzhFU2xVUzFJzjbTGuYm/CISiEhXuFQ2UDPpxNkVfG9gIvQaQw6/WoSb6Cce7IRgnNHBYTlc3p4gwP5nE=
+	t=1760715910; cv=none; b=aQRDnlFCLc4NaJeEALTf/GinuMh8JzPblSzhqFiLTUtTWe8T60vdwzq8INGjDyzctV4ALT75iqUT2wThAYu8H3cf2OmaHcxYEvxuy/u2lBjHE46aqC0o/RSwQ3ae6xZSCi5Mm11Iqjw7YG9DTl7OJ3A3jfbzx4tcjYYt3nuyD7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715791; c=relaxed/simple;
-	bh=dib6tAuKu4wS+x37ZT9c016cVyi42HeUihF0DXzCCTM=;
+	s=arc-20240116; t=1760715910; c=relaxed/simple;
+	bh=j6j6+CoMgMDrsz8JwYg8HM0UCLcNHdSmCOWJ2b0yKqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmGiDrqLNKrQZCxh1h7hDWy1V7gAlElS37o2ZKHKRxDY5HHYOgG58sFfGby91DIDwAbtPWqLtCIVk0c/oX1ux2T/CWVCf4mdphlA2e+HfyzIhaCgt3qReLAzVPFdqeOay36Th+SST53nRCE2yNkjgiGW2kWe/duanBfeE14OCNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRTbzuX0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC00C4CEE7;
-	Fri, 17 Oct 2025 15:43:10 +0000 (UTC)
+	 MIME-Version; b=i77p9TQc0KqTxCgTy8BWceumEiE0/0fpHY8Pr2DKs5kH3vHI6hlH9NkeFUtb8oZ2g1rIe4mxTQDKtJkiKuc+LeugB6uLIBpr1MQPulaYGL/p7YX9lgw5pOChtrv4JaenjpdTxgq+Z9MfyzhnUoUAVnjk/a5tjaqB+nebu4I6bRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNk79abc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEE9C4CEE7;
+	Fri, 17 Oct 2025 15:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715791;
-	bh=dib6tAuKu4wS+x37ZT9c016cVyi42HeUihF0DXzCCTM=;
+	s=korg; t=1760715910;
+	bh=j6j6+CoMgMDrsz8JwYg8HM0UCLcNHdSmCOWJ2b0yKqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRTbzuX0sNO1iXqdyER0WYUv9x8sP/sj104Nn1cKfD+qeOz3NgfV4hGSW5mLQeiKm
-	 o2M2Tj2RmzCCN/tOPGkZMILY3GR/fnlbUgTKZ101OVK96Hs7csTjyImzIA6ieOxmq0
-	 PfruMHw1jG4/W0YWKNyrAjPuf09C7BwycAQZdqw4=
+	b=tNk79abc4QMQPZA63L1eqMlrV48z3RTgtciXwMvriIwvtxHPceTfJVJyK/IRcdr7G
+	 BYPf6wRAyQtvqANrO7PPYo5oV6FZCAZ4bV0Ylh/QxPrujNtemTO2yBhP2S8ROCs644
+	 qpdw6zEi03t2QY5qjCEQS5k5Sh/LawHCyo2SHWIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Subject: [PATCH 6.17 337/371] media: iris: Allow stop on firmware only if start was issued.
-Date: Fri, 17 Oct 2025 16:55:12 +0200
-Message-ID: <20251017145214.275771195@linuxfoundation.org>
+	stable@kernel.org,
+	Jan Kara <jack@suse.cz>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.17 339/371] ext4: fail unaligned direct IO write with EINVAL
+Date: Fri, 17 Oct 2025 16:55:14 +0200
+Message-ID: <20251017145214.347947647@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -69,45 +67,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 56a2d85ee8f9b994e5cd17039133218c57c5902b upstream.
+commit 963845748fe67125006859229487b45485564db7 upstream.
 
-For HFI Gen1, the instances substate is changed to LOAD_RESOURCES only
-when a START command is issues to the firmware. If STOP is called
-without a prior START, the firmware may reject the command and throw
-some erros.
-Handle this by adding a substate check before issuing STOP command to
-the firmware.
+Commit bc264fea0f6f ("iomap: support incremental iomap_iter advances")
+changed the error handling logic in iomap_iter(). Previously any error
+from iomap_dio_bio_iter() got propagated to userspace, after this commit
+if ->iomap_end returns error, it gets propagated to userspace instead of
+an error from iomap_dio_bio_iter(). This results in unaligned writes to
+ext4 to silently fallback to buffered IO instead of erroring out.
 
-Fixes: 11712ce70f8e ("media: iris: implement vb2 streaming ops")
-Cc: stable@vger.kernel.org
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # X1E80100
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Now returning ENOTBLK for DIO writes from ext4_iomap_end() seems
+unnecessary these days. It is enough to return ENOTBLK from
+ext4_iomap_begin() when we don't support DIO write for that particular
+file offset (due to hole).
+
+Fixes: bc264fea0f6f ("iomap: support incremental iomap_iter advances")
+Cc: stable@kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Message-ID: <20250901112739.32484-2-jack@suse.cz>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/inode.c | 35 -----------------------------------
+ 1 file changed, 35 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
-index 3e41c8cb620e..a3461ccf170a 100644
---- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
-+++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
-@@ -202,7 +202,7 @@ static int iris_hfi_gen1_session_stop(struct iris_inst *inst, u32 plane)
- 			inst->flush_responses_pending++;
- 			ret = iris_wait_for_session_response(inst, true);
- 		}
--	} else {
-+	} else if (inst->sub_state & IRIS_INST_SUB_LOAD_RESOURCES) {
- 		reinit_completion(&inst->completion);
- 		iris_hfi_gen1_packet_session_cmd(inst, &pkt, HFI_CMD_SESSION_STOP);
- 		ret = iris_hfi_queue_cmd_write(core, &pkt, pkt.shdr.hdr.size);
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 5b7a15db4953..c3b23c90fd11 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -3872,47 +3872,12 @@ static int ext4_iomap_overwrite_begin(struct inode *inode, loff_t offset,
+ 	return ret;
+ }
+ 
+-static inline bool ext4_want_directio_fallback(unsigned flags, ssize_t written)
+-{
+-	/* must be a directio to fall back to buffered */
+-	if ((flags & (IOMAP_WRITE | IOMAP_DIRECT)) !=
+-		    (IOMAP_WRITE | IOMAP_DIRECT))
+-		return false;
+-
+-	/* atomic writes are all-or-nothing */
+-	if (flags & IOMAP_ATOMIC)
+-		return false;
+-
+-	/* can only try again if we wrote nothing */
+-	return written == 0;
+-}
+-
+-static int ext4_iomap_end(struct inode *inode, loff_t offset, loff_t length,
+-			  ssize_t written, unsigned flags, struct iomap *iomap)
+-{
+-	/*
+-	 * Check to see whether an error occurred while writing out the data to
+-	 * the allocated blocks. If so, return the magic error code for
+-	 * non-atomic write so that we fallback to buffered I/O and attempt to
+-	 * complete the remainder of the I/O.
+-	 * For non-atomic writes, any blocks that may have been
+-	 * allocated in preparation for the direct I/O will be reused during
+-	 * buffered I/O. For atomic write, we never fallback to buffered-io.
+-	 */
+-	if (ext4_want_directio_fallback(flags, written))
+-		return -ENOTBLK;
+-
+-	return 0;
+-}
+-
+ const struct iomap_ops ext4_iomap_ops = {
+ 	.iomap_begin		= ext4_iomap_begin,
+-	.iomap_end		= ext4_iomap_end,
+ };
+ 
+ const struct iomap_ops ext4_iomap_overwrite_ops = {
+ 	.iomap_begin		= ext4_iomap_overwrite_begin,
+-	.iomap_end		= ext4_iomap_end,
+ };
+ 
+ static int ext4_iomap_begin_report(struct inode *inode, loff_t offset,
 -- 
 2.51.0
 
