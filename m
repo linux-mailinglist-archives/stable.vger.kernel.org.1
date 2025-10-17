@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0ECABEA508
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:56:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72CEBE9CA5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B55F188FE40
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 235C83B781E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DCC330B3A;
-	Fri, 17 Oct 2025 15:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DA433508D;
+	Fri, 17 Oct 2025 15:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueoXbmVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xyMEbJyT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312D9330B04;
-	Fri, 17 Oct 2025 15:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D303328EE;
+	Fri, 17 Oct 2025 15:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716319; cv=none; b=kyHwTnNhic8B6i7k8pXaIoUJBB12aeMKLk2PkGacF1Bo1/5s/jxtcB3NNmHFkYOfWI8aAHmpxxbASUspVSPepRPCqPbkwlb0dAAI30I4jzhWOTBrjzdcPhj/foofVu1RneQwsg1nprVpXUWGdREDtudE6Zf4pVz6Yg1ScdluOq8=
+	t=1760713843; cv=none; b=ZD26JmTLA0rMewWs2KAuXHbgZSzcxZVHj1aP60YAzt/vUDvn22rP97m5SM0XWbUV8BU5N8ZlB7/uy1qOGFhmEUjUIlHruuSQbdQxPJ8jrbpU+Dat0gR6fhB1e6FU55UkSAtgn6phl4UdpprCFVcNOidn0LObOth5achKxFszZ5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716319; c=relaxed/simple;
-	bh=4KVUwCsbwSpG9bp7tFhpGS+Y2/5FQtl5SvfDD2KolXI=;
+	s=arc-20240116; t=1760713843; c=relaxed/simple;
+	bh=Z48An+sFSpjUxoFkyrNfamoTOygVS6J50AvalY4/lp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDgCUZAexQG131TyxdFYsxwJ899nm1vJpyXqBnsfb0guSeh3l4tTQzEzaLgs/f6bRFCGZzKB166e8hNePyKVTZXUAjsN+UGS7UQx5iKLLkSc/6PtmuAY3uBlngcXmKgrxasIXwCQeSBuvWVeeJhNa7/H17XqQu8+/rzpg7wH+rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueoXbmVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3D5C4CEE7;
-	Fri, 17 Oct 2025 15:51:58 +0000 (UTC)
+	 MIME-Version; b=nyvd0Qc2rdGtOOhnMEKJn9OshHQued0TiAjTEPhpIS/Dvh/HrGBMYZ43M2JTaN0Ty0HdjiDNo4as/NM5Jo6VaHxrSu58y6NVEBL04PsZJaCFOlQNp+TLVZ2AC9jgIuUIZSwctNFRgF67inzYe5d1yc84O5WSnuaC7Px9yprO3ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xyMEbJyT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2CBFC4CEE7;
+	Fri, 17 Oct 2025 15:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716319;
-	bh=4KVUwCsbwSpG9bp7tFhpGS+Y2/5FQtl5SvfDD2KolXI=;
+	s=korg; t=1760713843;
+	bh=Z48An+sFSpjUxoFkyrNfamoTOygVS6J50AvalY4/lp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ueoXbmVy3xYqkais6R5NPyFc2qSTe7tXbl6oevh6q7ChdGNf0HREOGzg9j6AWQgdx
-	 M5/wWqvg7MTcMSaLfMj7m7ELYknny+3igtN0tFnx79Ox2C0I1GWtSPNUiiflcuKT1e
-	 naKQ4nSbldRcEKmDGgUfHdCpjTVO5opztp24wFaM=
+	b=xyMEbJyTzh5x3vHQRtHX0or8eYor3DGmtJl+jbespxtOzU2yL+od19YdGfBMGWb0X
+	 qA/7y+wT7BLl7Ie601M6Zcnzhm1C9Ui0jwClEbneiMORL+7DuY5HUegtebuEY+E4Bm
+	 t4kUrwGF6hBEPUCKb8EX2A3J6hV3GM7+GKK4l6n4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	syzbot+157bdef5cf596ad0da2c@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 107/276] Squashfs: fix uninit-value in squashfs_get_parent
+	Sean Christopherson <seanjc@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 139/201] x86/umip: Fix decoding of register forms of 0F 01 (SGDT and SIDT aliases)
 Date: Fri, 17 Oct 2025 16:53:20 +0200
-Message-ID: <20251017145146.387498012@linuxfoundation.org>
+Message-ID: <20251017145139.842300583@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,124 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 74058c0a9fc8b2b4d5f4a0ef7ee2cfa66a9e49cf upstream.
+commit 27b1fd62012dfe9d3eb8ecde344d7aa673695ecf upstream.
 
-Syzkaller reports a "KMSAN: uninit-value in squashfs_get_parent" bug.
+Filter out the register forms of 0F 01 when determining whether or not to
+emulate in response to a potential UMIP violation #GP, as SGDT and SIDT only
+accept memory operands.  The register variants of 0F 01 are used to encode
+instructions for things like VMX and SGX, i.e. not checking the Mod field
+would cause the kernel to incorrectly emulate on #GP, e.g. due to a CPL
+violation on VMLAUNCH.
 
-This is caused by open_by_handle_at() being called with a file handle
-containing an invalid parent inode number.  In particular the inode number
-is that of a symbolic link, rather than a directory.
-
-Squashfs_get_parent() gets called with that symbolic link inode, and
-accesses the parent member field.
-
-	unsigned int parent_ino = squashfs_i(inode)->parent;
-
-Because non-directory inodes in Squashfs do not have a parent value, this
-is uninitialised, and this causes an uninitialised value access.
-
-The fix is to initialise parent with the invalid inode 0, which will cause
-an EINVAL error to be returned.
-
-Regular inodes used to share the parent field with the block_list_start
-field.  This is removed in this commit to enable the parent field to
-contain the invalid inode number 0.
-
-Link: https://lkml.kernel.org/r/20250918233308.293861-1-phillip@squashfs.org.uk
-Fixes: 122601408d20 ("Squashfs: export operations")
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: syzbot+157bdef5cf596ad0da2c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68cc2431.050a0220.139b6.0001.GAE@google.com/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1e5db223696a ("x86/umip: Add emulation code for UMIP instructions")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c         |    7 +++++++
- fs/squashfs/squashfs_fs_i.h |    2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ arch/x86/kernel/umip.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -165,6 +165,7 @@ int squashfs_read_inode(struct inode *in
- 		squashfs_i(inode)->start = le32_to_cpu(sqsh_ino->start_block);
- 		squashfs_i(inode)->block_list_start = block;
- 		squashfs_i(inode)->offset = offset;
-+		squashfs_i(inode)->parent = 0;
- 		inode->i_data.a_ops = &squashfs_aops;
- 
- 		TRACE("File inode %x:%x, start_block %llx, block_list_start "
-@@ -212,6 +213,7 @@ int squashfs_read_inode(struct inode *in
- 		squashfs_i(inode)->start = le64_to_cpu(sqsh_ino->start_block);
- 		squashfs_i(inode)->block_list_start = block;
- 		squashfs_i(inode)->offset = offset;
-+		squashfs_i(inode)->parent = 0;
- 		inode->i_data.a_ops = &squashfs_aops;
- 
- 		TRACE("File inode %x:%x, start_block %llx, block_list_start "
-@@ -292,6 +294,7 @@ int squashfs_read_inode(struct inode *in
- 		inode->i_mode |= S_IFLNK;
- 		squashfs_i(inode)->start = block;
- 		squashfs_i(inode)->offset = offset;
-+		squashfs_i(inode)->parent = 0;
- 
- 		if (type == SQUASHFS_LSYMLINK_TYPE) {
- 			__le32 xattr;
-@@ -329,6 +332,7 @@ int squashfs_read_inode(struct inode *in
- 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		rdev = le32_to_cpu(sqsh_ino->rdev);
- 		init_special_inode(inode, inode->i_mode, new_decode_dev(rdev));
-+		squashfs_i(inode)->parent = 0;
- 
- 		TRACE("Device inode %x:%x, rdev %x\n",
- 				SQUASHFS_INODE_BLK(ino), offset, rdev);
-@@ -353,6 +357,7 @@ int squashfs_read_inode(struct inode *in
- 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		rdev = le32_to_cpu(sqsh_ino->rdev);
- 		init_special_inode(inode, inode->i_mode, new_decode_dev(rdev));
-+		squashfs_i(inode)->parent = 0;
- 
- 		TRACE("Device inode %x:%x, rdev %x\n",
- 				SQUASHFS_INODE_BLK(ino), offset, rdev);
-@@ -373,6 +378,7 @@ int squashfs_read_inode(struct inode *in
- 			inode->i_mode |= S_IFSOCK;
- 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		init_special_inode(inode, inode->i_mode, 0);
-+		squashfs_i(inode)->parent = 0;
- 		break;
- 	}
- 	case SQUASHFS_LFIFO_TYPE:
-@@ -392,6 +398,7 @@ int squashfs_read_inode(struct inode *in
- 		inode->i_op = &squashfs_inode_ops;
- 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		init_special_inode(inode, inode->i_mode, 0);
-+		squashfs_i(inode)->parent = 0;
- 		break;
- 	}
- 	default:
---- a/fs/squashfs/squashfs_fs_i.h
-+++ b/fs/squashfs/squashfs_fs_i.h
-@@ -16,6 +16,7 @@ struct squashfs_inode_info {
- 	u64		xattr;
- 	unsigned int	xattr_size;
- 	int		xattr_count;
-+	int		parent;
- 	union {
- 		struct {
- 			u64		fragment_block;
-@@ -27,7 +28,6 @@ struct squashfs_inode_info {
- 			u64		dir_idx_start;
- 			int		dir_idx_offset;
- 			int		dir_idx_cnt;
--			int		parent;
- 		};
- 	};
- 	struct inode	vfs_inode;
+--- a/arch/x86/kernel/umip.c
++++ b/arch/x86/kernel/umip.c
+@@ -163,8 +163,19 @@ static int identify_insn(struct insn *in
+ 	if (insn->opcode.bytes[1] == 0x1) {
+ 		switch (X86_MODRM_REG(insn->modrm.value)) {
+ 		case 0:
++			/* The reg form of 0F 01 /0 encodes VMX instructions. */
++			if (X86_MODRM_MOD(insn->modrm.value) == 3)
++				return -EINVAL;
++
+ 			return UMIP_INST_SGDT;
+ 		case 1:
++			/*
++			 * The reg form of 0F 01 /1 encodes MONITOR/MWAIT,
++			 * STAC/CLAC, and ENCLS.
++			 */
++			if (X86_MODRM_MOD(insn->modrm.value) == 3)
++				return -EINVAL;
++
+ 			return UMIP_INST_SIDT;
+ 		case 4:
+ 			return UMIP_INST_SMSW;
 
 
 
