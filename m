@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-186529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E50BE9B11
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D14BE9F4B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:36:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B062740F64
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0EDBD58217F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796F232C93E;
-	Fri, 17 Oct 2025 15:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7414332903;
+	Fri, 17 Oct 2025 15:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AfHosSAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mynsShU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3530D2F12BD;
-	Fri, 17 Oct 2025 15:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F764337110;
+	Fri, 17 Oct 2025 15:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713500; cv=none; b=Jh8tK5V531BESOtzRx3t4zzN9qAfs+7Nh/BO87VgE4nFmmsagpFWprb5Xtz9mhCM/PNGj9l6E+5FUXml8NCgi9wEfMhs5kbde6EODkQ6m1sCHH82DNwMzVd7CmA0tMLUXZd7aG41D+oqFVTr7jZ7p3ijB83pjKll6pP/8lRyi0g=
+	t=1760714230; cv=none; b=QUkb9UT+r+MU+rvT9xRGdUlNZ9G891wptssNMIVWWGU4cpxsZmgcfl3lEU70uLZD+YSU7cNKfrydXDHpTUtXf3p7tlrHZIV5s/Q/VBcXCC1uCD6T3E9z6B5+oXJu/NGnFymxyznGotJ9oPWItppRGFveoQUmTSL7sy7jeScnTB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713500; c=relaxed/simple;
-	bh=tqrevVX7iA+DogRMX55FuiIVYv1n92uzrPB6+NQw29k=;
+	s=arc-20240116; t=1760714230; c=relaxed/simple;
+	bh=kSJt0NmgcD83gljwgoYD8CU3aofV2RpjWvu9wxlMGp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQWAqSkMyyaLKtC5qzABQi4SRIZcIzWy0+P9PoJNyVFeQQGxh6HC8wW4K8B4F6CGaXoBXQ/c0yU8HdfXAS8fTA5ELZqptw2Bv4gSV7BSM5gR47dB0X3lj099B9bTR61ocbsN4eCTisCN1Kv1j/P8pKGzfEDc5MK2zuxAf98I8yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AfHosSAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81819C4CEE7;
-	Fri, 17 Oct 2025 15:04:59 +0000 (UTC)
+	 MIME-Version; b=WeDuddrKTf1qdgnoLvL9SFz+P4ljWSDDjVgmKfd5V9q1qpCH88iXg4qiPJ4pd4HzRwSqtsg9hrp+NtmzhT64OVj3L3TklAa/9++s/WW+MfZ8vgtqud1PHDh3hSMex+NDW0NgHy31fWA7NXqq4WsRjVO3N9x7qQy1lgAjqWh2Ykg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mynsShU6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A60DC4CEF9;
+	Fri, 17 Oct 2025 15:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713500;
-	bh=tqrevVX7iA+DogRMX55FuiIVYv1n92uzrPB6+NQw29k=;
+	s=korg; t=1760714230;
+	bh=kSJt0NmgcD83gljwgoYD8CU3aofV2RpjWvu9wxlMGp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AfHosSAc8TJqtlkgjzyF7hoUgRXFR3vp+o3Mz1RS7jAIQzpfeplPo4f0TkaBDxI5p
-	 SsHR5b7elxS2mMF+PbHg3r7KgyRm2vXp4HxdlW7B7GISWBwbESq2hud7dtE7h/ZEfH
-	 U6/l4/tEjBUQq/dxmO5abNbYWMmsRtE7aWvuuR04=
+	b=mynsShU6tEM0SZsIN8vI8y7yz64PYQ9cTYF1V+zpPDIIdJD5QfQPSDEVS0HLQrBlh
+	 nDhz90FB0SfivpnWpe1Cpoh2V+eIY1GKkthbf9ciNDwJ03gvI48vJVvKozYtEJPwR8
+	 kfbn+sIXdLcdLlikAlk9Fu+PQ1nz4iGRf7ZVv3pU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	James Clark <james.clark@arm.com>,
-	Atish Patra <atishp@atishpatra.org>,
-	Mingwei Zhang <mizhang@google.com>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Georg Pfuetzenreuter <georg.pfuetzenreuter@suse.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/201] perf tools: Add fallback for exclude_guest
+Subject: [PATCH 6.12 073/277] netfilter: nft_objref: validate objref and objrefmap expressions
 Date: Fri, 17 Oct 2025 16:51:20 +0200
-Message-ID: <20251017145135.443774685@linuxfoundation.org>
+Message-ID: <20251017145149.805747839@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,132 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit bb6e7cb11d97ce1957894d30d13bfad3e8bfefe9 ]
+[ Upstream commit f359b809d54c6e3dd1d039b97e0b68390b0e53e4 ]
 
-Commit 7b100989b4f6bce70 ("perf evlist: Remove __evlist__add_default")
-changed to parse "cycles:P" event instead of creating a new cycles
-event for perf record.  But it also changed the way how modifiers are
-handled so it doesn't set the exclude_guest bit by default.
+Referencing a synproxy stateful object from OUTPUT hook causes kernel
+crash due to infinite recursive calls:
 
-It seems Apple M1 PMU requires exclude_guest set and returns EOPNOTSUPP
-if not.  Let's add a fallback so that it can work with default events.
+BUG: TASK stack guard page was hit at 000000008bda5b8c (stack is 000000003ab1c4a5..00000000494d8b12)
+[...]
+Call Trace:
+ __find_rr_leaf+0x99/0x230
+ fib6_table_lookup+0x13b/0x2d0
+ ip6_pol_route+0xa4/0x400
+ fib6_rule_lookup+0x156/0x240
+ ip6_route_output_flags+0xc6/0x150
+ __nf_ip6_route+0x23/0x50
+ synproxy_send_tcp_ipv6+0x106/0x200
+ synproxy_send_client_synack_ipv6+0x1aa/0x1f0
+ nft_synproxy_do_eval+0x263/0x310
+ nft_do_chain+0x5a8/0x5f0 [nf_tables
+ nft_do_chain_inet+0x98/0x110
+ nf_hook_slow+0x43/0xc0
+ __ip6_local_out+0xf0/0x170
+ ip6_local_out+0x17/0x70
+ synproxy_send_tcp_ipv6+0x1a2/0x200
+ synproxy_send_client_synack_ipv6+0x1aa/0x1f0
+[...]
 
-Also update perf stat hybrid tests to handle possible u or H modifiers.
+Implement objref and objrefmap expression validate functions.
 
-Reviewed-by: Ian Rogers <irogers@google.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Acked-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Atish Patra <atishp@atishpatra.org>
-Cc: Mingwei Zhang <mizhang@google.com>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Link: https://lore.kernel.org/r/20241016062359.264929-2-namhyung@kernel.org
-Fixes: 7b100989b4f6bce70 ("perf evlist: Remove __evlist__add_default")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Stable-dep-of: 24937ee839e4 ("perf evsel: Ensure the fallback message is always written to")
+Currently, only NFT_OBJECT_SYNPROXY object type requires validation.
+This will also handle a jump to a chain using a synproxy object from the
+OUTPUT hook.
+
+Now when trying to reference a synproxy object in the OUTPUT hook, nft
+will produce the following error:
+
+synproxy_crash.nft: Error: Could not process rule: Operation not supported
+  synproxy name mysynproxy
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+
+Fixes: ee394f96ad75 ("netfilter: nft_synproxy: add synproxy stateful object support")
+Reported-by: Georg Pfuetzenreuter <georg.pfuetzenreuter@suse.com>
+Closes: https://bugzilla.suse.com/1250237
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-stat.c      | 18 +++++++++++++++---
- tools/perf/tests/shell/stat.sh |  2 +-
- tools/perf/util/evsel.c        | 21 +++++++++++++++++++++
- 3 files changed, 37 insertions(+), 4 deletions(-)
+ net/netfilter/nft_objref.c | 39 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
-index 9692ebdd7f11e..1512fedd90cf9 100644
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -638,8 +638,7 @@ static enum counter_recovery stat_handle_error(struct evsel *counter)
- 	 * (behavior changed with commit b0a873e).
- 	 */
- 	if (errno == EINVAL || errno == ENOSYS ||
--	    errno == ENOENT || errno == EOPNOTSUPP ||
--	    errno == ENXIO) {
-+	    errno == ENOENT || errno == ENXIO) {
- 		if (verbose > 0)
- 			ui__warning("%s event is not supported by the kernel.\n",
- 				    evsel__name(counter));
-@@ -657,7 +656,7 @@ static enum counter_recovery stat_handle_error(struct evsel *counter)
- 		if (verbose > 0)
- 			ui__warning("%s\n", msg);
- 		return COUNTER_RETRY;
--	} else if (target__has_per_thread(&target) &&
-+	} else if (target__has_per_thread(&target) && errno != EOPNOTSUPP &&
- 		   evsel_list->core.threads &&
- 		   evsel_list->core.threads->err_thread != -1) {
- 		/*
-@@ -678,6 +677,19 @@ static enum counter_recovery stat_handle_error(struct evsel *counter)
- 		return COUNTER_SKIP;
- 	}
+diff --git a/net/netfilter/nft_objref.c b/net/netfilter/nft_objref.c
+index 8ee66a86c3bc7..1a62e384766a7 100644
+--- a/net/netfilter/nft_objref.c
++++ b/net/netfilter/nft_objref.c
+@@ -22,6 +22,35 @@ void nft_objref_eval(const struct nft_expr *expr,
+ 	obj->ops->eval(obj, regs, pkt);
+ }
  
-+	if (errno == EOPNOTSUPP) {
-+		if (verbose > 0) {
-+			ui__warning("%s event is not supported by the kernel.\n",
-+				    evsel__name(counter));
-+		}
-+		counter->supported = false;
-+		counter->errored = true;
++static int nft_objref_validate_obj_type(const struct nft_ctx *ctx, u32 type)
++{
++	unsigned int hooks;
 +
-+		if ((evsel__leader(counter) != counter) ||
-+		    !(counter->core.leader->nr_members > 1))
-+			return COUNTER_SKIP;
++	switch (type) {
++	case NFT_OBJECT_SYNPROXY:
++		if (ctx->family != NFPROTO_IPV4 &&
++		    ctx->family != NFPROTO_IPV6 &&
++		    ctx->family != NFPROTO_INET)
++			return -EOPNOTSUPP;
++
++		hooks = (1 << NF_INET_LOCAL_IN) | (1 << NF_INET_FORWARD);
++
++		return nft_chain_validate_hooks(ctx->chain, hooks);
++	default:
++		break;
 +	}
 +
- 	evsel__open_strerror(counter, &target, errno, msg, sizeof(msg));
- 	ui__error("%s\n", msg);
- 
-diff --git a/tools/perf/tests/shell/stat.sh b/tools/perf/tests/shell/stat.sh
-index c6df7eec96b98..c4bef71568970 100755
---- a/tools/perf/tests/shell/stat.sh
-+++ b/tools/perf/tests/shell/stat.sh
-@@ -159,7 +159,7 @@ test_hybrid() {
-   fi
- 
-   # Run default Perf stat
--  cycles_events=$(perf stat -- true 2>&1 | grep -E "/cycles/|  cycles  " | wc -l)
-+  cycles_events=$(perf stat -- true 2>&1 | grep -E "/cycles/[uH]*|  cycles[:uH]*  " -c)
- 
-   if [ "$pmus" -ne "$cycles_events" ]
-   then
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index cdd13f576c191..c37faef63df99 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -2892,6 +2892,27 @@ bool evsel__fallback(struct evsel *evsel, int err, char *msg, size_t msgsize)
- 		evsel->core.attr.exclude_kernel = 1;
- 		evsel->core.attr.exclude_hv     = 1;
- 
-+		return true;
-+	} else if (err == EOPNOTSUPP && !evsel->core.attr.exclude_guest &&
-+		   !evsel->exclude_GH) {
-+		const char *name = evsel__name(evsel);
-+		char *new_name;
-+		const char *sep = ":";
++	return 0;
++}
 +
-+		/* Is there already the separator in the name. */
-+		if (strchr(name, '/') ||
-+		    (strchr(name, ':') && !evsel->is_libpfm_event))
-+			sep = "";
++static int nft_objref_validate(const struct nft_ctx *ctx,
++			       const struct nft_expr *expr)
++{
++	struct nft_object *obj = nft_objref_priv(expr);
 +
-+		if (asprintf(&new_name, "%s%sH", name, sep) < 0)
-+			return false;
++	return nft_objref_validate_obj_type(ctx, obj->ops->type->type);
++}
 +
-+		free(evsel->name);
-+		evsel->name = new_name;
-+		/* Apple M1 requires exclude_guest */
-+		scnprintf(msg, msgsize, "trying to fall back to excluding guest samples");
-+		evsel->core.attr.exclude_guest = 1;
+ static int nft_objref_init(const struct nft_ctx *ctx,
+ 			   const struct nft_expr *expr,
+ 			   const struct nlattr * const tb[])
+@@ -93,6 +122,7 @@ static const struct nft_expr_ops nft_objref_ops = {
+ 	.activate	= nft_objref_activate,
+ 	.deactivate	= nft_objref_deactivate,
+ 	.dump		= nft_objref_dump,
++	.validate	= nft_objref_validate,
+ 	.reduce		= NFT_REDUCE_READONLY,
+ };
+ 
+@@ -197,6 +227,14 @@ static void nft_objref_map_destroy(const struct nft_ctx *ctx,
+ 	nf_tables_destroy_set(ctx, priv->set);
+ }
+ 
++static int nft_objref_map_validate(const struct nft_ctx *ctx,
++				   const struct nft_expr *expr)
++{
++	const struct nft_objref_map *priv = nft_expr_priv(expr);
 +
- 		return true;
- 	}
++	return nft_objref_validate_obj_type(ctx, priv->set->objtype);
++}
++
+ static const struct nft_expr_ops nft_objref_map_ops = {
+ 	.type		= &nft_objref_type,
+ 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_objref_map)),
+@@ -206,6 +244,7 @@ static const struct nft_expr_ops nft_objref_map_ops = {
+ 	.deactivate	= nft_objref_map_deactivate,
+ 	.destroy	= nft_objref_map_destroy,
+ 	.dump		= nft_objref_map_dump,
++	.validate	= nft_objref_map_validate,
+ 	.reduce		= NFT_REDUCE_READONLY,
+ };
  
 -- 
 2.51.0
