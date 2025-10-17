@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B801FBE9B3E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:29 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B98EBEA293
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 56BF735D946
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:21:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC4FD503AA8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616573570CC;
-	Fri, 17 Oct 2025 15:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE01393DF6;
+	Fri, 17 Oct 2025 15:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRaHIdZf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EmUtSNmK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCC82F12A5;
-	Fri, 17 Oct 2025 15:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CEE393DF1;
+	Fri, 17 Oct 2025 15:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714379; cv=none; b=mfIkvWMEfXeaoNWb5tRv4+t4+TatFnOMfLL6qIZsv7vZtHXSC+0XEcyoyLftzw78FOsCFXSr+4Cp8v0+uCNBt08ffPPUKcKTe+fwKvWkqjWrIV3cHtZhj1xY9v/hZt7uzHFMke3fA3zt8c4buBO1YgpxCaBVwJQnxvPS/i50pDA=
+	t=1760715270; cv=none; b=N2Hh6ifnr5iyhbYQTXUJuBN6j47Snpth+8SlATuF1ms9scSN8to3xWsJVGLkJTywCxXkHWKjcjBEVn1XEvXA01berx37Gdz5FkRoD3R0tPpAjen0ViYTlQnkwRx4Ekt0b5fbl1aCV5/+V2hrHMWhBd7B/ZcO02O1ByoV7vrUfFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714379; c=relaxed/simple;
-	bh=1bMu4CiifytBfQ2Dziwi/wgTsRq73sfg1Q1uPsdoQ4o=;
+	s=arc-20240116; t=1760715270; c=relaxed/simple;
+	bh=HeIGjbT528AZfG1W7GHtT/lDAag18KYOSj8BnmeBypI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kn/53DAYLBrAg0s4LeCOplFmUdEVKorK+Ko1VJhUKhHP6gQ9Ta6mBNMGxyuwiIHemqrqUl1mpR1JkZXz6yzr7oGEaGzqUfTSNqI6IxR6znlzLCdAt74YqpKXpVyWHdiIIfLMD6ryHgPNsJz8i/0YsTJEiq1cFjTo6ccCEXlUZ44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRaHIdZf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C394C4CEE7;
-	Fri, 17 Oct 2025 15:19:38 +0000 (UTC)
+	 MIME-Version; b=NEEtubY52FkWkockZ8S01U5VqnjI5WBMXgIgkPu17Aka747XoeGm6v6079Qt2YK964y8FcfTEly5tmi2Or6orLHh/B19X2E3P5hdLnNbh7oUYOuaW71FqK5KDx2YGaqN5wHloEoQz4Xp29vrj8BwJXAzvu1cMnaMHi5rgTdwAiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EmUtSNmK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71261C4CEE7;
+	Fri, 17 Oct 2025 15:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714378;
-	bh=1bMu4CiifytBfQ2Dziwi/wgTsRq73sfg1Q1uPsdoQ4o=;
+	s=korg; t=1760715269;
+	bh=HeIGjbT528AZfG1W7GHtT/lDAag18KYOSj8BnmeBypI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRaHIdZfnH6+YvOMfdXKcRxwlXLHSubNzysBBqiUa3At0sfoblBuHaOCH2itJf2SE
-	 Ww1YmN86wTZN6vkTbRV8V7sS6bZzlQHPpQ18lJNeEFC/H8+c4IbvGX3UtbZq/fva7F
-	 U0xpwEeMs5LnJp2a+UOCTotHYwGfi48VIndo8t68=
+	b=EmUtSNmK+KCZ+3vlYIwqI5Qgmj3As5s8Gu/tXqGQJ1hrr2lx+6dTovKWMCQrnuhQb
+	 uc2KTA8OyNNtAUXg5hTGC3z2DBJ/Z5hMnhcMAtfckKExHY6dSMB6tzrdwfrAIHiqbH
+	 FkIS7w7p6sQ2Me+bv27nOZUHhA9PZfA3pMCQpqV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 124/277] clk: qcom: tcsrcc-x1e80100: Set the bi_tcxo as parent to eDP refclk
+	Fuad Tabba <tabba@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.17 156/371] KVM: arm64: Fix page leak in user_mem_abort()
 Date: Fri, 17 Oct 2025 16:52:11 +0200
-Message-ID: <20251017145151.652280269@linuxfoundation.org>
+Message-ID: <20251017145207.578592629@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Fuad Tabba <tabba@google.com>
 
-commit 57c8e9da3dfe606b918d8f193837ebf2213a9545 upstream.
+commit 5f9466b50c1b4253d91abf81780b90a722133162 upstream.
 
-All the other ref clocks provided by this driver have the bi_tcxo
-as parent. The eDP refclk is the only one without a parent, leading
-to reporting its rate as 0. So set its parent to bi_tcxo, just like
-the rest of the refclks.
+The user_mem_abort() function acquires a page reference via
+__kvm_faultin_pfn() early in its execution. However, the subsequent
+checks for mismatched attributes between stage 1 and stage 2 mappings
+would return an error code directly, bypassing the corresponding page
+release.
 
-Cc: stable@vger.kernel.org # v6.9
-Fixes: 06aff116199c ("clk: qcom: Add TCSR clock driver for x1e80100")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250730-clk-qcom-tcsrcc-x1e80100-parent-edp-refclk-v1-1-7a36ef06e045@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fix this by storing the error and releasing the unused page before
+returning the error.
+
+Fixes: 6d674e28f642 ("KVM: arm/arm64: Properly handle faulting of device mappings")
+Fixes: 2a8dfab26677 ("KVM: arm64: Block cacheable PFNMAP mapping")
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/tcsrcc-x1e80100.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/kvm/mmu.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/tcsrcc-x1e80100.c
-+++ b/drivers/clk/qcom/tcsrcc-x1e80100.c
-@@ -29,6 +29,10 @@ static struct clk_branch tcsr_edp_clkref
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_edp_clkref_en",
-+			.parent_data = &(const struct clk_parent_data){
-+				.index = DT_BI_TCXO_PAD,
-+			},
-+			.num_parents = 1,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1673,7 +1673,7 @@ static int user_mem_abort(struct kvm_vcp
+ 			 * cache maintenance.
+ 			 */
+ 			if (!kvm_supports_cacheable_pfnmap())
+-				return -EFAULT;
++				ret = -EFAULT;
+ 		} else {
+ 			/*
+ 			 * If the page was identified as device early by looking at
+@@ -1696,7 +1696,12 @@ static int user_mem_abort(struct kvm_vcp
+ 	}
+ 
+ 	if (exec_fault && s2_force_noncacheable)
+-		return -ENOEXEC;
++		ret = -ENOEXEC;
++
++	if (ret) {
++		kvm_release_page_unused(page);
++		return ret;
++	}
+ 
+ 	/*
+ 	 * Potentially reduce shadow S2 permissions to match the guest's own
 
 
 
