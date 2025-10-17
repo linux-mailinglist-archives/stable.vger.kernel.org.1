@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-186869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037A3BE9EC7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:33:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 049F0BE977B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50BD5744BE2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E38285829F7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C9F32C92B;
-	Fri, 17 Oct 2025 15:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94509246783;
+	Fri, 17 Oct 2025 14:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Er1T0gxD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpU3wLqr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E76432E143;
-	Fri, 17 Oct 2025 15:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED18241663;
+	Fri, 17 Oct 2025 14:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714458; cv=none; b=N4E+42jlMvoS2LpgJQY9bDrTrXfYsqKOOr6y+Q1bw1WVJXjmhvZq9c+oYoBhBIwfov1cQoOfzUqjhyjioCc769GOG1dN6y7dbP8f41CA6Tr3OykjJgGYFk+1r3sfdxibzoAn1HSPe/RJdzPgGV7EXORqQmdqRACo/umPq7Q4Xj4=
+	t=1760713197; cv=none; b=Wm+UiCC+Y+MyVjNb/pPQuXn95Bum1Z9BBTqimbi28SwE1J0ahurvz/a2J4Af3+wMVDxkdexZb2D/xzwGFe/MWB9dUq4R9KTXvgrJaMptEuV1En3NwbCetjDEM1T1ksKqZKU0AaP7F1YB7tJHKG4cGeqcZdVNGbeZNODwlaCaCQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714458; c=relaxed/simple;
-	bh=ag9icF00RJ6CThBbFz+R1ZyrIGDduWbePoy+51VxMoM=;
+	s=arc-20240116; t=1760713197; c=relaxed/simple;
+	bh=j6mKPdweI29Z7II4JQaff9e7MqgFCCuOby0lsvUfsNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKFtA5smc7V683Lsp7aEv7pKI0t8DYgin1A25rZDCw/JbL2r4+91Kl7qIXKez54r5x4n1w6Jj8ih/+wnETxlFbSuHmAmxaFulQZuMSOFwhLllSTaL0B02wr7Yeao/UOs4Zk1I12rIiIwRVslYYEgGLDDzBePDdW4E79qSrjRzSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Er1T0gxD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AFCC4CEE7;
-	Fri, 17 Oct 2025 15:20:57 +0000 (UTC)
+	 MIME-Version; b=NR806gCf0Xz13Snd0/Yz5mxvYqjsJ0hkCioFPqIPRVhd0gTpY+JeC7ET8g9KVk/9u4lzahrIhzbs52A/Wzt98ZCBGisY0zWS3M7tL5sPB21KoL8t+C96JuwsxYAvxdC6vMBUGVc2uFuwbG6dnodJrIx3X4Dg5x09mAWRb21FY/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpU3wLqr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10BFC4CEE7;
+	Fri, 17 Oct 2025 14:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714458;
-	bh=ag9icF00RJ6CThBbFz+R1ZyrIGDduWbePoy+51VxMoM=;
+	s=korg; t=1760713197;
+	bh=j6mKPdweI29Z7II4JQaff9e7MqgFCCuOby0lsvUfsNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Er1T0gxD+LihPMTV/4T4zqffYwyyvNoTAmDIV+XbTVWldDXNdiKcjjFmh+KVbFqog
-	 jz+0NYhgwfvRxdQPObVRL3xoj/7yrBWSUNwdaqBXqEQFV6DzVWjfcAzyBVpRyaVQBD
-	 uQ0QKI/sEO3Si3cB+T2TC88a+W189HJhhXDP0yFk=
+	b=DpU3wLqrEYtvM7GrO+Yx4gWumfG5W+zB0pALZT93+YNEUtpKeVBu3fiBMM/lEk2qh
+	 5+zIJPBSIaKaJsGYHZGqap/u3BVdinalwPTQdqtp8L88T+uXpa5jv/UFGImFrK9vOH
+	 KUutrD67A0nUlwFEx/rEtKPBsUEad+wAy+0GPsHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.12 153/277] nvme-pci: Add TUXEDO IBS Gen8 to Samsung sleep quirk
+	Sean Anderson <sean.anderson@linux.dev>,
+	"OGriofa, Conall" <conall.ogriofa@amd.com>,
+	"Erim, Salih" <Salih.Erim@amd.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 081/168] iio: xilinx-ams: Unmask interrupts after updating alarms
 Date: Fri, 17 Oct 2025 16:52:40 +0200
-Message-ID: <20251017145152.712157851@linuxfoundation.org>
+Message-ID: <20251017145132.011219436@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georg Gottleuber <ggo@tuxedocomputers.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-commit eeaed48980a7aeb0d3d8b438185d4b5a66154ff9 upstream.
+commit feb500c7ae7a198db4d2757901bce562feeefa5e upstream.
 
-On the TUXEDO InfinityBook S Gen8, a Samsung 990 Evo NVMe leads to
-a high power consumption in s2idle sleep (3.5 watts).
+To convert level-triggered alarms into edge-triggered IIO events, alarms
+are masked when they are triggered. To ensure we catch subsequent
+alarms, we then periodically poll to see if the alarm is still active.
+If it isn't, we unmask it. Active but masked alarms are stored in
+current_masked_alarm.
 
-This patch applies 'Force No Simple Suspend' quirk to achieve a sleep with
-a lower power consumption, typically around 1 watts.
+If an active alarm is disabled, it will remain set in
+current_masked_alarm until ams_unmask_worker clears it. If the alarm is
+re-enabled before ams_unmask_worker runs, then it will never be cleared
+from current_masked_alarm. This will prevent the alarm event from being
+pushed even if the alarm is still active.
 
-Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fix this by recalculating current_masked_alarm immediately when enabling
+or disabling alarms.
+
+Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: O'Griofa, Conall <conall.ogriofa@amd.com>
+Tested-by: Erim, Salih <Salih.Erim@amd.com>
+Acked-by: Erim, Salih <Salih.Erim@amd.com>
+Link: https://patch.msgid.link/20250715002847.2035228-1-sean.anderson@linux.dev
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/adc/xilinx-ams.c |   45 +++++++++++++++++++++++--------------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3140,10 +3140,12 @@ static unsigned long check_vendor_combin
- 		 * Exclude Samsung 990 Evo from NVME_QUIRK_SIMPLE_SUSPEND
- 		 * because of high power consumption (> 2 Watt) in s2idle
- 		 * sleep. Only some boards with Intel CPU are affected.
-+		 * (Note for testing: Samsung 990 Evo Plus has same PCI ID)
- 		 */
- 		if (dmi_match(DMI_BOARD_NAME, "DN50Z-140HC-YD") ||
- 		    dmi_match(DMI_BOARD_NAME, "GMxPXxx") ||
- 		    dmi_match(DMI_BOARD_NAME, "GXxMRXx") ||
-+		    dmi_match(DMI_BOARD_NAME, "NS5X_NS7XAU") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PG31") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1") ||
- 		    dmi_match(DMI_BOARD_NAME, "PH6PG01_PH6PG71"))
+--- a/drivers/iio/adc/xilinx-ams.c
++++ b/drivers/iio/adc/xilinx-ams.c
+@@ -385,6 +385,29 @@ static void ams_update_pl_alarm(struct a
+ 	ams_pl_update_reg(ams, AMS_REG_CONFIG3, AMS_REGCFG3_ALARM_MASK, cfg);
+ }
+ 
++static void ams_unmask(struct ams *ams)
++{
++	unsigned int status, unmask;
++
++	status = readl(ams->base + AMS_ISR_0);
++
++	/* Clear those bits which are not active anymore */
++	unmask = (ams->current_masked_alarm ^ status) & ams->current_masked_alarm;
++
++	/* Clear status of disabled alarm */
++	unmask |= ams->intr_mask;
++
++	ams->current_masked_alarm &= status;
++
++	/* Also clear those which are masked out anyway */
++	ams->current_masked_alarm &= ~ams->intr_mask;
++
++	/* Clear the interrupts before we unmask them */
++	writel(unmask, ams->base + AMS_ISR_0);
++
++	ams_update_intrmask(ams, ~AMS_ALARM_MASK, ~AMS_ALARM_MASK);
++}
++
+ static void ams_update_alarm(struct ams *ams, unsigned long alarm_mask)
+ {
+ 	unsigned long flags;
+@@ -397,6 +420,7 @@ static void ams_update_alarm(struct ams
+ 
+ 	spin_lock_irqsave(&ams->intr_lock, flags);
+ 	ams_update_intrmask(ams, AMS_ISR0_ALARM_MASK, ~alarm_mask);
++	ams_unmask(ams);
+ 	spin_unlock_irqrestore(&ams->intr_lock, flags);
+ }
+ 
+@@ -1025,28 +1049,9 @@ static void ams_handle_events(struct iio
+ static void ams_unmask_worker(struct work_struct *work)
+ {
+ 	struct ams *ams = container_of(work, struct ams, ams_unmask_work.work);
+-	unsigned int status, unmask;
+ 
+ 	spin_lock_irq(&ams->intr_lock);
+-
+-	status = readl(ams->base + AMS_ISR_0);
+-
+-	/* Clear those bits which are not active anymore */
+-	unmask = (ams->current_masked_alarm ^ status) & ams->current_masked_alarm;
+-
+-	/* Clear status of disabled alarm */
+-	unmask |= ams->intr_mask;
+-
+-	ams->current_masked_alarm &= status;
+-
+-	/* Also clear those which are masked out anyway */
+-	ams->current_masked_alarm &= ~ams->intr_mask;
+-
+-	/* Clear the interrupts before we unmask them */
+-	writel(unmask, ams->base + AMS_ISR_0);
+-
+-	ams_update_intrmask(ams, ~AMS_ALARM_MASK, ~AMS_ALARM_MASK);
+-
++	ams_unmask(ams);
+ 	spin_unlock_irq(&ams->intr_lock);
+ 
+ 	/* If still pending some alarm re-trigger the timer */
 
 
 
