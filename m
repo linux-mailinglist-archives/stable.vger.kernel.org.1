@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-187170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FA2BEA81B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:11:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD699BEA6F9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:04:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3560627AC8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68A9A941BE3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CD632E131;
-	Fri, 17 Oct 2025 15:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D850732E151;
+	Fri, 17 Oct 2025 15:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mp6rsGhn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3RI73vC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2396A1A9FB7;
-	Fri, 17 Oct 2025 15:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B2A330B30;
+	Fri, 17 Oct 2025 15:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715313; cv=none; b=oF2u0+xTKuKnqu8qfH9D3HF12GQxyUt2by3jxvmNXyKzRGy70ICE0YTxhTX3x5iGwDvvGI0MsoukKLIFXLd9csZ5k8bbW2RkSbntlTlBtKpMKHpfjx2o/qOQluDYZ167f3/twu1JCc41rVYyz43Bzms2gqlfkJZYacJBqbfvcN0=
+	t=1760715321; cv=none; b=Q8KcZJnEsZYwZ8Wr0ri5mgD2zHU7e/tLvK50g1JvoNcxW6yNvfxR9Vjdd27tUSv8cLzzmrTiTu7lU234lBGWQ6rK502JX2+7/7l6enMImvAgS0Zc4DLrgUnDuZXwwiSax+3+jzxcMJh7Zo0oDjn/n6Pr5JyQrrNoxPbGfbR4fvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715313; c=relaxed/simple;
-	bh=3r4GNGpt68Bug7LQiozU9fryIEAoGWp4Px8ena1fruU=;
+	s=arc-20240116; t=1760715321; c=relaxed/simple;
+	bh=7IbGXiguCTO7c8a/YXsS8bXL9Rqnttah1qlBWvk3Z6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=II/BI8nRX16mCMMAHjLFzH4mk8va8LzMyVUVeiErqdq4xJnx82O7f/BamNBlqhnrlFlpqu8c9MLhcIixbhdJOWVAg4eBSUfWc6PFppOUhZ5yn8SjamJT+4b9GqmanPDXFV8adPRMxiNyWl8PwCb/dOJMJVdXG/jAVnazMQIfIUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mp6rsGhn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973F6C4CEE7;
-	Fri, 17 Oct 2025 15:35:12 +0000 (UTC)
+	 MIME-Version; b=HaRSNZJKx2rgSCylJkQrdGqCO5uY4x15VrHJ2pPQJscgCFD6cK+dIOrtmeNTxzzeu1X1OlBGqsbkxkWmzmPymQLWd1/gvUegRATHtYL25phwV1il6cl+x8/dVDEij6IeImPPgeeYW1Dk3eMkRcIOzA0fufK0lfrXBNZnBglP6Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3RI73vC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182ADC4CEE7;
+	Fri, 17 Oct 2025 15:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715313;
-	bh=3r4GNGpt68Bug7LQiozU9fryIEAoGWp4Px8ena1fruU=;
+	s=korg; t=1760715321;
+	bh=7IbGXiguCTO7c8a/YXsS8bXL9Rqnttah1qlBWvk3Z6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mp6rsGhnHDXBGJ3H3ZXDuCK7k+iJvV8lwlQcuWP0YMvuKt4FUwjZEA5qXfhGwj2jN
-	 05grsT5ozwy2XCicqqya2qMxFGQsVrVsAhjZBF/jsJyS8PUE1OJQ8DYE51pl38rXXN
-	 HT4+9PDbuSwrOqQTFcpHPSvkbDl0Anp3bq1IX0mw=
+	b=h3RI73vC484+8sTFU95ocv1llzjXtVnhcrQY/Cam5rrvQnSciiwn/fKkNgkahtqw0
+	 9N9FTR5YJJ/jlZaHPRNsTc899tla8VEV0flIPL6GfoiOuFMA8SovzXYPObIIPkSElT
+	 n6rQ1ddeV821F8oC/e196BG35jc42OxIyBgs6Zyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.17 173/371] media: pci: ivtv: Add missing check after DMA map
-Date: Fri, 17 Oct 2025 16:52:28 +0200
-Message-ID: <20251017145208.189181202@linuxfoundation.org>
+Subject: [PATCH 6.17 176/371] media: s5p-mfc: remove an unused/uninitialized variable
+Date: Fri, 17 Oct 2025 16:52:31 +0200
+Message-ID: <20251017145208.297221876@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -65,60 +65,131 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 1069a4fe637d0e3e4c163e3f8df9be306cc299b4 upstream.
+commit 7fa37ba25a1dfc084e24ea9acc14bf1fad8af14c upstream.
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, free blanking_ptr and set it to 0.  As 0 is a
-valid DMA address, use blanking_ptr to test if the DMA address
-is set.
+The s5p_mfc_cmd_args structure in the v6 driver is never used, not
+initialized to anything other than zero, but as of clang-21 this
+causes a warning:
 
-Fixes: 1a0adaf37c30 ("V4L/DVB (5345): ivtv driver for Conexant cx23416/cx23415 MPEG encoder/decoder")
+drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:45:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   45 |                                         &h2r_args);
+      |                                          ^~~~~~~~
+
+Just remove this for simplicity. Since the function is also called
+through a callback, this does require adding a trivial wrapper with
+the correct prototype.
+
+Fixes: f96f3cfa0bb8 ("[media] s5p-mfc: Update MFC v4l2 driver to support MFC6.x")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/ivtv/ivtv-irq.c |    2 +-
- drivers/media/pci/ivtv/ivtv-yuv.c |    8 +++++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c |   35 +++++-----------
+ 1 file changed, 13 insertions(+), 22 deletions(-)
 
---- a/drivers/media/pci/ivtv/ivtv-irq.c
-+++ b/drivers/media/pci/ivtv/ivtv-irq.c
-@@ -351,7 +351,7 @@ void ivtv_dma_stream_dec_prepare(struct
+--- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
++++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
+@@ -14,8 +14,7 @@
+ #include "s5p_mfc_opr.h"
+ #include "s5p_mfc_cmd_v6.h"
  
- 	/* Insert buffer block for YUV if needed */
- 	if (s->type == IVTV_DEC_STREAM_TYPE_YUV && f->offset_y) {
--		if (yi->blanking_dmaptr) {
-+		if (yi->blanking_ptr) {
- 			s->sg_pending[idx].src = yi->blanking_dmaptr;
- 			s->sg_pending[idx].dst = offset;
- 			s->sg_pending[idx].size = 720 * 16;
---- a/drivers/media/pci/ivtv/ivtv-yuv.c
-+++ b/drivers/media/pci/ivtv/ivtv-yuv.c
-@@ -125,7 +125,7 @@ static int ivtv_yuv_prep_user_dma(struct
- 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
+-static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
+-				    const struct s5p_mfc_cmd_args *args)
++static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd)
+ {
+ 	mfc_debug(2, "Issue the command: %d\n", cmd);
  
- 	/* If we've offset the y plane, ensure top area is blanked */
--	if (f->offset_y && yi->blanking_dmaptr) {
-+	if (f->offset_y && yi->blanking_ptr) {
- 		dma->SGarray[dma->SG_length].size = cpu_to_le32(720*16);
- 		dma->SGarray[dma->SG_length].src = cpu_to_le32(yi->blanking_dmaptr);
- 		dma->SGarray[dma->SG_length].dst = cpu_to_le32(IVTV_DECODER_OFFSET + yuv_offset[frame]);
-@@ -929,6 +929,12 @@ static void ivtv_yuv_init(struct ivtv *i
- 		yi->blanking_dmaptr = dma_map_single(&itv->pdev->dev,
- 						     yi->blanking_ptr,
- 						     720 * 16, DMA_TO_DEVICE);
-+		if (dma_mapping_error(&itv->pdev->dev, yi->blanking_dmaptr)) {
-+			kfree(yi->blanking_ptr);
-+			yi->blanking_ptr = NULL;
-+			yi->blanking_dmaptr = 0;
-+			IVTV_DEBUG_WARN("Failed to dma_map yuv blanking buffer\n");
-+		}
+@@ -31,7 +30,6 @@ static int s5p_mfc_cmd_host2risc_v6(stru
+ 
+ static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	const struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
+ 	int ret;
+ 
+@@ -41,33 +39,23 @@ static int s5p_mfc_sys_init_cmd_v6(struc
+ 
+ 	mfc_write(dev, dev->ctx_buf.dma, S5P_FIMV_CONTEXT_MEM_ADDR_V6);
+ 	mfc_write(dev, buf_size->dev_ctx, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6);
+ }
+ 
+ static int s5p_mfc_sleep_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6,
+-			&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6);
+ }
+ 
+ static int s5p_mfc_wakeup_cmd_v6(struct s5p_mfc_dev *dev)
+ {
+-	struct s5p_mfc_cmd_args h2r_args;
+-
+-	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6);
+ }
+ 
+ /* Open a new instance and get its number */
+ static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int codec_type;
+ 
+ 	mfc_debug(2, "Requested codec mode: %d\n", ctx->codec_mode);
+@@ -129,23 +117,20 @@ static int s5p_mfc_open_inst_cmd_v6(stru
+ 	mfc_write(dev, ctx->ctx.size, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+ 	mfc_write(dev, 0, S5P_FIMV_D_CRC_CTRL_V6); /* no crc */
+ 
+-	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6,
+-					&h2r_args);
++	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6);
+ }
+ 
+ /* Close instance */
+ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ {
+ 	struct s5p_mfc_dev *dev = ctx->dev;
+-	struct s5p_mfc_cmd_args h2r_args;
+ 	int ret = 0;
+ 
+ 	dev->curr_ctx = ctx->num;
+ 	if (ctx->state != MFCINST_FREE) {
+ 		mfc_write(dev, ctx->inst_no, S5P_FIMV_INSTANCE_ID_V6);
+ 		ret = s5p_mfc_cmd_host2risc_v6(dev,
+-					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6,
+-					&h2r_args);
++					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6);
  	} else {
- 		yi->blanking_dmaptr = 0;
- 		IVTV_DEBUG_WARN("Failed to allocate yuv blanking buffer\n");
+ 		ret = -EINVAL;
+ 	}
+@@ -153,9 +138,15 @@ static int s5p_mfc_close_inst_cmd_v6(str
+ 	return ret;
+ }
+ 
++static int s5p_mfc_cmd_host2risc_v6_args(struct s5p_mfc_dev *dev, int cmd,
++				    const struct s5p_mfc_cmd_args *ignored)
++{
++	return s5p_mfc_cmd_host2risc_v6(dev, cmd);
++}
++
+ /* Initialize cmd function pointers for MFC v6 */
+ static const struct s5p_mfc_hw_cmds s5p_mfc_cmds_v6 = {
+-	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6,
++	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6_args,
+ 	.sys_init_cmd = s5p_mfc_sys_init_cmd_v6,
+ 	.sleep_cmd = s5p_mfc_sleep_cmd_v6,
+ 	.wakeup_cmd = s5p_mfc_wakeup_cmd_v6,
 
 
 
