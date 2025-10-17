@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-186599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036B3BE9A22
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:17:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86E5BE9742
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:05:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6C87A583D11
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5B193B6951
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA8A2F12B7;
-	Fri, 17 Oct 2025 15:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B595695;
+	Fri, 17 Oct 2025 14:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5m+dwFH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAw7th1t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A8733710B;
-	Fri, 17 Oct 2025 15:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0C93370F6;
+	Fri, 17 Oct 2025 14:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713698; cv=none; b=KZO1n2lJzUmUVkKHqo6K5UIusMZR58HEJyyglpxQw9UzeVA9bMHs/Uak1hajg9imVb1zIi8XgBmbKP/SiQx/h7uTOG+bJMgkalrjv2SVwHWcQrOBnvxaJxObHuSBuSJC+JfuQpU3WyKc/jsMn/qx3ImysU7PbXkAZoVMWLGIdp8=
+	t=1760713171; cv=none; b=BzZy3cE8pfWXTFb4ppB8Al24Pd2K6WvMyEhWLUXKjSsPZJGZoHF9op0Zw0s/fwWGkMAAcpwROCZNNbwqiohht+qnqUsjmjzcAuYfbRWwNVL1wJYSPBv/DYyRBEZyJCBNDsdlxrl3PkLWjns/pjh4vJNdkaRlY2PwL5+TPoYTK6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713698; c=relaxed/simple;
-	bh=YqqUF7mOXSq2i9MHC8pdri52zk1jgCLmp/qmCfgEKQU=;
+	s=arc-20240116; t=1760713171; c=relaxed/simple;
+	bh=hBVlUDe83yNCPDz1mAQiaDHfiyDe2/Xnn3NWZjJ5SC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oN9NCQLxna7Ncp/htVNRKXFvoCrxW2bTM/XjU4gFmcYOacXtdriQWXaGlJ9NacbpctF5tRyvuiv/gbg3xP2RgJqOYUQaQIhRyzFgbbywaTo0mvxlJcEKMZFUh81tWS0ScW/Os+1i5h8scL5zzYwVsN+eR4SqfwfkoHeUB3SYly4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5m+dwFH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2DDC4CEE7;
-	Fri, 17 Oct 2025 15:08:17 +0000 (UTC)
+	 MIME-Version; b=AvUN7QJO87xCk18VXSJrQJGfQTpKBEJlXTNKvSEEyDMOsgVE7U7SP7fP/mGUO3h3Y6ZkynwD+8iPRlWcizPd+D6Sd3wlrPf4/O4dA9wcT9OTvqI+zsTyZZYXEqorTwtTQkiOoqM1IeqPVgFs/yEpDN9Ho6Sj/WB4dXrrmZk4GUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAw7th1t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88DDC4CEE7;
+	Fri, 17 Oct 2025 14:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713698;
-	bh=YqqUF7mOXSq2i9MHC8pdri52zk1jgCLmp/qmCfgEKQU=;
+	s=korg; t=1760713171;
+	bh=hBVlUDe83yNCPDz1mAQiaDHfiyDe2/Xnn3NWZjJ5SC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5m+dwFH5BNUrC7xH4rrIdAjLWI9zHTCAR1eRRlMOC7LMMscGlZw481mypGvZsuKl
-	 xUbZ2q3UMX4+mL6++bC72hgXAg/IozBdv8cKbI0uzpR069RxBU3CbtmFMNl6eodrQX
-	 d4AeXFVz7xswWoX2I2KMzXy31E7BX7jrKpgJZiPg=
+	b=aAw7th1tLCV6h+VCQdF7ZeKPrC5pNRJZ51kTT5sPgseLJ2FH26znkIHOtMGAMElm/
+	 nxRHghae9OhcSd3ZJ5J+fn/30rYMOV9rTLfnStaMqh51NRgBqdGdX3/4Br18OBOs84
+	 7tVTUugv9nOACgWPlN0vFQk5j80tczrDx+TXkxak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Helge Deller <deller@gmx.de>,
-	Stan Johnson <userm57@yahoo.com>
-Subject: [PATCH 6.6 089/201] fbdev: Fix logic error in "offb" name match
-Date: Fri, 17 Oct 2025 16:52:30 +0200
-Message-ID: <20251017145138.024228938@linuxfoundation.org>
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 072/168] copy_sighand: Handle architectures where sizeof(unsigned long) < sizeof(u64)
+Date: Fri, 17 Oct 2025 16:52:31 +0200
+Message-ID: <20251017145131.679234866@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Simon Schuster <schuster.simon@siemens-energy.com>
 
-commit 15df28699b28d6b49dc305040c4e26a9553df07a upstream.
+commit 04ff48239f46e8b493571e260bd0e6c3a6400371 upstream.
 
-A regression was reported to me recently whereby /dev/fb0 had disappeared
-from a PowerBook G3 Series "Wallstreet". The problem shows up when the
-"video=ofonly" parameter is passed to the kernel, which is what the
-bootloader does when "no video driver" is selected. The cause of the
-problem is the "offb" string comparison, which got mangled when it got
-refactored. Fix it.
+With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
+clone3") the effective bit width of clone_flags on all architectures was
+increased from 32-bit to 64-bit. However, the signature of the copy_*
+helper functions (e.g., copy_sighand) used by copy_process was not
+adapted.
 
-Cc: stable@vger.kernel.org
-Fixes: 93604a5ade3a ("fbdev: Handle video= parameter in video/cmdline.c")
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+As such, they truncate the flags on any 32-bit architectures that
+supports clone3 (arc, arm, csky, m68k, microblaze, mips32, openrisc,
+parisc32, powerpc32, riscv32, x86-32 and xtensa).
+
+For copy_sighand with CLONE_CLEAR_SIGHAND being an actual u64
+constant, this triggers an observable bug in kernel selftest
+clone3_clear_sighand:
+
+        if (clone_flags & CLONE_CLEAR_SIGHAND)
+
+in function copy_sighand within fork.c will always fail given:
+
+        unsigned long /* == uint32_t */ clone_flags
+        #define CLONE_CLEAR_SIGHAND 0x100000000ULL
+
+This commit fixes the bug by always passing clone_flags to copy_sighand
+via their declared u64 type, invariant of architecture-dependent integer
+sizes.
+
+Fixes: b612e5df4587 ("clone3: add CLONE_CLEAR_SIGHAND")
+Cc: stable@vger.kernel.org # linux-5.5+
+Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+Link: https://lore.kernel.org/20250901-nios2-implement-clone3-v2-1-53fcf5577d57@siemens-energy.com
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fb_cmdline.c | 2 +-
+ kernel/fork.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/fb_cmdline.c b/drivers/video/fbdev/core/fb_cmdline.c
-index 4d1634c492ec..594b60424d1c 100644
---- a/drivers/video/fbdev/core/fb_cmdline.c
-+++ b/drivers/video/fbdev/core/fb_cmdline.c
-@@ -40,7 +40,7 @@ int fb_get_options(const char *name, char **option)
- 	bool enabled;
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1641,7 +1641,7 @@ static int copy_files(unsigned long clon
+ 	return 0;
+ }
  
- 	if (name)
--		is_of = strncmp(name, "offb", 4);
-+		is_of = !strncmp(name, "offb", 4);
+-static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
++static int copy_sighand(u64 clone_flags, struct task_struct *tsk)
+ {
+ 	struct sighand_struct *sig;
  
- 	enabled = __video_get_options(name, &options, is_of);
- 
--- 
-2.51.0
-
 
 
 
