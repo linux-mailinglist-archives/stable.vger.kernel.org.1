@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-187140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8838BE9FFC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B8ABE9BC7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CE86188A674
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B4B718927B4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C315336EFA;
-	Fri, 17 Oct 2025 15:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6777233507C;
+	Fri, 17 Oct 2025 15:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIF/bK0A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWqXzjbN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063AE2F12D9;
-	Fri, 17 Oct 2025 15:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A55332909;
+	Fri, 17 Oct 2025 15:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715229; cv=none; b=uTGdXH7VNrwyDDi1kUNiNP7aHgM1d8Magdm6bw6IY/owLlfntpbEwXQ3vzpkQGuItx1Rx75J3eGg7wxJ51XclLo6sfKzgkvoB3C154bNlEl/9tHE5x6HN+OLYyBL5VyNeOes6EhA1MxOjVCkpH+/0JvVj1QmBdBfHSXt+mwmJKw=
+	t=1760714339; cv=none; b=DT5w216JLkBi49ofF+3m0mdKB9QzGlXbVuWD5PjxVe4CeV7KPCyEeuKCc3Cl0CwdOOTl9z9XjObtwo/nVpmAxOB6KAMpVFCK6kHKaerOtTtlwS2Uzx8ya2g6/8hX2neV0kgVUEbRgupQRvpgCDavh0q3koAjNvPgA516Vf8lric=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715229; c=relaxed/simple;
-	bh=UG42y1ktzQdfwF5MSQL2BEUijxJY504B8wQ8FA4CLKs=;
+	s=arc-20240116; t=1760714339; c=relaxed/simple;
+	bh=RdHLbeC5K4TyEc14wkePHdOJ/P9tZH7QVig7VueiOQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbNVaJq2RLYc03KM0LhBQOEWnKdAhA7+N6zVdOJlbF3zyaaNJmSMBUo7iY5Bt2eazVlzYqtC841aqxHkXodqlyV77HisdVF6N6QWTdTTZyfLdMtpTfGCQ9PJadRUAsXavV4OoiBCMkz0NmtWxME5B/wbLK/XmvCmfkwT/N/OD1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIF/bK0A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BEBC4CEE7;
-	Fri, 17 Oct 2025 15:33:47 +0000 (UTC)
+	 MIME-Version; b=UBxJaHdt/1RoGNKf/dPMg2EOVyWs0zoMtDzETXDJsWQgoOpMe2ce3CjiMbkSZNSoWeOOsh1EWDrXvQSRh9FUFqj9FDOtihZK3+9DuUVOTcp4yrmk4zq6JN4nNWPtanrTKvV6EJIX9P08vpq+cZwePAqXOkF12W6SuDVjHzymthU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWqXzjbN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A280AC4CEE7;
+	Fri, 17 Oct 2025 15:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715227;
-	bh=UG42y1ktzQdfwF5MSQL2BEUijxJY504B8wQ8FA4CLKs=;
+	s=korg; t=1760714339;
+	bh=RdHLbeC5K4TyEc14wkePHdOJ/P9tZH7QVig7VueiOQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xIF/bK0AjmpEMx57BuXWuPZsnZQqXhH47ZaNEZeFHN8qGqAxYreY9t57ScG+gbwhj
-	 13uHBNsXqTa0ewxe0SKwlfFZCLgHp08TJRNQZI/LOs69MDO+EWKkN1m59AqwRuPXrm
-	 7DmjlCVfmlWaljxHyOgdUJB5l449lKv9VmvcD9ts=
+	b=yWqXzjbNshVsxlyR4Li0RHAKwEXcx/GkwF5JZ8TzfwKz7jHI1mdPYO8wrsirlNsJd
+	 VhXgWvhCdYlNXozdDPTPgPsrBX74Vb07x+tmAKcdUZ4mB3SYrjcamtszQsbUcZf13e
+	 yiAO9SQZOZ9ZI2r+/KQ710+JIfq2gx21n8H4oDTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.17 143/371] arm64: dts: qcom: msm8939: Add missing MDSS reset
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 111/277] media: vivid: fix disappearing <Vendor Command With ID> messages
 Date: Fri, 17 Oct 2025 16:51:58 +0200
-Message-ID: <20251017145207.109815946@linuxfoundation.org>
+Message-ID: <20251017145151.180119544@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
 
-commit f73c82c855e186e9b67125e3eee743960320e43c upstream.
+commit 4bd8a6147645480d550242ff816b4c7ba160e5b7 upstream.
 
-On most MSM8939 devices, the bootloader already initializes the display to
-show the boot splash screen. In this situation, MDSS is already configured
-and left running when starting Linux. To avoid side effects from the
-bootloader configuration, the MDSS reset can be specified in the device
-tree to start again with a clean hardware state.
+The vivid driver supports the <Vendor Command With ID> message,
+but if the Vendor ID of the received message didn't match the Vendor ID
+of the CEC Adapter, then it ignores it (good) and returns 0 (bad).
 
-The reset for MDSS is currently missing in msm8939.dtsi, which causes
-errors when the MDSS driver tries to re-initialize the registers:
+It should return -ENOMSG to indicate that other followers should be
+asked to handle it. Return code 0 means that the driver handled it,
+which is wrong in this case.
 
- dsi_err_worker: status=6
- dsi_err_worker: status=6
- dsi_err_worker: status=6
- ...
+As a result, userspace followers never get the chance to process such a
+message.
 
-It turns out that we have always indirectly worked around this by building
-the MDSS driver as a module. Before v6.17, the power domain was temporarily
-turned off until the module was loaded, long enough to clear the register
-contents. In v6.17, power domains are not turned off during boot until
-sync_state() happens, so this is no longer working. Even before v6.17 this
-resulted in broken behavior, but notably only when the MDSS driver was
-built-in instead of a module.
+Refactor the code a bit to have the function return -ENOMSG at the end,
+drop the default case, and ensure that the message handlers return 0.
 
+That way 0 is only returned if the message is actually handled in the
+vivid_received() function.
+
+Fixes: 812765cd6954 ("media: vivid: add <Vendor Command With ID> support")
 Cc: stable@vger.kernel.org
-Fixes: 61550c6c156c ("arm64: dts: qcom: Add msm8939 SoC")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-2-a5c705df0c45@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/msm8939.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/test-drivers/vivid/vivid-cec.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-@@ -1249,6 +1249,8 @@
+diff --git a/drivers/media/test-drivers/vivid/vivid-cec.c b/drivers/media/test-drivers/vivid/vivid-cec.c
+index 356a988dd6a1..2d15fdd5d999 100644
+--- a/drivers/media/test-drivers/vivid/vivid-cec.c
++++ b/drivers/media/test-drivers/vivid/vivid-cec.c
+@@ -327,7 +327,7 @@ static int vivid_received(struct cec_adapter *adap, struct cec_msg *msg)
+ 		char osd[14];
  
- 			power-domains = <&gcc MDSS_GDSC>;
+ 		if (!cec_is_sink(adap))
+-			return -ENOMSG;
++			break;
+ 		cec_ops_set_osd_string(msg, &disp_ctl, osd);
+ 		switch (disp_ctl) {
+ 		case CEC_OP_DISP_CTL_DEFAULT:
+@@ -348,7 +348,7 @@ static int vivid_received(struct cec_adapter *adap, struct cec_msg *msg)
+ 			cec_transmit_msg(adap, &reply, false);
+ 			break;
+ 		}
+-		break;
++		return 0;
+ 	}
+ 	case CEC_MSG_VENDOR_COMMAND_WITH_ID: {
+ 		u32 vendor_id;
+@@ -379,7 +379,7 @@ static int vivid_received(struct cec_adapter *adap, struct cec_msg *msg)
+ 		if (size == 1) {
+ 			// Ignore even op values
+ 			if (!(vendor_cmd[0] & 1))
+-				break;
++				return 0;
+ 			reply.len = msg->len;
+ 			memcpy(reply.msg + 1, msg->msg + 1, msg->len - 1);
+ 			reply.msg[msg->len - 1]++;
+@@ -388,12 +388,10 @@ static int vivid_received(struct cec_adapter *adap, struct cec_msg *msg)
+ 					      CEC_OP_ABORT_INVALID_OP);
+ 		}
+ 		cec_transmit_msg(adap, &reply, false);
+-		break;
++		return 0;
+ 	}
+-	default:
+-		return -ENOMSG;
+ 	}
+-	return 0;
++	return -ENOMSG;
+ }
  
-+			resets = <&gcc GCC_MDSS_BCR>;
-+
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			#interrupt-cells = <1>;
+ static const struct cec_adap_ops vivid_cec_adap_ops = {
+-- 
+2.51.0
+
 
 
 
