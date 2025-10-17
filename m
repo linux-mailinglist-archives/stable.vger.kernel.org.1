@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF054BE9D9B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:00 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F2EBE9647
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBAB0624CB3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7B7BB508BEA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEFD2F12D0;
-	Fri, 17 Oct 2025 15:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FF7337107;
+	Fri, 17 Oct 2025 14:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvTVYyu7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBK+7NDX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B37A289811;
-	Fri, 17 Oct 2025 15:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997C13370E3;
+	Fri, 17 Oct 2025 14:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714330; cv=none; b=K4LLiW4LZNBkbOM4Ktc/35shx8ysB2Th0hWSUfpfRciGqzFQWQW7u3fI89RhAYW9pkRlKqlPM1c98yG/aoq4olgnGoTA7kb32YCfwaa4raEjHPZzuTujzGk0xffMT32iA8igrVUvE+cLB2DafJ5B1ZwTUqYxEAH8xrdfP9ZA4uw=
+	t=1760713068; cv=none; b=c5rDWj07ksPqU4GtbcczClKIMW2dyjO2JtXJyfj6jP8metK8LWFaXzk0RbmFJ8VGIcwxKxxJqartzkR9WWwcIL8MfKpnREFcLAPh/wkxW23PkCNZxthhDRDM11B48sH2bxTiyQAEaqxvqwAg3s/7e8EGASu0U6t5csix003HWIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714330; c=relaxed/simple;
-	bh=e1n7RHUGjCxsmTD+j7ySOQQSJgJfzww+VeaU0ySrng0=;
+	s=arc-20240116; t=1760713068; c=relaxed/simple;
+	bh=I/N797+3E8Nqdh/REmB7FKzQ4OZoINtYXU1RXmCbSes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UXYVXA7VACjGJfH3rT3N0fHIegpA5S79IAZSKNT3MycuBieGDayeiPrpr+QyylFdI0WOizG7LevzzpgHfZ/jU67yHPntW8RAt2bBqTiIf9hd4g0QhBm6BE7Gd6qONZBBRtI07XCdlVffewPEl6HyOXIFeq7LXZrm0u9AomsSjuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvTVYyu7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03364C4CEE7;
-	Fri, 17 Oct 2025 15:18:49 +0000 (UTC)
+	 MIME-Version; b=DHrS4hc5oSrJQHUvqAr1df7iMdo8dQ1Mtu3j0M3Olp4OZRLbamp2DcIPM7uZaMLhRTjAlmScFWTvXsZUHiY/8/Vm/D63Hph0kxETY3JsbIdByIebMB5vMwT1G9akewopgYRwoBNGSduP1WzG58cs0YN8BLuL5AUKzRUVDXVbmuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBK+7NDX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C54C4CEE7;
+	Fri, 17 Oct 2025 14:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714330;
-	bh=e1n7RHUGjCxsmTD+j7ySOQQSJgJfzww+VeaU0ySrng0=;
+	s=korg; t=1760713068;
+	bh=I/N797+3E8Nqdh/REmB7FKzQ4OZoINtYXU1RXmCbSes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvTVYyu7SljubqSFQbUYQdwwvwyNnlPnSk9ZlWK9zJAH6YRIrab3jNkOD4rms3I72
-	 LsU1Pop57Eki5KOFpc7pwlc66vAWd/F+4FRu7QbBPHw1kRZjbs6eurW+NQfa0dNHo7
-	 1aVyYKZv51X1vElnwjDpXB3a5SFoZwdjbfQ+z3tc=
+	b=IBK+7NDXWkCwW5eecMKaPvHM0riAqsiae3ltQAnaXWqvH75EZ/UORdUHsJE7LDcg+
+	 I5Sw+hzmqMYCqWoFZNEjve/ktjY2k8++EktjREsT3AKD4lkyGIo1+Jr52WU7l2Lcos
+	 MSpJTbTSs11kA1+ZuS/6T/Qsazy+1tkisF1gr6/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 108/277] media: pci: mg4b: fix uninitialized iio scan data
+	Erick Karanja <karanja99erick@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/168] net: fsl_pq_mdio: Fix device node reference leak in fsl_pq_mdio_probe
 Date: Fri, 17 Oct 2025 16:51:55 +0200
-Message-ID: <20251017145151.071963563@linuxfoundation.org>
+Message-ID: <20251017145130.348229276@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Erick Karanja <karanja99erick@gmail.com>
 
-commit c0d3f6969bb4d72476cfe7ea9263831f1c283704 upstream.
+[ Upstream commit 521405cb54cd2812bbb6dedd5afc14bca1e7e98a ]
 
-Fix potential leak of uninitialized stack data to userspace by ensuring
-that the `scan` structure is zeroed before use.
+Add missing of_node_put call to release device node tbi obtained
+via for_each_child_of_node.
 
-Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: afae5ad78b342 ("net/fsl_pq_mdio: streamline probing of MDIO nodes")
+Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
+Link: https://patch.msgid.link/20251002174617.960521-1-karanja99erick@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/mgb4/mgb4_trigger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fsl_pq_mdio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/pci/mgb4/mgb4_trigger.c
-+++ b/drivers/media/pci/mgb4/mgb4_trigger.c
-@@ -91,7 +91,7 @@ static irqreturn_t trigger_handler(int i
- 	struct {
- 		u32 data;
- 		s64 ts __aligned(8);
--	} scan;
-+	} scan = { };
+diff --git a/drivers/net/ethernet/freescale/fsl_pq_mdio.c b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
+index 9d58d83344670..ea49b0df397e5 100644
+--- a/drivers/net/ethernet/freescale/fsl_pq_mdio.c
++++ b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
+@@ -482,10 +482,12 @@ static int fsl_pq_mdio_probe(struct platform_device *pdev)
+ 					"missing 'reg' property in node %pOF\n",
+ 					tbi);
+ 				err = -EBUSY;
++				of_node_put(tbi);
+ 				goto error;
+ 			}
+ 			set_tbipa(*prop, pdev,
+ 				  data->get_tbipa, priv->map, &res);
++			of_node_put(tbi);
+ 		}
+ 	}
  
- 	scan.data = mgb4_read_reg(&st->mgbdev->video, 0xA0);
- 	mgb4_write_reg(&st->mgbdev->video, 0xA0, scan.data);
+-- 
+2.51.0
+
 
 
 
