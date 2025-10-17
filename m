@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-186943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C17ABE9C75
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C87EBEA4EC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:56:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0B3E935E1D0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C52FC1889692
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91D52F12B8;
-	Fri, 17 Oct 2025 15:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2B7330B3C;
+	Fri, 17 Oct 2025 15:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBQiDL0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8qmtZsx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6389C219A7A;
-	Fri, 17 Oct 2025 15:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37296330B17;
+	Fri, 17 Oct 2025 15:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714672; cv=none; b=cuNzyP55Wyy6sQ89ShNT/G1NApE/Nj3QXtJoN0HBxXVAM24dCcgyloSnfZjtwEOMMi5Iybzm4Wozrv7qoOAHyBJMLG9bRi5SUyOQ9y6zF5oWWdZ4tUeYLabPFLFhv6/cWFyF8wCsURd60qQqOrNHEFyTBb8joVP6L5yNKCRJ0KM=
+	t=1760716299; cv=none; b=YsksGqpd+cMTQOJ8L9BOtjLjgSxXw0qvNp/y1hfj65o+IuNcVXZcqGH9B6DfgsJs0zg7nu9ORtsLlIlptHyF9MCl0Wp0d0bcNSR1UooGymul86EaNGy0609swG3hKpUlK9fYC7EyflzHfwKJ1ETo4QKEAqgqlKVY7RCHEiTj8xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714672; c=relaxed/simple;
-	bh=b1LO+f1xjPF39vyJ+d30q3F+mKBQ0/XAsc+8jy4kP6o=;
+	s=arc-20240116; t=1760716299; c=relaxed/simple;
+	bh=gohRUfHNiaTEUbv233h7qPKQnZTslC00ZfLleEvnZpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0gQNu/vDdE4mwzqEK51N0FPRQpQetOC5RNSfObABrjNGFpzNXxm0C5zz7Ka+QCfZ+zitHrt1TtzOczQtw0ytyuM02UUmnBoweASWPcHazoGxdlFHbIubKzpVnXBAm8Hmdew2nuMHC1MqnkSqVygCtYUkyXVraGHIgI8XGFeUVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBQiDL0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECB1C4CEE7;
-	Fri, 17 Oct 2025 15:24:31 +0000 (UTC)
+	 MIME-Version; b=KueARIjQLGYWhGLbI3NlJMkwIRXlj+b+Tvr1eOPKeFY9hOBylYEskN3KjTy8VjDZq+v2Duqmpkplb4Ndqjcz0pLdxjJ1v0KTgFHse7FMkS8+sOE0CDnDsvhaiDssmauOdIC15ETc6w7QR8HIfvHdr8DSe5TrQTTDdHb6fvZ/nH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8qmtZsx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B144DC4CEE7;
+	Fri, 17 Oct 2025 15:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714672;
-	bh=b1LO+f1xjPF39vyJ+d30q3F+mKBQ0/XAsc+8jy4kP6o=;
+	s=korg; t=1760716299;
+	bh=gohRUfHNiaTEUbv233h7qPKQnZTslC00ZfLleEvnZpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBQiDL0iZvxl20vB6/FKpBNSwfZHEHRuSrFZYzvDDflRb9qZwxnvCmc5a+8GYr/UG
-	 LXK4LFaPw9uvo0nt52gVQAxULiUaDTwnDWZCDxH06qk91+YRhlKQvehko+dW/5ikcx
-	 2td6VWqE8KbG/3PB6AXKJQJUiB9STmyja3b7sY+Q=
+	b=G8qmtZsxc3g8s++GlDl14gsuLgQ/QRHPvsulsH/rkcE4VzjxNEgRU6ASh2A2ZpPeR
+	 2Hpp8WNo4nUbQLpAl98LojnThdBHKQpMCF35pVK+Lz2gEdvfLCOF0DJ+RU0NcwyLBT
+	 zNyyK9ZxSxvNZSxSquQqnByhB5tePwF8XziJRn0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com,
-	Amir Goldstein <amir73il@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	John Garry <john.garry@huawei.com>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/277] Squashfs: reject negative file sizes in squashfs_read_inode()
-Date: Fri, 17 Oct 2025 16:53:53 +0200
-Message-ID: <20251017145155.380305226@linuxfoundation.org>
+Subject: [PATCH 5.15 141/276] scsi: mvsas: Delete mvs_tag_init()
+Date: Fri, 17 Oct 2025 16:53:54 +0200
+Message-ID: <20251017145147.629838658@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: John Garry <john.garry@huawei.com>
 
-[ Upstream commit 9f1c14c1de1bdde395f6cc893efa4f80a2ae3b2b ]
+[ Upstream commit ffc9f9bf3f14876d019f67ef17d41138802529a8 ]
 
-Syskaller reports a "WARNING in ovl_copy_up_file" in overlayfs.
+All mvs_tag_init() does is zero the tag bitmap, but this is already done
+with the kzalloc() call to alloc the tags, so delete this unneeded
+function.
 
-This warning is ultimately caused because the underlying Squashfs file
-system returns a file with a negative file size.
-
-This commit checks for a negative file size and returns EINVAL.
-
-[phillip@squashfs.org.uk: only need to check 64 bit quantity]
-  Link: https://lkml.kernel.org/r/20250926222305.110103-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20250926215935.107233-1-phillip@squashfs.org.uk
-Fixes: 6545b246a2c8 ("Squashfs: inode operations")
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68d580e5.a00a0220.303701.0019.GAE@google.com/
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: John Garry <john.garry@huawei.com>
+Link: https://lore.kernel.org/r/1666091763-11023-7-git-send-email-john.garry@huawei.com
+Reviewed-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 60cd16a3b743 ("scsi: mvsas: Fix use-after-free bugs in mvs_work_queue")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/mvsas/mv_init.c | 2 --
+ drivers/scsi/mvsas/mv_sas.c  | 7 -------
+ drivers/scsi/mvsas/mv_sas.h  | 1 -
+ 3 files changed, 10 deletions(-)
 
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -193,6 +193,10 @@ int squashfs_read_inode(struct inode *in
- 			goto failed_read;
+diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
+index 1c98662db080f..e2093e7637d82 100644
+--- a/drivers/scsi/mvsas/mv_init.c
++++ b/drivers/scsi/mvsas/mv_init.c
+@@ -286,8 +286,6 @@ static int mvs_alloc(struct mvs_info *mvi, struct Scsi_Host *shost)
+ 	}
+ 	mvi->tags_num = slot_nr;
  
- 		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
-+		if (inode->i_size < 0) {
-+			err = -EINVAL;
-+			goto failed_read;
-+		}
- 		frag = le32_to_cpu(sqsh_ino->fragment);
- 		if (frag != SQUASHFS_INVALID_FRAG) {
- 			/*
+-	/* Initialize tags */
+-	mvs_tag_init(mvi);
+ 	return 0;
+ err_out:
+ 	return 1;
+diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
+index efd11fabff937..3b4576dba590e 100644
+--- a/drivers/scsi/mvsas/mv_sas.c
++++ b/drivers/scsi/mvsas/mv_sas.c
+@@ -51,13 +51,6 @@ inline int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out)
+ 	return 0;
+ }
+ 
+-void mvs_tag_init(struct mvs_info *mvi)
+-{
+-	int i;
+-	for (i = 0; i < mvi->tags_num; ++i)
+-		mvs_tag_clear(mvi, i);
+-}
+-
+ static struct mvs_info *mvs_find_dev_mvi(struct domain_device *dev)
+ {
+ 	unsigned long i = 0, j = 0, hi = 0;
+diff --git a/drivers/scsi/mvsas/mv_sas.h b/drivers/scsi/mvsas/mv_sas.h
+index fa654c73beeee..8dd30f8b478ec 100644
+--- a/drivers/scsi/mvsas/mv_sas.h
++++ b/drivers/scsi/mvsas/mv_sas.h
+@@ -428,7 +428,6 @@ void mvs_tag_clear(struct mvs_info *mvi, u32 tag);
+ void mvs_tag_free(struct mvs_info *mvi, u32 tag);
+ void mvs_tag_set(struct mvs_info *mvi, unsigned int tag);
+ int mvs_tag_alloc(struct mvs_info *mvi, u32 *tag_out);
+-void mvs_tag_init(struct mvs_info *mvi);
+ void mvs_iounmap(void __iomem *regs);
+ int mvs_ioremap(struct mvs_info *mvi, int bar, int bar_ex);
+ void mvs_phys_reset(struct mvs_info *mvi, u32 phy_mask, int hard);
+-- 
+2.51.0
+
 
 
 
