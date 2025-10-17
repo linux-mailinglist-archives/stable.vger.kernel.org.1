@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72840BEA2ED
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03504BE995A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 982677C19B5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8176743A27
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13CC242935;
-	Fri, 17 Oct 2025 15:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C769733507C;
+	Fri, 17 Oct 2025 15:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdKLF+cI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjngnv4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D17A337100;
-	Fri, 17 Oct 2025 15:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D47E335078;
+	Fri, 17 Oct 2025 15:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714669; cv=none; b=UHN3JyOvZtGmiuFRA02kTLKyp+HA1SCwqCPuR6Bh5BzFLhg8IWqWWAJUhBGqu3NdC35MFxWOayLKF2Ei5WHKuXyMRIVeSjwBwdQypgyGIIiGdrYrr3GGmlcYFnAk5FgB4UzAyFzn+dpuqjHl81B4ACOQZNITlN95EE23g4GYvCs=
+	t=1760713403; cv=none; b=Rs/yoUBSAh1KDRibgBva79RQQQYPD95TaUdn0gp5kXqPSwMYeL5FkVRtetLMTzQxfTeMSGmWIconUeqbY1M99anBmsbbIA/7CsMgvQU+mCy+86sABi9sxuJZPYKDAiou993WEgU4imbArC7ursQimjSObcbSMVyoZRO5v8+h0Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714669; c=relaxed/simple;
-	bh=yx1iih9rHRM6Nh7ID/Qqw2LhRcHr1XmDbWqMX2e5YZA=;
+	s=arc-20240116; t=1760713403; c=relaxed/simple;
+	bh=aGPpW6XgsVbr7Dyw64byegUYAAWUgL9YRRhRsnrv/lQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMVkF4oAHF27rxQZcwkcFuzeJEltVQv7WsUtwka7ERE9MpXgtukIAAqpP3dF81E3qKoXrr6grwcfLvWQkhW7uH+hbvqBqWo+2u7KuhUAWQbxkwolY2dKJqMmygfyix2kqdHrxhF1b23d8jycnFmr0VQlX/a159OVKqmWxRF6g6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdKLF+cI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0409AC4CEFE;
-	Fri, 17 Oct 2025 15:24:28 +0000 (UTC)
+	 MIME-Version; b=IuxC52vg6xfcsGnEzFbpsCN36iI2vhRmsZmqFhsl3Fqtfc1d8qNqUQ+YbvndVlanL/WugHh1uUqfz+1Qr51rsIOAOhWguAc2sgQMrgGMzdUnBhBeZO2qE6CB4vyw+Gz83no2tkPk2kxbKwOGaC4JHqOqNsJ9uFxJ9mW0OigIvak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjngnv4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C9AC4CEE7;
+	Fri, 17 Oct 2025 15:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714669;
-	bh=yx1iih9rHRM6Nh7ID/Qqw2LhRcHr1XmDbWqMX2e5YZA=;
+	s=korg; t=1760713403;
+	bh=aGPpW6XgsVbr7Dyw64byegUYAAWUgL9YRRhRsnrv/lQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdKLF+cIoijNX5lxTdlN3vz3lDloCWsrLnAJwU/Qe05VWAmuNuDv7kcmrg55khRSB
-	 aTqBNJhabge80SMT2+UYuS4KFA9pUmaRac/c63MDvQvJy3Q3zmDl2ux+aNVF1heqUa
-	 z9H9GkjtKVSMfDAjFLplQqbhkjyMRg7kHq9E8f7c=
+	b=tjngnv4eMx2Tdjh0pAJcRE/7/tGiVAhGXbPLm1M9+lHI5oJqRyIasycK+HVfJLwQC
+	 9kl8P1pG2ADcPuxFWDCUpYvXogQlTXoK0abvrLX+zKpC7m/Zjww28Ob5rncZohezka
+	 dXzdEKWYv68yZv9epfeJOrf+DKAowIQCowLSgBOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 225/277] Squashfs: add additional inode sanity checking
+Subject: [PATCH 6.1 153/168] ACPI: property: Disregard references in data-only subnode lists
 Date: Fri, 17 Oct 2025 16:53:52 +0200
-Message-ID: <20251017145155.342708485@linuxfoundation.org>
+Message-ID: <20251017145134.680146503@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 9ee94bfbe930a1b39df53fa2d7b31141b780eb5a ]
+[ Upstream commit d06118fe9b03426484980ed4c189a8c7b99fa631 ]
 
-Patch series "Squashfs: performance improvement and a sanity check".
+Data-only subnode links following the ACPI data subnode GUID in a _DSD
+package are expected to point to named objects returning _DSD-equivalent
+packages.  If a reference to such an object is used in the target field
+of any of those links, that object will be evaluated in place (as a
+named object) and its return data will be embedded in the outer _DSD
+package.
 
-This patchset adds an additional sanity check when reading regular file
-inodes, and adds support for SEEK_DATA/SEEK_HOLE lseek() whence values.
+For this reason, it is not expected to see a subnode link with the
+target field containing a local reference (that would mean pointing
+to a device or another object that cannot be evaluated in place and
+therefore cannot return a _DSD-equivalent package).
 
-This patch (of 2):
+Accordingly, simplify the code parsing data-only subnode links to
+simply print a message when it encounters a local reference in the
+target field of one of those links.
 
-Add an additional sanity check when reading regular file inodes.
+Moreover, since acpi_nondev_subnode_data_ok() would only have one
+caller after the change above, fold it into that caller.
 
-A regular file if the file size is an exact multiple of the filesystem
-block size cannot have a fragment.  This is because by definition a
-fragment block stores tailends which are not a whole block in size.
-
-Link: https://lkml.kernel.org/r/20250923220652.568416-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20250923220652.568416-2-phillip@squashfs.org.uk
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 9f1c14c1de1b ("Squashfs: reject negative file sizes in squashfs_read_inode()")
+Link: https://lore.kernel.org/linux-acpi/CAJZ5v0jVeSrDO6hrZhKgRZrH=FpGD4vNUjFD8hV9WwN9TLHjzQ@mail.gmail.com/
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Stable-dep-of: baf60d5cb8bc ("ACPI: property: Do not pass NULL handles to acpi_attach_data()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/acpi/property.c |   51 ++++++++++++++++++++----------------------------
+ 1 file changed, 22 insertions(+), 29 deletions(-)
 
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -140,8 +140,17 @@ int squashfs_read_inode(struct inode *in
- 		if (err < 0)
- 			goto failed_read;
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -112,32 +112,12 @@ static bool acpi_nondev_subnode_extract(
+ 	return false;
+ }
  
-+		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
- 		frag = le32_to_cpu(sqsh_ino->fragment);
- 		if (frag != SQUASHFS_INVALID_FRAG) {
+-static bool acpi_nondev_subnode_data_ok(acpi_handle handle,
+-					const union acpi_object *link,
+-					struct list_head *list,
+-					struct fwnode_handle *parent)
+-{
+-	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
+-	acpi_status status;
+-
+-	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
+-					    ACPI_TYPE_PACKAGE);
+-	if (ACPI_FAILURE(status))
+-		return false;
+-
+-	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
+-					parent))
+-		return true;
+-
+-	ACPI_FREE(buf.pointer);
+-	return false;
+-}
+-
+ static bool acpi_nondev_subnode_ok(acpi_handle scope,
+ 				   const union acpi_object *link,
+ 				   struct list_head *list,
+ 				   struct fwnode_handle *parent)
+ {
++	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
+ 	acpi_handle handle;
+ 	acpi_status status;
+ 
+@@ -149,7 +129,17 @@ static bool acpi_nondev_subnode_ok(acpi_
+ 	if (ACPI_FAILURE(status))
+ 		return false;
+ 
+-	return acpi_nondev_subnode_data_ok(handle, link, list, parent);
++	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
++					    ACPI_TYPE_PACKAGE);
++	if (ACPI_FAILURE(status))
++		return false;
++
++	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
++					parent))
++		return true;
++
++	ACPI_FREE(buf.pointer);
++	return false;
+ }
+ 
+ static bool acpi_add_nondev_subnodes(acpi_handle scope,
+@@ -162,7 +152,6 @@ static bool acpi_add_nondev_subnodes(acp
+ 
+ 	for (i = 0; i < links->package.count; i++) {
+ 		union acpi_object *link, *desc;
+-		acpi_handle handle;
+ 		bool result;
+ 
+ 		link = &links->package.elements[i];
+@@ -174,22 +163,26 @@ static bool acpi_add_nondev_subnodes(acp
+ 		if (link->package.elements[0].type != ACPI_TYPE_STRING)
+ 			continue;
+ 
+-		/* The second one may be a string, a reference or a package. */
++		/* The second one may be a string or a package. */
+ 		switch (link->package.elements[1].type) {
+ 		case ACPI_TYPE_STRING:
+ 			result = acpi_nondev_subnode_ok(scope, link, list,
+ 							 parent);
+ 			break;
+-		case ACPI_TYPE_LOCAL_REFERENCE:
+-			handle = link->package.elements[1].reference.handle;
+-			result = acpi_nondev_subnode_data_ok(handle, link, list,
+-							     parent);
+-			break;
+ 		case ACPI_TYPE_PACKAGE:
+ 			desc = &link->package.elements[1];
+ 			result = acpi_nondev_subnode_extract(desc, NULL, link,
+ 							     list, parent);
+ 			break;
++		case ACPI_TYPE_LOCAL_REFERENCE:
 +			/*
-+			 * the file cannot have a fragment (tailend) and have a
-+			 * file size a multiple of the block size
++			 * It is not expected to see any local references in
++			 * the links package because referencing a named object
++			 * should cause it to be evaluated in place.
 +			 */
-+			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
-+				err = -EINVAL;
-+				goto failed_read;
-+			}
- 			frag_offset = le32_to_cpu(sqsh_ino->offset);
- 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
- 			if (frag_size < 0) {
-@@ -155,7 +164,6 @@ int squashfs_read_inode(struct inode *in
- 		}
- 
- 		set_nlink(inode, 1);
--		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
- 		inode->i_fop = &generic_ro_fops;
- 		inode->i_mode |= S_IFREG;
- 		inode->i_blocks = ((inode->i_size - 1) >> 9) + 1;
-@@ -184,8 +192,17 @@ int squashfs_read_inode(struct inode *in
- 		if (err < 0)
- 			goto failed_read;
- 
-+		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
- 		frag = le32_to_cpu(sqsh_ino->fragment);
- 		if (frag != SQUASHFS_INVALID_FRAG) {
-+			/*
-+			 * the file cannot have a fragment (tailend) and have a
-+			 * file size a multiple of the block size
-+			 */
-+			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
-+				err = -EINVAL;
-+				goto failed_read;
-+			}
- 			frag_offset = le32_to_cpu(sqsh_ino->offset);
- 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
- 			if (frag_size < 0) {
-@@ -200,7 +217,6 @@ int squashfs_read_inode(struct inode *in
- 
- 		xattr_id = le32_to_cpu(sqsh_ino->xattr);
- 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
--		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
- 		inode->i_op = &squashfs_inode_ops;
- 		inode->i_fop = &generic_ro_fops;
- 		inode->i_mode |= S_IFREG;
++			acpi_handle_info(scope, "subnode %s: Unexpected reference\n",
++					 link->package.elements[0].string.pointer);
++			fallthrough;
+ 		default:
+ 			result = false;
+ 			break;
 
 
 
