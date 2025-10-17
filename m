@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FF7BE9A7B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB9FBE9F03
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 536FB744E1B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74CE41886771
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95AFC332919;
-	Fri, 17 Oct 2025 15:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CC832C95D;
+	Fri, 17 Oct 2025 15:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwcXeZSe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN+MXaaJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4909932C94B;
-	Fri, 17 Oct 2025 15:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6E420C00A;
+	Fri, 17 Oct 2025 15:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713506; cv=none; b=lJTdICfLqjGcgsV03qOqdTDCYDT+qfd8i3t0wSbttzCdzsanTNrE24j4tSEVYDPpcVKTD+h7hNC/s/BVL2/TJtD44BRjRPn0T0pJbMUDYNs2BIAQQDpJGdFZUKxaVGRlHWf6d0GS0MZAqPMCdULWI4J2QF3+P+YnBzY785hDVQs=
+	t=1760715124; cv=none; b=H5Wekgh5OdEDkjJKCH5WuOQSN/mL9E2Dt+KwfmwPgMTPqHy3Du+X3JqIXvwoVTwsmO/8BGqEUAoFC3yVi4kD1jiKyMeFSrfbV2wBBJQHwjHsfdoC71YNp4KNnL+fnWjaEiLIgYf7/0VNuq/wkdQXr82fQrvpHi3FrsFKtwvXtfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713506; c=relaxed/simple;
-	bh=sAFm3HJUeyqlNz5vnLoK1aHOGEZUh0iAP5VW+4m3PnQ=;
+	s=arc-20240116; t=1760715124; c=relaxed/simple;
+	bh=PYw/WFpiBa79VFOE/hVw4ugWN30ABgTLMyItF9Bm67I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XTySR9eC6xr1T/bgGVIpyfYjuU/cF1Ns7R/FK1JkAAbm28w0z297gavRZ60uJ62tj88hG14AtIX13hbrepDO92fRGHjrX+Dfu55bP9Vpw6g9o+il4BAGAh/J/dExszyVkFr2YMeXoXAx0lKuZ4CHEP/9HbrpyuyTEhwshwrcqqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwcXeZSe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646BDC4CEFE;
-	Fri, 17 Oct 2025 15:05:05 +0000 (UTC)
+	 MIME-Version; b=uDmMoc7MJBlL4RUSURzEyrkwIrfrWZRlqBu4cu/L4pmFM3ptieXTtUbAF6c1V6KxzgZLE6VyEcUT/9UncnC3VJFn8IYZduUEVO43JhZ37r85xJuyjBlCDIkvR/IFhlG1BOqW3UcIZquwGlrEfNjTP49gsG9+pFD9Jo9WfsNoTss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN+MXaaJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B8EC116B1;
+	Fri, 17 Oct 2025 15:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713505;
-	bh=sAFm3HJUeyqlNz5vnLoK1aHOGEZUh0iAP5VW+4m3PnQ=;
+	s=korg; t=1760715124;
+	bh=PYw/WFpiBa79VFOE/hVw4ugWN30ABgTLMyItF9Bm67I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UwcXeZSemIOn6FKBf/kSzO5DMPTlYLne8uH1xYOqTFE7fpBJkR1d212xK1ERvB6L2
-	 B0F78VxBtuxAuLh50TcnASToJT4K1d+wd4G34EBxCHw7UaFRJ99+AT/ZD56BpLVF2J
-	 WFwIYDNf25ZqckgdbNu+6ppsZtRgi2KOEcb5v8OY=
+	b=ZN+MXaaJBlZ7T9P1yNvfe2pqonx0NODrqUPkNIASrbkk9cFp6EoouFRaQEW0pW5Ou
+	 KgrS+G5PqHNg5J8Bb5o9NgPvhVzHEaHGF5H/j6bxDu8TVABW0MRSVTJ6fC8AVFb7Xv
+	 J00q2qWg0F1iM1l5jvz/Q3OoyZn+Gk8KxsC9E4Po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Jason-JH Lin <jason-jh.lin@mediatek.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/201] clk: mediatek: mt8195-infra_ao: Fix parent for infra_ao_hdmi_26m
+Subject: [PATCH 6.17 107/371] mailbox: mtk-cmdq: Remove pm_runtime APIs from cmdq_mbox_send_data()
 Date: Fri, 17 Oct 2025 16:51:22 +0200
-Message-ID: <20251017145135.520269545@linuxfoundation.org>
+Message-ID: <20251017145205.808799131@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 6c4c26b624790098988c1034541087e3e5ed5bed ]
+[ Upstream commit 3f39f56520374cf56872644acf9afcc618a4b674 ]
 
-The infrastructure gate for the HDMI specific crystal needs the
-top_hdmi_xtal clock to be configured in order to ungate the 26m
-clock to the HDMI IP, and it wouldn't work without.
+pm_runtime_get_sync() and pm_runtime_put_autosuspend() were previously
+called in cmdq_mbox_send_data(), which is under a spinlock in msg_submit()
+(mailbox.c). This caused lockdep warnings such as "sleeping function
+called from invalid context" when running with lockdebug enabled.
 
-Reparent the infra_ao_hdmi_26m clock to top_hdmi_xtal to fix that.
+The BUG report:
+  BUG: sleeping function called from invalid context at drivers/base/power/runtime.c:1164
+  in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 3616, name: kworker/u17:3
+    preempt_count: 1, expected: 0
+    RCU nest depth: 0, expected: 0
+    INFO: lockdep is turned off.
+    irq event stamp: 0
+    CPU: 1 PID: 3616 Comm: kworker/u17:3 Not tainted 6.1.87-lockdep-14133-g26e933aca785 #1
+    Hardware name: Google Ciri sku0/unprovisioned board (DT)
+    Workqueue: imgsys_runner imgsys_runner_func
+    Call trace:
+     dump_backtrace+0x100/0x120
+     show_stack+0x20/0x2c
+     dump_stack_lvl+0x84/0xb4
+     dump_stack+0x18/0x48
+     __might_resched+0x354/0x4c0
+     __might_sleep+0x98/0xe4
+     __pm_runtime_resume+0x70/0x124
+     cmdq_mbox_send_data+0xe4/0xb1c
+     msg_submit+0x194/0x2dc
+     mbox_send_message+0x190/0x330
+     imgsys_cmdq_sendtask+0x1618/0x2224
+     imgsys_runner_func+0xac/0x11c
+     process_one_work+0x638/0xf84
+     worker_thread+0x808/0xcd0
+     kthread+0x24c/0x324
+     ret_from_fork+0x10/0x20
 
-Fixes: e2edf59dec0b ("clk: mediatek: Add MT8195 infrastructure clock support")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Additionally, pm_runtime_put_autosuspend() should be invoked from the
+GCE IRQ handler to ensure the hardware has actually completed its work.
+
+To resolve these issues, remove the pm_runtime calls from
+cmdq_mbox_send_data() and delegate power management responsibilities
+to the client driver.
+
+Fixes: 8afe816b0c99 ("mailbox: mtk-cmdq-mailbox: Implement Runtime PM with autosuspend")
+Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt8195-infra_ao.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mailbox/mtk-cmdq-mailbox.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt8195-infra_ao.c b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-index dfba6eb61ccfe..4ecdf9ae02443 100644
---- a/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-+++ b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-@@ -103,7 +103,7 @@ static const struct mtk_gate infra_ao_clks[] = {
- 	GATE_INFRA_AO0(CLK_INFRA_AO_CQ_DMA_FPC, "infra_ao_cq_dma_fpc", "fpc", 28),
- 	GATE_INFRA_AO0(CLK_INFRA_AO_UART5, "infra_ao_uart5", "top_uart", 29),
- 	/* INFRA_AO1 */
--	GATE_INFRA_AO1(CLK_INFRA_AO_HDMI_26M, "infra_ao_hdmi_26m", "clk26m", 0),
-+	GATE_INFRA_AO1(CLK_INFRA_AO_HDMI_26M, "infra_ao_hdmi_26m", "top_hdmi_xtal", 0),
- 	GATE_INFRA_AO1(CLK_INFRA_AO_SPI0, "infra_ao_spi0", "top_spi", 1),
- 	GATE_INFRA_AO1(CLK_INFRA_AO_MSDC0, "infra_ao_msdc0", "top_msdc50_0_hclk", 2),
- 	GATE_INFRA_AO1(CLK_INFRA_AO_MSDC1, "infra_ao_msdc1", "top_axi", 4),
+diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
+index 532929916e998..654a60f63756a 100644
+--- a/drivers/mailbox/mtk-cmdq-mailbox.c
++++ b/drivers/mailbox/mtk-cmdq-mailbox.c
+@@ -379,20 +379,13 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
+ 	struct cmdq *cmdq = dev_get_drvdata(chan->mbox->dev);
+ 	struct cmdq_task *task;
+ 	unsigned long curr_pa, end_pa;
+-	int ret;
+ 
+ 	/* Client should not flush new tasks if suspended. */
+ 	WARN_ON(cmdq->suspended);
+ 
+-	ret = pm_runtime_get_sync(cmdq->mbox.dev);
+-	if (ret < 0)
+-		return ret;
+-
+ 	task = kzalloc(sizeof(*task), GFP_ATOMIC);
+-	if (!task) {
+-		pm_runtime_put_autosuspend(cmdq->mbox.dev);
++	if (!task)
+ 		return -ENOMEM;
+-	}
+ 
+ 	task->cmdq = cmdq;
+ 	INIT_LIST_HEAD(&task->list_entry);
+@@ -439,9 +432,6 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
+ 	}
+ 	list_move_tail(&task->list_entry, &thread->task_busy_list);
+ 
+-	pm_runtime_mark_last_busy(cmdq->mbox.dev);
+-	pm_runtime_put_autosuspend(cmdq->mbox.dev);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
