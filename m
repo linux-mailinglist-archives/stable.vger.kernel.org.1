@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-187223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845DEBEA14C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3890BEA3B9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA16A189229E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECBD87C4364
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40DC336EC3;
-	Fri, 17 Oct 2025 15:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F6F32C944;
+	Fri, 17 Oct 2025 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrcJnktp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="va/TZ9vI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F17A33509C;
-	Fri, 17 Oct 2025 15:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E0C2F12D1;
+	Fri, 17 Oct 2025 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715464; cv=none; b=GtRdVjVpY+uRRPhNhowWS/ua7TpoP2ShVUHZ0LYBKnKfO/HDr05vi3QSspLB19+QyDqUPsfAhRzwn6WDlEUF42WX+l5Ujb0BVlGnY+N7h8NxUl9V4Tj5WQ5pJHCdxxXlpje6W49n7fR61IW3pWPMWFruZ1SU1LrhzW3p18yeNKU=
+	t=1760714576; cv=none; b=Zqjav+Z2wQGTrb11Z+djpW1K67ovqGAesnmKQOcvQRlnmJ0CSW4iVSrpIp3LrtziszDvZ8Ojq7EHKGj6qPglNT0Qo7eVj2xvgZR3j9HWT+995PilhS059kneSqBZhU3l+neryAvg0n7BYorrXRVMVw6QJntYzaBRbD9O2E17rwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715464; c=relaxed/simple;
-	bh=ZeOO+ihgIsWAmTFeia4T/KFxeM/23VIwhvCcvRdYzek=;
+	s=arc-20240116; t=1760714576; c=relaxed/simple;
+	bh=Bh+ryoqV0Io3w698RKQsoZQannSlch7/hLTHGGYvGxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJ7QLdS7Y+vXJvoZAeozKwwDmteMnDT4q4mErmWYLtH0c/ZkkS5V7wwKlzn60hiVfQrGff0fdNRaHYJtAz0Ez9CVN8H8upyA5gX56e4koInGc1/kRjRP2stslyfabqyYHGO/25CuJOqNjY5hm5jM/jh3bR00w+6QNx/j7ZKb50I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrcJnktp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDAD1C113D0;
-	Fri, 17 Oct 2025 15:37:43 +0000 (UTC)
+	 MIME-Version; b=jNUkZHIrTAN2eUgVUR21f7kg+9snhTqp1i/tSTvDLxZxW1KUAKZb9BWKxJu0QH7EIDLTAvXJ1kx3N/1coVkZFWU22WR2up48z0LvRiI44FxLq/dvPzg0R0f4sRkabgDSJvlzw4wfZeXsHgMAXQe4ZfUfPOo1IopY1jET0ZwKpCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=va/TZ9vI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2545FC4CEE7;
+	Fri, 17 Oct 2025 15:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715464;
-	bh=ZeOO+ihgIsWAmTFeia4T/KFxeM/23VIwhvCcvRdYzek=;
+	s=korg; t=1760714576;
+	bh=Bh+ryoqV0Io3w698RKQsoZQannSlch7/hLTHGGYvGxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RrcJnktp6DO2yZ8HCt7G+6/hXd1r316MhlQO1Q9R3WlcKI9Jnb5n5NWpkIGFM9i0d
-	 +nYgqVq3bgN0yvVQg/yWx5z07EOWkNYT5RvQ4H2qhvZ6AJIVHJDJmDCqF0lLM89o26
-	 tn9GY5bQ4W9je0pO45lUsTy1w612TOWlNOO1HNtI=
+	b=va/TZ9vIbPdXfGU5Yjd+coKLIcwI9b+bf0Blk33Jj9e6h59wQVzXCxHxrLFFZnYXY
+	 kn/a+CEv9/pIMBSrk091f0cUBSMNzQa4nhspO1UNcBOMC5gLS7ynxKRgp6PerG5WDw
+	 DLC+wpb6qdaONF3Ln+lfKWee4cVsFEVIqqAqTUiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 225/371] init: handle bootloader identifier in kernel parameters
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>
+Subject: [PATCH 6.12 193/277] x86/fred: Remove ENDBR64 from FRED entry points
 Date: Fri, 17 Oct 2025 16:53:20 +0200
-Message-ID: <20251017145210.226728114@linuxfoundation.org>
+Message-ID: <20251017145154.166574506@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Xin Li (Intel) <xin@zytor.com>
 
-commit e416f0ed3c500c05c55fb62ee62662717b1c7f71 upstream.
+commit 3da01ffe1aeaa0d427ab5235ba735226670a80d9 upstream.
 
-BootLoaders (Grub, LILO, etc) may pass an identifier such as "BOOT_IMAGE=
-/boot/vmlinuz-x.y.z" to kernel parameters.  But these identifiers are not
-recognized by the kernel itself so will be passed to userspace.  However
-user space init program also don't recognize it.
+The FRED specification has been changed in v9.0 to state that there
+is no need for FRED event handlers to begin with ENDBR64, because
+in the presence of supervisor indirect branch tracking, FRED event
+delivery does not enter the WAIT_FOR_ENDBRANCH state.
 
-KEXEC/KDUMP (kexec-tools) may also pass an identifier such as "kexec" on
-some architectures.
+As a result, remove ENDBR64 from FRED entry points.
 
-We cannot change BootLoader's behavior, because this behavior exists for
-many years, and there are already user space programs search BOOT_IMAGE=
-in /proc/cmdline to obtain the kernel image locations:
+Then add ANNOTATE_NOENDBR to indicate that FRED entry points will
+never be used for indirect calls to suppress an objtool warning.
 
-https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.go
-(search getBootOptions)
-https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.go
-(search getKernelReleaseWithBootOption) So the the best way is handle
-(ignore) it by the kernel itself, which can avoid such boot warnings (if
-we use something like init=/bin/bash, bootloader identifier can even cause
-a crash):
+This change implies that any indirect CALL/JMP to FRED entry points
+causes #CP in the presence of supervisor indirect branch tracking.
 
-Kernel command line: BOOT_IMAGE=(hd0,1)/vmlinuz-6.x root=/dev/sda3 ro console=tty
-Unknown kernel command line parameters "BOOT_IMAGE=(hd0,1)/vmlinuz-6.x", will be passed to user space.
+Credit goes to Jennifer Miller <jmill@asu.edu> and other contributors
+from Arizona State University whose research shows that placing ENDBR
+at entry points has negative value thus led to this change.
 
-[chenhuacai@loongson.cn: use strstarts()]
-  Link: https://lkml.kernel.org/r/20250815090120.1569947-1-chenhuacai@loongson.cn
-Link: https://lkml.kernel.org/r/20250721101343.3283480-1-chenhuacai@loongson.cn
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Note: This is obviously an incompatible change to the FRED
+architecture.  But, it's OK because there no FRED systems out in the
+wild today. All production hardware and late pre-production hardware
+will follow the FRED v9 spec and be compatible with this approach.
+
+[ dhansen: add note to changelog about incompatibility ]
+
+Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Link: https://lore.kernel.org/linux-hardening/Z60NwR4w%2F28Z7XUa@ubun/
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250716063320.1337818-1-xin%40zytor.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/main.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/x86/entry/entry_64_fred.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/init/main.c
-+++ b/init/main.c
-@@ -544,6 +544,12 @@ static int __init unknown_bootoption(cha
- 				     const char *unused, void *arg)
- {
- 	size_t len = strlen(param);
-+	/*
-+	 * Well-known bootloader identifiers:
-+	 * 1. LILO/Grub pass "BOOT_IMAGE=...";
-+	 * 2. kexec/kdump (kexec-tools) pass "kexec".
-+	 */
-+	const char *bootloader[] = { "BOOT_IMAGE=", "kexec", NULL };
+--- a/arch/x86/entry/entry_64_fred.S
++++ b/arch/x86/entry/entry_64_fred.S
+@@ -16,7 +16,7 @@
  
- 	/* Handle params aliased to sysctls */
- 	if (sysctl_is_alias(param))
-@@ -551,6 +557,12 @@ static int __init unknown_bootoption(cha
- 
- 	repair_env_string(param, val);
- 
-+	/* Handle bootloader identifier */
-+	for (int i = 0; bootloader[i]; i++) {
-+		if (strstarts(param, bootloader[i]))
-+			return 0;
-+	}
-+
- 	/* Handle obsolete-style parameters */
- 	if (obsolete_checksetup(param))
- 		return 0;
+ .macro FRED_ENTER
+ 	UNWIND_HINT_END_OF_STACK
+-	ENDBR
++	ANNOTATE_NOENDBR
+ 	PUSH_AND_CLEAR_REGS
+ 	movq	%rsp, %rdi	/* %rdi -> pt_regs */
+ .endm
 
 
 
