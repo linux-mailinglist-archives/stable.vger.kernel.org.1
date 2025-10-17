@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAF5BEA398
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:53 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A52BE9692
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CF0A75A39D5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E0781563EAA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B48F332912;
-	Fri, 17 Oct 2025 15:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3049E33711A;
+	Fri, 17 Oct 2025 14:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIYUpfkB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGkGbm0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170762F12D1;
-	Fri, 17 Oct 2025 15:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D924E3370FB;
+	Fri, 17 Oct 2025 14:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715199; cv=none; b=rUF5hA2cRMKXqVLjx0T995OHy8uP7TMDVfsFF9hLHcK6PB0p1BVs9MGWS8RNFfMtdha7OU0kPl1z//PDoEs8pOweh91ewlzmV2AAIIPuIkkB54ynnL94jfsl6veNBtCyAL5mBVr8bTsDzkbOUQ+6RU6sa3rPetWj1MYC9vIqeRY=
+	t=1760713119; cv=none; b=hSyRLDu8wZu2eUC1bq9VaQSL8vMsCW5hvEevcAYuVpqPFy25Z1TeN5IG3PiTE6Ul37fmUYeOGaHwAVOrTvBGKsSdyIOovWHPd+k06ZOhtTOLH+j3oMNqt0sfUEIjHhAkG7mEvIY+cv5gpJpQ9zGSwPK+7Hp3kxr+Go8Vl3mzD7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715199; c=relaxed/simple;
-	bh=rWCzDd5zMfWDFRyYJysUBAAE+9GrQ6jG9weKdBTt328=;
+	s=arc-20240116; t=1760713119; c=relaxed/simple;
+	bh=WxfrMWgp7y022tna2FxrONf2j3A5z6XFp3E2gmszvOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VsrmklDxl1Y/4mPoFe5gPMzL/AD9ERWAfXV6lGtLxfL1yMi4VvO6aPYUya2MS1oWItdNnwv/nOB/wU9dbBBrZFbOVoswJE+lMsE8hUUnKZD5hh8FmI0j3hmWftSmmfqH19IbryharOctl15cvbmUCM5yBpAWbKol6OG8OGGKLwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIYUpfkB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5ABC113D0;
-	Fri, 17 Oct 2025 15:33:18 +0000 (UTC)
+	 MIME-Version; b=WfvqrJi5SZuXDLzpThwYcoqtg/KCY5RO6QVlmv1J7hWEOmGtMOxlohCvtF+xD2gFGmDpTxO+bFRxpx0ahQ3R73Yy4dqEfXH6mvd2heaao86vfJ1kBJV4G8ysR3ayURI0/s8BsKG4KMuyZLfoA7YW/m0m15c1iS1IZnC3u0BdPw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGkGbm0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BC4C4CEE7;
+	Fri, 17 Oct 2025 14:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715199;
-	bh=rWCzDd5zMfWDFRyYJysUBAAE+9GrQ6jG9weKdBTt328=;
+	s=korg; t=1760713119;
+	bh=WxfrMWgp7y022tna2FxrONf2j3A5z6XFp3E2gmszvOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KIYUpfkB6nXz1YOfK9f09VgW8qNgYlnb+fWoKHnETPPqcwTmphyc3rgWVVqQGKWi2
-	 JYQ4EkFXdsY2NEZfA7fWG0WVCn6wm+FDLISIn2r2M8XedmiP8waQnahD97WhFbTBdS
-	 Ay+nbtG/dqUA4OsZ2nIQKsiG8Usv3IGgpkxjkCM0=
+	b=wGkGbm0AAtIKmpqe+WnM4veuOMWVic9Sbzcfw86hc1ziKjsBcI0XrpSnPQ1MDDRiO
+	 JRf+5bKpiRseB5x3nZqX916XB4u+QJRQ2lJZSKxozTp1tRTBFUqTPUsvt1HjaSPdu7
+	 KFbBcTaCXuibuFvm4FpVld1v4KQxcmL1Tm4DXj1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Esben Haabendal <esben@geanix.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 125/371] rtc: isl12022: Fix initial enable_irq/disable_irq balance
+Subject: [PATCH 6.1 021/168] clk: nxp: Fix pll0 rate check condition in LPC18xx CGU driver
 Date: Fri, 17 Oct 2025 16:51:40 +0200
-Message-ID: <20251017145206.456284938@linuxfoundation.org>
+Message-ID: <20251017145129.800181773@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 9ffe06b6ccd7a8eaa31d31625db009ea26a22a3c ]
+[ Upstream commit 1624dead9a4d288a594fdf19735ebfe4bb567cb8 ]
 
-Interrupts are automatically enabled when requested, so we need to
-initialize irq_enabled accordingly to avoid causing an unbalanced enable
-warning.
+The conditional check for the PLL0 multiplier 'm' used a logical AND
+instead of OR, making the range check ineffective. This patch replaces
+&& with || to correctly reject invalid values of 'm' that are either
+less than or equal to 0 or greater than LPC18XX_PLL0_MSEL_MAX.
 
-Fixes: c62d658e5253 ("rtc: isl12022: Add alarm support")
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Link: https://lore.kernel.org/r/20250516-rtc-uie-irq-fixes-v2-2-3de8e530a39e@geanix.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+This ensures proper bounds checking during clk rate setting and rounding.
+
+Fixes: b04e0b8fd544 ("clk: add lpc18xx cgu clk driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+[sboyd@kernel.org: 'm' is unsigned so remove < condition]
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-isl12022.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/nxp/clk-lpc18xx-cgu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-isl12022.c b/drivers/rtc/rtc-isl12022.c
-index 9b44839a7402c..5fc52dc642130 100644
---- a/drivers/rtc/rtc-isl12022.c
-+++ b/drivers/rtc/rtc-isl12022.c
-@@ -413,6 +413,7 @@ static int isl12022_setup_irq(struct device *dev, int irq)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/clk/nxp/clk-lpc18xx-cgu.c b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+index 821155f79b015..bbd7d64038fab 100644
+--- a/drivers/clk/nxp/clk-lpc18xx-cgu.c
++++ b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+@@ -382,7 +382,7 @@ static int lpc18xx_pll0_determine_rate(struct clk_hw *hw,
+ 	}
  
-+	isl12022->irq_enabled = true;
- 	ret = devm_request_threaded_irq(dev, irq, NULL,
- 					isl12022_rtc_interrupt,
- 					IRQF_SHARED | IRQF_ONESHOT,
+ 	m = DIV_ROUND_UP_ULL(req->best_parent_rate, req->rate * 2);
+-	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
++	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
+ 		pr_warn("%s: unable to support rate %lu\n", __func__, req->rate);
+ 		return -EINVAL;
+ 	}
+@@ -405,7 +405,7 @@ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	}
+ 
+ 	m = DIV_ROUND_UP_ULL(parent_rate, rate * 2);
+-	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
++	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
+ 		pr_warn("%s: unable to support rate %lu\n", __func__, rate);
+ 		return -EINVAL;
+ 	}
 -- 
 2.51.0
 
