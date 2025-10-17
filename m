@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-187262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148FFBEA1B8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCF1BE9C7B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF18B1886FE0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 155F458696D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBDF2F12D2;
-	Fri, 17 Oct 2025 15:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444C0332915;
+	Fri, 17 Oct 2025 15:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4TOnd+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BBXCyxMx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97D7330B38;
-	Fri, 17 Oct 2025 15:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F298B32E151;
+	Fri, 17 Oct 2025 15:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715576; cv=none; b=t8zykOyDHf2rSlUpbiHMnypiYDjgMAaWjgg6cP3WRlb3e/LtlUECp4UIV/c0mjuBz7/g9LqFDrKrW9IDB3ekgLBssZb7BWxeg/sDzUPKOtDX6ulhkHgsLZZG9uiPR2UvYoRwU1tszDCMxl2WIWMr10e5g7GcBhYfGkZaD0S1sSc=
+	t=1760713954; cv=none; b=Yp8u/8P+BcvrPfn2j1m3jrPHIxaqqlUI8NkJl7HiAoTEf9C306KEkWjRcGYk7wP5pJSqRwSk0xMwcNcreYcF8WbHeaHZbR0RoyGw8gbjG5x4H2gK1nvilN6C6t+qv1qIfyAuOp48GAI1rA91VfE0kjvHtZeEdgHusDMtu0zoMPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715576; c=relaxed/simple;
-	bh=mK/c6qibBEJKSIgDWEsZb3Z3RiqM/hfgkgWID+lo/F8=;
+	s=arc-20240116; t=1760713954; c=relaxed/simple;
+	bh=ltzVjiZtWAUGHX1nlh79TvLwtr+dielBBVVULPnLW8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXTdVLO8g0F0uN3tErw4vbQjZk9QsvxoXtX7ZrNxU3kpXBtsGPbDNlRafAs55AHq6TcgOkVgAjc6ZjFiRfFBNCtJqVUYytHBpU5zFD6TTddnEHWbp5JP2C6iQIbYfRiHuNXaNI6gk6ueEIlAav35MvzX3tyLlZA9Zm8/1Z4kW/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4TOnd+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D21C4CEE7;
-	Fri, 17 Oct 2025 15:39:36 +0000 (UTC)
+	 MIME-Version; b=l9NPQhbiuBbSYOmQM5fxZRqEtqm/5Cx2tmPyYcrbpidvrNjIaIq3rTGJYK1zaZTHNY2LXxPYPniJjqDI4cGQGNyejykTD2ZlY5r/a2hX200pY+tb/XEARPMYsFQbd7Y99iUijmLd6dIQeUj3wGONBC7cIyDDxeM3us1APwvIrT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BBXCyxMx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80490C4CEFE;
+	Fri, 17 Oct 2025 15:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715576;
-	bh=mK/c6qibBEJKSIgDWEsZb3Z3RiqM/hfgkgWID+lo/F8=;
+	s=korg; t=1760713953;
+	bh=ltzVjiZtWAUGHX1nlh79TvLwtr+dielBBVVULPnLW8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k4TOnd+mdXFNqux3mi9Ub5MzBDvAZtMavTJRZLdT5pfcqa2FCrg3Q55SLYOrI0iQw
-	 cF4e+knm+fesZ8tc4zGFtoaH0gVjCkL60uCBL38ISYajHQLcs2J0Cz/F48SBWM/ELr
-	 gSFNQo+0W6/1rI3z/JkUMNz0W82RhEGjNeFAKB+I=
+	b=BBXCyxMxRUC/hcdwyn5o4TLLVxjQShUgHimrb6V8YaxW0zXznGMQD5m+1UDj6dlSl
+	 ALj3O95zrExV3UToRZMZaNF4KuajzvxnHj2M0iC9exrl5A4v/ddPzeqEVc1SoGOgxu
+	 HNaGrzs+4pBh6wlYHPbwXlo4io4cV87hoU5982hM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.17 263/371] xsk: Harden userspace-supplied xdp_desc validation
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Gergely Kovacs <Gergely.Kovacs2@arm.com>,
+	Will Deacon <will@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 177/201] arm64: mte: Do not flag the zero page as PG_mte_tagged
 Date: Fri, 17 Oct 2025 16:53:58 +0200
-Message-ID: <20251017145211.595128037@linuxfoundation.org>
+Message-ID: <20251017145141.255016185@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +65,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-commit 07ca98f906a403637fc5e513a872a50ef1247f3b upstream.
+[ Upstream commit f620d66af3165838bfa845dcf9f5f9b4089bf508 ]
 
-Turned out certain clearly invalid values passed in xdp_desc from
-userspace can pass xp_{,un}aligned_validate_desc() and then lead
-to UBs or just invalid frames to be queued for xmit.
+Commit 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the
+zero page") attempted to fix ptrace() reading of tags from the zero page
+by marking it as PG_mte_tagged during cpu_enable_mte(). The same commit
+also changed the ptrace() tag access permission check to the VM_MTE vma
+flag while turning the page flag test into a WARN_ON_ONCE().
 
-desc->len close to ``U32_MAX`` with a non-zero pool->tx_metadata_len
-can cause positive integer overflow and wraparound, the same way low
-enough desc->addr with a non-zero pool->tx_metadata_len can cause
-negative integer overflow. Both scenarios can then pass the
-validation successfully.
-This doesn't happen with valid XSk applications, but can be used
-to perform attacks.
+Attempting to set the PG_mte_tagged flag early with
+CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled may either hang (after commit
+d77e59a8fccd "arm64: mte: Lock a page for MTE tag initialisation") or
+have the flags cleared later during page_alloc_init_late(). In addition,
+pages_identical() -> memcmp_pages() will reject any comparison with the
+zero page as it is marked as tagged.
 
-Always promote desc->len to ``u64`` first to exclude positive
-overflows of it. Use explicit check_{add,sub}_overflow() when
-validating desc->addr (which is ``u64`` already).
+Partially revert the above commit to avoid setting PG_mte_tagged on the
+zero page. Update the __access_remote_tags() warning on untagged pages
+to ignore the zero page since it is known to have the tags initialised.
 
-bloat-o-meter reports a little growth of the code size:
+Note that all user mapping of the zero page are marked as pte_special().
+The arm64 set_pte_at() will not call mte_sync_tags() on such pages, so
+PG_mte_tagged will remain cleared.
 
-add/remove: 0/0 grow/shrink: 2/1 up/down: 60/-16 (44)
-Function                                     old     new   delta
-xskq_cons_peek_desc                          299     330     +31
-xsk_tx_peek_release_desc_batch               973    1002     +29
-xsk_generic_xmit                            3148    3132     -16
-
-but hopefully this doesn't hurt the performance much.
-
-Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
-Cc: stable@vger.kernel.org # 6.8+
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20251008165659.4141318-1-aleksander.lobakin@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 68d54ceeec0e ("arm64: mte: Allow PTRACE_PEEKMTETAGS access to the zero page")
+Reported-by: Gergely Kovacs <Gergely.Kovacs2@arm.com>
+Cc: stable@vger.kernel.org # 5.10.x
+Cc: Will Deacon <will@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Acked-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xdp/xsk_queue.h |   45 +++++++++++++++++++++++++++++++++++----------
- 1 file changed, 35 insertions(+), 10 deletions(-)
+ arch/arm64/kernel/cpufeature.c |   10 +++++++---
+ arch/arm64/kernel/mte.c        |    3 ++-
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
---- a/net/xdp/xsk_queue.h
-+++ b/net/xdp/xsk_queue.h
-@@ -143,14 +143,24 @@ static inline bool xp_unused_options_set
- static inline bool xp_aligned_validate_desc(struct xsk_buff_pool *pool,
- 					    struct xdp_desc *desc)
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -2174,17 +2174,21 @@ static void bti_enable(const struct arm6
+ #ifdef CONFIG_ARM64_MTE
+ static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
  {
--	u64 addr = desc->addr - pool->tx_metadata_len;
--	u64 len = desc->len + pool->tx_metadata_len;
--	u64 offset = addr & (pool->chunk_size - 1);
-+	u64 len = desc->len;
-+	u64 addr, offset;
- 
--	if (!desc->len)
-+	if (!len)
- 		return false;
- 
--	if (offset + len > pool->chunk_size)
-+	/* Can overflow if desc->addr < pool->tx_metadata_len */
-+	if (check_sub_overflow(desc->addr, pool->tx_metadata_len, &addr))
-+		return false;
++	static bool cleared_zero_page = false;
 +
-+	offset = addr & (pool->chunk_size - 1);
+ 	sysreg_clear_set(sctlr_el1, 0, SCTLR_ELx_ATA | SCTLR_EL1_ATA0);
+ 
+ 	mte_cpu_setup();
+ 
+ 	/*
+ 	 * Clear the tags in the zero page. This needs to be done via the
+-	 * linear map which has the Tagged attribute.
++	 * linear map which has the Tagged attribute. Since this page is
++	 * always mapped as pte_special(), set_pte_at() will not attempt to
++	 * clear the tags or set PG_mte_tagged.
+ 	 */
+-	if (try_page_mte_tagging(ZERO_PAGE(0))) {
++	if (!cleared_zero_page) {
++		cleared_zero_page = true;
+ 		mte_clear_page_tags(lm_alias(empty_zero_page));
+-		set_page_mte_tagged(ZERO_PAGE(0));
+ 	}
+ 
+ 	kasan_init_hw_tags_cpu();
+--- a/arch/arm64/kernel/mte.c
++++ b/arch/arm64/kernel/mte.c
+@@ -428,7 +428,8 @@ static int __access_remote_tags(struct m
+ 			put_page(page);
+ 			break;
+ 		}
+-		WARN_ON_ONCE(!page_mte_tagged(page));
 +
-+	/*
-+	 * Can't overflow: @offset is guaranteed to be < ``U32_MAX``
-+	 * (pool->chunk_size is ``u32``), @len is guaranteed
-+	 * to be <= ``U32_MAX``.
-+	 */
-+	if (offset + len + pool->tx_metadata_len > pool->chunk_size)
- 		return false;
++		WARN_ON_ONCE(!page_mte_tagged(page) && !is_zero_page(page));
  
- 	if (addr >= pool->addrs_cnt)
-@@ -158,27 +168,42 @@ static inline bool xp_aligned_validate_d
- 
- 	if (xp_unused_options_set(desc->options))
- 		return false;
-+
- 	return true;
- }
- 
- static inline bool xp_unaligned_validate_desc(struct xsk_buff_pool *pool,
- 					      struct xdp_desc *desc)
- {
--	u64 addr = xp_unaligned_add_offset_to_addr(desc->addr) - pool->tx_metadata_len;
--	u64 len = desc->len + pool->tx_metadata_len;
-+	u64 len = desc->len;
-+	u64 addr, end;
- 
--	if (!desc->len)
-+	if (!len)
- 		return false;
- 
-+	/* Can't overflow: @len is guaranteed to be <= ``U32_MAX`` */
-+	len += pool->tx_metadata_len;
- 	if (len > pool->chunk_size)
- 		return false;
- 
--	if (addr >= pool->addrs_cnt || addr + len > pool->addrs_cnt ||
--	    xp_desc_crosses_non_contig_pg(pool, addr, len))
-+	/* Can overflow if desc->addr is close to 0 */
-+	if (check_sub_overflow(xp_unaligned_add_offset_to_addr(desc->addr),
-+			       pool->tx_metadata_len, &addr))
-+		return false;
-+
-+	if (addr >= pool->addrs_cnt)
-+		return false;
-+
-+	/* Can overflow if pool->addrs_cnt is high enough */
-+	if (check_add_overflow(addr, len, &end) || end > pool->addrs_cnt)
-+		return false;
-+
-+	if (xp_desc_crosses_non_contig_pg(pool, addr, len))
- 		return false;
- 
- 	if (xp_unused_options_set(desc->options))
- 		return false;
-+
- 	return true;
- }
- 
+ 		/* limit access to the end of the page */
+ 		offset = offset_in_page(addr);
 
 
 
