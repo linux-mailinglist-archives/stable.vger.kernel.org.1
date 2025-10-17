@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-187232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37971BEAAD4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0F6BEA986
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBFA09444E0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E52C7C2DEF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C887335079;
-	Fri, 17 Oct 2025 15:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1C43396E5;
+	Fri, 17 Oct 2025 15:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4VUp7jo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1cxOKx5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9B530CD9F;
-	Fri, 17 Oct 2025 15:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC681336ED7;
+	Fri, 17 Oct 2025 15:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715490; cv=none; b=QiRcYgM2CkPT2OsGYA1W3gVyR5fKWuDJY6CvitaJm9jF89c5P1YZnvXsQOuAzVsqgUd/eBM70eZWBtlGUgEp+Otbhew9xrAGjjzbktbM1kfTsWkVZvg09QTN2Me7D13I8pC6W+a11Ncc6TFuCPqtYhJ+rRQiQkd1VkzInuuFTQI=
+	t=1760715499; cv=none; b=VP+OeP6Z/hJPfH9lua3vVD4nKpGdomUWWZ7pmpu0KXmga3T6ABBsGXb5E464+u149dHrkK9upC8lylS64opWAe7A+rDKBADx6+znE6T7+FOFBSdjOI5heUiJ2aDGptp4ZxJVBhI+fQBDGXERRDq8KVz5Ngum1TrgcmoI1PAZijo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715490; c=relaxed/simple;
-	bh=gK6/eY2g0/qHufduk+zhtBjVVe1Y2uBeVmvmcguIlo4=;
+	s=arc-20240116; t=1760715499; c=relaxed/simple;
+	bh=wqkOyTjsZu1X+Jc7wFhoEvxherud7w4mk4xhgmFX34o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmvdLsHhOjCL+vUkfZ1gjyR2A2W90/Qv1xeq9E3OQPaLQ71co2ifSRPBHSD/kt8s4eJkV6rxN4X8gUIibfVstIhciYYi6kvQAChoIGmWb0THvRsQKIBGqqt4y3mYag0DPmr5Ujr7oX4j9lhuXEobsW8/O5ZYDePBDkQYOJi67ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4VUp7jo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61BBC4CEE7;
-	Fri, 17 Oct 2025 15:38:09 +0000 (UTC)
+	 MIME-Version; b=dN6G3aKdk7ElVMHHAIlBH23hhTtegtryVCqBoc9wpmqZFM6O/zenRsVJJM40pkjjCyB/6iiD0to6AUBoteqtwYSLi2+xn8+5zX8bvssXNzOLIHRMR5KVGbiF2ZyKPBvY7vmV8O445zZ8th/73Mm3pfOiZdEiYk29axoSkAHKsjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1cxOKx5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3640EC4CEE7;
+	Fri, 17 Oct 2025 15:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715490;
-	bh=gK6/eY2g0/qHufduk+zhtBjVVe1Y2uBeVmvmcguIlo4=;
+	s=korg; t=1760715498;
+	bh=wqkOyTjsZu1X+Jc7wFhoEvxherud7w4mk4xhgmFX34o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4VUp7joJYws6QhtEcAB3j4WelG4SHbSU4+u3LrPLwclSOmiYKZvyeOb/2hQm9zUU
-	 C5ciZs08Hec1dC2oG6FAktZ/5qYbFt5K2fDcsVMBSLz6FeBfsWjlytbgJwuAU3gSjV
-	 tV7TEKcZuB4AQiQguPjJ8/yu2PhwVoFhDtBJdvnk=
+	b=m1cxOKx5lmYDM18OFZ1tSjiTBr8YORkpeQXJhtV95pdfVHeWFoLtyV0LH1GzwelRr
+	 P8FIfc5L6DSFWCzOihesTmrXdenOQOafi2h2Mvg0VQTAz7ThlS1vrRG61j61HYpNTS
+	 KUS78/l6nWgueRnJxR/jcL9/C9h36tACAUv9iSys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denzeel Oliva <wachiturroxd150@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.17 201/371] clk: samsung: exynos990: Use PLL_CON0 for PLL parent muxes
-Date: Fri, 17 Oct 2025 16:52:56 +0200
-Message-ID: <20251017145209.198631942@linuxfoundation.org>
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.17 204/371] copy_sighand: Handle architectures where sizeof(unsigned long) < sizeof(u64)
+Date: Fri, 17 Oct 2025 16:52:59 +0200
+Message-ID: <20251017145209.469063846@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -65,68 +68,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Denzeel Oliva <wachiturroxd150@gmail.com>
+From: Simon Schuster <schuster.simon@siemens-energy.com>
 
-commit 19b50ab02eddbbd87ec2f0ad4a5bc93ac1c9b82d upstream.
+commit 04ff48239f46e8b493571e260bd0e6c3a6400371 upstream.
 
-Parent select bits for shared PLLs are in PLL_CON0, not PLL_CON3.
-Using the wrong register leads to incorrect parent selection and rates.
+With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
+clone3") the effective bit width of clone_flags on all architectures was
+increased from 32-bit to 64-bit. However, the signature of the copy_*
+helper functions (e.g., copy_sighand) used by copy_process was not
+adapted.
 
-Fixes: bdd03ebf721f ("clk: samsung: Introduce Exynos990 clock controller driver")
-Signed-off-by: Denzeel Oliva <wachiturroxd150@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20250830-fix-cmu-top-v5-1-7c62f608309e@gmail.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+As such, they truncate the flags on any 32-bit architectures that
+supports clone3 (arc, arm, csky, m68k, microblaze, mips32, openrisc,
+parisc32, powerpc32, riscv32, x86-32 and xtensa).
+
+For copy_sighand with CLONE_CLEAR_SIGHAND being an actual u64
+constant, this triggers an observable bug in kernel selftest
+clone3_clear_sighand:
+
+        if (clone_flags & CLONE_CLEAR_SIGHAND)
+
+in function copy_sighand within fork.c will always fail given:
+
+        unsigned long /* == uint32_t */ clone_flags
+        #define CLONE_CLEAR_SIGHAND 0x100000000ULL
+
+This commit fixes the bug by always passing clone_flags to copy_sighand
+via their declared u64 type, invariant of architecture-dependent integer
+sizes.
+
+Fixes: b612e5df4587 ("clone3: add CLONE_CLEAR_SIGHAND")
+Cc: stable@vger.kernel.org # linux-5.5+
+Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+Link: https://lore.kernel.org/20250901-nios2-implement-clone3-v2-1-53fcf5577d57@siemens-energy.com
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/samsung/clk-exynos990.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ kernel/fork.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/samsung/clk-exynos990.c b/drivers/clk/samsung/clk-exynos990.c
-index 8d3f193d2b4d..12e98bf5005a 100644
---- a/drivers/clk/samsung/clk-exynos990.c
-+++ b/drivers/clk/samsung/clk-exynos990.c
-@@ -239,12 +239,19 @@ static const unsigned long top_clk_regs[] __initconst = {
- 	PLL_LOCKTIME_PLL_SHARED2,
- 	PLL_LOCKTIME_PLL_SHARED3,
- 	PLL_LOCKTIME_PLL_SHARED4,
-+	PLL_CON0_PLL_G3D,
- 	PLL_CON3_PLL_G3D,
-+	PLL_CON0_PLL_MMC,
- 	PLL_CON3_PLL_MMC,
-+	PLL_CON0_PLL_SHARED0,
- 	PLL_CON3_PLL_SHARED0,
-+	PLL_CON0_PLL_SHARED1,
- 	PLL_CON3_PLL_SHARED1,
-+	PLL_CON0_PLL_SHARED2,
- 	PLL_CON3_PLL_SHARED2,
-+	PLL_CON0_PLL_SHARED3,
- 	PLL_CON3_PLL_SHARED3,
-+	PLL_CON0_PLL_SHARED4,
- 	PLL_CON3_PLL_SHARED4,
- 	CLK_CON_MUX_MUX_CLKCMU_APM_BUS,
- 	CLK_CON_MUX_MUX_CLKCMU_AUD_CPU,
-@@ -689,13 +696,13 @@ PNAME(mout_cmu_vra_bus_p)		= { "dout_cmu_shared0_div3",
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1596,7 +1596,7 @@ static int copy_files(unsigned long clon
+ 	return 0;
+ }
  
- static const struct samsung_mux_clock top_mux_clks[] __initconst = {
- 	MUX(CLK_MOUT_PLL_SHARED0, "mout_pll_shared0", mout_pll_shared0_p,
--	    PLL_CON3_PLL_SHARED0, 4, 1),
-+	    PLL_CON0_PLL_SHARED0, 4, 1),
- 	MUX(CLK_MOUT_PLL_SHARED1, "mout_pll_shared1", mout_pll_shared1_p,
--	    PLL_CON3_PLL_SHARED1, 4, 1),
-+	    PLL_CON0_PLL_SHARED1, 4, 1),
- 	MUX(CLK_MOUT_PLL_SHARED2, "mout_pll_shared2", mout_pll_shared2_p,
--	    PLL_CON3_PLL_SHARED2, 4, 1),
-+	    PLL_CON0_PLL_SHARED2, 4, 1),
- 	MUX(CLK_MOUT_PLL_SHARED3, "mout_pll_shared3", mout_pll_shared3_p,
--	    PLL_CON3_PLL_SHARED3, 4, 1),
-+	    PLL_CON0_PLL_SHARED3, 4, 1),
- 	MUX(CLK_MOUT_PLL_SHARED4, "mout_pll_shared4", mout_pll_shared4_p,
- 	    PLL_CON0_PLL_SHARED4, 4, 1),
- 	MUX(CLK_MOUT_PLL_MMC, "mout_pll_mmc", mout_pll_mmc_p,
--- 
-2.51.0
-
+-static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
++static int copy_sighand(u64 clone_flags, struct task_struct *tsk)
+ {
+ 	struct sighand_struct *sig;
+ 
 
 
 
