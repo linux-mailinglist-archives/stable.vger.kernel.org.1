@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-186797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776FFBE9B68
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E14BE9F7B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F2DD1AE12BE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9784019C1507
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549B02F12D9;
-	Fri, 17 Oct 2025 15:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41442F12DE;
+	Fri, 17 Oct 2025 15:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skYTIl5I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncqjLboL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF97242935;
-	Fri, 17 Oct 2025 15:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08573328EE;
+	Fri, 17 Oct 2025 15:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714265; cv=none; b=B1qGm5g/fDFXYUt3ht9Y14j+PkrpYEMv5vCg7qXLR9sgCG49bMKm5N8j1CfnBEwtbeb9XDUmOBWK4TfBkdVSCoQ+RmuGZQ3sxCI5wWYbOfa6htN1X0zRfQsTyJP4+EzZS0gjl5Fx9NvjCvoca4c5cq3hj5gz1IbHIX94yok4Ays=
+	t=1760715156; cv=none; b=Vj5Y3HATN4lGeXT72LG4VMw4LyckGof3Smnqy8bD4Op0XvezWI1uQ6WTM8pN64pprAbZ4I/QpHArjqt8/3IkIBLBVtr7Ms+k939vH5mgBZAWlrtwzBggnSY2DhKW2gqcsGdfVp+75zMaLts+hVGqTEGqvUVsAJYUbkU+zNN8ICY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714265; c=relaxed/simple;
-	bh=qaVn1EfSCoq/X/UjKkqcIvx5tNmh0D9GKE60MXiKX6s=;
+	s=arc-20240116; t=1760715156; c=relaxed/simple;
+	bh=ftikmk450lt8bCsvaL4Hi6L5NA2ywVA9BoxPutYMRMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWzMZp3yAcGE1PuK30x1blh2U+XSxUhD9T54NS0Drno9jOWtuWzqqnklXPo73JLQDGp97MM1aJP5MzOO0oLa4df63I4vjlMQ81PfsFoIIC+lyTeiGKQvI6X4SE1j68/sb7qAoxKhWrWj2kRss7qa0yTaj9f9DkbO5IEIEfgMhAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skYTIl5I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAF3C4CEE7;
-	Fri, 17 Oct 2025 15:17:44 +0000 (UTC)
+	 MIME-Version; b=PfY+QzNfLd1RsTSQ13EvsjKsGb6g23XAAC5VueGV57k+wN5uOxyI3t+VFRv3U8axYwFZqICNYkKM1mUCwq9NPAdRi57wEbWqdf8plSaiqZBqKQC2AutllbQb97FU1783yrYhiMnt0qsE/ZgRsmn/LlPpHbNVnqywUbiDegQaI/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncqjLboL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA07C4CEFE;
+	Fri, 17 Oct 2025 15:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714264;
-	bh=qaVn1EfSCoq/X/UjKkqcIvx5tNmh0D9GKE60MXiKX6s=;
+	s=korg; t=1760715156;
+	bh=ftikmk450lt8bCsvaL4Hi6L5NA2ywVA9BoxPutYMRMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skYTIl5IMTckDVlNYgX8ZEZn+SD6mhjGfHeLoB6pTU6aLyWh6GvU/EF7BskTlAE+L
-	 05bH2qWi/SAwwkDvk1J4NAjSEJ8tOfGImQEwJLolRSGQe/ES4nGNIRp9WT8ufdx023
-	 X9AHWeinjDtXJP8oXbg7orv93d1tE88SpwxGrxmw=
+	b=ncqjLboLL8xfw//jM2Dw4oT8jGb5qkTH+SMkEgE5FfXTnBTnO2DJOIjYXHdL4CTBN
+	 MyBVrXfMz+mWq/DqbZqKZkr/E2hlxP0ozKL1bRjpb5SMf0DESp+/CSDfm5Mw1s3w4W
+	 O3jgsduZcGNs1plpYIeesvEieeS4qi4V3n9oQhYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexey Gladkov <legion@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/277] s390/vmlinux.lds.S: Move .vmlinux.info to end of allocatable sections
-Date: Fri, 17 Oct 2025 16:51:31 +0200
-Message-ID: <20251017145150.200875376@linuxfoundation.org>
+Subject: [PATCH 6.17 117/371] bridge: br_vlan_fill_forward_path_pvid: use br_vlan_group_rcu()
+Date: Fri, 17 Oct 2025 16:51:32 +0200
+Message-ID: <20251017145206.168766225@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Eric Woudstra <ericwouds@gmail.com>
 
-[ Upstream commit 9338d660b79a0dfe4eb3fe9bd748054cded87d4f ]
+[ Upstream commit bbf0c98b3ad9edaea1f982de6c199cc11d3b7705 ]
 
-When building s390 defconfig with binutils older than 2.32, there are
-several warnings during the final linking stage:
+net/bridge/br_private.h:1627 suspicious rcu_dereference_protected() usage!
+other info that might help us debug this:
 
-  s390-linux-ld: .tmp_vmlinux1: warning: allocated section `.got.plt' not in segment
-  s390-linux-ld: .tmp_vmlinux2: warning: allocated section `.got.plt' not in segment
-  s390-linux-ld: vmlinux.unstripped: warning: allocated section `.got.plt' not in segment
-  s390-linux-objcopy: vmlinux: warning: allocated section `.got.plt' not in segment
-  s390-linux-objcopy: st7afZyb: warning: allocated section `.got.plt' not in segment
+rcu_scheduler_active = 2, debug_locks = 1
+7 locks held by socat/410:
+ #0: ffff88800d7a9c90 (sk_lock-AF_INET){+.+.}-{0:0}, at: inet_stream_connect+0x43/0xa0
+ #1: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: __ip_queue_xmit+0x62/0x1830
+ [..]
+ #6: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: nf_hook.constprop.0+0x8a/0x440
 
-binutils commit afca762f598 ("S/390: Improve partial relro support for
-64 bit") [1] in 2.32 changed where .got.plt is emitted, avoiding the
-warning.
+Call Trace:
+ lockdep_rcu_suspicious.cold+0x4f/0xb1
+ br_vlan_fill_forward_path_pvid+0x32c/0x410 [bridge]
+ br_fill_forward_path+0x7a/0x4d0 [bridge]
 
-The :NONE in the .vmlinux.info output section description changes the
-segment for subsequent allocated sections. Move .vmlinux.info right
-above the discards section to place all other sections in the previously
-defined segment, .data.
+Use to correct helper, non _rcu variant requires RTNL mutex.
 
-Fixes: 30226853d6ec ("s390: vmlinux.lds.S: explicitly handle '.got' and '.plt' sections")
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=afca762f598d453c563f244cd3777715b1a0cb72 [1]
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Acked-by: Alexey Gladkov <legion@kernel.org>
-Acked-by: Nicolas Schier <nsc@kernel.org>
-Link: https://patch.msgid.link/20251008-kbuild-fix-modinfo-regressions-v1-3-9fc776c5887c@kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: bcf2766b1377 ("net: bridge: resolve forwarding path for VLAN tag actions in bridge devices")
+Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/vmlinux.lds.S | 44 +++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ net/bridge/br_vlan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
-index 3f2f90e38808c..0d18d3267bc4f 100644
---- a/arch/s390/kernel/vmlinux.lds.S
-+++ b/arch/s390/kernel/vmlinux.lds.S
-@@ -207,6 +207,28 @@ SECTIONS
- 	DWARF_DEBUG
- 	ELF_DETAILS
+diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
+index 939a3aa78d5c4..54993a05037c1 100644
+--- a/net/bridge/br_vlan.c
++++ b/net/bridge/br_vlan.c
+@@ -1455,7 +1455,7 @@ void br_vlan_fill_forward_path_pvid(struct net_bridge *br,
+ 	if (!br_opt_get(br, BROPT_VLAN_ENABLED))
+ 		return;
  
-+	/*
-+	 * Make sure that the .got.plt is either completely empty or it
-+	 * contains only the three reserved double words.
-+	 */
-+	.got.plt : {
-+		*(.got.plt)
-+	}
-+	ASSERT(SIZEOF(.got.plt) == 0 || SIZEOF(.got.plt) == 0x18, "Unexpected GOT/PLT entries detected!")
-+
-+	/*
-+	 * Sections that should stay zero sized, which is safer to
-+	 * explicitly check instead of blindly discarding.
-+	 */
-+	.plt : {
-+		*(.plt) *(.plt.*) *(.iplt) *(.igot .igot.plt)
-+	}
-+	ASSERT(SIZEOF(.plt) == 0, "Unexpected run-time procedure linkages detected!")
-+	.rela.dyn : {
-+		*(.rela.*) *(.rela_*)
-+	}
-+	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
-+
- 	/*
- 	 * uncompressed image info used by the decompressor
- 	 * it should match struct vmlinux_info
-@@ -237,28 +259,6 @@ SECTIONS
- #endif
- 	} :NONE
+-	vg = br_vlan_group(br);
++	vg = br_vlan_group_rcu(br);
  
--	/*
--	 * Make sure that the .got.plt is either completely empty or it
--	 * contains only the three reserved double words.
--	 */
--	.got.plt : {
--		*(.got.plt)
--	}
--	ASSERT(SIZEOF(.got.plt) == 0 || SIZEOF(.got.plt) == 0x18, "Unexpected GOT/PLT entries detected!")
--
--	/*
--	 * Sections that should stay zero sized, which is safer to
--	 * explicitly check instead of blindly discarding.
--	 */
--	.plt : {
--		*(.plt) *(.plt.*) *(.iplt) *(.igot .igot.plt)
--	}
--	ASSERT(SIZEOF(.plt) == 0, "Unexpected run-time procedure linkages detected!")
--	.rela.dyn : {
--		*(.rela.*) *(.rela_*)
--	}
--	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
--
- 	/* Sections to be discarded */
- 	DISCARDS
- 	/DISCARD/ : {
+ 	if (idx >= 0 &&
+ 	    ctx->vlan[idx].proto == br->vlan_proto) {
 -- 
 2.51.0
 
