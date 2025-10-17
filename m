@@ -1,74 +1,57 @@
-Return-Path: <stable+bounces-186772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DDEBE9A18
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:17:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F01BE97C0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9608935D44F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F5D81884CB8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03CA32C95D;
-	Fri, 17 Oct 2025 15:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7387633710B;
+	Fri, 17 Oct 2025 15:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBKOIW+w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wn7DQbXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2FF32C93B;
-	Fri, 17 Oct 2025 15:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECD13328E8;
+	Fri, 17 Oct 2025 15:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714193; cv=none; b=JCmPfUo+ycpcW51NvSvdW3aC5m+FhUQ+NtbCKnea1ja9gHU1ann0U+a7Wb8PaKY2uWFV5OksuQ0jDmEHHIlxZUNprNNGPMoutlNJb27uSkIHNmCCht7QRq6oLIYYaoAlpoFQApSHn1mWUb6eS1ovXFAUS2hmMjpqqTihVXhq+i8=
+	t=1760713483; cv=none; b=sUAyLsi/a5meXLXsMnpXQ7T901SuuXEskR1aUmg3c9ExuD7347ncuqLIxwnoIHyff5/227GGz8d+CbiqJR1Ve77WLsRtPYmVrYPcqVJLSQj8oTHWVHXN8aNDoJctcuxJm1uS0hVBf3ctGjAni6jXH2f5fgePNQ7YL0svJ638xEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714193; c=relaxed/simple;
-	bh=FJVmlgvH5D9rSLxtwrbxKmmWeMweUDF0H7CeyR0Tw5w=;
+	s=arc-20240116; t=1760713483; c=relaxed/simple;
+	bh=nbIrV75eUPq1tqavNi8AxSzHuOqBa7/HOIUzhT+ZH1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFeWPYReRLv4LzhEpM7MNHsV2l4k/O/PDK6VKJprJ21BbVJEkjVGvaRCisfKTItwHo1ETNTafCP9+lEpuicVCZVP5LLJTMniKNnn4Y3E3ieGzWIQfqC64tDwW8m+2ZhexNcgZeqQ2OswyDHyL+NzvWKg7gvs5+mbAXcz6rH34iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBKOIW+w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3ADC4CEE7;
-	Fri, 17 Oct 2025 15:16:32 +0000 (UTC)
+	 MIME-Version; b=jxAE6EcKSMRA6N2XOBSBDlGXOcx8J8Oo7nPYmfqe9vm4yPaf20+aUgqX+QEXYLb3tpvXn40QhWLNHqs5uZiA+8pZ4a9xeu8QWlLoX2zl9epmwsB4LoEbTJzAQ/uscLGFNZC5KasZVA9kQSf6QCQfPicwf52P4WappPl3HdunpEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wn7DQbXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5CFC4CEE7;
+	Fri, 17 Oct 2025 15:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714192;
-	bh=FJVmlgvH5D9rSLxtwrbxKmmWeMweUDF0H7CeyR0Tw5w=;
+	s=korg; t=1760713483;
+	bh=nbIrV75eUPq1tqavNi8AxSzHuOqBa7/HOIUzhT+ZH1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBKOIW+wlXNY0EaJb2x2Lp0cYvKeg4+rPYbBMFKuWlSGl9h4xecE7h+AFm4ZQtiF5
-	 zgflETGBE5tqFHnN4Cr5o3+/nMPaIkjs+3moruPpMCQU9/oOICgvmDI/oKsLDLWCv1
-	 UUn/q536P8gouZKRz4QGzt5QFdLUw7b8VA6Fw+78=
+	b=wn7DQbXXhuqPCxGDffmInhg972S/kgQjXhZIW9IMEx7FmawyiTJO9rUxBpLe1rzzg
+	 GtmzK2ln3uMRWcVtotKsZQ6PArnVNjYB7Tch7mSEMuoeex0QkHEPd7qai10CON7Dzn
+	 gp1GDmiqDQQ7r74C5uNxt/8BDCkmGjv+e30xT3lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	James Clark <james.clark@linaro.org>,
-	linux-riscv@lists.infradead.org,
-	llvm@lists.linux.dev,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/277] tools build: Align warning options with perf
-Date: Fri, 17 Oct 2025 16:51:05 +0200
-Message-ID: <20251017145149.262900452@linuxfoundation.org>
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.6 005/201] media: v4l2-subdev: Fix alloc failure check in v4l2_subdev_call_state_try()
+Date: Fri, 17 Oct 2025 16:51:06 +0200
+Message-ID: <20251017145134.923799575@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,67 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 53d067feb8c4f16d1f24ce3f4df4450bb18c555f ]
+commit f37df9a0eb5e43fcfe02cbaef076123dc0d79c7e upstream.
 
-The feature test programs are built without enabling '-Wall -Werror'
-options. As a result, a feature may appear to be available, but later
-building in perf can fail with stricter checks.
+v4l2_subdev_call_state_try() macro allocates a subdev state with
+__v4l2_subdev_state_alloc(), but does not check the returned value. If
+__v4l2_subdev_state_alloc fails, it returns an ERR_PTR, and that would
+cause v4l2_subdev_call_state_try() to crash.
 
-Make the feature test program use the same warning options as perf.
+Add proper error handling to v4l2_subdev_call_state_try().
 
-Fixes: 1925459b4d92 ("tools build: Fix feature Makefile issues with 'O='")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20251006-perf_build_android_ndk-v3-1-4305590795b2@arm.com
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: James Clark <james.clark@linaro.org>
-Cc: linux-riscv@lists.infradead.org
-Cc: llvm@lists.linux.dev
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-perf-users@vger.kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: 982c0487185b ("media: subdev: Add v4l2_subdev_call_state_try() macro")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/aJTNtpDUbTz7eyJc%40stanley.mountain/
+Cc: stable@vger.kernel.org
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/build/feature/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/media/v4l2-subdev.h |   30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/tools/build/feature/Makefile b/tools/build/feature/Makefile
-index 1658596188bf8..592ca17b4b74a 100644
---- a/tools/build/feature/Makefile
-+++ b/tools/build/feature/Makefile
-@@ -327,10 +327,10 @@ $(OUTPUT)test-libcapstone.bin:
- 	$(BUILD) # -lcapstone provided by $(FEATURE_CHECK_LDFLAGS-libcapstone)
+--- a/include/media/v4l2-subdev.h
++++ b/include/media/v4l2-subdev.h
+@@ -1881,19 +1881,23 @@ extern const struct v4l2_subdev_ops v4l2
+  *
+  * Note: only legacy non-MC drivers may need this macro.
+  */
+-#define v4l2_subdev_call_state_try(sd, o, f, args...)                 \
+-	({                                                            \
+-		int __result;                                         \
+-		static struct lock_class_key __key;                   \
+-		const char *name = KBUILD_BASENAME                    \
+-			":" __stringify(__LINE__) ":state->lock";     \
+-		struct v4l2_subdev_state *state =                     \
+-			__v4l2_subdev_state_alloc(sd, name, &__key);  \
+-		v4l2_subdev_lock_state(state);                        \
+-		__result = v4l2_subdev_call(sd, o, f, state, ##args); \
+-		v4l2_subdev_unlock_state(state);                      \
+-		__v4l2_subdev_state_free(state);                      \
+-		__result;                                             \
++#define v4l2_subdev_call_state_try(sd, o, f, args...)                         \
++	({                                                                    \
++		int __result;                                                 \
++		static struct lock_class_key __key;                           \
++		const char *name = KBUILD_BASENAME                            \
++			":" __stringify(__LINE__) ":state->lock";             \
++		struct v4l2_subdev_state *state =                             \
++			__v4l2_subdev_state_alloc(sd, name, &__key);          \
++		if (IS_ERR(state)) {                                          \
++			__result = PTR_ERR(state);                            \
++		} else {                                                      \
++			v4l2_subdev_lock_state(state);                        \
++			__result = v4l2_subdev_call(sd, o, f, state, ##args); \
++			v4l2_subdev_unlock_state(state);                      \
++			__v4l2_subdev_state_free(state);                      \
++		}                                                             \
++		__result;                                                     \
+ 	})
  
- $(OUTPUT)test-compile-32.bin:
--	$(CC) -m32 -o $@ test-compile.c
-+	$(CC) -m32 -Wall -Werror -o $@ test-compile.c
- 
- $(OUTPUT)test-compile-x32.bin:
--	$(CC) -mx32 -o $@ test-compile.c
-+	$(CC) -mx32 -Wall -Werror -o $@ test-compile.c
- 
- $(OUTPUT)test-zlib.bin:
- 	$(BUILD) -lz
--- 
-2.51.0
-
+ /**
 
 
 
