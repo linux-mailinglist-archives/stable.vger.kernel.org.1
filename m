@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-187306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53209BEA227
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F75BE9F3F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 477771AE2A55
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ECCA74783A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B2A330B06;
-	Fri, 17 Oct 2025 15:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C523A20C00A;
+	Fri, 17 Oct 2025 15:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0hqC8Kx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXbQf7ZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D382330B39;
-	Fri, 17 Oct 2025 15:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B62C337110;
+	Fri, 17 Oct 2025 15:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715704; cv=none; b=Umk6UvT1DbSSCC90L62Dc74b+lXIObl97SdyPKRATzCeuIBR44ics4wTsReevghHE4Gfpjw9BSVpeFfctXo7JcZug2AWYZdKwrNV0uS3/bS2cXYPcplhJYIAiqaOOhJSct3N+hI03163oj6ZhySfzr4sAFki2RmrmpIKFkoWkO0=
+	t=1760714802; cv=none; b=fAZHnETArhojSLNucUI8pJBBjnthQvQSv9ATk2ERlO6R+mQFvOVcndoU8Bw0LLoKkgaQUL9P8XSWbWGK2Yx7x9QT1ulYwhTB9jNUsYx4Q1PlLC/e3FdXJgwGOPSmajkx6pz+VxI5Vx4m7suNWGtRPtvnSZzALKYnl+xjPi8bkpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715704; c=relaxed/simple;
-	bh=6kdjiKEr2EAHHB6ZD9FKke5+CsYfXUe4k1Isg1k+J0k=;
+	s=arc-20240116; t=1760714802; c=relaxed/simple;
+	bh=Kt30bplBa9QnXuGK2Snj8Enaf+jGRn44ezra9aDxZI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fT/0DVOz/ZrSfQMDFoz7KfX83HOPq+Mbw7eZOM0oGtaTmUN7PXXpcCsSNZkHWYnoDXwulCK1mMKSCv9VQzt0AW0t8d/6NDCcizEE1ocSvAbYHyFzQc+m++m2Z6LLqtlc86ShlKW4+DXrMZ9u0+tCGN7oPNhyLq9DMdknTsMsA8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0hqC8Kx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9432C4CEE7;
-	Fri, 17 Oct 2025 15:41:43 +0000 (UTC)
+	 MIME-Version; b=OdDbBOV6mRkCz5JtDmhhs9CywEqKt5HKPOsIyNf0Vu7JuYevqUBIib4dGwgzdMlr3d/5m1OM4AxbMhDluUTGN/UxKvT2qev1Q63+b28ACDt+ZnxqbOoRHGiBs1zz5vQQWhrykqa1lBN6j7k4h2YdcUU86bH3/32OHy85zbB+GtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXbQf7ZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035CAC4CEE7;
+	Fri, 17 Oct 2025 15:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715704;
-	bh=6kdjiKEr2EAHHB6ZD9FKke5+CsYfXUe4k1Isg1k+J0k=;
+	s=korg; t=1760714802;
+	bh=Kt30bplBa9QnXuGK2Snj8Enaf+jGRn44ezra9aDxZI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0hqC8Kx08OKPzpnmDG3U9Oq9fd1kQ4/oZzEol0HVx0BYGydXeheDz40yq+cuYxuz
-	 eFMMKObO3r/ubkZm+eXJcpeiww55vlLRUm0DQ2IW9Zjo7S54desPnWSJh8BOJEwH/5
-	 Jv2HxKgaNNPJk+imo0EofI0HNs1lP8QSNC5QEYI8=
+	b=ZXbQf7ZSU13vCR+FbTz9sOG0dJJ7ix+fOZltlSW3aernEQ49X45/161IRwU0AsCI+
+	 k0+EqRHole9Ut5T6Co+NrlvDrzRuddINhbWK5RPYJRxk4yur8FMiUCenBi7HgqLWwx
+	 4eOm8ioxz7DH/yMSjMoW54cd1Xl+P7HQnp/XYpUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Benjamin Block <bblock@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Julian Ruess <julianr@linux.ibm.com>
-Subject: [PATCH 6.17 276/371] PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 244/277] NFSD: Replace use of NFSD_MAY_LOCK in nfsd4_lock()
 Date: Fri, 17 Oct 2025 16:54:11 +0200
-Message-ID: <20251017145212.060118508@linuxfoundation.org>
+Message-ID: <20251017145156.055132341@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 05703271c3cdcc0f2a8cf6ebdc45892b8ca83520 upstream.
+[ Upstream commit 6640556b0c80edc66d6f50abe53f00311a873536 ]
 
-Before disabling SR-IOV via config space accesses to the parent PF,
-sriov_disable() first removes the PCI devices representing the VFs.
+NFSv4 LOCK operations should not avoid the set of authorization
+checks that apply to all other NFSv4 operations. Also, the
+"no_auth_nlm" export option should apply only to NLM LOCK requests.
+It's not necessary or sensible to apply it to NFSv4 LOCK operations.
 
-Since commit 9d16947b7583 ("PCI: Add global pci_lock_rescan_remove()")
-such removal operations are serialized against concurrent remove and
-rescan using the pci_rescan_remove_lock. No such locking was ever added
-in sriov_disable() however. In particular when commit 18f9e9d150fc
-("PCI/IOV: Factor out sriov_add_vfs()") factored out the PCI device
-removal into sriov_del_vfs() there was still no locking around the
-pci_iov_remove_virtfn() calls.
+Instead, set no permission bits when calling fh_verify(). Subsequent
+stateid processing handles authorization checks.
 
-On s390 the lack of serialization in sriov_disable() may cause double
-remove and list corruption with the below (amended) trace being observed:
-
-  PSW:  0704c00180000000 0000000c914e4b38 (klist_put+56)
-  GPRS: 000003800313fb48 0000000000000000 0000000100000001 0000000000000001
-	00000000f9b520a8 0000000000000000 0000000000002fbd 00000000f4cc9480
-	0000000000000001 0000000000000000 0000000000000000 0000000180692828
-	00000000818e8000 000003800313fe2c 000003800313fb20 000003800313fad8
-  #0 [3800313fb20] device_del at c9158ad5c
-  #1 [3800313fb88] pci_remove_bus_device at c915105ba
-  #2 [3800313fbd0] pci_iov_remove_virtfn at c9152f198
-  #3 [3800313fc28] zpci_iov_remove_virtfn at c90fb67c0
-  #4 [3800313fc60] zpci_bus_remove_device at c90fb6104
-  #5 [3800313fca0] __zpci_event_availability at c90fb3dca
-  #6 [3800313fd08] chsc_process_sei_nt0 at c918fe4a2
-  #7 [3800313fd60] crw_collect_info at c91905822
-  #8 [3800313fe10] kthread at c90feb390
-  #9 [3800313fe68] __ret_from_fork at c90f6aa64
-  #10 [3800313fe98] ret_from_fork at c9194f3f2.
-
-This is because in addition to sriov_disable() removing the VFs, the
-platform also generates hot-unplug events for the VFs. This being the
-reverse operation to the hotplug events generated by sriov_enable() and
-handled via pdev->no_vf_scan. And while the event processing takes
-pci_rescan_remove_lock and checks whether the struct pci_dev still exists,
-the lack of synchronization makes this checking racy.
-
-Other races may also be possible of course though given that this lack of
-locking persisted so long observable races seem very rare. Even on s390 the
-list corruption was only observed with certain devices since the platform
-events are only triggered by config accesses after the removal, so as long
-as the removal finished synchronously they would not race. Either way the
-locking is missing so fix this by adding it to the sriov_del_vfs() helper.
-
-Just like PCI rescan-remove, locking is also missing in sriov_add_vfs()
-including for the error case where pci_stop_and_remove_bus_device() is
-called without the PCI rescan-remove lock being held. Even in the non-error
-case, adding new PCI devices and buses should be serialized via the PCI
-rescan-remove lock. Add the necessary locking.
-
-Fixes: 18f9e9d150fc ("PCI/IOV: Factor out sriov_add_vfs()")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250826-pci_fix_sriov_disable-v1-1-2d0bc938f2a3@linux.ibm.com
+Reported-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: 898374fdd7f0 ("nfsd: unregister with rpcbind when deleting a transport")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/iov.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfsd/nfs4state.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/iov.c
-+++ b/drivers/pci/iov.c
-@@ -629,15 +629,18 @@ static int sriov_add_vfs(struct pci_dev
- 	if (dev->no_vf_scan)
- 		return 0;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7998,11 +7998,9 @@ nfsd4_lock(struct svc_rqst *rqstp, struc
+ 	if (check_lock_length(lock->lk_offset, lock->lk_length))
+ 		 return nfserr_inval;
  
-+	pci_lock_rescan_remove();
- 	for (i = 0; i < num_vfs; i++) {
- 		rc = pci_iov_add_virtfn(dev, i);
- 		if (rc)
- 			goto failed;
- 	}
-+	pci_unlock_rescan_remove();
- 	return 0;
- failed:
- 	while (i--)
- 		pci_iov_remove_virtfn(dev, i);
-+	pci_unlock_rescan_remove();
+-	if ((status = fh_verify(rqstp, &cstate->current_fh,
+-				S_IFREG, NFSD_MAY_LOCK))) {
+-		dprintk("NFSD: nfsd4_lock: permission denied!\n");
++	status = fh_verify(rqstp, &cstate->current_fh, S_IFREG, 0);
++	if (status != nfs_ok)
+ 		return status;
+-	}
+ 	sb = cstate->current_fh.fh_dentry->d_sb;
  
- 	return rc;
- }
-@@ -762,8 +765,10 @@ static void sriov_del_vfs(struct pci_dev
- 	struct pci_sriov *iov = dev->sriov;
- 	int i;
- 
-+	pci_lock_rescan_remove();
- 	for (i = 0; i < iov->num_VFs; i++)
- 		pci_iov_remove_virtfn(dev, i);
-+	pci_unlock_rescan_remove();
- }
- 
- static void sriov_disable(struct pci_dev *dev)
+ 	if (lock->lk_is_new) {
 
 
 
