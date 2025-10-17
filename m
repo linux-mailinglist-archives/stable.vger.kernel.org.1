@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-186790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F448BE9F3C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 522B7BE98F7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DFB1B589288
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E4DF568B53
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D201D2F12D0;
-	Fri, 17 Oct 2025 15:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E1C32E13C;
+	Fri, 17 Oct 2025 15:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFJ/M/6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDu9KCOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F6C1D5CE0;
-	Fri, 17 Oct 2025 15:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBE132C958;
+	Fri, 17 Oct 2025 15:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714244; cv=none; b=QgqkwiP2A9sFNxVj+TtGFp+B17790rp3SCLAtA80ZUyTpJEIrbXONGr/iBeUYX87e7WqsVI0SXJRiy0K289DAnxfl2U+6ehFq5oakYovUt5SmMEzvjco4FtlSyhtrvgVOVKdborR5kORCY/uj9M9Bm8h5nFE5UYdwUojWqAAn0s=
+	t=1760713514; cv=none; b=RzQOcAJlRqzcE3EXI5qvJjDT+3/TnPCMfRE6CHjBzmenG0BjV+nAuDvnBXPgxjaqJQU2toyuoMgdDG//X3dmz8GOvC61wcjRd793RneaJCaNGmcZgKrydxYDJy8bGO8euo9LNLCty4soJx7VP4NmwWEySZP8T1iG60vyKM2BEYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714244; c=relaxed/simple;
-	bh=9wacYYWiBL/E7YaJ1TKlKkcnGqg1RremJa4VaO/vWsU=;
+	s=arc-20240116; t=1760713514; c=relaxed/simple;
+	bh=1uCvqkvkcpXjRiX6CbdsorNrjmCFv+NqmKtfodErsBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9FosUGfvjUdn/nmZyIu7Jm+qBzEgrn8Qf8h1RopBNUAu0yA0+JrwvX+oX+/6TXUGf6X0puS+sx/AH2U9c8SwlZaaFiT1TEhYn1TvUkyOE6iurOE82Ksur/DccvbVgj/Z+XcWia4ScCz1H8+QTRefiREJr+FQePROx55m/jy60w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFJ/M/6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8B4C4CEE7;
-	Fri, 17 Oct 2025 15:17:23 +0000 (UTC)
+	 MIME-Version; b=D83D7gm8RZH4bh9E5fcQ/nxkGO00abu+nwbQJ74GJGYzaAetRk7Spz8wS6X1l3XAFCovn7jYCs8LaA1noc0w+R5LIFwb/HxSvKv4HTtjDAAqfR+tEunAfXyNpEVC7/69CHcKs7VjlJPg3nqJ6lPlLiLLmE/plLj91bobbd+6N2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDu9KCOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EF2C4CEE7;
+	Fri, 17 Oct 2025 15:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714244;
-	bh=9wacYYWiBL/E7YaJ1TKlKkcnGqg1RremJa4VaO/vWsU=;
+	s=korg; t=1760713514;
+	bh=1uCvqkvkcpXjRiX6CbdsorNrjmCFv+NqmKtfodErsBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uFJ/M/6wJK0CMxpaELY3nW2JOIFQzgkb0sqrZGwag9UVFsigKOJtymxQPM78bCKW9
-	 nvZk8wryUfs95o79VB7BpSgCiuTt+lE+ueAgklRm04uCjm1q9UQWHhem7ND41v+sm0
-	 UoXck+e+IzZ1qGWyDmaqoNmak2WAXPoLUuSqw/Os=
+	b=rDu9KCOzp3/EDHtQGN8fUsSvCQyfHrTByk1wCB0IeQ7OHdhCTtD/GBz9rNcaUSdQC
+	 Wv/fBUHSS9wkdvFa9JZqGAUn4JIe+d97zJKoQjBtFzpn0DDrNlmrFNxMYonzL14zSn
+	 YUfxgdXL6ccIhqhfwmkJrOrNKmJaXk9/NMnee+IQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Frank Sorenson <sorenson@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/277] smb: client: fix missing timestamp updates after utime(2)
+Subject: [PATCH 6.6 024/201] clk: nxp: Fix pll0 rate check condition in LPC18xx CGU driver
 Date: Fri, 17 Oct 2025 16:51:25 +0200
-Message-ID: <20251017145149.985444186@linuxfoundation.org>
+Message-ID: <20251017145135.633051294@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,110 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit b95cd1bdf5aa9221c98fc9259014b8bb8d1829d7 ]
+[ Upstream commit 1624dead9a4d288a594fdf19735ebfe4bb567cb8 ]
 
-Don't reuse open handle when changing timestamps to prevent the server
-from disabling automatic timestamp updates as per MS-FSA 2.1.4.17.
+The conditional check for the PLL0 multiplier 'm' used a logical AND
+instead of OR, making the range check ineffective. This patch replaces
+&& with || to correctly reject invalid values of 'm' that are either
+less than or equal to 0 or greater than LPC18XX_PLL0_MSEL_MAX.
 
----8<---
-import os
-import time
+This ensures proper bounds checking during clk rate setting and rounding.
 
-filename = '/mnt/foo'
-
-def print_stat(prefix):
-    st = os.stat(filename)
-    print(prefix, ': ', time.ctime(st.st_atime), time.ctime(st.st_ctime))
-
-fd = os.open(filename, os.O_CREAT|os.O_TRUNC|os.O_WRONLY, 0o644)
-print_stat('old')
-os.utime(fd, None)
-time.sleep(2)
-os.write(fd, b'foo')
-os.close(fd)
-time.sleep(2)
-print_stat('new')
----8<---
-
-Before patch:
-
-$ mount.cifs //srv/share /mnt -o ...
-$ python3 run.py
-old :  Fri Oct  3 14:01:21 2025 Fri Oct  3 14:01:21 2025
-new :  Fri Oct  3 14:01:21 2025 Fri Oct  3 14:01:21 2025
-
-After patch:
-
-$ mount.cifs //srv/share /mnt -o ...
-$ python3 run.py
-old :  Fri Oct  3 17:03:34 2025 Fri Oct  3 17:03:34 2025
-new :  Fri Oct  3 17:03:36 2025 Fri Oct  3 17:03:36 2025
-
-Fixes: b6f2a0f89d7e ("cifs: for compound requests, use open handle if possible")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Cc: Frank Sorenson <sorenson@redhat.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Cc: linux-cifs@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: b04e0b8fd544 ("clk: add lpc18xx cgu clk driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+[sboyd@kernel.org: 'm' is unsigned so remove < condition]
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/clk/nxp/clk-lpc18xx-cgu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 104a563dc317f..cb049bc70e0cb 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -1220,31 +1220,33 @@ int
- smb2_set_file_info(struct inode *inode, const char *full_path,
- 		   FILE_BASIC_INFO *buf, const unsigned int xid)
- {
--	struct cifs_open_parms oparms;
-+	struct kvec in_iov = { .iov_base = buf, .iov_len = sizeof(*buf), };
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
-+	struct cifsFileInfo *cfile = NULL;
-+	struct cifs_open_parms oparms;
- 	struct tcon_link *tlink;
- 	struct cifs_tcon *tcon;
--	struct cifsFileInfo *cfile;
--	struct kvec in_iov = { .iov_base = buf, .iov_len = sizeof(*buf), };
--	int rc;
--
--	if ((buf->CreationTime == 0) && (buf->LastAccessTime == 0) &&
--	    (buf->LastWriteTime == 0) && (buf->ChangeTime == 0) &&
--	    (buf->Attributes == 0))
--		return 0; /* would be a no op, no sense sending this */
-+	int rc = 0;
+diff --git a/drivers/clk/nxp/clk-lpc18xx-cgu.c b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+index 821155f79b015..bbd7d64038fab 100644
+--- a/drivers/clk/nxp/clk-lpc18xx-cgu.c
++++ b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+@@ -382,7 +382,7 @@ static int lpc18xx_pll0_determine_rate(struct clk_hw *hw,
+ 	}
  
- 	tlink = cifs_sb_tlink(cifs_sb);
- 	if (IS_ERR(tlink))
- 		return PTR_ERR(tlink);
- 	tcon = tlink_tcon(tlink);
+ 	m = DIV_ROUND_UP_ULL(req->best_parent_rate, req->rate * 2);
+-	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
++	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
+ 		pr_warn("%s: unable to support rate %lu\n", __func__, req->rate);
+ 		return -EINVAL;
+ 	}
+@@ -405,7 +405,7 @@ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	}
  
--	cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
-+	if ((buf->CreationTime == 0) && (buf->LastAccessTime == 0) &&
-+	    (buf->LastWriteTime == 0) && (buf->ChangeTime == 0)) {
-+		if (buf->Attributes == 0)
-+			goto out; /* would be a no op, no sense sending this */
-+		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
-+	}
-+
- 	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path, FILE_WRITE_ATTRIBUTES,
- 			     FILE_OPEN, 0, ACL_NO_MODE);
- 	rc = smb2_compound_op(xid, tcon, cifs_sb,
- 			      full_path, &oparms, &in_iov,
- 			      &(int){SMB2_OP_SET_INFO}, 1,
- 			      cfile, NULL, NULL, NULL);
-+out:
- 	cifs_put_tlink(tlink);
- 	return rc;
- }
+ 	m = DIV_ROUND_UP_ULL(parent_rate, rate * 2);
+-	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
++	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
+ 		pr_warn("%s: unable to support rate %lu\n", __func__, rate);
+ 		return -EINVAL;
+ 	}
 -- 
 2.51.0
 
