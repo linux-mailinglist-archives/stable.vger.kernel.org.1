@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8853ABE9E10
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:30:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAF5BEA398
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A89335894A0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CF0A75A39D5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D091A335076;
-	Fri, 17 Oct 2025 15:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B48F332912;
+	Fri, 17 Oct 2025 15:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uF6cYKqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIYUpfkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5C4335073;
-	Fri, 17 Oct 2025 15:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170762F12D1;
+	Fri, 17 Oct 2025 15:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714293; cv=none; b=EIy7x4+eaeVlgfpUsi2E+599uAddvBmR4ZHqGP9/p63hqrHTQxdZj60FqLTsof2oiKQGGFaMky+oTAbZU4dSInX3dhCeMTkfQ8XKQxSXJFA5qYQhpF5A1iwnpPqTYjIuMsQULkKrcJWigfxh2cVXMDKZpShkRPpuFk2Zk7GTC0E=
+	t=1760715199; cv=none; b=rUF5hA2cRMKXqVLjx0T995OHy8uP7TMDVfsFF9hLHcK6PB0p1BVs9MGWS8RNFfMtdha7OU0kPl1z//PDoEs8pOweh91ewlzmV2AAIIPuIkkB54ynnL94jfsl6veNBtCyAL5mBVr8bTsDzkbOUQ+6RU6sa3rPetWj1MYC9vIqeRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714293; c=relaxed/simple;
-	bh=zn2DIl2RFt3FWZcHjzBvEcKjCI9D92HHkM8dsEWstaQ=;
+	s=arc-20240116; t=1760715199; c=relaxed/simple;
+	bh=rWCzDd5zMfWDFRyYJysUBAAE+9GrQ6jG9weKdBTt328=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TThgrqRrfUH0F3R9YWx/sUQeqMancBfBHBrzP24nnt52T/TxlLm9VBPQc7y0y275j2p7UsL1MAKxBKMIc0IuhsowJiSI/ET/zUrZtJTeLQ2XkABQZvoNCCGXbwz/XOWfxaz7HcXiZ+AI3yF3ZH3I2iVzJrKDbNwaidqUxwgALDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uF6cYKqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0351EC4CEE7;
-	Fri, 17 Oct 2025 15:18:12 +0000 (UTC)
+	 MIME-Version; b=VsrmklDxl1Y/4mPoFe5gPMzL/AD9ERWAfXV6lGtLxfL1yMi4VvO6aPYUya2MS1oWItdNnwv/nOB/wU9dbBBrZFbOVoswJE+lMsE8hUUnKZD5hh8FmI0j3hmWftSmmfqH19IbryharOctl15cvbmUCM5yBpAWbKol6OG8OGGKLwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIYUpfkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5ABC113D0;
+	Fri, 17 Oct 2025 15:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714293;
-	bh=zn2DIl2RFt3FWZcHjzBvEcKjCI9D92HHkM8dsEWstaQ=;
+	s=korg; t=1760715199;
+	bh=rWCzDd5zMfWDFRyYJysUBAAE+9GrQ6jG9weKdBTt328=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uF6cYKqzt1wFx8eqA1aWzFBR84AbfPlLZF+7Wed9xWt43uXDKrs2m9JTA4NRmgA2L
-	 2x7Zi+eHc9frn3m/67I/Qh3JsWeKm9PcwYlz2ggcjS0aPBi2G9S7Cun9LDROzgrpY9
-	 cLdUoxcXtEVwXS1A3DHstrYJ2JnftaW9ZgRxbGtw=
+	b=KIYUpfkB6nXz1YOfK9f09VgW8qNgYlnb+fWoKHnETPPqcwTmphyc3rgWVVqQGKWi2
+	 JYQ4EkFXdsY2NEZfA7fWG0WVCn6wm+FDLISIn2r2M8XedmiP8waQnahD97WhFbTBdS
+	 Ay+nbtG/dqUA4OsZ2nIQKsiG8Usv3IGgpkxjkCM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.12 093/277] arm64: kprobes: call set_memory_rox() for kprobe page
+	Esben Haabendal <esben@geanix.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 125/371] rtc: isl12022: Fix initial enable_irq/disable_irq balance
 Date: Fri, 17 Oct 2025 16:51:40 +0200
-Message-ID: <20251017145150.530024860@linuxfoundation.org>
+Message-ID: <20251017145206.456284938@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Shi <yang@os.amperecomputing.com>
+From: Esben Haabendal <esben@geanix.com>
 
-commit 195a1b7d8388c0ec2969a39324feb8bebf9bb907 upstream.
+[ Upstream commit 9ffe06b6ccd7a8eaa31d31625db009ea26a22a3c ]
 
-The kprobe page is allocated by execmem allocator with ROX permission.
-It needs to call set_memory_rox() to set proper permission for the
-direct map too. It was missed.
+Interrupts are automatically enabled when requested, so we need to
+initialize irq_enabled accordingly to avoid causing an unbalanced enable
+warning.
 
-Fixes: 10d5e97c1bf8 ("arm64: use PAGE_KERNEL_ROX directly in alloc_insn_page")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c62d658e5253 ("rtc: isl12022: Add alarm support")
+Signed-off-by: Esben Haabendal <esben@geanix.com>
+Link: https://lore.kernel.org/r/20250516-rtc-uie-irq-fixes-v2-2-3de8e530a39e@geanix.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/probes/kprobes.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/rtc/rtc-isl12022.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/kernel/probes/kprobes.c
-+++ b/arch/arm64/kernel/probes/kprobes.c
-@@ -10,6 +10,7 @@
+diff --git a/drivers/rtc/rtc-isl12022.c b/drivers/rtc/rtc-isl12022.c
+index 9b44839a7402c..5fc52dc642130 100644
+--- a/drivers/rtc/rtc-isl12022.c
++++ b/drivers/rtc/rtc-isl12022.c
+@@ -413,6 +413,7 @@ static int isl12022_setup_irq(struct device *dev, int irq)
+ 	if (ret)
+ 		return ret;
  
- #define pr_fmt(fmt) "kprobes: " fmt
- 
-+#include <linux/execmem.h>
- #include <linux/extable.h>
- #include <linux/kasan.h>
- #include <linux/kernel.h>
-@@ -41,6 +42,17 @@ DEFINE_PER_CPU(struct kprobe_ctlblk, kpr
- static void __kprobes
- post_kprobe_handler(struct kprobe *, struct kprobe_ctlblk *, struct pt_regs *);
- 
-+void *alloc_insn_page(void)
-+{
-+	void *addr;
-+
-+	addr = execmem_alloc(EXECMEM_KPROBES, PAGE_SIZE);
-+	if (!addr)
-+		return NULL;
-+	set_memory_rox((unsigned long)addr, 1);
-+	return addr;
-+}
-+
- static void __kprobes arch_prepare_ss_slot(struct kprobe *p)
- {
- 	kprobe_opcode_t *addr = p->ainsn.api.insn;
++	isl12022->irq_enabled = true;
+ 	ret = devm_request_threaded_irq(dev, irq, NULL,
+ 					isl12022_rtc_interrupt,
+ 					IRQF_SHARED | IRQF_ONESHOT,
+-- 
+2.51.0
+
 
 
 
