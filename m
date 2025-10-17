@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-186752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37880BE9D1D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1141BBEA02C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D7A5B58055A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E85B674309E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582C933507A;
-	Fri, 17 Oct 2025 15:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1CE2F12C5;
+	Fri, 17 Oct 2025 15:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaWGRySq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNVso1PF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1054C33507E;
-	Fri, 17 Oct 2025 15:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA191946C8;
+	Fri, 17 Oct 2025 15:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714136; cv=none; b=VGb///a486R5hwKXLsP3i0+SEqYWkm4Het6cru7Vwx56uW5K6aPmwLBMQx55H5mlbiPSo6vzLoYDVU0B5rkXBd1qRbynsLXLNw/YkT6kYURIuAr6zoZmjkb8s5O+Qj3Dl2mw+H5zME+qo8O6Z+majRJo4pY5o3YPUXZ9RejMLzA=
+	t=1760715030; cv=none; b=MTHzVHcGGbCQqmoF2uSVd6Py3kBYQacvEWdpz3lcCCLNUq2GWknAQIcFP9uJ/px5A43OeNPqM6cjh8AM9f3A4jT/DEGuepTASsdYfgEAS/HNtxNEHpvRGxpzboJ8HMfj3XlgnoksNGuLyr2OBCxH958efQ+wUHGXROM6Azfjorg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714136; c=relaxed/simple;
-	bh=JPWPC4yvsNskWN0YGQYGovhglo71o4tkijCvV90iTbo=;
+	s=arc-20240116; t=1760715030; c=relaxed/simple;
+	bh=QfTyGlMhyBYPhoP2Ef8kz9iEmHf7ma959dHkMXloRB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RP1lTgE9da+WKrSuYrwum9WA6jePaVNFvlN6pNlGaO1S+nbCHdF2bQ2nr1+gRlmcFXZLg8PerwiPTDOfrA3ZRYfSZGR8XSiu/gezOJBekI6s4oakWQp+60PY9zLnGqFYBg8mCOySdmcUOWy6e3Ffeq6Ja85CRwd10LWIeEBww3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaWGRySq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4537CC4CEFE;
-	Fri, 17 Oct 2025 15:15:35 +0000 (UTC)
+	 MIME-Version; b=GqWh0WppTgqKoEcL8P59YUhcPbp+r6e0snG8Y4vrI9x/8sl+dY2k4c+YRaGxWSzExFh/SQvc66DeMY1yt9T+ftRDpqCcByRuUMJfvRoDeDPhE9ZVokF5ErH3FHA8WEQOpQ4cpLF1inTw2SPin/aYq7ipVzP0va0MzOl6MKujhFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNVso1PF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B368C4CEE7;
+	Fri, 17 Oct 2025 15:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714135;
-	bh=JPWPC4yvsNskWN0YGQYGovhglo71o4tkijCvV90iTbo=;
+	s=korg; t=1760715029;
+	bh=QfTyGlMhyBYPhoP2Ef8kz9iEmHf7ma959dHkMXloRB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uaWGRySqeyjUErOM50lOluxShADaw3u8xQ33bdo8C+PZ08ZqAaDYbqibnjuoCuELB
-	 tBrnD2CVF6wkeL9UoTD6IPW+jvuDRf3H3xDRh5gW4e0RpCZMvWM9QQGQozexaRNdeO
-	 E0tYhFxdQDGxG8dons9gXGaJAiiWajZbsFs+zoVg=
+	b=DNVso1PF0OLA7FgaHArRL2+G28qELJxdUOmSw9PXdEjNxaADL5nYYWo1rfOXfokNB
+	 0h0ug95fLF/44MOlKekKtED4J0rYkLVRBQ5SgEPtMqalKoUax+BzMmlBLkUzuces0q
+	 cXbns1WS5D056ohUUf7khCXQH9lQY4ndhZknjcPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/277] scsi: mvsas: Fix use-after-free bugs in mvs_work_queue
-Date: Fri, 17 Oct 2025 16:50:47 +0200
-Message-ID: <20251017145148.610375796@linuxfoundation.org>
+Subject: [PATCH 6.17 073/371] ASoC: SOF: ipc4-topology: Correct the minimum host DMA buffer size
+Date: Fri, 17 Oct 2025 16:50:48 +0200
+Message-ID: <20251017145204.583181916@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 60cd16a3b7439ccb699d0bf533799eeb894fd217 ]
+[ Upstream commit a7fe5ff832d61d9393095bc3dd5f06f4af7da3c1 ]
 
-During the detaching of Marvell's SAS/SATA controller, the original code
-calls cancel_delayed_work() in mvs_free() to cancel the delayed work
-item mwq->work_q. However, if mwq->work_q is already running, the
-cancel_delayed_work() may fail to cancel it. This can lead to
-use-after-free scenarios where mvs_free() frees the mvs_info while
-mvs_work_queue() is still executing and attempts to access the
-already-freed mvs_info.
+The firmware has changed the minimum host buffer size from 2 periods to
+4 periods (1 period is 1ms) which was missed by the kernel side.
 
-A typical race condition is illustrated below:
+Adjust the SOF_IPC4_MIN_DMA_BUFFER_SIZE to 4 ms to align with firmware.
 
-CPU 0 (remove)            | CPU 1 (delayed work callback)
-mvs_pci_remove()          |
-  mvs_free()              | mvs_work_queue()
-    cancel_delayed_work() |
-      kfree(mvi)          |
-                          |   mvi-> // UAF
-
-Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
-that the delayed work item is properly canceled and any executing
-delayed work item completes before the mvs_info is deallocated.
-
-This bug was found by static analysis.
-
-Fixes: 20b09c2992fe ("[SCSI] mvsas: add support for 94xx; layout change; bug fixes")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://github.com/thesofproject/sof/commit/f0a14a3f410735db18a79eb7a5f40dc49fdee7a7
+Fixes: 594c1bb9ff73 ("ASoC: SOF: ipc4-topology: Do not parse the DMA_BUFFER_SIZE token")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20251002135752.2430-2-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mvsas/mv_init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/ipc4-topology.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
-index 020037cbf0d91..655cca5fe7ccb 100644
---- a/drivers/scsi/mvsas/mv_init.c
-+++ b/drivers/scsi/mvsas/mv_init.c
-@@ -124,7 +124,7 @@ static void mvs_free(struct mvs_info *mvi)
- 	if (mvi->shost)
- 		scsi_host_put(mvi->shost);
- 	list_for_each_entry(mwq, &mvi->wq_list, entry)
--		cancel_delayed_work(&mwq->work_q);
-+		cancel_delayed_work_sync(&mwq->work_q);
- 	kfree(mvi->rsvd_tags);
- 	kfree(mvi);
- }
+diff --git a/sound/soc/sof/ipc4-topology.h b/sound/soc/sof/ipc4-topology.h
+index 659e1ae0a85f9..ce5c69cb9ea4e 100644
+--- a/sound/soc/sof/ipc4-topology.h
++++ b/sound/soc/sof/ipc4-topology.h
+@@ -61,8 +61,8 @@
+ #define SOF_IPC4_CHAIN_DMA_NODE_ID	0x7fffffff
+ #define SOF_IPC4_INVALID_NODE_ID	0xffffffff
+ 
+-/* FW requires minimum 2ms DMA buffer size */
+-#define SOF_IPC4_MIN_DMA_BUFFER_SIZE	2
++/* FW requires minimum 4ms DMA buffer size */
++#define SOF_IPC4_MIN_DMA_BUFFER_SIZE	4
+ 
+ /*
+  * The base of multi-gateways. Multi-gateways addressing starts from
 -- 
 2.51.0
 
