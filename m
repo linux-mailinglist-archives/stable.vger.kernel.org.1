@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-187211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D10BEA536
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:41 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32880BEA64F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 634A09431A6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 84E8A5A2438
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EA4330B29;
-	Fri, 17 Oct 2025 15:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC97330B17;
+	Fri, 17 Oct 2025 15:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAf2xFoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSeED8id"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A50330B14;
-	Fri, 17 Oct 2025 15:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AD5330B04;
+	Fri, 17 Oct 2025 15:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715429; cv=none; b=en+8dCicuXBvdKP1L0DjIxp1Kza773ccMAIe3EYzVxXfT+w7ZlLcEh3sFOEp+io8VXNo9uB1Krcc/VPjZlidzQvEOtW2bLHkwvvnAKt2rgolbZ6SP0ZiIVYhBUfGcJuWSk6v5rsgr8MHTWyTX+FLJ1owwxWh4oki9hUJy8ARi9M=
+	t=1760716166; cv=none; b=XZab5xuAwX0xGQblkv5Cp+y0oG0xfU3Nftklq/wF225VKgTondInUw/f2XTvXOPO+qUR7TFAPjEWqBO98gny9NZtg4i/+p2VqNG4mi3bIGqnyJGY7jY807B18MuY77FDOqb7mzPaYeOY4sKrZbWMxK/UXrT+q0NYXPEpQhKLY6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715429; c=relaxed/simple;
-	bh=1L0BwS4GE9ed+s6SKgkwUPiVlLVy8hNtzVFIomOCM5c=;
+	s=arc-20240116; t=1760716166; c=relaxed/simple;
+	bh=dW6/dgKc4QK7NV23OEE5rtAGyUvLVlpKcRSidNDA8+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWV+ctGsi5NPu10zZ7UYARKXubHEE+VGfJGAGdI3zP05SYNo4giblKftFRFSzpYl7UBX1uLqJK2MfoWR7Hk94AArdbFhvZbNwXdrJtLcTTau1NuO8C6OMS0s86ToGpCXj/JSHXnzxCTnG9oFMzNA1TqWal5rl080r72JE91tV6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAf2xFoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21318C4CEE7;
-	Fri, 17 Oct 2025 15:37:09 +0000 (UTC)
+	 MIME-Version; b=ABWfbLRCsIYj7EFWmv59mvyXt25fmLIumY9lhxcZ6sv29ADq8KQe/BVT/2G3KbUZwp3tuHuSALTBv5w9rTNZ8VGPwOcHsf/dXED+gWGSbw6DwCJJ6sAgQePDVBf87XQIklH8oUw/InNRaR0WoAMfLMemkGmib98jkVRCVQi0x0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSeED8id; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3720BC4CEE7;
+	Fri, 17 Oct 2025 15:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715429;
-	bh=1L0BwS4GE9ed+s6SKgkwUPiVlLVy8hNtzVFIomOCM5c=;
+	s=korg; t=1760716166;
+	bh=dW6/dgKc4QK7NV23OEE5rtAGyUvLVlpKcRSidNDA8+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZAf2xFoLd7juoJR6xwVlpG/URZoz7yedGpzZvH8f9ZqsqbUzabAD3Swu8b9SSiaYo
-	 reN38qDooTMyozSuv44IdyeobAPRcSEKbGgfJfxBq204C3Q0+POjsSEqqDANJxsBCx
-	 QmJilFnYbZLpnXuxJkPC3nHnQ4TUbg6xmhJz3FPA=
+	b=uSeED8idpn6GLMDjnDShQSYpwuQwE8nDIXB5u/YcydZ21i5Op2xIRzM4TuZFzMYn5
+	 yODBs7CnQmwt81lfVx0A74aw66UQ6BQFbQMGdET4mzBBBHiDpEkHLmRNv44ToNeTsI
+	 V0X35tZWQFoHw1G4D5Js6zTdtgsk4ohjqyovxsHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 214/371] fsnotify: pass correct offset to fsnotify_mmap_perm()
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 096/276] usb: vhci-hcd: Prevent suspending virtually attached devices
 Date: Fri, 17 Oct 2025 16:53:09 +0200
-Message-ID: <20251017145209.828417524@linuxfoundation.org>
+Message-ID: <20251017145145.990224540@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,61 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 28bba2c2935e219d6cb6946e16b9a0b7c47913be upstream.
+[ Upstream commit e40b984b6c4ce3f80814f39f86f87b2a48f2e662 ]
 
-fsnotify_mmap_perm() requires a byte offset for the file about to be
-mmap'ed.  But it is called from vm_mmap_pgoff(), which has a page offset.
-Previously the conversion was done incorrectly so let's fix it, being
-careful not to overflow on 32-bit platforms.
+The VHCI platform driver aims to forbid entering system suspend when at
+least one of the virtual USB ports are bound to an active USB/IP
+connection.
 
-Discovered during code review.
+However, in some cases, the detection logic doesn't work reliably, i.e.
+when all devices attached to the virtual root hub have been already
+suspended, leading to a broken suspend state, with unrecoverable resume.
 
-Link: https://lkml.kernel.org/r/20251003155238.2147410-1-ryan.roberts@arm.com
-Fixes: 066e053fe208 ("fsnotify: add pre-content hooks on mmap()")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Ensure the virtually attached devices do not enter suspend by setting
+the syscore PM flag.  Note this is currently limited to the client side
+only, since the server side doesn't implement system suspend prevention.
+
+Fixes: 04679b3489e0 ("Staging: USB/IP: add client driver")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250902-vhci-hcd-suspend-fix-v3-1-864e4e833559@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/util.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/usbip/vhci_hcd.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/mm/util.c b/mm/util.c
-index 6c1d64ed0221..8989d5767528 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -566,6 +566,7 @@ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
- 	unsigned long len, unsigned long prot,
- 	unsigned long flag, unsigned long pgoff)
- {
-+	loff_t off = (loff_t)pgoff << PAGE_SHIFT;
- 	unsigned long ret;
- 	struct mm_struct *mm = current->mm;
- 	unsigned long populate;
-@@ -573,7 +574,7 @@ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
+diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
+index 6b98f5ab6dfed..e3c8483d7ba40 100644
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -764,6 +764,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
+ 				 ctrlreq->wValue, vdev->rhport);
  
- 	ret = security_mmap_file(file, prot, flag);
- 	if (!ret)
--		ret = fsnotify_mmap_perm(file, prot, pgoff >> PAGE_SHIFT, len);
-+		ret = fsnotify_mmap_perm(file, prot, off, len);
- 	if (!ret) {
- 		if (mmap_write_lock_killable(mm))
- 			return -EINTR;
+ 			vdev->udev = usb_get_dev(urb->dev);
++			/*
++			 * NOTE: A similar operation has been done via
++			 * USB_REQ_GET_DESCRIPTOR handler below, which is
++			 * supposed to always precede USB_REQ_SET_ADDRESS.
++			 *
++			 * It's not entirely clear if operating on a different
++			 * usb_device instance here is a real possibility,
++			 * otherwise this call and vdev->udev assignment above
++			 * should be dropped.
++			 */
++			dev_pm_syscore_device(&vdev->udev->dev, true);
+ 			usb_put_dev(old);
+ 
+ 			spin_lock(&vdev->ud.lock);
+@@ -784,6 +795,17 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
+ 					"Not yet?:Get_Descriptor to device 0 (get max pipe size)\n");
+ 
+ 			vdev->udev = usb_get_dev(urb->dev);
++			/*
++			 * Set syscore PM flag for the virtually attached
++			 * devices to ensure they will not enter suspend on
++			 * the client side.
++			 *
++			 * Note this doesn't have any impact on the physical
++			 * devices attached to the host system on the server
++			 * side, hence there is no need to undo the operation
++			 * on disconnect.
++			 */
++			dev_pm_syscore_device(&vdev->udev->dev, true);
+ 			usb_put_dev(old);
+ 			goto out;
+ 
 -- 
 2.51.0
 
