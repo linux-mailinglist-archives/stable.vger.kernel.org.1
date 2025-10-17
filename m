@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ABBEBE9724
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:04:36 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE01BE99CC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BE05956380E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D684B581A70
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CBB2F692A;
-	Fri, 17 Oct 2025 15:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F922F12DD;
+	Fri, 17 Oct 2025 15:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ec3QZiEP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0ijY62I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5EA23EABB;
-	Fri, 17 Oct 2025 15:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D112745E;
+	Fri, 17 Oct 2025 15:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713237; cv=none; b=o5lT5m+BO+wASzs+vox+Ia1Rz6yDKTOBha1FO/Nz6Ik9F6Hq/4hXJwES/Z1AXPqAYC2Tv124QIZSbqOtZRA38kuvSsHSDSyWIL+IyZBakvQ+0DWQIPT2dZWw2b20fWv0NO7pd8c4m1E+35h6R5QbGhE5LEts1wRvJqFzZUm6vC8=
+	t=1760713647; cv=none; b=VVEKB4CUqJvgJNkA7OpqG1O+jht5+qmMff+9MkZ/oLFv0OQZXnsfjvm30f3Ocy7CFMOTVgEUOnvezTP7ZUInsjXny+/lRx4FcvwVxTx7FO7eZ9AqO8JrQNUlZj7nnR2ZGOyrQabg30Wc42R6JlgG8GmXBeLeQAIRkoOHwV+u2g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713237; c=relaxed/simple;
-	bh=fk+B3A0uEqxoJkjlz9rvuFfHx9/nIZbj7xHuILV0WZA=;
+	s=arc-20240116; t=1760713647; c=relaxed/simple;
+	bh=g9dsxCADkjHqWVbqQun8/xX2qiE5PuvPlLTk2e9A4OA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=olOMe67O9ylkmS4enDOhfrBeIqOM3sHEOX+jU78t3XFDhivHbmZB1yUH61UGRGxh0Kd9Yf7w6Bmnz3B0uo5g835KC5U4Xb26KcP/SwBhAE2LFh9U0VBouDsCK69fVJcq1gyS4NU0UVeDJ3IpOs+REJvrKvYfM6RuQwB0sTFPf3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ec3QZiEP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFF8C113D0;
-	Fri, 17 Oct 2025 15:00:37 +0000 (UTC)
+	 MIME-Version; b=OGmDIV+DcIoi/omWqpRuUJy6bhAdsPjuKlnPubYhtGEt0tcew/gz4Wz1EkBd6HaX9b/ivYPnHQpsNHkoK7KfE2E4v5Qj0PNOyK841VbnfOv8HQSBSXGACNg5mET6Igz8wvKSrVZvNDnbsb2jxnhl9lqEWP9luup2wVbKXl/gRqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0ijY62I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BB9C4CEE7;
+	Fri, 17 Oct 2025 15:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713237;
-	bh=fk+B3A0uEqxoJkjlz9rvuFfHx9/nIZbj7xHuILV0WZA=;
+	s=korg; t=1760713647;
+	bh=g9dsxCADkjHqWVbqQun8/xX2qiE5PuvPlLTk2e9A4OA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ec3QZiEP3lqQwCSp4Jcs3bTgUjtqKtW8hGvkgX+iF7i/YVqmQ6/SmonLpqTirZ/5r
-	 ONfoNU1STARuxuUkwdsI1i9jC9rGnnE8e8KzShA4uQKSsVrvnp5jdFMEolylUmcuJ1
-	 5GfVnIFdvpZYZBCt/P64pxYaDDErMBZdaxIc4wOc=
+	b=B0ijY62IaTErFwju9B+TDnTsYcV0chgisLXZg/cFo4km6RX4+7IiEzhJMJmFxz/kE
+	 lnvDviIMAK0YEh0L4iUFSCDeSGwYtFsE+M9LVqxXluL5F2i9b4socwpgp3BHhCeJ00
+	 qQRoY+uWvE0KxfHHgd14UdiKB5SvP8DSj3ED/DiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Tang <danielzgtg.opensource@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 052/168] ACPI: TAD: Add missing sysfs_remove_group() for ACPI_TAD_RT
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 070/201] xen/events: Update virq_to_irq on migration
 Date: Fri, 17 Oct 2025 16:52:11 +0200
-Message-ID: <20251017145130.935736506@linuxfoundation.org>
+Message-ID: <20251017145137.324997549@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Tang <danielzgtg.opensource@gmail.com>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-commit 4aac453deca0d9c61df18d968f8864c3ae7d3d8d upstream.
+commit 3fcc8e146935415d69ffabb5df40ecf50e106131 upstream.
 
-Previously, after `rmmod acpi_tad`, `modprobe acpi_tad` would fail
-with this dmesg:
+VIRQs come in 3 flavors, per-VPU, per-domain, and global, and the VIRQs
+are tracked in per-cpu virq_to_irq arrays.
 
-sysfs: cannot create duplicate filename '/devices/platform/ACPI000E:00/time'
-Call Trace:
- <TASK>
- dump_stack_lvl+0x6c/0x90
- dump_stack+0x10/0x20
- sysfs_warn_dup+0x8b/0xa0
- sysfs_add_file_mode_ns+0x122/0x130
- internal_create_group+0x1dd/0x4c0
- sysfs_create_group+0x13/0x20
- acpi_tad_probe+0x147/0x1f0 [acpi_tad]
- platform_probe+0x42/0xb0
- </TASK>
-acpi-tad ACPI000E:00: probe with driver acpi-tad failed with error -17
+Per-domain and global VIRQs must be bound on CPU 0, and
+bind_virq_to_irq() sets the per_cpu virq_to_irq at registration time
+Later, the interrupt can migrate, and info->cpu is updated.  When
+calling __unbind_from_irq(), the per-cpu virq_to_irq is cleared for a
+different cpu.  If bind_virq_to_irq() is called again with CPU 0, the
+stale irq is returned.  There won't be any irq_info for the irq, so
+things break.
 
-Fixes: 3230b2b3c1ab ("ACPI: TAD: Add low-level support for real time capability")
-Signed-off-by: Daniel Tang <danielzgtg.opensource@gmail.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/2881298.hMirdbgypa@daniel-desktop3
-Cc: 5.2+ <stable@vger.kernel.org> # 5.2+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Make xen_rebind_evtchn_to_cpu() update the per_cpu virq_to_irq mappings
+to keep them update to date with the current cpu.  This ensures the
+correct virq_to_irq is cleared in __unbind_from_irq().
+
+Fixes: e46cdb66c8fc ("xen: event channels")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250828003604.8949-4-jason.andryuk@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_tad.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/xen/events/events_base.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/acpi_tad.c
-+++ b/drivers/acpi/acpi_tad.c
-@@ -563,6 +563,9 @@ static int acpi_tad_remove(struct platfo
- 
- 	pm_runtime_get_sync(dev);
- 
-+	if (dd->capabilities & ACPI_TAD_RT)
-+		sysfs_remove_group(&dev->kobj, &acpi_tad_time_attr_group);
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1809,9 +1809,20 @@ static int xen_rebind_evtchn_to_cpu(stru
+ 	 * virq or IPI channel, which don't actually need to be rebound. Ignore
+ 	 * it, but don't do the xenlinux-level rebind in that case.
+ 	 */
+-	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0)
++	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0) {
++		int old_cpu = info->cpu;
 +
- 	if (dd->capabilities & ACPI_TAD_DC_WAKE)
- 		sysfs_remove_group(&dev->kobj, &acpi_tad_dc_attr_group);
+ 		bind_evtchn_to_cpu(info, tcpu, false);
  
++		if (info->type == IRQT_VIRQ) {
++			int virq = info->u.virq;
++			int irq = per_cpu(virq_to_irq, old_cpu)[virq];
++
++			per_cpu(virq_to_irq, old_cpu)[virq] = -1;
++			per_cpu(virq_to_irq, tcpu)[virq] = irq;
++		}
++	}
++
+ 	do_unmask(info, EVT_MASK_REASON_TEMPORARY);
+ 
+ 	return 0;
 
 
 
