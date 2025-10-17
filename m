@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-186792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC50BE9A6A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:18:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822AEBE963B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 973B835D529
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB92C5E69E6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200EA3277A9;
-	Fri, 17 Oct 2025 15:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4985833710B;
+	Fri, 17 Oct 2025 14:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCZWjALP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzeZxbGH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C059D3BB5A;
-	Fri, 17 Oct 2025 15:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073973370EE;
+	Fri, 17 Oct 2025 14:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714250; cv=none; b=LRsGdIuWoWmUCShoBL3aUG7VRQbn9+KlVQfiSN7doo+nKolvGETPYfTit4ed1wLq4LVg2Dy8d2gEFggcuxrOgK9/H39oouuXmmJfwB0BrtRfl1WBwmBdKomC5c0UdZvKNHdJ9MM5lfZMu9dC/ubD3RmsKbLCmdQO6BsfwKFrRSg=
+	t=1760713026; cv=none; b=SKs6A0aP8GFu9GxwNHYBzfQ4LUG56n0E1PftayV3lQM/0gWH9XrFLiLkUM1k8xCdUqaByA+rPaLmc3/tht5jzgGzuPFQQxdxv9HLptwdz4dKiXD+QGqEVkeePUzDkJi3PzmiwR0F6GOixOaQWbYYtcRdVAaS8M2C5aw5tQRMWws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714250; c=relaxed/simple;
-	bh=xtZKABeWYS5pAHjnXA09bqrlHtbPzMJsgy8M3WlzoxE=;
+	s=arc-20240116; t=1760713026; c=relaxed/simple;
+	bh=9t8jVKjinDkgEZAhV0vGCN89K5WsQ8KugCBcx4GAfWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jb+GA1aD7Uw/Wttw39W1gy9NbdX8h+ybJbBJubV57BOAofXuX44a1qIJv+1EBcEOpHgsidtUgu1VlHxUF8oNmKuxloVfN4UODJkmriW2S2mdUtuRHJnxT/2eqJ3+j1umpjtbrK2Kl1BRHiDUXRx9qf5HfQcyoRY7sMU2xmByywo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCZWjALP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484C1C4CEE7;
-	Fri, 17 Oct 2025 15:17:30 +0000 (UTC)
+	 MIME-Version; b=oR0KuNMbrLoecs3YhRMbTt+JHWu8SO1JULcMlMn3VT1VqAna9jRacpVgUqtWFKXQVu2oICLSGb28aW3wsefc2r7xP/hKUDWtZ1x5+6L93hVrHZtphh3mK0ynK91rhkcNjygp5JzqCeIJ+rZg9y9UB0VZZx5w3bS4wkAoVDpyb9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzeZxbGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3381DC4CEE7;
+	Fri, 17 Oct 2025 14:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714250;
-	bh=xtZKABeWYS5pAHjnXA09bqrlHtbPzMJsgy8M3WlzoxE=;
+	s=korg; t=1760713025;
+	bh=9t8jVKjinDkgEZAhV0vGCN89K5WsQ8KugCBcx4GAfWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCZWjALPQFY8YzSw4DnqFzEKzllnv3oWdb65y3aCYPyVe1h8JBdP8nG8bYUl62Q7T
-	 l1pT/JfUjlqguLGV127hIJWbp/Hn7KeIR8m8rD65zkVzy3/bFZUJ78Hgy4zP4cF4xC
-	 hxQcZZElzq4KMW/YkkxYibr5u6oYfsXqS1kLILWI=
+	b=RzeZxbGHRFbvxLV93Q1OWRvU4mQsUMtDHSLEscK8/76/1Hfkw5pyh2dn6dJbB8Nao
+	 bp1NWdtA35/1KcJ+ROIxGXsg3XWPzqtmY5JtjA5rkLdlUf7cxNGo20u2nK5eJgEUQe
+	 jKaAOyouFNugC4OOurkfWYrxLQ1c3B4c4liAg3eU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
-	Justinien Bouron <jbouron@amazon.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Brian Masney <bmasney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/277] tpm_tis: Fix incorrect arguments in tpm_tis_probe_irq_single
+Subject: [PATCH 6.1 008/168] clk: at91: peripheral: fix return value
 Date: Fri, 17 Oct 2025 16:51:27 +0200
-Message-ID: <20251017145150.057004831@linuxfoundation.org>
+Message-ID: <20251017145129.320196758@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gunnar Kudrjavets <gunnarku@amazon.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 8a81236f2cb0882c7ea6c621ce357f7f3f601fe5 ]
+[ Upstream commit 47b13635dabc14f1c2fdcaa5468b47ddadbdd1b5 ]
 
-The tpm_tis_write8() call specifies arguments in wrong order. Should be
-(data, addr, value) not (data, value, addr). The initial correct order
-was changed during the major refactoring when the code was split.
+determine_rate() is expected to return an error code, or 0 on success.
+clk_sam9x5_peripheral_determine_rate() has a branch that returns the
+parent rate on a certain case. This is the behavior of round_rate(),
+so let's go ahead and fix this by setting req->rate.
 
-Fixes: 41a5e1cf1fe1 ("tpm/tpm_tis: Split tpm_tis driver into a core and TCG TIS compliant phy")
-Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Reviewed-by: Justinien Bouron <jbouron@amazon.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: b4c115c76184f ("clk: at91: clk-peripheral: add support for changeable parent rate")
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/at91/clk-peripheral.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index ed0d3d8449b30..59e992dc65c4c 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -977,8 +977,8 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 	 * will call disable_irq which undoes all of the above.
- 	 */
- 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
--		tpm_tis_write8(priv, original_int_vec,
--			       TPM_INT_VECTOR(priv->locality));
-+		tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality),
-+			       original_int_vec);
- 		rc = -1;
- 	}
+diff --git a/drivers/clk/at91/clk-peripheral.c b/drivers/clk/at91/clk-peripheral.c
+index 5104d4025484c..a5e8f5949d770 100644
+--- a/drivers/clk/at91/clk-peripheral.c
++++ b/drivers/clk/at91/clk-peripheral.c
+@@ -275,8 +275,11 @@ static int clk_sam9x5_peripheral_determine_rate(struct clk_hw *hw,
+ 	long best_diff = LONG_MIN;
+ 	u32 shift;
  
+-	if (periph->id < PERIPHERAL_ID_MIN || !periph->range.max)
+-		return parent_rate;
++	if (periph->id < PERIPHERAL_ID_MIN || !periph->range.max) {
++		req->rate = parent_rate;
++
++		return 0;
++	}
+ 
+ 	/* Fist step: check the available dividers. */
+ 	for (shift = 0; shift <= PERIPHERAL_MAX_SHIFT; shift++) {
 -- 
 2.51.0
 
