@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E27BE9BA4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2289DBEA5DB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 42C2635D99A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 077E2941DB5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B9333290A;
-	Fri, 17 Oct 2025 15:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED90F33507A;
+	Fri, 17 Oct 2025 15:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdVoBJzp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mK8XgeR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F368732C93E;
-	Fri, 17 Oct 2025 15:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88F6330B30;
+	Fri, 17 Oct 2025 15:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714450; cv=none; b=Ih9K3X9TG7QdHE7vK3RzArgAD2WpL2hhzLiDjm6gnjjx6VuzrDHLvue+NKcOHWt6xKH8HR9S3sgKoRfWx/OQgBMns213hAlSSXJ5rcGPmgzSzDVCgFz8+it4Zawd2joh6lwcNwu47Secxlx/FYWA+dv1i/1ZR49JtAYMkci+GUA=
+	t=1760715341; cv=none; b=bqlmIFSj3TcinrXE2oD4eumtaNQZIxBG9wKBRQJWCladTiTVGIiQmEQXz74MWfxKKSu6m22AK+3x79TDUEabH9GjWrYTJ1CKkrXUsNcftvMX/pCz190sOdoJ2LuMhSgF0O/SOnXqHIbVNxuWWyzAc8Sig7xXSNQF28uBsgytClk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714450; c=relaxed/simple;
-	bh=o7xltGhrKlGPZcttTbs3nPrl79TAMpYmcSk8HxHPND4=;
+	s=arc-20240116; t=1760715341; c=relaxed/simple;
+	bh=plrgq2PDAWV9Qp1OEa0O3XKMHwL38C/TYDmuksh675c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EuwSgorcFkOJcPfI4B/v6qjE2dng+vIua82bpiIK5WnwfqTNnBOG1Y+utSj6wZHIEVWML2utxoMoPgQyrufshYQeU8GdO7rMUx2O1aBY8BwEFNmuPVDpJLo5eDqx+GNNjFqs6aso1mThJ8yzwEj8Lq6CagEeauWqJsKr613OBGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdVoBJzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D38C4CEE7;
-	Fri, 17 Oct 2025 15:20:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DV1gJa4hKgfbpYuSL11cT6zNd8nqdMLZe2zzU/MUkcFNsK4LufIB7QF5xtcke+yX9AAmMu/GJdip9DZ/ig2OcZ9cQP8z5EDWZPy/L81EsbFBhFLdp3mbWY5lazY5t2fy8v8b2Ua1P6sTSWH0YKf0UoHdDe9GRWUg6GBUcVqJv4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mK8XgeR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE797C4CEE7;
+	Fri, 17 Oct 2025 15:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714449;
-	bh=o7xltGhrKlGPZcttTbs3nPrl79TAMpYmcSk8HxHPND4=;
+	s=korg; t=1760715341;
+	bh=plrgq2PDAWV9Qp1OEa0O3XKMHwL38C/TYDmuksh675c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xdVoBJzpHY89gB9VXYOk4Qd49od8laRFJypU6D61ruSmkWIoTUR8irjmqTwYBa+ql
-	 AgTbMXQDKJ0UOubtiK0A9OPse3kXAOmS0A+WimdcfAnsYsyyaqVHKGWCdI+scYuwl8
-	 II+m9HP2v41PWr150KQSPhBuZXhwlNmCWJCjJQvo=
+	b=2mK8XgeRlIzN7Xf1Wq0pUbz3doR0vzfpcFFBJot4HGJiFDOQKn0RXKhpxNdpknau3
+	 5SkZXepptvGsd+DOo9A2hDZKfJVmCQjkV2Kwv6Jumc3VFcwTs7xwaqGYQD75fvMNoE
+	 oSXDNUMbC4PTrvqzVFkZJLr7cYmX8/mio2tqclwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	Askar Safin <safinaskar@zohomail.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 150/277] openat2: dont trigger automounts with RESOLVE_NO_XDEV
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.17 182/371] media: vsp1: Export missing vsp1_isp_free_buffer symbol
 Date: Fri, 17 Oct 2025 16:52:37 +0200
-Message-ID: <20251017145152.600707042@linuxfoundation.org>
+Message-ID: <20251017145208.510098657@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Askar Safin <safinaskar@zohomail.com>
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-commit 042a60680de43175eb4df0977ff04a4eba9da082 upstream.
+commit b32655a5f4c1a3b830f05fe3d43e17b2c4d09146 upstream.
 
-openat2 had a bug: if we pass RESOLVE_NO_XDEV, then openat2
-doesn't traverse through automounts, but may still trigger them.
-(See the link for full bug report with reproducer.)
+The vsp1_isp_free_buffer() function implemented by the vsp1 driver is
+part of the API exposed to the rcar-isp driver. All other symbols except
+that one are properly exported. Fix it.
 
-This commit fixes this bug.
-
-Link: https://lore.kernel.org/linux-fsdevel/20250817075252.4137628-1-safinaskar@zohomail.com/
-Fixes: fddb5d430ad9fa91b49b1 ("open: introduce openat2(2) syscall")
-Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
+Fixes: d06c1a9f348d ("media: vsp1: Add VSPX support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Askar Safin <safinaskar@zohomail.com>
-Link: https://lore.kernel.org/20250825181233.2464822-5-safinaskar@zohomail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namei.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/media/platform/renesas/vsp1/vsp1_vspx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -1388,6 +1388,10 @@ static int follow_automount(struct path
- 	    dentry->d_inode)
- 		return -EISDIR;
+diff --git a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
+index a754b92232bd..1673479be0ff 100644
+--- a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
++++ b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
+@@ -286,6 +286,7 @@ void vsp1_isp_free_buffer(struct device *dev,
+ 	dma_free_coherent(bus_master, buffer_desc->size, buffer_desc->cpu_addr,
+ 			  buffer_desc->dma_addr);
+ }
++EXPORT_SYMBOL_GPL(vsp1_isp_free_buffer);
  
-+	/* No need to trigger automounts if mountpoint crossing is disabled. */
-+	if (lookup_flags & LOOKUP_NO_XDEV)
-+		return -EXDEV;
-+
- 	if (count && (*count)++ >= MAXSYMLINKS)
- 		return -ELOOP;
- 
-@@ -1411,6 +1415,10 @@ static int __traverse_mounts(struct path
- 		/* Allow the filesystem to manage the transit without i_mutex
- 		 * being held. */
- 		if (flags & DCACHE_MANAGE_TRANSIT) {
-+			if (lookup_flags & LOOKUP_NO_XDEV) {
-+				ret = -EXDEV;
-+				break;
-+			}
- 			ret = path->dentry->d_op->d_manage(path, false);
- 			flags = smp_load_acquire(&path->dentry->d_flags);
- 			if (ret < 0)
+ /**
+  * vsp1_isp_start_streaming - Start processing VSPX jobs
+-- 
+2.51.0
+
 
 
 
