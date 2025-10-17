@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-187215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF09ABEA110
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE37BE97CF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30A2C188070F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 22C07565958
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C8D330B34;
-	Fri, 17 Oct 2025 15:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4521E32C948;
+	Fri, 17 Oct 2025 15:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O63uBnQp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWhzlRqA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74254330B3C;
-	Fri, 17 Oct 2025 15:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F562F12B7;
+	Fri, 17 Oct 2025 15:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715441; cv=none; b=ievSIGBYdxlC+pAanHbeClF46TQ7dBubtuYT+71tZ0i0YUfcPbzDmZnQXIrEU1dRgg+u3pRJM3PDIp/Sysew0BCqJZPXbm1CvZhevH6UZJu5ymf3bfcySL/Eq2iC1IrzQUwjPDDsHQpaiC/BYtekzOmsCaqwrLmZZopwjVV+JXg=
+	t=1760713289; cv=none; b=UZ1wnOhgksmJ64WgNjaQ6ytajgo2CmrIeoHl5HUliH4hjifd/2yi/xeLPH4KW9PVb0WVY6Iiq/nW68gLsd5lnqIxQR35fbXGz4xLgAToXeyEyZInYFRK7Wkvv2bIEsexmDxpj4h63CQQThqP5yrH58pVJNoSQKIZmaQPJvJToR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715441; c=relaxed/simple;
-	bh=SmX2aW+6fy+2nr/JaMRvviepMuEZF9iPwPGl9hDV670=;
+	s=arc-20240116; t=1760713289; c=relaxed/simple;
+	bh=1dApfQbzippDxwkXaFUHSHTulTWBDvmYyaGJGbE8ltI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ci3THBW8nWTD8PpL7+7tyhK/fSF0sfzqMxlCaNLfY+YH9Mz0ZHN66jcIwRtMzYBSEK0RJeeMMoLPLsg7UYQWM4B89LoePPgQQQdhEk+pRJEN4gSNTdqZ0Sfzr4gJtk1/SUYoLgfFVJHuzKx9GwuSrFDFUt9DFKB4pm/TfsdOOGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O63uBnQp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4996C4CEFE;
-	Fri, 17 Oct 2025 15:37:20 +0000 (UTC)
+	 MIME-Version; b=djc8QNVMzRv4cjXC08fod65XrpLX7/23GZ3tVcoH2ewzHtRt76gWuvKadNO8d3ZJArK/RbpccAJG+XDY3B8jpy2DggDVpIsB7PVzdtjoraUYYJ3F2PyqQjKBXJpN585VOfcBnqHmP4C9kn9c6hVrnd8BVxVY16FetNsfPLoMq8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWhzlRqA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83082C4CEF9;
+	Fri, 17 Oct 2025 15:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715441;
-	bh=SmX2aW+6fy+2nr/JaMRvviepMuEZF9iPwPGl9hDV670=;
+	s=korg; t=1760713288;
+	bh=1dApfQbzippDxwkXaFUHSHTulTWBDvmYyaGJGbE8ltI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O63uBnQp+b/a74W5RWaoONlPq/7aAax19ul6FCa67btYAHZPjYMNKy3GMia9foLeA
-	 mf7ux72uXz0EXJVR2pyTY56q/gKAJe8G6HR6a0FN3hN3LmODW02ycqaNWQvtsGQeoi
-	 5gIHp0qdxS4TCUVfdfbl9RG+G81lg48XweoLebps=
+	b=UWhzlRqAz11xO4e8HIkNI7YAoACouaFtiTjm/SVo68ivJnv6+GqWlAbLevTtb/HQn
+	 /hIn8pu/oAZ5YOSSoGewhCSvI5oy5ViOHnfuzKlbtQIkQhah3oPTHpxBOBDyvJTDNK
+	 bUXwh/IUN9OQl6YLOoM9sZzt8hxVK/xN5dWK3j8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.17 217/371] gpio: mpfs: fix setting gpio direction to output
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: [PATCH 6.1 113/168] PCI/AER: Support errors introduced by PCIe r6.0
 Date: Fri, 17 Oct 2025 16:53:12 +0200
-Message-ID: <20251017145209.938991831@linuxfoundation.org>
+Message-ID: <20251017145133.188929030@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit bc061143637532c08d9fc657eec93fdc2588068e upstream.
+commit 6633875250b38b18b8638cf01e695de031c71f02 upstream.
 
-mpfs_gpio_direction_output() actually sets the line to input mode.
-Use the correct register settings for output mode so that this function
-actually works as intended.
+PCIe r6.0 defined five additional errors in the Uncorrectable Error
+Status, Mask and Severity Registers (PCIe r7.0 sec 7.8.4.2ff).
 
-This was a copy-paste mistake made when converting to regmap during the
-driver submission process. It went unnoticed because my test for output
-mode is toggling LEDs on an Icicle kit which functions with the
-incorrect code. The internal reporter has yet to test the patch, but on
-their system the incorrect setting may be the reason for failures to
-drive the GPIO lines on the BeagleV-fire board.
+lspci has been supporting them since commit 144b0911cc0b ("ls-ecaps:
+extend decode support for more fields for AER CE and UE status"):
 
-CC: stable@vger.kernel.org
-Fixes: a987b78f3615e ("gpio: mpfs: add polarfire soc gpio support")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20250925-boogieman-carrot-82989ff75d10@spud
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+  https://git.kernel.org/pub/scm/utils/pciutils/pciutils.git/commit/?id=144b0911cc0b
+
+Amend the AER driver to recognize them as well, instead of logging them as
+"Unknown Error Bit".
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/21f1875b18d4078c99353378f37dcd6b994f6d4e.1756301211.git.lukas@wunner.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-mpfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pcie/aer.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/gpio/gpio-mpfs.c
-+++ b/drivers/gpio/gpio-mpfs.c
-@@ -69,7 +69,7 @@ static int mpfs_gpio_direction_output(st
- 	struct mpfs_gpio_chip *mpfs_gpio = gpiochip_get_data(gc);
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -37,7 +37,7 @@
+ #define AER_ERROR_SOURCES_MAX		128
  
- 	regmap_update_bits(mpfs_gpio->regs, MPFS_GPIO_CTRL(gpio_index),
--			   MPFS_GPIO_DIR_MASK, MPFS_GPIO_EN_IN);
-+			   MPFS_GPIO_DIR_MASK, MPFS_GPIO_EN_OUT | MPFS_GPIO_EN_OUT_BUF);
- 	regmap_update_bits(mpfs_gpio->regs, mpfs_gpio->offsets->outp, BIT(gpio_index),
- 			   value << gpio_index);
+ #define AER_MAX_TYPEOF_COR_ERRS		16	/* as per PCI_ERR_COR_STATUS */
+-#define AER_MAX_TYPEOF_UNCOR_ERRS	27	/* as per PCI_ERR_UNCOR_STATUS*/
++#define AER_MAX_TYPEOF_UNCOR_ERRS	32	/* as per PCI_ERR_UNCOR_STATUS*/
  
+ struct aer_err_source {
+ 	unsigned int status;
+@@ -518,11 +518,11 @@ static const char *aer_uncorrectable_err
+ 	"AtomicOpBlocked",		/* Bit Position 24	*/
+ 	"TLPBlockedErr",		/* Bit Position 25	*/
+ 	"PoisonTLPBlocked",		/* Bit Position 26	*/
+-	NULL,				/* Bit Position 27	*/
+-	NULL,				/* Bit Position 28	*/
+-	NULL,				/* Bit Position 29	*/
+-	NULL,				/* Bit Position 30	*/
+-	NULL,				/* Bit Position 31	*/
++	"DMWrReqBlocked",		/* Bit Position 27	*/
++	"IDECheck",			/* Bit Position 28	*/
++	"MisIDETLP",			/* Bit Position 29	*/
++	"PCRC_CHECK",			/* Bit Position 30	*/
++	"TLPXlatBlocked",		/* Bit Position 31	*/
+ };
+ 
+ static const char *aer_agent_string[] = {
 
 
 
