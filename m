@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-186902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FFBBE9CF3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84132BEA114
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8EC419C1CC2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EB4C189848E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F5C332919;
-	Fri, 17 Oct 2025 15:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990742F12D1;
+	Fri, 17 Oct 2025 15:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKwI/x3p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhZ78S3h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E49332ED8;
-	Fri, 17 Oct 2025 15:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534AE289811;
+	Fri, 17 Oct 2025 15:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714553; cv=none; b=L5h2lmYdSpIc6I93mKH5H/wOjrqSmhzLnVonFo4AA1bPjFRbI3Q2DntyHvdU7xi4Nujc9zXhvc/ATIc3Zcdny/Fps6WS3NCyoaSKRAcvnKlUWRIrxyIPFZ7fjI+Pl4WfsRgS6HK8bL4oKneo0JdXADaGgt5ktCeHNkJ0Rb7wcIo=
+	t=1760715444; cv=none; b=qOeindsZ+x08aoFaaRITFpMEiLafZqoDyGNV9wBjhz/vGFzjPSCuCCrpX+WiK5nvW955CZ7JgxSsBW+Xzj02bYoHazYcm60qZlqgeY9lW4R9V4ypDACw9HeN/WEz5IVz2pbdnPxkPA43c6bIINIe4qEory2+1eOiXgs2Nu/aFIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714553; c=relaxed/simple;
-	bh=VuzeDgYbFsS3PHbvvC109hRpFhqoGUJBu5IfnYYy2b4=;
+	s=arc-20240116; t=1760715444; c=relaxed/simple;
+	bh=ujpjFsGqLgM1BTKzuNJY7v75XddsFX4OU9gMVSbz9yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHpzlSgnFpk+lgH21W0qvZYVkY6pggPdQm/i++g8aygPDn2Lnv4TWAfris4MXt8G53TnXDz9wXZstMBBSiG5nONqgdrHk8R19Km1UC1cLH0svGSfmKV6Aih3Qpk/fuOmqRHrPQNcrUGg2Rg2LXoR8hdMJg8aLYoBr/kqUtPaPz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKwI/x3p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871CCC4CEFE;
-	Fri, 17 Oct 2025 15:22:33 +0000 (UTC)
+	 MIME-Version; b=chdm7oRLC2tRJrumSD6iWprUTjZLjYg7eFRE2/3gBsoFGGy+eTLK2YTVWix6B6ptKmf1972/Poimyff3lGkwHm1UjuRukooqjzCJCqflQRIz4Rj52b4vcXpcCY6z78pdAWJ5/4jg0q7WA3YbbtSofOnsRjcI+cz1zo0cwHqe5vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhZ78S3h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB52C4CEFE;
+	Fri, 17 Oct 2025 15:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714553;
-	bh=VuzeDgYbFsS3PHbvvC109hRpFhqoGUJBu5IfnYYy2b4=;
+	s=korg; t=1760715444;
+	bh=ujpjFsGqLgM1BTKzuNJY7v75XddsFX4OU9gMVSbz9yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKwI/x3pSAodHIX8nA/8Qjaf3vryGLwVxHOKagZW42M36g5OEAMtGb4e203AY0dNp
-	 wWf/YrB2LSwP1D09r1bDZCWVG5uaZGMF9d43d9qI8vQW2oG9m35hyUH32lBPsI2WGb
-	 +teyHxWbs/nOzWrEz+jpdpIgfj6ephZAL7vTm0/c=
+	b=jhZ78S3h7vNaZYtttBwGSnnQSjk5wVmPT4GChEfJ5wDm6nCvq0AMH6tq96gHgMfek
+	 VPsQgvFkjIP4jSxvJYnUaLqv0cC2ud3Vh9+VJq3UQswwW/gW7Fy8Nkrr6EBAtHgaql
+	 uj1EY2I+L4yJ8zLucqlieAf32koVai39URh0rJ4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duy Nguyen <duy.nguyen.rh@renesas.com>,
-	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.12 186/277] PCI: rcar-host: Convert struct rcar_msi mask_lock into raw spinlock
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.17 218/371] i3c: Fix default I2C adapter timeout value
 Date: Fri, 17 Oct 2025 16:53:13 +0200
-Message-ID: <20251017145153.914544398@linuxfoundation.org>
+Message-ID: <20251017145209.974830213@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-commit 5ed35b4d490d8735021cce9b715b62a418310864 upstream.
+commit 9395b3c412933401a34845d5326afe4011bbd40f upstream.
 
-The rcar_msi_irq_unmask() function may be called from a PCI driver
-request_threaded_irq() function. This triggers kernel/irq/manage.c
-__setup_irq() which locks raw spinlock &desc->lock descriptor lock
-and with that descriptor lock held, calls rcar_msi_irq_unmask().
+Commit 3a379bbcea0a ("i3c: Add core I3C infrastructure") set the default
+adapter timeout for I2C transfers as 1000 (ms). However that parameter
+is defined in jiffies not in milliseconds.
 
-Since the &desc->lock descriptor lock is a raw spinlock, and the rcar_msi
-.mask_lock is not a raw spinlock, this setup triggers 'BUG: Invalid wait
-context' with CONFIG_PROVE_RAW_LOCK_NESTING=y.
+With mipi-i3c-hci driver this wasn't visible until commit c0a90eb55a69
+("i3c: mipi-i3c-hci: use adapter timeout value for I2C transfers").
 
-Use scoped_guard() to simplify the locking.
+Fix this by setting the default timeout as HZ (CONFIG_HZ) not 1000.
 
-Fixes: 83ed8d4fa656 ("PCI: rcar: Convert to MSI domains")
-Reported-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
-Reported-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250909162707.13927-2-marek.vasut+renesas@mailbox.org
+Fixes: 1b84691e7870 ("i3c: dw: use adapter timeout value for I2C transfers")
+Fixes: be27ed672878 ("i3c: master: cdns: use adapter timeout value for I2C transfers")
+Fixes: c0a90eb55a69 ("i3c: mipi-i3c-hci: use adapter timeout value for I2C transfers")
+Fixes: a747e01adad2 ("i3c: master: svc: use adapter timeout value for I2C transfers")
+Fixes: d028219a9f14 ("i3c: master: Add basic driver for the Renesas I3C controller")
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Cc: stable@vger.kernel.org # 6.17
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20250905100320.954536-1-jarkko.nikula@linux.intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rcar-host.c |   27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ drivers/i3c/master.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-rcar-host.c
-+++ b/drivers/pci/controller/pcie-rcar-host.c
-@@ -12,6 +12,7 @@
-  */
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2492,7 +2492,7 @@ static int i3c_master_i2c_adapter_init(s
+ 	strscpy(adap->name, dev_name(master->dev.parent), sizeof(adap->name));
  
- #include <linux/bitops.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/clk-provider.h>
- #include <linux/delay.h>
-@@ -37,7 +38,7 @@ struct rcar_msi {
- 	DECLARE_BITMAP(used, INT_PCI_MSI_NR);
- 	struct irq_domain *domain;
- 	struct mutex map_lock;
--	spinlock_t mask_lock;
-+	raw_spinlock_t mask_lock;
- 	int irq1;
- 	int irq2;
- };
-@@ -625,28 +626,26 @@ static void rcar_msi_irq_mask(struct irq
- {
- 	struct rcar_msi *msi = irq_data_get_irq_chip_data(d);
- 	struct rcar_pcie *pcie = &msi_to_host(msi)->pcie;
--	unsigned long flags;
- 	u32 value;
+ 	/* FIXME: Should we allow i3c masters to override these values? */
+-	adap->timeout = 1000;
++	adap->timeout = HZ;
+ 	adap->retries = 3;
  
--	spin_lock_irqsave(&msi->mask_lock, flags);
--	value = rcar_pci_read_reg(pcie, PCIEMSIIER);
--	value &= ~BIT(d->hwirq);
--	rcar_pci_write_reg(pcie, value, PCIEMSIIER);
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
-+		value = rcar_pci_read_reg(pcie, PCIEMSIIER);
-+		value &= ~BIT(d->hwirq);
-+		rcar_pci_write_reg(pcie, value, PCIEMSIIER);
-+	}
- }
- 
- static void rcar_msi_irq_unmask(struct irq_data *d)
- {
- 	struct rcar_msi *msi = irq_data_get_irq_chip_data(d);
- 	struct rcar_pcie *pcie = &msi_to_host(msi)->pcie;
--	unsigned long flags;
- 	u32 value;
- 
--	spin_lock_irqsave(&msi->mask_lock, flags);
--	value = rcar_pci_read_reg(pcie, PCIEMSIIER);
--	value |= BIT(d->hwirq);
--	rcar_pci_write_reg(pcie, value, PCIEMSIIER);
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
-+		value = rcar_pci_read_reg(pcie, PCIEMSIIER);
-+		value |= BIT(d->hwirq);
-+		rcar_pci_write_reg(pcie, value, PCIEMSIIER);
-+	}
- }
- 
- static void rcar_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
-@@ -756,7 +755,7 @@ static int rcar_pcie_enable_msi(struct r
- 	int err;
- 
- 	mutex_init(&msi->map_lock);
--	spin_lock_init(&msi->mask_lock);
-+	raw_spin_lock_init(&msi->mask_lock);
- 
- 	err = of_address_to_resource(dev->of_node, 0, &res);
- 	if (err)
+ 	id = of_alias_get_id(master->dev.of_node, "i2c");
 
 
 
