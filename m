@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B72FBEA0DA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E93F8BE9A63
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58FFC74838D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 224A6623D91
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3ED332911;
-	Fri, 17 Oct 2025 15:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3722933711F;
+	Fri, 17 Oct 2025 15:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/MQnJqs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcji2Mgq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BA95695;
-	Fri, 17 Oct 2025 15:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B7F32E14F;
+	Fri, 17 Oct 2025 15:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714418; cv=none; b=HKVt3M0XkvGW2xojuUcQH6D0CWGJDe0FkfvlyKiEpGGshTFJFhWdlkgZAOKI2PZSsZT+CYjnZ2P9xzWupfE6PGdNDurMdslwBMguFLYMuJqkTzgxIwl8idXsg3u+aoXLW0DaV3/CB4MLXy8v4ldSOtQI84GixIvvrBu9hxIOSbw=
+	t=1760713688; cv=none; b=VAG9uMwupNpuRuIgYlPHRc0r0wn/fB5xQ40tJB3trc9F/DdieLcm5cjs1Rg4G2fGva76cnfczgjuk9atCh5uAS+fTZmYE9PFwjuoASr+B62FrgkKNd5KXLRwxQNFMLgoens6fOxPLEUsTSE0w9BBnxlDSIeVCRYhoblzvAsc7kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714418; c=relaxed/simple;
-	bh=wRfIDixHeSabQnrIzlbOmjhvY9KWQHEiy1u+PvxSWqw=;
+	s=arc-20240116; t=1760713688; c=relaxed/simple;
+	bh=Iwv6qradxyLqU/p6IbgDgiR60ynA0hYbbmT5V9czOTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMaJgi6C92DXaVlH3RnZsPDCnr02DDRxiWfKJMB622/bJz8aGRzepDEIOei9hqBmuhkq74zGU5qeFDoVylZJ+AkztntQpWy3kjraTDRdr+hDkvz95OBUGkkwQdZ0tDur5Huvp13v1C5YGywjsPZMUNERpPdbvSWcSk+TdK1uNZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/MQnJqs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF04C4CEE7;
-	Fri, 17 Oct 2025 15:20:17 +0000 (UTC)
+	 MIME-Version; b=dBMY3IUAakwzUiVDQly41Z5n+zB9MopRUTKhm+72VzrXkTS+dM7UB8lVWW8mGDmV0GJS26wF3enQGdIl9WftladbBJot1zUvS95HTpkeqCiSZ8V9VEC59sjnfIAjntV1yUgc1AP00TtWysZNuBM/ilx/AyG25/7foVy9Hx4hPU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcji2Mgq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64D2C4CEF9;
+	Fri, 17 Oct 2025 15:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714418;
-	bh=wRfIDixHeSabQnrIzlbOmjhvY9KWQHEiy1u+PvxSWqw=;
+	s=korg; t=1760713687;
+	bh=Iwv6qradxyLqU/p6IbgDgiR60ynA0hYbbmT5V9czOTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/MQnJqsxixplbOyZ4QYkyCm5ae6iytTZPBBHuCWj4ACpLRnYFMtsSe2jlfFbYyyf
-	 2GvR3Vh9v8J2dbYcYtvPgqrAYhj2ygoCIc3DlhnvNbaf3biIoHi2fbcPn4budYBSOk
-	 a+H0J/i5NFJB4QJJakggBWfPcQL+spbnXnhBQbTM=
+	b=qcji2Mgqni7m8pp7PgvO4EQUm2Iu6G9cqxig41Uy2GFKs4K3NeSQfGQsGGGQGWVxv
+	 EvSEsME2TiWT+ZVhM1qzS81mgoiDtzE6r02OOxoB6Rim9BFpud7VPlDEtIt/QBdMN2
+	 nGLSlKOoGHuJ9/NbQ8zSwX2VDZGyC2kLYFBGtLUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 105/277] media: i2c: mt9v111: fix incorrect type for ret
+	Eric Woudstra <ericwouds@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 051/201] bridge: br_vlan_fill_forward_path_pvid: use br_vlan_group_rcu()
 Date: Fri, 17 Oct 2025 16:51:52 +0200
-Message-ID: <20251017145150.963898779@linuxfoundation.org>
+Message-ID: <20251017145136.619664443@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Eric Woudstra <ericwouds@gmail.com>
 
-commit bacd713145443dce7764bb2967d30832a95e5ec8 upstream.
+[ Upstream commit bbf0c98b3ad9edaea1f982de6c199cc11d3b7705 ]
 
-Change "ret" from unsigned int to int type in mt9v111_calc_frame_rate()
-to store negative error codes or zero returned by __mt9v111_hw_reset()
-and other functions.
+net/bridge/br_private.h:1627 suspicious rcu_dereference_protected() usage!
+other info that might help us debug this:
 
-Storing the negative error codes in unsigned type, doesn't cause an issue
-at runtime but it's ugly as pants.
+rcu_scheduler_active = 2, debug_locks = 1
+7 locks held by socat/410:
+ #0: ffff88800d7a9c90 (sk_lock-AF_INET){+.+.}-{0:0}, at: inet_stream_connect+0x43/0xa0
+ #1: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: __ip_queue_xmit+0x62/0x1830
+ [..]
+ #6: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: nf_hook.constprop.0+0x8a/0x440
 
-No effect on runtime.
+Call Trace:
+ lockdep_rcu_suspicious.cold+0x4f/0xb1
+ br_vlan_fill_forward_path_pvid+0x32c/0x410 [bridge]
+ br_fill_forward_path+0x7a/0x4d0 [bridge]
 
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Fixes: aab7ed1c3927 ("media: i2c: Add driver for Aptina MT9V111")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use to correct helper, non _rcu variant requires RTNL mutex.
+
+Fixes: bcf2766b1377 ("net: bridge: resolve forwarding path for VLAN tag actions in bridge devices")
+Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/mt9v111.c |    2 +-
+ net/bridge/br_vlan.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/mt9v111.c
-+++ b/drivers/media/i2c/mt9v111.c
-@@ -532,8 +532,8 @@ static int mt9v111_calc_frame_rate(struc
- static int mt9v111_hw_config(struct mt9v111_dev *mt9v111)
- {
- 	struct i2c_client *c = mt9v111->client;
--	unsigned int ret;
- 	u16 outfmtctrl2;
-+	int ret;
+diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
+index a1c22eab71ffe..cc54b8267bcc7 100644
+--- a/net/bridge/br_vlan.c
++++ b/net/bridge/br_vlan.c
+@@ -1455,7 +1455,7 @@ void br_vlan_fill_forward_path_pvid(struct net_bridge *br,
+ 	if (!br_opt_get(br, BROPT_VLAN_ENABLED))
+ 		return;
  
- 	/* Force device reset. */
- 	ret = __mt9v111_hw_reset(mt9v111);
+-	vg = br_vlan_group(br);
++	vg = br_vlan_group_rcu(br);
+ 
+ 	if (idx >= 0 &&
+ 	    ctx->vlan[idx].proto == br->vlan_proto) {
+-- 
+2.51.0
+
 
 
 
