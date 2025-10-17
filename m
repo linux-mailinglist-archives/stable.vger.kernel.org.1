@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-187500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C5BBEA6EA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:04:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AB4BE9B20
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6EBA3582B34
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E509743102
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCA02E62BE;
-	Fri, 17 Oct 2025 15:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D5A3328EE;
+	Fri, 17 Oct 2025 15:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5CFYHRd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwqrjS4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49528330B0C;
-	Fri, 17 Oct 2025 15:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FE03370E1;
+	Fri, 17 Oct 2025 15:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716250; cv=none; b=p0IsqyV55Lhzz7JLxKCb2kcXx8rAPwdSoEIItucOhKyYfguO+qHXPngyeddaXcvVHo57KiCzc8gBp0feext9uRFYlbBPDcZp9rmgxJyCkBTsAjkndTCXra06wLoWOiJHA6bzFKVV4d4Ml4iEV6iSMJtZXENiZ5b/nLBn/nO8lBA=
+	t=1760713363; cv=none; b=Q3+PzXFAnd+t/oz/6KVgBbb+PHGW7VQMl5BUdlAy4/JKe0Zc1ctJb99NXH1l0FNycnQPEJ40TV8+HlPiAvtB6b0DS+Yu1pKQANoPwwsUXm1oa5tXx7t+koNYiWmWTFxoeLP2oUkpT9KNxS2Yz5xgdhew7Fh2Hc91lbWbZcl5nZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716250; c=relaxed/simple;
-	bh=2OvkWyR1hhgfepRyaGI3FcTf2RM2p9SkeUDXM+YpU08=;
+	s=arc-20240116; t=1760713363; c=relaxed/simple;
+	bh=s0a7NeVVdlHnRL/b+DagOT/iXsB5HX0ozQg+q5m3eCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVIbFR573FmsOhENlvDxpBSnhXm1KjN05kC0SQ7i8msJKBEC6njrT4bNtDTxQ4tlzCUNNCBktfXbj8ztAuXbvdRAR2lWSwAWYM9VUH+yiq8wA0Khqy/2HMVHEYOOyiiO1QgrcpjZsPzD3ytU6k0E5F+nIikI/pAND9lsaGGzSZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5CFYHRd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84790C4CEE7;
-	Fri, 17 Oct 2025 15:50:49 +0000 (UTC)
+	 MIME-Version; b=T7mZckqYqlhiD2blKOAsskMIjlZOCJHLi7WdsqD7fcPj5f/BQRRliOtpKpliob7U7e+mL7+NDXop2Z6Fp4LVsZmyJIj8sNiduvVcDbMSDpaaiJfn07Zw4m3Lko5+2FyWJ7Z7uVDYeUNU6p/Cp3/NxjK7XnuvTMWwrAlOU9wfsyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwqrjS4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92247C4CEE7;
+	Fri, 17 Oct 2025 15:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716250;
-	bh=2OvkWyR1hhgfepRyaGI3FcTf2RM2p9SkeUDXM+YpU08=;
+	s=korg; t=1760713362;
+	bh=s0a7NeVVdlHnRL/b+DagOT/iXsB5HX0ozQg+q5m3eCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5CFYHRdaVhEqlAeib/XNi3xJ3rk3jdxE2ms1aTAifPIoFv8JxJusjT2noh4tL471
-	 0e7Z8005gDgPOCeicPpv3xU97MxXN4dIQzbEzZPw8rOIwcxjJSZ8dKn9MYmpLX4TPc
-	 blIKZbCqh4Zl2xZk9ImVmiO0jdnn/CSML9SwyMjY=
+	b=UwqrjS4HT6E7pT6IihnmUmqiAF6XbT8v3DZAr3tBVJBn6wTbThvXIm7XyB9Ip4u3m
+	 UdtVrHPGZHlKtvKnoNoEaLdZfn4ZQhuI4diAQTjVHNq90X/gllMB4wCGkfGaph2R6n
+	 l7NQnRSxR6x20G0xUc5Br+I23uKnOUu4aIU+DWm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yunseong Kim <ysk@kzalloc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 126/276] perf util: Fix compression checks returning -1 as bool
+Subject: [PATCH 6.1 140/168] Squashfs: add additional inode sanity checking
 Date: Fri, 17 Oct 2025 16:53:39 +0200
-Message-ID: <20251017145147.080628977@linuxfoundation.org>
+Message-ID: <20251017145134.188538577@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,72 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunseong Kim <ysk@kzalloc.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit 43fa1141e2c1af79c91aaa4df03e436c415a6fc3 ]
+[ Upstream commit 9ee94bfbe930a1b39df53fa2d7b31141b780eb5a ]
 
-The lzma_is_compressed and gzip_is_compressed functions are declared
-to return a "bool" type, but in case of an error (e.g., file open
-failure), they incorrectly returned -1.
+Patch series "Squashfs: performance improvement and a sanity check".
 
-A bool type is a boolean value that is either true or false.
-Returning -1 for a bool return type can lead to unexpected behavior
-and may violate strict type-checking in some compilers.
+This patchset adds an additional sanity check when reading regular file
+inodes, and adds support for SEEK_DATA/SEEK_HOLE lseek() whence values.
 
-Fix the return value to be false in error cases, ensuring the function
-adheres to its declared return type improves for preventing potential
-bugs related to type mismatch.
+This patch (of 2):
 
-Fixes: 4b57fd44b61beb51 ("perf tools: Add lzma_is_compressed function")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Stephen Brennan <stephen.s.brennan@oracle.com>
-Link: https://lore.kernel.org/r/20250822162506.316844-3-ysk@kzalloc.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Add an additional sanity check when reading regular file inodes.
+
+A regular file if the file size is an exact multiple of the filesystem
+block size cannot have a fragment.  This is because by definition a
+fragment block stores tailends which are not a whole block in size.
+
+Link: https://lkml.kernel.org/r/20250923220652.568416-1-phillip@squashfs.org.uk
+Link: https://lkml.kernel.org/r/20250923220652.568416-2-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 9f1c14c1de1b ("Squashfs: reject negative file sizes in squashfs_read_inode()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/lzma.c | 2 +-
- tools/perf/util/zlib.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/squashfs/inode.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/lzma.c b/tools/perf/util/lzma.c
-index 51424cdc3b682..aa9a0ebc1f937 100644
---- a/tools/perf/util/lzma.c
-+++ b/tools/perf/util/lzma.c
-@@ -115,7 +115,7 @@ bool lzma_is_compressed(const char *input)
- 	ssize_t rc;
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -140,8 +140,17 @@ int squashfs_read_inode(struct inode *in
+ 		if (err < 0)
+ 			goto failed_read;
  
- 	if (fd < 0)
--		return -1;
-+		return false;
++		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
++			/*
++			 * the file cannot have a fragment (tailend) and have a
++			 * file size a multiple of the block size
++			 */
++			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
++				err = -EINVAL;
++				goto failed_read;
++			}
+ 			frag_offset = le32_to_cpu(sqsh_ino->offset);
+ 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
+ 			if (frag_size < 0) {
+@@ -155,7 +164,6 @@ int squashfs_read_inode(struct inode *in
+ 		}
  
- 	rc = read(fd, buf, sizeof(buf));
- 	close(fd);
-diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
-index 78d2297c1b674..1f7c065230599 100644
---- a/tools/perf/util/zlib.c
-+++ b/tools/perf/util/zlib.c
-@@ -88,7 +88,7 @@ bool gzip_is_compressed(const char *input)
- 	ssize_t rc;
+ 		set_nlink(inode, 1);
+-		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		inode->i_fop = &generic_ro_fops;
+ 		inode->i_mode |= S_IFREG;
+ 		inode->i_blocks = ((inode->i_size - 1) >> 9) + 1;
+@@ -184,8 +192,17 @@ int squashfs_read_inode(struct inode *in
+ 		if (err < 0)
+ 			goto failed_read;
  
- 	if (fd < 0)
--		return -1;
-+		return false;
++		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
++			/*
++			 * the file cannot have a fragment (tailend) and have a
++			 * file size a multiple of the block size
++			 */
++			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
++				err = -EINVAL;
++				goto failed_read;
++			}
+ 			frag_offset = le32_to_cpu(sqsh_ino->offset);
+ 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
+ 			if (frag_size < 0) {
+@@ -200,7 +217,6 @@ int squashfs_read_inode(struct inode *in
  
- 	rc = read(fd, buf, sizeof(buf));
- 	close(fd);
--- 
-2.51.0
-
+ 		xattr_id = le32_to_cpu(sqsh_ino->xattr);
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+-		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
+ 		inode->i_op = &squashfs_inode_ops;
+ 		inode->i_fop = &generic_ro_fops;
+ 		inode->i_mode |= S_IFREG;
 
 
 
