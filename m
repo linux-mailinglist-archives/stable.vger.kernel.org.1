@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-186481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82AB4BE9B20
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41181BE9B8F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E509743102
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:04:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A7E80587020
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D5A3328EE;
-	Fri, 17 Oct 2025 15:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14AF932C93E;
+	Fri, 17 Oct 2025 15:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwqrjS4H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRtCCDoJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FE03370E1;
-	Fri, 17 Oct 2025 15:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C693332C92B;
+	Fri, 17 Oct 2025 15:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713363; cv=none; b=Q3+PzXFAnd+t/oz/6KVgBbb+PHGW7VQMl5BUdlAy4/JKe0Zc1ctJb99NXH1l0FNycnQPEJ40TV8+HlPiAvtB6b0DS+Yu1pKQANoPwwsUXm1oa5tXx7t+koNYiWmWTFxoeLP2oUkpT9KNxS2Yz5xgdhew7Fh2Hc91lbWbZcl5nZo=
+	t=1760713993; cv=none; b=NiYT2/ETmMaiMETECZ2/0Sf0I5MJWnBKeD84gzPrU8hgKRZcHzKz72ZOcprBVt0zoXNCeqdPvNYUn+pKvRx3Q5EOrRoUR4e+u87Xjq4T1FO7ffKKReMeD8S/VSoeNqFQ1Uq6xthg2Wrh/Y3nHHhUnjEOl+jhUx0FBaRM2HcYbZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713363; c=relaxed/simple;
-	bh=s0a7NeVVdlHnRL/b+DagOT/iXsB5HX0ozQg+q5m3eCA=;
+	s=arc-20240116; t=1760713993; c=relaxed/simple;
+	bh=shAYL50+/CDPTAWYy3jHTWWe0wzxMYxpGXY4HlWerIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7mZckqYqlhiD2blKOAsskMIjlZOCJHLi7WdsqD7fcPj5f/BQRRliOtpKpliob7U7e+mL7+NDXop2Z6Fp4LVsZmyJIj8sNiduvVcDbMSDpaaiJfn07Zw4m3Lko5+2FyWJ7Z7uVDYeUNU6p/Cp3/NxjK7XnuvTMWwrAlOU9wfsyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwqrjS4H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92247C4CEE7;
-	Fri, 17 Oct 2025 15:02:42 +0000 (UTC)
+	 MIME-Version; b=QcnEZJFnquh4OIdncK7LhfJtV8wypxp9fijp+9zRrZs+08yS0ewTLrukVX8XuxCP0pFfm0sC3EhGS1oppMckRTYak9vUt/ty5qDpYBHgpBKUdjfvEP682mDvv7bw+dvvGyv+Z/MeR06BYvVLy7aeST3XhNRBdI6gaallH4A1NbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRtCCDoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6634C4CEE7;
+	Fri, 17 Oct 2025 15:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713362;
-	bh=s0a7NeVVdlHnRL/b+DagOT/iXsB5HX0ozQg+q5m3eCA=;
+	s=korg; t=1760713991;
+	bh=shAYL50+/CDPTAWYy3jHTWWe0wzxMYxpGXY4HlWerIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UwqrjS4HT6E7pT6IihnmUmqiAF6XbT8v3DZAr3tBVJBn6wTbThvXIm7XyB9Ip4u3m
-	 UdtVrHPGZHlKtvKnoNoEaLdZfn4ZQhuI4diAQTjVHNq90X/gllMB4wCGkfGaph2R6n
-	 l7NQnRSxR6x20G0xUc5Br+I23uKnOUu4aIU+DWm0=
+	b=vRtCCDoJXnC16KqCAmNIA4tjnQO+sNcyAdao7AXB83BjN6+vsV/bMVsxp9HA5kNQn
+	 +egbPEUQKw0qsMXHfoo2yzTZud5EZk+Jcgx+zh6/g1Ol+Yf/DNl3rL6SEodAYe1IDV
+	 fXEKVQ/e8COYE0+sPPl5tSk3uR+ZI8PRgFu3C8P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Phillip Lougher <phillip@squashfs.org.uk>,
+	syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com,
+	Amir Goldstein <amir73il@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/168] Squashfs: add additional inode sanity checking
+Subject: [PATCH 6.6 158/201] Squashfs: reject negative file sizes in squashfs_read_inode()
 Date: Fri, 17 Oct 2025 16:53:39 +0200
-Message-ID: <20251017145134.188538577@linuxfoundation.org>
+Message-ID: <20251017145140.535634484@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit 9ee94bfbe930a1b39df53fa2d7b31141b780eb5a ]
+[ Upstream commit 9f1c14c1de1bdde395f6cc893efa4f80a2ae3b2b ]
 
-Patch series "Squashfs: performance improvement and a sanity check".
+Syskaller reports a "WARNING in ovl_copy_up_file" in overlayfs.
 
-This patchset adds an additional sanity check when reading regular file
-inodes, and adds support for SEEK_DATA/SEEK_HOLE lseek() whence values.
+This warning is ultimately caused because the underlying Squashfs file
+system returns a file with a negative file size.
 
-This patch (of 2):
+This commit checks for a negative file size and returns EINVAL.
 
-Add an additional sanity check when reading regular file inodes.
-
-A regular file if the file size is an exact multiple of the filesystem
-block size cannot have a fragment.  This is because by definition a
-fragment block stores tailends which are not a whole block in size.
-
-Link: https://lkml.kernel.org/r/20250923220652.568416-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20250923220652.568416-2-phillip@squashfs.org.uk
+[phillip@squashfs.org.uk: only need to check 64 bit quantity]
+  Link: https://lkml.kernel.org/r/20250926222305.110103-1-phillip@squashfs.org.uk
+Link: https://lkml.kernel.org/r/20250926215935.107233-1-phillip@squashfs.org.uk
+Fixes: 6545b246a2c8 ("Squashfs: inode operations")
 Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68d580e5.a00a0220.303701.0019.GAE@google.com/
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 9f1c14c1de1b ("Squashfs: reject negative file sizes in squashfs_read_inode()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/inode.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ fs/squashfs/inode.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
 --- a/fs/squashfs/inode.c
 +++ b/fs/squashfs/inode.c
-@@ -140,8 +140,17 @@ int squashfs_read_inode(struct inode *in
- 		if (err < 0)
+@@ -193,6 +193,10 @@ int squashfs_read_inode(struct inode *in
  			goto failed_read;
  
-+		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
++		if (inode->i_size < 0) {
++			err = -EINVAL;
++			goto failed_read;
++		}
  		frag = le32_to_cpu(sqsh_ino->fragment);
  		if (frag != SQUASHFS_INVALID_FRAG) {
-+			/*
-+			 * the file cannot have a fragment (tailend) and have a
-+			 * file size a multiple of the block size
-+			 */
-+			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
-+				err = -EINVAL;
-+				goto failed_read;
-+			}
- 			frag_offset = le32_to_cpu(sqsh_ino->offset);
- 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
- 			if (frag_size < 0) {
-@@ -155,7 +164,6 @@ int squashfs_read_inode(struct inode *in
- 		}
- 
- 		set_nlink(inode, 1);
--		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
- 		inode->i_fop = &generic_ro_fops;
- 		inode->i_mode |= S_IFREG;
- 		inode->i_blocks = ((inode->i_size - 1) >> 9) + 1;
-@@ -184,8 +192,17 @@ int squashfs_read_inode(struct inode *in
- 		if (err < 0)
- 			goto failed_read;
- 
-+		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
- 		frag = le32_to_cpu(sqsh_ino->fragment);
- 		if (frag != SQUASHFS_INVALID_FRAG) {
-+			/*
-+			 * the file cannot have a fragment (tailend) and have a
-+			 * file size a multiple of the block size
-+			 */
-+			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
-+				err = -EINVAL;
-+				goto failed_read;
-+			}
- 			frag_offset = le32_to_cpu(sqsh_ino->offset);
- 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
- 			if (frag_size < 0) {
-@@ -200,7 +217,6 @@ int squashfs_read_inode(struct inode *in
- 
- 		xattr_id = le32_to_cpu(sqsh_ino->xattr);
- 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
--		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
- 		inode->i_op = &squashfs_inode_ops;
- 		inode->i_fop = &generic_ro_fops;
- 		inode->i_mode |= S_IFREG;
+ 			/*
 
 
 
