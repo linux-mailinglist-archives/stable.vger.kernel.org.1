@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-186856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2784FBE9B8C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95DBCBE980E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C6E2935D9F9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A41731AA7A79
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1339A3328F5;
-	Fri, 17 Oct 2025 15:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4775F32E14F;
+	Fri, 17 Oct 2025 15:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZQ31Ntb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZjiWJ/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E1A3370F7;
-	Fri, 17 Oct 2025 15:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4022F12BA;
+	Fri, 17 Oct 2025 15:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714421; cv=none; b=pMBgjaEZpD1Q4CLKhVlrzrRmt9bSKoVE3n8rK+Wss5qaAvGE7J8qH+HKXnh/RNJBhf6KKe3UlsS2gfe+8CILp/cC05rzxNCJgVRSYbKuvBdRLgdvgnR7ci9yaAKx0fqOAjxuJe4yd9EQulecBgnZOb/oKVXWwOjSH4K8gotiGNg=
+	t=1760713594; cv=none; b=iDGLAVeH0hMKWqyehHjxWtBtAKAr9MleDuRD9GtCiuzvxsyGiJCRdD3t6c3PIc9qHiiJyrtZAYFKgXiHGJgPPLmi873t9arYvo2hUW7D9ArM0yuRIE93fYR5k3zihETOBwA4yN2aZocUK/fmBQzgN2G9Xeg0ZBX/E4mRB5pyCUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714421; c=relaxed/simple;
-	bh=i815xBWBD8jginWV4FswiuwiemGNqHTQ7nw+0h+GSWA=;
+	s=arc-20240116; t=1760713594; c=relaxed/simple;
+	bh=CE0p/PJBwjeqbTzsjxIFCYBCzR5nL8HYYt6SsDuv6D8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HUCuR1RSoXQzpZCQ6VP87K0C7XryJoPdrf8cOkYNJs/9aOrqhTcwfs+OKlJnePtDFRSGIOq9v4+rGAGa/cqUPTw+XnhkDq/CWVjYgidBYT1xTVQBvpAF6Gb40gvnkvIaSfp4fkTfpbrO3m8oaGzgR/CDGgePOFrFG5gOcG66F7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZQ31Ntb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1978AC4CEE7;
-	Fri, 17 Oct 2025 15:20:20 +0000 (UTC)
+	 MIME-Version; b=FYpddePj4BYBYVHALPTvO0wwtk9h2Li+fi1jxw+rsfLdVsB836r9ck7dxVgLjul9folEP9n5HIzm8nxlOSStpwGw+lQyDBtfo5iJfDSyrV/TmJ++RpMr9zDxAm1v96C+x3IRWJgUuCMpQeHUFovVaRetyiqF3nkXG2S2IA1Fztg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZjiWJ/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAAFC4CEE7;
+	Fri, 17 Oct 2025 15:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714421;
-	bh=i815xBWBD8jginWV4FswiuwiemGNqHTQ7nw+0h+GSWA=;
+	s=korg; t=1760713593;
+	bh=CE0p/PJBwjeqbTzsjxIFCYBCzR5nL8HYYt6SsDuv6D8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZQ31NtbkHtU220uReS3tf+zo8HJCUkS+eZz2hV+eedjtHwD7mWWbLHUSjUGjFlKu
-	 W4nKeg7+csB5Ond5MaUwiDJ+xR5KNYvuHFdP8kpyROY3ySCIXb6Jry/nyL10GJVyyk
-	 ECuwOmzHLbFxMLYqNCw1QqW26Fke4quWoT8XlqL4=
+	b=AZjiWJ/l0J+afi4OLyDazwFlbtJnzGcVtI0j1tKLx3DrrsCqHinmGQJyN+a/Iu9ap
+	 6NgI3hAYpAwQZVmtKnss1DB9v8r2VDGXlmxPWkC5oqCl29FqOTYJGAe97ozxw9VSM1
+	 fD/Qy0rNzCXnfEe9aUOlQ8oQ4SdJShklWypwSpkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Kepplinger-Novakovi=C4=87?= <martink@posteo.de>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 106/277] media: mc: Fix MUST_CONNECT handling for pads with no links
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 052/201] crypto: essiv - Check ssize for decryption and in-place encryption
 Date: Fri, 17 Oct 2025 16:51:53 +0200
-Message-ID: <20251017145150.999563193@linuxfoundation.org>
+Message-ID: <20251017145136.656692687@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit eec81250219a209b863f11d02128ec1dd8e20877 upstream.
+[ Upstream commit 6bb73db6948c2de23e407fe1b7ef94bf02b7529f ]
 
-Commit b3decc5ce7d7 ("media: mc: Expand MUST_CONNECT flag to always
-require an enabled link") expanded the meaning of the MUST_CONNECT flag
-to require an enabled link in all cases. To do so, the link exploration
-code was expanded to cover unconnected pads, in order to reject those
-that have the MUST_CONNECT flag set. The implementation was however
-incorrect, ignoring unconnected pads instead of ignoring connected pads.
-Fix it.
+Move the ssize check to the start in essiv_aead_crypt so that
+it's also checked for decryption and in-place encryption.
 
-Reported-by: Martin Kepplinger-Novaković <martink@posteo.de>
-Closes: https://lore.kernel.org/linux-media/20250205172957.182362-1-martink@posteo.de
-Reported-by: Maud Spierings <maudspierings@gocontroll.com>
-Closes: https://lore.kernel.org/linux-media/20250818-imx8_isi-v1-1-e9cfe994c435@gocontroll.com
-Fixes: b3decc5ce7d7 ("media: mc: Expand MUST_CONNECT flag to always require an enabled link")
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Tested-by: Maud Spierings <maudspierings@gocontroll.com>
-Tested-by: Martin Kepplinger-Novaković <martink@posteo.de>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Fixes: be1eb7f78aa8 ("crypto: essiv - create wrapper template for ESSIV generation")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/mc/mc-entity.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/essiv.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/drivers/media/mc/mc-entity.c
-+++ b/drivers/media/mc/mc-entity.c
-@@ -691,7 +691,7 @@ done:
- 		 * (already discovered through iterating over links) and pads
- 		 * not internally connected.
- 		 */
--		if (origin == local || !local->num_links ||
-+		if (origin == local || local->num_links ||
- 		    !media_entity_has_pad_interdep(origin->entity, origin->index,
- 						   local->index))
- 			continue;
+diff --git a/crypto/essiv.c b/crypto/essiv.c
+index f7d4ef4837e54..4dbec116ddc3e 100644
+--- a/crypto/essiv.c
++++ b/crypto/essiv.c
+@@ -186,9 +186,14 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	const struct essiv_tfm_ctx *tctx = crypto_aead_ctx(tfm);
+ 	struct essiv_aead_request_ctx *rctx = aead_request_ctx(req);
+ 	struct aead_request *subreq = &rctx->aead_req;
++	int ivsize = crypto_aead_ivsize(tfm);
++	int ssize = req->assoclen - ivsize;
+ 	struct scatterlist *src = req->src;
+ 	int err;
+ 
++	if (ssize < 0)
++		return -EINVAL;
++
+ 	crypto_cipher_encrypt_one(tctx->essiv_cipher, req->iv, req->iv);
+ 
+ 	/*
+@@ -198,19 +203,12 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	 */
+ 	rctx->assoc = NULL;
+ 	if (req->src == req->dst || !enc) {
+-		scatterwalk_map_and_copy(req->iv, req->dst,
+-					 req->assoclen - crypto_aead_ivsize(tfm),
+-					 crypto_aead_ivsize(tfm), 1);
++		scatterwalk_map_and_copy(req->iv, req->dst, ssize, ivsize, 1);
+ 	} else {
+ 		u8 *iv = (u8 *)aead_request_ctx(req) + tctx->ivoffset;
+-		int ivsize = crypto_aead_ivsize(tfm);
+-		int ssize = req->assoclen - ivsize;
+ 		struct scatterlist *sg;
+ 		int nents;
+ 
+-		if (ssize < 0)
+-			return -EINVAL;
+-
+ 		nents = sg_nents_for_len(req->src, ssize);
+ 		if (nents < 0)
+ 			return -EINVAL;
+-- 
+2.51.0
+
 
 
 
