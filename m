@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-187296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51713BEAAAA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:24:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78872BEAB3B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D27F67C4E12
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F01AE6E7163
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB44330B0A;
-	Fri, 17 Oct 2025 15:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062CE289811;
+	Fri, 17 Oct 2025 15:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAMBlteo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRwN3aAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B630330B0F;
-	Fri, 17 Oct 2025 15:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FD4253B42;
+	Fri, 17 Oct 2025 15:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715675; cv=none; b=q+1qilMb2njv65SoJ/g66VYIj4DEWxRofUhgjJyCS8k1R4eYB9frWrAO+5KPwfe7llKh+/DhYm+mqFYhYAFrbwJcUvLD4jMK6hEhf2c7XGh/5qR1ufyKmgQ5KkUGWPNIbvuv+KpvUVhc+UJdSa10Mybj708wlR3pSv+kSoVmb0A=
+	t=1760716333; cv=none; b=pxA01wXWJRQCBn6sjnLWaNsNfXN6upRdS9fFrmadfuMTQpoW+SAEXwMg2ITtwb/zKF/8IcgLj7JnjzeUNTaNmwkb9ysqoBBLchUkAEpberp/4veTR9S60ZqmBiHRwxAmcVxL0R/xKDkgcXb4+hO6hNZ0hAP9XQPRILN6tG69uqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715675; c=relaxed/simple;
-	bh=sOEWN7onPNQwrblPCuq0FCZ0eL4EeNlt5y3nu8Q+6cI=;
+	s=arc-20240116; t=1760716333; c=relaxed/simple;
+	bh=Diep5EFJPuYWAXYxX3TDNtu+Glb2C2GFLTJ+k6/ixsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F14Hm1WgcEj9fzoKIe3R2OK7hZenx8S4jmZu4k4KFDkrAWWPYjaSVpdUtM8SeKUyt7KgE0B43WfNCIiKm5gOivj1odg7By8fkXfdLB2di5i/cnXHWCoLdcZMomq7cwYbFEtu+BF33bsXMPkKE9QN2MG4M5MiOSuA2L1G+zkqMwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAMBlteo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AB7C4CEE7;
-	Fri, 17 Oct 2025 15:41:14 +0000 (UTC)
+	 MIME-Version; b=YhRPcsN7h2CO9L/7YE6ryN5Y1HKnpeOWG81u0sDkjo/5vWyU14+5CnhMClFcN9rVoV1fvZOKos7ojFW7u5PSMENEJrlSKcXXS/IASI66b2HTMagF3I6h/GNm++ksi5ZKB/bHnxGHrMkWaIq8WwYk+MRfv/J0fzqjqY4ebBVmYfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRwN3aAV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C834C116C6;
+	Fri, 17 Oct 2025 15:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715675;
-	bh=sOEWN7onPNQwrblPCuq0FCZ0eL4EeNlt5y3nu8Q+6cI=;
+	s=korg; t=1760716333;
+	bh=Diep5EFJPuYWAXYxX3TDNtu+Glb2C2GFLTJ+k6/ixsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jAMBlteophL1PPlIpE4qJOUTe4zDNVQxVmraaKGNC80rIpnk5izn5e9VEbhkzMMQg
-	 56BbrPjPgIYghhC90e1Bk7eA/TyoU99hc+K4z8uHOQd/XAAo5Afq5rWdaI+79a3vZe
-	 JEubvox3pmPWlJq8cRD6tW5+KU948QTM/tD/n2vo=
+	b=SRwN3aAVxy5jK3NCCgJqAX31LVFqrLeKsFfzwOr5rXmr6aF4C06c2wtfw5i0FyFzw
+	 36kcFLYodZm859XOxdMC4tGtXZkBZkrA5uT18DDTRl0MVh3XaMOAquaUXdTlq9q8Bj
+	 a9/00/AzXWrZA1r+htCi7I9LUZ9Az7hRy0QJ/wFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Esben Haabendal <esben@geanix.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.17 271/371] rtc: interface: Fix long-standing race when setting alarm
-Date: Fri, 17 Oct 2025 16:54:06 +0200
-Message-ID: <20251017145211.880030361@linuxfoundation.org>
+	Yusuke Suzuki <yusuke.suzuki@isovalent.com>,
+	Julian Wiedmann <jwi@isovalent.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jordan Rife <jrife@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 155/276] bpf: Fix metadata_dst leak __bpf_redirect_neigh_v{4,6}
+Date: Fri, 17 Oct 2025 16:54:08 +0200
+Message-ID: <20251017145148.136136246@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +68,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 795cda8338eab036013314dbc0b04aae728880ab upstream.
+[ Upstream commit 23f3770e1a53e6c7a553135011f547209e141e72 ]
 
-As described in the old comment dating back to
-commit 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
-from 2010, we have been living with a race window when setting alarm
-with an expiry in the near future (i.e. next second).
-With 1 second resolution, it can happen that the second ticks after the
-check for the timer having expired, but before the alarm is actually set.
-When this happen, no alarm IRQ is generated, at least not with some RTC
-chips (isl12022 is an example of this).
+Cilium has a BPF egress gateway feature which forces outgoing K8s Pod
+traffic to pass through dedicated egress gateways which then SNAT the
+traffic in order to interact with stable IPs outside the cluster.
 
-With UIE RTC timer being implemented on top of alarm irq, being re-armed
-every second, UIE will occasionally fail to work, as an alarm irq lost
-due to this race will stop the re-arming loop.
+The traffic is directed to the gateway via vxlan tunnel in collect md
+mode. A recent BPF change utilized the bpf_redirect_neigh() helper to
+forward packets after the arrival and decap on vxlan, which turned out
+over time that the kmalloc-256 slab usage in kernel was ever-increasing.
 
-For now, I have limited the additional expiry check to only be done for
-alarms set to next seconds. I expect it should be good enough, although I
-don't know if we can now for sure that systems with loads could end up
-causing the same problems for alarms set 2 seconds or even longer in the
-future.
+The issue was that vxlan allocates the metadata_dst object and attaches
+it through a fake dst entry to the skb. The latter was never released
+though given bpf_redirect_neigh() was merely setting the new dst entry
+via skb_dst_set() without dropping an existing one first.
 
-I haven't been able to reproduce the problem with this check in place.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Link: https://lore.kernel.org/r/20250516-rtc-uie-irq-fixes-v2-1-3de8e530a39e@geanix.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
+Reported-by: Yusuke Suzuki <yusuke.suzuki@isovalent.com>
+Reported-by: Julian Wiedmann <jwi@isovalent.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Jordan Rife <jrife@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20251003073418.291171-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/interface.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ net/core/filter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -443,6 +443,29 @@ static int __rtc_set_alarm(struct rtc_de
- 	else
- 		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index b95af925b9c27..1403829b96db9 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2257,6 +2257,7 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
+ 		if (IS_ERR(dst))
+ 			goto out_drop;
  
-+	/*
-+	 * Check for potential race described above. If the waiting for next
-+	 * second, and the second just ticked since the check above, either
-+	 *
-+	 * 1) It ticked after the alarm was set, and an alarm irq should be
-+	 *    generated.
-+	 *
-+	 * 2) It ticked before the alarm was set, and alarm irq most likely will
-+	 * not be generated.
-+	 *
-+	 * While we cannot easily check for which of these two scenarios we
-+	 * are in, we can return -ETIME to signal that the timer has already
-+	 * expired, which is true in both cases.
-+	 */
-+	if ((scheduled - now) <= 1) {
-+		err = __rtc_read_time(rtc, &tm);
-+		if (err)
-+			return err;
-+		now = rtc_tm_to_time64(&tm);
-+		if (scheduled <= now)
-+			return -ETIME;
-+	}
-+
- 	trace_rtc_set_alarm(rtc_tm_to_time64(&alarm->time), err);
- 	return err;
- }
++		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 	} else if (nh->nh_family != AF_INET6) {
+ 		goto out_drop;
+@@ -2364,6 +2365,7 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
+ 			goto out_drop;
+ 		}
+ 
++		skb_dst_drop(skb);
+ 		skb_dst_set(skb, &rt->dst);
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
