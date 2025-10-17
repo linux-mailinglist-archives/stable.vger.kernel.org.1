@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-186948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50CE1BE9C84
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 148FFBEA1B8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0834135E150
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF18B1886FE0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36C92F12A5;
-	Fri, 17 Oct 2025 15:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBDF2F12D2;
+	Fri, 17 Oct 2025 15:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uduyNG6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4TOnd+m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903D92745E;
-	Fri, 17 Oct 2025 15:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97D7330B38;
+	Fri, 17 Oct 2025 15:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714687; cv=none; b=NlxUfiQ2JYc941GEHzlMpbk7gzvk7Ag4S3CtfU5aUM47//AVM8QGXDmociqIj4/Llt4fMLI7L8f84ajMUTG36bWi34DJ9aGB9ihCcfNAA/wph11VoI6gevsnU9BH3ZMzPi0VTMR0/NiO3pN15SNKiz8EA/Py6D8wrjPOALByh14=
+	t=1760715576; cv=none; b=t8zykOyDHf2rSlUpbiHMnypiYDjgMAaWjgg6cP3WRlb3e/LtlUECp4UIV/c0mjuBz7/g9LqFDrKrW9IDB3ekgLBssZb7BWxeg/sDzUPKOtDX6ulhkHgsLZZG9uiPR2UvYoRwU1tszDCMxl2WIWMr10e5g7GcBhYfGkZaD0S1sSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714687; c=relaxed/simple;
-	bh=KAIkPGwoOks6SiiPxXVts4GZuTJFEUBwW7iGHzexJyw=;
+	s=arc-20240116; t=1760715576; c=relaxed/simple;
+	bh=mK/c6qibBEJKSIgDWEsZb3Z3RiqM/hfgkgWID+lo/F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uyyvpHUVx3suqiD+SfnGr5R+Wbtc95hr9wXkzmhKIJQzjTPAYlTi6vQvhTA+D3BE4PWBEiPUDqv2U8pr8VqRpA8J7ODAa//+o5Mkl4Oyl3IGPkXES6/OlPDDEmDKarkifIg8rZszxc6v1DpEGb7Ql03k0hZIFcS0ug16se0uLMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uduyNG6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4618C4CEE7;
-	Fri, 17 Oct 2025 15:24:46 +0000 (UTC)
+	 MIME-Version; b=aXTdVLO8g0F0uN3tErw4vbQjZk9QsvxoXtX7ZrNxU3kpXBtsGPbDNlRafAs55AHq6TcgOkVgAjc6ZjFiRfFBNCtJqVUYytHBpU5zFD6TTddnEHWbp5JP2C6iQIbYfRiHuNXaNI6gk6ueEIlAav35MvzX3tyLlZA9Zm8/1Z4kW/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4TOnd+m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D21C4CEE7;
+	Fri, 17 Oct 2025 15:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714687;
-	bh=KAIkPGwoOks6SiiPxXVts4GZuTJFEUBwW7iGHzexJyw=;
+	s=korg; t=1760715576;
+	bh=mK/c6qibBEJKSIgDWEsZb3Z3RiqM/hfgkgWID+lo/F8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uduyNG6rLAj3G9Ub4opxbxVQIajGmzdmVlACnZC0rPC0wS+fp8Zu6gCY8FgWUZxZB
-	 HgPPSkVJsh055fyrbp0BI0CNXX0gvWQyXuq7wromQeIzRzEAZt5o3H+pv0+NdUNwV7
-	 AtLEPjzc0AtnMemhf/VWry5HglQ/pOVPOPWZK5+M=
+	b=k4TOnd+mdXFNqux3mi9Ub5MzBDvAZtMavTJRZLdT5pfcqa2FCrg3Q55SLYOrI0iQw
+	 cF4e+knm+fesZ8tc4zGFtoaH0gVjCkL60uCBL38ISYajHQLcs2J0Cz/F48SBWM/ELr
+	 gSFNQo+0W6/1rI3z/JkUMNz0W82RhEGjNeFAKB+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 231/277] ASoC: SOF: ipc4-pcm: Enable delay reporting for ChainDMA streams
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.17 263/371] xsk: Harden userspace-supplied xdp_desc validation
 Date: Fri, 17 Oct 2025 16:53:58 +0200
-Message-ID: <20251017145155.569825456@linuxfoundation.org>
+Message-ID: <20251017145211.595128037@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,139 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit a1d203d390e04798ccc1c3c06019cd4411885d6d ]
+commit 07ca98f906a403637fc5e513a872a50ef1247f3b upstream.
 
-All streams (currently) which is configured to use ChainDMA can only work
-on Link/host DMA pairs where the link side position can be access via host
-registers (like HDA on CAVS 2.5 platforms).
+Turned out certain clearly invalid values passed in xdp_desc from
+userspace can pass xp_{,un}aligned_validate_desc() and then lead
+to UBs or just invalid frames to be queued for xmit.
 
-Since the firmware does not provide time_info for ChainDMA, unlike for HDA
-stream, the kernel should calculate the start and end offsets that is
-needed for the delay calculation.
+desc->len close to ``U32_MAX`` with a non-zero pool->tx_metadata_len
+can cause positive integer overflow and wraparound, the same way low
+enough desc->addr with a non-zero pool->tx_metadata_len can cause
+negative integer overflow. Both scenarios can then pass the
+validation successfully.
+This doesn't happen with valid XSk applications, but can be used
+to perform attacks.
 
-With this small change we can report accurate delays when the stream is
-configured to use ChainDMA.
+Always promote desc->len to ``u64`` first to exclude positive
+overflows of it. Use explicit check_{add,sub}_overflow() when
+validating desc->addr (which is ``u64`` already).
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://patch.msgid.link/20250619102848.12389-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: bcd1383516bb ("ASoC: SOF: ipc4-pcm: fix delay calculation when DSP resamples")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+bloat-o-meter reports a little growth of the code size:
+
+add/remove: 0/0 grow/shrink: 2/1 up/down: 60/-16 (44)
+Function                                     old     new   delta
+xskq_cons_peek_desc                          299     330     +31
+xsk_tx_peek_release_desc_batch               973    1002     +29
+xsk_generic_xmit                            3148    3132     -16
+
+but hopefully this doesn't hurt the performance much.
+
+Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
+Cc: stable@vger.kernel.org # 6.8+
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20251008165659.4141318-1-aleksander.lobakin@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/ipc4-pcm.c      |   49 ++++++++++++++++++++++++++++++++++++++----
- sound/soc/sof/ipc4-topology.c |    6 ++---
- sound/soc/sof/ipc4-topology.h |    1 
- 3 files changed, 49 insertions(+), 7 deletions(-)
+ net/xdp/xsk_queue.h |   45 +++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 35 insertions(+), 10 deletions(-)
 
---- a/sound/soc/sof/ipc4-pcm.c
-+++ b/sound/soc/sof/ipc4-pcm.c
-@@ -409,9 +409,33 @@ static int sof_ipc4_trigger_pipelines(st
- 	 * If use_chain_dma attribute is set we proceed to chained DMA
- 	 * trigger function that handles the rest for the substream.
- 	 */
--	if (pipeline->use_chain_dma)
--		return sof_ipc4_chain_dma_trigger(sdev, spcm, substream->stream,
--						  pipeline_list, state, cmd);
-+	if (pipeline->use_chain_dma) {
-+		struct sof_ipc4_timestamp_info *time_info;
+--- a/net/xdp/xsk_queue.h
++++ b/net/xdp/xsk_queue.h
+@@ -143,14 +143,24 @@ static inline bool xp_unused_options_set
+ static inline bool xp_aligned_validate_desc(struct xsk_buff_pool *pool,
+ 					    struct xdp_desc *desc)
+ {
+-	u64 addr = desc->addr - pool->tx_metadata_len;
+-	u64 len = desc->len + pool->tx_metadata_len;
+-	u64 offset = addr & (pool->chunk_size - 1);
++	u64 len = desc->len;
++	u64 addr, offset;
+ 
+-	if (!desc->len)
++	if (!len)
+ 		return false;
+ 
+-	if (offset + len > pool->chunk_size)
++	/* Can overflow if desc->addr < pool->tx_metadata_len */
++	if (check_sub_overflow(desc->addr, pool->tx_metadata_len, &addr))
++		return false;
 +
-+		time_info = sof_ipc4_sps_to_time_info(&spcm->stream[substream->stream]);
++	offset = addr & (pool->chunk_size - 1);
 +
-+		ret = sof_ipc4_chain_dma_trigger(sdev, spcm, substream->stream,
-+						 pipeline_list, state, cmd);
-+		if (ret || !time_info)
-+			return ret;
++	/*
++	 * Can't overflow: @offset is guaranteed to be < ``U32_MAX``
++	 * (pool->chunk_size is ``u32``), @len is guaranteed
++	 * to be <= ``U32_MAX``.
++	 */
++	if (offset + len + pool->tx_metadata_len > pool->chunk_size)
+ 		return false;
+ 
+ 	if (addr >= pool->addrs_cnt)
+@@ -158,27 +168,42 @@ static inline bool xp_aligned_validate_d
+ 
+ 	if (xp_unused_options_set(desc->options))
+ 		return false;
 +
-+		if (state == SOF_IPC4_PIPE_PAUSED) {
-+			/*
-+			 * Record the DAI position for delay reporting
-+			 * To handle multiple pause/resume/xrun we need to add
-+			 * the positions to simulate how the firmware behaves
-+			 */
-+			u64 pos = snd_sof_pcm_get_dai_frame_counter(sdev, component,
-+								    substream);
+ 	return true;
+ }
+ 
+ static inline bool xp_unaligned_validate_desc(struct xsk_buff_pool *pool,
+ 					      struct xdp_desc *desc)
+ {
+-	u64 addr = xp_unaligned_add_offset_to_addr(desc->addr) - pool->tx_metadata_len;
+-	u64 len = desc->len + pool->tx_metadata_len;
++	u64 len = desc->len;
++	u64 addr, end;
+ 
+-	if (!desc->len)
++	if (!len)
+ 		return false;
+ 
++	/* Can't overflow: @len is guaranteed to be <= ``U32_MAX`` */
++	len += pool->tx_metadata_len;
+ 	if (len > pool->chunk_size)
+ 		return false;
+ 
+-	if (addr >= pool->addrs_cnt || addr + len > pool->addrs_cnt ||
+-	    xp_desc_crosses_non_contig_pg(pool, addr, len))
++	/* Can overflow if desc->addr is close to 0 */
++	if (check_sub_overflow(xp_unaligned_add_offset_to_addr(desc->addr),
++			       pool->tx_metadata_len, &addr))
++		return false;
 +
-+			time_info->stream_end_offset += pos;
-+		} else if (state == SOF_IPC4_PIPE_RESET) {
-+			/* Reset the end offset as the stream is stopped */
-+			time_info->stream_end_offset = 0;
-+		}
++	if (addr >= pool->addrs_cnt)
++		return false;
 +
-+		return 0;
-+	}
++	/* Can overflow if pool->addrs_cnt is high enough */
++	if (check_add_overflow(addr, len, &end) || end > pool->addrs_cnt)
++		return false;
++
++	if (xp_desc_crosses_non_contig_pg(pool, addr, len))
+ 		return false;
  
- 	/* allocate memory for the pipeline data */
- 	trigger_list = kzalloc(struct_size(trigger_list, pipeline_instance_ids,
-@@ -924,8 +948,24 @@ static int sof_ipc4_get_stream_start_off
- 	if (!host_copier || !dai_copier)
- 		return -EINVAL;
+ 	if (xp_unused_options_set(desc->options))
+ 		return false;
++
+ 	return true;
+ }
  
--	if (host_copier->data.gtw_cfg.node_id == SOF_IPC4_INVALID_NODE_ID)
-+	if (host_copier->data.gtw_cfg.node_id == SOF_IPC4_INVALID_NODE_ID) {
- 		return -EINVAL;
-+	} else if (host_copier->data.gtw_cfg.node_id == SOF_IPC4_CHAIN_DMA_NODE_ID) {
-+		/*
-+		 * While the firmware does not supports time_info reporting for
-+		 * streams using ChainDMA, it is granted that ChainDMA can only
-+		 * be used on Host+Link pairs where the link position is
-+		 * accessible from the host side.
-+		 *
-+		 * Enable delay calculation in case of ChainDMA via host
-+		 * accessible registers.
-+		 *
-+		 * The ChainDMA uses 2x 1ms ping-pong buffer, dai side starts
-+		 * when 1ms data is available
-+		 */
-+		time_info->stream_start_offset = substream->runtime->rate / MSEC_PER_SEC;
-+		goto out;
-+	}
- 
- 	node_index = SOF_IPC4_NODE_INDEX(host_copier->data.gtw_cfg.node_id);
- 	offset = offsetof(struct sof_ipc4_fw_registers, pipeline_regs) + node_index * sizeof(ppl_reg);
-@@ -943,6 +983,7 @@ static int sof_ipc4_get_stream_start_off
- 	time_info->stream_end_offset = ppl_reg.stream_end_offset;
- 	do_div(time_info->stream_end_offset, dai_sample_size);
- 
-+out:
- 	/*
- 	 * Calculate the wrap boundary need to be used for delay calculation
- 	 * The host counter is in bytes, it will wrap earlier than the frames
---- a/sound/soc/sof/ipc4-topology.c
-+++ b/sound/soc/sof/ipc4-topology.c
-@@ -1782,10 +1782,10 @@ sof_ipc4_prepare_copier_module(struct sn
- 			pipeline->msg.extension |= SOF_IPC4_GLB_EXT_CHAIN_DMA_FIFO_SIZE(fifo_size);
- 
- 			/*
--			 * Chain DMA does not support stream timestamping, set node_id to invalid
--			 * to skip the code in sof_ipc4_get_stream_start_offset().
-+			 * Chain DMA does not support stream timestamping, but it
-+			 * can use the host side registers for delay calculation.
- 			 */
--			copier_data->gtw_cfg.node_id = SOF_IPC4_INVALID_NODE_ID;
-+			copier_data->gtw_cfg.node_id = SOF_IPC4_CHAIN_DMA_NODE_ID;
- 
- 			return 0;
- 		}
---- a/sound/soc/sof/ipc4-topology.h
-+++ b/sound/soc/sof/ipc4-topology.h
-@@ -58,6 +58,7 @@
- 
- #define SOF_IPC4_DMA_DEVICE_MAX_COUNT 16
- 
-+#define SOF_IPC4_CHAIN_DMA_NODE_ID	0x7fffffff
- #define SOF_IPC4_INVALID_NODE_ID	0xffffffff
- 
- /* FW requires minimum 4ms DMA buffer size */
 
 
 
