@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD310BE9665
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:38 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A646BEA3CB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63C9818844E4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5E57C5681AB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F3D2F12D7;
-	Fri, 17 Oct 2025 15:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1B036CDE0;
+	Fri, 17 Oct 2025 15:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bphlc67j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcNpQgB5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9523208;
-	Fri, 17 Oct 2025 15:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773363328EA;
+	Fri, 17 Oct 2025 15:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713229; cv=none; b=DTHO4cJCIQvkaNeUFPq3M0C+EQpOmqHdyfEa4OzM9v7uYrhD4lTuSjMw8P1OjeF6iNLlvT5QB+zj1n7J7lKoU75EvTcVZ3g7U0whXEyFLaGfdhM3Tz4YIfREWmbeksRDPaGFy0FHK27o4VZDo4o/LWYl42jmZFvZcDmpdjBCbNs=
+	t=1760715365; cv=none; b=qsbgBPglKWyHAnSHmEBYNyx93DPGgWqz/966hMA5biGbm7jmdWI5P7q+pBsxn74iPiruNuF6859O0RPVkbC/OHJDKJeHSILdQxdu+q3PBQoytJVRyHRIJvIyOjmtdVnPHEWbJb55wElzQCwAwr0EDmTiq4G3mQDXB7tirhR7zJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713229; c=relaxed/simple;
-	bh=lGECs1ZFfda0ijWqJnRBKbqTh7Ahap7VMdoyZb8KQ08=;
+	s=arc-20240116; t=1760715365; c=relaxed/simple;
+	bh=bnrub2W215sTQaywyEdFtK8nKRY70LNJ5+vZkJQHulM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQov04I364BOvyxLMh5Wb7vsQ2djlaSP1hOKvkj5TN5iG+SgPdeBWmNPHGul+B9eh7PxnPw5eId+fn1Q6BOnW6Of7YuKezBjzJfn17VbeY3WtT0EHL5RvrqOC0UhfW5WG77K/OoNoAsLn0OEbjZh30pyp4zrTPsjkH4LC2LmSJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bphlc67j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF61AC4CEE7;
-	Fri, 17 Oct 2025 15:00:28 +0000 (UTC)
+	 MIME-Version; b=agMOruo8j0EqRBd/zojb2P4AAOngd9z/JjbWHEBq8euVRuc7f9NxcOW6FWiTesfUAXqmyvepyUESuC2iDPTiI9cWLUo2HZ55O5JVZI1rHTitAft5qEHx7GLfm72KWGbwqAKHFoVJRjaFs5OWBUvTSi3iG0x4tKaOYhkacKbx5l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcNpQgB5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2BCC4CEFE;
+	Fri, 17 Oct 2025 15:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713229;
-	bh=lGECs1ZFfda0ijWqJnRBKbqTh7Ahap7VMdoyZb8KQ08=;
+	s=korg; t=1760715364;
+	bh=bnrub2W215sTQaywyEdFtK8nKRY70LNJ5+vZkJQHulM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bphlc67jKmQnIm9SlzNvv0H7+BtApl/vanzYe4AL4/v0VbHVnZ54JMgEO6Y/89FBW
-	 oiMOmCy/4N5QG0DSc83bN/BEciDYu4RCrUo72oEVwH5uZJB4BY4K7yuIB4bVBeH6mc
-	 mDUVmx/8nZR5+ym3kqPINDaEIToeIXd2vJ/BSwBY=
+	b=GcNpQgB5mLsFkv9bf7nnsffhfErsYZT7l7q+n3gjmdyConVrRNJIcgkDWNakZ0KwE
+	 xIVK/3X3JTeXxRxzkd9ET4aBNUKbfEf1kZTDJ8wUgQ9aGleeNMwv7IVRlkzIoFQBm0
+	 iMwefQp1R+PwjQcVwJThP2fqwm8/CLaPPFFDXy3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 059/168] dt-bindings: phy: rockchip-inno-csi-dphy: make power-domains non-required
+	Lukas Wunner <lukas@wunner.de>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.17 163/371] xen/manage: Fix suspend error path
 Date: Fri, 17 Oct 2025 16:52:18 +0200
-Message-ID: <20251017145131.196136583@linuxfoundation.org>
+Message-ID: <20251017145207.829961903@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Riesch <michael.riesch@collabora.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit c254815b02673cc77a84103c4c0d6197bd90c0ef upstream.
+commit f770c3d858687252f1270265ba152d5c622e793f upstream.
 
-There are variants of the Rockchip Innosilicon CSI DPHY (e.g., the RK3568
-variant) that are powered on by default as they are part of the ALIVE power
-domain.
-Remove 'power-domains' from the required properties in order to avoid false
-positives.
+The device power management API has the following asymmetry:
+* dpm_suspend_start() does not clean up on failure
+  (it requires a call to dpm_resume_end())
+* dpm_suspend_end() does clean up on failure
+  (it does not require a call to dpm_resume_start())
 
-Fixes: 22c8e0a69b7f ("dt-bindings: phy: add compatible for rk356x to rockchip-inno-csi-dphy")
-Cc: stable@kernel.org
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
-Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-2-a4f340a7f0cf@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The asymmetry was introduced by commit d8f3de0d2412 ("Suspend-related
+patches for 2.6.27") in June 2008:  It removed a call to device_resume()
+from device_suspend() (which was later renamed to dpm_suspend_start()).
+
+When Xen began using the device power management API in May 2008 with
+commit 0e91398f2a5d ("xen: implement save/restore"), the asymmetry did
+not yet exist.  But since it was introduced, a call to dpm_resume_end()
+is missing in the error path of dpm_suspend_start().  Fix it.
+
+Fixes: d8f3de0d2412 ("Suspend-related patches for 2.6.27")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org  # v2.6.27
+Reviewed-by: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <22453676d1ddcebbe81641bb68ddf587fee7e21e.1756990799.git.lukas@wunner.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml |   15 +++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/xen/manage.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml
-+++ b/Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml
-@@ -57,11 +57,24 @@ required:
-   - clocks
-   - clock-names
-   - '#phy-cells'
--  - power-domains
-   - resets
-   - reset-names
-   - rockchip,grf
+--- a/drivers/xen/manage.c
++++ b/drivers/xen/manage.c
+@@ -117,7 +117,7 @@ static void do_suspend(void)
+ 	err = dpm_suspend_start(PMSG_FREEZE);
+ 	if (err) {
+ 		pr_err("%s: dpm_suspend_start %d\n", __func__, err);
+-		goto out_thaw;
++		goto out_resume_end;
+ 	}
  
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - rockchip,px30-csi-dphy
-+              - rockchip,rk1808-csi-dphy
-+              - rockchip,rk3326-csi-dphy
-+              - rockchip,rk3368-csi-dphy
-+    then:
-+      required:
-+        - power-domains
-+
- additionalProperties: false
+ 	printk(KERN_DEBUG "suspending xenstore...\n");
+@@ -157,6 +157,7 @@ out_resume:
+ 	else
+ 		xs_suspend_cancel();
  
- examples:
++out_resume_end:
+ 	dpm_resume_end(si.cancelled ? PMSG_THAW : PMSG_RESTORE);
+ 
+ out_thaw:
 
 
 
