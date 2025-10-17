@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C18BE9557
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:52:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9C2BE956F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D4442755D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:51:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC5FA188ADEC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED46C3370FE;
-	Fri, 17 Oct 2025 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF81337110;
+	Fri, 17 Oct 2025 14:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TYtp1Tcs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uMtqFk0k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D793370FC
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F29337104
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 14:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760712544; cv=none; b=JbAmKZfLTMwxHRZOeotWIXZ1XOenpRyHkVM5w42xyUCV/MhR25GE6MHVDyMrGlNp5kXp7gFNqyTpeMxYe5VCIyNXuHQEdLGJS36OjRDQQPf92ONG+lFam0ZR9RXN9D1woyAQmC6bQE2IhvPcoTihlnU5Xvr9rKC0bA4i84+7H08=
+	t=1760712546; cv=none; b=k07+GFwrGxnIreFWixR+Elon5PY96TfuqD7Hm2QvseJNAp50Wl6lLQsUFfI8OsoT1exZS2YQjxV5OqF9WTI/3vAv00CSxSUT+YtUCYRzfSZDKlnlNWa8gXifMJf8ABMZoHj08LH2KfOs/m7BzUE3jAc/wZMus8bAosUJGESjnA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760712544; c=relaxed/simple;
-	bh=WoUBdqFTE9UmV7ZhEnpi4eP0g5PbpFrqE+Jba5bnMV0=;
+	s=arc-20240116; t=1760712546; c=relaxed/simple;
+	bh=RUGwU0HLIxBez3QLkRRH7tHTg6usCxWF4kdtnJNo6oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNlENoloZBD5eLjcrx+OYiaxYm5dMR5v09ItXrzfrFKQma0pyA0ni/EJaTdzoPmjK1iDtHmgjwAEs6RJr9adL7fyyfm4yMYndLz1MD1ZBZtNXDwZ0Qkkt0X6RZ7JSn8vaxmNTkVB+CaCFVNlte4JFMcUw2wBvRYDfoieDfRQLmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TYtp1Tcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3129C4CEF9;
-	Fri, 17 Oct 2025 14:49:03 +0000 (UTC)
+	 MIME-Version; b=DM/wwWq99g8sluyW4rzR7nKp+lo3GeOVsZwJZnK4jluxCC9nKaeJ0E00V4Ei/9K+2LRkQKXjKnoCwOoEzI4i0BoNylkuOpi2ntYWnG8aFyPNPSN2A8k7X+363Jy3l1xFGuvnBnzzJHlJNVEh2XyFU1a0X0AmrQkSsrcEHslVQMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uMtqFk0k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C771EC2BCFC;
+	Fri, 17 Oct 2025 14:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760712544;
-	bh=WoUBdqFTE9UmV7ZhEnpi4eP0g5PbpFrqE+Jba5bnMV0=;
+	s=k20201202; t=1760712545;
+	bh=RUGwU0HLIxBez3QLkRRH7tHTg6usCxWF4kdtnJNo6oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TYtp1TcsZJGI46mnKaprRkeayaAiSpMPmRQi8Urx9EqOOC4LwbUFTEB5CPepuM7jm
-	 vwqNiHky6LQVkqOsFLBNaAeNq8odooWjjtz0Di2sDzXUjtyKDNSJNGj/ZlAtIIAJD4
-	 jrBDHO/XCVHqUeUV6SR9lNUsCsB9kBasEBQzLV4XLribzmWwlHzH10zOeOKO2LZOmw
-	 H2DBfMNFGL5DzIs7XrPYSc7VCBHxWKgDBYqmnALhb4QJP3POdAzkJ9J+tgAgGGJkzd
-	 f0SD3Wav/BXCKd2eXDwbKMtfFxDtClOPTNgvfgIKPybZtiU1JO0jSwjqc3S70hAa9N
-	 ZsXV88ZXaP6wQ==
+	b=uMtqFk0kqaCgExEmBNWv2OnsNIiutS9QJ3OcIOoLe8bJ0A7lWgKXiG23q5/UP9Dvb
+	 rk9n+Xt6n8Gps/qMSLULtV/7MEhXhe63/v0xyqhGh0bWN7HHhywpMpdVIxOThAJhqk
+	 QeSWNA03DcsH3YY9bPkIXyFw+Wa3KMknwjukcNBtb1y/ffLXycQ1yVVDZgFDib4i3B
+	 dP/X5utKKfPT9TLckmQMIUF4hs9Huz3WPEv9Bx9keeKhgUeRbakB+iED5YLEtSYvi7
+	 rXqDP54rvRMdkiZMBmtkBm6OUBYtnD6k1cmN9iVzlvcRK0+/aN3suwDEucSvp9QORD
+	 LPC+bSUp1fDQg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Aakarsh Jain <aakarsh.jain@samsung.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/5] media: s5p-mfc: constify s5p_mfc_buf_size structures
-Date: Fri, 17 Oct 2025 10:48:57 -0400
-Message-ID: <20251017144900.4007781-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y 3/5] media: s5p-mfc: constify s5p_mfc_hw_cmds structures
+Date: Fri, 17 Oct 2025 10:48:58 -0400
+Message-ID: <20251017144900.4007781-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017144900.4007781-1-sashal@kernel.org>
 References: <2025101646-overtake-starch-c0ab@gregkh>
@@ -64,9 +64,9 @@ Content-Transfer-Encoding: 8bit
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit e8cc4c0bc2a660fed4ad57be6635d88ccc490a05 ]
+[ Upstream commit c76c43d77869adc1709693ba532fe7fb4f30aa45 ]
 
-Static "s5p_mfc_buf_size*" structures are not modified by the driver, so
+Static "s5p_mfc_hw_cmds" structures are not modified by the driver, so
 they can be made const for code safety.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
@@ -75,216 +75,94 @@ Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Stable-dep-of: 7fa37ba25a1d ("media: s5p-mfc: remove an unused/uninitialized variable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/samsung/s5p-mfc/s5p_mfc.c  | 20 +++++++++----------
- .../platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c |  2 +-
- .../platform/samsung/s5p-mfc/s5p_mfc_common.h |  4 ++--
- .../platform/samsung/s5p-mfc/s5p_mfc_dec.c    |  2 +-
- .../platform/samsung/s5p-mfc/s5p_mfc_opr_v5.c |  6 +++---
- .../platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c |  6 +++---
- 6 files changed, 20 insertions(+), 20 deletions(-)
+ drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.c | 4 ++--
+ drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.h | 2 +-
+ drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c | 4 ++--
+ drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.h | 2 +-
+ drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h | 2 +-
+ 5 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc.c
-index 007c7dbee0377..5b42fa8d87a6a 100644
---- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc.c
-+++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc.c
-@@ -1503,14 +1503,14 @@ static const struct dev_pm_ops s5p_mfc_pm_ops = {
- 	SET_SYSTEM_SLEEP_PM_OPS(s5p_mfc_suspend, s5p_mfc_resume)
+diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.c
+index 327e54e706114..1fbf7ed5d4cca 100644
+--- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.c
++++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.c
+@@ -148,7 +148,7 @@ static int s5p_mfc_close_inst_cmd_v5(struct s5p_mfc_ctx *ctx)
+ }
+ 
+ /* Initialize cmd function pointers for MFC v5 */
+-static struct s5p_mfc_hw_cmds s5p_mfc_cmds_v5 = {
++static const struct s5p_mfc_hw_cmds s5p_mfc_cmds_v5 = {
+ 	.cmd_host2risc = s5p_mfc_cmd_host2risc_v5,
+ 	.sys_init_cmd = s5p_mfc_sys_init_cmd_v5,
+ 	.sleep_cmd = s5p_mfc_sleep_cmd_v5,
+@@ -157,7 +157,7 @@ static struct s5p_mfc_hw_cmds s5p_mfc_cmds_v5 = {
+ 	.close_inst_cmd = s5p_mfc_close_inst_cmd_v5,
  };
  
--static struct s5p_mfc_buf_size_v5 mfc_buf_size_v5 = {
-+static const struct s5p_mfc_buf_size_v5 mfc_buf_size_v5 = {
- 	.h264_ctx	= MFC_H264_CTX_BUF_SIZE,
- 	.non_h264_ctx	= MFC_CTX_BUF_SIZE,
- 	.dsc		= DESC_BUF_SIZE,
- 	.shm		= SHARED_BUF_SIZE,
- };
+-struct s5p_mfc_hw_cmds *s5p_mfc_init_hw_cmds_v5(void)
++const struct s5p_mfc_hw_cmds *s5p_mfc_init_hw_cmds_v5(void)
+ {
+ 	return &s5p_mfc_cmds_v5;
+ }
+diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.h b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.h
+index 6eafa514aebca..c626376053c45 100644
+--- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.h
++++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v5.h
+@@ -11,6 +11,6 @@
  
--static struct s5p_mfc_buf_size buf_size_v5 = {
-+static const struct s5p_mfc_buf_size buf_size_v5 = {
- 	.fw	= MAX_FW_SIZE,
- 	.cpb	= MAX_CPB_SIZE,
- 	.priv	= &mfc_buf_size_v5,
-@@ -1527,7 +1527,7 @@ static struct s5p_mfc_variant mfc_drvdata_v5 = {
- 	.use_clock_gating = true,
- };
+ #include "s5p_mfc_common.h"
  
--static struct s5p_mfc_buf_size_v6 mfc_buf_size_v6 = {
-+static const struct s5p_mfc_buf_size_v6 mfc_buf_size_v6 = {
- 	.dev_ctx	= MFC_CTX_BUF_SIZE_V6,
- 	.h264_dec_ctx	= MFC_H264_DEC_CTX_BUF_SIZE_V6,
- 	.other_dec_ctx	= MFC_OTHER_DEC_CTX_BUF_SIZE_V6,
-@@ -1535,7 +1535,7 @@ static struct s5p_mfc_buf_size_v6 mfc_buf_size_v6 = {
- 	.other_enc_ctx	= MFC_OTHER_ENC_CTX_BUF_SIZE_V6,
- };
+-struct s5p_mfc_hw_cmds *s5p_mfc_init_hw_cmds_v5(void);
++const struct s5p_mfc_hw_cmds *s5p_mfc_init_hw_cmds_v5(void);
  
--static struct s5p_mfc_buf_size buf_size_v6 = {
-+static const struct s5p_mfc_buf_size buf_size_v6 = {
- 	.fw	= MAX_FW_SIZE_V6,
- 	.cpb	= MAX_CPB_SIZE_V6,
- 	.priv	= &mfc_buf_size_v6,
-@@ -1556,7 +1556,7 @@ static struct s5p_mfc_variant mfc_drvdata_v6 = {
- 	.num_clocks	= 1,
- };
- 
--static struct s5p_mfc_buf_size_v6 mfc_buf_size_v7 = {
-+static const struct s5p_mfc_buf_size_v6 mfc_buf_size_v7 = {
- 	.dev_ctx	= MFC_CTX_BUF_SIZE_V7,
- 	.h264_dec_ctx	= MFC_H264_DEC_CTX_BUF_SIZE_V7,
- 	.other_dec_ctx	= MFC_OTHER_DEC_CTX_BUF_SIZE_V7,
-@@ -1564,7 +1564,7 @@ static struct s5p_mfc_buf_size_v6 mfc_buf_size_v7 = {
- 	.other_enc_ctx	= MFC_OTHER_ENC_CTX_BUF_SIZE_V7,
- };
- 
--static struct s5p_mfc_buf_size buf_size_v7 = {
-+static const struct s5p_mfc_buf_size buf_size_v7 = {
- 	.fw	= MAX_FW_SIZE_V7,
- 	.cpb	= MAX_CPB_SIZE_V7,
- 	.priv	= &mfc_buf_size_v7,
-@@ -1590,7 +1590,7 @@ static struct s5p_mfc_variant mfc_drvdata_v7_3250 = {
- 	.num_clocks     = 2,
- };
- 
--static struct s5p_mfc_buf_size_v6 mfc_buf_size_v8 = {
-+static const struct s5p_mfc_buf_size_v6 mfc_buf_size_v8 = {
- 	.dev_ctx	= MFC_CTX_BUF_SIZE_V8,
- 	.h264_dec_ctx	= MFC_H264_DEC_CTX_BUF_SIZE_V8,
- 	.other_dec_ctx	= MFC_OTHER_DEC_CTX_BUF_SIZE_V8,
-@@ -1598,7 +1598,7 @@ static struct s5p_mfc_buf_size_v6 mfc_buf_size_v8 = {
- 	.other_enc_ctx	= MFC_OTHER_ENC_CTX_BUF_SIZE_V8,
- };
- 
--static struct s5p_mfc_buf_size buf_size_v8 = {
-+static const struct s5p_mfc_buf_size buf_size_v8 = {
- 	.fw	= MAX_FW_SIZE_V8,
- 	.cpb	= MAX_CPB_SIZE_V8,
- 	.priv	= &mfc_buf_size_v8,
-@@ -1624,7 +1624,7 @@ static struct s5p_mfc_variant mfc_drvdata_v8_5433 = {
- 	.num_clocks	= 3,
- };
- 
--static struct s5p_mfc_buf_size_v6 mfc_buf_size_v10 = {
-+static const struct s5p_mfc_buf_size_v6 mfc_buf_size_v10 = {
- 	.dev_ctx        = MFC_CTX_BUF_SIZE_V10,
- 	.h264_dec_ctx   = MFC_H264_DEC_CTX_BUF_SIZE_V10,
- 	.other_dec_ctx  = MFC_OTHER_DEC_CTX_BUF_SIZE_V10,
-@@ -1633,7 +1633,7 @@ static struct s5p_mfc_buf_size_v6 mfc_buf_size_v10 = {
- 	.other_enc_ctx  = MFC_OTHER_ENC_CTX_BUF_SIZE_V10,
- };
- 
--static struct s5p_mfc_buf_size buf_size_v10 = {
-+static const struct s5p_mfc_buf_size buf_size_v10 = {
- 	.fw     = MAX_FW_SIZE_V10,
- 	.cpb    = MAX_CPB_SIZE_V10,
- 	.priv   = &mfc_buf_size_v10,
+ #endif /* S5P_MFC_CMD_H_ */
 diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
-index f8588e52dfc82..25c4719a5dd05 100644
+index 25c4719a5dd05..740aa4dfae579 100644
 --- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
 +++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
-@@ -32,7 +32,7 @@ static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
- static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
- {
- 	struct s5p_mfc_cmd_args h2r_args;
--	struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
-+	const struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
- 	int ret;
+@@ -154,7 +154,7 @@ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+ }
  
- 	ret = s5p_mfc_hw_call(dev->mfc_ops, alloc_dev_context_buffer, dev);
-diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h
-index f33a755327ef0..6a47f3434c60d 100644
---- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h
-+++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h
-@@ -219,14 +219,14 @@ struct s5p_mfc_buf_size_v6 {
- struct s5p_mfc_buf_size {
- 	unsigned int fw;
- 	unsigned int cpb;
--	void *priv;
-+	const void *priv;
+ /* Initialize cmd function pointers for MFC v6 */
+-static struct s5p_mfc_hw_cmds s5p_mfc_cmds_v6 = {
++static const struct s5p_mfc_hw_cmds s5p_mfc_cmds_v6 = {
+ 	.cmd_host2risc = s5p_mfc_cmd_host2risc_v6,
+ 	.sys_init_cmd = s5p_mfc_sys_init_cmd_v6,
+ 	.sleep_cmd = s5p_mfc_sleep_cmd_v6,
+@@ -163,7 +163,7 @@ static struct s5p_mfc_hw_cmds s5p_mfc_cmds_v6 = {
+ 	.close_inst_cmd = s5p_mfc_close_inst_cmd_v6,
  };
  
- struct s5p_mfc_variant {
- 	unsigned int version;
- 	unsigned int port_num;
- 	u32 version_bit;
--	struct s5p_mfc_buf_size *buf_size;
-+	const struct s5p_mfc_buf_size *buf_size;
- 	const char	*fw_name[MFC_FW_MAX_VERSIONS];
- 	const char	*clk_names[MFC_MAX_CLOCKS];
- 	int		num_clocks;
-diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_dec.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_dec.c
-index 268ffe4da53c0..4dbe8792ac3d7 100644
---- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_dec.c
-+++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_dec.c
-@@ -426,7 +426,7 @@ static int vidioc_s_fmt(struct file *file, void *priv, struct v4l2_format *f)
- 	struct s5p_mfc_ctx *ctx = fh_to_ctx(priv);
- 	int ret = 0;
- 	struct v4l2_pix_format_mplane *pix_mp;
--	struct s5p_mfc_buf_size *buf_size = dev->variant->buf_size;
-+	const struct s5p_mfc_buf_size *buf_size = dev->variant->buf_size;
- 
- 	mfc_debug_enter();
- 	ret = vidioc_try_fmt(file, priv, f);
-diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v5.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v5.c
-index 28a06dc343fd5..13a3ff55e5479 100644
---- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v5.c
-+++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v5.c
-@@ -34,7 +34,7 @@
- static int s5p_mfc_alloc_dec_temp_buffers_v5(struct s5p_mfc_ctx *ctx)
+-struct s5p_mfc_hw_cmds *s5p_mfc_init_hw_cmds_v6(void)
++const struct s5p_mfc_hw_cmds *s5p_mfc_init_hw_cmds_v6(void)
  {
- 	struct s5p_mfc_dev *dev = ctx->dev;
--	struct s5p_mfc_buf_size_v5 *buf_size = dev->variant->buf_size->priv;
-+	const struct s5p_mfc_buf_size_v5 *buf_size = dev->variant->buf_size->priv;
- 	int ret;
+ 	return &s5p_mfc_cmds_v6;
+ }
+diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.h b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.h
+index 9dc44460cc38d..29083436f5173 100644
+--- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.h
++++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.h
+@@ -11,6 +11,6 @@
  
- 	ctx->dsc.size = buf_size->dsc;
-@@ -200,7 +200,7 @@ static void s5p_mfc_release_codec_buffers_v5(struct s5p_mfc_ctx *ctx)
- static int s5p_mfc_alloc_instance_buffer_v5(struct s5p_mfc_ctx *ctx)
- {
- 	struct s5p_mfc_dev *dev = ctx->dev;
--	struct s5p_mfc_buf_size_v5 *buf_size = dev->variant->buf_size->priv;
-+	const struct s5p_mfc_buf_size_v5 *buf_size = dev->variant->buf_size->priv;
- 	int ret;
+ #include "s5p_mfc_common.h"
  
- 	if (ctx->codec_mode == S5P_MFC_CODEC_H264_DEC ||
-@@ -345,7 +345,7 @@ static void s5p_mfc_enc_calc_src_size_v5(struct s5p_mfc_ctx *ctx)
- static void s5p_mfc_set_dec_desc_buffer(struct s5p_mfc_ctx *ctx)
- {
- 	struct s5p_mfc_dev *dev = ctx->dev;
--	struct s5p_mfc_buf_size_v5 *buf_size = dev->variant->buf_size->priv;
-+	const struct s5p_mfc_buf_size_v5 *buf_size = dev->variant->buf_size->priv;
+-struct s5p_mfc_hw_cmds *s5p_mfc_init_hw_cmds_v6(void);
++const struct s5p_mfc_hw_cmds *s5p_mfc_init_hw_cmds_v6(void);
  
- 	mfc_write(dev, OFFSETA(ctx->dsc.dma), S5P_FIMV_SI_CH0_DESC_ADR);
- 	mfc_write(dev, buf_size->dsc, S5P_FIMV_SI_CH0_DESC_SIZE);
-diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c
-index c0df5ac9fcff2..70a62400908ed 100644
---- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c
-+++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c
-@@ -333,7 +333,7 @@ static void s5p_mfc_release_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
- static int s5p_mfc_alloc_instance_buffer_v6(struct s5p_mfc_ctx *ctx)
- {
- 	struct s5p_mfc_dev *dev = ctx->dev;
--	struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
-+	const struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
- 	int ret;
- 
- 	mfc_debug_enter();
-@@ -393,7 +393,7 @@ static void s5p_mfc_release_instance_buffer_v6(struct s5p_mfc_ctx *ctx)
- /* Allocate context buffers for SYS_INIT */
- static int s5p_mfc_alloc_dev_context_buffer_v6(struct s5p_mfc_dev *dev)
- {
--	struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
-+	const struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
- 	int ret;
- 
- 	mfc_debug_enter();
-@@ -493,7 +493,7 @@ static int s5p_mfc_set_dec_stream_buffer_v6(struct s5p_mfc_ctx *ctx,
- {
- 	struct s5p_mfc_dev *dev = ctx->dev;
- 	const struct s5p_mfc_regs *mfc_regs = dev->mfc_regs;
--	struct s5p_mfc_buf_size *buf_size = dev->variant->buf_size;
-+	const struct s5p_mfc_buf_size *buf_size = dev->variant->buf_size;
- 
- 	mfc_debug_enter();
- 	mfc_debug(2, "inst_no: %d, buf_addr: 0x%08x,\n"
+ #endif /* S5P_MFC_CMD_H_ */
+diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h
+index 6a47f3434c60d..9278ed537e9ca 100644
+--- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h
++++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h
+@@ -339,7 +339,7 @@ struct s5p_mfc_dev {
+ 	struct s5p_mfc_priv_buf ctx_buf;
+ 	int warn_start;
+ 	struct s5p_mfc_hw_ops *mfc_ops;
+-	struct s5p_mfc_hw_cmds *mfc_cmds;
++	const struct s5p_mfc_hw_cmds *mfc_cmds;
+ 	const struct s5p_mfc_regs *mfc_regs;
+ 	enum s5p_mfc_fw_ver fw_ver;
+ 	bool fw_get_done;
 -- 
 2.51.0
 
