@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-187035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80650BEA10D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:36 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21CDABE99C9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 21B9B5874AE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:28:59 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8F77E35D226
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BDC20A5E5;
-	Fri, 17 Oct 2025 15:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB072F12C5;
+	Fri, 17 Oct 2025 15:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8ER3R3F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/VdCkoY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456763208;
-	Fri, 17 Oct 2025 15:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D542F12B0;
+	Fri, 17 Oct 2025 15:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714937; cv=none; b=o4fGRCvE+swgCDJqCSGTEOZFMvHxgLW/dJrs1Z27TpS6RPim8qfgeapaBflLoxYmdJJnJlmJ0YHoZS3emHKW+XN7J+IcayIt6mFbA7bbahu7S7nF6cN15RcJxYG16ALxJ9RAysAf0zLXFQbKjAkq76LlyNI8zT5m0/jBeyi6dOQ=
+	t=1760714118; cv=none; b=DmzErL8VjaMVSCDtk2BCDxuQTwoMVsiBfOrR4alrHp/sHxsNa75NfjX47S9Jj+RFPyXecnbRYRoVCGB8ELYXGdXVGLNp+3K8P1m3N/4Wsm8QyY95fFU3Sc7A/2sY9AeiaX4WUSz/CcdZe5iB85wI45tF6tZaYY2552eRni4UfFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714937; c=relaxed/simple;
-	bh=sP6ZTuQ2IVg1YE7QJPNQU9IGNVX1vkl4Io5T7hvRJa0=;
+	s=arc-20240116; t=1760714118; c=relaxed/simple;
+	bh=rzh/DeDRLCW1z9coGWo/O+DS2J+5mg0KTvP8gqaDOdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQPB4I5cB33J8EG8VdYpNE9MkOeSYOiG5GEJlTsqpy2VCIhogV4vMah7CIShoDtlWCf4l7bqvnC1OWx1MNJXOsRD5xJ93pG19IPqW+i6wOvjnylUtEJSwmpFcjdw01ZH/XtypRwSYseiNIroUbWUjEkmGwoDvSn2yEUdEACYTng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8ER3R3F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E997C4CEE7;
-	Fri, 17 Oct 2025 15:28:56 +0000 (UTC)
+	 MIME-Version; b=KHTUdLchybeOgXi/GRDIM+GA5qYEUhHhEsLLW2qMlNDLeAOiRb3IzYMZKsw8TcyRpTY+AzjAIOgKz2Mrv8xjp4eyej/3ADY7drtAhEmcerjHLt+jr1+OtDm7D0TqM4vKV4yEADulgoi8/ufjH6VvY6ZOBFf3/RU0MU1Culo/6m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/VdCkoY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E33DC4CEE7;
+	Fri, 17 Oct 2025 15:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714937;
-	bh=sP6ZTuQ2IVg1YE7QJPNQU9IGNVX1vkl4Io5T7hvRJa0=;
+	s=korg; t=1760714118;
+	bh=rzh/DeDRLCW1z9coGWo/O+DS2J+5mg0KTvP8gqaDOdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K8ER3R3Fu9h5GU/+oXkzfRcwxsRS6CLmjy43v8JhyzYllqHoCbSTbkQ9vZlBfLO4U
-	 skqUj8DgHUNMAl7YP+red7JYe4KxkNm7Dz2EJ1vLhTgqR2oxqRQxTMIhIlrg5tpj7r
-	 FIxdHIcD1ZKpDH9lvTJD/oq5XkEXJ2uZ3RVV3T10=
+	b=q/VdCkoYVHY4PU+51vIBAuC+RExD0mvesluxjd2tV5u+c8L33Qn3skSkcsoTUwF9a
+	 AAOURJc8XoS/ZN+sJN6yiUTw8G0TK3B3pOSQYvr/q8/QevcCQmHPBvAZkw6ve5rkyQ
+	 ewI434uqldnr0zOeTVEhbpHMIWCGIoCV8rG0zZQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ali Saidi <alisaidi@amazon.com>,
-	German Gomez <german.gomez@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 040/371] perf arm_spe: Correct memory level for remote access
-Date: Fri, 17 Oct 2025 16:50:15 +0200
-Message-ID: <20251017145203.250588621@linuxfoundation.org>
+	Sandipan Das <sandipan.das@amd.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 009/277] KVM: SVM: Emulate PERF_CNTR_GLOBAL_STATUS_SET for PerfMonV2
+Date: Fri, 17 Oct 2025 16:50:16 +0200
+Message-ID: <20251017145147.486848677@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,54 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit cb300e3515057fb555983ce47e8acc86a5c69c3c ]
+commit 68e61f6fd65610e73b17882f86fedfd784d99229 upstream.
 
-For remote accesses, the data source packet does not contain information
-about the memory level. To avoid misinformation, set the memory level to
-NA (Not Available).
+Emulate PERF_CNTR_GLOBAL_STATUS_SET when PerfMonV2 is enumerated to the
+guest, as the MSR is supposed to exist in all AMD v2 PMUs.
 
-Fixes: 4e6430cbb1a9f1dc ("perf arm-spe: Use SPE data source for neoverse cores")
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ali Saidi <alisaidi@amazon.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4a2771895ca6 ("KVM: x86/svm/pmu: Add AMD PerfMonV2 support")
+Cc: stable@vger.kernel.org
+Cc: Sandipan Das <sandipan.das@amd.com>
+Link: https://lore.kernel.org/r/20250711172746.1579423-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/arm-spe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/msr-index.h |    1 +
+ arch/x86/kvm/pmu.c               |    5 +++++
+ arch/x86/kvm/svm/pmu.c           |    1 +
+ arch/x86/kvm/x86.c               |    2 ++
+ 4 files changed, 9 insertions(+)
 
-diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
-index 8ecf7142dcd87..3086dad92965a 100644
---- a/tools/perf/util/arm-spe.c
-+++ b/tools/perf/util/arm-spe.c
-@@ -670,8 +670,8 @@ static void arm_spe__synth_data_source_common(const struct arm_spe_record *recor
- 	 * socket
- 	 */
- 	case ARM_SPE_COMMON_DS_REMOTE:
--		data_src->mem_lvl = PERF_MEM_LVL_REM_CCE1;
--		data_src->mem_lvl_num = PERF_MEM_LVLNUM_ANY_CACHE;
-+		data_src->mem_lvl = PERF_MEM_LVL_NA;
-+		data_src->mem_lvl_num = PERF_MEM_LVLNUM_NA;
- 		data_src->mem_remote = PERF_MEM_REMOTE_REMOTE;
- 		data_src->mem_snoopx = PERF_MEM_SNOOPX_PEER;
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -722,6 +722,7 @@
+ #define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS	0xc0000300
+ #define MSR_AMD64_PERF_CNTR_GLOBAL_CTL		0xc0000301
+ #define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR	0xc0000302
++#define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET	0xc0000303
+ 
+ /* AMD Last Branch Record MSRs */
+ #define MSR_AMD64_LBR_SELECT			0xc000010e
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -650,6 +650,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcp
+ 		msr_info->data = pmu->global_ctrl;
  		break;
--- 
-2.51.0
-
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
++	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
+ 	case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
+ 		msr_info->data = 0;
+ 		break;
+@@ -711,6 +712,10 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcp
+ 		if (!msr_info->host_initiated)
+ 			pmu->global_status &= ~data;
+ 		break;
++	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
++		if (!msr_info->host_initiated)
++			pmu->global_status |= data & ~pmu->global_status_rsvd;
++		break;
+ 	default:
+ 		kvm_pmu_mark_pmc_in_use(vcpu, msr_info->index);
+ 		return kvm_pmu_call(set_msr)(vcpu, msr_info);
+--- a/arch/x86/kvm/svm/pmu.c
++++ b/arch/x86/kvm/svm/pmu.c
+@@ -113,6 +113,7 @@ static bool amd_is_valid_msr(struct kvm_
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
++	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
+ 		return pmu->version > 1;
+ 	default:
+ 		if (msr > MSR_F15H_PERF_CTR5 &&
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -364,6 +364,7 @@ static const u32 msrs_to_save_pmu[] = {
+ 	MSR_AMD64_PERF_CNTR_GLOBAL_CTL,
+ 	MSR_AMD64_PERF_CNTR_GLOBAL_STATUS,
+ 	MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR,
++	MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET,
+ };
+ 
+ static u32 msrs_to_save[ARRAY_SIZE(msrs_to_save_base) +
+@@ -7449,6 +7450,7 @@ static void kvm_probe_msr_to_save(u32 ms
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS:
+ 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
++	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
+ 		if (!kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2))
+ 			return;
+ 		break;
 
 
 
