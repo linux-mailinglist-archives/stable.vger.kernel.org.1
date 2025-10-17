@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF394BE9DA8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534A2BEA6C6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED8FF188CD1A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:27:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E35E47C83E1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71050219A7A;
-	Fri, 17 Oct 2025 15:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93248330B35;
+	Fri, 17 Oct 2025 15:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzOhJR4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYURD/X8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F851D5CE0;
-	Fri, 17 Oct 2025 15:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFB3330B0F;
+	Fri, 17 Oct 2025 15:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714808; cv=none; b=jyOlzYTORlanI6Ki8YQUT6BkHoAXuGPL0cM1dDOkmg/cLEcaysg9hIDNlnuDF2O322YEpNNQVHf2Zzc02twnTj7Y8tqnMLymEJzzWwX90j7NPDV0Z5pP0Mj6xOOvIidGyBiiG0WhSiwSpBjOMbPyXqlD5/rfTZ/CNGuVT3cwztQ=
+	t=1760716521; cv=none; b=VrGI/J0Ena22CvYKN0uDhb2HOC8bU0f/23m5q3b8D8TND8Hg+PJag4yJ3zZgOJbW/+xStxKdPZ1W1zL2YQ0yaBfxExsUsfOeoio7NA3aCUUWya10ROrcOg+TTPnJzBzeKCtTcgiEJKvuFjcPxRkpl1uZITyTddsv/Blio9ebQ1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714808; c=relaxed/simple;
-	bh=PnlAC14aVqRqPELg6AvOf5ClX3KI72ku+rmyx8mohTA=;
+	s=arc-20240116; t=1760716521; c=relaxed/simple;
+	bh=e0+8SzwbfUBozvJQ4+BTD5HCvF9Y8SzM1iKADjYttYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPfZ0bQ610wnoPutgo7m40YVEWTDFUVvARkLjvG2bge8YXOqOAlRva/RNL/g/4Qa1UVCgP2EJk438fKW2zkZ13PeTJCkdBoIiFqBKHdo43vDsr/uMXa7eLHI03dRDoL0OekBO/hIGraC9JTnnto//J2spfZ/pQkGDrJUGZWCBLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzOhJR4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A495CC4CEE7;
-	Fri, 17 Oct 2025 15:26:47 +0000 (UTC)
+	 MIME-Version; b=hPtHUdiWhbg5d/b5lPRIJdGIqfFJUNXnIPbNr2Kf3Ednxa9f4nL3SZUjVtDKI3RDvI38iBUf/5BhvWDiPmvrsXZYIip+T15QdZWbw590xYTxWMyGACZ+AafVvWqayMtd/HwyUjM5xpzt17UWchPxz0hu0n2wJ8O52VLyP2OFP6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYURD/X8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C014AC4CEE7;
+	Fri, 17 Oct 2025 15:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714808;
-	bh=PnlAC14aVqRqPELg6AvOf5ClX3KI72ku+rmyx8mohTA=;
+	s=korg; t=1760716521;
+	bh=e0+8SzwbfUBozvJQ4+BTD5HCvF9Y8SzM1iKADjYttYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzOhJR4QA+SxYxGiTLLr+KD07DaYgJieY9hi3j1vKS9dFfD/kOVJj+0n4EVb+AwAq
-	 wfT/+rqfw0rlEYeE2KC6AzLV9lFdCyhHrn5LbHIkoxGxE5lsj88oEPKskHFzNZ0DDv
-	 yH8iWgxgyScorBHrUDocFrT2LU06tcipAUmxWrHs=
+	b=EYURD/X8rBUZw7UQyAG3HjVbsd9/8pdMeVXjybBwKWu5ftkiTBNfceNCL1zRK0+00
+	 GRmlna0OyXrZLqK7mJjGk359HnGZDNwJQiWwVKUDE6sSAR9GD65mOImi06jcRxF0Dn
+	 JM9VY3TqGrMxG6mibxwaWItdofSoEHEWkui3L1Xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 272/277] writeback: Avoid excessively long inode switching times
+	Joel Granados <joel.granados@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 5.15 186/276] iommu/vt-d: PRS isnt usable if PDS isnt supported
 Date: Fri, 17 Oct 2025 16:54:39 +0200
-Message-ID: <20251017145157.090786333@linuxfoundation.org>
+Message-ID: <20251017145149.262800253@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 9a6ebbdbd41235ea3bc0c4f39e2076599b8113cc ]
+commit 5ef7e24c742038a5d8c626fdc0e3a21834358341 upstream.
 
-With lazytime mount option enabled we can be switching many dirty inodes
-on cgroup exit to the parent cgroup. The numbers observed in practice
-when systemd slice of a large cron job exits can easily reach hundreds
-of thousands or millions. The logic in inode_do_switch_wbs() which sorts
-the inode into appropriate place in b_dirty list of the target wb
-however has linear complexity in the number of dirty inodes thus overall
-time complexity of switching all the inodes is quadratic leading to
-workers being pegged for hours consuming 100% of the CPU and switching
-inodes to the parent wb.
+The specification, Section 7.10, "Software Steps to Drain Page Requests &
+Responses," requires software to submit an Invalidation Wait Descriptor
+(inv_wait_dsc) with the Page-request Drain (PD=1) flag set, along with
+the Invalidation Wait Completion Status Write flag (SW=1). It then waits
+for the Invalidation Wait Descriptor's completion.
 
-Simple reproducer of the issue:
-  FILES=10000
-  # Filesystem mounted with lazytime mount option
-  MNT=/mnt/
-  echo "Creating files and switching timestamps"
-  for (( j = 0; j < 50; j ++ )); do
-      mkdir $MNT/dir$j
-      for (( i = 0; i < $FILES; i++ )); do
-          echo "foo" >$MNT/dir$j/file$i
-      done
-      touch -a -t 202501010000 $MNT/dir$j/file*
-  done
-  wait
-  echo "Syncing and flushing"
-  sync
-  echo 3 >/proc/sys/vm/drop_caches
+However, the PD field in the Invalidation Wait Descriptor is optional, as
+stated in Section 6.5.2.9, "Invalidation Wait Descriptor":
 
-  echo "Reading all files from a cgroup"
-  mkdir /sys/fs/cgroup/unified/mycg1 || exit
-  echo $$ >/sys/fs/cgroup/unified/mycg1/cgroup.procs || exit
-  for (( j = 0; j < 50; j ++ )); do
-      cat /mnt/dir$j/file* >/dev/null &
-  done
-  wait
-  echo "Switching wbs"
-  # Now rmdir the cgroup after the script exits
+"Page-request Drain (PD): Remapping hardware implementations reporting
+ Page-request draining as not supported (PDS = 0 in ECAP_REG) treat this
+ field as reserved."
 
-We need to maintain b_dirty list ordering to keep writeback happy so
-instead of sorting inode into appropriate place just append it at the
-end of the list and clobber dirtied_time_when. This may result in inode
-writeback starting later after cgroup switch however cgroup switches are
-rare so it shouldn't matter much. Since the cgroup had write access to
-the inode, there are no practical concerns of the possible DoS issues.
+This implies that if the IOMMU doesn't support the PDS capability, software
+can't drain page requests and group responses as expected.
 
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Do not enable PCI/PRI if the IOMMU doesn't support PDS.
+
+Reported-by: Joel Granados <joel.granados@kernel.org>
+Closes: https://lore.kernel.org/r/20250909-jag-pds-v1-1-ad8cba0e494e@kernel.org
+Fixes: 66ac4db36f4c ("iommu/vt-d: Add page request draining support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20250915062946.120196-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fs-writeback.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/iommu/intel/iommu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index eff778dc0386c..28edfad85c628 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -446,22 +446,23 @@ static bool inode_do_switch_wbs(struct inode *inode,
- 	 * Transfer to @new_wb's IO list if necessary.  If the @inode is dirty,
- 	 * the specific list @inode was on is ignored and the @inode is put on
- 	 * ->b_dirty which is always correct including from ->b_dirty_time.
--	 * The transfer preserves @inode->dirtied_when ordering.  If the @inode
--	 * was clean, it means it was on the b_attached list, so move it onto
--	 * the b_attached list of @new_wb.
-+	 * If the @inode was clean, it means it was on the b_attached list, so
-+	 * move it onto the b_attached list of @new_wb.
- 	 */
- 	if (!list_empty(&inode->i_io_list)) {
- 		inode->i_wb = new_wb;
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -2659,7 +2659,7 @@ static struct dmar_domain *dmar_insert_o
+ 			}
  
- 		if (inode->i_state & I_DIRTY_ALL) {
--			struct inode *pos;
--
--			list_for_each_entry(pos, &new_wb->b_dirty, i_io_list)
--				if (time_after_eq(inode->dirtied_when,
--						  pos->dirtied_when))
--					break;
-+			/*
-+			 * We need to keep b_dirty list sorted by
-+			 * dirtied_time_when. However properly sorting the
-+			 * inode in the list gets too expensive when switching
-+			 * many inodes. So just attach inode at the end of the
-+			 * dirty list and clobber the dirtied_time_when.
-+			 */
-+			inode->dirtied_time_when = jiffies;
- 			inode_io_list_move_locked(inode, new_wb,
--						  pos->i_io_list.prev);
-+						  &new_wb->b_dirty);
- 		} else {
- 			inode_cgwb_move_to_attached(inode, new_wb);
+ 			if (info->ats_supported && ecap_prs(iommu->ecap) &&
+-			    pci_pri_supported(pdev))
++			    ecap_pds(iommu->ecap) && pci_pri_supported(pdev))
+ 				info->pri_supported = 1;
  		}
--- 
-2.51.0
-
+ 	}
 
 
 
