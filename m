@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE0FBE99ED
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BD1BEA3AD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B080581B07
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4839C1A63C0A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5942F12AF;
-	Fri, 17 Oct 2025 15:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04348330B00;
+	Fri, 17 Oct 2025 15:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFjxYoL/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBqcgy5x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE7B33710B;
-	Fri, 17 Oct 2025 15:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F11330B1C;
+	Fri, 17 Oct 2025 15:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713706; cv=none; b=TIRH2SGQgBQYdJIaHblh172hMGh+UE/MlxzbUsY2bBVNCsbLXbjeINo0xDvku7KwWQqnTRmo8eKFD+Tfbt0Dm/0kYSMaugF1dptRbSjGJM3RxbPOdtqhAubxmdq+H8KOt3OP9PhlAQewEE9PjqmAI7nmtoUvkOsHPsd7p3i03Pc=
+	t=1760716063; cv=none; b=K19rpjnbSaFrUPdcEpeeeBpS6ZVSYvST8Y8Cfc2lFb5TBvF4IvYuNIQxwQQ0j4cQewAbfDmxpd+VqkjLNDrj1I08HYIm74wcc4CH1veNLb3xOHT3kGVuXaMjLtkBb4fvknFDV4m3pUoodA0KWwaKwpjTq5wqW3T7sS4gNOe3f8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713706; c=relaxed/simple;
-	bh=ytmKJDtpF4/ZjeePnE1kUaDPHIRaU0FO5mQFLo5xg8c=;
+	s=arc-20240116; t=1760716063; c=relaxed/simple;
+	bh=91vXonBSQQyLT2dbHxndQMIrzqldcs/cNACB2HUnTOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9pWPRuYInl9SyZ4okHgDwJquawymVAuBelZXoRVWEoZwBQ5FmNCwu0bMVhzpqjg2Waw4nW3DH4sD4DzAdrj+em2vpixMbT+HMsIA6cwVG6LrK+JPhexgDCSIuB9fXU+ukAdod0mclTjIG8fG0Pn7i1xCwQVOk9hacdFZbMYvao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFjxYoL/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20494C4CEE7;
-	Fri, 17 Oct 2025 15:08:25 +0000 (UTC)
+	 MIME-Version; b=BQCh5uo7GJHtseIbXi9NJ1qDyODiLKZ/nDORJqsU/FNLYB09yem4ut4CffZo2yAdU16ExXlScormsfadCPmwylk2KMgKbSaAfxW53oUTWQ29oeudUDzHlUsjIOwlioFVdycL2D/n5Zz07R8jXKFRSJoCSOtWRx0ry6l41ebBk7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBqcgy5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36065C4CEE7;
+	Fri, 17 Oct 2025 15:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713706;
-	bh=ytmKJDtpF4/ZjeePnE1kUaDPHIRaU0FO5mQFLo5xg8c=;
+	s=korg; t=1760716063;
+	bh=91vXonBSQQyLT2dbHxndQMIrzqldcs/cNACB2HUnTOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oFjxYoL/JxVlwQF6C4Q35r0ZPuKjsuvwoRzV+jpgmoNWNYtPgPbTI1gSAXYyxiuVv
-	 sNJhreX+xnkQuPZXjpwva/ei3FjvZo0Pvc6aaL6E/QysFMbmCfLPDA9aHqg2Hnyl6A
-	 qYeBJzlwAndOcxC6zcknMk1mZEYd3XeKSPEG+4jI=
+	b=NBqcgy5xiTKRm/lppd3XW+nq4R4eKqCBcb96VGzubp4BVmqmBgy1CLeRQS+3COMvL
+	 XjFV8sewJ/rU8uw3dgBewPARQD1tX5JLXpdJiZfj0E36gQD7R0Rve/MyB4i6fyH5PF
+	 BGCkI5DmuzrrrXIkKWTAdvZRw3ZvbFOS5Q8JJkF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 092/201] iio: dac: ad5421: use int type to store negative error codes
+	Stefan Kerkmann <s.kerkmann@pengutronix.de>,
+	Jeff Chen <jeff.chen_1@nxp.con>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 060/276] wifi: mwifiex: send world regulatory domain to driver
 Date: Fri, 17 Oct 2025 16:52:33 +0200
-Message-ID: <20251017145138.133154304@linuxfoundation.org>
+Message-ID: <20251017145144.679342889@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 
-commit 3379c900320954d768ed9903691fb2520926bbe3 upstream.
+[ Upstream commit 56819d00bc2ebaa6308913c28680da5d896852b8 ]
 
-Change the 'ret' variable in ad5421_update_ctrl() from unsigned int to
-int, as it needs to store either negative error codes or zero returned
-by ad5421_write_unlocked().
+The world regulatory domain is a restrictive subset of channel
+configurations which allows legal operation of the adapter all over the
+world. Changing to this domain should not be prevented.
 
-Fixes: 5691b23489db ("staging:iio:dac: Add AD5421 driver")
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Link: https://patch.msgid.link/20250901135726.17601-3-rongqianfeng@vivo.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dd4a9ac05c8e1 ("mwifiex: send regulatory domain info to firmware only if alpha2 changed") changed
+Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.con>
+Link: https://patch.msgid.link/20250804-fix-mwifiex-regulatory-domain-v1-1-e4715c770c4d@pengutronix.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/dac/ad5421.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/dac/ad5421.c
-+++ b/drivers/iio/dac/ad5421.c
-@@ -186,7 +186,7 @@ static int ad5421_update_ctrl(struct iio
- 	unsigned int clr)
- {
- 	struct ad5421_state *st = iio_priv(indio_dev);
--	unsigned int ret;
-+	int ret;
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index d76a8523ef1d3..8978f18d98de4 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -663,10 +663,9 @@ static void mwifiex_reg_notifier(struct wiphy *wiphy,
+ 		return;
+ 	}
  
- 	mutex_lock(&st->lock);
- 
+-	/* Don't send world or same regdom info to firmware */
+-	if (strncmp(request->alpha2, "00", 2) &&
+-	    strncmp(request->alpha2, adapter->country_code,
+-		    sizeof(request->alpha2))) {
++	/* Don't send same regdom info to firmware */
++	if (strncmp(request->alpha2, adapter->country_code,
++		    sizeof(request->alpha2)) != 0) {
+ 		memcpy(adapter->country_code, request->alpha2,
+ 		       sizeof(request->alpha2));
+ 		mwifiex_send_domain_info_cmd_fw(wiphy);
+-- 
+2.51.0
+
 
 
 
