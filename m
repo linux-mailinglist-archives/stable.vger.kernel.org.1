@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-187365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59388BEA1A9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:49 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 397F8BEA3DA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0599D35EB41
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E65215874C1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27092F12C6;
-	Fri, 17 Oct 2025 15:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA791330B20;
+	Fri, 17 Oct 2025 15:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVJyAQuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTmk6BfK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D570231C9F;
-	Fri, 17 Oct 2025 15:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F445330B1C;
+	Fri, 17 Oct 2025 15:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715863; cv=none; b=Vs6OGxsNCk3Ef0XF89f8DUUb/jgnogCUYAUuEH1YXvK3nto+DBWKeYGTyRsXq/ZOZBNBAOktVHG3qCTqHrv0q9Er1RxdF6dFYi/f+7jqs1Ufx9pZlySO+07J1OhoW4UXk3q/0YNILtTH/i+NwMMUY2waZwFNugMmQpQbOrDDzAo=
+	t=1760715869; cv=none; b=EqESy8TJVH+IZZZg2nEhsdjAoiGBbjYipcOMu1uWPB0wWQXuMLy8DEicB3nqbjFEr22169mblxmW0/rtQRUkQyaSMpOqpdbU24atSFkvFJu5KIYIIB/yNpAeRjbsnswAenPw9bm8gATyQ/Tnn7lqvzJc1Qg7RVTDbGm8gnNvHyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715863; c=relaxed/simple;
-	bh=mqj6gZ6s86WLxa+fTo3E+33SUZQuzxxjCj6bKSJgFhI=;
+	s=arc-20240116; t=1760715869; c=relaxed/simple;
+	bh=lgSq0hr+PeiiJfrEVejA1pa75brgx5nc6a7gXpONxl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UyvNR3koaG+q3BBC4NRGc0pbBW9y2XSRqG+uk759LkE2fqMyzHDofO0N0LnDHnRqJ5jpfpKNwAuFJR6aa7xuMFy9cPuXnbosm3DLpaVdZ9eUDWIVhJzmhDYbR/jVeM31CgjTrUp+IjH9aCraF9eYdC0+lVoVY0fTQchMqd32ykY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVJyAQuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20904C4CEE7;
-	Fri, 17 Oct 2025 15:44:22 +0000 (UTC)
+	 MIME-Version; b=NwMI6RGf1MWlMOKwGsBHCz/insaOHunpwXvprYkBqyx5rVUpqVwsTWqp6sRrO5LzIid59IJyTVwg10ih9Ybzg/fDYRNOMbAbPbI0y3o2YFrdfEnsY8mJOCReSKUMRQ9BKjAeGQHAVvjrJWWlH2VcSXmvQYUGRO8qT5xJn/wFdFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTmk6BfK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE559C113D0;
+	Fri, 17 Oct 2025 15:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715863;
-	bh=mqj6gZ6s86WLxa+fTo3E+33SUZQuzxxjCj6bKSJgFhI=;
+	s=korg; t=1760715869;
+	bh=lgSq0hr+PeiiJfrEVejA1pa75brgx5nc6a7gXpONxl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wVJyAQuzhOS+Ws1Vdq7QFgT9kdYMZVidO7I40P79vxIcnYd8rvoSYvOc2yMmwJbzy
-	 9yNd83l3R60s583M1pS5V0iupDgz21TB89WiIwjoY6hwBD4rcWShXUVDyAjA2ZShmG
-	 nGEzly+FIjmVdiyNKuwmAhsM/uHNaUit9kphx+ME=
+	b=nTmk6BfKSbR9292HB2dhwuXW6mUABFAH/CHu6eF6n8iUFwrvEqSdEq1vxouwVj91d
+	 fESlQkxFJhsblqXUFa/KlCWg1vCgDw8bbbQe3jPqlo017OJfrb/aUjU8q+NDXzzpdl
+	 boJEikIUSflo79PM2dVTsCkK2VfwKcqKcdoOpO/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lichen Liu <lichliu@redhat.com>,
-	Rob Landley <rob@landley.net>,
+	Jan Kara <jack@suse.cz>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 363/371] fs: Add initramfs_options to set initramfs mount options
-Date: Fri, 17 Oct 2025 16:55:38 +0200
-Message-ID: <20251017145215.221725387@linuxfoundation.org>
+Subject: [PATCH 6.17 365/371] nsfs: validate extensible ioctls
+Date: Fri, 17 Oct 2025 16:55:40 +0200
+Message-ID: <20251017145215.292205160@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -61,118 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lichen Liu <lichliu@redhat.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 278033a225e13ec21900f0a92b8351658f5377f2 ]
+[ Upstream commit f8527a29f4619f74bc30a9845ea87abb9a6faa1e ]
 
-When CONFIG_TMPFS is enabled, the initial root filesystem is a tmpfs.
-By default, a tmpfs mount is limited to using 50% of the available RAM
-for its content. This can be problematic in memory-constrained
-environments, particularly during a kdump capture.
+Validate extensible ioctls stricter than we do now.
 
-In a kdump scenario, the capture kernel boots with a limited amount of
-memory specified by the 'crashkernel' parameter. If the initramfs is
-large, it may fail to unpack into the tmpfs rootfs due to insufficient
-space. This is because to get X MB of usable space in tmpfs, 2*X MB of
-memory must be available for the mount. This leads to an OOM failure
-during the early boot process, preventing a successful crash dump.
-
-This patch introduces a new kernel command-line parameter,
-initramfs_options, which allows passing specific mount options directly
-to the rootfs when it is first mounted. This gives users control over
-the rootfs behavior.
-
-For example, a user can now specify initramfs_options=size=75% to allow
-the tmpfs to use up to 75% of the available memory. This can
-significantly reduce the memory pressure for kdump.
-
-Consider a practical example:
-
-To unpack a 48MB initramfs, the tmpfs needs 48MB of usable space. With
-the default 50% limit, this requires a memory pool of 96MB to be
-available for the tmpfs mount. The total memory requirement is therefore
-approximately: 16MB (vmlinuz) + 48MB (loaded initramfs) + 48MB (unpacked
-kernel) + 96MB (for tmpfs) + 12MB (runtime overhead) ≈ 220MB.
-
-By using initramfs_options=size=75%, the memory pool required for the
-48MB tmpfs is reduced to 48MB / 0.75 = 64MB. This reduces the total
-memory requirement by 32MB (96MB - 64MB), allowing the kdump to succeed
-with a smaller crashkernel size, such as 192MB.
-
-An alternative approach of reusing the existing rootflags parameter was
-considered. However, a new, dedicated initramfs_options parameter was
-chosen to avoid altering the current behavior of rootflags (which
-applies to the final root filesystem) and to prevent any potential
-regressions.
-
-Also add documentation for the new kernel parameter "initramfs_options"
-
-This approach is inspired by prior discussions and patches on the topic.
-Ref: https://www.lightofdawn.org/blog/?viewDetailed=00128
-Ref: https://landley.net/notes-2015.html#01-01-2015
-Ref: https://lkml.org/lkml/2021/6/29/783
-Ref: https://www.kernel.org/doc/html/latest/filesystems/ramfs-rootfs-initramfs.html#what-is-rootfs
-
-Signed-off-by: Lichen Liu <lichliu@redhat.com>
-Link: https://lore.kernel.org/20250815121459.3391223-1-lichliu@redhat.com
-Tested-by: Rob Landley <rob@landley.net>
+Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  3 +++
- fs/namespace.c                                  | 11 ++++++++++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ fs/nsfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 5a7a83c411e9c..e92c0056e4e0a 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -6429,6 +6429,9 @@
+diff --git a/fs/nsfs.c b/fs/nsfs.c
+index 59aa801347a7d..34f0b35d3ead7 100644
+--- a/fs/nsfs.c
++++ b/fs/nsfs.c
+@@ -169,9 +169,11 @@ static bool nsfs_ioctl_valid(unsigned int cmd)
+ 	/* Extensible ioctls require some extra handling. */
+ 	switch (_IOC_NR(cmd)) {
+ 	case _IOC_NR(NS_MNT_GET_INFO):
++		return extensible_ioctl_valid(cmd, NS_MNT_GET_INFO, MNT_NS_INFO_SIZE_VER0);
+ 	case _IOC_NR(NS_MNT_GET_NEXT):
++		return extensible_ioctl_valid(cmd, NS_MNT_GET_NEXT, MNT_NS_INFO_SIZE_VER0);
+ 	case _IOC_NR(NS_MNT_GET_PREV):
+-		return (_IOC_TYPE(cmd) == _IOC_TYPE(cmd));
++		return extensible_ioctl_valid(cmd, NS_MNT_GET_PREV, MNT_NS_INFO_SIZE_VER0);
+ 	}
  
- 	rootflags=	[KNL] Set root filesystem mount option string
- 
-+	initramfs_options= [KNL]
-+                        Specify mount options for for the initramfs mount.
-+
- 	rootfstype=	[KNL] Set root filesystem type
- 
- 	rootwait	[KNL] Wait (indefinitely) for root device to show up.
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 46e654247274f..38609066cf330 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -65,6 +65,15 @@ static int __init set_mphash_entries(char *str)
- }
- __setup("mphash_entries=", set_mphash_entries);
- 
-+static char * __initdata initramfs_options;
-+static int __init initramfs_options_setup(char *str)
-+{
-+	initramfs_options = str;
-+	return 1;
-+}
-+
-+__setup("initramfs_options=", initramfs_options_setup);
-+
- static u64 event;
- static DEFINE_XARRAY_FLAGS(mnt_id_xa, XA_FLAGS_ALLOC);
- static DEFINE_IDA(mnt_group_ida);
-@@ -6127,7 +6136,7 @@ static void __init init_mount_tree(void)
- 	struct mnt_namespace *ns;
- 	struct path root;
- 
--	mnt = vfs_kern_mount(&rootfs_fs_type, 0, "rootfs", NULL);
-+	mnt = vfs_kern_mount(&rootfs_fs_type, 0, "rootfs", initramfs_options);
- 	if (IS_ERR(mnt))
- 		panic("Can't create rootfs");
- 
+ 	return false;
 -- 
 2.51.0
 
