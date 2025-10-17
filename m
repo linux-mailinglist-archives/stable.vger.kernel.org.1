@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-187176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47B1BEA4AF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE02BE9FBD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A7647C3568
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E1C65680D5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A977232E147;
-	Fri, 17 Oct 2025 15:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EA633506D;
+	Fri, 17 Oct 2025 15:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOmOi5g2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhqJ6xrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65705332905;
-	Fri, 17 Oct 2025 15:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5308032C93B;
+	Fri, 17 Oct 2025 15:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715330; cv=none; b=Ss18+VBzSoU5TcVRGOIT+kz427RoP0md++OuL1YntBfWFxPqBG5IaRw+c9Rmcq6J0cd5nG0zg5M1eZtjuRFMmf275qRRK2Hm1OtHDMcP9ZK0L+EATPKDDptL6caqyPrC2sNY9s0KIfAIVxH6YiLtYED+eeORhsPK7tKZLY2G/S8=
+	t=1760714441; cv=none; b=PSrA27B1tcwRqz7XCQISmVKM73k8SxfTda/52NWGcNsQcmHrxttuRthKjOopcTU/WXV/8nBYlAGye6FSApt8Z8GcNMTz2ENtHUlIsg6+K8sdonfM+NNBGGMG1ouwOh7FNsQxgn1v9WYalKroTuMRLGqVh5KRvYdeOsTcAi7m8CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715330; c=relaxed/simple;
-	bh=6w+utiZNYckTC1cZKGvvQhciMPIa8X6Ufb8v8ce7Ovs=;
+	s=arc-20240116; t=1760714441; c=relaxed/simple;
+	bh=+9eA+KjlNZ4XH8IkqxLsjSVRYrVLuQKH71amR7a2/SA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/LvVnJM+qpwu4WZ9SHrTXFYgS9G5B4I0ZNzOHyV3n9Vn+UPUPuJPAVS0+sfk88htmE93Y9FPgJbbpZU7WtNpEcHdO8tUnV1RZmokT27St6O5bgvE9aLHeLbqTr4q22N2Ijp45pXRoEVFEkLRyFrQAhcEIwgZ0NmoLjvQGm6itM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOmOi5g2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3D2C4CEFE;
-	Fri, 17 Oct 2025 15:35:29 +0000 (UTC)
+	 MIME-Version; b=eNmlYsyoIPLgyhKqlCMC8ufGKK7gjTJ74Jw4Lem/aonp1KaCCX0F0avw2ZiTse7W/WbSs5E16lRbYCfFQn/q4HARrJALnNSaKlfvypQJGW+Jag6i9Hs8REP2avBnFWsEYsVGg8J3tCp7Ndk/2cpf3lEbiE37DxLPDvtvL3YrAv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhqJ6xrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D76C4CEE7;
+	Fri, 17 Oct 2025 15:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715329;
-	bh=6w+utiZNYckTC1cZKGvvQhciMPIa8X6Ufb8v8ce7Ovs=;
+	s=korg; t=1760714441;
+	bh=+9eA+KjlNZ4XH8IkqxLsjSVRYrVLuQKH71amR7a2/SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOmOi5g25OM5TrmL1kk2iHe0Gs+bLdKzFWF9HS0iuKBq26qE4ObtNxOLNWIMuP+TG
-	 kFoyre+2fLCOVO9P2dbxT1EdZQZowQfo+JXLNEaL7oMu8g40no1FpmB/KI9iRGn0fT
-	 mQsSjKLv/s6W8TfkF75XQp8TcuoYW2tucZM1CJJk=
+	b=UhqJ6xrTuZTPASprp6CsbR4s1X5G6YHtCpnF4BXrv5Bw8EfbiK9kOgNzvnmaz9a1u
+	 7rv6aFmnRftv3FaVsZExZcezdCbt48FpFigbhvKue6LSfTg/g5tI7dXUUAVX+by8cD
+	 t4xv1j4ymN9MoCM5DC7qIp+faWq0VQM/mAc+gv5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.17 179/371] media: venus: firmware: Use correct reset sequence for IRIS2
+	Johan Hovold <johan@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 147/277] lib/genalloc: fix device leak in of_gen_pool_get()
 Date: Fri, 17 Oct 2025 16:52:34 +0200
-Message-ID: <20251017145208.404269427@linuxfoundation.org>
+Message-ID: <20251017145152.491121049@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 93f213b444a40f1e7a4383b499b65e782dcb14b9 upstream.
+commit 1260cbcffa608219fc9188a6cbe9c45a300ef8b5 upstream.
 
-When starting venus with the "no_tz" code path, IRIS2 needs the same
-boot/reset sequence as IRIS2_1. This is because most of the registers were
-moved to the "wrapper_tz_base", which is already defined for both IRIS2 and
-IRIS2_1 inside core.c. Add IRIS2 to the checks inside firmware.c as well to
-make sure that it uses the correct reset sequence.
+Make sure to drop the reference taken when looking up the genpool platform
+device in of_gen_pool_get() before returning the pool.
 
-Both IRIS2 and IRIS2_1 are HFI v6 variants, so the correct sequence was
-used before commit c38610f8981e ("media: venus: firmware: Sanitize
-per-VPU-version").
+Note that holding a reference to a device does typically not prevent its
+devres managed resources from being released so there is no point in
+keeping the reference.
 
-Fixes: c38610f8981e ("media: venus: firmware: Sanitize per-VPU-version")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-[bod: Fixed commit log IRIS -> IRIS2]
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Link: https://lkml.kernel.org/r/20250924080207.18006-1-johan@kernel.org
+Fixes: 9375db07adea ("genalloc: add devres support, allow to find a managed pool by device")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Vladimir Zapolskiy <vz@mleia.com>
+Cc: <stable@vger.kernel.org>	[3.10+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/firmware.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ lib/genalloc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/firmware.c
-+++ b/drivers/media/platform/qcom/venus/firmware.c
-@@ -30,7 +30,7 @@ static void venus_reset_cpu(struct venus
- 	u32 fw_size = core->fw.mapped_mem_size;
- 	void __iomem *wrapper_base;
+--- a/lib/genalloc.c
++++ b/lib/genalloc.c
+@@ -899,8 +899,11 @@ struct gen_pool *of_gen_pool_get(struct
+ 		if (!name)
+ 			name = of_node_full_name(np_pool);
+ 	}
+-	if (pdev)
++	if (pdev) {
+ 		pool = gen_pool_get(&pdev->dev, name);
++		put_device(&pdev->dev);
++	}
++
+ 	of_node_put(np_pool);
  
--	if (IS_IRIS2_1(core))
-+	if (IS_IRIS2(core) || IS_IRIS2_1(core))
- 		wrapper_base = core->wrapper_tz_base;
- 	else
- 		wrapper_base = core->wrapper_base;
-@@ -42,7 +42,7 @@ static void venus_reset_cpu(struct venus
- 	writel(fw_size, wrapper_base + WRAPPER_NONPIX_START_ADDR);
- 	writel(fw_size, wrapper_base + WRAPPER_NONPIX_END_ADDR);
- 
--	if (IS_IRIS2_1(core)) {
-+	if (IS_IRIS2(core) || IS_IRIS2_1(core)) {
- 		/* Bring XTSS out of reset */
- 		writel(0, wrapper_base + WRAPPER_TZ_XTSS_SW_RESET);
- 	} else {
-@@ -68,7 +68,7 @@ int venus_set_hw_state(struct venus_core
- 	if (resume) {
- 		venus_reset_cpu(core);
- 	} else {
--		if (IS_IRIS2_1(core))
-+		if (IS_IRIS2(core) || IS_IRIS2_1(core))
- 			writel(WRAPPER_XTSS_SW_RESET_BIT,
- 			       core->wrapper_tz_base + WRAPPER_TZ_XTSS_SW_RESET);
- 		else
-@@ -181,7 +181,7 @@ static int venus_shutdown_no_tz(struct v
- 	void __iomem *wrapper_base = core->wrapper_base;
- 	void __iomem *wrapper_tz_base = core->wrapper_tz_base;
- 
--	if (IS_IRIS2_1(core)) {
-+	if (IS_IRIS2(core) || IS_IRIS2_1(core)) {
- 		/* Assert the reset to XTSS */
- 		reg = readl(wrapper_tz_base + WRAPPER_TZ_XTSS_SW_RESET);
- 		reg |= WRAPPER_XTSS_SW_RESET_BIT;
+ 	return pool;
 
 
 
