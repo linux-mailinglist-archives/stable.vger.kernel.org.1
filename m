@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19775BEABB7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA23BEA9A1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:18:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B8C4741EAA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C78B7C6185
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B70E1448E0;
-	Fri, 17 Oct 2025 15:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C77330B2D;
+	Fri, 17 Oct 2025 15:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O960Bc1d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIzv3ar9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC7A330B17;
-	Fri, 17 Oct 2025 15:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876A0330B27;
+	Fri, 17 Oct 2025 15:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716290; cv=none; b=j/IXlCxbhBFEVtOw5EG2CyJ07JWEytj+nD1OcfyjDAweMD8ekAb9HgnPIG/z6VWek6pagivyG3WhzsipKelk4VpPA1QDc+mCCnOJCTB2/nrKOiFohETLt7cN1Qdr5+8PCdvvPPnzm1/OUBgwZBTP0eQNEEX8rPaatNLysCBDxok=
+	t=1760715553; cv=none; b=jwJlcq28QYE+mxGO1BT5/0nnImL2GMPuo52iAWR/ZkudG7uY7PHvvH6ZkV+fR6zscc8YzRHlZc8Woiy4kFVudsjJkNLfmvjRLfDdTyxZa0hMWDTQ2TbYX6W4fEEL6Rr5oRvdKIOrphlef4iNPRzQvCPbCnD1vk7wYxhVNrAWaiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716290; c=relaxed/simple;
-	bh=g7hlPvH7xbb9XhlN4E6Hr8EPKkjTwdT89ctVOP7qRK8=;
+	s=arc-20240116; t=1760715553; c=relaxed/simple;
+	bh=6wju+rbndnHaDQKcFOOV24217oREHLY8cHMThe8El1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5llRRgqr3uptQU1ESYcib2Yf1KH/3kLHA99jYQTqlgYCdp8As4TGjuj+gDw+huyZWiCwXe5gS7JMIr/96pCPL5UIJ/+ez2C4xubvuUDXNje3NDufdZBA7d196jRfg2x3/uWCUHmwIXP8xLN8gZcqHPziTMAhst6XnkhZCQKG2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O960Bc1d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E489BC4CEE7;
-	Fri, 17 Oct 2025 15:51:29 +0000 (UTC)
+	 MIME-Version; b=OnVPQmZ0xcDyOGRYc7Av9Mkw4BHK6M8qJmhpAbv/qASgTxMQYONo8AiyTjFAxLYl/wihcTD4mcX6qUwDWSJU9YiWMzR0d7ZCB0US9WJs9rIyrJaKdR/7geT/po+JEWfno1LvUeovxSszdAk2ljDCOaWblYaub5pwMWUAPQN1wss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIzv3ar9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFA2C4CEE7;
+	Fri, 17 Oct 2025 15:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716290;
-	bh=g7hlPvH7xbb9XhlN4E6Hr8EPKkjTwdT89ctVOP7qRK8=;
+	s=korg; t=1760715553;
+	bh=6wju+rbndnHaDQKcFOOV24217oREHLY8cHMThe8El1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O960Bc1dlGBJzr/ERVmLQy9sblalq621NMGkRqWKYZw2Mdn3cmKzrEmyqEFEBXwdy
-	 Ic1aAtcLzdsMEXb4WReazhmGV7avC39Lkhp0AFuBccPEOaRd+YD3bAhVNZPwCX2GO0
-	 f4dxexzBek1Dt/TlJdL5lpiFCV2con8dwk734r1A=
+	b=TIzv3ar988RkQvvO5kW1OYKpEFfjoT8FbMiUQ8uIgQ3oSA4n57ZPcBAt9BNcePz6c
+	 fKYQsA//0yNfHPTJGBAFQUqgpDwA7TMhyUKG3tJiZ81YY3fptMVuGBoIcWmefxRMjk
+	 lxq3AfSKuuj5jm2+1PDl0qNRoY21MJ3V+ql/zBy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/276] clk: nxp: Fix pll0 rate check condition in LPC18xx CGU driver
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.17 256/371] scsi: hpsa: Fix potential memory leak in hpsa_big_passthru_ioctl()
 Date: Fri, 17 Oct 2025 16:53:51 +0200
-Message-ID: <20251017145147.520814463@linuxfoundation.org>
+Message-ID: <20251017145211.345394372@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 1624dead9a4d288a594fdf19735ebfe4bb567cb8 ]
+commit b81296591c567b12d3873b05a37b975707959b94 upstream.
 
-The conditional check for the PLL0 multiplier 'm' used a logical AND
-instead of OR, making the range check ineffective. This patch replaces
-&& with || to correctly reject invalid values of 'm' that are either
-less than or equal to 0 or greater than LPC18XX_PLL0_MSEL_MAX.
+Replace kmalloc() followed by copy_from_user() with memdup_user() to fix
+a memory leak that occurs when copy_from_user(buff[sg_used],,) fails and
+the 'cleanup1:' path does not free the memory for 'buff[sg_used]'. Using
+memdup_user() avoids this by freeing the memory internally.
 
-This ensures proper bounds checking during clk rate setting and rounding.
+Since memdup_user() already allocates memory, use kzalloc() in the else
+branch instead of manually zeroing 'buff[sg_used]' using memset(0).
 
-Fixes: b04e0b8fd544 ("clk: add lpc18xx cgu clk driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-[sboyd@kernel.org: 'm' is unsigned so remove < condition]
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: edd163687ea5 ("[SCSI] hpsa: add driver for HP Smart Array controllers.")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Acked-by: Don Brace <don.brace@microchip.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/nxp/clk-lpc18xx-cgu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/hpsa.c |   21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/clk/nxp/clk-lpc18xx-cgu.c b/drivers/clk/nxp/clk-lpc18xx-cgu.c
-index 44e07a3c253b9..ab8741fe57c99 100644
---- a/drivers/clk/nxp/clk-lpc18xx-cgu.c
-+++ b/drivers/clk/nxp/clk-lpc18xx-cgu.c
-@@ -385,7 +385,7 @@ static int lpc18xx_pll0_determine_rate(struct clk_hw *hw,
- 	}
- 
- 	m = DIV_ROUND_UP_ULL(req->best_parent_rate, req->rate * 2);
--	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
-+	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
- 		pr_warn("%s: unable to support rate %lu\n", __func__, req->rate);
- 		return -EINVAL;
- 	}
-@@ -408,7 +408,7 @@ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
- 	}
- 
- 	m = DIV_ROUND_UP_ULL(parent_rate, rate * 2);
--	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
-+	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
- 		pr_warn("%s: unable to support rate %lu\n", __func__, rate);
- 		return -EINVAL;
- 	}
--- 
-2.51.0
-
+--- a/drivers/scsi/hpsa.c
++++ b/drivers/scsi/hpsa.c
+@@ -6522,18 +6522,21 @@ static int hpsa_big_passthru_ioctl(struc
+ 	while (left) {
+ 		sz = (left > ioc->malloc_size) ? ioc->malloc_size : left;
+ 		buff_size[sg_used] = sz;
+-		buff[sg_used] = kmalloc(sz, GFP_KERNEL);
+-		if (buff[sg_used] == NULL) {
+-			status = -ENOMEM;
+-			goto cleanup1;
+-		}
++
+ 		if (ioc->Request.Type.Direction & XFER_WRITE) {
+-			if (copy_from_user(buff[sg_used], data_ptr, sz)) {
+-				status = -EFAULT;
++			buff[sg_used] = memdup_user(data_ptr, sz);
++			if (IS_ERR(buff[sg_used])) {
++				status = PTR_ERR(buff[sg_used]);
++				goto cleanup1;
++			}
++		} else {
++			buff[sg_used] = kzalloc(sz, GFP_KERNEL);
++			if (!buff[sg_used]) {
++				status = -ENOMEM;
+ 				goto cleanup1;
+ 			}
+-		} else
+-			memset(buff[sg_used], 0, sz);
++		}
++
+ 		left -= sz;
+ 		data_ptr += sz;
+ 		sg_used++;
 
 
 
