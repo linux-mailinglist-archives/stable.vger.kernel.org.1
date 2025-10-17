@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A965ABEAA2B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:22:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19775BEABB7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE2EC944D72
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B8C4741EAA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BF6330B1E;
-	Fri, 17 Oct 2025 15:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B70E1448E0;
+	Fri, 17 Oct 2025 15:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTzB2wLD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O960Bc1d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CC2330B03;
-	Fri, 17 Oct 2025 15:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC7A330B17;
+	Fri, 17 Oct 2025 15:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715548; cv=none; b=gh6Qh6mV50gpAp3hGBspZBTUesBp0caOUC6NKMm757z/k/YSUzsGxrhW+9VAaRzA/N4jyQESJ8xnVrfbhbwKe+FIysemFWr413ZUthAGuOuhmBXpFxzAX0VL+Utouuel0hvMvhaZrMhAsyoFpP1OG7bjSwV6szJD3/iwzNQBafs=
+	t=1760716290; cv=none; b=j/IXlCxbhBFEVtOw5EG2CyJ07JWEytj+nD1OcfyjDAweMD8ekAb9HgnPIG/z6VWek6pagivyG3WhzsipKelk4VpPA1QDc+mCCnOJCTB2/nrKOiFohETLt7cN1Qdr5+8PCdvvPPnzm1/OUBgwZBTP0eQNEEX8rPaatNLysCBDxok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715548; c=relaxed/simple;
-	bh=K3DWd1bPHL7Zt4lI1IldnI3/Qpm4NofqyWP6TtcJwQE=;
+	s=arc-20240116; t=1760716290; c=relaxed/simple;
+	bh=g7hlPvH7xbb9XhlN4E6Hr8EPKkjTwdT89ctVOP7qRK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dV2oXH1rnmw92Pm/ySQNUy1SuuzGP9g2pcO2y9qFE0V8/E6UweNk+KUFKgQSR7wRhFO60eK027og9+MVZjM7FX4bhiqeb3+QpHR0VRvXBEvTTG9ZIrXR0lGj/k79JpmGORNSKaChI/CaYS9hLU58l01Y71a3BKLDJwg3TWT+NzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTzB2wLD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DF3C4CEE7;
-	Fri, 17 Oct 2025 15:39:07 +0000 (UTC)
+	 MIME-Version; b=X5llRRgqr3uptQU1ESYcib2Yf1KH/3kLHA99jYQTqlgYCdp8As4TGjuj+gDw+huyZWiCwXe5gS7JMIr/96pCPL5UIJ/+ez2C4xubvuUDXNje3NDufdZBA7d196jRfg2x3/uWCUHmwIXP8xLN8gZcqHPziTMAhst6XnkhZCQKG2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O960Bc1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E489BC4CEE7;
+	Fri, 17 Oct 2025 15:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715547;
-	bh=K3DWd1bPHL7Zt4lI1IldnI3/Qpm4NofqyWP6TtcJwQE=;
+	s=korg; t=1760716290;
+	bh=g7hlPvH7xbb9XhlN4E6Hr8EPKkjTwdT89ctVOP7qRK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTzB2wLDPAKKEKu3uIxCfOgk/oTrKNkksi4xN7VUflOoMl8cwl+VzTY/oC4iBeb+b
-	 YWii18VpcA8+RNyaa6gCA+90WNQ9Mz9SMipNiOiDDlxBCBtN9MpxV7J16WHkI34ehz
-	 thaSvziKSXbbFagJYh2Z5Hp9iTRUbzJ3hkBCw4dw=
+	b=O960Bc1dlGBJzr/ERVmLQy9sblalq621NMGkRqWKYZw2Mdn3cmKzrEmyqEFEBXwdy
+	 Ic1aAtcLzdsMEXb4WReazhmGV7avC39Lkhp0AFuBccPEOaRd+YD3bAhVNZPwCX2GO0
+	 f4dxexzBek1Dt/TlJdL5lpiFCV2con8dwk734r1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 254/371] riscv: use an atomic xchg in pudp_huge_get_and_clear()
-Date: Fri, 17 Oct 2025 16:53:49 +0200
-Message-ID: <20251017145211.272190287@linuxfoundation.org>
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 138/276] clk: nxp: Fix pll0 rate check condition in LPC18xx CGU driver
+Date: Fri, 17 Oct 2025 16:53:51 +0200
+Message-ID: <20251017145147.520814463@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 668208b161a0b679427e7d0f34c0a65fd7d23979 upstream.
+[ Upstream commit 1624dead9a4d288a594fdf19735ebfe4bb567cb8 ]
 
-Make sure we return the right pud value and not a value that could have
-been overwritten in between by a different core.
+The conditional check for the PLL0 multiplier 'm' used a logical AND
+instead of OR, making the range check ineffective. This patch replaces
+&& with || to correctly reject invalid values of 'm' that are either
+less than or equal to 0 or greater than LPC18XX_PLL0_MSEL_MAX.
 
-Link: https://lkml.kernel.org/r/20250814-dev-alex-thp_pud_xchg-v1-1-b4704dfae206@rivosinc.com
-Fixes: c3cc2a4a3a23 ("riscv: Add support for PUD THP")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This ensures proper bounds checking during clk rate setting and rounding.
+
+Fixes: b04e0b8fd544 ("clk: add lpc18xx cgu clk driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+[sboyd@kernel.org: 'm' is unsigned so remove < condition]
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/pgtable.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/clk/nxp/clk-lpc18xx-cgu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -959,6 +959,17 @@ static inline pud_t pudp_huge_get_and_cl
- 	return pud;
- }
+diff --git a/drivers/clk/nxp/clk-lpc18xx-cgu.c b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+index 44e07a3c253b9..ab8741fe57c99 100644
+--- a/drivers/clk/nxp/clk-lpc18xx-cgu.c
++++ b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+@@ -385,7 +385,7 @@ static int lpc18xx_pll0_determine_rate(struct clk_hw *hw,
+ 	}
  
-+#define __HAVE_ARCH_PUDP_HUGE_GET_AND_CLEAR
-+static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
-+					    unsigned long address, pud_t *pudp)
-+{
-+	pud_t pud = __pud(atomic_long_xchg((atomic_long_t *)pudp, 0));
-+
-+	page_table_check_pud_clear(mm, pud);
-+
-+	return pud;
-+}
-+
- static inline int pud_young(pud_t pud)
- {
- 	return pte_young(pud_pte(pud));
+ 	m = DIV_ROUND_UP_ULL(req->best_parent_rate, req->rate * 2);
+-	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
++	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
+ 		pr_warn("%s: unable to support rate %lu\n", __func__, req->rate);
+ 		return -EINVAL;
+ 	}
+@@ -408,7 +408,7 @@ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	}
+ 
+ 	m = DIV_ROUND_UP_ULL(parent_rate, rate * 2);
+-	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
++	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
+ 		pr_warn("%s: unable to support rate %lu\n", __func__, rate);
+ 		return -EINVAL;
+ 	}
+-- 
+2.51.0
+
 
 
 
