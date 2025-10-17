@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA5EBE9F9F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:27 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F209BEA660
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 029DF566094
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D81D458737B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEED3208;
-	Fri, 17 Oct 2025 15:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B2B330B36;
+	Fri, 17 Oct 2025 15:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7axWOmN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gclN0KI+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292953BB5A;
-	Fri, 17 Oct 2025 15:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11CA330B20;
+	Fri, 17 Oct 2025 15:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714774; cv=none; b=nhD2RS9iujRfot1HvSycQCNEMEqMFk1DYpR+UC6QdOT+Eo5m5LU11iHmGk0G8UWEWedOlR5Oy+/JKyr6pusCWs8f9NatHX2QdJVutr6prYLrwE9BOA9qTgCCIuts4aG+xC/k6jXslzDUOSdgTnjITFlh7Uquq5hsMgBong+arwc=
+	t=1760716396; cv=none; b=bq0wHwFAsY1/mwKSui8VfYpNAw4Bxl3auY4iyxd/SmSiucYwiTskXW761yXbqnvoZlVCazehnJr+j+cmKiJ7nQ2Tm8ea3NXFckoNYYZmGIdYHju9IXzvLntaqlIFRcRdfmAObIGgnXdDRWpWZoqGqPqrxJwAumVNejLj7sDuDjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714774; c=relaxed/simple;
-	bh=Uk1tJ1do6LXFJdqvJtZHXw66C6akSoIpJEDY2sELd3M=;
+	s=arc-20240116; t=1760716396; c=relaxed/simple;
+	bh=uXh0zbTld5MHPDqXt0aS5nw/gxNmUp6lmrwqKqE0lI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9FMManmHPQNg/5h06Ya9P+IqBBjx3Om0a9xr6SNcO/GnTdrfW9/w6/0myXzmndlp+c9Cpo/fOSxtgt++lo4AJHlGzIC73wUYlQdtMzlc8OggJlI5UhGVfwGvK+Z0KEreTQXzhZgsVQd3tdtspT6RRaTFRU5LCzkJSltYk+IkV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7axWOmN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77DBC4CEE7;
-	Fri, 17 Oct 2025 15:26:13 +0000 (UTC)
+	 MIME-Version; b=VxBrfLiHrDVxZRW+CtzjjdwYyhqAlZJvOJ7ek0rPldZyKVN7Rj1UUYrATfIJwLglD2W5pYdWPnP4CE4BB6in5RUbRj/Sgruu3Pa/TGqQDvTVHyNkdFx9/EEEN7vxJiJfEfBHmC52MvPln9g5C2Tzz8W6XKHFuIN+kYa2UR6kUeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gclN0KI+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5511AC4CEE7;
+	Fri, 17 Oct 2025 15:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714774;
-	bh=Uk1tJ1do6LXFJdqvJtZHXw66C6akSoIpJEDY2sELd3M=;
+	s=korg; t=1760716396;
+	bh=uXh0zbTld5MHPDqXt0aS5nw/gxNmUp6lmrwqKqE0lI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r7axWOmNZIlNgl54uR9GqYKBYUzhrd0KdP8U8EYqPYCYAaeZuOPykBAeyJ7jAZV3q
-	 xUGjjA9EJrTHluaW5KnqnXzpWony98JpTnEAgeOOwJ3otg8GigW7Lln+bZLSyYoyjv
-	 S62jsUUm8W2ffbFohCKRljXHnUb67+ev++tPnltM=
+	b=gclN0KI+1/+e6TcTPBnOELJo2XyspOBgMi/cYeQqDw5udhnBNVPIkFUVW0AElU5ek
+	 6DeSuLql0k7/BxKAj2lGg9omJB/XtNferGgFzTTn+82vq7vtcfM0U2eDxWa7BDd5gU
+	 K3Krux33UfNhvds9cTLrMEGY1Ucp2rl5SK3A+8ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 6.12 261/277] s390/bpf: Write back tail call counter for BPF_PSEUDO_CALL
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 175/276] btrfs: avoid potential out-of-bounds in btrfs_encode_fh()
 Date: Fri, 17 Oct 2025 16:54:28 +0200
-Message-ID: <20251017145156.690461709@linuxfoundation.org>
+Message-ID: <20251017145148.863461386@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Anderson Nascimento <anderson@allelesecurity.com>
 
-commit c861a6b147137d10b5ff88a2c492ba376cd1b8b0 upstream.
+commit dff4f9ff5d7f289e4545cc936362e01ed3252742 upstream.
 
-The tailcall_bpf2bpf_hierarchy_1 test hangs on s390. Its call graph is
-as follows:
+The function btrfs_encode_fh() does not properly account for the three
+cases it handles.
 
-  entry()
-    subprog_tail()
-      bpf_tail_call_static(0) -> entry + tail_call_start
-    subprog_tail()
-      bpf_tail_call_static(0) -> entry + tail_call_start
+Before writing to the file handle (fh), the function only returns to the
+user BTRFS_FID_SIZE_NON_CONNECTABLE (5 dwords, 20 bytes) or
+BTRFS_FID_SIZE_CONNECTABLE (8 dwords, 32 bytes).
 
-entry() copies its tail call counter to the subprog_tail()'s frame,
-which then increments it. However, the incremented result is discarded,
-leading to an astronomically large number of tail calls.
+However, when a parent exists and the root ID of the parent and the
+inode are different, the function writes BTRFS_FID_SIZE_CONNECTABLE_ROOT
+(10 dwords, 40 bytes).
 
-Fix by writing the incremented counter back to the entry()'s frame.
+If *max_len is not large enough, this write goes out of bounds because
+BTRFS_FID_SIZE_CONNECTABLE_ROOT is greater than
+BTRFS_FID_SIZE_CONNECTABLE originally returned.
 
-Fixes: dd691e847d28 ("s390/bpf: Implement bpf_jit_supports_subprog_tailcalls()")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20250813121016.163375-3-iii@linux.ibm.com
+This results in an 8-byte out-of-bounds write at
+fid->parent_root_objectid = parent_root_id.
+
+A previous attempt to fix this issue was made but was lost.
+
+https://lore.kernel.org/all/4CADAEEC020000780001B32C@vpn.id2.novell.com/
+
+Although this issue does not seem to be easily triggerable, it is a
+potential memory corruption bug that should be fixed. This patch
+resolves the issue by ensuring the function returns the appropriate size
+for all three cases and validates that *max_len is large enough before
+writing any data.
+
+Fixes: be6e8dc0ba84 ("NFS support for btrfs - v3")
+CC: stable@vger.kernel.org # 3.0+
+Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/net/bpf_jit_comp.c |   23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ fs/btrfs/export.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -1789,13 +1789,6 @@ static noinline int bpf_jit_insn(struct
- 		jit->seen |= SEEN_FUNC;
- 		/*
- 		 * Copy the tail call counter to where the callee expects it.
--		 *
--		 * Note 1: The callee can increment the tail call counter, but
--		 * we do not load it back, since the x86 JIT does not do this
--		 * either.
--		 *
--		 * Note 2: We assume that the verifier does not let us call the
--		 * main program, which clears the tail call counter on entry.
- 		 */
- 		/* mvc tail_call_cnt(4,%r15),frame_off+tail_call_cnt(%r15) */
- 		_EMIT6(0xd203f000 | offsetof(struct prog_frame, tail_call_cnt),
-@@ -1822,6 +1815,22 @@ static noinline int bpf_jit_insn(struct
- 		call_r1(jit);
- 		/* lgr %b0,%r2: load return value into %b0 */
- 		EMIT4(0xb9040000, BPF_REG_0, REG_2);
-+
-+		/*
-+		 * Copy the potentially updated tail call counter back.
-+		 */
-+
-+		if (insn->src_reg == BPF_PSEUDO_CALL)
-+			/*
-+			 * mvc frame_off+tail_call_cnt(%r15),
-+			 *     tail_call_cnt(4,%r15)
-+			 */
-+			_EMIT6(0xd203f000 | (jit->frame_off +
-+					     offsetof(struct prog_frame,
-+						      tail_call_cnt)),
-+			       0xf000 | offsetof(struct prog_frame,
-+						 tail_call_cnt));
-+
- 		break;
- 	}
- 	case BPF_JMP | BPF_TAIL_CALL: {
+--- a/fs/btrfs/export.c
++++ b/fs/btrfs/export.c
+@@ -22,7 +22,11 @@ static int btrfs_encode_fh(struct inode
+ 	int type;
+ 
+ 	if (parent && (len < BTRFS_FID_SIZE_CONNECTABLE)) {
+-		*max_len = BTRFS_FID_SIZE_CONNECTABLE;
++		if (btrfs_root_id(BTRFS_I(inode)->root) !=
++		    btrfs_root_id(BTRFS_I(parent)->root))
++			*max_len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
++		else
++			*max_len = BTRFS_FID_SIZE_CONNECTABLE;
+ 		return FILEID_INVALID;
+ 	} else if (len < BTRFS_FID_SIZE_NON_CONNECTABLE) {
+ 		*max_len = BTRFS_FID_SIZE_NON_CONNECTABLE;
+@@ -44,6 +48,8 @@ static int btrfs_encode_fh(struct inode
+ 		parent_root_id = BTRFS_I(parent)->root->root_key.objectid;
+ 
+ 		if (parent_root_id != fid->root_objectid) {
++			if (*max_len < BTRFS_FID_SIZE_CONNECTABLE_ROOT)
++				return FILEID_INVALID;
+ 			fid->parent_root_objectid = parent_root_id;
+ 			len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
+ 			type = FILEID_BTRFS_WITH_PARENT_ROOT;
 
 
 
