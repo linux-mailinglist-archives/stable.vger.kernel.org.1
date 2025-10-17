@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-186789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCBA2BE9F2A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C27BEA4DC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:56:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A9C76E7E14
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5B317C6641
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C9E2F12B8;
-	Fri, 17 Oct 2025 15:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89514332EC9;
+	Fri, 17 Oct 2025 15:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BnTt9QCw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFrv3zqr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDA82F12A5;
-	Fri, 17 Oct 2025 15:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A4D332915;
+	Fri, 17 Oct 2025 15:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714241; cv=none; b=u49q2qiXeT3Q7CujhQgc3EUqI8gYjJONjfLmxA4cIopooEKRBb0qTv2Wr3XHCOILZff5Qqyq0bwERT3wVrTp7Bh6enMSUGXz6N8eGBc2ApxiA5UExsCpsIEE7kvuQV4F2r6Vf22WJjrkRaLiodnK9U9lgYo7xKH1Y2mgK89lnBk=
+	t=1760715133; cv=none; b=JaJq1PdLHP2f1fLMlQMV6YABSspTTsR0ABlyE+aQItSjPVt0e8R/msASUfhWePr261JYJ2oF41/xikWI9BiAWuAAQlvMh796JCLP9ahERz0chEmo+ZehGk92jet3O8RgzuvuGo8dUel4DJgPh379BGA8Cvo3BtEooZQK3lplD4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714241; c=relaxed/simple;
-	bh=55wU2Ro8g08cl0ye4Z4UiQhubOXzexzAveiTgYnQtwQ=;
+	s=arc-20240116; t=1760715133; c=relaxed/simple;
+	bh=/QKP4DiEd6DJpgM90YlMXCvuWU1NEvk8R0YX6WraVgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ii4cT5HDu894IZ5kTMctEUsxyW58vrY34u03nQg+XRbm47ZoqewpzrV7WwgXuT/+3hEhX0V8HzuQEl3P7MNueiQ3Sw/j++CHLXkhc29FGWVzAAVQ0+81sbvjvThVQqZP4t1bUwqPJUDQWAt0b1p0x13wn8qGTMvmZuLfkCt4Y0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnTt9QCw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555B8C4CEE7;
-	Fri, 17 Oct 2025 15:17:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iTk+AmzbxYuaKuDt3WIacAzJDOdaQwkgtV+kLSkDrdwfOdeyL5I6iLr99WL7EM8n+lijmOyXmJOURysdxM97qy7LwdSnKn1sFF3VFmBxEqC1qd01lvGCmi7+OaoXe4enBRWp4XXciGt7wt6wsOluZzKMmRFCA/vhQJGlyjQewx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFrv3zqr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC65C4CEFE;
+	Fri, 17 Oct 2025 15:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714241;
-	bh=55wU2Ro8g08cl0ye4Z4UiQhubOXzexzAveiTgYnQtwQ=;
+	s=korg; t=1760715133;
+	bh=/QKP4DiEd6DJpgM90YlMXCvuWU1NEvk8R0YX6WraVgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BnTt9QCwltMc+gwuYTBEUDSZBybY7/v3XQ8Yo7V0G8qtX39eERWtqbgLuE7S71oWe
-	 Ik5LyAevuIXFX1L+/zfH3s173Tr1MbYiqCf7b2DuQ4VlJJzfznt4Pjq061TyujOB8T
-	 3nmEsOZvrBPKe+sKMqOsLu4fsOeGofsAh0aH9Z7E=
+	b=DFrv3zqrmqDLzcE93vebT/GMCs5aCZ9Pjf15Vli+s3VkEH199vyAREz96XKjaXhRR
+	 +q5KkaAU391J5cKm+ikXqCSoD5+KKLqe14e8SQQx/olmv4HtRmClCs2TAM1Mjt6ZS2
+	 z3wvVfQqZsqT52lkOIz8VzjvT3DBOyrt+uwaLKuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Talpey <tom@talpey.com>,
-	David Howells <dhowells@redhat.com>,
-	Fushuai Wang <wangfushuai@baidu.com>,
-	Steve French <stfrench@microsoft.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/277] cifs: Fix copy_to_iter return value check
+Subject: [PATCH 6.17 109/371] drm/amd/display: Add missing DCE6 SCL_HORZ_FILTER_INIT* SRIs
 Date: Fri, 17 Oct 2025 16:51:24 +0200
-Message-ID: <20251017145149.949513575@linuxfoundation.org>
+Message-ID: <20251017145205.879942639@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fushuai Wang <wangfushuai@baidu.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 0cc380d0e1d36b8f2703379890e90f896f68e9e8 ]
+[ Upstream commit d60f9c45d1bff7e20ecd57492ef7a5e33c94a37c ]
 
-The return value of copy_to_iter() function will never be negative,
-it is the number of bytes copied, or zero if nothing was copied.
-Update the check to treat 0 as an error, and return -1 in that case.
+Without these, it's impossible to program these registers.
 
-Fixes: d08089f649a0 ("cifs: Change the I/O paths to use an iterator rather than a page list")
-Acked-by: Tom Talpey <tom@talpey.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 102b2f587ac8 ("drm/amd/display: dce_transform: DCE6 Scaling Horizontal Filter Init (v2)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_transform.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index c946c3a09245c..1b30035d02bc5 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4657,7 +4657,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 	unsigned int pad_len;
- 	struct cifs_io_subrequest *rdata = mid->callback_data;
- 	struct smb2_hdr *shdr = (struct smb2_hdr *)buf;
--	int length;
-+	size_t copied;
- 	bool use_rdma_mr = false;
- 
- 	if (shdr->Command != SMB2_READ) {
-@@ -4770,10 +4770,10 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 	} else if (buf_len >= data_offset + data_len) {
- 		/* read response payload is in buf */
- 		WARN_ONCE(buffer, "read data can be either in buf or in buffer");
--		length = copy_to_iter(buf + data_offset, data_len, &rdata->subreq.io_iter);
--		if (length < 0)
--			return length;
--		rdata->got_bytes = data_len;
-+		copied = copy_to_iter(buf + data_offset, data_len, &rdata->subreq.io_iter);
-+		if (copied == 0)
-+			return -EIO;
-+		rdata->got_bytes = copied;
- 	} else {
- 		/* read response payload cannot be in both buf and pages */
- 		WARN_ONCE(1, "buf can not contain only a part of read data");
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
+index cbce194ec7b82..ff746fba850bc 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
+@@ -155,6 +155,8 @@
+ 	SRI(SCL_COEF_RAM_TAP_DATA, SCL, id), \
+ 	SRI(VIEWPORT_START, SCL, id), \
+ 	SRI(VIEWPORT_SIZE, SCL, id), \
++	SRI(SCL_HORZ_FILTER_INIT_RGB_LUMA, SCL, id), \
++	SRI(SCL_HORZ_FILTER_INIT_CHROMA, SCL, id), \
+ 	SRI(SCL_HORZ_FILTER_SCALE_RATIO, SCL, id), \
+ 	SRI(SCL_VERT_FILTER_SCALE_RATIO, SCL, id), \
+ 	SRI(SCL_VERT_FILTER_INIT, SCL, id), \
 -- 
 2.51.0
 
