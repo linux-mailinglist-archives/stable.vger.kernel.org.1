@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-186241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3666ABE679C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 07:50:25 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA988BE6AB5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 08:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 350BF4F6CF6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 05:50:24 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9267B354623
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 06:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC2326F44C;
-	Fri, 17 Oct 2025 05:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEC830CD9F;
+	Fri, 17 Oct 2025 06:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vBVDvstF"
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="a5o1/U7m"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E1E211A05;
-	Fri, 17 Oct 2025 05:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192CB30F529;
+	Fri, 17 Oct 2025 06:28:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760680213; cv=none; b=Xbazzg77zpObAlYPqWd/HkulDP4fnXX00iitdj1Zg1DdHq4p4IaGc/tX4tVXvfeBgqvAruhRy+tRuipGdu/L1rhIsi1I9mQ7qqbvyPYPTRmJJW85vYX9Xw2f6n6yr/O/GFaXti5d6O+G+C+nenbr5xn9z0zN0Dy3p97CTe+7640=
+	t=1760682524; cv=none; b=TX+hkRF826XI/jH+C7amjbCFGfnHDfJ5mB1a1ncIAb8W8HIbGdf8zwr8cd8Tm6XCXTc98jD+g2cFD3TABdWNNEQD2WlFg8cNujS75YT1BYap/MwYu2zwM2A+I+Hp1+NwaQZf/Y0EYbOZkCgcNLQmTip7Ups7QyV2sTIWgMjvi1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760680213; c=relaxed/simple;
-	bh=0b95OKl2hALGPyNplOZPKf4Y7VYqH6zj/9WkuCLnrGw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UNSyq4SjHXs6GYdSc3mnLzMBajpg1NitSajmwCZzEDB4QHkn31gnpvgYktbgYWHy5kRAuw/HeHOnHyp+GZ8rRrjfemMwbiAImQXOachgHJi0ezLkVZs1uZEQEkniu1UN6fs0apU8aVdop38xP26+/LxkPBmf8SDv6SbbArIjw6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vBVDvstF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA559C4CEE7;
-	Fri, 17 Oct 2025 05:50:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760680212;
-	bh=0b95OKl2hALGPyNplOZPKf4Y7VYqH6zj/9WkuCLnrGw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=vBVDvstFTg+zrgGzMzNvURZhdz3IYQ7KzKj0zYZDCqWFWjIpyNOCI5llSvoLOnIvw
-	 3nIK8flcDR7UQcEPLXnXJvUteIsG47jrOCZhPFYnKZFKAJmA0s4S9Op/ZEjE6CgCQn
-	 mcKAgXQEQYLZJuQsEa1lOd/VTKcRLyKbLQPin1aka6bXS06/Bk4T5MbBzcfEDVP2GT
-	 LIXun7FrwsFChNP+1mqQORoes4e52C6oGA6jsEAgNMGr24Nvhe+nFQTSkz3phvC23u
-	 iueXMl/OYhyJPZt1hvmf3rT6CzD2tVIcyDtuuY+M3zv3kfFw/lxx8SoD8p01IXArcb
-	 stWtvaRoXgdBg==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1v9dLz-000000001so-16IQ;
-	Fri, 17 Oct 2025 07:50:15 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] clocksource/drivers/stm: Fix section mismatches
-Date: Fri, 17 Oct 2025 07:49:43 +0200
-Message-ID: <20251017054943.7195-1-johan@kernel.org>
-X-Mailer: git-send-email 2.49.1
+	s=arc-20240116; t=1760682524; c=relaxed/simple;
+	bh=5q8sjs9dcsbZK0iWASKvemxXFRLIMsHSBbtjDlZFGDI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UC4KVtZNc7Y4HFLpp95ecpaenUWtLvf68Q+4t8/dSMvaC2GJ0bxXiskfvN7dU7P9j4/akXBpZr3AeBBcK33+8QAaOtz0jDO8NGaN2Y/2N/f96egKhFiPbEV55k2MCe3hwA8fR1Y4GmKgaFz6BqPN0ko0kG9KWk3QzIMWfYKwghM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=a5o1/U7m; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=EariMdmxqMUoT2CmPJ9Fw37Rbcsk5MNlNnkFbFt8+Hg=;
+	b=a5o1/U7mqaMy8Ypr05HmPHeSWzMjrzj3E2/1qGDmHHeGo34F0oGY2cyJaq/FkBDnZKL4O8eHN
+	/Nfbwn1hoAXly9Eq7c99PYANeDqWRvJiE+1Z7xfdblSY3PDuPEpEuUKn7amT97ravHb2Do/Xvn+
+	W7IX+5wpIU5Bf2xU+wsS8LI=
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4cnvyH0FQYz1T4G8;
+	Fri, 17 Oct 2025 14:27:51 +0800 (CST)
+Received: from kwepemk200016.china.huawei.com (unknown [7.202.194.82])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1F94D180464;
+	Fri, 17 Oct 2025 14:28:38 +0800 (CST)
+Received: from huawei.com (10.67.174.78) by kwepemk200016.china.huawei.com
+ (7.202.194.82) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 17 Oct
+ 2025 14:28:37 +0800
+From: Yi Yang <yiyang13@huawei.com>
+To: Alexey Dobriyan <adobriyan@sw.ru>, Andrew Morton
+	<akpm@linux-foundation.org>
+CC: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+	<lujialin4@huawei.com>
+Subject: [PATCH stable] notifiers: Add oops check in blocking_notifier_call_chain()
+Date: Fri, 17 Oct 2025 06:17:40 +0000
+Message-ID: <20251017061740.59843-1-yiyang13@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,86 +63,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk200016.china.huawei.com (7.202.194.82)
 
-Platform drivers can be probed after their init sections have been
-discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-probe function must not live in init. Device managed resource actions
-similarly cannot be discarded.
+In hrtimer_interrupt(), interrupts are disabled when acquiring a spinlock,
+which subsequently triggers an oops. During the oops call chain,
+blocking_notifier_call_chain() invokes _cond_resched, ultimately leading
+to a hard lockup.
 
-The "_probe" suffix of the driver structure name prevents modpost from
-warning about this so replace it to catch any similar future issues.
+Call Stack:
+hrtimer_interrupt//raw_spin_lock_irqsave
+__hrtimer_run_queues
+page_fault
+do_page_fault
+bad_area_nosemaphore
+no_context
+oops_end
+bust_spinlocks
+unblank_screen
+do_unblank_screen
+fbcon_blank
+fb_notifier_call_chain
+blocking_notifier_call_chain
+down_read
+_cond_resched
 
-Fixes: cec32ac75827 ("clocksource/drivers/nxp-timer: Add the System Timer Module for the s32gx platforms")
-Cc: stable@vger.kernel.org	# 6.16
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+If the system is in an oops state, use down_read_trylock instead of a
+blocking lock acquisition. If the trylock fails, skip executing the
+notifier callbacks to avoid potential deadlocks or unsafe operations
+during the oops handling process.
+
+Cc: stable@vger.kernel.org      # 6.6
+Fixes: fe9d4f576324 ("Add kernel/notifier.c")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
 ---
- drivers/clocksource/timer-nxp-stm.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ kernel/notifier.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clocksource/timer-nxp-stm.c b/drivers/clocksource/timer-nxp-stm.c
-index bbc40623728f..ce10bdcfc76b 100644
---- a/drivers/clocksource/timer-nxp-stm.c
-+++ b/drivers/clocksource/timer-nxp-stm.c
-@@ -177,15 +177,15 @@ static void nxp_stm_clocksource_resume(struct clocksource *cs)
- 	nxp_stm_clocksource_enable(cs);
+diff --git a/kernel/notifier.c b/kernel/notifier.c
+index b3ce28f39eb6..ebff2315fac2 100644
+--- a/kernel/notifier.c
++++ b/kernel/notifier.c
+@@ -384,9 +384,18 @@ int blocking_notifier_call_chain(struct blocking_notifier_head *nh,
+ 	 * is, we re-check the list after having taken the lock anyway:
+ 	 */
+ 	if (rcu_access_pointer(nh->head)) {
+-		down_read(&nh->rwsem);
+-		ret = notifier_call_chain(&nh->head, val, v, -1, NULL);
+-		up_read(&nh->rwsem);
++		if (!oops_in_progress) {
++			down_read(&nh->rwsem);
++			ret = notifier_call_chain(&nh->head, val, v, -1, NULL);
++			up_read(&nh->rwsem);
++		} else {
++			if (down_read_trylock(&nh->rwsem)) {
++				ret = notifier_call_chain(&nh->head, val, v, -1, NULL);
++				up_read(&nh->rwsem);
++			} else {
++				ret = NOTIFY_BAD;
++			}
++		}
+ 	}
+ 	return ret;
  }
- 
--static void __init devm_clocksource_unregister(void *data)
-+static void devm_clocksource_unregister(void *data)
- {
- 	struct stm_timer *stm_timer = data;
- 
- 	clocksource_unregister(&stm_timer->cs);
- }
- 
--static int __init nxp_stm_clocksource_init(struct device *dev, struct stm_timer *stm_timer,
--					   const char *name, void __iomem *base, struct clk *clk)
-+static int nxp_stm_clocksource_init(struct device *dev, struct stm_timer *stm_timer,
-+				    const char *name, void __iomem *base, struct clk *clk)
- {
- 	int ret;
- 
-@@ -298,9 +298,9 @@ static void nxp_stm_clockevent_resume(struct clock_event_device *ced)
- 	nxp_stm_module_get(stm_timer);
- }
- 
--static int __init nxp_stm_clockevent_per_cpu_init(struct device *dev, struct stm_timer *stm_timer,
--						  const char *name, void __iomem *base, int irq,
--						  struct clk *clk, int cpu)
-+static int nxp_stm_clockevent_per_cpu_init(struct device *dev, struct stm_timer *stm_timer,
-+					   const char *name, void __iomem *base, int irq,
-+					   struct clk *clk, int cpu)
- {
- 	stm_timer->base = base;
- 	stm_timer->rate = clk_get_rate(clk);
-@@ -388,7 +388,7 @@ static irqreturn_t nxp_stm_module_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--static int __init nxp_stm_timer_probe(struct platform_device *pdev)
-+static int nxp_stm_timer_probe(struct platform_device *pdev)
- {
- 	struct stm_timer *stm_timer;
- 	struct device *dev = &pdev->dev;
-@@ -484,14 +484,14 @@ static const struct of_device_id nxp_stm_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, nxp_stm_of_match);
- 
--static struct platform_driver nxp_stm_probe = {
-+static struct platform_driver nxp_stm_driver = {
- 	.probe	= nxp_stm_timer_probe,
- 	.driver	= {
- 		.name		= "nxp-stm",
- 		.of_match_table	= nxp_stm_of_match,
- 	},
- };
--module_platform_driver(nxp_stm_probe);
-+module_platform_driver(nxp_stm_driver);
- 
- MODULE_DESCRIPTION("NXP System Timer Module driver");
- MODULE_LICENSE("GPL");
 -- 
-2.49.1
+2.25.1
 
 
