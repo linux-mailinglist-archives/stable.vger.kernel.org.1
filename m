@@ -1,68 +1,57 @@
-Return-Path: <stable+bounces-186527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9FABE98C5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:12:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61323BEA31A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CA9F9581185
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 452787C105F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64B7339711;
-	Fri, 17 Oct 2025 15:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500702F12C0;
+	Fri, 17 Oct 2025 15:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NubfD+rb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDucsCdH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAC4336EFB;
-	Fri, 17 Oct 2025 15:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6D45695;
+	Fri, 17 Oct 2025 15:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713494; cv=none; b=HjeC34B/o3ZUCMtOr5arAf7ECXNDvMhnfCPkafbKzDhwX+XxfUoAALbN05f1yPxjHpSUZLvQxo96T52v7Ko84+58Ti2Xg1finaMUUWSWOtf3qfz+OTSfPcWGUEhEVQxSHHUR9/ZtTQJM69vVIPQXttFhKXwG/ZaPPPa5tUpCB5U=
+	t=1760715116; cv=none; b=Ky6JqFn5/DiCNEOxZmiW96MA2cZlUxoGJhT84Uo4sQ4VhUmFbOrHZ5jLuEecP5ySeEKYRDVgoX6kre1zKCQUJLmQrndin16s9rmAq8n+ReqGyxyo5r2+nbhezGgdWulNqLpdWRIuY7AU5jf1g9itF2jpFVToudS2UZ/2kFD5J5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713494; c=relaxed/simple;
-	bh=/WMDMeoYCqBhqKesin2Sw2hEfs+JSq02kaiOJQAsv1Q=;
+	s=arc-20240116; t=1760715116; c=relaxed/simple;
+	bh=wreVg/ekLFJWuMJ6HaXpFVNOr2djj8BZO9dGX7dwmEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GdPBWUNdsrdaFsxOf5RLrj9pb7L8jn5QecHNaKKnXQugicav+pzicr0+oB5JpyAYPxxM3S06rjnnvgK9YCm+UEoC8/KBIx1HEkpTaG0v8GiYN7h2MHwphRQPMW/u+SksGhqJ0btJYOzkxu11DAn5QcCcN06XKYPr3gnnPwQVmoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NubfD+rb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BE7C4CEE7;
-	Fri, 17 Oct 2025 15:04:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cJQOXwv1ZJHyQwmYjHuIF+hrewyo/SSF/GZ083ePXtJVubicf0czcjkqlPUSYtdYO0y7K9T6VJAN+2y7zYiVhGkpGqcWGoGwF2sgXN3wYs5wMKyGsOxSSDdqo0z699lvtuOD8Wfc1BZJGT+3vbil2Rw5xlU4BGF8SBzbfIXJ2vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDucsCdH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8915AC4CEE7;
+	Fri, 17 Oct 2025 15:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713494;
-	bh=/WMDMeoYCqBhqKesin2Sw2hEfs+JSq02kaiOJQAsv1Q=;
+	s=korg; t=1760715115;
+	bh=wreVg/ekLFJWuMJ6HaXpFVNOr2djj8BZO9dGX7dwmEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NubfD+rbeo2LjWJeZfP4cOYb40sjh0i/2KupEfRx9mnpHvbj+b77FtK1pv5sHjGoA
-	 OxBaq75Ap+aoxKWqKXjNE00juLsHg1XazNv48f4oETF/Xmk/BR7ITNMOHLgS/sdzdk
-	 aVI4es8m6yQYk2Bk0wioheU5wcnCJGK9iswrtwbA=
+	b=RDucsCdHkm1vlWND7+XfpB8E0HygaAHoooQgEtLdPXGae+MvnIaYMMypbQs9H78At
+	 G+zZCWPiYAU1OgI+3DJaYLw17ieoFCGg73e2zkQ2Qp1wqYxfy6lzk++cQwPw1BcJRJ
+	 s+zJz5IzVm3T3jogDbx8iNceo7X8vVeumttKsHzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.ibm.com>,
-	Chun-Tse Shao <ctshao@google.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/201] perf test: Dont leak workload gopipe in PERF_RECORD_*
-Date: Fri, 17 Oct 2025 16:51:18 +0200
-Message-ID: <20251017145135.368414497@linuxfoundation.org>
+Subject: [PATCH 6.17 104/371] net: sparx5/lan969x: fix flooding configuration on bridge join/leave
+Date: Fri, 17 Oct 2025 16:51:19 +0200
+Message-ID: <20251017145205.702569795@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,206 +61,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-[ Upstream commit 48918cacefd226af44373e914e63304927c0e7dc ]
+[ Upstream commit c9d1b0b54258ba13b567dd116ead3c7c30cba7d8 ]
 
-The test starts a workload and then opens events. If the events fail
-to open, for example because of perf_event_paranoid, the gopipe of the
-workload is leaked and the file descriptor leak check fails when the
-test exits. To avoid this cancel the workload when opening the events
-fails.
+The sparx5 driver programs UC/MC/BC flooding in sparx5_update_fwd() by
+unconditionally applying bridge_fwd_mask to all flood PGIDs. Any bridge
+topology change that triggers sparx5_update_fwd() (for example enslaving
+another port) therefore reinstalls flooding in hardware for already
+bridged ports, regardless of their per-port flood flags.
 
-Before:
-```
-$ perf test -vv 7
-  7: PERF_RECORD_* events & perf_sample fields:
- --- start ---
-test child forked, pid 1189568
-Using CPUID GenuineIntel-6-B7-1
- ------------------------------------------------------------
-perf_event_attr:
-  type                    	   0 (PERF_TYPE_HARDWARE)
-  config                  	   0xa00000000 (cpu_atom/PERF_COUNT_HW_CPU_CYCLES/)
-  disabled                	   1
- ------------------------------------------------------------
-sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8
-sys_perf_event_open failed, error -13
- ------------------------------------------------------------
-perf_event_attr:
-  type                             0 (PERF_TYPE_HARDWARE)
-  config                           0xa00000000 (cpu_atom/PERF_COUNT_HW_CPU_CYCLES/)
-  disabled                         1
-  exclude_kernel                   1
- ------------------------------------------------------------
-sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 3
- ------------------------------------------------------------
-perf_event_attr:
-  type                             0 (PERF_TYPE_HARDWARE)
-  config                           0x400000000 (cpu_core/PERF_COUNT_HW_CPU_CYCLES/)
-  disabled                         1
- ------------------------------------------------------------
-sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8
-sys_perf_event_open failed, error -13
- ------------------------------------------------------------
-perf_event_attr:
-  type                             0 (PERF_TYPE_HARDWARE)
-  config                           0x400000000 (cpu_core/PERF_COUNT_HW_CPU_CYCLES/)
-  disabled                         1
-  exclude_kernel                   1
- ------------------------------------------------------------
-sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 3
-Attempt to add: software/cpu-clock/
-..after resolving event: software/config=0/
-cpu-clock -> software/cpu-clock/
- ------------------------------------------------------------
-perf_event_attr:
-  type                             1 (PERF_TYPE_SOFTWARE)
-  size                             136
-  config                           0x9 (PERF_COUNT_SW_DUMMY)
-  sample_type                      IP|TID|TIME|CPU
-  read_format                      ID|LOST
-  disabled                         1
-  inherit                          1
-  mmap                             1
-  comm                             1
-  enable_on_exec                   1
-  task                             1
-  sample_id_all                    1
-  mmap2                            1
-  comm_exec                        1
-  ksymbol                          1
-  bpf_event                        1
-  { wakeup_events, wakeup_watermark } 1
- ------------------------------------------------------------
-sys_perf_event_open: pid 1189569  cpu 0  group_fd -1  flags 0x8
-sys_perf_event_open failed, error -13
-perf_evlist__open: Permission denied
- ---- end(-2) ----
-Leak of file descriptor 6 that opened: 'pipe:[14200347]'
- ---- unexpected signal (6) ----
-iFailed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-    #0 0x565358f6666e in child_test_sig_handler builtin-test.c:311
-    #1 0x7f29ce849df0 in __restore_rt libc_sigaction.c:0
-    #2 0x7f29ce89e95c in __pthread_kill_implementation pthread_kill.c:44
-    #3 0x7f29ce849cc2 in raise raise.c:27
-    #4 0x7f29ce8324ac in abort abort.c:81
-    #5 0x565358f662d4 in check_leaks builtin-test.c:226
-    #6 0x565358f6682e in run_test_child builtin-test.c:344
-    #7 0x565358ef7121 in start_command run-command.c:128
-    #8 0x565358f67273 in start_test builtin-test.c:545
-    #9 0x565358f6771d in __cmd_test builtin-test.c:647
-    #10 0x565358f682bd in cmd_test builtin-test.c:849
-    #11 0x565358ee5ded in run_builtin perf.c:349
-    #12 0x565358ee6085 in handle_internal_command perf.c:401
-    #13 0x565358ee61de in run_argv perf.c:448
-    #14 0x565358ee6527 in main perf.c:555
-    #15 0x7f29ce833ca8 in __libc_start_call_main libc_start_call_main.h:74
-    #16 0x7f29ce833d65 in __libc_start_main@@GLIBC_2.34 libc-start.c:128
-    #17 0x565358e391c1 in _start perf[851c1]
-  7: PERF_RECORD_* events & perf_sample fields                       : FAILED!
-```
+This results in clobbering of the flood masks, and desynchronization
+between software and hardware: the bridge still reports “flood off” for
+the port, but hardware has flooding enabled due to unconditional PGID
+reprogramming.
 
-After:
-```
-$ perf test 7
-  7: PERF_RECORD_* events & perf_sample fields                       : Skip (permissions)
-```
+Steps to reproduce:
 
-Fixes: 16d00fee703866c6 ("perf tests: Move test__PERF_RECORD into separate object")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.ibm.com>
-Cc: Chun-Tse Shao <ctshao@google.com>
-Cc: Howard Chu <howardchu95@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+    $ ip link add br0 type bridge
+    $ ip link set br0 up
+    $ ip link set eth0 master br0
+    $ ip link set eth0 up
+    $ bridge link set dev eth0 flood off
+    $ ip link set eth1 master br0
+    $ ip link set eth1 up
+
+At this point, flooding is silently re-enabled for eth0. Software still
+shows “flood off” for eth0, but hardware has flooding enabled.
+
+To fix this, flooding is now set explicitly during bridge join/leave,
+through sparx5_port_attr_bridge_flags():
+
+    On bridge join, UC/MC/BC flooding is enabled by default.
+
+    On bridge leave, UC/MC/BC flooding is disabled.
+
+    sparx5_update_fwd() no longer touches the flood PGIDs, clobbering
+    the flood masks, and desynchronizing software and hardware.
+
+    Initialization of the flooding PGIDs have been moved to
+    sparx5_start(). This is required as flooding PGIDs defaults to
+    0x3fffffff in hardware and the initialization was previously handled
+    in sparx5_update_fwd(), which was removed.
+
+With this change, user-configured flooding flags persist across bridge
+updates and are no longer overridden by sparx5_update_fwd().
+
+Fixes: d6fce5141929 ("net: sparx5: add switching support")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251003-fix-flood-fwd-v1-1-48eb478b2904@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/perf-record.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c  |  5 +++++
+ .../net/ethernet/microchip/sparx5/sparx5_switchdev.c | 12 ++++++++++++
+ drivers/net/ethernet/microchip/sparx5/sparx5_vlan.c  | 10 ----------
+ 3 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/tools/perf/tests/perf-record.c b/tools/perf/tests/perf-record.c
-index 1c4feec1adff1..6e7f053006b4f 100644
---- a/tools/perf/tests/perf-record.c
-+++ b/tools/perf/tests/perf-record.c
-@@ -115,6 +115,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
- 	if (err < 0) {
- 		pr_debug("sched__get_first_possible_cpu: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
-+		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
- 	}
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+index 74ad1d73b4652..40b1bfc600a79 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+@@ -708,6 +708,11 @@ static int sparx5_start(struct sparx5 *sparx5)
+ 	/* Init masks */
+ 	sparx5_update_fwd(sparx5);
  
-@@ -126,6 +127,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
- 	if (sched_setaffinity(evlist->workload.pid, cpu_mask_size, &cpu_mask) < 0) {
- 		pr_debug("sched_setaffinity: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
-+		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
- 	}
++	/* Init flood masks */
++	for (int pgid = sparx5_get_pgid(sparx5, PGID_UC_FLOOD);
++	     pgid <= sparx5_get_pgid(sparx5, PGID_BCAST); pgid++)
++		sparx5_pgid_clear(sparx5, pgid);
++
+ 	/* CPU copy CPU pgids */
+ 	spx5_wr(ANA_AC_PGID_MISC_CFG_PGID_CPU_COPY_ENA_SET(1), sparx5,
+ 		ANA_AC_PGID_MISC_CFG(sparx5_get_pgid(sparx5, PGID_CPU)));
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_switchdev.c b/drivers/net/ethernet/microchip/sparx5/sparx5_switchdev.c
+index bc9ecb9392cd3..0a71abbd3da58 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_switchdev.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_switchdev.c
+@@ -176,6 +176,7 @@ static int sparx5_port_bridge_join(struct sparx5_port *port,
+ 				   struct net_device *bridge,
+ 				   struct netlink_ext_ack *extack)
+ {
++	struct switchdev_brport_flags flags = {0};
+ 	struct sparx5 *sparx5 = port->sparx5;
+ 	struct net_device *ndev = port->ndev;
+ 	int err;
+@@ -205,6 +206,11 @@ static int sparx5_port_bridge_join(struct sparx5_port *port,
+ 	 */
+ 	__dev_mc_unsync(ndev, sparx5_mc_unsync);
  
-@@ -137,6 +139,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
- 	if (err < 0) {
- 		pr_debug("perf_evlist__open: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
-+		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
- 	}
++	/* Enable uc/mc/bc flooding */
++	flags.mask = BR_FLOOD | BR_MCAST_FLOOD | BR_BCAST_FLOOD;
++	flags.val = flags.mask;
++	sparx5_port_attr_bridge_flags(port, flags);
++
+ 	return 0;
  
-@@ -149,6 +152,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
- 	if (err < 0) {
- 		pr_debug("evlist__mmap: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
-+		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
- 	}
+ err_switchdev_offload:
+@@ -215,6 +221,7 @@ static int sparx5_port_bridge_join(struct sparx5_port *port,
+ static void sparx5_port_bridge_leave(struct sparx5_port *port,
+ 				     struct net_device *bridge)
+ {
++	struct switchdev_brport_flags flags = {0};
+ 	struct sparx5 *sparx5 = port->sparx5;
  
+ 	switchdev_bridge_port_unoffload(port->ndev, NULL, NULL, NULL);
+@@ -234,6 +241,11 @@ static void sparx5_port_bridge_leave(struct sparx5_port *port,
+ 
+ 	/* Port enters in host more therefore restore mc list */
+ 	__dev_mc_sync(port->ndev, sparx5_mc_sync, sparx5_mc_unsync);
++
++	/* Disable uc/mc/bc flooding */
++	flags.mask = BR_FLOOD | BR_MCAST_FLOOD | BR_BCAST_FLOOD;
++	flags.val = 0;
++	sparx5_port_attr_bridge_flags(port, flags);
+ }
+ 
+ static int sparx5_port_changeupper(struct net_device *dev,
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_vlan.c b/drivers/net/ethernet/microchip/sparx5/sparx5_vlan.c
+index d42097aa60a0e..4947828719038 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_vlan.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_vlan.c
+@@ -167,16 +167,6 @@ void sparx5_update_fwd(struct sparx5 *sparx5)
+ 	/* Divide up fwd mask in 32 bit words */
+ 	bitmap_to_arr32(mask, sparx5->bridge_fwd_mask, SPX5_PORTS);
+ 
+-	/* Update flood masks */
+-	for (port = sparx5_get_pgid(sparx5, PGID_UC_FLOOD);
+-	     port <= sparx5_get_pgid(sparx5, PGID_BCAST); port++) {
+-		spx5_wr(mask[0], sparx5, ANA_AC_PGID_CFG(port));
+-		if (is_sparx5(sparx5)) {
+-			spx5_wr(mask[1], sparx5, ANA_AC_PGID_CFG1(port));
+-			spx5_wr(mask[2], sparx5, ANA_AC_PGID_CFG2(port));
+-		}
+-	}
+-
+ 	/* Update SRC masks */
+ 	for (port = 0; port < sparx5->data->consts->n_ports; port++) {
+ 		if (test_bit(port, sparx5->bridge_fwd_mask)) {
 -- 
 2.51.0
 
