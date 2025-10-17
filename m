@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-186504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87850BE9984
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F33A3BE9C0F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0319D743CA5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2314F74243D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8AD33509A;
-	Fri, 17 Oct 2025 15:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED0532E144;
+	Fri, 17 Oct 2025 15:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWv8cU6D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbK5RHLA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E6A337112;
-	Fri, 17 Oct 2025 15:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1C22F12DD;
+	Fri, 17 Oct 2025 15:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713429; cv=none; b=bhPNTEz2Zd1qHdml5NwfCXJDbZxehzHYeeDKbAj7nIEX+B6x8GwPi4pKVtpf13XxWmd8HKO8AlhIog0Bm2SR35aDTzFod9xLiG9xmNRdHy5FVa1Aho5VZ0vm10wwcnScwy1BQftGG7PKm7y2N30KZsIv3/vKeKD1ky2rMXaa5JE=
+	t=1760713873; cv=none; b=KMRnyn45Hem7lJRd42VVC3OBdQmSIP0tplP3ohMqQqlKJQQeQwnZgskF1oyw1jBJ6i2T4/jZWiB8C/uQSeZDw4ztl1/L3X/ORPNy0CHWyYkmkCcqT3HTwgymPKamRBtaPwfBnz1uXoWKXgiqfImprYKbuaolSZRqSI2Z0CCmj1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713429; c=relaxed/simple;
-	bh=0vtEGiGWf2RPW0PRVYilbQBrSFKicYnuPgNrwSIXDaQ=;
+	s=arc-20240116; t=1760713873; c=relaxed/simple;
+	bh=mIrPSLVskJ4R2tUNJUaChEa0p5AHYFRD5HPoboJFjx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+CfW3leYNRYdsDLwARwnUlK4Rsl0OxVQDk7uxghl7FQ5zcsIuDZqZvi5MepWoueyak+EKf7UaUV7dk29xTLyZhp4r8avJtICzPpwP6Sg3KqKfbSJ++sCF2OdlLJC8uShdSHiC8qKnAdaAY0AR/kT/zGvV1smNrVvR5GlIdy8KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWv8cU6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C37C4CEE7;
-	Fri, 17 Oct 2025 15:03:48 +0000 (UTC)
+	 MIME-Version; b=VsCkpB7gWvCW0aTzbdtXsW9PRUbBzJA1SvzmAhXjpYtozQ/ueD1SmcTb9Tb+XSrQC97chCLqFpojyu8t7C3DIoux6Kp1LUVFAEsjtGTHSQ+/DqZ/wwM3VmKBRauNCjqLoSfNXKgcJt9C86OOBaDJShC9LV/cx5XdJhBqt8nCowc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbK5RHLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FB0C4CEE7;
+	Fri, 17 Oct 2025 15:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713428;
-	bh=0vtEGiGWf2RPW0PRVYilbQBrSFKicYnuPgNrwSIXDaQ=;
+	s=korg; t=1760713873;
+	bh=mIrPSLVskJ4R2tUNJUaChEa0p5AHYFRD5HPoboJFjx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oWv8cU6Df/h2SnX3ba/8dOpUaIKJg0oj4pHQtlQNpdTWx1rKkcrH/w0mrDB7K1Eo6
-	 YHyMqhhJ07tqcPb0dmL8oTsxhXLcvEcOmoR5SFvHdcyy4kmVHmn20k1WvBcvbu9s3c
-	 SIhlueuh9s4eQUj7XG2iGiCqyiLwgi2DAyXcpfu8=
+	b=RbK5RHLAqk5TtAHnWQjeAyIFH6bitjtjnScqAJOoYg+8F/Az8OaU/C8bgtFSLQ1nf
+	 RlgG0jfp5uR6Lr7AgC/xt53DUAXyM4PRwW/4gJvR1PLNeChA/VsMWJryh+b6YC8WCu
+	 Aiy4eGWPX0+6AArVyzwtlmQqB4d1jEuEfCeLVI/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@kernel.org,
 	Jan Kara <jack@suse.cz>,
 	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 129/168] ext4: verify orphan file size is not too big
-Date: Fri, 17 Oct 2025 16:53:28 +0200
-Message-ID: <20251017145133.778223878@linuxfoundation.org>
+Subject: [PATCH 6.6 148/201] ext4: verify orphan file size is not too big
+Date: Fri, 17 Oct 2025 16:53:29 +0200
+Message-ID: <20251017145140.171477845@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
