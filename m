@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-187728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E73BBEC087
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 01:43:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1AD1BEC0F1
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 01:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1C24188B831
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 23:43:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0022F6E764F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 23:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B63730DD2F;
-	Fri, 17 Oct 2025 23:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEEC3126CA;
+	Fri, 17 Oct 2025 23:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L2Jt4dGf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DfzzDjo6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1153081DC
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 23:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE6428B415
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 23:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760744598; cv=none; b=dqyNTnLOpdVADYE/O4PPQDlrxM+qh/HWomLc4oxN6CrfsBl2+SnKsYA9C0TB0qmq8NsU9Ee/8yo4WvBduuz5zhBPEAPrQo95wx3NDpNde6sYJevDC0R9cdz7wAGYUMwwCtLpCeXR5vfCg9R4fje4c8AEUV/I6n5AIg7E8sooZn0=
+	t=1760745513; cv=none; b=eGmR1uyLBG2chIzguZx/3/tLRH/jCKf6c4MH8fPTXRkWzQX3IB41rwmoaPfZStcZ0Kc5I27JRfuJxNjZw3nPO5IV834F9ljhPDwDgIJ/03xwlwHc2W/WlBCYjZgXMmlv54KSg/mpG0Xx0Mn109/tqGxe/mAX7swvvHCqAn/gnCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760744598; c=relaxed/simple;
-	bh=dIOvEiL+fuukS2Si+kgd/f63DnNthVrXyxuNN6IjV7s=;
+	s=arc-20240116; t=1760745513; c=relaxed/simple;
+	bh=7Spc6QISJKTAZDv81us8MhJTADWZLwAu5yqBypETP68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fe3y4DW3yySPX4fzh/oR4d50mmbgblB8AWfz+bYuAOpwTVqclEFSljKTxDIC1N+ARYXhGSw/r+jhG0qSwydzss7okxfATnqjk6GoRrArkbX1UFqu006PX3ZSPTI0kB/9yQjSP628xJdD4uJsdoAy1nWoKmZIKh+xopAAZQXEl4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L2Jt4dGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8CB2C116B1;
-	Fri, 17 Oct 2025 23:43:17 +0000 (UTC)
+	 MIME-Version; b=algbNjCqQYiBYvMPOLiV3vYs/YSGV5E0hHI+sXu+aRAryo2RGAYtoqtVdSlWsLQS9Qs3pBrSH0FrlxITq4GKBrJP5I+If5uuoMl3BmlsiFoGI04Eb52c6fBS5hbYOnrJW5zLniPzWBuB6VGIC+RxMja0je1NAKFLWRrTUNdgatM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DfzzDjo6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1F3C4CEE7;
+	Fri, 17 Oct 2025 23:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760744598;
-	bh=dIOvEiL+fuukS2Si+kgd/f63DnNthVrXyxuNN6IjV7s=;
+	s=k20201202; t=1760745513;
+	bh=7Spc6QISJKTAZDv81us8MhJTADWZLwAu5yqBypETP68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L2Jt4dGf+2hMFphum6dwkUwEKE3qel/8yZ1EPeGECiYUVK3v+qsdmXSCX085nnbW5
-	 u6Ifhon/k10lZNWjycCLmgLIiy6+Dukv65FAP3xBcqeZ+ofh59+mcTnehj0yPtKvYz
-	 nsAeQixk2xKI51B4OS/PFI237u1L7/i5hk9bnT9IvKEhF35WifKNuS8sITD0jecGPz
-	 7VuN1X89dMBe0ohjiNjWx/Rbgf/PkSs7eJ0IbR20uLncBlvkGfQmJnTr7S2wyayqA9
-	 mOL59bGlR5G5Ag3CWVC4j6p64VQkGjRHEH7NPl0IBQHf6u/h9xwm0n4k5o2fJ9igb3
-	 eplmtu6/77ylQ==
+	b=DfzzDjo6ttpJPsH4VbgP5L5es1uEX2obgsWdtWlzVEoUOTIxGZSh7/g/2EUCgkRt5
+	 f/D7HpiWQ2zywU5IExGOi062DoM7RuYwfpE5vF6IabFMP9l5sSBj+qS2YKNG2D6lDn
+	 4qr50AgyLuVNQxlGt5GGdcjCSXqskWYo/clyxdESHY4uJDPTrEthysL1HdhxLXzd3Z
+	 xsrYxyeysYzslTwprlJsn3Jzh8HNLuq+h0iRyLVhR65yfyFT/JIEK9IMn627xGnFbx
+	 NVsmbjHS6FiSIj78vXzTgzUgOSiGjLv4hiemnLkxy4+QMfqcFwzS2N3f0CXR2l+vgY
+	 DmMttlPN1HPYA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Kuen-Han Tsai <khtsai@google.com>,
-	stable@kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 3/3] usb: gadget: f_ncm: Refactor bind path to use __free()
-Date: Fri, 17 Oct 2025 19:43:14 -0400
-Message-ID: <20251017234314.52983-3-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/3] usb: gadget: Store endpoint pointer in usb_request
+Date: Fri, 17 Oct 2025 19:58:24 -0400
+Message-ID: <20251017235826.62546-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017234314.52983-1-sashal@kernel.org>
-References: <2025101601-custard-enchilada-decc@gregkh>
- <20251017234314.52983-1-sashal@kernel.org>
+In-Reply-To: <2025101602-unvarying-unmade-9abc@gregkh>
+References: <2025101602-unvarying-unmade-9abc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,227 +62,65 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 75a5b8d4ddd4eb6b16cb0b475d14ff4ae64295ef ]
+[ Upstream commit bfb1d99d969fe3b892db30848aeebfa19d21f57f ]
 
-After an bind/unbind cycle, the ncm->notify_req is left stale. If a
-subsequent bind fails, the unified error label attempts to free this
-stale request, leading to a NULL pointer dereference when accessing
-ep->ops->free_request.
+Gadget function drivers often have goto-based error handling in their
+bind paths, which can be bug-prone. Refactoring these paths to use
+__free() scope-based cleanup is desirable, but currently blocked.
 
-Refactor the error handling in the bind path to use the __free()
-automatic cleanup mechanism.
+The blocker is that usb_ep_free_request(ep, req) requires two
+parameters, while the __free() mechanism can only pass a pointer to the
+request itself.
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
-Call trace:
- usb_ep_free_request+0x2c/0xec
- ncm_bind+0x39c/0x3dc
- usb_add_function+0xcc/0x1f0
- configfs_composite_bind+0x468/0x588
- gadget_bind_driver+0x104/0x270
- really_probe+0x190/0x374
- __driver_probe_device+0xa0/0x12c
- driver_probe_device+0x3c/0x218
- __device_attach_driver+0x14c/0x188
- bus_for_each_drv+0x10c/0x168
- __device_attach+0xfc/0x198
- device_initial_probe+0x14/0x24
- bus_probe_device+0x94/0x11c
- device_add+0x268/0x48c
- usb_add_gadget+0x198/0x28c
- dwc3_gadget_init+0x700/0x858
- __dwc3_set_mode+0x3cc/0x664
- process_scheduled_works+0x1d8/0x488
- worker_thread+0x244/0x334
- kthread+0x114/0x1bc
- ret_from_fork+0x10/0x20
+Store an endpoint pointer in the struct usb_request. The pointer is
+populated centrally in usb_ep_alloc_request() on every successful
+allocation, making the request object self-contained.
 
-Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
-Cc: stable@kernel.org
 Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-3-4997bf277548@google.com
+Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-3-4997bf277548@google.com
+Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
+Stable-dep-of: 75a5b8d4ddd4 ("usb: gadget: f_ncm: Refactor bind path to use __free()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c | 78 ++++++++++++-----------------
- 1 file changed, 33 insertions(+), 45 deletions(-)
+ drivers/usb/gadget/udc/core.c | 3 +++
+ include/linux/usb/gadget.h    | 2 ++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
-index 58b0dd575af32..0148d60926dcf 100644
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -11,6 +11,7 @@
-  * Copyright (C) 2008 Nokia Corporation
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index d709e24c1fd42..e3d63b8fa0f4c 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -194,6 +194,9 @@ struct usb_request *usb_ep_alloc_request(struct usb_ep *ep,
+ 
+ 	req = ep->ops->alloc_request(ep, gfp_flags);
+ 
++	if (req)
++		req->ep = ep;
++
+ 	trace_usb_ep_alloc_request(ep, req, req ? 0 : -ENOMEM);
+ 
+ 	return req;
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index df33333650a0d..77554f4446651 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -32,6 +32,7 @@ struct usb_ep;
+ 
+ /**
+  * struct usb_request - describes one i/o request
++ * @ep: The associated endpoint set by usb_ep_alloc_request().
+  * @buf: Buffer used for data.  Always provide this; some controllers
+  *	only use PIO, or don't use DMA for some endpoints.
+  * @dma: DMA address corresponding to 'buf'.  If you don't set this
+@@ -98,6 +99,7 @@ struct usb_ep;
   */
  
-+#include <linux/cleanup.h>
- #include <linux/kernel.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-@@ -20,6 +21,7 @@
- #include <linux/string_choices.h>
- 
- #include <linux/usb/cdc.h>
-+#include <linux/usb/gadget.h>
- 
- #include "u_ether.h"
- #include "u_ether_configfs.h"
-@@ -1436,18 +1438,18 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	struct usb_ep		*ep;
- 	struct f_ncm_opts	*ncm_opts;
- 
-+	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
-+	struct usb_request		*request __free(free_usb_request) = NULL;
-+
- 	if (!can_support_ecm(cdev->gadget))
- 		return -EINVAL;
- 
- 	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
- 
- 	if (cdev->use_os_string) {
--		f->os_desc_table = kzalloc(sizeof(*f->os_desc_table),
--					   GFP_KERNEL);
--		if (!f->os_desc_table)
-+		os_desc_table = kzalloc(sizeof(*os_desc_table), GFP_KERNEL);
-+		if (!os_desc_table)
- 			return -ENOMEM;
--		f->os_desc_n = 1;
--		f->os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
- 	}
- 
- 	mutex_lock(&ncm_opts->lock);
-@@ -1459,16 +1461,15 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	mutex_unlock(&ncm_opts->lock);
- 
- 	if (status)
--		goto fail;
-+		return status;
- 
- 	ncm_opts->bound = true;
- 
- 	us = usb_gstrings_attach(cdev, ncm_strings,
- 				 ARRAY_SIZE(ncm_string_defs));
--	if (IS_ERR(us)) {
--		status = PTR_ERR(us);
--		goto fail;
--	}
-+	if (IS_ERR(us))
-+		return PTR_ERR(us);
-+
- 	ncm_control_intf.iInterface = us[STRING_CTRL_IDX].id;
- 	ncm_data_nop_intf.iInterface = us[STRING_DATA_IDX].id;
- 	ncm_data_intf.iInterface = us[STRING_DATA_IDX].id;
-@@ -1478,20 +1479,16 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ncm->ctrl_id = status;
- 	ncm_iad_desc.bFirstInterface = status;
- 
- 	ncm_control_intf.bInterfaceNumber = status;
- 	ncm_union_desc.bMasterInterface0 = status;
- 
--	if (cdev->use_os_string)
--		f->os_desc_table[0].if_id =
--			ncm_iad_desc.bFirstInterface;
--
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ncm->data_id = status;
- 
- 	ncm_data_nop_intf.bInterfaceNumber = status;
-@@ -1500,35 +1497,31 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 
- 	ecm_desc.wMaxSegmentSize = cpu_to_le16(ncm_opts->max_segment_size);
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ncm->port.in_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ncm->port.out_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_notify_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ncm->notify = ep;
- 
--	status = -ENOMEM;
--
- 	/* allocate notification request and buffer */
--	ncm->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
--	if (!ncm->notify_req)
--		goto fail;
--	ncm->notify_req->buf = kmalloc(NCM_STATUS_BYTECOUNT, GFP_KERNEL);
--	if (!ncm->notify_req->buf)
--		goto fail;
--	ncm->notify_req->context = ncm;
--	ncm->notify_req->complete = ncm_notify_complete;
-+	request = usb_ep_alloc_request(ep, GFP_KERNEL);
-+	if (!request)
-+		return -ENOMEM;
-+	request->buf = kmalloc(NCM_STATUS_BYTECOUNT, GFP_KERNEL);
-+	if (!request->buf)
-+		return -ENOMEM;
-+	request->context = ncm;
-+	request->complete = ncm_notify_complete;
- 
- 	/*
- 	 * support all relevant hardware speeds... we expect that when
-@@ -1548,7 +1541,7 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	status = usb_assign_descriptors(f, ncm_fs_function, ncm_hs_function,
- 			ncm_ss_function, ncm_ss_function);
- 	if (status)
--		goto fail;
-+		return status;
- 
- 	/*
- 	 * NOTE:  all that is done without knowing or caring about
-@@ -1561,23 +1554,18 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 
- 	hrtimer_setup(&ncm->task_timer, ncm_tx_timeout, CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
- 
-+	if (cdev->use_os_string) {
-+		os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
-+		os_desc_table[0].if_id = ncm_iad_desc.bFirstInterface;
-+		f->os_desc_table = no_free_ptr(os_desc_table);
-+		f->os_desc_n = 1;
-+	}
-+	ncm->notify_req = no_free_ptr(request);
-+
- 	DBG(cdev, "CDC Network: IN/%s OUT/%s NOTIFY/%s\n",
- 			ncm->port.in_ep->name, ncm->port.out_ep->name,
- 			ncm->notify->name);
- 	return 0;
--
--fail:
--	kfree(f->os_desc_table);
--	f->os_desc_n = 0;
--
--	if (ncm->notify_req) {
--		kfree(ncm->notify_req->buf);
--		usb_ep_free_request(ncm->notify, ncm->notify_req);
--	}
--
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
--
--	return status;
- }
- 
- static inline struct f_ncm_opts *to_f_ncm_opts(struct config_item *item)
+ struct usb_request {
++	struct usb_ep		*ep;
+ 	void			*buf;
+ 	unsigned		length;
+ 	dma_addr_t		dma;
 -- 
 2.51.0
 
