@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1004DBEA092
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D3DBE9EB8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 113255005F6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 124EB7C1BFC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675142F12C5;
-	Fri, 17 Oct 2025 15:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72EB4330315;
+	Fri, 17 Oct 2025 15:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LmJa93j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8FXN8mp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AAA27B33B;
-	Fri, 17 Oct 2025 15:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3008F32C940;
+	Fri, 17 Oct 2025 15:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715013; cv=none; b=ru9q9FmXU8QsYGNtjEurL2ecGkXjvmwEe1p15oV5akvzZTtyKRjdYNzuLo6m9j4Wwcqiow+1Cj6wO1CupgPUH3BohrSX+2zIK1dA9vTTCpDq5GS6a78bNmAie5GOkcr/54fUyL5Chtd2UOkwy6yOL1H8HNcL4vx9BuZEE3AlQe4=
+	t=1760714127; cv=none; b=RdaHlVIUJWXJmZZRvnmf0aSNBQa646AbBO6o2vla5N6ueFxv3/UlVSmw3EhK4wLvnZCu5R0AEl8aQAfZik5RN9wELGc18U0Rkfr/NLgAm+6WaXTavu6H361YdooOjV+8RwYmaDMkRxQEa8p2iwMZHPcZIp0c9/sDRQPXUVv/t2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715013; c=relaxed/simple;
-	bh=G4rWnLBGCx0s4yBRj2rg2h8ulo4YbiHnSuiSrBjjNFI=;
+	s=arc-20240116; t=1760714127; c=relaxed/simple;
+	bh=lv3BEcdxBzJiKpOQRON2w29mDI4Vz31QpaRa2iJETkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fA7aGTT2ai0HMy6A1sAW1ejm6esP+ffvlj7D17KQRgrx2732dMI11nVK1Tg7/bvnCRgFo2ICfGyHkGmgO+L/CtEwQ86IRawoMV5OM9dHD71Gv935O+pVx8DJ2rxdAMjzbc0mzFoonI4AOmjTuhibTdPthNbttPDIdZglEBtqvlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LmJa93j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC99C4CEE7;
-	Fri, 17 Oct 2025 15:30:12 +0000 (UTC)
+	 MIME-Version; b=QfAdG+5P0SPs5eevAPPhIuFNbC6uUlM1AcC2KI9852Okf0zwwe1+uoHPri9VJHVKU6qZrhCZzETbfPxsQxWCngpoZu+hTR927WeD+EqP/VQmI3mYHSy+zrAaVDWL8fAAJFq/+i/vgNZ1+191sDpkuQhG9XfNS4OKJb6hzfaq5RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8FXN8mp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36F2C4CEE7;
+	Fri, 17 Oct 2025 15:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715013;
-	bh=G4rWnLBGCx0s4yBRj2rg2h8ulo4YbiHnSuiSrBjjNFI=;
+	s=korg; t=1760714127;
+	bh=lv3BEcdxBzJiKpOQRON2w29mDI4Vz31QpaRa2iJETkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LmJa93joiPdwe1HlaP1MNhWdQJJdrnrwi351uQjGHPrrR8n99LL3FrwNIU+H9cN2
-	 cetw+6s5u7ERBlty2ztDakvM2U9qEqyX8WtVGtmmg6AxvttfsD1wtYqcfDc6otREK+
-	 DTW7Uevem/CbDJq+H8xB+zRfUouZ0v/pKn9BEPPQ=
+	b=m8FXN8mpk3XKGLB/xyuNlMkOdjMtkX8feSJeQX3W17gmzGbveN07xB+7JS8nUGO/l
+	 z9bQK+Mt5GCDZJU7qsioh3dWoYRaiAZH8+n0m8lQpkoDCFOAKKXAq6PQJxtufRqRNf
+	 vqJsib3pfzYsJuN7o2GVF+B1tZrp3np5bUIbkWBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 068/371] scsi: mvsas: Fix use-after-free bugs in mvs_work_queue
-Date: Fri, 17 Oct 2025 16:50:43 +0200
-Message-ID: <20251017145204.396281006@linuxfoundation.org>
+Subject: [PATCH 6.12 037/277] clk: nxp: Fix pll0 rate check condition in LPC18xx CGU driver
+Date: Fri, 17 Oct 2025 16:50:44 +0200
+Message-ID: <20251017145148.503355126@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 60cd16a3b7439ccb699d0bf533799eeb894fd217 ]
+[ Upstream commit 1624dead9a4d288a594fdf19735ebfe4bb567cb8 ]
 
-During the detaching of Marvell's SAS/SATA controller, the original code
-calls cancel_delayed_work() in mvs_free() to cancel the delayed work
-item mwq->work_q. However, if mwq->work_q is already running, the
-cancel_delayed_work() may fail to cancel it. This can lead to
-use-after-free scenarios where mvs_free() frees the mvs_info while
-mvs_work_queue() is still executing and attempts to access the
-already-freed mvs_info.
+The conditional check for the PLL0 multiplier 'm' used a logical AND
+instead of OR, making the range check ineffective. This patch replaces
+&& with || to correctly reject invalid values of 'm' that are either
+less than or equal to 0 or greater than LPC18XX_PLL0_MSEL_MAX.
 
-A typical race condition is illustrated below:
+This ensures proper bounds checking during clk rate setting and rounding.
 
-CPU 0 (remove)            | CPU 1 (delayed work callback)
-mvs_pci_remove()          |
-  mvs_free()              | mvs_work_queue()
-    cancel_delayed_work() |
-      kfree(mvi)          |
-                          |   mvi-> // UAF
-
-Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
-that the delayed work item is properly canceled and any executing
-delayed work item completes before the mvs_info is deallocated.
-
-This bug was found by static analysis.
-
-Fixes: 20b09c2992fe ("[SCSI] mvsas: add support for 94xx; layout change; bug fixes")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: b04e0b8fd544 ("clk: add lpc18xx cgu clk driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+[sboyd@kernel.org: 'm' is unsigned so remove < condition]
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mvsas/mv_init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/nxp/clk-lpc18xx-cgu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
-index 2c72da6b8cf0c..7f1ad305eee63 100644
---- a/drivers/scsi/mvsas/mv_init.c
-+++ b/drivers/scsi/mvsas/mv_init.c
-@@ -124,7 +124,7 @@ static void mvs_free(struct mvs_info *mvi)
- 	if (mvi->shost)
- 		scsi_host_put(mvi->shost);
- 	list_for_each_entry(mwq, &mvi->wq_list, entry)
--		cancel_delayed_work(&mwq->work_q);
-+		cancel_delayed_work_sync(&mwq->work_q);
- 	kfree(mvi->rsvd_tags);
- 	kfree(mvi);
- }
+diff --git a/drivers/clk/nxp/clk-lpc18xx-cgu.c b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+index 30e0b283ca608..b9e204d63a972 100644
+--- a/drivers/clk/nxp/clk-lpc18xx-cgu.c
++++ b/drivers/clk/nxp/clk-lpc18xx-cgu.c
+@@ -381,7 +381,7 @@ static int lpc18xx_pll0_determine_rate(struct clk_hw *hw,
+ 	}
+ 
+ 	m = DIV_ROUND_UP_ULL(req->best_parent_rate, req->rate * 2);
+-	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
++	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
+ 		pr_warn("%s: unable to support rate %lu\n", __func__, req->rate);
+ 		return -EINVAL;
+ 	}
+@@ -404,7 +404,7 @@ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	}
+ 
+ 	m = DIV_ROUND_UP_ULL(parent_rate, rate * 2);
+-	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
++	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
+ 		pr_warn("%s: unable to support rate %lu\n", __func__, rate);
+ 		return -EINVAL;
+ 	}
 -- 
 2.51.0
 
