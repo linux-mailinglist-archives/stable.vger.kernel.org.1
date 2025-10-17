@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C37BE996A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:04 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 545A5BE9FF9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2034618934F9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F3EAD35A683
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B9B2DECBC;
-	Fri, 17 Oct 2025 15:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A9433291F;
+	Fri, 17 Oct 2025 15:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFq9cLHJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBM4EtAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23F9288A2;
-	Fri, 17 Oct 2025 15:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30245339717;
+	Fri, 17 Oct 2025 15:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713884; cv=none; b=uOSsVf5GxB9Lo4lZZ6X1O7pe38BxChDO/nNXozCKU1MW3Rz2M7upEUQ3RDdeS+eI4wVLueDIzTnM6QBp1IEWpOhqqztz1md0Hvd47TDxBkqVwflkZQXaTXMr4cUepCWLsQIRYjrW2pLT8ShjoU0/sMoaPtm5wUN299XyEmZnW9A=
+	t=1760715407; cv=none; b=YX2sb//YGwKOzCLEoT383kwGGIAeuEBjrAIHX5vxbUqW1G0XXUofZuE9k5TmOIiEgruozjggCpb8YlrVM5qVEapGwT9yH8WJK71FfBSI1o9KOWVcHWy2GHw8jDPgM+gLc+fsJ2nvdGoSb3eusDCk5iF6FvZ9mDTdfMFJvZfuMH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713884; c=relaxed/simple;
-	bh=ALgrt0DWv0fc9qZgD93OxJROKDDLRnsov3qaHI3Wo/M=;
+	s=arc-20240116; t=1760715407; c=relaxed/simple;
+	bh=8w6DjhsfDrc9tgYKKDym2U6zAu/ee7/anxzR7lHwhRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rv1sM6OmlIyV+ioyVz3Rzk+hWAhLtN+HYf+fsEVv2kvKRJyJYOXuXH8vVNtq7gl6lmDfRdM/OoWJstMSTnTk15zOHsAb29LIbgFwBgBYNOOr1Z4g6sZ8rJnbGc/GzIB1iG6PgMOa3fdSOgxDaWt+/YscoypI0jbY40wP9r0Ubvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFq9cLHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAE2C4CEE7;
-	Fri, 17 Oct 2025 15:11:24 +0000 (UTC)
+	 MIME-Version; b=t89asaUwrnVxkJqbFKHS7jizBfuBseA+N3MEUR1bK1lSvPRsUKEg7WWj9r0i0OZbUdO3Xooi45FdGcPhJ8SRWR6wLUp4fkfBLLpI5ujf6Rbukmt7MGhd2FInFM8og1RYCgwkJLHLtQJ2FzaCvL7ghl8mfveFfUq1i10nVzIXqtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBM4EtAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E9BC4CEE7;
+	Fri, 17 Oct 2025 15:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713884;
-	bh=ALgrt0DWv0fc9qZgD93OxJROKDDLRnsov3qaHI3Wo/M=;
+	s=korg; t=1760715407;
+	bh=8w6DjhsfDrc9tgYKKDym2U6zAu/ee7/anxzR7lHwhRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pFq9cLHJ5lnAYLrTtMkcYvj3APS+UqmJs0toUHsnqqhhHzNtqHCza2P6+vwyh7UYs
-	 3XYAAlB0Y2lZqoWJsxfgaEYpE+Ccymbww13J1AM7PHzzCf6QLTOAtY2So+L4Kkj8/q
-	 BWvm2Kxhe1IwVEqY8/RDoUN9QqorRXXPDTtu4drM=
+	b=NBM4EtAqw1RW0BYQZEO3USrFJ/o+tsHVkIko4BiKnK6sM+V7rLDYRZb201w6m2mpE
+	 ojxaVOb75SsMpX2fjPquxG33XnBJ8fkJmWHf7ffIg9o9gXo8LdyJ3A4OaSzXZ/0ng0
+	 fxcbJdaBoNx2HtGRi5aqnrICJWDzTIHhlRNsM33M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rex Chen <rex.chen_1@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 120/201] mmc: core: SPI mode remove cmd7
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Zihuan Zhang <zhangzihuan@kylinos.cn>
+Subject: [PATCH 6.17 206/371] cpufreq: intel_pstate: Fix object lifecycle issue in update_qos_request()
 Date: Fri, 17 Oct 2025 16:53:01 +0200
-Message-ID: <20251017145139.152363189@linuxfoundation.org>
+Message-ID: <20251017145209.543335182@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rex Chen <rex.chen_1@nxp.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit fec40f44afdabcbc4a7748e4278f30737b54bb1a upstream.
+commit 69e5d50fcf4093fb3f9f41c4f931f12c2ca8c467 upstream.
 
-SPI mode doesn't support cmd7, so remove it in mmc_sdio_alive() and
-confirm if sdio is active by checking CCCR register value is available
-or not.
+The cpufreq_cpu_put() call in update_qos_request() takes place too early
+because the latter subsequently calls freq_qos_update_request() that
+indirectly accesses the policy object in question through the QoS request
+object passed to it.
 
-Signed-off-by: Rex Chen <rex.chen_1@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250728082230.1037917-2-rex.chen_1@nxp.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fortunately, update_qos_request() is called under intel_pstate_driver_lock,
+so this issue does not matter for changing the intel_pstate operation
+mode, but it theoretically can cause a crash to occur on CPU device hot
+removal (which currently can only happen in virt, but it is formally
+supported nevertheless).
+
+Address this issue by modifying update_qos_request() to drop the
+reference to the policy later.
+
+Fixes: da5c504c7aae ("cpufreq: intel_pstate: Implement QoS supported freq constraints")
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Link: https://patch.msgid.link/2255671.irdbgypaU6@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/sdio.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/cpufreq/intel_pstate.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -945,7 +945,11 @@ static void mmc_sdio_remove(struct mmc_h
-  */
- static int mmc_sdio_alive(struct mmc_host *host)
- {
--	return mmc_select_card(host->card);
-+	if (!mmc_host_is_spi(host))
-+		return mmc_select_card(host->card);
-+	else
-+		return mmc_io_rw_direct(host->card, 0, 0, SDIO_CCCR_CCCR, 0,
-+					NULL);
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -1710,10 +1710,10 @@ static void update_qos_request(enum freq
+ 			continue;
+ 
+ 		req = policy->driver_data;
+-		cpufreq_cpu_put(policy);
+-
+-		if (!req)
++		if (!req) {
++			cpufreq_cpu_put(policy);
+ 			continue;
++		}
+ 
+ 		if (hwp_active)
+ 			intel_pstate_get_hwp_cap(cpu);
+@@ -1729,6 +1729,8 @@ static void update_qos_request(enum freq
+ 
+ 		if (freq_qos_update_request(req, freq) < 0)
+ 			pr_warn("Failed to update freq constraint: CPU%d\n", i);
++
++		cpufreq_cpu_put(policy);
+ 	}
  }
  
- /*
 
 
 
