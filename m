@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-186844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFEFDBE9EBE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:33:30 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11300BEA116
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C972174206E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:21:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D4295567A13
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4FA2F692B;
-	Fri, 17 Oct 2025 15:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3762B335093;
+	Fri, 17 Oct 2025 15:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiR4znRA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V09AMXF4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6C62F12D0;
-	Fri, 17 Oct 2025 15:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F5633508E;
+	Fri, 17 Oct 2025 15:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714390; cv=none; b=GNXKJzsER5IXiFEImbeZAcPt1AtQaiGALCUcCrGd9dCNJb/y48tX2FolyHVk2ETpVSwmtaFM4U7PF1R6Rw+Yb173EHG6m1uNQUqwJD/Dv44Uizl7+WgUxJLL3aEByUCVUm1SzD4+pUoDx4mmvgCQ8xpiCf1iVZ9PFwK+LZXo2CY=
+	t=1760715202; cv=none; b=QHl3xWHBc3WAaDVvbrElLoLzYm+rmHDkvu74dZjS3ZmCfoSdWEQ5anIG+usUFJA0nvokZYUkvBtxyjo/ApYxTWIaDkL+yPMhnHzosyifr51bW3xHrXmKwzklr/bCWvupMfYhk/7ZCvrl/D0Ke5HIHC//Ej1TGhQ9GoBl9gBZiwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714390; c=relaxed/simple;
-	bh=3ylKpRZqMBDYArYQiFRnxZ74Ds7Bf56+jX0hQ/GiCAs=;
+	s=arc-20240116; t=1760715202; c=relaxed/simple;
+	bh=o3TtHpvnnc82H7yNIMBhkaxhFHJQrVVIyyjFGkw6dNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jb5xZ1d8uI1qqxjRWEm98LtUtlo9Uyljw/T5MwCysgvqTJJHWH4SYl+MpRsAD6W3k+QhLg6jqfrZJVHAj0rCAVU08R8gEGs6TId4YR0U4upIfin55A6iCc7euPFi/6qtPCd8KH97CKa41Gwak+F13bpy/kWLE/QI2VtrTk5I4qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiR4znRA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C685C4CEE7;
-	Fri, 17 Oct 2025 15:19:49 +0000 (UTC)
+	 MIME-Version; b=C4pycxWZawbN1N80Jin08mOo4AwcnpdSemMF85K07lCR0yDeDro/KFSZBngqWVVowLVxGOwsRaWpeRfkTAGposPYCoDfPWFYqVSZH1OFoUsZwPeCGoWVkCLJzI/UsDks6QPmdWg16J6OHZfFcccZfmY6plw7oPS/AcUP1rHPYso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V09AMXF4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D882C113D0;
+	Fri, 17 Oct 2025 15:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714389;
-	bh=3ylKpRZqMBDYArYQiFRnxZ74Ds7Bf56+jX0hQ/GiCAs=;
+	s=korg; t=1760715201;
+	bh=o3TtHpvnnc82H7yNIMBhkaxhFHJQrVVIyyjFGkw6dNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QiR4znRA46d6EBiUjv8Eq4yX3dm/MucZWGUC6GQD2ramPaLcs290R3+Wg08VQijj+
-	 LmQrqz6Qv6H75hzj4uZ6BMbLzWoP3FBckDWP9+ovVnsFp1YB9sPzcB+6pLQyRAQlii
-	 ISRJhyxEMPvwPj4qaqOYjL3ZxNQFZ0jCAJ3bOHxs=
+	b=V09AMXF4ReKuuLebTcI0OEiNuukxI0uB4SmpQqAvRG2wkvXY9X5v4etBR0sUTxgcZ
+	 hciPSNY0aNJZ9o+ZmK/1KyHhDP7BMOs/m+P3Gp4nC1P0xI95RXrCSvC92a2ILsny+x
+	 Vx6iItj8OKYQcpWlxblQlu/HhkThAyXIMqpsZKa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.12 101/277] xen/events: Update virq_to_irq on migration
-Date: Fri, 17 Oct 2025 16:51:48 +0200
-Message-ID: <20251017145150.819144960@linuxfoundation.org>
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	linux-s390@vger.kernel.org,
+	kernel test robot <lkp@intel.com>,
+	Alexey Gladkov <legion@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 134/371] s390: vmlinux.lds.S: Reorder sections
+Date: Fri, 17 Oct 2025 16:51:49 +0200
+Message-ID: <20251017145206.777084323@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +67,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Alexey Gladkov <legion@kernel.org>
 
-commit 3fcc8e146935415d69ffabb5df40ecf50e106131 upstream.
+[ Upstream commit 8d18ef04f940a8d336fe7915b5ea419c3eb0c0a6 ]
 
-VIRQs come in 3 flavors, per-VPU, per-domain, and global, and the VIRQs
-are tracked in per-cpu virq_to_irq arrays.
+In the upcoming changes, the ELF_DETAILS macro will be extended with
+the ".modinfo" section, which will cause an error:
 
-Per-domain and global VIRQs must be bound on CPU 0, and
-bind_virq_to_irq() sets the per_cpu virq_to_irq at registration time
-Later, the interrupt can migrate, and info->cpu is updated.  When
-calling __unbind_from_irq(), the per-cpu virq_to_irq is cleared for a
-different cpu.  If bind_virq_to_irq() is called again with CPU 0, the
-stale irq is returned.  There won't be any irq_info for the irq, so
-things break.
+>> s390x-linux-ld: .tmp_vmlinux1: warning: allocated section `.modinfo' not in segment
+>> s390x-linux-ld: .tmp_vmlinux2: warning: allocated section `.modinfo' not in segment
+>> s390x-linux-ld: vmlinux.unstripped: warning: allocated section `.modinfo' not in segment
 
-Make xen_rebind_evtchn_to_cpu() update the per_cpu virq_to_irq mappings
-to keep them update to date with the current cpu.  This ensures the
-correct virq_to_irq is cleared in __unbind_from_irq().
+This happens because the .vmlinux.info use :NONE to override the default
+segment and tell the linker to not put the section in any segment at all.
 
-Fixes: e46cdb66c8fc ("xen: event channels")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250828003604.8949-4-jason.andryuk@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To avoid this, we need to change the sections order that will be placed
+in the default segment.
+
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506062053.zbkFBEnJ-lkp@intel.com/
+Signed-off-by: Alexey Gladkov <legion@kernel.org>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://patch.msgid.link/20d40a7a3a053ba06a54155e777dcde7fdada1db.1758182101.git.legion@kernel.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Stable-dep-of: 9338d660b79a ("s390/vmlinux.lds.S: Move .vmlinux.info to end of allocatable sections")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/s390/kernel/vmlinux.lds.S | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -1803,9 +1803,20 @@ static int xen_rebind_evtchn_to_cpu(stru
- 	 * virq or IPI channel, which don't actually need to be rebound. Ignore
- 	 * it, but don't do the xenlinux-level rebind in that case.
- 	 */
--	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0)
-+	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0) {
-+		int old_cpu = info->cpu;
-+
- 		bind_evtchn_to_cpu(info, tcpu, false);
+diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
+index 1c606dfa595d8..feecf1a6ddb44 100644
+--- a/arch/s390/kernel/vmlinux.lds.S
++++ b/arch/s390/kernel/vmlinux.lds.S
+@@ -209,6 +209,11 @@ SECTIONS
+ 	. = ALIGN(PAGE_SIZE);
+ 	_end = . ;
  
-+		if (info->type == IRQT_VIRQ) {
-+			int virq = info->u.virq;
-+			int irq = per_cpu(virq_to_irq, old_cpu)[virq];
++	/* Debugging sections.	*/
++	STABS_DEBUG
++	DWARF_DEBUG
++	ELF_DETAILS
 +
-+			per_cpu(virq_to_irq, old_cpu)[virq] = -1;
-+			per_cpu(virq_to_irq, tcpu)[virq] = irq;
-+		}
-+	}
-+
- 	do_unmask(info, EVT_MASK_REASON_TEMPORARY);
+ 	/*
+ 	 * uncompressed image info used by the decompressor
+ 	 * it should match struct vmlinux_info
+@@ -239,11 +244,6 @@ SECTIONS
+ #endif
+ 	} :NONE
  
- 	return 0;
+-	/* Debugging sections.	*/
+-	STABS_DEBUG
+-	DWARF_DEBUG
+-	ELF_DETAILS
+-
+ 	/*
+ 	 * Make sure that the .got.plt is either completely empty or it
+ 	 * contains only the three reserved double words.
+-- 
+2.51.0
+
 
 
 
