@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-186816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAC2BE9AB1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:36 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 152E0BEA25B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:47:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2BA0835D6D4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 195BC5A25E1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6612745E;
-	Fri, 17 Oct 2025 15:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F4832E143;
+	Fri, 17 Oct 2025 15:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGEW3jWU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Os7xtqtI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEFA231C9F;
-	Fri, 17 Oct 2025 15:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2772F12C0;
+	Fri, 17 Oct 2025 15:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714319; cv=none; b=R0HRJkKT5zkTHClY58gKd/ksL1fU0O/gtCpG9/qgGSkgrbCmp7yBF7HIbYAr+Bb2z6bFG6vyYbascKH6GbLEp4Gwv7fBcg783lrs9L3je3uwhvTfWltO5O7PTklaaKt0WejNXg1yuzutSbRo9pj+hnefdbV3paiHE/7L1eBldK8=
+	t=1760715113; cv=none; b=dAVp/fnGK9CB6bVhMbna4xpxvKJ7yTT3Nt4PPIa59iw0O3U92BgWPTleEx9r2m+y+VH+anKhLzVPhCSLsBxnTEBRi9Hu2GsaDM1oZeQ2a5GeH6GAnggL1xeig0BJsOE0L97lEkdqgSP1AfJ/eWUTXBMW5A2V1KR2BaWykdHmXJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714319; c=relaxed/simple;
-	bh=lbKk6LnfqpIPH19BZaIRYZ5klqmBbaD22e+VlOFNb8A=;
+	s=arc-20240116; t=1760715113; c=relaxed/simple;
+	bh=88GfuKTdkEVgl45xtidlXQxtY4ABMDfO1oRObOb81c8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uOtBoIOgi/zPFwVAgujecYNTxBRSQd95xxUaMjkTKI8uc20gR+/uMHnieH1wJrau2ivcDqj+dYja8s8mhr572o/4iZmi42DuU9JSdcMzSkJdYywzuPOXKwHdVpajxIE+JrSqHF68dppt+3wU52nBbh6y5HkIf5db63Y2GxSxPRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGEW3jWU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC00CC4CEE7;
-	Fri, 17 Oct 2025 15:18:38 +0000 (UTC)
+	 MIME-Version; b=KiJ5WUUP+AgsHTGnmkos1S8fZ3Q3SZ0tgUm8Ai/6kHJEyfYDqDAxqPQV5Gsk39e6lRsn/BQmsJBoZrUd+lJA64bPYtUAW//maR2G9NylCFfzQEFn1sRlYaqfb3GBqbXPzsHa26xzFLmSD/ebB+R3l8Rym/YKH0W57Abx3sa6s5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Os7xtqtI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5E2C4CEE7;
+	Fri, 17 Oct 2025 15:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714319;
-	bh=lbKk6LnfqpIPH19BZaIRYZ5klqmBbaD22e+VlOFNb8A=;
+	s=korg; t=1760715113;
+	bh=88GfuKTdkEVgl45xtidlXQxtY4ABMDfO1oRObOb81c8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mGEW3jWUbVdA6RMGppBxQMCTvdp2LBCPuxvXGarRKCLl/YCvRHhIEDzik/MV/f/rT
-	 hJwl1t/Pou+UqBHoQf6bjui8fdPwQjbhmTYTCDhI6mi124cNF9DOJiMbnD1x3/k3JQ
-	 cRN6SYyUuxc5wDSCxaiBj6zt61hvWyaSUhLvBhcg=
+	b=Os7xtqtI+Iisw0otO5WA3/AlKoKmi0deKA4RCvSgALLPlNZvHh0BqXe+vZ0gheYGM
+	 BHA4qBl6il5cJfR1vfcJs0R9FXzHhVXGXkvT3rigpV/Ev5yXZQUOxvnWZDRgKlmnL5
+	 31c/WUMMWR2nJWUZIYrdzBRre1mI8N4I6VYdB28g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/277] drm/amd/display: Add missing DCE6 SCL_HORZ_FILTER_INIT* SRIs
-Date: Fri, 17 Oct 2025 16:51:17 +0200
-Message-ID: <20251017145149.697986104@linuxfoundation.org>
+Subject: [PATCH 6.17 103/371] net: mdio: mdio-i2c: Hold the i2c bus lock during smbus transactions
+Date: Fri, 17 Oct 2025 16:51:18 +0200
+Message-ID: <20251017145205.666901701@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit d60f9c45d1bff7e20ecd57492ef7a5e33c94a37c ]
+[ Upstream commit 4dc8b26a3ac2cb79f19f252d9077696d3ef0823a ]
 
-Without these, it's impossible to program these registers.
+When accessing an MDIO register using single-byte smbus accesses, we have to
+perform 2 consecutive operations targeting the same address,
+first accessing the MSB then the LSB of the 16 bit register:
 
-Fixes: 102b2f587ac8 ("drm/amd/display: dce_transform: DCE6 Scaling Horizontal Filter Init (v2)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+  read_1_byte(addr); <- returns MSB of register at address 'addr'
+  read_1_byte(addr); <- returns LSB
+
+Some PHY devices present in SFP such as the Broadcom 5461 don't like
+seeing foreign i2c transactions in-between these 2 smbus accesses, and
+will return the MSB a second time when trying to read the LSB :
+
+  read_1_byte(addr); <- returns MSB
+
+  	i2c_transaction_for_other_device_on_the_bus();
+
+  read_1_byte(addr); <- returns MSB again
+
+Given the already fragile nature of accessing PHYs/SFPs with single-byte
+smbus accesses, it's safe to say that this Broadcom PHY may not be the
+only one acting like this.
+
+Let's therefore hold the i2c bus lock while performing our smbus
+transactions to avoid interleaved accesses.
+
+Fixes: d4bd3aca33c2 ("net: mdio: mdio-i2c: Add support for single-byte SMBus operations")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251003070311.861135-1-maxime.chevallier@bootlin.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dce_transform.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/mdio/mdio-i2c.c | 39 ++++++++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-index cbce194ec7b82..ff746fba850bc 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-@@ -155,6 +155,8 @@
- 	SRI(SCL_COEF_RAM_TAP_DATA, SCL, id), \
- 	SRI(VIEWPORT_START, SCL, id), \
- 	SRI(VIEWPORT_SIZE, SCL, id), \
-+	SRI(SCL_HORZ_FILTER_INIT_RGB_LUMA, SCL, id), \
-+	SRI(SCL_HORZ_FILTER_INIT_CHROMA, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_SCALE_RATIO, SCL, id), \
- 	SRI(SCL_VERT_FILTER_SCALE_RATIO, SCL, id), \
- 	SRI(SCL_VERT_FILTER_INIT, SCL, id), \
+diff --git a/drivers/net/mdio/mdio-i2c.c b/drivers/net/mdio/mdio-i2c.c
+index 53e96bfab5422..ed20352a589a3 100644
+--- a/drivers/net/mdio/mdio-i2c.c
++++ b/drivers/net/mdio/mdio-i2c.c
+@@ -116,17 +116,23 @@ static int smbus_byte_mii_read_default_c22(struct mii_bus *bus, int phy_id,
+ 	if (!i2c_mii_valid_phy_id(phy_id))
+ 		return 0;
+ 
+-	ret = i2c_smbus_xfer(i2c, i2c_mii_phy_addr(phy_id), 0,
+-			     I2C_SMBUS_READ, reg,
+-			     I2C_SMBUS_BYTE_DATA, &smbus_data);
++	i2c_lock_bus(i2c, I2C_LOCK_SEGMENT);
++
++	ret = __i2c_smbus_xfer(i2c, i2c_mii_phy_addr(phy_id), 0,
++			       I2C_SMBUS_READ, reg,
++			       I2C_SMBUS_BYTE_DATA, &smbus_data);
+ 	if (ret < 0)
+-		return ret;
++		goto unlock;
+ 
+ 	val = (smbus_data.byte & 0xff) << 8;
+ 
+-	ret = i2c_smbus_xfer(i2c, i2c_mii_phy_addr(phy_id), 0,
+-			     I2C_SMBUS_READ, reg,
+-			     I2C_SMBUS_BYTE_DATA, &smbus_data);
++	ret = __i2c_smbus_xfer(i2c, i2c_mii_phy_addr(phy_id), 0,
++			       I2C_SMBUS_READ, reg,
++			       I2C_SMBUS_BYTE_DATA, &smbus_data);
++
++unlock:
++	i2c_unlock_bus(i2c, I2C_LOCK_SEGMENT);
++
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -147,17 +153,22 @@ static int smbus_byte_mii_write_default_c22(struct mii_bus *bus, int phy_id,
+ 
+ 	smbus_data.byte = (val & 0xff00) >> 8;
+ 
+-	ret = i2c_smbus_xfer(i2c, i2c_mii_phy_addr(phy_id), 0,
+-			     I2C_SMBUS_WRITE, reg,
+-			     I2C_SMBUS_BYTE_DATA, &smbus_data);
++	i2c_lock_bus(i2c, I2C_LOCK_SEGMENT);
++
++	ret = __i2c_smbus_xfer(i2c, i2c_mii_phy_addr(phy_id), 0,
++			       I2C_SMBUS_WRITE, reg,
++			       I2C_SMBUS_BYTE_DATA, &smbus_data);
+ 	if (ret < 0)
+-		return ret;
++		goto unlock;
+ 
+ 	smbus_data.byte = val & 0xff;
+ 
+-	ret = i2c_smbus_xfer(i2c, i2c_mii_phy_addr(phy_id), 0,
+-			     I2C_SMBUS_WRITE, reg,
+-			     I2C_SMBUS_BYTE_DATA, &smbus_data);
++	ret = __i2c_smbus_xfer(i2c, i2c_mii_phy_addr(phy_id), 0,
++			       I2C_SMBUS_WRITE, reg,
++			       I2C_SMBUS_BYTE_DATA, &smbus_data);
++
++unlock:
++	i2c_unlock_bus(i2c, I2C_LOCK_SEGMENT);
+ 
+ 	return ret < 0 ? ret : 0;
+ }
 -- 
 2.51.0
 
