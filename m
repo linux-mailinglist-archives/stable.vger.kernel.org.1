@@ -1,117 +1,100 @@
-Return-Path: <stable+bounces-186259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5365EBE736D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 10:40:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 955D5BE73E9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 10:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE4DA1A62FAD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 08:40:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE4FB586028
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 08:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51AA29D279;
-	Fri, 17 Oct 2025 08:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0648129E0E5;
+	Fri, 17 Oct 2025 08:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="USH3g03Q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B861021B185;
-	Fri, 17 Oct 2025 08:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6310A26F44C
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 08:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760690416; cv=none; b=R62wCbWkOliWKVDvBySslLwzwdDAy9MgAxkQgBQx5vT+2IUkjkuVcvZ+4Qx0hYZ1IfiKILJdcaoHbqClAbRW6kXqSQXfWPd93uleCOEh4HWs+g6hlexKb0F9PujZDtfBKsI7fX5E0Owi9WXDA0spEfZlhlGx/Eevh31q6V4hsR8=
+	t=1760690688; cv=none; b=pbah/cNhueEeoKuSr200XUuqNEy+wstZb21BgXa2Bxl/rv8hyptUOGQUBofo7S9Gz3Bz6S97XitUurMQwTi8Q0vu0yrttpPXXeHfa7PLd7JF7B1u1iVD2sfvvygLIGccI/XASme2uYSKx2nAKRDZvTfZZ3TF9HWFPkM8Xr9YRhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760690416; c=relaxed/simple;
-	bh=dsZvQxJtweRSbWprsBUkU2SOnynoqRWoBCApBCXh3Qg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=baqDEEOF/fKZFnRY5uzmi/kCrhudUfpW63761ASUlsnjKERvjza0snx6yjNvO1WKy/DTZHMoWV+gzWre3gwCVUDpCJ1dr6c7NUJMtJAYpBM0BDBC52j85luyN/uys9nfCFsvRn+RV647vKk01GSMZzELCHnX7qAE+yeSjo8kX9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=radxa.com; spf=pass smtp.mailfrom=radxa.com; arc=none smtp.client-ip=54.243.244.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=radxa.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=radxa.com
-X-QQ-mid: zesmtpsz3t1760690358tf89476e9
-X-QQ-Originating-IP: /A5aLrgRw/j8SKmd3JVMi6f9jX/yuWXc2XR2LUdo+jU=
-Received: from bigfoot-server-arm-node1.classf ( [183.250.239.212])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 17 Oct 2025 16:39:16 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 10021269870126242908
-EX-QQ-RecipientCnt: 12
-From: Junhao Xie <bigfoot@radxa.com>
-To: Srinivas Kandagatla <srini@kernel.org>,
-	Amol Maheshwari <amahesh@qti.qualcomm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ling Xu <quic_lxu5@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Junhao Xie <bigfoot@radxa.com>,
-	stable@kernel.org,
-	Xilin Wu <sophon@radxa.com>
-Subject: [PATCH] misc: fastrpc: Fix dma_buf object leak in fastrpc_map_lookup
-Date: Fri, 17 Oct 2025 16:39:06 +0800
-Message-ID: <48B368FB4C7007A7+20251017083906.3259343-1-bigfoot@radxa.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1760690688; c=relaxed/simple;
+	bh=Y98ZKLF+7BjByi5cyVpSHwAEzXBXyJ5zb5RbjsR4cSo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=uc/u+NQj8WoUmd5an4exIgGqFe7+rRYcOtNNZhW+irVJgBgpQ8X+sAwYaZWOGHcCpRVqhpHaipyza1gFINj4t4wmzGk4tXCFj9tUguuUW2w53wPWB6Td23sDMtHN4j/Y8aN7v8bSMUwuvBBBGahrjyqAwe4p+onGD0orO2pmdt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=USH3g03Q; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760690688; x=1792226688;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=Y98ZKLF+7BjByi5cyVpSHwAEzXBXyJ5zb5RbjsR4cSo=;
+  b=USH3g03QgbsB76qty2rrqsx6ahF2qLuegfSW2zU7fyP/Yg2IPJjAmkfx
+   SZra2I/G/wXKRlVr1YK0W8WIE5m2Lui48Hdd3XsevSakt5MEzcDA6h87J
+   K0bK4CXD8Cepd1pm70RR3Fm+bVx4KZGtc24gdyvhSs7V4AnIdFfLQhfbo
+   mOrnsVdlzc5oVMlTbk8GkSuZRijVX8OuDHn8K6fZJu3TwGGN+amwgMQ2U
+   ypiWca1zSNi7I2s9Mr6eJ8kcK2e5+NB+TIvjnCT9bX4Mw7iXs15ipVVkN
+   gy8BJ4oxkIZw10AAB8sRtRaVYdjrEHspYeLSDWwe/TnBcblL9MiyeyvC1
+   g==;
+X-CSE-ConnectionGUID: hoOPrZn/ThSDCy6cpPouHg==
+X-CSE-MsgGUID: x6gNC/DMS4u2Dp4CewJX1w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="62608729"
+X-IronPort-AV: E=Sophos;i="6.19,236,1754982000"; 
+   d="scan'208";a="62608729"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 01:44:47 -0700
+X-CSE-ConnectionGUID: 27xKFFBxTKm/1VdrlZPgIg==
+X-CSE-MsgGUID: k5o0Zs2MRSudQj/qo6dA2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,236,1754982000"; 
+   d="scan'208";a="182617930"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by fmviesa006.fm.intel.com with ESMTP; 17 Oct 2025 01:44:43 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v9g4A-0005ln-2E;
+	Fri, 17 Oct 2025 08:44:19 +0000
+Date: Fri, 17 Oct 2025 16:43:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Junhao Xie <bigfoot@radxa.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] misc: fastrpc: Fix dma_buf object leak in
+ fastrpc_map_lookup
+Message-ID: <aPIBqrFFUfK8j94F@0fa591faaba7>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:radxa.com:qybglogicsvrgz:qybglogicsvrgz7a-0
-X-QQ-XMAILINFO: OYM3GZRvbPalLiATFyBjHVySEMnZJbrPaHEmf0UANKERrzk59tlfdMzE
-	1xVTYc05P4fnjfJf28d2OOdTKxK30dnaWuuB7Nu5kL3M5l6e546UvECTxFlLljqwE9s0PeL
-	uS5gOemc3MZYV16PsD7c0yH0Y7QzDc+mlpQ7W6aX6KiNoCL97HEYM+hu3uUNqq5Hte7fWn/
-	7ol9cdSXCzLv+ERwWrjbaMQ6RJAd487S9M8l/0+JV3qcOqW2ActcHnDhCmQ/LR2C9dQzpYD
-	SnmIol/jN5MVdChcxjZLRZ1mOLKzPao/Hy+5/yq1wy1A1N0lOYCThR+jm4h89/bmPK/Qq6l
-	dJNE/7nj6ekgz3cANWfPr5c+Vn7EgpP0P2At+PoKELaFqIkceDT0j7M3yjk66U+gCRpy8FK
-	E0bipQx8dowM0eSgzFUzXfqcYkjVf2RZ+VKplS6Z7FxvH+QSiV3SQxaX03z5Mly27nm5QV3
-	hxYAIUKXHh7UC0top63w1ACj4lH8Llkpp7TA6eaiUZ6Zb+WPfYbzUojPIJZRPba++Yopghx
-	QvfAVnrTEEs306aSLr8xSpxIkZ9Blevq5I9x4FsSZ6nhvZO66iPn6JchUloSj7n2hJpztW2
-	EhIFRoVv1+6dM9xJdOrGZiCNYleuB/hI/T9U9w6DUazM3eXeA8k1vyGE2+If524evhKdCdW
-	vFAVprC0v/NmMyKDCZbQr3HXQuqj+L2VISrWecmWAPxzxJaXSqP5vVmGs8Rbo9yjOf6Oe1n
-	TDPMJvW5gFbsueQYlfIPZeft+3HFd7QD4uxmO+jYniGTYrh38B7GXqDMT06vpEroKhre2us
-	bofaZWb4Is5ySxdEZhTyC2+isAuz7OZPUQagdkxSWaKcxH6xPrOzsDop0gRAs+VEnqSdFms
-	bjVAjF2sYg//ngFTNpMBfpkSf8gZZgxBYRYhxT+h3e6IaOijTTw8HZCfuPVWo7c6b1plh6a
-	VWpgg23v/RHreGIgctvr1Xg0SDgsTxM3xhvW+CNasByBbcbiL8sPLRzWznzG2wVn3BF/AJp
-	cgRnwohQ==
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <48B368FB4C7007A7+20251017083906.3259343-1-bigfoot@radxa.com>
 
-In fastrpc_map_lookup, dma_buf_get is called to obtain a reference to
-the dma_buf for comparison purposes. However, this reference is never
-released when the function returns, leading to a dma_buf memory leak.
+Hi,
 
-Fix this by adding dma_buf_put before returning from the function,
-ensuring that the temporarily acquired reference is properly released
-regardless of whether a matching map is found.
+Thanks for your patch.
 
-Fixes: 9031626ade38 ("misc: fastrpc: Fix fastrpc_map_lookup operation")
-Cc: stable@kernel.org
-Signed-off-by: Junhao Xie <bigfoot@radxa.com>
-Tested-by: Xilin Wu <sophon@radxa.com>
----
- drivers/misc/fastrpc.c | 2 ++
- 1 file changed, 2 insertions(+)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index 621bce7e101c1..ee652ef01534a 100644
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -381,6 +381,8 @@ static int fastrpc_map_lookup(struct fastrpc_user *fl, int fd,
- 	}
- 	spin_unlock(&fl->lock);
- 
-+	dma_buf_put(buf);
-+
- 	return ret;
- }
- 
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] misc: fastrpc: Fix dma_buf object leak in fastrpc_map_lookup
+Link: https://lore.kernel.org/stable/48B368FB4C7007A7%2B20251017083906.3259343-1-bigfoot%40radxa.com
+
 -- 
-2.50.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
