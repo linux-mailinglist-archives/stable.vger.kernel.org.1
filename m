@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-187631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7380CBEA669
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B16BEA269
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FE4A18938A7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A86D019A5656
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED00330B2B;
-	Fri, 17 Oct 2025 15:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BBE330B26;
+	Fri, 17 Oct 2025 15:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wamz2mFn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruwqnbu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738FD330B2E;
-	Fri, 17 Oct 2025 15:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28BB330B08;
+	Fri, 17 Oct 2025 15:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716629; cv=none; b=Dt7hgiV4D7IxeEqIeT6qOHbwckfWK6M7voVC0Nn1QVhkPLtPJ9xEZ65yLT8phtR6yOVo92Lwvpl1aFhxn0WlxmIBDCkbdKDQM34fdH6+a5wcLJeP6W1Sda2YVPqITw73INO6k7dF7LMpwenR85i6FkOhxbAXIEbQBup2qZSu10w=
+	t=1760715774; cv=none; b=lzBcarWCSWs6zp6LkSA0FYdJno82j710435oexruiYZKsh1EI6Akf0WlEAnGzxmvE+Sh6qubPVjUY226RiQX8XtOcTdxrgTrQdzSLkyQVfbwiHC8g6N/IOVoAZ3LUWqwrSYCptswJ46dfTJg0nb8acMUlnMWMBqutJv145RGT4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716629; c=relaxed/simple;
-	bh=2f8Vsg9XE0Rb2Y0VNB9Idl2MGmXzVk26P4wyJUEFOhs=;
+	s=arc-20240116; t=1760715774; c=relaxed/simple;
+	bh=ClmddUr4zoXEztnZX93QJpoLTVXzNHCsKcp8pUXnKII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NNMawlmMplR2FYbO3nF1th3iJSHKzbB46fnql3SsR+ZJ27ofXIGJAj0Ya8pLSwNCVqwkaKKtJ5oejuXPPpz0TeI1NkksZB95njDMjYK39kyC9Q/IOg00jRlnKre/jY2NtpINCdPNuuzYbB1zuu/3pQlhC650tAFu2BAIm9Yy6yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wamz2mFn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F266DC4CEFE;
-	Fri, 17 Oct 2025 15:57:08 +0000 (UTC)
+	 MIME-Version; b=Gcjop2kuRxoKvG7oakpahmlkKEmwuSy5TXm1U2bVwghClu9nrhYnUPGB+iSkrBqq4AcGiY5lsaSaMUfuPkNrrZmRucH4NR+EovvCKq0P4zjJuAP+xXDaxo/Wa0YYIR32ohQ9QHYqal2Z4odg80t3GK5ux5lv9WY3oKQHiLiHBig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruwqnbu+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76999C4CEE7;
+	Fri, 17 Oct 2025 15:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716629;
-	bh=2f8Vsg9XE0Rb2Y0VNB9Idl2MGmXzVk26P4wyJUEFOhs=;
+	s=korg; t=1760715773;
+	bh=ClmddUr4zoXEztnZX93QJpoLTVXzNHCsKcp8pUXnKII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wamz2mFnOL5SQ14IIs/b/SxyU1lrp/ODaAts0GPOxagyF8ckxEJhwlv2/tw4OJuKF
-	 Isf9lnxt5TfxeHAAWQeD1dKXhhbQ6tKuS+nkllBztT8W4kuKwaUxL75hlTP55luy1X
-	 qf7ayQd1pPRZcjaZTRA+jPUSoh4Bg+wN5qQe3zOQ=
+	b=ruwqnbu+uATgb5JKksK+Rg6dVU4xco3CFxLe3s3GDkr8GaKH+v974NzmxYSAxiw6U
+	 9k6lWMSeedZ5xsFDuLhhuQF7ax9QC4HAudWbuTVgTs/OLh653GZ9fQXs0NiC0YlVw9
+	 wRRdMz/2kmeNFTHdWVgbBKTdgtYtfYfsgITe3pdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Santhosh Kumar K <s-k6@ti.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 213/276] spi: cadence-quadspi: Flush posted register writes before DAC access
-Date: Fri, 17 Oct 2025 16:55:06 +0200
-Message-ID: <20251017145150.238666805@linuxfoundation.org>
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH 6.17 332/371] media: iris: Simplify session stop logic by relying on vb2 checks
+Date: Fri, 17 Oct 2025 16:55:07 +0200
+Message-ID: <20251017145214.091034060@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +65,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratyush Yadav <pratyush@kernel.org>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-commit 1ad55767e77a853c98752ed1e33b68049a243bd7 upstream.
+commit 0fe10666d3b4d0757b7f4671892523855ee68cc8 upstream.
 
-cqspi_read_setup() and cqspi_write_setup() program the address width as
-the last step in the setup. This is likely to be immediately followed by
-a DAC region read/write. On TI K3 SoCs the DAC region is on a different
-endpoint from the register region. This means that the order of the two
-operations is not guaranteed, and they might be reordered at the
-interconnect level. It is possible that the DAC read/write goes through
-before the address width update goes through. In this situation if the
-previous command used a different address width the OSPI command is sent
-with the wrong number of address bytes, resulting in an invalid command
-and undefined behavior.
+Remove earlier complex conditional checks in the non-streaming path that
+attempted to verify if stop was called on a plane that was previously
+started. These explicit checks are redundant, as vb2 already ensures
+that stop is only called on ports that have been started, maintaining
+correct buffer state management.
 
-Read back the size register to make sure the write gets flushed before
-accessing the DAC region.
-
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-CC: stable@vger.kernel.org
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
-Message-ID: <20250905185958.3575037-3-s-k6@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 11712ce70f8e ("media: iris: implement vb2 streaming ops")
+Cc: stable@vger.kernel.org
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # X1E80100
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    2 ++
- 1 file changed, 2 insertions(+)
+ .../qcom/iris/iris_hfi_gen1_command.c         | 42 +++++++++----------
+ 1 file changed, 19 insertions(+), 23 deletions(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -666,6 +666,7 @@ static int cqspi_read_setup(struct cqspi
- 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
- 	reg |= (op->addr.nbytes - 1);
- 	writel(reg, reg_base + CQSPI_REG_SIZE);
-+	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
- 	return 0;
- }
+diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
+index 5fc30d54af4d..3e41c8cb620e 100644
+--- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
++++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
+@@ -184,11 +184,25 @@ static int iris_hfi_gen1_session_stop(struct iris_inst *inst, u32 plane)
+ 	u32 flush_type = 0;
+ 	int ret = 0;
  
-@@ -810,6 +811,7 @@ static int cqspi_write_setup(struct cqsp
- 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
- 	reg |= (op->addr.nbytes - 1);
- 	writel(reg, reg_base + CQSPI_REG_SIZE);
-+	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
- 	return 0;
- }
+-	if ((V4L2_TYPE_IS_OUTPUT(plane) &&
+-	     inst->state == IRIS_INST_INPUT_STREAMING) ||
+-	    (V4L2_TYPE_IS_CAPTURE(plane) &&
+-	     inst->state == IRIS_INST_OUTPUT_STREAMING) ||
+-	    inst->state == IRIS_INST_ERROR) {
++	if (inst->state == IRIS_INST_STREAMING) {
++		if (V4L2_TYPE_IS_OUTPUT(plane))
++			flush_type = HFI_FLUSH_ALL;
++		else if (V4L2_TYPE_IS_CAPTURE(plane))
++			flush_type = HFI_FLUSH_OUTPUT;
++
++		reinit_completion(&inst->flush_completion);
++
++		flush_pkt.shdr.hdr.size = sizeof(struct hfi_session_flush_pkt);
++		flush_pkt.shdr.hdr.pkt_type = HFI_CMD_SESSION_FLUSH;
++		flush_pkt.shdr.session_id = inst->session_id;
++		flush_pkt.flush_type = flush_type;
++
++		ret = iris_hfi_queue_cmd_write(core, &flush_pkt, flush_pkt.shdr.hdr.size);
++		if (!ret) {
++			inst->flush_responses_pending++;
++			ret = iris_wait_for_session_response(inst, true);
++		}
++	} else {
+ 		reinit_completion(&inst->completion);
+ 		iris_hfi_gen1_packet_session_cmd(inst, &pkt, HFI_CMD_SESSION_STOP);
+ 		ret = iris_hfi_queue_cmd_write(core, &pkt, pkt.shdr.hdr.size);
+@@ -207,24 +221,6 @@ static int iris_hfi_gen1_session_stop(struct iris_inst *inst, u32 plane)
+ 					 VB2_BUF_STATE_ERROR);
+ 		iris_helper_buffers_done(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE,
+ 					 VB2_BUF_STATE_ERROR);
+-	} else if (inst->state == IRIS_INST_STREAMING) {
+-		if (V4L2_TYPE_IS_OUTPUT(plane))
+-			flush_type = HFI_FLUSH_ALL;
+-		else if (V4L2_TYPE_IS_CAPTURE(plane))
+-			flush_type = HFI_FLUSH_OUTPUT;
+-
+-		reinit_completion(&inst->flush_completion);
+-
+-		flush_pkt.shdr.hdr.size = sizeof(struct hfi_session_flush_pkt);
+-		flush_pkt.shdr.hdr.pkt_type = HFI_CMD_SESSION_FLUSH;
+-		flush_pkt.shdr.session_id = inst->session_id;
+-		flush_pkt.flush_type = flush_type;
+-
+-		ret = iris_hfi_queue_cmd_write(core, &flush_pkt, flush_pkt.shdr.hdr.size);
+-		if (!ret) {
+-			inst->flush_responses_pending++;
+-			ret = iris_wait_for_session_response(inst, true);
+-		}
+ 	}
  
+ 	return ret;
+-- 
+2.51.0
+
 
 
 
