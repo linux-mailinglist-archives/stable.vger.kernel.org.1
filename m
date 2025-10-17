@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-186795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D08BE9CF6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD3CBE97ED
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:08:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42734742001
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C440E1880512
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEF61D5CE0;
-	Fri, 17 Oct 2025 15:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0983632C94A;
+	Fri, 17 Oct 2025 15:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkdNz5ah"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lt+/8jQ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48341332912;
-	Fri, 17 Oct 2025 15:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE1932E151;
+	Fri, 17 Oct 2025 15:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714259; cv=none; b=NT1hV9c2yySbS/HBKCNTMfsbVoNXZD032foKVUqUnLbgJ+fNH1nyNMdJ36ReQrLLXGwBtSOqiSAi2yQzUEp5diNhWHnKbUF/D39KNenngdUwJHEmUsii1/xVUFGVJdtD6T57uCGd7FzyjqOAVm73mDnUfKgEVeM0eBQ0gRez3hg=
+	t=1760713528; cv=none; b=WyYuS1lNWE731qejTgchmth54rGe3ptb68oTLu4JrqmhM4dAIfZmFhStTskee6HjHsjsSAJ60Pt2iCcoutN27j9ro4SQjoUiNYDgLHcfO19/xxWCgHBvFitKAElzesER8lq1l13n1ReNM6OwiU3mQSXUa8G7oQQUOGkmLHcQZjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714259; c=relaxed/simple;
-	bh=70TN6uJLtL6/y8tOmhiJLgiorjdltspeBsGs0lpr2kI=;
+	s=arc-20240116; t=1760713528; c=relaxed/simple;
+	bh=DRNRSHc4iBCHGmq+dMOu8qvIuH0mm7jNIPtwbA0XPHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uqcPqp6S0L4ppu//2RxgUjmdOc9PgmZSt804Jp1JMv4rtJ0kzY+CXrj6ccQI4UG8zRXQyC4EMY2SMtybfQ85qffxHSZqCwIhxMV+zxG3J3KqwwxrVPBS990o4kbs6bXbG3RgorQOC9IR1Hl1t7lRNygcMH4g++yTBkGXtu0YRrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkdNz5ah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDCBC4CEE7;
-	Fri, 17 Oct 2025 15:17:38 +0000 (UTC)
+	 MIME-Version; b=m241/oaf93IeYqJNMzN5266iHPIc0vRH693NEslVhF4k8anCHf6OP35Ld51efM5djTLdF3PNOQ1LfeIBA1lnFgiyUbN0r89kYS5V3AtMSiTgSDpPNnmZSs1ecSkOKPLSiHY7NtcFFRnA7mHafFG2NMfuhUHtyncEtBcCSKHm2Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lt+/8jQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D7EC4CEE7;
+	Fri, 17 Oct 2025 15:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714259;
-	bh=70TN6uJLtL6/y8tOmhiJLgiorjdltspeBsGs0lpr2kI=;
+	s=korg; t=1760713528;
+	bh=DRNRSHc4iBCHGmq+dMOu8qvIuH0mm7jNIPtwbA0XPHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkdNz5ahZ+3PUEK+6IcX0qnvV8ZBSJQyeQHGTGGseU5jggHQRIWaxxGsUuyN6A9Tm
-	 +d9I4uJghMEbm5TP/xYACslLzyGiO1HtodNj+p1m6HxfMClq5mM/v0OHsZzc3JICu0
-	 +BycpsnJ5hQaz1CPuEdwDU/PPwWO8tryWqNeVKjQ=
+	b=lt+/8jQ8CQ2EJFVCRgQfoYcVLRsTxCHLH9xQ5tshiWVBjbeUpxlxxubDZppKRKws+
+	 lnnAE2Zp4bw7OaD86xyPCgDUd5W03P4XqW5UZsaMvCahiPEgx35CyZrEDaPi3mC0OK
+	 LX6xDvaXPRGSrW3rJtIp5jjeQfCDzsD+SlwrddZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Le Chen <tom2cat@sjtu.edu.cn>,
-	Alexei Starovoitov <ast@kernel.org>,
-	KaFai Wan <kafai.wan@linux.dev>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/277] bpf: Avoid RCU context warning when unpinning htab with internal structs
+Subject: [PATCH 6.6 028/201] ASoC: SOF: ipc4-topology: Correct the minimum host DMA buffer size
 Date: Fri, 17 Oct 2025 16:51:29 +0200
-Message-ID: <20251017145150.128493786@linuxfoundation.org>
+Message-ID: <20251017145135.778888014@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: KaFai Wan <kafai.wan@linux.dev>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 4f375ade6aa9f37fd72d7a78682f639772089eed ]
+[ Upstream commit a7fe5ff832d61d9393095bc3dd5f06f4af7da3c1 ]
 
-When unpinning a BPF hash table (htab or htab_lru) that contains internal
-structures (timer, workqueue, or task_work) in its values, a BUG warning
-is triggered:
- BUG: sleeping function called from invalid context at kernel/bpf/hashtab.c:244
- in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 14, name: ksoftirqd/0
- ...
+The firmware has changed the minimum host buffer size from 2 periods to
+4 periods (1 period is 1ms) which was missed by the kernel side.
 
-The issue arises from the interaction between BPF object unpinning and
-RCU callback mechanisms:
-1. BPF object unpinning uses ->free_inode() which schedules cleanup via
-   call_rcu(), deferring the actual freeing to an RCU callback that
-   executes within the RCU_SOFTIRQ context.
-2. During cleanup of hash tables containing internal structures,
-   htab_map_free_internal_structs() is invoked, which includes
-   cond_resched() or cond_resched_rcu() calls to yield the CPU during
-   potentially long operations.
+Adjust the SOF_IPC4_MIN_DMA_BUFFER_SIZE to 4 ms to align with firmware.
 
-However, cond_resched() or cond_resched_rcu() cannot be safely called from
-atomic RCU softirq context, leading to the BUG warning when attempting
-to reschedule.
-
-Fix this by changing from ->free_inode() to ->destroy_inode() and rename
-bpf_free_inode() to bpf_destroy_inode() for BPF objects (prog, map, link).
-This allows direct inode freeing without RCU callback scheduling,
-avoiding the invalid context warning.
-
-Reported-by: Le Chen <tom2cat@sjtu.edu.cn>
-Closes: https://lore.kernel.org/all/1444123482.1827743.1750996347470.JavaMail.zimbra@sjtu.edu.cn/
-Fixes: 68134668c17f ("bpf: Add map side support for bpf timers.")
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: KaFai Wan <kafai.wan@linux.dev>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20251008102628.808045-2-kafai.wan@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://github.com/thesofproject/sof/commit/f0a14a3f410735db18a79eb7a5f40dc49fdee7a7
+Fixes: 594c1bb9ff73 ("ASoC: SOF: ipc4-topology: Do not parse the DMA_BUFFER_SIZE token")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20251002135752.2430-2-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/inode.c | 4 ++--
+ sound/soc/sof/ipc4-topology.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
-index 9aaf5124648bd..746b5644d9a19 100644
---- a/kernel/bpf/inode.c
-+++ b/kernel/bpf/inode.c
-@@ -775,7 +775,7 @@ static int bpf_show_options(struct seq_file *m, struct dentry *root)
- 	return 0;
- }
+diff --git a/sound/soc/sof/ipc4-topology.h b/sound/soc/sof/ipc4-topology.h
+index 0fb759c6eeaf9..07bd84204baa7 100644
+--- a/sound/soc/sof/ipc4-topology.h
++++ b/sound/soc/sof/ipc4-topology.h
+@@ -59,8 +59,8 @@
  
--static void bpf_free_inode(struct inode *inode)
-+static void bpf_destroy_inode(struct inode *inode)
- {
- 	enum bpf_type type;
+ #define SOF_IPC4_INVALID_NODE_ID	0xffffffff
  
-@@ -790,7 +790,7 @@ const struct super_operations bpf_super_ops = {
- 	.statfs		= simple_statfs,
- 	.drop_inode	= generic_delete_inode,
- 	.show_options	= bpf_show_options,
--	.free_inode	= bpf_free_inode,
-+	.destroy_inode	= bpf_destroy_inode,
- };
+-/* FW requires minimum 2ms DMA buffer size */
+-#define SOF_IPC4_MIN_DMA_BUFFER_SIZE	2
++/* FW requires minimum 4ms DMA buffer size */
++#define SOF_IPC4_MIN_DMA_BUFFER_SIZE	4
  
- enum {
+ /*
+  * The base of multi-gateways. Multi-gateways addressing starts from
 -- 
 2.51.0
 
