@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-187345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D526ABEA287
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4FEBEA593
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C3F618837ED
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED068188BFDC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE2C330B34;
-	Fri, 17 Oct 2025 15:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77C7330B3C;
+	Fri, 17 Oct 2025 15:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBjyltvt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5iZehwb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FA7270568;
-	Fri, 17 Oct 2025 15:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6369C330B00;
+	Fri, 17 Oct 2025 15:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715809; cv=none; b=WpE++S2n4pK4Q83ujfYOm8WbCFsq+nkCc7uKb/+fVOBB4sOSvK3Z/0ksCd9rYO3N23mF65+8SeOPX/0u54gAco5AaEqe8AGQTCx0lUbsU9Zbt40fKY84YTDpd4Yt2Am5em+bnrysoU71ezMeJD2xNpEEE/PLOUsGqSyCSpFajMQ=
+	t=1760716446; cv=none; b=AmVt4CFN54dKbDt8u5RCfUB9ZaPCoiCwKB2WEa21zr7D9XkwsUvKPM2P8lqmEXvoauRuzDKYpm0nhUfK2210GC8yVzSfA5mnhOzQmG0lMvKzk5KoKnqzOZ7E0q0AbVEWwQl+2zWIS6X4kbfnexnOWCOzNefLdM6elF8lEvR5HBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715809; c=relaxed/simple;
-	bh=Dwn2RLsp81F5LJ2JO10Ku8MEGCLe0NVukoEMY57PwtQ=;
+	s=arc-20240116; t=1760716446; c=relaxed/simple;
+	bh=7GSQWtf527WDldCRWmHn7gf6Xs3ADvLjcFyudGSOBtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQXsG7P9zVdqepbwbcRQleuqKM6tbsy6N4s1a0J8ik6unZm2wSX9GQxqFiITANkkGl5ZAaXjGnnPYZyLcGIuaU6T7ecOQbcPuaDAANn1vdxFoJYpWqhNAQHay1aq0L0SIDdPRCFWuKmLdyBk3QsXWrEp5tNsbMt+gwsWfHbN/L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBjyltvt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EFC3C4CEE7;
-	Fri, 17 Oct 2025 15:43:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ps8hj1kHvwOIiWZmCuwjG5DmHuS9KHWa0wypi3xU3FlOlM0HNLXhoWVedCmLXIwGq/KOyN9Fd0qQz1FC3Uo+cMbqjUJBAfr6L/JOnFkmEcA/Tjfw5V2jlowHEVjOcizyMAImN5dFqDOra1M9cNWE78NaSEW9pNKJLugiDGkpx8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5iZehwb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD70DC4CEE7;
+	Fri, 17 Oct 2025 15:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715808;
-	bh=Dwn2RLsp81F5LJ2JO10Ku8MEGCLe0NVukoEMY57PwtQ=;
+	s=korg; t=1760716446;
+	bh=7GSQWtf527WDldCRWmHn7gf6Xs3ADvLjcFyudGSOBtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBjyltvt/u8mJStKP4Gm1Xtk6OYJ1SLDSJ01t6sBod6Zh3aN2slKnxRd5zCpivwL/
-	 Lc0UZzoGmfWg14jIqUYuAnuowZRUzkncLOuotEwa9HOH0nlsQ+hjjo8uPWhqT+Oq2n
-	 1t2RCN6Hi8DnmYF73PJG5C1xwwT+t92cwPPaaxOs=
+	b=c5iZehwbhYu4EJyGUzMVuq9GJdzkqjYjwmCE0sMviQfTJQL8gp1crPhWVth9vNSQ8
+	 PuYhbWDhHD0IyCHwoi5a4hJBuLVzfeZNvafIMq6TyHm7P+EejcUYqZt3NgDuUD/OuC
+	 OBeZzafAjayz2/HOFHyvwS7v0XfGbSKKJw0bdArE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 6.17 311/371] wifi: iwlwifi: Fix dentry reference leak in iwl_mld_add_link_debugfs
-Date: Fri, 17 Oct 2025 16:54:46 +0200
-Message-ID: <20251017145213.329465016@linuxfoundation.org>
+	Jisheng Zhang <jszhang@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 5.15 194/276] pwm: berlin: Fix wrong register in suspend/resume
+Date: Fri, 17 Oct 2025 16:54:47 +0200
+Message-ID: <20251017145149.552499500@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-commit ff46e2e7034c78489fa7a6bc35f7c9dd8ab82905 upstream.
+commit 3a4b9d027e4061766f618292df91760ea64a1fcc upstream.
 
-The debugfs_lookup() function increases the dentry reference count.
-Add missing dput() call to release the reference when the "iwlmld"
-directory already exists.
+The 'enable' register should be BERLIN_PWM_EN rather than
+BERLIN_PWM_ENABLE, otherwise, the driver accesses wrong address, there
+will be cpu exception then kernel panic during suspend/resume.
 
-Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Fixes: bbf0722c1c66 ("pwm: berlin: Add suspend/resume support")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://lore.kernel.org/r/20250819114224.31825-1-jszhang@kernel.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://patch.msgid.link/20250902040955.2362472-1-linmq006@gmail.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/debugfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-berlin.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
-index cc052b0aa53f..372204bf8452 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
-@@ -1001,8 +1001,12 @@ void iwl_mld_add_link_debugfs(struct ieee80211_hw *hw,
- 	 * If not, this is a per-link dir of a MLO vif, add in it the iwlmld
- 	 * dir.
- 	 */
--	if (!mld_link_dir)
-+	if (!mld_link_dir) {
- 		mld_link_dir = debugfs_create_dir("iwlmld", dir);
-+	} else {
-+		/* Release the reference from debugfs_lookup */
-+		dput(mld_link_dir);
-+	}
- }
+--- a/drivers/pwm/pwm-berlin.c
++++ b/drivers/pwm/pwm-berlin.c
+@@ -274,7 +274,7 @@ static int berlin_pwm_suspend(struct dev
+ 		if (!channel)
+ 			continue;
  
- static ssize_t _iwl_dbgfs_fixed_rate_write(struct iwl_mld *mld, char *buf,
--- 
-2.51.0
-
+-		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_ENABLE);
++		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_EN);
+ 		channel->ctrl = berlin_pwm_readl(bpc, i, BERLIN_PWM_CONTROL);
+ 		channel->duty = berlin_pwm_readl(bpc, i, BERLIN_PWM_DUTY);
+ 		channel->tcnt = berlin_pwm_readl(bpc, i, BERLIN_PWM_TCNT);
+@@ -305,7 +305,7 @@ static int berlin_pwm_resume(struct devi
+ 		berlin_pwm_writel(bpc, i, channel->ctrl, BERLIN_PWM_CONTROL);
+ 		berlin_pwm_writel(bpc, i, channel->duty, BERLIN_PWM_DUTY);
+ 		berlin_pwm_writel(bpc, i, channel->tcnt, BERLIN_PWM_TCNT);
+-		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_ENABLE);
++		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_EN);
+ 	}
+ 
+ 	return 0;
 
 
 
