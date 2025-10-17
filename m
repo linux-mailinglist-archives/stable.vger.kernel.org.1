@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD4DBE99A8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D53BE9BA7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A26C622653
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CD101886680
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9796E2F12CF;
-	Fri, 17 Oct 2025 15:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D51231C9F;
+	Fri, 17 Oct 2025 15:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSGPcD2w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZILlDaQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464F732E144;
-	Fri, 17 Oct 2025 15:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2ABA3370F7;
+	Fri, 17 Oct 2025 15:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713653; cv=none; b=P9IeXio3cKoeFDjbe22eSUU/yI/16H8JIYnMxotYB58PWrO3qPkXR9v9nIsCfRfHZw+Pbrq4pbzn3o8XisNoqh/0DWt/K+WUXxQtNHDL2W3q0CYZYtDimPLISS6BOZnIS+KzwwAG0U83cIUDcPd0KryYKles7zvYBw+r/C01wGQ=
+	t=1760714327; cv=none; b=P9Po7HDQiNqXqyliUvDPpO6JS3ygLd1AkpuV36NKLnLTGCv3A2cdCW3ITTdBwGxOHOI0JIiNKSufYy2ZKGc04Um/Bkc9W+ZkvgUouAxADv6nED/UJigH1wgZQCc9Gap6tF9trGnVX5ljJ1WLayAYn7O1JnOcicPYS/EtYzUt9bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713653; c=relaxed/simple;
-	bh=F4fD9M6MKLcrNlaSuGLNLssvMb9B15A2m0EUWVoq7Cg=;
+	s=arc-20240116; t=1760714327; c=relaxed/simple;
+	bh=rmvxI/0DumJCC3VBNMopeur44u6dlJXyFFqWfbmBF5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkpaJFKYEgNkXYcaGMl1MRg+++uH6gzPelHP4u9uv6YCQ4CgrCmJrDLyUaSgfHLAoPaZ9EeFuj+WcGta2UjsOa+hNL1IJMiXnGSVGSOp+I9Fsw/LM92jxNOX0kaydDfkQ05e/L7y8mErz9ALETIadmB7pehhTQx22PF/oozBirk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSGPcD2w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BCAC4CEE7;
-	Fri, 17 Oct 2025 15:07:32 +0000 (UTC)
+	 MIME-Version; b=d09dy9d1iyJ7CcK+KDxbDQIkWI3N4ASwWxcIjVji1+zT6ojWlm2XcX73Ab6pHF1GclZsCr5tVl1+VXsBWamUhCwirdgYYDD3K1nOBMVdXD8qC6BdnQfgxv/pV8T4WSAgQEJ7zRKYFLlcuMgxmRobEoijk2e4tVDrn6sHKV1DC1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZILlDaQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A678C4CEE7;
+	Fri, 17 Oct 2025 15:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713653;
-	bh=F4fD9M6MKLcrNlaSuGLNLssvMb9B15A2m0EUWVoq7Cg=;
+	s=korg; t=1760714327;
+	bh=rmvxI/0DumJCC3VBNMopeur44u6dlJXyFFqWfbmBF5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSGPcD2w5HazbGPes0cJNMV3id2YwgjyVDQ8yhDFvSdZG3pWhYKl4z+bBjbMwFVSx
-	 H9jSzHW1EhvVzvU3yk5tXxU0G1spZ8M+19JJiIjuVNnskVi9x03fbn0C0bSwv0XWDl
-	 G04eRTZhAbwLzv3t95vqFmfh6a+pZTtn3Npr+Zgg=
+	b=KZILlDaQoZaKN7CNcMuBRoVENo7b2XghvuxX6hYN2hAeqJMTgR3fppaQrFtfDWUYn
+	 +eDt7FRhzZFLVMqcJjzuEUq5xf3eHpqBNK2YPkD9SdHgq+CXyEALrO834yXsva+9vA
+	 OB87b4YVeGJsc2nwuXOTB+Gv0saATVDP9WbsfM9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/201] drm/amdgpu: Add additional DCE6 SCL registers
+	Lukas Wunner <lukas@wunner.de>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.12 099/277] xen/manage: Fix suspend error path
 Date: Fri, 17 Oct 2025 16:51:46 +0200
-Message-ID: <20251017145136.402198938@linuxfoundation.org>
+Message-ID: <20251017145150.745761929@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 507296328b36ffd00ec1f4fde5b8acafb7222ec7 ]
+commit f770c3d858687252f1270265ba152d5c622e793f upstream.
 
-Fixes: 102b2f587ac8 ("drm/amd/display: dce_transform: DCE6 Scaling Horizontal Filter Init (v2)")
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The device power management API has the following asymmetry:
+* dpm_suspend_start() does not clean up on failure
+  (it requires a call to dpm_resume_end())
+* dpm_suspend_end() does clean up on failure
+  (it does not require a call to dpm_resume_start())
+
+The asymmetry was introduced by commit d8f3de0d2412 ("Suspend-related
+patches for 2.6.27") in June 2008:  It removed a call to device_resume()
+from device_suspend() (which was later renamed to dpm_suspend_start()).
+
+When Xen began using the device power management API in May 2008 with
+commit 0e91398f2a5d ("xen: implement save/restore"), the asymmetry did
+not yet exist.  But since it was introduced, a call to dpm_resume_end()
+is missing in the error path of dpm_suspend_start().  Fix it.
+
+Fixes: d8f3de0d2412 ("Suspend-related patches for 2.6.27")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org  # v2.6.27
+Reviewed-by: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <22453676d1ddcebbe81641bb68ddf587fee7e21e.1756990799.git.lukas@wunner.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h       | 7 +++++++
- drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h | 2 ++
- 2 files changed, 9 insertions(+)
+ drivers/xen/manage.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
-index 9de01ae574c03..067eddd9c62d8 100644
---- a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
-+++ b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_d.h
-@@ -4115,6 +4115,7 @@
- #define mmSCL0_SCL_COEF_RAM_CONFLICT_STATUS 0x1B55
- #define mmSCL0_SCL_COEF_RAM_SELECT 0x1B40
- #define mmSCL0_SCL_COEF_RAM_TAP_DATA 0x1B41
-+#define mmSCL0_SCL_SCALER_ENABLE 0x1B42
- #define mmSCL0_SCL_CONTROL 0x1B44
- #define mmSCL0_SCL_DEBUG 0x1B6A
- #define mmSCL0_SCL_DEBUG2 0x1B69
-@@ -4144,6 +4145,7 @@
- #define mmSCL1_SCL_COEF_RAM_CONFLICT_STATUS 0x1E55
- #define mmSCL1_SCL_COEF_RAM_SELECT 0x1E40
- #define mmSCL1_SCL_COEF_RAM_TAP_DATA 0x1E41
-+#define mmSCL1_SCL_SCALER_ENABLE 0x1E42
- #define mmSCL1_SCL_CONTROL 0x1E44
- #define mmSCL1_SCL_DEBUG 0x1E6A
- #define mmSCL1_SCL_DEBUG2 0x1E69
-@@ -4173,6 +4175,7 @@
- #define mmSCL2_SCL_COEF_RAM_CONFLICT_STATUS 0x4155
- #define mmSCL2_SCL_COEF_RAM_SELECT 0x4140
- #define mmSCL2_SCL_COEF_RAM_TAP_DATA 0x4141
-+#define mmSCL2_SCL_SCALER_ENABLE 0x4142
- #define mmSCL2_SCL_CONTROL 0x4144
- #define mmSCL2_SCL_DEBUG 0x416A
- #define mmSCL2_SCL_DEBUG2 0x4169
-@@ -4202,6 +4205,7 @@
- #define mmSCL3_SCL_COEF_RAM_CONFLICT_STATUS 0x4455
- #define mmSCL3_SCL_COEF_RAM_SELECT 0x4440
- #define mmSCL3_SCL_COEF_RAM_TAP_DATA 0x4441
-+#define mmSCL3_SCL_SCALER_ENABLE 0x4442
- #define mmSCL3_SCL_CONTROL 0x4444
- #define mmSCL3_SCL_DEBUG 0x446A
- #define mmSCL3_SCL_DEBUG2 0x4469
-@@ -4231,6 +4235,7 @@
- #define mmSCL4_SCL_COEF_RAM_CONFLICT_STATUS 0x4755
- #define mmSCL4_SCL_COEF_RAM_SELECT 0x4740
- #define mmSCL4_SCL_COEF_RAM_TAP_DATA 0x4741
-+#define mmSCL4_SCL_SCALER_ENABLE 0x4742
- #define mmSCL4_SCL_CONTROL 0x4744
- #define mmSCL4_SCL_DEBUG 0x476A
- #define mmSCL4_SCL_DEBUG2 0x4769
-@@ -4260,6 +4265,7 @@
- #define mmSCL5_SCL_COEF_RAM_CONFLICT_STATUS 0x4A55
- #define mmSCL5_SCL_COEF_RAM_SELECT 0x4A40
- #define mmSCL5_SCL_COEF_RAM_TAP_DATA 0x4A41
-+#define mmSCL5_SCL_SCALER_ENABLE 0x4A42
- #define mmSCL5_SCL_CONTROL 0x4A44
- #define mmSCL5_SCL_DEBUG 0x4A6A
- #define mmSCL5_SCL_DEBUG2 0x4A69
-@@ -4287,6 +4293,7 @@
- #define mmSCL_COEF_RAM_CONFLICT_STATUS 0x1B55
- #define mmSCL_COEF_RAM_SELECT 0x1B40
- #define mmSCL_COEF_RAM_TAP_DATA 0x1B41
-+#define mmSCL_SCALER_ENABLE 0x1B42
- #define mmSCL_CONTROL 0x1B44
- #define mmSCL_DEBUG 0x1B6A
- #define mmSCL_DEBUG2 0x1B69
-diff --git a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
-index bd8085ec54ed5..da5596fbfdcb3 100644
---- a/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
-+++ b/drivers/gpu/drm/amd/include/asic_reg/dce/dce_6_0_sh_mask.h
-@@ -8648,6 +8648,8 @@
- #define REGAMMA_LUT_INDEX__REGAMMA_LUT_INDEX__SHIFT 0x00000000
- #define REGAMMA_LUT_WRITE_EN_MASK__REGAMMA_LUT_WRITE_EN_MASK_MASK 0x00000007L
- #define REGAMMA_LUT_WRITE_EN_MASK__REGAMMA_LUT_WRITE_EN_MASK__SHIFT 0x00000000
-+#define SCL_SCALER_ENABLE__SCL_SCALE_EN_MASK 0x00000001L
-+#define SCL_SCALER_ENABLE__SCL_SCALE_EN__SHIFT 0x00000000
- #define SCL_ALU_CONTROL__SCL_ALU_DISABLE_MASK 0x00000001L
- #define SCL_ALU_CONTROL__SCL_ALU_DISABLE__SHIFT 0x00000000
- #define SCL_BYPASS_CONTROL__SCL_BYPASS_MODE_MASK 0x00000003L
--- 
-2.51.0
-
+--- a/drivers/xen/manage.c
++++ b/drivers/xen/manage.c
+@@ -116,7 +116,7 @@ static void do_suspend(void)
+ 	err = dpm_suspend_start(PMSG_FREEZE);
+ 	if (err) {
+ 		pr_err("%s: dpm_suspend_start %d\n", __func__, err);
+-		goto out_thaw;
++		goto out_resume_end;
+ 	}
+ 
+ 	printk(KERN_DEBUG "suspending xenstore...\n");
+@@ -156,6 +156,7 @@ out_resume:
+ 	else
+ 		xs_suspend_cancel();
+ 
++out_resume_end:
+ 	dpm_resume_end(si.cancelled ? PMSG_THAW : PMSG_RESTORE);
+ 
+ out_thaw:
 
 
 
