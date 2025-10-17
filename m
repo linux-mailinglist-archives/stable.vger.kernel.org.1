@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-186793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869D0BE9D2C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D08BE9CF6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 216D34FDEDC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42734742001
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F8632C938;
-	Fri, 17 Oct 2025 15:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEF61D5CE0;
+	Fri, 17 Oct 2025 15:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJQVtppn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkdNz5ah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3EC1D5CE0;
-	Fri, 17 Oct 2025 15:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48341332912;
+	Fri, 17 Oct 2025 15:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714253; cv=none; b=pX2KqV3GnsiL/16w2KMUvyUIbmtLHjXHdfZbynzUMiTcqfpOynupRLvLJuNu9W0l+blLBkrugILH1xqYumO/X+cUdaDBLyRXQ6FRISzDcPMV1C59pAwI204yYV03XChO74ApbFekgmbrKgxE7GBuZNOHFIdkpz5cWPe6va95yuI=
+	t=1760714259; cv=none; b=NT1hV9c2yySbS/HBKCNTMfsbVoNXZD032foKVUqUnLbgJ+fNH1nyNMdJ36ReQrLLXGwBtSOqiSAi2yQzUEp5diNhWHnKbUF/D39KNenngdUwJHEmUsii1/xVUFGVJdtD6T57uCGd7FzyjqOAVm73mDnUfKgEVeM0eBQ0gRez3hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714253; c=relaxed/simple;
-	bh=UsGhDM1nIWk0ari7BLXKPa0sxUQ7DAPRBVPjS5cvSQw=;
+	s=arc-20240116; t=1760714259; c=relaxed/simple;
+	bh=70TN6uJLtL6/y8tOmhiJLgiorjdltspeBsGs0lpr2kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JFxrG7Rh3b9lVmH11PQ7F2o5bHsEbImgzcDAElAALvrGhpCHQ7ncfOrvn6JBV4BI5EViwmutkCfHLNHf0YAk3hpcCBSlqWA/mGwitQz0v1l178Tb9PH4Zk0WdHhJcAEyPtwO3tmKBYPFvD2nyTDjsX5jeaVUuKb6V3y1v+D5Lg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJQVtppn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E384C4CEE7;
-	Fri, 17 Oct 2025 15:17:32 +0000 (UTC)
+	 MIME-Version; b=uqcPqp6S0L4ppu//2RxgUjmdOc9PgmZSt804Jp1JMv4rtJ0kzY+CXrj6ccQI4UG8zRXQyC4EMY2SMtybfQ85qffxHSZqCwIhxMV+zxG3J3KqwwxrVPBS990o4kbs6bXbG3RgorQOC9IR1Hl1t7lRNygcMH4g++yTBkGXtu0YRrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkdNz5ah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDCBC4CEE7;
+	Fri, 17 Oct 2025 15:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714253;
-	bh=UsGhDM1nIWk0ari7BLXKPa0sxUQ7DAPRBVPjS5cvSQw=;
+	s=korg; t=1760714259;
+	bh=70TN6uJLtL6/y8tOmhiJLgiorjdltspeBsGs0lpr2kI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJQVtppn9yktxZBxTxDUuCFyKQjfivT/8yWQOz9/pjTWmX++LPDtDC1UlfWlu2LCA
-	 TKqMMgFxDB3Rfdy28K0sZsFwy0SmvHlzmm/AVbUEjToP2QXixYBPiFdLFRR+8OT3RF
-	 Z49CpfVeMwlS0SbTrDgBrD9UJ2ylZhKPyQkp9zZ0=
+	b=FkdNz5ahZ+3PUEK+6IcX0qnvV8ZBSJQyeQHGTGGseU5jggHQRIWaxxGsUuyN6A9Tm
+	 +d9I4uJghMEbm5TP/xYACslLzyGiO1HtodNj+p1m6HxfMClq5mM/v0OHsZzc3JICu0
+	 +BycpsnJ5hQaz1CPuEdwDU/PPwWO8tryWqNeVKjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Le Chen <tom2cat@sjtu.edu.cn>,
+	Alexei Starovoitov <ast@kernel.org>,
+	KaFai Wan <kafai.wan@linux.dev>,
+	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/277] gpio: wcd934x: mark the GPIO controller as sleeping
-Date: Fri, 17 Oct 2025 16:51:28 +0200
-Message-ID: <20251017145150.092838064@linuxfoundation.org>
+Subject: [PATCH 6.12 082/277] bpf: Avoid RCU context warning when unpinning htab with internal structs
+Date: Fri, 17 Oct 2025 16:51:29 +0200
+Message-ID: <20251017145150.128493786@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
 References: <20251017145147.138822285@linuxfoundation.org>
@@ -65,35 +68,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: KaFai Wan <kafai.wan@linux.dev>
 
-[ Upstream commit b5f8aa8d4bde0cf3e4595af5a536da337e5f1c78 ]
+[ Upstream commit 4f375ade6aa9f37fd72d7a78682f639772089eed ]
 
-The slimbus regmap passed to the GPIO driver down from MFD does not use
-fast_io. This means a mutex is used for locking and thus this GPIO chip
-must not be used in atomic context. Change the can_sleep switch in
-struct gpio_chip to true.
+When unpinning a BPF hash table (htab or htab_lru) that contains internal
+structures (timer, workqueue, or task_work) in its values, a BUG warning
+is triggered:
+ BUG: sleeping function called from invalid context at kernel/bpf/hashtab.c:244
+ in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 14, name: ksoftirqd/0
+ ...
 
-Fixes: 59c324683400 ("gpio: wcd934x: Add support to wcd934x gpio controller")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+The issue arises from the interaction between BPF object unpinning and
+RCU callback mechanisms:
+1. BPF object unpinning uses ->free_inode() which schedules cleanup via
+   call_rcu(), deferring the actual freeing to an RCU callback that
+   executes within the RCU_SOFTIRQ context.
+2. During cleanup of hash tables containing internal structures,
+   htab_map_free_internal_structs() is invoked, which includes
+   cond_resched() or cond_resched_rcu() calls to yield the CPU during
+   potentially long operations.
+
+However, cond_resched() or cond_resched_rcu() cannot be safely called from
+atomic RCU softirq context, leading to the BUG warning when attempting
+to reschedule.
+
+Fix this by changing from ->free_inode() to ->destroy_inode() and rename
+bpf_free_inode() to bpf_destroy_inode() for BPF objects (prog, map, link).
+This allows direct inode freeing without RCU callback scheduling,
+avoiding the invalid context warning.
+
+Reported-by: Le Chen <tom2cat@sjtu.edu.cn>
+Closes: https://lore.kernel.org/all/1444123482.1827743.1750996347470.JavaMail.zimbra@sjtu.edu.cn/
+Fixes: 68134668c17f ("bpf: Add map side support for bpf timers.")
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: KaFai Wan <kafai.wan@linux.dev>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20251008102628.808045-2-kafai.wan@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-wcd934x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/inode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
-index cfa7b0a50c8e3..03b16b8f639ad 100644
---- a/drivers/gpio/gpio-wcd934x.c
-+++ b/drivers/gpio/gpio-wcd934x.c
-@@ -102,7 +102,7 @@ static int wcd_gpio_probe(struct platform_device *pdev)
- 	chip->base = -1;
- 	chip->ngpio = WCD934X_NPINS;
- 	chip->label = dev_name(dev);
--	chip->can_sleep = false;
-+	chip->can_sleep = true;
- 
- 	return devm_gpiochip_add_data(dev, chip, data);
+diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
+index 9aaf5124648bd..746b5644d9a19 100644
+--- a/kernel/bpf/inode.c
++++ b/kernel/bpf/inode.c
+@@ -775,7 +775,7 @@ static int bpf_show_options(struct seq_file *m, struct dentry *root)
+ 	return 0;
  }
+ 
+-static void bpf_free_inode(struct inode *inode)
++static void bpf_destroy_inode(struct inode *inode)
+ {
+ 	enum bpf_type type;
+ 
+@@ -790,7 +790,7 @@ const struct super_operations bpf_super_ops = {
+ 	.statfs		= simple_statfs,
+ 	.drop_inode	= generic_delete_inode,
+ 	.show_options	= bpf_show_options,
+-	.free_inode	= bpf_free_inode,
++	.destroy_inode	= bpf_destroy_inode,
+ };
+ 
+ enum {
 -- 
 2.51.0
 
