@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6291BE9AC3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A61E0BEA149
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A05A189228D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2D53425ABD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331CE2472B0;
-	Fri, 17 Oct 2025 15:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE5C32C937;
+	Fri, 17 Oct 2025 15:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YE+BWQTh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxM+gmFY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E107A217722;
-	Fri, 17 Oct 2025 15:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F033370FB;
+	Fri, 17 Oct 2025 15:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714170; cv=none; b=gKxQHRyQ3jsKibucsOdk3t5/rbRVDnMZVSIV6ncziy+As8Ca37uhRButAcAeIS8Qe7GDrYIhMw6HCl2cRisZT/PYDibYJ2gVL3PpXa9HOr2yLQrmCuc+BNdN8fp+vWXKBdUPng+b8CjgQT/jjz53KhejC/hlmMfwau5J86yl0Jw=
+	t=1760715061; cv=none; b=c8gjDVyhwvN1KHM9HOROK5zgVVcHXWWxS5GP8vSwVXjLbCmikYNel/wdHrnVufR5LJ4FrGm+rL2k8MCQvm2pDAuKRlUowN3pTkiiChEtQCQh2PaDcmw2PfXP1s9v+WUCOEqp3KVaNFszVloSoNYQBQirKSkbuJoV7DawdDUaQFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714170; c=relaxed/simple;
-	bh=o/mhResQYr2xJzPDrxIsGfkstOkW/n06l1wJF+RhohQ=;
+	s=arc-20240116; t=1760715061; c=relaxed/simple;
+	bh=TPvulGeYaVaKGeTksUcjuySdRUjqe6+V3iUb7cxRujE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5FinRP2bTKktGv5cVmtPU0KwUW+xA34kreYxBWupbuJiknzHmEXe7ekvooZTPCcMcDs5aV+1S/ESt8ZznbbzgknIPPcvl3wut6rBxpb1V97THsImaoaogEa6MSPkCxoTcKDpz4IcGmNPTwILeHnrCn3EsH5uyVb+SkrW8OPFTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YE+BWQTh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67072C4CEE7;
-	Fri, 17 Oct 2025 15:16:09 +0000 (UTC)
+	 MIME-Version; b=ouj5Kf8OSrLl8fmy48LnkMTs5yo+MTCFArN/yyUiZpbRK5ZoAiZaDVa0fhpzJanJNTd0gk46bTjoljpRSJVQmBDsbImAI2SHFdO9Ai6sr4OmS29E5BJHp8SvVio6xjSPdDPw5fYp2tF9sy56VAP95AoRLSlcKFz4Lj9rw78bmKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxM+gmFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B25C4CEE7;
+	Fri, 17 Oct 2025 15:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714169;
-	bh=o/mhResQYr2xJzPDrxIsGfkstOkW/n06l1wJF+RhohQ=;
+	s=korg; t=1760715061;
+	bh=TPvulGeYaVaKGeTksUcjuySdRUjqe6+V3iUb7cxRujE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YE+BWQThzFXAXYu3kZ4KqCYDiiwQqbM2Ts4tMovCICtzaqELK2Lamz+3IJiCKuxvg
-	 usiKcsLKHK7wxiQKB17xhXRKFLXP2cLbesPcyhLSWso9xKixZiOFEkXoSQf+95iGj9
-	 SMRCZFhgSdZeIRUfTRTQONGrRSThPh6EsxND18d0=
+	b=NxM+gmFYTFp0h1WrvQoc65qcyDnDOOCU7eydLZtSt4Mj6os8kA5GpEeulCWIxTGlU
+	 NQso/mYXk1ZsQXwC6tMvypFhyl9Yc5Pjk8VT68M1UKHomPY8y6/AX0ocB8djAAXWA+
+	 pcwQy7NyPiGn0aojubPqQKtZ+ePBTK1KeUuAxTLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Raag Jadav <raag.jadav@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/277] drm/vmwgfx: Fix Use-after-free in validation
+Subject: [PATCH 6.17 083/371] drm/xe/i2c: Dont rely on d3cold.allowed flag in system PM path
 Date: Fri, 17 Oct 2025 16:50:58 +0200
-Message-ID: <20251017145149.010394099@linuxfoundation.org>
+Message-ID: <20251017145204.942180796@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Raag Jadav <raag.jadav@intel.com>
 
-[ Upstream commit dfe1323ab3c8a4dd5625ebfdba44dc47df84512a ]
+[ Upstream commit 1af59cd5cc2b65d7fc95165f056695ce3f171133 ]
 
-Nodes stored in the validation duplicates hashtable come from an arena
-allocator that is cleared at the end of vmw_execbuf_process. All nodes
-are expected to be cleared in vmw_validation_drop_ht but this node escaped
-because its resource was destroyed prematurely.
+In S3 and above sleep states, the device can loose power regardless of
+d3cold.allowed flag. Bring up I2C controller explicitly in system PM
+path to ensure its normal operation after losing power.
 
-Fixes: 64ad2abfe9a6 ("drm/vmwgfx: Adapt validation code for reference-free lookups")
-Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://lore.kernel.org/r/20250926195427.1405237-1-ian.forbes@broadcom.com
+v2: Cover S3 and above states (Rodrigo)
+
+Fixes: 0ea07b69517a ("drm/xe/pm: Wire up suspend/resume for I2C controller")
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://lore.kernel.org/r/20250918103200.2952576-1-raag.jadav@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit e4863f1159befcd70df24fcb5458afaf2feab043)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_validation.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_pm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
-index e7625b3f71e0e..c18dc414a047f 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
-@@ -309,8 +309,10 @@ int vmw_validation_add_resource(struct vmw_validation_context *ctx,
- 		hash_add_rcu(ctx->sw_context->res_ht, &node->hash.head, node->hash.key);
- 	}
- 	node->res = vmw_resource_reference_unless_doomed(res);
--	if (!node->res)
-+	if (!node->res) {
-+		hash_del_rcu(&node->hash.head);
- 		return -ESRCH;
-+	}
+diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
+index bb9b6ecad2afc..3e301e42b2f19 100644
+--- a/drivers/gpu/drm/xe/xe_pm.c
++++ b/drivers/gpu/drm/xe/xe_pm.c
+@@ -194,7 +194,7 @@ int xe_pm_resume(struct xe_device *xe)
+ 	if (err)
+ 		goto err;
  
- 	node->first_usage = 1;
- 	if (!res->dev_priv->has_mob) {
+-	xe_i2c_pm_resume(xe, xe->d3cold.allowed);
++	xe_i2c_pm_resume(xe, true);
+ 
+ 	xe_irq_resume(xe);
+ 
 -- 
 2.51.0
 
