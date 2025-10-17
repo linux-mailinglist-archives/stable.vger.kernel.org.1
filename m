@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66045BEA1F8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B72FBEA0DA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 11C6135ECB4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58FFC74838D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C404820C00A;
-	Fri, 17 Oct 2025 15:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3ED332911;
+	Fri, 17 Oct 2025 15:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRo/5qMB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/MQnJqs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79123330B11;
-	Fri, 17 Oct 2025 15:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BA95695;
+	Fri, 17 Oct 2025 15:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715939; cv=none; b=RtgBhUKtSMlofT8senq0oW3sHAksqT/l+Zoa1tiBMqZGUTbT3EnwRhcRygaMcXyko7i0Vwpa2r+9Iug2v4LN6/frhZO1i+F7J65oOb9hwKXeYUDjZ0SaYKho9u6i2V32Y0M+boMzy/Tdd/1A3ejM66H9KqqzmdKwvvblM5TefLQ=
+	t=1760714418; cv=none; b=HKVt3M0XkvGW2xojuUcQH6D0CWGJDe0FkfvlyKiEpGGshTFJFhWdlkgZAOKI2PZSsZT+CYjnZ2P9xzWupfE6PGdNDurMdslwBMguFLYMuJqkTzgxIwl8idXsg3u+aoXLW0DaV3/CB4MLXy8v4ldSOtQI84GixIvvrBu9hxIOSbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715939; c=relaxed/simple;
-	bh=gEkPhJ+zGQStONqNHTA2bbb7p2pFPOvispZnkyj2cHk=;
+	s=arc-20240116; t=1760714418; c=relaxed/simple;
+	bh=wRfIDixHeSabQnrIzlbOmjhvY9KWQHEiy1u+PvxSWqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOuPnKEqw3BpjxMDucBGcpTzImmu7HaOqr1zV7H1ZoGeOkBivwWkoEK4W46Y5MZkUDJ7M8w1mPq8K/VCs+RuRnZpR/Ifrgv9QUaFpxlXYWvlomqWF8fGY1T+C33KsS7PfUGhbtl0OXy/aaxl/5ciGNQzPEXrfbqr6JHJsgpNmdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRo/5qMB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01EF7C4CEE7;
-	Fri, 17 Oct 2025 15:45:38 +0000 (UTC)
+	 MIME-Version; b=HMaJgi6C92DXaVlH3RnZsPDCnr02DDRxiWfKJMB622/bJz8aGRzepDEIOei9hqBmuhkq74zGU5qeFDoVylZJ+AkztntQpWy3kjraTDRdr+hDkvz95OBUGkkwQdZ0tDur5Huvp13v1C5YGywjsPZMUNERpPdbvSWcSk+TdK1uNZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/MQnJqs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF04C4CEE7;
+	Fri, 17 Oct 2025 15:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715939;
-	bh=gEkPhJ+zGQStONqNHTA2bbb7p2pFPOvispZnkyj2cHk=;
+	s=korg; t=1760714418;
+	bh=wRfIDixHeSabQnrIzlbOmjhvY9KWQHEiy1u+PvxSWqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fRo/5qMB6Akl2er9d1Y0M4kbKqUxms2m6VLbBngnryik8pHnBNIoJ8qcGf/1ZFcKK
-	 xnURpcn0Ee5qYw47nLEAf/MQdmoE0WgwN/ctVUGEZ8Y2x+V1/PGIaldqkebwobekE1
-	 kdLyiEa3SkuzZq7UgXmU5TXeezwcJE9CGM3cFRYA=
+	b=O/MQnJqsxixplbOyZ4QYkyCm5ae6iytTZPBBHuCWj4ACpLRnYFMtsSe2jlfFbYyyf
+	 2GvR3Vh9v8J2dbYcYtvPgqrAYhj2ygoCIc3DlhnvNbaf3biIoHi2fbcPn4budYBSOk
+	 a+H0J/i5NFJB4QJJakggBWfPcQL+spbnXnhBQbTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	stable <stable@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 5.15 018/276] driver core/PM: Set power.no_callbacks along with power.no_pm
-Date: Fri, 17 Oct 2025 16:51:51 +0200
-Message-ID: <20251017145143.067011846@linuxfoundation.org>
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 105/277] media: i2c: mt9v111: fix incorrect type for ret
+Date: Fri, 17 Oct 2025 16:51:52 +0200
+Message-ID: <20251017145150.963898779@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-commit c2ce2453413d429e302659abc5ace634e873f6f5 upstream.
+commit bacd713145443dce7764bb2967d30832a95e5ec8 upstream.
 
-Devices with power.no_pm set are not expected to need any power
-management at all, so modify device_set_pm_not_required() to set
-power.no_callbacks for them too in case runtime PM will be enabled
-for any of them (which in principle may be done for convenience if
-such a device participates in a dependency chain).
+Change "ret" from unsigned int to int type in mt9v111_calc_frame_rate()
+to store negative error codes or zero returned by __mt9v111_hw_reset()
+and other functions.
 
-Since device_set_pm_not_required() must be called before device_add()
-or it would not have any effect, it can update power.no_callbacks
-without locking, unlike pm_runtime_no_callbacks() that can be called
-after registering the target device.
+Storing the negative error codes in unsigned type, doesn't cause an issue
+at runtime but it's ugly as pants.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://lore.kernel.org/r/1950054.tdWV9SEqCh@rafael.j.wysocki
+No effect on runtime.
+
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Fixes: aab7ed1c3927 ("media: i2c: Add driver for Aptina MT9V111")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/device.h |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/i2c/mt9v111.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -736,6 +736,9 @@ static inline bool device_pm_not_require
- static inline void device_set_pm_not_required(struct device *dev)
+--- a/drivers/media/i2c/mt9v111.c
++++ b/drivers/media/i2c/mt9v111.c
+@@ -532,8 +532,8 @@ static int mt9v111_calc_frame_rate(struc
+ static int mt9v111_hw_config(struct mt9v111_dev *mt9v111)
  {
- 	dev->power.no_pm = true;
-+#ifdef CONFIG_PM
-+	dev->power.no_callbacks = true;
-+#endif
- }
+ 	struct i2c_client *c = mt9v111->client;
+-	unsigned int ret;
+ 	u16 outfmtctrl2;
++	int ret;
  
- static inline void dev_pm_syscore_device(struct device *dev, bool val)
+ 	/* Force device reset. */
+ 	ret = __mt9v111_hw_reset(mt9v111);
 
 
 
