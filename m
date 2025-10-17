@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-186544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DEFBE9B7D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:17 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 335C6BEA1E5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1172E745886
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D3D6F35EC75
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A66332ECA;
-	Fri, 17 Oct 2025 15:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0FC330B28;
+	Fri, 17 Oct 2025 15:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHxYZTvF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tBYEgrX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E199033711C;
-	Fri, 17 Oct 2025 15:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784E3330B00;
+	Fri, 17 Oct 2025 15:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713543; cv=none; b=D0u6NjPmfHFv/meQ4+Fkq8AXouTSi0XpxX0oFixUeFct2c2lwxj/emdfO+z3w8LR/tXbe3jtHzYf0iUmuxROn0IJ8BfX+tpdEP73xSo+520vgQ11yeRF6UKRfeeCWh+rrirVAieLTclzLfQ4QHcwQh0RxGvPWMwrXHL+L95yXuc=
+	t=1760715913; cv=none; b=Ap0cwPkrovqZ1kcw5sKi4hUEEoXNaXIkOvdusuxU6mxh0t50yUbu7FWZopfqkwWMGsDhcJo+JMIB/JMBeXeQ/ofMelxcOwdFb+X30zLS8e3tbOsYjFMB/5hVLbI4cHi2CRyOOO3XGkf0RaMlsH/GgxiA1rPoV878WyA4oSAZsdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713543; c=relaxed/simple;
-	bh=jd2Oz//zHIxBpGFXepWRdskcnPG6U7GEtIK76+QESCE=;
+	s=arc-20240116; t=1760715913; c=relaxed/simple;
+	bh=tGvAay0tl1v+kgRcAQvHRAVjnsp/ABAqxwEnex8LmFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uu/2IsAguv7VZ7s+BXicISvLpgNJoJ+KI8Dw0pathpl6EPABrIeZcPz/k8iGb9hzy/j5GapgZ99CbAHA5ghLyV66CpwvqgeQmhUAFZP9Il2fR+teQzMJ8O/v8EZefOJlRSGTALhzMYC1r+L9U9jkjcuG2kj5w/iuBlWhUmdy/W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHxYZTvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F015C4CEE7;
-	Fri, 17 Oct 2025 15:05:42 +0000 (UTC)
+	 MIME-Version; b=MzM0EInYyjw8fwLUJO6JmPdSxqvPDvB6jA1enVZL8G4zZm7qUZadcz9vlDT5lx/Ot16fkr1b8xMGKv5GVM74AfS/M8bEl4rt73mr9/YAE0/6RFaVdnMCCJHnRSVquI/MyYA1y9Fp3wdyulULTveHHZVN6GVWVNCpIKFQguxBV84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tBYEgrX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AABC4CEE7;
+	Fri, 17 Oct 2025 15:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713542;
-	bh=jd2Oz//zHIxBpGFXepWRdskcnPG6U7GEtIK76+QESCE=;
+	s=korg; t=1760715913;
+	bh=tGvAay0tl1v+kgRcAQvHRAVjnsp/ABAqxwEnex8LmFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHxYZTvFLiZNn4iJRPnYJzc895Hhh9m31REP7yKsAoaAGpGpjfG6w/lGnQXGvJSoa
-	 POrPPnXQObj7rwadO5ZpLAfVRQWN8ekPr2v4nYk824dYm2njkgOLiqy2cgxCtjT9Xl
-	 kvDEqeacj6UFWWnRjx0a1sF6uDmq05zArWbtAYog=
+	b=0tBYEgrXIrSyQ69Cg45I6OsbXRZxHTS0jzxm5Ok0loKCMoVQOj9bKuMIIfe5LXkov
+	 q0kt8h+ZejlY0qwvIKse6sFdzh969Je7EjuUew6r09PWuUPLN3xch3gt0WVQmPv97W
+	 Jct3VH9ttq3TChU26caug6g3MzDNiWyLvuljQ/Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/201] drm/vmwgfx: Fix a null-ptr access in the cursor snooper
+	Robin Murphy <robin.murphy@arm.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Zhichuang Sun <zhichuang@google.com>
+Subject: [PATCH 5.15 001/276] iommu/amd: Add map/unmap_pages() iommu_domain_ops callback support
 Date: Fri, 17 Oct 2025 16:51:34 +0200
-Message-ID: <20251017145135.961739138@linuxfoundation.org>
+Message-ID: <20251017145142.441705453@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit 5ac2c0279053a2c5265d46903432fb26ae2d0da2 ]
+commit 6b080c4e815ceba3c08ffa980c858595c07e786a upstream.
 
-Check that the resource which is converted to a surface exists before
-trying to use the cursor snooper on it.
+Implement the map_pages() and unmap_pages() callback for the AMD IOMMU
+driver to allow calls from iommu core to map and unmap multiple pages.
+Also deprecate map/unmap callbacks.
 
-vmw_cmd_res_check allows explicit invalid (SVGA3D_INVALID_ID) identifiers
-because some svga commands accept SVGA3D_INVALID_ID to mean "no surface",
-unfortunately functions that accept the actual surfaces as objects might
-(and in case of the cursor snooper, do not) be able to handle null
-objects. Make sure that we validate not only the identifier (via the
-vmw_cmd_res_check) but also check that the actual resource exists before
-trying to do something with it.
+Finally gatherer is not updated by iommu_v1_unmap_pages(). Hence pass
+NULL instead of gather to iommu_v1_unmap_pages.
 
-Fixes unchecked null-ptr reference in the snooping code.
-
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: c0951b797e7d ("drm/vmwgfx: Refactor resource management")
-Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
-Link: https://lore.kernel.org/r/20250917153655.1968583-1-zack.rusin@broadcom.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20220825063939.8360-4-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+[ partial bacport of the original patch, just what is needed to fix a
+  bug in 5.15.y only ]
+Fixes: fc65d0acaf23 ("iommu/amd: Selective flush on unmap")
+Signed-off-by: Zhichuang Sun <zhichuang@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/iommu/amd/iommu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index b129ce873af3f..b235e7cc41f3f 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1514,6 +1514,7 @@ static int vmw_cmd_dma(struct vmw_private *dev_priv,
- 		       SVGA3dCmdHeader *header)
- {
- 	struct vmw_bo *vmw_bo = NULL;
-+	struct vmw_resource *res;
- 	struct vmw_surface *srf = NULL;
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdSurfaceDMA);
- 	int ret;
-@@ -1549,18 +1550,24 @@ static int vmw_cmd_dma(struct vmw_private *dev_priv,
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2121,7 +2121,8 @@ static size_t amd_iommu_unmap(struct iom
  
- 	dirty = (cmd->body.transfer == SVGA3D_WRITE_HOST_VRAM) ?
- 		VMW_RES_DIRTY_SET : 0;
--	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface,
--				dirty, user_surface_converter,
--				&cmd->body.host.sid, NULL);
-+	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface, dirty,
-+				user_surface_converter, &cmd->body.host.sid,
-+				NULL);
- 	if (unlikely(ret != 0)) {
- 		if (unlikely(ret != -ERESTARTSYS))
- 			VMW_DEBUG_USER("could not find surface for DMA.\n");
- 		return ret;
- 	}
+ 	r = (ops->unmap) ? ops->unmap(ops, iova, page_size, gather) : 0;
  
--	srf = vmw_res_to_srf(sw_context->res_cache[vmw_res_surface].res);
-+	res = sw_context->res_cache[vmw_res_surface].res;
-+	if (!res) {
-+		VMW_DEBUG_USER("Invalid DMA surface.\n");
-+		return -EINVAL;
-+	}
+-	amd_iommu_iotlb_gather_add_page(dom, gather, iova, page_size);
++	if (r)
++		amd_iommu_iotlb_gather_add_page(dom, gather, iova, r);
  
--	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->tbo, header);
-+	srf = vmw_res_to_srf(res);
-+	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->tbo,
-+			     header);
- 
- 	return 0;
+ 	return r;
  }
--- 
-2.51.0
-
 
 
 
