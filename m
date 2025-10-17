@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65810BEA774
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:07:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E77BEA95F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A84E585FB9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703AF7C58E5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72411A9FB7;
-	Fri, 17 Oct 2025 15:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0833C3277A9;
+	Fri, 17 Oct 2025 15:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2E/GPET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IqkgxuX7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72375330B00;
-	Fri, 17 Oct 2025 15:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CAC270568;
+	Fri, 17 Oct 2025 15:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716518; cv=none; b=Jo2RISnzR1xn3tmembLho/vairUIvVJZOQqGd3ap0QXbl+0MNHhqAQVWUmWPKPP57qlgeTuOdPnHwNN5Y62y7qmxtGO221Jhm5BjuidvYuM8n7QFEjSrFuCOmuxLFWxywxK5hgs/kJtzRNInAYcMcuDRXPwJpOIYcE3SFnlOhe8=
+	t=1760715814; cv=none; b=qRKIqTJOW2MD1z7nLn5VtlA1EEikE49innFzdO6GtH0LU9bu6iGvjR+mzeps3o7fqaUYvOGUMv2RfpjbBj/bMa48FD2OU4wpH3w8JQepVgtKYR3Ezfj426m+Oo2RwkvGhoIJfD8edFZ21lgfPcOzVIDAT3LsRYNSWjYSk/SUlIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716518; c=relaxed/simple;
-	bh=gsHisVrDePyZJzgho+CxKFCxUT3Rrvb1Ns1S3GDstfs=;
+	s=arc-20240116; t=1760715814; c=relaxed/simple;
+	bh=YOVR9eIhMiABCnOMF4tUgDE1NTRPqmT0aQYfViFKXbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gfsjyq6x7V0PQy3rSVVARHkR7UU1o4iS+ysuO+eATdylAyqlWXEPf1qRa7CBoUKBnjntgvBeLOaTisLsHUncv2mwl55jjkCGWy++Mps9quv6Lp9JTFRC41hpBQjNRFHJH3hypDpWl0WtnDQDHlusa41FbmNYAF4N77SMvY1n7Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2E/GPET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF534C4CEE7;
-	Fri, 17 Oct 2025 15:55:17 +0000 (UTC)
+	 MIME-Version; b=crvKT0hpaLMPFIJ4jcRt8vXYVNLxqonnOi+N1hPXGxZ7Fqynbu529MKNVq+60zBbuExVvCQFHGWs71zRl2IbsR/exAjIQUYk9FXoBGT2bO3P+YmmmE+oMQxCjgQzvPZwVIQw376RB/Wf+NBGNV9vr9mamutdKeG3/iDXXEqenWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IqkgxuX7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40839C4CEE7;
+	Fri, 17 Oct 2025 15:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716518;
-	bh=gsHisVrDePyZJzgho+CxKFCxUT3Rrvb1Ns1S3GDstfs=;
+	s=korg; t=1760715814;
+	bh=YOVR9eIhMiABCnOMF4tUgDE1NTRPqmT0aQYfViFKXbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2E/GPETOjm/ihcJjqCsYPsrIVMHyhmT7YVBy9OueL2kMq2bNXRU+pTD/K/pUL2R/
-	 0ZH2TGDlcq9VQrf2vUyGkkF3Y+vYxgbET6IJnWDCQ/F4rmFri9VX4tyXuVSLIRyh1b
-	 NN/h/eUG6jMugjqD0DhcUBAfYfKkUsT2f4WpbyWY=
+	b=IqkgxuX7GGQ5khozsp2RE0VsO7JnBec7PXXdap4TErrZezy0Cd3/SGaT75c5Zp/Or
+	 pEEHm4ATSS+uTXnoLWjLLLiTCtRrYMIBkuWkt5nEnSUppvAlqaV5OEFyC2QCZRMIlq
+	 KjyTBgbeTbHFdqZtZkIoHT9OXjThP/A3aQpl3OVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 185/276] iio: imu: inv_icm42600: Drop redundant pm_runtime reinitialization in resume
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.17 303/371] selftests: mptcp: join: validate C-flag + def limit
 Date: Fri, 17 Oct 2025 16:54:38 +0200
-Message-ID: <20251017145149.226590204@linuxfoundation.org>
+Message-ID: <20251017145213.039985494@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit a95a0b4e471a6d8860f40c6ac8f1cad9dde3189a upstream.
+commit 008385efd05e04d8dff299382df2e8be0f91d8a0 upstream.
 
-Remove unnecessary calls to pm_runtime_disable(), pm_runtime_set_active(),
-and pm_runtime_enable() from the resume path. These operations are not
-required here and can interfere with proper pm_runtime state handling,
-especially when resuming from a pm_runtime suspended state.
+The previous commit adds an exception for the C-flag case. The
+'mptcp_join.sh' selftest is extended to validate this case.
 
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-2-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+In this subtest, there is a typical CDN deployment with a client where
+MPTCP endpoints have been 'automatically' configured:
+
+- the server set net.mptcp.allow_join_initial_addr_port=0
+
+- the client has multiple 'subflow' endpoints, and the default limits:
+  not accepting ADD_ADDRs.
+
+Without the parent patch, the client is not able to establish new
+subflows using its 'subflow' endpoints. The parent commit fixes that.
+
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250925-net-next-mptcp-c-flag-laminar-v1-2-ad126cc47c6b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |    4 ----
- 1 file changed, 4 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -730,10 +730,6 @@ static int __maybe_unused inv_icm42600_r
- 	if (ret)
- 		goto out_unlock;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3187,6 +3187,17 @@ deny_join_id0_tests()
+ 		run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 1 1 1
+ 	fi
++
++	# default limits, server deny join id 0 + signal
++	if reset_with_allow_join_id0 "default limits, server deny join id 0" 0 1; then
++		pm_nl_set_limits $ns1 0 2
++		pm_nl_set_limits $ns2 0 2
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
++		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
++		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
++		run_tests $ns1 $ns2 10.0.1.1
++		chk_join_nr 2 2 2
++	fi
+ }
  
--	pm_runtime_disable(dev);
--	pm_runtime_set_active(dev);
--	pm_runtime_enable(dev);
--
- 	/* restore sensors state */
- 	ret = inv_icm42600_set_pwr_mgmt0(st, st->suspended.gyro,
- 					 st->suspended.accel,
+ fullmesh_tests()
 
 
 
