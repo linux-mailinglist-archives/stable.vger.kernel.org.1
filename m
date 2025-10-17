@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DE1BE99E4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA77BEA2FF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 536C774705F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15CA3188AA08
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3F323EA9E;
-	Fri, 17 Oct 2025 15:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1371A0728;
+	Fri, 17 Oct 2025 15:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZnYK4ad"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bclMwlTl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3712E1F08;
-	Fri, 17 Oct 2025 15:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56690330B00;
+	Fri, 17 Oct 2025 15:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713690; cv=none; b=Qf4uu/50nni1Kn8mxRD268KdJHn1AhyiCVrTqrIGTakhypPypsQtwEOFRjrASJoTA0lqcN3Tlr0tFyQ9vRkP1Tsz+alXK5uRksjKqOpPTQjxHKy2cNgSJXBFQCJdUESmEXC20BLdi/l5dPYpvC4Dxq2PkchRQMM3XO4Dqg82Zu8=
+	t=1760715916; cv=none; b=Tfbisqqo4pUGzjyje2cKPZvp1+jWyynw1l6Ghhflf//uWImjF8/eSMjSjNt++KAFhZKlJOkdkguTqPs9cVhEihuq7k6gBc7RqUdR5SfwaaQGk8jMBEp17TgLnxQ94hRz7eyn2Ll3FNBFV0S8ELoBEEcStp7kx7n8Ncvv2bJFZCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713690; c=relaxed/simple;
-	bh=OGp2OfnRaFvRRnxNjX/WbWkUK8F2MBZ/KhCrNteqz+8=;
+	s=arc-20240116; t=1760715916; c=relaxed/simple;
+	bh=WdB/rYkCl84Rbj50kzWLZqPl2/8A7gZw080/zcCdL8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0FNVkDxZLqW3nIB/EKjcMLo2cj7dPN+1sIseR6odsrHpYbyUvjeoB8YOl/zBvR5A5X02l4jOIYIaFw0prDYLLNTj0sceqCPT9vl6ek7Z5uOoKnqPnfBrxnynslAhGGP0wqNJIvQXiR2vtW4fcL3FckjBJUWePMznWC+eKl3Rqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZnYK4ad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72265C4CEF9;
-	Fri, 17 Oct 2025 15:08:09 +0000 (UTC)
+	 MIME-Version; b=DWs/XCULmyFYVwwl200FuGKtfHMvgC+L5k0kws2+TxvQkpUs9vzdB14mHgZkaUVerBmupeDpEnDG8obzdykfMRCOCrJS/+gF7XnBWNoV49SCfPRafUcDCt5v76Tt7FbD9hfbCqGlI0gl+3RqnyUSTY0zTror/Rv7X99hxn8O8UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bclMwlTl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD296C4CEE7;
+	Fri, 17 Oct 2025 15:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713689;
-	bh=OGp2OfnRaFvRRnxNjX/WbWkUK8F2MBZ/KhCrNteqz+8=;
+	s=korg; t=1760715916;
+	bh=WdB/rYkCl84Rbj50kzWLZqPl2/8A7gZw080/zcCdL8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZnYK4adiuhMS5kbOBBS58QPWEYnoUd+fPAHv1S7jhgQW0VAbNZ5wLIEaYwd1yL0Y
-	 vdqzwn4ETOzdloED3KUUMqTBt49syZmP5YsDm3+PCrSWfqa+Jm3I6/aiNSYC7pwWjH
-	 mOAzA2M6QS1b1+Co5o3eGgee7nPAf3gxLNVqH1cA=
+	b=bclMwlTl9LHoeXfQAUuXIjk7mQqP9FFE4Qynn2vsquaRAOOW+UV6NYBXOFjx8Dq42
+	 LZBXH5zAjboReQDGm0515tE2qPtcoAxUMgB+dCVcF+G16hB31FbRliNdb6yju+WONz
+	 p+l20UFplIQ7EFQnfRT9bYjV+lkUF/F48Qc+/N3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harini T <harini.t@amd.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/201] mailbox: zynqmp-ipi: Remove redundant mbox_controller_unregister() call
+	Xiaowei Li <xiaowei.li@simcom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 010/276] USB: serial: option: add SIMCom 8230C compositions
 Date: Fri, 17 Oct 2025 16:51:43 +0200
-Message-ID: <20251017145136.292391748@linuxfoundation.org>
+Message-ID: <20251017145142.773808985@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harini T <harini.t@amd.com>
+From: Xiaowei Li <xiaowei.li@simcom.com>
 
-[ Upstream commit 341867f730d3d3bb54491ee64e8b1a0c446656e7 ]
+commit 0e0ba0ecec3d6e819e0c2348331ff99afe2eb5d5 upstream.
 
-The controller is registered using the device-managed function
-'devm_mbox_controller_register()'. As documented in mailbox.c, this
-ensures the devres framework automatically calls
-mbox_controller_unregister() when device_unregister() is invoked, making
-the explicit call unnecessary.
+Add support for SIMCom 8230C which is based on Qualcomm SDX35 chip.
 
-Remove redundant mbox_controller_unregister() call as
-device_unregister() handles controller cleanup.
+USB Device Listings:
 
-Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
-Signed-off-by: Harini T <harini.t@amd.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x9071: tty (DM) + tty (NMEA) + tty (AT) + rmnet (QMI mode) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#= 10 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1e0e ProdID=9071 Rev= 5.15
+S:  Manufacturer=SIMCOM
+S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
+S:  SerialNumber=0123456789ABCDEF
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x9078: tty (DM) + tty (NMEA) + tty (AT) + ECM + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  9 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1e0e ProdID=9078 Rev= 5.15
+S:  Manufacturer=SIMCOM
+S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
+S:  SerialNumber=0123456789ABCDEF
+C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=86(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+I:* If#= 4 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x907b: RNDIS + tty (DM) + tty (NMEA) + tty (AT) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1e0e ProdID=907b Rev= 5.15
+S:  Manufacturer=SIMCOM
+S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
+S:  SerialNumber=0123456789ABCDEF
+C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=ef(misc ) Sub=04 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Xiaowei Li <xiaowei.li@simcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/zynqmp-ipi-mailbox.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
-index e4fcac97dbfaa..06529dc0daf3f 100644
---- a/drivers/mailbox/zynqmp-ipi-mailbox.c
-+++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
-@@ -617,7 +617,6 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
- 	for (; i >= 0; i--) {
- 		ipi_mbox = &pdata->ipi_mboxes[i];
- 		if (ipi_mbox->dev.parent) {
--			mbox_controller_unregister(&ipi_mbox->mbox);
- 			if (device_is_registered(&ipi_mbox->dev))
- 				device_unregister(&ipi_mbox->dev);
- 		}
--- 
-2.51.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2114,6 +2114,12 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9003, 0xff) },	/* Simcom SIM7500/SIM7600 MBIM mode */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9011, 0xff),	/* Simcom SIM7500/SIM7600 RNDIS mode */
+ 	  .driver_info = RSVD(7) },
++	{ USB_DEVICE(0x1e0e, 0x9071),				/* Simcom SIM8230 RMNET mode */
++	  .driver_info = RSVD(3) | RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9078, 0xff),	/* Simcom SIM8230 ECM mode */
++	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x907b, 0xff),	/* Simcom SIM8230 RNDIS mode */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9205, 0xff) },	/* Simcom SIM7070/SIM7080/SIM7090 AT+ECM mode */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1e0e, 0x9206, 0xff) },	/* Simcom SIM7070/SIM7080/SIM7090 AT-only mode */
+ 	{ USB_DEVICE(ALCATEL_VENDOR_ID, ALCATEL_PRODUCT_X060S_X200),
 
 
 
