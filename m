@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-187372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B1FBEAAE6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:26:59 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B9F4BEA864
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:12:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E33917C7004
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 29A3A5A62A5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C24330B39;
-	Fri, 17 Oct 2025 15:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943ED330B2D;
+	Fri, 17 Oct 2025 15:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gA9Pv3VX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfV+nX24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7023330B30;
-	Fri, 17 Oct 2025 15:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50411330B26;
+	Fri, 17 Oct 2025 15:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715883; cv=none; b=LmjgN+u4IjOzKFRBNYTa/EayZ5gTGTPXa1Gj3FmTUnfzLZpmr0Jzd4cPggebPtoSthWJqbatiOUiJ9uzaLTTpCm6Gf8Cl+2kEhjXAwk55yr5TIfw6VKsJ+zQhBZq+YhPIdGWps1hh7Z2wHeI0A4ikvRxweYO34j8SInzJKT7HLE=
+	t=1760716664; cv=none; b=TQjiP/R1obgZ92IJcdP/E7RegKuPKpc3PsYKKAGk0lpV4F+aS2Ob61/Z/zwxy95mi0vK+F3j3b0QdOiCQ2aBqBW5Rjr/Ohxl8li48oxWp/ryffcLMNhWzPUVs5CB8Ki7Qf7VjX7f0rsaTn1EOohXcpB015tpJrWJJftrXWKCFpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715883; c=relaxed/simple;
-	bh=Kf3M8WOVHmWNlju8hfxYgOYethboVlaOMFU8Tgy/994=;
+	s=arc-20240116; t=1760716664; c=relaxed/simple;
+	bh=ynHSONR9qfUN1R7Wz6ooZRTj0UwgjuDxUy6JrXbmnSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3YhJ20qRiHqfz6Rv7P3p8u9CpGg3BxcCBbQ803WHiTf19REFikkymhTnJjC6Xv+4Qw8k/+VyOyXkOKSH5Zrm+HvcinQLy9BjFfawrMJNxgQ4+6sBwtat/j5TQwl+NCwTPJy/FAh3MxfkOhRpCG5xmZZL5mmrz03i0mZqn+WMZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gA9Pv3VX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D689C116B1;
-	Fri, 17 Oct 2025 15:44:43 +0000 (UTC)
+	 MIME-Version; b=XGXRUWL+Fy9JMTLsFqu2O57iT0/rjvqsqwFprA2fbzv/CDyK4bGb9FqC2al6yt6oQeDVYfgKIaJh6NOvtTa9ZoOjfIWhO249S7YC8a68UKq7ejNj8LXt7oj1SlwAfIngFnkNFkwnI05A88vUZMkuthJ8RsNlZ7y3s8H4Hi87CfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfV+nX24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4921C4CEE7;
+	Fri, 17 Oct 2025 15:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715883;
-	bh=Kf3M8WOVHmWNlju8hfxYgOYethboVlaOMFU8Tgy/994=;
+	s=korg; t=1760716664;
+	bh=ynHSONR9qfUN1R7Wz6ooZRTj0UwgjuDxUy6JrXbmnSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gA9Pv3VXFOlY+kGwIghQ6Jy01D2xEpNf1+Si7r6biqBqC2W9GyVe4P11nUlk3Wz+y
-	 VP36Z0hQiLb+s8WmM9QZF5GE/d/cndiyMjC4tA7a2JUu0HaPzkw/OV87Fy+6TITewG
-	 hRpbA7Li9B8N7+hXlar9QYle3AcwJN25o+cRCZaA=
+	b=wfV+nX24YLEMP+RbmjOPrrywjM6+//+uiT3LtvYQC66i5+LZhLXIgCWH65bKD7LQa
+	 wqZZ+VVVomtVpTE0MUDYU3pVOCD8u7LrklmYCmYIA/MIKjn+S1iftrw0b9IDo02bz6
+	 dMzBg3yPb4pw4r8Zmd3G43MqfoghVvbLDtMXeVmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 369/371] iomap: error out on file IO when there is no inline_data buffer
+	Arnd Bergmann <arnd@kernel.org>,
+	David Laight <David.Laight@aculab.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.15 251/276] minmax: improve macro expansion and type checking
 Date: Fri, 17 Oct 2025 16:55:44 +0200
-Message-ID: <20251017145215.435208683@linuxfoundation.org>
+Message-ID: <20251017145151.640450711@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +64,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 6a96fb653b6481ec73e9627ade216b299e4de9ea ]
+[ Upstream commit 22f5468731491e53356ba7c028f0fdea20b18e2c ]
 
-Return IO errors if an ->iomap_begin implementation returns an
-IOMAP_INLINE buffer but forgets to set the inline_data pointer.
-Filesystems should never do this, but we could help fs developers (me)
-fix their bugs by handling this more gracefully than crashing the
-kernel.
+This clarifies the rules for min()/max()/clamp() type checking and makes
+them a much more efficient macro expansion.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://lore.kernel.org/175803480324.966383.7414345025943296442.stgit@frogsfrogsfrogs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In particular, we now look at the type and range of the inputs to see
+whether they work together, generating a mask of acceptable comparisons,
+and then just verifying that the inputs have a shared case:
+
+ - an expression with a signed type can be used for
+    (1) signed comparisons
+    (2) unsigned comparisons if it is statically known to have a
+        non-negative value
+
+ - an expression with an unsigned type can be used for
+    (3) unsigned comparison
+    (4) signed comparisons if the type is smaller than 'int' and thus
+        the C integer promotion rules will make it signed anyway
+
+Here rule (1) and (3) are obvious, and rule (2) is important in order to
+allow obvious trivial constants to be used together with unsigned
+values.
+
+Rule (4) is not necessarily a good idea, but matches what we used to do,
+and we have extant cases of this situation in the kernel.  Notably with
+bcachefs having an expression like
+
+	min(bch2_bucket_sectors_dirty(a), ca->mi.bucket_size)
+
+where bch2_bucket_sectors_dirty() returns an 's64', and
+'ca->mi.bucket_size' is of type 'u16'.
+
+Technically that bcachefs comparison is clearly sensible on a C type
+level, because the 'u16' will go through the normal C integer promotion,
+and become 'int', and then we're comparing two signed values and
+everything looks sane.
+
+However, it's not entirely clear that a 'min(s64,u16)' operation makes a
+lot of conceptual sense, and it's possible that we will remove rule (4).
+After all, the _reason_ we have these complicated type checks is exactly
+that the C type promotion rules are not very intuitive.
+
+But at least for now the rule is in place for backwards compatibility.
+
+Also note that rule (2) existed before, but is hugely relaxed by this
+commit.  It used to be true only for the simplest compile-time
+non-negative integer constants.  The new macro model will allow cases
+where the compiler can trivially see that an expression is non-negative
+even if it isn't necessarily a constant.
+
+For example, the amdgpu driver does
+
+	min_t(size_t, sizeof(fru_info->serial), pia[addr] & 0x3F));
+
+because our old 'min()' macro would see that 'pia[addr] & 0x3F' is of
+type 'int' and clearly not a C constant expression, so doing a 'min()'
+with a 'size_t' is a signedness violation.
+
+Our new 'min()' macro still sees that 'pia[addr] & 0x3F' is of type
+'int', but is smart enough to also see that it is clearly non-negative,
+and thus would allow that case without any complaints.
+
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: David Laight <David.Laight@aculab.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c | 15 ++++++++++-----
- fs/iomap/direct-io.c   |  3 +++
- 2 files changed, 13 insertions(+), 5 deletions(-)
+ include/linux/compiler.h |    9 +++++
+ include/linux/minmax.h   |   78 ++++++++++++++++++++++++++++++++++++-----------
+ 2 files changed, 70 insertions(+), 17 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index fd827398afd2f..6fa653d83f703 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -304,6 +304,9 @@ static int iomap_read_inline_data(const struct iomap_iter *iter,
- 	size_t size = i_size_read(iter->inode) - iomap->offset;
- 	size_t offset = offset_in_folio(folio, iomap->offset);
- 
-+	if (WARN_ON_ONCE(!iomap->inline_data))
-+		return -EIO;
-+
- 	if (folio_test_uptodate(folio))
- 		return 0;
- 
-@@ -894,7 +897,7 @@ static bool __iomap_write_end(struct inode *inode, loff_t pos, size_t len,
- 	return true;
- }
- 
--static void iomap_write_end_inline(const struct iomap_iter *iter,
-+static bool iomap_write_end_inline(const struct iomap_iter *iter,
- 		struct folio *folio, loff_t pos, size_t copied)
- {
- 	const struct iomap *iomap = &iter->iomap;
-@@ -903,12 +906,16 @@ static void iomap_write_end_inline(const struct iomap_iter *iter,
- 	WARN_ON_ONCE(!folio_test_uptodate(folio));
- 	BUG_ON(!iomap_inline_data_valid(iomap));
- 
-+	if (WARN_ON_ONCE(!iomap->inline_data))
-+		return false;
-+
- 	flush_dcache_folio(folio);
- 	addr = kmap_local_folio(folio, pos);
- 	memcpy(iomap_inline_data(iomap, pos), addr, copied);
- 	kunmap_local(addr);
- 
- 	mark_inode_dirty(iter->inode);
-+	return true;
- }
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -259,6 +259,15 @@ static inline void *offset_to_ptr(const
+ #define is_signed_type(type) (((type)(-1)) < (__force type)1)
  
  /*
-@@ -921,10 +928,8 @@ static bool iomap_write_end(struct iomap_iter *iter, size_t len, size_t copied,
- 	const struct iomap *srcmap = iomap_iter_srcmap(iter);
- 	loff_t pos = iter->pos;
- 
--	if (srcmap->type == IOMAP_INLINE) {
--		iomap_write_end_inline(iter, folio, pos, copied);
--		return true;
--	}
-+	if (srcmap->type == IOMAP_INLINE)
-+		return iomap_write_end_inline(iter, folio, pos, copied);
- 
- 	if (srcmap->flags & IOMAP_F_BUFFER_HEAD) {
- 		size_t bh_written;
-diff --git a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c
-index b84f6af2eb4c8..46aa85af13dc5 100644
---- a/fs/iomap/direct-io.c
-+++ b/fs/iomap/direct-io.c
-@@ -519,6 +519,9 @@ static int iomap_dio_inline_iter(struct iomap_iter *iomi, struct iomap_dio *dio)
- 	loff_t pos = iomi->pos;
- 	u64 copied;
- 
-+	if (WARN_ON_ONCE(!inline_data))
-+		return -EIO;
++ * Useful shorthand for "is this condition known at compile-time?"
++ *
++ * Note that the condition may involve non-constant values,
++ * but the compiler may know enough about the details of the
++ * values to determine that the condition is statically true.
++ */
++#define statically_true(x) (__builtin_constant_p(x) && (x))
 +
- 	if (WARN_ON_ONCE(!iomap_inline_data_valid(iomap)))
- 		return -EIO;
++/*
+  * This is needed in functions which generate the stack canary, see
+  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
+  */
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -26,19 +26,63 @@
+ #define __typecheck(x, y) \
+ 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
  
--- 
-2.51.0
-
+-/* is_signed_type() isn't a constexpr for pointer types */
+-#define __is_signed(x) 								\
+-	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
+-		is_signed_type(typeof(x)), 0)
+-
+-/* True for a non-negative signed int constant */
+-#define __is_noneg_int(x)	\
+-	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
+-
+-#define __types_ok(x, y, ux, uy) 				\
+-	(__is_signed(ux) == __is_signed(uy) ||			\
+-	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
+-	 __is_noneg_int(x) || __is_noneg_int(y))
++/*
++ * __sign_use for integer expressions:
++ *   bit #0 set if ok for unsigned comparisons
++ *   bit #1 set if ok for signed comparisons
++ *
++ * In particular, statically non-negative signed integer
++ * expressions are ok for both.
++ *
++ * NOTE! Unsigned types smaller than 'int' are implicitly
++ * converted to 'int' in expressions, and are accepted for
++ * signed conversions for now. This is debatable.
++ *
++ * Note that 'x' is the original expression, and 'ux' is
++ * the unique variable that contains the value.
++ *
++ * We use 'ux' for pure type checking, and 'x' for when
++ * we need to look at the value (but without evaluating
++ * it for side effects! Careful to only ever evaluate it
++ * with sizeof() or __builtin_constant_p() etc).
++ *
++ * Pointers end up being checked by the normal C type
++ * rules at the actual comparison, and these expressions
++ * only need to be careful to not cause warnings for
++ * pointer use.
++ */
++#define __signed_type_use(x,ux) (2+__is_nonneg(x,ux))
++#define __unsigned_type_use(x,ux) (1+2*(sizeof(ux)<4))
++#define __sign_use(x,ux) (is_signed_type(typeof(ux))? \
++	__signed_type_use(x,ux):__unsigned_type_use(x,ux))
++
++/*
++ * To avoid warnings about casting pointers to integers
++ * of different sizes, we need that special sign type.
++ *
++ * On 64-bit we can just always use 'long', since any
++ * integer or pointer type can just be cast to that.
++ *
++ * This does not work for 128-bit signed integers since
++ * the cast would truncate them, but we do not use s128
++ * types in the kernel (we do use 'u128', but they will
++ * be handled by the !is_signed_type() case).
++ *
++ * NOTE! The cast is there only to avoid any warnings
++ * from when values that aren't signed integer types.
++ */
++#ifdef CONFIG_64BIT
++  #define __signed_type(ux) long
++#else
++  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux)>4,1LL,1L))
++#endif
++#define __is_nonneg(x,ux) statically_true((__signed_type(ux))(x)>=0)
++
++#define __types_ok(x,y,ux,uy) \
++	(__sign_use(x,ux) & __sign_use(y,uy))
++
++#define __types_ok3(x,y,z,ux,uy,uz) \
++	(__sign_use(x,ux) & __sign_use(y,uy) & __sign_use(z,uz))
+ 
+ #define __cmp_op_min <
+ #define __cmp_op_max >
+@@ -53,8 +97,8 @@
+ 
+ #define __careful_cmp_once(op, x, y, ux, uy) ({		\
+ 	__auto_type ux = (x); __auto_type uy = (y);	\
+-	static_assert(__types_ok(x, y, ux, uy),		\
+-		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
++	BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),	\
++		#op"("#x", "#y") signedness error");	\
+ 	__cmp(op, ux, uy); })
+ 
+ #define __careful_cmp(op, x, y) \
+@@ -70,8 +114,8 @@
+ 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+ 			(lo) <= (hi), true),					\
+ 		"clamp() low limit " #lo " greater than high limit " #hi);	\
+-	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
+-	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
++	BUILD_BUG_ON_MSG(!__types_ok3(val,lo,hi,uval,ulo,uhi),			\
++		"clamp("#val", "#lo", "#hi") signedness error");		\
+ 	__clamp(uval, ulo, uhi); })
+ 
+ #define __careful_clamp(val, lo, hi) \
 
 
 
