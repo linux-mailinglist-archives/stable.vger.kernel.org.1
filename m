@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B635BE9877
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:11:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D39FBBE9B02
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6868C580748
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A1FA5582894
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B3A332905;
-	Fri, 17 Oct 2025 15:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49D22F692B;
+	Fri, 17 Oct 2025 15:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D30WM9/O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyMhownD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DA9335079;
-	Fri, 17 Oct 2025 15:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819BE32C947;
+	Fri, 17 Oct 2025 15:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713406; cv=none; b=k+ECd03vnzAEb57Vt+2F+zlu1pQCUJf7g2AamNsWHzwIp7N7ugCdv0ofxWRnU5bVBPpNh1Mej/LFobVOf0VgtAnD7S5BwSrLA+gZ947nRDfmKjjgAiiWZxZBMTne7R37dhZkDl6RLCE+Z9wCPvBm2//sNXuoPl6R8vqdIjUEYn4=
+	t=1760713863; cv=none; b=H1W1c52tlF8ruGIp0GAbjbIIrE9LMRVabnXJfERj3BHI1oDLDWtv+98+wqIim01Iy1iBwMAHWHvIj5d/51TJ1/OtHkO+NNZfNRqv3oULltx2giUk22g8Of6FLcS4KzX7sw6Ns89romZeUyrHPqGH6/hk6ay3cB+OVOpc4gBwfM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713406; c=relaxed/simple;
-	bh=MvggLcLor3peeyp+nShXT3t9c9JHXYksw2iXYUGg7Cg=;
+	s=arc-20240116; t=1760713863; c=relaxed/simple;
+	bh=tjzxIPYrnvYc7zCSUHSg/aRdoAF9DS1Vw8ImP0Qk52U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+b4QXDm1ZyRKnf6ieEsWxF8YxcZDAJHGwxSG3oerC5+M5IQvDjfl3DRvpG6Lgtmz69sJl10XjPNbWnTJVZYHsosDX2AX0P73uFHkatY8tJxXLwB/4rABRJKQEPK23QEjmmVfA7qvF8p6T28Fz540WpIHVyR26TWSywTHVtb3Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D30WM9/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A14C4CEE7;
-	Fri, 17 Oct 2025 15:03:25 +0000 (UTC)
+	 MIME-Version; b=ixCVCTMwvjleX+3LdX6YqAYBzYpD0g+8p29AR8dIYkj3FS5zssdRdviMgvoqHKkDDSCt9gR5eKqUo7vDPRfb4bYLKIp8PBfx7i5VCwgKhng5YPhmcCCQw0SgeW5oB786QjPxEW56ZTAcvaHnZ9MMf12+hW7Y3xZRsk1WAtLtU60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyMhownD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20E9C4CEF9;
+	Fri, 17 Oct 2025 15:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713406;
-	bh=MvggLcLor3peeyp+nShXT3t9c9JHXYksw2iXYUGg7Cg=;
+	s=korg; t=1760713863;
+	bh=tjzxIPYrnvYc7zCSUHSg/aRdoAF9DS1Vw8ImP0Qk52U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D30WM9/OhlSEyU/oa0MpWTajxrzJEos+y4lMmJr7A2lxQzRDpQr4bEgZSjyfmdMLG
-	 oeYSGV/bNfIMf1XLuoRy41IZbbAG4+RRoF7ayDiLJl8sQGBRqwIqcNL1w9K9f6n9uO
-	 Ft0BxOyClXJbEFYhTSkRmW90Uvo9sVqNBxnNBSZo=
+	b=KyMhownD1/XopkwV+JAgr5ztkMx9hyo/jYSazWKg0K00pM4wPMFe97UUFw9ukA/i4
+	 kDYxfEZSExoPKLKupKKQjMtMRfVsD7PfrIh3s4xwk8U97k26D3REDaObU0D1AnffT5
+	 WmI2/iM3luBkUOl2UiBd3RUowylWTEEvt0AxGqDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 127/168] NFSD: Fix destination buffer size in nfsd4_ssc_setup_dul()
+	SeongJae Park <sj@kernel.org>,
+	Xinyu Zheng <zhengxinyu6@huawei.com>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 145/201] mm/damon/vaddr: do not repeat pte_offset_map_lock() until success
 Date: Fri, 17 Oct 2025 16:53:26 +0200
-Message-ID: <20251017145133.703323047@linuxfoundation.org>
+Message-ID: <20251017145140.059698918@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: SeongJae Park <sj@kernel.org>
 
-commit ab1c282c010c4f327bd7addc3c0035fd8e3c1721 upstream.
+commit b93af2cc8e036754c0d9970d9ddc47f43cc94b9f upstream.
 
-Commit 5304877936c0 ("NFSD: Fix strncpy() fortify warning") replaced
-strncpy(,, sizeof(..)) with strlcpy(,, sizeof(..) - 1), but strlcpy()
-already guaranteed NUL-termination of the destination buffer and
-subtracting one byte potentially truncated the source string.
+DAMON's virtual address space operation set implementation (vaddr) calls
+pte_offset_map_lock() inside the page table walk callback function.  This
+is for reading and writing page table accessed bits.  If
+pte_offset_map_lock() fails, it retries by returning the page table walk
+callback function with ACTION_AGAIN.
 
-The incorrect size was then carried over in commit 72f78ae00a8e ("NFSD:
-move from strlcpy with unused retval to strscpy") when switching from
-strlcpy() to strscpy().
+pte_offset_map_lock() can continuously fail if the target is a pmd
+migration entry, though.  Hence it could cause an infinite page table walk
+if the migration cannot be done until the page table walk is finished.
+This indeed caused a soft lockup when CPU hotplugging and DAMON were
+running in parallel.
 
-Fix this off-by-one error by using the full size of the destination
-buffer again.
+Avoid the infinite loop by simply not retrying the page table walk.  DAMON
+is promising only a best-effort accuracy, so missing access to such pages
+is no problem.
 
-Cc: stable@vger.kernel.org
-Fixes: 5304877936c0 ("NFSD: Fix strncpy() fortify warning")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lkml.kernel.org/r/20250930004410.55228-1-sj@kernel.org
+Fixes: 7780d04046a2 ("mm/pagewalkers: ACTION_AGAIN if pte_offset_map_lock() fails")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: Xinyu Zheng <zhengxinyu6@huawei.com>
+Closes: https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
+Acked-by: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>	[6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/vaddr.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1334,7 +1334,7 @@ try_again:
- 		return 0;
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -324,10 +324,8 @@ static int damon_mkold_pmd_entry(pmd_t *
  	}
- 	if (work) {
--		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr) - 1);
-+		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr));
- 		refcount_set(&work->nsui_refcnt, 2);
- 		work->nsui_busy = true;
- 		list_add_tail(&work->nsui_list, &nn->nfsd_ssc_mount_list);
+ 
+ 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+-	if (!pte) {
+-		walk->action = ACTION_AGAIN;
++	if (!pte)
+ 		return 0;
+-	}
+ 	if (!pte_present(ptep_get(pte)))
+ 		goto out;
+ 	damon_ptep_mkold(pte, walk->vma, addr);
+@@ -479,10 +477,8 @@ regular_page:
+ #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+ 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+-	if (!pte) {
+-		walk->action = ACTION_AGAIN;
++	if (!pte)
+ 		return 0;
+-	}
+ 	ptent = ptep_get(pte);
+ 	if (!pte_present(ptent))
+ 		goto out;
 
 
 
