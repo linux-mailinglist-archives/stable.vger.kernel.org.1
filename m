@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20671BEA41C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD310BE9665
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D2281886374
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63C9818844E4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF6D2F12A7;
-	Fri, 17 Oct 2025 15:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F3D2F12D7;
+	Fri, 17 Oct 2025 15:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wnv8FX56"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bphlc67j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C832330B04;
-	Fri, 17 Oct 2025 15:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9523208;
+	Fri, 17 Oct 2025 15:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716115; cv=none; b=X9cNDaKUw5pX4LKOsg7vOoZbrnokkmiOMbZCNOVrTMtN2cvWJeHyA559+A981VVh6iLCdsUvOQafcwvrow5AMaWxUcrY3ScQuRCBl0wLC3ST2xzQstspEKEkYClpjX/RDcbMUWPhNuyztLqerWxHwX0y3paizsTXopjhmtNFR2E=
+	t=1760713229; cv=none; b=DTHO4cJCIQvkaNeUFPq3M0C+EQpOmqHdyfEa4OzM9v7uYrhD4lTuSjMw8P1OjeF6iNLlvT5QB+zj1n7J7lKoU75EvTcVZ3g7U0whXEyFLaGfdhM3Tz4YIfREWmbeksRDPaGFy0FHK27o4VZDo4o/LWYl42jmZFvZcDmpdjBCbNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716115; c=relaxed/simple;
-	bh=7vmZjezO3AIBblq7USCH5XVMgRlMQMS53JGX4mWJzhQ=;
+	s=arc-20240116; t=1760713229; c=relaxed/simple;
+	bh=lGECs1ZFfda0ijWqJnRBKbqTh7Ahap7VMdoyZb8KQ08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pc1EQ2EzfwEsSMLd05qcEUWvMgxOwnPlCsZCrhaVGhDpIpyPOiSwx7vq5NfVc/xmfMktXjpOWorp966mhndHWGCYTt1FdkHSaTX0qL0HnOY2srRE4zLLjYV6MCjIc2ODpInN2MlJ51L7Cd2v4+jfKWMcM50PNFNBU1+uSkJyMPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wnv8FX56; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDEBC4CEE7;
-	Fri, 17 Oct 2025 15:48:34 +0000 (UTC)
+	 MIME-Version; b=AQov04I364BOvyxLMh5Wb7vsQ2djlaSP1hOKvkj5TN5iG+SgPdeBWmNPHGul+B9eh7PxnPw5eId+fn1Q6BOnW6Of7YuKezBjzJfn17VbeY3WtT0EHL5RvrqOC0UhfW5WG77K/OoNoAsLn0OEbjZh30pyp4zrTPsjkH4LC2LmSJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bphlc67j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF61AC4CEE7;
+	Fri, 17 Oct 2025 15:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716115;
-	bh=7vmZjezO3AIBblq7USCH5XVMgRlMQMS53JGX4mWJzhQ=;
+	s=korg; t=1760713229;
+	bh=lGECs1ZFfda0ijWqJnRBKbqTh7Ahap7VMdoyZb8KQ08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wnv8FX56f4vjtSPPe9GF7BRRrQCwl5DtLZt1hU4LX55Ei6RgXYBEbF/gdLOAJFzqp
-	 MpIvJCp7mBLM99QzpOnykmFiRY6NOeNcihfwEZ86FTXswFzoEYTdEbPzto2Qj5xPj8
-	 8ctQuA1M7lIQ7wNeMeE8NYwLQhu//Hdk3LlHc19s=
+	b=bphlc67jKmQnIm9SlzNvv0H7+BtApl/vanzYe4AL4/v0VbHVnZ54JMgEO6Y/89FBW
+	 oiMOmCy/4N5QG0DSc83bN/BEciDYu4RCrUo72oEVwH5uZJB4BY4K7yuIB4bVBeH6mc
+	 mDUVmx/8nZR5+ym3kqPINDaEIToeIXd2vJ/BSwBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhilesh Patil <akhilesh@ee.iitb.ac.in>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 045/276] selftests: watchdog: skip ping loop if WDIOF_KEEPALIVEPING not supported
+	stable@kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 059/168] dt-bindings: phy: rockchip-inno-csi-dphy: make power-domains non-required
 Date: Fri, 17 Oct 2025 16:52:18 +0200
-Message-ID: <20251017145144.049028021@linuxfoundation.org>
+Message-ID: <20251017145131.196136583@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+From: Michael Riesch <michael.riesch@collabora.com>
 
-[ Upstream commit e8cfc524eaf3c0ed88106177edb6961e202e6716 ]
+commit c254815b02673cc77a84103c4c0d6197bd90c0ef upstream.
 
-Check if watchdog device supports WDIOF_KEEPALIVEPING option before
-entering keep_alive() ping test loop. Fix watchdog-test silently looping
-if ioctl based ping is not supported by the device. Exit from test in
-such case instead of getting stuck in loop executing failing keep_alive()
+There are variants of the Rockchip Innosilicon CSI DPHY (e.g., the RK3568
+variant) that are powered on by default as they are part of the ALIVE power
+domain.
+Remove 'power-domains' from the required properties in order to avoid false
+positives.
 
-watchdog_info:
- identity:              m41t93 rtc Watchdog
- firmware_version:      0
-Support/Status: Set timeout (in seconds)
-Support/Status: Watchdog triggers a management or other external alarm not a reboot
-
-Watchdog card disabled.
-Watchdog timeout set to 5 seconds.
-Watchdog ping rate set to 2 seconds.
-Watchdog card enabled.
-WDIOC_KEEPALIVE not supported by this device
-
-without this change
-Watchdog card disabled.
-Watchdog timeout set to 5 seconds.
-Watchdog ping rate set to 2 seconds.
-Watchdog card enabled.
-Watchdog Ticking Away!
-(Where test stuck here forver silently)
-
-Updated change log at commit time:
-Shuah Khan <skhan@linuxfoundation.org>
-
-Link: https://lore.kernel.org/r/20250914152840.GA3047348@bhairav-test.ee.iitb.ac.in
-Fixes: d89d08ffd2c5 ("selftests: watchdog: Fix ioctl SET* error paths to take oneshot exit path")
-Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 22c8e0a69b7f ("dt-bindings: phy: add compatible for rk356x to rockchip-inno-csi-dphy")
+Cc: stable@kernel.org
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
+Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-2-a4f340a7f0cf@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml |   15 +++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
-index 09773695d219f..4056706d63f7e 100644
---- a/tools/testing/selftests/watchdog/watchdog-test.c
-+++ b/tools/testing/selftests/watchdog/watchdog-test.c
-@@ -240,6 +240,12 @@ int main(int argc, char *argv[])
- 	if (oneshot)
- 		goto end;
+--- a/Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml
++++ b/Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml
+@@ -57,11 +57,24 @@ required:
+   - clocks
+   - clock-names
+   - '#phy-cells'
+-  - power-domains
+   - resets
+   - reset-names
+   - rockchip,grf
  
-+	/* Check if WDIOF_KEEPALIVEPING is supported */
-+	if (!(info.options & WDIOF_KEEPALIVEPING)) {
-+		printf("WDIOC_KEEPALIVE not supported by this device\n");
-+		goto end;
-+	}
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - rockchip,px30-csi-dphy
++              - rockchip,rk1808-csi-dphy
++              - rockchip,rk3326-csi-dphy
++              - rockchip,rk3368-csi-dphy
++    then:
++      required:
++        - power-domains
 +
- 	printf("Watchdog Ticking Away!\n");
+ additionalProperties: false
  
- 	/*
--- 
-2.51.0
-
+ examples:
 
 
 
