@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-186680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F07BE9EA6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:33:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4728BE99F6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798EF5E791F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 586253A7435
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378723328E9;
-	Fri, 17 Oct 2025 15:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C432F12DC;
+	Fri, 17 Oct 2025 15:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BX5bTtM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhbN/dOg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E841F32C92D;
-	Fri, 17 Oct 2025 15:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AA83370E1;
+	Fri, 17 Oct 2025 15:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713931; cv=none; b=kfxE18k2qx49kq9DU6YaH0p8cBcv+wZ+M4FR7UocS1ee7TsLET6BTRrN4tX9IU7yPxboW41wC0cJTzMFTiiBdIKeoENpkh995QJTb5xfuSecYZ4Yl3ExI0hyF4tUAMOSa8o0v8UL7YDHD/pOWv9W9uRMWL0/dz8vdDXi/yiUNuA=
+	t=1760713346; cv=none; b=WIgpq3bOjoN8VLAmpAzuvYOUhabAKTDp+T02v9knaJRXoS/JrX8LyCg2szjOZjrDdlyJFpPhn4U8k2Py06nXzL4eYgzb0kXLswNHwUfNiPrqDzy1qsGxr2rvQFI1DRdIz2IdBysgvPAqsI8da55LWrA+giUCMnW+k8zD4AFEANc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713931; c=relaxed/simple;
-	bh=w/P1onfkEOE2Dwq+Cgvs+KJEN+E2hjElHmxKhXPPNRY=;
+	s=arc-20240116; t=1760713346; c=relaxed/simple;
+	bh=PcGu28HkM1mTsYutx1VRAKVD4NbQYcapR9RK35RS2Yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTqhnzu8R0qY8/LOABZtcxqskRpoeqK/r+V0+/fIzIRlJKKoz710BKmGM0zCkqPt2e4r9LSGkPJmZgmxayQGv1wiXJPMhEcCMg4CQiu7V/EHSynnZ0B7I5BY1brbcq5IZsB6X2/M0bJFSzDM8h6jWTZGRuVwAyBPeFmebLgY67s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BX5bTtM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD80C4CEFE;
-	Fri, 17 Oct 2025 15:12:10 +0000 (UTC)
+	 MIME-Version; b=sm0sGQQ9yS9oJkv5oQN+9OJY3bzX0ljYuhKpdYQhkHx7WyxJe2XFsg7pzHFV0JooWDtrMG+nTZmGyRBf4XI7TS8oI7Cwknf5ayR9PlHKZBSQYI431JHAaYYsDy0wibR2RH3bafg5Tg4u/OHnnFKrtcI+GaA03QlHk25G5MvsOho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhbN/dOg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBE8C4CEE7;
+	Fri, 17 Oct 2025 15:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713930;
-	bh=w/P1onfkEOE2Dwq+Cgvs+KJEN+E2hjElHmxKhXPPNRY=;
+	s=korg; t=1760713346;
+	bh=PcGu28HkM1mTsYutx1VRAKVD4NbQYcapR9RK35RS2Yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BX5bTtM7Yba/cqiMggNhwGOxlaC0os2He7MS3UJI+WIP8qazkG5b4+M0gVmQfM5qY
-	 DRATSy+/04mk45nPsYTHpGA0wO1rTo9+HuCtCxlE6LUeuwKIoVwr5WvOio+ieum1ss
-	 JyY5MSeaLXr1e7heF7f9NLdPHvCZ9vtQD4v3idws=
+	b=zhbN/dOgMCz4kyPxlXVJGgoN6P1mokEE9a8kTLzfdZp0cXcvmlHwhraM+i1aCmzPC
+	 5sjB0HhCykyPZflcYfOcxvixqCZ77pAdn6NegTI2NI5pNgPAv47KVibG7Ul2Fo2r/Q
+	 wPd4ZXtm7ZAK+DcTCAS5S7EN5X6ILIjGN1UF8H8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
-	Ahmet Eray Karadag <eraykrdg1@gmail.com>,
+	Chris Mason <clm@meta.com>,
+	Jan Kara <jack@suse.cz>,
 	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 152/201] ext4: guard against EA inode refcount underflow in xattr update
+Subject: [PATCH 6.1 134/168] ext4: free orphan info with kvfree
 Date: Fri, 17 Oct 2025 16:53:33 +0200
-Message-ID: <20251017145140.316176074@linuxfoundation.org>
+Message-ID: <20251017145133.963019629@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmet Eray Karadag <eraykrdg1@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 57295e835408d8d425bef58da5253465db3d6888 upstream.
+commit 971843c511c3c2f6eda96c6b03442913bfee6148 upstream.
 
-syzkaller found a path where ext4_xattr_inode_update_ref() reads an EA
-inode refcount that is already <= 0 and then applies ref_change (often
--1). That lets the refcount underflow and we proceed with a bogus value,
-triggering errors like:
+Orphan info is now getting allocated with kvmalloc_array(). Free it with
+kvfree() instead of kfree() to avoid complaints from mm.
 
-  EXT4-fs error: EA inode <n> ref underflow: ref_count=-1 ref_change=-1
-  EXT4-fs warning: ea_inode dec ref err=-117
-
-Make the invariant explicit: if the current refcount is non-positive,
-treat this as on-disk corruption, emit ext4_error_inode(), and fail the
-operation with -EFSCORRUPTED instead of updating the refcount. Delete the
-WARN_ONCE() as negative refcounts are now impossible; keep error reporting
-in ext4_error_inode().
-
-This prevents the underflow and the follow-on orphan/cleanup churn.
-
-Reported-by: syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com
-Fixes: https://syzbot.org/bug?extid=0be4f339a8218d2a5bb1
-Cc: stable@kernel.org
-Co-developed-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Ahmet Eray Karadag <eraykrdg1@gmail.com>
-Message-ID: <20250920021342.45575-1-eraykrdg1@gmail.com>
+Reported-by: Chris Mason <clm@meta.com>
+Fixes: 0a6ce20c1564 ("ext4: verify orphan file size is not too big")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251007134936.7291-2-jack@suse.cz>
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ fs/ext4/orphan.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1036,7 +1036,7 @@ static int ext4_xattr_inode_update_ref(h
- 				       int ref_change)
- {
- 	struct ext4_iloc iloc;
--	s64 ref_count;
-+	u64 ref_count;
- 	int ret;
+--- a/fs/ext4/orphan.c
++++ b/fs/ext4/orphan.c
+@@ -513,7 +513,7 @@ void ext4_release_orphan_info(struct sup
+ 		return;
+ 	for (i = 0; i < oi->of_blocks; i++)
+ 		brelse(oi->of_binfo[i].ob_bh);
+-	kfree(oi->of_binfo);
++	kvfree(oi->of_binfo);
+ }
  
- 	inode_lock_nested(ea_inode, I_MUTEX_XATTR);
-@@ -1046,13 +1046,17 @@ static int ext4_xattr_inode_update_ref(h
- 		goto out;
- 
- 	ref_count = ext4_xattr_inode_get_ref(ea_inode);
-+	if ((ref_count == 0 && ref_change < 0) || (ref_count == U64_MAX && ref_change > 0)) {
-+		ext4_error_inode(ea_inode, __func__, __LINE__, 0,
-+			"EA inode %lu ref wraparound: ref_count=%lld ref_change=%d",
-+			ea_inode->i_ino, ref_count, ref_change);
-+		ret = -EFSCORRUPTED;
-+		goto out;
-+	}
- 	ref_count += ref_change;
- 	ext4_xattr_inode_set_ref(ea_inode, ref_count);
- 
- 	if (ref_change > 0) {
--		WARN_ONCE(ref_count <= 0, "EA inode %lu ref_count=%lld",
--			  ea_inode->i_ino, ref_count);
--
- 		if (ref_count == 1) {
- 			WARN_ONCE(ea_inode->i_nlink, "EA inode %lu i_nlink=%u",
- 				  ea_inode->i_ino, ea_inode->i_nlink);
-@@ -1061,9 +1065,6 @@ static int ext4_xattr_inode_update_ref(h
- 			ext4_orphan_del(handle, ea_inode);
- 		}
- 	} else {
--		WARN_ONCE(ref_count < 0, "EA inode %lu ref_count=%lld",
--			  ea_inode->i_ino, ref_count);
--
- 		if (ref_count == 0) {
- 			WARN_ONCE(ea_inode->i_nlink != 1,
- 				  "EA inode %lu i_nlink=%u",
+ static struct ext4_orphan_block_tail *ext4_orphan_block_tail(
+@@ -638,7 +638,7 @@ int ext4_init_orphan_info(struct super_b
+ out_free:
+ 	for (i--; i >= 0; i--)
+ 		brelse(oi->of_binfo[i].ob_bh);
+-	kfree(oi->of_binfo);
++	kvfree(oi->of_binfo);
+ out_put:
+ 	iput(inode);
+ 	return ret;
 
 
 
