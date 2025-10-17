@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-187388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A59FBEA77A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D302BEAA2E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DE3E9483D3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48EC79484BB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B785330B21;
-	Fri, 17 Oct 2025 15:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07775289811;
+	Fri, 17 Oct 2025 15:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTkHLT2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qjf4tcii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15FF330B11;
-	Fri, 17 Oct 2025 15:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F46330B3A;
+	Fri, 17 Oct 2025 15:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715927; cv=none; b=uX0xiYU8TfGgyDZykrci/NKaFJv8aU3lnvwWYxnmi+wrsEw5DRPMSgcDudESpoTN2eEEAsZtXJhp4KDWwi5QTphB73W9Ci4lcVO05VGFqIBGgxSVU17rc56w3fVyW4FV9iA4Oji6nbOuNzIYop7uCMI0ni6q2TiZMh6hdDfEEvs=
+	t=1760715933; cv=none; b=pmS7+mk1b4L4TyIVRdezzIL0qDVJYoA7wUSrlGFptO31VqIJlQG/GqfAtXBTVDHAUnzECvc2+PoIjiUii06fN1PcInu8NABmWp0QO4Sq9Iqq3qCTOqlNeZzsfU8elihAQY7QPZ67QISLXQLmAFwf8QZULy+vOm1rPPK7jEyzXSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715927; c=relaxed/simple;
-	bh=cV5lJ8jz7ajbLmn8IRCgc9exwQuS89fwMJpjcTEyoEE=;
+	s=arc-20240116; t=1760715933; c=relaxed/simple;
+	bh=GZfxEWTVVL22XWsUWzBWa5UzcJkuFP4g0+fkWk4hgU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SyVbddLxIF+/IeOMb5keOILKulOA7Ay+wnAoMhDL8FuGlQe2ITXpBwx6O9mI0POLL0n+tfoLxp/TETH4jKUUcNKCMcyYmSfDPqlc/HN9ZA72cYZACWRk6+ZpXmdoiOWrJhbHfhy6U0ezGLsy5c28FO2gZm0dZszkZgX9RmRwpLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTkHLT2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5CDC4CEE7;
-	Fri, 17 Oct 2025 15:45:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fgPIQsUhv1kUO/wTbqzHXe9jYexJIKmXfFYYoCIJxRlLOjSnnjt57Lwto1BpNnT4J/yy0vEiphnMSXTuF5Eby4kyZ5rAvKcx/v4vWyIYcDQZcqf0ZVV1kNnjXnuH4zxMarztqp+8CDH3wrZNWsGQpCvsfrOZVh4idqWZXW97+Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qjf4tcii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A77DC4CEE7;
+	Fri, 17 Oct 2025 15:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715927;
-	bh=cV5lJ8jz7ajbLmn8IRCgc9exwQuS89fwMJpjcTEyoEE=;
+	s=korg; t=1760715933;
+	bh=GZfxEWTVVL22XWsUWzBWa5UzcJkuFP4g0+fkWk4hgU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTkHLT2sUHtZVjN9yTvUMwnImGm03HjLEy1w64T2s6enrrfpDrFjq/J3fg6TcE3NY
-	 P0jtLHsJTTY0VliKYyTifh5AxKMFXybxoXdKaqjNCSUureVGnyJWqoboRBcTya1ydB
-	 Mylu5Je4+hfuDVa+qfREIhSyQ2MYwfVkhmawS688=
+	b=Qjf4tciiy81zVeyrMSf+8kI+1JoOl2cTH29EIM/YZjYQDlQrGinibCkytLig1pcBg
+	 Ms9nwQTEqHPImg1GE2xiSPWyAEt5zt1gY13CMisL+nmpAXubocBXOydAIJUZ4bwmYR
+	 ymbVQSr4tGct+LtNlRPFStaRZGsN6TVij7JLqjUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Romain Sioen <romain.sioen@microchip.com>
-Subject: [PATCH 5.15 014/276] hid: fix I2C read buffer overflow in raw_event() for mcp2221
-Date: Fri, 17 Oct 2025 16:51:47 +0200
-Message-ID: <20251017145142.920827807@linuxfoundation.org>
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Subject: [PATCH 5.15 016/276] staging: axis-fifo: fix maximum TX packet length check
+Date: Fri, 17 Oct 2025 16:51:49 +0200
+Message-ID: <20251017145142.993915751@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -61,49 +58,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-commit b56cc41a3ae7323aa3c6165f93c32e020538b6d2 upstream.
+commit 52ff2b840bc723f3be1f096f8017c78e0515858c upstream.
 
-As reported by syzbot, mcp2221_raw_event lacked
-validation of incoming I2C read data sizes, risking buffer
-overflows in mcp->rxbuf during multi-part transfers.
-As highlighted in the DS20005565B spec, p44, we have:
-"The number of read-back data bytes to follow in this packet:
-from 0 to a maximum of 60 bytes of read-back bytes."
-This patch enforces we don't exceed this limit.
+Since commit 2ca34b508774 ("staging: axis-fifo: Correct handling of
+tx_fifo_depth for size validation"), write() operations with packets
+larger than 'tx_fifo_depth - 4' words are no longer rejected with -EINVAL.
 
-Reported-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=52c1a7d3e5b361ccd346
-Tested-by: syzbot+52c1a7d3e5b361ccd346@syzkaller.appspotmail.com
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Link: https://patch.msgid.link/20250726220931.7126-1-contact@arnaud-lcm.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
+Fortunately, the packets are not actually getting transmitted to hardware,
+otherwise they would be raising a 'Transmit Packet Overrun Error'
+interrupt, which requires a reset of the TX circuit to recover from.
+
+Instead, the request times out inside wait_event_interruptible_timeout()
+and always returns -EAGAIN, since the wake up condition can never be true
+for these packets. But still, they unnecessarily block other tasks from
+writing to the FIFO and the EAGAIN return code signals userspace to retry
+the write() call, even though it will always fail and time out.
+
+According to the AXI4-Stream FIFO reference manual (PG080), the maximum
+valid packet length is 'tx_fifo_depth - 4' words, so attempting to send
+larger packets is invalid and should not be happening in the first place:
+
+> The maximum packet that can be transmitted is limited by the size of
+> the FIFO, which is (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
+
+Therefore, bring back the old behavior and outright reject packets larger
+than 'tx_fifo_depth - 4' with -EINVAL. Add a comment to explain why the
+check is necessary. The dev_err() message was removed to avoid cluttering
+the dmesg log if an invalid packet is received from userspace.
+
+Fixes: 2ca34b508774 ("staging: axis-fifo: Correct handling of tx_fifo_depth for size validation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Link: https://lore.kernel.org/r/20250817171350.872105-1-ovidiu.panait.oss@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-mcp2221.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/staging/axis-fifo/axis-fifo.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -791,6 +791,10 @@ static int mcp2221_raw_event(struct hid_
- 			}
- 			if (data[2] == MCP2221_I2C_READ_COMPL ||
- 			    data[2] == MCP2221_I2C_READ_PARTIAL) {
-+				if (!mcp->rxbuf || mcp->rxbuf_idx < 0 || data[3] > 60) {
-+					mcp->status = -EINVAL;
-+					break;
-+				}
- 				buf = mcp->rxbuf;
- 				memcpy(&buf[mcp->rxbuf_idx], &data[4], data[3]);
- 				mcp->rxbuf_idx = mcp->rxbuf_idx + data[3];
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -494,11 +494,17 @@ static ssize_t axis_fifo_write(struct fi
+ 		return -EINVAL;
+ 	}
+ 
+-	if (words_to_write > fifo->tx_fifo_depth) {
+-		dev_err(fifo->dt_device, "tried to write more words [%u] than slots in the fifo buffer [%u]\n",
+-			words_to_write, fifo->tx_fifo_depth);
++	/*
++	 * In 'Store-and-Forward' mode, the maximum packet that can be
++	 * transmitted is limited by the size of the FIFO, which is
++	 * (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
++	 *
++	 * Do not attempt to send a packet larger than 'tx_fifo_depth - 4',
++	 * otherwise a 'Transmit Packet Overrun Error' interrupt will be
++	 * raised, which requires a reset of the TX circuit to recover.
++	 */
++	if (words_to_write > (fifo->tx_fifo_depth - 4))
+ 		return -EINVAL;
+-	}
+ 
+ 	if (fifo->write_flags & O_NONBLOCK) {
+ 		/*
 
 
 
