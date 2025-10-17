@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-187367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397F8BEA3DA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220A2BEA619
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E65215874C1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E990D947971
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA791330B20;
-	Fri, 17 Oct 2025 15:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8553F330B26;
+	Fri, 17 Oct 2025 15:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTmk6BfK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5uRUkiE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F445330B1C;
-	Fri, 17 Oct 2025 15:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB08330B21;
+	Fri, 17 Oct 2025 15:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715869; cv=none; b=EqESy8TJVH+IZZZg2nEhsdjAoiGBbjYipcOMu1uWPB0wWQXuMLy8DEicB3nqbjFEr22169mblxmW0/rtQRUkQyaSMpOqpdbU24atSFkvFJu5KIYIIB/yNpAeRjbsnswAenPw9bm8gATyQ/Tnn7lqvzJc1Qg7RVTDbGm8gnNvHyA=
+	t=1760715872; cv=none; b=PgMwoAk2JQP9fil7FBtW8NhKpmIWivUhKTZ+SK6Jl1YwA5NvNkLg4azyNVirD20QwxoOIkoTGHrQekofDgiIAdR52ciECBy/RTVWdrYFN8qMVEFnzow/YVGl1Zz7h1meMb0db1g4dWmH+7E2VtK1lwWbHyjAFkPcNmaJ2/JyXCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715869; c=relaxed/simple;
-	bh=lgSq0hr+PeiiJfrEVejA1pa75brgx5nc6a7gXpONxl0=;
+	s=arc-20240116; t=1760715872; c=relaxed/simple;
+	bh=nClh2577163dlybQhCh9aInIp3JpLYOhJAxjoR9WOVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NwMI6RGf1MWlMOKwGsBHCz/insaOHunpwXvprYkBqyx5rVUpqVwsTWqp6sRrO5LzIid59IJyTVwg10ih9Ybzg/fDYRNOMbAbPbI0y3o2YFrdfEnsY8mJOCReSKUMRQ9BKjAeGQHAVvjrJWWlH2VcSXmvQYUGRO8qT5xJn/wFdFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTmk6BfK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE559C113D0;
-	Fri, 17 Oct 2025 15:44:28 +0000 (UTC)
+	 MIME-Version; b=G68WOG9o8AqdccpMN3NK1SbJDS81Loo5VKfNKnQqFs6rUzmgm944aM3Qnf6DE10bXp/LSQaRY3ysYIVQnjNGxoE29HvGFKwSqIn/1vKeJFCqA4rWPcivsagxKcOKUJZiOFDiOpiMhZJaddW+4q3DLQULVWRNF6yaHwgZcVXk9Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5uRUkiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD1BC4CEFE;
+	Fri, 17 Oct 2025 15:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715869;
-	bh=lgSq0hr+PeiiJfrEVejA1pa75brgx5nc6a7gXpONxl0=;
+	s=korg; t=1760715872;
+	bh=nClh2577163dlybQhCh9aInIp3JpLYOhJAxjoR9WOVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTmk6BfKSbR9292HB2dhwuXW6mUABFAH/CHu6eF6n8iUFwrvEqSdEq1vxouwVj91d
-	 fESlQkxFJhsblqXUFa/KlCWg1vCgDw8bbbQe3jPqlo017OJfrb/aUjU8q+NDXzzpdl
-	 boJEikIUSflo79PM2dVTsCkK2VfwKcqKcdoOpO/w=
+	b=e5uRUkiErPhmUdjzUNkxvH8N0dw4feiinMYuKpyj0R/j+SMTePxSFnLuG3PxGT14e
+	 uRw7BsovC9BUEGMa2ujU53q+xzc91tYOQsF+oraK0FBEA03oPdr8cdvw+GSeHK1giq
+	 ZOsgYwvLDMTbt5EIUJIGrgVvgYptmCLiRRUdBKFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
 	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 365/371] nsfs: validate extensible ioctls
-Date: Fri, 17 Oct 2025 16:55:40 +0200
-Message-ID: <20251017145215.292205160@linuxfoundation.org>
+Subject: [PATCH 6.17 366/371] mnt_ns_tree_remove(): DTRT if mnt_ns had never been added to mnt_ns_list
+Date: Fri, 17 Oct 2025 16:55:41 +0200
+Message-ID: <20251017145215.327630736@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -66,36 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit f8527a29f4619f74bc30a9845ea87abb9a6faa1e ]
+[ Upstream commit 38f4885088fc5ad41b8b0a2a2cfc73d01e709e5c ]
 
-Validate extensible ioctls stricter than we do now.
+Actual removal is done under the lock, but for checking if need to bother
+the lockless RB_EMPTY_NODE() is safe - either that namespace had never
+been added to mnt_ns_tree, in which case the the node will stay empty, or
+whoever had allocated it has called mnt_ns_tree_add() and it has already
+run to completion.  After that point RB_EMPTY_NODE() will become false and
+will remain false, no matter what we do with other nodes in the tree.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nsfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/namespace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nsfs.c b/fs/nsfs.c
-index 59aa801347a7d..34f0b35d3ead7 100644
---- a/fs/nsfs.c
-+++ b/fs/nsfs.c
-@@ -169,9 +169,11 @@ static bool nsfs_ioctl_valid(unsigned int cmd)
- 	/* Extensible ioctls require some extra handling. */
- 	switch (_IOC_NR(cmd)) {
- 	case _IOC_NR(NS_MNT_GET_INFO):
-+		return extensible_ioctl_valid(cmd, NS_MNT_GET_INFO, MNT_NS_INFO_SIZE_VER0);
- 	case _IOC_NR(NS_MNT_GET_NEXT):
-+		return extensible_ioctl_valid(cmd, NS_MNT_GET_NEXT, MNT_NS_INFO_SIZE_VER0);
- 	case _IOC_NR(NS_MNT_GET_PREV):
--		return (_IOC_TYPE(cmd) == _IOC_TYPE(cmd));
-+		return extensible_ioctl_valid(cmd, NS_MNT_GET_PREV, MNT_NS_INFO_SIZE_VER0);
- 	}
- 
- 	return false;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 38609066cf330..fc4cbbefa70e2 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -196,7 +196,7 @@ static void mnt_ns_release_rcu(struct rcu_head *rcu)
+ static void mnt_ns_tree_remove(struct mnt_namespace *ns)
+ {
+ 	/* remove from global mount namespace list */
+-	if (!is_anon_ns(ns)) {
++	if (!RB_EMPTY_NODE(&ns->mnt_ns_tree_node)) {
+ 		mnt_ns_tree_write_lock();
+ 		rb_erase(&ns->mnt_ns_tree_node, &mnt_ns_tree);
+ 		list_bidir_del_rcu(&ns->mnt_ns_list);
 -- 
 2.51.0
 
