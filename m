@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-187610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8503BEADCD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 997F9BEA9A2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:18:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9DE8960ADB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 769377414A2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0932F12A0;
-	Fri, 17 Oct 2025 15:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F367330B27;
+	Fri, 17 Oct 2025 15:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTKtEhvj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y51KM4BM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4640330B06;
-	Fri, 17 Oct 2025 15:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0EC330B03;
+	Fri, 17 Oct 2025 15:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716567; cv=none; b=rt5JxOz5G0dowY7x5GL+VvIgrJip4+XBOewl4PuOQHPlk3Fp5A9G+6pVwFojKcrUR9TU4KjvljF15Itn81rAIonU4dciwT5PFTP61tIOefCBy8F9wWPNJgknT3G/zcLXaqhlkP2AUCiOHagA9meSue2aUiNPrZ9dH/1Gvy9vUAE=
+	t=1760715832; cv=none; b=odnvecv/1WutdVwwbj3mLVEczMe64kOYUt31YniRjzZ17BrJwAZaXg5ktcNfXhKjgsZcjkUQh+3BE+P1109EEuWMO8KjBCgZfnIdis72xtRAeUY3SeyHyOkN1DsD/z3mJedTYnnLiQkOktmUd6vxlWn75ExAtQbJU7n5aZV/OME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716567; c=relaxed/simple;
-	bh=7x9QzPtvqOEK93ueLpz6jfyNAxoiadqxq9dxi5giihg=;
+	s=arc-20240116; t=1760715832; c=relaxed/simple;
+	bh=Xp/yCJnO1q4mvyMEzqfIDrln5bgSpv3TOub/ChXHYOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/KKCWs1D9CS+NIKFexU2dOOzRfd5xs7O14l/XXxZotvbVimixKE2bn/hic03yW5jWdIC0QJTr/olP/0Ls6u1DMCe9oEwn1iJktNBqtGu0wRVqhefpDyD2nqbPJ9ayh/NuWl+G46Lo+a+drmle/KZIcczlBxAhUWW0c4ZR10k8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTKtEhvj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB53C4CEFE;
-	Fri, 17 Oct 2025 15:56:06 +0000 (UTC)
+	 MIME-Version; b=u4jtN+iS6BhgZLtkcsFg/oD8A+7wLvY+Tl7vm3LRjvwCyY95XvygesO9Y5eU/AayHdGXj5z1VsyQt2Ux5c0y64xkAOJ6FaQPRyGyMi7RaBrszBAQTddF6UcAu8vnU/KFJG10AS3TtwfAvEiOCiJud2gfRjN+RBlWHKR0K6d/Qn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y51KM4BM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8519AC4CEE7;
+	Fri, 17 Oct 2025 15:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716567;
-	bh=7x9QzPtvqOEK93ueLpz6jfyNAxoiadqxq9dxi5giihg=;
+	s=korg; t=1760715831;
+	bh=Xp/yCJnO1q4mvyMEzqfIDrln5bgSpv3TOub/ChXHYOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mTKtEhvjaOsGPTko5AmqXYkvPmIB3PoL/XekyqeZwKctk/cs7OCnRC2WHo6SCLJcd
-	 dMCxsiScHcVf5eLoDFL1f/DRRPn+ffq9zjm5ZO8TgwIiZqzW38Lk45O5tWnFz2S5y0
-	 tLe8vhYp8L0uROKbjdsHXmXY8hGLi5iec6X/j2Iw=
+	b=Y51KM4BMdtL8XIkBORxWbPiKdOjIOMehafj0bpRPzZW7llxRE9E5xBKIBrpvSZQFp
+	 Zc1Q33tvSu5urKoZ832l2qP+rC512RzXo9InRKiSFfRivYJfcm/nBh0UtJ40TqYaPW
+	 fXg1fQ9E1lm+ac+28xSTiz2lapGzI+zijDPFSLqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matvey Kovalev <matvey.kovalev@ispras.ru>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 235/276] ksmbd: fix error code overwriting in smb2_get_info_filesystem()
+Subject: [PATCH 6.17 353/371] media: mc: Clear minor number before put device
 Date: Fri, 17 Oct 2025 16:55:28 +0200
-Message-ID: <20251017145151.046730557@linuxfoundation.org>
+Message-ID: <20251017145214.856658637@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matvey Kovalev <matvey.kovalev@ispras.ru>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 88daf2f448aad05a2e6df738d66fe8b0cf85cee0 ]
+[ Upstream commit 8cfc8cec1b4da88a47c243a11f384baefd092a50 ]
 
-If client doesn't negotiate with SMB3.1.1 POSIX Extensions,
-then proper error code won't be returned due to overwriting.
+The device minor should not be cleared after the device is released.
 
-Return error immediately.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: e2f34481b24db ("cifsd: add server-side procedures for SMB3")
+Fixes: 9e14868dc952 ("media: mc: Clear minor number reservation at unregistration time")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matvey Kovalev <matvey.kovalev@ispras.ru>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ adjusted file path from fs/smb/server/smb2pdu.c to fs/ksmbd/smb2pdu.c ]
+Reported-by: syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=031d0cfd7c362817963f
+Tested-by: syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ moved clear_bit from media_devnode_release callback to media_devnode_unregister before put_device ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/mc/mc-devnode.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -5204,7 +5204,8 @@ static int smb2_get_info_filesystem(stru
+--- a/drivers/media/mc/mc-devnode.c
++++ b/drivers/media/mc/mc-devnode.c
+@@ -50,11 +50,6 @@ static void media_devnode_release(struct
+ {
+ 	struct media_devnode *devnode = to_media_devnode(cd);
  
- 		if (!work->tcon->posix_extensions) {
- 			pr_err("client doesn't negotiate with SMB3.1.1 POSIX Extensions\n");
--			rc = -EOPNOTSUPP;
-+			path_put(&path);
-+			return -EOPNOTSUPP;
- 		} else {
- 			info = (struct filesystem_posix_info *)(rsp->Buffer);
- 			info->OptimalTransferSize = cpu_to_le32(stfs.f_bsize);
+-	mutex_lock(&media_devnode_lock);
+-	/* Mark device node number as free */
+-	clear_bit(devnode->minor, media_devnode_nums);
+-	mutex_unlock(&media_devnode_lock);
+-
+ 	/* Release media_devnode and perform other cleanups as needed. */
+ 	if (devnode->release)
+ 		devnode->release(devnode);
+@@ -281,6 +276,7 @@ void media_devnode_unregister(struct med
+ 	/* Delete the cdev on this minor as well */
+ 	cdev_device_del(&devnode->cdev, &devnode->dev);
+ 	devnode->media_dev = NULL;
++	clear_bit(devnode->minor, media_devnode_nums);
+ 	mutex_unlock(&media_devnode_lock);
+ 
+ 	put_device(&devnode->dev);
 
 
 
