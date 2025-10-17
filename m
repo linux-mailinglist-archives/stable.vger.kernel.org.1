@@ -1,99 +1,189 @@
-Return-Path: <stable+bounces-186233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105D8BE60F7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 03:50:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4D2BE61AF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 04:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CFA594E3D8C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 01:50:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE1373A6CC3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 02:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B922236E3;
-	Fri, 17 Oct 2025 01:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F8C21CC5B;
+	Fri, 17 Oct 2025 02:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EziOnAs4"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b="mRX+oCNb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4E01758B;
-	Fri, 17 Oct 2025 01:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BCD38DD8
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 02:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760665822; cv=none; b=DFJwPtdOBKJk2MQVTGtiigoltfQzF+inKpOFPQsQNcFZQqSgJD9ipGIW/qSbyWKftQTI8KcVM3QxqscTuPE4coIhawuXptZO99snjriP5IUtNJvgzzfA4S8lA0DYos6f2ZWO/YIXFJIHUU4GDNpWuZ7xKSkt67FmFO9MOXm9+2I=
+	t=1760668447; cv=none; b=SeKbdeKWqmP+DwGTTlxcBb9MQ98culPOJIxVCvvmxi7tjHBf3ZvxVgrqV+XvREi1WDtYenBWYF49GFuXqe7nX5pdJfYDsR0hCUurXrIY1lcsaFDMxDcBnRavtM1u6/CTSq7AnWks8ivAfch2bbehqEUOgBTESsUYjQEUuAThY1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760665822; c=relaxed/simple;
-	bh=7fPUJIEArno78HUx7DgvUxAlsXlA2hcDbpKnlfJamP8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=J9LVMVax8g1KSQByc4mqpd3pYer2ssVgquWzfP9e2z6dpEI1eEGKfXSOeWdw4IwN6uwc6zYOgbIYxPeqsAs5BggEZLapH6+dSduhzDCO5iubY/tVsUhrx61h2LNOEwZMtKZxg9P0FgqUAHN+rurXocZ372UuHk684LqjRTzkoI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EziOnAs4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD83C4CEF1;
-	Fri, 17 Oct 2025 01:50:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760665822;
-	bh=7fPUJIEArno78HUx7DgvUxAlsXlA2hcDbpKnlfJamP8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=EziOnAs4c/iow1Lz1fpu+9DEXk4dlcx8ugpKtI9pDV3NlEhlssRtusKVnvJMeWbER
-	 t4xvA9MNawLezoDBi40CqY8T3iounKchb+wXOUdYkOjs5wzV0rlU5unzkb0c76L3d5
-	 ux3BonMcgyp4mgK5pUqR8GewYuCE0VKRUPBTTYGLjvqOg1USfQ9fjYZnbfi7fGy4VJ
-	 BrfBtvIYQR0SB9Ex+kBTj/RBcr7jqnU5m9jCv/B5Cx1q9xrwZu0Km8I9NC+mVhugIq
-	 g8JW60Ko8TW+eREauGZvir4ANTJn8YR+emF4HIm6TojWKrTQJozI1p90fy2oAEwdvl
-	 H4CzVEc7puToQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70ED439D0C96;
-	Fri, 17 Oct 2025 01:50:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1760668447; c=relaxed/simple;
+	bh=994P03rJ9bDXeonnhtv3w/T3UpjWJKGVQMrGcfDisaA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ty+krausjS1rCv/XvJO3wo6ITfc+xvsNV5GxlY5YLYd9H7tM5g3lVz9eH0dTXKiRmJXwnOsVz1O1yXvK91a99BSyqppKD1Js4QNTKb9Qb8EqFiBZmN5mDIZZt+59OftKsPHNnH3hlBhZRi7N0tfVSNR0APvcDPACw3Z8LNn8Ejo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b=mRX+oCNb; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1760668436; x=1761273236; i=s.l-h@gmx.de;
+	bh=04SgkB0hDueLjD0+gc2mpn+8aDSdXgwuYvfYpcVq+Ts=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=mRX+oCNbXiBfPOHtPq08WkqzRw28DfcTwUuzt3xNGI6nW4rWzukxncHjz2tovKnw
+	 Ys9milYqn6AjfzhNN30yWfI0EpX8eacMcmlO0uEz7rlwStfXO5i/OQ2kGrQ5O8caq
+	 u6WLnmNI8KLUiJ7CdNS1fUns3KjUfXNSg6/63KSgKoGfrUTnQGqWh4mhkJyWXqEES
+	 tYJD6dK9WAcRTAdRes+Zkax2f8lJj0yeGq2Ah0+bMjkWXZGgCYwvzHsP1yVN1CXh8
+	 xqY36SPx1zZccgC6ahdhCdBcixVCdtjPW5dA7KisUsJrNiai+eMF6OsRoL/fojjzd
+	 yJNHof9Up+Hgl5irMw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mir ([94.31.111.154]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M59GG-1vAgka2dEK-000Lwr; Fri, 17
+ Oct 2025 04:33:56 +0200
+Date: Fri, 17 Oct 2025 04:33:54 +0200
+From: Stefan Lippers-Hollmann <s.l-h@gmx.de>
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Chen Wang
+ <unicorn_wang@outlook.com>, Bjorn Helgaas <bhelgaas@google.com>, Sasha
+ Levin <sashal@kernel.org>, Kenneth Crudup <kenny@panix.com>, Genes Lists
+ <lists@sapience.com>, Jens Axboe <axboe@kernel.dk>, Todd Brandt
+ <todd.e.brandt@intel.com>
+Subject: Re: [PATCH 6.17 068/563] PCI/MSI: Add startup/shutdown for per
+ device domains
+Message-ID: <20251017043308.147d1a98@mir>
+In-Reply-To: <o7hrpbeszf564cznyns3zorrofz4kkffugbmvwwub5arh34vki@dgrqpuasd7ks>
+References: <20251013144413.753811471@linuxfoundation.org>
+	<20251013211648.GA864848@bhelgaas>
+	<20251016030711.57e92e97@mir>
+	<o7hrpbeszf564cznyns3zorrofz4kkffugbmvwwub5arh34vki@dgrqpuasd7ks>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: stmmac: dwmac-rk: Fix disabling
- set_clock_selection
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176066580626.1978978.3015288820560591602.git-patchwork-notify@kernel.org>
-Date: Fri, 17 Oct 2025 01:50:06 +0000
-References: 
- <20251014-rockchip-network-clock-fix-v1-1-c257b4afdf75@collabora.com>
-In-Reply-To: 
- <20251014-rockchip-network-clock-fix-v1-1-c257b4afdf75@collabora.com>
-To: Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, david.wu@rock-chips.com,
- netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, kernel@collabora.com, stable@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:04fG8OgH/mVDL++F33CSRLZRo9drn1Sp5uf2q7z+gqGq0WPFg8d
+ 2z7mPEHVBBC/Wt66b3t6bsJ6CuF9826AUfbkSBjBxsvlRkBdOeygXW26wg6XNcD+1wrsXcf
+ xrvsDZPTR2wXYabzSfKwEQF5vJQWf5p4jZxyFnDtBZqGKndgreU2xl14Gjy9qU4dQ+v+usL
+ GIMd4W9LHwmluY/MoQabQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:OHSrTqI7wpE=;HNIhbAmq6EMovKLOKrTCSKg69eK
+ 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
+ XV5CKK3E2AMJeWCPq6RqUCPPYs=
 
-Hello:
+Hi
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+On 2025-10-16, Inochi Amaoto wrote:
+> On Thu, Oct 16, 2025 at 03:07:11AM +0200, Stefan Lippers-Hollmann wrote:
+[...]
+> > > We have open regression reports about this, so I don't think we
+> > > should backport it yet:
+> > >=20
+> > >   https://lore.kernel.org/r/af5f1790-c3b3-4f43-97d5-759d43e09c7b@pan=
+ix.com
+> >=20
+> > I've received a similar report for v6.17.3-rc1/ v6.17.3 (v6.17.2 was=
+=20
+> > fine) on a Lenovo 82FG/ Ideapad 5-15ITL05 (i5-1135G7 and Xe graphics),=
+=20
+> > failing to (UEFI-) boot already within the initramfs (Debian/ unstable=
+,=20
+> > initramfs-tools).
+> >=20
+> > Backing out (only) the changes to drivers/pci/msi/irqdomain.c and=20
+> > include/linux/msi.h from patch-6.17.3 fixes the regression again.
+[...]
+> This is caused by the vmd driver, as vmd driver rely on the assumption
+> that pci domain template does not set irq_startup()/irq_shutdown.
+>=20
+> I think this may needs the following patch:
+> https://lore.kernel.org/all/20251014014607.612586-1-inochiama@gmail.com
 
-On Tue, 14 Oct 2025 17:49:34 +0200 you wrote:
-> On all platforms set_clock_selection() writes to a GRF register. This
-> requires certain clocks running and thus should happen before the
-> clocks are disabled.
-> 
-> This has been noticed on RK3576 Sige5, which hangs during system suspend
-> when trying to suspend the second network interface. Note, that
-> suspending the first interface works, because the second device ensures
-> that the necessary clocks for the GRF are enabled.
-> 
-> [...]
+I got confirmation that this patch indeed fixes the problem, thanks a=20
+lot!
 
-Here is the summary with links:
-  - [net] net: stmmac: dwmac-rk: Fix disabling set_clock_selection
-    https://git.kernel.org/netdev/net/c/7f864458e9a6
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Regards
+	Stefan Lippers-Hollmann
 
