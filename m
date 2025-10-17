@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-187454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D043BEA41F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F22BE9635
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:59:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EA021AE4B96
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89D151885090
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3CC2E716A;
-	Fri, 17 Oct 2025 15:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE10B33711A;
+	Fri, 17 Oct 2025 14:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7iqFI+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moXZziKt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F37330B06;
-	Fri, 17 Oct 2025 15:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699B73370E3;
+	Fri, 17 Oct 2025 14:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716118; cv=none; b=HCgO10zSyNV3qt4QgaToJb4q29FzqY7nq8pWFVA02MpciWNNIQMZQcBwS5o+C2mYVnfCZWuvjHHzohWwNUR7m1VBR4RsONrnQEPdjW5Oj7/GuDF7TL3Suw1OSbNchxlxBKUSCtjgj9+MhW9TjQOB7g8aodZHv6bq/fz8IyBJ534=
+	t=1760713111; cv=none; b=BqJmQpGr9ZqrkmGCNAHilsIpOaTYlBPQ3eyLCKp2yhW/l1h7LUhcf21vWopNrURH3ScsF2q4ob1FxuFJLR5tnyC2SEBn1OoKtk2uk8RanjK9t2WhHbk1OcUStQdDap3eaWcTgiSMAGRITA6dHUoslPPLBWbzvTeRMbjcnZQwGkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716118; c=relaxed/simple;
-	bh=PG0ZqXrF5GWH85BsXMtgF1id3vvt/07sF2AI6pG1PaY=;
+	s=arc-20240116; t=1760713111; c=relaxed/simple;
+	bh=LZRIJbmo3jQsbnDKi0u5WRrsQonz6cUM1QzY4eQBWTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k16QIsb4idVxnTOM2yS5+ajkWSSlhJZNVpWROimdSLBLcX05rjrmq+rMngumh5b8wCqrAXNjQukfgPS0L2MYqDtIy/DdWJkGsTUb6DGgPEgvU887yfT+3KI0bO8ODFwrbVCt+J4sY9lnR3uyE8SQlEEWQ1K1nrIzxp5R+2P8SIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7iqFI+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D38C4CEE7;
-	Fri, 17 Oct 2025 15:48:37 +0000 (UTC)
+	 MIME-Version; b=o60NdL4W0N2uYu73ahpxIEcjn7FGmoXquZm1vsOanisqkyK+CqWDMZjEvSCZZvkUWwYS/cvoaS4+RGl6I5p6DJluQxdLUQznpT23QJcbXaDzTrXI2JPenmX0e5LgH23oVSXrlZAha975UdzWuGOtDFvDZTHbqwv1wMHVlXwfVdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moXZziKt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7316C4CEE7;
+	Fri, 17 Oct 2025 14:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716117;
-	bh=PG0ZqXrF5GWH85BsXMtgF1id3vvt/07sF2AI6pG1PaY=;
+	s=korg; t=1760713111;
+	bh=LZRIJbmo3jQsbnDKi0u5WRrsQonz6cUM1QzY4eQBWTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r7iqFI+9RmO/5aCxJO85KvcfTaF/4KWzoCOBnQBLOjWNZSnKCKhRtiGmgWz8V7Lgu
-	 71vbfAO8pjBWFR/oWbzqUQespWm6B0F8F6MJvoSerWF7UYQWDUEH4dlk/C4frGQKHj
-	 h66YJLCzWwH1JnWWGlQR5cUlPsqD0emv/Hpdnw5M=
+	b=moXZziKtYQ9J766ogiC9C3PDbpNZG3IuBy8T/2+z5qrrRdY8xHhDyZoAlQ57+h6cH
+	 VUEs6rSDZ1abA5j5rY+EZCjug+Ff+iu4D3I97nRHf18S+OpPkIXG0FtBrSuBkZQV8G
+	 BxJd161D9LVKkStmRyMbzorCrZX5atpLwH1/IJj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Mark Brown <broonie@kernel.org>,
+	Le Chen <tom2cat@sjtu.edu.cn>,
+	Alexei Starovoitov <ast@kernel.org>,
+	KaFai Wan <kafai.wan@linux.dev>,
+	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 036/276] regulator: scmi: Use int type to store negative error codes
+Subject: [PATCH 6.1 050/168] bpf: Avoid RCU context warning when unpinning htab with internal structs
 Date: Fri, 17 Oct 2025 16:52:09 +0200
-Message-ID: <20251017145143.723643422@linuxfoundation.org>
+Message-ID: <20251017145130.860904545@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: KaFai Wan <kafai.wan@linux.dev>
 
-[ Upstream commit 9d35d068fb138160709e04e3ee97fe29a6f8615b ]
+[ Upstream commit 4f375ade6aa9f37fd72d7a78682f639772089eed ]
 
-Change the 'ret' variable from u32 to int to store negative error codes or
-zero returned by of_property_read_u32().
+When unpinning a BPF hash table (htab or htab_lru) that contains internal
+structures (timer, workqueue, or task_work) in its values, a BUG warning
+is triggered:
+ BUG: sleeping function called from invalid context at kernel/bpf/hashtab.c:244
+ in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 14, name: ksoftirqd/0
+ ...
 
-Storing the negative error codes in unsigned type, doesn't cause an issue
-at runtime but it's ugly as pants. Additionally, assigning negative error
-codes to unsigned type may trigger a GCC warning when the -Wsign-conversion
-flag is enabled.
+The issue arises from the interaction between BPF object unpinning and
+RCU callback mechanisms:
+1. BPF object unpinning uses ->free_inode() which schedules cleanup via
+   call_rcu(), deferring the actual freeing to an RCU callback that
+   executes within the RCU_SOFTIRQ context.
+2. During cleanup of hash tables containing internal structures,
+   htab_map_free_internal_structs() is invoked, which includes
+   cond_resched() or cond_resched_rcu() calls to yield the CPU during
+   potentially long operations.
 
-No effect on runtime.
+However, cond_resched() or cond_resched_rcu() cannot be safely called from
+atomic RCU softirq context, leading to the BUG warning when attempting
+to reschedule.
 
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Fixes: 0fbeae70ee7c ("regulator: add SCMI driver")
-Link: https://patch.msgid.link/20250829101411.625214-1-rongqianfeng@vivo.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix this by changing from ->free_inode() to ->destroy_inode() and rename
+bpf_free_inode() to bpf_destroy_inode() for BPF objects (prog, map, link).
+This allows direct inode freeing without RCU callback scheduling,
+avoiding the invalid context warning.
+
+Reported-by: Le Chen <tom2cat@sjtu.edu.cn>
+Closes: https://lore.kernel.org/all/1444123482.1827743.1750996347470.JavaMail.zimbra@sjtu.edu.cn/
+Fixes: 68134668c17f ("bpf: Add map side support for bpf timers.")
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: KaFai Wan <kafai.wan@linux.dev>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20251008102628.808045-2-kafai.wan@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/scmi-regulator.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/bpf/inode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/scmi-regulator.c b/drivers/regulator/scmi-regulator.c
-index 41ae7ac27ff6a..7c0d29c7856bb 100644
---- a/drivers/regulator/scmi-regulator.c
-+++ b/drivers/regulator/scmi-regulator.c
-@@ -257,7 +257,8 @@ static int process_scmi_regulator_of_node(struct scmi_device *sdev,
- 					  struct device_node *np,
- 					  struct scmi_regulator_info *rinfo)
- {
--	u32 dom, ret;
-+	u32 dom;
-+	int ret;
+diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
+index 4f841e16779e7..9b184f3fbf45f 100644
+--- a/kernel/bpf/inode.c
++++ b/kernel/bpf/inode.c
+@@ -610,7 +610,7 @@ static int bpf_show_options(struct seq_file *m, struct dentry *root)
+ 	return 0;
+ }
  
- 	ret = of_property_read_u32(np, "reg", &dom);
- 	if (ret)
+-static void bpf_free_inode(struct inode *inode)
++static void bpf_destroy_inode(struct inode *inode)
+ {
+ 	enum bpf_type type;
+ 
+@@ -625,7 +625,7 @@ static const struct super_operations bpf_super_ops = {
+ 	.statfs		= simple_statfs,
+ 	.drop_inode	= generic_delete_inode,
+ 	.show_options	= bpf_show_options,
+-	.free_inode	= bpf_free_inode,
++	.destroy_inode	= bpf_destroy_inode,
+ };
+ 
+ enum {
 -- 
 2.51.0
 
