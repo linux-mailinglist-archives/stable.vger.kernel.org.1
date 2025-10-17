@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50AE0BE9966
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2911BE9B98
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76ECD5834F1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8633188FD9D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405843328E3;
-	Fri, 17 Oct 2025 15:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A56032E159;
+	Fri, 17 Oct 2025 15:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWDHDA7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LDMoIIf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF56333710B;
-	Fri, 17 Oct 2025 15:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70173370F7;
+	Fri, 17 Oct 2025 15:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713591; cv=none; b=Oo1UGlEubu7W0yihrOIjwQR4OvXVy/12GE9zy+LrcoVHiqJGm1Whe4PuPw0yi412mgP9OcB3XnnNrFiCFU8NS6zs8KrFfppOCvysBTWbwf8BrTRTNKKCJnWJidvQf6mGo3s/XXMhctIorQrDR4OpCZKJ5iaP9szSx/x+zvYmU+k=
+	t=1760714304; cv=none; b=Oiob6yZrdx+6DUOg/nYVyVb83skMJvqmdRtb9GzY1xSALCxXLNPzcHtVs/iKZBe20DOgemJOMlxaPqWaUEHzs5BIxwPBXE94Fx1kDed2C+EUoOKzE7iD2PKiaUd92/tpzTzTlpf0sKr8ZhcgLVYKkb1seCj58xqdfcYX3/owxxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713591; c=relaxed/simple;
-	bh=VCpecrqCP0/Go4wLyGS0uOwa3zcfKGgFn+8sd3VPfpg=;
+	s=arc-20240116; t=1760714304; c=relaxed/simple;
+	bh=UPm6lNSD51aJiDUdmdHAJlA1x81kKGWBd+VnIgGngSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qRJiolmEnqv2AsAYbTbpoQrdABioTfWz48UxdQ0aVmIaIEQKTVP/admds5o6iRpVB79ho0VfPbglriZwIqIVfPsxstCb4l/9Ddk04vr2pDWAU8YT00RbFAkoJnhtqMBsJ1j4Q1Wzd0/bz4VzTAkS2LYH85t/aNFEwuUCQ6+BL4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWDHDA7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795A0C4CEE7;
-	Fri, 17 Oct 2025 15:06:30 +0000 (UTC)
+	 MIME-Version; b=I/GDFw7ZEIUl93yXfu9gRllRnuFZn2hMQN5J5MhBO0x7ACwaNRsgPsqBknYfjfPwdqFfauvgXbpWvwqDwRzJtbiazICWpRPk9vWlxF3o5ozcK0n+MmMtMo/vixRi8vQX3AQZi0PKG+LrfXiqtK868BteCJaHcuvfEXkFyD0YyAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LDMoIIf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F44C4CEE7;
+	Fri, 17 Oct 2025 15:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713590;
-	bh=VCpecrqCP0/Go4wLyGS0uOwa3zcfKGgFn+8sd3VPfpg=;
+	s=korg; t=1760714304;
+	bh=UPm6lNSD51aJiDUdmdHAJlA1x81kKGWBd+VnIgGngSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWDHDA7GQ9kI9DzyaZWTmEwXuybyIdUtlpX2dWBnQhioDO5udd4s3O1ci1OzaOnZT
-	 W+mFr5kHcVI4iXPFJxwKOISwTuBzwCAZ4gE1uBSejy+ciXRta3tvQdFLUQrw3LDnQ9
-	 8rmfGrh7sRL1slX4nshgLM0s0kawYtxdupjtD1Fc=
+	b=0LDMoIIfUYBGAHkWegJ0RyTUL/L49jkt8XM+CVSWIwK/G1nKC+iBkQetdPAU/NfXa
+	 2KqSYFvVa05Uhjc9mdFO8KCh+lkwlPhLBKPmCAD816r8kD757wYJvofAJJ0CVbwpvf
+	 067k4KunLzuTY99LwrdU6hAcXuAi8253BDj/vbrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harini T <harini.t@amd.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/201] mailbox: zynqmp-ipi: Remove dev.parent check in zynqmp_ipi_free_mboxes
+	stable@kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 097/277] dt-bindings: phy: rockchip-inno-csi-dphy: make power-domains non-required
 Date: Fri, 17 Oct 2025 16:51:44 +0200
-Message-ID: <20251017145136.329056255@linuxfoundation.org>
+Message-ID: <20251017145150.674452651@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harini T <harini.t@amd.com>
+From: Michael Riesch <michael.riesch@collabora.com>
 
-[ Upstream commit 019e3f4550fc7d319a7fd03eff487255f8e8aecd ]
+commit c254815b02673cc77a84103c4c0d6197bd90c0ef upstream.
 
-The ipi_mbox->dev.parent check is unreliable proxy for registration
-status as it fails to protect against probe failures that occur after
-the parent is assigned but before device_register() completes.
+There are variants of the Rockchip Innosilicon CSI DPHY (e.g., the RK3568
+variant) that are powered on by default as they are part of the ALIVE power
+domain.
+Remove 'power-domains' from the required properties in order to avoid false
+positives.
 
-device_is_registered() is the canonical and robust method to verify the
-registration status.
-
-Remove ipi_mbox->dev.parent check in zynqmp_ipi_free_mboxes().
-
-Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
-Signed-off-by: Harini T <harini.t@amd.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 22c8e0a69b7f ("dt-bindings: phy: add compatible for rk356x to rockchip-inno-csi-dphy")
+Cc: stable@kernel.org
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
+Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-2-a4f340a7f0cf@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/zynqmp-ipi-mailbox.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml |   15 +++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
-index 06529dc0daf3f..90f248ef2a1fc 100644
---- a/drivers/mailbox/zynqmp-ipi-mailbox.c
-+++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
-@@ -616,10 +616,8 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
- 	i = pdata->num_mboxes;
- 	for (; i >= 0; i--) {
- 		ipi_mbox = &pdata->ipi_mboxes[i];
--		if (ipi_mbox->dev.parent) {
--			if (device_is_registered(&ipi_mbox->dev))
--				device_unregister(&ipi_mbox->dev);
--		}
-+		if (device_is_registered(&ipi_mbox->dev))
-+			device_unregister(&ipi_mbox->dev);
- 	}
- }
+--- a/Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml
++++ b/Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml
+@@ -57,11 +57,24 @@ required:
+   - clocks
+   - clock-names
+   - '#phy-cells'
+-  - power-domains
+   - resets
+   - reset-names
+   - rockchip,grf
  
--- 
-2.51.0
-
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - rockchip,px30-csi-dphy
++              - rockchip,rk1808-csi-dphy
++              - rockchip,rk3326-csi-dphy
++              - rockchip,rk3368-csi-dphy
++    then:
++      required:
++        - power-domains
++
+ additionalProperties: false
+ 
+ examples:
 
 
 
