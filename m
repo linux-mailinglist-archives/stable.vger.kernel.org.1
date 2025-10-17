@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2A1BEAC0E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE33BEA7C8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BA7E7C4F97
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A775A9460D2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD74A330B2E;
-	Fri, 17 Oct 2025 15:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487A1330B1B;
+	Fri, 17 Oct 2025 15:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOZe4nrW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7PJGgoa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985E1330B1E;
-	Fri, 17 Oct 2025 15:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02453330B0C;
+	Fri, 17 Oct 2025 15:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716399; cv=none; b=R+/N+Ia4JGHqbDkkIAJmOnxerqy0a/X/GCk32GhF/e41+fFM8XSaipesrg8A6vK0jqbYFLXRG7C+/DjypHU2ExeoCuF1qnxfJFClvUr4R6/db63lnvq750GhVh0rzQjc6klmcRoyrm/M26cpXswrUPjNt/jC2k8GnYVlAxBB9ag=
+	t=1760715668; cv=none; b=jAnaEobJ1rP3HOJLuG3zZTzUVX35RjtvsrTlJTJuf3w+keyBVy32gZAzOOhzPbIFA5gZevUwk2cehx8wnvPchM7yiYjB2Cfuu3+oTI7UHE9VZ7dLuMz9NWK+H9zqEQi07NoVY1h/Z3sEPthrlygV386hyGkyTbuOF8ebp434SxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716399; c=relaxed/simple;
-	bh=HIDRVfzES7Wj2MgF+VxceUelMXuz3NFPXRPqfxwFaa8=;
+	s=arc-20240116; t=1760715668; c=relaxed/simple;
+	bh=GAWqIt7KeIPcs1u2QzZnpxaYVjANGRqRLzrVwaAl7sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPGYtghJGbnDkoLGEb1hQIZWTRc95t1xmplZ2q6dCyKRvscrdJvggG1efFFKoRVQ8PAZtoSSWAwTcu3/lZSSfQewqZPg1sErvxmm5rm+KIr7qxS/rZO7V1tai7ZQYJydIdSQCKq6utIbLjmw6Or/33QdJgCrY0ckiZhhq8eVg6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOZe4nrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D5CC4CEE7;
-	Fri, 17 Oct 2025 15:53:18 +0000 (UTC)
+	 MIME-Version; b=WQChAcJgdk4bAzeuYT3flomqvtZKKE6phcN5humZWAKwR5jRwPNxgvSM0aPwFaOrcl0Otph1qAaODDReHYnvoiX+7Iy9dwE+1Lf9eBnAj7VHYt/DVwZOKd76u9XrCNn2VbA8+C4aTZjZ+0ibDSJFb87UZoIQeNH7QKkXMCnbE+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7PJGgoa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F86C4CEE7;
+	Fri, 17 Oct 2025 15:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716399;
-	bh=HIDRVfzES7Wj2MgF+VxceUelMXuz3NFPXRPqfxwFaa8=;
+	s=korg; t=1760715666;
+	bh=GAWqIt7KeIPcs1u2QzZnpxaYVjANGRqRLzrVwaAl7sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SOZe4nrW53nvQF+XKwgcxqQQERhu0fuXjurqpApPZf9u8VIybWzgAsGoaLXBnqR9S
-	 1zLgMoArGr6F+S5QGEy41iURKPVMzY1BJfp5tKgO2h9gKKRX4pU8lOsBQUTPNVH2Uh
-	 oi3PjZylPZI0MBzreYv9lC4HbpfbGr3tzLYYoAmA=
+	b=G7PJGgoas6Lst/QVTx5ppIPVGWjnYvOQ5qJGQl+NeSjI9u2OxysWfvDGVqwTiO/pa
+	 m3j+xgL4N/Z51Iv4CKMcmXdbgvhcNy/tr4JzHssKG6jMFK4a0auRPPuCyGar8HZ8r+
+	 F8xq/2JBha+7UG2WxYHwa/9WjtZIdvu/BMK+Xf3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Xue <zxue@semtech.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: [PATCH 5.15 176/276] bus: mhi: host: Do not use uninitialized dev pointer in mhi_init_irq_setup()
-Date: Fri, 17 Oct 2025 16:54:29 +0200
-Message-ID: <20251017145148.900673208@linuxfoundation.org>
+	Pratyush Yadav <pratyush@kernel.org>,
+	Santhosh Kumar K <s-k6@ti.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.17 295/371] spi: cadence-quadspi: Flush posted register writes before DAC access
+Date: Fri, 17 Oct 2025 16:54:30 +0200
+Message-ID: <20251017145212.747547443@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Xue <zxue@semtech.com>
+From: Pratyush Yadav <pratyush@kernel.org>
 
-commit d0856a6dff57f95cc5d2d74e50880f01697d0cc4 upstream.
+commit 1ad55767e77a853c98752ed1e33b68049a243bd7 upstream.
 
-In mhi_init_irq_setup, the device pointer used for dev_err() was not
-initialized. Use the pointer from mhi_cntrl instead.
+cqspi_read_setup() and cqspi_write_setup() program the address width as
+the last step in the setup. This is likely to be immediately followed by
+a DAC region read/write. On TI K3 SoCs the DAC region is on a different
+endpoint from the register region. This means that the order of the two
+operations is not guaranteed, and they might be reordered at the
+interconnect level. It is possible that the DAC read/write goes through
+before the address width update goes through. In this situation if the
+previous command used a different address width the OSPI command is sent
+with the wrong number of address bytes, resulting in an invalid command
+and undefined behavior.
 
-Fixes: b0fc0167f254 ("bus: mhi: core: Allow shared IRQ for event rings")
-Fixes: 3000f85b8f47 ("bus: mhi: core: Add support for basic PM operations")
-Signed-off-by: Adam Xue <zxue@semtech.com>
-[mani: reworded subject/description and CCed stable]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250905174118.38512-1-zxue@semtech.com
+Read back the size register to make sure the write gets flushed before
+accessing the DAC region.
+
+Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
+CC: stable@vger.kernel.org
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+Message-ID: <20250905185958.3575037-3-s-k6@ti.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/init.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/bus/mhi/host/init.c
-+++ b/drivers/bus/mhi/host/init.c
-@@ -161,7 +161,6 @@ void mhi_deinit_free_irq(struct mhi_cont
- int mhi_init_irq_setup(struct mhi_controller *mhi_cntrl)
- {
- 	struct mhi_event *mhi_event = mhi_cntrl->mhi_event;
--	struct device *dev = &mhi_cntrl->mhi_dev->dev;
- 	unsigned long irq_flags = IRQF_SHARED | IRQF_NO_SUSPEND;
- 	int i, ret;
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -720,6 +720,7 @@ static int cqspi_read_setup(struct cqspi
+ 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
+ 	reg |= (op->addr.nbytes - 1);
+ 	writel(reg, reg_base + CQSPI_REG_SIZE);
++	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
+ 	return 0;
+ }
  
-@@ -182,7 +181,7 @@ int mhi_init_irq_setup(struct mhi_contro
- 			continue;
+@@ -1064,6 +1065,7 @@ static int cqspi_write_setup(struct cqsp
+ 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
+ 	reg |= (op->addr.nbytes - 1);
+ 	writel(reg, reg_base + CQSPI_REG_SIZE);
++	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
+ 	return 0;
+ }
  
- 		if (mhi_event->irq >= mhi_cntrl->nr_irqs) {
--			dev_err(dev, "irq %d not available for event ring\n",
-+			dev_err(mhi_cntrl->cntrl_dev, "irq %d not available for event ring\n",
- 				mhi_event->irq);
- 			ret = -EINVAL;
- 			goto error_request;
-@@ -193,7 +192,7 @@ int mhi_init_irq_setup(struct mhi_contro
- 				  irq_flags,
- 				  "mhi", mhi_event);
- 		if (ret) {
--			dev_err(dev, "Error requesting irq:%d for ev:%d\n",
-+			dev_err(mhi_cntrl->cntrl_dev, "Error requesting irq:%d for ev:%d\n",
- 				mhi_cntrl->irq[mhi_event->irq], i);
- 			goto error_request;
- 		}
 
 
 
