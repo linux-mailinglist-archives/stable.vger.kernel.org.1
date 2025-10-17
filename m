@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7921EBE9C6F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D941EBE97F6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1721258299E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D31B5741150
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA482E1F08;
-	Fri, 17 Oct 2025 15:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1476132C952;
+	Fri, 17 Oct 2025 15:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tknb5A2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6DuhV/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02EE23EA9E;
-	Fri, 17 Oct 2025 15:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F182F12D6;
+	Fri, 17 Oct 2025 15:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713890; cv=none; b=Hj6FLk2xv+RdQbL7Ule0rMuFY3A0RIxuqJbWlTmUcHCb+gQzgY/vs65mHhiw39VhTubtN0RGEAj+N82B56Z+Eh2IbMC9xRSxjRfpusbSrEsKMXKhXfAAdebiQYLduEU9YxWisXcuuyeCFlt7o5OuImnrfOo9ZgHii/ikjwgTxV4=
+	t=1760713263; cv=none; b=PB/iTU2SvfrEPUBNb9Si4y7wiZXl/wKTEWQSl7eW1Mz2Oyqb/1i+NuuYTGdMrkyQWc7vp0zS4j3KlQ/VH29cS4nv6ZwuCJWNRxh8O+H7byle/qTOJfVwyd321L+CddDYQj05gKlqjiFxKqaQ0S9m3BFqpqt3zlkad0Rn4Bf1YCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713890; c=relaxed/simple;
-	bh=NWqSh39vH0zK9UvxTr0ECfXAmHnPQPHPDG6ryVHwCl0=;
+	s=arc-20240116; t=1760713263; c=relaxed/simple;
+	bh=ga9xnGzZO3+LfhUahlJA0OGVApkTR53Cjd+aG08cJmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iZYXudorFFgFGWxJU43sH0a32K9aCirrMBEwnkuIl8FURc8BA53+hIVOd6p7GOAt9BlSq+2WHEdE0en+cE3B6Q73e3yVwU1gzQ57v0msODTs7I2p1atO9R10AcdiS3+QePbO0IG28m7l9MHqvxwf8eNp24/kH+zKNekSeR2XKmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tknb5A2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A17AC4CEE7;
-	Fri, 17 Oct 2025 15:11:29 +0000 (UTC)
+	 MIME-Version; b=uy+HEF80rCreMOSH6gEOE4zGPaJUsij0rPa5D8gpFD/mY8ep/HGnSUxoq5r804lxpanOoK0/2MsZeCVKSGrb4ZuHFj9piicopAaghD1qgvHnnRb2ZTYqBeNUDcaiZXpJl4hkUp8NMclXPu+yGiWfnQfF2kCi/uL4RYD1v4Vnuj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6DuhV/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04D2C4CEE7;
+	Fri, 17 Oct 2025 15:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713890;
-	bh=NWqSh39vH0zK9UvxTr0ECfXAmHnPQPHPDG6ryVHwCl0=;
+	s=korg; t=1760713263;
+	bh=ga9xnGzZO3+LfhUahlJA0OGVApkTR53Cjd+aG08cJmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tknb5A2s95AWRgWyhsKs5H/7r5xliA80qFyCyZsD+CiXA7a4nAAVnWSrxKumKNNpy
-	 D58WEP42YyGSRJJpLNldo4m/Z/8yETk4D8c56U1QTOKb4314SeaqCEUSo1a2JicZi8
-	 K0fgm9U+9WCKDdJWa8GAzX21IYwQXkXbgcRhIif0=
+	b=b6DuhV/A648othNB6ZkSVxLK2/LaSnajDIP1C8nWIcat+DiryN5rZcoUj7UFMMPgT
+	 5e+uDoxOnuF8XpXCU6Cnd/SCtx6/7CLfzsZwYjcuqWspf/9WOWXlyBerp6c05D/leo
+	 MltVu0GfMdh9rMsYKCW+tbGD070Mlv/vKghRM7ws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Esben Haabendal <esben@geanix.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 122/201] rtc: interface: Ensure alarm irq is enabled when UIE is enabled
-Date: Fri, 17 Oct 2025 16:53:03 +0200
-Message-ID: <20251017145139.224062273@linuxfoundation.org>
+Subject: [PATCH 6.1 105/168] rtc: interface: Ensure alarm irq is enabled when UIE is enabled
+Date: Fri, 17 Oct 2025 16:53:04 +0200
+Message-ID: <20251017145132.894465369@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
