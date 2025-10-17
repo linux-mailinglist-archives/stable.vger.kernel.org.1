@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88A7BEA00B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:55 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4CABEA446
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9A3A188A508
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9BF9C58908C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1B23321C5;
-	Fri, 17 Oct 2025 15:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1ED330B21;
+	Fri, 17 Oct 2025 15:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PesBmoNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXi88zoM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80392F12D9;
-	Fri, 17 Oct 2025 15:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C184C330B00;
+	Fri, 17 Oct 2025 15:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715244; cv=none; b=QLyZ7SlA2o2yeZ0DSr9OyJPExZYJQZTklVU2SfNyEdkmyXp6xSrm2rlU7XNJWRII7Y7IJLc/lKCQ/nTh2n3wSD/SvwWajZZ7TG23i9pkcm6Nk5HJlHlRHsHYXH8rHw6AXk5EdqXh+ojcqZCvMXzfa+AY01s29vPFqHd9fzGb08w=
+	t=1760715982; cv=none; b=p0HtbfPsCueFisP5rtMlaWewf6JZ3CfwdJVVIUA8eofeQTQuH1ZL8ORFa8o7o0+EmVxLtRUxj7Vfzuzb3mbIAN4PLzKGFoeDwpmW5iVxraS2fgA6/lPNVqdgqsKACFv9lSabI7vRZTP2aE+I5nmZX+Q8XvwzjAA9RXK2t3nwKWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715244; c=relaxed/simple;
-	bh=CmbePvvRbwvoGkyaSzIj1xN9ADxBOOX4MOxY7PyzlB0=;
+	s=arc-20240116; t=1760715982; c=relaxed/simple;
+	bh=3oL+DNgzjdEtkNT3S4oLs4ktTl26m90yT5Kvw33mQKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqTAhEMIqiyByuJKR9RaNKII1G+MoK2M4ZhRIqgTqnXs/R9BdFnitTRKagUsWuUNBrrpZb2CF/icyQuvFw/ioXmoG5cbKcW+g4jlFbZLizveW0jBfrHIFOrCN+zhFHMH0p0lD0jqDI5W1QrhQpkse3EJbCB+gxvmObdBawbr2fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PesBmoNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEB7C4CEE7;
-	Fri, 17 Oct 2025 15:34:04 +0000 (UTC)
+	 MIME-Version; b=NGQ44dDrlYJY+959iE48Vs+DKdHKss+k2j1S4pmDzUB1BDsJvxOvJ6+Kj52/HVoMhU+taMw5MrIP9BfFOEIdviAb8EMJdbF4HFIkIUHp2wYLG6RltkNIC19FH8VUC+QU141nWgWoeAEGtnYmjNpJUX4hxOobukhyXym/Ibop9oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXi88zoM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD64C4CEE7;
+	Fri, 17 Oct 2025 15:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715244;
-	bh=CmbePvvRbwvoGkyaSzIj1xN9ADxBOOX4MOxY7PyzlB0=;
+	s=korg; t=1760715982;
+	bh=3oL+DNgzjdEtkNT3S4oLs4ktTl26m90yT5Kvw33mQKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PesBmoNSRbObknkEdtq/Ufv07jrmJUEclRLsQlzLayjGzKUN5+FZTR+C6wtgdzWT4
-	 fTTdpNXJg6aFXonMDV93BSdMnsAzeWBG66LuwUETo6pwlLPzDalKB+fKtMw2dIw7ee
-	 ZcvZbqKQF1wSxAh1EHYRbjZ/JmdxD9OPFp5WF9PA=
+	b=CXi88zoMgh293FM1kHVGCMfWxDZJSt86OqzJERkeuT3CpeCG9HojcpB3RFtOBiLNm
+	 jku/jk3A85ERH2GnAxBXoetxr/LV0xosaQso60rFY9gchTa9JDh69vbw42sosMMjJ+
+	 BiVnciLf5XNQvSgQb0LRwe6NvT+1eSOlKI1oMo1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.17 148/371] arm64: kprobes: call set_memory_rox() for kprobe page
-Date: Fri, 17 Oct 2025 16:52:03 +0200
-Message-ID: <20251017145207.288392262@linuxfoundation.org>
+	Huisong Li <lihuisong@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 031/276] ACPI: processor: idle: Fix memory leak when register cpuidle device failed
+Date: Fri, 17 Oct 2025 16:52:04 +0200
+Message-ID: <20251017145143.540214881@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Shi <yang@os.amperecomputing.com>
+From: Huisong Li <lihuisong@huawei.com>
 
-commit 195a1b7d8388c0ec2969a39324feb8bebf9bb907 upstream.
+[ Upstream commit 11b3de1c03fa9f3b5d17e6d48050bc98b3704420 ]
 
-The kprobe page is allocated by execmem allocator with ROX permission.
-It needs to call set_memory_rox() to set proper permission for the
-direct map too. It was missed.
+The cpuidle device's memory is leaked when cpuidle device registration
+fails in acpi_processor_power_init().  Free it as appropriate.
 
-Fixes: 10d5e97c1bf8 ("arm64: use PAGE_KERNEL_ROX directly in alloc_insn_page")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3d339dcbb56d ("cpuidle / ACPI : move cpuidle_device field out of the acpi_processor_power structure")
+Signed-off-by: Huisong Li <lihuisong@huawei.com>
+Link: https://patch.msgid.link/20250728070612.1260859-2-lihuisong@huawei.com
+[ rjw: Changed the order of the new statements, added empty line after if () ]
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/probes/kprobes.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/acpi/processor_idle.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/arm64/kernel/probes/kprobes.c
-+++ b/arch/arm64/kernel/probes/kprobes.c
-@@ -10,6 +10,7 @@
- 
- #define pr_fmt(fmt) "kprobes: " fmt
- 
-+#include <linux/execmem.h>
- #include <linux/extable.h>
- #include <linux/kasan.h>
- #include <linux/kernel.h>
-@@ -41,6 +42,17 @@ DEFINE_PER_CPU(struct kprobe_ctlblk, kpr
- static void __kprobes
- post_kprobe_handler(struct kprobe *, struct kprobe_ctlblk *, struct pt_regs *);
- 
-+void *alloc_insn_page(void)
-+{
-+	void *addr;
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 74459ac13f4bc..6b71082d474f9 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -1403,6 +1403,9 @@ int acpi_processor_power_init(struct acpi_processor *pr)
+ 		if (retval) {
+ 			if (acpi_processor_registered == 0)
+ 				cpuidle_unregister_driver(&acpi_idle_driver);
 +
-+	addr = execmem_alloc(EXECMEM_KPROBES, PAGE_SIZE);
-+	if (!addr)
-+		return NULL;
-+	set_memory_rox((unsigned long)addr, 1);
-+	return addr;
-+}
-+
- static void __kprobes arch_prepare_ss_slot(struct kprobe *p)
- {
- 	kprobe_opcode_t *addr = p->ainsn.xol_insn;
++			per_cpu(acpi_cpuidle_device, pr->id) = NULL;
++			kfree(dev);
+ 			return retval;
+ 		}
+ 		acpi_processor_registered++;
+-- 
+2.51.0
+
 
 
 
