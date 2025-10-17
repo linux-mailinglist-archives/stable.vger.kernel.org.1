@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 225AEBEA37E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428FEBEA329
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DD907C10C8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E6F81887192
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6124C393DE3;
-	Fri, 17 Oct 2025 15:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0968330B36;
+	Fri, 17 Oct 2025 15:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCChpabb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhKygDUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E69032C95D;
-	Fri, 17 Oct 2025 15:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3E1330B17;
+	Fri, 17 Oct 2025 15:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715225; cv=none; b=Q4wO5sZLPBSuNrqklL2O3tjPVvuBNkCPV8pAruLZ3zKY6BDYRqZI2Xtc3apdacBAUC18vUrYs0B8iISMJ0zpXOKkMReeM7KbkPubY9pwpR6dx60dLK2mLYaDWVq3YtZNGlEG9fnpLK+dtDpIyUdb4s9IUaEPvo4j2/bnEhyDqns=
+	t=1760715959; cv=none; b=VECNLhnm5BOtAeKSzbsgUjRUJJpBHzWB+VOpZnJ0H4WKSFcs8jetb8cIxMhRpnUSMu+9+9xsNBaADJ2oU7qdjZckJP5bvKHcZpflCyEVH/02wyn2tiByQEaadRnut8ITTyqQ7r/3nKLF1nZnroS8cZbhCueoEGW48PVGXbvQkGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715225; c=relaxed/simple;
-	bh=eSla8AgxdrxCQhpeOdzVHlOaaD4rKhlUoBSj1c0mLmY=;
+	s=arc-20240116; t=1760715959; c=relaxed/simple;
+	bh=G9Hhn2gmRB/b6uxQBVIoAF1ftA1Ke21EIKtdaXWDOfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0GPkLdho5kAwLLvJYT0vrZwm811Xqatwp3jssv/dtYcDYQln7YqcFUFogiq6jJX0HnPtLsrl7j5SpgHPQLtCPeqVHmh+EPPP+bUXVkEEvlNaYC6jvXENJR9K4Knqcg66o/E0wkyp1LF7gdnc6/1VWuO4uSYXOMGWp7X1n+La/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCChpabb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0D3C4CEE7;
-	Fri, 17 Oct 2025 15:33:44 +0000 (UTC)
+	 MIME-Version; b=EznPjRlRhvPTxtjb2HzhO9ZkmkTcWxFLYLddXtYIvTHX+3S4PhNA4T4iYqcEyhsbb35Rn+UzkeilRSgRPiGkJVLQlPg0JKvF3DvnlulKf22kjjLikxANFRg4iaHw3fqk53+hQgs2NiFtiy89x3OVWUPmOGcWmeo4T5BVfd7CVSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhKygDUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5ADC4CEFE;
+	Fri, 17 Oct 2025 15:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715224;
-	bh=eSla8AgxdrxCQhpeOdzVHlOaaD4rKhlUoBSj1c0mLmY=;
+	s=korg; t=1760715959;
+	bh=G9Hhn2gmRB/b6uxQBVIoAF1ftA1Ke21EIKtdaXWDOfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DCChpabbJ4hrxT+dWc53gJnLgUQxP98zWbpscuuWy16GsKb7K2rd1rWre1w06dYUk
-	 /grwdiWoCc6U1KE0W0jRTxb8OlIIQIIeLn4xgDq3Redix/bed9mJjgABbHlUDJZRG0
-	 Wfpnr/h0EGYXbIYOuw6GwBYCTgbzdewlB3yWN3s0=
+	b=qhKygDUehtNqZENxHxWRaLhYHvqPoltWrkv41SuQWua43mL8pE0FiJsW6pZkdyFjC
+	 nsuBQYwi8ZOzmx9/mthQo/WArGr7Xcwhy4WM+8PZ7qI0NZ7MWAuIn4btU50jkLzWbf
+	 gM5BdtJc8l1EEbtDdBgNZT57ZZVnGKI+8dt8Ve5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.17 142/371] arm64: dts: qcom: msm8916: Add missing MDSS reset
+	Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 024/276] selftests: arm64: Check fread return value in exec_target
 Date: Fri, 17 Oct 2025 16:51:57 +0200
-Message-ID: <20251017145207.074276241@linuxfoundation.org>
+Message-ID: <20251017145143.286661016@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
 
-commit 99b78773c2ae55dcc01025f94eae8ce9700ae985 upstream.
+[ Upstream commit a679e5683d3eef22ca12514ff8784b2b914ebedc ]
 
-On most MSM8916 devices (aside from the DragonBoard 410c), the bootloader
-already initializes the display to show the boot splash screen. In this
-situation, MDSS is already configured and left running when starting Linux.
-To avoid side effects from the bootloader configuration, the MDSS reset can
-be specified in the device tree to start again with a clean hardware state.
+Fix -Wunused-result warning generated when compiled with gcc 13.3.0,
+by checking fread's return value and handling errors, preventing
+potential failures when reading from stdin.
 
-The reset for MDSS is currently missing in msm8916.dtsi, which causes
-errors when the MDSS driver tries to re-initialize the registers:
+Fixes compiler warning:
+warning: ignoring return value of 'fread' declared with attribute
+'warn_unused_result' [-Wunused-result]
 
- dsi_err_worker: status=6
- dsi_err_worker: status=6
- dsi_err_worker: status=6
- ...
+Fixes: 806a15b2545e ("kselftests/arm64: add PAuth test for whether exec() changes keys")
 
-It turns out that we have always indirectly worked around this by building
-the MDSS driver as a module. Before v6.17, the power domain was temporarily
-turned off until the module was loaded, long enough to clear the register
-contents. In v6.17, power domains are not turned off during boot until
-sync_state() happens, so this is no longer working. Even before v6.17 this
-resulted in broken behavior, but notably only when the MDSS driver was
-built-in instead of a module.
-
-Cc: stable@vger.kernel.org
-Fixes: 305410ffd1b2 ("arm64: dts: msm8916: Add display support")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-1-a5c705df0c45@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8916.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/arm64/pauth/exec_target.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-@@ -1562,6 +1562,8 @@
+diff --git a/tools/testing/selftests/arm64/pauth/exec_target.c b/tools/testing/selftests/arm64/pauth/exec_target.c
+index 4435600ca400d..e597861b26d6b 100644
+--- a/tools/testing/selftests/arm64/pauth/exec_target.c
++++ b/tools/testing/selftests/arm64/pauth/exec_target.c
+@@ -13,7 +13,12 @@ int main(void)
+ 	unsigned long hwcaps;
+ 	size_t val;
  
- 			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
- 
-+			resets = <&gcc GCC_MDSS_BCR>;
+-	fread(&val, sizeof(size_t), 1, stdin);
++	size_t size = fread(&val, sizeof(size_t), 1, stdin);
 +
- 			interrupt-controller;
- 			#interrupt-cells = <1>;
++	if (size != 1) {
++		fprintf(stderr, "Could not read input from stdin\n");
++		return EXIT_FAILURE;
++	}
  
+ 	/* don't try to execute illegal (unimplemented) instructions) caller
+ 	 * should have checked this and keep worker simple
+-- 
+2.51.0
+
 
 
 
