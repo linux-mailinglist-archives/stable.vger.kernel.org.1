@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B40BEA2A2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBFEABEA42B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96D0C587CEF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3C9FF588B8F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E3F26B96A;
-	Fri, 17 Oct 2025 15:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A4A330B20;
+	Fri, 17 Oct 2025 15:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyxaAX+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmoYnINK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6371F330B30;
-	Fri, 17 Oct 2025 15:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3FF330B1C;
+	Fri, 17 Oct 2025 15:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715324; cv=none; b=L1pJE2hFf6DbGjrFYHE3kDYdAnzZ2oQRLXeyYXTikSulqNQrl+0rLM0w8sEdhruRFl5IfHAEQSoC5UbMGZWA2pOoNwhR0EFaGVXebIpV/DXsRRsTDxoFIMTw+3v7Y5e8nYEb6o/3BfFp/5EosgLd1uDmPBJ3BktBqHFh2BnZ3A4=
+	t=1760716061; cv=none; b=Z4Gbnoz68mN/gH1FXH62Uek0zUWcu4P8opJDwX5NSiNHyergIuCgXAqVZa2fymkae9R7DfLcepaD/eFwclsHoGIPafORN81UUJYZ2WHeHOvb3huX2uwvnACWMnmNCE9XGue7gHyGE5yNhvalWycomPQv65aR0/LTFb0j822VX2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715324; c=relaxed/simple;
-	bh=JWwjR8Ci+jXCJ++AKXmiqhfhz1ligFl5w/Qbf7l0KYk=;
+	s=arc-20240116; t=1760716061; c=relaxed/simple;
+	bh=UxNSqUCemrbACV6NrfVKozlYt13z6JT6FE0FP/vnaNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uYfOVFqjz285OvVn5qzEFf/EcMwZ6+WnX20uv2iF1om2ZQ7PjzDXi0h9hr8iNmS2QwKZNwRgGrNDxt6FSWZzpLP515zqiahkkcMNh8t2UzS6dGyhQhgl1QHgmLORN83t4lzd89SY4uvEzPF0YiC2PUU5tw0Zzah9W3jQEUW32IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyxaAX+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16E8C4CEE7;
-	Fri, 17 Oct 2025 15:35:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VL4nPmHkmgFCbkhGzR3qCq9EhJlcXGNAwghR9/K3WwdPJ8E+Jb/fiY6MqXC/r0RBFaZ+0oJbROzG41lCPGvAbD0zKu5YgSi7m5WlE5fS0Y34J/gaKkCDdaJvXADLDl4EZlEBUPsLD4kMhYNGacVjA0kwS3uDwoEF6IX08GDiAMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmoYnINK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657B6C4CEE7;
+	Fri, 17 Oct 2025 15:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715324;
-	bh=JWwjR8Ci+jXCJ++AKXmiqhfhz1ligFl5w/Qbf7l0KYk=;
+	s=korg; t=1760716060;
+	bh=UxNSqUCemrbACV6NrfVKozlYt13z6JT6FE0FP/vnaNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyxaAX+1sgdoWCXQ9/tSuk1xqchdPp2JCAwLZNE3r7vtaDmIldTNYjBUZq5+GkPx1
-	 06lxw/fI5XdkYycXgdffbcnZ/c0dscF0FsXn9lunOui/3GxNRGw6O3lwpoNVkz5hPn
-	 Sx0VTOjYpcg8Bo18dyVQiOGL9AdXX1b6uR27WH/c=
+	b=AmoYnINK4C6oYJNpUH0a+27Agn8SqmP7FrZ/3fFlQBmHFRG+hOErzhj+2O2pOobF1
+	 oIoxmTlQPgS4QBBCv0s8wnGucP5wN+rW6hGGfjYycajgIrHLH+9jbONBFE3yXVOCdM
+	 No22eGlYYk9hI6xsyvO7Gw8qdyhb3zoz3K0oootc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.17 177/371] media: staging/ipu7: fix isys device runtime PM usage in firmware closing
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 059/276] drm/amdgpu: Power up UVD 3 for FW validation (v2)
 Date: Fri, 17 Oct 2025 16:52:32 +0200
-Message-ID: <20251017145208.332485353@linuxfoundation.org>
+Message-ID: <20251017145144.643282829@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 895d3b4b5832edefd2f1fbad9d75c0179f47fe0e upstream.
+[ Upstream commit c661219cd7be75bb5599b525f16a455a058eb516 ]
 
-The PM usage counter of isys was bumped up when start camera stream
-(opening firmware) but it was not dropped after stream stop(closing
-firmware), it forbids system fail to suspend due to the wrong PM state
-of ISYS. This patch drop the PM usage counter in firmware close to fix
-it.
+Unlike later versions, UVD 3 has firmware validation.
+For this to work, the UVD should be powered up correctly.
 
-Cc: Stable@vger.kernel.org
-Fixes: a516d36bdc3d ("media: staging/ipu7: add IPU7 input system device driver")
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When DPM is enabled and the display clock is off,
+the SMU may choose a power state which doesn't power
+the UVD, which can result in failure to initialize UVD.
+
+v2:
+Add code comments to explain about the UVD power state
+and how UVD clock is turned on/off.
+
+Fixes: b38f3e80ecec ("drm amdgpu: SI UVD v3_1 (v2)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/ipu7/ipu7-isys-video.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c | 29 +++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
---- a/drivers/staging/media/ipu7/ipu7-isys-video.c
-+++ b/drivers/staging/media/ipu7/ipu7-isys-video.c
-@@ -946,6 +946,7 @@ void ipu7_isys_fw_close(struct ipu7_isys
- 		ipu7_fw_isys_close(isys);
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+index 0fef925b66024..e458e0d5801b0 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+@@ -625,7 +625,22 @@ static void uvd_v3_1_enable_mgcg(struct amdgpu_device *adev,
+  *
+  * @handle: handle used to pass amdgpu_device pointer
+  *
+- * Initialize the hardware, boot up the VCPU and do some testing
++ * Initialize the hardware, boot up the VCPU and do some testing.
++ *
++ * On SI, the UVD is meant to be used in a specific power state,
++ * or alternatively the driver can manually enable its clock.
++ * In amdgpu we use the dedicated UVD power state when DPM is enabled.
++ * Calling amdgpu_dpm_enable_uvd makes DPM select the UVD power state
++ * for the SMU and afterwards enables the UVD clock.
++ * This is automatically done by amdgpu_uvd_ring_begin_use when work
++ * is submitted to the UVD ring. Here, we have to call it manually
++ * in order to power up UVD before firmware validation.
++ *
++ * Note that we must not disable the UVD clock here, as that would
++ * cause the ring test to fail. However, UVD is powered off
++ * automatically after the ring test: amdgpu_uvd_ring_end_use calls
++ * the UVD idle work handler which will disable the UVD clock when
++ * all fences are signalled.
+  */
+ static int uvd_v3_1_hw_init(void *handle)
+ {
+@@ -635,6 +650,15 @@ static int uvd_v3_1_hw_init(void *handle)
+ 	int r;
  
- 	mutex_unlock(&isys->mutex);
-+	pm_runtime_put(&isys->adev->auxdev.dev);
- }
+ 	uvd_v3_1_mc_resume(adev);
++	uvd_v3_1_enable_mgcg(adev, true);
++
++	/* Make sure UVD is powered during FW validation.
++	 * It's going to be automatically powered off after the ring test.
++	 */
++	if (adev->pm.dpm_enabled)
++		amdgpu_dpm_enable_uvd(adev, true);
++	else
++		amdgpu_asic_set_uvd_clocks(adev, 53300, 40000);
  
- int ipu7_isys_setup_video(struct ipu7_isys_video *av,
+ 	r = uvd_v3_1_fw_validate(adev);
+ 	if (r) {
+@@ -642,9 +666,6 @@ static int uvd_v3_1_hw_init(void *handle)
+ 		return r;
+ 	}
+ 
+-	uvd_v3_1_enable_mgcg(adev, true);
+-	amdgpu_asic_set_uvd_clocks(adev, 53300, 40000);
+-
+ 	uvd_v3_1_start(adev);
+ 
+ 	r = amdgpu_ring_test_helper(ring);
+-- 
+2.51.0
+
 
 
 
