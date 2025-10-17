@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-187611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F1EBEA780
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:07:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E93BEA8B8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:14:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 021FB509795
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8828960C83
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA0B32C94F;
-	Fri, 17 Oct 2025 15:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086FC2F12A8;
+	Fri, 17 Oct 2025 15:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPS6uNCp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ut4FJBfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BE632C93B;
-	Fri, 17 Oct 2025 15:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78F2330B26;
+	Fri, 17 Oct 2025 15:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716570; cv=none; b=mDoUfTgX+zCkt4ZnsRLr/+N9ptrxeLFrfmMqg6TMh9HG0Nn5TU11g99SNhEGevhGPFUhnexWSHTb5UR6C/eGeYfgjDuCWOlEbbcz5hURBy/VBRJJ8Nu1owjLhf9AUYG9TBxC27GY3AFsZNAriPjaKvO/yWNyEgk8Cm+RCAMw5jA=
+	t=1760716576; cv=none; b=TebHqu7p4lIUjX0Up+rX5TK9O3VaWboKjWYDXG9nZHHLrURYQ+4QBb1yurRZnEDAr1Jpn8HGw6IpjWckMO7pLRCKcONH6IawHtn0+/9N0Um7NnLT2TVH/XS7bC7CQSLu4SfNReC26jQYPOG+ntnqWYUbQN9tfxWYHsChqOhY3cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716570; c=relaxed/simple;
-	bh=MezhuLhtOaIf4qITO7mRovPxY0ZoZ17RKAXgRGnwrmk=;
+	s=arc-20240116; t=1760716576; c=relaxed/simple;
+	bh=nGoGA/C+aakH1L4cUz97RybiIOg7w+0Oz8uV27cQ3k0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rQXdjOK/RQOY1Zq95gLPL4UhyH9BY9aYR4y74T7MIQ17TMMk8jokKkLoVfLf8aroa3+4X7oCLZrX/HUBuqzGJhIM+TSQ0njMIh8GxAgE1uJq1C5kZ5V8vY08DCd6jpS+kdg1NtcgswWmfOl82C/7uviAMuWM3bkLyyw/oSKVlhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPS6uNCp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16774C113D0;
-	Fri, 17 Oct 2025 15:56:09 +0000 (UTC)
+	 MIME-Version; b=ZEteQroMYme4y2FBRlMbXjrufwS/qdAvi4pYKrwBcBkB3ZZ1A/3wcecIun/Ho3H8aaQCbibgQw5/OnnN0M7f6ENe1cFH9OT11mvjHPSnzmiAN4GQ75UiApEAzkOS/azGmIMWVfld0UA4qc63ToAezi2bZ3j6to+D9IvigVzxugc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ut4FJBfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E9CC4CEE7;
+	Fri, 17 Oct 2025 15:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716570;
-	bh=MezhuLhtOaIf4qITO7mRovPxY0ZoZ17RKAXgRGnwrmk=;
+	s=korg; t=1760716576;
+	bh=nGoGA/C+aakH1L4cUz97RybiIOg7w+0Oz8uV27cQ3k0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPS6uNCpIpYODNEn21RPnfp+PQsYjjPn+zuqP8McMsD/Wl5nsC1NEneixyVhLaTH+
-	 +0JsPv03ynkgZaOOHIdXitUUL9W4TB+WVtHrNnoVsosQk1LG3U3RjJ4Gx6sJF3P54v
-	 o4iLPgMCOcObDOS6p7BmhfKFdJ7TEyW1IUH2EE0E=
+	b=ut4FJBfD/0ExM6RpvYyE2nmVgAv4IXJm7aFDKUAMwZH4+Ct2nDqEvZq0Y69d/DYJ4
+	 H/+ty33zs2afVrEGOuUPSZWa0VW+LUakZFb3qowlDzkxOR7NONvGDJ7mgZKdj9Uo+z
+	 cs7dXTe0JmIGOVHM3N2iO3sDqvVtQR4oNFf/0GsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 236/276] tracing: Fix race condition in kprobe initialization causing NULL pointer dereference
-Date: Fri, 17 Oct 2025 16:55:29 +0200
-Message-ID: <20251017145151.084051469@linuxfoundation.org>
+Subject: [PATCH 5.15 238/276] locking: Introduce __cleanup() based infrastructure
+Date: Fri, 17 Oct 2025 16:55:31 +0200
+Message-ID: <20251017145151.158672062@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -60,244 +59,628 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 9cf9aa7b0acfde7545c1a1d912576e9bab28dc6f ]
+[ Upstream commit 54da6a0924311c7cf5015533991e44fb8eb12773 ]
 
-There is a critical race condition in kprobe initialization that can lead to
-NULL pointer dereference and kernel crash.
+Use __attribute__((__cleanup__(func))) to build:
 
-[1135630.084782] Unable to handle kernel paging request at virtual address 0000710a04630000
-...
-[1135630.260314] pstate: 404003c9 (nZcv DAIF +PAN -UAO)
-[1135630.269239] pc : kprobe_perf_func+0x30/0x260
-[1135630.277643] lr : kprobe_dispatcher+0x44/0x60
-[1135630.286041] sp : ffffaeff4977fa40
-[1135630.293441] x29: ffffaeff4977fa40 x28: ffffaf015340e400
-[1135630.302837] x27: 0000000000000000 x26: 0000000000000000
-[1135630.312257] x25: ffffaf029ed108a8 x24: ffffaf015340e528
-[1135630.321705] x23: ffffaeff4977fc50 x22: ffffaeff4977fc50
-[1135630.331154] x21: 0000000000000000 x20: ffffaeff4977fc50
-[1135630.340586] x19: ffffaf015340e400 x18: 0000000000000000
-[1135630.349985] x17: 0000000000000000 x16: 0000000000000000
-[1135630.359285] x15: 0000000000000000 x14: 0000000000000000
-[1135630.368445] x13: 0000000000000000 x12: 0000000000000000
-[1135630.377473] x11: 0000000000000000 x10: 0000000000000000
-[1135630.386411] x9 : 0000000000000000 x8 : 0000000000000000
-[1135630.395252] x7 : 0000000000000000 x6 : 0000000000000000
-[1135630.403963] x5 : 0000000000000000 x4 : 0000000000000000
-[1135630.412545] x3 : 0000710a04630000 x2 : 0000000000000006
-[1135630.421021] x1 : ffffaeff4977fc50 x0 : 0000710a04630000
-[1135630.429410] Call trace:
-[1135630.434828]  kprobe_perf_func+0x30/0x260
-[1135630.441661]  kprobe_dispatcher+0x44/0x60
-[1135630.448396]  aggr_pre_handler+0x70/0xc8
-[1135630.454959]  kprobe_breakpoint_handler+0x140/0x1e0
-[1135630.462435]  brk_handler+0xbc/0xd8
-[1135630.468437]  do_debug_exception+0x84/0x138
-[1135630.475074]  el1_dbg+0x18/0x8c
-[1135630.480582]  security_file_permission+0x0/0xd0
-[1135630.487426]  vfs_write+0x70/0x1c0
-[1135630.493059]  ksys_write+0x5c/0xc8
-[1135630.498638]  __arm64_sys_write+0x24/0x30
-[1135630.504821]  el0_svc_common+0x78/0x130
-[1135630.510838]  el0_svc_handler+0x38/0x78
-[1135630.516834]  el0_svc+0x8/0x1b0
+ - simple auto-release pointers using __free()
 
-kernel/trace/trace_kprobe.c: 1308
-0xffff3df8995039ec <kprobe_perf_func+0x2c>:     ldr     x21, [x24,#120]
-include/linux/compiler.h: 294
-0xffff3df8995039f0 <kprobe_perf_func+0x30>:     ldr     x1, [x21,x0]
+ - 'classes' with constructor and destructor semantics for
+   scope-based resource management.
 
-kernel/trace/trace_kprobe.c
-1308: head = this_cpu_ptr(call->perf_events);
-1309: if (hlist_empty(head))
-1310: 	return 0;
+ - lock guards based on the above classes.
 
-crash> struct trace_event_call -o
-struct trace_event_call {
-  ...
-  [120] struct hlist_head *perf_events;  //(call->perf_event)
-  ...
-}
-
-crash> struct trace_event_call ffffaf015340e528
-struct trace_event_call {
-  ...
-  perf_events = 0xffff0ad5fa89f088, //this value is correct, but x21 = 0
-  ...
-}
-
-Race Condition Analysis:
-
-The race occurs between kprobe activation and perf_events initialization:
-
-  CPU0                                    CPU1
-  ====                                    ====
-  perf_kprobe_init
-    perf_trace_event_init
-      tp_event->perf_events = list;(1)
-      tp_event->class->reg (2)← KPROBE ACTIVE
-                                          Debug exception triggers
-                                          ...
-                                          kprobe_dispatcher
-                                            kprobe_perf_func (tk->tp.flags & TP_FLAG_PROFILE)
-                                              head = this_cpu_ptr(call->perf_events)(3)
-                                              (perf_events is still NULL)
-
-Problem:
-1. CPU0 executes (1) assigning tp_event->perf_events = list
-2. CPU0 executes (2) enabling kprobe functionality via class->reg()
-3. CPU1 triggers and reaches kprobe_dispatcher
-4. CPU1 checks TP_FLAG_PROFILE - condition passes (step 2 completed)
-5. CPU1 calls kprobe_perf_func() and crashes at (3) because
-   call->perf_events is still NULL
-
-CPU1 sees that kprobe functionality is enabled but does not see that
-perf_events has been assigned.
-
-Add pairing read and write memory barriers to guarantee that if CPU1
-sees that kprobe functionality is enabled, it must also see that
-perf_events has been assigned.
-
-Link: https://lore.kernel.org/all/20251001022025.44626-1-chenyuan_fl@163.com/
-
-Fixes: 50d780560785 ("tracing/kprobes: Add probe handler dispatcher to support perf and ftrace concurrent use")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-[ Drop fprobe changes + context ]
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230612093537.614161713%40infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_kprobe.c |   11 +++++++----
- kernel/trace/trace_probe.h  |    9 +++++++--
- kernel/trace/trace_uprobe.c |   12 ++++++++----
- 3 files changed, 22 insertions(+), 10 deletions(-)
+ drivers/dma/ioat/dma.c              |   12 +-
+ include/linux/cleanup.h             |  171 ++++++++++++++++++++++++++++++++++++
+ include/linux/compiler-clang.h      |    9 +
+ include/linux/compiler_attributes.h |    6 +
+ include/linux/device.h              |    7 +
+ include/linux/file.h                |    6 +
+ include/linux/irqflags.h            |    7 +
+ include/linux/mutex.h               |    4 
+ include/linux/percpu.h              |    4 
+ include/linux/preempt.h             |   47 +++++++++
+ include/linux/rcupdate.h            |    3 
+ include/linux/rwsem.h               |    8 +
+ include/linux/sched/task.h          |    2 
+ include/linux/slab.h                |    3 
+ include/linux/spinlock.h            |   32 ++++++
+ include/linux/srcu.h                |    5 +
+ scripts/checkpatch.pl               |    2 
+ 17 files changed, 321 insertions(+), 7 deletions(-)
+ create mode 100644 include/linux/cleanup.h
 
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -1722,14 +1722,15 @@ static int kprobe_register(struct trace_
- static int kprobe_dispatcher(struct kprobe *kp, struct pt_regs *regs)
+--- a/drivers/dma/ioat/dma.c
++++ b/drivers/dma/ioat/dma.c
+@@ -584,11 +584,11 @@ desc_get_errstat(struct ioatdma_chan *io
+ }
+ 
+ /**
+- * __cleanup - reclaim used descriptors
++ * __ioat_cleanup - reclaim used descriptors
+  * @ioat_chan: channel (ring) to clean
+  * @phys_complete: zeroed (or not) completion address (from status)
+  */
+-static void __cleanup(struct ioatdma_chan *ioat_chan, dma_addr_t phys_complete)
++static void __ioat_cleanup(struct ioatdma_chan *ioat_chan, dma_addr_t phys_complete)
  {
- 	struct trace_kprobe *tk = container_of(kp, struct trace_kprobe, rp.kp);
-+	unsigned int flags = trace_probe_load_flag(&tk->tp);
- 	int ret = 0;
+ 	struct ioatdma_device *ioat_dma = ioat_chan->ioat_dma;
+ 	struct ioat_ring_ent *desc;
+@@ -675,7 +675,7 @@ static void ioat_cleanup(struct ioatdma_
+ 	spin_lock_bh(&ioat_chan->cleanup_lock);
  
- 	raw_cpu_inc(*tk->nhit);
+ 	if (ioat_cleanup_preamble(ioat_chan, &phys_complete))
+-		__cleanup(ioat_chan, phys_complete);
++		__ioat_cleanup(ioat_chan, phys_complete);
  
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		kprobe_trace_func(tk, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret = kprobe_perf_func(tk, regs);
- #endif
- 	return ret;
-@@ -1741,6 +1742,7 @@ kretprobe_dispatcher(struct kretprobe_in
- {
- 	struct kretprobe *rp = get_kretprobe(ri);
- 	struct trace_kprobe *tk;
-+	unsigned int flags;
+ 	if (is_ioat_halted(*ioat_chan->completion)) {
+ 		u32 chanerr = readl(ioat_chan->reg_base + IOAT_CHANERR_OFFSET);
+@@ -712,7 +712,7 @@ static void ioat_restart_channel(struct
  
- 	/*
- 	 * There is a small chance that get_kretprobe(ri) returns NULL when
-@@ -1753,10 +1755,11 @@ kretprobe_dispatcher(struct kretprobe_in
- 	tk = container_of(rp, struct trace_kprobe, rp);
- 	raw_cpu_inc(*tk->nhit);
+ 	ioat_quiesce(ioat_chan, 0);
+ 	if (ioat_cleanup_preamble(ioat_chan, &phys_complete))
+-		__cleanup(ioat_chan, phys_complete);
++		__ioat_cleanup(ioat_chan, phys_complete);
  
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tk->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		kretprobe_trace_func(tk, ri, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		kretprobe_perf_func(tk, ri, regs);
- #endif
- 	return 0;	/* We don't tweak kernel, so just return 0 */
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -258,16 +258,21 @@ struct event_file_link {
- 	struct list_head		list;
- };
+ 	__ioat_restart_chan(ioat_chan);
+ }
+@@ -786,7 +786,7 @@ static void ioat_eh(struct ioatdma_chan
  
-+static inline unsigned int trace_probe_load_flag(struct trace_probe *tp)
-+{
-+	return smp_load_acquire(&tp->event->flags);
+ 	/* cleanup so tail points to descriptor that caused the error */
+ 	if (ioat_cleanup_preamble(ioat_chan, &phys_complete))
+-		__cleanup(ioat_chan, phys_complete);
++		__ioat_cleanup(ioat_chan, phys_complete);
+ 
+ 	chanerr = readl(ioat_chan->reg_base + IOAT_CHANERR_OFFSET);
+ 	pci_read_config_dword(pdev, IOAT_PCI_CHANERR_INT_OFFSET, &chanerr_int);
+@@ -943,7 +943,7 @@ void ioat_timer_event(struct timer_list
+ 		/* timer restarted in ioat_cleanup_preamble
+ 		 * and IOAT_COMPLETION_ACK cleared
+ 		 */
+-		__cleanup(ioat_chan, phys_complete);
++		__ioat_cleanup(ioat_chan, phys_complete);
+ 		goto unlock_out;
+ 	}
+ 
+--- /dev/null
++++ b/include/linux/cleanup.h
+@@ -0,0 +1,171 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __LINUX_GUARDS_H
++#define __LINUX_GUARDS_H
++
++#include <linux/compiler.h>
++
++/*
++ * DEFINE_FREE(name, type, free):
++ *	simple helper macro that defines the required wrapper for a __free()
++ *	based cleanup function. @free is an expression using '_T' to access
++ *	the variable.
++ *
++ * __free(name):
++ *	variable attribute to add a scoped based cleanup to the variable.
++ *
++ * no_free_ptr(var):
++ *	like a non-atomic xchg(var, NULL), such that the cleanup function will
++ *	be inhibited -- provided it sanely deals with a NULL value.
++ *
++ * return_ptr(p):
++ *	returns p while inhibiting the __free().
++ *
++ * Ex.
++ *
++ * DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
++ *
++ *	struct obj *p __free(kfree) = kmalloc(...);
++ *	if (!p)
++ *		return NULL;
++ *
++ *	if (!init_obj(p))
++ *		return NULL;
++ *
++ *	return_ptr(p);
++ */
++
++#define DEFINE_FREE(_name, _type, _free) \
++	static inline void __free_##_name(void *p) { _type _T = *(_type *)p; _free; }
++
++#define __free(_name)	__cleanup(__free_##_name)
++
++#define no_free_ptr(p) \
++	({ __auto_type __ptr = (p); (p) = NULL; __ptr; })
++
++#define return_ptr(p)	return no_free_ptr(p)
++
++
++/*
++ * DEFINE_CLASS(name, type, exit, init, init_args...):
++ *	helper to define the destructor and constructor for a type.
++ *	@exit is an expression using '_T' -- similar to FREE above.
++ *	@init is an expression in @init_args resulting in @type
++ *
++ * EXTEND_CLASS(name, ext, init, init_args...):
++ *	extends class @name to @name@ext with the new constructor
++ *
++ * CLASS(name, var)(args...):
++ *	declare the variable @var as an instance of the named class
++ *
++ * Ex.
++ *
++ * DEFINE_CLASS(fdget, struct fd, fdput(_T), fdget(fd), int fd)
++ *
++ *	CLASS(fdget, f)(fd);
++ *	if (!f.file)
++ *		return -EBADF;
++ *
++ *	// use 'f' without concern
++ */
++
++#define DEFINE_CLASS(_name, _type, _exit, _init, _init_args...)		\
++typedef _type class_##_name##_t;					\
++static inline void class_##_name##_destructor(_type *p)			\
++{ _type _T = *p; _exit; }						\
++static inline _type class_##_name##_constructor(_init_args)		\
++{ _type t = _init; return t; }
++
++#define EXTEND_CLASS(_name, ext, _init, _init_args...)			\
++typedef class_##_name##_t class_##_name##ext##_t;			\
++static inline void class_##_name##ext##_destructor(class_##_name##_t *p)\
++{ class_##_name##_destructor(p); }					\
++static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
++{ class_##_name##_t t = _init; return t; }
++
++#define CLASS(_name, var)						\
++	class_##_name##_t var __cleanup(class_##_name##_destructor) =	\
++		class_##_name##_constructor
++
++
++/*
++ * DEFINE_GUARD(name, type, lock, unlock):
++ *	trivial wrapper around DEFINE_CLASS() above specifically
++ *	for locks.
++ *
++ * guard(name):
++ *	an anonymous instance of the (guard) class
++ *
++ * scoped_guard (name, args...) { }:
++ *	similar to CLASS(name, scope)(args), except the variable (with the
++ *	explicit name 'scope') is declard in a for-loop such that its scope is
++ *	bound to the next (compound) statement.
++ *
++ */
++
++#define DEFINE_GUARD(_name, _type, _lock, _unlock) \
++	DEFINE_CLASS(_name, _type, _unlock, ({ _lock; _T; }), _type _T)
++
++#define guard(_name) \
++	CLASS(_name, __UNIQUE_ID(guard))
++
++#define scoped_guard(_name, args...)					\
++	for (CLASS(_name, scope)(args),					\
++	     *done = NULL; !done; done = (void *)1)
++
++/*
++ * Additional helper macros for generating lock guards with types, either for
++ * locks that don't have a native type (eg. RCU, preempt) or those that need a
++ * 'fat' pointer (eg. spin_lock_irqsave).
++ *
++ * DEFINE_LOCK_GUARD_0(name, lock, unlock, ...)
++ * DEFINE_LOCK_GUARD_1(name, type, lock, unlock, ...)
++ *
++ * will result in the following type:
++ *
++ *   typedef struct {
++ *	type *lock;		// 'type := void' for the _0 variant
++ *	__VA_ARGS__;
++ *   } class_##name##_t;
++ *
++ * As above, both _lock and _unlock are statements, except this time '_T' will
++ * be a pointer to the above struct.
++ */
++
++#define __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, ...)		\
++typedef struct {							\
++	_type *lock;							\
++	__VA_ARGS__;							\
++} class_##_name##_t;							\
++									\
++static inline void class_##_name##_destructor(class_##_name##_t *_T)	\
++{									\
++	if (_T->lock) { _unlock; }					\
 +}
 +
- static inline bool trace_probe_test_flag(struct trace_probe *tp,
- 					 unsigned int flag)
- {
--	return !!(tp->event->flags & flag);
-+	return !!(trace_probe_load_flag(tp) & flag);
++
++#define __DEFINE_LOCK_GUARD_1(_name, _type, _lock)			\
++static inline class_##_name##_t class_##_name##_constructor(_type *l)	\
++{									\
++	class_##_name##_t _t = { .lock = l }, *_T = &_t;		\
++	_lock;								\
++	return _t;							\
++}
++
++#define __DEFINE_LOCK_GUARD_0(_name, _lock)				\
++static inline class_##_name##_t class_##_name##_constructor(void)	\
++{									\
++	class_##_name##_t _t = { .lock = (void*)1 },			\
++			 *_T __maybe_unused = &_t;			\
++	_lock;								\
++	return _t;							\
++}
++
++#define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
++__DEFINE_UNLOCK_GUARD(_name, _type, _unlock, __VA_ARGS__)		\
++__DEFINE_LOCK_GUARD_1(_name, _type, _lock)
++
++#define DEFINE_LOCK_GUARD_0(_name, _lock, _unlock, ...)			\
++__DEFINE_UNLOCK_GUARD(_name, void, _unlock, __VA_ARGS__)		\
++__DEFINE_LOCK_GUARD_0(_name, _lock)
++
++#endif /* __LINUX_GUARDS_H */
+--- a/include/linux/compiler-clang.h
++++ b/include/linux/compiler-clang.h
+@@ -5,6 +5,15 @@
+ 
+ /* Compiler specific definitions for Clang compiler */
+ 
++/*
++ * Clang prior to 17 is being silly and considers many __cleanup() variables
++ * as unused (because they are, their sole purpose is to go out of scope).
++ *
++ * https://reviews.llvm.org/D152180
++ */
++#undef __cleanup
++#define __cleanup(func) __maybe_unused __attribute__((__cleanup__(func)))
++
+ /* same as gcc, this was present in clang-2.6 so we can assume it works
+  * with any version that can compile the kernel
+  */
+--- a/include/linux/compiler_attributes.h
++++ b/include/linux/compiler_attributes.h
+@@ -81,6 +81,12 @@
+ #define __cold                          __attribute__((__cold__))
+ 
+ /*
++ *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-cleanup-variable-attribute
++ * clang: https://clang.llvm.org/docs/AttributeReference.html#cleanup
++ */
++#define __cleanup(func)			__attribute__((__cleanup__(func)))
++
++/*
+  * Note the long name.
+  *
+  *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-const-function-attribute
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -30,6 +30,7 @@
+ #include <linux/device/bus.h>
+ #include <linux/device/class.h>
+ #include <linux/device/driver.h>
++#include <linux/cleanup.h>
+ #include <asm/device.h>
+ 
+ struct device;
+@@ -825,6 +826,9 @@ void device_unregister(struct device *de
+ void device_initialize(struct device *dev);
+ int __must_check device_add(struct device *dev);
+ void device_del(struct device *dev);
++
++DEFINE_FREE(device_del, struct device *, if (_T) device_del(_T))
++
+ int device_for_each_child(struct device *dev, void *data,
+ 			  int (*fn)(struct device *dev, void *data));
+ int device_for_each_child_reverse(struct device *dev, void *data,
+@@ -955,6 +959,9 @@ extern int (*platform_notify_remove)(str
+  */
+ struct device *get_device(struct device *dev);
+ void put_device(struct device *dev);
++
++DEFINE_FREE(put_device, struct device *, if (_T) put_device(_T))
++
+ bool kill_device(struct device *dev);
+ 
+ #ifdef CONFIG_DEVTMPFS
+--- a/include/linux/file.h
++++ b/include/linux/file.h
+@@ -10,6 +10,7 @@
+ #include <linux/types.h>
+ #include <linux/posix_types.h>
+ #include <linux/errno.h>
++#include <linux/cleanup.h>
+ 
+ struct file;
+ 
+@@ -82,6 +83,8 @@ static inline void fdput_pos(struct fd f
+ 	fdput(f);
  }
  
- static inline void trace_probe_set_flag(struct trace_probe *tp,
- 					unsigned int flag)
- {
--	tp->event->flags |= flag;
-+	smp_store_release(&tp->event->flags, tp->event->flags | flag);
++DEFINE_CLASS(fd, struct fd, fdput(_T), fdget(fd), int fd)
++
+ extern int f_dupfd(unsigned int from, struct file *file, unsigned flags);
+ extern int replace_fd(unsigned fd, struct file *file, unsigned flags);
+ extern void set_close_on_exec(unsigned int fd, int flag);
+@@ -90,6 +93,9 @@ extern int __get_unused_fd_flags(unsigne
+ extern int get_unused_fd_flags(unsigned flags);
+ extern void put_unused_fd(unsigned int fd);
+ 
++DEFINE_CLASS(get_unused_fd, int, if (_T >= 0) put_unused_fd(_T),
++	     get_unused_fd_flags(flags), unsigned flags)
++
+ extern void fd_install(unsigned int fd, struct file *file);
+ 
+ extern int __receive_fd(struct file *file, int __user *ufd,
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -13,6 +13,7 @@
+ #define _LINUX_TRACE_IRQFLAGS_H
+ 
+ #include <linux/typecheck.h>
++#include <linux/cleanup.h>
+ #include <asm/irqflags.h>
+ #include <asm/percpu.h>
+ 
+@@ -260,4 +261,10 @@ extern void warn_bogus_irq_restore(void)
+ 
+ #define irqs_disabled_flags(flags) raw_irqs_disabled_flags(flags)
+ 
++DEFINE_LOCK_GUARD_0(irq, local_irq_disable(), local_irq_enable())
++DEFINE_LOCK_GUARD_0(irqsave,
++		    local_irq_save(_T->flags),
++		    local_irq_restore(_T->flags),
++		    unsigned long flags)
++
+ #endif
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -19,6 +19,7 @@
+ #include <asm/processor.h>
+ #include <linux/osq_lock.h>
+ #include <linux/debug_locks.h>
++#include <linux/cleanup.h>
+ 
+ struct device;
+ 
+@@ -246,4 +247,7 @@ extern void mutex_unlock(struct mutex *l
+ 
+ extern int atomic_dec_and_mutex_lock(atomic_t *cnt, struct mutex *lock);
+ 
++DEFINE_GUARD(mutex, struct mutex *, mutex_lock(_T), mutex_unlock(_T))
++DEFINE_FREE(mutex, struct mutex *, if (_T) mutex_unlock(_T))
++
+ #endif /* __LINUX_MUTEX_H */
+--- a/include/linux/percpu.h
++++ b/include/linux/percpu.h
+@@ -9,6 +9,7 @@
+ #include <linux/printk.h>
+ #include <linux/pfn.h>
+ #include <linux/init.h>
++#include <linux/cleanup.h>
+ 
+ #include <asm/percpu.h>
+ 
+@@ -134,6 +135,9 @@ extern void __init setup_per_cpu_areas(v
+ extern void __percpu *__alloc_percpu_gfp(size_t size, size_t align, gfp_t gfp);
+ extern void __percpu *__alloc_percpu(size_t size, size_t align);
+ extern void free_percpu(void __percpu *__pdata);
++
++DEFINE_FREE(free_percpu, void __percpu *, free_percpu(_T))
++
+ extern phys_addr_t per_cpu_ptr_to_phys(void *addr);
+ 
+ #define alloc_percpu_gfp(type, gfp)					\
+--- a/include/linux/preempt.h
++++ b/include/linux/preempt.h
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include <linux/linkage.h>
++#include <linux/cleanup.h>
+ #include <linux/list.h>
+ 
+ /*
+@@ -431,4 +432,50 @@ static inline void migrate_enable(void)
+ 
+ #endif /* CONFIG_SMP */
+ 
++/**
++ * preempt_disable_nested - Disable preemption inside a normally preempt disabled section
++ *
++ * Use for code which requires preemption protection inside a critical
++ * section which has preemption disabled implicitly on non-PREEMPT_RT
++ * enabled kernels, by e.g.:
++ *  - holding a spinlock/rwlock
++ *  - soft interrupt context
++ *  - regular interrupt handlers
++ *
++ * On PREEMPT_RT enabled kernels spinlock/rwlock held sections, soft
++ * interrupt context and regular interrupt handlers are preemptible and
++ * only prevent migration. preempt_disable_nested() ensures that preemption
++ * is disabled for cases which require CPU local serialization even on
++ * PREEMPT_RT. For non-PREEMPT_RT kernels this is a NOP.
++ *
++ * The use cases are code sequences which are not serialized by a
++ * particular lock instance, e.g.:
++ *  - seqcount write side critical sections where the seqcount is not
++ *    associated to a particular lock and therefore the automatic
++ *    protection mechanism does not work. This prevents a live lock
++ *    against a preempting high priority reader.
++ *  - RMW per CPU variable updates like vmstat.
++ */
++/* Macro to avoid header recursion hell vs. lockdep */
++#define preempt_disable_nested()				\
++do {								\
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))			\
++		preempt_disable();				\
++	else							\
++		lockdep_assert_preemption_disabled();		\
++} while (0)
++
++/**
++ * preempt_enable_nested - Undo the effect of preempt_disable_nested()
++ */
++static __always_inline void preempt_enable_nested(void)
++{
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_enable();
++}
++
++DEFINE_LOCK_GUARD_0(preempt, preempt_disable(), preempt_enable())
++DEFINE_LOCK_GUARD_0(preempt_notrace, preempt_disable_notrace(), preempt_enable_notrace())
++DEFINE_LOCK_GUARD_0(migrate, migrate_disable(), migrate_enable())
++
+ #endif /* __LINUX_PREEMPT_H */
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -27,6 +27,7 @@
+ #include <linux/preempt.h>
+ #include <linux/bottom_half.h>
+ #include <linux/lockdep.h>
++#include <linux/cleanup.h>
+ #include <asm/processor.h>
+ #include <linux/cpumask.h>
+ 
+@@ -1060,4 +1061,6 @@ rcu_head_after_call_rcu(struct rcu_head
+ extern int rcu_expedited;
+ extern int rcu_normal;
+ 
++DEFINE_LOCK_GUARD_0(rcu, rcu_read_lock(), rcu_read_unlock())
++
+ #endif /* __LINUX_RCUPDATE_H */
+--- a/include/linux/rwsem.h
++++ b/include/linux/rwsem.h
+@@ -16,6 +16,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/atomic.h>
+ #include <linux/err.h>
++#include <linux/cleanup.h>
+ 
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ # define __RWSEM_DEP_MAP_INIT(lockname)			\
+@@ -202,6 +203,13 @@ extern void up_read(struct rw_semaphore
+  */
+ extern void up_write(struct rw_semaphore *sem);
+ 
++DEFINE_GUARD(rwsem_read, struct rw_semaphore *, down_read(_T), up_read(_T))
++DEFINE_GUARD(rwsem_write, struct rw_semaphore *, down_write(_T), up_write(_T))
++
++DEFINE_FREE(up_read, struct rw_semaphore *, if (_T) up_read(_T))
++DEFINE_FREE(up_write, struct rw_semaphore *, if (_T) up_write(_T))
++
++
+ /*
+  * downgrade write lock to read lock
+  */
+--- a/include/linux/sched/task.h
++++ b/include/linux/sched/task.h
+@@ -142,6 +142,8 @@ static inline void put_task_struct(struc
+ 		__put_task_struct(t);
  }
  
- static inline void trace_probe_clear_flag(struct trace_probe *tp,
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -1485,6 +1485,7 @@ static int uprobe_dispatcher(struct upro
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb;
- 	int dsize, esize;
-+	unsigned int flags;
- 	int ret = 0;
++DEFINE_FREE(put_task, struct task_struct *, if (_T) put_task_struct(_T))
++
+ static inline void put_task_struct_many(struct task_struct *t, int nr)
+ {
+ 	if (refcount_sub_and_test(nr, &t->usage))
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -17,6 +17,7 @@
+ #include <linux/types.h>
+ #include <linux/workqueue.h>
+ #include <linux/percpu-refcount.h>
++#include <linux/cleanup.h>
  
  
-@@ -1505,11 +1506,12 @@ static int uprobe_dispatcher(struct upro
- 	ucb = uprobe_buffer_get();
- 	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
+ /*
+@@ -186,6 +187,8 @@ void kfree(const void *objp);
+ void kfree_sensitive(const void *objp);
+ size_t __ksize(const void *objp);
  
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		ret |= uprobe_trace_func(tu, regs, ucb, dsize);
++DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
++
+ /**
+  * ksize - Report actual allocation size of associated object
+  *
+--- a/include/linux/spinlock.h
++++ b/include/linux/spinlock.h
+@@ -61,6 +61,7 @@
+ #include <linux/stringify.h>
+ #include <linux/bottom_half.h>
+ #include <linux/lockdep.h>
++#include <linux/cleanup.h>
+ #include <asm/barrier.h>
+ #include <asm/mmiowb.h>
  
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret |= uprobe_perf_func(tu, regs, ucb, dsize);
+@@ -506,4 +507,35 @@ int __alloc_bucket_spinlocks(spinlock_t
+ 
+ void free_bucket_spinlocks(spinlock_t *locks);
+ 
++DEFINE_LOCK_GUARD_1(raw_spinlock, raw_spinlock_t,
++		    raw_spin_lock(_T->lock),
++		    raw_spin_unlock(_T->lock))
++
++DEFINE_LOCK_GUARD_1(raw_spinlock_nested, raw_spinlock_t,
++		    raw_spin_lock_nested(_T->lock, SINGLE_DEPTH_NESTING),
++		    raw_spin_unlock(_T->lock))
++
++DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
++		    raw_spin_lock_irq(_T->lock),
++		    raw_spin_unlock_irq(_T->lock))
++
++DEFINE_LOCK_GUARD_1(raw_spinlock_irqsave, raw_spinlock_t,
++		    raw_spin_lock_irqsave(_T->lock, _T->flags),
++		    raw_spin_unlock_irqrestore(_T->lock, _T->flags),
++		    unsigned long flags)
++
++DEFINE_LOCK_GUARD_1(spinlock, spinlock_t,
++		    spin_lock(_T->lock),
++		    spin_unlock(_T->lock))
++
++DEFINE_LOCK_GUARD_1(spinlock_irq, spinlock_t,
++		    spin_lock_irq(_T->lock),
++		    spin_unlock_irq(_T->lock))
++
++DEFINE_LOCK_GUARD_1(spinlock_irqsave, spinlock_t,
++		    spin_lock_irqsave(_T->lock, _T->flags),
++		    spin_unlock_irqrestore(_T->lock, _T->flags),
++		    unsigned long flags)
++
++#undef __LINUX_INSIDE_SPINLOCK_H
+ #endif /* __LINUX_SPINLOCK_H */
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -211,4 +211,9 @@ static inline void smp_mb__after_srcu_re
+ 	/* __srcu_read_unlock has smp_mb() internally so nothing to do here. */
+ }
+ 
++DEFINE_LOCK_GUARD_1(srcu, struct srcu_struct,
++		    _T->idx = srcu_read_lock(_T->lock),
++		    srcu_read_unlock(_T->lock, _T->idx),
++		    int idx)
++
  #endif
- 	uprobe_buffer_put(ucb);
-@@ -1523,6 +1525,7 @@ static int uretprobe_dispatcher(struct u
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb;
- 	int dsize, esize;
-+	unsigned int flags;
- 
- 	tu = container_of(con, struct trace_uprobe, consumer);
- 
-@@ -1540,11 +1543,12 @@ static int uretprobe_dispatcher(struct u
- 	ucb = uprobe_buffer_get();
- 	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
- 
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		uretprobe_trace_func(tu, func, regs, ucb, dsize);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		uretprobe_perf_func(tu, func, regs, ucb, dsize);
- #endif
- 	uprobe_buffer_put(ucb);
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -4895,7 +4895,7 @@ sub process {
+ 				if|for|while|switch|return|case|
+ 				volatile|__volatile__|
+ 				__attribute__|format|__extension__|
+-				asm|__asm__)$/x)
++				asm|__asm__|scoped_guard)$/x)
+ 			{
+ 			# cpp #define statements have non-optional spaces, ie
+ 			# if there is a space between the name and the open
 
 
 
