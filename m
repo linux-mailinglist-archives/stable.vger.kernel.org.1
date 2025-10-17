@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-186805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383C1BE9A93
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F9ABE9FC9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D8BFC35D678
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D34561A636A7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA8332C946;
-	Fri, 17 Oct 2025 15:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3FB393DCB;
+	Fri, 17 Oct 2025 15:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH/qiJE1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHnkF0yx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF933370E2;
-	Fri, 17 Oct 2025 15:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A44B2745E;
+	Fri, 17 Oct 2025 15:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714287; cv=none; b=YQrEfWSRZhewWECtZSFa0w7jMmG9axD31Ynm4jo26rqXgi9SrUiCAmP+Yp6N8zKQJTqezX7kxGR6PaK2OHwA6KysiKzrScSUPZ6m+VKjvrfb5DZXroINisbK0LRBq5Eqb7eOey6ahIPOwoLJ3/JyaA6e94mZBI3mBJfPZ25y9SA=
+	t=1760715190; cv=none; b=RICNOFv6ES2rWPJHTsJQt3M6vkCX4kC6iWCiPdWf/XnvQ8FMWGs/zPFVIn8Zqp40Mn4rdXygTr6qdt49GZ8DcJr+2Ise9RPiy9rcuthMiN0vhKoYYQdeCm0O35vwdrQVyHSa0lMG0XI+uwIvg0kM6e4rNZ3Spu/SIodWDxsLHGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714287; c=relaxed/simple;
-	bh=GzWurK5W9ttN1tBguc87W+9UCKiXWOGMDvXFJDUwbMs=;
+	s=arc-20240116; t=1760715190; c=relaxed/simple;
+	bh=iu8fcFo2tPu44R+hm7aNJFVNMhne7iClZZCj73upYVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aTOAHWC2Wc4VtKUJ0Wfapt6/8L4eTy0ry6s7Nr3mRFRQmiO4bc98Nd7tff/3HcI38MnkOAEyEnOl7T7qeUAMZfbkQIlRgOze0Ujc+UA0JY5ymjLfuNtIdwmtVSvG8X29mu+kntIilCxg/ZXlyjjqOUjZqs9ZEUhLKrgJMtQ/Qzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH/qiJE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E896C4CEFE;
-	Fri, 17 Oct 2025 15:18:07 +0000 (UTC)
+	 MIME-Version; b=sagcU+UB73k+PjdkukRQ3vaDWQ9yWcYAAQE1kb9d3kiBpVnDDP1iysQa9dwzVu4riuDJsY+/ZgaBdg2bFK1oarnuOeCmuF0xyE10nGUj3comNAlBG/sn6yIdWFKHxfJ5OPSVApinLWGP7qaZcvACctIpJupACF2shoqYQPfwypQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHnkF0yx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14015C4CEE7;
+	Fri, 17 Oct 2025 15:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714287;
-	bh=GzWurK5W9ttN1tBguc87W+9UCKiXWOGMDvXFJDUwbMs=;
+	s=korg; t=1760715190;
+	bh=iu8fcFo2tPu44R+hm7aNJFVNMhne7iClZZCj73upYVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bH/qiJE1HOu5Df0V+2grXHCEiQoT0pBDwmP6k5PbnfZ7CLcH3T+hC8KeFmESIJxVr
-	 s8VVtoNa7H1IiZyrqjD8L6b93euzfigYfmmdmWF4IgTU6+lx3M+fxHBR1youMG1ZQg
-	 MUm9y6frlvxAzOHT4LM0qytnNx/OFJrEnOXXRF/c=
+	b=AHnkF0yxAKIR74FmHMwnhYITQrm0V9qoFgFt4D+ghrnfe8txlbmLtstY1S7szMk8B
+	 fFeRp43gsmZXLxE5Nnbw5YWi+e8r9UxMv9UfXquMX/ndpHsMa0uH4NV2g+PTmqO9B0
+	 yR5MU3XD311gAiVh1M+ImoCJ8Yf7lhLRTcu8YiyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yusuke Suzuki <yusuke.suzuki@isovalent.com>,
-	Julian Wiedmann <jwi@isovalent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jordan Rife <jrife@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Vincent Minet <v.minet@criteo.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/277] bpf: Fix metadata_dst leak __bpf_redirect_neigh_v{4,6}
+Subject: [PATCH 6.17 097/371] perf tools: Fix arm64 libjvmti build by generating unistd_64.h
 Date: Fri, 17 Oct 2025 16:51:12 +0200
-Message-ID: <20251017145149.516895036@linuxfoundation.org>
+Message-ID: <20251017145205.451062252@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,66 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Vincent Minet <v.minet@criteo.com>
 
-[ Upstream commit 23f3770e1a53e6c7a553135011f547209e141e72 ]
+[ Upstream commit f3b601f900902ab80902c44f820a8985384ac021 ]
 
-Cilium has a BPF egress gateway feature which forces outgoing K8s Pod
-traffic to pass through dedicated egress gateways which then SNAT the
-traffic in order to interact with stable IPs outside the cluster.
+Since commit 22f72088ffe6 ("tools headers: Update the syscall table with
+the kernel sources") the arm64 syscall header is generated at build
+time. Later, commit bfb713ea53c7 ("perf tools: Fix arm64 build by
+generating unistd_64.h") added a dependency to libperf to guarantee that
+this header was created before building libperf or perf itself.
 
-The traffic is directed to the gateway via vxlan tunnel in collect md
-mode. A recent BPF change utilized the bpf_redirect_neigh() helper to
-forward packets after the arrival and decap on vxlan, which turned out
-over time that the kmalloc-256 slab usage in kernel was ever-increasing.
+However, libjvmti also requires this header but does not depend on
+libperf, leading to build failures such as:
 
-The issue was that vxlan allocates the metadata_dst object and attaches
-it through a fake dst entry to the skb. The latter was never released
-though given bpf_redirect_neigh() was merely setting the new dst entry
-via skb_dst_set() without dropping an existing one first.
+  In file included from /usr/include/sys/syscall.h:24,
+                   from /usr/include/syscall.h:1,
+                   from jvmti/jvmti_agent.c:36:
+  tools/arch/arm64/include/uapi/asm/unistd.h:2:10: fatal error: asm/unistd_64.h: No such file or directory
+      2 | #include <asm/unistd_64.h>
 
-Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
-Reported-by: Yusuke Suzuki <yusuke.suzuki@isovalent.com>
-Reported-by: Julian Wiedmann <jwi@isovalent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jordan Rife <jrife@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jordan Rife <jrife@google.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20251003073418.291171-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fix this by ensuring that libperf is built before libjvmti, so that
+unistd_64.h is always available.
+
+Fixes: 22f72088ffe69a37 ("tools headers: Update the syscall table with the kernel sources")
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Vincent Minet <v.minet@criteo.com>
+Link: https://lore.kernel.org/r/20250922053702.2688374-1-v.minet@criteo.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/Makefile.perf | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index c850e5d6cbd87..fef4d85fee008 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2289,6 +2289,7 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
- 		if (IS_ERR(dst))
- 			goto out_drop;
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index e2150acc2c133..f561025d4085e 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -941,7 +941,7 @@ $(OUTPUT)dlfilters/%.so: $(OUTPUT)dlfilters/%.o
+ ifndef NO_JVMTI
+ LIBJVMTI_IN := $(OUTPUT)jvmti/jvmti-in.o
  
-+		skb_dst_drop(skb);
- 		skb_dst_set(skb, dst);
- 	} else if (nh->nh_family != AF_INET6) {
- 		goto out_drop;
-@@ -2397,6 +2398,7 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
- 			goto out_drop;
- 		}
+-$(LIBJVMTI_IN): FORCE
++$(LIBJVMTI_IN): prepare FORCE
+ 	$(Q)$(MAKE) -f $(srctree)/tools/build/Makefile.build dir=jvmti obj=jvmti
  
-+		skb_dst_drop(skb);
- 		skb_dst_set(skb, &rt->dst);
- 	}
- 
+ $(OUTPUT)$(LIBJVMTI): $(LIBJVMTI_IN)
 -- 
 2.51.0
 
