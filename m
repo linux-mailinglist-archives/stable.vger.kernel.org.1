@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CBB5BE9F1E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:14 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3FFBEA0F2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B5BB6E6BE9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2A27935E7EF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F16632E12D;
-	Fri, 17 Oct 2025 15:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CAD1336ED7;
+	Fri, 17 Oct 2025 15:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1yvY7Y+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3uzc0FC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478FC33711F;
-	Fri, 17 Oct 2025 15:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D2D336EC9;
+	Fri, 17 Oct 2025 15:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714003; cv=none; b=VE7sj7AHaz6mcIhsfKQlkOU0KtZcs3q9xdS9I89tMo5PZQfRd9QsouwJCfvd8H5LNItgB67Zcme9Fxd+X6yhRbcwowSAHkkZND1sJvDylD/jvW0iLvnEneYJWPDU+WECbSLd9WgIyIhhw0ExqaOQ79slpbo3V5EoXzyF6B3NHiw=
+	t=1760715626; cv=none; b=KqoV39qJt4OBqqLBndxZl+0O2aZRcR/FNFfQKNyb+5DtjoYT9odWpSo57nBpGIDoqgTSXMsz3euLBlJY+/FHg78nR7fokc+GeL/RH6W4DDSgOTR87UcagZahDcsWxlzOnjgQJooMn4LxvUTCicei6xGc5LwGcu/cD80dXeQ1Zc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714003; c=relaxed/simple;
-	bh=Lrq8OgRhUXYOVrIQKEt7kcphc5sJTNBreXhvFRb7WXo=;
+	s=arc-20240116; t=1760715626; c=relaxed/simple;
+	bh=cExiwiU9oTVHmQDa8ORyvpU2/AdSXHbOaDfcjKFHbZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hfy7Vd/ilYVNsf0MygOrFisOtMzoge0ntlB/lhUXtrm5zT/z/J+OMGyvPZpjoMRl/GkFGTAUotATXGicyWPd/Emd5MJJpVyHHkXTI8Brn2jDLmdqIwFBhDr+suy3PJs8BdggbmPrUFWeoXg67WDoJKCCZVGXl5jUXOdU0eUlJWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1yvY7Y+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F52BC4CEE7;
-	Fri, 17 Oct 2025 15:13:22 +0000 (UTC)
+	 MIME-Version; b=Zoq/EG+swvNETALA3/BIEWBsD8Mmapteu0RSYEP2ewocQSDoa0S0IjD7VyWfsYyigjp27khfyp7GKIpnXmjJsJu9Y1Gs1iGxQPVxUVZyigAHa7Sh4PNbYfS0t+A56h2BzFLpiDUAhlTGfQn9hdeUUWoZIyDInSoZwfl+pZwjRnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3uzc0FC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD03C4CEFE;
+	Fri, 17 Oct 2025 15:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714002;
-	bh=Lrq8OgRhUXYOVrIQKEt7kcphc5sJTNBreXhvFRb7WXo=;
+	s=korg; t=1760715626;
+	bh=cExiwiU9oTVHmQDa8ORyvpU2/AdSXHbOaDfcjKFHbZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I1yvY7Y+MYmbrS5jm3ALTNoDChUKiZi7FmIxXWqlVhY6xnnj6hp2EbN84vHjpJKq7
-	 GRKA4x944H0Z3a0gTsSarb5YWUeRoLgkFdAVBeiabTiWpPNRBxQA38ca5zuxciJH5k
-	 QB5+CQnITaYKF/GjZoNdEihnzCMdYxK9s5yQ6u/U=
+	b=d3uzc0FCDmgKjwZJQ9Ei7ARbYtTbfZUG4q+d4RI5N3+o69o7I8JCiTQ6sed7UMf0N
+	 RV1H42a95TXA0TFTOuv7OjZHngSPD4H/CXl1c1NMfKP8v8x/H7kJ/DiXHVEgsaL9Ol
+	 D8pi0Dx1Vw3nQBQGfwSmSskj7FXi04HQrPsL11JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	gaoxiang17 <gaoxiang17@xiaomi.com>,
-	Baoquan He <bhe@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 195/201] pid: Add a judgment for ns null in pid_nr_ns
-Date: Fri, 17 Oct 2025 16:54:16 +0200
-Message-ID: <20251017145141.925137538@linuxfoundation.org>
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Manivannan Sadhasivam <mani@kernel.org>
+Subject: [PATCH 6.17 282/371] PCI: j721e: Fix module autoloading
+Date: Fri, 17 Oct 2025 16:54:17 +0200
+Message-ID: <20251017145212.278335192@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gaoxiang17 <gaoxiang17@xiaomi.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 006568ab4c5ca2309ceb36fa553e390b4aa9c0c7 ]
+commit 9a7f144e18dc5f037d85a0f0d99524a574331098 upstream.
 
-__task_pid_nr_ns
-        ns = task_active_pid_ns(current);
-        pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);
-                if (pid && ns->level <= pid->level) {
+Commit a2790bf81f0f ("PCI: j721e: Add support to build as a loadable
+module") added support to build the driver as a loadable module. However,
+it did not add MODULE_DEVICE_TABLE() which is required for autoloading the
+driver based on device table when it is built as a loadable module.
 
-Sometimes null is returned for task_active_pid_ns. Then it will trigger kernel panic in pid_nr_ns.
+Fix it by adding MODULE_DEVICE_TABLE.
 
-For example:
-	Unable to handle kernel NULL pointer dereference at virtual address 0000000000000058
-	Mem abort info:
-	ESR = 0x0000000096000007
-	EC = 0x25: DABT (current EL), IL = 32 bits
-	SET = 0, FnV = 0
-	EA = 0, S1PTW = 0
-	FSC = 0x07: level 3 translation fault
-	Data abort info:
-	ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
-	CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-	GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-	user pgtable: 4k pages, 39-bit VAs, pgdp=00000002175aa000
-	[0000000000000058] pgd=08000002175ab003, p4d=08000002175ab003, pud=08000002175ab003, pmd=08000002175be003, pte=0000000000000000
-	pstate: 834000c5 (Nzcv daIF +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-	pc : __task_pid_nr_ns+0x74/0xd0
-	lr : __task_pid_nr_ns+0x24/0xd0
-	sp : ffffffc08001bd10
-	x29: ffffffc08001bd10 x28: ffffffd4422b2000 x27: 0000000000000001
-	x26: ffffffd442821168 x25: ffffffd442821000 x24: 00000f89492eab31
-	x23: 00000000000000c0 x22: ffffff806f5693c0 x21: ffffff806f5693c0
-	x20: 0000000000000001 x19: 0000000000000000 x18: 0000000000000000
-	x17: 00000000529c6ef0 x16: 00000000529c6ef0 x15: 00000000023a1adc
-	x14: 0000000000000003 x13: 00000000007ef6d8 x12: 001167c391c78800
-	x11: 00ffffffffffffff x10: 0000000000000000 x9 : 0000000000000001
-	x8 : ffffff80816fa3c0 x7 : 0000000000000000 x6 : 49534d702d535449
-	x5 : ffffffc080c4c2c0 x4 : ffffffd43ee128c8 x3 : ffffffd43ee124dc
-	x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffffff806f5693c0
-	Call trace:
-	__task_pid_nr_ns+0x74/0xd0
-	...
-	__handle_irq_event_percpu+0xd4/0x284
-	handle_irq_event+0x48/0xb0
-	handle_fasteoi_irq+0x160/0x2d8
-	generic_handle_domain_irq+0x44/0x60
-	gic_handle_irq+0x4c/0x114
-	call_on_irq_stack+0x3c/0x74
-	do_interrupt_handler+0x4c/0x84
-	el1_interrupt+0x34/0x58
-	el1h_64_irq_handler+0x18/0x24
-	el1h_64_irq+0x68/0x6c
-	account_kernel_stack+0x60/0x144
-	exit_task_stack_account+0x1c/0x80
-	do_exit+0x7e4/0xaf8
-	...
-	get_signal+0x7bc/0x8d8
-	do_notify_resume+0x128/0x828
-	el0_svc+0x6c/0x70
-	el0t_64_sync_handler+0x68/0xbc
-	el0t_64_sync+0x1a8/0x1ac
-	Code: 35fffe54 911a02a8 f9400108 b4000128 (b9405a69)
-	---[ end trace 0000000000000000 ]---
-	Kernel panic - not syncing: Oops: Fatal exception in interrupt
-
-Signed-off-by: gaoxiang17 <gaoxiang17@xiaomi.com>
-Link: https://lore.kernel.org/20250802022123.3536934-1-gxxa03070307@gmail.com
-Reviewed-by: Baoquan He <bhe@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a2790bf81f0f ("PCI: j721e: Add support to build as a loadable module")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+[mani: reworded description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250901120359.3410774-1-s-vadapalli@ti.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/pid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/cadence/pci-j721e.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/pid.c b/kernel/pid.c
-index 6500ef956f2f8..e57adc00cb779 100644
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -477,7 +477,7 @@ pid_t pid_nr_ns(struct pid *pid, struct pid_namespace *ns)
- 	struct upid *upid;
- 	pid_t nr = 0;
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index 6c93f39d0288..cfca13a4c840 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -440,6 +440,7 @@ static const struct of_device_id of_j721e_pcie_match[] = {
+ 	},
+ 	{},
+ };
++MODULE_DEVICE_TABLE(of, of_j721e_pcie_match);
  
--	if (pid && ns->level <= pid->level) {
-+	if (pid && ns && ns->level <= pid->level) {
- 		upid = &pid->numbers[ns->level];
- 		if (upid->ns == ns)
- 			nr = upid->nr;
+ static int j721e_pcie_probe(struct platform_device *pdev)
+ {
 -- 
 2.51.0
 
