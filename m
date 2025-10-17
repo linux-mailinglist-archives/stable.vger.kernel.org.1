@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-186474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C84BE9727
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:04:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5B5BEA03E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:39:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 007491A66747
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57922742229
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0FE3328E8;
-	Fri, 17 Oct 2025 15:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B8D330333;
+	Fri, 17 Oct 2025 15:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4vMWGp1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYm151Qn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805472F12DC;
-	Fri, 17 Oct 2025 15:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B323E2F12B0;
+	Fri, 17 Oct 2025 15:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713343; cv=none; b=GroFtmFVYDPGy21SJk6odZInweSvIx024ewfhEI0a+Y9GDicaaWQiKN9u5KRlKXG5GXawE9dRF9JuPWrf03L/Yq+SU7qAhIPGFAEfiy5mNNw+Sk/AfMljVQuMEKlSNnHoKhP4Qpbrsjv6ovkL1PiEj8oOQGqMVusbeUNQG1w6Ok=
+	t=1760713854; cv=none; b=rLs3lL3v+n5RDZAW7SDQclZ8ykt4jDcMl2aZ1IJddNnWRWdfNWuNrCDl4U3mrN9Kpo4WpjxfRIGAURI4beo3lorc+nhchfuxhkxOGJN1GOpKXglOSA2LDtxNVbT+6pKN6Lw70urR3cPHaz9VtFtZorZBPlGjyQjDEciCUrrsROY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713343; c=relaxed/simple;
-	bh=eh/QN2iPgnO9fiJsOt8VSzgvowb7gZeJCE5sZRLwNsA=;
+	s=arc-20240116; t=1760713854; c=relaxed/simple;
+	bh=qbTbmOaRuktCsq7mBpIWy2T+r0ue7K2I+QF63H/6+Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FVkHNTu3m579vQjIPLMNutiIVgQJuR1mfgf3ENGwfDlfNcPPDfc3K87tie/cUPkvhAhpHso2T/FgtfOjLV6P2aZ7PHmOjbT3DGxoUCRQSR7qjbp7kIrSwWYR7ccB0gqXOwZFIrYEg7lyKI2fXPu+i67/VRP7ZIgPqxxrytR2wYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4vMWGp1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8385C4CEE7;
-	Fri, 17 Oct 2025 15:02:22 +0000 (UTC)
+	 MIME-Version; b=opkVYvEnjTEKjlhiUkciS9cBjWRzQzRprLkCkc27LJPGiMx/uf+mSSy+mnZOSpr47cZ6KTmzzDrKnnGOIsh7fFbqvuuhgo8whWvot9LorkkV1+4VCeSWzQMwqm1mPa/7pLGD9y65nAdIPE+jrfsF5yNWInrJoWc+Qduf/ain25c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYm151Qn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A60C4CEE7;
+	Fri, 17 Oct 2025 15:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713343;
-	bh=eh/QN2iPgnO9fiJsOt8VSzgvowb7gZeJCE5sZRLwNsA=;
+	s=korg; t=1760713854;
+	bh=qbTbmOaRuktCsq7mBpIWy2T+r0ue7K2I+QF63H/6+Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4vMWGp1H2mW1bn6aK+T1xVpz05md6763r5UJSIHK29ul8cvR8+RnlQIO4beyTC/o
-	 948VqPFKQmLtyzwjjjjzeKKbW6FZKCdIfZinteI2oY8JiL7fjLVNgwKf2e5EEQMC2a
-	 h5kEaV6mCEjj/KsXpt8ULCIszaKvSSr8yj8E9ceo=
+	b=tYm151Qn5/O2fTN2EbwZ97eckgHOwzJVtJeC+c56w/e7PR6DqXiziaGDbRyHYN/Cc
+	 1ET9ksEu8I6299IaGJHY4WBYoV8VZ9PtMdaLpe7I+ns2ybKTzUj5hrBT1ngnnQW6Rj
+	 AaXp5K+L9OIWrGWqtCN/AI2J0tL+EHx9kAZM0DR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -56,12 +56,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Zi Yan <ziy@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 125/168] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH allocations
+Subject: [PATCH 6.6 143/201] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH allocations
 Date: Fri, 17 Oct 2025 16:53:24 +0200
-Message-ID: <20251017145133.628886233@linuxfoundation.org>
+Message-ID: <20251017145139.986882932@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,7 +73,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -136,7 +136,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -4887,7 +4887,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsig
+@@ -3738,7 +3738,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsig
  		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
  			alloc_flags |= ALLOC_NON_BLOCK;
  
