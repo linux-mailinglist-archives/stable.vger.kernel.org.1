@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5CD4BE9E49
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32DBBE9E3A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0DE31893DBF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:29:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D8677442A5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F69E3208;
-	Fri, 17 Oct 2025 15:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01F733711F;
+	Fri, 17 Oct 2025 15:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctFE1gWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+yTd3Yv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456AE1D5CE0;
-	Fri, 17 Oct 2025 15:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9586A3370FE;
+	Fri, 17 Oct 2025 15:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714971; cv=none; b=pBc7+eFGeQAo9dTCj+Xm+WVY652mXWXH92fHeicIx18eTggWmDKZXFUwuvqwTJDWqQfWq3qhT9FxtGq6M+uoEFe8/ecrbqwyVn2oiYIG+Yk3NtnXawuZwyvqJOesk2OupWmnRiERYu1e1kQrsjktfCzFN8Bd4R6dWN03Zl9n+zQ=
+	t=1760714076; cv=none; b=OdcIEzhzdTSTQFFIxzqF/ogVwXRfkH15JMS2x1w0YuDVzs0jVSe/LPFaTAhQytRRIA99AwxDTEtRzX8QuZas4b+wYjqvsWk35StXCGuPztCypc+YiitS7eSLtFNJtS1HxZ6uLMw6T9snq71p5qEktA0J61Z3V4UTZoKD3kCVzyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714971; c=relaxed/simple;
-	bh=DHEUTo8zD25xyxvs/bmG3WKhMmxW6e465rydmOG8cZA=;
+	s=arc-20240116; t=1760714076; c=relaxed/simple;
+	bh=5KdrJOStEEvYcaBJCd8YBKarSJJkSoCExirv0A+Ds+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpj4ldTk4TlhiYbci/O4hJ/ojCudrq94PWHRvVkyYUV1yeOAkhf9x1Qm8Z77nXi+fsheQsTDSsS3cEfzeCXchPdlzfmi8m6rXff7jYSvOmGqjwO3j62u//chH0inDeoJL+UCJowVEsN7bg6Eg2ks66dsYc35VpK/5Ddk2SMOhco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctFE1gWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5E0C113D0;
-	Fri, 17 Oct 2025 15:29:30 +0000 (UTC)
+	 MIME-Version; b=WjoaOe++7mYlZKx0U+Nz5Tkt+YpmeZdQMHXm5Ibj6YNOBaEm0fPvu6VVfbLj0xfHLMNEvNILg6CS9aCPaYWCUzyeo33aHEsKUFDifLVgpTUZae9iPgrtP56HbnziPi/MJTKtjqDE/hWQiBHNi1xHIrZquTLZeLgUnm+7tfUaIk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+yTd3Yv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD7EC116B1;
+	Fri, 17 Oct 2025 15:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714971;
-	bh=DHEUTo8zD25xyxvs/bmG3WKhMmxW6e465rydmOG8cZA=;
+	s=korg; t=1760714076;
+	bh=5KdrJOStEEvYcaBJCd8YBKarSJJkSoCExirv0A+Ds+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctFE1gWFaZWZZ/0ahHJksOF2xf1x0/zKTAYGu8foiJGdXbqtTX3krqKcmEiMFNJj0
-	 aZXRq2wGPTbA5a45hiVqFzTQ71lvg+hXXtde01Y61uVEuImZH/FWJHtBROtcf5qccL
-	 N06u+Q+v1eHeDVs25h58u2rjVkQAArNwg/yU+pHY=
+	b=G+yTd3YvZjkrg37blRmJDXV9Yw7JnaSztaoEg0a/2gujQFGmEcfN59qZb3TIyHX7B
+	 sk5H8ZGxOl8DJ8aZFw20OuB72ibblBVPeWpcbEJ22+QlplDLiYneM+qP8gjDv6ypf9
+	 9vj8UA/J/VTnagh6+nRhowmuE2yJVNxk4EhCZlhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Yuan CHen <chenyuan@kylinos.cn>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 051/371] clk: mediatek: mt8195-infra_ao: Fix parent for infra_ao_hdmi_26m
+Subject: [PATCH 6.12 019/277] clk: renesas: cpg-mssr: Fix memory leak in cpg_mssr_reserved_init()
 Date: Fri, 17 Oct 2025 16:50:26 +0200
-Message-ID: <20251017145203.647730117@linuxfoundation.org>
+Message-ID: <20251017145147.849665107@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Yuan CHen <chenyuan@kylinos.cn>
 
-[ Upstream commit 6c4c26b624790098988c1034541087e3e5ed5bed ]
+[ Upstream commit cc55fc58fc1b7f405003fd2ecf79e74653461f0b ]
 
-The infrastructure gate for the HDMI specific crystal needs the
-top_hdmi_xtal clock to be configured in order to ungate the 26m
-clock to the HDMI IP, and it wouldn't work without.
+In case of krealloc_array() failure, the current error handling just
+returns from the function without freeing the original array.
+Fix this memory leak by freeing the original array.
 
-Reparent the infra_ao_hdmi_26m clock to top_hdmi_xtal to fix that.
-
-Fixes: e2edf59dec0b ("clk: mediatek: Add MT8195 infrastructure clock support")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 6aa1754764901668 ("clk: renesas: cpg-mssr: Ignore all clocks assigned to non-Linux system")
+Signed-off-by: Yuan CHen <chenyuan@kylinos.cn>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250908012810.4767-1-chenyuan_fl@163.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt8195-infra_ao.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/renesas/renesas-cpg-mssr.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt8195-infra_ao.c b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-index bb648a88e43af..ad47fdb234607 100644
---- a/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-+++ b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-@@ -103,7 +103,7 @@ static const struct mtk_gate infra_ao_clks[] = {
- 	GATE_INFRA_AO0(CLK_INFRA_AO_CQ_DMA_FPC, "infra_ao_cq_dma_fpc", "fpc", 28),
- 	GATE_INFRA_AO0(CLK_INFRA_AO_UART5, "infra_ao_uart5", "top_uart", 29),
- 	/* INFRA_AO1 */
--	GATE_INFRA_AO1(CLK_INFRA_AO_HDMI_26M, "infra_ao_hdmi_26m", "clk26m", 0),
-+	GATE_INFRA_AO1(CLK_INFRA_AO_HDMI_26M, "infra_ao_hdmi_26m", "top_hdmi_xtal", 0),
- 	GATE_INFRA_AO1(CLK_INFRA_AO_SPI0, "infra_ao_spi0", "top_spi", 1),
- 	GATE_INFRA_AO1(CLK_INFRA_AO_MSDC0, "infra_ao_msdc0", "top_msdc50_0_hclk", 2),
- 	GATE_INFRA_AO1(CLK_INFRA_AO_MSDC1, "infra_ao_msdc1", "top_axi", 4),
+diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
+index 0f27c33192e10..112ed81f648ee 100644
+--- a/drivers/clk/renesas/renesas-cpg-mssr.c
++++ b/drivers/clk/renesas/renesas-cpg-mssr.c
+@@ -1012,6 +1012,7 @@ static int __init cpg_mssr_reserved_init(struct cpg_mssr_priv *priv,
+ 
+ 		of_for_each_phandle(&it, rc, node, "clocks", "#clock-cells", -1) {
+ 			int idx;
++			unsigned int *new_ids;
+ 
+ 			if (it.node != priv->np)
+ 				continue;
+@@ -1022,11 +1023,13 @@ static int __init cpg_mssr_reserved_init(struct cpg_mssr_priv *priv,
+ 			if (args[0] != CPG_MOD)
+ 				continue;
+ 
+-			ids = krealloc_array(ids, (num + 1), sizeof(*ids), GFP_KERNEL);
+-			if (!ids) {
++			new_ids = krealloc_array(ids, (num + 1), sizeof(*ids), GFP_KERNEL);
++			if (!new_ids) {
+ 				of_node_put(it.node);
++				kfree(ids);
+ 				return -ENOMEM;
+ 			}
++			ids = new_ids;
+ 
+ 			if (priv->reg_layout == CLK_REG_LAYOUT_RZ_A)
+ 				idx = MOD_CLK_PACK_10(args[1]);	/* for DEF_MOD_STB() */
 -- 
 2.51.0
 
