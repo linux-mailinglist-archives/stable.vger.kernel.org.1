@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-187300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303D3BEA117
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:49 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E42BEA098
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6879535E918
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 86A72568F6D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CF3330B26;
-	Fri, 17 Oct 2025 15:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18FE242935;
+	Fri, 17 Oct 2025 15:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFSLxNd2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wi8tAOv5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDFC330B16;
-	Fri, 17 Oct 2025 15:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8A0219A7A;
+	Fri, 17 Oct 2025 15:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715686; cv=none; b=hFFsYtJJzZC5oGl8Hw4zCHTxY0X8OcRKkjiv6l7VtqoKSgtSA16bEZtEkN2AZRxkOggeS8rkXlA5mGJIxeMzGZ/jo0ChkR8radHAZDM5D2t8LwdjALU/24rfA0pJFejKqC0NsC2oxkbye+KPgpjq9kVC9FLqQCIK/AHvChqNjww=
+	t=1760714799; cv=none; b=RopvEySNs/qk56s3Erh8W+6fy/u8oLxxdOtihswAnVPjCyyzVnsIV/m/ZpuRFnEFgH2aauYAw5YxRtUHYWlpF6ceoU138vaoaePzbXm7c0CF+sPsWb5gsBw0MWPpVhU274iWlloE//sQ80u2jhWrAdESDbVeuUpZtNXNt6b88kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715686; c=relaxed/simple;
-	bh=HgF5lQYWif1C0P2RHRtCoMMAlW6Cncxen6hEqYa09Hg=;
+	s=arc-20240116; t=1760714799; c=relaxed/simple;
+	bh=3SggVsFRTWoeUwNrpk3dydAfc2Oi1zorwmQxAmLmofA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VgAAyx87mtcWhUm9nqoNstccfStCiqZkuB7bX339hnFKFpQjH4lbdXemHd2Q6Inuq0tYINohrt42nhh/M1HD8pTaO7UTHvsDXxgEPqAk1NKypWa7BSio4zFWcfut4RCyNn4XtyRkoJeiB34j+1Hfu45/K7CKbF1aaobjmOo2ldM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFSLxNd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5E6C4CEFE;
-	Fri, 17 Oct 2025 15:41:25 +0000 (UTC)
+	 MIME-Version; b=AudAdgj6KElKHXYDNsVMFcLAQBcGoT4JShlJkDC5BACtjVI7q9uFPjXGtLxK18baCSQHDFnmjVCUN/eNDjbhHhedewYU/j4jFV0v1ZtUJxoaI77TAQJKRakDWCXjisOzHz+RU+XjgI4G8ljUsQnjHhE0U84oJ2qR7TE8o57Ip2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wi8tAOv5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D0CC4CEE7;
+	Fri, 17 Oct 2025 15:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715686;
-	bh=HgF5lQYWif1C0P2RHRtCoMMAlW6Cncxen6hEqYa09Hg=;
+	s=korg; t=1760714799;
+	bh=3SggVsFRTWoeUwNrpk3dydAfc2Oi1zorwmQxAmLmofA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RFSLxNd2iRKRUI6j6Xgd94NVqV76mVQptU4zQjBsGzHF2mk7soKz2tBvkG7j42+WM
-	 Q2yy+jQnaBjMHChVi9UZ8Vup27GmoexHVXVx7KYjSykB36XBlhNj7DzwF0qy3XsstW
-	 2Dof2gHanxNWIJSir/33hFrWiGYKPFvXHQscvIkQ=
+	b=wi8tAOv5cWCfI3z8Lo6VwnDMtEBabfGo6kwJN3NkCxETruRZYnvruyjAO1BQpYZ+s
+	 lJ+4qHi+p98OKMWUwdKARtPU9rLk8FztZAJHecHOsYWQz8tRcuz2LVEQ86l6k2ho/E
+	 zeJ2iutc0zq11Zl6poexRfedC5URYgYpD66mrFBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 301/371] mptcp: pm: in-kernel: usable client side with C-flag
-Date: Fri, 17 Oct 2025 16:54:36 +0200
-Message-ID: <20251017145212.965197021@linuxfoundation.org>
+	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Nicolas Pitre <nico@fluxnic.net>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 270/277] cramfs: Verify inode mode when loading from disk
+Date: Fri, 17 Oct 2025 16:54:37 +0200
+Message-ID: <20251017145157.018683701@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,169 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 4b1ff850e0c1aacc23e923ed22989b827b9808f9 upstream.
+[ Upstream commit 7f9d34b0a7cb93d678ee7207f0634dbf79e47fe5 ]
 
-When servers set the C-flag in their MP_CAPABLE to tell clients not to
-create subflows to the initial address and port, clients will likely not
-use their other endpoints. That's because the in-kernel path-manager
-uses the 'subflow' endpoints to create subflows only to the initial
-address and port.
+The inode mode loaded from corrupted disk can be invalid. Do like what
+commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
+does.
 
-If the limits have not been modified to accept ADD_ADDR, the client
-doesn't try to establish new subflows. If the limits accept ADD_ADDR,
-the routing routes will be used to select the source IP.
-
-The C-flag is typically set when the server is operating behind a legacy
-Layer 4 load balancer, or using anycast IP address. Clients having their
-different 'subflow' endpoints setup, don't end up creating multiple
-subflows as expected, and causing some deployment issues.
-
-A special case is then added here: when servers set the C-flag in the
-MPC and directly sends an ADD_ADDR, this single ADD_ADDR is accepted.
-The 'subflows' endpoints will then be used with this new remote IP and
-port. This exception is only allowed when the ADD_ADDR is sent
-immediately after the 3WHS, and makes the client switching to the 'fully
-established' mode. After that, 'select_local_address()' will not be able
-to find any subflows, because 'id_avail_bitmap' will be filled in
-mptcp_pm_create_subflow_or_signal_addr(), when switching to 'fully
-established' mode.
-
-Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/536
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250925-net-next-mptcp-c-flag-laminar-v1-1-ad126cc47c6b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/429b3ef1-13de-4310-9a8e-c2dc9a36234a@I-love.SAKURA.ne.jp
+Acked-by: Nicolas Pitre <nico@fluxnic.net>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm.c        |    7 +++++--
- net/mptcp/pm_kernel.c |   50 +++++++++++++++++++++++++++++++++++++++++++++++++-
- net/mptcp/protocol.h  |    8 ++++++++
- 3 files changed, 62 insertions(+), 3 deletions(-)
+ fs/cramfs/inode.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -617,9 +617,12 @@ void mptcp_pm_add_addr_received(const st
- 		} else {
- 			__MPTCP_INC_STATS(sock_net((struct sock *)msk), MPTCP_MIB_ADDADDRDROP);
- 		}
--	/* id0 should not have a different address */
-+	/* - id0 should not have a different address
-+	 * - special case for C-flag: linked to fill_local_addresses_vec()
-+	 */
- 	} else if ((addr->id == 0 && !mptcp_pm_is_init_remote_addr(msk, addr)) ||
--		   (addr->id > 0 && !READ_ONCE(pm->accept_addr))) {
-+		   (addr->id > 0 && !READ_ONCE(pm->accept_addr) &&
-+		    !mptcp_pm_add_addr_c_flag_case(msk))) {
- 		mptcp_pm_announce_addr(msk, addr, true);
- 		mptcp_pm_add_addr_send_ack(msk);
- 	} else if (mptcp_pm_schedule_work(msk, MPTCP_PM_ADD_ADDR_RECEIVED)) {
---- a/net/mptcp/pm_kernel.c
-+++ b/net/mptcp/pm_kernel.c
-@@ -389,10 +389,12 @@ static unsigned int fill_local_addresses
- 	struct mptcp_addr_info mpc_addr;
- 	struct pm_nl_pernet *pernet;
- 	unsigned int subflows_max;
-+	bool c_flag_case;
- 	int i = 0;
- 
- 	pernet = pm_nl_get_pernet_from_msk(msk);
- 	subflows_max = mptcp_pm_get_subflows_max(msk);
-+	c_flag_case = remote->id && mptcp_pm_add_addr_c_flag_case(msk);
- 
- 	mptcp_local_address((struct sock_common *)msk, &mpc_addr);
- 
-@@ -405,12 +407,27 @@ static unsigned int fill_local_addresses
- 			continue;
- 
- 		if (msk->pm.subflows < subflows_max) {
-+			bool is_id0;
-+
- 			locals[i].addr = entry->addr;
- 			locals[i].flags = entry->flags;
- 			locals[i].ifindex = entry->ifindex;
- 
-+			is_id0 = mptcp_addresses_equal(&locals[i].addr,
-+						       &mpc_addr,
-+						       locals[i].addr.port);
-+
-+			if (c_flag_case &&
-+			    (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW)) {
-+				__clear_bit(locals[i].addr.id,
-+					    msk->pm.id_avail_bitmap);
-+
-+				if (!is_id0)
-+					msk->pm.local_addr_used++;
-+			}
-+
- 			/* Special case for ID0: set the correct ID */
--			if (mptcp_addresses_equal(&locals[i].addr, &mpc_addr, locals[i].addr.port))
-+			if (is_id0)
- 				locals[i].addr.id = 0;
- 
- 			msk->pm.subflows++;
-@@ -419,6 +436,37 @@ static unsigned int fill_local_addresses
+diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
+index b84d1747a0205..e7d192f7ab3b4 100644
+--- a/fs/cramfs/inode.c
++++ b/fs/cramfs/inode.c
+@@ -117,9 +117,18 @@ static struct inode *get_cramfs_inode(struct super_block *sb,
+ 		inode_nohighmem(inode);
+ 		inode->i_data.a_ops = &cramfs_aops;
+ 		break;
+-	default:
++	case S_IFCHR:
++	case S_IFBLK:
++	case S_IFIFO:
++	case S_IFSOCK:
+ 		init_special_inode(inode, cramfs_inode->mode,
+ 				old_decode_dev(cramfs_inode->size));
++		break;
++	default:
++		printk(KERN_DEBUG "CRAMFS: Invalid file type 0%04o for inode %lu.\n",
++		       inode->i_mode, inode->i_ino);
++		iget_failed(inode);
++		return ERR_PTR(-EIO);
  	}
- 	rcu_read_unlock();
  
-+	/* Special case: peer sets the C flag, accept one ADD_ADDR if default
-+	 * limits are used -- accepting no ADD_ADDR -- and use subflow endpoints
-+	 */
-+	if (!i && c_flag_case) {
-+		unsigned int local_addr_max = mptcp_pm_get_local_addr_max(msk);
-+
-+		while (msk->pm.local_addr_used < local_addr_max &&
-+		       msk->pm.subflows < subflows_max) {
-+			struct mptcp_pm_local *local = &locals[i];
-+
-+			if (!select_local_address(pernet, msk, local))
-+				break;
-+
-+			__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
-+
-+			if (!mptcp_pm_addr_families_match(sk, &local->addr,
-+							  remote))
-+				continue;
-+
-+			if (mptcp_addresses_equal(&local->addr, &mpc_addr,
-+						  local->addr.port))
-+				continue;
-+
-+			msk->pm.local_addr_used++;
-+			msk->pm.subflows++;
-+			i++;
-+		}
-+
-+		return i;
-+	}
-+
- 	/* If the array is empty, fill in the single
- 	 * 'IPADDRANY' local address
- 	 */
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1201,6 +1201,14 @@ static inline void mptcp_pm_close_subflo
- 	spin_unlock_bh(&msk->pm.lock);
- }
- 
-+static inline bool mptcp_pm_add_addr_c_flag_case(struct mptcp_sock *msk)
-+{
-+	return READ_ONCE(msk->pm.remote_deny_join_id0) &&
-+	       msk->pm.local_addr_used == 0 &&
-+	       mptcp_pm_get_add_addr_accept_max(msk) == 0 &&
-+	       msk->pm.subflows < mptcp_pm_get_subflows_max(msk);
-+}
-+
- void mptcp_sockopt_sync_locked(struct mptcp_sock *msk, struct sock *ssk);
- 
- static inline struct mptcp_ext *mptcp_get_ext(const struct sk_buff *skb)
+ 	inode->i_mode = cramfs_inode->mode;
+-- 
+2.51.0
+
 
 
 
