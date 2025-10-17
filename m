@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E7FBE9608
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:39 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FF1BEA26C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5A911883474
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DB4D85A3A6F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95F222A7E4;
-	Fri, 17 Oct 2025 14:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7E932E151;
+	Fri, 17 Oct 2025 15:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN/9ph89"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVR2tlrR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A0C3370F6;
-	Fri, 17 Oct 2025 14:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896031946C8;
+	Fri, 17 Oct 2025 15:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713057; cv=none; b=AXCG+K441oGnnU3Z2ABh5roZ6WPcTlZPZoxXiK4z88O0eKISzaiNLGbpkOdGkvqCvd50lAiJQcA4uKBuuvVPawUULDqJLJwimp+fnYL1mieHoTGB5rf5nCfRJoO8PY48RGymc+BJOpiX0B6LF7chFgDpwikmamtmu1FZFni11E4=
+	t=1760715213; cv=none; b=KxvNgKhgfro9cplE5rHAmxozWRF3rh1oIAKDiEqfzY3rxId6XuQz8CeIwpQlArRAjtvhESfJ2RocXwHtGStBgOzo/Mg0Iyr16eb26dYea2B7ymkr1x0sjmtx9BIto4sffWbMqzXfyXfOtDMFjcD73ZTXaWd4lWhHlVpN/mT7UAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713057; c=relaxed/simple;
-	bh=ccxUa492ijo0pcI1M0muyHOHsNnBCm7tiktwjC3KqrQ=;
+	s=arc-20240116; t=1760715213; c=relaxed/simple;
+	bh=G6iMDsXhBDGxooQf2Yv3eWrdTaNYsCWoMlajhounTr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExpIiJ9K1CUxLDL9f6oh2AaH6cnUWrxTLa8DZUSaRcS4MMTel/bNmGo4bqoRNVQ/HzRsOnwPhK6KziJR+cjfWNgmShXYBNDgL5diFLPvS73MkHTH5sUNrwenRNERhcQjnlv/Ax333YKEBzxmbT2O9Gjsl9T16xmsMcmKZBMX68Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kN/9ph89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC98CC4CEE7;
-	Fri, 17 Oct 2025 14:57:36 +0000 (UTC)
+	 MIME-Version; b=k9tI3XzzAmF+6Gyqzs8e1uEL41JizW7Tu+CnYZCTlJUD6u91AXhdnontPCKCTTJORLWl9icwIGkKB7R6fZ3HU/5TcBWrMa7MuhvlQ+9gb3SZudZS9aFvv8xzeDcp8l0Ql4iVuALZHLtOAR0c/lsW1JhLssw3Zr/dq6qPElbEZqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVR2tlrR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F89BC4CEE7;
+	Fri, 17 Oct 2025 15:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713057;
-	bh=ccxUa492ijo0pcI1M0muyHOHsNnBCm7tiktwjC3KqrQ=;
+	s=korg; t=1760715213;
+	bh=G6iMDsXhBDGxooQf2Yv3eWrdTaNYsCWoMlajhounTr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kN/9ph89BHcMLLoAahNhI4AQBGd9oHM/e8Wpx74AdZIJZxuR14O76cEMxnLpYb+eV
-	 2SiKGpOaGTuOPDfc4dpbvr3564WekZXxhBczymErYINuq1FpMS5+6LXIaZH5z0ukuy
-	 kEL+FQlocNwS7B2l4mDGQhSLj5vwrMarKTD8o0CM=
+	b=oVR2tlrRC6Bw+OzetrzsCg54bOtU9qVS7gCx2cG5+reoMD5ZwpPI9hAIDdFmto0SX
+	 9k0siW5o3PbKD/Lstj/AXxgDJQldjD+r5ToZsdqBXaKb9iyTB9eViUFGHr0nIZMAb6
+	 rgNhntVT8oEFI3tKLFz+eoh0jMJk7kyvU2DPnDUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/168] drm/vmwgfx: Fix copy-paste typo in validation
-Date: Fri, 17 Oct 2025 16:51:52 +0200
-Message-ID: <20251017145130.239105722@linuxfoundation.org>
+	Daniel Tang <danielzgtg.opensource@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.17 138/371] ACPI: TAD: Add missing sysfs_remove_group() for ACPI_TAD_RT
+Date: Fri, 17 Oct 2025 16:51:53 +0200
+Message-ID: <20251017145206.925506798@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Daniel Tang <danielzgtg.opensource@gmail.com>
 
-[ Upstream commit 228c5d44dffe8c293cd2d2f0e7ea45e64565b1c4 ]
+commit 4aac453deca0d9c61df18d968f8864c3ae7d3d8d upstream.
 
-'entry' should be 'val' which is the loop iterator.
+Previously, after `rmmod acpi_tad`, `modprobe acpi_tad` would fail
+with this dmesg:
 
-Fixes: 9e931f2e0970 ("drm/vmwgfx: Refactor resource validation hashtable to use linux/hashtable implementation.")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://lore.kernel.org/r/20250926195427.1405237-2-ian.forbes@broadcom.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sysfs: cannot create duplicate filename '/devices/platform/ACPI000E:00/time'
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x6c/0x90
+ dump_stack+0x10/0x20
+ sysfs_warn_dup+0x8b/0xa0
+ sysfs_add_file_mode_ns+0x122/0x130
+ internal_create_group+0x1dd/0x4c0
+ sysfs_create_group+0x13/0x20
+ acpi_tad_probe+0x147/0x1f0 [acpi_tad]
+ platform_probe+0x42/0xb0
+ </TASK>
+acpi-tad ACPI000E:00: probe with driver acpi-tad failed with error -17
+
+Fixes: 3230b2b3c1ab ("ACPI: TAD: Add low-level support for real time capability")
+Signed-off-by: Daniel Tang <danielzgtg.opensource@gmail.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://patch.msgid.link/2881298.hMirdbgypa@daniel-desktop3
+Cc: 5.2+ <stable@vger.kernel.org> # 5.2+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_validation.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpi_tad.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
-index d37cf22e9caeb..27f33297fcf3e 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
-@@ -692,7 +692,7 @@ void vmw_validation_drop_ht(struct vmw_validation_context *ctx)
- 		hash_del_rcu(&val->hash.head);
+--- a/drivers/acpi/acpi_tad.c
++++ b/drivers/acpi/acpi_tad.c
+@@ -565,6 +565,9 @@ static void acpi_tad_remove(struct platf
  
- 	list_for_each_entry(val, &ctx->resource_ctx_list, head)
--		hash_del_rcu(&entry->hash.head);
-+		hash_del_rcu(&val->hash.head);
+ 	pm_runtime_get_sync(dev);
  
- 	ctx->sw_context = NULL;
- }
--- 
-2.51.0
-
++	if (dd->capabilities & ACPI_TAD_RT)
++		sysfs_remove_group(&dev->kobj, &acpi_tad_time_attr_group);
++
+ 	if (dd->capabilities & ACPI_TAD_DC_WAKE)
+ 		sysfs_remove_group(&dev->kobj, &acpi_tad_dc_attr_group);
+ 
 
 
 
