@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-186648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DBD4BE992C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67777BEA13A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD991890FCB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5821189D321
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1775F335074;
-	Fri, 17 Oct 2025 15:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2576335089;
+	Fri, 17 Oct 2025 15:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ht0748f3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfUPEXHq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EA032E14A;
-	Fri, 17 Oct 2025 15:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A021D335071;
+	Fri, 17 Oct 2025 15:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713837; cv=none; b=DCMiFUfeBg38XrWdB0cDo0btSLcrdvRSkYdCSUuv47dvh+6/3TU0QdVoW+5pKo4K82ueHwIANiE9Ja6u4h6LbuSlHxwQhat/PuLieZe2cfoF/Ydb/6AvTfnGl8U1bGjG7R2w487pvA8g8Wtb4UQQrkm8wT6K8vanxkOhFYGH96g=
+	t=1760715458; cv=none; b=nrDfjByMgcNrJXGedtH29NGBuKhecl71rfwF0flonGgS4gk/7DRB/NenPS6mr5dHankTTugt7NHyVSEgtq0jMVqXtVaZk15UhCccxgHsbz+/79IBig0vQA7QldOt/3pz+wrF4ADXC2javyngdSCmA6ROxJV+H7HGvS7nVYFNUlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713837; c=relaxed/simple;
-	bh=e/zkTX6hzZ4OTXfgpCQEbTaDoHd/6jg22I4H49c4VAI=;
+	s=arc-20240116; t=1760715458; c=relaxed/simple;
+	bh=dDhnwPrLtXDkzqI0KFFCQOzleH4MfejH4WvjucdcpRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ii6pXviHH/gRwiAIbjEDZ+ZMrOYbQDBfct7hkktjGWAUEsADpBZf4ZpwJztvzAiwc2aTHa3Qkzk77oBvJ3h846xHcK4nY79O/biHSkq33WoCr9UKySJCZ0kYIftE/b1cqxybf2qmypcyI0ZEy9qefkXj6B3/9sCuk9FF2lZxC40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ht0748f3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAAEC4CEE7;
-	Fri, 17 Oct 2025 15:10:37 +0000 (UTC)
+	 MIME-Version; b=jPyef8q2J2KkdYrUENRHqVotHO0LqxO2XGvyH6XBc3wLzX9/4k8K2O57Sm3zvl4lcEdqRALXOOpPFpE/8B98SbZF6G66B2x1/hgxNXerXuMIMUWYZW1w7YNvk9b8agPlfpR2NCEgFYGVL10sc/RG4dsIWysNasM7s+biOYhFBNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfUPEXHq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25914C4CEFE;
+	Fri, 17 Oct 2025 15:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713837;
-	bh=e/zkTX6hzZ4OTXfgpCQEbTaDoHd/6jg22I4H49c4VAI=;
+	s=korg; t=1760715458;
+	bh=dDhnwPrLtXDkzqI0KFFCQOzleH4MfejH4WvjucdcpRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ht0748f3CkGJ4O41lBCRVp+1VI0khLz65qhLndHvZ1lpd66iMuLaprWeCiKC/X69x
-	 8IjzzM4GSYRR/zIQrKGhkOjoqURTadnhQgLk9Y1XzeJuuQHxarTJZbu6I+EaRDzTn8
-	 /Qh1WFvZg0Qg0jVM0tJGbB2SZzKBfAYLpO20FCWU=
+	b=JfUPEXHqzOFmiLveJ6DtN62jCVdfWTMHJEdBS6K7yZrNR4O0Ohrw9Mp044gV4f3cM
+	 wGq4hrcHWgdQXM+70EfBVVpiEgjHf422LJ1q5BORkumdJxPqRAvnAs7C67DbARMSjI
+	 jVLFHpjDI/ymmPAotXAJTOesBW7vu1q9qYw60l48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Santhosh Kumar K <s-k6@ti.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 137/201] spi: cadence-quadspi: Flush posted register writes before DAC access
+	Sean Anderson <sean.anderson@linux.dev>,
+	"OGriofa, Conall" <conall.ogriofa@amd.com>,
+	"Erim, Salih" <Salih.Erim@amd.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 223/371] iio: xilinx-ams: Fix AMS_ALARM_THR_DIRECT_MASK
 Date: Fri, 17 Oct 2025 16:53:18 +0200
-Message-ID: <20251017145139.769274369@linuxfoundation.org>
+Message-ID: <20251017145210.154592183@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratyush Yadav <pratyush@kernel.org>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-commit 1ad55767e77a853c98752ed1e33b68049a243bd7 upstream.
+commit 1315cc2dbd5034f566e20ddce4d675cb9e6d4ddd upstream.
 
-cqspi_read_setup() and cqspi_write_setup() program the address width as
-the last step in the setup. This is likely to be immediately followed by
-a DAC region read/write. On TI K3 SoCs the DAC region is on a different
-endpoint from the register region. This means that the order of the two
-operations is not guaranteed, and they might be reordered at the
-interconnect level. It is possible that the DAC read/write goes through
-before the address width update goes through. In this situation if the
-previous command used a different address width the OSPI command is sent
-with the wrong number of address bytes, resulting in an invalid command
-and undefined behavior.
+AMS_ALARM_THR_DIRECT_MASK should be bit 0, not bit 1. This would cause
+hysteresis to be enabled with a lower threshold of -28C. The temperature
+alarm would never deassert even if the temperature dropped below the
+upper threshold.
 
-Read back the size register to make sure the write gets flushed before
-accessing the DAC region.
-
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-CC: stable@vger.kernel.org
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
-Message-ID: <20250905185958.3575037-3-s-k6@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: O'Griofa, Conall <conall.ogriofa@amd.com>
+Tested-by: Erim, Salih <Salih.Erim@amd.com>
+Acked-by: Erim, Salih <Salih.Erim@amd.com>
+Link: https://patch.msgid.link/20250715003058.2035656-1-sean.anderson@linux.dev
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/adc/xilinx-ams.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -687,6 +687,7 @@ static int cqspi_read_setup(struct cqspi
- 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
- 	reg |= (op->addr.nbytes - 1);
- 	writel(reg, reg_base + CQSPI_REG_SIZE);
-+	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
- 	return 0;
- }
+--- a/drivers/iio/adc/xilinx-ams.c
++++ b/drivers/iio/adc/xilinx-ams.c
+@@ -118,7 +118,7 @@
+ #define AMS_ALARM_THRESHOLD_OFF_10	0x10
+ #define AMS_ALARM_THRESHOLD_OFF_20	0x20
  
-@@ -1005,6 +1006,7 @@ static int cqspi_write_setup(struct cqsp
- 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
- 	reg |= (op->addr.nbytes - 1);
- 	writel(reg, reg_base + CQSPI_REG_SIZE);
-+	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
- 	return 0;
- }
+-#define AMS_ALARM_THR_DIRECT_MASK	BIT(1)
++#define AMS_ALARM_THR_DIRECT_MASK	BIT(0)
+ #define AMS_ALARM_THR_MIN		0x0000
+ #define AMS_ALARM_THR_MAX		(BIT(16) - 1)
  
 
 
