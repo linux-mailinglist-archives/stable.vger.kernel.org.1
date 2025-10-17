@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E29BE996F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:07 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E904BEA003
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC3801893B2B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4C33535E256
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BEC2264A7;
-	Fri, 17 Oct 2025 15:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448D2330B0E;
+	Fri, 17 Oct 2025 15:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sN+W/ZWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUhCtyxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECA4337110;
-	Fri, 17 Oct 2025 15:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEEF330B06;
+	Fri, 17 Oct 2025 15:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713893; cv=none; b=PmxE6/iQ/Vig+7AC45gEGXDGcqlis0SDIj92ErGu7RbhFyPm4a4PRsW5FqPtbIV7tRQr95pYz3RNOioH3dJdeOSOjm/6VFWSQHo/X4ZgZZbz1yORCMsopruJcebfzBywOp8LhGwiYG400ausI3QKwaXjK07+bpFmCK1FjX9ZSBQ=
+	t=1760715416; cv=none; b=mah+YKN2QRNG+J680gSPjic/WRyldHAjtWk+Nl4M7nGEih0pVufLb4lg8D7KJrR1m9sphwzrLP1qwbKwUNoJKAFOqXqBYjzyRuX0EMymKnvaS9wZRiegmzoRyvcZ1j5Acp7MXBmoYCdy0/YQ10qMvcmyhfyxWFlMcnftKir1Ihw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713893; c=relaxed/simple;
-	bh=BY4zMQJMCRA4hPztzd98wY8dY8Qqwa/q3Sc5wDNdvXs=;
+	s=arc-20240116; t=1760715416; c=relaxed/simple;
+	bh=oyJO/s+0OiJp3gfCSz2jYeYUupw0/KC2zwcwNwgGL40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSb9Ky93jYZLKFVxgsYepaFj8rXBqgEhmuX1J9oBM36+R8PxjfMKvYMDstX7DHgJijL4aRVSzbOFCVRuM/IC7SvQerIF0Mzjc85mF+Ro/gUD0DL+YnGTJvV31Gs785RDW5e93bBnkLAfsifWea/xoj9d8bCzAZeSclPsBZPKkkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sN+W/ZWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EB1C4CEE7;
-	Fri, 17 Oct 2025 15:11:32 +0000 (UTC)
+	 MIME-Version; b=pEWoOm2ySELJl0ifRBMLyAXOraCTjyl6NyN4Ipk4rttKH9jACJYCq2R2qbUwxzOOWzBLJ+GmoM+ryD5SZoLMQeoLB2wTppQuRrwnnlK1IJJwXpvqNxwSqdDbh8wzULcgBGsvNMekp0aP0EfYoPIk90OgIwcFsemVWZH2LJij2/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUhCtyxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297A2C4CEE7;
+	Fri, 17 Oct 2025 15:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713893;
-	bh=BY4zMQJMCRA4hPztzd98wY8dY8Qqwa/q3Sc5wDNdvXs=;
+	s=korg; t=1760715415;
+	bh=oyJO/s+0OiJp3gfCSz2jYeYUupw0/KC2zwcwNwgGL40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sN+W/ZWfZCo8d/NIlVGPdvgOU/htdpWFIiQgbW83X9zDAGddSOYPjEYQSu24RbqAO
-	 ddLMHfKJaEUwpEMHc70gO8Wb/vmqjLUcF/SoqKRU3bgkR+0v0vI8M6k7IsPlwgcP0a
-	 8o1b7Y20KHekKYxj71zfqWs6qIQM0/68NcrItdVY=
+	b=iUhCtyxMGhcYvU1aSaY4l2xfNDp7CVS+8t9QR3r1ZlLufLJKNAAUSXIYRwF+TVadX
+	 Ay1PuWo9c3nih3Yw4TGa60hYaKZf1u+gVQ16QpQ1vzVT5PJwTwB7e1fiFchgA13kpI
+	 7gYV9hn4hVkVsR2tW9/hYJuIMIAk5E6ZdoaaErPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Esben Haabendal <esben@geanix.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 123/201] rtc: interface: Fix long-standing race when setting alarm
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.17 209/371] crypto: rockchip - Fix dma_unmap_sg() nents value
 Date: Fri, 17 Oct 2025 16:53:04 +0200
-Message-ID: <20251017145139.260103743@linuxfoundation.org>
+Message-ID: <20251017145209.651171108@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 795cda8338eab036013314dbc0b04aae728880ab upstream.
+commit 21140e5caf019e4a24e1ceabcaaa16bd693b393f upstream.
 
-As described in the old comment dating back to
-commit 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
-from 2010, we have been living with a race window when setting alarm
-with an expiry in the near future (i.e. next second).
-With 1 second resolution, it can happen that the second ticks after the
-check for the timer having expired, but before the alarm is actually set.
-When this happen, no alarm IRQ is generated, at least not with some RTC
-chips (isl12022 is an example of this).
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-With UIE RTC timer being implemented on top of alarm irq, being re-armed
-every second, UIE will occasionally fail to work, as an alarm irq lost
-due to this race will stop the re-arming loop.
-
-For now, I have limited the additional expiry check to only be done for
-alarms set to next seconds. I expect it should be good enough, although I
-don't know if we can now for sure that systems with loads could end up
-causing the same problems for alarms set 2 seconds or even longer in the
-future.
-
-I haven't been able to reproduce the problem with this check in place.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Link: https://lore.kernel.org/r/20250516-rtc-uie-irq-fixes-v2-1-3de8e530a39e@geanix.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 57d67c6e8219 ("crypto: rockchip - rework by using crypto_engine")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/interface.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/crypto/rockchip/rk3288_crypto_ahash.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -443,6 +443,29 @@ static int __rtc_set_alarm(struct rtc_de
- 	else
- 		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
+--- a/drivers/crypto/rockchip/rk3288_crypto_ahash.c
++++ b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
+@@ -254,7 +254,7 @@ static void rk_hash_unprepare(struct cry
+ 	struct rk_ahash_rctx *rctx = ahash_request_ctx(areq);
+ 	struct rk_crypto_info *rkc = rctx->dev;
  
-+	/*
-+	 * Check for potential race described above. If the waiting for next
-+	 * second, and the second just ticked since the check above, either
-+	 *
-+	 * 1) It ticked after the alarm was set, and an alarm irq should be
-+	 *    generated.
-+	 *
-+	 * 2) It ticked before the alarm was set, and alarm irq most likely will
-+	 * not be generated.
-+	 *
-+	 * While we cannot easily check for which of these two scenarios we
-+	 * are in, we can return -ETIME to signal that the timer has already
-+	 * expired, which is true in both cases.
-+	 */
-+	if ((scheduled - now) <= 1) {
-+		err = __rtc_read_time(rtc, &tm);
-+		if (err)
-+			return err;
-+		now = rtc_tm_to_time64(&tm);
-+		if (scheduled <= now)
-+			return -ETIME;
-+	}
-+
- 	trace_rtc_set_alarm(rtc_tm_to_time64(&alarm->time), err);
- 	return err;
+-	dma_unmap_sg(rkc->dev, areq->src, rctx->nrsg, DMA_TO_DEVICE);
++	dma_unmap_sg(rkc->dev, areq->src, sg_nents(areq->src), DMA_TO_DEVICE);
  }
+ 
+ static int rk_hash_run(struct crypto_engine *engine, void *breq)
 
 
 
