@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A81BE9BF1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:27 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 732BFBEA071
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F5E56E8596
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A3E3D585EF7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDCC03370FA;
-	Fri, 17 Oct 2025 15:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C40B33507B;
+	Fri, 17 Oct 2025 15:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYkuxIrF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SKTBt/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A936432E15E;
-	Fri, 17 Oct 2025 15:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D857330CD9F;
+	Fri, 17 Oct 2025 15:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713741; cv=none; b=DNocSlw7VagoJKfw1KoTXuVUGnquCS9+cXwKA65o+t2XyiB1BfVWV5mkFv8hGWcpv1e6XizeEeQ+BmmE/s1rJ+MzyAnb2KPMa0QvknfH1Fpylr8c0zg2MLarlPb20mcTTt4Qsh1sLp1kl0nvxP6DkGzUQkgxHyNrGxkL1+3ygAw=
+	t=1760714472; cv=none; b=A/q+4pao2bUrT6EuXpnuTIlaxqetvR+9kZf9iZ2HaA36yt3jG4iFJ6OiaQTtozMJCKDltk0EZGy3RAf0fl/rmr3jn7nyhN0yjUeVWonkcUUTVZkQYRvCGmDtvMAtJvSH7C6KQc/RJWwwgE9aAsv2vs9BKlzn2NiECJV0/DCjDUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713741; c=relaxed/simple;
-	bh=m5VX3eBZdfhhToBc3r25l6J5vZgqy4golDebcYVYv14=;
+	s=arc-20240116; t=1760714472; c=relaxed/simple;
+	bh=F14BSajSHTU+rpf+/HMl7Yyo2DU9K8KIsRCRUDirGdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZ2EKMRHBr3Ebq2eGIpAN6Hec9EeOGKzNUNtspHI1h8S52/Fr5TCw4utyIg1NP0Q+wKjboJKYvGSanukAqfjT21RDE0tI51NlArQ1V+Ro1gLfOx8TelKDHaxVqHU62PnA9VyENwnrknh3tX2zugnLPZgb4zGEWdFtDRtk0inTUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYkuxIrF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE8FC4CEE7;
-	Fri, 17 Oct 2025 15:09:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oQmRMrDpSo8ZUTfIcEcZK+BqWxvKaF7U2FWsetkp2fzuTPe/QGY7H3CLbW0kDEBUIRCXQOJavq7Fi0iATtAihNsnQozvSD17w+OvrfmTuqXrfY0XGjYYJ0pxN1Tlwz0p4DA6uOzunZscavWC+OcLQxYS79RCkqG3kRqCmuIUuYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SKTBt/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A77DC4CEE7;
+	Fri, 17 Oct 2025 15:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713741;
-	bh=m5VX3eBZdfhhToBc3r25l6J5vZgqy4golDebcYVYv14=;
+	s=korg; t=1760714472;
+	bh=F14BSajSHTU+rpf+/HMl7Yyo2DU9K8KIsRCRUDirGdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYkuxIrFsOOJ5sJi69spY0GNTb6cbDW+DUV+CuO1Fbmf+5U5Qtgiz26rjq92PZ/XY
-	 cV54CzSyVK/xOejPrh7gk9mKgNwQn1fkjKFi2VHquQMqnD3Wh8GFYedRCRZasq8LMH
-	 wvCCDSuuombW+BeQ/Jch5Nl0/NiW9rZPPlLduHxM=
+	b=1SKTBt/XKlXWOWrfwAce0cjoWyJcpvcDRUmGEqa64nB2TK60PX/z2uGunwmiV6kui
+	 tMTyXyQbp/2NA06dmavtG1fxmMoyjjl2U/nxNthxUwfKiRmkrYYATNxge6U96kz80h
+	 Mg7t3L9QNvH9/HHINiPvDCdY6ZfvKYhoHCA7qA6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	Askar Safin <safinaskar@zohomail.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 103/201] openat2: dont trigger automounts with RESOLVE_NO_XDEV
+	Nam Cao <namcao@linutronix.de>,
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.12 157/277] powerpc/pseries/msi: Fix potential underflow and leak issue
 Date: Fri, 17 Oct 2025 16:52:44 +0200
-Message-ID: <20251017145138.531104720@linuxfoundation.org>
+Message-ID: <20251017145152.856510413@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Askar Safin <safinaskar@zohomail.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 042a60680de43175eb4df0977ff04a4eba9da082 upstream.
+commit 3443ff3be6e59b80d74036bb39f5b6409eb23cc9 upstream.
 
-openat2 had a bug: if we pass RESOLVE_NO_XDEV, then openat2
-doesn't traverse through automounts, but may still trigger them.
-(See the link for full bug report with reproducer.)
+pseries_irq_domain_alloc() allocates interrupts at parent's interrupt
+domain. If it fails in the progress, all allocated interrupts are
+freed.
 
-This commit fixes this bug.
+The number of successfully allocated interrupts so far is stored
+"i". However, "i - 1" interrupts are freed. This is broken:
 
-Link: https://lore.kernel.org/linux-fsdevel/20250817075252.4137628-1-safinaskar@zohomail.com/
-Fixes: fddb5d430ad9fa91b49b1 ("open: introduce openat2(2) syscall")
-Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
+  - One interrupt is not be freed
+
+  - If "i" is zero, "i - 1" wraps around
+
+Correct the number of freed interrupts to 'i'.
+
+Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Askar Safin <safinaskar@zohomail.com>
-Link: https://lore.kernel.org/20250825181233.2464822-5-safinaskar@zohomail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/a980067f2b256bf716b4cd713bc1095966eed8cd.1754300646.git.namcao@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namei.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/powerpc/platforms/pseries/msi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -1364,6 +1364,10 @@ static int follow_automount(struct path
- 	    dentry->d_inode)
- 		return -EISDIR;
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -592,7 +592,7 @@ static int pseries_irq_domain_alloc(stru
  
-+	/* No need to trigger automounts if mountpoint crossing is disabled. */
-+	if (lookup_flags & LOOKUP_NO_XDEV)
-+		return -EXDEV;
-+
- 	if (count && (*count)++ >= MAXSYMLINKS)
- 		return -ELOOP;
+ out:
+ 	/* TODO: handle RTAS cleanup in ->msi_finish() ? */
+-	irq_domain_free_irqs_parent(domain, virq, i - 1);
++	irq_domain_free_irqs_parent(domain, virq, i);
+ 	return ret;
+ }
  
-@@ -1387,6 +1391,10 @@ static int __traverse_mounts(struct path
- 		/* Allow the filesystem to manage the transit without i_mutex
- 		 * being held. */
- 		if (flags & DCACHE_MANAGE_TRANSIT) {
-+			if (lookup_flags & LOOKUP_NO_XDEV) {
-+				ret = -EXDEV;
-+				break;
-+			}
- 			ret = path->dentry->d_op->d_manage(path, false);
- 			flags = smp_load_acquire(&path->dentry->d_flags);
- 			if (ret < 0)
 
 
 
