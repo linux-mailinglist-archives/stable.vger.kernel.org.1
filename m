@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0167FBEA28A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:24 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B9ABE9C54
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5A99944C19
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:02 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D6C9835E18E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D2220C00A;
-	Fri, 17 Oct 2025 15:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1974B3328EE;
+	Fri, 17 Oct 2025 15:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvOCBb1Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/PGo1Gf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7001C330B0A;
-	Fri, 17 Oct 2025 15:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D472F12D0;
+	Fri, 17 Oct 2025 15:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715530; cv=none; b=KVqACVlCNX3hVz/FVXO8j8cww26cMHLqLAJOzTXRHyLLr9q7GBf7D2h/2zNWFOuUNePB/0jDUhkT8/9B/ZnroviUxZbRIVNKnPI0SLxKVIceLA8xKr9ejChNoxWlUD2rR7PiJVn+9obsuK4JeWmzCqcUWg8iERroQbov+U79fzM=
+	t=1760714643; cv=none; b=T30c/MCgoz+NkEkIWcQHLfG0rPb6GdbC/VHqaU23luGfkfnmcUGPxFx3Wn5AKRySKUf8gcpQPDSd1nDbiC9y+q7FBXgfQGRl6XSVzmY8YJBmKShUm2jcxPl6f5AGv+FTRhKPcX/YLS/Wm9gkI4YBH4+3Xe0IKtnWzNbmOFxf9oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715530; c=relaxed/simple;
-	bh=9qZCUX6wqcHEe/qJiy98XtPlaAq+2mjsvTNxLCaqYwE=;
+	s=arc-20240116; t=1760714643; c=relaxed/simple;
+	bh=QOovSz7EcVuLPXOkZdVqM0SoM8Du7NscYI2cBk4CEVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ump2Vq2zzb+gSRB0fHUSncqeZW1Ii0O5T5Rx0CcQbd93OEDwgi/vJt5soobYBVnPIT5fRuhmINP+4M0dSIdZWQA3nG9RB3qX5wseY51FJAIrgx6F278xhV5RPli+46c6WoXxlDa+8orm2/YkITxt9gkfR/KF/iQZhDyU8PdEIIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvOCBb1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15D1C4CEFE;
-	Fri, 17 Oct 2025 15:38:49 +0000 (UTC)
+	 MIME-Version; b=ub+nigTrE+GdHYHhBhH6GIMqS4FB6qJrM0Hc5Enc14Qvq3fyOgsZgqFcYXYrecI250Z3cQTFnPmDgvxYtKHxWM28L/ie50M9bR95EzsFpKaX2qUJlIAc0jpEyM3rElPL/RePltN7lNjCzq+GEXBS0NEKg8EkqPkw6opMF1DO9YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/PGo1Gf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48816C4CEE7;
+	Fri, 17 Oct 2025 15:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715530;
-	bh=9qZCUX6wqcHEe/qJiy98XtPlaAq+2mjsvTNxLCaqYwE=;
+	s=korg; t=1760714643;
+	bh=QOovSz7EcVuLPXOkZdVqM0SoM8Du7NscYI2cBk4CEVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PvOCBb1ZNKEDw8pjtvXVBIk7LpV4NSg+R7r7+HZzy5OJ8o5tKJYAjUSQhs8s4vwVD
-	 ugfeidNCG8GHJhkgbIaZzMn6jJF7+crPVcjFPy38PIgCQsx6PUKZD+zkatPe3/36uf
-	 GA/+RPJ/655KecOdnHa+r6ZVEWQJ0EDfNco1EIXI=
+	b=h/PGo1GfrA7sxbwFYvKjuceIirIuh5zJdCvrETbNRJPXJOl//4ycMVbtSPXbqGKQ6
+	 A5UjvDzr7QZPhmzjvVCHE+EfF8/QIpie6I4JTFDwwPUJczvFrBHAm/LnOoQ5oghS0a
+	 eAmpsMQkS3/qyrHnkaOJzrLAWp7kiZdk8ni6uDNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.17 249/371] powerpc/powernv/pci: Fix underflow and leak issue
+	stable@kernel.org,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.12 217/277] ext4: fix an off-by-one issue during moving extents
 Date: Fri, 17 Oct 2025 16:53:44 +0200
-Message-ID: <20251017145211.089322690@linuxfoundation.org>
+Message-ID: <20251017145155.053021357@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit a39087905af9ffecaa237a918a2c03a04e479934 upstream.
+commit 12e803c8827d049ae8f2c743ef66ab87ae898375 upstream.
 
-pnv_irq_domain_alloc() allocates interrupts at parent's interrupt
-domain. If it fails in the progress, all allocated interrupts are
-freed.
+During the movement of a written extent, mext_page_mkuptodate() is
+called to read data in the range [from, to) into the page cache and to
+update the corresponding buffers. Therefore, we should not wait on any
+buffer whose start offset is >= 'to'. Otherwise, it will return -EIO and
+fail the extents movement.
 
-The number of successfully allocated interrupts so far is stored
-"i". However, "i - 1" interrupts are freed. This is broken:
+ $ for i in `seq 3 -1 0`; \
+   do xfs_io -fs -c "pwrite -b 1024 $((i * 1024)) 1024" /mnt/foo; \
+   done
+ $ umount /mnt && mount /dev/pmem1s /mnt  # drop cache
+ $ e4defrag /mnt/foo
+   e4defrag 1.47.0 (5-Feb-2023)
+   ext4 defragmentation for /mnt/foo
+   [1/1]/mnt/foo:    0%    [ NG ]
+   Success:                       [0/1]
 
-    - One interrupt is not be freed
-
-    - If "i" is zero, "i - 1" wraps around
-
-Correct the number of freed interrupts to "i".
-
-Fixes: 0fcfe2247e75 ("powerpc/powernv/pci: Add MSI domains")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/70f8debe8688e0b467367db769b71c20146a836d.1754300646.git.namcao@linutronix.de
+Cc: stable@kernel.org
+Fixes: a40759fb16ae ("ext4: remove array of buffer_heads from mext_page_mkuptodate()")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20250912105841.1886799-1-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c |    2 +-
+ fs/ext4/move_extent.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1854,7 +1854,7 @@ static int pnv_irq_domain_alloc(struct i
- 	return 0;
- 
- out:
--	irq_domain_free_irqs_parent(domain, virq, i - 1);
-+	irq_domain_free_irqs_parent(domain, virq, i);
- 	msi_bitmap_free_hwirqs(&phb->msi_bmp, hwirq, nr_irqs);
- 	return ret;
- }
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -225,7 +225,7 @@ static int mext_page_mkuptodate(struct f
+ 	do {
+ 		if (bh_offset(bh) + blocksize <= from)
+ 			continue;
+-		if (bh_offset(bh) > to)
++		if (bh_offset(bh) >= to)
+ 			break;
+ 		wait_on_buffer(bh);
+ 		if (buffer_uptodate(bh))
 
 
 
