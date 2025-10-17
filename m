@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-186908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDCF1BE9CF9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03229BEA359
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FCB91888420
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4FB674255F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BE332E14C;
-	Fri, 17 Oct 2025 15:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA5536CDEC;
+	Fri, 17 Oct 2025 15:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5nJ6f4q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKZElXbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F40242935;
-	Fri, 17 Oct 2025 15:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959D936999C;
+	Fri, 17 Oct 2025 15:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714570; cv=none; b=jL6x0Nbdr/Z3PcrXB85ly3Dkt7Dg+bbgRgl51ofnGlQ4D+m4mReaXyKygRSHw4Z4L/Ml7T47gmVfdzVNaglU8SVSSd2QneInM5GGzTN0imtZfjIOyFdo5z+at03auDPQshfk4+bZXgonL/gh22Ls49m871YnSAyAZ2yiQ0AXUJQ=
+	t=1760715461; cv=none; b=GPNW4dYyKZN/1UmzqelamC6oneCpSTzGQEJe/p1jrefBoMvx3UaxNB2SUnGjKVQvYas2sziN/H299geJ1mGtu6iov5LITF/bqJBJZIlY/WrWmpp+91cQFcj6XCZ8OXT+Hp6Jko/KjaW6FyKxkQfX//Jw+MN9HsS4RCS8OILawIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714570; c=relaxed/simple;
-	bh=tJ1YVDi6JQyRekZDsGJ4FUfNltpvNAIhtKw0uKVZAQQ=;
+	s=arc-20240116; t=1760715461; c=relaxed/simple;
+	bh=wUhO5znvV8efi9sWuPtfegINoGQQKyMIrsz61NEUIQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvebIfUPglyiQKrjMjjcMHstXcY52wiQsfnNvxO62gGa3yvy1F5Wr0K6dVd+4f9nnxpJAJIXcW0oztOW/752GKL2UW0Qmu2zNWIsRUdjPw4yr2aw91PNHsvNKy48oqh1aAlwewhKahpPNoDBVZx9oAnPEhKzwUSqgBo5hqJlF98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5nJ6f4q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5368BC4CEE7;
-	Fri, 17 Oct 2025 15:22:50 +0000 (UTC)
+	 MIME-Version; b=tTYHaDuWxH1CuWf6owxGg+sZX5wlFC/x/z8mQLTr8nMiyU1HVS0B14YLm3LRV+uOgCFslpR1O+dFByS4B8SzPbmREil3/UKrjqvtrL0Fllnhvkxh5vk4J2YyjXepH/PX4nYPJrRNiltuEy6hJhfKjHxKkEx76CIgbolYTau3XMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKZElXbB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B192C4CEFE;
+	Fri, 17 Oct 2025 15:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714570;
-	bh=tJ1YVDi6JQyRekZDsGJ4FUfNltpvNAIhtKw0uKVZAQQ=;
+	s=korg; t=1760715461;
+	bh=wUhO5znvV8efi9sWuPtfegINoGQQKyMIrsz61NEUIQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5nJ6f4qiMffYLCObDCF+hhqZOcPESTzRzQ0zgWSvkkfzp/i31GxRGb8E4tVyR1id
-	 Bxr7UuW4vOLE2ilETjwxei2nFv/ZoG6AtKPmoFRjw6VJv8U7UrFSd3HobPonVambDN
-	 DOWElxRIvhpIK4zi0+tf/mxbLPC09BonYgA7af4U=
+	b=MKZElXbBBLtIq9G23Uk8L9aOHf2Vo2T07/xJWSCYOH0N/QgedQycFvJZlHCQMBc9G
+	 rUITRv7cV/v67e9MIxJcazibDw51rjbuDGlJcsN2SQUObYgwJQnXkehQLS+vxUt9Sr
+	 5ShKaVH83DI+6KkVq49Ic9/XH5Yfu8MWkw4GEcHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Santhosh Kumar K <s-k6@ti.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 191/277] spi: cadence-quadspi: Flush posted register writes before DAC access
-Date: Fri, 17 Oct 2025 16:53:18 +0200
-Message-ID: <20251017145154.095336018@linuxfoundation.org>
+	Sean Anderson <sean.anderson@linux.dev>,
+	"OGriofa, Conall" <conall.ogriofa@amd.com>,
+	"Erim, Salih" <Salih.Erim@amd.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 224/371] iio: xilinx-ams: Unmask interrupts after updating alarms
+Date: Fri, 17 Oct 2025 16:53:19 +0200
+Message-ID: <20251017145210.190910202@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratyush Yadav <pratyush@kernel.org>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-commit 1ad55767e77a853c98752ed1e33b68049a243bd7 upstream.
+commit feb500c7ae7a198db4d2757901bce562feeefa5e upstream.
 
-cqspi_read_setup() and cqspi_write_setup() program the address width as
-the last step in the setup. This is likely to be immediately followed by
-a DAC region read/write. On TI K3 SoCs the DAC region is on a different
-endpoint from the register region. This means that the order of the two
-operations is not guaranteed, and they might be reordered at the
-interconnect level. It is possible that the DAC read/write goes through
-before the address width update goes through. In this situation if the
-previous command used a different address width the OSPI command is sent
-with the wrong number of address bytes, resulting in an invalid command
-and undefined behavior.
+To convert level-triggered alarms into edge-triggered IIO events, alarms
+are masked when they are triggered. To ensure we catch subsequent
+alarms, we then periodically poll to see if the alarm is still active.
+If it isn't, we unmask it. Active but masked alarms are stored in
+current_masked_alarm.
 
-Read back the size register to make sure the write gets flushed before
-accessing the DAC region.
+If an active alarm is disabled, it will remain set in
+current_masked_alarm until ams_unmask_worker clears it. If the alarm is
+re-enabled before ams_unmask_worker runs, then it will never be cleared
+from current_masked_alarm. This will prevent the alarm event from being
+pushed even if the alarm is still active.
 
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-CC: stable@vger.kernel.org
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
-Message-ID: <20250905185958.3575037-3-s-k6@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix this by recalculating current_masked_alarm immediately when enabling
+or disabling alarms.
+
+Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: O'Griofa, Conall <conall.ogriofa@amd.com>
+Tested-by: Erim, Salih <Salih.Erim@amd.com>
+Acked-by: Erim, Salih <Salih.Erim@amd.com>
+Link: https://patch.msgid.link/20250715002847.2035228-1-sean.anderson@linux.dev
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/adc/xilinx-ams.c |   45 +++++++++++++++++++++++--------------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -712,6 +712,7 @@ static int cqspi_read_setup(struct cqspi
- 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
- 	reg |= (op->addr.nbytes - 1);
- 	writel(reg, reg_base + CQSPI_REG_SIZE);
-+	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
- 	return 0;
+--- a/drivers/iio/adc/xilinx-ams.c
++++ b/drivers/iio/adc/xilinx-ams.c
+@@ -389,6 +389,29 @@ static void ams_update_pl_alarm(struct a
+ 	ams_pl_update_reg(ams, AMS_REG_CONFIG3, AMS_REGCFG3_ALARM_MASK, cfg);
  }
  
-@@ -1034,6 +1035,7 @@ static int cqspi_write_setup(struct cqsp
- 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
- 	reg |= (op->addr.nbytes - 1);
- 	writel(reg, reg_base + CQSPI_REG_SIZE);
-+	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
- 	return 0;
++static void ams_unmask(struct ams *ams)
++{
++	unsigned int status, unmask;
++
++	status = readl(ams->base + AMS_ISR_0);
++
++	/* Clear those bits which are not active anymore */
++	unmask = (ams->current_masked_alarm ^ status) & ams->current_masked_alarm;
++
++	/* Clear status of disabled alarm */
++	unmask |= ams->intr_mask;
++
++	ams->current_masked_alarm &= status;
++
++	/* Also clear those which are masked out anyway */
++	ams->current_masked_alarm &= ~ams->intr_mask;
++
++	/* Clear the interrupts before we unmask them */
++	writel(unmask, ams->base + AMS_ISR_0);
++
++	ams_update_intrmask(ams, ~AMS_ALARM_MASK, ~AMS_ALARM_MASK);
++}
++
+ static void ams_update_alarm(struct ams *ams, unsigned long alarm_mask)
+ {
+ 	unsigned long flags;
+@@ -401,6 +424,7 @@ static void ams_update_alarm(struct ams
+ 
+ 	spin_lock_irqsave(&ams->intr_lock, flags);
+ 	ams_update_intrmask(ams, AMS_ISR0_ALARM_MASK, ~alarm_mask);
++	ams_unmask(ams);
+ 	spin_unlock_irqrestore(&ams->intr_lock, flags);
  }
  
+@@ -1035,28 +1059,9 @@ static void ams_handle_events(struct iio
+ static void ams_unmask_worker(struct work_struct *work)
+ {
+ 	struct ams *ams = container_of(work, struct ams, ams_unmask_work.work);
+-	unsigned int status, unmask;
+ 
+ 	spin_lock_irq(&ams->intr_lock);
+-
+-	status = readl(ams->base + AMS_ISR_0);
+-
+-	/* Clear those bits which are not active anymore */
+-	unmask = (ams->current_masked_alarm ^ status) & ams->current_masked_alarm;
+-
+-	/* Clear status of disabled alarm */
+-	unmask |= ams->intr_mask;
+-
+-	ams->current_masked_alarm &= status;
+-
+-	/* Also clear those which are masked out anyway */
+-	ams->current_masked_alarm &= ~ams->intr_mask;
+-
+-	/* Clear the interrupts before we unmask them */
+-	writel(unmask, ams->base + AMS_ISR_0);
+-
+-	ams_update_intrmask(ams, ~AMS_ALARM_MASK, ~AMS_ALARM_MASK);
+-
++	ams_unmask(ams);
+ 	spin_unlock_irq(&ams->intr_lock);
+ 
+ 	/* If still pending some alarm re-trigger the timer */
 
 
 
