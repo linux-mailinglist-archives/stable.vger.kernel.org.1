@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F7CBE9BB5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE95BE9CB6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E90F735DBEE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDBA66E85BA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC6A3328E9;
-	Fri, 17 Oct 2025 15:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE0B3328F6;
+	Fri, 17 Oct 2025 15:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F76ihXLh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izYT9fb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9731632C944;
-	Fri, 17 Oct 2025 15:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A737F32E15E;
+	Fri, 17 Oct 2025 15:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714475; cv=none; b=P150TSjmIFs6pdgtqzItPehPLCq4eTxY+9I0SZJX3KQUeW0LCfmfWyn2zdFtr0UgOwiDVVzRZLdMnXV3UAcXJ1TG+A7Hen028ImttVneAAJcAvafpCqElvb2h+ULSlcf4xqtNyF1GGZkYE1etvnGygq4S+k+lyfgfwkLVL1Si5o=
+	t=1760713745; cv=none; b=j+JCok01YsKVE3tTp6GQpnuOV01pbtI8ReK9nXbqVqSaJTeE8TB2YeAWsPxi/hIW0z0CyExpUXjfKYfXJTYZ5MtwKYDn2vPd4Gko7in5erbW98QvYM5k32a+9d1qNYz+McIA1vz5A9Gd/T6aTvtFV8OslF8XsWW+Zs0aObYC8mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714475; c=relaxed/simple;
-	bh=5/x5vAuNxv7/llw97bzi+CgOAxB/OK114Jy9UKydeNo=;
+	s=arc-20240116; t=1760713745; c=relaxed/simple;
+	bh=fwWD9w2JS+74C/A+moWvJdVDMyChbYxPRget7N7pS6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AQZyybo3nwxvNfG4h0nc9FHb2RgZ+tIJSdYdosxrlZTnj+EXPYAQ4LDHWYhpQYfAEzV5C4i8ce0J6WFrDiDMKBxtOVQGqJE7DtGg8Rfyt4qCVSEkfi+hi4PXDXyU3D0tmpZF0OXduf99IohDTfIp4r28qk8VlgaiKt2anwCqFSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F76ihXLh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24277C113D0;
-	Fri, 17 Oct 2025 15:21:14 +0000 (UTC)
+	 MIME-Version; b=gUikystXv3u5vg+FZvmuv+/tK5Sqh5CJQVSwJlWQePjFDZEfLM+D4Mkr6zE/DumMhYGqGXUeEIbuOeSZT1BPBZDq7rOJ4ii7rKxNwetCLQTTo7hZQa46sW8/PEkLG9SwxxCSYUyPeROLPxr/hReGMlkZOjP54KUtN2Sm9l8sLXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izYT9fb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B1FC4CEE7;
+	Fri, 17 Oct 2025 15:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714475;
-	bh=5/x5vAuNxv7/llw97bzi+CgOAxB/OK114Jy9UKydeNo=;
+	s=korg; t=1760713744;
+	bh=fwWD9w2JS+74C/A+moWvJdVDMyChbYxPRget7N7pS6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F76ihXLhpYtsXG9JN5WvPSZBhuPeGKkjSYTZ9iGGBdTO4FDocN+gTQATOGH5P0dnX
-	 Xxa0ORSN1+jt6iqmP38ejq3CfbKTSjDwjfqKk8mxR5StoC3gxYulBkU8yLqYTp/AvJ
-	 u1IFXcS9SJgG2s17/sPX1Y73IVfCsm/Wi3lrV3Sk=
+	b=izYT9fb6yqtZo3sOXGF2PlhiUgy1AvSdLMsfKEURgATMQx218+PtoWViDmBkOn7iF
+	 kxwomnpHqwlasZ99kJ/oR85cgWJprF3kIOqDYyEVO0cHcZcDBUjlxw5IVBjYMcZTsH
+	 b/BJGjmVKs2arBbles+z/nNkHwMDg+olI+XPU4Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.12 158/277] pwm: berlin: Fix wrong register in suspend/resume
+	Sam James <sam@gentoo.org>,
+	Helge Deller <deller@gmx.de>,
+	Stian Halseth <stian@itx.no>
+Subject: [PATCH 6.6 104/201] parisc: dont reference obsolete termio struct for TC* constants
 Date: Fri, 17 Oct 2025 16:52:45 +0200
-Message-ID: <20251017145152.893253829@linuxfoundation.org>
+Message-ID: <20251017145138.566769432@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Sam James <sam@gentoo.org>
 
-commit 3a4b9d027e4061766f618292df91760ea64a1fcc upstream.
+commit 8ec5a066f88f89bd52094ba18792b34c49dcd55a upstream.
 
-The 'enable' register should be BERLIN_PWM_EN rather than
-BERLIN_PWM_ENABLE, otherwise, the driver accesses wrong address, there
-will be cpu exception then kernel panic during suspend/resume.
+Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
+drops the legacy termio struct, but the ioctls.h header still defines some
+TC* constants in terms of termio (via sizeof). Hardcode the values instead.
 
-Fixes: bbf0722c1c66 ("pwm: berlin: Add suspend/resume support")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://lore.kernel.org/r/20250819114224.31825-1-jszhang@kernel.org
+This fixes building Python for example, which falls over like:
+  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
+
+Link: https://bugs.gentoo.org/961769
+Link: https://bugs.gentoo.org/962600
+Co-authored-by: Stian Halseth <stian@itx.no>
 Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Sam James <sam@gentoo.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-berlin.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/parisc/include/uapi/asm/ioctls.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/pwm/pwm-berlin.c
-+++ b/drivers/pwm/pwm-berlin.c
-@@ -234,7 +234,7 @@ static int berlin_pwm_suspend(struct dev
- 	for (i = 0; i < chip->npwm; i++) {
- 		struct berlin_pwm_channel *channel = &bpc->channel[i];
- 
--		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_ENABLE);
-+		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_EN);
- 		channel->ctrl = berlin_pwm_readl(bpc, i, BERLIN_PWM_CONTROL);
- 		channel->duty = berlin_pwm_readl(bpc, i, BERLIN_PWM_DUTY);
- 		channel->tcnt = berlin_pwm_readl(bpc, i, BERLIN_PWM_TCNT);
-@@ -262,7 +262,7 @@ static int berlin_pwm_resume(struct devi
- 		berlin_pwm_writel(bpc, i, channel->ctrl, BERLIN_PWM_CONTROL);
- 		berlin_pwm_writel(bpc, i, channel->duty, BERLIN_PWM_DUTY);
- 		berlin_pwm_writel(bpc, i, channel->tcnt, BERLIN_PWM_TCNT);
--		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_ENABLE);
-+		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_EN);
- 	}
- 
- 	return 0;
+--- a/arch/parisc/include/uapi/asm/ioctls.h
++++ b/arch/parisc/include/uapi/asm/ioctls.h
+@@ -10,10 +10,10 @@
+ #define TCSETS		_IOW('T', 17, struct termios) /* TCSETATTR */
+ #define TCSETSW		_IOW('T', 18, struct termios) /* TCSETATTRD */
+ #define TCSETSF		_IOW('T', 19, struct termios) /* TCSETATTRF */
+-#define TCGETA		_IOR('T', 1, struct termio)
+-#define TCSETA		_IOW('T', 2, struct termio)
+-#define TCSETAW		_IOW('T', 3, struct termio)
+-#define TCSETAF		_IOW('T', 4, struct termio)
++#define TCGETA          0x40125401
++#define TCSETA          0x80125402
++#define TCSETAW         0x80125403
++#define TCSETAF         0x80125404
+ #define TCSBRK		_IO('T', 5)
+ #define TCXONC		_IO('T', 6)
+ #define TCFLSH		_IO('T', 7)
 
 
 
