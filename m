@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F8AEBEA01D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E47BBEA170
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D32745FAB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16B4C4261FB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A3C2DECBC;
-	Fri, 17 Oct 2025 15:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4041D5CE0;
+	Fri, 17 Oct 2025 15:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WuzMGIvP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4XaTUyx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDDA32C952;
-	Fri, 17 Oct 2025 15:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C7D20C00A;
+	Fri, 17 Oct 2025 15:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714034; cv=none; b=uwIdWnaNaZ8ZeHB8h/191Z5fr40280vZMTPSEwXhIT4BjCekkyf5pwrukxyxbjQ9XOH5wJrUscfJ7Vdp3P/Jv7J/TIGjnX4r2PhBrUAJbYJ+VrNml4Hhs8znDCGK/ATFFCtyRf9pEH4faK4Pce8oY5poJLMOSrcG2e6Br3OWdTs=
+	t=1760714822; cv=none; b=bXeQeo5DiwEyHNwyIjGae/fFwcbP1BeNlg04asp5sSJVBwfmC9BS3MwzoEh7JudQViyJRc5aDBONCVhuG85Jyf2jBOIrPx/lpBjOJB5N8he1GcSkYya1elQoFV7knuvF1BkY22AvqXuzGJ1/qfxRYL3SMuEkfH/UccjetYvuee4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714034; c=relaxed/simple;
-	bh=fc176EVSHRVvp24Zr14/gQgGr8L2poZ8NTuLpEJN4MU=;
+	s=arc-20240116; t=1760714822; c=relaxed/simple;
+	bh=Nrn0LGqikKAlqXAAm1b3bguqk/6L2Ex6KYjGP4uRJog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qK8+EAWZ3wSuoth55QeHWQcY2Ln4Q70BK2/T8B/1jA8c7CSArdvSHspNjCzjN4ZyvXE0ROcEnC1IAacUZhqPfAnX+U869Y5335ImOwfFTvP+EpO8agQ0KOFpBPO9V77Fqfu7ZJL/0GMCWG1G76adWrD4GkCyu7g1CU1lRwBABHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WuzMGIvP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D309EC4CEF9;
-	Fri, 17 Oct 2025 15:13:53 +0000 (UTC)
+	 MIME-Version; b=e+NwpC/51r1v+djSXweLF127IM93hPmrOp3XdbpJZxCcB9l5F+96SHlK1iKcSi5ewnecl5USWNYhZn1i/eMOpTSXVL/QkvvLGe3rpCVxIxdSHFbq2FGMMo/goZgM0v++u4D7Ls9O5cv99U7usDVivbNdnEnX2rhjfoWRzYH6GzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4XaTUyx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D15C4CEE7;
+	Fri, 17 Oct 2025 15:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714034;
-	bh=fc176EVSHRVvp24Zr14/gQgGr8L2poZ8NTuLpEJN4MU=;
+	s=korg; t=1760714822;
+	bh=Nrn0LGqikKAlqXAAm1b3bguqk/6L2Ex6KYjGP4uRJog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WuzMGIvPzMR4+A6dlRggdS0/+xUFNnkBWTux+izzixKA2ELFg7RYnBfyUZg4ab2gZ
-	 7643YwJhO+v4bjXq4bNWanp6j/MVffwlGVbZnti3Jo0a10lZr20vxs78RIPMHH7C9O
-	 pcf9pYFOUnq9ywHThJCMBppmdR8WBY0p2dOBzi3Q=
+	b=i4XaTUyxboGVXV4Y/0WJM6aXmJ5PPQOBnn1u7HJHAom6NmuXvu+3SBasMplVovTan
+	 fQ/j5oxp6ezTYLUnOj9RVYGVFooxKaiCoGNhDbiyDlyCpSIVWfi+jVKqomahnTIUTA
+	 zVycy/IYP20qE447Gk+oJRmhcCoGtdO/F1E4CsOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 191/201] mptcp: pm: in-kernel: usable client side with C-flag
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 245/277] nfsd: refine and rename NFSD_MAY_LOCK
 Date: Fri, 17 Oct 2025 16:54:12 +0200
-Message-ID: <20251017145141.778026486@linuxfoundation.org>
+Message-ID: <20251017145156.092358763@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,189 +62,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: NeilBrown <neilb@suse.de>
 
-commit 4b1ff850e0c1aacc23e923ed22989b827b9808f9 upstream.
+[ Upstream commit 4cc9b9f2bf4dfe13fe573da978e626e2248df388 ]
 
-When servers set the C-flag in their MP_CAPABLE to tell clients not to
-create subflows to the initial address and port, clients will likely not
-use their other endpoints. That's because the in-kernel path-manager
-uses the 'subflow' endpoints to create subflows only to the initial
-address and port.
+NFSD_MAY_LOCK means a few different things.
+- it means that GSS is not required.
+- it means that with NFSEXP_NOAUTHNLM, authentication is not required
+- it means that OWNER_OVERRIDE is allowed.
 
-If the limits have not been modified to accept ADD_ADDR, the client
-doesn't try to establish new subflows. If the limits accept ADD_ADDR,
-the routing routes will be used to select the source IP.
+None of these are specific to locking, they are specific to the NLM
+protocol.
+So:
+ - rename to NFSD_MAY_NLM
+ - set NFSD_MAY_OWNER_OVERRIDE and NFSD_MAY_BYPASS_GSS in nlm_fopen()
+   so that NFSD_MAY_NLM doesn't need to imply these.
+ - move the test on NFSEXP_NOAUTHNLM out of nfsd_permission() and
+   into fh_verify where other special-case tests on the MAY flags
+   happen.  nfsd_permission() can be called from other places than
+   fh_verify(), but none of these will have NFSD_MAY_NLM.
 
-The C-flag is typically set when the server is operating behind a legacy
-Layer 4 load balancer, or using anycast IP address. Clients having their
-different 'subflow' endpoints setup, don't end up creating multiple
-subflows as expected, and causing some deployment issues.
-
-A special case is then added here: when servers set the C-flag in the
-MPC and directly sends an ADD_ADDR, this single ADD_ADDR is accepted.
-The 'subflows' endpoints will then be used with this new remote IP and
-port. This exception is only allowed when the ADD_ADDR is sent
-immediately after the 3WHS, and makes the client switching to the 'fully
-established' mode. After that, 'select_local_address()' will not be able
-to find any subflows, because 'id_avail_bitmap' will be filled in
-mptcp_pm_create_subflow_or_signal_addr(), when switching to 'fully
-established' mode.
-
-Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/536
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250925-net-next-mptcp-c-flag-laminar-v1-1-ad126cc47c6b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflict in pm.c, because commit 498d7d8b75f1 ("mptcp: pm: remove
-  '_nl' from mptcp_pm_nl_is_init_remote_addr") renamed an helper in the
-  context, and it is not in this version. The same new code can be
-  applied at the same place.
-  Conflict in pm_kernel.c, because the modified code has been moved from
-  pm_netlink.c to pm_kernel.c in commit 8617e85e04bd ("mptcp: pm: split
-  in-kernel PM specific code"), which is not in this version. The
-  resolution is easy: simply by applying the patch where 'pm_kernel.c'
-  has been replaced 'pm_netlink.c'.
-  Conflict in pm_netlink.c, because commit b83fbca1b4c9 ("mptcp: pm:
-  reduce entries iterations on connect") is not in this version. Instead
-  of using the 'locals' variable (struct mptcp_pm_local *) from the new
-  version and embedding a "struct mptcp_addr_info", we can simply
-  continue to use the 'addrs' variable (struct mptcp_addr_info *).
-  Conflict in protocol.h, because commit af3dc0ad3167 ("mptcp: Remove
-  unused declaration mptcp_sockopt_sync()") is not in this version and
-  it removed one line in the context. The resolution is easy because the
-  new function can still be added at the same place. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: 898374fdd7f0 ("nfsd: unregister with rpcbind when deleting a transport")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c         |    7 ++++--
- net/mptcp/pm_netlink.c |   52 ++++++++++++++++++++++++++++++++++++++++++++++++-
- net/mptcp/protocol.h   |    8 +++++++
- 3 files changed, 64 insertions(+), 3 deletions(-)
+ fs/nfsd/lockd.c |   13 +++++++++++--
+ fs/nfsd/nfsfh.c |   12 ++++--------
+ fs/nfsd/trace.h |    2 +-
+ fs/nfsd/vfs.c   |   12 +-----------
+ fs/nfsd/vfs.h   |    2 +-
+ 5 files changed, 18 insertions(+), 23 deletions(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -227,9 +227,12 @@ void mptcp_pm_add_addr_received(const st
- 		} else {
- 			__MPTCP_INC_STATS(sock_net((struct sock *)msk), MPTCP_MIB_ADDADDRDROP);
- 		}
--	/* id0 should not have a different address */
-+	/* - id0 should not have a different address
-+	 * - special case for C-flag: linked to fill_local_addresses_vec()
+--- a/fs/nfsd/lockd.c
++++ b/fs/nfsd/lockd.c
+@@ -38,11 +38,20 @@ nlm_fopen(struct svc_rqst *rqstp, struct
+ 	memcpy(&fh.fh_handle.fh_raw, f->data, f->size);
+ 	fh.fh_export = NULL;
+ 
++	/*
++	 * Allow BYPASS_GSS as some client implementations use AUTH_SYS
++	 * for NLM even when GSS is used for NFS.
++	 * Allow OWNER_OVERRIDE as permission might have been changed
++	 * after the file was opened.
++	 * Pass MAY_NLM so that authentication can be completely bypassed
++	 * if NFSEXP_NOAUTHNLM is set.  Some older clients use AUTH_NULL
++	 * for NLM requests.
 +	 */
- 	} else if ((addr->id == 0 && !mptcp_pm_nl_is_init_remote_addr(msk, addr)) ||
--		   (addr->id > 0 && !READ_ONCE(pm->accept_addr))) {
-+		   (addr->id > 0 && !READ_ONCE(pm->accept_addr) &&
-+		    !mptcp_pm_add_addr_c_flag_case(msk))) {
- 		mptcp_pm_announce_addr(msk, addr, true);
- 		mptcp_pm_add_addr_send_ack(msk);
- 	} else if (mptcp_pm_schedule_work(msk, MPTCP_PM_ADD_ADDR_RECEIVED)) {
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -675,10 +675,12 @@ static unsigned int fill_local_addresses
- 	struct mptcp_addr_info mpc_addr;
- 	struct pm_nl_pernet *pernet;
- 	unsigned int subflows_max;
-+	bool c_flag_case;
- 	int i = 0;
- 
- 	pernet = pm_nl_get_pernet_from_msk(msk);
- 	subflows_max = mptcp_pm_get_subflows_max(msk);
-+	c_flag_case = remote->id && mptcp_pm_add_addr_c_flag_case(msk);
- 
- 	mptcp_local_address((struct sock_common *)msk, &mpc_addr);
- 
-@@ -691,11 +693,26 @@ static unsigned int fill_local_addresses
- 			continue;
- 
- 		if (msk->pm.subflows < subflows_max) {
-+			bool is_id0;
-+
- 			msk->pm.subflows++;
- 			addrs[i] = entry->addr;
- 
-+			is_id0 = mptcp_addresses_equal(&entry->addr,
-+						       &mpc_addr,
-+						       entry->addr.port);
-+
-+			if (c_flag_case &&
-+			    (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW)) {
-+				__clear_bit(addrs[i].id,
-+					    msk->pm.id_avail_bitmap);
-+
-+				if (!is_id0)
-+					msk->pm.local_addr_used++;
-+			}
-+
- 			/* Special case for ID0: set the correct ID */
--			if (mptcp_addresses_equal(&entry->addr, &mpc_addr, entry->addr.port))
-+			if (is_id0)
- 				addrs[i].id = 0;
- 
- 			i++;
-@@ -703,6 +720,39 @@ static unsigned int fill_local_addresses
- 	}
- 	rcu_read_unlock();
- 
-+	/* Special case: peer sets the C flag, accept one ADD_ADDR if default
-+	 * limits are used -- accepting no ADD_ADDR -- and use subflow endpoints
-+	 */
-+	if (!i && c_flag_case) {
-+		unsigned int local_addr_max = mptcp_pm_get_local_addr_max(msk);
-+
-+		while (msk->pm.local_addr_used < local_addr_max &&
-+		       msk->pm.subflows < subflows_max) {
-+			struct mptcp_pm_addr_entry local;
-+
-+			if (!select_local_address(pernet, msk, &local))
-+				break;
-+
-+			__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
-+
-+			if (!mptcp_pm_addr_families_match(sk, &local.addr,
-+							  remote))
-+				continue;
-+
-+			if (mptcp_addresses_equal(&local.addr, &mpc_addr,
-+						  local.addr.port))
-+				continue;
-+
-+			addrs[i] = local.addr;
-+
-+			msk->pm.local_addr_used++;
-+			msk->pm.subflows++;
-+			i++;
-+		}
-+
-+		return i;
-+	}
-+
- 	/* If the array is empty, fill in the single
- 	 * 'IPADDRANY' local address
+ 	access = (mode == O_WRONLY) ? NFSD_MAY_WRITE : NFSD_MAY_READ;
+-	access |= NFSD_MAY_LOCK;
++	access |= NFSD_MAY_NLM | NFSD_MAY_OWNER_OVERRIDE | NFSD_MAY_BYPASS_GSS;
+ 	nfserr = nfsd_open(rqstp, &fh, S_IFREG, access, filp);
+ 	fh_put(&fh);
+- 	/* We return nlm error codes as nlm doesn't know
++	/* We return nlm error codes as nlm doesn't know
+ 	 * about nfsd, but nfsd does know about nlm..
  	 */
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1080,6 +1080,14 @@ static inline void mptcp_pm_close_subflo
- 	spin_unlock_bh(&msk->pm.lock);
- }
+ 	switch (nfserr) {
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -363,13 +363,10 @@ __fh_verify(struct svc_rqst *rqstp,
+ 	if (error)
+ 		goto out;
  
-+static inline bool mptcp_pm_add_addr_c_flag_case(struct mptcp_sock *msk)
-+{
-+	return READ_ONCE(msk->pm.remote_deny_join_id0) &&
-+	       msk->pm.local_addr_used == 0 &&
-+	       mptcp_pm_get_add_addr_accept_max(msk) == 0 &&
-+	       msk->pm.subflows < mptcp_pm_get_subflows_max(msk);
-+}
+-	/*
+-	 * pseudoflavor restrictions are not enforced on NLM,
+-	 * which clients virtually always use auth_sys for,
+-	 * even while using RPCSEC_GSS for NFS.
+-	 */
+-	if (access & NFSD_MAY_LOCK)
+-		goto skip_pseudoflavor_check;
++	if ((access & NFSD_MAY_NLM) && (exp->ex_flags & NFSEXP_NOAUTHNLM))
++		/* NLM is allowed to fully bypass authentication */
++		goto out;
 +
- void mptcp_sockopt_sync(struct mptcp_sock *msk, struct sock *ssk);
- void mptcp_sockopt_sync_locked(struct mptcp_sock *msk, struct sock *ssk);
+ 	if (access & NFSD_MAY_BYPASS_GSS)
+ 		may_bypass_gss = true;
+ 	/*
+@@ -385,7 +382,6 @@ __fh_verify(struct svc_rqst *rqstp,
+ 	if (error)
+ 		goto out;
  
+-skip_pseudoflavor_check:
+ 	/* Finally, check access permissions. */
+ 	error = nfsd_permission(cred, exp, dentry, access);
+ out:
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -79,7 +79,7 @@ DEFINE_NFSD_XDR_ERR_EVENT(cant_encode);
+ 		{ NFSD_MAY_READ,		"READ" },		\
+ 		{ NFSD_MAY_SATTR,		"SATTR" },		\
+ 		{ NFSD_MAY_TRUNC,		"TRUNC" },		\
+-		{ NFSD_MAY_LOCK,		"LOCK" },		\
++		{ NFSD_MAY_NLM,			"NLM" },		\
+ 		{ NFSD_MAY_OWNER_OVERRIDE,	"OWNER_OVERRIDE" },	\
+ 		{ NFSD_MAY_LOCAL_ACCESS,	"LOCAL_ACCESS" },	\
+ 		{ NFSD_MAY_BYPASS_GSS_ON_ROOT,	"BYPASS_GSS_ON_ROOT" },	\
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -2519,7 +2519,7 @@ nfsd_permission(struct svc_cred *cred, s
+ 		(acc & NFSD_MAY_EXEC)?	" exec"  : "",
+ 		(acc & NFSD_MAY_SATTR)?	" sattr" : "",
+ 		(acc & NFSD_MAY_TRUNC)?	" trunc" : "",
+-		(acc & NFSD_MAY_LOCK)?	" lock"  : "",
++		(acc & NFSD_MAY_NLM)?	" nlm"  : "",
+ 		(acc & NFSD_MAY_OWNER_OVERRIDE)? " owneroverride" : "",
+ 		inode->i_mode,
+ 		IS_IMMUTABLE(inode)?	" immut" : "",
+@@ -2544,16 +2544,6 @@ nfsd_permission(struct svc_cred *cred, s
+ 	if ((acc & NFSD_MAY_TRUNC) && IS_APPEND(inode))
+ 		return nfserr_perm;
+ 
+-	if (acc & NFSD_MAY_LOCK) {
+-		/* If we cannot rely on authentication in NLM requests,
+-		 * just allow locks, otherwise require read permission, or
+-		 * ownership
+-		 */
+-		if (exp->ex_flags & NFSEXP_NOAUTHNLM)
+-			return 0;
+-		else
+-			acc = NFSD_MAY_READ | NFSD_MAY_OWNER_OVERRIDE;
+-	}
+ 	/*
+ 	 * The file owner always gets access permission for accesses that
+ 	 * would normally be checked at open time. This is to make
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -20,7 +20,7 @@
+ #define NFSD_MAY_READ			0x004 /* == MAY_READ */
+ #define NFSD_MAY_SATTR			0x008
+ #define NFSD_MAY_TRUNC			0x010
+-#define NFSD_MAY_LOCK			0x020
++#define NFSD_MAY_NLM			0x020 /* request is from lockd */
+ #define NFSD_MAY_MASK			0x03f
+ 
+ /* extra hints to permission and open routines: */
 
 
 
