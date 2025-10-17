@@ -1,126 +1,106 @@
-Return-Path: <stable+bounces-187700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7195BEBB15
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 22:31:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 172CBBEBB96
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 22:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3DB19A7640
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 20:31:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F1FE44E98D0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 20:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318CB264A76;
-	Fri, 17 Oct 2025 20:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BF9269CF1;
+	Fri, 17 Oct 2025 20:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="QuywydNj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SnIFHLZZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFA8354AFA
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 20:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2ADA248F4E
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 20:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760733088; cv=none; b=Zsq5Wt68uRP/KkyZlJMCsoxIVTKCOAgBre3a2KbIkmqAeRcUiM3qWFvAX9FQS4CM1GT1DDaBj5yFyWDw2F7hYeLbJiyt2VJ7Cl7KqW6AfyyKxxeBGjiprCjucWAHvIw9ipFJZ8DBr5pE1IgQrq/N9W5o5Y9eOq3zdTvuP3LovCQ=
+	t=1760734117; cv=none; b=dRO1DkaqzGHL37odppxpHpV9WTr/Cj7bIRnVXqzfrX5/8cN0H0DA/OtmPkiJmfu/PkafnmiZHV3zh8Q1yeTqGG+aPKU9ooev6AQVK710qsIp0ufyB5v9QVmt7Pr1rHG+UfdgEqO0WkdLEhNXODGqxsLHmMI0UQbpjx+lwElHqEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760733088; c=relaxed/simple;
-	bh=MKk7ulg8THfN6IMYxwH8fJ0oDGq7pR+r1xwzI/IoyqM=;
+	s=arc-20240116; t=1760734117; c=relaxed/simple;
+	bh=oQ/gGtYvav+gWWdoIlX8Zb6LNC9cOW2UkrE8R2Ydnos=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tS8Hr3iGCHSFyufjtwLbiwWOU/kW8lkOmxmShewOYrzmZFygnqH2eHpiUz44gIfCNKcV4uArQxxSNvhnNRaa/pkbLG9xuqfkMl7VbaakDuymLWJ2d95RA7HCL/RPbKIWul7f/ek3QcWvgbmU/MW4SvEqPmDZb2DEp3We4yvHNCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=QuywydNj; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-78ea15d3489so27752956d6.3
-        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 13:31:26 -0700 (PDT)
+	 To:Cc:Content-Type; b=tEv++JUYPS7pnAdpcby6pWdgmTQ1z2W/OZNPK1zyq9liVbFexGUk55PuN0ja/u0nVskUIxaYWZrO6kgbipvJMOeL08xzxtLf2eEk7530vDk8+2LMPbUz11KVcunHxryMxkngxidVBnRGZMpa1iA7owJ4Po9zw7QB8J7vBLELBOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SnIFHLZZ; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47112edf9f7so13692405e9.0
+        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 13:48:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1760733085; x=1761337885; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0lPpXtKNC8Pcljol6lZmI6XFoGZEJXZUpwOt8AD0/Gk=;
-        b=QuywydNjcm27vQc791n5AmY//nevEF1Kg5ym8e4hlgMfm3jZ7Xc8kCd6zGSOzwLHVl
-         06B7afgDe/8nWP/DNfIlABHnfk4pNPlLfQvB1N6e68/0m/WaUR/ZQwzFKxvXvW5pJoB+
-         54UcDNbuQ/yIc2EjV/W6UPTRX9mzCd6aPPtfYpJMXlel3UF3ZsX4N5LI1B056BZO6m98
-         WCuUMsLOV3zMNEIVL4SJ++Hctj7bwHgXi0gPwIq/UvvXytrws5YKIBzvUX7UW320nRix
-         CUu0HR4QwimBe2zGbInM08vqSgx7FgJm4B3NJWrGVqWVDj2lqwc+mHp+t8wiZftzTS61
-         H8kQ==
+        d=google.com; s=20230601; t=1760734114; x=1761338914; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=oQ/gGtYvav+gWWdoIlX8Zb6LNC9cOW2UkrE8R2Ydnos=;
+        b=SnIFHLZZs7YhF2m0vcAe6oe2xSQE7X5HerxWIZHUhyYeXUfr/vpSeIuV2rCIv4Ej1Y
+         ZvCk1M9UfrxvmkrBhjvhTfzrpcEjQ5i31aiY1TEDK9+gw7ES+bcHEB9K4Qv2ZL8lFwau
+         w2onrMDpEfDdqPAmxo0vDNbqdxfCYANz0jtb22JO+be/pGGXtDJbiEhV/qr66XMN/Xi3
+         qaVkTy6tgfAXQs1ioibH64ugtYfJtBOZPzPUTpkcUIpSrZjsL7yvUQDdeHjCTLlv+kp1
+         0TghXFfBor0vE/LkNvPq1EqIl92DvkMBSS8QuROhu/tsu/pJEJFPAn4nSNSLPd9Ffx5z
+         06og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760733085; x=1761337885;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0lPpXtKNC8Pcljol6lZmI6XFoGZEJXZUpwOt8AD0/Gk=;
-        b=v3n2Jl0OkZVMeH9GSCjTfVzBVqfo7Q99iOIRQOCjdybjLMyIUZe9L+xFpgFpeo++Ae
-         frSp/zUTCkf2KFLcQZPrlwp/r/OfNmckEbbJniAei1s6HRmIsrFut2Jx2OtUGitjxlX0
-         NBkWrTiG/L/clmlor2Xs+1YWeUb8tlHEH0pRAIvEaCJOvAGIGSyP7dmJG07lqv+SaIrN
-         qaCV3N7rUfOGXarDJQstsG0fLwHey6tWpDFhIzesxq9ueVrLrt3+nR9wiD0fJy77G+6e
-         R3WEkIvEwVFGV0ZXyrxynGqLpgz5i8nxN6SXckJ04GrP3r/i8Ih/Jldb04j8mwqHjgs8
-         /ojA==
-X-Gm-Message-State: AOJu0YygfEycL+m1L6KdsxPIDb4VQWJsqErCiOqJVWzJUagnYAaA9NQw
-	knxitam2LkuyS6PvrT9oEX6kTNFWvT8Dc1PrPtvGtZIb8lC7V26G2R+hxFTQprh0OvXgQ+Lys9E
-	vdP9JJjXemv3ZtIlSoLwP0gO/1+SH2Q/AXQHge+r7vg==
-X-Gm-Gg: ASbGncvJnVMMAvKQSjSL3jAPD/wzuI2cGe2zi7Itu5b5V2bl/erboyN82Z+jhZD1vaw
-	HCKATThdUiVjVOlPnmCBCg4rPHqY3+UgspXrUn6597ntdz2m+Z3fI2gwDkgSMfCEBViuRvyGaNn
-	9XjBrJX1Ro4SMueglkBoZZ/HcDrtqt5HTRKWAQfbRrXz/o19yi1mrxplWP1ZZq7d0zCcOrfZzyR
-	xsX/Ut8t1552uwngZEwDKt+jYcp5k/zbtyhbVH/LND0c6LrikanvVeWXNfwAw==
-X-Google-Smtp-Source: AGHT+IGQFfaB9wOSLxDZqrYjsq7EvvuhGYx/LCDuuPQUSKlNN3GFBd2FmzvCC7AVAg1tdTIrtigxUrv4wdP7WpBC77c=
-X-Received: by 2002:a05:6214:c64:b0:87c:a721:42f1 with SMTP id
- 6a1803df08f44-87ca72143c0mr20321786d6.52.1760733085286; Fri, 17 Oct 2025
- 13:31:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760734114; x=1761338914;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oQ/gGtYvav+gWWdoIlX8Zb6LNC9cOW2UkrE8R2Ydnos=;
+        b=LpoMGon/c1NbNC/HztOp1SBOrKW6zINPR3sj1l2GPPLXGLzW8QZDtayMRXljFpdUnb
+         qggCFHQkAb6QiNd2KC9hQjRIpGQJhrx8jPBqk+RexLcKlJxnUtNOWAt8/xFQ29B5mOM8
+         dkyrWQHULrro6UTaaH2ksWXgz8qET36w2eAh5o0bEg0Zvr7CBFSM4avXPJxBxLf7z/6B
+         1AIYR5azzq+uw13sWqUvIclFnecJROCZ4cIVKp7F2L/8tamitnwvUfIZD0YPLyTlD7BG
+         aBxJCGS5WoSX+QtidlLC5sjdcsbAxf7gMJcttb1rfC6X40p7Uv9hRcr0R/mOQSGbG6U3
+         5sxg==
+X-Forwarded-Encrypted: i=1; AJvYcCWu63pgAgS3nLN2KlHEM30T2JG/FiXPl2WUfMFm923/WTraWaoF3x+j3jIQBLj8tf+U6fG6ZWg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyj3NZa6f3BmhbgymmqcFy8UaG22qV56fXP208eN/lwTvoEn3R1
+	ivIRbx7EjktrSXAKQI4DUVyFOcDJ93OK2PjoMVHsViyt8imtzxzfasenD02T0bYfVW1qrF4z3ia
+	rn9l1cbgrBvgTchCXV8HHkOfnBpOeerY97pcyUKl5
+X-Gm-Gg: ASbGncvP3SrRXyA15o0mqckLlmz7vYWr8bkdxNsH4NIyldfVkPX9R0NC6EBiYpVzTu4
+	3W+5pKZwn9Vnr5UnvQKrgP19tyTGCte+UxwPJ+2YsEyo63sadRUYMMDPIhJrHcpGHu26HTsH5b/
+	BSsgL12KryjX0JV1oAwHaOfis0eoC/HKRWRSBip3xvlwhfVZij+brVcPhD+lC9P+mZ4DApcWpBK
+	FRl8kMJMJSXirwTVC+kPoH4y2s+7aFm8Rg4BT/aUGA7pTnHcoukGu3tScW51v6ASbn4yuc7Co+l
+	2gQgVDZZrG72fYKWmePSPlE=
+X-Google-Smtp-Source: AGHT+IHAavia4dajmjd1wu0ozenk/EgHnS13fnhiNCGOo15GBQoO3qzrk0f46KUvjIzbKPhJBuIwwZghoR1ZvbV+ZV8=
+X-Received: by 2002:a05:600c:681b:b0:46e:4921:9443 with SMTP id
+ 5b1f17b1804b1-4711792a6bemr42023365e9.37.1760734113965; Fri, 17 Oct 2025
+ 13:48:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251017145147.138822285@linuxfoundation.org>
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-From: Brett Mastbergen <bmastbergen@ciq.com>
-Date: Fri, 17 Oct 2025 16:31:13 -0400
-X-Gm-Features: AS18NWAWVvdm9jPTS1ddtyd-wd5oGJSWRBN2RKy5mD95QqYr0wV-qU9IWXqpvdI
-Message-ID: <CAOBMUvgT47EEqCi9_np-Fx6j7dR9=RhqY_tsb7+gMYi7Jb05WA@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/277] 6.12.54-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org
+References: <20251017000051.2094101-1-jthies@google.com> <abd715e2-6edd-4f35-a308-d2ee9a5ca334@panix.com>
+In-Reply-To: <abd715e2-6edd-4f35-a308-d2ee9a5ca334@panix.com>
+From: Jameson Thies <jthies@google.com>
+Date: Fri, 17 Oct 2025 13:48:21 -0700
+X-Gm-Features: AS18NWBOVLDYxDh3NOr1aYj7ImsXftnVZMr0nHmHk5U7INnmD_I0toUf4vs0lBc
+Message-ID: <CAMFSARdUMJ3WX1L8U-2k1w7kmH8Z4y7=MKKEBjCmyY-94wiBig@mail.gmail.com>
+Subject: Re: [PATCH] usb: typec: ucsi: psy: Set max current to zero when disconnected
+To: Kenneth Crudup <kenny@panix.com>
+Cc: heikki.krogerus@linux.intel.com, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dmitry.baryshkov@oss.qualcomm.com, 
+	bleung@chromium.org, gregkh@linuxfoundation.org, akuchynski@chromium.org, 
+	abhishekpandit@chromium.org, sebastian.reichel@collabora.com, 
+	linux-pm@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 17, 2025 at 11:16=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.54 release.
-> There are 277 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 19 Oct 2025 14:50:59 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.54-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+> Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+> Subject: [PATCH] usb: typec: ucsi: psy: Set max current to zero when disconnected
+> Link: https://lore.kernel.org/stable/20251017000051.2094101-1-jthies%40google.com
 
-Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
-Intel Core i7-12600H
+My mistake, I'll send up a v2 adding the appropriate CCs.
 
-Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
+> I wonder if this is the reason my (Kubuntu 25.04, FWIW) system will
+> sometimes show the battery icon as "Charging" even when it's discharging
+> (or nothing is plugged into either USB-C port)?
 
-Thanks,
-Brett
+The update to set max current to 0.1A for BC and default USB operation
+landed only a couple months ago. If the battery icon issue is a recent
+regression, it's definitely possible.
 
