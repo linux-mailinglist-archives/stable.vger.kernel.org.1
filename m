@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-186629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AF7EBE9DFE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 628D7BE9FDE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25E5E7480DD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 627966E83FD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE732F12B2;
-	Fri, 17 Oct 2025 15:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C51C336EF1;
+	Fri, 17 Oct 2025 15:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0R2RNuv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gYaAXaV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD9533710B;
-	Fri, 17 Oct 2025 15:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38923336EEA;
+	Fri, 17 Oct 2025 15:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713784; cv=none; b=RkJ2n8vtR3QGMa9IKG2xubp5jHRC10RRrq28zn4OBS8EF83aXrM7U4hqM+cxoFJbo1mZYkGPUfm/bQQoL855OA7Ut0Mp563iZc2ldGhDu1Q3nalEDl2vvYitRCnrSheTG8gaZij6Sank/CtfpVwOirtHa4wDu8ByERJ3jAYZJ+E=
+	t=1760714516; cv=none; b=cZ5jSMoG2Fw4bTc9Yjhf0CJkfLsGjahvaQqGi8JOAKGys1mXJ0ePU7JbpDIwgh5vTGqDBRNyK83KcPhmDykuffYF8tshVyvY5gvyLP5m/6XMU6sF1mg2mS3pky0FX2SNwU0Gxgu6zqNe2dS0PnkFbLNnDAnjk/t4/bwmIjU/0zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713784; c=relaxed/simple;
-	bh=5kFpIzrHfJwSGVCn8pMoqqufQn1zu1A/9cf4NPs8i7M=;
+	s=arc-20240116; t=1760714516; c=relaxed/simple;
+	bh=SgYRcrrggEymZh0Z3kvL4ZltgCuTmovO29DMXaE51Hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDJceRuuXQbZkG8iuJm59srpZMhEgOPJtX/jSoTD3Svv4/9uHvNeNPIE6gPTtVeMN0JlhjWDUDZoUi6mfDIwxek/JoWkSn428J1Ys4q1/XyQ4Hi9CzQhDYRJHjmppfny+AaRW1Y3AUbBNHTTcIVdh0/TytNp9CSwRlMza6492Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0R2RNuv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62125C4CEE7;
-	Fri, 17 Oct 2025 15:09:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TxnGxmFNivdevDjl8U1rXHuyZbbJC6q49suuFxgf/b8pJyBKC9lhVB5J950MuMm7ghupNozvwzFopwlyJ4K78qQcLUguvtmzqLHxaUPoYtMARGVQpzZ1GNo4ZWWxagAUQk1AcuL6qiL8bSsyorxPCkuX6GuBeORWnIufJzgV+fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gYaAXaV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EF4C4CEE7;
+	Fri, 17 Oct 2025 15:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713783;
-	bh=5kFpIzrHfJwSGVCn8pMoqqufQn1zu1A/9cf4NPs8i7M=;
+	s=korg; t=1760714516;
+	bh=SgYRcrrggEymZh0Z3kvL4ZltgCuTmovO29DMXaE51Hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0R2RNuvkQ3FFHmY8lTjw35ngIz3X1nDNg4O+EyoQUP25Te8y+9ZAx841Qy39Q1ww
-	 +4OqQzsju0GkCmDozlh2Ngsls6mE3umlEqr1FZyMkhO3kGoOUpUe6jL6f7JV7y5gIy
-	 iAGbpN1P0L0XNd4Rwsjk/z/rqYvl7QRGw4JLjtBY=
+	b=0gYaAXaVch1PCULrHSokP7Ah/6Q/GKi+czKsuhicXNPbie+IqccT6jRQYgFuxEFo/
+	 WjQMjE1xBsIhhjsLtwdwSJxu+NBOSRIIdGRsbTpaWG5RytX2SBRtOuKOpwjLj+d6tD
+	 sfJ3XXrks+upAksVwpjQ+RDjOWApdWfn3g1LN1KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH 6.6 085/201] cpufreq: intel_pstate: Fix object lifecycle issue in update_qos_request()
+	Michael Hennerich <michael.hennerich@analog.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 139/277] iio: frequency: adf4350: Fix prescaler usage.
 Date: Fri, 17 Oct 2025 16:52:26 +0200
-Message-ID: <20251017145137.877950081@linuxfoundation.org>
+Message-ID: <20251017145152.201053215@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,65 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Michael Hennerich <michael.hennerich@analog.com>
 
-commit 69e5d50fcf4093fb3f9f41c4f931f12c2ca8c467 upstream.
+commit 33d7ecbf69aa7dd4145e3b77962bcb8759eede3d upstream.
 
-The cpufreq_cpu_put() call in update_qos_request() takes place too early
-because the latter subsequently calls freq_qos_update_request() that
-indirectly accesses the policy object in question through the QoS request
-object passed to it.
+The ADF4350/1 features a programmable dual-modulus prescaler of 4/5 or 8/9.
+When set to 4/5, the maximum RF frequency allowed is 3 GHz.
+Therefore, when operating the ADF4351 above 3 GHz, this must be set to 8/9.
+In this context not the RF output frequency is meant
+- it's the VCO frequency.
 
-Fortunately, update_qos_request() is called under intel_pstate_driver_lock,
-so this issue does not matter for changing the intel_pstate operation
-mode, but it theoretically can cause a crash to occur on CPU device hot
-removal (which currently can only happen in virt, but it is formally
-supported nevertheless).
+Therefore move the prescaler selection after we derived the VCO frequency
+from the desired RF output frequency.
 
-Address this issue by modifying update_qos_request() to drop the
-reference to the policy later.
+This BUG may have caused PLL lock instabilities when operating the VCO at
+the very high range close to 4.4 GHz.
 
-Fixes: da5c504c7aae ("cpufreq: intel_pstate: Implement QoS supported freq constraints")
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Link: https://patch.msgid.link/2255671.irdbgypaU6@rafael.j.wysocki
+Fixes: e31166f0fd48 ("iio: frequency: New driver for Analog Devices ADF4350/ADF4351 Wideband Synthesizers")
+Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://patch.msgid.link/20250829-adf4350-fix-v2-1-0bf543ba797d@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/intel_pstate.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/iio/frequency/adf4350.c |   20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -1341,10 +1341,10 @@ static void update_qos_request(enum freq
- 			continue;
+--- a/drivers/iio/frequency/adf4350.c
++++ b/drivers/iio/frequency/adf4350.c
+@@ -149,6 +149,19 @@ static int adf4350_set_freq(struct adf43
+ 	if (freq > ADF4350_MAX_OUT_FREQ || freq < st->min_out_freq)
+ 		return -EINVAL;
  
- 		req = policy->driver_data;
--		cpufreq_cpu_put(policy);
--
--		if (!req)
-+		if (!req) {
-+			cpufreq_cpu_put(policy);
- 			continue;
-+		}
- 
- 		if (hwp_active)
- 			intel_pstate_get_hwp_cap(cpu);
-@@ -1360,6 +1360,8 @@ static void update_qos_request(enum freq
- 
- 		if (freq_qos_update_request(req, freq) < 0)
- 			pr_warn("Failed to update freq constraint: CPU%d\n", i);
++	st->r4_rf_div_sel = 0;
 +
-+		cpufreq_cpu_put(policy);
++	/*
++	 * !\TODO: The below computation is making sure we get a power of 2
++	 * shift (st->r4_rf_div_sel) so that freq becomes higher or equal to
++	 * ADF4350_MIN_VCO_FREQ. This might be simplified with fls()/fls_long()
++	 * and friends.
++	 */
++	while (freq < ADF4350_MIN_VCO_FREQ) {
++		freq <<= 1;
++		st->r4_rf_div_sel++;
++	}
++
+ 	if (freq > ADF4350_MAX_FREQ_45_PRESC) {
+ 		prescaler = ADF4350_REG1_PRESCALER;
+ 		mdiv = 75;
+@@ -157,13 +170,6 @@ static int adf4350_set_freq(struct adf43
+ 		mdiv = 23;
  	}
- }
  
+-	st->r4_rf_div_sel = 0;
+-
+-	while (freq < ADF4350_MIN_VCO_FREQ) {
+-		freq <<= 1;
+-		st->r4_rf_div_sel++;
+-	}
+-
+ 	/*
+ 	 * Allow a predefined reference division factor
+ 	 * if not set, compute our own
 
 
 
