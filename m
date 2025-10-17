@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-187437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E202BEA4DD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:56:07 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2337BE9BA1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 494FB586B34
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:48:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5E4A435DB46
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075682F12BB;
-	Fri, 17 Oct 2025 15:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDCC33291F;
+	Fri, 17 Oct 2025 15:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRXfDxhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/T8xDFO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79F6330B1E;
-	Fri, 17 Oct 2025 15:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580C81D5CE0;
+	Fri, 17 Oct 2025 15:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716069; cv=none; b=osX2wlkwq+0l3GOhuHNDsr8B2kwS11g2T0AJLqs1MhrJXDW63U5Mzkl/s0gQZfUSuk6FQ8NcalNKxQ338/yGYzzp5N9EPoyClCWVAELdGxZJIhevw8Rf9m1x7hFO7Bk5g3JoqIaYxSGf1xD/JQLpvBSVnR28k2Gy404vF8/FC0U=
+	t=1760714444; cv=none; b=XCbWv9mSTGf3/oGMSko+mHnK5l+F8QF2knd2cCSRyEAFgLGg1TTG8wq1atrPpVcyGdhq5sLwu6onR4R7MTMGKjdwGwaByKO2Y4fKkFPeFz+p1yxBNYgx8katRCfVt31JCCRqGb6v2/2F0sDLZP+3qKxmUl6CkakNO0JSe2ielqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716069; c=relaxed/simple;
-	bh=YYCrFpBOyPkgRohNCK964Be7iJBFZFh1syVDvpp0mag=;
+	s=arc-20240116; t=1760714444; c=relaxed/simple;
+	bh=VJBHMiXlBaLTuCNDqJWMXG55sXIucT25bpf4D8VjP/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MW+8GnYU+NRVQdyyCC48Z0iDmS64hj4yo46zGBU864SKCOzdJvREXcoIOJO6BHf2AZIr8XLOUFYWTU+DQOZ9MTx+Qv+AQcM5Hv8vfQ5yz/mzDHL3ooLPbhAGrFpTK/rFIiwK6gO30+h3VoqHbYiDaUQg5fkZ03NPoVAAtadNS/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRXfDxhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AF7C4CEFE;
-	Fri, 17 Oct 2025 15:47:48 +0000 (UTC)
+	 MIME-Version; b=FQ/d600ejmsn7fD4IVDjUflyzpIWuddnHKMHIpC7obMu+8r46iKa7fq5Dr0aoJKVWI393p72y0uoYXKvGtnP4lKmFQdXmuV8jMYHxFxdOi0kZHYzQymRI9qmYjCXcKEEUQos2XJlJB5BT/n2vg7D602xJBO8962PydP6dUSXkWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/T8xDFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB028C4CEE7;
+	Fri, 17 Oct 2025 15:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716069;
-	bh=YYCrFpBOyPkgRohNCK964Be7iJBFZFh1syVDvpp0mag=;
+	s=korg; t=1760714444;
+	bh=VJBHMiXlBaLTuCNDqJWMXG55sXIucT25bpf4D8VjP/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRXfDxhLhGwX3D9z8VsXmFPdbYFh7anrMuVPDa89uXwWz25X5ME+AsiNacZ7h9hyD
-	 +5v2eopHflv2oR7LCyxxXwYak2h6s/iadM32kXaDt0TE/FQw3RFE6kH3YmdLl1PNzA
-	 Jt0G5Vgsp9z1tzScyosiC4g+nojQ1NRSVYojDuFQ=
+	b=W/T8xDFOo4nStfFTMRy5GEpSQ5Qwe6fAsikRS9Mc2LnDozwv2Ck3JGnQq9DoIYXqi
+	 2yhJC3yevCoyjkrnPNlc/GgO+wv/H2nyRg8Cfif/DS+LqjgO2nc4posKGRYFfOIj76
+	 lgfhulF8UbK45qbajipLf/IR3+mTom6GfXoHigvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/276] tcp: fix __tcp_close() to only send RST when required
+	Markus Elfring <Markus.Elfring@web.de>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Yu Kuai <yukuai1@huaweicloud.com>,
+	Li Chen <chenl311@chinatelecom.cn>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 148/277] loop: fix backing file reference leak on validation error
 Date: Fri, 17 Oct 2025 16:52:35 +0200
-Message-ID: <20251017145144.753755014@linuxfoundation.org>
+Message-ID: <20251017145152.528627400@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Li Chen <me@linux.beauty>
 
-[ Upstream commit 5f9238530970f2993b23dd67fdaffc552a2d2e98 ]
+commit 98b7bf54338b797e3a11e8178ce0e806060d8fa3 upstream.
 
-If the receive queue contains payload that was already
-received, __tcp_close() can send an unexpected RST.
+loop_change_fd() and loop_configure() call loop_check_backing_file()
+to validate the new backing file. If validation fails, the reference
+acquired by fget() was not dropped, leaking a file reference.
 
-Refine the code to take tp->copied_seq into account,
-as we already do in tcp recvmsg().
+Fix this by calling fput(file) before returning the error.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Link: https://patch.msgid.link/20250903084720.1168904-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Markus Elfring <Markus.Elfring@web.de>
+CC: Yang Erkun <yangerkun@huawei.com>
+Cc: Ming Lei <ming.lei@redhat.com>
+Cc: Yu Kuai <yukuai1@huaweicloud.com>
+Fixes: f5c84eff634b ("loop: Add sanity check for read/write_iter")
+Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/block/loop.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 9508e2c90b840..b3d373372e841 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2747,8 +2747,8 @@ bool tcp_check_oom(struct sock *sk, int shift)
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -536,8 +536,10 @@ static int loop_change_fd(struct loop_de
+ 		return -EBADF;
  
- void __tcp_close(struct sock *sk, long timeout)
- {
-+	bool data_was_unread = false;
- 	struct sk_buff *skb;
--	int data_was_unread = 0;
- 	int state;
+ 	error = loop_check_backing_file(file);
+-	if (error)
++	if (error) {
++		fput(file);
+ 		return error;
++	}
  
- 	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
-@@ -2767,11 +2767,12 @@ void __tcp_close(struct sock *sk, long timeout)
- 	 *  reader process may not have drained the data yet!
- 	 */
- 	while ((skb = __skb_dequeue(&sk->sk_receive_queue)) != NULL) {
--		u32 len = TCP_SKB_CB(skb)->end_seq - TCP_SKB_CB(skb)->seq;
-+		u32 end_seq = TCP_SKB_CB(skb)->end_seq;
+ 	/* suppress uevents while reconfiguring the device */
+ 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 1);
+@@ -973,8 +975,10 @@ static int loop_configure(struct loop_de
+ 		return -EBADF;
  
- 		if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN)
--			len--;
--		data_was_unread += len;
-+			end_seq--;
-+		if (after(end_seq, tcp_sk(sk)->copied_seq))
-+			data_was_unread = true;
- 		__kfree_skb(skb);
- 	}
+ 	error = loop_check_backing_file(file);
+-	if (error)
++	if (error) {
++		fput(file);
+ 		return error;
++	}
  
--- 
-2.51.0
-
+ 	is_loop = is_loop_device(file);
+ 
 
 
 
