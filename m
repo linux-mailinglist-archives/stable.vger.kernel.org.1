@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-186741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B22BE9D95
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3208BEA0FE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 750145884AC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90DC4745DD7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367A4335063;
-	Fri, 17 Oct 2025 15:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473712745E;
+	Fri, 17 Oct 2025 15:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVFTJ0nw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uljfJdvG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E668B2F12CF;
-	Fri, 17 Oct 2025 15:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B363370FB;
+	Fri, 17 Oct 2025 15:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714105; cv=none; b=Bhconie6XT1XIXlk+XZy1vUWT46MAN+6Vgc0MraW/Gz1T65d+3ulczovPI4AakzMthP/l4Eu5onbHPTaf1BHpIlh4nWe++zrsL/ymL65E1AftY5lAG0lvJtfRv6tdzRPiHEN/GROiZTO82SoNh5gEoynb95nhAwg9zLeLrimsgU=
+	t=1760714923; cv=none; b=jDfMqaektI/ZF4RpkctNWfh9rf7A4gpFDo5690NoWSECkUCoBbfv0RFHrwk0xNKxCY9r0LkZMAERKpTF6WYetmsMRz7HpableSHAwYD+EgBtmJIWMlHgk+lxJdKc6Wv2sQYFgYugiak9cpvgvQyIVOXxIUSwXnWIpw+NvXE/34w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714105; c=relaxed/simple;
-	bh=EZjBkxIrr78ZISRUTuLCewp/30ytmpIS1kRvjEvfMf8=;
+	s=arc-20240116; t=1760714923; c=relaxed/simple;
+	bh=OOSW01oQTh1xfBbsMOffrHLUao5ji+7kMImoRrAUpzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iuR5N+4p1H+aN3on5wE3cfL0T3W1Nus2o+5XQbkS2Hhr9ktQpKUmdbyn1c6qrvFzwcQrRcpD0lsQi343eBk/LTbNR7LCuq1pIf1yEbRe6TUle0tYqB3ktQXv6qmp2MXFV7ZObjkRUdfEWndLSXOX03tVw97sloO5qecdcuKUG6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVFTJ0nw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2A4C4CEE7;
-	Fri, 17 Oct 2025 15:15:04 +0000 (UTC)
+	 MIME-Version; b=NhFfLf51/gU9WKCE5yYWaNCEXWyGuLRey7d+R5IgAKgbfBBFDJkocKbm8eOfPsx4iP9wPqNnGaCNo6PrNKHSLgE4e7T3AaYS2MLY9r/xFoEn9ql97dvhpvnIXZF0xbtT/rblZuz3d8pD36ad67lkLuoqLJi+YtaNHOBRBwJG6ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uljfJdvG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF3DC4CEE7;
+	Fri, 17 Oct 2025 15:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714104;
-	bh=EZjBkxIrr78ZISRUTuLCewp/30ytmpIS1kRvjEvfMf8=;
+	s=korg; t=1760714922;
+	bh=OOSW01oQTh1xfBbsMOffrHLUao5ji+7kMImoRrAUpzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVFTJ0nwjNXM/x5A4caNyowGKejmrMERk3kgu/pMp5jJZaHB+Q1C+KlQ4DtECNNMX
-	 rA7Bi1HfEHLfFU6g1tpXzqPH6zwoaN69H38HrlW41RkC+UtMRp/iT3veFkPtix1qEY
-	 HvRFk9ONCfCaimFWFIKQbNiNX0B7KJxfFDinqI5I=
+	b=uljfJdvGXNu9nwc048DhqnCMeRbTEar3/s+ABhMDtZxXmwhlUpcXa17IaqkLUlef+
+	 688FYdgDtuq02rsV+nl4XnlB3FdDLQSCneqd2fxirsbZ61Nj4eRN3Bz2Sr63PlkREM
+	 IhI5wTfReVA/5jJuBEZiVMtr2+flevocSHqtRP/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Subject: [PATCH 6.12 004/277] rseq: Protect event mask against membarrier IPI
+	Ian Rogers <irogers@google.com>,
+	Yunseong Kim <ysk@kzalloc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 036/371] perf util: Fix compression checks returning -1 as bool
 Date: Fri, 17 Oct 2025 16:50:11 +0200
-Message-ID: <20251017145147.304978615@linuxfoundation.org>
+Message-ID: <20251017145203.107043422@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +69,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Yunseong Kim <ysk@kzalloc.com>
 
-commit 6eb350a2233100a283f882c023e5ad426d0ed63b upstream.
+[ Upstream commit 43fa1141e2c1af79c91aaa4df03e436c415a6fc3 ]
 
-rseq_need_restart() reads and clears task::rseq_event_mask with preemption
-disabled to guard against the scheduler.
+The lzma_is_compressed and gzip_is_compressed functions are declared
+to return a "bool" type, but in case of an error (e.g., file open
+failure), they incorrectly returned -1.
 
-But membarrier() uses an IPI and sets the PREEMPT bit in the event mask
-from the IPI, which leaves that RMW operation unprotected.
+A bool type is a boolean value that is either true or false.
+Returning -1 for a bool return type can lead to unexpected behavior
+and may violate strict type-checking in some compilers.
 
-Use guard(irq) if CONFIG_MEMBARRIER is enabled to fix that.
+Fix the return value to be false in error cases, ensuring the function
+adheres to its declared return type improves for preventing potential
+bugs related to type mismatch.
 
-Fixes: 2a36ab717e8f ("rseq/membarrier: Add MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4b57fd44b61beb51 ("perf tools: Add lzma_is_compressed function")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Stephen Brennan <stephen.s.brennan@oracle.com>
+Link: https://lore.kernel.org/r/20250822162506.316844-3-ysk@kzalloc.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rseq.h |   11 ++++++++---
- kernel/rseq.c        |   10 +++++-----
- 2 files changed, 13 insertions(+), 8 deletions(-)
+ tools/perf/util/lzma.c | 2 +-
+ tools/perf/util/zlib.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/rseq.h
-+++ b/include/linux/rseq.h
-@@ -7,6 +7,12 @@
- #include <linux/preempt.h>
- #include <linux/sched.h>
+diff --git a/tools/perf/util/lzma.c b/tools/perf/util/lzma.c
+index bbcd2ffcf4bd1..c355757ed3911 100644
+--- a/tools/perf/util/lzma.c
++++ b/tools/perf/util/lzma.c
+@@ -120,7 +120,7 @@ bool lzma_is_compressed(const char *input)
+ 	ssize_t rc;
  
-+#ifdef CONFIG_MEMBARRIER
-+# define RSEQ_EVENT_GUARD	irq
-+#else
-+# define RSEQ_EVENT_GUARD	preempt
-+#endif
-+
- /*
-  * Map the event mask on the user-space ABI enum rseq_cs_flags
-  * for direct mask checks.
-@@ -41,9 +47,8 @@ static inline void rseq_handle_notify_re
- static inline void rseq_signal_deliver(struct ksignal *ksig,
- 				       struct pt_regs *regs)
- {
--	preempt_disable();
--	__set_bit(RSEQ_EVENT_SIGNAL_BIT, &current->rseq_event_mask);
--	preempt_enable();
-+	scoped_guard(RSEQ_EVENT_GUARD)
-+		__set_bit(RSEQ_EVENT_SIGNAL_BIT, &current->rseq_event_mask);
- 	rseq_handle_notify_resume(ksig, regs);
- }
+ 	if (fd < 0)
+-		return -1;
++		return false;
  
---- a/kernel/rseq.c
-+++ b/kernel/rseq.c
-@@ -255,12 +255,12 @@ static int rseq_need_restart(struct task
+ 	rc = read(fd, buf, sizeof(buf));
+ 	close(fd);
+diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
+index 78d2297c1b674..1f7c065230599 100644
+--- a/tools/perf/util/zlib.c
++++ b/tools/perf/util/zlib.c
+@@ -88,7 +88,7 @@ bool gzip_is_compressed(const char *input)
+ 	ssize_t rc;
  
- 	/*
- 	 * Load and clear event mask atomically with respect to
--	 * scheduler preemption.
-+	 * scheduler preemption and membarrier IPIs.
- 	 */
--	preempt_disable();
--	event_mask = t->rseq_event_mask;
--	t->rseq_event_mask = 0;
--	preempt_enable();
-+	scoped_guard(RSEQ_EVENT_GUARD) {
-+		event_mask = t->rseq_event_mask;
-+		t->rseq_event_mask = 0;
-+	}
+ 	if (fd < 0)
+-		return -1;
++		return false;
  
- 	return !!event_mask;
- }
+ 	rc = read(fd, buf, sizeof(buf));
+ 	close(fd);
+-- 
+2.51.0
+
 
 
 
