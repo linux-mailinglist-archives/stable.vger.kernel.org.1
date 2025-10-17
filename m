@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 005E6BEA0CE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:53 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F7CBE9BB5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1C38189540E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E90F735DBEE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA4A3328EC;
-	Fri, 17 Oct 2025 15:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC6A3328E9;
+	Fri, 17 Oct 2025 15:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cU6ynnsn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F76ihXLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A48D32C944;
-	Fri, 17 Oct 2025 15:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9731632C944;
+	Fri, 17 Oct 2025 15:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715370; cv=none; b=SLiHonstUv4n09/lYTDCdn8jhgftl/XrZueGX6PODhJ8PXCWgpcSuRItcdcABU13jxxO/sPJP3pM/4c4cAOojJnAtVQw/2cugbA+5J7m++lK273pBWnQ8k1Sn9S4o+IeXiYGlA+FZ/fYNDrsx+Na8N1aEdyK1Zi8nkqlvibZPe4=
+	t=1760714475; cv=none; b=P150TSjmIFs6pdgtqzItPehPLCq4eTxY+9I0SZJX3KQUeW0LCfmfWyn2zdFtr0UgOwiDVVzRZLdMnXV3UAcXJ1TG+A7Hen028ImttVneAAJcAvafpCqElvb2h+ULSlcf4xqtNyF1GGZkYE1etvnGygq4S+k+lyfgfwkLVL1Si5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715370; c=relaxed/simple;
-	bh=/5iHVqXygcYIP8WDWYGlsTR2W2DOav2V1cdKZftV1Yc=;
+	s=arc-20240116; t=1760714475; c=relaxed/simple;
+	bh=5/x5vAuNxv7/llw97bzi+CgOAxB/OK114Jy9UKydeNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uarzz0uKXn2XtJoCGHgYkixjjIASCnc2+297IjtGf+GFH0CumZEtr9mIoCgNBLPpMzHWeogueqfyaZOdikyOFSCfec4H8x8LWJcyaIBXPafF5prcktbO82ipS47t+x5GZFEdBpoh1RNQCQQkcetu6rWyYlZG2TPluYsiFomPYqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cU6ynnsn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80652C113D0;
-	Fri, 17 Oct 2025 15:36:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AQZyybo3nwxvNfG4h0nc9FHb2RgZ+tIJSdYdosxrlZTnj+EXPYAQ4LDHWYhpQYfAEzV5C4i8ce0J6WFrDiDMKBxtOVQGqJE7DtGg8Rfyt4qCVSEkfi+hi4PXDXyU3D0tmpZF0OXduf99IohDTfIp4r28qk8VlgaiKt2anwCqFSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F76ihXLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24277C113D0;
+	Fri, 17 Oct 2025 15:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715366;
-	bh=/5iHVqXygcYIP8WDWYGlsTR2W2DOav2V1cdKZftV1Yc=;
+	s=korg; t=1760714475;
+	bh=5/x5vAuNxv7/llw97bzi+CgOAxB/OK114Jy9UKydeNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cU6ynnsnkOJmoBIsICxDeDfCpvU/rGZP5joWAv6L0vuV5GOQaEITywh5qNf7xkgeL
-	 swVR/Koq12XgyCznagN5MbEl2wL0YfaOOKW00YnUOmL3sanoxeK3oVxhF0NgorZ1LJ
-	 cIOlLOPuwgZ6d3ruqaRucgXo8s2MMhJsdcb9dDz0=
+	b=F76ihXLhpYtsXG9JN5WvPSZBhuPeGKkjSYTZ9iGGBdTO4FDocN+gTQATOGH5P0dnX
+	 Xxa0ORSN1+jt6iqmP38ejq3CfbKTSjDwjfqKk8mxR5StoC3gxYulBkU8yLqYTp/AvJ
+	 u1IFXcS9SJgG2s17/sPX1Y73IVfCsm/Wi3lrV3Sk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Vorel <pvorel@suse.cz>,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.17 190/371] drm/nouveau: fix bad ret code in nouveau_bo_move_prep
+	Jisheng Zhang <jszhang@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.12 158/277] pwm: berlin: Fix wrong register in suspend/resume
 Date: Fri, 17 Oct 2025 16:52:45 +0200
-Message-ID: <20251017145208.799451739@linuxfoundation.org>
+Message-ID: <20251017145152.893253829@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuhao Fu <sfual@cse.ust.hk>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-commit e4bea919584ff292c9156cf7d641a2ab3cbe27b0 upstream.
+commit 3a4b9d027e4061766f618292df91760ea64a1fcc upstream.
 
-In `nouveau_bo_move_prep`, if `nouveau_mem_map` fails, an error code
-should be returned. Currently, it returns zero even if vmm addr is not
-correctly mapped.
+The 'enable' register should be BERLIN_PWM_EN rather than
+BERLIN_PWM_ENABLE, otherwise, the driver accesses wrong address, there
+will be cpu exception then kernel panic during suspend/resume.
 
+Fixes: bbf0722c1c66 ("pwm: berlin: Add suspend/resume support")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://lore.kernel.org/r/20250819114224.31825-1-jszhang@kernel.org
 Cc: stable@vger.kernel.org
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
-Fixes: 9ce523cc3bf2 ("drm/nouveau: separate buffer object backing memory from nvkm structures")
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-berlin.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_bo.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
-@@ -929,7 +929,7 @@ done:
- 		nvif_vmm_put(vmm, &old_mem->vma[1]);
- 		nvif_vmm_put(vmm, &old_mem->vma[0]);
- 	}
--	return 0;
-+	return ret;
- }
+--- a/drivers/pwm/pwm-berlin.c
++++ b/drivers/pwm/pwm-berlin.c
+@@ -234,7 +234,7 @@ static int berlin_pwm_suspend(struct dev
+ 	for (i = 0; i < chip->npwm; i++) {
+ 		struct berlin_pwm_channel *channel = &bpc->channel[i];
  
- static int
+-		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_ENABLE);
++		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_EN);
+ 		channel->ctrl = berlin_pwm_readl(bpc, i, BERLIN_PWM_CONTROL);
+ 		channel->duty = berlin_pwm_readl(bpc, i, BERLIN_PWM_DUTY);
+ 		channel->tcnt = berlin_pwm_readl(bpc, i, BERLIN_PWM_TCNT);
+@@ -262,7 +262,7 @@ static int berlin_pwm_resume(struct devi
+ 		berlin_pwm_writel(bpc, i, channel->ctrl, BERLIN_PWM_CONTROL);
+ 		berlin_pwm_writel(bpc, i, channel->duty, BERLIN_PWM_DUTY);
+ 		berlin_pwm_writel(bpc, i, channel->tcnt, BERLIN_PWM_TCNT);
+-		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_ENABLE);
++		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_EN);
+ 	}
+ 
+ 	return 0;
 
 
 
