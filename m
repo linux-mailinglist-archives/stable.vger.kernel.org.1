@@ -1,72 +1,87 @@
-Return-Path: <stable+bounces-186250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E42CBE6E55
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 09:09:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5F1EBE6EC2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 09:25:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 038551A67A34
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 07:10:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F56B3AC1F3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 07:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEF7310783;
-	Fri, 17 Oct 2025 07:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883ED21D59C;
+	Fri, 17 Oct 2025 07:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWwyv5cW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfkBtycp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCAE30C61F;
-	Fri, 17 Oct 2025 07:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A1223B0
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 07:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760684977; cv=none; b=A0VaHctKARulc8r5reH5q2sJyK62OmXwRkr1qF12x3mq+8IhVvoZmqn8WyzUVn5ocNhlel+GYwBy5KSRelV9KJL1S8GgQ2XVyNWdWzqsgWjj/pFleAkejrThafoRqNqlWTqc3Z8nwEa0gj89qSQJZgwzcFWfbfnLVVTsgAaYDis=
+	t=1760685918; cv=none; b=uu8BSDubFu/VulfixB4pZ5TxTm5VKWTZfgQ3u2O97zp0o01pybwETOt/IWqa7n9+7HBXV+fOPgB2DsPFsjmoLUmxECR/If4lrKINvuesaVfbModsMRDwbxuKLP1v6X3m+FhDLTx+MSmItbDoDIVpNqn3QaaW3DhqPcH3IfbvaOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760684977; c=relaxed/simple;
-	bh=jV+TUIskuSaW4PqPLIhhgcZ+dMmdnbPKzrkpZD9Ujmw=;
+	s=arc-20240116; t=1760685918; c=relaxed/simple;
+	bh=22K/HNC17+AdCshY6tozqt4gBMDZnC30mupe9USAYQc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fNwXPTBZAopnrV07hZyByKMQfueYRzfSiDcRaIjtIjZs18ZfveDCnRgWMlvhpAfqKpvPJxCBse7Avi6J9yLMTK7B2ChKDkcqL5djb/G3FBB9tnAq5fHfy1Yj7PwTOqIyhm3ptIo2HPYCwSaUoVAoDpSsqZmKOEWh8Jp2aSCmuec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWwyv5cW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF20FC4CEFE;
-	Fri, 17 Oct 2025 07:09:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=W6r70MRGmbL+k33wM64W/Qd5GVr0F80JzAslQ88NKSXxnGuibJVWArgGPXgd944uaFEakHx0uIWuA1uNRViQ31x2vqfuoGgfzhsarlJFMDaa91dDvaGon3zcDNYodYbUhAJzO36bP8zEPM4ZoRcJtoQtoS68xEat2EYmhUIfJeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfkBtycp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E14C4CEF9;
+	Fri, 17 Oct 2025 07:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760684977;
-	bh=jV+TUIskuSaW4PqPLIhhgcZ+dMmdnbPKzrkpZD9Ujmw=;
+	s=korg; t=1760685917;
+	bh=22K/HNC17+AdCshY6tozqt4gBMDZnC30mupe9USAYQc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uWwyv5cWRtSUZESQHsSxt0/MxePRymFTASYKjv5ennh9et2DqUSl5g3Fb2Oks1dM7
-	 ZIKajvWjbwvIZz6vSk7puZUH456bgWf+4vsYPH5O+Gjqd4krvN7YpunM9vqJkxBkNw
-	 pcVHhZXXiuux19HFZI/u6ajs1VA1OsxrpM8Sx92k=
-Date: Fri, 17 Oct 2025 09:09:34 +0200
+	b=bfkBtycp+//lFf0d7xJxk1eV3PBv7U1NJ1XUQEWjZ8b1xNauWJVt7AQHleAr2ugkZ
+	 k1eKJb8lGjyCAWPOz49IUgjDCzEwC73bksuXw8UUzOEhIYex6S0IataE/LY7GYT9T/
+	 Xl4pLm6vhT9IE2ost8ZneYBiqK1Ijrytq6Oviwc4=
+Date: Fri, 17 Oct 2025 09:25:15 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: Apply 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN
- with clang-17 and older") to 6.12
-Message-ID: <2025101729-squatting-resale-9042@gregkh>
-References: <20251015003231.GA2336835@ax162>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	debian-powerpc <debian-powerpc@lists.debian.org>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	linux-stable <stable@vger.kernel.org>
+Subject: Re: Kernel failing to build on 32-bit powerpc
+Message-ID: <2025101758-appendage-postal-6d5e@gregkh>
+References: <eb8a89e43f01a920244bde9252cbe4f5c0e2d75a.camel@physik.fu-berlin.de>
+ <bd6fbf70-bf31-4b95-86db-68c0626a3338@csgroup.eu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251015003231.GA2336835@ax162>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bd6fbf70-bf31-4b95-86db-68c0626a3338@csgroup.eu>
 
-On Tue, Oct 14, 2025 at 05:32:31PM -0700, Nathan Chancellor wrote:
-> Hi stable folks,
+On Fri, Oct 17, 2025 at 08:49:06AM +0200, Christophe Leroy wrote:
+> Hi,
 > 
-> Please apply commit 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable
-> KASAN with clang-17 and older") to 6.12 (and possibly 6.6), as upstream
-> commit 6f110a5e4f99 ("Disable SLUB_TINY for build testing") was
-> backported to those trees, introducing the warning for at least 6.12. It
-> applies cleanly for me. If there are any issues, please let me know.
+> Le 16/10/2025 à 21:03, John Paul Adrian Glaubitz a écrit :
+> > Hi,
+> > 
+> > could someone investigate the following build failure on powerpc [1], please?
+> > 
+> > In file included from /build/reproducible-path/linux-6.16.12/kernel/sched/build_policy.c:64:
+> > /build/reproducible-path/linux-6.16.12/kernel/sched/ext_idle.c: In function ‘is_bpf_migration_disabled’:
+> > /build/reproducible-path/linux-6.16.12/kernel/sched/ext_idle.c:893:14: error: ‘const struct task_struct’ has no member named ‘migration_disabled’
+> >    893 |         if (p->migration_disabled == 1)
+> >        |              ^~
+> > /build/reproducible-path/linux-6.16.12/kernel/sched/ext_idle.c:896:25: error: ‘const struct task_struct’ has no member named ‘migration_disabled’
+> >    896 |                 return p->migration_disabled;
+> >        |                         ^~
+> > 
+> 
+> I guess 6.16.12 is missing commit cac5cefbade9 ("sched/smp: Make SMP
+> unconditional")
 
-Now queued up, thanks.
+6.16 is now end-of-life, so not much we can do there, sorry.
 
 greg k-h
 
