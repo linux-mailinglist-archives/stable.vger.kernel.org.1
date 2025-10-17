@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-186933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B9ABE9C54
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B34A7BE989B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D6C9835E18E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45CF33B327D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1974B3328EE;
-	Fri, 17 Oct 2025 15:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACD732E121;
+	Fri, 17 Oct 2025 15:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/PGo1Gf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HssRvOIQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D472F12D0;
-	Fri, 17 Oct 2025 15:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABF02F12D2;
+	Fri, 17 Oct 2025 15:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714643; cv=none; b=T30c/MCgoz+NkEkIWcQHLfG0rPb6GdbC/VHqaU23luGfkfnmcUGPxFx3Wn5AKRySKUf8gcpQPDSd1nDbiC9y+q7FBXgfQGRl6XSVzmY8YJBmKShUm2jcxPl6f5AGv+FTRhKPcX/YLS/Wm9gkI4YBH4+3Xe0IKtnWzNbmOFxf9oI=
+	t=1760713380; cv=none; b=qpgxIOUMajfFvLFSmKa3JdY14HLUB/XlWI0TV5M/3w/t30+Csu/cSMGKL2zp1m4s3K5Z5trAjMNFBmjLU9VVUf0/szMs4k+mLTE6XCSqJUzhUIuCFPaRRTgWpY02w/xviJ8XhKPOdwa3YgUS9YU+I80qgGMipGvtmNMajQV7OVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714643; c=relaxed/simple;
-	bh=QOovSz7EcVuLPXOkZdVqM0SoM8Du7NscYI2cBk4CEVI=;
+	s=arc-20240116; t=1760713380; c=relaxed/simple;
+	bh=LmL+QvAgcekx3cN+RvuDz+5Eoj67+18dR7lABdud/v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ub+nigTrE+GdHYHhBhH6GIMqS4FB6qJrM0Hc5Enc14Qvq3fyOgsZgqFcYXYrecI250Z3cQTFnPmDgvxYtKHxWM28L/ie50M9bR95EzsFpKaX2qUJlIAc0jpEyM3rElPL/RePltN7lNjCzq+GEXBS0NEKg8EkqPkw6opMF1DO9YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/PGo1Gf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48816C4CEE7;
-	Fri, 17 Oct 2025 15:24:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XhoPUB5b7loPSWxvEYYmayga68rsIiGHy0rutiEbb8Zox62mlzljPulHFMQWA4/uVnF7n1+SalDoLYa8ng29MhaAxkNAWqoQzduJ03cpokYxxXg5/InMR82LqHQ4Md4agJUaLIakRt0Ut9Xqv3evtBjmYL1DVfS76jonP1ZYlmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HssRvOIQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10237C4CEE7;
+	Fri, 17 Oct 2025 15:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714643;
-	bh=QOovSz7EcVuLPXOkZdVqM0SoM8Du7NscYI2cBk4CEVI=;
+	s=korg; t=1760713380;
+	bh=LmL+QvAgcekx3cN+RvuDz+5Eoj67+18dR7lABdud/v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/PGo1GfrA7sxbwFYvKjuceIirIuh5zJdCvrETbNRJPXJOl//4ycMVbtSPXbqGKQ6
-	 A5UjvDzr7QZPhmzjvVCHE+EfF8/QIpie6I4JTFDwwPUJczvFrBHAm/LnOoQ5oghS0a
-	 eAmpsMQkS3/qyrHnkaOJzrLAWp7kiZdk8ni6uDNc=
+	b=HssRvOIQdRB++/vfpEEaq/iZ7zQbPgArUQ9nxzTSxaAl9m/RDS3bDtiZ+aKmQPrb5
+	 /gbp0xlCoDMiUu3YVUb2jeuuKyceBKMNIXFCh/ftnnQYEBoPWCVW+pMGDMF8UiNLh8
+	 St2LTSkrYnRQEIoJMru4Exs1yr0ABdD4n7CEUuRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 217/277] ext4: fix an off-by-one issue during moving extents
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 145/168] PCI: endpoint: pci-epf-test: Add NULL check for DMA channels before release
 Date: Fri, 17 Oct 2025 16:53:44 +0200
-Message-ID: <20251017145155.053021357@linuxfoundation.org>
+Message-ID: <20251017145134.377777336@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit 12e803c8827d049ae8f2c743ef66ab87ae898375 upstream.
+[ Upstream commit 85afa9ea122dd9d4a2ead104a951d318975dcd25 ]
 
-During the movement of a written extent, mext_page_mkuptodate() is
-called to read data in the range [from, to) into the page cache and to
-update the corresponding buffers. Therefore, we should not wait on any
-buffer whose start offset is >= 'to'. Otherwise, it will return -EIO and
-fail the extents movement.
+The fields dma_chan_tx and dma_chan_rx of the struct pci_epf_test can be
+NULL even after EPF initialization. Then it is prudent to check that
+they have non-NULL values before releasing the channels. Add the checks
+in pci_epf_test_clean_dma_chan().
 
- $ for i in `seq 3 -1 0`; \
-   do xfs_io -fs -c "pwrite -b 1024 $((i * 1024)) 1024" /mnt/foo; \
-   done
- $ umount /mnt && mount /dev/pmem1s /mnt  # drop cache
- $ e4defrag /mnt/foo
-   e4defrag 1.47.0 (5-Feb-2023)
-   ext4 defragmentation for /mnt/foo
-   [1/1]/mnt/foo:    0%    [ NG ]
-   Success:                       [0/1]
+Without the checks, NULL pointer dereferences happen and they can lead
+to a kernel panic in some cases:
 
-Cc: stable@kernel.org
-Fixes: a40759fb16ae ("ext4: remove array of buffer_heads from mext_page_mkuptodate()")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20250912105841.1886799-1-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000050
+  Call trace:
+   dma_release_channel+0x2c/0x120 (P)
+   pci_epf_test_epc_deinit+0x94/0xc0 [pci_epf_test]
+   pci_epc_deinit_notify+0x74/0xc0
+   tegra_pcie_ep_pex_rst_irq+0x250/0x5d8
+   irq_thread_fn+0x34/0xb8
+   irq_thread+0x18c/0x2e8
+   kthread+0x14c/0x210
+   ret_from_fork+0x10/0x20
+
+Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
+Fixes: 5ebf3fc59bd2 ("PCI: endpoint: functions/pci-epf-test: Add DMA support to transfer data")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+[mani: trimmed the stack trace]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250916025756.34807-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/move_extent.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -225,7 +225,7 @@ static int mext_page_mkuptodate(struct f
- 	do {
- 		if (bh_offset(bh) + blocksize <= from)
- 			continue;
--		if (bh_offset(bh) > to)
-+		if (bh_offset(bh) >= to)
- 			break;
- 		wait_on_buffer(bh);
- 		if (buffer_uptodate(bh))
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -282,15 +282,20 @@ static void pci_epf_test_clean_dma_chan(
+ 	if (!epf_test->dma_supported)
+ 		return;
+ 
+-	dma_release_channel(epf_test->dma_chan_tx);
+-	if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
++	if (epf_test->dma_chan_tx) {
++		dma_release_channel(epf_test->dma_chan_tx);
++		if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
++			epf_test->dma_chan_tx = NULL;
++			epf_test->dma_chan_rx = NULL;
++			return;
++		}
+ 		epf_test->dma_chan_tx = NULL;
+-		epf_test->dma_chan_rx = NULL;
+-		return;
+ 	}
+ 
+-	dma_release_channel(epf_test->dma_chan_rx);
+-	epf_test->dma_chan_rx = NULL;
++	if (epf_test->dma_chan_rx) {
++		dma_release_channel(epf_test->dma_chan_rx);
++		epf_test->dma_chan_rx = NULL;
++	}
+ }
+ 
+ static void pci_epf_test_print_rate(const char *ops, u64 size,
 
 
 
