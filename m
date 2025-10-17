@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-187626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6909EBEA65A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E2FBEA278
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60C7E1884460
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3FF219A025D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F66257437;
-	Fri, 17 Oct 2025 15:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2573330B11;
+	Fri, 17 Oct 2025 15:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXma1gqS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JS0iSj3X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD09330B26;
-	Fri, 17 Oct 2025 15:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04FC1946C8;
+	Fri, 17 Oct 2025 15:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716615; cv=none; b=k8K+5AUMePktiEwfhCqYLPT046feQuf6LU49klhOnUF/ow0kUaCHfak4DGS9ycWqQTDZ0rvJp2F3A38z/LgJuqRn6viJS/2OyvUAsm1XtV3ADQ325DwOP+xPPtWhVcyajPuMW49Ez+FC+Gue/KidxgHFzJhm+sCvkn4cv7+cLnU=
+	t=1760715788; cv=none; b=DJ2x1F5EMg8ivyZy1n0dtnXmqp241yvoVZqQj+Gk4fGzjW0QGQQRGwx/wXHlStCwgZ1KoIR/TXahZbEy9QoveypW09K8UZjs3MT/XEZc9Fb6sUfP6Mc+AY1xl/xm2g5GPjm7hxUJB+dmZg3CLzJAxTOTkHOu6dON8Oh2wutKSCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716615; c=relaxed/simple;
-	bh=anRvgZJomLusgC+VepSBWDOPMwbn90HKT50kcNnj2Ls=;
+	s=arc-20240116; t=1760715788; c=relaxed/simple;
+	bh=9caCpVWC195JeU/JiXkCTzTYTPCKSIpS1Nd7veMYX7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ck2mdxQRelga993l1JDT33nh+9JOpCnih9snFijOWIVw0jMQaKmvykN1nu/hJywOfRiJJUDZiWACNd5pQjBjs4ZTZw60YEqk6NWPT6rvKANFR7iKzVeKTLKQluzsxpddNsZ6oZg7lhg2lRn9x609K9kMFq7n3KmmhKJIKBKion8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXma1gqS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B1CC4CEE7;
-	Fri, 17 Oct 2025 15:56:54 +0000 (UTC)
+	 MIME-Version; b=hVRUcSvinmOAeWxoFBt8pAg1ZAvHddB4Dbip15xpEQAhe82JrhgZB06SZp+TzK22CDSRUD5ikuJ3vkOquUHfQdjopReNq/u4M9NMwVi2VU0XeJLkIH+58i7A/z4OaqAwxfdyhas1JbPIQ4cfqz3NRfPZxWe9WPCWoe0IWm8Jtso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JS0iSj3X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01076C4CEFE;
+	Fri, 17 Oct 2025 15:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716615;
-	bh=anRvgZJomLusgC+VepSBWDOPMwbn90HKT50kcNnj2Ls=;
+	s=korg; t=1760715788;
+	bh=9caCpVWC195JeU/JiXkCTzTYTPCKSIpS1Nd7veMYX7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nXma1gqSYjs7LZWdamLSAjDxGKiBE5w0CrnOD3bazRRTHphFEEavEM3f5vtWdS95m
-	 OD/haO+3fvEK/1ooSeIHY4IlrB8h9YZw/GPj8tBTDTWTxh++iD54L69SmcUr94Pmas
-	 tFqgYQr8qsOnmNJiyoNyKSgYYT/CJGKdz0pOIC3A=
+	b=JS0iSj3XQcfnD+LD5Bc9No4X6bnLYe8fQ8LaptxHsD4UeJxlzuqFq4zVjBeAddOos
+	 2Syv6CjokHQlL609v/di82OU/6fWAxaaik2NTVeOnU+kLQ1U8i4+VZOSDvslIp4iGF
+	 S6It02NRasSchpvOQafX435PNX/5GUofiPIsYXKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 218/276] nfsd: nfserr_jukebox in nlm_fopen should lead to a retry
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH 6.17 336/371] media: iris: Fix format check for CAPTURE plane in try_fmt
 Date: Fri, 17 Oct 2025 16:55:11 +0200
-Message-ID: <20251017145150.421015094@linuxfoundation.org>
+Message-ID: <20251017145214.239224787@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-commit a082e4b4d08a4a0e656d90c2c05da85f23e6d0c9 upstream.
+commit 2dbd2645c07df8de04ee37b24f2395800513391e upstream.
 
-When v3 NLM request finds a conflicting delegation, it triggers
-a delegation recall and nfsd_open fails with EAGAIN. nfsd_open
-then translates EAGAIN into nfserr_jukebox. In nlm_fopen, instead
-of returning nlm_failed for when there is a conflicting delegation,
-drop this NLM request so that the client retries. Once delegation
-is recalled and if a local lock is claimed, a retry would lead to
-nfsd returning a nlm_lck_blocked error or a successful nlm lock.
+Previously, the format validation relied on an array of supported
+formats, which only listed formats for the OUTPUT plane. This caused
+failures when validating formats for the CAPTURE plane.
+Update the check to validate against the only supported format on the
+CAPTURE plane, which is NV12.
 
-Fixes: d343fce148a4 ("[PATCH] knfsd: Allow lockd to drop replies as appropriate")
-Cc: stable@vger.kernel.org # v6.6
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: fde6161d91bb ("media: iris: Add HEVC and VP9 formats for decoder")
+Cc: stable@vger.kernel.org
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # X1E80100
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/lockd.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/media/platform/qcom/iris/iris_vdec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/lockd.c
-+++ b/fs/nfsd/lockd.c
-@@ -48,6 +48,21 @@ nlm_fopen(struct svc_rqst *rqstp, struct
- 	switch (nfserr) {
- 	case nfs_ok:
- 		return 0;
-+	case nfserr_jukebox:
-+		/* this error can indicate a presence of a conflicting
-+		 * delegation to an NLM lock request. Options are:
-+		 * (1) For now, drop this request and make the client
-+		 * retry. When delegation is returned, client's lock retry
-+		 * will complete.
-+		 * (2) NLM4_DENIED as per "spec" signals to the client
-+		 * that the lock is unavailable now but client can retry.
-+		 * Linux client implementation does not. It treats
-+		 * NLM4_DENIED same as NLM4_FAILED and errors the request.
-+		 * (3) For the future, treat this as blocked lock and try
-+		 * to callback when the delegation is returned but might
-+		 * not have a proper lock request to block on.
-+		 */
-+		fallthrough;
- 	case nfserr_dropit:
- 		return nlm_drop_reply;
- 	case nfserr_stale:
+diff --git a/drivers/media/platform/qcom/iris/iris_vdec.c b/drivers/media/platform/qcom/iris/iris_vdec.c
+index d670b51c5839..0f5adaac829f 100644
+--- a/drivers/media/platform/qcom/iris/iris_vdec.c
++++ b/drivers/media/platform/qcom/iris/iris_vdec.c
+@@ -158,7 +158,7 @@ int iris_vdec_try_fmt(struct iris_inst *inst, struct v4l2_format *f)
+ 		}
+ 		break;
+ 	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
+-		if (!fmt) {
++		if (f->fmt.pix_mp.pixelformat != V4L2_PIX_FMT_NV12) {
+ 			f_inst = inst->fmt_dst;
+ 			f->fmt.pix_mp.pixelformat = f_inst->fmt.pix_mp.pixelformat;
+ 			f->fmt.pix_mp.width = f_inst->fmt.pix_mp.width;
+-- 
+2.51.0
+
 
 
 
