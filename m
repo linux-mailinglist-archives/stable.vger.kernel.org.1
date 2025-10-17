@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F5EBE999C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BF7BEA488
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BF2674292C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:03:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0361C1AE2E53
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A873570CC;
-	Fri, 17 Oct 2025 15:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1F82F12A0;
+	Fri, 17 Oct 2025 15:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHLG2Tqd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OF1CWtIf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AF6343210;
-	Fri, 17 Oct 2025 15:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBD9330B0F;
+	Fri, 17 Oct 2025 15:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713326; cv=none; b=aRtdYYE2s85Ud2V49YEknTyFjxNXGcQIGrRJc9SjNlMTfWYPoSzkq4cQ353RX75ywTczIttIzutt3vKJY5TihXO0qhljCPjRKmmAWpG3/EtYxVVQb6W74EQjDJrybD6qSsCFqz4SCBaH+jBIoMiqgYQJ+CZ9apFFAuQYJFhokkw=
+	t=1760716213; cv=none; b=Ppt+5RD/IjpanySgScyAuRPqij4fWAW6zQsXfLHDiU+JLWicYStmOKb/GmLgfUNEpy5LWgoulMLEXO51mEOiKTVaV5r3ywZWgcXgV0CCW42EurZ1WvUsP6iBYSAkxcCIK8G1pk5DH6rE+Ytwpt0+or7gh4g0370PrAIAAoWtxPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713326; c=relaxed/simple;
-	bh=c7Llca/0NMrPhKrc8BbhJG95zlOC6nRegVZ7s2SZSkE=;
+	s=arc-20240116; t=1760716213; c=relaxed/simple;
+	bh=GhrSGDCL9SJP+EfT7xugyPPQSvYQQVjQmvRW2QHwVX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fZaNRHtZZPw38geY4XrnOrQnRb6RoTqVPdEzrYpCOU9Uc0SMBDv5tcRJMv8epmjvUP/NMaLGmZzGWWzJ8ganM8h2IXLf6An9J1jNXLrv95/zQXHq4q1CsYhteOy6dKJuHGEvgN92HxR4X7sxL/4EWcOWaODda003kUH6rG38H0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHLG2Tqd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2125C4CEF9;
-	Fri, 17 Oct 2025 15:02:05 +0000 (UTC)
+	 MIME-Version; b=P7VBgfO1yr6rIUx9T/mQo6dYJx2fbUNZXeN/JVBm0WW2g9mTY8PKJzzo0x5ChMlaqWO/vrJSqeZCI+SCUDEkYRwJ0FDdW09l8eJWjdsThGeO9Hctinf6o6AO1dolvy9mXvewXQl39PWtdn2k/33feKj/hmazI3hqhGMsnB6myh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OF1CWtIf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F74C113D0;
+	Fri, 17 Oct 2025 15:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713326;
-	bh=c7Llca/0NMrPhKrc8BbhJG95zlOC6nRegVZ7s2SZSkE=;
+	s=korg; t=1760716212;
+	bh=GhrSGDCL9SJP+EfT7xugyPPQSvYQQVjQmvRW2QHwVX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHLG2TqdhyV+prI7MMWo3MFMBJCn8FsuHS1QwM8AxgIXofVHH4dnMi1B+Yi7bnysx
-	 wsKoMAQuL2Ya7xG2OwUT24j8mWTt/B9bIUPHPB3fudpmvt3Fwvv7VHPnzjbXt6oXBQ
-	 Eb5O8TtheM2LMLRMLRU9WDtYlf1t3tGNtKS6Q8nE=
+	b=OF1CWtIfcwlkhYDpltr8+C73+jcmF5SYR4ZL3N4ohT4N2KhsFi9XZv53zC/+hCIKq
+	 24UNfrPvx/WDfedzmgisHMGl0mygJhkOM0S03tHOT5tlPcjmoEQQ+BncDOEU9EUzLp
+	 uJWdq8qcTDNNQ13YB7JY6nAiR9WvS3xfnVQLBpMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.1 093/168] powerpc/powernv/pci: Fix underflow and leak issue
-Date: Fri, 17 Oct 2025 16:52:52 +0200
-Message-ID: <20251017145132.454115039@linuxfoundation.org>
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 080/276] scsi: qla2xxx: Fix incorrect sign of error code in START_SP_W_RETRIES()
+Date: Fri, 17 Oct 2025 16:52:53 +0200
+Message-ID: <20251017145145.407961339@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-commit a39087905af9ffecaa237a918a2c03a04e479934 upstream.
+[ Upstream commit 1f037e3acda79639a78f096355f2c308a3d45492 ]
 
-pnv_irq_domain_alloc() allocates interrupts at parent's interrupt
-domain. If it fails in the progress, all allocated interrupts are
-freed.
+Change the error code EAGAIN to -EAGAIN in START_SP_W_RETRIES() to align
+with qla2x00_start_sp() returning negative error codes or QLA_SUCCESS,
+preventing logical errors.  Additionally, the '_rval' variable should
+store negative error codes to conform to Linux kernel error code
+conventions.
 
-The number of successfully allocated interrupts so far is stored
-"i". However, "i - 1" interrupts are freed. This is broken:
-
-    - One interrupt is not be freed
-
-    - If "i" is zero, "i - 1" wraps around
-
-Correct the number of freed interrupts to "i".
-
-Fixes: 0fcfe2247e75 ("powerpc/powernv/pci: Add MSI domains")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/70f8debe8688e0b467367db769b71c20146a836d.1754300646.git.namcao@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9803fb5d2759 ("scsi: qla2xxx: Fix task management cmd failure")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Message-ID: <20250905075446.381139-3-rongqianfeng@vivo.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -2234,7 +2234,7 @@ static int pnv_irq_domain_alloc(struct i
- 	return 0;
- 
- out:
--	irq_domain_free_irqs_parent(domain, virq, i - 1);
-+	irq_domain_free_irqs_parent(domain, virq, i);
- 	msi_bitmap_free_hwirqs(&phb->msi_bmp, hwirq, nr_irqs);
- 	return ret;
- }
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index 2053c560b580c..5f3593680c953 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -2061,11 +2061,11 @@ static void qla_marker_sp_done(srb_t *sp, int res)
+ 	int cnt = 5; \
+ 	do { \
+ 		if (_chip_gen != sp->vha->hw->chip_reset || _login_gen != sp->fcport->login_gen) {\
+-			_rval = EINVAL; \
++			_rval = -EINVAL; \
+ 			break; \
+ 		} \
+ 		_rval = qla2x00_start_sp(_sp); \
+-		if (_rval == EAGAIN) \
++		if (_rval == -EAGAIN) \
+ 			msleep(1); \
+ 		else \
+ 			break; \
+-- 
+2.51.0
+
 
 
 
