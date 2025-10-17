@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA01BEA82E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:11:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 773C3BEABB0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5909A741E69
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A93107C3E0F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D9C33506E;
-	Fri, 17 Oct 2025 15:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D04D330B20;
+	Fri, 17 Oct 2025 15:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wn6KAB1e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQUTzijt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8404133291F;
-	Fri, 17 Oct 2025 15:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A8D330B00;
+	Fri, 17 Oct 2025 15:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715401; cv=none; b=c7bT0DaMHboDqGStI6bG5OM3BICOAvWG5Z2OWvcOH5n6F36Rf3bONtF39c5gzKuOPj0pEWn8nPar39w0NQbukcIhZnPEq9yRUPfJUd6/T1IDi5YG5BDInmimqCdCP8ZD7LNh/6zImNsuHIaABbRnjS5bBpTzSejxdFmA6Ut84Q0=
+	t=1760716036; cv=none; b=e4eT2jzWrFIYPObOL+Z2mPcc2Nug2D5L7AALYTTU6UfDyOW511fZ22f+6blaqthJ1dZV5YoBxNIfoXV+EKAnFWCDNXxeySaDsAAcEqxui7qI/zFfjiU1dUO772WcsVYkpVNTN9HOuBbKiv6ZeWe5K1zROdQTJ+5MzdUWd0R2Jjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715401; c=relaxed/simple;
-	bh=Ko1Ulyzqpkhal3crmfTvgzFZteSxf/Ael6PKD8NQn0U=;
+	s=arc-20240116; t=1760716036; c=relaxed/simple;
+	bh=GiZ7dwXX5mKeEer1tKWGmipym9oWDxAusoCk0uM4DHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSpZGIg6+/jRrDyK/EGSIjXTj+KGgrEVexn63pGyu/dOTfUG4PHHvLfhVUsfICeTcK//ZCbSlOrHgd6NTE/hzjLbSt601eIGne7bpEkDXwhfFgxLBTKIPHMYBeImCH1XkMZIc1HPImwlsiEWONPM4aSat2b1Zqby2LDX70eB7ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wn6KAB1e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E804C4CEE7;
-	Fri, 17 Oct 2025 15:36:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dhQNslh1DlhuD6D0Y2dFWdsLGsa040CWtWpbVwRvnjUi2oFP0xCpSMiwugB+4oG5Qp68qTM6MfOTxpl4IPwWO9y+aL9Cx3VSM+S04yISuK2n6z3PCgMjQsU6iUY+/4GotI5jU0iiLmtl0yNATB2suDMTtXqAvfAEbCLo0FiVRN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQUTzijt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179FFC4CEE7;
+	Fri, 17 Oct 2025 15:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715401;
-	bh=Ko1Ulyzqpkhal3crmfTvgzFZteSxf/Ael6PKD8NQn0U=;
+	s=korg; t=1760716034;
+	bh=GiZ7dwXX5mKeEer1tKWGmipym9oWDxAusoCk0uM4DHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wn6KAB1eEgQYGP5Hx1s0rGgD83jjVOviSSMEnws6m/gHnCmWuri8kU0aFEzc2Tkqq
-	 V2Jgh/QcTUB8HITW6LuY9NfJsXbm6mSx5CXZ1O4jQXJL5Iv0cYlwcKtJL02cOY/1ra
-	 VjyK25qYdoCiKkFOXxWz4+0QyGEiMWqGGpNGutMc=
+	b=bQUTzijtTBiQVu/JtnvH9T6+5Ch54a7m38wGKllyTHlcNVH74UeUaFEW5O2JvnZRF
+	 Kwux3Ub69cFynDkMtTMRjVoUb3438nILtCemALCrS9f/S1/prKaOKLA0ptiQXXED79
+	 /k23p7gGbEGY/K9aZUtrB7j52sAkxg4W8iaZ2QXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.17 160/371] dt-bindings: phy: rockchip-inno-csi-dphy: make power-domains non-required
-Date: Fri, 17 Oct 2025 16:52:15 +0200
-Message-ID: <20251017145207.722057708@linuxfoundation.org>
+	"Leilk.Liu" <leilk.liu@mediatek.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 051/276] i2c: mediatek: fix potential incorrect use of I2C_MASTER_WRRD
+Date: Fri, 17 Oct 2025 16:52:24 +0200
+Message-ID: <20251017145144.352103453@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Riesch <michael.riesch@collabora.com>
+From: Leilk.Liu <leilk.liu@mediatek.com>
 
-commit c254815b02673cc77a84103c4c0d6197bd90c0ef upstream.
+[ Upstream commit b492183652808e0f389272bf63dc836241b287ff ]
 
-There are variants of the Rockchip Innosilicon CSI DPHY (e.g., the RK3568
-variant) that are powered on by default as they are part of the ALIVE power
-domain.
-Remove 'power-domains' from the required properties in order to avoid false
-positives.
+The old IC does not support the I2C_MASTER_WRRD (write-then-read)
+function, but the current code’s handling of i2c->auto_restart may
+potentially lead to entering the I2C_MASTER_WRRD software flow,
+resulting in unexpected bugs.
 
-Fixes: 22c8e0a69b7f ("dt-bindings: phy: add compatible for rk356x to rockchip-inno-csi-dphy")
-Cc: stable@kernel.org
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
-Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-2-a4f340a7f0cf@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead of repurposing the auto_restart flag, add a separate flag
+to signal I2C_MASTER_WRRD operations.
+
+Also fix handling of msgs. If the operation (i2c->op) is
+I2C_MASTER_WRRD, then the msgs pointer is incremented by 2.
+For all other operations, msgs is simply incremented by 1.
+
+Fixes: b2ed11e224a2 ("I2C: mediatek: Add driver for MediaTek MT8173 I2C controller")
+Signed-off-by: Leilk.Liu <leilk.liu@mediatek.com>
+Suggested-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml |   15 +++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-mt65xx.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
---- a/Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml
-+++ b/Documentation/devicetree/bindings/phy/rockchip-inno-csi-dphy.yaml
-@@ -57,11 +57,24 @@ required:
-   - clocks
-   - clock-names
-   - '#phy-cells'
--  - power-domains
-   - resets
-   - reset-names
-   - rockchip,grf
+diff --git a/drivers/i2c/busses/i2c-mt65xx.c b/drivers/i2c/busses/i2c-mt65xx.c
+index 72acda59eb399..03e5d488f874f 100644
+--- a/drivers/i2c/busses/i2c-mt65xx.c
++++ b/drivers/i2c/busses/i2c-mt65xx.c
+@@ -1067,6 +1067,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ {
+ 	int ret;
+ 	int left_num = num;
++	bool write_then_read_en = false;
+ 	struct mtk_i2c *i2c = i2c_get_adapdata(adap);
  
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - rockchip,px30-csi-dphy
-+              - rockchip,rk1808-csi-dphy
-+              - rockchip,rk3326-csi-dphy
-+              - rockchip,rk3368-csi-dphy
-+    then:
-+      required:
-+        - power-domains
-+
- additionalProperties: false
+ 	ret = mtk_i2c_clock_enable(i2c);
+@@ -1080,6 +1081,7 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		if (!(msgs[0].flags & I2C_M_RD) && (msgs[1].flags & I2C_M_RD) &&
+ 		    msgs[0].addr == msgs[1].addr) {
+ 			i2c->auto_restart = 0;
++			write_then_read_en = true;
+ 		}
+ 	}
  
- examples:
+@@ -1104,12 +1106,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		else
+ 			i2c->op = I2C_MASTER_WR;
+ 
+-		if (!i2c->auto_restart) {
+-			if (num > 1) {
+-				/* combined two messages into one transaction */
+-				i2c->op = I2C_MASTER_WRRD;
+-				left_num--;
+-			}
++		if (write_then_read_en) {
++			/* combined two messages into one transaction */
++			i2c->op = I2C_MASTER_WRRD;
++			left_num--;
+ 		}
+ 
+ 		/* always use DMA mode. */
+@@ -1117,7 +1117,10 @@ static int mtk_i2c_transfer(struct i2c_adapter *adap,
+ 		if (ret < 0)
+ 			goto err_exit;
+ 
+-		msgs++;
++		if (i2c->op == I2C_MASTER_WRRD)
++			msgs += 2;
++		else
++			msgs++;
+ 	}
+ 	/* the return value is number of executed messages */
+ 	ret = num;
+-- 
+2.51.0
+
 
 
 
