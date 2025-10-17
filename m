@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C0B9BE96F7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:03:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02615BE9DB6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B36E9507ED6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB73C585979
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D5A337100;
-	Fri, 17 Oct 2025 15:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD66732C928;
+	Fri, 17 Oct 2025 15:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YX3YEEcg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8i42/Zr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EEF3370F6;
-	Fri, 17 Oct 2025 15:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777AC2F12D0;
+	Fri, 17 Oct 2025 15:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713200; cv=none; b=fnO6Yxmx81978GsRHbGMJQaLpyq31BlERudXZ4XG1SWmISBjeZX18yvTzjAyMENw/hHF1tn8XCYf1aDNNs+qYrQHZGzlWWUjXRZe6HzKhIA1a2mNjvJb3y3/wg3OlBtsgCHVpxhd+Ny8P+K3XZsVXtl80WiNEYrVHIJ6Zb6zrOo=
+	t=1760714388; cv=none; b=kAk0aQdkRZN3aE5vvMUL5nivKyBUxaCD2+pirfiMyk2tugOhg7aDzpBbQQQFjGyv/VKy7ZvevT92AaX6H1pDXIlTX9GaOD2lNjMhlmAgojtZCr5+WKxtDpZaaVOpVlgxvA9hrD4ift8zC9Y6rVCSDLNcYCHVg8iWdymCccKupHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713200; c=relaxed/simple;
-	bh=oO2nkXOM6SniMqOm/3kbccNNakPqEex/S3DIKU2Ki00=;
+	s=arc-20240116; t=1760714388; c=relaxed/simple;
+	bh=S/MXThZFr5NvVqMRt9V1ubHqakFOoL3t7qLKEKEAoDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEzi+trbS5p3n/oJQuIvNXikbnl+IA+tTfkAWkcYv6Rs2RC6MpbEK2iQK5HTlQw4bcOh0EO+nwmOStoC8RSrug0oZEC+b0w9YP3JwVKZrcDjxNDLTvP9KAbxilVpEWxdNR9ZKPgJ8MddMufyp/J1lPr7GaC4wNZ/4hQhAUVNuCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YX3YEEcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91838C4CEE7;
-	Fri, 17 Oct 2025 14:59:59 +0000 (UTC)
+	 MIME-Version; b=JKpW2HKDOqIVX9yp5es5jphCWnB1IkCJl2Q/RNf0F0SJZHXuUcmw3LsBMd5WnTd7KBSxH2DLnPnrUlmcBpdoKcI3g7dHD4QgqdjJUa6A86G76XG+oMC3MzG3ngpab6sHj0JYVF1CIdcJFe7iDqkcU1Csf1dZNZXTQFBs0NMn3B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8i42/Zr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC888C4CEE7;
+	Fri, 17 Oct 2025 15:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713200;
-	bh=oO2nkXOM6SniMqOm/3kbccNNakPqEex/S3DIKU2Ki00=;
+	s=korg; t=1760714387;
+	bh=S/MXThZFr5NvVqMRt9V1ubHqakFOoL3t7qLKEKEAoDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YX3YEEcg7kGCae09Hselbtm+hJO+7YziTpB5kgo54adyQGJCndrVPnFE5dxFHuXSm
-	 T4B0IUkr1YFqX++7H8tJkU9EChvPaglOovOgTUALyTnT14IWSzdoJjP42ej9/sfy1h
-	 nvbHs9/mN5FRaqq55ChiDehtVezI97l/BkxQalCU=
+	b=K8i42/ZrgY2MlzsGVqxAZpUUmxyJV3hiK36HBfJBgmgVcBAVE/L3SiusciudVEA//
+	 X7e564i8f7fLPhTz31sMJ6Hx/VlJ5In9qF1ES2dkOS+l/BfiL+8xGqEv0A19Gx5uai
+	 hx8jwZN5tYFgMrNug2AUzjn0+Lm+D8c9ljXhu4W8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 055/168] arm64: dts: qcom: sdm845: Fix slimbam num-channels/ees
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 127/277] crypto: aspeed - Fix dma_unmap_sg() direction
 Date: Fri, 17 Oct 2025 16:52:14 +0200
-Message-ID: <20251017145131.048756923@linuxfoundation.org>
+Message-ID: <20251017145151.765147109@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 316294bb6695a43a9181973ecd4e6fb3e576a9f7 upstream.
+commit 838d2d51513e6d2504a678e906823cfd2ecaaa22 upstream.
 
-Reading the hardware registers of the &slimbam on RB3 reveals that the BAM
-supports only 23 pipes (channels) and supports 4 EEs instead of 2. This
-hasn't caused problems so far since nothing is using the extra channels,
-but attempting to use them would lead to crashes.
+It seems like everywhere in this file, when the request is not
+bidirectionala, req->src is mapped with DMA_TO_DEVICE and req->dst is
+mapped with DMA_FROM_DEVICE.
 
-The bam_dma driver might warn in the future if the num-channels in the DT
-are wrong, so correct the properties in the DT to avoid future regressions.
-
-Cc: stable@vger.kernel.org
-Fixes: 27ca1de07dc3 ("arm64: dts: qcom: sdm845: add slimbus nodes")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250821-sdm845-slimbam-channels-v1-1-498f7d46b9ee@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 62f58b1637b7 ("crypto: aspeed - add HACE crypto driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/aspeed/aspeed-hace-crypto.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -5134,11 +5134,11 @@
- 			compatible = "qcom,bam-v1.7.0";
- 			qcom,controlled-remotely;
- 			reg = <0 0x17184000 0 0x2a000>;
--			num-channels = <31>;
-+			num-channels = <23>;
- 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
- 			#dma-cells = <1>;
- 			qcom,ee = <1>;
--			qcom,num-ees = <2>;
-+			qcom,num-ees = <4>;
- 			iommus = <&apps_smmu 0x1806 0x0>;
- 		};
+--- a/drivers/crypto/aspeed/aspeed-hace-crypto.c
++++ b/drivers/crypto/aspeed/aspeed-hace-crypto.c
+@@ -346,7 +346,7 @@ free_req:
  
+ 	} else {
+ 		dma_unmap_sg(hace_dev->dev, req->dst, rctx->dst_nents,
+-			     DMA_TO_DEVICE);
++			     DMA_FROM_DEVICE);
+ 		dma_unmap_sg(hace_dev->dev, req->src, rctx->src_nents,
+ 			     DMA_TO_DEVICE);
+ 	}
 
 
 
