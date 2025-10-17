@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32A8BE9F5D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:36:22 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4FEBBE9FF3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98FB0747F50
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 900C235DCE5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A75E25B1DA;
-	Fri, 17 Oct 2025 15:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B2633CEB5;
+	Fri, 17 Oct 2025 15:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUkNMlLA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hs9mqbm0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA65B23EA9E;
-	Fri, 17 Oct 2025 15:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443E4332ED8;
+	Fri, 17 Oct 2025 15:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713766; cv=none; b=Pvowpt6kATxviYCPj+pEkAKsqYRnCIOZFOkWW3VzX0dycBdlq2UjYfergdVUYriWWDW7XyvTY93eufJpPOohxsyKteJzyxs9zQIEoqZImAh1FCEiUXEUTyj3L/CMdcTir1w8oqr/5JoFCqQJqhiaVSrsL50IALxRU2yubLIFHL4=
+	t=1760715404; cv=none; b=X0T3t3u8lIKhfQrbd/D7lRcXWhuZ8NFUWeaPE9goOOJ5GqguZcLUvJm/qqqOE4B3D+X4HK+G/RoKqCRYiq23cGAj6el/rQAPA60rbaSps5tI+YJA2cHAMHtfezpYy8iScVxD9Vl7Zhasa6cnJCbHZj1zGsKj/ltkd+HJhbPzXSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713766; c=relaxed/simple;
-	bh=S4mwUKq6IzKdZLam4NbzyvjwxFdtk2BhHvhkyceRIWI=;
+	s=arc-20240116; t=1760715404; c=relaxed/simple;
+	bh=h2/ptWU9cY+AVSeEUUg76ozXCV0Q0Bv9qB5ILYuWZJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rvIJh5qHckLpqqKjqLYAHg0iCy++3ZxZEWOHG9CcPfApJiX+cOTY8OZRs8Th4KT/t1tMA79ZrbHVBMuOal96opnId258mjSaFrPTGpJVx729cH9MlqcUrEQ7VZ+uGJP3qJc0L/cGcOM5lj3dXLNTY/rJtq1nXu1dQTDTDJ1pVoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUkNMlLA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596F0C4CEE7;
-	Fri, 17 Oct 2025 15:09:26 +0000 (UTC)
+	 MIME-Version; b=GarDm2QSKxUDnCOVM3JAsCKCjjZxUfhX7B+SVXMiQbA9KWut9gv0y6VhvmE9a2ArXqcJjQqwuCgQIbJMXwxWTxJsXyc846j7cbBWjtDPs3wlQUrYP7FPCcqDRCNIPRaeI4EgePwateEPNh9H/WtlEfhu5eWAOw0QqW5PoQ5k//0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hs9mqbm0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73E6C4CEE7;
+	Fri, 17 Oct 2025 15:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713766;
-	bh=S4mwUKq6IzKdZLam4NbzyvjwxFdtk2BhHvhkyceRIWI=;
+	s=korg; t=1760715404;
+	bh=h2/ptWU9cY+AVSeEUUg76ozXCV0Q0Bv9qB5ILYuWZJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUkNMlLArd54A/tiocxL7dOvubXSsfYfuGNQrZdwbmwDhNeV+j1Hke3UKwW64KFXa
-	 x2KuG7zE0lFWr5QTkRBEqn+OIfWBWpz3DFZOo6u1+J3JqqykOUADa/FuGdiptkhVqk
-	 CCk4dikET55Wy+JG9A4fIlqvRQpBFvDyy0y/w/xk=
+	b=hs9mqbm0IkACgN+UvE1uwHXqYwM58kkOuM7VYIehpQrlsYZ/Ol4dD4hoRv0CaiUBz
+	 JIJoVnPdanQQ/jTYz61nnxlSeH6KoB3Dr8akUM31OzfE+vmJN6OQ8ccXB2kP0bOUgc
+	 V7vTVio7z2zwHHbDTDlAwqFhgZlXmQhgDmiIyZK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.6 111/201] pwm: berlin: Fix wrong register in suspend/resume
+	Akhil Vinod <akhil.vinod@oss.qualcomm.com>,
+	Sumit Kumar <sumit.kumar@oss.qualcomm.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Subject: [PATCH 6.17 197/371] bus: mhi: ep: Fix chained transfer handling in read path
 Date: Fri, 17 Oct 2025 16:52:52 +0200
-Message-ID: <20251017145138.821106042@linuxfoundation.org>
+Message-ID: <20251017145209.054631977@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +61,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
 
-commit 3a4b9d027e4061766f618292df91760ea64a1fcc upstream.
+commit f5225a34bd8f9f64eec37f6ae1461289aaa3eb86 upstream.
 
-The 'enable' register should be BERLIN_PWM_EN rather than
-BERLIN_PWM_ENABLE, otherwise, the driver accesses wrong address, there
-will be cpu exception then kernel panic during suspend/resume.
+The mhi_ep_read_channel function incorrectly assumes the End of Transfer
+(EOT) bit is present for each packet in a chained transactions, causing
+it to advance mhi_chan->rd_offset beyond wr_offset during host-to-device
+transfers when EOT has not yet arrived. This leads to access of unmapped
+host memory, causing IOMMU faults and processing of stale TREs.
 
-Fixes: bbf0722c1c66 ("pwm: berlin: Add suspend/resume support")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://lore.kernel.org/r/20250819114224.31825-1-jszhang@kernel.org
+Modify the loop condition to ensure mhi_queue is not empty, allowing the
+function to process only valid TREs up to the current write pointer to
+prevent premature reads and ensure safe traversal of chained TREs.
+
+Due to this change, buf_left needs to be removed from the while loop
+condition to avoid exiting prematurely before reading the ring completely,
+and also remove write_offset since it will always be zero because the new
+cache buffer is allocated every time.
+
+Fixes: 5301258899773 ("bus: mhi: ep: Add support for reading from the host")
+Co-developed-by: Akhil Vinod <akhil.vinod@oss.qualcomm.com>
+Signed-off-by: Akhil Vinod <akhil.vinod@oss.qualcomm.com>
+Signed-off-by: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
+[mani: reworded description slightly]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Link: https://patch.msgid.link/20250910-final_chained-v3-1-ec77c9d88ace@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-berlin.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/bus/mhi/ep/main.c |   37 ++++++++++++-------------------------
+ 1 file changed, 12 insertions(+), 25 deletions(-)
 
---- a/drivers/pwm/pwm-berlin.c
-+++ b/drivers/pwm/pwm-berlin.c
-@@ -273,7 +273,7 @@ static int berlin_pwm_suspend(struct dev
- 		if (!channel)
- 			continue;
+--- a/drivers/bus/mhi/ep/main.c
++++ b/drivers/bus/mhi/ep/main.c
+@@ -403,17 +403,13 @@ static int mhi_ep_read_channel(struct mh
+ {
+ 	struct mhi_ep_chan *mhi_chan = &mhi_cntrl->mhi_chan[ring->ch_id];
+ 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+-	size_t tr_len, read_offset, write_offset;
++	size_t tr_len, read_offset;
+ 	struct mhi_ep_buf_info buf_info = {};
+ 	u32 len = MHI_EP_DEFAULT_MTU;
+ 	struct mhi_ring_element *el;
+-	bool tr_done = false;
+ 	void *buf_addr;
+-	u32 buf_left;
+ 	int ret;
  
--		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_ENABLE);
-+		channel->enable = berlin_pwm_readl(bpc, i, BERLIN_PWM_EN);
- 		channel->ctrl = berlin_pwm_readl(bpc, i, BERLIN_PWM_CONTROL);
- 		channel->duty = berlin_pwm_readl(bpc, i, BERLIN_PWM_DUTY);
- 		channel->tcnt = berlin_pwm_readl(bpc, i, BERLIN_PWM_TCNT);
-@@ -304,7 +304,7 @@ static int berlin_pwm_resume(struct devi
- 		berlin_pwm_writel(bpc, i, channel->ctrl, BERLIN_PWM_CONTROL);
- 		berlin_pwm_writel(bpc, i, channel->duty, BERLIN_PWM_DUTY);
- 		berlin_pwm_writel(bpc, i, channel->tcnt, BERLIN_PWM_TCNT);
--		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_ENABLE);
-+		berlin_pwm_writel(bpc, i, channel->enable, BERLIN_PWM_EN);
+-	buf_left = len;
+-
+ 	do {
+ 		/* Don't process the transfer ring if the channel is not in RUNNING state */
+ 		if (mhi_chan->state != MHI_CH_STATE_RUNNING) {
+@@ -426,24 +422,23 @@ static int mhi_ep_read_channel(struct mh
+ 		/* Check if there is data pending to be read from previous read operation */
+ 		if (mhi_chan->tre_bytes_left) {
+ 			dev_dbg(dev, "TRE bytes remaining: %u\n", mhi_chan->tre_bytes_left);
+-			tr_len = min(buf_left, mhi_chan->tre_bytes_left);
++			tr_len = min(len, mhi_chan->tre_bytes_left);
+ 		} else {
+ 			mhi_chan->tre_loc = MHI_TRE_DATA_GET_PTR(el);
+ 			mhi_chan->tre_size = MHI_TRE_DATA_GET_LEN(el);
+ 			mhi_chan->tre_bytes_left = mhi_chan->tre_size;
+ 
+-			tr_len = min(buf_left, mhi_chan->tre_size);
++			tr_len = min(len, mhi_chan->tre_size);
+ 		}
+ 
+ 		read_offset = mhi_chan->tre_size - mhi_chan->tre_bytes_left;
+-		write_offset = len - buf_left;
+ 
+ 		buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL);
+ 		if (!buf_addr)
+ 			return -ENOMEM;
+ 
+ 		buf_info.host_addr = mhi_chan->tre_loc + read_offset;
+-		buf_info.dev_addr = buf_addr + write_offset;
++		buf_info.dev_addr = buf_addr;
+ 		buf_info.size = tr_len;
+ 		buf_info.cb = mhi_ep_read_completion;
+ 		buf_info.cb_buf = buf_addr;
+@@ -459,16 +454,12 @@ static int mhi_ep_read_channel(struct mh
+ 			goto err_free_buf_addr;
+ 		}
+ 
+-		buf_left -= tr_len;
+ 		mhi_chan->tre_bytes_left -= tr_len;
+ 
+-		if (!mhi_chan->tre_bytes_left) {
+-			if (MHI_TRE_DATA_GET_IEOT(el))
+-				tr_done = true;
+-
++		if (!mhi_chan->tre_bytes_left)
+ 			mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
+-		}
+-	} while (buf_left && !tr_done);
++	/* Read until the some buffer is left or the ring becomes not empty */
++	} while (!mhi_ep_queue_is_empty(mhi_chan->mhi_dev, DMA_TO_DEVICE));
+ 
+ 	return 0;
+ 
+@@ -502,15 +493,11 @@ static int mhi_ep_process_ch_ring(struct
+ 		mhi_chan->xfer_cb(mhi_chan->mhi_dev, &result);
+ 	} else {
+ 		/* UL channel */
+-		do {
+-			ret = mhi_ep_read_channel(mhi_cntrl, ring);
+-			if (ret < 0) {
+-				dev_err(&mhi_chan->mhi_dev->dev, "Failed to read channel\n");
+-				return ret;
+-			}
+-
+-			/* Read until the ring becomes empty */
+-		} while (!mhi_ep_queue_is_empty(mhi_chan->mhi_dev, DMA_TO_DEVICE));
++		ret = mhi_ep_read_channel(mhi_cntrl, ring);
++		if (ret < 0) {
++			dev_err(&mhi_chan->mhi_dev->dev, "Failed to read channel\n");
++			return ret;
++		}
  	}
  
  	return 0;
