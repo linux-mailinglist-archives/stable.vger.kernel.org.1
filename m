@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-186901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0BA6BE9F54
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:36:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF09ABEA110
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9DF935802B2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30A2C188070F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817F4335068;
-	Fri, 17 Oct 2025 15:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C8D330B34;
+	Fri, 17 Oct 2025 15:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIORxSM4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O63uBnQp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2E2332919;
-	Fri, 17 Oct 2025 15:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74254330B3C;
+	Fri, 17 Oct 2025 15:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714551; cv=none; b=bqEtOalvtzOFCq4DDwUoeJiWUgsq1JaWyCW8Vw7EaqPkxlsC4Fuk77oRmk/8x+7Bz8DVEgiAtWHdbQodTz4+pl2cyGarKR+mc+0VFNQfPSC/INcX7UBYVyzZxEO9Ij0aXOMATy9bKWdJXiGgdg7BIAUptdnDFLG6eKafZtJOGgA=
+	t=1760715441; cv=none; b=ievSIGBYdxlC+pAanHbeClF46TQ7dBubtuYT+71tZ0i0YUfcPbzDmZnQXIrEU1dRgg+u3pRJM3PDIp/Sysew0BCqJZPXbm1CvZhevH6UZJu5ymf3bfcySL/Eq2iC1IrzQUwjPDDsHQpaiC/BYtekzOmsCaqwrLmZZopwjVV+JXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714551; c=relaxed/simple;
-	bh=BBfpX87JK1A1fn2/D502fvQevvSoP9MO9FuxCMUIYEQ=;
+	s=arc-20240116; t=1760715441; c=relaxed/simple;
+	bh=SmX2aW+6fy+2nr/JaMRvviepMuEZF9iPwPGl9hDV670=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pgn5CTjkreSczrm1bYGuW4/ND51IJ8RAlS91sQdX/5SEvVyFjN2tsz0qnQIcAho1S/wiYOXK/4ALgUOf/nYi4MWgThAOJZ7Wc/k2kFPa3syuBI9KsL4VrPdDKNwgKZf0cUZq3day2K3qZDrV9oMtJVf6v23OQdi9DgW/5YFFYn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIORxSM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C8EC4CEE7;
-	Fri, 17 Oct 2025 15:22:30 +0000 (UTC)
+	 MIME-Version; b=ci3THBW8nWTD8PpL7+7tyhK/fSF0sfzqMxlCaNLfY+YH9Mz0ZHN66jcIwRtMzYBSEK0RJeeMMoLPLsg7UYQWM4B89LoePPgQQQdhEk+pRJEN4gSNTdqZ0Sfzr4gJtk1/SUYoLgfFVJHuzKx9GwuSrFDFUt9DFKB4pm/TfsdOOGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O63uBnQp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4996C4CEFE;
+	Fri, 17 Oct 2025 15:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714551;
-	bh=BBfpX87JK1A1fn2/D502fvQevvSoP9MO9FuxCMUIYEQ=;
+	s=korg; t=1760715441;
+	bh=SmX2aW+6fy+2nr/JaMRvviepMuEZF9iPwPGl9hDV670=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yIORxSM4u6bXbL5IaqLtHafubkhiFt8WuIHbdUXXY7X7uyPlCizUHnA3RJ2Zn3Cgp
-	 HOUS6drWAlGEQbbefaCcVMKQNON+WqxqvldPHMf3ZKGtsdaRbKFy6mRXfUQn/PtN3v
-	 TZw1xDn7ZKSdMJZVgRO07b4peKwnBz29nwTKTPxQ=
+	b=O63uBnQp+b/a74W5RWaoONlPq/7aAax19ul6FCa67btYAHZPjYMNKy3GMia9foLeA
+	 mf7ux72uXz0EXJVR2pyTY56q/gKAJe8G6HR6a0FN3hN3LmODW02ycqaNWQvtsGQeoi
+	 5gIHp0qdxS4TCUVfdfbl9RG+G81lg48XweoLebps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duy Nguyen <duy.nguyen.rh@renesas.com>,
-	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 6.12 185/277] PCI: rcar-host: Drop PMSR spinlock
+	Conor Dooley <conor.dooley@microchip.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.17 217/371] gpio: mpfs: fix setting gpio direction to output
 Date: Fri, 17 Oct 2025 16:53:12 +0200
-Message-ID: <20251017145153.878923454@linuxfoundation.org>
+Message-ID: <20251017145209.938991831@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-commit 0a8f173d9dad13930d5888505dc4c4fd6a1d4262 upstream.
+commit bc061143637532c08d9fc657eec93fdc2588068e upstream.
 
-The pmsr_lock spinlock used to be necessary to synchronize access to the
-PMSR register, because that access could have been triggered from either
-config space access in rcar_pcie_config_access() or an exception handler
-rcar_pcie_aarch32_abort_handler().
+mpfs_gpio_direction_output() actually sets the line to input mode.
+Use the correct register settings for output mode so that this function
+actually works as intended.
 
-The rcar_pcie_aarch32_abort_handler() case is no longer applicable since
-commit 6e36203bc14c ("PCI: rcar: Use PCI_SET_ERROR_RESPONSE after read
-which triggered an exception"), which performs more accurate, controlled
-invocation of the exception, and a fixup.
+This was a copy-paste mistake made when converting to regmap during the
+driver submission process. It went unnoticed because my test for output
+mode is toggling LEDs on an Icicle kit which functions with the
+incorrect code. The internal reporter has yet to test the patch, but on
+their system the incorrect setting may be the reason for failures to
+drive the GPIO lines on the BeagleV-fire board.
 
-This leaves rcar_pcie_config_access() as the only call site from which
-rcar_pcie_wakeup() is called. The rcar_pcie_config_access() can only be
-called from the controller struct pci_ops .read and .write callbacks,
-and those are serialized in drivers/pci/access.c using raw spinlock
-'pci_lock' . It should be noted that CONFIG_PCI_LOCKLESS_CONFIG is never
-set on this platform.
-
-Since the 'pci_lock' is a raw spinlock , and the 'pmsr_lock' is not a
-raw spinlock, this constellation triggers 'BUG: Invalid wait context'
-with CONFIG_PROVE_RAW_LOCK_NESTING=y .
-
-Remove the pmsr_lock to fix the locking.
-
-Fixes: a115b1bd3af0 ("PCI: rcar: Add L1 link state fix into data abort hook")
-Reported-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
-Reported-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250909162707.13927-1-marek.vasut+renesas@mailbox.org
+CC: stable@vger.kernel.org
+Fixes: a987b78f3615e ("gpio: mpfs: add polarfire soc gpio support")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20250925-boogieman-carrot-82989ff75d10@spud
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rcar-host.c |   13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/gpio/gpio-mpfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-rcar-host.c
-+++ b/drivers/pci/controller/pcie-rcar-host.c
-@@ -51,20 +51,13 @@ struct rcar_pcie_host {
- 	int			(*phy_init_fn)(struct rcar_pcie_host *host);
- };
+--- a/drivers/gpio/gpio-mpfs.c
++++ b/drivers/gpio/gpio-mpfs.c
+@@ -69,7 +69,7 @@ static int mpfs_gpio_direction_output(st
+ 	struct mpfs_gpio_chip *mpfs_gpio = gpiochip_get_data(gc);
  
--static DEFINE_SPINLOCK(pmsr_lock);
--
- static int rcar_pcie_wakeup(struct device *pcie_dev, void __iomem *pcie_base)
- {
--	unsigned long flags;
- 	u32 pmsr, val;
- 	int ret = 0;
- 
--	spin_lock_irqsave(&pmsr_lock, flags);
--
--	if (!pcie_base || pm_runtime_suspended(pcie_dev)) {
--		ret = -EINVAL;
--		goto unlock_exit;
--	}
-+	if (!pcie_base || pm_runtime_suspended(pcie_dev))
-+		return -EINVAL;
- 
- 	pmsr = readl(pcie_base + PMSR);
- 
-@@ -86,8 +79,6 @@ static int rcar_pcie_wakeup(struct devic
- 		writel(L1FAEG | PMEL1RX, pcie_base + PMSR);
- 	}
- 
--unlock_exit:
--	spin_unlock_irqrestore(&pmsr_lock, flags);
- 	return ret;
- }
+ 	regmap_update_bits(mpfs_gpio->regs, MPFS_GPIO_CTRL(gpio_index),
+-			   MPFS_GPIO_DIR_MASK, MPFS_GPIO_EN_IN);
++			   MPFS_GPIO_DIR_MASK, MPFS_GPIO_EN_OUT | MPFS_GPIO_EN_OUT_BUF);
+ 	regmap_update_bits(mpfs_gpio->regs, mpfs_gpio->offsets->outp, BIT(gpio_index),
+ 			   value << gpio_index);
  
 
 
