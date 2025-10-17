@@ -1,56 +1,73 @@
-Return-Path: <stable+bounces-186673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A01BE9BC1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A89A7BEA6BA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:03:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C071E56826C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D9E3580B4B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBED02F12DC;
-	Fri, 17 Oct 2025 15:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94012330B1F;
+	Fri, 17 Oct 2025 15:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAnjCOjX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwqLUWHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684AC3370FB;
-	Fri, 17 Oct 2025 15:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE77330B0F;
+	Fri, 17 Oct 2025 15:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713910; cv=none; b=gN+LJiVvqzEg77J+i1W5iWtMu3LxvAi4r9olN4H9l+mUFV9Vh5SrPkpqbGaH/ogsYSu12O7eP4Wo3+t/vCn/Qbu6YoXOd2+VDFH+F+5tAVhRoxA5kpLywiGWJ6WTQnApl93JSiN5BcHFWBcHvvVRCTlSdW/Cp6NbYIUTMv1E2as=
+	t=1760716267; cv=none; b=e7YHuC+juvGHbTh+FFERehX7vEWwtXNUkA7Cb24Bm1QiZbUK1J/pR65nbIaxPDAVGrqaX4l9+d6TC/7W2XQqPLrAOCBKOAXiyQZ2M2puCsTdFLOizKrdxpn0OPQ+WeUtqBgbYzVokpqu0dacf0lOIUm7Mh4IjVIdxt3TQhLLHnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713910; c=relaxed/simple;
-	bh=3p3l7grPK1QeSIo2HB+f9wdvEJoWT+RsDHx0NUprbnU=;
+	s=arc-20240116; t=1760716267; c=relaxed/simple;
+	bh=vi24S4r00seo+yxu3h2z3uA9n2v8HfMe1RARODEk554=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CvkZVMuCt/C3jCoIXiL24TVjUnTrmVZ0wefY3LOvGvNdgTtXX+ID9KWd6Frfe+PJP9hI7IC/UE4LUjTGgmo+Ugm+2KgpI7mfuwcgWmrpdr2LV7fVVvAJ6yHWiviXWqXmRTuB7ohgW5Sg7QW9GiydwwniXiTwm7UbV3o5c19Ke7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAnjCOjX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E581EC4CEE7;
-	Fri, 17 Oct 2025 15:11:49 +0000 (UTC)
+	 MIME-Version; b=kFX6ZvY2OR5UF1AdBo1eIznLG4SvJPD9RYiaWxR2lErMr1RkVMM7kMmGPHdj5DqyzJWzS5oGr6ZeE7CcN0MCLRSY/AApW2fUh54jExj6xVwZZt8Ch3om0iyX26AjmNtzAqT2iroKUZUtd6M4L2rRuFnsqvpcAnOePkxDU3McaNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwqLUWHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E0DC4CEE7;
+	Fri, 17 Oct 2025 15:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713910;
-	bh=3p3l7grPK1QeSIo2HB+f9wdvEJoWT+RsDHx0NUprbnU=;
+	s=korg; t=1760716267;
+	bh=vi24S4r00seo+yxu3h2z3uA9n2v8HfMe1RARODEk554=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EAnjCOjXvw1U3mz0zbKvDstcy2FGSpwIzI5eo2smAJLTvMv3zDAaqUEuoQeVOKpR3
-	 xjZYbPBEAFWwIc8j+r0CwBjJ1GbPYBJwc4HFfHKXagAHjj1khFxkpF6vXV5iNbQ9Li
-	 UZ4z7Zk+IQm3djUuyVpoaFRdh/bupXkJjlLTZIIg=
+	b=lwqLUWHPc6RT3GYtFMs4FjdKFb25bSqGshROxdDCSU4eD66Mv4YDwjtdE0C9UBh4n
+	 mYsqt3TpG9buFGZ6ZWKzCSKwZ3WCmLRqVSDX40j/vYEE3+JSvJlQ5QGIA3pIjWn98g
+	 E3L1Fq4nercJx+pYUy/dT+s4d0sD8zlI44uDTIUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Ali Saidi <alisaidi@amazon.com>,
+	Leo Yan <leo.yan@linaro.org>,
+	Jing Zhang <renyu.zj@linux.alibaba.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	German Gomez <german.gomez@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	John Garry <john.garry@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Timothy Hayes <timothy.hayes@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Zhuo Song <zhuo.song@linux.alibaba.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/201] tracing: Fix race condition in kprobe initialization causing NULL pointer dereference
+Subject: [PATCH 5.15 131/276] perf arm-spe: augment the data source type with neoverse_spe list
 Date: Fri, 17 Oct 2025 16:53:44 +0200
-Message-ID: <20251017145140.721903325@linuxfoundation.org>
+Message-ID: <20251017145147.264329126@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,279 +77,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Jing Zhang <renyu.zj@linux.alibaba.com>
 
-[ Upstream commit 9cf9aa7b0acfde7545c1a1d912576e9bab28dc6f ]
+[ Upstream commit 74a61d53a6d1ca1172d85964d15c83c2cc3670b3 ]
 
-There is a critical race condition in kprobe initialization that can lead to
-NULL pointer dereference and kernel crash.
+When synthesizing event with SPE data source, commit 4e6430cbb1a9("perf
+arm-spe: Use SPE data source for neoverse cores") augment the type with
+source information by MIDR. However, is_midr_in_range only compares the
+first entry in neoverse_spe.
 
-[1135630.084782] Unable to handle kernel paging request at virtual address 0000710a04630000
-...
-[1135630.260314] pstate: 404003c9 (nZcv DAIF +PAN -UAO)
-[1135630.269239] pc : kprobe_perf_func+0x30/0x260
-[1135630.277643] lr : kprobe_dispatcher+0x44/0x60
-[1135630.286041] sp : ffffaeff4977fa40
-[1135630.293441] x29: ffffaeff4977fa40 x28: ffffaf015340e400
-[1135630.302837] x27: 0000000000000000 x26: 0000000000000000
-[1135630.312257] x25: ffffaf029ed108a8 x24: ffffaf015340e528
-[1135630.321705] x23: ffffaeff4977fc50 x22: ffffaeff4977fc50
-[1135630.331154] x21: 0000000000000000 x20: ffffaeff4977fc50
-[1135630.340586] x19: ffffaf015340e400 x18: 0000000000000000
-[1135630.349985] x17: 0000000000000000 x16: 0000000000000000
-[1135630.359285] x15: 0000000000000000 x14: 0000000000000000
-[1135630.368445] x13: 0000000000000000 x12: 0000000000000000
-[1135630.377473] x11: 0000000000000000 x10: 0000000000000000
-[1135630.386411] x9 : 0000000000000000 x8 : 0000000000000000
-[1135630.395252] x7 : 0000000000000000 x6 : 0000000000000000
-[1135630.403963] x5 : 0000000000000000 x4 : 0000000000000000
-[1135630.412545] x3 : 0000710a04630000 x2 : 0000000000000006
-[1135630.421021] x1 : ffffaeff4977fc50 x0 : 0000710a04630000
-[1135630.429410] Call trace:
-[1135630.434828]  kprobe_perf_func+0x30/0x260
-[1135630.441661]  kprobe_dispatcher+0x44/0x60
-[1135630.448396]  aggr_pre_handler+0x70/0xc8
-[1135630.454959]  kprobe_breakpoint_handler+0x140/0x1e0
-[1135630.462435]  brk_handler+0xbc/0xd8
-[1135630.468437]  do_debug_exception+0x84/0x138
-[1135630.475074]  el1_dbg+0x18/0x8c
-[1135630.480582]  security_file_permission+0x0/0xd0
-[1135630.487426]  vfs_write+0x70/0x1c0
-[1135630.493059]  ksys_write+0x5c/0xc8
-[1135630.498638]  __arm64_sys_write+0x24/0x30
-[1135630.504821]  el0_svc_common+0x78/0x130
-[1135630.510838]  el0_svc_handler+0x38/0x78
-[1135630.516834]  el0_svc+0x8/0x1b0
+Change is_midr_in_range to is_midr_in_range_list to traverse the
+neoverse_spe array so that all neoverse cores synthesize event with data
+source packet.
 
-kernel/trace/trace_kprobe.c: 1308
-0xffff3df8995039ec <kprobe_perf_func+0x2c>:     ldr     x21, [x24,#120]
-include/linux/compiler.h: 294
-0xffff3df8995039f0 <kprobe_perf_func+0x30>:     ldr     x1, [x21,x0]
-
-kernel/trace/trace_kprobe.c
-1308: head = this_cpu_ptr(call->perf_events);
-1309: if (hlist_empty(head))
-1310: 	return 0;
-
-crash> struct trace_event_call -o
-struct trace_event_call {
-  ...
-  [120] struct hlist_head *perf_events;  //(call->perf_event)
-  ...
-}
-
-crash> struct trace_event_call ffffaf015340e528
-struct trace_event_call {
-  ...
-  perf_events = 0xffff0ad5fa89f088, //this value is correct, but x21 = 0
-  ...
-}
-
-Race Condition Analysis:
-
-The race occurs between kprobe activation and perf_events initialization:
-
-  CPU0                                    CPU1
-  ====                                    ====
-  perf_kprobe_init
-    perf_trace_event_init
-      tp_event->perf_events = list;(1)
-      tp_event->class->reg (2)← KPROBE ACTIVE
-                                          Debug exception triggers
-                                          ...
-                                          kprobe_dispatcher
-                                            kprobe_perf_func (tk->tp.flags & TP_FLAG_PROFILE)
-                                              head = this_cpu_ptr(call->perf_events)(3)
-                                              (perf_events is still NULL)
-
-Problem:
-1. CPU0 executes (1) assigning tp_event->perf_events = list
-2. CPU0 executes (2) enabling kprobe functionality via class->reg()
-3. CPU1 triggers and reaches kprobe_dispatcher
-4. CPU1 checks TP_FLAG_PROFILE - condition passes (step 2 completed)
-5. CPU1 calls kprobe_perf_func() and crashes at (3) because
-   call->perf_events is still NULL
-
-CPU1 sees that kprobe functionality is enabled but does not see that
-perf_events has been assigned.
-
-Add pairing read and write memory barriers to guarantee that if CPU1
-sees that kprobe functionality is enabled, it must also see that
-perf_events has been assigned.
-
-Link: https://lore.kernel.org/all/20251001022025.44626-1-chenyuan_fl@163.com/
-
-Fixes: 50d780560785 ("tracing/kprobes: Add probe handler dispatcher to support perf and ftrace concurrent use")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-[ Adjust context ]
+Fixes: 4e6430cbb1a9f1dc ("perf arm-spe: Use SPE data source for neoverse cores")
+Reviewed-by: Ali Saidi <alisaidi@amazon.com>
+Reviewed-by: Leo Yan <leo.yan@linaro.org>
+Signed-off-by: Jing Zhang <renyu.zj@linux.alibaba.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ali Saidi <alisaidi@amazon.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Garry <john.garry@huawei.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: Timothy Hayes <timothy.hayes@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Zhuo Song <zhuo.song@linux.alibaba.com>
+Link: https://lore.kernel.org/r/1664197396-42672-1-git-send-email-renyu.zj@linux.alibaba.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: cb300e351505 ("perf arm_spe: Correct memory level for remote access")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_fprobe.c |   11 +++++++----
- kernel/trace/trace_kprobe.c |   11 +++++++----
- kernel/trace/trace_probe.h  |    9 +++++++--
- kernel/trace/trace_uprobe.c |   12 ++++++++----
- 4 files changed, 29 insertions(+), 14 deletions(-)
+ tools/perf/util/arm-spe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace_fprobe.c
-+++ b/kernel/trace/trace_fprobe.c
-@@ -342,12 +342,14 @@ static int fentry_dispatcher(struct fpro
- 			     void *entry_data)
+diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
+index 9e7e56596c60e..2d7fc2b01f36b 100644
+--- a/tools/perf/util/arm-spe.c
++++ b/tools/perf/util/arm-spe.c
+@@ -423,7 +423,7 @@ static void arm_spe__synth_data_source_generic(const struct arm_spe_record *reco
+ static u64 arm_spe__synth_data_source(const struct arm_spe_record *record, u64 midr)
  {
- 	struct trace_fprobe *tf = container_of(fp, struct trace_fprobe, fp);
-+	unsigned int flags = trace_probe_load_flag(&tf->tp);
- 	int ret = 0;
+ 	union perf_mem_data_src	data_src = { 0 };
+-	bool is_neoverse = is_midr_in_range(midr, neoverse_spe);
++	bool is_neoverse = is_midr_in_range_list(midr, neoverse_spe);
  
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		fentry_trace_func(tf, entry_ip, regs);
-+
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret = fentry_perf_func(tf, entry_ip, regs);
- #endif
- 	return ret;
-@@ -359,11 +361,12 @@ static void fexit_dispatcher(struct fpro
- 			     void *entry_data)
- {
- 	struct trace_fprobe *tf = container_of(fp, struct trace_fprobe, fp);
-+	unsigned int flags = trace_probe_load_flag(&tf->tp);
- 
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		fexit_trace_func(tf, entry_ip, ret_ip, regs, entry_data);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tf->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		fexit_perf_func(tf, entry_ip, ret_ip, regs, entry_data);
- #endif
- }
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -1713,14 +1713,15 @@ static int kprobe_register(struct trace_
- static int kprobe_dispatcher(struct kprobe *kp, struct pt_regs *regs)
- {
- 	struct trace_kprobe *tk = container_of(kp, struct trace_kprobe, rp.kp);
-+	unsigned int flags = trace_probe_load_flag(&tk->tp);
- 	int ret = 0;
- 
- 	raw_cpu_inc(*tk->nhit);
- 
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	if (flags & TP_FLAG_TRACE)
- 		kprobe_trace_func(tk, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret = kprobe_perf_func(tk, regs);
- #endif
- 	return ret;
-@@ -1732,6 +1733,7 @@ kretprobe_dispatcher(struct kretprobe_in
- {
- 	struct kretprobe *rp = get_kretprobe(ri);
- 	struct trace_kprobe *tk;
-+	unsigned int flags;
- 
- 	/*
- 	 * There is a small chance that get_kretprobe(ri) returns NULL when
-@@ -1744,10 +1746,11 @@ kretprobe_dispatcher(struct kretprobe_in
- 	tk = container_of(rp, struct trace_kprobe, rp);
- 	raw_cpu_inc(*tk->nhit);
- 
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tk->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		kretprobe_trace_func(tk, ri, regs);
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tk->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		kretprobe_perf_func(tk, ri, regs);
- #endif
- 	return 0;	/* We don't tweak kernel, so just return 0 */
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -268,16 +268,21 @@ struct event_file_link {
- 	struct list_head		list;
- };
- 
-+static inline unsigned int trace_probe_load_flag(struct trace_probe *tp)
-+{
-+	return smp_load_acquire(&tp->event->flags);
-+}
-+
- static inline bool trace_probe_test_flag(struct trace_probe *tp,
- 					 unsigned int flag)
- {
--	return !!(tp->event->flags & flag);
-+	return !!(trace_probe_load_flag(tp) & flag);
- }
- 
- static inline void trace_probe_set_flag(struct trace_probe *tp,
- 					unsigned int flag)
- {
--	tp->event->flags |= flag;
-+	smp_store_release(&tp->event->flags, tp->event->flags | flag);
- }
- 
- static inline void trace_probe_clear_flag(struct trace_probe *tp,
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -1514,6 +1514,7 @@ static int uprobe_dispatcher(struct upro
- 	struct trace_uprobe *tu;
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb = NULL;
-+	unsigned int flags;
- 	int ret = 0;
- 
- 	tu = container_of(con, struct trace_uprobe, consumer);
-@@ -1527,11 +1528,12 @@ static int uprobe_dispatcher(struct upro
- 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
- 		return 0;
- 
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		ret |= uprobe_trace_func(tu, regs, &ucb);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		ret |= uprobe_perf_func(tu, regs, &ucb);
- #endif
- 	uprobe_buffer_put(ucb);
-@@ -1544,6 +1546,7 @@ static int uretprobe_dispatcher(struct u
- 	struct trace_uprobe *tu;
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb = NULL;
-+	unsigned int flags;
- 
- 	tu = container_of(con, struct trace_uprobe, consumer);
- 
-@@ -1555,11 +1558,12 @@ static int uretprobe_dispatcher(struct u
- 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
- 		return 0;
- 
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
-+	flags = trace_probe_load_flag(&tu->tp);
-+	if (flags & TP_FLAG_TRACE)
- 		uretprobe_trace_func(tu, func, regs, &ucb);
- 
- #ifdef CONFIG_PERF_EVENTS
--	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
-+	if (flags & TP_FLAG_PROFILE)
- 		uretprobe_perf_func(tu, func, regs, &ucb);
- #endif
- 	uprobe_buffer_put(ucb);
+ 	if (record->op == ARM_SPE_LD)
+ 		data_src.mem_op = PERF_MEM_OP_LOAD;
+-- 
+2.51.0
+
 
 
 
