@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-186576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853BEBE9BF4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9D17BEA1D9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F1EE746A96
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B32096221CF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB98C32C94A;
-	Fri, 17 Oct 2025 15:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABEF258ECA;
+	Fri, 17 Oct 2025 15:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxkE8cDj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrCn7pSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693052F12DB;
-	Fri, 17 Oct 2025 15:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BA2337117;
+	Fri, 17 Oct 2025 15:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713633; cv=none; b=GHEeHBIuft3zJapuexjd9CJv36ZhzZtWhNs2XNLml6s0RvG1bWqhvf+TqylDRUu707/Uzo3hUh30/vkvBvFh/KIv8NsK1UoQp++oZe9/eNmYNHoEo4kfCJnfWOPXccNq/zeC1CWard5/IckpEASYuCgtgQKnpIgLYiEpnKHIc0c=
+	t=1760714364; cv=none; b=pIswmLz5dEqkxM1PhXpullJgexzIl4YpDlB2lLJo9nIUbBJqGlELLb1g8iku2Cz79yoTkqqrPyaZrUVMzAfqKMnoqFaVSuonsSO7bkE7GzOseAJ/fpkNo8BGTIoFtRZM6pmpPHoXXfoQlBDQTGWeCkCdPoYd8/maAehklQQcmVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713633; c=relaxed/simple;
-	bh=+NmEGl5gRvoxqn5oXPBglvnDESQduxFyjjmYF0P7F0Q=;
+	s=arc-20240116; t=1760714364; c=relaxed/simple;
+	bh=/A23npCBNbGC/UtHjVeTkd8mEloDSVDHVdtUWcJlCxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jc7Z3dfbbmpDOnwQE24Y2qcBPfNCttPnQvBiLiK5/EIsS4Wlu3d9bKCUnfl85Ru7cCMN8xb6u65CGayC5RpTmZYMynFCj2AiD0cFEAuDxtjWNNobgTrXX9UE3uBn+9XthGv90G1hIrc3Vv0TsXTkYTMuqjBQ2tBotcIiujJ/n2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxkE8cDj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15D2C4CEF9;
-	Fri, 17 Oct 2025 15:07:12 +0000 (UTC)
+	 MIME-Version; b=SsOJ4SSGbX/p3ergVVBAlw/FZumUvXojvLWmfNKqHzOPA0YXdTsr1MdeNeFIYi8JLPpgkXJVU1XTRQvI59SlRgskBStMHF3ybumuoLFA/134+TF0Bguiz4mC94sEYFMkgPuGBuCct8DKazNPsOFcnDVNJb0qYqPo1kt7eLo5onU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrCn7pSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9DAC4CEE7;
+	Fri, 17 Oct 2025 15:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713633;
-	bh=+NmEGl5gRvoxqn5oXPBglvnDESQduxFyjjmYF0P7F0Q=;
+	s=korg; t=1760714364;
+	bh=/A23npCBNbGC/UtHjVeTkd8mEloDSVDHVdtUWcJlCxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HxkE8cDjyl0qldIntLgIGPXLfHWxPiwNpK/THBXtT5pK3dV7FOORdqg1lWlzTjeoJ
-	 lNkbpdGP/T2/1UxmrC5CLCO/bkfFw159M6dCwOpHuIT2jg8kmqpSJLu4sANm2HiNn/
-	 JK4Uczyee/k0UeoHyJIEeBuiaYhf3Ehm2fBqWKVo=
+	b=yrCn7pSzm+hww8WaUGAKM8m8RPCVg5pgxgb4vrWORgxMT7+n9vKGT9DnVG37ZEq8c
+	 ydn70oeOZrKqEW/t3wgJdYq4lRt5v6VAF8el7nE2zqkuAiXbkyO/XdFBZ+r9LAp4mL
+	 V+kjcaEC7268f0pvnDsUyX9Q8lYhW7btAiKX8X/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>
-Subject: [PATCH 6.6 065/201] ARM: OMAP2+: pm33xx-core: ix device node reference leaks in amx3_idle_init
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Fangzhi Zuo <Jerry.Zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.12 119/277] drm/amd/display: Enable Dynamic DTBCLK Switch
 Date: Fri, 17 Oct 2025 16:52:06 +0200
-Message-ID: <20251017145137.139219766@linuxfoundation.org>
+Message-ID: <20251017145151.471225261@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Fangzhi Zuo <Jerry.Zuo@amd.com>
 
-commit 74139a64e8cedb6d971c78d5d17384efeced1725 upstream.
+commit 5949e7c4890c3cf65e783c83c355b95e21f10dba upstream.
 
-Add missing of_node_put() calls to release
-device node references obtained via of_parse_phandle().
+[WHAT]
+Since dcn35, DTBCLK can be disabled when no DP2 sink connected for
+power saving purpose.
 
-Fixes: 06ee7a950b6a ("ARM: OMAP2+: pm33xx-core: Add cpuidle_ops for am335x/am437x")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20250902075943.2408832-1-linmq006@gmail.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-omap2/pm33xx-core.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm/mach-omap2/pm33xx-core.c
-+++ b/arch/arm/mach-omap2/pm33xx-core.c
-@@ -388,12 +388,15 @@ static int __init amx3_idle_init(struct
- 		if (!state_node)
- 			break;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2027,6 +2027,10 @@ static int amdgpu_dm_init(struct amdgpu_
  
--		if (!of_device_is_available(state_node))
-+		if (!of_device_is_available(state_node)) {
-+			of_node_put(state_node);
- 			continue;
-+		}
+ 	init_data.flags.disable_ips_in_vpb = 0;
  
- 		if (i == CPUIDLE_STATE_MAX) {
- 			pr_warn("%s: cpuidle states reached max possible\n",
- 				__func__);
-+			of_node_put(state_node);
- 			break;
- 		}
- 
-@@ -403,6 +406,7 @@ static int __init amx3_idle_init(struct
- 			states[state_count].wfi_flags |= WFI_FLAG_WAKE_M3 |
- 							 WFI_FLAG_FLUSH_CACHE;
- 
-+		of_node_put(state_node);
- 		state_count++;
- 	}
- 
++	/* DCN35 and above supports dynamic DTBCLK switch */
++	if (amdgpu_ip_version(adev, DCE_HWIP, 0) >= IP_VERSION(3, 5, 0))
++		init_data.flags.allow_0_dtb_clk = true;
++
+ 	/* Enable DWB for tested platforms only */
+ 	if (amdgpu_ip_version(adev, DCE_HWIP, 0) >= IP_VERSION(3, 0, 0))
+ 		init_data.num_virtual_links = 1;
 
 
 
