@@ -1,89 +1,112 @@
-Return-Path: <stable+bounces-186324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEC5BE8D27
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3425BE8F7C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B8DC6E2981
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 13:24:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 886401AA6BAC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 13:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B7C34F488;
-	Fri, 17 Oct 2025 13:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5BD2F6903;
+	Fri, 17 Oct 2025 13:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqVr3H4t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ucjbJloF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F74332ECD;
-	Fri, 17 Oct 2025 13:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296DC2F6912
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 13:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760707476; cv=none; b=aMPIhojHfqRnweFvGr4TWbMHGE5nxJIekByNDCiIUm3r8nchNR+2ulwZWk/xB0xKt+otUmhUnV1f6xX4efAOkuFLwcFFOiijAeGE2VLNSIsoGsS5gYHAB8MYFbiA4dEyFPiCn00c4/+An22tCfFv4rR5mwz8Bdce78tsOd42wEs=
+	t=1760708364; cv=none; b=QkzkXvQDT8lMXvpK0HPbgIRHcZTEW3zd9N8kWNLsUYrLOFJT73LjC2HhmRBT9aIItGk2X0LcuGriLreoZR7QiFH3cZugpSI7EusSAbYZm5F19RV5OAeSCljlV3qtzqzfH5NW0B5GLaU8S0eCFosGKXa16D2CaodjKAsQKBiiSm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760707476; c=relaxed/simple;
-	bh=OJG0btO9mK5cD8BkzgHp6FWSeXog2428DkzWPSMdbMQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R54TbpsCiuJRzTKY1Vb4yxw3j63WI5A+NwRl2wJ+pSts/8cWF/y4o9ZLf4Rw35laXPLh92GBqyv4AfNvQb0Bc3zglQ4P3SjUe0IaAyu/ND31cEERjnkeAZJ/m6OyESPTd+u+zN/tOLhqz6FCd1CG7vf6FOT/AOMx1zzqNOEs/A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqVr3H4t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035E0C4CEF9;
-	Fri, 17 Oct 2025 13:24:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760707475;
-	bh=OJG0btO9mK5cD8BkzgHp6FWSeXog2428DkzWPSMdbMQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fqVr3H4trlS9SOn/0U46bLvIfk+tcyAPvwD0Uwb36pTdNbZFohgPSknE1++cD3B5n
-	 SXXrZgj0v6KoS+60mGw85iauS9ureynXPV2y+AmxAXIY//xe1kRl3JIINUfHL8OVtn
-	 /nJIKuKCKhCvrs91dGhlLIDfn3Yi9zlGIKD+ttPU=
-Date: Fri, 17 Oct 2025 15:24:32 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: stable-commits@vger.kernel.org, geliang@kernel.org, kuba@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: Patch "selftests: mptcp: join: validate C-flag + def limit" has
- been added to the 5.15-stable tree
-Message-ID: <2025101722-relative-stunt-b387@gregkh>
-References: <2025101612-civic-donated-16c8@gregkh>
- <03816237-f54d-4483-a8d4-98bf12e0ac00@kernel.org>
+	s=arc-20240116; t=1760708364; c=relaxed/simple;
+	bh=sd2km+7BP8WkoxfL2nECXgNvS9LYvCn7i2puj3KCEPg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ln4Bd3haNOJwqSM+q51kxE2x77dkl9orAoK+obVFxm3oHJ5A4mcFp8oHsoz+BkS3IQbzlCzZuwIGoVe9QRcWT5Rev1Co3WmBc8C2Jz9KNNkqzFFWNJGtcZBACctE9QH9AK+oMjnk5yHImqZQuu2d/fTTmKTmCaRcheDNU8CbUs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ucjbJloF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C33C4CEE7;
+	Fri, 17 Oct 2025 13:39:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760708363;
+	bh=sd2km+7BP8WkoxfL2nECXgNvS9LYvCn7i2puj3KCEPg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ucjbJloF2+z8iaaajL3VCguFIWomM7wj/+96VQyE+H4y3ZkdytnQlOjI4r4CF+A7o
+	 elWT+zraJ79s10xfgk4LGVV7Oglk6Mpap7tjohCRJpDrFNHu52aaYDflLIDV04qBIw
+	 hdW5t0zgqLXXSovprmsnl2TudUA1/8UtsJqCOKXAClFle9mNH3hMmOfat6QHXvUOuY
+	 pPnidQ1W/m+E/g/yuzRZR2HtjfgOlRDdOy2ycFjpmqb6AglhNBtPOtMn0hWC8yE9dd
+	 wESPzFLmP0CW5uU5toSOAv9MvbNFxlLhJIeBtbzpOxQRPpKBLmQ2ML5rr2FerE9VCo
+	 U20gSl6rYg6fA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] media: cx18: Add missing check after DMA map
+Date: Fri, 17 Oct 2025 09:39:17 -0400
+Message-ID: <20251017133917.3955532-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101641-imminent-rentable-bc13@gregkh>
+References: <2025101641-imminent-rentable-bc13@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <03816237-f54d-4483-a8d4-98bf12e0ac00@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 17, 2025 at 12:16:56PM +0200, Matthieu Baerts wrote:
-> Hi Greg,
-> 
-> On 16/10/2025 15:25, gregkh@linuxfoundation.org wrote:
-> > 
-> > This is a note to let you know that I've just added the patch titled
-> > 
-> >     selftests: mptcp: join: validate C-flag + def limit
-> > 
-> > to the 5.15-stable tree which can be found at:
-> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> > 
-> > The filename of the patch is:
-> >      selftests-mptcp-join-validate-c-flag-def-limit.patch
-> > and it can be found in the queue-5.15 subdirectory.
-> > 
-> > If you, or anyone else, feels it should not be added to the stable tree,
-> > please let <stable@vger.kernel.org> know about it.
-> 
-> It looks like this patch was applied at the wrong place, and further
-> adaptations are needed to work in v5.15. Do you mind dropping it from
-> the v5.15 tree, please?
-> 
-> I will send a newer version later on.
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-Now dropped from both queues, thanks for the review!
+[ Upstream commit 23b53639a793477326fd57ed103823a8ab63084f ]
 
-greg k-h
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, dealloc buffers, and return.
+
+Fixes: 1c1e45d17b66 ("V4L/DVB (7786): cx18: new driver for the Conexant CX23418 MPEG encoder chip")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ removed pci_map_single() replaced by dma_map_single() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/media/pci/cx18/cx18-queue.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/media/pci/cx18/cx18-queue.c b/drivers/media/pci/cx18/cx18-queue.c
+index 2f5df471dada6..9b247ecf48d5c 100644
+--- a/drivers/media/pci/cx18/cx18-queue.c
++++ b/drivers/media/pci/cx18/cx18-queue.c
+@@ -379,14 +379,22 @@ int cx18_stream_alloc(struct cx18_stream *s)
+ 			break;
+ 		}
+ 
++		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
++						 buf->buf, s->buf_size,
++						 s->dma);
++		if (dma_mapping_error(&s->cx->pci_dev->dev, buf->dma_handle)) {
++			kfree(buf->buf);
++			kfree(mdl);
++			kfree(buf);
++			break;
++		}
++
+ 		INIT_LIST_HEAD(&mdl->list);
+ 		INIT_LIST_HEAD(&mdl->buf_list);
+ 		mdl->id = s->mdl_base_idx; /* a somewhat safe value */
+ 		cx18_enqueue(s, mdl, &s->q_idle);
+ 
+ 		INIT_LIST_HEAD(&buf->list);
+-		buf->dma_handle = pci_map_single(s->cx->pci_dev,
+-				buf->buf, s->buf_size, s->dma);
+ 		cx18_buf_sync_for_cpu(s, buf);
+ 		list_add_tail(&buf->list, &s->buf_pool);
+ 	}
+-- 
+2.51.0
+
 
