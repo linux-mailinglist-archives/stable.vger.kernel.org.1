@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-186861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B30BEA1F6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:56 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE0FBE99ED
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 427777C39D4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B080581B07
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1828C335061;
-	Fri, 17 Oct 2025 15:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5942F12AF;
+	Fri, 17 Oct 2025 15:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WHdT2u+C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFjxYoL/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AB533291F;
-	Fri, 17 Oct 2025 15:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE7B33710B;
+	Fri, 17 Oct 2025 15:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714435; cv=none; b=e4na/GfCyF/tV3U6V4y1E4VJoz0p/nbNiAgqz+hdgQHxZzMVl1jFhHWaJchP0OntknwUYlGaNkMeJhSolY3LhWFbL2xkXngPc1A2gp2LJQ6gMErQ82RoM1VLtQgkgeZL7wKoGf8RuYxAQrFrzvgh9luo2Inzbq734BffKuHWYVk=
+	t=1760713706; cv=none; b=TIRH2SGQgBQYdJIaHblh172hMGh+UE/MlxzbUsY2bBVNCsbLXbjeINo0xDvku7KwWQqnTRmo8eKFD+Tfbt0Dm/0kYSMaugF1dptRbSjGJM3RxbPOdtqhAubxmdq+H8KOt3OP9PhlAQewEE9PjqmAI7nmtoUvkOsHPsd7p3i03Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714435; c=relaxed/simple;
-	bh=m95M0Q3LFhjUOqvdmWounWlj1tkErRuySYxjTHIfVvY=;
+	s=arc-20240116; t=1760713706; c=relaxed/simple;
+	bh=ytmKJDtpF4/ZjeePnE1kUaDPHIRaU0FO5mQFLo5xg8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4PG9rbXrrZNTciMSZL8mnIsrlvro4K7r3y9j7xCB4gLbOQDuOYZ0ykhNRCL34mB3NyImP+ANRPDvu43bCi+E6dbEWrxuF2IetKcaYh9QEMn6bVjwQ970Ty+NtowhTvndAO1ncGweR0rq0FXce8Ca2twpEaNA8kUKdlHVeYpXZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WHdT2u+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBA8C4CEE7;
-	Fri, 17 Oct 2025 15:20:35 +0000 (UTC)
+	 MIME-Version; b=F9pWPRuYInl9SyZ4okHgDwJquawymVAuBelZXoRVWEoZwBQ5FmNCwu0bMVhzpqjg2Waw4nW3DH4sD4DzAdrj+em2vpixMbT+HMsIA6cwVG6LrK+JPhexgDCSIuB9fXU+ukAdod0mclTjIG8fG0Pn7i1xCwQVOk9hacdFZbMYvao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFjxYoL/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20494C4CEE7;
+	Fri, 17 Oct 2025 15:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714435;
-	bh=m95M0Q3LFhjUOqvdmWounWlj1tkErRuySYxjTHIfVvY=;
+	s=korg; t=1760713706;
+	bh=ytmKJDtpF4/ZjeePnE1kUaDPHIRaU0FO5mQFLo5xg8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WHdT2u+CAo1ncTdQRg5E5VvWqAXw02Z4ZFt8bFEJualySoXK7p5dtfO1B3p8S3QKJ
-	 6AX8ztY44iX+ZCyC15LM3HufPogRZ3KE9EN+3dYUl26jR8TPX7D+XF3bgw82Mo9XEy
-	 DuG+ornxW/VidZD53C1DVr8NnTouEsElIzd0y0G4=
+	b=oFjxYoL/JxVlwQF6C4Q35r0ZPuKjsuvwoRzV+jpgmoNWNYtPgPbTI1gSAXYyxiuVv
+	 sNJhreX+xnkQuPZXjpwva/ei3FjvZo0Pvc6aaL6E/QysFMbmCfLPDA9aHqg2Hnyl6A
+	 qYeBJzlwAndOcxC6zcknMk1mZEYd3XeKSPEG+4jI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 145/277] kernel/sys.c: fix the racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths
-Date: Fri, 17 Oct 2025 16:52:32 +0200
-Message-ID: <20251017145152.418339572@linuxfoundation.org>
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 092/201] iio: dac: ad5421: use int type to store negative error codes
+Date: Fri, 17 Oct 2025 16:52:33 +0200
+Message-ID: <20251017145138.133154304@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-commit a15f37a40145c986cdf289a4b88390f35efdecc4 upstream.
+commit 3379c900320954d768ed9903691fb2520926bbe3 upstream.
 
-The usage of task_lock(tsk->group_leader) in sys_prlimit64()->do_prlimit()
-path is very broken.
+Change the 'ret' variable in ad5421_update_ctrl() from unsigned int to
+int, as it needs to store either negative error codes or zero returned
+by ad5421_write_unlocked().
 
-sys_prlimit64() does get_task_struct(tsk) but this only protects task_struct
-itself. If tsk != current and tsk is not a leader, this process can exit/exec
-and task_lock(tsk->group_leader) may use the already freed task_struct.
-
-Another problem is that sys_prlimit64() can race with mt-exec which changes
-->group_leader. In this case do_prlimit() may take the wrong lock, or (worse)
-->group_leader may change between task_lock() and task_unlock().
-
-Change sys_prlimit64() to take tasklist_lock when necessary. This is not
-nice, but I don't see a better fix for -stable.
-
-Link: https://lkml.kernel.org/r/20250915120917.GA27702@redhat.com
-Fixes: 18c91bb2d872 ("prlimit: do not grab the tasklist_lock")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 5691b23489db ("staging:iio:dac: Add AD5421 driver")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Link: https://patch.msgid.link/20250901135726.17601-3-rongqianfeng@vivo.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sys.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/iio/dac/ad5421.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -1698,6 +1698,7 @@ SYSCALL_DEFINE4(prlimit64, pid_t, pid, u
- 	struct rlimit old, new;
- 	struct task_struct *tsk;
- 	unsigned int checkflags = 0;
-+	bool need_tasklist;
- 	int ret;
+--- a/drivers/iio/dac/ad5421.c
++++ b/drivers/iio/dac/ad5421.c
+@@ -186,7 +186,7 @@ static int ad5421_update_ctrl(struct iio
+ 	unsigned int clr)
+ {
+ 	struct ad5421_state *st = iio_priv(indio_dev);
+-	unsigned int ret;
++	int ret;
  
- 	if (old_rlim)
-@@ -1724,8 +1725,25 @@ SYSCALL_DEFINE4(prlimit64, pid_t, pid, u
- 	get_task_struct(tsk);
- 	rcu_read_unlock();
+ 	mutex_lock(&st->lock);
  
--	ret = do_prlimit(tsk, resource, new_rlim ? &new : NULL,
--			old_rlim ? &old : NULL);
-+	need_tasklist = !same_thread_group(tsk, current);
-+	if (need_tasklist) {
-+		/*
-+		 * Ensure we can't race with group exit or de_thread(),
-+		 * so tsk->group_leader can't be freed or changed until
-+		 * read_unlock(tasklist_lock) below.
-+		 */
-+		read_lock(&tasklist_lock);
-+		if (!pid_alive(tsk))
-+			ret = -ESRCH;
-+	}
-+
-+	if (!ret) {
-+		ret = do_prlimit(tsk, resource, new_rlim ? &new : NULL,
-+				old_rlim ? &old : NULL);
-+	}
-+
-+	if (need_tasklist)
-+		read_unlock(&tasklist_lock);
- 
- 	if (!ret && old_rlim) {
- 		rlim_to_rlim64(&old, &old64);
 
 
 
