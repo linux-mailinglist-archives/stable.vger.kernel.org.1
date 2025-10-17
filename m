@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFC4BEA542
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E58B8BE9D6B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 598C71AE5FDE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 04B965878DA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F56B32E15B;
-	Fri, 17 Oct 2025 15:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC6C23EABB;
+	Fri, 17 Oct 2025 15:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywd+0PkJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGFzR9la"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCE4217722;
-	Fri, 17 Oct 2025 15:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB7C337118;
+	Fri, 17 Oct 2025 15:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716348; cv=none; b=uo0Fu11SllpKeFOhGTyT6NGi8kcgiDEkHzaoSM52Qi9qVssSkZuviqA5fatTdyssStiw6uzV+0H+CJ5weVAgMc0KnXcld+Ux7U8S9jHPOhCJAcmULRFUGCmPrKRaZ4Z4tB7lCnsZHsn4EnTVmixEmMQpz/kCjZF97TnFlL6mzbs=
+	t=1760714037; cv=none; b=JYLPWsVH6Bol7pis+dCq7+XSDbctnrs135xj4ICn38evrqY2gcs4s7+frlUqGju58Tz+Q4x+9Y9IEccUaWxUEr6NO0di+iGTmYj1CTh40CjC21IqEJypTezvJnj2vNkdMcYdofpzvVLNBBrQ9TaZLZKkw7pNGInq42DwoItvBvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716348; c=relaxed/simple;
-	bh=sBdAxypGKKlpq86yb5ijMyiFwMne3kFR7q29kuF42do=;
+	s=arc-20240116; t=1760714037; c=relaxed/simple;
+	bh=zfiQTIBWAdHbVTDdR/7/BZIbx8I6hk8plFgCfaHdK3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HIjlzkUvw1dFwKCmt/s6ptqRsf5tiJFV1r0uoD7ETNXEQE6gb1ufpx7zSgEJS4Hm2jw/HZjiFp2O74BGKib/DPoirsi3PTdO+SwVfr/RhPu+SEf7YkUs+bkQ8Ymnjn85TAmcZl6i7lA0Q9AjrUk8DkMn0gvDTb/EAHeEfhhyvg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywd+0PkJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6911CC4CEE7;
-	Fri, 17 Oct 2025 15:52:27 +0000 (UTC)
+	 MIME-Version; b=OZIwiC0rXyDV+oR4N8lmdl1u1gieCEnaJ+Woi3rXKA+lZVggHt2FQVmt882bJjy2hpOqvqD7RCIf72RD7tDQizhCn0fOe8sGJPRbVVGTCPloKAwPVmAfJuY1N/smKm5o80OTrLRWbRyRdQgIpsKB/ZxSaRbKn1kSHl6k9HO0I9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGFzR9la; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96855C4CEE7;
+	Fri, 17 Oct 2025 15:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716347;
-	bh=sBdAxypGKKlpq86yb5ijMyiFwMne3kFR7q29kuF42do=;
+	s=korg; t=1760714037;
+	bh=zfiQTIBWAdHbVTDdR/7/BZIbx8I6hk8plFgCfaHdK3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywd+0PkJGkdN0M1dRidaHE7W9NTR9dTVj3bmOzfhqhTyJXB2RFScZOeZ6ICuE/BGK
-	 gEgmIzM8c8CPyq9vZdJL7z7xey/TP3FtVQhT3lwSim8Pkqm9nMe690IcFvm1ZsEhKo
-	 hSW6XdlcgiTh3WfP9KQrSCB86F328fdIPiGLl8Go=
+	b=bGFzR9la/G+bCdf1GTr1nwmUsLrA6Y2Dko/aN9RqUO0PNQczNKdFpls5ljsUv+EBX
+	 +ZvDKJwNGxGEoZzHorICIkuEafHFRqUgVPrAQJz8y0KDO+Wrl/3NqCxOsHX7QLZh4n
+	 UI166PjoFo27cNl+P1By/XPsms665zlhgZ0VdOB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 160/276] bridge: br_vlan_fill_forward_path_pvid: use br_vlan_group_rcu()
+Subject: [PATCH 6.6 192/201] irqchip/sifive-plic: Make use of __assign_bit()
 Date: Fri, 17 Oct 2025 16:54:13 +0200
-Message-ID: <20251017145148.315441016@linuxfoundation.org>
+Message-ID: <20251017145141.814354804@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Woudstra <ericwouds@gmail.com>
+From: Hongbo Li <lihongbo22@huawei.com>
 
-[ Upstream commit bbf0c98b3ad9edaea1f982de6c199cc11d3b7705 ]
+[ Upstream commit 40d7af5375a4e27d8576d9d11954ac213d06f09e ]
 
-net/bridge/br_private.h:1627 suspicious rcu_dereference_protected() usage!
-other info that might help us debug this:
+Replace the open coded
 
-rcu_scheduler_active = 2, debug_locks = 1
-7 locks held by socat/410:
- #0: ffff88800d7a9c90 (sk_lock-AF_INET){+.+.}-{0:0}, at: inet_stream_connect+0x43/0xa0
- #1: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: __ip_queue_xmit+0x62/0x1830
- [..]
- #6: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: nf_hook.constprop.0+0x8a/0x440
+if (foo)
+        __set_bit(n, bar);
+    else
+        __clear_bit(n, bar);
 
-Call Trace:
- lockdep_rcu_suspicious.cold+0x4f/0xb1
- br_vlan_fill_forward_path_pvid+0x32c/0x410 [bridge]
- br_fill_forward_path+0x7a/0x4d0 [bridge]
+with __assign_bit(). No functional change intended.
 
-Use to correct helper, non _rcu variant requires RTNL mutex.
-
-Fixes: bcf2766b1377 ("net: bridge: resolve forwarding path for VLAN tag actions in bridge devices")
-Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lore.kernel.org/all/20240902130824.2878644-1-lihongbo22@huawei.com
+Stable-dep-of: f75e07bf5226 ("irqchip/sifive-plic: Avoid interrupt ID 0 handling during suspend/resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_vlan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-sifive-plic.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-index 86441ff78a0f8..055d988d280cd 100644
---- a/net/bridge/br_vlan.c
-+++ b/net/bridge/br_vlan.c
-@@ -1391,7 +1391,7 @@ void br_vlan_fill_forward_path_pvid(struct net_bridge *br,
- 	if (!br_opt_get(br, BROPT_VLAN_ENABLED))
- 		return;
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index 5728996691549..0fcd37108b67e 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -248,11 +248,10 @@ static int plic_irq_suspend(void)
  
--	vg = br_vlan_group(br);
-+	vg = br_vlan_group_rcu(br);
+ 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
  
- 	if (idx >= 0 &&
- 	    ctx->vlan[idx].proto == br->vlan_proto) {
+-	for (i = 0; i < priv->nr_irqs; i++)
+-		if (readl(priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID))
+-			__set_bit(i, priv->prio_save);
+-		else
+-			__clear_bit(i, priv->prio_save);
++	for (i = 0; i < priv->nr_irqs; i++) {
++		__assign_bit(i, priv->prio_save,
++			     readl(priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID));
++	}
+ 
+ 	for_each_cpu(cpu, cpu_present_mask) {
+ 		struct plic_handler *handler = per_cpu_ptr(&plic_handlers, cpu);
 -- 
 2.51.0
 
