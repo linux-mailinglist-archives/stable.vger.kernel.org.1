@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-187191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678A0BEA85E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD8BBEAB0D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B80B942A83
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E193942AD9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D09A32F778;
-	Fri, 17 Oct 2025 15:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74B9332909;
+	Fri, 17 Oct 2025 15:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjFEKz6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfRFPNFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEF03328F0;
-	Fri, 17 Oct 2025 15:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8220C332908;
+	Fri, 17 Oct 2025 15:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715372; cv=none; b=fhNR5n5KqKi2oOIfZxc9/R8UvTwwA7TdV228febRtp7mNSuv0AyLTb3dGXBDj5aCb8JuQlfm81e6kwp/Hj8BkXljN3NRbRS47eicMXCGLoxD4QKTXIeMADLXgW3JjlE/29jR3IBg/FDHSp3bobbnFveTvGGjmweZQbsBroC/vpM=
+	t=1760715378; cv=none; b=BjN6SI1nBFg96+n3HooGyhA10Cifjc8V4myWwnPyfMPzVYnOB1HZzWerBh+i/k3Z6IE1PJsZRVLFnpU2eVPkh5Vc+9Ml4j+6W0Y6Aki8y8Shi8u1Br66rwlw3t5h9knNyZ2tRknXHpO1WPvNw+klDVuCSKZ1+p+Ndks3GNSKOwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715372; c=relaxed/simple;
-	bh=y4dOuRgiw6EspPPv30LeKmo4mexoTtVibp0wcV+MNZ0=;
+	s=arc-20240116; t=1760715378; c=relaxed/simple;
+	bh=Hq+8/ysaV8V252nitXpGyaXDbSLVyqEz+z/kM/77Mz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N1fBmKiQAVfjnQwIlWqLFUBdtTD8sk0WgcbPdD0GknwNmMZzcMGs0S9kh7xfACPZYeF4zoqvHuchStC+9oqcUl7W4Zaih+XHgi50pJ0tcGAreK0lObQCXhCQCHkZ4e0f3/dqSZ1S5A0U97UOIToDQI4511X8I3B+k+GlT43Xsos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjFEKz6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D46C19423;
-	Fri, 17 Oct 2025 15:36:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T0l8tvQllNJVP2dZRJTdILrD9RRMoGj79forhQo+k5DADRb0YNXJLWVsTA6GCE5/o+1zNG53cJvJb/PvkrIryYcEtpWVYLHEnrU4elhJW2yt11TBXWtqRjt6NWEZlk5GT54o5H204NNpCDwWpxxCu/nmUD1bmbdisTcVGHOGcXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfRFPNFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86D7C4CEE7;
+	Fri, 17 Oct 2025 15:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715372;
-	bh=y4dOuRgiw6EspPPv30LeKmo4mexoTtVibp0wcV+MNZ0=;
+	s=korg; t=1760715378;
+	bh=Hq+8/ysaV8V252nitXpGyaXDbSLVyqEz+z/kM/77Mz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fjFEKz6wrOtVrUvqvuTeQDCKosh1iS6MnqelAtXm7hsFeFR7/5EVOIqC64mlc5/GM
-	 i9gDPSir7lC7WWt0Jh9rE9Rvcv5vjIp9G7MKk4peN4iLeW/3dvYZ0C7k67vl28fLMt
-	 QMnD8mE9i1GU5qIzLYlp/wL5/8HcXyWt34PcvPAg=
+	b=cfRFPNFKK4jUScmQ8SvYjeRLof6f4vtOfpinxij3zxuQ/G+gdwIwvpumyRrBFS/y3
+	 SP8sqDCrp/WY3yA9nAhkXZaB514r1djTzJTdlqgFmSYWjkkyKK5D0hE/gKYhi2Dgch
+	 cAvupFcApQLnX1H3qqdcXxciOHT1EV8Sou+4hRvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Austin Zheng <austin.zheng@amd.com>,
+	Jun Lei <jun.lei@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Samson Tam <samson.tam@amd.com>,
-	Jesse Agate <jesse.agate@amd.com>,
-	Brendan Leder <breleder@amd.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 6.17 192/371] drm/amd/display: Incorrect Mirror Cositing
-Date: Fri, 17 Oct 2025 16:52:47 +0200
-Message-ID: <20251017145208.873368228@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.17 194/371] drm/amd/display: Fix unsafe uses of kernel mode FPU
+Date: Fri, 17 Oct 2025 16:52:49 +0200
+Message-ID: <20251017145208.946507573@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -63,60 +67,227 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Agate <jesse.agate@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit d07e142641417e67f3bfc9d8ba3da8a69c39cfcd upstream.
+commit ddbfac152830e38d488ff8e45ab7eaf5d72f8527 upstream.
 
-[WHY]
-hinit/vinit are incorrect in the case of mirroring.
+The point of isolating code that uses kernel mode FPU in separate
+compilation units is to ensure that even implicit uses of, e.g., SIMD
+registers for spilling occur only in a context where this is permitted,
+i.e., from inside a kernel_fpu_begin/end block.
 
-[HOW]
-Cositing sign must be flipped when image is mirrored in the vertical
-or horizontal direction.
+This is important on arm64, which uses -mgeneral-regs-only to build all
+kernel code, with the exception of such compilation units where FP or
+SIMD registers are expected to be used. Given that the compiler may
+invent uses of FP/SIMD anywhere in such a unit, none of its code may be
+accessible from outside a kernel_fpu_begin/end block.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
+This means that all callers into such compilation units must use the
+DC_FP start/end macros, which must not occur there themselves. For
+robustness, all functions with external linkage that reside there should
+call dc_assert_fp_enabled() to assert that the FPU context was set up
+correctly.
+
+Fix this for the DCN35, DCN351 and DCN36 implementations.
+
+Cc: Austin Zheng <austin.zheng@amd.com>
+Cc: Jun Lei <jun.lei@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Rodrigo Siqueira <siqueira@igalia.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Samson Tam <samson.tam@amd.com>
-Signed-off-by: Jesse Agate <jesse.agate@amd.com>
-Signed-off-by: Brendan Leder <breleder@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/sspl/dc_spl.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c             |    4 ++
+ drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c             |    6 ++-
+ drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c           |    4 +-
+ drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c   |   16 ++++++++-
+ drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c |   17 +++++++++-
+ drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c   |   16 ++++++++-
+ 6 files changed, 56 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/sspl/dc_spl.c
-+++ b/drivers/gpu/drm/amd/display/dc/sspl/dc_spl.c
-@@ -641,16 +641,16 @@ static void spl_calculate_inits_and_view
- 		/* this gives the direction of the cositing (negative will move
- 		 * left, right otherwise)
- 		 */
--		int sign = 1;
-+		int h_sign = flip_horz_scan_dir ? -1 : 1;
-+		int v_sign = flip_vert_scan_dir ? -1 : 1;
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
+@@ -808,6 +808,8 @@ void dcn316_update_bw_bounding_box(struc
  
- 		switch (spl_in->basic_in.cositing) {
--
- 		case CHROMA_COSITING_TOPLEFT:
--			init_adj_h = spl_fixpt_from_fraction(sign, 4);
--			init_adj_v = spl_fixpt_from_fraction(sign, 4);
-+			init_adj_h = spl_fixpt_from_fraction(h_sign, 4);
-+			init_adj_v = spl_fixpt_from_fraction(v_sign, 4);
- 			break;
- 		case CHROMA_COSITING_LEFT:
--			init_adj_h = spl_fixpt_from_fraction(sign, 4);
-+			init_adj_h = spl_fixpt_from_fraction(h_sign, 4);
- 			init_adj_v = spl_fixpt_zero;
- 			break;
- 		case CHROMA_COSITING_NONE:
+ int dcn_get_max_non_odm_pix_rate_100hz(struct _vcs_dpi_soc_bounding_box_st *soc)
+ {
++	dc_assert_fp_enabled();
++
+ 	return soc->clock_limits[0].dispclk_mhz * 10000.0 / (1.0 + soc->dcn_downspread_percent / 100.0);
+ }
+ 
+@@ -815,6 +817,8 @@ int dcn_get_approx_det_segs_required_for
+ 		struct _vcs_dpi_soc_bounding_box_st *soc,
+ 		int pix_clk_100hz, int bpp, int seg_size_kb)
+ {
++	dc_assert_fp_enabled();
++
+ 	/* Roughly calculate required crb to hide latency. In practice there is slightly
+ 	 * more buffer available for latency hiding
+ 	 */
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+@@ -445,6 +445,8 @@ int dcn35_populate_dml_pipes_from_contex
+ 	bool upscaled = false;
+ 	const unsigned int max_allowed_vblank_nom = 1023;
+ 
++	dc_assert_fp_enabled();
++
+ 	dcn31_populate_dml_pipes_from_context(dc, context, pipes,
+ 					      validate_mode);
+ 
+@@ -498,9 +500,7 @@ int dcn35_populate_dml_pipes_from_contex
+ 
+ 		pipes[pipe_cnt].pipe.src.unbounded_req_mode = false;
+ 
+-		DC_FP_START();
+ 		dcn31_zero_pipe_dcc_fraction(pipes, pipe_cnt);
+-		DC_FP_END();
+ 
+ 		pipes[pipe_cnt].pipe.dest.vfront_porch = timing->v_front_porch;
+ 		pipes[pipe_cnt].pipe.src.dcc_rate = 3;
+@@ -581,6 +581,8 @@ void dcn35_decide_zstate_support(struct
+ 	unsigned int i, plane_count = 0;
+ 	DC_LOGGER_INIT(dc->ctx->logger);
+ 
++	dc_assert_fp_enabled();
++
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 		if (context->res_ctx.pipe_ctx[i].plane_state)
+ 			plane_count++;
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c
+@@ -478,6 +478,8 @@ int dcn351_populate_dml_pipes_from_conte
+ 	bool upscaled = false;
+ 	const unsigned int max_allowed_vblank_nom = 1023;
+ 
++	dc_assert_fp_enabled();
++
+ 	dcn31_populate_dml_pipes_from_context(dc, context, pipes,
+ 					      validate_mode);
+ 
+@@ -531,9 +533,7 @@ int dcn351_populate_dml_pipes_from_conte
+ 
+ 		pipes[pipe_cnt].pipe.src.unbounded_req_mode = false;
+ 
+-		DC_FP_START();
+ 		dcn31_zero_pipe_dcc_fraction(pipes, pipe_cnt);
+-		DC_FP_END();
+ 
+ 		pipes[pipe_cnt].pipe.dest.vfront_porch = timing->v_front_porch;
+ 		pipes[pipe_cnt].pipe.src.dcc_rate = 3;
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+@@ -1760,6 +1760,20 @@ enum dc_status dcn35_patch_unknown_plane
+ }
+ 
+ 
++static int populate_dml_pipes_from_context_fpu(struct dc *dc,
++					       struct dc_state *context,
++					       display_e2e_pipe_params_st *pipes,
++					       enum dc_validate_mode validate_mode)
++{
++	int ret;
++
++	DC_FP_START();
++	ret = dcn35_populate_dml_pipes_from_context_fpu(dc, context, pipes, validate_mode);
++	DC_FP_END();
++
++	return ret;
++}
++
+ static struct resource_funcs dcn35_res_pool_funcs = {
+ 	.destroy = dcn35_destroy_resource_pool,
+ 	.link_enc_create = dcn35_link_encoder_create,
+@@ -1770,7 +1784,7 @@ static struct resource_funcs dcn35_res_p
+ 	.validate_bandwidth = dcn35_validate_bandwidth,
+ 	.calculate_wm_and_dlg = NULL,
+ 	.update_soc_for_wm_a = dcn31_update_soc_for_wm_a,
+-	.populate_dml_pipes = dcn35_populate_dml_pipes_from_context_fpu,
++	.populate_dml_pipes = populate_dml_pipes_from_context_fpu,
+ 	.acquire_free_pipe_as_secondary_dpp_pipe = dcn20_acquire_free_pipe_for_layer,
+ 	.release_pipe = dcn20_release_pipe,
+ 	.add_stream_to_ctx = dcn30_add_stream_to_ctx,
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
+@@ -1732,6 +1732,21 @@ static enum dc_status dcn351_validate_ba
+ 	return out ? DC_OK : DC_FAIL_BANDWIDTH_VALIDATE;
+ }
+ 
++static int populate_dml_pipes_from_context_fpu(struct dc *dc,
++					       struct dc_state *context,
++					       display_e2e_pipe_params_st *pipes,
++					       enum dc_validate_mode validate_mode)
++{
++	int ret;
++
++	DC_FP_START();
++	ret = dcn351_populate_dml_pipes_from_context_fpu(dc, context, pipes, validate_mode);
++	DC_FP_END();
++
++	return ret;
++
++}
++
+ static struct resource_funcs dcn351_res_pool_funcs = {
+ 	.destroy = dcn351_destroy_resource_pool,
+ 	.link_enc_create = dcn35_link_encoder_create,
+@@ -1742,7 +1757,7 @@ static struct resource_funcs dcn351_res_
+ 	.validate_bandwidth = dcn351_validate_bandwidth,
+ 	.calculate_wm_and_dlg = NULL,
+ 	.update_soc_for_wm_a = dcn31_update_soc_for_wm_a,
+-	.populate_dml_pipes = dcn351_populate_dml_pipes_from_context_fpu,
++	.populate_dml_pipes = populate_dml_pipes_from_context_fpu,
+ 	.acquire_free_pipe_as_secondary_dpp_pipe = dcn20_acquire_free_pipe_for_layer,
+ 	.release_pipe = dcn20_release_pipe,
+ 	.add_stream_to_ctx = dcn30_add_stream_to_ctx,
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
+@@ -1734,6 +1734,20 @@ static enum dc_status dcn35_validate_ban
+ }
+ 
+ 
++static int populate_dml_pipes_from_context_fpu(struct dc *dc,
++					       struct dc_state *context,
++					       display_e2e_pipe_params_st *pipes,
++					       enum dc_validate_mode validate_mode)
++{
++	int ret;
++
++	DC_FP_START();
++	ret = dcn35_populate_dml_pipes_from_context_fpu(dc, context, pipes, validate_mode);
++	DC_FP_END();
++
++	return ret;
++}
++
+ static struct resource_funcs dcn36_res_pool_funcs = {
+ 	.destroy = dcn36_destroy_resource_pool,
+ 	.link_enc_create = dcn35_link_encoder_create,
+@@ -1744,7 +1758,7 @@ static struct resource_funcs dcn36_res_p
+ 	.validate_bandwidth = dcn35_validate_bandwidth,
+ 	.calculate_wm_and_dlg = NULL,
+ 	.update_soc_for_wm_a = dcn31_update_soc_for_wm_a,
+-	.populate_dml_pipes = dcn35_populate_dml_pipes_from_context_fpu,
++	.populate_dml_pipes = populate_dml_pipes_from_context_fpu,
+ 	.acquire_free_pipe_as_secondary_dpp_pipe = dcn20_acquire_free_pipe_for_layer,
+ 	.release_pipe = dcn20_release_pipe,
+ 	.add_stream_to_ctx = dcn30_add_stream_to_ctx,
 
 
 
