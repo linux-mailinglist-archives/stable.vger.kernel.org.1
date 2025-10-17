@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009BBBEA200
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:58 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4F7BE98E2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A0F1435ED36
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 69CEC582ED7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B382330B2E;
-	Fri, 17 Oct 2025 15:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1513A32E144;
+	Fri, 17 Oct 2025 15:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GR6716nj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XK9BL8BG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27067330B0D;
-	Fri, 17 Oct 2025 15:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5CF33711C;
+	Fri, 17 Oct 2025 15:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715945; cv=none; b=L/Xf0GO6FRsS+bpvfh9as31PEVa2TGkcWEspDF/TFDHMoSokhxGG0NZ6FhhIX/fhNEufstDBB5a6HL2zP0rrFsw0GiFMk3LmH8o4mmeE+GeGmc7KkUJ2Ee78VwbBoaJC/4ndJ4qis5EZZEUdKhcwDras1Q+VkX0fhz7ECItK3rE=
+	t=1760713545; cv=none; b=nYCYxE4mqeF5ITah8VbxJVaH4FYzXGMhUxrJDKV2HYgVBY6tTynqTk4L8m+mnYMB0J4jBKra2ILuWML1m2jIKAPNnb2SbPagy4Y1CenPx5I2ZEPNNdp2esOsVUVHM+vzo+gVGXQhtq82giT5iId4VPm/KWk5Rd7ZxanDoCM3bdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715945; c=relaxed/simple;
-	bh=xu9e8hvJyJhj44FEhZKAfkLln261VGTWny8cXndnCII=;
+	s=arc-20240116; t=1760713545; c=relaxed/simple;
+	bh=oJKrRTVNnxNRnYQTrWFN+DM8ubyA56rt+/Xch87EzHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+akpdw+3O2YGRpN/xn7upUMIC+eNpRmd5QyMNmen8Kip5AvjLKjuf4SQjPp/IoJRzExav9Yefrd7F2nxyq/7UXKdY+9fM7dRPdTN0wWGg/h7jFS7+YP4jsypZRDA5GR/FKu9Dv3zVKwPo6AecGcbxAEggIt+tSNhF/k/tLJxYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GR6716nj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0529C4CEE7;
-	Fri, 17 Oct 2025 15:45:44 +0000 (UTC)
+	 MIME-Version; b=UK3/4+3EYSTxyuN2WhqM3mnwTMjx6IP0JsbWZE/2eQRRwoETamlvo/9g1xeJH8FQhC4aelW9tE3tlXfhgEOb6Rq+mgXd2NFtdLbFPlFJ9C2dhrHI7AXSFt63lJrr7QLZyVLObsJ5NO8n61htb494BdF49e+90htcfUtLfUpq1PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XK9BL8BG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379BAC4CEE7;
+	Fri, 17 Oct 2025 15:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715945;
-	bh=xu9e8hvJyJhj44FEhZKAfkLln261VGTWny8cXndnCII=;
+	s=korg; t=1760713545;
+	bh=oJKrRTVNnxNRnYQTrWFN+DM8ubyA56rt+/Xch87EzHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GR6716njfBnPF0ok2hXIp2Wr4qmpRqQ03JSF3hE+8XgxZVq6GJk6hL0Z/LyVXAeGQ
-	 clVhTIgbnGNZ4WxilTBSfgUamC/XTvWTTxC3AZoNLj2rrQvDpCOYl0Ke9T8NEbqSve
-	 idCxfMkWt+8GpfZrqnrFoVBTc+B6isJz3mt6VZFE=
+	b=XK9BL8BGuEsX1Rm4sddLY0knlTmUr7CtrA5POcIQDrHBqZNKBc3Cmi/7vo9XCDUIi
+	 9rzYcmKM3zZa/XldsUypg6Ar9s8xIUsz4SNvaPsPfcYXD/yLKyegw/b+4b4MSAIqPs
+	 Wuk957WEEX74JD24x/7B42x/+iIo0zoSig/4MBVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Haoran <haoranwangsec@gmail.com>,
-	ziiiro <yuanmingbuaa@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 002/276] scsi: target: target_core_configfs: Add length check to avoid buffer overflow
+	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 034/201] drm/vmwgfx: Fix Use-after-free in validation
 Date: Fri, 17 Oct 2025 16:51:35 +0200
-Message-ID: <20251017145142.477812533@linuxfoundation.org>
+Message-ID: <20251017145135.998133296@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Haoran <haoranwangsec@gmail.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit 27e06650a5eafe832a90fd2604f0c5e920857fae upstream.
+[ Upstream commit dfe1323ab3c8a4dd5625ebfdba44dc47df84512a ]
 
-A buffer overflow arises from the usage of snprintf to write into the
-buffer "buf" in target_lu_gp_members_show function located in
-/drivers/target/target_core_configfs.c. This buffer is allocated with
-size LU_GROUP_NAME_BUF (256 bytes).
+Nodes stored in the validation duplicates hashtable come from an arena
+allocator that is cleared at the end of vmw_execbuf_process. All nodes
+are expected to be cleared in vmw_validation_drop_ht but this node escaped
+because its resource was destroyed prematurely.
 
-snprintf(...) formats multiple strings into buf with the HBA name
-(hba->hba_group.cg_item), a slash character, a devicename (dev->
-dev_group.cg_item) and a newline character, the total formatted string
-length may exceed the buffer size of 256 bytes.
-
-Since snprintf() returns the total number of bytes that would have been
-written (the length of %s/%sn ), this value may exceed the buffer length
-(256 bytes) passed to memcpy(), this will ultimately cause function
-memcpy reporting a buffer overflow error.
-
-An additional check of the return value of snprintf() can avoid this
-buffer overflow.
-
-Reported-by: Wang Haoran <haoranwangsec@gmail.com>
-Reported-by: ziiiro <yuanmingbuaa@gmail.com>
-Signed-off-by: Wang Haoran <haoranwangsec@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 64ad2abfe9a6 ("drm/vmwgfx: Adapt validation code for reference-free lookups")
+Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://lore.kernel.org/r/20250926195427.1405237-1-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_configfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_validation.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -2679,7 +2679,7 @@ static ssize_t target_lu_gp_members_show
- 			config_item_name(&dev->dev_group.cg_item));
- 		cur_len++; /* Extra byte for NULL terminator */
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+index aaacbdcbd742f..a4a11e725d183 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+@@ -326,8 +326,10 @@ int vmw_validation_add_resource(struct vmw_validation_context *ctx,
+ 		hash_add_rcu(ctx->sw_context->res_ht, &node->hash.head, node->hash.key);
+ 	}
+ 	node->res = vmw_resource_reference_unless_doomed(res);
+-	if (!node->res)
++	if (!node->res) {
++		hash_del_rcu(&node->hash.head);
+ 		return -ESRCH;
++	}
  
--		if ((cur_len + len) > PAGE_SIZE) {
-+		if ((cur_len + len) > PAGE_SIZE || cur_len > LU_GROUP_NAME_BUF) {
- 			pr_warn("Ran out of lu_gp_show_attr"
- 				"_members buffer\n");
- 			break;
+ 	node->first_usage = 1;
+ 	if (!res->dev_priv->has_mob) {
+-- 
+2.51.0
+
 
 
 
