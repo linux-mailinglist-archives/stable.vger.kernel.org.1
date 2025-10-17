@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-186920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFC1BE9E3D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1281BE9B4A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7DC29582745
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A164743CFB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5279D32C940;
-	Fri, 17 Oct 2025 15:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EF5332907;
+	Fri, 17 Oct 2025 15:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/wnVjXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/M4ibiJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E56F337110;
-	Fri, 17 Oct 2025 15:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100CA3370E0;
+	Fri, 17 Oct 2025 15:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714606; cv=none; b=RjR2QFhqRMSRRg3e6FkzwkwSKUwTDn07nhHTN2FdBoY+SxewzMp8FjHhyoEUL9Z3qYLAj/PtsjNhOh2kzW4tjQH8OKaxGRrLkhdp8tb0F/3epRp28OySsa18OC827V2GCKYltXNwB52t1cXC5HmMXl7ThtpBhd6nbU1I6UTm6UY=
+	t=1760713432; cv=none; b=KsiGVE1M8ginuCzKbwRT5qJ3ekZnZmzn5vGA80a2Wf1eQV8AyjZtZDwpSRPZ5rZ2tredhISVJvRCBYF10EMKvNZrL4vXoyI8gnK+yx/orCXz1aethAca6+YXcStAoEy6cIbNmaPOe1FV333pmrcZMStBaHAmmtHRk7gBNfjxkZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714606; c=relaxed/simple;
-	bh=zSPtZNhnul48c8ht9cHCYD81VtrWAqZnnhrR7YbuheA=;
+	s=arc-20240116; t=1760713432; c=relaxed/simple;
+	bh=xoODPbniTobvfUhspqbP85L4zH3vBC7VfvVlPSjSXIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+AqJ7OH5+6YmvXpSM/z73zSCJDdxf06W4fwHast4JXEc15o093uKy4qeVBZQueNQM3bWY9F1KGbpJ6393NoEj2vDULEDNAl0/xo4//lJa1iJCRh92xtfsFxMsmyTjqnb5yVZBs43nSyGwibU6feiDOjsOMH1bG8z00sjMyD1a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/wnVjXB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB01C4CEE7;
-	Fri, 17 Oct 2025 15:23:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EvQ9Hau+c4iV+/vuddSNMZ+fx2FxQY+dGIQtsamNE1lzXaT/imd7Go86EiPjVTqC7/eL1J6rwHwoZ39gJPFUJSH07X3EJJhTFRqKvcrdx6qC37YLmCfwhpII7kWHUBrPQAWtsN2ZIZQKvsGndg+c903vHJEntX7MVRZ+co34GI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/M4ibiJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F073C4CEE7;
+	Fri, 17 Oct 2025 15:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714605;
-	bh=zSPtZNhnul48c8ht9cHCYD81VtrWAqZnnhrR7YbuheA=;
+	s=korg; t=1760713431;
+	bh=xoODPbniTobvfUhspqbP85L4zH3vBC7VfvVlPSjSXIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/wnVjXBXOg3I/tyMaep4kFMJfZ9UejWuRKBlC1ri6WZVMJxaoyPOMO7qrA8xpTIx
-	 jnDeyCkMwlR7pUPpX3N7/RgIWlZ8JG6uDA6qz26mEVmnWoubsMqxqcCgPe5Htlcpd7
-	 XvnlY7MiI2DFYIiwmwgiXq15aDkSAA1Kx8MuMDQ8=
+	b=t/M4ibiJdbsc2F1CLpnn4raLdCliv02fvwMi7iYpH80iFZCgPOytS3Hk/nD30+e2j
+	 t0tcHT6Xg/82R9F8nMWr6GH1ermhVwJWczBcnrOnbDF1C6byTGxddemKXCfM8NcEsB
+	 QDRXg/YhBeTySVuAQdNLJboD0zbZCube4RY3Z460=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.12 202/277] wifi: ath11k: HAL SRNG: dont deinitialize and re-initialize again
+	stable@kernel.org,
+	Yongjian Sun <sunyongjian1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 130/168] ext4: increase i_disksize to offset + len in ext4_update_disksize_before_punch()
 Date: Fri, 17 Oct 2025 16:53:29 +0200
-Message-ID: <20251017145154.498397922@linuxfoundation.org>
+Message-ID: <20251017145133.814611266@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +63,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Yongjian Sun <sunyongjian1@huawei.com>
 
-commit 32be3ca4cf78b309dfe7ba52fe2d7cc3c23c5634 upstream.
+commit 9d80eaa1a1d37539224982b76c9ceeee736510b9 upstream.
 
-Don't deinitialize and reinitialize the HAL helpers. The dma memory is
-deallocated and there is high possibility that we'll not be able to get
-the same memory allocated from dma when there is high memory pressure.
+After running a stress test combined with fault injection,
+we performed fsck -a followed by fsck -fn on the filesystem
+image. During the second pass, fsck -fn reported:
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+Inode 131512, end of extent exceeds allowed value
+	(logical block 405, physical block 1180540, len 2)
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org
-Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://patch.msgid.link/20250722053121.1145001-1-usama.anjum@collabora.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+This inode was not in the orphan list. Analysis revealed the
+following call chain that leads to the inconsistency:
+
+                             ext4_da_write_end()
+                              //does not update i_disksize
+                             ext4_punch_hole()
+                              //truncate folio, keep size
+ext4_page_mkwrite()
+ ext4_block_page_mkwrite()
+  ext4_block_write_begin()
+    ext4_get_block()
+     //insert written extent without update i_disksize
+journal commit
+echo 1 > /sys/block/xxx/device/delete
+
+da-write path updates i_size but does not update i_disksize. Then
+ext4_punch_hole truncates the da-folio yet still leaves i_disksize
+unchanged(in the ext4_update_disksize_before_punch function, the
+condition offset + len < size is met). Then ext4_page_mkwrite sees
+ext4_nonda_switch return 1 and takes the nodioread_nolock path, the
+folio about to be written has just been punched out, and it’s offset
+sits beyond the current i_disksize. This may result in a written
+extent being inserted, but again does not update i_disksize. If the
+journal gets committed and then the block device is yanked, we might
+run into this. It should be noted that replacing ext4_punch_hole with
+ext4_zero_range in the call sequence may also trigger this issue, as
+neither will update i_disksize under these circumstances.
+
+To fix this, we can modify ext4_update_disksize_before_punch to
+increase i_disksize to min(i_size, offset + len) when both i_size and
+(offset + len) are greater than i_disksize.
+
+Cc: stable@kernel.org
+Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Message-ID: <20250911133024.1841027-1-sunyongjian@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c |    6 +-----
- drivers/net/wireless/ath/ath11k/hal.c  |   16 ++++++++++++++++
- drivers/net/wireless/ath/ath11k/hal.h  |    1 +
- 3 files changed, 18 insertions(+), 5 deletions(-)
+ fs/ext4/inode.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -1936,14 +1936,10 @@ static int ath11k_core_reconfigure_on_cr
- 	mutex_unlock(&ab->core_lock);
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -3945,7 +3945,11 @@ int ext4_can_truncate(struct inode *inod
+  * We have to make sure i_disksize gets properly updated before we truncate
+  * page cache due to hole punching or zero range. Otherwise i_disksize update
+  * can get lost as it may have been postponed to submission of writeback but
+- * that will never happen after we truncate page cache.
++ * that will never happen if we remove the folio containing i_size from the
++ * page cache. Also if we punch hole within i_size but above i_disksize,
++ * following ext4_page_mkwrite() may mistakenly allocate written blocks over
++ * the hole and thus introduce allocated blocks beyond i_disksize which is
++ * not allowed (e2fsck would complain in case of crash).
+  */
+ int ext4_update_disksize_before_punch(struct inode *inode, loff_t offset,
+ 				      loff_t len)
+@@ -3956,9 +3960,11 @@ int ext4_update_disksize_before_punch(st
+ 	loff_t size = i_size_read(inode);
  
- 	ath11k_dp_free(ab);
--	ath11k_hal_srng_deinit(ab);
-+	ath11k_hal_srng_clear(ab);
+ 	WARN_ON(!inode_is_locked(inode));
+-	if (offset > size || offset + len < size)
++	if (offset > size)
+ 		return 0;
  
- 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
++	if (offset + len < size)
++		size = offset + len;
+ 	if (EXT4_I(inode)->i_disksize >= size)
+ 		return 0;
  
--	ret = ath11k_hal_srng_init(ab);
--	if (ret)
--		return ret;
--
- 	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
- 
- 	ret = ath11k_core_qmi_firmware_ready(ab);
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1383,6 +1383,22 @@ void ath11k_hal_srng_deinit(struct ath11
- }
- EXPORT_SYMBOL(ath11k_hal_srng_deinit);
- 
-+void ath11k_hal_srng_clear(struct ath11k_base *ab)
-+{
-+	/* No need to memset rdp and wrp memory since each individual
-+	 * segment would get cleared in ath11k_hal_srng_src_hw_init()
-+	 * and ath11k_hal_srng_dst_hw_init().
-+	 */
-+	memset(ab->hal.srng_list, 0,
-+	       sizeof(ab->hal.srng_list));
-+	memset(ab->hal.shadow_reg_addr, 0,
-+	       sizeof(ab->hal.shadow_reg_addr));
-+	ab->hal.avail_blk_resource = 0;
-+	ab->hal.current_blk_index = 0;
-+	ab->hal.num_shadow_reg_configured = 0;
-+}
-+EXPORT_SYMBOL(ath11k_hal_srng_clear);
-+
- void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
- {
- 	struct hal_srng *srng;
---- a/drivers/net/wireless/ath/ath11k/hal.h
-+++ b/drivers/net/wireless/ath/ath11k/hal.h
-@@ -965,6 +965,7 @@ int ath11k_hal_srng_setup(struct ath11k_
- 			  struct hal_srng_params *params);
- int ath11k_hal_srng_init(struct ath11k_base *ath11k);
- void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
-+void ath11k_hal_srng_clear(struct ath11k_base *ab);
- void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
- void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
- 				       u32 **cfg, u32 *len);
 
 
 
