@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84132BEA114
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E69BEA44F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EB4C189848E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3260118891C2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990742F12D1;
-	Fri, 17 Oct 2025 15:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD81F330B1E;
+	Fri, 17 Oct 2025 15:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhZ78S3h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5Nc2Qhz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534AE289811;
-	Fri, 17 Oct 2025 15:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FC9330B04;
+	Fri, 17 Oct 2025 15:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715444; cv=none; b=qOeindsZ+x08aoFaaRITFpMEiLafZqoDyGNV9wBjhz/vGFzjPSCuCCrpX+WiK5nvW955CZ7JgxSsBW+Xzj02bYoHazYcm60qZlqgeY9lW4R9V4ypDACw9HeN/WEz5IVz2pbdnPxkPA43c6bIINIe4qEory2+1eOiXgs2Nu/aFIQ=
+	t=1760716178; cv=none; b=IqcStgVkdwN+MdjWPUO1eX32i3UrIG/wygjZqWZ+N05qB8LtSGRdVTGZZONdl4toGfwSgeYp0VvDCBBHV+PSeCot9AtY8rOyv8BGc3defCV8YEBPUbf30EamljLDltThQYyru9yUoZ7/Iphps/OQCkfnYs0/CdoGagRBmvn/biw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715444; c=relaxed/simple;
-	bh=ujpjFsGqLgM1BTKzuNJY7v75XddsFX4OU9gMVSbz9yc=;
+	s=arc-20240116; t=1760716178; c=relaxed/simple;
+	bh=HSbTm++3YfoDtobZio3duJ+lXAIRIdWtuEKDkOgt3gI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chdm7oRLC2tRJrumSD6iWprUTjZLjYg7eFRE2/3gBsoFGGy+eTLK2YTVWix6B6ptKmf1972/Poimyff3lGkwHm1UjuRukooqjzCJCqflQRIz4Rj52b4vcXpcCY6z78pdAWJ5/4jg0q7WA3YbbtSofOnsRjcI+cz1zo0cwHqe5vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhZ78S3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB52C4CEFE;
-	Fri, 17 Oct 2025 15:37:23 +0000 (UTC)
+	 MIME-Version; b=FSmoqurv7vnQGuVbJdPGudeIMtnIMMUJqzFpTrVpZlqgKXwXO00eOyyO+JAHGP/f9QbE2Gw6mtYAjWZM1sNzIOLyVTGn1mDLEsKcXquGmuAQkKJUSp95SLMKHrO3Sow4sr6PjosD+QTIygo9rdDrXrDh1eEol5FCea+kVQ4Brcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5Nc2Qhz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD059C4CEE7;
+	Fri, 17 Oct 2025 15:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715444;
-	bh=ujpjFsGqLgM1BTKzuNJY7v75XddsFX4OU9gMVSbz9yc=;
+	s=korg; t=1760716178;
+	bh=HSbTm++3YfoDtobZio3duJ+lXAIRIdWtuEKDkOgt3gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jhZ78S3h7vNaZYtttBwGSnnQSjk5wVmPT4GChEfJ5wDm6nCvq0AMH6tq96gHgMfek
-	 VPsQgvFkjIP4jSxvJYnUaLqv0cC2ud3Vh9+VJq3UQswwW/gW7Fy8Nkrr6EBAtHgaql
-	 uj1EY2I+L4yJ8zLucqlieAf32koVai39URh0rJ4E=
+	b=n5Nc2QhzNLlybc1pQg+6e0AZv83OakF85jtttYO+45fRZeciV+uKznvI4avrTRuh8
+	 +vbAgJaNZWdj1zuDQCuCXFgC6SxILanYrpOjpoW7v8g6Tc06CnzTemGa2QsiM4ZUf8
+	 6x5Scv/eJ/jKVTtYJZwcNiERYdQydZoduBD3ELUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.17 218/371] i3c: Fix default I2C adapter timeout value
+	Nishanth Menon <nm@ti.com>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 100/276] hwrng: ks-sa - fix division by zero in ks_sa_rng_init
 Date: Fri, 17 Oct 2025 16:53:13 +0200
-Message-ID: <20251017145209.974830213@linuxfoundation.org>
+Message-ID: <20251017145146.134446983@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Nishanth Menon <nm@ti.com>
 
-commit 9395b3c412933401a34845d5326afe4011bbd40f upstream.
+[ Upstream commit 612b1dfeb414dfa780a6316014ceddf9a74ff5c0 ]
 
-Commit 3a379bbcea0a ("i3c: Add core I3C infrastructure") set the default
-adapter timeout for I2C transfers as 1000 (ms). However that parameter
-is defined in jiffies not in milliseconds.
+Fix division by zero in ks_sa_rng_init caused by missing clock
+pointer initialization. The clk_get_rate() call is performed on
+an uninitialized clk pointer, resulting in division by zero when
+calculating delay values.
 
-With mipi-i3c-hci driver this wasn't visible until commit c0a90eb55a69
-("i3c: mipi-i3c-hci: use adapter timeout value for I2C transfers").
+Add clock initialization code before using the clock.
 
-Fix this by setting the default timeout as HZ (CONFIG_HZ) not 1000.
+Fixes: 6d01d8511dce ("hwrng: ks-sa - Add minimum sleep time before ready-polling")
+Signed-off-by: Nishanth Menon <nm@ti.com>
 
-Fixes: 1b84691e7870 ("i3c: dw: use adapter timeout value for I2C transfers")
-Fixes: be27ed672878 ("i3c: master: cdns: use adapter timeout value for I2C transfers")
-Fixes: c0a90eb55a69 ("i3c: mipi-i3c-hci: use adapter timeout value for I2C transfers")
-Fixes: a747e01adad2 ("i3c: master: svc: use adapter timeout value for I2C transfers")
-Fixes: d028219a9f14 ("i3c: master: Add basic driver for the Renesas I3C controller")
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Cc: stable@vger.kernel.org # 6.17
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20250905100320.954536-1-jarkko.nikula@linux.intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ drivers/char/hw_random/ks-sa-rng.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/hw_random/ks-sa-rng.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2492,7 +2492,7 @@ static int i3c_master_i2c_adapter_init(s
- 	strscpy(adap->name, dev_name(master->dev.parent), sizeof(adap->name));
+diff --git a/drivers/char/hw_random/ks-sa-rng.c b/drivers/char/hw_random/ks-sa-rng.c
+index 2f2f21f1b659e..d7b42888f25c2 100644
+--- a/drivers/char/hw_random/ks-sa-rng.c
++++ b/drivers/char/hw_random/ks-sa-rng.c
+@@ -240,6 +240,10 @@ static int ks_sa_rng_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
  
- 	/* FIXME: Should we allow i3c masters to override these values? */
--	adap->timeout = 1000;
-+	adap->timeout = HZ;
- 	adap->retries = 3;
- 
- 	id = of_alias_get_id(master->dev.of_node, "i2c");
++	ks_sa_rng->clk = devm_clk_get_enabled(dev, NULL);
++	if (IS_ERR(ks_sa_rng->clk))
++		return dev_err_probe(dev, PTR_ERR(ks_sa_rng->clk), "Failed to get clock\n");
++
+ 	pm_runtime_enable(dev);
+ 	ret = pm_runtime_resume_and_get(dev);
+ 	if (ret < 0) {
+-- 
+2.51.0
+
 
 
 
