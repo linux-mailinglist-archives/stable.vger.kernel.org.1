@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964BFBEA50F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0CABE98FD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E1D3F5A05CA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2991C1884022
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DDE1A0728;
-	Fri, 17 Oct 2025 15:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FDB3328E1;
+	Fri, 17 Oct 2025 15:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vGiukmTm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEph1q6J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F73330B1E;
-	Fri, 17 Oct 2025 15:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852B32745E;
+	Fri, 17 Oct 2025 15:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716028; cv=none; b=MXu/XyfJ78IcJdmNRNtG/Gf/YIZRx5oUH4VCP6iby+XnuOLEk8S+JJ+LnlVJTMblg6UOJeSdguDECcuVAPUA3hDuzbQjYlRpI5OgGkRSciV4NQq4fE2S0mkz93Gi3kMCTjZr7OLnSEm0ew79aT7A4zV3qYN2wc3reYsO4NH6tBA=
+	t=1760713755; cv=none; b=e3XNuUxNJs3GFStkONBzz+pO6Ks4dxx/Wiuno/Yx17MwCJPJ7yJdDlxHRCfBg7HHDlp4rjE4KkAvccU6y8hva6O5J9y4dJNmlHu/+tFm4LbuUYrSCbbQ5Od450BrMuAx9Q2XDkzUGJR8I80PCeBCdjeiFCZGoras7IVqB7FM3ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716028; c=relaxed/simple;
-	bh=f9jpA9tmR5Fk1DoQhtXdGkrWMLhUJkDHm3hrDxawWtE=;
+	s=arc-20240116; t=1760713755; c=relaxed/simple;
+	bh=C/fDUuNrohORP4XeDgRwX3Y8aFyZ5aQiL5i2eDU80XY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPkbeH6eZEgZmEX5RHn3b27aUxOZGgGdnTYhLMdmXVuD9GAVbmGWMDpFcd8wWNo+qeZLgjEx3m5jCylNdCFghayVtHkAqOaE+qk27IFjeseex0VbJPNy1VRRRxmcz2fcaJlZcahxSuw7FY2B3Q43ab5ZFdawGpLIPKY+jUDCU5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vGiukmTm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59896C113D0;
-	Fri, 17 Oct 2025 15:47:08 +0000 (UTC)
+	 MIME-Version; b=Dx9zCCIbjpmAiGQ9hU9jluAqv+GMcAtUoAiLK6cdKpnmdlod3LVjltngBLuxYlMDZzcf6XOU8oXpi+BmUhClWbKz6qqLSkAUqTHT1nMoLUkFngfIgAhbbX/u9jd+RqVwazqNHntRGD0UnRZA/hYR1zGqOHLnBoMxDkHNnUYnvrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEph1q6J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133B7C4CEE7;
+	Fri, 17 Oct 2025 15:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716028;
-	bh=f9jpA9tmR5Fk1DoQhtXdGkrWMLhUJkDHm3hrDxawWtE=;
+	s=korg; t=1760713755;
+	bh=C/fDUuNrohORP4XeDgRwX3Y8aFyZ5aQiL5i2eDU80XY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vGiukmTm7pypepWkQbVdYEyGIbKmBy8M7nKSRevdRH0pWN8F3Ky9FdSjiGBX0Hmp2
-	 bSfLZQOK+tbBnngEiQRelqd4aKePyLEIeE0D8ENjEK3GB4UZCvexjefvXBTmHCYinN
-	 y5rZxeNdXPuUqF9lzeSZbN1xdx8Ou6BxJLsLsD1o=
+	b=aEph1q6J3Hsp6PBsSnz0MUpYs/TJbbKW1m0WV6/EtRoJ/ugvFjUMndVCRYmmila6e
+	 eeBPAQ1HBqLEAhrZtnkf6fu7CrJDZJdqRJGgZiyZm3YJNUg7ENd5Ry8AJzcG+TVK84
+	 rly0A1C4u00l+sVJeEW2JoquRfN6BE6YctuMHmj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/276] thermal/drivers/qcom: Make LMH select QCOM_SCM
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 081/201] btrfs: avoid potential out-of-bounds in btrfs_encode_fh()
 Date: Fri, 17 Oct 2025 16:52:22 +0200
-Message-ID: <20251017145144.280184911@linuxfoundation.org>
+Message-ID: <20251017145137.730714131@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Anderson Nascimento <anderson@allelesecurity.com>
 
-[ Upstream commit 57eda47bd14b0c2876f2db42e757c57b7a671965 ]
+commit dff4f9ff5d7f289e4545cc936362e01ed3252742 upstream.
 
-The QCOM_SCM symbol is not user-visible, so it makes little sense to
-depend on it. Make LMH driver select QCOM_SCM as all other drivers do
-and, as the dependecy is now correctly handled, enable || COMPILE_TEST
-in order to include the driver into broader set of build tests.
+The function btrfs_encode_fh() does not properly account for the three
+cases it handles.
 
-Fixes: 9e5a4fb84230 ("thermal/drivers/qcom/lmh: make QCOM_LMH depends on QCOM_SCM")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20250728-lmh-scm-v2-1-33bc58388ca5@oss.qualcomm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before writing to the file handle (fh), the function only returns to the
+user BTRFS_FID_SIZE_NON_CONNECTABLE (5 dwords, 20 bytes) or
+BTRFS_FID_SIZE_CONNECTABLE (8 dwords, 32 bytes).
+
+However, when a parent exists and the root ID of the parent and the
+inode are different, the function writes BTRFS_FID_SIZE_CONNECTABLE_ROOT
+(10 dwords, 40 bytes).
+
+If *max_len is not large enough, this write goes out of bounds because
+BTRFS_FID_SIZE_CONNECTABLE_ROOT is greater than
+BTRFS_FID_SIZE_CONNECTABLE originally returned.
+
+This results in an 8-byte out-of-bounds write at
+fid->parent_root_objectid = parent_root_id.
+
+A previous attempt to fix this issue was made but was lost.
+
+https://lore.kernel.org/all/4CADAEEC020000780001B32C@vpn.id2.novell.com/
+
+Although this issue does not seem to be easily triggerable, it is a
+potential memory corruption bug that should be fixed. This patch
+resolves the issue by ensuring the function returns the appropriate size
+for all three cases and validates that *max_len is large enough before
+writing any data.
+
+Fixes: be6e8dc0ba84 ("NFS support for btrfs - v3")
+CC: stable@vger.kernel.org # 3.0+
+Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/qcom/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/export.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/qcom/Kconfig b/drivers/thermal/qcom/Kconfig
-index bfd889422dd32..22cd3d5384910 100644
---- a/drivers/thermal/qcom/Kconfig
-+++ b/drivers/thermal/qcom/Kconfig
-@@ -34,7 +34,8 @@ config QCOM_SPMI_TEMP_ALARM
+--- a/fs/btrfs/export.c
++++ b/fs/btrfs/export.c
+@@ -24,7 +24,11 @@ static int btrfs_encode_fh(struct inode
+ 	int type;
  
- config QCOM_LMH
- 	tristate "Qualcomm Limits Management Hardware"
--	depends on ARCH_QCOM && QCOM_SCM
-+	depends on ARCH_QCOM || COMPILE_TEST
-+	select QCOM_SCM
- 	help
- 	  This enables initialization of Qualcomm limits management
- 	  hardware(LMh). LMh allows for hardware-enforced mitigation for cpus based on
--- 
-2.51.0
-
+ 	if (parent && (len < BTRFS_FID_SIZE_CONNECTABLE)) {
+-		*max_len = BTRFS_FID_SIZE_CONNECTABLE;
++		if (btrfs_root_id(BTRFS_I(inode)->root) !=
++		    btrfs_root_id(BTRFS_I(parent)->root))
++			*max_len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
++		else
++			*max_len = BTRFS_FID_SIZE_CONNECTABLE;
+ 		return FILEID_INVALID;
+ 	} else if (len < BTRFS_FID_SIZE_NON_CONNECTABLE) {
+ 		*max_len = BTRFS_FID_SIZE_NON_CONNECTABLE;
+@@ -46,6 +50,8 @@ static int btrfs_encode_fh(struct inode
+ 		parent_root_id = BTRFS_I(parent)->root->root_key.objectid;
+ 
+ 		if (parent_root_id != fid->root_objectid) {
++			if (*max_len < BTRFS_FID_SIZE_CONNECTABLE_ROOT)
++				return FILEID_INVALID;
+ 			fid->parent_root_objectid = parent_root_id;
+ 			len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
+ 			type = FILEID_BTRFS_WITH_PARENT_ROOT;
 
 
 
