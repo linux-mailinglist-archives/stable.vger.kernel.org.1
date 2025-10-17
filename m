@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40307BEA712
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:05:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B1FBEAAE6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ACA535A0EA8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:57:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E33917C7004
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDA6330B2D;
-	Fri, 17 Oct 2025 15:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C24330B39;
+	Fri, 17 Oct 2025 15:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgPRN4hU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gA9Pv3VX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6858E330B36;
-	Fri, 17 Oct 2025 15:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7023330B30;
+	Fri, 17 Oct 2025 15:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716632; cv=none; b=I1bCu4UYTeNXOFtOXRYuZjDOCjcJMo6utruQ81MSy7nDlc462WagHb8y2SXr53AMfGJrBHBdCIo/jIvNP127Y1osUCma2T3z+6j17lkBKVWt6LHGmp7P48eAfCq3jFsa2VdykrjMXH0a8oOJZ013j1HCySvoDjzjM45THLpas+Y=
+	t=1760715883; cv=none; b=LmjgN+u4IjOzKFRBNYTa/EayZ5gTGTPXa1Gj3FmTUnfzLZpmr0Jzd4cPggebPtoSthWJqbatiOUiJ9uzaLTTpCm6Gf8Cl+2kEhjXAwk55yr5TIfw6VKsJ+zQhBZq+YhPIdGWps1hh7Z2wHeI0A4ikvRxweYO34j8SInzJKT7HLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716632; c=relaxed/simple;
-	bh=WuSNE1N3dIJEH8V9uOuHxyawXVGO4+P0CBBjb2Kz9sg=;
+	s=arc-20240116; t=1760715883; c=relaxed/simple;
+	bh=Kf3M8WOVHmWNlju8hfxYgOYethboVlaOMFU8Tgy/994=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mo6HeN2Bn+FIC7mFE2Hygi4ECZT++r9wyPUuWdvE0H6CZR8Lfnu531QMdwkvTPjH/tuaUOUGyqnbPJWipE54WT03rApXZhQujeMmTO6ycyPT2b91G6G/5Xfm6YhOEPSgF5G/nvMBR13GISU7aQfrlzHhimYnFGHeba4zLWMJnts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgPRN4hU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E208FC4CEE7;
-	Fri, 17 Oct 2025 15:57:11 +0000 (UTC)
+	 MIME-Version; b=q3YhJ20qRiHqfz6Rv7P3p8u9CpGg3BxcCBbQ803WHiTf19REFikkymhTnJjC6Xv+4Qw8k/+VyOyXkOKSH5Zrm+HvcinQLy9BjFfawrMJNxgQ4+6sBwtat/j5TQwl+NCwTPJy/FAh3MxfkOhRpCG5xmZZL5mmrz03i0mZqn+WMZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gA9Pv3VX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D689C116B1;
+	Fri, 17 Oct 2025 15:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716632;
-	bh=WuSNE1N3dIJEH8V9uOuHxyawXVGO4+P0CBBjb2Kz9sg=;
+	s=korg; t=1760715883;
+	bh=Kf3M8WOVHmWNlju8hfxYgOYethboVlaOMFU8Tgy/994=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgPRN4hUMFxCpd+n0fN8VQRwAAH8QppI7RKxjgNrcpzvdfumq71dN3s/FnZUpjrb0
-	 xx5sCvnHxAp3SnQTq9S6wl5xDt8UIA6nFyFnn5wp3a1erADEt8oBZqA7MfRtATtTI1
-	 vjsslotRGkCEmz1LngK5PtYnurg2qREy2Gbch5kw=
+	b=gA9Pv3VXFOlY+kGwIghQ6Jy01D2xEpNf1+Si7r6biqBqC2W9GyVe4P11nUlk3Wz+y
+	 VP36Z0hQiLb+s8WmM9QZF5GE/d/cndiyMjC4tA7a2JUu0HaPzkw/OV87Fy+6TITewG
+	 hRpbA7Li9B8N7+hXlar9QYle3AcwJN25o+cRCZaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <David.Laight@aculab.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 5.15 250/276] minmax: simplify min()/max()/clamp() implementation
-Date: Fri, 17 Oct 2025 16:55:43 +0200
-Message-ID: <20251017145151.602305255@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 369/371] iomap: error out on file IO when there is no inline_data buffer
+Date: Fri, 17 Oct 2025 16:55:44 +0200
+Message-ID: <20251017145215.435208683@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,142 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit dc1c8034e31b14a2e5e212104ec508aec44ce1b9 ]
+[ Upstream commit 6a96fb653b6481ec73e9627ade216b299e4de9ea ]
 
-Now that we no longer have any C constant expression contexts (ie array
-size declarations or static initializers) that use min() or max(), we
-can simpify the implementation by not having to worry about the result
-staying as a C constant expression.
+Return IO errors if an ->iomap_begin implementation returns an
+IOMAP_INLINE buffer but forgets to set the inline_data pointer.
+Filesystems should never do this, but we could help fs developers (me)
+fix their bugs by handling this more gracefully than crashing the
+kernel.
 
-So now we can unconditionally just use temporary variables of the right
-type, and get rid of the excessive expansion that used to come from the
-use of
-
-   __builtin_choose_expr(__is_constexpr(...), ..
-
-to pick the specialized code for constant expressions.
-
-Another expansion simplification is to pass the temporary variables (in
-addition to the original expression) to our __types_ok() macro.  That
-may superficially look like it complicates the macro, but when we only
-want the type of the expression, expanding the temporary variable names
-is much simpler and smaller than expanding the potentially complicated
-original expression.
-
-As a result, on my machine, doing a
-
-  $ time make drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.i
-
-goes from
-
-	real	0m16.621s
-	user	0m15.360s
-	sys	0m1.221s
-
-to
-
-	real	0m2.532s
-	user	0m2.091s
-	sys	0m0.452s
-
-because the token expansion goes down dramatically.
-
-In particular, the longest line expansion (which was line 71 of that
-'ia_css_ynr.host.c' file) shrinks from 23,338kB (yes, 23MB for one
-single line) to "just" 1,444kB (now "only" 1.4MB).
-
-And yes, that line is still the line from hell, because it's doing
-multiple levels of "min()/max()" expansion thanks to some of them being
-hidden inside the uDIGIT_FITTING() macro.
-
-Lorenzo has a nice cleanup patch that makes that driver use inline
-functions instead of macros for sDIGIT_FITTING() and uDIGIT_FITTING(),
-which will fix that line once and for all, but the 16-fold reduction in
-this case does show why we need to simplify these helpers.
-
-Cc: David Laight <David.Laight@aculab.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/175803480324.966383.7414345025943296442.stgit@frogsfrogsfrogs
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   43 ++++++++++++++++++++-----------------------
- 1 file changed, 20 insertions(+), 23 deletions(-)
+ fs/iomap/buffered-io.c | 15 ++++++++++-----
+ fs/iomap/direct-io.c   |  3 +++
+ 2 files changed, 13 insertions(+), 5 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -35,10 +35,10 @@
- #define __is_noneg_int(x)	\
- 	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index fd827398afd2f..6fa653d83f703 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -304,6 +304,9 @@ static int iomap_read_inline_data(const struct iomap_iter *iter,
+ 	size_t size = i_size_read(iter->inode) - iomap->offset;
+ 	size_t offset = offset_in_folio(folio, iomap->offset);
  
--#define __types_ok(x, y) 					\
--	(__is_signed(x) == __is_signed(y) ||			\
--		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
--		__is_noneg_int(x) || __is_noneg_int(y))
-+#define __types_ok(x, y, ux, uy) 				\
-+	(__is_signed(ux) == __is_signed(uy) ||			\
-+	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
-+	 __is_noneg_int(x) || __is_noneg_int(y))
- 
- #define __cmp_op_min <
- #define __cmp_op_max >
-@@ -51,34 +51,31 @@
- #define __cmp_once(op, type, x, y) \
- 	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
- 
--#define __careful_cmp_once(op, x, y) ({			\
--	static_assert(__types_ok(x, y),			\
-+#define __careful_cmp_once(op, x, y, ux, uy) ({		\
-+	__auto_type ux = (x); __auto_type uy = (y);	\
-+	static_assert(__types_ok(x, y, ux, uy),		\
- 		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
--	__cmp_once(op, __auto_type, x, y); })
-+	__cmp(op, ux, uy); })
- 
--#define __careful_cmp(op, x, y)					\
--	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
--		__cmp(op, x, y), __careful_cmp_once(op, x, y))
-+#define __careful_cmp(op, x, y) \
-+	__careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
- 
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
- 
--#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({		\
--	typeof(val) unique_val = (val);						\
--	typeof(lo) unique_lo = (lo);						\
--	typeof(hi) unique_hi = (hi);						\
-+#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
-+	__auto_type uval = (val);						\
-+	__auto_type ulo = (lo);							\
-+	__auto_type uhi = (hi);							\
- 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
- 			(lo) <= (hi), true),					\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
--	static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
--	static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
--	__clamp(unique_val, unique_lo, unique_hi); })
--
--#define __careful_clamp(val, lo, hi) ({					\
--	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
--		__clamp(val, lo, hi),					\
--		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
--			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
-+	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
-+	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
-+	__clamp(uval, ulo, uhi); })
++	if (WARN_ON_ONCE(!iomap->inline_data))
++		return -EIO;
 +
-+#define __careful_clamp(val, lo, hi) \
-+	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
+ 	if (folio_test_uptodate(folio))
+ 		return 0;
  
- /**
-  * min - return minimum of two values of the same or compatible types
+@@ -894,7 +897,7 @@ static bool __iomap_write_end(struct inode *inode, loff_t pos, size_t len,
+ 	return true;
+ }
+ 
+-static void iomap_write_end_inline(const struct iomap_iter *iter,
++static bool iomap_write_end_inline(const struct iomap_iter *iter,
+ 		struct folio *folio, loff_t pos, size_t copied)
+ {
+ 	const struct iomap *iomap = &iter->iomap;
+@@ -903,12 +906,16 @@ static void iomap_write_end_inline(const struct iomap_iter *iter,
+ 	WARN_ON_ONCE(!folio_test_uptodate(folio));
+ 	BUG_ON(!iomap_inline_data_valid(iomap));
+ 
++	if (WARN_ON_ONCE(!iomap->inline_data))
++		return false;
++
+ 	flush_dcache_folio(folio);
+ 	addr = kmap_local_folio(folio, pos);
+ 	memcpy(iomap_inline_data(iomap, pos), addr, copied);
+ 	kunmap_local(addr);
+ 
+ 	mark_inode_dirty(iter->inode);
++	return true;
+ }
+ 
+ /*
+@@ -921,10 +928,8 @@ static bool iomap_write_end(struct iomap_iter *iter, size_t len, size_t copied,
+ 	const struct iomap *srcmap = iomap_iter_srcmap(iter);
+ 	loff_t pos = iter->pos;
+ 
+-	if (srcmap->type == IOMAP_INLINE) {
+-		iomap_write_end_inline(iter, folio, pos, copied);
+-		return true;
+-	}
++	if (srcmap->type == IOMAP_INLINE)
++		return iomap_write_end_inline(iter, folio, pos, copied);
+ 
+ 	if (srcmap->flags & IOMAP_F_BUFFER_HEAD) {
+ 		size_t bh_written;
+diff --git a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c
+index b84f6af2eb4c8..46aa85af13dc5 100644
+--- a/fs/iomap/direct-io.c
++++ b/fs/iomap/direct-io.c
+@@ -519,6 +519,9 @@ static int iomap_dio_inline_iter(struct iomap_iter *iomi, struct iomap_dio *dio)
+ 	loff_t pos = iomi->pos;
+ 	u64 copied;
+ 
++	if (WARN_ON_ONCE(!inline_data))
++		return -EIO;
++
+ 	if (WARN_ON_ONCE(!iomap_inline_data_valid(iomap)))
+ 		return -EIO;
+ 
+-- 
+2.51.0
+
 
 
 
