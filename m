@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-187115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3226CBEA36E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E58BEA2A3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3CFF8567D6B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:34:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F317E7C2262
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A070F332904;
-	Fri, 17 Oct 2025 15:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFAB335064;
+	Fri, 17 Oct 2025 15:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTDKYYDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fiUSla4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFE6346A11;
-	Fri, 17 Oct 2025 15:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F90219A7A;
+	Fri, 17 Oct 2025 15:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715162; cv=none; b=SmZMx9Xln/5FFTIucc54VOtZYnpm4rdErbYareWjQtmXZ5vXVmQBoC812vr9zm+ZdWe7ObB0VzrqYTcQY4jJR+FJabdtQewA1GrSKGH/Dcux2GJubwudNrAJXyuB48cLXTOLCHDWpgkMrG7A1/+tjXvCls9sZ0juxRi0TorpoJY=
+	t=1760714201; cv=none; b=iT/hxQIVUUFD91XGjCU+2vn7CEeGJkvYtu3SpETPDOZTCqaskc3Z9AePdi55Bqc0nhLO+BZPItvFJpnJR4AAsEYN3q0x9WEy9EjqqluoK79+CsS4P68LWrJeeA72VNY3GmfD6qlIIQx8NlZ75rysGFzJlqXpakVUQrO+A0N4y90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715162; c=relaxed/simple;
-	bh=nEWVG1URKY+VvFx0KZQdN703roa3GVTZ2Akyq2bTKOA=;
+	s=arc-20240116; t=1760714201; c=relaxed/simple;
+	bh=qbgzpyLeW7/4Tw5LRdDx9rAjsNBzfPFceB9c8se9xI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YgWW4P4AHjGy/buxVcdkE5WfMW9z8tt3+zy07LA3U14zmOVKzmdW5jU9zkXKFWnsBEBhfJvW8b30LLhXBTXf5Ns6i+dFcuu7ea4IFzijp1l2hqQTT5KSm5nvBzO0b7ZVwAUcgj3P8uUntrGgDTe73RJNbxcxH0mvx8Ckrobiaaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTDKYYDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A08C113D0;
-	Fri, 17 Oct 2025 15:32:41 +0000 (UTC)
+	 MIME-Version; b=ZosGEYovpneDzdgv0SKUO5aINuaERbiouk16yietpSe3wFvxeoyUQVphonsWJXkqy0fvbepjSas4dB/venxCW73GaNVKMpAOJNHznd441w7U8EIzxd8IsaNrxjI7MDJf2LXvuFZaYmch5VzYWV9aDf/Nq/MsrrbnLMuh+EX45uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fiUSla4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA46C4CEE7;
+	Fri, 17 Oct 2025 15:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715162;
-	bh=nEWVG1URKY+VvFx0KZQdN703roa3GVTZ2Akyq2bTKOA=;
+	s=korg; t=1760714201;
+	bh=qbgzpyLeW7/4Tw5LRdDx9rAjsNBzfPFceB9c8se9xI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTDKYYDhTHkTUpE0DQWQ8FHJdx3O4z2zBZjgDdlR9k724Ik2JfLdhGzhJkEEvEIUv
-	 DXFOZQP+224U3y0eizSozPXrBsovfotC4IqFWv55pOMsRhOV0oIyt9dVb7krQuHQRb
-	 Ba1MxtkSLKTEvg0NgXtCOggapU7ChxTqbH7rQaig=
+	b=1fiUSla4dlb9Bk1apHPtvEnJJt5ZdUGcrpmRz6+9yarWWSfhc53BuJCro1gzUCTfz
+	 jWpit5mOVYZWvJfid5B/4P9aVy+j8eHdlVln9r/0HveCHS8asUtYz+tpYf3uu74llY
+	 ECaYKC0yPbYUdVc1+c80VtGqIeLM+wgIK5c4OfnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Harini T <harini.t@amd.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 092/371] ice: ice_adapter: release xa entry on adapter allocation failure
-Date: Fri, 17 Oct 2025 16:51:07 +0200
-Message-ID: <20251017145205.267352810@linuxfoundation.org>
+Subject: [PATCH 6.12 061/277] mailbox: zynqmp-ipi: Remove redundant mbox_controller_unregister() call
+Date: Fri, 17 Oct 2025 16:51:08 +0200
+Message-ID: <20251017145149.374247512@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Harini T <harini.t@amd.com>
 
-[ Upstream commit 2db687f3469dbc5c59bc53d55acafd75d530b497 ]
+[ Upstream commit 341867f730d3d3bb54491ee64e8b1a0c446656e7 ]
 
-When ice_adapter_new() fails, the reserved XArray entry created by
-xa_insert() is not released. This causes subsequent insertions at
-the same index to return -EBUSY, potentially leading to
-NULL pointer dereferences.
+The controller is registered using the device-managed function
+'devm_mbox_controller_register()'. As documented in mailbox.c, this
+ensures the devres framework automatically calls
+mbox_controller_unregister() when device_unregister() is invoked, making
+the explicit call unnecessary.
 
-Reorder the operations as suggested by Przemek Kitszel:
-1. Check if adapter already exists (xa_load)
-2. Reserve the XArray slot (xa_reserve)
-3. Allocate the adapter (ice_adapter_new)
-4. Store the adapter (xa_store)
+Remove redundant mbox_controller_unregister() call as
+device_unregister() handles controller cleanup.
 
-Fixes: 0f0023c649c7 ("ice: do not init struct ice_adapter more times than needed")
-Suggested-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20251001115336.1707-1-vulab@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
+Signed-off-by: Harini T <harini.t@amd.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_adapter.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/mailbox/zynqmp-ipi-mailbox.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c b/drivers/net/ethernet/intel/ice/ice_adapter.c
-index b53561c347082..0a8a48cd4bce6 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.c
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
-@@ -99,19 +99,21 @@ struct ice_adapter *ice_adapter_get(struct pci_dev *pdev)
- 
- 	index = ice_adapter_xa_index(pdev);
- 	scoped_guard(mutex, &ice_adapters_mutex) {
--		err = xa_insert(&ice_adapters, index, NULL, GFP_KERNEL);
--		if (err == -EBUSY) {
--			adapter = xa_load(&ice_adapters, index);
-+		adapter = xa_load(&ice_adapters, index);
-+		if (adapter) {
- 			refcount_inc(&adapter->refcount);
- 			WARN_ON_ONCE(adapter->index != ice_adapter_index(pdev));
- 			return adapter;
+diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
+index d59fcb74b3479..388f418aebb72 100644
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -894,7 +894,6 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
+ 	for (; i >= 0; i--) {
+ 		ipi_mbox = &pdata->ipi_mboxes[i];
+ 		if (ipi_mbox->dev.parent) {
+-			mbox_controller_unregister(&ipi_mbox->mbox);
+ 			if (device_is_registered(&ipi_mbox->dev))
+ 				device_unregister(&ipi_mbox->dev);
  		}
-+		err = xa_reserve(&ice_adapters, index, GFP_KERNEL);
- 		if (err)
- 			return ERR_PTR(err);
- 
- 		adapter = ice_adapter_new(pdev);
--		if (!adapter)
-+		if (!adapter) {
-+			xa_release(&ice_adapters, index);
- 			return ERR_PTR(-ENOMEM);
-+		}
- 		xa_store(&ice_adapters, index, adapter, GFP_KERNEL);
- 	}
- 	return adapter;
 -- 
 2.51.0
 
