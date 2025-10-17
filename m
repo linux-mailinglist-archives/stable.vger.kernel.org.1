@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-187579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47413BEADB5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:48:14 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D953BEA79B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9CC47C71B5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DA4695A0963
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DFA330B3A;
-	Fri, 17 Oct 2025 15:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A592E11DD;
+	Fri, 17 Oct 2025 15:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+ju2+OJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWXuFtbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9265330B2D;
-	Fri, 17 Oct 2025 15:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28E0330B06;
+	Fri, 17 Oct 2025 15:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716477; cv=none; b=QW2qyhuCcQO43JLAnfI8vWoZAZ5/3DhqJ6ExuznEJs8kst6qbz1DkD28DnOHPhnOPrnrkIAstGDKdtMoXSjFT5OTyGpHLojUcOTThrYQ6uM6mfhunitQQa6vkdm1ld3jdZoLSJ+tMfrFgW1GcgfOpFxA0BDRjXotr1cUxWSC7gM=
+	t=1760716483; cv=none; b=DV4OxegbP8oV4ZOID9DHY6Xf3JvreO0luyrSmyCoklBIU8WgArzMQSkH58ECftgx2EQnquIzbLOXxgW8JgtdrT9o/p1hXOPH0+gR0kuXTWJR2FYl5tckT3OknXwX1H2NWzURaE1KgSRjeFtE+G7XF8/Fwa8bM8v6KieEVDVw4d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716477; c=relaxed/simple;
-	bh=JwZXfW1ck3W7wxLfrfkEe4w/8iSlcq11uBNgwrYfoGc=;
+	s=arc-20240116; t=1760716483; c=relaxed/simple;
+	bh=4F7fFwwum/Vi2fSSKt0eQF7UHtqB10YoOgw7qoYSxpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AP0/CIp1uR3khvWo+7dbkq7kZTJ7H8ZIknJZcKWxeFVf6dOFpqhdKvt1rXtYs+cJQdBm5ZWRRy3CdxOoL5iJdxWnpgYu6pYFFan08sHjZPha02AYD7WyvYpnHEhqB+vKTw/J+kp6eg/GoJlSAqbYfVmxL+/VY6uSyJfFA9k9jvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+ju2+OJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5339CC4CEE7;
-	Fri, 17 Oct 2025 15:54:37 +0000 (UTC)
+	 MIME-Version; b=jJ2wzFd7khKFkIgUecnoAw14nTP4Dyqm25yaxVKz7EhTqHwHz6qg28Snt/b7pFUjvQHZKXHmaZKTxnda1roJy6gtfpbtAxWg4II+sz72B7fhhB7caQDPtIqqmIdOYhSgrq+2nqXlWJ2Sm7cQdWpQFm/8rDB7O3g+h9QGTgLJbME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWXuFtbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BECC116C6;
+	Fri, 17 Oct 2025 15:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716477;
-	bh=JwZXfW1ck3W7wxLfrfkEe4w/8iSlcq11uBNgwrYfoGc=;
+	s=korg; t=1760716483;
+	bh=4F7fFwwum/Vi2fSSKt0eQF7UHtqB10YoOgw7qoYSxpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+ju2+OJSKDaRFcBBjL906LeAXcM6nDHusjInleCWzbklmX2wmJ5MHJRTw/J+P6R1
-	 MCfV6oXkzWMktAO6RrSG/+m8oymL94B1WGuRK0CDXyVmLz30n6vEadUYwD59tpdsnO
-	 +hV2i/xKNnVyoFmm4U1ikFICEBplQMTyYN/EmnZs=
+	b=VWXuFtbDxYL3RtfluKvB5V2sppAaZkRbnx8GF+jxm8Do6/SErW2Bl1kZAU5J1kTbv
+	 wFN0Pe5AtdZADUcMxNA+8lKrbTHRFAnmWZYojDiid56auKVZhIh+QIJyDOn7W2/2ez
+	 jPfAD/Z5i0fBd0byuAxzvGLDbcWpkOalcbdYwAk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Florian Weimer <fweimer@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Subject: [PATCH 5.15 204/276] rseq/selftests: Use weak symbol reference, not definition, to link with glibc
-Date: Fri, 17 Oct 2025 16:54:57 +0200
-Message-ID: <20251017145149.914863674@linuxfoundation.org>
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Benjamin Block <bblock@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Julian Ruess <julianr@linux.ibm.com>
+Subject: [PATCH 5.15 206/276] PCI/IOV: Add PCI rescan-remove locking when enabling/disabling SR-IOV
+Date: Fri, 17 Oct 2025 16:54:59 +0200
+Message-ID: <20251017145149.986668117@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -67,64 +68,106 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-commit a001cd248ab244633c5fabe4f7c707e13fc1d1cc upstream.
+commit 05703271c3cdcc0f2a8cf6ebdc45892b8ca83520 upstream.
 
-Add "extern" to the glibc-defined weak rseq symbols to convert the rseq
-selftest's usage from weak symbol definitions to weak symbol _references_.
-Effectively re-defining the glibc symbols wreaks havoc when building with
--fno-common, e.g. generates segfaults when running multi-threaded programs,
-as dynamically linked applications end up with multiple versions of the
-symbols.
+Before disabling SR-IOV via config space accesses to the parent PF,
+sriov_disable() first removes the PCI devices representing the VFs.
 
-Building with -fcommon, which until recently has the been the default for
-GCC and clang, papers over the bug by allowing the linker to resolve the
-weak/tentative definition to glibc's "real" definition.
+Since commit 9d16947b7583 ("PCI: Add global pci_lock_rescan_remove()")
+such removal operations are serialized against concurrent remove and
+rescan using the pci_rescan_remove_lock. No such locking was ever added
+in sriov_disable() however. In particular when commit 18f9e9d150fc
+("PCI/IOV: Factor out sriov_add_vfs()") factored out the PCI device
+removal into sriov_del_vfs() there was still no locking around the
+pci_iov_remove_virtfn() calls.
 
-Note, the symbol itself (or rather its address), not the value of the
-symbol, is set to 0/NULL for unresolved weak symbol references, as the
-symbol doesn't exist and thus can't have a value.  Check for a NULL rseq
-size pointer to handle the scenario where the test is statically linked
-against a libc that doesn't support rseq in any capacity.
+On s390 the lack of serialization in sriov_disable() may cause double
+remove and list corruption with the below (amended) trace being observed:
 
-Fixes: 3bcbc20942db ("selftests/rseq: Play nice with binaries statically linked against glibc 2.35+")
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
-Suggested-by: Florian Weimer <fweimer@redhat.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+  PSW:  0704c00180000000 0000000c914e4b38 (klist_put+56)
+  GPRS: 000003800313fb48 0000000000000000 0000000100000001 0000000000000001
+	00000000f9b520a8 0000000000000000 0000000000002fbd 00000000f4cc9480
+	0000000000000001 0000000000000000 0000000000000000 0000000180692828
+	00000000818e8000 000003800313fe2c 000003800313fb20 000003800313fad8
+  #0 [3800313fb20] device_del at c9158ad5c
+  #1 [3800313fb88] pci_remove_bus_device at c915105ba
+  #2 [3800313fbd0] pci_iov_remove_virtfn at c9152f198
+  #3 [3800313fc28] zpci_iov_remove_virtfn at c90fb67c0
+  #4 [3800313fc60] zpci_bus_remove_device at c90fb6104
+  #5 [3800313fca0] __zpci_event_availability at c90fb3dca
+  #6 [3800313fd08] chsc_process_sei_nt0 at c918fe4a2
+  #7 [3800313fd60] crw_collect_info at c91905822
+  #8 [3800313fe10] kthread at c90feb390
+  #9 [3800313fe68] __ret_from_fork at c90f6aa64
+  #10 [3800313fe98] ret_from_fork at c9194f3f2.
+
+This is because in addition to sriov_disable() removing the VFs, the
+platform also generates hot-unplug events for the VFs. This being the
+reverse operation to the hotplug events generated by sriov_enable() and
+handled via pdev->no_vf_scan. And while the event processing takes
+pci_rescan_remove_lock and checks whether the struct pci_dev still exists,
+the lack of synchronization makes this checking racy.
+
+Other races may also be possible of course though given that this lack of
+locking persisted so long observable races seem very rare. Even on s390 the
+list corruption was only observed with certain devices since the platform
+events are only triggered by config accesses after the removal, so as long
+as the removal finished synchronously they would not race. Either way the
+locking is missing so fix this by adding it to the sriov_del_vfs() helper.
+
+Just like PCI rescan-remove, locking is also missing in sriov_add_vfs()
+including for the error case where pci_stop_and_remove_bus_device() is
+called without the PCI rescan-remove lock being held. Even in the non-error
+case, adding new PCI devices and buses should be serialized via the PCI
+rescan-remove lock. Add the necessary locking.
+
+Fixes: 18f9e9d150fc ("PCI/IOV: Factor out sriov_add_vfs()")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
 Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/87frdoybk4.ffs@tglx
+Link: https://patch.msgid.link/20250826-pci_fix_sriov_disable-v1-1-2d0bc938f2a3@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/rseq/rseq.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/iov.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/tools/testing/selftests/rseq/rseq.c
-+++ b/tools/testing/selftests/rseq/rseq.c
-@@ -38,9 +38,9 @@
-  * Define weak versions to play nice with binaries that are statically linked
-  * against a libc that doesn't support registering its own rseq.
-  */
--__weak ptrdiff_t __rseq_offset;
--__weak unsigned int __rseq_size;
--__weak unsigned int __rseq_flags;
-+extern __weak ptrdiff_t __rseq_offset;
-+extern __weak unsigned int __rseq_size;
-+extern __weak unsigned int __rseq_flags;
+--- a/drivers/pci/iov.c
++++ b/drivers/pci/iov.c
+@@ -541,15 +541,18 @@ static int sriov_add_vfs(struct pci_dev
+ 	if (dev->no_vf_scan)
+ 		return 0;
  
- static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
- static const unsigned int *libc_rseq_size_p = &__rseq_size;
-@@ -124,7 +124,7 @@ void rseq_init(void)
- 	 * libc not having registered a restartable sequence.  Try to find the
- 	 * symbols if that's the case.
- 	 */
--	if (!*libc_rseq_size_p) {
-+	if (!libc_rseq_size_p || !*libc_rseq_size_p) {
- 		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
- 		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
- 		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
++	pci_lock_rescan_remove();
+ 	for (i = 0; i < num_vfs; i++) {
+ 		rc = pci_iov_add_virtfn(dev, i);
+ 		if (rc)
+ 			goto failed;
+ 	}
++	pci_unlock_rescan_remove();
+ 	return 0;
+ failed:
+ 	while (i--)
+ 		pci_iov_remove_virtfn(dev, i);
++	pci_unlock_rescan_remove();
+ 
+ 	return rc;
+ }
+@@ -669,8 +672,10 @@ static void sriov_del_vfs(struct pci_dev
+ 	struct pci_sriov *iov = dev->sriov;
+ 	int i;
+ 
++	pci_lock_rescan_remove();
+ 	for (i = 0; i < iov->num_VFs; i++)
+ 		pci_iov_remove_virtfn(dev, i);
++	pci_unlock_rescan_remove();
+ }
+ 
+ static void sriov_disable(struct pci_dev *dev)
 
 
 
