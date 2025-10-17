@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF019BE9ACF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:08 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA8DBE9948
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A12F935D7CE
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB70D5690DC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04683289811;
-	Fri, 17 Oct 2025 15:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F66D3370FB;
+	Fri, 17 Oct 2025 15:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNjj/Tbu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfTBoZiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E942F12D9;
-	Fri, 17 Oct 2025 15:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEC233711D;
+	Fri, 17 Oct 2025 15:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714347; cv=none; b=FJ+XQNuEVT+1cW6uEBSj80p34YTIpxqikohqNkklfzxwr8CuFbES2HzOH5uchY8RMZ2nzwOqJCOs3GznvTzNocGW7bZf5ppdD9VNv6FXmZ37d30GnvN2qRY9g2hSm7FgyE9i4kURyC+aZvxAaNPb2oJLeIG9EL+5gLMwWuICrC4=
+	t=1760713616; cv=none; b=jz0v850moxLXKFlXdwhIwXjGR+Y6roMLK4VLZhL1I4jGcNQr1HL6w7c6eY/5tGU6+WBAFq+Ff92MEVcYic8PWwodXXlFutJh0Vs2Yf0OgkjeQgx644Z9fmYUw4ZWWlN2Mjq91tm5oSwITMNXAWDOJq37HMMAJ+S8NJO3zN/yaEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714347; c=relaxed/simple;
-	bh=LsZg75N0lA+uEXJfVm+PXgAOkF9h9qlh3FJWbpu9ED4=;
+	s=arc-20240116; t=1760713616; c=relaxed/simple;
+	bh=MuOG8TFeYHRWNJsu6IeKMjqo0ELjlMGIgWuNgTpbFVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BAMXBNBiM8PnSV2U4gIdTCOYeFZ4om8ks9UQkNIi8VDxk7Yhgts3kcSJ2+tCjxG24MBdkrARArJC+wQcoErfEjaUCJ+LLiWrk4qTJY6Tez0tbfdWW39vfDT1qREaMoqNvc4KZSq+QhQ/xL5D7dLTOy6xOIq+7Q3v9gmvoDS8jNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNjj/Tbu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4C7C4CEE7;
-	Fri, 17 Oct 2025 15:19:07 +0000 (UTC)
+	 MIME-Version; b=L4qGTuU3awWUl4PyjnQ0wa1LGkEaeAXX/bRGWWfTqPWqn5fjNJgfbhbGmWga9Uq4Dc0IFeCd5VuHZ2AXt+2UgJ4saAywAO4/H6Ng/aHYtRsiu5sEtlFzJ36rFsXy/KxUwC9hR9XQ9uySfBPjDeTCoVMkzzpNx12M9gv/9GpaVYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfTBoZiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F31C4CEF9;
+	Fri, 17 Oct 2025 15:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714347;
-	bh=LsZg75N0lA+uEXJfVm+PXgAOkF9h9qlh3FJWbpu9ED4=;
+	s=korg; t=1760713616;
+	bh=MuOG8TFeYHRWNJsu6IeKMjqo0ELjlMGIgWuNgTpbFVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sNjj/TbuoSmfaYCsqQKPhOK3R1ioBj2xykLC5a6lY/qeGuJkv+zg2S1ddLprgp4Xn
-	 +x+EtjbgncE2lFs0SeS88Ye4h2dPe8PkL3rmA2x2Oqd0VDSNECxJ91X9Y843tr/0dl
-	 n+XhQoPqJjWkdlt8f5oLpxV4nx8nW4bLFe/Rg+Ws=
+	b=CfTBoZiUUXXA3J8+OuAEBMfYIOYdUkCN/CY48J+9eUBFIKzvANWnjV2MfW1/K+iYG
+	 ktaUhvK+GzbjzdLipGThmqLKpycQKE860CZXb7vZ5zGYHjw56VSemqlCIUTwByw8zZ
+	 Yy7DqcrlVRu9zaAwSVZ2soSrQz7n7iV51KGUQklw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 114/277] media: lirc: Fix error handling in lirc_register()
+	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 060/201] ACPI: debug: fix signedness issues in read/write helpers
 Date: Fri, 17 Oct 2025 16:52:01 +0200
-Message-ID: <20251017145151.290069704@linuxfoundation.org>
+Message-ID: <20251017145136.952935455@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
 
-commit 4f4098c57e139ad972154077fb45c3e3141555dd upstream.
+commit 496f9372eae14775e0524e83e952814691fe850a upstream.
 
-When cdev_device_add() failed, calling put_device() to explicitly
-release dev->lirc_dev. Otherwise, it could cause the fault of the
-reference count.
+In the ACPI debugger interface, the helper functions for read and write
+operations use "int" as the length parameter data type. When a large
+"size_t count" is passed from the file operations, this cast to "int"
+results in truncation and a negative value due to signed integer
+representation.
 
-Found by code review.
+Logically, this negative number propagates to the min() calculation,
+where it is selected over the positive buffer space value, leading to
+unexpected behavior. Subsequently, when this negative value is used in
+copy_to_user() or copy_from_user(), it is interpreted as a large positive
+value due to the unsigned nature of the size parameter in these functions,
+causing the copy operations to attempt handling sizes far beyond the
+intended buffer limits.
 
-Cc: stable@vger.kernel.org
-Fixes: a6ddd4fecbb0 ("media: lirc: remove last remnants of lirc kapi")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Address the issue by:
+ - Changing the length parameters in acpi_aml_read_user() and
+   acpi_aml_write_user() from "int" to "size_t", aligning with the
+   expected unsigned size semantics.
+ - Updating return types and local variables in acpi_aml_read() and
+   acpi_aml_write() to "ssize_t" for consistency with kernel file
+   operation conventions.
+ - Using "size_t" for the "n" variable to ensure calculations remain
+   unsigned.
+ - Using min_t() for circ_count_to_end() and circ_space_to_end() to
+   ensure type-safe comparisons and prevent integer overflow.
+
+Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+Link: https://patch.msgid.link/20250923013113.20615-1-a.jahangirzad@gmail.com
+[ rjw: Changelog tweaks, local variable definitions ordering adjustments ]
+Fixes: 8cfb0cdf07e2 ("ACPI / debugger: Add IO interface to access debugger functionalities")
+Cc: 4.5+ <stable@vger.kernel.org> # 4.5+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/lirc_dev.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/acpi/acpi_dbg.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -736,11 +736,11 @@ int lirc_register(struct rc_dev *dev)
- 
- 	cdev_init(&dev->lirc_cdev, &lirc_fops);
- 
-+	get_device(&dev->dev);
-+
- 	err = cdev_device_add(&dev->lirc_cdev, &dev->lirc_dev);
- 	if (err)
--		goto out_ida;
--
--	get_device(&dev->dev);
-+		goto out_put_device;
- 
- 	switch (dev->driver_type) {
- 	case RC_DRIVER_SCANCODE:
-@@ -764,7 +764,8 @@ int lirc_register(struct rc_dev *dev)
- 
+--- a/drivers/acpi/acpi_dbg.c
++++ b/drivers/acpi/acpi_dbg.c
+@@ -569,11 +569,11 @@ static int acpi_aml_release(struct inode
  	return 0;
- 
--out_ida:
-+out_put_device:
-+	put_device(&dev->lirc_dev);
- 	ida_free(&lirc_ida, minor);
- 	return err;
  }
+ 
+-static int acpi_aml_read_user(char __user *buf, int len)
++static ssize_t acpi_aml_read_user(char __user *buf, size_t len)
+ {
+-	int ret;
+ 	struct circ_buf *crc = &acpi_aml_io.out_crc;
+-	int n;
++	ssize_t ret;
++	size_t n;
+ 	char *p;
+ 
+ 	ret = acpi_aml_lock_read(crc, ACPI_AML_OUT_USER);
+@@ -582,7 +582,7 @@ static int acpi_aml_read_user(char __use
+ 	/* sync head before removing logs */
+ 	smp_rmb();
+ 	p = &crc->buf[crc->tail];
+-	n = min(len, circ_count_to_end(crc));
++	n = min_t(size_t, len, circ_count_to_end(crc));
+ 	if (copy_to_user(buf, p, n)) {
+ 		ret = -EFAULT;
+ 		goto out;
+@@ -599,8 +599,8 @@ out:
+ static ssize_t acpi_aml_read(struct file *file, char __user *buf,
+ 			     size_t count, loff_t *ppos)
+ {
+-	int ret = 0;
+-	int size = 0;
++	ssize_t ret = 0;
++	ssize_t size = 0;
+ 
+ 	if (!count)
+ 		return 0;
+@@ -639,11 +639,11 @@ again:
+ 	return size > 0 ? size : ret;
+ }
+ 
+-static int acpi_aml_write_user(const char __user *buf, int len)
++static ssize_t acpi_aml_write_user(const char __user *buf, size_t len)
+ {
+-	int ret;
+ 	struct circ_buf *crc = &acpi_aml_io.in_crc;
+-	int n;
++	ssize_t ret;
++	size_t n;
+ 	char *p;
+ 
+ 	ret = acpi_aml_lock_write(crc, ACPI_AML_IN_USER);
+@@ -652,7 +652,7 @@ static int acpi_aml_write_user(const cha
+ 	/* sync tail before inserting cmds */
+ 	smp_mb();
+ 	p = &crc->buf[crc->head];
+-	n = min(len, circ_space_to_end(crc));
++	n = min_t(size_t, len, circ_space_to_end(crc));
+ 	if (copy_from_user(p, buf, n)) {
+ 		ret = -EFAULT;
+ 		goto out;
+@@ -663,14 +663,14 @@ static int acpi_aml_write_user(const cha
+ 	ret = n;
+ out:
+ 	acpi_aml_unlock_fifo(ACPI_AML_IN_USER, ret >= 0);
+-	return n;
++	return ret;
+ }
+ 
+ static ssize_t acpi_aml_write(struct file *file, const char __user *buf,
+ 			      size_t count, loff_t *ppos)
+ {
+-	int ret = 0;
+-	int size = 0;
++	ssize_t ret = 0;
++	ssize_t size = 0;
+ 
+ 	if (!count)
+ 		return 0;
 
 
 
