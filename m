@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F01BE97C0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:07:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6011BEA2F3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F5D81884CB8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56DFD74429C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7387633710B;
-	Fri, 17 Oct 2025 15:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732D032C92F;
+	Fri, 17 Oct 2025 15:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wn7DQbXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDz7N9uy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECD13328E8;
-	Fri, 17 Oct 2025 15:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4AC337110;
+	Fri, 17 Oct 2025 15:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713483; cv=none; b=sUAyLsi/a5meXLXsMnpXQ7T901SuuXEskR1aUmg3c9ExuD7347ncuqLIxwnoIHyff5/227GGz8d+CbiqJR1Ve77WLsRtPYmVrYPcqVJLSQj8oTHWVHXN8aNDoJctcuxJm1uS0hVBf3ctGjAni6jXH2f5fgePNQ7YL0svJ638xEk=
+	t=1760715130; cv=none; b=P8sHyUASSXnwVnUQ9BePXYSMOsSzGWQQh0DP2iHY/sknzWOnmxW3yQNloYA+ttAUoSoO2Ux+9vL2IEYZyQmysbtKWhKLQnJ0k3bUi141LVhD3UFngOtvrq6wCP9bMlV6Fw0esu3zjPujKAeZ36vV0hnrHCHQGrS/dEJ+2CMlGsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713483; c=relaxed/simple;
-	bh=nbIrV75eUPq1tqavNi8AxSzHuOqBa7/HOIUzhT+ZH1c=;
+	s=arc-20240116; t=1760715130; c=relaxed/simple;
+	bh=I6UdUe3hAhWw+v5Z40zd7X3tRWAuz49JUc+tIxr6nB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxAE6EcKSMRA6N2XOBSBDlGXOcx8J8Oo7nPYmfqe9vm4yPaf20+aUgqX+QEXYLb3tpvXn40QhWLNHqs5uZiA+8pZ4a9xeu8QWlLoX2zl9epmwsB4LoEbTJzAQ/uscLGFNZC5KasZVA9kQSf6QCQfPicwf52P4WappPl3HdunpEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wn7DQbXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5CFC4CEE7;
-	Fri, 17 Oct 2025 15:04:42 +0000 (UTC)
+	 MIME-Version; b=rGKpniNzG7FuO+BWNAt7rSp6ZvXO/udWkD7I5SIAIHAk7xiIM1hENJ6kU21Qgamf8g/ilhLBkGk71EaWcw2usenR+kC9Zg4LKA1PJhtoVB5RUYEwM1o/qXXtakvAa96DWb+/SA6r0Ewmaw1hD0laXQKjO5r1sZSpZftOcmKJ2Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDz7N9uy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2DBC4CEE7;
+	Fri, 17 Oct 2025 15:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713483;
-	bh=nbIrV75eUPq1tqavNi8AxSzHuOqBa7/HOIUzhT+ZH1c=;
+	s=korg; t=1760715130;
+	bh=I6UdUe3hAhWw+v5Z40zd7X3tRWAuz49JUc+tIxr6nB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wn7DQbXXhuqPCxGDffmInhg972S/kgQjXhZIW9IMEx7FmawyiTJO9rUxBpLe1rzzg
-	 GtmzK2ln3uMRWcVtotKsZQ6PArnVNjYB7Tch7mSEMuoeex0QkHEPd7qai10CON7Dzn
-	 gp1GDmiqDQQ7r74C5uNxt/8BDCkmGjv+e30xT3lg=
+	b=XDz7N9uyMR+/zlCDcTU5em9qwKljGRmcKwxbbtBvDVKngFtHhDqA/B5uIjXj33mMs
+	 IqcheiUbpYV4TSsfxZ2Lptc21kEzFu301cC6+2hsefdDYTii8OYJHP10D7WTpYCK7I
+	 /ry9b05LaYkVupyhMqacaOvUj9ce1GcC8vFW1d5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.6 005/201] media: v4l2-subdev: Fix alloc failure check in v4l2_subdev_call_state_try()
+	Sidharth Seela <sidharthseela@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 091/371] selftest: net: ovpn: Fix uninit return values
 Date: Fri, 17 Oct 2025 16:51:06 +0200
-Message-ID: <20251017145134.923799575@linuxfoundation.org>
+Message-ID: <20251017145205.231379238@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Sidharth Seela <sidharthseela@gmail.com>
 
-commit f37df9a0eb5e43fcfe02cbaef076123dc0d79c7e upstream.
+[ Upstream commit 7fc25c5a5ae6230d14b4c088fc94dbd58b2a9f3a ]
 
-v4l2_subdev_call_state_try() macro allocates a subdev state with
-__v4l2_subdev_state_alloc(), but does not check the returned value. If
-__v4l2_subdev_state_alloc fails, it returns an ERR_PTR, and that would
-cause v4l2_subdev_call_state_try() to crash.
+Fix functions that return undefined values. These issues were caught by
+running clang using LLVM=1 option.
 
-Add proper error handling to v4l2_subdev_call_state_try().
+Clang warnings are as follows:
+ovpn-cli.c:1587:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+ 1587 |         if (!sock) {
+      |             ^~~~~
+ovpn-cli.c:1635:9: note: uninitialized use occurs here
+ 1635 |         return ret;
+      |                ^~~
+ovpn-cli.c:1587:2: note: remove the 'if' if its condition is always false
+ 1587 |         if (!sock) {
+      |         ^~~~~~~~~~~~
+ 1588 |                 fprintf(stderr, "cannot allocate netlink socket\n");
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1589 |                 goto err_free;
+      |                 ~~~~~~~~~~~~~~
+ 1590 |         }
+      |         ~
+ovpn-cli.c:1584:15: note: initialize the variable 'ret' to silence this warning
+ 1584 |         int mcid, ret;
+      |                      ^
+      |                       = 0
+ovpn-cli.c:2107:7: warning: variable 'ret' is used uninitialized whenever switch case is taken [-Wsometimes-uninitialized]
+ 2107 |         case CMD_INVALID:
+      |              ^~~~~~~~~~~
+ovpn-cli.c:2111:9: note: uninitialized use occurs here
+ 2111 |         return ret;
+      |                ^~~
+ovpn-cli.c:1939:12: note: initialize the variable 'ret' to silence this warning
+ 1939 |         int n, ret;
+      |                   ^
+      |
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Fixes: 982c0487185b ("media: subdev: Add v4l2_subdev_call_state_try() macro")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/aJTNtpDUbTz7eyJc%40stanley.mountain/
-Cc: stable@vger.kernel.org
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 959bc330a439 ("testing/selftests: add test tool and scripts for ovpn module")
+Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
+Link: https://patch.msgid.link/20251001123107.96244-2-sidharthseela@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/media/v4l2-subdev.h |   30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ tools/testing/selftests/net/ovpn/ovpn-cli.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/media/v4l2-subdev.h
-+++ b/include/media/v4l2-subdev.h
-@@ -1881,19 +1881,23 @@ extern const struct v4l2_subdev_ops v4l2
-  *
-  * Note: only legacy non-MC drivers may need this macro.
-  */
--#define v4l2_subdev_call_state_try(sd, o, f, args...)                 \
--	({                                                            \
--		int __result;                                         \
--		static struct lock_class_key __key;                   \
--		const char *name = KBUILD_BASENAME                    \
--			":" __stringify(__LINE__) ":state->lock";     \
--		struct v4l2_subdev_state *state =                     \
--			__v4l2_subdev_state_alloc(sd, name, &__key);  \
--		v4l2_subdev_lock_state(state);                        \
--		__result = v4l2_subdev_call(sd, o, f, state, ##args); \
--		v4l2_subdev_unlock_state(state);                      \
--		__v4l2_subdev_state_free(state);                      \
--		__result;                                             \
-+#define v4l2_subdev_call_state_try(sd, o, f, args...)                         \
-+	({                                                                    \
-+		int __result;                                                 \
-+		static struct lock_class_key __key;                           \
-+		const char *name = KBUILD_BASENAME                            \
-+			":" __stringify(__LINE__) ":state->lock";             \
-+		struct v4l2_subdev_state *state =                             \
-+			__v4l2_subdev_state_alloc(sd, name, &__key);          \
-+		if (IS_ERR(state)) {                                          \
-+			__result = PTR_ERR(state);                            \
-+		} else {                                                      \
-+			v4l2_subdev_lock_state(state);                        \
-+			__result = v4l2_subdev_call(sd, o, f, state, ##args); \
-+			v4l2_subdev_unlock_state(state);                      \
-+			__v4l2_subdev_state_free(state);                      \
-+		}                                                             \
-+		__result;                                                     \
- 	})
+diff --git a/tools/testing/selftests/net/ovpn/ovpn-cli.c b/tools/testing/selftests/net/ovpn/ovpn-cli.c
+index 9201f2905f2ce..8d0f2f61923c9 100644
+--- a/tools/testing/selftests/net/ovpn/ovpn-cli.c
++++ b/tools/testing/selftests/net/ovpn/ovpn-cli.c
+@@ -1586,6 +1586,7 @@ static int ovpn_listen_mcast(void)
+ 	sock = nl_socket_alloc();
+ 	if (!sock) {
+ 		fprintf(stderr, "cannot allocate netlink socket\n");
++		ret = -ENOMEM;
+ 		goto err_free;
+ 	}
  
- /**
+@@ -2105,6 +2106,7 @@ static int ovpn_run_cmd(struct ovpn_ctx *ovpn)
+ 		ret = ovpn_listen_mcast();
+ 		break;
+ 	case CMD_INVALID:
++		ret = -EINVAL;
+ 		break;
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
