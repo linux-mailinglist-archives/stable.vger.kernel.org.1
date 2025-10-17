@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A506BE9C39
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CD4BE9E49
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 32FF3587E88
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0DE31893DBF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709AE32C929;
-	Fri, 17 Oct 2025 15:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F69E3208;
+	Fri, 17 Oct 2025 15:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1BkDOWM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctFE1gWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE5D33711F;
-	Fri, 17 Oct 2025 15:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456AE1D5CE0;
+	Fri, 17 Oct 2025 15:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714074; cv=none; b=Tzc0a/EqiEtEiThnxKiNujVxe3S4kFw21sDbLZI+yjEE2pTFEqzEmkUC+kKO1MrLTF2bbmkUvUDV2jow4wXqXHTvi/MsiEp8h98FVR/bxvQmOd0kwjUg9z+ws904F9aoaR0EP75BiX+BfsrTOISub0RxDFGiSF2id3DVQio1C70=
+	t=1760714971; cv=none; b=pBc7+eFGeQAo9dTCj+Xm+WVY652mXWXH92fHeicIx18eTggWmDKZXFUwuvqwTJDWqQfWq3qhT9FxtGq6M+uoEFe8/ecrbqwyVn2oiYIG+Yk3NtnXawuZwyvqJOesk2OupWmnRiERYu1e1kQrsjktfCzFN8Bd4R6dWN03Zl9n+zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714074; c=relaxed/simple;
-	bh=MS1tc/jjsvpYCTjexqy0g9ry6FbPATnixCe7OOa4cSo=;
+	s=arc-20240116; t=1760714971; c=relaxed/simple;
+	bh=DHEUTo8zD25xyxvs/bmG3WKhMmxW6e465rydmOG8cZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpFehDmZ6kH4MAmt0vj7veu0X7Df09yHu36N4I8Kv96LnfUOvstuYIplFGl5NmrBdBJ8B54xs4WJXHxAWWTuARbPuLPIuSL/7P4oadcy1JWpQbxqV555ZkJFbVzT4p5HPdKxAgE8TmVRR5lgODx1SC5PGkjJ6W2fDhBV7Lp082E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1BkDOWM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C68AC4CEE7;
-	Fri, 17 Oct 2025 15:14:33 +0000 (UTC)
+	 MIME-Version; b=hpj4ldTk4TlhiYbci/O4hJ/ojCudrq94PWHRvVkyYUV1yeOAkhf9x1Qm8Z77nXi+fsheQsTDSsS3cEfzeCXchPdlzfmi8m6rXff7jYSvOmGqjwO3j62u//chH0inDeoJL+UCJowVEsN7bg6Eg2ks66dsYc35VpK/5Ddk2SMOhco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctFE1gWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5E0C113D0;
+	Fri, 17 Oct 2025 15:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714073;
-	bh=MS1tc/jjsvpYCTjexqy0g9ry6FbPATnixCe7OOa4cSo=;
+	s=korg; t=1760714971;
+	bh=DHEUTo8zD25xyxvs/bmG3WKhMmxW6e465rydmOG8cZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1BkDOWMMlGzaCAvhk0Nn9LBGjJ7f76DuMDYry63O+nhqZEo0EMQYwQkaNrwv6hF7
-	 7UGT24SajmaDSDVLPX2YEjIwxJU19PfbGu6M3S3QvIvhzoDx+/0cU1Sry4vxioFZu3
-	 htUjEFv9Je++EB/OaY9fsmYgM7ueZMyu+0cpad4U=
+	b=ctFE1gWFaZWZZ/0ahHJksOF2xf1x0/zKTAYGu8foiJGdXbqtTX3krqKcmEiMFNJj0
+	 aZXRq2wGPTbA5a45hiVqFzTQ71lvg+hXXtde01Y61uVEuImZH/FWJHtBROtcf5qccL
+	 N06u+Q+v1eHeDVs25h58u2rjVkQAArNwg/yU+pHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Brian Masney <bmasney@redhat.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 018/277] clk: at91: peripheral: fix return value
-Date: Fri, 17 Oct 2025 16:50:25 +0200
-Message-ID: <20251017145147.814184173@linuxfoundation.org>
+Subject: [PATCH 6.17 051/371] clk: mediatek: mt8195-infra_ao: Fix parent for infra_ao_hdmi_26m
+Date: Fri, 17 Oct 2025 16:50:26 +0200
+Message-ID: <20251017145203.647730117@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 47b13635dabc14f1c2fdcaa5468b47ddadbdd1b5 ]
+[ Upstream commit 6c4c26b624790098988c1034541087e3e5ed5bed ]
 
-determine_rate() is expected to return an error code, or 0 on success.
-clk_sam9x5_peripheral_determine_rate() has a branch that returns the
-parent rate on a certain case. This is the behavior of round_rate(),
-so let's go ahead and fix this by setting req->rate.
+The infrastructure gate for the HDMI specific crystal needs the
+top_hdmi_xtal clock to be configured in order to ungate the 26m
+clock to the HDMI IP, and it wouldn't work without.
 
-Fixes: b4c115c76184f ("clk: at91: clk-peripheral: add support for changeable parent rate")
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+Reparent the infra_ao_hdmi_26m clock to top_hdmi_xtal to fix that.
+
+Fixes: e2edf59dec0b ("clk: mediatek: Add MT8195 infrastructure clock support")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/at91/clk-peripheral.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/clk/mediatek/clk-mt8195-infra_ao.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/at91/clk-peripheral.c b/drivers/clk/at91/clk-peripheral.c
-index c173a44c800aa..629f050a855aa 100644
---- a/drivers/clk/at91/clk-peripheral.c
-+++ b/drivers/clk/at91/clk-peripheral.c
-@@ -279,8 +279,11 @@ static int clk_sam9x5_peripheral_determine_rate(struct clk_hw *hw,
- 	long best_diff = LONG_MIN;
- 	u32 shift;
- 
--	if (periph->id < PERIPHERAL_ID_MIN || !periph->range.max)
--		return parent_rate;
-+	if (periph->id < PERIPHERAL_ID_MIN || !periph->range.max) {
-+		req->rate = parent_rate;
-+
-+		return 0;
-+	}
- 
- 	/* Fist step: check the available dividers. */
- 	for (shift = 0; shift <= PERIPHERAL_MAX_SHIFT; shift++) {
+diff --git a/drivers/clk/mediatek/clk-mt8195-infra_ao.c b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
+index bb648a88e43af..ad47fdb234607 100644
+--- a/drivers/clk/mediatek/clk-mt8195-infra_ao.c
++++ b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
+@@ -103,7 +103,7 @@ static const struct mtk_gate infra_ao_clks[] = {
+ 	GATE_INFRA_AO0(CLK_INFRA_AO_CQ_DMA_FPC, "infra_ao_cq_dma_fpc", "fpc", 28),
+ 	GATE_INFRA_AO0(CLK_INFRA_AO_UART5, "infra_ao_uart5", "top_uart", 29),
+ 	/* INFRA_AO1 */
+-	GATE_INFRA_AO1(CLK_INFRA_AO_HDMI_26M, "infra_ao_hdmi_26m", "clk26m", 0),
++	GATE_INFRA_AO1(CLK_INFRA_AO_HDMI_26M, "infra_ao_hdmi_26m", "top_hdmi_xtal", 0),
+ 	GATE_INFRA_AO1(CLK_INFRA_AO_SPI0, "infra_ao_spi0", "top_spi", 1),
+ 	GATE_INFRA_AO1(CLK_INFRA_AO_MSDC0, "infra_ao_msdc0", "top_msdc50_0_hclk", 2),
+ 	GATE_INFRA_AO1(CLK_INFRA_AO_MSDC1, "infra_ao_msdc1", "top_axi", 4),
 -- 
 2.51.0
 
