@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E597BE9E5B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538EEBEA368
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 708B8586693
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DEF89436CD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A072A32C93B;
-	Fri, 17 Oct 2025 15:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD4632E142;
+	Fri, 17 Oct 2025 15:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r31Zei+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJ0sDplL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C83A242935;
-	Fri, 17 Oct 2025 15:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF1D32C957;
+	Fri, 17 Oct 2025 15:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714562; cv=none; b=HCGtMmGG6aoa1RVJLzjUeTrmqqOEQBemzaB6Jj7ZR7JZWWIacG76wFZD5RprTwuHAjZW7x9Ax/OSeGiB6jrRJpyUELGgWlicL2tdUF3fXNQvEsouwrdPMo02Vggr5PBmfvVLt59Vhu5Bub/FBYg8PJKyyjUgQ1KtGJmvyKql5MQ=
+	t=1760715453; cv=none; b=SjvfL/By+5OzkagGMfetna72lITGHYriphneDP39h1b81tABtf381015gMwaeRxDMo8Smr2SPhZC9M8kZviH5lixto6/Tbk4dT2NJGTW+dzBy9V1ZvKVOeR/0LzGkhVMYDOH4pb7IgUZqBuoFmwTcPwtnoGYULaj01qi15w8U0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714562; c=relaxed/simple;
-	bh=Y5CWZFZ1zEa6KBnUuawu8PlVHuS2fQ+hvH3URgDqHNw=;
+	s=arc-20240116; t=1760715453; c=relaxed/simple;
+	bh=jAOCkGS4FbCFgCCWWPgLwvYvTKMpPSJJzwY3PxRtE/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yaz/3LjON1OJ8smZywgIqK3l8W6+XGlaJMohY7VVGzG8d1OcF3JBm2OvVrnjIuzKPWY8nCXdtJqNWxCk3Q82vgP5e/otGsYtxTj1xHGrf7xedUvE6eJc6VmdXN9G/YBujUh41HGECnKsdKD21toIGXz50fUaEMPr4Fb4npzOvE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r31Zei+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC06C4CEE7;
-	Fri, 17 Oct 2025 15:22:41 +0000 (UTC)
+	 MIME-Version; b=NI56/K+/xzSkIHWqVyq3l9WyWUECXXDC5FkmOmwrGm1oYKYiFB5WYYqsJK/O2nPcOgoVfZ2q0oT23Ui4C4OeVmjkA5AJ9ndlzkz16hBqF2RuI1aWE038YsbHi5f1OUq3v1L7p20DR8R9ZaJGzlqIhD38yGICkUwx/mc+YDbNdxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJ0sDplL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2978FC4CEE7;
+	Fri, 17 Oct 2025 15:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714562;
-	bh=Y5CWZFZ1zEa6KBnUuawu8PlVHuS2fQ+hvH3URgDqHNw=;
+	s=korg; t=1760715452;
+	bh=jAOCkGS4FbCFgCCWWPgLwvYvTKMpPSJJzwY3PxRtE/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r31Zei+iJyuYfcN3TmmqFWj1GrC5VvCBps8S4c2gPqPFT4I16LdwyLe4/58Wkd6Zp
-	 4EiVkXNSHlC6LTDnBZHOwwfApCZ7F4RSTfv5quu855taSwdViZUbasGvJQA5aM4oq1
-	 73DfcPmvMu+FugKcKPWVSf52yLHheOfl7mZsrFMI=
+	b=tJ0sDplLJlk5zWu75OV7PFJhm/fjEbXNAoD8jb2pnb2tlCgTMJufVKbkw0SeDTwla
+	 sySaIIF8AMZmbGCFGhdDetQGrdAqj/ex0APMo5orgmTR4M7vPr8WfbmSfpa2l8P4X7
+	 iLpxtKKPRvG360d7zLoehGPXXWxT1ia66UIe1n7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.12 189/277] PCI: tegra194: Reset BARs when running in PCIe endpoint mode
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 221/371] iio: dac: ad5421: use int type to store negative error codes
 Date: Fri, 17 Oct 2025 16:53:16 +0200
-Message-ID: <20251017145154.022938839@linuxfoundation.org>
+Message-ID: <20251017145210.082606919@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-commit 42f9c66a6d0cc45758dab77233c5460e1cf003df upstream.
+commit 3379c900320954d768ed9903691fb2520926bbe3 upstream.
 
-Tegra already defines all BARs except BAR0 as BAR_RESERVED.  This is
-sufficient for pci-epf-test to not allocate backing memory and to not call
-set_bar() for those BARs. However, marking a BAR as BAR_RESERVED does not
-mean that the BAR gets disabled.
+Change the 'ret' variable in ad5421_update_ctrl() from unsigned int to
+int, as it needs to store either negative error codes or zero returned
+by ad5421_write_unlocked().
 
-The host side driver, pci_endpoint_test, simply does an ioremap for all
-enabled BARs and will run tests against all enabled BARs, so it will run
-tests against the BARs marked as BAR_RESERVED.
-
-After running the BAR tests (which will write to all enabled BARs), the
-inbound address translation is broken. This is because the tegra controller
-exposes the ATU Port Logic Structure in BAR4, so when BAR4 is written, the
-inbound address translation settings get overwritten.
-
-To avoid this, implement the dw_pcie_ep_ops .init() callback and start off
-by disabling all BARs (pci-epf-test will later enable/configure BARs that
-are not defined as BAR_RESERVED).
-
-This matches the behavior of other PCIe endpoint drivers: dra7xx, imx6,
-layerscape-ep, artpec6, dw-rockchip, qcom-ep, rcar-gen4, and uniphier-ep.
-
-With this, the PCI endpoint kselftest test case CONSECUTIVE_BAR_TEST (which
-was specifically made to detect address translation issues) passes.
-
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250922140822.519796-7-cassel@kernel.org
+Fixes: 5691b23489db ("staging:iio:dac: Add AD5421 driver")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Link: https://patch.msgid.link/20250901135726.17601-3-rongqianfeng@vivo.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/iio/dac/ad5421.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1954,6 +1954,15 @@ static irqreturn_t tegra_pcie_ep_pex_rst
- 	return IRQ_HANDLED;
- }
- 
-+static void tegra_pcie_ep_init(struct dw_pcie_ep *ep)
-+{
-+	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-+	enum pci_barno bar;
-+
-+	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++)
-+		dw_pcie_ep_reset_bar(pci, bar);
-+};
-+
- static int tegra_pcie_ep_raise_intx_irq(struct tegra_pcie_dw *pcie, u16 irq)
+--- a/drivers/iio/dac/ad5421.c
++++ b/drivers/iio/dac/ad5421.c
+@@ -186,7 +186,7 @@ static int ad5421_update_ctrl(struct iio
+ 	unsigned int clr)
  {
- 	/* Tegra194 supports only INTA */
-@@ -2030,6 +2039,7 @@ tegra_pcie_ep_get_features(struct dw_pci
- }
+ 	struct ad5421_state *st = iio_priv(indio_dev);
+-	unsigned int ret;
++	int ret;
  
- static const struct dw_pcie_ep_ops pcie_ep_ops = {
-+	.init = tegra_pcie_ep_init,
- 	.raise_irq = tegra_pcie_ep_raise_irq,
- 	.get_features = tegra_pcie_ep_get_features,
- };
+ 	mutex_lock(&st->lock);
+ 
 
 
 
