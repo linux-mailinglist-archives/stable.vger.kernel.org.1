@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91CB6BE9D02
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD1BBEA1AD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B69FA581E90
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 20DF75A1D9F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871C832E156;
-	Fri, 17 Oct 2025 15:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1527830CD9F;
+	Fri, 17 Oct 2025 15:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7eAm/AM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4HeowvE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CBF289811;
-	Fri, 17 Oct 2025 15:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F9F20C00A;
+	Fri, 17 Oct 2025 15:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714164; cv=none; b=he+BLr4QzGWDkHu72q1+GoRJjsyQYIwEoXmA/gU1RkPnZStlRV5wIg5+E2mZCtBo2wJrD9Brj8IGLqByvojW7XeRTAjdNhM7ZrLkoytlrjvBrEZDDzJeVZBTUXnr61DZ5+zFqV29RQ5BsTr7jx3MGFh6CBfWRkb5Kaf34+jQpvg=
+	t=1760715052; cv=none; b=TVw4f9qgWaI4U1M+Rx0y4KY5Nu7GwkZH3uSquhl7tfvJqRX4vigkWWpADgg5DPl3J4IzVOL7zVE/HnTuXs3OWN0N+rkHdBoMeWMWVEyII8ONd1PhasP4BjEX0ns5fKJeAlSmRkYhfmAhItS6WhR06/SsNNcMXESGPnigEOHgVHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714164; c=relaxed/simple;
-	bh=s/mmSxuPL3QpQVdkv7PzHZGv525uBgv/tfGzBO0M7Wg=;
+	s=arc-20240116; t=1760715052; c=relaxed/simple;
+	bh=YqqsTdxEtiQu/BMy8m59Z18uI1DsgaoARxN9g5J/8v4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqdFOfTmHNuohhfWaPx3SNGAmkfFil9JFldDCy6XmkrZ+t6fEqNfHFNKQysCiAQyMAGlNHz6lD3Pc4cFWMwjy8fBwfa9BkbBEmGyCyo+tBZNtHU/8OlsbS6JnnvztMK6KzBYrlZL+oGYvDwnvtKgHNKvEMQrZ8Zx+Jt5XVXCb1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7eAm/AM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C3DC4CEE7;
-	Fri, 17 Oct 2025 15:16:03 +0000 (UTC)
+	 MIME-Version; b=mlxFs6q9k7EI2wz3D8U4OteeG/hxTC01upYW5DhA8yuFLk+j3GrXhFuHQK38w2D0YAU9/DSpQ4t090NYnob9cz8uaCgaARLy28l/90ljflLHklogDhDhJ6pIHgloarJOy+hd64kij15Oi3CJVpi/MdUJ3cNruHg4zWyffrZON3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4HeowvE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1F3C4CEE7;
+	Fri, 17 Oct 2025 15:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714164;
-	bh=s/mmSxuPL3QpQVdkv7PzHZGv525uBgv/tfGzBO0M7Wg=;
+	s=korg; t=1760715052;
+	bh=YqqsTdxEtiQu/BMy8m59Z18uI1DsgaoARxN9g5J/8v4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7eAm/AMvxGCiXM7E3mxfJyzFdDpOkd1c9Qp5+avWLTBgWAq0xOR5wd7O4DKPNU/Y
-	 qYP9c3gGBGZ9DcH777vgQnjiLsFFFmI4G/bFv6TqhpOYmgEONuuYF0uUkI273Qhnm7
-	 euPpwMjiz6/mIqxsGqKlEhC4/VM7BzAECjfqkcEI=
+	b=N4HeowvEnW/Geo28u+6NFwmgA/n4sbP43GU1Dv1+EYLWaNmjir1fXqvDo4hR4umeI
+	 qL2Q58Qul5ZO3FzQ5GCgdYA/AvSoVJAI/5EJ+Utr6KQtfmvA1EKcIy3YKevHESIZtM
+	 LW/kPV4ZfQ7UayPyGPVWHNZU8PryLV0u3M76dwuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/277] s390/cio: Update purge function to unregister the unused subchannels
+Subject: [PATCH 6.17 081/371] net/mlx4: prevent potential use after free in mlx4_en_do_uc_filter()
 Date: Fri, 17 Oct 2025 16:50:56 +0200
-Message-ID: <20251017145148.939164192@linuxfoundation.org>
+Message-ID: <20251017145204.869419338@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vineeth Vijayan <vneethv@linux.ibm.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 9daa5a8795865f9a3c93d8d1066785b07ded6073 ]
+[ Upstream commit 4f0d91ba72811fd5dd577bcdccd7fed649aae62c ]
 
-Starting with 'commit 2297791c92d0 ("s390/cio: dont unregister
-subchannel from child-drivers")', cio no longer unregisters
-subchannels when the attached device is invalid or unavailable.
+Print "entry->mac" before freeing "entry".  The "entry" pointer is
+freed with kfree_rcu() so it's unlikely that we would trigger this
+in real life, but it's safer to re-order it.
 
-As an unintended side-effect, the cio_ignore purge function no longer
-removes subchannels for devices on the cio_ignore list if no CCW device
-is attached. This situation occurs when a CCW device is non-operational
-or unavailable
-
-To ensure the same outcome of the purge function as when the
-current cio_ignore list had been active during boot, update the purge
-function to remove I/O subchannels without working CCW devices if the
-associated device number is found on the cio_ignore list.
-
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Suggested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: cc5387f7346a ("net/mlx4_en: Add unicast MAC filtering")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/aNvMHX4g8RksFFvV@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/device.c | 37 ++++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/en_netdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
-index 9498825d9c7a5..858a9e171351b 100644
---- a/drivers/s390/cio/device.c
-+++ b/drivers/s390/cio/device.c
-@@ -1318,23 +1318,34 @@ void ccw_device_schedule_recovery(void)
- 	spin_unlock_irqrestore(&recovery_lock, flags);
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
+index d2071aff7b8f3..308b4458e0d44 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
+@@ -1180,9 +1180,9 @@ static void mlx4_en_do_uc_filter(struct mlx4_en_priv *priv,
+ 				mlx4_unregister_mac(mdev->dev, priv->port, mac);
  
--static int purge_fn(struct device *dev, void *data)
-+static int purge_fn(struct subchannel *sch, void *data)
- {
--	struct ccw_device *cdev = to_ccwdev(dev);
--	struct ccw_dev_id *id = &cdev->private->dev_id;
--	struct subchannel *sch = to_subchannel(cdev->dev.parent);
-+	struct ccw_device *cdev;
- 
--	spin_lock_irq(cdev->ccwlock);
--	if (is_blacklisted(id->ssid, id->devno) &&
--	    (cdev->private->state == DEV_STATE_OFFLINE) &&
--	    (atomic_cmpxchg(&cdev->private->onoff, 0, 1) == 0)) {
--		CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x\n", id->ssid,
--			      id->devno);
-+	spin_lock_irq(&sch->lock);
-+	if (sch->st != SUBCHANNEL_TYPE_IO || !sch->schib.pmcw.dnv)
-+		goto unlock;
-+
-+	if (!is_blacklisted(sch->schid.ssid, sch->schib.pmcw.dev))
-+		goto unlock;
-+
-+	cdev = sch_get_cdev(sch);
-+	if (cdev) {
-+		if (cdev->private->state != DEV_STATE_OFFLINE)
-+			goto unlock;
-+
-+		if (atomic_cmpxchg(&cdev->private->onoff, 0, 1) != 0)
-+			goto unlock;
- 		ccw_device_sched_todo(cdev, CDEV_TODO_UNREG);
--		css_sched_sch_todo(sch, SCH_TODO_UNREG);
- 		atomic_set(&cdev->private->onoff, 0);
- 	}
--	spin_unlock_irq(cdev->ccwlock);
-+
-+	css_sched_sch_todo(sch, SCH_TODO_UNREG);
-+	CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x%s\n", sch->schid.ssid,
-+		      sch->schib.pmcw.dev, cdev ? "" : " (no cdev)");
-+
-+unlock:
-+	spin_unlock_irq(&sch->lock);
- 	/* Abort loop in case of pending signal. */
- 	if (signal_pending(current))
- 		return -EINTR;
-@@ -1350,7 +1361,7 @@ static int purge_fn(struct device *dev, void *data)
- int ccw_purge_blacklisted(void)
- {
- 	CIO_MSG_EVENT(2, "ccw: purging blacklisted devices\n");
--	bus_for_each_dev(&ccw_bus_type, NULL, NULL, purge_fn);
-+	for_each_subchannel_staged(purge_fn, NULL, NULL);
- 	return 0;
- }
- 
+ 				hlist_del_rcu(&entry->hlist);
+-				kfree_rcu(entry, rcu);
+ 				en_dbg(DRV, priv, "Removed MAC %pM on port:%d\n",
+ 				       entry->mac, priv->port);
++				kfree_rcu(entry, rcu);
+ 				++removed;
+ 			}
+ 		}
 -- 
 2.51.0
 
