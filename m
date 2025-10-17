@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-186939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DFABE9C60
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55571BE9E4F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9D00135E12F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B30066E7BCE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7E31D5CE0;
-	Fri, 17 Oct 2025 15:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBD23328EF;
+	Fri, 17 Oct 2025 15:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dF6nBZ7S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQHAmKT5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE942F12BA;
-	Fri, 17 Oct 2025 15:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0BB2F6932;
+	Fri, 17 Oct 2025 15:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714661; cv=none; b=mjuoBdQtqxDzjUj7oH/FOe8iQr3eGlI6St4asuauN6fxx7iR3WQiHo1j0HWX2WEePw61u02iqmPYbQCcwerMp3+9fHxdDewE/b0PXjKrBi5gw7u5jhT5Szer7n7/OeSqNmRojQ91omx41rX+aYLsF6/aX4J0KLICt4P0PxPTrMA=
+	t=1760713933; cv=none; b=RR2r3ATXlvyocCU7Q+FI8OHyH95XMKvotxBzTpZiQJ03fPQ9ctHsuPhfxVz7xpkVBhOnfFeLJ+llPjlxHdfs7BoLXQ4xVU3lwAGRRNvIeV5bbAu+JiJg8HfP99m8pFvsJNb+zv3ejvba7L2HehWADgesxSg3tdP6HbP1QU5s418=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714661; c=relaxed/simple;
-	bh=8mhqw500W8xTzndSLjdXE5UZD5MndbMNsf47AeVTcBQ=;
+	s=arc-20240116; t=1760713933; c=relaxed/simple;
+	bh=P9G7YyFHS46X4Don+1m3lIqGKJNjC2LtnPT7Yzfoftk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hU4LdlmNjydMHPyDcaJ5AMaFw9OzKD72fn9eg+F4RbeUFaQfmU9onMguZqvnQYJolDQyZsW5QkvjscPeOqJMRSUu5loSdan8z2TjwAdwQj3vei9Y3RpJv5lHdU1ndGY7wltA42q7XhW63lcVd61KSK1PmiOuTr4dn7lj+lOhwnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dF6nBZ7S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F58C4CEFE;
-	Fri, 17 Oct 2025 15:24:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U73hXs/tJY/XnNKVmd2RXH2TcQmFjTr4PCw7jddtmlPb6QaUJhAr/k0ZqKfxkLDDq0aiQJQ0Q9dsdN2dopSzVmVUQWVgqaHOMrlwMV3Z/uQzxACfu798jwHhPLAhWLVeKO0uOvFwa2joiR2MSmzuYSBalBncZNnGj7M2tGsgX68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQHAmKT5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E2EC4CEE7;
+	Fri, 17 Oct 2025 15:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714660;
-	bh=8mhqw500W8xTzndSLjdXE5UZD5MndbMNsf47AeVTcBQ=;
+	s=korg; t=1760713933;
+	bh=P9G7YyFHS46X4Don+1m3lIqGKJNjC2LtnPT7Yzfoftk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dF6nBZ7S6V6Etqbsxd++ft28wbyx+dEChnQujWWPyklXZfXOYRzyRtBNxJl0L2/pC
-	 mXxoCZpkAGsa+TlJYbhCvk1rWHtUvIGhi8wYz6+QBz9IFQhpcU5vEavg12FkubZPIB
-	 gH1npXtEOydWzLSf20CYutkVgdtuYdLUYhqGLMyQ=
+	b=xQHAmKT5AhisV8/C+iHeOv/8jXDtGlItbGOBrK786v8UAd4crPqwBwTpKkzFx7esD
+	 AmEWLtsB7GH6K/Y0rgc6twjMiNHc2KVAe7xMINznhwizx5MB8xJvcoDSN/euP8t/Gw
+	 3Egeo5V9BUzmkNxV8AAeIvjd7ifHvCdeKQ/eXDU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lance Yang <lance.yang@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Gabriel Krisman Bertazi <krisman@collabora.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 223/277] selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled
-Date: Fri, 17 Oct 2025 16:53:50 +0200
-Message-ID: <20251017145155.269342912@linuxfoundation.org>
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 170/201] PCI: endpoint: pci-epf-test: Add NULL check for DMA channels before release
+Date: Fri, 17 Oct 2025 16:53:51 +0200
+Message-ID: <20251017145140.985649719@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,199 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lance Yang <lance.yang@linux.dev>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit 0389c305ef56cbadca4cbef44affc0ec3213ed30 upstream.
+[ Upstream commit 85afa9ea122dd9d4a2ead104a951d318975dcd25 ]
 
-The madv_populate and soft-dirty kselftests currently fail on systems
-where CONFIG_MEM_SOFT_DIRTY is disabled.
+The fields dma_chan_tx and dma_chan_rx of the struct pci_epf_test can be
+NULL even after EPF initialization. Then it is prudent to check that
+they have non-NULL values before releasing the channels. Add the checks
+in pci_epf_test_clean_dma_chan().
 
-Introduce a new helper softdirty_supported() into vm_util.c/h to ensure
-tests are properly skipped when the feature is not enabled.
+Without the checks, NULL pointer dereferences happen and they can lead
+to a kernel panic in some cases:
 
-Link: https://lkml.kernel.org/r/20250917133137.62802-1-lance.yang@linux.dev
-Fixes: 9f3265db6ae8 ("selftests: vm: add test for Soft-Dirty PTE bit")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Gabriel Krisman Bertazi <krisman@collabora.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000050
+  Call trace:
+   dma_release_channel+0x2c/0x120 (P)
+   pci_epf_test_epc_deinit+0x94/0xc0 [pci_epf_test]
+   pci_epc_deinit_notify+0x74/0xc0
+   tegra_pcie_ep_pex_rst_irq+0x250/0x5d8
+   irq_thread_fn+0x34/0xb8
+   irq_thread+0x18c/0x2e8
+   kthread+0x14c/0x210
+   ret_from_fork+0x10/0x20
+
+Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
+Fixes: 5ebf3fc59bd2 ("PCI: endpoint: functions/pci-epf-test: Add DMA support to transfer data")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+[mani: trimmed the stack trace]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250916025756.34807-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/madv_populate.c |   21 -------
- tools/testing/selftests/mm/soft-dirty.c    |    5 +
- tools/testing/selftests/mm/vm_util.c       |   77 +++++++++++++++++++++++++++++
- tools/testing/selftests/mm/vm_util.h       |    1 
- 4 files changed, 84 insertions(+), 20 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/tools/testing/selftests/mm/madv_populate.c
-+++ b/tools/testing/selftests/mm/madv_populate.c
-@@ -264,23 +264,6 @@ static void test_softdirty(void)
- 	munmap(addr, SIZE);
- }
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -282,15 +282,20 @@ static void pci_epf_test_clean_dma_chan(
+ 	if (!epf_test->dma_supported)
+ 		return;
  
--static int system_has_softdirty(void)
--{
--	/*
--	 * There is no way to check if the kernel supports soft-dirty, other
--	 * than by writing to a page and seeing if the bit was set. But the
--	 * tests are intended to check that the bit gets set when it should, so
--	 * doing that check would turn a potentially legitimate fail into a
--	 * skip. Fortunately, we know for sure that arm64 does not support
--	 * soft-dirty. So for now, let's just use the arch as a corse guide.
--	 */
--#if defined(__aarch64__)
--	return 0;
--#else
--	return 1;
--#endif
--}
--
- int main(int argc, char **argv)
- {
- 	int nr_tests = 16;
-@@ -288,7 +271,7 @@ int main(int argc, char **argv)
+-	dma_release_channel(epf_test->dma_chan_tx);
+-	if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
++	if (epf_test->dma_chan_tx) {
++		dma_release_channel(epf_test->dma_chan_tx);
++		if (epf_test->dma_chan_tx == epf_test->dma_chan_rx) {
++			epf_test->dma_chan_tx = NULL;
++			epf_test->dma_chan_rx = NULL;
++			return;
++		}
+ 		epf_test->dma_chan_tx = NULL;
+-		epf_test->dma_chan_rx = NULL;
+-		return;
+ 	}
  
- 	pagesize = getpagesize();
- 
--	if (system_has_softdirty())
-+	if (softdirty_supported())
- 		nr_tests += 5;
- 
- 	ksft_print_header();
-@@ -300,7 +283,7 @@ int main(int argc, char **argv)
- 	test_holes();
- 	test_populate_read();
- 	test_populate_write();
--	if (system_has_softdirty())
-+	if (softdirty_supported())
- 		test_softdirty();
- 
- 	err = ksft_get_fail_cnt();
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -193,8 +193,11 @@ int main(int argc, char **argv)
- 	int pagesize;
- 
- 	ksft_print_header();
--	ksft_set_plan(15);
- 
-+	if (!softdirty_supported())
-+		ksft_exit_skip("soft-dirty is not support\n");
-+
-+	ksft_set_plan(15);
- 	pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
- 	if (pagemap_fd < 0)
- 		ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -193,6 +193,42 @@ err_out:
- 	return rss_anon;
- }
- 
-+char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
-+{
-+	int ret;
-+	FILE *fp;
-+	char *entry = NULL;
-+	char addr_pattern[MAX_LINE_LENGTH];
-+
-+	ret = snprintf(addr_pattern, MAX_LINE_LENGTH, "%08lx-",
-+		       (unsigned long)addr);
-+	if (ret >= MAX_LINE_LENGTH)
-+		ksft_exit_fail_msg("%s: Pattern is too long\n", __func__);
-+
-+	fp = fopen(SMAP_FILE_PATH, "r");
-+	if (!fp)
-+		ksft_exit_fail_msg("%s: Failed to open file %s\n", __func__,
-+				   SMAP_FILE_PATH);
-+
-+	if (!check_for_pattern(fp, addr_pattern, buf, len))
-+		goto err_out;
-+
-+	/* Fetch the pattern in the same block */
-+	if (!check_for_pattern(fp, pattern, buf, len))
-+		goto err_out;
-+
-+	/* Trim trailing newline */
-+	entry = strchr(buf, '\n');
-+	if (entry)
-+		*entry = '\0';
-+
-+	entry = buf + strlen(pattern);
-+
-+err_out:
-+	fclose(fp);
-+	return entry;
-+}
-+
- bool __check_huge(void *addr, char *pattern, int nr_hpages,
- 		  uint64_t hpage_size)
- {
-@@ -384,3 +420,44 @@ unsigned long get_free_hugepages(void)
- 	fclose(f);
- 	return fhp;
- }
-+
-+static bool check_vmflag(void *addr, const char *flag)
-+{
-+	char buffer[MAX_LINE_LENGTH];
-+	const char *flags;
-+	size_t flaglen;
-+
-+	flags = __get_smap_entry(addr, "VmFlags:", buffer, sizeof(buffer));
-+	if (!flags)
-+		ksft_exit_fail_msg("%s: No VmFlags for %p\n", __func__, addr);
-+
-+	while (true) {
-+		flags += strspn(flags, " ");
-+
-+		flaglen = strcspn(flags, " ");
-+		if (!flaglen)
-+			return false;
-+
-+		if (flaglen == strlen(flag) && !memcmp(flags, flag, flaglen))
-+			return true;
-+
-+		flags += flaglen;
+-	dma_release_channel(epf_test->dma_chan_rx);
+-	epf_test->dma_chan_rx = NULL;
++	if (epf_test->dma_chan_rx) {
++		dma_release_channel(epf_test->dma_chan_rx);
++		epf_test->dma_chan_rx = NULL;
 +	}
-+}
-+
-+bool softdirty_supported(void)
-+{
-+	char *addr;
-+	bool supported = false;
-+	const size_t pagesize = getpagesize();
-+
-+	/* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
-+	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (!addr)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	supported = check_vmflag(addr, "sd");
-+	munmap(addr, pagesize);
-+	return supported;
-+}
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -53,6 +53,7 @@ int uffd_unregister(int uffd, void *addr
- int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
- 			      bool miss, bool wp, bool minor, uint64_t *ioctls);
- unsigned long get_free_hugepages(void);
-+bool softdirty_supported(void);
+ }
  
- /*
-  * On ppc64 this will only work with radix 2M hugepage size
+ static void pci_epf_test_print_rate(struct pci_epf_test *epf_test,
 
 
 
