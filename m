@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65014BE9B95
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9CDBEA600
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:00:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 11A1B35DA96
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 996169401EF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D287C332914;
-	Fri, 17 Oct 2025 15:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99933336EE1;
+	Fri, 17 Oct 2025 15:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmMRCReM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZbTB2Eh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9066F2F12D9;
-	Fri, 17 Oct 2025 15:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55259336EDC;
+	Fri, 17 Oct 2025 15:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714424; cv=none; b=tSN+0sAyCzycxEoGTUQdfyTjUoIjE+10eqmlNVQk8z3jeI9lWpn9UAQWyLoel3YeQzmjSEcnS0KSIksozXPnl8smdJBXGXjncndsZYQ1IWWXBYPRSk/0Fs09BRrpxCvhXOGbYKa8Pnlk8w1x8lHnDZ0wpaJgLU2crfCh1CSlNtY=
+	t=1760715216; cv=none; b=fgC5PVTJuvVImYJGJXnRwr3nL2r/mPuiyi6MN1Clr4ns56c6Uv5bAVz6IID10Z8sbmexk9RtLEKjzmHEr5q1Kcv1HWAYNwFZP0h8+4BWUaEDA9QBopwQQhaQcVi42slZyfZVtzQSkV2A8pxxs/jXQ1jeoRwZW1kNVvZIjhO+6hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714424; c=relaxed/simple;
-	bh=o6dmrN2MCcC/h+RIR3582CifRK2Cy8X0pwcw/EW1D/Q=;
+	s=arc-20240116; t=1760715216; c=relaxed/simple;
+	bh=pFob4Wmzy/DZp59g1gYH+xfIa8bfUH5pwIkLw198wpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIl1/X3TMyU94w1IQfvwTmQ6Uokal4WdW7n6lrweSMriSbN9WYlsh+BZm3uPTy5o/xdJdmITolB+4GXXmlFt9OCdK7ArpBBS9H/AzakL2H5/DIhgvnZE5YIztcKum340qvwvmkk18fUf0bBnwE1+nWSv0prhABVo0u1dTwG90Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmMRCReM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15033C4CEE7;
-	Fri, 17 Oct 2025 15:20:23 +0000 (UTC)
+	 MIME-Version; b=O5FPiynR0ZQ7FioS+Bmvv7WU6DDZjg9ou0EFhU2Naup7azVjRCQ6np3FrUuwXoBKWtT5k/nS4PIGay1L/p7ZhtM358/Wh7vRaoO3XjGGh0tRSmed0plC0sIX045wREFI3ID09VNYOjpFqKBPMVKbipcOy14bIP1TipFLcFVGbNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZbTB2Eh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57FBC113D0;
+	Fri, 17 Oct 2025 15:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714424;
-	bh=o6dmrN2MCcC/h+RIR3582CifRK2Cy8X0pwcw/EW1D/Q=;
+	s=korg; t=1760715216;
+	bh=pFob4Wmzy/DZp59g1gYH+xfIa8bfUH5pwIkLw198wpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmMRCReM7SfV6JJdAXtmr9Hk/3+EXVW8Cx7QKJPhygnCBv39sVn5rg32xrxU321kf
-	 IqS6oECPbVcXIwvQTfbxHq7du0wsRuvQMaGAWWBK1P+I5bJWkttb+hcJj+YiEhIVBL
-	 e6lIF2uIvLHDOuVZYd2PHq/KaR4CGHkjTDoV48l8=
+	b=OZbTB2EhaDXaW2rkFqI2tOc1WeczlPd+XFPnFymiqm0uKb+ebd8KGSycLPM2g4f+o
+	 zHLV0fuSjuEnNiVGnQ428SJOmbDRY9BnRKNTb6G5QuOEPZyXfgd/cdhmcrMkQzNPBo
+	 HoNzK/+cWdi11XLzGfszT129TcZRgOkOIBPYigho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 107/277] media: pci: ivtv: Add missing check after DMA map
+	Jiri Slaby <jirislaby@kernel.org>,
+	Ahmed Salem <x0rw3ll@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.17 139/371] ACPICA: Debugger: drop ACPI_NONSTRING attribute from name_seg
 Date: Fri, 17 Oct 2025 16:51:54 +0200
-Message-ID: <20251017145151.035809482@linuxfoundation.org>
+Message-ID: <20251017145206.963242018@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ahmed Salem <x0rw3ll@gmail.com>
 
-commit 1069a4fe637d0e3e4c163e3f8df9be306cc299b4 upstream.
+commit 22c65572eff14a6e9546a9dbaa333619eb5505ab upstream.
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, free blanking_ptr and set it to 0.  As 0 is a
-valid DMA address, use blanking_ptr to test if the DMA address
-is set.
+ACPICA commit 4623b3369f3aa1ec5229d461e91c514510a96912
 
-Fixes: 1a0adaf37c30 ("V4L/DVB (5345): ivtv driver for Conexant cx23416/cx23415 MPEG encoder/decoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Partially revert commit 70662db73d54 ("ACPICA: Apply ACPI_NONSTRING in
+more places") as I've yet again incorrectly applied the ACPI_NONSTRING
+attribute where it is not needed.
+
+A warning was initially reported by Collin Funk [1], and further review
+by Jiri Slaby [2] highlighted another issue related to the same commit.
+
+Drop the ACPI_NONSTRING attribute to fix the issue.
+
+Fixes: 70662db73d54 ("ACPICA: Apply ACPI_NONSTRING in more places")
+Link: https://lore.kernel.org/all/87ecvpcypw.fsf@gmail.com [1]
+Link: https://lore.kernel.org/all/5c210121-c9b8-4458-b1ad-0da24732ac72@kernel.org [2]
+Link: https://github.com/acpica/acpica/commit/4623b336
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
+Cc: 6.16+ <stable@vger.kernel.org> # 6.16+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/ivtv/ivtv-irq.c |    2 +-
- drivers/media/pci/ivtv/ivtv-yuv.c |    8 +++++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/acpi/acpica/acdebug.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/pci/ivtv/ivtv-irq.c
-+++ b/drivers/media/pci/ivtv/ivtv-irq.c
-@@ -351,7 +351,7 @@ void ivtv_dma_stream_dec_prepare(struct
+--- a/drivers/acpi/acpica/acdebug.h
++++ b/drivers/acpi/acpica/acdebug.h
+@@ -37,7 +37,7 @@ struct acpi_db_argument_info {
+ struct acpi_db_execute_walk {
+ 	u32 count;
+ 	u32 max_count;
+-	char name_seg[ACPI_NAMESEG_SIZE + 1] ACPI_NONSTRING;
++	char name_seg[ACPI_NAMESEG_SIZE + 1];
+ };
  
- 	/* Insert buffer block for YUV if needed */
- 	if (s->type == IVTV_DEC_STREAM_TYPE_YUV && f->offset_y) {
--		if (yi->blanking_dmaptr) {
-+		if (yi->blanking_ptr) {
- 			s->sg_pending[idx].src = yi->blanking_dmaptr;
- 			s->sg_pending[idx].dst = offset;
- 			s->sg_pending[idx].size = 720 * 16;
---- a/drivers/media/pci/ivtv/ivtv-yuv.c
-+++ b/drivers/media/pci/ivtv/ivtv-yuv.c
-@@ -125,7 +125,7 @@ static int ivtv_yuv_prep_user_dma(struct
- 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
- 
- 	/* If we've offset the y plane, ensure top area is blanked */
--	if (f->offset_y && yi->blanking_dmaptr) {
-+	if (f->offset_y && yi->blanking_ptr) {
- 		dma->SGarray[dma->SG_length].size = cpu_to_le32(720*16);
- 		dma->SGarray[dma->SG_length].src = cpu_to_le32(yi->blanking_dmaptr);
- 		dma->SGarray[dma->SG_length].dst = cpu_to_le32(IVTV_DECODER_OFFSET + yuv_offset[frame]);
-@@ -929,6 +929,12 @@ static void ivtv_yuv_init(struct ivtv *i
- 		yi->blanking_dmaptr = dma_map_single(&itv->pdev->dev,
- 						     yi->blanking_ptr,
- 						     720 * 16, DMA_TO_DEVICE);
-+		if (dma_mapping_error(&itv->pdev->dev, yi->blanking_dmaptr)) {
-+			kfree(yi->blanking_ptr);
-+			yi->blanking_ptr = NULL;
-+			yi->blanking_dmaptr = 0;
-+			IVTV_DEBUG_WARN("Failed to dma_map yuv blanking buffer\n");
-+		}
- 	} else {
- 		yi->blanking_dmaptr = 0;
- 		IVTV_DEBUG_WARN("Failed to allocate yuv blanking buffer\n");
+ #define PARAM_LIST(pl)                  pl
 
 
 
