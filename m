@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4C4BEA699
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AEE7BE9CF0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F23475A4902
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19D947C0B86
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7133320C00A;
-	Fri, 17 Oct 2025 15:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEB32F12BC;
+	Fri, 17 Oct 2025 15:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9glP2LH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tg9N2dzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C092330B26;
-	Fri, 17 Oct 2025 15:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABF53370FA;
+	Fri, 17 Oct 2025 15:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716408; cv=none; b=ujhSjXH8i0Mip2Jg+igkLy7R/7H7aoRJaHU5pkgJnmqbcmHp0sJmrPaNL46TGxQZmLAjOJmUZO5AAlsY6zVaWOXbc1ywo8X1+7j24UAtRAFwv6ixnhXYp2KF9EIV4hMUI7qRzOrHxvn6DnxZkFMB/tWOSY9AnKRK2j/twqwdVeI=
+	t=1760713965; cv=none; b=tHd9SJz+5O3w1uV+ktjs6S3yQ/8XN5FVmjLZfAfMEarj/Ge7QNWPaOP2sB8zceNFFNNw2bgNF2BU+Y+pKPReyFZtW7TACtfd8avvxQnkqQugmdMwDRBmtN/q6PtislpIY82H2neusUNGuVje0mu/E4KBrtHP3kwi6yk6WWMJQ/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716408; c=relaxed/simple;
-	bh=46o7K7f1sdce3gE2ddfG7LmANUWVysKZkkSTBcKdn0I=;
+	s=arc-20240116; t=1760713965; c=relaxed/simple;
+	bh=veubsG0v8Ee0KhDu03uZtTFolSsEvyaZVlLZe8GFDiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dhMdvdrNPtan09vhDzr5mD5Yw5p8er4AhYHMc6ybV6wA5Wcg5v8aLEgFx8UG1N9DcENbQwCnA0wZW1Q+2CbmKtFPlgBcN6lIz9dXr9wTvNtogSiFoO6Ax8tG+cim1T2wxFpjFX5ZNQqbhbyg2m1ZNCWQcYtyMODRm1Sge7nwI5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9glP2LH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB591C4CEE7;
-	Fri, 17 Oct 2025 15:53:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qtOBBG4tIFIgnb9vVLeOvH01rpUPoOrjum7TCS2jIS7uj7rXFpql7KXyRHqR9hJBGnUMxpe8T7NFJZmummJV8ltDKKRJSrZk5eZMhiymcJQCdIrEQQz59UBPQ5vPS9duvfUC+dV9yCbBHOfGDygPEq3LTBZDT/aXrH8i12SfqZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tg9N2dzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203F8C4CEE7;
+	Fri, 17 Oct 2025 15:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716408;
-	bh=46o7K7f1sdce3gE2ddfG7LmANUWVysKZkkSTBcKdn0I=;
+	s=korg; t=1760713965;
+	bh=veubsG0v8Ee0KhDu03uZtTFolSsEvyaZVlLZe8GFDiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9glP2LHDilPp5zdvGSbxGjwBTw7KSwXKvxuB92WyfHe5gngPrPNUGAJfR05eP05+
-	 gGfTSZOgnEwBVNOHKoev+l8CR9lypUNaWTZHMoHZ7mCZLLkrAPr7FUGvPzCUjAyYvs
-	 kQnY659H0HfMbHNAZFah2CYDAM4plQOPojKOyj9Y=
+	b=tg9N2dznV0b3Hd3fyAp/Jmh4aV+TIMLzrGK5XlOMVawaEt5Oq2mIJmHAeIQd1gRty
+	 uTViREGOtOhqK4nr2gPJySLJdgw644+PrMcxBYkUy+GZ5OW2MBBtfP/XZA0GJJyos8
+	 Tn7t9HQ1ismNjAvui+SMQTPdXZfwSN8aEgOHz92g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/276] drm/vmwgfx: Fix Use-after-free in validation
+Subject: [PATCH 6.6 180/201] ACPI: battery: Check for error code from devm_mutex_init() call
 Date: Fri, 17 Oct 2025 16:54:01 +0200
-Message-ID: <20251017145147.883882121@linuxfoundation.org>
+Message-ID: <20251017145141.367650146@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit dfe1323ab3c8a4dd5625ebfdba44dc47df84512a ]
+[ Upstream commit 815daedc318b2f9f1b956d0631377619a0d69d96 ]
 
-Nodes stored in the validation duplicates hashtable come from an arena
-allocator that is cleared at the end of vmw_execbuf_process. All nodes
-are expected to be cleared in vmw_validation_drop_ht but this node escaped
-because its resource was destroyed prematurely.
+Even if it's not critical, the avoidance of checking the error code
+from devm_mutex_init() call today diminishes the point of using devm
+variant of it. Tomorrow it may even leak something. Add the missed
+check.
 
-Fixes: 64ad2abfe9a6 ("drm/vmwgfx: Adapt validation code for reference-free lookups")
-Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://lore.kernel.org/r/20250926195427.1405237-1-ian.forbes@broadcom.com
+Fixes: 0710c1ce5045 ("ACPI: battery: initialize mutexes through devm_ APIs")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20241030162754.2110946-1-andriy.shevchenko@linux.intel.com
+[ rjw: Added 2 empty code lines ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 399dbcadc01e ("ACPI: battery: Add synchronization between interface updates")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_validation.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/battery.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
-index 41b7417cb5d3d..4633bd3081852 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
-@@ -343,8 +343,10 @@ int vmw_validation_add_resource(struct vmw_validation_context *ctx,
- 		}
- 	}
- 	node->res = vmw_resource_reference_unless_doomed(res);
--	if (!node->res)
-+	if (!node->res) {
-+		hash_del_rcu(&node->hash.head);
- 		return -ESRCH;
-+	}
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -1210,8 +1210,14 @@ static int acpi_battery_add(struct acpi_
+ 	strcpy(acpi_device_name(device), ACPI_BATTERY_DEVICE_NAME);
+ 	strcpy(acpi_device_class(device), ACPI_BATTERY_CLASS);
+ 	device->driver_data = battery;
+-	devm_mutex_init(&device->dev, &battery->lock);
+-	devm_mutex_init(&device->dev, &battery->sysfs_lock);
++	result = devm_mutex_init(&device->dev, &battery->lock);
++	if (result)
++		return result;
++
++	result = devm_mutex_init(&device->dev, &battery->sysfs_lock);
++	if (result)
++		return result;
++
+ 	if (acpi_has_method(battery->device->handle, "_BIX"))
+ 		set_bit(ACPI_BATTERY_XINFO_PRESENT, &battery->flags);
  
- 	node->first_usage = 1;
- 	if (!res->dev_priv->has_mob) {
--- 
-2.51.0
-
 
 
 
