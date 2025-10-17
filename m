@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C83BE9769
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:05:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C628BEA3A7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5FD41A67119
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F500582D3A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D8333507F;
-	Fri, 17 Oct 2025 15:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB461330B1F;
+	Fri, 17 Oct 2025 15:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rf6MkyR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJEhaIVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42133335078;
-	Fri, 17 Oct 2025 15:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8528330B08;
+	Fri, 17 Oct 2025 15:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713398; cv=none; b=GoCRbu0kqCVIQmOlRJG+CACnHGg7h64G6C4KhOHD2nwYN5enT5g4Axzzy7bfXtHypSb8AX2vwO5BQ1tyPG8hqTyHxNNRNdFfrbAfHfsnomTzfnIQGq2vQtl3G6GgLFixa4UX2ESGRRiWXtoNB1gSD5m62jmyva+YfblBrhFZL44=
+	t=1760715550; cv=none; b=gEqOigQdQ6SKGZXX6l+AxqO5MiaR6ye9rBqW1FgRMgj3pYhMJ0yKQ1taoVc2732iw/GGSjjI6YqlpyivP2K75c5Rj/8Hmcew59/0SWqVvi3RhUHs9BH0ipCruFiiqdT0/0cOBOv2PEppZNtlgHi6IkHs4TnvnZS7tU92NDDitu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713398; c=relaxed/simple;
-	bh=kbvmSq2xuVbDyxIWoQXsyB46HCPSsGGgRn4HSCKvYoo=;
+	s=arc-20240116; t=1760715550; c=relaxed/simple;
+	bh=89SgChmy7vN+/msLHJ90G+XgfyPa71jUndCb7EajY7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MpsIA+/lwIV2dgMazdIcT4F7EVbO5qKJp8ScqvVbU0WMB7wC1Xn0ci7qhjV4+e48uslDExQV3G6Q8ysYgxqUweo9Nopccor9FpSZhH+9Ir0ZNIn5/U+DMsXlR4PcsNwksb9My2LB1etjWxOGAcNmPMgyEkynCI4yCiyKLzOG2y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rf6MkyR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62723C4CEF9;
-	Fri, 17 Oct 2025 15:03:17 +0000 (UTC)
+	 MIME-Version; b=nGbG3OMqaHlmy11/SDUIXg2aG2Hh/v6vW2sGgPpsIDar51UQZXBey0FNmPuucgzJeaVXzjBAGRoTgSI647z02CbERnH6hjNjmeTOG+FApraI8PZBjxzTjEp9ZWaQtKow75ZnSbeFnoWIn2bmdStx7YBxvr2BZQ5bjlfLqZ/cxys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJEhaIVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F70C4CEE7;
+	Fri, 17 Oct 2025 15:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713397;
-	bh=kbvmSq2xuVbDyxIWoQXsyB46HCPSsGGgRn4HSCKvYoo=;
+	s=korg; t=1760715550;
+	bh=89SgChmy7vN+/msLHJ90G+XgfyPa71jUndCb7EajY7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rf6MkyRWBZvusvY+4Wv7Hsbz+oqwSnlRFeecMG4jEUXtjF9VsFhOmvEfXMyY4S7D
-	 opd5nppmwc6LMUJS1033At2IWIqvCvk8ZTEqTvxI7uh6a4lS25gED6xQjlX9jFFlQm
-	 zoZc+ASuT4KTDem9ACcDESigJjh/0uvIu8WQyei4=
+	b=BJEhaIVddZDOr24Vi9bDtqopkxgTufoe+8gMuQc87Aziw8yULrJGJ5pHE5dX58IUC
+	 1PshWlqx/vdScn8vBDb1qLgeRLkMVUfULBTMsRqyz7BNRA4eE3JkhFJDQRUPBWSWY4
+	 B5iQ4pjjwZI2seY07/foQ6HrJSOA/bN5VqKBtvNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gilles BULOZ <gilles.buloz@kontron.com>,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 6.1 151/168] ipmi: Rework user message limit handling
+	Harshit Agarwal <harshit@nutanix.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>
+Subject: [PATCH 6.17 255/371] sched/deadline: Fix race in push_dl_task()
 Date: Fri, 17 Oct 2025 16:53:50 +0200
-Message-ID: <20251017145134.604715285@linuxfoundation.org>
+Message-ID: <20251017145211.308907504@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,648 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Harshit Agarwal <harshit@nutanix.com>
 
-commit b52da4054ee0bf9ecb44996f2c83236ff50b3812 upstream
+commit 8fd5485fb4f3d9da3977fd783fcb8e5452463420 upstream.
 
-This patch required quite a bit of work to backport due to a number
-of unrelated changes that do not make sense to backport.  This has
-been run against my test suite and passes all tests.
+When a CPU chooses to call push_dl_task and picks a task to push to
+another CPU's runqueue then it will call find_lock_later_rq method
+which would take a double lock on both CPUs' runqueues. If one of the
+locks aren't readily available, it may lead to dropping the current
+runqueue lock and reacquiring both the locks at once. During this window
+it is possible that the task is already migrated and is running on some
+other CPU. These cases are already handled. However, if the task is
+migrated and has already been executed and another CPU is now trying to
+wake it up (ttwu) such that it is queued again on the runqeue
+(on_rq is 1) and also if the task was run by the same CPU, then the
+current checks will pass even though the task was migrated out and is no
+longer in the pushable tasks list.
+Please go through the original rt change for more details on the issue.
 
-The limit on the number of user messages had a number of issues,
-improper counting in some cases and a use after free.
+To fix this, after the lock is obtained inside the find_lock_later_rq,
+it ensures that the task is still at the head of pushable tasks list.
+Also removed some checks that are no longer needed with the addition of
+this new check.
+However, the new check of pushable tasks list only applies when
+find_lock_later_rq is called by push_dl_task. For the other caller i.e.
+dl_task_offline_migration, existing checks are used.
 
-Restructure how this is all done to handle more in the receive message
-allocation routine, so all refcouting and user message limit counts
-are done in that routine.  It's a lot cleaner and safer.
-
-Reported-by: Gilles BULOZ <gilles.buloz@kontron.com>
-Closes: https://lore.kernel.org/lkml/aLsw6G0GyqfpKs2S@mail.minyard.net/
-Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
-Cc: <stable@vger.kernel.org> # 4.19
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Tested-by: Gilles BULOZ <gilles.buloz@kontron.com>
+Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250408045021.3283624-1-harshit@nutanix.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c |  415 +++++++++++++++++-------------------
- 1 file changed, 198 insertions(+), 217 deletions(-)
+ kernel/sched/deadline.c |   73 ++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 49 insertions(+), 24 deletions(-)
 
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -39,7 +39,9 @@
- 
- #define IPMI_DRIVER_VERSION "39.2"
- 
--static struct ipmi_recv_msg *ipmi_alloc_recv_msg(void);
-+static struct ipmi_recv_msg *ipmi_alloc_recv_msg(struct ipmi_user *user);
-+static void ipmi_set_recv_msg_user(struct ipmi_recv_msg *msg,
-+				   struct ipmi_user *user);
- static int ipmi_init_msghandler(void);
- static void smi_recv_tasklet(struct tasklet_struct *t);
- static void handle_new_recv_msgs(struct ipmi_smi *intf);
-@@ -939,13 +941,11 @@ static int deliver_response(struct ipmi_
- 		 * risk.  At this moment, simply skip it in that case.
- 		 */
- 		ipmi_free_recv_msg(msg);
--		atomic_dec(&msg->user->nr_msgs);
- 	} else {
- 		int index;
- 		struct ipmi_user *user = acquire_ipmi_user(msg->user, &index);
- 
- 		if (user) {
--			atomic_dec(&user->nr_msgs);
- 			user->handler->ipmi_recv_hndl(msg, user->handler_data);
- 			release_ipmi_user(user, index);
- 		} else {
-@@ -1634,8 +1634,7 @@ int ipmi_set_gets_events(struct ipmi_use
- 		spin_unlock_irqrestore(&intf->events_lock, flags);
- 
- 		list_for_each_entry_safe(msg, msg2, &msgs, link) {
--			msg->user = user;
--			kref_get(&user->refcount);
-+			ipmi_set_recv_msg_user(msg, user);
- 			deliver_local_response(intf, msg);
- 		}
- 
-@@ -2309,22 +2308,15 @@ static int i_ipmi_request(struct ipmi_us
- 	struct ipmi_recv_msg *recv_msg;
- 	int rv = 0;
- 
--	if (user) {
--		if (atomic_add_return(1, &user->nr_msgs) > max_msgs_per_user) {
--			/* Decrement will happen at the end of the routine. */
--			rv = -EBUSY;
--			goto out;
--		}
--	}
--
--	if (supplied_recv)
-+	if (supplied_recv) {
- 		recv_msg = supplied_recv;
--	else {
--		recv_msg = ipmi_alloc_recv_msg();
--		if (recv_msg == NULL) {
--			rv = -ENOMEM;
--			goto out;
--		}
-+		recv_msg->user = user;
-+		if (user)
-+			atomic_inc(&user->nr_msgs);
-+	} else {
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+		if (IS_ERR(recv_msg))
-+			return PTR_ERR(recv_msg);
- 	}
- 	recv_msg->user_msg_data = user_msg_data;
- 
-@@ -2335,8 +2327,7 @@ static int i_ipmi_request(struct ipmi_us
- 		if (smi_msg == NULL) {
- 			if (!supplied_recv)
- 				ipmi_free_recv_msg(recv_msg);
--			rv = -ENOMEM;
--			goto out;
-+			return -ENOMEM;
- 		}
- 	}
- 
-@@ -2346,10 +2337,6 @@ static int i_ipmi_request(struct ipmi_us
- 		goto out_err;
- 	}
- 
--	recv_msg->user = user;
--	if (user)
--		/* The put happens when the message is freed. */
--		kref_get(&user->refcount);
- 	recv_msg->msgid = msgid;
- 	/*
- 	 * Store the message to send in the receive message so timeout
-@@ -2378,8 +2365,10 @@ static int i_ipmi_request(struct ipmi_us
- 
- 	if (rv) {
- out_err:
--		ipmi_free_smi_msg(smi_msg);
--		ipmi_free_recv_msg(recv_msg);
-+		if (!supplied_smi)
-+			ipmi_free_smi_msg(smi_msg);
-+		if (!supplied_recv)
-+			ipmi_free_recv_msg(recv_msg);
- 	} else {
- 		dev_dbg(intf->si_dev, "Send: %*ph\n",
- 			smi_msg->data_size, smi_msg->data);
-@@ -2388,9 +2377,6 @@ out_err:
- 	}
- 	rcu_read_unlock();
- 
--out:
--	if (rv && user)
--		atomic_dec(&user->nr_msgs);
- 	return rv;
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2551,6 +2551,25 @@ static int find_later_rq(struct task_str
+ 	return -1;
  }
  
-@@ -3883,7 +3869,7 @@ static int handle_ipmb_get_msg_cmd(struc
- 	unsigned char            chan;
- 	struct ipmi_user         *user = NULL;
- 	struct ipmi_ipmb_addr    *ipmb_addr;
--	struct ipmi_recv_msg     *recv_msg;
-+	struct ipmi_recv_msg     *recv_msg = NULL;
- 
- 	if (msg->rsp_size < 10) {
- 		/* Message not big enough, just ignore it. */
-@@ -3904,9 +3890,8 @@ static int handle_ipmb_get_msg_cmd(struc
- 	rcvr = find_cmd_rcvr(intf, netfn, cmd, chan);
- 	if (rcvr) {
- 		user = rcvr->user;
--		kref_get(&user->refcount);
--	} else
--		user = NULL;
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+	}
- 	rcu_read_unlock();
- 
- 	if (user == NULL) {
-@@ -3941,47 +3926,41 @@ static int handle_ipmb_get_msg_cmd(struc
- 			rv = -1;
- 		}
- 		rcu_read_unlock();
--	} else {
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
--			/*
--			 * We couldn't allocate memory for the
--			 * message, so requeue it for handling
--			 * later.
--			 */
--			rv = 1;
--			kref_put(&user->refcount, free_user);
--		} else {
--			/* Extract the source address from the data. */
--			ipmb_addr = (struct ipmi_ipmb_addr *) &recv_msg->addr;
--			ipmb_addr->addr_type = IPMI_IPMB_ADDR_TYPE;
--			ipmb_addr->slave_addr = msg->rsp[6];
--			ipmb_addr->lun = msg->rsp[7] & 3;
--			ipmb_addr->channel = msg->rsp[3] & 0xf;
-+	} else if (!IS_ERR(recv_msg)) {
-+		/* Extract the source address from the data. */
-+		ipmb_addr = (struct ipmi_ipmb_addr *) &recv_msg->addr;
-+		ipmb_addr->addr_type = IPMI_IPMB_ADDR_TYPE;
-+		ipmb_addr->slave_addr = msg->rsp[6];
-+		ipmb_addr->lun = msg->rsp[7] & 3;
-+		ipmb_addr->channel = msg->rsp[3] & 0xf;
- 
--			/*
--			 * Extract the rest of the message information
--			 * from the IPMB header.
--			 */
--			recv_msg->user = user;
--			recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
--			recv_msg->msgid = msg->rsp[7] >> 2;
--			recv_msg->msg.netfn = msg->rsp[4] >> 2;
--			recv_msg->msg.cmd = msg->rsp[8];
--			recv_msg->msg.data = recv_msg->msg_data;
-+		/*
-+		 * Extract the rest of the message information
-+		 * from the IPMB header.
-+		 */
-+		recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
-+		recv_msg->msgid = msg->rsp[7] >> 2;
-+		recv_msg->msg.netfn = msg->rsp[4] >> 2;
-+		recv_msg->msg.cmd = msg->rsp[8];
-+		recv_msg->msg.data = recv_msg->msg_data;
- 
--			/*
--			 * We chop off 10, not 9 bytes because the checksum
--			 * at the end also needs to be removed.
--			 */
--			recv_msg->msg.data_len = msg->rsp_size - 10;
--			memcpy(recv_msg->msg_data, &msg->rsp[9],
--			       msg->rsp_size - 10);
--			if (deliver_response(intf, recv_msg))
--				ipmi_inc_stat(intf, unhandled_commands);
--			else
--				ipmi_inc_stat(intf, handled_commands);
--		}
-+		/*
-+		 * We chop off 10, not 9 bytes because the checksum
-+		 * at the end also needs to be removed.
-+		 */
-+		recv_msg->msg.data_len = msg->rsp_size - 10;
-+		memcpy(recv_msg->msg_data, &msg->rsp[9],
-+		       msg->rsp_size - 10);
-+		if (deliver_response(intf, recv_msg))
-+			ipmi_inc_stat(intf, unhandled_commands);
-+		else
-+			ipmi_inc_stat(intf, handled_commands);
-+	} else {
-+		/*
-+		 * We couldn't allocate memory for the message, so
-+		 * requeue it for handling later.
-+		 */
-+		rv = 1;
- 	}
- 
- 	return rv;
-@@ -3994,7 +3973,7 @@ static int handle_ipmb_direct_rcv_cmd(st
- 	int                      rv = 0;
- 	struct ipmi_user         *user = NULL;
- 	struct ipmi_ipmb_direct_addr *daddr;
--	struct ipmi_recv_msg     *recv_msg;
-+	struct ipmi_recv_msg     *recv_msg = NULL;
- 	unsigned char netfn = msg->rsp[0] >> 2;
- 	unsigned char cmd = msg->rsp[3];
- 
-@@ -4003,9 +3982,8 @@ static int handle_ipmb_direct_rcv_cmd(st
- 	rcvr = find_cmd_rcvr(intf, netfn, cmd, 0);
- 	if (rcvr) {
- 		user = rcvr->user;
--		kref_get(&user->refcount);
--	} else
--		user = NULL;
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+	}
- 	rcu_read_unlock();
- 
- 	if (user == NULL) {
-@@ -4032,44 +4010,38 @@ static int handle_ipmb_direct_rcv_cmd(st
- 			rv = -1;
- 		}
- 		rcu_read_unlock();
--	} else {
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
--			/*
--			 * We couldn't allocate memory for the
--			 * message, so requeue it for handling
--			 * later.
--			 */
--			rv = 1;
--			kref_put(&user->refcount, free_user);
--		} else {
--			/* Extract the source address from the data. */
--			daddr = (struct ipmi_ipmb_direct_addr *)&recv_msg->addr;
--			daddr->addr_type = IPMI_IPMB_DIRECT_ADDR_TYPE;
--			daddr->channel = 0;
--			daddr->slave_addr = msg->rsp[1];
--			daddr->rs_lun = msg->rsp[0] & 3;
--			daddr->rq_lun = msg->rsp[2] & 3;
-+	} else if (!IS_ERR(recv_msg)) {
-+		/* Extract the source address from the data. */
-+		daddr = (struct ipmi_ipmb_direct_addr *)&recv_msg->addr;
-+		daddr->addr_type = IPMI_IPMB_DIRECT_ADDR_TYPE;
-+		daddr->channel = 0;
-+		daddr->slave_addr = msg->rsp[1];
-+		daddr->rs_lun = msg->rsp[0] & 3;
-+		daddr->rq_lun = msg->rsp[2] & 3;
- 
--			/*
--			 * Extract the rest of the message information
--			 * from the IPMB header.
--			 */
--			recv_msg->user = user;
--			recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
--			recv_msg->msgid = (msg->rsp[2] >> 2);
--			recv_msg->msg.netfn = msg->rsp[0] >> 2;
--			recv_msg->msg.cmd = msg->rsp[3];
--			recv_msg->msg.data = recv_msg->msg_data;
--
--			recv_msg->msg.data_len = msg->rsp_size - 4;
--			memcpy(recv_msg->msg_data, msg->rsp + 4,
--			       msg->rsp_size - 4);
--			if (deliver_response(intf, recv_msg))
--				ipmi_inc_stat(intf, unhandled_commands);
--			else
--				ipmi_inc_stat(intf, handled_commands);
--		}
-+		/*
-+		 * Extract the rest of the message information
-+		 * from the IPMB header.
-+		 */
-+		recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
-+		recv_msg->msgid = (msg->rsp[2] >> 2);
-+		recv_msg->msg.netfn = msg->rsp[0] >> 2;
-+		recv_msg->msg.cmd = msg->rsp[3];
-+		recv_msg->msg.data = recv_msg->msg_data;
-+
-+		recv_msg->msg.data_len = msg->rsp_size - 4;
-+		memcpy(recv_msg->msg_data, msg->rsp + 4,
-+		       msg->rsp_size - 4);
-+		if (deliver_response(intf, recv_msg))
-+			ipmi_inc_stat(intf, unhandled_commands);
-+		else
-+			ipmi_inc_stat(intf, handled_commands);
-+	} else {
-+		/*
-+		 * We couldn't allocate memory for the message, so
-+		 * requeue it for handling later.
-+		 */
-+		rv = 1;
- 	}
- 
- 	return rv;
-@@ -4183,7 +4155,7 @@ static int handle_lan_get_msg_cmd(struct
- 	unsigned char            chan;
- 	struct ipmi_user         *user = NULL;
- 	struct ipmi_lan_addr     *lan_addr;
--	struct ipmi_recv_msg     *recv_msg;
-+	struct ipmi_recv_msg     *recv_msg = NULL;
- 
- 	if (msg->rsp_size < 12) {
- 		/* Message not big enough, just ignore it. */
-@@ -4204,9 +4176,8 @@ static int handle_lan_get_msg_cmd(struct
- 	rcvr = find_cmd_rcvr(intf, netfn, cmd, chan);
- 	if (rcvr) {
- 		user = rcvr->user;
--		kref_get(&user->refcount);
--	} else
--		user = NULL;
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+	}
- 	rcu_read_unlock();
- 
- 	if (user == NULL) {
-@@ -4218,49 +4189,44 @@ static int handle_lan_get_msg_cmd(struct
- 		 * them to be freed.
- 		 */
- 		rv = 0;
--	} else {
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
--			/*
--			 * We couldn't allocate memory for the
--			 * message, so requeue it for handling later.
--			 */
--			rv = 1;
--			kref_put(&user->refcount, free_user);
--		} else {
--			/* Extract the source address from the data. */
--			lan_addr = (struct ipmi_lan_addr *) &recv_msg->addr;
--			lan_addr->addr_type = IPMI_LAN_ADDR_TYPE;
--			lan_addr->session_handle = msg->rsp[4];
--			lan_addr->remote_SWID = msg->rsp[8];
--			lan_addr->local_SWID = msg->rsp[5];
--			lan_addr->lun = msg->rsp[9] & 3;
--			lan_addr->channel = msg->rsp[3] & 0xf;
--			lan_addr->privilege = msg->rsp[3] >> 4;
-+	} else if (!IS_ERR(recv_msg)) {
-+		/* Extract the source address from the data. */
-+		lan_addr = (struct ipmi_lan_addr *) &recv_msg->addr;
-+		lan_addr->addr_type = IPMI_LAN_ADDR_TYPE;
-+		lan_addr->session_handle = msg->rsp[4];
-+		lan_addr->remote_SWID = msg->rsp[8];
-+		lan_addr->local_SWID = msg->rsp[5];
-+		lan_addr->lun = msg->rsp[9] & 3;
-+		lan_addr->channel = msg->rsp[3] & 0xf;
-+		lan_addr->privilege = msg->rsp[3] >> 4;
- 
--			/*
--			 * Extract the rest of the message information
--			 * from the IPMB header.
--			 */
--			recv_msg->user = user;
--			recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
--			recv_msg->msgid = msg->rsp[9] >> 2;
--			recv_msg->msg.netfn = msg->rsp[6] >> 2;
--			recv_msg->msg.cmd = msg->rsp[10];
--			recv_msg->msg.data = recv_msg->msg_data;
-+		/*
-+		 * Extract the rest of the message information
-+		 * from the IPMB header.
-+		 */
-+		recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
-+		recv_msg->msgid = msg->rsp[9] >> 2;
-+		recv_msg->msg.netfn = msg->rsp[6] >> 2;
-+		recv_msg->msg.cmd = msg->rsp[10];
-+		recv_msg->msg.data = recv_msg->msg_data;
- 
--			/*
--			 * We chop off 12, not 11 bytes because the checksum
--			 * at the end also needs to be removed.
--			 */
--			recv_msg->msg.data_len = msg->rsp_size - 12;
--			memcpy(recv_msg->msg_data, &msg->rsp[11],
--			       msg->rsp_size - 12);
--			if (deliver_response(intf, recv_msg))
--				ipmi_inc_stat(intf, unhandled_commands);
--			else
--				ipmi_inc_stat(intf, handled_commands);
--		}
-+		/*
-+		 * We chop off 12, not 11 bytes because the checksum
-+		 * at the end also needs to be removed.
-+		 */
-+		recv_msg->msg.data_len = msg->rsp_size - 12;
-+		memcpy(recv_msg->msg_data, &msg->rsp[11],
-+		       msg->rsp_size - 12);
-+		if (deliver_response(intf, recv_msg))
-+			ipmi_inc_stat(intf, unhandled_commands);
-+		else
-+			ipmi_inc_stat(intf, handled_commands);
-+	} else {
-+		/*
-+		 * We couldn't allocate memory for the message, so
-+		 * requeue it for handling later.
-+		 */
-+		rv = 1;
- 	}
- 
- 	return rv;
-@@ -4282,7 +4248,7 @@ static int handle_oem_get_msg_cmd(struct
- 	unsigned char         chan;
- 	struct ipmi_user *user = NULL;
- 	struct ipmi_system_interface_addr *smi_addr;
--	struct ipmi_recv_msg  *recv_msg;
-+	struct ipmi_recv_msg  *recv_msg = NULL;
- 
- 	/*
- 	 * We expect the OEM SW to perform error checking
-@@ -4311,9 +4277,8 @@ static int handle_oem_get_msg_cmd(struct
- 	rcvr = find_cmd_rcvr(intf, netfn, cmd, chan);
- 	if (rcvr) {
- 		user = rcvr->user;
--		kref_get(&user->refcount);
--	} else
--		user = NULL;
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+	}
- 	rcu_read_unlock();
- 
- 	if (user == NULL) {
-@@ -4326,48 +4291,42 @@ static int handle_oem_get_msg_cmd(struct
- 		 */
- 
- 		rv = 0;
--	} else {
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
--			/*
--			 * We couldn't allocate memory for the
--			 * message, so requeue it for handling
--			 * later.
--			 */
--			rv = 1;
--			kref_put(&user->refcount, free_user);
--		} else {
--			/*
--			 * OEM Messages are expected to be delivered via
--			 * the system interface to SMS software.  We might
--			 * need to visit this again depending on OEM
--			 * requirements
--			 */
--			smi_addr = ((struct ipmi_system_interface_addr *)
--				    &recv_msg->addr);
--			smi_addr->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
--			smi_addr->channel = IPMI_BMC_CHANNEL;
--			smi_addr->lun = msg->rsp[0] & 3;
--
--			recv_msg->user = user;
--			recv_msg->user_msg_data = NULL;
--			recv_msg->recv_type = IPMI_OEM_RECV_TYPE;
--			recv_msg->msg.netfn = msg->rsp[0] >> 2;
--			recv_msg->msg.cmd = msg->rsp[1];
--			recv_msg->msg.data = recv_msg->msg_data;
-+	} else if (!IS_ERR(recv_msg)) {
-+		/*
-+		 * OEM Messages are expected to be delivered via
-+		 * the system interface to SMS software.  We might
-+		 * need to visit this again depending on OEM
-+		 * requirements
-+		 */
-+		smi_addr = ((struct ipmi_system_interface_addr *)
-+			    &recv_msg->addr);
-+		smi_addr->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
-+		smi_addr->channel = IPMI_BMC_CHANNEL;
-+		smi_addr->lun = msg->rsp[0] & 3;
-+
-+		recv_msg->user_msg_data = NULL;
-+		recv_msg->recv_type = IPMI_OEM_RECV_TYPE;
-+		recv_msg->msg.netfn = msg->rsp[0] >> 2;
-+		recv_msg->msg.cmd = msg->rsp[1];
-+		recv_msg->msg.data = recv_msg->msg_data;
- 
--			/*
--			 * The message starts at byte 4 which follows the
--			 * Channel Byte in the "GET MESSAGE" command
--			 */
--			recv_msg->msg.data_len = msg->rsp_size - 4;
--			memcpy(recv_msg->msg_data, &msg->rsp[4],
--			       msg->rsp_size - 4);
--			if (deliver_response(intf, recv_msg))
--				ipmi_inc_stat(intf, unhandled_commands);
--			else
--				ipmi_inc_stat(intf, handled_commands);
--		}
-+		/*
-+		 * The message starts at byte 4 which follows the
-+		 * Channel Byte in the "GET MESSAGE" command
-+		 */
-+		recv_msg->msg.data_len = msg->rsp_size - 4;
-+		memcpy(recv_msg->msg_data, &msg->rsp[4],
-+		       msg->rsp_size - 4);
-+		if (deliver_response(intf, recv_msg))
-+			ipmi_inc_stat(intf, unhandled_commands);
-+		else
-+			ipmi_inc_stat(intf, handled_commands);
-+	} else {
-+		/*
-+		 * We couldn't allocate memory for the message, so
-+		 * requeue it for handling later.
-+		 */
-+		rv = 1;
- 	}
- 
- 	return rv;
-@@ -4426,8 +4385,8 @@ static int handle_read_event_rsp(struct
- 		if (!user->gets_events)
- 			continue;
- 
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
-+		recv_msg = ipmi_alloc_recv_msg(user);
-+		if (IS_ERR(recv_msg)) {
- 			rcu_read_unlock();
- 			list_for_each_entry_safe(recv_msg, recv_msg2, &msgs,
- 						 link) {
-@@ -4446,8 +4405,6 @@ static int handle_read_event_rsp(struct
- 		deliver_count++;
- 
- 		copy_event_into_recv_msg(recv_msg, msg);
--		recv_msg->user = user;
--		kref_get(&user->refcount);
- 		list_add_tail(&recv_msg->link, &msgs);
- 	}
- 	srcu_read_unlock(&intf->users_srcu, index);
-@@ -4463,8 +4420,8 @@ static int handle_read_event_rsp(struct
- 		 * No one to receive the message, put it in queue if there's
- 		 * not already too many things in the queue.
- 		 */
--		recv_msg = ipmi_alloc_recv_msg();
--		if (!recv_msg) {
-+		recv_msg = ipmi_alloc_recv_msg(NULL);
-+		if (IS_ERR(recv_msg)) {
- 			/*
- 			 * We couldn't allocate memory for the
- 			 * message, so requeue it for handling
-@@ -5156,27 +5113,51 @@ static void free_recv_msg(struct ipmi_re
- 		kfree(msg);
- }
- 
--static struct ipmi_recv_msg *ipmi_alloc_recv_msg(void)
-+static struct ipmi_recv_msg *ipmi_alloc_recv_msg(struct ipmi_user *user)
- {
- 	struct ipmi_recv_msg *rv;
- 
-+	if (user) {
-+		if (atomic_add_return(1, &user->nr_msgs) > max_msgs_per_user) {
-+			atomic_dec(&user->nr_msgs);
-+			return ERR_PTR(-EBUSY);
-+		}
-+	}
-+
- 	rv = kmalloc(sizeof(struct ipmi_recv_msg), GFP_ATOMIC);
--	if (rv) {
--		rv->user = NULL;
--		rv->done = free_recv_msg;
--		atomic_inc(&recv_msg_inuse_count);
-+	if (!rv) {
-+		if (user)
-+			atomic_dec(&user->nr_msgs);
-+		return ERR_PTR(-ENOMEM);
- 	}
-+
-+	rv->user = user;
-+	rv->done = free_recv_msg;
-+	if (user)
-+		kref_get(&user->refcount);
-+	atomic_inc(&recv_msg_inuse_count);
- 	return rv;
- }
- 
- void ipmi_free_recv_msg(struct ipmi_recv_msg *msg)
- {
--	if (msg->user && !oops_in_progress)
-+	if (msg->user && !oops_in_progress) {
-+		atomic_dec(&msg->user->nr_msgs);
- 		kref_put(&msg->user->refcount, free_user);
-+	}
- 	msg->done(msg);
- }
- EXPORT_SYMBOL(ipmi_free_recv_msg);
- 
-+static void ipmi_set_recv_msg_user(struct ipmi_recv_msg *msg,
-+				   struct ipmi_user *user)
++static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
 +{
-+	WARN_ON_ONCE(msg->user); /* User should not be set. */
-+	msg->user = user;
-+	atomic_inc(&user->nr_msgs);
-+	kref_get(&user->refcount);
++	struct task_struct *p;
++
++	if (!has_pushable_dl_tasks(rq))
++		return NULL;
++
++	p = __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
++
++	WARN_ON_ONCE(rq->cpu != task_cpu(p));
++	WARN_ON_ONCE(task_current(rq, p));
++	WARN_ON_ONCE(p->nr_cpus_allowed <= 1);
++
++	WARN_ON_ONCE(!task_on_rq_queued(p));
++	WARN_ON_ONCE(!dl_task(p));
++
++	return p;
 +}
 +
- static atomic_t panic_done_count = ATOMIC_INIT(0);
+ /* Locks the rq it finds */
+ static struct rq *find_lock_later_rq(struct task_struct *task, struct rq *rq)
+ {
+@@ -2578,12 +2597,37 @@ static struct rq *find_lock_later_rq(str
  
- static void dummy_smi_done_handler(struct ipmi_smi_msg *msg)
+ 		/* Retry if something changed. */
+ 		if (double_lock_balance(rq, later_rq)) {
+-			if (unlikely(task_rq(task) != rq ||
++			/*
++			 * double_lock_balance had to release rq->lock, in the
++			 * meantime, task may no longer be fit to be migrated.
++			 * Check the following to ensure that the task is
++			 * still suitable for migration:
++			 * 1. It is possible the task was scheduled,
++			 *    migrate_disabled was set and then got preempted,
++			 *    so we must check the task migration disable
++			 *    flag.
++			 * 2. The CPU picked is in the task's affinity.
++			 * 3. For throttled task (dl_task_offline_migration),
++			 *    check the following:
++			 *    - the task is not on the rq anymore (it was
++			 *      migrated)
++			 *    - the task is not on CPU anymore
++			 *    - the task is still a dl task
++			 *    - the task is not queued on the rq anymore
++			 * 4. For the non-throttled task (push_dl_task), the
++			 *    check to ensure that this task is still at the
++			 *    head of the pushable tasks list is enough.
++			 */
++			if (unlikely(is_migration_disabled(task) ||
+ 				     !cpumask_test_cpu(later_rq->cpu, &task->cpus_mask) ||
+-				     task_on_cpu(rq, task) ||
+-				     !dl_task(task) ||
+-				     is_migration_disabled(task) ||
+-				     !task_on_rq_queued(task))) {
++				     (task->dl.dl_throttled &&
++				      (task_rq(task) != rq ||
++				       task_on_cpu(rq, task) ||
++				       !dl_task(task) ||
++				       !task_on_rq_queued(task))) ||
++				     (!task->dl.dl_throttled &&
++				      task != pick_next_pushable_dl_task(rq)))) {
++
+ 				double_unlock_balance(rq, later_rq);
+ 				later_rq = NULL;
+ 				break;
+@@ -2606,25 +2650,6 @@ static struct rq *find_lock_later_rq(str
+ 	return later_rq;
+ }
+ 
+-static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
+-{
+-	struct task_struct *p;
+-
+-	if (!has_pushable_dl_tasks(rq))
+-		return NULL;
+-
+-	p = __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
+-
+-	WARN_ON_ONCE(rq->cpu != task_cpu(p));
+-	WARN_ON_ONCE(task_current(rq, p));
+-	WARN_ON_ONCE(p->nr_cpus_allowed <= 1);
+-
+-	WARN_ON_ONCE(!task_on_rq_queued(p));
+-	WARN_ON_ONCE(!dl_task(p));
+-
+-	return p;
+-}
+-
+ /*
+  * See if the non running -deadline tasks on this rq
+  * can be sent to some other CPU where they can preempt
 
 
 
