@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-187287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77016BEA3DD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3853BEA549
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AD1C75694EF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 214181884E03
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6C23321C5;
-	Fri, 17 Oct 2025 15:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56A31A9FB7;
+	Fri, 17 Oct 2025 15:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ir9cBb/i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JXAWjQy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F0D2745E;
-	Fri, 17 Oct 2025 15:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633A2330B1E;
+	Fri, 17 Oct 2025 15:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715649; cv=none; b=qx1jOHaGyxcFqUKvkC0Tp+/NySpWRLu95OW5Zv28wVvk1FmTBIG0q2IzVdCuh0A6XzZNAhqu3Y7n7sstAnz1Pdaj03VJEcWUtGJN8qQTUPuoshnzG9Yl3fT1KwRqXDoxHDpXmxSIHIk0LuOBzOvqLZUm1jjuPTOFJycK51U2Cyg=
+	t=1760716382; cv=none; b=E1HTdsdpdLiOkOVMswd+cKg9YNRYkY7GYvTxj/4L3BDbssW8cwoltb5pkug1b5IlPUiWldknLVOSLXaiB6AmnZHd19kbIxxRGoayEgluRIekeXxIDDsBJYeKe26DaYWUkGtPpMGcQBObtOpdsDkjRN/DbCsakeVZJuoc3ls43rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715649; c=relaxed/simple;
-	bh=3U/2yMXBrwccYw9M+KrN7G7Sj/EDRHqv/Lmrh5FRd34=;
+	s=arc-20240116; t=1760716382; c=relaxed/simple;
+	bh=rsqAAjT3XsIbOnYuzWFjmVU1RM8DIx2934+/gQdI2S4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BtXKB/BmCvT09tmWtsFSy/81mhHB/dTfwY1jhbdLS507XyrwA8dIIDFhb71gJtlpTSBKPiIFyv6Xi+Qio5NI+qQeVsvFO2XW7J3M+Yve5CuB2jVAo6cCWyjAKqFoux8J+4kO+9osy7lX33RlNw9Gc9JhSmceL4gk3H5SF4LHBD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ir9cBb/i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F72BC4CEE7;
-	Fri, 17 Oct 2025 15:40:48 +0000 (UTC)
+	 MIME-Version; b=OVZcSrMo8+l7mTWSdykK47u7JYQHIZtU2cCxjFdzQNnPR5qJKhawM/9SPu8Ow/TFsyJ63VrKtt9cnqgJnzPHdJiYnRLGIVxS3brsfgBF0ATOmPTrN1uOwee2zu788B/MRnLqxd2PefRF8jGD6CPnbaoNtmK3LsIEE9WIGUSVRRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JXAWjQy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1104C4CEE7;
+	Fri, 17 Oct 2025 15:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715648;
-	bh=3U/2yMXBrwccYw9M+KrN7G7Sj/EDRHqv/Lmrh5FRd34=;
+	s=korg; t=1760716382;
+	bh=rsqAAjT3XsIbOnYuzWFjmVU1RM8DIx2934+/gQdI2S4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ir9cBb/ipysf6D/yoS5UyhDBTnkHUzHxEfBn62i0UbgsgueWvjIlUqkbz3cMaBRnb
-	 ucmS5F3dfa8WIoe45ogXRhC5ILMd8g1YeI6FYIbmW88ZOXUmQPgJvZq2bnKkSZj3KB
-	 4zNqcJ0iM2OMVzaNf6iuWhxUUiPrkUJgT/ul4uNU=
+	b=2JXAWjQyJ6Ad7mfOYmcs+HLaz1Jsz+ljFZ9rSRwcUjCaaw4ATshVaXfxejkO/SQ6v
+	 mo9ULtSPb1b4jqujTJ6iQ3CuI4TgKk8CXEnxC7QsW6ius4vDVuzd3lEfDEFu04k/i5
+	 Z9RBkODDPqGW0p+W2lKi+Gm+7GbdTyYnVHZHTtlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.17 289/371] PCI: tegra194: Handle errors in BPMP response
+	Lukas Wunner <lukas@wunner.de>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 5.15 171/276] xen/manage: Fix suspend error path
 Date: Fri, 17 Oct 2025 16:54:24 +0200
-Message-ID: <20251017145212.528211047@linuxfoundation.org>
+Message-ID: <20251017145148.714572775@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit f8c9ad46b00453a8c075453f3745f8d263f44834 upstream.
+commit f770c3d858687252f1270265ba152d5c622e793f upstream.
 
-The return value from tegra_bpmp_transfer() indicates the success or
-failure of the IPC transaction with BPMP. If the transaction succeeded, we
-also need to check the actual command's result code.
+The device power management API has the following asymmetry:
+* dpm_suspend_start() does not clean up on failure
+  (it requires a call to dpm_resume_end())
+* dpm_suspend_end() does clean up on failure
+  (it does not require a call to dpm_resume_start())
 
-If we don't have error handling for tegra_bpmp_transfer(), we will set the
-pcie->ep_state to EP_STATE_ENABLED even when the tegra_bpmp_transfer()
-command fails. Thus, the pcie->ep_state will get out of sync with reality,
-and any further PERST# assert + deassert will be a no-op and will not
-trigger the hardware initialization sequence.
+The asymmetry was introduced by commit d8f3de0d2412 ("Suspend-related
+patches for 2.6.27") in June 2008:  It removed a call to device_resume()
+from device_suspend() (which was later renamed to dpm_suspend_start()).
 
-This is because pex_ep_event_pex_rst_deassert() checks the current
-pcie->ep_state, and does nothing if the current state is already
-EP_STATE_ENABLED.
+When Xen began using the device power management API in May 2008 with
+commit 0e91398f2a5d ("xen: implement save/restore"), the asymmetry did
+not yet exist.  But since it was introduced, a call to dpm_resume_end()
+is missing in the error path of dpm_suspend_start().  Fix it.
 
-Thus, it is important to have error handling for tegra_bpmp_transfer(),
-such that the pcie->ep_state can not get out of sync with reality, so that
-we will try to initialize the hardware not only during the first PERST#
-assert + deassert, but also during any succeeding PERST# assert + deassert.
-
-One example where this fix is needed is when using a rock5b as host.
-During the initial PERST# assert + deassert (triggered by the bootloader on
-the rock5b) pex_ep_event_pex_rst_deassert() will get called, but for some
-unknown reason, the tegra_bpmp_transfer() call to initialize the PHY fails.
-Once Linux has been loaded on the rock5b, the PCIe driver will once again
-assert + deassert PERST#. However, without tegra_bpmp_transfer() error
-handling, this second PERST# assert + deassert will not trigger the
-hardware initialization sequence.
-
-With tegra_bpmp_transfer() error handling, the second PERST# assert +
-deassert will once again trigger the hardware to be initialized and this
-time the tegra_bpmp_transfer() succeeds.
-
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-[cassel: improve commit log]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250922140822.519796-8-cassel@kernel.org
+Fixes: d8f3de0d2412 ("Suspend-related patches for 2.6.27")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org  # v2.6.27
+Reviewed-by: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <22453676d1ddcebbe81641bb68ddf587fee7e21e.1756990799.git.lukas@wunner.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/xen/manage.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1214,6 +1214,7 @@ static int tegra_pcie_bpmp_set_ctrl_stat
- 	struct mrq_uphy_response resp;
- 	struct tegra_bpmp_message msg;
- 	struct mrq_uphy_request req;
-+	int err;
+--- a/drivers/xen/manage.c
++++ b/drivers/xen/manage.c
+@@ -116,7 +116,7 @@ static void do_suspend(void)
+ 	err = dpm_suspend_start(PMSG_FREEZE);
+ 	if (err) {
+ 		pr_err("%s: dpm_suspend_start %d\n", __func__, err);
+-		goto out_thaw;
++		goto out_resume_end;
+ 	}
  
- 	/*
- 	 * Controller-5 doesn't need to have its state set by BPMP-FW in
-@@ -1236,7 +1237,13 @@ static int tegra_pcie_bpmp_set_ctrl_stat
- 	msg.rx.data = &resp;
- 	msg.rx.size = sizeof(resp);
+ 	printk(KERN_DEBUG "suspending xenstore...\n");
+@@ -156,6 +156,7 @@ out_resume:
+ 	else
+ 		xs_suspend_cancel();
  
--	return tegra_bpmp_transfer(pcie->bpmp, &msg);
-+	err = tegra_bpmp_transfer(pcie->bpmp, &msg);
-+	if (err)
-+		return err;
-+	if (msg.rx.ret)
-+		return -EINVAL;
-+
-+	return 0;
- }
++out_resume_end:
+ 	dpm_resume_end(si.cancelled ? PMSG_THAW : PMSG_RESTORE);
  
- static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
-@@ -1245,6 +1252,7 @@ static int tegra_pcie_bpmp_set_pll_state
- 	struct mrq_uphy_response resp;
- 	struct tegra_bpmp_message msg;
- 	struct mrq_uphy_request req;
-+	int err;
- 
- 	memset(&req, 0, sizeof(req));
- 	memset(&resp, 0, sizeof(resp));
-@@ -1264,7 +1272,13 @@ static int tegra_pcie_bpmp_set_pll_state
- 	msg.rx.data = &resp;
- 	msg.rx.size = sizeof(resp);
- 
--	return tegra_bpmp_transfer(pcie->bpmp, &msg);
-+	err = tegra_bpmp_transfer(pcie->bpmp, &msg);
-+	if (err)
-+		return err;
-+	if (msg.rx.ret)
-+		return -EINVAL;
-+
-+	return 0;
- }
- 
- static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
+ out_thaw:
 
 
 
