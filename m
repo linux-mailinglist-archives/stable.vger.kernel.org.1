@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-186480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A068BE9B62
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C5BBEA6EA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:04:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A82397430B1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:04:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6EBA3582B34
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D781E32C92D;
-	Fri, 17 Oct 2025 15:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCA02E62BE;
+	Fri, 17 Oct 2025 15:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWDnTFMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5CFYHRd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9432E32E152;
-	Fri, 17 Oct 2025 15:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49528330B0C;
+	Fri, 17 Oct 2025 15:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713360; cv=none; b=rnpnGN8lJCRqcNQgL1wTOdo3wfsl0ENMo7Mydkv0RbNLQsZHh/nbPM0u3dn+Dm6/26oiQCJ2I7ETF6MTCNMP9z4PBGIbu/5Y0q6alePO5LAvvoa9NSWU/+8OxBqptvRswHz8OrfmUuSJiKNGiVr7psTYhUnGdpspH+/ylbnqPs4=
+	t=1760716250; cv=none; b=p0IsqyV55Lhzz7JLxKCb2kcXx8rAPwdSoEIItucOhKyYfguO+qHXPngyeddaXcvVHo57KiCzc8gBp0feext9uRFYlbBPDcZp9rmgxJyCkBTsAjkndTCXra06wLoWOiJHA6bzFKVV4d4Ml4iEV6iSMJtZXENiZ5b/nLBn/nO8lBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713360; c=relaxed/simple;
-	bh=WJ9gBnqdkzXC88mdsEWWANjUDQC7m6/tU/lfUM/mOUE=;
+	s=arc-20240116; t=1760716250; c=relaxed/simple;
+	bh=2OvkWyR1hhgfepRyaGI3FcTf2RM2p9SkeUDXM+YpU08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VtaUsRM4JlyO2VhfTYw983UYX/9prZ6phPSGjelCce3t4tn0TvLchctPh/YsS49wfmKJd7WRqSkkOqdk02VgS6Al3ABZufRyoL9yDOyPe4tV62aeOADXF17IQ8uwvkq7R/EG//9g2hKXEhNYpZHUpR1IVtVGnPOh191FyNdeOsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWDnTFMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6B9C4CEE7;
-	Fri, 17 Oct 2025 15:02:39 +0000 (UTC)
+	 MIME-Version; b=rVIbFR573FmsOhENlvDxpBSnhXm1KjN05kC0SQ7i8msJKBEC6njrT4bNtDTxQ4tlzCUNNCBktfXbj8ztAuXbvdRAR2lWSwAWYM9VUH+yiq8wA0Khqy/2HMVHEYOOyiiO1QgrcpjZsPzD3ytU6k0E5F+nIikI/pAND9lsaGGzSZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5CFYHRd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84790C4CEE7;
+	Fri, 17 Oct 2025 15:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713360;
-	bh=WJ9gBnqdkzXC88mdsEWWANjUDQC7m6/tU/lfUM/mOUE=;
+	s=korg; t=1760716250;
+	bh=2OvkWyR1hhgfepRyaGI3FcTf2RM2p9SkeUDXM+YpU08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWDnTFMNvxyFiHrAClpVjYb7ZRuksCVnmXUwUVBexhhPsglBiBy2dMX7s/4mY1Msy
-	 L5IIWimSyCVRLgeoilMPyjHvFjoji8Feln9OpAwDSaJ7o4l4inJGVKQwtlXpKtyzMR
-	 lRuYKO7xY/jbKxSFO4sRYJM1kScKpd9iGwj16uHI=
+	b=f5CFYHRdaVhEqlAeib/XNi3xJ3rk3jdxE2ms1aTAifPIoFv8JxJusjT2noh4tL471
+	 0e7Z8005gDgPOCeicPpv3xU97MxXN4dIQzbEzZPw8rOIwcxjJSZ8dKn9MYmpLX4TPc
+	 blIKZbCqh4Zl2xZk9ImVmiO0jdnn/CSML9SwyMjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Yunseong Kim <ysk@kzalloc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/168] media: mc: Clear minor number before put device
-Date: Fri, 17 Oct 2025 16:53:38 +0200
-Message-ID: <20251017145134.151264265@linuxfoundation.org>
+Subject: [PATCH 5.15 126/276] perf util: Fix compression checks returning -1 as bool
+Date: Fri, 17 Oct 2025 16:53:39 +0200
+Message-ID: <20251017145147.080628977@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +69,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Yunseong Kim <ysk@kzalloc.com>
 
-[ Upstream commit 8cfc8cec1b4da88a47c243a11f384baefd092a50 ]
+[ Upstream commit 43fa1141e2c1af79c91aaa4df03e436c415a6fc3 ]
 
-The device minor should not be cleared after the device is released.
+The lzma_is_compressed and gzip_is_compressed functions are declared
+to return a "bool" type, but in case of an error (e.g., file open
+failure), they incorrectly returned -1.
 
-Fixes: 9e14868dc952 ("media: mc: Clear minor number reservation at unregistration time")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=031d0cfd7c362817963f
-Tested-by: syzbot+031d0cfd7c362817963f@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ moved clear_bit from media_devnode_release callback to media_devnode_unregister before put_device ]
+A bool type is a boolean value that is either true or false.
+Returning -1 for a bool return type can lead to unexpected behavior
+and may violate strict type-checking in some compilers.
+
+Fix the return value to be false in error cases, ensuring the function
+adheres to its declared return type improves for preventing potential
+bugs related to type mismatch.
+
+Fixes: 4b57fd44b61beb51 ("perf tools: Add lzma_is_compressed function")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Stephen Brennan <stephen.s.brennan@oracle.com>
+Link: https://lore.kernel.org/r/20250822162506.316844-3-ysk@kzalloc.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/mc/mc-devnode.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ tools/perf/util/lzma.c | 2 +-
+ tools/perf/util/zlib.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/mc/mc-devnode.c
-+++ b/drivers/media/mc/mc-devnode.c
-@@ -50,11 +50,6 @@ static void media_devnode_release(struct
- {
- 	struct media_devnode *devnode = to_media_devnode(cd);
+diff --git a/tools/perf/util/lzma.c b/tools/perf/util/lzma.c
+index 51424cdc3b682..aa9a0ebc1f937 100644
+--- a/tools/perf/util/lzma.c
++++ b/tools/perf/util/lzma.c
+@@ -115,7 +115,7 @@ bool lzma_is_compressed(const char *input)
+ 	ssize_t rc;
  
--	mutex_lock(&media_devnode_lock);
--	/* Mark device node number as free */
--	clear_bit(devnode->minor, media_devnode_nums);
--	mutex_unlock(&media_devnode_lock);
--
- 	/* Release media_devnode and perform other cleanups as needed. */
- 	if (devnode->release)
- 		devnode->release(devnode);
-@@ -283,6 +278,7 @@ void media_devnode_unregister(struct med
- 	/* Delete the cdev on this minor as well */
- 	cdev_device_del(&devnode->cdev, &devnode->dev);
- 	devnode->media_dev = NULL;
-+	clear_bit(devnode->minor, media_devnode_nums);
- 	mutex_unlock(&media_devnode_lock);
+ 	if (fd < 0)
+-		return -1;
++		return false;
  
- 	put_device(&devnode->dev);
+ 	rc = read(fd, buf, sizeof(buf));
+ 	close(fd);
+diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
+index 78d2297c1b674..1f7c065230599 100644
+--- a/tools/perf/util/zlib.c
++++ b/tools/perf/util/zlib.c
+@@ -88,7 +88,7 @@ bool gzip_is_compressed(const char *input)
+ 	ssize_t rc;
+ 
+ 	if (fd < 0)
+-		return -1;
++		return false;
+ 
+ 	rc = read(fd, buf, sizeof(buf));
+ 	close(fd);
+-- 
+2.51.0
+
 
 
 
