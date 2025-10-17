@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-187390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D302BEAA2E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FFF5BEAA0D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48EC79484BB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BF3E7C285F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07775289811;
-	Fri, 17 Oct 2025 15:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480AC32E14C;
+	Fri, 17 Oct 2025 15:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qjf4tcii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlMXN1Tx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F46330B3A;
-	Fri, 17 Oct 2025 15:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032871946C8;
+	Fri, 17 Oct 2025 15:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715933; cv=none; b=pmS7+mk1b4L4TyIVRdezzIL0qDVJYoA7wUSrlGFptO31VqIJlQG/GqfAtXBTVDHAUnzECvc2+PoIjiUii06fN1PcInu8NABmWp0QO4Sq9Iqq3qCTOqlNeZzsfU8elihAQY7QPZ67QISLXQLmAFwf8QZULy+vOm1rPPK7jEyzXSI=
+	t=1760715208; cv=none; b=cQEy+AQz0mxhp5veMRmlPLR7Gyhiz98SMCKCJCQ4hbbCqfT8u4e4onRG3rqGvHxU6KHsV3szA9LZBnpS2MMYVDcGmqClkzLIOlZN5u7mGYCkmFjuXGJLeX0+uy0tWLAeyLtfjYeIbh3y8CU22FbASiVOXBXpaqXy7D/XOsuKdzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715933; c=relaxed/simple;
-	bh=GZfxEWTVVL22XWsUWzBWa5UzcJkuFP4g0+fkWk4hgU0=;
+	s=arc-20240116; t=1760715208; c=relaxed/simple;
+	bh=48AoGztM5cfLKnNy3g3BBvbCMqeVp5yjkapTG709wJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fgPIQsUhv1kUO/wTbqzHXe9jYexJIKmXfFYYoCIJxRlLOjSnnjt57Lwto1BpNnT4J/yy0vEiphnMSXTuF5Eby4kyZ5rAvKcx/v4vWyIYcDQZcqf0ZVV1kNnjXnuH4zxMarztqp+8CDH3wrZNWsGQpCvsfrOZVh4idqWZXW97+Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qjf4tcii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A77DC4CEE7;
-	Fri, 17 Oct 2025 15:45:33 +0000 (UTC)
+	 MIME-Version; b=sHdtTB0UOvoilYgntCYZQZD2stQdTTic3E5HTBja1N47Fjd/+QvmyBddA3RhBe2HJshcwGFLyOf4kuO8dtjCIZamdcUgyHNIFG2tri0SQQf9Trf5K6/r7N2tXgXZSq35LUbPu9LcT3T6MeSC5701fHD71s4d+LR8Yg6ru9WsrUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlMXN1Tx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B34C4CEE7;
+	Fri, 17 Oct 2025 15:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715933;
-	bh=GZfxEWTVVL22XWsUWzBWa5UzcJkuFP4g0+fkWk4hgU0=;
+	s=korg; t=1760715207;
+	bh=48AoGztM5cfLKnNy3g3BBvbCMqeVp5yjkapTG709wJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qjf4tciiy81zVeyrMSf+8kI+1JoOl2cTH29EIM/YZjYQDlQrGinibCkytLig1pcBg
-	 Ms9nwQTEqHPImg1GE2xiSPWyAEt5zt1gY13CMisL+nmpAXubocBXOydAIJUZ4bwmYR
-	 ymbVQSr4tGct+LtNlRPFStaRZGsN6TVij7JLqjUc=
+	b=mlMXN1TxQ1adnBKI+3V4nyksd93SbzNzzjxg8r1yjMJa7HriF7zJe6EUT8k1WWqyz
+	 I9H76PZSHAa5FqZQ1h6kLg8H24XVnit7AdqhtblUxcGtVQQ1mPI43hZzocj0qzBHLj
+	 mHKHy1m+Bpkx+nq1Ydplt0gGatKu1aLw5YXOh2Og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Subject: [PATCH 5.15 016/276] staging: axis-fifo: fix maximum TX packet length check
-Date: Fri, 17 Oct 2025 16:51:49 +0200
-Message-ID: <20251017145142.993915751@linuxfoundation.org>
+	Collin Funk <collin.funk1@gmail.com>,
+	Ahmed Salem <x0rw3ll@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.17 136/371] ACPICA: acpidump: drop ACPI_NONSTRING attribute from file_name
+Date: Fri, 17 Oct 2025 16:51:51 +0200
+Message-ID: <20251017145206.848314332@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,76 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Ahmed Salem <x0rw3ll@gmail.com>
 
-commit 52ff2b840bc723f3be1f096f8017c78e0515858c upstream.
+commit 16ae95800b1cc46c0d69d8d90c9c7be488421a40 upstream.
 
-Since commit 2ca34b508774 ("staging: axis-fifo: Correct handling of
-tx_fifo_depth for size validation"), write() operations with packets
-larger than 'tx_fifo_depth - 4' words are no longer rejected with -EINVAL.
+Partially revert commit 70662db73d54 ("ACPICA: Apply ACPI_NONSTRING in
+more places") as I've yet again incorrectly applied the ACPI_NONSTRING
+attribute where it is not needed.
 
-Fortunately, the packets are not actually getting transmitted to hardware,
-otherwise they would be raising a 'Transmit Packet Overrun Error'
-interrupt, which requires a reset of the TX circuit to recover from.
+A warning was initially reported by Collin Funk [1], and further review
+by Jiri Slaby [2] highlighted another issue related to the same commit.
 
-Instead, the request times out inside wait_event_interruptible_timeout()
-and always returns -EAGAIN, since the wake up condition can never be true
-for these packets. But still, they unnecessarily block other tasks from
-writing to the FIFO and the EAGAIN return code signals userspace to retry
-the write() call, even though it will always fail and time out.
+Drop the ACPI_NONSTRING attribute to fix the issue.
 
-According to the AXI4-Stream FIFO reference manual (PG080), the maximum
-valid packet length is 'tx_fifo_depth - 4' words, so attempting to send
-larger packets is invalid and should not be happening in the first place:
-
-> The maximum packet that can be transmitted is limited by the size of
-> the FIFO, which is (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
-
-Therefore, bring back the old behavior and outright reject packets larger
-than 'tx_fifo_depth - 4' with -EINVAL. Add a comment to explain why the
-check is necessary. The dev_err() message was removed to avoid cluttering
-the dmesg log if an invalid packet is received from userspace.
-
-Fixes: 2ca34b508774 ("staging: axis-fifo: Correct handling of tx_fifo_depth for size validation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Link: https://lore.kernel.org/r/20250817171350.872105-1-ovidiu.panait.oss@gmail.com
+Fixes: 70662db73d54 ("ACPICA: Apply ACPI_NONSTRING in more places")
+Link: https://lore.kernel.org/all/87ecvpcypw.fsf@gmail.com [1]
+Link: https://lore.kernel.org/all/5c210121-c9b8-4458-b1ad-0da24732ac72@kernel.org [2]
+Link: https://github.com/acpica/acpica/commit/a6ee09ca
+Reported-by: Collin Funk <collin.funk1@gmail.com>
+Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
+Cc: 6.16+ <stable@vger.kernel.org> # 6.16+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/axis-fifo/axis-fifo.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ tools/power/acpi/tools/acpidump/apfiles.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/staging/axis-fifo/axis-fifo.c
-+++ b/drivers/staging/axis-fifo/axis-fifo.c
-@@ -494,11 +494,17 @@ static ssize_t axis_fifo_write(struct fi
- 		return -EINVAL;
- 	}
+--- a/tools/power/acpi/tools/acpidump/apfiles.c
++++ b/tools/power/acpi/tools/acpidump/apfiles.c
+@@ -103,7 +103,7 @@ int ap_open_output_file(char *pathname)
  
--	if (words_to_write > fifo->tx_fifo_depth) {
--		dev_err(fifo->dt_device, "tried to write more words [%u] than slots in the fifo buffer [%u]\n",
--			words_to_write, fifo->tx_fifo_depth);
-+	/*
-+	 * In 'Store-and-Forward' mode, the maximum packet that can be
-+	 * transmitted is limited by the size of the FIFO, which is
-+	 * (C_TX_FIFO_DEPTH–4)*(data interface width/8) bytes.
-+	 *
-+	 * Do not attempt to send a packet larger than 'tx_fifo_depth - 4',
-+	 * otherwise a 'Transmit Packet Overrun Error' interrupt will be
-+	 * raised, which requires a reset of the TX circuit to recover.
-+	 */
-+	if (words_to_write > (fifo->tx_fifo_depth - 4))
- 		return -EINVAL;
--	}
- 
- 	if (fifo->write_flags & O_NONBLOCK) {
- 		/*
+ int ap_write_to_binary_file(struct acpi_table_header *table, u32 instance)
+ {
+-	char filename[ACPI_NAMESEG_SIZE + 16] ACPI_NONSTRING;
++	char filename[ACPI_NAMESEG_SIZE + 16];
+ 	char instance_str[16];
+ 	ACPI_FILE file;
+ 	acpi_size actual;
 
 
 
