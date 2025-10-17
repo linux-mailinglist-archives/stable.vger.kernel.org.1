@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DACBE9703
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:03:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2B6BEA5F1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5298D509096
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4429F94225C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CD52F12D6;
-	Fri, 17 Oct 2025 15:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B657A336EE3;
+	Fri, 17 Oct 2025 15:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8cM+5Ay"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEsMnBjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED362F12BA;
-	Fri, 17 Oct 2025 15:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC8D335074;
+	Fri, 17 Oct 2025 15:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713207; cv=none; b=rtvPaXorWd7TYzTZaYbwRSLzTni4Jv1QW1UCFa3pJb2aHebLB7+FurOBqfhcLR13xosPNLC8epZT729bEbEJUAs6ZE4XDkEslJTehKY/yVAvO5Qv1uZaQWZ7yuNkmUu2zMXgvKqrh+nDXqtZYM1YU3L5iF2ww/j40L7WcQEQFUk=
+	t=1760715355; cv=none; b=nEvNIuRvKq9k0vDBXwAjQdr16KAk6xnzYsfFFtGDNGZLqmqQRZbrF6b/fiT3Ek1b1LMlT+lmCTkdH4ESJc8uv23zaMlsckhwJobIHKVnaKpiYzY1PmkPGODOxTolhZk9hkmPghFIO4a/WDtKPqzOsq650qEjRJ3+9eltTNmnObk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713207; c=relaxed/simple;
-	bh=kTVtFCZPM699PohySB59zPvbrNEZrRNrHeiS7IAVrbg=;
+	s=arc-20240116; t=1760715355; c=relaxed/simple;
+	bh=qAanRGAIgSo+uxHkcMSrj1zormgUSuFm3WcGMHkh4G4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Agl4xBJd2ob2Rfq82goSgRTFde+tU6qTHwvxyUr7t6tSdtI/HAuf8VYSifUHoFR7kSwJ2XrtmcR7TDQofBAksgoiamVAP9y9Jv9fs7uM+nHNrtBSm6ZN27xCBVZejfK4BiJveL/gHertJTD7u0cJ3d14l4Mz4Xg+NhKGnq3/fII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8cM+5Ay; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF60C4CEE7;
-	Fri, 17 Oct 2025 15:00:05 +0000 (UTC)
+	 MIME-Version; b=bxeKcK/77tD+1e+hKBFWhODcBSSXEL/HtluuaJL98929zQ4g+PcarQRY830Ehd5EKYTPhC2agV8ll2jcfncnI3QLcQINxCCSlzNOAYASMgTqXi3zbzKPd9rUd6hofIBSAGJtVSEt7Zc5pZcQ1cL9WC/qiwymWb5f38Kd2cIqy+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEsMnBjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F32C4CEE7;
+	Fri, 17 Oct 2025 15:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713206;
-	bh=kTVtFCZPM699PohySB59zPvbrNEZrRNrHeiS7IAVrbg=;
+	s=korg; t=1760715355;
+	bh=qAanRGAIgSo+uxHkcMSrj1zormgUSuFm3WcGMHkh4G4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8cM+5AyvgDjNmqAcKuTTr37b/LOyiGZTTkd4faP/apuDTsGmfTDSqQr83Jl+Ejzr
-	 bMVTlhlzbbR0YWGNbGW0XglV5ALmJJz20y0Ru4TG3N56aZMPtwZsDGSkbqkQwL1bur
-	 tCjVcFWdgF1WCzRmV30Gnu62XlC7nJu2jZ9N3oY8=
+	b=TEsMnBjKPOWs1hogfrTWA9WQkz1eyCFM8RcO6/7Zv54epBGcGJa5OTB8g2wwdgE/w
+	 wOKaar9foKeslkwkqBKMbHnKeyx5TSSph5kPeGn9jnaqcA13nvRESMw1r1P2BnOZIl
+	 33LU1TUevKK6oYX0XBALX7KgeT+LqZvFVB0g/Nx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 083/168] iio: imu: inv_icm42600: Drop redundant pm_runtime reinitialization in resume
+	Jann Horn <jannh@google.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Steven Price <steven.price@arm.com>
+Subject: [PATCH 6.17 187/371] drm/panthor: Fix memory leak in panthor_ioctl_group_create()
 Date: Fri, 17 Oct 2025 16:52:42 +0200
-Message-ID: <20251017145132.084401660@linuxfoundation.org>
+Message-ID: <20251017145208.689038652@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Jann Horn <jannh@google.com>
 
-commit a95a0b4e471a6d8860f40c6ac8f1cad9dde3189a upstream.
+commit ca2a6abdaee43808034cdb218428d2ed85fd3db8 upstream.
 
-Remove unnecessary calls to pm_runtime_disable(), pm_runtime_set_active(),
-and pm_runtime_enable() from the resume path. These operations are not
-required here and can interfere with proper pm_runtime state handling,
-especially when resuming from a pm_runtime suspended state.
+When bailing out due to group_priority_permit() failure, the queue_args
+need to be freed. Fix it by rearranging the function to use the
+goto-on-error pattern, such that the success case flows straight without
+indentation while error cases jump forward to cleanup.
 
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-2-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: 5f7762042f8a ("drm/panthor: Restrict high priorities on group_create")
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20241113-panthor-fix-gcq-bailout-v1-1-654307254d68@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/gpu/drm/panthor/panthor_drv.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -730,10 +730,6 @@ static int __maybe_unused inv_icm42600_r
- 	if (ret)
- 		goto out_unlock;
+--- a/drivers/gpu/drm/panthor/panthor_drv.c
++++ b/drivers/gpu/drm/panthor/panthor_drv.c
+@@ -1103,14 +1103,15 @@ static int panthor_ioctl_group_create(st
  
--	pm_runtime_disable(dev);
--	pm_runtime_set_active(dev);
--	pm_runtime_enable(dev);
--
- 	/* restore sensors state */
- 	ret = inv_icm42600_set_pwr_mgmt0(st, st->suspended.gyro,
- 					 st->suspended.accel,
+ 	ret = group_priority_permit(file, args->priority);
+ 	if (ret)
+-		return ret;
++		goto out;
+ 
+ 	ret = panthor_group_create(pfile, args, queue_args);
+-	if (ret >= 0) {
+-		args->group_handle = ret;
+-		ret = 0;
+-	}
++	if (ret < 0)
++		goto out;
++	args->group_handle = ret;
++	ret = 0;
+ 
++out:
+ 	kvfree(queue_args);
+ 	return ret;
+ }
 
 
 
