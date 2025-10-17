@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C797BEA6A5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA354BE98CC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 282005A44F8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F114401AE6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F111F217722;
-	Fri, 17 Oct 2025 15:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AD7335093;
+	Fri, 17 Oct 2025 15:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b81CnMkW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Izd11bGZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6A12F12B8;
-	Fri, 17 Oct 2025 15:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75000332907;
+	Fri, 17 Oct 2025 15:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716353; cv=none; b=pkQCDX7wroYbvFDU1X89A+FKO3f8rR+78NY1/eYTjytfN9BZMRyakDAq3xcYjiqXiDeYz0GxT2tLw3dnikV5PUHrdoC/Vm3DeU+ps/shbrLC8pFtZau1qHG9hC6rZPcCPQZaD524dzlz3fcmd5aaKhJWb89mBa4zwVTsLEf3az8=
+	t=1760713420; cv=none; b=NMajXOJoRLHL/213NPnQD9qi8bOPOSc+QGiK+cMD6qTiEs2AEKyCNU5fxORN/MKQ2oCP93sWUUsTpgg2JdNnrAVtv6Ayvc3ndLnFsEeQxgxUl1eWECoGlN+DqTsUXVp1+sKUk4VeVh+9xz60QCKyc5MOhV7BFmnxHeVOtMxdz0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716353; c=relaxed/simple;
-	bh=F4+pRdxydbv57tiO2ExAKXXoxD3Vo8DCfYXItxJ0Jos=;
+	s=arc-20240116; t=1760713420; c=relaxed/simple;
+	bh=vQ8DU6G1+n/KSHZaFhWCwa7+1Y+ajtZqAXKIX3H5ATs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dltnsv8jLIn6WK3pMwfjyQCibD8gMdBheuiPvtrZ3nVVZPpK/qCFlq1QJXQlosVvw86mNySv0VFdaKfN/XIH5P7NFIV1x3Z6u7ouGpsbyCOnZAsSpHZ3mQyxMMIGPPPqDkaXJLopolhUBP/Tmkuaz0QVbXLeCHlqSJAZIYSXw38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b81CnMkW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D00C4CEE7;
-	Fri, 17 Oct 2025 15:52:32 +0000 (UTC)
+	 MIME-Version; b=VFo2S7lJbUyRlO2GJBETF3eN46mVJBldGfBQxq9itCYJSTUhSiRh9UdYgg6gI6h2scVlMbA3ri7o0mOlhniw6/FdMETANFc+uRwZOPGdHulm+rt5qVoyjl7Q1jwm1IXx/eEh2Td0+MYweCqcMsz87rFiAAY21JbFYjaG0SpLfTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Izd11bGZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58CEC4CEE7;
+	Fri, 17 Oct 2025 15:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716353;
-	bh=F4+pRdxydbv57tiO2ExAKXXoxD3Vo8DCfYXItxJ0Jos=;
+	s=korg; t=1760713420;
+	bh=vQ8DU6G1+n/KSHZaFhWCwa7+1Y+ajtZqAXKIX3H5ATs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b81CnMkWpLRZ5l1sD0DgQhrQONnWWZZAnSKuq2H6osJ2ea8nDqr9lX7ZicxLWkAHf
-	 YpBe87hXysCmsHTNf8oP9Jido6YdC7ymc4+5DL57I3yMJORwWPdTUsrTVa8n6kjtEA
-	 6F0lqiRS4IftzUjg7OXAVrXVYzjy4th0z6/Gq1u4=
+	b=Izd11bGZDNcG5GDwKJjnBc03ZwMM5Q2uBCR1kCIwOTMTrNo14Ee2lDTR0QgBJ+7yf
+	 ezTEcguZCptkuYd2R8018WDeP+0p+L4PqLuAWkO8Sr/k92an6XufDNHn2tdzEPW9da
+	 z0Gmh0Jc1TEJRLnK/CnrHpXnz6YlitvX80FcgrrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 144/276] net/mlx4: prevent potential use after free in mlx4_en_do_uc_filter()
+Subject: [PATCH 6.1 158/168] asm-generic/io.h: suppress endianness warnings for relaxed accessors
 Date: Fri, 17 Oct 2025 16:53:57 +0200
-Message-ID: <20251017145147.738734095@linuxfoundation.org>
+Message-ID: <20251017145134.867889832@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 4f0d91ba72811fd5dd577bcdccd7fed649aae62c ]
+[ Upstream commit 05d3855b4d21ef3c2df26be1cbba9d2c68915fcb ]
 
-Print "entry->mac" before freeing "entry".  The "entry" pointer is
-freed with kfree_rcu() so it's unlikely that we would trigger this
-in real life, but it's safer to re-order it.
+Copy the forced type casts from the normal MMIO accessors to suppress
+the sparse warnings that point out __raw_readl() returns a native endian
+word (just like readl()).
 
-Fixes: cc5387f7346a ("net/mlx4_en: Add unicast MAC filtering")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/aNvMHX4g8RksFFvV@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Stable-dep-of: 8327bd4fcb6c ("asm-generic/io.h: Skip trace helpers if rwmmio events are disabled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_netdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/asm-generic/io.h |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-index 3bd3603873e32..efbb01460f4ba 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-@@ -1176,9 +1176,9 @@ static void mlx4_en_do_uc_filter(struct mlx4_en_priv *priv,
- 				mlx4_unregister_mac(mdev->dev, priv->port, mac);
+--- a/include/asm-generic/io.h
++++ b/include/asm-generic/io.h
+@@ -319,7 +319,7 @@ static inline u16 readw_relaxed(const vo
+ 	u16 val;
  
- 				hlist_del_rcu(&entry->hlist);
--				kfree_rcu(entry, rcu);
- 				en_dbg(DRV, priv, "Removed MAC %pM on port:%d\n",
- 				       entry->mac, priv->port);
-+				kfree_rcu(entry, rcu);
- 				++removed;
- 			}
- 		}
--- 
-2.51.0
-
+ 	log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
+-	val = __le16_to_cpu(__raw_readw(addr));
++	val = __le16_to_cpu((__le16 __force)__raw_readw(addr));
+ 	log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
+ 	return val;
+ }
+@@ -332,7 +332,7 @@ static inline u32 readl_relaxed(const vo
+ 	u32 val;
+ 
+ 	log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
+-	val = __le32_to_cpu(__raw_readl(addr));
++	val = __le32_to_cpu((__le32 __force)__raw_readl(addr));
+ 	log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
+ 	return val;
+ }
+@@ -345,7 +345,7 @@ static inline u64 readq_relaxed(const vo
+ 	u64 val;
+ 
+ 	log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
+-	val = __le64_to_cpu(__raw_readq(addr));
++	val = __le64_to_cpu((__le64 __force)__raw_readq(addr));
+ 	log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
+ 	return val;
+ }
+@@ -366,7 +366,7 @@ static inline void writeb_relaxed(u8 val
+ static inline void writew_relaxed(u16 value, volatile void __iomem *addr)
+ {
+ 	log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
+-	__raw_writew(cpu_to_le16(value), addr);
++	__raw_writew((u16 __force)cpu_to_le16(value), addr);
+ 	log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
+ }
+ #endif
+@@ -376,7 +376,7 @@ static inline void writew_relaxed(u16 va
+ static inline void writel_relaxed(u32 value, volatile void __iomem *addr)
+ {
+ 	log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
+-	__raw_writel(__cpu_to_le32(value), addr);
++	__raw_writel((u32 __force)__cpu_to_le32(value), addr);
+ 	log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
+ }
+ #endif
+@@ -386,7 +386,7 @@ static inline void writel_relaxed(u32 va
+ static inline void writeq_relaxed(u64 value, volatile void __iomem *addr)
+ {
+ 	log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
+-	__raw_writeq(__cpu_to_le64(value), addr);
++	__raw_writeq((u64 __force)__cpu_to_le64(value), addr);
+ 	log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
+ }
+ #endif
 
 
 
