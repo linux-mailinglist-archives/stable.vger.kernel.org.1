@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-186870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA98BEA49D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECDD4BEA0E3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0E4B7C3ABD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21E4A188411C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B6B242935;
-	Fri, 17 Oct 2025 15:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2F3336EF2;
+	Fri, 17 Oct 2025 15:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVYIbKbV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/60ykfY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4402D32C929;
-	Fri, 17 Oct 2025 15:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4C232C931;
+	Fri, 17 Oct 2025 15:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714461; cv=none; b=I6kEkRIjFIdt5WmGc9a2oE0hQIbpJEX/pTZV5yWBJvLSrRlHh/t8TDOIRsJj0m7jjE8Tbo6XT37Aidb5mmdv0YJ342uEwUgiTOiGY8vUAbfKgaiFE04/YsLBr54SROkICqoeeXFPnECxqwzadz6mx7FVfPnAIbTUMAHE4hsmK04=
+	t=1760715396; cv=none; b=bKWJ0lBSoHmF5vzx+275QEpqACrVdULPDElpOJh5c1u0r8umigxxLmZ3ZfZbSOcQPTYqqWppml2sQgfiUAbAwIitrCwiXJrULtxUYuBFHsskhi+aCrHjz/gF6sho+XZJkoI8TKNIc1iqbh0OqFNIhfVlaxrnqu82X8SRJFB4+dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714461; c=relaxed/simple;
-	bh=78sxnaqOKe6qW5ilkTmMvN+u2viJCFDBVtMzzPIXokM=;
+	s=arc-20240116; t=1760715396; c=relaxed/simple;
+	bh=1RBgBjGESXyPbFHih0+6Wm7ubliVLyFhA/lie/xG3nY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ADd/J8n3Smln+jYYQIzMUSHQ/ZhwA3bPaeQf7TkMat0rnSbKIQEvyRybuXoE6rk+beUAqUKDmK+mFhUcqPiwglP7gHc8w/C0diYj7Fi9wiV2Uv1V/K3qIwMMPvCl9bPVBU5bUi3hpOGX1PkgXtuP+r9aFQ0fQmIMgO6wpXyBJwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVYIbKbV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25CAC4CEE7;
-	Fri, 17 Oct 2025 15:21:00 +0000 (UTC)
+	 MIME-Version; b=e1qe+Bd2ULuClHUdc4yfbpOdtU5QdOSmFZxfAQZyAP7icknLstcemgzS5Ijc4vp/mwacWN+6JWb+vOveNO5UkIUPNXd2Gb4jLhg0FRMJZygQ+7NS9KAgF8TRZwE3tIRVIJWDP3PVpZnf/ufHzOpr1+U6fhWCvZWpNnNhanjPVY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/60ykfY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B585C4CEE7;
+	Fri, 17 Oct 2025 15:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714461;
-	bh=78sxnaqOKe6qW5ilkTmMvN+u2viJCFDBVtMzzPIXokM=;
+	s=korg; t=1760715395;
+	bh=1RBgBjGESXyPbFHih0+6Wm7ubliVLyFhA/lie/xG3nY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVYIbKbVfMgCduP+jWNnG/RT34/PWdTxNHkJn3PdXCn/NWJNwY0jpfOt70Y0N0/7q
-	 kjcIvIDQt4gvykdIcVkXDVZ8wE3Y8Mb++bqkA3/t2uzRterMTVY0yIpDV3WQNO83Lg
-	 w9/OgPE7vVwbLJpXJIHw9Q/0ZhNq32M8fPIC5bvY=
+	b=b/60ykfY3rtjvLSfwK0kbNQsCkw5EpR5wb6Nj2iKBRi5TJLanqgsCS1DTmkEuZqEV
+	 +O6wDH2AFLLRx0kkai2G2v4tQYx2ecWL8wj2lVu18E0V/YSREcod1zR0nXdEKyWeJd
+	 bKxJ9pN/5HFP0IpxXDR9702g1Tua6AhYwxhnkKkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandar Gerasimovski <aleksandar.gerasimovski@belden.com>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Rene Straub <"mailto:rene.straub"@belden.com>
-Subject: [PATCH 6.12 136/277] iio/adc/pac1934: fix channel disable configuration
+	Randy Dunlap <rdunlap@infradead.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.17 168/371] media: cec: extron-da-hd-4k-plus: drop external-module make commands
 Date: Fri, 17 Oct 2025 16:52:23 +0200
-Message-ID: <20251017145152.091752201@linuxfoundation.org>
+Message-ID: <20251017145208.011029132@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandar Gerasimovski <aleksandar.gerasimovski@belden.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 3c63ba1c430af1c0dcd68dd36f2246980621dcba upstream.
+commit d5d12cc03e501c38925e544abe44d5bfe23dc930 upstream.
 
-There are two problems with the chip configuration in this driver:
-- First, is that writing 12 bytes (ARRAY_SIZE(regs)) would anyhow
-  lead to a config overflow due to HW auto increment implementation
-  in the chip.
-- Second, the i2c_smbus_write_block_data write ends up in writing
-  unexpected value to the channel_dis register, this is because
-  the smbus size that is 0x03 in this case gets written to the
-  register. The PAC1931/2/3/4 data sheet does not really specify
-  that block write is indeed supported.
+Delete the external-module style Makefile commands. They are not needed
+for in-tree modules.
 
-This problem is probably not visible on PAC1934 version where all
-channels are used as the chip is properly configured by luck,
-but in our case whenusing PAC1931 this leads to nonfunctional device.
+This is the only Makefile in the kernel tree (aside from tools/ and
+samples/) that uses this Makefile style.
 
-Fixes: 0fb528c8255b (iio: adc: adding support for PAC193x)
-Suggested-by: Rene Straub <mailto:rene.straub@belden.com>
-Signed-off-by: Aleksandar Gerasimovski <aleksandar.gerasimovski@belden.com>
-Reviewed-by: Marius Cristea <marius.cristea@microchip.com>
-Link: https://patch.msgid.link/20250811130904.2481790-1-aleksandar.gerasimovski@belden.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The same files are built with or without this patch.
+
+Fixes: 056f2821b631 ("media: cec: extron-da-hd-4k-plus: add the Extron DA HD 4K Plus CEC driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/pac1934.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/media/cec/usb/extron-da-hd-4k-plus/Makefile |    6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/drivers/iio/adc/pac1934.c
-+++ b/drivers/iio/adc/pac1934.c
-@@ -88,6 +88,7 @@
- #define PAC1934_VPOWER_3_ADDR			0x19
- #define PAC1934_VPOWER_4_ADDR			0x1A
- #define PAC1934_REFRESH_V_REG_ADDR		0x1F
-+#define PAC1934_SLOW_REG_ADDR			0x20
- #define PAC1934_CTRL_STAT_REGS_ADDR		0x1C
- #define PAC1934_PID_REG_ADDR			0xFD
- #define PAC1934_MID_REG_ADDR			0xFE
-@@ -1265,8 +1266,23 @@ static int pac1934_chip_configure(struct
- 	/* no SLOW triggered REFRESH, clear POR */
- 	regs[PAC1934_SLOW_REG_OFF] = 0;
- 
--	ret =  i2c_smbus_write_block_data(client, PAC1934_CTRL_STAT_REGS_ADDR,
--					  ARRAY_SIZE(regs), (u8 *)regs);
-+	/*
-+	 * Write the three bytes sequentially, as the device does not support
-+	 * block write.
-+	 */
-+	ret = i2c_smbus_write_byte_data(client, PAC1934_CTRL_STAT_REGS_ADDR,
-+					regs[PAC1934_CHANNEL_DIS_REG_OFF]);
-+	if (ret)
-+		return ret;
-+
-+	ret = i2c_smbus_write_byte_data(client,
-+					PAC1934_CTRL_STAT_REGS_ADDR + PAC1934_NEG_PWR_REG_OFF,
-+					regs[PAC1934_NEG_PWR_REG_OFF]);
-+	if (ret)
-+		return ret;
-+
-+	ret = i2c_smbus_write_byte_data(client, PAC1934_SLOW_REG_ADDR,
-+					regs[PAC1934_SLOW_REG_OFF]);
- 	if (ret)
- 		return ret;
- 
+--- a/drivers/media/cec/usb/extron-da-hd-4k-plus/Makefile
++++ b/drivers/media/cec/usb/extron-da-hd-4k-plus/Makefile
+@@ -1,8 +1,2 @@
+ extron-da-hd-4k-plus-cec-objs := extron-da-hd-4k-plus.o cec-splitter.o
+ obj-$(CONFIG_USB_EXTRON_DA_HD_4K_PLUS_CEC) := extron-da-hd-4k-plus-cec.o
+-
+-all:
+-	$(MAKE) -C $(KDIR) M=$(shell pwd) modules
+-
+-install:
+-	$(MAKE) -C $(KDIR) M=$(shell pwd) modules_install
 
 
 
