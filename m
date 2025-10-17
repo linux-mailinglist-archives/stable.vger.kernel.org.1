@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A15ABE9FF6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F57BEA284
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8A76258717B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:27:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DE1A1883533
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F0623EA9E;
-	Fri, 17 Oct 2025 15:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A422E62BE;
+	Fri, 17 Oct 2025 15:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIQbu1FY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgbxKPaZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA99A337100;
-	Fri, 17 Oct 2025 15:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD31526B96A;
+	Fri, 17 Oct 2025 15:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714819; cv=none; b=tE74GoyTUTNmqQoZm1c6SGGBuzDqwIcFpj/nkAlpgxB6nno+svt/kDT1qXDqlbW8zN1iA+jqkHOkJSmJgYVV1RSNMsMWpep611SZapTgnFsM+OlAZfNnaSraxBQdFNr+sYdHp4qOG/N6IoPayzfmva78zW18c5tPBxEAPf7qSHM=
+	t=1760715800; cv=none; b=RQ7w0Qy7XkAluGsSSXMZ/cMhVxHp708C3xWXu7673DTmGKjLmOuObQu1L2nuTw+F6wnk+3SSVtJoMZkwadJqjYFmRBtof/ckPK0UHsdPmS6K4YA+QjlGBO8R4d1LcvXlksA01aFt8BS/+c+nM6vEUgAcR6Zd4eZMwdtgZCFGgD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714819; c=relaxed/simple;
-	bh=N0e3IEKPA/mj6qZXp1hEuVuByPnH1/NkctpCG/R0wcw=;
+	s=arc-20240116; t=1760715800; c=relaxed/simple;
+	bh=0MD3Ul0TKWwwqwQd4nkP/huX8q0fp0AzYk6uHYdReyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SQrlR7Jt34YScSosOfSZq+UCLmqoTyIMMCtxRvcbnApk68hXnbf6PLv6orQTpjhnPpqE50ezene2p26oqjfrOfnBMI+cQJH5Xqgk6JZ9YT6Dm7ds87R8JoW+Tc3wPnvI2nL1TJKYO2UB/m10069dBd5UTYQ1mRxMJS/6HMBDmdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIQbu1FY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2A6C4CEE7;
-	Fri, 17 Oct 2025 15:26:59 +0000 (UTC)
+	 MIME-Version; b=pkshsnWbVamc3Yr1ujBBlG2eK+72Mwr3jdeZDhlQM3O5weS5KpKxlSivDZMytRsDKAieE8WdWSYvd5ZzlgxlIi/aQ+niw4qsNEjB9P4Xo38MV4ktpqWAPiiaamOXHso9drrPaXLJHuWTCpvyKEfUZ7if7OAe3VNoKRsL9XtyAGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgbxKPaZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AE2C4CEE7;
+	Fri, 17 Oct 2025 15:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714819;
-	bh=N0e3IEKPA/mj6qZXp1hEuVuByPnH1/NkctpCG/R0wcw=;
+	s=korg; t=1760715800;
+	bh=0MD3Ul0TKWwwqwQd4nkP/huX8q0fp0AzYk6uHYdReyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIQbu1FYuWZnSYsQlMsR2YDNudp0zlUykvLiC1QXUYzUzB0AkcvgEwnEJrJYQVWpP
-	 zOGogZ/WZG2V6+gFI5AE9n3pMyCvCVTRVDahqauGI4ac96Wnkn0rzSwPcrbP2DteyN
-	 Z9IyP4DO2ZgQ4rO6bWqRcAzCe/sj/J/31jtc8UbE=
+	b=JgbxKPaZ4oUXlbKkUBbOwRqOXoJKX/gvjd2d4uFtT4pMVcljvSbIUkRDeGm2RM3jC
+	 7N3B0iqvJAq1IFdNuWQVhTgMDw1cN/nNpzZLQEaF41zba9DratJvH46JqlZadQBlct
+	 O17FNYEhhUS7EhkabAuopah7TWBx34Sf3pTgFm5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 276/277] nfsd: fix access checking for NLM under XPRTSEC policies
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.17 308/371] slab: prevent warnings when slab obj_exts vector allocation fails
 Date: Fri, 17 Oct 2025 16:54:43 +0200
-Message-ID: <20251017145157.237029632@linuxfoundation.org>
+Message-ID: <20251017145213.220244790@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Suren Baghdasaryan <surenb@google.com>
 
-commit 0813c5f01249dbc32ccbc68d27a24fde5bf2901c upstream.
+commit 4038016397da5c1cebb10e7c85a36d06123724a8 upstream.
 
-When an export policy with xprtsec policy is set with "tls"
-and/or "mtls", but an NFS client is doing a v3 xprtsec=tls
-mount, then NLM locking calls fail with an error because
-there is currently no support for NLM with TLS.
+When object extension vector allocation fails, we set slab->obj_exts to
+OBJEXTS_ALLOC_FAIL to indicate the failure. Later, once the vector is
+successfully allocated, we will use this flag to mark codetag references
+stored in that vector as empty to avoid codetag warnings.
 
-Until such support is added, allow NLM calls under TLS-secured
-policy.
+slab_obj_exts() used to retrieve the slab->obj_exts vector pointer checks
+slab->obj_exts for being either NULL or a pointer with MEMCG_DATA_OBJEXTS
+bit set. However it does not handle the case when slab->obj_exts equals
+OBJEXTS_ALLOC_FAIL. Add the missing condition to avoid extra warning.
 
-Fixes: 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
-Cc: stable@vger.kernel.org
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Reviewed-by: NeilBrown <neil@brown.name>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to mark failed slab_ext allocations")
+Reported-by: Shakeel Butt <shakeel.butt@linux.dev>
+Closes: https://lore.kernel.org/all/jftidhymri2af5u3xtcqry3cfu6aqzte3uzlznhlaylgrdztsi@5vpjnzpsemf5/
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org # v6.10+
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/export.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/slab.h |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -1115,7 +1115,8 @@ __be32 check_nfsd_access(struct svc_expo
- 		    test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
- 			goto ok;
- 	}
--	goto denied;
-+	if (!may_bypass_gss)
-+		goto denied;
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -526,8 +526,12 @@ static inline struct slabobj_ext *slab_o
+ 	unsigned long obj_exts = READ_ONCE(slab->obj_exts);
  
- ok:
- 	/* legacy gss-only clients are always OK: */
+ #ifdef CONFIG_MEMCG
+-	VM_BUG_ON_PAGE(obj_exts && !(obj_exts & MEMCG_DATA_OBJEXTS),
+-							slab_page(slab));
++	/*
++	 * obj_exts should be either NULL, a valid pointer with
++	 * MEMCG_DATA_OBJEXTS bit set or be equal to OBJEXTS_ALLOC_FAIL.
++	 */
++	VM_BUG_ON_PAGE(obj_exts && !(obj_exts & MEMCG_DATA_OBJEXTS) &&
++		       obj_exts != OBJEXTS_ALLOC_FAIL, slab_page(slab));
+ 	VM_BUG_ON_PAGE(obj_exts & MEMCG_DATA_KMEM, slab_page(slab));
+ #endif
+ 	return (struct slabobj_ext *)(obj_exts & ~OBJEXTS_FLAGS_MASK);
 
 
 
