@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-187459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CA3BEA413
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A89BE982C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 931A21886E98
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF1DC623B51
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E022F12C6;
-	Fri, 17 Oct 2025 15:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AA72E1F08;
+	Fri, 17 Oct 2025 15:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDF20iM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKqrws5j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64532E11DD;
-	Fri, 17 Oct 2025 15:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5478132C92B;
+	Fri, 17 Oct 2025 15:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716132; cv=none; b=TQeUEwXjcgnDZkMZbjFkPKq92USNrO76Mup+FPR2BKZS+ahXfebvDgbYa4LOWLaudb9dfaFLvl34aNzSmIzw+OGDSbourMlZUqtZlC1AhKgPAG/51Y/tdbtTUAfGQM86fob/I3EkDbVeuFvMuTzm2VBgYKi5vjYoNOaFX8ZkhVA=
+	t=1760713246; cv=none; b=qP9n2w0mOEplKwFAjd/FL28kADETtKaZa45tMEDxGY1HofFoX/cjGY2vWrZrNN+tMFHv4yXlkDKWdwbehZZilTxTR0qSgkd7duwci/kWHOmwXLg9k/d1ZwZkjYJVtgCECpyS6lcCasAwih7qO3TRTUm028ZWAoh91SXcDmajR3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716132; c=relaxed/simple;
-	bh=MNQ384jIRqrZbaa2YLJFkO0cTVYjq+1yBJfRoEc143Y=;
+	s=arc-20240116; t=1760713246; c=relaxed/simple;
+	bh=aHub4z773bHMZtzrng7UmVVziu/PPNlKiduVsCGn/8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iaXbf5Sv6hl2jsQNF3FPkMdnz7gErS/PYaK8CA0byzch2B9y3sqv+8lYZ2X6/P+HzmMRuL3dbnJ0cTpZxcDQslIvI/hRTNhcg0PZAT0hH2nel/A0L2MeTMn6pGstjNCgcGOS8vqjhoyC9JimEAOABhg/bjSvj4+xmOuTznWWiWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDF20iM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726E7C4CEE7;
-	Fri, 17 Oct 2025 15:48:51 +0000 (UTC)
+	 MIME-Version; b=uneVtVHKITNQHA4HIuE+ysgsBRvekeX6tEyCaosUiLxVKRIpZ7qQb939kI0rmdob+M1DDzvO63zBZEFq3f5m/oyckvC/JEsy6Bs5mA1M/3eNo6pxdPUQl6vMl/5OFmQrp7t3HytpFDW2EuutLA0bj6/F2m6JMpLOEypRAHqagLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKqrws5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD16AC4CEF9;
+	Fri, 17 Oct 2025 15:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716131;
-	bh=MNQ384jIRqrZbaa2YLJFkO0cTVYjq+1yBJfRoEc143Y=;
+	s=korg; t=1760713246;
+	bh=aHub4z773bHMZtzrng7UmVVziu/PPNlKiduVsCGn/8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDF20iM/Jbg+7uaoktL4vCpIAUz/H4eE3n2+SLiMDqRZgjbHlcJFOvX//U08ohjMv
-	 xxQZ6ISl/gBUfeTBw8mxYfzqM6fEMN5CLJnTfpp7Sf1kmHf0z8pna0mxU209E7kpiC
-	 zYD1u5M/avIF2gxzTM41OkcX9v2/i2FN5VewqOIY=
+	b=eKqrws5jZbbxET+r4fsDWYMzVfRbA0mwkgUYVuEvRJXR4y2e0WoKZqYMeQuNn3JT/
+	 c9e4M7GOHEx9cTMBStz2GwQbesTnKR9D9gtGXw9XN0gopFBBDlO0MRv0RTzN65VArj
+	 CkAZpY0hvGyZwJD7M1Nurn6BNQhVMvULQ2GeJITg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 085/276] wifi: ath10k: avoid unnecessary wait for service ready message
+	Anthony Yznaga <anthony.yznaga@oracle.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Andreas Larsson <andreas@gaisler.com>
+Subject: [PATCH 6.1 099/168] sparc64: fix hugetlb for sun4u
 Date: Fri, 17 Oct 2025 16:52:58 +0200
-Message-ID: <20251017145145.588677068@linuxfoundation.org>
+Message-ID: <20251017145132.675333477@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Anthony Yznaga <anthony.yznaga@oracle.com>
 
-[ Upstream commit 51a73f1b2e56b0324b4a3bb8cebc4221b5be4c7a ]
+commit 6fd44a481b3c6111e4801cec964627791d0f3ec5 upstream.
 
-Commit e57b7d62a1b2 ("wifi: ath10k: poll service ready message before
-failing") works around the failure in waiting for the service ready
-message by active polling. Note the polling is triggered after initial
-wait timeout, which means that the wait-till-timeout can not be avoided
-even the message is ready.
+An attempt to exercise sparc hugetlb code in a sun4u-based guest
+running under qemu results in the guest hanging due to being stuck
+in a trap loop. This is due to invalid hugetlb TTEs being installed
+that do not have the expected _PAGE_PMD_HUGE and page size bits set.
+Although the breakage has gone apparently unnoticed for several years,
+fix it now so there is the option to exercise sparc hugetlb code under
+qemu. This can be useful because sun4v support in qemu does not support
+linux guests currently and sun4v-based hardware resources may not be
+readily available.
 
-A possible fix is to do polling once before wait as well, however this
-can not handle the race that the message arrives right after polling.
-So the solution is to do periodic polling until timeout.
+Fix tested with a 6.15.2 and 6.16-rc6 kernels by running libhugetlbfs
+tests on a qemu guest running Debian 13.
 
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
-
-Fixes: e57b7d62a1b2 ("wifi: ath10k: poll service ready message before failing")
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/all/97a15967-5518-4731-a8ff-d43ff7f437b0@molgen.mpg.de
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250811-ath10k-avoid-unnecessary-wait-v1-1-db2deb87c39b@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c7d9f77d33a7 ("sparc64: Multi-page size support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20250716012446.10357-1-anthony.yznaga@oracle.com
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi.c | 39 +++++++++++++--------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+ arch/sparc/mm/hugetlbpage.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 572aabc0541c5..5817501b0c3fe 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -1762,33 +1762,32 @@ void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
+--- a/arch/sparc/mm/hugetlbpage.c
++++ b/arch/sparc/mm/hugetlbpage.c
+@@ -133,6 +133,26 @@ hugetlb_get_unmapped_area(struct file *f
  
- int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
+ static pte_t sun4u_hugepage_shift_to_tte(pte_t entry, unsigned int shift)
  {
-+	unsigned long timeout = jiffies + WMI_SERVICE_READY_TIMEOUT_HZ;
- 	unsigned long time_left, i;
- 
--	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
--						WMI_SERVICE_READY_TIMEOUT_HZ);
--	if (!time_left) {
--		/* Sometimes the PCI HIF doesn't receive interrupt
--		 * for the service ready message even if the buffer
--		 * was completed. PCIe sniffer shows that it's
--		 * because the corresponding CE ring doesn't fires
--		 * it. Workaround here by polling CE rings once.
--		 */
--		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
--
-+	/* Sometimes the PCI HIF doesn't receive interrupt
-+	 * for the service ready message even if the buffer
-+	 * was completed. PCIe sniffer shows that it's
-+	 * because the corresponding CE ring doesn't fires
-+	 * it. Workaround here by polling CE rings. Since
-+	 * the message could arrive at any time, continue
-+	 * polling until timeout.
-+	 */
-+	do {
- 		for (i = 0; i < CE_COUNT; i++)
- 			ath10k_hif_send_complete_check(ar, i, 1);
- 
-+		/* The 100 ms granularity is a tradeoff considering scheduler
-+		 * overhead and response latency
-+		 */
- 		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
--							WMI_SERVICE_READY_TIMEOUT_HZ);
--		if (!time_left) {
--			ath10k_warn(ar, "polling timed out\n");
--			return -ETIMEDOUT;
--		}
--
--		ath10k_warn(ar, "service ready completion received, continuing normally\n");
--	}
-+							msecs_to_jiffies(100));
-+		if (time_left)
-+			return 0;
-+	} while (time_before(jiffies, timeout));
- 
--	return 0;
-+	ath10k_warn(ar, "failed to receive service ready completion\n");
-+	return -ETIMEDOUT;
++	unsigned long hugepage_size = _PAGE_SZ4MB_4U;
++
++	pte_val(entry) = pte_val(entry) & ~_PAGE_SZALL_4U;
++
++	switch (shift) {
++	case HPAGE_256MB_SHIFT:
++		hugepage_size = _PAGE_SZ256MB_4U;
++		pte_val(entry) |= _PAGE_PMD_HUGE;
++		break;
++	case HPAGE_SHIFT:
++		pte_val(entry) |= _PAGE_PMD_HUGE;
++		break;
++	case HPAGE_64K_SHIFT:
++		hugepage_size = _PAGE_SZ64K_4U;
++		break;
++	default:
++		WARN_ONCE(1, "unsupported hugepage shift=%u\n", shift);
++	}
++
++	pte_val(entry) = pte_val(entry) | hugepage_size;
+ 	return entry;
  }
  
- int ath10k_wmi_wait_for_unified_ready(struct ath10k *ar)
--- 
-2.51.0
-
 
 
 
