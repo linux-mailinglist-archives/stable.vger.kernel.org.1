@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-186590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0F4BE995D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78BEEBE9DC5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2B0D4581652
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A35637C31D4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82911332905;
-	Fri, 17 Oct 2025 15:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8DA335071;
+	Fri, 17 Oct 2025 15:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZ10o0Kl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4hsfSn8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6CA3370E2;
-	Fri, 17 Oct 2025 15:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A58E336EE7;
+	Fri, 17 Oct 2025 15:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713673; cv=none; b=CwJ1o/UmIkub6mnxIHNahlAF+EcIdDuqJHJEiSOLmaSfPSBCLxe9gkpZaeUpdsFqDdlj3cV1FlqPlBzAHxwKbtlVPLKSwcTa1Y15Ko0nWGd7Qba/p5vsNepWDB6iLRGmmf2aoQ9iBHPsLqnrlDVvlJSVIQ+ZWOvzUEdqyPvg6sM=
+	t=1760714359; cv=none; b=MvnfrmVdyVpE6esbM4Cbje0+P2xGwiT/stRzI43nQTTdUAjW5ryR872lKyRPC2PfUvhNEjFztni5QaUKMglzBafAaV84OKojyNWYifPnoHWCBMf/AJh8vG/fQiW3hQC8zjPkHn1a62yu55UMPkny06aaAOqi/TpdkzebBjYwICE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713673; c=relaxed/simple;
-	bh=C3DwPdx+jhieXVmYXg5GYqYKq2gtJIlyGZBhYGReDVo=;
+	s=arc-20240116; t=1760714359; c=relaxed/simple;
+	bh=J9bOhnmP6KQ0U61OpFGGcoIlKIuwxpNrHERRAPDmH/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NFrKV25h0f8jic+hd/l+CqRDJTspokzc3j3nDSr/Lr8nBmWzagY7JuFuOwV6Kj4TI5Axipsm/vt/3vj/R2LdShf8byqqlMQt9sDqySmG5X77l8CH0lJ7WfWDMcNS2ZldXqqEOs4WdqyExZ7JqybqZcc3BILw12IJD2WRA1jFQFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZ10o0Kl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA82C4CEE7;
-	Fri, 17 Oct 2025 15:07:52 +0000 (UTC)
+	 MIME-Version; b=Ic/2zNhPkxVzGfbNSjE6kRgFmaza49yVo4YXHFllJq+IB6mW4umB/d/rSXyYL6uZiiLUsYDF4SV46c4mGmP7uE5Jd8SB6X18jS0jjmN7FKmZDJZHV4abRmkcKEdmbNzD5JXjjBYjMPgVg7UJY9CILfDnS58Fc0dUUraR2XOFxMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4hsfSn8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEAAC4CEE7;
+	Fri, 17 Oct 2025 15:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713673;
-	bh=C3DwPdx+jhieXVmYXg5GYqYKq2gtJIlyGZBhYGReDVo=;
+	s=korg; t=1760714358;
+	bh=J9bOhnmP6KQ0U61OpFGGcoIlKIuwxpNrHERRAPDmH/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZ10o0KlNSmXC6K1jIeRM4jlTjXK0C1Hudo+OTf0UBrAfs1vdbCwAyqb6UnKnPzc4
-	 g6AZ1u01NGs5wmUhrzqwtY+DZavBLVfaOvljc5KmyAy0wjISBnq8aTmnyjYY7SxRMw
-	 W9p+VLPcIcvvh8XcS4WBH/cCDW4hd9AESZEN66PI=
+	b=A4hsfSn8/vO2NOBtflsPVS1Ln5KjDuTR6nLB7rZozWkune+lgScNV+R/H060tFWQI
+	 OJngY7J3g4rwNwS1/2SL0h5ClFOU9N2pRP8ljdEsoUjosYeW8bVofwUTuce/qAvXWe
+	 5qjz/9eWPTGoikRCdPfe/+9GATNI8rVPru37GfBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/201] drm/amd/display: Add missing DCE6 SCL_HORZ_FILTER_INIT* SRIs
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.12 100/277] xen/events: Return -EEXIST for bound VIRQs
 Date: Fri, 17 Oct 2025 16:51:47 +0200
-Message-ID: <20251017145136.437903821@linuxfoundation.org>
+Message-ID: <20251017145150.782545874@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-[ Upstream commit d60f9c45d1bff7e20ecd57492ef7a5e33c94a37c ]
+commit 07ce121d93a5e5fb2440a24da3dbf408fcee978e upstream.
 
-Without these, it's impossible to program these registers.
+Change find_virq() to return -EEXIST when a VIRQ is bound to a
+different CPU than the one passed in.  With that, remove the BUG_ON()
+from bind_virq_to_irq() to propogate the error upwards.
 
-Fixes: 102b2f587ac8 ("drm/amd/display: dce_transform: DCE6 Scaling Horizontal Filter Init (v2)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Some VIRQs are per-cpu, but others are per-domain or global.  Those must
+be bound to CPU0 and can then migrate elsewhere.  The lookup for
+per-domain and global will probably fail when migrated off CPU 0,
+especially when the current CPU is tracked.  This now returns -EEXIST
+instead of BUG_ON().
+
+A second call to bind a per-domain or global VIRQ is not expected, but
+make it non-fatal to avoid trying to look up the irq, since we don't
+know which per_cpu(virq_to_irq) it will be in.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250828003604.8949-3-jason.andryuk@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dce_transform.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/xen/events/events_base.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-index cbce194ec7b82..ff746fba850bc 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-@@ -155,6 +155,8 @@
- 	SRI(SCL_COEF_RAM_TAP_DATA, SCL, id), \
- 	SRI(VIEWPORT_START, SCL, id), \
- 	SRI(VIEWPORT_SIZE, SCL, id), \
-+	SRI(SCL_HORZ_FILTER_INIT_RGB_LUMA, SCL, id), \
-+	SRI(SCL_HORZ_FILTER_INIT_CHROMA, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_SCALE_RATIO, SCL, id), \
- 	SRI(SCL_VERT_FILTER_SCALE_RATIO, SCL, id), \
- 	SRI(SCL_VERT_FILTER_INIT, SCL, id), \
--- 
-2.51.0
-
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1320,10 +1320,12 @@ int bind_interdomain_evtchn_to_irq_latee
+ }
+ EXPORT_SYMBOL_GPL(bind_interdomain_evtchn_to_irq_lateeoi);
+ 
+-static int find_virq(unsigned int virq, unsigned int cpu, evtchn_port_t *evtchn)
++static int find_virq(unsigned int virq, unsigned int cpu, evtchn_port_t *evtchn,
++		     bool percpu)
+ {
+ 	struct evtchn_status status;
+ 	evtchn_port_t port;
++	bool exists = false;
+ 
+ 	memset(&status, 0, sizeof(status));
+ 	for (port = 0; port < xen_evtchn_max_channels(); port++) {
+@@ -1336,12 +1338,16 @@ static int find_virq(unsigned int virq,
+ 			continue;
+ 		if (status.status != EVTCHNSTAT_virq)
+ 			continue;
+-		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu)) {
++		if (status.u.virq != virq)
++			continue;
++		if (status.vcpu == xen_vcpu_nr(cpu)) {
+ 			*evtchn = port;
+ 			return 0;
++		} else if (!percpu) {
++			exists = true;
+ 		}
+ 	}
+-	return -ENOENT;
++	return exists ? -EEXIST : -ENOENT;
+ }
+ 
+ /**
+@@ -1388,8 +1394,11 @@ int bind_virq_to_irq(unsigned int virq,
+ 			evtchn = bind_virq.port;
+ 		else {
+ 			if (ret == -EEXIST)
+-				ret = find_virq(virq, cpu, &evtchn);
+-			BUG_ON(ret < 0);
++				ret = find_virq(virq, cpu, &evtchn, percpu);
++			if (ret) {
++				__unbind_from_irq(info, info->irq);
++				goto out;
++			}
+ 		}
+ 
+ 		ret = xen_irq_info_virq_setup(info, cpu, evtchn, virq);
 
 
 
