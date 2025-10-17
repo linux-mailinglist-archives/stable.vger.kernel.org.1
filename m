@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-187323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F8EBEA918
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:15:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23510BEAD8B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D741F946BFB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF4B37C7E90
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59AD32E15B;
-	Fri, 17 Oct 2025 15:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59161448E0;
+	Fri, 17 Oct 2025 15:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzEMzYk0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEIGDoAh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A365330B1D;
-	Fri, 17 Oct 2025 15:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5206A330B2D;
+	Fri, 17 Oct 2025 15:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715753; cv=none; b=WtLUAP+k9zWZQsvJchyY9RNWKN2Jbrdma852Fux6JBAd5WIhEYsyOlyv7lSjbqv5zjkiiCvLVHPWV1QfcpoWsa16naq+5NCOyUDmIFHZnhKF81CbMX4Z9+9bMJmlwB3cPTC7j+9BM14JEz80vBFeDN5J84wNhhxsBUUzqu8yFx8=
+	t=1760716489; cv=none; b=HFycLsTF57s9SWbtOzeUu3ztvfvUnFEsXsdA2Ccyv6IWpqM5iLUK+eF8yDHWK5D4vtt4THrRDIaG1x6ZEORHTvKUhdVDbdmwXGG7R3ehM89ZRpK0NIX+el8e+uTbsSoHdferZ/9lakJW49EQyuW7pVKxBx9rLf/akRJaxYg8gd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715753; c=relaxed/simple;
-	bh=XE2eW8hCI6OYe2t9I2OqBAAXstre8dlHIVpG1yelcl4=;
+	s=arc-20240116; t=1760716489; c=relaxed/simple;
+	bh=1kbba0VuBbsbjzZVnHjEwfu6fozR4O4laXdYvzoJDXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J8QMBOvVVMkpCuak3rRXGx8Jd8oqpVQW2ocLKSa1dxVQe47/Br+p9toG4Y9fDqGFVZBKrCoEG7YcsnSNez6/U/04H14mHvY239GZiynd3TWZjo15AUx1yNn3gGfwJ4/Ofu/GkP4HIhoT206k3/s7sCTMx/PvMA/rkhl/b76Tq0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzEMzYk0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA0EC4CEE7;
-	Fri, 17 Oct 2025 15:42:32 +0000 (UTC)
+	 MIME-Version; b=NQ+8g3236gBnyy8EQub/BS9+92KamQH2zFSrWIAM77KZ8ZAMpyDtjVxPvavWX7RWOW0m3S4JDYtg0n1/la5W23AECa4aCMcQ9rbkoTtCeQSPi3BWW6EwMuuINfH+UVpk0MHYAXiAekDSl33rfnu2Htr0lmlgS9BYE3zGPXW9yh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEIGDoAh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1069C4CEE7;
+	Fri, 17 Oct 2025 15:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715753;
-	bh=XE2eW8hCI6OYe2t9I2OqBAAXstre8dlHIVpG1yelcl4=;
+	s=korg; t=1760716489;
+	bh=1kbba0VuBbsbjzZVnHjEwfu6fozR4O4laXdYvzoJDXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gzEMzYk07qorHDHqQuoNMjk39qAqlYKNHsqOUbo04zrO6aVcWYRvCwDGY10uS1pTH
-	 gTM+z7C3dVmt9hKUvZkvK3f9kUmE6e76LbCljavkVzmar0Bew2Br4ntnIUO2JNvCze
-	 U7nALFlXScsMaT/oLaIjDyAk/n3mcI6TnFpBHwps=
+	b=pEIGDoAhzNdW480o3ULlD+o5xLERELYqi0zk/33LPcU2ZVNyxaMW+YwHArr14Rxdn
+	 NxFrgI02ow0FG+BBxaE8jeCb0gtqXRM17CPXzSZuLZhX7cBUoWgJK++4jMuyiwt0+a
+	 02VBtLzATK2UGMZjPF1anTY39plpJ/fLbKIo0HO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.17 325/371] media: iris: Fix firmware reference leak and unmap memory after load
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.15 207/276] PCI/ERR: Fix uevent on failure to recover
 Date: Fri, 17 Oct 2025 16:55:00 +0200
-Message-ID: <20251017145213.835227195@linuxfoundation.org>
+Message-ID: <20251017145150.022359810@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 57429b0fddfe3cea21a56326576451a4a4c2019b upstream.
+commit 1cbc5e25fb70e942a7a735a1f3d6dd391afc9b29 upstream.
 
-When we succeed loading the firmware, we don't want to hold on to the
-firmware pointer anymore, since it won't be freed anywhere else. The same
-applies for the mapped memory. Unmapping the memory is particularly
-important since the memory will be protected after the Iris firmware is
-started, so we need to make sure there will be no accidental access to this
-region (even if just a speculative one from the CPU).
+Upon failure to recover from a PCIe error through AER, DPC or EDR, a
+uevent is sent to inform user space about disconnection of the bridge
+whose subordinate devices failed to recover.
 
-Almost the same firmware loading code also exists in venus/firmware.c,
-there it is implemented correctly.
+However the bridge itself is not disconnected.  Instead, a uevent should
+be sent for each of the subordinate devices.
 
-Fix this by dropping the early "return ret" and move the call of
-qcom_scm_pas_auth_and_reset() out of iris_load_fw_to_memory(). We should
-unmap the memory before bringing the firmware out of reset.
+Only if the "bridge" happens to be a Root Complex Event Collector or
+Integrated Endpoint does it make sense to send a uevent for it (because
+there are no subordinate devices).
 
-Cc: stable@vger.kernel.org
-Fixes: d19b163356b8 ("media: iris: implement video firmware load/unload")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Right now if there is a mix of subordinate devices with and without
+pci_error_handlers, a BEGIN_RECOVERY event is sent for those with
+pci_error_handlers but no FAILED_RECOVERY event is ever sent for them
+afterwards.  Fix it.
+
+Fixes: 856e1eb9bdd4 ("PCI/AER: Add uevents in AER and EEH error/resume")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org  # v4.16+
+Link: https://patch.msgid.link/68fc527a380821b5d861dd554d2ce42cb739591c.1755008151.git.lukas@wunner.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/iris/iris_firmware.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/pci/pcie/err.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/iris/iris_firmware.c b/drivers/media/platform/qcom/iris/iris_firmware.c
-index f1b5cd56db32..9ab499fad946 100644
---- a/drivers/media/platform/qcom/iris/iris_firmware.c
-+++ b/drivers/media/platform/qcom/iris/iris_firmware.c
-@@ -60,16 +60,7 @@ static int iris_load_fw_to_memory(struct iris_core *core, const char *fw_name)
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -102,6 +102,12 @@ static int report_normal_detected(struct
+ 	return report_error_detected(dev, pci_channel_io_normal, data);
+ }
  
- 	ret = qcom_mdt_load(dev, firmware, fw_name,
- 			    pas_id, mem_virt, mem_phys, res_size, NULL);
--	if (ret)
--		goto err_mem_unmap;
- 
--	ret = qcom_scm_pas_auth_and_reset(pas_id);
--	if (ret)
--		goto err_mem_unmap;
--
--	return ret;
--
--err_mem_unmap:
- 	memunmap(mem_virt);
- err_release_fw:
- 	release_firmware(firmware);
-@@ -94,6 +85,12 @@ int iris_fw_load(struct iris_core *core)
- 		return -ENOMEM;
- 	}
- 
-+	ret = qcom_scm_pas_auth_and_reset(core->iris_platform_data->pas_id);
-+	if (ret)  {
-+		dev_err(core->dev, "auth and reset failed: %d\n", ret);
-+		return ret;
-+	}
++static int report_perm_failure_detected(struct pci_dev *dev, void *data)
++{
++	pci_uevent_ers(dev, PCI_ERS_RESULT_DISCONNECT);
++	return 0;
++}
 +
- 	ret = qcom_scm_mem_protect_video_var(cp_config->cp_start,
- 					     cp_config->cp_size,
- 					     cp_config->cp_nonpixel_start,
--- 
-2.51.0
-
+ static int report_mmio_enabled(struct pci_dev *dev, void *data)
+ {
+ 	pci_ers_result_t vote, *result = data;
+@@ -263,7 +269,7 @@ pci_ers_result_t pcie_do_recovery(struct
+ failed:
+ 	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
+ 
+-	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
++	pci_walk_bridge(bridge, report_perm_failure_detected, NULL);
+ 
+ 	/* TODO: Should kernel panic here? */
+ 	pci_info(bridge, "device recovery failed\n");
 
 
 
