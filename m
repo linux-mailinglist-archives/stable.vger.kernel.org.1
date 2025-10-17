@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-187259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F51BEA5E4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:59:47 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1755BE9906
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D97437C121C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 600D235CF25
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4C9330B3E;
-	Fri, 17 Oct 2025 15:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCABA33290F;
+	Fri, 17 Oct 2025 15:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1HMCJt4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA0v0NVE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B04C330B38;
-	Fri, 17 Oct 2025 15:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C4419DF9A;
+	Fri, 17 Oct 2025 15:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715568; cv=none; b=IRtp6ZiaHPyKsMWtwUh0CjMs9U5Ij2QJ5wkdLgDeyIGda3lYp/0Fo31YYwqkct/8Hd42uQ2Ws/kv4ZKqIsE7a4o49O6Z+3jd3oMTfDPc8rId5mS4p0uSH5/eJ1U/oKsJp42H0JT0vfctAcN4Jn4SMT7PCCTaSbvIfJmKipoPmmI=
+	t=1760713948; cv=none; b=jUoF+RHx4+63e89DifDxPaBWQFIDw10FSJfWcD9LUFbozG1xhCQFOJZKSfIvP9+2qat9amhZEzy416m7LKXEMXeL/xHwyiiobZopgswjpCXMzaaNde68r4zZzDLfWcIGSJcsBXJ9PqUtOG/bmu0lp6v5rAdVU1wDQo6ugQqwCYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715568; c=relaxed/simple;
-	bh=Pe/LyNG8C2LUQHx03taKqlWf/4+mGKOb/XiuN72FSGc=;
+	s=arc-20240116; t=1760713948; c=relaxed/simple;
+	bh=+7FnJPn96W9GVGEWZ2XWvzatj6cgYrIpnaWmvD4zS9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUQ9x5ofJ5lEedCSa22TUl7dqYwWA6ByhiL/0Bct71xP3E4r/zZ9LN8mMB7aCSVZ3ngH85tYU0su7MSOR1kUvjuUE3ZMRu2lczttt6o+rP9JFvtfunCcq0JQ3n/EMOzKU6ItOdIdr8ngjslhzA45pfE962BxPCh9TFK3zNElPKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1HMCJt4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB1CC4CEE7;
-	Fri, 17 Oct 2025 15:39:27 +0000 (UTC)
+	 MIME-Version; b=e0M+ZvVRhr3f6/6Sm7AkXz9EfbTjW/qouUkDr3mP67MFl1Rtf//tY5/kAG8vCqe5KCDoST85tWPPgiinkBv6DM5+x28UOXMEoiGrI6ScIzw2EaZOsdb6oGLZtg17J5G29EB/0YviOKM5jsb4o7oYpDbMDIuz97CCN6kJNnHcBKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA0v0NVE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F364EC4CEE7;
+	Fri, 17 Oct 2025 15:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715567;
-	bh=Pe/LyNG8C2LUQHx03taKqlWf/4+mGKOb/XiuN72FSGc=;
+	s=korg; t=1760713948;
+	bh=+7FnJPn96W9GVGEWZ2XWvzatj6cgYrIpnaWmvD4zS9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h1HMCJt4Oo7oDGJH1KEkhURhu+OLzH7mmdWH5bUWAr93lmHbTWI/pHH44R8CdDcwq
-	 qQ6oG8I+lkRpSfqHLTPrDCl3PM+bWoWgvB6n2yOibXiBuTHZ4mRNKrh2oZctPdYPoh
-	 iml8Lqn62H/yi4d1Q8D3U0iGvlhoR8oWGOz9DFLM=
+	b=IA0v0NVEHQlBpDFh5nrX1+dfyhYLFDd66vVpIvHSAwB3rQ7YZ02ivV9qJRxYBlnaX
+	 M+vnT+UewDXwRvb3zlWdxLSoTTA7zCynSW2sGseZyZ/mzHK7KkDgRv1/XZ82jxC+sn
+	 4LluCdqg/eVEPqM49BzB0sk1/QrqZkc9JjA0idno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH 6.17 261/371] sparc: fix error handling in scan_one_device()
+	Eric Dumazet <edumazet@google.com>,
+	Greg Thelen <gthelen@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.6 175/201] ipmi: Fix handling of messages with provided receive message pointer
 Date: Fri, 17 Oct 2025 16:53:56 +0200
-Message-ID: <20251017145211.524098728@linuxfoundation.org>
+Message-ID: <20251017145141.173878947@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 302c04110f0ce70d25add2496b521132548cd408 upstream.
+commit e2c69490dda5d4c9f1bfbb2898989c8f3530e354 upstream
 
-Once of_device_register() failed, we should call put_device() to
-decrement reference count for cleanup. Or it could cause memory leak.
-So fix this by calling put_device(), then the name can be freed in
-kobject_cleanup().
+Prior to commit b52da4054ee0 ("ipmi: Rework user message limit handling"),
+i_ipmi_request() used to increase the user reference counter if the receive
+message is provided by the caller of IPMI API functions. This is no longer
+the case. However, ipmi_free_recv_msg() is still called and decreases the
+reference counter. This results in the reference counter reaching zero,
+the user data pointer is released, and all kinds of interesting crashes are
+seen.
 
-Calling path: of_device_register() -> of_device_add() -> device_add().
-As comment of device_add() says, 'if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count'.
+Fix the problem by increasing user reference counter if the receive message
+has been provided by the caller.
 
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: cf44bbc26cf1 ("[SPARC]: Beginnings of generic of_device framework.")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Fixes: b52da4054ee0 ("ipmi: Rework user message limit handling")
+Reported-by: Eric Dumazet <edumazet@google.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Greg Thelen <gthelen@google.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Message-ID: <20251006201857.3433837-1-linux@roeck-us.net>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/kernel/of_device_32.c |    1 +
- arch/sparc/kernel/of_device_64.c |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/char/ipmi/ipmi_msghandler.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/sparc/kernel/of_device_32.c
-+++ b/arch/sparc/kernel/of_device_32.c
-@@ -387,6 +387,7 @@ static struct platform_device * __init s
- 
- 	if (of_device_register(op)) {
- 		printk("%pOF: Could not register of device.\n", dp);
-+		put_device(&op->dev);
- 		kfree(op);
- 		op = NULL;
- 	}
---- a/arch/sparc/kernel/of_device_64.c
-+++ b/arch/sparc/kernel/of_device_64.c
-@@ -677,6 +677,7 @@ static struct platform_device * __init s
- 
- 	if (of_device_register(op)) {
- 		printk("%pOF: Could not register of device.\n", dp);
-+		put_device(&op->dev);
- 		kfree(op);
- 		op = NULL;
- 	}
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -2311,8 +2311,11 @@ static int i_ipmi_request(struct ipmi_us
+ 	if (supplied_recv) {
+ 		recv_msg = supplied_recv;
+ 		recv_msg->user = user;
+-		if (user)
++		if (user) {
+ 			atomic_inc(&user->nr_msgs);
++			/* The put happens when the message is freed. */
++			kref_get(&user->refcount);
++		}
+ 	} else {
+ 		recv_msg = ipmi_alloc_recv_msg(user);
+ 		if (IS_ERR(recv_msg))
 
 
 
