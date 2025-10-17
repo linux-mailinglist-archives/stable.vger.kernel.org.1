@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-187378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30E2BEA45B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77565BEA615
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A00225885C3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:45:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDAAA188FE3C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71625330B26;
-	Fri, 17 Oct 2025 15:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684DA2F12A7;
+	Fri, 17 Oct 2025 15:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jerZiJr/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQ1IPhgJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5F5330B06;
-	Fri, 17 Oct 2025 15:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2365B1448E0;
+	Fri, 17 Oct 2025 15:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715898; cv=none; b=YuQvcHFlImaOoxWi/FIcsU0Xy4B9hB2ChdbE70ehdbCZd/5YZ9GQXV0yuGDH2tCniC1mwyb0sShXWsawr7C2G2uZsvTawC94+LwJVYpdk59g56WC3tdjmaipJW+k4/VcOcelvxkcWdBP8K4UqEwZhMv9ycuF9ypASO7tFn++TZw=
+	t=1760716545; cv=none; b=Ped9+W7QlZXAVYbASO2Cz+QYnB+iudwL8kVnug0YDS+2BZWC13kCqbT0zop22DXvuDqTrcxVfdxX1kxc1Larf0iyd9FpVOrnyBa4FJwConGQ/s+jru3CVLuSJalsRb73qtvSwIoBK5Ic2qNm3tn9eZ2r08CFT75pJ5rtnMIhaZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715898; c=relaxed/simple;
-	bh=eFOyL1L45r+YUoeNawZBsTifkeoNXoELYwTBTTzECdw=;
+	s=arc-20240116; t=1760716545; c=relaxed/simple;
+	bh=nMA5TywC/C9BxVHo7fy8OtuOjRPtN/TtHelc8v3zVtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmrKB9U9ucZLfGJVSLHCjCqTZ/Iz/NHEYjZI6VCH2Wfd+wHiIhj3Oc5eMenQ8A5e/+rPLTRb8Jb8mE8QtLepmtafJpcsHRcxnshxHm0Mh6UQGmk3CFs8mWgUkJn4D8r9g2ItyY5Xvzz78jGn2AlB6LRby3B325wCGZAFkGOVL8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jerZiJr/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC71C4CEE7;
-	Fri, 17 Oct 2025 15:44:57 +0000 (UTC)
+	 MIME-Version; b=dtPhsLa2ya8SrL8chrKPg0xox0eOI27H3eD6pnnegxIGua4gCGgVxnImsgr1QiTnsKe5Qwt9lyZN9ps35e+6iipefqU/lfRdDCxCQS5Vb1lmd7T4BsELJNYelVoE/KlJc3EYWp1IzpJ86ogv3NxOAuMr4ie3JSa6TsMlZqg51R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQ1IPhgJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E073C4CEE7;
+	Fri, 17 Oct 2025 15:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715898;
-	bh=eFOyL1L45r+YUoeNawZBsTifkeoNXoELYwTBTTzECdw=;
+	s=korg; t=1760716543;
+	bh=nMA5TywC/C9BxVHo7fy8OtuOjRPtN/TtHelc8v3zVtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jerZiJr/JRITPgC50ShX1UfEeUDhF59u8hlaK0BVho27odbXk0umj0Np5yLturcgB
-	 itTVjfFf9YFaMRapA3SB74BTMWex3X/vdUNderrcNo3qXc9lrh5J5nkECJbh3BXwJi
-	 i31ve/7n1dyE0upkKbKDu49IC6zR9wvwTbW/3JlU=
+	b=jQ1IPhgJPHE8c6uqcs3QozL+qmrg35ZdUf9NODmuqGmpGQ6m/rHBCERLTyqRIv/6s
+	 2xcWyHYFDGPwJaJCtkaqwSEbw03lxEEvA18NujcAp2/eaH1GAP5hpkShij4LcEOVDB
+	 omCjJvmw0YtjXh9IEZEqDVawFUfLJS6VRv/KqjPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
-	Ahmet Eray Karadag <eraykrdg1@gmail.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.17 345/371] ext4: guard against EA inode refcount underflow in xattr update
-Date: Fri, 17 Oct 2025 16:55:20 +0200
-Message-ID: <20251017145214.561978850@linuxfoundation.org>
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 228/276] Squashfs: add additional inode sanity checking
+Date: Fri, 17 Oct 2025 16:55:21 +0200
+Message-ID: <20251017145150.788277614@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmet Eray Karadag <eraykrdg1@gmail.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-commit 57295e835408d8d425bef58da5253465db3d6888 upstream.
+[ Upstream commit 9ee94bfbe930a1b39df53fa2d7b31141b780eb5a ]
 
-syzkaller found a path where ext4_xattr_inode_update_ref() reads an EA
-inode refcount that is already <= 0 and then applies ref_change (often
--1). That lets the refcount underflow and we proceed with a bogus value,
-triggering errors like:
+Patch series "Squashfs: performance improvement and a sanity check".
 
-  EXT4-fs error: EA inode <n> ref underflow: ref_count=-1 ref_change=-1
-  EXT4-fs warning: ea_inode dec ref err=-117
+This patchset adds an additional sanity check when reading regular file
+inodes, and adds support for SEEK_DATA/SEEK_HOLE lseek() whence values.
 
-Make the invariant explicit: if the current refcount is non-positive,
-treat this as on-disk corruption, emit ext4_error_inode(), and fail the
-operation with -EFSCORRUPTED instead of updating the refcount. Delete the
-WARN_ONCE() as negative refcounts are now impossible; keep error reporting
-in ext4_error_inode().
+This patch (of 2):
 
-This prevents the underflow and the follow-on orphan/cleanup churn.
+Add an additional sanity check when reading regular file inodes.
 
-Reported-by: syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com
-Fixes: https://syzbot.org/bug?extid=0be4f339a8218d2a5bb1
-Cc: stable@kernel.org
-Co-developed-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Ahmet Eray Karadag <eraykrdg1@gmail.com>
-Message-ID: <20250920021342.45575-1-eraykrdg1@gmail.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+A regular file if the file size is an exact multiple of the filesystem
+block size cannot have a fragment.  This is because by definition a
+fragment block stores tailends which are not a whole block in size.
+
+Link: https://lkml.kernel.org/r/20250923220652.568416-1-phillip@squashfs.org.uk
+Link: https://lkml.kernel.org/r/20250923220652.568416-2-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 9f1c14c1de1b ("Squashfs: reject negative file sizes in squashfs_read_inode()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ fs/squashfs/inode.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1019,7 +1019,7 @@ static int ext4_xattr_inode_update_ref(h
- 				       int ref_change)
- {
- 	struct ext4_iloc iloc;
--	s64 ref_count;
-+	u64 ref_count;
- 	int ret;
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -140,8 +140,17 @@ int squashfs_read_inode(struct inode *in
+ 		if (err < 0)
+ 			goto failed_read;
  
- 	inode_lock_nested(ea_inode, I_MUTEX_XATTR);
-@@ -1029,13 +1029,17 @@ static int ext4_xattr_inode_update_ref(h
- 		goto out;
- 
- 	ref_count = ext4_xattr_inode_get_ref(ea_inode);
-+	if ((ref_count == 0 && ref_change < 0) || (ref_count == U64_MAX && ref_change > 0)) {
-+		ext4_error_inode(ea_inode, __func__, __LINE__, 0,
-+			"EA inode %lu ref wraparound: ref_count=%lld ref_change=%d",
-+			ea_inode->i_ino, ref_count, ref_change);
-+		ret = -EFSCORRUPTED;
-+		goto out;
-+	}
- 	ref_count += ref_change;
- 	ext4_xattr_inode_set_ref(ea_inode, ref_count);
- 
- 	if (ref_change > 0) {
--		WARN_ONCE(ref_count <= 0, "EA inode %lu ref_count=%lld",
--			  ea_inode->i_ino, ref_count);
--
- 		if (ref_count == 1) {
- 			WARN_ONCE(ea_inode->i_nlink, "EA inode %lu i_nlink=%u",
- 				  ea_inode->i_ino, ea_inode->i_nlink);
-@@ -1044,9 +1048,6 @@ static int ext4_xattr_inode_update_ref(h
- 			ext4_orphan_del(handle, ea_inode);
++		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
++			/*
++			 * the file cannot have a fragment (tailend) and have a
++			 * file size a multiple of the block size
++			 */
++			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
++				err = -EINVAL;
++				goto failed_read;
++			}
+ 			frag_offset = le32_to_cpu(sqsh_ino->offset);
+ 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
+ 			if (frag_size < 0) {
+@@ -155,7 +164,6 @@ int squashfs_read_inode(struct inode *in
  		}
- 	} else {
--		WARN_ONCE(ref_count < 0, "EA inode %lu ref_count=%lld",
--			  ea_inode->i_ino, ref_count);
--
- 		if (ref_count == 0) {
- 			WARN_ONCE(ea_inode->i_nlink != 1,
- 				  "EA inode %lu i_nlink=%u",
+ 
+ 		set_nlink(inode, 1);
+-		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		inode->i_fop = &generic_ro_fops;
+ 		inode->i_mode |= S_IFREG;
+ 		inode->i_blocks = ((inode->i_size - 1) >> 9) + 1;
+@@ -184,8 +192,17 @@ int squashfs_read_inode(struct inode *in
+ 		if (err < 0)
+ 			goto failed_read;
+ 
++		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
++			/*
++			 * the file cannot have a fragment (tailend) and have a
++			 * file size a multiple of the block size
++			 */
++			if ((inode->i_size & (msblk->block_size - 1)) == 0) {
++				err = -EINVAL;
++				goto failed_read;
++			}
+ 			frag_offset = le32_to_cpu(sqsh_ino->offset);
+ 			frag_size = squashfs_frag_lookup(sb, frag, &frag_blk);
+ 			if (frag_size < 0) {
+@@ -200,7 +217,6 @@ int squashfs_read_inode(struct inode *in
+ 
+ 		xattr_id = le32_to_cpu(sqsh_ino->xattr);
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+-		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
+ 		inode->i_op = &squashfs_inode_ops;
+ 		inode->i_fop = &generic_ro_fops;
+ 		inode->i_mode |= S_IFREG;
 
 
 
