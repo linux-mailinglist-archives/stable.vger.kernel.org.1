@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638F0BEABA4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:31:42 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD7EBEA7FE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E99894709B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 47F5F582DAF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9CB2F12D1;
-	Fri, 17 Oct 2025 15:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A2A330B00;
+	Fri, 17 Oct 2025 15:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgmRXZRR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhv8QDSs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83C8330B34;
-	Fri, 17 Oct 2025 15:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBBC330B1E;
+	Fri, 17 Oct 2025 15:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715798; cv=none; b=sssZ7cOmfEnKkZ/oHuoEGMytpRPzw7ouccOJAMH0KJppPCrQ8gjTq12a6ObVcoMFdrUapXQ7LjfiLwuojytVQh0VO+nLQY4XaJSBdLtkA8BVFLy9V/66oQav6sU6bY+hjHLLXAjCKQbwc4VGQp1HwMrs9Et/WnEteSUhyZNLJEo=
+	t=1760716434; cv=none; b=XNsJHBbHY/QfYXnPODcnUJNn+EHi3ohuHX8P4HTz8RA/CEgH3iEUDrLJZyOVNAgh4KUqffTSu/hEA39U47dTcsq4mQmX1ULdBjsyOg/Gv0DCgN6tATu0Rtlaq9xhTIyXCurFNOCDHOGh4BdLfD4Bvk/LrNv1dQ3lslFme0zUl80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715798; c=relaxed/simple;
-	bh=O4i+gv6X0q8UYoNwT9v+7ShjMhYTs+NA6RzI7jQGXc0=;
+	s=arc-20240116; t=1760716434; c=relaxed/simple;
+	bh=S24wiqjIAXDg1tVADkkc4bu7okNZS9rvUyGMZKVeICA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzkT38jeeCE+xPAdU0kJJQgYTu5tiz/saeybYE/yq8F18c8JqEiz7AFZvUyyzFD0YqlSPy7AH6gk5wfzsEvNIjItd8pl5ITCuSW7bo2DwrCUCQyzhRtqNIHMR6p3L1/Nmg1wbVEmFwE+86V4alRXTbBfrBr9DnIWPFL3rUW9Kjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgmRXZRR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A6CC4CEE7;
-	Fri, 17 Oct 2025 15:43:16 +0000 (UTC)
+	 MIME-Version; b=UVjRpRsGiY9ZqVzsqoOrVBP/6neFyZMoffSXoAM1v76zrzaJTax+hTTwiScXv9muEPA0FwHHOb9fBcAy71BPrqi2/9b9bq+Yv9HlmxmCCmsGjNktsw4Ltb3rVTTysR4HCLt1z8D51iLSGabmvIoJSDiLX7np0Pxc5l77PkQ2cIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhv8QDSs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E188AC4CEE7;
+	Fri, 17 Oct 2025 15:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715797;
-	bh=O4i+gv6X0q8UYoNwT9v+7ShjMhYTs+NA6RzI7jQGXc0=;
+	s=korg; t=1760716434;
+	bh=S24wiqjIAXDg1tVADkkc4bu7okNZS9rvUyGMZKVeICA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tgmRXZRRrmdkBPOIp0z8UedL1ANmI4LZ2hr8UTfRu0EIK+zx+C4jK0bhTNCwPuTgl
-	 /ZeE4nCSjc3Ce5puGooKWQd7u/6SiVXwAA5MgRe1nMQR5fKW73wVqtI/buoPlCewhN
-	 I7FdvcoRw5BAbMBdaaBNEmqiTJ0eMw/tFb0mz/vk=
+	b=lhv8QDSsz/MuteUJPtBv1o3R3lT/BQTgXAA2kXeQwjF/uAWLDhlTDp8+h36QCUBgJ
+	 oK0zdzS+yHxCWh0czcfcKVyjhCaMHy/ZWptfHRQ8TH6+HNZ8mLhCSGhaTSD73XCgMW
+	 q71hVEEWmXO1bFOF9AJ8HSz729jQHERBo9tyn5a8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.17 307/371] s390: Add -Wno-pointer-sign to KBUILD_CFLAGS_DECOMPRESSOR
-Date: Fri, 17 Oct 2025 16:54:42 +0200
-Message-ID: <20251017145213.184435797@linuxfoundation.org>
+	Sam James <sam@gentoo.org>,
+	Helge Deller <deller@gmx.de>,
+	Stian Halseth <stian@itx.no>
+Subject: [PATCH 5.15 190/276] parisc: dont reference obsolete termio struct for TC* constants
+Date: Fri, 17 Oct 2025 16:54:43 +0200
+Message-ID: <20251017145149.406983016@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Sam James <sam@gentoo.org>
 
-commit fa7a0a53eeb7e16402f82c3d5a9ef4bf5efe9357 upstream.
+commit 8ec5a066f88f89bd52094ba18792b34c49dcd55a upstream.
 
-If the decompressor is compiled with clang this can lead to the following
-warning:
+Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
+drops the legacy termio struct, but the ioctls.h header still defines some
+TC* constants in terms of termio (via sizeof). Hardcode the values instead.
 
-In file included from arch/s390/boot/startup.c:4:
-...
-In file included from ./include/linux/pgtable.h:6:
-./arch/s390/include/asm/pgtable.h:2065:48: warning: passing 'unsigned long *' to parameter of type
-      'long *' converts between pointers to integer types with different sign [-Wpointer-sign]
- 2065 |                 value = __atomic64_or_barrier(PGSTE_PCL_BIT, ptr);
+This fixes building Python for example, which falls over like:
+  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
 
-Add -Wno-pointer-sign to the decompressor compile flags, like it is also
-done for the kernel. This is similar to what was done for x86 to address
-the same problem [1].
-
-[1] commit dca5203e3fe2 ("x86/boot: Add -Wno-pointer-sign to KBUILD_CFLAGS")
-
+Link: https://bugs.gentoo.org/961769
+Link: https://bugs.gentoo.org/962600
+Co-authored-by: Stian Halseth <stian@itx.no>
 Cc: stable@vger.kernel.org
-Reported-by: Gerd Bayer <gbayer@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sam James <sam@gentoo.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ arch/parisc/include/uapi/asm/ioctls.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/s390/Makefile
-+++ b/arch/s390/Makefile
-@@ -25,6 +25,7 @@ endif
- KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -mpacked-stack -std=gnu11
- KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
- KBUILD_CFLAGS_DECOMPRESSOR += -D__DECOMPRESSOR
-+KBUILD_CFLAGS_DECOMPRESSOR += -Wno-pointer-sign
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float -mbackchain
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
- KBUILD_CFLAGS_DECOMPRESSOR += -ffreestanding
+--- a/arch/parisc/include/uapi/asm/ioctls.h
++++ b/arch/parisc/include/uapi/asm/ioctls.h
+@@ -10,10 +10,10 @@
+ #define TCSETS		_IOW('T', 17, struct termios) /* TCSETATTR */
+ #define TCSETSW		_IOW('T', 18, struct termios) /* TCSETATTRD */
+ #define TCSETSF		_IOW('T', 19, struct termios) /* TCSETATTRF */
+-#define TCGETA		_IOR('T', 1, struct termio)
+-#define TCSETA		_IOW('T', 2, struct termio)
+-#define TCSETAW		_IOW('T', 3, struct termio)
+-#define TCSETAF		_IOW('T', 4, struct termio)
++#define TCGETA          0x40125401
++#define TCSETA          0x80125402
++#define TCSETAW         0x80125403
++#define TCSETAF         0x80125404
+ #define TCSBRK		_IO('T', 5)
+ #define TCXONC		_IO('T', 6)
+ #define TCFLSH		_IO('T', 7)
 
 
 
