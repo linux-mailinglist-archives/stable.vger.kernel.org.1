@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D91EBE9AEA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95481BEA473
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 603F0580A0A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24CB97C45EC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E0232C93A;
-	Fri, 17 Oct 2025 15:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D41232E142;
+	Fri, 17 Oct 2025 15:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6Iehm/I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEksOA6k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F6332C937;
-	Fri, 17 Oct 2025 15:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB2C3BB5A;
+	Fri, 17 Oct 2025 15:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713800; cv=none; b=MQZ+OqhbfPOMvtKRYE9F6TW96u92OFsweoeGwYyBPwoUxr8FcgNhcvOAsrInRUsAo9DGyJe6OilEqHT0xvc6fsEN45sMmo3BAt4WUdoMKEqIgVykvlhsbdNku9wxUnQXxu5aXoCzi4xrzm2HSeQ7jrAfosCVv3FF2r/owMdvDpw=
+	t=1760714629; cv=none; b=t7hKZy/4wQtRYuB6nIm8q3hkQ9iFhD1V0ap6fa9oiJtTzkFcolb2YLroC95fLJginEt/k9nNO9aPqFy7dFDe62WDxx5P9R3m7Uxaw+962JPRySd5xb/wzq/QQKP3xPZgRqiPwk76UFNWDIH4VbEx5OtxrVz8nCnHlo6T3DcXb9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713800; c=relaxed/simple;
-	bh=dWH0NZNJmQJ7Aq5HQ2drt7jVg+OJWzXB+sSFdpIMaSk=;
+	s=arc-20240116; t=1760714629; c=relaxed/simple;
+	bh=lRO0xePK6/jYnGQ96tdhHYdI/3mapooaKB4NjaJPqdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fg5sC47uSdsp7g0EIOQ0+m/FJkCoDuV1qWt8alECHTc+KtjFxHwkzr7wo9Zly7LkyCwWeW/PIIWHakDOzWSV6tFhGKI1B09dV2a2O87ZdzDB+dByhlRJoFPP/UCvA7I99ZsgBWRDaLnJPIs4Ky31bDuAaotcamuBRQpemgfzJSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6Iehm/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21378C4CEE7;
-	Fri, 17 Oct 2025 15:09:59 +0000 (UTC)
+	 MIME-Version; b=bYq7HqLFm/tQl3LLqqb7JPUPGZByLPFq/hkWE/Qpvlz5xHlpKBUMmccodcuO5ZHW4vALoZq2Kd7tdKsCiwJD2pje6C/d1/xpDgl2GkVpEHws+dHhUvzUCkpiFLp5gBepllZgSM8glc10HhW4d7jIPepwGULolze/kqy0s92CPi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEksOA6k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE34C4CEE7;
+	Fri, 17 Oct 2025 15:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713800;
-	bh=dWH0NZNJmQJ7Aq5HQ2drt7jVg+OJWzXB+sSFdpIMaSk=;
+	s=korg; t=1760714628;
+	bh=lRO0xePK6/jYnGQ96tdhHYdI/3mapooaKB4NjaJPqdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6Iehm/Ir4w0JdFWxem+lo2LcKO99csrlQHVXMqBAcJEGNPf6l5MBZx9xkS6jMJ0A
-	 h7a1D0m+uhIax2+knvSEGknUHpDJ2Qa70Qw5ixGg4RqFXHt4kPJ2T8EQFi2tD8LBDZ
-	 ciFa37ObC/VZA/Rgt5wuYy0wR+uaqqoSzt9Pfbao=
+	b=tEksOA6kNQyA9ecVHohY3o+mu23BcGBFQBiRiX9imd7aj96RXyBsYY4x30cOc2tGs
+	 wtjPJlMGjA2H6BG47FBIZz65Z2vdM8g8WMbkn9mG/mUrRILDwDAxW4O4yjUwvlhSn5
+	 1Kmk6uIbJ6nO0xTJbbeVIQtF51jhJNWH1pFqLTHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
 	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.6 125/201] PCI: tegra: Convert struct tegra_msi mask_lock into raw spinlock
+Subject: [PATCH 6.12 179/277] PCI/ERR: Fix uevent on failure to recover
 Date: Fri, 17 Oct 2025 16:53:06 +0200
-Message-ID: <20251017145139.333268096@linuxfoundation.org>
+Message-ID: <20251017145153.663655982@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 26fda92d3b56bf44a02bcb4001c5a5548e0ae8ee upstream.
+commit 1cbc5e25fb70e942a7a735a1f3d6dd391afc9b29 upstream.
 
-The tegra_msi_irq_unmask() function may be called from a PCI driver
-request_threaded_irq() function. This triggers kernel/irq/manage.c
-__setup_irq() which locks raw spinlock &desc->lock descriptor lock
-and with that descriptor lock held, calls tegra_msi_irq_unmask().
+Upon failure to recover from a PCIe error through AER, DPC or EDR, a
+uevent is sent to inform user space about disconnection of the bridge
+whose subordinate devices failed to recover.
 
-Since the &desc->lock descriptor lock is a raw spinlock, and the tegra_msi
-.mask_lock is not a raw spinlock, this setup triggers 'BUG: Invalid wait
-context' with CONFIG_PROVE_RAW_LOCK_NESTING=y.
+However the bridge itself is not disconnected.  Instead, a uevent should
+be sent for each of the subordinate devices.
 
-Use scoped_guard() to simplify the locking.
+Only if the "bridge" happens to be a Root Complex Event Collector or
+Integrated Endpoint does it make sense to send a uevent for it (because
+there are no subordinate devices).
 
-Fixes: 2c99e55f7955 ("PCI: tegra: Convert to MSI domains")
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Closes: https://patchwork.kernel.org/project/linux-pci/patch/20250909162707.13927-2-marek.vasut+renesas@mailbox.org/#26574451
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Right now if there is a mix of subordinate devices with and without
+pci_error_handlers, a BEGIN_RECOVERY event is sent for those with
+pci_error_handlers but no FAILED_RECOVERY event is ever sent for them
+afterwards.  Fix it.
+
+Fixes: 856e1eb9bdd4 ("PCI/AER: Add uevents in AER and EEH error/resume")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250922150811.88450-1-marek.vasut+renesas@mailbox.org
+Cc: stable@vger.kernel.org  # v4.16+
+Link: https://patch.msgid.link/68fc527a380821b5d861dd554d2ce42cb739591c.1755008151.git.lukas@wunner.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-tegra.c |   27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ drivers/pci/pcie/err.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pci-tegra.c
-+++ b/drivers/pci/controller/pci-tegra.c
-@@ -14,6 +14,7 @@
-  */
- 
- #include <linux/clk.h>
-+#include <linux/cleanup.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
- #include <linux/export.h>
-@@ -269,7 +270,7 @@ struct tegra_msi {
- 	DECLARE_BITMAP(used, INT_PCI_MSI_NR);
- 	struct irq_domain *domain;
- 	struct mutex map_lock;
--	spinlock_t mask_lock;
-+	raw_spinlock_t mask_lock;
- 	void *virt;
- 	dma_addr_t phys;
- 	int irq;
-@@ -1604,14 +1605,13 @@ static void tegra_msi_irq_mask(struct ir
- 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
- 	struct tegra_pcie *pcie = msi_to_pcie(msi);
- 	unsigned int index = d->hwirq / 32;
--	unsigned long flags;
- 	u32 value;
- 
--	spin_lock_irqsave(&msi->mask_lock, flags);
--	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
--	value &= ~BIT(d->hwirq % 32);
--	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
-+		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
-+		value &= ~BIT(d->hwirq % 32);
-+		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
-+	}
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -108,6 +108,12 @@ static int report_normal_detected(struct
+ 	return report_error_detected(dev, pci_channel_io_normal, data);
  }
  
- static void tegra_msi_irq_unmask(struct irq_data *d)
-@@ -1619,14 +1619,13 @@ static void tegra_msi_irq_unmask(struct
- 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
- 	struct tegra_pcie *pcie = msi_to_pcie(msi);
- 	unsigned int index = d->hwirq / 32;
--	unsigned long flags;
- 	u32 value;
++static int report_perm_failure_detected(struct pci_dev *dev, void *data)
++{
++	pci_uevent_ers(dev, PCI_ERS_RESULT_DISCONNECT);
++	return 0;
++}
++
+ static int report_mmio_enabled(struct pci_dev *dev, void *data)
+ {
+ 	struct pci_driver *pdrv;
+@@ -269,7 +275,7 @@ pci_ers_result_t pcie_do_recovery(struct
+ failed:
+ 	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
  
--	spin_lock_irqsave(&msi->mask_lock, flags);
--	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
--	value |= BIT(d->hwirq % 32);
--	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
-+		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
-+		value |= BIT(d->hwirq % 32);
-+		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
-+	}
- }
+-	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
++	pci_walk_bridge(bridge, report_perm_failure_detected, NULL);
  
- static int tegra_msi_set_affinity(struct irq_data *d, const struct cpumask *mask, bool force)
-@@ -1742,7 +1741,7 @@ static int tegra_pcie_msi_setup(struct t
- 	int err;
- 
- 	mutex_init(&msi->map_lock);
--	spin_lock_init(&msi->mask_lock);
-+	raw_spin_lock_init(&msi->mask_lock);
- 
- 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
- 		err = tegra_allocate_domains(msi);
+ 	/* TODO: Should kernel panic here? */
+ 	pci_info(bridge, "device recovery failed\n");
 
 
 
