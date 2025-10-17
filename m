@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10CFBEA1CD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 549CFBE9D0B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 097555A2F0C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:33:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAB5B7452CA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C54336EFE;
-	Fri, 17 Oct 2025 15:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5147F32E155;
+	Fri, 17 Oct 2025 15:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Szq5Tn0u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCz9zO/8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB812336EF8;
-	Fri, 17 Oct 2025 15:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B71D2F12B0;
+	Fri, 17 Oct 2025 15:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715144; cv=none; b=W2c+K2YX0+jq+azwpUFp9oXLr8TgJQUTpmQ0GQWhteF01jtRD6xxMHYuI7u4Kspq1TH2AG0UHfTNeC6G2LLJDj73LKTCHjgIxBXTiDr3FsnDPI2dXLI561qfpLRKBH3LxLuzFkecBNU7ewu7C5SBUOf20ZeW5pXyUEBw+LYSvRQ=
+	t=1760713526; cv=none; b=S/GOxX5tOJRCUtcTEvVqTuyBkWGTf49G90tsbrnJ+lzB4Vi3+R9+f/Hscz2cSonFy/lyFcpp9bddXuFV7Can8WMJed5Xotnqhbl5fCEx6ooZCW3CtIU3Xjdj0aqF6LdBffHZf3WDbjjkH1fzfeCkB4b+S17q02L9F+GK5om2qdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715144; c=relaxed/simple;
-	bh=BetPScECIQ+oQz0LT8K+T5dNNGkVdwPasqGeL6hVhLs=;
+	s=arc-20240116; t=1760713526; c=relaxed/simple;
+	bh=S+F8+OSp8rwBVjkBd/WkjbzI4H5g6bp0wba1oFl1wgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBAdJnsZuUNJvhUmi65x26UgccWNLK/EzmxTT4OSH9f+1b5NuwvRPFjB4aK1LXiYQdUJmcmZQ8WPj7qDnVLtzH5zAKaIvp21QPs6ETQiv3IooTakcUKlmdvl7OTM4HjFDRmBc1rx++SzdagYo7jwOF+wJjHRLlzMJ+oKeE4WuOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Szq5Tn0u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51563C4CEE7;
-	Fri, 17 Oct 2025 15:32:24 +0000 (UTC)
+	 MIME-Version; b=Z+Y1vjuq6z+eVuuxmeRJvL0RLHhfOp/6Lki5ow6AjDvrD8XvXBd9POFGGnrHrLjFKKKqvn2DUio1kNHTvRQQMd2trg7VdRk8HyMkgiPFVGTSegT/nJU0DUK2ogKsVRyOTBR9wJB5lr/ndaQadBccbd1OtF0SvO1EpX3kTYabRdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCz9zO/8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80088C4CEE7;
+	Fri, 17 Oct 2025 15:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715144;
-	bh=BetPScECIQ+oQz0LT8K+T5dNNGkVdwPasqGeL6hVhLs=;
+	s=korg; t=1760713525;
+	bh=S+F8+OSp8rwBVjkBd/WkjbzI4H5g6bp0wba1oFl1wgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Szq5Tn0u9bafAdk3JAhdkpFpm0QUSaKkEAPnMReXG68k9h4FtW59w/+epSr5WK3pA
-	 KbSByKDieaAIBb554xeUXXEgLdvJgw6ND3TPxPCx1sl/3LrwpQTgMEkocYyKixnmKC
-	 /MzZ1APQcKS8dNi0rOrtkEJpUGhXqgedNFyLEJy8=
+	b=RCz9zO/8Jns9zRQGGEHXZo83cQ11Nm0wSSa5AS+l6r8MVxG782c/MuIJlO1I7P8Yz
+	 hV90RZDocRuKUX8ORGmzEUDIfK8T/urx3khzBZqtWW3CG6QP1ZGGajiKJ472kQZfBX
+	 XkK2/C2zjmPEdosSerreVagXGfu5Z8qVTjp463GY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 113/371] drm/amdkfd: Fix kfd process ref leaking when userptr unmapping
+Subject: [PATCH 6.6 027/201] scsi: mvsas: Fix use-after-free bugs in mvs_work_queue
 Date: Fri, 17 Oct 2025 16:51:28 +0200
-Message-ID: <20251017145206.026023560@linuxfoundation.org>
+Message-ID: <20251017145135.741720622@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 58e6fc2fb94f0f409447e5d46cf6a417b6397fbc ]
+[ Upstream commit 60cd16a3b7439ccb699d0bf533799eeb894fd217 ]
 
-kfd_lookup_process_by_pid hold the kfd process reference to ensure it
-doesn't get destroyed while sending the segfault event to user space.
+During the detaching of Marvell's SAS/SATA controller, the original code
+calls cancel_delayed_work() in mvs_free() to cancel the delayed work
+item mwq->work_q. However, if mwq->work_q is already running, the
+cancel_delayed_work() may fail to cancel it. This can lead to
+use-after-free scenarios where mvs_free() frees the mvs_info while
+mvs_work_queue() is still executing and attempts to access the
+already-freed mvs_info.
 
-Calling kfd_lookup_process_by_pid as function parameter leaks the kfd
-process refcount and miss the NULL pointer check if app process is
-already destroyed.
+A typical race condition is illustrated below:
 
-Fixes: 2d274bf7099b ("amd/amdkfd: Trigger segfault for early userptr unmmapping")
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+CPU 0 (remove)            | CPU 1 (delayed work callback)
+mvs_pci_remove()          |
+  mvs_free()              | mvs_work_queue()
+    cancel_delayed_work() |
+      kfree(mvi)          |
+                          |   mvi-> // UAF
+
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the delayed work item is properly canceled and any executing
+delayed work item completes before the mvs_info is deallocated.
+
+This bug was found by static analysis.
+
+Fixes: 20b09c2992fe ("[SCSI] mvsas: add support for 94xx; layout change; bug fixes")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/scsi/mvsas/mv_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-index b16cce7c22c37..d5f9d48bf8842 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -2583,12 +2583,17 @@ static int update_invalid_user_pages(struct amdkfd_process_info *process_info,
- 			 * from the KFD, trigger a segmentation fault in VM debug mode.
- 			 */
- 			if (amdgpu_ttm_adev(bo->tbo.bdev)->debug_vm_userptr) {
-+				struct kfd_process *p;
-+
- 				pr_err("Pid %d unmapped memory before destroying userptr at GPU addr 0x%llx\n",
- 								pid_nr(process_info->pid), mem->va);
- 
- 				// Send GPU VM fault to user space
--				kfd_signal_vm_fault_event_with_userptr(kfd_lookup_process_by_pid(process_info->pid),
--								mem->va);
-+				p = kfd_lookup_process_by_pid(process_info->pid);
-+				if (p) {
-+					kfd_signal_vm_fault_event_with_userptr(p, mem->va);
-+					kfd_unref_process(p);
-+				}
- 			}
- 
- 			ret = 0;
+diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
+index 43ebb331e2167..47c4434dc7e79 100644
+--- a/drivers/scsi/mvsas/mv_init.c
++++ b/drivers/scsi/mvsas/mv_init.c
+@@ -139,7 +139,7 @@ static void mvs_free(struct mvs_info *mvi)
+ 	if (mvi->shost)
+ 		scsi_host_put(mvi->shost);
+ 	list_for_each_entry(mwq, &mvi->wq_list, entry)
+-		cancel_delayed_work(&mwq->work_q);
++		cancel_delayed_work_sync(&mwq->work_q);
+ 	kfree(mvi->rsvd_tags);
+ 	kfree(mvi);
+ }
 -- 
 2.51.0
 
