@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F83BE9931
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:30 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80385BE9C57
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04CC874360D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:09 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6CF8C35E1A3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B705E32E14D;
-	Fri, 17 Oct 2025 15:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6B23328EC;
+	Fri, 17 Oct 2025 15:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVR/aJrW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZ9MCONP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718422F12D2;
-	Fri, 17 Oct 2025 15:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F5732E151;
+	Fri, 17 Oct 2025 15:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713386; cv=none; b=JaJpMf0Q8jiVF6szh2hP0sUwWVyhhp7wTBqZOF6euAT+01Rrs56iVnaX9BfJxu+oTO4DsSFzOidhArPHNNEyT60z/gfQ8Muaq1UW5a21d4aYqs9+t0Lf9hyVu3cPx7m/YhPzyocXZGjB+oAB7KnHe1ewM2Tawg6f7z4P6q2TL3A=
+	t=1760714649; cv=none; b=I8LT+D+xHFYMs23AZ6eXB6uhxIK12Bkor+tNJfUJOV1OPn5cVZJW74Mxnya5vBXRKMil0X3+Al3wzNlat9cUko5LCE7nx/asRfbcuqfgCu9ZqcYQ/pqQvD7jkldx/ogUh6I5isdwlVSdqjTWm7EhER/7bZ0F5o/R0a/+yj96VQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713386; c=relaxed/simple;
-	bh=g/RhqVah9/7xyPd22QjjzwQW0Ysp174ZJxG8S0ftzq8=;
+	s=arc-20240116; t=1760714649; c=relaxed/simple;
+	bh=so+B3lgiDklxtuEC4TgL96xxlKg3N3L2NRg9FAVf7a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WJ2sy4lkPd/DumzJXwdRmwu18Cw/dkEeWBx6P3TjnK1yppRxJDa+dQvG5I9PiC9l/e5b0US7mbuuzPTqLx3CWdU/NzkPv7SZcph0hR1HrG5k//ibH43NRUf7+wDbZBxxZO92RiwAwiM0xWqB4svaE+NwHEzPwZ5PVr6em5CIClY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVR/aJrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E06C4CEE7;
-	Fri, 17 Oct 2025 15:03:05 +0000 (UTC)
+	 MIME-Version; b=gMO7OHxTSbj+POONVe25maMAY0CfNfdp9ilakGdRY59BGzBvu2PQeHWtbl01gXlI0cMK3LYMstxbC5zzRLN9y6RtgAfHOukWlu7jLhzz6mr17P+Y1iTpu0A8n0Hu+BWxUmMbc+8owXDy9lYF8NOx7Lwm20EsGkbWkk8NKsVS5Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZ9MCONP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8834C4CEFE;
+	Fri, 17 Oct 2025 15:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713386;
-	bh=g/RhqVah9/7xyPd22QjjzwQW0Ysp174ZJxG8S0ftzq8=;
+	s=korg; t=1760714649;
+	bh=so+B3lgiDklxtuEC4TgL96xxlKg3N3L2NRg9FAVf7a4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVR/aJrWnVa7rwfnqM8dl8q9CJmIa/7/eOfA9H80ueZ/LQIqepaapz6l9Nm38L9ai
-	 ecR7nU44APg4BD55uQ9Z9mDCX/oEMXi3HOTIxznTopcUvPfujZpW2rdcZ9jDZ+Nhir
-	 5tohEV2QzSQHbFU2aZkSAZZ0tkbB+Tv5RjqGS+OQ=
+	b=VZ9MCONPXQQ9xH5dC4/2bhamNl1Aefu2QbJioRMf/vj2759GlScMUgZAgovOH1eVB
+	 16O0rQgl54S4au7hgQCFQ0TL8QLQ1XA83pVrZWm3X74nXMblMZOa8JBD0IEdoYJ2Gd
+	 BAy/SivD/JAZwfE+CaZVU1X8YhNU45NhUq3Oavvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 147/168] mfd: intel_soc_pmic_chtdc_ti: Drop unneeded assignment for cache_type
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>,
+	syzbot+4c9d23743a2409b80293@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: [PATCH 6.12 219/277] ext4: validate ea_ino and size in check_xattrs
 Date: Fri, 17 Oct 2025 16:53:46 +0200
-Message-ID: <20251017145134.452744967@linuxfoundation.org>
+Message-ID: <20251017145155.124197555@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 9eb99c08508714906db078b5efbe075329a3fb06 ]
+commit 44d2a72f4d64655f906ba47a5e108733f59e6f28 upstream.
 
-REGCACHE_NONE is the default type of the cache when not provided.
-Drop unneeded explicit assignment to it.
+During xattr block validation, check_xattrs() processes xattr entries
+without validating that entries claiming to use EA inodes have non-zero
+sizes. Corrupted filesystems may contain xattr entries where e_value_size
+is zero but e_value_inum is non-zero, indicating invalid xattr data.
 
-Note, it's defined to 0, and if ever be redefined, it will break
-literally a lot of the drivers, so it very unlikely to happen.
+Add validation in check_xattrs() to detect this corruption pattern early
+and return -EFSCORRUPTED, preventing invalid xattr entries from causing
+issues throughout the ext4 codebase.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20250129152823.1802273-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: 64e0d839c589 ("mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Suggested-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: syzbot+4c9d23743a2409b80293@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=4c9d23743a2409b80293
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Message-ID: <20250923133245.1091761-1-kartikey406@gmail.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/intel_soc_pmic_chtdc_ti.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/ext4/xattr.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-+++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-@@ -82,7 +82,6 @@ static const struct regmap_config chtdc_
- 	.reg_bits = 8,
- 	.val_bits = 8,
- 	.max_register = 0xff,
--	.cache_type = REGCACHE_NONE,
- };
- 
- static const struct regmap_irq chtdc_ti_irqs[] = {
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -251,6 +251,10 @@ check_xattrs(struct inode *inode, struct
+ 			err_str = "invalid ea_ino";
+ 			goto errout;
+ 		}
++		if (ea_ino && !size) {
++			err_str = "invalid size in ea xattr";
++			goto errout;
++		}
+ 		if (size > EXT4_XATTR_SIZE_MAX) {
+ 			err_str = "e_value size too large";
+ 			goto errout;
 
 
 
