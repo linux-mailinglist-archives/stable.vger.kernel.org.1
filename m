@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809DFBEA924
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:16:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96EFFBEA837
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3D17742F6E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 049C07448BF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F226E330B03;
-	Fri, 17 Oct 2025 15:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9312E62BE;
+	Fri, 17 Oct 2025 15:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F81MaSy5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiDGwko9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6E7330B21;
-	Fri, 17 Oct 2025 15:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730EB2DECBC;
+	Fri, 17 Oct 2025 15:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715683; cv=none; b=HNzfb21UhVpaxlF8tzeckljncYrr/I15PnRzqF4bOHPT2PIFksV2UDlzxLknE69F24M2yc3X7Y7SXehM91NT23xau7vdzXhxcJK83laUZ1Q3zpuYSoRYvpVV8utkFVWLym876egs1aqNc3CIU9bc9V0Tdn6Xe298CX7oa9lEW7E=
+	t=1760716510; cv=none; b=c5IExLG+ztX8SjaDD2PBKjZlpIyq1BVk0EhJk3vsvy1gT2yep41Hbt4CJvqhaSxtbjeandx8GPrhMDnLKrnTU9tQ2lRAvA6oztVhcOE/+tXGW78vu377ABQFvBYzg1xCRXHBUg1VWKECQ9mbnpHtG1227xBXJfIv2tZqLcHJZVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715683; c=relaxed/simple;
-	bh=agoHfRWVX1Nvfu/m0Wz4yJV77PPUkugxVOzI/vuhmaY=;
+	s=arc-20240116; t=1760716510; c=relaxed/simple;
+	bh=4d5ymmunzL4+XPy0gXw9X0hvP9uSKIEsXyp0hyj9lr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZyTtfjBybUFkFiq0wquOUN+Ecvo2YZzSuPkDjIpTSUq2272Kzh7TnFfavG3r8HF/ZEtJQrSJcy8P0Adw/QPz7h35nML5sXwjskdfsb3SUJOAFsJLinbUAVMKRBJovpaAtMmjxZiup6isKVt+/nb6pZagjloXg+wY4dUrKoUT6kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F81MaSy5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377E4C116B1;
-	Fri, 17 Oct 2025 15:41:23 +0000 (UTC)
+	 MIME-Version; b=hsSig4XQTJ/fFz+7W6uWsnnSjC1YwDtyqjXgoIZnrJmYvN6/yH+R+V7nGNqLRkpaCKfQGC+feHW3bwqVe1oOV4lsFuzAGAG/AgRdFsEPK0YmyNQhNQZ1ecIWznUmAbdcPwbuUe0QX3H2GLrro+VhDaZrJVRGTnqmoRZYeSvca9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiDGwko9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8D9C4CEE7;
+	Fri, 17 Oct 2025 15:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715683;
-	bh=agoHfRWVX1Nvfu/m0Wz4yJV77PPUkugxVOzI/vuhmaY=;
+	s=korg; t=1760716509;
+	bh=4d5ymmunzL4+XPy0gXw9X0hvP9uSKIEsXyp0hyj9lr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F81MaSy50Z2t62cUifxi8uij5lzg4mWC7DoPIHxu+YW7tYSpnPCCH9ddO1sejjY0G
-	 LqZFUMIqGQAiUO0m1xTwAYzRtvll6PqwbzDGDYHDvHCF5rp36uh5dCmtNPWyshgl+c
-	 qqv46G3+DulHVb/B/Fc0GyF++O0MN3z8V56609nM=
+	b=jiDGwko9cMPL51GwtwTNKxwhCjUwk4La3I5c8I6zLN3i3+QyDZX+rhF1AA79hdXPw
+	 zFq/bniurYFeeU/DmD2AhQbIk39nnpZQx7L7est6oQ7/VOF9eL9fwxs1/1EsHWtySM
+	 4+UAaEGgwXBIqjhHsBVOkET0a4ihBlejFA7q/Qcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.17 300/371] x86/umip: Fix decoding of register forms of 0F 01 (SGDT and SIDT aliases)
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 182/276] iio: dac: ad5421: use int type to store negative error codes
 Date: Fri, 17 Oct 2025 16:54:35 +0200
-Message-ID: <20251017145212.928889941@linuxfoundation.org>
+Message-ID: <20251017145149.118766029@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-commit 27b1fd62012dfe9d3eb8ecde344d7aa673695ecf upstream.
+commit 3379c900320954d768ed9903691fb2520926bbe3 upstream.
 
-Filter out the register forms of 0F 01 when determining whether or not to
-emulate in response to a potential UMIP violation #GP, as SGDT and SIDT only
-accept memory operands.  The register variants of 0F 01 are used to encode
-instructions for things like VMX and SGX, i.e. not checking the Mod field
-would cause the kernel to incorrectly emulate on #GP, e.g. due to a CPL
-violation on VMLAUNCH.
+Change the 'ret' variable in ad5421_update_ctrl() from unsigned int to
+int, as it needs to store either negative error codes or zero returned
+by ad5421_write_unlocked().
 
-Fixes: 1e5db223696a ("x86/umip: Add emulation code for UMIP instructions")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
+Fixes: 5691b23489db ("staging:iio:dac: Add AD5421 driver")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Link: https://patch.msgid.link/20250901135726.17601-3-rongqianfeng@vivo.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/umip.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/iio/dac/ad5421.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/umip.c
-+++ b/arch/x86/kernel/umip.c
-@@ -163,8 +163,19 @@ static int identify_insn(struct insn *in
- 	if (insn->opcode.bytes[1] == 0x1) {
- 		switch (X86_MODRM_REG(insn->modrm.value)) {
- 		case 0:
-+			/* The reg form of 0F 01 /0 encodes VMX instructions. */
-+			if (X86_MODRM_MOD(insn->modrm.value) == 3)
-+				return -EINVAL;
-+
- 			return UMIP_INST_SGDT;
- 		case 1:
-+			/*
-+			 * The reg form of 0F 01 /1 encodes MONITOR/MWAIT,
-+			 * STAC/CLAC, and ENCLS.
-+			 */
-+			if (X86_MODRM_MOD(insn->modrm.value) == 3)
-+				return -EINVAL;
-+
- 			return UMIP_INST_SIDT;
- 		case 4:
- 			return UMIP_INST_SMSW;
+--- a/drivers/iio/dac/ad5421.c
++++ b/drivers/iio/dac/ad5421.c
+@@ -186,7 +186,7 @@ static int ad5421_update_ctrl(struct iio
+ 	unsigned int clr)
+ {
+ 	struct ad5421_state *st = iio_priv(indio_dev);
+-	unsigned int ret;
++	int ret;
+ 
+ 	mutex_lock(&st->lock);
+ 
 
 
 
