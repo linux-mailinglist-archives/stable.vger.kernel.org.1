@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-187244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9DFBEA086
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0387BE9978
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4765535E5E0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEB531894340
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97AA332914;
-	Fri, 17 Oct 2025 15:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0000F2F12BE;
+	Fri, 17 Oct 2025 15:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="de1FLYSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExsOPFQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C923328FF;
-	Fri, 17 Oct 2025 15:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AA2337113;
+	Fri, 17 Oct 2025 15:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715524; cv=none; b=S+6OZ4yuucbLFYNXXCHwGjNsibkSLvLl1Uttxc/0c45na0pihOizKls0X7HNRmvINkaihZavD7CjW06gFRrs1f6fdHC6rRSGXBwpoc++jagY0/QCkZra6I+egCgG1S3hKWzxYRshgu/HumDe+k/cn/QmCIm5OZ9yL4tpWOrIfEY=
+	t=1760713904; cv=none; b=BCnr/VcWEbS7dysi1d9sJ2I0yEDHw6YLyBXkwLYteBWfarz7RAt6lzdw+e/aRnepIRVH3gVq+sZq+0LbFXGoJ3l3YKB7zoc6qZkO4RrEHiJswol4/yQFGtbLuuZ2z9yc5F+rLMjQC24izEgBLJMLZBFrrYuB46u8NIdgpgD7nVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715524; c=relaxed/simple;
-	bh=KwQqcPvm49go1jJmQ+E2OuxSOpyP7TIXshz40f6AIlo=;
+	s=arc-20240116; t=1760713904; c=relaxed/simple;
+	bh=0AeLj3T5IMMzCcwtcNZ7wMs3hEmKmBh8dyKC0vwkvrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQlb4XiqWgLz0fu22a6W4M/toPSdttFPtU1IP5ihKjlQ3bZWHDpCgDpKdWWYwRHF6eq3z/Poze5JTmtAfMjYxiVH5fttm0eLh63wpcFbhB7xMAl/cHVjwvXIObwsUcuyPRTBBsBevR6MDU/0eSWwpaExfV0hbslJ+gMTTDMzGvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=de1FLYSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12811C4CEE7;
-	Fri, 17 Oct 2025 15:38:43 +0000 (UTC)
+	 MIME-Version; b=YST201LHZedu4j0Y6rU66Wrqg8bxhwVF9aOSXO3JR93wT6Kg07QYLn+QYfck0pj8ValRVdER/g84EgjBdB8uYuzZ2C7VF8nWNv9r5dJ5etLs7QMZX6rA1Lae2tYXSCZSBdoGzjw2Qcd4LqEdbV9QpHb0NgT/dtIwdD6o5igAeXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExsOPFQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF04C4CEE7;
+	Fri, 17 Oct 2025 15:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715524;
-	bh=KwQqcPvm49go1jJmQ+E2OuxSOpyP7TIXshz40f6AIlo=;
+	s=korg; t=1760713904;
+	bh=0AeLj3T5IMMzCcwtcNZ7wMs3hEmKmBh8dyKC0vwkvrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=de1FLYSV6wZeaOfPWRfh+fsni5kkKCQgelOA8g/igpRan5wemPK2Az0yDMHci5oS7
-	 XRwpW+EtGP52YnO/72LWWOwzmTuxVut+gJrZPbqi6pPzWfev8DYnVlVjHM/Pxd5Tec
-	 YU+Q/Nr6lYCGVIKemyxeZD3UE/riMfdedFim2ce8=
+	b=ExsOPFQiUytslHSD16yjpVmSbisvw32U0mFzQ5Z9N+Tejd9Uf7HHp4dJbPVPhcwE2
+	 ezcNxBMLfgWAY3nl4xEUN1Fo0AYMTIT6bO1GVXDBmMCM/KFnCJTrkUqdGBrE20afWG
+	 qart5BF3mmz1C0xz2xhhv+mIBvlz5ELSDvyn9Vgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>
-Subject: [PATCH 6.17 247/371] PM: hibernate: Restrict GFP mask in power_down()
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 161/201] mfd: intel_soc_pmic_chtdc_ti: Drop unneeded assignment for cache_type
 Date: Fri, 17 Oct 2025 16:53:42 +0200
-Message-ID: <20251017145211.015805476@linuxfoundation.org>
+Message-ID: <20251017145140.647499380@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 6f4c6f9ed4ce65303f6bb153e2afc71bc33c8ded upstream.
+[ Upstream commit 9eb99c08508714906db078b5efbe075329a3fb06 ]
 
-Commit 12ffc3b1513e ("PM: Restrict swap use to later in the
-suspend sequence") caused hibernation_platform_enter() to call
-pm_restore_gfp_mask() via dpm_resume_end(), so when power_down()
-returns after aborting hibernation_platform_enter(), it needs
-to match the pm_restore_gfp_mask() call in hibernate() that will
-occur subsequently.
+REGCACHE_NONE is the default type of the cache when not provided.
+Drop unneeded explicit assignment to it.
 
-Address this by adding a pm_restrict_gfp_mask() call to the relevant
-error path in power_down().
+Note, it's defined to 0, and if ever be redefined, it will break
+literally a lot of the drivers, so it very unlikely to happen.
 
-Fixes: 12ffc3b1513e ("PM: Restrict swap use to later in the suspend sequence")
-Cc: 6.16+ <stable@vger.kernel.org> # 6.16+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250129152823.1802273-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: 64e0d839c589 ("mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/hibernate.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mfd/intel_soc_pmic_chtdc_ti.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/kernel/power/hibernate.c
-+++ b/kernel/power/hibernate.c
-@@ -722,6 +722,8 @@ static void power_down(void)
- 	case HIBERNATION_PLATFORM:
- 		error = hibernation_platform_enter();
- 		if (error == -EAGAIN || error == -EBUSY) {
-+			/* Match pm_restore_gfp_mask() in hibernate(). */
-+			pm_restrict_gfp_mask();
- 			swsusp_unmark();
- 			events_check_enabled = false;
- 			pr_info("Wakeup event detected during hibernation, rolling back.\n");
+--- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
++++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+@@ -82,7 +82,6 @@ static const struct regmap_config chtdc_
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+ 	.max_register = 0xff,
+-	.cache_type = REGCACHE_NONE,
+ };
+ 
+ static const struct regmap_irq chtdc_ti_irqs[] = {
 
 
 
