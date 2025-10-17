@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-186864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2337BE9BA1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45DC0BE9773
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:05:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5E4A435DB46
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4FEA740B98
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDCC33291F;
-	Fri, 17 Oct 2025 15:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AED13370F8;
+	Fri, 17 Oct 2025 14:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/T8xDFO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yb8bBEBp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580C81D5CE0;
-	Fri, 17 Oct 2025 15:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABD33370E3;
+	Fri, 17 Oct 2025 14:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714444; cv=none; b=XCbWv9mSTGf3/oGMSko+mHnK5l+F8QF2knd2cCSRyEAFgLGg1TTG8wq1atrPpVcyGdhq5sLwu6onR4R7MTMGKjdwGwaByKO2Y4fKkFPeFz+p1yxBNYgx8katRCfVt31JCCRqGb6v2/2F0sDLZP+3qKxmUl6CkakNO0JSe2ielqU=
+	t=1760713182; cv=none; b=Q0k5yb/d3PpNgG/dLanGIwOGMQRT7zcmEPnhWclbXrAfUlNmRzzbcpbrj1WiT7bvzOL+sc8VWdLY5vVFmVTh73PsPqVCZLGy6kw3m1fVtwiH0tiKMVxuQ92w4GtJhTm9eJ4uyjCzy5cmJoR/i0B2/3r8mecjbP08i80Sts3mWPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714444; c=relaxed/simple;
-	bh=VJBHMiXlBaLTuCNDqJWMXG55sXIucT25bpf4D8VjP/0=;
+	s=arc-20240116; t=1760713182; c=relaxed/simple;
+	bh=K1M1YDy4WUfB0TA8Unur8yWEk7DTd2Q7P7F+vFFPaWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FQ/d600ejmsn7fD4IVDjUflyzpIWuddnHKMHIpC7obMu+8r46iKa7fq5Dr0aoJKVWI393p72y0uoYXKvGtnP4lKmFQdXmuV8jMYHxFxdOi0kZHYzQymRI9qmYjCXcKEEUQos2XJlJB5BT/n2vg7D602xJBO8962PydP6dUSXkWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/T8xDFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB028C4CEE7;
-	Fri, 17 Oct 2025 15:20:43 +0000 (UTC)
+	 MIME-Version; b=tHs0YGjyLVwIdm0tnQ8E/c7iokAiKSlO3UBd9CUY7qHqX74CcyebO76xsLnhVWE3yYP7Lh8FrUZrVgL0dxRpzeTYf8ecHJCkrnIyfiJznCusBKR7AvUh0KRX2VblO8s8wgPhJcIC4UBRYJ/7nIOaOS5j1+cJPuDmP3qXP6zDpI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yb8bBEBp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65987C4CEFE;
+	Fri, 17 Oct 2025 14:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714444;
-	bh=VJBHMiXlBaLTuCNDqJWMXG55sXIucT25bpf4D8VjP/0=;
+	s=korg; t=1760713182;
+	bh=K1M1YDy4WUfB0TA8Unur8yWEk7DTd2Q7P7F+vFFPaWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/T8xDFOo4nStfFTMRy5GEpSQ5Qwe6fAsikRS9Mc2LnDozwv2Ck3JGnQq9DoIYXqi
-	 2yhJC3yevCoyjkrnPNlc/GgO+wv/H2nyRg8Cfif/DS+LqjgO2nc4posKGRYFfOIj76
-	 lgfhulF8UbK45qbajipLf/IR3+mTom6GfXoHigvE=
+	b=Yb8bBEBpQTADb77Fwj177ps5o4H6MbPmB4+MmCGhvxSRxeKOUJKWinILPcePw+ZAI
+	 rneNrJH+GwNQXAelllnQsbthRaJgOuvqaAJPZongnCQo3LJ1OJ0Dsd3ZysZaiiydpV
+	 gv/KKP9HeGVrUC827wVEnwBcqdF+ymjurypFiDyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <Markus.Elfring@web.de>,
-	Yang Erkun <yangerkun@huawei.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Yu Kuai <yukuai1@huaweicloud.com>,
-	Li Chen <chenl311@chinatelecom.cn>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 148/277] loop: fix backing file reference leak on validation error
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 6.1 076/168] fs/ntfs3: Fix a resource leak bug in wnd_extend()
 Date: Fri, 17 Oct 2025 16:52:35 +0200
-Message-ID: <20251017145152.528627400@linuxfoundation.org>
+Message-ID: <20251017145131.828217064@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Chen <me@linux.beauty>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 98b7bf54338b797e3a11e8178ce0e806060d8fa3 upstream.
+commit d68318471aa2e16222ebf492883e05a2d72b9b17 upstream.
 
-loop_change_fd() and loop_configure() call loop_check_backing_file()
-to validate the new backing file. If validation fails, the reference
-acquired by fget() was not dropped, leaking a file reference.
+Add put_bh() to decrease the refcount of 'bh' after the job
+is finished, preventing a resource leak.
 
-Fix this by calling fput(file) before returning the error.
-
+Fixes: 3f3b442b5ad2 ("fs/ntfs3: Add bitmap")
 Cc: stable@vger.kernel.org
-Cc: Markus Elfring <Markus.Elfring@web.de>
-CC: Yang Erkun <yangerkun@huawei.com>
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: Yu Kuai <yukuai1@huaweicloud.com>
-Fixes: f5c84eff634b ("loop: Add sanity check for read/write_iter")
-Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Yang Erkun <yangerkun@huawei.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/loop.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/ntfs3/bitmap.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -536,8 +536,10 @@ static int loop_change_fd(struct loop_de
- 		return -EBADF;
+--- a/fs/ntfs3/bitmap.c
++++ b/fs/ntfs3/bitmap.c
+@@ -1374,6 +1374,7 @@ int wnd_extend(struct wnd_bitmap *wnd, s
+ 		mark_buffer_dirty(bh);
+ 		unlock_buffer(bh);
+ 		/* err = sync_dirty_buffer(bh); */
++		put_bh(bh);
  
- 	error = loop_check_backing_file(file);
--	if (error)
-+	if (error) {
-+		fput(file);
- 		return error;
-+	}
- 
- 	/* suppress uevents while reconfiguring the device */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 1);
-@@ -973,8 +975,10 @@ static int loop_configure(struct loop_de
- 		return -EBADF;
- 
- 	error = loop_check_backing_file(file);
--	if (error)
-+	if (error) {
-+		fput(file);
- 		return error;
-+	}
- 
- 	is_loop = is_loop_device(file);
- 
+ 		b0 = 0;
+ 		bits -= op;
 
 
 
