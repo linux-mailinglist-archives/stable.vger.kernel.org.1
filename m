@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A872BEA68E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC1CBEA609
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48B58745835
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16A1B94438D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC058330B1F;
-	Fri, 17 Oct 2025 15:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A66336ED6;
+	Fri, 17 Oct 2025 15:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmU1E2xt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMNEkzBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7874C330B00;
-	Fri, 17 Oct 2025 15:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE50C33507C;
+	Fri, 17 Oct 2025 15:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716302; cv=none; b=o1taiMVjQNVjFtZyyx5JXp5S8ZyTMvQWhu6VXdZUQBr/cyGf/ig4mLeI90pEcOYJHuWq+GajQOBQVijivVoufpzVUvp6fwDxNJUCk7aOxh47kawk/KsLHibpEe8e5rXrPLLBXd6S+m8ivEZcFCcHpT/VIKDj4OnidtQy4dECgwc=
+	t=1760715479; cv=none; b=oVWPTEkjJD6z0WBm436kEaKo7VVXcpT17yFswkbSaRz68QVnOX3WflNmAxF3uy7HllNTWM/zGhGW2Rb9XCM0z8zhwV7bvlRf2IKDL+1Fl7KOyrLoOpS6A3X/bNO+5Nv6HYaqWxdvn9d9I8MKUr2H9S4Jj74kheKhccA1X5N2tR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716302; c=relaxed/simple;
-	bh=i9Ayl5CAVvpTPwUZLDwwDvNLOeTXYkrjOEW+OOQ5Wqs=;
+	s=arc-20240116; t=1760715479; c=relaxed/simple;
+	bh=f+NLP2SmMtqLG8jKqx/PIMHU59QShw6d01h2xFLlGB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNkfdivMAMwZp8iED329EOUzctyysjKq+xD4jacKyECzBQCDDg5sPFSG+QIX3fBxr5FFTeh3oAXq8kT1dl8VNvxmN6KSn8ovnhzO33PZsSJERMS36Ibi6XEtOfUTMEMOQV8gEeqrM2bhKVP23WrTuyAeBKkDImvHWQ+IyQ8kHPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmU1E2xt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0A5C4CEE7;
-	Fri, 17 Oct 2025 15:51:41 +0000 (UTC)
+	 MIME-Version; b=ukh9LJDD8U0ius2IPSuVXsSJNhCUsrerwxahnkP/jCNN2KFT9LVeGQwRVlglYnW7FU9AcvXHVEl1XeCzFQtlg1tWKFb6tHNnCpacdQ87+cg9MBaNNuOCKlNEg6trI+tE/Gr19wGMF0cX/IffsPJ3msZYxipfTKuBdIpz2sq5gY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMNEkzBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7A6C4CEFE;
+	Fri, 17 Oct 2025 15:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716302;
-	bh=i9Ayl5CAVvpTPwUZLDwwDvNLOeTXYkrjOEW+OOQ5Wqs=;
+	s=korg; t=1760715478;
+	bh=f+NLP2SmMtqLG8jKqx/PIMHU59QShw6d01h2xFLlGB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmU1E2xt+KyqnwrUUpGY9R2dEFgrBuz7Dsl3FHQNoxngmI0znngNj4V/s6glliO02
-	 Jfyu2TFVC7mLvAhMTaZIAHAGYjYJ9vO81MTSLqUGSaGgByfRpDEDgOuHjL+aQZUine
-	 taC7WZKabZjlBE5666SQjsGO6hWfSw0gpLin5tio=
+	b=rMNEkzBZu5fBGU58p1JyJRN5Pka7g5G2COnmH+9zAcwZjJ7XO6hw939yLdQVy/3Ht
+	 FH6kgKelwVG4vOPsokQhYgYBuK5RoIYZq+TkN6z7vNEZA6/gtkgc4hl2Ppm4U9Xdkf
+	 q+MU81eQzj7GYop77mFneb5li4fyGfXmJniTszog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.15 111/276] mfd: vexpress-sysreg: Check the return value of devm_gpiochip_add_data()
+	Joel Granados <joel.granados@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.17 229/371] iommu/vt-d: PRS isnt usable if PDS isnt supported
 Date: Fri, 17 Oct 2025 16:53:24 +0200
-Message-ID: <20251017145146.530857380@linuxfoundation.org>
+Message-ID: <20251017145210.369055451@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-commit 1efbee6852f1ff698a9981bd731308dd027189fb upstream.
+commit 5ef7e24c742038a5d8c626fdc0e3a21834358341 upstream.
 
-Commit 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
-removed the return value check from the call to gpiochip_add_data() (or
-rather gpiochip_add() back then and later converted to devres) with no
-explanation. This function however can still fail, so check the return
-value and bail-out if it does.
+The specification, Section 7.10, "Software Steps to Drain Page Requests &
+Responses," requires software to submit an Invalidation Wait Descriptor
+(inv_wait_dsc) with the Page-request Drain (PD=1) flag set, along with
+the Invalidation Wait Completion Status Write flag (SW=1). It then waits
+for the Invalidation Wait Descriptor's completion.
 
+However, the PD field in the Invalidation Wait Descriptor is optional, as
+stated in Section 6.5.2.9, "Invalidation Wait Descriptor":
+
+"Page-request Drain (PD): Remapping hardware implementations reporting
+ Page-request draining as not supported (PDS = 0 in ECAP_REG) treat this
+ field as reserved."
+
+This implies that if the IOMMU doesn't support the PDS capability, software
+can't drain page requests and group responses as expected.
+
+Do not enable PCI/PRI if the IOMMU doesn't support PDS.
+
+Reported-by: Joel Granados <joel.granados@kernel.org>
+Closes: https://lore.kernel.org/r/20250909-jag-pds-v1-1-ad8cba0e494e@kernel.org
+Fixes: 66ac4db36f4c ("iommu/vt-d: Add page request draining support")
 Cc: stable@vger.kernel.org
-Fixes: 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250811-gpio-mmio-mfd-conv-v1-1-68c5c958cf80@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20250915062946.120196-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/vexpress-sysreg.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/iommu/intel/iommu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mfd/vexpress-sysreg.c
-+++ b/drivers/mfd/vexpress-sysreg.c
-@@ -98,6 +98,7 @@ static int vexpress_sysreg_probe(struct
- 	struct resource *mem;
- 	void __iomem *base;
- 	struct gpio_chip *mmc_gpio_chip;
-+	int ret;
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -3817,7 +3817,7 @@ static struct iommu_device *intel_iommu_
+ 			}
  
- 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!mem)
-@@ -118,7 +119,10 @@ static int vexpress_sysreg_probe(struct
- 	bgpio_init(mmc_gpio_chip, &pdev->dev, 0x4, base + SYS_MCI,
- 			NULL, NULL, NULL, NULL, 0);
- 	mmc_gpio_chip->ngpio = 2;
--	devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
-+
-+	ret = devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
-+	if (ret)
-+		return ret;
- 
- 	return devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_AUTO,
- 			vexpress_sysreg_cells,
+ 			if (info->ats_supported && ecap_prs(iommu->ecap) &&
+-			    pci_pri_supported(pdev))
++			    ecap_pds(iommu->ecap) && pci_pri_supported(pdev))
+ 				info->pri_supported = 1;
+ 		}
+ 	}
 
 
 
