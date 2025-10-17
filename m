@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27FDBEA323
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 225AEBEA37E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F1021AE3097
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DD907C10C8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F89330B29;
-	Fri, 17 Oct 2025 15:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6124C393DE3;
+	Fri, 17 Oct 2025 15:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9UCs+Po"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCChpabb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E3C330B17;
-	Fri, 17 Oct 2025 15:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E69032C95D;
+	Fri, 17 Oct 2025 15:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715956; cv=none; b=ehlZBJQsZkp3taJ6FW9K1vWCU8ZK2lCV5Aj2YPD7lQmXzCZAiTft8+BRZLrWfXuJTx9qYiuDCzV/C9snHjGnPH+eW128xuEPdy5HrRlsBnQRgCJH0xx+m+HgU4//48jNEjsDnQXj3iFyv8BeyUiYLkGrId5CXJRXmixAFlpUmoc=
+	t=1760715225; cv=none; b=Q4wO5sZLPBSuNrqklL2O3tjPVvuBNkCPV8pAruLZ3zKY6BDYRqZI2Xtc3apdacBAUC18vUrYs0B8iISMJ0zpXOKkMReeM7KbkPubY9pwpR6dx60dLK2mLYaDWVq3YtZNGlEG9fnpLK+dtDpIyUdb4s9IUaEPvo4j2/bnEhyDqns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715956; c=relaxed/simple;
-	bh=hu59CXuBHq/wOcdBzC2bWJw093lLqps8jTnxEMl0m8A=;
+	s=arc-20240116; t=1760715225; c=relaxed/simple;
+	bh=eSla8AgxdrxCQhpeOdzVHlOaaD4rKhlUoBSj1c0mLmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vAsQuxtSUNNA4lCSfjEtZDQlWvEjChEGkikYf/OIkBCwNlcrTinzqU7BzKv3q8kfCUUDaiMQ2j8j0JxN3F3ko22XAUdcjgqfzs8gFMSuqxdPC+djOefMatv8WABGPw4+VKjoXsyHjGY6BtVbGKZ6vBebyyePVxcoQdieYh019Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9UCs+Po; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D36AC4CEE7;
-	Fri, 17 Oct 2025 15:45:55 +0000 (UTC)
+	 MIME-Version; b=Q0GPkLdho5kAwLLvJYT0vrZwm811Xqatwp3jssv/dtYcDYQln7YqcFUFogiq6jJX0HnPtLsrl7j5SpgHPQLtCPeqVHmh+EPPP+bUXVkEEvlNaYC6jvXENJR9K4Knqcg66o/E0wkyp1LF7gdnc6/1VWuO4uSYXOMGWp7X1n+La/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCChpabb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0D3C4CEE7;
+	Fri, 17 Oct 2025 15:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715956;
-	bh=hu59CXuBHq/wOcdBzC2bWJw093lLqps8jTnxEMl0m8A=;
+	s=korg; t=1760715224;
+	bh=eSla8AgxdrxCQhpeOdzVHlOaaD4rKhlUoBSj1c0mLmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9UCs+Pod8/zFVKRwcOxYb9h5bwkgK5sXqv5B1gGwOLePoIEA4W4bdvI55cgmy0p2
-	 6APdmRQacDxbLHP8uSyH+qwTxh8xZeG63dkWGEdYxI8BpfjUoxsuthBkW4giJ4YuLV
-	 vxB2mrgvk03vtkTsok85IvVHU6ZVDuDquSySaQBs=
+	b=DCChpabbJ4hrxT+dWc53gJnLgUQxP98zWbpscuuWy16GsKb7K2rd1rWre1w06dYUk
+	 /grwdiWoCc6U1KE0W0jRTxb8OlIIQIIeLn4xgDq3Redix/bed9mJjgABbHlUDJZRG0
+	 Wfpnr/h0EGYXbIYOuw6GwBYCTgbzdewlB3yWN3s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/276] filelock: add FL_RECLAIM to show_fl_flags() macro
-Date: Fri, 17 Oct 2025 16:51:56 +0200
-Message-ID: <20251017145143.250453617@linuxfoundation.org>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.17 142/371] arm64: dts: qcom: msm8916: Add missing MDSS reset
+Date: Fri, 17 Oct 2025 16:51:57 +0200
+Message-ID: <20251017145207.074276241@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit c593b9d6c446510684da400833f9d632651942f0 ]
+commit 99b78773c2ae55dcc01025f94eae8ce9700ae985 upstream.
 
-Show the FL_RECLAIM flag symbolically in tracepoints.
+On most MSM8916 devices (aside from the DragonBoard 410c), the bootloader
+already initializes the display to show the boot splash screen. In this
+situation, MDSS is already configured and left running when starting Linux.
+To avoid side effects from the bootloader configuration, the MDSS reset can
+be specified in the device tree to start again with a clean hardware state.
 
-Fixes: bb0a55bb7148 ("nfs: don't allow reexport reclaims")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/20250903-filelock-v1-1-f2926902962d@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reset for MDSS is currently missing in msm8916.dtsi, which causes
+errors when the MDSS driver tries to re-initialize the registers:
+
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ ...
+
+It turns out that we have always indirectly worked around this by building
+the MDSS driver as a module. Before v6.17, the power domain was temporarily
+turned off until the module was loaded, long enough to clear the register
+contents. In v6.17, power domains are not turned off during boot until
+sync_state() happens, so this is no longer working. Even before v6.17 this
+resulted in broken behavior, but notably only when the MDSS driver was
+built-in instead of a module.
+
+Cc: stable@vger.kernel.org
+Fixes: 305410ffd1b2 ("arm64: dts: msm8916: Add display support")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-1-a5c705df0c45@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/filelock.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8916.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/trace/events/filelock.h b/include/trace/events/filelock.h
-index 1646dadd7f37c..3b1c8d93b2654 100644
---- a/include/trace/events/filelock.h
-+++ b/include/trace/events/filelock.h
-@@ -27,7 +27,8 @@
- 		{ FL_SLEEP,		"FL_SLEEP" },			\
- 		{ FL_DOWNGRADE_PENDING,	"FL_DOWNGRADE_PENDING" },	\
- 		{ FL_UNLOCK_PENDING,	"FL_UNLOCK_PENDING" },		\
--		{ FL_OFDLCK,		"FL_OFDLCK" })
-+		{ FL_OFDLCK,		"FL_OFDLCK" },			\
-+		{ FL_RECLAIM,		"FL_RECLAIM"})
+--- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+@@ -1562,6 +1562,8 @@
  
- #define show_fl_type(val)				\
- 	__print_symbolic(val,				\
--- 
-2.51.0
-
+ 			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+ 
++			resets = <&gcc GCC_MDSS_BCR>;
++
+ 			interrupt-controller;
+ 			#interrupt-cells = <1>;
+ 
 
 
 
