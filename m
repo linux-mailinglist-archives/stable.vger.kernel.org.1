@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-187440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD178BEA87F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:13:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE99BEAB53
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9383A7C31BF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:48:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71BF6746F5A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AD1330B0D;
-	Fri, 17 Oct 2025 15:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E882F12C6;
+	Fri, 17 Oct 2025 15:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hW1alKUy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZHuzonq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F3F330B17;
-	Fri, 17 Oct 2025 15:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53AC330B36;
+	Fri, 17 Oct 2025 15:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716078; cv=none; b=HsQ63uOdIBIHyzhvsVI5fRat5KdgYbEh75JKRJzXvcvz39IWRy57jzhKZgfNSe8cihkwp9Gx6WpsaLPOJcETryfKbYQerXNi1vMWd27BAV31UwXLokC1zMRHsKcteyy7XiSmOg0jfpIxyegzrQH+AyutJ3LnBLDlcpzrn0Ay308=
+	t=1760716089; cv=none; b=Z5OUL7P6h3pnqUZLkcSKMx6nW7p1QZ36VR+VdAR2yl5q8cC+RXINfztdWQLoOw/6Sk7vsiY0DkKzvjQLnuzad44W143BhDyMNzO4co2PqWAx1J9bI+OsmVa3BjPpztO+gtV3ugYYQvT7N74ivBLlsjkQjIseh10saNWrFZDKdYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716078; c=relaxed/simple;
-	bh=5+OEJQd3bQDcuc7HkXF3tbOhh5r73lC2QSlfoZ5h0jM=;
+	s=arc-20240116; t=1760716089; c=relaxed/simple;
+	bh=eEZqdYjO9/AHnhaMy1p9TGkit2Q+F7N1JWVoVuGhK1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uI8ANSamNRYRTY92hIAJRuVy6d/5Q5SZCZeqYF42uisgnvURn+ZYCCQHzMVHcMgXEMW1SXQ5As2+s/5uirNi3Hi0VKbD5alxUeOPAsa6lRZpWsklppVrMNBzQJsdk312Ee4xxjpojIqjPS/gNMchHwHy/5/uduri6tadOl/0bOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hW1alKUy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A039FC116B1;
-	Fri, 17 Oct 2025 15:47:57 +0000 (UTC)
+	 MIME-Version; b=G3bKEp2mcuchXviBkXStJGnc+2qR9IQ111kcRcQnntz+sdfiTr+Uvg/3V/IMbzkRJlOO5fwSJUBvc9x1IvAnF3icw8t6B9762inpzP2n7dKQXxRGZ1R4DhzNPl8K+FbhJjEPFSBSajePWIJ7JxogXxwj7yxV8+sB9/gikDfXW+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZHuzonq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421BDC113D0;
+	Fri, 17 Oct 2025 15:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716078;
-	bh=5+OEJQd3bQDcuc7HkXF3tbOhh5r73lC2QSlfoZ5h0jM=;
+	s=korg; t=1760716089;
+	bh=eEZqdYjO9/AHnhaMy1p9TGkit2Q+F7N1JWVoVuGhK1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hW1alKUyDwhQmLvnx6zIlNVdFdHfOPXD1SaG0IfRu0Yx67pClDpAknLEFVyYWOSM3
-	 xsdE5l9BlZ/JKT8T7hpNnnZwv6HiayDs5aknqb04eFpZne5IVxTMjwsV1AGhhGurbJ
-	 hA6Bbx8kg9+6sobR8/PB9kiOSEXXcOG1No/FNsFQ=
+	b=BZHuzonqpwXBygdq/2IpK9zXGinC/+YcskFhXCgX5nynY37+HjMwLtTTBaNNeLLSI
+	 03P4rH+K14E/Rj5EOCfVMXsvP1DLAAb4GAfkfgje+Uv/XHaAEJgTiceXm7/R35QX6w
+	 pXfSRhqDE9I7ORhUfj6CGaavTGzDauKY5oiyqeA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Wu <william.wu@rock-chips.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/276] usb: gadget: configfs: Correctly set use_os_string at bind
-Date: Fri, 17 Oct 2025 16:52:38 +0200
-Message-ID: <20251017145144.862152054@linuxfoundation.org>
+Subject: [PATCH 5.15 068/276] ASoC: Intel: bytcht_es8316: Fix invalid quirk input mapping
+Date: Fri, 17 Oct 2025 16:52:41 +0200
+Message-ID: <20251017145144.969617521@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -65,56 +66,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: William Wu <william.wu@rock-chips.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit e271cc0d25015f4be6c88bd7731444644eb352c2 ]
+[ Upstream commit b20eb0e8de383116f1e1470d74da2a3c83c4e345 ]
 
-Once the use_os_string flag is set to true for some functions
-(e.g. adb/mtp) which need to response the OS string, and then
-if we re-bind the ConfigFS gadget to use the other functions
-(e.g. hid) which should not to response the OS string, however,
-because the use_os_string flag is still true, so the usb gadget
-response the OS string descriptor incorrectly, this can cause
-the USB device to be unrecognizable on the Windows system.
+When an invalid value is passed via quirk option, currently
+bytcht_es8316 driver just ignores and leaves as is, which may lead to
+unepxected results like OOB access.
 
-An example of this as follows:
+This patch adds the sanity check and corrects the input mapping to the
+certain default value if an invalid value is passed.
 
-echo 1 > os_desc/use
-ln -s functions/ffs.adb configs/b.1/function0
-start adbd
-echo "<udc device>" > UDC   #succeed
-
-stop adbd
-rm configs/b.1/function0
-echo 0 > os_desc/use
-ln -s functions/hid.gs0 configs/b.1/function0
-echo "<udc device>" > UDC  #fail to connect on Windows
-
-This patch sets the use_os_string flag to false at bind if
-the functions not support OS Descriptors.
-
-Signed-off-by: William Wu <william.wu@rock-chips.com>
-Fixes: 87213d388e92 ("usb: gadget: configfs: OS String support")
-Link: https://lore.kernel.org/r/1755833769-25434-1-git-send-email-william.wu@rock-chips.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 249d2fc9e55c ("ASoC: Intel: bytcht_es8316: Set card long_name based on quirks")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Message-ID: <20250902171826.27329-2-tiwai@suse.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/configfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/intel/boards/bytcht_es8316.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
-index 6423930b0e72e..9a3de907de696 100644
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -1364,6 +1364,8 @@ static int configfs_composite_bind(struct usb_gadget *gadget,
- 		cdev->use_os_string = true;
- 		cdev->b_vendor_code = gi->b_vendor_code;
- 		memcpy(cdev->qw_sign, gi->qw_sign, OS_STRING_QW_SIGN_LEN);
-+	} else {
-+		cdev->use_os_string = false;
- 	}
+diff --git a/sound/soc/intel/boards/bytcht_es8316.c b/sound/soc/intel/boards/bytcht_es8316.c
+index b5c97d35864a6..923e69c7695c2 100644
+--- a/sound/soc/intel/boards/bytcht_es8316.c
++++ b/sound/soc/intel/boards/bytcht_es8316.c
+@@ -46,7 +46,8 @@ enum {
+ 	BYT_CHT_ES8316_INTMIC_IN2_MAP,
+ };
  
- 	if (gadget_is_otg(gadget) && !otg_desc[0]) {
+-#define BYT_CHT_ES8316_MAP(quirk)		((quirk) & GENMASK(3, 0))
++#define BYT_CHT_ES8316_MAP_MASK			GENMASK(3, 0)
++#define BYT_CHT_ES8316_MAP(quirk)		((quirk) & BYT_CHT_ES8316_MAP_MASK)
+ #define BYT_CHT_ES8316_SSP0			BIT(16)
+ #define BYT_CHT_ES8316_MONO_SPEAKER		BIT(17)
+ #define BYT_CHT_ES8316_JD_INVERTED		BIT(18)
+@@ -59,10 +60,23 @@ MODULE_PARM_DESC(quirk, "Board-specific quirk override");
+ 
+ static void log_quirks(struct device *dev)
+ {
+-	if (BYT_CHT_ES8316_MAP(quirk) == BYT_CHT_ES8316_INTMIC_IN1_MAP)
++	int map;
++
++	map = BYT_CHT_ES8316_MAP(quirk);
++	switch (map) {
++	case BYT_CHT_ES8316_INTMIC_IN1_MAP:
+ 		dev_info(dev, "quirk IN1_MAP enabled");
+-	if (BYT_CHT_ES8316_MAP(quirk) == BYT_CHT_ES8316_INTMIC_IN2_MAP)
++		break;
++	case BYT_CHT_ES8316_INTMIC_IN2_MAP:
+ 		dev_info(dev, "quirk IN2_MAP enabled");
++		break;
++	default:
++		dev_warn_once(dev, "quirk sets invalid input map: 0x%x, default to INTMIC_IN1_MAP\n", map);
++		quirk &= ~BYT_CHT_ES8316_MAP_MASK;
++		quirk |= BYT_CHT_ES8316_INTMIC_IN1_MAP;
++		break;
++	}
++
+ 	if (quirk & BYT_CHT_ES8316_SSP0)
+ 		dev_info(dev, "quirk SSP0 enabled");
+ 	if (quirk & BYT_CHT_ES8316_MONO_SPEAKER)
 -- 
 2.51.0
 
