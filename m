@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-187245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFB8BEA089
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3532EBE9D23
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9A4B535E4DC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C09C1AE23CB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B47330B1B;
-	Fri, 17 Oct 2025 15:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCEF332903;
+	Fri, 17 Oct 2025 15:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMmaGOlb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFIeVWGw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6FB320A0B;
-	Fri, 17 Oct 2025 15:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDFB3328F5;
+	Fri, 17 Oct 2025 15:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715527; cv=none; b=mM292pl7SWhJLQna2GWpGuAwyyyYz0BDRShUK3own9iyQLb+9XhERrdM1tMpxi9eEZLOK8QXmKomh1QoPfW835QOHifONzeNOEOYA7aq6VKVSwbCplxYI0qXlhQX3eviqDhYXP6Qe+J6sKpOSIsygQdH3m9zMEkPPgACPOc0MRI=
+	t=1760714640; cv=none; b=NrYtarA5JUuEDCqNoxUGTxDtb0/LYftvMFxPM/c6xD55+kas/k2cyJf1jaY+TmCT+8XxOUojYaIa2wjarpLtibi5yfjjjlOfqG+NijborakSOULiMIgqcV0BV+YPKz6TdaSwmNzc8Vf0x1OG7DG/gvlbOfx3Z77bRrf7ZucgdfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715527; c=relaxed/simple;
-	bh=spURvNHriZgjB7ZweA/gJVcpr2idbqcPCkl4DIbtfts=;
+	s=arc-20240116; t=1760714640; c=relaxed/simple;
+	bh=8VpkkCZutAVLxCL4Fq6u5hokSDgeidODHFtUktqSbSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c2k1UJLiH0ijUvLPGRtVEW77+imDJkMcOzx9UIDNgBcXTIIE89oJEMFyb0JsCWcvalEYZVDkDvENosl2xyENLwZKipMDnz2+A2kgbpiB9Y2LsOQV3ZAlImnpd8YGI5FQ1ZDfForPubmk7Bce7TpVTBb5Qxx6G04zAyij4jBi7nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMmaGOlb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03745C4CEE7;
-	Fri, 17 Oct 2025 15:38:46 +0000 (UTC)
+	 MIME-Version; b=VEbNd4QAT87FpVlZTFuoY8afg/SLFI9wAwkpWxEwTyWrlFDH8k4+idWFmlX56SKOl63jEQYSM4chB126nqx5dG5GZJ6XVsqhdA+qh005nB6/GCo7ELWFyt0W6eOU7p9Uggi1mRJi/QyOcBmwGgg2zqBkc5PJCaC7trmCLB8p+Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFIeVWGw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29247C4CEE7;
+	Fri, 17 Oct 2025 15:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715527;
-	bh=spURvNHriZgjB7ZweA/gJVcpr2idbqcPCkl4DIbtfts=;
+	s=korg; t=1760714640;
+	bh=8VpkkCZutAVLxCL4Fq6u5hokSDgeidODHFtUktqSbSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMmaGOlbUqwJ8mUCWLhNIdbcsjlMpO8eaXRzgFBWsLDygOYrTJMoCP/ix4mUmf1DN
-	 /fw5OxCujITpcAPj2Lc4emp56NzICH/iuEh6ZcBmRQo5nzhQ5VMwyJLKOeBxE0Q6C7
-	 wDAleBiMxCbzJZ+aA7JMXzFOMR3ELnHB4MOnI4NA=
+	b=BFIeVWGwEOdsaFGu4lrgkcOVACAJrPPIK4mdSkiqo4z7ef7bQouWA2te6vv/l2UDT
+	 TD7F4OmwIBwDw0LCq/GUDiUGFVAvUXvMnHmReKtLcfRUk7WQSHGzMNVGHZuicTAthY
+	 /STQbxTGKq9p/gL78H8kXYM+gFqtF/I2a6HjIlVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dzmitry Sankouski <dsankouski@gmail.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.17 248/371] power: supply: max77976_charger: fix constant current reporting
+	Jan Kara <jack@suse.cz>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.12 216/277] ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()
 Date: Fri, 17 Oct 2025 16:53:43 +0200
-Message-ID: <20251017145211.052501294@linuxfoundation.org>
+Message-ID: <20251017145155.017120126@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dzmitry Sankouski <dsankouski@gmail.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit ee6cd8f3e28ee5a929c3b67c01a350f550f9b73a upstream.
+commit 8ecb790ea8c3fc69e77bace57f14cf0d7c177bd8 upstream.
 
-CHARGE_CONTROL_LIMIT is a wrong property to report charge current limit,
-because `CHARGE_*` attributes represents capacity, not current. The
-correct attribute to report and set charge current limit is
-CONSTANT_CHARGE_CURRENT.
-
-Rename CHARGE_CONTROL_LIMIT to CONSTANT_CHARGE_CURRENT.
+Unlike other strings in the ext4 superblock, we rely on tune2fs to
+make sure s_mount_opts is NUL terminated.  Harden
+parse_apply_sb_mount_options() by treating s_mount_opts as a potential
+__nonstring.
 
 Cc: stable@vger.kernel.org
-Fixes: 715ecbc10d6a ("power: supply: max77976: add Maxim MAX77976 charger driver")
-Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 8b67f04ab9de ("ext4: Add mount options in superblock")
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Message-ID: <20250916-tune2fs-v2-1-d594dc7486f0@mit.edu>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/max77976_charger.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/ext4/super.c |   17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
---- a/drivers/power/supply/max77976_charger.c
-+++ b/drivers/power/supply/max77976_charger.c
-@@ -292,10 +292,10 @@ static int max77976_get_property(struct
- 	case POWER_SUPPLY_PROP_ONLINE:
- 		err = max77976_get_online(chg, &val->intval);
- 		break;
--	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX:
-+	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
- 		val->intval = MAX77976_CHG_CC_MAX;
- 		break;
--	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
-+	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
- 		err = max77976_get_integer(chg, CHG_CC,
- 					   MAX77976_CHG_CC_MIN,
- 					   MAX77976_CHG_CC_MAX,
-@@ -330,7 +330,7 @@ static int max77976_set_property(struct
- 	int err = 0;
- 
- 	switch (psp) {
--	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
-+	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
- 		err = max77976_set_integer(chg, CHG_CC,
- 					   MAX77976_CHG_CC_MIN,
- 					   MAX77976_CHG_CC_MAX,
-@@ -355,7 +355,7 @@ static int max77976_property_is_writeabl
- 					  enum power_supply_property psp)
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2493,7 +2493,7 @@ static int parse_apply_sb_mount_options(
+ 					struct ext4_fs_context *m_ctx)
  {
- 	switch (psp) {
--	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
-+	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
- 	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
- 		return true;
- 	default:
-@@ -368,8 +368,8 @@ static enum power_supply_property max779
- 	POWER_SUPPLY_PROP_CHARGE_TYPE,
- 	POWER_SUPPLY_PROP_HEALTH,
- 	POWER_SUPPLY_PROP_ONLINE,
--	POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT,
--	POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX,
-+	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-+	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
- 	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
- 	POWER_SUPPLY_PROP_MODEL_NAME,
- 	POWER_SUPPLY_PROP_MANUFACTURER,
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	char *s_mount_opts = NULL;
++	char s_mount_opts[65];
+ 	struct ext4_fs_context *s_ctx = NULL;
+ 	struct fs_context *fc = NULL;
+ 	int ret = -ENOMEM;
+@@ -2501,15 +2501,11 @@ static int parse_apply_sb_mount_options(
+ 	if (!sbi->s_es->s_mount_opts[0])
+ 		return 0;
+ 
+-	s_mount_opts = kstrndup(sbi->s_es->s_mount_opts,
+-				sizeof(sbi->s_es->s_mount_opts),
+-				GFP_KERNEL);
+-	if (!s_mount_opts)
+-		return ret;
++	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts);
+ 
+ 	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
+ 	if (!fc)
+-		goto out_free;
++		return -ENOMEM;
+ 
+ 	s_ctx = kzalloc(sizeof(struct ext4_fs_context), GFP_KERNEL);
+ 	if (!s_ctx)
+@@ -2541,11 +2537,8 @@ parse_failed:
+ 	ret = 0;
+ 
+ out_free:
+-	if (fc) {
+-		ext4_fc_free(fc);
+-		kfree(fc);
+-	}
+-	kfree(s_mount_opts);
++	ext4_fc_free(fc);
++	kfree(fc);
+ 	return ret;
+ }
+ 
 
 
 
