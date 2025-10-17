@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69B3BEA3D7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B93BE9632
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A6155507EFD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F23E618862DE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F30832C944;
-	Fri, 17 Oct 2025 15:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EDB337107;
+	Fri, 17 Oct 2025 14:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bmv4TwTF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxqL+FHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC342F692A;
-	Fri, 17 Oct 2025 15:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950563370FB;
+	Fri, 17 Oct 2025 14:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715256; cv=none; b=X8G/aasp2EVnvtZNTOSlMTTn3kqjtIgX466lkIcSlKQlKmmuuW75ODSZIH1FMu8ofi9hP5XOl7sSieOLbvZfld9X9dTyYNQaHRMpDNJwt+yRTDHvdRRQ04hjiM8mV41iJ2uMOXIFTZRAdBPYN80JaAFhXABlCnWhU7Iouwp8HS4=
+	t=1760713105; cv=none; b=rZofZfi8BX0FKJyBcN42A5uCtn2jhSQXM3UISIn3tz4RPrKtJX9lt83RABeTo30d+rQtr5pJd/Mx+eMrYgVcxsPoVhX9gq/BzhS8KZnAV9kW3VzXv7pHSJzpwvjirgv2iEl1SKBI1qATQW+YrXafmwVjiewEIMEHqzkifWiE0Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715256; c=relaxed/simple;
-	bh=uHLcs62fLxB5/h23SXDxLlIOTlviamLST5/nEnZyJf0=;
+	s=arc-20240116; t=1760713105; c=relaxed/simple;
+	bh=/tAV1V3vhwkYZhMYnKkpggYAX0hlaqtjvw1tnNU1eQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+vcfr5Oz3NU7wvY/WQZRz6isrO/ncmRj7WHsKiyt7SusS1JiSxCr1twQx/LhMcPbYeMjiGEB1bV7Ehi9oqintxEx0+GAQ7cmiFQFyV8I9RgieU3/xcM4jK8P/lZ8bMCs4qJ8ib4mehT+qPPE+u1umNEkEr9sNkpKVPB0D/5fEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bmv4TwTF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7957AC4CEE7;
-	Fri, 17 Oct 2025 15:34:15 +0000 (UTC)
+	 MIME-Version; b=QrMAhNeArX4tpLWbWleLmraCNfZTqQxKQKKXFf6+P22fkfncdx6ptLjnRl3Jf6I+5tdehIN8qJQoJhAFq5Wyji/OzpD5j4ixuPx4Z+PW2es9avB+XXnJ4GuSOzQr5LHE+sSM+wllPWkoxVg605Cfxio1SBw757uEjBnLfvXpgto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxqL+FHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B2FC4CEE7;
+	Fri, 17 Oct 2025 14:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715255;
-	bh=uHLcs62fLxB5/h23SXDxLlIOTlviamLST5/nEnZyJf0=;
+	s=korg; t=1760713105;
+	bh=/tAV1V3vhwkYZhMYnKkpggYAX0hlaqtjvw1tnNU1eQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bmv4TwTFp1pYhj6vLog8xjOLM1PH7ZFXlelPHN44wcqdKIJl9T0i6/Wum1TInSxG+
-	 ZSZsxmXCdhJVPXHdThnaSyDDt2u71peiamZSEqY6gLonTeBQ0WFY50soQzUUJicTzz
-	 MPh7O+LavbRkTb/62J64dXdsLOt6sPiyp7hY1N3Y=
+	b=oxqL+FHPnQLzRPQP0SkE62H+ds/KKSPQ9rd81CJ20vM6kSvxSgiLdQraT5KPXkCHC
+	 fRWTV0oe90flp+SFIyYeCFOme0aGNLN4Zv4bwTa38rZs36G6YgTsoQ25gsB158vsv1
+	 9AMUZuINmtbHRf6SyqP9sC2SPpfsjRhEh30SqRKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Jan Palus <jpalus@fastmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.17 152/371] firmware: arm_scmi: quirk: Prevent writes to string constants
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 048/168] gpio: wcd934x: Remove duplicate assignment of of_gpio_n_cells
 Date: Fri, 17 Oct 2025 16:52:07 +0200
-Message-ID: <20251017145207.433145473@linuxfoundation.org>
+Message-ID: <20251017145130.787893091@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 572ce546390d1b7c99b16c38cae1b680c716216c upstream.
+[ Upstream commit a060dc6620c13435b78e92cd2ebdbb6d11af237a ]
 
-The quirk version range is typically a string constant and must not be
-modified (e.g. as it may be stored in read-only memory). Attempting
-to do so can trigger faults such as:
+The of_gpio_n_cells default is 2 when ->of_xlate() callback is
+not defined. No need to assign it explicitly in the driver.
 
-  |  Unable to handle kernel write to read-only memory at virtual
-  |  address ffffc036d998a947
-
-Update the range parsing so that it operates on a copy of the version
-range string, and mark all the quirk strings as const to reduce the
-risk of introducing similar future issues.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220437
-Fixes: 487c407d57d6 ("firmware: arm_scmi: Add common framework to handle firmware quirks")
-Cc: stable@vger.kernel.org	# 6.16
-Cc: Cristian Marussi <cristian.marussi@arm.com>
-Reported-by: Jan Palus <jpalus@fastmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Message-Id: <20250829132152.28218-1-johan@kernel.org>
-[sudeep.holla: minor commit message rewording; switch to cleanup helpers]
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: b5f8aa8d4bde ("gpio: wcd934x: mark the GPIO controller as sleeping")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/quirks.c |   15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/gpio/gpio-wcd934x.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/firmware/arm_scmi/quirks.c
-+++ b/drivers/firmware/arm_scmi/quirks.c
-@@ -71,6 +71,7 @@
-  */
+diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
+index c00968ce7a569..cbbbd105a5a7b 100644
+--- a/drivers/gpio/gpio-wcd934x.c
++++ b/drivers/gpio/gpio-wcd934x.c
+@@ -101,7 +101,6 @@ static int wcd_gpio_probe(struct platform_device *pdev)
+ 	chip->base = -1;
+ 	chip->ngpio = WCD934X_NPINS;
+ 	chip->label = dev_name(dev);
+-	chip->of_gpio_n_cells = 2;
+ 	chip->can_sleep = false;
  
- #include <linux/ctype.h>
-+#include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/export.h>
- #include <linux/hashtable.h>
-@@ -89,9 +90,9 @@
- struct scmi_quirk {
- 	bool enabled;
- 	const char *name;
--	char *vendor;
--	char *sub_vendor_id;
--	char *impl_ver_range;
-+	const char *vendor;
-+	const char *sub_vendor_id;
-+	const char *impl_ver_range;
- 	u32 start_range;
- 	u32 end_range;
- 	struct static_key_false *key;
-@@ -217,7 +218,7 @@ static unsigned int scmi_quirk_signature
- 
- static int scmi_quirk_range_parse(struct scmi_quirk *quirk)
- {
--	const char *last, *first = quirk->impl_ver_range;
-+	const char *last, *first __free(kfree) = NULL;
- 	size_t len;
- 	char *sep;
- 	int ret;
-@@ -228,8 +229,12 @@ static int scmi_quirk_range_parse(struct
- 	if (!len)
- 		return 0;
- 
-+	first = kmemdup(quirk->impl_ver_range, len + 1, GFP_KERNEL);
-+	if (!first)
-+		return -ENOMEM;
-+
- 	last = first + len - 1;
--	sep = strchr(quirk->impl_ver_range, '-');
-+	sep = strchr(first, '-');
- 	if (sep)
- 		*sep = '\0';
- 
+ 	return devm_gpiochip_add_data(dev, chip, data);
+-- 
+2.51.0
+
 
 
 
