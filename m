@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-186568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD56DBE99A2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E28BEA002
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3BE9746720
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00193188AE40
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78C62F12B7;
-	Fri, 17 Oct 2025 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7FC330315;
+	Fri, 17 Oct 2025 15:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIZo1nDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKEFsQ6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854D82F6932;
-	Fri, 17 Oct 2025 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B20F30CD9F;
+	Fri, 17 Oct 2025 15:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713610; cv=none; b=U90HqMj0QEV+GNZ0QZWAdmVHyNwZ9PPV0RTzq7WN06m4Ix9Nb8S7R/J7dppkdPyrNwdJ+erdYIMoJFNXSjwSJqOMhwnLV/Sd1yQDML0zSzyoqd9z9lCJ/EXBJ+S+/vsJqZlHDeSe/ToPQ8FwMVXijUc7+zopq/K4/3yjKi++puw=
+	t=1760715236; cv=none; b=jxL+S+0s5OaxsnwHHBoaUdkX9yZ7tnE3gKmDj/NCjhQ/IxUqGP/slEJ2eNLGHxBpqNMKQnG7lLPsPmbbX6NY4M+vAHMwVUolDRxUpqssVjNk6zzIouL34J2Q9iX8r/CV1ct2B9uBKzVk7DUWJBdwZx+FKUVrbMFPLu4tNE6HFQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713610; c=relaxed/simple;
-	bh=026bJqazZrqd93QictfX8f8c8HV3EURvg71LcdWrCeI=;
+	s=arc-20240116; t=1760715236; c=relaxed/simple;
+	bh=b3DxJHtjV8jf8EgGqEUY/vSoA7DrNj/nvfv0Ker0gsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwOAW3rQUYkYGalkpN+HAzj7QsVgBS39TeEsoIImN+Y8Ae4Zs+CjTpIZtrgrl9q1MkfT2eeFlDzFaaUxtUSWkG3wsnTjOWenJKlp7lUXfVR3H1Kxh9o0QpdlswKrukTjPISDEetSf5stKRLDWSpT7u0EzUIt+XhpDoSnxkIORn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIZo1nDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13774C4CEE7;
-	Fri, 17 Oct 2025 15:06:49 +0000 (UTC)
+	 MIME-Version; b=NLIGv5fY7lNPXIOwHKG6SdVdhZyAOqYTPh7cjQIks1y7r3xWJ0sBV32It0LkeqWM6JcPLW963Dwt+hMJF6qGHc5tpUAsXEKS59+0/+NxKSxwFnCHeY+BJXkkpts/rFX/fdqP/KvnHMvcyHZiSDbDJZtSM9Qn3sOTKNdNZCfnLxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKEFsQ6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88705C113D0;
+	Fri, 17 Oct 2025 15:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713610;
-	bh=026bJqazZrqd93QictfX8f8c8HV3EURvg71LcdWrCeI=;
+	s=korg; t=1760715235;
+	bh=b3DxJHtjV8jf8EgGqEUY/vSoA7DrNj/nvfv0Ker0gsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIZo1nDJ/T1VB8o0TuenL3q7qaEeNQr1jzX/SJdFj1UgWlAIraDvdfuY0J51Jwzqh
-	 vkR09muujdI0bP57PEiw75QUpldS71JZxBOkqMph3H6XR6xeC1/4h6hY1z6/1UNFJD
-	 8etAp/mhemxRCEupWbj8tsMaxVBOBU1Ij8gY49Jw=
+	b=AKEFsQ6fGiixXKdftvWuqQkg3ZqZA13HXnKxhggS6wfIMy1xrizyHfHObkIFdTsni
+	 ES/PL/hNwLA/fp6dOzkiZUm48b23Wcvc9ztiBYsrMerKICdEeF5GB0+QHwEaKiT9Bo
+	 JsulBpcI5rUs12n8uFCT3BPymZSMSd/af6Z5qeM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 6.6 058/201] ACPI: property: Fix buffer properties extraction for subnodes
-Date: Fri, 17 Oct 2025 16:51:59 +0200
-Message-ID: <20251017145136.874853226@linuxfoundation.org>
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.17 145/371] arm64: dts: qcom: x1e80100-pmics: Disable pm8010 by default
+Date: Fri, 17 Oct 2025 16:52:00 +0200
+Message-ID: <20251017145207.180859045@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
 
-commit d0759b10989c5c5aae3d455458c9fc4e8cc694f7 upstream.
+commit b9a185198f96259311543b30d884d8c01da913f7 upstream.
 
-The ACPI handle passed to acpi_extract_properties() as the first
-argument represents the ACPI namespace scope in which to look for
-objects returning buffers associated with buffer properties.
+pm8010 is a camera specific PMIC, and may not be present on some
+devices. These may instead use a dedicated vreg for this purpose (Dell
+XPS 9345, Dell Inspiron..) or use USB webcam instead of a MIPI one
+alltogether (Lenovo Thinbook 16, Lenovo Yoga..).
 
-For _DSD objects located immediately under ACPI devices, this handle is
-the same as the handle of the device object holding the _DSD, but for
-data-only subnodes it is not so.
+Disable pm8010 by default, let platforms that actually have one onboard
+enable it instead.
 
-First of all, data-only subnodes are represented by objects that
-cannot hold other objects in their scopes (like control methods).
-Therefore a data-only subnode handle cannot be used for completing
-relative pathname segments, so the current code in
-in acpi_nondev_subnode_extract() passing a data-only subnode handle
-to acpi_extract_properties() is invalid.
-
-Moreover, a data-only subnode of device A may be represented by an
-object located in the scope of device B (which kind of makes sense,
-for instance, if A is a B's child).  In that case, the scope in
-question would be the one of device B.  In other words, the scope
-mentioned above is the same as the scope used for subnode object
-lookup in acpi_nondev_subnode_extract().
-
-Accordingly, rearrange that function to use the same scope for the
-extraction of properties and subnode object lookup.
-
-Fixes: 103e10c69c61 ("ACPI: property: Add support for parsing buffer property UUID")
-Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 2559e61e7ef4 ("arm64: dts: qcom: x1e80100-pmics: Add the missing PMICs")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+Link: https://lore.kernel.org/r/20250701183625.1968246-2-alex.vinarskis@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/property.c |   30 +++++++++++-------------------
- 1 file changed, 11 insertions(+), 19 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100-pmics.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -74,6 +74,7 @@ static bool acpi_nondev_subnode_extract(
- 					struct fwnode_handle *parent)
- {
- 	struct acpi_data_node *dn;
-+	acpi_handle scope = NULL;
- 	bool result;
+--- a/arch/arm64/boot/dts/qcom/x1e80100-pmics.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100-pmics.dtsi
+@@ -475,6 +475,8 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
  
- 	dn = kzalloc(sizeof(*dn), GFP_KERNEL);
-@@ -86,27 +87,18 @@ static bool acpi_nondev_subnode_extract(
- 	INIT_LIST_HEAD(&dn->data.properties);
- 	INIT_LIST_HEAD(&dn->data.subnodes);
- 
--	result = acpi_extract_properties(handle, desc, &dn->data);
-+	/*
-+	 * The scope for the completion of relative pathname segments and
-+	 * subnode object lookup is the one of the namespace node (device)
-+	 * containing the object that has returned the package.  That is, it's
-+	 * the scope of that object's parent device.
-+	 */
-+	if (handle)
-+		acpi_get_parent(handle, &scope);
- 
--	if (handle) {
--		acpi_handle scope;
--		acpi_status status;
--
--		/*
--		 * The scope for the subnode object lookup is the one of the
--		 * namespace node (device) containing the object that has
--		 * returned the package.  That is, it's the scope of that
--		 * object's parent.
--		 */
--		status = acpi_get_parent(handle, &scope);
--		if (ACPI_SUCCESS(status)
--		    && acpi_enumerate_nondev_subnodes(scope, desc, &dn->data,
--						      &dn->fwnode))
--			result = true;
--	} else if (acpi_enumerate_nondev_subnodes(NULL, desc, &dn->data,
--						  &dn->fwnode)) {
-+	result = acpi_extract_properties(scope, desc, &dn->data);
-+	if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->fwnode))
- 		result = true;
--	}
- 
- 	if (result) {
- 		dn->handle = handle;
++		status = "disabled";
++
+ 		pm8010_temp_alarm: temp-alarm@2400 {
+ 			compatible = "qcom,spmi-temp-alarm";
+ 			reg = <0x2400>;
 
 
 
