@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-187151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89970BEA383
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0546BBEA500
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4CA95567A7E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3736C5840BB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF766332903;
-	Fri, 17 Oct 2025 15:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4445C330B1C;
+	Fri, 17 Oct 2025 15:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opuKQnsA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbbaQB1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB343328F5;
-	Fri, 17 Oct 2025 15:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0155B330B00;
+	Fri, 17 Oct 2025 15:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715258; cv=none; b=awfjfnkbQt0ziyePS9YqieBFzdmQMHl5DKiRBoIXxdXmiL3WQ2hPWWVbdQbxR6N/SG6l8huMYAezy8nRJHX2DrAYqZ3mlnkqqHJKktQQXf5nb7OcOATjZli3UPoNEObRdcV50yUfcTx8aspzTGfaWgmFUSnqzvFCCjKoWpuwjfQ=
+	t=1760715994; cv=none; b=UOKkfPiJDnVGH5SCZnKijnsAk5sWkIsLK4uo50ediYnFSXOIxVxgaQ1lFnw24Pc1ZXPMs/jMgX/RICcjUEwNKbXp0I5aFDRqNokIpxTQj7E/BdwQ0p+nqamj3hRuI82wi92PKQjFXUHMIGjZrbxLaIsWtu2uEFbJw162X2bCd9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715258; c=relaxed/simple;
-	bh=DdBsN6XYBr9n4TkQVlNypUjiKPKKOh585wPpBv+MIM4=;
+	s=arc-20240116; t=1760715994; c=relaxed/simple;
+	bh=G5Tr2AJ+Sf2FqeicaabdJv91AJx1a00XaxSTFHyCRvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldh6jR9N7YpVY56P+gjV1DBBsECLpeFNR/7I8KwbIZt8IQfkTnV+MvlM8E83/T8Vj3CN3gAadZkZHuRA7teigDQ/D/Ej141w0RXvRM3fRwSEUSVsRtu0g03bDxGnTqbXNAnLguPAW/dZBOwurVAQa2pS2sfU2L9Spfvqfd/3DQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opuKQnsA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371D8C113D0;
-	Fri, 17 Oct 2025 15:34:18 +0000 (UTC)
+	 MIME-Version; b=raNR63JYMHrrH79jW4Cz/QdIWtovdqLUqExJJI3U2IQ96b/iFrvdVaVLwLZmmn7ks65X1rb4wV0GeMoqUkr3ifp07Ws4bRMK7xnehO+Hc8HnSY1jMPaR8UcgQslAJMdELyn6TKxIIfZKlyJRnfbBqYImgG9HvVpy4nayWHLDkpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbbaQB1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B47C4CEE7;
+	Fri, 17 Oct 2025 15:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715258;
-	bh=DdBsN6XYBr9n4TkQVlNypUjiKPKKOh585wPpBv+MIM4=;
+	s=korg; t=1760715993;
+	bh=G5Tr2AJ+Sf2FqeicaabdJv91AJx1a00XaxSTFHyCRvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opuKQnsAAmV5X6qJ6UisFGjQSgwkGoZjShZ2a1+c4m/ce/EPtSHEVafWnh1LsoKKL
-	 4bUqvno/XeFAFVRK+Oo2sosVM/6UJaBJu2+hZZiz/T0PcEtIiBm3IulsfaGbolricm
-	 xMjbdSAhtcNbIqfk96i6FDbcApVui4BWN0DB5/rc=
+	b=vbbaQB1PawkSsmNjgwlIU28qiV30l6M8Sy58QErM7WGJBI/NnqW+oIW9lePSham7d
+	 +6ssy/N+FKvLDm3Uqa84vXUtyxMAvL1/j8BhWPQd1O2WdggKQKnLpgWsKFEssIsSXX
+	 AMd+WjHztRWGZB6txwUmGo2eVQFnNmmPIgiJNTBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.17 153/371] perf/arm-cmn: Fix CMN S3 DTM offset
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 035/276] ARM: at91: pm: fix MCKx restore routine
 Date: Fri, 17 Oct 2025 16:52:08 +0200
-Message-ID: <20251017145207.469323064@linuxfoundation.org>
+Message-ID: <20251017145143.686923535@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-commit b3fe1c83a56f3cb7c475747ee1c6ec5a9dd5f60e upstream.
+[ Upstream commit 296302d3d81360e09fa956e9be9edc8223b69a12 ]
 
-CMN S3's DTM offset is different between r0px and r1p0, and it
-turns out this was not a error in the earlier documentation, but
-does actually exist in the design. Lovely.
+The at91_mckx_ps_restore() assembly function is responsible for setting
+back MCKx system bus clocks after exiting low power modes.
 
-Cc: stable@vger.kernel.org
-Fixes: 0dc2f4963f7e ("perf/arm-cmn: Support CMN S3")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix a typo and use tmp3 variable instead of tmp2 to correctly set MCKx
+to previously saved state.
+Tmp2 was used without the needed changes in CSS and DIV. Moreover the
+required bit 7, telling that MCR register's content is to be changed
+(CMD/write), was not set.
+
+Fix function comment to match tmp variables actually used.
+
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Fixes: 28eb1d40fe57 ("ARM: at91: pm: add support for MCK1..4 save/restore for ulp modes")
+Link: https://lore.kernel.org/r/20250827145427.46819-3-nicolas.ferre@microchip.com
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+[claudiu.beznea: s/sate/state in commit description]
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-cmn.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/arm/mach-at91/pm_suspend.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -65,7 +65,7 @@
- /* PMU registers occupy the 3rd 4KB page of each node's region */
- #define CMN_PMU_OFFSET			0x2000
- /* ...except when they don't :( */
--#define CMN_S3_DTM_OFFSET		0xa000
-+#define CMN_S3_R1_DTM_OFFSET		0xa000
- #define CMN_S3_PMU_OFFSET		0xd900
+diff --git a/arch/arm/mach-at91/pm_suspend.S b/arch/arm/mach-at91/pm_suspend.S
+index 2f0a370a13096..60f9d6f5f8229 100644
+--- a/arch/arm/mach-at91/pm_suspend.S
++++ b/arch/arm/mach-at91/pm_suspend.S
+@@ -868,7 +868,7 @@ e_done:
+ /**
+  * at91_mckx_ps_restore: restore MCK1..4 settings
+  *
+- * Side effects: overwrites tmp1, tmp2
++ * Side effects: overwrites tmp1, tmp2 and tmp3
+  */
+ .macro at91_mckx_ps_restore
+ #ifdef CONFIG_SOC_SAMA7
+@@ -912,7 +912,7 @@ r_ps:
+ 	bic	tmp3, tmp3, #AT91_PMC_MCR_V2_ID_MSK
+ 	orr	tmp3, tmp3, tmp1
+ 	orr	tmp3, tmp3, #AT91_PMC_MCR_V2_CMD
+-	str	tmp2, [pmc, #AT91_PMC_MCR_V2]
++	str	tmp3, [pmc, #AT91_PMC_MCR_V2]
  
- /* For most nodes, this is all there is */
-@@ -233,6 +233,9 @@ enum cmn_revision {
- 	REV_CMN700_R1P0,
- 	REV_CMN700_R2P0,
- 	REV_CMN700_R3P0,
-+	REV_CMNS3_R0P0 = 0,
-+	REV_CMNS3_R0P1,
-+	REV_CMNS3_R1P0,
- 	REV_CI700_R0P0 = 0,
- 	REV_CI700_R1P0,
- 	REV_CI700_R2P0,
-@@ -425,8 +428,8 @@ static enum cmn_model arm_cmn_model(cons
- static int arm_cmn_pmu_offset(const struct arm_cmn *cmn, const struct arm_cmn_node *dn)
- {
- 	if (cmn->part == PART_CMN_S3) {
--		if (dn->type == CMN_TYPE_XP)
--			return CMN_S3_DTM_OFFSET;
-+		if (cmn->rev >= REV_CMNS3_R1P0 && dn->type == CMN_TYPE_XP)
-+			return CMN_S3_R1_DTM_OFFSET;
- 		return CMN_S3_PMU_OFFSET;
- 	}
- 	return CMN_PMU_OFFSET;
+ 	wait_mckrdy tmp1
+ 
+-- 
+2.51.0
+
 
 
 
