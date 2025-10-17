@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A79BEA389
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:39 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B2BBE96B8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:02:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C8671AE2BEB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EF2DD502104
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D052745E;
-	Fri, 17 Oct 2025 15:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054E721C9EA;
+	Fri, 17 Oct 2025 14:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcndKALe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCibwgLS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCA4330B22;
-	Fri, 17 Oct 2025 15:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A486D20A5E5;
+	Fri, 17 Oct 2025 14:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716026; cv=none; b=U8/8A9ylOXQE7MjSvY0OMV8pYo8DRQ+AW3/QoE88PLOQJiCdXac7PAecOuDMXiavdkIvx5/octEKP2hS+VO6WEs/sEJFA2IHjsfxdqzyCrF3JnF9eb9e/4pytqU0wDEu6eUsshMjCbu8XvXHu6PO0VU0TQKZp9yuqLht9mywgYA=
+	t=1760713139; cv=none; b=Se1XYhrCrCCZ1qgML7RSC/QXQ6j7jXI9RyS7F0swiEUL5DPF2w5ZoTdfkO1AHWDsL5Gu55k9JxouOHjMR2rG2dNcTRNE9kb2KS329ETwlcRkYyCPDXuLyUwxOkUhMqqAfESUFMRJvB7ztWj7q2kvS1ysFmzwNu8EFkaM5fwwxks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716026; c=relaxed/simple;
-	bh=XnTYSbfaRh81eelLoCN2sW7wVngYccgxsRBDV8C660g=;
+	s=arc-20240116; t=1760713139; c=relaxed/simple;
+	bh=4RrHTIDyr3ZzpHu1qX7EshcC0FrAu1Q5gZ3RciozKH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=neyj1mAnBAlpzFYNx/M4w/Is4XrseUNmGiEpiR5QgbJxY21kXZX7jPm4LvH+/3p83UV5xgTZHqUuvhcjxH9FmIb6lZwgQWuzwwFzNQNNjPkVsz+yW5fe1GABNLO2WBhCOKHc+gDfQ1O8FDVJtlnwTgwfjNA2uGPCCSN97ETAd1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcndKALe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A6BC4CEE7;
-	Fri, 17 Oct 2025 15:47:05 +0000 (UTC)
+	 MIME-Version; b=h50XzXPGZoyn+5pqcFj0rdTGIFQ9+j+Rqcrek61m2Ga4lIjDiR9eDKj1CCJiG9FklFG1eYSKyhR1s/7ryXj86DQrs4xzwpUJ53EBsfLp6rV0xw2u3GlWObrjTwYFU58Wnul6Qx4cYWhPntu5KMKd+K7S6hm8+nL/Yxq/I2xCU1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCibwgLS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328AEC4CEE7;
+	Fri, 17 Oct 2025 14:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716025;
-	bh=XnTYSbfaRh81eelLoCN2sW7wVngYccgxsRBDV8C660g=;
+	s=korg; t=1760713139;
+	bh=4RrHTIDyr3ZzpHu1qX7EshcC0FrAu1Q5gZ3RciozKH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcndKALeUfd8FLZBT45CC5gYckiZUd6IIobw66z20V36YmISZGBf47HxOdCBkXyHm
-	 bcmZA2Z2DY+vF46fhzxozCe7PH49OcLtr38ZPm7nb8vaHYDvldtuQAnLSAN3iYEAQD
-	 CTXMO0+QqGioIBJVXu5srMC/IxkGVfsSB9JfvKiM=
+	b=kCibwgLSNAEi7fY5bTLsh7rkjW/kqwUeMR9ZvTy/HSiQ/IUoxd7/6oLCqqrO9ey1k
+	 ND4X8/gEC1bC5sFpkwZZtj90JtZtmqOHcg7zBpZgAA5vhiERh2J7gI0v+zULJLutYr
+	 Kdho+4kYavrpUkZN/Txp7aTIegkYY6ZFO4fQwa0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhouyi Zhou <zhouzhouyi@gmail.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 048/276] tools/nolibc: make time_t robust if __kernel_old_time_t is missing in host headers
+	Carlo Caione <ccaione@baylibre.com>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.1 062/168] firmware: meson_sm: fix device leak at probe
 Date: Fri, 17 Oct 2025 16:52:21 +0200
-Message-ID: <20251017145144.157184772@linuxfoundation.org>
+Message-ID: <20251017145131.307995578@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 0ff52df6b32a6b04a7c9dfe3d7a387aff215b482 ]
+commit 8ece3173f87df03935906d0c612c2aeda9db92ca upstream.
 
-Commit d5094bcb5bfd ("tools/nolibc: define time_t in terms of
-__kernel_old_time_t") made nolibc use the kernel's time type so that
-`time_t` matches `timespec::tv_sec` on all ABIs (notably x32).
+Make sure to drop the reference to the secure monitor device taken by
+of_find_device_by_node() when looking up its driver data on behalf of
+other drivers (e.g. during probe).
 
-But since __kernel_old_time_t is fairly new, notably from 2020 in commit
-94c467ddb273 ("y2038: add __kernel_old_timespec and __kernel_old_time_t"),
-nolibc builds that rely on host headers may fail.
+Note that holding a reference to the platform device does not prevent
+its driver data from going away so there is no point in keeping the
+reference after the helper returns.
 
-Switch to __kernel_time_t, which is the same as __kernel_old_time_t and
-has existed for longer.
-
-Tested in PPC VM of Open Source Lab of Oregon State University
-(./tools/testing/selftests/rcutorture/bin/mkinitrd.sh)
-
-Fixes: d5094bcb5bfd ("tools/nolibc: define time_t in terms of __kernel_old_time_t")
-Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
-[Thomas: Reformat commit and its message a bit]
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
+Cc: stable@vger.kernel.org	# 5.5
+Cc: Carlo Caione <ccaione@baylibre.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250725074019.8765-1-johan@kernel.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/include/nolibc/std.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/meson/meson_sm.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
-index a0ea830e1ba17..f9eccd40c221f 100644
---- a/tools/include/nolibc/std.h
-+++ b/tools/include/nolibc/std.h
-@@ -46,6 +46,6 @@ typedef unsigned long       nlink_t;
- typedef   signed long         off_t;
- typedef   signed long     blksize_t;
- typedef   signed long      blkcnt_t;
--typedef __kernel_old_time_t  time_t;
-+typedef __kernel_time_t      time_t;
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -225,11 +225,16 @@ EXPORT_SYMBOL(meson_sm_call_write);
+ struct meson_sm_firmware *meson_sm_get(struct device_node *sm_node)
+ {
+ 	struct platform_device *pdev = of_find_device_by_node(sm_node);
++	struct meson_sm_firmware *fw;
  
- #endif /* _NOLIBC_STD_H */
--- 
-2.51.0
-
+ 	if (!pdev)
+ 		return NULL;
+ 
+-	return platform_get_drvdata(pdev);
++	fw = platform_get_drvdata(pdev);
++
++	put_device(&pdev->dev);
++
++	return fw;
+ }
+ EXPORT_SYMBOL_GPL(meson_sm_get);
+ 
 
 
 
