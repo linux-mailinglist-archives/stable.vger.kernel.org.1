@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-186332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D97BE91A5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC08BE938C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 144BB4EFEB3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:07:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B86D94F4A28
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F9D3195E5;
-	Fri, 17 Oct 2025 14:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83B2225762;
+	Fri, 17 Oct 2025 14:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dg2pVCC9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JB2dXUEA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0A736998C
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 14:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F163396F2
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 14:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760710032; cv=none; b=WWNZ9/9rmvaA+n9vL+WRPCd29GFs7pCiQAF11YRCfty7FwDndGTChLaZxFmXDoPHqjyvlgfChtDJk5vZQlY6opBrSHV9SQqT+TQL8SfMq86o451PzXohM/91CSPh+Rx90uz4RSZ5ZM81s6UblJzxFnQoPOo7L/2t4hrlsUh86DU=
+	t=1760711531; cv=none; b=eISvaOPnsBhGsKClO6atzHtomVIMU7wsuIBjP2Oge+eWJj3G2xPp4D12vWU/NyzYjF6tFdbZfFNrT9B/k1gIri/Rm3UdDkP2KYmmtassCnhtKOdfzIMOy+XN9TSqo5V64rYZC3GwDYj36ekKju8C1Lk7JP3s16PSwCtXHF28uQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760710032; c=relaxed/simple;
-	bh=9arAh/O73YqSPpERlS3pWVEm8/OMghHNzqHE0ev1C1M=;
+	s=arc-20240116; t=1760711531; c=relaxed/simple;
+	bh=xNECdUme27H/FyO/lLP84doY+ketMceeue/7rtyHpl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mw4D/Toh+OfI78pvznzYjZyjgo+yYpVbfK51YL77NdJbnykojVJTu9FSGAaOAR9xgRdvhupaoDOg5inri5gPNyiK/oZmSy1RS1MqyhjAw0cqCt43AUfLSa5JG1+DY7O9E/PwXZ59XFHJZ1LiwUJJPlgSHmx5K1FA32ZuzdLcJjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dg2pVCC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40605C4CEF9;
-	Fri, 17 Oct 2025 14:07:11 +0000 (UTC)
+	 MIME-Version; b=Q/dl9Dj4TcImKqFbt1dT5X8qlM2uPxwgVICgbl59KOgo9tr6Ldzpdlc5uaJM3/D7VDqZvxDjWfe1yNG5cqW3vsRjhvrM1zssSYz2yK0SnTq5Oo11a7ZEmH+Jk1nrvlcETc93fL5msLv9Y1M/E6QCeRgk9w2iLguz2tThoPoRFVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JB2dXUEA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 402D8C4CEE7;
+	Fri, 17 Oct 2025 14:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760710031;
-	bh=9arAh/O73YqSPpERlS3pWVEm8/OMghHNzqHE0ev1C1M=;
+	s=k20201202; t=1760711530;
+	bh=xNECdUme27H/FyO/lLP84doY+ketMceeue/7rtyHpl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dg2pVCC9/7pZF9vCyd/EZliRE3nzA5Vi24LNSF0uk9iyAbq5YbP4XBMdweFSlvPcJ
-	 +KDwDJyheHiI90QqP7/FWcP19/3KpPh7eMJ73oUZEJvtLe0LRROWZLyRrCZyz2YfB7
-	 kw1Pkpk5IiK8KuUr7UwtLr60VOhRi1aJ785t0VuZtTMp3iyh8Evy+XEmDlzwYi+QMe
-	 aEE8puigE037/3n4B7nm579PN+BTI7C/BFc1Ly1c0i/ZN8hvBX2JC8t4vcxJkCQpKq
-	 kPa4QVmMhNUWW4TvRW/5T1TbGBw0kwaBNs6DFQjbucd6+ucRmhR6v076dxpK+MQrJo
-	 ltCuxx6kuGh7A==
+	b=JB2dXUEAzKB2uNbPH7tN/vgwA281fXJu8cvSAlYGSYKNxqLV1ebQs22p8uQp6zPIK
+	 7hDPNPsE3uJOIdiyf8Cuz6azHU5Kl+KWVuWvPJ90FbfYkHllUgT5zKrDF5wBGa6h9I
+	 2CFcZ9jEGRDoexHl7UNXJTs+sLuQbxxGLyD8ny1lT/qHQtaZdXfL0+0LuD/OgmC+U8
+	 fV8hVSUPVW+hm+RUtuiiXmN83kcrJc7Kz5bPJFOS8EY30wnlOFKeKtQ05S8Uw+Fn+f
+	 MorpvSove0KnwAB9USAusZ2FH6QrskCdG3X0nwoX10sQZcFwC9Lk4VYNjbYsHnAXvA
+	 caxrsvxfpJAOw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Aakarsh Jain <aakarsh.jain@samsung.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/2] media: pci: ivtv: Add missing check after DMA map
-Date: Fri, 17 Oct 2025 10:07:08 -0400
-Message-ID: <20251017140708.3972659-2-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/5] media: s5p-mfc: constify fw_name strings
+Date: Fri, 17 Oct 2025 10:32:04 -0400
+Message-ID: <20251017143208.3997488-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017140708.3972659-1-sashal@kernel.org>
-References: <2025101625-demise-squander-3a2c@gregkh>
- <20251017140708.3972659-1-sashal@kernel.org>
+In-Reply-To: <2025101646-unfunded-bootlace-0264@gregkh>
+References: <2025101646-unfunded-bootlace-0264@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,64 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 1069a4fe637d0e3e4c163e3f8df9be306cc299b4 ]
+[ Upstream commit dd761d3cf4d518db197c8e03e3447ddfdccdb27e ]
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, free blanking_ptr and set it to 0.  As 0 is a
-valid DMA address, use blanking_ptr to test if the DMA address
-is set.
+Constify stored pointers to firmware names for code safety.  These are
+not modified by the driver.
 
-Fixes: 1a0adaf37c30 ("V4L/DVB (5345): ivtv driver for Conexant cx23416/cx23415 MPEG encoder/decoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Aakarsh Jain <aakarsh.jain@samsung.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: 7fa37ba25a1d ("media: s5p-mfc: remove an unused/uninitialized variable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/ivtv/ivtv-irq.c | 2 +-
- drivers/media/pci/ivtv/ivtv-yuv.c | 8 +++++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/ivtv/ivtv-irq.c b/drivers/media/pci/ivtv/ivtv-irq.c
-index b7aaa8b4a7841..e39bf64c5c715 100644
---- a/drivers/media/pci/ivtv/ivtv-irq.c
-+++ b/drivers/media/pci/ivtv/ivtv-irq.c
-@@ -351,7 +351,7 @@ void ivtv_dma_stream_dec_prepare(struct ivtv_stream *s, u32 offset, int lock)
- 
- 	/* Insert buffer block for YUV if needed */
- 	if (s->type == IVTV_DEC_STREAM_TYPE_YUV && f->offset_y) {
--		if (yi->blanking_dmaptr) {
-+		if (yi->blanking_ptr) {
- 			s->sg_pending[idx].src = yi->blanking_dmaptr;
- 			s->sg_pending[idx].dst = offset;
- 			s->sg_pending[idx].size = 720 * 16;
-diff --git a/drivers/media/pci/ivtv/ivtv-yuv.c b/drivers/media/pci/ivtv/ivtv-yuv.c
-index e79e8a5a744ad..0e6014f95178b 100644
---- a/drivers/media/pci/ivtv/ivtv-yuv.c
-+++ b/drivers/media/pci/ivtv/ivtv-yuv.c
-@@ -120,7 +120,7 @@ static int ivtv_yuv_prep_user_dma(struct ivtv *itv, struct ivtv_user_dma *dma,
- 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
- 
- 	/* If we've offset the y plane, ensure top area is blanked */
--	if (f->offset_y && yi->blanking_dmaptr) {
-+	if (f->offset_y && yi->blanking_ptr) {
- 		dma->SGarray[dma->SG_length].size = cpu_to_le32(720*16);
- 		dma->SGarray[dma->SG_length].src = cpu_to_le32(yi->blanking_dmaptr);
- 		dma->SGarray[dma->SG_length].dst = cpu_to_le32(IVTV_DECODER_OFFSET + yuv_offset[frame]);
-@@ -924,6 +924,12 @@ static void ivtv_yuv_init(struct ivtv *itv)
- 		yi->blanking_dmaptr = dma_map_single(&itv->pdev->dev,
- 						     yi->blanking_ptr,
- 						     720 * 16, DMA_TO_DEVICE);
-+		if (dma_mapping_error(&itv->pdev->dev, yi->blanking_dmaptr)) {
-+			kfree(yi->blanking_ptr);
-+			yi->blanking_ptr = NULL;
-+			yi->blanking_dmaptr = 0;
-+			IVTV_DEBUG_WARN("Failed to dma_map yuv blanking buffer\n");
-+		}
- 	} else {
- 		yi->blanking_dmaptr = 0;
- 		IVTV_DEBUG_WARN("Failed to allocate yuv blanking buffer\n");
+diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h
+index 5304f42c8c721..f33a755327ef0 100644
+--- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h
++++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h
+@@ -227,7 +227,7 @@ struct s5p_mfc_variant {
+ 	unsigned int port_num;
+ 	u32 version_bit;
+ 	struct s5p_mfc_buf_size *buf_size;
+-	char	*fw_name[MFC_FW_MAX_VERSIONS];
++	const char	*fw_name[MFC_FW_MAX_VERSIONS];
+ 	const char	*clk_names[MFC_MAX_CLOCKS];
+ 	int		num_clocks;
+ 	bool		use_clock_gating;
 -- 
 2.51.0
 
