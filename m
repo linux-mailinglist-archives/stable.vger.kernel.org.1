@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D23FBE9CC9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 986B5BE9915
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5B6C19A596A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:23:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1074E18814E9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7D02F12B4;
-	Fri, 17 Oct 2025 15:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A3C23EA9E;
+	Fri, 17 Oct 2025 15:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtdPHYtE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oneuyJeL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7FA3BB5A;
-	Fri, 17 Oct 2025 15:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE9C33710E;
+	Fri, 17 Oct 2025 15:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714504; cv=none; b=GTpP4jC02knJdBNGxSnOahv5YKggen52Q95IrzCJXHAtPspW4Z+/zDFdmOkC7+JqusthJu+KiYJRr5FBHd9RqTWZwacl8DhZQT8Um9CuA7MwRKuKP5QUGycOsFGm6MDELiF/GA+/OkLfXubMrqOYfwCnadByBVppwQwAhFWOQTs=
+	t=1760713772; cv=none; b=dSuJ8jlF9E1sZV/O+pvdYTBgEobG9E2l+FSgo/oyYQAIv/ciyXc5nHLu1QnbLDXo4rHC//ZiRIRDvvChHsFdQfjvjOxg6g1WQCP3msc3lpXNClhtsAgoZwqaWINxNBQ1c0B4N3mzvTJIifmIQFhXTc9pwRtFnD3bh5fVZVWobPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714504; c=relaxed/simple;
-	bh=C2hHx08eUavXEE/C1Y62sF3NgzBVJzvIfjDGlAZre6o=;
+	s=arc-20240116; t=1760713772; c=relaxed/simple;
+	bh=zj+ee0Z3Yca/0c7hEqmvE6jxbQKA7P908t1H0uMyKBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GokHr0FUz1TnhVcyL24qajijABjdJfpD6wWl3v/BM/rsDN9GzI0hTCUHUnCW5IvImB5qnbFBehb9cb2e6+NFmgJ3zA6kWsYwdBRJb6RoP8GW3Nj0eeJjBNTr05skYTeAY5nmuwSQ0h/r40HrtBQZ1QrfczskguE8q+/i/mVJ7/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtdPHYtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1DAC4CEE7;
-	Fri, 17 Oct 2025 15:21:43 +0000 (UTC)
+	 MIME-Version; b=h5vR3O1yyTMDvMyrMhNoedhNLHZlZ8Z488KM9oCWPZnQsi3pWCyybxnO2SZviQnJkaq+1mvCfRigd3G0lZp2g2IgW1hCE9xWjeHeujsVk8g9jOM4yyxZVA3Yr1VMIGZsmDLibvPHa4E653W2sS1oPgnecCSxsXwGQ4X+QizPgHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oneuyJeL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C50C4CEE7;
+	Fri, 17 Oct 2025 15:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714504;
-	bh=C2hHx08eUavXEE/C1Y62sF3NgzBVJzvIfjDGlAZre6o=;
+	s=korg; t=1760713772;
+	bh=zj+ee0Z3Yca/0c7hEqmvE6jxbQKA7P908t1H0uMyKBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UtdPHYtE1FV1Glc/+nktI4U7LhJPhCgF1VFp9ZsNrfSvK2CsZKe48bVnNvUBBnh3w
-	 LhbbrlTckARI9VFhUtOk8ufJU4n0YNm0xcnK3bBFCuosOkngrm4gdYAVymjKX+1PmN
-	 p45I9dGUSdW9L4KOo8PcXYm1uWA3gEG+As/BC1gU=
+	b=oneuyJeLzjuis2eJHXnj3bH6/84NH+d5yb5WltAdZikOvuGXq9jSD3tCE9XJZTVKw
+	 o1/uMDrUbtOpu27vABEJaJ5McSKHyOxxjWoNveLNQWm2gWt8YWv4F5g9gPQ2N6Dg91
+	 yC5nDbzhHYOCDX2DRBGzNsxG2x992xEc//FSv7OA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.12 167/277] xsk: Harden userspace-supplied xdp_desc validation
+	Harshit Agarwal <harshit@nutanix.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>
+Subject: [PATCH 6.6 113/201] sched/deadline: Fix race in push_dl_task()
 Date: Fri, 17 Oct 2025 16:52:54 +0200
-Message-ID: <20251017145153.225231604@linuxfoundation.org>
+Message-ID: <20251017145138.896406860@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Harshit Agarwal <harshit@nutanix.com>
 
-commit 07ca98f906a403637fc5e513a872a50ef1247f3b upstream.
+commit 8fd5485fb4f3d9da3977fd783fcb8e5452463420 upstream.
 
-Turned out certain clearly invalid values passed in xdp_desc from
-userspace can pass xp_{,un}aligned_validate_desc() and then lead
-to UBs or just invalid frames to be queued for xmit.
+When a CPU chooses to call push_dl_task and picks a task to push to
+another CPU's runqueue then it will call find_lock_later_rq method
+which would take a double lock on both CPUs' runqueues. If one of the
+locks aren't readily available, it may lead to dropping the current
+runqueue lock and reacquiring both the locks at once. During this window
+it is possible that the task is already migrated and is running on some
+other CPU. These cases are already handled. However, if the task is
+migrated and has already been executed and another CPU is now trying to
+wake it up (ttwu) such that it is queued again on the runqeue
+(on_rq is 1) and also if the task was run by the same CPU, then the
+current checks will pass even though the task was migrated out and is no
+longer in the pushable tasks list.
+Please go through the original rt change for more details on the issue.
 
-desc->len close to ``U32_MAX`` with a non-zero pool->tx_metadata_len
-can cause positive integer overflow and wraparound, the same way low
-enough desc->addr with a non-zero pool->tx_metadata_len can cause
-negative integer overflow. Both scenarios can then pass the
-validation successfully.
-This doesn't happen with valid XSk applications, but can be used
-to perform attacks.
+To fix this, after the lock is obtained inside the find_lock_later_rq,
+it ensures that the task is still at the head of pushable tasks list.
+Also removed some checks that are no longer needed with the addition of
+this new check.
+However, the new check of pushable tasks list only applies when
+find_lock_later_rq is called by push_dl_task. For the other caller i.e.
+dl_task_offline_migration, existing checks are used.
 
-Always promote desc->len to ``u64`` first to exclude positive
-overflows of it. Use explicit check_{add,sub}_overflow() when
-validating desc->addr (which is ``u64`` already).
-
-bloat-o-meter reports a little growth of the code size:
-
-add/remove: 0/0 grow/shrink: 2/1 up/down: 60/-16 (44)
-Function                                     old     new   delta
-xskq_cons_peek_desc                          299     330     +31
-xsk_tx_peek_release_desc_batch               973    1002     +29
-xsk_generic_xmit                            3148    3132     -16
-
-but hopefully this doesn't hurt the performance much.
-
-Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
-Cc: stable@vger.kernel.org # 6.8+
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20251008165659.4141318-1-aleksander.lobakin@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250408045021.3283624-1-harshit@nutanix.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xdp/xsk_queue.h |   45 +++++++++++++++++++++++++++++++++++----------
- 1 file changed, 35 insertions(+), 10 deletions(-)
+ kernel/sched/deadline.c |   73 ++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 49 insertions(+), 24 deletions(-)
 
---- a/net/xdp/xsk_queue.h
-+++ b/net/xdp/xsk_queue.h
-@@ -143,14 +143,24 @@ static inline bool xp_unused_options_set
- static inline bool xp_aligned_validate_desc(struct xsk_buff_pool *pool,
- 					    struct xdp_desc *desc)
- {
--	u64 addr = desc->addr - pool->tx_metadata_len;
--	u64 len = desc->len + pool->tx_metadata_len;
--	u64 offset = addr & (pool->chunk_size - 1);
-+	u64 len = desc->len;
-+	u64 addr, offset;
- 
--	if (!desc->len)
-+	if (!len)
- 		return false;
- 
--	if (offset + len > pool->chunk_size)
-+	/* Can overflow if desc->addr < pool->tx_metadata_len */
-+	if (check_sub_overflow(desc->addr, pool->tx_metadata_len, &addr))
-+		return false;
-+
-+	offset = addr & (pool->chunk_size - 1);
-+
-+	/*
-+	 * Can't overflow: @offset is guaranteed to be < ``U32_MAX``
-+	 * (pool->chunk_size is ``u32``), @len is guaranteed
-+	 * to be <= ``U32_MAX``.
-+	 */
-+	if (offset + len + pool->tx_metadata_len > pool->chunk_size)
- 		return false;
- 
- 	if (addr >= pool->addrs_cnt)
-@@ -158,27 +168,42 @@ static inline bool xp_aligned_validate_d
- 
- 	if (xp_unused_options_set(desc->options))
- 		return false;
-+
- 	return true;
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2214,6 +2214,25 @@ static int find_later_rq(struct task_str
+ 	return -1;
  }
  
- static inline bool xp_unaligned_validate_desc(struct xsk_buff_pool *pool,
- 					      struct xdp_desc *desc)
++static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
++{
++	struct task_struct *p;
++
++	if (!has_pushable_dl_tasks(rq))
++		return NULL;
++
++	p = __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
++
++	WARN_ON_ONCE(rq->cpu != task_cpu(p));
++	WARN_ON_ONCE(task_current(rq, p));
++	WARN_ON_ONCE(p->nr_cpus_allowed <= 1);
++
++	WARN_ON_ONCE(!task_on_rq_queued(p));
++	WARN_ON_ONCE(!dl_task(p));
++
++	return p;
++}
++
+ /* Locks the rq it finds */
+ static struct rq *find_lock_later_rq(struct task_struct *task, struct rq *rq)
  {
--	u64 addr = xp_unaligned_add_offset_to_addr(desc->addr) - pool->tx_metadata_len;
--	u64 len = desc->len + pool->tx_metadata_len;
-+	u64 len = desc->len;
-+	u64 addr, end;
+@@ -2241,12 +2260,37 @@ static struct rq *find_lock_later_rq(str
  
--	if (!desc->len)
-+	if (!len)
- 		return false;
- 
-+	/* Can't overflow: @len is guaranteed to be <= ``U32_MAX`` */
-+	len += pool->tx_metadata_len;
- 	if (len > pool->chunk_size)
- 		return false;
- 
--	if (addr >= pool->addrs_cnt || addr + len > pool->addrs_cnt ||
--	    xp_desc_crosses_non_contig_pg(pool, addr, len))
-+	/* Can overflow if desc->addr is close to 0 */
-+	if (check_sub_overflow(xp_unaligned_add_offset_to_addr(desc->addr),
-+			       pool->tx_metadata_len, &addr))
-+		return false;
+ 		/* Retry if something changed. */
+ 		if (double_lock_balance(rq, later_rq)) {
+-			if (unlikely(task_rq(task) != rq ||
++			/*
++			 * double_lock_balance had to release rq->lock, in the
++			 * meantime, task may no longer be fit to be migrated.
++			 * Check the following to ensure that the task is
++			 * still suitable for migration:
++			 * 1. It is possible the task was scheduled,
++			 *    migrate_disabled was set and then got preempted,
++			 *    so we must check the task migration disable
++			 *    flag.
++			 * 2. The CPU picked is in the task's affinity.
++			 * 3. For throttled task (dl_task_offline_migration),
++			 *    check the following:
++			 *    - the task is not on the rq anymore (it was
++			 *      migrated)
++			 *    - the task is not on CPU anymore
++			 *    - the task is still a dl task
++			 *    - the task is not queued on the rq anymore
++			 * 4. For the non-throttled task (push_dl_task), the
++			 *    check to ensure that this task is still at the
++			 *    head of the pushable tasks list is enough.
++			 */
++			if (unlikely(is_migration_disabled(task) ||
+ 				     !cpumask_test_cpu(later_rq->cpu, &task->cpus_mask) ||
+-				     task_on_cpu(rq, task) ||
+-				     !dl_task(task) ||
+-				     is_migration_disabled(task) ||
+-				     !task_on_rq_queued(task))) {
++				     (task->dl.dl_throttled &&
++				      (task_rq(task) != rq ||
++				       task_on_cpu(rq, task) ||
++				       !dl_task(task) ||
++				       !task_on_rq_queued(task))) ||
++				     (!task->dl.dl_throttled &&
++				      task != pick_next_pushable_dl_task(rq)))) {
 +
-+	if (addr >= pool->addrs_cnt)
-+		return false;
-+
-+	/* Can overflow if pool->addrs_cnt is high enough */
-+	if (check_add_overflow(addr, len, &end) || end > pool->addrs_cnt)
-+		return false;
-+
-+	if (xp_desc_crosses_non_contig_pg(pool, addr, len))
- 		return false;
- 
- 	if (xp_unused_options_set(desc->options))
- 		return false;
-+
- 	return true;
+ 				double_unlock_balance(rq, later_rq);
+ 				later_rq = NULL;
+ 				break;
+@@ -2269,25 +2313,6 @@ static struct rq *find_lock_later_rq(str
+ 	return later_rq;
  }
  
+-static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
+-{
+-	struct task_struct *p;
+-
+-	if (!has_pushable_dl_tasks(rq))
+-		return NULL;
+-
+-	p = __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
+-
+-	WARN_ON_ONCE(rq->cpu != task_cpu(p));
+-	WARN_ON_ONCE(task_current(rq, p));
+-	WARN_ON_ONCE(p->nr_cpus_allowed <= 1);
+-
+-	WARN_ON_ONCE(!task_on_rq_queued(p));
+-	WARN_ON_ONCE(!dl_task(p));
+-
+-	return p;
+-}
+-
+ /*
+  * See if the non running -deadline tasks on this rq
+  * can be sent to some other CPU where they can preempt
 
 
 
