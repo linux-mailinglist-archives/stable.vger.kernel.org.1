@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-186835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88CE0BE9DDD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75735BE96EB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:03:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EB2B75A05BD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:20:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D12E34262B5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D518D336EEE;
-	Fri, 17 Oct 2025 15:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1285239591;
+	Fri, 17 Oct 2025 14:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXECxm79"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTFsCHAF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93966335084;
-	Fri, 17 Oct 2025 15:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6EC337111;
+	Fri, 17 Oct 2025 14:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714367; cv=none; b=OtjwmcPqsDjoFhn5ydlrVHInKvuOJrLBcUWyPCV181jEYHb7BYGniCtJ4dof818BtW01lw1985c2oy2juOfMk804NZC94aSZbTISLUcSAkqsu9KJk6VhR4yjUan4kNB24wOeCCOvLwzGsVGV3r/zEeDLcRz6Teu94RoHzWPAUkI=
+	t=1760713108; cv=none; b=udqKdBJbY9XGokno7dz7iIHkPiq+lNjIPX/E0uz00vPRKn5r5f1mh9eUAQ/SM+KFzIceUsJSv3NN37fWgNtIv3QHVvSmfJMc6P7oPPen69xsBh71/ZaMUfp/HNWGtGcevDvImGQSyMa7SHjjoeSVJ3dRX3Ku91Rvt5dl+tyd23w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714367; c=relaxed/simple;
-	bh=1QoD1IIR1jfwwIzVio6d4hfwJ6pZoWZMcjeueHoIp7Q=;
+	s=arc-20240116; t=1760713108; c=relaxed/simple;
+	bh=HB0TSy8LxflJAEJkGM0PVMn6nFOOhHEKjkoERsq9oH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgurn5yAdeK2e4i1/2CCBI8xfTVlRI3F1b5jJ7AUErejtx9ak4gNfrfaWrmrbxsz/cL9Dq0b4+QntNsQ9Yz0aOtzvBy9vk9/f8pd46qNGeeGtpvtE/Z4CINSn3ufhRZkPnneZqJdTRGxSBRsIYaLB084jbyQOHbwxMBl1oTAxhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXECxm79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17316C116B1;
-	Fri, 17 Oct 2025 15:19:26 +0000 (UTC)
+	 MIME-Version; b=m5EES9bPspiKZAli8Wp9IYF9ml+ZMLeMeBnPylwL3vB0n/3kQfdkrH58CwWYFbUodtlZgHr/+2lWPxMXitKzwFK3ft0q84ANFXqoh9FucOhTSZcE8tVXoyINbrIm816pBx0EwriCPhsfgvAELwqymQ2WkDfowBWUw2KxcH9sai8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTFsCHAF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D9AC4CEE7;
+	Fri, 17 Oct 2025 14:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714367;
-	bh=1QoD1IIR1jfwwIzVio6d4hfwJ6pZoWZMcjeueHoIp7Q=;
+	s=korg; t=1760713108;
+	bh=HB0TSy8LxflJAEJkGM0PVMn6nFOOhHEKjkoERsq9oH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PXECxm79QT28QbN3UUy+gqJ23xv4dxjHjh3hIH1ltZDkif638595iRIK6rtKCcFZP
-	 T35hmK6Hqm9qNUxUtn08nXDYzOAHdtsxXTq0ApLmeF8QUVXPHpauPeCCh6xlLukIZz
-	 cSxzUVA6yWDSZeMSH/WPyqLO+1S71ebG3AdgSOsY=
+	b=pTFsCHAFTlmMLgVgx0QUrvScnC/a4LbzGznkV7lK4cd76zqI6xA59GaUp/Y8K62aQ
+	 7qjdWG8cuTDMMVQx/gLUOLibECW3HjwRR1Or9RQGnJjMrDGkLxk5VUdG9n51JHspgx
+	 D09IPKWy3BbhdS5WtkuXOe0Z+cSSEIhv3xLsEd6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 120/277] blk-crypto: fix missing blktrace bio split events
-Date: Fri, 17 Oct 2025 16:52:07 +0200
-Message-ID: <20251017145151.506943464@linuxfoundation.org>
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 049/168] gpio: wcd934x: mark the GPIO controller as sleeping
+Date: Fri, 17 Oct 2025 16:52:08 +0200
+Message-ID: <20251017145130.824029910@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 06d712d297649f48ebf1381d19bd24e942813b37 upstream.
+[ Upstream commit b5f8aa8d4bde0cf3e4595af5a536da337e5f1c78 ]
 
-trace_block_split() is missing, resulting in blktrace inability to catch
-BIO split events and making it harder to analyze the BIO sequence.
+The slimbus regmap passed to the GPIO driver down from MFD does not use
+fast_io. This means a mutex is used for locking and thus this GPIO chip
+must not be used in atomic context. Change the can_sleep switch in
+struct gpio_chip to true.
 
-Cc: stable@vger.kernel.org
-Fixes: 488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 59c324683400 ("gpio: wcd934x: Add support to wcd934x gpio controller")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-crypto-fallback.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpio/gpio-wcd934x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/blk-crypto-fallback.c
-+++ b/block/blk-crypto-fallback.c
-@@ -18,6 +18,7 @@
- #include <linux/module.h>
- #include <linux/random.h>
- #include <linux/scatterlist.h>
-+#include <trace/events/block.h>
+diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
+index cbbbd105a5a7b..26d70ac90933c 100644
+--- a/drivers/gpio/gpio-wcd934x.c
++++ b/drivers/gpio/gpio-wcd934x.c
+@@ -101,7 +101,7 @@ static int wcd_gpio_probe(struct platform_device *pdev)
+ 	chip->base = -1;
+ 	chip->ngpio = WCD934X_NPINS;
+ 	chip->label = dev_name(dev);
+-	chip->can_sleep = false;
++	chip->can_sleep = true;
  
- #include "blk-cgroup.h"
- #include "blk-crypto-internal.h"
-@@ -230,7 +231,9 @@ static bool blk_crypto_fallback_split_bi
- 			bio->bi_status = BLK_STS_RESOURCE;
- 			return false;
- 		}
-+
- 		bio_chain(split_bio, bio);
-+		trace_block_split(split_bio, bio->bi_iter.bi_sector);
- 		submit_bio_noacct(bio);
- 		*bio_ptr = split_bio;
- 	}
+ 	return devm_gpiochip_add_data(dev, chip, data);
+ }
+-- 
+2.51.0
+
 
 
 
