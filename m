@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-186430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90549BE97B1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DFCBE9E07
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4DFA740F3D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3753746C4F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590163208;
-	Fri, 17 Oct 2025 15:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6003321BA;
+	Fri, 17 Oct 2025 15:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6Vxuwvh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9f8nYj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F0F2F12DB;
-	Fri, 17 Oct 2025 15:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABD3330317;
+	Fri, 17 Oct 2025 15:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713221; cv=none; b=Suq7lfIgykev/GpesYtgnUlEQ8bIkfoYbnh9vJqR6mtu44wmxWQzkygDTq8/CHW6Ro+Il0FQT9yfFKe5HwPlZR+Q6JvF9gq9bOglPZbiADYlpiKQUVseZJbb59iNDHh23eR7t2m9rmpwlcJ7AhV14YMrcObcUSSs0KiKpW4NkDk=
+	t=1760713661; cv=none; b=JI7XqxvRHY1Z1b1yPDCRommQXPe9dewvgEfj7BvNEcUWSjDLKxA1+yLYB2iY6hwaOSceR/9xafO131Sl6EgWy5bCZDPtLBf8sD2fHhuJw6hHGtQnWfWcWzIRg2nLsS3TKT8g2jBDMwmOXkbdjQyDdDEChFS2CiCwVBegAq7qZOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713221; c=relaxed/simple;
-	bh=AISeejv4wpXVz4V2T8EcC3q1Zi4FIalDx+CehiTRYh8=;
+	s=arc-20240116; t=1760713661; c=relaxed/simple;
+	bh=2kSCpRgnPd1Q1DAdVOTEuLnriZYmpNBhlsBibo3Wrkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5lPlsYiaNeIm8X0lzVoqSvDIQ7wRRMTO1AnOJGLmA/n8oug7bJfOrlaggCeuubaLpTuKo7SQHUJe7LONbB7kdctCcsSmqPGGztpUSatc1uJfYLam/QIvVRo1rb5n/9PD55chVDeDJLt8ooXtcyeGQvC+dkdKueUBm/OHz+CNY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6Vxuwvh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F61BC113D0;
-	Fri, 17 Oct 2025 15:00:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M16Hoq40DDG5h6rxG7EomWGZls/u1MHzejs7T8kv5r8x/gwATIlAQMWne6lNYDvemYVUDDIK3t4R6/+6I0tGfxleOAEK2inOb9Dhg29wwOgl3hDj9zdTwOOWk9d6Pb8IC2g0zMZC7bSdjPrqExdxbdabKOwv7omhkffN57G4pLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9f8nYj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48425C4CEE7;
+	Fri, 17 Oct 2025 15:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713220;
-	bh=AISeejv4wpXVz4V2T8EcC3q1Zi4FIalDx+CehiTRYh8=;
+	s=korg; t=1760713661;
+	bh=2kSCpRgnPd1Q1DAdVOTEuLnriZYmpNBhlsBibo3Wrkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6VxuwvhpRClpa7HtEjp6dqSWwhQKKbtofT3QFPW3fg615pa9xMH7QkS9zaIaGxWm
-	 GjOZXSQjQm6a5HUbK6Mn8sxMBDqIUcXE11+DSFtfHAmZug8lcqtnY7v08JHANq9q7S
-	 3pNNRVr/CgvlVbuTROKPxhmIoNPoLTg5rr0dQc+o=
+	b=c9f8nYj6lLlcwCv+p6GEWmXTVe9QFWjAuEozY1gGzGGGnrjSm1IKtA0BZ9wymetdK
+	 glYcsyiIoeB5UFhkH5Oaa+LZ+kvBmRbpWHkn3B9RERUbGtsfJs4rHC/wXmYvwYFzct
+	 u6+bM10DZz1hSTYSxO526TzyOFgyExw5N5vwKz7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vibhore Vardhan <vibhore@ti.com>,
-	Paresh Bhagat <p-bhagat@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.1 056/168] arm64: dts: ti: k3-am62a-main: Fix main padcfg length
+	=?UTF-8?q?Martin=20Kepplinger-Novakovi=C4=87?= <martink@posteo.de>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.6 074/201] media: mc: Fix MUST_CONNECT handling for pads with no links
 Date: Fri, 17 Oct 2025 16:52:15 +0200
-Message-ID: <20251017145131.085808997@linuxfoundation.org>
+Message-ID: <20251017145137.474819582@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vibhore Vardhan <vibhore@ti.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-commit 4c4e48afb6d85c1a8f9fdbae1fdf17ceef4a6f5b upstream.
+commit eec81250219a209b863f11d02128ec1dd8e20877 upstream.
 
-The main pad configuration register region starts with the register
-MAIN_PADCFG_CTRL_MMR_CFG0_PADCONFIG0 with address 0x000f4000 and ends
-with the MAIN_PADCFG_CTRL_MMR_CFG0_PADCONFIG150 register with address
-0x000f4258, as a result of which, total size of the region is 0x25c
-instead of 0x2ac.
+Commit b3decc5ce7d7 ("media: mc: Expand MUST_CONNECT flag to always
+require an enabled link") expanded the meaning of the MUST_CONNECT flag
+to require an enabled link in all cases. To do so, the link exploration
+code was expanded to cover unconnected pads, in order to reject those
+that have the MUST_CONNECT flag set. The implementation was however
+incorrect, ignoring unconnected pads instead of ignoring connected pads.
+Fix it.
 
-Reference Docs
-TRM (AM62A) - https://www.ti.com/lit/ug/spruj16b/spruj16b.pdf
-TRM (AM62D) - https://www.ti.com/lit/ug/sprujd4/sprujd4.pdf
-
-Fixes: 5fc6b1b62639c ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vibhore Vardhan <vibhore@ti.com>
-Signed-off-by: Paresh Bhagat <p-bhagat@ti.com>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://patch.msgid.link/20250903062513.813925-2-p-bhagat@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Reported-by: Martin Kepplinger-Novaković <martink@posteo.de>
+Closes: https://lore.kernel.org/linux-media/20250205172957.182362-1-martink@posteo.de
+Reported-by: Maud Spierings <maudspierings@gocontroll.com>
+Closes: https://lore.kernel.org/linux-media/20250818-imx8_isi-v1-1-e9cfe994c435@gocontroll.com
+Fixes: b3decc5ce7d7 ("media: mc: Expand MUST_CONNECT flag to always require an enabled link")
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Tested-by: Maud Spierings <maudspierings@gocontroll.com>
+Tested-by: Martin Kepplinger-Novaković <martink@posteo.de>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62a-main.dtsi |    2 +-
+ drivers/media/mc/mc-entity.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-@@ -97,7 +97,7 @@
- 
- 	main_pmx0: pinctrl@f4000 {
- 		compatible = "pinctrl-single";
--		reg = <0x00 0xf4000 0x00 0x2ac>;
-+		reg = <0x00 0xf4000 0x00 0x25c>;
- 		#pinctrl-cells = <1>;
- 		pinctrl-single,register-width = <32>;
- 		pinctrl-single,function-mask = <0xffffffff>;
+--- a/drivers/media/mc/mc-entity.c
++++ b/drivers/media/mc/mc-entity.c
+@@ -678,7 +678,7 @@ done:
+ 		 * (already discovered through iterating over links) and pads
+ 		 * not internally connected.
+ 		 */
+-		if (origin == local || !local->num_links ||
++		if (origin == local || local->num_links ||
+ 		    !media_entity_has_pad_interdep(origin->entity, origin->index,
+ 						   local->index))
+ 			continue;
 
 
 
