@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-187071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284D7BEA068
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02724BEA115
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 686E47449E3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E498C58582A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2603277A9;
-	Fri, 17 Oct 2025 15:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912F023EA9E;
+	Fri, 17 Oct 2025 15:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AT7jnbxz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYc0fg58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7092532E131;
-	Fri, 17 Oct 2025 15:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459593370FB;
+	Fri, 17 Oct 2025 15:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715038; cv=none; b=SGvpdm71WQqK6dAncjkLf8vowRfQKL6DFayoKrMiAqKRHQ1LFwZzzrOlRrT1XuKQSJmJMIBMeLXWlZAv+5jtYbTPYiBCqNGNi7TCtkbvArSD1wTX/ZL1bgTUT+acd1is7YpTBfTCA8p1DrF+CLSzg9CTgLqNM5dcB/TIpxeizjE=
+	t=1760715041; cv=none; b=IKvlqybudjyVDmkRmzrz+XpAx5xxCacT0hsha5Sa1l0u5mJPCdxXlEM/wQjQUhum+4f0YA9YBVev5tkkvLyePRFlcADqhWajCoh9pat2nemIvTO4XQeH5zY8DLkQedkPWc0loYGoAfikTYEp1xmZg8Z643AdHcENiMIpKKA3RxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715038; c=relaxed/simple;
-	bh=Jh7MQRQfT+XQb56sQNF4fF6e2719ycv/OTkY5Dh65cw=;
+	s=arc-20240116; t=1760715041; c=relaxed/simple;
+	bh=m/mg2SX03q1x+UAgKZBM3zVyMy+jbMQ94zxoaB0gxKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iRmHlSI1RNX3QWvwozgZ0N1jB4HxBgXhkPUkh9j32zOvYzppYHPVzEdkwHhzqsp5g1f1jZZDbEM9x++CCg6taP6xDVMZw6W+ewgsjPLtTeproRlXeLlKBKVYt0tHcK/LpcKkiY4vNcTvUcMn0jmEufTpnf4kqXxOLHkc1DzoKX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AT7jnbxz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E911CC4CEE7;
-	Fri, 17 Oct 2025 15:30:37 +0000 (UTC)
+	 MIME-Version; b=UrwLjKWv+LfyZ5nsekF7aPDioOxa5L7S66rWbr80lqMPpowXVUvdLLvgKrKbBsTlI27A0bo1jS+2apr/TrPkZdYseWWBxAg3FCXDc5rSa9cc3JvQknK7F/XPKR3PYBeRgc5hF6AfrkNs0kkI0+9ZRful6/hKse+4xKCcWsoCR4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYc0fg58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3880C4CEE7;
+	Fri, 17 Oct 2025 15:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715038;
-	bh=Jh7MQRQfT+XQb56sQNF4fF6e2719ycv/OTkY5Dh65cw=;
+	s=korg; t=1760715041;
+	bh=m/mg2SX03q1x+UAgKZBM3zVyMy+jbMQ94zxoaB0gxKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AT7jnbxzDqvAJg0okMezxrLciXXZOYPxCDxgmexBVBS8LFxGbxkJt+2IRgad4x65E
-	 YuJoOQ6LEvJJvNvlmtsljlWzGiU1YY/dmpeBt1xA01Xtk+SjWekj7kEx6D66LhZ6YT
-	 sut84ZiFGZl/q+Nl+J31kMQlcV+n33+N9HGCqJss=
+	b=nYc0fg58yo80eZnyeHdDkuScgl8wdYWCmZ5KV0yk4JTDzCwwUr17eiQEtUxnlScH5
+	 UhNtPxCYIU1pR9Cf902nuHigMwsLDRcXzjvKagmykb6qLdFoTVoFVixPv0JgtInmbI
+	 e+DHyTd/gtV63GxShs674Hi8mBik/HeS2IzgpxWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
 	WANG Rui <wangrui@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 076/371] LoongArch: Add cflag -fno-isolate-erroneous-paths-dereference
-Date: Fri, 17 Oct 2025 16:50:51 +0200
-Message-ID: <20251017145204.690121907@linuxfoundation.org>
+Subject: [PATCH 6.17 077/371] LoongArch: Fix build error for LTO with LLVM-18
+Date: Fri, 17 Oct 2025 16:50:52 +0200
+Message-ID: <20251017145204.725832881@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -68,38 +67,25 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit abb2a5572264b425e6dd9c213b735a82ab0ca68a ]
+[ Upstream commit 19baac378a5f4c34e61007023cfcb605cc64c76d ]
 
-Currently, when compiling with GCC, there is no "break 7" instruction
-for zero division due to using the option -mno-check-zero-division, but
-the compiler still generates "break 0" instruction for zero division.
+Commit b15212824a01 ("LoongArch: Make LTO case independent in Makefile")
+moves "KBUILD_LDFLAGS += -mllvm --loongarch-annotate-tablejump" out of
+CONFIG_CC_HAS_ANNOTATE_TABLEJUMP, which breaks the build for LLVM-18, as
+'--loongarch-annotate-tablejump' is unimplemented there:
 
-Here is a simple example:
+ld.lld: error: -mllvm: ld.lld: Unknown command line argument '--loongarch-annotate-tablejump'.
 
-  $ cat test.c
-  int div(int a)
-  {
-	  return a / 0;
-  }
-  $ gcc -O2 -S test.c -o test.s
+Call ld-option to detect '--loongarch-annotate-tablejump' before use, so
+as to fix the build error.
 
-GCC generates "break 0" on LoongArch and "ud2" on x86, objtool decodes
-"ud2" as INSN_BUG for x86, so decode "break 0" as INSN_BUG can fix the
-objtool warnings for LoongArch, but this is not the intention.
-
-When decoding "break 0" as INSN_TRAP in the previous commit, the aim is
-to handle "break 0" as a trap. The generated "break 0" for zero division
-by GCC is not proper, it should generate a break instruction with proper
-bug type, so add the GCC option -fno-isolate-erroneous-paths-dereference
-to avoid generating the unexpected "break 0" instruction for now.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202509200413.7uihAxJ5-lkp@intel.com/
-Fixes: baad7830ee9a ("objtool/LoongArch: Mark types based on break immediate code")
+Fixes: b15212824a01 ("LoongArch: Make LTO case independent in Makefile")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org> # build
 Suggested-by: WANG Rui <wangrui@loongson.cn>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -107,18 +93,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-index ae419e32f22e2..f2a585b4a9375 100644
+index f2a585b4a9375..dc5bd3f1b8d2c 100644
 --- a/arch/loongarch/Makefile
 +++ b/arch/loongarch/Makefile
-@@ -129,7 +129,7 @@ KBUILD_RUSTFLAGS_KERNEL		+= -Crelocation-model=pie
- LDFLAGS_vmlinux			+= -static -pie --no-dynamic-linker -z notext $(call ld-option, --apply-dynamic-relocs)
+@@ -115,7 +115,7 @@ ifdef CONFIG_LTO_CLANG
+ # The annotate-tablejump option can not be passed to LLVM backend when LTO is enabled.
+ # Ensure it is aware of linker with LTO, '--loongarch-annotate-tablejump' also needs to
+ # be passed via '-mllvm' to ld.lld.
+-KBUILD_LDFLAGS			+= -mllvm --loongarch-annotate-tablejump
++KBUILD_LDFLAGS			+= $(call ld-option,-mllvm --loongarch-annotate-tablejump)
+ endif
  endif
  
--cflags-y += $(call cc-option, -mno-check-zero-division)
-+cflags-y += $(call cc-option, -mno-check-zero-division -fno-isolate-erroneous-paths-dereference)
- 
- ifndef CONFIG_KASAN
- cflags-y += -fno-builtin-memcpy -fno-builtin-memmove -fno-builtin-memset
 -- 
 2.51.0
 
