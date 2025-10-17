@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-186352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B463ABE95E7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A18BEA177
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A307420CC9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:56:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A43FD7C73DE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596135695;
-	Fri, 17 Oct 2025 14:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B43337110;
+	Fri, 17 Oct 2025 15:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBVwSv7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttRiPuQf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A52F3370FB;
-	Fri, 17 Oct 2025 14:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F5730CD9F;
+	Fri, 17 Oct 2025 15:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760712997; cv=none; b=dNPHPxoKv5pkf7PlgKvmdldVWfskSkFgoOTUIIct5MsqFP3GDv0IsVj2y3f1WJ6VZ5IbRg5anx1cChkVbWrjBCp3jX/j2p9a14D4DQ5KfegUYctNiJ7Qvyn6RRUAHDfjpoVXDaD9tk1/PB5pNuIHVMhWjHxnOnjV333e8+nyUVY=
+	t=1760715153; cv=none; b=HA2bYkP4UscBjA31TO2TsYbztwjfSJJSyolZNxeiEYebcTiT9L5kjRdFbQkN1fBKBh8wsxJyc/AJYHJDA0VQp5z8x/nMzs5Wh7QtF+LihvJglgbh8JTA5YTnfOJL43N3b9U7gssCslmfdjzOgsOGP9sXdZHtyrfINk+23KsE2Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760712997; c=relaxed/simple;
-	bh=aZZwKnacziJUjcoR8aYz6ZgqqQ0jxFFoHixlVTbMGLA=;
+	s=arc-20240116; t=1760715153; c=relaxed/simple;
+	bh=rc9jlm/gw+dqqK3lSkEkmpXdgIEs4d4J0zeJ4H1nfHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mv8smHwNCYMd5NlpXXj1RCkBSSrjf4V8JNi4b1QfAhzMSQKMxtLnZnGOnUquOJWb7paiya+3gz+QCErsrEJnRTUM+fwRG0peVZuef8xnW0pwimS+eyxIa4K5Uf7VkxBOeTK9EgDpOHaxWZL8e5njyYDD5sbkVye4DPsmuCS7Igw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBVwSv7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A848C4CEE7;
-	Fri, 17 Oct 2025 14:56:36 +0000 (UTC)
+	 MIME-Version; b=Q96PEgVowAY6EOlCjhVI6s7AhDMJ7Naxx47c8DMrYYwq2idX78s3LxOPfVahSumuEfgoQqxQhqTH3nhqV3E7YMBqUn+8Ky+hCjBPoDI8sLITdJ/xOMWi8V4+2KGBkwas8ukTSE/ZVytFIz1+FMg3TZX5FHmr3jN8OGSoW2e4i/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttRiPuQf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D09C113D0;
+	Fri, 17 Oct 2025 15:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760712996;
-	bh=aZZwKnacziJUjcoR8aYz6ZgqqQ0jxFFoHixlVTbMGLA=;
+	s=korg; t=1760715153;
+	bh=rc9jlm/gw+dqqK3lSkEkmpXdgIEs4d4J0zeJ4H1nfHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBVwSv7vIKs9vUdoSssoqmbNdZxUzmXCInb5av5R2bslTyKVW9yFZLuv4bXm1ESts
-	 EOjzlBgP1CU2WsPbR4CXLEMLH9Lz7sE/0OwNRAX9zYj89dKESLXtSfIv8jWMPv2/fN
-	 tnPw/jCZ0JL56Vm8waqoy7a7J1gh8IsEUh3c6iMc=
+	b=ttRiPuQfjapSNyV+HKvVQgqziKJ8xFDD88b+EEpehmLFCyv+1M5Fr3oOwpWxfH8Lf
+	 x4uVTaKcARsWm6BxkSf+wTT632Znij7MNaF1rNjV0jrOHQit9GbgCnnKjTlh3hZInm
+	 /q4JTSXZMrzO486C8C9On4bM7oc3IsEUwlIhA+eQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ali Saidi <alisaidi@amazon.com>,
-	German Gomez <german.gomez@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Georg Pfuetzenreuter <georg.pfuetzenreuter@suse.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/168] perf arm_spe: Correct setting remote access
+Subject: [PATCH 6.17 116/371] netfilter: nft_objref: validate objref and objrefmap expressions
 Date: Fri, 17 Oct 2025 16:51:31 +0200
-Message-ID: <20251017145129.466696764@linuxfoundation.org>
+Message-ID: <20251017145206.132640174@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,48 +64,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 039fd0634a0629132432632d7ac9a14915406b5c ]
+[ Upstream commit f359b809d54c6e3dd1d039b97e0b68390b0e53e4 ]
 
-Set the mem_remote field for a remote access to appropriately represent
-the event.
+Referencing a synproxy stateful object from OUTPUT hook causes kernel
+crash due to infinite recursive calls:
 
-Fixes: a89dbc9b988f3ba8 ("perf arm-spe: Set sample's data source field")
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ali Saidi <alisaidi@amazon.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+BUG: TASK stack guard page was hit at 000000008bda5b8c (stack is 000000003ab1c4a5..00000000494d8b12)
+[...]
+Call Trace:
+ __find_rr_leaf+0x99/0x230
+ fib6_table_lookup+0x13b/0x2d0
+ ip6_pol_route+0xa4/0x400
+ fib6_rule_lookup+0x156/0x240
+ ip6_route_output_flags+0xc6/0x150
+ __nf_ip6_route+0x23/0x50
+ synproxy_send_tcp_ipv6+0x106/0x200
+ synproxy_send_client_synack_ipv6+0x1aa/0x1f0
+ nft_synproxy_do_eval+0x263/0x310
+ nft_do_chain+0x5a8/0x5f0 [nf_tables
+ nft_do_chain_inet+0x98/0x110
+ nf_hook_slow+0x43/0xc0
+ __ip6_local_out+0xf0/0x170
+ ip6_local_out+0x17/0x70
+ synproxy_send_tcp_ipv6+0x1a2/0x200
+ synproxy_send_client_synack_ipv6+0x1aa/0x1f0
+[...]
+
+Implement objref and objrefmap expression validate functions.
+
+Currently, only NFT_OBJECT_SYNPROXY object type requires validation.
+This will also handle a jump to a chain using a synproxy object from the
+OUTPUT hook.
+
+Now when trying to reference a synproxy object in the OUTPUT hook, nft
+will produce the following error:
+
+synproxy_crash.nft: Error: Could not process rule: Operation not supported
+  synproxy name mysynproxy
+  ^^^^^^^^^^^^^^^^^^^^^^^^
+
+Fixes: ee394f96ad75 ("netfilter: nft_synproxy: add synproxy stateful object support")
+Reported-by: Georg Pfuetzenreuter <georg.pfuetzenreuter@suse.com>
+Closes: https://bugzilla.suse.com/1250237
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/arm-spe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_objref.c | 39 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
-index 906476a839e1f..98e3c3fce05a2 100644
---- a/tools/perf/util/arm-spe.c
-+++ b/tools/perf/util/arm-spe.c
-@@ -492,7 +492,7 @@ static void arm_spe__synth_data_source_generic(const struct arm_spe_record *reco
- 	}
- 
- 	if (record->type & ARM_SPE_REMOTE_ACCESS)
--		data_src->mem_lvl |= PERF_MEM_LVL_REM_CCE1;
-+		data_src->mem_remote = PERF_MEM_REMOTE_REMOTE;
+diff --git a/net/netfilter/nft_objref.c b/net/netfilter/nft_objref.c
+index 8ee66a86c3bc7..1a62e384766a7 100644
+--- a/net/netfilter/nft_objref.c
++++ b/net/netfilter/nft_objref.c
+@@ -22,6 +22,35 @@ void nft_objref_eval(const struct nft_expr *expr,
+ 	obj->ops->eval(obj, regs, pkt);
  }
  
- static u64 arm_spe__synth_data_source(const struct arm_spe_record *record, u64 midr)
++static int nft_objref_validate_obj_type(const struct nft_ctx *ctx, u32 type)
++{
++	unsigned int hooks;
++
++	switch (type) {
++	case NFT_OBJECT_SYNPROXY:
++		if (ctx->family != NFPROTO_IPV4 &&
++		    ctx->family != NFPROTO_IPV6 &&
++		    ctx->family != NFPROTO_INET)
++			return -EOPNOTSUPP;
++
++		hooks = (1 << NF_INET_LOCAL_IN) | (1 << NF_INET_FORWARD);
++
++		return nft_chain_validate_hooks(ctx->chain, hooks);
++	default:
++		break;
++	}
++
++	return 0;
++}
++
++static int nft_objref_validate(const struct nft_ctx *ctx,
++			       const struct nft_expr *expr)
++{
++	struct nft_object *obj = nft_objref_priv(expr);
++
++	return nft_objref_validate_obj_type(ctx, obj->ops->type->type);
++}
++
+ static int nft_objref_init(const struct nft_ctx *ctx,
+ 			   const struct nft_expr *expr,
+ 			   const struct nlattr * const tb[])
+@@ -93,6 +122,7 @@ static const struct nft_expr_ops nft_objref_ops = {
+ 	.activate	= nft_objref_activate,
+ 	.deactivate	= nft_objref_deactivate,
+ 	.dump		= nft_objref_dump,
++	.validate	= nft_objref_validate,
+ 	.reduce		= NFT_REDUCE_READONLY,
+ };
+ 
+@@ -197,6 +227,14 @@ static void nft_objref_map_destroy(const struct nft_ctx *ctx,
+ 	nf_tables_destroy_set(ctx, priv->set);
+ }
+ 
++static int nft_objref_map_validate(const struct nft_ctx *ctx,
++				   const struct nft_expr *expr)
++{
++	const struct nft_objref_map *priv = nft_expr_priv(expr);
++
++	return nft_objref_validate_obj_type(ctx, priv->set->objtype);
++}
++
+ static const struct nft_expr_ops nft_objref_map_ops = {
+ 	.type		= &nft_objref_type,
+ 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_objref_map)),
+@@ -206,6 +244,7 @@ static const struct nft_expr_ops nft_objref_map_ops = {
+ 	.deactivate	= nft_objref_map_deactivate,
+ 	.destroy	= nft_objref_map_destroy,
+ 	.dump		= nft_objref_map_dump,
++	.validate	= nft_objref_map_validate,
+ 	.reduce		= NFT_REDUCE_READONLY,
+ };
+ 
 -- 
 2.51.0
 
