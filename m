@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAABBE97F9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:08:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8853ABE9E10
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FFC11883AC9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A89335894A0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD2A2745E;
-	Fri, 17 Oct 2025 15:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D091A335076;
+	Fri, 17 Oct 2025 15:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UF35ZeXT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uF6cYKqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061DC3370E2;
-	Fri, 17 Oct 2025 15:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5C4335073;
+	Fri, 17 Oct 2025 15:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713560; cv=none; b=origUtNuVbQfbso0c0QYNGA32cV7p5A8QTmGi2Szio5KuBt10r2BGGeMaHH1CNowy00XA32V2oN9FDaIhVGZ0CZfFH6IjVWc3PRGu6EFIPW4Cjl7x28eEdVMPRK9MjL+Ew4qH8UM2WApmhHmSW9ZUDuw9jHd+UKC799le2PbSGE=
+	t=1760714293; cv=none; b=EIy7x4+eaeVlgfpUsi2E+599uAddvBmR4ZHqGP9/p63hqrHTQxdZj60FqLTsof2oiKQGGFaMky+oTAbZU4dSInX3dhCeMTkfQ8XKQxSXJFA5qYQhpF5A1iwnpPqTYjIuMsQULkKrcJWigfxh2cVXMDKZpShkRPpuFk2Zk7GTC0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713560; c=relaxed/simple;
-	bh=pXXXAHY0Iq9ibxirjSpOcGYReGh7sHaJvJVY6WzSPNc=;
+	s=arc-20240116; t=1760714293; c=relaxed/simple;
+	bh=zn2DIl2RFt3FWZcHjzBvEcKjCI9D92HHkM8dsEWstaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTpsRzozx2xr05YcWBYLABcoZzLp5Gc+SFlgpxskG29QPaaNuTigdfk7dHrCtTPKLcwfFAPN7f94UZpinmYoqUG0fi3i0uj60cVoRcvtOwQXJCCZvMZ8tSsEGXhZmVQlsv37KxdtByBgbfTUmzKLKVVet3EeUQqR3Ir3VabEhAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UF35ZeXT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805FAC4CEE7;
-	Fri, 17 Oct 2025 15:05:59 +0000 (UTC)
+	 MIME-Version; b=TThgrqRrfUH0F3R9YWx/sUQeqMancBfBHBrzP24nnt52T/TxlLm9VBPQc7y0y275j2p7UsL1MAKxBKMIc0IuhsowJiSI/ET/zUrZtJTeLQ2XkABQZvoNCCGXbwz/XOWfxaz7HcXiZ+AI3yF3ZH3I2iVzJrKDbNwaidqUxwgALDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uF6cYKqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0351EC4CEE7;
+	Fri, 17 Oct 2025 15:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713559;
-	bh=pXXXAHY0Iq9ibxirjSpOcGYReGh7sHaJvJVY6WzSPNc=;
+	s=korg; t=1760714293;
+	bh=zn2DIl2RFt3FWZcHjzBvEcKjCI9D92HHkM8dsEWstaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UF35ZeXT0Sv6xSWFwCXzKjHsA9WSkZ+avcdBbRYcnJ8RIUkM2ihK/XRi38jOlXOCN
-	 hUe7NGzGFYtmdaCV/pyQc4ss9GlyKPU+IPyKPftlbo5JKKVqYJIUhlEhfoVsXRgbEL
-	 PpEmRuv4/XcuzyWFCzApLB87P3+rlAaW/KvYWGCE=
+	b=uF6cYKqzt1wFx8eqA1aWzFBR84AbfPlLZF+7Wed9xWt43uXDKrs2m9JTA4NRmgA2L
+	 2x7Zi+eHc9frn3m/67I/Qh3JsWeKm9PcwYlz2ggcjS0aPBi2G9S7Cun9LDROzgrpY9
+	 cLdUoxcXtEVwXS1A3DHstrYJ2JnftaW9ZgRxbGtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Karanja <karanja99erick@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/201] net: fsl_pq_mdio: Fix device node reference leak in fsl_pq_mdio_probe
-Date: Fri, 17 Oct 2025 16:51:39 +0200
-Message-ID: <20251017145136.144644772@linuxfoundation.org>
+	Yang Shi <yang@os.amperecomputing.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.12 093/277] arm64: kprobes: call set_memory_rox() for kprobe page
+Date: Fri, 17 Oct 2025 16:51:40 +0200
+Message-ID: <20251017145150.530024860@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Karanja <karanja99erick@gmail.com>
+From: Yang Shi <yang@os.amperecomputing.com>
 
-[ Upstream commit 521405cb54cd2812bbb6dedd5afc14bca1e7e98a ]
+commit 195a1b7d8388c0ec2969a39324feb8bebf9bb907 upstream.
 
-Add missing of_node_put call to release device node tbi obtained
-via for_each_child_of_node.
+The kprobe page is allocated by execmem allocator with ROX permission.
+It needs to call set_memory_rox() to set proper permission for the
+direct map too. It was missed.
 
-Fixes: afae5ad78b342 ("net/fsl_pq_mdio: streamline probing of MDIO nodes")
-Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
-Link: https://patch.msgid.link/20251002174617.960521-1-karanja99erick@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 10d5e97c1bf8 ("arm64: use PAGE_KERNEL_ROX directly in alloc_insn_page")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fsl_pq_mdio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kernel/probes/kprobes.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fsl_pq_mdio.c b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
-index eee675a25b2c3..ef9adecb639ae 100644
---- a/drivers/net/ethernet/freescale/fsl_pq_mdio.c
-+++ b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
-@@ -483,10 +483,12 @@ static int fsl_pq_mdio_probe(struct platform_device *pdev)
- 					"missing 'reg' property in node %pOF\n",
- 					tbi);
- 				err = -EBUSY;
-+				of_node_put(tbi);
- 				goto error;
- 			}
- 			set_tbipa(*prop, pdev,
- 				  data->get_tbipa, priv->map, &res);
-+			of_node_put(tbi);
- 		}
- 	}
+--- a/arch/arm64/kernel/probes/kprobes.c
++++ b/arch/arm64/kernel/probes/kprobes.c
+@@ -10,6 +10,7 @@
  
--- 
-2.51.0
-
+ #define pr_fmt(fmt) "kprobes: " fmt
+ 
++#include <linux/execmem.h>
+ #include <linux/extable.h>
+ #include <linux/kasan.h>
+ #include <linux/kernel.h>
+@@ -41,6 +42,17 @@ DEFINE_PER_CPU(struct kprobe_ctlblk, kpr
+ static void __kprobes
+ post_kprobe_handler(struct kprobe *, struct kprobe_ctlblk *, struct pt_regs *);
+ 
++void *alloc_insn_page(void)
++{
++	void *addr;
++
++	addr = execmem_alloc(EXECMEM_KPROBES, PAGE_SIZE);
++	if (!addr)
++		return NULL;
++	set_memory_rox((unsigned long)addr, 1);
++	return addr;
++}
++
+ static void __kprobes arch_prepare_ss_slot(struct kprobe *p)
+ {
+ 	kprobe_opcode_t *addr = p->ainsn.api.insn;
 
 
 
