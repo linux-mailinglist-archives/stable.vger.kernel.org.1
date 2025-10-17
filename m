@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-186683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E560BE9999
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:35 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C17ABE9C75
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 571551AA2B50
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0B3E935E1D0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B726C332907;
-	Fri, 17 Oct 2025 15:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91D52F12B8;
+	Fri, 17 Oct 2025 15:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnXZh11o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBQiDL0i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A77D2745E;
-	Fri, 17 Oct 2025 15:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6389C219A7A;
+	Fri, 17 Oct 2025 15:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713939; cv=none; b=V0ThFtup15FQBlAAFmy6stljsK8DBRbBgsw8Ob4xo6aYNzfmPLYww+QH3rkaslasV47JLDMc7Y9dlyxzZ0MOQuhqegfMhFIAGKpF14URZ687MsqXGWjvLBXHUSohL+VJKh7hO4XhRJ64eCjY8NRfeAkcSQLJLTWQrpQRVhyEdCg=
+	t=1760714672; cv=none; b=cuNzyP55Wyy6sQ89ShNT/G1NApE/Nj3QXtJoN0HBxXVAM24dCcgyloSnfZjtwEOMMi5Iybzm4Wozrv7qoOAHyBJMLG9bRi5SUyOQ9y6zF5oWWdZ4tUeYLabPFLFhv6/cWFyF8wCsURd60qQqOrNHEFyTBb8joVP6L5yNKCRJ0KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713939; c=relaxed/simple;
-	bh=jPzgKN4/dR0A62w6Zhi6zdJW4q1MJ4BkuhYN8okHins=;
+	s=arc-20240116; t=1760714672; c=relaxed/simple;
+	bh=b1LO+f1xjPF39vyJ+d30q3F+mKBQ0/XAsc+8jy4kP6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1omeYnUSgWLPDPxEMByzA2XYr004XIghckwyfT3nCq0YD4DPbbTZO0h+4G32XooPSSdPrcZp/5iFIMxrMrAtGbI7m3eJWgIkXoJ9YvRv7In8WpKwIMSTjkIElFYKG6iYpQm1RFD31k0DBQFoKWtQe5Xmqceq/s+JvqKyE9muYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnXZh11o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E74C4CEE7;
-	Fri, 17 Oct 2025 15:12:18 +0000 (UTC)
+	 MIME-Version; b=R0gQNu/vDdE4mwzqEK51N0FPRQpQetOC5RNSfObABrjNGFpzNXxm0C5zz7Ka+QCfZ+zitHrt1TtzOczQtw0ytyuM02UUmnBoweASWPcHazoGxdlFHbIubKzpVnXBAm8Hmdew2nuMHC1MqnkSqVygCtYUkyXVraGHIgI8XGFeUVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBQiDL0i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECB1C4CEE7;
+	Fri, 17 Oct 2025 15:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713939;
-	bh=jPzgKN4/dR0A62w6Zhi6zdJW4q1MJ4BkuhYN8okHins=;
+	s=korg; t=1760714672;
+	bh=b1LO+f1xjPF39vyJ+d30q3F+mKBQ0/XAsc+8jy4kP6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CnXZh11o5R/UnMhTynfgqqeknFqDk2Jgj6SheVUsxjp4Q+WW8L7HxmKPO3oWSTudd
-	 0N5/PJpcxk4Aiv8gOXlXf61PpZZqi6h1eNdfTBC6XLYNEcBpnNNvVCAel4R51mmJeY
-	 tmHBg69WANb1zs0lV8H68NDjiyD+SCBFSWWCzCX4=
+	b=CBQiDL0iZvxl20vB6/FKpBNSwfZHEHRuSrFZYzvDDflRb9qZwxnvCmc5a+8GYr/UG
+	 LXK4LFaPw9uvo0nt52gVQAxULiUaDTwnDWZCDxH06qk91+YRhlKQvehko+dW/5ikcx
+	 2td6VWqE8KbG/3PB6AXKJQJUiB9STmyja3b7sY+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com,
+	Amir Goldstein <amir73il@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/201] rseq: Protect event mask against membarrier IPI
+Subject: [PATCH 6.12 226/277] Squashfs: reject negative file sizes in squashfs_read_inode()
 Date: Fri, 17 Oct 2025 16:53:53 +0200
-Message-ID: <20251017145141.059504259@linuxfoundation.org>
+Message-ID: <20251017145155.380305226@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit 6eb350a2233100a283f882c023e5ad426d0ed63b ]
+[ Upstream commit 9f1c14c1de1bdde395f6cc893efa4f80a2ae3b2b ]
 
-rseq_need_restart() reads and clears task::rseq_event_mask with preemption
-disabled to guard against the scheduler.
+Syskaller reports a "WARNING in ovl_copy_up_file" in overlayfs.
 
-But membarrier() uses an IPI and sets the PREEMPT bit in the event mask
-from the IPI, which leaves that RMW operation unprotected.
+This warning is ultimately caused because the underlying Squashfs file
+system returns a file with a negative file size.
 
-Use guard(irq) if CONFIG_MEMBARRIER is enabled to fix that.
+This commit checks for a negative file size and returns EINVAL.
 
-Fixes: 2a36ab717e8f ("rseq/membarrier: Add MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: stable@vger.kernel.org
-[ Applied changes to include/linux/sched.h instead of include/linux/rseq.h ]
+[phillip@squashfs.org.uk: only need to check 64 bit quantity]
+  Link: https://lkml.kernel.org/r/20250926222305.110103-1-phillip@squashfs.org.uk
+Link: https://lkml.kernel.org/r/20250926215935.107233-1-phillip@squashfs.org.uk
+Fixes: 6545b246a2c8 ("Squashfs: inode operations")
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68d580e5.a00a0220.303701.0019.GAE@google.com/
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched.h |   11 ++++++++---
- kernel/rseq.c         |   10 +++++-----
- 2 files changed, 13 insertions(+), 8 deletions(-)
+ fs/squashfs/inode.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2343,6 +2343,12 @@ enum rseq_event_mask {
- 	RSEQ_EVENT_MIGRATE	= (1U << RSEQ_EVENT_MIGRATE_BIT),
- };
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -193,6 +193,10 @@ int squashfs_read_inode(struct inode *in
+ 			goto failed_read;
  
-+#ifdef CONFIG_MEMBARRIER
-+# define RSEQ_EVENT_GUARD	irq
-+#else
-+# define RSEQ_EVENT_GUARD	preempt
-+#endif
-+
- static inline void rseq_set_notify_resume(struct task_struct *t)
- {
- 	if (t->rseq)
-@@ -2361,9 +2367,8 @@ static inline void rseq_handle_notify_re
- static inline void rseq_signal_deliver(struct ksignal *ksig,
- 				       struct pt_regs *regs)
- {
--	preempt_disable();
--	__set_bit(RSEQ_EVENT_SIGNAL_BIT, &current->rseq_event_mask);
--	preempt_enable();
-+	scoped_guard(RSEQ_EVENT_GUARD)
-+		__set_bit(RSEQ_EVENT_SIGNAL_BIT, &current->rseq_event_mask);
- 	rseq_handle_notify_resume(ksig, regs);
- }
- 
---- a/kernel/rseq.c
-+++ b/kernel/rseq.c
-@@ -255,12 +255,12 @@ static int rseq_need_restart(struct task
- 
- 	/*
- 	 * Load and clear event mask atomically with respect to
--	 * scheduler preemption.
-+	 * scheduler preemption and membarrier IPIs.
- 	 */
--	preempt_disable();
--	event_mask = t->rseq_event_mask;
--	t->rseq_event_mask = 0;
--	preempt_enable();
-+	scoped_guard(RSEQ_EVENT_GUARD) {
-+		event_mask = t->rseq_event_mask;
-+		t->rseq_event_mask = 0;
-+	}
- 
- 	return !!event_mask;
- }
+ 		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
++		if (inode->i_size < 0) {
++			err = -EINVAL;
++			goto failed_read;
++		}
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
+ 			/*
 
 
 
