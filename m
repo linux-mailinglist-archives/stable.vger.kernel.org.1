@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-186930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034BABE9C4E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51063BEA64B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C73CC35E02A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8937F5A2EB2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0331E3328F4;
-	Fri, 17 Oct 2025 15:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C728330B0C;
+	Fri, 17 Oct 2025 15:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrA4lql8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSh1GU2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C8D32C93E;
-	Fri, 17 Oct 2025 15:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088C1330B26;
+	Fri, 17 Oct 2025 15:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714634; cv=none; b=bd5w18tnqZgEOsxizCUzjHuuef6aM3KKrRbQPwooiqnrl02z+J8crdcwpxIZFkLA2UcQyTu6SkiyyLWLyC5khV7Y6zGX4bNmbtqBofU4yDfG3UfXRBsrcRbKWYDo4EZuOgeD8vby4iOghWdi6JhYWH5biyqLTENlDL2UG7mkAHQ=
+	t=1760716233; cv=none; b=YIVmJcL+or0qwSiot+ppIR3GYsukDnpkgKx8FgfT0s+NrDailpCH0u++F71g8fgRzGFD80vIRRvRxPJugif2Z4JQRvo0GmIkCnUh1qFWglO5hsNNMNS7s2lz1THr76PAmHy6nhMx1pl28BPBNI67QTaOvzNA27ACAhg1E7UPGvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714634; c=relaxed/simple;
-	bh=jHBFVl3JDvQWmR7ph+Djko6RU0MAdi/ThyB4pbquLlo=;
+	s=arc-20240116; t=1760716233; c=relaxed/simple;
+	bh=NW2aKZJZbUt+Jzz1WpcWFfahtlWBZevyHAFiLPPdu30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pooa+Zy0WeIJRXj8+nobk2Y9N/xtDSmVYrxxB2EKWRNblI6GasLUDJsSucMcqKyW9GN1im92d5JhiyjceKFvej5OV3Iqyh+3C5UYQJ755ljQzuNN4tJvhTQCNN/bJJ4PZGxEbsgMFIyzwYNcrIwCDQOXtw1BFUUJpEWnN77oDus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrA4lql8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB150C4CEE7;
-	Fri, 17 Oct 2025 15:23:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hn5ZMMcB05xjqCbzzkuvgEXMqgUcoSKT4g/qzMINu5e6vYn5btko6PRRDg7v8cFVyzoga/T+9Bxt8uKU6iS2t/reAMjTXVu26uxQ+H6FmmRqtaBcNtq/PgFO7PITUFrZKkbPdTejL+wv3LP0sSdOJbM25XmPZqvU2++0T26nO4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSh1GU2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839E7C4CEE7;
+	Fri, 17 Oct 2025 15:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714634;
-	bh=jHBFVl3JDvQWmR7ph+Djko6RU0MAdi/ThyB4pbquLlo=;
+	s=korg; t=1760716232;
+	bh=NW2aKZJZbUt+Jzz1WpcWFfahtlWBZevyHAFiLPPdu30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrA4lql8IdFY3st5Ynb7yp1Gf0prD6RR9sOVy+dWQVhkT4nqPWVt0hUhwdEMAnNij
-	 fu8r9e3VIyAEot9ju5X9IWfrtK/baityUXhfitF8Zm/eQ3JLGZOV/LH4PZKJhUBAYA
-	 HPQcmeMUvOGenAciXVMFIa4Xg/UA65API96dWobo=
+	b=TSh1GU2I5ZpSwjc8FT2S4Wz90Cx6ZPDrUZwIZCmJckJmxu/8SKZX51Qw1dMCrhWus
+	 7RRPd/cDv31ybl1j7Kw0RUgqWEs5ia6eCA/l2nvf6a6MmshUDHQrHECT32yvB7OQle
+	 R7cWJtifnE9eBw9QFJ+HJ96bTJansaWlzGAcZnaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Helen Koike <koike@igalia.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Matthew Wilcox <willy@infradead.org>,
-	NeilBrown <neilb@suse.de>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 206/277] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH allocations
+	Al Viro <viro@zeniv.linux.org.uk>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 120/276] fs: always return zero on success from replace_fd()
 Date: Fri, 17 Oct 2025 16:53:33 +0200
-Message-ID: <20251017145154.647498521@linuxfoundation.org>
+Message-ID: <20251017145146.858285975@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,80 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 6a204d4b14c99232e05d35305c27ebce1c009840 upstream.
+commit 708c04a5c2b78e22f56e2350de41feba74dfccd9 upstream.
 
-Commit 524c48072e56 ("mm/page_alloc: rename ALLOC_HIGH to
-ALLOC_MIN_RESERVE") is the start of a series that explains how __GFP_HIGH,
-which implies ALLOC_MIN_RESERVE, is going to be used instead of
-__GFP_ATOMIC for high atomic reserves.
+replace_fd() returns the number of the new file descriptor through the
+return value of do_dup2(). However its callers never care about the
+specific returned number. In fact the caller in receive_fd_replace() treats
+any non-zero return value as an error and therefore never calls
+__receive_sock() for most file descriptors, which is a bug.
 
-Commit eb2e2b425c69 ("mm/page_alloc: explicitly record high-order atomic
-allocations in alloc_flags") introduced ALLOC_HIGHATOMIC for such
-allocations of order higher than 0.  It still used __GFP_ATOMIC, though.
+To fix the bug in receive_fd_replace() and to avoid the same issue
+happening in future callers, signal success through a plain zero.
 
-Then, commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how
-__GFP_HIGH non-blocking allocations accesses reserves") just turned that
-check for !__GFP_DIRECT_RECLAIM, ignoring that high atomic reserves were
-expected to test for __GFP_HIGH.
-
-This leads to high atomic reserves being added for high-order GFP_NOWAIT
-allocations and others that clear __GFP_DIRECT_RECLAIM, which is
-unexpected.  Later, those reserves lead to 0-order allocations going to
-the slow path and starting reclaim.
-
->From /proc/pagetypeinfo, without the patch:
-
-Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-Node    0, zone    DMA32, type   HighAtomic      1      8     10      9      7      3      0      0      0      0      0
-Node    0, zone   Normal, type   HighAtomic     64     20     12      5      0      0      0      0      0      0      0
-
-With the patch:
-
-Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-Node    0, zone    DMA32, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-Node    0, zone   Normal, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-
-Link: https://lkml.kernel.org/r/20250814172245.1259625-1-cascardo@igalia.com
-Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Tested-by: Helen Koike <koike@igalia.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: NeilBrown <neilb@suse.de>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://lore.kernel.org/lkml/20250801220215.GS222315@ZenIV/
+Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
+Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://lore.kernel.org/20250805-fix-receive_fd_replace-v3-1-b72ba8b34bac@linutronix.de
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/file.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4052,7 +4052,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsig
- 		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
- 			alloc_flags |= ALLOC_NON_BLOCK;
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1154,7 +1154,10 @@ int replace_fd(unsigned fd, struct file
+ 	err = expand_files(files, fd);
+ 	if (unlikely(err < 0))
+ 		goto out_unlock;
+-	return do_dup2(files, file, fd, flags);
++	err = do_dup2(files, file, fd, flags);
++	if (err < 0)
++		return err;
++	return 0;
  
--			if (order > 0)
-+			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
- 				alloc_flags |= ALLOC_HIGHATOMIC;
- 		}
- 
+ out_unlock:
+ 	spin_unlock(&files->file_lock);
 
 
 
