@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-187070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF58BE9EA3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:32:43 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBCBBE99F0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C7BE1AE2AAB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CB5D735D325
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C695132C944;
-	Fri, 17 Oct 2025 15:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB63D32E13C;
+	Fri, 17 Oct 2025 15:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hI6GXLbi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxCdcJXw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A48232C931;
-	Fri, 17 Oct 2025 15:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8821632E13B;
+	Fri, 17 Oct 2025 15:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715035; cv=none; b=F3EfYzkr3dwOHi+QiT3r+QIClYWmFphQhA13A0sdL2HxnoVzmBOZIrfwxrVwC4Heyi+pwkXgxk2wv8Zx1IDU/fVnhtxL9Wlp495FItFbZA4L2LJU5RjKAy8vSNXtp/LTUJe635fM69nrPBPA8YOZk+ccJzmveywnmgVL5asnF1M=
+	t=1760714144; cv=none; b=r1aEvDED3dfkbeY2C/vAuiel7YhLrg/HO0y44EczUvuIVxmx1uvdF8X0k3BopIjBSbyRpnRLqTpLbc6EVH2278PY0uIlv3XpdC61ETdlanuH6qYXgflX/ioLTac+PhEuSH27gwEknSuls6XN9EKKGDloMqamwa0PcPwXcgRZ9Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715035; c=relaxed/simple;
-	bh=bwc3G50cKu/JTMUlHirkApVl7Ubfxu6Q9lGt47t02+U=;
+	s=arc-20240116; t=1760714144; c=relaxed/simple;
+	bh=ffKTKgS3OAO9GbRLWyQq20CJKZXUrFmhBsL+bNvDUjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9A6v3pSZ85qU7P+Tl1tUEk5KzCwsKRBoxjvyLKnrJYYKKs7f3/zyPGl9jXlD6E6U+9vKq2J07+qh/vY8PdtQVv6ps5dzroPXTD/ZMu07C/Y2Wks74o1wyaKlmO2k3hK3s0lkwLJMWoBw28StS9PQy2um/aWo1VecLEXyWj50tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hI6GXLbi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07826C4CEFE;
-	Fri, 17 Oct 2025 15:30:34 +0000 (UTC)
+	 MIME-Version; b=nKSAlCLuikHJjuFuaSvmSX5wEyIHmgkhl+LJMYRGVR3ls8z3ECBYHzgJ/sVV70A8IqKgj+UOSGkow1whkGwlQOJJQsfnJ0veNbiYgjMTjDTQKsFS2XfiykSRXgBOziOmQuCej2aXKaaixOlkPWOjJezXVMrbVSEwQfzWGdFYezs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxCdcJXw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CCDC4CEE7;
+	Fri, 17 Oct 2025 15:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715035;
-	bh=bwc3G50cKu/JTMUlHirkApVl7Ubfxu6Q9lGt47t02+U=;
+	s=korg; t=1760714144;
+	bh=ffKTKgS3OAO9GbRLWyQq20CJKZXUrFmhBsL+bNvDUjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hI6GXLbiPKZzPPhWMTmtqqoBsDu4EqEuxREUCiRfo+9WzXk83nK1ikYD9HSva7xZe
-	 5hBb7+A93ij+pfFAZGxzbkI6qsyPUmUZ0Y9ST9wH95bjgbqy58kuYXhZFNLoIleWYg
-	 634rECeZtY8MLNXulSF8g8AU1sbUFDD7aTrJM7iM=
+	b=bxCdcJXwfv0vNdEdAjxTxKVWxTXP1sjnnMtBP6uvmrK7Vw+MnkknvGhvV4kQDO7a7
+	 leo/PquKPbMQqqMU07rRmsf8gqoaE8vcnvo+qfJD5KfJl1P9+ncKJYJaXZ+U83EkFj
+	 ypZbt9HyCcjd99YbiwrW3nYjyQLUnd/oQ9Bjrcqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 075/371] ASoC: SOF: Intel: hda-pcm: Place the constraint on period time instead of buffer time
+Subject: [PATCH 6.12 043/277] ASoC: SOF: Intel: hda-pcm: Place the constraint on period time instead of buffer time
 Date: Fri, 17 Oct 2025 16:50:50 +0200
-Message-ID: <20251017145204.654432874@linuxfoundation.org>
+Message-ID: <20251017145148.718317399@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -92,7 +92,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 21 insertions(+), 8 deletions(-)
 
 diff --git a/sound/soc/sof/intel/hda-pcm.c b/sound/soc/sof/intel/hda-pcm.c
-index 1dd8d2092c3b4..da6c1e7263cde 100644
+index f6e24edd7adbe..898e4fcde2dde 100644
 --- a/sound/soc/sof/intel/hda-pcm.c
 +++ b/sound/soc/sof/intel/hda-pcm.c
 @@ -29,6 +29,8 @@
@@ -104,7 +104,7 @@ index 1dd8d2092c3b4..da6c1e7263cde 100644
  static bool hda_always_enable_dmi_l1;
  module_param_named(always_enable_dmi_l1, hda_always_enable_dmi_l1, bool, 0444);
  MODULE_PARM_DESC(always_enable_dmi_l1, "SOF HDA always enable DMI l1");
-@@ -291,19 +293,30 @@ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
+@@ -276,19 +278,30 @@ int hda_dsp_pcm_open(struct snd_sof_dev *sdev,
  	 * On playback start the DMA will transfer dsp_max_burst_size_in_ms
  	 * amount of data in one initial burst to fill up the host DMA buffer.
  	 * Consequent DMA burst sizes are shorter and their length can vary.
