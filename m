@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940C8BEA86A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:12:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122B9BEA93F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:16:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7848F74463E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF416946A1D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B18F3328E1;
-	Fri, 17 Oct 2025 15:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD6B2F12B5;
+	Fri, 17 Oct 2025 15:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFanIpgZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fg3LCRIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB07D330B1D;
-	Fri, 17 Oct 2025 15:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01165330B1F;
+	Fri, 17 Oct 2025 15:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715632; cv=none; b=bm61FrVTFhSrZ/FUhMTapgDr9STXLn0gdanWvlQ1XE67OBX0zDnefh2fRGUoOzfx+i7/tLVOohA13sxuPbomsg6xOdbgDMz1mGwJyFL+vqxqNDmtMIN7UcQx0VimH7LwwVDuun8FXtE55UM1kwQs9gGcPE+llm3zw0wLA1SOh8w=
+	t=1760716371; cv=none; b=mJyZ41GZ/MEFyz0cbL6cQo3ZRRl6jXhptJi+Ur0mIUSMqLoYQRDYYtzUX5TiwU+J9ACifuZUdwdESveLQVzsMJ4DdTJ9u3xIE9QpMsrPGizCwv/PO6WUSx3DwrErwNqnZk6+w4UCNy4wAeSKym2IAhX/W7uK/tvlHt//PFS3T5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715632; c=relaxed/simple;
-	bh=z+/TifYXTT7Nn//zBj9irxyyL3ZlC6VutJ2UgXsQxZ4=;
+	s=arc-20240116; t=1760716371; c=relaxed/simple;
+	bh=qRlhtJHt0GHfrmCxNKQdgteESyBndpw4WjysVAk3i18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldK6Q7dSt/5muiF9ch1K8UY2h67J5CxFxbABVoKrBgUYX7XoL2e3NG2s9GS3Q8dO9YFWocZ+l10tYVLVlGfp2MYgpHukgD2JLt9AN7Fyl0wcb5Z7sh0x0xXEWytCUaYFUGuLw0u6UhD456hZUsMH84gZ4wF5fhFuPZjYrEzNWIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFanIpgZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B40AC4CEE7;
-	Fri, 17 Oct 2025 15:40:31 +0000 (UTC)
+	 MIME-Version; b=ni/pBAPx0DAIFfCeIhVuQoTUGbvbwLFeJemhAlwBNQUGyUU+9hN4G9PyRc083pANG5poQoq6ApiNoD9UXcu1wuzPNfhsEfW0PZWxG5Huk/UBcM7CiH+VXfDaCuvn5mkqlR1zsKMRG+RTRqu1U6ReoMLs0M/nh6wuvYGG9xlugg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fg3LCRIE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D298C4CEE7;
+	Fri, 17 Oct 2025 15:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715631;
-	bh=z+/TifYXTT7Nn//zBj9irxyyL3ZlC6VutJ2UgXsQxZ4=;
+	s=korg; t=1760716370;
+	bh=qRlhtJHt0GHfrmCxNKQdgteESyBndpw4WjysVAk3i18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFanIpgZUKOrNv+kxbGO5Ux3r5Kv3dnobbReMewmUUfebU3d/oHe7y0tp044E1aPE
-	 AkgO+mkO5s2QzR0ILdIWGPqn7cHz3h5jxjPjpK/eqVPLzM4X2CYzHzwjULxxvVRK5w
-	 TNfdf7e5y1+Df3x0S9B8ieSXYBqNOGXVjdvJ+L7c=
+	b=fg3LCRIEB1dbxKmcVjUJ39tfDaaxpdB0AMUJaUb+N4wdJHxz2h1xajJ5rmsczuz/F
+	 u2tadhOX6ncNHbgr4lHZPehB3/GFemVFwSGOpV86qmaFCt2Qjas4MWdCqS0kY/oOqc
+	 qzfu3V8QU97gHzU0T/C18dbXxW7RMYFDdabo/Q3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Manivannan Sadhasivam <mani@kernel.org>
-Subject: [PATCH 6.17 284/371] PCI: keystone: Use devm_request_irq() to free "ks-pcie-error-irq" on exit
-Date: Fri, 17 Oct 2025 16:54:19 +0200
-Message-ID: <20251017145212.350305125@linuxfoundation.org>
+	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 167/276] ACPI: debug: fix signedness issues in read/write helpers
+Date: Fri, 17 Oct 2025 16:54:20 +0200
+Message-ID: <20251017145148.569189971@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
 
-commit e51d05f523e43ce5d2bad957943a2b14f68078cd upstream.
+commit 496f9372eae14775e0524e83e952814691fe850a upstream.
 
-Commit under Fixes introduced the IRQ handler for "ks-pcie-error-irq".
-The interrupt is acquired using "request_irq()" but is never freed if
-the driver exits due to an error. Although the section in the driver that
-invokes "request_irq()" has moved around over time, the issue hasn't been
-addressed until now.
+In the ACPI debugger interface, the helper functions for read and write
+operations use "int" as the length parameter data type. When a large
+"size_t count" is passed from the file operations, this cast to "int"
+results in truncation and a negative value due to signed integer
+representation.
 
-Fix this by using "devm_request_irq()" which automatically frees the
-interrupt if the driver exits.
+Logically, this negative number propagates to the min() calculation,
+where it is selected over the positive buffer space value, leading to
+unexpected behavior. Subsequently, when this negative value is used in
+copy_to_user() or copy_from_user(), it is interpreted as a large positive
+value due to the unsigned nature of the size parameter in these functions,
+causing the copy operations to attempt handling sizes far beyond the
+intended buffer limits.
 
-Fixes: 025dd3daeda7 ("PCI: keystone: Add error IRQ handler")
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Closes: https://lore.kernel.org/r/3d3a4b52-e343-42f3-9d69-94c259812143@kernel.org
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250912100802.3136121-2-s-vadapalli@ti.com
+Address the issue by:
+ - Changing the length parameters in acpi_aml_read_user() and
+   acpi_aml_write_user() from "int" to "size_t", aligning with the
+   expected unsigned size semantics.
+ - Updating return types and local variables in acpi_aml_read() and
+   acpi_aml_write() to "ssize_t" for consistency with kernel file
+   operation conventions.
+ - Using "size_t" for the "n" variable to ensure calculations remain
+   unsigned.
+ - Using min_t() for circ_count_to_end() and circ_space_to_end() to
+   ensure type-safe comparisons and prevent integer overflow.
+
+Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+Link: https://patch.msgid.link/20250923013113.20615-1-a.jahangirzad@gmail.com
+[ rjw: Changelog tweaks, local variable definitions ordering adjustments ]
+Fixes: 8cfb0cdf07e2 ("ACPI / debugger: Add IO interface to access debugger functionalities")
+Cc: 4.5+ <stable@vger.kernel.org> # 4.5+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/acpi_dbg.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1201,8 +1201,8 @@ static int ks_pcie_probe(struct platform
- 	if (irq < 0)
- 		return irq;
+--- a/drivers/acpi/acpi_dbg.c
++++ b/drivers/acpi/acpi_dbg.c
+@@ -569,11 +569,11 @@ static int acpi_aml_release(struct inode
+ 	return 0;
+ }
  
--	ret = request_irq(irq, ks_pcie_err_irq_handler, IRQF_SHARED,
--			  "ks-pcie-error-irq", ks_pcie);
-+	ret = devm_request_irq(dev, irq, ks_pcie_err_irq_handler, IRQF_SHARED,
-+			       "ks-pcie-error-irq", ks_pcie);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to request error IRQ %d\n",
- 			irq);
+-static int acpi_aml_read_user(char __user *buf, int len)
++static ssize_t acpi_aml_read_user(char __user *buf, size_t len)
+ {
+-	int ret;
+ 	struct circ_buf *crc = &acpi_aml_io.out_crc;
+-	int n;
++	ssize_t ret;
++	size_t n;
+ 	char *p;
+ 
+ 	ret = acpi_aml_lock_read(crc, ACPI_AML_OUT_USER);
+@@ -582,7 +582,7 @@ static int acpi_aml_read_user(char __use
+ 	/* sync head before removing logs */
+ 	smp_rmb();
+ 	p = &crc->buf[crc->tail];
+-	n = min(len, circ_count_to_end(crc));
++	n = min_t(size_t, len, circ_count_to_end(crc));
+ 	if (copy_to_user(buf, p, n)) {
+ 		ret = -EFAULT;
+ 		goto out;
+@@ -599,8 +599,8 @@ out:
+ static ssize_t acpi_aml_read(struct file *file, char __user *buf,
+ 			     size_t count, loff_t *ppos)
+ {
+-	int ret = 0;
+-	int size = 0;
++	ssize_t ret = 0;
++	ssize_t size = 0;
+ 
+ 	if (!count)
+ 		return 0;
+@@ -639,11 +639,11 @@ again:
+ 	return size > 0 ? size : ret;
+ }
+ 
+-static int acpi_aml_write_user(const char __user *buf, int len)
++static ssize_t acpi_aml_write_user(const char __user *buf, size_t len)
+ {
+-	int ret;
+ 	struct circ_buf *crc = &acpi_aml_io.in_crc;
+-	int n;
++	ssize_t ret;
++	size_t n;
+ 	char *p;
+ 
+ 	ret = acpi_aml_lock_write(crc, ACPI_AML_IN_USER);
+@@ -652,7 +652,7 @@ static int acpi_aml_write_user(const cha
+ 	/* sync tail before inserting cmds */
+ 	smp_mb();
+ 	p = &crc->buf[crc->head];
+-	n = min(len, circ_space_to_end(crc));
++	n = min_t(size_t, len, circ_space_to_end(crc));
+ 	if (copy_from_user(p, buf, n)) {
+ 		ret = -EFAULT;
+ 		goto out;
+@@ -663,14 +663,14 @@ static int acpi_aml_write_user(const cha
+ 	ret = n;
+ out:
+ 	acpi_aml_unlock_fifo(ACPI_AML_IN_USER, ret >= 0);
+-	return n;
++	return ret;
+ }
+ 
+ static ssize_t acpi_aml_write(struct file *file, const char __user *buf,
+ 			      size_t count, loff_t *ppos)
+ {
+-	int ret = 0;
+-	int size = 0;
++	ssize_t ret = 0;
++	ssize_t size = 0;
+ 
+ 	if (!count)
+ 		return 0;
 
 
 
