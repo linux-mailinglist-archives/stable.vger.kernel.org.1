@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-186607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653F5BE9C5D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CE7BEA08C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18DC9425E6B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:10:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5FF91885CE9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A5A335094;
-	Fri, 17 Oct 2025 15:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76019335082;
+	Fri, 17 Oct 2025 15:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHXbKdM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uW6hzAlt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBCF335085;
-	Fri, 17 Oct 2025 15:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD241946C8;
+	Fri, 17 Oct 2025 15:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713721; cv=none; b=jcxlJORZIXn6c34P2H2N5DMYdyIbIkT9KZoq2EzUyBonsJz4+Z5vnAzZparGIfCwOr3g+25Lv6T1piyx+KdLVTG/Ca8VIhggqOLbbhxplWTJXrT1eUa/K3DWjAmOkJFxZsoxebfp20a4gAenJHV7yniauqyVkYQSzA/dyjdKaps=
+	t=1760715344; cv=none; b=bQjNy0s82TjDZUA6FoEAON6A0RfBKJRitT2IImkFiigMQJJxwRFwRltJ8RU51enxFH//PTsz1KjuwbyRFeMvyaMTU4O2XfAYkoy8USpLYGVA9babGFrco6TKELJ1975NXZ6mggO32cOdVd6MSyUW3Er0ifHzrEhWc8GuycmLVmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713721; c=relaxed/simple;
-	bh=aywmOkiumjIPVg8ljAo6HgOelm7SnyCYYfxEOR7jR2g=;
+	s=arc-20240116; t=1760715344; c=relaxed/simple;
+	bh=oZwjs8oCnX1stmBu0y+wdGBeNX6zR+0fRf5FuKquTfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f88YSNOBquv3ruJIBkhxrMnrGJh84IgBSN2qn1JxKri49NJZyLDPTdAfmZlcheofgA25W83TWnrq+E2GRGKyEInU/z85hKvCB8cF8R+g9yxfkAyc5Q//WmURhMnq7uDR4jtC+RgfJVryKnZJ/tKhT5D8ZwhvfrPM0e7dnM2lf9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHXbKdM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED81C4CEE7;
-	Fri, 17 Oct 2025 15:08:40 +0000 (UTC)
+	 MIME-Version; b=SM+1rxJGaMOHEVCDFuzO/WURIgbmwBOwydVrp0UQa1pl7wtnnB1KjdsJi3MSLqsTyhs8G1kwdrSt3diHaBSGafrdro2tIR0Pm1yZSTLX/dAt0KLWOOuz5h08lkcCuQ0gHWsSW1cqljqUwIxwhZ6VNSse4PzkavGjWe8yGL9awRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uW6hzAlt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE9AC4CEE7;
+	Fri, 17 Oct 2025 15:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713721;
-	bh=aywmOkiumjIPVg8ljAo6HgOelm7SnyCYYfxEOR7jR2g=;
+	s=korg; t=1760715344;
+	bh=oZwjs8oCnX1stmBu0y+wdGBeNX6zR+0fRf5FuKquTfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eHXbKdM/39g1rCtYxm1n28ULThrWsXpBJg+O2UmSruO/Ut+iJNmLQlSBdAzFJlCfh
-	 NSphcFkxXhJvtj5xKd8Kghqd9krqnHQtb1aMgVMjp2iOQTE81MybMUlYYasiY7ZQQq
-	 fo6f3Kmanyb16DDRYEB1aTeCMudjJ3pBpy7vCGoI=
+	b=uW6hzAlt1WHaIyD2pIPmdfYEp5uqFjpxDVUTZVEXA8H/Z4QI8z408Q6WBaUX9u7G+
+	 vw9eKoVhjUs9czhPZivSTvrjyrDEusrSu7R/ioP9r7vP19OyitUn4ndOAB3sm7eOYM
+	 /EvvfiEOdm7B6yuOB0B2YW9LfiMpE0jVQ0WzIY0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 097/201] iio: imu: inv_icm42600: Drop redundant pm_runtime reinitialization in resume
+	Devarsh Thakkar <devarsht@ti.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Subject: [PATCH 6.17 183/371] media: ti: j721e-csi2rx: Use devm_of_platform_populate
 Date: Fri, 17 Oct 2025 16:52:38 +0200
-Message-ID: <20251017145138.313644584@linuxfoundation.org>
+Message-ID: <20251017145208.546122548@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Jai Luthra <jai.luthra@ideasonboard.com>
 
-commit a95a0b4e471a6d8860f40c6ac8f1cad9dde3189a upstream.
+commit 072799db233f9de90a62be54c1e59275c2db3969 upstream.
 
-Remove unnecessary calls to pm_runtime_disable(), pm_runtime_set_active(),
-and pm_runtime_enable() from the resume path. These operations are not
-required here and can interfere with proper pm_runtime state handling,
-especially when resuming from a pm_runtime suspended state.
+Ensure that we clean up the platform bus when we remove this driver.
 
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-2-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This fixes a crash seen when reloading the module for the child device
+with the parent not yet reloaded.
+
+Fixes: b4a3d877dc92 ("media: ti: Add CSI2RX support for J721E")
+Cc: stable@vger.kernel.org
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Tested-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com> (on SK-AM68)
+Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -747,10 +747,6 @@ static int inv_icm42600_resume(struct de
+--- a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
++++ b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+@@ -1120,7 +1120,7 @@ static int ti_csi2rx_probe(struct platfo
  	if (ret)
- 		goto out_unlock;
+ 		goto err_vb2q;
  
--	pm_runtime_disable(dev);
--	pm_runtime_set_active(dev);
--	pm_runtime_enable(dev);
--
- 	/* restore sensors state */
- 	ret = inv_icm42600_set_pwr_mgmt0(st, st->suspended.gyro,
- 					 st->suspended.accel,
+-	ret = of_platform_populate(csi->dev->of_node, NULL, NULL, csi->dev);
++	ret = devm_of_platform_populate(csi->dev);
+ 	if (ret) {
+ 		dev_err(csi->dev, "Failed to create children: %d\n", ret);
+ 		goto err_subdev;
 
 
 
