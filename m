@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-186937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E1FBE9D29
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:39 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD0D2BEA5E1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 070D21AE241D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1062D58753D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA29633290B;
-	Fri, 17 Oct 2025 15:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4988C2745E;
+	Fri, 17 Oct 2025 15:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmNMMpz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E58bbQ7Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8409B32C92B;
-	Fri, 17 Oct 2025 15:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B6A330B00;
+	Fri, 17 Oct 2025 15:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714656; cv=none; b=By87K/k3SUoTPIvZ5L8Rwx2KSCLfCWarv9gC3DHzdDJIUPFyCdhVQZMiIj0auds56IA2SF3eBirvH1gUgmEi9ac0msNKkFZQRClsEHTbYbnBhGRYb5iXD6FjtrKHcKnufkbOgmuYicH4K6g3IK6ZRxgBUPGdDBN6IIA+kb1c4fs=
+	t=1760716279; cv=none; b=r4dfcBD6bh8JnajnuuoPZyv8K+dUab6/b1cse5Rqo9mrtnJSp/m9W7ch1NVEH+Q+mNDWLDX8eTJ4DnxLH1KgNQforIOlaHIm+fqbExjdXB5O3K8KMKbFvqBrrBSTJMbefxbNOs1KQwGn5tWtpYK3jsj3Rt+snZB6B4YqIHSBkl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714656; c=relaxed/simple;
-	bh=dojiDWfAqV3Plj4bRvrNouSY1+THS4ao7Mk+2VeBASE=;
+	s=arc-20240116; t=1760716279; c=relaxed/simple;
+	bh=JwaJnOjz3YB1d8pKMSM+xskGH2su/2jIQp8tnyOvctg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPJk/lMF6gHS8ALyYZjbogFRjMtqOsVmum2VLYkuQe0/LW8hlzTJ9mm1WjEu9Cnxs0dnQn0pWPs2SzD7tJxSrbEpAaeXVS2iMIx6fUNUGQhFLgP40xBsKa9wm7S6rp2ISbkFBp/15mBT/nDdQNjBdjlBsCrrQMHY5VHh7isckWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmNMMpz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A373EC4CEFE;
-	Fri, 17 Oct 2025 15:24:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mhtforYiw/36mEoSIXCVKkHKYdQl3o1VO6shd5fwvhyKt+kt6nbz4bqL/vNLH9juaGxV/WYfNgugcrqHZUYs0IM5FgJHponcR2E2TBDgUrtlkKQV6qoH8yhKAFZpZeqqiKtikYlO8g8QQLVpn+yKxAqJVSyUub+kgvPoGETQT3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E58bbQ7Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5A8C4CEE7;
+	Fri, 17 Oct 2025 15:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714655;
-	bh=dojiDWfAqV3Plj4bRvrNouSY1+THS4ao7Mk+2VeBASE=;
+	s=korg; t=1760716278;
+	bh=JwaJnOjz3YB1d8pKMSM+xskGH2su/2jIQp8tnyOvctg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmNMMpz9mIx/lIBpmIuEaibHyhxHvdp/uIMv1ejYMDJaqKUM+Lv+rZNzV+G2SlkAb
-	 rkUdYzisz/82MhPJZ2y64MINn63akjE23odHkXlP40iud9Aun4gDsfHvd+uutP4Akt
-	 UUjSL9qh84dDf6QNqLkkBjJoPoT25gGuY5AaRrL8=
+	b=E58bbQ7YhtkcXvZlJnYAyUBW0fY59liOjloLgoMLZno5MmCK7HWN1S8aEQwoSj9P9
+	 w3MAa/xZiMyQLnwDEoavY54Ze5tkNCo5SqRPQNVy2cSjIWm5cBzO5mO5gJ4QWGBS/m
+	 xtUWTTSsw0acjrFoHW7zu9GuF5tUPFxw4B9CkD6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 221/277] ext4: free orphan info with kvfree
+	Tamas Zsoldos <tamas.zsoldos@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 135/276] perf session: Fix handling when buffer exceeds 2 GiB
 Date: Fri, 17 Oct 2025 16:53:48 +0200
-Message-ID: <20251017145155.196951852@linuxfoundation.org>
+Message-ID: <20251017145147.410584255@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +65,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Leo Yan <leo.yan@arm.com>
 
-commit 971843c511c3c2f6eda96c6b03442913bfee6148 upstream.
+[ Upstream commit c17dda8013495d8132c976cbf349be9949d0fbd1 ]
 
-Orphan info is now getting allocated with kvmalloc_array(). Free it with
-kvfree() instead of kfree() to avoid complaints from mm.
+If a user specifies an AUX buffer larger than 2 GiB, the returned size
+may exceed 0x80000000. Since the err variable is defined as a signed
+32-bit integer, such a value overflows and becomes negative.
 
-Reported-by: Chris Mason <clm@meta.com>
-Fixes: 0a6ce20c1564 ("ext4: verify orphan file size is not too big")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251007134936.7291-2-jack@suse.cz>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a result, the perf record command reports an error:
+
+  0x146e8 [0x30]: failed to process type: 71 [Unknown error 183711232]
+
+Change the type of the err variable to a signed 64-bit integer to
+accommodate large buffer sizes correctly.
+
+Fixes: d5652d865ea734a1 ("perf session: Add ability to skip 4GiB or more")
+Reported-by: Tamas Zsoldos <tamas.zsoldos@arm.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20250808-perf_fix_big_buffer_size-v1-1-45f45444a9a4@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/orphan.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/session.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/orphan.c
-+++ b/fs/ext4/orphan.c
-@@ -513,7 +513,7 @@ void ext4_release_orphan_info(struct sup
- 		return;
- 	for (i = 0; i < oi->of_blocks; i++)
- 		brelse(oi->of_binfo[i].ob_bh);
--	kfree(oi->of_binfo);
-+	kvfree(oi->of_binfo);
- }
+diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
+index 562e9b8080272..0ecfda9d9f8b4 100644
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -1598,7 +1598,7 @@ static s64 perf_session__process_user_event(struct perf_session *session,
+ 	struct perf_tool *tool = session->tool;
+ 	struct perf_sample sample = { .time = 0, };
+ 	int fd = perf_data__fd(session->data);
+-	int err;
++	s64 err;
  
- static struct ext4_orphan_block_tail *ext4_orphan_block_tail(
-@@ -638,7 +638,7 @@ int ext4_init_orphan_info(struct super_b
- out_free:
- 	for (i--; i >= 0; i--)
- 		brelse(oi->of_binfo[i].ob_bh);
--	kfree(oi->of_binfo);
-+	kvfree(oi->of_binfo);
- out_put:
- 	iput(inode);
- 	return ret;
+ 	if (event->header.type != PERF_RECORD_COMPRESSED ||
+ 	    tool->compressed == perf_session__process_compressed_event_stub)
+-- 
+2.51.0
+
 
 
 
