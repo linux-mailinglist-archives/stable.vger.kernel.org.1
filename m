@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41FABE9D92
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC34BEA42E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 143DF1886A5B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E82E35800B4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960542745E;
-	Fri, 17 Oct 2025 15:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A30D330B22;
+	Fri, 17 Oct 2025 15:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Le9gUQq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CseDtQgn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5188F337110;
-	Fri, 17 Oct 2025 15:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA302330B16;
+	Fri, 17 Oct 2025 15:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714791; cv=none; b=OxS6OpPKtHWrj0z3NKiJI3o6Imj1MCivrUVqonod9mxt9+1UX1nTDaWq/BKHYTsARW7jafuliE5osi0o9MENLBwvZelw6+1PuR23TcqjqYRw/0Ih00ONoD/DBBOhgRuHBB1kStfZpFSO9F+I3hEPOQb9k5opdVIE+XTM3JTVPw0=
+	t=1760715681; cv=none; b=StP3aj+onlH9/Q+A/ig0VFFcUvNWzY3StN+e0tsPQU6/3xx+l4Lg/QbUcrx4tBmf/Yi/yj4sTVdaO3trIPGmh2/GfSbqNjvp23NPJLUt20sp8EyIiDfzMETSqroI1EZHWMgJrTF4zshg8MHOgk9CxBKhz34nfZMm4oPghmvpBb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714791; c=relaxed/simple;
-	bh=7hGzwisyvJvaN7atvN6Hzrnneu3nG3ZHJAdSzIfmgrc=;
+	s=arc-20240116; t=1760715681; c=relaxed/simple;
+	bh=mx0p3lHdAJXxGYkQop027kXvS72EfBV7Y/SFGExBV9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/+whHwXlGxbzHd4WNaCOJL4vfaUw8QRiL5rdNqBBhJOPJ8SOtPDXVwBakEO3iY9pCkIogIMX7Ca4tsw7+/aa/pglbuq6EuChlHXHj9FRLE0CNg33Y8Q1ToEB+QH/L9ZHJ0TBSB9eLyOB0bQmDAAiXrLvc1kffMKpebYqqkmgUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Le9gUQq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23C7C4CEE7;
-	Fri, 17 Oct 2025 15:26:30 +0000 (UTC)
+	 MIME-Version; b=txklrszjoTLvdDJnuVlgXuC5rKRgj1eYoJX9gXJ/emJt6OaPIV0lFOb6OJkLSSuyhC+j2gkbdZAb6G36y7HrrCWkhGoq8T4TdA/jxOmJrNV3iCXd4ziO9spWRms9wA1SlnEPLB1y/rRpeypnarUr231GC03mVo7nbamTLHqcja0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CseDtQgn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7E0C4CEE7;
+	Fri, 17 Oct 2025 15:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714791;
-	bh=7hGzwisyvJvaN7atvN6Hzrnneu3nG3ZHJAdSzIfmgrc=;
+	s=korg; t=1760715680;
+	bh=mx0p3lHdAJXxGYkQop027kXvS72EfBV7Y/SFGExBV9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Le9gUQq41nkltwHYlGGu6Qj5udkmLlgvTtC0E4ygxp6HcS2piXfriTWorqOvEg3tp
-	 1h+anzscqKfHZjtDxEMTZjF6jJkh3qxuWVSzTWv5E4Ql0K8j1953G8eLaCLudl1OSf
-	 QU4o8Loc864hwgr0wdgoDqCyG6vOkm2xrB/YRjfo=
+	b=CseDtQgnpVafAXGTsfN+oHEj092NmbeWMShYNDr5/3YvKQVlGtIkG0zNAcjLxzBsF
+	 U49lUcVmHL99EUJZgr+WNtDg7i+iNhWX619T3g7aI8XbTKFglv44R47F/IQcau9i/z
+	 poK0yL1O/TXVrTk7Pj4MABIxTynqV7z0YwwhDySw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	gaoxiang17 <gaoxiang17@xiaomi.com>,
-	Baoquan He <bhe@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 267/277] pid: Add a judgment for ns null in pid_nr_ns
+	Dan Snyder <dansnyder@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.17 299/371] x86/umip: Check that the instruction opcode is at least two bytes
 Date: Fri, 17 Oct 2025 16:54:34 +0200
-Message-ID: <20251017145156.910600268@linuxfoundation.org>
+Message-ID: <20251017145212.892573612@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gaoxiang17 <gaoxiang17@xiaomi.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 006568ab4c5ca2309ceb36fa553e390b4aa9c0c7 ]
+commit 32278c677947ae2f042c9535674a7fff9a245dd3 upstream.
 
-__task_pid_nr_ns
-        ns = task_active_pid_ns(current);
-        pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);
-                if (pid && ns->level <= pid->level) {
+When checking for a potential UMIP violation on #GP, verify the decoder found
+at least two opcode bytes to avoid false positives when the kernel encounters
+an unknown instruction that starts with 0f.  Because the array of opcode.bytes
+is zero-initialized by insn_init(), peeking at bytes[1] will misinterpret
+garbage as a potential SLDT or STR instruction, and can incorrectly trigger
+emulation.
 
-Sometimes null is returned for task_active_pid_ns. Then it will trigger kernel panic in pid_nr_ns.
+E.g. if a VPALIGNR instruction
 
-For example:
-	Unable to handle kernel NULL pointer dereference at virtual address 0000000000000058
-	Mem abort info:
-	ESR = 0x0000000096000007
-	EC = 0x25: DABT (current EL), IL = 32 bits
-	SET = 0, FnV = 0
-	EA = 0, S1PTW = 0
-	FSC = 0x07: level 3 translation fault
-	Data abort info:
-	ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
-	CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-	GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-	user pgtable: 4k pages, 39-bit VAs, pgdp=00000002175aa000
-	[0000000000000058] pgd=08000002175ab003, p4d=08000002175ab003, pud=08000002175ab003, pmd=08000002175be003, pte=0000000000000000
-	pstate: 834000c5 (Nzcv daIF +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-	pc : __task_pid_nr_ns+0x74/0xd0
-	lr : __task_pid_nr_ns+0x24/0xd0
-	sp : ffffffc08001bd10
-	x29: ffffffc08001bd10 x28: ffffffd4422b2000 x27: 0000000000000001
-	x26: ffffffd442821168 x25: ffffffd442821000 x24: 00000f89492eab31
-	x23: 00000000000000c0 x22: ffffff806f5693c0 x21: ffffff806f5693c0
-	x20: 0000000000000001 x19: 0000000000000000 x18: 0000000000000000
-	x17: 00000000529c6ef0 x16: 00000000529c6ef0 x15: 00000000023a1adc
-	x14: 0000000000000003 x13: 00000000007ef6d8 x12: 001167c391c78800
-	x11: 00ffffffffffffff x10: 0000000000000000 x9 : 0000000000000001
-	x8 : ffffff80816fa3c0 x7 : 0000000000000000 x6 : 49534d702d535449
-	x5 : ffffffc080c4c2c0 x4 : ffffffd43ee128c8 x3 : ffffffd43ee124dc
-	x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffffff806f5693c0
-	Call trace:
-	__task_pid_nr_ns+0x74/0xd0
-	...
-	__handle_irq_event_percpu+0xd4/0x284
-	handle_irq_event+0x48/0xb0
-	handle_fasteoi_irq+0x160/0x2d8
-	generic_handle_domain_irq+0x44/0x60
-	gic_handle_irq+0x4c/0x114
-	call_on_irq_stack+0x3c/0x74
-	do_interrupt_handler+0x4c/0x84
-	el1_interrupt+0x34/0x58
-	el1h_64_irq_handler+0x18/0x24
-	el1h_64_irq+0x68/0x6c
-	account_kernel_stack+0x60/0x144
-	exit_task_stack_account+0x1c/0x80
-	do_exit+0x7e4/0xaf8
-	...
-	get_signal+0x7bc/0x8d8
-	do_notify_resume+0x128/0x828
-	el0_svc+0x6c/0x70
-	el0t_64_sync_handler+0x68/0xbc
-	el0t_64_sync+0x1a8/0x1ac
-	Code: 35fffe54 911a02a8 f9400108 b4000128 (b9405a69)
-	---[ end trace 0000000000000000 ]---
-	Kernel panic - not syncing: Oops: Fatal exception in interrupt
+   62 83 c5 05 0f 08 ff     vpalignr xmm17{k5},xmm23,XMMWORD PTR [r8],0xff
 
-Signed-off-by: gaoxiang17 <gaoxiang17@xiaomi.com>
-Link: https://lore.kernel.org/20250802022123.3536934-1-gxxa03070307@gmail.com
-Reviewed-by: Baoquan He <bhe@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+hits a #GP, the kernel emulates it as STR and squashes the #GP (and corrupts
+the userspace code stream).
+
+Arguably the check should look for exactly two bytes, but no three byte
+opcodes use '0f 00 xx' or '0f 01 xx' as an escape, i.e. it should be
+impossible to get a false positive if the first two opcode bytes match '0f 00'
+or '0f 01'.  Go with a more conservative check with respect to the existing
+code to minimize the chances of breaking userspace, e.g. due to decoder
+weirdness.
+
+Analyzed by Nick Bray <ncbray@google.com>.
+
+Fixes: 1e5db223696a ("x86/umip: Add emulation code for UMIP instructions")
+Reported-by: Dan Snyder <dansnyder@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/pid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/umip.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/pid.c b/kernel/pid.c
-index 2715afb77eab8..b80c3bfb58d07 100644
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -487,7 +487,7 @@ pid_t pid_nr_ns(struct pid *pid, struct pid_namespace *ns)
- 	struct upid *upid;
- 	pid_t nr = 0;
+--- a/arch/x86/kernel/umip.c
++++ b/arch/x86/kernel/umip.c
+@@ -156,8 +156,8 @@ static int identify_insn(struct insn *in
+ 	if (!insn->modrm.nbytes)
+ 		return -EINVAL;
  
--	if (pid && ns->level <= pid->level) {
-+	if (pid && ns && ns->level <= pid->level) {
- 		upid = &pid->numbers[ns->level];
- 		if (upid->ns == ns)
- 			nr = upid->nr;
--- 
-2.51.0
-
+-	/* All the instructions of interest start with 0x0f. */
+-	if (insn->opcode.bytes[0] != 0xf)
++	/* The instructions of interest have 2-byte opcodes: 0F 00 or 0F 01. */
++	if (insn->opcode.nbytes < 2 || insn->opcode.bytes[0] != 0xf)
+ 		return -EINVAL;
+ 
+ 	if (insn->opcode.bytes[1] == 0x1) {
 
 
 
