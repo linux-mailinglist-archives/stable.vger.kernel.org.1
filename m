@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-187117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571F1BE9F8A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB4BBE9B71
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E77F188448B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:34:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1941F188CC03
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F0C33290F;
-	Fri, 17 Oct 2025 15:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5C133291C;
+	Fri, 17 Oct 2025 15:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQ8TNWZI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WroJ1F6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C0D332914;
-	Fri, 17 Oct 2025 15:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457F0242935;
+	Fri, 17 Oct 2025 15:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715168; cv=none; b=TJxJtpxOk3hxV/etOwM1siguAP5XXD7flixPRMeQ4k7O8HcyLJawO2nf/dDhrcde9HP3tlbfWqGU24mu2HeyDpI2PNhkWrt43f7Tlk++TRsbQZ715c5T2MYJqloBZTJWP8MRVPqYrt32XkOlMwle1h2d870rH76COV5bcCMa2dg=
+	t=1760714276; cv=none; b=VOVnvEMCy7AYbn5o7hvYJa37HyYQKOMGAAzUDaqWUSbB7gBfGzJgEaS0jvdTXW2ghNwp76jgumODUURmFBdCVQM7BKIPcHCBhYV4vVMS+uB52qDoAlpjYSNwGKiieJKeqNNgyYjVPrGrnvrmEj0RMqSyv6q6uC0ETiG3qSRjNAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715168; c=relaxed/simple;
-	bh=pS6SaHVJzV5iXS/V77q7xTh0MqlWIEVDizkKYdR4pzc=;
+	s=arc-20240116; t=1760714276; c=relaxed/simple;
+	bh=YPj1gzCBrw9/ditR74pxshybkyK7Y8SvQp5Xh7AcleU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnLXmaHYaFqWpfCzG2ssXVqeP44n0qIAqLLT4jg7rfxDeyaq1d2Jgxb+JhGNa2dEH0WEdH40wURu2kT1LgmFHCsl5jPEX7+8BK2DoESg82nu/nt2Wm9Y0BmXoLSa9X/0gGene3m7TDK4r2X+MzFF29p2N179U8Z01ePyY+zmAB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQ8TNWZI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9142BC4CEE7;
-	Fri, 17 Oct 2025 15:32:47 +0000 (UTC)
+	 MIME-Version; b=Fwix3YNcktym8glikUnYAteYWcOrwmEQ8E/9oMQhSlyVftgsc7pFQkBqbYHKu198BCEk13yXblikHLUbfN2QIky58aBDtRpHjrfCGjCOqZurE07thsq4hDoNG1qHS+0W5DuRBL9vULUyTf5Yk8pluR52hwabrfBEJ8EiMtwXWuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WroJ1F6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB69DC4CEE7;
+	Fri, 17 Oct 2025 15:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715168;
-	bh=pS6SaHVJzV5iXS/V77q7xTh0MqlWIEVDizkKYdR4pzc=;
+	s=korg; t=1760714276;
+	bh=YPj1gzCBrw9/ditR74pxshybkyK7Y8SvQp5Xh7AcleU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQ8TNWZIMBUJGTCpJifUzRjP1iadNVJfG7IlWJTwQ3oRpQZZtJtsDrgKdPCx94A2s
-	 z8WIgD/1Wno2xR+6ZPNSxi+B/7texkwEH2dfe0ZjM+rJXdY1mf9b0M71/OJrQM7LlS
-	 b00QOg8azghQlO9tXR/ZlejHwJ+NVFtniDz8FF64=
+	b=WroJ1F6Dita8Lgy4L0M4NFfRPIlogkoPh2d2e0UJhL+ybJxySTDlgkguM8q0CFwdP
+	 X9NiMHu6VQsD84v9PWdBr0ah3cWrPJJy3NNz1jpshyooaVPOyVzfm2JNalWzIbi1qc
+	 zmiIbPp4ofqTN6bfDuQi/9NLytkSv611Xg7XyzXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 120/371] io_uring/zcrx: increment fallback loop src offset
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 088/277] arm64: dts: qcom: msm8916: Add missing MDSS reset
 Date: Fri, 17 Oct 2025 16:51:35 +0200
-Message-ID: <20251017145206.276956328@linuxfoundation.org>
+Message-ID: <20251017145150.348838972@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit e9a9dcb4ccb32446165800a9d83058e95c4833d2 ]
+commit 99b78773c2ae55dcc01025f94eae8ce9700ae985 upstream.
 
-Don't forget to adjust the source offset in io_copy_page(), otherwise
-it'll be copying into the same location in some cases for highmem
-setups.
+On most MSM8916 devices (aside from the DragonBoard 410c), the bootloader
+already initializes the display to show the boot splash screen. In this
+situation, MDSS is already configured and left running when starting Linux.
+To avoid side effects from the bootloader configuration, the MDSS reset can
+be specified in the device tree to start again with a clean hardware state.
 
-Fixes: e67645bb7f3f4 ("io_uring/zcrx: prepare fallback for larger pages")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reset for MDSS is currently missing in msm8916.dtsi, which causes
+errors when the MDSS driver tries to re-initialize the registers:
+
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ ...
+
+It turns out that we have always indirectly worked around this by building
+the MDSS driver as a module. Before v6.17, the power domain was temporarily
+turned off until the module was loaded, long enough to clear the register
+contents. In v6.17, power domains are not turned off during boot until
+sync_state() happens, so this is no longer working. Even before v6.17 this
+resulted in broken behavior, but notably only when the MDSS driver was
+built-in instead of a module.
+
+Cc: stable@vger.kernel.org
+Fixes: 305410ffd1b2 ("arm64: dts: msm8916: Add display support")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-1-a5c705df0c45@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/zcrx.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/msm8916.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 643a69f9ffe2a..2035c77a16357 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -993,6 +993,7 @@ static ssize_t io_copy_page(struct io_copy_cache *cc, struct page *src_page,
+--- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+@@ -1540,6 +1540,8 @@
  
- 		cc->size -= n;
- 		cc->offset += n;
-+		src_offset += n;
- 		len -= n;
- 		copied += n;
- 	}
--- 
-2.51.0
-
+ 			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+ 
++			resets = <&gcc GCC_MDSS_BCR>;
++
+ 			interrupt-controller;
+ 			#interrupt-cells = <1>;
+ 
 
 
 
