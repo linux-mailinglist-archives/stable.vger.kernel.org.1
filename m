@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3A9BE9C6A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:16 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66405BE9B56
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7400189E063
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5F669580BF1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D0C36CE0B;
-	Fri, 17 Oct 2025 15:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6612C2F12C5;
+	Fri, 17 Oct 2025 15:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtIcl67l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAMr2X8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6D23328FE;
-	Fri, 17 Oct 2025 15:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181AC3370FB;
+	Fri, 17 Oct 2025 15:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714401; cv=none; b=JH7W2c7jWAK7XTH46xVghSqn26ZCVWtTooGq9YJcDJhIvgiiQs85OT6XxRTbJZ+krK49YZMYV5oXRxUKg9ItrwHMGI/2fvxEFEVLWMArY5zaWPtxyg4ZmOS/2qD7i1RuYudL6kg12OPmQmiNqiB/MDBk5A81i+2OSGKIICzd9pk=
+	t=1760713792; cv=none; b=ngx4YWFmwIxa7BP/1bt6W5ugsL8hP4TvREfhgtxNdfC0gzsoQLKQV8x9QWB8XGtOWd5WU8edNxOgO08ms22z4DbS2tSsS4NNw+nCKvplokZTifzGmCprFMUK/eKhAtx38th6hoTcyNEoq9ZE/Y9I1GmztiKS6/k0S5D+mLkjEPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714401; c=relaxed/simple;
-	bh=sBBae0p2D/jjQtHNBFafEKabxJM9BKyE7NUyA2XRLFM=;
+	s=arc-20240116; t=1760713792; c=relaxed/simple;
+	bh=C572DkR+voZB88W0wYfxZAjf57Jt7s0BWNtKOGuRiEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPCvejzsfD0BjgKrGhRnqIzvBiIrKUUGG7Bzb9KCIgZbNXN7EoGNWzLJNWUtTm8ZN8YOyJNeGL/MLz4gyFC6I1VdIj/5nWm/nxSdvlqLdj25/+eO5STdgOl+i3oy5SxAgwT/oX2+bczspQcce9wbMHn6Ic6B5c+icvMqD1plFQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtIcl67l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1613C4CEFE;
-	Fri, 17 Oct 2025 15:20:00 +0000 (UTC)
+	 MIME-Version; b=jb1EGXUuWoFL6aaAYkL6QTejU4JjB9NMbUdsHuJuKn8NgmzJuyQAA0GwgtQIe0MG739ZH68JiaJ3Jl3/vvKFbgvw+Q0rWH/viDLDOROarvb2HGl4OHn2y4LrOPUFr1CBf8WnhachyCcvZsrxwTm386LYktyg+9ydK2N+tA+k1VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAMr2X8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9479FC4CEE7;
+	Fri, 17 Oct 2025 15:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714401;
-	bh=sBBae0p2D/jjQtHNBFafEKabxJM9BKyE7NUyA2XRLFM=;
+	s=korg; t=1760713792;
+	bh=C572DkR+voZB88W0wYfxZAjf57Jt7s0BWNtKOGuRiEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OtIcl67lM+lVXntNU3UvDhGru6xuRnidMxcix/MN2aOfTtQnrCMerdeg7BU9qnVin
-	 +SJLQF3vrFqiZouL82tJTpRze5CFJGzyMXBnKav84nm+/2tiyg25rbyL/FecIWDEy5
-	 OELkl044VFyx4fUIrhL6tmgJqBEKhiPlmxJBnP6o=
+	b=pAMr2X8heqqYC2zi7YN3ftZs+20X4uY04FwAXjLYAsm+y9meTk1CrV/739z+Rbh4p
+	 pXq7qvBYvux0SUCCS30vTaidkvDVuaHyp1q6cUckLklgUWLMnRxI1ZpdeVRJFAQXo8
+	 OfWrOr8M8mqZBZ4n+8+ZpPURD1GWkWT/4ea9cB3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Helge Deller <deller@gmx.de>,
-	Stan Johnson <userm57@yahoo.com>
-Subject: [PATCH 6.12 131/277] fbdev: Fix logic error in "offb" name match
-Date: Fri, 17 Oct 2025 16:52:18 +0200
-Message-ID: <20251017145151.909579991@linuxfoundation.org>
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 6.6 078/201] drm/rcar-du: dsi: Fix 1/2/3 lane support
+Date: Fri, 17 Oct 2025 16:52:19 +0200
+Message-ID: <20251017145137.621077570@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-commit 15df28699b28d6b49dc305040c4e26a9553df07a upstream.
+commit d83f1d19c898ac1b54ae64d1c950f5beff801982 upstream.
 
-A regression was reported to me recently whereby /dev/fb0 had disappeared
-from a PowerBook G3 Series "Wallstreet". The problem shows up when the
-"video=ofonly" parameter is passed to the kernel, which is what the
-bootloader does when "no video driver" is selected. The cause of the
-problem is the "offb" string comparison, which got mangled when it got
-refactored. Fix it.
+Remove fixed PPI lane count setup. The R-Car DSI host is capable
+of operating in 1..4 DSI lane mode. Remove the hard-coded 4-lane
+configuration from PPI register settings and instead configure
+the PPI lane count according to lane count information already
+obtained by this driver instance.
 
+Configure TXSETR register to match PPI lane count. The R-Car V4H
+Reference Manual R19UH0186EJ0121 Rev.1.21 section 67.2.2.3 Tx Set
+Register (TXSETR), field LANECNT description indicates that the
+TXSETR register LANECNT bitfield lane count must be configured
+such, that it matches lane count configuration in PPISETR register
+DLEN bitfield. Make sure the LANECNT and DLEN bitfields are
+configured to match.
+
+Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
 Cc: stable@vger.kernel.org
-Fixes: 93604a5ade3a ("fbdev: Handle video= parameter in video/cmdline.c")
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250813210840.97621-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fb_cmdline.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c      |    5 ++++-
+ drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h |    8 ++++----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/video/fbdev/core/fb_cmdline.c
-+++ b/drivers/video/fbdev/core/fb_cmdline.c
-@@ -40,7 +40,7 @@ int fb_get_options(const char *name, cha
- 	bool enabled;
+--- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
++++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
+@@ -576,7 +576,10 @@ static int rcar_mipi_dsi_startup(struct
+ 	udelay(10);
+ 	rcar_mipi_dsi_clr(dsi, CLOCKSET1, CLOCKSET1_UPDATEPLL);
  
- 	if (name)
--		is_of = strncmp(name, "offb", 4);
-+		is_of = !strncmp(name, "offb", 4);
+-	ppisetr = PPISETR_DLEN_3 | PPISETR_CLEN;
++	rcar_mipi_dsi_clr(dsi, TXSETR, TXSETR_LANECNT_MASK);
++	rcar_mipi_dsi_set(dsi, TXSETR, dsi->lanes - 1);
++
++	ppisetr = ((BIT(dsi->lanes) - 1) & PPISETR_DLEN_MASK) | PPISETR_CLEN;
+ 	rcar_mipi_dsi_write(dsi, PPISETR, ppisetr);
  
- 	enabled = __video_get_options(name, &options, is_of);
+ 	rcar_mipi_dsi_set(dsi, PHYSETUP, PHYSETUP_SHUTDOWNZ);
+--- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
++++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
+@@ -12,6 +12,9 @@
+ #define LINKSR_LPBUSY			(1 << 1)
+ #define LINKSR_HSBUSY			(1 << 0)
  
++#define TXSETR				0x100
++#define TXSETR_LANECNT_MASK		(0x3 << 0)
++
+ /*
+  * Video Mode Register
+  */
+@@ -80,10 +83,7 @@
+  * PHY-Protocol Interface (PPI) Registers
+  */
+ #define PPISETR				0x700
+-#define PPISETR_DLEN_0			(0x1 << 0)
+-#define PPISETR_DLEN_1			(0x3 << 0)
+-#define PPISETR_DLEN_2			(0x7 << 0)
+-#define PPISETR_DLEN_3			(0xf << 0)
++#define PPISETR_DLEN_MASK		(0xf << 0)
+ #define PPISETR_CLEN			(1 << 8)
+ 
+ #define PPICLCR				0x710
 
 
 
