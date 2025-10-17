@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-187075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE38BEA251
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:47:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A28BEA1C4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D0955A1CE4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0A9D744225
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431AB32F743;
-	Fri, 17 Oct 2025 15:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EAD33291B;
+	Fri, 17 Oct 2025 15:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeegNrwb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9xFaCDL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C4E32C951;
-	Fri, 17 Oct 2025 15:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93EE332912;
+	Fri, 17 Oct 2025 15:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715050; cv=none; b=PsFn6ub6sX72MwyzDJ5dFgbWxtcTu/bbLQSqqrONr05uiZe70U5bkhKy9uzwUGybsekxt7XvDFboMdRSW93yovVp7/WBN4M61BndtqT/NOOyoG7+gojYkFilXtHOVwOmeJjluiBaDVdxwHCA3lGeqVf8U6TOPS0OGZZckbW/PUE=
+	t=1760714161; cv=none; b=RPQWKxgV6LgWBfJ8dB22HT26vaqdisSPOqJFjHAWfbnQIO6S1Ul4BHohbUKrRLrQWhnasuVi6r7e6Wj/gQKR/8tOY3DmGmCNoQnGX9SpIZH45BDjPmvbynTUozcibb92uXYATwBU3WN9BtBQzSILlfjSgILQS6ubxZdl6XaibGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715050; c=relaxed/simple;
-	bh=cVmkrE9woRDMgW15j+B/ZgO1ksUIRhI9gd125U0twNc=;
+	s=arc-20240116; t=1760714161; c=relaxed/simple;
+	bh=dpIX9f4kzzNW/VICsSW3L8uSkqW3ZKxjGbBEZkU73d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXOdORlNSecnbPqQfzebvw1WGGxG1113bW67OWAoCRmniEhxCvaGRPg/iLdGxGviO6teWRz8W4KopLqeirysOWQn+6cnZH4dVt7guytKoOrSVVaD3Ofz+i++oZNwtNShJK/zRI5D+OT1/XZkbetzfOMHb3C7mlMuFEPevpRGBnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeegNrwb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70BD7C4CEFE;
-	Fri, 17 Oct 2025 15:30:49 +0000 (UTC)
+	 MIME-Version; b=n9ooh/rnoKoY3ZlmI5YMEdfbCHrXyG1ZpZqRWFz/495feomU9Hi0EEuMnhyqojgswm0AmSkwBT41/jc8GS+H3Lf0ImcoLYWdUy1+/6bOerBnTltI4kcfe0oUcRbUvo4/rdcjobY4yDtA04e8nblWdWhhyyrLDzQ0kriszlmIKDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9xFaCDL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2304C4CEFE;
+	Fri, 17 Oct 2025 15:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715049;
-	bh=cVmkrE9woRDMgW15j+B/ZgO1ksUIRhI9gd125U0twNc=;
+	s=korg; t=1760714161;
+	bh=dpIX9f4kzzNW/VICsSW3L8uSkqW3ZKxjGbBEZkU73d0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zeegNrwbe6S59X6Vjgzt2rJD/v1qtIB8XkljlPiOxni1MknBIQmRMQp39RO32FDf2
-	 wxr4eXk/9D0KZXZfVa30183CETL5hkD8O3jZK0/uNuOXH/U7cv0T7q62AWgv0iMNE9
-	 GPXKqWZPBjd6ECpb/cW4UPdZcSV77wG7fnZvD8gA=
+	b=S9xFaCDL06QqxOXXjDrf/GH9AUT/kaA5UKPjypdx+EJ5nQFF/+XwjLbB5GDcpBYtf
+	 RdXJ6KoBtJpWiO2Dlz0xTpjL7iDKExbIY0rdKaCcle623617s3UBSRB3OnSOw0hhOc
+	 1XRM7267o29JZR7eriC8Zww/HlyufL5T7cU/IsLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+62ec8226f01cb4ca19d9@syzkaller.appspotmail.com,
-	Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Francois Dugast <francois.dugast@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 080/371] net: usb: lan78xx: Fix lost EEPROM read timeout error(-ETIMEDOUT) in lan78xx_read_raw_eeprom
+Subject: [PATCH 6.12 048/277] drm/xe/hw_engine_group: Fix double write lock release in error path
 Date: Fri, 17 Oct 2025 16:50:55 +0200
-Message-ID: <20251017145204.833916264@linuxfoundation.org>
+Message-ID: <20251017145148.901352533@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 49bdb63ff64469a6de8ea901aef123c75be9bbe7 ]
+[ Upstream commit 08fdfd260e641da203f80aff8d3ed19c5ecceb7d ]
 
-Syzbot reported read of uninitialized variable BUG with following call stack.
+In xe_hw_engine_group_get_mode(), a write lock is acquired before
+calling switch_mode(), which in turn invokes
+xe_hw_engine_group_suspend_faulting_lr_jobs().
 
-lan78xx 8-1:1.0 (unnamed net_device) (uninitialized): EEPROM read operation timeout
-=====================================================
-BUG: KMSAN: uninit-value in lan78xx_read_eeprom drivers/net/usb/lan78xx.c:1095 [inline]
-BUG: KMSAN: uninit-value in lan78xx_init_mac_address drivers/net/usb/lan78xx.c:1937 [inline]
-BUG: KMSAN: uninit-value in lan78xx_reset+0x999/0x2cd0 drivers/net/usb/lan78xx.c:3241
- lan78xx_read_eeprom drivers/net/usb/lan78xx.c:1095 [inline]
- lan78xx_init_mac_address drivers/net/usb/lan78xx.c:1937 [inline]
- lan78xx_reset+0x999/0x2cd0 drivers/net/usb/lan78xx.c:3241
- lan78xx_bind+0x711/0x1690 drivers/net/usb/lan78xx.c:3766
- lan78xx_probe+0x225c/0x3310 drivers/net/usb/lan78xx.c:4707
+On failure inside xe_hw_engine_group_suspend_faulting_lr_jobs(),
+the write lock is released there, and then again in
+xe_hw_engine_group_get_mode(), leading to a double release.
 
-Local variable sig.i.i created at:
- lan78xx_read_eeprom drivers/net/usb/lan78xx.c:1092 [inline]
- lan78xx_init_mac_address drivers/net/usb/lan78xx.c:1937 [inline]
- lan78xx_reset+0x77e/0x2cd0 drivers/net/usb/lan78xx.c:3241
- lan78xx_bind+0x711/0x1690 drivers/net/usb/lan78xx.c:3766
+Fix this by keeping both acquire and release operation in
+xe_hw_engine_group_get_mode().
 
-The function lan78xx_read_raw_eeprom failed to properly propagate EEPROM
-read timeout errors (-ETIMEDOUT). In the fallthrough path, it first
-attempted to restore the pin configuration for LED outputs and then
-returned only the status of that restore operation, discarding the
-original timeout error.
-
-As a result, callers could mistakenly treat the data buffer as valid
-even though the EEPROM read had actually timed out with no data or partial
-data.
-
-To fix this, handle errors in restoring the LED pin configuration separately.
-If the restore succeeds, return any prior EEPROM timeout error correctly
-to the caller.
-
-Reported-by: syzbot+62ec8226f01cb4ca19d9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=62ec8226f01cb4ca19d9
-Fixes: 8b1b2ca83b20 ("net: usb: lan78xx: Improve error handling in EEPROM and OTP operations")
-Signed-off-by: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20250930084902.19062-1-bhanuseshukumar@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 770bd1d34113 ("drm/xe/hw_engine_group: Ensure safe transition between execution modes")
+Cc: Francois Dugast <francois.dugast@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+Link: https://lore.kernel.org/r/20250925023145.1203004-2-shuicheng.lin@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 662d98b8b373007fa1b08ba93fee11f6fd3e387c)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_hw_engine_group.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 1ff25f57329a8..d75502ebbc0d9 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1079,10 +1079,13 @@ static int lan78xx_read_raw_eeprom(struct lan78xx_net *dev, u32 offset,
+diff --git a/drivers/gpu/drm/xe/xe_hw_engine_group.c b/drivers/gpu/drm/xe/xe_hw_engine_group.c
+index 82750520a90a5..f14a3cc7d1173 100644
+--- a/drivers/gpu/drm/xe/xe_hw_engine_group.c
++++ b/drivers/gpu/drm/xe/xe_hw_engine_group.c
+@@ -237,17 +237,13 @@ static int xe_hw_engine_group_suspend_faulting_lr_jobs(struct xe_hw_engine_group
+ 
+ 		err = q->ops->suspend_wait(q);
+ 		if (err)
+-			goto err_suspend;
++			return err;
  	}
  
- read_raw_eeprom_done:
--	if (dev->chipid == ID_REV_CHIP_ID_7800_)
--		return lan78xx_write_reg(dev, HW_CFG, saved);
+ 	if (need_resume)
+ 		xe_hw_engine_group_resume_faulting_lr_jobs(group);
+ 
+ 	return 0;
 -
--	return 0;
-+	if (dev->chipid == ID_REV_CHIP_ID_7800_) {
-+		int rc = lan78xx_write_reg(dev, HW_CFG, saved);
-+		/* If USB fails, there is nothing to do */
-+		if (rc < 0)
-+			return rc;
-+	}
-+	return ret;
+-err_suspend:
+-	up_write(&group->mode_sem);
+-	return err;
  }
  
- static int lan78xx_read_eeprom(struct lan78xx_net *dev, u32 offset,
+ /**
 -- 
 2.51.0
 
