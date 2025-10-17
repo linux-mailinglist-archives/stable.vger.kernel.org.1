@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B8ABEA702
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:04:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F6FBEAD58
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0E8D74629C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:27:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 865255E7DA8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54BD27FB03;
-	Fri, 17 Oct 2025 15:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F79253B42;
+	Fri, 17 Oct 2025 15:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oq45rbwb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rh+HEPcf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F7F3BB5A;
-	Fri, 17 Oct 2025 15:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1426B1A9FB7;
+	Fri, 17 Oct 2025 15:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714829; cv=none; b=tY3FJGfWcPcHpKqhJYKMS5O6wzGGJtvOtke2UKA4K+QM1Lfdo5kvuD6KZ0Z26ve0m0C78XNdDN2TzX0BEPU72WRSuN74d6Gdi6nFeKqXnA5wra+/Xdcv44WiC+fl73+FnSscge13NgedfJsSIKNcpoDXB8SBBcoudTbd1ZLh0OY=
+	t=1760716360; cv=none; b=S4Z+RrAkn+eS6cU2yB4lUXMlJAjhNRERpjiLPwWMS+NAlpVdS/VEwtmqHo0lIXaTYwFSSRPM/Jv5R4uVIiJX3+K1vI3iQMmz0JrG4jbwq7TciamnB8dMOQh5gko1EQVZDUkF7wmMYMw3nXv8filXN0RBoDfMklqI70/MM0DkVlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714829; c=relaxed/simple;
-	bh=O24pZQQJ7dzUdHQMc/tZezxU6vpssh/sR5KDZXj//Hs=;
+	s=arc-20240116; t=1760716360; c=relaxed/simple;
+	bh=cXRDwRrybquujEs9aH4bjpePoRlrCO31jlQClZctejM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2pNQHi6tTF7DTyvUjE2dCswdv9s62rwWisH09YevhmELhCWllUmyqg6Qk16CIV8MxRg3d00h35FWwyB3jYAm4xy0htOI0zE17TgNelY29257H6Ks59SMDGNjCVqnfRRIOLU+SXF8Tz+mojFzikzFxCbSYkqaQGiooyq3QqIQrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oq45rbwb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94350C113D0;
-	Fri, 17 Oct 2025 15:27:07 +0000 (UTC)
+	 MIME-Version; b=QhONdJMNTQn5JYSvewswIw5XoiCvBi2Yfz2KF6pEkFA9SjxQsGgck+QckEUKwHOe0Rx24FdnXJwYAzF99ipuFjhAOCohIeQJO8b5+wAa0G3QwVaR43Fi1zre+U2A8kTiTJzToZXKDrPFelEj84GBcjoY4W6w4V7lVsMEB6cMXZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rh+HEPcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBCFC4CEE7;
+	Fri, 17 Oct 2025 15:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714828;
-	bh=O24pZQQJ7dzUdHQMc/tZezxU6vpssh/sR5KDZXj//Hs=;
+	s=korg; t=1760716359;
+	bh=cXRDwRrybquujEs9aH4bjpePoRlrCO31jlQClZctejM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oq45rbwb8kSUqshPkPdIoxGemDazCkiFIt3q473q5k2Pc0sVSY/iNvipfwdlIh6Tf
-	 YE4+HraREIHJkUQ3Ydrz0xGD2JgkM8DxNf/CWACMgmpaaom3CsOv3lDAQmFMQAHDmE
-	 PIdtj2nsGu6+zdhrH4rmRlPAEylw9MtyQgQ5VeY8=
+	b=rh+HEPcfsJRRv8dlh28KUimyibkw4fCxsmqoSrPq/Pb98/WUTEyvTQF0xSDGOoLR9
+	 EvC/3epix323ouR12z1JLI6y7CyLh8kp2J/stc5nf8c1QnxMwZV6rmm2EC6zvD04dw
+	 sZVUW492aoxw7hkc6/FD5iR/hy9eYyuGW7jGMQAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 247/277] nfsd: unregister with rpcbind when deleting a transport
-Date: Fri, 17 Oct 2025 16:54:14 +0200
-Message-ID: <20251017145156.168026730@linuxfoundation.org>
+Subject: [PATCH 5.15 163/276] gpio: wcd934x: Remove duplicate assignment of of_gpio_n_cells
+Date: Fri, 17 Oct 2025 16:54:16 +0200
+Message-ID: <20251017145148.422374356@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 898374fdd7f06fa4c4a66e8be3135efeae6128d5 ]
+[ Upstream commit a060dc6620c13435b78e92cd2ebdbb6d11af237a ]
 
-When a listener is added, a part of creation of transport also registers
-program/port with rpcbind. However, when the listener is removed,
-while transport goes away, rpcbind still has the entry for that
-port/type.
+The of_gpio_n_cells default is 2 when ->of_xlate() callback is
+not defined. No need to assign it explicitly in the driver.
 
-When deleting the transport, unregister with rpcbind when appropriate.
-
----v2 created a new xpt_flag XPT_RPCB_UNREG to mark TCP and UDP
-transport and at xprt destroy send rpcbind unregister if flag set.
-
-Suggested-by: Chuck Lever <chuck.lever@oracle.com>
-Fixes: d093c9089260 ("nfsd: fix management of listener transports")
-Cc: stable@vger.kernel.org
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: b5f8aa8d4bde ("gpio: wcd934x: mark the GPIO controller as sleeping")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sunrpc/svc_xprt.h |    3 +++
- net/sunrpc/svc_xprt.c           |   13 +++++++++++++
- net/sunrpc/svcsock.c            |    2 ++
- 3 files changed, 18 insertions(+)
+ drivers/gpio/gpio-wcd934x.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/include/linux/sunrpc/svc_xprt.h
-+++ b/include/linux/sunrpc/svc_xprt.h
-@@ -103,6 +103,9 @@ enum {
- 				 * it has access to.  It is NOT counted
- 				 * in ->sv_tmpcnt.
- 				 */
-+	XPT_RPCB_UNREG,		/* transport that needs unregistering
-+				 * with rpcbind (TCP, UDP) on destroy
-+				 */
- };
+diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
+index c00968ce7a569..cbbbd105a5a7b 100644
+--- a/drivers/gpio/gpio-wcd934x.c
++++ b/drivers/gpio/gpio-wcd934x.c
+@@ -101,7 +101,6 @@ static int wcd_gpio_probe(struct platform_device *pdev)
+ 	chip->base = -1;
+ 	chip->ngpio = WCD934X_NPINS;
+ 	chip->label = dev_name(dev);
+-	chip->of_gpio_n_cells = 2;
+ 	chip->can_sleep = false;
  
- static inline void svc_xprt_set_valid(struct svc_xprt *xpt)
---- a/net/sunrpc/svc_xprt.c
-+++ b/net/sunrpc/svc_xprt.c
-@@ -1028,6 +1028,19 @@ static void svc_delete_xprt(struct svc_x
- 	struct svc_serv	*serv = xprt->xpt_server;
- 	struct svc_deferred_req *dr;
- 
-+	/* unregister with rpcbind for when transport type is TCP or UDP.
-+	 */
-+	if (test_bit(XPT_RPCB_UNREG, &xprt->xpt_flags)) {
-+		struct svc_sock *svsk = container_of(xprt, struct svc_sock,
-+						     sk_xprt);
-+		struct socket *sock = svsk->sk_sock;
-+
-+		if (svc_register(serv, xprt->xpt_net, sock->sk->sk_family,
-+				 sock->sk->sk_protocol, 0) < 0)
-+			pr_warn("failed to unregister %s with rpcbind\n",
-+				xprt->xpt_class->xcl_name);
-+	}
-+
- 	if (test_and_set_bit(XPT_DEAD, &xprt->xpt_flags))
- 		return;
- 
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -837,6 +837,7 @@ static void svc_udp_init(struct svc_sock
- 	/* data might have come in before data_ready set up */
- 	set_bit(XPT_DATA, &svsk->sk_xprt.xpt_flags);
- 	set_bit(XPT_CHNGBUF, &svsk->sk_xprt.xpt_flags);
-+	set_bit(XPT_RPCB_UNREG, &svsk->sk_xprt.xpt_flags);
- 
- 	/* make sure we get destination address info */
- 	switch (svsk->sk_sk->sk_family) {
-@@ -1357,6 +1358,7 @@ static void svc_tcp_init(struct svc_sock
- 	if (sk->sk_state == TCP_LISTEN) {
- 		strcpy(svsk->sk_xprt.xpt_remotebuf, "listener");
- 		set_bit(XPT_LISTENER, &svsk->sk_xprt.xpt_flags);
-+		set_bit(XPT_RPCB_UNREG, &svsk->sk_xprt.xpt_flags);
- 		sk->sk_data_ready = svc_tcp_listen_data_ready;
- 		set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
- 	} else {
+ 	return devm_gpiochip_add_data(dev, chip, data);
+-- 
+2.51.0
+
 
 
 
