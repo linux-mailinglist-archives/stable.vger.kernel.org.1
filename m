@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-187366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61518BEACD1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D60ADBEAB5C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:29:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57AB1947882
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:44:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42ADE947B1C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23510330B16;
-	Fri, 17 Oct 2025 15:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF181A0728;
+	Fri, 17 Oct 2025 15:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OhkrUAJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APdvqXTw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B0D20C00A;
-	Fri, 17 Oct 2025 15:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738C2330B2B;
+	Fri, 17 Oct 2025 15:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715866; cv=none; b=IQAC3gBsGBvEaCh1itnUEcKOGJLoUcQRV729jH9fp7dxg24hZU3tOc9vaGogtzI+QLrUK9HVJTToAAlPI7e7qAZmJx0CrXsANbpMP6ZVXWrm+CZ0NEsVDkoF+R9kChhNihlO0WGeJ8N/nlkQZRoctyUZebHg0SdrZl4m7BKOnIM=
+	t=1760716606; cv=none; b=qIOCH0zBg621Namj65jkvlM/2w6HhzQ+4nK15kZj0syB7t3r0mbb+CaX/cBRflkrttbnTzkaZuHldqC/MpKsDwKkl3gYg/o9D5aPiSlLmIP7reTIdivawig4j6PyAWoqVJix4YKg6euRYzpKjlLgmGoZZuMEh2ns5hAQg68ckek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715866; c=relaxed/simple;
-	bh=4kI1T1PupbOMB+BRfO9WihJEYBgVwzJUE0yUkaG9wjo=;
+	s=arc-20240116; t=1760716606; c=relaxed/simple;
+	bh=RI071oNmcivDN6kwS5Tz9DmYZuRGycqH8ZWIe97bTjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DFrVUPQXKXCRROL42Cd+brWoxnlkJVfc37sfACplugFrZjSwjmePiwI9/kxPMxWaGi0fzOmTfToH0oweuxQXg5uDUAapxRMIs75Pms7HDsqCTS/32NnkIpTp+kqJjqjcR5ZVa0rTj8J/KNGDsnhBRfFPhQumQAkjdDF7H46oJuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OhkrUAJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13028C4CEFE;
-	Fri, 17 Oct 2025 15:44:25 +0000 (UTC)
+	 MIME-Version; b=XmCgOOhfs0ox1GmUqQH4iGxp0JE0Jl4WegYjsRXdQqE5vm0XdQYXyt8ieb8qtnLtvYv0wNbabD/7X52rTdFwJJsoUWGV91EQoFe0BLSb+NvfYdfSNNGxoZuArE88uG+fYNATrDkNQwmfqMXV3WNaHvhMNyjVuvizrCIP94p1vsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APdvqXTw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11ADC4CEE7;
+	Fri, 17 Oct 2025 15:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715866;
-	bh=4kI1T1PupbOMB+BRfO9WihJEYBgVwzJUE0yUkaG9wjo=;
+	s=korg; t=1760716606;
+	bh=RI071oNmcivDN6kwS5Tz9DmYZuRGycqH8ZWIe97bTjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OhkrUAJ8cT8ZdXFdDw0+YR2+vOqXkOzSjN8if8Z/G5m1VCiXgfMMbl2m80eKJo7sF
-	 /5Nj2pUuIZ4Ht46gjcAaNVxsOae9SCY0z1m64RXCSahMKUqhDT0Mit2qWPs5mjqOzI
-	 7YCJPEuVxgfPrgMUR3Wwvamn9S0t58T7jzCPEIQg=
+	b=APdvqXTwW8Db8zBrDj3MJpN9G/x5TcnBwlf8SHKlTAh5qDFc0gyiDbbAdXWQ+k5r0
+	 pKZ4NCCdNohXxPfiawnIDtqB5ackycbD4t8TPhb4zg+3ABqEYpQC3NAnsWBdkVWbwf
+	 qnZsCOcBIb35E2vdnZKojJBGDYxpmvbgbGgzeOk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Nicolas Pitre <nico@fluxnic.net>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 364/371] cramfs: Verify inode mode when loading from disk
-Date: Fri, 17 Oct 2025 16:55:39 +0200
-Message-ID: <20251017145215.257209742@linuxfoundation.org>
+	David Laight <David.Laight@aculab.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.15 247/276] minmax: simplify and clarify min_t()/max_t() implementation
+Date: Fri, 17 Oct 2025 16:55:40 +0200
+Message-ID: <20251017145151.491727829@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 7f9d34b0a7cb93d678ee7207f0634dbf79e47fe5 ]
+[ Upstream commit 017fa3e89187848fd056af757769c9e66ac3e93d ]
 
-The inode mode loaded from corrupted disk can be invalid. Do like what
-commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
-does.
+This simplifies the min_t() and max_t() macros by no longer making them
+work in the context of a C constant expression.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/429b3ef1-13de-4310-9a8e-c2dc9a36234a@I-love.SAKURA.ne.jp
-Acked-by: Nicolas Pitre <nico@fluxnic.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That means that you can no longer use them for static initializers or
+for array sizes in type definitions, but there were only a couple of
+such uses, and all of them were converted (famous last words) to use
+MIN_T/MAX_T instead.
+
+Cc: David Laight <David.Laight@aculab.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cramfs/inode.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+V1 -> V2:
+Use `[ Upstream commit <HASH> ]` instead of `commit <HASH> upstream.`
+like in all other patches.
 
-diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
-index 56c8005b24a34..ca54bf24b719f 100644
---- a/fs/cramfs/inode.c
-+++ b/fs/cramfs/inode.c
-@@ -116,9 +116,18 @@ static struct inode *get_cramfs_inode(struct super_block *sb,
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &cramfs_aops;
- 		break;
--	default:
-+	case S_IFCHR:
-+	case S_IFBLK:
-+	case S_IFIFO:
-+	case S_IFSOCK:
- 		init_special_inode(inode, cramfs_inode->mode,
- 				old_decode_dev(cramfs_inode->size));
-+		break;
-+	default:
-+		printk(KERN_DEBUG "CRAMFS: Invalid file type 0%04o for inode %lu.\n",
-+		       inode->i_mode, inode->i_ino);
-+		iget_failed(inode);
-+		return ERR_PTR(-EIO);
- 	}
+ include/linux/minmax.h |   19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
+
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -45,17 +45,20 @@
  
- 	inode->i_mode = cramfs_inode->mode;
--- 
-2.51.0
-
+ #define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
+ 
+-#define __cmp_once(op, x, y, unique_x, unique_y) ({	\
+-	typeof(x) unique_x = (x);			\
+-	typeof(y) unique_y = (y);			\
++#define __cmp_once_unique(op, type, x, y, ux, uy) \
++	({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
++
++#define __cmp_once(op, type, x, y) \
++	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
++
++#define __careful_cmp_once(op, x, y) ({			\
+ 	static_assert(__types_ok(x, y),			\
+ 		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
+-	__cmp(op, unique_x, unique_y); })
++	__cmp_once(op, __auto_type, x, y); })
+ 
+ #define __careful_cmp(op, x, y)					\
+ 	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
+-		__cmp(op, x, y),				\
+-		__cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
++		__cmp(op, x, y), __careful_cmp_once(op, x, y))
+ 
+ #define __clamp(val, lo, hi)	\
+ 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+@@ -158,7 +161,7 @@
+  * @x: first value
+  * @y: second value
+  */
+-#define min_t(type, x, y)	__careful_cmp(min, (type)(x), (type)(y))
++#define min_t(type, x, y) __cmp_once(min, type, x, y)
+ 
+ /**
+  * max_t - return maximum of two values, using the specified type
+@@ -166,7 +169,7 @@
+  * @x: first value
+  * @y: second value
+  */
+-#define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
++#define max_t(type, x, y) __cmp_once(max, type, x, y)
+ 
+ /*
+  * Do not check the array parameter using __must_be_array().
 
 
 
