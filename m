@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-186715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CBA2BE9C0E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FF4BEA22D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2DB2258783E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE46D19A2A87
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4A62F12D2;
-	Fri, 17 Oct 2025 15:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3F51946C8;
+	Fri, 17 Oct 2025 15:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oShS2smx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVHfZiwK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA328288A2;
-	Fri, 17 Oct 2025 15:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEDE330B1A;
+	Fri, 17 Oct 2025 15:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714033; cv=none; b=IWqSEbAdPfznbSIdQh0ibffOKU95cenX/1FhGru1YXquP6fXky9B2LJfNmVB1tXqz7yzHKrejSRCMd3Ffa8yUvPpoljB+GMA8lg99FvsBIwVUJ6Iisg5PvB+q7lcUYiFiWqm41El6kxW3IVpv4zprVEiXN1nPiTlvq0ZsdQSXfI=
+	t=1760715707; cv=none; b=eU/f5Rr3nFpajKPbnoohCbKoQtxKiSjiJ84bugTFCihF1+P6sFLBdh4RBDT8GsGg4hVhfSX4BPifqo9tsWW4lkUD5TJFhNTau27twb07dfb2flK9IPCpyAyCcOUrIJDrGAs9qDrK1kGTmsJVqGOm0mA+4fnoBoCKEsL4ip0N6Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714033; c=relaxed/simple;
-	bh=sqLSBkEHIXviSTLlST+j3Bn2Ghkg52RBd9U25p83G4I=;
+	s=arc-20240116; t=1760715707; c=relaxed/simple;
+	bh=fAUTC9QNLCc9rZLyKI1SUNxKDYlXJ69hG6meHPo5UFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hM/o4Cf5Cv/0Tghqs3nKXd5Vhdla6MhQOBP5lTo4FiLrWPX6/ExrD7zkDKN9HGkpixRacCxHhbhNnEYsiZ3y5bNW42g4mpvJAQHi1ufC5XXgIABkaY2Ip0HIvaX5Q4YSW2mVeSyvmnQg8D31/oebuDkigE6HN5SE7boqllgTm4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oShS2smx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E23C4CEE7;
-	Fri, 17 Oct 2025 15:13:50 +0000 (UTC)
+	 MIME-Version; b=oIaXNiKhHBvZ91KMKUEV25pgRXEHnEQ4GyyH1Ig0dWs3sWyxCufW+lzcP3NMcnrY+ga66dd7Fd16mi4scHjMprjDgjDt8Xh9fYlpbJIlP+aNdz+YBKLV7tQXA5oubl8SoYM1flIwMbsqMRRLfJP2ROcXoS+5eJYUCtis5ZJXawA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVHfZiwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA1AC4CEE7;
+	Fri, 17 Oct 2025 15:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714031;
-	bh=sqLSBkEHIXviSTLlST+j3Bn2Ghkg52RBd9U25p83G4I=;
+	s=korg; t=1760715706;
+	bh=fAUTC9QNLCc9rZLyKI1SUNxKDYlXJ69hG6meHPo5UFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oShS2smx4u9mF6bY/xPSNxHDOmQtMGj4ep2iunyGeiEzCp4ZPT/i+PbcDUtZqgTWF
-	 nPr3IOo5T76PR+6cI5lImy8g+GXBM36cLY4oVUz2c89YmCYuo6Kyw+ldDrsUDtOUz3
-	 +hZoPo0F56P21grvaOogPbwgvUI/6ffM7tsgVaCQ=
+	b=BVHfZiwKuypgQRgIMrT1oAu7KEX9473ovSvR6FbdYjwzAGASzPcMxRyMaA2RoF/kd
+	 lo/ZaiVKkXcupY2GhfbRqN7KdRywotStFEQAO0nTjPnsDX+ZJEnbgv4R+DShh7MiJQ
+	 0q3JPCYfBJ5Wn4Gu/BCoFewm5S7EzkYdugxpCmvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lance Yang <lance.yang@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Gabriel Krisman Bertazi <krisman@collabora.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 190/201] selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled
-Date: Fri, 17 Oct 2025 16:54:11 +0200
-Message-ID: <20251017145141.741634778@linuxfoundation.org>
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.17 277/371] PCI/ERR: Fix uevent on failure to recover
+Date: Fri, 17 Oct 2025 16:54:12 +0200
+Message-ID: <20251017145212.095872051@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,197 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lance Yang <lance.yang@linux.dev>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 0389c305ef56cbadca4cbef44affc0ec3213ed30 upstream.
+commit 1cbc5e25fb70e942a7a735a1f3d6dd391afc9b29 upstream.
 
-The madv_populate and soft-dirty kselftests currently fail on systems
-where CONFIG_MEM_SOFT_DIRTY is disabled.
+Upon failure to recover from a PCIe error through AER, DPC or EDR, a
+uevent is sent to inform user space about disconnection of the bridge
+whose subordinate devices failed to recover.
 
-Introduce a new helper softdirty_supported() into vm_util.c/h to ensure
-tests are properly skipped when the feature is not enabled.
+However the bridge itself is not disconnected.  Instead, a uevent should
+be sent for each of the subordinate devices.
 
-Link: https://lkml.kernel.org/r/20250917133137.62802-1-lance.yang@linux.dev
-Fixes: 9f3265db6ae8 ("selftests: vm: add test for Soft-Dirty PTE bit")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Gabriel Krisman Bertazi <krisman@collabora.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Only if the "bridge" happens to be a Root Complex Event Collector or
+Integrated Endpoint does it make sense to send a uevent for it (because
+there are no subordinate devices).
+
+Right now if there is a mix of subordinate devices with and without
+pci_error_handlers, a BEGIN_RECOVERY event is sent for those with
+pci_error_handlers but no FAILED_RECOVERY event is ever sent for them
+afterwards.  Fix it.
+
+Fixes: 856e1eb9bdd4 ("PCI/AER: Add uevents in AER and EEH error/resume")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org  # v4.16+
+Link: https://patch.msgid.link/68fc527a380821b5d861dd554d2ce42cb739591c.1755008151.git.lukas@wunner.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/madv_populate.c |   21 -------
- tools/testing/selftests/mm/soft-dirty.c    |    5 +
- tools/testing/selftests/mm/vm_util.c       |   77 +++++++++++++++++++++++++++++
- tools/testing/selftests/mm/vm_util.h       |    1 
- 4 files changed, 84 insertions(+), 20 deletions(-)
+ drivers/pci/pcie/err.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/mm/madv_populate.c
-+++ b/tools/testing/selftests/mm/madv_populate.c
-@@ -264,23 +264,6 @@ static void test_softdirty(void)
- 	munmap(addr, SIZE);
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -108,6 +108,12 @@ static int report_normal_detected(struct
+ 	return report_error_detected(dev, pci_channel_io_normal, data);
  }
  
--static int system_has_softdirty(void)
--{
--	/*
--	 * There is no way to check if the kernel supports soft-dirty, other
--	 * than by writing to a page and seeing if the bit was set. But the
--	 * tests are intended to check that the bit gets set when it should, so
--	 * doing that check would turn a potentially legitimate fail into a
--	 * skip. Fortunately, we know for sure that arm64 does not support
--	 * soft-dirty. So for now, let's just use the arch as a corse guide.
--	 */
--#if defined(__aarch64__)
--	return 0;
--#else
--	return 1;
--#endif
--}
--
- int main(int argc, char **argv)
++static int report_perm_failure_detected(struct pci_dev *dev, void *data)
++{
++	pci_uevent_ers(dev, PCI_ERS_RESULT_DISCONNECT);
++	return 0;
++}
++
+ static int report_mmio_enabled(struct pci_dev *dev, void *data)
  {
- 	int nr_tests = 16;
-@@ -288,7 +271,7 @@ int main(int argc, char **argv)
+ 	struct pci_driver *pdrv;
+@@ -269,7 +275,7 @@ pci_ers_result_t pcie_do_recovery(struct
+ failed:
+ 	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
  
- 	pagesize = getpagesize();
+-	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
++	pci_walk_bridge(bridge, report_perm_failure_detected, NULL);
  
--	if (system_has_softdirty())
-+	if (softdirty_supported())
- 		nr_tests += 5;
+ 	pci_info(bridge, "device recovery failed\n");
  
- 	ksft_print_header();
-@@ -300,7 +283,7 @@ int main(int argc, char **argv)
- 	test_holes();
- 	test_populate_read();
- 	test_populate_write();
--	if (system_has_softdirty())
-+	if (softdirty_supported())
- 		test_softdirty();
- 
- 	err = ksft_get_fail_cnt();
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -193,8 +193,11 @@ int main(int argc, char **argv)
- 	int pagesize;
- 
- 	ksft_print_header();
--	ksft_set_plan(15);
- 
-+	if (!softdirty_supported())
-+		ksft_exit_skip("soft-dirty is not support\n");
-+
-+	ksft_set_plan(15);
- 	pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
- 	if (pagemap_fd < 0)
- 		ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -97,6 +97,42 @@ uint64_t read_pmd_pagesize(void)
- 	return strtoul(buf, NULL, 10);
- }
- 
-+char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
-+{
-+	int ret;
-+	FILE *fp;
-+	char *entry = NULL;
-+	char addr_pattern[MAX_LINE_LENGTH];
-+
-+	ret = snprintf(addr_pattern, MAX_LINE_LENGTH, "%08lx-",
-+		       (unsigned long)addr);
-+	if (ret >= MAX_LINE_LENGTH)
-+		ksft_exit_fail_msg("%s: Pattern is too long\n", __func__);
-+
-+	fp = fopen(SMAP_FILE_PATH, "r");
-+	if (!fp)
-+		ksft_exit_fail_msg("%s: Failed to open file %s\n", __func__,
-+				   SMAP_FILE_PATH);
-+
-+	if (!check_for_pattern(fp, addr_pattern, buf, len))
-+		goto err_out;
-+
-+	/* Fetch the pattern in the same block */
-+	if (!check_for_pattern(fp, pattern, buf, len))
-+		goto err_out;
-+
-+	/* Trim trailing newline */
-+	entry = strchr(buf, '\n');
-+	if (entry)
-+		*entry = '\0';
-+
-+	entry = buf + strlen(pattern);
-+
-+err_out:
-+	fclose(fp);
-+	return entry;
-+}
-+
- bool __check_huge(void *addr, char *pattern, int nr_hpages,
- 		  uint64_t hpage_size)
- {
-@@ -269,3 +305,44 @@ int uffd_unregister(int uffd, void *addr
- 
- 	return ret;
- }
-+
-+static bool check_vmflag(void *addr, const char *flag)
-+{
-+	char buffer[MAX_LINE_LENGTH];
-+	const char *flags;
-+	size_t flaglen;
-+
-+	flags = __get_smap_entry(addr, "VmFlags:", buffer, sizeof(buffer));
-+	if (!flags)
-+		ksft_exit_fail_msg("%s: No VmFlags for %p\n", __func__, addr);
-+
-+	while (true) {
-+		flags += strspn(flags, " ");
-+
-+		flaglen = strcspn(flags, " ");
-+		if (!flaglen)
-+			return false;
-+
-+		if (flaglen == strlen(flag) && !memcmp(flags, flag, flaglen))
-+			return true;
-+
-+		flags += flaglen;
-+	}
-+}
-+
-+bool softdirty_supported(void)
-+{
-+	char *addr;
-+	bool supported = false;
-+	const size_t pagesize = getpagesize();
-+
-+	/* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
-+	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (!addr)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	supported = check_vmflag(addr, "sd");
-+	munmap(addr, pagesize);
-+	return supported;
-+}
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -51,6 +51,7 @@ int uffd_register(int uffd, void *addr,
- int uffd_unregister(int uffd, void *addr, uint64_t len);
- int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
- 			      bool miss, bool wp, bool minor, uint64_t *ioctls);
-+bool softdirty_supported(void);
- 
- /*
-  * On ppc64 this will only work with radix 2M hugepage size
 
 
 
