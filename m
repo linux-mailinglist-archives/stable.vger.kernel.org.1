@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-187570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29F1BEA599
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:45 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B220BEA140
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC742188A459
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 42CB434937B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54605330B36;
-	Fri, 17 Oct 2025 15:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1370330B1A;
+	Fri, 17 Oct 2025 15:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iG5nSQre"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Si6RaHAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1116A330B0F;
-	Fri, 17 Oct 2025 15:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE75330B28;
+	Fri, 17 Oct 2025 15:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716452; cv=none; b=H+XaP1X+EkoJSp1rk7IpjYGOeuzSMEiiaDw3c2As9TUQ2UQBkRiTNCABKyHGVzLhwFEtQo1z4f9lwE8ttcoG0IqkkSQxt0O7gnkHG4n3U8M/rn74Mc5UJriVYu9oZ7JF2lBdv1zzW74QXbyWbSqJA3HVsl7YYQAc1KSXFKYY6Cw=
+	t=1760715718; cv=none; b=n7CgZfSEH3JYuipfpiDPcIV+864346mASphcj45+n0ohCWvGDnrcqgdFta3N2LlZ8MEJr2TkXFOm2KoCBuVBC+mtF5AFskhhiVxBRU8enZ54++A/UYpFlWmB/VGwsNcA/6rlCW0FyEmppbLg0UX7l8A7djxSjQyM0HSBkKFp1f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716452; c=relaxed/simple;
-	bh=NNd0+VY8KRnIq8xyvv4/0kp1XR89rQB09tDYcb482dk=;
+	s=arc-20240116; t=1760715718; c=relaxed/simple;
+	bh=W4P4e0cOybGOGr9sRUWbeiZ0gm1pe13bfcIX8cEpcRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckA/hawMHANpyjQ6eWI3/rK1ftaqCGvloK8YFno+1x+ibDed6GLscK16qfNXCcoqgo/K5uuGeqkz5bpBRmYbLslNAj088YmRZ2ZezWgi9JeV4V/e765yXoGIbf2CBmv/9d+f/BL9OuCAKo0ugx8bt6hwQlGLS+y3rso7zekhYnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iG5nSQre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6D6C4CEE7;
-	Fri, 17 Oct 2025 15:54:11 +0000 (UTC)
+	 MIME-Version; b=bRumhO39baHlxhPtLHLvl/0i1k+Bk6oR2GioYH5zZqwhd6Fq9IxyrNxB+lludpBIXBjWNDoptGXIHAvaTgIxTJYGDyEE/LclhS9c/47+j2fTrMUxxQh2gqKIKaMkvk7CbCwo0oVRBnQAad0KhSuv2Oatyp7iQD+tvdKb546KKaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Si6RaHAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2F5C4CEE7;
+	Fri, 17 Oct 2025 15:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716451;
-	bh=NNd0+VY8KRnIq8xyvv4/0kp1XR89rQB09tDYcb482dk=;
+	s=korg; t=1760715718;
+	bh=W4P4e0cOybGOGr9sRUWbeiZ0gm1pe13bfcIX8cEpcRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iG5nSQreSJwpGYdci18/0HEN1xdpYQY1EGEB2vYZ8Fv2HO2yc52HannQsf9tZSQ+C
-	 9bg+6eDovApa4z+/9mIoMzKlx6AUE91PkNygJvPloUjPLqZiIMbew5dCbMGxRuW2tF
-	 x+KaNdcsTbXypiU/mgz+9dMwAmBTqndXYu/ShXuY=
+	b=Si6RaHAvunKks8b+mqfvK3SjIJtx1k+l+hS4ueVygpbDyqgrS7o767pOOIzHWdyWQ
+	 q7oVzNKD/tlmyUef7wSLbexoQogCckRS96PBUvHP1rzUpKJhHMxmYtz7bY/CS11jOK
+	 FtKij/nLzV9zw5wWgJQut2VSclOS86DaelMv4uH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 196/276] sctp: Fix MAC comparison to be constant-time
+	Autumn Dececco <autumndececco@gmail.com>,
+	Nick Morrow <morrownr@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.17 314/371] wifi: mt76: mt7921u: Add VID/PID for Netgear A7500
 Date: Fri, 17 Oct 2025 16:54:49 +0200
-Message-ID: <20251017145149.626675018@linuxfoundation.org>
+Message-ID: <20251017145213.435786733@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Nick Morrow <morrownr@gmail.com>
 
-commit dd91c79e4f58fbe2898dac84858033700e0e99fb upstream.
+commit fc6627ca8a5f811b601aea74e934cf8a048c88ac upstream.
 
-To prevent timing attacks, MACs need to be compared in constant time.
-Use the appropriate helper function for this.
+Add VID/PID 0846/9065 for Netgear A7500.
 
-Fixes: bbd0d59809f9 ("[SCTP]: Implement the receive and verification of AUTH chunk")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Autumn Dececco <autumndececco@gmail.com>
+Tested-by: Autumn Dececco <autumndececco@gmail.com>
+Signed-off-by: Nick Morrow <morrownr@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://patch.msgid.link/20250818205426.30222-3-ebiggers@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/80bacfd6-6073-4ce5-be32-ae9580832337@gmail.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sm_make_chunk.c |    3 ++-
- net/sctp/sm_statefuns.c  |    3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/usb.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/sctp/sm_make_chunk.c
-+++ b/net/sctp/sm_make_chunk.c
-@@ -31,6 +31,7 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
- #include <crypto/hash.h>
-+#include <crypto/algapi.h>
- #include <linux/types.h>
- #include <linux/kernel.h>
- #include <linux/ip.h>
-@@ -1796,7 +1797,7 @@ struct sctp_association *sctp_unpack_coo
- 		}
- 	}
- 
--	if (memcmp(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
-+	if (crypto_memneq(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
- 		*error = -SCTP_IERROR_BAD_SIG;
- 		goto fail;
- 	}
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -30,6 +30,7 @@
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <crypto/algapi.h>
- #include <linux/types.h>
- #include <linux/kernel.h>
- #include <linux/ip.h>
-@@ -4402,7 +4403,7 @@ static enum sctp_ierror sctp_sf_authenti
- 				 sh_key, GFP_ATOMIC);
- 
- 	/* Discard the packet if the digests do not match */
--	if (memcmp(save_digest, digest, sig_len)) {
-+	if (crypto_memneq(save_digest, digest, sig_len)) {
- 		kfree(save_digest);
- 		return SCTP_IERROR_BAD_SIG;
- 	}
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -21,6 +21,9 @@ static const struct usb_device_id mt7921
+ 	/* Netgear, Inc. [A8000,AXE3000] */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9060, 0xff, 0xff, 0xff),
+ 		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
++	/* Netgear, Inc. A7500 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9065, 0xff, 0xff, 0xff),
++		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+ 	/* TP-Link TXE50UH */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0107, 0xff, 0xff, 0xff),
+ 		.driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
 
 
 
