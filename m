@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18BEBEA0B9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C697BE98B0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:12:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C31115A039D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D82856816B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541CD32E6BD;
-	Fri, 17 Oct 2025 15:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01E4336EFA;
+	Fri, 17 Oct 2025 15:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6QOkAkc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeJiCM7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F58C32E144;
-	Fri, 17 Oct 2025 15:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4993328E5;
+	Fri, 17 Oct 2025 15:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715076; cv=none; b=mujuDYRXIgjtX6bqn0KFS/LPSyevCk4Ih9+Y1zlZjZyCh4j5pv0wOjUIsnV8s1Nej+gOd7D8oMr4wJXiLck1/pS48KukIExSlXFN8Regg6D+cyNCliNYJwQ3OlCnoJASOhaQwc/mqBCHZFd+/WPDwcPXncaPg4TS7R32QpX1Gk4=
+	t=1760713474; cv=none; b=Mvn7pfefWLE1l/O2uNoqtii+hoPDpdKStYwLCDbDjWigGOWyVXRI8F0wB62P9EQUWC1va9Tr7k0NKnB27hLD8NFWupzIhX5C1Xl1bfG9oMKLLRF8AoVouemdk+PpH8LjufV1C9jLxhTEZcMhosHrGbfXKBhl6cPpqSZ0dtvPqRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715076; c=relaxed/simple;
-	bh=h3MM86bhAY6ETnw1nEVUtcQGqmEhQxSRwnIIfEjhsek=;
+	s=arc-20240116; t=1760713474; c=relaxed/simple;
+	bh=nYTdEQhJEjNzZA4sad1XXL5PWk5lAMlwa2Hxfjf95u4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNfowAMXqyFWusuVHgQ4BQdf9Q+M6bUsUA7fxgrAvdzh6wGp/25glGgIH4Bru1mZgdhvCkd9OEEMDi6IrHpPSBClX4yziWtAX7P/Q7jJNTNav8zLZYTL82l5xSSZ2FybojucWn4CzjutteQQ2YU9E+oaXraPaQIFpdrUk1ao9F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6QOkAkc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9284CC116C6;
-	Fri, 17 Oct 2025 15:31:15 +0000 (UTC)
+	 MIME-Version; b=D5MBinyQfFLwYOzermJc+oBdIpBnZIHJJdY+x2r9V35rwyXuTHpScoVcbS2PAfZpwdr8qeCMVPZDAKTfXLFXpVFbLpepuyK+hCAbusjfDjQlNd80n4Kbt57/QKuFyY4LBcw6ty3XMwaEUyraLk6uOjFg5JqLuzB8blcLaNA7Hq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeJiCM7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC1BC4CEE7;
+	Fri, 17 Oct 2025 15:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715075;
-	bh=h3MM86bhAY6ETnw1nEVUtcQGqmEhQxSRwnIIfEjhsek=;
+	s=korg; t=1760713474;
+	bh=nYTdEQhJEjNzZA4sad1XXL5PWk5lAMlwa2Hxfjf95u4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6QOkAkcuuIy/r4InlNDt64MmKprqv7klxXloN6IeICHrFGEjFD8etRC/DTm6Lluy
-	 wnPYi2XXe2++Ssa+QY7LbMND7D2k2tbKNa+nY4a7Ndv58OvdtaWIcxjFGJtFFtLZNn
-	 5o571urMnzd3a1osoiQ/ur4OBdoy84HMWZOATaRM=
+	b=HeJiCM7nXyhbll8TniAxcRcnu17ve97ZMqYcatvUnSt8ZkH5IHdgzToT6JNye2sQ8
+	 wI0SdaOlxfgSMMAX7madRZFakb3godINtdz00t63z9EHL7R24JJvjKyzjeZjJoMooz
+	 wYP4BpDibRkxv1FhkofgMz4gyTPi8eOHhM4oPI0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandr Sapozhnikov <alsp705@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 088/371] net/sctp: fix a null dereference in sctp_disposition sctp_sf_do_5_1D_ce()
+	David Howells <dhowells@redhat.com>,
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 002/201] fscontext: do not consume log entries when returning -EMSGSIZE
 Date: Fri, 17 Oct 2025 16:51:03 +0200
-Message-ID: <20251017145205.122549800@linuxfoundation.org>
+Message-ID: <20251017145134.813046013@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandr Sapozhnikov <alsp705@gmail.com>
+From: Aleksa Sarai <cyphar@cyphar.com>
 
-[ Upstream commit 2f3119686ef50319490ccaec81a575973da98815 ]
+commit 72d271a7baa7062cb27e774ac37c5459c6d20e22 upstream.
 
-If new_asoc->peer.adaptation_ind=0 and sctp_ulpevent_make_authkey=0
-and sctp_ulpevent_make_authkey() returns 0, then the variable
-ai_ev remains zero and the zero will be dereferenced
-in the sctp_ulpevent_free() function.
+Userspace generally expects APIs that return -EMSGSIZE to allow for them
+to adjust their buffer size and retry the operation. However, the
+fscontext log would previously clear the message even in the -EMSGSIZE
+case.
 
-Signed-off-by: Alexandr Sapozhnikov <alsp705@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Fixes: 30f6ebf65bc4 ("sctp: add SCTP_AUTH_NO_AUTH type for AUTHENTICATION_EVENT")
-Link: https://patch.msgid.link/20251002091448.11-1-alsp705@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Given that it is very cheap for us to check whether the buffer is too
+small before we remove the message from the ring buffer, let's just do
+that instead. While we're at it, refactor some fscontext_read() into a
+separate helper to make the ring buffer logic a bit easier to read.
+
+Fixes: 007ec26cdc9f ("vfs: Implement logging through fs_context")
+Cc: David Howells <dhowells@redhat.com>
+Cc: stable@vger.kernel.org # v5.2+
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+Link: https://lore.kernel.org/20250807-fscontext-log-cleanups-v3-1-8d91d6242dc3@cyphar.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sm_statefuns.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/fsopen.c |   70 ++++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 38 insertions(+), 32 deletions(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index a0524ba8d7878..93cac73472c79 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -885,7 +885,8 @@ enum sctp_disposition sctp_sf_do_5_1D_ce(struct net *net,
- 	return SCTP_DISPOSITION_CONSUME;
+--- a/fs/fsopen.c
++++ b/fs/fsopen.c
+@@ -18,50 +18,56 @@
+ #include "internal.h"
+ #include "mount.h"
  
- nomem_authev:
--	sctp_ulpevent_free(ai_ev);
-+	if (ai_ev)
-+		sctp_ulpevent_free(ai_ev);
- nomem_aiev:
- 	sctp_ulpevent_free(ev);
- nomem_ev:
--- 
-2.51.0
-
++static inline const char *fetch_message_locked(struct fc_log *log, size_t len,
++					       bool *need_free)
++{
++	const char *p;
++	int index;
++
++	if (unlikely(log->head == log->tail))
++		return ERR_PTR(-ENODATA);
++
++	index = log->tail & (ARRAY_SIZE(log->buffer) - 1);
++	p = log->buffer[index];
++	if (unlikely(strlen(p) > len))
++		return ERR_PTR(-EMSGSIZE);
++
++	log->buffer[index] = NULL;
++	*need_free = log->need_free & (1 << index);
++	log->need_free &= ~(1 << index);
++	log->tail++;
++
++	return p;
++}
++
+ /*
+  * Allow the user to read back any error, warning or informational messages.
++ * Only one message is returned for each read(2) call.
+  */
+ static ssize_t fscontext_read(struct file *file,
+ 			      char __user *_buf, size_t len, loff_t *pos)
+ {
+ 	struct fs_context *fc = file->private_data;
+-	struct fc_log *log = fc->log.log;
+-	unsigned int logsize = ARRAY_SIZE(log->buffer);
+-	ssize_t ret;
+-	char *p;
++	ssize_t err;
++	const char *p __free(kfree) = NULL, *message;
+ 	bool need_free;
+-	int index, n;
+-
+-	ret = mutex_lock_interruptible(&fc->uapi_mutex);
+-	if (ret < 0)
+-		return ret;
+-
+-	if (log->head == log->tail) {
+-		mutex_unlock(&fc->uapi_mutex);
+-		return -ENODATA;
+-	}
++	int n;
+ 
+-	index = log->tail & (logsize - 1);
+-	p = log->buffer[index];
+-	need_free = log->need_free & (1 << index);
+-	log->buffer[index] = NULL;
+-	log->need_free &= ~(1 << index);
+-	log->tail++;
++	err = mutex_lock_interruptible(&fc->uapi_mutex);
++	if (err < 0)
++		return err;
++	message = fetch_message_locked(fc->log.log, len, &need_free);
+ 	mutex_unlock(&fc->uapi_mutex);
++	if (IS_ERR(message))
++		return PTR_ERR(message);
+ 
+-	ret = -EMSGSIZE;
+-	n = strlen(p);
+-	if (n > len)
+-		goto err_free;
+-	ret = -EFAULT;
+-	if (copy_to_user(_buf, p, n) != 0)
+-		goto err_free;
+-	ret = n;
+-
+-err_free:
+ 	if (need_free)
+-		kfree(p);
+-	return ret;
++		p = message;
++
++	n = strlen(message);
++	if (copy_to_user(_buf, message, n))
++		return -EFAULT;
++	return n;
+ }
+ 
+ static int fscontext_release(struct inode *inode, struct file *file)
 
 
 
