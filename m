@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71E3BE9841
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:10:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A684EBE9E9D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C3BA1AA6596
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6E257C388F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97EEB332901;
-	Fri, 17 Oct 2025 15:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F8E33290B;
+	Fri, 17 Oct 2025 15:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVybHtlK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IP9Vq0ox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5289B33291D;
-	Fri, 17 Oct 2025 15:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2152A32C94B;
+	Fri, 17 Oct 2025 15:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713679; cv=none; b=OscYgVJTz4/k5QgBZFRuXPeTcN6V/yhjSwpVaxv9P1OqR33PJA4xlmW0uCLJoy9avQxQyinJNWJDUyq7Bf+DltFvVVqs6B050NRYpkn3gk7i54o9F9z8bZ6EgMjPN0g92IfsKmn/YnZ/E9N9eyoZd9AVv4ytPPgWiumYU/PBn2g=
+	t=1760714410; cv=none; b=n1v66mEStWoudMIG7YDyqTSdDCEqgTgj6XipXqXz00hs6u7Q68PnGDhxbZuFrfnIIpYHnG25qYh/hpzdPtkfGQqYPPmnArMVFb6njqIVZbNqOaAeodjqL2KZI95LWDJds+ugV+71v619fGKeeeq89Tpot2WnxQnTPbZjTD4Z2ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713679; c=relaxed/simple;
-	bh=3EyeH/sCtb+qeJ7ICXNf8XdpF6Z1zenjDYfi5yXPsio=;
+	s=arc-20240116; t=1760714410; c=relaxed/simple;
+	bh=rb9R45WJ6T0aAWr/Jqe/ubdXbZL3XRdJ32M4sXP8rrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HhSSRynMdeUM4pCp7AmCJ8sZKXGBItctLB42SjcxKEC2dgv5QH5aAjyTeOI9GoqdD7478k+yKhCzMrbCGSH+yJLWS3W6eyXfyOTqSiRQYaH6vg01BlyIPtE77PwCOUECL30eJxruj1DG+lltnkhaeS6AW14cpL7eBEIIe9HLzFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVybHtlK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B1BC4CEE7;
-	Fri, 17 Oct 2025 15:07:58 +0000 (UTC)
+	 MIME-Version; b=OLsWDK0LZ+lcpsqTA4OMzYRnLvwX4bk0z7UhKKYH7i5tQ6gZu7iYzkEyxl2HT1gA+aRXCGUfaTWAynlZedqeqw2BszYGi9U7Beveb/KcLWfFEBx07IV/DeQSf34xIXUNVIDZr8eHblClXummOjy1H1k5nE2RXescU9zqdfbGWmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IP9Vq0ox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E16C4CEE7;
+	Fri, 17 Oct 2025 15:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713678;
-	bh=3EyeH/sCtb+qeJ7ICXNf8XdpF6Z1zenjDYfi5yXPsio=;
+	s=korg; t=1760714410;
+	bh=rb9R45WJ6T0aAWr/Jqe/ubdXbZL3XRdJ32M4sXP8rrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XVybHtlKh3k5hXhYsmSfOKlmn7AwjZOdl7gDULKnhZCjG1V49DihrkgRxx0pwso1e
-	 Tx4Ut7lUur15C+j3COPIIPkdQed9Aucf68p1ZxcLYxhGoRaUiZ2zC0Kjcgs0UXbUb0
-	 KF8GH+T9+QYoyFkSaDiJ9XMiH44vH4hJN7Di5ZzU=
+	b=IP9Vq0oxot7m7jA08vsB2RtZEol2bYLyVv7ZyZrHS6nysM+7+vwU0jNU3lTnW3A8V
+	 JqQSPBXsh5rMozpSpomPnhprHrsbozlWUiGzjgMBTCnbapNF2t/0Hf0FZ0v7HJwZ1/
+	 yVwPmXSkFbFfht7yJRuSWO/8Wi4XG/YPSv+CR9Zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/201] drm/amd/display: Properly disable scaling on DCE6
+	Carlo Caione <ccaione@baylibre.com>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.12 102/277] firmware: meson_sm: fix device leak at probe
 Date: Fri, 17 Oct 2025 16:51:49 +0200
-Message-ID: <20251017145136.510211691@linuxfoundation.org>
+Message-ID: <20251017145150.855550909@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,106 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit a7dc87f3448bea5ebe054f14e861074b9c289c65 ]
+commit 8ece3173f87df03935906d0c612c2aeda9db92ca upstream.
 
-SCL_SCALER_ENABLE can be used to enable/disable the scaler
-on DCE6. Program it to 0 when scaling isn't used, 1 when used.
-Additionally, clear some other registers when scaling is
-disabled and program the SCL_UPDATE register as recommended.
+Make sure to drop the reference to the secure monitor device taken by
+of_find_device_by_node() when looking up its driver data on behalf of
+other drivers (e.g. during probe).
 
-This fixes visible glitches for users whose BIOS sets up a
-mode with scaling at boot, which DC was unable to clean up.
+Note that holding a reference to the platform device does not prevent
+its driver data from going away so there is no point in keeping the
+reference after the helper returns.
 
-Fixes: b70aaf5586f2 ("drm/amd/display: dce_transform: add DCE6 specific macros,functions")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
+Cc: stable@vger.kernel.org	# 5.5
+Cc: Carlo Caione <ccaione@baylibre.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250725074019.8765-1-johan@kernel.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/display/dc/dce/dce_transform.c    | 15 +++++++++++----
- .../gpu/drm/amd/display/dc/dce/dce_transform.h    |  2 ++
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/firmware/meson/meson_sm.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-index b761dda491d54..f97c182677082 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-@@ -154,10 +154,13 @@ static bool dce60_setup_scaling_configuration(
- 	REG_SET(SCL_BYPASS_CONTROL, 0, SCL_BYPASS_MODE, 0);
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -232,11 +232,16 @@ EXPORT_SYMBOL(meson_sm_call_write);
+ struct meson_sm_firmware *meson_sm_get(struct device_node *sm_node)
+ {
+ 	struct platform_device *pdev = of_find_device_by_node(sm_node);
++	struct meson_sm_firmware *fw;
  
- 	if (data->taps.h_taps + data->taps.v_taps <= 2) {
--		/* Set bypass */
--
--		/* DCE6 has no SCL_MODE register, skip scale mode programming */
-+		/* Disable scaler functionality */
-+		REG_WRITE(SCL_SCALER_ENABLE, 0);
+ 	if (!pdev)
+ 		return NULL;
  
-+		/* Clear registers that can cause glitches even when the scaler is off */
-+		REG_WRITE(SCL_TAP_CONTROL, 0);
-+		REG_WRITE(SCL_AUTOMATIC_MODE_CONTROL, 0);
-+		REG_WRITE(SCL_F_SHARP_CONTROL, 0);
- 		return false;
- 	}
- 
-@@ -165,7 +168,7 @@ static bool dce60_setup_scaling_configuration(
- 			SCL_H_NUM_OF_TAPS, data->taps.h_taps - 1,
- 			SCL_V_NUM_OF_TAPS, data->taps.v_taps - 1);
- 
--	/* DCE6 has no SCL_MODE register, skip scale mode programming */
-+	REG_WRITE(SCL_SCALER_ENABLE, 1);
- 
- 	/* DCE6 has no SCL_BOUNDARY_MODE bit, skip replace out of bound pixels */
- 
-@@ -502,6 +505,8 @@ static void dce60_transform_set_scaler(
- 	REG_SET(DC_LB_MEM_SIZE, 0,
- 		DC_LB_MEM_SIZE, xfm_dce->lb_memory_size);
- 
-+	REG_WRITE(SCL_UPDATE, 0x00010000);
+-	return platform_get_drvdata(pdev);
++	fw = platform_get_drvdata(pdev);
 +
- 	/* Clear SCL_F_SHARP_CONTROL value to 0 */
- 	REG_WRITE(SCL_F_SHARP_CONTROL, 0);
- 
-@@ -564,6 +569,8 @@ static void dce60_transform_set_scaler(
- 	/* DCE6 has no SCL_COEF_UPDATE_COMPLETE bit to flip to new coefficient memory */
- 
- 	/* DCE6 DATA_FORMAT register does not support ALPHA_EN */
++	put_device(&pdev->dev);
 +
-+	REG_WRITE(SCL_UPDATE, 0);
++	return fw;
  }
- #endif
+ EXPORT_SYMBOL_GPL(meson_sm_get);
  
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-index ff746fba850bc..eb716e8337e23 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-@@ -155,6 +155,7 @@
- 	SRI(SCL_COEF_RAM_TAP_DATA, SCL, id), \
- 	SRI(VIEWPORT_START, SCL, id), \
- 	SRI(VIEWPORT_SIZE, SCL, id), \
-+	SRI(SCL_SCALER_ENABLE, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_INIT_RGB_LUMA, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_INIT_CHROMA, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_SCALE_RATIO, SCL, id), \
-@@ -592,6 +593,7 @@ struct dce_transform_registers {
- 	uint32_t SCL_VERT_FILTER_SCALE_RATIO;
- 	uint32_t SCL_HORZ_FILTER_INIT;
- #if defined(CONFIG_DRM_AMD_DC_SI)
-+	uint32_t SCL_SCALER_ENABLE;
- 	uint32_t SCL_HORZ_FILTER_INIT_RGB_LUMA;
- 	uint32_t SCL_HORZ_FILTER_INIT_CHROMA;
- #endif
--- 
-2.51.0
-
 
 
 
