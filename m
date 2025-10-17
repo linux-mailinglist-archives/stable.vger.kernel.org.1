@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-186440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B03ABE9844
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 517C0BEA675
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E110741029
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:01:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54E4B5E7252
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9523A32C938;
-	Fri, 17 Oct 2025 15:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5613335071;
+	Fri, 17 Oct 2025 15:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGnkff9a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+6s8VMK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6F63208;
-	Fri, 17 Oct 2025 15:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F002745E;
+	Fri, 17 Oct 2025 15:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713249; cv=none; b=n688XgbtOQ1xhzA/OTMzJqcQaup2End8JClZWtFRBy1A3I6aZUDE8HykVIIlOw0YGSIoto/mVKVZJpsiXcqzwzxSarD0JL1A5TPniVHnJEzMhdNv3TbPFjx2ZXd2OLwOEAaD/5pDNJPkKE+SzQGJUPlv68F6UkNJqEoek8bu/14=
+	t=1760714597; cv=none; b=bM4rAemoNa73OG0MCUKhmIvQ6Hz/7eA6OFd1p4cux6UNatx7DcLvYsMAizI3Do1Sqx/tqyT3Nf5Y2CVqhd5pJgX8SaYhFn3eP624yPMQmCjOd+rNTwamBmehIJkwQH0khE2QZtqGfLJV4Q2oruXjENwTglQLJj4JBTUb92SnX4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713249; c=relaxed/simple;
-	bh=FQL6hD/vBxd/zkvIaSnEHNBUOZw1E4gpBoVqpoy6Aao=;
+	s=arc-20240116; t=1760714597; c=relaxed/simple;
+	bh=bme+BhO+x9d2wELrVtxwzUsZO9mDNOB7TzQIT0tgwic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcqHZHV7OVoN3RNeu6M4JMh0J9L7u+x9vwzKKeUh6/Sq5ORfV+KcNp8UuK18ZcuAtHbQ/q8ZhnRCi5aKPgv5gxGUBu+tEsTLxIAPWzzPAFRxFslGTxUQvHy9yaEaajl7y5GciZ9I76cRZOWppOVPcGFFqixQn8fmHzLsxCtpxO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGnkff9a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E58C4CEE7;
-	Fri, 17 Oct 2025 15:00:48 +0000 (UTC)
+	 MIME-Version; b=qBsbWDAelLNK43ax9HIe6zf6WZNCn8Ok6M3k9VpgfHeL/Kph9IvROZF5UQb3Kt+ZM6y2izKSp89w8bz6vU2yzFsQ7wdmAeAW3B/SrQdwyPtx31wvyqy8SngXuTcD2m68ztUS+WykflR0IcsOiKi7ALBpWiV6KGtZmHgFKbM93J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+6s8VMK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7DFC4CEE7;
+	Fri, 17 Oct 2025 15:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713249;
-	bh=FQL6hD/vBxd/zkvIaSnEHNBUOZw1E4gpBoVqpoy6Aao=;
+	s=korg; t=1760714597;
+	bh=bme+BhO+x9d2wELrVtxwzUsZO9mDNOB7TzQIT0tgwic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGnkff9am4I3Tj+EOPcT88oo2Zy4upo4MBvUEPmcaQDSTdtIyt7Sv8QVd30RV72EX
-	 FhXW+wdkaKxVnCV5uQZWAcH3aG7l1PKAqfWWU9iUW0zwTeoaHyOn2L80bsNabl70HP
-	 FDtDK6nqPAetK5PMkFZKy/iTZFcu/VvNUAVJFZZI=
+	b=W+6s8VMKZ34iTEFKV5ksBtGEcjKO6ZhrpVC6U3jv34RT1DHU4QH7rdBvJFa1D9nyu
+	 i7EX3XbU5d7fRZ2sqnSNhZh78HR/vY687RREjT65Ctqy1nJXRIUN0Mr9+4aZOwz6Qw
+	 Yia/vIbMZqglQwag6eb0MMa1VvijBj3mjMMht4ZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH 6.1 100/168] sparc: fix error handling in scan_one_device()
-Date: Fri, 17 Oct 2025 16:52:59 +0200
-Message-ID: <20251017145132.711741445@linuxfoundation.org>
+	Esben Haabendal <esben@geanix.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.12 173/277] rtc: interface: Fix long-standing race when setting alarm
+Date: Fri, 17 Oct 2025 16:53:00 +0200
+Message-ID: <20251017145153.445500780@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Esben Haabendal <esben@geanix.com>
 
-commit 302c04110f0ce70d25add2496b521132548cd408 upstream.
+commit 795cda8338eab036013314dbc0b04aae728880ab upstream.
 
-Once of_device_register() failed, we should call put_device() to
-decrement reference count for cleanup. Or it could cause memory leak.
-So fix this by calling put_device(), then the name can be freed in
-kobject_cleanup().
+As described in the old comment dating back to
+commit 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
+from 2010, we have been living with a race window when setting alarm
+with an expiry in the near future (i.e. next second).
+With 1 second resolution, it can happen that the second ticks after the
+check for the timer having expired, but before the alarm is actually set.
+When this happen, no alarm IRQ is generated, at least not with some RTC
+chips (isl12022 is an example of this).
 
-Calling path: of_device_register() -> of_device_add() -> device_add().
-As comment of device_add() says, 'if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count'.
+With UIE RTC timer being implemented on top of alarm irq, being re-armed
+every second, UIE will occasionally fail to work, as an alarm irq lost
+due to this race will stop the re-arming loop.
 
-Found by code review.
+For now, I have limited the additional expiry check to only be done for
+alarms set to next seconds. I expect it should be good enough, although I
+don't know if we can now for sure that systems with loads could end up
+causing the same problems for alarms set 2 seconds or even longer in the
+future.
+
+I haven't been able to reproduce the problem with this check in place.
 
 Cc: stable@vger.kernel.org
-Fixes: cf44bbc26cf1 ("[SPARC]: Beginnings of generic of_device framework.")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Esben Haabendal <esben@geanix.com>
+Link: https://lore.kernel.org/r/20250516-rtc-uie-irq-fixes-v2-1-3de8e530a39e@geanix.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/kernel/of_device_32.c |    1 +
- arch/sparc/kernel/of_device_64.c |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/rtc/interface.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/arch/sparc/kernel/of_device_32.c
-+++ b/arch/sparc/kernel/of_device_32.c
-@@ -387,6 +387,7 @@ static struct platform_device * __init s
+--- a/drivers/rtc/interface.c
++++ b/drivers/rtc/interface.c
+@@ -443,6 +443,29 @@ static int __rtc_set_alarm(struct rtc_de
+ 	else
+ 		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
  
- 	if (of_device_register(op)) {
- 		printk("%pOF: Could not register of device.\n", dp);
-+		put_device(&op->dev);
- 		kfree(op);
- 		op = NULL;
- 	}
---- a/arch/sparc/kernel/of_device_64.c
-+++ b/arch/sparc/kernel/of_device_64.c
-@@ -680,6 +680,7 @@ static struct platform_device * __init s
- 
- 	if (of_device_register(op)) {
- 		printk("%pOF: Could not register of device.\n", dp);
-+		put_device(&op->dev);
- 		kfree(op);
- 		op = NULL;
- 	}
++	/*
++	 * Check for potential race described above. If the waiting for next
++	 * second, and the second just ticked since the check above, either
++	 *
++	 * 1) It ticked after the alarm was set, and an alarm irq should be
++	 *    generated.
++	 *
++	 * 2) It ticked before the alarm was set, and alarm irq most likely will
++	 * not be generated.
++	 *
++	 * While we cannot easily check for which of these two scenarios we
++	 * are in, we can return -ETIME to signal that the timer has already
++	 * expired, which is true in both cases.
++	 */
++	if ((scheduled - now) <= 1) {
++		err = __rtc_read_time(rtc, &tm);
++		if (err)
++			return err;
++		now = rtc_tm_to_time64(&tm);
++		if (scheduled <= now)
++			return -ETIME;
++	}
++
+ 	trace_rtc_set_alarm(rtc_tm_to_time64(&alarm->time), err);
+ 	return err;
+ }
 
 
 
