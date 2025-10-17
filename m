@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A52BE9692
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:01:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB83BEA353
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E0781563EAA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBB4E19A2D91
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3049E33711A;
-	Fri, 17 Oct 2025 14:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE4F330B1C;
+	Fri, 17 Oct 2025 15:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGkGbm0A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIihUKi5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D924E3370FB;
-	Fri, 17 Oct 2025 14:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4886E330B0D;
+	Fri, 17 Oct 2025 15:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713119; cv=none; b=hSyRLDu8wZu2eUC1bq9VaQSL8vMsCW5hvEevcAYuVpqPFy25Z1TeN5IG3PiTE6Ul37fmUYeOGaHwAVOrTvBGKsSdyIOovWHPd+k06ZOhtTOLH+j3oMNqt0sfUEIjHhAkG7mEvIY+cv5gpJpQ9zGSwPK+7Hp3kxr+Go8Vl3mzD7c=
+	t=1760716005; cv=none; b=Sx54gfsxVoFipiP5JruS9IAzKbUCQxTkr+oZd/OcFv+7S0WEhlTYPpJoWPTZKyUAvru2RGut85JR4/w0AxiEb8A04/dS4SX0QWCUj5FpQ2L+KIDENbRhdTNEC33fFguls49F7DsxNUs7zh4OGjZjDc82Hn1bmo4yrBxiJzCFK58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713119; c=relaxed/simple;
-	bh=WxfrMWgp7y022tna2FxrONf2j3A5z6XFp3E2gmszvOQ=;
+	s=arc-20240116; t=1760716005; c=relaxed/simple;
+	bh=l0houY8h9YowyC6x7nkJOW15sptWF4IZzujGatGZBeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WfvqrJi5SZuXDLzpThwYcoqtg/KCY5RO6QVlmv1J7hWEOmGtMOxlohCvtF+xD2gFGmDpTxO+bFRxpx0ahQ3R73Yy4dqEfXH6mvd2heaao86vfJ1kBJV4G8ysR3ayURI0/s8BsKG4KMuyZLfoA7YW/m0m15c1iS1IZnC3u0BdPw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGkGbm0A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BC4C4CEE7;
-	Fri, 17 Oct 2025 14:58:39 +0000 (UTC)
+	 MIME-Version; b=i31xHrUgIzTF7Eni9siBW+ZVVEljndh0CjUNfUPodZQkQcNOCMqbofHIUxOHNhS3x42EEZzGzikXGNcqZS84XcDiae4ryIpZg4/BNT+OsTSs7TKSDhpYjXi8A9EfTu+DXbOrWq54p1jYfN1+Aa0NVjikLC7qD2HYzkCwKmCKKWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIihUKi5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72D4C116B1;
+	Fri, 17 Oct 2025 15:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713119;
-	bh=WxfrMWgp7y022tna2FxrONf2j3A5z6XFp3E2gmszvOQ=;
+	s=korg; t=1760716005;
+	bh=l0houY8h9YowyC6x7nkJOW15sptWF4IZzujGatGZBeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wGkGbm0AAtIKmpqe+WnM4veuOMWVic9Sbzcfw86hc1ziKjsBcI0XrpSnPQ1MDDRiO
-	 JRf+5bKpiRseB5x3nZqX916XB4u+QJRQ2lJZSKxozTp1tRTBFUqTPUsvt1HjaSPdu7
-	 KFbBcTaCXuibuFvm4FpVld1v4KQxcmL1Tm4DXj1o=
+	b=vIihUKi5DMmynKs7d+PjcDLMmvj/jykkMzK+9xcYR/XOvlVHCGBbiJoIG2MIykIYv
+	 OpN9PVROUIS8JLKKGdHSyIm0elO8mU25c8hB5TeZQkHkQ37EFJGeDRqhILrZkTJjNA
+	 2WpOO0nhgjvR3sT1pLxnFRkYlqANnMiU+xgrj9mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Shuah Khan <shuah.kh@samsung.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/168] clk: nxp: Fix pll0 rate check condition in LPC18xx CGU driver
+Subject: [PATCH 5.15 007/276] media: tunner: xc5000: Refactor firmware load
 Date: Fri, 17 Oct 2025 16:51:40 +0200
-Message-ID: <20251017145129.800181773@linuxfoundation.org>
+Message-ID: <20251017145142.659320827@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 1624dead9a4d288a594fdf19735ebfe4bb567cb8 ]
+[ Upstream commit 8e1f5da59dd4a1966f859639860b803a7e8b8bfb ]
 
-The conditional check for the PLL0 multiplier 'm' used a logical AND
-instead of OR, making the range check ineffective. This patch replaces
-&& with || to correctly reject invalid values of 'm' that are either
-less than or equal to 0 or greater than LPC18XX_PLL0_MSEL_MAX.
+Make sure the firmware is released when we leave
+xc_load_fw_and_init_tuner()
 
-This ensures proper bounds checking during clk rate setting and rounding.
+This change makes smatch happy:
+drivers/media/tuners/xc5000.c:1213 xc_load_fw_and_init_tuner() warn: 'fw' from request_firmware() not released on lines: 1213.
 
-Fixes: b04e0b8fd544 ("clk: add lpc18xx cgu clk driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-[sboyd@kernel.org: 'm' is unsigned so remove < condition]
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Cc: Shuah Khan <shuah.kh@samsung.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: 40b7a19f321e ("media: tuner: xc5000: Fix use-after-free in xc5000_release")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/nxp/clk-lpc18xx-cgu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/tuners/xc5000.c |   41 ++++++++++++++++++-----------------------
+ 1 file changed, 18 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/clk/nxp/clk-lpc18xx-cgu.c b/drivers/clk/nxp/clk-lpc18xx-cgu.c
-index 821155f79b015..bbd7d64038fab 100644
---- a/drivers/clk/nxp/clk-lpc18xx-cgu.c
-+++ b/drivers/clk/nxp/clk-lpc18xx-cgu.c
-@@ -382,7 +382,7 @@ static int lpc18xx_pll0_determine_rate(struct clk_hw *hw,
+--- a/drivers/media/tuners/xc5000.c
++++ b/drivers/media/tuners/xc5000.c
+@@ -58,7 +58,7 @@ struct xc5000_priv {
+ 	struct dvb_frontend *fe;
+ 	struct delayed_work timer_sleep;
+ 
+-	const struct firmware   *firmware;
++	bool inited;
+ };
+ 
+ /* Misc Defines */
+@@ -1110,23 +1110,19 @@ static int xc_load_fw_and_init_tuner(str
+ 	if (!force && xc5000_is_firmware_loaded(fe) == 0)
+ 		return 0;
+ 
+-	if (!priv->firmware) {
+-		ret = request_firmware(&fw, desired_fw->name,
+-					priv->i2c_props.adap->dev.parent);
+-		if (ret) {
+-			pr_err("xc5000: Upload failed. rc %d\n", ret);
+-			return ret;
+-		}
+-		dprintk(1, "firmware read %zu bytes.\n", fw->size);
+-
+-		if (fw->size != desired_fw->size) {
+-			pr_err("xc5000: Firmware file with incorrect size\n");
+-			release_firmware(fw);
+-			return -EINVAL;
+-		}
+-		priv->firmware = fw;
+-	} else
+-		fw = priv->firmware;
++	ret = request_firmware(&fw, desired_fw->name,
++			       priv->i2c_props.adap->dev.parent);
++	if (ret) {
++		pr_err("xc5000: Upload failed. rc %d\n", ret);
++		return ret;
++	}
++	dprintk(1, "firmware read %zu bytes.\n", fw->size);
++
++	if (fw->size != desired_fw->size) {
++		pr_err("xc5000: Firmware file with incorrect size\n");
++		release_firmware(fw);
++		return -EINVAL;
++	}
+ 
+ 	/* Try up to 5 times to load firmware */
+ 	for (i = 0; i < 5; i++) {
+@@ -1204,6 +1200,7 @@ static int xc_load_fw_and_init_tuner(str
  	}
  
- 	m = DIV_ROUND_UP_ULL(req->best_parent_rate, req->rate * 2);
--	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
-+	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
- 		pr_warn("%s: unable to support rate %lu\n", __func__, req->rate);
- 		return -EINVAL;
- 	}
-@@ -405,7 +405,7 @@ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
+ err:
++	release_firmware(fw);
+ 	if (!ret)
+ 		printk(KERN_INFO "xc5000: Firmware %s loaded and running.\n",
+ 		       desired_fw->name);
+@@ -1274,7 +1271,7 @@ static int xc5000_resume(struct dvb_fron
+ 
+ 	/* suspended before firmware is loaded.
+ 	   Avoid firmware load in resume path. */
+-	if (!priv->firmware)
++	if (!priv->inited)
+ 		return 0;
+ 
+ 	return xc5000_set_params(fe);
+@@ -1293,6 +1290,8 @@ static int xc5000_init(struct dvb_fronte
+ 	if (debug)
+ 		xc_debug_dump(priv);
+ 
++	priv->inited = true;
++
+ 	return 0;
+ }
+ 
+@@ -1306,10 +1305,6 @@ static void xc5000_release(struct dvb_fr
+ 
+ 	if (priv) {
+ 		cancel_delayed_work(&priv->timer_sleep);
+-		if (priv->firmware) {
+-			release_firmware(priv->firmware);
+-			priv->firmware = NULL;
+-		}
+ 		hybrid_tuner_release_state(priv);
  	}
  
- 	m = DIV_ROUND_UP_ULL(parent_rate, rate * 2);
--	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
-+	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
- 		pr_warn("%s: unable to support rate %lu\n", __func__, rate);
- 		return -EINVAL;
- 	}
--- 
-2.51.0
-
 
 
 
