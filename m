@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA24BEA5D8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:59:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A0ABE9814
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 168595A2392
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BD1C626DDA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E80E330B0D;
-	Fri, 17 Oct 2025 15:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A93433290A;
+	Fri, 17 Oct 2025 15:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mx9vh94Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tt+xgfub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0BB330B04;
-	Fri, 17 Oct 2025 15:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA83C332904;
+	Fri, 17 Oct 2025 15:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716161; cv=none; b=nhgWnVZ4oFI+QVf/Sf19zAWFa9VHxwb77RpPJkASXXGhnpUK+My+UoqVFN8AMoQf56hmQwmsR6CpDGFLNJliuueG1Sm7zzqhvnRR1VVqRVbvun5Lkksub1E/GRQ8q5bSZ1Z2n6mCfLmfvaTXUp2YVCdGGYQhesRqpfBJgiFFUrU=
+	t=1760713274; cv=none; b=WSrvTpA51vgS5H8Wky+Odmph4U8YFJTifCEyzMQuxSPRNaN2tAILD5LVVYvSrOdck74GXmrImSMeB+MJLD2SmL/BD6smz68yUwoy/VD/fYSbrrisXdxJugo1yRkwR1yI3Q730w5v+KzLUWf5dP0ljyC2naRLWFWF3V7FnpYbbQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716161; c=relaxed/simple;
-	bh=ocl87OdQWxOeh1U5aRDMdKjHhBdb6xvfE9eCKOmJ+O8=;
+	s=arc-20240116; t=1760713274; c=relaxed/simple;
+	bh=Z1W+eQ/Q39FQsRJiLEY6aAfxfScIP65n4J5HreO2bAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+joBvUk2ooCX5nFj5ReKdbzAJ21ua1755XJmy3AqnPOrI7j4ErK0kpMkOKDXifpOITEWkG/hDvnbjaV//ezQNcT1XZqSZnvh21tMjZPtt1N6y8aYfLc+gf4btZqXY6E/gl+e6IxjvnAJuhCST4EvlIYGjm8+bnaVK4rMvvR4hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mx9vh94Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98553C4CEE7;
-	Fri, 17 Oct 2025 15:49:20 +0000 (UTC)
+	 MIME-Version; b=rxWc+xr72ekssYCdVmLGgAQrOR+v5Q3Dm69tjQedbBLJiUluap4ig1RutqbFaXiqxevCmFQnKKvwJZgVejC7D5ZEgqSX8qrEsDy2s0AqPXudBYCjlLAvt+5hauXQHO2VpC9xRHhNlbrWWakjfBdxXQ9pQbYRtn5HLGg+juUgBy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tt+xgfub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30658C4CEE7;
+	Fri, 17 Oct 2025 15:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716161;
-	bh=ocl87OdQWxOeh1U5aRDMdKjHhBdb6xvfE9eCKOmJ+O8=;
+	s=korg; t=1760713274;
+	bh=Z1W+eQ/Q39FQsRJiLEY6aAfxfScIP65n4J5HreO2bAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mx9vh94Y41VPHuXOVuDjJT0BfTAnxsXsaWOu0Z6WONVyYgzyvm/3zlK3489zNZejr
-	 /acoAMZx+zKIahmullciLaqtejdtBkFHkI5k/Io+p1kGIeRv5xclU6pesuUDWimJ0A
-	 k15/66MZ/mXnmdF78dgVKSFi24t7X2VIoJaEgYjM=
+	b=Tt+xgfub0K+rZbKmObE5Nw5n4x98Ss7Rtnj50NLCSGZxoMF1Q2JwkbZrLNg2RW8xy
+	 dzQIUm0KUOEwghapU3eeR8AcJIoP2V+W94p9Y5fjvNwueO5GyXSUFJlMSnqJ4U0UBY
+	 I5/QtbQjUH6VQW1QSkkFo3aXnriVaSpstpp2hasQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Anastasov <ja@ssi.bg>,
-	Slavin Liu <slavin452@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/276] ipvs: Defer ip_vs_ftp unregister during netns cleanup
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.1 108/168] PCI: tegra: Convert struct tegra_msi mask_lock into raw spinlock
 Date: Fri, 17 Oct 2025 16:53:07 +0200
-Message-ID: <20251017145145.918245218@linuxfoundation.org>
+Message-ID: <20251017145133.004222139@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slavin Liu <slavin452@gmail.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 134121bfd99a06d44ef5ba15a9beb075297c0821 ]
+commit 26fda92d3b56bf44a02bcb4001c5a5548e0ae8ee upstream.
 
-On the netns cleanup path, __ip_vs_ftp_exit() may unregister ip_vs_ftp
-before connections with valid cp->app pointers are flushed, leading to a
-use-after-free.
+The tegra_msi_irq_unmask() function may be called from a PCI driver
+request_threaded_irq() function. This triggers kernel/irq/manage.c
+__setup_irq() which locks raw spinlock &desc->lock descriptor lock
+and with that descriptor lock held, calls tegra_msi_irq_unmask().
 
-Fix this by introducing a global `exiting_module` flag, set to true in
-ip_vs_ftp_exit() before unregistering the pernet subsystem. In
-__ip_vs_ftp_exit(), skip ip_vs_ftp unregister if called during netns
-cleanup (when exiting_module is false) and defer it to
-__ip_vs_cleanup_batch(), which unregisters all apps after all connections
-are flushed. If called during module exit, unregister ip_vs_ftp
-immediately.
+Since the &desc->lock descriptor lock is a raw spinlock, and the tegra_msi
+.mask_lock is not a raw spinlock, this setup triggers 'BUG: Invalid wait
+context' with CONFIG_PROVE_RAW_LOCK_NESTING=y.
 
-Fixes: 61b1ab4583e2 ("IPVS: netns, add basic init per netns.")
-Suggested-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Slavin Liu <slavin452@gmail.com>
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use scoped_guard() to simplify the locking.
+
+Fixes: 2c99e55f7955 ("PCI: tegra: Convert to MSI domains")
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Closes: https://patchwork.kernel.org/project/linux-pci/patch/20250909162707.13927-2-marek.vasut+renesas@mailbox.org/#26574451
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250922150811.88450-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_ftp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/controller/pci-tegra.c |   27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
-index ef1f45e43b630..61d3797fb7995 100644
---- a/net/netfilter/ipvs/ip_vs_ftp.c
-+++ b/net/netfilter/ipvs/ip_vs_ftp.c
-@@ -53,6 +53,7 @@ enum {
- 	IP_VS_FTP_EPSV,
- };
- 
-+static bool exiting_module;
- /*
-  * List of ports (up to IP_VS_APP_MAX_PORTS) to be handled by helper
-  * First port is set to the default port.
-@@ -605,7 +606,7 @@ static void __ip_vs_ftp_exit(struct net *net)
- {
- 	struct netns_ipvs *ipvs = net_ipvs(net);
- 
--	if (!ipvs)
-+	if (!ipvs || !exiting_module)
- 		return;
- 
- 	unregister_ip_vs_app(ipvs, &ip_vs_ftp);
-@@ -627,6 +628,7 @@ static int __init ip_vs_ftp_init(void)
+--- a/drivers/pci/controller/pci-tegra.c
++++ b/drivers/pci/controller/pci-tegra.c
+@@ -14,6 +14,7 @@
   */
- static void __exit ip_vs_ftp_exit(void)
- {
-+	exiting_module = true;
- 	unregister_pernet_subsys(&ip_vs_ftp_ops);
- 	/* rcu_barrier() is called by netns */
+ 
+ #include <linux/clk.h>
++#include <linux/cleanup.h>
+ #include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/export.h>
+@@ -269,7 +270,7 @@ struct tegra_msi {
+ 	DECLARE_BITMAP(used, INT_PCI_MSI_NR);
+ 	struct irq_domain *domain;
+ 	struct mutex map_lock;
+-	spinlock_t mask_lock;
++	raw_spinlock_t mask_lock;
+ 	void *virt;
+ 	dma_addr_t phys;
+ 	int irq;
+@@ -1607,14 +1608,13 @@ static void tegra_msi_irq_mask(struct ir
+ 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
+ 	struct tegra_pcie *pcie = msi_to_pcie(msi);
+ 	unsigned int index = d->hwirq / 32;
+-	unsigned long flags;
+ 	u32 value;
+ 
+-	spin_lock_irqsave(&msi->mask_lock, flags);
+-	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
+-	value &= ~BIT(d->hwirq % 32);
+-	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
+-	spin_unlock_irqrestore(&msi->mask_lock, flags);
++	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
++		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
++		value &= ~BIT(d->hwirq % 32);
++		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
++	}
  }
--- 
-2.51.0
-
+ 
+ static void tegra_msi_irq_unmask(struct irq_data *d)
+@@ -1622,14 +1622,13 @@ static void tegra_msi_irq_unmask(struct
+ 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
+ 	struct tegra_pcie *pcie = msi_to_pcie(msi);
+ 	unsigned int index = d->hwirq / 32;
+-	unsigned long flags;
+ 	u32 value;
+ 
+-	spin_lock_irqsave(&msi->mask_lock, flags);
+-	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
+-	value |= BIT(d->hwirq % 32);
+-	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
+-	spin_unlock_irqrestore(&msi->mask_lock, flags);
++	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
++		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
++		value |= BIT(d->hwirq % 32);
++		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
++	}
+ }
+ 
+ static int tegra_msi_set_affinity(struct irq_data *d, const struct cpumask *mask, bool force)
+@@ -1745,7 +1744,7 @@ static int tegra_pcie_msi_setup(struct t
+ 	int err;
+ 
+ 	mutex_init(&msi->map_lock);
+-	spin_lock_init(&msi->mask_lock);
++	raw_spin_lock_init(&msi->mask_lock);
+ 
+ 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+ 		err = tegra_allocate_domains(msi);
 
 
 
