@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-187222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03229BEA359
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDCB6BE994E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4FB674255F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19E6A18856BA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA5536CDEC;
-	Fri, 17 Oct 2025 15:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1493335096;
+	Fri, 17 Oct 2025 15:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKZElXbB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0a782w0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959D936999C;
-	Fri, 17 Oct 2025 15:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9803328FA;
+	Fri, 17 Oct 2025 15:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715461; cv=none; b=GPNW4dYyKZN/1UmzqelamC6oneCpSTzGQEJe/p1jrefBoMvx3UaxNB2SUnGjKVQvYas2sziN/H299geJ1mGtu6iov5LITF/bqJBJZIlY/WrWmpp+91cQFcj6XCZ8OXT+Hp6Jko/KjaW6FyKxkQfX//Jw+MN9HsS4RCS8OILawIY=
+	t=1760713840; cv=none; b=MluDyH/z7/NWFN8sUn68XO7/gV5VaS6+c77H3XDwo7Iub+ZPzBfDqO4OUFAkGsDTl2fzjW/hTt0lRW0BQxvQxfc+Z+FIx7olcGop9nqH2XsRwbTXYHF+GW1WHJqE9PTZZx16AQT/av/xLRlDArUhhU5HY/4E3M4aUtiHBxGYuWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715461; c=relaxed/simple;
-	bh=wUhO5znvV8efi9sWuPtfegINoGQQKyMIrsz61NEUIQo=;
+	s=arc-20240116; t=1760713840; c=relaxed/simple;
+	bh=s4vUtHLfPiS3rucQZNeP8UDDNqHMYGRMPvApL5ESWw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTYHaDuWxH1CuWf6owxGg+sZX5wlFC/x/z8mQLTr8nMiyU1HVS0B14YLm3LRV+uOgCFslpR1O+dFByS4B8SzPbmREil3/UKrjqvtrL0Fllnhvkxh5vk4J2YyjXepH/PX4nYPJrRNiltuEy6hJhfKjHxKkEx76CIgbolYTau3XMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKZElXbB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B192C4CEFE;
-	Fri, 17 Oct 2025 15:37:40 +0000 (UTC)
+	 MIME-Version; b=LI9ZqSjgZcL3N9J3oM4PhnQ1WozwZtfJTcBboLI9sj+q9Xb4UynO+TIH4KXo35VUI3vY4CmPR2ENcXMtouTn59xPI7doR8PnNyAbrhzfvICKjYLew/fiRw5KI+nA0JEFhDrTckjU1HT+JqBoDM5VtjaKNJnJDm2ftR+o9N2QtL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w0a782w0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E35C4CEFE;
+	Fri, 17 Oct 2025 15:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715461;
-	bh=wUhO5znvV8efi9sWuPtfegINoGQQKyMIrsz61NEUIQo=;
+	s=korg; t=1760713840;
+	bh=s4vUtHLfPiS3rucQZNeP8UDDNqHMYGRMPvApL5ESWw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKZElXbBBLtIq9G23Uk8L9aOHf2Vo2T07/xJWSCYOH0N/QgedQycFvJZlHCQMBc9G
-	 rUITRv7cV/v67e9MIxJcazibDw51rjbuDGlJcsN2SQUObYgwJQnXkehQLS+vxUt9Sr
-	 5ShKaVH83DI+6KkVq49Ic9/XH5Yfu8MWkw4GEcHA=
+	b=w0a782w0kUDZfTwj2e6HRkyMNi/m3vCkZ5LkMOMO9kxDQ+UbcjjemzPMEEy4WATux
+	 xhuxyilw1kXSYYQXyR9+0BqiKypTYTbDlNaiJJPCoqaqt4N6xpRaZeb638q9e3g4xc
+	 1cI1t4O7xRb630vGZekWF4kIGn/WfwtNqwFIy+zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	"OGriofa, Conall" <conall.ogriofa@amd.com>,
-	"Erim, Salih" <Salih.Erim@amd.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 224/371] iio: xilinx-ams: Unmask interrupts after updating alarms
+	Dan Snyder <dansnyder@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 138/201] x86/umip: Check that the instruction opcode is at least two bytes
 Date: Fri, 17 Oct 2025 16:53:19 +0200
-Message-ID: <20251017145210.190910202@linuxfoundation.org>
+Message-ID: <20251017145139.805977895@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Sean Christopherson <seanjc@google.com>
 
-commit feb500c7ae7a198db4d2757901bce562feeefa5e upstream.
+commit 32278c677947ae2f042c9535674a7fff9a245dd3 upstream.
 
-To convert level-triggered alarms into edge-triggered IIO events, alarms
-are masked when they are triggered. To ensure we catch subsequent
-alarms, we then periodically poll to see if the alarm is still active.
-If it isn't, we unmask it. Active but masked alarms are stored in
-current_masked_alarm.
+When checking for a potential UMIP violation on #GP, verify the decoder found
+at least two opcode bytes to avoid false positives when the kernel encounters
+an unknown instruction that starts with 0f.  Because the array of opcode.bytes
+is zero-initialized by insn_init(), peeking at bytes[1] will misinterpret
+garbage as a potential SLDT or STR instruction, and can incorrectly trigger
+emulation.
 
-If an active alarm is disabled, it will remain set in
-current_masked_alarm until ams_unmask_worker clears it. If the alarm is
-re-enabled before ams_unmask_worker runs, then it will never be cleared
-from current_masked_alarm. This will prevent the alarm event from being
-pushed even if the alarm is still active.
+E.g. if a VPALIGNR instruction
 
-Fix this by recalculating current_masked_alarm immediately when enabling
-or disabling alarms.
+   62 83 c5 05 0f 08 ff     vpalignr xmm17{k5},xmm23,XMMWORD PTR [r8],0xff
 
-Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: O'Griofa, Conall <conall.ogriofa@amd.com>
-Tested-by: Erim, Salih <Salih.Erim@amd.com>
-Acked-by: Erim, Salih <Salih.Erim@amd.com>
-Link: https://patch.msgid.link/20250715002847.2035228-1-sean.anderson@linux.dev
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+hits a #GP, the kernel emulates it as STR and squashes the #GP (and corrupts
+the userspace code stream).
+
+Arguably the check should look for exactly two bytes, but no three byte
+opcodes use '0f 00 xx' or '0f 01 xx' as an escape, i.e. it should be
+impossible to get a false positive if the first two opcode bytes match '0f 00'
+or '0f 01'.  Go with a more conservative check with respect to the existing
+code to minimize the chances of breaking userspace, e.g. due to decoder
+weirdness.
+
+Analyzed by Nick Bray <ncbray@google.com>.
+
+Fixes: 1e5db223696a ("x86/umip: Add emulation code for UMIP instructions")
+Reported-by: Dan Snyder <dansnyder@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/xilinx-ams.c |   45 +++++++++++++++++++++++--------------------
- 1 file changed, 25 insertions(+), 20 deletions(-)
+ arch/x86/kernel/umip.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/xilinx-ams.c
-+++ b/drivers/iio/adc/xilinx-ams.c
-@@ -389,6 +389,29 @@ static void ams_update_pl_alarm(struct a
- 	ams_pl_update_reg(ams, AMS_REG_CONFIG3, AMS_REGCFG3_ALARM_MASK, cfg);
- }
+--- a/arch/x86/kernel/umip.c
++++ b/arch/x86/kernel/umip.c
+@@ -156,8 +156,8 @@ static int identify_insn(struct insn *in
+ 	if (!insn->modrm.nbytes)
+ 		return -EINVAL;
  
-+static void ams_unmask(struct ams *ams)
-+{
-+	unsigned int status, unmask;
-+
-+	status = readl(ams->base + AMS_ISR_0);
-+
-+	/* Clear those bits which are not active anymore */
-+	unmask = (ams->current_masked_alarm ^ status) & ams->current_masked_alarm;
-+
-+	/* Clear status of disabled alarm */
-+	unmask |= ams->intr_mask;
-+
-+	ams->current_masked_alarm &= status;
-+
-+	/* Also clear those which are masked out anyway */
-+	ams->current_masked_alarm &= ~ams->intr_mask;
-+
-+	/* Clear the interrupts before we unmask them */
-+	writel(unmask, ams->base + AMS_ISR_0);
-+
-+	ams_update_intrmask(ams, ~AMS_ALARM_MASK, ~AMS_ALARM_MASK);
-+}
-+
- static void ams_update_alarm(struct ams *ams, unsigned long alarm_mask)
- {
- 	unsigned long flags;
-@@ -401,6 +424,7 @@ static void ams_update_alarm(struct ams
+-	/* All the instructions of interest start with 0x0f. */
+-	if (insn->opcode.bytes[0] != 0xf)
++	/* The instructions of interest have 2-byte opcodes: 0F 00 or 0F 01. */
++	if (insn->opcode.nbytes < 2 || insn->opcode.bytes[0] != 0xf)
+ 		return -EINVAL;
  
- 	spin_lock_irqsave(&ams->intr_lock, flags);
- 	ams_update_intrmask(ams, AMS_ISR0_ALARM_MASK, ~alarm_mask);
-+	ams_unmask(ams);
- 	spin_unlock_irqrestore(&ams->intr_lock, flags);
- }
- 
-@@ -1035,28 +1059,9 @@ static void ams_handle_events(struct iio
- static void ams_unmask_worker(struct work_struct *work)
- {
- 	struct ams *ams = container_of(work, struct ams, ams_unmask_work.work);
--	unsigned int status, unmask;
- 
- 	spin_lock_irq(&ams->intr_lock);
--
--	status = readl(ams->base + AMS_ISR_0);
--
--	/* Clear those bits which are not active anymore */
--	unmask = (ams->current_masked_alarm ^ status) & ams->current_masked_alarm;
--
--	/* Clear status of disabled alarm */
--	unmask |= ams->intr_mask;
--
--	ams->current_masked_alarm &= status;
--
--	/* Also clear those which are masked out anyway */
--	ams->current_masked_alarm &= ~ams->intr_mask;
--
--	/* Clear the interrupts before we unmask them */
--	writel(unmask, ams->base + AMS_ISR_0);
--
--	ams_update_intrmask(ams, ~AMS_ALARM_MASK, ~AMS_ALARM_MASK);
--
-+	ams_unmask(ams);
- 	spin_unlock_irq(&ams->intr_lock);
- 
- 	/* If still pending some alarm re-trigger the timer */
+ 	if (insn->opcode.bytes[1] == 0x1) {
 
 
 
