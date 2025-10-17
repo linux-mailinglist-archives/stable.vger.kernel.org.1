@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-187164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B324BEA38C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B38BDBE9677
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:01:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B496D7C1611
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:36:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE6F3622B4D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D420330B04;
-	Fri, 17 Oct 2025 15:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8A9337114;
+	Fri, 17 Oct 2025 14:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsxBWz6G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/+coq3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFEB330B01;
-	Fri, 17 Oct 2025 15:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787513370F7;
+	Fri, 17 Oct 2025 14:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715296; cv=none; b=HEjuZmoL2J9Azw7V2EM0g/kmmtum1Euq8O/rcaALbeyV1UcoS4PgZEExVvzUQ/xMUhsuVc4JhP+pbYvKvmRc7XL9Fq9BdeVKQM0oe4ldmeC258mV1i7J74fZU1nXd53nczgfoWoAaCCvLZsS3SZA6o+U1ZGwJJeIcQzFGTNLfn4=
+	t=1760713046; cv=none; b=i73qJMVBoq902nSFIKpPEf4F7Iy8Q8l5DxZBMtsL/v5rN2FFmmFdyx7sWMnPOrzAz1nNNVNKqAH2BXJ49b4yUmrzKqQNFTwTL0vfrNXo4K0hLcT/RJYiOdF79E5dFTevLiMrw1SJoGKKniGpaC7w12J6Wt3R8epAyZ84lzCj52A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715296; c=relaxed/simple;
-	bh=qs8zg/W9vzyXD/9NlogoMDBMO3q1GLYL8AqyJP27Oao=;
+	s=arc-20240116; t=1760713046; c=relaxed/simple;
+	bh=q7F0duG3v4YT514+G0ChC2ZLhUz4aGuIPwZ9TjlGQTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JufEK2lNm4u0zsB9un4fU5SICj37R0gwcRURPZgZoktrs1Yc4XwPXAzrnSgHc27Or8wP2/bPJX1gX0er+ckQlNmOywVGZtBt6HhxRth/bD58dihFjjCLcYuGxdzwliq2nPc89h0aWcqpEiWg2kfK9NGZ+/SG+17mru2Z/zUtPt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsxBWz6G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A6EC4CEE7;
-	Fri, 17 Oct 2025 15:34:55 +0000 (UTC)
+	 MIME-Version; b=oVWkEuym3hhLcW29Dy3s/CEO4Fx+MPu1S7d9NmFiP0DqlhaZrdwnDuwdXbVJ7yOCa2pu34l2p+LfQc6tJMbqNunsPHjn+ufu0ckKvWdMrz8Ax2Z5HwGPL8/at21rQ7kpYEfvMQKYCKYTpiQJPQatzuDOyGF7S4c+aNc2IR4ImHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/+coq3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4E7C4CEE7;
+	Fri, 17 Oct 2025 14:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715295;
-	bh=qs8zg/W9vzyXD/9NlogoMDBMO3q1GLYL8AqyJP27Oao=;
+	s=korg; t=1760713046;
+	bh=q7F0duG3v4YT514+G0ChC2ZLhUz4aGuIPwZ9TjlGQTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QsxBWz6GcgMPC4N9eB2zlbuCSO6b2yDY4fxKkxvXd1g5ONLtN3L7YRSLwaRkLxr00
-	 vet4S30tIZ/jnYvI3FoWaEVl+zdOYV4Qtknm+1HIf/2cjvN4/KSLwuADNX4OHNFZe7
-	 IRwlqQRH76rDAHjPZYyUBrtbRO1HQNRvaLThkaAc=
+	b=x/+coq3EKhABCPhD7OGDZJkbGFRM+I5MrIJfuSRqceMctqg4ZiXGe/NTBlSVDtW24
+	 exm1tjdE4b+lR78HRefhjk/3hmwbuaAgfXP50ZoqJZVtCK09U4bQxeKP2q+9dfe/Py
+	 dAZ8YQKZQag9Q8Stt5+Tbtm5QQ3odee3RhFy4p/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Alexey Gladkov <legion@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 133/371] kbuild: Add .rel.* strip pattern for vmlinux
+Subject: [PATCH 6.1 029/168] LoongArch: Init acpi_gbl_use_global_lock to false
 Date: Fri, 17 Oct 2025 16:51:48 +0200
-Message-ID: <20251017145206.741614158@linuxfoundation.org>
+Message-ID: <20251017145130.092318799@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 8ec3af916fe3954381cf3555ea03dc5adf4d0e8e ]
+[ Upstream commit 98662be7ef20d2b88b598f72e7ce9b6ac26a40f9 ]
 
-Prior to binutils commit c12d9fa2afe ("Support objcopy
---remove-section=.relaFOO") [1] in 2.32, stripping relocation sections
-required the trailing period (i.e., '.rel.*') to work properly.
+Init acpi_gbl_use_global_lock to false, in order to void error messages
+during boot phase:
 
-After commit 3e86e4d74c04 ("kbuild: keep .modinfo section in
-vmlinux.unstripped"), there is an error with binutils 2.31.1 or earlier
-because these sections are not properly removed:
+ ACPI Error: Could not enable GlobalLock event (20240827/evxfevnt-182)
+ ACPI Error: No response from Global Lock hardware, disabling lock (20240827/evglock-59)
 
-  s390-linux-objcopy: st6tO8Ev: symbol `.modinfo' required but not present
-  s390-linux-objcopy:st6tO8Ev: no symbols
-
-Add the old pattern to resolve this issue (along with a comment to allow
-cleaning this when binutils 2.32 or newer is the minimum supported
-version). While the aforementioned kbuild change exposes this, the
-pattern was originally changed by commit 71d815bf5dfd ("kbuild: Strip
-runtime const RELA sections correctly"), where it would still be
-incorrect with binutils older than 2.32.
-
-Fixes: 71d815bf5dfd ("kbuild: Strip runtime const RELA sections correctly")
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=c12d9fa2afe7abcbe407a00e15719e1a1350c2a7 [1]
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/CA+G9fYvVktRhFtZXdNgVOL8j+ArsJDpvMLgCitaQvQmCx=hwOQ@mail.gmail.com/
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Alexey Gladkov <legion@kernel.org>
-Acked-by: Nicolas Schier <nsc@kernel.org>
-Link: https://patch.msgid.link/20251008-kbuild-fix-modinfo-regressions-v1-2-9fc776c5887c@kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: 628c3bb40e9a8cefc0a6 ("LoongArch: Add boot and setup routines")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.vmlinux | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/loongarch/kernel/setup.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-index 7c6f0e882eabb..ffc7b49e54f70 100644
---- a/scripts/Makefile.vmlinux
-+++ b/scripts/Makefile.vmlinux
-@@ -88,6 +88,9 @@ endif
+diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+index 55efe2f5fa1c3..e2d294aebab2a 100644
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -254,6 +254,7 @@ void __init platform_init(void)
  
- remove-section-y                                   := .modinfo
- remove-section-$(CONFIG_ARCH_VMLINUX_NEEDS_RELOCS) += '.rel*' '!.rel*.dyn'
-+# for compatibility with binutils < 2.32
-+# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=c12d9fa2afe7abcbe407a00e15719e1a1350c2a7
-+remove-section-$(CONFIG_ARCH_VMLINUX_NEEDS_RELOCS) += '.rel.*'
- 
- # To avoid warnings: "empty loadable segment detected at ..." from GNU objcopy,
- # it is necessary to remove the PT_LOAD flag from the segment.
+ #ifdef CONFIG_ACPI
+ 	acpi_table_upgrade();
++	acpi_gbl_use_global_lock = false;
+ 	acpi_gbl_use_default_register_widths = false;
+ 	acpi_boot_table_init();
+ #endif
 -- 
 2.51.0
 
