@@ -1,124 +1,90 @@
-Return-Path: <stable+bounces-186339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6CEBE936B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:33:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAFFBE93D1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D66D33B5AD6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:32:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C3811892B64
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439442F692B;
-	Fri, 17 Oct 2025 14:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9153A32E126;
+	Fri, 17 Oct 2025 14:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPRdC0x7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JiGg8dHX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFB8339700
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 14:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EC4257859;
+	Fri, 17 Oct 2025 14:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760711566; cv=none; b=Uf9JoujexCwQFUw1y+1SGwWjWKyang/MTjBG11FsLhneweXHXq+gdiX3FM3iIEPdFQAMrr5C2ncksUEDm1htm/KeARxvZ3FrLZazXRW7Uf+WDeCcvhjK/400TtPX8t90OctvpLdYab68Ye18WkRGtJRyrlJrj9XTTWvfBRCGiQQ=
+	t=1760712021; cv=none; b=nbdelveXWy5jL9IrbTHAlkEclHHTcOWLWqQyx0nqwdFSpqiIkE9vzxAGhE75ncfWsievLkXobID335tZM533UGa76w2sF/PAXWMVfwNCdTUV+hPp/QY3XO8jqCbkXDDM6sHfHtnY1pG2QTog8uwCodqtPrkijERSAFePQJLjaaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760711566; c=relaxed/simple;
-	bh=R/9Ydn6UjM/N6CcQWTK1H6Z6TdHJOk6HoGf8w+5o2PA=;
+	s=arc-20240116; t=1760712021; c=relaxed/simple;
+	bh=llHOMmbr8Mkpz1dy2JXYRv+KnMnM3J1NGe0mSe7nu3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZ2LPyL5XK5jj+f6YmxqUYU24uxaRoTkPErrq7gPuhLuvKRcZ2Z2MUHPAfytVnZvqSpBSmy6hPsbky+7+iOMAypdupplXfOYHdtFMSAdh21AGT5loaQvq/73yah+jr306WE73tAZuGlQsZUhjLNDfjbs+o4hHWLubUpsi3I2lLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPRdC0x7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F19C4CEF9;
-	Fri, 17 Oct 2025 14:32:44 +0000 (UTC)
+	 MIME-Version; b=u9A6DmDgS9f8GwiJlpzdg2vg1CC+ftfrlzuHDk76tUt8TcaYl3z9Bq6vvjIQwx+Cu0CDhJX/rL+L46q8bGLRcmzVXSeCNTPf/cRRK7tyWeZHx51PibFP6tNyoaQtDoYepN+ainIVJyefomcr0ZMi4e3rXWJO0LRFb3eIk48MpOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JiGg8dHX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1986BC4CEE7;
+	Fri, 17 Oct 2025 14:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760711565;
-	bh=R/9Ydn6UjM/N6CcQWTK1H6Z6TdHJOk6HoGf8w+5o2PA=;
+	s=k20201202; t=1760712021;
+	bh=llHOMmbr8Mkpz1dy2JXYRv+KnMnM3J1NGe0mSe7nu3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPRdC0x7qJwDlLdYQosSNx5h0gJ15mrLxm2/HxjwNBfaiHxwycsrlqqdrMGz9+gEl
-	 mHLVIb36ER/zOYmJyMiGlk0p3G0vRYeNR+2ThwxjlfTYDjvj6Wo9zZnJ7X0lUvBm8b
-	 NezsieIMHZl2Z3EirQRZL9uqqatN84EXwTFPz+0O65UivEQi+AE3HhrX7WsM1O6BO7
-	 YLqvgJAvxL3derIvSD8SpcIHKN/bJ/S9AlpjdCR3GvGnC315idzGVW1Ay/v2Bl3lL0
-	 KACTYBf7x90pRwukNUIzqvwVu5TDwBmdMWuO58+3F02/+qn6vKe74wMrsFQg7nWwm5
-	 8TWHd5VikbJKg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 2/2] media: pci: ivtv: Add missing check after DMA map
-Date: Fri, 17 Oct 2025 10:32:42 -0400
-Message-ID: <20251017143242.3997991-2-sashal@kernel.org>
+	b=JiGg8dHXUreYtfm1Ys0T3Ho6SkidEBfr4ABja4sAr8ihatQp/4qsfu6B6z248AqQR
+	 5Hdl3q3ZnkO2ldrV8wtyRIZ9PCRhiWOhEt3ajsG/WuqSuOPV6vDp5HEp/MsJXzJ7Hk
+	 lGa4WQD0aOKLuZFD0Ttzu2WkFHwKD4ZQN6ycjA7iMonnogcYw1i7sLFb5AUekfhUJ2
+	 NHaY9JaLGP3vovUwonceGbHPwzTTpUScT3YXKdKlJ8wX5ranhVP5z+Pkm9244G61aq
+	 3emUZFoS9AhCvlz9o3PbyiTikC/CiUrULd8iKPkubo78pMjIK+mQY/qbKxYCcdAPdY
+	 EV3ftl6dga5Tg==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: mptcp@lists.linux.dev,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	sashal@kernel.org
+Subject: [PATCH 5.15.y 0/2] mptcp: fix recent failed backports (20251016)
+Date: Fri, 17 Oct 2025 16:39:50 +0200
+Message-ID: <20251017143949.2844546-4-matttbe@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017143242.3997991-1-sashal@kernel.org>
-References: <2025101626-deplete-worrier-4b19@gregkh>
- <20251017143242.3997991-1-sashal@kernel.org>
+In-Reply-To: <2025101658-underwire-colonize-b998@gregkh>
+References: <2025101658-underwire-colonize-b998@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=878; i=matttbe@kernel.org; h=from:subject; bh=llHOMmbr8Mkpz1dy2JXYRv+KnMnM3J1NGe0mSe7nu3U=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDI+hZq9PWxvKKJy50pr5tp88f31qett7y+X9n04t+Kp2 oXeuuYbHaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABM5eJvhf8bDiEVBE77W9n5s bb6Zl3qn4tjNhzPzIu/XNn7mnezjfY7hfyyjyR2zFZx/1kRWhf+ouh1bUV3ZfE3z5rb1r9t3SGd u4AAA
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+Greg recently reported the following patch could not be applied without
+conflicts in this tree:
 
-[ Upstream commit 1069a4fe637d0e3e4c163e3f8df9be306cc299b4 ]
+ - 4b1ff850e0c1 ("mptcp: pm: in-kernel: usable client side with C-flag")
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, free blanking_ptr and set it to 0.  As 0 is a
-valid DMA address, use blanking_ptr to test if the DMA address
-is set.
+Note that the following patch got applied, but at the wrong place and
+requiring additional modifications:
 
-Fixes: 1a0adaf37c30 ("V4L/DVB (5345): ivtv driver for Conexant cx23416/cx23415 MPEG encoder/decoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/media/pci/ivtv/ivtv-irq.c | 2 +-
- drivers/media/pci/ivtv/ivtv-yuv.c | 8 +++++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ - 008385efd05e ("selftests: mptcp: join: validate C-flag + def limit")
 
-diff --git a/drivers/media/pci/ivtv/ivtv-irq.c b/drivers/media/pci/ivtv/ivtv-irq.c
-index b7aaa8b4a7841..e39bf64c5c715 100644
---- a/drivers/media/pci/ivtv/ivtv-irq.c
-+++ b/drivers/media/pci/ivtv/ivtv-irq.c
-@@ -351,7 +351,7 @@ void ivtv_dma_stream_dec_prepare(struct ivtv_stream *s, u32 offset, int lock)
- 
- 	/* Insert buffer block for YUV if needed */
- 	if (s->type == IVTV_DEC_STREAM_TYPE_YUV && f->offset_y) {
--		if (yi->blanking_dmaptr) {
-+		if (yi->blanking_ptr) {
- 			s->sg_pending[idx].src = yi->blanking_dmaptr;
- 			s->sg_pending[idx].dst = offset;
- 			s->sg_pending[idx].size = 720 * 16;
-diff --git a/drivers/media/pci/ivtv/ivtv-yuv.c b/drivers/media/pci/ivtv/ivtv-yuv.c
-index 922e64bad10d7..1b101b032a352 100644
---- a/drivers/media/pci/ivtv/ivtv-yuv.c
-+++ b/drivers/media/pci/ivtv/ivtv-yuv.c
-@@ -125,7 +125,7 @@ static int ivtv_yuv_prep_user_dma(struct ivtv *itv, struct ivtv_user_dma *dma,
- 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
- 
- 	/* If we've offset the y plane, ensure top area is blanked */
--	if (f->offset_y && yi->blanking_dmaptr) {
-+	if (f->offset_y && yi->blanking_ptr) {
- 		dma->SGarray[dma->SG_length].size = cpu_to_le32(720*16);
- 		dma->SGarray[dma->SG_length].src = cpu_to_le32(yi->blanking_dmaptr);
- 		dma->SGarray[dma->SG_length].dst = cpu_to_le32(IVTV_DECODER_OFFSET + yuv_offset[frame]);
-@@ -929,6 +929,12 @@ static void ivtv_yuv_init(struct ivtv *itv)
- 		yi->blanking_dmaptr = dma_map_single(&itv->pdev->dev,
- 						     yi->blanking_ptr,
- 						     720 * 16, DMA_TO_DEVICE);
-+		if (dma_mapping_error(&itv->pdev->dev, yi->blanking_dmaptr)) {
-+			kfree(yi->blanking_ptr);
-+			yi->blanking_ptr = NULL;
-+			yi->blanking_dmaptr = 0;
-+			IVTV_DEBUG_WARN("Failed to dma_map yuv blanking buffer\n");
-+		}
- 	} else {
- 		yi->blanking_dmaptr = 0;
- 		IVTV_DEBUG_WARN("Failed to allocate yuv blanking buffer\n");
+Conflicts have been resolved, and documented in each patch.
+
+Matthieu Baerts (NGI0) (2):
+  mptcp: pm: in-kernel: usable client side with C-flag
+  selftests: mptcp: join: validate C-flag + def limit
+
+ net/mptcp/pm.c                                |  7 ++-
+ net/mptcp/pm_netlink.c                        | 49 ++++++++++++++++++-
+ net/mptcp/protocol.h                          |  8 +++
+ .../testing/selftests/net/mptcp/mptcp_join.sh | 10 ++++
+ 4 files changed, 71 insertions(+), 3 deletions(-)
+
 -- 
 2.51.0
 
