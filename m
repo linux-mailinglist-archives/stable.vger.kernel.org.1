@@ -1,73 +1,62 @@
-Return-Path: <stable+bounces-187506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89A7BEA6BA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:03:09 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B92BE9B0B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D9E3580B4B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 330F65815EB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94012330B1F;
-	Fri, 17 Oct 2025 15:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C801C2F12A5;
+	Fri, 17 Oct 2025 15:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwqLUWHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+aR+quG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE77330B0F;
-	Fri, 17 Oct 2025 15:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF143370FB;
+	Fri, 17 Oct 2025 15:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716267; cv=none; b=e7YHuC+juvGHbTh+FFERehX7vEWwtXNUkA7Cb24Bm1QiZbUK1J/pR65nbIaxPDAVGrqaX4l9+d6TC/7W2XQqPLrAOCBKOAXiyQZ2M2puCsTdFLOizKrdxpn0OPQ+WeUtqBgbYzVokpqu0dacf0lOIUm7Mh4IjVIdxt3TQhLLHnE=
+	t=1760713913; cv=none; b=qZQaBMYHhRFzt4GWUPD+6zI93gYBgrhBLKk7MID5xnjKyYAmZEm52q3kZ42fMNawt/vSM0di9awX9Er9kzKyr17HrhWHAZprDiQwr0jd+wHhHCVRYIuGR7pvt0wzS47H4RGuI/yMq4gMrDuYQnVgjiznqrmkGin0ERNyzSVl7GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716267; c=relaxed/simple;
-	bh=vi24S4r00seo+yxu3h2z3uA9n2v8HfMe1RARODEk554=;
+	s=arc-20240116; t=1760713913; c=relaxed/simple;
+	bh=os97lHwbO7PQ/bpwSPhYloQl5R0Mu0mI308Mi2xzAy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFX6ZvY2OR5UF1AdBo1eIznLG4SvJPD9RYiaWxR2lErMr1RkVMM7kMmGPHdj5DqyzJWzS5oGr6ZeE7CcN0MCLRSY/AApW2fUh54jExj6xVwZZt8Ch3om0iyX26AjmNtzAqT2iroKUZUtd6M4L2rRuFnsqvpcAnOePkxDU3McaNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwqLUWHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E0DC4CEE7;
-	Fri, 17 Oct 2025 15:51:06 +0000 (UTC)
+	 MIME-Version; b=Wo78cFYAc7RxyP9pFEOTKFF8vu0FZCcwXVN2kJxlEggkwUgsMC97HA1c+F61eh42by1+TAW+Tiq73W6AIxGwoaHm6tkFrYDWMSaLiu6pYd852YUM55vM44/SXG/3Z/91KLVxY5t0F8U+y6YRyqtt8kDihuDp4S2w7Yti2L200IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+aR+quG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F383EC4CEF9;
+	Fri, 17 Oct 2025 15:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716267;
-	bh=vi24S4r00seo+yxu3h2z3uA9n2v8HfMe1RARODEk554=;
+	s=korg; t=1760713913;
+	bh=os97lHwbO7PQ/bpwSPhYloQl5R0Mu0mI308Mi2xzAy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwqLUWHPc6RT3GYtFMs4FjdKFb25bSqGshROxdDCSU4eD66Mv4YDwjtdE0C9UBh4n
-	 mYsqt3TpG9buFGZ6ZWKzCSKwZ3WCmLRqVSDX40j/vYEE3+JSvJlQ5QGIA3pIjWn98g
-	 E3L1Fq4nercJx+pYUy/dT+s4d0sD8zlI44uDTIUE=
+	b=T+aR+quGMYV07K0nVimF9SnnCZTZxVmu4EKnpMKshGYy8mCHwIHbUYPB5ljD8cjZG
+	 fUXu0lAzqrQS4Dv3iMa+VH3l048YsAJKkLsqxy7r9FyzPioOlg2cwVnXPQWLvwQZ8b
+	 Yc39JYGSdaiOcezWdpJ0I42M/WP25pvKg3IvCP1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ali Saidi <alisaidi@amazon.com>,
-	Leo Yan <leo.yan@linaro.org>,
-	Jing Zhang <renyu.zj@linux.alibaba.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	German Gomez <german.gomez@arm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Garry <john.garry@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Timothy Hayes <timothy.hayes@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Zhuo Song <zhuo.song@linux.alibaba.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 131/276] perf arm-spe: augment the data source type with neoverse_spe list
-Date: Fri, 17 Oct 2025 16:53:44 +0200
-Message-ID: <20251017145147.264329126@linuxfoundation.org>
+Subject: [PATCH 6.6 164/201] mm/ksm: fix incorrect KSM counter handling in mm_struct during fork
+Date: Fri, 17 Oct 2025 16:53:45 +0200
+Message-ID: <20251017145140.759430315@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,67 +68,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jing Zhang <renyu.zj@linux.alibaba.com>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit 74a61d53a6d1ca1172d85964d15c83c2cc3670b3 ]
+[ Upstream commit 4d6fc29f36341d7795db1d1819b4c15fe9be7b23 ]
 
-When synthesizing event with SPE data source, commit 4e6430cbb1a9("perf
-arm-spe: Use SPE data source for neoverse cores") augment the type with
-source information by MIDR. However, is_midr_in_range only compares the
-first entry in neoverse_spe.
+Patch series "mm/ksm: Fix incorrect accounting of KSM counters during
+fork", v3.
 
-Change is_midr_in_range to is_midr_in_range_list to traverse the
-neoverse_spe array so that all neoverse cores synthesize event with data
-source packet.
+The first patch in this series fixes the incorrect accounting of KSM
+counters such as ksm_merging_pages, ksm_rmap_items, and the global
+ksm_zero_pages during fork.
 
-Fixes: 4e6430cbb1a9f1dc ("perf arm-spe: Use SPE data source for neoverse cores")
-Reviewed-by: Ali Saidi <alisaidi@amazon.com>
-Reviewed-by: Leo Yan <leo.yan@linaro.org>
-Signed-off-by: Jing Zhang <renyu.zj@linux.alibaba.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ali Saidi <alisaidi@amazon.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.garry@huawei.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: Timothy Hayes <timothy.hayes@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Zhuo Song <zhuo.song@linux.alibaba.com>
-Link: https://lore.kernel.org/r/1664197396-42672-1-git-send-email-renyu.zj@linux.alibaba.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: cb300e351505 ("perf arm_spe: Correct memory level for remote access")
+The following patch add a selftest to verify the ksm_merging_pages counter
+was updated correctly during fork.
+
+Test Results
+============
+Without the first patch
+-----------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ not ok 10 ksm_merging_page in child: 32
+
+With the first patch
+--------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ ok 10 ksm_merging_pages is not inherited after fork
+
+This patch (of 2):
+
+Currently, the KSM-related counters in `mm_struct`, such as
+`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are inherited
+by the child process during fork.  This results in inconsistent
+accounting.
+
+When a process uses KSM, identical pages are merged and an rmap item is
+created for each merged page.  The `ksm_merging_pages` and
+`ksm_rmap_items` counters are updated accordingly.  However, after a fork,
+these counters are copied to the child while the corresponding rmap items
+are not.  As a result, when the child later triggers an unmerge, there are
+no rmap items present in the child, so the counters remain stale, leading
+to incorrect accounting.
+
+A similar issue exists with `ksm_zero_pages`, which maintains both a
+global counter and a per-process counter.  During fork, the per-process
+counter is inherited by the child, but the global counter is not
+incremented.  Since the child also references zero pages, the global
+counter should be updated as well.  Otherwise, during zero-page unmerge,
+both the global and per-process counters are decremented, causing the
+global counter to become inconsistent.
+
+To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0 during
+fork, and the global ksm_zero_pages counter is updated with the
+per-process ksm_zero_pages value inherited by the child.  This ensures
+that KSM statistics remain accurate and reflect the activity of each
+process correctly.
+
+Link: https://lkml.kernel.org/r/cover.1758648700.git.donettom@linux.ibm.com
+Link: https://lkml.kernel.org/r/7b9870eb67ccc0d79593940d9dbd4a0b39b5d396.1758648700.git.donettom@linux.ibm.com
+Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
+Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
+Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ changed mm_flags_test() to test_bit() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/arm-spe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/ksm.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
-index 9e7e56596c60e..2d7fc2b01f36b 100644
---- a/tools/perf/util/arm-spe.c
-+++ b/tools/perf/util/arm-spe.c
-@@ -423,7 +423,7 @@ static void arm_spe__synth_data_source_generic(const struct arm_spe_record *reco
- static u64 arm_spe__synth_data_source(const struct arm_spe_record *record, u64 midr)
- {
- 	union perf_mem_data_src	data_src = { 0 };
--	bool is_neoverse = is_midr_in_range(midr, neoverse_spe);
-+	bool is_neoverse = is_midr_in_range_list(midr, neoverse_spe);
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -59,6 +59,12 @@ static inline int ksm_fork(struct mm_str
+ 	int ret;
  
- 	if (record->op == ARM_SPE_LD)
- 		data_src.mem_op = PERF_MEM_OP_LOAD;
--- 
-2.51.0
-
+ 	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags)) {
++		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
++
++		mm->ksm_merging_pages = 0;
++		mm->ksm_rmap_items = 0;
++		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
++
+ 		ret = __ksm_enter(mm);
+ 		if (ret)
+ 			return ret;
 
 
 
