@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-186556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A32BE980B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:19 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D19EBBE9DB3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CDE01892597
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 399CF589552
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421AA336EC1;
-	Fri, 17 Oct 2025 15:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB413328E6;
+	Fri, 17 Oct 2025 15:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kz/B7YDk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfBU64Zj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13E2336EC2;
-	Fri, 17 Oct 2025 15:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FB13370F7;
+	Fri, 17 Oct 2025 15:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713577; cv=none; b=UGMmxiHPtwc29yeCWaqvjje4d1RsRs5W5/caZkd1xNnI9U1SYUZR9U7s9ef1SyvRGyAKnEtqVCkTGqlM+zUViZBXqpA4En01PHv2M+xiI+8Oadope2io3fslrPIj8Eh6u0cCIWT2kTW3O870iQjgMnaGkqAZkqa0K5QDoea0264=
+	t=1760714310; cv=none; b=tL3RBrrOdPk27mHMzQS8f2bbS7dsEBNKXb5wX5f2SCf9L5QZw9rYXPIZdGsxsFHOBfVYvw4HrtzDdCA+ezGcSy3B1SFk9pWz2Giwc4Axf1VP9l51UTC3Lpv+D89aBoMEeGO+CJ1tbPakGe9THfzw8qrYfvQSEUi9x2jBG0XrgeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713577; c=relaxed/simple;
-	bh=d9I0yZyQEh5rSbN2B8ugYI/Io5O+Rh4tMhkELTeJIQY=;
+	s=arc-20240116; t=1760714310; c=relaxed/simple;
+	bh=ce8Eh2HGPah8Pv4Jmmqb18+euf6IwC/Kgmg/TlE92JQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dTm/CtuHMqpyr1yj/OhaXqtvNhGlTrmPyO9jV/pdCD8sq4JCANXnvpGJ5F9SHVGq9ER2Wvt1nJqHLIbzjf6ej2NngLxbw0rZBsR6CCqNCvCetXBljQEWXGjCSY8uXQ1orpoHTX8D57K3zQcNnnhRpJoREDQTBmCQexCydz71aRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kz/B7YDk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B41DC4CEFE;
-	Fri, 17 Oct 2025 15:06:16 +0000 (UTC)
+	 MIME-Version; b=ExxyC9RtS0W1WDv4s6LWdXzIf5klDTw7f8ba/sXrzeYNGlPSvQn9eqxD4xZtDQ+zrgwqU2nf+J09+25AtRYUorParlNXwqPEXwIpV+LStQPqgZDv9Qo4a6gWJL2QEABuPmOY6jwc/Fc31dS8ZuHr9NAAAproZQr5JhDcs4H7wek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfBU64Zj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A3BC4CEE7;
+	Fri, 17 Oct 2025 15:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713576;
-	bh=d9I0yZyQEh5rSbN2B8ugYI/Io5O+Rh4tMhkELTeJIQY=;
+	s=korg; t=1760714310;
+	bh=ce8Eh2HGPah8Pv4Jmmqb18+euf6IwC/Kgmg/TlE92JQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kz/B7YDkpliCvnz67hpEzRyZ/Xfrnb75TFpxDW2DslRI3Rjtnltaiv+7tECT8hyXW
-	 frAmbVivDEAy85OtVU7jwpJ6UCSw/8vadd5P7EjXmYftZU5OvpGJ5HCGMHVrvDjNTD
-	 J2Hbmi3xX+7kNVFcJzNVow0CB4ESsESfThgOv1Fc=
+	b=rfBU64Zj3zbe5b9ZwoYw0kY5Q0h9xumbt4CKmQME7yBsKENq1pYxx/z5cC3eZiR2y
+	 K4WghMsS1MgeHRZqTIIOPeX4g904iy6fOWGidVziyhM265KDPVS7UZMhlGWm6gvk6y
+	 kzcc0MekocCZf2xrlrUENXg8kz59c2OQdB09fLnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ali Saidi <alisaidi@amazon.com>,
-	German Gomez <german.gomez@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/201] perf arm_spe: Correct setting remote access
+Subject: [PATCH 6.12 067/277] mailbox: mtk-cmdq: Switch to pm_runtime_put_autosuspend()
 Date: Fri, 17 Oct 2025 16:51:14 +0200
-Message-ID: <20251017145135.220317452@linuxfoundation.org>
+Message-ID: <20251017145149.589172806@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,48 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 039fd0634a0629132432632d7ac9a14915406b5c ]
+[ Upstream commit 472f8a3fccbb579cb98c1821da4cb9cbd51ee3e4 ]
 
-Set the mem_remote field for a remote access to appropriately represent
-the event.
+__pm_runtime_put_autosuspend() was meant to be used by callers that needed
+to put the Runtime PM usage_count without marking the device's last busy
+timestamp. It was however seen that the Runtime PM autosuspend related
+functions should include that call. Thus switch the driver to
+use pm_runtime_put_autosuspend().
 
-Fixes: a89dbc9b988f3ba8 ("perf arm-spe: Set sample's data source field")
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ali Saidi <alisaidi@amazon.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Stable-dep-of: 3f39f5652037 ("mailbox: mtk-cmdq: Remove pm_runtime APIs from cmdq_mbox_send_data()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/arm-spe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mailbox/mtk-cmdq-mailbox.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
-index 9848310cee5f3..0faa4cfaf1f91 100644
---- a/tools/perf/util/arm-spe.c
-+++ b/tools/perf/util/arm-spe.c
-@@ -514,7 +514,7 @@ static void arm_spe__synth_data_source_generic(const struct arm_spe_record *reco
+diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
+index 4e093b58fb7b5..d24f71819c3d6 100644
+--- a/drivers/mailbox/mtk-cmdq-mailbox.c
++++ b/drivers/mailbox/mtk-cmdq-mailbox.c
+@@ -390,7 +390,7 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
+ 
+ 	task = kzalloc(sizeof(*task), GFP_ATOMIC);
+ 	if (!task) {
+-		__pm_runtime_put_autosuspend(cmdq->mbox.dev);
++		pm_runtime_put_autosuspend(cmdq->mbox.dev);
+ 		return -ENOMEM;
  	}
  
- 	if (record->type & ARM_SPE_REMOTE_ACCESS)
--		data_src->mem_lvl |= PERF_MEM_LVL_REM_CCE1;
-+		data_src->mem_remote = PERF_MEM_REMOTE_REMOTE;
+@@ -440,7 +440,7 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
+ 	list_move_tail(&task->list_entry, &thread->task_busy_list);
+ 
+ 	pm_runtime_mark_last_busy(cmdq->mbox.dev);
+-	__pm_runtime_put_autosuspend(cmdq->mbox.dev);
++	pm_runtime_put_autosuspend(cmdq->mbox.dev);
+ 
+ 	return 0;
+ }
+@@ -488,7 +488,7 @@ static void cmdq_mbox_shutdown(struct mbox_chan *chan)
+ 	spin_unlock_irqrestore(&thread->chan->lock, flags);
+ 
+ 	pm_runtime_mark_last_busy(cmdq->mbox.dev);
+-	__pm_runtime_put_autosuspend(cmdq->mbox.dev);
++	pm_runtime_put_autosuspend(cmdq->mbox.dev);
  }
  
- static u64 arm_spe__synth_data_source(const struct arm_spe_record *record, u64 midr)
+ static int cmdq_mbox_flush(struct mbox_chan *chan, unsigned long timeout)
+@@ -528,7 +528,7 @@ static int cmdq_mbox_flush(struct mbox_chan *chan, unsigned long timeout)
+ out:
+ 	spin_unlock_irqrestore(&thread->chan->lock, flags);
+ 	pm_runtime_mark_last_busy(cmdq->mbox.dev);
+-	__pm_runtime_put_autosuspend(cmdq->mbox.dev);
++	pm_runtime_put_autosuspend(cmdq->mbox.dev);
+ 
+ 	return 0;
+ 
+@@ -543,7 +543,7 @@ static int cmdq_mbox_flush(struct mbox_chan *chan, unsigned long timeout)
+ 		return -EFAULT;
+ 	}
+ 	pm_runtime_mark_last_busy(cmdq->mbox.dev);
+-	__pm_runtime_put_autosuspend(cmdq->mbox.dev);
++	pm_runtime_put_autosuspend(cmdq->mbox.dev);
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
