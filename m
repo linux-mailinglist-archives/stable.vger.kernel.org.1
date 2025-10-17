@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FC0BEA849
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:11:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8934EBEA9EF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57D249408B3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:35:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A62A47443E5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC6032E159;
-	Fri, 17 Oct 2025 15:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C92A330B2D;
+	Fri, 17 Oct 2025 15:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aq2j5iL3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSxEotS3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57091337110;
-	Fri, 17 Oct 2025 15:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B6B330B1C;
+	Fri, 17 Oct 2025 15:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715233; cv=none; b=titFBLAWpbiEkR6ju1gf8CSoUbreGRtJcGvbwhSgOM9mMqrOwzdDJho8w+QR5AmLm86Q7olf8mssE6wfzHpxw9vMnQrHieawh4V7/mM6sw6MuVURddrOT/6Megf29O9Sqxt6YI2YQ7oppdSm5dC4hSSh1EuJZIzyQUqrN62RI4Y=
+	t=1760715985; cv=none; b=CzlRMLrmIZQHhG6btqiQOGVp/7ugugLUPAg8tlOOMdV06zPJw3Mz10/2PHWgqgvYBpkKQmitLr8Jh8PwcGRYo2+c0nRsHzkei0YB/4hTr7rv9zXouXCmeRt51kp1Ccmse6LUSdp8sdXEfxplQkq3s4569MNsdXz53JSyZJMNyL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715233; c=relaxed/simple;
-	bh=v6PECsREVZo8FLzo/oVjq3F5wT4BudU9ZP54SYay4BI=;
+	s=arc-20240116; t=1760715985; c=relaxed/simple;
+	bh=3rWlyWEyQLjjcLU1n/Lw/96I/AsKqiUHx+5h7595jso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r9a6uGBdLslA4nOTkxgsJ/vOHOQ4lRVNudjhpKofK4fUoanKd4cpmx1ydpVh1ZFkUXPutsF/qYkWnXW1+9mBhd+6VVb8udu3Y9Ai9lwWRGPZVufY7eDnDAo470STS+V8vR/xvkIv+85wj4IRRzcP4ktXtVSw3CsA09tcBIpw7zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aq2j5iL3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E94C4CEFE;
-	Fri, 17 Oct 2025 15:33:52 +0000 (UTC)
+	 MIME-Version; b=gV7klninXJ5S8vDxAg+5JjO//9L1/6Dstg2SYIIOaxVlQfUzv1wdojLpj/RtIa3xcLPIXBrkETBSL+SF/NdHlX4iNGzjZvEozoODz+b+404+4gbqrOa/m1gHyhTGdXGvL8Eko0LxRsiNYdWFFhxkn7gA21G9jiE1D3NLZvW28v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSxEotS3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D74C4CEE7;
+	Fri, 17 Oct 2025 15:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715233;
-	bh=v6PECsREVZo8FLzo/oVjq3F5wT4BudU9ZP54SYay4BI=;
+	s=korg; t=1760715985;
+	bh=3rWlyWEyQLjjcLU1n/Lw/96I/AsKqiUHx+5h7595jso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aq2j5iL3k+tpzB8VEm27proKMPwCSWgpJZeDVSEm8X4281Tj5H/vJvbE5zriJgq2V
-	 rVTHcbTRz4yU89jqcnGgwOXLEsG7mdJcJf1pjkHpLPzAu+UACeBbNk3YOX6JrcKJQa
-	 lJUihX5H3Q/Moi7tCZR5uv3i/0hgYYSemaVB1sFM=
+	b=jSxEotS37T9DiVZ87+dPskuR6kWKReIGKfSyG8LD4JTc3iC5OJXr9j246OgOJJvbs
+	 2i0bh9jX1OKPU8exzfq/m6mTabjr6mcGbfm8Cf6MPfwn220EFFYZCfKtTtO5C2Zy2D
+	 0pauOsPEh/jkC1TkotKznNxAZXp3PUYi3WFFKePs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.17 144/371] arm64: dts: qcom: sdm845: Fix slimbam num-channels/ees
-Date: Fri, 17 Oct 2025 16:51:59 +0200
-Message-ID: <20251017145207.145008683@linuxfoundation.org>
+	Sneh Mankad <sneh.mankad@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 032/276] soc: qcom: rpmh-rsc: Unconditionally clear _TRIGGER bit for TCS
+Date: Fri, 17 Oct 2025 16:52:05 +0200
+Message-ID: <20251017145143.577773352@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
 
-commit 316294bb6695a43a9181973ecd4e6fb3e576a9f7 upstream.
+[ Upstream commit f87412d18edb5b8393eb8cb1c2d4a54f90185a21 ]
 
-Reading the hardware registers of the &slimbam on RB3 reveals that the BAM
-supports only 23 pipes (channels) and supports 4 EEs instead of 2. This
-hasn't caused problems so far since nothing is using the extra channels,
-but attempting to use them would lead to crashes.
+Unconditionally clear the TCS_AMC_MODE_TRIGGER bit when a
+transaction completes. Previously this bit was only cleared when
+a wake TCS was borrowed as an AMC TCS but not for dedicated
+AMC TCS. Leaving this bit set for AMC TCS and entering deeper low
+power modes can generate a false completion IRQ.
 
-The bam_dma driver might warn in the future if the num-channels in the DT
-are wrong, so correct the properties in the DT to avoid future regressions.
+Prevent this scenario by always clearing the TCS_AMC_MODE_TRIGGER
+bit upon receiving a completion IRQ.
 
-Cc: stable@vger.kernel.org
-Fixes: 27ca1de07dc3 ("arm64: dts: qcom: sdm845: add slimbus nodes")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250821-sdm845-slimbam-channels-v1-1-498f7d46b9ee@linaro.org
+Fixes: 15b3bf61b8d4 ("soc: qcom: rpmh-rsc: Clear active mode configuration for wake TCS")
+Signed-off-by: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250825-rpmh_rsc_change-v1-1-138202c31bf6@oss.qualcomm.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/rpmh-rsc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -5404,11 +5404,11 @@
- 			compatible = "qcom,bam-v1.7.4", "qcom,bam-v1.7.0";
- 			qcom,controlled-remotely;
- 			reg = <0 0x17184000 0 0x2a000>;
--			num-channels = <31>;
-+			num-channels = <23>;
- 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
- 			#dma-cells = <1>;
- 			qcom,ee = <1>;
--			qcom,num-ees = <2>;
-+			qcom,num-ees = <4>;
- 			iommus = <&apps_smmu 0x1806 0x0>;
- 		};
+diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
+index 4c9400cf6686b..5dc60ee0b07a1 100644
+--- a/drivers/soc/qcom/rpmh-rsc.c
++++ b/drivers/soc/qcom/rpmh-rsc.c
+@@ -415,13 +415,10 @@ static irqreturn_t tcs_tx_done(int irq, void *p)
  
+ 		trace_rpmh_tx_done(drv, i, req, err);
+ 
+-		/*
+-		 * If wake tcs was re-purposed for sending active
+-		 * votes, clear AMC trigger & enable modes and
++		/* Clear AMC trigger & enable modes and
+ 		 * disable interrupt for this TCS
+ 		 */
+-		if (!drv->tcs[ACTIVE_TCS].num_tcs)
+-			__tcs_set_trigger(drv, i, false);
++		__tcs_set_trigger(drv, i, false);
+ skip:
+ 		/* Reclaim the TCS */
+ 		write_tcs_reg(drv, RSC_DRV_CMD_ENABLE, i, 0);
+-- 
+2.51.0
+
 
 
 
