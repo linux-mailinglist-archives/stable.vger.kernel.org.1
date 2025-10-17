@@ -1,56 +1,75 @@
-Return-Path: <stable+bounces-186534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 522B7BE98F7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9C3BE95D8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E4DF568B53
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD0FF1888CD9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E1C32E13C;
-	Fri, 17 Oct 2025 15:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B6E33710B;
+	Fri, 17 Oct 2025 14:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDu9KCOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTndZ8J5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBE132C958;
-	Fri, 17 Oct 2025 15:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07373370F7;
+	Fri, 17 Oct 2025 14:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713514; cv=none; b=RzQOcAJlRqzcE3EXI5qvJjDT+3/TnPCMfRE6CHjBzmenG0BjV+nAuDvnBXPgxjaqJQU2toyuoMgdDG//X3dmz8GOvC61wcjRd793RneaJCaNGmcZgKrydxYDJy8bGO8euo9LNLCty4soJx7VP4NmwWEySZP8T1iG60vyKM2BEYk=
+	t=1760713023; cv=none; b=nqlP6ND+XC+Pc/+418Sefux7abAXq/9vMha/NdCCpfDkeimlYtkP1y2Ms4YDBSu+oxFioa/uM8CqP1ZQMc4QetB/Dimdk7xZeoJvYAcWE4zHU6fxv4/wKB4NFAVek6c7xnRnZQGHgzgbnvJmM06iy9W4Dd8jbUBR/dlMbpjE8ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713514; c=relaxed/simple;
-	bh=1uCvqkvkcpXjRiX6CbdsorNrjmCFv+NqmKtfodErsBY=;
+	s=arc-20240116; t=1760713023; c=relaxed/simple;
+	bh=a4HVAxqpOzhx8A0CWA/LQFgE0jlNOYemRxy483l4Sww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D83D7gm8RZH4bh9E5fcQ/nxkGO00abu+nwbQJ74GJGYzaAetRk7Spz8wS6X1l3XAFCovn7jYCs8LaA1noc0w+R5LIFwb/HxSvKv4HTtjDAAqfR+tEunAfXyNpEVC7/69CHcKs7VjlJPg3nqJ6lPlLiLLmE/plLj91bobbd+6N2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDu9KCOz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EF2C4CEE7;
-	Fri, 17 Oct 2025 15:05:13 +0000 (UTC)
+	 MIME-Version; b=tSFls0UBL/Hsws+4+fDCHtibK7LZxBy6tNMwtCIp+/31hQ9AWQGCKywlu1FSbt5lt1pMx9gYVVhLvhsGFIIXM0LSbKg13IZZcdgm27r/hN8mYO08LmBp1aPvzyqsI//lOeGLgDX9y+OsDs+Hyhnq/Lgg2KBOJ8CsdyhFCU/TEmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTndZ8J5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F451C113D0;
+	Fri, 17 Oct 2025 14:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713514;
-	bh=1uCvqkvkcpXjRiX6CbdsorNrjmCFv+NqmKtfodErsBY=;
+	s=korg; t=1760713022;
+	bh=a4HVAxqpOzhx8A0CWA/LQFgE0jlNOYemRxy483l4Sww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rDu9KCOzp3/EDHtQGN8fUsSvCQyfHrTByk1wCB0IeQ7OHdhCTtD/GBz9rNcaUSdQC
-	 Wv/fBUHSS9wkdvFa9JZqGAUn4JIe+d97zJKoQjBtFzpn0DDrNlmrFNxMYonzL14zSn
-	 YUfxgdXL6ccIhqhfwmkJrOrNKmJaXk9/NMnee+IQ=
+	b=uTndZ8J5v/IIYn1wJdV1V7jLVQpLr4UveKTZWCdMci6RLzeaN9arDmLdsXIPx8sC8
+	 Uz5n9U7qZ1HAbt2+ygi8SrPdHokFQWmiccV5lu41BpFuCEJ75r/RGkzmoVekvsRXp2
+	 z+fvjDyo2AoSv3e7CmmLuxJ07aQnfufRWNU9GVI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.ibm.com>,
+	Blake Jones <blakejones@google.com>,
+	Chun-Tse Shao <ctshao@google.com>,
+	Collin Funk <collin.funk1@gmail.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jan Polensky <japo@linux.ibm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Li Huafei <lihuafei1@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Nam Cao <namcao@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Steinar H. Gunderson" <sesse@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/201] clk: nxp: Fix pll0 rate check condition in LPC18xx CGU driver
-Date: Fri, 17 Oct 2025 16:51:25 +0200
-Message-ID: <20251017145135.633051294@linuxfoundation.org>
+Subject: [PATCH 6.1 007/168] libperf event: Ensure tracing data is multiple of 8 sized
+Date: Fri, 17 Oct 2025 16:51:26 +0200
+Message-ID: <20251017145129.282536599@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +81,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 1624dead9a4d288a594fdf19735ebfe4bb567cb8 ]
+[ Upstream commit b39c915a4f365cce6bdc0e538ed95d31823aea8f ]
 
-The conditional check for the PLL0 multiplier 'm' used a logical AND
-instead of OR, making the range check ineffective. This patch replaces
-&& with || to correctly reject invalid values of 'm' that are either
-less than or equal to 0 or greater than LPC18XX_PLL0_MSEL_MAX.
+Perf's synthetic-events.c will ensure 8-byte alignment of tracing
+data, writing it after a perf_record_header_tracing_data event.
 
-This ensures proper bounds checking during clk rate setting and rounding.
+Add padding to struct perf_record_header_tracing_data to make it 16-byte
+rather than 12-byte sized.
 
-Fixes: b04e0b8fd544 ("clk: add lpc18xx cgu clk driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-[sboyd@kernel.org: 'm' is unsigned so remove < condition]
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 055c67ed39887c55 ("perf tools: Move event synthesizing routines to separate .c file")
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.ibm.com>
+Cc: Blake Jones <blakejones@google.com>
+Cc: Chun-Tse Shao <ctshao@google.com>
+Cc: Collin Funk <collin.funk1@gmail.com>
+Cc: Howard Chu <howardchu95@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jan Polensky <japo@linux.ibm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Li Huafei <lihuafei1@huawei.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Nam Cao <namcao@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steinar H. Gunderson <sesse@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20250821163820.1132977-6-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/nxp/clk-lpc18xx-cgu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/lib/perf/include/perf/event.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/nxp/clk-lpc18xx-cgu.c b/drivers/clk/nxp/clk-lpc18xx-cgu.c
-index 821155f79b015..bbd7d64038fab 100644
---- a/drivers/clk/nxp/clk-lpc18xx-cgu.c
-+++ b/drivers/clk/nxp/clk-lpc18xx-cgu.c
-@@ -382,7 +382,7 @@ static int lpc18xx_pll0_determine_rate(struct clk_hw *hw,
- 	}
+diff --git a/tools/lib/perf/include/perf/event.h b/tools/lib/perf/include/perf/event.h
+index ad47d7b31046c..91db42a9f6589 100644
+--- a/tools/lib/perf/include/perf/event.h
++++ b/tools/lib/perf/include/perf/event.h
+@@ -273,6 +273,7 @@ struct perf_record_header_event_type {
+ struct perf_record_header_tracing_data {
+ 	struct perf_event_header header;
+ 	__u32			 size;
++	__u32			 pad;
+ };
  
- 	m = DIV_ROUND_UP_ULL(req->best_parent_rate, req->rate * 2);
--	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
-+	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
- 		pr_warn("%s: unable to support rate %lu\n", __func__, req->rate);
- 		return -EINVAL;
- 	}
-@@ -405,7 +405,7 @@ static int lpc18xx_pll0_set_rate(struct clk_hw *hw, unsigned long rate,
- 	}
- 
- 	m = DIV_ROUND_UP_ULL(parent_rate, rate * 2);
--	if (m <= 0 && m > LPC18XX_PLL0_MSEL_MAX) {
-+	if (m == 0 || m > LPC18XX_PLL0_MSEL_MAX) {
- 		pr_warn("%s: unable to support rate %lu\n", __func__, rate);
- 		return -EINVAL;
- 	}
+ #define PERF_RECORD_MISC_BUILD_ID_SIZE (1 << 15)
 -- 
 2.51.0
 
