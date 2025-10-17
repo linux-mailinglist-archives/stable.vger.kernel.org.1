@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-187395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7595BEA20C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E75BE9686
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:01:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 835F935ED61
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD7EE3B85ED
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528082F12A0;
-	Fri, 17 Oct 2025 15:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E43223EA9E;
+	Fri, 17 Oct 2025 14:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoF0VEZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mMndS0Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03478330B11;
-	Fri, 17 Oct 2025 15:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300083370F6;
+	Fri, 17 Oct 2025 14:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715948; cv=none; b=LaqlNKtV1nVG70ae/ehnIAl7QtIIWhG7S6y0yH0VPnFVMOVcvmoQFBpz6oxA/H8iwqe/0SRgb4jHVUs9ho3akXcQKCyXi1VF7+3QBZYLqyld51Sf1EKN9pGRCZ2PouMED4MmkmfL48Q73XknCLEv0l4ZJR8sp4HBsavEh8CEKuY=
+	t=1760713060; cv=none; b=KWWXs+r2IBCj4am3WHZ3ro0re+ARi9nRyrtc7iL/S/l3vCL1LmbnaPA3GfOU3SNLl60O2or30CARbUEew9Zpt0U3Px3VlvfWwQwO7GU9UmgRbGuv1zGx48WlPcNNDg/gF/y982TsV+NLYuRf8b1gKZppvzLNUp4vIMJ2dYKy66s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715948; c=relaxed/simple;
-	bh=XMRetHSpKS/R1jWK1QRQZRzQOufJb4COPQ4mIMbcV/I=;
+	s=arc-20240116; t=1760713060; c=relaxed/simple;
+	bh=JjFHKBFZsL8GeFDqFGQsHrR3jOLon2bLHa9eSmcOpaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/7EjB5YC3+V2cyBz5PI9Y3TFhMOE/zaOW9qKOELssZBkzSGlTUfoPWl0TSjf6nZFjA+5LhPinJwP59pBhH4OhPXa79FXOv8MnReCVWy/EmI2AMlsC25izrnVJhzJ7HUgu8R52NotKJPUEZ2TW5RbPCbs0T5lfM3cxVaC69mlSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoF0VEZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E50C4CEE7;
-	Fri, 17 Oct 2025 15:45:47 +0000 (UTC)
+	 MIME-Version; b=PbTi95hQ4E1EAgLIVdaxV1Vk+uMDfopKycbm56S+GZyreVujh4ZOO3HvFFy5QzjFDmsasDT8sTOrZ32r2kT3dlZSJuvld/dq/k0EihPM+KCTg84jNkuVfWJuLPKCvory5/9/8OfkHLodDssv/FVr8gR7sT7DB7Xd5xGADFWyUFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mMndS0Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA2CC4CEE7;
+	Fri, 17 Oct 2025 14:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715947;
-	bh=XMRetHSpKS/R1jWK1QRQZRzQOufJb4COPQ4mIMbcV/I=;
+	s=korg; t=1760713060;
+	bh=JjFHKBFZsL8GeFDqFGQsHrR3jOLon2bLHa9eSmcOpaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AoF0VEZy4fnpMA3fpLmd6bwba1v0YRNamj/SWSp5Ob9APH48ev27GdNca3COY4Mh/
-	 w6Q3snq2g/fzvlAgpKGCNeXZ0m2LFPxFNf8L3YXZ9wZXJwE7FdnlEFeVZ0roz+rSIr
-	 VNU5Uaq0ykFslNgaJ1fmzqvGcblqI1lpra5rVjVY=
+	b=0mMndS0Qia37SjPLS7Hbcp045YzJm1qZ+pTG98sv7Fr5GoTaPBt92Gc0S0XhaqSY5
+	 Kv/ubwUyuhgwBSFrwtcUQsRfrA2HV/pBl5l9SoMgw6V7R18eap/FmSu3dn4WomMWG7
+	 nvGVHK7RaLuWWKWoHAmebT7m1UF/1zEYQcLDpno0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiqi Sun <sunyiqixm@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 020/276] crypto: rng - Ensure set_ent is always present
+	Alexandr Sapozhnikov <alsp705@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 034/168] net/sctp: fix a null dereference in sctp_disposition sctp_sf_do_5_1D_ce()
 Date: Fri, 17 Oct 2025 16:51:53 +0200
-Message-ID: <20251017145143.138615380@linuxfoundation.org>
+Message-ID: <20251017145130.275696519@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Alexandr Sapozhnikov <alsp705@gmail.com>
 
-commit c0d36727bf39bb16ef0a67ed608e279535ebf0da upstream.
+[ Upstream commit 2f3119686ef50319490ccaec81a575973da98815 ]
 
-Ensure that set_ent is always set since only drbg provides it.
+If new_asoc->peer.adaptation_ind=0 and sctp_ulpevent_make_authkey=0
+and sctp_ulpevent_make_authkey() returns 0, then the variable
+ai_ev remains zero and the zero will be dereferenced
+in the sctp_ulpevent_free() function.
 
-Fixes: 77ebdabe8de7 ("crypto: af_alg - add extra parameters for DRBG interface")
-Reported-by: Yiqi Sun <sunyiqixm@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexandr Sapozhnikov <alsp705@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Fixes: 30f6ebf65bc4 ("sctp: add SCTP_AUTH_NO_AUTH type for AUTHENTICATION_EVENT")
+Link: https://patch.msgid.link/20251002091448.11-1-alsp705@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/rng.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/sctp/sm_statefuns.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/crypto/rng.c
-+++ b/crypto/rng.c
-@@ -174,6 +174,11 @@ out:
- EXPORT_SYMBOL_GPL(crypto_del_default_rng);
- #endif
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 4848d5d50a5f5..1ca9073c95835 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -885,7 +885,8 @@ enum sctp_disposition sctp_sf_do_5_1D_ce(struct net *net,
+ 	return SCTP_DISPOSITION_CONSUME;
  
-+static void rng_default_set_ent(struct crypto_rng *tfm, const u8 *data,
-+				unsigned int len)
-+{
-+}
-+
- int crypto_register_rng(struct rng_alg *alg)
- {
- 	struct crypto_alg *base = &alg->base;
-@@ -185,6 +190,9 @@ int crypto_register_rng(struct rng_alg *
- 	base->cra_flags &= ~CRYPTO_ALG_TYPE_MASK;
- 	base->cra_flags |= CRYPTO_ALG_TYPE_RNG;
- 
-+	if (!alg->set_ent)
-+		alg->set_ent = rng_default_set_ent;
-+
- 	return crypto_register_alg(base);
- }
- EXPORT_SYMBOL_GPL(crypto_register_rng);
+ nomem_authev:
+-	sctp_ulpevent_free(ai_ev);
++	if (ai_ev)
++		sctp_ulpevent_free(ai_ev);
+ nomem_aiev:
+ 	sctp_ulpevent_free(ev);
+ nomem_ev:
+-- 
+2.51.0
+
 
 
 
