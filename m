@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE0EBE9B41
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:21:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22623BE9617
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23A811AE08F9
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 027175851CF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC302472B0;
-	Fri, 17 Oct 2025 15:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55B72F12A0;
+	Fri, 17 Oct 2025 14:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/nGsSYi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wj/9ElJA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F07242935;
-	Fri, 17 Oct 2025 15:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE77246783;
+	Fri, 17 Oct 2025 14:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714233; cv=none; b=F37lyIu/ItzNdvurUSN5LCMCImcvCzD+ENApqjpvzwuSgWtczfSzUk85B/QDJ70J8ZyRP8XXldvOGba/FY0+v2JUVqfaJCpKwky19G5TNfX7VSrKV7TxLgqeDhhiJJczanxr2MiHvjaub6Qrwv/3xb0cEZO555uPkC0VQWCK8iU=
+	t=1760713008; cv=none; b=LX+cEBtnKK1053wYKVattJI5JargeoSOjv2jffO0DBaOMM3pP7oLfbLLCP3A0BbR37ZSFkXEkbWgWcKzivaSK4ZMJih8Yx/bKlvjDmEuNnzeJi9EZAf4LJTjtskKiyx/AZnH9XdeV6QWcWqMrQTZEUdIDNYmXvfNvYtKxyqdofc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714233; c=relaxed/simple;
-	bh=Yuf2+TiE8+jXWYl39TGWsLfqRsBUuADy5rEIbVeGu/k=;
+	s=arc-20240116; t=1760713008; c=relaxed/simple;
+	bh=W9F/E2KgZG2O/8k5ZFAQeRKa4ZPuAR0ZuVew+Rn2pPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PTG4BbUHF/yd6Ozqm8tdbCjPF/q9gXhu++kt8AO4DDA4XDKohJWpVHu63rV/UNcOAyPH/pPGEJ8lnZGcxdINMQbB2FDrfuF5Fjx2gzKQpI3vbZAm6o+OrxL4NBpPDq1NZTWW6ieC8h9uxbSe9QODv88U1HeqVIz5SBebCjkUhBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/nGsSYi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB68C4CEE7;
-	Fri, 17 Oct 2025 15:17:12 +0000 (UTC)
+	 MIME-Version; b=jH4IFh2SKNbpqvQI2+zUHeVDXipI6DTAfDRh6ZxQt37tcnc6PNsf9A2c2ay9YrgH3/ZHcE1IX3HjbrYGHNOKYe5HYsT/HDME8+hY+5IaIYMlW9WePj05oqBhtnQIDtqGKjta7eJ8Z1xDe1ZDUrtJiQ9p6erZlM3XIks91SRpjL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wj/9ElJA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D68C4CEE7;
+	Fri, 17 Oct 2025 14:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714233;
-	bh=Yuf2+TiE8+jXWYl39TGWsLfqRsBUuADy5rEIbVeGu/k=;
+	s=korg; t=1760713008;
+	bh=W9F/E2KgZG2O/8k5ZFAQeRKa4ZPuAR0ZuVew+Rn2pPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x/nGsSYiNH45r0KwEMDiZ7qWP3Sp6HB3NfozOzxUheSsA/6FPyQ2oit3Jf2vXZcBa
-	 DUXPCuSvekGcD9Rl9XpJlOmEeQcmYCrHjaW7FCfdmHRwpm4xW8xgDwWtMJ5kJVaJlG
-	 JYGvJX7jAxiGESejISyDCn7eAL3tnQ6ZmfTfHwBo=
+	b=Wj/9ElJA5WZR0CeINCwcXJREAk2/8NsP1DZu7tbIoH5e228EWnGHG76y1oTVAOEXG
+	 3QbLUzVm0TskATw4m73f/34G0gKKn6lfJ6If4AQd0xPJCvwG775yQgegN/+vlUSrdn
+	 cCI4V6r+/RGVIHxeSjoPc1qYHYSG4obP5X4NcOx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/277] bridge: br_vlan_fill_forward_path_pvid: use br_vlan_group_rcu()
+	David Howells <dhowells@redhat.com>,
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 002/168] fscontext: do not consume log entries when returning -EMSGSIZE
 Date: Fri, 17 Oct 2025 16:51:21 +0200
-Message-ID: <20251017145149.841901979@linuxfoundation.org>
+Message-ID: <20251017145129.094806860@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Woudstra <ericwouds@gmail.com>
+From: Aleksa Sarai <cyphar@cyphar.com>
 
-[ Upstream commit bbf0c98b3ad9edaea1f982de6c199cc11d3b7705 ]
+commit 72d271a7baa7062cb27e774ac37c5459c6d20e22 upstream.
 
-net/bridge/br_private.h:1627 suspicious rcu_dereference_protected() usage!
-other info that might help us debug this:
+Userspace generally expects APIs that return -EMSGSIZE to allow for them
+to adjust their buffer size and retry the operation. However, the
+fscontext log would previously clear the message even in the -EMSGSIZE
+case.
 
-rcu_scheduler_active = 2, debug_locks = 1
-7 locks held by socat/410:
- #0: ffff88800d7a9c90 (sk_lock-AF_INET){+.+.}-{0:0}, at: inet_stream_connect+0x43/0xa0
- #1: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: __ip_queue_xmit+0x62/0x1830
- [..]
- #6: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: nf_hook.constprop.0+0x8a/0x440
+Given that it is very cheap for us to check whether the buffer is too
+small before we remove the message from the ring buffer, let's just do
+that instead. While we're at it, refactor some fscontext_read() into a
+separate helper to make the ring buffer logic a bit easier to read.
 
-Call Trace:
- lockdep_rcu_suspicious.cold+0x4f/0xb1
- br_vlan_fill_forward_path_pvid+0x32c/0x410 [bridge]
- br_fill_forward_path+0x7a/0x4d0 [bridge]
-
-Use to correct helper, non _rcu variant requires RTNL mutex.
-
-Fixes: bcf2766b1377 ("net: bridge: resolve forwarding path for VLAN tag actions in bridge devices")
-Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 007ec26cdc9f ("vfs: Implement logging through fs_context")
+Cc: David Howells <dhowells@redhat.com>
+Cc: stable@vger.kernel.org # v5.2+
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+Link: https://lore.kernel.org/20250807-fscontext-log-cleanups-v3-1-8d91d6242dc3@cyphar.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_vlan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fsopen.c |   70 ++++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 38 insertions(+), 32 deletions(-)
 
-diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-index f2efb58d152bc..13d6c3f51c29d 100644
---- a/net/bridge/br_vlan.c
-+++ b/net/bridge/br_vlan.c
-@@ -1455,7 +1455,7 @@ void br_vlan_fill_forward_path_pvid(struct net_bridge *br,
- 	if (!br_opt_get(br, BROPT_VLAN_ENABLED))
- 		return;
+--- a/fs/fsopen.c
++++ b/fs/fsopen.c
+@@ -18,50 +18,56 @@
+ #include "internal.h"
+ #include "mount.h"
  
--	vg = br_vlan_group(br);
-+	vg = br_vlan_group_rcu(br);
++static inline const char *fetch_message_locked(struct fc_log *log, size_t len,
++					       bool *need_free)
++{
++	const char *p;
++	int index;
++
++	if (unlikely(log->head == log->tail))
++		return ERR_PTR(-ENODATA);
++
++	index = log->tail & (ARRAY_SIZE(log->buffer) - 1);
++	p = log->buffer[index];
++	if (unlikely(strlen(p) > len))
++		return ERR_PTR(-EMSGSIZE);
++
++	log->buffer[index] = NULL;
++	*need_free = log->need_free & (1 << index);
++	log->need_free &= ~(1 << index);
++	log->tail++;
++
++	return p;
++}
++
+ /*
+  * Allow the user to read back any error, warning or informational messages.
++ * Only one message is returned for each read(2) call.
+  */
+ static ssize_t fscontext_read(struct file *file,
+ 			      char __user *_buf, size_t len, loff_t *pos)
+ {
+ 	struct fs_context *fc = file->private_data;
+-	struct fc_log *log = fc->log.log;
+-	unsigned int logsize = ARRAY_SIZE(log->buffer);
+-	ssize_t ret;
+-	char *p;
++	ssize_t err;
++	const char *p __free(kfree) = NULL, *message;
+ 	bool need_free;
+-	int index, n;
+-
+-	ret = mutex_lock_interruptible(&fc->uapi_mutex);
+-	if (ret < 0)
+-		return ret;
+-
+-	if (log->head == log->tail) {
+-		mutex_unlock(&fc->uapi_mutex);
+-		return -ENODATA;
+-	}
++	int n;
  
- 	if (idx >= 0 &&
- 	    ctx->vlan[idx].proto == br->vlan_proto) {
--- 
-2.51.0
-
+-	index = log->tail & (logsize - 1);
+-	p = log->buffer[index];
+-	need_free = log->need_free & (1 << index);
+-	log->buffer[index] = NULL;
+-	log->need_free &= ~(1 << index);
+-	log->tail++;
++	err = mutex_lock_interruptible(&fc->uapi_mutex);
++	if (err < 0)
++		return err;
++	message = fetch_message_locked(fc->log.log, len, &need_free);
+ 	mutex_unlock(&fc->uapi_mutex);
++	if (IS_ERR(message))
++		return PTR_ERR(message);
+ 
+-	ret = -EMSGSIZE;
+-	n = strlen(p);
+-	if (n > len)
+-		goto err_free;
+-	ret = -EFAULT;
+-	if (copy_to_user(_buf, p, n) != 0)
+-		goto err_free;
+-	ret = n;
+-
+-err_free:
+ 	if (need_free)
+-		kfree(p);
+-	return ret;
++		p = message;
++
++	n = strlen(message);
++	if (copy_to_user(_buf, message, n))
++		return -EFAULT;
++	return n;
+ }
+ 
+ static int fscontext_release(struct inode *inode, struct file *file)
 
 
 
