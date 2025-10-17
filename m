@@ -1,57 +1,74 @@
-Return-Path: <stable+bounces-187415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB83BEA353
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:51:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DC99BE9C0C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBB4E19A2D91
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:47:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20B6B745EFE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE4F330B1C;
-	Fri, 17 Oct 2025 15:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EAB8332901;
+	Fri, 17 Oct 2025 15:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIihUKi5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuSKZPyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4886E330B0D;
-	Fri, 17 Oct 2025 15:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB07B60DCF;
+	Fri, 17 Oct 2025 15:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716005; cv=none; b=Sx54gfsxVoFipiP5JruS9IAzKbUCQxTkr+oZd/OcFv+7S0WEhlTYPpJoWPTZKyUAvru2RGut85JR4/w0AxiEb8A04/dS4SX0QWCUj5FpQ2L+KIDENbRhdTNEC33fFguls49F7DsxNUs7zh4OGjZjDc82Hn1bmo4yrBxiJzCFK58=
+	t=1760713563; cv=none; b=Ly3YkF2NgrEspRJjjB5XgZa4Fb9IFTk1RH7m+KQuBcw77qIjFJFdokehT+c79fRZQunXBrNwCbf4/luZFmA1OkcYug4NTNHCRa9NREs88O8ZvWGmyhFnj1yyjYERo7xnc8b3rX/AkYsnlOgalbU9xCRjftnsgTQRfdc45gKLYS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716005; c=relaxed/simple;
-	bh=l0houY8h9YowyC6x7nkJOW15sptWF4IZzujGatGZBeg=;
+	s=arc-20240116; t=1760713563; c=relaxed/simple;
+	bh=aXYiaW60kEXBJHbhpm7wTDTpf+hS7fd/uW32fo4VVJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i31xHrUgIzTF7Eni9siBW+ZVVEljndh0CjUNfUPodZQkQcNOCMqbofHIUxOHNhS3x42EEZzGzikXGNcqZS84XcDiae4ryIpZg4/BNT+OsTSs7TKSDhpYjXi8A9EfTu+DXbOrWq54p1jYfN1+Aa0NVjikLC7qD2HYzkCwKmCKKWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIihUKi5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72D4C116B1;
-	Fri, 17 Oct 2025 15:46:44 +0000 (UTC)
+	 MIME-Version; b=htXUeYumGAmrIDBm4nhngXGNv7TVJvdvXAv2VoxP04Z58X3GlUpgXXyis0y9S74v/i3lreGAkjP0F0Q58o2O20xLguAq0towRou6Q0lHbboGh/RrRY8K4ESJ36UQh1F0r+k0gkKnm1xc86KYsJE2lDGdsobtLG4//iC/6yW7EIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuSKZPyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438D7C4CEE7;
+	Fri, 17 Oct 2025 15:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716005;
-	bh=l0houY8h9YowyC6x7nkJOW15sptWF4IZzujGatGZBeg=;
+	s=korg; t=1760713562;
+	bh=aXYiaW60kEXBJHbhpm7wTDTpf+hS7fd/uW32fo4VVJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vIihUKi5DMmynKs7d+PjcDLMmvj/jykkMzK+9xcYR/XOvlVHCGBbiJoIG2MIykIYv
-	 OpN9PVROUIS8JLKKGdHSyIm0elO8mU25c8hB5TeZQkHkQ37EFJGeDRqhILrZkTJjNA
-	 2WpOO0nhgjvR3sT1pLxnFRkYlqANnMiU+xgrj9mE=
+	b=XuSKZPyukqnjuHC6kaqdVOeDM0IG1PRcjGOIfbTnwBthzWLoglC5cD/GtsAtUh2bJ
+	 iUCZhqQJlUbmLmc9Aqo0IsgnLoC6TllgKe53w+hZl0CzgxDddSDYr+/6ySjFP8TGGw
+	 NSU/FRN7cyV7dY54P/P7LNtV2f07CO9CORHWJ6os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <shuah.kh@samsung.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Leo Yan <leo.yan@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	linux-riscv@lists.infradead.org,
+	llvm@lists.linux.dev,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 007/276] media: tunner: xc5000: Refactor firmware load
+Subject: [PATCH 6.6 039/201] tools build: Align warning options with perf
 Date: Fri, 17 Oct 2025 16:51:40 +0200
-Message-ID: <20251017145142.659320827@linuxfoundation.org>
+Message-ID: <20251017145136.181864974@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +80,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 8e1f5da59dd4a1966f859639860b803a7e8b8bfb ]
+[ Upstream commit 53d067feb8c4f16d1f24ce3f4df4450bb18c555f ]
 
-Make sure the firmware is released when we leave
-xc_load_fw_and_init_tuner()
+The feature test programs are built without enabling '-Wall -Werror'
+options. As a result, a feature may appear to be available, but later
+building in perf can fail with stricter checks.
 
-This change makes smatch happy:
-drivers/media/tuners/xc5000.c:1213 xc_load_fw_and_init_tuner() warn: 'fw' from request_firmware() not released on lines: 1213.
+Make the feature test program use the same warning options as perf.
 
-Cc: Shuah Khan <shuah.kh@samsung.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: 40b7a19f321e ("media: tuner: xc5000: Fix use-after-free in xc5000_release")
+Fixes: 1925459b4d92 ("tools build: Fix feature Makefile issues with 'O='")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20251006-perf_build_android_ndk-v3-1-4305590795b2@arm.com
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: James Clark <james.clark@linaro.org>
+Cc: linux-riscv@lists.infradead.org
+Cc: llvm@lists.linux.dev
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-perf-users@vger.kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/tuners/xc5000.c |   41 ++++++++++++++++++-----------------------
- 1 file changed, 18 insertions(+), 23 deletions(-)
+ tools/build/feature/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/tuners/xc5000.c
-+++ b/drivers/media/tuners/xc5000.c
-@@ -58,7 +58,7 @@ struct xc5000_priv {
- 	struct dvb_frontend *fe;
- 	struct delayed_work timer_sleep;
+diff --git a/tools/build/feature/Makefile b/tools/build/feature/Makefile
+index 4f869fff28fe4..17e03236e3461 100644
+--- a/tools/build/feature/Makefile
++++ b/tools/build/feature/Makefile
+@@ -306,10 +306,10 @@ $(OUTPUT)test-libbabeltrace.bin:
+ 	$(BUILD) # -lbabeltrace provided by $(FEATURE_CHECK_LDFLAGS-libbabeltrace)
  
--	const struct firmware   *firmware;
-+	bool inited;
- };
+ $(OUTPUT)test-compile-32.bin:
+-	$(CC) -m32 -o $@ test-compile.c
++	$(CC) -m32 -Wall -Werror -o $@ test-compile.c
  
- /* Misc Defines */
-@@ -1110,23 +1110,19 @@ static int xc_load_fw_and_init_tuner(str
- 	if (!force && xc5000_is_firmware_loaded(fe) == 0)
- 		return 0;
+ $(OUTPUT)test-compile-x32.bin:
+-	$(CC) -mx32 -o $@ test-compile.c
++	$(CC) -mx32 -Wall -Werror -o $@ test-compile.c
  
--	if (!priv->firmware) {
--		ret = request_firmware(&fw, desired_fw->name,
--					priv->i2c_props.adap->dev.parent);
--		if (ret) {
--			pr_err("xc5000: Upload failed. rc %d\n", ret);
--			return ret;
--		}
--		dprintk(1, "firmware read %zu bytes.\n", fw->size);
--
--		if (fw->size != desired_fw->size) {
--			pr_err("xc5000: Firmware file with incorrect size\n");
--			release_firmware(fw);
--			return -EINVAL;
--		}
--		priv->firmware = fw;
--	} else
--		fw = priv->firmware;
-+	ret = request_firmware(&fw, desired_fw->name,
-+			       priv->i2c_props.adap->dev.parent);
-+	if (ret) {
-+		pr_err("xc5000: Upload failed. rc %d\n", ret);
-+		return ret;
-+	}
-+	dprintk(1, "firmware read %zu bytes.\n", fw->size);
-+
-+	if (fw->size != desired_fw->size) {
-+		pr_err("xc5000: Firmware file with incorrect size\n");
-+		release_firmware(fw);
-+		return -EINVAL;
-+	}
- 
- 	/* Try up to 5 times to load firmware */
- 	for (i = 0; i < 5; i++) {
-@@ -1204,6 +1200,7 @@ static int xc_load_fw_and_init_tuner(str
- 	}
- 
- err:
-+	release_firmware(fw);
- 	if (!ret)
- 		printk(KERN_INFO "xc5000: Firmware %s loaded and running.\n",
- 		       desired_fw->name);
-@@ -1274,7 +1271,7 @@ static int xc5000_resume(struct dvb_fron
- 
- 	/* suspended before firmware is loaded.
- 	   Avoid firmware load in resume path. */
--	if (!priv->firmware)
-+	if (!priv->inited)
- 		return 0;
- 
- 	return xc5000_set_params(fe);
-@@ -1293,6 +1290,8 @@ static int xc5000_init(struct dvb_fronte
- 	if (debug)
- 		xc_debug_dump(priv);
- 
-+	priv->inited = true;
-+
- 	return 0;
- }
- 
-@@ -1306,10 +1305,6 @@ static void xc5000_release(struct dvb_fr
- 
- 	if (priv) {
- 		cancel_delayed_work(&priv->timer_sleep);
--		if (priv->firmware) {
--			release_firmware(priv->firmware);
--			priv->firmware = NULL;
--		}
- 		hybrid_tuner_release_state(priv);
- 	}
- 
+ $(OUTPUT)test-zlib.bin:
+ 	$(BUILD) -lz
+-- 
+2.51.0
+
 
 
 
