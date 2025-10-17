@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-186945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815FFBE9C78
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:23 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E6ABE987A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:11:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D4B0C35E205
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D2F01563CC2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D03032C931;
-	Fri, 17 Oct 2025 15:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A732332903;
+	Fri, 17 Oct 2025 15:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWKBdBSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7HelXhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6A92F12C5;
-	Fri, 17 Oct 2025 15:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD7C3370E2;
+	Fri, 17 Oct 2025 15:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714678; cv=none; b=MjxtPxhb4xYnkO0tt6LL+P/YTiARh7gdePgwxnJzG4qWfUZjouJ+l4AmgqG2MWec2yNO+/m2w71XruFOaLG+mcluC8T62v0RMqaQPZ0dB7MMuLRjOKdDINJzkah8kV1SZ3SFzT4Lo7HEe3Le5LmDohZIYTvWAX95MCp0snzMvKs=
+	t=1760713415; cv=none; b=nRxcGhBynbSjRxOe+dilk0C3cENtX9wUZ+RxRkdDn78RfINIGk8WQbRii0u3E6Cci82U6wpHXadl1a+M0+k8dcRKj/7I5uRIw9me06k2GRhSpxOXLM/m4DcMgtEwW39wyIOqzqwEURpdmHfVFkU/pzNCPa5yjNSxjGe4LufwEsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714678; c=relaxed/simple;
-	bh=2c+o32Z0vIdPqsOhF+rfgqZ26QCm4UxXfRTs1Z+qH1s=;
+	s=arc-20240116; t=1760713415; c=relaxed/simple;
+	bh=NMOxBXNpV79OA/b5c/49CCEb0girFwchHcVsMNtMuDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnJgRgR9lY8VVjSaWUxBW0BXHnHF8uRPJAaVSraR61AObJPRB7d9aEli1/99bxNuqQ5AZQRHDYtrjwAEeBYAWS30BywyGzdn5L0NVxHhFOCBRpHsl/Tf0yGaI7D5S3zk4v9BUU7YuOt2a4D1SuFtB5LjVbeChtH+oEGLW7q3q3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWKBdBSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D98C4CEE7;
-	Fri, 17 Oct 2025 15:24:37 +0000 (UTC)
+	 MIME-Version; b=L0gzlwhivxDWe8C9L1xIxwLzJKpfsrbP3jWxBs2F5IJl0MtstJ0WR+jsLcFoKrjYrHPZfnMVmNA1WY1iwzk9sbKr06QaAMjg3F15v0KN5VQHG5j2v+/HjDywtMu/4dBk0zeCM1k+zxuCbtlfiQ6MZiaYVyIAc64yW5dEEu+xXSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7HelXhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F22C4CEFE;
+	Fri, 17 Oct 2025 15:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714678;
-	bh=2c+o32Z0vIdPqsOhF+rfgqZ26QCm4UxXfRTs1Z+qH1s=;
+	s=korg; t=1760713414;
+	bh=NMOxBXNpV79OA/b5c/49CCEb0girFwchHcVsMNtMuDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yWKBdBSHyVd1z39dGd6Ly7hDgKiubsgIeXeTNnBe9ajtYyz8u3tWDYay6Kfzj9W3E
-	 VbwuL7VavH7y81D/yRoRpeg4EyxiGhIYdNCuD/TJf8n+SApQJ9iYvd/E+k3EHTRg95
-	 AJKtFkOBKBKOtBYfHSES2uE6ErxnUFvn8rfVXVn4=
+	b=W7HelXhXphlwKiZcoGI68UcKSoyql0cu5C80e0BBL2WkXD5VQgkZZJoKqofm9NH4Z
+	 42dl/THrEAa2/+l38e62y4aUCQbrXUo45D2f5CIo4awFjl8H8sSsLt1Y4KnwW4zmPj
+	 bEAK7P3gWpRur04GoE1SSgutvSV6rLTebMKFv3oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
+	Lance Yang <lance.yang@linux.dev>,
 	David Hildenbrand <david@redhat.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 228/277] mm/ksm: fix incorrect KSM counter handling in mm_struct during fork
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Gabriel Krisman Bertazi <krisman@collabora.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 156/168] selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled
 Date: Fri, 17 Oct 2025 16:53:55 +0200
-Message-ID: <20251017145155.457236143@linuxfoundation.org>
+Message-ID: <20251017145134.792833722@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,106 +65,188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Lance Yang <lance.yang@linux.dev>
 
-[ Upstream commit 4d6fc29f36341d7795db1d1819b4c15fe9be7b23 ]
+commit 0389c305ef56cbadca4cbef44affc0ec3213ed30 upstream.
 
-Patch series "mm/ksm: Fix incorrect accounting of KSM counters during
-fork", v3.
+The madv_populate and soft-dirty kselftests currently fail on systems
+where CONFIG_MEM_SOFT_DIRTY is disabled.
 
-The first patch in this series fixes the incorrect accounting of KSM
-counters such as ksm_merging_pages, ksm_rmap_items, and the global
-ksm_zero_pages during fork.
+Introduce a new helper softdirty_supported() into vm_util.c/h to ensure
+tests are properly skipped when the feature is not enabled.
 
-The following patch add a selftest to verify the ksm_merging_pages counter
-was updated correctly during fork.
-
-Test Results
-============
-Without the first patch
------------------------
- # [RUN] test_fork_ksm_merging_page_count
- not ok 10 ksm_merging_page in child: 32
-
-With the first patch
---------------------
- # [RUN] test_fork_ksm_merging_page_count
- ok 10 ksm_merging_pages is not inherited after fork
-
-This patch (of 2):
-
-Currently, the KSM-related counters in `mm_struct`, such as
-`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are inherited
-by the child process during fork.  This results in inconsistent
-accounting.
-
-When a process uses KSM, identical pages are merged and an rmap item is
-created for each merged page.  The `ksm_merging_pages` and
-`ksm_rmap_items` counters are updated accordingly.  However, after a fork,
-these counters are copied to the child while the corresponding rmap items
-are not.  As a result, when the child later triggers an unmerge, there are
-no rmap items present in the child, so the counters remain stale, leading
-to incorrect accounting.
-
-A similar issue exists with `ksm_zero_pages`, which maintains both a
-global counter and a per-process counter.  During fork, the per-process
-counter is inherited by the child, but the global counter is not
-incremented.  Since the child also references zero pages, the global
-counter should be updated as well.  Otherwise, during zero-page unmerge,
-both the global and per-process counters are decremented, causing the
-global counter to become inconsistent.
-
-To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0 during
-fork, and the global ksm_zero_pages counter is updated with the
-per-process ksm_zero_pages value inherited by the child.  This ensures
-that KSM statistics remain accurate and reflect the activity of each
-process correctly.
-
-Link: https://lkml.kernel.org/r/cover.1758648700.git.donettom@linux.ibm.com
-Link: https://lkml.kernel.org/r/7b9870eb67ccc0d79593940d9dbd4a0b39b5d396.1758648700.git.donettom@linux.ibm.com
-Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
-Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
-Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Link: https://lkml.kernel.org/r/20250917133137.62802-1-lance.yang@linux.dev
+Fixes: 9f3265db6ae8 ("selftests: vm: add test for Soft-Dirty PTE bit")
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
 Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: <stable@vger.kernel.org>	[6.6+]
+Suggested-by: David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Gabriel Krisman Bertazi <krisman@collabora.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ replaced mm_flags_test() calls with test_bit() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/ksm.h |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/testing/selftests/vm/madv_populate.c |    9 ++-
+ tools/testing/selftests/vm/soft-dirty.c    |    5 +
+ tools/testing/selftests/vm/vm_util.c       |   77 +++++++++++++++++++++++++++++
+ tools/testing/selftests/vm/vm_util.h       |    2 
+ 4 files changed, 90 insertions(+), 3 deletions(-)
 
---- a/include/linux/ksm.h
-+++ b/include/linux/ksm.h
-@@ -57,8 +57,14 @@ static inline long mm_ksm_zero_pages(str
- static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+--- a/tools/testing/selftests/vm/madv_populate.c
++++ b/tools/testing/selftests/vm/madv_populate.c
+@@ -274,12 +274,16 @@ static void test_softdirty(void)
+ 
+ int main(int argc, char **argv)
  {
- 	/* Adding mm to ksm is best effort on fork. */
--	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags))
-+	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags)) {
-+		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
++	int nr_tests = 16;
+ 	int err;
+ 
+ 	pagesize = getpagesize();
+ 
++	if (softdirty_supported())
++		nr_tests += 5;
 +
-+		mm->ksm_merging_pages = 0;
-+		mm->ksm_rmap_items = 0;
-+		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
- 		__ksm_enter(mm);
-+	}
+ 	ksft_print_header();
+-	ksft_set_plan(21);
++	ksft_set_plan(nr_tests);
+ 
+ 	sense_support();
+ 	test_prot_read();
+@@ -287,7 +291,8 @@ int main(int argc, char **argv)
+ 	test_holes();
+ 	test_populate_read();
+ 	test_populate_write();
+-	test_softdirty();
++	if (softdirty_supported())
++		test_softdirty();
+ 
+ 	err = ksft_get_fail_cnt();
+ 	if (err)
+--- a/tools/testing/selftests/vm/soft-dirty.c
++++ b/tools/testing/selftests/vm/soft-dirty.c
+@@ -190,8 +190,11 @@ int main(int argc, char **argv)
+ 	int pagesize;
+ 
+ 	ksft_print_header();
+-	ksft_set_plan(15);
+ 
++	if (!softdirty_supported())
++		ksft_exit_skip("soft-dirty is not support\n");
++
++	ksft_set_plan(15);
+ 	pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
+ 	if (pagemap_fd < 0)
+ 		ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
+--- a/tools/testing/selftests/vm/vm_util.c
++++ b/tools/testing/selftests/vm/vm_util.c
+@@ -72,6 +72,42 @@ uint64_t read_pmd_pagesize(void)
+ 	return strtoul(buf, NULL, 10);
  }
  
- static inline int ksm_execve(struct mm_struct *mm)
++char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
++{
++	int ret;
++	FILE *fp;
++	char *entry = NULL;
++	char addr_pattern[MAX_LINE_LENGTH];
++
++	ret = snprintf(addr_pattern, MAX_LINE_LENGTH, "%08lx-",
++		       (unsigned long)addr);
++	if (ret >= MAX_LINE_LENGTH)
++		ksft_exit_fail_msg("%s: Pattern is too long\n", __func__);
++
++	fp = fopen(SMAP_FILE_PATH, "r");
++	if (!fp)
++		ksft_exit_fail_msg("%s: Failed to open file %s\n", __func__,
++				   SMAP_FILE_PATH);
++
++	if (!check_for_pattern(fp, addr_pattern, buf, len))
++		goto err_out;
++
++	/* Fetch the pattern in the same block */
++	if (!check_for_pattern(fp, pattern, buf, len))
++		goto err_out;
++
++	/* Trim trailing newline */
++	entry = strchr(buf, '\n');
++	if (entry)
++		*entry = '\0';
++
++	entry = buf + strlen(pattern);
++
++err_out:
++	fclose(fp);
++	return entry;
++}
++
+ bool __check_huge(void *addr, char *pattern, int nr_hpages,
+ 		  uint64_t hpage_size)
+ {
+@@ -124,3 +160,44 @@ bool check_huge_shmem(void *addr, int nr
+ {
+ 	return __check_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
+ }
++
++static bool check_vmflag(void *addr, const char *flag)
++{
++	char buffer[MAX_LINE_LENGTH];
++	const char *flags;
++	size_t flaglen;
++
++	flags = __get_smap_entry(addr, "VmFlags:", buffer, sizeof(buffer));
++	if (!flags)
++		ksft_exit_fail_msg("%s: No VmFlags for %p\n", __func__, addr);
++
++	while (true) {
++		flags += strspn(flags, " ");
++
++		flaglen = strcspn(flags, " ");
++		if (!flaglen)
++			return false;
++
++		if (flaglen == strlen(flag) && !memcmp(flags, flag, flaglen))
++			return true;
++
++		flags += flaglen;
++	}
++}
++
++bool softdirty_supported(void)
++{
++	char *addr;
++	bool supported = false;
++	const size_t pagesize = getpagesize();
++
++	/* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
++	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
++		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
++	if (!addr)
++		ksft_exit_fail_msg("mmap failed\n");
++
++	supported = check_vmflag(addr, "sd");
++	munmap(addr, pagesize);
++	return supported;
++}
+--- a/tools/testing/selftests/vm/vm_util.h
++++ b/tools/testing/selftests/vm/vm_util.h
+@@ -1,6 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #include <stdint.h>
+ #include <stdbool.h>
++#include <sys/mman.h>
+ 
+ uint64_t pagemap_get_entry(int fd, char *start);
+ bool pagemap_is_softdirty(int fd, char *start);
+@@ -10,3 +11,4 @@ uint64_t read_pmd_pagesize(void);
+ bool check_huge_anon(void *addr, int nr_hpages, uint64_t hpage_size);
+ bool check_huge_file(void *addr, int nr_hpages, uint64_t hpage_size);
+ bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size);
++bool softdirty_supported(void);
 
 
 
