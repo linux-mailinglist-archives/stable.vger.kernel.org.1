@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-187113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E14BE9F7B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:36:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BF1BE9DD7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9784019C1507
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:34:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 26DD058470E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41442F12DE;
-	Fri, 17 Oct 2025 15:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2054333291F;
+	Fri, 17 Oct 2025 15:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncqjLboL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tp/6BxZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08573328EE;
-	Fri, 17 Oct 2025 15:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC62A242935;
+	Fri, 17 Oct 2025 15:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715156; cv=none; b=Vj5Y3HATN4lGeXT72LG4VMw4LyckGof3Smnqy8bD4Op0XvezWI1uQ6WTM8pN64pprAbZ4I/QpHArjqt8/3IkIBLBVtr7Ms+k939vH5mgBZAWlrtwzBggnSY2DhKW2gqcsGdfVp+75zMaLts+hVGqTEGqvUVsAJYUbkU+zNN8ICY=
+	t=1760714267; cv=none; b=PvfRd+PQ5uafcx0U2cBOiLmJMJH5a9dIenZvdhCxnbdFGmFA1fI5SfbCxIhOzxhJv01I8yQK9dxzbbNGwmNoA+pC1QduBLOHZqMQdjtm8KxnwpLf/4KOQ/j4tZpPfc5W6m2s0Wnv0CwkQFtmkCGRgJfXcw1+U01Q62pAmvqrl5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715156; c=relaxed/simple;
-	bh=ftikmk450lt8bCsvaL4Hi6L5NA2ywVA9BoxPutYMRMM=;
+	s=arc-20240116; t=1760714267; c=relaxed/simple;
+	bh=gjcgqEJo+3oJ+bZlrdR+ZkvhNZdhdfV0YbI4PYMVUAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PfY+QzNfLd1RsTSQ13EvsjKsGb6g23XAAC5VueGV57k+wN5uOxyI3t+VFRv3U8axYwFZqICNYkKM1mUCwq9NPAdRi57wEbWqdf8plSaiqZBqKQC2AutllbQb97FU1783yrYhiMnt0qsE/ZgRsmn/LlPpHbNVnqywUbiDegQaI/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncqjLboL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA07C4CEFE;
-	Fri, 17 Oct 2025 15:32:36 +0000 (UTC)
+	 MIME-Version; b=CNpsYuk90AUkyRBguAvb/KxRtatycPbi8gssD9S95JfttYsQ3M39VaO53JR5yc3P4u2fPtTaZIZPugVVxeL0lc6NIhOBy8gPUkym/7sOwkNxHp5FpAT10V5GXC1YiQEDNr+GlY9IL+ncdfHQ9OP3rzFkb7fjihak3R8D2GxbMqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tp/6BxZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BA6C4CEFE;
+	Fri, 17 Oct 2025 15:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715156;
-	bh=ftikmk450lt8bCsvaL4Hi6L5NA2ywVA9BoxPutYMRMM=;
+	s=korg; t=1760714267;
+	bh=gjcgqEJo+3oJ+bZlrdR+ZkvhNZdhdfV0YbI4PYMVUAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ncqjLboLL8xfw//jM2Dw4oT8jGb5qkTH+SMkEgE5FfXTnBTnO2DJOIjYXHdL4CTBN
-	 MyBVrXfMz+mWq/DqbZqKZkr/E2hlxP0ozKL1bRjpb5SMf0DESp+/CSDfm5Mw1s3w4W
-	 O3jgsduZcGNs1plpYIeesvEieeS4qi4V3n9oQhYQ=
+	b=tp/6BxZ1qQNvLOvGxYC9hhbUDMJtOdmIyJcp8CTiTpTP4hzDI/VylOWRXeMbNdZp3
+	 Lkza2lJv04MRux+dfjmV2O8wAgiAZVSSsmfL9b7aPQjCtUOLA50PSnxlmfpzUTVt4q
+	 e06oEPwBAgMF4J7Z8zqWectmlaOTkyNRZzdqtZAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 117/371] bridge: br_vlan_fill_forward_path_pvid: use br_vlan_group_rcu()
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.12 085/277] ACPI: property: Fix buffer properties extraction for subnodes
 Date: Fri, 17 Oct 2025 16:51:32 +0200
-Message-ID: <20251017145206.168766225@linuxfoundation.org>
+Message-ID: <20251017145150.236880038@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Woudstra <ericwouds@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit bbf0c98b3ad9edaea1f982de6c199cc11d3b7705 ]
+commit d0759b10989c5c5aae3d455458c9fc4e8cc694f7 upstream.
 
-net/bridge/br_private.h:1627 suspicious rcu_dereference_protected() usage!
-other info that might help us debug this:
+The ACPI handle passed to acpi_extract_properties() as the first
+argument represents the ACPI namespace scope in which to look for
+objects returning buffers associated with buffer properties.
 
-rcu_scheduler_active = 2, debug_locks = 1
-7 locks held by socat/410:
- #0: ffff88800d7a9c90 (sk_lock-AF_INET){+.+.}-{0:0}, at: inet_stream_connect+0x43/0xa0
- #1: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: __ip_queue_xmit+0x62/0x1830
- [..]
- #6: ffffffff9a779900 (rcu_read_lock){....}-{1:3}, at: nf_hook.constprop.0+0x8a/0x440
+For _DSD objects located immediately under ACPI devices, this handle is
+the same as the handle of the device object holding the _DSD, but for
+data-only subnodes it is not so.
 
-Call Trace:
- lockdep_rcu_suspicious.cold+0x4f/0xb1
- br_vlan_fill_forward_path_pvid+0x32c/0x410 [bridge]
- br_fill_forward_path+0x7a/0x4d0 [bridge]
+First of all, data-only subnodes are represented by objects that
+cannot hold other objects in their scopes (like control methods).
+Therefore a data-only subnode handle cannot be used for completing
+relative pathname segments, so the current code in
+in acpi_nondev_subnode_extract() passing a data-only subnode handle
+to acpi_extract_properties() is invalid.
 
-Use to correct helper, non _rcu variant requires RTNL mutex.
+Moreover, a data-only subnode of device A may be represented by an
+object located in the scope of device B (which kind of makes sense,
+for instance, if A is a B's child).  In that case, the scope in
+question would be the one of device B.  In other words, the scope
+mentioned above is the same as the scope used for subnode object
+lookup in acpi_nondev_subnode_extract().
 
-Fixes: bcf2766b1377 ("net: bridge: resolve forwarding path for VLAN tag actions in bridge devices")
-Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Accordingly, rearrange that function to use the same scope for the
+extraction of properties and subnode object lookup.
+
+Fixes: 103e10c69c61 ("ACPI: property: Add support for parsing buffer property UUID")
+Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_vlan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/property.c |   30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
 
-diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-index 939a3aa78d5c4..54993a05037c1 100644
---- a/net/bridge/br_vlan.c
-+++ b/net/bridge/br_vlan.c
-@@ -1455,7 +1455,7 @@ void br_vlan_fill_forward_path_pvid(struct net_bridge *br,
- 	if (!br_opt_get(br, BROPT_VLAN_ENABLED))
- 		return;
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -83,6 +83,7 @@ static bool acpi_nondev_subnode_extract(
+ 					struct fwnode_handle *parent)
+ {
+ 	struct acpi_data_node *dn;
++	acpi_handle scope = NULL;
+ 	bool result;
  
--	vg = br_vlan_group(br);
-+	vg = br_vlan_group_rcu(br);
+ 	if (acpi_graph_ignore_port(handle))
+@@ -98,27 +99,18 @@ static bool acpi_nondev_subnode_extract(
+ 	INIT_LIST_HEAD(&dn->data.properties);
+ 	INIT_LIST_HEAD(&dn->data.subnodes);
  
- 	if (idx >= 0 &&
- 	    ctx->vlan[idx].proto == br->vlan_proto) {
--- 
-2.51.0
-
+-	result = acpi_extract_properties(handle, desc, &dn->data);
++	/*
++	 * The scope for the completion of relative pathname segments and
++	 * subnode object lookup is the one of the namespace node (device)
++	 * containing the object that has returned the package.  That is, it's
++	 * the scope of that object's parent device.
++	 */
++	if (handle)
++		acpi_get_parent(handle, &scope);
+ 
+-	if (handle) {
+-		acpi_handle scope;
+-		acpi_status status;
+-
+-		/*
+-		 * The scope for the subnode object lookup is the one of the
+-		 * namespace node (device) containing the object that has
+-		 * returned the package.  That is, it's the scope of that
+-		 * object's parent.
+-		 */
+-		status = acpi_get_parent(handle, &scope);
+-		if (ACPI_SUCCESS(status)
+-		    && acpi_enumerate_nondev_subnodes(scope, desc, &dn->data,
+-						      &dn->fwnode))
+-			result = true;
+-	} else if (acpi_enumerate_nondev_subnodes(NULL, desc, &dn->data,
+-						  &dn->fwnode)) {
++	result = acpi_extract_properties(scope, desc, &dn->data);
++	if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->fwnode))
+ 		result = true;
+-	}
+ 
+ 	if (result) {
+ 		dn->handle = handle;
 
 
 
