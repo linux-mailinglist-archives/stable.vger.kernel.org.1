@@ -1,75 +1,56 @@
-Return-Path: <stable+bounces-187497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313ADBEA4BB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E4DBE99D2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5450C19C0A02
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D9DD188E880
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007791A0728;
-	Fri, 17 Oct 2025 15:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C49B2F12BD;
+	Fri, 17 Oct 2025 15:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJoitGMH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBeF00BK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DDC330B17;
-	Fri, 17 Oct 2025 15:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082BA33711F;
+	Fri, 17 Oct 2025 15:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716241; cv=none; b=tqKOedD0vfZEs03Ambq2sX4eou576dxoiEOQYzQCwdoWftNP/X7TajzRLXUKFFuy7D4Z6VetKC97Qvw6v0XJGf+s89y/oKdKhZ/jx9um95C3J9MdvNGLKQqCDP5YL4NyMBsLS6tnQyBzJiQONJkMuNbkvmMT8uSA6KNjf/6czdg=
+	t=1760713983; cv=none; b=sFciETaZDLjEoCKIiY9gtbLxn4ComI94w2ZDVGprsMQqECKCr/SSwM3pY9k4H/1mNNXr8tavlrzqc9bOTo9eHm9i3Rv87B6t3NwNs8stQrBHbYr4IMVvfAakyco3b+a9Pyb+82ogA1ozPU38PWbvLBcT2Yj+HlB3vG5Pz3aA6AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716241; c=relaxed/simple;
-	bh=OdvT9fvFH76Yt4QCDaTPHmxIo+rw0jPYH3xK+97kKC4=;
+	s=arc-20240116; t=1760713983; c=relaxed/simple;
+	bh=0Ls6NTcYN7qTO3GT/Vt0PcG/SV10/ppn/Mpf/NH2OL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AvwIA9ADW53tamd6PmoAlPNkFpFTOmlSqoPO7djE7wAATeC72j2dwYnudMQrJlgryyoJxzlndP3jdEr5pRlf186iIa56K7NMNFT4MLdh+4C4O0p8c64U+VYVdaKfy+qBjXVyGKNUeIQpCS3uP9Z9shs1HxN/LoLO/l3F8t9yXCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJoitGMH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2DBC4CEE7;
-	Fri, 17 Oct 2025 15:50:41 +0000 (UTC)
+	 MIME-Version; b=fkB9X7ioNRUNotrcX5R87zKndY4c+WaJoW/uSnwNLI4s2ceh21ZhuuDsaebu14GJ4R1mIZKN5jNgEzw6pE41xe/xbuDlSVGu67vQ4JLdVLyQaUlthpyATgspfpMU7lR+p6cks+CIGpydZxio0rEHs3AXPPynZhlx6h7wk4B42i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBeF00BK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82945C4CEE7;
+	Fri, 17 Oct 2025 15:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716241;
-	bh=OdvT9fvFH76Yt4QCDaTPHmxIo+rw0jPYH3xK+97kKC4=;
+	s=korg; t=1760713982;
+	bh=0Ls6NTcYN7qTO3GT/Vt0PcG/SV10/ppn/Mpf/NH2OL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YJoitGMHNtBwrmqeB1gQhq5Lkv6FKDFMiO+dKQX5vgBtgJSh+wP8IHIW4Z85U9zeY
-	 qY+Ad21AflVM82J3rRs+KBamWxALg26UP+OHvn/P4zMKuWY9L0qteQbO/HRaI3c/JW
-	 rinf1QOFJZBY5AaPl9iPQpWbi0rgzO6XFncFtJLg=
+	b=eBeF00BKmheu0PMHxM4ujRWEcWwwSeuwNw6jQ8P6dysbhgAF6EC2N342MCyF2v9vs
+	 Hw9BU5t4mZAFMSs1I0Y6d2loEvq4+8z4WwDDicKBqV/PLC1rOYseJQd/xvbYpt+MgG
+	 V1FOvgEm+dMCMFoAn7UKhAZR4UZGNBWSciDMEIio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.ibm.com>,
-	Blake Jones <blakejones@google.com>,
-	Chun-Tse Shao <ctshao@google.com>,
-	Collin Funk <collin.funk1@gmail.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jan Polensky <japo@linux.ibm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Li Huafei <lihuafei1@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Nam Cao <namcao@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Steinar H. Gunderson" <sesse@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 123/276] perf evsel: Avoid container_of on a NULL leader
+	Chris Mason <clm@meta.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 155/201] ext4: free orphan info with kvfree
 Date: Fri, 17 Oct 2025 16:53:36 +0200
-Message-ID: <20251017145146.969045018@linuxfoundation.org>
+Message-ID: <20251017145140.424696512@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,64 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 2354479026d726954ff86ce82f4b649637319661 ]
+commit 971843c511c3c2f6eda96c6b03442913bfee6148 upstream.
 
-An evsel should typically have a leader of itself, however, in tests
-like 'Sample parsing' a NULL leader may occur and the container_of
-will return a corrupt pointer.
+Orphan info is now getting allocated with kvmalloc_array(). Free it with
+kvfree() instead of kfree() to avoid complaints from mm.
 
-Avoid this with an explicit NULL test.
-
-Fixes: fba7c86601e2e42d ("libperf: Move 'leader' from tools/perf to perf_evsel::leader")
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.ibm.com>
-Cc: Blake Jones <blakejones@google.com>
-Cc: Chun-Tse Shao <ctshao@google.com>
-Cc: Collin Funk <collin.funk1@gmail.com>
-Cc: Howard Chu <howardchu95@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jan Polensky <japo@linux.ibm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Li Huafei <lihuafei1@huawei.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Nam Cao <namcao@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steinar H. Gunderson <sesse@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250821163820.1132977-4-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Chris Mason <clm@meta.com>
+Fixes: 0a6ce20c1564 ("ext4: verify orphan file size is not too big")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251007134936.7291-2-jack@suse.cz>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/evsel.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/orphan.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index f14c83e6829a8..a9cb1aede476e 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -2930,6 +2930,8 @@ bool evsel__is_hybrid(struct evsel *evsel)
- 
- struct evsel *evsel__leader(struct evsel *evsel)
- {
-+	if (evsel->core.leader == NULL)
-+		return NULL;
- 	return container_of(evsel->core.leader, struct evsel, core);
+--- a/fs/ext4/orphan.c
++++ b/fs/ext4/orphan.c
+@@ -513,7 +513,7 @@ void ext4_release_orphan_info(struct sup
+ 		return;
+ 	for (i = 0; i < oi->of_blocks; i++)
+ 		brelse(oi->of_binfo[i].ob_bh);
+-	kfree(oi->of_binfo);
++	kvfree(oi->of_binfo);
  }
  
--- 
-2.51.0
-
+ static struct ext4_orphan_block_tail *ext4_orphan_block_tail(
+@@ -638,7 +638,7 @@ int ext4_init_orphan_info(struct super_b
+ out_free:
+ 	for (i--; i >= 0; i--)
+ 		brelse(oi->of_binfo[i].ob_bh);
+-	kfree(oi->of_binfo);
++	kvfree(oi->of_binfo);
+ out_put:
+ 	iput(inode);
+ 	return ret;
 
 
 
