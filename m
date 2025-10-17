@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-186559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0513DBE991E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DFFBEA1D3
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BDC295660A1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81875741956
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0726933291B;
-	Fri, 17 Oct 2025 15:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D5732E13C;
+	Fri, 17 Oct 2025 15:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPujA2PY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cI9C46DE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A892F6932;
-	Fri, 17 Oct 2025 15:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D60323EA9E;
+	Fri, 17 Oct 2025 15:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713585; cv=none; b=S+Xkh9Vf8AJGsS+DmiRkdWG1VS6xrpzvsEBq0fZPJMUe8w4pCqALQYjow1gRoTuTtUurXrSKJQMA2ECtU8gKNi3GPbohG382fANWo8Nb0QxVCbRFihMhCWppZbtOWLbD+CVlnF0CH3hG2pjj8hvergbR8++kTeGPKjVViNkXCzg=
+	t=1760715110; cv=none; b=B05ubAk3L4VDKu2zZjfZKOBFnuCxQ4CBch7koOPDfr9WYGzyDEeooaLfnBwZhPveDz6bscgoyeG4xyPypM8j1ZJWwsMIApbfXKQnIWkW0FKkgVGojcTq+kzHU9/7HlKvLLxJeWJXb4gUDcGp7Y/nHR8cCfU1lhOvVSN34zFKRtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713585; c=relaxed/simple;
-	bh=b4Y2sPiiJ2YG847m2UIHrShijfwWU8HVrEI2Ov/paUQ=;
+	s=arc-20240116; t=1760715110; c=relaxed/simple;
+	bh=yoPgXsbvlUIBu3QnWUMtqxhokOgAUV6VI+4h4UzYF2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uGePixJu84ZXcg9CicTfC4nVYwUHoAA+EkIONNFCFEpFxb1ErSyFADAmQBYPN6rbUzULLDD+yNJ9q3kqriqR4U8fxr0QweBMDFfUxqdOPu2tChbs8pbMsq+3CnzwQ/kaAahmPua88rjlMS+mqP0XBzdUN4f2pXhbOnqaudRhiyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPujA2PY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B58C4CEE7;
-	Fri, 17 Oct 2025 15:06:24 +0000 (UTC)
+	 MIME-Version; b=SZMKbMw4LAtNGX5JWdmqzeylNXsM/roKTtQ1nF1aNJs99Cdk4RipFoKEahYZ7xLhOQMF0iEwHE5halUTIQWIGt4NqeRkeb569gu86LmUkGe9F8tTH+MRzI2GVdkG7VWdIDLH2a8tUlB5wnt3QSajU0ZQrj3wgnicUdRsR17OG54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cI9C46DE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC97C4CEE7;
+	Fri, 17 Oct 2025 15:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713585;
-	bh=b4Y2sPiiJ2YG847m2UIHrShijfwWU8HVrEI2Ov/paUQ=;
+	s=korg; t=1760715110;
+	bh=yoPgXsbvlUIBu3QnWUMtqxhokOgAUV6VI+4h4UzYF2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IPujA2PYvezfvjmDwYx3QOkTlbbw9p5kMqEAJ7godANk7kfGOvrsY2DDCVTZXwCP3
-	 C26w4tFq6LEtyCE4ov+/6W6eB34SO+Rl4rgYT59aWpvlPHKGSnZijGN9qNRzPHR5tT
-	 ycnhLV6mA1gPTb2hEiAI2eCWapmTDPEM6X95tmvA=
+	b=cI9C46DEzccEjoM5XY7dnIKT4CUl5kMWXGlJMCOmdM6KsZF5um9aPAYuQms6GEtZQ
+	 6gDQsOMhlH7SSopWEF0upDkM0nXRTWPTEr8GloiVacuLvo5QDT2Df3ACOCGklnx1bF
+	 eNZpgVSFwlLoqz9A336Tp6ZdIoI8IymAeJNGYQZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamas Zsoldos <tamas.zsoldos@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Yusuke Suzuki <yusuke.suzuki@isovalent.com>,
+	Julian Wiedmann <jwi@isovalent.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jordan Rife <jrife@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/201] perf session: Fix handling when buffer exceeds 2 GiB
+Subject: [PATCH 6.17 102/371] bpf: Fix metadata_dst leak __bpf_redirect_neigh_v{4,6}
 Date: Fri, 17 Oct 2025 16:51:17 +0200
-Message-ID: <20251017145135.331571381@linuxfoundation.org>
+Message-ID: <20251017145205.631191487@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +66,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit c17dda8013495d8132c976cbf349be9949d0fbd1 ]
+[ Upstream commit 23f3770e1a53e6c7a553135011f547209e141e72 ]
 
-If a user specifies an AUX buffer larger than 2 GiB, the returned size
-may exceed 0x80000000. Since the err variable is defined as a signed
-32-bit integer, such a value overflows and becomes negative.
+Cilium has a BPF egress gateway feature which forces outgoing K8s Pod
+traffic to pass through dedicated egress gateways which then SNAT the
+traffic in order to interact with stable IPs outside the cluster.
 
-As a result, the perf record command reports an error:
+The traffic is directed to the gateway via vxlan tunnel in collect md
+mode. A recent BPF change utilized the bpf_redirect_neigh() helper to
+forward packets after the arrival and decap on vxlan, which turned out
+over time that the kmalloc-256 slab usage in kernel was ever-increasing.
 
-  0x146e8 [0x30]: failed to process type: 71 [Unknown error 183711232]
+The issue was that vxlan allocates the metadata_dst object and attaches
+it through a fake dst entry to the skb. The latter was never released
+though given bpf_redirect_neigh() was merely setting the new dst entry
+via skb_dst_set() without dropping an existing one first.
 
-Change the type of the err variable to a signed 64-bit integer to
-accommodate large buffer sizes correctly.
-
-Fixes: d5652d865ea734a1 ("perf session: Add ability to skip 4GiB or more")
-Reported-by: Tamas Zsoldos <tamas.zsoldos@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20250808-perf_fix_big_buffer_size-v1-1-45f45444a9a4@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
+Reported-by: Yusuke Suzuki <yusuke.suzuki@isovalent.com>
+Reported-by: Julian Wiedmann <jwi@isovalent.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Jordan Rife <jrife@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20251003073418.291171-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/session.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/filter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
-index 277b2cbd51861..e4d57e7df7ae1 100644
---- a/tools/perf/util/session.c
-+++ b/tools/perf/util/session.c
-@@ -1662,7 +1662,7 @@ static s64 perf_session__process_user_event(struct perf_session *session,
- 	struct perf_tool *tool = session->tool;
- 	struct perf_sample sample = { .time = 0, };
- 	int fd = perf_data__fd(session->data);
--	int err;
-+	s64 err;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 2d326d35c3871..c5cdf3b08341a 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2281,6 +2281,7 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
+ 		if (IS_ERR(dst))
+ 			goto out_drop;
  
- 	if (event->header.type != PERF_RECORD_COMPRESSED ||
- 	    tool->compressed == perf_session__process_compressed_event_stub)
++		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 	} else if (nh->nh_family != AF_INET6) {
+ 		goto out_drop;
+@@ -2389,6 +2390,7 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
+ 			goto out_drop;
+ 		}
+ 
++		skb_dst_drop(skb);
+ 		skb_dst_set(skb, &rt->dst);
+ 	}
+ 
 -- 
 2.51.0
 
