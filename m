@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03504BE995A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B1FBEA6DB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:03:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8176743A27
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:05:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9F1DD58451A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C769733507C;
-	Fri, 17 Oct 2025 15:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196DA330B00;
+	Fri, 17 Oct 2025 15:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjngnv4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2b3NMJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D47E335078;
-	Fri, 17 Oct 2025 15:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6216330B1F;
+	Fri, 17 Oct 2025 15:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713403; cv=none; b=Rs/yoUBSAh1KDRibgBva79RQQQYPD95TaUdn0gp5kXqPSwMYeL5FkVRtetLMTzQxfTeMSGmWIconUeqbY1M99anBmsbbIA/7CsMgvQU+mCy+86sABi9sxuJZPYKDAiou993WEgU4imbArC7ursQimjSObcbSMVyoZRO5v8+h0Qc=
+	t=1760716293; cv=none; b=KsQjswtd6X2Y9K7H+hBDg0W+4iMgh/Azv3Egnq/QZuglMdThg5y8my3OMciWlhTU07QVXWXDjGHsWP0QKdmnW6C+/Vox8hOCDT/WBlis209WTkdqe5+3/ZpS1B9O+madASmMEEQDQSMzQlt+vR2NNFifJy54jw4mzNXSmTXeupI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713403; c=relaxed/simple;
-	bh=aGPpW6XgsVbr7Dyw64byegUYAAWUgL9YRRhRsnrv/lQ=;
+	s=arc-20240116; t=1760716293; c=relaxed/simple;
+	bh=MvgxDz3p8JW8qd07lAkDY4m1qcktZCpiOZ5vL/r5k/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IuxC52vg6xfcsGnEzFbpsCN36iI2vhRmsZmqFhsl3Fqtfc1d8qNqUQ+YbvndVlanL/WugHh1uUqfz+1Qr51rsIOAOhWguAc2sgQMrgGMzdUnBhBeZO2qE6CB4vyw+Gz83no2tkPk2kxbKwOGaC4JHqOqNsJ9uFxJ9mW0OigIvak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjngnv4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C9AC4CEE7;
-	Fri, 17 Oct 2025 15:03:22 +0000 (UTC)
+	 MIME-Version; b=HIU1qG92jENQj0sSO235f7/eizvXIs6ks41JMs8BWbdL8gVuqkuReTthpKF1lNMJZLEWaovIyCJCJ/9JVxjRfqLQO6w6VRmJ3UiNU83ry2FiJSBKKunaCQLlirbHQIPoqcbEnFBMi/TZ0rpMIpOOp4cQp8wDllfQDA6flU1hzkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2b3NMJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9215C4CEE7;
+	Fri, 17 Oct 2025 15:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713403;
-	bh=aGPpW6XgsVbr7Dyw64byegUYAAWUgL9YRRhRsnrv/lQ=;
+	s=korg; t=1760716293;
+	bh=MvgxDz3p8JW8qd07lAkDY4m1qcktZCpiOZ5vL/r5k/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjngnv4eMx2Tdjh0pAJcRE/7/tGiVAhGXbPLm1M9+lHI5oJqRyIasycK+HVfJLwQC
-	 9kl8P1pG2ADcPuxFWDCUpYvXogQlTXoK0abvrLX+zKpC7m/Zjww28Ob5rncZohezka
-	 dXzdEKWYv68yZv9epfeJOrf+DKAowIQCowLSgBOA=
+	b=x2b3NMJTR7UpCxN5mKj+5EuSIjo2Ehan+HG/3/xtqUI08V9/xYOhdlSZWy9vkPPUc
+	 uI5oUzFEv48dRxUCLahKzu3Whw2oOS6uuvsqeKeWcTw3DJMHQ78Mz2KL4gP7IRIeVl
+	 mZLRk3/7UIP7ZBnkjg0BOhqo3XMErovQ64ehZies=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/168] ACPI: property: Disregard references in data-only subnode lists
+Subject: [PATCH 5.15 139/276] cpufreq: tegra186: Set target frequency for all cpus in policy
 Date: Fri, 17 Oct 2025 16:53:52 +0200
-Message-ID: <20251017145134.680146503@linuxfoundation.org>
+Message-ID: <20251017145147.557335939@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit d06118fe9b03426484980ed4c189a8c7b99fa631 ]
+[ Upstream commit 0b1bb980fd7cae126ee3d59f817068a13e321b07 ]
 
-Data-only subnode links following the ACPI data subnode GUID in a _DSD
-package are expected to point to named objects returning _DSD-equivalent
-packages.  If a reference to such an object is used in the target field
-of any of those links, that object will be evaluated in place (as a
-named object) and its return data will be embedded in the outer _DSD
-package.
+The original commit set all cores in a cluster to a shared policy, but
+did not update set_target to apply a frequency change to all cores for
+the policy. This caused most cores to remain stuck at their boot
+frequency.
 
-For this reason, it is not expected to see a subnode link with the
-target field containing a local reference (that would mean pointing
-to a device or another object that cannot be evaluated in place and
-therefore cannot return a _DSD-equivalent package).
-
-Accordingly, simplify the code parsing data-only subnode links to
-simply print a message when it encounters a local reference in the
-target field of one of those links.
-
-Moreover, since acpi_nondev_subnode_data_ok() would only have one
-caller after the change above, fold it into that caller.
-
-Link: https://lore.kernel.org/linux-acpi/CAJZ5v0jVeSrDO6hrZhKgRZrH=FpGD4vNUjFD8hV9WwN9TLHjzQ@mail.gmail.com/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Stable-dep-of: baf60d5cb8bc ("ACPI: property: Do not pass NULL handles to acpi_attach_data()")
+Fixes: be4ae8c19492 ("cpufreq: tegra186: Share policy per cluster")
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/property.c |   51 ++++++++++++++++++++----------------------------
- 1 file changed, 22 insertions(+), 29 deletions(-)
+ drivers/cpufreq/tegra186-cpufreq.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -112,32 +112,12 @@ static bool acpi_nondev_subnode_extract(
- 	return false;
- }
- 
--static bool acpi_nondev_subnode_data_ok(acpi_handle handle,
--					const union acpi_object *link,
--					struct list_head *list,
--					struct fwnode_handle *parent)
--{
--	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
--	acpi_status status;
--
--	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
--					    ACPI_TYPE_PACKAGE);
--	if (ACPI_FAILURE(status))
--		return false;
--
--	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
--					parent))
--		return true;
--
--	ACPI_FREE(buf.pointer);
--	return false;
--}
--
- static bool acpi_nondev_subnode_ok(acpi_handle scope,
- 				   const union acpi_object *link,
- 				   struct list_head *list,
- 				   struct fwnode_handle *parent)
+diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
+index 5d1943e787b0c..af7edddaa84e4 100644
+--- a/drivers/cpufreq/tegra186-cpufreq.c
++++ b/drivers/cpufreq/tegra186-cpufreq.c
+@@ -86,10 +86,14 @@ static int tegra186_cpufreq_set_target(struct cpufreq_policy *policy,
  {
-+	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
- 	acpi_handle handle;
- 	acpi_status status;
+ 	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
+ 	struct cpufreq_frequency_table *tbl = policy->freq_table + index;
+-	unsigned int edvd_offset = data->cpus[policy->cpu].edvd_offset;
++	unsigned int edvd_offset;
+ 	u32 edvd_val = tbl->driver_data;
++	u32 cpu;
  
-@@ -149,7 +129,17 @@ static bool acpi_nondev_subnode_ok(acpi_
- 	if (ACPI_FAILURE(status))
- 		return false;
+-	writel(edvd_val, data->regs + edvd_offset);
++	for_each_cpu(cpu, policy->cpus) {
++		edvd_offset = data->cpus[cpu].edvd_offset;
++		writel(edvd_val, data->regs + edvd_offset);
++	}
  
--	return acpi_nondev_subnode_data_ok(handle, link, list, parent);
-+	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
-+					    ACPI_TYPE_PACKAGE);
-+	if (ACPI_FAILURE(status))
-+		return false;
-+
-+	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
-+					parent))
-+		return true;
-+
-+	ACPI_FREE(buf.pointer);
-+	return false;
+ 	return 0;
  }
- 
- static bool acpi_add_nondev_subnodes(acpi_handle scope,
-@@ -162,7 +152,6 @@ static bool acpi_add_nondev_subnodes(acp
- 
- 	for (i = 0; i < links->package.count; i++) {
- 		union acpi_object *link, *desc;
--		acpi_handle handle;
- 		bool result;
- 
- 		link = &links->package.elements[i];
-@@ -174,22 +163,26 @@ static bool acpi_add_nondev_subnodes(acp
- 		if (link->package.elements[0].type != ACPI_TYPE_STRING)
- 			continue;
- 
--		/* The second one may be a string, a reference or a package. */
-+		/* The second one may be a string or a package. */
- 		switch (link->package.elements[1].type) {
- 		case ACPI_TYPE_STRING:
- 			result = acpi_nondev_subnode_ok(scope, link, list,
- 							 parent);
- 			break;
--		case ACPI_TYPE_LOCAL_REFERENCE:
--			handle = link->package.elements[1].reference.handle;
--			result = acpi_nondev_subnode_data_ok(handle, link, list,
--							     parent);
--			break;
- 		case ACPI_TYPE_PACKAGE:
- 			desc = &link->package.elements[1];
- 			result = acpi_nondev_subnode_extract(desc, NULL, link,
- 							     list, parent);
- 			break;
-+		case ACPI_TYPE_LOCAL_REFERENCE:
-+			/*
-+			 * It is not expected to see any local references in
-+			 * the links package because referencing a named object
-+			 * should cause it to be evaluated in place.
-+			 */
-+			acpi_handle_info(scope, "subnode %s: Unexpected reference\n",
-+					 link->package.elements[0].string.pointer);
-+			fallthrough;
- 		default:
- 			result = false;
- 			break;
+-- 
+2.51.0
+
 
 
 
