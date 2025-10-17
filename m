@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-187541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5635BEA618
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA1BBE9BAD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A94275A45E4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:53:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6FDE556661D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB866330B2E;
-	Fri, 17 Oct 2025 15:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B1132E157;
+	Fri, 17 Oct 2025 15:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azKID30X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5bWBv05"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8948D330B1F;
-	Fri, 17 Oct 2025 15:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5DA32E147;
+	Fri, 17 Oct 2025 15:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716368; cv=none; b=NtF3UfJyoEuMqS9syoKqsloI1ccAiEZ9sCu3/4qJsXbSq2Uxi5vjgr943L4p2u041lkZamyLuJbVlfT8YdG7/aTfo/OK5Jyy5Lb9h17MdHvnUeUt7j41TQnWMz0Kr4YxKpVjj8EeqZDVUachUqYKyTQnZXU90zScJHH/cBa0Xp4=
+	t=1760714011; cv=none; b=G2px6xZM+KS56lDzprh7XvswTIAi8/yn7Ld/8BbR+WYe4Vo2RC/AuoX8jtDias0qYx4bnNP+vAW+PTm13W5RECKzmCUG/E8cBaQ4l3c5bs0Z17tC50UezCzILUhRYDYx6tPuwu9Pu6VfM/1QIn8oSo74Ov1rsyyUwgiMedQkxfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716368; c=relaxed/simple;
-	bh=WXSPoK7qIl2/2T9B0+hzqXykb9n+bm5SnEv8b96f9s0=;
+	s=arc-20240116; t=1760714011; c=relaxed/simple;
+	bh=69XIVgZAi45SwiSqMgY4xzqxYOlDv2XLkd6a7EV8hvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVejGuSuE/lhjPRtP14+fqzLalKb6A1r3maM0XlOKznCcEYgOtRLT2Lvta0EBfRDL7PNYf0hB7bLy9/tpIAp7HZ290eenidJuuHZ4P8w7cPkjlkzOp41lS9l+pkE72wsJvZi1t1/NTv3fQGodj7SfEwjJCPMtVVoHUcuzN1ZoB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azKID30X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFFDC4CEE7;
-	Fri, 17 Oct 2025 15:52:47 +0000 (UTC)
+	 MIME-Version; b=PDztPf67Wgz0HqYKwRQsz2myGwetllzafIEOQVmF/IVFR9nl0FCzmpsEUFLSdKLLGZEo3lZmZIVkk2RRua6yQ+ETPV/gt2y0a+RG4weFwTO+bUVaA+XAbLQuX1i9rp7WPkdOK1mrioICwvyQXtDiW6sbdG2dxBLxG2fx0sU3wus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5bWBv05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2287C4CEE7;
+	Fri, 17 Oct 2025 15:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716368;
-	bh=WXSPoK7qIl2/2T9B0+hzqXykb9n+bm5SnEv8b96f9s0=;
+	s=korg; t=1760714011;
+	bh=69XIVgZAi45SwiSqMgY4xzqxYOlDv2XLkd6a7EV8hvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azKID30XLfbWn16c8Oyhya88Lml0Wo1QcDIuIj38+lZwQQgV6i8o5y3RMpkC4G6uH
-	 2/EvsFxbQnO06i+pe8KXR39NYxpydnlIM+kT8k+bhlmLp8Qm80rMGh3LCF/M9t3XeU
-	 W2bq1CecWoZhm8mhSMCdKj93/4++1ugJ5PDEAq5k=
+	b=I5bWBv05fPfPZmDHytFPQe30uVVu5EpJ6KVGolHfKN6I/yiEb83PvnoStfgmLFwR/
+	 2wF4bDm0XN5GtshIG4Iy/vtORCnu0HkA910fFM19v+ccH5cgUqgwoGTYxyxBfVw5sJ
+	 tWYairWsg3+nkckNg+5WFa3L8GCtMz93jfymCCzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Tang <danielzgtg.opensource@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 166/276] ACPI: TAD: Add missing sysfs_remove_group() for ACPI_TAD_RT
+	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Nicolas Pitre <nico@fluxnic.net>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 198/201] cramfs: Verify inode mode when loading from disk
 Date: Fri, 17 Oct 2025 16:54:19 +0200
-Message-ID: <20251017145148.531380352@linuxfoundation.org>
+Message-ID: <20251017145142.034215423@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Tang <danielzgtg.opensource@gmail.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 4aac453deca0d9c61df18d968f8864c3ae7d3d8d upstream.
+[ Upstream commit 7f9d34b0a7cb93d678ee7207f0634dbf79e47fe5 ]
 
-Previously, after `rmmod acpi_tad`, `modprobe acpi_tad` would fail
-with this dmesg:
+The inode mode loaded from corrupted disk can be invalid. Do like what
+commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
+does.
 
-sysfs: cannot create duplicate filename '/devices/platform/ACPI000E:00/time'
-Call Trace:
- <TASK>
- dump_stack_lvl+0x6c/0x90
- dump_stack+0x10/0x20
- sysfs_warn_dup+0x8b/0xa0
- sysfs_add_file_mode_ns+0x122/0x130
- internal_create_group+0x1dd/0x4c0
- sysfs_create_group+0x13/0x20
- acpi_tad_probe+0x147/0x1f0 [acpi_tad]
- platform_probe+0x42/0xb0
- </TASK>
-acpi-tad ACPI000E:00: probe with driver acpi-tad failed with error -17
-
-Fixes: 3230b2b3c1ab ("ACPI: TAD: Add low-level support for real time capability")
-Signed-off-by: Daniel Tang <danielzgtg.opensource@gmail.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/2881298.hMirdbgypa@daniel-desktop3
-Cc: 5.2+ <stable@vger.kernel.org> # 5.2+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/429b3ef1-13de-4310-9a8e-c2dc9a36234a@I-love.SAKURA.ne.jp
+Acked-by: Nicolas Pitre <nico@fluxnic.net>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_tad.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/cramfs/inode.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/acpi_tad.c
-+++ b/drivers/acpi/acpi_tad.c
-@@ -563,6 +563,9 @@ static int acpi_tad_remove(struct platfo
+diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
+index 2fbf97077ce91..3f06362985b5a 100644
+--- a/fs/cramfs/inode.c
++++ b/fs/cramfs/inode.c
+@@ -117,9 +117,18 @@ static struct inode *get_cramfs_inode(struct super_block *sb,
+ 		inode_nohighmem(inode);
+ 		inode->i_data.a_ops = &cramfs_aops;
+ 		break;
+-	default:
++	case S_IFCHR:
++	case S_IFBLK:
++	case S_IFIFO:
++	case S_IFSOCK:
+ 		init_special_inode(inode, cramfs_inode->mode,
+ 				old_decode_dev(cramfs_inode->size));
++		break;
++	default:
++		printk(KERN_DEBUG "CRAMFS: Invalid file type 0%04o for inode %lu.\n",
++		       inode->i_mode, inode->i_ino);
++		iget_failed(inode);
++		return ERR_PTR(-EIO);
+ 	}
  
- 	pm_runtime_get_sync(dev);
- 
-+	if (dd->capabilities & ACPI_TAD_RT)
-+		sysfs_remove_group(&dev->kobj, &acpi_tad_time_attr_group);
-+
- 	if (dd->capabilities & ACPI_TAD_DC_WAKE)
- 		sysfs_remove_group(&dev->kobj, &acpi_tad_dc_attr_group);
- 
+ 	inode->i_mode = cramfs_inode->mode;
+-- 
+2.51.0
+
 
 
 
