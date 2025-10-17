@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A61E0BEA149
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:43:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE43EBEA233
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2D53425ABD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F1B674707B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE5C32C937;
-	Fri, 17 Oct 2025 15:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6521E2F12A9;
+	Fri, 17 Oct 2025 15:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxM+gmFY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGfrOD7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F033370FB;
-	Fri, 17 Oct 2025 15:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231CA217722;
+	Fri, 17 Oct 2025 15:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715061; cv=none; b=c8gjDVyhwvN1KHM9HOROK5zgVVcHXWWxS5GP8vSwVXjLbCmikYNel/wdHrnVufR5LJ4FrGm+rL2k8MCQvm2pDAuKRlUowN3pTkiiChEtQCQh2PaDcmw2PfXP1s9v+WUCOEqp3KVaNFszVloSoNYQBQirKSkbuJoV7DawdDUaQFU=
+	t=1760714175; cv=none; b=PwghU0Hey3uqy1ddWBOJJJ47mnODYDS2SpB3HQY3uJTmz6WcJ/oU4BsvQwXAloVdoVERNQ8T4r+FOTem4k0jI7hdVWZuot+ouASVdYNinMm0N1RjdFgX7UBT36aUAYjz1PodoLegKyFo9+cKbh74MpoFpET23bTgmL9XyU/qW8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715061; c=relaxed/simple;
-	bh=TPvulGeYaVaKGeTksUcjuySdRUjqe6+V3iUb7cxRujE=;
+	s=arc-20240116; t=1760714175; c=relaxed/simple;
+	bh=264GAyXI1g58mRvjfRWBJ7nZGkCV/911vVo79ZYFvT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ouj5Kf8OSrLl8fmy48LnkMTs5yo+MTCFArN/yyUiZpbRK5ZoAiZaDVa0fhpzJanJNTd0gk46bTjoljpRSJVQmBDsbImAI2SHFdO9Ai6sr4OmS29E5BJHp8SvVio6xjSPdDPw5fYp2tF9sy56VAP95AoRLSlcKFz4Lj9rw78bmKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxM+gmFY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B25C4CEE7;
-	Fri, 17 Oct 2025 15:31:00 +0000 (UTC)
+	 MIME-Version; b=moMtnrin5Ub53Kk0WzglhLdcKqvuGoBTD+tOcdLRJMMrW4UwiiUTwrcJ1m7xR2OzQKjQeKp0h5ZWA0bqylpe1o8VIcoOb8ym1u9fLzpACgqMtA2X6ZBrtu3PVBeHSydTdjSoP+zl4J/bhx7yJsK91iEllLKnniMG4nKl7uSAptc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGfrOD7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E7BC113D0;
+	Fri, 17 Oct 2025 15:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715061;
-	bh=TPvulGeYaVaKGeTksUcjuySdRUjqe6+V3iUb7cxRujE=;
+	s=korg; t=1760714172;
+	bh=264GAyXI1g58mRvjfRWBJ7nZGkCV/911vVo79ZYFvT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NxM+gmFYTFp0h1WrvQoc65qcyDnDOOCU7eydLZtSt4Mj6os8kA5GpEeulCWIxTGlU
-	 NQso/mYXk1ZsQXwC6tMvypFhyl9Yc5Pjk8VT68M1UKHomPY8y6/AX0ocB8djAAXWA+
-	 pcwQy7NyPiGn0aojubPqQKtZ+ePBTK1KeUuAxTLc=
+	b=mGfrOD7Rpf1UQTyrvVsKEbWmMxGJ0ypUGwwgtwGU5Z7P/fvwdtvYy9TT7WSOYm7kN
+	 IzBctO6yjNwPrsFVM49YVmTc3qQJRSAsOMexNTwf9GbPSATobMKIJUikUhrPJnK5r6
+	 KRploiflJy++6oUVWsNq0eEMzcBJBNhBvo7LwiZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raag Jadav <raag.jadav@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 083/371] drm/xe/i2c: Dont rely on d3cold.allowed flag in system PM path
-Date: Fri, 17 Oct 2025 16:50:58 +0200
-Message-ID: <20251017145204.942180796@linuxfoundation.org>
+Subject: [PATCH 6.12 052/277] drm/vmwgfx: Fix copy-paste typo in validation
+Date: Fri, 17 Oct 2025 16:50:59 +0200
+Message-ID: <20251017145149.047108136@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raag Jadav <raag.jadav@intel.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 1af59cd5cc2b65d7fc95165f056695ce3f171133 ]
+[ Upstream commit 228c5d44dffe8c293cd2d2f0e7ea45e64565b1c4 ]
 
-In S3 and above sleep states, the device can loose power regardless of
-d3cold.allowed flag. Bring up I2C controller explicitly in system PM
-path to ensure its normal operation after losing power.
+'entry' should be 'val' which is the loop iterator.
 
-v2: Cover S3 and above states (Rodrigo)
-
-Fixes: 0ea07b69517a ("drm/xe/pm: Wire up suspend/resume for I2C controller")
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://lore.kernel.org/r/20250918103200.2952576-1-raag.jadav@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit e4863f1159befcd70df24fcb5458afaf2feab043)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: 9e931f2e0970 ("drm/vmwgfx: Refactor resource validation hashtable to use linux/hashtable implementation.")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://lore.kernel.org/r/20250926195427.1405237-2-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pm.c | 2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_validation.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-index bb9b6ecad2afc..3e301e42b2f19 100644
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -194,7 +194,7 @@ int xe_pm_resume(struct xe_device *xe)
- 	if (err)
- 		goto err;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+index c18dc414a047f..80e8bbc3021d1 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+@@ -639,7 +639,7 @@ void vmw_validation_drop_ht(struct vmw_validation_context *ctx)
+ 		hash_del_rcu(&val->hash.head);
  
--	xe_i2c_pm_resume(xe, xe->d3cold.allowed);
-+	xe_i2c_pm_resume(xe, true);
+ 	list_for_each_entry(val, &ctx->resource_ctx_list, head)
+-		hash_del_rcu(&entry->hash.head);
++		hash_del_rcu(&val->hash.head);
  
- 	xe_irq_resume(xe);
- 
+ 	ctx->sw_context = NULL;
+ }
 -- 
 2.51.0
 
