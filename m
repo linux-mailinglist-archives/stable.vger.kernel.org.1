@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63541BEA9F2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:20:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65810BEA774
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92F127C2BFF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A84E585FB9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9525E330B16;
-	Fri, 17 Oct 2025 15:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72411A9FB7;
+	Fri, 17 Oct 2025 15:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IFsv55h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2E/GPET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB3E330B31;
-	Fri, 17 Oct 2025 15:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72375330B00;
+	Fri, 17 Oct 2025 15:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715689; cv=none; b=Rc28VPXc+vnZ52DaPoa3+upyjWR9/S9ma4M9+yM+p2gVdEQyR1R4AD+OhEqt2TBLrmCoKKI41Bm6dSl/3ebFW/SSmZwJSCMzsi9jpkBdZOJxMVdhIkPqYrdiqjoaaj+4lkkUPvaDNHHUe84c6JGZiZ7fK3QKH6XTMebfnbyWYyo=
+	t=1760716518; cv=none; b=Jo2RISnzR1xn3tmembLho/vairUIvVJZOQqGd3ap0QXbl+0MNHhqAQVWUmWPKPP57qlgeTuOdPnHwNN5Y62y7qmxtGO221Jhm5BjuidvYuM8n7QFEjSrFuCOmuxLFWxywxK5hgs/kJtzRNInAYcMcuDRXPwJpOIYcE3SFnlOhe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715689; c=relaxed/simple;
-	bh=vcZFqicQuewmRFP1MSS77/7+JoZLg/jacnGw/AD8uZ0=;
+	s=arc-20240116; t=1760716518; c=relaxed/simple;
+	bh=gsHisVrDePyZJzgho+CxKFCxUT3Rrvb1Ns1S3GDstfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QUAnY0JCHqXXvdRVvXsg9V7OTW9fLcx/Ol1i08vm2XG5qrdX0o5OIPdVvbNiJStT6ppS5pVZnxf1RZ4EIgYA0uU+sSHaLoNVVGklLFWFw3VUKCaFd0nLAmH2lEs9EWx81txc4ZAhCVXWMOPK9oYZbX2L+ZWOqyaL5BtluSIFEiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IFsv55h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E40C116B1;
-	Fri, 17 Oct 2025 15:41:28 +0000 (UTC)
+	 MIME-Version; b=Gfsjyq6x7V0PQy3rSVVARHkR7UU1o4iS+ysuO+eATdylAyqlWXEPf1qRa7CBoUKBnjntgvBeLOaTisLsHUncv2mwl55jjkCGWy++Mps9quv6Lp9JTFRC41hpBQjNRFHJH3hypDpWl0WtnDQDHlusa41FbmNYAF4N77SMvY1n7Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2E/GPET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF534C4CEE7;
+	Fri, 17 Oct 2025 15:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715689;
-	bh=vcZFqicQuewmRFP1MSS77/7+JoZLg/jacnGw/AD8uZ0=;
+	s=korg; t=1760716518;
+	bh=gsHisVrDePyZJzgho+CxKFCxUT3Rrvb1Ns1S3GDstfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2IFsv55h6W19e3INWDgd0WC5hovWshKG4Az1G7gQVtOFzXiKC9gg4J50LvyaPHjFb
-	 timXKyqajjJMQbvn5aW/rE76n30a9sY/LgQMtFPJyyPgHDpNIjPcVlatElJcAw4Sdl
-	 wtf7KrWcRLtnKZekz2gXlyw4NWQ9xXc3Jdnr3Lt0=
+	b=C2E/GPETOjm/ihcJjqCsYPsrIVMHyhmT7YVBy9OueL2kMq2bNXRU+pTD/K/pUL2R/
+	 0ZH2TGDlcq9VQrf2vUyGkkF3Y+vYxgbET6IJnWDCQ/F4rmFri9VX4tyXuVSLIRyh1b
+	 NN/h/eUG6jMugjqD0DhcUBAfYfKkUsT2f4WpbyWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 302/371] mptcp: reset blackhole on success with non-loopback ifaces
-Date: Fri, 17 Oct 2025 16:54:37 +0200
-Message-ID: <20251017145213.001454570@linuxfoundation.org>
+	Sean Nyekjaer <sean@geanix.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 185/276] iio: imu: inv_icm42600: Drop redundant pm_runtime reinitialization in resume
+Date: Fri, 17 Oct 2025 16:54:38 +0200
+Message-ID: <20251017145149.226590204@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Sean Nyekjaer <sean@geanix.com>
 
-commit 833d4313bc1e9e194814917d23e8874d6b651649 upstream.
+commit a95a0b4e471a6d8860f40c6ac8f1cad9dde3189a upstream.
 
-When a first MPTCP connection gets successfully established after a
-blackhole period, 'active_disable_times' was supposed to be reset when
-this connection was done via any non-loopback interfaces.
+Remove unnecessary calls to pm_runtime_disable(), pm_runtime_set_active(),
+and pm_runtime_enable() from the resume path. These operations are not
+required here and can interfere with proper pm_runtime state handling,
+especially when resuming from a pm_runtime suspended state.
 
-Unfortunately, the opposite condition was checked: only reset when the
-connection was established via a loopback interface. Fixing this by
-simply looking at the opposite.
-
-This is similar to what is done with TCP FastOpen, see
-tcp_fastopen_active_disable_ofo_check().
-
-This patch is a follow-up of a previous discussion linked to commit
-893c49a78d9f ("mptcp: Use __sk_dst_get() and dst_dev_rcu() in
-mptcp_active_enable()."), see [1].
-
-Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/4209a283-8822-47bd-95b7-87e96d9b7ea3@kernel.org [1]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250918-net-next-mptcp-blackhole-reset-loopback-v1-1-bf5818326639@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250901-icm42pmreg-v3-2-ef1336246960@geanix.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/ctrl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/net/mptcp/ctrl.c
-+++ b/net/mptcp/ctrl.c
-@@ -507,7 +507,7 @@ void mptcp_active_enable(struct sock *sk
- 		rcu_read_lock();
- 		dst = __sk_dst_get(sk);
- 		dev = dst ? dst_dev_rcu(dst) : NULL;
--		if (dev && (dev->flags & IFF_LOOPBACK))
-+		if (!(dev && (dev->flags & IFF_LOOPBACK)))
- 			atomic_set(&pernet->active_disable_times, 0);
- 		rcu_read_unlock();
- 	}
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -730,10 +730,6 @@ static int __maybe_unused inv_icm42600_r
+ 	if (ret)
+ 		goto out_unlock;
+ 
+-	pm_runtime_disable(dev);
+-	pm_runtime_set_active(dev);
+-	pm_runtime_enable(dev);
+-
+ 	/* restore sensors state */
+ 	ret = inv_icm42600_set_pwr_mgmt0(st, st->suspended.gyro,
+ 					 st->suspended.accel,
 
 
 
