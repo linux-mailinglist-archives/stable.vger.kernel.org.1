@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-187614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC02BEA795
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:08:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7BE8BEAD09
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 530E15A280B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B65D7960DA2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB75B2E62BE;
-	Fri, 17 Oct 2025 15:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895982472B0;
+	Fri, 17 Oct 2025 15:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxNCO5bC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyZzSQhs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A7D330B26;
-	Fri, 17 Oct 2025 15:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451E121C9EA;
+	Fri, 17 Oct 2025 15:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716580; cv=none; b=Cmz6pv2tG7y1sQKl+BPEQcr4TAXu8qZEzY3few07Auy9pka9sTgjANZBKVWvXltVr3knPzpYRC/dbQJOqWWyTROjsCqQXNMvioX1Z8Tr4ovyW3p3LsR0u7GSUEP/S7s8oXujeqOiELwdIw4cOvR567DFt2jrNb3QrGutZ/55OOI=
+	t=1760716586; cv=none; b=K7/w3RaSw7LkTP9EDe99yq18ilq3NG9M1ryCqINx4hp4Wny86svlimE6XPKugPxVEzU3wE4ibmlEpv9XZmIxdpBA61bsmZq75sA1jMulNmm9vh38mE6kGTlTo3UhDS271LAT52FaGlqQoVOMEO70TpMCZmCdTnefz2BFraNMwiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716580; c=relaxed/simple;
-	bh=c6JBegE0yyf88j1SsgYiEe2N5EuEipcJEGFmlYWEAvc=;
+	s=arc-20240116; t=1760716586; c=relaxed/simple;
+	bh=QbAwGDAedkg68d5zy06yFYsWongnZkcUfLTYAB2/kZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSaQ9t96zZp8XtjxBsB828xRyhDBVNJvXp1qwxaI99YqZWzAZqJ47qn9WNZX6MxGENo8pUTmWzKLUeqOcuj94UMTOpMR6JwIQRae8kiPmXRUr24URMZg9QAm1zvGmRjzYk6PXx+OyRZ27OWbPr5tpS59KdcQURUfU6C2Xe8rjak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxNCO5bC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF14C4CEE7;
-	Fri, 17 Oct 2025 15:56:19 +0000 (UTC)
+	 MIME-Version; b=iGYEGHjcoUWsBLbHIUZ5Yg2EfWMM3IO462RV+bZS1w914NELuGk3OryKwgsk9CyIean/vtyuQOK8XPKJ+OZfGdmH9fWRfHiy2RvbQFuxne9/xE980rDecF2Cw58n5GdNn+rJBH5s3WDJq2IcHs2b8/2w+hcH7Gj7nOrjhgB8o04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyZzSQhs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7EE3C4CEE7;
+	Fri, 17 Oct 2025 15:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716580;
-	bh=c6JBegE0yyf88j1SsgYiEe2N5EuEipcJEGFmlYWEAvc=;
+	s=korg; t=1760716586;
+	bh=QbAwGDAedkg68d5zy06yFYsWongnZkcUfLTYAB2/kZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gxNCO5bCuIMO4KXMzfvuizAysorbAQAIaUayqhJIrNDiC0P+/cwTrIjZ0KDPXfa4n
-	 1fRnFan/KBznJ0mEHO1THYd4N6VAbtLmhrZbEMeYkdyR6U9ELqt1OeFSArP+lwDdz/
-	 tseGviDoty6Zn4jCis94QMkH7xZ+1/wYq30tMrd0=
+	b=WyZzSQhsRJE+yEJH0t3wZ8hadvK95QaIlvFF7E5dBvaMkonYkmwPQy1289M4r5FcW
+	 cW5qr2H/yoEzdPdTz+1A+LI78tKWduVkanVZQsFK/Gz3br2lWe4bDnZKeKj4xZLjaP
+	 b+Xiqq9VoZwQvMpipojPCBcblRa9cJBM9ZEtNv3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 239/276] fscontext: do not consume log entries when returning -EMSGSIZE
-Date: Fri, 17 Oct 2025 16:55:32 +0200
-Message-ID: <20251017145151.195842205@linuxfoundation.org>
+Subject: [PATCH 5.15 241/276] arm64: dts: qcom: sdm845: Fix slimbam num-channels/ees
+Date: Fri, 17 Oct 2025 16:55:34 +0200
+Message-ID: <20251017145151.270159081@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
 References: <20251017145142.382145055@linuxfoundation.org>
@@ -67,123 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aleksa Sarai <cyphar@cyphar.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 72d271a7baa7062cb27e774ac37c5459c6d20e22 ]
+[ Upstream commit 316294bb6695a43a9181973ecd4e6fb3e576a9f7 ]
 
-Userspace generally expects APIs that return -EMSGSIZE to allow for them
-to adjust their buffer size and retry the operation. However, the
-fscontext log would previously clear the message even in the -EMSGSIZE
-case.
+Reading the hardware registers of the &slimbam on RB3 reveals that the BAM
+supports only 23 pipes (channels) and supports 4 EEs instead of 2. This
+hasn't caused problems so far since nothing is using the extra channels,
+but attempting to use them would lead to crashes.
 
-Given that it is very cheap for us to check whether the buffer is too
-small before we remove the message from the ring buffer, let's just do
-that instead. While we're at it, refactor some fscontext_read() into a
-separate helper to make the ring buffer logic a bit easier to read.
+The bam_dma driver might warn in the future if the num-channels in the DT
+are wrong, so correct the properties in the DT to avoid future regressions.
 
-Fixes: 007ec26cdc9f ("vfs: Implement logging through fs_context")
-Cc: David Howells <dhowells@redhat.com>
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-Link: https://lore.kernel.org/20250807-fscontext-log-cleanups-v3-1-8d91d6242dc3@cyphar.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 27ca1de07dc3 ("arm64: dts: qcom: sdm845: add slimbus nodes")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250821-sdm845-slimbam-channels-v1-1-498f7d46b9ee@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fsopen.c |   70 ++++++++++++++++++++++++++++++++----------------------------
- 1 file changed, 38 insertions(+), 32 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/fsopen.c
-+++ b/fs/fsopen.c
-@@ -18,50 +18,56 @@
- #include "internal.h"
- #include "mount.h"
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4839,11 +4839,11 @@
+ 			compatible = "qcom,bam-v1.7.0";
+ 			qcom,controlled-remotely;
+ 			reg = <0 0x17184000 0 0x2a000>;
+-			num-channels  = <31>;
++			num-channels = <23>;
+ 			interrupts = <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>;
+ 			#dma-cells = <1>;
+ 			qcom,ee = <1>;
+-			qcom,num-ees = <2>;
++			qcom,num-ees = <4>;
+ 			iommus = <&apps_smmu 0x1806 0x0>;
+ 		};
  
-+static inline const char *fetch_message_locked(struct fc_log *log, size_t len,
-+					       bool *need_free)
-+{
-+	const char *p;
-+	int index;
-+
-+	if (unlikely(log->head == log->tail))
-+		return ERR_PTR(-ENODATA);
-+
-+	index = log->tail & (ARRAY_SIZE(log->buffer) - 1);
-+	p = log->buffer[index];
-+	if (unlikely(strlen(p) > len))
-+		return ERR_PTR(-EMSGSIZE);
-+
-+	log->buffer[index] = NULL;
-+	*need_free = log->need_free & (1 << index);
-+	log->need_free &= ~(1 << index);
-+	log->tail++;
-+
-+	return p;
-+}
-+
- /*
-  * Allow the user to read back any error, warning or informational messages.
-+ * Only one message is returned for each read(2) call.
-  */
- static ssize_t fscontext_read(struct file *file,
- 			      char __user *_buf, size_t len, loff_t *pos)
- {
- 	struct fs_context *fc = file->private_data;
--	struct fc_log *log = fc->log.log;
--	unsigned int logsize = ARRAY_SIZE(log->buffer);
--	ssize_t ret;
--	char *p;
-+	ssize_t err;
-+	const char *p __free(kfree) = NULL, *message;
- 	bool need_free;
--	int index, n;
--
--	ret = mutex_lock_interruptible(&fc->uapi_mutex);
--	if (ret < 0)
--		return ret;
--
--	if (log->head == log->tail) {
--		mutex_unlock(&fc->uapi_mutex);
--		return -ENODATA;
--	}
-+	int n;
- 
--	index = log->tail & (logsize - 1);
--	p = log->buffer[index];
--	need_free = log->need_free & (1 << index);
--	log->buffer[index] = NULL;
--	log->need_free &= ~(1 << index);
--	log->tail++;
-+	err = mutex_lock_interruptible(&fc->uapi_mutex);
-+	if (err < 0)
-+		return err;
-+	message = fetch_message_locked(fc->log.log, len, &need_free);
- 	mutex_unlock(&fc->uapi_mutex);
-+	if (IS_ERR(message))
-+		return PTR_ERR(message);
- 
--	ret = -EMSGSIZE;
--	n = strlen(p);
--	if (n > len)
--		goto err_free;
--	ret = -EFAULT;
--	if (copy_to_user(_buf, p, n) != 0)
--		goto err_free;
--	ret = n;
--
--err_free:
- 	if (need_free)
--		kfree(p);
--	return ret;
-+		p = message;
-+
-+	n = strlen(message);
-+	if (copy_to_user(_buf, message, n))
-+		return -EFAULT;
-+	return n;
- }
- 
- static int fscontext_release(struct inode *inode, struct file *file)
 
 
 
