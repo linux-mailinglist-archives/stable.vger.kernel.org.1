@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-186398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E70BE96FA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:03:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07478BEA05C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 621AC6E7C4C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBCBB18933FF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51A02F12AC;
-	Fri, 17 Oct 2025 14:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B1F330B0E;
+	Fri, 17 Oct 2025 15:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVNOzkzs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFq+VefN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A061D2472B0;
-	Fri, 17 Oct 2025 14:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506FD330B08;
+	Fri, 17 Oct 2025 15:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713128; cv=none; b=p9iAOjoXpdpEZmDSFfeRIyaUuwJik0kkkiLd9Aqv4zN+5lkTBP2PgQuGhcZKT+LvS4drqJVVgtkq3Rb7InJnc4gSz7w+Zg1PtBB7klb+Yj0EcRuj7JOlGKMVuU1KlTqaui5EZE/mM9DTsCHVZx/f4jhzYrzZuUvfnIPrpTU0oY8=
+	t=1760715281; cv=none; b=AsFOB8UWigbUHD7sZrryk27NVxsEsBJG8akUofLtU5PCYwmC0bPMaBBKVUMyh5Ef+EB+Gn3P6ZwNotkBkQeX6ipvWUqRd47ICnMy6TQci4f7GdMdSOiG/5CiV/stSNDL8fSrIYcd+/leqd/nRjKf0QLRkRKrVQcUUaj15tzDQZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713128; c=relaxed/simple;
-	bh=SRVpUUgjzn9IlBoJStPFpzdRLFbZ+yLfBUptgGtMwJk=;
+	s=arc-20240116; t=1760715281; c=relaxed/simple;
+	bh=3v0iIOgjeLj6wXUIlaJP0Bo+PX8Kllf8I5EA1vQIJOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTUR12In5SqQL8HLnkLQbiil9ppBsDU9mE/O9K+1bAkl0cQrwpvqLC6lCS8vCL8soMcQpMQyEPNiRO2D+bbEmp1A/t2LIbYvp0rnhWMgZroN7eEiN/FYPvJ8yse/05gae9N+uUQ12Om5wpJxcoxeM5ky2lASMiPJyOuRoNAysMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVNOzkzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E863C4CEE7;
-	Fri, 17 Oct 2025 14:58:48 +0000 (UTC)
+	 MIME-Version; b=L4feIi07hh8LBCQ1tV8AxnPjPGCeG58//fEdIOfigZkxRN2vWUAaiatjYgDjt0stAaLC7eanxi/W6RizLc+4jW/lzQkt6GY9TnGEldx88rpdMPVzGFv3mw4BBU/HGp5WVF3yAlkDl1vQkh2ThEURhGsKbe9xzIXDsJQ2QT2eKBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFq+VefN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED4DC4CEE7;
+	Fri, 17 Oct 2025 15:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713128;
-	bh=SRVpUUgjzn9IlBoJStPFpzdRLFbZ+yLfBUptgGtMwJk=;
+	s=korg; t=1760715281;
+	bh=3v0iIOgjeLj6wXUIlaJP0Bo+PX8Kllf8I5EA1vQIJOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVNOzkzsPZD6O4K/nZP4Z7dhMHVz4uzbVZ19bPIyGQEGGQw4DFh1dOOokhs1Nm0M8
-	 ywBdeocMnHpUjKS7tUcVkjAU1tOkEYH9avcvHYSejXQHfzyPVe/xui/Ztg+R9QWspH
-	 2fjp/6GW7sZwqFYjrF6jc+x3WVaPxxHbxA3WFm14=
+	b=qFq+VefNlpPbO4JNRT2kZzQkRGBYYeSKrziZspjcKmuL5b6AD8B6u+cMecAdx3t1N
+	 PNfjrLcZxIucVg0+7vrI8Ik2lfZx38S45hRYJM8sLn76loT+6WW/hgdFUV3l9o/YAh
+	 d8ZO99qzfR1JTUUOuJNTFPMj5w5UDcvRQV6YlmVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.garry@huawei.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/168] scsi: libsas: Add sas_task_find_rq()
+Subject: [PATCH 6.17 128/371] gpio: wcd934x: mark the GPIO controller as sleeping
 Date: Fri, 17 Oct 2025 16:51:43 +0200
-Message-ID: <20251017145129.910301580@linuxfoundation.org>
+Message-ID: <20251017145206.563184631@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit a9ee3f840646e2ec419c734e592ffe997195435e ]
+[ Upstream commit b5f8aa8d4bde0cf3e4595af5a536da337e5f1c78 ]
 
-blk-mq already provides a unique tag per request. Some libsas LLDDs - like
-hisi_sas - already use this tag as the unique per-I/O HW tag.
+The slimbus regmap passed to the GPIO driver down from MFD does not use
+fast_io. This means a mutex is used for locking and thus this GPIO chip
+must not be used in atomic context. Change the can_sleep switch in
+struct gpio_chip to true.
 
-Add a common function to provide the request associated with a sas_task for
-all libsas LLDDs.
-
-Signed-off-by: John Garry <john.garry@huawei.com>
-Link: https://lore.kernel.org/r/1666091763-11023-2-git-send-email-john.garry@huawei.com
-Reviewed-by: Jack Wang <jinpu.wang@ionos.com>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 60cd16a3b743 ("scsi: mvsas: Fix use-after-free bugs in mvs_work_queue")
+Fixes: 59c324683400 ("gpio: wcd934x: Add support to wcd934x gpio controller")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/scsi/libsas.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/gpio/gpio-wcd934x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/scsi/libsas.h b/include/scsi/libsas.h
-index 2dbead74a2afe..9e9dff75a02bc 100644
---- a/include/scsi/libsas.h
-+++ b/include/scsi/libsas.h
-@@ -648,6 +648,24 @@ static inline bool sas_is_internal_abort(struct sas_task *task)
- 	return task->task_proto == SAS_PROTOCOL_INTERNAL_ABORT;
- }
+diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
+index 4af504c23e6ff..572b85e773700 100644
+--- a/drivers/gpio/gpio-wcd934x.c
++++ b/drivers/gpio/gpio-wcd934x.c
+@@ -103,7 +103,7 @@ static int wcd_gpio_probe(struct platform_device *pdev)
+ 	chip->base = -1;
+ 	chip->ngpio = WCD934X_NPINS;
+ 	chip->label = dev_name(dev);
+-	chip->can_sleep = false;
++	chip->can_sleep = true;
  
-+static inline struct request *sas_task_find_rq(struct sas_task *task)
-+{
-+	struct scsi_cmnd *scmd;
-+
-+	if (task->task_proto & SAS_PROTOCOL_STP_ALL) {
-+		struct ata_queued_cmd *qc = task->uldd_task;
-+
-+		scmd = qc ? qc->scsicmd : NULL;
-+	} else {
-+		scmd = task->uldd_task;
-+	}
-+
-+	if (!scmd)
-+		return NULL;
-+
-+	return scsi_cmd_to_rq(scmd);
-+}
-+
- struct sas_domain_function_template {
- 	/* The class calls these to notify the LLDD of an event. */
- 	void (*lldd_port_formed)(struct asd_sas_phy *);
+ 	return devm_gpiochip_add_data(dev, chip, data);
+ }
 -- 
 2.51.0
 
