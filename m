@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E55BE97E1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:08:16 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77A4BE95F6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB902188A6D6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5FDBE4E6274
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBC62F12BD;
-	Fri, 17 Oct 2025 15:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFEA45C0B;
+	Fri, 17 Oct 2025 14:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwxhxlG9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ywe6w+2h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE48B32C952;
-	Fri, 17 Oct 2025 15:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674D8337117;
+	Fri, 17 Oct 2025 14:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713509; cv=none; b=d8Sdr55KVFmPw//fJ1bPIypH2RJVHVIr8wFk9TdL3BQoOyFZAv+bf7H3CIG9FWgrSeaHQVlBeSEDAUZshYwprbvEMd6IpmlGnaVQ/IsMagS5iZFJXIgz0KLUM0Y96raTEqTcx3LNgWD7t/fNxfBPyGJ174r8Lx8EoYdOh+k/1QQ=
+	t=1760713017; cv=none; b=SpgTL7/IFANs5sNTxR1ZPKeEY0ywrDpXLXTKE46UQfF9NT85Xi+VN9xdVM9hO/qfasxA+z9veY9KC4R9K8h7K08dRT9fjSrncVH6S7TuEEWw5nR4SQDNrjFtQmary7wFfJQc4OpKRB79/RFrPR2f2f3tBitkKRcjFC4ZEsyKil8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713509; c=relaxed/simple;
-	bh=PJIwibolVz5cz3ryIpZ4/6hnjtKlDFUFfPjcsa0CzCc=;
+	s=arc-20240116; t=1760713017; c=relaxed/simple;
+	bh=+OWJRoDtwYuF1nxhauEPqh0WNNzCasibDT5TWC44oaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVdJQcP/FdNxGuOIybKHtEjluzA+SFcG4iDhz77zF/9/fz95bQGNSiWxt7xkc3EaXzeTcTlHNQZ/Kh2ZJm7in9CQLoHXe3Gvf72Rfey/OdP8SyvEBOscVIRbn1QArq+BAnpOktQxC5fNfuCM0EF4miW97cYikr5BRsiE4guOhbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwxhxlG9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CFDC4CEE7;
-	Fri, 17 Oct 2025 15:05:08 +0000 (UTC)
+	 MIME-Version; b=abZhYxjWhOEmnvTzVxRk0Uj1bgyXKua3XEegrr05JJV1HEr9zSC2O0wV12qgWf/qkBjeP1L4fqhirIRYchdm6w46/iV7hJCUkkfNGedecefhSZ7kdarZ9hWdT+SbsVMlejY9q1U4Tz/7z5vGK5HGeFYn2v4s0dJ38Bp2SnlIkkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ywe6w+2h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77441C4CEE7;
+	Fri, 17 Oct 2025 14:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713508;
-	bh=PJIwibolVz5cz3ryIpZ4/6hnjtKlDFUFfPjcsa0CzCc=;
+	s=korg; t=1760713017;
+	bh=+OWJRoDtwYuF1nxhauEPqh0WNNzCasibDT5TWC44oaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OwxhxlG9hUM8dxRVTOckd6Xa06egvDrVTxHWjzopr1PsXAqh/TrFzOMA6Eu4/6cED
-	 5SajwSwDEhgXaYp9HXWJgAueLU374Q7lnTwegYmdk/L9euTyPWE7gt7nF2wJ3gzGLm
-	 MFHKbwzeKsc2WJ2kiEnL2otnA32zlb8XmQsY1aT8=
+	b=Ywe6w+2h1Xw5deeX+anQR87GCwxhkMn3EknUcFaU+HxCpQtMJj/el9cu56nLtWhTn
+	 c9/5DfzLkubsFDhrRnwT9AYFiHYb7oTeftmgagPK2smm3WktGAQE06kiOrfWkLhu7f
+	 8TZtKzAtAwgXb2r+SBBhaXg9CTYjJcP9pcDA1Mbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/201] clk: mediatek: clk-mux: Do not pass flags to clk_mux_determine_rate_flags()
-Date: Fri, 17 Oct 2025 16:51:23 +0200
-Message-ID: <20251017145135.559101646@linuxfoundation.org>
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 005/168] media: v4l2-subdev: Fix alloc failure check in v4l2_subdev_call_state_try()
+Date: Fri, 17 Oct 2025 16:51:24 +0200
+Message-ID: <20251017145129.207517879@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 5e121370a7ad3414c7f3a77002e2b18abe5c6fe1 ]
+commit f37df9a0eb5e43fcfe02cbaef076123dc0d79c7e upstream.
 
-The `flags` in |struct mtk_mux| are core clk flags, not mux clk flags.
-Passing one to the other is wrong.
+v4l2_subdev_call_state_try() macro allocates a subdev state with
+__v4l2_subdev_state_alloc(), but does not check the returned value. If
+__v4l2_subdev_state_alloc fails, it returns an ERR_PTR, and that would
+cause v4l2_subdev_call_state_try() to crash.
 
-Since there aren't any actual users adding CLK_MUX_* flags, just drop it
-for now.
+Add proper error handling to v4l2_subdev_call_state_try().
 
-Fixes: b05ea3314390 ("clk: mediatek: clk-mux: Add .determine_rate() callback")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: 982c0487185b ("media: subdev: Add v4l2_subdev_call_state_try() macro")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/aJTNtpDUbTz7eyJc%40stanley.mountain/
+Cc: stable@vger.kernel.org
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mux.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/media/v4l2-subdev.h |   30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mux.c b/drivers/clk/mediatek/clk-mux.c
-index c93bc7f926e5d..359f92df826b5 100644
---- a/drivers/clk/mediatek/clk-mux.c
-+++ b/drivers/clk/mediatek/clk-mux.c
-@@ -132,9 +132,7 @@ static int mtk_clk_mux_set_parent_setclr_lock(struct clk_hw *hw, u8 index)
- static int mtk_clk_mux_determine_rate(struct clk_hw *hw,
- 				      struct clk_rate_request *req)
- {
--	struct mtk_clk_mux *mux = to_mtk_clk_mux(hw);
--
--	return clk_mux_determine_rate_flags(hw, req, mux->data->flags);
-+	return clk_mux_determine_rate_flags(hw, req, 0);
- }
+--- a/include/media/v4l2-subdev.h
++++ b/include/media/v4l2-subdev.h
+@@ -1462,19 +1462,23 @@ extern const struct v4l2_subdev_ops v4l2
+  *
+  * Note: only legacy non-MC drivers may need this macro.
+  */
+-#define v4l2_subdev_call_state_try(sd, o, f, args...)                 \
+-	({                                                            \
+-		int __result;                                         \
+-		static struct lock_class_key __key;                   \
+-		const char *name = KBUILD_BASENAME                    \
+-			":" __stringify(__LINE__) ":state->lock";     \
+-		struct v4l2_subdev_state *state =                     \
+-			__v4l2_subdev_state_alloc(sd, name, &__key);  \
+-		v4l2_subdev_lock_state(state);                        \
+-		__result = v4l2_subdev_call(sd, o, f, state, ##args); \
+-		v4l2_subdev_unlock_state(state);                      \
+-		__v4l2_subdev_state_free(state);                      \
+-		__result;                                             \
++#define v4l2_subdev_call_state_try(sd, o, f, args...)                         \
++	({                                                                    \
++		int __result;                                                 \
++		static struct lock_class_key __key;                           \
++		const char *name = KBUILD_BASENAME                            \
++			":" __stringify(__LINE__) ":state->lock";             \
++		struct v4l2_subdev_state *state =                             \
++			__v4l2_subdev_state_alloc(sd, name, &__key);          \
++		if (IS_ERR(state)) {                                          \
++			__result = PTR_ERR(state);                            \
++		} else {                                                      \
++			v4l2_subdev_lock_state(state);                        \
++			__result = v4l2_subdev_call(sd, o, f, state, ##args); \
++			v4l2_subdev_unlock_state(state);                      \
++			__v4l2_subdev_state_free(state);                      \
++		}                                                             \
++		__result;                                                     \
+ 	})
  
- const struct clk_ops mtk_mux_clr_set_upd_ops = {
--- 
-2.51.0
-
+ /**
 
 
 
