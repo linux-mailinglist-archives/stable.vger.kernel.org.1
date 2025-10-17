@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-186548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E66BE994B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:14:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814C4BE9ECA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:33:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3E50745B8F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21ADE744B70
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA7332C952;
-	Fri, 17 Oct 2025 15:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 952203328F6;
+	Fri, 17 Oct 2025 15:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLWRfsVm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtlC6JzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF002F12CF;
-	Fri, 17 Oct 2025 15:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5159732E15D;
+	Fri, 17 Oct 2025 15:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713554; cv=none; b=Vkoy5Sl8k+d5I7bov7Kq0QMU3pqlTTL6fFFIDIwYz1BATAPlqO0AUULIJ0WqbThQyw9AS7iDnJUTMpz4o+k7SBpj1v4jCSDrR9HdIYJ3iV198gwOoDRWidOnwrBdmLSs5P8Ju9JnoIDWCbUd+upPD8qdCy9XGLnljfWalEb47yU=
+	t=1760714256; cv=none; b=PjlTMUiKQzA8WGPuKx98Nqk0onxfPBVTYHdMQ6XYaqe1BoVmZ2dj8tSeTP+BzSqXdcDPIgm148eyuYM4XGZ4YqSO/OzM1OtthaSU6ykuvEgPi421s3186ghDbWjRMcJmkxbnLdtpr587fVREF2AIWvyGSOVKX4H56lqHVx+LTQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713554; c=relaxed/simple;
-	bh=tLa+yd5rfnCjrcDVjtqz1NpRStbSaFdCSnIWpzmyJIk=;
+	s=arc-20240116; t=1760714256; c=relaxed/simple;
+	bh=a3YoWmr1ZMUMiCm9DBzi4zZSqwe/Wx9t9MRqt9V2HWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V9q/Xln7U/pKoEFR1OE+FhbDuvIx4SofbUNq64SkKLH8xY2PMELshCcfVeXe6TILl1+XxjdcjPEEUoQ8wCWikCU3hRDeZhUG3e9cIzWD9HhfA7mWZiWUavKrd5mjGX26NQ9w+sSS6TyXUrLzk12iwcnW4eGpwCyCj39vnwvLcMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLWRfsVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741ECC4CEE7;
-	Fri, 17 Oct 2025 15:05:53 +0000 (UTC)
+	 MIME-Version; b=GMkTFMDhXUzTvDMy/FW90w4R8W/GmvpzpvmO4+eGZkiXEHzFTHgRQub/NNHHXqZPFUnFcD3YxzojQpnakfh2pOl/lCBG+WXD4FDFldnr7SfQeiXpUu69fmIeCsdA1eE+gt778Nmfk8W0dHLAFY3bbPLyApSx1VEKwrJYhd1+ETU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtlC6JzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D26CDC4CEF9;
+	Fri, 17 Oct 2025 15:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713554;
-	bh=tLa+yd5rfnCjrcDVjtqz1NpRStbSaFdCSnIWpzmyJIk=;
+	s=korg; t=1760714256;
+	bh=a3YoWmr1ZMUMiCm9DBzi4zZSqwe/Wx9t9MRqt9V2HWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SLWRfsVm2fILKgj4/AuaZA+cjRjWD98p2yef5EJqR8Rw6ULYEy6+lIF2M8alw2DU2
-	 PBaDs5dcDLFdGIaSgEn/MasdktqKvuLfaZ1j83HFsNP8Hlqbhc9M1LW8lCZ4PLL9u/
-	 X+l7oXUmwvZHTLwhZIGRhHPQYwZbdIC5RoxyDKUg=
+	b=GtlC6JzTUbglXAwECqt5E9Z80z6OM1Rjz/AmO6w5HQ5PoR1cdEU0dE7ebVpugBdvc
+	 6GCiqJjMlYGih883rtC/ApEZLIFIeiS9aeYOuGILJHw+s00qlZ0jH6r8p+dOvZ0f1D
+	 Pw30iD7qbCaeL2t1gCMUiJBSDIoa64SI8ssCNQ90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yunseong Kim <ysk@kzalloc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Harini T <harini.t@amd.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/201] perf util: Fix compression checks returning -1 as bool
+Subject: [PATCH 6.12 064/277] mailbox: zynqmp-ipi: Fix SGI cleanup on unbind
 Date: Fri, 17 Oct 2025 16:51:11 +0200
-Message-ID: <20251017145135.110100365@linuxfoundation.org>
+Message-ID: <20251017145149.481095604@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,69 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunseong Kim <ysk@kzalloc.com>
+From: Harini T <harini.t@amd.com>
 
-[ Upstream commit 43fa1141e2c1af79c91aaa4df03e436c415a6fc3 ]
+[ Upstream commit bb160e791ab15b89188a7a19589b8e11f681bef3 ]
 
-The lzma_is_compressed and gzip_is_compressed functions are declared
-to return a "bool" type, but in case of an error (e.g., file open
-failure), they incorrectly returned -1.
+The driver incorrectly determines SGI vs SPI interrupts by checking IRQ
+number < 16, which fails with dynamic IRQ allocation. During unbind,
+this causes improper SGI cleanup leading to kernel crash.
 
-A bool type is a boolean value that is either true or false.
-Returning -1 for a bool return type can lead to unexpected behavior
-and may violate strict type-checking in some compilers.
+Add explicit irq_type field to pdata for reliable identification of SGI
+interrupts (type-2) and only clean up SGI resources when appropriate.
 
-Fix the return value to be false in error cases, ensuring the function
-adheres to its declared return type improves for preventing potential
-bugs related to type mismatch.
-
-Fixes: 4b57fd44b61beb51 ("perf tools: Add lzma_is_compressed function")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Stephen Brennan <stephen.s.brennan@oracle.com>
-Link: https://lore.kernel.org/r/20250822162506.316844-3-ysk@kzalloc.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 6ffb1635341b ("mailbox: zynqmp: handle SGI for shared IPI")
+Signed-off-by: Harini T <harini.t@amd.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/lzma.c | 2 +-
- tools/perf/util/zlib.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mailbox/zynqmp-ipi-mailbox.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/lzma.c b/tools/perf/util/lzma.c
-index af9a97612f9df..f61574d1581e3 100644
---- a/tools/perf/util/lzma.c
-+++ b/tools/perf/util/lzma.c
-@@ -113,7 +113,7 @@ bool lzma_is_compressed(const char *input)
- 	ssize_t rc;
+diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
+index fab897b5724c1..5bf81b60e9e67 100644
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -62,7 +62,8 @@
+ #define DST_BIT_POS	9U
+ #define SRC_BITMASK	GENMASK(11, 8)
  
- 	if (fd < 0)
--		return -1;
-+		return false;
+-#define MAX_SGI 16
++/* Macro to represent SGI type for IPI IRQs */
++#define IPI_IRQ_TYPE_SGI	2
  
- 	rc = read(fd, buf, sizeof(buf));
- 	close(fd);
-diff --git a/tools/perf/util/zlib.c b/tools/perf/util/zlib.c
-index 78d2297c1b674..1f7c065230599 100644
---- a/tools/perf/util/zlib.c
-+++ b/tools/perf/util/zlib.c
-@@ -88,7 +88,7 @@ bool gzip_is_compressed(const char *input)
- 	ssize_t rc;
+ /*
+  * Module parameters
+@@ -121,6 +122,7 @@ struct zynqmp_ipi_mbox {
+  * @dev:                  device pointer corresponding to the Xilinx ZynqMP
+  *                        IPI agent
+  * @irq:                  IPI agent interrupt ID
++ * @irq_type:             IPI SGI or SPI IRQ type
+  * @method:               IPI SMC or HVC is going to be used
+  * @local_id:             local IPI agent ID
+  * @virq_sgi:             IRQ number mapped to SGI
+@@ -130,6 +132,7 @@ struct zynqmp_ipi_mbox {
+ struct zynqmp_ipi_pdata {
+ 	struct device *dev;
+ 	int irq;
++	unsigned int irq_type;
+ 	unsigned int method;
+ 	u32 local_id;
+ 	int virq_sgi;
+@@ -887,7 +890,7 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
+ 	struct zynqmp_ipi_mbox *ipi_mbox;
+ 	int i;
  
- 	if (fd < 0)
--		return -1;
-+		return false;
+-	if (pdata->irq < MAX_SGI)
++	if (pdata->irq_type == IPI_IRQ_TYPE_SGI)
+ 		xlnx_mbox_cleanup_sgi(pdata);
  
- 	rc = read(fd, buf, sizeof(buf));
- 	close(fd);
+ 	i = pdata->num_mboxes - 1;
+@@ -956,14 +959,16 @@ static int zynqmp_ipi_probe(struct platform_device *pdev)
+ 		dev_err(dev, "failed to parse interrupts\n");
+ 		goto free_mbox_dev;
+ 	}
+-	ret = out_irq.args[1];
++
++	/* Use interrupt type to distinguish SGI and SPI interrupts */
++	pdata->irq_type = out_irq.args[0];
+ 
+ 	/*
+ 	 * If Interrupt number is in SGI range, then request SGI else request
+ 	 * IPI system IRQ.
+ 	 */
+-	if (ret < MAX_SGI) {
+-		pdata->irq = ret;
++	if (pdata->irq_type == IPI_IRQ_TYPE_SGI) {
++		pdata->irq = out_irq.args[1];
+ 		ret = xlnx_mbox_init_sgi(pdev, pdata->irq, pdata);
+ 		if (ret)
+ 			goto free_mbox_dev;
 -- 
 2.51.0
 
