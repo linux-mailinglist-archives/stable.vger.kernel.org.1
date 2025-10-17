@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CDABE95F3
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35470BE981D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E79E235BDD6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53B951AA7D88
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BC12F12C6;
-	Fri, 17 Oct 2025 14:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C1A3208;
+	Fri, 17 Oct 2025 15:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zhkgmyjm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CN1+GIT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60E92F12B7;
-	Fri, 17 Oct 2025 14:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D41432C94E;
+	Fri, 17 Oct 2025 15:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713091; cv=none; b=lzK48KoHZe+x5sTLiAXlN5/9jRe6v4tD/6KcawgB0neqazx0UO/3fH4ioPqgCUVcSxeetEPmhu2pIrbv5ESQlwXs0uDjAO0Iv3obuDDMGVwZ834f/v2KuHgEF1fK3WVGv22uJqHMMTYpR2TLs4b78JtCZkm9qmTbqEgmS8nZfc4=
+	t=1760713625; cv=none; b=huPsa1EMDsZ+Hf1ZtKSl1m2SE+MA52amApM6WuZLK7O2kJjKzKBYg4W4i9RmaPraVSH0Gzdi3GX7R9fvwBCZtP7k+DzJzNC3s7tZcnzkRS+3gS7mm94M6JNgTo6RC7JgMgtY9hd9sm7V/0W43kGUtrYSU3LBtds1IGIwxO4dDew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713091; c=relaxed/simple;
-	bh=pi/4WtHVO6WIllfEJNNgW2p5S66RgAzVQSqwXsThG+k=;
+	s=arc-20240116; t=1760713625; c=relaxed/simple;
+	bh=u+4WUIgxpRf/yqXiYvsfYDXC3G6mQb9AVLNTWnjd9PY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bN/IEiugX6UUX76zxm3PTOuYtP9jM8F1+k1pG4PHNbYtPOjb/8EWuXR3u8EQ0MRa2v/8VmDX4qkPLDjQTduKFLjIvlgfWWuwJy8jxaE9VK04qb2W7kuh4Sfp/UzLehS5bAXm9iRYwG8FFiUcH37H4TV2CLNeb6uFsb13PxF+b+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zhkgmyjm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD352C4CEF9;
-	Fri, 17 Oct 2025 14:58:10 +0000 (UTC)
+	 MIME-Version; b=RygEmG8HbB3hwgI6e2b4h9SBM8Ziw/aIu/fmoXZcQ9ibQQ6d6VNsdB3DYOFIGLNqotFpOXiGXYrXA+EnsldyQnF6HLYCeOrLXDn6CcSKZlypNnGav3ddLPaeCTCLtSw4wdrsbXhSLmd/2xbO0Eim1AxF9ZushpQAcTxwGYzEB8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CN1+GIT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59873C4CEE7;
+	Fri, 17 Oct 2025 15:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713091;
-	bh=pi/4WtHVO6WIllfEJNNgW2p5S66RgAzVQSqwXsThG+k=;
+	s=korg; t=1760713624;
+	bh=u+4WUIgxpRf/yqXiYvsfYDXC3G6mQb9AVLNTWnjd9PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZhkgmyjmrkfeEqlQR3BCSuOGk89VIjmRuP0NxvEl7GB+YXCAmuF9jietsSr3ogDNT
-	 8Cyyw11auylAgZZd0N7W78UoDILNyKM8y820B+ef7OxC4X0yB733oMnwUTNsQxbjYW
-	 j5OkTHa1M1zPgz9tYWkpB343CUKqrMQz4D79rywA=
+	b=2CN1+GITphLkf8qvXmDYjge/Ecv337I9D6Fn/44TM9jQReaAfcaL+3htiSIDE22ZD
+	 BljWNKEtXvjAsxXto43UPqTGRPnx9xLmloOkjZk5ClT6Mj46X1es0fvFC7OQM2S3qx
+	 Z2h4nakgQUZgeOqaI/hpGucVUO387vOBoNE5zH1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/168] drm/amd/display: Properly disable scaling on DCE6
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 062/201] arm64: dts: qcom: msm8939: Add missing MDSS reset
 Date: Fri, 17 Oct 2025 16:52:03 +0200
-Message-ID: <20251017145130.641321576@linuxfoundation.org>
+Message-ID: <20251017145137.028755710@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,106 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit a7dc87f3448bea5ebe054f14e861074b9c289c65 ]
+commit f73c82c855e186e9b67125e3eee743960320e43c upstream.
 
-SCL_SCALER_ENABLE can be used to enable/disable the scaler
-on DCE6. Program it to 0 when scaling isn't used, 1 when used.
-Additionally, clear some other registers when scaling is
-disabled and program the SCL_UPDATE register as recommended.
+On most MSM8939 devices, the bootloader already initializes the display to
+show the boot splash screen. In this situation, MDSS is already configured
+and left running when starting Linux. To avoid side effects from the
+bootloader configuration, the MDSS reset can be specified in the device
+tree to start again with a clean hardware state.
 
-This fixes visible glitches for users whose BIOS sets up a
-mode with scaling at boot, which DC was unable to clean up.
+The reset for MDSS is currently missing in msm8939.dtsi, which causes
+errors when the MDSS driver tries to re-initialize the registers:
 
-Fixes: b70aaf5586f2 ("drm/amd/display: dce_transform: add DCE6 specific macros,functions")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ dsi_err_worker: status=6
+ ...
+
+It turns out that we have always indirectly worked around this by building
+the MDSS driver as a module. Before v6.17, the power domain was temporarily
+turned off until the module was loaded, long enough to clear the register
+contents. In v6.17, power domains are not turned off during boot until
+sync_state() happens, so this is no longer working. Even before v6.17 this
+resulted in broken behavior, but notably only when the MDSS driver was
+built-in instead of a module.
+
+Cc: stable@vger.kernel.org
+Fixes: 61550c6c156c ("arm64: dts: qcom: Add msm8939 SoC")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-2-a5c705df0c45@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/display/dc/dce/dce_transform.c    | 15 +++++++++++----
- .../gpu/drm/amd/display/dc/dce/dce_transform.h    |  2 ++
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8939.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-index b761dda491d54..f97c182677082 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-@@ -154,10 +154,13 @@ static bool dce60_setup_scaling_configuration(
- 	REG_SET(SCL_BYPASS_CONTROL, 0, SCL_BYPASS_MODE, 0);
+--- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
+@@ -1210,6 +1210,8 @@
  
- 	if (data->taps.h_taps + data->taps.v_taps <= 2) {
--		/* Set bypass */
--
--		/* DCE6 has no SCL_MODE register, skip scale mode programming */
-+		/* Disable scaler functionality */
-+		REG_WRITE(SCL_SCALER_ENABLE, 0);
+ 			power-domains = <&gcc MDSS_GDSC>;
  
-+		/* Clear registers that can cause glitches even when the scaler is off */
-+		REG_WRITE(SCL_TAP_CONTROL, 0);
-+		REG_WRITE(SCL_AUTOMATIC_MODE_CONTROL, 0);
-+		REG_WRITE(SCL_F_SHARP_CONTROL, 0);
- 		return false;
- 	}
- 
-@@ -165,7 +168,7 @@ static bool dce60_setup_scaling_configuration(
- 			SCL_H_NUM_OF_TAPS, data->taps.h_taps - 1,
- 			SCL_V_NUM_OF_TAPS, data->taps.v_taps - 1);
- 
--	/* DCE6 has no SCL_MODE register, skip scale mode programming */
-+	REG_WRITE(SCL_SCALER_ENABLE, 1);
- 
- 	/* DCE6 has no SCL_BOUNDARY_MODE bit, skip replace out of bound pixels */
- 
-@@ -502,6 +505,8 @@ static void dce60_transform_set_scaler(
- 	REG_SET(DC_LB_MEM_SIZE, 0,
- 		DC_LB_MEM_SIZE, xfm_dce->lb_memory_size);
- 
-+	REG_WRITE(SCL_UPDATE, 0x00010000);
++			resets = <&gcc GCC_MDSS_BCR>;
 +
- 	/* Clear SCL_F_SHARP_CONTROL value to 0 */
- 	REG_WRITE(SCL_F_SHARP_CONTROL, 0);
- 
-@@ -564,6 +569,8 @@ static void dce60_transform_set_scaler(
- 	/* DCE6 has no SCL_COEF_UPDATE_COMPLETE bit to flip to new coefficient memory */
- 
- 	/* DCE6 DATA_FORMAT register does not support ALPHA_EN */
-+
-+	REG_WRITE(SCL_UPDATE, 0);
- }
- #endif
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-index ff746fba850bc..eb716e8337e23 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.h
-@@ -155,6 +155,7 @@
- 	SRI(SCL_COEF_RAM_TAP_DATA, SCL, id), \
- 	SRI(VIEWPORT_START, SCL, id), \
- 	SRI(VIEWPORT_SIZE, SCL, id), \
-+	SRI(SCL_SCALER_ENABLE, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_INIT_RGB_LUMA, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_INIT_CHROMA, SCL, id), \
- 	SRI(SCL_HORZ_FILTER_SCALE_RATIO, SCL, id), \
-@@ -592,6 +593,7 @@ struct dce_transform_registers {
- 	uint32_t SCL_VERT_FILTER_SCALE_RATIO;
- 	uint32_t SCL_HORZ_FILTER_INIT;
- #if defined(CONFIG_DRM_AMD_DC_SI)
-+	uint32_t SCL_SCALER_ENABLE;
- 	uint32_t SCL_HORZ_FILTER_INIT_RGB_LUMA;
- 	uint32_t SCL_HORZ_FILTER_INIT_CHROMA;
- #endif
--- 
-2.51.0
-
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			#interrupt-cells = <1>;
 
 
 
