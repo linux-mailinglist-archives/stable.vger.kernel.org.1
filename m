@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-187214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27298BEA4D6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:56 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5996EBEA0F5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8C2D6E606B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:39:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2B0B4586B87
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC75330B38;
-	Fri, 17 Oct 2025 15:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB665339717;
+	Fri, 17 Oct 2025 15:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQL/h/P+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtvLeXIM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864DC330B34;
-	Fri, 17 Oct 2025 15:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994CC336EF5;
+	Fri, 17 Oct 2025 15:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715438; cv=none; b=PxpHJRCmao6RIvzIQCCJNC5vZawLN6W1SFTZuJhWbcS734AfZ0oLmV8el7HS524+IOtVpCcHhLIdB4UB/G1cuSBSPARELLipqMacKD3EyRZzNZJPIC6YMR0jQt47SieDh0L3aCdM1csG7Dy7oJUjysEUdtAn/N5Lmm6sQigYNIg=
+	t=1760714548; cv=none; b=JGvmbfygo5gCgbeO+IZwOpx1gIaIflfl5vznodBQc2z46pWg/eTpystnWii7S5p5ov6c2UQ4emRSnC7ur3r7Cvbl1RDuv2V4OjSBDJ7+K42b/p9CeHIEinPw067tGEIR0yNbit0t2ANW27AU1hRKejIdotTXPi+uP36Z8Z1qwFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715438; c=relaxed/simple;
-	bh=1fKaLqJ6eZX3ovi/mgkbC73Ha8q2vEtZcgGGF/NYx0Y=;
+	s=arc-20240116; t=1760714548; c=relaxed/simple;
+	bh=yDk5OGtoUODNdKhsKVzkyX3kqp4l8carmt1SgwRr/Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBLMJdBakWzIgLYRHmhulYD+qtDMod3MRkBHvuPiybbFK00fMuTEinc5GKoTbrlq2DR4cZUdjmWpWUgimCockwPmU722Xg34q7eWic4g3/i//jvH7/fk0qKcalMv94XrV+ez78Q5y7RU2i6Z8Dbn4kyVGwl7aHXzQzAlh55UVrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQL/h/P+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F90FC113D0;
-	Fri, 17 Oct 2025 15:37:17 +0000 (UTC)
+	 MIME-Version; b=P6mEbjQFQn7E5bCRI9gbBR0zNA6SS9es0hF8SXe0VkIqSjEO+XR0g9Zp8pJif0kbFycyr6K2++TcaTx0YJ0/lJG8ZGQDu/6pEpksyrz4aqAjoJRjQpaFLhR0PYKpxcRrfITedeM4owglq3QJDj4x/btQdaaMajlkTBTWWZapICU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtvLeXIM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA97AC4CEFE;
+	Fri, 17 Oct 2025 15:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715438;
-	bh=1fKaLqJ6eZX3ovi/mgkbC73Ha8q2vEtZcgGGF/NYx0Y=;
+	s=korg; t=1760714548;
+	bh=yDk5OGtoUODNdKhsKVzkyX3kqp4l8carmt1SgwRr/Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQL/h/P+ofIJKyZLfSdjooU61Cgi91Ig3+ZjR1OXWslS2NbQn3mVPJXW5PZi0gpM/
-	 duBDYH5sc3vN/MdgYVAE3mxdWGc6TTWjDs7huDJrNHuWvAUEI+/l1qOBUEoLTV+5g8
-	 tnSCOkOKVYHh+T4Q7myNXsGk+CzxAzTFcTwRjv8M=
+	b=wtvLeXIMv2OC9Q+0orS9KfheCcPNxs6YMGcth/6dcwwAym/gVLZB5yU3WoCzHJPxz
+	 4N3yeYuLzl1tF1JRj/4X5fqnhvvyktCxCvIamXm0aoRML2vt/lRqQkbe/IoXtrzhSQ
+	 ntNSM6ywfdITPZdCt3aZrRP/+L4L2zV1PGvvtSqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.17 216/371] fuse: fix livelock in synchronous file put from fuseblk workers
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Manivannan Sadhasivam <mani@kernel.org>
+Subject: [PATCH 6.12 184/277] PCI: rcar-gen4: Fix PHY initialization
 Date: Fri, 17 Oct 2025 16:53:11 +0200
-Message-ID: <20251017145209.902491583@linuxfoundation.org>
+Message-ID: <20251017145153.843324470@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-commit 26e5c67deb2e1f42a951f022fdf5b9f7eb747b01 upstream.
+commit d96ac5bdc52b271b4f8ac0670a203913666b8758 upstream.
 
-I observed a hang when running generic/323 against a fuseblk server.
-This test opens a file, initiates a lot of AIO writes to that file
-descriptor, and closes the file descriptor before the writes complete.
-Unsurprisingly, the AIO exerciser threads are mostly stuck waiting for
-responses from the fuseblk server:
+R-Car V4H Reference Manual R19UH0186EJ0130 Rev.1.30 Apr. 21, 2025 page 4581
+Figure 104.3b Initial Setting of PCIEC(example), middle of the figure
+indicates that fourth write into register 0x148 [2:0] is 0x3 or
+GENMASK(1, 0). The current code writes GENMASK(11, 0) which is a typo. Fix
+the typo.
 
-# cat /proc/372265/task/372313/stack
-[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
-[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
-[<0>] fuse_do_getattr+0xfc/0x1f0 [fuse]
-[<0>] fuse_file_read_iter+0xbe/0x1c0 [fuse]
-[<0>] aio_read+0x130/0x1e0
-[<0>] io_submit_one+0x542/0x860
-[<0>] __x64_sys_io_submit+0x98/0x1a0
-[<0>] do_syscall_64+0x37/0xf0
-[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-But the /weird/ part is that the fuseblk server threads are waiting for
-responses from itself:
-
-# cat /proc/372210/task/372232/stack
-[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
-[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
-[<0>] fuse_file_put+0x9a/0xd0 [fuse]
-[<0>] fuse_release+0x36/0x50 [fuse]
-[<0>] __fput+0xec/0x2b0
-[<0>] task_work_run+0x55/0x90
-[<0>] syscall_exit_to_user_mode+0xe9/0x100
-[<0>] do_syscall_64+0x43/0xf0
-[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-The fuseblk server is fuse2fs so there's nothing all that exciting in
-the server itself.  So why is the fuse server calling fuse_file_put?
-The commit message for the fstest sheds some light on that:
-
-"By closing the file descriptor before calling io_destroy, you pretty
-much guarantee that the last put on the ioctx will be done in interrupt
-context (during I/O completion).
-
-Aha.  AIO fgets a new struct file from the fd when it queues the ioctx.
-The completion of the FUSE_WRITE command from userspace causes the fuse
-server to call the AIO completion function.  The completion puts the
-struct file, queuing a delayed fput to the fuse server task.  When the
-fuse server task returns to userspace, it has to run the delayed fput,
-which in the case of a fuseblk server, it does synchronously.
-
-Sending the FUSE_RELEASE command sychronously from fuse server threads
-is a bad idea because a client program can initiate enough simultaneous
-AIOs such that all the fuse server threads end up in delayed_fput, and
-now there aren't any threads left to handle the queued fuse commands.
-
-Fix this by only using asynchronous fputs when closing files, and leave
-a comment explaining why.
-
-Cc: stable@vger.kernel.org # v2.6.38
-Fixes: 5a18ec176c934c ("fuse: fix hang of single threaded fuseblk filesystem")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: faf5a975ee3b ("PCI: rcar-gen4: Add support for R-Car V4H")
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250806192548.133140-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -356,8 +356,14 @@ void fuse_file_release(struct inode *ino
- 	 * Make the release synchronous if this is a fuseblk mount,
- 	 * synchronous RELEASE is allowed (and desirable) in this case
- 	 * because the server can be trusted not to screw up.
-+	 *
-+	 * Always use the asynchronous file put because the current thread
-+	 * might be the fuse server.  This can happen if a process starts some
-+	 * aio and closes the fd before the aio completes.  Since aio takes its
-+	 * own ref to the file, the IO completion has to drop the ref, which is
-+	 * how the fuse server can end up closing its clients' files.
- 	 */
--	fuse_file_put(ff, ff->fm->fc->destroy);
-+	fuse_file_put(ff, false);
- }
- 
- void fuse_release_common(struct file *file, bool isdir)
+--- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
++++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+@@ -723,7 +723,7 @@ static int rcar_gen4_pcie_ltssm_control(
+ 	rcar_gen4_pcie_phy_reg_update_bits(rcar, 0x148, GENMASK(23, 22), BIT(22));
+ 	rcar_gen4_pcie_phy_reg_update_bits(rcar, 0x148, GENMASK(18, 16), GENMASK(17, 16));
+ 	rcar_gen4_pcie_phy_reg_update_bits(rcar, 0x148, GENMASK(7, 6), BIT(6));
+-	rcar_gen4_pcie_phy_reg_update_bits(rcar, 0x148, GENMASK(2, 0), GENMASK(11, 0));
++	rcar_gen4_pcie_phy_reg_update_bits(rcar, 0x148, GENMASK(2, 0), GENMASK(1, 0));
+ 	rcar_gen4_pcie_phy_reg_update_bits(rcar, 0x1d4, GENMASK(16, 15), GENMASK(16, 15));
+ 	rcar_gen4_pcie_phy_reg_update_bits(rcar, 0x514, BIT(26), BIT(26));
+ 	rcar_gen4_pcie_phy_reg_update_bits(rcar, 0x0f8, BIT(16), 0);
 
 
 
