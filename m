@@ -1,53 +1,66 @@
-Return-Path: <stable+bounces-187088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD99BEA78F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F407ABEA84C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A5136228F7
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B687620B35
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59E032C93A;
-	Fri, 17 Oct 2025 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674132F12C2;
+	Fri, 17 Oct 2025 15:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oV0lMyzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQPa0+TW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E5823EA9E;
-	Fri, 17 Oct 2025 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3C31946C8;
+	Fri, 17 Oct 2025 15:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715084; cv=none; b=EcyV9Ixvi8YAOqhf7nVs9+fQ62Dt9sntQieq4Sebx1NYUpDUm+eSX7BJuO3LUbEnr16LDTSdrbw3i0KsnN8kHvq6fN9t0ZgNPo0hGc9OmXdlDjiJfoJkk762JbsSLpNTdgtUIiaFcN+tMZfdHngB0vdk/fvEj62VYtWcgRRsUB0=
+	t=1760715016; cv=none; b=FClpBazV8+egeVw+kE7o2rnPZETIk7gWcZw5jjUMoB0RqRezotbhhEHpErr/gTni4oLutUcEvdjqQE7jjyQtFDRMHp7hfrh01IyUujin4DnoAHWBwV7q3XUs/2o1pByO5AKZXL+no8za5EjrbIYOJ8/D4vhRrlIxj4zT0Yv1ndU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715084; c=relaxed/simple;
-	bh=ji15KFgmDWWuWQBg0iKIiRTF8KHkIwx7Oj9k6reYUNU=;
+	s=arc-20240116; t=1760715016; c=relaxed/simple;
+	bh=uowemTQlJiYgMGrbUDmHstGZHrwBihs94XchgZk6xHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nq2Gv6TkbNOxRpuYBY8nlf5kbduyjjg0l2cVSivZvl1K/mWxrFmECp91cAC4zgSnTKH9fV+vp0hSiAbmrpHbUkRbDz9/CfWPDmD+/A3W2C8I6WZMVJgcu6M2ay7yDgIKPyyLErgiTUgeCAxry0OHfLhk3ygZxDsPynS85G426/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oV0lMyzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDB6C4CEFE;
-	Fri, 17 Oct 2025 15:31:23 +0000 (UTC)
+	 MIME-Version; b=tGiQDWvPWOauVYNCaCnbqEMRCu8xwlsDGQrJ37wxpqek/j8VVDM8ywOesuWR78y+D+43FFyJc892OooJs1SNILl6J+pmMb7QLhqScC58EMtmPwyxLMmrr5gvohjBwfmjTld2x1Hs0J6ib5YVsFNktdGLVhRmY4WG4G2hBmmdoKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQPa0+TW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4EBC4CEE7;
+	Fri, 17 Oct 2025 15:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715084;
-	bh=ji15KFgmDWWuWQBg0iKIiRTF8KHkIwx7Oj9k6reYUNU=;
+	s=korg; t=1760715016;
+	bh=uowemTQlJiYgMGrbUDmHstGZHrwBihs94XchgZk6xHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oV0lMyzcQPhxadO8zKyhcdB4LUPa3Go5CtnB9qgTyScoeJ7Y732vdqeZQYgQccXlB
-	 kRVxSNy0Q/OKS+WcLY6UOD9/S6M8/h+olH9Ank2yeqnkZJdxAfu/1Z3Wtz7LLJ3C3w
-	 p3aqW5wqqpz667LkLpitpFajoVzRLUkUs5jwnRCw=
+	b=xQPa0+TW0xXQ7b6GUESetvOUAXBdmfDlwHkCX4B8KSvlc4vaZv8SOd+4vkeL0rqSO
+	 JMwaMY9nTBvHWEVBwBS2jBVBeBW1SQhF9sbdPEj8fvpSdtbIRaH0V9xmufQru2msAB
+	 3MIgE4aA++zQdtVlPEeaCuexf7kHJLjEdsnTuSkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	bpf@vger.kernel.org,
+	Hao Ge <gehao@kylinos.cn>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Richter <tmricht@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 059/371] nfsd: use ATTR_CTIME_SET for delegated ctime updates
-Date: Fri, 17 Oct 2025 16:50:34 +0200
-Message-ID: <20251017145203.934163488@linuxfoundation.org>
+Subject: [PATCH 6.17 069/371] perf bpf-filter: Fix opts declaration on older libbpfs
+Date: Fri, 17 Oct 2025 16:50:44 +0200
+Message-ID: <20251017145204.432766505@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
 References: <20251017145201.780251198@linuxfoundation.org>
@@ -66,74 +79,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit c066ff58e5d6e5d7400e5fda0c33f95b8c37dd02 ]
+[ Upstream commit 3a0f56d72a7575f03187a85b7869c76a862b40ab ]
 
-Ensure that notify_change() doesn't clobber a delegated ctime update
-with current_time() by setting ATTR_CTIME_SET for those updates.
+Building perf with LIBBPF_DYNAMIC (ie not the default static linking of
+libbpf with perf) is breaking as the libbpf isn't version 1.7 or newer,
+where dont_enable is added to bpf_perf_event_opts.
 
-Don't bother setting the timestamps in cb_getattr_update_times() in the
-non-delegated case. notify_change() will do that itself.
+To avoid this breakage add a compile time version check and don't
+declare the variable when not present.
 
-Fixes: 7e13f4f8d27d ("nfsd: handle delegated timestamps in SETATTR")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 5e2ac8e8571df54d ("perf bpf-filter: Enable events manually")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: bpf@vger.kernel.org
+Cc: Hao Ge <gehao@kylinos.cn>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 6 +++---
- fs/nfsd/nfs4xdr.c   | 3 ++-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ tools/perf/util/bpf-filter.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 88c347957da5b..77eea2ad93cc0 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -9167,7 +9167,6 @@ static bool set_cb_time(struct timespec64 *cb, const struct timespec64 *orig,
- static int cb_getattr_update_times(struct dentry *dentry, struct nfs4_delegation *dp)
+diff --git a/tools/perf/util/bpf-filter.c b/tools/perf/util/bpf-filter.c
+index a0b11f35395f8..92308c38fbb56 100644
+--- a/tools/perf/util/bpf-filter.c
++++ b/tools/perf/util/bpf-filter.c
+@@ -443,6 +443,10 @@ static int create_idx_hash(struct evsel *evsel, struct perf_bpf_filter_entry *en
+ 	return -1;
+ }
+ 
++#define LIBBPF_CURRENT_VERSION_GEQ(major, minor)			\
++	(LIBBPF_MAJOR_VERSION > (major) ||				\
++	 (LIBBPF_MAJOR_VERSION == (major) && LIBBPF_MINOR_VERSION >= (minor)))
++
+ int perf_bpf_filter__prepare(struct evsel *evsel, struct target *target)
  {
- 	struct inode *inode = d_inode(dentry);
--	struct timespec64 now = current_time(inode);
- 	struct nfs4_cb_fattr *ncf = &dp->dl_cb_fattr;
- 	struct iattr attrs = { };
- 	int ret;
-@@ -9175,6 +9174,7 @@ static int cb_getattr_update_times(struct dentry *dentry, struct nfs4_delegation
- 	if (deleg_attrs_deleg(dp->dl_type)) {
- 		struct timespec64 atime = inode_get_atime(inode);
- 		struct timespec64 mtime = inode_get_mtime(inode);
-+		struct timespec64 now = current_time(inode);
+ 	int i, x, y, fd, ret;
+@@ -451,8 +455,12 @@ int perf_bpf_filter__prepare(struct evsel *evsel, struct target *target)
+ 	struct bpf_link *link;
+ 	struct perf_bpf_filter_entry *entry;
+ 	bool needs_idx_hash = !target__has_cpu(target);
++#if LIBBPF_CURRENT_VERSION_GEQ(1, 7)
+ 	DECLARE_LIBBPF_OPTS(bpf_perf_event_opts, pe_opts,
+ 			    .dont_enable = true);
++#else
++	DECLARE_LIBBPF_OPTS(bpf_perf_event_opts, pe_opts);
++#endif
  
- 		attrs.ia_atime = ncf->ncf_cb_atime;
- 		attrs.ia_mtime = ncf->ncf_cb_mtime;
-@@ -9183,12 +9183,12 @@ static int cb_getattr_update_times(struct dentry *dentry, struct nfs4_delegation
- 			attrs.ia_valid |= ATTR_ATIME | ATTR_ATIME_SET;
- 
- 		if (set_cb_time(&attrs.ia_mtime, &mtime, &now)) {
--			attrs.ia_valid |= ATTR_CTIME | ATTR_MTIME | ATTR_MTIME_SET;
-+			attrs.ia_valid |= ATTR_CTIME | ATTR_CTIME_SET |
-+					  ATTR_MTIME | ATTR_MTIME_SET;
- 			attrs.ia_ctime = attrs.ia_mtime;
- 		}
- 	} else {
- 		attrs.ia_valid |= ATTR_MTIME | ATTR_CTIME;
--		attrs.ia_mtime = attrs.ia_ctime = now;
- 	}
- 
- 	if (!attrs.ia_valid)
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 1f3a20360d0c2..a00300b287754 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -539,7 +539,8 @@ nfsd4_decode_fattr4(struct nfsd4_compoundargs *argp, u32 *bmval, u32 bmlen,
- 		iattr->ia_mtime.tv_nsec = modify.nseconds;
- 		iattr->ia_ctime.tv_sec = modify.seconds;
- 		iattr->ia_ctime.tv_nsec = modify.nseconds;
--		iattr->ia_valid |= ATTR_CTIME | ATTR_MTIME | ATTR_MTIME_SET | ATTR_DELEG;
-+		iattr->ia_valid |= ATTR_CTIME | ATTR_CTIME_SET |
-+				   ATTR_MTIME | ATTR_MTIME_SET | ATTR_DELEG;
- 	}
- 
- 	/* request sanity: did attrlist4 contain the expected number of words? */
+ 	entry = calloc(MAX_FILTERS, sizeof(*entry));
+ 	if (entry == NULL)
 -- 
 2.51.0
 
