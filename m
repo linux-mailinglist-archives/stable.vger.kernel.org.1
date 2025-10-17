@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D49BBE9629
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2531DBE9D7D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80C765E206C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 917307C2697
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88E32F12AC;
-	Fri, 17 Oct 2025 14:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B3C231C9F;
+	Fri, 17 Oct 2025 15:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BB8pQASl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEg4sONT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C721F3B8A;
-	Fri, 17 Oct 2025 14:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B87337110;
+	Fri, 17 Oct 2025 15:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713011; cv=none; b=Cz8fp6JlX+SUHQxR8x3N2c7q3gf/ahbTTGEgc1FGmqwxNO9HPYREyVM/sOVDW87Zof99C2k5zB1a72jtRumJEpGCLqUb1MmEW/WAb7K2K43sJpEPmhpRH4VJFPvOgS/6JOvcISvQ7JDMq2x1NbM5+D8ZnOqZ2pwvZ8k/696IFZE=
+	t=1760714236; cv=none; b=OI3hlzdIuWMh5lVjqDtCnIY+Sil7LEbazHUSgBLPUjsZRDrAU/oKZjPv862AOHSYoKyqYuM7t/Q1wU05O4ajd7kDXQXZ7Avr7RWkw+tDIdHOpJFhcMW+7I2+3jd+rj/a8CAcendiFNpt4SIL4EjTEa3y6QRA0xOiPTe/QqOwfls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713011; c=relaxed/simple;
-	bh=48E/LUlZhMzdHzHUvAOrJr3BRWyiozcWKfKXj3D1R5o=;
+	s=arc-20240116; t=1760714236; c=relaxed/simple;
+	bh=KpofKOfF9+mgR33eF9b2YXsbs9OIehEG3aoJbfGOqhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uv5rVHp95h5vzEm6qggzxkQbVgvVGSsf8mvrZzzMFybQkbWzfg8oOrSjfPUyByoY6vEZ4+6Oq1yOZbBYsvRxnzmAoL9kZ41VvjVL7K4s/x702vUE2HcNSpsqLOtB/NOViwHubsYzwqp7RrKofRnVmCvSJlcKt41K4RtiQeH3mSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BB8pQASl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C822DC116B1;
-	Fri, 17 Oct 2025 14:56:50 +0000 (UTC)
+	 MIME-Version; b=V9/ue8S5NUCpXHKBQeNVLUdke1zgGxyWtmEj9NXHe8q1tvtaxoWyZHV0b7T2gUdfU6nC33w6/67w8MnIEJqGHQN2XmmNxBHAEHdUS72Eit0ctuqJ2YT0hhW3FDLvBL/TQ/qbuJQrtRjDQxSIAF032K8FIZlsQ1U8zJ5vj6FD5T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEg4sONT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D53C4CEE7;
+	Fri, 17 Oct 2025 15:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713011;
-	bh=48E/LUlZhMzdHzHUvAOrJr3BRWyiozcWKfKXj3D1R5o=;
+	s=korg; t=1760714236;
+	bh=KpofKOfF9+mgR33eF9b2YXsbs9OIehEG3aoJbfGOqhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BB8pQASlciF5kJCfDpEGzH8BmCJEsjpzXjPZGpiHkTeD4hNXiRDPSJGXvav6Xr5FL
-	 LnNzG6eBCkzQ+6wfx+8cJsrg1V+Md/TnoCob28UWmwjAWC6y/ucEdowmLSnaFNytAx
-	 CYJc1f0oUBcHVL5hjDrCVSuwYXE0D70OEkrfNlpU=
+	b=CEg4sONTuxMRHyn036y04qSLDOs3rp0H+U/aRyG3L3kZuZEsrGMOU4XYnONKX79+l
+	 UCy1hxrV1b7Nge61pbehTl+44ioj0VV08OZ67Ioobm2u25JnnChlj3w5bfbVGHd9+7
+	 HQ4SM+gAsu4qx6fa6hbAw6JsnsZDSEdC+mkR6iw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.1 003/168] clocksource/drivers/clps711x: Fix resource leaks in error paths
+	Jakub Kicinski <kuba@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 075/277] selftests: netfilter: query conntrack state to check for port clash resolution
 Date: Fri, 17 Oct 2025 16:51:22 +0200
-Message-ID: <20251017145129.131874393@linuxfoundation.org>
+Message-ID: <20251017145149.877932950@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Florian Westphal <fw@strlen.de>
 
-commit cd32e596f02fc981674573402c1138f616df1728 upstream.
+[ Upstream commit e84945bdc619ed4243ba4298dbb8ca2062026474 ]
 
-The current implementation of clps711x_timer_init() has multiple error
-paths that directly return without releasing the base I/O memory mapped
-via of_iomap(). Fix of_iomap leaks in error paths.
+Jakub reported this self test flaking occasionally (fails, but passes on
+re-run) on debug kernels.
 
-Fixes: 04410efbb6bc ("clocksource/drivers/clps711x: Convert init function to return error")
-Fixes: 2a6a8e2d9004 ("clocksource/drivers/clps711x: Remove board support")
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250814123324.1516495-1-zhen.ni@easystack.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is because the test checks for elapsed time to determine if both
+connections were established in parallel.
+
+Rework this to no longer depend on timing.
+Use busywait helper to check that both sockets have moved to established
+state and then query the conntrack engine for the two entries.
+
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/netfilter-devel/20250926163318.40d1a502@kernel.org/
+Fixes: 117e149e26d1 ("selftests: netfilter: test nat source port clash resolution interaction with tcp early demux")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/clps711x-timer.c |   23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ .../selftests/net/netfilter/nf_nat_edemux.sh  | 58 +++++++++++++------
+ 1 file changed, 41 insertions(+), 17 deletions(-)
 
---- a/drivers/clocksource/clps711x-timer.c
-+++ b/drivers/clocksource/clps711x-timer.c
-@@ -78,24 +78,33 @@ static int __init clps711x_timer_init(st
- 	unsigned int irq = irq_of_parse_and_map(np, 0);
- 	struct clk *clock = of_clk_get(np, 0);
- 	void __iomem *base = of_iomap(np, 0);
-+	int ret = 0;
+diff --git a/tools/testing/selftests/net/netfilter/nf_nat_edemux.sh b/tools/testing/selftests/net/netfilter/nf_nat_edemux.sh
+index 1014551dd7694..6731fe1eaf2e9 100755
+--- a/tools/testing/selftests/net/netfilter/nf_nat_edemux.sh
++++ b/tools/testing/selftests/net/netfilter/nf_nat_edemux.sh
+@@ -17,9 +17,31 @@ cleanup()
  
- 	if (!base)
- 		return -ENOMEM;
--	if (!irq)
--		return -EINVAL;
--	if (IS_ERR(clock))
--		return PTR_ERR(clock);
-+	if (!irq) {
-+		ret = -EINVAL;
-+		goto unmap_io;
-+	}
-+	if (IS_ERR(clock)) {
-+		ret = PTR_ERR(clock);
-+		goto unmap_io;
-+	}
+ checktool "socat -h" "run test without socat"
+ checktool "iptables --version" "run test without iptables"
++checktool "conntrack --version" "run test without conntrack"
  
- 	switch (of_alias_get_id(np, "timer")) {
- 	case CLPS711X_CLKSRC_CLOCKSOURCE:
- 		clps711x_clksrc_init(clock, base);
- 		break;
- 	case CLPS711X_CLKSRC_CLOCKEVENT:
--		return _clps711x_clkevt_init(clock, base, irq);
-+		ret =  _clps711x_clkevt_init(clock, base, irq);
-+		break;
- 	default:
--		return -EINVAL;
-+		ret = -EINVAL;
-+		break;
- 	}
+ trap cleanup EXIT
  
--	return 0;
-+unmap_io:
-+	iounmap(base);
-+	return ret;
- }
- TIMER_OF_DECLARE(clps711x, "cirrus,ep7209-timer", clps711x_timer_init);
++connect_done()
++{
++	local ns="$1"
++	local port="$2"
++
++	ip netns exec "$ns" ss -nt -o state established "dport = :$port" | grep -q "$port"
++}
++
++check_ctstate()
++{
++	local ns="$1"
++	local dp="$2"
++
++	if ! ip netns exec "$ns" conntrack --get -s 192.168.1.2 -d 192.168.1.1 -p tcp \
++	     --sport 10000 --dport "$dp" --state ESTABLISHED > /dev/null 2>&1;then
++		echo "FAIL: Did not find expected state for dport $2"
++		ip netns exec "$ns" bash -c 'conntrack -L; conntrack -S; ss -nt'
++		ret=1
++	fi
++}
++
+ setup_ns ns1 ns2
+ 
+ # Connect the namespaces using a veth pair
+@@ -44,15 +66,18 @@ socatpid=$!
+ ip netns exec "$ns2" sysctl -q net.ipv4.ip_local_port_range="10000 10000"
+ 
+ # add a virtual IP using DNAT
+-ip netns exec "$ns2" iptables -t nat -A OUTPUT -d 10.96.0.1/32 -p tcp --dport 443 -j DNAT --to-destination 192.168.1.1:5201
++ip netns exec "$ns2" iptables -t nat -A OUTPUT -d 10.96.0.1/32 -p tcp --dport 443 -j DNAT --to-destination 192.168.1.1:5201 || exit 1
+ 
+ # ... and route it to the other namespace
+ ip netns exec "$ns2" ip route add 10.96.0.1 via 192.168.1.1
+ 
+-# add a persistent connection from the other namespace
+-ip netns exec "$ns2" socat -t 10 - TCP:192.168.1.1:5201 > /dev/null &
++# listener should be up by now, wait if it isn't yet.
++wait_local_port_listen "$ns1" 5201 tcp
+ 
+-sleep 1
++# add a persistent connection from the other namespace
++sleep 10 | ip netns exec "$ns2" socat -t 10 - TCP:192.168.1.1:5201 > /dev/null &
++cpid0=$!
++busywait "$BUSYWAIT_TIMEOUT" connect_done "$ns2" "5201"
+ 
+ # ip daddr:dport will be rewritten to 192.168.1.1 5201
+ # NAT must reallocate source port 10000 because
+@@ -71,26 +96,25 @@ fi
+ ip netns exec "$ns1" iptables -t nat -A PREROUTING -p tcp --dport 5202 -j REDIRECT --to-ports 5201
+ ip netns exec "$ns1" iptables -t nat -A PREROUTING -p tcp --dport 5203 -j REDIRECT --to-ports 5201
+ 
+-sleep 5 | ip netns exec "$ns2" socat -t 5 -u STDIN TCP:192.168.1.1:5202,connect-timeout=5 >/dev/null &
++sleep 5 | ip netns exec "$ns2" socat -T 5 -u STDIN TCP:192.168.1.1:5202,connect-timeout=5 >/dev/null &
++cpid1=$!
+ 
+-# if connect succeeds, client closes instantly due to EOF on stdin.
+-# if connect hangs, it will time out after 5s.
+-echo | ip netns exec "$ns2" socat -t 3 -u STDIN TCP:192.168.1.1:5203,connect-timeout=5 >/dev/null &
++sleep 5 | ip netns exec "$ns2" socat -T 5 -u STDIN TCP:192.168.1.1:5203,connect-timeout=5 >/dev/null &
+ cpid2=$!
+ 
+-time_then=$(date +%s)
+-wait $cpid2
+-rv=$?
+-time_now=$(date +%s)
++busywait "$BUSYWAIT_TIMEOUT" connect_done "$ns2" 5202
++busywait "$BUSYWAIT_TIMEOUT" connect_done "$ns2" 5203
+ 
+-# Check how much time has elapsed, expectation is for
+-# 'cpid2' to connect and then exit (and no connect delay).
+-delta=$((time_now - time_then))
++check_ctstate "$ns1" 5202
++check_ctstate "$ns1" 5203
+ 
+-if [ $delta -lt 2 ] && [ $rv -eq 0 ]; then
++kill $socatpid $cpid0 $cpid1 $cpid2
++socatpid=0
++
++if [ $ret -eq 0 ]; then
+ 	echo "PASS: could connect to service via redirected ports"
+ else
+-	echo "FAIL: socat cannot connect to service via redirect ($delta seconds elapsed, returned $rv)"
++	echo "FAIL: socat cannot connect to service via redirect"
+ 	ret=1
+ fi
+ 
+-- 
+2.51.0
+
 
 
 
