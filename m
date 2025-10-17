@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-186230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6141CBE605A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 03:14:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32223BE607C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 03:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D51E581984
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 01:14:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4579F3A107F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 01:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0908211706;
-	Fri, 17 Oct 2025 01:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B131D21C167;
+	Fri, 17 Oct 2025 01:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GKcE7uPh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iEy1jlLG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB3538DD8
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 01:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AA1334691
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 01:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760663658; cv=none; b=o65nduOzUeyVJr6BZcnh1ERsFX6t4BuWuLr5AEtww33/2GIiALotCVB4Zxi8Wfvz9jYV4y5QDJYVLcSCHcqhlXyUgFiO9BU0KPabLBlvyxl0VBiXQNZ0NTEKIA9ldGNfjeIWmRznXBck7H2LAzpA0gsvqRHT/nYN5P33lqdeWAM=
+	t=1760664326; cv=none; b=ijx4PgU9oyH9A4Rk7VbdlITV46Ovb9x8Wn+Sx1eZgwQky8JYhec9y4BWZ84i1QvcAOqpJUVKkAnvwWtYVxM5VtXkXRBemzTCf4aw5x9YEiudjFtHwwy8KmV/7WQ3uKvTw5JuGWgzJBwkX92UiM05L7BlH8AtqVb6fdnExZgH4Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760663658; c=relaxed/simple;
-	bh=T7NlNelf79fpZKSZqrQ9nDiGHT5HRR1YtgWpkPNbiOU=;
+	s=arc-20240116; t=1760664326; c=relaxed/simple;
+	bh=J/RRNPxo/YwGivLpmJHsONmwdTWNViUPoUFwIYhOUz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7RXXmVTjboOW1GA44IcFTueG9XQhQq/S554NmrzD+DwU3/1JN7NzSkqW1FB3Y+Ouyco9HoATuQe+2TMSnjavUx16+Js1eH9wQxT4JAM/GATgcn5EVzsbFeEmH0XykDmxKbBmc3N3phvTSjViHrXyapPx+YuPAbkrCWHRr5iL30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GKcE7uPh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E94C4CEF1;
-	Fri, 17 Oct 2025 01:14:17 +0000 (UTC)
+	 MIME-Version; b=IDh5lSDtcQ3B+6FenIrD1uazNXEbIrADsoztm+RUHI/8gCv79wXkBGhBn0Hpi7JBGyVJZCH267atnne0INcy7OXYGIwyXF4R3AYcP3CEbecQbACFaCdzydDBTuCv0IjtdnemTVe8pYUb1oW7ncpXRfZy6kfxIRe+YuXv5C7d/i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iEy1jlLG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139C1C4CEF1;
+	Fri, 17 Oct 2025 01:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760663658;
-	bh=T7NlNelf79fpZKSZqrQ9nDiGHT5HRR1YtgWpkPNbiOU=;
+	s=k20201202; t=1760664324;
+	bh=J/RRNPxo/YwGivLpmJHsONmwdTWNViUPoUFwIYhOUz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GKcE7uPhhYdUWOXz93MRknymE3zepKx973e8Hup58Q4yrEv3wvo/3JaCPxN5+hfk0
-	 guIM8ma/CtZPBhQPXhamCA7D5/OmVk0TsFV+oZ7GGNENI9E/0P9EOuLTr4NnriqDKI
-	 HrvvVy7Uz9qPqBckd1HSMEchpW2hie3CyWIGq7bU839LhJKsKmX+IYSE28wr6Uxe8B
-	 r7ZJdRQTOH2A20Iq345wKAJx5wnVvwhUuOd4J47J8Fa8Xv9O0bzZFwSa4DxmYy2vl/
-	 wyj3tqSeh2luEMWVMO7UG+c/SIBQb+mMy6ho4B45ezGqwP1ih2Oc6eWNj1+Qg027zH
-	 tsWSuntm2FWIA==
+	b=iEy1jlLG3uRkyiSbi6mUXUzhKjCMjohZtoGikFyV4sj3U+Q5hbdQRXXz10b8YmiJY
+	 FrD3rPZ0HOH9C9zG5iPwcI0B5ewFzDycsn4Vhd4gjgQBAmplPysUhLo6vDKjGZrV6Z
+	 /tALhnaEEJzUhoFFQnXUxjxIKX8UZHKG8HXojXCpgeHMd0h/MC3KIE7SwcTwxhUZNe
+	 BQXtHPGaiE3NPv7KvzdeOxFWKp73FsFBVowKOsfshdeGfp/UN3/M1VQwJ9icR9mr8Y
+	 tjvYcSFMvcfR8Q18I9W6jOG0OEG29qDowm5KOifyC8AWu8BCkpOWuB4TxVeq0v0QNk
+	 gpgmrAkZe5yhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Catalin Marinas <catalin.marinas@arm.com>,
@@ -49,12 +49,12 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
 	David Hildenbrand <david@redhat.com>,
 	Lance Yang <lance.yang@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] arm64: mte: Do not flag the zero page as PG_mte_tagged
-Date: Thu, 16 Oct 2025 21:14:15 -0400
-Message-ID: <20251017011415.3502373-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] arm64: mte: Do not flag the zero page as PG_mte_tagged
+Date: Thu, 16 Oct 2025 21:25:22 -0400
+Message-ID: <20251017012522.3571144-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101645-blissful-snagged-feca@gregkh>
-References: <2025101645-blissful-snagged-feca@gregkh>
+In-Reply-To: <2025101645-unplanned-pointy-70c8@gregkh>
+References: <2025101645-unplanned-pointy-70c8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -107,10 +107,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 9ca5ffd8d817f..5e68d65e675e5 100644
+index 2ce9ef9d924aa..4561c4a670afb 100644
 --- a/arch/arm64/kernel/cpufeature.c
 +++ b/arch/arm64/kernel/cpufeature.c
-@@ -2279,17 +2279,21 @@ static void bti_enable(const struct arm64_cpu_capabilities *__unused)
+@@ -2174,17 +2174,21 @@ static void bti_enable(const struct arm64_cpu_capabilities *__unused)
  #ifdef CONFIG_ARM64_MTE
  static void cpu_enable_mte(struct arm64_cpu_capabilities const *cap)
  {
@@ -136,7 +136,7 @@ index 9ca5ffd8d817f..5e68d65e675e5 100644
  
  	kasan_init_hw_tags_cpu();
 diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
-index 6174671be7c18..5d63ca9667370 100644
+index 4edecaac8f919..84ea9c50c076f 100644
 --- a/arch/arm64/kernel/mte.c
 +++ b/arch/arm64/kernel/mte.c
 @@ -428,7 +428,8 @@ static int __access_remote_tags(struct mm_struct *mm, unsigned long addr,
