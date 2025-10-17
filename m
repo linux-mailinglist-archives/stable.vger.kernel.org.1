@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-186573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35470BE981D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5C0BEA33B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53B951AA7D88
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06E3B19C1749
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C1A3208;
-	Fri, 17 Oct 2025 15:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5C9330B04;
+	Fri, 17 Oct 2025 15:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CN1+GIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwZf4NUS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D41432C94E;
-	Fri, 17 Oct 2025 15:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7796D330B06;
+	Fri, 17 Oct 2025 15:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713625; cv=none; b=huPsa1EMDsZ+Hf1ZtKSl1m2SE+MA52amApM6WuZLK7O2kJjKzKBYg4W4i9RmaPraVSH0Gzdi3GX7R9fvwBCZtP7k+DzJzNC3s7tZcnzkRS+3gS7mm94M6JNgTo6RC7JgMgtY9hd9sm7V/0W43kGUtrYSU3LBtds1IGIwxO4dDew=
+	t=1760715979; cv=none; b=Wv6Fg0+UzEyS1Q1tOmRfRZs8PJ3KVrDj8i3wlPVG1tCvyx9N3Dh+yzYNPwkYp32UwaN5YmVt6RW3aKsLj8JntqIV/T49cIzVnlcNYsZ3gJeX43eGNR6IhWteJNxrfnWGp9QoSkuZzyWmgdMJRV0WN4rT1h2/UcPN4yTmtNr5240=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713625; c=relaxed/simple;
-	bh=u+4WUIgxpRf/yqXiYvsfYDXC3G6mQb9AVLNTWnjd9PY=;
+	s=arc-20240116; t=1760715979; c=relaxed/simple;
+	bh=+tyhZkuijTbvjsjVwP0lpg5DitBOCUHA0iNQDJUNclQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RygEmG8HbB3hwgI6e2b4h9SBM8Ziw/aIu/fmoXZcQ9ibQQ6d6VNsdB3DYOFIGLNqotFpOXiGXYrXA+EnsldyQnF6HLYCeOrLXDn6CcSKZlypNnGav3ddLPaeCTCLtSw4wdrsbXhSLmd/2xbO0Eim1AxF9ZushpQAcTxwGYzEB8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CN1+GIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59873C4CEE7;
-	Fri, 17 Oct 2025 15:07:04 +0000 (UTC)
+	 MIME-Version; b=I2bK23cQSW5S7r8ZgmomSmUGr3+r786M3Rve8gOe2ghxDqC316dVL/rsW1PYGmw6DzWKWHKyksDojZ7zoVK0/dJW9x35H1kaq7SvF5FdKEODLTrJvSV8n4pAqidPw+rEo0ki2l/2brB5V/DApT9MBbJ6w3M5g8FOny3m+EzGKSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwZf4NUS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE8FC113D0;
+	Fri, 17 Oct 2025 15:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713624;
-	bh=u+4WUIgxpRf/yqXiYvsfYDXC3G6mQb9AVLNTWnjd9PY=;
+	s=korg; t=1760715979;
+	bh=+tyhZkuijTbvjsjVwP0lpg5DitBOCUHA0iNQDJUNclQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2CN1+GITphLkf8qvXmDYjge/Ecv337I9D6Fn/44TM9jQReaAfcaL+3htiSIDE22ZD
-	 BljWNKEtXvjAsxXto43UPqTGRPnx9xLmloOkjZk5ClT6Mj46X1es0fvFC7OQM2S3qx
-	 Z2h4nakgQUZgeOqaI/hpGucVUO387vOBoNE5zH1c=
+	b=OwZf4NUS0fK39+3Ls7UGBqBD2E5e59OmvIdyzjIlfmiSybJs38Gs9qtd/EejgvM85
+	 YNlHddbbpqHWqVOacDVJM7W7ujdkyowH/pKESkHPaJo2Iws0jNPdf0edL19/gAI4TW
+	 5wYbfJ8p48H8AQEtyxgR6QIHDEFHOvrk3vyDDJ1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 062/201] arm64: dts: qcom: msm8939: Add missing MDSS reset
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 030/276] cpufreq: scmi: Account for malformed DT in scmi_dev_used_by_cpus()
 Date: Fri, 17 Oct 2025 16:52:03 +0200
-Message-ID: <20251017145137.028755710@linuxfoundation.org>
+Message-ID: <20251017145143.503809753@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit f73c82c855e186e9b67125e3eee743960320e43c upstream.
+[ Upstream commit cd5d4621ba846dad9b2e6b0c2d1518d083fcfa13 ]
 
-On most MSM8939 devices, the bootloader already initializes the display to
-show the boot splash screen. In this situation, MDSS is already configured
-and left running when starting Linux. To avoid side effects from the
-bootloader configuration, the MDSS reset can be specified in the device
-tree to start again with a clean hardware state.
+Broadcom STB platforms were early adopters (2017) of the SCMI framework and as
+a result, not all deployed systems have a Device Tree entry where SCMI
+protocol 0x13 (PERFORMANCE) is declared as a clock provider, nor are the
+CPU Device Tree node(s) referencing protocol 0x13 as their clock
+provider. This was clarified in commit e11c480b6df1 ("dt-bindings:
+firmware: arm,scmi: Extend bindings for protocol@13") in 2023.
 
-The reset for MDSS is currently missing in msm8939.dtsi, which causes
-errors when the MDSS driver tries to re-initialize the registers:
+For those platforms, we allow the checks done by scmi_dev_used_by_cpus()
+to continue, and in the event of not having done an early return, we key
+off the documented compatible string and give them a pass to continue to
+use scmi-cpufreq.
 
- dsi_err_worker: status=6
- dsi_err_worker: status=6
- dsi_err_worker: status=6
- ...
-
-It turns out that we have always indirectly worked around this by building
-the MDSS driver as a module. Before v6.17, the power domain was temporarily
-turned off until the module was loaded, long enough to clear the register
-contents. In v6.17, power domains are not turned off during boot until
-sync_state() happens, so this is no longer working. Even before v6.17 this
-resulted in broken behavior, but notably only when the MDSS driver was
-built-in instead of a module.
-
-Cc: stable@vger.kernel.org
-Fixes: 61550c6c156c ("arm64: dts: qcom: Add msm8939 SoC")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250915-msm8916-resets-v1-2-a5c705df0c45@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6c9bb8692272 ("cpufreq: scmi: Skip SCMI devices that aren't used by the CPUs")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8939.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/cpufreq/scmi-cpufreq.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-@@ -1210,6 +1210,8 @@
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index 1f12109526fa6..35287ab0148a2 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -15,6 +15,7 @@
+ #include <linux/energy_model.h>
+ #include <linux/export.h>
+ #include <linux/module.h>
++#include <linux/of.h>
+ #include <linux/pm_opp.h>
+ #include <linux/slab.h>
+ #include <linux/scmi_protocol.h>
+@@ -319,6 +320,15 @@ static bool scmi_dev_used_by_cpus(struct device *scmi_dev)
+ 			return true;
+ 	}
  
- 			power-domains = <&gcc MDSS_GDSC>;
- 
-+			resets = <&gcc GCC_MDSS_BCR>;
++	/*
++	 * Older Broadcom STB chips had a "clocks" property for CPU node(s)
++	 * that did not match the SCMI performance protocol node, if we got
++	 * there, it means we had such an older Device Tree, therefore return
++	 * true to preserve backwards compatibility.
++	 */
++	if (of_machine_is_compatible("brcm,brcmstb"))
++		return true;
 +
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			#interrupt-cells = <1>;
+ 	return false;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
