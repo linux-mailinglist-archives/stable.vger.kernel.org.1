@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-187189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C88BEA2DB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2064BBEA56F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BB48942A59
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 74E025A1EFF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B592F12D9;
-	Fri, 17 Oct 2025 15:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149EA2F12B8;
+	Fri, 17 Oct 2025 15:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umwNRz0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5hqIZFk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18813328EC;
-	Fri, 17 Oct 2025 15:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C666D330B3C;
+	Fri, 17 Oct 2025 15:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715369; cv=none; b=TZBj7kbutDZMFZd2Mt65yaihcKBSRJcFCmlXwx49L0kXbnxc6GDzAEqHmIp7aEM7VJaBF0TxaxT9BJC4fEUDNKfkAvx+awSv7hA4/laPG7dLOAK6z/WMSVFlxXvxmXoTS2sgqoPe0zytCG6ZgHw8klisSLk9RYKoCriOw7CQeJ8=
+	t=1760716120; cv=none; b=agXr1ECEYkFraMmT+GyVdbbOpMYphzJyglLcwWYuZf2rFYtQtqKQMO2vCINuUiJTnUwjgCZcCah5zUxtKSEy0BmJ/sYYY2F+ZXJCEfUIgOjG7Yx1xO+f9mAo3EvX6m4d4V06Y1o6iy2seifGWwaiEtV6hnfQCpnAgTZovcMKhNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715369; c=relaxed/simple;
-	bh=UNUXHQq9GhukL+lhCqE2zrp5DZIlH2rlIZiC1s/KLw8=;
+	s=arc-20240116; t=1760716120; c=relaxed/simple;
+	bh=G9020WmRMhMXZ57B6KETNoM9dpN4UDlJfQi2hREkCPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=so53glvPVELnYIF12CEvyuY8v21Ekk6uE3ApcxB69UmAmarx2ZpCCXR3PyMPKzr7f3tch4AxuCsiQtd2BHJAe3hKkq4knH3rpvshDG8cUjSce6XnFOTYExoxEKk+vSxMwtXJtiGw4b1RSuIvlhDFobvg2J/jDJYNFh1MdSD2XtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umwNRz0O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9C2C4CEE7;
-	Fri, 17 Oct 2025 15:36:09 +0000 (UTC)
+	 MIME-Version; b=DhOnz8ptpew3BYc1Y5ZUuRTsS+vtUKBBfsEPs+BwgH9Zx5qL+x6az+L1wh748REJNdlWSrfzYy5pJaNNaV0YESY/F6F4poGMOpz8w9M9Ua+p2q7+5uhchZVRkRtuJLSMwmf0ymP/YLFs1BE432/8BBoouu7Np1+xq5i7efTw2qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5hqIZFk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B936C4CEE7;
+	Fri, 17 Oct 2025 15:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715369;
-	bh=UNUXHQq9GhukL+lhCqE2zrp5DZIlH2rlIZiC1s/KLw8=;
+	s=korg; t=1760716120;
+	bh=G9020WmRMhMXZ57B6KETNoM9dpN4UDlJfQi2hREkCPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umwNRz0O26hb7DJ/sOapxiqo2tfnMf+q7lhgJU4jkLiYEX5I6op77TPpI265mzXW8
-	 Q1zYrIwtontVKVKevoX3FhSU4WtsMdtZEWqeilndAiiOSf122wFEYleeXjkHK6Amn8
-	 xCwPBHBta1UKG1/rHJEiWw3x5gt1ihQmwvipTOhY=
+	b=i5hqIZFkYI/3WTg50YQ+Lk+xiTCCjPChAcpGv0hG0CFXmy7/Uy6mFNWPMX0prWL4R
+	 mhZuoWKbn/nHKc2+YtK3ue1R3ee/1mSLdyDXeaZwdU/9l22nrq2D4erWEw5hBYEjbW
+	 45vKc7Ho1f4ozpfPXrjjiWxiBMKTbotqbG9e8UFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Joshua Santosh <joshua.santosh.ranjan@intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.17 191/371] drm/xe/uapi: loosen used tracking restriction
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Phil Sutter <phil@nwl.cc>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 073/276] netfilter: ipset: Remove unused htable_bits in macro ahash_region
 Date: Fri, 17 Oct 2025 16:52:46 +0200
-Message-ID: <20251017145208.837003819@linuxfoundation.org>
+Message-ID: <20251017145145.151888720@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-commit 2d1684a077d62fddfac074052c162ec6573a34e1 upstream.
+[ Upstream commit ba941796d7cd1e81f51eed145dad1b47240ff420 ]
 
-Currently this is hidden behind perfmon_capable() since this is
-technically an info leak, given that this is a system wide metric.
-However the granularity reported here is always PAGE_SIZE aligned, which
-matches what the core kernel is already willing to expose to userspace
-if querying how many free RAM pages there are on the system, and that
-doesn't need any special privileges. In addition other drm drivers seem
-happy to expose this.
+Since the ahash_region() macro was redefined to calculate the region
+index solely from HTABLE_REGION_BITS, the htable_bits parameter became
+unused.
 
-The motivation here if with oneAPI where they want to use the system
-wide 'used' reporting here, so not the per-client fdinfo stats. This has
-also come up with some perf overlay applications wanting this
-information.
+Remove the unused htable_bits argument and its call sites, simplifying
+the code without changing semantics.
 
-Fixes: 1105ac15d2a1 ("drm/xe/uapi: restrict system wide accounting")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Joshua Santosh <joshua.santosh.ranjan@intel.com>
-Cc: José Roberto de Souza <jose.souza@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://lore.kernel.org/r/20250919122052.420979-2-matthew.auld@intel.com
-(cherry picked from commit 4d0b035fd6dae8ee48e9c928b10f14877e595356)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8478a729c046 ("netfilter: ipset: fix region locking in hash types")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Reviewed-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_query.c |   15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ net/netfilter/ipset/ip_set_hash_gen.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_query.c
-+++ b/drivers/gpu/drm/xe/xe_query.c
-@@ -274,8 +274,7 @@ static int query_mem_regions(struct xe_d
- 	mem_regions->mem_regions[0].instance = 0;
- 	mem_regions->mem_regions[0].min_page_size = PAGE_SIZE;
- 	mem_regions->mem_regions[0].total_size = man->size << PAGE_SHIFT;
--	if (perfmon_capable())
--		mem_regions->mem_regions[0].used = ttm_resource_manager_usage(man);
-+	mem_regions->mem_regions[0].used = ttm_resource_manager_usage(man);
- 	mem_regions->num_mem_regions = 1;
+diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
+index 0bd6bf46f05f3..1f9ca5040982d 100644
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -62,7 +62,7 @@ struct hbucket {
+ 		: jhash_size((htable_bits) - HTABLE_REGION_BITS))
+ #define ahash_sizeof_regions(htable_bits)		\
+ 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
+-#define ahash_region(n, htable_bits)		\
++#define ahash_region(n)		\
+ 	((n) / jhash_size(HTABLE_REGION_BITS))
+ #define ahash_bucket_start(h,  htable_bits)	\
+ 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
+@@ -689,7 +689,7 @@ mtype_resize(struct ip_set *set, bool retried)
+ #endif
+ 				key = HKEY(data, h->initval, htable_bits);
+ 				m = __ipset_dereference(hbucket(t, key));
+-				nr = ahash_region(key, htable_bits);
++				nr = ahash_region(key);
+ 				if (!m) {
+ 					m = kzalloc(sizeof(*m) +
+ 					    AHASH_INIT_SIZE * dsize,
+@@ -839,7 +839,7 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	rcu_read_lock_bh();
+ 	t = rcu_dereference_bh(h->table);
+ 	key = HKEY(value, h->initval, t->htable_bits);
+-	r = ahash_region(key, t->htable_bits);
++	r = ahash_region(key);
+ 	atomic_inc(&t->uref);
+ 	elements = t->hregion[r].elements;
+ 	maxelem = t->maxelem;
+@@ -1037,7 +1037,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	rcu_read_lock_bh();
+ 	t = rcu_dereference_bh(h->table);
+ 	key = HKEY(value, h->initval, t->htable_bits);
+-	r = ahash_region(key, t->htable_bits);
++	r = ahash_region(key);
+ 	atomic_inc(&t->uref);
+ 	rcu_read_unlock_bh();
  
- 	for (i = XE_PL_VRAM0; i <= XE_PL_VRAM1; ++i) {
-@@ -291,13 +290,11 @@ static int query_mem_regions(struct xe_d
- 			mem_regions->mem_regions[mem_regions->num_mem_regions].total_size =
- 				man->size;
- 
--			if (perfmon_capable()) {
--				xe_ttm_vram_get_used(man,
--					&mem_regions->mem_regions
--					[mem_regions->num_mem_regions].used,
--					&mem_regions->mem_regions
--					[mem_regions->num_mem_regions].cpu_visible_used);
--			}
-+			xe_ttm_vram_get_used(man,
-+					     &mem_regions->mem_regions
-+					     [mem_regions->num_mem_regions].used,
-+					     &mem_regions->mem_regions
-+					     [mem_regions->num_mem_regions].cpu_visible_used);
- 
- 			mem_regions->mem_regions[mem_regions->num_mem_regions].cpu_visible_size =
- 				xe_ttm_vram_get_cpu_visible_size(man);
+-- 
+2.51.0
+
 
 
 
