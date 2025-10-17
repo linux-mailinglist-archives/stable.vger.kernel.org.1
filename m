@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-187494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51063BEA64B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F07BE9EA6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8937F5A2EB2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:50:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798EF5E791F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C728330B0C;
-	Fri, 17 Oct 2025 15:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378723328E9;
+	Fri, 17 Oct 2025 15:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSh1GU2I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BX5bTtM7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088C1330B26;
-	Fri, 17 Oct 2025 15:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E841F32C92D;
+	Fri, 17 Oct 2025 15:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716233; cv=none; b=YIVmJcL+or0qwSiot+ppIR3GYsukDnpkgKx8FgfT0s+NrDailpCH0u++F71g8fgRzGFD80vIRRvRxPJugif2Z4JQRvo0GmIkCnUh1qFWglO5hsNNMNS7s2lz1THr76PAmHy6nhMx1pl28BPBNI67QTaOvzNA27ACAhg1E7UPGvE=
+	t=1760713931; cv=none; b=kfxE18k2qx49kq9DU6YaH0p8cBcv+wZ+M4FR7UocS1ee7TsLET6BTRrN4tX9IU7yPxboW41wC0cJTzMFTiiBdIKeoENpkh995QJTb5xfuSecYZ4Yl3ExI0hyF4tUAMOSa8o0v8UL7YDHD/pOWv9W9uRMWL0/dz8vdDXi/yiUNuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716233; c=relaxed/simple;
-	bh=NW2aKZJZbUt+Jzz1WpcWFfahtlWBZevyHAFiLPPdu30=;
+	s=arc-20240116; t=1760713931; c=relaxed/simple;
+	bh=w/P1onfkEOE2Dwq+Cgvs+KJEN+E2hjElHmxKhXPPNRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hn5ZMMcB05xjqCbzzkuvgEXMqgUcoSKT4g/qzMINu5e6vYn5btko6PRRDg7v8cFVyzoga/T+9Bxt8uKU6iS2t/reAMjTXVu26uxQ+H6FmmRqtaBcNtq/PgFO7PITUFrZKkbPdTejL+wv3LP0sSdOJbM25XmPZqvU2++0T26nO4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSh1GU2I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839E7C4CEE7;
-	Fri, 17 Oct 2025 15:50:32 +0000 (UTC)
+	 MIME-Version; b=MTqhnzu8R0qY8/LOABZtcxqskRpoeqK/r+V0+/fIzIRlJKKoz710BKmGM0zCkqPt2e4r9LSGkPJmZgmxayQGv1wiXJPMhEcCMg4CQiu7V/EHSynnZ0B7I5BY1brbcq5IZsB6X2/M0bJFSzDM8h6jWTZGRuVwAyBPeFmebLgY67s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BX5bTtM7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD80C4CEFE;
+	Fri, 17 Oct 2025 15:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716232;
-	bh=NW2aKZJZbUt+Jzz1WpcWFfahtlWBZevyHAFiLPPdu30=;
+	s=korg; t=1760713930;
+	bh=w/P1onfkEOE2Dwq+Cgvs+KJEN+E2hjElHmxKhXPPNRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSh1GU2I5ZpSwjc8FT2S4Wz90Cx6ZPDrUZwIZCmJckJmxu/8SKZX51Qw1dMCrhWus
-	 7RRPd/cDv31ybl1j7Kw0RUgqWEs5ia6eCA/l2nvf6a6MmshUDHQrHECT32yvB7OQle
-	 R7cWJtifnE9eBw9QFJ+HJ96bTJansaWlzGAcZnaQ=
+	b=BX5bTtM7Yba/cqiMggNhwGOxlaC0os2He7MS3UJI+WIP8qazkG5b4+M0gVmQfM5qY
+	 DRATSy+/04mk45nPsYTHpGA0wO1rTo9+HuCtCxlE6LUeuwKIoVwr5WvOio+ieum1ss
+	 JyY5MSeaLXr1e7heF7f9NLdPHvCZ9vtQD4v3idws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 120/276] fs: always return zero on success from replace_fd()
+	syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
+	Ahmet Eray Karadag <eraykrdg1@gmail.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 152/201] ext4: guard against EA inode refcount underflow in xattr update
 Date: Fri, 17 Oct 2025 16:53:33 +0200
-Message-ID: <20251017145146.858285975@linuxfoundation.org>
+Message-ID: <20251017145140.316176074@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Ahmet Eray Karadag <eraykrdg1@gmail.com>
 
-commit 708c04a5c2b78e22f56e2350de41feba74dfccd9 upstream.
+commit 57295e835408d8d425bef58da5253465db3d6888 upstream.
 
-replace_fd() returns the number of the new file descriptor through the
-return value of do_dup2(). However its callers never care about the
-specific returned number. In fact the caller in receive_fd_replace() treats
-any non-zero return value as an error and therefore never calls
-__receive_sock() for most file descriptors, which is a bug.
+syzkaller found a path where ext4_xattr_inode_update_ref() reads an EA
+inode refcount that is already <= 0 and then applies ref_change (often
+-1). That lets the refcount underflow and we proceed with a bogus value,
+triggering errors like:
 
-To fix the bug in receive_fd_replace() and to avoid the same issue
-happening in future callers, signal success through a plain zero.
+  EXT4-fs error: EA inode <n> ref underflow: ref_count=-1 ref_change=-1
+  EXT4-fs warning: ea_inode dec ref err=-117
 
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Link: https://lore.kernel.org/lkml/20250801220215.GS222315@ZenIV/
-Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
-Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/20250805-fix-receive_fd_replace-v3-1-b72ba8b34bac@linutronix.de
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Make the invariant explicit: if the current refcount is non-positive,
+treat this as on-disk corruption, emit ext4_error_inode(), and fail the
+operation with -EFSCORRUPTED instead of updating the refcount. Delete the
+WARN_ONCE() as negative refcounts are now impossible; keep error reporting
+in ext4_error_inode().
+
+This prevents the underflow and the follow-on orphan/cleanup churn.
+
+Reported-by: syzbot+0be4f339a8218d2a5bb1@syzkaller.appspotmail.com
+Fixes: https://syzbot.org/bug?extid=0be4f339a8218d2a5bb1
+Cc: stable@kernel.org
+Co-developed-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+Signed-off-by: Ahmet Eray Karadag <eraykrdg1@gmail.com>
+Message-ID: <20250920021342.45575-1-eraykrdg1@gmail.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/file.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/ext4/xattr.c |   15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -1154,7 +1154,10 @@ int replace_fd(unsigned fd, struct file
- 	err = expand_files(files, fd);
- 	if (unlikely(err < 0))
- 		goto out_unlock;
--	return do_dup2(files, file, fd, flags);
-+	err = do_dup2(files, file, fd, flags);
-+	if (err < 0)
-+		return err;
-+	return 0;
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1036,7 +1036,7 @@ static int ext4_xattr_inode_update_ref(h
+ 				       int ref_change)
+ {
+ 	struct ext4_iloc iloc;
+-	s64 ref_count;
++	u64 ref_count;
+ 	int ret;
  
- out_unlock:
- 	spin_unlock(&files->file_lock);
+ 	inode_lock_nested(ea_inode, I_MUTEX_XATTR);
+@@ -1046,13 +1046,17 @@ static int ext4_xattr_inode_update_ref(h
+ 		goto out;
+ 
+ 	ref_count = ext4_xattr_inode_get_ref(ea_inode);
++	if ((ref_count == 0 && ref_change < 0) || (ref_count == U64_MAX && ref_change > 0)) {
++		ext4_error_inode(ea_inode, __func__, __LINE__, 0,
++			"EA inode %lu ref wraparound: ref_count=%lld ref_change=%d",
++			ea_inode->i_ino, ref_count, ref_change);
++		ret = -EFSCORRUPTED;
++		goto out;
++	}
+ 	ref_count += ref_change;
+ 	ext4_xattr_inode_set_ref(ea_inode, ref_count);
+ 
+ 	if (ref_change > 0) {
+-		WARN_ONCE(ref_count <= 0, "EA inode %lu ref_count=%lld",
+-			  ea_inode->i_ino, ref_count);
+-
+ 		if (ref_count == 1) {
+ 			WARN_ONCE(ea_inode->i_nlink, "EA inode %lu i_nlink=%u",
+ 				  ea_inode->i_ino, ea_inode->i_nlink);
+@@ -1061,9 +1065,6 @@ static int ext4_xattr_inode_update_ref(h
+ 			ext4_orphan_del(handle, ea_inode);
+ 		}
+ 	} else {
+-		WARN_ONCE(ref_count < 0, "EA inode %lu ref_count=%lld",
+-			  ea_inode->i_ino, ref_count);
+-
+ 		if (ref_count == 0) {
+ 			WARN_ONCE(ea_inode->i_nlink != 1,
+ 				  "EA inode %lu i_nlink=%u",
 
 
 
