@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E2CBE9DD1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88552BEA038
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5C6485682BF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8FF61584352
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F14F33291B;
-	Fri, 17 Oct 2025 15:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB97337100;
+	Fri, 17 Oct 2025 15:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYnSGdcg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyE4qLHi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4DD33290F;
-	Fri, 17 Oct 2025 15:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B56B2745E;
+	Fri, 17 Oct 2025 15:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714017; cv=none; b=o2XYDIlvA6LlrgpXAI1YyNBVXviAYQ+pr+NdlRnVIMLtSfRZr2odCl5BYg2/bWZ/EZUAn5FVwaTolSYxNQkhLph1hBeSLvek92Or6c6KBS+ckbcESWAQFpaUt/l5pY6y2pNITsba2zrIBGeR2LCOZ5cNMkFGQriw/MHay5DEjUU=
+	t=1760714751; cv=none; b=JLffq1hHy8B0CyXm5zotJ6QKVp6XnPcZLgfrWFgMe5wkQoEckC0hhuyC7SvfQNwtQzKj3wZsjJUy74VuIlYIAOFm/RjeZt13ZCBffA0XlxLjzmxtWiF102/Ugw6TdtqT/r7g6gNvKihxzCYq2INdhNGWX4QvbVtCd5pdLUYTWN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714017; c=relaxed/simple;
-	bh=1wfBPW5gRNL5+HzeDyPWz8WTikKXTnAPdf6gHMHyC2U=;
+	s=arc-20240116; t=1760714751; c=relaxed/simple;
+	bh=M2IP5uDzCXvb4mZMQBJysCBlzy+P/Gxf+xANki8p+3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffUP/UCMXV5IUEhjjWkUdsVYvH/GiqAYhcxie+k3uSq8debmMRqw+pZoyxR2z2OICprOXPpwvBeZBVCFiS8bmY/NSNaMcYUfTMoj49ztqD3XF6KH2dbYNdH0Uun2a8uy79PfyhWdj2Or8Pb5aevHv+a36kL18v0ltDja0hU6EA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYnSGdcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B306CC4CEE7;
-	Fri, 17 Oct 2025 15:13:36 +0000 (UTC)
+	 MIME-Version; b=t9HKqZ9oD3IugS99cIqWMSxU6gRy7ay3mwdD/bYPKqoS12b8cdk3AEGwsprkD8hJbLavck3BuzCdYqqTWz7MkUwyEN5e8FqALT5jCdJENNBOsys5XkeEUuMl10UucAYlcFAqrXwqwmwES528vKrd87AoqYhePwjGxUua+RqzQ3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyE4qLHi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB654C4CEE7;
+	Fri, 17 Oct 2025 15:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714017;
-	bh=1wfBPW5gRNL5+HzeDyPWz8WTikKXTnAPdf6gHMHyC2U=;
+	s=korg; t=1760714751;
+	bh=M2IP5uDzCXvb4mZMQBJysCBlzy+P/Gxf+xANki8p+3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYnSGdcg9jGQeVNBr8kT9wbqzLcVjrZJpYwuMGOLxGiaqrTeuPyLLVDbYJIRGu5Y5
-	 P7kqCGrbPBQaT7jqV2li4HGK3gBAoSQZ3XBoFe/+GLJ7rnjFc2MCkL1NJzLCsesRpS
-	 Nv+YQ1svlVOLbstPtNg5keXmRaBmiCseejtFZXGg=
+	b=MyE4qLHiasx2Ck/sI7mKY+iuJPkhtuYV07B8D6hUd+O3DQwjW3RNbNb2ELRgRHYDR
+	 gKrJZvv/aZfWt80hOMad5Ne4gQ4SKNeqXL9jVNpHE+iWNWA/4V/gKVn0opS62Wor/N
+	 8nvZV/Dh3N9oDOQufte+j/QUTKEmW0pmF1N7ArPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 200/201] writeback: Avoid excessively long inode switching times
+Subject: [PATCH 6.12 254/277] ACPI: property: Do not pass NULL handles to acpi_attach_data()
 Date: Fri, 17 Oct 2025 16:54:21 +0200
-Message-ID: <20251017145142.106178814@linuxfoundation.org>
+Message-ID: <20251017145156.428535620@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 9a6ebbdbd41235ea3bc0c4f39e2076599b8113cc ]
+[ Upstream commit baf60d5cb8bc6b85511c5df5f0ad7620bb66d23c ]
 
-With lazytime mount option enabled we can be switching many dirty inodes
-on cgroup exit to the parent cgroup. The numbers observed in practice
-when systemd slice of a large cron job exits can easily reach hundreds
-of thousands or millions. The logic in inode_do_switch_wbs() which sorts
-the inode into appropriate place in b_dirty list of the target wb
-however has linear complexity in the number of dirty inodes thus overall
-time complexity of switching all the inodes is quadratic leading to
-workers being pegged for hours consuming 100% of the CPU and switching
-inodes to the parent wb.
+In certain circumstances, the ACPI handle of a data-only node may be
+NULL, in which case it does not make sense to attempt to attach that
+node to an ACPI namespace object, so update the code to avoid attempts
+to do so.
 
-Simple reproducer of the issue:
-  FILES=10000
-  # Filesystem mounted with lazytime mount option
-  MNT=/mnt/
-  echo "Creating files and switching timestamps"
-  for (( j = 0; j < 50; j ++ )); do
-      mkdir $MNT/dir$j
-      for (( i = 0; i < $FILES; i++ )); do
-          echo "foo" >$MNT/dir$j/file$i
-      done
-      touch -a -t 202501010000 $MNT/dir$j/file*
-  done
-  wait
-  echo "Syncing and flushing"
-  sync
-  echo 3 >/proc/sys/vm/drop_caches
+This prevents confusing and unuseful error messages from being printed.
 
-  echo "Reading all files from a cgroup"
-  mkdir /sys/fs/cgroup/unified/mycg1 || exit
-  echo $$ >/sys/fs/cgroup/unified/mycg1/cgroup.procs || exit
-  for (( j = 0; j < 50; j ++ )); do
-      cat /mnt/dir$j/file* >/dev/null &
-  done
-  wait
-  echo "Switching wbs"
-  # Now rmdir the cgroup after the script exits
+Also document the fact that the ACPI handle of a data-only node may be
+NULL and when that happens in a code comment.  In addition, make
+acpi_add_nondev_subnodes() print a diagnostic message for each data-only
+node with an unknown ACPI namespace scope.
 
-We need to maintain b_dirty list ordering to keep writeback happy so
-instead of sorting inode into appropriate place just append it at the
-end of the list and clobber dirtied_time_when. This may result in inode
-writeback starting later after cgroup switch however cgroup switches are
-rare so it shouldn't matter much. Since the cgroup had write access to
-the inode, there are no practical concerns of the possible DoS issues.
-
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 1d52f10917a7 ("ACPI: property: Tie data nodes to acpi handles")
+Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fs-writeback.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/acpi/property.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 0454a1f0fc636..274fae88b498e 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -422,22 +422,23 @@ static bool inode_do_switch_wbs(struct inode *inode,
- 	 * Transfer to @new_wb's IO list if necessary.  If the @inode is dirty,
- 	 * the specific list @inode was on is ignored and the @inode is put on
- 	 * ->b_dirty which is always correct including from ->b_dirty_time.
--	 * The transfer preserves @inode->dirtied_when ordering.  If the @inode
--	 * was clean, it means it was on the b_attached list, so move it onto
--	 * the b_attached list of @new_wb.
-+	 * If the @inode was clean, it means it was on the b_attached list, so
-+	 * move it onto the b_attached list of @new_wb.
- 	 */
- 	if (!list_empty(&inode->i_io_list)) {
- 		inode->i_wb = new_wb;
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -124,6 +124,10 @@ static bool acpi_nondev_subnode_extract(
+ 		result = true;
  
- 		if (inode->i_state & I_DIRTY_ALL) {
--			struct inode *pos;
--
--			list_for_each_entry(pos, &new_wb->b_dirty, i_io_list)
--				if (time_after_eq(inode->dirtied_when,
--						  pos->dirtied_when))
--					break;
-+			/*
-+			 * We need to keep b_dirty list sorted by
-+			 * dirtied_time_when. However properly sorting the
-+			 * inode in the list gets too expensive when switching
-+			 * many inodes. So just attach inode at the end of the
-+			 * dirty list and clobber the dirtied_time_when.
-+			 */
-+			inode->dirtied_time_when = jiffies;
- 			inode_io_list_move_locked(inode, new_wb,
--						  pos->i_io_list.prev);
-+						  &new_wb->b_dirty);
- 		} else {
- 			inode_cgwb_move_to_attached(inode, new_wb);
- 		}
--- 
-2.51.0
-
+ 	if (result) {
++		/*
++		 * This will be NULL if the desc package is embedded in an outer
++		 * _DSD-equivalent package and its scope cannot be determined.
++		 */
+ 		dn->handle = handle;
+ 		dn->data.pointer = desc;
+ 		list_add_tail(&dn->sibling, list);
+@@ -224,6 +228,8 @@ static bool acpi_add_nondev_subnodes(acp
+ 			 * strings because there is no way to build full
+ 			 * pathnames out of them.
+ 			 */
++			acpi_handle_debug(scope, "subnode %s: Unknown scope\n",
++					  link->package.elements[0].string.pointer);
+ 			desc = &link->package.elements[1];
+ 			result = acpi_nondev_subnode_extract(desc, NULL, link,
+ 							     list, parent);
+@@ -396,6 +402,9 @@ static void acpi_untie_nondev_subnodes(s
+ 	struct acpi_data_node *dn;
+ 
+ 	list_for_each_entry(dn, &data->subnodes, sibling) {
++		if (!dn->handle)
++			continue;
++
+ 		acpi_detach_data(dn->handle, acpi_nondev_subnode_tag);
+ 
+ 		acpi_untie_nondev_subnodes(&dn->data);
+@@ -410,6 +419,9 @@ static bool acpi_tie_nondev_subnodes(str
+ 		acpi_status status;
+ 		bool ret;
+ 
++		if (!dn->handle)
++			continue;
++
+ 		status = acpi_attach_data(dn->handle, acpi_nondev_subnode_tag, dn);
+ 		if (ACPI_FAILURE(status) && status != AE_ALREADY_EXISTS) {
+ 			acpi_handle_err(dn->handle, "Can't tag data node\n");
 
 
 
