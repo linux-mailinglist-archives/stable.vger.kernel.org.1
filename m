@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6812BE9602
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CEFBBE9AA8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8541887D01
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:58:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FE3D746D4D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061E05695;
-	Fri, 17 Oct 2025 14:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B4632F743;
+	Fri, 17 Oct 2025 15:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLYQVWJI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsqx+n9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FCF3370F6;
-	Fri, 17 Oct 2025 14:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032D03370E2;
+	Fri, 17 Oct 2025 15:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713043; cv=none; b=taUjQbW2m8odkhN+/YUiI3jDbMZ3cOcLzB9fPcmS3Q8ST0YnV2Je0OoVcDj14sUCbk1Nx6XjZPMB6qtr6pxepeQD+GessMwmOl6cuc2ml5wl5GSQnE/apCsfMrkCOvtwXvW8zQY1GDxqCI4z3D+XEo0gh/f0ATlGc9mzaEg3mD8=
+	t=1760713676; cv=none; b=HeansRhGeLj1pDzIE+oAUDZZsYqoetS/Hr4jRDHtoLwfoFJ+n1O1T7O9IJ9HN+h6Oulwt717hoKgPYVdqERwRY5ZjjHfGzIVFrsRVydhIjnorDdtQoCYTzZTVxG6Gck2g9Y3ItejcOdMvk3uvSy09GgSlIqL8106rbQMcxlWGqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713043; c=relaxed/simple;
-	bh=sFS22HaoMVKkPGkOEdJy6n9N/szY2RZmKHP5++O75cQ=;
+	s=arc-20240116; t=1760713676; c=relaxed/simple;
+	bh=YXAMbnhZTMKCbIhpSsRk/HtM18Tw+fGeuAhYGi81HHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RE6LD5nwSqgtunFvLprJGJjXt+1et/VaD7x76zgUKtqW/1GsLgfq2HqtBi5t9VO91Y2Ag0vf7DiBcVCjXFQOlKGVxkpynwJMZx8vmaUfDGpfa7MwCfjhxmsV+T/K45vMT1BM6gMs2VivCr5ycNm5hV1kS/lyVA2tygoLOVfUR2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLYQVWJI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E1DC4CEE7;
-	Fri, 17 Oct 2025 14:57:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G7K5Ov60ONMOXe2/DB7uYD/L+fuCORusNAd46Idq1yYdO9tmvJA5v3SH8mNu/mqn3Nj3U1rSKYaUx8JVtIBvFTOWBKl96pdXyKCNZfeE97pFRH6aBUQLNRrS4xUK3mgME0kO7IMr57YonBse0sB49u3w8fp1Oosiin2mGm1E/2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsqx+n9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836C5C4CEE7;
+	Fri, 17 Oct 2025 15:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713043;
-	bh=sFS22HaoMVKkPGkOEdJy6n9N/szY2RZmKHP5++O75cQ=;
+	s=korg; t=1760713675;
+	bh=YXAMbnhZTMKCbIhpSsRk/HtM18Tw+fGeuAhYGi81HHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MLYQVWJI4O2CsVitXY47y70NQz9JI5hD6rrxLt7kjPCA9gtJVWbcjwbyJDaU/LQfs
-	 FxukvVyfwSHXHca/C8hFEguKu/xUAWsqbiUssfHvoo+HzG48mNgjP6KYUDB8OBtYjn
-	 yM3+zv3Fm4SxJW+nztMRNIn5n2j2PJWLP+YRL0LE=
+	b=hsqx+n9xvNAVAgSqQgevcZtQ+v4SNNA5FdQkBp7+uzDfyr/N8JnIWMUFqh36puZ1O
+	 ygTNCGrqKlB6rTpgSifSpXGapA4l21dsgRyFZ9a/Yx7VjSJ1zvOxvz72dcVnUHei8t
+	 GyNLDixDSOEGrPwPgou1kSlAcCW3F6Yqsu0Bjfd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/168] LoongArch: Remove CONFIG_ACPI_TABLE_UPGRADE in platform_init()
-Date: Fri, 17 Oct 2025 16:51:47 +0200
-Message-ID: <20251017145130.056309599@linuxfoundation.org>
+Subject: [PATCH 6.6 047/201] drm/amd/display: Properly clear SCL_*_FILTER_CONTROL on DCE6
+Date: Fri, 17 Oct 2025 16:51:48 +0200
+Message-ID: <20251017145136.474520167@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 6c3ca6654a74dd396bc477839ba8d9792eced441 ]
+[ Upstream commit c0aa7cf49dd6cb302fe28e7183992b772cb7420c ]
 
-Both acpi_table_upgrade() and acpi_boot_table_init() are defined as
-empty functions under !CONFIG_ACPI_TABLE_UPGRADE and !CONFIG_ACPI in
-include/linux/acpi.h, there are no implicit declaration errors with
-various configs.
+Previously, the code would set a bit field which didn't exist
+on DCE6 so it would be effectively a no-op.
 
-  #ifdef CONFIG_ACPI_TABLE_UPGRADE
-  void acpi_table_upgrade(void);
-  #else
-  static inline void acpi_table_upgrade(void) { }
-  #endif
-
-  #ifdef	CONFIG_ACPI
-  ...
-  void acpi_boot_table_init (void);
-  ...
-  #else	/* !CONFIG_ACPI */
-  ...
-  static inline void acpi_boot_table_init(void)
-  {
-  }
-  ...
-  #endif	/* !CONFIG_ACPI */
-
-As Huacai suggested, CONFIG_ACPI_TABLE_UPGRADE is ugly and not necessary
-here, just remove it. At the same time, just keep CONFIG_ACPI to prevent
-potential build errors in future, and give a signal to indicate the code
-is ACPI-specific. For the same reason, we also put acpi_table_upgrade()
-under CONFIG_ACPI.
-
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Stable-dep-of: 98662be7ef20 ("LoongArch: Init acpi_gbl_use_global_lock to false")
+Fixes: b70aaf5586f2 ("drm/amd/display: dce_transform: add DCE6 specific macros,functions")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/setup.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_transform.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-index b00e885d98458..55efe2f5fa1c3 100644
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -252,10 +252,8 @@ void __init platform_init(void)
- 	arch_reserve_vmcore();
- 	arch_parse_crashkernel();
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
+index 670d5ab9d9984..b761dda491d54 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
+@@ -527,8 +527,7 @@ static void dce60_transform_set_scaler(
+ 		if (coeffs_v != xfm_dce->filter_v || coeffs_h != xfm_dce->filter_h) {
+ 			/* 4. Program vertical filters */
+ 			if (xfm_dce->filter_v == NULL)
+-				REG_SET(SCL_VERT_FILTER_CONTROL, 0,
+-						SCL_V_2TAP_HARDCODE_COEF_EN, 0);
++				REG_WRITE(SCL_VERT_FILTER_CONTROL, 0);
+ 			program_multi_taps_filter(
+ 					xfm_dce,
+ 					data->taps.v_taps,
+@@ -542,8 +541,7 @@ static void dce60_transform_set_scaler(
  
--#ifdef CONFIG_ACPI_TABLE_UPGRADE
--	acpi_table_upgrade();
--#endif
- #ifdef CONFIG_ACPI
-+	acpi_table_upgrade();
- 	acpi_gbl_use_default_register_widths = false;
- 	acpi_boot_table_init();
- #endif
+ 			/* 5. Program horizontal filters */
+ 			if (xfm_dce->filter_h == NULL)
+-				REG_SET(SCL_HORZ_FILTER_CONTROL, 0,
+-						SCL_H_2TAP_HARDCODE_COEF_EN, 0);
++				REG_WRITE(SCL_HORZ_FILTER_CONTROL, 0);
+ 			program_multi_taps_filter(
+ 					xfm_dce,
+ 					data->taps.h_taps,
 -- 
 2.51.0
 
