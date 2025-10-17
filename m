@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-186854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F346BE9F66
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:36:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21F4CBE9683
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:01:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 69ACC585DB8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BCD0623211
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E116E332909;
-	Fri, 17 Oct 2025 15:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC554241663;
+	Fri, 17 Oct 2025 14:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RztcfTlj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPMcM+Ip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996C6332901;
-	Fri, 17 Oct 2025 15:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80941239591;
+	Fri, 17 Oct 2025 14:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714415; cv=none; b=lpfPyg8pForMWXSlKQ9R8bldFyJkaAhCN30f1b7zSYzeamB9M7wGXtCbeKIf6j2HiE4gCI2VnbNYQrONsE3A8/mrxoUWoKAuwMbMyOdokD7KINLo2Rn1xmOhkiDIwg0YTv+B1e6OVrkqUoh4NanYfmE9NKtZG+/uPOT9ALkGvQ8=
+	t=1760713054; cv=none; b=infKh4iSRy9RjG2bF+mwgAWCqxbpyZOW1Sh6q0TNl8SLpWE04vfaCag/mHcg/jsodx2VKd7IirNaGFVgck9CIo0bb25aDsEvtDgiHiDQ86aqdIqe8yaAyxMe8GuxjyQI1d0vAVRXOOiDkUE3gEpOMu3fVvc6DnFPz9JhYutD4ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714415; c=relaxed/simple;
-	bh=bC6VSP9KSwHzrvHhg7M9Zvw0ET0xMm+oWz8Ya+mtvU4=;
+	s=arc-20240116; t=1760713054; c=relaxed/simple;
+	bh=cbz7kgi7sd+fgeBulgOoLLyAkmFHPHJDnWojJMpX51A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z86aN2eTnj4U/wqfHZq1JvmxZ7F/VtIbFxpiaYXCR5onBrlNkBHoMbTTYQrW3Fs+aT80TZJyTyTFItYWch9lP6b+jAKL9JuudvRzqUo2m0+7MyK1ElCOA9tIOffbOa95Iu6ptdHUesWgp3vPSEcndtTjgtcMGPxMPLMQInJktF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RztcfTlj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EA4C4CEE7;
-	Fri, 17 Oct 2025 15:20:14 +0000 (UTC)
+	 MIME-Version; b=NXzLDOrJC0+9AJBuXZt7T2FI1SAhM2tfI3JdnJhj5cKAMShmND+7GUWMTUDRMBbZw6vjpe5TXIsPeid8OWirhsI+szFKyf2/IbBqDyScjLhv8BBK26gkMVm3bZ3xbVX6FityV7E09u02q3dm5xxg45kOrNT/8Gp+erTy7N8wgVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPMcM+Ip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA3EC4CEE7;
+	Fri, 17 Oct 2025 14:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714415;
-	bh=bC6VSP9KSwHzrvHhg7M9Zvw0ET0xMm+oWz8Ya+mtvU4=;
+	s=korg; t=1760713054;
+	bh=cbz7kgi7sd+fgeBulgOoLLyAkmFHPHJDnWojJMpX51A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RztcfTljji/yR6KslvnZBQsHts7sYvuYaxfbsy2ie93Hvbn7VAxmbBGJYGLRzETrc
-	 54PPcQcHJMzjv7ItjT74Nfi710r1YMRyagVfZygaArCml3r+ehjhJ8/9ruxavlEKB5
-	 PLsQGtFxd2ki7+JJsJO1uGJe0G8a1FDXLsSzEyK8=
+	b=FPMcM+IpcF7MLvRn5RSdRUnjNtr9jcxg5/FqIzE48pFdWKb61YD6IQmY0TS9b6RkQ
+	 V8YMopL9Aj0gSEFpUm7zj4Enho7ikkm2AnF2bGmADdpUKC8jO0IRoxK+delcVkZdaM
+	 Zz+lGyAluGPAW98rOCXhbmljP3Ea9ZdnUdGuSQzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 104/277] media: cx18: Add missing check after DMA map
+	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 032/168] drm/vmwgfx: Fix Use-after-free in validation
 Date: Fri, 17 Oct 2025 16:51:51 +0200
-Message-ID: <20251017145150.928044298@linuxfoundation.org>
+Message-ID: <20251017145130.203005012@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit 23b53639a793477326fd57ed103823a8ab63084f upstream.
+[ Upstream commit dfe1323ab3c8a4dd5625ebfdba44dc47df84512a ]
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, dealloc buffers, and return.
+Nodes stored in the validation duplicates hashtable come from an arena
+allocator that is cleared at the end of vmw_execbuf_process. All nodes
+are expected to be cleared in vmw_validation_drop_ht but this node escaped
+because its resource was destroyed prematurely.
 
-Fixes: 1c1e45d17b66 ("V4L/DVB (7786): cx18: new driver for the Conexant CX23418 MPEG encoder chip")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 64ad2abfe9a6 ("drm/vmwgfx: Adapt validation code for reference-free lookups")
+Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://lore.kernel.org/r/20250926195427.1405237-1-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/cx18/cx18-queue.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_validation.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/pci/cx18/cx18-queue.c
-+++ b/drivers/media/pci/cx18/cx18-queue.c
-@@ -379,15 +379,22 @@ int cx18_stream_alloc(struct cx18_stream
- 			break;
- 		}
- 
-+		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
-+						 buf->buf, s->buf_size,
-+						 s->dma);
-+		if (dma_mapping_error(&s->cx->pci_dev->dev, buf->dma_handle)) {
-+			kfree(buf->buf);
-+			kfree(mdl);
-+			kfree(buf);
-+			break;
-+		}
-+
- 		INIT_LIST_HEAD(&mdl->list);
- 		INIT_LIST_HEAD(&mdl->buf_list);
- 		mdl->id = s->mdl_base_idx; /* a somewhat safe value */
- 		cx18_enqueue(s, mdl, &s->q_idle);
- 
- 		INIT_LIST_HEAD(&buf->list);
--		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
--						 buf->buf, s->buf_size,
--						 s->dma);
- 		cx18_buf_sync_for_cpu(s, buf);
- 		list_add_tail(&buf->list, &s->buf_pool);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+index f5c4a40fb16d7..d37cf22e9caeb 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_validation.c
+@@ -339,8 +339,10 @@ int vmw_validation_add_resource(struct vmw_validation_context *ctx,
+ 		hash_add_rcu(ctx->sw_context->res_ht, &node->hash.head, node->hash.key);
  	}
+ 	node->res = vmw_resource_reference_unless_doomed(res);
+-	if (!node->res)
++	if (!node->res) {
++		hash_del_rcu(&node->hash.head);
+ 		return -ESRCH;
++	}
+ 
+ 	node->first_usage = 1;
+ 	if (!res->dev_priv->has_mob) {
+-- 
+2.51.0
+
 
 
 
