@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-187448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F9B2BEA621
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:01:03 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0F9BE99BD
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F4545A1BCC
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:48:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8776A4FDFBB
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D0E32E143;
-	Fri, 17 Oct 2025 15:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B6432E159;
+	Fri, 17 Oct 2025 15:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oq1C+57G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjWPgWz1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F457330B29;
-	Fri, 17 Oct 2025 15:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BC83370FA;
+	Fri, 17 Oct 2025 15:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716101; cv=none; b=ZxBYCrpO2gp/weTklT2SOqfRjwPY4dhCbuQjoHMG42ULWKOTo1JVH9gWBSEVMya7px0f72hDy4xA7SqnlR3iDLcNZ/224Xo1pDWECkjoTwSjgr//hXDqSgfI4ysFBskq/uG8sBjM7lvVxu7jLBxNrC5eL91BUenFOzhEYm/I3QU=
+	t=1760713656; cv=none; b=IbjwUQYDevlGzP+D1FxdlrvW2jyHICghNKrVG2Y3vFUXlx4UU6Pb2+cpobHrTAf4hI0vuINR31jsE2xEa4govfKAhHn/L+2AfWSI/c9xgOhj5TT4hBAlVPMiYsmy37TegBsUEGL5i34gk0WGrRYqWKryP4mSWgmkpVheXYPM50w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716101; c=relaxed/simple;
-	bh=mRL8vPyLg3Gx+GcuPbAXKjsiLkiYBEA8gyrGp4LGk7M=;
+	s=arc-20240116; t=1760713656; c=relaxed/simple;
+	bh=UUhodY3zxHQ4gxuIxgj61kBAp3jtUOkkS8rpFFefqfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHeTr0dFtOnisjXpBlsglHYft7/fsvyLf3E4VMyPryz5EtPe6iv5YM7yV3N4Fk/1SxLOySL9dSHHFmO5AOyh74zZShfSKo5mtUFHTizFYx9HIB4BVcX2y4EQGLyh7Wc29r3lAymDJo+crPclN1DJPj0duOFRFd/SbHin8rUR3Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oq1C+57G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D22C113D0;
-	Fri, 17 Oct 2025 15:48:20 +0000 (UTC)
+	 MIME-Version; b=VKpbgYVznoNRAEU1r4PGcakTMcjffMnhU2ySlcC0VDiBLDJwmmtgLr+IRdijU9OlywvcUMArlsKMC//DjQdBzFklmUaXRExgpX2pmisiMJvDxs2/7EqtvNeLxztN1xpZ9tSofZ1Rbsxs22srmv/yFJYick3lBMmcvoy8yk9WP74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjWPgWz1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF50C4CEE7;
+	Fri, 17 Oct 2025 15:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716100;
-	bh=mRL8vPyLg3Gx+GcuPbAXKjsiLkiYBEA8gyrGp4LGk7M=;
+	s=korg; t=1760713655;
+	bh=UUhodY3zxHQ4gxuIxgj61kBAp3jtUOkkS8rpFFefqfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oq1C+57G1F/lO7bT+/6Ax726DvlMPUCvegSf25mDEpyMfhgmLH/BhqkgG7Iboc6o1
-	 qsX+eUX+uPwE3uw6O0UHqf/Vv+UDWU7M8CK5CPWm/YCLOs/rqPwD1lp3poP01PAi1t
-	 9aM6DQ2fPGKUhQuE1LfJVChZTpUKubVd6cJ+nQUM=
+	b=cjWPgWz1wuQwhEpzEl+yOVxX9Ur5AcwgE7KSG/CxosXkfskWpMYoDpEBOtItIgZdM
+	 q3WKcqRGK/JRflZh4qSKQ2o0alhDOvl4iQkPpIUSxczZAMSJYRZurMku/UOcmWHE8K
+	 oeOtp4txb/S/OfO0H/kL6MSUj+wI8OwsPdK01sec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 040/276] firmware: firmware: meson-sm: fix compile-test default
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.6 072/201] media: cx18: Add missing check after DMA map
 Date: Fri, 17 Oct 2025 16:52:13 +0200
-Message-ID: <20251017145143.868493300@linuxfoundation.org>
+Message-ID: <20251017145137.401685168@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 0454346d1c5f7fccb3ef6e3103985de8ab3469f3 ]
+commit 23b53639a793477326fd57ed103823a8ab63084f upstream.
 
-Enabling compile testing should not enable every individual driver (we
-have "allyesconfig" for that).
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, dealloc buffers, and return.
 
-Fixes: 4a434abc40d2 ("firmware: meson-sm: enable build as module")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250725075429.10056-1-johan@kernel.org
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c1e45d17b66 ("V4L/DVB (7786): cx18: new driver for the Conexant CX23418 MPEG encoder chip")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/meson/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/pci/cx18/cx18-queue.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/meson/Kconfig b/drivers/firmware/meson/Kconfig
-index f2fdd37566482..179f5d46d8ddf 100644
---- a/drivers/firmware/meson/Kconfig
-+++ b/drivers/firmware/meson/Kconfig
-@@ -5,7 +5,7 @@
- config MESON_SM
- 	tristate "Amlogic Secure Monitor driver"
- 	depends on ARCH_MESON || COMPILE_TEST
--	default y
-+	default ARCH_MESON
- 	depends on ARM64_4K_PAGES
- 	help
- 	  Say y here to enable the Amlogic secure monitor driver
--- 
-2.51.0
-
+--- a/drivers/media/pci/cx18/cx18-queue.c
++++ b/drivers/media/pci/cx18/cx18-queue.c
+@@ -379,15 +379,22 @@ int cx18_stream_alloc(struct cx18_stream
+ 			break;
+ 		}
+ 
++		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
++						 buf->buf, s->buf_size,
++						 s->dma);
++		if (dma_mapping_error(&s->cx->pci_dev->dev, buf->dma_handle)) {
++			kfree(buf->buf);
++			kfree(mdl);
++			kfree(buf);
++			break;
++		}
++
+ 		INIT_LIST_HEAD(&mdl->list);
+ 		INIT_LIST_HEAD(&mdl->buf_list);
+ 		mdl->id = s->mdl_base_idx; /* a somewhat safe value */
+ 		cx18_enqueue(s, mdl, &s->q_idle);
+ 
+ 		INIT_LIST_HEAD(&buf->list);
+-		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
+-						 buf->buf, s->buf_size,
+-						 s->dma);
+ 		cx18_buf_sync_for_cpu(s, buf);
+ 		list_add_tail(&buf->list, &s->buf_pool);
+ 	}
 
 
 
