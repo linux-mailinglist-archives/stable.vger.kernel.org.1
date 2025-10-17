@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-186663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD92BE9969
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:15:03 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FBDBEA075
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBEA8189333D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:11 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C89E235E55F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E4E32F743;
-	Fri, 17 Oct 2025 15:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF5E369972;
+	Fri, 17 Oct 2025 15:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R78otExv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsX0M9Ju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AB82F692A;
-	Fri, 17 Oct 2025 15:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB22A3328E8;
+	Fri, 17 Oct 2025 15:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713882; cv=none; b=MfSm9bU0p3Hz2mw+QzqgzWmqZSTPkv1hEbffdaag/BdxzZKNK5PA05NknbLgPMG2DDLJYOqLqV5WHq8b0clktB3YzdmzU/ahV6McCB3MUxP/9L9TLWCu6IlQpDduVJsQZRsOJzIFkppk0Fcli67JJbhqsOXpltZ9bMJNI585REY=
+	t=1760715501; cv=none; b=Ym5dBPtB8311uvFllwo35fP/gFYp5wur9dIcje4H+hhRaxn0Muk9ZXNXdvPislHMMSen7tFul3Bi/deSvSuES3jqcTqhWLdV8ZQtTsm5cZhIrEY8n+o9DWEGVruB5JBcBhce7dXBjLknvyhC0VL6jfinw/E8J/RfvkZWl7bvmbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713882; c=relaxed/simple;
-	bh=rYFEBfE4aFquGZQxtJEThcBVn3QbRc9pXiWWXW/JEpk=;
+	s=arc-20240116; t=1760715501; c=relaxed/simple;
+	bh=jiOmg4R4OfEV+91qmPy20qwWNuBsclMT2slKLkaoM3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IOu91OQkDPnCdFw2RK96CA4EBtF95RB/0ayO58dAVJErameicUdKqsLFM5sFNB20ydTcM2AaFczDU65kowQsGmdXBhIz78dWnwyuYWDrJbi0KUMA8LFOQCIg8IhZ0OdQ/h+je4UDGPClPmk3cELhIcA4LVbw8clU7WKu6gozHkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R78otExv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981E3C4CEE7;
-	Fri, 17 Oct 2025 15:11:21 +0000 (UTC)
+	 MIME-Version; b=iuSoSrwx9GKtqm1wI8bJU7tv1CLUrxpK44W3mhlzjr+Q8wPmcJXJFmMofAXzXmOCcrJEoE7oOOIXdSzVb00j3K1fdXV2n91EiFxVm1ensjNx65hx3dXxmMt9wI/94YnPQqx6EZcmQLHhR7noXr1R7oYjRUfy1904h6ObfSWiq+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsX0M9Ju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D34C4CEE7;
+	Fri, 17 Oct 2025 15:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713882;
-	bh=rYFEBfE4aFquGZQxtJEThcBVn3QbRc9pXiWWXW/JEpk=;
+	s=korg; t=1760715501;
+	bh=jiOmg4R4OfEV+91qmPy20qwWNuBsclMT2slKLkaoM3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R78otExvte9tJaNrCQRylxl9jSOyqLANy/bXfGerV0JAcYxVWjjYH1V1XrlMoJUN9
-	 +YJa0E7x6VekFD6DLvNll9WUq57r04NiYQzNTiOkO/YdXQWgI7cX4nQjV0/9jtJobX
-	 ULG9KnTfbom4YDuFkthsdz/IJCo4ObhQuhh/UZPw=
+	b=WsX0M9Juflm2cLQLgAtlZR6UZ+pKGQneRgECSINZTclO0bja5LySQgcKZ6wMiyccy
+	 LYjkM0dGLbJ3kVQKOvhspbf1fDXsA0RM2SFQ5RAuO9EDu7IF+qdqpr8S/n18lQX4lW
+	 /GfxWXiBtrHJBx3tXCHx37DI38yZG+O8webf4Osc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 119/201] mtd: rawnand: fsmc: Default to autodetect buswidth
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Jie Zhan <zhanjie9@hisilicon.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Qais Yousef <qyousef@layalina.io>
+Subject: [PATCH 6.17 205/371] cpufreq: CPPC: Avoid using CPUFREQ_ETERNAL as transition delay
 Date: Fri, 17 Oct 2025 16:53:00 +0200
-Message-ID: <20251017145139.115349845@linuxfoundation.org>
+Message-ID: <20251017145209.505538093@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit b8df622cf7f6808c85764e681847150ed6d85f3d upstream.
+commit f965d111e68f4a993cc44d487d416e3d954eea11 upstream.
 
-If you don't specify buswidth 2 (16 bits) in the device
-tree, FSMC doesn't even probe anymore:
+If cppc_get_transition_latency() returns CPUFREQ_ETERNAL to indicate a
+failure to retrieve the transition latency value from the platform
+firmware, the CPPC cpufreq driver will use that value (converted to
+microseconds) as the policy transition delay, but it is way too large
+for any practical use.
 
-fsmc-nand 10100000.flash: FSMC device partno 090,
-  manufacturer 80, revision 00, config 00
-nand: device found, Manufacturer ID: 0x20, Chip ID: 0xb1
-nand: ST Micro 10100000.flash
-nand: bus width 8 instead of 16 bits
-nand: No NAND device found
-fsmc-nand 10100000.flash: probe with driver fsmc-nand failed
-  with error -22
+Address this by making the driver use the cpufreq's default
+transition latency value (in microseconds) as the transition delay
+if CPUFREQ_ETERNAL is returned by cppc_get_transition_latency().
 
-With this patch to use autodetection unless buswidth is
-specified, the device is properly detected again:
-
-fsmc-nand 10100000.flash: FSMC device partno 090,
-  manufacturer 80, revision 00, config 00
-nand: device found, Manufacturer ID: 0x20, Chip ID: 0xb1
-nand: ST Micro NAND 128MiB 1,8V 16-bit
-nand: 128 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
-fsmc-nand 10100000.flash: Using 1-bit HW ECC scheme
-Scanning device for bad blocks
-
-I don't know where or how this happened, I think some change
-in the nand core.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: d4f3388afd48 ("cpufreq / CPPC: Set platform specific transition_delay_us")
+Cc: 5.19+ <stable@vger.kernel.org> # 5.19
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/fsmc_nand.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/cpufreq/cppc_cpufreq.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/fsmc_nand.c
-+++ b/drivers/mtd/nand/raw/fsmc_nand.c
-@@ -876,10 +876,14 @@ static int fsmc_nand_probe_config_dt(str
- 	if (!of_property_read_u32(np, "bank-width", &val)) {
- 		if (val == 2) {
- 			nand->options |= NAND_BUSWIDTH_16;
--		} else if (val != 1) {
-+		} else if (val == 1) {
-+			nand->options |= NAND_BUSWIDTH_AUTO;
-+		} else {
- 			dev_err(&pdev->dev, "invalid bank-width %u\n", val);
- 			return -EINVAL;
- 		}
-+	} else {
-+		nand->options |= NAND_BUSWIDTH_AUTO;
- 	}
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -310,6 +310,16 @@ static int cppc_verify_policy(struct cpu
+ 	return 0;
+ }
  
- 	if (of_property_read_bool(np, "nand-skip-bbtscan"))
++static unsigned int __cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
++{
++	unsigned int transition_latency_ns = cppc_get_transition_latency(cpu);
++
++	if (transition_latency_ns == CPUFREQ_ETERNAL)
++		return CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS / NSEC_PER_USEC;
++
++	return transition_latency_ns / NSEC_PER_USEC;
++}
++
+ /*
+  * The PCC subspace describes the rate at which platform can accept commands
+  * on the shared PCC channel (including READs which do not count towards freq
+@@ -332,12 +342,12 @@ static unsigned int cppc_cpufreq_get_tra
+ 			return 10000;
+ 		}
+ 	}
+-	return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
++	return __cppc_cpufreq_get_transition_delay_us(cpu);
+ }
+ #else
+ static unsigned int cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
+ {
+-	return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
++	return __cppc_cpufreq_get_transition_delay_us(cpu);
+ }
+ #endif
+ 
 
 
 
