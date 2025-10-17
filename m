@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-187068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1141BBEA02C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:39:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5929EBE9A9C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E85B674309E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:30:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFDB0188F189
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1CE2F12C5;
-	Fri, 17 Oct 2025 15:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154413370F7;
+	Fri, 17 Oct 2025 15:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNVso1PF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkBcUrhM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA191946C8;
-	Fri, 17 Oct 2025 15:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C385332E159;
+	Fri, 17 Oct 2025 15:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715030; cv=none; b=MTHzVHcGGbCQqmoF2uSVd6Py3kBYQacvEWdpz3lcCCLNUq2GWknAQIcFP9uJ/px5A43OeNPqM6cjh8AM9f3A4jT/DEGuepTASsdYfgEAS/HNtxNEHpvRGxpzboJ8HMfj3XlgnoksNGuLyr2OBCxH958efQ+wUHGXROM6Azfjorg=
+	t=1760714138; cv=none; b=XlqcM266ZRBAs6RyBBCaL02MK+lNFh49+RBGwPrg55lOPSamPnML2MhJB2/hJblKJK6Ie5m9sjWG1ErcSRa/pHE+fmm5DhepCGFemSLT1s1DONJ1Jt2csfm25eGq3XGfhBC7S+mDYjc5ApWQkaJk82wwFCDND6Yh1Zx3vNUPXaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715030; c=relaxed/simple;
-	bh=QfTyGlMhyBYPhoP2Ef8kz9iEmHf7ma959dHkMXloRB0=;
+	s=arc-20240116; t=1760714138; c=relaxed/simple;
+	bh=ywRpJ0ci+jbh7pqVxyLP9IEcaTHOTIWshFqFyKOIlsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqWh0WppTgqKoEcL8P59YUhcPbp+r6e0snG8Y4vrI9x/8sl+dY2k4c+YRaGxWSzExFh/SQvc66DeMY1yt9T+ftRDpqCcByRuUMJfvRoDeDPhE9ZVokF5ErH3FHA8WEQOpQ4cpLF1inTw2SPin/aYq7ipVzP0va0MzOl6MKujhFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNVso1PF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B368C4CEE7;
-	Fri, 17 Oct 2025 15:30:29 +0000 (UTC)
+	 MIME-Version; b=WtsRVeLhszfmUeDng9sCRCRh9mRE3qctrYrMNJGe/qHpjw3WRH2Aqy797waJW/5FWL3WlGFpQH4sVuK4++aw3I5MLY7w2U3GaIh+7fg6BUH5J3FMJ+jXvF2MeYYhmO98WJc4ptYI/ALrNpzMcIHkuBcnXuigTeY95mIM6GPhBfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkBcUrhM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF86C4CEE7;
+	Fri, 17 Oct 2025 15:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715029;
-	bh=QfTyGlMhyBYPhoP2Ef8kz9iEmHf7ma959dHkMXloRB0=;
+	s=korg; t=1760714138;
+	bh=ywRpJ0ci+jbh7pqVxyLP9IEcaTHOTIWshFqFyKOIlsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNVso1PF0OLA7FgaHArRL2+G28qELJxdUOmSw9PXdEjNxaADL5nYYWo1rfOXfokNB
-	 0h0ug95fLF/44MOlKekKtED4J0rYkLVRBQ5SgEPtMqalKoUax+BzMmlBLkUzuces0q
-	 cXbns1WS5D056ohUUf7khCXQH9lQY4ndhZknjcPA=
+	b=OkBcUrhMHzBLwRbs4OcVj7vUXgDLDf1c+2biTtDMohGa+U+8u7NL0Bp8A3I3nCpWU
+	 OMVVZataRRvGxrdLfXKu0rYJr9MaPNYfCqlvrZXyOls84tORZzTEYNmk4lpQCb/xga
+	 D3xParF7oqed0uYWXz/pgwQy8g196AH0QJx2vrsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 073/371] ASoC: SOF: ipc4-topology: Correct the minimum host DMA buffer size
+Subject: [PATCH 6.12 041/277] ASoC: SOF: ipc4-topology: Correct the minimum host DMA buffer size
 Date: Fri, 17 Oct 2025 16:50:48 +0200
-Message-ID: <20251017145204.583181916@linuxfoundation.org>
+Message-ID: <20251017145148.645879210@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -92,11 +92,11 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/sound/soc/sof/ipc4-topology.h b/sound/soc/sof/ipc4-topology.h
-index 659e1ae0a85f9..ce5c69cb9ea4e 100644
+index f4dc499c0ffe5..187e186ba4f8f 100644
 --- a/sound/soc/sof/ipc4-topology.h
 +++ b/sound/soc/sof/ipc4-topology.h
-@@ -61,8 +61,8 @@
- #define SOF_IPC4_CHAIN_DMA_NODE_ID	0x7fffffff
+@@ -60,8 +60,8 @@
+ 
  #define SOF_IPC4_INVALID_NODE_ID	0xffffffff
  
 -/* FW requires minimum 2ms DMA buffer size */
