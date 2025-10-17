@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-186609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35053BE9BDF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:23:19 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4635BE9FB4
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B15C9626BE5
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:00 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6058835E1FE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA35436CE10;
-	Fri, 17 Oct 2025 15:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7527733509C;
+	Fri, 17 Oct 2025 15:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbIl9gUh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NoA32IsU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6580F33711C;
-	Fri, 17 Oct 2025 15:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3182333509E;
+	Fri, 17 Oct 2025 15:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713727; cv=none; b=LepTcdQMlKCR/QneXimc0/8q4Sdc6mD6WA+HYnE7eWEThhbEsgNWRVFcUiPumutuhuPZ3Lg7kJkW1yOfPY6OeONkzxVF1qytXG1qH9lasuUB8DR7wqqkjvnsc/aY37hiuYM/bveGAxuzX1Q5lKz9D3T3QUldOu+eaVMLclhMDjc=
+	t=1760715347; cv=none; b=sQpQBbfAjtUp1WJpGj7I1JY+ped4NDp4vXvR2lakYQHnq/0LooZXIVsyHNkQ8DnQETsHTlG0t7ycBjgeZXJeEHM/jlq2ePFSRg8NCP+g/wJmHQ5Nje40muCCVpJlweFnZ6eraOWt5+LwMt0b8Et/8STed4RpXxV/zESA+xickYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713727; c=relaxed/simple;
-	bh=JKQtEKH45s0f9odsipS7gM6flVmaQ173y0oxX8US73A=;
+	s=arc-20240116; t=1760715347; c=relaxed/simple;
+	bh=Mj2Vj5YwDG6G402LwTownvMoXurLN+6hVDqDstCj030=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eB7ykkJc5myc41j908ptVK3Wz2nuSTtZ8qLpq0SL/Fy1mHozfQIWMCrK+5HWr2OvF+nKKrc1M8RFJOIZJz6r/SfLVMlzxAS1Go+gVL4ZJG5hT5u8WOC8EPDwVL3HlDI7tTqy+eaclXQMNpZyclN7w8GzrOTiT/RXeATDjJ7CGus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbIl9gUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9380BC4CEF9;
-	Fri, 17 Oct 2025 15:08:46 +0000 (UTC)
+	 MIME-Version; b=g3mKXWeu4+BFJe5c+g/YFSm9bil2p5TtjgVt/oxVLE8QcxVqMo45RBCfJBwv9f+Bb6opUVJ+oJGg0Kjnirn49UZq2XCkSh7gmxeFBn856IrryfvARbre2TY/HF13yBPPFcqcGHeuoy90IIwvOsWQyKBhMtIzq68Qt8CX7sm5kT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NoA32IsU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0293C4CEFE;
+	Fri, 17 Oct 2025 15:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713727;
-	bh=JKQtEKH45s0f9odsipS7gM6flVmaQ173y0oxX8US73A=;
+	s=korg; t=1760715347;
+	bh=Mj2Vj5YwDG6G402LwTownvMoXurLN+6hVDqDstCj030=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xbIl9gUhclKgv+ot6rkVxWwjQu63I420gYYxSZMtyXkksXgcuaRfsxMwEh825vgC+
-	 97z44cD9crzfz7u1RHaUE06C+qr3VHdAP9EMwrD4q6QKZm23yF+D7gXMX6qIHwXiS2
-	 lMaVZaeuYJsCaeloaQ75IZieX1RigppPFW01Tajk=
+	b=NoA32IsUEDRy07ddok2+Q+9B2KKKBI4OU7T9bIkxbDYQjANfqB7n+cQqk6XsAo+3y
+	 lYotqfM56VRCDwgZkJTi5wMvjGo+y+ZFmO3XfaO8gN3tvoq4Rn//2iTr/7g77g6iYy
+	 iyhAP5dfEZ0DYJAr1QZ4M2Q/9CJ0bztF53qmX6vI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Granados <joel.granados@kernel.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.6 098/201] iommu/vt-d: PRS isnt usable if PDS isnt supported
+	Devarsh Thakkar <devarsht@ti.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Subject: [PATCH 6.17 184/371] media: ti: j721e-csi2rx: Fix source subdev link creation
 Date: Fri, 17 Oct 2025 16:52:39 +0200
-Message-ID: <20251017145138.349835735@linuxfoundation.org>
+Message-ID: <20251017145208.582621566@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Jai Luthra <jai.luthra@ideasonboard.com>
 
-commit 5ef7e24c742038a5d8c626fdc0e3a21834358341 upstream.
+commit 3e743cd0a73246219da117ee99061aad51c4748c upstream.
 
-The specification, Section 7.10, "Software Steps to Drain Page Requests &
-Responses," requires software to submit an Invalidation Wait Descriptor
-(inv_wait_dsc) with the Page-request Drain (PD=1) flag set, along with
-the Invalidation Wait Completion Status Write flag (SW=1). It then waits
-for the Invalidation Wait Descriptor's completion.
+We don't use OF ports and remote-endpoints to connect the CSI2RX bridge
+and this device in the device tree, thus it is wrong to use
+v4l2_create_fwnode_links_to_pad() to create the media graph link between
+the two.
 
-However, the PD field in the Invalidation Wait Descriptor is optional, as
-stated in Section 6.5.2.9, "Invalidation Wait Descriptor":
+It works out on accident, as neither the source nor the sink implement
+the .get_fwnode_pad() callback, and the framework helper falls back on
+using the first source and sink pads to create the link between them.
 
-"Page-request Drain (PD): Remapping hardware implementations reporting
- Page-request draining as not supported (PDS = 0 in ECAP_REG) treat this
- field as reserved."
+Instead, manually create the media link from the first source pad of the
+bridge to the first sink pad of the J721E CSI2RX.
 
-This implies that if the IOMMU doesn't support the PDS capability, software
-can't drain page requests and group responses as expected.
-
-Do not enable PCI/PRI if the IOMMU doesn't support PDS.
-
-Reported-by: Joel Granados <joel.granados@kernel.org>
-Closes: https://lore.kernel.org/r/20250909-jag-pds-v1-1-ad8cba0e494e@kernel.org
-Fixes: 66ac4db36f4c ("iommu/vt-d: Add page request draining support")
+Fixes: b4a3d877dc92 ("media: ti: Add CSI2RX support for J721E")
 Cc: stable@vger.kernel.org
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20250915062946.120196-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Tested-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com> (on SK-AM68)
+Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4415,7 +4415,7 @@ static struct iommu_device *intel_iommu_
- 			}
+--- a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
++++ b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+@@ -52,6 +52,8 @@
+ #define DRAIN_TIMEOUT_MS		50
+ #define DRAIN_BUFFER_SIZE		SZ_32K
  
- 			if (info->ats_supported && ecap_prs(iommu->ecap) &&
--			    pci_pri_supported(pdev))
-+			    ecap_pds(iommu->ecap) && pci_pri_supported(pdev))
- 				info->pri_supported = 1;
- 		}
- 	}
++#define CSI2RX_BRIDGE_SOURCE_PAD	1
++
+ struct ti_csi2rx_fmt {
+ 	u32				fourcc;	/* Four character code. */
+ 	u32				code;	/* Mbus code. */
+@@ -426,8 +428,9 @@ static int csi_async_notifier_complete(s
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = v4l2_create_fwnode_links_to_pad(csi->source, &csi->pad,
+-					      MEDIA_LNK_FL_IMMUTABLE | MEDIA_LNK_FL_ENABLED);
++	ret = media_create_pad_link(&csi->source->entity, CSI2RX_BRIDGE_SOURCE_PAD,
++				    &vdev->entity, csi->pad.index,
++				    MEDIA_LNK_FL_IMMUTABLE | MEDIA_LNK_FL_ENABLED);
+ 
+ 	if (ret) {
+ 		video_unregister_device(vdev);
 
 
 
