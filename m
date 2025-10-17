@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-187446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D422EBEAA76
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:23:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 678A0BEA85E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20F41941698
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:48:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B80B942A83
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFB3330B36;
-	Fri, 17 Oct 2025 15:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D09A32F778;
+	Fri, 17 Oct 2025 15:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmdO/ZYO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjFEKz6w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF928330B1F;
-	Fri, 17 Oct 2025 15:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEF03328F0;
+	Fri, 17 Oct 2025 15:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716096; cv=none; b=nX7yCQg6hgP/O7RrbLhQgibgRSb4V3NOBOjQuuvra6lMUsUI8wh9Mde2WGlyW3TPTPNxmiSno8+rhUKicJ4LFUqLFBCvqh3ssZnFk+s+Up32FQ1su4G8J2bdwwmc9xAs/f9Rvb4/uDcKguRYLM9nhg7hhn8tJPElZQSvDuMb6zo=
+	t=1760715372; cv=none; b=fhNR5n5KqKi2oOIfZxc9/R8UvTwwA7TdV228febRtp7mNSuv0AyLTb3dGXBDj5aCb8JuQlfm81e6kwp/Hj8BkXljN3NRbRS47eicMXCGLoxD4QKTXIeMADLXgW3JjlE/29jR3IBg/FDHSp3bobbnFveTvGGjmweZQbsBroC/vpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716096; c=relaxed/simple;
-	bh=+QBR/FgeydHqMwRMWSpZtkr591EqGbKpvcUycY9V9eo=;
+	s=arc-20240116; t=1760715372; c=relaxed/simple;
+	bh=y4dOuRgiw6EspPPv30LeKmo4mexoTtVibp0wcV+MNZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNC5e4UNES5c9Tby3tV2rejx+xCtdcoVVxHGlLr6HHvicIb6p2WgH/hqb/qSqSGEt0tQ/+udeh8rcU5cXyb4nA84y7KiAg6l+Ywan3Q8RNFJInOcrhMTymJ47Zy5yQqd57Mwi/pBcuUVhcuuRNe+vTI0KnjnVgtenX6UKStNH80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmdO/ZYO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACEFC4CEFE;
-	Fri, 17 Oct 2025 15:48:14 +0000 (UTC)
+	 MIME-Version; b=N1fBmKiQAVfjnQwIlWqLFUBdtTD8sk0WgcbPdD0GknwNmMZzcMGs0S9kh7xfACPZYeF4zoqvHuchStC+9oqcUl7W4Zaih+XHgi50pJ0tcGAreK0lObQCXhCQCHkZ4e0f3/dqSZ1S5A0U97UOIToDQI4511X8I3B+k+GlT43Xsos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjFEKz6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D46C19423;
+	Fri, 17 Oct 2025 15:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716095;
-	bh=+QBR/FgeydHqMwRMWSpZtkr591EqGbKpvcUycY9V9eo=;
+	s=korg; t=1760715372;
+	bh=y4dOuRgiw6EspPPv30LeKmo4mexoTtVibp0wcV+MNZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmdO/ZYOQESlu5tq2+SFYi8Lff2vn8EWSG4Ruhi4v5Of4Xa2E+ki4572JkLewb+SZ
-	 WQZlCa7kO4fpbAUeum2qz+cPtAoTHhdrhmOoBBZOurGTwNvJHG5W6d6BRFyYuUU7ir
-	 uWyZzrd+PQf/Nre6yyGTmFFEQ+dxx+PDP/ZLAy2E=
+	b=fjFEKz6wrOtVrUvqvuTeQDCKosh1iS6MnqelAtXm7hsFeFR7/5EVOIqC64mlc5/GM
+	 i9gDPSir7lC7WWt0Jh9rE9Rvcv5vjIp9G7MKk4peN4iLeW/3dvYZ0C7k67vl28fLMt
+	 QMnD8mE9i1GU5qIzLYlp/wL5/8HcXyWt34PcvPAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/276] ASoC: Intel: bytcr_rt5651: Fix invalid quirk input mapping
-Date: Fri, 17 Oct 2025 16:52:43 +0200
-Message-ID: <20251017145145.042338068@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Samson Tam <samson.tam@amd.com>,
+	Jesse Agate <jesse.agate@amd.com>,
+	Brendan Leder <breleder@amd.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.17 192/371] drm/amd/display: Incorrect Mirror Cositing
+Date: Fri, 17 Oct 2025 16:52:47 +0200
+Message-ID: <20251017145208.873368228@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jesse Agate <jesse.agate@amd.com>
 
-[ Upstream commit 4336efb59ef364e691ef829a73d9dbd4d5ed7c7b ]
+commit d07e142641417e67f3bfc9d8ba3da8a69c39cfcd upstream.
 
-When an invalid value is passed via quirk option, currently
-bytcr_rt5640 driver just ignores and leaves as is, which may lead to
-unepxected results like OOB access.
+[WHY]
+hinit/vinit are incorrect in the case of mirroring.
 
-This patch adds the sanity check and corrects the input mapping to the
-certain default value if an invalid value is passed.
+[HOW]
+Cositing sign must be flipped when image is mirrored in the vertical
+or horizontal direction.
 
-Fixes: 64484ccee7af ("ASoC: Intel: bytcr_rt5651: Set card long_name based on quirks")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Message-ID: <20250902171826.27329-4-tiwai@suse.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Samson Tam <samson.tam@amd.com>
+Signed-off-by: Jesse Agate <jesse.agate@amd.com>
+Signed-off-by: Brendan Leder <breleder@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/bytcr_rt5651.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/sspl/dc_spl.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
-index 93cec4d916273..b0b41a03c083e 100644
---- a/sound/soc/intel/boards/bytcr_rt5651.c
-+++ b/sound/soc/intel/boards/bytcr_rt5651.c
-@@ -58,7 +58,8 @@ enum {
- 	BYT_RT5651_OVCD_SF_1P5	= (RT5651_OVCD_SF_1P5 << 13),
- };
+--- a/drivers/gpu/drm/amd/display/dc/sspl/dc_spl.c
++++ b/drivers/gpu/drm/amd/display/dc/sspl/dc_spl.c
+@@ -641,16 +641,16 @@ static void spl_calculate_inits_and_view
+ 		/* this gives the direction of the cositing (negative will move
+ 		 * left, right otherwise)
+ 		 */
+-		int sign = 1;
++		int h_sign = flip_horz_scan_dir ? -1 : 1;
++		int v_sign = flip_vert_scan_dir ? -1 : 1;
  
--#define BYT_RT5651_MAP(quirk)		((quirk) & GENMASK(3, 0))
-+#define BYT_RT5651_MAP_MASK		GENMASK(3, 0)
-+#define BYT_RT5651_MAP(quirk)		((quirk) & BYT_RT5651_MAP_MASK)
- #define BYT_RT5651_JDSRC(quirk)		(((quirk) & GENMASK(7, 4)) >> 4)
- #define BYT_RT5651_OVCD_TH(quirk)	(((quirk) & GENMASK(12, 8)) >> 8)
- #define BYT_RT5651_OVCD_SF(quirk)	(((quirk) & GENMASK(14, 13)) >> 13)
-@@ -100,14 +101,29 @@ MODULE_PARM_DESC(quirk, "Board-specific quirk override");
- 
- static void log_quirks(struct device *dev)
- {
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_DMIC_MAP)
-+	int map;
-+
-+	map = BYT_RT5651_MAP(byt_rt5651_quirk);
-+	switch (map) {
-+	case BYT_RT5651_DMIC_MAP:
- 		dev_info(dev, "quirk DMIC_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN1_MAP)
-+		break;
-+	case BYT_RT5651_IN1_MAP:
- 		dev_info(dev, "quirk IN1_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN2_MAP)
-+		break;
-+	case BYT_RT5651_IN2_MAP:
- 		dev_info(dev, "quirk IN2_MAP enabled");
--	if (BYT_RT5651_MAP(byt_rt5651_quirk) == BYT_RT5651_IN1_IN2_MAP)
-+		break;
-+	case BYT_RT5651_IN1_IN2_MAP:
- 		dev_info(dev, "quirk IN1_IN2_MAP enabled");
-+		break;
-+	default:
-+		dev_warn_once(dev, "quirk sets invalid input map: 0x%x, default to DMIC_MAP\n", map);
-+		byt_rt5651_quirk &= ~BYT_RT5651_MAP_MASK;
-+		byt_rt5651_quirk |= BYT_RT5651_DMIC_MAP;
-+		break;
-+	}
-+
- 	if (BYT_RT5651_JDSRC(byt_rt5651_quirk)) {
- 		dev_info(dev, "quirk realtek,jack-detect-source %ld\n",
- 			 BYT_RT5651_JDSRC(byt_rt5651_quirk));
--- 
-2.51.0
-
+ 		switch (spl_in->basic_in.cositing) {
+-
+ 		case CHROMA_COSITING_TOPLEFT:
+-			init_adj_h = spl_fixpt_from_fraction(sign, 4);
+-			init_adj_v = spl_fixpt_from_fraction(sign, 4);
++			init_adj_h = spl_fixpt_from_fraction(h_sign, 4);
++			init_adj_v = spl_fixpt_from_fraction(v_sign, 4);
+ 			break;
+ 		case CHROMA_COSITING_LEFT:
+-			init_adj_h = spl_fixpt_from_fraction(sign, 4);
++			init_adj_h = spl_fixpt_from_fraction(h_sign, 4);
+ 			init_adj_v = spl_fixpt_zero;
+ 			break;
+ 		case CHROMA_COSITING_NONE:
 
 
 
