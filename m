@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD90BE983C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:10:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20671BEA41C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935A91AA8058
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D2281886374
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2896A332907;
-	Fri, 17 Oct 2025 15:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF6D2F12A7;
+	Fri, 17 Oct 2025 15:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fO0WWb+M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wnv8FX56"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F7833710E;
-	Fri, 17 Oct 2025 15:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C832330B04;
+	Fri, 17 Oct 2025 15:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713670; cv=none; b=don66BDPSfdcirtBbIz0myNe6HO5IhuON+6qMraOpTDov/Rwo1mFRUSW2J9LJQbt28IaYbq87G4FXhCE0fSLl/GgBWHQR34P9LQVRY7FDSuVYwNrb5CVClIQ9f5EblhvbA6zzm6f5wo2VtiwfW9vKQLaarDPfyBLUBubzcChzlk=
+	t=1760716115; cv=none; b=X9cNDaKUw5pX4LKOsg7vOoZbrnokkmiOMbZCNOVrTMtN2cvWJeHyA559+A981VVh6iLCdsUvOQafcwvrow5AMaWxUcrY3ScQuRCBl0wLC3ST2xzQstspEKEkYClpjX/RDcbMUWPhNuyztLqerWxHwX0y3paizsTXopjhmtNFR2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713670; c=relaxed/simple;
-	bh=+39OfO5iAHs+Ndaaby6J4/5cUG8WqaIP2iwnVf9SXIc=;
+	s=arc-20240116; t=1760716115; c=relaxed/simple;
+	bh=7vmZjezO3AIBblq7USCH5XVMgRlMQMS53JGX4mWJzhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6aDBRvmtmwcePyz/mKgFDOqzWi6fJU5klAhmDWBAEgkJhskY2gMhq7sNurOiw7xQTiTCLKr7mnau9sI9lu/1HV5WxhUdFOWU0VFkwWTRNMyC+17ZLOG1reIIqBEpgzHvwCyYAmmjsRtngDPOx+PP5vH3CWo/x2alfI+ZOoVTjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fO0WWb+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB4FC4CEE7;
-	Fri, 17 Oct 2025 15:07:49 +0000 (UTC)
+	 MIME-Version; b=pc1EQ2EzfwEsSMLd05qcEUWvMgxOwnPlCsZCrhaVGhDpIpyPOiSwx7vq5NfVc/xmfMktXjpOWorp966mhndHWGCYTt1FdkHSaTX0qL0HnOY2srRE4zLLjYV6MCjIc2ODpInN2MlJ51L7Cd2v4+jfKWMcM50PNFNBU1+uSkJyMPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wnv8FX56; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDEBC4CEE7;
+	Fri, 17 Oct 2025 15:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713670;
-	bh=+39OfO5iAHs+Ndaaby6J4/5cUG8WqaIP2iwnVf9SXIc=;
+	s=korg; t=1760716115;
+	bh=7vmZjezO3AIBblq7USCH5XVMgRlMQMS53JGX4mWJzhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fO0WWb+MjqUHwnsB/nB513JGANO0JxEO6YwJ4e7RWeBzdmUVfqSEcUkfu/SpotKER
-	 ZMCAFVLmcT2UVm7FnId9WN4D+20dkk7oxkosulXx7k60HRLkPnm56Ikuzp13fKHHdV
-	 1Bg9Ts6KxpjzsNV+8ZN2JAH03hivXHkyZMG4pBE0=
+	b=Wnv8FX56f4vjtSPPe9GF7BRRrQCwl5DtLZt1hU4LX55Ei6RgXYBEbF/gdLOAJFzqp
+	 MpIvJCp7mBLM99QzpOnykmFiRY6NOeNcihfwEZ86FTXswFzoEYTdEbPzto2Qj5xPj8
+	 8ctQuA1M7lIQ7wNeMeE8NYwLQhu//Hdk3LlHc19s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.6 077/201] media: lirc: Fix error handling in lirc_register()
+	Akhilesh Patil <akhilesh@ee.iitb.ac.in>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 045/276] selftests: watchdog: skip ping loop if WDIOF_KEEPALIVEPING not supported
 Date: Fri, 17 Oct 2025 16:52:18 +0200
-Message-ID: <20251017145137.585017259@linuxfoundation.org>
+Message-ID: <20251017145144.049028021@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
 
-commit 4f4098c57e139ad972154077fb45c3e3141555dd upstream.
+[ Upstream commit e8cfc524eaf3c0ed88106177edb6961e202e6716 ]
 
-When cdev_device_add() failed, calling put_device() to explicitly
-release dev->lirc_dev. Otherwise, it could cause the fault of the
-reference count.
+Check if watchdog device supports WDIOF_KEEPALIVEPING option before
+entering keep_alive() ping test loop. Fix watchdog-test silently looping
+if ioctl based ping is not supported by the device. Exit from test in
+such case instead of getting stuck in loop executing failing keep_alive()
 
-Found by code review.
+watchdog_info:
+ identity:              m41t93 rtc Watchdog
+ firmware_version:      0
+Support/Status: Set timeout (in seconds)
+Support/Status: Watchdog triggers a management or other external alarm not a reboot
 
-Cc: stable@vger.kernel.org
-Fixes: a6ddd4fecbb0 ("media: lirc: remove last remnants of lirc kapi")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Watchdog card disabled.
+Watchdog timeout set to 5 seconds.
+Watchdog ping rate set to 2 seconds.
+Watchdog card enabled.
+WDIOC_KEEPALIVE not supported by this device
+
+without this change
+Watchdog card disabled.
+Watchdog timeout set to 5 seconds.
+Watchdog ping rate set to 2 seconds.
+Watchdog card enabled.
+Watchdog Ticking Away!
+(Where test stuck here forver silently)
+
+Updated change log at commit time:
+Shuah Khan <skhan@linuxfoundation.org>
+
+Link: https://lore.kernel.org/r/20250914152840.GA3047348@bhairav-test.ee.iitb.ac.in
+Fixes: d89d08ffd2c5 ("selftests: watchdog: Fix ioctl SET* error paths to take oneshot exit path")
+Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/lirc_dev.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -735,11 +735,11 @@ int lirc_register(struct rc_dev *dev)
+diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
+index 09773695d219f..4056706d63f7e 100644
+--- a/tools/testing/selftests/watchdog/watchdog-test.c
++++ b/tools/testing/selftests/watchdog/watchdog-test.c
+@@ -240,6 +240,12 @@ int main(int argc, char *argv[])
+ 	if (oneshot)
+ 		goto end;
  
- 	cdev_init(&dev->lirc_cdev, &lirc_fops);
- 
-+	get_device(&dev->dev);
++	/* Check if WDIOF_KEEPALIVEPING is supported */
++	if (!(info.options & WDIOF_KEEPALIVEPING)) {
++		printf("WDIOC_KEEPALIVE not supported by this device\n");
++		goto end;
++	}
 +
- 	err = cdev_device_add(&dev->lirc_cdev, &dev->lirc_dev);
- 	if (err)
--		goto out_ida;
--
--	get_device(&dev->dev);
-+		goto out_put_device;
+ 	printf("Watchdog Ticking Away!\n");
  
- 	switch (dev->driver_type) {
- 	case RC_DRIVER_SCANCODE:
-@@ -763,7 +763,8 @@ int lirc_register(struct rc_dev *dev)
- 
- 	return 0;
- 
--out_ida:
-+out_put_device:
-+	put_device(&dev->lirc_dev);
- 	ida_free(&lirc_ida, minor);
- 	return err;
- }
+ 	/*
+-- 
+2.51.0
+
 
 
 
