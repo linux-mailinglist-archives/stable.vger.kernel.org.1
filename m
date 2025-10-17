@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-186871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F50BE9F6F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:36:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADB0BE9D5F
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5028258577E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 834556E78E1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED29337117;
-	Fri, 17 Oct 2025 15:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E654632E150;
+	Fri, 17 Oct 2025 15:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVnk2pS6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZS9S8hxV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D4632E14C;
-	Fri, 17 Oct 2025 15:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE142F12DD;
+	Fri, 17 Oct 2025 15:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714464; cv=none; b=skMsR+9jpeOgA0wgNksT+N/kubYsP3Gyi+5XbPyWxm5nKm5Obgjo8636MMK4ErsQwebf9ULooY57R7AYNvrENlaI63GZAEnZ46yIqpVvKdBA3M7hphF0p3U87iRFI68nxfQzhWC+0oozqFyBcTDQZiSh+mT634u7ZyLgTb6Vvns=
+	t=1760713735; cv=none; b=uRMmRvqLFIG394TUpXg2R9x28bxElutWIJKSvH+dcFhXbZlfCf3n6JdePHijj0wQLXs8/5nlWOkGzry41OKIX1DoFGCw/1GDym9ku/n/srodQpBXYBQcHiF6Qz6lay2YWLz2z54K4GgOdU4cTo/wVQGdbXykDewzocVgSbgL3QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714464; c=relaxed/simple;
-	bh=EcDLBk68gkQkRq9XTynlSOvuMiKK2IypmfeLhGYfQzY=;
+	s=arc-20240116; t=1760713735; c=relaxed/simple;
+	bh=fRselGrkgSb4tIu2huIn5vHNrlm7PXCn3gEJ9SrcgUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KaKPa75pe6Jjxa1bChdUFCSzVRmgiNzYXwVXCbv3XvhdrF41FaXw9JUwuPGUp1ceixvA6PtjUH8uYLgd42zgpl2OIKrtGSMAKLCa+FZEPv0pNKZZp6LpJ/HMU40e7SD3G8mOejDrx0Dz26ETYSeWhh9uCttgYGWB2r91qOnP8kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVnk2pS6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DA2C4CEE7;
-	Fri, 17 Oct 2025 15:21:03 +0000 (UTC)
+	 MIME-Version; b=k8Ejwzzhna6ZJ9ikuZddMfqOWmYbG2OfGEBsRwytkY28cCCMcroAg/8iTSXOO8WKSa9protmwbFLp+GlCQdPmng9jJ5Nc+MRtXNSIg2JhGrDg0UUwjvaC1oWQJzW2pX/XsqFOKgYU7W0aJtVROzUZez/LVqYWDdQFZpTHDBYrGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZS9S8hxV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F72C4CEFE;
+	Fri, 17 Oct 2025 15:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714463;
-	bh=EcDLBk68gkQkRq9XTynlSOvuMiKK2IypmfeLhGYfQzY=;
+	s=korg; t=1760713735;
+	bh=fRselGrkgSb4tIu2huIn5vHNrlm7PXCn3gEJ9SrcgUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QVnk2pS6QQYMN8sFQZ+xDRqMktpYULocDOG3LDKlqxr1Nk2CCbDhmQYxuBpawnyGk
-	 zL6kowfb/F6ECiI/fdJ2Wyt6kgcmXPCseQi8MC0FYDdHvNDd72EBktPyXDZgKL16Cf
-	 t99i7YYqgtC3N/j+x5d5Dd/BOwpKcuEUiOK90OWM=
+	b=ZS9S8hxVX3j1ikVv01c2+rLhe/qqzPI9XDytzLmTxofYyhyFX1NVSQlTbL20j63AY
+	 1Gan89tG9feXt6Y3miB8Dp980XLccAGhyVDpQZm+7yawAwk7EPFZi0M32xFWf+wscH
+	 sOMGWip2erSYTeUH91kOi5llX6JtDfHWemZgbV4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.12 154/277] pinctrl: samsung: Drop unused S3C24xx driver data
-Date: Fri, 17 Oct 2025 16:52:41 +0200
-Message-ID: <20251017145152.748862217@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 101/201] lib/genalloc: fix device leak in of_gen_pool_get()
+Date: Fri, 17 Oct 2025 16:52:42 +0200
+Message-ID: <20251017145138.458067055@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 358253fa8179ab4217ac283b56adde0174186f87 upstream.
+commit 1260cbcffa608219fc9188a6cbe9c45a300ef8b5 upstream.
 
-Drop unused declarations after S3C24xx SoC family removal in the commit
-61b7f8920b17 ("ARM: s3c: remove all s3c24xx support").
+Make sure to drop the reference taken when looking up the genpool platform
+device in of_gen_pool_get() before returning the pool.
 
-Fixes: 1ea35b355722 ("ARM: s3c: remove s3c24xx specific hacks")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250830111657.126190-3-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Note that holding a reference to a device does typically not prevent its
+devres managed resources from being released so there is no point in
+keeping the reference.
+
+Link: https://lkml.kernel.org/r/20250924080207.18006-1-johan@kernel.org
+Fixes: 9375db07adea ("genalloc: add devres support, allow to find a managed pool by device")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Vladimir Zapolskiy <vz@mleia.com>
+Cc: <stable@vger.kernel.org>	[3.10+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/samsung/pinctrl-samsung.h |    4 ----
- 1 file changed, 4 deletions(-)
+ lib/genalloc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/pinctrl/samsung/pinctrl-samsung.h
-+++ b/drivers/pinctrl/samsung/pinctrl-samsung.h
-@@ -393,10 +393,6 @@ extern const struct samsung_pinctrl_of_m
- extern const struct samsung_pinctrl_of_match_data fsd_of_data;
- extern const struct samsung_pinctrl_of_match_data gs101_of_data;
- extern const struct samsung_pinctrl_of_match_data s3c64xx_of_data;
--extern const struct samsung_pinctrl_of_match_data s3c2412_of_data;
--extern const struct samsung_pinctrl_of_match_data s3c2416_of_data;
--extern const struct samsung_pinctrl_of_match_data s3c2440_of_data;
--extern const struct samsung_pinctrl_of_match_data s3c2450_of_data;
- extern const struct samsung_pinctrl_of_match_data s5pv210_of_data;
+--- a/lib/genalloc.c
++++ b/lib/genalloc.c
+@@ -899,8 +899,11 @@ struct gen_pool *of_gen_pool_get(struct
+ 		if (!name)
+ 			name = of_node_full_name(np_pool);
+ 	}
+-	if (pdev)
++	if (pdev) {
+ 		pool = gen_pool_get(&pdev->dev, name);
++		put_device(&pdev->dev);
++	}
++
+ 	of_node_put(np_pool);
  
- #endif /* __PINCTRL_SAMSUNG_H */
+ 	return pool;
 
 
 
