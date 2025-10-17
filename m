@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0891BE99C0
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:16:05 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8F9BE9C8A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B4951881E5B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1C6EC35E24A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64652D8795;
-	Fri, 17 Oct 2025 15:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D4D2F12D9;
+	Fri, 17 Oct 2025 15:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pv3rdi3O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFC3fTjC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602203208;
-	Fri, 17 Oct 2025 15:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B292F3208;
+	Fri, 17 Oct 2025 15:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713971; cv=none; b=X0Vt9RQU50mRzd8dQfXF2l/1vvxiOVF0BsTzPpkG+LLMlfbhfl22cjPhOA7rfuAWioX5l6o0YRFAFkLE5ZCMOd/5PLh9W5pEw4FNNG8hkSFdUGriZl1RsLrAlFGwO8iwjmOn6dvcbWv2GDhnpW9s2VPeDYPx1fTvlzjJeHoahdE=
+	t=1760714704; cv=none; b=HBqKzVYTMepkebwUcU7XbC98XlrozZsxoAepFiNHURDiqq+gc2BA0V7SNZHBRaBAy/S09BU1m5aboJz/aw5bA9Gl5Fmsj/4ItaWmfchDRZPM+gcIPxSDhjnHNRdr+5C3Smvwut7WHPghfGNWvtMKOiTJA4UfD17V4sLS8RErc0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713971; c=relaxed/simple;
-	bh=HL4+Ca/PeN1WnfhQkau516IfN84GScMUB/u0XNGTEwg=;
+	s=arc-20240116; t=1760714704; c=relaxed/simple;
+	bh=PZ0qkQHwxUCWD0zMYJHHOiZHKbOhun7Aual+OboE2uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otRcIw0Vz345s0Lrd4j4AnyS20zI9wAdwJCt/HbEhiJvW2tW3orDzBOjy1dhox4G34+qRvFOTXs+dpZ7ju16nJ3Ptd2yTGtngaq4BaVIZo5CaRTsYWUNME3vwflH3uxpvzdI4GzuaxGtLyGg0gn7sQMSXpT66JtqkfANdLSiKgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pv3rdi3O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF91C4CEE7;
-	Fri, 17 Oct 2025 15:12:50 +0000 (UTC)
+	 MIME-Version; b=eUgDVGZ34mN7YfnM1aZBr3JvPOoaOGYZMSiA9X74qXxSyLPiG2SrtZN9x1YH0uSwgGLJ1YLdKwAeTvLUawESXIYw+9FicTxMSp2Xe/3Da4Bby3GD2bUNYdXBfitkad3x76DHi87U7DzbOOyi4vXOES0xAaWSoE874VLAMP3SbPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFC3fTjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F90C4CEE7;
+	Fri, 17 Oct 2025 15:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713971;
-	bh=HL4+Ca/PeN1WnfhQkau516IfN84GScMUB/u0XNGTEwg=;
+	s=korg; t=1760714704;
+	bh=PZ0qkQHwxUCWD0zMYJHHOiZHKbOhun7Aual+OboE2uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pv3rdi3Ob40KVmV/F1qJGl4IvujcXWeo07bail5EUYFHDlpWeZ16hhYpESoDOLGaK
-	 5iGxAeIVZarcR88UddwzFKkB144TqKQ9wo8+OA5qOvlbnUbXc8RvFAreZojYtXA2Mk
-	 2Pf5Z57LwCWglFl5KjwTQmGvrDOl52rEIrMXZ3sw=
+	b=iFC3fTjCDSYkuytaIjhrJp679JneO2qc7p33BHOmIFIAV3IOFUpWLccbFLcwWJ6wO
+	 rbzwhOTxLOOexVw3Nk0NTlRcSjXrLDC8zBHjESu/obqlCJtKdidRgHnDrMqDj7A4Ou
+	 CpxEFkcJjqOqLIyeRjZrA4LqciLb7ohNwtVfwXjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/201] ACPI: property: Disregard references in data-only subnode lists
+Subject: [PATCH 6.12 236/277] btrfs: fix the incorrect max_bytes value for find_lock_delalloc_range()
 Date: Fri, 17 Oct 2025 16:54:03 +0200
-Message-ID: <20251017145141.442060081@linuxfoundation.org>
+Message-ID: <20251017145155.755456973@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit d06118fe9b03426484980ed4c189a8c7b99fa631 ]
+[ Upstream commit 7b26da407420e5054e3f06c5d13271697add9423 ]
 
-Data-only subnode links following the ACPI data subnode GUID in a _DSD
-package are expected to point to named objects returning _DSD-equivalent
-packages.  If a reference to such an object is used in the target field
-of any of those links, that object will be evaluated in place (as a
-named object) and its return data will be embedded in the outer _DSD
-package.
+[BUG]
+With my local branch to enable bs > ps support for btrfs, sometimes I
+hit the following ASSERT() inside submit_one_sector():
 
-For this reason, it is not expected to see a subnode link with the
-target field containing a local reference (that would mean pointing
-to a device or another object that cannot be evaluated in place and
-therefore cannot return a _DSD-equivalent package).
+	ASSERT(block_start != EXTENT_MAP_HOLE);
 
-Accordingly, simplify the code parsing data-only subnode links to
-simply print a message when it encounters a local reference in the
-target field of one of those links.
+Please note that it's not yet possible to hit this ASSERT() in the wild
+yet, as it requires btrfs bs > ps support, which is not even in the
+development branch.
 
-Moreover, since acpi_nondev_subnode_data_ok() would only have one
-caller after the change above, fold it into that caller.
+But on the other hand, there is also a very low chance to hit above
+ASSERT() with bs < ps cases, so this is an existing bug affect not only
+the incoming bs > ps support but also the existing bs < ps support.
 
-Link: https://lore.kernel.org/linux-acpi/CAJZ5v0jVeSrDO6hrZhKgRZrH=FpGD4vNUjFD8hV9WwN9TLHjzQ@mail.gmail.com/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Stable-dep-of: baf60d5cb8bc ("ACPI: property: Do not pass NULL handles to acpi_attach_data()")
+[CAUSE]
+Firstly that ASSERT() means we're trying to submit a dirty block but
+without a real extent map nor ordered extent map backing it.
+
+Furthermore with extra debugging, the folio triggering such ASSERT() is
+always larger than the fs block size in my bs > ps case.
+(8K block size, 4K page size)
+
+After some more debugging, the ASSERT() is trigger by the following
+sequence:
+
+ extent_writepage()
+ |  We got a 32K folio (4 fs blocks) at file offset 0, and the fs block
+ |  size is 8K, page size is 4K.
+ |  And there is another 8K folio at file offset 32K, which is also
+ |  dirty.
+ |  So the filemap layout looks like the following:
+ |
+ |  "||" is the filio boundary in the filemap.
+ |  "//| is the dirty range.
+ |
+ |  0        8K       16K        24K         32K       40K
+ |  |////////|        |//////////////////////||////////|
+ |
+ |- writepage_delalloc()
+ |  |- find_lock_delalloc_range() for [0, 8K)
+ |  |  Now range [0, 8K) is properly locked.
+ |  |
+ |  |- find_lock_delalloc_range() for [16K, 40K)
+ |  |  |- btrfs_find_delalloc_range() returned range [16K, 40K)
+ |  |  |- lock_delalloc_folios() locked folio 0 successfully
+ |  |  |
+ |  |  |  The filemap range [32K, 40K) got dropped from filemap.
+ |  |  |
+ |  |  |- lock_delalloc_folios() failed with -EAGAIN on folio 32K
+ |  |  |  As the folio at 32K is dropped.
+ |  |  |
+ |  |  |- loops = 1;
+ |  |  |- max_bytes = PAGE_SIZE;
+ |  |  |- goto again;
+ |  |  |  This will re-do the lookup for dirty delalloc ranges.
+ |  |  |
+ |  |  |- btrfs_find_delalloc_range() called with @max_bytes == 4K
+ |  |  |  This is smaller than block size, so
+ |  |  |  btrfs_find_delalloc_range() is unable to return any range.
+ |  |  \- return false;
+ |  |
+ |  \- Now only range [0, 8K) has an OE for it, but for dirty range
+ |     [16K, 32K) it's dirty without an OE.
+ |     This breaks the assumption that writepage_delalloc() will find
+ |     and lock all dirty ranges inside the folio.
+ |
+ |- extent_writepage_io()
+    |- submit_one_sector() for [0, 8K)
+    |  Succeeded
+    |
+    |- submit_one_sector() for [16K, 24K)
+       Triggering the ASSERT(), as there is no OE, and the original
+       extent map is a hole.
+
+Please note that, this also exposed the same problem for bs < ps
+support. E.g. with 64K page size and 4K block size.
+
+If we failed to lock a folio, and falls back into the "loops = 1;"
+branch, we will re-do the search using 64K as max_bytes.
+Which may fail again to lock the next folio, and exit early without
+handling all dirty blocks inside the folio.
+
+[FIX]
+Instead of using the fixed size PAGE_SIZE as @max_bytes, use
+@sectorsize, so that we are ensured to find and lock any remaining
+blocks inside the folio.
+
+And since we're here, add an extra ASSERT() to
+before calling btrfs_find_delalloc_range() to make sure the @max_bytes is
+at least no smaller than a block to avoid false negative.
+
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/property.c |   51 ++++++++++++++++++++----------------------------
- 1 file changed, 22 insertions(+), 29 deletions(-)
+ fs/btrfs/extent_io.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -112,32 +112,12 @@ static bool acpi_nondev_subnode_extract(
- 	return false;
- }
- 
--static bool acpi_nondev_subnode_data_ok(acpi_handle handle,
--					const union acpi_object *link,
--					struct list_head *list,
--					struct fwnode_handle *parent)
--{
--	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
--	acpi_status status;
--
--	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
--					    ACPI_TYPE_PACKAGE);
--	if (ACPI_FAILURE(status))
--		return false;
--
--	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
--					parent))
--		return true;
--
--	ACPI_FREE(buf.pointer);
--	return false;
--}
--
- static bool acpi_nondev_subnode_ok(acpi_handle scope,
- 				   const union acpi_object *link,
- 				   struct list_head *list,
- 				   struct fwnode_handle *parent)
- {
-+	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
- 	acpi_handle handle;
- 	acpi_status status;
- 
-@@ -149,7 +129,17 @@ static bool acpi_nondev_subnode_ok(acpi_
- 	if (ACPI_FAILURE(status))
- 		return false;
- 
--	return acpi_nondev_subnode_data_ok(handle, link, list, parent);
-+	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
-+					    ACPI_TYPE_PACKAGE);
-+	if (ACPI_FAILURE(status))
-+		return false;
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -355,6 +355,13 @@ again:
+ 	/* step one, find a bunch of delalloc bytes starting at start */
+ 	delalloc_start = *start;
+ 	delalloc_end = 0;
 +
-+	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
-+					parent))
-+		return true;
++	/*
++	 * If @max_bytes is smaller than a block, btrfs_find_delalloc_range() can
++	 * return early without handling any dirty ranges.
++	 */
++	ASSERT(max_bytes >= fs_info->sectorsize);
 +
-+	ACPI_FREE(buf.pointer);
-+	return false;
- }
- 
- static bool acpi_add_nondev_subnodes(acpi_handle scope,
-@@ -162,7 +152,6 @@ static bool acpi_add_nondev_subnodes(acp
- 
- 	for (i = 0; i < links->package.count; i++) {
- 		union acpi_object *link, *desc;
--		acpi_handle handle;
- 		bool result;
- 
- 		link = &links->package.elements[i];
-@@ -174,22 +163,26 @@ static bool acpi_add_nondev_subnodes(acp
- 		if (link->package.elements[0].type != ACPI_TYPE_STRING)
- 			continue;
- 
--		/* The second one may be a string, a reference or a package. */
-+		/* The second one may be a string or a package. */
- 		switch (link->package.elements[1].type) {
- 		case ACPI_TYPE_STRING:
- 			result = acpi_nondev_subnode_ok(scope, link, list,
- 							 parent);
- 			break;
--		case ACPI_TYPE_LOCAL_REFERENCE:
--			handle = link->package.elements[1].reference.handle;
--			result = acpi_nondev_subnode_data_ok(handle, link, list,
--							     parent);
--			break;
- 		case ACPI_TYPE_PACKAGE:
- 			desc = &link->package.elements[1];
- 			result = acpi_nondev_subnode_extract(desc, NULL, link,
- 							     list, parent);
- 			break;
-+		case ACPI_TYPE_LOCAL_REFERENCE:
-+			/*
-+			 * It is not expected to see any local references in
-+			 * the links package because referencing a named object
-+			 * should cause it to be evaluated in place.
-+			 */
-+			acpi_handle_info(scope, "subnode %s: Unexpected reference\n",
-+					 link->package.elements[0].string.pointer);
-+			fallthrough;
- 		default:
- 			result = false;
- 			break;
+ 	found = btrfs_find_delalloc_range(tree, &delalloc_start, &delalloc_end,
+ 					  max_bytes, &cached_state);
+ 	if (!found || delalloc_end <= *start || delalloc_start > orig_end) {
+@@ -385,13 +392,14 @@ again:
+ 				   delalloc_end);
+ 	ASSERT(!ret || ret == -EAGAIN);
+ 	if (ret == -EAGAIN) {
+-		/* some of the folios are gone, lets avoid looping by
+-		 * shortening the size of the delalloc range we're searching
++		/*
++		 * Some of the folios are gone, lets avoid looping by
++		 * shortening the size of the delalloc range we're searching.
+ 		 */
+ 		free_extent_state(cached_state);
+ 		cached_state = NULL;
+ 		if (!loops) {
+-			max_bytes = PAGE_SIZE;
++			max_bytes = fs_info->sectorsize;
+ 			loops = 1;
+ 			goto again;
+ 		} else {
 
 
 
