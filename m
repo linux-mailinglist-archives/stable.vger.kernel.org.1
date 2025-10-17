@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-187094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791C2BEA118
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:42:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A32BE980B
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 875305A252D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:32:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CDE01892597
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DAC2F12B0;
-	Fri, 17 Oct 2025 15:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421AA336EC1;
+	Fri, 17 Oct 2025 15:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cy2QPI8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kz/B7YDk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E494123EA9E;
-	Fri, 17 Oct 2025 15:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13E2336EC2;
+	Fri, 17 Oct 2025 15:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715102; cv=none; b=JYYj/h9wVSCeWiB4FwvOSso4cUyYvuTQDBeVsiMFvbxh+RF57wjbxsEicq4JHDoBDjDKFIQDVDJ9MtBYuNXb1IsoFu4O25dVGsWCOfRLKQ/ZvHwiDC6fv1+sB8LFSFLS04wxoLmwhuwG0yEreEdSAw9uIOjlliETba5jIKbvKV4=
+	t=1760713577; cv=none; b=UGMmxiHPtwc29yeCWaqvjje4d1RsRs5W5/caZkd1xNnI9U1SYUZR9U7s9ef1SyvRGyAKnEtqVCkTGqlM+zUViZBXqpA4En01PHv2M+xiI+8Oadope2io3fslrPIj8Eh6u0cCIWT2kTW3O870iQjgMnaGkqAZkqa0K5QDoea0264=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715102; c=relaxed/simple;
-	bh=cDg+mnlw9KDqIeZD6NIqYZbfd76yFxKkxm7jEqBPWNY=;
+	s=arc-20240116; t=1760713577; c=relaxed/simple;
+	bh=d9I0yZyQEh5rSbN2B8ugYI/Io5O+Rh4tMhkELTeJIQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjmxZm+M/Fmgz5bd3bUIB/nX8rYB91ZQ75dnfcaHTPoQOWYGH5klGUdcyEsgKYpwR+5sPo2YBY1kj00aFAndkqnhLjKwRoTiEuey3ZQ2fp/aSTNuAxyeM+3TfH19ySnHU60+3f8A0f8NM0ppaa0gkeP2osQAsca3E5RhT47RObc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cy2QPI8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EEDC4CEE7;
-	Fri, 17 Oct 2025 15:31:41 +0000 (UTC)
+	 MIME-Version; b=dTm/CtuHMqpyr1yj/OhaXqtvNhGlTrmPyO9jV/pdCD8sq4JCANXnvpGJ5F9SHVGq9ER2Wvt1nJqHLIbzjf6ej2NngLxbw0rZBsR6CCqNCvCetXBljQEWXGjCSY8uXQ1orpoHTX8D57K3zQcNnnhRpJoREDQTBmCQexCydz71aRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kz/B7YDk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B41DC4CEFE;
+	Fri, 17 Oct 2025 15:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715101;
-	bh=cDg+mnlw9KDqIeZD6NIqYZbfd76yFxKkxm7jEqBPWNY=;
+	s=korg; t=1760713576;
+	bh=d9I0yZyQEh5rSbN2B8ugYI/Io5O+Rh4tMhkELTeJIQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cy2QPI8+DKfLcCaZWTIQI7kvWAnJ+Cx5fETtHma7ToSpCynpzLVA4VJKRHZLLr5ir
-	 bipYzWEJrcOP2T2iCi7Pz2Vo9UlZeONHkjqUrJfS7W3ROX6b0K9F2zgQQXLndNQ/qg
-	 pzq+Sc/A3+ITSRWW2FPnmIAmOjbRZSX/tfotQLcc=
+	b=kz/B7YDkpliCvnz67hpEzRyZ/Xfrnb75TFpxDW2DslRI3Rjtnltaiv+7tECT8hyXW
+	 frAmbVivDEAy85OtVU7jwpJ6UCSw/8vadd5P7EjXmYftZU5OvpGJ5HCGMHVrvDjNTD
+	 J2Hbmi3xX+7kNVFcJzNVow0CB4ESsESfThgOv1Fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harini T <harini.t@amd.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ali Saidi <alisaidi@amazon.com>,
+	German Gomez <german.gomez@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 099/371] mailbox: zynqmp-ipi: Remove dev.parent check in zynqmp_ipi_free_mboxes
+Subject: [PATCH 6.6 013/201] perf arm_spe: Correct setting remote access
 Date: Fri, 17 Oct 2025 16:51:14 +0200
-Message-ID: <20251017145205.523736779@linuxfoundation.org>
+Message-ID: <20251017145135.220317452@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +72,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harini T <harini.t@amd.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 019e3f4550fc7d319a7fd03eff487255f8e8aecd ]
+[ Upstream commit 039fd0634a0629132432632d7ac9a14915406b5c ]
 
-The ipi_mbox->dev.parent check is unreliable proxy for registration
-status as it fails to protect against probe failures that occur after
-the parent is assigned but before device_register() completes.
+Set the mem_remote field for a remote access to appropriately represent
+the event.
 
-device_is_registered() is the canonical and robust method to verify the
-registration status.
-
-Remove ipi_mbox->dev.parent check in zynqmp_ipi_free_mboxes().
-
-Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
-Signed-off-by: Harini T <harini.t@amd.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Fixes: a89dbc9b988f3ba8 ("perf arm-spe: Set sample's data source field")
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ali Saidi <alisaidi@amazon.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/zynqmp-ipi-mailbox.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ tools/perf/util/arm-spe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
-index 263a3413a8c7f..bdcc6937ee309 100644
---- a/drivers/mailbox/zynqmp-ipi-mailbox.c
-+++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
-@@ -893,10 +893,8 @@ static void zynqmp_ipi_free_mboxes(struct zynqmp_ipi_pdata *pdata)
- 	i = pdata->num_mboxes;
- 	for (; i >= 0; i--) {
- 		ipi_mbox = &pdata->ipi_mboxes[i];
--		if (ipi_mbox->dev.parent) {
--			if (device_is_registered(&ipi_mbox->dev))
--				device_unregister(&ipi_mbox->dev);
--		}
-+		if (device_is_registered(&ipi_mbox->dev))
-+			device_unregister(&ipi_mbox->dev);
+diff --git a/tools/perf/util/arm-spe.c b/tools/perf/util/arm-spe.c
+index 9848310cee5f3..0faa4cfaf1f91 100644
+--- a/tools/perf/util/arm-spe.c
++++ b/tools/perf/util/arm-spe.c
+@@ -514,7 +514,7 @@ static void arm_spe__synth_data_source_generic(const struct arm_spe_record *reco
  	}
+ 
+ 	if (record->type & ARM_SPE_REMOTE_ACCESS)
+-		data_src->mem_lvl |= PERF_MEM_LVL_REM_CCE1;
++		data_src->mem_remote = PERF_MEM_REMOTE_REMOTE;
  }
  
+ static u64 arm_spe__synth_data_source(const struct arm_spe_record *record, u64 midr)
 -- 
 2.51.0
 
