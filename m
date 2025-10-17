@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-186999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5296BBE9DBD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CBB5BE9F1E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1B8618914B1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:27:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B5BB6E6BE9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7392DAFD8;
-	Fri, 17 Oct 2025 15:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F16632E12D;
+	Fri, 17 Oct 2025 15:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeCRxkHv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1yvY7Y+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB4D2745E;
-	Fri, 17 Oct 2025 15:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478FC33711F;
+	Fri, 17 Oct 2025 15:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714833; cv=none; b=aRyc96hbB8/Huab6u9EchBSKCKP79mxL8XlIJ8uMXteZscGRhre3V4VKRuoPblW/9ticlVQwdM64ajM7xhskzOt8C4zjup/IyN96NgGA7sVs7QUdPs9J1qcH7isDpz0HeZB65hLxkyJlffyGMj2nJeSKvB1U5ak6ccxBBCgSPlQ=
+	t=1760714003; cv=none; b=VE7sj7AHaz6mcIhsfKQlkOU0KtZcs3q9xdS9I89tMo5PZQfRd9QsouwJCfvd8H5LNItgB67Zcme9Fxd+X6yhRbcwowSAHkkZND1sJvDylD/jvW0iLvnEneYJWPDU+WECbSLd9WgIyIhhw0ExqaOQ79slpbo3V5EoXzyF6B3NHiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714833; c=relaxed/simple;
-	bh=EPc0ZpYJRTxYexr2ZL7eU3Y+ZScFXlgiDf/AY5kss14=;
+	s=arc-20240116; t=1760714003; c=relaxed/simple;
+	bh=Lrq8OgRhUXYOVrIQKEt7kcphc5sJTNBreXhvFRb7WXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mzHVTfcgdGvb8MUXrqxvzZ8We6fQmXcWFoyVV4GnmgVEP0EQR5RH40o2N9K3oNwPIneWAifzHR4r/fWGdsES+kc42NBEOcs7KFtcpGCkuXI1G/a1ORU5heOSB9aM1fbtPoeZt+przEsMYluu6CjStqo666JZoC79SfVNfZPlX4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeCRxkHv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC61C4CEE7;
-	Fri, 17 Oct 2025 15:27:13 +0000 (UTC)
+	 MIME-Version; b=Hfy7Vd/ilYVNsf0MygOrFisOtMzoge0ntlB/lhUXtrm5zT/z/J+OMGyvPZpjoMRl/GkFGTAUotATXGicyWPd/Emd5MJJpVyHHkXTI8Brn2jDLmdqIwFBhDr+suy3PJs8BdggbmPrUFWeoXg67WDoJKCCZVGXl5jUXOdU0eUlJWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1yvY7Y+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F52BC4CEE7;
+	Fri, 17 Oct 2025 15:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714833;
-	bh=EPc0ZpYJRTxYexr2ZL7eU3Y+ZScFXlgiDf/AY5kss14=;
+	s=korg; t=1760714002;
+	bh=Lrq8OgRhUXYOVrIQKEt7kcphc5sJTNBreXhvFRb7WXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WeCRxkHvZMcL4/WVQraghffXapBTfP3X9g/juuXrxy4n/+FwSnL0xDBo0U8LWgeJ9
-	 zRxm4WN3W69Tnq1a5BitQUyBSas9WlNm2R6LO9DVWrmUJ0FO8soTrijQUBsY2SCJye
-	 JC1kGjlmgTMoCLfGYzS6DZmmxXjlnZIqBETvE3/E=
+	b=I1yvY7Y+MYmbrS5jm3ALTNoDChUKiZi7FmIxXWqlVhY6xnnj6hp2EbN84vHjpJKq7
+	 GRKA4x944H0Z3a0gTsSarb5YWUeRoLgkFdAVBeiabTiWpPNRBxQA38ca5zuxciJH5k
+	 QB5+CQnITaYKF/GjZoNdEihnzCMdYxK9s5yQ6u/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	gaoxiang17 <gaoxiang17@xiaomi.com>,
+	Baoquan He <bhe@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 249/277] ACPI: battery: initialize mutexes through devm_ APIs
+Subject: [PATCH 6.6 195/201] pid: Add a judgment for ns null in pid_nr_ns
 Date: Fri, 17 Oct 2025 16:54:16 +0200
-Message-ID: <20251017145156.242602725@linuxfoundation.org>
+Message-ID: <20251017145141.925137538@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+References: <20251017145134.710337454@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +61,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: gaoxiang17 <gaoxiang17@xiaomi.com>
 
-[ Upstream commit 0710c1ce50455ed0db91bffa0eebbaa4f69b1773 ]
+[ Upstream commit 006568ab4c5ca2309ceb36fa553e390b4aa9c0c7 ]
 
-Simplify the cleanup logic a bit.
+__task_pid_nr_ns
+        ns = task_active_pid_ns(current);
+        pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);
+                if (pid && ns->level <= pid->level) {
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://patch.msgid.link/20240904-acpi-battery-cleanups-v1-3-a3bf74f22d40@weissschuh.net
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 399dbcadc01e ("ACPI: battery: Add synchronization between interface updates")
+Sometimes null is returned for task_active_pid_ns. Then it will trigger kernel panic in pid_nr_ns.
+
+For example:
+	Unable to handle kernel NULL pointer dereference at virtual address 0000000000000058
+	Mem abort info:
+	ESR = 0x0000000096000007
+	EC = 0x25: DABT (current EL), IL = 32 bits
+	SET = 0, FnV = 0
+	EA = 0, S1PTW = 0
+	FSC = 0x07: level 3 translation fault
+	Data abort info:
+	ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
+	CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+	GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+	user pgtable: 4k pages, 39-bit VAs, pgdp=00000002175aa000
+	[0000000000000058] pgd=08000002175ab003, p4d=08000002175ab003, pud=08000002175ab003, pmd=08000002175be003, pte=0000000000000000
+	pstate: 834000c5 (Nzcv daIF +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+	pc : __task_pid_nr_ns+0x74/0xd0
+	lr : __task_pid_nr_ns+0x24/0xd0
+	sp : ffffffc08001bd10
+	x29: ffffffc08001bd10 x28: ffffffd4422b2000 x27: 0000000000000001
+	x26: ffffffd442821168 x25: ffffffd442821000 x24: 00000f89492eab31
+	x23: 00000000000000c0 x22: ffffff806f5693c0 x21: ffffff806f5693c0
+	x20: 0000000000000001 x19: 0000000000000000 x18: 0000000000000000
+	x17: 00000000529c6ef0 x16: 00000000529c6ef0 x15: 00000000023a1adc
+	x14: 0000000000000003 x13: 00000000007ef6d8 x12: 001167c391c78800
+	x11: 00ffffffffffffff x10: 0000000000000000 x9 : 0000000000000001
+	x8 : ffffff80816fa3c0 x7 : 0000000000000000 x6 : 49534d702d535449
+	x5 : ffffffc080c4c2c0 x4 : ffffffd43ee128c8 x3 : ffffffd43ee124dc
+	x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffffff806f5693c0
+	Call trace:
+	__task_pid_nr_ns+0x74/0xd0
+	...
+	__handle_irq_event_percpu+0xd4/0x284
+	handle_irq_event+0x48/0xb0
+	handle_fasteoi_irq+0x160/0x2d8
+	generic_handle_domain_irq+0x44/0x60
+	gic_handle_irq+0x4c/0x114
+	call_on_irq_stack+0x3c/0x74
+	do_interrupt_handler+0x4c/0x84
+	el1_interrupt+0x34/0x58
+	el1h_64_irq_handler+0x18/0x24
+	el1h_64_irq+0x68/0x6c
+	account_kernel_stack+0x60/0x144
+	exit_task_stack_account+0x1c/0x80
+	do_exit+0x7e4/0xaf8
+	...
+	get_signal+0x7bc/0x8d8
+	do_notify_resume+0x128/0x828
+	el0_svc+0x6c/0x70
+	el0t_64_sync_handler+0x68/0xbc
+	el0t_64_sync+0x1a8/0x1ac
+	Code: 35fffe54 911a02a8 f9400108 b4000128 (b9405a69)
+	---[ end trace 0000000000000000 ]---
+	Kernel panic - not syncing: Oops: Fatal exception in interrupt
+
+Signed-off-by: gaoxiang17 <gaoxiang17@xiaomi.com>
+Link: https://lore.kernel.org/20250802022123.3536934-1-gxxa03070307@gmail.com
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ kernel/pid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -1225,8 +1225,8 @@ static int acpi_battery_add(struct acpi_
- 	strscpy(acpi_device_name(device), ACPI_BATTERY_DEVICE_NAME);
- 	strscpy(acpi_device_class(device), ACPI_BATTERY_CLASS);
- 	device->driver_data = battery;
--	mutex_init(&battery->lock);
--	mutex_init(&battery->sysfs_lock);
-+	devm_mutex_init(&device->dev, &battery->lock);
-+	devm_mutex_init(&device->dev, &battery->sysfs_lock);
- 	if (acpi_has_method(battery->device->handle, "_BIX"))
- 		set_bit(ACPI_BATTERY_XINFO_PRESENT, &battery->flags);
+diff --git a/kernel/pid.c b/kernel/pid.c
+index 6500ef956f2f8..e57adc00cb779 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -477,7 +477,7 @@ pid_t pid_nr_ns(struct pid *pid, struct pid_namespace *ns)
+ 	struct upid *upid;
+ 	pid_t nr = 0;
  
-@@ -1254,8 +1254,6 @@ fail_pm:
- 	unregister_pm_notifier(&battery->pm_nb);
- fail:
- 	sysfs_remove_battery(battery);
--	mutex_destroy(&battery->lock);
--	mutex_destroy(&battery->sysfs_lock);
- 
- 	return result;
- }
-@@ -1275,9 +1273,6 @@ static void acpi_battery_remove(struct a
- 	device_init_wakeup(&device->dev, 0);
- 	unregister_pm_notifier(&battery->pm_nb);
- 	sysfs_remove_battery(battery);
--
--	mutex_destroy(&battery->lock);
--	mutex_destroy(&battery->sysfs_lock);
- }
- 
- #ifdef CONFIG_PM_SLEEP
+-	if (pid && ns->level <= pid->level) {
++	if (pid && ns && ns->level <= pid->level) {
+ 		upid = &pid->numbers[ns->level];
+ 		if (upid->ns == ns)
+ 			nr = upid->nr;
+-- 
+2.51.0
+
 
 
 
