@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-186766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ECC0BE9ACA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1206EBE9ED6
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFD55189290D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:17:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9299818832C9
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F582F12B4;
-	Fri, 17 Oct 2025 15:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7154932C93E;
+	Fri, 17 Oct 2025 15:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tG8nEktX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQzaeh3O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5191217722;
-	Fri, 17 Oct 2025 15:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B93C33711F;
+	Fri, 17 Oct 2025 15:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714175; cv=none; b=X5Euwv4/EmW0eH6mfJAxZBoiq64/mXORGte2bHwp1XEjuw4OrYaE7POCszUeppFqWvqbc9hjMzEGQ/fMtdbcGChPc9+uUXOTdQ+zlKjzM9Jr9xitkBMufxM/JNgjAGySmniqbaz6IpnNoBiJZrYVXHFuJd/PaphZdem3d32ky5I=
+	t=1760715067; cv=none; b=PkxQK6eRnLygXG/CXek80sv3b/Qn2NMJzZQJHpkcQeI3LqOFIoqBvbasIV3XwUC26GaNox26mM9yr3qeotuh+PeE2IVOGsdLOD+UY9oKYUATc5VLOQ2FnZ6VXzA/I+r/gIz72+QlBV74d0m6UcjuulfxCAX6eQSuz2sHNipVYnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714175; c=relaxed/simple;
-	bh=dpolJf5m9SOkZtsIF6eK2aQnwdMAoCJwNCsy37Xbrzg=;
+	s=arc-20240116; t=1760715067; c=relaxed/simple;
+	bh=8MB0VEECLqUOz874kLsTLnzq23KMQ1l3ZOQ1jFCWMxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPo5MllmF1hzRdwBvX8aYBR7eSnzmSFj+fJLgbE2Klgf6k4ME2L2/l+UpOGa0FveCoEH8KpK3WHFRW02xYn1aizkCtXfk+xa0NMSbCuOjfqBa6mhB6rhh7Phl47aTB946BzybpiugONfuQJ2sqkuo8zzvGzdc7dH2T62CWB/VCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tG8nEktX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3037FC4CEE7;
-	Fri, 17 Oct 2025 15:16:15 +0000 (UTC)
+	 MIME-Version; b=Pe1l4w3ENxsCAXy3fifx9yS3uATLrkBC6beI3RcA3v7/FHYBEIeFhvT9sgtY4j4OnsrXlDIO47GMZdLDUgI1qlqyKX2omIrEDLsETF1/swBfuonaUdkvhPBX2Jva8DbN7iYCJezYypvudxCXbBTqF22ovvwJGwiC1Y0vPzpX4XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQzaeh3O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C08C4CEFE;
+	Fri, 17 Oct 2025 15:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714175;
-	bh=dpolJf5m9SOkZtsIF6eK2aQnwdMAoCJwNCsy37Xbrzg=;
+	s=korg; t=1760715067;
+	bh=8MB0VEECLqUOz874kLsTLnzq23KMQ1l3ZOQ1jFCWMxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tG8nEktXpEmJ+h7FXYDJjmI/50GWZOK5d2MJ+5qQwwxiQ8y3iYH/9P6zy0jxaM14t
-	 eDb1L6mcV3y+m9fnFdz3XMK6rWRauimfJx+4dUwPBjIohztqRYVUTDhUPW93fXcvfX
-	 V7DQ4Fg/OJs4SM7pM4buCSfQ8V4qWtRjD/9QQaE0=
+	b=MQzaeh3OjPecv0VfE3ITZ3IFFpAGvMh3sBuWE5lzuA8c45QlQbrPhSQSScCKmRm3C
+	 qE46k8nsEaVFsQWHbVlf5bK9gtUG9kSHbdzYHoOOzNforZbfdvaPaPnagbCx70AyO4
+	 y4ot7VMML3FXbmiVFEDKVtSGQESgBMDkQ1ASgEVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandr Sapozhnikov <alsp705@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Ian Forbes <ian.forbes@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 053/277] net/sctp: fix a null dereference in sctp_disposition sctp_sf_do_5_1D_ce()
+Subject: [PATCH 6.17 085/371] drm/vmwgfx: Fix a null-ptr access in the cursor snooper
 Date: Fri, 17 Oct 2025 16:51:00 +0200
-Message-ID: <20251017145149.082730939@linuxfoundation.org>
+Message-ID: <20251017145205.014199888@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandr Sapozhnikov <alsp705@gmail.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit 2f3119686ef50319490ccaec81a575973da98815 ]
+[ Upstream commit 5ac2c0279053a2c5265d46903432fb26ae2d0da2 ]
 
-If new_asoc->peer.adaptation_ind=0 and sctp_ulpevent_make_authkey=0
-and sctp_ulpevent_make_authkey() returns 0, then the variable
-ai_ev remains zero and the zero will be dereferenced
-in the sctp_ulpevent_free() function.
+Check that the resource which is converted to a surface exists before
+trying to use the cursor snooper on it.
 
-Signed-off-by: Alexandr Sapozhnikov <alsp705@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Fixes: 30f6ebf65bc4 ("sctp: add SCTP_AUTH_NO_AUTH type for AUTHENTICATION_EVENT")
-Link: https://patch.msgid.link/20251002091448.11-1-alsp705@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+vmw_cmd_res_check allows explicit invalid (SVGA3D_INVALID_ID) identifiers
+because some svga commands accept SVGA3D_INVALID_ID to mean "no surface",
+unfortunately functions that accept the actual surfaces as objects might
+(and in case of the cursor snooper, do not) be able to handle null
+objects. Make sure that we validate not only the identifier (via the
+vmw_cmd_res_check) but also check that the actual resource exists before
+trying to do something with it.
+
+Fixes unchecked null-ptr reference in the snooping code.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: c0951b797e7d ("drm/vmwgfx: Refactor resource management")
+Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
+Link: https://lore.kernel.org/r/20250917153655.1968583-1-zack.rusin@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_statefuns.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index a0524ba8d7878..93cac73472c79 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -885,7 +885,8 @@ enum sctp_disposition sctp_sf_do_5_1D_ce(struct net *net,
- 	return SCTP_DISPOSITION_CONSUME;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 819704ac675d0..d539f25b5fbe0 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1497,6 +1497,7 @@ static int vmw_cmd_dma(struct vmw_private *dev_priv,
+ 		       SVGA3dCmdHeader *header)
+ {
+ 	struct vmw_bo *vmw_bo = NULL;
++	struct vmw_resource *res;
+ 	struct vmw_surface *srf = NULL;
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdSurfaceDMA);
+ 	int ret;
+@@ -1532,18 +1533,24 @@ static int vmw_cmd_dma(struct vmw_private *dev_priv,
  
- nomem_authev:
--	sctp_ulpevent_free(ai_ev);
-+	if (ai_ev)
-+		sctp_ulpevent_free(ai_ev);
- nomem_aiev:
- 	sctp_ulpevent_free(ev);
- nomem_ev:
+ 	dirty = (cmd->body.transfer == SVGA3D_WRITE_HOST_VRAM) ?
+ 		VMW_RES_DIRTY_SET : 0;
+-	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface,
+-				dirty, user_surface_converter,
+-				&cmd->body.host.sid, NULL);
++	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface, dirty,
++				user_surface_converter, &cmd->body.host.sid,
++				NULL);
+ 	if (unlikely(ret != 0)) {
+ 		if (unlikely(ret != -ERESTARTSYS))
+ 			VMW_DEBUG_USER("could not find surface for DMA.\n");
+ 		return ret;
+ 	}
+ 
+-	srf = vmw_res_to_srf(sw_context->res_cache[vmw_res_surface].res);
++	res = sw_context->res_cache[vmw_res_surface].res;
++	if (!res) {
++		VMW_DEBUG_USER("Invalid DMA surface.\n");
++		return -EINVAL;
++	}
+ 
+-	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->tbo, header);
++	srf = vmw_res_to_srf(res);
++	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->tbo,
++			     header);
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
