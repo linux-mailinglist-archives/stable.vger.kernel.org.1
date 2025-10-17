@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-187314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084ECBEA48C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:55:01 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB903BEA681
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:02:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61DF094665C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:43:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9D0F2583289
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB65330B11;
-	Fri, 17 Oct 2025 15:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54821A0728;
+	Fri, 17 Oct 2025 15:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2XLYmRqi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cMjh3U+t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FA0330B37;
-	Fri, 17 Oct 2025 15:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5C1330B2D;
+	Fri, 17 Oct 2025 15:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715727; cv=none; b=O9NVW0Yk0T7e7z3/nbGJ6H9j+iI1bpE0pofz4NBVqVkKwsDZw0aGRzlpWF7AEdeTTUkncoNwh0Pjm+Qnx5FLaSu435Wx53d34S0IZ8UsnS42Iioca7qG4veMuokUC9x8is+zgmDTMcWZ2xV2+g+MYl8vPPg12AlFko73K9EcLvI=
+	t=1760716463; cv=none; b=h3ahGxd0sQ02QNpGqE3JtxySs4G4aVwOwn8UilHf/EiRBWq8Xv24SsHsj6mXd2v1ZtRNUN+1Bv2OEBYGudwCk/Y8NG9SHMyPrZLtvJUhsltLTtRSXIpxy2Fh2l2VkPUkIRDImsTgF8sE2360lspNyd3pXegDIsW8zN1JBqGoRSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715727; c=relaxed/simple;
-	bh=hoiWqCQQIg0bcRVnRxu3mJkPivtAhV+TFJwpNYGo+AM=;
+	s=arc-20240116; t=1760716463; c=relaxed/simple;
+	bh=cG70Y07hC+t2HoRt4dz1tKwKtblgJxhzn1YejkL5dd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1x0QBL5WyX5XYd5RFK9NTvGNwXIHlNb1QBdYhYNtIHMIv7/Q4FuxGGY31MF/J3fnYVeVW5Z4hJ5smbnT1pW1UdpwwZvn1RyDX+Y7TZz1mg/pqx+bfy92l9IsB7b7CIku5a5VL5c+Lf8ByE+Op3+3qtT8Mx5p0x6f43PEOf3CZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2XLYmRqi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FA8C4CEE7;
-	Fri, 17 Oct 2025 15:42:06 +0000 (UTC)
+	 MIME-Version; b=BGKkRT29T8yY2JOhIlI101q+GMvtdCvHX7rhAFUU7DW4Rla2gnSOFC5+iq3/SJuETbqnbdz1u98MJXybSi1N3XUEt88AlYcWNcLM1oyICZt7s6gtAZrdotYYqyPxCkPSnnNZF+t8igMgG+/T4po38PacrZGriitJDP69O5aEaMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cMjh3U+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4D5C4CEE7;
+	Fri, 17 Oct 2025 15:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715727;
-	bh=hoiWqCQQIg0bcRVnRxu3mJkPivtAhV+TFJwpNYGo+AM=;
+	s=korg; t=1760716463;
+	bh=cG70Y07hC+t2HoRt4dz1tKwKtblgJxhzn1YejkL5dd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2XLYmRqiWJIgGIH56sO/R7dxdiHEuHkQX24x1gZIQ8IOAMxIpazAdFEdC+gFyqWza
-	 DOgORlCjZpWZ6gkLnooAItIzsAjvK+BYrxXPzUYChOZPSDGsyJG1CNGDLMRughTpSx
-	 Ne7qL4bDd2zu71rfR1DTKianENM8wPmZiMVXEf0w=
+	b=cMjh3U+tJQtWGE099aWcK/GzPs8PPOg5wB5Vg8buvHbxUfX2pIDwre4yVFpYvEWwd
+	 nTjJoao2rrwnkhr9Wk/mkzq8OlwZOD1Gw6jox/p8IOsljJRAhBvHBRe2hzbBs76T7g
+	 po+GArptfdqKiGn2dy9yz27Pn8t56y/cdrvaBhPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Helen Koike <koike@igalia.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Matthew Wilcox <willy@infradead.org>,
-	NeilBrown <neilb@suse.de>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.17 317/371] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH allocations
+	Linus Walleij <linus.walleij@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 199/276] mtd: rawnand: fsmc: Default to autodetect buswidth
 Date: Fri, 17 Oct 2025 16:54:52 +0200
-Message-ID: <20251017145213.546298440@linuxfoundation.org>
+Message-ID: <20251017145149.735402175@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,78 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit 6a204d4b14c99232e05d35305c27ebce1c009840 upstream.
+commit b8df622cf7f6808c85764e681847150ed6d85f3d upstream.
 
-Commit 524c48072e56 ("mm/page_alloc: rename ALLOC_HIGH to
-ALLOC_MIN_RESERVE") is the start of a series that explains how __GFP_HIGH,
-which implies ALLOC_MIN_RESERVE, is going to be used instead of
-__GFP_ATOMIC for high atomic reserves.
+If you don't specify buswidth 2 (16 bits) in the device
+tree, FSMC doesn't even probe anymore:
 
-Commit eb2e2b425c69 ("mm/page_alloc: explicitly record high-order atomic
-allocations in alloc_flags") introduced ALLOC_HIGHATOMIC for such
-allocations of order higher than 0.  It still used __GFP_ATOMIC, though.
+fsmc-nand 10100000.flash: FSMC device partno 090,
+  manufacturer 80, revision 00, config 00
+nand: device found, Manufacturer ID: 0x20, Chip ID: 0xb1
+nand: ST Micro 10100000.flash
+nand: bus width 8 instead of 16 bits
+nand: No NAND device found
+fsmc-nand 10100000.flash: probe with driver fsmc-nand failed
+  with error -22
 
-Then, commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how
-__GFP_HIGH non-blocking allocations accesses reserves") just turned that
-check for !__GFP_DIRECT_RECLAIM, ignoring that high atomic reserves were
-expected to test for __GFP_HIGH.
+With this patch to use autodetection unless buswidth is
+specified, the device is properly detected again:
 
-This leads to high atomic reserves being added for high-order GFP_NOWAIT
-allocations and others that clear __GFP_DIRECT_RECLAIM, which is
-unexpected.  Later, those reserves lead to 0-order allocations going to
-the slow path and starting reclaim.
+fsmc-nand 10100000.flash: FSMC device partno 090,
+  manufacturer 80, revision 00, config 00
+nand: device found, Manufacturer ID: 0x20, Chip ID: 0xb1
+nand: ST Micro NAND 128MiB 1,8V 16-bit
+nand: 128 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
+fsmc-nand 10100000.flash: Using 1-bit HW ECC scheme
+Scanning device for bad blocks
 
->From /proc/pagetypeinfo, without the patch:
+I don't know where or how this happened, I think some change
+in the nand core.
 
-Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-Node    0, zone    DMA32, type   HighAtomic      1      8     10      9      7      3      0      0      0      0      0
-Node    0, zone   Normal, type   HighAtomic     64     20     12      5      0      0      0      0      0      0      0
-
-With the patch:
-
-Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-Node    0, zone    DMA32, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-Node    0, zone   Normal, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-
-Link: https://lkml.kernel.org/r/20250814172245.1259625-1-cascardo@igalia.com
-Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Tested-by: Helen Koike <koike@igalia.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: NeilBrown <neilb@suse.de>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/fsmc_nand.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4408,7 +4408,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsig
- 		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
- 			alloc_flags |= ALLOC_NON_BLOCK;
- 
--			if (order > 0)
-+			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
- 				alloc_flags |= ALLOC_HIGHATOMIC;
+--- a/drivers/mtd/nand/raw/fsmc_nand.c
++++ b/drivers/mtd/nand/raw/fsmc_nand.c
+@@ -876,10 +876,14 @@ static int fsmc_nand_probe_config_dt(str
+ 	if (!of_property_read_u32(np, "bank-width", &val)) {
+ 		if (val == 2) {
+ 			nand->options |= NAND_BUSWIDTH_16;
+-		} else if (val != 1) {
++		} else if (val == 1) {
++			nand->options |= NAND_BUSWIDTH_AUTO;
++		} else {
+ 			dev_err(&pdev->dev, "invalid bank-width %u\n", val);
+ 			return -EINVAL;
  		}
++	} else {
++		nand->options |= NAND_BUSWIDTH_AUTO;
+ 	}
  
+ 	if (of_get_property(np, "nand-skip-bbtscan", NULL))
 
 
 
