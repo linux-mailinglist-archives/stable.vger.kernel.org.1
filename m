@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-186946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FFEBE9C7E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E20BEA3BC
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 39DEB35E1AD
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C38C735E748
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96D42F12C5;
-	Fri, 17 Oct 2025 15:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82781A0728;
+	Fri, 17 Oct 2025 15:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/frXeV3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Paqq1kdd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6476320C00A;
-	Fri, 17 Oct 2025 15:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E6E330B26;
+	Fri, 17 Oct 2025 15:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714681; cv=none; b=TRJ3OFtd7DE9utoFgSiezSZHYClFLXM7Au3SVKOim5FiLgmZZfttuVOAVT7Iyxb+VoTy5WaqYZt2woo58YBrYEy0QDDKvKunmBfiMF8hxqcVQzIxz4Ot2FnhBJxd/PKBMnzYj9GQiFLVPcV/fIgXMDwNVswTZB3Mpbcc25Njhq0=
+	t=1760716322; cv=none; b=hho/KuYSy2gpcTzlNLsH3PIF5C+6ybqBEOuxS3iV1WgXyD238dEuYZtFp55vlQ4pAw0jGKgYJC1s3AZ8LuH55BKop/axjFHaN+0BXUNKhTB883qdjUANryvXCyWPietKGT/LYL0kqq6l8cxxUzRfkJdSjGcplBn+H4np27yLg7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714681; c=relaxed/simple;
-	bh=cjkAKOOU3wEzSx/lz5jqphL8kpVLtUd0s6pjySWKcoU=;
+	s=arc-20240116; t=1760716322; c=relaxed/simple;
+	bh=OeazGBfjBxjwemXiP4ZbchwUW8stUDtyu0wMugZN1rE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J90wVU2USmRqTQh3FGEXbFT+mzGRv4VV/cSAKsVD8ZKwz124znfXR0rQSHgmpNaI95qhY4vp1GyFcAsB9GXF6Wu3wyDJ0czuXcYp/9Vm+RyaW8AACcMAhlv8o9EJbI8McSTkfF2l4WcSE8lrFLkklkECvu8ULyaA5Cx7VtwMABg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/frXeV3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A18C4CEE7;
-	Fri, 17 Oct 2025 15:24:40 +0000 (UTC)
+	 MIME-Version; b=KA9PFKi/p3S4GpQLdZiTfgW5NGmWdMz7xnf5NTZ48/vsk5utfLarHYM/3D2HQkn0MKuAIPLJIoVroAlD2RFmaa753Iskxzx/m1i4GVQWa5qbMEaUZPUHco7Ike1t5jMsML3rRFsMNV/QoxkLxq4fXyEYkz5BunQuQUKKQw0pSRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Paqq1kdd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94213C4CEE7;
+	Fri, 17 Oct 2025 15:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714681;
-	bh=cjkAKOOU3wEzSx/lz5jqphL8kpVLtUd0s6pjySWKcoU=;
+	s=korg; t=1760716322;
+	bh=OeazGBfjBxjwemXiP4ZbchwUW8stUDtyu0wMugZN1rE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/frXeV3+cdsRB+cmtzFOhHQkBqab6bigd8YZshP72ZJQqqa8ufRJ5CI1V/etZyZJ
-	 rh4ghIWice0coG56Ha6x3bNAhNLXmHNSQPzFIqfLTlllyTScOd6LCQg8qdezFhmxOC
-	 5JIM/P1CtrcJ3B2Bx/vt72RjSvqOkK8XsAAuacsY=
+	b=Paqq1kddUEmSPYH3bQ98IPD+3cyVzFz8qcP0N/yNohEEF6YWPE5fg/ZQYKgj22BKP
+	 OhGgHbT56ZiHZR5VUis1bOUEqBNP8sUVRSl87pQB+/9A4S6aMgE7J6ZFWn4+0A+wqe
+	 cpUdmIwE9Sr2/VYaKD4HZPLyuqGIsC1s/Q63TWVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Jiang <jiangwang@kylinos.cn>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 229/277] PCI: endpoint: Remove surplus return statement from pci_epf_test_clean_dma_chan()
+Subject: [PATCH 5.15 143/276] scsi: mvsas: Fix use-after-free bugs in mvs_work_queue
 Date: Fri, 17 Oct 2025 16:53:56 +0200
-Message-ID: <20251017145155.494557906@linuxfoundation.org>
+Message-ID: <20251017145147.702484206@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jiang <jiangwang@kylinos.cn>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 9b80bdb10aee04ce7289896e6bdad13e33972636 ]
+[ Upstream commit 60cd16a3b7439ccb699d0bf533799eeb894fd217 ]
 
-Remove a surplus return statement from the void function that has been
-added in the commit commit 8353813c88ef ("PCI: endpoint: Enable DMA
-tests for endpoints with DMA capabilities").
+During the detaching of Marvell's SAS/SATA controller, the original code
+calls cancel_delayed_work() in mvs_free() to cancel the delayed work
+item mwq->work_q. However, if mwq->work_q is already running, the
+cancel_delayed_work() may fail to cancel it. This can lead to
+use-after-free scenarios where mvs_free() frees the mvs_info while
+mvs_work_queue() is still executing and attempts to access the
+already-freed mvs_info.
 
-Especially, as an empty return statements at the end of a void functions
-serve little purpose.
+A typical race condition is illustrated below:
 
-This fixes the following checkpatch.pl script warning:
+CPU 0 (remove)            | CPU 1 (delayed work callback)
+mvs_pci_remove()          |
+  mvs_free()              | mvs_work_queue()
+    cancel_delayed_work() |
+      kfree(mvi)          |
+                          |   mvi-> // UAF
 
-  WARNING: void function return statements are not generally useful
-  #296: FILE: drivers/pci/endpoint/functions/pci-epf-test.c:296:
-  +     return;
-  +}
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the delayed work item is properly canceled and any executing
+delayed work item completes before the mvs_info is deallocated.
 
-Link: https://lore.kernel.org/r/tencent_F250BEE2A65745A524E2EFE70CF615CA8F06@qq.com
-Signed-off-by: Wang Jiang <jiangwang@kylinos.cn>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Stable-dep-of: 85afa9ea122d ("PCI: endpoint: pci-epf-test: Add NULL check for DMA channels before release")
+This bug was found by static analysis.
+
+Fixes: 20b09c2992fe ("[SCSI] mvsas: add support for 94xx; layout change; bug fixes")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-test.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/scsi/mvsas/mv_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -291,8 +291,6 @@ static void pci_epf_test_clean_dma_chan(
- 
- 	dma_release_channel(epf_test->dma_chan_rx);
- 	epf_test->dma_chan_rx = NULL;
--
--	return;
+diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
+index 5f217f9ab5223..d348350c15094 100644
+--- a/drivers/scsi/mvsas/mv_init.c
++++ b/drivers/scsi/mvsas/mv_init.c
+@@ -141,7 +141,7 @@ static void mvs_free(struct mvs_info *mvi)
+ 	if (mvi->shost)
+ 		scsi_host_put(mvi->shost);
+ 	list_for_each_entry(mwq, &mvi->wq_list, entry)
+-		cancel_delayed_work(&mwq->work_q);
++		cancel_delayed_work_sync(&mwq->work_q);
+ 	kfree(mvi->rsvd_tags);
+ 	kfree(mvi);
  }
- 
- static void pci_epf_test_print_rate(struct pci_epf_test *epf_test,
+-- 
+2.51.0
+
 
 
 
