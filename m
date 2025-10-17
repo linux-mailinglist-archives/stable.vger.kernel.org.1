@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-187027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98D4BEA56C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E384BE9DA7
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50F7621C77
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:28:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 921295879BF
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2F927FB03;
-	Fri, 17 Oct 2025 15:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AAD2F12B2;
+	Fri, 17 Oct 2025 15:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8dICTMY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dx+aa6zP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3DF219A7A;
-	Fri, 17 Oct 2025 15:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D88337117;
+	Fri, 17 Oct 2025 15:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714914; cv=none; b=iAAn50jDK4FbKdCAbZpY7FHqe7SDnrPQoAV/I6knKGiXWH4Wmhr4X87LZQzw0qkhVKveKiSkAxanBOJ0hcDdGd8rghLru6XJ6r9f1kNOnV4wC8VuxkXoAwDOjsMYzpaW39fqk3t5A8JkxpgXJG1ZFC9GG5JF3VT7cpVbAPzFbr0=
+	t=1760714048; cv=none; b=dJSraOhihU9/OHAdu5C+/RNHjVu16sxO06z1QMglanZy7GZUyc5MdPZe2BYH9HLDKK8NzuoKMcHpS0hsBrcViXq6D0tHMboBUMK3o1QFmKscoLwsIypj8GX2eL6ijfe/xbYD2M2oU91+ieSvr7TLs68G3fMwj08MgMW7HSsGVBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714914; c=relaxed/simple;
-	bh=rQh/7a7fAzpzYn0z8TS2ZiDA28KIJuCf2cfn1ce6e4Y=;
+	s=arc-20240116; t=1760714048; c=relaxed/simple;
+	bh=DAXRcqHSHD62BS2uHbN2Gl1CC5gm0Yjl9ONZ6ZZqJ8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+9RrpMLu+Nfp1/S7l++UVUyuVflFLSKmqpIqaGEkyzmCUhnXVeSG64agTCnEniohBPg/0aQkbmnjkRiqv0fSw6PXzLLS9u2hL8FJvonEWhD4wEr2+3scK7I+gVEWylRfe6d5JEgRGi7b8CI15kI/7UcFVWywzVlkGJyGn4VGAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8dICTMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F3DC4CEE7;
-	Fri, 17 Oct 2025 15:28:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L2GLZPyXlMclTz6zD5QdAxOJTd2R7FvrxFxIM+Jlb6H7ub3X8HmKcgxHrH0MD+jjcWZTcEz8dziEGMCH6vFvTobZb5AytztYTYDxR9dxlVQ7vT7gIyLHliCWAi5okp9ssZrXSmq/J5Yh8sFvZhGi7s42oWjqf56EyapGNXN33vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dx+aa6zP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E7FC4CEE7;
+	Fri, 17 Oct 2025 15:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714914;
-	bh=rQh/7a7fAzpzYn0z8TS2ZiDA28KIJuCf2cfn1ce6e4Y=;
+	s=korg; t=1760714048;
+	bh=DAXRcqHSHD62BS2uHbN2Gl1CC5gm0Yjl9ONZ6ZZqJ8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8dICTMYX13KAWH8I4XFaf3Fc49XnZunlEaawnHVD1TWki0Sy6vCEb4B9yRZE0lL8
-	 s15gjMRM02329qpYrLOTxRdQf8tJWveZaMUTA/8XeKa24PUtjEYjuNCnc+MsHEHIRu
-	 ku5A3rS/9FsotEzgoNkl6Nx5YLoHtsrlnPs+3Usw=
+	b=Dx+aa6zPCbUw8b/PbkUCuXHZDfOgRUWh7kmADJIE9GaBHTYrrxdljLsTUfHb0+yR8
+	 VpFN4ScEghLaGspjk+hqJYgVqB7/voiTWp0VudRhuIHRxj+bzIHux1R6DxUQmpEP+8
+	 n/N1jEmiqfC3yHehgrhjuR72CWBvvd8pd53/5Q+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan CHen <chenyuan@kylinos.cn>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 033/371] clk: renesas: cpg-mssr: Fix memory leak in cpg_mssr_reserved_init()
+	Al Viro <viro@zeniv.linux.org.uk>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 001/277] fs: always return zero on success from replace_fd()
 Date: Fri, 17 Oct 2025 16:50:08 +0200
-Message-ID: <20251017145202.998357623@linuxfoundation.org>
+Message-ID: <20251017145147.197046032@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan CHen <chenyuan@kylinos.cn>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit cc55fc58fc1b7f405003fd2ecf79e74653461f0b ]
+commit 708c04a5c2b78e22f56e2350de41feba74dfccd9 upstream.
 
-In case of krealloc_array() failure, the current error handling just
-returns from the function without freeing the original array.
-Fix this memory leak by freeing the original array.
+replace_fd() returns the number of the new file descriptor through the
+return value of do_dup2(). However its callers never care about the
+specific returned number. In fact the caller in receive_fd_replace() treats
+any non-zero return value as an error and therefore never calls
+__receive_sock() for most file descriptors, which is a bug.
 
-Fixes: 6aa1754764901668 ("clk: renesas: cpg-mssr: Ignore all clocks assigned to non-Linux system")
-Signed-off-by: Yuan CHen <chenyuan@kylinos.cn>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20250908012810.4767-1-chenyuan_fl@163.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To fix the bug in receive_fd_replace() and to avoid the same issue
+happening in future callers, signal success through a plain zero.
+
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://lore.kernel.org/lkml/20250801220215.GS222315@ZenIV/
+Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
+Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://lore.kernel.org/20250805-fix-receive_fd_replace-v3-1-b72ba8b34bac@linutronix.de
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/renesas/renesas-cpg-mssr.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/file.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
-index 5ff6ee1f7d4b7..de1cf7ba45b78 100644
---- a/drivers/clk/renesas/renesas-cpg-mssr.c
-+++ b/drivers/clk/renesas/renesas-cpg-mssr.c
-@@ -1082,6 +1082,7 @@ static int __init cpg_mssr_reserved_init(struct cpg_mssr_priv *priv,
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1262,7 +1262,10 @@ int replace_fd(unsigned fd, struct file
+ 	err = expand_files(files, fd);
+ 	if (unlikely(err < 0))
+ 		goto out_unlock;
+-	return do_dup2(files, file, fd, flags);
++	err = do_dup2(files, file, fd, flags);
++	if (err < 0)
++		return err;
++	return 0;
  
- 		of_for_each_phandle(&it, rc, node, "clocks", "#clock-cells", -1) {
- 			int idx;
-+			unsigned int *new_ids;
- 
- 			if (it.node != priv->np)
- 				continue;
-@@ -1092,11 +1093,13 @@ static int __init cpg_mssr_reserved_init(struct cpg_mssr_priv *priv,
- 			if (args[0] != CPG_MOD)
- 				continue;
- 
--			ids = krealloc_array(ids, (num + 1), sizeof(*ids), GFP_KERNEL);
--			if (!ids) {
-+			new_ids = krealloc_array(ids, (num + 1), sizeof(*ids), GFP_KERNEL);
-+			if (!new_ids) {
- 				of_node_put(it.node);
-+				kfree(ids);
- 				return -ENOMEM;
- 			}
-+			ids = new_ids;
- 
- 			if (priv->reg_layout == CLK_REG_LAYOUT_RZ_A)
- 				idx = MOD_CLK_PACK_10(args[1]);	/* for DEF_MOD_STB() */
--- 
-2.51.0
-
+ out_unlock:
+ 	spin_unlock(&files->file_lock);
 
 
 
