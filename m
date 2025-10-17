@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-187028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63EDFBE9E0A
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:30:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2687BBE9D1A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21FCB19C2F1E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:29:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65F896E681A
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A58219A7A;
-	Fri, 17 Oct 2025 15:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BFE32E155;
+	Fri, 17 Oct 2025 15:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7YOWhSF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIDVcqe/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A4D337109;
-	Fri, 17 Oct 2025 15:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE8332E14D;
+	Fri, 17 Oct 2025 15:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714917; cv=none; b=heXUiMxHFyOkeCfEPVGf6Uqfuky1HPxvp+QRLEAqJC5dFMedMUegqC2Xzd6/Z1AMnakSdNzLfodGIDtu3tjcN6lGDIXnbZLuiwaafptuXc4yeI3sOza+XS/KFTV//S1LQdwQg5g80CImZTyKd/ZD7slwWPICKSb/8kVdqNfWEN0=
+	t=1760714079; cv=none; b=Mus/Cv5ed72K4w1s9k/BjrBHSn3LAXGU0vA6tW3/r6ImPFjLUi3tPxF7DvftYUjKvkLW186foAMXFLNDl69TS/BmkTDkjBEtsefA6J/LBulOpFQDqUQuVL6oM5DfjHM0px5b2LcFc7ECghG5BUz6ukRyZpbTm0nWAEszSez3I70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714917; c=relaxed/simple;
-	bh=8ikhfVYaTjmVLu7pfRYMde6jyNUCApdorKsWmNmDA2w=;
+	s=arc-20240116; t=1760714079; c=relaxed/simple;
+	bh=esOiWYu9JxgqvuxwQdJRm+E6lcLXG0V/syg8fxVSePk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLK5MuHhiyVehMknraiyqxWlfXH6wvTLYzVgr2J6egY2YrtUsSwdOt2G0fk+RWLWyxZtXZqCYYC1boX1Sgfct2iEWzfYOx/SsEGsTqn2/oDysyGVkpmUjCygMP/huh08fPh6qqhOvVAqc8AxmKdtAciAopl8uSl7XO8sZ3JAKww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7YOWhSF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D70C4CEE7;
-	Fri, 17 Oct 2025 15:28:36 +0000 (UTC)
+	 MIME-Version; b=fft5Ns4i7OowBNSlcvpq1Giq4niKGFa9woku52HvRlYR0q9H8piEMhgvOplYqRBS/HqA2wanRzB0V/+19A8jn5e4LvI5TmcGXR3lZ6NUc5pkdVIUitRVIAMxDR+FeH91nhrg+hUJxZqjSqZJWtOdyA5N+KzMOMP/Oskrhk7hkXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIDVcqe/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F33D0C116B1;
+	Fri, 17 Oct 2025 15:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760714916;
-	bh=8ikhfVYaTjmVLu7pfRYMde6jyNUCApdorKsWmNmDA2w=;
+	s=korg; t=1760714079;
+	bh=esOiWYu9JxgqvuxwQdJRm+E6lcLXG0V/syg8fxVSePk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f7YOWhSFnpFJdTSToQcgiyRt0Rr1wsQNUfNDoF5wxB8rEAnoW8orGaj7X3WmQzWuM
-	 IJwoq6ul/b5h/rlwqCxXvWMVX3dc8h8EPFWB4LPO5QqPhnNi6w04RGP5NaSbQ9T+h5
-	 yCbRSePgYgGDYyhSh9sIcxYVwsr2/gO8qwUzlAX4=
+	b=DIDVcqe/+D8VPdI6plSZuWFnqzRsnIrmlmxNyFnr3xqertIVahL/uMEP6Ou6SntXx
+	 yQg2+AVGZw6OkWyLvl/2O1Ycaz/i2iYNOHAbKjAaZYgjEt+TnpmJrCF4LgA4hPiSg0
+	 PO+DCaLiIYY8jZa+81+/f9SyIXQoTV+8dC/r5y5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 034/371] perf: Completely remove possibility to override MAX_NR_CPUS
+	David Howells <dhowells@redhat.com>,
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 002/277] fscontext: do not consume log entries when returning -EMSGSIZE
 Date: Fri, 17 Oct 2025 16:50:09 +0200
-Message-ID: <20251017145203.035099069@linuxfoundation.org>
+Message-ID: <20251017145147.232638275@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,79 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Aleksa Sarai <cyphar@cyphar.com>
 
-[ Upstream commit 6f8fb022ef2c6694e47f6e2f5676eb63be66c208 ]
+commit 72d271a7baa7062cb27e774ac37c5459c6d20e22 upstream.
 
-Commit 21b8732eb447 ("perf tools: Allow overriding MAX_NR_CPUS at
-compile time") added the capability to override MAX_NR_CPUS. At
-that time it was necessary to reduce the huge amount of RAM used
-by static stats variables.
+Userspace generally expects APIs that return -EMSGSIZE to allow for them
+to adjust their buffer size and retry the operation. However, the
+fscontext log would previously clear the message even in the -EMSGSIZE
+case.
 
-But this has been unnecessary since commit 6a1e2c5c2673 ("perf stat:
-Remove a set of shadow stats static variables"), and
-commit e8399d34d568 ("libperf cpumap: Hide/reduce scope of
-MAX_NR_CPUS") broke the build in that case because it failed to
-add the guard around the new definition of MAX_NR_CPUS.
+Given that it is very cheap for us to check whether the buffer is too
+small before we remove the message from the ring buffer, let's just do
+that instead. While we're at it, refactor some fscontext_read() into a
+separate helper to make the ring buffer logic a bit easier to read.
 
-So cleanup things and remove guards completely to officialise it
-is not necessary anymore to override MAX_NR_CPUS.
-
-Fixes: e8399d34d568d61c ("libperf cpumap: Hide/reduce scope of MAX_NR_CPUS")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/all/8c8553387ebf904a9e5a93eaf643cb01164d9fb3.1736188471.git.christophe.leroy@csgroup.eu/
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 007ec26cdc9f ("vfs: Implement logging through fs_context")
+Cc: David Howells <dhowells@redhat.com>
+Cc: stable@vger.kernel.org # v5.2+
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+Link: https://lore.kernel.org/20250807-fscontext-log-cleanups-v3-1-8d91d6242dc3@cyphar.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/perf.h                        | 2 --
- tools/perf/util/bpf_skel/kwork_top.bpf.c | 2 --
- 2 files changed, 4 deletions(-)
+ fs/fsopen.c |   70 ++++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 38 insertions(+), 32 deletions(-)
 
-diff --git a/tools/perf/perf.h b/tools/perf/perf.h
-index 3cb40965549f5..e004178472d9e 100644
---- a/tools/perf/perf.h
-+++ b/tools/perf/perf.h
-@@ -2,9 +2,7 @@
- #ifndef _PERF_PERF_H
- #define _PERF_PERF_H
+--- a/fs/fsopen.c
++++ b/fs/fsopen.c
+@@ -18,50 +18,56 @@
+ #include "internal.h"
+ #include "mount.h"
  
--#ifndef MAX_NR_CPUS
- #define MAX_NR_CPUS			4096
--#endif
++static inline const char *fetch_message_locked(struct fc_log *log, size_t len,
++					       bool *need_free)
++{
++	const char *p;
++	int index;
++
++	if (unlikely(log->head == log->tail))
++		return ERR_PTR(-ENODATA);
++
++	index = log->tail & (ARRAY_SIZE(log->buffer) - 1);
++	p = log->buffer[index];
++	if (unlikely(strlen(p) > len))
++		return ERR_PTR(-EMSGSIZE);
++
++	log->buffer[index] = NULL;
++	*need_free = log->need_free & (1 << index);
++	log->need_free &= ~(1 << index);
++	log->tail++;
++
++	return p;
++}
++
+ /*
+  * Allow the user to read back any error, warning or informational messages.
++ * Only one message is returned for each read(2) call.
+  */
+ static ssize_t fscontext_read(struct file *file,
+ 			      char __user *_buf, size_t len, loff_t *pos)
+ {
+ 	struct fs_context *fc = file->private_data;
+-	struct fc_log *log = fc->log.log;
+-	unsigned int logsize = ARRAY_SIZE(log->buffer);
+-	ssize_t ret;
+-	char *p;
++	ssize_t err;
++	const char *p __free(kfree) = NULL, *message;
+ 	bool need_free;
+-	int index, n;
+-
+-	ret = mutex_lock_interruptible(&fc->uapi_mutex);
+-	if (ret < 0)
+-		return ret;
+-
+-	if (log->head == log->tail) {
+-		mutex_unlock(&fc->uapi_mutex);
+-		return -ENODATA;
+-	}
++	int n;
  
- enum perf_affinity {
- 	PERF_AFFINITY_SYS = 0,
-diff --git a/tools/perf/util/bpf_skel/kwork_top.bpf.c b/tools/perf/util/bpf_skel/kwork_top.bpf.c
-index 73e32e0630301..6673386302e2f 100644
---- a/tools/perf/util/bpf_skel/kwork_top.bpf.c
-+++ b/tools/perf/util/bpf_skel/kwork_top.bpf.c
-@@ -18,9 +18,7 @@ enum kwork_class_type {
- };
+-	index = log->tail & (logsize - 1);
+-	p = log->buffer[index];
+-	need_free = log->need_free & (1 << index);
+-	log->buffer[index] = NULL;
+-	log->need_free &= ~(1 << index);
+-	log->tail++;
++	err = mutex_lock_interruptible(&fc->uapi_mutex);
++	if (err < 0)
++		return err;
++	message = fetch_message_locked(fc->log.log, len, &need_free);
+ 	mutex_unlock(&fc->uapi_mutex);
++	if (IS_ERR(message))
++		return PTR_ERR(message);
  
- #define MAX_ENTRIES     102400
--#ifndef MAX_NR_CPUS
- #define MAX_NR_CPUS     4096
--#endif
- #define PF_KTHREAD      0x00200000
- #define MAX_COMMAND_LEN 16
+-	ret = -EMSGSIZE;
+-	n = strlen(p);
+-	if (n > len)
+-		goto err_free;
+-	ret = -EFAULT;
+-	if (copy_to_user(_buf, p, n) != 0)
+-		goto err_free;
+-	ret = n;
+-
+-err_free:
+ 	if (need_free)
+-		kfree(p);
+-	return ret;
++		p = message;
++
++	n = strlen(message);
++	if (copy_to_user(_buf, message, n))
++		return -EFAULT;
++	return n;
+ }
  
--- 
-2.51.0
-
+ static int fscontext_release(struct inode *inode, struct file *file)
 
 
 
