@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-186428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B972BE97A8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:06:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005E6BEA0CE
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 310E33AC92F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1C38189540E
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477A232E131;
-	Fri, 17 Oct 2025 15:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA4A3328EC;
+	Fri, 17 Oct 2025 15:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TMUehbC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cU6ynnsn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F321432E121;
-	Fri, 17 Oct 2025 15:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A48D32C944;
+	Fri, 17 Oct 2025 15:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713215; cv=none; b=i+sgmE8oV6zWYXM7TPq/7o+usWzFOyKJJdm47WEJDVC5uNizEEkVAslPZbqfQjjLLwFb5vFndDplFY4ckxkWLSHbQHPhrWRqEv7erEFUlSV0TIM7ce82lv+9UXkOvxpk4OWgkibp3dCWPG6aRcw3n+wSj1YbDXGVxy2fjstns3A=
+	t=1760715370; cv=none; b=SLiHonstUv4n09/lYTDCdn8jhgftl/XrZueGX6PODhJ8PXCWgpcSuRItcdcABU13jxxO/sPJP3pM/4c4cAOojJnAtVQw/2cugbA+5J7m++lK273pBWnQ8k1Sn9S4o+IeXiYGlA+FZ/fYNDrsx+Na8N1aEdyK1Zi8nkqlvibZPe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713215; c=relaxed/simple;
-	bh=6JYK5QtRwCx2bN02h8gjVOOXa0OfTRjDrG++MtnK1TE=;
+	s=arc-20240116; t=1760715370; c=relaxed/simple;
+	bh=/5iHVqXygcYIP8WDWYGlsTR2W2DOav2V1cdKZftV1Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j4z45AfSIQ+fhqIcbRTvdmwtyb1mtGInHiyZYPRY8GgTKfdM3b52zQECzkN/YAX+MQZPUI6DkrX+UWuCt9Vlp14ICJtRDOXpAYNA2QnN6Wogk0406nCKZzFJtF/YgtyZ8nNKzewFwobHDIfEn7XZowfCpWdZSZXQrlbo6EjOaqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TMUehbC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CDFC4CEFE;
-	Fri, 17 Oct 2025 15:00:14 +0000 (UTC)
+	 MIME-Version; b=uarzz0uKXn2XtJoCGHgYkixjjIASCnc2+297IjtGf+GFH0CumZEtr9mIoCgNBLPpMzHWeogueqfyaZOdikyOFSCfec4H8x8LWJcyaIBXPafF5prcktbO82ipS47t+x5GZFEdBpoh1RNQCQQkcetu6rWyYlZG2TPluYsiFomPYqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cU6ynnsn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80652C113D0;
+	Fri, 17 Oct 2025 15:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713214;
-	bh=6JYK5QtRwCx2bN02h8gjVOOXa0OfTRjDrG++MtnK1TE=;
+	s=korg; t=1760715366;
+	bh=/5iHVqXygcYIP8WDWYGlsTR2W2DOav2V1cdKZftV1Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0TMUehbCCGpZs879g7jE8PJh65Lg22IMKyBGdgbFjc2bBoekBaX98FssW+1dNMd6W
-	 Rngbezl9e8v9+mYI/1Jk9YUDTWGkX19FexqpHzeJDXqaLJG956U5cGYcM9nCYF+5Uj
-	 4M50hwE4jgpEnmxi6ubyJtCsxDQN7GauzTnfthho=
+	b=cU6ynnsnkOJmoBIsICxDeDfCpvU/rGZP5joWAv6L0vuV5GOQaEITywh5qNf7xkgeL
+	 swVR/Koq12XgyCznagN5MbEl2wL0YfaOOKW00YnUOmL3sanoxeK3oVxhF0NgorZ1LJ
+	 cIOlLOPuwgZ6d3ruqaRucgXo8s2MMhJsdcb9dDz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.1 086/168] KEYS: trusted_tpm1: Compare HMAC values in constant time
+	Petr Vorel <pvorel@suse.cz>,
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.17 190/371] drm/nouveau: fix bad ret code in nouveau_bo_move_prep
 Date: Fri, 17 Oct 2025 16:52:45 +0200
-Message-ID: <20251017145132.194589007@linuxfoundation.org>
+Message-ID: <20251017145208.799451739@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-commit eed0e3d305530066b4fc5370107cff8ef1a0d229 upstream.
+commit e4bea919584ff292c9156cf7d641a2ab3cbe27b0 upstream.
 
-To prevent timing attacks, HMAC value comparison needs to be constant
-time.  Replace the memcmp() with the correct function, crypto_memneq().
+In `nouveau_bo_move_prep`, if `nouveau_mem_map` fails, an error code
+should be returned. Currently, it returns zero even if vmm addr is not
+correctly mapped.
 
-[For the Fixes commit I used the commit that introduced the memcmp().
-It predates the introduction of crypto_memneq(), but it was still a bug
-at the time even though a helper function didn't exist yet.]
-
-Fixes: d00a1c72f7f4 ("keys: add new trusted key-type")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Fixes: 9ce523cc3bf2 ("drm/nouveau: separate buffer object backing memory from nvkm structures")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/keys/trusted-keys/trusted_tpm1.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_bo.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/security/keys/trusted-keys/trusted_tpm1.c
-+++ b/security/keys/trusted-keys/trusted_tpm1.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <crypto/hash_info.h>
-+#include <crypto/algapi.h>
- #include <linux/init.h>
- #include <linux/slab.h>
- #include <linux/parser.h>
-@@ -241,7 +242,7 @@ int TSS_checkhmac1(unsigned char *buffer
- 	if (ret < 0)
- 		goto out;
- 
--	if (memcmp(testhmac, authdata, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac, authdata, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
-@@ -334,7 +335,7 @@ static int TSS_checkhmac2(unsigned char
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag1, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
-+	if (crypto_memneq(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
- 		ret = -EINVAL;
- 		goto out;
+--- a/drivers/gpu/drm/nouveau/nouveau_bo.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
+@@ -929,7 +929,7 @@ done:
+ 		nvif_vmm_put(vmm, &old_mem->vma[1]);
+ 		nvif_vmm_put(vmm, &old_mem->vma[0]);
  	}
-@@ -343,7 +344,7 @@ static int TSS_checkhmac2(unsigned char
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag2, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac2, authdata2, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac2, authdata2, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
+-	return 0;
++	return ret;
+ }
+ 
+ static int
 
 
 
