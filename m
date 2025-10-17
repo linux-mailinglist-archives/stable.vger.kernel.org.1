@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2064BBEA56F
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:58:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0211EBE9CA8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:25:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 74E025A1EFF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F00E19A1272
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149EA2F12B8;
-	Fri, 17 Oct 2025 15:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59BE32C957;
+	Fri, 17 Oct 2025 15:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5hqIZFk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBWworcY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C666D330B3C;
-	Fri, 17 Oct 2025 15:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BC92F12D1;
+	Fri, 17 Oct 2025 15:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716120; cv=none; b=agXr1ECEYkFraMmT+GyVdbbOpMYphzJyglLcwWYuZf2rFYtQtqKQMO2vCINuUiJTnUwjgCZcCah5zUxtKSEy0BmJ/sYYY2F+ZXJCEfUIgOjG7Yx1xO+f9mAo3EvX6m4d4V06Y1o6iy2seifGWwaiEtV6hnfQCpnAgTZovcMKhNc=
+	t=1760714481; cv=none; b=ODt3KycQOj1k6vAtMstPMdE/ulEBRzH8VWOW4YGCcMD6hXss6kAaBpnY9c6yfwepbduLssqXWDZ3220n3ai+PtDpJS0E0ophaDz+Q1Y/yv/6PN5wleab+fREDMTeqHgzopKm1Gs5dFhIdQqtPzwKiDjHNkXnRGJmK9JO9JUgYjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716120; c=relaxed/simple;
-	bh=G9020WmRMhMXZ57B6KETNoM9dpN4UDlJfQi2hREkCPo=;
+	s=arc-20240116; t=1760714481; c=relaxed/simple;
+	bh=tB/aRbVQPT0Ld1gQCGrt1I8rCVn/II7bP+Y+0GqyJ48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DhOnz8ptpew3BYc1Y5ZUuRTsS+vtUKBBfsEPs+BwgH9Zx5qL+x6az+L1wh748REJNdlWSrfzYy5pJaNNaV0YESY/F6F4poGMOpz8w9M9Ua+p2q7+5uhchZVRkRtuJLSMwmf0ymP/YLFs1BE432/8BBoouu7Np1+xq5i7efTw2qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5hqIZFk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B936C4CEE7;
-	Fri, 17 Oct 2025 15:48:40 +0000 (UTC)
+	 MIME-Version; b=DJBKUktwwHFL+dksdVN8in0DtZXzK/vXoeyyK9NRPh8IWK3G6/cNm2/QGHpA4D4x9sJjBPTxNKDe9z9vbZKFFZ6bR9vK8NeGsJoNGPP5ij/HXbffRIQaTERyiYz+OuWQZFjf4B9FLAHTuQpp1qXVEGzNmcfIc3cwoctaieKSea8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBWworcY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D0CC4CEFE;
+	Fri, 17 Oct 2025 15:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716120;
-	bh=G9020WmRMhMXZ57B6KETNoM9dpN4UDlJfQi2hREkCPo=;
+	s=korg; t=1760714481;
+	bh=tB/aRbVQPT0Ld1gQCGrt1I8rCVn/II7bP+Y+0GqyJ48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5hqIZFkYI/3WTg50YQ+Lk+xiTCCjPChAcpGv0hG0CFXmy7/Uy6mFNWPMX0prWL4R
-	 mhZuoWKbn/nHKc2+YtK3ue1R3ee/1mSLdyDXeaZwdU/9l22nrq2D4erWEw5hBYEjbW
-	 45vKc7Ho1f4ozpfPXrjjiWxiBMKTbotqbG9e8UFI=
+	b=kBWworcYGt1oD8RUajcChDwOtBvuuAGF89LYO+HELJHaOkCQLxJF1Fg+IlhQuKGD2
+	 ExQMqJlYKYgWp0DcmBE0GOwqSu8gbARiNbw/K1OYCqLAFwnBMwq2RHi4W9Uh40rWjv
+	 52Sl61AqW4u1wcHsCuSErQg2zRBDpl23FVqYXVoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Phil Sutter <phil@nwl.cc>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 073/276] netfilter: ipset: Remove unused htable_bits in macro ahash_region
-Date: Fri, 17 Oct 2025 16:52:46 +0200
-Message-ID: <20251017145145.151888720@linuxfoundation.org>
+	Harshit Agarwal <harshit@nutanix.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>
+Subject: [PATCH 6.12 160/277] sched/deadline: Fix race in push_dl_task()
+Date: Fri, 17 Oct 2025 16:52:47 +0200
+Message-ID: <20251017145152.968805297@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Harshit Agarwal <harshit@nutanix.com>
 
-[ Upstream commit ba941796d7cd1e81f51eed145dad1b47240ff420 ]
+commit 8fd5485fb4f3d9da3977fd783fcb8e5452463420 upstream.
 
-Since the ahash_region() macro was redefined to calculate the region
-index solely from HTABLE_REGION_BITS, the htable_bits parameter became
-unused.
+When a CPU chooses to call push_dl_task and picks a task to push to
+another CPU's runqueue then it will call find_lock_later_rq method
+which would take a double lock on both CPUs' runqueues. If one of the
+locks aren't readily available, it may lead to dropping the current
+runqueue lock and reacquiring both the locks at once. During this window
+it is possible that the task is already migrated and is running on some
+other CPU. These cases are already handled. However, if the task is
+migrated and has already been executed and another CPU is now trying to
+wake it up (ttwu) such that it is queued again on the runqeue
+(on_rq is 1) and also if the task was run by the same CPU, then the
+current checks will pass even though the task was migrated out and is no
+longer in the pushable tasks list.
+Please go through the original rt change for more details on the issue.
 
-Remove the unused htable_bits argument and its call sites, simplifying
-the code without changing semantics.
+To fix this, after the lock is obtained inside the find_lock_later_rq,
+it ensures that the task is still at the head of pushable tasks list.
+Also removed some checks that are no longer needed with the addition of
+this new check.
+However, the new check of pushable tasks list only applies when
+find_lock_later_rq is called by push_dl_task. For the other caller i.e.
+dl_task_offline_migration, existing checks are used.
 
-Fixes: 8478a729c046 ("netfilter: ipset: fix region locking in hash types")
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Reviewed-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250408045021.3283624-1-harshit@nutanix.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_hash_gen.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/sched/deadline.c |   73 ++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 49 insertions(+), 24 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
-index 0bd6bf46f05f3..1f9ca5040982d 100644
---- a/net/netfilter/ipset/ip_set_hash_gen.h
-+++ b/net/netfilter/ipset/ip_set_hash_gen.h
-@@ -62,7 +62,7 @@ struct hbucket {
- 		: jhash_size((htable_bits) - HTABLE_REGION_BITS))
- #define ahash_sizeof_regions(htable_bits)		\
- 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
--#define ahash_region(n, htable_bits)		\
-+#define ahash_region(n)		\
- 	((n) / jhash_size(HTABLE_REGION_BITS))
- #define ahash_bucket_start(h,  htable_bits)	\
- 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
-@@ -689,7 +689,7 @@ mtype_resize(struct ip_set *set, bool retried)
- #endif
- 				key = HKEY(data, h->initval, htable_bits);
- 				m = __ipset_dereference(hbucket(t, key));
--				nr = ahash_region(key, htable_bits);
-+				nr = ahash_region(key);
- 				if (!m) {
- 					m = kzalloc(sizeof(*m) +
- 					    AHASH_INIT_SIZE * dsize,
-@@ -839,7 +839,7 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 	rcu_read_lock_bh();
- 	t = rcu_dereference_bh(h->table);
- 	key = HKEY(value, h->initval, t->htable_bits);
--	r = ahash_region(key, t->htable_bits);
-+	r = ahash_region(key);
- 	atomic_inc(&t->uref);
- 	elements = t->hregion[r].elements;
- 	maxelem = t->maxelem;
-@@ -1037,7 +1037,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 	rcu_read_lock_bh();
- 	t = rcu_dereference_bh(h->table);
- 	key = HKEY(value, h->initval, t->htable_bits);
--	r = ahash_region(key, t->htable_bits);
-+	r = ahash_region(key);
- 	atomic_inc(&t->uref);
- 	rcu_read_unlock_bh();
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2617,6 +2617,25 @@ static int find_later_rq(struct task_str
+ 	return -1;
+ }
  
--- 
-2.51.0
-
++static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
++{
++	struct task_struct *p;
++
++	if (!has_pushable_dl_tasks(rq))
++		return NULL;
++
++	p = __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
++
++	WARN_ON_ONCE(rq->cpu != task_cpu(p));
++	WARN_ON_ONCE(task_current(rq, p));
++	WARN_ON_ONCE(p->nr_cpus_allowed <= 1);
++
++	WARN_ON_ONCE(!task_on_rq_queued(p));
++	WARN_ON_ONCE(!dl_task(p));
++
++	return p;
++}
++
+ /* Locks the rq it finds */
+ static struct rq *find_lock_later_rq(struct task_struct *task, struct rq *rq)
+ {
+@@ -2644,12 +2663,37 @@ static struct rq *find_lock_later_rq(str
+ 
+ 		/* Retry if something changed. */
+ 		if (double_lock_balance(rq, later_rq)) {
+-			if (unlikely(task_rq(task) != rq ||
++			/*
++			 * double_lock_balance had to release rq->lock, in the
++			 * meantime, task may no longer be fit to be migrated.
++			 * Check the following to ensure that the task is
++			 * still suitable for migration:
++			 * 1. It is possible the task was scheduled,
++			 *    migrate_disabled was set and then got preempted,
++			 *    so we must check the task migration disable
++			 *    flag.
++			 * 2. The CPU picked is in the task's affinity.
++			 * 3. For throttled task (dl_task_offline_migration),
++			 *    check the following:
++			 *    - the task is not on the rq anymore (it was
++			 *      migrated)
++			 *    - the task is not on CPU anymore
++			 *    - the task is still a dl task
++			 *    - the task is not queued on the rq anymore
++			 * 4. For the non-throttled task (push_dl_task), the
++			 *    check to ensure that this task is still at the
++			 *    head of the pushable tasks list is enough.
++			 */
++			if (unlikely(is_migration_disabled(task) ||
+ 				     !cpumask_test_cpu(later_rq->cpu, &task->cpus_mask) ||
+-				     task_on_cpu(rq, task) ||
+-				     !dl_task(task) ||
+-				     is_migration_disabled(task) ||
+-				     !task_on_rq_queued(task))) {
++				     (task->dl.dl_throttled &&
++				      (task_rq(task) != rq ||
++				       task_on_cpu(rq, task) ||
++				       !dl_task(task) ||
++				       !task_on_rq_queued(task))) ||
++				     (!task->dl.dl_throttled &&
++				      task != pick_next_pushable_dl_task(rq)))) {
++
+ 				double_unlock_balance(rq, later_rq);
+ 				later_rq = NULL;
+ 				break;
+@@ -2672,25 +2716,6 @@ static struct rq *find_lock_later_rq(str
+ 	return later_rq;
+ }
+ 
+-static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
+-{
+-	struct task_struct *p;
+-
+-	if (!has_pushable_dl_tasks(rq))
+-		return NULL;
+-
+-	p = __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
+-
+-	WARN_ON_ONCE(rq->cpu != task_cpu(p));
+-	WARN_ON_ONCE(task_current(rq, p));
+-	WARN_ON_ONCE(p->nr_cpus_allowed <= 1);
+-
+-	WARN_ON_ONCE(!task_on_rq_queued(p));
+-	WARN_ON_ONCE(!dl_task(p));
+-
+-	return p;
+-}
+-
+ /*
+  * See if the non running -deadline tasks on this rq
+  * can be sent to some other CPU where they can preempt
 
 
 
