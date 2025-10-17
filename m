@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-186365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0554BE95ED
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:58:17 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C90BEA2EA
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 694B4189624D
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 14:57:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 30476585F4C
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15061337100;
-	Fri, 17 Oct 2025 14:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61224332909;
+	Fri, 17 Oct 2025 15:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n49vTJL3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGd2VemZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53E5288A2;
-	Fri, 17 Oct 2025 14:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD4F332914;
+	Fri, 17 Oct 2025 15:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713034; cv=none; b=J/WqKpL9Y6JvAMN/+q17A6A1Kq9R6qT9iu1Au6pD/ztQMq8t0+GMFBFrkyfBGhS747EAVb0I0iHgk+EOP9mgzUW3DakQxoHPDBMEh0oDlzJonMhOfaEQnaMZURwYzW/pCi2mwoxqKddx5CPduiBiHq1jGDUkbiUOwjxpiK6kqqg=
+	t=1760715171; cv=none; b=g8yFw3LJPrDCTkJSn4Xuu/NfKi9PN62C/UUjC9Uc9ATMoZGuFMTQ1hK3Axv9agaAfY5urGVRyZ9NKst/Lh4hTaWqixZ2hRlOhlQPifjaDErziHoNJ7GVS/s9vyvVr84vK+quCxFqf9HL3Quh+tZkIGQIg5sKtnqOK5rXIAfDrB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713034; c=relaxed/simple;
-	bh=7X5qrAesmXQLtmF02s3XxF9qu+XfeL6sV2Ke0VfknOg=;
+	s=arc-20240116; t=1760715171; c=relaxed/simple;
+	bh=bcUW84U/bK9ys2SDFyF+U4o2PopTMsr41ajvXEDgb9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dnJ8VUjsysZtzr3E9jevuA0CutNqQf0Ar08BDI9XVEesxx8HXVuv1X3s4KJt6eMTVA4mV19X1Dvr641FbX2/SZg6zSFy69a3cVRc1lQn9lRqZkYsAblSaWsWSDhJMl93RIlOIJ7NQTLp16HsJBjLLfl7xpqtolrr3c4Cl+27BME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n49vTJL3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0415C4CEFE;
-	Fri, 17 Oct 2025 14:57:13 +0000 (UTC)
+	 MIME-Version; b=dYolOb6vqpBfNDIRDHwl/A56j1NFXEdpNpD1CvEohyyhTkdwaQU2XWrQkFV3a/jpkNeWrzEOWyFnGhZbEqXjdeyVMxq0FGaDHLG/7XBVO/KXtZ7NYnA2zZhsez1ZaJYcu5PPIobO7oTGefJrMYP32PMQgbrPx28Mc1NT7te6jsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGd2VemZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E6CC4CEE7;
+	Fri, 17 Oct 2025 15:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713034;
-	bh=7X5qrAesmXQLtmF02s3XxF9qu+XfeL6sV2Ke0VfknOg=;
+	s=korg; t=1760715171;
+	bh=bcUW84U/bK9ys2SDFyF+U4o2PopTMsr41ajvXEDgb9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n49vTJL3hSd23LmDifkJNmz5WokyA0mfRC7qRN4SJbnDKF5UIYrK5w8hi5aMY9St0
-	 bp5LwDLbFAR/8URg5vm/VOZP7xmm/q6eSd/LvR8HOKFLOdVs0f/I5aNbDjbGQuWNiP
-	 cWybkn6QDwSBTni9gqKrq0vcssWAYgDbdMkUY9K8=
+	b=EGd2VemZoF0l8t3SKsDxKTFZhf0bZRtq8/XLXt5Ic42i9nmNX3XWxy4cVP4FUWY8B
+	 RdVWVNLWoTgieDMUtKtswzShtTZ7TPLVYkGfLh5nruWOgQQyTV1kHV9ZfoOK3QgJRO
+	 nIVRLNK7c3khh/3YyzQDAgidjBeY5X1eoLRaaFYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.ibm.com>,
-	Chun-Tse Shao <ctshao@google.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/168] perf test: Dont leak workload gopipe in PERF_RECORD_*
+Subject: [PATCH 6.17 121/371] crypto: essiv - Check ssize for decryption and in-place encryption
 Date: Fri, 17 Oct 2025 16:51:36 +0200
-Message-ID: <20251017145129.652229378@linuxfoundation.org>
+Message-ID: <20251017145206.312401153@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,204 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 48918cacefd226af44373e914e63304927c0e7dc ]
+[ Upstream commit 6bb73db6948c2de23e407fe1b7ef94bf02b7529f ]
 
-The test starts a workload and then opens events. If the events fail
-to open, for example because of perf_event_paranoid, the gopipe of the
-workload is leaked and the file descriptor leak check fails when the
-test exits. To avoid this cancel the workload when opening the events
-fails.
+Move the ssize check to the start in essiv_aead_crypt so that
+it's also checked for decryption and in-place encryption.
 
-Before:
-```
-$ perf test -vv 7
-  7: PERF_RECORD_* events & perf_sample fields:
- --- start ---
-test child forked, pid 1189568
-Using CPUID GenuineIntel-6-B7-1
- ------------------------------------------------------------
-perf_event_attr:
-  type                    	   0 (PERF_TYPE_HARDWARE)
-  config                  	   0xa00000000 (cpu_atom/PERF_COUNT_HW_CPU_CYCLES/)
-  disabled                	   1
- ------------------------------------------------------------
-sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8
-sys_perf_event_open failed, error -13
- ------------------------------------------------------------
-perf_event_attr:
-  type                             0 (PERF_TYPE_HARDWARE)
-  config                           0xa00000000 (cpu_atom/PERF_COUNT_HW_CPU_CYCLES/)
-  disabled                         1
-  exclude_kernel                   1
- ------------------------------------------------------------
-sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 3
- ------------------------------------------------------------
-perf_event_attr:
-  type                             0 (PERF_TYPE_HARDWARE)
-  config                           0x400000000 (cpu_core/PERF_COUNT_HW_CPU_CYCLES/)
-  disabled                         1
- ------------------------------------------------------------
-sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8
-sys_perf_event_open failed, error -13
- ------------------------------------------------------------
-perf_event_attr:
-  type                             0 (PERF_TYPE_HARDWARE)
-  config                           0x400000000 (cpu_core/PERF_COUNT_HW_CPU_CYCLES/)
-  disabled                         1
-  exclude_kernel                   1
- ------------------------------------------------------------
-sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 3
-Attempt to add: software/cpu-clock/
-..after resolving event: software/config=0/
-cpu-clock -> software/cpu-clock/
- ------------------------------------------------------------
-perf_event_attr:
-  type                             1 (PERF_TYPE_SOFTWARE)
-  size                             136
-  config                           0x9 (PERF_COUNT_SW_DUMMY)
-  sample_type                      IP|TID|TIME|CPU
-  read_format                      ID|LOST
-  disabled                         1
-  inherit                          1
-  mmap                             1
-  comm                             1
-  enable_on_exec                   1
-  task                             1
-  sample_id_all                    1
-  mmap2                            1
-  comm_exec                        1
-  ksymbol                          1
-  bpf_event                        1
-  { wakeup_events, wakeup_watermark } 1
- ------------------------------------------------------------
-sys_perf_event_open: pid 1189569  cpu 0  group_fd -1  flags 0x8
-sys_perf_event_open failed, error -13
-perf_evlist__open: Permission denied
- ---- end(-2) ----
-Leak of file descriptor 6 that opened: 'pipe:[14200347]'
- ---- unexpected signal (6) ----
-iFailed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-Failed to read build ID for //anon
-    #0 0x565358f6666e in child_test_sig_handler builtin-test.c:311
-    #1 0x7f29ce849df0 in __restore_rt libc_sigaction.c:0
-    #2 0x7f29ce89e95c in __pthread_kill_implementation pthread_kill.c:44
-    #3 0x7f29ce849cc2 in raise raise.c:27
-    #4 0x7f29ce8324ac in abort abort.c:81
-    #5 0x565358f662d4 in check_leaks builtin-test.c:226
-    #6 0x565358f6682e in run_test_child builtin-test.c:344
-    #7 0x565358ef7121 in start_command run-command.c:128
-    #8 0x565358f67273 in start_test builtin-test.c:545
-    #9 0x565358f6771d in __cmd_test builtin-test.c:647
-    #10 0x565358f682bd in cmd_test builtin-test.c:849
-    #11 0x565358ee5ded in run_builtin perf.c:349
-    #12 0x565358ee6085 in handle_internal_command perf.c:401
-    #13 0x565358ee61de in run_argv perf.c:448
-    #14 0x565358ee6527 in main perf.c:555
-    #15 0x7f29ce833ca8 in __libc_start_call_main libc_start_call_main.h:74
-    #16 0x7f29ce833d65 in __libc_start_main@@GLIBC_2.34 libc-start.c:128
-    #17 0x565358e391c1 in _start perf[851c1]
-  7: PERF_RECORD_* events & perf_sample fields                       : FAILED!
-```
-
-After:
-```
-$ perf test 7
-  7: PERF_RECORD_* events & perf_sample fields                       : Skip (permissions)
-```
-
-Fixes: 16d00fee703866c6 ("perf tests: Move test__PERF_RECORD into separate object")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.ibm.com>
-Cc: Chun-Tse Shao <ctshao@google.com>
-Cc: Howard Chu <howardchu95@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Fixes: be1eb7f78aa8 ("crypto: essiv - create wrapper template for ESSIV generation")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/perf-record.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ crypto/essiv.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/tools/perf/tests/perf-record.c b/tools/perf/tests/perf-record.c
-index 7aa946aa886de..c410ce87323b0 100644
---- a/tools/perf/tests/perf-record.c
-+++ b/tools/perf/tests/perf-record.c
-@@ -113,6 +113,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
- 	if (err < 0) {
- 		pr_debug("sched__get_first_possible_cpu: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
-+		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
- 	}
+diff --git a/crypto/essiv.c b/crypto/essiv.c
+index d003b78fcd855..a47a3eab69351 100644
+--- a/crypto/essiv.c
++++ b/crypto/essiv.c
+@@ -186,9 +186,14 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	const struct essiv_tfm_ctx *tctx = crypto_aead_ctx(tfm);
+ 	struct essiv_aead_request_ctx *rctx = aead_request_ctx(req);
+ 	struct aead_request *subreq = &rctx->aead_req;
++	int ivsize = crypto_aead_ivsize(tfm);
++	int ssize = req->assoclen - ivsize;
+ 	struct scatterlist *src = req->src;
+ 	int err;
  
-@@ -124,6 +125,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
- 	if (sched_setaffinity(evlist->workload.pid, cpu_mask_size, &cpu_mask) < 0) {
- 		pr_debug("sched_setaffinity: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
-+		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
- 	}
++	if (ssize < 0)
++		return -EINVAL;
++
+ 	crypto_cipher_encrypt_one(tctx->essiv_cipher, req->iv, req->iv);
  
-@@ -135,6 +137,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
- 	if (err < 0) {
- 		pr_debug("perf_evlist__open: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
-+		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
- 	}
+ 	/*
+@@ -198,19 +203,12 @@ static int essiv_aead_crypt(struct aead_request *req, bool enc)
+ 	 */
+ 	rctx->assoc = NULL;
+ 	if (req->src == req->dst || !enc) {
+-		scatterwalk_map_and_copy(req->iv, req->dst,
+-					 req->assoclen - crypto_aead_ivsize(tfm),
+-					 crypto_aead_ivsize(tfm), 1);
++		scatterwalk_map_and_copy(req->iv, req->dst, ssize, ivsize, 1);
+ 	} else {
+ 		u8 *iv = (u8 *)aead_request_ctx(req) + tctx->ivoffset;
+-		int ivsize = crypto_aead_ivsize(tfm);
+-		int ssize = req->assoclen - ivsize;
+ 		struct scatterlist *sg;
+ 		int nents;
  
-@@ -147,6 +150,7 @@ static int test__PERF_RECORD(struct test_suite *test __maybe_unused, int subtest
- 	if (err < 0) {
- 		pr_debug("evlist__mmap: %s\n",
- 			 str_error_r(errno, sbuf, sizeof(sbuf)));
-+		evlist__cancel_workload(evlist);
- 		goto out_delete_evlist;
- 	}
- 
+-		if (ssize < 0)
+-			return -EINVAL;
+-
+ 		nents = sg_nents_for_len(req->src, ssize);
+ 		if (nents < 0)
+ 			return -EINVAL;
 -- 
 2.51.0
 
