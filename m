@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-187442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD803BEA479
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:54:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CB0BE9653
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 981555A127B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:48:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3F8F18847C2
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691921946C8;
-	Fri, 17 Oct 2025 15:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AED422A7E4;
+	Fri, 17 Oct 2025 14:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrpLLNNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkGYZV+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AD9330B3A;
-	Fri, 17 Oct 2025 15:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4427D337100;
+	Fri, 17 Oct 2025 14:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716084; cv=none; b=nuQskOs4hADGavJtw0kwgDk5yI/SrZcx2K7UK7y3KLlbgmsbliuwIR+TMlqSJn+d/SPM4aQtZ1JcXr8gsAIom7Ka3tDeYtmGGFgyE0VsBLY/IonJmTQLr8VRj/d6vbpTHUTpakXe8TpiFob2yxsLNepdUaOSU2SlLvUEwgg8AT4=
+	t=1760713194; cv=none; b=Lsdn81X6tw4vvW4cB8jvj5HlZnWwQJxsT1nL6C8e06Abv2h8GBWVbGeuZcmmNTnGSfN/+jXNsCzsGQ0uXTrVY4y/HME7accbEtZitOviS3lQ6lgmYjCdz0UTSawnQeUbZ+CKCdWWLJXvSKnEu4WQjQ30EBjsEAtX6Zkqh/T0Fdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716084; c=relaxed/simple;
-	bh=m1VWT1ad9ymHjHjEYoGfn75SID5LYEz/aXr3pj3pHm8=;
+	s=arc-20240116; t=1760713194; c=relaxed/simple;
+	bh=j9CcaA0Hk18LU1W8Xo4TtC+xW9UHwPKa0DhtS4iSnys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMtn4NBrcSBTzfry0bnXabG2WPfpn0kV8QNosq0jbsRK9g4Id/TsUD6cDBBrnP9aR+kENYwwTaEAUxusfbCpwoHPcllTtzIqCRJ8ThALboHz0T9Z7yrarM37yVjzCStumZfCX4w5WIUZbHKmApA1gLmFdYamuPxKhyH8tP4digQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrpLLNNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCC0C4CEE7;
-	Fri, 17 Oct 2025 15:48:03 +0000 (UTC)
+	 MIME-Version; b=ZhIEtBtsBtc0KVZ1IyBdICLlW8+0Lhyg56KNmSmUw89Ui9+Tp1zl+uA/e/DXvAimhfXP7Tg1bNrzzWVPYcMV7UWTQ9pPnk1WJpjRbcYzi0SuzaOXsw25/MUCZwrPF0CxgEAGIud0S4RcimdNQ9ymNIytokgpS1AfYQGsNakxF0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkGYZV+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7478C4CEF9;
+	Fri, 17 Oct 2025 14:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716084;
-	bh=m1VWT1ad9ymHjHjEYoGfn75SID5LYEz/aXr3pj3pHm8=;
+	s=korg; t=1760713194;
+	bh=j9CcaA0Hk18LU1W8Xo4TtC+xW9UHwPKa0DhtS4iSnys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mrpLLNNWdccveljb6JJGqwaxpRyiq24PDVRikgxsi1bgJd8DASYygWF1dRKBKus4F
-	 7r+Pplx6/+2WDHXjg9axuQqeWlyfEuHWKUWSGaEQXYhpEx+yAuvQlDMQnE2L+1GO45
-	 oJysLywncMvdpKpukLdIfo+yMi4XajN++yfpGvzA=
+	b=ZkGYZV+nLA10+7vqKcyVJ8D4sj4qRTqYZp1I3D7WfkgaEiOmddr0VZqt47qyNHzwR
+	 Edyn49CBB1mpItdwGE2E0grGvCWEs734GsRCbcsHHUPPqNHbBDQ3gKiJ7qHrAmXBzZ
+	 jgA31nJfRqPF/JMiTOtBKfOYRDO3sLx3Fxm/rJ6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 066/276] misc: genwqe: Fix incorrect cmd field being reported in error
+	Sean Anderson <sean.anderson@linux.dev>,
+	"OGriofa, Conall" <conall.ogriofa@amd.com>,
+	"Erim, Salih" <Salih.Erim@amd.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 080/168] iio: xilinx-ams: Fix AMS_ALARM_THR_DIRECT_MASK
 Date: Fri, 17 Oct 2025 16:52:39 +0200
-Message-ID: <20251017145144.898320394@linuxfoundation.org>
+Message-ID: <20251017145131.974657490@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+References: <20251017145129.000176255@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 6b26053819dccc664120e07c56f107fb6f72f3fa ]
+commit 1315cc2dbd5034f566e20ddce4d675cb9e6d4ddd upstream.
 
-There is a dev_err message that is reporting the value of
-cmd->asiv_length when it should be reporting cmd->asv_length
-instead. Fix this.
+AMS_ALARM_THR_DIRECT_MASK should be bit 0, not bit 1. This would cause
+hysteresis to be enabled with a lower threshold of -28C. The temperature
+alarm would never deassert even if the temperature dropped below the
+upper threshold.
 
-Fixes: eaf4722d4645 ("GenWQE Character device and DDCB queue")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://lore.kernel.org/r/20250902113712.2624743-1-colin.i.king@gmail.com
+Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: O'Griofa, Conall <conall.ogriofa@amd.com>
+Tested-by: Erim, Salih <Salih.Erim@amd.com>
+Acked-by: Erim, Salih <Salih.Erim@amd.com>
+Link: https://patch.msgid.link/20250715003058.2035656-1-sean.anderson@linux.dev
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/genwqe/card_ddcb.c | 2 +-
+ drivers/iio/adc/xilinx-ams.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/genwqe/card_ddcb.c b/drivers/misc/genwqe/card_ddcb.c
-index 500b1feaf1f6f..fd7d5cd50d396 100644
---- a/drivers/misc/genwqe/card_ddcb.c
-+++ b/drivers/misc/genwqe/card_ddcb.c
-@@ -923,7 +923,7 @@ int __genwqe_execute_raw_ddcb(struct genwqe_dev *cd,
- 	}
- 	if (cmd->asv_length > DDCB_ASV_LENGTH) {
- 		dev_err(&pci_dev->dev, "[%s] err: wrong asv_length of %d\n",
--			__func__, cmd->asiv_length);
-+			__func__, cmd->asv_length);
- 		return -EINVAL;
- 	}
- 	rc = __genwqe_enqueue_ddcb(cd, req, f_flags);
--- 
-2.51.0
-
+--- a/drivers/iio/adc/xilinx-ams.c
++++ b/drivers/iio/adc/xilinx-ams.c
+@@ -118,7 +118,7 @@
+ #define AMS_ALARM_THRESHOLD_OFF_10	0x10
+ #define AMS_ALARM_THRESHOLD_OFF_20	0x20
+ 
+-#define AMS_ALARM_THR_DIRECT_MASK	BIT(1)
++#define AMS_ALARM_THR_DIRECT_MASK	BIT(0)
+ #define AMS_ALARM_THR_MIN		0x0000
+ #define AMS_ALARM_THR_MAX		(BIT(16) - 1)
+ 
 
 
 
