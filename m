@@ -1,145 +1,98 @@
-Return-Path: <stable+bounces-187673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B208BBEAF7B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 19:04:16 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67FB2BEAE6D
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5C6E744CDA
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:53:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 14DFF35EA70
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 16:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFA52EB866;
-	Fri, 17 Oct 2025 16:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7522EB5C8;
+	Fri, 17 Oct 2025 16:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C1Bg3h5u"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="f99vrMjs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38562E06D2;
-	Fri, 17 Oct 2025 16:53:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310CF2EB5D4
+	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 16:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760720031; cv=none; b=dwHTEx7vu+oitMEnCu0M8qaE/WuEJAn+wIRgd4HKBbpGprDFYOK08UGcWgiQT6YLSYizcLm/yqqiDwcH6t5rfKkFu3NGI36wgqUTPC0o7rQVFmf1kOHn5bYGWMCYcF4uTmZaRwSXo87NZ2PJLzobSkDk9Th2/2+8LcEEJbaUUJE=
+	t=1760720024; cv=none; b=o/bCPxqpKGmPcvODUgI1x2mkx36yORIWCTuZ8NeBW+wJlVOJ8nxOkBdJ9vVyZCwQqxF/WS3ye9Ib8x/LWw1Oa2fGRA0FO6boJneUoSJvttG9z+VFDxTnpGaEgYkY+mhS+RWuD+0PJOJj+OwRMRUwagqGNgRH5Ogcq8qWXsllFZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760720031; c=relaxed/simple;
-	bh=56kXImUOjI7S0JtfattLR6VoUm8jYTpY84IFUYVfYAo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Lr5pvU0n4DP63eHhd40xA5V1uoy+cxFhRxnpagraA7Cv4mjeYi2tyejBXA+lrePRuvqeRDVOlkAuH9JmS0b9WaQSdwe9XlTKI+4cxoW0ykf1d8zgwYI0CQuVA7N9RtcnkZppsi64anDZLmlF4RDml3Ps/hrwTGkoBuHlH7SsPFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C1Bg3h5u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A99C4CEFE;
-	Fri, 17 Oct 2025 16:53:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760720031;
-	bh=56kXImUOjI7S0JtfattLR6VoUm8jYTpY84IFUYVfYAo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=C1Bg3h5ueGjboU/TprejgVFM0X5oYVxaiYV/tg6jdLnIgNF4Ll/pSmvnEJ5ly+ZGE
-	 3l640KjuYLptQ7+v3YIte0WQxs/sJm1tq7LPfiLq/038dD6lCX0CMcbkVeXMwUGa5M
-	 RRdBdNfS3xzDs5zQV2/VpK3bSJQxF3zo9z6FIn8rWH/reR17jhXcon2SQj6c6Hs6oy
-	 w0ZdjZfWjHRwt5uyIMRe+d5w1dfdoWZD46u38hI2jvZI2EXfkD+BGWTcSSjN4fiujP
-	 EIt0x26lukeeYN2JppehofcFOGHEn0QyzGY2y9UHUoS1k5WMr4nLBYUCDVApA8AB2l
-	 KF0HKelxiJnbA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+	s=arc-20240116; t=1760720024; c=relaxed/simple;
+	bh=lhLaTP4i6wTM8dhctfYFi0F+wRr7OtCzWVNbtHn/mYI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nRHKmcxzAlcf8Pym6oH3aWbWBxTiRuwWoWlPqKlqIx4yzgcjOvxteAcQ5MirXCj87uxTiDj2JTTaTt0E8fBWLo+MsBGvm2cl1pIcPdxMMdftzRYn++8ZVcy9wR2YKFpZ0IqIWbKX3rPJPxz5M8hJQ+tzvjF6dliOFan/0L3nrLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=f99vrMjs; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 20E0040E01AB;
+	Fri, 17 Oct 2025 16:53:41 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id zDbjsLdi0gWn; Fri, 17 Oct 2025 16:53:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1760720017; bh=Bk8lFwaQKYdpxzkysfTwMCZpN29bMISfMdKWT0QHnAo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f99vrMjsSQDzcDmQBTNQHiV0SRJ7RGbqNYUlYMnYgkcnXOmERXQPqeG+i6jHlZR7C
+	 5Yi4ipH25MPMVtt69NbJdpmZ6nubP3rQdwDYsbuy791QZgS4R/fTbq0/6cHIYK6SOX
+	 5leHh8BZ7bth3mld3mmvKmv/mSoPB+mea4nNZP8FyFdmstkKKELex58roeYzljEvWD
+	 envMMTFaY7eJ5G6c8vGQH1P2tdREWCd8YACvdbIsguHLLwhczsJ46+qj2e0nvdlEkV
+	 2rgl/2+Z+zVhZWrJtTQC91qBPnTIyRrMvmt0qR1+qgx1wuEhO6CMz2p6X1Vo5mpq4f
+	 R/+NaoYCDXjuHiHrI5Bj6Wzph+PkbwVLd2tYYmJmnnXRCuCjQ1H6A7Jxf/ltHa9E2s
+	 6kSU+Gvzii0yUoc+fp/+GBWdsJ37ojCcv4gzXncwV87YQVxSKtkYHa7DmURvZ+fqBN
+	 DyRj0BqoCQaZEXhZuN5VOhFeUJka1zEoECg/wuHrQ08PNjZAgDIcFJdKEEQzZSkaiu
+	 1AK+WJ1aPSTbsVbYsw823kzLhLfuX39PwkhsoS+7xnhXd2R3+/GfBanTlZN9jP7e1o
+	 1NoekcCvtw12d+kUhCtQ9Kx74Krzw1uOd2mLIR+vaX4slha0/SdjnICpOxOf3l6bKi
+	 JBgzvRb2xb3ZN3Y/2YtVClhc=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 2C6A340E01F9;
+	Fri, 17 Oct 2025 16:53:31 +0000 (UTC)
 Date: Fri, 17 Oct 2025 18:53:25 +0200
-Subject: [PATCH 5.10.y 1/3] x86/boot: Compile boot code with -std=gnu11 too
+From: Borislav Petkov <bp@alien8.de>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	patches@lists.linux.dev, Nikolay Borisov <nik.borisov@suse.com>
+Subject: Re: [PATCH 6.12 238/277] KVM: x86: Advertise SRSO_USER_KERNEL_NO to
+ userspace
+Message-ID: <20251017165325.GBaPJ0hXW917YN8BX0@fat_crate.local>
+References: <20251017145147.138822285@linuxfoundation.org>
+ <20251017145155.829311022@linuxfoundation.org>
+ <ba4f2329-8e29-4817-993a-895b8aee4fb8@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251017-v5-10-gcc-15-v1-1-cdbbfe1a2100@kernel.org>
-References: <20251017-v5-10-gcc-15-v1-0-cdbbfe1a2100@kernel.org>
-In-Reply-To: <20251017-v5-10-gcc-15-v1-0-cdbbfe1a2100@kernel.org>
-To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Sasha Levin <sashal@kernel.org>
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Alexey Dobriyan <adobriyan@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
- "H. Peter Anvin (Intel)" <hpa@zytor.com>, 
- Nathan Chancellor <nathan@kernel.org>, 
- Dave Hansen <dave.hansen@linux.intel.com>, Ard Biesheuvel <ardb@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3055; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=Vm/w1YyWqDcVlHEO1pDghuv63FD1ynM2aKxxlwUTgv0=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDI+lUy7b7z+ZsLLphDGxPjl0w0UHT7tb7biZT8uatT3b
- M0zdku+jlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIn4ZjD893v64zhX9mcFm3bW
- fz0Pnkuuf9SZwK7fMCfXL/OasfNXY0aGfzvjHp3Zzpu05H3qR+8/J3XFP6y482nVS99PXgLHdKN
- zuQE=
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ba4f2329-8e29-4817-993a-895b8aee4fb8@oracle.com>
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+On Fri, Oct 17, 2025 at 10:11:36PM +0530, Harshit Mogalapalli wrote:
+> Also, I haven't yet got ACK from Borislav, so should we defer ?
 
-commit b3bee1e7c3f2b1b77182302c7b2131c804175870 upstream.
+I assume you're in much better position than me to verify those bits are
+actually exported and visible in the guest. So you don't really need my ACK.
 
-Use -std=gnu11 for consistency with main kernel code.
-
-It doesn't seem to change anything in vmlinux.
-
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Link: https://lore.kernel.org/r/2058761e-12a4-4b2f-9690-3c3c1c9902a5@p183
-[ This kernel version doesn't build with GCC 15:
-
-    In file included from include/uapi/linux/posix_types.h:5,
-                     from include/uapi/linux/types.h:14,
-                     from include/linux/types.h:6,
-                     from arch/x86/realmode/rm/wakeup.h:11,
-                     from arch/x86/realmode/rm/wakemain.c:2:
-    include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-       11 |         false   = 0,
-          |         ^~~~~
-    include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
-    include/linux/types.h:30:33: error: 'bool' cannot be defined via 'typedef'
-       30 | typedef _Bool                   bool;
-          |                                 ^~~~
-    include/linux/types.h:30:33: note: 'bool' is a keyword with '-std=c23' onwards
-    include/linux/types.h:30:1: warning: useless type name in empty declaration
-       30 | typedef _Bool                   bool;
-          | ^~~~~~~
-
-  The fix is similar to commit ee2ab467bddf ("x86/boot: Use '-std=gnu11'
-  to fix build with GCC 15") which has been backported to this kernel.
-
-  Note: In < 5.18 version, -std=gnu89 is used instead of -std=gnu11, see
-  commit e8c07082a810 ("Kbuild: move to -std=gnu11"). I suggest not to
-  modify that in this commit here as all the other similar fixes to
-  support GCC 15 set -std=gnu11. This can be done in a dedicated commit
-  if needed.
-  There was a conflict, because commit 2838307b019d ("x86/build: Remove
-  -m16 workaround for unsupported versions of GCC") is not in this
-  version and change code in the context. -std=gnu11 can still be added
-  at the same place. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 8b9fa777f513..f584d07095f1 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -31,7 +31,7 @@ endif
- CODE16GCC_CFLAGS := -m32 -Wa,$(srctree)/arch/x86/boot/code16gcc.h
- M16_CFLAGS	 := $(call cc-option, -m16, $(CODE16GCC_CFLAGS))
- 
--REALMODE_CFLAGS	:= $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
-+REALMODE_CFLAGS	:= -std=gnu11 $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
- 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
- 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
- 		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
+Thx.
 
 -- 
-2.51.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
