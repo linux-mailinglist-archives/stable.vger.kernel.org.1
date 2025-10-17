@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-187271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED664BEA3F2
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:52:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FB8BE9D38
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:27:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9A549453F6
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58715189F1C0
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BC23328E9;
-	Fri, 17 Oct 2025 15:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404D432C938;
+	Fri, 17 Oct 2025 15:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fajYiVyk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVzmClor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9859330B11;
-	Fri, 17 Oct 2025 15:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02C03BB5A;
+	Fri, 17 Oct 2025 15:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715603; cv=none; b=I1uXr/LzhpVUeS4RhjM8zrhVMxcyf/Q+Rm5RjynysuutV1Mr00jUgOaC5OMWfaoD8lCE6IKRaFL0CIckn4i0E9hk2ZuC2vfrQygF/3iAA/cjvIwijLFr7I8P2bN5eieRf7lyHfcbt5zAAcBrtJUSof/97/UdIH4PKFIdAEUvMYA=
+	t=1760714699; cv=none; b=jqHiH6sbwNLRbJHdrueYaKng2ltRFi5t73iZeqtWLxscgxiQ+6ueFm/V2iNQkpT/Qhil9ck+paRi8EHtEltEtHAPClClKcnSobYfJTmPGDT8nsGJpjo1cNywM74nZDb2bNBVkO4Z77oY5OGPS8PdOj2qjDKYM/MHStXj9W2J5o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715603; c=relaxed/simple;
-	bh=X88paqly145GE6k6iCgOIzcFqQC1osCuCDSsjFt4Mhc=;
+	s=arc-20240116; t=1760714699; c=relaxed/simple;
+	bh=GsBUgHnkuCNrat/Tkldm49+WSIp/a5vFWSGNz/v+2sE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPkbT1Hd+tWBFmHpcrY7plQqxASK5ISrxla/YyHv7bZ5n7YaAgmSNc79rrWLh4I7JCi1uysYV6/QrQX1U1gk6PgA1pheFg83GW/7h7MB9HXZk2XTHRZ4dMMCmBSwOEnnSy5ybqFJGye0lIprmUZIWd5TQSBNGoteMbrznXOsct0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fajYiVyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A93C4CEE7;
-	Fri, 17 Oct 2025 15:40:02 +0000 (UTC)
+	 MIME-Version; b=e4hqIWLZcpZzg88/ckdRM2cDbCRehgP20H99Lh9QLfp8iOlXOFcGWHSi0CFR0qJryslSVg4CgurZstwQaSBQCcrSWhHbSzNkNe8v6MYmwb8YP+zmgXccjYObbTy+YYGmJTn/ZPzdm9iZSYLw6rKbgFsyJ98CiNo+fXcbwLyKMGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVzmClor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB8DC4CEE7;
+	Fri, 17 Oct 2025 15:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715602;
-	bh=X88paqly145GE6k6iCgOIzcFqQC1osCuCDSsjFt4Mhc=;
+	s=korg; t=1760714698;
+	bh=GsBUgHnkuCNrat/Tkldm49+WSIp/a5vFWSGNz/v+2sE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fajYiVykv3dddYrboKMxWcLTJghJTBo9gCtS4o9UDGO1IJq6Okf6+dSMKzYyvp5jW
-	 1Ln2MfnmIyys4BCJrsIAUl3wZdMrNdnMi9w1qA5tiignae2hDXIhQ9X/5K2h/TEzD7
-	 3bkMVllF4jdlSYA90dr/VF92VBblyxTmC1Q2XLMA=
+	b=PVzmClor/Doas4x9OlOSN02BAHiB7PJDA+j4pgaRtkrex/pX3k60AIADe677mBIPh
+	 5akIQBgE3wUYUeS/Rw3jUBvnqcIY8kWlL0fYmE133gsHm+pcEZG4UxQunqssuPwehe
+	 d/N7FUwvcDvwnlYs66SXPuzpeFT75qiekvZA81m8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Liang <shaw.leon@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.17 240/371] padata: Reset next CPU when reorder sequence wraps around
+	SeongJae Park <sj@kernel.org>,
+	Xinyu Zheng <zhengxinyu6@huawei.com>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 208/277] mm/damon/vaddr: do not repeat pte_offset_map_lock() until success
 Date: Fri, 17 Oct 2025 16:53:35 +0200
-Message-ID: <20251017145210.762675574@linuxfoundation.org>
+Message-ID: <20251017145154.721105472@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiao Liang <shaw.leon@gmail.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 501302d5cee0d8e8ec2c4a5919c37e0df9abc99b upstream.
+commit b93af2cc8e036754c0d9970d9ddc47f43cc94b9f upstream.
 
-When seq_nr wraps around, the next reorder job with seq 0 is hashed to
-the first CPU in padata_do_serial(). Correspondingly, need reset pd->cpu
-to the first one when pd->processed wraps around. Otherwise, if the
-number of used CPUs is not a power of 2, padata_find_next() will be
-checking a wrong list, hence deadlock.
+DAMON's virtual address space operation set implementation (vaddr) calls
+pte_offset_map_lock() inside the page table walk callback function.  This
+is for reading and writing page table accessed bits.  If
+pte_offset_map_lock() fails, it retries by returning the page table walk
+callback function with ACTION_AGAIN.
 
-Fixes: 6fc4dbcf0276 ("padata: Replace delayed timer with immediate workqueue in padata_reorder")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+pte_offset_map_lock() can continuously fail if the target is a pmd
+migration entry, though.  Hence it could cause an infinite page table walk
+if the migration cannot be done until the page table walk is finished.
+This indeed caused a soft lockup when CPU hotplugging and DAMON were
+running in parallel.
+
+Avoid the infinite loop by simply not retrying the page table walk.  DAMON
+is promising only a best-effort accuracy, so missing access to such pages
+is no problem.
+
+Link: https://lkml.kernel.org/r/20250930004410.55228-1-sj@kernel.org
+Fixes: 7780d04046a2 ("mm/pagewalkers: ACTION_AGAIN if pte_offset_map_lock() fails")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: Xinyu Zheng <zhengxinyu6@huawei.com>
+Closes: https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
+Acked-by: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>	[6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/padata.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ mm/damon/vaddr.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -291,8 +291,12 @@ static void padata_reorder(struct padata
- 		struct padata_serial_queue *squeue;
- 		int cb_cpu;
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -324,10 +324,8 @@ static int damon_mkold_pmd_entry(pmd_t *
+ 	}
  
--		cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu);
- 		processed++;
-+		/* When sequence wraps around, reset to the first CPU. */
-+		if (unlikely(processed == 0))
-+			cpu = cpumask_first(pd->cpumask.pcpu);
-+		else
-+			cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu);
+ 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+-	if (!pte) {
+-		walk->action = ACTION_AGAIN;
++	if (!pte)
+ 		return 0;
+-	}
+ 	if (!pte_present(ptep_get(pte)))
+ 		goto out;
+ 	damon_ptep_mkold(pte, walk->vma, addr);
+@@ -479,10 +477,8 @@ regular_page:
+ #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
  
- 		cb_cpu = padata->cb_cpu;
- 		squeue = per_cpu_ptr(pd->squeue, cb_cpu);
+ 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+-	if (!pte) {
+-		walk->action = ACTION_AGAIN;
++	if (!pte)
+ 		return 0;
+-	}
+ 	ptent = ptep_get(pte);
+ 	if (!pte_present(ptent))
+ 		goto out;
 
 
 
