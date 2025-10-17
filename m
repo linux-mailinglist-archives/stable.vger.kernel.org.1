@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-186594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3766BE985C
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:10:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F346BE9F66
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:36:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B962B1888EC1
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:09:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 69ACC585DB8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C08A3328E6;
-	Fri, 17 Oct 2025 15:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E116E332909;
+	Fri, 17 Oct 2025 15:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0g7Y7ON"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RztcfTlj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8B62F12DC;
-	Fri, 17 Oct 2025 15:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996C6332901;
+	Fri, 17 Oct 2025 15:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713686; cv=none; b=HHc5baJqvvET23t7VHhMEJylf3bew2MkW+frjIM/oyZMSsM6bO79okSUpYnu7pzcPUFdgbOTCUuN/B/SsfKrUhqvHfbG37puSBkf7VAV4Am9wh41z9BkO81YOa/HQ3oEmOrQSSJ+3ctvtC2PARLz4oMVNv1UGpS4tOHJbIYgpes=
+	t=1760714415; cv=none; b=lpfPyg8pForMWXSlKQ9R8bldFyJkaAhCN30f1b7zSYzeamB9M7wGXtCbeKIf6j2HiE4gCI2VnbNYQrONsE3A8/mrxoUWoKAuwMbMyOdokD7KINLo2Rn1xmOhkiDIwg0YTv+B1e6OVrkqUoh4NanYfmE9NKtZG+/uPOT9ALkGvQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713686; c=relaxed/simple;
-	bh=ffG2V3IA8UoUQiiB3ZJJsfWGNOHOD/V92sAe2ST+eNw=;
+	s=arc-20240116; t=1760714415; c=relaxed/simple;
+	bh=bC6VSP9KSwHzrvHhg7M9Zvw0ET0xMm+oWz8Ya+mtvU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLNQgbnKeT0ZeNLF9l9LgBm/u4ktpL1v8XXaVaioqn/yeFOYq8XhIctw+ab08r5uanguN/4tHRmooJqSRvgRYTSKYyU6ObbndsNzYyf3iI/CXJZ22xXHlhGKWGNC7O2xpkn9KYuX6Jz6u7AGXJ2FTfuGPR9bB+j0hfdMSUdsxZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0g7Y7ON; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08732C4CEE7;
-	Fri, 17 Oct 2025 15:08:03 +0000 (UTC)
+	 MIME-Version; b=Z86aN2eTnj4U/wqfHZq1JvmxZ7F/VtIbFxpiaYXCR5onBrlNkBHoMbTTYQrW3Fs+aT80TZJyTyTFItYWch9lP6b+jAKL9JuudvRzqUo2m0+7MyK1ElCOA9tIOffbOa95Iu6ptdHUesWgp3vPSEcndtTjgtcMGPxMPLMQInJktF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RztcfTlj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EA4C4CEE7;
+	Fri, 17 Oct 2025 15:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713684;
-	bh=ffG2V3IA8UoUQiiB3ZJJsfWGNOHOD/V92sAe2ST+eNw=;
+	s=korg; t=1760714415;
+	bh=bC6VSP9KSwHzrvHhg7M9Zvw0ET0xMm+oWz8Ya+mtvU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0g7Y7ONIrWncl5427b78T+eS0SlSYc33W1e6/8M+Af9S6PUNHx7h1Q8ksceI3fjv
-	 MSpaZbFZ5MZD3ElvOyf9/j6JpFDZBzBqVDc6hvKyWYK46BuqtfyXvWMnHjOtqhB/jv
-	 HD7KPK9aMSn++lB93fr+jKUlDZbrGSvvYri6Kbn4=
+	b=RztcfTljji/yR6KslvnZBQsHts7sYvuYaxfbsy2ie93Hvbn7VAxmbBGJYGLRzETrc
+	 54PPcQcHJMzjv7ItjT74Nfi710r1YMRyagVfZygaArCml3r+ehjhJ8/9ruxavlEKB5
+	 PLsQGtFxd2ki7+JJsJO1uGJe0G8a1FDXLsSzEyK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georg Pfuetzenreuter <georg.pfuetzenreuter@suse.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/201] netfilter: nft_objref: validate objref and objrefmap expressions
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 104/277] media: cx18: Add missing check after DMA map
 Date: Fri, 17 Oct 2025 16:51:51 +0200
-Message-ID: <20251017145136.583903050@linuxfoundation.org>
+Message-ID: <20251017145150.928044298@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit f359b809d54c6e3dd1d039b97e0b68390b0e53e4 ]
+commit 23b53639a793477326fd57ed103823a8ab63084f upstream.
 
-Referencing a synproxy stateful object from OUTPUT hook causes kernel
-crash due to infinite recursive calls:
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, dealloc buffers, and return.
 
-BUG: TASK stack guard page was hit at 000000008bda5b8c (stack is 000000003ab1c4a5..00000000494d8b12)
-[...]
-Call Trace:
- __find_rr_leaf+0x99/0x230
- fib6_table_lookup+0x13b/0x2d0
- ip6_pol_route+0xa4/0x400
- fib6_rule_lookup+0x156/0x240
- ip6_route_output_flags+0xc6/0x150
- __nf_ip6_route+0x23/0x50
- synproxy_send_tcp_ipv6+0x106/0x200
- synproxy_send_client_synack_ipv6+0x1aa/0x1f0
- nft_synproxy_do_eval+0x263/0x310
- nft_do_chain+0x5a8/0x5f0 [nf_tables
- nft_do_chain_inet+0x98/0x110
- nf_hook_slow+0x43/0xc0
- __ip6_local_out+0xf0/0x170
- ip6_local_out+0x17/0x70
- synproxy_send_tcp_ipv6+0x1a2/0x200
- synproxy_send_client_synack_ipv6+0x1aa/0x1f0
-[...]
-
-Implement objref and objrefmap expression validate functions.
-
-Currently, only NFT_OBJECT_SYNPROXY object type requires validation.
-This will also handle a jump to a chain using a synproxy object from the
-OUTPUT hook.
-
-Now when trying to reference a synproxy object in the OUTPUT hook, nft
-will produce the following error:
-
-synproxy_crash.nft: Error: Could not process rule: Operation not supported
-  synproxy name mysynproxy
-  ^^^^^^^^^^^^^^^^^^^^^^^^
-
-Fixes: ee394f96ad75 ("netfilter: nft_synproxy: add synproxy stateful object support")
-Reported-by: Georg Pfuetzenreuter <georg.pfuetzenreuter@suse.com>
-Closes: https://bugzilla.suse.com/1250237
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c1e45d17b66 ("V4L/DVB (7786): cx18: new driver for the Conexant CX23418 MPEG encoder chip")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_objref.c | 39 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/media/pci/cx18/cx18-queue.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nft_objref.c b/net/netfilter/nft_objref.c
-index 509011b1ef597..08a27433e2f5f 100644
---- a/net/netfilter/nft_objref.c
-+++ b/net/netfilter/nft_objref.c
-@@ -22,6 +22,35 @@ void nft_objref_eval(const struct nft_expr *expr,
- 	obj->ops->eval(obj, regs, pkt);
- }
+--- a/drivers/media/pci/cx18/cx18-queue.c
++++ b/drivers/media/pci/cx18/cx18-queue.c
+@@ -379,15 +379,22 @@ int cx18_stream_alloc(struct cx18_stream
+ 			break;
+ 		}
  
-+static int nft_objref_validate_obj_type(const struct nft_ctx *ctx, u32 type)
-+{
-+	unsigned int hooks;
++		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
++						 buf->buf, s->buf_size,
++						 s->dma);
++		if (dma_mapping_error(&s->cx->pci_dev->dev, buf->dma_handle)) {
++			kfree(buf->buf);
++			kfree(mdl);
++			kfree(buf);
++			break;
++		}
 +
-+	switch (type) {
-+	case NFT_OBJECT_SYNPROXY:
-+		if (ctx->family != NFPROTO_IPV4 &&
-+		    ctx->family != NFPROTO_IPV6 &&
-+		    ctx->family != NFPROTO_INET)
-+			return -EOPNOTSUPP;
-+
-+		hooks = (1 << NF_INET_LOCAL_IN) | (1 << NF_INET_FORWARD);
-+
-+		return nft_chain_validate_hooks(ctx->chain, hooks);
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static int nft_objref_validate(const struct nft_ctx *ctx,
-+			       const struct nft_expr *expr)
-+{
-+	struct nft_object *obj = nft_objref_priv(expr);
-+
-+	return nft_objref_validate_obj_type(ctx, obj->ops->type->type);
-+}
-+
- static int nft_objref_init(const struct nft_ctx *ctx,
- 			   const struct nft_expr *expr,
- 			   const struct nlattr * const tb[])
-@@ -93,6 +122,7 @@ static const struct nft_expr_ops nft_objref_ops = {
- 	.activate	= nft_objref_activate,
- 	.deactivate	= nft_objref_deactivate,
- 	.dump		= nft_objref_dump,
-+	.validate	= nft_objref_validate,
- 	.reduce		= NFT_REDUCE_READONLY,
- };
+ 		INIT_LIST_HEAD(&mdl->list);
+ 		INIT_LIST_HEAD(&mdl->buf_list);
+ 		mdl->id = s->mdl_base_idx; /* a somewhat safe value */
+ 		cx18_enqueue(s, mdl, &s->q_idle);
  
-@@ -198,6 +228,14 @@ static void nft_objref_map_destroy(const struct nft_ctx *ctx,
- 	nf_tables_destroy_set(ctx, priv->set);
- }
- 
-+static int nft_objref_map_validate(const struct nft_ctx *ctx,
-+				   const struct nft_expr *expr)
-+{
-+	const struct nft_objref_map *priv = nft_expr_priv(expr);
-+
-+	return nft_objref_validate_obj_type(ctx, priv->set->objtype);
-+}
-+
- static const struct nft_expr_ops nft_objref_map_ops = {
- 	.type		= &nft_objref_type,
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_objref_map)),
-@@ -207,6 +245,7 @@ static const struct nft_expr_ops nft_objref_map_ops = {
- 	.deactivate	= nft_objref_map_deactivate,
- 	.destroy	= nft_objref_map_destroy,
- 	.dump		= nft_objref_map_dump,
-+	.validate	= nft_objref_map_validate,
- 	.reduce		= NFT_REDUCE_READONLY,
- };
- 
--- 
-2.51.0
-
+ 		INIT_LIST_HEAD(&buf->list);
+-		buf->dma_handle = dma_map_single(&s->cx->pci_dev->dev,
+-						 buf->buf, s->buf_size,
+-						 s->dma);
+ 		cx18_buf_sync_for_cpu(s, buf);
+ 		list_add_tail(&buf->list, &s->buf_pool);
+ 	}
 
 
 
