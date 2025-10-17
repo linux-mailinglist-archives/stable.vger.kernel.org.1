@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-187277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343B1BEA1DF
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:45:34 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3885EBEA6E1
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 18:03:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C876E1A65F1E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 589845A4513
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F99335091;
-	Fri, 17 Oct 2025 15:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210EC2D6E40;
+	Fri, 17 Oct 2025 15:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzl7PndO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gleA2YA/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641B9335061;
-	Fri, 17 Oct 2025 15:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1476330B17;
+	Fri, 17 Oct 2025 15:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715620; cv=none; b=c7/GP0F4JMaXDDYZ5+9PXDkrx3Y86t7CsDbVI4cuzx80o4krd+NNvlcj8VD6HnywC/j20xVLq0fYWN/xqrSQjxZzAJVl6Uwj82mMIPYZ9oLU5TxDCwh+KzqB1n1WfaEj9rS3fw/LOOcJkJzO4xyktSUFlFP1dBcT3DqsNuaDux4=
+	t=1760716356; cv=none; b=a8kOrdBgqf8pJ7XqmGZdfk3Nk4hBzsTIWOnNt0p3Hh+VM2v/29VJiS+jmIrX6xU6V8tN8X/b7UhMXiHHRzDUT+NJmlvXj9GUtbc/ZcgruzM3QCGgL/WY/yIClQotajhjHuOJqKlrglmR4NGQw63E90KTitsUdyp4m19/pbYEaO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715620; c=relaxed/simple;
-	bh=C3DVdXiNWDXwuDYkHSMD4vcVuoxidNmj4f1fZi2OP1c=;
+	s=arc-20240116; t=1760716356; c=relaxed/simple;
+	bh=quoAO5GwoGjrn2HzljXCEKhRiDtLzVpgSesePwTo51o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NLXkjFcPBNSCn4AVz44jAF2Hog0eWHgdGOm1Gi2ax4QoxkJWHQSgogbfzHrtDCSbftANJ2r/th6LeH+1n6WwmClUCjq/ML/KiCZKobN3XCOWCKjoWWs6XwJbJ4gjeF+4MrlHYO6z5s/ZYPp+A4ar8te5jwTzAihixdZcWXG38cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzl7PndO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64D1C4CEE7;
-	Fri, 17 Oct 2025 15:40:19 +0000 (UTC)
+	 MIME-Version; b=B/UTtOA81fPeHuk+0FR8TTnQeiC8YVOLBRnVY3hyk5IOsNllBtlOYelI7S3LHQmfB+MTHyHE8h9JJ+sDfbubr7owQWfkVTTCzcuvFr+NrAZr5yLkV08xYmTjVsyFVwttNE5UIvA5JF02mVPBuWB1D/RzkWB5U70yX29C7roXIMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gleA2YA/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F267EC4CEE7;
+	Fri, 17 Oct 2025 15:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715620;
-	bh=C3DVdXiNWDXwuDYkHSMD4vcVuoxidNmj4f1fZi2OP1c=;
+	s=korg; t=1760716356;
+	bh=quoAO5GwoGjrn2HzljXCEKhRiDtLzVpgSesePwTo51o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzl7PndOlUUghDNpl8RRGbgQH5BTX4uv7NgV/o66xMwr2jGTgOM6lPJJazhPxT+gy
-	 CFvS+viduB40mKx0xzx49XPXH+9eWOrH0Z8JPsLcWv2YgtrPkwMY1UHMUawsH6S8Ul
-	 tIaODD1D5MWvon3R0HdsjQFZSHz0Ry6+c7rF6f/U=
+	b=gleA2YA/u9wrqQVO0CF8oYtqX42js9MQx+M1HMnGDrAzW6PvDoqo9ubfKMjxlDSrF
+	 SE2+K9wx2W8+C7ZIP8lKF2y/kjb8Sse6kYYrJar0cXsW3iRe8uNehWoxxybr3+stfH
+	 ddqgurJwk2AdYlCFu7LB+zFu0rL+jhjpuF/VHQ3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rio Liu <rio@r26.me>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.17 280/371] PCI: Ensure relaxed tail alignment does not increase min_align
+	Gunnar Kudrjavets <gunnarku@amazon.com>,
+	Justinien Bouron <jbouron@amazon.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 162/276] tpm_tis: Fix incorrect arguments in tpm_tis_probe_irq_single
 Date: Fri, 17 Oct 2025 16:54:15 +0200
-Message-ID: <20251017145212.205318585@linuxfoundation.org>
+Message-ID: <20251017145148.387254899@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Gunnar Kudrjavets <gunnarku@amazon.com>
 
-commit 6e460c3d611009a1d1c2c1f61c96578284a14fba upstream.
+[ Upstream commit 8a81236f2cb0882c7ea6c621ce357f7f3f601fe5 ]
 
-When using relaxed tail alignment for the bridge window, pbus_size_mem()
-also tries to minimize min_align, which can under certain scenarios end up
-increasing min_align from that found by calculate_mem_align().
+The tpm_tis_write8() call specifies arguments in wrong order. Should be
+(data, addr, value) not (data, value, addr). The initial correct order
+was changed during the major refactoring when the code was split.
 
-Ensure min_align is not increased by the relaxed tail alignment.
-
-Eventually, it would be better to add calculate_relaxed_head_align()
-similar to calculate_mem_align() which finds out what alignment can be used
-for the head without introducing any gaps into the bridge window to give
-flexibility on head address too. But that looks relatively complex so it
-requires much more testing than fixing the immediate problem causing a
-regression.
-
-Fixes: 67f9085596ee ("PCI: Allow relaxed bridge window tail sizing for optional resources")
-Reported-by: Rio Liu <rio@r26.me>
-Closes: https://lore.kernel.org/all/o2bL8MtD_40-lf8GlslTw-AZpUPzm8nmfCnJKvS8RQ3NOzOW1uq1dVCEfRpUjJ2i7G2WjfQhk2IWZ7oGp-7G-jXN4qOdtnyOcjRR0PZWK5I=@r26.me/
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Rio Liu <rio@r26.me>
-Cc: stable@vger.kernel.org	# v6.15+
-Link: https://patch.msgid.link/20250822123359.16305-2-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 41a5e1cf1fe1 ("tpm/tpm_tis: Split tpm_tis driver into a core and TCG TIS compliant phy")
+Signed-off-by: Gunnar Kudrjavets <gunnarku@amazon.com>
+Reviewed-by: Justinien Bouron <jbouron@amazon.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 7853ac6999e2..527f0479e983 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -1169,6 +1169,7 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
- 	resource_size_t children_add_size = 0;
- 	resource_size_t children_add_align = 0;
- 	resource_size_t add_align = 0;
-+	resource_size_t relaxed_align;
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index b3452259d6e0b..c8c68301543b2 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -831,8 +831,8 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 	 * will call disable_irq which undoes all of the above.
+ 	 */
+ 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
+-		tpm_tis_write8(priv, original_int_vec,
+-			       TPM_INT_VECTOR(priv->locality));
++		tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality),
++			       original_int_vec);
+ 		rc = -1;
+ 	}
  
- 	if (!b_res)
- 		return -ENOSPC;
-@@ -1246,8 +1247,9 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
- 	if (bus->self && size0 &&
- 	    !pbus_upstream_space_available(bus, mask | IORESOURCE_PREFETCH, type,
- 					   size0, min_align)) {
--		min_align = 1ULL << (max_order + __ffs(SZ_1M));
--		min_align = max(min_align, win_align);
-+		relaxed_align = 1ULL << (max_order + __ffs(SZ_1M));
-+		relaxed_align = max(relaxed_align, win_align);
-+		min_align = min(min_align, relaxed_align);
- 		size0 = calculate_memsize(size, min_size, 0, 0, resource_size(b_res), win_align);
- 		pci_info(bus->self, "bridge window %pR to %pR requires relaxed alignment rules\n",
- 			 b_res, &bus->busn_res);
-@@ -1261,8 +1263,9 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
- 		if (bus->self && size1 &&
- 		    !pbus_upstream_space_available(bus, mask | IORESOURCE_PREFETCH, type,
- 						   size1, add_align)) {
--			min_align = 1ULL << (max_order + __ffs(SZ_1M));
--			min_align = max(min_align, win_align);
-+			relaxed_align = 1ULL << (max_order + __ffs(SZ_1M));
-+			relaxed_align = max(relaxed_align, win_align);
-+			min_align = min(min_align, relaxed_align);
- 			size1 = calculate_memsize(size, min_size, add_size, children_add_size,
- 						  resource_size(b_res), win_align);
- 			pci_info(bus->self,
 -- 
 2.51.0
 
