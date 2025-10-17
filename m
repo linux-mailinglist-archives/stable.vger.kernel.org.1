@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC34BEA42E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:55 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03791BE9F78
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E82E35800B4
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:42:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D61BB565978
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A30D330B22;
-	Fri, 17 Oct 2025 15:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CFCC217722;
+	Fri, 17 Oct 2025 15:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CseDtQgn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DsV/9ETw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA302330B16;
-	Fri, 17 Oct 2025 15:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283B53BB5A;
+	Fri, 17 Oct 2025 15:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760715681; cv=none; b=StP3aj+onlH9/Q+A/ig0VFFcUvNWzY3StN+e0tsPQU6/3xx+l4Lg/QbUcrx4tBmf/Yi/yj4sTVdaO3trIPGmh2/GfSbqNjvp23NPJLUt20sp8EyIiDfzMETSqroI1EZHWMgJrTF4zshg8MHOgk9CxBKhz34nfZMm4oPghmvpBb8=
+	t=1760714794; cv=none; b=QJzepqxbeMgtVNIxvm89hZ9dUiehELkArYgt+mLhezhzmWmJ2Z6te7+D6nzzc771fkbahVWVVdxTv+kFWACzdLsfMr1BXVEVQ4MOyjkluyO5qQtNmxdLZdc/hBQRxbnGRdc4M3yGxGfRBGKQw/pBmKOazrm/J/2jW6BkX7543T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760715681; c=relaxed/simple;
-	bh=mx0p3lHdAJXxGYkQop027kXvS72EfBV7Y/SFGExBV9w=;
+	s=arc-20240116; t=1760714794; c=relaxed/simple;
+	bh=O+meoy7Jj2I+ElVplh73hENstT9QPBGvqcraU+uAgd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=txklrszjoTLvdDJnuVlgXuC5rKRgj1eYoJX9gXJ/emJt6OaPIV0lFOb6OJkLSSuyhC+j2gkbdZAb6G36y7HrrCWkhGoq8T4TdA/jxOmJrNV3iCXd4ziO9spWRms9wA1SlnEPLB1y/rRpeypnarUr231GC03mVo7nbamTLHqcja0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CseDtQgn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7E0C4CEE7;
-	Fri, 17 Oct 2025 15:41:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pj6KxokXv9M+tXqE/igL+odfuw298maOnw6EwlKefYbhckQHnndtKqu64WjyYR4MVaMT6/8sKGCKpoNMSlfy0FrfgrseLKm2MhQDjLzdTrkBAAvtK85OJEEYyVouoO+HVIvfniXicTBJL7Po8w5MzRlJ5bH3f+jn6HXweu/2YLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DsV/9ETw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71DEC4CEE7;
+	Fri, 17 Oct 2025 15:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760715680;
-	bh=mx0p3lHdAJXxGYkQop027kXvS72EfBV7Y/SFGExBV9w=;
+	s=korg; t=1760714794;
+	bh=O+meoy7Jj2I+ElVplh73hENstT9QPBGvqcraU+uAgd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CseDtQgnpVafAXGTsfN+oHEj092NmbeWMShYNDr5/3YvKQVlGtIkG0zNAcjLxzBsF
-	 U49lUcVmHL99EUJZgr+WNtDg7i+iNhWX619T3g7aI8XbTKFglv44R47F/IQcau9i/z
-	 poK0yL1O/TXVrTk7Pj4MABIxTynqV7z0YwwhDySw=
+	b=DsV/9ETwZxzCnrG/bWQIxSkBWVZGkegSPYHJiZgKXu7ZX9Ig261nSenxg1CNETSea
+	 HypInFkoY3HsaC1eGrvAsiMSMBlqeVFCeTs+btpHaHOgAGqyVHrY4pB0b9YblwdAFr
+	 03r+5FXu1GA86BwNVGmzg473V8a4IBX9u0Whn33Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Snyder <dansnyder@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.17 299/371] x86/umip: Check that the instruction opcode is at least two bytes
-Date: Fri, 17 Oct 2025 16:54:34 +0200
-Message-ID: <20251017145212.892573612@linuxfoundation.org>
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	=?UTF-8?q?=E9=AB=98=E7=BF=94?= <gaoxiang17@xiaomi.com>
+Subject: [PATCH 6.12 268/277] pid: make __task_pid_nr_ns(ns => NULL) safe for zombie callers
+Date: Fri, 17 Oct 2025 16:54:35 +0200
+Message-ID: <20251017145156.946680679@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 32278c677947ae2f042c9535674a7fff9a245dd3 upstream.
+[ Upstream commit abdfd4948e45c51b19162cf8b3f5003f8f53c9b9 ]
 
-When checking for a potential UMIP violation on #GP, verify the decoder found
-at least two opcode bytes to avoid false positives when the kernel encounters
-an unknown instruction that starts with 0f.  Because the array of opcode.bytes
-is zero-initialized by insn_init(), peeking at bytes[1] will misinterpret
-garbage as a potential SLDT or STR instruction, and can incorrectly trigger
-emulation.
+task_pid_vnr(another_task) will crash if the caller was already reaped.
+The pid_alive(current) check can't really help, the parent/debugger can
+call release_task() right after this check.
 
-E.g. if a VPALIGNR instruction
+This also means that even task_ppid_nr_ns(current, NULL) is not safe,
+pid_alive() only ensures that it is safe to dereference ->real_parent.
 
-   62 83 c5 05 0f 08 ff     vpalignr xmm17{k5},xmm23,XMMWORD PTR [r8],0xff
+Change __task_pid_nr_ns() to ensure ns != NULL.
 
-hits a #GP, the kernel emulates it as STR and squashes the #GP (and corrupts
-the userspace code stream).
-
-Arguably the check should look for exactly two bytes, but no three byte
-opcodes use '0f 00 xx' or '0f 01 xx' as an escape, i.e. it should be
-impossible to get a false positive if the first two opcode bytes match '0f 00'
-or '0f 01'.  Go with a more conservative check with respect to the existing
-code to minimize the chances of breaking userspace, e.g. due to decoder
-weirdness.
-
-Analyzed by Nick Bray <ncbray@google.com>.
-
-Fixes: 1e5db223696a ("x86/umip: Add emulation code for UMIP instructions")
-Reported-by: Dan Snyder <dansnyder@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Originally-by: 高翔 <gaoxiang17@xiaomi.com>
+Link: https://lore.kernel.org/all/20250802022123.3536934-1-gxxa03070307@gmail.com/
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/20250810173604.GA19991@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/umip.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/pid.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/umip.c
-+++ b/arch/x86/kernel/umip.c
-@@ -156,8 +156,8 @@ static int identify_insn(struct insn *in
- 	if (!insn->modrm.nbytes)
- 		return -EINVAL;
+diff --git a/kernel/pid.c b/kernel/pid.c
+index b80c3bfb58d07..8fdc3a5f87c7d 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -510,7 +510,8 @@ pid_t __task_pid_nr_ns(struct task_struct *task, enum pid_type type,
+ 	rcu_read_lock();
+ 	if (!ns)
+ 		ns = task_active_pid_ns(current);
+-	nr = pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);
++	if (ns)
++		nr = pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);
+ 	rcu_read_unlock();
  
--	/* All the instructions of interest start with 0x0f. */
--	if (insn->opcode.bytes[0] != 0xf)
-+	/* The instructions of interest have 2-byte opcodes: 0F 00 or 0F 01. */
-+	if (insn->opcode.nbytes < 2 || insn->opcode.bytes[0] != 0xf)
- 		return -EINVAL;
- 
- 	if (insn->opcode.bytes[1] == 0x1) {
+ 	return nr;
+-- 
+2.51.0
+
 
 
 
