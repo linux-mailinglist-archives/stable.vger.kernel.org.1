@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-187452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3A0BEA422
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:53:49 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3536DBEA290
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0B5F1AE4B01
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:49:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 46CBD582341
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE9A330B26;
-	Fri, 17 Oct 2025 15:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553A7335070;
+	Fri, 17 Oct 2025 15:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftrKlxeN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkNiC5ma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E31330B06;
-	Fri, 17 Oct 2025 15:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F16330B30;
+	Fri, 17 Oct 2025 15:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716112; cv=none; b=QPO1GrEdWNNFIyEBRZXBbPTI4gvdFEkDoPALfrNl2kdEZ5D+A6536TzBEEabn36ApAzI2nfoC8rPoX0LgeSWY5wdrXKGC61EeWYBqJWld7WNetrWoietywtHT3kOjS/yqjnOFSkKbNnXsllBLPmXiErhpAACT/Qe1nAWkUfyqhM=
+	t=1760715333; cv=none; b=ma2t7EuqqIjTnUiXHdj0NA5W7s3ADPmeq4D6lgFYyxypMPwpISbTNmw74lVVJQtc5KtkWALUVEVAddtnD3VvuAHLzUtF/rDg9bVavMzBkyNnZfohlJbHkwho/dUuKwnv0RBVUM03bNSTcw44sHxMNwugvCkZmP5IyjPNZ314AFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716112; c=relaxed/simple;
-	bh=4sVGd3Jdt+rkzPAbxGzCP5CE2LaT7aH8VG2lclmtuGM=;
+	s=arc-20240116; t=1760715333; c=relaxed/simple;
+	bh=A8drwjtBWRLj8sldcM6ki0n3qOH/ae7mG3yHNpeVBFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MngdmyC75U+l4P80CsE0cfoMw7BbbigPlK0r2OUmVVfqWmBRbuus4P0loGXhyHxrSpguQgO6i8u0FbPr4x76Qc5WDXukOOFraWIH92kxwOun0SEFJ2pB4aQQxwx35wXUpANd/HBDeIEeIZdC9VWM6iIqJsHrqrc4GGOThE4FWu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftrKlxeN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66DEC4CEE7;
-	Fri, 17 Oct 2025 15:48:31 +0000 (UTC)
+	 MIME-Version; b=GkiFTbXjxhhwfZt0QNr82jcubop1b5j2i4EzYznTszDlccmVeKFZDSpymiZe9HJ2RUFZM1yee1U/nK0kjRhE3fHNGDnixf5iN8rYsPNJ73X5bI2Pf8tG1n7ksIlGJNr8ZwOC8+TiuDhJmo1nlrKdT+sLsA04/8akw5JHlUCODhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkNiC5ma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F00C4CEE7;
+	Fri, 17 Oct 2025 15:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760716112;
-	bh=4sVGd3Jdt+rkzPAbxGzCP5CE2LaT7aH8VG2lclmtuGM=;
+	s=korg; t=1760715332;
+	bh=A8drwjtBWRLj8sldcM6ki0n3qOH/ae7mG3yHNpeVBFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ftrKlxeNqia0jDS5MmSmq2ZXyFtnW8Td5j16pJys1XwxdHNrVI+ydrldG+YH0prIx
-	 QF/oHyPRoqUI57SlHuD6atQKDdAljVsaqaS3VE/6k7vQgTtomTLNuAxr2kBE6gnnB7
-	 uhq5NDPoG7Hd2XTK7yd8nzwzMbQWzg9iLt6vBxvs=
+	b=PkNiC5maTlye+idtGe/s+4kC94EO4qj1y+xFlDO2cjggMwdNC0LrJwPQeCbwdevtZ
+	 tS4PhQ6YNR2otCOkpk8U72gLj6m9auv0qiBwrsFEB0i47E3PUQIcwrFg1yFSezEYwO
+	 VfzZwPwEkeVUD0F8GywiCv4XT9k96wRY6usUvq1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 044/276] i3c: master: svc: Recycle unused IBI slot
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.17 162/371] xen/events: Cleanup find_virq() return codes
 Date: Fri, 17 Oct 2025 16:52:17 +0200
-Message-ID: <20251017145144.013335898@linuxfoundation.org>
+Message-ID: <20251017145207.794668417@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
-References: <20251017145142.382145055@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley Chu <stanley.chuys@gmail.com>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-[ Upstream commit 3448a934ba6f803911ac084d05a2ffce507ea6c6 ]
+commit 08df2d7dd4ab2db8a172d824cda7872d5eca460a upstream.
 
-In svc_i3c_master_handle_ibi(), an IBI slot is fetched from the pool
-to store the IBI payload. However, when an error condition is encountered,
-the function returns without recycling the IBI slot, resulting in an IBI
-slot leak.
+rc is overwritten by the evtchn_status hypercall in each iteration, so
+the return value will be whatever the last iteration is.  This could
+incorrectly return success even if the event channel was not found.
+Change to an explicit -ENOENT for an un-found virq and return 0 on a
+successful match.
 
-Fixes: c85e209b799f ("i3c: master: svc: fix ibi may not return mandatory data byte")
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250829012309.3562585-3-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 62cc5fc7b2e0 ("xen/pv-on-hvm kexec: rebind virqs to existing eventchannel ports")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250828003604.8949-2-jason.andryuk@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/xen/events/events_base.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 62a4d06bcfb5d..27f55b5e388d9 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -308,6 +308,7 @@ static int svc_i3c_master_handle_ibi(struct svc_i3c_master *master,
- 						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
- 	if (ret) {
- 		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
-+		i3c_generic_ibi_recycle_slot(data->ibi_pool, slot);
- 		return ret;
- 	}
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1318,10 +1318,11 @@ static int find_virq(unsigned int virq,
+ {
+ 	struct evtchn_status status;
+ 	evtchn_port_t port;
+-	int rc = -ENOENT;
  
--- 
-2.51.0
-
+ 	memset(&status, 0, sizeof(status));
+ 	for (port = 0; port < xen_evtchn_max_channels(); port++) {
++		int rc;
++
+ 		status.dom = DOMID_SELF;
+ 		status.port = port;
+ 		rc = HYPERVISOR_event_channel_op(EVTCHNOP_status, &status);
+@@ -1331,10 +1332,10 @@ static int find_virq(unsigned int virq,
+ 			continue;
+ 		if (status.u.virq == virq && status.vcpu == xen_vcpu_nr(cpu)) {
+ 			*evtchn = port;
+-			break;
++			return 0;
+ 		}
+ 	}
+-	return rc;
++	return -ENOENT;
+ }
+ 
+ /**
 
 
 
