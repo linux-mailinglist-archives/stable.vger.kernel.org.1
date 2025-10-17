@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-186542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-186799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76085BE98E8
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:13:09 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08F8BE9A81
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C02F6582D96
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:07:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5C5DF35D567
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D85332902;
-	Fri, 17 Oct 2025 15:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29434332EDB;
+	Fri, 17 Oct 2025 15:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6CJ3Ux5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqJTZoZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCEF32E144;
-	Fri, 17 Oct 2025 15:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AC032E12B;
+	Fri, 17 Oct 2025 15:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713537; cv=none; b=Dd+cYs4p5ymG/YRq0HzQw1yQ4Eh96tF9I+Ax6EfcapMb27k/XcwA8r1pYT3xeZ0YmKI8Opkc1s9BDebS9U1aVsl985C+7yLTt2rwcrp0VnY3esK1QFiKg7LjgjuDxjGWR7hY8tLpe3IuTMgppJahSFwpW7HHWzZRJfzkepmOWZk=
+	t=1760714272; cv=none; b=GOnoxHQ1ZuukgPNVjKckNPBgGrchA1KhtTV5j4WnUNzZUOYExzcMBdFynkXHvqsdTpeomPa/kFmoiPVwN3evIRJIk3ZTiD1isd9GWli5l2QcYLznNePrzOCd6RLpr58EvSunD9mXmw4iI2+qgcbFrT4BzuPsfpxCnjIb8l2YpE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713537; c=relaxed/simple;
-	bh=66lAXbvNcWzYoNPTHvbm47tsu/kkBO4/YmvmLCpD6DI=;
+	s=arc-20240116; t=1760714272; c=relaxed/simple;
+	bh=pcZsxkKqKaQ3hLLtWHb8OnUdFuNR06rGwa3jzgRsuGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DmqRrXBKEUrT+Y+mZmKlWElqqZ/+oeVgbIV8NsSrXJPgLurDvFV1n7GUGWQnewECMYhQuqL40nXCucAo5i6UFE1F/aicNd91eNyzhTdTivpTjGbVW2aGanCc+Tf9R5Be9n2RZ82jhevMZ7VC5o6Aooo5UiB8CiLff2Oita4IgRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6CJ3Ux5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEE0C4CEE7;
-	Fri, 17 Oct 2025 15:05:36 +0000 (UTC)
+	 MIME-Version; b=RzcppsDejdyn1dxXwLQqCydZxS5AVBbBWZxSGSpbQDqduIZFACdgvOeA+f+AohHaDRjU5fGkCccKhCTm7vY+hrOsPYms/UKV3qx+EZFovy1JErslCvnVgzwqywHFSnEynmnkJVJ7uFYVTy/F7r6spyaGKH51r7UAlVyLgAhjA+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqJTZoZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15510C4CEFE;
+	Fri, 17 Oct 2025 15:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713537;
-	bh=66lAXbvNcWzYoNPTHvbm47tsu/kkBO4/YmvmLCpD6DI=;
+	s=korg; t=1760714270;
+	bh=pcZsxkKqKaQ3hLLtWHb8OnUdFuNR06rGwa3jzgRsuGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6CJ3Ux535jPCIyAHfxI3m8RQqwSzf28vy9uRgDsDr5MiF6fZFCDBXSrpZYlR7vPQ
-	 zWuDMXmRCyx9C1gDQagnhwJt/h7zNUyVt8X88qjRMKIyAEftWMgCSK83Kj+HOTb1iV
-	 Zuh5uO2gO3Qb1dP4xKJlnSaQ2SJlC2l27MRIOwHs=
+	b=XqJTZoZrC5WYwGL0R1g1y2tAY2yyzkMtmsUlW/SnLxLV3gqRYuyv2aJ0DzKnSXbHp
+	 pIaTSLy5kdF7g7rnBG6d2vrE66wc7OVvM3n8TfdpagrR0vY/c1Lfy1uOI7PI6SG/7y
+	 ZWyAr+MqdkD69PpAeP6LfFnFkbpvw3U2JP8dVsdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/201] net/mlx4: prevent potential use after free in mlx4_en_do_uc_filter()
-Date: Fri, 17 Oct 2025 16:51:32 +0200
-Message-ID: <20251017145135.886977386@linuxfoundation.org>
+	Daniel Tang <danielzgtg.opensource@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 086/277] ACPI: TAD: Add missing sysfs_remove_group() for ACPI_TAD_RT
+Date: Fri, 17 Oct 2025 16:51:33 +0200
+Message-ID: <20251017145150.274159859@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+References: <20251017145147.138822285@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Daniel Tang <danielzgtg.opensource@gmail.com>
 
-[ Upstream commit 4f0d91ba72811fd5dd577bcdccd7fed649aae62c ]
+commit 4aac453deca0d9c61df18d968f8864c3ae7d3d8d upstream.
 
-Print "entry->mac" before freeing "entry".  The "entry" pointer is
-freed with kfree_rcu() so it's unlikely that we would trigger this
-in real life, but it's safer to re-order it.
+Previously, after `rmmod acpi_tad`, `modprobe acpi_tad` would fail
+with this dmesg:
 
-Fixes: cc5387f7346a ("net/mlx4_en: Add unicast MAC filtering")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/aNvMHX4g8RksFFvV@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sysfs: cannot create duplicate filename '/devices/platform/ACPI000E:00/time'
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x6c/0x90
+ dump_stack+0x10/0x20
+ sysfs_warn_dup+0x8b/0xa0
+ sysfs_add_file_mode_ns+0x122/0x130
+ internal_create_group+0x1dd/0x4c0
+ sysfs_create_group+0x13/0x20
+ acpi_tad_probe+0x147/0x1f0 [acpi_tad]
+ platform_probe+0x42/0xb0
+ </TASK>
+acpi-tad ACPI000E:00: probe with driver acpi-tad failed with error -17
+
+Fixes: 3230b2b3c1ab ("ACPI: TAD: Add low-level support for real time capability")
+Signed-off-by: Daniel Tang <danielzgtg.opensource@gmail.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://patch.msgid.link/2881298.hMirdbgypa@daniel-desktop3
+Cc: 5.2+ <stable@vger.kernel.org> # 5.2+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_netdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpi_tad.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-index 33bbcced81059..275561272721e 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_netdev.c
-@@ -1177,9 +1177,9 @@ static void mlx4_en_do_uc_filter(struct mlx4_en_priv *priv,
- 				mlx4_unregister_mac(mdev->dev, priv->port, mac);
+--- a/drivers/acpi/acpi_tad.c
++++ b/drivers/acpi/acpi_tad.c
+@@ -565,6 +565,9 @@ static void acpi_tad_remove(struct platf
  
- 				hlist_del_rcu(&entry->hlist);
--				kfree_rcu(entry, rcu);
- 				en_dbg(DRV, priv, "Removed MAC %pM on port:%d\n",
- 				       entry->mac, priv->port);
-+				kfree_rcu(entry, rcu);
- 				++removed;
- 			}
- 		}
--- 
-2.51.0
-
+ 	pm_runtime_get_sync(dev);
+ 
++	if (dd->capabilities & ACPI_TAD_RT)
++		sysfs_remove_group(&dev->kobj, &acpi_tad_time_attr_group);
++
+ 	if (dd->capabilities & ACPI_TAD_DC_WAKE)
+ 		sysfs_remove_group(&dev->kobj, &acpi_tad_dc_attr_group);
+ 
 
 
 
