@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-186674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B92BE9B0B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:20:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D48EBEA2A8
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:48:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 330F65815EB
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:13:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA345747468
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C801C2F12A5;
-	Fri, 17 Oct 2025 15:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86200330B0C;
+	Fri, 17 Oct 2025 15:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+aR+quG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swDCT4yS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF143370FB;
-	Fri, 17 Oct 2025 15:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44743330B03;
+	Fri, 17 Oct 2025 15:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713913; cv=none; b=qZQaBMYHhRFzt4GWUPD+6zI93gYBgrhBLKk7MID5xnjKyYAmZEm52q3kZ42fMNawt/vSM0di9awX9Er9kzKyr17HrhWHAZprDiQwr0jd+wHhHCVRYIuGR7pvt0wzS47H4RGuI/yMq4gMrDuYQnVgjiznqrmkGin0ERNyzSVl7GI=
+	t=1760715535; cv=none; b=tZns76am+40D3xhR4GkN1ANg9trDqUGdNUT4yYXjZQBX/R0LgopyxrhtCnBUDq5lQRv5m8VA4rZd1MtEBJKn1kisPXjA3Jj+0e3ZKCAHi/k6KGeHv42bErTL1NJrrEG6kPmEX0xuWR0/dsiMu5r4n2zGLrVn40PLXLv4vGAAIYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713913; c=relaxed/simple;
-	bh=os97lHwbO7PQ/bpwSPhYloQl5R0Mu0mI308Mi2xzAy4=;
+	s=arc-20240116; t=1760715535; c=relaxed/simple;
+	bh=6/wdtpnUJS52HS3Xwl3o74Hk195620gLHf1bH6OMY14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wo78cFYAc7RxyP9pFEOTKFF8vu0FZCcwXVN2kJxlEggkwUgsMC97HA1c+F61eh42by1+TAW+Tiq73W6AIxGwoaHm6tkFrYDWMSaLiu6pYd852YUM55vM44/SXG/3Z/91KLVxY5t0F8U+y6YRyqtt8kDihuDp4S2w7Yti2L200IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+aR+quG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F383EC4CEF9;
-	Fri, 17 Oct 2025 15:11:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fU9y4w8CJltF6xq+xOSREh+0PDfAw7ILTFr5gP3IyNI4pMhO1IlRau1yl06v+31IrqIFZ/Z+rZ0Zh4AouAkmsqDUyWg4hE0El+8sLhNVw3kptInRBmyE8YUMpRmSNkzxx/j+Qev7Ft+6ciechPUZdvXwkUx/FQs6OFHQkOwPS+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swDCT4yS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90B6C4CEE7;
+	Fri, 17 Oct 2025 15:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713913;
-	bh=os97lHwbO7PQ/bpwSPhYloQl5R0Mu0mI308Mi2xzAy4=;
+	s=korg; t=1760715533;
+	bh=6/wdtpnUJS52HS3Xwl3o74Hk195620gLHf1bH6OMY14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+aR+quGMYV07K0nVimF9SnnCZTZxVmu4EKnpMKshGYy8mCHwIHbUYPB5ljD8cjZG
-	 fUXu0lAzqrQS4Dv3iMa+VH3l048YsAJKkLsqxy7r9FyzPioOlg2cwVnXPQWLvwQZ8b
-	 Yc39JYGSdaiOcezWdpJ0I42M/WP25pvKg3IvCP1o=
+	b=swDCT4ySx/v/YOmq8UZruUzXeNHeDTq1hrCmWcRV0x0hc5XtgBrYs6aUWrFuOQdSP
+	 KSkZqHY5bI4pN2g4/exZdiD+jR+Di58akN0EmJeo+omfk6khPeWDEyv9cjS2eexFrf
+	 gJU4Vc1bzeHOw0OjkZroD/SodJMHXu13mdmztn40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/201] mm/ksm: fix incorrect KSM counter handling in mm_struct during fork
+	Nam Cao <namcao@linutronix.de>,
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.17 250/371] powerpc/pseries/msi: Fix potential underflow and leak issue
 Date: Fri, 17 Oct 2025 16:53:45 +0200
-Message-ID: <20251017145140.759430315@linuxfoundation.org>
+Message-ID: <20251017145211.125296391@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-References: <20251017145134.710337454@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 4d6fc29f36341d7795db1d1819b4c15fe9be7b23 ]
+commit 3443ff3be6e59b80d74036bb39f5b6409eb23cc9 upstream.
 
-Patch series "mm/ksm: Fix incorrect accounting of KSM counters during
-fork", v3.
+pseries_irq_domain_alloc() allocates interrupts at parent's interrupt
+domain. If it fails in the progress, all allocated interrupts are
+freed.
 
-The first patch in this series fixes the incorrect accounting of KSM
-counters such as ksm_merging_pages, ksm_rmap_items, and the global
-ksm_zero_pages during fork.
+The number of successfully allocated interrupts so far is stored
+"i". However, "i - 1" interrupts are freed. This is broken:
 
-The following patch add a selftest to verify the ksm_merging_pages counter
-was updated correctly during fork.
+  - One interrupt is not be freed
 
-Test Results
-============
-Without the first patch
------------------------
- # [RUN] test_fork_ksm_merging_page_count
- not ok 10 ksm_merging_page in child: 32
+  - If "i" is zero, "i - 1" wraps around
 
-With the first patch
---------------------
- # [RUN] test_fork_ksm_merging_page_count
- ok 10 ksm_merging_pages is not inherited after fork
+Correct the number of freed interrupts to 'i'.
 
-This patch (of 2):
-
-Currently, the KSM-related counters in `mm_struct`, such as
-`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are inherited
-by the child process during fork.  This results in inconsistent
-accounting.
-
-When a process uses KSM, identical pages are merged and an rmap item is
-created for each merged page.  The `ksm_merging_pages` and
-`ksm_rmap_items` counters are updated accordingly.  However, after a fork,
-these counters are copied to the child while the corresponding rmap items
-are not.  As a result, when the child later triggers an unmerge, there are
-no rmap items present in the child, so the counters remain stale, leading
-to incorrect accounting.
-
-A similar issue exists with `ksm_zero_pages`, which maintains both a
-global counter and a per-process counter.  During fork, the per-process
-counter is inherited by the child, but the global counter is not
-incremented.  Since the child also references zero pages, the global
-counter should be updated as well.  Otherwise, during zero-page unmerge,
-both the global and per-process counters are decremented, causing the
-global counter to become inconsistent.
-
-To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0 during
-fork, and the global ksm_zero_pages counter is updated with the
-per-process ksm_zero_pages value inherited by the child.  This ensures
-that KSM statistics remain accurate and reflect the activity of each
-process correctly.
-
-Link: https://lkml.kernel.org/r/cover.1758648700.git.donettom@linux.ibm.com
-Link: https://lkml.kernel.org/r/7b9870eb67ccc0d79593940d9dbd4a0b39b5d396.1758648700.git.donettom@linux.ibm.com
-Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
-Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
-Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: <stable@vger.kernel.org>	[6.6+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ changed mm_flags_test() to test_bit() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/a980067f2b256bf716b4cd713bc1095966eed8cd.1754300646.git.namcao@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/ksm.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/powerpc/platforms/pseries/msi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/ksm.h
-+++ b/include/linux/ksm.h
-@@ -59,6 +59,12 @@ static inline int ksm_fork(struct mm_str
- 	int ret;
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -593,7 +593,7 @@ static int pseries_irq_domain_alloc(stru
  
- 	if (test_bit(MMF_VM_MERGEABLE, &oldmm->flags)) {
-+		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
-+
-+		mm->ksm_merging_pages = 0;
-+		mm->ksm_rmap_items = 0;
-+		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
-+
- 		ret = __ksm_enter(mm);
- 		if (ret)
- 			return ret;
+ out:
+ 	/* TODO: handle RTAS cleanup in ->msi_finish() ? */
+-	irq_domain_free_irqs_parent(domain, virq, i - 1);
++	irq_domain_free_irqs_parent(domain, virq, i);
+ 	return ret;
+ }
+ 
 
 
 
