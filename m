@@ -1,57 +1,75 @@
-Return-Path: <stable+bounces-186479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0354BE9A7E
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:19:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5200DBEA530
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 17:57:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 610BD740627
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:04:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1648B585BB5
+	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 15:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13813328F2;
-	Fri, 17 Oct 2025 15:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D931C330B30;
+	Fri, 17 Oct 2025 15:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGvBlgpt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yn9D3Oqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2303328EE;
-	Fri, 17 Oct 2025 15:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BA4330B17;
+	Fri, 17 Oct 2025 15:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713357; cv=none; b=KZxK/uSipCyuzA+cHoDAezQJgEXGcun1DfUANjwf3cGNfcboUASx1TEgSFdzEqpwxrPIcxK2yqG8fIfgh+M26uqazhzCg/QrizvtiqcOMz8JU/KT2/llzztczboHsB0cNPw3g4KNYvC6X9wTIiQm67N+auKbzQiK604tmkAn7IY=
+	t=1760716244; cv=none; b=B90/zOt3OiZagwNUszpcyZX/BTbKPjzCMaxna0BZr3jDpeVhyGFqDHE/0+1yGbdkBidJWZ+8kwjw0oIuGotjB046oW7wH8PAKJ/u2CLeJmjrJMuKmK1ratTHqBfpxjgsIKS0izSEaghEmsC/osAESdeXOM2SbGOaoLh3Fw2WXAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713357; c=relaxed/simple;
-	bh=UPmKGknb+K7BifERug2FX2igtQrkzVmiJACqiRUs7K0=;
+	s=arc-20240116; t=1760716244; c=relaxed/simple;
+	bh=ol6rMaWelqdOn7ooNngXAXOwqTegJlq38kO2w/VAnlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbfIYIMUkz4IbpOpjbjOFykVUrx2tnjDYQgBXfYfri/x9+GAUPEKEjR6teD1KZKrk0dL0bpor2NPtGz3bf5DoO5VL64gkWS48Z0Y53RQlUXcrzp408w9/pTMvdoW+HG4py3BdJF7ARdiud7Zemk7GjW7Mbf3wRAXMMGKxYLSE5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGvBlgpt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FB8C4CEE7;
-	Fri, 17 Oct 2025 15:02:36 +0000 (UTC)
+	 MIME-Version; b=L7+h8LH+zeqSsfvFOFyhQWTNIQDtfle6/amTqfQ5k19Tvj9EGuCT2aIzO2nI2XooJzKTA4iKDXqiZVvM9r9Bk1kp8tBrmCTYQXQvcrvcRRsUl6yUsY+qdaQrQ3A8Qed2xPRb9P3d/b3DUJcbPWBMGfL/4SxGpZvjA7kmYglNorc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yn9D3Oqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7142C4CEE7;
+	Fri, 17 Oct 2025 15:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760713357;
-	bh=UPmKGknb+K7BifERug2FX2igtQrkzVmiJACqiRUs7K0=;
+	s=korg; t=1760716244;
+	bh=ol6rMaWelqdOn7ooNngXAXOwqTegJlq38kO2w/VAnlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGvBlgptboY60Hb6/igyeqPvr2p3rLJlSdYiLpQpkUE2C1+bD9Qxrj2elCc+fdhBJ
-	 DWZRdYd32oU42WplHrlOwVFHR28PM/mf5eARt5dKpwzl4mWttB/5VDsxy4lpABLeVX
-	 Z3Tu3ecGSi7B783gglA01+MyFkQosJzhATzZdEUA=
+	b=yn9D3Oqfwu7r5MEx7YSeitLSo3tX0CArD3eah6eyzRRacihYMmU4yQGJYnqmFsXYv
+	 d1rcBZiTxzuby8sbg788YDtaxlkTk2ZOWVQXw7xN5daa4xfTSWQx4V3Jns6O+1TUEb
+	 DXZ0sjI7xG8DIUw7+PvOge8NcXH33BJxM8bmKB7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.ibm.com>,
+	Blake Jones <blakejones@google.com>,
+	Chun-Tse Shao <ctshao@google.com>,
+	Collin Funk <collin.funk1@gmail.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jan Polensky <japo@linux.ibm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Li Huafei <lihuafei1@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Nam Cao <namcao@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Steinar H. Gunderson" <sesse@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/168] KVM: x86: Dont (re)check L1 intercepts when completing userspace I/O
+Subject: [PATCH 5.15 124/276] libperf event: Ensure tracing data is multiple of 8 sized
 Date: Fri, 17 Oct 2025 16:53:37 +0200
-Message-ID: <20251017145134.113541006@linuxfoundation.org>
+Message-ID: <20251017145147.005782915@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
-References: <20251017145129.000176255@linuxfoundation.org>
+In-Reply-To: <20251017145142.382145055@linuxfoundation.org>
+References: <20251017145142.382145055@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,147 +81,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit e750f85391286a4c8100275516973324b621a269 ]
+[ Upstream commit b39c915a4f365cce6bdc0e538ed95d31823aea8f ]
 
-When completing emulation of instruction that generated a userspace exit
-for I/O, don't recheck L1 intercepts as KVM has already finished that
-phase of instruction execution, i.e. has already committed to allowing L2
-to perform I/O.  If L1 (or host userspace) modifies the I/O permission
-bitmaps during the exit to userspace,  KVM will treat the access as being
-intercepted despite already having emulated the I/O access.
+Perf's synthetic-events.c will ensure 8-byte alignment of tracing
+data, writing it after a perf_record_header_tracing_data event.
 
-Pivot on EMULTYPE_NO_DECODE to detect that KVM is completing emulation.
-Of the three users of EMULTYPE_NO_DECODE, only complete_emulated_io() (the
-intended "recipient") can reach the code in question.  gp_interception()'s
-use is mutually exclusive with is_guest_mode(), and
-complete_emulated_insn_gp() unconditionally pairs EMULTYPE_NO_DECODE with
-EMULTYPE_SKIP.
+Add padding to struct perf_record_header_tracing_data to make it 16-byte
+rather than 12-byte sized.
 
-The bad behavior was detected by a syzkaller program that toggles port I/O
-interception during the userspace I/O exit, ultimately resulting in a WARN
-on vcpu->arch.pio.count being non-zero due to KVM no completing emulation
-of the I/O instruction.
-
-  WARNING: CPU: 23 PID: 1083 at arch/x86/kvm/x86.c:8039 emulator_pio_in_out+0x154/0x170 [kvm]
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 23 UID: 1000 PID: 1083 Comm: repro Not tainted 6.16.0-rc5-c1610d2d66b1-next-vm #74 NONE
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:emulator_pio_in_out+0x154/0x170 [kvm]
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   kvm_fast_pio+0xd6/0x1d0 [kvm]
-   vmx_handle_exit+0x149/0x610 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xda8/0x1ac0 [kvm]
-   kvm_vcpu_ioctl+0x244/0x8c0 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0x5d/0xc60
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
-
-Reported-by: syzbot+cc2032ba16cc2018ca25@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68790db4.a00a0220.3af5df.0020.GAE@google.com
-Fixes: 8a76d7f25f8f ("KVM: x86: Add x86 callback for intercept check")
-Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20250715190638.1899116-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ is_guest_mode() was open coded ]
+Fixes: 055c67ed39887c55 ("perf tools: Move event synthesizing routines to separate .c file")
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.ibm.com>
+Cc: Blake Jones <blakejones@google.com>
+Cc: Chun-Tse Shao <ctshao@google.com>
+Cc: Collin Funk <collin.funk1@gmail.com>
+Cc: Howard Chu <howardchu95@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jan Polensky <japo@linux.ibm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Li Huafei <lihuafei1@huawei.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Nam Cao <namcao@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steinar H. Gunderson <sesse@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20250821163820.1132977-6-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/emulate.c     |   11 ++++-------
- arch/x86/kvm/kvm_emulate.h |    2 +-
- arch/x86/kvm/x86.c         |    9 ++++++++-
- 3 files changed, 13 insertions(+), 9 deletions(-)
+ tools/lib/perf/include/perf/event.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -5478,12 +5478,11 @@ void init_decode_cache(struct x86_emulat
- 	ctxt->mem_read.end = 0;
- }
+diff --git a/tools/lib/perf/include/perf/event.h b/tools/lib/perf/include/perf/event.h
+index 4d0c02ba3f7d3..1187415e26990 100644
+--- a/tools/lib/perf/include/perf/event.h
++++ b/tools/lib/perf/include/perf/event.h
+@@ -211,6 +211,7 @@ struct perf_record_header_event_type {
+ struct perf_record_header_tracing_data {
+ 	struct perf_event_header header;
+ 	__u32			 size;
++	__u32			 pad;
+ };
  
--int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
-+int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts)
- {
- 	const struct x86_emulate_ops *ops = ctxt->ops;
- 	int rc = X86EMUL_CONTINUE;
- 	int saved_dst_type = ctxt->dst.type;
--	unsigned emul_flags;
- 
- 	ctxt->mem_read.pos = 0;
- 
-@@ -5497,8 +5496,6 @@ int x86_emulate_insn(struct x86_emulate_
- 		rc = emulate_ud(ctxt);
- 		goto done;
- 	}
--
--	emul_flags = ctxt->ops->get_hflags(ctxt);
- 	if (unlikely(ctxt->d &
- 		     (No64|Undefined|Sse|Mmx|Intercept|CheckPerm|Priv|Prot|String))) {
- 		if ((ctxt->mode == X86EMUL_MODE_PROT64 && (ctxt->d & No64)) ||
-@@ -5532,7 +5529,7 @@ int x86_emulate_insn(struct x86_emulate_
- 				fetch_possible_mmx_operand(&ctxt->dst);
- 		}
- 
--		if (unlikely(emul_flags & X86EMUL_GUEST_MASK) && ctxt->intercept) {
-+		if (unlikely(check_intercepts) && ctxt->intercept) {
- 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 						      X86_ICPT_PRE_EXCEPT);
- 			if (rc != X86EMUL_CONTINUE)
-@@ -5561,7 +5558,7 @@ int x86_emulate_insn(struct x86_emulate_
- 				goto done;
- 		}
- 
--		if (unlikely(emul_flags & X86EMUL_GUEST_MASK) && (ctxt->d & Intercept)) {
-+		if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
- 			rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 						      X86_ICPT_POST_EXCEPT);
- 			if (rc != X86EMUL_CONTINUE)
-@@ -5615,7 +5612,7 @@ int x86_emulate_insn(struct x86_emulate_
- 
- special_insn:
- 
--	if (unlikely(emul_flags & X86EMUL_GUEST_MASK) && (ctxt->d & Intercept)) {
-+	if (unlikely(check_intercepts) && (ctxt->d & Intercept)) {
- 		rc = emulator_check_intercept(ctxt, ctxt->intercept,
- 					      X86_ICPT_POST_MEMACCESS);
- 		if (rc != X86EMUL_CONTINUE)
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -517,7 +517,7 @@ bool x86_page_table_writing_insn(struct
- #define EMULATION_RESTART 1
- #define EMULATION_INTERCEPTED 2
- void init_decode_cache(struct x86_emulate_ctxt *ctxt);
--int x86_emulate_insn(struct x86_emulate_ctxt *ctxt);
-+int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts);
- int emulator_task_switch(struct x86_emulate_ctxt *ctxt,
- 			 u16 tss_selector, int idt_index, int reason,
- 			 bool has_error_code, u32 error_code);
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8976,7 +8976,14 @@ restart:
- 		ctxt->exception.address = 0;
- 	}
- 
--	r = x86_emulate_insn(ctxt);
-+	/*
-+	 * Check L1's instruction intercepts when emulating instructions for
-+	 * L2, unless KVM is re-emulating a previously decoded instruction,
-+	 * e.g. to complete userspace I/O, in which case KVM has already
-+	 * checked the intercepts.
-+	 */
-+	r = x86_emulate_insn(ctxt, is_guest_mode(vcpu) &&
-+				   !(emulation_type & EMULTYPE_NO_DECODE));
- 
- 	if (r == EMULATION_INTERCEPTED)
- 		return 1;
+ #define PERF_RECORD_MISC_BUILD_ID_SIZE (1 << 15)
+-- 
+2.51.0
+
 
 
 
