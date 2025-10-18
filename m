@@ -1,586 +1,430 @@
-Return-Path: <stable+bounces-187870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1E6BEDB26
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 22:00:05 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F694BEDB6B
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 22:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BA0019A68ED
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 20:00:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1F2354EF3EE
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 20:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10DF286D4B;
-	Sat, 18 Oct 2025 19:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07F42DC32A;
+	Sat, 18 Oct 2025 20:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="ejlQvqtC"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="tMw3eXu+"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+Received: from iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com [34.198.218.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823D5277C9A;
-	Sat, 18 Oct 2025 19:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760817598; cv=none; b=ggCOsRf39KYsROOPLeloZODi6tWjcTd9R3iJmPSYGGhV71y+Dl4tHeySXFVhNueWM0NU2HSUZPhSNdxG8BsyizcE/ufNmsfT5X4hMeVra1jvVPZnG+WwULTsOoyAJb4+iV3Z670hZ+DCLTJfedsfW+o9ZdXdyr27+HW3LyPHtPw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760817598; c=relaxed/simple;
-	bh=bMV20D65SQY2T5+vRg8Qz5xebhjMdjI0P1Ep0l7Sirg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=loW/iLZ8BVZwl7fAXMDcabYPQI219rIBbrduIYBes8hnIQ5bySt+pV/qAyoduJ0afcCMK3JMeRGOPKD5AWg2sMekJkZ5cC/wtKzEBePb65Zamru6McfTrDuCbSiRhYp3yttuy6D0S03bemtZLsNL31CP9jYLUykpCZR3M1RKYwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=ejlQvqtC; arc=none smtp.client-ip=52.34.181.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B56F2C2369;
+	Sat, 18 Oct 2025 20:07:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=34.198.218.121
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760818075; cv=fail; b=Kaj+gloi7QTqBP1VeQpzVtNifTNWCFkn3s+oGpOH/sps8rXjbPB85yze0TqziEbml+ZVFZq3caJ76vNn4LvjT/S3IkaCe3VQDwHxpk5dP6Sra4O/hl6Ht5KfUBzKXs7luP7KEal8EJQXcSOp9HkKlTASPbu/2TvhIWy0D3vZS3Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760818075; c=relaxed/simple;
+	bh=faTSuBMol+S8aiOV6ICfD5+EPjrZok0AzHQwNcEXMP8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qg9pag0Y8gG5hYaOYNC5neEYMxCo6ZGIyREA7ie8+tBp1knUT56NAyQqQakGpbshEUG9IXJM+2GPPBb+/N+li5/1vPbyAnW3Fq3uEZ9RdsMqoVpjf+MsOcIDrRWkCZF4x5czXWAPDi4nxfyYBvTr9kgfAWyxqncRxCVFLxZGkOI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=tMw3eXu+; arc=fail smtp.client-ip=34.198.218.121
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1760817596; x=1792353596;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=sEYdbCmseZgzNgUq/qO65kcsC90lv2jjfE41BXg79O0=;
-  b=ejlQvqtClOX7gRWZ2jDp9jQiPWKlWWAyxfwONJe/fZGCPRE9WJqU9WUK
-   6pGeGvhrmMS+TxYf69wLWUtcLN80p6wJOVHeuEjDBZmXhM7saNrogbhCY
-   mOSOzlEjQ2ThlYrB6b9cqqAsbMx8vtTiQk91xghu/Jqebo7jhExt+1vyq
-   vgy8RdXtvlXYuZegfYPH4xoVIxKv4vCedPsr2qIGfvW3zNT7EJEz7M5XF
-   xiNI5fFMYaqdM1TXkV/hZzpW+0QaF4sAbEfozmMeAbVgpfUtnEtcwcY88
-   3RJIW+Fy8VUSuQeQph5ButI9ix5DJp/6NaCBsS5pjI9xexz7hsL7ForiZ
-   Q==;
-X-CSE-ConnectionGUID: B8e9Z53URZGiJYgR/wmpLw==
-X-CSE-MsgGUID: sNPGVj6HR/uPqsJ6gHt1xg==
-X-IronPort-AV: E=Sophos;i="6.18,263,1751241600"; 
-   d="scan'208";a="5144657"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 19:59:54 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:10134]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.56.234:2525] with esmtp (Farcaster)
- id 3afe7262-b5b9-4d6d-8904-b41b36d4b890; Sat, 18 Oct 2025 19:59:54 +0000 (UTC)
-X-Farcaster-Flow-ID: 3afe7262-b5b9-4d6d-8904-b41b36d4b890
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+  t=1760818073; x=1792354073;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=faTSuBMol+S8aiOV6ICfD5+EPjrZok0AzHQwNcEXMP8=;
+  b=tMw3eXu+iaXXZHRs71ZJbxxNHmVIBE18gjFY0AllXIwpBiAsg9QaXk1H
+   ++v+0jmoATC4FnwTsDZ+gHg9dl4VOgjPaCtX/C9fB0Tot/xDmvghKnARk
+   kE7N1aM3jPfdiaUpsFntImF/8seeze/i/DnfKNv/269lVXURKk5kf24iD
+   mSbH93Pn5v6wUDsyJRo6Oh/az6QhSVV2FjYeHd2DJ3PiZz4ixaXHK/w+Y
+   UQ9pE+8JJCgeNHQSXW5qS7OehnBc9oO5m9tJ6314GOU7vCiTZNVGc6xYU
+   98nomRNbroicDH6AqVbTylTBysciq9vKCSVy+2vPOwgcTTE4KszuR8IXi
+   g==;
+X-CSE-ConnectionGUID: giSIe6tITsSah9GLTxasFw==
+X-CSE-MsgGUID: /ziCnTclSdq9KqJpm3qZKw==
+X-IronPort-AV: E=Sophos;i="6.18,259,1751241600"; 
+   d="scan'208";a="4219831"
+Received: from ip-10-4-3-150.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.3.150])
+  by internal-iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 20:07:47 +0000
+Received: from EX19MTAUEA002.ant.amazon.com [72.21.196.65:25918]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.61.254:2525] with esmtp (Farcaster)
+ id b8b370c3-14a3-4401-b9fc-de73221abf88; Sat, 18 Oct 2025 20:07:47 +0000 (UTC)
+X-Farcaster-Flow-ID: b8b370c3-14a3-4401-b9fc-de73221abf88
+Received: from EX19EXOUEC002.ant.amazon.com (10.252.135.179) by
+ EX19MTAUEA002.ant.amazon.com (10.252.134.9) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Sat, 18 Oct 2025 19:59:53 +0000
-Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
- (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Sat, 18 Oct 2025 20:07:43 +0000
+Received: from EX19EXOUEC001.ant.amazon.com (10.252.135.173) by
+ EX19EXOUEC002.ant.amazon.com (10.252.135.179) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Sat, 18 Oct 2025 20:07:41 +0000
+Received: from BL2PR08CU001.outbound.protection.outlook.com (10.252.134.239)
+ by EX19EXOUEC001.ant.amazon.com (10.252.135.173) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20
+ via Frontend Transport; Sat, 18 Oct 2025 20:07:41 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dZ7mquB/NZm0MDovCQCZq0H9RRfMhiK60/biMQw/ewXkMDY4Cfx361IGKxbuvW8w3JiycO1/Jtw1yS6uMhBqIZMhWiWRiq+4Q1xVhASNeFJgKH9IEvmoH5T4kT1SmsGk9bCpW9M8ECVmFNrYJeleC30yJ92IoASJO4TICXjqNnVmCX/+P8ogJQ3oS5/r/zjglQ0nS1ZaaNmttxUSWNEi2rRx3pNaqWMkyiVq54WQmzbEbtx9IHHzH1zPSTaciXKgDp0o0VADhqUINgzQaDa6wBSbIJmGLZeEt7wPViAJcYr7vyXfw43ut+Mn5DTputqhcMo7FjLdYHsRo3QuDzL+nQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=faTSuBMol+S8aiOV6ICfD5+EPjrZok0AzHQwNcEXMP8=;
+ b=Y54Kgu/hi7IX+xgSwTP2r/NkBRMFa0L/WWm3WWGGKfKeakm1LBlG3sphEQDRTdKyHBmEah5/ErwPFQLuS9NKCSU/grZJHDgDGZNwgUTtLwGXWoa1A2hhvP+MmuIRAlaDfrnOlDZF1kwWsogifzC0UB9df5fh23JIeiTTwxOlpoALHAGwwkx0jnYEB2Nm23QvW1QUDO4PAqYSfT3eR7PSeC4VeQAn2Rlt9tmcLCS50lR6QSRGIwEd+sZWr7TYqomUXW0J/3cUbqbDUV00EYGl1oJZu3thbLxV2Szhgl1STo8r/Db82rHuY+av++5WHXyrEOuKozg33pVoMR9/B7A+2g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amazon.com; dmarc=pass action=none header.from=amazon.com;
+ dkim=pass header.d=amazon.com; arc=none
+Received: from CH0PR18MB5433.namprd18.prod.outlook.com (2603:10b6:610:181::16)
+ by PH0PR18MB4558.namprd18.prod.outlook.com (2603:10b6:510:ac::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Sat, 18 Oct 2025
- 19:59:51 +0000
-From: Eliav Farber <farbere@amazon.com>
-To: <stf_xl@wp.pl>, <helmut.schaa@googlemail.com>, <kvalo@codeaurora.org>,
-	<davem@davemloft.net>, <kuba@kernel.org>, <linux-wireless@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <nathan@kernel.org>,
-	<farbere@amazon.com>
-CC: "Jason A. Donenfeld" <Jason@zx2c4.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, Kalle Valo <kvalo@kernel.org>, "Naresh
- Kamboju" <naresh.kamboju@linaro.org>
-Subject: [PATCH 5.10.y] wifi: rt2x00: use explicitly signed or unsigned types
-Date: Sat, 18 Oct 2025 19:59:35 +0000
-Message-ID: <20251018195945.18825-1-farbere@amazon.com>
-X-Mailer: git-send-email 2.47.3
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.14; Sat, 18 Oct
+ 2025 20:07:33 +0000
+Received: from CH0PR18MB5433.namprd18.prod.outlook.com
+ ([fe80::1423:ab6b:11cc:7b0]) by CH0PR18MB5433.namprd18.prod.outlook.com
+ ([fe80::1423:ab6b:11cc:7b0%7]) with mapi id 15.20.9228.014; Sat, 18 Oct 2025
+ 20:07:33 +0000
+From: "Farber, Eliav" <farbere@amazon.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, "jdike@addtoit.com" <jdike@addtoit.com>,
+	"richard@nod.at" <richard@nod.at>, "anton.ivanov@cambridgegreys.com"
+	<anton.ivanov@cambridgegreys.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "luto@kernel.org" <luto@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de"
+	<bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com"
+	<hpa@zytor.com>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"qiuxu.zhuo@intel.com" <qiuxu.zhuo@intel.com>, "mchehab@kernel.org"
+	<mchehab@kernel.org>, "james.morse@arm.com" <james.morse@arm.com>,
+	"rric@kernel.org" <rric@kernel.org>, "harry.wentland@amd.com"
+	<harry.wentland@amd.com>, "sunpeng.li@amd.com" <sunpeng.li@amd.com>,
+	"alexander.deucher@amd.com" <alexander.deucher@amd.com>,
+	"christian.koenig@amd.com" <christian.koenig@amd.com>, "airlied@linux.ie"
+	<airlied@linux.ie>, "daniel@ffwll.ch" <daniel@ffwll.ch>, "evan.quan@amd.com"
+	<evan.quan@amd.com>, "james.qian.wang@arm.com" <james.qian.wang@arm.com>,
+	"liviu.dudau@arm.com" <liviu.dudau@arm.com>, "mihail.atanassov@arm.com"
+	<mihail.atanassov@arm.com>, "brian.starkey@arm.com" <brian.starkey@arm.com>,
+	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+	"mripard@kernel.org" <mripard@kernel.org>, "tzimmermann@suse.de"
+	<tzimmermann@suse.de>, "robdclark@gmail.com" <robdclark@gmail.com>,
+	"sean@poorly.run" <sean@poorly.run>, "jdelvare@suse.com" <jdelvare@suse.com>,
+	"linux@roeck-us.net" <linux@roeck-us.net>, "fery@cypress.com"
+	<fery@cypress.com>, "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+	"agk@redhat.com" <agk@redhat.com>, "snitzer@redhat.com" <snitzer@redhat.com>,
+	"dm-devel@redhat.com" <dm-devel@redhat.com>, "rajur@chelsio.com"
+	<rajur@chelsio.com>, "davem@davemloft.net" <davem@davemloft.net>,
+	"kuba@kernel.org" <kuba@kernel.org>, "peppe.cavallaro@st.com"
+	<peppe.cavallaro@st.com>, "alexandre.torgue@st.com"
+	<alexandre.torgue@st.com>, "joabreu@synopsys.com" <joabreu@synopsys.com>,
+	"mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>, "malattia@linux.it"
+	<malattia@linux.it>, "hdegoede@redhat.com" <hdegoede@redhat.com>,
+	"mgross@linux.intel.com" <mgross@linux.intel.com>,
+	"intel-linux-scu@intel.com" <intel-linux-scu@intel.com>,
+	"artur.paszkiewicz@intel.com" <artur.paszkiewicz@intel.com>,
+	"jejb@linux.ibm.com" <jejb@linux.ibm.com>, "martin.petersen@oracle.com"
+	<martin.petersen@oracle.com>, "sakari.ailus@linux.intel.com"
+	<sakari.ailus@linux.intel.com>, "clm@fb.com" <clm@fb.com>,
+	"josef@toxicpanda.com" <josef@toxicpanda.com>, "dsterba@suse.com"
+	<dsterba@suse.com>, "xiang@kernel.org" <xiang@kernel.org>, "chao@kernel.org"
+	<chao@kernel.org>, "jack@suse.com" <jack@suse.com>, "tytso@mit.edu"
+	<tytso@mit.edu>, "adilger.kernel@dilger.ca" <adilger.kernel@dilger.ca>,
+	"dushistov@mail.ru" <dushistov@mail.ru>, "luc.vanoostenryck@gmail.com"
+	<luc.vanoostenryck@gmail.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>,
+	"pmladek@suse.com" <pmladek@suse.com>, "sergey.senozhatsky@gmail.com"
+	<sergey.senozhatsky@gmail.com>, "andriy.shevchenko@linux.intel.com"
+	<andriy.shevchenko@linux.intel.com>, "linux@rasmusvillemoes.dk"
+	<linux@rasmusvillemoes.dk>, "minchan@kernel.org" <minchan@kernel.org>,
+	"ngupta@vflare.org" <ngupta@vflare.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "kuznet@ms2.inr.ac.ru" <kuznet@ms2.inr.ac.ru>,
+	"yoshfuji@linux-ipv6.org" <yoshfuji@linux-ipv6.org>, "pablo@netfilter.org"
+	<pablo@netfilter.org>, "kadlec@netfilter.org" <kadlec@netfilter.org>,
+	"fw@strlen.de" <fw@strlen.de>, "jmaloy@redhat.com" <jmaloy@redhat.com>,
+	"ying.xue@windriver.com" <ying.xue@windriver.com>, "willy@infradead.org"
+	<willy@infradead.org>, "sashal@kernel.org" <sashal@kernel.org>,
+	"ruanjinjie@huawei.com" <ruanjinjie@huawei.com>, "David.Laight@aculab.com"
+	<David.Laight@aculab.com>, "herve.codina@bootlin.com"
+	<herve.codina@bootlin.com>, "Jason@zx2c4.com" <Jason@zx2c4.com>,
+	"keescook@chromium.org" <keescook@chromium.org>, "kbusch@kernel.org"
+	<kbusch@kernel.org>, "nathan@kernel.org" <nathan@kernel.org>,
+	"bvanassche@acm.org" <bvanassche@acm.org>, "ndesaulniers@google.com"
+	<ndesaulniers@google.com>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-um@lists.infradead.org"
+	<linux-um@lists.infradead.org>, "linux-edac@vger.kernel.org"
+	<linux-edac@vger.kernel.org>, "amd-gfx@lists.freedesktop.org"
+	<amd-gfx@lists.freedesktop.org>, "dri-devel@lists.freedesktop.org"
+	<dri-devel@lists.freedesktop.org>, "linux-arm-msm@vger.kernel.org"
+	<linux-arm-msm@vger.kernel.org>, "freedreno@lists.freedesktop.org"
+	<freedreno@lists.freedesktop.org>, "linux-hwmon@vger.kernel.org"
+	<linux-hwmon@vger.kernel.org>, "linux-input@vger.kernel.org"
+	<linux-input@vger.kernel.org>, "linux-media@vger.kernel.org"
+	<linux-media@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-stm32@st-md-mailman.stormreply.com"
+	<linux-stm32@st-md-mailman.stormreply.com>,
+	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
+	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+	"linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
+	"linux-erofs@lists.ozlabs.org" <linux-erofs@lists.ozlabs.org>,
+	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
+	"linux-sparse@vger.kernel.org" <linux-sparse@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "netfilter-devel@vger.kernel.org"
+	<netfilter-devel@vger.kernel.org>, "coreteam@netfilter.org"
+	<coreteam@netfilter.org>, "tipc-discussion@lists.sourceforge.net"
+	<tipc-discussion@lists.sourceforge.net>, "Farber, Eliav" <farbere@amazon.com>
+Subject: RE: [PATCH v2 00/27 5.10.y] Backport minmax.h updates from v6.17-rc7
+Thread-Topic: [PATCH v2 00/27 5.10.y] Backport minmax.h updates from v6.17-rc7
+Thread-Index: AQHcQGrWt9KuxcR5vUiwU3AnN2A8Rw==
+Date: Sat, 18 Oct 2025 20:07:32 +0000
+Message-ID: <CH0PR18MB5433BB2E99395D2AC8B0E0FBC6F7A@CH0PR18MB5433.namprd18.prod.outlook.com>
+References: <20251017090519.46992-1-farbere@amazon.com>
+ <2025101704-rumble-chatroom-60b5@gregkh>
+In-Reply-To: <2025101704-rumble-chatroom-60b5@gregkh>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amazon.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH0PR18MB5433:EE_|PH0PR18MB4558:EE_
+x-ms-office365-filtering-correlation-id: f5d260fd-b8cb-46ea-5ff8-08de0e81f93a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021;
+x-microsoft-antispam-message-info: =?utf-8?B?WVNPOVJSUmdZU1NwaGlDMDRQbXNCdE51WnRZZGN1VHA3MlVSeUxTcWtMV2hO?=
+ =?utf-8?B?Y0ZMYVRtaGhnS0IzUk9mMFd2MWpGVTAxY1dRTWV1bHZIK2JGTVRVQS9LSzFn?=
+ =?utf-8?B?anE5YzVrWjVvaEdCSjExTDNBZnB1WUVwSVhFeEhJNVZXVWVWL1QrYk1EMmJw?=
+ =?utf-8?B?dFBybTVhSmFEWkovWTdzZ0JYcWFQb3VhbnlqRU1oQ2RrOTZuU2tSZldKNGNs?=
+ =?utf-8?B?c1FTeklkQnJ4dG1kM1hYMkNQVnNhdXF6elFnQkViZldFWmhITTdGZWRmS2Q4?=
+ =?utf-8?B?Nk9sbVJLSSs5c1liOVUzTjN6MGlpOXo4RGtDUjlESUl3eVRySFA5dWFVWXhN?=
+ =?utf-8?B?K01KOElma1hrT1BpSzZuNnYveUNwYXZZdmFEc3ZQTTR2alJ1OGVTNlN3QVhu?=
+ =?utf-8?B?WmZYT1RiOWlHbzgrdmlvWC90RU51N3hMbzJUeTUzcUpkTHM5UzJncUVCOXEx?=
+ =?utf-8?B?OThGMTV0U0xETWptOS9Oa0h4d2RTdzJtK2xuWEUxWUZBMjF5UnBsZmdYU2tv?=
+ =?utf-8?B?YWpreSttNk8xV1hxTU9NY1hmQWFNZ2pwTFRrQXk4OGl3NzkvK1JvWEt0b0pk?=
+ =?utf-8?B?Uk82emVEV1JLaXh0OEh2QkVoSzFsTE9kTFk5cUdwc3ljTjFpK1p5V2dOdFBK?=
+ =?utf-8?B?YjNtSE0xTU5iTXBqd3hsczJoWDRqVy8zS1hOK3JydWJ1UENSYkFuZVdaS3Bs?=
+ =?utf-8?B?ZjNOYnI5dkNMc25WYjMwdUZhMm4raVNQTGxXb3VBaGZpOWVuNXllcEE5Y1J0?=
+ =?utf-8?B?emU4Wkp6bmNXMVhEcWRzaGdWTm9WMmdFMzBXbDRRZ2ZaTkloZVhvVlhoTWxY?=
+ =?utf-8?B?cWJhOU4vZnpkbzR5OFYybFBIMEY4UDFiME1HVFhabC9CWkNDYm5vQm94VFZW?=
+ =?utf-8?B?djhqYTJHdjdGSXd2Tys3dDBEbUFHOU8rZEVEcXM5SHpRMjR5RjVxZFVQNnFC?=
+ =?utf-8?B?bmxSTEJrVE1ybEcvMkRLbWc1QS9uOC9peWdUOENLb0xFUC9xNms0aC9aRURK?=
+ =?utf-8?B?YlB5c1VhOEZ2WkpoWUtQdFltQVZoNXN6c0pJVjVFbE1lNjAvaDRmUTFzK0tB?=
+ =?utf-8?B?dEc2TVE2ckczZGhnZVlLbVFXNFRsUk55QmlIbmVGdENnQmttWjRra2dlMFZL?=
+ =?utf-8?B?OTBuc2JtMnEzcmlzdUUyYXkvM0hpVHJ4czYxdmdxWFB6alhENFpGbEs3Qll3?=
+ =?utf-8?B?YTF4b3lBS3dYQTZsR1lybHREZU45UVRmdXBndFBZUVdEbzJvWTdTcGJEWldx?=
+ =?utf-8?B?dllZT1NTSXFYMEZ3ZGh6TEIvRDZNbDRWT2xxUThHZHEvSllFdjk3bElVQUxV?=
+ =?utf-8?B?TGN2eEEwZzVnM3lMOGJGNjlxdmJBRS9zMzg4U1hwTjJqR05aZnRrdTlzSzM0?=
+ =?utf-8?B?WTBZRGovOTJYZ296RDdTUXNzenhaMzdBcWE0Z0xPZE84UFpyRUVISUgrdFNR?=
+ =?utf-8?B?SGM4TmtMeE5nZXB6TDN1RUVUaERGYTdQc3dPS1pIREV6ZjhYNytzOUg3eHdz?=
+ =?utf-8?B?Mk1lWWRXNmI4UUlRYVBrTGF3eEpRNXkxQ3o2RkJPemhobVllTVZ4Ukp0RjVW?=
+ =?utf-8?B?UG1uV3QvMzBkOFZlMkJ6M2tvalJFSmpKcTQvMWdEb0ZKWTIwLzdRRzRyUE1U?=
+ =?utf-8?B?UmpHYVVTclNXeGcvU0VKL0tlUzA0a3lwdWM4MTFFT2lMbHR2cmpDcEcwREhT?=
+ =?utf-8?B?eDdkSktnd1ZHZkw3cE1KS2hzellQeThwbjBGMjNyWHRwb1dNcUZ0eDJPTU9l?=
+ =?utf-8?B?aUtKQmxvdGtzeFc2enR3S1cvanJHZzZmTE04VUJnd3dGNTIvWG0za3FuekFI?=
+ =?utf-8?B?bU56d2ZUTnBDOVZQM3ArUzdWNU1rV25YN3VFY2hSNEkvb2NOdlg2MFo5a3c4?=
+ =?utf-8?B?WE80VVlmQ0dlait1djVpeXk2ajY3UjZ1ajg4S2JaNjIzVFVmZmtqcnhZYkpT?=
+ =?utf-8?B?QktycVRHVlM5UFg5M3BaeFFpQVB2OUxyMDVYR3A3Q2xyL2R1a0tLRy9tRVlt?=
+ =?utf-8?B?TFdUS3VybkNBPT0=?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR18MB5433.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZWVhdGxieG1obWpVczZVUEVPMm93cEtvVDhoaHQ1SnZNcTFyZlI5cXhVcFJT?=
+ =?utf-8?B?Rk15WjBTSFRkbVEvQVRvR3N3VTJFbi9iQkJXVFA2bGNPVUo3MGc4Y3U4V0Js?=
+ =?utf-8?B?MTZtdW92N2J3Tm1ubmx1OXV4RjBzYU1HUDZEK3RqeGdMbDFtNEoyYzdLVFNw?=
+ =?utf-8?B?TEZIWFphVE11UXJKN25EMHdMMysyL3ZoYWw5aU5uL2RRdDY4eWlPdEF6aGN2?=
+ =?utf-8?B?OEZjQVgxekFwNkk2aEpmQTJ1QWcvWTZia2NEdDdIUHlnMkZONXIxQTAvY3Zz?=
+ =?utf-8?B?aXFEODFLcHZkcnpSK0NEd3JQZ0F0UmFlL0hzWWtSOExBaDBzQUFNaFYyV3VL?=
+ =?utf-8?B?ZE9LS0dac2t1ekFVTVNYMkl2TTJKWXdpb0ZzbHphUVd4NVUwQTBQOEdDWTlF?=
+ =?utf-8?B?cTAzUktCaWVyQjFvRGhhcUc5NlRRMmNzYTg3UDJEKytKU3FVRXBaTk1kRC9N?=
+ =?utf-8?B?NzFpN2ZJeGxPMTQwZWkwdWJ1VFZvY2V4Vm4ybDJ5SnlyYmVNRTZ4WkVlcWlG?=
+ =?utf-8?B?K3BDYjF5V1NFQTg3L0hra0ZzVWVWSHdWRXhpNDhHdHdZUjZvbVh1TVJNYVlS?=
+ =?utf-8?B?d3o5REdrUHZoZjVlT1VJck1haWlnK0ZIb3dxaEhjaC9DZzVxTytQWmNEWGl1?=
+ =?utf-8?B?T1ZkNFpLZitmb2FxRjZxdTB3K25JLzFmc3RJTUE4bDhHdkZvOFJLd2k2NjJW?=
+ =?utf-8?B?VE9uTEhmdERLRllIR3VQR3RweFVHR2o5Y0tLenlTMTIxSlloVEt0SGpFcFZS?=
+ =?utf-8?B?S2QveVk3amJmTjg3S3dyeUN2Vk5kWlB2NkJIOHRQY1Q0d21RMFpidndCbDNH?=
+ =?utf-8?B?bGc4Nnh4SWRiY1ZQWFM2TmcvN0ZQeFJCN2hmbURveGJOUS90Qis3Z0htNkpx?=
+ =?utf-8?B?dkE2WWpjOFJMOGlYUkpjaTFidWZiK1N4dkJMcGRDMklNTHU1L3p6VGpaUG5Y?=
+ =?utf-8?B?TmVXVEtiTnlDRG9nT3BtMzhZMW9mdTJYdWtLbjJ0ZDM0anlZUEprQ1VoaDRF?=
+ =?utf-8?B?OGJabXJmcXFYbTJYOEJNRWdFZ1c0UGN2dElVNFN3NU5YUC83bUlOZXN5RWJR?=
+ =?utf-8?B?QmUvVHZOdEluY3hOalZRUDczMkZaRGh5MFZtS2Vyd0hENHRnbHI3SVhFYUFV?=
+ =?utf-8?B?UlhzMHVxdmU3dWVWUnUzTlVnSlpLSE1HTzRiVEJCMDJ3OGdLM096OWlja0hv?=
+ =?utf-8?B?TTZETC9GWjB5aWJBN2paNEhZOHZBNVY4Nk1IaU4rUDdMQmd3Ym9tOEVtU1ZZ?=
+ =?utf-8?B?OEFLc01BRW9JSjh4NjF3UW14ZEVNVExaQVl0Nkx2UXNPYVdrMlJvYWhDYkZw?=
+ =?utf-8?B?ZjNkMGVZMjNVcUxnQUREV20vM1IrNndEcElCZEc5N2o0dUZ2Y3hIRmNEQnVx?=
+ =?utf-8?B?OXpCcjN0bGZIKzAvNTZoRE9XZldTdlk2WE9TTEExc2JXU0syVmlzaHBvY1Zs?=
+ =?utf-8?B?MEFHWTg0M3REbTlnWUN3dVQ2eDBVaVNpNVVBaHBEb0VmUE56cHZIblQ3NEtu?=
+ =?utf-8?B?RHJpUDVNNEUxRUg0bTBFQ1RDcTlmV21HdXd3aUxmZTczRFJ1WCtxcyt6Q2Fy?=
+ =?utf-8?B?cHB5RDIrV2ZDRGozcGVwVlp4UURzbmwzenNoeFlZdmlJQWRDdWR4TnEyU1pR?=
+ =?utf-8?B?ckh5ajV1REhiTjBEM05DZzR4MlFVOGpIOWFvbFpSdWNDRkJubHdjQTVsaFkx?=
+ =?utf-8?B?aERneHpmMzliWTJDQkZCM3FTU3NqcGlVZSttdTM4MHk2djltWkRwUWdVRHJj?=
+ =?utf-8?B?TFVqMmhUTGFCSDh2YkcvcnMxZ0ZYNWxNbnR5RDhqQnJad0Y5NG00UWo1WXc3?=
+ =?utf-8?B?aS9QRzF3a2RPUHFoS1gvSWUrcGhZNzVDR1JiVGhFcUh2MFREbUlGbG1Iclhk?=
+ =?utf-8?B?d1hoUFRMZUx5VTlDbGhLZ3dCaWVtUkFzQ0kwaHpDSnNFZURiQUhVZXlxdEp4?=
+ =?utf-8?B?NXhlRjRJSW90REVmTUwweEo1RHpYdzNyM0VxY1I3NmJwSU9BZVdyU0NhSjh2?=
+ =?utf-8?B?N0hYZEJ5bkFkQWtwak0rSnJaQmUxYmtuQ1kvTmZWdDhTWlJlS3o3OGkyUUUr?=
+ =?utf-8?B?bWltY243dDNBMVhEUzJ1NVJnNzhSZ3J4VkFkMXljakxwYUNjT3BzbmdGMEFY?=
+ =?utf-8?Q?FYN4=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EX19D037UWC001.ant.amazon.com (10.13.139.197) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR18MB5433.namprd18.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5d260fd-b8cb-46ea-5ff8-08de0e81f93a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Oct 2025 20:07:32.8050
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: g+ny1zt614LyeAmtN+QMZX+GivZb18A4g+iLjEgNWGUZ+g/wjXRYpBLk6Oob+KdDOZBbiA6OODP6Limctphz8w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR18MB4558
+X-OriginatorOrg: amazon.com
 
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-
-commit 66063033f77e10b985258126a97573f84bb8d3b4 upstream.
-
-On some platforms, `char` is unsigned, but this driver, for the most
-part, assumed it was signed. In other places, it uses `char` to mean an
-unsigned number, but only in cases when the values are small. And in
-still other places, `char` is used as a boolean. Put an end to this
-confusion by declaring explicit types, depending on the context.
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: Helmut Schaa <helmut.schaa@googlemail.com>
-Cc: Kalle Valo <kvalo@kernel.org>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20221019155541.3410813-1-Jason@zx2c4.com
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
----
-This backport is required to fix build errors on an arm64 server when building with allmodconfig.
-The build failures were introduced after backporting:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/queue-5.10?id=37c71b96ff37b6a069569841b1baa51be72299b2
-
-The original commit in the mainline branch is:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/net/wireless/ralink/rt2x00/rt2800lib.c?h=v6.18-rc1&id=66063033f77e10b985258126a97573f84bb8d3b4
-
-This fix already exists in 5.15.y:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/net/wireless/ralink/rt2x00/rt2800lib.c?h=v5.15.194&id=2d3cef3d7a5df260a14a6679c4aca0c97e570ee5
-…but is missing in 5.10.y.
-
-
-The error encountered during the build:
-
-In file included from <command-line>:
-In function ‘rt2800_txpower_to_dev’,
-    inlined from ‘rt2800_config_channel’ at drivers/net/wireless/ralink/rt2x00/rt2800lib.c:4022:25:
-././include/linux/compiler_types.h:309:45: error: call to ‘__compiletime_assert_1168’ declared with attribute error: clamp() low limit -7 greater than high limit 15
-  309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-      |                                             ^
-././include/linux/compiler_types.h:290:25: note: in definition of macro ‘__compiletime_assert’
-  290 |                         prefix ## suffix();                             \
-      |                         ^~~~~~
-././include/linux/compiler_types.h:309:9: note: in expansion of macro ‘_compiletime_assert’
-  309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-      |         ^~~~~~~~~~~~~~~~~~~
-./include/linux/build_bug.h:39:37: note: in expansion of macro ‘compiletime_assert’
-   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-      |                                     ^~~~~~~~~~~~~~~~~~
-./include/linux/minmax.h:188:9: note: in expansion of macro ‘BUILD_BUG_ON_MSG’
-  188 |         BUILD_BUG_ON_MSG(statically_true(ulo > uhi),                            \
-      |         ^~~~~~~~~~~~~~~~
-./include/linux/minmax.h:195:9: note: in expansion of macro ‘__clamp_once’
-  195 |         __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-      |         ^~~~~~~~~~~~
-./include/linux/minmax.h:218:36: note: in expansion of macro ‘__careful_clamp’
-  218 | #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
-      |                                    ^~~~~~~~~~~~~~~
-drivers/net/wireless/ralink/rt2x00/rt2800lib.c:3980:24: note: in expansion of macro ‘clamp_t’
- 3980 |                 return clamp_t(char, txpower, MIN_A_TXPOWER, MAX_A_TXPOWER);
-      |                        ^~~~~~~
-In function ‘rt2800_txpower_to_dev’,
-    inlined from ‘rt2800_config_channel’ at drivers/net/wireless/ralink/rt2x00/rt2800lib.c:4024:25:
-././include/linux/compiler_types.h:309:45: error: call to ‘__compiletime_assert_1168’ declared with attribute error: clamp() low limit -7 greater than high limit 15
-  309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-      |                                             ^
-././include/linux/compiler_types.h:290:25: note: in definition of macro ‘__compiletime_assert’
-  290 |                         prefix ## suffix();                             \
-      |                         ^~~~~~
-././include/linux/compiler_types.h:309:9: note: in expansion of macro ‘_compiletime_assert’
-  309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-      |         ^~~~~~~~~~~~~~~~~~~
-./include/linux/build_bug.h:39:37: note: in expansion of macro ‘compiletime_assert’
-   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-      |                                     ^~~~~~~~~~~~~~~~~~
-./include/linux/minmax.h:188:9: note: in expansion of macro ‘BUILD_BUG_ON_MSG’
-  188 |         BUILD_BUG_ON_MSG(statically_true(ulo > uhi),                            \
-      |         ^~~~~~~~~~~~~~~~
-./include/linux/minmax.h:195:9: note: in expansion of macro ‘__clamp_once’
-  195 |         __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-      |         ^~~~~~~~~~~~
-./include/linux/minmax.h:218:36: note: in expansion of macro ‘__careful_clamp’
-  218 | #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
-      |                                    ^~~~~~~~~~~~~~~
-drivers/net/wireless/ralink/rt2x00/rt2800lib.c:3980:24: note: in expansion of macro ‘clamp_t’
- 3980 |                 return clamp_t(char, txpower, MIN_A_TXPOWER, MAX_A_TXPOWER);
-      |                        ^~~~~~~
-In function ‘rt2800_txpower_to_dev’,
-    inlined from ‘rt2800_config_channel’ at drivers/net/wireless/ralink/rt2x00/rt2800lib.c:4028:4:
-././include/linux/compiler_types.h:309:45: error: call to ‘__compiletime_assert_1168’ declared with attribute error: clamp() low limit -7 greater than high limit 15
-  309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-      |                                             ^
-././include/linux/compiler_types.h:290:25: note: in definition of macro ‘__compiletime_assert’
-  290 |                         prefix ## suffix();                             \
-      |                         ^~~~~~
-././include/linux/compiler_types.h:309:9: note: in expansion of macro ‘_compiletime_assert’
-  309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-      |         ^~~~~~~~~~~~~~~~~~~
-./include/linux/build_bug.h:39:37: note: in expansion of macro ‘compiletime_assert’
-   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-      |                                     ^~~~~~~~~~~~~~~~~~
-./include/linux/minmax.h:188:9: note: in expansion of macro ‘BUILD_BUG_ON_MSG’
-  188 |         BUILD_BUG_ON_MSG(statically_true(ulo > uhi),                            \
-      |         ^~~~~~~~~~~~~~~~
-./include/linux/minmax.h:195:9: note: in expansion of macro ‘__clamp_once’
-  195 |         __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-      |         ^~~~~~~~~~~~
-./include/linux/minmax.h:218:36: note: in expansion of macro ‘__careful_clamp’
-  218 | #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
-      |                                    ^~~~~~~~~~~~~~~
-drivers/net/wireless/ralink/rt2x00/rt2800lib.c:3980:24: note: in expansion of macro ‘clamp_t’
- 3980 |                 return clamp_t(char, txpower, MIN_A_TXPOWER, MAX_A_TXPOWER);
-      |                        ^~~~~~~
-make[5]: *** [scripts/Makefile.build:286: drivers/net/wireless/ralink/rt2x00/rt2800lib.o] Error 1
-make[4]: *** [scripts/Makefile.build:503: drivers/net/wireless/ralink/rt2x00] Error 2
-make[3]: *** [scripts/Makefile.build:503: drivers/net/wireless/ralink] Error 2
-make[2]: *** [scripts/Makefile.build:503: drivers/net/wireless] Error 2
-make[1]: *** [scripts/Makefile.build:503: drivers/net] Error 2
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1851: drivers] Error 2
-make: *** Waiting for unfinished jobs....
-  CC [M]  kernel/kheaders.o
-
-
- .../net/wireless/ralink/rt2x00/rt2400pci.c    |  8 ++---
- .../net/wireless/ralink/rt2x00/rt2400pci.h    |  2 +-
- .../net/wireless/ralink/rt2x00/rt2500pci.c    |  8 ++---
- .../net/wireless/ralink/rt2x00/rt2500pci.h    |  2 +-
- .../net/wireless/ralink/rt2x00/rt2500usb.c    |  8 ++---
- .../net/wireless/ralink/rt2x00/rt2500usb.h    |  2 +-
- .../net/wireless/ralink/rt2x00/rt2800lib.c    | 36 +++++++++----------
- .../net/wireless/ralink/rt2x00/rt2800lib.h    |  8 ++---
- .../net/wireless/ralink/rt2x00/rt2x00usb.c    |  6 ++--
- drivers/net/wireless/ralink/rt2x00/rt61pci.c  |  4 +--
- drivers/net/wireless/ralink/rt2x00/rt61pci.h  |  2 +-
- drivers/net/wireless/ralink/rt2x00/rt73usb.c  |  4 +--
- drivers/net/wireless/ralink/rt2x00/rt73usb.h  |  2 +-
- 13 files changed, 46 insertions(+), 46 deletions(-)
-
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2400pci.c b/drivers/net/wireless/ralink/rt2x00/rt2400pci.c
-index 8f860c14da58..1520785c3ddb 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2400pci.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2400pci.c
-@@ -1023,9 +1023,9 @@ static int rt2400pci_set_state(struct rt2x00_dev *rt2x00dev,
- {
- 	u32 reg, reg2;
- 	unsigned int i;
--	char put_to_sleep;
--	char bbp_state;
--	char rf_state;
-+	bool put_to_sleep;
-+	u8 bbp_state;
-+	u8 rf_state;
- 
- 	put_to_sleep = (state != STATE_AWAKE);
- 
-@@ -1561,7 +1561,7 @@ static int rt2400pci_probe_hw_mode(struct rt2x00_dev *rt2x00dev)
- {
- 	struct hw_mode_spec *spec = &rt2x00dev->spec;
- 	struct channel_info *info;
--	char *tx_power;
-+	u8 *tx_power;
- 	unsigned int i;
- 
- 	/*
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2400pci.h b/drivers/net/wireless/ralink/rt2x00/rt2400pci.h
-index b8187b6de143..979d5fd8babf 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2400pci.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2400pci.h
-@@ -939,7 +939,7 @@
- #define DEFAULT_TXPOWER	39
- 
- #define __CLAMP_TX(__txpower) \
--	clamp_t(char, (__txpower), MIN_TXPOWER, MAX_TXPOWER)
-+	clamp_t(u8, (__txpower), MIN_TXPOWER, MAX_TXPOWER)
- 
- #define TXPOWER_FROM_DEV(__txpower) \
- 	((__CLAMP_TX(__txpower) - MAX_TXPOWER) + MIN_TXPOWER)
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2500pci.c b/drivers/net/wireless/ralink/rt2x00/rt2500pci.c
-index e940443c52ad..1be535c74917 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2500pci.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2500pci.c
-@@ -1176,9 +1176,9 @@ static int rt2500pci_set_state(struct rt2x00_dev *rt2x00dev,
- {
- 	u32 reg, reg2;
- 	unsigned int i;
--	char put_to_sleep;
--	char bbp_state;
--	char rf_state;
-+	bool put_to_sleep;
-+	u8 bbp_state;
-+	u8 rf_state;
- 
- 	put_to_sleep = (state != STATE_AWAKE);
- 
-@@ -1856,7 +1856,7 @@ static int rt2500pci_probe_hw_mode(struct rt2x00_dev *rt2x00dev)
- {
- 	struct hw_mode_spec *spec = &rt2x00dev->spec;
- 	struct channel_info *info;
--	char *tx_power;
-+	u8 *tx_power;
- 	unsigned int i;
- 
- 	/*
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2500pci.h b/drivers/net/wireless/ralink/rt2x00/rt2500pci.h
-index 7e64aee2a172..ba362675c52c 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2500pci.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2500pci.h
-@@ -1219,6 +1219,6 @@
- 	(((u8)(__txpower)) > MAX_TXPOWER) ? DEFAULT_TXPOWER : (__txpower)
- 
- #define TXPOWER_TO_DEV(__txpower) \
--	clamp_t(char, __txpower, MIN_TXPOWER, MAX_TXPOWER)
-+	clamp_t(u8, __txpower, MIN_TXPOWER, MAX_TXPOWER)
- 
- #endif /* RT2500PCI_H */
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2500usb.c b/drivers/net/wireless/ralink/rt2x00/rt2500usb.c
-index fce05fc88aaf..6d12e3879a90 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2500usb.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2500usb.c
-@@ -984,9 +984,9 @@ static int rt2500usb_set_state(struct rt2x00_dev *rt2x00dev,
- 	u16 reg;
- 	u16 reg2;
- 	unsigned int i;
--	char put_to_sleep;
--	char bbp_state;
--	char rf_state;
-+	bool put_to_sleep;
-+	u8 bbp_state;
-+	u8 rf_state;
- 
- 	put_to_sleep = (state != STATE_AWAKE);
- 
-@@ -1663,7 +1663,7 @@ static int rt2500usb_probe_hw_mode(struct rt2x00_dev *rt2x00dev)
- {
- 	struct hw_mode_spec *spec = &rt2x00dev->spec;
- 	struct channel_info *info;
--	char *tx_power;
-+	u8 *tx_power;
- 	unsigned int i;
- 
- 	/*
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2500usb.h b/drivers/net/wireless/ralink/rt2x00/rt2500usb.h
-index 0c070288a140..746f0e950b76 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2500usb.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2500usb.h
-@@ -839,6 +839,6 @@
- 	(((u8)(__txpower)) > MAX_TXPOWER) ? DEFAULT_TXPOWER : (__txpower)
- 
- #define TXPOWER_TO_DEV(__txpower) \
--	clamp_t(char, __txpower, MIN_TXPOWER, MAX_TXPOWER)
-+	clamp_t(u8, __txpower, MIN_TXPOWER, MAX_TXPOWER)
- 
- #endif /* RT2500USB_H */
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index 4bdd3a95f2d2..adea793c6a76 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -3297,10 +3297,10 @@ static void rt2800_config_channel_rf53xx(struct rt2x00_dev *rt2x00dev,
- 	if (rt2x00_has_cap_bt_coexist(rt2x00dev)) {
- 		if (rt2x00_rt_rev_gte(rt2x00dev, RT5390, REV_RT5390F)) {
- 			/* r55/r59 value array of channel 1~14 */
--			static const char r55_bt_rev[] = {0x83, 0x83,
-+			static const u8 r55_bt_rev[] = {0x83, 0x83,
- 				0x83, 0x73, 0x73, 0x63, 0x53, 0x53,
- 				0x53, 0x43, 0x43, 0x43, 0x43, 0x43};
--			static const char r59_bt_rev[] = {0x0e, 0x0e,
-+			static const u8 r59_bt_rev[] = {0x0e, 0x0e,
- 				0x0e, 0x0e, 0x0e, 0x0b, 0x0a, 0x09,
- 				0x07, 0x07, 0x07, 0x07, 0x07, 0x07};
- 
-@@ -3309,7 +3309,7 @@ static void rt2800_config_channel_rf53xx(struct rt2x00_dev *rt2x00dev,
- 			rt2800_rfcsr_write(rt2x00dev, 59,
- 					   r59_bt_rev[idx]);
- 		} else {
--			static const char r59_bt[] = {0x8b, 0x8b, 0x8b,
-+			static const u8 r59_bt[] = {0x8b, 0x8b, 0x8b,
- 				0x8b, 0x8b, 0x8b, 0x8b, 0x8a, 0x89,
- 				0x88, 0x88, 0x86, 0x85, 0x84};
- 
-@@ -3317,10 +3317,10 @@ static void rt2800_config_channel_rf53xx(struct rt2x00_dev *rt2x00dev,
- 		}
- 	} else {
- 		if (rt2x00_rt_rev_gte(rt2x00dev, RT5390, REV_RT5390F)) {
--			static const char r55_nonbt_rev[] = {0x23, 0x23,
-+			static const u8 r55_nonbt_rev[] = {0x23, 0x23,
- 				0x23, 0x23, 0x13, 0x13, 0x03, 0x03,
- 				0x03, 0x03, 0x03, 0x03, 0x03, 0x03};
--			static const char r59_nonbt_rev[] = {0x07, 0x07,
-+			static const u8 r59_nonbt_rev[] = {0x07, 0x07,
- 				0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
- 				0x07, 0x07, 0x06, 0x05, 0x04, 0x04};
- 
-@@ -3331,14 +3331,14 @@ static void rt2800_config_channel_rf53xx(struct rt2x00_dev *rt2x00dev,
- 		} else if (rt2x00_rt(rt2x00dev, RT5390) ||
- 			   rt2x00_rt(rt2x00dev, RT5392) ||
- 			   rt2x00_rt(rt2x00dev, RT6352)) {
--			static const char r59_non_bt[] = {0x8f, 0x8f,
-+			static const u8 r59_non_bt[] = {0x8f, 0x8f,
- 				0x8f, 0x8f, 0x8f, 0x8f, 0x8f, 0x8d,
- 				0x8a, 0x88, 0x88, 0x87, 0x87, 0x86};
- 
- 			rt2800_rfcsr_write(rt2x00dev, 59,
- 					   r59_non_bt[idx]);
- 		} else if (rt2x00_rt(rt2x00dev, RT5350)) {
--			static const char r59_non_bt[] = {0x0b, 0x0b,
-+			static const u8 r59_non_bt[] = {0x0b, 0x0b,
- 				0x0b, 0x0b, 0x0b, 0x0b, 0x0b, 0x0a,
- 				0x0a, 0x09, 0x08, 0x07, 0x07, 0x06};
- 
-@@ -3961,23 +3961,23 @@ static void rt2800_iq_calibrate(struct rt2x00_dev *rt2x00dev, int channel)
- 	rt2800_bbp_write(rt2x00dev, 159, cal != 0xff ? cal : 0);
- }
- 
--static char rt2800_txpower_to_dev(struct rt2x00_dev *rt2x00dev,
-+static s8 rt2800_txpower_to_dev(struct rt2x00_dev *rt2x00dev,
- 				  unsigned int channel,
--				  char txpower)
-+				  s8 txpower)
- {
- 	if (rt2x00_rt(rt2x00dev, RT3593) ||
- 	    rt2x00_rt(rt2x00dev, RT3883))
- 		txpower = rt2x00_get_field8(txpower, EEPROM_TXPOWER_ALC);
- 
- 	if (channel <= 14)
--		return clamp_t(char, txpower, MIN_G_TXPOWER, MAX_G_TXPOWER);
-+		return clamp_t(s8, txpower, MIN_G_TXPOWER, MAX_G_TXPOWER);
- 
- 	if (rt2x00_rt(rt2x00dev, RT3593) ||
- 	    rt2x00_rt(rt2x00dev, RT3883))
--		return clamp_t(char, txpower, MIN_A_TXPOWER_3593,
-+		return clamp_t(s8, txpower, MIN_A_TXPOWER_3593,
- 			       MAX_A_TXPOWER_3593);
- 	else
--		return clamp_t(char, txpower, MIN_A_TXPOWER, MAX_A_TXPOWER);
-+		return clamp_t(s8, txpower, MIN_A_TXPOWER, MAX_A_TXPOWER);
- }
- 
- static void rt3883_bbp_adjust(struct rt2x00_dev *rt2x00dev,
-@@ -8473,11 +8473,11 @@ static int rt2800_rf_lp_config(struct rt2x00_dev *rt2x00dev, bool btxcal)
- 	return 0;
- }
- 
--static char rt2800_lp_tx_filter_bw_cal(struct rt2x00_dev *rt2x00dev)
-+static s8 rt2800_lp_tx_filter_bw_cal(struct rt2x00_dev *rt2x00dev)
- {
- 	unsigned int cnt;
- 	u8 bbp_val;
--	char cal_val;
-+	s8 cal_val;
- 
- 	rt2800_bbp_dcoc_write(rt2x00dev, 0, 0x82);
- 
-@@ -8509,7 +8509,7 @@ static void rt2800_bw_filter_calibration(struct rt2x00_dev *rt2x00dev,
- 	u8 rx_filter_target_20m = 0x27, rx_filter_target_40m = 0x31;
- 	int loop = 0, is_ht40, cnt;
- 	u8 bbp_val, rf_val;
--	char cal_r32_init, cal_r32_val, cal_diff;
-+	s8 cal_r32_init, cal_r32_val, cal_diff;
- 	u8 saverfb5r00, saverfb5r01, saverfb5r03, saverfb5r04, saverfb5r05;
- 	u8 saverfb5r06, saverfb5r07;
- 	u8 saverfb5r08, saverfb5r17, saverfb5r18, saverfb5r19, saverfb5r20;
-@@ -9960,9 +9960,9 @@ static int rt2800_probe_hw_mode(struct rt2x00_dev *rt2x00dev)
- {
- 	struct hw_mode_spec *spec = &rt2x00dev->spec;
- 	struct channel_info *info;
--	char *default_power1;
--	char *default_power2;
--	char *default_power3;
-+	s8 *default_power1;
-+	s8 *default_power2;
-+	s8 *default_power3;
- 	unsigned int i, tx_chains, rx_chains;
- 	u32 reg;
- 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-index 1139405c0ebb..6928f352f631 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-@@ -22,10 +22,10 @@
- struct rt2800_drv_data {
- 	u8 calibration_bw20;
- 	u8 calibration_bw40;
--	char rx_calibration_bw20;
--	char rx_calibration_bw40;
--	char tx_calibration_bw20;
--	char tx_calibration_bw40;
-+	s8 rx_calibration_bw20;
-+	s8 rx_calibration_bw40;
-+	s8 tx_calibration_bw20;
-+	s8 tx_calibration_bw40;
- 	u8 bbp25;
- 	u8 bbp26;
- 	u8 txmixer_gain_24g;
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-index 74c3d8cb3100..8b3c90231110 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-@@ -117,12 +117,12 @@ int rt2x00usb_vendor_request_buff(struct rt2x00_dev *rt2x00dev,
- 				  const u16 buffer_length)
- {
- 	int status = 0;
--	unsigned char *tb;
-+	u8 *tb;
- 	u16 off, len, bsize;
- 
- 	mutex_lock(&rt2x00dev->csr_mutex);
- 
--	tb  = (char *)buffer;
-+	tb  = (u8 *)buffer;
- 	off = offset;
- 	len = buffer_length;
- 	while (len && !status) {
-@@ -215,7 +215,7 @@ void rt2x00usb_register_read_async(struct rt2x00_dev *rt2x00dev,
- 	rd->cr.wLength = cpu_to_le16(sizeof(u32));
- 
- 	usb_fill_control_urb(urb, usb_dev, usb_rcvctrlpipe(usb_dev, 0),
--			     (unsigned char *)(&rd->cr), &rd->reg, sizeof(rd->reg),
-+			     (u8 *)(&rd->cr), &rd->reg, sizeof(rd->reg),
- 			     rt2x00usb_register_read_async_cb, rd);
- 	usb_anchor_urb(urb, rt2x00dev->anchor);
- 	if (usb_submit_urb(urb, GFP_ATOMIC) < 0) {
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt61pci.c b/drivers/net/wireless/ralink/rt2x00/rt61pci.c
-index 02da5dd37ddd..d04761c32a5d 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt61pci.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt61pci.c
-@@ -1709,7 +1709,7 @@ static int rt61pci_set_state(struct rt2x00_dev *rt2x00dev, enum dev_state state)
- {
- 	u32 reg, reg2;
- 	unsigned int i;
--	char put_to_sleep;
-+	bool put_to_sleep;
- 
- 	put_to_sleep = (state != STATE_AWAKE);
- 
-@@ -2656,7 +2656,7 @@ static int rt61pci_probe_hw_mode(struct rt2x00_dev *rt2x00dev)
- {
- 	struct hw_mode_spec *spec = &rt2x00dev->spec;
- 	struct channel_info *info;
--	char *tx_power;
-+	u8 *tx_power;
- 	unsigned int i;
- 
- 	/*
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt61pci.h b/drivers/net/wireless/ralink/rt2x00/rt61pci.h
-index 5f208ad509bd..d72d0ffd1127 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt61pci.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt61pci.h
-@@ -1484,6 +1484,6 @@ struct hw_pairwise_ta_entry {
- 	(((u8)(__txpower)) > MAX_TXPOWER) ? DEFAULT_TXPOWER : (__txpower)
- 
- #define TXPOWER_TO_DEV(__txpower) \
--	clamp_t(char, __txpower, MIN_TXPOWER, MAX_TXPOWER)
-+	clamp_t(u8, __txpower, MIN_TXPOWER, MAX_TXPOWER)
- 
- #endif /* RT61PCI_H */
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt73usb.c b/drivers/net/wireless/ralink/rt2x00/rt73usb.c
-index e69793773d87..32f6d689bd36 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt73usb.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt73usb.c
-@@ -1378,7 +1378,7 @@ static int rt73usb_set_state(struct rt2x00_dev *rt2x00dev, enum dev_state state)
- {
- 	u32 reg, reg2;
- 	unsigned int i;
--	char put_to_sleep;
-+	bool put_to_sleep;
- 
- 	put_to_sleep = (state != STATE_AWAKE);
- 
-@@ -2090,7 +2090,7 @@ static int rt73usb_probe_hw_mode(struct rt2x00_dev *rt2x00dev)
- {
- 	struct hw_mode_spec *spec = &rt2x00dev->spec;
- 	struct channel_info *info;
--	char *tx_power;
-+	u8 *tx_power;
- 	unsigned int i;
- 
- 	/*
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt73usb.h b/drivers/net/wireless/ralink/rt2x00/rt73usb.h
-index 1b56d285c34b..bb0a68516c08 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt73usb.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt73usb.h
-@@ -1063,6 +1063,6 @@ struct hw_pairwise_ta_entry {
- 	(((u8)(__txpower)) > MAX_TXPOWER) ? DEFAULT_TXPOWER : (__txpower)
- 
- #define TXPOWER_TO_DEV(__txpower) \
--	clamp_t(char, __txpower, MIN_TXPOWER, MAX_TXPOWER)
-+	clamp_t(u8, __txpower, MIN_TXPOWER, MAX_TXPOWER)
- 
- #endif /* RT73USB_H */
--- 
-2.47.3
-
+PiBPbiBGcmksIE9jdCAxNywgMjAyNSBhdCAwOTowNDo1MkFNICswMDAwLCBFbGlhdiBGYXJiZXIg
+d3JvdGU6DQo+ID4gVGhpcyBzZXJpZXMgYmFja3BvcnRzIDI3IHBhdGNoZXMgdG8gdXBkYXRlIG1p
+bm1heC5oIGluIHRoZSA1LjEwLnkNCj4gPiBicmFuY2gsIGFsaWduaW5nIGl0IHdpdGggdjYuMTct
+cmM3Lg0KPiA+DQo+ID4gVGhlIHVsdGltYXRlIGdvYWwgaXMgdG8gc3luY2hyb25pemUgYWxsIGxv
+bmctdGVybSBicmFuY2hlcyBzbyB0aGF0IHRoZXkNCj4gPiBpbmNsdWRlIHRoZSBmdWxsIHNldCBv
+ZiBtaW5tYXguaCBjaGFuZ2VzLg0KPiA+DQo+ID4gLSA2LjEyLnkgaGFzIGFscmVhZHkgYmVlbiBi
+YWNrcG9ydGVkOyB0aGUgY2hhbmdlcyBhcmUgaW5jbHVkZWQgaW4NCj4gPiAgIHY2LjEyLjQ5Lg0K
+PiA+IC0gNi42LnkgaGFzIGFscmVhZHkgYmVlbiBiYWNrcG9ydGVkOyB0aGUgY2hhbmdlcyBhcmUg
+aW5jbHVkZWQgaW4NCj4gPiAgIHY2LjYuMTA5Lg0KPiA+IC0gNi4xLnkgaGFzIGFscmVhZHkgYmVl
+biBiYWNrcG9ydGVkOyB0aGUgY2hhbmdlcyBhcmUgY3VycmVudGx5IGluIHRoZQ0KPiA+ICAgNi4x
+LXN0YWJsZSB0cmVlLg0KPiA+IC0gNS4xNS55IGhhcyBhbHJlYWR5IGJlZW4gYmFja3BvcnRlZDsg
+dGhlIGNoYW5nZXMgYXJlIGN1cnJlbnRseSBpbiB0aGUNCj4gPiAgIDUuMTUtc3RhYmxlIHRyZWUu
+DQo+DQo+IFdpdGggdGhpcyBzZXJpZXMgYXBwbGllZCwgb24gYW4gYXJtNjQgc2VydmVyLCBidWls
+ZGluZyAnYWxsbW9kY29uZmlnJywgSQ0KPiBnZXQgdGhlIGZvbGxvd2luZyBidWlsZCBlcnJvci4N
+Cj4NCj4gT2RkbHkgSSBkb24ndCBzZWUgaXQgb24gbXkgeDg2IHNlcnZlciwgcGVyaGFwcyBkdWUg
+dG8gZGlmZmVyZW50IGNvbXBpbGVyDQo+IHZlcnNpb25zPw0KPg0KPiBBbnkgaWRlYXM/DQoNClRo
+aXMgbWFpbmxpbmUgY29tbWl0IGlzIG1pc3Npbmc6DQpodHRwczovL2dpdC5rZXJuZWwub3JnL3B1
+Yi9zY20vbGludXgva2VybmVsL2dpdC90b3J2YWxkcy9saW51eC5naXQvY29tbWl0L2RyaXZlcnMv
+bmV0L3dpcmVsZXNzL3JhbGluay9ydDJ4MDAvcnQyODAwbGliLmM/aD12Ni4xOC1yYzEmaWQ9NjYw
+NjMwMzNmNzdlMTBiOTg1MjU4MTI2YTk3NTczZjg0YmI4ZDNiNA0KDQpUaGlzIGZpeCBhbHJlYWR5
+IGV4aXN0cyBpbiA1LjE1Lnk6DQpodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgv
+a2VybmVsL2dpdC9zdGFibGUvbGludXguZ2l0L2NvbW1pdC9kcml2ZXJzL25ldC93aXJlbGVzcy9y
+YWxpbmsvcnQyeDAwL3J0MjgwMGxpYi5jP2g9djUuMTUuMTk0JmlkPTJkM2NlZjNkN2E1ZGYyNjBh
+MTRhNjY3OWM0YWNhMGM5N2U1NzBlZTUNCuKApmJ1dCBpcyBtaXNzaW5nIGluIDUuMTAueS4NCg0K
+SSBub3cgYmFja3BvcnRlZCBpdCB0byA1LjEwLnkgaGVyZToNCmh0dHBzOi8vbG9yZS5rZXJuZWwu
+b3JnL3N0YWJsZS8yMDI1MTAxODE5NTk0NS4xODgyNS0xLWZhcmJlcmVAYW1hem9uLmNvbS9ULyN1
+DQoNClJlZ2FyZHMsIEVsaWF2DQoNCg0KPiBJbiBmdW5jdGlvbiDigJhydDI4MDBfdHhwb3dlcl90
+b19kZXbigJksDQo+ICAgICBpbmxpbmVkIGZyb20g4oCYcnQyODAwX2NvbmZpZ19jaGFubmVs4oCZ
+IGF0IC4uL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JhbGluay9ydDJ4MDAvcnQyODAwbGliLmM6NDAy
+MjoyNToNCj4uLy4uL2luY2x1ZGUvbGludXgvY29tcGlsZXJfdHlwZXMuaDozMDk6NDU6IGVycm9y
+OiBjYWxsIHRvIOKAmF9fY29tcGlsZXRpbWVfYXNzZXJ0XzExNjjigJkgZGVjbGFyZWQgd2l0aCBh
+dHRyaWJ1dGUgZXJyb3I6IGNsYW1wKCkgbG93IGxpbWl0IC03IGdyZWF0ZXIgdGhhbiBoaWdoIGxp
+bWl0IDE1DQo+ICAgMzA5IHwgICAgICAgICBfY29tcGlsZXRpbWVfYXNzZXJ0KGNvbmRpdGlvbiwg
+bXNnLCBfX2NvbXBpbGV0aW1lX2Fzc2VydF8sIF9fQ09VTlRFUl9fKQ0KPiAgICAgICB8ICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXg0KPi4vLi4vaW5jbHVkZS9s
+aW51eC9jb21waWxlcl90eXBlcy5oOjI5MDoyNTogbm90ZTogaW4gZGVmaW5pdGlvbiBvZiBtYWNy
+byDigJhfX2NvbXBpbGV0aW1lX2Fzc2VydOKAmQ0KPiAgIDI5MCB8ICAgICAgICAgICAgICAgICAg
+ICAgICAgIHByZWZpeCAjIyBzdWZmaXgoKTsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwN
+Cj4gICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICBefn5+fn4NCj4uLy4uL2luY2x1ZGUv
+bGludXgvY29tcGlsZXJfdHlwZXMuaDozMDk6OTogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3Jv
+IOKAmF9jb21waWxldGltZV9hc3NlcnTigJkNCj4gICAzMDkgfCAgICAgICAgIF9jb21waWxldGlt
+ZV9hc3NlcnQoY29uZGl0aW9uLCBtc2csIF9fY29tcGlsZXRpbWVfYXNzZXJ0XywgX19DT1VOVEVS
+X18pDQo+ICAgICAgIHwgICAgICAgICBefn5+fn5+fn5+fn5+fn5+fn5+DQo+Li4vaW5jbHVkZS9s
+aW51eC9idWlsZF9idWcuaDozOTozNzogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmGNv
+bXBpbGV0aW1lX2Fzc2VydOKAmQ0KPiAgICAzOSB8ICNkZWZpbmUgQlVJTERfQlVHX09OX01TRyhj
+b25kLCBtc2cpIGNvbXBpbGV0aW1lX2Fzc2VydCghKGNvbmQpLCBtc2cpDQo+ICAgICAgIHwgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXn5+fn5+fn5+fn5+fn5+fn5+DQo+Li4v
+aW5jbHVkZS9saW51eC9taW5tYXguaDoxODg6OTogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3Jv
+IOKAmEJVSUxEX0JVR19PTl9NU0figJkNCj4gICAxODggfCAgICAgICAgIEJVSUxEX0JVR19PTl9N
+U0coc3RhdGljYWxseV90cnVlKHVsbyA+IHVoaSksICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IFwNCj4gICAgICAgfCAgICAgICAgIF5+fn5+fn5+fn5+fn5+fn4NCj4uLi9pbmNsdWRlL2xpbnV4
+L21pbm1heC5oOjE5NTo5OiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFjcm8g4oCYX19jbGFtcF9v
+bmNl4oCZDQo+ICAgMTk1IHwgICAgICAgICBfX2NsYW1wX29uY2UodHlwZSwgdmFsLCBsbywgaGks
+IF9fVU5JUVVFX0lEKHZfKSwgX19VTklRVUVfSUQobF8pLCBfX1VOSVFVRV9JRChoXykpDQo+ICAg
+ICAgIHwgICAgICAgICBefn5+fn5+fn5+fn4NCj4uLi9pbmNsdWRlL2xpbnV4L21pbm1heC5oOjIx
+ODozNjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmF9fY2FyZWZ1bF9jbGFtcOKAmQ0K
+PiAgIDIxOCB8ICNkZWZpbmUgY2xhbXBfdCh0eXBlLCB2YWwsIGxvLCBoaSkgX19jYXJlZnVsX2Ns
+YW1wKHR5cGUsIHZhbCwgbG8sIGhpKQ0KPiAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgXn5+fn5+fn5+fn5+fn5+DQo+Li4vZHJpdmVycy9uZXQvd2lyZWxlc3MvcmFs
+aW5rL3J0MngwMC9ydDI4MDBsaWIuYzozOTgwOjI0OiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFj
+cm8g4oCYY2xhbXBfdOKAmQ0KPiAgMzk4MCB8ICAgICAgICAgICAgICAgICByZXR1cm4gY2xhbXBf
+dChjaGFyLCB0eHBvd2VyLCBNSU5fQV9UWFBPV0VSLCBNQVhfQV9UWFBPV0VSKTsNCj4gICAgICAg
+fCAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fn4NCj4gSW4gZnVuY3Rpb24g4oCYcnQyODAw
+X3R4cG93ZXJfdG9fZGV24oCZLA0KPiAgICAgaW5saW5lZCBmcm9tIOKAmHJ0MjgwMF9jb25maWdf
+Y2hhbm5lbOKAmSBhdCAuLi9kcml2ZXJzL25ldC93aXJlbGVzcy9yYWxpbmsvcnQyeDAwL3J0Mjgw
+MGxpYi5jOjQwMjQ6MjU6DQo+Li8uLi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyX3R5cGVzLmg6MzA5
+OjQ1OiBlcnJvcjogY2FsbCB0byDigJhfX2NvbXBpbGV0aW1lX2Fzc2VydF8xMTY44oCZIGRlY2xh
+cmVkIHdpdGggYXR0cmlidXRlIGVycm9yOiBjbGFtcCgpIGxvdyBsaW1pdCAtNyBncmVhdGVyIHRo
+YW4gaGlnaCBsaW1pdCAxNQ0KPiAgIDMwOSB8ICAgICAgICAgX2NvbXBpbGV0aW1lX2Fzc2VydChj
+b25kaXRpb24sIG1zZywgX19jb21waWxldGltZV9hc3NlcnRfLCBfX0NPVU5URVJfXykNCj4gICAg
+ICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4NCj4uLy4u
+L2luY2x1ZGUvbGludXgvY29tcGlsZXJfdHlwZXMuaDoyOTA6MjU6IG5vdGU6IGluIGRlZmluaXRp
+b24gb2YgbWFjcm8g4oCYX19jb21waWxldGltZV9hc3NlcnTigJkNCj4gICAyOTAgfCAgICAgICAg
+ICAgICAgICAgICAgICAgICBwcmVmaXggIyMgc3VmZml4KCk7ICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBcDQo+ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgXn5+fn5+DQo+Li8u
+Li9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyX3R5cGVzLmg6MzA5Ojk6IG5vdGU6IGluIGV4cGFuc2lv
+biBvZiBtYWNybyDigJhfY29tcGlsZXRpbWVfYXNzZXJ04oCZDQo+ICAgMzA5IHwgICAgICAgICBf
+Y29tcGlsZXRpbWVfYXNzZXJ0KGNvbmRpdGlvbiwgbXNnLCBfX2NvbXBpbGV0aW1lX2Fzc2VydF8s
+IF9fQ09VTlRFUl9fKQ0KPiAgICAgICB8ICAgICAgICAgXn5+fn5+fn5+fn5+fn5+fn5+fg0KPi4u
+L2luY2x1ZGUvbGludXgvYnVpbGRfYnVnLmg6Mzk6Mzc6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBt
+YWNybyDigJhjb21waWxldGltZV9hc3NlcnTigJkNCj4gICAgMzkgfCAjZGVmaW5lIEJVSUxEX0JV
+R19PTl9NU0coY29uZCwgbXNnKSBjb21waWxldGltZV9hc3NlcnQoIShjb25kKSwgbXNnKQ0KPiAg
+ICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fn5+fn5+fn5+
+fn5+fg0KPi4uL2luY2x1ZGUvbGludXgvbWlubWF4Lmg6MTg4Ojk6IG5vdGU6IGluIGV4cGFuc2lv
+biBvZiBtYWNybyDigJhCVUlMRF9CVUdfT05fTVNH4oCZDQo+ICAgMTg4IHwgICAgICAgICBCVUlM
+RF9CVUdfT05fTVNHKHN0YXRpY2FsbHlfdHJ1ZSh1bG8gPiB1aGkpLCAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICBcDQo+ICAgICAgIHwgICAgICAgICBefn5+fn5+fn5+fn5+fn5+DQo+Li4vaW5j
+bHVkZS9saW51eC9taW5tYXguaDoxOTU6OTogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKA
+mF9fY2xhbXBfb25jZeKAmQ0KPiAgIDE5NSB8ICAgICAgICAgX19jbGFtcF9vbmNlKHR5cGUsIHZh
+bCwgbG8sIGhpLCBfX1VOSVFVRV9JRCh2XyksIF9fVU5JUVVFX0lEKGxfKSwgX19VTklRVUVfSUQo
+aF8pKQ0KPiAgICAgICB8ICAgICAgICAgXn5+fn5+fn5+fn5+DQo+Li4vaW5jbHVkZS9saW51eC9t
+aW5tYXguaDoyMTg6MzY6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhfX2NhcmVmdWxf
+Y2xhbXDigJkNCj4gICAyMTggfCAjZGVmaW5lIGNsYW1wX3QodHlwZSwgdmFsLCBsbywgaGkpIF9f
+Y2FyZWZ1bF9jbGFtcCh0eXBlLCB2YWwsIGxvLCBoaSkNCj4gICAgICAgfCAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fn5+fn5+fn5+fg0KPi4uL2RyaXZlcnMvbmV0L3dp
+cmVsZXNzL3JhbGluay9ydDJ4MDAvcnQyODAwbGliLmM6Mzk4MDoyNDogbm90ZTogaW4gZXhwYW5z
+aW9uIG9mIG1hY3JvIOKAmGNsYW1wX3TigJkNCj4gIDM5ODAgfCAgICAgICAgICAgICAgICAgcmV0
+dXJuIGNsYW1wX3QoY2hhciwgdHhwb3dlciwgTUlOX0FfVFhQT1dFUiwgTUFYX0FfVFhQT1dFUik7
+DQo+ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICBefn5+fn5+DQo+IEluIGZ1bmN0aW9u
+IOKAmHJ0MjgwMF90eHBvd2VyX3RvX2RlduKAmSwNCj4gICAgIGlubGluZWQgZnJvbSDigJhydDI4
+MDBfY29uZmlnX2NoYW5uZWzigJkgYXQgLi4vZHJpdmVycy9uZXQvd2lyZWxlc3MvcmFsaW5rL3J0
+MngwMC9ydDI4MDBsaWIuYzo0MDI4OjQ6DQo+Li8uLi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyX3R5
+cGVzLmg6MzA5OjQ1OiBlcnJvcjogY2FsbCB0byDigJhfX2NvbXBpbGV0aW1lX2Fzc2VydF8xMTY4
+4oCZIGRlY2xhcmVkIHdpdGggYXR0cmlidXRlIGVycm9yOiBjbGFtcCgpIGxvdyBsaW1pdCAtNyBn
+cmVhdGVyIHRoYW4gaGlnaCBsaW1pdCAxNQ0KPiAgIDMwOSB8ICAgICAgICAgX2NvbXBpbGV0aW1l
+X2Fzc2VydChjb25kaXRpb24sIG1zZywgX19jb21waWxldGltZV9hc3NlcnRfLCBfX0NPVU5URVJf
+XykNCj4gICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IF4NCj4uLy4uL2luY2x1ZGUvbGludXgvY29tcGlsZXJfdHlwZXMuaDoyOTA6MjU6IG5vdGU6IGlu
+IGRlZmluaXRpb24gb2YgbWFjcm8g4oCYX19jb21waWxldGltZV9hc3NlcnTigJkNCj4gICAyOTAg
+fCAgICAgICAgICAgICAgICAgICAgICAgICBwcmVmaXggIyMgc3VmZml4KCk7ICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICBcDQo+ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgXn5+
+fn5+DQo+Li8uLi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyX3R5cGVzLmg6MzA5Ojk6IG5vdGU6IGlu
+IGV4cGFuc2lvbiBvZiBtYWNybyDigJhfY29tcGlsZXRpbWVfYXNzZXJ04oCZDQo+ICAgMzA5IHwg
+ICAgICAgICBfY29tcGlsZXRpbWVfYXNzZXJ0KGNvbmRpdGlvbiwgbXNnLCBfX2NvbXBpbGV0aW1l
+X2Fzc2VydF8sIF9fQ09VTlRFUl9fKQ0KPiAgICAgICB8ICAgICAgICAgXn5+fn5+fn5+fn5+fn5+
+fn5+fg0KPi4uL2luY2x1ZGUvbGludXgvYnVpbGRfYnVnLmg6Mzk6Mzc6IG5vdGU6IGluIGV4cGFu
+c2lvbiBvZiBtYWNybyDigJhjb21waWxldGltZV9hc3NlcnTigJkNCj4gICAgMzkgfCAjZGVmaW5l
+IEJVSUxEX0JVR19PTl9NU0coY29uZCwgbXNnKSBjb21waWxldGltZV9hc3NlcnQoIShjb25kKSwg
+bXNnKQ0KPiAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+
+fn5+fn5+fn5+fn5+fg0KPi4uL2luY2x1ZGUvbGludXgvbWlubWF4Lmg6MTg4Ojk6IG5vdGU6IGlu
+IGV4cGFuc2lvbiBvZiBtYWNybyDigJhCVUlMRF9CVUdfT05fTVNH4oCZDQo+ICAgMTg4IHwgICAg
+ICAgICBCVUlMRF9CVUdfT05fTVNHKHN0YXRpY2FsbHlfdHJ1ZSh1bG8gPiB1aGkpLCAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICBcDQo+ICAgICAgIHwgICAgICAgICBefn5+fn5+fn5+fn5+fn5+
+DQo+Li4vaW5jbHVkZS9saW51eC9taW5tYXguaDoxOTU6OTogbm90ZTogaW4gZXhwYW5zaW9uIG9m
+IG1hY3JvIOKAmF9fY2xhbXBfb25jZeKAmQ0KPiAgIDE5NSB8ICAgICAgICAgX19jbGFtcF9vbmNl
+KHR5cGUsIHZhbCwgbG8sIGhpLCBfX1VOSVFVRV9JRCh2XyksIF9fVU5JUVVFX0lEKGxfKSwgX19V
+TklRVUVfSUQoaF8pKQ0KPiAgICAgICB8ICAgICAgICAgXn5+fn5+fn5+fn5+DQo+Li4vaW5jbHVk
+ZS9saW51eC9taW5tYXguaDoyMTg6MzY6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhf
+X2NhcmVmdWxfY2xhbXDigJkNCj4gICAyMTggfCAjZGVmaW5lIGNsYW1wX3QodHlwZSwgdmFsLCBs
+bywgaGkpIF9fY2FyZWZ1bF9jbGFtcCh0eXBlLCB2YWwsIGxvLCBoaSkNCj4gICAgICAgfCAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fn5+fn5+fn5+fg0KPi4uL2RyaXZl
+cnMvbmV0L3dpcmVsZXNzL3JhbGluay9ydDJ4MDAvcnQyODAwbGliLmM6Mzk4MDoyNDogbm90ZTog
+aW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmGNsYW1wX3TigJkNCj4gIDM5ODAgfCAgICAgICAgICAg
+ICAgICAgcmV0dXJuIGNsYW1wX3QoY2hhciwgdHhwb3dlciwgTUlOX0FfVFhQT1dFUiwgTUFYX0Ff
+VFhQT1dFUik7DQo+ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICBefn5+fn5+DQo+IG1h
+a2VbNl06ICoqKiBbLi4vc2NyaXB0cy9NYWtlZmlsZS5idWlsZDoyODY6IGRyaXZlcnMvbmV0L3dp
+cmVsZXNzL3JhbGluay9ydDJ4MDAvcnQyODAwbGliLm9dIEVycm9yIDENCj4gbWFrZVs1XTogKioq
+IFsuLi9zY3JpcHRzL01ha2VmaWxlLmJ1aWxkOjUwMzogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmFs
+aW5rL3J0MngwMF0gRXJyb3IgMg0KPiBtYWtlWzRdOiAqKiogWy4uL3NjcmlwdHMvTWFrZWZpbGUu
+YnVpbGQ6NTAzOiBkcml2ZXJzL25ldC93aXJlbGVzcy9yYWxpbmtdIEVycm9yIDINCj4gbWFrZVs0
+XTogKioqIFdhaXRpbmcgZm9yIHVuZmluaXNoZWQgam9icy4uLi4NCg==
 
