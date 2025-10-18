@@ -1,110 +1,295 @@
-Return-Path: <stable+bounces-187815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADE9BEC7F2
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 07:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B3EBEC872
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 08:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29163427F27
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 05:07:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49DC84070E1
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 06:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D31217722;
-	Sat, 18 Oct 2025 05:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D49279327;
+	Sat, 18 Oct 2025 06:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jcEHkju8"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LRoyhHlo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E025227;
-	Sat, 18 Oct 2025 05:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D151B260585
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 06:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760764059; cv=none; b=OtJ11gAZ4ljbR53D+WzfyCzVlThlFZnZYKJqMEwTXZv/DCpga12zyqXnZrsenCLYiU4AD0POK/kX3LW7tTwf30FHsCBKVEhoDBZ9o6RXTZUbrToxdd+t4xXKfa+6BZqsaAAN2+vwr+dogAejeMF8fLQfBHZmhxuvhoc6YnFYwSc=
+	t=1760767594; cv=none; b=Irc5+qYIFN6Cb4+zfcJsqYAMTZJovoe7/HLhiG9kiJZt3mCJ4eiEDHPbvA4Hl9UtzWnmASE3IqkxzSh/J55863A0NFkPo0/GsUN53XPX736gDIX20gbHC9WAh17BX6a+QjlW6KnlxWyurZ6IMdYoC8hFdmArcLejkOu+zdrG6tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760764059; c=relaxed/simple;
-	bh=7HQHgRhKu2K+O3M8/DReLJ1cTm/7JJq+iftVZzfodks=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=s0asMNn4R7XjZbHNcEeJ22aOsuVBz6DV99OHdCz6JqcpQxI5f58L1qWlWaFUpnNsMggnDjUYdy1PIeUBchSuAsfk7tXqIb10nozJ/chrrU2hfnk6WoX5XJM/USoY0Pq8guVFFTUVxTptQqCvaZ4sSlzVd1Tnh7Vr4g6BtI4yoPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jcEHkju8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591CFC4CEF8;
-	Sat, 18 Oct 2025 05:07:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760764059;
-	bh=7HQHgRhKu2K+O3M8/DReLJ1cTm/7JJq+iftVZzfodks=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=jcEHkju89gP9MlVd3XBTlA+BScjCk+KCEnMgkB4zIPwOOC0l/A5XDJPg5jj/NflSA
-	 Z7ysfdXwfMUqMTe5iGk+EQWG7ZtpW4kvZNGnOARN+E7motMWAkmFFkMPhEqPCtwmra
-	 1tk+HuLpFxzT4CzhyKXN8Dy5TWW/tkz40UmdVW8ZARYMhjVLnBySZw+vaY0R2G+zjC
-	 TUPKDLDxcJINO6nvFyaTLMKTo/GjKXoGiNwQ9LhAM0eukm9VX8f3GMkYldjruOPyse
-	 6rgf4ZX7k8VksAgHMcXyCBhEywUPHV3Rjl9q83Q46IcDI5Tp6OsgE4+c881I3IYC5C
-	 X89baa+iOWsAw==
-Date: Sat, 18 Oct 2025 07:07:35 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-CC: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>,
- Shawn Lin <shawn.lin@rock-chips.com>, Kever Yang <kever.yang@rock-chips.com>,
- Simon Xue <xxm@rock-chips.com>, Damien Le Moal <dlemoal@kernel.org>,
- Dragan Simic <dsimic@manjaro.org>, FUKAUMI Naoki <naoki@radxa.com>,
- Diederik de Haas <diederik@cknow-tech.com>, stable@vger.kernel.org,
- Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3=5D_PCI=3A_dw-rockchip=3A_Pre?=
- =?US-ASCII?Q?vent_advertising_L1_Substates_support?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20251017164558.GA1034609@bhelgaas>
-References: <20251017164558.GA1034609@bhelgaas>
-Message-ID: <54FD6159-AE45-432B-8F0E-4654721D16A6@kernel.org>
+	s=arc-20240116; t=1760767594; c=relaxed/simple;
+	bh=Y7VjzJ7gtb5qwhTcI0eZoGslmJDABeIw4LK16Zz63y8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HnfAYoJ799BEkAM8r4XSboQTc6HkAKeLqUaZSvwXHt3j4RPkdb+Q+XFQm91O3jzBsaqGS4mWpEDpzHQhWAZSbFE5HqxyDb9Ex5X66pmgPcYgxwPfiPYt1mb7BU3wxxhpu5DabeTqTakRRNFmRjGPW5nfnb1oQ1q8lUYD18KyPr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LRoyhHlo; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-27ee41e074dso31603335ad.1
+        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 23:06:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1760767592; x=1761372392; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=aazlfJMFqoIIqAXzADQv4tBj3QeLA4CZuF+zY7Y2u30=;
+        b=LRoyhHlo7SvF5tvIDDiQyj+Qid98y2j4IQGveI8McidAneJzriQKcJ6UXb29Wdqe52
+         frxc7C/p/2wUUvR990lAkfORBNkLTHklngiZvOEdM/YyVbo8DWGzR0Qx5YIaQ6oQRN/L
+         H85drrjOwkjSg/de2v7h9ecygkC17CBDwZ8k57UyH2eJQaX1QNwVGXxkvVys7nMIHywF
+         Yk3w/GF46CdK5ujRTl4CmQA7O4SxXGUHiN8ymX0kEq4WAGcvI53oOWi7zsr0neVXKeu5
+         uVcVrjK/kXPNoDzOGvRjyFb8a5i0aWqUZoZLYDi3M7zgGdrs9fNG4X4quonXf5hnDNpQ
+         zOxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760767592; x=1761372392;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aazlfJMFqoIIqAXzADQv4tBj3QeLA4CZuF+zY7Y2u30=;
+        b=QtUp1OwhZ2LSZ+R2t0HW7tq8gUV6lkcdEOWHhsqStni/idbvP3ceUiVFBvjDACIdg4
+         2/MbO9k8v6Kq/b/2pn8nK8iv7ptTtPQSuFPuMnSWRq5J8V7ZokSgNXX+VXaYFXKH8Bg0
+         v8Pah9iT+y4vqAbbo1VOM6ZxRtpZVz9Wp8CbKe+yt3D2RwSyU4Y0MTEnL+Q0amHdzO1Y
+         4eietLD+keLrpG5UajaxHUxOnjgXqaaBdf7AgLENUBZNCRsymDf4ogdlxVM69lGUzysN
+         aZrSeAYrfD4A77cxzhzTaTZrcJjlBD9QXJs5eHm/ht15lJrkRpEjyz0ivIe+/iIyVDPl
+         TYQg==
+X-Gm-Message-State: AOJu0Yy5nAN3QTRKmB8jJ0gN/3uj8Gkd1Zv/Eh3hif+cEKgTT7Q/jwGD
+	Kt1sjCnxAtkFBP9c12bdKT6F0csfzoI7UVIlLMRPZpcLozcKmXrbmZ2hMwOsnVEsWTPgt/W/LWb
+	mbxTq15LEzGMv/6xI4aj0T7HYLzm6G+BYNzda15BkfA==
+X-Gm-Gg: ASbGncsut19F2Pw6XegjbLG2pfGyC9v6Beu+BSin/sZZD6XJSK+vguSaiWUXD0TBBW1
+	ySzAX7X3OnAUlRYS3E/8PWSG6+zC1eBsEjCCscFFsyTsICiO3pFm+MEJs8usK8CFk8IzCl1XcEj
+	qVuBpi4qPyLCv7gmCR7j2B6hHpy+6Ip5OqvqXJQVj3j3SaqXsQcRV4R5zUDzCDkmTogkTnos5X5
+	j1aPUvcQAbePjhcoRNW3ZYXqHMT0Q3UwqHcb2L7deHO5gv69oqHlZhcwjf920Pfrbj+ZtG/G0D1
+	yXluvLEepzG3ofI/uJMU5g3Mrvg2GO/4kntSlPQEsjsgeKlAJHkjNDJ3cAY=
+X-Google-Smtp-Source: AGHT+IHw7R+YKzHxbRvPtqVHveDcGsf+JR70AmHfztdh/65g7vwQzHb9v03kO0aR/In7bOt2WwurKH7t1XzdIq0sxKg=
+X-Received: by 2002:a17:902:e5cc:b0:269:8d16:42d1 with SMTP id
+ d9443c01a7336-290cb278af5mr83894225ad.50.1760767592005; Fri, 17 Oct 2025
+ 23:06:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20251017145147.138822285@linuxfoundation.org>
+In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Sat, 18 Oct 2025 11:36:20 +0530
+X-Gm-Features: AS18NWDT1IrNVAEdIh-3uwC43DMp1BdTel7L0k_1kbuM11sAOiFrjCGmbmGqSJA
+Message-ID: <CA+G9fYs1jVE3OGhp5QMr=XZ0NzmCXV-izshW2scAtSy+v4T17g@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/277] 6.12.54-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	Al Viro <viro@zeniv.linux.org.uk>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Anders Roxell <anders.roxell@linaro.org>, 
+	Ben Copeland <benjamin.copeland@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 17 October 2025 18:45:58 CEST, Bjorn Helgaas <helgaas@kernel=2Eorg> wrot=
-e:
-
-(snip)
-
->>=20
->> Thus, prevent advertising L1 Substates support until proper driver supp=
-ort
->> is added=2E
+On Fri, 17 Oct 2025 at 20:45, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
->I think Mani is planning a change so we don't try to enable L1
->Substates by default, which should avoid the regression even without a
->patch like this=2E
-
-Sounds good, I suggested the same:
-https://lore=2Ekernel=2Eorg/linux-pci/aO9tWjgHnkATroNa@ryzen/
-
-
+> This is the start of the stable review cycle for the 6.12.54 release.
+> There are 277 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
->That will still leave the existing CONFIG_PCIEASPM_POWER_SUPERSAVE=3Dy
->and sysfs l1_1_aspm problems=2E
-
-Indeed, which is why I think that this patch is v6=2E18 material=2E
-
-
+> Responses should be made by Sun, 19 Oct 2025 14:50:59 +0000.
+> Anything received after that time might be too late.
 >
->And we'll need to figure out a way to allow L1=2Ex to be enabled based
->on 'supports-clkreq' and possibly other info=2E  That would likely be
->v6=2E19 material since it's new functionality=2E
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.54-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I agree=2E
+The following kernel crash noticed on the stable-rc 6.12.54-rc1 while running
+LTP syscalls listmount04 test case.
+
+This is a known regression on the Linux next and reported [1] and fixed [2].
+
+This was caused by,
+listmount: don't call path_put() under namespace semaphore
+commit c1f86d0ac322c7e77f6f8dbd216c65d39358ffc0 upstream.
+
+And there is a follow up patch to fix this.
+
+mount: handle NULL values in mnt_ns_release()
+[ Upstream commit 6c7ca6a02f8f9549a438a08a23c6327580ecf3d6 ]
+
+When calling in listmount() mnt_ns_release() may be passed a NULL
+pointer. Handle that case gracefully.
+
+Christian Brauner <brauner@kernel.org>
+
+First seen on 6.12.54-rc1
+Good: v6.12.53
+Bad: 6.12.54-rc1
+
+Regression Analysis:
+- New regression? yes
+- Reproducibility? yes
+
+Test regression: 6.12.54-rc1 Internal error: Oops: mnt_ns_release
+__arm64_sys_listmount (fs/namespace.c:5526)
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+### LTP syscalls failures:
+    ltp-syscalls/listmount04
+    ltp-syscalls/madvise06
+    ltp-syscalls/sendmsg03
+    ltp-syscalls/sendto03
+    ltp-syscalls/setsockopt05
+    ltp-syscalls/setsockopt09
+    ltp-syscalls/timerfd_settime02
+    ltp-syscalls/wait403
+    ltp-containers/userns08
 
 
-Kind regards,
-Niklas
+### LTP test log listmount04
+[ 3587.449309] <LAVA_SIGNAL_STARTTC listmount04>
+Received signal: <STARTTC> listmount04
+tst_buffers.c:57: TINFO: Test is using guarded buffers
+tst_test.c:2021: TINFO: LTP version: 20250930
+tst_test.c:2024: TINFO: Tested kernel: 6.12.54-rc1 #1 SMP PREEMPT
+@1760715935 aarch64
+tst_kconfig.c:88: TINFO: Parsing kernel config '/proc/config.gz'
+tst_kconfig.c:676: TINFO: CONFIG_TRACE_IRQFLAGS kernel option detected
+which might slow the execution
+tst_test.c:1842: TINFO: Overall timeout per run is 0h 21m 36s
+[ 3587.464366] <LAVA_SIGNAL_ENDTC listmount04>
+Received signal: <ENDTC> listmount04
+tst_test.c:1920: TBROK: Test killed by SIGSEGV!
+Summary:
+passed   0
+failed   0
+broken   1
+skipped  0
+warnings 0
+[ 3587.523917] <LAVA_SIGNAL_TESTCASE TEST_CASE_ID=listmount04 RESULT=fail>
 
+
+### Test cash log
+listmount04: [ 1440.660118] /usr/local/bin/kirk[418]: listmount04:
+start (command: listmount04)
+[ 1440.761870] Unable to handle kernel NULL pointer dereference at
+virtual address 0000000000000080
+[ 1440.762768] Mem abort info:
+[ 1440.763156]   ESR = 0x0000000096000004
+[ 1440.763722]   EC = 0x25: DABT (current EL), IL = 32 bits
+[ 1440.764204]   SET = 0, FnV = 0
+[ 1440.764486]   EA = 0, S1PTW = 0
+[ 1440.764883]   FSC = 0x04: level 0 translation fault
+[ 1440.765393] Data abort info:
+[ 1440.765795]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[ 1440.766288]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[ 1440.766738]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[ 1440.767213] user pgtable: 4k pages, 48-bit VAs, pgdp=000000000d4c1000
+[ 1440.767819] [0000000000000080] pgd=0000000000000000, p4d=0000000000000000
+[ 1440.768448] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+[ 1440.769002] Modules linked in: tun overlay btrfs xor xor_neon
+raid6_pq zstd_compress libcrc32c snd_soc_hdmi_codec hantro_vpu
+dw_hdmi_cec dw_hdmi_i2s_audio brcmfmac rockchipdrm v4l2_h264
+dw_mipi_dsi v4l2_vp9 hci_uart brcmutil analogix_dp crct10dif_ce btqca
+v4l2_jpeg panfrost dw_hdmi v4l2_mem2mem btbcm snd_soc_simple_card
+snd_soc_audio_graph_card snd_soc_spdif_tx cec gpu_sched
+snd_soc_simple_card_utils bluetooth cfg80211 drm_display_helper
+videobuf2_v4l2 drm_shmem_helper snd_soc_rockchip_i2s
+videobuf2_dma_contig pwrseq_core phy_rockchip_pcie drm_dma_helper
+rtc_rk808 videobuf2_memops drm_kms_helper videobuf2_common rfkill
+snd_soc_es8316 rockchip_saradc industrialio_triggered_buffer
+rockchip_thermal kfifo_buf pcie_rockchip_host coresight_cpu_debug drm
+fuse backlight ip_tables x_tables
+[ 1440.775190] CPU: 3 UID: 0 PID: 131415 Comm: listmount04 Not tainted
+6.12.54-rc1 #1
+[ 1440.775866] Hardware name: Radxa ROCK Pi 4B (DT)
+[ 1440.776277] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 1440.776893] pc : mnt_ns_release
+(arch/arm64/include/asm/atomic_ll_sc.h:96
+arch/arm64/include/asm/atomic.h:51
+include/linux/atomic/atomic-arch-fallback.h:944
+include/linux/atomic/atomic-instrumented.h:401
+include/linux/refcount.h:264 include/linux/refcount.h:307
+include/linux/refcount.h:325 fs/namespace.c:156)
+[ 1440.777267] lr : __arm64_sys_listmount (fs/namespace.c:?
+fs/namespace.c:5569 fs/namespace.c:5526 fs/namespace.c:5526)
+[ 1440.777694] sp : ffff80008d663d30
+[ 1440.777987] x29: ffff80008d663d30 x28: ffff0000bba30000 x27: 0000000000000000
+[ 1440.778622] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+[ 1440.779256] x23: 0000000000000000 x22: 0000000000000020 x21: fffffffffffffff2
+[ 1440.779890] x20: 0000000000000100 x19: 0000aaaab5ee1110 x18: 0000000000000000
+[ 1440.780524] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[ 1440.781158] x14: 0000000000000000 x13: ffff80008d660000 x12: ffff80008d664000
+[ 1440.781791] x11: 0000000000000000 x10: 0000000000000001 x9 : ffff80008044cdf0
+[ 1440.782425] x8 : 0000000000000080 x7 : 0000000000000000 x6 : 0000000000000000
+[ 1440.783059] x5 : 0000000000000000 x4 : 0000000000000000 x3 : ffff80008d663e00
+[ 1440.783692] x2 : ffff800081700c70 x1 : ffff80008d663d50 x0 : 0000000000000000
+[ 1440.784326] Call trace:
+[ 1440.784545]  mnt_ns_release
+(arch/arm64/include/asm/atomic_ll_sc.h:96
+arch/arm64/include/asm/atomic.h:51
+include/linux/atomic/atomic-arch-fallback.h:944
+include/linux/atomic/atomic-instrumented.h:401
+include/linux/refcount.h:264 include/linux/refcount.h:307
+include/linux/refcount.h:325 fs/namespace.c:156)
+[ 1440.784882]  __arm64_sys_listmount (fs/namespace.c:?
+fs/namespace.c:5569 fs/namespace.c:5526 fs/namespace.c:5526)
+[ 1440.785278]  invoke_syscall (arch/arm64/kernel/syscall.c:50)
+[ 1440.785618]  el0_svc_common (include/linux/thread_info.h:127
+arch/arm64/kernel/syscall.c:140)
+[ 1440.785948]  do_el0_svc (arch/arm64/kernel/syscall.c:152)
+[ 1440.786247]  el0_svc (arch/arm64/kernel/entry-common.c:165)
+[ 1440.786524]  el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:789)
+[ 1440.786904]  el0t_64_sync (arch/arm64/kernel/entry.S:598)
+[ 1440.787238] Code: aa1303e0 14000019 5280002a f9800111 (885f7d09)
+All code
+========
+   0: aa1303e0 mov x0, x19
+   4: 14000019 b 0x68
+   8: 5280002a mov w10, #0x1                    // #1
+   c: f9800111 prfm pstl1strm, [x8]
+  10:* 885f7d09 ldxr w9, [x8] <-- trapping instruction
+
+Code starting with the faulting instruction
+===========================================
+   0: 885f7d09 ldxr w9, [x8]
+[ 1440.787776] ---[ end trace 0000000000000000 ]---
+
+
+## Lore link,
+[1] https://lore.kernel.org/all/CA+G9fYueO8kP8mXVNmbHkyrFPKpt-onPfeyNXLuLGGjiO1WFfQ@mail.gmail.com/
+[2] https://lore.kernel.org/all/20251017145215.505418259@linuxfoundation.org/
+
+## Build
+* kernel: 6.12.54-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* git commit: 6122296b30b695962026ca4d1b434cae639373e0
+* git describe: v6.12.53-278-g6122296b30b6
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12.53-278-g6122296b30b6
+
+## Build
+* Test log: https://lkft.validation.linaro.org/scheduler/job/8496757#L6787
+* Test details:
+https://regressions.linaro.org/lkft/linux-stable-rc-linux-6.12.y/v6.12.53-278-g6122296b30b6/log-parser-test/internal-error-oops-Oops_PREEMPT_SMP__mnt_ns_release-064d7f50/
+* Build plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/34CRZ9uzNjZKMeKVqBaBBIUC2Z9
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/34CRXmuzdt1HaZluq4cBw4zG4lh/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/34CRXmuzdt1HaZluq4cBw4zG4lh/config
+
+--
+Linaro LKFT
 
