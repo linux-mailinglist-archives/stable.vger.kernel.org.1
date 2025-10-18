@@ -1,109 +1,126 @@
-Return-Path: <stable+bounces-187865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB038BED81E
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 21:03:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59EABEDAB3
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 21:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 609274E2DC9
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 19:03:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 853C4407C2C
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 19:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CBE2609FC;
-	Sat, 18 Oct 2025 19:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2975E2580F9;
+	Sat, 18 Oct 2025 19:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KPAaxwnY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tiGi7eDp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C9B1F584C;
-	Sat, 18 Oct 2025 19:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4D118DB26
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 19:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760814208; cv=none; b=bNVa/wFZ155KazA7pb1NYIz0d6nRgk+8ypwTZ/kkQeDyefPxyZgRVEU0iSutvcbvJjm1uF6/ASqi+yFbI3BehllAAa7a+25NYb6MoSRT2GisfWGDcmfQj+izSEREhwIG6Col88N6jStYhE34r7ST5CBovHEM7Sp/FO2G8FcElzQ=
+	t=1760816192; cv=none; b=KkiyT4Uk/4vrTzvV06JQmAf7oNWml/FXnANKrAUMrqOPIMfikce56jYXcvSMc4C63d7j9DZjf2Xj6ov4/3Zn8GyfdJCyUuObBpDmuoXqhzoevAIf0ieSWK9A67GeUzhyvM/YIxC9O12Nhyl5o47DOxnQJdPC6CTuEdjuoWYUBQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760814208; c=relaxed/simple;
-	bh=NC3dTROvnxyo+JZe670NbOUB1WkJiUu502tayp2ov0I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eRURzA50E+7UWvE8K7fQf2Eg7LdJjwN11+IU12GPhY7BT9b1iACkNW18gso8XWKJ53s53cmkCRW0NvNkmfD7H2r2kkLjEa2N1MOTmEnAo62uOu+X69Wama+VQOQ0hTceN2V27R3kwvcn2P5v/5KaRj8Iq/OtyZDvmR7SLJ9xfh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KPAaxwnY; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760814207; x=1792350207;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NC3dTROvnxyo+JZe670NbOUB1WkJiUu502tayp2ov0I=;
-  b=KPAaxwnYShVVUbhl+YIPQjxazPY6ppwWFJugMV2+OOTcEQZ4/9RKU30u
-   KCyeJRg1w9jjgur1rNrz+b5AqOaOPJVq7LKr5/Uyo1/cVwmIixu7FdQ87
-   PQV4RPTtWs4uMO1lBAOiyYtrjLDE5HJqENRd+8qWk2SHaaLUKQs0qEz+z
-   VgqbGR9GP973G8eaz/JbsgMYJEVRY/xJJQrHRq3DVicr6metodyYJ/V6P
-   QHiBH0LgTKA3ozAwEUMHTEq/qT7HIHnByo0UrDBOWo5Va1+voY8QGqsDb
-   7f/RKSoz9vkTXn6cvURhWDShZCjW4lT2VfDDmW6JI5MXwIymQA/7DfmDO
-   g==;
-X-CSE-ConnectionGUID: fRq1cGvQTTyRXAk+eII5DQ==
-X-CSE-MsgGUID: CI/GBwAxT+CqhMZLe2bTPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66865926"
-X-IronPort-AV: E=Sophos;i="6.19,239,1754982000"; 
-   d="scan'208";a="66865926"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 12:03:27 -0700
-X-CSE-ConnectionGUID: wR9iSZ6oTiWN+DXF1hiDkA==
-X-CSE-MsgGUID: /0E50z1sSvmbR5SC3mdIvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,239,1754982000"; 
-   d="scan'208";a="206710597"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.194])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 12:03:24 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1vACD3-00000000xCD-3HhT;
-	Sat, 18 Oct 2025 22:03:21 +0300
-Date: Sat, 18 Oct 2025 22:03:21 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: William Breathitt Gray <wbg@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 0/3] gpio: idio-16: Fix regmap initialization errors
-Message-ID: <aPPkeRLgxobzoNlb@ashevche-desk.local>
-References: <20251017-fix-gpio-idio-16-regmap-v1-0-a7c71080f740@kernel.org>
+	s=arc-20240116; t=1760816192; c=relaxed/simple;
+	bh=SVvD6qO63jbT6fdD9L4BUkF7AiFs7qDHxv2xfEgsHl4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pK9vpuKcdHk6oo/NMw7NBjjImED9efsbVjPxXSLxKNm6e6nzXTf4eWQdSiweSbyyK3/IYnssUKxgSqFeXY9GM3IJvKW2Cb1p9HW+BJEMDrI6OC9GSaRumDtvo/gAvwNDXE0KQ+qavZdiXr9KRsJjAhYcQhsTB2m5i/5e+aV6i1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tiGi7eDp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D064BC4CEF8;
+	Sat, 18 Oct 2025 19:36:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760816191;
+	bh=SVvD6qO63jbT6fdD9L4BUkF7AiFs7qDHxv2xfEgsHl4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tiGi7eDp6CidN7tM5n5dW2928OxVKFiTYedMiJwOpLP/zN1FvkcxQRSdkgl5pTRMl
+	 dY6ScoyEcHbz2rOqxlgt6z4Tw6ci4bo/XtfT4uzv0uZKkpskM922aM6WQ/3p6neD7b
+	 gbQTGaPAIL8+Y0qR3mmhneYQMWFd3D6tJvGqTDTETnRmBE0CH8m3cZiOhwyORzVplE
+	 p8hY095PGl/KMMyoQ3dKfItWnfDOwS2jHaFLt+/VSsm+GffU9Qr5diJe427BTeqXCC
+	 mqjmH8NhYPiC52ZNwV+nOhegNwqoDB7cRK0uZxn6r53yF+b2ykakpyow5d2RWO/wlu
+	 QyI8U0jiztZrQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Huang Xiaojia <huangxiaojia2@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] epoll: Remove ep_scan_ready_list() in comments
+Date: Sat, 18 Oct 2025 15:36:27 -0400
+Message-ID: <20251018193629.891117-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101614-turbofan-sufferer-957e@gregkh>
+References: <2025101614-turbofan-sufferer-957e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251017-fix-gpio-idio-16-regmap-v1-0-a7c71080f740@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 17, 2025 at 09:58:00AM +0900, William Breathitt Gray wrote:
-> The migration of IDIO-16 GPIO drivers to the regmap API resulted in some
-> regressions to the gpio-104-idio-16, gpio-pci-idio-16, and gpio-idio-16
-> modules. Specifically, the 104-idio-16 and pci-idio-16 GPIO drivers
-> utilize regmap caching and thus must set max_register for their
-> regmap_config, while gpio-idio-16 requires fixed_direction_output to
-> represent the fixed direction of the IDIO-16 GPIO lines. Fixes for these
-> regressions are provided by this series.
+From: Huang Xiaojia <huangxiaojia2@huawei.com>
 
-With commit message amendment and Cc list (as per Bart's message),
-feel free to add
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+[ Upstream commit e6f7958042a7b1dc9a4dfc19fca74217bc0c4865 ]
 
+Since commit 443f1a042233 ("lift the calls of ep_send_events_proc()
+into the callers"), ep_scan_ready_list() has been removed.
+But there are still several in comments. All of them should
+be replaced with other caller functions.
+
+Signed-off-by: Huang Xiaojia <huangxiaojia2@huawei.com>
+Link: https://lore.kernel.org/r/20240206014353.4191262-1-huangxiaojia2@huawei.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 0c43094f8cc9 ("eventpoll: Replace rwlock with spinlock")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/eventpoll.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 6b2d655c1cefc..0f6107827c6c5 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -206,7 +206,7 @@ struct eventpoll {
+ 	 */
+ 	struct epitem *ovflist;
+ 
+-	/* wakeup_source used when ep_scan_ready_list is running */
++	/* wakeup_source used when ep_send_events or __ep_eventpoll_poll is running */
+ 	struct wakeup_source *ws;
+ 
+ 	/* The user that created the eventpoll descriptor */
+@@ -1190,7 +1190,7 @@ static inline bool chain_epi_lockless(struct epitem *epi)
+  * This callback takes a read lock in order not to contend with concurrent
+  * events from another file descriptor, thus all modifications to ->rdllist
+  * or ->ovflist are lockless.  Read lock is paired with the write lock from
+- * ep_scan_ready_list(), which stops all list modifications and guarantees
++ * ep_start/done_scan(), which stops all list modifications and guarantees
+  * that lists state is seen correctly.
+  *
+  * Another thing worth to mention is that ep_poll_callback() can be called
+@@ -1792,7 +1792,7 @@ static int ep_send_events(struct eventpoll *ep,
+ 			 * availability. At this point, no one can insert
+ 			 * into ep->rdllist besides us. The epoll_ctl()
+ 			 * callers are locked out by
+-			 * ep_scan_ready_list() holding "mtx" and the
++			 * ep_send_events() holding "mtx" and the
+ 			 * poll callback will queue them in ep->ovflist.
+ 			 */
+ 			list_add_tail(&epi->rdllink, &ep->rdllist);
+@@ -1945,7 +1945,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
+ 		__set_current_state(TASK_INTERRUPTIBLE);
+ 
+ 		/*
+-		 * Do the final check under the lock. ep_scan_ready_list()
++		 * Do the final check under the lock. ep_start/done_scan()
+ 		 * plays with two lists (->rdllist and ->ovflist) and there
+ 		 * is always a race when both lists are empty for short
+ 		 * period of time although events are pending, so lock is
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.51.0
 
 
