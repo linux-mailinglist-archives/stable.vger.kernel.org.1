@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-187807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67B8BEC66A
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 05:18:33 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4E8BEC66D
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 05:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703DD6E1A69
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 03:18:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A5D34E961E
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 03:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5517A27602C;
-	Sat, 18 Oct 2025 03:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F4427702D;
+	Sat, 18 Oct 2025 03:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LQHXLttX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Llrki9gB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119D13595C
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 03:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8085D3595C
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 03:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760757510; cv=none; b=XJsxk6EB6dS8SC1WnOZC9CXvd/Y69/wZTEA/cDMDiNgTmTSAk5rv6wYsmuvzU1TWRLp3l8qfV2DLYBluNKWsYcCR0hJC5vWym3HTxfSHnz9pIpv2sWw67WG7kdJOQwXdfN4RaBVbJWJVRhUVjkgQn/uGUd7NcYy4LjzcO7Rv31M=
+	t=1760757853; cv=none; b=dsl4lpOQ6756kyHjHJWoVedsbyNl9Em8S5Ixfe1V7S08s4AEKt3vZMS8lqp1Gc1HMoyPYUAnr0Fde2qQJzOu4bBF/OInbG49iSWOoNP+7+3UeRVkifR7FGZsjOAFDdASu/It5GiF8LeQUag0IQLzoxUxV8VdHvJ98i0zwTdRp74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760757510; c=relaxed/simple;
-	bh=DrRRyBNDb6QCVDghnVBjdNhgGKhGYnD+4IzNMl4YFbc=;
+	s=arc-20240116; t=1760757853; c=relaxed/simple;
+	bh=px7jYbqwdqVR7BMsbxx2cR4lpp2b6B4DwFpTzMq87PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YocT34gvnLDMO3LE3tgoiN9p/F9XMeOl3JhuRTcuVFbtigwWJRJm6L/4YgVDQxBPwRNK2CTlMA9PmkjN42xghARLHZN9PLQBy61TK8xim98u/M2A+FUSFBIC+N49TDnQM5SKJJqlKxZAOI31i0fuL905jBbvKcb4gHR85QAE+y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LQHXLttX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB620C4CEE7;
-	Sat, 18 Oct 2025 03:18:28 +0000 (UTC)
+	 MIME-Version; b=d0suRLPRVK0CUoiI6Ivip4slX3CldPsfDWgQqpQFz630j4qv7aaq5iqfEqkP4O6bUIA4nGnYXWonXjnesjwt+diJhqUhO4Ar+SNy6cjF+bWl5Kbv3EpshqZh+1Njcp2+DpdMzSoyK+kjpBVbKRZWvEAmYAB7//OcmHr0/+ej3eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Llrki9gB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0744C4CEE7;
+	Sat, 18 Oct 2025 03:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760757509;
-	bh=DrRRyBNDb6QCVDghnVBjdNhgGKhGYnD+4IzNMl4YFbc=;
+	s=k20201202; t=1760757851;
+	bh=px7jYbqwdqVR7BMsbxx2cR4lpp2b6B4DwFpTzMq87PE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQHXLttXGUiJnSZyPxzsj+TP7cK2H1BiW6u1YTRGieREBylUGRaItAr7Z9brJdg27
-	 JL3YrW4xj597SRHX3aX5176i/sboWSz/6GkmxIkj/ZQRfcXMaL4wvxkurCCclrBHwo
-	 6HRlmJ9F7pmyFzZuv2lygQphcOq+miFTd4Yq3TGR/fuu9RSi19nrtn1b+/H4D8Oh2K
-	 mzbHuMKwyTqNDEMziRocn6yVipQsgX1ToW6qNm3A+iHQx5v3HXXvt5H4cEz7sFSibA
-	 ILFpgibeG/0yAwC8eKyPRT/Ri3p1kyANfhF3GRsmq6BMT+q8Ccltf8yZJd1hWl8BX3
-	 MA2UOuLLhzKzA==
+	b=Llrki9gB2z4iMD4L7vP99VvFq/+4kt7EG1oW5xB9xdqcPOVBQXFdnm1lL7DNtaAUp
+	 sTZ9hpNDMpE8ovAqIGzKOY1W/gpqKQ8f5ZGOGQg0WNm08tOHlBO462CrQ8HYQXwyCO
+	 UeUWq+oMmxNxYBMoiijqLsi1Whv7sqEhkZKJzKC0i4mREnNBXdUuDdOH31jC1cOhkX
+	 rqWUbwtwfmVzdhoMhVtSXSq7HdBKbqDEZayuK3HNggXXCgudGSLpOUqHRus6Mwz1Sj
+	 6DTY06rNvwTE2w2h2src2fVgBemKbDqTRoG9oYGyaEGujKnFHOwZVTJ+204E09+fBG
+	 04xiX7uJAjMIQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Akhil P Oommen <quic_akhilpo@quicinc.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] drm/rcar-du: dsi: Fix 1/2/3 lane support
-Date: Fri, 17 Oct 2025 23:18:25 -0400
-Message-ID: <20251018031825.247562-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] drm/msm/adreno: De-spaghettify the use of memory barriers
+Date: Fri, 17 Oct 2025 23:24:07 -0400
+Message-ID: <20251018032408.252050-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101659-grinning-hertz-186a@gregkh>
-References: <2025101659-grinning-hertz-186a@gregkh>
+In-Reply-To: <2025101631-punctual-jaybird-dba5@gregkh>
+References: <2025101631-punctual-jaybird-dba5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,79 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit d83f1d19c898ac1b54ae64d1c950f5beff801982 ]
+[ Upstream commit 43ec1a202cfa9f765412d325b93873284e7c3d82 ]
 
-Remove fixed PPI lane count setup. The R-Car DSI host is capable
-of operating in 1..4 DSI lane mode. Remove the hard-coded 4-lane
-configuration from PPI register settings and instead configure
-the PPI lane count according to lane count information already
-obtained by this driver instance.
+Memory barriers help ensure instruction ordering, NOT time and order
+of actual write arrival at other observers (e.g. memory-mapped IP).
+On architectures employing weak memory ordering, the latter can be a
+giant pain point, and it has been as part of this driver.
 
-Configure TXSETR register to match PPI lane count. The R-Car V4H
-Reference Manual R19UH0186EJ0121 Rev.1.21 section 67.2.2.3 Tx Set
-Register (TXSETR), field LANECNT description indicates that the
-TXSETR register LANECNT bitfield lane count must be configured
-such, that it matches lane count configuration in PPISETR register
-DLEN bitfield. Make sure the LANECNT and DLEN bitfields are
-configured to match.
+Moreover, the gpu_/gmu_ accessors already use non-relaxed versions of
+readl/writel, which include r/w (respectively) barriers.
 
-Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250813210840.97621-1-marek.vasut+renesas@mailbox.org
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-[ adjusted file paths to remove renesas/ subdirectory ]
+Replace the barriers with a readback (or drop altogether where possible)
+that ensures the previous writes have exited the write buffer (as the CPU
+must flush the write to the register it's trying to read back).
+
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/600869/
+Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Stable-dep-of: f248d5d5159a ("drm/msm/a6xx: Fix PDC sleep sequence")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rcar-du/rcar_mipi_dsi.c      | 5 ++++-
- drivers/gpu/drm/rcar-du/rcar_mipi_dsi_regs.h | 8 ++++----
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c |  4 +---
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 10 ++++++----
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/rcar-du/rcar_mipi_dsi.c b/drivers/gpu/drm/rcar-du/rcar_mipi_dsi.c
-index 9ec9c43971dfb..3f1148636f061 100644
---- a/drivers/gpu/drm/rcar-du/rcar_mipi_dsi.c
-+++ b/drivers/gpu/drm/rcar-du/rcar_mipi_dsi.c
-@@ -385,7 +385,10 @@ static int rcar_mipi_dsi_startup(struct rcar_mipi_dsi *dsi,
- 	udelay(10);
- 	rcar_mipi_dsi_clr(dsi, CLOCKSET1, CLOCKSET1_UPDATEPLL);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index e7136b7759cb3..0a30ecc81a8cc 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -460,9 +460,7 @@ static int a6xx_rpmh_start(struct a6xx_gmu *gmu)
+ 	int ret;
+ 	u32 val;
  
--	ppisetr = PPISETR_DLEN_3 | PPISETR_CLEN;
-+	rcar_mipi_dsi_clr(dsi, TXSETR, TXSETR_LANECNT_MASK);
-+	rcar_mipi_dsi_set(dsi, TXSETR, dsi->lanes - 1);
+-	gmu_write(gmu, REG_A6XX_GMU_RSCC_CONTROL_REQ, 1 << 1);
+-	/* Wait for the register to finish posting */
+-	wmb();
++	gmu_write(gmu, REG_A6XX_GMU_RSCC_CONTROL_REQ, BIT(1));
+ 
+ 	ret = gmu_poll_timeout(gmu, REG_A6XX_GMU_RSCC_CONTROL_ACK, val,
+ 		val & (1 << 1), 100, 10000);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 3664c1476a83a..00bfc6f38f459 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -1209,14 +1209,16 @@ static int hw_init(struct msm_gpu *gpu)
+ 	/* Clear GBIF halt in case GX domain was not collapsed */
+ 	if (adreno_is_a619_holi(adreno_gpu)) {
+ 		gpu_write(gpu, REG_A6XX_GBIF_HALT, 0);
++		gpu_read(gpu, REG_A6XX_GBIF_HALT);
 +
-+	ppisetr = ((BIT(dsi->lanes) - 1) & PPISETR_DLEN_MASK) | PPISETR_CLEN;
- 	rcar_mipi_dsi_write(dsi, PPISETR, ppisetr);
- 
- 	rcar_mipi_dsi_set(dsi, PHYSETUP, PHYSETUP_SHUTDOWNZ);
-diff --git a/drivers/gpu/drm/rcar-du/rcar_mipi_dsi_regs.h b/drivers/gpu/drm/rcar-du/rcar_mipi_dsi_regs.h
-index 1f1eb46c721fe..a04e9c6614dc9 100644
---- a/drivers/gpu/drm/rcar-du/rcar_mipi_dsi_regs.h
-+++ b/drivers/gpu/drm/rcar-du/rcar_mipi_dsi_regs.h
-@@ -12,6 +12,9 @@
- #define LINKSR_LPBUSY			(1 << 1)
- #define LINKSR_HSBUSY			(1 << 0)
- 
-+#define TXSETR				0x100
-+#define TXSETR_LANECNT_MASK		(0x3 << 0)
+ 		gpu_write(gpu, REG_A6XX_RBBM_GPR0_CNTL, 0);
+-		/* Let's make extra sure that the GPU can access the memory.. */
+-		mb();
++		gpu_read(gpu, REG_A6XX_RBBM_GPR0_CNTL);
+ 	} else if (a6xx_has_gbif(adreno_gpu)) {
+ 		gpu_write(gpu, REG_A6XX_GBIF_HALT, 0);
++		gpu_read(gpu, REG_A6XX_GBIF_HALT);
 +
- /*
-  * Video Mode Register
-  */
-@@ -80,10 +83,7 @@
-  * PHY-Protocol Interface (PPI) Registers
-  */
- #define PPISETR				0x700
--#define PPISETR_DLEN_0			(0x1 << 0)
--#define PPISETR_DLEN_1			(0x3 << 0)
--#define PPISETR_DLEN_2			(0x7 << 0)
--#define PPISETR_DLEN_3			(0xf << 0)
-+#define PPISETR_DLEN_MASK		(0xf << 0)
- #define PPISETR_CLEN			(1 << 8)
+ 		gpu_write(gpu, REG_A6XX_RBBM_GBIF_HALT, 0);
+-		/* Let's make extra sure that the GPU can access the memory.. */
+-		mb();
++		gpu_read(gpu, REG_A6XX_RBBM_GBIF_HALT);
+ 	}
  
- #define PPICLCR				0x710
+ 	gpu_write(gpu, REG_A6XX_RBBM_SECVID_TSB_CNTL, 0);
 -- 
 2.51.0
 
