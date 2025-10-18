@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-187790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249DDBEC51E
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:18:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1987BEC524
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 831FA19A4D7D
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:18:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73ED51AA4C53
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AF6207A32;
-	Sat, 18 Oct 2025 02:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2098140E34;
+	Sat, 18 Oct 2025 02:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="og/iYfbn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hyhcuzXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC72146D45
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB9418626
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760753907; cv=none; b=d05VO2Cu9dTVUynrC/0pifV0B5EGCjFBgLrORaulrIbKn9jSSYgefGCegkUUd2SqVm442CeiTVNxOKxqhOD9foaYG8/jC3zf40ReWY4FVgosVFc7Ye/GuVmaQioCApWke3rkVQnTS6N5bJHxDUqu/hkSG6bzdRu+v8wLMDc0QlI=
+	t=1760754405; cv=none; b=pz4zWPdTRWgLvUqUEmzeYPcCrJ6P8RnH2h88vrdWNkvVVeyAjm0gOwd7jBxVQu7uM5ywAGf9pk4PaC7xikmA0+ZkT0ePU37z8up42fVNor0La7LWJjkSc2eaQbHrYb8WnLsCr1qdcU8j2Cf1wUYQS3WygzXzRu7odsrJBxNaY7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760753907; c=relaxed/simple;
-	bh=Cc/4qX0zfUwM27RVsZ7OAbLshm5JLghJm28l6OgGT6o=;
+	s=arc-20240116; t=1760754405; c=relaxed/simple;
+	bh=aDti7gcVCvz6XZo1XcPAdBrlN2mexGVA1lVzLMyEiWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jZaiJi5coRykY06VACMGCq5xYHHweLm0ayTQVRPvIgBw3iMpdLN11Bo4dMs0C38edUjayBkhLsP/Po23LutcsgUOWPq411cSltL3pIZ8NW2q3pJkLIyFe6lF26zNkkSVHwGApEjCPjcmObGlNmXqQbhWshRhfM+j/n5USIqFfho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=og/iYfbn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B5CC4CEE7;
-	Sat, 18 Oct 2025 02:18:26 +0000 (UTC)
+	 MIME-Version; b=DO1A5vxdB7X42UHPpL5F2RnjWtKNdg+Xqmpg/cWdpJiu8o160cbmyyNd9V25fno2Y2F04x3/4ovk9J/PCsmMxL7mfhEfnVF0sDhatP1EWCCEEh3+vaX0oOhX8QzfDGWNTb/zJ7yQ42I9r0aVU7Sm85D8Wl4QqIMJIoD/YsfwnXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyhcuzXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A4EC4CEE7;
+	Sat, 18 Oct 2025 02:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760753906;
-	bh=Cc/4qX0zfUwM27RVsZ7OAbLshm5JLghJm28l6OgGT6o=;
+	s=k20201202; t=1760754405;
+	bh=aDti7gcVCvz6XZo1XcPAdBrlN2mexGVA1lVzLMyEiWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=og/iYfbnroCbWHFPmj9rnAkmwtajUHLrrYvYM1YN0KaLz3C7h7IxK7fM8oryy/g5N
-	 WuKmfvrOHNyt4AQ5VpiQW8Av72wj+QWsiU1tekX3VZEcVlCq5bSN4naeRyz3sNedD4
-	 NvlR2AjQw0Ib/FgfP6EAHC5l3VqRm90W/BY3f2iAOCAlRudnIPPctQhUXGvPhsLx+j
-	 yjw5rCOTVoqCXbT7WA1F0fVkEqMCTZTjVk8jmNYLAq/z1SKXQC+knzSif5PLov5eQS
-	 aQDHPQ0bBUPNZlpx79hJUCKOAzhlQM9i2u3lZlQDsrZ0Oj+F0hZpWlPpFELoyXrQZu
-	 Pn2aZtezWPIVw==
+	b=hyhcuzXYmRYAGTZm5WQcLFC7McCVhhu/On1B8X1U5KqVdMYRRV/a613IpdKwbHwKF
+	 gKOprP8v1Fy4e3810VNhKaJD63DFR1gR1h+DN8snl4qYbPPXbvWSuDBpfbj7mfXJDr
+	 TGulxnPlmjFbAfznIngR388D3uFQ75mBWKvevVAnIYlVshfvH5dxd3Xiw5bEBYVudm
+	 oqyKREIqwMv73awJONmWvaUMSab5s0PvaDrP8d9V9hODymPJVzeR9X9HMe0emD53r5
+	 vNiLlcR6bu0szwAyxRtShg5CrPGNrwwUK4w98VNPy3EYTRQW77sCkd8AMwx+D9vtCb
+	 b59f+6BstAwWw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kuen-Han Tsai <khtsai@google.com>,
-	stable@kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] usb: gadget: f_rndis: Refactor bind path to use __free()
-Date: Fri, 17 Oct 2025 22:18:22 -0400
-Message-ID: <20251018021822.214718-3-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/3] drm/exynos: exynos7_drm_decon: fix uninitialized crtc reference in functions
+Date: Fri, 17 Oct 2025 22:26:40 -0400
+Message-ID: <20251018022642.218123-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251018021822.214718-1-sashal@kernel.org>
-References: <2025101631-subscript-pruning-bc19@gregkh>
- <20251018021822.214718-1-sashal@kernel.org>
+In-Reply-To: <2025101640-sprig-fifth-f5a1@gregkh>
+References: <2025101640-sprig-fifth-f5a1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,211 +60,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-[ Upstream commit 08228941436047bdcd35a612c1aec0912a29d8cd ]
+[ Upstream commit d31bbacf783daf1e71fbe5c68df93550c446bf44 ]
 
-After an bind/unbind cycle, the rndis->notify_req is left stale. If a
-subsequent bind fails, the unified error label attempts to free this
-stale request, leading to a NULL pointer dereference when accessing
-ep->ops->free_request.
+Modify the functions to accept a pointer to struct decon_context
+instead.
 
-Refactor the error handling in the bind path to use the __free()
-automatic cleanup mechanism.
-
-Fixes: 45fe3b8e5342 ("usb ethernet gadget: split RNDIS function")
-Cc: stable@kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-6-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-6-4997bf277548@google.com
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Stable-dep-of: e1361a4f1be9 ("drm/exynos: exynos7_drm_decon: remove ctx->suspended")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_rndis.c | 85 +++++++++++----------------
- 1 file changed, 35 insertions(+), 50 deletions(-)
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_rndis.c b/drivers/usb/gadget/function/f_rndis.c
-index b47f99d17ee9a..ef7e734511ab2 100644
---- a/drivers/usb/gadget/function/f_rndis.c
-+++ b/drivers/usb/gadget/function/f_rndis.c
-@@ -19,6 +19,8 @@
+diff --git a/drivers/gpu/drm/exynos/exynos7_drm_decon.c b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+index e52f72cc000e2..6d18a20e1104d 100644
+--- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+@@ -82,10 +82,8 @@ static const enum drm_plane_type decon_win_types[WINDOWS_NR] = {
+ 	DRM_PLANE_TYPE_CURSOR,
+ };
  
- #include <linux/atomic.h>
- 
-+#include <linux/usb/gadget.h>
-+
- #include "u_ether.h"
- #include "u_ether_configfs.h"
- #include "u_rndis.h"
-@@ -662,6 +664,8 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	struct usb_ep		*ep;
- 
- 	struct f_rndis_opts *rndis_opts;
-+	struct usb_os_desc_table        *os_desc_table __free(kfree) = NULL;
-+	struct usb_request		*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_rndis(c))
- 		return -EINVAL;
-@@ -669,12 +673,9 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	rndis_opts = container_of(f->fi, struct f_rndis_opts, func_inst);
- 
- 	if (cdev->use_os_string) {
--		f->os_desc_table = kzalloc(sizeof(*f->os_desc_table),
--					   GFP_KERNEL);
--		if (!f->os_desc_table)
-+		os_desc_table = kzalloc(sizeof(*os_desc_table), GFP_KERNEL);
-+		if (!os_desc_table)
- 			return -ENOMEM;
--		f->os_desc_n = 1;
--		f->os_desc_table[0].os_desc = &rndis_opts->rndis_os_desc;
- 	}
- 
- 	rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
-@@ -692,16 +693,14 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 		gether_set_gadget(rndis_opts->net, cdev->gadget);
- 		status = gether_register_netdev(rndis_opts->net);
- 		if (status)
--			goto fail;
-+			return status;
- 		rndis_opts->bound = true;
- 	}
- 
- 	us = usb_gstrings_attach(cdev, rndis_strings,
- 				 ARRAY_SIZE(rndis_string_defs));
--	if (IS_ERR(us)) {
--		status = PTR_ERR(us);
--		goto fail;
--	}
-+	if (IS_ERR(us))
-+		return PTR_ERR(us);
- 	rndis_control_intf.iInterface = us[0].id;
- 	rndis_data_intf.iInterface = us[1].id;
- 	rndis_iad_descriptor.iFunction = us[2].id;
-@@ -709,36 +708,30 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	rndis->ctrl_id = status;
- 	rndis_iad_descriptor.bFirstInterface = status;
- 
- 	rndis_control_intf.bInterfaceNumber = status;
- 	rndis_union_desc.bMasterInterface0 = status;
- 
--	if (cdev->use_os_string)
--		f->os_desc_table[0].if_id =
--			rndis_iad_descriptor.bFirstInterface;
+-static void decon_wait_for_vblank(struct exynos_drm_crtc *crtc)
++static void decon_wait_for_vblank(struct decon_context *ctx)
+ {
+-	struct decon_context *ctx = crtc->ctx;
 -
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	rndis->data_id = status;
+ 	if (ctx->suspended)
+ 		return;
  
- 	rndis_data_intf.bInterfaceNumber = status;
- 	rndis_union_desc.bSlaveInterface0 = status;
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	rndis->port.in_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	rndis->port.out_ep = ep;
- 
- 	/* NOTE:  a status/notification endpoint is, strictly speaking,
-@@ -747,21 +740,19 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	 */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_notify_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	rndis->notify = ep;
- 
--	status = -ENOMEM;
--
- 	/* allocate notification request and buffer */
--	rndis->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
--	if (!rndis->notify_req)
--		goto fail;
--	rndis->notify_req->buf = kmalloc(STATUS_BYTECOUNT, GFP_KERNEL);
--	if (!rndis->notify_req->buf)
--		goto fail;
--	rndis->notify_req->length = STATUS_BYTECOUNT;
--	rndis->notify_req->context = rndis;
--	rndis->notify_req->complete = rndis_response_complete;
-+	request = usb_ep_alloc_request(ep, GFP_KERNEL);
-+	if (!request)
-+		return -ENOMEM;
-+	request->buf = kmalloc(STATUS_BYTECOUNT, GFP_KERNEL);
-+	if (!request->buf)
-+		return -ENOMEM;
-+	request->length = STATUS_BYTECOUNT;
-+	request->context = rndis;
-+	request->complete = rndis_response_complete;
- 
- 	/* support all relevant hardware speeds... we expect that when
- 	 * hardware is dual speed, all bulk-capable endpoints work at
-@@ -778,7 +769,7 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	status = usb_assign_descriptors(f, eth_fs_function, eth_hs_function,
- 			eth_ss_function, eth_ss_function);
- 	if (status)
--		goto fail;
-+		return status;
- 
- 	rndis->port.open = rndis_open;
- 	rndis->port.close = rndis_close;
-@@ -789,9 +780,18 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	if (rndis->manufacturer && rndis->vendorID &&
- 			rndis_set_param_vendor(rndis->params, rndis->vendorID,
- 					       rndis->manufacturer)) {
--		status = -EINVAL;
--		goto fail_free_descs;
-+		usb_free_all_descriptors(f);
-+		return -EINVAL;
-+	}
-+
-+	if (cdev->use_os_string) {
-+		os_desc_table[0].os_desc = &rndis_opts->rndis_os_desc;
-+		os_desc_table[0].if_id = rndis_iad_descriptor.bFirstInterface;
-+		f->os_desc_table = no_free_ptr(os_desc_table);
-+		f->os_desc_n = 1;
-+
- 	}
-+	rndis->notify_req = no_free_ptr(request);
- 
- 	/* NOTE:  all that is done without knowing or caring about
- 	 * the network link ... which is unavailable to this code
-@@ -802,21 +802,6 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 			rndis->port.in_ep->name, rndis->port.out_ep->name,
- 			rndis->notify->name);
- 	return 0;
--
--fail_free_descs:
--	usb_free_all_descriptors(f);
--fail:
--	kfree(f->os_desc_table);
--	f->os_desc_n = 0;
--
--	if (rndis->notify_req) {
--		kfree(rndis->notify_req->buf);
--		usb_ep_free_request(rndis->notify, rndis->notify_req);
--	}
--
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
--
--	return status;
+@@ -101,9 +99,8 @@ static void decon_wait_for_vblank(struct exynos_drm_crtc *crtc)
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "vblank wait timed out.\n");
  }
  
- void rndis_borrow_net(struct usb_function_instance *f, struct net_device *net)
+-static void decon_clear_channels(struct exynos_drm_crtc *crtc)
++static void decon_clear_channels(struct decon_context *ctx)
+ {
+-	struct decon_context *ctx = crtc->ctx;
+ 	unsigned int win, ch_enabled = 0;
+ 
+ 	/* Check if any channel is enabled. */
+@@ -119,7 +116,7 @@ static void decon_clear_channels(struct exynos_drm_crtc *crtc)
+ 
+ 	/* Wait for vsync, as disable channel takes effect at next vsync */
+ 	if (ch_enabled)
+-		decon_wait_for_vblank(ctx->crtc);
++		decon_wait_for_vblank(ctx);
+ }
+ 
+ static int decon_ctx_initialize(struct decon_context *ctx,
+@@ -127,7 +124,7 @@ static int decon_ctx_initialize(struct decon_context *ctx,
+ {
+ 	ctx->drm_dev = drm_dev;
+ 
+-	decon_clear_channels(ctx->crtc);
++	decon_clear_channels(ctx);
+ 
+ 	return exynos_drm_register_dma(drm_dev, ctx->dev, &ctx->dma_priv);
+ }
 -- 
 2.51.0
 
