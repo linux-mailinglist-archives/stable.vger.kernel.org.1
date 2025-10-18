@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-187838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9AABED0B2
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 15:51:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6E1BED0BB
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 15:52:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC1FC1887D05
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 13:51:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703A35E4AEA
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 13:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B752D8DD6;
-	Sat, 18 Oct 2025 13:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8103626CE06;
+	Sat, 18 Oct 2025 13:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZNIh9Nn+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRvUblXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83B21B4F1F
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 13:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECA076026
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 13:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760795467; cv=none; b=DQqyK8EVx6l62zAAeXNSy1G6KPPxMsiL7Xk31rW4RMpfKSdR2zzdPl/L8zXwKlYEQOt/sYZwP4vYRq5VwF6tY8TMqRFFVf3WoGIHR8OKAgOTMgb6YCQAumRktPe/mv1QiPlkCFI7k4Kfi1qrh9USQAWvSgTSUdGxFNe4UITddX8=
+	t=1760795518; cv=none; b=ipGkSef9NEpQtszPBQpVbDv8gd0x/1f33ebanVm/nZoJNg6PuwQAr1b9Rq2fMuerSLFXufxnu1piYUqCluCCxgL3D5rR6nuRLO2Qg0R5pt4cs3QDKEUjGfnx2Y/uVtR72WuLguWVLechbdZ10C8H3xGCokhISFcFAArBJO5CI6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760795467; c=relaxed/simple;
-	bh=tiLiFh5+RjBM0YQ8cyw0CmAXwp5UA1QsMsDXv4GCVBc=;
+	s=arc-20240116; t=1760795518; c=relaxed/simple;
+	bh=DLtX7u7y/SesgslOdJOSDSzFE74XkAku9gKcTMx2Y9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIOvDbZ3BM5W38AEQvdxOrAhXF+k5Oy0lLb/VuxOQmS4/S4TETvPsSHH9/+CcKt3jH0V+Ne/AXVCoVGeUlY9899EHjn0jvDg240QOWBG+px5aFYbwK/j7sqUFPcJo91zQKZjTd6MnkAJ3V0AmgtzM+MfABp5gjUe8y5ctUVxYtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNIh9Nn+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E2AC116B1;
-	Sat, 18 Oct 2025 13:51:05 +0000 (UTC)
+	 MIME-Version; b=Kh6nmxJPA3eDE9jAAaMR/y1+83E0kqzgAiIUByfTGJR6lNJyP90gJG1HDbP5Q7Flvb7p8mwRVLApJUZQWdc5ii9huc1YPfMXpPpjMOySSpuA6VxFPpddx96ViuyAwZOvM1n+mgZnOJ8x0qxdzyRVvU165B5pFqK4xv7WlxIVt+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRvUblXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56372C4CEF8;
+	Sat, 18 Oct 2025 13:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760795466;
-	bh=tiLiFh5+RjBM0YQ8cyw0CmAXwp5UA1QsMsDXv4GCVBc=;
+	s=k20201202; t=1760795517;
+	bh=DLtX7u7y/SesgslOdJOSDSzFE74XkAku9gKcTMx2Y9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZNIh9Nn+aZmiGxDPGUqNj2zpGSXfzqIWL1sYLojh2hZldTXeLYMqjm/Wmvn3Bqiif
-	 7FsNVw3Zp88RK/JSCcTw9D4LiQpT9aXjLDgZYxXhWL6+bnACbJ6OKykk9lnrMCKU7u
-	 uLL4tqpqD0x8Q6YtClqtiPZXkLxjnP+PPNXF4HJUXJKtl9UDt1it7/qdwHGzbbwXCI
-	 FnJySEKMM2GMgH71OQQSCirzA+bO0QFWxlDGXDokLflX6yhrLQfnsJ3xwFvuEMqj+n
-	 0tmq3/Y4zxd/LVa968sxY2AXn87YpGgMLeudoskoO1tNTtK23K6rvaUmccgxO+tqUu
-	 Qd924rSdMoBWA==
+	b=WRvUblXp3W83V53rpaAIayioLSaez5lZq4zhx4lGFWbdq4BlfUBUe6aBCoBAA3sQb
+	 rY6teGTAwV2tZ3LJjid7hPpD4XeoTBJfFhtzQGTDQz1gYsOWiD0kv1fyBi5DS7lO0c
+	 qL1p7dacBphGNbpD1kbJMjqYcqg7i5hZMXix/W1Bpfv+jNQjiPs3Ved+85DmWv3k+c
+	 TNWMkE7KBsglbdApbd1WEOOHhUyUQahDJZjR52dqVG8P6bProh5AIUi64Z1h2mbRf3
+	 dfrNV89sEfistA9uK+9yPdfrE7U6z+kOZr7mE4V/P1p/c1ibcGwfOXVEdBM66prbef
+	 FFq511mll7zvQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Ionut Nechita <ionut_n2001@yahoo.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Kenneth Crudup <kenny@panix.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 2/2] drm/amd: Fix hybrid sleep
-Date: Sat, 18 Oct 2025 09:51:02 -0400
-Message-ID: <20251018135102.711457-2-sashal@kernel.org>
+Subject: [PATCH 5.10.y] drm/exynos: exynos7_drm_decon: remove ctx->suspended
+Date: Sat, 18 Oct 2025 09:51:55 -0400
+Message-ID: <20251018135155.712293-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251018135102.711457-1-sashal@kernel.org>
-References: <2025101656-trailside-reabsorb-e368@gregkh>
- <20251018135102.711457-1-sashal@kernel.org>
+In-Reply-To: <2025101641-plop-hertz-3940@gregkh>
+References: <2025101641-plop-hertz-3940@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,53 +60,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Mario Limonciello (AMD)" <superm1@kernel.org>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-[ Upstream commit 0a6e9e098fcc318fec0f45a05a5c4743a81a60d9 ]
+[ Upstream commit e1361a4f1be9cb69a662c6d7b5ce218007d6e82b ]
 
-[Why]
-commit 530694f54dd5e ("drm/amdgpu: do not resume device in thaw for
-normal hibernation") optimized the flow for systems that are going
-into S4 where the power would be turned off.  Basically the thaw()
-callback wouldn't resume the device if the hibernation image was
-successfully created since the system would be powered off.
+Condition guards are found to be redundant, as the call flow is properly
+managed now, as also observed in the Exynos5433 DECON driver. Since
+state checking is no longer necessary, remove it.
 
-This however isn't the correct flow for a system entering into
-s0i3 after the hibernation image is created.  Some of the amdgpu
-callbacks have different behavior depending upon the intended
-state of the suspend.
+This also fixes an issue which prevented decon_commit() from
+decon_atomic_enable() due to an incorrect state change setting.
 
-[How]
-Use pm_hibernation_mode_is_suspend() as an input to decide whether
-to run resume during thaw() callback.
-
-Reported-by: Ionut Nechita <ionut_n2001@yahoo.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4573
-Tested-by: Ionut Nechita <ionut_n2001@yahoo.com>
-Fixes: 530694f54dd5e ("drm/amdgpu: do not resume device in thaw for normal hibernation")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Tested-by: Kenneth Crudup <kenny@panix.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Cc: 6.17+ <stable@vger.kernel.org> # 6.17+: 495c8d35035e: PM: hibernate: Add pm_hibernation_mode_is_suspend()
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
+Cc: stable@vger.kernel.org
+Suggested-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c | 36 ----------------------
+ 1 file changed, 36 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index dbbb3407fa13b..65f4a76490eac 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2665,7 +2665,7 @@ static int amdgpu_pmops_thaw(struct device *dev)
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
+diff --git a/drivers/gpu/drm/exynos/exynos7_drm_decon.c b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+index 81494d5938303..77ebe3ce463e0 100644
+--- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+@@ -51,7 +51,6 @@ struct decon_context {
+ 	void __iomem			*regs;
+ 	unsigned long			irq_flags;
+ 	bool				i80_if;
+-	bool				suspended;
+ 	wait_queue_head_t		wait_vsync_queue;
+ 	atomic_t			wait_vsync_event;
  
- 	/* do not resume device if it's normal hibernation */
--	if (!pm_hibernate_is_recovering())
-+	if (!pm_hibernate_is_recovering() && !pm_hibernation_mode_is_suspend())
- 		return 0;
+@@ -85,9 +84,6 @@ static void decon_wait_for_vblank(struct exynos_drm_crtc *crtc)
+ {
+ 	struct decon_context *ctx = crtc->ctx;
  
- 	return amdgpu_device_resume(drm_dev, true);
+-	if (ctx->suspended)
+-		return;
+-
+ 	atomic_set(&ctx->wait_vsync_event, 1);
+ 
+ 	/*
+@@ -155,9 +151,6 @@ static void decon_commit(struct exynos_drm_crtc *crtc)
+ 	struct drm_display_mode *mode = &crtc->base.state->adjusted_mode;
+ 	u32 val, clkdiv;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/* nothing to do if we haven't set the mode yet */
+ 	if (mode->htotal == 0 || mode->vtotal == 0)
+ 		return;
+@@ -219,9 +212,6 @@ static int decon_enable_vblank(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return -EPERM;
+-
+ 	if (!test_and_set_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
+ 
+@@ -244,9 +234,6 @@ static void decon_disable_vblank(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	if (test_and_clear_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
+ 
+@@ -369,9 +356,6 @@ static void decon_atomic_begin(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, true);
+ }
+@@ -391,9 +375,6 @@ static void decon_update_plane(struct exynos_drm_crtc *crtc,
+ 	unsigned int cpp = fb->format->cpp[0];
+ 	unsigned int pitch = fb->pitches[0];
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/*
+ 	 * SHADOWCON/PRTCON register is used for enabling timing.
+ 	 *
+@@ -481,9 +462,6 @@ static void decon_disable_plane(struct exynos_drm_crtc *crtc,
+ 	unsigned int win = plane->index;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/* protect windows */
+ 	decon_shadow_protect_win(ctx, win, true);
+ 
+@@ -502,9 +480,6 @@ static void decon_atomic_flush(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, false);
+ 	exynos_crtc_handle_event(crtc);
+@@ -531,9 +506,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
+ {
+ 	struct decon_context *ctx = crtc->ctx;
+ 
+-	if (!ctx->suspended)
+-		return;
+-
+ 	pm_runtime_get_sync(ctx->dev);
+ 
+ 	decon_init(ctx);
+@@ -543,8 +515,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
+ 		decon_enable_vblank(ctx->crtc);
+ 
+ 	decon_commit(ctx->crtc);
+-
+-	ctx->suspended = false;
+ }
+ 
+ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+@@ -552,9 +522,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/*
+ 	 * We need to make sure that all windows are disabled before we
+ 	 * suspend that connector. Otherwise we might try to scan from
+@@ -564,8 +531,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+ 		decon_disable_plane(crtc, &ctx->planes[i]);
+ 
+ 	pm_runtime_put_sync(ctx->dev);
+-
+-	ctx->suspended = true;
+ }
+ 
+ static const struct exynos_drm_crtc_ops decon_crtc_ops = {
+@@ -687,7 +652,6 @@ static int decon_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	ctx->dev = dev;
+-	ctx->suspended = true;
+ 
+ 	i80_if_timings = of_get_child_by_name(dev->of_node, "i80-if-timings");
+ 	if (i80_if_timings)
 -- 
 2.51.0
 
