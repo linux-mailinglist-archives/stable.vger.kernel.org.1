@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-187801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CA1BEC5C1
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD80BEC5BD
 	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B207D4E21E0
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:44:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26AFC19A8479
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C3124DCFD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BCA24DCF7;
 	Sat, 18 Oct 2025 02:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o4RkOMPe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LnDYIDCG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FB8248F7F
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA02F24C07A
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760755489; cv=none; b=UHOzK3yYSQQ87MUWvnswIAlY4O7Qe16TXk1cpj2BuJgnkyXkRgrlVKTPg7NMRGQwuTAGr4y56M5yrZK3ezFBZSuOqc7cV3d+9EBaeTSWwp6u211h91MjXJlJsbAbllSQQ+qHY148A7+VAR3by3owFINGbmTjTRylFb6tEbPGQrc=
+	t=1760755489; cv=none; b=vGUta0zODFnLxPCMS7Zn/IKMOtQVqRQX8s6aFYOwDjRvdZHcIPxaNCkW1oiJdzKIoYqHptr8zSxReCPcUMkG3Fqvg1+f/tq3xz08T9khPFbILo6cVjwrDLxqZMAZnTJ+uYvClRH1uJh8ema/2gAoA2ToP8OmUkL+pkOz7vLP9eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760755489; c=relaxed/simple;
-	bh=Y/eQaSwIxswG2gfZ4zFpaC5To0q4o3cAx10x5A+xYK0=;
+	bh=63x1qOBK8UwXkZGMZwrdzKOnmuzTqTL6kOhN2QpLXR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGGrQKVH9SX0rBu6zIL6HC05LSzX0X8zv2HoPvRRiUfKu1NR4Oa34U0RoqCi+1luA8idDpuyOJOfDjOMnnQg6Lna5ZmFqHdhbg7/PEROHdUTnS4Fr30hXfFiIvmE+ENyS3XsxEsPq0VLhcBIN9ahOtrZMBDDPozbKQ2CKYyoO4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o4RkOMPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BD0C116B1;
-	Sat, 18 Oct 2025 02:44:46 +0000 (UTC)
+	 MIME-Version; b=gAumpSWIOrtyWkwxJorCKuzyK3/scVOq3EDs4810qhY8FcGAY/yRaTr/SuOR9/tyEKuN8i13E9JJXZE/MnGzDa6j/dMVn3fIkPIFbl1qh8SswCozCg8g2GPVtzFUN0tHTUV+JEQX5SHCB0O3Jo6bIMwlaUhvh94wj2iXDSzVFmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LnDYIDCG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2241C4CEE7;
+	Sat, 18 Oct 2025 02:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760755487;
-	bh=Y/eQaSwIxswG2gfZ4zFpaC5To0q4o3cAx10x5A+xYK0=;
+	s=k20201202; t=1760755488;
+	bh=63x1qOBK8UwXkZGMZwrdzKOnmuzTqTL6kOhN2QpLXR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4RkOMPeg3D+uhWy7VAS7dKISKQFSFWccUD8eIFrULPR68jFKe8cXrTIEeiFG8IkZ
-	 QtL+nRfdXyBSAvJirT79iBpJMm4E2k62Cioddi8MnuBYZAHpAnFy3b4EdRp8/CSNm2
-	 HAypSZPEfEzhO9NWEePbMGxh8Vl1JfV24n4e/RJCMM4JAHjPmNEJpZDkShvdPmocAT
-	 jwzg+6d5yP3Djyt7mKHh0ssopuWFx7BFjdns9ohbKmHAAGM+gpVjKbB+QD3AHIFY0O
-	 2Qx6whMESyTE/FewER6W9eQYxcuJaloDMpXl4LUPs3QKr/d8XMRuJVfSr6D53+fFYr
-	 QweaJSE8j31FQ==
+	b=LnDYIDCGoD5AikUMdVQXDKzcttjQ2ThcKLthjpGWV+ILw2JH9umruy7N5c9L0w4rh
+	 P02wRco9x+yhgI+b+ITUSFpfem9DmjZBGdlhMkp71jIfIaII+XNRnHiv49F6wXphKM
+	 E6NImI5WGQtDy4em5UKYQ4iZ3dbJizWtzBn3lS8ZYQDMhS0Da8LL3Gz4IDzDszqRGA
+	 VtkuftVu8qpTZFrYxXpcUexZ/GyRz8kYX2kKgRvo9/IDq0wal1Q+mb1ehrhdR+fmG3
+	 wUmi2+SRsIE+WDbxTKTbDeir1D8T78Xv390KMSyXna+0YHLXXLLpFY9MNWjndEouh4
+	 Ztktwz9pe8Mfw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Kuen-Han Tsai <khtsai@google.com>,
+	stable@kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/3] usb: gadget: Introduce free_usb_request helper
-Date: Fri, 17 Oct 2025 22:44:43 -0400
-Message-ID: <20251018024444.228704-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y 3/3] usb: gadget: f_rndis: Refactor bind path to use __free()
+Date: Fri, 17 Oct 2025 22:44:44 -0400
+Message-ID: <20251018024444.228704-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251018024444.228704-1-sashal@kernel.org>
 References: <2025101656-perky-popcorn-f7b0@gregkh>
@@ -63,65 +64,209 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 201c53c687f2b55a7cc6d9f4000af4797860174b ]
+[ Upstream commit 08228941436047bdcd35a612c1aec0912a29d8cd ]
 
-Introduce the free_usb_request() function that frees both the request's
-buffer and the request itself.
+After an bind/unbind cycle, the rndis->notify_req is left stale. If a
+subsequent bind fails, the unified error label attempts to free this
+stale request, leading to a NULL pointer dereference when accessing
+ep->ops->free_request.
 
-This function serves as the cleanup callback for DEFINE_FREE() to enable
-automatic, scope-based cleanup for usb_request pointers.
+Refactor the error handling in the bind path to use the __free()
+automatic cleanup mechanism.
 
+Fixes: 45fe3b8e5342 ("usb ethernet gadget: split RNDIS function")
+Cc: stable@kernel.org
 Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-2-4997bf277548@google.com
+Link: https://lore.kernel.org/r/20250916-ready-v1-6-4997bf277548@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-2-4997bf277548@google.com
-Stable-dep-of: 082289414360 ("usb: gadget: f_rndis: Refactor bind path to use __free()")
+Link: https://lore.kernel.org/r/20250916-ready-v1-6-4997bf277548@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/usb/gadget.h | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/usb/gadget/function/f_rndis.c | 85 +++++++++++----------------
+ 1 file changed, 35 insertions(+), 50 deletions(-)
 
-diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
-index 9a4d800cdc1e3..2cae3af9742d3 100644
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -15,6 +15,7 @@
- #ifndef __LINUX_USB_GADGET_H
- #define __LINUX_USB_GADGET_H
+diff --git a/drivers/usb/gadget/function/f_rndis.c b/drivers/usb/gadget/function/f_rndis.c
+index ee95e8f5f9d48..1dbda4e98ac43 100644
+--- a/drivers/usb/gadget/function/f_rndis.c
++++ b/drivers/usb/gadget/function/f_rndis.c
+@@ -19,6 +19,8 @@
  
-+#include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/errno.h>
- #include <linux/init.h>
-@@ -290,6 +291,28 @@ static inline void usb_ep_fifo_flush(struct usb_ep *ep)
+ #include <linux/atomic.h>
  
- /*-------------------------------------------------------------------------*/
++#include <linux/usb/gadget.h>
++
+ #include "u_ether.h"
+ #include "u_ether_configfs.h"
+ #include "u_rndis.h"
+@@ -675,6 +677,8 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+ 	struct usb_ep		*ep;
  
-+/**
-+ * free_usb_request - frees a usb_request object and its buffer
-+ * @req: the request being freed
-+ *
-+ * This helper function frees both the request's buffer and the request object
-+ * itself by calling usb_ep_free_request(). Its signature is designed to be used
-+ * with DEFINE_FREE() to enable automatic, scope-based cleanup for usb_request
-+ * pointers.
-+ */
-+static inline void free_usb_request(struct usb_request *req)
-+{
-+	if (!req)
-+		return;
+ 	struct f_rndis_opts *rndis_opts;
++	struct usb_os_desc_table        *os_desc_table __free(kfree) = NULL;
++	struct usb_request		*request __free(free_usb_request) = NULL;
+ 
+ 	if (!can_support_rndis(c))
+ 		return -EINVAL;
+@@ -682,12 +686,9 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+ 	rndis_opts = container_of(f->fi, struct f_rndis_opts, func_inst);
+ 
+ 	if (cdev->use_os_string) {
+-		f->os_desc_table = kzalloc(sizeof(*f->os_desc_table),
+-					   GFP_KERNEL);
+-		if (!f->os_desc_table)
++		os_desc_table = kzalloc(sizeof(*os_desc_table), GFP_KERNEL);
++		if (!os_desc_table)
+ 			return -ENOMEM;
+-		f->os_desc_n = 1;
+-		f->os_desc_table[0].os_desc = &rndis_opts->rndis_os_desc;
+ 	}
+ 
+ 	rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
+@@ -705,16 +706,14 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+ 		gether_set_gadget(rndis_opts->net, cdev->gadget);
+ 		status = gether_register_netdev(rndis_opts->net);
+ 		if (status)
+-			goto fail;
++			return status;
+ 		rndis_opts->bound = true;
+ 	}
+ 
+ 	us = usb_gstrings_attach(cdev, rndis_strings,
+ 				 ARRAY_SIZE(rndis_string_defs));
+-	if (IS_ERR(us)) {
+-		status = PTR_ERR(us);
+-		goto fail;
+-	}
++	if (IS_ERR(us))
++		return PTR_ERR(us);
+ 	rndis_control_intf.iInterface = us[0].id;
+ 	rndis_data_intf.iInterface = us[1].id;
+ 	rndis_iad_descriptor.iFunction = us[2].id;
+@@ -722,36 +721,30 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+ 	/* allocate instance-specific interface IDs */
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	rndis->ctrl_id = status;
+ 	rndis_iad_descriptor.bFirstInterface = status;
+ 
+ 	rndis_control_intf.bInterfaceNumber = status;
+ 	rndis_union_desc.bMasterInterface0 = status;
+ 
+-	if (cdev->use_os_string)
+-		f->os_desc_table[0].if_id =
+-			rndis_iad_descriptor.bFirstInterface;
+-
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	rndis->data_id = status;
+ 
+ 	rndis_data_intf.bInterfaceNumber = status;
+ 	rndis_union_desc.bSlaveInterface0 = status;
+ 
+-	status = -ENODEV;
+-
+ 	/* allocate instance-specific endpoints */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_in_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	rndis->port.in_ep = ep;
+ 
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_out_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	rndis->port.out_ep = ep;
+ 
+ 	/* NOTE:  a status/notification endpoint is, strictly speaking,
+@@ -760,21 +753,19 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+ 	 */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_notify_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	rndis->notify = ep;
+ 
+-	status = -ENOMEM;
+-
+ 	/* allocate notification request and buffer */
+-	rndis->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
+-	if (!rndis->notify_req)
+-		goto fail;
+-	rndis->notify_req->buf = kmalloc(STATUS_BYTECOUNT, GFP_KERNEL);
+-	if (!rndis->notify_req->buf)
+-		goto fail;
+-	rndis->notify_req->length = STATUS_BYTECOUNT;
+-	rndis->notify_req->context = rndis;
+-	rndis->notify_req->complete = rndis_response_complete;
++	request = usb_ep_alloc_request(ep, GFP_KERNEL);
++	if (!request)
++		return -ENOMEM;
++	request->buf = kmalloc(STATUS_BYTECOUNT, GFP_KERNEL);
++	if (!request->buf)
++		return -ENOMEM;
++	request->length = STATUS_BYTECOUNT;
++	request->context = rndis;
++	request->complete = rndis_response_complete;
+ 
+ 	/* support all relevant hardware speeds... we expect that when
+ 	 * hardware is dual speed, all bulk-capable endpoints work at
+@@ -791,7 +782,7 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+ 	status = usb_assign_descriptors(f, eth_fs_function, eth_hs_function,
+ 			eth_ss_function, eth_ss_function);
+ 	if (status)
+-		goto fail;
++		return status;
+ 
+ 	rndis->port.open = rndis_open;
+ 	rndis->port.close = rndis_close;
+@@ -802,9 +793,18 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+ 	if (rndis->manufacturer && rndis->vendorID &&
+ 			rndis_set_param_vendor(rndis->params, rndis->vendorID,
+ 					       rndis->manufacturer)) {
+-		status = -EINVAL;
+-		goto fail_free_descs;
++		usb_free_all_descriptors(f);
++		return -EINVAL;
++	}
 +
-+	kfree(req->buf);
-+	usb_ep_free_request(req->ep, req);
-+}
++	if (cdev->use_os_string) {
++		os_desc_table[0].os_desc = &rndis_opts->rndis_os_desc;
++		os_desc_table[0].if_id = rndis_iad_descriptor.bFirstInterface;
++		f->os_desc_table = no_free_ptr(os_desc_table);
++		f->os_desc_n = 1;
 +
-+DEFINE_FREE(free_usb_request, struct usb_request *, free_usb_request(_T))
-+
-+/*-------------------------------------------------------------------------*/
-+
- struct usb_dcd_config_params {
- 	__u8  bU1devExitLat;	/* U1 Device exit Latency */
- #define USB_DEFAULT_U1_DEV_EXIT_LAT	0x01	/* Less then 1 microsec */
+ 	}
++	rndis->notify_req = no_free_ptr(request);
+ 
+ 	/* NOTE:  all that is done without knowing or caring about
+ 	 * the network link ... which is unavailable to this code
+@@ -817,21 +817,6 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+ 			rndis->port.in_ep->name, rndis->port.out_ep->name,
+ 			rndis->notify->name);
+ 	return 0;
+-
+-fail_free_descs:
+-	usb_free_all_descriptors(f);
+-fail:
+-	kfree(f->os_desc_table);
+-	f->os_desc_n = 0;
+-
+-	if (rndis->notify_req) {
+-		kfree(rndis->notify_req->buf);
+-		usb_ep_free_request(rndis->notify, rndis->notify_req);
+-	}
+-
+-	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
+-
+-	return status;
+ }
+ 
+ void rndis_borrow_net(struct usb_function_instance *f, struct net_device *net)
 -- 
 2.51.0
 
