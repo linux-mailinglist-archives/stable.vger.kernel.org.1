@@ -1,142 +1,124 @@
-Return-Path: <stable+bounces-187798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0B0BEC590
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:40:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12416BEC599
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 138D14081AF
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:40:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E36319A5B95
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43CE24336D;
-	Sat, 18 Oct 2025 02:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E9C24C076;
+	Sat, 18 Oct 2025 02:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="oC0JFe3r"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="gOOOjBIU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3758819E81F
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695B9248F7F
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760755222; cv=none; b=pjXblvEwVQzkFE6YE4o1g2ZY+O8O+puaLNBpS+goUnzFrLKhs0j98oddjBmdmB2etxmHPuFTYD4N0nWmA39TuIvJSjqKrFB7RNO/Ve2GuZrD4mIub36sSnq6NhPRu7Y/eU3FBN9FmSDKAHeJf8G4uhrNp75IypzAXXXIXkvc94I=
+	t=1760755389; cv=none; b=XaZkjenkGjTT6MNRcgP/BruSUz3H9yixx3UVNml40tqlr6kTwoclwQAvYB0RZeAA01uB212l3M3XW7bshQe7VifoRglgi/KQk1J8oA5KGgeSeDz5V205TyHWCVkZSzM9rl5PLsF+zSjTR4woXSQo9LyNmGTG3E6ExcxAWdMF9SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760755222; c=relaxed/simple;
-	bh=zd6tQBowptX4m4Mw6QRX5estg4n4hoBoi1Dfssm20GQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FUdLoyQ4pmOoNFm+TaeEYhOCI0dpUeRcoz8+R/vA2tp5gqN447dL19CidpI5TrT4aaMf5cUrGpo9JPeYZN1mGhu69d6/6npy7san5FEjFPp/pvcWYKzj8+3D6RfEpZtZwEV0YyeSY8pmH8a18n59KEtK3PtOnxbanrw4W7KaSLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=oC0JFe3r; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-87c103928ffso37924106d6.1
-        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 19:40:19 -0700 (PDT)
+	s=arc-20240116; t=1760755389; c=relaxed/simple;
+	bh=+b2DvE7xTQ+YplYhEJssLncHPzlO3qrdo1+/WrFFXQQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vEnlYg074BKCSnc9SJsGxgAMCar7eZpKVn0uMt4J5PEuYEGFH0c8K0Yz8bPkmbCSfYtxyTz4Jq2jQt5XnnAnG+/VGxVPwL7q68VTWq2BNqe4GPqNO0WIgunaigV5Jwu+ePzSqBZDfpsCVZO+nZ+H8Wv5fsW5oHEbxBwrztTs5ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=gOOOjBIU; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47103b6058fso18381825e9.1
+        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 19:43:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1760755219; x=1761360019; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Dus8AFvubYCo2Iz75kl/mYsJ0os8tXO5WjEduobHi4=;
-        b=oC0JFe3rGSMj9T1J0hmVSZSKMAV23Aa7KGoZH+aTeTEifjJQRMBmF3OB9OQxDZ8nGv
-         7qcx2LqrXBdrO1YFi6wpmlvGnaEL3lzmInYdN+GEkb286mTyxbvBr5/Da5jF48OYdCOa
-         qnHckrOEGVEBdbdBFeIFqVdl0MRS4TCwbp2Q3UAV1/CW1haELZ/Ng1aTKdyu1sRySrTp
-         c45MCuLH2CLKYR7NLSCHm++U8zWZNIpCEP37BL7PDlnQxWWpiDV7dWBBbx4SFoofVT5o
-         GS2u0uAron3BfutQ7LwQ/pwgp5V8csWxcAEZoGnQulLMqRtgEamdX8Z9pOwIh/r9VPuO
-         67AQ==
+        d=googlemail.com; s=20230601; t=1760755385; x=1761360185; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KedOym6ANAjmntB6MdnT69wUxSKMRmT+YO6XJ5I6B+A=;
+        b=gOOOjBIUkUvo1jjrvQixoM7SbqU7Brmhj41vhBGQ+h0ES/WIdLtKTScDalZ5c+M1tR
+         gaAwrCLrMeIAlzpizY4Y7C2sI8pKQ84pDnHocv6wE/bB0kdKVZRxa7Iuiky22lFdhaaz
+         ZTLK62LWDSbjqfnIHYWiFtSoxJQ2BzEDASGwAL71i7NkKBgDS58GRU7JpcWgWjvr4aoo
+         k5ife4MRT6BPjs/hn9WwzCxjp89w4hZGE5j0ok/4PtlrMegT69Z+4bDUX3KxreMXmgJp
+         SbPHe1n8J+AIj/XuiTYKrWX+MUKQuz0qhQsoYxyAObOfvl1dD3t0nHXhJGxq7sgCZito
+         RFLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760755219; x=1761360019;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+Dus8AFvubYCo2Iz75kl/mYsJ0os8tXO5WjEduobHi4=;
-        b=t1UnqOoWF43sb+akIGS4pqxmKDrm/f4nqY1WxP/Z/PHyPSi/yoj+7Wvi+Im8uI3EFd
-         LnVvSDIPCjFDuJWVXfO3wIlef7sLkyJOz1iqlsRO74J8smceD18txsC8AWgq+0YpULRS
-         aTu2flRS1LPznH3XzQYG2Fcbrlc/5FVP+68ej4TsZfccVw3fWdUD/qCIKBqm6S6N083E
-         iEoKzuwNuwDz9BPu78BXfqeSIuK2O9efkNA5FcfYFGeEP2khBuOcg+yZ38KvoQbWejCy
-         dUdw5SA+KIFFubtsCjm6P5PSWuHVP98EEWZMMUGC+i6RpU9hj0klhnXf65YzxOMLu/L7
-         pEfw==
-X-Forwarded-Encrypted: i=1; AJvYcCUqXf5q6ss+PkDhB4U5RzoHnyzOFYweeKzzaT/QKQBVPh7F/RAiANQ0X3a52QwY9xcyNQUQfP0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsQMelXF8W0CZVLvZZ7SIORKQg93yGmSJU6oAjlPGNq20oOmbg
-	pIC8ejja65BRyWu+VRp30rG1UNxy0EceoqpOGmwkt0joSuu5d5TNVjPUK9kt9CUB3QI=
-X-Gm-Gg: ASbGncs6kBCx4dqNGviUcGb20OmnJshTpWkQdp+yasjN8fw/RKHZwy0id2LBBp6Aib4
-	u7DYIU6Ar8fFqrrzlGa5EPx85worxPotFJAyFYuXP58CgiIZ8ixC9gK5U4ggGRPsb0jT0sgleVZ
-	C4NVSjQe0wZyeZtlWzUY3Xt+cjExyJIq77Kl30h3bbjdwCw5/AOtMuRLMu1DQpNeG0neZERwxE2
-	dXyG4B5inPCQfhLpy445Oola38PyS5lFeGKquobifpJierR+9+NS2wc+29UlwX0dcggSmQom7N6
-	kdfI/evY4/s8DIehPm4gYQ/DO6l85B1QcA6aHJIgeuXyoFCWHPsgkpBPThhyLp5v4QE7zm1Bsar
-	J9jN8FhjvdEIC7OKOVLLMtWiEPe06mtDMew+l6pl6py76N7QKCINW1wcMCCa4cJSkR7rWt/sLuu
-	2Aan1xx9zbe3ON6UVsUzt6QIHbTdFYDZOGBJSaxXXFklaMdzItbRqlSoKGvS35KyvI
-X-Google-Smtp-Source: AGHT+IHa5CVoc9R4UCxsuyKubgfsAJamI5eRYeedq2Gpyju8Cu94PfvkOYi04haInndEP2HJ/gEVdA==
-X-Received: by 2002:a05:6214:5985:b0:87c:2111:ad4e with SMTP id 6a1803df08f44-87c2111b136mr72178006d6.8.1760755219062;
-        Fri, 17 Oct 2025 19:40:19 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87cf51fcd39sm9355186d6.6.2025.10.17.19.40.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Oct 2025 19:40:18 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: x86@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	peterz@infradead.org,
-	mario.limonciello@amd.com,
-	riel@surriel.com,
-	yazen.ghannam@amd.com,
-	me@mixaill.net,
-	kai.huang@intel.com,
-	sandipan.das@amd.com,
-	darwi@linutronix.de,
-	stable@vger.kernel.org
-Subject: [PATCH v2] x86/amd: Disable RDSEED on AMD Zen5 because of an error.
-Date: Fri, 17 Oct 2025 22:40:10 -0400
-Message-ID: <20251018024010.4112396-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.51.0
+        d=1e100.net; s=20230601; t=1760755385; x=1761360185;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KedOym6ANAjmntB6MdnT69wUxSKMRmT+YO6XJ5I6B+A=;
+        b=EEFhiAuIneXDR0O/F10a6micb0qSp1KYJXwEHwrpF9AzWWL1BxC8g1WCRg7FWQx8VE
+         sJWZV4qyjWWTZ5UE/U5c9YRbvn5skIEzN+y6g0kI2Moc4t6Gdw7m2SYUe7p97oSIefhs
+         /KJ3MvXI7Ko4hL06QuAt1LCESYTSNHjPLotTCEYB176vmboEkojR2U5iOWMJR4GPQEDQ
+         LAl9Zyz5ce6Qq30SrXYi8nK58QgZXEnBrcJi8Ii7o7uOrYtAm6VZB4taXZntAE6KEm0p
+         nH7sEdnY5AjsGamXb+2KykvyGiWb3AvSHt8w7oOjOSh2XBToPs2dnvwyNzrLFF7TyfyC
+         w+9g==
+X-Forwarded-Encrypted: i=1; AJvYcCVaLpmW3TLmJg5mfeeI1PhQ/UYg8XP8fEVO72zygpTwFAeqzvuNqu/2wWbwXk2H3XUTZTSN4Ig=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxe6CsfAh112gI96ozcnk63PCvqmL1jhyJ2jgGeoUK1ElAkMhBu
+	O1mWSKLvPJi7iqsEjdTgYhwp9eL6PiC2eXnYGkiL6MTMTvoNBl+PdQM=
+X-Gm-Gg: ASbGncs2VLvlbBNh/hMJOhYDDRP/RHTdT3oXEfI8GEQqZVuIrbqD7FCTdwTJkvcptBY
+	C4xQfkSfQH7sbwlxf56IyjL4aZKNUrZnOg4q+TjXKRsLbuW1HHrXzBMSduN3W7kC/q0gvsCuoN8
+	NZ8/bCAhILfxaPDIyJDZtOZfmpgHPwsoUkdiMKHWpF1Cv8gqUyg6HITjnnPuw9h1y9hlMzgr3pg
+	LjwcQYY1Le6rS3zdpiVuUJ7BIkg/Pxe6zCWjUMRa5JsZKwDAhiPbGl3Ar2DInzOCBh5Uci3JX7U
+	QdBE+Pc9DP3hMCnWNCr2S4hSOco2D8moe5fkpTwj1MHhH95hYKfVxYCaL8D2o7AT/Ew0jC9W+os
+	gDqCzRt2jIrRxhjP/WOM7ML0jZ5u8/SLuLcfZ2BjNhueDqAiU/79pFD/6NDVvIaQf26sRFYAi3N
+	7jtXTabW2QDawdQYeBj+JL3MxtEgOh1HPGxuGDaXZrwgEmNEMbY4lv
+X-Google-Smtp-Source: AGHT+IHJCQEarLyt9R2soYu4NGJRlr1qtMl+VxBgaRp4vpWrXNohBal3V0rIJ/WL73KWrYBnM8te3g==
+X-Received: by 2002:a05:600c:190f:b0:46e:3b58:1b40 with SMTP id 5b1f17b1804b1-4711721a479mr46610845e9.4.1760755384377;
+        Fri, 17 Oct 2025 19:43:04 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b488a.dip0.t-ipconnect.de. [91.43.72.138])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4715257d916sm21954375e9.4.2025.10.17.19.43.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Oct 2025 19:43:04 -0700 (PDT)
+Message-ID: <8cc5cdfa-e25a-492f-a75d-38fa14961ebd@googlemail.com>
+Date: Sat, 18 Oct 2025 04:43:03 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/201] 6.6.113-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20251017145134.710337454@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Under unknown conditions, Zen5 chips running rdseed can produce
-(val=0,CF=1) over 10% of the time (when rdseed is successful).
-CF=1 indicates success, while val=0 is typically only produced
-when rdseed fails (CF=0).
+Am 17.10.2025 um 16:51 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.113 release.
+> There are 201 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-This suggests there is a bug which causes rdseed to silently fail.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-This was reproduced reliably by launching 2-threads per available
-core, 1-thread per for hamming on RDSEED, and 1-thread per core
-collectively eating and hammering on ~90% of memory.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-This was observed on more than 1 Zen5 model, so it should be disabled
-for all of Zen5 until/unless a comprehensive blacklist can be built.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Price <gourry@gourry.net>
----
- arch/x86/kernel/cpu/amd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Beste Grüße,
+Peter Schneider
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 5398db4dedb4..1af30518d3e7 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1037,6 +1037,10 @@ static void init_amd_zen4(struct cpuinfo_x86 *c)
- 
- static void init_amd_zen5(struct cpuinfo_x86 *c)
- {
-+	/* Disable RDSEED on AMD Turin because of an error. */
-+	clear_cpu_cap(c, X86_FEATURE_RDSEED);
-+	msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
-+	pr_emerg("RDSEED is not reliable on this platform; disabling.\n");
- }
- 
- static void init_amd(struct cpuinfo_x86 *c)
 -- 
-2.51.0
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
