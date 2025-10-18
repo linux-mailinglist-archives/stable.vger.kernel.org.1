@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6E1BED0BB
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 15:52:03 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9672CBED0C7
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 15:57:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703A35E4AEA
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 13:52:02 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 097D134DBBF
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 13:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8103626CE06;
-	Sat, 18 Oct 2025 13:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A928316DEB1;
+	Sat, 18 Oct 2025 13:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRvUblXp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPDR/yMN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECA076026
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 13:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688F41BC3F
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 13:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760795518; cv=none; b=ipGkSef9NEpQtszPBQpVbDv8gd0x/1f33ebanVm/nZoJNg6PuwQAr1b9Rq2fMuerSLFXufxnu1piYUqCluCCxgL3D5rR6nuRLO2Qg0R5pt4cs3QDKEUjGfnx2Y/uVtR72WuLguWVLechbdZ10C8H3xGCokhISFcFAArBJO5CI6I=
+	t=1760795825; cv=none; b=WyEOc/RcMLvCUKgzkc/SGMhZLAbTJhpsM2g/xD3gCr5+JaHhmfrz2R/rXmVGMAKwss69PbxAfLG+gt0vuhLfXHjA2bHI8Wk+vHtchvsuNVyKtjAypY8mr2pv/xpr3XQnZp/LaVzvwzm9FlXoIa5oj3mlq9rwvognPB7MUnmuFsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760795518; c=relaxed/simple;
-	bh=DLtX7u7y/SesgslOdJOSDSzFE74XkAku9gKcTMx2Y9E=;
+	s=arc-20240116; t=1760795825; c=relaxed/simple;
+	bh=hzxt/YLLgOX3wqwS1ZWaSn54WvzG2SvRTAy2Gi+q/E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kh6nmxJPA3eDE9jAAaMR/y1+83E0kqzgAiIUByfTGJR6lNJyP90gJG1HDbP5Q7Flvb7p8mwRVLApJUZQWdc5ii9huc1YPfMXpPpjMOySSpuA6VxFPpddx96ViuyAwZOvM1n+mgZnOJ8x0qxdzyRVvU165B5pFqK4xv7WlxIVt+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRvUblXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56372C4CEF8;
-	Sat, 18 Oct 2025 13:51:57 +0000 (UTC)
+	 MIME-Version; b=pnKGqFGUsShQ0GRByvpnK/gvI7NjxGNjvNEMUcCHYMlitcHUb1eGCxaT7C7QbU6KtFejudCYeKZ5oOxTI6wQWgN97K8gN1grvU6OdMWkenMxOisqs0fFNN+P+iWDD72qrKIndvawhRH4nqdFHf4hSU1rc+z/sAI3N+iJKjHFUI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPDR/yMN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C3FC4CEF8;
+	Sat, 18 Oct 2025 13:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760795517;
-	bh=DLtX7u7y/SesgslOdJOSDSzFE74XkAku9gKcTMx2Y9E=;
+	s=k20201202; t=1760795822;
+	bh=hzxt/YLLgOX3wqwS1ZWaSn54WvzG2SvRTAy2Gi+q/E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WRvUblXp3W83V53rpaAIayioLSaez5lZq4zhx4lGFWbdq4BlfUBUe6aBCoBAA3sQb
-	 rY6teGTAwV2tZ3LJjid7hPpD4XeoTBJfFhtzQGTDQz1gYsOWiD0kv1fyBi5DS7lO0c
-	 qL1p7dacBphGNbpD1kbJMjqYcqg7i5hZMXix/W1Bpfv+jNQjiPs3Ved+85DmWv3k+c
-	 TNWMkE7KBsglbdApbd1WEOOHhUyUQahDJZjR52dqVG8P6bProh5AIUi64Z1h2mbRf3
-	 dfrNV89sEfistA9uK+9yPdfrE7U6z+kOZr7mE4V/P1p/c1ibcGwfOXVEdBM66prbef
-	 FFq511mll7zvQ==
+	b=NPDR/yMNw+rSPzLu+BzvtaiqX1B++5/zDaDMK9o6neDaNj3wO0kZX19B0MLJyoQgp
+	 5+b19ElqXdPumZK/jAJp/+JktWvDZoxIiUzSNvUc5L5tXX5ayWAZFZarRjsZG358+B
+	 sw/uPjA48Cp41i9cQM5qTY3j2EW1rOyAq3Igq3ESfYaBu9DWCTz1LqP9J27ePJb/uA
+	 9k21iPJpa6K/W2lPbx/W7q5pfzcO1tvml86+W7MVoaLLksIfokvkIoxrc+Vt5Qe5JN
+	 J2uy1McmIpCqN1jkCUjaJ52zpPreBmt6H9ugTvvAd3QVTS/5VVMzG6Guds3nYZ+iKz
+	 oG/XYY2zwgQSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Kaustabh Chakraborty <kauschluss@disroot.org>,
 	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] drm/exynos: exynos7_drm_decon: remove ctx->suspended
-Date: Sat, 18 Oct 2025 09:51:55 -0400
-Message-ID: <20251018135155.712293-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y] drm/exynos: exynos7_drm_decon: remove ctx->suspended
+Date: Sat, 18 Oct 2025 09:57:00 -0400
+Message-ID: <20251018135700.715655-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101641-plop-hertz-3940@gregkh>
-References: <2025101641-plop-hertz-3940@gregkh>
+In-Reply-To: <2025101641-wistful-rebuff-94b8@gregkh>
+References: <2025101641-wistful-rebuff-94b8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,7 +83,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 36 deletions(-)
 
 diff --git a/drivers/gpu/drm/exynos/exynos7_drm_decon.c b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-index 81494d5938303..77ebe3ce463e0 100644
+index a0049ee129ed2..344375293acee 100644
 --- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
 +++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
 @@ -51,7 +51,6 @@ struct decon_context {
@@ -174,7 +174,7 @@ index 81494d5938303..77ebe3ce463e0 100644
  	for (i = 0; i < WINDOWS_NR; i++)
  		decon_shadow_protect_win(ctx, i, false);
  	exynos_crtc_handle_event(crtc);
-@@ -531,9 +506,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
+@@ -531,9 +506,6 @@ static void decon_enable(struct exynos_drm_crtc *crtc)
  {
  	struct decon_context *ctx = crtc->ctx;
  
@@ -184,7 +184,7 @@ index 81494d5938303..77ebe3ce463e0 100644
  	pm_runtime_get_sync(ctx->dev);
  
  	decon_init(ctx);
-@@ -543,8 +515,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
+@@ -543,8 +515,6 @@ static void decon_enable(struct exynos_drm_crtc *crtc)
  		decon_enable_vblank(ctx->crtc);
  
  	decon_commit(ctx->crtc);
@@ -192,8 +192,8 @@ index 81494d5938303..77ebe3ce463e0 100644
 -	ctx->suspended = false;
  }
  
- static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
-@@ -552,9 +522,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+ static void decon_disable(struct exynos_drm_crtc *crtc)
+@@ -552,9 +522,6 @@ static void decon_disable(struct exynos_drm_crtc *crtc)
  	struct decon_context *ctx = crtc->ctx;
  	int i;
  
@@ -203,7 +203,7 @@ index 81494d5938303..77ebe3ce463e0 100644
  	/*
  	 * We need to make sure that all windows are disabled before we
  	 * suspend that connector. Otherwise we might try to scan from
-@@ -564,8 +531,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+@@ -564,8 +531,6 @@ static void decon_disable(struct exynos_drm_crtc *crtc)
  		decon_disable_plane(crtc, &ctx->planes[i]);
  
  	pm_runtime_put_sync(ctx->dev);
