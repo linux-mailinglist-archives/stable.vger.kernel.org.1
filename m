@@ -1,58 +1,98 @@
-Return-Path: <stable+bounces-187796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D00BEC581
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F0B0BEC590
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:40:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89F766E8911
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:35:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 138D14081AF
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01545239E88;
-	Sat, 18 Oct 2025 02:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43CE24336D;
+	Sat, 18 Oct 2025 02:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="myDJ98fz"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="oC0JFe3r"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42BB23535E
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3758819E81F
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760754901; cv=none; b=ZX7SiGMXLvDL6RcTwsRC2ci2upXJWZEDHU/llQyU3UBtbsOxnQ/LTLuwmquLm1t+Xb+l9mDOzfnRinRYBzI0iJbJr9LwkaSzU67ze1BWZWfz7KgRCx3/39/1JTvwLuon0myPPQkWiIWUm4//gzP7Sx/nDbefG1uqIVIaKq7vFws=
+	t=1760755222; cv=none; b=pjXblvEwVQzkFE6YE4o1g2ZY+O8O+puaLNBpS+goUnzFrLKhs0j98oddjBmdmB2etxmHPuFTYD4N0nWmA39TuIvJSjqKrFB7RNO/Ve2GuZrD4mIub36sSnq6NhPRu7Y/eU3FBN9FmSDKAHeJf8G4uhrNp75IypzAXXXIXkvc94I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760754901; c=relaxed/simple;
-	bh=CVyWQRupTTIv3/VQC2sbmShwP+xNG/ya80I52kzrjJU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzXP9Dj5+IpQkCA6QlTLldH0jEjPlFi8FMiu25Uswp+SI1iSsJ7+oXl6udIXE6AtybyELx+irLBmbVL8Vs+j0oWELnr2xlWxZbrzH9/l4aYZEyiip7EkkyfisJmRUQCzltjZN0ZEzpwg4kXSGGBKL199LMXa1D2T0k5IuO12PrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=myDJ98fz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13BEC116B1;
-	Sat, 18 Oct 2025 02:35:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760754901;
-	bh=CVyWQRupTTIv3/VQC2sbmShwP+xNG/ya80I52kzrjJU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=myDJ98fzPUvGZXkKuV2vu6iNwkQod5pz6Rfd5WSZgd+b7rvcLbTRzgu4/2LWDEmfp
-	 Wl1eX9AhPYyGW47OLX1bq1T0jR+H21NAXps+5P9rtMvvBuJ2E4J9M6MBtwzhbMBxpa
-	 VHTca6pL/whDFopJaBq0wBejX8LU6bMn7ufmwn+dO5r8Xi/c3fL76R9cgdXQf3v7tT
-	 P763Nu86Kj7nYrTfaDoyYKuBeN0OdBhpCTnM69vrcMN+JORHbornyjsqxXWmlgFOtj
-	 hN6HMR3HKDIuAttS1bo8jhr10chsil+erEXCDrxiO/4t/S0u6mVw9o2EiVIFwSJgP3
-	 KWOgWRKg9Mxhg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Kaustabh Chakraborty <kauschluss@disroot.org>,
-	Inki Dae <inki.dae@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 3/3] drm/exynos: exynos7_drm_decon: remove ctx->suspended
-Date: Fri, 17 Oct 2025 22:34:57 -0400
-Message-ID: <20251018023457.221641-3-sashal@kernel.org>
+	s=arc-20240116; t=1760755222; c=relaxed/simple;
+	bh=zd6tQBowptX4m4Mw6QRX5estg4n4hoBoi1Dfssm20GQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FUdLoyQ4pmOoNFm+TaeEYhOCI0dpUeRcoz8+R/vA2tp5gqN447dL19CidpI5TrT4aaMf5cUrGpo9JPeYZN1mGhu69d6/6npy7san5FEjFPp/pvcWYKzj8+3D6RfEpZtZwEV0YyeSY8pmH8a18n59KEtK3PtOnxbanrw4W7KaSLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=oC0JFe3r; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-87c103928ffso37924106d6.1
+        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 19:40:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1760755219; x=1761360019; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+Dus8AFvubYCo2Iz75kl/mYsJ0os8tXO5WjEduobHi4=;
+        b=oC0JFe3rGSMj9T1J0hmVSZSKMAV23Aa7KGoZH+aTeTEifjJQRMBmF3OB9OQxDZ8nGv
+         7qcx2LqrXBdrO1YFi6wpmlvGnaEL3lzmInYdN+GEkb286mTyxbvBr5/Da5jF48OYdCOa
+         qnHckrOEGVEBdbdBFeIFqVdl0MRS4TCwbp2Q3UAV1/CW1haELZ/Ng1aTKdyu1sRySrTp
+         c45MCuLH2CLKYR7NLSCHm++U8zWZNIpCEP37BL7PDlnQxWWpiDV7dWBBbx4SFoofVT5o
+         GS2u0uAron3BfutQ7LwQ/pwgp5V8csWxcAEZoGnQulLMqRtgEamdX8Z9pOwIh/r9VPuO
+         67AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760755219; x=1761360019;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+Dus8AFvubYCo2Iz75kl/mYsJ0os8tXO5WjEduobHi4=;
+        b=t1UnqOoWF43sb+akIGS4pqxmKDrm/f4nqY1WxP/Z/PHyPSi/yoj+7Wvi+Im8uI3EFd
+         LnVvSDIPCjFDuJWVXfO3wIlef7sLkyJOz1iqlsRO74J8smceD18txsC8AWgq+0YpULRS
+         aTu2flRS1LPznH3XzQYG2Fcbrlc/5FVP+68ej4TsZfccVw3fWdUD/qCIKBqm6S6N083E
+         iEoKzuwNuwDz9BPu78BXfqeSIuK2O9efkNA5FcfYFGeEP2khBuOcg+yZ38KvoQbWejCy
+         dUdw5SA+KIFFubtsCjm6P5PSWuHVP98EEWZMMUGC+i6RpU9hj0klhnXf65YzxOMLu/L7
+         pEfw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqXf5q6ss+PkDhB4U5RzoHnyzOFYweeKzzaT/QKQBVPh7F/RAiANQ0X3a52QwY9xcyNQUQfP0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsQMelXF8W0CZVLvZZ7SIORKQg93yGmSJU6oAjlPGNq20oOmbg
+	pIC8ejja65BRyWu+VRp30rG1UNxy0EceoqpOGmwkt0joSuu5d5TNVjPUK9kt9CUB3QI=
+X-Gm-Gg: ASbGncs6kBCx4dqNGviUcGb20OmnJshTpWkQdp+yasjN8fw/RKHZwy0id2LBBp6Aib4
+	u7DYIU6Ar8fFqrrzlGa5EPx85worxPotFJAyFYuXP58CgiIZ8ixC9gK5U4ggGRPsb0jT0sgleVZ
+	C4NVSjQe0wZyeZtlWzUY3Xt+cjExyJIq77Kl30h3bbjdwCw5/AOtMuRLMu1DQpNeG0neZERwxE2
+	dXyG4B5inPCQfhLpy445Oola38PyS5lFeGKquobifpJierR+9+NS2wc+29UlwX0dcggSmQom7N6
+	kdfI/evY4/s8DIehPm4gYQ/DO6l85B1QcA6aHJIgeuXyoFCWHPsgkpBPThhyLp5v4QE7zm1Bsar
+	J9jN8FhjvdEIC7OKOVLLMtWiEPe06mtDMew+l6pl6py76N7QKCINW1wcMCCa4cJSkR7rWt/sLuu
+	2Aan1xx9zbe3ON6UVsUzt6QIHbTdFYDZOGBJSaxXXFklaMdzItbRqlSoKGvS35KyvI
+X-Google-Smtp-Source: AGHT+IHa5CVoc9R4UCxsuyKubgfsAJamI5eRYeedq2Gpyju8Cu94PfvkOYi04haInndEP2HJ/gEVdA==
+X-Received: by 2002:a05:6214:5985:b0:87c:2111:ad4e with SMTP id 6a1803df08f44-87c2111b136mr72178006d6.8.1760755219062;
+        Fri, 17 Oct 2025 19:40:19 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87cf51fcd39sm9355186d6.6.2025.10.17.19.40.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Oct 2025 19:40:18 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: x86@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	peterz@infradead.org,
+	mario.limonciello@amd.com,
+	riel@surriel.com,
+	yazen.ghannam@amd.com,
+	me@mixaill.net,
+	kai.huang@intel.com,
+	sandipan.das@amd.com,
+	darwi@linutronix.de,
+	stable@vger.kernel.org
+Subject: [PATCH v2] x86/amd: Disable RDSEED on AMD Zen5 because of an error.
+Date: Fri, 17 Oct 2025 22:40:10 -0400
+Message-ID: <20251018024010.4112396-1-gourry@gourry.net>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251018023457.221641-1-sashal@kernel.org>
-References: <2025101640-enviable-movable-b2dd@gregkh>
- <20251018023457.221641-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,165 +101,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+Under unknown conditions, Zen5 chips running rdseed can produce
+(val=0,CF=1) over 10% of the time (when rdseed is successful).
+CF=1 indicates success, while val=0 is typically only produced
+when rdseed fails (CF=0).
 
-[ Upstream commit e1361a4f1be9cb69a662c6d7b5ce218007d6e82b ]
+This suggests there is a bug which causes rdseed to silently fail.
 
-Condition guards are found to be redundant, as the call flow is properly
-managed now, as also observed in the Exynos5433 DECON driver. Since
-state checking is no longer necessary, remove it.
+This was reproduced reliably by launching 2-threads per available
+core, 1-thread per for hamming on RDSEED, and 1-thread per core
+collectively eating and hammering on ~90% of memory.
 
-This also fixes an issue which prevented decon_commit() from
-decon_atomic_enable() due to an incorrect state change setting.
+This was observed on more than 1 Zen5 model, so it should be disabled
+for all of Zen5 until/unless a comprehensive blacklist can be built.
 
-Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
 Cc: stable@vger.kernel.org
-Suggested-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- drivers/gpu/drm/exynos/exynos7_drm_decon.c | 36 ----------------------
- 1 file changed, 36 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/exynos/exynos7_drm_decon.c b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-index 46a1b61a500b3..cfc68e3f808ab 100644
---- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-+++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-@@ -51,7 +51,6 @@ struct decon_context {
- 	void __iomem			*regs;
- 	unsigned long			irq_flags;
- 	bool				i80_if;
--	bool				suspended;
- 	wait_queue_head_t		wait_vsync_queue;
- 	atomic_t			wait_vsync_event;
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 5398db4dedb4..1af30518d3e7 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1037,6 +1037,10 @@ static void init_amd_zen4(struct cpuinfo_x86 *c)
  
-@@ -105,9 +104,6 @@ static void decon_shadow_protect_win(struct decon_context *ctx,
- 
- static void decon_wait_for_vblank(struct decon_context *ctx)
+ static void init_amd_zen5(struct cpuinfo_x86 *c)
  {
--	if (ctx->suspended)
--		return;
--
- 	atomic_set(&ctx->wait_vsync_event, 1);
- 
- 	/*
-@@ -183,9 +179,6 @@ static void decon_commit(struct exynos_drm_crtc *crtc)
- 	struct drm_display_mode *mode = &crtc->base.state->adjusted_mode;
- 	u32 val, clkdiv;
- 
--	if (ctx->suspended)
--		return;
--
- 	/* nothing to do if we haven't set the mode yet */
- 	if (mode->htotal == 0 || mode->vtotal == 0)
- 		return;
-@@ -247,9 +240,6 @@ static int decon_enable_vblank(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	u32 val;
- 
--	if (ctx->suspended)
--		return -EPERM;
--
- 	if (!test_and_set_bit(0, &ctx->irq_flags)) {
- 		val = readl(ctx->regs + VIDINTCON0);
- 
-@@ -272,9 +262,6 @@ static void decon_disable_vblank(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	u32 val;
- 
--	if (ctx->suspended)
--		return;
--
- 	if (test_and_clear_bit(0, &ctx->irq_flags)) {
- 		val = readl(ctx->regs + VIDINTCON0);
- 
-@@ -376,9 +363,6 @@ static void decon_atomic_begin(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
- 
--	if (ctx->suspended)
--		return;
--
- 	for (i = 0; i < WINDOWS_NR; i++)
- 		decon_shadow_protect_win(ctx, i, true);
- }
-@@ -398,9 +382,6 @@ static void decon_update_plane(struct exynos_drm_crtc *crtc,
- 	unsigned int cpp = fb->format->cpp[0];
- 	unsigned int pitch = fb->pitches[0];
- 
--	if (ctx->suspended)
--		return;
--
- 	/*
- 	 * SHADOWCON/PRTCON register is used for enabling timing.
- 	 *
-@@ -488,9 +469,6 @@ static void decon_disable_plane(struct exynos_drm_crtc *crtc,
- 	unsigned int win = plane->index;
- 	u32 val;
- 
--	if (ctx->suspended)
--		return;
--
- 	/* protect windows */
- 	decon_shadow_protect_win(ctx, win, true);
- 
-@@ -509,9 +487,6 @@ static void decon_atomic_flush(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
- 
--	if (ctx->suspended)
--		return;
--
- 	for (i = 0; i < WINDOWS_NR; i++)
- 		decon_shadow_protect_win(ctx, i, false);
- 	exynos_crtc_handle_event(crtc);
-@@ -539,9 +514,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int ret;
- 
--	if (!ctx->suspended)
--		return;
--
- 	ret = pm_runtime_resume_and_get(ctx->dev);
- 	if (ret < 0) {
- 		DRM_DEV_ERROR(ctx->dev, "failed to enable DECON device.\n");
-@@ -555,8 +527,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
- 		decon_enable_vblank(ctx->crtc);
- 
- 	decon_commit(ctx->crtc);
--
--	ctx->suspended = false;
++	/* Disable RDSEED on AMD Turin because of an error. */
++	clear_cpu_cap(c, X86_FEATURE_RDSEED);
++	msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
++	pr_emerg("RDSEED is not reliable on this platform; disabling.\n");
  }
  
- static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
-@@ -564,9 +534,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
- 
--	if (ctx->suspended)
--		return;
--
- 	/*
- 	 * We need to make sure that all windows are disabled before we
- 	 * suspend that connector. Otherwise we might try to scan from
-@@ -576,8 +543,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
- 		decon_disable_plane(crtc, &ctx->planes[i]);
- 
- 	pm_runtime_put_sync(ctx->dev);
--
--	ctx->suspended = true;
- }
- 
- static const struct exynos_drm_crtc_ops decon_crtc_ops = {
-@@ -699,7 +664,6 @@ static int decon_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	ctx->dev = dev;
--	ctx->suspended = true;
- 
- 	i80_if_timings = of_get_child_by_name(dev->of_node, "i80-if-timings");
- 	if (i80_if_timings)
+ static void init_amd(struct cpuinfo_x86 *c)
 -- 
 2.51.0
 
