@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-187842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006CEBED1B8
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 16:51:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69333BED1CD
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 16:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B21CD5E19D8
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 14:51:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32FBB3A5EB5
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 14:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2961D7999;
-	Sat, 18 Oct 2025 14:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0488127E05A;
+	Sat, 18 Oct 2025 14:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UqTFCzoU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tBvrX660"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB0B185B67
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 14:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7550155C87
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 14:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760799093; cv=none; b=m+J30PdgdyRIo+cDovJ9oWcOrfai9Yo+xWAL9A0WSuX+PHmIxvqSYoiLXHDqhLXPT1ArDUEmhxoxgo74w4d2Od8dbLooeIchtXhR5gV2RuYOnnCF3cWeoAYxLwdQrtnGuiZWDyan34k0LTupImDgeaCL2u7rRQ0yiygNSxb4g/g=
+	t=1760799294; cv=none; b=BQYupgwVjM91ZbwJnP5bpRJW7B1+INZy2Wae89YZqn+TW1eishH1dgBf5Tn7E+ulEfbvrThIQlh++TS885xJsIVQ008ypKlDndfqD3HbNPgPLZPIpCtWanJ9CyHoCCsIGJCKSJS1OofqvBFTKH/YVg2xh+3uEvhM12ZmfEM+r+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760799093; c=relaxed/simple;
-	bh=E9LrDr+bFvomIu5wJ7hqk4+KJUcmPCsa8Bog+JQ2jxw=;
+	s=arc-20240116; t=1760799294; c=relaxed/simple;
+	bh=vUsOZ5FPtzf7nVfFD4BVNHPt2emZv3bNIk4SBON/DgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PzzhiJsDo+bYf+yD3StAOLjaYPi557tVsWeuarhV4TfNbe0OrzPfd+Gpb+u6nwXCjQnkUHxuoI2cScKNL2epTknwdfQai/T10MIYe/rBCxsYBnT6z+Ri6ZpGEg/knWhEtevJOJ0dPJ453GUfhBhusFxOakmzsLKWSPhIpVlX7HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UqTFCzoU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3B7C4CEF8;
-	Sat, 18 Oct 2025 14:51:31 +0000 (UTC)
+	 MIME-Version; b=P2+T7H6/p6ZQBAsR+0JNzFuvd60SDii4I0mMTb1tV+I/xXEQ0mJDleOG4R1MmOpxfkyHY+NcjJTm9ptZ53+BrE9X3AG4xqgkH2Ntr1bqvU+kYPg04py1vuG7bQQa/An508By6+Z0izsVAt/pbsXnd4jvdwk8/4PDSj2iTnxQu6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tBvrX660; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB13CC4CEF8;
+	Sat, 18 Oct 2025 14:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760799092;
-	bh=E9LrDr+bFvomIu5wJ7hqk4+KJUcmPCsa8Bog+JQ2jxw=;
+	s=k20201202; t=1760799294;
+	bh=vUsOZ5FPtzf7nVfFD4BVNHPt2emZv3bNIk4SBON/DgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UqTFCzoUXouwa3vnXFnzp2q887x7zO7EOmSm+xcqIvvqogInNAIfwmLgRMcUvkW2A
-	 s+nQ+pBV3pzvFH+ricFPE887+rGgRINao9p4Kb59I1onV8WZXbnsw3OyK90N4OdFUf
-	 mSLzL2urkR9aYYINExog2K9B8mLgUGV43f/HP+7JIDEdKO/p58ZTtGpUAopXEz3Pmv
-	 nRwiFlTWBynT6diX7avKJuCTwHmsUAd6njCJt5O5itMuVsGbMlIzSKymf7g/J/oGTH
-	 wKCaeDHoz+/VZzZM4srDwnJvxhgVygALMPSXVZhN5arqBpCDqyty9XUVlDuCx9y0rV
-	 3TOs/WA+efMYA==
+	b=tBvrX660Z6TG0eNfkMKHgaUiQH+2A6IquDeCXBxgdrYtGz/mRwfw9MbXib3qlMhB/
+	 7Pgmb7i89jGIzSuzD25eiwPJuwBs588JDn6CTah9rB3IDVcXGFoLojCp1gnxLVoTtn
+	 ncPo3ofQwqbNSkXqHxF+efeUKQ2Hb/OOpE77UmRPpfaacCFcv5ZGzfYnkPwyLS+JH/
+	 2djuazSm+U4XvRlYYiKJKJud5j4gIL/bXGlqxSaBmOxVSZjRQRojcQmhSSiIFLkkRL
+	 cXG+PHwfB1O86yDDKIGUnCfxCl6i5ewvK/mR4FpZwFCLlc3g+wRz0QMZaJc8vjDd93
+	 Zi3Gjsb4/tGJA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Yu Kuai <yukuai3@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Adam Xue <zxue@semtech.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] blk-crypto: fix missing blktrace bio split events
-Date: Sat, 18 Oct 2025 10:51:29 -0400
-Message-ID: <20251018145130.791122-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] bus: mhi: host: Do not use uninitialized 'dev' pointer in mhi_init_irq_setup()
+Date: Sat, 18 Oct 2025 10:54:52 -0400
+Message-ID: <20251018145452.792939-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101656-curdle-duration-949d@gregkh>
-References: <2025101656-curdle-duration-949d@gregkh>
+In-Reply-To: <2025101641-blooming-stiffness-1ee0@gregkh>
+References: <2025101641-blooming-stiffness-1ee0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,47 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Adam Xue <zxue@semtech.com>
 
-[ Upstream commit 06d712d297649f48ebf1381d19bd24e942813b37 ]
+[ Upstream commit d0856a6dff57f95cc5d2d74e50880f01697d0cc4 ]
 
-trace_block_split() is missing, resulting in blktrace inability to catch
-BIO split events and making it harder to analyze the BIO sequence.
+In mhi_init_irq_setup, the device pointer used for dev_err() was not
+initialized. Use the pointer from mhi_cntrl instead.
 
+Fixes: b0fc0167f254 ("bus: mhi: core: Allow shared IRQ for event rings")
+Fixes: 3000f85b8f47 ("bus: mhi: core: Add support for basic PM operations")
+Signed-off-by: Adam Xue <zxue@semtech.com>
+[mani: reworded subject/description and CCed stable]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Fixes: 488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ changed blk_crypto_fallback_split_bio_if_needed() to blk_crypto_split_bio_if_needed() ]
+Link: https://patch.msgid.link/20250905174118.38512-1-zxue@semtech.com
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-crypto-fallback.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/bus/mhi/host/init.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/block/blk-crypto-fallback.c b/block/blk-crypto-fallback.c
-index c322176a1e099..e47716fe289dd 100644
---- a/block/blk-crypto-fallback.c
-+++ b/block/blk-crypto-fallback.c
-@@ -18,6 +18,7 @@
- #include <linux/mempool.h>
- #include <linux/module.h>
- #include <linux/random.h>
-+#include <trace/events/block.h>
+diff --git a/drivers/bus/mhi/host/init.c b/drivers/bus/mhi/host/init.c
+index 2cc48f96afdbc..2e7a1a3a546a8 100644
+--- a/drivers/bus/mhi/host/init.c
++++ b/drivers/bus/mhi/host/init.c
+@@ -147,7 +147,6 @@ void mhi_deinit_free_irq(struct mhi_controller *mhi_cntrl)
+ int mhi_init_irq_setup(struct mhi_controller *mhi_cntrl)
+ {
+ 	struct mhi_event *mhi_event = mhi_cntrl->mhi_event;
+-	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+ 	int i, ret;
  
- #include "blk-crypto-internal.h"
+ 	/* Setup BHI_INTVEC IRQ */
+@@ -163,7 +162,7 @@ int mhi_init_irq_setup(struct mhi_controller *mhi_cntrl)
+ 			continue;
  
-@@ -231,7 +232,9 @@ static bool blk_crypto_split_bio_if_needed(struct bio **bio_ptr)
- 			bio->bi_status = BLK_STS_RESOURCE;
- 			return false;
+ 		if (mhi_event->irq >= mhi_cntrl->nr_irqs) {
+-			dev_err(dev, "irq %d not available for event ring\n",
++			dev_err(mhi_cntrl->cntrl_dev, "irq %d not available for event ring\n",
+ 				mhi_event->irq);
+ 			ret = -EINVAL;
+ 			goto error_request;
+@@ -174,7 +173,7 @@ int mhi_init_irq_setup(struct mhi_controller *mhi_cntrl)
+ 				  IRQF_SHARED | IRQF_NO_SUSPEND,
+ 				  "mhi", mhi_event);
+ 		if (ret) {
+-			dev_err(dev, "Error requesting irq:%d for ev:%d\n",
++			dev_err(mhi_cntrl->cntrl_dev, "Error requesting irq:%d for ev:%d\n",
+ 				mhi_cntrl->irq[mhi_event->irq], i);
+ 			goto error_request;
  		}
-+
- 		bio_chain(split_bio, bio);
-+		trace_block_split(split_bio, bio->bi_iter.bi_sector);
- 		submit_bio_noacct(bio);
- 		*bio_ptr = split_bio;
- 	}
 -- 
 2.51.0
 
