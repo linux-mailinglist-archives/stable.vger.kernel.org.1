@@ -1,218 +1,136 @@
-Return-Path: <stable+bounces-187764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D118BBEC341
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 03:03:05 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65E68BEC34A
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 03:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2918E4F23AA
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 01:03:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E02C6354D5E
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 01:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB641B4F1F;
-	Sat, 18 Oct 2025 01:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF5A1C8616;
+	Sat, 18 Oct 2025 01:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NN5cliET"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f8XmRHQo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1CB155C82
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 01:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF4018DF89
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 01:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760749380; cv=none; b=IvTSbJ88BniQU6KmDihxSO5Idg49m6WOnrGuxgC7ygYqxd3guzNJC7AE+LNRahV29hxwkPBrCDqU/YcSlxKU7FKFR5hMeSJf2kV8sWwbLwCBQbBcIGzs6dHnG9ZvoPTeOmM33H0qRpnG0Ah2JItsrLtOXUJ0FwLtXQ/1Ujy0ZLM=
+	t=1760749744; cv=none; b=YEU4A9wuwVFdktYzhGqZ33MGlIWzKfOG2pUeB+mjtNPSQ758xbqUuHNU7rBLngb3Q0jJPSjCORjFNP1elijUyNJMx7Ol/j9yPheoT2wjrkTL8RuNtehViBCQPIaXGNIs4R+eUm3YVk7THw1LHnW42q8XRCvQ+6JiYG2TGmwx6Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760749380; c=relaxed/simple;
-	bh=6pJCvN+8qzdbBcDj8yEIp210DyhFgOvPfhMcfpsFnuA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ScFONq4Yxc/XcZ7PJr82iUR7jwwKZAO9CamvPtVy3IrlVqcq3LWwGh36aT8wGnDRxbwQgIxtweCznnBR0dUgMzVaSeFN/U3Jw7aWlbcn/ZE3aSjFpENx9WKsvUJmVtX3q22N1n9N+IULW2N0JmPwKXGo6NXWn0CTz7y0tvLLDBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NN5cliET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318B3C4CEE7;
-	Sat, 18 Oct 2025 01:02:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760749379;
-	bh=6pJCvN+8qzdbBcDj8yEIp210DyhFgOvPfhMcfpsFnuA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NN5cliETC11Lj2rSYCvD+60hd1o1mdaaMHzm47HMJ5ZAwAt8tmw75mwZfcWjPMytJ
-	 tvw9gSEpSIxZCWoenhz62FGhPjcyKVGA9SZcRd1ngFL6qzobVeYptjiTn8zRpzeW9M
-	 v5QybwOPNh4+K04fre6RZCOfVObLQdv+YptwWIXS68og4U2VC7pbzNrLTpbhsf1Lhs
-	 W+A3swHRJPUqGjYm+UohJufx2P29PX9tHt/r62i99qqsl8KO9uZ4mlgkjNf0eulKVp
-	 0bpCzc9B5LoZpQg81/fOQeNlRbuzFPRIT9lBYJ1klvMS0HafH/fIhJCfWdOwojW9nQ
-	 eLGmFyM0kXkuQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Kuen-Han Tsai <khtsai@google.com>,
-	stable@kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] usb: gadget: f_ecm: Refactor bind path to use __free()
-Date: Fri, 17 Oct 2025 21:02:55 -0400
-Message-ID: <20251018010255.104362-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251018010255.104362-1-sashal@kernel.org>
-References: <2025101641-passcode-sanitizer-19b3@gregkh>
- <20251018010255.104362-1-sashal@kernel.org>
+	s=arc-20240116; t=1760749744; c=relaxed/simple;
+	bh=e3j0tM594BEHtaLmHhl6ldltnFaSOezHubsVppH21NE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rZAmWJtVu0Q6zNrkYw+nJNOVMqabL8EczD8T7M1f2/khho43kptqwnox8s/vh6LFbUyjqKazdlP6LYkZ0TcYiobJ9pIzvVZ37PymG9ZGbVcoSzsaGBpHwKj44PGHHx8YYtVQCaveNChiyccFfXEee0mVLvg7lOyM7HGO5Quejr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f8XmRHQo; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7a226a0798cso970411b3a.2
+        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 18:09:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760749741; x=1761354541; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LvZsZ7oS0CM+3Jpc3uOT/QYGpqH5xVAqjmhfBxS7UXc=;
+        b=f8XmRHQoialr6hHO75SR9y6KXIDBpZrz5wiTFqXhooWvtNBYO9XDc7YxLHqwGJb8cf
+         zEQifro+pgRp1+5J4KRZNL0dFK7Hzvu1JXFL1g8qlP7+2UAnuQwcTXtnimZAXngUJQU3
+         NELLzLTgbhxbunMav54TgFuNoVFYKinpQoS8xkw5YKxhT3bJGlR4dY8/AoHpXTD4+CYU
+         IXUSEiVJGUO45zP2WmUUTNLE6lKHQgw0mRQYm2GWl26xrH65si3fYJH0vnIPVVitsW1I
+         X4RPaKWQpWtrt0BMOiaG7yOG5xFqz1ZilpmclLMhd503Ro34sJv9b9eab/YEOFWA8SXl
+         /F4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760749741; x=1761354541;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LvZsZ7oS0CM+3Jpc3uOT/QYGpqH5xVAqjmhfBxS7UXc=;
+        b=vp6zZTThvps+5C0c/nsWJUc5cC12I3AF1elmlThSgN0vrap0Ol0Wgf6DLsJz9ESCnI
+         XaLcHjOyaSUK0/r3Xc+6QNTYxdJZkyQQXQ/pepDxSaDdzsHNCfOGKbtnIZTb7bntBwbw
+         j7V9KOR33WEfJYH38PkcSYuKEomWWeKqmujBCBsTwDNFF4Yn2mAfKk/tRl/9RMTnlGmN
+         dPBrC5+ct2+FBivhHYSmaa5odu/KxOBew/TZ6XbKI4nDDv3hYPgsTN6aG/iwI2w5ReSK
+         ql/8egb3VEP9V2c4OuWZxanI07qr8g7D0zp8heWFdT7QNE+E2t67dEn8Enq82keS9+h9
+         oiOw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKWkzASr+A/Kxww4ZuqJVUMGHpdNdRB7bXRsGUs5a2VDos3LVpS+9EFgIm2Umyolv0OVS0P5s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtEYH5h85TxFn+tMBE2741pz+3CWxkJ5dfakF5EYnNlyHhYdbd
+	Isn89ODjXmuLQpuAhMH+BLtD99CadOWxlSemWw2vkUy6fgZDUNoIW5LW
+X-Gm-Gg: ASbGncvE1PXMgtp6DU8Wz/K22HndFih85k2x+oeF2pXSuOtv+ZVlOseOu+xM+XOK8On
+	jp+S1lCgg7g10eUc3w4UAeYoPEQwYVeKHm0OgSSsfPnR9HrGYHOw5YlWn4+DJgOpMHfqHqCOHSM
+	VR+IcJ9cZKWQ2FLcQPXpja6c9tN4Iykjv3kZdjp2FT0oBWOPxlHURijjfBSpsO+X3Rg3vqVZ/8a
+	rcfaR7gPHo05KuSXgVGehtBK09AbvPkos1p9f2xnAI9lUKUNrcQNt3GZIMXGHesI3DICTbnwW1v
+	f3smGE0OJ4+SfZmrMFz+M5FD8pCnqy9J8Yt/RBJL/A4GwY1m4Hgx08YDDBkcwwYjd3BPvdOCa6q
+	OS1udBxoeVoHmZnpi1Ip2so/xA+hVNqo30uFakFF8QjC1mqo8C1fafFkTkvtFdxxBaHdMJunWF3
+	VAK0Ku3Dnwk9Ol/b/Dj5hdFzB86kM/Tm7lWjX5IVlAjQ9fYQhQIb4=
+X-Google-Smtp-Source: AGHT+IHiiFYtC9umsD49rAB9MiYKz9Jivl0/Pq/GslEpRRno7xqWZQr46WIide/BgT2Kw79Lw4OfOA==
+X-Received: by 2002:a05:6a20:6a1a:b0:334:87c2:445 with SMTP id adf61e73a8af0-334a8610a11mr8025098637.36.1760749741445;
+        Fri, 17 Oct 2025 18:09:01 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:5e2d:c6df:afce:809b])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33d5de30555sm756087a91.12.2025.10.17.18.09.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Oct 2025 18:09:01 -0700 (PDT)
+Date: Fri, 17 Oct 2025 18:08:58 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: pip-izony <eeodqql09@gmail.com>
+Cc: Kyungtae Kim <Kyungtae.Kim@dartmouth.edu>, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] Input: pegasus-notetaker - fix out-of-bounds access
+ vulnerability in pegasus_parse_packet() function of the pegasus driver
+Message-ID: <ekkelgdcm3ovrix3ktmzhlmc2bgchui4g7ogunut5k3dafhwri@y7fyt3uycxgr>
+References: <20251007214131.3737115-2-eeodqql09@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251007214131.3737115-2-eeodqql09@gmail.com>
 
-From: Kuen-Han Tsai <khtsai@google.com>
+Hi,
 
-[ Upstream commit 42988380ac67c76bb9dff8f77d7ef3eefd50b7b5 ]
+On Tue, Oct 07, 2025 at 05:41:32PM -0400, pip-izony wrote:
+> From: Seungjin Bae <eeodqql09@gmail.com>
+> 
+> In the pegasus_notetaker driver, the pegasus_probe() function allocates
+> the URB transfer buffer using the wMaxPacketSize value from
+> the endpoint descriptor. An attacker can use a malicious USB descriptor
+> to force the allocation of a very small buffer.
+> 
+> Subsequently, if the device sends an interrupt packet with a specific
+> pattern (e.g., where the first byte is 0x80 or 0x42),
+> the pegasus_parse_packet() function parses the packet without checking
+> the allocated buffer size. This leads to an out-of-bounds memory access,
+> which could result in a system panic.
+> 
+> Fixes: 948bf18 ("Input: remove third argument of usb_maxpacket()")
+> Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+> ---
+>  drivers/input/tablet/pegasus_notetaker.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/input/tablet/pegasus_notetaker.c b/drivers/input/tablet/pegasus_notetaker.c
+> index 8d6b71d59793..6c4199712a4e 100644
+> --- a/drivers/input/tablet/pegasus_notetaker.c
+> +++ b/drivers/input/tablet/pegasus_notetaker.c
+> @@ -311,6 +311,11 @@ static int pegasus_probe(struct usb_interface *intf,
+>  	}
+>  
+>  	pegasus->data_len = usb_maxpacket(dev, pipe);
+> +    if (pegasus->data_len < 5) {
 
-After an bind/unbind cycle, the ecm->notify_req is left stale. If a
-subsequent bind fails, the unified error label attempts to free this
-stale request, leading to a NULL pointer dereference when accessing
-ep->ops->free_request.
+The packet size is actually 6 (status + color + 2-byte X coordinate +
+2-byte Y coordinate) so there's still off-by-one error.
 
-Refactor the error handling in the bind path to use the __free()
-automatic cleanup mechanism.
+I fixed it up and applied.
 
-Fixes: da741b8c56d6 ("usb ethernet gadget: split CDC Ethernet function")
-Cc: stable@kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/gadget/function/f_ecm.c | 48 ++++++++++++-----------------
- 1 file changed, 20 insertions(+), 28 deletions(-)
+Thanks.
 
-diff --git a/drivers/usb/gadget/function/f_ecm.c b/drivers/usb/gadget/function/f_ecm.c
-index 2afc30de54ce2..7bb63b9e3f78d 100644
---- a/drivers/usb/gadget/function/f_ecm.c
-+++ b/drivers/usb/gadget/function/f_ecm.c
-@@ -8,12 +8,15 @@
- 
- /* #define VERBOSE_DEBUG */
- 
-+#include <linux/cleanup.h>
- #include <linux/slab.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/device.h>
- #include <linux/etherdevice.h>
- 
-+#include <linux/usb/gadget.h>
-+
- #include "u_ether.h"
- #include "u_ether_configfs.h"
- #include "u_ecm.h"
-@@ -678,6 +681,7 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 	struct usb_ep		*ep;
- 
- 	struct f_ecm_opts	*ecm_opts;
-+	struct usb_request	*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_ecm(cdev->gadget))
- 		return -EINVAL;
-@@ -711,7 +715,7 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ecm->ctrl_id = status;
- 	ecm_iad_descriptor.bFirstInterface = status;
- 
-@@ -720,24 +724,22 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ecm->data_id = status;
- 
- 	ecm_data_nop_intf.bInterfaceNumber = status;
- 	ecm_data_intf.bInterfaceNumber = status;
- 	ecm_union_desc.bSlaveInterface0 = status;
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ecm->port.in_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ecm->port.out_ep = ep;
- 
- 	/* NOTE:  a status/notification endpoint is *OPTIONAL* but we
-@@ -746,20 +748,18 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 	 */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_notify_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ecm->notify = ep;
- 
--	status = -ENOMEM;
--
- 	/* allocate notification request and buffer */
--	ecm->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
--	if (!ecm->notify_req)
--		goto fail;
--	ecm->notify_req->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
--	if (!ecm->notify_req->buf)
--		goto fail;
--	ecm->notify_req->context = ecm;
--	ecm->notify_req->complete = ecm_notify_complete;
-+	request = usb_ep_alloc_request(ep, GFP_KERNEL);
-+	if (!request)
-+		return -ENOMEM;
-+	request->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
-+	if (!request->buf)
-+		return -ENOMEM;
-+	request->context = ecm;
-+	request->complete = ecm_notify_complete;
- 
- 	/* support all relevant hardware speeds... we expect that when
- 	 * hardware is dual speed, all bulk-capable endpoints work at
-@@ -778,7 +778,7 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 	status = usb_assign_descriptors(f, ecm_fs_function, ecm_hs_function,
- 			ecm_ss_function, ecm_ss_function);
- 	if (status)
--		goto fail;
-+		return status;
- 
- 	/* NOTE:  all that is done without knowing or caring about
- 	 * the network link ... which is unavailable to this code
-@@ -788,20 +788,12 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
- 	ecm->port.open = ecm_open;
- 	ecm->port.close = ecm_close;
- 
-+	ecm->notify_req = no_free_ptr(request);
-+
- 	DBG(cdev, "CDC Ethernet: IN/%s OUT/%s NOTIFY/%s\n",
- 			ecm->port.in_ep->name, ecm->port.out_ep->name,
- 			ecm->notify->name);
- 	return 0;
--
--fail:
--	if (ecm->notify_req) {
--		kfree(ecm->notify_req->buf);
--		usb_ep_free_request(ecm->notify, ecm->notify_req);
--	}
--
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
--
--	return status;
- }
- 
- static inline struct f_ecm_opts *to_f_ecm_opts(struct config_item *item)
 -- 
-2.51.0
-
+Dmitry
 
