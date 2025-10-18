@@ -1,101 +1,76 @@
-Return-Path: <stable+bounces-187821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22059BEC95D
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 09:29:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57BA0BEC999
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 09:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E8983B7536
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 07:29:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D79541A61539
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 07:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE94228724D;
-	Sat, 18 Oct 2025 07:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvcJ3Rey"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9676A2874FA;
+	Sat, 18 Oct 2025 07:53:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B6D7082A;
-	Sat, 18 Oct 2025 07:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3190727A900;
+	Sat, 18 Oct 2025 07:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760772539; cv=none; b=nfFOZ1CWhW1KR0fmZ00r+N78e9SPyiZ0+qaqdgLgFczAHVdXW09OlZSZdjAej5yA/Il2YZPqRphE4PlC7TlYA28qVvWREhy/IFP3VLarVb+NtBvB2XaBXzQt9RKrb/Pw29IMpeccWX8Xuqe9Pr4mao23cZxx54hpLmQo4/upHoA=
+	t=1760773993; cv=none; b=T2f39LENyWPFm3O5OcvLpxk0JzNJwVkksHM3xNZnuGb1YsfrMwR5GTwE5I195tORr1vzMOVjO5hKqo7LQQL5B6Q9NtSL8lR3KzaIs1DeY/v9DvTzoMArzQI1BdVH22QGNa82z+00IwpeYpoV1EVVhTxdgRO0gKlHoIdSXyhhW3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760772539; c=relaxed/simple;
-	bh=vNWHIejyNgeAjj/yP4OEU+1cL7lMtWgCcdaXyxFMFWw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MtQUwpIw7+SNGwz8iE46TTCNdFTYZrwcEB64s8YLjxFSRFIxqmTb08m6EChfYlxZoNukbKWapxHO8TOh9MfhG3hzt+p1QhcK7ko4Scio8eFsj3YlNx1mqioMQEQbDl+ZlaaTIfWAdtfp+dm/cdD4MQRD+/uu++j4NWmO9+mwS0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvcJ3Rey; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AE8C4CEF8;
-	Sat, 18 Oct 2025 07:28:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760772539;
-	bh=vNWHIejyNgeAjj/yP4OEU+1cL7lMtWgCcdaXyxFMFWw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CvcJ3ReyaXPPslwlWdIZL4FEe7QpsFYYG6NVPNq8SjZMeD5e9m0CAkfUxyZJftFpK
-	 Fy67kWTRI0BVHNZmU0FlDKZogL/nqVuLjF7WmPUMxifUZy8h10PmX5bCZim2JmPlgo
-	 AxV1XechTYn+F9J+U6QlHPVzUao7Ka27VE98W2J8=
-Date: Sat, 18 Oct 2025 09:28:56 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jameson Thies <jthies@google.com>
-Cc: heikki.krogerus@linux.intel.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dmitry.baryshkov@oss.qualcomm.com,
-	bleung@chromium.org, akuchynski@chromium.org,
-	abhishekpandit@chromium.org, sebastian.reichel@collabora.com,
-	kenny@panix.com, linux-pm@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] usb: typec: ucsi: psy: Set max current to zero when
- disconnected
-Message-ID: <2025101839-startup-backwash-3830@gregkh>
-References: <20251017223053.2415243-1-jthies@google.com>
+	s=arc-20240116; t=1760773993; c=relaxed/simple;
+	bh=BYiwqgG5VbQByF6+85MfXB4omvQImU65Yw05maSfpyY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TH0ma7O2Kp7o+A99YLHCD6GVdP4Mf/JsbRlPEi1qZOPklqDGulZSk0OsQeHuxLxPr0lkeA4w1+C1WQOn7m7DJAlgc2rW4rrYO0btZUCj04VKqL78FZkBSSqgsEP/StsMi52bRSwEsHdUhA9AOgJC2fm7A5RN8VnqKzrxXrFYWVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+From: Brett A C Sheffield <bacs@librecast.net>
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	Brett A C Sheffield <bacs@librecast.net>
+Subject: Re: [PATCH 6.17 000/371] 6.17.4-rc1 review
+Date: Sat, 18 Oct 2025 07:52:34 +0000
+Message-ID: <20251018075239.14057-1-bacs@librecast.net>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251017223053.2415243-1-jthies@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 17, 2025 at 10:30:53PM +0000, Jameson Thies wrote:
-> The ucsi_psy_get_current_max function defaults to 0.1A when it is not
-> clear how much current the partner device can support. But this does
-> not check the port is connected, and will report 0.1A max current when
-> nothing is connected. Update ucsi_psy_get_current_max to report 0A when
-> there is no connection.
-> 
-> v2 changes:
-> - added cc stable tag to commit message
-> 
-> Fixes: af833e7f7db3 ("usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jameson Thies <jthies@google.com>
-> Reviewed-by: Benson Leung <bleung@chromium.org>
-> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Tested-by: Kenneth R. Crudup <kenny@panix.com>
-> ---
->  drivers/usb/typec/ucsi/psy.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
-> index 62a9d68bb66d..8ae900c8c132 100644
-> --- a/drivers/usb/typec/ucsi/psy.c
-> +++ b/drivers/usb/typec/ucsi/psy.c
-> @@ -145,6 +145,11 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
->  {
->  	u32 pdo;
->  
-> +	if (!UCSI_CONSTAT(con, CONNECTED)) {
-> +		val->intval = 0;
-> +		return 0;
-> +	}
+# Librecast Test Results
 
-What prevents this from changing right after checking it?
+020/020 [ OK ] liblcrq
+010/010 [ OK ] libmld
+120/120 [ OK ] liblibrecast
 
-thanks,
+CPU/kernel: Linux auntie 6.17.4-rc1-g396c6daa5f57 #110 SMP PREEMPT_DYNAMIC Fri Oct 17 19:51:58 -00 2025 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
 
-greg k-h
+Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
