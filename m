@@ -1,154 +1,179 @@
-Return-Path: <stable+bounces-187861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF65BED44A
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 18:58:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D825BED7D6
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 20:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C18A14E4526
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 16:58:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 644B84E8B63
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 18:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2297825392D;
-	Sat, 18 Oct 2025 16:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173B725EFBE;
+	Sat, 18 Oct 2025 18:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WHkOVAD9"
+	dkim=pass (2048-bit key) header.d=psu.edu header.i=@psu.edu header.b="ecIYSIib"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010038.outbound.protection.outlook.com [52.101.201.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2EC2571C5
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 16:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760806722; cv=none; b=L9eh92P0dhHxZYl3DeaJ2rGQz0FZbSbUOBv81oRrynyfDtdEECimCh8b9K/EauO4/eH41titeWkyUZf/s6pcFxQDsqI4UtFGFXetCiUYNI9QuMOVV4jmkcoFGyufjh3IhFU+RXlqzi0vYIo5qTt72JgVO5Zw9tOZa0CjqSrOXe8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760806722; c=relaxed/simple;
-	bh=23ewjXJ3BzVpzfN1aBXik27sMddVr01HXAy7SGZ8tU8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KADKBubgKv9H2YGiNXSDQxaHAxXZOVz2ndykgAEDr5kzf1IsULtTn2cMPGh+13p7Y58Kx6e4dj9rervFFGP/G+tR34P3RS18zb2xTLSzBCN3v+Vbwb3Yx+9QyrbhXByCfXylaA/IusuteqetbavzmMA54Oyk2fvaSGBR9Hn6RnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WHkOVAD9; arc=none smtp.client-ip=209.85.166.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-430c17e29d9so12480505ab.1
-        for <stable@vger.kernel.org>; Sat, 18 Oct 2025 09:58:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760806720; x=1761411520; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UEET0KVM5chlyitbvvEN7T7JusMwE1pBm8UXQW3X9tQ=;
-        b=WHkOVAD9QLkkMVGKXcAB/R/ed7gB286klfPEU/ERp2vekD21cEa6XpKMIWabKT6kdY
-         Lf7Wv7WB8uIxJkTSW102nDJDuZamlfistoxSxCD0b4l7K6/Z3V2kGR8FQaF7F9pXlbbq
-         dAPrf+1gSMLUYvALiqBwIAJvydoq4kkq0jRkD35pXOcSTXQQB5lwLqPahMsgYwMDtHU1
-         rHsiNdSuT8g4f86ayE2pphjvh9hfk8j9fA+vLrQ8WIiAMU1wKJV5qz3enV5IZXKpBnYe
-         eHs0fvXENaok30KB6Pu1nU1d3t8iRRlWYxuhNUccd63TDgBWxQMJQVgvKb05ORKRPO1P
-         f9tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760806720; x=1761411520;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UEET0KVM5chlyitbvvEN7T7JusMwE1pBm8UXQW3X9tQ=;
-        b=rO//YBavCat6WS5tMXqPgnvIBpMfPd7Ij3I+TUTBBbeTsJT49tFD0V6O646KtZv2HS
-         9R+VadT1J6PGQYCljYbhMWEL69QANPMYRestGrbRGzQtGZYraMIynoUFEy6EUa9/A+mH
-         PEV1r3KDlbmAMj/JLiGj8E1Fuz83Wg/QxUQwyQqPRWmqImdFrQro/N45WxRQFdcbQmk4
-         zToFsbz/u7VsXk+gC3CeMB+IYQHmGYe1gfKK4KHylUNmFbX4SkKj2LmOhTuSpRHVv5e4
-         HC//TA/dctb7jrpFEABqCkQfzc42y3P3BuolBNLIcGx4QiD3qA2DqeMEcJOKtY9wbR9c
-         gNJw==
-X-Gm-Message-State: AOJu0Yy4ytty/dxUMoVS8VLwohOuLr/M+/kuG8GWbuKwmoZi8bL49KMJ
-	PbdadeYnwHzNxQzWmy4BPC6I5dG0QRJ9bJUeMmpN9e+ofhYlaxWTsYqjlaGyx1MKjcc=
-X-Gm-Gg: ASbGncu8/qlesjqK5IzP17idlmh+mNFEH5hHeqs8YZkck9nDgYwsFB5XS+KTucKMkek
-	Eg+NMss/4Afgj+XnkYvTClC++AKXYMiZVtHEfioGl6cliqWo0sJR0Usc2YZlTl1abx0chVJYbAk
-	dkCEgXP25UihwkElRERqfBk+rHrmkEafkVtRBranyZ9eLNIxFSDrUqbyqwOVldnjZxQR82Qz18d
-	OXELaL2qXiBXWpycIaxkOw58xG2npwYL6vCTp2BhP7hmjj5hNqJsgs4qsQfKFOyRAGns8YDhFkM
-	9wBDbXLVmSTmXLZe5p+EPRBtIBF7KEknI9WK6OGggVXBFUXVM4cwlsUtkfdcp6DUjeuujyL6Now
-	VS2A1bnPEmahpp3bdDq9BoA6LjhNS4JOO0xqAWW4r9yJnFlcC1NguWzsOjvsE4CDKAWjeiEIryB
-	Yo0Z7CEBPu1BCpJfW+MS/ctq6MJlhFDqGB4q/1lcg4+cRjQ9hGXewx6mQk40s=
-X-Google-Smtp-Source: AGHT+IFCNSF9mGRrBZYYhBS2A8zvP5w+BXMIBNv8w2krK5loOYKHGlSyH3pHY40YSUNyYon4Zl+PSA==
-X-Received: by 2002:a05:6e02:2167:b0:430:ac80:7fff with SMTP id e9e14a558f8ab-430c52d772amr110212355ab.23.1760806720345;
-        Sat, 18 Oct 2025 09:58:40 -0700 (PDT)
-Received: from nairdora (108-75-189-46.lightspeed.wchtks.sbcglobal.net. [108.75.189.46])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-430d07b4614sm11927545ab.33.2025.10.18.09.58.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 09:58:40 -0700 (PDT)
-From: Adrian Yip <adrian.ytw@gmail.com>
-To: stable@vger.kernel.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	Adrian Yip <adrian.ytw@gmail.com>
-Subject: [PATCH 4/4 6.1.y] drm/amd: Check whether secure display TA loaded successfully
-Date: Sat, 18 Oct 2025 11:56:44 -0500
-Message-ID: <20251018165653.1939869-5-adrian.ytw@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251018165653.1939869-1-adrian.ytw@gmail.com>
-References: <20251018165653.1939869-1-adrian.ytw@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9727E1E00A0;
+	Sat, 18 Oct 2025 18:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760812468; cv=fail; b=MeqxrQBECN5c7ckpUMYMO0tQ5PuV67b9q//JlTX5ZK9MSBIbVUMzoWCMLKGVQHH0Bror7pFibiWJeK3dw9GEiFlHPg7YVaE2hy2j4r/UkOVOARTomT7CSoqqiYYn+XY4+Qyo121sPVzVb9WdcPrRphSExoBByQbOh85T1QtNNAQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760812468; c=relaxed/simple;
+	bh=Mx0VUtc3ZaLNWNAJy1FNLs4cOTxsJVUWEhJf12nDt8s=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=hFUc3VVHJQtiiQesGaMdcZ41fUIDT7AeoKWXsUe6eXdBMzV98jdiOPhAfnOoP8UaaXLIFU99Cz7fIDUyHgJ8XbOBD20yq6D/H5IixBlDApD5Iw0YSvYmU+nNvnhsZxxQ5LHlo32oz3Swc1ismbk+W8T1H28X5TNzMhtaYUGNBwk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=PSU.EDU; spf=pass smtp.mailfrom=PSU.EDU; dkim=pass (2048-bit key) header.d=psu.edu header.i=@psu.edu header.b=ecIYSIib; arc=fail smtp.client-ip=52.101.201.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=PSU.EDU
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=PSU.EDU
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UlVNypHTk5i3+wwY+xN11n0M700NyDMRF7XwjS+qf0s2FMBq9eXRHNhWUmTUZzNcFMbU/+csdDl3gS48+mh9CU2dApkgPJLMhav3ImPs0BC5EngIsPdJb8qrIQPiTn1VpqohPBNZrKgS110G1XSolWPOzK7hih2YGtoBplYe56/2+Z2seX7lmJLW/E7M2QrXlzd/JvL2sQNVG3K9d4br5Wa9Lr6V1htDwU4PYbdAnsnE6j4rjuJM66mnECE77lNWBfE6Sgr4RA3SwOw9E6GNBiTmCqg4CidZ7hXUiUjllUr0Twr5xhhZKn36VNYDXWS0MY2h2cDlqWGqBf65JZsJ0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Mx0VUtc3ZaLNWNAJy1FNLs4cOTxsJVUWEhJf12nDt8s=;
+ b=Hv6BsKiNJ2WCZUrpAR4j7Nbm3ZHARe6BRjU+yIkBFlm+/BSVWbDKT6VF8xlvvnhBtLeE6cI+q/jMDyZhHwUwBeO2uLhuFuQpy0dmyl5yczp2YAsaiQZhRsXnaq6GpTf++g4WXVsRduzbyOstje9LR5jKfqPSUvcVWtiL3skfl6H9CfNpD8U90OL6aGTamb9Fx5ixWBs74AFNbCbAJWThXzet3rD8zAQyWMWLoYnmbypz5Vfqo/VIPTMCDQtsjvKgXZVh500+WTyytP2TnAGTnS/3cGi4Qwqc6DESCa6iu9vgnmskwerHebqGc+GbvUOJruSs0Ag6o/D39k3VZthX8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=psu.edu; dmarc=pass action=none header.from=psu.edu; dkim=pass
+ header.d=psu.edu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=psu.edu; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Mx0VUtc3ZaLNWNAJy1FNLs4cOTxsJVUWEhJf12nDt8s=;
+ b=ecIYSIibs7EmHSZKUCJPYwNGxms2kbM13kxsAUm4m880g1cxXikwKNTLocLmq5+mXTmA2Ov7YWCmylzw1ZoGKmkV5xckkl1y1Weu+Y6mXku3wyIzBtdlFe6WJkpYznoLS3O2JEm9vb/Ni/h7BBAmEAWFf4fRmOuoGv8U2wcAgvkEilOKm7FOwBLrUYaIJBcqJAmua8xNYIf7VDdLJUKpmcO68oUpZn8QyUcj5qCI1dvBkmO8femyMFIYbclbslWtPLXlV6EPr8t9d/ntBS/nD77AvOJk7JQYS3inbUzAm0fVoSLtedb6gzFoLmadY9cGMKoLlsee1PEV+95QzSAjcQ==
+Received: from SA0PR02MB7276.namprd02.prod.outlook.com (2603:10b6:806:e6::17)
+ by MW4PR02MB7444.namprd02.prod.outlook.com (2603:10b6:303:77::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Sat, 18 Oct
+ 2025 18:34:24 +0000
+Received: from SA0PR02MB7276.namprd02.prod.outlook.com
+ ([fe80::e6ab:3830:2755:fa66]) by SA0PR02MB7276.namprd02.prod.outlook.com
+ ([fe80::e6ab:3830:2755:fa66%7]) with mapi id 15.20.9228.011; Sat, 18 Oct 2025
+ 18:34:24 +0000
+From: "Bai, Shuangpeng" <SJB7183@PSU.EDU>
+To: "m.szyprowski@samsung.com" <m.szyprowski@samsung.com>
+CC: "benjamin.gaignard@collabora.com" <benjamin.gaignard@collabora.com>,
+	"g.liakhovetski@gmx.de" <g.liakhovetski@gmx.de>, "hverkuil@kernel.org"
+	<hverkuil@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-media@vger.kernel.org"
+	<linux-media@vger.kernel.org>, "mchehab@kernel.org" <mchehab@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "tfiga@chromium.org"
+	<tfiga@chromium.org>
+Subject: Re: [PATCH] media: videobuf2: forbid create_bufs/remove_bufs when
+ legacy fileio is active
+Thread-Topic: [PATCH] media: videobuf2: forbid create_bufs/remove_bufs when
+ legacy fileio is active
+Thread-Index: AQHcQF3TAAksCghiO0iL2O9nMkjYtA==
+Date: Sat, 18 Oct 2025 18:34:24 +0000
+Message-ID: <5317B590-AAB4-4F17-8EA1-621965886D49@psu.edu>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=PSU.EDU;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA0PR02MB7276:EE_|MW4PR02MB7444:EE_
+x-ms-office365-filtering-correlation-id: bfc4fdb2-80e5-4ecf-6ed7-08de0e74f64f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|10070799003|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?VMd+r6dVc3AnLKP8hUBHg5Q00Hq14ky3cgjlUdvD2b7YLlaMRRjcbyC2d27w?=
+ =?us-ascii?Q?W10QINGHDPc6XQ+21UyJwKAh8QiAmxyQnozYH4V37liETVFWP90YuTWEKyR1?=
+ =?us-ascii?Q?mHCX8PiqpRFku/dTZJRq6lCGZvrn2pauZxMlKs42DcItnDcWFc6MZgzfiLoG?=
+ =?us-ascii?Q?IcQot1L8AdyACKlMHJhSEzRpvZsv9906sEvpAZucd6C8Ga3LPRFKxpyu3hyi?=
+ =?us-ascii?Q?78x8j6gUcSOztn0+GjmeqHv3qVkVd7DyHopzSrlehsIvmuQnkOnnObDwJg4a?=
+ =?us-ascii?Q?qWkKUHesuGVpiOnmgk64ZRcrxfT33DIR+0zDP8QhgGqUxOoajlRT34BTifhX?=
+ =?us-ascii?Q?yaNhHPXjkqthSdDfhAnSCyLnOj7gf9Lbc8+wPWWCcIutRlmNFS4RkOAgSAY9?=
+ =?us-ascii?Q?fGyUq/VbrOSaKyTlxESXFMS2QLAcDLg1n0lC6B8MVYzedboMpdkgXnK/Kve2?=
+ =?us-ascii?Q?anMzxlVAHd2WOm4J0HkSysP/LXuqIAO9QvjUrcnqR83Ct/P0aZNiqeiv3aVa?=
+ =?us-ascii?Q?ji3J3plsjUPafeS96MyL0VQ3hdHbaE6wlQJFSq+y0E1QSRth+p11GRCeOZ1l?=
+ =?us-ascii?Q?RVkjU0EhBBUFlVlieEbLwdhGI9UcEy9FOGQgS0Zgq97Vkr4hxptFraDVfw/v?=
+ =?us-ascii?Q?6u6SF6FP8b+xTNPwcIVpOaMWlQvmc3J8LwzQJCpmR8P7HECnmCXaj0OcZaeH?=
+ =?us-ascii?Q?skdXUQwq95gSqPmxpVjP21l2Q6NORlDdn1QXucJOW4szrZX8xNJuiBmxuKkE?=
+ =?us-ascii?Q?e1Yy8RZAgpxU34YIamKrQdD2eXPqt2pK2XL9gYGM4kUARkTY02yR4504qGC7?=
+ =?us-ascii?Q?kgUST+M6FXKhxTs9cd+Z0/xE5H1mhzIPg+hkgXRab8Bxr/ayinHIJLmVYZCD?=
+ =?us-ascii?Q?Lc2HboVAEw6d7popiUdqOldfwvyB8Ji2ghT16daYCzAMMeIB+6VS4K3BEQXj?=
+ =?us-ascii?Q?+CZoSpv9y5AvCL1NSCgKVNRKdcMbZqgg7hyYKEBXMDiGIu7IPvOnY3Gwjpz1?=
+ =?us-ascii?Q?s1op+Rv09gebJrsWr5c82I9DG945Z0KuNka9XIgsyHABwe58SPBJEg1qvZo/?=
+ =?us-ascii?Q?jfFvSy0843O/cVLG+Z+9DEEgtPmsQNYwBVPM7oYF8Ywj/OAttOTIibQj0i+z?=
+ =?us-ascii?Q?2XlmnECrzyGd2nr93+tSlNavGQ3Bdd6OUvHElxZpmFXGjyusxQw6/3tMUSYE?=
+ =?us-ascii?Q?2IXHgJwCiAgm63oYXhZgGkJ34Plqwo6gvgFlN/qwDLyj+4amp4GhkXRriiF8?=
+ =?us-ascii?Q?JJW+78674HdzPahf02KoyXH/aNzlgojW6r3j2TC6xgVo0R+aZLaWpRB6HbTZ?=
+ =?us-ascii?Q?0yEgARg5pRg9PZwzIxTLT5P4UrG9jGOrJhz8iAndTTa2/9OkjFrV6HyXQ+TD?=
+ =?us-ascii?Q?dR4Jcsb5r2YAcblApF11e7G0WHQPqkdFWpL6b3G8gzwHB4JGjt+yyUPTYIT5?=
+ =?us-ascii?Q?om0EKVwakfIedQCPJf8EdxYpJqsglts9tJgiRiwsB3wfWjI+DaeurzoZEFKn?=
+ =?us-ascii?Q?v3vHgnZjluUH4ijO3nbUFOjoTHyoh4omVEXX?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR02MB7276.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(10070799003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?o/blzfXRjdvMana3RDj1wuSA9Lcl+XTg8vmrCIC0c07YI4usFqd0loLSonFs?=
+ =?us-ascii?Q?GMqFrk2UCCuMSHihsdp4cClUJsjcprGisL6wmXCsmvWFusWKAMu0m4PWqijh?=
+ =?us-ascii?Q?CeYA+E0RPWDO0Dejy0xXihgHu2RXMNw3id+SzWjs/NslL+2zEINygRkLCyNa?=
+ =?us-ascii?Q?fqlEIUNGVsnmAJrfK+De33RUQPr5BKagwzZkMMRZe6SrYGHT9oieQV5pERuz?=
+ =?us-ascii?Q?jbEE5B94XxQH/vzqtwN9tX470oP+43T2xXoW7swQ6aEiTU8bC65t37/YM5OL?=
+ =?us-ascii?Q?jyWXCXcyIlQbtKt9/7Y/O60eS4ESFh+8Mlijjp0xDCXGh5wnBKyTjzlccZbB?=
+ =?us-ascii?Q?0cT/PEVLOl1M9ID++WXv7EHlnSBalA9/6Jloqff+qmfppeFTV6Bf/zN4s1rD?=
+ =?us-ascii?Q?aOkrNFjzU/J1sYqyHc0dtiqBRwSgFW3ZxYSKHbg1qUFRir1GVv+4KdQ2HWJk?=
+ =?us-ascii?Q?zBHH/+mGWMdH/RFp4kPrCNED0NwiQYCZ9L09rNDLb+mHBjIp+Edxyu3obhV7?=
+ =?us-ascii?Q?NmEatLfoYaV0p2kyC0XgJ91kTtmWvlIp98K7H6XqqWFreY/khxbc2ShHvbHv?=
+ =?us-ascii?Q?Kkwjg6IffnPysu5EqURZFlmb8CDpRJzyApxmWHqN+0JWvTNuar0MeSxQrfz/?=
+ =?us-ascii?Q?txZC7D/nXtUXOtMMER7WO8o1VMswW8eM+7jy+O476JlBF69mCtGfrOCHVePz?=
+ =?us-ascii?Q?XW0dYoIGYHapIUvhJ33sgy/0pZFA5jo/XoerzAdensPJd0gQ8P0awqZV+4f2?=
+ =?us-ascii?Q?yOs9A1skvdfZOk/wpvqCyTRGVjTi3i8BgxDJTLaU8n26u3mJeRyvzN4vasjL?=
+ =?us-ascii?Q?cUrrUczjyO5rze1JHGCM8gKwCimdTZOZ7ApGKZipDnXIEPfcbIdfpghTxwxO?=
+ =?us-ascii?Q?kfNU0BpG+X22nN2KHjdfAWjeEi1VSAaK2kkJwqpc7Z5WhQcK32kXlQwfTwxu?=
+ =?us-ascii?Q?f0Xtu7j2JXynlqI7TqlSzKT4GhZ6lJ3R/JWtFmOSFRz33S19JeXO6xnWWvOz?=
+ =?us-ascii?Q?uTDCUqS1i+t16mT77+anW/gxb8WulYGpggAoJaaUVQ6778E/ros60vIi168H?=
+ =?us-ascii?Q?s2286/6MpSKxTEZf9kmxdBnPfIIIkVrTZ0PXxugi6qKmWg6chiPjy3OqpAKM?=
+ =?us-ascii?Q?awjDbiVrBD8sFkK7ZkP29LVRaEJHEkRLIHxwVokgDGyK3T/dp3HXEk1evYzM?=
+ =?us-ascii?Q?nFu8Y+YlwLwjXU1dhpkvCzXMw+5KEtlLrTO7fAsWeZBTqHEEq0ubQcGbSvPB?=
+ =?us-ascii?Q?WwPqVsiDlWSw1usnZz/EIIqSXsQAftHQxJtk3AHS9VjBP2XUI9DLSNf2xh5V?=
+ =?us-ascii?Q?3HRX2Hm2DRVyn1H7K4W5QIaI3D4bbaDUw35l/YFRgsXqVfw1RMCr1X0HrYB9?=
+ =?us-ascii?Q?gJFJigb6b2bX9STswlA6ue9fZAQ+j2FfAb806FEBhD1HGrqPFz1oUe9szEW+?=
+ =?us-ascii?Q?fXF9fHfOP7u9TGceNseKJIKCrBqu/jLta3BGubLLrJpmPTGOqoPfl/3wa2pc?=
+ =?us-ascii?Q?Vqy7nk6GKxxcCQEKEIMScnZ2Bft4DI6s0qyGLRDZjvOwokWLHDjRy7l51Jfd?=
+ =?us-ascii?Q?sFrFXOgHBi/NX6cy+XO5OxHjeKPkz1A7V/IJIAdFFJ5uRk3IRyHta+ZcbKxu?=
+ =?us-ascii?Q?aqaXal8FnpNsBg2IvcR6wfIWj5u3VdUb9jSkAKbdIWox?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <AE429BAEE46B294F97CD0FE5321F4BF5@namprd02.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: psu.edu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR02MB7276.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfc4fdb2-80e5-4ecf-6ed7-08de0e74f64f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Oct 2025 18:34:24.4273
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7cf48d45-3ddb-4389-a9c1-c115526eb52e
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: RRm/VDKpJRqfquy9NvkDqnjxCKaoRyiR9rnCT3dRxZgAfE72JF2EcFeBtlnHv3xq
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR02MB7444
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+Hi Marek,
 
-commit c760bcda83571e07b72c10d9da175db5051ed971 upstream
+Thank you very much for fixing this bug and for your contribution.
 
-[Why]
-Not all renoir hardware supports secure display.  If the TA is present
-but the feature isn't supported it will fail to load or send commands.
-This shows ERR messages to the user that make it seems like there is
-a problem.
+Since my original report was not posted to a public mailing list, I would
+appreciate it if you could add the following credit to this patch:
 
-[How]
-Check the resp_status of the context to see if there was an error
-before trying to send any secure display commands.
+Reported-by: Shuangpeng Bai <SJB7183@psu.edu>
 
-There were no code conflict when applying to 6.1.y.
-This backport gets rid of below error messages on AMD GPUs (per Shuah
-Khan's machine)
+Thanks again!
 
-  kern  :err   :
-  amdgpu 0000:0b:00.0: amdgpu: Secure display: Generic Failure.
-  amdgpu 0000:0b:00.0: amdgpu: SECUREDISPLAY: query securedisplay TA
-    failed. ret 0x0
-
-Compile test was done.
-
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1415
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c760bcda83571e07b72c10d9da175db5051ed971)
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Adrian Yip <adrian.ytw@gmail.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index 0bc21106d9e8..e22eaf9d450d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -1959,7 +1959,7 @@ static int psp_securedisplay_initialize(struct psp_context *psp)
- 	}
- 
- 	ret = psp_ta_load(psp, &psp->securedisplay_context.context);
--	if (!ret) {
-+	if (!ret && !psp->securedisplay_context.context.resp_status) {
- 		psp->securedisplay_context.context.initialized = true;
- 		mutex_init(&psp->securedisplay_context.mutex);
- 	} else
--- 
-2.51.0
+Best regards,
+Shuangpeng
 
 
