@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-187734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5972EBEC25F
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:15:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D391DBEC275
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CBDED34AD12
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:15:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84209404B9A
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AC186352;
-	Sat, 18 Oct 2025 00:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9481B672;
+	Sat, 18 Oct 2025 00:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oNJf3lCN"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RXFBwlm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD8657C9F;
-	Sat, 18 Oct 2025 00:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641281388;
+	Sat, 18 Oct 2025 00:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760746524; cv=none; b=tReHSJ1v134T02sCRHAqzMv1Dc483wGUDeWE7/uPiMoLFFPyBN9zQq0+c4WjjhHnjX02NEYg079D++MP0GjzrtAGk+Mk0BHEmYyG5vN1eDLlXnOdwuPCVgma9AkpmSGeeGpGZUpxRpuM14iZok2I56rQCOt2rmBJ/eMgYmqciCA=
+	t=1760746662; cv=none; b=W6hrHvjD1rFt0nzwcc7lh+X3+F7QJujrDqsbQ0W9NVu+cjfQaUm6uWRKbHKOUuqmAhkUYZ4ZBAOyJt6bHyLbHC04frt3IqbyRAFhT4zxBAMZ/Q1VJ4jnqqizaMNmc2QTPpNr/4O+/EIBiu1Gp2tq4asqHNQHwaMWq4uN8tUYh1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760746524; c=relaxed/simple;
-	bh=YZ4N1rHj1pwjtt3i7gLo9zt8/inKBT+EiPtspcVyryU=;
-	h=Date:To:From:Subject:Message-Id; b=cI/Z0RgceZosszWM0ugogj0IvK+ZYHx5m6ca4WmSheFr1Eg4p2jA9qveRvypMseTZxnVoEP7PKs3OfP9odO9o6UB6udzmVopLJeRv1BdJHzLnEFL6Bn6nAILGoNlyXgENpQB++SrbPSKOBmCtvopP5bmHdb1IQUDFzCeSJ3g9vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oNJf3lCN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6525FC4CEE7;
-	Sat, 18 Oct 2025 00:15:23 +0000 (UTC)
+	s=arc-20240116; t=1760746662; c=relaxed/simple;
+	bh=nPxvzU1bJ9PWc+udBBoaTFAOhwRan2qgTw6VjJM0v+E=;
+	h=Date:To:From:Subject:Message-Id; b=uFEcKgl+KGA9MrbvlBURT+UVJrFf/CYV8aV8KseF3a+4kYmSC1IXCzJMTwNALlYxlaIXnNrjz5X/gqg+M6V8z9HfpUzUhP119TmhLymRWLp6h51sTajw+yTnS1gWd1c293wGeaD5Jm5DcNAnfTmakZp/xvJ0xGnjnZ5I/9zken8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RXFBwlm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CBBC4CEF9;
+	Sat, 18 Oct 2025 00:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760746523;
-	bh=YZ4N1rHj1pwjtt3i7gLo9zt8/inKBT+EiPtspcVyryU=;
+	s=korg; t=1760746662;
+	bh=nPxvzU1bJ9PWc+udBBoaTFAOhwRan2qgTw6VjJM0v+E=;
 	h=Date:To:From:Subject:From;
-	b=oNJf3lCNqqClmapKBFwa+m3V7b6OxDCVYMA4l6UCWexgDtIL9O/asSXbhnCInfQ4R
-	 oqX79ZxSoAoEBjISaqDd0LkLA0GRU03t75EkQe0Yzkj0ppjZglzOLVQTH0ZKrUi4DE
-	 mABKukY3WUYF0X1A+qFT0WA1PNRSIT+0XlSDzrJA=
-Date: Fri, 17 Oct 2025 17:15:22 -0700
+	b=RXFBwlm+S5yiXASd5gMShXwo+zmcO1NImKG3fr40loHq5l8GV/bYHTM1imJqglhgr
+	 9SvmBozMek1OqvtUyjUIzRwOrQ4g9hKUDeOhUVxGvepoJyWWC56e1kGGETtX8zfuNF
+	 b5tshSYIYGzGq0dL2YAz/hAfLVmGUiMJeXaRsKDE=
+Date: Fri, 17 Oct 2025 17:17:41 -0700
 To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,jiangqi903@gmail.com,heming.zhao@suse.com,gechangwei@live.cn,dmantipov@yandex.ru,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc.patch added to mm-nonmm-unstable branch
-Message-Id: <20251018001523.6525FC4CEE7@smtp.kernel.org>
+Subject: [to-be-updated] ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc.patch removed from -mm tree
+Message-Id: <20251018001742.12CBBC4CEF9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,28 +49,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The patch titled
+The quilt patch titled
      Subject: ocfs2: add chain list sanity check to ocfs2_block_group_alloc()
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+has been removed from the -mm tree.  Its filename was
      ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc.patch
-
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+This patch was dropped because an updated version will be issued
 
 ------------------------------------------------------
 From: Dmitry Antipov <dmantipov@yandex.ru>
@@ -127,6 +111,6 @@ ocfs2-relax-bug-to-ocfs2_error-in-__ocfs2_move_extent.patch
 ocfs2-annotate-flexible-array-members-with-__counted_by_le.patch
 ocfs2-annotate-flexible-array-members-with-__counted_by_le-fix.patch
 ocfs2-add-extra-consistency-check-to-ocfs2_dx_dir_lookup_rec.patch
-ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc.patch
+ocfs2-add-directory-size-check-to-ocfs2_find_dir_space_id.patch
 
 
