@@ -1,273 +1,124 @@
-Return-Path: <stable+bounces-187780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4CDFBEC4EF
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:06:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B74BEC4F2
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9203B4F15A9
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:06:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26083BACA8
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2E71FDA92;
-	Sat, 18 Oct 2025 02:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECE6212554;
+	Sat, 18 Oct 2025 02:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGBb2WMi"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="QkCugHjA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4FF19F41C
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE121F419A
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760753035; cv=none; b=OmBpeq51jxkEM8rvpfBxqEnAtainSDD+4EViL0zsCIyNNN60J34v6O9HFfP74b/wMR7zk+BO0jJF1IN2CpkxMLfQHXCforIkGALmAx+Fh5v/vDmPiYb8Th6Lw6WEMvXoZ5Bjs9qZyhz/KOLZaC4+Y52gQwUCPROBLoJDh2GJE9g=
+	t=1760753040; cv=none; b=YhzsqD7X32djoQZeT7pa3LeKgdkxkCTaO8iHDbBX7Kgn/KLpkMuxUwAFdE/RangJ2t4exC7X/PmL/QFfRyCETCfBRszhxcKMfBknYSaXlz8p00Ezg7kVXHMwrqORckNNrz9g5c+5DStWGiC1Udg+DYDO66BQREZXE2ik1uZd934=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760753035; c=relaxed/simple;
-	bh=36BWmdCrW9s23LZjgJpJFiGkRNdRgOh6veamFhMJy9k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DyJj6Vfsrx6j8ewzf41BiiLiUvPYtIVJM76P5UiRqicGQpuqtFLpApKstKG3D0M4SjcTxOht9OJDAPB+tEXOtP1kWt4AL0YWeIPLBEBXR2K6+fynpr2X2Zfn6j9l60uGrJ+HSPE/+PilIxRIv85erIiQ4qe0pln29M+6GzR+BuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IGBb2WMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E5DC19424;
-	Sat, 18 Oct 2025 02:03:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760753035;
-	bh=36BWmdCrW9s23LZjgJpJFiGkRNdRgOh6veamFhMJy9k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGBb2WMiV/inZKD/Zv16ZoZ5br6z/Dx3lqygVl4JEw/4w3Mz9/T/019r84lpdbPLE
-	 UJESWYKx8ki+qfI1o2Q+XdZ8PiLSfUIaOD7C3TcA7mwjfoxl8LpvX7o4gEcz1btelg
-	 VHirXdKTM91FyDTSZdRAIqIJqEN1VZbzUiIWZNnEaJMtAhjoyHTyHCwSghhVbWirUe
-	 U3Ohqe2xbLM67l8/iDn0dpaf97Fe2UbJmE6uvfbWfOmFUSHM+bXsR0TCwHL+G7+C88
-	 vvnnsT/alGubKy/CQplftQPim/NgrZxZSzwdHdVfQHMlRl34H+VFq2wYXUfAfYVrVG
-	 4UwrKN4Rx9lqg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Kuen-Han Tsai <khtsai@google.com>,
-	stable@kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] usb: gadget: f_rndis: Refactor bind path to use __free()
-Date: Fri, 17 Oct 2025 22:03:50 -0400
-Message-ID: <20251018020351.207730-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251018020351.207730-1-sashal@kernel.org>
-References: <2025101631-macaroni-reabsorb-72e7@gregkh>
- <20251018020351.207730-1-sashal@kernel.org>
+	s=arc-20240116; t=1760753040; c=relaxed/simple;
+	bh=9QaYv7+eLxmlZymzm9dDED5562G0eINYVtnrbZbU4q0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rr6zrnR9CJjsJGdN3ININM7ygAvlOhevqdXc4sum65vSvC+2WLRWVQOo8O9G/D3ZxTtFfTv99qTvZGuwx4VOoOrPZaZvKxRU6HjqiDN05wNwfJsIiHkrxs+zcEq635eg+0l5bCyk2EolHNGPVabE8pB3+7x7cvBcqy8aTojBwQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=QkCugHjA; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3ece1102998so1942844f8f.2
+        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 19:03:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1760753037; x=1761357837; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Xc59SxJSZGImXKCMLgUW84zLp4qIeFDtzUIiilJXAVs=;
+        b=QkCugHjAArQn+oafG3PN6UzBR2iwy+Xj0aWSUqo85w4mCzv6BxEoN+Rs2vmrofs6/j
+         T2sXXiirgouSIfBXteF12vfbjnJ3aBrzvYvrcgg9YFgis2zDpPSvJfG58khVNyGNspOd
+         l6GluItziSmQkwQSGLcWQQG+aBR+fu/wEt3Y8WuhsdsBXya9PFZsgmu07qM8xzmgABiE
+         Am9HkpNvdwOwj6Efs6AyLAosJje42zqWfZopfESrAQGol/dI7FSQPnmA+lToc17Y0WCC
+         ZXwLaOjwcooAxOt9xoso9JqHZLYdFFMNZ4/I9NXvFRrxK4HIGQqhd9pVRlwe3UfJ2x26
+         PWmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760753037; x=1761357837;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xc59SxJSZGImXKCMLgUW84zLp4qIeFDtzUIiilJXAVs=;
+        b=gulR70XtCEojraA7wgqEA1zjHGNDKre0TIAKw056NhVuJuvAby4FoFtT7kxoiGGrdb
+         UcsxAcvJjuTXortgChWoE6E/7g4r/2sZ+4fSRDvPhpftYPeo8PjZoqwP7XgIzcvYAkOL
+         K3YBmaozFJu9a1Wbqqv73XCgZfZ4C9D4/kyKIkMOJKxVg22MfXYRjIviOQ5QiwtjiHhf
+         YL/g4n/WSVIaoh/KoA2L0CtFJlrClrgnU+xEMownRLk8657sHiThsmjJoNNnA48rn9pu
+         nPAUFBNA69QTvATl1rs3VhQxgcavvIHSa56Q7lioubMWrMuZQ+48TrLftsTS+WhI4xwA
+         Gjlg==
+X-Forwarded-Encrypted: i=1; AJvYcCWYOcn1+vZBfcZQk/W3aEQ4NHBZ3+WWTy6ogslVO9srray9HT3kf/r2+mLzQ+hif3GkdmFVetk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTyVJDXIiJfCH6VykfaLOaQgTGdNLHV9GXGid2cVn5pxve/MwQ
+	0u0eg+X5BWixCMebOBSwJ+uU1YTSe/9WT5U/CeNBsmw+6VpSTbqtNEE=
+X-Gm-Gg: ASbGncumMsPM0Zfgdp3W3U6V7EOJNPWTb2wygb1weqtUfZdIBD8Czb7k7XsFVA9Hz0P
+	9fnoAqvcxVSWd6sB6nFH0JAK+rl8jcruqg0L4G+/DTbrcW7fBlEg6sZhMGoBXtbE3DNATec5v+V
+	3aEMkCE/c7Ei4D8VdoaQHsQa12ucVaX1RPZ6T9qdzqlv/O/3Ap8yQyJLvUYWQCKv5CJHz3+T2gd
+	b/sgxfVxtPz4CijiNUQ+vE3qz83wKTlxs9QkjxrPJhaE15XPS5whfCFeSDycUM5/vk/ax0DP0fZ
+	/8wqcZCxCs9x4Wm+75DDLMVyGFbHGLRmid4buOEkaiQwCYkkA1ByWIT4Rsn3IadnpdYbj4MbTzZ
+	MfQRI4b6Nah3kkQGUSOCkDFM2vQVWMwI2062BrmGG2td55XkhFGaTLQbCz5muC+vbeFtTKKRc4b
+	Hd7g4aAVCb5k49mKJBzrFhJwyuU6xUnQwhLe47IVCNE+LOZGCkDcsoB4skV4AyqT0=
+X-Google-Smtp-Source: AGHT+IEdZrPytaqi4hsbKrC4Mclfmgk8aPsP0EiVqGb4uh1/ZCwHou20C/wosOjacHYe/E03wW1x7g==
+X-Received: by 2002:a05:600c:3b05:b0:46e:32dd:1b1a with SMTP id 5b1f17b1804b1-47117874689mr44730065e9.7.1760753037144;
+        Fri, 17 Oct 2025 19:03:57 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b488a.dip0.t-ipconnect.de. [91.43.72.138])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47152b42911sm20918505e9.8.2025.10.17.19.03.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Oct 2025 19:03:56 -0700 (PDT)
+Message-ID: <a8f56754-ec53-43fa-b4c3-d1db97e68221@googlemail.com>
+Date: Sat, 18 Oct 2025 04:03:56 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 000/168] 6.1.157-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20251017145129.000176255@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Kuen-Han Tsai <khtsai@google.com>
+Am 17.10.2025 um 16:51 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.157 release.
+> There are 168 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-[ Upstream commit 08228941436047bdcd35a612c1aec0912a29d8cd ]
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-After an bind/unbind cycle, the rndis->notify_req is left stale. If a
-subsequent bind fails, the unified error label attempts to free this
-stale request, leading to a NULL pointer dereference when accessing
-ep->ops->free_request.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Refactor the error handling in the bind path to use the __free()
-automatic cleanup mechanism.
 
-Fixes: 45fe3b8e5342 ("usb ethernet gadget: split RNDIS function")
-Cc: stable@kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-6-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-6-4997bf277548@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/gadget/function/f_rndis.c | 85 +++++++++++----------------
- 1 file changed, 35 insertions(+), 50 deletions(-)
+Beste Grüße,
+Peter Schneider
 
-diff --git a/drivers/usb/gadget/function/f_rndis.c b/drivers/usb/gadget/function/f_rndis.c
-index 7cec19d65fb53..7451e7cb7a852 100644
---- a/drivers/usb/gadget/function/f_rndis.c
-+++ b/drivers/usb/gadget/function/f_rndis.c
-@@ -19,6 +19,8 @@
- 
- #include <linux/atomic.h>
- 
-+#include <linux/usb/gadget.h>
-+
- #include "u_ether.h"
- #include "u_ether_configfs.h"
- #include "u_rndis.h"
-@@ -662,6 +664,8 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	struct usb_ep		*ep;
- 
- 	struct f_rndis_opts *rndis_opts;
-+	struct usb_os_desc_table        *os_desc_table __free(kfree) = NULL;
-+	struct usb_request		*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_rndis(c))
- 		return -EINVAL;
-@@ -669,12 +673,9 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	rndis_opts = container_of(f->fi, struct f_rndis_opts, func_inst);
- 
- 	if (cdev->use_os_string) {
--		f->os_desc_table = kzalloc(sizeof(*f->os_desc_table),
--					   GFP_KERNEL);
--		if (!f->os_desc_table)
-+		os_desc_table = kzalloc(sizeof(*os_desc_table), GFP_KERNEL);
-+		if (!os_desc_table)
- 			return -ENOMEM;
--		f->os_desc_n = 1;
--		f->os_desc_table[0].os_desc = &rndis_opts->rndis_os_desc;
- 	}
- 
- 	rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
-@@ -692,16 +693,14 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 		gether_set_gadget(rndis_opts->net, cdev->gadget);
- 		status = gether_register_netdev(rndis_opts->net);
- 		if (status)
--			goto fail;
-+			return status;
- 		rndis_opts->bound = true;
- 	}
- 
- 	us = usb_gstrings_attach(cdev, rndis_strings,
- 				 ARRAY_SIZE(rndis_string_defs));
--	if (IS_ERR(us)) {
--		status = PTR_ERR(us);
--		goto fail;
--	}
-+	if (IS_ERR(us))
-+		return PTR_ERR(us);
- 	rndis_control_intf.iInterface = us[0].id;
- 	rndis_data_intf.iInterface = us[1].id;
- 	rndis_iad_descriptor.iFunction = us[2].id;
-@@ -709,36 +708,30 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	rndis->ctrl_id = status;
- 	rndis_iad_descriptor.bFirstInterface = status;
- 
- 	rndis_control_intf.bInterfaceNumber = status;
- 	rndis_union_desc.bMasterInterface0 = status;
- 
--	if (cdev->use_os_string)
--		f->os_desc_table[0].if_id =
--			rndis_iad_descriptor.bFirstInterface;
--
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	rndis->data_id = status;
- 
- 	rndis_data_intf.bInterfaceNumber = status;
- 	rndis_union_desc.bSlaveInterface0 = status;
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	rndis->port.in_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	rndis->port.out_ep = ep;
- 
- 	/* NOTE:  a status/notification endpoint is, strictly speaking,
-@@ -747,21 +740,19 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	 */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_notify_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	rndis->notify = ep;
- 
--	status = -ENOMEM;
--
- 	/* allocate notification request and buffer */
--	rndis->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
--	if (!rndis->notify_req)
--		goto fail;
--	rndis->notify_req->buf = kmalloc(STATUS_BYTECOUNT, GFP_KERNEL);
--	if (!rndis->notify_req->buf)
--		goto fail;
--	rndis->notify_req->length = STATUS_BYTECOUNT;
--	rndis->notify_req->context = rndis;
--	rndis->notify_req->complete = rndis_response_complete;
-+	request = usb_ep_alloc_request(ep, GFP_KERNEL);
-+	if (!request)
-+		return -ENOMEM;
-+	request->buf = kmalloc(STATUS_BYTECOUNT, GFP_KERNEL);
-+	if (!request->buf)
-+		return -ENOMEM;
-+	request->length = STATUS_BYTECOUNT;
-+	request->context = rndis;
-+	request->complete = rndis_response_complete;
- 
- 	/* support all relevant hardware speeds... we expect that when
- 	 * hardware is dual speed, all bulk-capable endpoints work at
-@@ -778,7 +769,7 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	status = usb_assign_descriptors(f, eth_fs_function, eth_hs_function,
- 			eth_ss_function, eth_ss_function);
- 	if (status)
--		goto fail;
-+		return status;
- 
- 	rndis->port.open = rndis_open;
- 	rndis->port.close = rndis_close;
-@@ -789,9 +780,18 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	if (rndis->manufacturer && rndis->vendorID &&
- 			rndis_set_param_vendor(rndis->params, rndis->vendorID,
- 					       rndis->manufacturer)) {
--		status = -EINVAL;
--		goto fail_free_descs;
-+		usb_free_all_descriptors(f);
-+		return -EINVAL;
-+	}
-+
-+	if (cdev->use_os_string) {
-+		os_desc_table[0].os_desc = &rndis_opts->rndis_os_desc;
-+		os_desc_table[0].if_id = rndis_iad_descriptor.bFirstInterface;
-+		f->os_desc_table = no_free_ptr(os_desc_table);
-+		f->os_desc_n = 1;
-+
- 	}
-+	rndis->notify_req = no_free_ptr(request);
- 
- 	/* NOTE:  all that is done without knowing or caring about
- 	 * the network link ... which is unavailable to this code
-@@ -802,21 +802,6 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 			rndis->port.in_ep->name, rndis->port.out_ep->name,
- 			rndis->notify->name);
- 	return 0;
--
--fail_free_descs:
--	usb_free_all_descriptors(f);
--fail:
--	kfree(f->os_desc_table);
--	f->os_desc_n = 0;
--
--	if (rndis->notify_req) {
--		kfree(rndis->notify_req->buf);
--		usb_ep_free_request(rndis->notify, rndis->notify_req);
--	}
--
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
--
--	return status;
- }
- 
- void rndis_borrow_net(struct usb_function_instance *f, struct net_device *net)
 -- 
-2.51.0
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
