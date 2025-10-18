@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C663BEC539
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:28:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52566BEC57B
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 12BAE4E1B87
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:28:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4F721AA7EB9
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124A021A449;
-	Sat, 18 Oct 2025 02:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61038236451;
+	Sat, 18 Oct 2025 02:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="phQxvD3K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oen4wbPg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52EB217F31
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1C4235C01
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760754514; cv=none; b=PIphzCYUIiCFO3UvssEScRnVtwckF3Qpu2Fddwp5vXxa5wV7nY1NanKqcD0B4srtqJhbCEiNTfcC681uJv5J12S3sLbDZ4XEdiL77mWDowrlMRH5AT0K+sXchXuhrvlO7Ski06g8YcPpz1cBTHOzSFu5gxl/GCOTNnECVxWRUrE=
+	t=1760754900; cv=none; b=knIul8PgK9916K2XgFr1tSGpO6bFGgTSeDJv6+7fZazVJqr1laVrcR+gQUrl9pr78XLzNjOLztgOrKI6sfwrwPu6mTBXYB3tcXk4NoJ3JXOf02s+bmfHS82cUy9mvGpc4XP9NPLXxcNGiLXW+HuMpa0UL+WIPCuGIzm7inmliVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760754514; c=relaxed/simple;
-	bh=o38o4w8wqEZ+U/kHgnLMryolswqaI60f0UdM7HnBeGA=;
+	s=arc-20240116; t=1760754900; c=relaxed/simple;
+	bh=gLMjXnSh46nzHRKrJyDttRRxP97Yl0ViVw7RYPtMqsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sOPe8TQUtPuf0IpkqJea3hwiKmTv1b9MejOAcUx1Ok031ZdBBVI4/jT6szOfr15J6lb5zf/+TB2gGpDIYjWnuMGE1N/srvnlAYXh/iE9CJm9hdg4FNs4iZSoduUsGf20yTqGoo/sfm7ZiCYr0a2DlSNmD47X43BOTsrDuVooLN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=phQxvD3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2090C4CEFE;
-	Sat, 18 Oct 2025 02:28:33 +0000 (UTC)
+	 MIME-Version; b=T6gffcfPJjIG2pdoxpG8IoFBF2AsnXtHT4JgRcWefWkdCHQJ8usMdJk3RYvtIZp1VXwh1oaPQn8bYmfwh0ZplmzmwWDwR8O4296KzOBhc1dlU4EPlVDJmFahx/4yGVY5ktOfBLVWU9gctSMLlNnNOjWePoCBAEkuWth5JnZ8jfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oen4wbPg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304DEC4CEE7;
+	Sat, 18 Oct 2025 02:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760754514;
-	bh=o38o4w8wqEZ+U/kHgnLMryolswqaI60f0UdM7HnBeGA=;
+	s=k20201202; t=1760754899;
+	bh=gLMjXnSh46nzHRKrJyDttRRxP97Yl0ViVw7RYPtMqsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phQxvD3KOyzIEjXK2wpvVcU5yUKSPTGuz9GPWS0fE7h6uMUuVAavGPIC5Q4ZoIRHY
-	 iCvriyc1t09lXGRr7tAiyob6VhAh/4/do8Umacnrw6BzcoQivS19lRhy5olFQAm8i8
-	 DeAscDwAwMlBVuzL5mqbyR7Ndstj4H6jcXniIc5S810YsrClxUt/cBPHc9yA7Vlubo
-	 dmCQyBikGIZ56+MPkRs1j6JVRWHZd5niyPeIfxGFSGmCSIoVeTTtJd3s/Dmt+RNTC+
-	 LGuZmqKS7w7klycNn1djxnvVQDPUGU5+nF7yIirs9Xih4dsmrpXRuFbcN2ZDyFW0cB
-	 ZEScntU3Yf7GQ==
+	b=oen4wbPgrK/VgObjxdHTFbSur+O2IEIBMkU+1I+7fglBV7/Y8+6nEbjPKtvI/zYV7
+	 3d4yXCQF6fQa9fNKjNZ/gzFc3uOjbufOBZT00CPFKrz1o5csvabZNVN70ZLuN6ShT4
+	 liQegqNO9XP/5eJqRv2lUgggcGeTocjX+qU5/ddqca+SGB+6+F0TRrK6Q6Ug+XeqCL
+	 G9VhmneJNq8FiktGsJvSP4mKtVnqyOlsVYXBN4osCxI8/AGG4fRZu/Nx9iMpnZu2KZ
+	 vpQ5V+2hidHC35HpGVihRQrHF/e5sU0DB69Hu0QHubo0dB06ugwl0EXQ1EccyVzsFc
+	 R0wvTGJRS8dpQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+Cc: Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] drm/msm/a6xx: Fix PDC sleep sequence
-Date: Fri, 17 Oct 2025 22:28:32 -0400
-Message-ID: <20251018022832.219177-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/3] drm/exynos: exynos7_drm_decon: fix uninitialized crtc reference in functions
+Date: Fri, 17 Oct 2025 22:34:55 -0400
+Message-ID: <20251018023457.221641-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101631-neurosis-worshiper-3728@gregkh>
-References: <2025101631-neurosis-worshiper-3728@gregkh>
+In-Reply-To: <2025101640-enviable-movable-b2dd@gregkh>
+References: <2025101640-enviable-movable-b2dd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,134 +60,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-[ Upstream commit f248d5d5159a88ded55329f0b1b463d0f4094228 ]
+[ Upstream commit d31bbacf783daf1e71fbe5c68df93550c446bf44 ]
 
-Since the PDC resides out of the GPU subsystem and cannot be reset in
-case it enters bad state, utmost care must be taken to trigger the PDC
-wake/sleep routines in the correct order.
+Modify the functions to accept a pointer to struct decon_context
+instead.
 
-The PDC wake sequence can be exercised only after a PDC sleep sequence.
-Additionally, GMU firmware should initialize a few registers before the
-KMD can trigger a PDC sleep sequence. So PDC sleep can't be done if the
-GMU firmware has not initialized. Track these dependencies using a new
-status variable and trigger PDC sleep/wake sequences appropriately.
-
-Cc: stable@vger.kernel.org
-Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/673362/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-[ Adjust context ]
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Stable-dep-of: e1361a4f1be9 ("drm/exynos: exynos7_drm_decon: remove ctx->suspended")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 28 ++++++++++++++++-----------
- drivers/gpu/drm/msm/adreno/a6xx_gmu.h |  6 ++++++
- 2 files changed, 23 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 67fa528f546d3..8609fa38058ea 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -236,6 +236,8 @@ static int a6xx_gmu_start(struct a6xx_gmu *gmu)
- 	if (ret)
- 		DRM_DEV_ERROR(gmu->dev, "GMU firmware initialization timed out\n");
- 
-+	set_bit(GMU_STATUS_FW_START, &gmu->status);
-+
- 	return ret;
- }
- 
-@@ -482,6 +484,9 @@ static int a6xx_rpmh_start(struct a6xx_gmu *gmu)
- 	int ret;
- 	u32 val;
- 
-+	if (!test_and_clear_bit(GMU_STATUS_PDC_SLEEP, &gmu->status))
-+		return 0;
-+
- 	gmu_write(gmu, REG_A6XX_GMU_RSCC_CONTROL_REQ, BIT(1));
- 
- 	ret = gmu_poll_timeout(gmu, REG_A6XX_GMU_RSCC_CONTROL_ACK, val,
-@@ -509,6 +514,9 @@ static void a6xx_rpmh_stop(struct a6xx_gmu *gmu)
- 	int ret;
- 	u32 val;
- 
-+	if (test_and_clear_bit(GMU_STATUS_FW_START, &gmu->status))
-+		return;
-+
- 	gmu_write(gmu, REG_A6XX_GMU_RSCC_CONTROL_REQ, 1);
- 
- 	ret = gmu_poll_timeout_rscc(gmu, REG_A6XX_GPU_RSCC_RSC_STATUS0_DRV0,
-@@ -517,6 +525,8 @@ static void a6xx_rpmh_stop(struct a6xx_gmu *gmu)
- 		DRM_DEV_ERROR(gmu->dev, "Unable to power off the GPU RSC\n");
- 
- 	gmu_write(gmu, REG_A6XX_GMU_RSCC_CONTROL_REQ, 0);
-+
-+	set_bit(GMU_STATUS_PDC_SLEEP, &gmu->status);
- }
- 
- static inline void pdc_write(void __iomem *ptr, u32 offset, u32 value)
-@@ -645,8 +655,6 @@ static void a6xx_gmu_rpmh_init(struct a6xx_gmu *gmu)
- 	/* ensure no writes happen before the uCode is fully written */
- 	wmb();
- 
--	a6xx_rpmh_stop(gmu);
--
- err:
- 	if (!IS_ERR_OR_NULL(pdcptr))
- 		iounmap(pdcptr);
-@@ -799,19 +807,15 @@ static int a6xx_gmu_fw_start(struct a6xx_gmu *gmu, unsigned int state)
- 	else
- 		gmu_write(gmu, REG_A6XX_GMU_GENERAL_7, 1);
- 
--	if (state == GMU_WARM_BOOT) {
--		ret = a6xx_rpmh_start(gmu);
--		if (ret)
--			return ret;
--	} else {
-+	ret = a6xx_rpmh_start(gmu);
-+	if (ret)
-+		return ret;
-+
-+	if (state == GMU_COLD_BOOT) {
- 		if (WARN(!adreno_gpu->fw[ADRENO_FW_GMU],
- 			"GMU firmware is not loaded\n"))
- 			return -ENOENT;
- 
--		ret = a6xx_rpmh_start(gmu);
--		if (ret)
--			return ret;
--
- 		ret = a6xx_gmu_fw_load(gmu);
- 		if (ret)
- 			return ret;
-@@ -980,6 +984,8 @@ static void a6xx_gmu_force_off(struct a6xx_gmu *gmu)
- 
- 	/* Reset GPU core blocks */
- 	a6xx_gpu_sw_reset(gpu, true);
-+
-+	a6xx_rpmh_stop(gmu);
- }
- 
- static void a6xx_gmu_set_initial_freq(struct msm_gpu *gpu, struct a6xx_gmu *gmu)
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.h b/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
-index 94b6c5cab6f43..db5b3b13e7435 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
-@@ -99,6 +99,12 @@ struct a6xx_gmu {
- 	struct completion pd_gate;
- 
- 	struct qmp *qmp;
-+
-+/* To check if we can trigger sleep seq at PDC. Cleared in a6xx_rpmh_stop() */
-+#define GMU_STATUS_FW_START	0
-+/* To track if PDC sleep seq was done */
-+#define GMU_STATUS_PDC_SLEEP	1
-+	unsigned long status;
+diff --git a/drivers/gpu/drm/exynos/exynos7_drm_decon.c b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+index d255c03aed225..abd08991a6d18 100644
+--- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+@@ -81,10 +81,8 @@ static const enum drm_plane_type decon_win_types[WINDOWS_NR] = {
+ 	DRM_PLANE_TYPE_CURSOR,
  };
  
- static inline u32 gmu_read(struct a6xx_gmu *gmu, u32 offset)
+-static void decon_wait_for_vblank(struct exynos_drm_crtc *crtc)
++static void decon_wait_for_vblank(struct decon_context *ctx)
+ {
+-	struct decon_context *ctx = crtc->ctx;
+-
+ 	if (ctx->suspended)
+ 		return;
+ 
+@@ -100,9 +98,8 @@ static void decon_wait_for_vblank(struct exynos_drm_crtc *crtc)
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "vblank wait timed out.\n");
+ }
+ 
+-static void decon_clear_channels(struct exynos_drm_crtc *crtc)
++static void decon_clear_channels(struct decon_context *ctx)
+ {
+-	struct decon_context *ctx = crtc->ctx;
+ 	unsigned int win, ch_enabled = 0;
+ 
+ 	/* Check if any channel is enabled. */
+@@ -118,7 +115,7 @@ static void decon_clear_channels(struct exynos_drm_crtc *crtc)
+ 
+ 	/* Wait for vsync, as disable channel takes effect at next vsync */
+ 	if (ch_enabled)
+-		decon_wait_for_vblank(ctx->crtc);
++		decon_wait_for_vblank(ctx);
+ }
+ 
+ static int decon_ctx_initialize(struct decon_context *ctx,
+@@ -126,7 +123,7 @@ static int decon_ctx_initialize(struct decon_context *ctx,
+ {
+ 	ctx->drm_dev = drm_dev;
+ 
+-	decon_clear_channels(ctx->crtc);
++	decon_clear_channels(ctx);
+ 
+ 	return exynos_drm_register_dma(drm_dev, ctx->dev, &ctx->dma_priv);
+ }
 -- 
 2.51.0
 
