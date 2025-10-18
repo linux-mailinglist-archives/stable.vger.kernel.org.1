@@ -1,111 +1,132 @@
-Return-Path: <stable+bounces-187733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F833BEC103
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:00:44 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5972EBEC25F
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4BDC1AA7F5A
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:01:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CBDED34AD12
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669F2246BC5;
-	Sat, 18 Oct 2025 00:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AC186352;
+	Sat, 18 Oct 2025 00:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cAj8NfQN"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oNJf3lCN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EFD225779;
-	Sat, 18 Oct 2025 00:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD8657C9F;
+	Sat, 18 Oct 2025 00:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760745630; cv=none; b=hNqx+/OdgkUMn2/19iVb73U2GRAcjTg0KOMlQRXCIVeT4x2NJgiX2EhEOstw7uVY2iBqfpWERckJPRRzoLkOVSLyxvf62vPeDjwaKpqzllnXRTcx8xViXqza+jGjV74LJYTIhgBJ6UfjpU1NWnvg5xlaNVyY/Y4nCAKaisQSTTU=
+	t=1760746524; cv=none; b=tReHSJ1v134T02sCRHAqzMv1Dc483wGUDeWE7/uPiMoLFFPyBN9zQq0+c4WjjhHnjX02NEYg079D++MP0GjzrtAGk+Mk0BHEmYyG5vN1eDLlXnOdwuPCVgma9AkpmSGeeGpGZUpxRpuM14iZok2I56rQCOt2rmBJ/eMgYmqciCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760745630; c=relaxed/simple;
-	bh=YW7J4Cb2xkLTCFVdkNW03zNph9tJS3+L4niLsZEK/R8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pQy6HpD4e4aV7m70ssXLPjL1gIVASti0sIUWkiGLJ3jhUBCdUGai4j6xJWM1E8HC9CkOnJmcb5f5ny1VmXIBANItqI9lzRfLjYLB2ymiX4Y8YIYkSZrvWlXlMty2ceYYqjej9ZY5zW6yeIseOJVFPZpbgNmsIWCVR44Ddc/efGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cAj8NfQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE8EC4CEF9;
-	Sat, 18 Oct 2025 00:00:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760745629;
-	bh=YW7J4Cb2xkLTCFVdkNW03zNph9tJS3+L4niLsZEK/R8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=cAj8NfQNt3hE4hn6ZrOLuy9hCm46yQnbgTrje07WI5eucNPH0xn5wRfiflJy12do/
-	 muLAi5IykR56dV5RnkUM1Fi38fqwkh9ftr+p8kkwX9sqXr/aEaw87wW/u3ayyKjLNG
-	 /RL8DD0HVq1DeROUS4PmXPUQRac7J1dlmN7X1Nlw9lCy8G4tEKHs5pl81smnVjQAep
-	 yP3iJvu7RE4RjWauGJAWKMaRM3yRS4epra8kiN0AmHBxLbsYGRwCekF1Ymkiu+78xv
-	 ICO+X/ukLTgY/muddRgJ49Y2jirLYLsjZPVWqEIEP8AGBM2Ru/8tf4xIDd2EpKxI68
-	 m2xYNrWG7iiSQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70DB239EFA61;
-	Sat, 18 Oct 2025 00:00:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1760746524; c=relaxed/simple;
+	bh=YZ4N1rHj1pwjtt3i7gLo9zt8/inKBT+EiPtspcVyryU=;
+	h=Date:To:From:Subject:Message-Id; b=cI/Z0RgceZosszWM0ugogj0IvK+ZYHx5m6ca4WmSheFr1Eg4p2jA9qveRvypMseTZxnVoEP7PKs3OfP9odO9o6UB6udzmVopLJeRv1BdJHzLnEFL6Bn6nAILGoNlyXgENpQB++SrbPSKOBmCtvopP5bmHdb1IQUDFzCeSJ3g9vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oNJf3lCN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6525FC4CEE7;
+	Sat, 18 Oct 2025 00:15:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1760746523;
+	bh=YZ4N1rHj1pwjtt3i7gLo9zt8/inKBT+EiPtspcVyryU=;
+	h=Date:To:From:Subject:From;
+	b=oNJf3lCNqqClmapKBFwa+m3V7b6OxDCVYMA4l6UCWexgDtIL9O/asSXbhnCInfQ4R
+	 oqX79ZxSoAoEBjISaqDd0LkLA0GRU03t75EkQe0Yzkj0ppjZglzOLVQTH0ZKrUi4DE
+	 mABKukY3WUYF0X1A+qFT0WA1PNRSIT+0XlSDzrJA=
+Date: Fri, 17 Oct 2025 17:15:22 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,jiangqi903@gmail.com,heming.zhao@suse.com,gechangwei@live.cn,dmantipov@yandex.ru,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc.patch added to mm-nonmm-unstable branch
+Message-Id: <20251018001523.6525FC4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: bonding: update the slave array for broadcast
- mode
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176074561324.2830883.17596939425156454668.git-patchwork-notify@kernel.org>
-Date: Sat, 18 Oct 2025 00:00:13 +0000
-References: <20251016125136.16568-1-tonghao@bamaicloud.com>
-In-Reply-To: <20251016125136.16568-1-tonghao@bamaicloud.com>
-To: Tonghao Zhang <tonghao@bamaicloud.com>
-Cc: netdev@vger.kernel.org, jv@jvosburgh.net, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- corbet@lwn.net, andrew+netdev@lunn.ch, razor@blackwall.org,
- liuhangbin@gmail.com, jirislaby@kernel.org, stable@vger.kernel.org
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+The patch titled
+     Subject: ocfs2: add chain list sanity check to ocfs2_block_group_alloc()
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc.patch
 
-On Thu, 16 Oct 2025 20:51:36 +0800 you wrote:
-> This patch fixes ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad").
-> Before this commit, on the broadcast mode, all devices were traversed using the
-> bond_for_each_slave_rcu. This patch supports traversing devices by using all_slaves.
-> Therefore, we need to update the slave array when enslave or release slave.
-> 
-> Fixes: ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad")
-> Cc: Jay Vosburgh <jv@jvosburgh.net>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Simon Horman <horms@kernel.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-> Cc: Nikolay Aleksandrov <razor@blackwall.org>
-> Cc: Hangbin Liu <liuhangbin@gmail.com>
-> Cc: Jiri Slaby <jirislaby@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Jiri Slaby <jirislaby@kernel.org>
-> Tested-by: Jiri Slaby <jirislaby@kernel.org>
-> Link: https://lore.kernel.org/all/a97e6e1e-81bc-4a79-8352-9e4794b0d2ca@kernel.org/
-> Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
-> Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-> 
-> [...]
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc.patch
 
-Here is the summary with links:
-  - [net,v2] net: bonding: update the slave array for broadcast mode
-    https://git.kernel.org/netdev/net/c/e0caeb24f538
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Dmitry Antipov <dmantipov@yandex.ru>
+Subject: ocfs2: add chain list sanity check to ocfs2_block_group_alloc()
+Date: Thu, 16 Oct 2025 11:46:53 +0300
+
+Fix a UBSAN error:
+
+UBSAN: array-index-out-of-bounds in fs/ocfs2/suballoc.c:380:22
+index 0 is out of range for type 'struct ocfs2_chain_rec[] __counted_by(cl_count)' (aka 'struct ocfs2_chain_rec[]')
+
+In 'ocfs2_block_group_alloc()', add an extra check whether the maximum
+amount of chain records in 'struct ocfs2_chain_list' matches the value
+calculated based on the filesystem block size.
+
+Link: https://lkml.kernel.org/r/20251016084653.59686-1-dmantipov@yandex.ru
+Reported-by: syzbot+77026564530dbc29b854@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=77026564530dbc29b854
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/ocfs2/suballoc.c |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+--- a/fs/ocfs2/suballoc.c~ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc
++++ a/fs/ocfs2/suballoc.c
+@@ -671,6 +671,11 @@ static int ocfs2_block_group_alloc(struc
+ 	BUG_ON(ocfs2_is_cluster_bitmap(alloc_inode));
+ 
+ 	cl = &fe->id2.i_chain;
++	if (le16_to_cpu(cl->cl_count) != ocfs2_chain_recs_per_inode(osb->sb)) {
++		status = -EINVAL;
++		goto bail;
++	}
++
+ 	status = ocfs2_reserve_clusters_with_limit(osb,
+ 						   le16_to_cpu(cl->cl_cpg),
+ 						   max_block, flags, &ac);
+_
+
+Patches currently in -mm which might be from dmantipov@yandex.ru are
+
+ocfs2-add-extra-flags-check-in-ocfs2_ioctl_move_extents.patch
+ocfs2-relax-bug-to-ocfs2_error-in-__ocfs2_move_extent.patch
+ocfs2-annotate-flexible-array-members-with-__counted_by_le.patch
+ocfs2-annotate-flexible-array-members-with-__counted_by_le-fix.patch
+ocfs2-add-extra-consistency-check-to-ocfs2_dx_dir_lookup_rec.patch
+ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc.patch
 
 
