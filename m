@@ -1,124 +1,127 @@
-Return-Path: <stable+bounces-187799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12416BEC599
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:43:14 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D16BEC5A4
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E36319A5B95
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:43:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 037134E2B41
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E9C24C076;
-	Sat, 18 Oct 2025 02:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD8524A05D;
+	Sat, 18 Oct 2025 02:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="gOOOjBIU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Em+SvQYj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695B9248F7F
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A59248F7F
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760755389; cv=none; b=XaZkjenkGjTT6MNRcgP/BruSUz3H9yixx3UVNml40tqlr6kTwoclwQAvYB0RZeAA01uB212l3M3XW7bshQe7VifoRglgi/KQk1J8oA5KGgeSeDz5V205TyHWCVkZSzM9rl5PLsF+zSjTR4woXSQo9LyNmGTG3E6ExcxAWdMF9SM=
+	t=1760755487; cv=none; b=r0vAzLMTyenFp3kb/twMwRDUJKOfiJLDxVuT/8W3aDV2JsPv8juJ2hgLKwEssVKKfnu6VPcOnZwri+nQZ4EMFbXF4J3JXyPPMf7dnPKRYL0aXBvB91VtXvWHmlTNWr+0wiTjhswvyFeh/6CAVDLDTz4cHptflnF7/EwRjvSWLKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760755389; c=relaxed/simple;
-	bh=+b2DvE7xTQ+YplYhEJssLncHPzlO3qrdo1+/WrFFXQQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vEnlYg074BKCSnc9SJsGxgAMCar7eZpKVn0uMt4J5PEuYEGFH0c8K0Yz8bPkmbCSfYtxyTz4Jq2jQt5XnnAnG+/VGxVPwL7q68VTWq2BNqe4GPqNO0WIgunaigV5Jwu+ePzSqBZDfpsCVZO+nZ+H8Wv5fsW5oHEbxBwrztTs5ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=gOOOjBIU; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47103b6058fso18381825e9.1
-        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 19:43:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1760755385; x=1761360185; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KedOym6ANAjmntB6MdnT69wUxSKMRmT+YO6XJ5I6B+A=;
-        b=gOOOjBIUkUvo1jjrvQixoM7SbqU7Brmhj41vhBGQ+h0ES/WIdLtKTScDalZ5c+M1tR
-         gaAwrCLrMeIAlzpizY4Y7C2sI8pKQ84pDnHocv6wE/bB0kdKVZRxa7Iuiky22lFdhaaz
-         ZTLK62LWDSbjqfnIHYWiFtSoxJQ2BzEDASGwAL71i7NkKBgDS58GRU7JpcWgWjvr4aoo
-         k5ife4MRT6BPjs/hn9WwzCxjp89w4hZGE5j0ok/4PtlrMegT69Z+4bDUX3KxreMXmgJp
-         SbPHe1n8J+AIj/XuiTYKrWX+MUKQuz0qhQsoYxyAObOfvl1dD3t0nHXhJGxq7sgCZito
-         RFLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760755385; x=1761360185;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KedOym6ANAjmntB6MdnT69wUxSKMRmT+YO6XJ5I6B+A=;
-        b=EEFhiAuIneXDR0O/F10a6micb0qSp1KYJXwEHwrpF9AzWWL1BxC8g1WCRg7FWQx8VE
-         sJWZV4qyjWWTZ5UE/U5c9YRbvn5skIEzN+y6g0kI2Moc4t6Gdw7m2SYUe7p97oSIefhs
-         /KJ3MvXI7Ko4hL06QuAt1LCESYTSNHjPLotTCEYB176vmboEkojR2U5iOWMJR4GPQEDQ
-         LAl9Zyz5ce6Qq30SrXYi8nK58QgZXEnBrcJi8Ii7o7uOrYtAm6VZB4taXZntAE6KEm0p
-         nH7sEdnY5AjsGamXb+2KykvyGiWb3AvSHt8w7oOjOSh2XBToPs2dnvwyNzrLFF7TyfyC
-         w+9g==
-X-Forwarded-Encrypted: i=1; AJvYcCVaLpmW3TLmJg5mfeeI1PhQ/UYg8XP8fEVO72zygpTwFAeqzvuNqu/2wWbwXk2H3XUTZTSN4Ig=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxe6CsfAh112gI96ozcnk63PCvqmL1jhyJ2jgGeoUK1ElAkMhBu
-	O1mWSKLvPJi7iqsEjdTgYhwp9eL6PiC2eXnYGkiL6MTMTvoNBl+PdQM=
-X-Gm-Gg: ASbGncs2VLvlbBNh/hMJOhYDDRP/RHTdT3oXEfI8GEQqZVuIrbqD7FCTdwTJkvcptBY
-	C4xQfkSfQH7sbwlxf56IyjL4aZKNUrZnOg4q+TjXKRsLbuW1HHrXzBMSduN3W7kC/q0gvsCuoN8
-	NZ8/bCAhILfxaPDIyJDZtOZfmpgHPwsoUkdiMKHWpF1Cv8gqUyg6HITjnnPuw9h1y9hlMzgr3pg
-	LjwcQYY1Le6rS3zdpiVuUJ7BIkg/Pxe6zCWjUMRa5JsZKwDAhiPbGl3Ar2DInzOCBh5Uci3JX7U
-	QdBE+Pc9DP3hMCnWNCr2S4hSOco2D8moe5fkpTwj1MHhH95hYKfVxYCaL8D2o7AT/Ew0jC9W+os
-	gDqCzRt2jIrRxhjP/WOM7ML0jZ5u8/SLuLcfZ2BjNhueDqAiU/79pFD/6NDVvIaQf26sRFYAi3N
-	7jtXTabW2QDawdQYeBj+JL3MxtEgOh1HPGxuGDaXZrwgEmNEMbY4lv
-X-Google-Smtp-Source: AGHT+IHJCQEarLyt9R2soYu4NGJRlr1qtMl+VxBgaRp4vpWrXNohBal3V0rIJ/WL73KWrYBnM8te3g==
-X-Received: by 2002:a05:600c:190f:b0:46e:3b58:1b40 with SMTP id 5b1f17b1804b1-4711721a479mr46610845e9.4.1760755384377;
-        Fri, 17 Oct 2025 19:43:04 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b488a.dip0.t-ipconnect.de. [91.43.72.138])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4715257d916sm21954375e9.4.2025.10.17.19.43.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Oct 2025 19:43:04 -0700 (PDT)
-Message-ID: <8cc5cdfa-e25a-492f-a75d-38fa14961ebd@googlemail.com>
-Date: Sat, 18 Oct 2025 04:43:03 +0200
+	s=arc-20240116; t=1760755487; c=relaxed/simple;
+	bh=DP+dWei3odhsCHdX2pFfi/TISdIIYuvo7LUPqRKN1vA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BpjBiwrNPZaz40jgqxBihR8/XLcFK9NSos2T/kKS9s7kbgXtNem8jqSSi5Lok49QKiYvtx4wJyWglKWb7/apsth8NgBcDOEruNToieRtJ3CWiTTlbRwYxVPbXbl/WxY+oGAvMzJ18VWsSQywgr6x7IOCxGIFlBr2saFZLIUzYhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Em+SvQYj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7F6C4CEE7;
+	Sat, 18 Oct 2025 02:44:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760755486;
+	bh=DP+dWei3odhsCHdX2pFfi/TISdIIYuvo7LUPqRKN1vA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Em+SvQYjnwn6XM+C4yfMgObU3rXzT2TYGypfJ4uE1cYTAO3HE38WVzsRSzT6mLysL
+	 tKJpmksiG/ehC12t9CBeTBNM8S4uzTRjC3vNg73nUSX1ro2BzZ4aMVi8/pposW42LB
+	 zF9XVKRIhHiV664GcoL566zDto58ZoEuKub+gyq+lad85KH2xmVejClIQnSh1ZSmlG
+	 rjS+ZN/D8x4xQCfvo2f488EZtsm4Nkj73dn+EAbhwqA6H/siDfNpmR8OhYL1s+wBVm
+	 dLacygtib7/HGq8cbBWMLEecN/H+3LN3d4494VJu+S6yhewAGDdjyjREnJDP9loDKA
+	 DpHrBamVsmFhA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Kuen-Han Tsai <khtsai@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/3] usb: gadget: Store endpoint pointer in usb_request
+Date: Fri, 17 Oct 2025 22:44:42 -0400
+Message-ID: <20251018024444.228704-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101656-perky-popcorn-f7b0@gregkh>
+References: <2025101656-perky-popcorn-f7b0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 000/201] 6.6.113-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20251017145134.710337454@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20251017145134.710337454@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Am 17.10.2025 um 16:51 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.113 release.
-> There are 201 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+From: Kuen-Han Tsai <khtsai@google.com>
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+[ Upstream commit bfb1d99d969fe3b892db30848aeebfa19d21f57f ]
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Gadget function drivers often have goto-based error handling in their
+bind paths, which can be bug-prone. Refactoring these paths to use
+__free() scope-based cleanup is desirable, but currently blocked.
 
+The blocker is that usb_ep_free_request(ep, req) requires two
+parameters, while the __free() mechanism can only pass a pointer to the
+request itself.
 
-Beste Grüße,
-Peter Schneider
+Store an endpoint pointer in the struct usb_request. The pointer is
+populated centrally in usb_ep_alloc_request() on every successful
+allocation, making the request object self-contained.
 
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
+Stable-dep-of: 082289414360 ("usb: gadget: f_rndis: Refactor bind path to use __free()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/usb/gadget/udc/core.c | 3 +++
+ include/linux/usb/gadget.h    | 2 ++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index 5adb6e831126a..d98da3c44ff5e 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -194,6 +194,9 @@ struct usb_request *usb_ep_alloc_request(struct usb_ep *ep,
+ 
+ 	req = ep->ops->alloc_request(ep, gfp_flags);
+ 
++	if (req)
++		req->ep = ep;
++
+ 	trace_usb_ep_alloc_request(ep, req, req ? 0 : -ENOMEM);
+ 
+ 	return req;
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index 705b76f8dddb2..9a4d800cdc1e3 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -31,6 +31,7 @@ struct usb_ep;
+ 
+ /**
+  * struct usb_request - describes one i/o request
++ * @ep: The associated endpoint set by usb_ep_alloc_request().
+  * @buf: Buffer used for data.  Always provide this; some controllers
+  *	only use PIO, or don't use DMA for some endpoints.
+  * @dma: DMA address corresponding to 'buf'.  If you don't set this
+@@ -96,6 +97,7 @@ struct usb_ep;
+  */
+ 
+ struct usb_request {
++	struct usb_ep		*ep;
+ 	void			*buf;
+ 	unsigned		length;
+ 	dma_addr_t		dma;
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.51.0
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
