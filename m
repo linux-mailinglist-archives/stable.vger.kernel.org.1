@@ -1,116 +1,127 @@
-Return-Path: <stable+bounces-187735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D391DBEC275
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:17:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BECF0BEC278
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84209404B9A
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:17:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D3BA406BA0
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9481B672;
-	Sat, 18 Oct 2025 00:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4456A4C6C;
+	Sat, 18 Oct 2025 00:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RXFBwlm+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2wXNDSR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641281388;
-	Sat, 18 Oct 2025 00:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B581388
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 00:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760746662; cv=none; b=W6hrHvjD1rFt0nzwcc7lh+X3+F7QJujrDqsbQ0W9NVu+cjfQaUm6uWRKbHKOUuqmAhkUYZ4ZBAOyJt6bHyLbHC04frt3IqbyRAFhT4zxBAMZ/Q1VJ4jnqqizaMNmc2QTPpNr/4O+/EIBiu1Gp2tq4asqHNQHwaMWq4uN8tUYh1Q=
+	t=1760746671; cv=none; b=NCutl3ExBgLl/rmEdJt0tPSamLqFD6rswDxRNZCbf8XRH0uT2AQOCm9J7XgPslBHF4HCB8WlxMuuuGvc+Lgwm0fKuw08DbPmE84LcYthlevADxp/I34Fe2qd0JV/wzTwseSDeia1Y50yE5K53H1M7tn2K0VN8vTIWC2jpLXfbyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760746662; c=relaxed/simple;
-	bh=nPxvzU1bJ9PWc+udBBoaTFAOhwRan2qgTw6VjJM0v+E=;
-	h=Date:To:From:Subject:Message-Id; b=uFEcKgl+KGA9MrbvlBURT+UVJrFf/CYV8aV8KseF3a+4kYmSC1IXCzJMTwNALlYxlaIXnNrjz5X/gqg+M6V8z9HfpUzUhP119TmhLymRWLp6h51sTajw+yTnS1gWd1c293wGeaD5Jm5DcNAnfTmakZp/xvJ0xGnjnZ5I/9zken8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RXFBwlm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CBBC4CEF9;
-	Sat, 18 Oct 2025 00:17:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760746662;
-	bh=nPxvzU1bJ9PWc+udBBoaTFAOhwRan2qgTw6VjJM0v+E=;
-	h=Date:To:From:Subject:From;
-	b=RXFBwlm+S5yiXASd5gMShXwo+zmcO1NImKG3fr40loHq5l8GV/bYHTM1imJqglhgr
-	 9SvmBozMek1OqvtUyjUIzRwOrQ4g9hKUDeOhUVxGvepoJyWWC56e1kGGETtX8zfuNF
-	 b5tshSYIYGzGq0dL2YAz/hAfLVmGUiMJeXaRsKDE=
-Date: Fri, 17 Oct 2025 17:17:41 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,jiangqi903@gmail.com,heming.zhao@suse.com,gechangwei@live.cn,dmantipov@yandex.ru,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc.patch removed from -mm tree
-Message-Id: <20251018001742.12CBBC4CEF9@smtp.kernel.org>
+	s=arc-20240116; t=1760746671; c=relaxed/simple;
+	bh=zurltcHcTc2VU2gNbm8UpGDeqEDpbu/27mRlCw7uvl0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uEsHynUrCjkJr5za/rkORI7OtlRkz3pPOojCfPuWZfPpsrEmoHeRlbVuoEmrIe9vWHuBgSdnBWlhzk3R5+rIDekHK4D9gvUYy4WdARPbjL3lzIas5CfvsEtN6Y1uzdpm6BaoDkxtA6IdUnoMmZfcGVGpqOqkcuGagfqJmkDX0q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2wXNDSR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D376C4CEE7;
+	Sat, 18 Oct 2025 00:17:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760746670;
+	bh=zurltcHcTc2VU2gNbm8UpGDeqEDpbu/27mRlCw7uvl0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=f2wXNDSRhrjI2peTi5FyUB9FRUuxWdLfd6yU50Ic8xisyMtzskmgkQwtI23HcbZ63
+	 VOS1GX/imi7VWeW47+SFYDrAcuxRZzXFul8aDqmHLe+DtMJ05hLWCW/6W3S08HbdKA
+	 ERXn3iUmBa5WSFd5anBxGEuvsyg3VU4+B6no5UfShHTAG2fQFyW7PFamqUEIVSgX2T
+	 Wod2y3niP/PD9SVhW0mfClRmtp5tbX79SKBLIydu4G8TsfkW2QBSUr2mIvoCQ4RAOh
+	 Rw+QvedI1DDJKvweTiWsXQlhZ/UjA8AgVwAihC+jt2RKg1+Wl5emb4Hg6YbLwMmPov
+	 yAwOqLXN59uEg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Kuen-Han Tsai <khtsai@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17.y 1/3] usb: gadget: Store endpoint pointer in usb_request
+Date: Fri, 17 Oct 2025 20:17:46 -0400
+Message-ID: <20251018001748.76008-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101617-yield-come-49f4@gregkh>
+References: <2025101617-yield-come-49f4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+From: Kuen-Han Tsai <khtsai@google.com>
 
-The quilt patch titled
-     Subject: ocfs2: add chain list sanity check to ocfs2_block_group_alloc()
-has been removed from the -mm tree.  Its filename was
-     ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc.patch
+[ Upstream commit bfb1d99d969fe3b892db30848aeebfa19d21f57f ]
 
-This patch was dropped because an updated version will be issued
+Gadget function drivers often have goto-based error handling in their
+bind paths, which can be bug-prone. Refactoring these paths to use
+__free() scope-based cleanup is desirable, but currently blocked.
 
-------------------------------------------------------
-From: Dmitry Antipov <dmantipov@yandex.ru>
-Subject: ocfs2: add chain list sanity check to ocfs2_block_group_alloc()
-Date: Thu, 16 Oct 2025 11:46:53 +0300
+The blocker is that usb_ep_free_request(ep, req) requires two
+parameters, while the __free() mechanism can only pass a pointer to the
+request itself.
 
-Fix a UBSAN error:
+Store an endpoint pointer in the struct usb_request. The pointer is
+populated centrally in usb_ep_alloc_request() on every successful
+allocation, making the request object self-contained.
 
-UBSAN: array-index-out-of-bounds in fs/ocfs2/suballoc.c:380:22
-index 0 is out of range for type 'struct ocfs2_chain_rec[] __counted_by(cl_count)' (aka 'struct ocfs2_chain_rec[]')
-
-In 'ocfs2_block_group_alloc()', add an extra check whether the maximum
-amount of chain records in 'struct ocfs2_chain_list' matches the value
-calculated based on the filesystem block size.
-
-Link: https://lkml.kernel.org/r/20251016084653.59686-1-dmantipov@yandex.ru
-Reported-by: syzbot+77026564530dbc29b854@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=77026564530dbc29b854
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
+Stable-dep-of: 47b2116e54b4 ("usb: gadget: f_acm: Refactor bind path to use __free()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/usb/gadget/udc/core.c | 3 +++
+ include/linux/usb/gadget.h    | 2 ++
+ 2 files changed, 5 insertions(+)
 
- fs/ocfs2/suballoc.c |    5 +++++
- 1 file changed, 5 insertions(+)
-
---- a/fs/ocfs2/suballoc.c~ocfs2-add-chain-list-sanity-check-to-ocfs2_block_group_alloc
-+++ a/fs/ocfs2/suballoc.c
-@@ -671,6 +671,11 @@ static int ocfs2_block_group_alloc(struc
- 	BUG_ON(ocfs2_is_cluster_bitmap(alloc_inode));
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index d709e24c1fd42..e3d63b8fa0f4c 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -194,6 +194,9 @@ struct usb_request *usb_ep_alloc_request(struct usb_ep *ep,
  
- 	cl = &fe->id2.i_chain;
-+	if (le16_to_cpu(cl->cl_count) != ocfs2_chain_recs_per_inode(osb->sb)) {
-+		status = -EINVAL;
-+		goto bail;
-+	}
+ 	req = ep->ops->alloc_request(ep, gfp_flags);
+ 
++	if (req)
++		req->ep = ep;
 +
- 	status = ocfs2_reserve_clusters_with_limit(osb,
- 						   le16_to_cpu(cl->cl_cpg),
- 						   max_block, flags, &ac);
-_
-
-Patches currently in -mm which might be from dmantipov@yandex.ru are
-
-ocfs2-add-extra-flags-check-in-ocfs2_ioctl_move_extents.patch
-ocfs2-relax-bug-to-ocfs2_error-in-__ocfs2_move_extent.patch
-ocfs2-annotate-flexible-array-members-with-__counted_by_le.patch
-ocfs2-annotate-flexible-array-members-with-__counted_by_le-fix.patch
-ocfs2-add-extra-consistency-check-to-ocfs2_dx_dir_lookup_rec.patch
-ocfs2-add-directory-size-check-to-ocfs2_find_dir_space_id.patch
+ 	trace_usb_ep_alloc_request(ep, req, req ? 0 : -ENOMEM);
+ 
+ 	return req;
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index 0f28c5512fcb6..0f20794760887 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -32,6 +32,7 @@ struct usb_ep;
+ 
+ /**
+  * struct usb_request - describes one i/o request
++ * @ep: The associated endpoint set by usb_ep_alloc_request().
+  * @buf: Buffer used for data.  Always provide this; some controllers
+  *	only use PIO, or don't use DMA for some endpoints.
+  * @dma: DMA address corresponding to 'buf'.  If you don't set this
+@@ -98,6 +99,7 @@ struct usb_ep;
+  */
+ 
+ struct usb_request {
++	struct usb_ep		*ep;
+ 	void			*buf;
+ 	unsigned		length;
+ 	dma_addr_t		dma;
+-- 
+2.51.0
 
 
