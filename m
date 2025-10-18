@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-187760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C3DBEC31A
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:52:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35150BEC31D
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 45C4E4F30B3
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:52:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 538D04F3AA8
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B50A1AAE13;
-	Sat, 18 Oct 2025 00:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2156A1B4F1F;
+	Sat, 18 Oct 2025 00:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wo0Y0CYo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o6LYlxbx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6951A9FAF
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 00:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D540A13AD26
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 00:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760748760; cv=none; b=VsQQKCsI1D5pVXevesc/YXD5XhoeeRnny1HRikfRJYPZHiQMfjjYwnBxsdPW5nWKzW6i2Ad9aK25/iEkTlJwfvQfnpxntS4SG7su6DUtoeQ326BAh86rXKQNlzF1DCdUqtKqTNeHG1snHEKEKTrl+/IAyn3r/FqZyjqXhKtWboo=
+	t=1760748760; cv=none; b=EgexVnRH03vEGWQZbx1DIGSoMRKm7Cmn0RBbdcHuh9lDUCMQR2sUJhMuw7w2SrEH3dxiKJe4VEoPVgVDwsTtCMOSuU7VgxAs/GzPiqXD6uAZa/TY40+8F4mfGN9xunWLnjcnyCsuf88nzto6Ql0hkrAFLm1VOxUJFga7PMTr/ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760748760; c=relaxed/simple;
-	bh=MPMNLnjuT0GC8lKIcMSXh+Rf5JP7ue/aYEtdNS5pExQ=;
+	bh=uBfWRqtLMLChV0coWmtWAfAFwAcHCU4TePMwQv78Et4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=keapPteyzJK2N2vZnRAXqx8L55RRbO9Oe1GagC4WQri3QVwce13nmnWu6ipo6hURo7mDiywvAG46H9BfRIFHXHhio3HrO3+mMhLns1Pba9AIBfosUzpiTu7Pr+AblRaVIiLCiprVKEJOJmnpiVJDcJ9avzbwLH/uwGuy6bAfKy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wo0Y0CYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457DEC4CEF9;
+	 MIME-Version; b=j2lgN5HuUVcOGUq18Mo+WFd3qUlWzIVqsqwjN5bBngpTGvtcZ9WxoELRFtHFP/sUxWnOJbtA6QGWd1d3L2yTduWFNmJJtfV92iTnHzGBkbp9dPcDFb2/nbbe+rSBi4t6kPJEmFAZEO5OTxctaLdCXrSU6qoQlcnllniIlN7NYgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o6LYlxbx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122E9C4CEE7;
 	Sat, 18 Oct 2025 00:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760748759;
-	bh=MPMNLnjuT0GC8lKIcMSXh+Rf5JP7ue/aYEtdNS5pExQ=;
+	s=k20201202; t=1760748760;
+	bh=uBfWRqtLMLChV0coWmtWAfAFwAcHCU4TePMwQv78Et4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wo0Y0CYoIVVM4YFC4eAfIROqpUSBTDnnDcNwcBiR565IGJQdVG5k7E7roYj8CLo1o
-	 MzroK/HOs8N4SNVoZIdaTRM5DWCe5Nn/sV2YjsGd+kYLwLBV2JV93Qr/vW6bAzfMuS
-	 zal/yZNSYdYeVYu3paK+0cmPL4EWIH6hbpYDS2Wthk+JPb6TUoSbkaDdo6+iYEcM6g
-	 O0FSv3qKsCd7KSvroUUBUeyMzH4E9cDiMtKYhQT0ubxJLk9qzoFubgeqrTkUoo3BQV
-	 AA9jIUg+yQR75if7Gil8tUsCZk8E4n4CKNtmbC2l9FFhVOWgimJnR4WkZ9NQZBk0B9
-	 66CIt1qozpLRg==
+	b=o6LYlxbx5MFRM0zpaTKgnAFPKQpeeMfuvnxNMbcjAXdEIADye8pTt6NS4e1dxzGGl
+	 arHao0Rj5wW+Eifu7+DHf8VKRnmrDZPOW2ihiChCUTnryFT2hDjaxPJavWrma0OLTq
+	 kxB45jIE+ihnZ4dUiSveIEWq4XZ+dXWHkLtkr8C2uyozkDe+9GcNIfvzJzMASogDTt
+	 Z5YB9I77A1u3ECQ/UL9uU8exlqgJkPM1x3TcjhvFOZ1Zu/yUhSAUMxlLLAtbr8gL2C
+	 /aGpOmJt6T0MPTw6+VxqHsFu1a9k+xn0dsCCQ8YOnvIiSfpmqDJhzRy1d+Eb4EyEE9
+	 G7UYblxB/ApIA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Kuen-Han Tsai <khtsai@google.com>,
+	stable@kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/3] usb: gadget: Introduce free_usb_request helper
-Date: Fri, 17 Oct 2025 20:52:35 -0400
-Message-ID: <20251018005236.98052-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y 3/3] usb: gadget: f_ecm: Refactor bind path to use __free()
+Date: Fri, 17 Oct 2025 20:52:36 -0400
+Message-ID: <20251018005236.98052-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251018005236.98052-1-sashal@kernel.org>
 References: <2025101641-spousal-accuracy-d282@gregkh>
@@ -63,65 +64,154 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 201c53c687f2b55a7cc6d9f4000af4797860174b ]
+[ Upstream commit 42988380ac67c76bb9dff8f77d7ef3eefd50b7b5 ]
 
-Introduce the free_usb_request() function that frees both the request's
-buffer and the request itself.
+After an bind/unbind cycle, the ecm->notify_req is left stale. If a
+subsequent bind fails, the unified error label attempts to free this
+stale request, leading to a NULL pointer dereference when accessing
+ep->ops->free_request.
 
-This function serves as the cleanup callback for DEFINE_FREE() to enable
-automatic, scope-based cleanup for usb_request pointers.
+Refactor the error handling in the bind path to use the __free()
+automatic cleanup mechanism.
 
+Fixes: da741b8c56d6 ("usb ethernet gadget: split CDC Ethernet function")
+Cc: stable@kernel.org
 Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-2-4997bf277548@google.com
+Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-2-4997bf277548@google.com
-Stable-dep-of: 42988380ac67 ("usb: gadget: f_ecm: Refactor bind path to use __free()")
+Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/usb/gadget.h | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/usb/gadget/function/f_ecm.c | 48 ++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 28 deletions(-)
 
-diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
-index 77554f4446651..da4309f3cea3f 100644
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -15,6 +15,7 @@
- #ifndef __LINUX_USB_GADGET_H
- #define __LINUX_USB_GADGET_H
+diff --git a/drivers/usb/gadget/function/f_ecm.c b/drivers/usb/gadget/function/f_ecm.c
+index 549efc84dd832..123c03a085099 100644
+--- a/drivers/usb/gadget/function/f_ecm.c
++++ b/drivers/usb/gadget/function/f_ecm.c
+@@ -8,12 +8,15 @@
+ 
+ /* #define VERBOSE_DEBUG */
  
 +#include <linux/cleanup.h>
- #include <linux/configfs.h>
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
  #include <linux/device.h>
- #include <linux/errno.h>
-@@ -293,6 +294,28 @@ static inline void usb_ep_fifo_flush(struct usb_ep *ep)
+ #include <linux/etherdevice.h>
  
- /*-------------------------------------------------------------------------*/
++#include <linux/usb/gadget.h>
++
+ #include "u_ether.h"
+ #include "u_ether_configfs.h"
+ #include "u_ecm.h"
+@@ -678,6 +681,7 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	struct usb_ep		*ep;
  
-+/**
-+ * free_usb_request - frees a usb_request object and its buffer
-+ * @req: the request being freed
-+ *
-+ * This helper function frees both the request's buffer and the request object
-+ * itself by calling usb_ep_free_request(). Its signature is designed to be used
-+ * with DEFINE_FREE() to enable automatic, scope-based cleanup for usb_request
-+ * pointers.
-+ */
-+static inline void free_usb_request(struct usb_request *req)
-+{
-+	if (!req)
-+		return;
+ 	struct f_ecm_opts	*ecm_opts;
++	struct usb_request	*request __free(free_usb_request) = NULL;
+ 
+ 	if (!can_support_ecm(cdev->gadget))
+ 		return -EINVAL;
+@@ -711,7 +715,7 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	/* allocate instance-specific interface IDs */
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	ecm->ctrl_id = status;
+ 	ecm_iad_descriptor.bFirstInterface = status;
+ 
+@@ -720,24 +724,22 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
+ 
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	ecm->data_id = status;
+ 
+ 	ecm_data_nop_intf.bInterfaceNumber = status;
+ 	ecm_data_intf.bInterfaceNumber = status;
+ 	ecm_union_desc.bSlaveInterface0 = status;
+ 
+-	status = -ENODEV;
+-
+ 	/* allocate instance-specific endpoints */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_in_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ecm->port.in_ep = ep;
+ 
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_out_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ecm->port.out_ep = ep;
+ 
+ 	/* NOTE:  a status/notification endpoint is *OPTIONAL* but we
+@@ -746,20 +748,18 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	 */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_notify_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ecm->notify = ep;
+ 
+-	status = -ENOMEM;
+-
+ 	/* allocate notification request and buffer */
+-	ecm->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
+-	if (!ecm->notify_req)
+-		goto fail;
+-	ecm->notify_req->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
+-	if (!ecm->notify_req->buf)
+-		goto fail;
+-	ecm->notify_req->context = ecm;
+-	ecm->notify_req->complete = ecm_notify_complete;
++	request = usb_ep_alloc_request(ep, GFP_KERNEL);
++	if (!request)
++		return -ENOMEM;
++	request->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
++	if (!request->buf)
++		return -ENOMEM;
++	request->context = ecm;
++	request->complete = ecm_notify_complete;
+ 
+ 	/* support all relevant hardware speeds... we expect that when
+ 	 * hardware is dual speed, all bulk-capable endpoints work at
+@@ -778,7 +778,7 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	status = usb_assign_descriptors(f, ecm_fs_function, ecm_hs_function,
+ 			ecm_ss_function, ecm_ss_function);
+ 	if (status)
+-		goto fail;
++		return status;
+ 
+ 	/* NOTE:  all that is done without knowing or caring about
+ 	 * the network link ... which is unavailable to this code
+@@ -788,20 +788,12 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	ecm->port.open = ecm_open;
+ 	ecm->port.close = ecm_close;
+ 
++	ecm->notify_req = no_free_ptr(request);
 +
-+	kfree(req->buf);
-+	usb_ep_free_request(req->ep, req);
-+}
-+
-+DEFINE_FREE(free_usb_request, struct usb_request *, free_usb_request(_T))
-+
-+/*-------------------------------------------------------------------------*/
-+
- struct usb_dcd_config_params {
- 	__u8  bU1devExitLat;	/* U1 Device exit Latency */
- #define USB_DEFAULT_U1_DEV_EXIT_LAT	0x01	/* Less then 1 microsec */
+ 	DBG(cdev, "CDC Ethernet: IN/%s OUT/%s NOTIFY/%s\n",
+ 			ecm->port.in_ep->name, ecm->port.out_ep->name,
+ 			ecm->notify->name);
+ 	return 0;
+-
+-fail:
+-	if (ecm->notify_req) {
+-		kfree(ecm->notify_req->buf);
+-		usb_ep_free_request(ecm->notify, ecm->notify_req);
+-	}
+-
+-	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
+-
+-	return status;
+ }
+ 
+ static inline struct f_ecm_opts *to_f_ecm_opts(struct config_item *item)
 -- 
 2.51.0
 
