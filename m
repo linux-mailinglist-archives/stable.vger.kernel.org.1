@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-187849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90D2BED392
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 18:10:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9171CBED39E
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 18:13:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABB0419C0F30
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 16:11:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D8FE5E0900
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 16:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910972459EA;
-	Sat, 18 Oct 2025 16:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527B424293C;
+	Sat, 18 Oct 2025 16:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ic4iDmd0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wv4Z0doD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52110245033
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 16:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED6523ABA7
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 16:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760803848; cv=none; b=VlC/We4k4mHuZbTiRG1KJQAwamJWg+3Pbhn8ubsJ13CvQAehpWfqMCEAxqhSXbvsaNbN57YrEsvDo20WppektWR8pzQpkwheYP+0Gwmp+nNDGoBlCrF8BO25q/ivmfJtYzEDKlnEd5sIimNF4a381dMPbOsQvo4DwUi0Le/27ec=
+	t=1760804024; cv=none; b=sO9Sd6RGcAfNGWF8W0bXlAghFwSSlNpyFsHa9xb+oQWmiTUSrV3bK2vqTpNuaWuhipaNjyunNZ5mtSP/k4Y6f63IThFN/CeslR/YQpjS1S2KmLRC+DmsRMJ90ii51mXxNEp7LGGTVLfhksIzoSbPPx5qqSY87RLCX0SG55ULcSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760803848; c=relaxed/simple;
-	bh=bLWVPb2wOE/rEICjO1E2qLOdafjoglvxlf0XX8gz6A4=;
+	s=arc-20240116; t=1760804024; c=relaxed/simple;
+	bh=dtfyoyNPzGe8YqsOPazYfyUDuCoyigMhbNekU74ZN44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dV4CkLqMjkKgUhzGVP4MhX6skT1H54SDHzxZZyYX/xHc8nFsIl5PYLJW7r3vZQwZrCAOphVjUE77UWDuLSSdNL42r/9cCfE2xIiRS+RxD6Q4mNaZX9kRWLAJMtKp4JjprtGjs2Nz5nCmY8KBAJZPYr4GgGKYloGqhtSf3jAzYwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ic4iDmd0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5345AC116B1;
-	Sat, 18 Oct 2025 16:10:46 +0000 (UTC)
+	 MIME-Version; b=Bn0aGMxJlp15a/IH5+hQQnAgQMrfazfWEXbmPvz4bWFBA3DRdAVjeeUOBojIAUezixX78Q/bbgFgzRgYtbd3+BqTWVy91eqQW3aoLn3Dnf033YypR48FQiflsyfDQ/w0DKFWZdHQbSgOnRKdXmHNvqTgf0TrtIgmcXW2HdpA1RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wv4Z0doD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C14AFC4CEF8;
+	Sat, 18 Oct 2025 16:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760803846;
-	bh=bLWVPb2wOE/rEICjO1E2qLOdafjoglvxlf0XX8gz6A4=;
+	s=k20201202; t=1760804023;
+	bh=dtfyoyNPzGe8YqsOPazYfyUDuCoyigMhbNekU74ZN44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ic4iDmd07vl26GMZVWimllwMy5u9QX5Qrd3jaZetS+qS4PrzNI0VGGModQbV/Iw7D
-	 ptv6btzs1o5CIAmFK/Y6t8hanm5Hflynmt194hfnVvbWnuWDTZ339zUL8lxZKKyR2e
-	 9W3ygRtFPn/9KNShJTQe7sqPwTGeTurDV4jkGifSsAkRcTWUxeR7yDVu50rGGVPEqn
-	 6zD8Jo3fNFSV1SAVQI815cPwvliJkejHQjxjHgS422sLRGtkVFk0p5kmxZI1xclI9E
-	 +QTJue20wfB1eoRM+22MIFfgiUi2fSDFIQKDQImSn2tfwRZWFxnF6U4SIECXGWzGb7
-	 Z75pUj3quhsow==
+	b=Wv4Z0doDAf7fHvHAagnbRq8+Ak7395DoGcnc7mlTe+Drw2A/Z8Ec4ZwU5fMWGFLCn
+	 lLXS7n4X7W65IlGr/1hqN0ti5EJsEH2tOVkQuM2xdbleijhttEmCD8N01R/9/xKO7L
+	 8qZpqcsPmSKU5NY/uiNbkayr4/3zJzxdM9BKG62vQoEC89muLAJ1d2kggZz3QGW3FV
+	 5CwQK8uz7a/pxwXzd4VE108D2GjZ7ah0ELakHYvL60W4Xly8FuDgtkjNEFe4I21Ko9
+	 bWoTIkQFXK8LbYPtXxoXRCGtV6hRQH8GBoicaSXx7KCpC6zCZFFCTRjf4yvpuDkLaY
+	 3Y3YOIgP5jQ3A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Anderson Nascimento <anderson@allelesecurity.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Jie Zhan <zhanjie9@hisilicon.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Qais Yousef <qyousef@layalina.io>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] btrfs: avoid potential out-of-bounds in btrfs_encode_fh()
-Date: Sat, 18 Oct 2025 12:10:44 -0400
-Message-ID: <20251018161044.834880-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] cpufreq: CPPC: Avoid using CPUFREQ_ETERNAL as transition delay
+Date: Sat, 18 Oct 2025 12:13:41 -0400
+Message-ID: <20251018161341.836384-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101644-legacy-starch-6a67@gregkh>
-References: <2025101644-legacy-starch-6a67@gregkh>
+In-Reply-To: <2025101610-twistable-shaping-5da2@gregkh>
+References: <2025101610-twistable-shaping-5da2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,75 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit dff4f9ff5d7f289e4545cc936362e01ed3252742 ]
+[ Upstream commit f965d111e68f4a993cc44d487d416e3d954eea11 ]
 
-The function btrfs_encode_fh() does not properly account for the three
-cases it handles.
+If cppc_get_transition_latency() returns CPUFREQ_ETERNAL to indicate a
+failure to retrieve the transition latency value from the platform
+firmware, the CPPC cpufreq driver will use that value (converted to
+microseconds) as the policy transition delay, but it is way too large
+for any practical use.
 
-Before writing to the file handle (fh), the function only returns to the
-user BTRFS_FID_SIZE_NON_CONNECTABLE (5 dwords, 20 bytes) or
-BTRFS_FID_SIZE_CONNECTABLE (8 dwords, 32 bytes).
+Address this by making the driver use the cpufreq's default
+transition latency value (in microseconds) as the transition delay
+if CPUFREQ_ETERNAL is returned by cppc_get_transition_latency().
 
-However, when a parent exists and the root ID of the parent and the
-inode are different, the function writes BTRFS_FID_SIZE_CONNECTABLE_ROOT
-(10 dwords, 40 bytes).
-
-If *max_len is not large enough, this write goes out of bounds because
-BTRFS_FID_SIZE_CONNECTABLE_ROOT is greater than
-BTRFS_FID_SIZE_CONNECTABLE originally returned.
-
-This results in an 8-byte out-of-bounds write at
-fid->parent_root_objectid = parent_root_id.
-
-A previous attempt to fix this issue was made but was lost.
-
-https://lore.kernel.org/all/4CADAEEC020000780001B32C@vpn.id2.novell.com/
-
-Although this issue does not seem to be easily triggerable, it is a
-potential memory corruption bug that should be fixed. This patch
-resolves the issue by ensuring the function returns the appropriate size
-for all three cases and validates that *max_len is large enough before
-writing any data.
-
-Fixes: be6e8dc0ba84 ("NFS support for btrfs - v3")
-CC: stable@vger.kernel.org # 3.0+
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ replaced btrfs_root_id() calls with direct ->root->root_key.objectid access ]
+Fixes: d4f3388afd48 ("cpufreq / CPPC: Set platform specific transition_delay_us")
+Cc: 5.19+ <stable@vger.kernel.org> # 5.19
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+[ added CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS definition to include/linux/cpufreq.h ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/export.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/cpufreq/cppc_cpufreq.c | 14 ++++++++++++--
+ include/linux/cpufreq.h        |  3 +++
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/export.c b/fs/btrfs/export.c
-index 08d1d456e2f0f..c244b4cc8ba11 100644
---- a/fs/btrfs/export.c
-+++ b/fs/btrfs/export.c
-@@ -22,7 +22,11 @@ static int btrfs_encode_fh(struct inode *inode, u32 *fh, int *max_len,
- 	int type;
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index 8d5279c21e6cf..1abedcae50b26 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -339,6 +339,16 @@ static int cppc_verify_policy(struct cpufreq_policy_data *policy)
+ 	return 0;
+ }
  
- 	if (parent && (len < BTRFS_FID_SIZE_CONNECTABLE)) {
--		*max_len = BTRFS_FID_SIZE_CONNECTABLE;
-+		if (BTRFS_I(inode)->root->root_key.objectid !=
-+		    BTRFS_I(parent)->root->root_key.objectid)
-+			*max_len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
-+		else
-+			*max_len = BTRFS_FID_SIZE_CONNECTABLE;
- 		return FILEID_INVALID;
- 	} else if (len < BTRFS_FID_SIZE_NON_CONNECTABLE) {
- 		*max_len = BTRFS_FID_SIZE_NON_CONNECTABLE;
-@@ -44,6 +48,8 @@ static int btrfs_encode_fh(struct inode *inode, u32 *fh, int *max_len,
- 		parent_root_id = BTRFS_I(parent)->root->root_key.objectid;
++static unsigned int __cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
++{
++	unsigned int transition_latency_ns = cppc_get_transition_latency(cpu);
++
++	if (transition_latency_ns == CPUFREQ_ETERNAL)
++		return CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS / NSEC_PER_USEC;
++
++	return transition_latency_ns / NSEC_PER_USEC;
++}
++
+ /*
+  * The PCC subspace describes the rate at which platform can accept commands
+  * on the shared PCC channel (including READs which do not count towards freq
+@@ -361,12 +371,12 @@ static unsigned int cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
+ 			return 10000;
+ 		}
+ 	}
+-	return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
++	return __cppc_cpufreq_get_transition_delay_us(cpu);
+ }
+ #else
+ static unsigned int cppc_cpufreq_get_transition_delay_us(unsigned int cpu)
+ {
+-	return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
++	return __cppc_cpufreq_get_transition_delay_us(cpu);
+ }
+ #endif
  
- 		if (parent_root_id != fid->root_objectid) {
-+			if (*max_len < BTRFS_FID_SIZE_CONNECTABLE_ROOT)
-+				return FILEID_INVALID;
- 			fid->parent_root_objectid = parent_root_id;
- 			len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
- 			type = FILEID_BTRFS_WITH_PARENT_ROOT;
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index a604c54ae44da..794e38320f568 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -32,6 +32,9 @@
+  */
+ 
+ #define CPUFREQ_ETERNAL			(-1)
++
++#define CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS	NSEC_PER_MSEC
++
+ #define CPUFREQ_NAME_LEN		16
+ /* Print length for names. Extra 1 space for accommodating '\n' in prints */
+ #define CPUFREQ_NAME_PLEN		(CPUFREQ_NAME_LEN + 1)
 -- 
 2.51.0
 
