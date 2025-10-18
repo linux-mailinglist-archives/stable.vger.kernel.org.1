@@ -1,196 +1,126 @@
-Return-Path: <stable+bounces-187804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA8EBEC645
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:59:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE5DBEC65A
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 05:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B849C4EAB07
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:59:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FB261A603CF
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 03:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E50275105;
-	Sat, 18 Oct 2025 02:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522A727FD5A;
+	Sat, 18 Oct 2025 03:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="kKipXA58"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NKSmcG0f"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9803770B
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CC9227B9F
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 03:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760756348; cv=none; b=G/hBFgrRNZVQkOh0sSmFiyWTXyMDqyMvIH/7M4HH/ydaRagdhUJFHEc4+aDr3xZ7yBp/5V6d5c7kIgjR2oQTmVXhityKR8pk1pHq6WYnTvkkdQh6ZWuOGQpvEzT9LAc/Kl/pxYb76EzW6c6MvFoEuyMCyzltQKUnV3d2Sl0JS9E=
+	t=1760757030; cv=none; b=VwtcIzA0gyY4BaFbEzzxbNcqky/QtSL8FeAHLdJCFErInKKLfWGw1xj9bymYUEMM6I2xTZSp2Ejfj/d69kWWVG3w9A8jARM19kb0PCBcKWAYUvhIqRvQglAUKzRvRHG1JcOsMajp/feKciiUK6xELAscWwpjWl8n+HwfbAJlZWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760756348; c=relaxed/simple;
-	bh=KlwR+x4sH15K2xq9XqAHIQei8RAJo+1mRrCrHpKme74=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=kXwb6FbcvGpP6lweZ5WSoC5+JC3y4fEd4Og3Tqwgfo9aXCGzDHxCbDOeCOpnrHkU+3ZXLzGMKyiPlJJ03U3icdtHFnp/C6llpug1dEW6zCzVkR9WvYcTemx7vA/70iEr08z7/QSIGYDfsVj3v573xH7pDrabT2wZ8VZguHQAgHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=kKipXA58; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b6093f8f71dso1726344a12.3
-        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 19:59:06 -0700 (PDT)
+	s=arc-20240116; t=1760757030; c=relaxed/simple;
+	bh=CJQ76v/E/PHDdYgbR8fro6XXoFI3bbatRfKPbnF54mk=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=hgW/fiWxl1a01AxwsEvxTH5zTd1uQMgALhEx/s9QS0AMfboBP/Kd0mj5DUccA3wU20CiYBW3fIAmJxBTDJtTBZq/fvORY+1ttZ3MXAk6ZcwRku5LtaP2dnIJSMm7CpS3qlljebPexOrf0m0YDRY7ZdwD6EvKLL19JzXGhO1YjSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NKSmcG0f; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b5579235200so1600629a12.3
+        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 20:10:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1760756346; x=1761361146; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OI6EOvjnQawY4iTILbjvax+Unopm95YPKwmsnsi9zR4=;
-        b=kKipXA58ct2KtMGslZeniivVTTejxXstO70NiXyEpwtY+l2/ApI9XMBLgOefDdF5eT
-         tFh2Ds4Zy5A8g61sgLk7sM6hd6YcmhvajkNriHf/tLtkU67jLgyE17MrJr9F7O+7FBtm
-         RVs3FTbYxoOWzIROOE3/+gXRAaPxM2I6HFu/oqkhlkVI9SlRBhFWxg/gOwTbWP9Gx3VZ
-         r3FBUUtO0WcHBnotR+SdArDtw7c4tPS0ku2zALvNYV1hBIC0ZbLsyF8n+LMtVaSattzK
-         b3lhhP/zy4vh6xMla4tQ9RR5jbApuk4T0GSZyU7lWYhito5CI90iXq1Ble9pUVzpILZx
-         EgJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760756346; x=1761361146;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+        d=gmail.com; s=20230601; t=1760757028; x=1761361828; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=OI6EOvjnQawY4iTILbjvax+Unopm95YPKwmsnsi9zR4=;
-        b=QU0lB4H3N4QZ50WiVEXa11MtLR9fU1rx67uBeguOrQjSDGZbhDxIH0RbageK+F+JBB
-         mK/81Q1KXhlADraWmI3Y2PJOWorGjhyUQc5UA2fRj8gQq1Uffqa+IzKA7uc6E2Gm2ZSa
-         9jWa4P+nwsdTQ3adwBx2j97/IGilt1Qkgav5igYb/GrwyyKssj1Y2IjKWnRLrdUy8F9c
-         rHc/dKGRiRy2Rb9xaImDqQNKJxB9HkysbjhQB/gajDDW9kjOlbxjXGnwxHLTksh1cTe3
-         +rDH5PXqhO8Zs5ky4MpU7klqSYWVMvfTwDOCYG1BL7u9AoVFJ1zojns5quOk+ZBMkmEI
-         v80Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUcCRWCuMM8DsW0vzHduHaKyDgrnWKKDInDjnfMPbI2FlEISyX1X6x72BJLDqYiwL+bgL1JULA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfDKfqQwyCoDSLqsmUJCbl7b6mvx9Fb2YpSb507FCkhKPi/M+R
-	y/0nGO8AxluQ5erb86yna/2c7KC6Kd20/OxSRmBU/RQgSPjOaDwo+5VIskWjrNvecsM=
-X-Gm-Gg: ASbGnctbvsQzXg63zKgHtRzZvUrM02tmJ1BmwvyDyNilnVJ9YHjWlx47KgFH5nty3zx
-	gdG03rggOb+tP6ALrfuCZEDd21LMFA97YLmV1OlXwqIx3pp1hpm9OppA1DTWZDgqXLvY6hWKw6L
-	ppdZGrt4GcFeMwAjnQCZ0VX92IUl9i8lqqdowfotC9iH0p5Tfjbqj9qT2BNd/idsK82FR7d1Tdm
-	U5d/4uipG+3HbD3Y6tvLM2nggkZqoVjvIJCrNoqxZOJr/ldQu7XUJrBviIHFspFUqihgbHCk3ZT
-	3qSO6kTYn7tLTIzjzImCgoVOID8xu1T2cltGhBPs02nGIF9UfX/l7SX6TJwHM+F1I1OcOKRvZ+O
-	E2ZhiOtt4C42w49qFj71mM8Qax9/PVeX/253QvCnorxOOkHxwImK3XTbSOIQykTBB6tWhJhOWcT
-	s+V99X
-X-Google-Smtp-Source: AGHT+IHrh+1DKjcPTO0zrfDc7mHaUwyhjkHUxkCKeNgGqomztW3uvi39ZueJo4x4LfSQG6HiUgTeAw==
-X-Received: by 2002:a17:903:94d:b0:266:9c1a:6def with SMTP id d9443c01a7336-290c9bea18dmr72836795ad.0.1760756346056;
-        Fri, 17 Oct 2025 19:59:06 -0700 (PDT)
-Received: from 15dd6324cc71 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29246ebd068sm10370415ad.12.2025.10.17.19.59.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Oct 2025 19:59:05 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        bh=Jf3FR3Gwahm6tMjH47zEEF5nx3T+VLl5Q8klA7mB664=;
+        b=NKSmcG0fKsXM1aZj1emCJEwyQVrNtKpTfRZuIbjgXWefdOCQPh5ajic1TAkl3JuW1e
+         Hf2dpEKkz/PPV0aA69MYyJp7cVaIZ9slgVXDpJ4qYBM1sarKygzNRXAJ+brY8POOYbz3
+         ism5rzEJypVbSGmI6AN11aXimcvlmWmGktLjcN4MV6JK4tFRrPw0HXi6kUZ/qi8RbY+J
+         +u0oJ5tKHsVyEOi3rVME1ncLPz9QOwc7BR1c5chGBD54uqqupeJu768W3QCB6t29iCXm
+         3SgJnRiU9gWwXGtRYbXi0KMiJtiuiJWQXhFCS98C2S7w5ihT2gXTCNAIYf2hadzetgH3
+         I+pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760757028; x=1761361828;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jf3FR3Gwahm6tMjH47zEEF5nx3T+VLl5Q8klA7mB664=;
+        b=rqBvMNcXK2K76MczgiUqFgEP3agJIBRzKsUu2sTzNkJDhaBN07G94WFWfLZu76lk3Z
+         h69MH5K47EyGtY8WmObMo7S1Bg1lgMv8NZ2jXnS4iPD/sPpaIjLDAO7BPr5PiN1vc2BV
+         90O7CL4YIC5Zpes/acshPOZWqDkNnvnASVE6H2JdAcourWW/5oOxd6Nee8i97V5JqC/+
+         09l5koajcCDskTLkWizh5ctmiknp9WhFNYM+YPW8esLDTicAQz9Jgh7Owl7UsAVeOFot
+         KFmg4U2uYYQitKrAtaczucUgOHPFFgt/ssUeS0N/VZYaOWYFj+4cGmM7DQgudhvadnwn
+         8IYw==
+X-Forwarded-Encrypted: i=1; AJvYcCXHQDhuj4lDuQagXn1MLaCQptgic/awRZ+fRoP4zE5J7vCwImMGj/bxwqEYMGDKk1oqpLZFRQM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwR+9J0YY0OcJjKn8o1pIcD2n/o8Ywy7Px5Bsg0dFXd+OlEme7u
+	G16lvURuxtabueEUiXRLlkBi8P6kWWVZmptSvEgs3TVHN3m6HIpnbTjY
+X-Gm-Gg: ASbGnctbX2kA3HRpyK7brII2TNnEAExBnsdjsKf3TFzY2AhVup7Ez/2M/7HsQn/RsRn
+	+8fv9O4fqhK6dbCamU/jyQlkP85uYOS++bIsgHwom0xFsE1eNXhIuy73MpcHoQ1YmDCLPwX7+rJ
+	c45s7Nf4rK03eNaLeRsJRX95NTCdOi/ztdGxu5rdi3Ayzwe+RPb1m/dFUufX/nK/o2R9UeXJVos
+	bPLJs9OR1jgwdIZbrRBNcBrQ4di7BouBf2iWEoNlO8dsGj/nKaZXqsIDf0zRWOr8OF1CCdz5TPj
+	KRoJRKFbAk0c6V3/4eMxlz7vPBqWofCVCgiK2r8UFRGlGLu6ZyzLvj0cL0t/CbE1Sr+5Z43CPdi
+	oHjNWfDhKnadjKObDoPL9lG/wBQ4WA+USVyLPin2meWhlxoF334i0HghuITfAUjqHN9+2VEeNwj
+	JyDV9KdMrZeiK8LNaTSJDgvklOamRWYkJgqz4n1HgLMiKaln+9fEAN
+X-Google-Smtp-Source: AGHT+IEhbwIAKfabrUVIFmF5c3f4H0tzASZNULyMLnrkF3+58Kx389FBrjyRdsSR1s0BEE1Eo4vI4g==
+X-Received: by 2002:a17:902:e549:b0:28e:756c:707e with SMTP id d9443c01a7336-290caf846e1mr76225645ad.33.1760757027966;
+        Fri, 17 Oct 2025 20:10:27 -0700 (PDT)
+Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471d5868sm10321445ad.60.2025.10.17.20.10.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Oct 2025 20:10:27 -0700 (PDT)
+Message-ID: <a7fa59d4-7c81-407b-bd1b-d6910f647443@gmail.com>
+Date: Fri, 17 Oct 2025 20:10:24 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: 
- =?utf-8?q?=5BREGRESSION=5D_stable-rc/linux-5=2E10=2Ey=3A_=28build=29_in_expa?=
- =?utf-8?q?nsion_of_macro_=E2=80=98clamp=5Ft=E2=80=99_in_drivers/net/wireles?=
- =?utf-8?q?s/ralink/rt2=2E=2E=2E?=
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Sat, 18 Oct 2025 02:59:05 -0000
-Message-ID: <176075634485.3430.12892426508442948824@15dd6324cc71>
+User-Agent: Mozilla Thunderbird
+From: Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 6.1 000/168] 6.1.157-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20251017145129.000176255@linuxfoundation.org>
+Content-Language: en-US
+In-Reply-To: <20251017145129.000176255@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 10/17/25 07:51, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.157 release.
+> There are 168 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 19 Oct 2025 14:50:59 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.157-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-
-
-Hello,
-
-New build issue found on stable-rc/linux-5.10.y:
-
----
- in expansion of macro ‘clamp_t’ in drivers/net/wireless/ralink/rt2x00/rt2800lib.o (drivers/net/wireless/ralink/rt2x00/rt2800lib.c) [logspec:kbuild,kbuild.compiler.note]
----
-
-- dashboard: https://d.kernelci.org/i/maestro:c03efd07fc01bc2d01554b8abdc3ecef088683b6
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  a32db271d59d9f35f3a937ac27fcc2db1e029cdc
-
-
-
-Log excerpt:
-=====================================================
-drivers/net/wireless/ralink/rt2x00/rt2800lib.c:3980:24: note: in expansion of macro ‘clamp_t’
- 3980 |                 return clamp_t(char, txpower, MIN_A_TXPOWER, MAX_A_TXPOWER);
-      |                        ^~~~~~~
-In function ‘rt2800_txpower_to_dev’,
-    inlined from ‘rt2800_config_channel’ at drivers/net/wireless/ralink/rt2x00/rt2800lib.c:4024:25,
-    inlined from ‘rt2800_config’ at drivers/net/wireless/ralink/rt2x00/rt2800lib.c:5560:3:
-././include/linux/compiler_types.h:309:45: error: call to ‘__compiletime_assert_1041’ declared with attribute error: clamp() low limit -7 greater than high limit 15
-  309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-      |                                             ^
-././include/linux/compiler_types.h:290:25: note: in definition of macro ‘__compiletime_assert’
-  290 |                         prefix ## suffix();                             \
-      |                         ^~~~~~
-././include/linux/compiler_types.h:309:9: note: in expansion of macro ‘_compiletime_assert’
-  309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-      |         ^~~~~~~~~~~~~~~~~~~
-./include/linux/build_bug.h:39:37: note: in expansion of macro ‘compiletime_assert’
-   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-      |                                     ^~~~~~~~~~~~~~~~~~
-./include/linux/minmax.h:188:9: note: in expansion of macro ‘BUILD_BUG_ON_MSG’
-  188 |         BUILD_BUG_ON_MSG(statically_true(ulo > uhi),                            \
-      |         ^~~~~~~~~~~~~~~~
-./include/linux/minmax.h:195:9: note: in expansion of macro ‘__clamp_once’
-  195 |         __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-      |         ^~~~~~~~~~~~
-./include/linux/minmax.h:218:36: note: in expansion of macro ‘__careful_clamp’
-  218 | #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
-      |                                    ^~~~~~~~~~~~~~~
-drivers/net/wireless/ralink/rt2x00/rt2800lib.c:3980:24: note: in expansion of macro ‘clamp_t’
- 3980 |                 return clamp_t(char, txpower, MIN_A_TXPOWER, MAX_A_TXPOWER);
-      |                        ^~~~~~~
-In function ‘rt2800_txpower_to_dev’,
-    inlined from ‘rt2800_config_channel’ at drivers/net/wireless/ralink/rt2x00/rt2800lib.c:4028:4,
-    inlined from ‘rt2800_config’ at drivers/net/wireless/ralink/rt2x00/rt2800lib.c:5560:3:
-././include/linux/compiler_types.h:309:45: error: call to ‘__compiletime_assert_1041’ declared with attribute error: clamp() low limit -7 greater than high limit 15
-  309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-      |                                             ^
-././include/linux/compiler_types.h:290:25: note: in definition of macro ‘__compiletime_assert’
-  290 |                         prefix ## suffix();                             \
-      |                         ^~~~~~
-././include/linux/compiler_types.h:309:9: note: in expansion of macro ‘_compiletime_assert’
-  309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-      |         ^~~~~~~~~~~~~~~~~~~
-./include/linux/build_bug.h:39:37: note: in expansion of macro ‘compiletime_assert’
-   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-      |                                     ^~~~~~~~~~~~~~~~~~
-./include/linux/minmax.h:188:9: note: in expansion of macro ‘BUILD_BUG_ON_MSG’
-  188 |         BUILD_BUG_ON_MSG(statically_true(ulo > uhi),                            \
-      |         ^~~~~~~~~~~~~~~~
-./include/linux/minmax.h:195:9: note: in expansion of macro ‘__clamp_once’
-  195 |         __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-      |         ^~~~~~~~~~~~
-./include/linux/minmax.h:218:36: note: in expansion of macro ‘__careful_clamp’
-  218 | #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
-      |                                    ^~~~~~~~~~~~~~~
-drivers/net/wireless/ralink/rt2x00/rt2800lib.c:3980:24: note: in expansion of macro ‘clamp_t’
- 3980 |                 return clamp_t(char, txpower, MIN_A_TXPOWER, MAX_A_TXPOWER);
-      |                        ^~~~~~~
-  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_plane.o
-  CC [M]  drivers/media/cec/platform/s5p/s5p_cec.o
-  CC [M]  drivers/gpu/drm/nouveau/nvkm/subdev/bus/nv50.o
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## multi_v7_defconfig on (arm):
-- compiler: gcc-12
-- config: https://files.kernelci.org/kbuild-gcc-12-arm-68f2e7db5621556c1f20565d/.config
-- dashboard: https://d.kernelci.org/build/maestro:68f2e7db5621556c1f20565d
-
-
-#kernelci issue maestro:c03efd07fc01bc2d01554b8abdc3ecef088683b6
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
