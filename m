@@ -1,59 +1,50 @@
-Return-Path: <stable+bounces-187732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3C8BEC0F0
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 01:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F833BEC103
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6B821AA7D7B
-	for <lists+stable@lfdr.de>; Fri, 17 Oct 2025 23:59:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4BDC1AA7F5A
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863813128DC;
-	Fri, 17 Oct 2025 23:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669F2246BC5;
+	Sat, 18 Oct 2025 00:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QIo9dem3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cAj8NfQN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441E93128BA
-	for <stable@vger.kernel.org>; Fri, 17 Oct 2025 23:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EFD225779;
+	Sat, 18 Oct 2025 00:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760745515; cv=none; b=DPjZ4PEA4NtMrlv4256MHYrwlCnZz/j198XmAezelkhCnTUvZBHKn03QLAojwLYI2sUz+xy3FnvFE6iYO1b3vgp28ZO/KnpzzPx77UBZD+R76VTgT/0VB1KfCgImaEw+A0w1e5YY1Nx/7n6VzA/Pkin3YAuBtwsQ7UtSes+N3Hk=
+	t=1760745630; cv=none; b=hNqx+/OdgkUMn2/19iVb73U2GRAcjTg0KOMlQRXCIVeT4x2NJgiX2EhEOstw7uVY2iBqfpWERckJPRRzoLkOVSLyxvf62vPeDjwaKpqzllnXRTcx8xViXqza+jGjV74LJYTIhgBJ6UfjpU1NWnvg5xlaNVyY/Y4nCAKaisQSTTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760745515; c=relaxed/simple;
-	bh=caNaOeX2hkNO8ai3C2K3EAawZA7olYzJXg3+TjHZJrU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=db7USisBjPKfwwbCOA4a3Eq/+P53McvsbL8wBWAE8EDaoPdBzQ7i9JNa0KfL7gv1Fdlr+poUcIgKUGyjF5d8eJMurjZ6UnN5wiO6+R3VhNNehoGus35ngpLRIDxD0f/WMdDEmN9eZ/z62UYAQG/eOeM2cYG5ZZ9Pv0r+U9RJs90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QIo9dem3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652BDC116B1;
-	Fri, 17 Oct 2025 23:58:34 +0000 (UTC)
+	s=arc-20240116; t=1760745630; c=relaxed/simple;
+	bh=YW7J4Cb2xkLTCFVdkNW03zNph9tJS3+L4niLsZEK/R8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=pQy6HpD4e4aV7m70ssXLPjL1gIVASti0sIUWkiGLJ3jhUBCdUGai4j6xJWM1E8HC9CkOnJmcb5f5ny1VmXIBANItqI9lzRfLjYLB2ymiX4Y8YIYkSZrvWlXlMty2ceYYqjej9ZY5zW6yeIseOJVFPZpbgNmsIWCVR44Ddc/efGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cAj8NfQN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE8EC4CEF9;
+	Sat, 18 Oct 2025 00:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760745515;
-	bh=caNaOeX2hkNO8ai3C2K3EAawZA7olYzJXg3+TjHZJrU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QIo9dem3RKfxCdtzAzFTsVlEtJreczTysGwT1PgBlIIGGYyGzvEuGAN1H6M5R2N8I
-	 6SyGv0Rhri+n0lqidZJ8rc0oVSBLkVxSbUYju6bMmWItmOvILYzxTIZk+SAfvkiM2B
-	 E1hbP50s4+zQlCPKM4pHrs4iIY6mV/BQuzNTEmY5KPQYbyvPbDBYP1sKeoDsATniQV
-	 t4yIZwLprXV8s8m4Bm5Fbz9ZbWxeXYMNMjR5kVTNEj1VA/iYfVczCHtqZjwsWzXVzc
-	 vOOHkkmmeM2C3UnDaX5SuftT/MS1N7xaBiXYZtVk/D8QQlKFqMgWpQGtTwlsvP8D7f
-	 4lyVWLGflFLzw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Kuen-Han Tsai <khtsai@google.com>,
-	stable@kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] usb: gadget: f_ncm: Refactor bind path to use __free()
-Date: Fri, 17 Oct 2025 19:58:26 -0400
-Message-ID: <20251017235826.62546-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017235826.62546-1-sashal@kernel.org>
-References: <2025101602-unvarying-unmade-9abc@gregkh>
- <20251017235826.62546-1-sashal@kernel.org>
+	s=k20201202; t=1760745629;
+	bh=YW7J4Cb2xkLTCFVdkNW03zNph9tJS3+L4niLsZEK/R8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=cAj8NfQNt3hE4hn6ZrOLuy9hCm46yQnbgTrje07WI5eucNPH0xn5wRfiflJy12do/
+	 muLAi5IykR56dV5RnkUM1Fi38fqwkh9ftr+p8kkwX9sqXr/aEaw87wW/u3ayyKjLNG
+	 /RL8DD0HVq1DeROUS4PmXPUQRac7J1dlmN7X1Nlw9lCy8G4tEKHs5pl81smnVjQAep
+	 yP3iJvu7RE4RjWauGJAWKMaRM3yRS4epra8kiN0AmHBxLbsYGRwCekF1Ymkiu+78xv
+	 ICO+X/ukLTgY/muddRgJ49Y2jirLYLsjZPVWqEIEP8AGBM2Ru/8tf4xIDd2EpKxI68
+	 m2xYNrWG7iiSQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70DB239EFA61;
+	Sat, 18 Oct 2025 00:00:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,231 +52,60 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: bonding: update the slave array for broadcast
+ mode
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176074561324.2830883.17596939425156454668.git-patchwork-notify@kernel.org>
+Date: Sat, 18 Oct 2025 00:00:13 +0000
+References: <20251016125136.16568-1-tonghao@bamaicloud.com>
+In-Reply-To: <20251016125136.16568-1-tonghao@bamaicloud.com>
+To: Tonghao Zhang <tonghao@bamaicloud.com>
+Cc: netdev@vger.kernel.org, jv@jvosburgh.net, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ corbet@lwn.net, andrew+netdev@lunn.ch, razor@blackwall.org,
+ liuhangbin@gmail.com, jirislaby@kernel.org, stable@vger.kernel.org
 
-From: Kuen-Han Tsai <khtsai@google.com>
+Hello:
 
-[ Upstream commit 75a5b8d4ddd4eb6b16cb0b475d14ff4ae64295ef ]
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-After an bind/unbind cycle, the ncm->notify_req is left stale. If a
-subsequent bind fails, the unified error label attempts to free this
-stale request, leading to a NULL pointer dereference when accessing
-ep->ops->free_request.
+On Thu, 16 Oct 2025 20:51:36 +0800 you wrote:
+> This patch fixes ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad").
+> Before this commit, on the broadcast mode, all devices were traversed using the
+> bond_for_each_slave_rcu. This patch supports traversing devices by using all_slaves.
+> Therefore, we need to update the slave array when enslave or release slave.
+> 
+> Fixes: ce7a381697cb ("net: bonding: add broadcast_neighbor option for 802.3ad")
+> Cc: Jay Vosburgh <jv@jvosburgh.net>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Simon Horman <horms@kernel.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> Cc: Nikolay Aleksandrov <razor@blackwall.org>
+> Cc: Hangbin Liu <liuhangbin@gmail.com>
+> Cc: Jiri Slaby <jirislaby@kernel.org>
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Jiri Slaby <jirislaby@kernel.org>
+> Tested-by: Jiri Slaby <jirislaby@kernel.org>
+> Link: https://lore.kernel.org/all/a97e6e1e-81bc-4a79-8352-9e4794b0d2ca@kernel.org/
+> Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+> Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+> 
+> [...]
 
-Refactor the error handling in the bind path to use the __free()
-automatic cleanup mechanism.
+Here is the summary with links:
+  - [net,v2] net: bonding: update the slave array for broadcast mode
+    https://git.kernel.org/netdev/net/c/e0caeb24f538
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
-Call trace:
- usb_ep_free_request+0x2c/0xec
- ncm_bind+0x39c/0x3dc
- usb_add_function+0xcc/0x1f0
- configfs_composite_bind+0x468/0x588
- gadget_bind_driver+0x104/0x270
- really_probe+0x190/0x374
- __driver_probe_device+0xa0/0x12c
- driver_probe_device+0x3c/0x218
- __device_attach_driver+0x14c/0x188
- bus_for_each_drv+0x10c/0x168
- __device_attach+0xfc/0x198
- device_initial_probe+0x14/0x24
- bus_probe_device+0x94/0x11c
- device_add+0x268/0x48c
- usb_add_gadget+0x198/0x28c
- dwc3_gadget_init+0x700/0x858
- __dwc3_set_mode+0x3cc/0x664
- process_scheduled_works+0x1d8/0x488
- worker_thread+0x244/0x334
- kthread+0x114/0x1bc
- ret_from_fork+0x10/0x20
-
-Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
-Cc: stable@kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-3-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-3-4997bf277548@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/gadget/function/f_ncm.c | 78 ++++++++++++-----------------
- 1 file changed, 33 insertions(+), 45 deletions(-)
-
-diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
-index 8e761249d672c..3afc9a622086c 100644
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -11,6 +11,7 @@
-  * Copyright (C) 2008 Nokia Corporation
-  */
- 
-+#include <linux/cleanup.h>
- #include <linux/kernel.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-@@ -19,6 +20,7 @@
- #include <linux/crc32.h>
- 
- #include <linux/usb/cdc.h>
-+#include <linux/usb/gadget.h>
- 
- #include "u_ether.h"
- #include "u_ether_configfs.h"
-@@ -1435,18 +1437,18 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	struct usb_ep		*ep;
- 	struct f_ncm_opts	*ncm_opts;
- 
-+	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
-+	struct usb_request		*request __free(free_usb_request) = NULL;
-+
- 	if (!can_support_ecm(cdev->gadget))
- 		return -EINVAL;
- 
- 	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
- 
- 	if (cdev->use_os_string) {
--		f->os_desc_table = kzalloc(sizeof(*f->os_desc_table),
--					   GFP_KERNEL);
--		if (!f->os_desc_table)
-+		os_desc_table = kzalloc(sizeof(*os_desc_table), GFP_KERNEL);
-+		if (!os_desc_table)
- 			return -ENOMEM;
--		f->os_desc_n = 1;
--		f->os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
- 	}
- 
- 	mutex_lock(&ncm_opts->lock);
-@@ -1458,16 +1460,15 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	mutex_unlock(&ncm_opts->lock);
- 
- 	if (status)
--		goto fail;
-+		return status;
- 
- 	ncm_opts->bound = true;
- 
- 	us = usb_gstrings_attach(cdev, ncm_strings,
- 				 ARRAY_SIZE(ncm_string_defs));
--	if (IS_ERR(us)) {
--		status = PTR_ERR(us);
--		goto fail;
--	}
-+	if (IS_ERR(us))
-+		return PTR_ERR(us);
-+
- 	ncm_control_intf.iInterface = us[STRING_CTRL_IDX].id;
- 	ncm_data_nop_intf.iInterface = us[STRING_DATA_IDX].id;
- 	ncm_data_intf.iInterface = us[STRING_DATA_IDX].id;
-@@ -1477,20 +1478,16 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ncm->ctrl_id = status;
- 	ncm_iad_desc.bFirstInterface = status;
- 
- 	ncm_control_intf.bInterfaceNumber = status;
- 	ncm_union_desc.bMasterInterface0 = status;
- 
--	if (cdev->use_os_string)
--		f->os_desc_table[0].if_id =
--			ncm_iad_desc.bFirstInterface;
--
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ncm->data_id = status;
- 
- 	ncm_data_nop_intf.bInterfaceNumber = status;
-@@ -1499,35 +1496,31 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 
- 	ecm_desc.wMaxSegmentSize = cpu_to_le16(ncm_opts->max_segment_size);
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ncm->port.in_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ncm->port.out_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_notify_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ncm->notify = ep;
- 
--	status = -ENOMEM;
--
- 	/* allocate notification request and buffer */
--	ncm->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
--	if (!ncm->notify_req)
--		goto fail;
--	ncm->notify_req->buf = kmalloc(NCM_STATUS_BYTECOUNT, GFP_KERNEL);
--	if (!ncm->notify_req->buf)
--		goto fail;
--	ncm->notify_req->context = ncm;
--	ncm->notify_req->complete = ncm_notify_complete;
-+	request = usb_ep_alloc_request(ep, GFP_KERNEL);
-+	if (!request)
-+		return -ENOMEM;
-+	request->buf = kmalloc(NCM_STATUS_BYTECOUNT, GFP_KERNEL);
-+	if (!request->buf)
-+		return -ENOMEM;
-+	request->context = ncm;
-+	request->complete = ncm_notify_complete;
- 
- 	/*
- 	 * support all relevant hardware speeds... we expect that when
-@@ -1547,7 +1540,7 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	status = usb_assign_descriptors(f, ncm_fs_function, ncm_hs_function,
- 			ncm_ss_function, ncm_ss_function);
- 	if (status)
--		goto fail;
-+		return status;
- 
- 	/*
- 	 * NOTE:  all that is done without knowing or caring about
-@@ -1561,23 +1554,18 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	hrtimer_init(&ncm->task_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
- 	ncm->task_timer.function = ncm_tx_timeout;
- 
-+	if (cdev->use_os_string) {
-+		os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
-+		os_desc_table[0].if_id = ncm_iad_desc.bFirstInterface;
-+		f->os_desc_table = no_free_ptr(os_desc_table);
-+		f->os_desc_n = 1;
-+	}
-+	ncm->notify_req = no_free_ptr(request);
-+
- 	DBG(cdev, "CDC Network: IN/%s OUT/%s NOTIFY/%s\n",
- 			ncm->port.in_ep->name, ncm->port.out_ep->name,
- 			ncm->notify->name);
- 	return 0;
--
--fail:
--	kfree(f->os_desc_table);
--	f->os_desc_n = 0;
--
--	if (ncm->notify_req) {
--		kfree(ncm->notify_req->buf);
--		usb_ep_free_request(ncm->notify, ncm->notify_req);
--	}
--
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
--
--	return status;
- }
- 
- static inline struct f_ncm_opts *to_f_ncm_opts(struct config_item *item)
+You are awesome, thank you!
 -- 
-2.51.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
