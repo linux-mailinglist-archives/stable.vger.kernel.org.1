@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-187867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2A7BEDAB6
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 21:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F4BEDAB9
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 21:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C0B844EDC33
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 19:36:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0AC8F4EA9EA
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 19:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC6327B4EB;
-	Sat, 18 Oct 2025 19:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5B82580F9;
+	Sat, 18 Oct 2025 19:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ESEE/DC5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tcHrgMZj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1C718DB26
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 19:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF62718DB26
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 19:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760816194; cv=none; b=aGTw6+S6W7zPUWgC+0iYznYQ+t/2H4Zz/frYVs+9+GA7EIhxFg/rP3Uqbmi5k9uMUfSnbV0lCCHmWR1mA+bKvDkNI7T6ShUTKE5oZ6d8EDvQLe3IhaQIT4M1RQ2Ugf5OkAsL8bEgwY8Izr66jeJQ7Efi/zhzYEe+ggNx3LERbtQ=
+	t=1760816227; cv=none; b=BLDemJLYhnUNjrh4/g+C+PpmN4FUKNNekZQBCDBVqoTqucPudOQ9EX3io55pIqek0l1ITBoOXy3WD/+E3Y6MOyzgHsj4+bEAf96kCIQoO0IRheoRaIxODyPMc2UA0G6+RjNtCko/3+ZBjkZVHte+SmpNmMJmct928DnRTNkC8ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760816194; c=relaxed/simple;
-	bh=EDaWQ10fQR2sks+5VOENbnXG5nTXwtSoV5gwKeQne5A=;
+	s=arc-20240116; t=1760816227; c=relaxed/simple;
+	bh=5iiTdNEgDqSUu/AqeVL2miXbD8ZzmQIKBpVn7ZM4Cxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rngMWWvxTpMPCayIyJvuWydDFgnsQHwFJOiklK9vXsczMiH75CLrUHObRJr6x7pzeLVmOHv2QvxeufX4rT1QcfHqXZRmoNMV/UPabDmt8PwLtWYZ2gJwy0G6KLJbQgRLE1ElvGceJFdOd4h4M7vcpd3OTQnhNy0kWNhYTSC9qe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ESEE/DC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC040C4CEF9;
-	Sat, 18 Oct 2025 19:36:31 +0000 (UTC)
+	 MIME-Version; b=jKFyg/0/CHp4kQZvvJZtCSQ2Fmrp6mvY7vfDafJ2Eys2EoO1K6uWi7QXePq4b0VnyJDZRNXHkuqWH+T1b5Veky4MAk4yyDXZL7X5wjVadCXM7EHXrCl4SMK6nU6LBoReZ2f7zxDo9AZVOjrkhvkUMd0oWfEzC3t/ieAPY0/wby8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tcHrgMZj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBF1C4CEF8;
+	Sat, 18 Oct 2025 19:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760816192;
-	bh=EDaWQ10fQR2sks+5VOENbnXG5nTXwtSoV5gwKeQne5A=;
+	s=k20201202; t=1760816227;
+	bh=5iiTdNEgDqSUu/AqeVL2miXbD8ZzmQIKBpVn7ZM4Cxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ESEE/DC5Od5lGozj9le4mCxaYe/C3UsRgC+YmvLWyAfetqIdYcrIyy2fVil6Mzoqp
-	 qI9Ch28wtKhtDBaqrTCGiQVwJrAUvmYzQeX6TUiklUg09BA2l/cDTfSi0Vp5su9DL+
-	 cMKSo1yvYXuzuJowNaWlhcf+/YZoFK1SY83+GNOXTCt+48fqrirS9tz7iJWiDhV1+c
-	 1PH1MKR+d249qNwexpF0Tl2Tk+vFHOiz5IBAgyjJQK50xDtIB7+YBxsxurrmPxmTkw
-	 QS/d012nLgianOlyinWBhKNnlpHaH6TTBiG6sSAljRFRWyB4D7TSkZ7bhPwRXm5fte
-	 LPcxjFXQ1gncA==
+	b=tcHrgMZjZjjQjQbAqY7g6/Fqvoa4v3Dw9rQQO/g4daAtBLbzIR7fy2oQARL+e1G4m
+	 6ABm7LCVvHvSBILjPyVFceNVqRjlA/foLjTp9vBMrLO5pm85lDxwaLDC5FnpT/YEdY
+	 D/JbxFaZocl7eYq7+ECedaHnZ2ntQeqZHWSb6WGN8P/49+UepzBzEaBmAi/g5TnA7Z
+	 EU7icW2bLqr6Ahd+Bwpg5xFqfHEUOMrPkz+r5FkUfb7Xgsuq4i6kqIYyHE2v2xM9dg
+	 J+cVq9Qf+oiRR+1l5fHBSxHShhEPTJvOB7bTguMeyn3rNOoVdwjmL5DSxyuC/QSL5y
+	 1aKD1eeoMqybg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Nam Cao <namcao@linutronix.de>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] eventpoll: Replace rwlock with spinlock
-Date: Sat, 18 Oct 2025 15:36:28 -0400
-Message-ID: <20251018193629.891117-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y] crypto: rockchip - Fix dma_unmap_sg() nents value
+Date: Sat, 18 Oct 2025 15:37:04 -0400
+Message-ID: <20251018193704.891321-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251018193629.891117-1-sashal@kernel.org>
-References: <2025101614-turbofan-sufferer-957e@gregkh>
- <20251018193629.891117-1-sashal@kernel.org>
+In-Reply-To: <2025101646-unsent-pull-230d@gregkh>
+References: <2025101646-unsent-pull-230d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,393 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Nam Cao <namcao@linutronix.de>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 0c43094f8cc9d3d99d835c0ac9c4fe1ccc62babd ]
+[ Upstream commit 21140e5caf019e4a24e1ceabcaaa16bd693b393f ]
 
-The ready event list of an epoll object is protected by read-write
-semaphore:
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-  - The consumer (waiter) acquires the write lock and takes items.
-  - the producer (waker) takes the read lock and adds items.
-
-The point of this design is enabling epoll to scale well with large number
-of producers, as multiple producers can hold the read lock at the same
-time.
-
-Unfortunately, this implementation may cause scheduling priority inversion
-problem. Suppose the consumer has higher scheduling priority than the
-producer. The consumer needs to acquire the write lock, but may be blocked
-by the producer holding the read lock. Since read-write semaphore does not
-support priority-boosting for the readers (even with CONFIG_PREEMPT_RT=y),
-we have a case of priority inversion: a higher priority consumer is blocked
-by a lower priority producer. This problem was reported in [1].
-
-Furthermore, this could also cause stall problem, as described in [2].
-
-Fix this problem by replacing rwlock with spinlock.
-
-This reduces the event bandwidth, as the producers now have to contend with
-each other for the spinlock. According to the benchmark from
-https://github.com/rouming/test-tools/blob/master/stress-epoll.c:
-
-    On 12 x86 CPUs:
-                  Before     After        Diff
-        threads  events/ms  events/ms
-              8       7162       4956     -31%
-             16       8733       5383     -38%
-             32       7968       5572     -30%
-             64      10652       5739     -46%
-            128      11236       5931     -47%
-
-    On 4 riscv CPUs:
-                  Before     After        Diff
-        threads  events/ms  events/ms
-              8       2958       2833      -4%
-             16       3323       3097      -7%
-             32       3451       3240      -6%
-             64       3554       3178     -11%
-            128       3601       3235     -10%
-
-Although the numbers look bad, it should be noted that this benchmark
-creates multiple threads who do nothing except constantly generating new
-epoll events, thus contention on the spinlock is high. For real workload,
-the event rate is likely much lower, and the performance drop is not as
-bad.
-
-Using another benchmark (perf bench epoll wait) where spinlock contention
-is lower, improvement is even observed on x86:
-
-    On 12 x86 CPUs:
-        Before: Averaged 110279 operations/sec (+- 1.09%), total secs = 8
-        After:  Averaged 114577 operations/sec (+- 2.25%), total secs = 8
-
-    On 4 riscv CPUs:
-        Before: Averaged 175767 operations/sec (+- 0.62%), total secs = 8
-        After:  Averaged 167396 operations/sec (+- 0.23%), total secs = 8
-
-In conclusion, no one is likely to be upset over this change. After all,
-spinlock was used originally for years, and the commit which converted to
-rwlock didn't mention a real workload, just that the benchmark numbers are
-nice.
-
-This patch is not exactly the revert of commit a218cc491420 ("epoll: use
-rwlock in order to reduce ep_poll_callback() contention"), because git
-revert conflicts in some places which are not obvious on the resolution.
-This patch is intended to be backported, therefore go with the obvious
-approach:
-
-  - Replace rwlock_t with spinlock_t one to one
-
-  - Delete list_add_tail_lockless() and chain_epi_lockless(). These were
-    introduced to allow producers to concurrently add items to the list.
-    But now that spinlock no longer allows producers to touch the event
-    list concurrently, these two functions are not necessary anymore.
-
-Fixes: a218cc491420 ("epoll: use rwlock in order to reduce ep_poll_callback() contention")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Link: https://lore.kernel.org/ec92458ea357ec503c737ead0f10b2c6e4c37d47.1752581388.git.namcao@linutronix.de
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: stable@vger.kernel.org
-Reported-by: Frederic Weisbecker <frederic@kernel.org>
-Closes: https://lore.kernel.org/linux-rt-users/20210825132754.GA895675@lothringen/ [1]
-Reported-by: Valentin Schneider <vschneid@redhat.com>
-Closes: https://lore.kernel.org/linux-rt-users/xhsmhttqvnall.mognet@vschneid.remote.csb/ [2]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 57d67c6e8219 ("crypto: rockchip - rework by using crypto_engine")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ removed unused rctx variable declaration since device pointer already came from tctx->dev->dev instead of rctx->dev ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 139 +++++++++----------------------------------------
- 1 file changed, 26 insertions(+), 113 deletions(-)
+ drivers/crypto/rockchip/rk3288_crypto_ahash.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 0f6107827c6c5..1e80a9b1d1263 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -45,10 +45,10 @@
-  *
-  * 1) epnested_mutex (mutex)
-  * 2) ep->mtx (mutex)
-- * 3) ep->lock (rwlock)
-+ * 3) ep->lock (spinlock)
-  *
-  * The acquire order is the one listed above, from 1 to 3.
-- * We need a rwlock (ep->lock) because we manipulate objects
-+ * We need a spinlock (ep->lock) because we manipulate objects
-  * from inside the poll callback, that might be triggered from
-  * a wake_up() that in turn might be called from IRQ context.
-  * So we can't sleep inside the poll callback and hence we need
-@@ -194,7 +194,7 @@ struct eventpoll {
- 	struct list_head rdllist;
- 
- 	/* Lock which protects rdllist and ovflist */
--	rwlock_t lock;
-+	spinlock_t lock;
- 
- 	/* RB tree root used to store monitored fd structs */
- 	struct rb_root_cached rbr;
-@@ -625,10 +625,10 @@ static void ep_start_scan(struct eventpoll *ep, struct list_head *txlist)
- 	 * in a lockless way.
- 	 */
- 	lockdep_assert_irqs_enabled();
--	write_lock_irq(&ep->lock);
-+	spin_lock_irq(&ep->lock);
- 	list_splice_init(&ep->rdllist, txlist);
- 	WRITE_ONCE(ep->ovflist, NULL);
--	write_unlock_irq(&ep->lock);
-+	spin_unlock_irq(&ep->lock);
- }
- 
- static void ep_done_scan(struct eventpoll *ep,
-@@ -636,7 +636,7 @@ static void ep_done_scan(struct eventpoll *ep,
+diff --git a/drivers/crypto/rockchip/rk3288_crypto_ahash.c b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
+index edd40e16a3f0a..087b7c41c58da 100644
+--- a/drivers/crypto/rockchip/rk3288_crypto_ahash.c
++++ b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
+@@ -236,10 +236,9 @@ static int rk_hash_unprepare(struct crypto_engine *engine, void *breq)
  {
- 	struct epitem *epi, *nepi;
+ 	struct ahash_request *areq = container_of(breq, struct ahash_request, base);
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
+-	struct rk_ahash_rctx *rctx = ahash_request_ctx(areq);
+ 	struct rk_ahash_ctx *tctx = crypto_ahash_ctx(tfm);
  
--	write_lock_irq(&ep->lock);
-+	spin_lock_irq(&ep->lock);
- 	/*
- 	 * During the time we spent inside the "sproc" callback, some
- 	 * other events might have been queued by the poll callback.
-@@ -677,7 +677,7 @@ static void ep_done_scan(struct eventpoll *ep,
- 			wake_up(&ep->wq);
- 	}
- 
--	write_unlock_irq(&ep->lock);
-+	spin_unlock_irq(&ep->lock);
+-	dma_unmap_sg(tctx->dev->dev, areq->src, rctx->nrsg, DMA_TO_DEVICE);
++	dma_unmap_sg(tctx->dev->dev, areq->src, sg_nents(areq->src), DMA_TO_DEVICE);
+ 	return 0;
  }
  
- static void epi_rcu_free(struct rcu_head *head)
-@@ -757,10 +757,10 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
- 
- 	rb_erase_cached(&epi->rbn, &ep->rbr);
- 
--	write_lock_irq(&ep->lock);
-+	spin_lock_irq(&ep->lock);
- 	if (ep_is_linked(epi))
- 		list_del_init(&epi->rdllink);
--	write_unlock_irq(&ep->lock);
-+	spin_unlock_irq(&ep->lock);
- 
- 	wakeup_source_unregister(ep_wakeup_source(epi));
- 	/*
-@@ -1018,7 +1018,7 @@ static int ep_alloc(struct eventpoll **pep)
- 		return -ENOMEM;
- 
- 	mutex_init(&ep->mtx);
--	rwlock_init(&ep->lock);
-+	spin_lock_init(&ep->lock);
- 	init_waitqueue_head(&ep->wq);
- 	init_waitqueue_head(&ep->poll_wait);
- 	INIT_LIST_HEAD(&ep->rdllist);
-@@ -1105,100 +1105,10 @@ struct file *get_epoll_tfile_raw_ptr(struct file *file, int tfd,
- }
- #endif /* CONFIG_KCMP */
- 
--/*
-- * Adds a new entry to the tail of the list in a lockless way, i.e.
-- * multiple CPUs are allowed to call this function concurrently.
-- *
-- * Beware: it is necessary to prevent any other modifications of the
-- *         existing list until all changes are completed, in other words
-- *         concurrent list_add_tail_lockless() calls should be protected
-- *         with a read lock, where write lock acts as a barrier which
-- *         makes sure all list_add_tail_lockless() calls are fully
-- *         completed.
-- *
-- *        Also an element can be locklessly added to the list only in one
-- *        direction i.e. either to the tail or to the head, otherwise
-- *        concurrent access will corrupt the list.
-- *
-- * Return: %false if element has been already added to the list, %true
-- * otherwise.
-- */
--static inline bool list_add_tail_lockless(struct list_head *new,
--					  struct list_head *head)
--{
--	struct list_head *prev;
--
--	/*
--	 * This is simple 'new->next = head' operation, but cmpxchg()
--	 * is used in order to detect that same element has been just
--	 * added to the list from another CPU: the winner observes
--	 * new->next == new.
--	 */
--	if (!try_cmpxchg(&new->next, &new, head))
--		return false;
--
--	/*
--	 * Initially ->next of a new element must be updated with the head
--	 * (we are inserting to the tail) and only then pointers are atomically
--	 * exchanged.  XCHG guarantees memory ordering, thus ->next should be
--	 * updated before pointers are actually swapped and pointers are
--	 * swapped before prev->next is updated.
--	 */
--
--	prev = xchg(&head->prev, new);
--
--	/*
--	 * It is safe to modify prev->next and new->prev, because a new element
--	 * is added only to the tail and new->next is updated before XCHG.
--	 */
--
--	prev->next = new;
--	new->prev = prev;
--
--	return true;
--}
--
--/*
-- * Chains a new epi entry to the tail of the ep->ovflist in a lockless way,
-- * i.e. multiple CPUs are allowed to call this function concurrently.
-- *
-- * Return: %false if epi element has been already chained, %true otherwise.
-- */
--static inline bool chain_epi_lockless(struct epitem *epi)
--{
--	struct eventpoll *ep = epi->ep;
--
--	/* Fast preliminary check */
--	if (epi->next != EP_UNACTIVE_PTR)
--		return false;
--
--	/* Check that the same epi has not been just chained from another CPU */
--	if (cmpxchg(&epi->next, EP_UNACTIVE_PTR, NULL) != EP_UNACTIVE_PTR)
--		return false;
--
--	/* Atomically exchange tail */
--	epi->next = xchg(&ep->ovflist, epi);
--
--	return true;
--}
--
- /*
-  * This is the callback that is passed to the wait queue wakeup
-  * mechanism. It is called by the stored file descriptors when they
-  * have events to report.
-- *
-- * This callback takes a read lock in order not to contend with concurrent
-- * events from another file descriptor, thus all modifications to ->rdllist
-- * or ->ovflist are lockless.  Read lock is paired with the write lock from
-- * ep_start/done_scan(), which stops all list modifications and guarantees
-- * that lists state is seen correctly.
-- *
-- * Another thing worth to mention is that ep_poll_callback() can be called
-- * concurrently for the same @epi from different CPUs if poll table was inited
-- * with several wait queues entries.  Plural wakeup from different CPUs of a
-- * single wait queue is serialized by wq.lock, but the case when multiple wait
-- * queues are used should be detected accordingly.  This is detected using
-- * cmpxchg() operation.
-  */
- static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, void *key)
- {
-@@ -1209,7 +1119,7 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 	unsigned long flags;
- 	int ewake = 0;
- 
--	read_lock_irqsave(&ep->lock, flags);
-+	spin_lock_irqsave(&ep->lock, flags);
- 
- 	ep_set_busy_poll_napi_id(epi);
- 
-@@ -1238,12 +1148,15 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 	 * chained in ep->ovflist and requeued later on.
- 	 */
- 	if (READ_ONCE(ep->ovflist) != EP_UNACTIVE_PTR) {
--		if (chain_epi_lockless(epi))
-+		if (epi->next == EP_UNACTIVE_PTR) {
-+			epi->next = READ_ONCE(ep->ovflist);
-+			WRITE_ONCE(ep->ovflist, epi);
- 			ep_pm_stay_awake_rcu(epi);
-+		}
- 	} else if (!ep_is_linked(epi)) {
- 		/* In the usual case, add event to ready list. */
--		if (list_add_tail_lockless(&epi->rdllink, &ep->rdllist))
--			ep_pm_stay_awake_rcu(epi);
-+		list_add_tail(&epi->rdllink, &ep->rdllist);
-+		ep_pm_stay_awake_rcu(epi);
- 	}
- 
- 	/*
-@@ -1276,7 +1189,7 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 		pwake++;
- 
- out_unlock:
--	read_unlock_irqrestore(&ep->lock, flags);
-+	spin_unlock_irqrestore(&ep->lock, flags);
- 
- 	/* We have to call this outside the lock */
- 	if (pwake)
-@@ -1611,7 +1524,7 @@ static int ep_insert(struct eventpoll *ep, const struct epoll_event *event,
- 	}
- 
- 	/* We have to drop the new item inside our item list to keep track of it */
--	write_lock_irq(&ep->lock);
-+	spin_lock_irq(&ep->lock);
- 
- 	/* record NAPI ID of new item if present */
- 	ep_set_busy_poll_napi_id(epi);
-@@ -1628,7 +1541,7 @@ static int ep_insert(struct eventpoll *ep, const struct epoll_event *event,
- 			pwake++;
- 	}
- 
--	write_unlock_irq(&ep->lock);
-+	spin_unlock_irq(&ep->lock);
- 
- 	/* We have to call this outside the lock */
- 	if (pwake)
-@@ -1692,7 +1605,7 @@ static int ep_modify(struct eventpoll *ep, struct epitem *epi,
- 	 * list, push it inside.
- 	 */
- 	if (ep_item_poll(epi, &pt, 1)) {
--		write_lock_irq(&ep->lock);
-+		spin_lock_irq(&ep->lock);
- 		if (!ep_is_linked(epi)) {
- 			list_add_tail(&epi->rdllink, &ep->rdllist);
- 			ep_pm_stay_awake(epi);
-@@ -1703,7 +1616,7 @@ static int ep_modify(struct eventpoll *ep, struct epitem *epi,
- 			if (waitqueue_active(&ep->poll_wait))
- 				pwake++;
- 		}
--		write_unlock_irq(&ep->lock);
-+		spin_unlock_irq(&ep->lock);
- 	}
- 
- 	/* We have to call this outside the lock */
-@@ -1936,7 +1849,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 		init_wait(&wait);
- 		wait.func = ep_autoremove_wake_function;
- 
--		write_lock_irq(&ep->lock);
-+		spin_lock_irq(&ep->lock);
- 		/*
- 		 * Barrierless variant, waitqueue_active() is called under
- 		 * the same lock on wakeup ep_poll_callback() side, so it
-@@ -1955,7 +1868,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 		if (!eavail)
- 			__add_wait_queue_exclusive(&ep->wq, &wait);
- 
--		write_unlock_irq(&ep->lock);
-+		spin_unlock_irq(&ep->lock);
- 
- 		if (!eavail)
- 			timed_out = !schedule_hrtimeout_range(to, slack,
-@@ -1970,7 +1883,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 		eavail = 1;
- 
- 		if (!list_empty_careful(&wait.entry)) {
--			write_lock_irq(&ep->lock);
-+			spin_lock_irq(&ep->lock);
- 			/*
- 			 * If the thread timed out and is not on the wait queue,
- 			 * it means that the thread was woken up after its
-@@ -1981,7 +1894,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 			if (timed_out)
- 				eavail = list_empty(&wait.entry);
- 			__remove_wait_queue(&ep->wq, &wait);
--			write_unlock_irq(&ep->lock);
-+			spin_unlock_irq(&ep->lock);
- 		}
- 	}
- }
 -- 
 2.51.0
 
