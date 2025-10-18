@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-187858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12583BED441
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 18:58:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C63BED444
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 18:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C490A4E6AD4
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 16:58:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21897400FFD
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 16:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4CF256C89;
-	Sat, 18 Oct 2025 16:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39CC2522B6;
+	Sat, 18 Oct 2025 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VQcfieWR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TKj19nsY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A5E24A067
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 16:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464FA225A29
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 16:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760806705; cv=none; b=r7OvsQmZ+pS5jycJzdOSp7pBGWrOJbai6SGe6DpcYC11jyFGt8JlBc9bw1anFJoVJQZzXx8OnIEUML2c4xN9mO69nHGY++R1xKUkDfUPduzNOORql87AgwfJYpOC5t42DKlNh8q2KBK/e+uzvGNpF08hldOkTpd59DowWmLZJBs=
+	t=1760806717; cv=none; b=Lz7b14on8JSi3cjOsPZu7K8nFBzjBkTVj/w7dxXaIouAZZAeIMroD+akdazUNpNc4OI7eexikjJsJIonpXmmiQSZxpaQF3nToXVkr1dWCdLoHStvZCDHVr2Hpsx5GD0ij1xY/6Yc4Omg94S/epaRehvbMhkCdNZYs2aZN1yNbpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760806705; c=relaxed/simple;
-	bh=4SufFCPXmxpkslZ+FDy02vXkO1ooFHOQKGFISivorpQ=;
+	s=arc-20240116; t=1760806717; c=relaxed/simple;
+	bh=w7J82fnUD6xfEpzP95bpQv/8s1/Ygz1qLRmzDTIVvOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQMli7oc0Sg5jRtZ5+Zef3m+ENztUl8/NV6iqFO3rXwMc3Fir1HJa14LcHlFIqMZYSqgwo4+ICrtnZGUrlZKUIgJEmAggZp/Qy7zvB2Oo9ORkJ8o3Lz3qL4P3ydJxCZOYzqPqui1lZw56teP34cafWiShfUwooAKRh6bwK6eFd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VQcfieWR; arc=none smtp.client-ip=209.85.166.50
+	 MIME-Version; b=bNk4sokGuXWUkOdH7Up8VtkSOBeZVDaaBPMsQ0GW0asXeHkc/+m5A4UcmXk7jTMVez8wSqLOKONQf2S8DQTePcJe8OoOrKQsE9CGeDSvCYsoZQgdz/mq4VbnnzQ+j+5/CKbDyrSydYIviaS/G31CXvOFc+o7BR+aPxQN1QscUno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TKj19nsY; arc=none smtp.client-ip=209.85.166.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-93e7e87c21bso151111139f.3
-        for <stable@vger.kernel.org>; Sat, 18 Oct 2025 09:58:23 -0700 (PDT)
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-938bf212b72so120858139f.1
+        for <stable@vger.kernel.org>; Sat, 18 Oct 2025 09:58:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760806703; x=1761411503; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1760806715; x=1761411515; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UU0Vaz702n4jmmJNBsbiEKHEOlTcHaJiSdld/th41J4=;
-        b=VQcfieWRAE+y8IKUWBNhOYq0V+ZLC3pPhqL8p6SOf22T78YZwz9Vu8Kkh4v/Ezkgjx
-         LGunTQCucBt0oBA7kkF/MMGbRQrIqB81nxyXopPqHlxZLMgEn4VAZRNnzKUQGyL5ekpT
-         bSgLTZytKdNoL95Y4tr0cIhWQvPfOSZsYN5V6wlgM0Cv8xKGCfE4AQdU9IrsGdaqcyYY
-         nO+aDSTW2tgTCG7jCkz1QO1ocUe6QYsu+Zhs2RKpBP4flMjM67M+vzQqWvVJl8abOgnS
-         U6BvDKkjanKHtWlXba1ezOBCFT621pQisjMpV0SMnVdi4eRT22R9RpEwqZ1yWy2qLplo
-         cAbQ==
+        bh=c1WBSTPx2pG3XQLINSM8ILY6Yp6IM7QVYiXHEETaCAQ=;
+        b=TKj19nsYrsdImkPiC3Sx6CFLvK1VC5rdeBrzaeiP2GTirj1C5vj1DDOQYMY39dZ91/
+         6lGhl0Atc9Y/5hQwNyS/q0zvsXXYpLaNf9TUXoOzD2gABATWL3yhYSDECAaWCzd3BLIY
+         bPFAp6vZoQOyL3Z0Hh/S2WUBJ1B54QvHnIQN3PGvQQfEmoJ85cUF/LiwaLCtrsEpF0Ov
+         6FFVT2lW9AOBFItU2CRkiMGWQMqhgZi2+QJCxJ6wQwZPAtUZvoR9D+rnWYPSqAbWwZkC
+         3PRXliw+4PI2i1wNXH6/IJk9uovBaMAhZ/GtMfhkB0hunBy2YAyXzDDrFDSLs5xME4tY
+         /iLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760806703; x=1761411503;
+        d=1e100.net; s=20230601; t=1760806715; x=1761411515;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UU0Vaz702n4jmmJNBsbiEKHEOlTcHaJiSdld/th41J4=;
-        b=cvgmgXMRCKyMBs1tgEuCSxqN9P1jyteqBJ6AD2vayQU6wUAcSulTW8dEewRM5WHni/
-         1we48Kuym61oVCVa8kHThL5JLCW34yslM/KP7zupRWv7uiBhOyVcbXWi7OaEte+MJkQ8
-         xnWVLB5RQpY7cDPjS4nWahBrNlMnQZR4/Q3abbL2qNcB9WpKtovUFL3bysyz7i1aD6kr
-         RwO5NLjihWDiGvM1WFA9h/N5wQ6QOrtJpgCJEVgTFDH5fJNGFRHyALgt7JhcLnpfxED+
-         3AYMSOMyutv1ofNb5R9tIz5I5ydoF1f7pGLcLn86EWZCfUBOrf+zlDEvbdEscV5fRLyU
-         FETg==
-X-Gm-Message-State: AOJu0YwlMzRVt9ze0GsVmmbcDjZkOQOxIsovGa+EUcYkBluilBVvw0Kb
-	+JgyOCG5puNPxVeyfVIrGRDqYxVmPAHJJHAxEY0GO68LaUKSdiDwqyRfIGgiW/vT5JA=
-X-Gm-Gg: ASbGnctYA1XrkHsIp9LibgIp8aIl3YvVRWgeuhCMVnHyRcSWQRCNdcNGVBprCUllc8M
-	nUs2lJJkqfPY5aWwn+ghLiFH75NlkUAQeOmr11t/b2oPGUHnZdZf7bBquYCVUOiNuRSLUaCA1Lf
-	uSyMf+8CUP9BwtyBvdLU70vfmF4aiz5VqhQu8RrO+4DJCj9erw0tDFlqdV6yKmmZYOjIT4ScmfP
-	onuNcy3FNgFJ9z7Igh4ZDe4EVyC4trdbGf4N1NGQz1dL/HmL65bmvy3VgPZCdzlHhLTEzLGU3Tp
-	chqtzmwNL7R44uSmk2jHSPNcOm5pNCjAp6tBJ0Hv0B1xYq1QUJpuwSJMIsXNQ1bNPDSDYdnPPIM
-	EPdYEGAAeH1Z4ygQ1j7nypcIhiKepDgv/l0A+C5MkjSV3HuLDXPYIrOzPyx9a2tfg018NVOOlDz
-	zp2yoaVzE7BrXb6QL1anGSvc/2JX9A86z2IuBCvy8zUbPMiFdEk0Hehf5Eaws=
-X-Google-Smtp-Source: AGHT+IHKaSv3O3IeWubXsR/NlCaA17Q7Uvpw8Ni/C5X6m8p/2C/Y03YluZFi07O36GktyEubOFY4zQ==
-X-Received: by 2002:a05:6e02:1d9d:b0:430:ab98:7b1f with SMTP id e9e14a558f8ab-430c52beddbmr124046415ab.18.1760806702718;
-        Sat, 18 Oct 2025 09:58:22 -0700 (PDT)
+        bh=c1WBSTPx2pG3XQLINSM8ILY6Yp6IM7QVYiXHEETaCAQ=;
+        b=oYYeP1UcNC/gDw1PxdeZxkICDTddlouIrnx+wew85zVvu+r3Hsh5eXkBBzY/gbLi+9
+         nXSciCu6o/oNyPJZKOnLqx9DZcz9AKOZKku0IlmgJuuBgGO2PYC4iFpG3KBVzZa8WjyE
+         FGdq2Z05PkSmd/1xRP+qSk/y1eYJQ90MDoUmOHRprkLUyiJJgXwGbVMkyhCNBj3/LUX9
+         5U92L/3KyMRamr+8frJNfpPC3SNYsKNIYtp/dF0A9y1y0uQZyx7lv44Tehd7w55QWRDk
+         pum4DKbmqlf5tJWsN0tDzHbwLD5GJrfgqM5yMFK6T+gL/Q/KQFkewUUXelARx9JxiiB/
+         /5Hg==
+X-Gm-Message-State: AOJu0YzLZZd3sZZKOw1eUpOCRYwouIQkyOLbEBOMlUtO4AzEjSU432Os
+	Vswj7Wlrgup/2u7qVFvmULbTu8Ms6goUDJj1LdzkUpL/DkJP2Xkov2F3pafC6MTK6NI=
+X-Gm-Gg: ASbGncuJ2f1OMzPANKSkfhOOA1TP+xRsjwh3nnLkY5/rnY/no5kbuDMdWz9aHjP+KCz
+	lr216b0AxkkH87yFrLCKWm1R75kXZIo222nct6quaK7onzKDVcjyV/GWOXO7t+M+0YKIvJVtiR6
+	UdoScU2FxwlYAbs78+moqMeVrCfv6y+GTSGqgrrUOVjFD1wHuI6/c/JtwBmnBlJ4T+qOudbOsX8
+	W3mwrzDVRLQcEPWXZay4+zeyIq1OfYkvSXnAuB6ldmjWLOG9NRtMuuaXBLfiC1AqIxynxRqkIV9
+	GL6sNPydaGg+LJOK4/lFa8WHOZrT6DXacXpxlWb/YLTdMx+XC/pecOXFVjB25q5lM1B4+jOlyXY
+	xbAqjz/flaxgsJClbez7castvgq3UlVr4EDjaWXEEfo++6cMIeWop+Iet9ckv+3hWdI+2wYZtX4
+	yfNFxVG7Lmnpr3Rxl2Aw0uqyuLE1UoxjHRqSJTJiV5WwPYP4YJg9QOl6GigOo=
+X-Google-Smtp-Source: AGHT+IGmyUsFoSszv+fFX1S9Hfb5LIc8WC5/DDJ3AFJI2cwDTPzwqnf8s2YrglMNMXLSksHQruG3ig==
+X-Received: by 2002:a05:6e02:1689:b0:42d:876e:61bd with SMTP id e9e14a558f8ab-430c527fb41mr119609355ab.28.1760806715225;
+        Sat, 18 Oct 2025 09:58:35 -0700 (PDT)
 Received: from nairdora (108-75-189-46.lightspeed.wchtks.sbcglobal.net. [108.75.189.46])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-430d07b4614sm11927545ab.33.2025.10.18.09.58.21
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-430d07b4614sm11927545ab.33.2025.10.18.09.58.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 09:58:22 -0700 (PDT)
+        Sat, 18 Oct 2025 09:58:35 -0700 (PDT)
 From: Adrian Yip <adrian.ytw@gmail.com>
 To: stable@vger.kernel.org
 Cc: Mario Limonciello <mario.limonciello@amd.com>,
@@ -85,9 +85,9 @@ Cc: Mario Limonciello <mario.limonciello@amd.com>,
 	david.hunter.linux@gmail.com,
 	khalid@kernel.org,
 	Adrian Yip <adrian.ytw@gmail.com>
-Subject: [PATCH 1/4 6.17.y] drm/amd: Check whether secure display TA loaded successfully
-Date: Sat, 18 Oct 2025 11:56:41 -0500
-Message-ID: <20251018165653.1939869-2-adrian.ytw@gmail.com>
+Subject: [PATCH 2/4 6.12.y] drm/amd: Check whether secure display TA loaded successfully
+Date: Sat, 18 Oct 2025 11:56:42 -0500
+Message-ID: <20251018165653.1939869-3-adrian.ytw@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251018165653.1939869-1-adrian.ytw@gmail.com>
 References: <20251018165653.1939869-1-adrian.ytw@gmail.com>
@@ -113,7 +113,7 @@ a problem.
 Check the resp_status of the context to see if there was an error
 before trying to send any secure display commands.
 
-There were no code conflict when applying to 6.17.y.
+There were no code conflict when applying to 6.12.y.
 This backport gets rid of below error messages on AMD GPUs (per Shuah
 Khan's machine)
 
@@ -136,10 +136,10 @@ Signed-off-by: Adrian Yip <adrian.ytw@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index 693357caa9a8..d9d7fc4c33cb 100644
+index 8553ac4c0ad3..a8358d1d1acb 100644
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -2350,7 +2350,7 @@ static int psp_securedisplay_initialize(struct psp_context *psp)
+@@ -2171,7 +2171,7 @@ static int psp_securedisplay_initialize(struct psp_context *psp)
  	}
  
  	ret = psp_ta_load(psp, &psp->securedisplay_context.context);
