@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-187844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B2EBED247
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 17:14:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E29BED356
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 18:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E51054E3AC3
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 15:14:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DE2019C302D
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 16:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC631F3BA2;
-	Sat, 18 Oct 2025 15:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25F924397A;
+	Sat, 18 Oct 2025 16:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QguKNl1z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPI58d9v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4A2EEBB
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 15:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6170D243387
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 16:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760800453; cv=none; b=DP6zam9ePWnes4zHPb4h3QQ/lQ3R5Wk+HOyYNHPy7PogSfTv8Bbla60hlL7iPf5++fQhFPdC9l2qKuQNjX0q7jJve3fN/EUAo8PTbCUT7NCqUOdPg2sPSIvPgozTKlXAA2/EOCdTAvSp9STnxT0Vu5sH6yfvYwC2BQqxr2houkY=
+	t=1760803321; cv=none; b=AJMGwY1QOmPO8IqP8ZbGDMOrW7zNfYJnQi0u+9YyOrhyXtka4LWgMd4SI3YE8MZKzDUQFBaRaDNwFJrKpIIVCs+D6NPBEZjekBdx+v4mQyuXjuY8ZlADCY1ivFj0YfNHQs4wma2p/gmL8ndY6GG8tCEmwGuNwVuiRGawL5I9G4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760800453; c=relaxed/simple;
-	bh=SCwAPnzbFicBTxhqkOrIah7n6hoIu4n2W+SY6m2jrrM=;
+	s=arc-20240116; t=1760803321; c=relaxed/simple;
+	bh=6TPhmgh8Mc2FtwdkesNLRfqGLZphtF3mTTN0m2X5XrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1118B8SES6brT4ZSpbJb9ia4NRrN+tbIxZmTr8k8QwvpobBrTAaK1IrYRW5oeBLSTJ+W7s5SGiptJePcse02ZH6s7idkTCQ53cWjyGFzo0kD1X+7N48LgHLkFcQUgC9BCo+iY/Ymi2zrw1CpoBctThOHgDxA8EpA6M+ejBhDto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QguKNl1z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1396DC4CEF8;
-	Sat, 18 Oct 2025 15:14:12 +0000 (UTC)
+	 MIME-Version; b=p3493owFWUki42u6Ai1/7/8JTy5oROMzILwBrujbOGonWiKQZQOa2NjYyTJKIE5lcKoAEeJj+QURYjwUT9CcrN4nl1mBI/oHtkjKhlBatH1ASbzwsuMpebLyiWZDPkZlJ0XlLYA0fUyj6aog1pGGkvT7HMPzkelZYZk4u+P7mo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPI58d9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AEBC4CEF8;
+	Sat, 18 Oct 2025 16:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760800453;
-	bh=SCwAPnzbFicBTxhqkOrIah7n6hoIu4n2W+SY6m2jrrM=;
+	s=k20201202; t=1760803321;
+	bh=6TPhmgh8Mc2FtwdkesNLRfqGLZphtF3mTTN0m2X5XrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QguKNl1znR44YdUPHI4lcM54PEt807flE1+JDi6XtUqDFvJ2D/BT9VVZHuuIvhG7X
-	 5GNlRJ5bPet9XZSuhyeoQmGZafx8KBAJlzu/vlTmlat/wcqC8TvsIUabEUuqL52Odt
-	 4I6NH1GresE1rqpSrYiDtvOIBlGnAutiglTacT2EOZeebqt+jKe7bh6dsmIc/L4ffJ
-	 U/AJUGeH33ispHfjZiSCkXa643T1Rf3bi6qtVGFJpZgDVzReUhVBCaTLH0pO6s3b2M
-	 X4yxlxsQPgGshX/JygPHqCWZ/f2h3G1KPvMXfWIDMAV6Nz6V83j8TWSzaPH6qamavL
-	 q6fQTQbZa6dGw==
+	b=oPI58d9vauoehhs0ljaPHgaxkSOWlnWCRGdsy9ima5iSqmSZzCHuvhDcK6UM3ifhW
+	 8drbYVioAOn82reu6W6mxYK/JJhgDP9Cn0CcoCrK4YbxR1bN8tIiNyIGp7lhBiVcdn
+	 VsP1/6iDA5dx8ACs5ZAZl7papEhqbS+reEWuFbzld7ry0mMHMXa+IhEA/ZVWp4kErN
+	 WXcseYzZYBOQxFUU+WwtWiuArXA5DXn7qlFeBMsb7Lhr+OfNrFCBX3iVFj9q4eCxB3
+	 TYspBTPaHKEdEAyaFIm2Nu3inR8R1izEUGoy8q3Apt4SHSPvaaSVAITf1zY21ZQMer
+	 Ss185DgZFL46A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Miaoqian Lin <linmq006@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Anderson Nascimento <anderson@allelesecurity.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] cdx: Fix device node reference leak in cdx_msi_domain_init
-Date: Sat, 18 Oct 2025 11:14:10 -0400
-Message-ID: <20251018151410.809778-2-sashal@kernel.org>
+Subject: [PATCH 5.10.y] btrfs: avoid potential out-of-bounds in btrfs_encode_fh()
+Date: Sat, 18 Oct 2025 12:01:58 -0400
+Message-ID: <20251018160158.831532-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251018151410.809778-1-sashal@kernel.org>
-References: <2025101657-coaster-squall-0e3f@gregkh>
- <20251018151410.809778-1-sashal@kernel.org>
+In-Reply-To: <2025101645-ceremony-playlist-e997@gregkh>
+References: <2025101645-ceremony-playlist-e997@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,36 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Anderson Nascimento <anderson@allelesecurity.com>
 
-[ Upstream commit 76254bc489d39dae9a3427f0984fe64213d20548 ]
+[ Upstream commit dff4f9ff5d7f289e4545cc936362e01ed3252742 ]
 
-Add missing of_node_put() call to release
-the device node reference obtained via of_parse_phandle().
+The function btrfs_encode_fh() does not properly account for the three
+cases it handles.
 
-Fixes: 0e439ba38e61 ("cdx: add MSI support for CDX bus")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Nipun Gupta <nipun.gupta@amd.com>
-Link: https://lore.kernel.org/r/20250902084933.2418264-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Before writing to the file handle (fh), the function only returns to the
+user BTRFS_FID_SIZE_NON_CONNECTABLE (5 dwords, 20 bytes) or
+BTRFS_FID_SIZE_CONNECTABLE (8 dwords, 32 bytes).
+
+However, when a parent exists and the root ID of the parent and the
+inode are different, the function writes BTRFS_FID_SIZE_CONNECTABLE_ROOT
+(10 dwords, 40 bytes).
+
+If *max_len is not large enough, this write goes out of bounds because
+BTRFS_FID_SIZE_CONNECTABLE_ROOT is greater than
+BTRFS_FID_SIZE_CONNECTABLE originally returned.
+
+This results in an 8-byte out-of-bounds write at
+fid->parent_root_objectid = parent_root_id.
+
+A previous attempt to fix this issue was made but was lost.
+
+https://lore.kernel.org/all/4CADAEEC020000780001B32C@vpn.id2.novell.com/
+
+Although this issue does not seem to be easily triggerable, it is a
+potential memory corruption bug that should be fixed. This patch
+resolves the issue by ensuring the function returns the appropriate size
+for all three cases and validates that *max_len is large enough before
+writing any data.
+
+Fixes: be6e8dc0ba84 ("NFS support for btrfs - v3")
+CC: stable@vger.kernel.org # 3.0+
+Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ replaced btrfs_root_id() calls with direct ->root->root_key.objectid access ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cdx/cdx_msi.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/export.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cdx/cdx_msi.c b/drivers/cdx/cdx_msi.c
-index 0bb32829d9084..d7bade143998e 100644
---- a/drivers/cdx/cdx_msi.c
-+++ b/drivers/cdx/cdx_msi.c
-@@ -174,6 +174,7 @@ struct irq_domain *cdx_msi_domain_init(struct device *dev)
- 	}
+diff --git a/fs/btrfs/export.c b/fs/btrfs/export.c
+index d908afa1f313c..b0cceebd5b3da 100644
+--- a/fs/btrfs/export.c
++++ b/fs/btrfs/export.c
+@@ -22,7 +22,11 @@ static int btrfs_encode_fh(struct inode *inode, u32 *fh, int *max_len,
+ 	int type;
  
- 	parent = irq_find_matching_fwnode(of_fwnode_handle(parent_node), DOMAIN_BUS_NEXUS);
-+	of_node_put(parent_node);
- 	if (!parent || !msi_get_domain_info(parent)) {
- 		dev_err(dev, "unable to locate ITS domain\n");
- 		return NULL;
+ 	if (parent && (len < BTRFS_FID_SIZE_CONNECTABLE)) {
+-		*max_len = BTRFS_FID_SIZE_CONNECTABLE;
++		if (BTRFS_I(inode)->root->root_key.objectid !=
++		    BTRFS_I(parent)->root->root_key.objectid)
++			*max_len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
++		else
++			*max_len = BTRFS_FID_SIZE_CONNECTABLE;
+ 		return FILEID_INVALID;
+ 	} else if (len < BTRFS_FID_SIZE_NON_CONNECTABLE) {
+ 		*max_len = BTRFS_FID_SIZE_NON_CONNECTABLE;
+@@ -44,6 +48,8 @@ static int btrfs_encode_fh(struct inode *inode, u32 *fh, int *max_len,
+ 		parent_root_id = BTRFS_I(parent)->root->root_key.objectid;
+ 
+ 		if (parent_root_id != fid->root_objectid) {
++			if (*max_len < BTRFS_FID_SIZE_CONNECTABLE_ROOT)
++				return FILEID_INVALID;
+ 			fid->parent_root_objectid = parent_root_id;
+ 			len = BTRFS_FID_SIZE_CONNECTABLE_ROOT;
+ 			type = FILEID_BTRFS_WITH_PARENT_ROOT;
 -- 
 2.51.0
 
