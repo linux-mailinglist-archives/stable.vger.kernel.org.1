@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-187868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F4BEDAB9
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 21:37:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A063BEDAE3
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 21:42:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0AC8F4EA9EA
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 19:37:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F27C358808C
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 19:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5B82580F9;
-	Sat, 18 Oct 2025 19:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9684E27F732;
+	Sat, 18 Oct 2025 19:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tcHrgMZj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YIin2Oko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF62718DB26
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 19:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5372D258CD7
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 19:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760816227; cv=none; b=BLDemJLYhnUNjrh4/g+C+PpmN4FUKNNekZQBCDBVqoTqucPudOQ9EX3io55pIqek0l1ITBoOXy3WD/+E3Y6MOyzgHsj4+bEAf96kCIQoO0IRheoRaIxODyPMc2UA0G6+RjNtCko/3+ZBjkZVHte+SmpNmMJmct928DnRTNkC8ko=
+	t=1760816560; cv=none; b=bA0DDhhbjvA0b+2zrIEJjZyNBC78gAWXzsEo1rxHihz+CIK2R1BKIrG+Y8T3INR0vpOjNakbPiVpBMpY05dhQZRXZbeB88Yad6dEoQGVI1J9iqO38kXX6vS2IIlyVn4QMIPjcuTyDrs7cItJs7q74XJnOWcuSeDd7pT2lZrtIYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760816227; c=relaxed/simple;
+	s=arc-20240116; t=1760816560; c=relaxed/simple;
 	bh=5iiTdNEgDqSUu/AqeVL2miXbD8ZzmQIKBpVn7ZM4Cxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKFyg/0/CHp4kQZvvJZtCSQ2Fmrp6mvY7vfDafJ2Eys2EoO1K6uWi7QXePq4b0VnyJDZRNXHkuqWH+T1b5Veky4MAk4yyDXZL7X5wjVadCXM7EHXrCl4SMK6nU6LBoReZ2f7zxDo9AZVOjrkhvkUMd0oWfEzC3t/ieAPY0/wby8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tcHrgMZj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBF1C4CEF8;
-	Sat, 18 Oct 2025 19:37:06 +0000 (UTC)
+	 MIME-Version; b=oDR92pdz4AA8iMwPgNvGE8tPzK/fYwbWvjInwdHAYngKNNOcpFxnigsregd1QUIKBeMfUPaPQJjBPq29GcsR88m8BagFJVf6LK6PhMHfSe/znVEjfSz+h2t4J/LaYb/AdXukgoXpEWX9uSEp1HV/vHATKUMjvkw7KevEghBDTWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YIin2Oko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF08C4CEF8;
+	Sat, 18 Oct 2025 19:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760816227;
+	s=k20201202; t=1760816559;
 	bh=5iiTdNEgDqSUu/AqeVL2miXbD8ZzmQIKBpVn7ZM4Cxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tcHrgMZjZjjQjQbAqY7g6/Fqvoa4v3Dw9rQQO/g4daAtBLbzIR7fy2oQARL+e1G4m
-	 6ABm7LCVvHvSBILjPyVFceNVqRjlA/foLjTp9vBMrLO5pm85lDxwaLDC5FnpT/YEdY
-	 D/JbxFaZocl7eYq7+ECedaHnZ2ntQeqZHWSb6WGN8P/49+UepzBzEaBmAi/g5TnA7Z
-	 EU7icW2bLqr6Ahd+Bwpg5xFqfHEUOMrPkz+r5FkUfb7Xgsuq4i6kqIYyHE2v2xM9dg
-	 J+cVq9Qf+oiRR+1l5fHBSxHShhEPTJvOB7bTguMeyn3rNOoVdwjmL5DSxyuC/QSL5y
-	 1aKD1eeoMqybg==
+	b=YIin2OkoXfBQccUHtTquBmEgkSXnhV9cQ7PxGhr+zMHlHHdMQFGGNbarsKKZuDmb1
+	 qqqYPwxxDmH1nhVcrVASa4rbZJhE7l29MlBYCRFVBedzzkM0oDFgE2kEbnfS529XyX
+	 DrSXGprG3Ux4N1UWHF1IZ/shGgcqZRIanJUEPbJEO2VTfHDSUTQ75MCQlGNxdjDgq7
+	 vhs0f6pKBr3HLk4TZAAtMSFJcaEJuuErVBJc7pKLTtSgi64x5baBG3Lb6KwA1MVYQe
+	 qcLxUsrIxrYNaNwUVmgfxqEmZP1EHfmgajedvRZegUlH+NQ9XCrunWeI///fBt06Oc
+	 YDVuphgp0JBMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Thomas Fourier <fourier.thomas@gmail.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] crypto: rockchip - Fix dma_unmap_sg() nents value
-Date: Sat, 18 Oct 2025 15:37:04 -0400
-Message-ID: <20251018193704.891321-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] crypto: rockchip - Fix dma_unmap_sg() nents value
+Date: Sat, 18 Oct 2025 15:42:37 -0400
+Message-ID: <20251018194237.892519-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101646-unsent-pull-230d@gregkh>
-References: <2025101646-unsent-pull-230d@gregkh>
+In-Reply-To: <2025101646-entitle-romp-923e@gregkh>
+References: <2025101646-entitle-romp-923e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
