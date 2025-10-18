@@ -1,234 +1,125 @@
-Return-Path: <stable+bounces-187738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8EF3BEC27E
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:17:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD0DBEC29F
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:24:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48D25420BE1
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:17:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AF8C424FEF
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 00:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E914CFBF6;
-	Sat, 18 Oct 2025 00:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8659A13A3F7;
+	Sat, 18 Oct 2025 00:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N5Wj3On1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgmskAGl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A641CC8E6
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 00:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544274A3E
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 00:24:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760746672; cv=none; b=q/MhNa+Of+D+G15J9M5slP8q6HAPhtpRqNoT4dHXckkREg8Jf0SD4BxSc0jOISBhn0V9Aio3EuapVlGmJC7MoF46+EILk5AnYhA+O0AIlbHMrqsTFuhen0uu04dNxTx+0Uv4NI7DrnLrPqlQ+3B550GCMjQNS+0uu3ifx4qun/U=
+	t=1760747075; cv=none; b=T+xB2NFEkXN3e3i/Z49uuctNtaFFqh876tGbkbt5VzVZS3CNYAY/GP2W4ZJEMCEPayM6y3rSlZ6qR7sgyD35VjOMWrT2q1s91U0ONBgcHFkuYqiIQnUC2nQpyv4OcCciAUZClSN5GgpFETbdBvd4c6iFTguMixyrEeKgvUenKJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760746672; c=relaxed/simple;
-	bh=4eDmb0voP6+q6DwtpHAdWkBTBIdiITtORpZ7iQZgkX8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aA4Bkr0O7GOP+AGNPB3OLtllpYtig2vUah/AgSwxM5hK4DkxOTT9OA/dLTVX8Uag6bcRnh91aQ33jP8Sz7BsiMvuiSw7Qia8dkVWGx1TIahqTc7ldNKIJzvWoNdsICoRczwfzGIvNHPPBPzUVPE93kMaExlelwVpOCterWeUbws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N5Wj3On1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FF9C116C6;
-	Sat, 18 Oct 2025 00:17:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760746672;
-	bh=4eDmb0voP6+q6DwtpHAdWkBTBIdiITtORpZ7iQZgkX8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N5Wj3On1zA+/CIb5i8IJNbYHPH3EmzJEGs77/JQHB+UgdhbEQeXCTCbWjUj8k9c1U
-	 PQ/9fgeHjXf4hkqvgsAEkmkXkTjOmLy1K8RrUSLKNwV2Hqm+vLqESp1IMsqYjWd7Jl
-	 57i6IGezNPuuO3DjYbRjZ+LMMKo9CbZHoq7FCbC9JOiaRGjVLUsW8+tPSyF367UtDW
-	 UIDSUnOPpFSUi8KNsDofW93+igpLbAYgZOzvA8c8Xv4ZGY/NS024olGyeiZbbp4MmW
-	 L/GGlgM4vP8MgjZlOFPVLthcrEoY/HF9bdvJDazSTudUs4YqEu8SwWRN+FKJ9v8lgU
-	 AiyZLtC+7P4oA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Kuen-Han Tsai <khtsai@google.com>,
-	stable@kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 3/3] usb: gadget: f_acm: Refactor bind path to use __free()
-Date: Fri, 17 Oct 2025 20:17:48 -0400
-Message-ID: <20251018001748.76008-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251018001748.76008-1-sashal@kernel.org>
-References: <2025101617-yield-come-49f4@gregkh>
- <20251018001748.76008-1-sashal@kernel.org>
+	s=arc-20240116; t=1760747075; c=relaxed/simple;
+	bh=U9IrYANTsLnJeSvCr1DnvWP2LKuNICWu5JtEQxnWi2M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gyG9JNzRkY4k89f98Bp0s7AJoVzDdhEYi68VDdjH80LrQSS35wRB70ts6MdM33H/Z2lnSZOrIaUowSwsaQ9wSFl818jVE5oBVpJr9jb55pXyg4aGoL0C26AXSkXQb1UYpD89QWE8dBS8yVCLY/hGEH+rvOQVf78YgXpgvZzaMcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgmskAGl; arc=none smtp.client-ip=209.85.166.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-911afafcc20so106126939f.3
+        for <stable@vger.kernel.org>; Fri, 17 Oct 2025 17:24:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1760747072; x=1761351872; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vnmqLG6mD8qqWt7UOjgypO2NRulVIOp0w81YmvKj5/o=;
+        b=MgmskAGlDarCSTX2cpYtvVL/SZtJsXEAJz2U5IuviCmBOvOKIs1fOpkLd/xg0N/sOJ
+         +J6IJstL3RxBxa7oQRcuvRN2edfO3Bz5QIG2yosM9fdi4GPdj3MOEI9ShZptCoBeTUh0
+         yvTnwh8WxLwb9ud7yufGD+E/7qjDJALAwSpRU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760747072; x=1761351872;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vnmqLG6mD8qqWt7UOjgypO2NRulVIOp0w81YmvKj5/o=;
+        b=QVrptde72MSoGtsaWSoZ3yPY7iH6k/ZsHcwoB4ZoJIl4QTYW4MzAFllaq0VAqdveNZ
+         DR02YG5x8UA7ObY1fyMbOv/uco4bEQP6JaRrZurn5TtOFcls0oW1p5tu4tvyAfHBWYSB
+         oIissUSqlloLXFZrsCTXYicFvwgwF7TZuM5+12s7UlS2VVT+OgVcdFENcB+x2dvnTImv
+         kq2JhmkyFhFhM33nSwXRxiEDrAlPMn2zYh/yh7aLmSWdRWH/jBk/2p6gyfp9LciTOMok
+         gtnjz540cTa4EiYlhTqKQmQHzQ80WYQQNump0MYOb/bEEWNNER7zntmf1672dUdyNEK6
+         2O4A==
+X-Forwarded-Encrypted: i=1; AJvYcCXVzbrwCa3UpDY2z0E9+RRVvtyzaJTyFLd/vfGenKl79J4CCDeNQyNg0uG4SWugNBLuDtlFy/w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0tFyLI1/EXipkcAwalp8yY8YBOmjJuWq6cVvBv3g6wvgy5myA
+	oK8y5SquvwLO1uJckUuVk+rwTvy4ucUxB95/jOCaLBLsW02nmDBOFNUBNUAm209TTsg=
+X-Gm-Gg: ASbGnctMdp03eC8K7HpmHWAxBxhmEmMS+0DcDYFhM/tS8Mh5knAD1VLHXjf3oZJK2++
+	Z66GUP7lvFm/PL2rF3QnqAJtC2ei9hCeTscUHSQkL3Aw0DDRM9QknRv1EJrddY9KVLgfQkSHnHq
+	gw2L0gdEbNcavpOA4JWogCOaV1uzlKDVZdh9Qd51oX4ojqShPghswp/xGThjsfWbsbmBBvzQ4rf
+	1wy4mARRZhAjcqRMtEp+kvGTKIJx1K/zJFFneMnlPhoCFufKH3KH5aZKKc52YR1qif1NE9ONo2Y
+	wyip/eug+tjjgMonsRfGzsbxh0VIvBJ3aGLJ/hMrORjRSLdJhdPCvll6IGJBDNxU4qUWj3OU3iU
+	KcrTBjVMHKYxufTEvk+AGcXKstY5K8Yd2NBsMdWlhNeTn6XxfZ8cEvyBAPCAyvZ5UtYK3LLeSL7
+	Y/+KLi8hw5+lMb
+X-Google-Smtp-Source: AGHT+IHx8toFL4okOKYH1BcXiwIuVau+vE6aOwtifNCHVZJjzx9BtPHT8riQx+rY+R82cWq9XNmtlw==
+X-Received: by 2002:a05:6602:2dc6:b0:93b:ac2b:d63b with SMTP id ca18e2360f4ac-93e7634f25emr896183039f.6.1760747072392;
+        Fri, 17 Oct 2025 17:24:32 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.187.108])
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-93e866cad8fsm40199239f.15.2025.10.17.17.24.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Oct 2025 17:24:31 -0700 (PDT)
+Message-ID: <bcf10471-28fd-4949-89e7-fc1fe9e5df94@linuxfoundation.org>
+Date: Fri, 17 Oct 2025 18:24:30 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.17 000/371] 6.17.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
+References: <20251017145201.780251198@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Kuen-Han Tsai <khtsai@google.com>
+On 10/17/25 08:49, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.17.4 release.
+> There are 371 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 19 Oct 2025 14:50:59 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.4-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-[ Upstream commit 47b2116e54b4a854600341487e8b55249e926324 ]
+Compiled and booted on my test system. No dmesg regressions.
 
-After an bind/unbind cycle, the acm->notify_req is left stale. If a
-subsequent bind fails, the unified error label attempts to free this
-stale request, leading to a NULL pointer dereference when accessing
-ep->ops->free_request.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Refactor the error handling in the bind path to use the __free()
-automatic cleanup mechanism.
-
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
-Call trace:
- usb_ep_free_request+0x2c/0xec
- gs_free_req+0x30/0x44
- acm_bind+0x1b8/0x1f4
- usb_add_function+0xcc/0x1f0
- configfs_composite_bind+0x468/0x588
- gadget_bind_driver+0x104/0x270
- really_probe+0x190/0x374
- __driver_probe_device+0xa0/0x12c
- driver_probe_device+0x3c/0x218
- __device_attach_driver+0x14c/0x188
- bus_for_each_drv+0x10c/0x168
- __device_attach+0xfc/0x198
- device_initial_probe+0x14/0x24
- bus_probe_device+0x94/0x11c
- device_add+0x268/0x48c
- usb_add_gadget+0x198/0x28c
- dwc3_gadget_init+0x700/0x858
- __dwc3_set_mode+0x3cc/0x664
- process_scheduled_works+0x1d8/0x488
- worker_thread+0x244/0x334
- kthread+0x114/0x1bc
- ret_from_fork+0x10/0x20
-
-Fixes: 1f1ba11b6494 ("usb gadget: issue notifications from ACM function")
-Cc: stable@kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-4-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-4-4997bf277548@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/gadget/function/f_acm.c | 42 +++++++++++++----------------
- 1 file changed, 19 insertions(+), 23 deletions(-)
-
-diff --git a/drivers/usb/gadget/function/f_acm.c b/drivers/usb/gadget/function/f_acm.c
-index 7061720b9732e..106046e17c4e1 100644
---- a/drivers/usb/gadget/function/f_acm.c
-+++ b/drivers/usb/gadget/function/f_acm.c
-@@ -11,12 +11,15 @@
- 
- /* #define VERBOSE_DEBUG */
- 
-+#include <linux/cleanup.h>
- #include <linux/slab.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/device.h>
- #include <linux/err.h>
- 
-+#include <linux/usb/gadget.h>
-+
- #include "u_serial.h"
- 
- 
-@@ -613,6 +616,7 @@ acm_bind(struct usb_configuration *c, struct usb_function *f)
- 	struct usb_string	*us;
- 	int			status;
- 	struct usb_ep		*ep;
-+	struct usb_request	*request __free(free_usb_request) = NULL;
- 
- 	/* REVISIT might want instance-specific strings to help
- 	 * distinguish instances ...
-@@ -630,7 +634,7 @@ acm_bind(struct usb_configuration *c, struct usb_function *f)
- 	/* allocate instance-specific interface IDs, and patch descriptors */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	acm->ctrl_id = status;
- 	acm_iad_descriptor.bFirstInterface = status;
- 
-@@ -639,43 +643,41 @@ acm_bind(struct usb_configuration *c, struct usb_function *f)
- 
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	acm->data_id = status;
- 
- 	acm_data_interface_desc.bInterfaceNumber = status;
- 	acm_union_desc.bSlaveInterface0 = status;
- 	acm_call_mgmt_descriptor.bDataInterface = status;
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &acm_fs_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	acm->port.in = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &acm_fs_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	acm->port.out = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &acm_fs_notify_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	acm->notify = ep;
- 
- 	acm_iad_descriptor.bFunctionProtocol = acm->bInterfaceProtocol;
- 	acm_control_interface_desc.bInterfaceProtocol = acm->bInterfaceProtocol;
- 
- 	/* allocate notification */
--	acm->notify_req = gs_alloc_req(ep,
--			sizeof(struct usb_cdc_notification) + 2,
--			GFP_KERNEL);
--	if (!acm->notify_req)
--		goto fail;
-+	request = gs_alloc_req(ep,
-+			       sizeof(struct usb_cdc_notification) + 2,
-+			       GFP_KERNEL);
-+	if (!request)
-+		return -ENODEV;
- 
--	acm->notify_req->complete = acm_cdc_notify_complete;
--	acm->notify_req->context = acm;
-+	request->complete = acm_cdc_notify_complete;
-+	request->context = acm;
- 
- 	/* support all relevant hardware speeds... we expect that when
- 	 * hardware is dual speed, all bulk-capable endpoints work at
-@@ -692,7 +694,9 @@ acm_bind(struct usb_configuration *c, struct usb_function *f)
- 	status = usb_assign_descriptors(f, acm_fs_function, acm_hs_function,
- 			acm_ss_function, acm_ss_function);
- 	if (status)
--		goto fail;
-+		return status;
-+
-+	acm->notify_req = no_free_ptr(request);
- 
- 	dev_dbg(&cdev->gadget->dev,
- 		"acm ttyGS%d: IN/%s OUT/%s NOTIFY/%s\n",
-@@ -700,14 +704,6 @@ acm_bind(struct usb_configuration *c, struct usb_function *f)
- 		acm->port.in->name, acm->port.out->name,
- 		acm->notify->name);
- 	return 0;
--
--fail:
--	if (acm->notify_req)
--		gs_free_req(acm->notify, acm->notify_req);
--
--	ERROR(cdev, "%s/%p: can't bind, err %d\n", f->name, f, status);
--
--	return status;
- }
- 
- static void acm_unbind(struct usb_configuration *c, struct usb_function *f)
--- 
-2.51.0
-
+thanks,
+-- Shuah
 
