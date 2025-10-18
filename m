@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-187784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0726DBEC504
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:07:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86776BEC50F
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 04:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BFDD1AE0055
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:07:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 214E74EA6CA
+	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 02:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F71E2144D7;
-	Sat, 18 Oct 2025 02:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B28F19995E;
+	Sat, 18 Oct 2025 02:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nBA7+cg1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3JyyRN8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3021A00CE
-	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FBC146D45
+	for <stable@vger.kernel.org>; Sat, 18 Oct 2025 02:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760753121; cv=none; b=LlaX2dYT17NYZ/Fec1e7ns3LIU8xzhoy740U2sNpMPpvyeU/vWPsMPBfhMH5uVrems3czuA/WhuitM8oSSw5LglTKFVaU/8vOcdETKorE6zAO7l1kSKvccVTVe7HksWWzsb+KqSJ006/Ljo4nrZW1ffvVQO0DUm8zwApWbU/Duw=
+	t=1760753903; cv=none; b=mKW+NlpGNY7yPaxrQ9aTzqwQytLRjrOYlL4zVY3TZo/+Xw9bsrmF+4Kq2+SWl/02wzPV1jttaLAxmAVPIAon4lj4QFZVTFcXSmOPWpoVvo4pJu2o46EJdfB0b6vFvj3n9vdGQpvyTCTI46XSG7ZCh+/pRklv0u8XL1xldp6NiRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760753121; c=relaxed/simple;
-	bh=DgdSZyUdvAGckBGqsspi7EAhs6uiZoHP8+n3T1NjzdQ=;
+	s=arc-20240116; t=1760753903; c=relaxed/simple;
+	bh=KvEZmaoCQ0WyMljIS+GLqZHj6jNiivBGyVmlU4M2LqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZLdICvRgY4RFxAey+K+nk+LFakQaSeF8JjiSxhQVk9rAuVKjmlB5WC/oCkohvmjvyFwrvHy497gOE+/PnKtuNpEEyqn6AOO/wG8onlIDbSJF8QL6Sx3SRtocKhc6Zn66RyU4HfCQ961531uyiiwYHaQty0kGsih33ODqoaagXnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nBA7+cg1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A91C4CEE7;
-	Sat, 18 Oct 2025 02:05:20 +0000 (UTC)
+	 MIME-Version; b=uHB9ZxgY4uwiBj442Cv/hm7vq6ut7CbastzG6BzRYvqw9Brq88dWzXTYks0KcBW/B5V6mB5j4tOW5kRic1tzji0/AwJ+FNOBO8pbvlscv3lGkxWFfJSW27nHu1MKrGt2wMqncI75lYs+oWnbQTWl0Db5yQ/NSGwFqJMu34SNX/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3JyyRN8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68420C4CEE7;
+	Sat, 18 Oct 2025 02:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760753120;
-	bh=DgdSZyUdvAGckBGqsspi7EAhs6uiZoHP8+n3T1NjzdQ=;
+	s=k20201202; t=1760753902;
+	bh=KvEZmaoCQ0WyMljIS+GLqZHj6jNiivBGyVmlU4M2LqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nBA7+cg1ujPPUw+xtJ23XdWxuL1z2TT8oyNa1sWlJMJ2+65PWW9HR0PDIeslozlX7
-	 ZmkNM8ODyHby9Bxu2Uy0tklAx5jNPE3S7lSUDRaYicF2rx5KnMuQiC2O8wd7SoWRP3
-	 is+nPkZD8PIVRNSUOTjKY5lsalzd+1xdMa1LvG7U8cKc02/B5YKkOUzdOk9kOu1ma5
-	 vkeWMeEA0EJOjZr+KQ/ng2TrCh37wCon8Byod6rOl9Pi8jF7f6BdCQQ5sQjJe1ycAC
-	 8HZl8Hz0nleKpEHJaY5f02lXzmfJauMZBj9DRbzUVbyDJH20oa36wMmFagcc7n8B95
-	 cgqCxgGNQeuzA==
+	b=X3JyyRN8BD+lfYJujbsowNYhE/2kHc1093dj04SVRwhJBmBrXtzEkmljOntqZokA0
+	 TZ8gPKpx0Lyt9vATEl5BmPw6jkZxxh0j9h+7S/e8jvycHn+MJr/KQFHQigCjDq8wOs
+	 pxN8Y5oyS6fm1eSki3NdiNnBjOXd+1Cdlv4reC9v//T1GYDTuJkBouTEKGeKntuovw
+	 CpsSIAO84unsREKw3uDi6wUKWeyt8TA/jApMt805aT0koy+2GY/cMn+4qL+/J0tl1o
+	 WTwZpfKHayLAAjFH88W509Ssc3uRoEItFa7osJADwQTZC+Cq8TN01qNEPd7S5jwHeY
+	 pZiLPmZbUzGoA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Kaustabh Chakraborty <kauschluss@disroot.org>,
 	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] drm/exynos: exynos7_drm_decon: remove ctx->suspended
-Date: Fri, 17 Oct 2025 22:05:15 -0400
-Message-ID: <20251018020515.208843-3-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/3] drm/exynos: exynos7_drm_decon: fix uninitialized crtc reference in functions
+Date: Fri, 17 Oct 2025 22:18:17 -0400
+Message-ID: <20251018021819.214653-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251018020515.208843-1-sashal@kernel.org>
-References: <2025101639-survey-affix-387d@gregkh>
- <20251018020515.208843-1-sashal@kernel.org>
+In-Reply-To: <2025101639-sublet-lilac-775e@gregkh>
+References: <2025101639-sublet-lilac-775e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,163 +62,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-[ Upstream commit e1361a4f1be9cb69a662c6d7b5ce218007d6e82b ]
+[ Upstream commit d31bbacf783daf1e71fbe5c68df93550c446bf44 ]
 
-Condition guards are found to be redundant, as the call flow is properly
-managed now, as also observed in the Exynos5433 DECON driver. Since
-state checking is no longer necessary, remove it.
+Modify the functions to accept a pointer to struct decon_context
+instead.
 
-This also fixes an issue which prevented decon_commit() from
-decon_atomic_enable() due to an incorrect state change setting.
-
-Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
-Cc: stable@vger.kernel.org
-Suggested-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
 Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Stable-dep-of: e1361a4f1be9 ("drm/exynos: exynos7_drm_decon: remove ctx->suspended")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos7_drm_decon.c | 36 ----------------------
- 1 file changed, 36 deletions(-)
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpu/drm/exynos/exynos7_drm_decon.c b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-index 2cc2962d4ef3a..2a218d2058428 100644
+index 5f8e5e87d7cd6..66f1a096c0f93 100644
 --- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
 +++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-@@ -51,7 +51,6 @@ struct decon_context {
- 	void __iomem			*regs;
- 	unsigned long			irq_flags;
- 	bool				i80_if;
--	bool				suspended;
- 	wait_queue_head_t		wait_vsync_queue;
- 	atomic_t			wait_vsync_event;
+@@ -81,10 +81,8 @@ static const enum drm_plane_type decon_win_types[WINDOWS_NR] = {
+ 	DRM_PLANE_TYPE_CURSOR,
+ };
  
-@@ -105,9 +104,6 @@ static void decon_shadow_protect_win(struct decon_context *ctx,
- 
- static void decon_wait_for_vblank(struct decon_context *ctx)
+-static void decon_wait_for_vblank(struct exynos_drm_crtc *crtc)
++static void decon_wait_for_vblank(struct decon_context *ctx)
  {
--	if (ctx->suspended)
--		return;
+-	struct decon_context *ctx = crtc->ctx;
 -
- 	atomic_set(&ctx->wait_vsync_event, 1);
- 
- 	/*
-@@ -183,9 +179,6 @@ static void decon_commit(struct exynos_drm_crtc *crtc)
- 	struct drm_display_mode *mode = &crtc->base.state->adjusted_mode;
- 	u32 val, clkdiv;
- 
--	if (ctx->suspended)
--		return;
--
- 	/* nothing to do if we haven't set the mode yet */
- 	if (mode->htotal == 0 || mode->vtotal == 0)
+ 	if (ctx->suspended)
  		return;
-@@ -247,9 +240,6 @@ static int decon_enable_vblank(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	u32 val;
  
--	if (ctx->suspended)
--		return -EPERM;
--
- 	if (!test_and_set_bit(0, &ctx->irq_flags)) {
- 		val = readl(ctx->regs + VIDINTCON0);
- 
-@@ -272,9 +262,6 @@ static void decon_disable_vblank(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	u32 val;
- 
--	if (ctx->suspended)
--		return;
--
- 	if (test_and_clear_bit(0, &ctx->irq_flags)) {
- 		val = readl(ctx->regs + VIDINTCON0);
- 
-@@ -376,9 +363,6 @@ static void decon_atomic_begin(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
- 
--	if (ctx->suspended)
--		return;
--
- 	for (i = 0; i < WINDOWS_NR; i++)
- 		decon_shadow_protect_win(ctx, i, true);
- }
-@@ -398,9 +382,6 @@ static void decon_update_plane(struct exynos_drm_crtc *crtc,
- 	unsigned int cpp = fb->format->cpp[0];
- 	unsigned int pitch = fb->pitches[0];
- 
--	if (ctx->suspended)
--		return;
--
- 	/*
- 	 * SHADOWCON/PRTCON register is used for enabling timing.
- 	 *
-@@ -488,9 +469,6 @@ static void decon_disable_plane(struct exynos_drm_crtc *crtc,
- 	unsigned int win = plane->index;
- 	u32 val;
- 
--	if (ctx->suspended)
--		return;
--
- 	/* protect windows */
- 	decon_shadow_protect_win(ctx, win, true);
- 
-@@ -509,9 +487,6 @@ static void decon_atomic_flush(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
- 
--	if (ctx->suspended)
--		return;
--
- 	for (i = 0; i < WINDOWS_NR; i++)
- 		decon_shadow_protect_win(ctx, i, false);
- 	exynos_crtc_handle_event(crtc);
-@@ -539,9 +514,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int ret;
- 
--	if (!ctx->suspended)
--		return;
--
- 	ret = pm_runtime_resume_and_get(ctx->dev);
- 	if (ret < 0) {
- 		DRM_DEV_ERROR(ctx->dev, "failed to enable DECON device.\n");
-@@ -555,8 +527,6 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
- 		decon_enable_vblank(ctx->crtc);
- 
- 	decon_commit(ctx->crtc);
--
--	ctx->suspended = false;
+@@ -100,9 +98,8 @@ static void decon_wait_for_vblank(struct exynos_drm_crtc *crtc)
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "vblank wait timed out.\n");
  }
  
- static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
-@@ -564,9 +534,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
- 	struct decon_context *ctx = crtc->ctx;
- 	int i;
+-static void decon_clear_channels(struct exynos_drm_crtc *crtc)
++static void decon_clear_channels(struct decon_context *ctx)
+ {
+-	struct decon_context *ctx = crtc->ctx;
+ 	unsigned int win, ch_enabled = 0;
  
--	if (ctx->suspended)
--		return;
--
- 	/*
- 	 * We need to make sure that all windows are disabled before we
- 	 * suspend that connector. Otherwise we might try to scan from
-@@ -576,8 +543,6 @@ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
- 		decon_disable_plane(crtc, &ctx->planes[i]);
+ 	/* Check if any channel is enabled. */
+@@ -118,7 +115,7 @@ static void decon_clear_channels(struct exynos_drm_crtc *crtc)
  
- 	pm_runtime_put_sync(ctx->dev);
--
--	ctx->suspended = true;
+ 	/* Wait for vsync, as disable channel takes effect at next vsync */
+ 	if (ch_enabled)
+-		decon_wait_for_vblank(ctx->crtc);
++		decon_wait_for_vblank(ctx);
  }
  
- static const struct exynos_drm_crtc_ops decon_crtc_ops = {
-@@ -698,7 +663,6 @@ static int decon_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+ static int decon_ctx_initialize(struct decon_context *ctx,
+@@ -126,7 +123,7 @@ static int decon_ctx_initialize(struct decon_context *ctx,
+ {
+ 	ctx->drm_dev = drm_dev;
  
- 	ctx->dev = dev;
--	ctx->suspended = true;
+-	decon_clear_channels(ctx->crtc);
++	decon_clear_channels(ctx);
  
- 	i80_if_timings = of_get_child_by_name(dev->of_node, "i80-if-timings");
- 	if (i80_if_timings)
+ 	return exynos_drm_register_dma(drm_dev, ctx->dev, &ctx->dma_priv);
+ }
 -- 
 2.51.0
 
