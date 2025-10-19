@@ -1,75 +1,75 @@
-Return-Path: <stable+bounces-187879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D3BBEE070
-	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 10:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F569BEE11F
+	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 10:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EDB2F4E0298
-	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 08:13:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4F2F4E4255
+	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 08:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F428230D1E;
-	Sun, 19 Oct 2025 08:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93BA29E0F6;
+	Sun, 19 Oct 2025 08:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S2vSzL+/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZNh6HDw/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCEB354AEB;
-	Sun, 19 Oct 2025 08:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51F0271A7C;
+	Sun, 19 Oct 2025 08:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760861591; cv=none; b=iBdkFZDaGfRn4gWUZFudNew7sOfgzg+DtwWlL+udyDSOLQWVigoAN0fn18BBfxcyIvBo+cyJ96F5gB4/QeYinHUxqKsLDTM7hSL/XgjpZnTn9hJCo45e4xUe2Qgq6JlodL7TRR0mFP+6NMBCT+VrOGUfLB3vLp1sfHUMUogiSSw=
+	t=1760863800; cv=none; b=JXgcT1WYxSUbZfKDwLNI31EQk8UYKiaSyjvYgBjiSWPJYc4X+kQ3V5dVeAGX+aNEeI2pzt876TxZxrxQTkyLzYmCpHU9BrPF6pdgzQl5h+3m8eWNZvje0T0X0Pabmc9eMrLdz3YRsdaEmgb1QQIJ9Ifjv/4crIQr3Z8+XFByzWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760861591; c=relaxed/simple;
+	s=arc-20240116; t=1760863800; c=relaxed/simple;
 	bh=PtUNYTIn35DmRKVdxJEa3D93GchQZ//XdbUorEkdtHM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T4A4G6uyrEQMJGzULLTxB2IEJeCwXVkew/QGHrt1KziSci5DXVZKynA1J6PSTbpvZbnIBeXhXCq0qz1kQ+ouosTWDz5E83W5MVmjfzEWDbGBnPOkaXoRnkDMvG208LnhsIEkqfy8FElcRZzUPmzeLEHOmyWfSQ5zgRxrcXyJNPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S2vSzL+/; arc=none smtp.client-ip=198.175.65.19
+	 MIME-Version; b=ovEjbX0xHFNaUBdrAsjFoPfUh+j0kHNzfWvKkqXnEn/HiukZb2JlPnYZhmRYkWHlTX6GqnV74BbOcBsoCiXRa5mOFbQCJTnd3gfqvPOCMUvmG96PkvHFWFyCCXl0rd60GsItky87zgMt2B5T4K1GtX/nT8yiHe0jb3mX12yfF9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZNh6HDw/; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760861590; x=1792397590;
+  t=1760863799; x=1792399799;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
   bh=PtUNYTIn35DmRKVdxJEa3D93GchQZ//XdbUorEkdtHM=;
-  b=S2vSzL+/qHO5bpqARcZh7rCmhv92yiZLfC6WdleX5OlbhAvLI+RJ9Rmo
-   SmEWkghqc0e3DHgHnaCgeKTK3IVt74KLyIY4VOTEfxuxOy3XzBI2i2zWM
-   3dQ8Et1weJCvU72+JKRkKendvxR1pHTqxF+3bmuNfSPkvF9LgouDcNwYT
-   WA1cNupK2XEMLIo/iJcQ9YNwbVm5bVuwdxFkKcor+b1xnFbQ/G+U6Jog6
-   zI1GOrnedzn4qH8/hv8sMEAp9rvpsE4J3WzRSLA2SyP3wjnfXiO9zV4kl
-   BsF7IUy0GQpD48b5hzStInvRcBk9WXlNUZPDBwSZVVdsFL9LM+tPEsYdt
-   Q==;
-X-CSE-ConnectionGUID: wW/cNNDIRz+ShS9sGP6Z9w==
-X-CSE-MsgGUID: 5EH3rQNORJi0MFympXp0BQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62912539"
+  b=ZNh6HDw/eQnasft26kP4cuvKzkWfPgA9hKmDYF8lQMk6qhNGVdY2zbZS
+   kkigqJk/aUEH5q1ZD2jgnnmDAfFSMCVgpu1zR/PTa9qFCvm+kL2jQfjE8
+   qC3pJDY2Lvu+ucXmEQvwowAqQvlJ2ceXDQ4lkt0vp1jbpPdhzJdsFSaEe
+   eFI0bwzcOOYdzMqGz/+NNyHaf8TgFdnbLzqUJiptOuD2MFOcoeRIUVSn5
+   h4H1WlMDOEjLJkf+3BHMjtttUn4JH76GDhg59atn3Oy/74OjN/ZGZo8oY
+   rgygQZNgTx+h6hWONvYaKDaeaEHK3T8Lw/a9NljkFV3BeqjSYQdPIBgAy
+   w==;
+X-CSE-ConnectionGUID: Hoc33k5nS8WOnm3E+dX5hw==
+X-CSE-MsgGUID: V4bn2UkkQzmnjfAeJnRC+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="65634508"
 X-IronPort-AV: E=Sophos;i="6.19,240,1754982000"; 
-   d="scan'208";a="62912539"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:13:08 -0700
-X-CSE-ConnectionGUID: hHzy20FuRVKPFN62W609eQ==
-X-CSE-MsgGUID: 7y9XSQZvSV2PZuJZH61Mpg==
+   d="scan'208";a="65634508"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:49:59 -0700
+X-CSE-ConnectionGUID: eXSY42MkQNCAKHWA0UdLcg==
+X-CSE-MsgGUID: pzJ5upbFQeS0JhHNjlGH0A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,240,1754982000"; 
-   d="scan'208";a="183501603"
+   d="scan'208";a="183055155"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:13:06 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:49:56 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Benjamin Berg <benjamin.berg@intel.com>,
 	stable@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 1/4] wifi: cfg80211: add an hrtimer based delayed work item
-Date: Sun, 19 Oct 2025 11:12:56 +0300
-Message-Id: <20251019111003.765ab7bfa87e.I01b5af0363869864b0580d9c2a1770bafab69566@changeid>
+Subject: [PATCH wireless-next v2 1/4] wifi: cfg80211: add an hrtimer based delayed work item
+Date: Sun, 19 Oct 2025 11:49:48 +0300
+Message-Id: <20251019114824.765ab7bfa87e.I01b5af0363869864b0580d9c2a1770bafab69566@changeid>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251019081259.2455317-1-miriam.rachel.korenblit@intel.com>
-References: <20251019081259.2455317-1-miriam.rachel.korenblit@intel.com>
+In-Reply-To: <20251019084951.2572582-1-miriam.rachel.korenblit@intel.com>
+References: <20251019084951.2572582-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
