@@ -1,126 +1,102 @@
-Return-Path: <stable+bounces-187873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC85BEDE28
-	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 06:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D1DBEDE87
+	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 07:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3BBD734B470
-	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 04:39:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7A88734B1AC
+	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 05:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F3D1D63D8;
-	Sun, 19 Oct 2025 04:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75272192F5;
+	Sun, 19 Oct 2025 05:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F3ZFTrOm"
+	dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b="GuiECUSi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ptr1337.dev (mail.ptr1337.dev [202.61.224.105])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7807F72614
-	for <stable@vger.kernel.org>; Sun, 19 Oct 2025 04:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9AE288A2
+	for <stable@vger.kernel.org>; Sun, 19 Oct 2025 05:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.61.224.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760848740; cv=none; b=aqtylu+ong3tWM3eiPDWb6cf3ymTVsxFArRIztCiPX6K0zh+S7uNscoj9LtI1mb+496ygDSPhBz520Qd0yrHVCblrQJj21aRBX7SBkVA2jzmTt1zlc3AWj/noh0ER/p2pkl2qb54LHLXyP7Y6PaBRse4XFQfdT5X/H2wW3CYqZo=
+	t=1760852368; cv=none; b=njYn16by1vQJWxCHdWsnfmN3TgiUkf5iiSNBmU0aC649gsQyu9ZgkL+oHDjfdToEHEohJVfq0HjOKmabNtKIGF9tuH8AQlRmC98F0xTc4mp/g0n+U8oW6HdppFE/UBTq/fLXvEYC5wBNqbE9bnq6vK/m0np0nYTzPuijaKrgSVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760848740; c=relaxed/simple;
-	bh=0VL6UvbA1L9L3KYApi2HBxM5osAN5B72tXfZdkax4n8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VJYlk8OulcUZLagE6ePtSta+UG1o2PzOrERkB3g9ZFHGTCO9joemYDoSoL3PZQ1FIV5yiqfIKKUNfQNtoiZJSlfsYBEOMLJww9M8+cFjk6RHG6oLAoEmU+tVbx5b5uKaDCGxgVqH4sUeqyaLHjNgmmbN03+4CPDAKeg5pE9hqtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F3ZFTrOm; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-290dc630a07so13611145ad.1
-        for <stable@vger.kernel.org>; Sat, 18 Oct 2025 21:38:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760848738; x=1761453538; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pmK1mTi1aKqF882bTtKfCSZ/kTsVspf2lr8U06HUrwA=;
-        b=F3ZFTrOm/fdEKaf6WBJmqCg0W+TaNaZrVAyDkmvtSoptDqo8MSHNrafraH0ypL3VQ2
-         uA1LmHVEO7r1IoGyBmFgG0pi8AQECL4292GZd7fq48C7NChdc/512G0AxBnBRp1INDqn
-         fHR3p4dqv3HwfwMnE85m0dmX0KMcvskzZrJJ/TLWgO80gYhJmcCEPmxAYXC4QgkDHE8t
-         OP8NMPB5Cn8uDQAM+ty6FT6deNbWo+KsAaAqvvO5WHlcdqwBUKNHBO/0dVr1x34frHBR
-         fe0RkWKZjf6qJgy2tcpvZtXXHZIO+dHwwQh4XJlhYext4a6ke7CyAVEaovykpxxaDO9C
-         W5ZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760848738; x=1761453538;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pmK1mTi1aKqF882bTtKfCSZ/kTsVspf2lr8U06HUrwA=;
-        b=meNhFIfKozruImlPJwUcVOwM6gkDZFrSuLTpJEexWb2X5GaRBNLYh7zaMEat5Gj2aX
-         c8NbpWYpH4cW0aPzaTi2B8S9lyuNV16LbSQ310AVnlmDtPI+A3gnOkcmIodEFMBsnu3e
-         hMjgjiBy/9YeImQXz0/Tn5HSSe8aWcVTwPWKgZP5xkAhtqZ9QlHLxRQa+EVfG9gpoOtj
-         96nRVU7hyJusFAYmfSMjIgOSUV3gJc+Ms/LTe3yctAWKNPybDcIz9GqiubLZ8rktBJeT
-         XSoVYfX91MNjwN4zcVM/MinxkyjHMSdrhntiWmKSoBIIDQmNA8ZxxC4PNdhfZSo2yrkO
-         zlQA==
-X-Gm-Message-State: AOJu0Yzr8qknt6OHof7/QLYxBPA8BOahr6uxvJg3qqRqZcjRmkCSbEdt
-	b5r9sLtY5g5Ugk1Zqecp0Cc4qjxFXAvNKcCJGrHkJXfFq2dUE59rkXkS
-X-Gm-Gg: ASbGnct+iF4kbIQzZr4S98HfdrtYyNU+/W8HLzokt9/YO9hSAOAFX5J/4q/Xgy/CagS
-	3q3bggMFaToDkKkbfyiKet3XDTlgNQlhXi6hSJ6RhMkR+eMyXbMB8ij9CBaaLHD2M0jwuhgnOKM
-	EibiXCik9n0qxQRl0Z8xBalxrbpjH7CU4zSp/mcFyS3eGqTGvHZ0qdazJ4svgVM+R/6FaiDalQE
-	AE2rgAJXlZNhD1fIvM6rPVpfG7vPnr/Dc7TFwhTKG2kj2+nBoY8I1qNGhOK09mASNTuGhO+idPb
-	s/2mZKTPdILGlPh327k9BghNpHrTY/i94ifsF9V0IeGtaYJYa77OsUg00BI5JDclck0fbK+P/70
-	JVGHFjzQitl9UhL28q3ddtI05caGdE21Vf6P/sUkdz6ntFy7reG2z0RlOQVS1y+xcxyEv62RoCe
-	Bd5L5YLe/oNhrD
-X-Google-Smtp-Source: AGHT+IHdS/E/u65fGvAAeZHq/8Z61TPZEPdEbbbaTroydHGnbRpgb6AV15wzVJl9z/JFGKzlDshZFA==
-X-Received: by 2002:a17:903:19c3:b0:270:4aa8:2dcc with SMTP id d9443c01a7336-290c9d34dddmr114629115ad.19.1760848737742;
-        Sat, 18 Oct 2025 21:38:57 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471d5874sm41615345ad.54.2025.10.18.21.38.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 21:38:57 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sat, 18 Oct 2025 21:38:55 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	Yi Sun <yi.sun@intel.com>
-Subject: Re: [PATCH 6.12 000/140] 6.12.48-rc1 review
-Message-ID: <58d213af-f422-4b70-8821-9777fc1b7020@roeck-us.net>
-References: <20250917123344.315037637@linuxfoundation.org>
+	s=arc-20240116; t=1760852368; c=relaxed/simple;
+	bh=AUetctZfU4WPwK3EmwpyMrcmmU7Sw0mh4g+oM9LzWmw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=csrFdhJkNNQ3Ri5FzrO0nFpWiaN1vmnjREdJXCRAUAOnersFSh7+V3zB8SRK8NkRpwP8+3UZxZt1uM7MQxm2vnA93mVGEkUkzUHJOPM8anH33GaABZuvSMSSzUidkNU5ecrkUqPaqm5VbCfgEDo6wqaYgPYD850R42jnI5/Xbk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org; spf=pass smtp.mailfrom=cachyos.org; dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b=GuiECUSi; arc=none smtp.client-ip=202.61.224.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cachyos.org
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C3C00284C2A;
+	Sun, 19 Oct 2025 07:29:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cachyos.org; s=dkim;
+	t=1760851770; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=4gGqfG3ZXsXTwpKldk/kpLeODZwHq4Vin9TjGeIck90=;
+	b=GuiECUSinqYYjjnEToOQj+knVSxz06gi0AbQ3yUlftiY0bdX8IP6d9I/fATf3pPhWdZ+1V
+	BlzS8O5dNr6hbhTFMMAewG7VsJSSkdEHXLVsyovIGYQor2V/+QycAszrxm535L6sXmqwcr
+	cXpoUtWKBefc8T8iM3aMc81K6op65ZdT5OorO65GTpgzg2YcefofLDx54SmkiDcxIQzBvo
+	Ok1IExwCrq6s7f2ZNZqhADcY5Yvd7xrkaIKFiB9gUZJhrR0lolEap1k9wsqj0HsPHlUhwe
+	sDSlM3/vnMeY6GdU7NB6D/TZTD0Xmg/qSkjDJL/+6sJb920Oh39SMtAsOSc2cw==
+Message-ID: <6f19c559-35b4-4cd8-8bcd-615898dd8a4d@cachyos.org>
+Date: Sun, 19 Oct 2025 13:29:18 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.17 068/563] PCI/MSI: Add startup/shutdown for per device
+ domains
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Bjorn Helgaas <helgaas@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ Thomas Gleixner <tglx@linutronix.de>, Inochi Amaoto <inochiama@gmail.com>,
+ Chen Wang <unicorn_wang@outlook.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Sasha Levin <sashal@kernel.org>, Kenneth Crudup <kenny@panix.com>,
+ Genes Lists <lists@sapience.com>, Jens Axboe <axboe@kernel.dk>,
+ Todd Brandt <todd.e.brandt@intel.com>
+References: <20251013144413.753811471@linuxfoundation.org>
+ <20251013211648.GA864848@bhelgaas> <2025101753-borough-perm-365d@gregkh>
+Content-Language: en-US
+From: Eric Naim <dnaim@cachyos.org>
+In-Reply-To: <2025101753-borough-perm-365d@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
-
-On Wed, Sep 17, 2025 at 02:32:52PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.48 release.
-> There are 140 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 10/17/25 14:56, Greg Kroah-Hartman wrote:
+> On Mon, Oct 13, 2025 at 04:16:48PM -0500, Bjorn Helgaas wrote:
+>> [+cc Kenny, Gene, Jens, Todd]
+>>
+>> On Mon, Oct 13, 2025 at 04:38:49PM +0200, Greg Kroah-Hartman wrote:
+>>> 6.17-stable review patch.  If anyone has any objections, please let me know.
+>>
+>> We have open regression reports about this, so I don't think we
+>> should backport it yet:
+>>
+>>   https://lore.kernel.org/r/af5f1790-c3b3-4f43-97d5-759d43e09c7b@panix.com
 > 
-> Responses should be made by Fri, 19 Sep 2025 12:32:53 +0000.
-> Anything received after that time might be too late.
+> It's already in a release :(
 > 
-...
+> If someone will be so kind as to forward me the git id of the fix when
+> it lands in Linus's tree, I will be glad to queue that up.
 > 
-> Yi Sun <yi.sun@intel.com>
->     dmaengine: idxd: Fix refcount underflow on module unload
+> thanks,
 > 
 
-This misses a cleanup call to idxd_disable_sva() if device_user_pasid_enabled()
-is true. This results in a warning backtrace seen when unloading and reloading
-the idxd driver. Upstream does not have the problem because support for
-IOMMU_DEV_FEAT_IOPF and with it the cleanup call was removed there.
+Hi Greg, the fix has made it into Linus's tree. The git hash is e433110eb5bf067f74d3d15c5fb252206c66ae0b
 
-This is just a notification. I'll send a patch fixing the problem later.
+-- 
+Regards,
+  Eric
 
-Guenter
+> greg k-h
+> 
+
 
