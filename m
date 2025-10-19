@@ -1,101 +1,123 @@
-Return-Path: <stable+bounces-187877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595AFBEDF80
-	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 09:10:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5DEBEE061
+	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 10:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 470784E3D55
-	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 07:10:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E9353B873F
+	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 08:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF43221294;
-	Sun, 19 Oct 2025 07:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD01231845;
+	Sun, 19 Oct 2025 08:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QIaAxIju"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ccTdEhIo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F87136358;
-	Sun, 19 Oct 2025 07:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438F922ACE3
+	for <stable@vger.kernel.org>; Sun, 19 Oct 2025 08:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760857840; cv=none; b=rCVkwnSSGb2nlktFlI4qogwSYOC1DDDPx1CL+h1duuzCtmqlICRkLSUK0Bx3ucQ4LjfokGUXZ5I4uPGpOzBEwNjiKIGGP6okqDiU8lPUw9JCJDDD9u6w1QFSvRlmWk9sa+KOOue2IknZbpQHFCRQ8xvDuQnfA+F34zyGcj3M644=
+	t=1760861464; cv=none; b=RXIV7ugkLKdPuzstNSzXfEt44hHrChUGAnt+jQB2tS4rmZkLJtRlrI+D6UDD+hfhcGMyiO8PXUm+pYH0EBDpKx+pZbatuCMT4AFTXX9jUwQz8qoubDpb1jEDjZLzGUTL041v5931sojcRoDVAPAbYhc2VwTeggCt1ZEJThM7NdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760857840; c=relaxed/simple;
-	bh=WDqVVyRyQr+FH8+6XQnjBusK3qxbfBk4dcq13t/IdEU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=grsZh4PF3R5qmVHa1BoLTDcVKl6f91Z8JC0TKa2QwCJ7Tpb+lK2775odUp3oCQyRfOjKDOMNtnj15W7MAy2LAik4prBT8h0A3ZMsx/QR4l2ACKLsaH6BFXs2s5vCecGUxnGuFSCkR/KozLUsfJJsRnW3uywzGQ6d3MJV3tp/z5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QIaAxIju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C71C4CEE7;
-	Sun, 19 Oct 2025 07:10:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760857840;
-	bh=WDqVVyRyQr+FH8+6XQnjBusK3qxbfBk4dcq13t/IdEU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QIaAxIju/58TL3RFmbl6lKGP1EV96wzk5L9mzMVqHif0ZFQDHs9ZzIHR0WmmZX7tF
-	 G7YHjWDl4SlPkWHhGaJy+iEALoY6Iuthmx8mFg3ladxAl//K92pb+3hWJK+z3MDoF2
-	 QPMwrH2TZg0Rru7ZnPm5qx0oO5lhZafyPfIN1a5kUtH59oEN/aiKBRkBh4rEECIXlG
-	 3wT1ejF5kgaBgyFIzEHOHOBMPxbAoBUA14APBB7XrBmcmXA7L8MPmvrO3lZQg86vkZ
-	 Yg8fz8wJU5lTyu5MxuLbzglkW1975mO0JEZ2ENw0qbnfbnrJRfjdlGs6kZmtcX6Yjw
-	 Z9qSabLbbuZEw==
-Date: Sun, 19 Oct 2025 12:40:24 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Ravi Kumar Bandi <ravib@amazon.com>, thippeswamy.havalige@amd.com
-Cc: lpieralisi@kernel.org, bhelgaas@google.com, linux-pci@vger.kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, michal.simek@amd.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
-Message-ID: <akia22ulvkho753escdkhmunx3wdkgzk4hoosbrdpg3flfucxd@clwwh2hkt6wl>
-References: <C47CF283-C0C4-4ACF-BE07-3E87153D6EC6@amazon.com>
- <20250920225232.18757-1-ravib@amazon.com>
- <ffnsnm67kc546xrx673yvuepolafapueyfboykmcfododbpb2o@cjcmlqcvu76v>
+	s=arc-20240116; t=1760861464; c=relaxed/simple;
+	bh=0JD5EhU3dMvt2TzDGGngYx4VWjKCENlPlTrXXievwr0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hJm9VnC0K0rJxXUkvx8veGGyn3W+wTE3l2gYqtGQ0ybm5JBtQbPjtaxH2B/JFfQEDDu6QEfJH6PkSlTZUO1V4BVwtWPhfnZ/+z/IFwiwVX9ouZCjKmQwOSC2BN1plExZLpluZYWKVNfULnx3jTYP8z7+1G79BdzeLfsDwqPbNvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ccTdEhIo; arc=none smtp.client-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-63e10cd6efeso2988128d50.0
+        for <stable@vger.kernel.org>; Sun, 19 Oct 2025 01:11:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760861461; x=1761466261; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0JD5EhU3dMvt2TzDGGngYx4VWjKCENlPlTrXXievwr0=;
+        b=ccTdEhIopdhypwI8L3JBil5M4STne8SmRaQFfCBM02l9LkTDCeY07VksMZS734XIYW
+         fSr9E0vMaFgWvM5hpUfvHCdQwXqN1rLdg7uGpCmcE1a8p73wsSFiGM9KgaCUVorU2bB4
+         QXlk0k/rKjfCpslj0HWJBncYE9y9o12Mjtf9KUBJxsuzUFBzDISvTP/UdlOzuowk2O9I
+         i6m0bPW8oTEyUXCgLGFGHisuLGD8VhQ1MKnYlEu61P8OxgXOJsE/nO9c7FNSYyLg97yE
+         4ySn5cXO9k6TDK22f8AGkED3Ks52VuOYFicnSfjIjvJlszMjZfsukHxg61ULY8iC4TUN
+         9kxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760861461; x=1761466261;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0JD5EhU3dMvt2TzDGGngYx4VWjKCENlPlTrXXievwr0=;
+        b=Rf0uaqhgCagDhUcnB6PMYcIcA5Yp30NAzwxyVpAJBHsmzMG75UJQwBTslVvnhT/udF
+         W5EBwUD1dc5mhXzgQEIHNa8/OevlbiQjeYZ+Q7YPIutka7d3aIe023Z0/7E6NLpH3KnN
+         8ssH3o0vvGi9QutuWD7L+WJdtfyeyyYGooKGoNudp81Ygxlgsk+YusdT0hladI3n8FJh
+         zb8W8iowmuNR26sA4wMZqsW54sI+14m0hzl4m1Dx9RcM1y80M8ziFPghGqiE0wfcmJaP
+         xv9OS1km2HFYezZ6DJpQ+47yihw92CmNb6WTq74EUstGMFiQ173tMdxhLgO3hD8ag3Oo
+         Sr7w==
+X-Forwarded-Encrypted: i=1; AJvYcCX8+kTFbhV9AppDzvKGMEKPneEy4JVYK0/1SPIaLKOmWbG0/8hzk0Ruz1oWCLntROG1cfvNYlI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt0XmwEZ1fFpzn7mQKNxSO78YW2pvizMiEGTyt4LYHUEXxHacy
+	vS0lS0Ux8XvhMG0UhwxBe0fY/42H5ulWKlPxcDEPDc3IsvNaqO/Rzln7hnMvPKeyr0hH7veMXup
+	yqdmY+w926c4QpWulItB4i24f3xrq1Ks=
+X-Gm-Gg: ASbGnctn7bxSoA7+kGW7PvIZiTzYc0mFsuPQeXb53grFAHSnYFft9WPdhRZIUZ4v1Hi
+	7Mb+gg17SwE+KB9fhBZ6ZAk8QDUBzWfqU54xivAIod4KrWeqhKZ52L2Apkf7QFCXEgc2FMfAk74
+	MuWdQ1poN3TiScWotwJqP0mSw4/qBht7zJy/43XfHE2QFK0MfR96eEwLV1bL4RFGE0MlLiWrBAr
+	dbwNLJwLFRq86ZhnBt822uQgpkYGEuvlanJ+EKA6R0SliivJb0p31spiKsqnjEElNGBQ3X28pQ=
+X-Google-Smtp-Source: AGHT+IEDp/usYEtVSaz10lwwm2/rh8YYcBuxag2F0nuBjSfSMoio/EijPl9t2f1PGKCDHr/mRoxnx6oC2CKJ7h3r2Ic=
+X-Received: by 2002:a05:690c:31e:b0:782:9037:1491 with SMTP id
+ 00721157ae682-7837780ba2dmr109813007b3.42.1760861461100; Sun, 19 Oct 2025
+ 01:11:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ffnsnm67kc546xrx673yvuepolafapueyfboykmcfododbpb2o@cjcmlqcvu76v>
+References: <20241202010844.144356-16-ebiggers@kernel.org> <20251019060845.553414-1-safinaskar@gmail.com>
+In-Reply-To: <20251019060845.553414-1-safinaskar@gmail.com>
+From: Askar Safin <safinaskar@gmail.com>
+Date: Sun, 19 Oct 2025 11:10:25 +0300
+X-Gm-Features: AS18NWAhDVf2aU8hB0qWERPwO9zi-ils_dPukaoQchmqqRauvEb3B93Zz-69KFg
+Message-ID: <CAPnZJGAb7AM4p=HdsDhYcANCzD8=gpGjuP4wYfr2utLp3WMSNQ@mail.gmail.com>
+Subject: Re: [PATCH v4 15/19] lib/crc32: make crc32c() go directly to lib
+To: ebiggers@kernel.org
+Cc: ardb@kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	loongarch@lists.linux.dev, sparclinux@vger.kernel.org, x86@kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 29, 2025 at 07:38:01PM +0530, Manivannan Sadhasivam wrote:
-> On Sat, Sep 20, 2025 at 10:52:32PM +0000, Ravi Kumar Bandi wrote:
-> > The pcie-xilinx-dma-pl driver does not enable INTx interrupts
-> > after initializing the port, preventing INTx interrupts from
-> > PCIe endpoints from flowing through the Xilinx XDMA root port
-> > bridge. This issue affects kernel 6.6.0 and later versions.
-> > 
-> > This patch allows INTx interrupts generated by PCIe endpoints
-> > to flow through the root port. Tested the fix on a board with
-> > two endpoints generating INTx interrupts. Interrupts are
-> > properly detected and serviced. The /proc/interrupts output
-> > shows:
-> > 
-> > [...]
-> > 32:        320          0  pl_dma:RC-Event  16 Level     400000000.axi-pcie, azdrv
-> > 52:        470          0  pl_dma:RC-Event  16 Level     500000000.axi-pcie, azdrv
-> > [...]
-> > 
-> > Changes since v1::
-> > - Fixed commit message per reviewer's comments
-> > 
-> > Fixes: 8d786149d78c ("PCI: xilinx-xdma: Add Xilinx XDMA Root Port driver")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Ravi Kumar Bandi <ravib@amazon.com>
-> 
-> Thippeswamy, are you fine with this change?
-> 
+On Sun, Oct 19, 2025 at 9:09=E2=80=AFAM Askar Safin <safinaskar@gmail.com> =
+wrote:
+>
+> Eric Biggers <ebiggers@kernel.org>:
+> > Now that the lower level __crc32c_le() library function is optimized fo=
+r
+>
+> This patch (i. e. 38a9a5121c3b ("lib/crc32: make crc32c() go directly to =
+lib"))
+> solves actual bug I found in practice. So, please, backport it
+> to stable kernels.
 
-Since there was no reply for a while and the change looked good to me, I've
-merged this patch.
+Oops. I just noticed that this patch removes module "libcrc32c".
+And this breaks build for Debian kernel v6.12.48.
+Previously I tested minimal build using "make localmodconfig".
+Now I tried full build of Debian kernel using "dpkg-buildpackage".
+And it failed, because some of Debian files reference "libcrc32c",
+which is not available.
 
-- Mani
+So, please, don't backport this patch to stable kernels.
+I'm sorry.
 
--- 
-மணிவண்ணன் சதாசிவம்
+
+
+--=20
+Askar Safin
 
