@@ -1,91 +1,126 @@
-Return-Path: <stable+bounces-187872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CD7BEDCF9
-	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 01:44:39 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC85BEDE28
+	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 06:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46BE319A34A4
-	for <lists+stable@lfdr.de>; Sat, 18 Oct 2025 23:45:03 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3BBD734B470
+	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 04:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB75285406;
-	Sat, 18 Oct 2025 23:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F3D1D63D8;
+	Sun, 19 Oct 2025 04:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQMHFoai"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F3ZFTrOm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E552512E6;
-	Sat, 18 Oct 2025 23:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7807F72614
+	for <stable@vger.kernel.org>; Sun, 19 Oct 2025 04:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760831074; cv=none; b=L5OjxOnba9lFnQazgoeWWgvHfkFSIChyqngIwTqii/cRzoG2qK5p1MYgr71/VpnIAfrH2DOaPegGaL6BCKS0ROyuB6ObAdtnITdUB7stU4oxpNdH1nkycGhdAvWJkxgZu07oaT93/7Xm4KGs/AWDd0bdtYc3slfCaFAYMA7OOBQ=
+	t=1760848740; cv=none; b=aqtylu+ong3tWM3eiPDWb6cf3ymTVsxFArRIztCiPX6K0zh+S7uNscoj9LtI1mb+496ygDSPhBz520Qd0yrHVCblrQJj21aRBX7SBkVA2jzmTt1zlc3AWj/noh0ER/p2pkl2qb54LHLXyP7Y6PaBRse4XFQfdT5X/H2wW3CYqZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760831074; c=relaxed/simple;
-	bh=35VEjtJG+w3mU7d4N1pbsg3mXXmtqZ9kwr9H4K6Izd8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHNW4hHdTuMpfim5NjgC9MDr66cFMtDIJ03NyH5mTxCZgO033WOBO2vFXobRYry6+kq2PMaQjvSS8raJMUiTsypfFmiClbq8y/txE86RTObk4aL2mqSr+imiNnF/R7mK2Y7tmH5STuN2pXig3pTv1LoeNu1CVM0MqCq3Y2Hq8iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQMHFoai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6B7C4CEF8;
-	Sat, 18 Oct 2025 23:44:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760831073;
-	bh=35VEjtJG+w3mU7d4N1pbsg3mXXmtqZ9kwr9H4K6Izd8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQMHFoaiTIgSh+HKLZbQjCPMk1pIIO3E0YcELV/2lZGKfCk3XAwiZDCVFCSR8M1dC
-	 VVkzyYgqqNoJlM5vHz6bIZ/ZrJ+99cgdzJsN618gK3bTgKvOQVzFX/EXBaggMtjTzH
-	 At/I/91lyQs7vrCwlN1+qf+zoFmbAASD9ut6A6hrxyaIzCTQXWsNypQpteL2mABjFa
-	 opNIkvkN7YTIyAs5hWe6r7mAQC8vDg2aSkRX4uzUZwbbUouby7+oaohWXGmjmC5TqU
-	 f71rH5H6RvEEnn24CNcnqN9ZVW7BGRSwO+e/rrjp6AV4lbkZqXx4CN39LZRsXDcD79
-	 VZd8s2TvoKvfQ==
-From: William Breathitt Gray <wbg@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: William Breathitt Gray <wbg@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] gpio: 104-idio-16: Define maximum valid register address offset
-Date: Sun, 19 Oct 2025 08:44:09 +0900
-Message-ID: <20251018234411.34877-1-wbg@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <aPPj22GL56sP1gOK@ashevche-desk.local>
-References: <aPPj22GL56sP1gOK@ashevche-desk.local>
+	s=arc-20240116; t=1760848740; c=relaxed/simple;
+	bh=0VL6UvbA1L9L3KYApi2HBxM5osAN5B72tXfZdkax4n8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VJYlk8OulcUZLagE6ePtSta+UG1o2PzOrERkB3g9ZFHGTCO9joemYDoSoL3PZQ1FIV5yiqfIKKUNfQNtoiZJSlfsYBEOMLJww9M8+cFjk6RHG6oLAoEmU+tVbx5b5uKaDCGxgVqH4sUeqyaLHjNgmmbN03+4CPDAKeg5pE9hqtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F3ZFTrOm; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-290dc630a07so13611145ad.1
+        for <stable@vger.kernel.org>; Sat, 18 Oct 2025 21:38:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760848738; x=1761453538; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pmK1mTi1aKqF882bTtKfCSZ/kTsVspf2lr8U06HUrwA=;
+        b=F3ZFTrOm/fdEKaf6WBJmqCg0W+TaNaZrVAyDkmvtSoptDqo8MSHNrafraH0ypL3VQ2
+         uA1LmHVEO7r1IoGyBmFgG0pi8AQECL4292GZd7fq48C7NChdc/512G0AxBnBRp1INDqn
+         fHR3p4dqv3HwfwMnE85m0dmX0KMcvskzZrJJ/TLWgO80gYhJmcCEPmxAYXC4QgkDHE8t
+         OP8NMPB5Cn8uDQAM+ty6FT6deNbWo+KsAaAqvvO5WHlcdqwBUKNHBO/0dVr1x34frHBR
+         fe0RkWKZjf6qJgy2tcpvZtXXHZIO+dHwwQh4XJlhYext4a6ke7CyAVEaovykpxxaDO9C
+         W5ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760848738; x=1761453538;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pmK1mTi1aKqF882bTtKfCSZ/kTsVspf2lr8U06HUrwA=;
+        b=meNhFIfKozruImlPJwUcVOwM6gkDZFrSuLTpJEexWb2X5GaRBNLYh7zaMEat5Gj2aX
+         c8NbpWYpH4cW0aPzaTi2B8S9lyuNV16LbSQ310AVnlmDtPI+A3gnOkcmIodEFMBsnu3e
+         hMjgjiBy/9YeImQXz0/Tn5HSSe8aWcVTwPWKgZP5xkAhtqZ9QlHLxRQa+EVfG9gpoOtj
+         96nRVU7hyJusFAYmfSMjIgOSUV3gJc+Ms/LTe3yctAWKNPybDcIz9GqiubLZ8rktBJeT
+         XSoVYfX91MNjwN4zcVM/MinxkyjHMSdrhntiWmKSoBIIDQmNA8ZxxC4PNdhfZSo2yrkO
+         zlQA==
+X-Gm-Message-State: AOJu0Yzr8qknt6OHof7/QLYxBPA8BOahr6uxvJg3qqRqZcjRmkCSbEdt
+	b5r9sLtY5g5Ugk1Zqecp0Cc4qjxFXAvNKcCJGrHkJXfFq2dUE59rkXkS
+X-Gm-Gg: ASbGnct+iF4kbIQzZr4S98HfdrtYyNU+/W8HLzokt9/YO9hSAOAFX5J/4q/Xgy/CagS
+	3q3bggMFaToDkKkbfyiKet3XDTlgNQlhXi6hSJ6RhMkR+eMyXbMB8ij9CBaaLHD2M0jwuhgnOKM
+	EibiXCik9n0qxQRl0Z8xBalxrbpjH7CU4zSp/mcFyS3eGqTGvHZ0qdazJ4svgVM+R/6FaiDalQE
+	AE2rgAJXlZNhD1fIvM6rPVpfG7vPnr/Dc7TFwhTKG2kj2+nBoY8I1qNGhOK09mASNTuGhO+idPb
+	s/2mZKTPdILGlPh327k9BghNpHrTY/i94ifsF9V0IeGtaYJYa77OsUg00BI5JDclck0fbK+P/70
+	JVGHFjzQitl9UhL28q3ddtI05caGdE21Vf6P/sUkdz6ntFy7reG2z0RlOQVS1y+xcxyEv62RoCe
+	Bd5L5YLe/oNhrD
+X-Google-Smtp-Source: AGHT+IHdS/E/u65fGvAAeZHq/8Z61TPZEPdEbbbaTroydHGnbRpgb6AV15wzVJl9z/JFGKzlDshZFA==
+X-Received: by 2002:a17:903:19c3:b0:270:4aa8:2dcc with SMTP id d9443c01a7336-290c9d34dddmr114629115ad.19.1760848737742;
+        Sat, 18 Oct 2025 21:38:57 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471d5874sm41615345ad.54.2025.10.18.21.38.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Oct 2025 21:38:57 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Sat, 18 Oct 2025 21:38:55 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	Yi Sun <yi.sun@intel.com>
+Subject: Re: [PATCH 6.12 000/140] 6.12.48-rc1 review
+Message-ID: <58d213af-f422-4b70-8821-9777fc1b7020@roeck-us.net>
+References: <20250917123344.315037637@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=838; i=wbg@kernel.org; h=from:subject; bh=35VEjtJG+w3mU7d4N1pbsg3mXXmtqZ9kwr9H4K6Izd8=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDBlfVF93+yVfjKjO+Rt53+L6wV5u/p9cnC0ekhm1bge+l S+SszXvKGVhEONikBVTZOk1P3v3wSVVjR8v5m+DmcPKBDKEgYtTAC7yl5Fh1Zk/S1ZN4A784+cb qJ68IH1p9rsTfBFtj9PnsTtYhXgnMjL8Mnglc/hl7GmPx1t2BjyYxsSxX73ukPHGJUn7eX7O1Zn PBwA=
-X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
 
-On Sat, Oct 18, 2025 at 10:00:43PM +0300, Andy Shevchenko wrote:
-> On Fri, Oct 17, 2025 at 09:58:01AM +0900, William Breathitt Gray wrote:
-> > Attempting to load the 104-idio-16 module fails during regmap
-> > initialization with a return error -EINVAL. This is a result of the
-> > regmap cache failing initialization. Set the idio_16_regmap_config
-> > max_register member to fix this failure.
+Hi,
+
+On Wed, Sep 17, 2025 at 02:32:52PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.48 release.
+> There are 140 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> > Fixes: 2c210c9a34a3 ("gpio: 104-idio-16: Migrate to the regmap API")
-> > Reported-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> > Link: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
+> Responses should be made by Fri, 19 Sep 2025 12:32:53 +0000.
+> Anything received after that time might be too late.
 > 
-> Link --> Closes ?
+...
+> 
+> Yi Sun <yi.sun@intel.com>
+>     dmaengine: idxd: Fix refcount underflow on module unload
+> 
 
-So that link points to a report detailing multiple bugs, but this patch
-only fixes one of those bugs. Is it still appropriate to use Closes in
-this case?
+This misses a cleanup call to idxd_disable_sva() if device_user_pasid_enabled()
+is true. This results in a warning backtrace seen when unloading and reloading
+the idxd driver. Upstream does not have the problem because support for
+IOMMU_DEV_FEAT_IOPF and with it the cleanup call was removed there.
 
-William Breathitt Gray
+This is just a notification. I'll send a patch fixing the problem later.
+
+Guenter
 
