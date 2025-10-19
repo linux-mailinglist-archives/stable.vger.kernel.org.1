@@ -1,91 +1,167 @@
-Return-Path: <stable+bounces-187882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC14BEE320
-	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 12:36:27 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3994BEE42F
+	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 13:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2520D4E7E7E
-	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 10:36:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C638D4E7BC2
+	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 11:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCA42E5406;
-	Sun, 19 Oct 2025 10:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373D52E371A;
+	Sun, 19 Oct 2025 11:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="T8Vm9QFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/ldLoz/"
 X-Original-To: stable@vger.kernel.org
-Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD632BD58A;
-	Sun, 19 Oct 2025 10:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40A72E54BB
+	for <stable@vger.kernel.org>; Sun, 19 Oct 2025 11:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760870181; cv=none; b=NyfR1dJN/0ENZa0xjNQnNcTIbkIXdWcz6B9TURgjN1cL+rj36VNXJovxO0OxXA9xy5kbtRxS6CzlCzcyuNrg/qu+VMPeojwT9njHGlMRM24K8x4Ir/tfwgSu3eym4lnMsUpykPL5/20mqJL4ETte3/8EUjdCm3CduXGJUzodIE8=
+	t=1760875088; cv=none; b=LpTslNLG/NPOb5lvC4Bct5BO6V4+0RXBxLnsT6PeaDSb/NnYYgedaXS3xkLbIxfhQWlwz+EQkc2MLJmucSUM+TGfPLP8jGz82TX5v7K36I87rZlw7r5d+frxIewR6VUr6aG0GigfYHdHSJ/KsF6EfILI3c6pPHclwr8Tt5xxl5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760870181; c=relaxed/simple;
-	bh=SAV7a4lt7hKEt6sivafdqNmETnmuFWWc/wWA4aTMqYg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KnT6nE21vTEioTnYP8cVnmGo106oyb7IlMu1XscVJT1aSits0wUMIhRqTLV3o/sUri0JKCC81um02eVo0f2U5kuH6gSfWFaIK3Z/kEYin62+2gd+RtCFtVU+XiyxNvGREMBWQkGrhd5GgNfCVxAgIyhaBJ7xPJmGyT/o4BRIJzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=T8Vm9QFx; arc=none smtp.client-ip=213.190.28.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
-	s=dkim_2024-02-03; t=1760870173;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7r6VrRQUTO8EjsqgAX+Zw+vSOXi8yjJZSq92aCAMveo=;
-	b=T8Vm9QFxTKYItZqDIpRI+i0VLm8VDoTIV35ZTVmko5B8ANaLKY38IkVmvxIuU/3nr4/sfr
-	PKYh1zy5a+qSZbDQ==
-Message-ID: <b779d8a1-f03f-4db8-878f-613162313653@hardfalcon.net>
-Date: Sun, 19 Oct 2025 12:36:13 +0200
+	s=arc-20240116; t=1760875088; c=relaxed/simple;
+	bh=KFt2pUymGD9xOEHNS/CSKITR5Xfe+GccJ7XfpfP0F7o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hcA/SJLmL38S83hmCJIlQuKbZAkHz0Ib418cdb0R5NhDJVjFf+piTgNkhpPoZziXShgkodNYSFxrFV2lJgRpa0TKCSP7hob9PkO2dw1skOf6mlgSGwt6at5woJT5XFXDB1VZ3A42bcwy7rVRGTFYmM0iAZi+MWDeZL44af4SEOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/ldLoz/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E46C4CEE7;
+	Sun, 19 Oct 2025 11:58:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760875087;
+	bh=KFt2pUymGD9xOEHNS/CSKITR5Xfe+GccJ7XfpfP0F7o=;
+	h=Subject:To:Cc:From:Date:From;
+	b=r/ldLoz/NvE54mcD/yWF6Kdy2OralAk7YFjkPpShB0Uqm2VkR3xaxwvFfYVPGosmO
+	 0F46elgxU078vVJkcfYN1oEL1KUsGhsXXabOMOj4UIPGD5vZPVOWWeLM6Y41syDJwz
+	 4SkeEAWA1kcpnfS8Zk9f3cQZshuAHjw7sn0OF4qM=
+Subject: FAILED: patch "[PATCH] s390/cio: Update purge function to unregister the unused" failed to apply to 6.6-stable tree
+To: vneethv@linux.ibm.com,hca@linux.ibm.com,oberpar@linux.ibm.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 19 Oct 2025 13:58:04 +0200
+Message-ID: <2025101904-seltzer-landslide-60b6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 6.12 000/277] 6.12.54-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20251017145147.138822285@linuxfoundation.org>
-Content-Language: en-US, de-DE, en-US-large
-From: Pascal Ernster <git@hardfalcon.net>
-In-Reply-To: <20251017145147.138822285@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-[2025-10-17 16:50] Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.54 release.
-> There are 277 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 19 Oct 2025 14:50:59 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.54-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-
-I've applied all patches from the current version of stable-queue/queue-6.12 (commit id 4bcf0259110152b33991cbff98ac69113530480b) applied on top of kernel 6.12.53, and compiled the result with GCC 15.2.0 and binutils 2.45 as part of OpenWRT images for various platforms. I've booted and tested the resulting OpenWRT images on the following platforms without noticing any issues:
-
-- x86_64: qemu microvm (Intel Haswell CPU)
-- MIPS 4KEc V7.0: Netgear GS108T v3 (SoC: Realtek RTL8380M)
-- MIPS 74Kc V5.0: TP-Link Archer C7 v4 (SoC: Qualcomm QCA956X)
-
-Tested-by: Pascal Ernster <git@hardfalcon.net>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-Regards
-Pascal
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9daa5a8795865f9a3c93d8d1066785b07ded6073
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025101904-seltzer-landslide-60b6@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 9daa5a8795865f9a3c93d8d1066785b07ded6073 Mon Sep 17 00:00:00 2001
+From: Vineeth Vijayan <vneethv@linux.ibm.com>
+Date: Wed, 1 Oct 2025 15:38:17 +0200
+Subject: [PATCH] s390/cio: Update purge function to unregister the unused
+ subchannels
+
+Starting with 'commit 2297791c92d0 ("s390/cio: dont unregister
+subchannel from child-drivers")', cio no longer unregisters
+subchannels when the attached device is invalid or unavailable.
+
+As an unintended side-effect, the cio_ignore purge function no longer
+removes subchannels for devices on the cio_ignore list if no CCW device
+is attached. This situation occurs when a CCW device is non-operational
+or unavailable
+
+To ensure the same outcome of the purge function as when the
+current cio_ignore list had been active during boot, update the purge
+function to remove I/O subchannels without working CCW devices if the
+associated device number is found on the cio_ignore list.
+
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Suggested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+
+diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
+index fb2c07cb4d3d..4b2dae6eb376 100644
+--- a/drivers/s390/cio/device.c
++++ b/drivers/s390/cio/device.c
+@@ -1316,23 +1316,34 @@ void ccw_device_schedule_recovery(void)
+ 	spin_unlock_irqrestore(&recovery_lock, flags);
+ }
+ 
+-static int purge_fn(struct device *dev, void *data)
++static int purge_fn(struct subchannel *sch, void *data)
+ {
+-	struct ccw_device *cdev = to_ccwdev(dev);
+-	struct ccw_dev_id *id = &cdev->private->dev_id;
+-	struct subchannel *sch = to_subchannel(cdev->dev.parent);
++	struct ccw_device *cdev;
+ 
+-	spin_lock_irq(cdev->ccwlock);
+-	if (is_blacklisted(id->ssid, id->devno) &&
+-	    (cdev->private->state == DEV_STATE_OFFLINE) &&
+-	    (atomic_cmpxchg(&cdev->private->onoff, 0, 1) == 0)) {
+-		CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x\n", id->ssid,
+-			      id->devno);
++	spin_lock_irq(&sch->lock);
++	if (sch->st != SUBCHANNEL_TYPE_IO || !sch->schib.pmcw.dnv)
++		goto unlock;
++
++	if (!is_blacklisted(sch->schid.ssid, sch->schib.pmcw.dev))
++		goto unlock;
++
++	cdev = sch_get_cdev(sch);
++	if (cdev) {
++		if (cdev->private->state != DEV_STATE_OFFLINE)
++			goto unlock;
++
++		if (atomic_cmpxchg(&cdev->private->onoff, 0, 1) != 0)
++			goto unlock;
+ 		ccw_device_sched_todo(cdev, CDEV_TODO_UNREG);
+-		css_sched_sch_todo(sch, SCH_TODO_UNREG);
+ 		atomic_set(&cdev->private->onoff, 0);
+ 	}
+-	spin_unlock_irq(cdev->ccwlock);
++
++	css_sched_sch_todo(sch, SCH_TODO_UNREG);
++	CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x%s\n", sch->schid.ssid,
++		      sch->schib.pmcw.dev, cdev ? "" : " (no cdev)");
++
++unlock:
++	spin_unlock_irq(&sch->lock);
+ 	/* Abort loop in case of pending signal. */
+ 	if (signal_pending(current))
+ 		return -EINTR;
+@@ -1348,7 +1359,7 @@ static int purge_fn(struct device *dev, void *data)
+ int ccw_purge_blacklisted(void)
+ {
+ 	CIO_MSG_EVENT(2, "ccw: purging blacklisted devices\n");
+-	bus_for_each_dev(&ccw_bus_type, NULL, NULL, purge_fn);
++	for_each_subchannel_staged(purge_fn, NULL, NULL);
+ 	return 0;
+ }
+ 
+
 
