@@ -1,120 +1,155 @@
-Return-Path: <stable+bounces-188029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4547BF0806
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:19:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74583BF0837
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B32E64EE169
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:19:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C0F33A3144
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72073239E79;
-	Mon, 20 Oct 2025 10:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B3D23C8A1;
+	Mon, 20 Oct 2025 10:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRDqtSpR"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B9D2E8B98
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 10:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0881D618C
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 10:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760955546; cv=none; b=m1lfNElIa+rKpBlOVBC3Vmcg7qXbua6FUoeH9Lrh0Sp6Q+2xW81ve3U8FaGSoq4G1gvRTZlJN1DiJMCWDyYzv/fpDqUybtvlOkHVi9rv9pFZUHTPWw3y3fvtmnos8RuBjMcjZrlqIMtP39QQa833FxX9PslrDOvwyqGSBognRdM=
+	t=1760955783; cv=none; b=kLYOXbhmUd90rEQJ4PmKsWyQaJAoZZJc058NyRAtEMQTNUP+0NVefabUh9b/smlHPgvr3VKMBouZd7PsE1/9pw5TUTI68IfAkVNCTmkY+RPH/k846tiov57mqH+aWVcKV56rlrhEDaS+gjpDH6MyA31pKQxsw2YpCtpB84FS6Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760955546; c=relaxed/simple;
-	bh=a/JFl7OquLGXEnv5j8if6yrJQ6SSYvLks3FT7JZp+6w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uiaYkc/Uf7AObQnTfJne3ifJvVgOPDz1atXw+cbDz6OQFjlpSxg0KX0x8JKDjuvGrY7CWzLg9C59ORc99rmdpug2dXg3/qiLNad8WWmR+wyKQGl/p5qLIl+3FQv+fkbDAP4WC+u8VYhj6NOVM3YxPRiE6VBkJYOxONPthJcfvLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 490F01063;
-	Mon, 20 Oct 2025 03:18:56 -0700 (PDT)
-Received: from e137867.arm.com (unknown [10.57.36.242])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id ECC233F63F;
-	Mon, 20 Oct 2025 03:19:02 -0700 (PDT)
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-To: stable@vger.kernel.org
-Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.17.y] arm64: debug: always unmask interrupts in el0_softstp()
-Date: Mon, 20 Oct 2025 11:18:56 +0100
-Message-ID: <20251020101856.93528-1-ada.coupriediaz@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2025102040-gopher-dipping-a96a@gregkh>
-References: <2025102040-gopher-dipping-a96a@gregkh>
+	s=arc-20240116; t=1760955783; c=relaxed/simple;
+	bh=Y/Of83zNnX6sLmH5GHkmtmLz/GMJGrrvbX//+5h9WSg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QN5Yg+IU3jrCfbn5ZJiXbe6Dn6YAI2Bc60TiDb+BWNr+Zpuf7DBkCY7yOg+loQ+KrezApkyixPl9POxAAexV1qiHWkFUGQ42FBeSlIPiWXQJd0rj/Dmg72FnHSs3Q7YcNhM9f3ffmtC6wYxmLXCMgETQZCyuoUBGIHP2rCLbvHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRDqtSpR; arc=none smtp.client-ip=209.85.166.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-430d0cad0deso8845685ab.2
+        for <stable@vger.kernel.org>; Mon, 20 Oct 2025 03:23:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760955781; x=1761560581; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wwVo13kZhRZYVn6fdjYldZCTWh9uLDhB/G1K2cn+K/o=;
+        b=NRDqtSpR6Om9EL/EVbI8uUOL4d3a7lY6WTNWqbhWHkFY+H3X/2RlnAiQGyGtrBVVwe
+         WokDmIyaJSwXGH3JoG7Sqz4dkHxS/20mKrB7I1b9iDCpbzLLdIq5twOOzh48rMIZZS9v
+         +iB9s+Zd+rAGiaw/1OhD65uDpKUV/pqbnwc+j+ez0a3zxmpGVq8hipheR2pbBzN9J0r3
+         BLnxRXo5a/WOj30ifE2wTtC9rv9nfWmY4kFRDJPoCZM+X29Nbfi3OstW5NcgzPXpUgs9
+         hFEXru5X/Wt61ffdn0glk+u17p2KQxYJwZ4iOy4NtjjI0FvrArSZJ/q9FCaqBnnRJY2T
+         OGSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760955781; x=1761560581;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wwVo13kZhRZYVn6fdjYldZCTWh9uLDhB/G1K2cn+K/o=;
+        b=M9TTEmNh5fVxxi+Vaa++bJnz2a3RxjCe2yqg1AyIZmZ6v9y6JvVVHmuW4y6OmJkJVG
+         VvzDccop1niRaDQHff0qlJmjXBqyLD0rZ05SQ1t7I44m6gLcfCtFrSf0U9Y7WP29EvKB
+         cdrYOJ/fcG99+/6OWWBn9R4bX2Z+Fwz6Nok8abraueRbA76AUlYYdZe5l0ssbFO05x8s
+         zGwsonfgYD98JED+W9znu+msKz8iMivnIUxc/6uaK6DUzcFri7ADXUDFt75E9RnitI74
+         l/k7RdbIm9NFotdCWvvcCO/rE/v6ddBAVX12VWtEn19HvirYNNULs6CUfuRZODSlrjOm
+         FJ6A==
+X-Gm-Message-State: AOJu0Yyl168CZHVU3/YshfIi6tpA/GUndmv84gs3tGNEzli+kEcja0Oq
+	8M7530ilZ4xFPc9NwdDtt0tdW2ZZBOrx+p8WBIV7BRHi4U/6yXNRFi+D
+X-Gm-Gg: ASbGncv9hr0FF/2XFNVMYcw4EYuFi40JN34D5i9nj1j4MwB8+z9tDB9MczAT6v6bK4a
+	OrBZvQxZ8ovx1Jp6YVw+qFbiMNdTtEkM877W9Yohh8qu0KtkrVDn2HnOh+gJkTbNfK4JFtnRljn
+	I5nO0ERI/mRQMr4+Fi511WTxHrufUkXPTsIqjb8BRYgOVx8RxoHjoG470BzdRKF0/XXBaK9LLZx
+	RUGeOFxZWNu7bB+QG7F8kn949aBnorBVSOcoVR1f2WtPJGBBNt7/3ogSJzWwChZSB8WUGC1spkj
+	8ykwoqiC0/Mwz1lm1WzxFdNtqmIKtp161DI1u8Q+hMDTcCOKuA/uegKJfONXDcQFnB72mtteYQd
+	ycMhJ+sfDxtZ3NbvB1wxf8Uprs54dnUWrjWkF2WX6kap3GZwh2wUmLujSP9FbC9sUsBioDu9rrK
+	bGihlPkpFoFHeIV+r8YyMprtwraR42BodquLUh/K1mlQGp/vxHnzTvRN1S3t88WH6SNbyH
+X-Google-Smtp-Source: AGHT+IG4dp/N0dV5mHcutfGgLi7WUo9KkOeCCIQt4U+ykxHYiQAKOUA3QFXQGElCS92gu8u84w17IQ==
+X-Received: by 2002:a05:6e02:2197:b0:42f:87c1:cc3f with SMTP id e9e14a558f8ab-430c526b099mr184393265ab.18.1760955781036;
+        Mon, 20 Oct 2025 03:23:01 -0700 (PDT)
+Received: from [192.168.88.138] (108-75-189-46.lightspeed.wchtks.sbcglobal.net. [108.75.189.46])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-430d071ebccsm28529785ab.17.2025.10.20.03.22.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Oct 2025 03:23:00 -0700 (PDT)
+Message-ID: <5e29b2ef-086a-406f-ba3b-f0b7a09617bb@gmail.com>
+Date: Mon, 20 Oct 2025 05:22:59 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] drm/amd: Check whether secure display TA loaded
+ successfully
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org,
+ david.hunter.linux@gmail.com, khalid@kernel.org
+References: <20251018165653.1939869-1-adrian.ytw@gmail.com>
+ <2025102014-hummus-handgun-d228@gregkh>
+Content-Language: en-US
+From: Adrian Yip <adrian.ytw@gmail.com>
+In-Reply-To: <2025102014-hummus-handgun-d228@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-We intend that EL0 exception handlers unmask all DAIF exceptions
-before calling exit_to_user_mode().
+On 10/20/2025 4:06 AM, Greg KH wrote:
+> On Sat, Oct 18, 2025 at 11:56:40AM -0500, Adrian Yip wrote:
+>> Hi everyone,
+>>
+>> This is a patch series of backports from a upstream commit:
+>>
+>>      c760bcda8357 ("drm/amd: Check whether secure display TA loaded successfully")
+>>
+>> to the following stable kernel trees:
+>>    * 6.17.y
+>>    * 6.12.y
+>>    * 6.6.y
+>>    * 6.1.y
+>>
+>> Each patch applied without conflicts.
+>>
+>> Compiling tests will be done for patches as I send them in.
+>> I have not tested backports personally, but Shuah khan has Kindly offered
+>>    to test them.
+>>
+>> This is my first patch, please do let me know if there are any corrections
+>>    or criticisms, I will take them to heart.
+> 
+> Meta-comment, do not send a "patch series" that can not all be applied
+> to the same tree.  When applying a series of patches (1-4 as sent here),
+> that implies that all 4 go to the same place.  That's not the case here,
+> so I need to pick out the patches individually some how, and apply patch
+> 1 to one tree, 2 to another, and so on.  It looks a bit odd to apply
+> patch 4/4 to only one tree, right?
+> 
+> I've picked these apart this time, but next time, just send 4 patches
+> separately, not as a series, as you can see others do on the stable
+> list, and all will be fine.
+> 
+> thanks,
+> 
+> greg k-h
 
-When completing single-step of a suspended breakpoint, we do not call
-local_daif_restore(DAIF_PROCCTX) before calling exit_to_user_mode(),
-leaving all DAIF exceptions masked.
+Thank you Greg, I appreciate your time and comments. I will be applying 
+your feedback to future patches, and the explanation makes perfect 
+sense. Sorry for the inconvenience.
 
-When pseudo-NMIs are not in use this is benign.
+There may also be some confusion with me saying Shuah offering to test 
+them. For some context, Shuah told me about this fix after she noticed 
+it on her machine and gave me the opportunity to make the patch. The 
+offer to test them was given to me along with it, but I don't believe 
+the tests were done on each of the stable trees yet.
 
-When pseudo-NMIs are in use, this is unsound. At this point interrupts
-are masked by both DAIF.IF and PMR_EL1, and subsequent irq flag
-manipulation may not work correctly. For example, a subsequent
-local_irq_enable() within exit_to_user_mode_loop() will only unmask
-interrupts via PMR_EL1 (leaving those masked via DAIF.IF), and
-anything depending on interrupts being unmasked (e.g. delivery of
-signals) will not work correctly.
+I'm writing to make sure these patches are added responsibly.
+Feel free to ignore if this isn't a problem. Thank you again.
 
-This was detected by CONFIG_ARM64_DEBUG_PRIORITY_MASKING.
+Respectfully,
 
-Move the call to `try_step_suspended_breakpoints()` outside of the check
-so that interrupts can be unmasked even if we don't call the step handler.
-
-Fixes: 0ac7584c08ce ("arm64: debug: split single stepping exception entry")
-Cc: <stable@vger.kernel.org> # 6.17
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-[catalin.marinas@arm.com: added Mark's rewritten commit log and some whitespace]
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-(cherry picked from commit ea0d55ae4b3207c33691a73da3443b1fd379f1d2)
-[ada.coupriediaz@arm.com: Fix conflict for v6.17 stable]
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
----
- arch/arm64/kernel/entry-common.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
-index 2b0c5925502e..db116a62ac95 100644
---- a/arch/arm64/kernel/entry-common.c
-+++ b/arch/arm64/kernel/entry-common.c
-@@ -832,6 +832,8 @@ static void noinstr el0_breakpt(struct pt_regs *regs, unsigned long esr)
- 
- static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
- {
-+	bool step_done;
-+
- 	if (!is_ttbr0_addr(regs->pc))
- 		arm64_apply_bp_hardening();
- 
-@@ -842,10 +844,10 @@ static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
- 	 * If we are stepping a suspended breakpoint there's nothing more to do:
- 	 * the single-step is complete.
- 	 */
--	if (!try_step_suspended_breakpoints(regs)) {
--		local_daif_restore(DAIF_PROCCTX);
-+	step_done = try_step_suspended_breakpoints(regs);
-+	local_daif_restore(DAIF_PROCCTX);
-+	if (!step_done)
- 		do_el0_softstep(esr, regs);
--	}
- 	exit_to_user_mode(regs);
- }
- 
--- 
-2.43.0
-
+Adrian Yip
 
