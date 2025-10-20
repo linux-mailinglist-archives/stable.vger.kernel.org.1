@@ -1,112 +1,174 @@
-Return-Path: <stable+bounces-188128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB356BF1DE6
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:33:00 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8C1BF1DA4
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CEAA3B3C19
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:32:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0230F4E9ECC
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392111EB5FD;
-	Mon, 20 Oct 2025 14:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511A81DF24F;
+	Mon, 20 Oct 2025 14:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b="C4bSwODM"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-108-mta144.mxroute.com (mail-108-mta144.mxroute.com [136.175.108.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SlqvTeos"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D307619C553
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 14:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903751519AC
+	for <Stable@vger.kernel.org>; Mon, 20 Oct 2025 14:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760970705; cv=none; b=fy3vW76mGBi6uIdCSgqG1gL81/z13QaBl7255Ymm/PF0BAz71WsFD8W9hPStzRzbRwfH7LD2nPr25yINrwmGt+gU2OQPDK2qRRIi+cixqd6yQPwAsKhTlmp+BHWsJgg/PlodnfCsU+U5W4zwewot0DWrZVbDMtP1rWXnvD9aJCg=
+	t=1760970681; cv=none; b=Nv+Gc78HNAe5Mj6VlTLR4ofiIh+x8tCL8ZribgoQ37NOhwk32jw922shesFozcZiuTXHOMKAPnjcVAuMeENwHYtmXWFzVHWx2tXDa0Fg6q8Hvj/K7IdL6qzoObpAVwYMKvRrnzvFW/ihfydJa5ze2lXwMa7hzC32NC5dGwWqB8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760970705; c=relaxed/simple;
-	bh=8zv4is5Fd4+KAHQmb2DilHjkxMsZEVyRbpIqbuM1MlE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DWd0ByF3xzjEoUKrXM1Tyfk2GQzG2UZ+sBzfhkhsdKyNJ1ZnLcREBMUyhXjRkHgZpPs5FnfYjq73jHa9X2MVxd7ooeQwDH7UKgiE7XWvFnI9bq+oTs/GM+74xlow/F/eqEKMMF4EyKa1OXyC1vfNciCInXxQlsjmxDI/rOnf+5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com; spf=pass smtp.mailfrom=mboxify.com; dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b=C4bSwODM; arc=none smtp.client-ip=136.175.108.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mboxify.com
-Received: from filter006.mxroute.com ([140.82.40.27] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta144.mxroute.com (ZoneMTA) with ESMTPSA id 19a020858f7000c217.00e
- for <stable@vger.kernel.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Mon, 20 Oct 2025 14:31:32 +0000
-X-Zone-Loop: 7e4b8a35e98740b3f0b502cb80d0a8c45c0033dd24c7
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mboxify.com
-	; s=x; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Date:
-	Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=kQRhYW1ob+5xxQnD5lkOkGhyx3jWDh5o2cQL6UsjPjQ=; b=C4bSwO
-	DMu+6OLvya7WOw0zKupVdvpHtFxMG+MPxM3eAY4FB8jR8IjQCj83QqWGDRrugi27tNTuCb01T0ovB
-	WWhpJwJCYF4A2ew0lSIbtmkY4jYcjVagvGdYKxB5KfEhyzsy5OCLq3lkd3UwACchw9yfSTNW6/NDW
-	W4GXsxaz8OSkexKHPCCZd6/hYBMo8KUTF+Vwr2sapu4uOyhbckvlya2rvP/wDNTIGukldAN+OkMqu
-	NxkSI08O3qIVEIA2BYLlUhxAqZndi5686+hDXt0t/HRvC5eQJdtTkUyw0cuf0misrqTNRJiNljN+0
-	R0ZM6E420fw0XPPgIe9uk0la8OxA==;
-From: Bo Sun <bo@mboxify.com>
-To: kuba@kernel.org,
-	pabeni@redhat.com
-Cc: sgoutham@marvell.com,
-	lcherian@marvell.com,
-	gakula@marvell.com,
-	jerinj@marvell.com,
-	hkelam@marvell.com,
-	sbhatta@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Bo Sun <bo@mboxify.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net 1/1] octeontx2-af: CGX: fix bitmap leaks
-Date: Mon, 20 Oct 2025 22:31:12 +0800
-Message-Id: <20251020143112.357819-2-bo@mboxify.com>
-In-Reply-To: <20251020143112.357819-1-bo@mboxify.com>
-References: <20251020143112.357819-1-bo@mboxify.com>
+	s=arc-20240116; t=1760970681; c=relaxed/simple;
+	bh=AWZ5JEQErQEgkIxsRTfnsV0dbvBu3BBNbNNvaGHfU1g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ak4z/MApPyRytxhFg32w7UPD0UEHCiFWbjj+8HmCM54maz2k2Kq+XaXgnrQrmP10eYRuWO6dDnr9CgZLIjk71Prub0ARkIi0BiSQXB9/pDRY8wWgzG9rB2SxzoqECNkJNv1xO/qEJqATAXFZLWm0YfW6DTGwNA2vent+KUoVmPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SlqvTeos; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59KBAQWw022738
+	for <Stable@vger.kernel.org>; Mon, 20 Oct 2025 14:31:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	WDwzWmcq4AKDGdpNvyveTUSafU4v7snQckB7LNYwDV0=; b=SlqvTeosTjNrJ8Eb
+	sO4+qHexPJuy7bWwTF+Ezj/j9GZBx+dQ1f6a0pBbXo/5d7D5JbgcePTZ3iMUJnc7
+	44cOs4QlAuJx2EFC8s0D3pwXt/cgbZffLJ3h+yL40mn2OCUOoBcy7gcuqr1P+8Ck
+	S8g9juUcJoUjaoanE6I+bUt8x4sbEtUoPjJe1NW/sQehaVJTATCjxWmpY2Tm7eXs
+	PYCj7ZWIMRJGW1KmLCR64VSm+NYR8L7K91Po4vrao/Zu2BNyZLDKc6alu5yjnCup
+	C2UqdSFVLLoAVp94yhTIS0TSw3D4aWeRrV5dsjWIV0sQjWlMQFIWl1WKu/JWvKlC
+	D2D/PQ==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v2yv4y4g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <Stable@vger.kernel.org>; Mon, 20 Oct 2025 14:31:18 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-81d800259e3so71790626d6.3
+        for <Stable@vger.kernel.org>; Mon, 20 Oct 2025 07:31:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760970677; x=1761575477;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WDwzWmcq4AKDGdpNvyveTUSafU4v7snQckB7LNYwDV0=;
+        b=IMdj5CeCDlZKNCBiSwBvr2B0GeHhTjIxhWSUlhWfcQ4Gu59OZQv+NPdgABcD/M88a/
+         mwLV+dBnzkqDZRmti8L1kGrZqBB4bpYwicLe3VK2R3nLtxY/mUu/HCdejNrYYffjHTn4
+         ionkfDGImUZu21z1xx0Cx6cYvcDt+Dtp1cz/fr38tAlebT8yNX9vfn2EbYdLsUZm53K1
+         j73XdnaZAboxjQVtfeefr0IGRj/CKUglLLc4Bxexosi2kXYhe2sAdIS/g3dyzQOhz7hk
+         ErYr7ODnpq6Tvdd5YfvDTpMg7AZMUHogXiX/5s/8kJer3wuSceU6rMzk6Qdlk64BxOwj
+         m+rg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBF6naCZp++zBnc8fhwTynfHXI99MwgGZrTvGxSJAg+MqaKApve3NeCB+JGUGntWCgdgsMSsM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywk9iw7VKb0TAXUOEKFc5lrINMdx490W4VTqGYToAOhuvxouYJ3
+	GuVq0Zyazng2w5B7gHDqlhfr7pfEBCmV/wiwK2wTVIOmBjuPE1+twomb2Heiafxzz2JchlAtGqX
+	8IhA/2faDpMIVZSHza+nkp9V/SfWaWblG+aSvuuc9oxh8ZIRYV/iOBnD69Dk=
+X-Gm-Gg: ASbGncvsa9/Cqhd6gNVAOQGg3rRDlE8BmDyARjfLhJe1VSztIlwSzAhPStS2EWISxXy
+	3Q6F1UxniRpIxsRzPovZo5FsFUU3dgdoBWlC0fav9A6QeipLsIojrJVU4OUb+l3KkFZfkKsP1gO
+	NpKlOI9t1OULA9UyXHxCqzVdvaIFe2AvRPQ/iz5wntV7jQgF9FMAa0m0odbon7SluTm5jZCb69/
+	5dEvUmXJRzpvmociLCsAnmL2qz4nH/XGZ/SCTDF7yvdASaFkNPHbQDFwJWUhaY4ezao3HvLwner
+	Ag2VQALXNeyf+3PS43+48CBNLPZjg6aB+GPlXxfe04PSfwFBfjwxoILe/crMuDTq3DB/ebVzTRa
+	85UmKF0KdeKUIPHOU2MB9A1uivQ==
+X-Received: by 2002:a05:622a:110e:b0:4e8:a9a2:4d50 with SMTP id d75a77b69052e-4e8a9a25039mr160564841cf.41.1760970677202;
+        Mon, 20 Oct 2025 07:31:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEos+8Az1kXkegLkZkoK78dfEsCGhaPacnWf31fm6ldL4T9xO4u7snVWYRJLwJrJQGi8f6MRg==
+X-Received: by 2002:a05:622a:110e:b0:4e8:a9a2:4d50 with SMTP id d75a77b69052e-4e8a9a25039mr160564271cf.41.1760970676602;
+        Mon, 20 Oct 2025 07:31:16 -0700 (PDT)
+Received: from [192.168.68.121] ([5.133.47.210])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-471553f8a3asm171487535e9.16.2025.10.20.07.31.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Oct 2025 07:31:16 -0700 (PDT)
+Message-ID: <4f394672-c7dc-4fdc-b70a-27fa8e20dd74@oss.qualcomm.com>
+Date: Mon, 20 Oct 2025 15:31:15 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: bo@mboxify.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] ASoC: qcom: sdw: fix memory leak for
+ sdw_stream_runtime
+To: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+        broonie@kernel.org
+Cc: perex@perex.cz, tiwai@suse.com, srini@kernel.org, alexey.klimov@linaro.org,
+        linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Stable@vger.kernel.org
+References: <20251020131208.22734-1-srinivas.kandagatla@oss.qualcomm.com>
+ <20251020131208.22734-2-srinivas.kandagatla@oss.qualcomm.com>
+Content-Language: en-US
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+In-Reply-To: <20251020131208.22734-2-srinivas.kandagatla@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: LYetc7ndgl0XLRxHCH-V7WY7VQQTLFcA
+X-Proofpoint-GUID: LYetc7ndgl0XLRxHCH-V7WY7VQQTLFcA
+X-Authority-Analysis: v=2.4 cv=f+5FxeyM c=1 sm=1 tr=0 ts=68f647b6 cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=-57JWHKmnLzaxYqXpKAA:9 a=QEXdDO2ut3YA:10 a=iYH6xdkBrDN1Jqds4HTS:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMyBTYWx0ZWRfXwAuGplWZSJfQ
+ 20GjoZEO1r9T9ogBlQKlGOhY+OoyEbE6AykoaEN8IAOZe3RdhlzGxONiJ8cEFlv9jFTUQ6L6v1N
+ dz4+id272I+rragihpOshzkMKSzBfv1VbvxPQqnR1fRJQP/BaS3edCLDXwdqMBnd6lTgoYT6Rfu
+ p12FQmHflV0rQSDe5LqDQGXt6cZ+b77s4TCGbIybowRkbP0juXxnEgAOtlZRKPZvO5lb632nkW/
+ 0I/vPO8qU3WMY9FyEGp76MCzhYHKoCgdUT1jV+AQj2IxtB9W63CDYzS+eBpeXBSBfgH2lJ7Z4Fv
+ XZ++SjqerYrf72dFgUAioqXh1bEuGKguD7ZsGD+DtnLUkJf7b94uaFOzBjHUL7yM5Fhi2qJqvxO
+ 9M4KhueZNvdoo3gAokfI3mhXi5cAXg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-20_04,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
+ adultscore=0 phishscore=0 bulkscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
+ definitions=main-2510180023
 
-The RX/TX flow-control bitmaps (rx_fc_pfvf_bmap and tx_fc_pfvf_bmap)
-are allocated by cgx_lmac_init() but never freed in cgx_lmac_exit().
-Unbinding and rebinding the driver therefore triggers kmemleak:
 
-    unreferenced object (size 16):
-        backtrace:
-          rvu_alloc_bitmap
-          cgx_probe
 
-Free both bitmaps during teardown.
+On 10/20/25 2:12 PM, Srinivas Kandagatla wrote:
+> {
+> + switch (id) {
+> + case WSA_CODEC_DMA_RX_0:
+> + case WSA_CODEC_DMA_TX_0:
+> + case WSA_CODEC_DMA_RX_1:
+> + case WSA_CODEC_DMA_TX_1:
+> + case WSA_CODEC_DMA_TX_2:
+> + case RX_CODEC_DMA_RX_0:
+> + case TX_CODEC_DMA_TX_0:
+> + case RX_CODEC_DMA_RX_1:
+> + case TX_CODEC_DMA_TX_1:
+> + case RX_CODEC_DMA_RX_2:
+> + case TX_CODEC_DMA_TX_2:
+> + case RX_CODEC_DMA_RX_3:
+> + case TX_CODEC_DMA_TX_3:
+> + case RX_CODEC_DMA_RX_4:
+> + case TX_CODEC_DMA_TX_4:
+> + case RX_CODEC_DMA_RX_5:
+> + case TX_CODEC_DMA_TX_5:
+> + case RX_CODEC_DMA_RX_6:
+> + case RX_CODEC_DMA_RX_7:
 
-Fixes: e740003874ed ("octeontx2-af: Flow control resource management")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bo Sun <bo@mboxify.com>
----
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 2 ++
- 1 file changed, 2 insertions(+)
+Looks like we need one more entry here for RB3.
+      case SLIMBUS_0_RX...SLIMBUS_6_TX:
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-index ec0e11c77cbf..f56e6782c4de 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -1823,6 +1823,8 @@ static int cgx_lmac_exit(struct cgx *cgx)
- 		cgx->mac_ops->mac_pause_frm_config(cgx, lmac->lmac_id, false);
- 		cgx_configure_interrupt(cgx, lmac, lmac->lmac_id, true);
- 		kfree(lmac->mac_to_index_bmap.bmap);
-+		kfree(lmac->rx_fc_pfvf_bmap.bmap);
-+		kfree(lmac->tx_fc_pfvf_bmap.bmap);
- 		kfree(lmac->name);
- 		kfree(lmac);
- 	}
+Hmm RB3 also has memory leaks for very long time, good that this list is
+able to clean up some of that inconsistent handling of dai ids for
+soundwire stream.
+
+--srini
+
+> + return true;
+> + default:
+> + break;
+> + }
+> +
+> + return false;
+> +}
+
 
