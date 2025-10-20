@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-188103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB01BF16B4
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:05:13 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD86FBF1717
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95E983BDADD
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 13:05:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 84D4E4F52FC
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 13:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4438E19C553;
-	Mon, 20 Oct 2025 13:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45F831326D;
+	Mon, 20 Oct 2025 13:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7pQPi79"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U2rJBfhV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0329C2FFDFF
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 13:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98E130214F
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 13:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760965508; cv=none; b=X+ClgbPF/gV87YYZuuEMurepJr6IliZUgt1YiUt7di9Q98VK5SpDV0vu/sYmicAD8VFek00ZKPHEUNcQIbT3WJgYu5DhFgwMHE659A9zoe5lLaL5dKsk1RbpHHWV/oAsi6XNy5NDVtVuIItGa0slROlNrKMHZlZpaEhIpBDMGrU=
+	t=1760965613; cv=none; b=txx+wim9KU8uKoBFyRuCqTmRnr8z5p3mvFGXY/i5qV+1Hn+STSWzhf1y8bdM1tmzVR3rd8EJgTnYqDDo6ay5/u2Bkid3MHCOD2o8jxgx1WYyuveHXbMmiSzANyMs3ruRdpYs80ldebZyImePA4v9o9LvJ+PzpOX721AfuxXkeEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760965508; c=relaxed/simple;
-	bh=PmJ8HWPjPUxEJi5JfAiox46llEx09C1OREpE6hfCr04=;
+	s=arc-20240116; t=1760965613; c=relaxed/simple;
+	bh=b/W+fEHXOEzB/bImYbbT56LtF6pyhGP9KFnFN1sRsIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HIZYF2ZljTD9eSYRfpjE4EkaEybZx9vPhnBEH/gOI7gB0vYGdz6UtaF2Hb4KI1mnnMrgK/h8i7SGchEhebp1zQC1ByKlDuE56Ey+pMFslh8KQroXSKsZz9xJBJ4rI6g9mpRNRzeqeYaS4oiL6tOsVCuNAPr2mWv2u5iznX0KFAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7pQPi79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25E7C113D0;
-	Mon, 20 Oct 2025 13:05:06 +0000 (UTC)
+	 MIME-Version; b=rAHeusjhbtEStq7izyFpcdy1GJnPnMjXEVs+0hHIwI8CS52uqmsnmvqDHHkcCHyEad8RFbwcPdBnU5kxaMQ5ERAJ9f0rWA+h7MQa2+wcs2ynp5yLh8XKH39hi5rpvnj+IdtiS2jkBAPn2rHFix93Dk5Zb3yxbKd3GGW0b1jQaXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U2rJBfhV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821A8C113D0;
+	Mon, 20 Oct 2025 13:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760965507;
-	bh=PmJ8HWPjPUxEJi5JfAiox46llEx09C1OREpE6hfCr04=;
+	s=k20201202; t=1760965612;
+	bh=b/W+fEHXOEzB/bImYbbT56LtF6pyhGP9KFnFN1sRsIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z7pQPi79RYADmosajrUYeNWg9ufad7ogPHLRDAWuFjwn+pVW/Kg44q4KKof425uxj
-	 Q51BkyWUcmpdOBFJazbgmSnOTBTyxbjJtESDTDRy8B8bCLBmaey0olnmG/1GG2YRM5
-	 TwtYShWpSCE/31X6/V7q3rKFOQF0zq2QFZJ+qO8B9IWGNNRpfHG8GGUzNHKEmMpBS4
-	 z1PDtB0Zw+/zMJWRmDe18ufvNpENgDjFKqZugRS4K0QwSZNR6ShNmoMFB6qpd3tY9V
-	 IEU3JCaJa5xkkvmWiMjco1wNkWRqeIyN1SA+i4c3WRK0wVLV0sDzwWU4gsg0rtU1Qk
-	 HZyYfUs7OPljg==
+	b=U2rJBfhVTSistD8WIaMM1K2AEd8SPJvyG6fTmCcoY+6yF9mV7bgfi7nnipv+lOrsC
+	 ddhnrKPTUXDjs8v+zV0lFdoRmp6qqtE98Mu3RiBpZT7TqGu+fqwx179MLA/KnVBFcv
+	 YpPMpsaMCBv7bg6riDdehFCld+RSkT/+t0lWQFtGYfoZziUjERlCQMrMCYllTlvsU3
+	 le5N/pHvv/DAvWfdB5qMs/wN/o7odfKIGA9KCVK+D8KCp9ZqTO5vtyHbU7/6Rdcugh
+	 e4P/x2QpKLHi+CCbVHSgF43UFF6GdLxlPmuvPA+Xp6U8I967gDaUcTEAaj5kwY1hFx
+	 0lspKL8KOk7ig==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: John Garry <john.g.garry@oracle.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/2] iio: imu: inv_icm42600: Simplify pm_runtime setup
-Date: Mon, 20 Oct 2025 09:05:03 -0400
-Message-ID: <20251020130503.1764881-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/4] md/raid0: Handle bio_split() errors
+Date: Mon, 20 Oct 2025 09:06:46 -0400
+Message-ID: <20251020130649.1765603-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251020130503.1764881-1-sashal@kernel.org>
-References: <2025101603-magnetism-bonded-4bc7@gregkh>
- <20251020130503.1764881-1-sashal@kernel.org>
+In-Reply-To: <2025101606-eggshell-static-9bca@gregkh>
+References: <2025101606-eggshell-static-9bca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,85 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit 0792c1984a45ccd7a296d6b8cb78088bc99a212e ]
+[ Upstream commit 74538fdac3e85aae55eb4ed786478ed2384cb85d ]
 
-Rework the power management in inv_icm42600_core_probe() to use
-devm_pm_runtime_set_active_enabled(), which simplifies the runtime PM
-setup by handling activation and enabling in one step.
-Remove the separate inv_icm42600_disable_pm callback, as it's no longer
-needed with the devm-managed approach.
-Using devm_pm_runtime_enable() also fixes the missing disable of
-autosuspend.
-Update inv_icm42600_disable_vddio_reg() to only disable the regulator if
-the device is not suspended i.e. powered-down, preventing unbalanced
-disables.
-Also remove redundant error msg on regulator_disable(), the regulator
-framework already emits an error message when regulator_disable() fails.
+Add proper bio_split() error handling. For any error, set bi_status, end
+the bio, and return.
 
-This simplifies the PM setup and avoids manipulating the usage counter
-unnecessarily.
-
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-1-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20241111112150.3756529-5-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 22f166218f73 ("md: fix mssing blktrace bio split events")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../iio/imu/inv_icm42600/inv_icm42600_core.c  | 24 ++++++-------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+ drivers/md/raid0.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index 4703507daa051..367d2efd89e05 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -550,20 +550,12 @@ static void inv_icm42600_disable_vdd_reg(void *_data)
- static void inv_icm42600_disable_vddio_reg(void *_data)
- {
- 	struct inv_icm42600_state *st = _data;
--	const struct device *dev = regmap_get_device(st->map);
--	int ret;
--
--	ret = regulator_disable(st->vddio_supply);
--	if (ret)
--		dev_err(dev, "failed to disable vddio error %d\n", ret);
--}
-+	struct device *dev = regmap_get_device(st->map);
- 
--static void inv_icm42600_disable_pm(void *_data)
--{
--	struct device *dev = _data;
-+	if (pm_runtime_status_suspended(dev))
-+		return;
- 
--	pm_runtime_put_sync(dev);
--	pm_runtime_disable(dev);
-+	regulator_disable(st->vddio_supply);
- }
- 
- int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
-@@ -660,16 +652,14 @@ int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
- 		return ret;
- 
- 	/* setup runtime power management */
--	ret = pm_runtime_set_active(dev);
-+	ret = devm_pm_runtime_set_active_enabled(dev);
- 	if (ret)
- 		return ret;
--	pm_runtime_get_noresume(dev);
--	pm_runtime_enable(dev);
+diff --git a/drivers/md/raid0.c b/drivers/md/raid0.c
+index 31bea72bcb01a..67ec633d27e26 100644
+--- a/drivers/md/raid0.c
++++ b/drivers/md/raid0.c
+@@ -464,6 +464,12 @@ static void raid0_handle_discard(struct mddev *mddev, struct bio *bio)
+ 		struct bio *split = bio_split(bio,
+ 			zone->zone_end - bio->bi_iter.bi_sector, GFP_NOIO,
+ 			&mddev->bio_set);
 +
- 	pm_runtime_set_autosuspend_delay(dev, INV_ICM42600_SUSPEND_DELAY_MS);
- 	pm_runtime_use_autosuspend(dev);
--	pm_runtime_put(dev);
- 
--	return devm_add_action_or_reset(dev, inv_icm42600_disable_pm, dev);
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(inv_icm42600_core_probe);
- 
++		if (IS_ERR(split)) {
++			bio->bi_status = errno_to_blk_status(PTR_ERR(split));
++			bio_endio(bio);
++			return;
++		}
+ 		bio_chain(split, bio);
+ 		submit_bio_noacct(bio);
+ 		bio = split;
+@@ -606,6 +612,12 @@ static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
+ 	if (sectors < bio_sectors(bio)) {
+ 		struct bio *split = bio_split(bio, sectors, GFP_NOIO,
+ 					      &mddev->bio_set);
++
++		if (IS_ERR(split)) {
++			bio->bi_status = errno_to_blk_status(PTR_ERR(split));
++			bio_endio(bio);
++			return true;
++		}
+ 		bio_chain(split, bio);
+ 		raid0_map_submit_bio(mddev, bio);
+ 		bio = split;
 -- 
 2.51.0
 
