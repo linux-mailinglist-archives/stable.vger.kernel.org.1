@@ -1,121 +1,98 @@
-Return-Path: <stable+bounces-187912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E371BEE9D6
-	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 18:25:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2446BBEF075
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 03:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 545E6189A9C8
-	for <lists+stable@lfdr.de>; Sun, 19 Oct 2025 16:25:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C59931896BDA
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 01:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662732ECD05;
-	Sun, 19 Oct 2025 16:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0421A840A;
+	Mon, 20 Oct 2025 01:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2EokHRL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rFBnrjnh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E851A00F0;
-	Sun, 19 Oct 2025 16:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05E419B5A7;
+	Mon, 20 Oct 2025 01:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760891120; cv=none; b=XHqLF6dvRtksg/rpYaCpQd0wvqWfyKJgzRoZOqo5spJ4Cn/TkCZgTu6JzpGpBu0J1SKlNei0ueCrHDOMqGwoUKzWBCBz3S9ZE0auTv0slrLqXDj6EYOZyyn3TRcK+xmuf68aD9XzkJ/k2fOaQu7wV9hIHvFwVkoglY1/dUjCpeE=
+	t=1760924518; cv=none; b=quTMJZbEK2QgLhwZd2quiMCuvFX99CbNwZB+YucTq+qPI9JawDCKxOCrAM9jV27YOMkzlp4xgrqKAivRY79/6R9kYBYNcd0ZqlNDPRrQtBeo0wWKBCdc3hPc/GkzduZva9ox73Td5vpaYcelYXyk4qzS7Vb0LvmVo9W4n9jFx7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760891120; c=relaxed/simple;
-	bh=AqeDRU1eKSmQXUiCZ7pwi0Bd8BGGXBM48O4Ou5Xs+sw=;
+	s=arc-20240116; t=1760924518; c=relaxed/simple;
+	bh=Cjcf1/xqZW+Uik6yvN4NeKdAMdpCcc66oIiTXtqvHEw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ny8OD4gi8nAij93+qSPZ92ytYCmvNp2te+9feN52PBmDlCrgJ1LDdj5X2hGC62awAnItnCA0/a6WPJfjeS0Obn/cuF4G9jS+9seTkI2xHvvDm9V2UN3sxVdmY/T5nBWmWwbDG3Y/jYnCrBraz4hwbcw1tiUMrGiFXEDLdfNHHNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2EokHRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7610C4CEE7;
-	Sun, 19 Oct 2025 16:25:18 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=NZfMrlAP5SL5wloGTtEHGl4hynnGiOuD2odiW28w6mV3M+W+JrPMpIm/pcdymxqVu9VLHtYLtDT5vOECFqeL5SwF0XSB2rahoq9ViCOjwShYzYS3aiLLhsakU8xIIxEFsr/vNiCwfEVvbneh2Sa8HrYukF0AHSo9nBRBN1AZ8K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rFBnrjnh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5462C4CEE7;
+	Mon, 20 Oct 2025 01:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760891119;
-	bh=AqeDRU1eKSmQXUiCZ7pwi0Bd8BGGXBM48O4Ou5Xs+sw=;
+	s=k20201202; t=1760924517;
+	bh=Cjcf1/xqZW+Uik6yvN4NeKdAMdpCcc66oIiTXtqvHEw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F2EokHRLd68kZBeDRRdhxJ1rDW2elFlh8EnkyaTJnHSCfqkoujh7BohpZc68H407D
-	 6bUXmBrNoq7Ww0jTMF1QQwGeMEpfXz0BrGd0k+T8PJbgWDRrKfDcnhwumf2RRZV3Tp
-	 M1nqa0cZRI89OYqyvuvRWeFwctcqJgDf9nK43gHk2G3mRl3usq7ey6ziFEp5oxVwef
-	 8ha/lyEniLuE2fegL9ApZJO+lst38G6OUrwAE6O/NFZ/Mz1YaBFZd+ociss1pkQv9d
-	 0MzWPAoBwoLUZ5+ACw5ohULeXVrjB6+3sdA7UiNPKC79wDn4zGf7+6LA7UKkZ5vUk5
-	 GbYsQCDUj5ADg==
-Date: Sun, 19 Oct 2025 09:23:46 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Askar Safin <safinaskar@gmail.com>
-Cc: ardb@kernel.org, linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev, sparclinux@vger.kernel.org,
-	x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	b=rFBnrjnhLCmQwKEpYJomTQd+PHRe17PXgbHBB4kdekJI8C0VJPgCu1ZhtY4VA6y1e
+	 Qiq1mI2P5xZkqtP8SXIcXyG/NyF9npEcV/C9cBKWegmH1KahaoVQ6zhOehUslIGa9M
+	 eI0X/lpJEKQGK02U6DtDmdi/UauveO3/0k3c7U0lEURhBeAIhGAz6WZ++hL3VgpCK7
+	 D0XYiYB7hP4NgiT3VCucfnizTcgkR+j6bLMyL1Qx0fjfyToeQZ2ARhEDMCE6DnRjIh
+	 0LPM4uf0WQ7D41cTS70E/GcOD+Lno3LXEYcyHv1JMwNLtzL1lIThZBG+ex3PDA8DZU
+	 C3N8UG0igRwbQ==
+Date: Mon, 20 Oct 2025 02:41:52 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: lgirdwood@gmail.com, linux-sound@vger.kernel.org,
+	kai.vehmanen@linux.intel.com, ranjani.sridharan@linux.intel.com,
+	yung-chuan.liao@linux.intel.com, pierre-louis.bossart@linux.dev,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v4 15/19] lib/crc32: make crc32c() go directly to lib
-Message-ID: <20251019162346.GB1604@sol>
-References: <20241202010844.144356-16-ebiggers@kernel.org>
- <20251019060845.553414-1-safinaskar@gmail.com>
- <CAPnZJGAb7AM4p=HdsDhYcANCzD8=gpGjuP4wYfr2utLp3WMSNQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] ASoC: SOF: ipc4-topology: Correct the minimum
+ host DMA buffer size
+Message-ID: <de8f8b56-ef5d-4d58-92ec-38280badcfb0@sirena.org.uk>
+References: <20251002125322.15692-1-peter.ujfalusi@linux.intel.com>
+ <20251002125322.15692-2-peter.ujfalusi@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dthMWkywLjRNJ4O0"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPnZJGAb7AM4p=HdsDhYcANCzD8=gpGjuP4wYfr2utLp3WMSNQ@mail.gmail.com>
+In-Reply-To: <20251002125322.15692-2-peter.ujfalusi@linux.intel.com>
+X-Cookie: I'm into SOFTWARE!
 
-On Sun, Oct 19, 2025 at 11:10:25AM +0300, Askar Safin wrote:
-> On Sun, Oct 19, 2025 at 9:09 AM Askar Safin <safinaskar@gmail.com> wrote:
-> >
-> > Eric Biggers <ebiggers@kernel.org>:
-> > > Now that the lower level __crc32c_le() library function is optimized for
-> >
-> > This patch (i. e. 38a9a5121c3b ("lib/crc32: make crc32c() go directly to lib"))
-> > solves actual bug I found in practice. So, please, backport it
-> > to stable kernels.
-> 
-> Oops. I just noticed that this patch removes module "libcrc32c".
-> And this breaks build for Debian kernel v6.12.48.
-> Previously I tested minimal build using "make localmodconfig".
-> Now I tried full build of Debian kernel using "dpkg-buildpackage".
-> And it failed, because some of Debian files reference "libcrc32c",
-> which is not available.
-> 
-> So, please, don't backport this patch to stable kernels.
-> I'm sorry.
 
-Right, this commit simplified the CRC library design by removing the
-libcrc32c module.  initramfs build scripts that hard-coded the addition
-of libcrc32c.ko into the ramdisk (which I don't think was ever necessary
-in the first place, though it did used to be useful to hard-code some of
-the *other* CRC modules like crc32c-intel) had to be updated to remove
-it.  It looks like Debian did indeed do that, and they updated it in
-https://salsa.debian.org/kernel-team/linux/-/commit/6c242c647f84bfdbdc22a6a758fa59da4e941a10#1251f9400a85485d275e1709758350aa098709a8
+--dthMWkywLjRNJ4O0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-As for your original problem, I'd glad to see that the simplified design
-is preventing problems.  There's an issue with backporting this commit
-alone, though.  This was patch 15 of a 19-patch series for a good
-reason: the CRC-32C implementation in lib/ wasn't architecture-optimized
-until after patches 1-14 of this series.  Backporting this commit alone
-would make crc32c() no longer utilize architecture-optimized code.
+On Thu, Oct 02, 2025 at 03:53:20PM +0300, Peter Ujfalusi wrote:
+> The firmware has changed the minimum host buffer size from 2 periods to
+> 4 periods (1 period is 1ms) which was missed by the kernel side.
+>=20
+> Adjust the SOF_IPC4_MIN_DMA_BUFFER_SIZE to 4 ms to align with firmware.
 
-Now, it already didn't do so reliably (and this patch series fixed
-that).  However, backporting this commit alone would make it never do
-so.  So it would regress performance in some cases.
+This doesn't apply as a fix, please check and resend.
 
-Since the errors you're actually getting are:
+--dthMWkywLjRNJ4O0
+Content-Type: application/pgp-signature; name="signature.asc"
 
-    [   19.619731] Invalid ELF header magic: != ELF
-    modprobe: can't load module libcrc32c (kernel/lib/libcrc32c.ko.xz): unknown symbol in module, or unknown parameter
+-----BEGIN PGP SIGNATURE-----
 
-I do have to wonder if this is actually a busybox bug or
-misconfiguration, where it's passing a compressed module to the kernel
-without decompressing it?  And removing the module just hid the problem.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmj1k2AACgkQJNaLcl1U
+h9C5CAgAhTOILLMaddbt9Pq6slTEERPkL1lmG9yKFRtZ2ymqzHGlruEBmuwkZNfh
+qUDaBYRq8CHBdyFIGEqcF63MrK6ixflEeiIF0F/WO80sEcZhWzT1RVMeFJoaul/q
+3tMZdSaWWZuMYjf0VY0UyZUDYXD/YDfsyAtOdB/og9k4GpmmBOgk7tCchNmIy2Qo
+lwKb6xzvGOLB8XjgG6S03QaOi42/CeC7OEUP2rHkBur5jqZUSuNBZco/NjQ+VwoZ
+zMI1zfoQrYGfq5ej0jqaA4BAPLDP8nU2bnWuZsWANXYzAIqeGM1yKMnmi2spYCd5
+ymPSKD9ggaUdRkh3L5wHU/RoCW2lCg==
+=zHxW
+-----END PGP SIGNATURE-----
 
-- Eric
+--dthMWkywLjRNJ4O0--
 
