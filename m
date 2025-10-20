@@ -1,401 +1,122 @@
-Return-Path: <stable+bounces-188227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18194BF2E0D
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 20:10:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11435BF3003
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 20:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AA6F18C1878
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:11:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1A2D44F896A
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1CC2C327E;
-	Mon, 20 Oct 2025 18:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050FA2BF3F3;
+	Mon, 20 Oct 2025 18:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TpGs/fnQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VMzbM0PG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB882C3263
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 18:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59227257427;
+	Mon, 20 Oct 2025 18:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760983835; cv=none; b=uLu7AF6EAjxmishKORK29TNXWrMQ6UsrEmuJXcsAwhkG+iWENPe8bvJ+sZTt/fAhVXlQ71rOS55sLatrY0vPoPYPLKyEV2oVvKdcdrrYQRWnP0Q8s8JmMu0rpQH+JwFM/5f1AZg41/jztBWdfH8xXwz3bsTWC362GDF167s8418=
+	t=1760986040; cv=none; b=JS/YzEeO3evQpj7b7EGfRmNi7aBshTvg1jDx4IOZ9R/f13lWnVau2p2trkFnMadiSsUeMM7lYgzGzvDUEOvXk/w9lsKJCcXu7fkBSjqN2LXzgcp9bYuHXuc+CPw1gYdIqbobNMdgO19jQZSsstIB+vZ3QFhXwmWky2/BsuUId8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760983835; c=relaxed/simple;
-	bh=sq75d0nDawSrYg5r8aqBBBrEPCvUKzME7Ak8BSALrPM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ch3IxgWLkxWTpRj8o5I/jjr2xeMwCyQqCUeBR6LedqZ+GH5AP0D0Xb2DpUun6QcStmwG7FeDKHMDx/z67DQ0Bn//sgh9FMoM4Iz8ev/2poYkzqm8ASbP0rizzydKjpdretiWor9WlPshwtlQEeXk42iHj/vmlPBflLOnYb4Y1cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpGs/fnQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C2DC113D0;
-	Mon, 20 Oct 2025 18:10:34 +0000 (UTC)
+	s=arc-20240116; t=1760986040; c=relaxed/simple;
+	bh=gnl1t3TC19SYVzt3uOj7MhJzHUfsGVGM+sv1GmLS2yw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CQLGA4PkyD6Qqd9rmNfNd/pviNZUviVPkVsRV9Z/eK9/4knpwl/MQPjs+qHfxUJo30yCWZ8dHAdDBPjLnkLQSFrAXAVthjgOk5oNF+ERhE1Rv1tRQoV7pzaceFWLFgdkbJQuQ0Ce+kguqu8S3h2/g4B5VJmZ+wwTv75iU+FGzlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VMzbM0PG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29BAC116B1;
+	Mon, 20 Oct 2025 18:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760983835;
-	bh=sq75d0nDawSrYg5r8aqBBBrEPCvUKzME7Ak8BSALrPM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TpGs/fnQTCz24tQfBVGaRXwrHX65tB/SECUNlVw66PUzcctXS403e2a5/ePdMIbgi
-	 IHZti2ruvH+jBROTXv+en6at6GL/EEXlL0znXeZ7a7YsdAgwkWatee6K9obXYUBtQg
-	 TZr0KsnCy07XHurb0RMpRmzJj4ZFSxEE1JK6rU3/9jHytY8d52PqFtNIUMawpoPi+8
-	 xoOTvxQbGuCe8Fv8bjOc8P9YjRIIXcAtrIQb8SXBmyvSAeJjm4EAXc0nByNTEiCyNb
-	 f8b3MqpgLLLRgbQoBXiB5ndt35Srz5RXBcbGMxpTDUcej6qMZzrh3WpOYH40qPphBr
-	 UZok4IzRbRX7w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 4/4] ixgbevf: fix mailbox API compatibility by negotiating supported features
-Date: Mon, 20 Oct 2025 14:10:28 -0400
-Message-ID: <20251020181028.1864198-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251020181028.1864198-1-sashal@kernel.org>
-References: <2025102051-bonded-proofread-bd52@gregkh>
- <20251020181028.1864198-1-sashal@kernel.org>
+	s=k20201202; t=1760986039;
+	bh=gnl1t3TC19SYVzt3uOj7MhJzHUfsGVGM+sv1GmLS2yw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VMzbM0PGZp3HOY9ZNyHO1iC0r4Sq8qOzpgDH9NLeNRkfReZOYRjHnvsk//gyw+70F
+	 LOy5Jhv2/HO40mExXv8jFGhswKoAenAmenn8rFLRMIF32Zg+xA7de8XW5M8T4CV2/t
+	 SmIoeXc20Ah9VAOYczXy/UIlxrPb0BSteWmotYNGGsKZK3xqTb2/UHELEZPY7IgTGC
+	 IFh712UIAXX9ni19x46YapP6BnkAg7pZ0dCayUzW4IT/rqFGHxSq58uYuIwgdeRD9g
+	 FOuAo0B0I7KipGJMKu78acP21BmlY3EhhpC6fqaCsw1VYohiAMhRLKzOPhIr+GeXuj
+	 xPxCvRdurnP8g==
+Date: Mon, 20 Oct 2025 11:47:19 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+	xfs-stable <xfs-stable@lists.linux.dev>
+Subject: Re: [PATCH 6.12.y] xfs: use deferred intent items for reaping
+ crosslinked blocks
+Message-ID: <20251020184719.GQ6178@frogsfrogsfrogs>
+References: <2025101603-parasitic-impatient-2d2b@gregkh>
+ <20251020154951.1825215-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251020154951.1825215-1-sashal@kernel.org>
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+On Mon, Oct 20, 2025 at 11:49:51AM -0400, Sasha Levin wrote:
+> From: "Darrick J. Wong" <djwong@kernel.org>
+> 
+> [ Upstream commit cd32a0c0dcdf634f2e0e71f41c272e19dece6264 ]
+> 
+> When we're removing rmap records for crosslinked blocks, use deferred
+> intent items so that we can try to free/unmap as many of the old data
+> structure's blocks as we can in the same transaction as the commit.
+> 
+> Cc: <stable@vger.kernel.org> # v6.6
+> Fixes: 1c7ce115e52106 ("xfs: reap large AG metadata extents when possible")
+> Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> [ adapted xfs_refcount_free_cow_extent() and xfs_rmap_free_extent() ]
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-[ Upstream commit a7075f501bd33c93570af759b6f4302ef0175168 ]
+Looks good to me,
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 
-There was backward compatibility in the terms of mailbox API. Various
-drivers from various OSes supporting 10G adapters from Intel portfolio
-could easily negotiate mailbox API.
+--D
 
-This convention has been broken since introducing API 1.4.
-Commit 0062e7cc955e ("ixgbevf: add VF IPsec offload code") added support
-for IPSec which is specific only for the kernel ixgbe driver. None of the
-rest of the Intel 10G PF/VF drivers supports it. And actually lack of
-support was not included in the IPSec implementation - there were no such
-code paths. No possibility to negotiate support for the feature was
-introduced along with introduction of the feature itself.
-
-Commit 339f28964147 ("ixgbevf: Add support for new mailbox communication
-between PF and VF") increasing API version to 1.5 did the same - it
-introduced code supported specifically by the PF ESX driver. It altered API
-version for the VF driver in the same time not touching the version
-defined for the PF ixgbe driver. It led to additional discrepancies,
-as the code provided within API 1.6 cannot be supported for Linux ixgbe
-driver as it causes crashes.
-
-The issue was noticed some time ago and mitigated by Jake within the commit
-d0725312adf5 ("ixgbevf: stop attempting IPSEC offload on Mailbox API 1.5").
-As a result we have regression for IPsec support and after increasing API
-to version 1.6 ixgbevf driver stopped to support ESX MBX.
-
-To fix this mess add new mailbox op asking PF driver about supported
-features. Basing on a response determine whether to set support for IPSec
-and ESX-specific enhanced mailbox.
-
-New mailbox op, for compatibility purposes, must be added within new API
-revision, as API version of OOT PF & VF drivers is already increased to
-1.6 and doesn't incorporate features negotiate op.
-
-Features negotiation mechanism gives possibility to be extended with new
-features when needed in the future.
-
-Reported-by: Jacob Keller <jacob.e.keller@intel.com>
-Closes: https://lore.kernel.org/intel-wired-lan/20241101-jk-ixgbevf-mailbox-v1-5-fixes-v1-0-f556dc9a66ed@intel.com/
-Fixes: 0062e7cc955e ("ixgbevf: add VF IPsec offload code")
-Fixes: 339f28964147 ("ixgbevf: Add support for new mailbox communication between PF and VF")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20251009-jk-iwl-net-2025-10-01-v3-4-ef32a425b92a@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/intel/ixgbevf/ipsec.c    | 10 +++++
- drivers/net/ethernet/intel/ixgbevf/ixgbevf.h  |  7 +++
- .../net/ethernet/intel/ixgbevf/ixgbevf_main.c | 32 ++++++++++++-
- drivers/net/ethernet/intel/ixgbevf/mbx.h      |  4 ++
- drivers/net/ethernet/intel/ixgbevf/vf.c       | 45 ++++++++++++++++++-
- drivers/net/ethernet/intel/ixgbevf/vf.h       |  1 +
- 6 files changed, 96 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ipsec.c b/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-index f804b35d79c72..83b3243f172c7 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-@@ -271,6 +271,9 @@ static int ixgbevf_ipsec_add_sa(struct xfrm_state *xs,
- 	adapter = netdev_priv(dev);
- 	ipsec = adapter->ipsec;
- 
-+	if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+		return -EOPNOTSUPP;
-+
- 	if (xs->id.proto != IPPROTO_ESP && xs->id.proto != IPPROTO_AH) {
- 		NL_SET_ERR_MSG_MOD(extack, "Unsupported protocol for IPsec offload");
- 		return -EINVAL;
-@@ -400,6 +403,9 @@ static void ixgbevf_ipsec_del_sa(struct xfrm_state *xs)
- 	adapter = netdev_priv(dev);
- 	ipsec = adapter->ipsec;
- 
-+	if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+		return;
-+
- 	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN) {
- 		sa_idx = xs->xso.offload_handle - IXGBE_IPSEC_BASE_RX_INDEX;
- 
-@@ -628,6 +634,10 @@ void ixgbevf_init_ipsec_offload(struct ixgbevf_adapter *adapter)
- 	size_t size;
- 
- 	switch (adapter->hw.api_version) {
-+	case ixgbe_mbox_api_17:
-+		if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+			return;
-+		break;
- 	case ixgbe_mbox_api_14:
- 		break;
- 	default:
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-index 9b37f354d78ce..f31068e24e867 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-@@ -366,6 +366,13 @@ struct ixgbevf_adapter {
- 	/* Interrupt Throttle Rate */
- 	u32 eitr_param;
- 
-+	u32 pf_features;
-+#define IXGBEVF_PF_SUP_IPSEC		BIT(0)
-+#define IXGBEVF_PF_SUP_ESX_MBX		BIT(1)
-+
-+#define IXGBEVF_SUPPORTED_FEATURES	(IXGBEVF_PF_SUP_IPSEC | \
-+					IXGBEVF_PF_SUP_ESX_MBX)
-+
- 	struct ixgbevf_hw_stats stats;
- 
- 	unsigned long state;
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-index c1a2a6b77f8d0..72b17a0f052c2 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -2275,10 +2275,35 @@ static void ixgbevf_init_last_counter_stats(struct ixgbevf_adapter *adapter)
- 	adapter->stats.base_vfmprc = adapter->stats.last_vfmprc;
- }
- 
-+/**
-+ * ixgbevf_set_features - Set features supported by PF
-+ * @adapter: pointer to the adapter struct
-+ *
-+ * Negotiate with PF supported features and then set pf_features accordingly.
-+ */
-+static void ixgbevf_set_features(struct ixgbevf_adapter *adapter)
-+{
-+	u32 *pf_features = &adapter->pf_features;
-+	struct ixgbe_hw *hw = &adapter->hw;
-+	int err;
-+
-+	err = hw->mac.ops.negotiate_features(hw, pf_features);
-+	if (err && err != -EOPNOTSUPP)
-+		netdev_dbg(adapter->netdev,
-+			   "PF feature negotiation failed.\n");
-+
-+	/* Address also pre API 1.7 cases */
-+	if (hw->api_version == ixgbe_mbox_api_14)
-+		*pf_features |= IXGBEVF_PF_SUP_IPSEC;
-+	else if (hw->api_version == ixgbe_mbox_api_15)
-+		*pf_features |= IXGBEVF_PF_SUP_ESX_MBX;
-+}
-+
- static void ixgbevf_negotiate_api(struct ixgbevf_adapter *adapter)
- {
- 	struct ixgbe_hw *hw = &adapter->hw;
- 	static const int api[] = {
-+		ixgbe_mbox_api_17,
- 		ixgbe_mbox_api_16,
- 		ixgbe_mbox_api_15,
- 		ixgbe_mbox_api_14,
-@@ -2299,8 +2324,9 @@ static void ixgbevf_negotiate_api(struct ixgbevf_adapter *adapter)
- 		idx++;
- 	}
- 
--	/* Following is not supported by API 1.6, it is specific for 1.5 */
--	if (hw->api_version == ixgbe_mbox_api_15) {
-+	ixgbevf_set_features(adapter);
-+
-+	if (adapter->pf_features & IXGBEVF_PF_SUP_ESX_MBX) {
- 		hw->mbx.ops.init_params(hw);
- 		memcpy(&hw->mbx.ops, &ixgbevf_mbx_ops,
- 		       sizeof(struct ixgbe_mbx_operations));
-@@ -2658,6 +2684,7 @@ static void ixgbevf_set_num_queues(struct ixgbevf_adapter *adapter)
- 		case ixgbe_mbox_api_14:
- 		case ixgbe_mbox_api_15:
- 		case ixgbe_mbox_api_16:
-+		case ixgbe_mbox_api_17:
- 			if (adapter->xdp_prog &&
- 			    hw->mac.max_tx_queues == rss)
- 				rss = rss > 3 ? 2 : 1;
-@@ -4653,6 +4680,7 @@ static int ixgbevf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		netdev->max_mtu = IXGBE_MAX_JUMBO_FRAME_SIZE -
- 				  (ETH_HLEN + ETH_FCS_LEN);
- 		break;
-diff --git a/drivers/net/ethernet/intel/ixgbevf/mbx.h b/drivers/net/ethernet/intel/ixgbevf/mbx.h
-index c1494fd1f67b4..a8ed23ee66aa8 100644
---- a/drivers/net/ethernet/intel/ixgbevf/mbx.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/mbx.h
-@@ -67,6 +67,7 @@ enum ixgbe_pfvf_api_rev {
- 	ixgbe_mbox_api_14,	/* API version 1.4, linux/freebsd VF driver */
- 	ixgbe_mbox_api_15,	/* API version 1.5, linux/freebsd VF driver */
- 	ixgbe_mbox_api_16,      /* API version 1.6, linux/freebsd VF driver */
-+	ixgbe_mbox_api_17,	/* API version 1.7, linux/freebsd VF driver */
- 	/* This value should always be last */
- 	ixgbe_mbox_api_unknown,	/* indicates that API version is not known */
- };
-@@ -106,6 +107,9 @@ enum ixgbe_pfvf_api_rev {
- /* mailbox API, version 1.6 VF requests */
- #define IXGBE_VF_GET_PF_LINK_STATE	0x11 /* request PF to send link info */
- 
-+/* mailbox API, version 1.7 VF requests */
-+#define IXGBE_VF_FEATURES_NEGOTIATE	0x12 /* get features supported by PF*/
-+
- /* length of permanent address message returned from PF */
- #define IXGBE_VF_PERMADDR_MSG_LEN	4
- /* word in permanent address message with the current multicast type */
-diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
-index 55ac79f87438f..65257107dfc8a 100644
---- a/drivers/net/ethernet/intel/ixgbevf/vf.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-@@ -313,6 +313,7 @@ int ixgbevf_get_reta_locked(struct ixgbe_hw *hw, u32 *reta, int num_rx_queues)
- 	 * is not supported for this device type.
- 	 */
- 	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_14:
-@@ -383,6 +384,7 @@ int ixgbevf_get_rss_key_locked(struct ixgbe_hw *hw, u8 *rss_key)
- 	 * or if the operation is not supported for this device type.
- 	 */
- 	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_14:
-@@ -555,6 +557,7 @@ static s32 ixgbevf_update_xcast_mode(struct ixgbe_hw *hw, int xcast_mode)
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -646,6 +649,7 @@ static int ixgbevf_get_pf_link_state(struct ixgbe_hw *hw, ixgbe_link_speed *spee
- 
- 	switch (hw->api_version) {
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -669,6 +673,42 @@ static int ixgbevf_get_pf_link_state(struct ixgbe_hw *hw, ixgbe_link_speed *spee
- 	return err;
- }
- 
-+/**
-+ * ixgbevf_negotiate_features_vf - negotiate supported features with PF driver
-+ * @hw: pointer to the HW structure
-+ * @pf_features: bitmask of features supported by PF
-+ *
-+ * Return: IXGBE_ERR_MBX in the  case of mailbox error,
-+ * -EOPNOTSUPP if the op is not supported or 0 on success.
-+ */
-+static int ixgbevf_negotiate_features_vf(struct ixgbe_hw *hw, u32 *pf_features)
-+{
-+	u32 msgbuf[2] = {};
-+	int err;
-+
-+	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	msgbuf[0] = IXGBE_VF_FEATURES_NEGOTIATE;
-+	msgbuf[1] = IXGBEVF_SUPPORTED_FEATURES;
-+
-+	err = ixgbevf_write_msg_read_ack(hw, msgbuf, msgbuf,
-+					 ARRAY_SIZE(msgbuf));
-+
-+	if (err || (msgbuf[0] & IXGBE_VT_MSGTYPE_FAILURE)) {
-+		err = IXGBE_ERR_MBX;
-+		*pf_features = 0x0;
-+	} else {
-+		*pf_features = msgbuf[1];
-+	}
-+
-+	return err;
-+}
-+
- /**
-  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
-  *  @hw: pointer to the HW structure
-@@ -799,6 +839,7 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
- 				     bool *link_up,
- 				     bool autoneg_wait_to_complete)
- {
-+	struct ixgbevf_adapter *adapter = hw->back;
- 	struct ixgbe_mbx_info *mbx = &hw->mbx;
- 	struct ixgbe_mac_info *mac = &hw->mac;
- 	s32 ret_val = 0;
-@@ -825,7 +866,7 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
- 	 * until we are called again and don't report an error
- 	 */
- 	if (mbx->ops.read(hw, &in_msg, 1)) {
--		if (hw->api_version >= ixgbe_mbox_api_15)
-+		if (adapter->pf_features & IXGBEVF_PF_SUP_ESX_MBX)
- 			mac->get_link_status = false;
- 		goto out;
- 	}
-@@ -1026,6 +1067,7 @@ int ixgbevf_get_queues(struct ixgbe_hw *hw, unsigned int *num_tcs,
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return 0;
-@@ -1080,6 +1122,7 @@ static const struct ixgbe_mac_operations ixgbevf_mac_ops = {
- 	.setup_link		= ixgbevf_setup_mac_link_vf,
- 	.check_link		= ixgbevf_check_mac_link_vf,
- 	.negotiate_api_version	= ixgbevf_negotiate_api_version_vf,
-+	.negotiate_features	= ixgbevf_negotiate_features_vf,
- 	.set_rar		= ixgbevf_set_rar_vf,
- 	.update_mc_addr_list	= ixgbevf_update_mc_addr_list_vf,
- 	.update_xcast_mode	= ixgbevf_update_xcast_mode,
-diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.h b/drivers/net/ethernet/intel/ixgbevf/vf.h
-index 2d791bc26ae4e..4f19b8900c29a 100644
---- a/drivers/net/ethernet/intel/ixgbevf/vf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.h
-@@ -26,6 +26,7 @@ struct ixgbe_mac_operations {
- 	s32 (*stop_adapter)(struct ixgbe_hw *);
- 	s32 (*get_bus_info)(struct ixgbe_hw *);
- 	s32 (*negotiate_api_version)(struct ixgbe_hw *hw, int api);
-+	int (*negotiate_features)(struct ixgbe_hw *hw, u32 *pf_features);
- 
- 	/* Link */
- 	s32 (*setup_link)(struct ixgbe_hw *, ixgbe_link_speed, bool, bool);
--- 
-2.51.0
-
+> ---
+>  fs/xfs/scrub/reap.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/xfs/scrub/reap.c b/fs/xfs/scrub/reap.c
+> index 53697f3c5e1b0..8688edec58755 100644
+> --- a/fs/xfs/scrub/reap.c
+> +++ b/fs/xfs/scrub/reap.c
+> @@ -409,8 +409,6 @@ xreap_agextent_iter(
+>  	if (crosslinked) {
+>  		trace_xreap_dispose_unmap_extent(sc->sa.pag, agbno, *aglenp);
+>  
+> -		rs->force_roll = true;
+> -
+>  		if (rs->oinfo == &XFS_RMAP_OINFO_COW) {
+>  			/*
+>  			 * If we're unmapping CoW staging extents, remove the
+> @@ -418,11 +416,14 @@ xreap_agextent_iter(
+>  			 * rmap record as well.
+>  			 */
+>  			xfs_refcount_free_cow_extent(sc->tp, fsbno, *aglenp);
+> +			rs->force_roll = true;
+>  			return 0;
+>  		}
+>  
+> -		return xfs_rmap_free(sc->tp, sc->sa.agf_bp, sc->sa.pag, agbno,
+> -				*aglenp, rs->oinfo);
+> +		xfs_rmap_free_extent(sc->tp, sc->sa.pag->pag_agno, agbno,
+> +				*aglenp, rs->oinfo->oi_owner);
+> +		rs->deferred++;
+> +		return 0;
+>  	}
+>  
+>  	trace_xreap_dispose_free_extent(sc->sa.pag, agbno, *aglenp);
+> -- 
+> 2.51.0
+> 
 
