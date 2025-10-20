@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-188064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A19BF158B
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:52:52 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656DFBF15B1
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:54:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 60DD234CE9B
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:52:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BB90A34D25A
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2F12836A0;
-	Mon, 20 Oct 2025 12:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFE83FFD;
+	Mon, 20 Oct 2025 12:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MnncI5n/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOsRlMFw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149F931355F
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A38231C9F
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760964753; cv=none; b=ZxeGiqeuZo1sTA9QHy1jr7qdriaWB5rq3ZRG6k405Jk/1NDHxdQUSfNJWwiYS9GeR6wmnqSbqlPTrT/d8XW3Bm9BR8ZJCaPyAIgT+mGYTDPcrxB/mnT/eXUrPaJciU+8le+caYXB5tnWPyrpMY6sMSQ4VMbR4cbfenOLxfpqvAE=
+	t=1760964788; cv=none; b=D/iwcawDcagctII6jevqgj3aWsVGyMkUn7dNRpJjdBUGDsdIWu5cOT0QNxQqeru/aTwIEPq+gsPbsIUhUS9gWOVyxFagGYlmrPXpKHpFiiDT6bAbxd+0Gb0sWtRJ02mOH83FpCNsRWX6fgFlcD5I5RzwuD6gcqMLYYZtMZ6ldXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760964753; c=relaxed/simple;
-	bh=nPAw7JEwW7sm+FuDgOvNp/mJVXQ4zJkDFeHM8JKdl9I=;
+	s=arc-20240116; t=1760964788; c=relaxed/simple;
+	bh=UnwEhKAXGlPCl9Mk+7YuKv9OAo9opaNXI8kPLrfDXZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOvJ4mAjmRkqF0uYPl/B0kRKq6kJMv/ybctZfvQhCzDH/C98sF3VtUzZ6vItaRCloqEh7ANoGtHEbwr4+J2Iq6WSGjBxD5yxK80j7MS4ZwodWWxbJSzZuWSGhszE4g4P7HRCU+Ke6beuqPUtsT7BMpTGSOSww3I4wQqkGTngt38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MnncI5n/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62876C4CEF9;
-	Mon, 20 Oct 2025 12:52:31 +0000 (UTC)
+	 MIME-Version; b=inJW7A0rAHroRqZjDAr1zVNUhYUcpWOEvFpj979xvX/0+phCi+fFPjQt498slqXMeiK7rv3OYvJ2AX865oYwqzvZqU0vW4XpQA98ERC/dr0o1V8KQEauJ5DaWYh/7q3vKLaJY4zMBI81Xfq6LaQ6XlrvgTsqKhrDMloayUFIb/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cOsRlMFw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74AAC4CEF9;
+	Mon, 20 Oct 2025 12:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760964752;
-	bh=nPAw7JEwW7sm+FuDgOvNp/mJVXQ4zJkDFeHM8JKdl9I=;
+	s=k20201202; t=1760964788;
+	bh=UnwEhKAXGlPCl9Mk+7YuKv9OAo9opaNXI8kPLrfDXZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnncI5n/vfwbrMDPeYaS/VOmt+7ru3tynbZrlzR+19zNS1JDxeVAPEE+ykO2X7vaV
-	 iAFXOqSJGZa86j1DJCJT9c02FtttSncofP8FGQLtSF+Rwi8SMSMuWPaMod6pOmSojM
-	 1uqp2BMyUHLNin+qcGtmU57fVHiQsQkxHMkBgWxOAJZXOfgV3Ca0zWszDT8DUDGklC
-	 UP+0BVsi3XHaHt20FMeSLqW9gQnk8hSgBI6P9Ii97pLgjSOzROr/hbrkhIIC/PbKGS
-	 VhES5vcNrE6JdzdXex4Y+HwWgZgTnpA6P7kkGZDSjn6yqyuqNppokfZ9cjdY1rbTUJ
-	 tYODLJlLSBCaA==
+	b=cOsRlMFwQ2qtx1EDXUANF4t7qROn8WmHRox18njjeb6EKhq28meSH9i4qoZz2JeJO
+	 zCUuEBwygvAXrDTTpTIvnKtRhR3Tx1HBRvoIlwsqErYuXl5ctlzwfbXXB9PHlDi2Ry
+	 WFgtiBM5lanppGnYoJVV75nweBczLYhMpPOI5gLLmyZZO+/+6sUcImqtE3YRnf0f25
+	 0NSniq6TXdHb19ZFyTMXdvtXxKX7csrKnSiCTEYc8jL7J5uZQlwCYRq9xRbysr51hd
+	 pIU0SROWAhyzBjlUtpSV5OGbz0jPqSg4gs15o8qTqDyW0SGzMDvHCra/mXbZrn5Ep2
+	 pqxh1Bf4J7WOg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sergey Bashirov <sergeybashirov@gmail.com>,
-	Konstantin Evtushenko <koevtushenko@yandex.com>,
 	Christoph Hellwig <hch@lst.de>,
-	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 4/4] NFSD: Fix last write offset handling in layoutcommit
-Date: Mon, 20 Oct 2025 08:52:25 -0400
-Message-ID: <20251020125226.1759978-4-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/7] nfsd: Use correct error code when decoding extents
+Date: Mon, 20 Oct 2025 08:52:59 -0400
+Message-ID: <20251020125305.1760219-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251020125226.1759978-1-sashal@kernel.org>
-References: <2025101656-unfrosted-rasping-f7dc@gregkh>
- <20251020125226.1759978-1-sashal@kernel.org>
+In-Reply-To: <2025101657-preseason-garnish-c1e0@gregkh>
+References: <2025101657-preseason-garnish-c1e0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,112 +63,237 @@ Content-Transfer-Encoding: 8bit
 
 From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit d68886bae76a4b9b3484d23e5b7df086f940fa38 ]
+[ Upstream commit 26d05e1c37d276905bc921384b5a75158fca284b ]
 
-The data type of loca_last_write_offset is newoffset4 and is switched
-on a boolean value, no_newoffset, that indicates if a previous write
-occurred or not. If no_newoffset is FALSE, an offset is not given.
-This means that client does not try to update the file size. Thus,
-server should not try to calculate new file size and check if it fits
-into the segment range. See RFC 8881, section 12.5.4.2.
+Update error codes in decoding functions of block and scsi layout
+drivers to match the core nfsd code. NFS4ERR_EINVAL means that the
+server was able to decode the request, but the decoded values are
+invalid. Use NFS4ERR_BADXDR instead to indicate a decoding error.
+And ENOMEM is changed to nfs code NFS4ERR_DELAY.
 
-Sometimes the current incorrect logic may cause clients to hang when
-trying to sync an inode. If layoutcommit fails, the client marks the
-inode as dirty again.
-
-Fixes: 9cf514ccfacb ("nfsd: implement pNFS operations")
-Cc: stable@vger.kernel.org
-Co-developed-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Konstantin Evtushenko <koevtushenko@yandex.com>
 Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: d68886bae76a ("NFSD: Fix last write offset handling in layoutcommit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/blocklayout.c |  5 ++---
- fs/nfsd/nfs4proc.c    | 30 +++++++++++++++---------------
- 2 files changed, 17 insertions(+), 18 deletions(-)
+ fs/nfsd/blocklayout.c    | 20 ++++++-----
+ fs/nfsd/blocklayoutxdr.c | 71 +++++++++++++++++++++++++++++++---------
+ fs/nfsd/blocklayoutxdr.h |  8 ++---
+ fs/nfsd/nfsd.h           |  1 +
+ 4 files changed, 73 insertions(+), 27 deletions(-)
 
 diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
-index 4c936132eb440..0822d8a119c6f 100644
+index 08a20e5bcf7fe..19078a043e85c 100644
 --- a/fs/nfsd/blocklayout.c
 +++ b/fs/nfsd/blocklayout.c
-@@ -118,7 +118,6 @@ nfsd4_block_commit_blocks(struct inode *inode, struct nfsd4_layoutcommit *lcp,
- 		struct iomap *iomaps, int nr_iomaps)
+@@ -178,11 +178,13 @@ nfsd4_block_proc_layoutcommit(struct inode *inode,
  {
- 	struct timespec64 mtime = inode_get_mtime(inode);
--	loff_t new_size = lcp->lc_last_wr + 1;
- 	struct iattr iattr = { .ia_valid = 0 };
- 	int error;
+ 	struct iomap *iomaps;
+ 	int nr_iomaps;
++	__be32 nfserr;
  
-@@ -128,9 +127,9 @@ nfsd4_block_commit_blocks(struct inode *inode, struct nfsd4_layoutcommit *lcp,
- 	iattr.ia_valid |= ATTR_ATIME | ATTR_CTIME | ATTR_MTIME;
- 	iattr.ia_atime = iattr.ia_ctime = iattr.ia_mtime = lcp->lc_mtime;
+-	nr_iomaps = nfsd4_block_decode_layoutupdate(lcp->lc_up_layout,
+-			lcp->lc_up_len, &iomaps, i_blocksize(inode));
+-	if (nr_iomaps < 0)
+-		return nfserrno(nr_iomaps);
++	nfserr = nfsd4_block_decode_layoutupdate(lcp->lc_up_layout,
++			lcp->lc_up_len, &iomaps, &nr_iomaps,
++			i_blocksize(inode));
++	if (nfserr != nfs_ok)
++		return nfserr;
  
--	if (new_size > i_size_read(inode)) {
-+	if (lcp->lc_size_chg) {
- 		iattr.ia_valid |= ATTR_SIZE;
--		iattr.ia_size = new_size;
-+		iattr.ia_size = lcp->lc_newsize;
+ 	return nfsd4_block_commit_blocks(inode, lcp, iomaps, nr_iomaps);
+ }
+@@ -316,11 +318,13 @@ nfsd4_scsi_proc_layoutcommit(struct inode *inode,
+ {
+ 	struct iomap *iomaps;
+ 	int nr_iomaps;
++	__be32 nfserr;
+ 
+-	nr_iomaps = nfsd4_scsi_decode_layoutupdate(lcp->lc_up_layout,
+-			lcp->lc_up_len, &iomaps, i_blocksize(inode));
+-	if (nr_iomaps < 0)
+-		return nfserrno(nr_iomaps);
++	nfserr = nfsd4_scsi_decode_layoutupdate(lcp->lc_up_layout,
++			lcp->lc_up_len, &iomaps, &nr_iomaps,
++			i_blocksize(inode));
++	if (nfserr != nfs_ok)
++		return nfserr;
+ 
+ 	return nfsd4_block_commit_blocks(inode, lcp, iomaps, nr_iomaps);
+ }
+diff --git a/fs/nfsd/blocklayoutxdr.c b/fs/nfsd/blocklayoutxdr.c
+index ce78f74715eea..669ff8e6e966e 100644
+--- a/fs/nfsd/blocklayoutxdr.c
++++ b/fs/nfsd/blocklayoutxdr.c
+@@ -112,34 +112,54 @@ nfsd4_block_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 	return 0;
+ }
+ 
+-int
++/**
++ * nfsd4_block_decode_layoutupdate - decode the block layout extent array
++ * @p: pointer to the xdr data
++ * @len: number of bytes to decode
++ * @iomapp: pointer to store the decoded extent array
++ * @nr_iomapsp: pointer to store the number of extents
++ * @block_size: alignment of extent offset and length
++ *
++ * This function decodes the opaque field of the layoutupdate4 structure
++ * in a layoutcommit request for the block layout driver. The field is
++ * actually an array of extents sent by the client. It also checks that
++ * the file offset, storage offset and length of each extent are aligned
++ * by @block_size.
++ *
++ * Return values:
++ *   %nfs_ok: Successful decoding, @iomapp and @nr_iomapsp are valid
++ *   %nfserr_bad_xdr: The encoded array in @p is invalid
++ *   %nfserr_inval: An unaligned extent found
++ *   %nfserr_delay: Failed to allocate memory for @iomapp
++ */
++__be32
+ nfsd4_block_decode_layoutupdate(__be32 *p, u32 len, struct iomap **iomapp,
+-		u32 block_size)
++		int *nr_iomapsp, u32 block_size)
+ {
+ 	struct iomap *iomaps;
+ 	u32 nr_iomaps, i;
+ 
+ 	if (len < sizeof(u32)) {
+ 		dprintk("%s: extent array too small: %u\n", __func__, len);
+-		return -EINVAL;
++		return nfserr_bad_xdr;
+ 	}
+ 	len -= sizeof(u32);
+ 	if (len % PNFS_BLOCK_EXTENT_SIZE) {
+ 		dprintk("%s: extent array invalid: %u\n", __func__, len);
+-		return -EINVAL;
++		return nfserr_bad_xdr;
  	}
  
- 	error = inode->i_sb->s_export_op->commit_blocks(inode, iomaps,
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 76b2703a23b28..7ae8e885d7530 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -2504,7 +2504,6 @@ nfsd4_layoutcommit(struct svc_rqst *rqstp,
- 	const struct nfsd4_layout_seg *seg = &lcp->lc_seg;
- 	struct svc_fh *current_fh = &cstate->current_fh;
- 	const struct nfsd4_layout_ops *ops;
--	loff_t new_size = lcp->lc_last_wr + 1;
- 	struct inode *inode;
- 	struct nfs4_layout_stateid *ls;
- 	__be32 nfserr;
-@@ -2520,13 +2519,21 @@ nfsd4_layoutcommit(struct svc_rqst *rqstp,
- 		goto out;
- 	inode = d_inode(current_fh->fh_dentry);
+ 	nr_iomaps = be32_to_cpup(p++);
+ 	if (nr_iomaps != len / PNFS_BLOCK_EXTENT_SIZE) {
+ 		dprintk("%s: extent array size mismatch: %u/%u\n",
+ 			__func__, len, nr_iomaps);
+-		return -EINVAL;
++		return nfserr_bad_xdr;
+ 	}
  
--	nfserr = nfserr_inval;
--	if (new_size <= seg->offset)
--		goto out;
--	if (new_size > seg->offset + seg->length)
--		goto out;
--	if (!lcp->lc_newoffset && new_size > i_size_read(inode))
--		goto out;
-+	lcp->lc_size_chg = false;
-+	if (lcp->lc_newoffset) {
-+		loff_t new_size = lcp->lc_last_wr + 1;
-+
-+		nfserr = nfserr_inval;
-+		if (new_size <= seg->offset)
-+			goto out;
-+		if (new_size > seg->offset + seg->length)
-+			goto out;
-+
-+		if (new_size > i_size_read(inode)) {
-+			lcp->lc_size_chg = true;
-+			lcp->lc_newsize = new_size;
-+		}
-+	}
+ 	iomaps = kcalloc(nr_iomaps, sizeof(*iomaps), GFP_KERNEL);
+ 	if (!iomaps) {
+ 		dprintk("%s: failed to allocate extent array\n", __func__);
+-		return -ENOMEM;
++		return nfserr_delay;
+ 	}
  
- 	nfserr = nfsd4_preprocess_layout_stateid(rqstp, cstate, &lcp->lc_sid,
- 						false, lcp->lc_layout_type,
-@@ -2542,13 +2549,6 @@ nfsd4_layoutcommit(struct svc_rqst *rqstp,
- 	/* LAYOUTCOMMIT does not require any serialization */
- 	mutex_unlock(&ls->ls_mutex);
+ 	for (i = 0; i < nr_iomaps; i++) {
+@@ -178,22 +198,42 @@ nfsd4_block_decode_layoutupdate(__be32 *p, u32 len, struct iomap **iomapp,
+ 	}
  
--	if (new_size > i_size_read(inode)) {
--		lcp->lc_size_chg = true;
--		lcp->lc_newsize = new_size;
--	} else {
--		lcp->lc_size_chg = false;
--	}
--
- 	nfserr = ops->proc_layoutcommit(inode, rqstp, lcp);
- 	nfs4_put_stid(&ls->ls_stid);
- out:
+ 	*iomapp = iomaps;
+-	return nr_iomaps;
++	*nr_iomapsp = nr_iomaps;
++	return nfs_ok;
+ fail:
+ 	kfree(iomaps);
+-	return -EINVAL;
++	return nfserr_inval;
+ }
+ 
+-int
++/**
++ * nfsd4_scsi_decode_layoutupdate - decode the scsi layout extent array
++ * @p: pointer to the xdr data
++ * @len: number of bytes to decode
++ * @iomapp: pointer to store the decoded extent array
++ * @nr_iomapsp: pointer to store the number of extents
++ * @block_size: alignment of extent offset and length
++ *
++ * This function decodes the opaque field of the layoutupdate4 structure
++ * in a layoutcommit request for the scsi layout driver. The field is
++ * actually an array of extents sent by the client. It also checks that
++ * the offset and length of each extent are aligned by @block_size.
++ *
++ * Return values:
++ *   %nfs_ok: Successful decoding, @iomapp and @nr_iomapsp are valid
++ *   %nfserr_bad_xdr: The encoded array in @p is invalid
++ *   %nfserr_inval: An unaligned extent found
++ *   %nfserr_delay: Failed to allocate memory for @iomapp
++ */
++__be32
+ nfsd4_scsi_decode_layoutupdate(__be32 *p, u32 len, struct iomap **iomapp,
+-		u32 block_size)
++		int *nr_iomapsp, u32 block_size)
+ {
+ 	struct iomap *iomaps;
+ 	u32 nr_iomaps, expected, i;
+ 
+ 	if (len < sizeof(u32)) {
+ 		dprintk("%s: extent array too small: %u\n", __func__, len);
+-		return -EINVAL;
++		return nfserr_bad_xdr;
+ 	}
+ 
+ 	nr_iomaps = be32_to_cpup(p++);
+@@ -201,13 +241,13 @@ nfsd4_scsi_decode_layoutupdate(__be32 *p, u32 len, struct iomap **iomapp,
+ 	if (len != expected) {
+ 		dprintk("%s: extent array size mismatch: %u/%u\n",
+ 			__func__, len, expected);
+-		return -EINVAL;
++		return nfserr_bad_xdr;
+ 	}
+ 
+ 	iomaps = kcalloc(nr_iomaps, sizeof(*iomaps), GFP_KERNEL);
+ 	if (!iomaps) {
+ 		dprintk("%s: failed to allocate extent array\n", __func__);
+-		return -ENOMEM;
++		return nfserr_delay;
+ 	}
+ 
+ 	for (i = 0; i < nr_iomaps; i++) {
+@@ -229,8 +269,9 @@ nfsd4_scsi_decode_layoutupdate(__be32 *p, u32 len, struct iomap **iomapp,
+ 	}
+ 
+ 	*iomapp = iomaps;
+-	return nr_iomaps;
++	*nr_iomapsp = nr_iomaps;
++	return nfs_ok;
+ fail:
+ 	kfree(iomaps);
+-	return -EINVAL;
++	return nfserr_inval;
+ }
+diff --git a/fs/nfsd/blocklayoutxdr.h b/fs/nfsd/blocklayoutxdr.h
+index 4e28ac8f11279..15b3569f3d9ad 100644
+--- a/fs/nfsd/blocklayoutxdr.h
++++ b/fs/nfsd/blocklayoutxdr.h
+@@ -54,9 +54,9 @@ __be32 nfsd4_block_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 		const struct nfsd4_getdeviceinfo *gdp);
+ __be32 nfsd4_block_encode_layoutget(struct xdr_stream *xdr,
+ 		const struct nfsd4_layoutget *lgp);
+-int nfsd4_block_decode_layoutupdate(__be32 *p, u32 len, struct iomap **iomapp,
+-		u32 block_size);
+-int nfsd4_scsi_decode_layoutupdate(__be32 *p, u32 len, struct iomap **iomapp,
+-		u32 block_size);
++__be32 nfsd4_block_decode_layoutupdate(__be32 *p, u32 len,
++		struct iomap **iomapp, int *nr_iomapsp, u32 block_size);
++__be32 nfsd4_scsi_decode_layoutupdate(__be32 *p, u32 len,
++		struct iomap **iomapp, int *nr_iomapsp, u32 block_size);
+ 
+ #endif /* _NFSD_BLOCKLAYOUTXDR_H */
+diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
+index 4b56ba1e8e48d..ae435444e8b3b 100644
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -286,6 +286,7 @@ void		nfsd_lockd_shutdown(void);
+ #define	nfserr_cb_path_down	cpu_to_be32(NFSERR_CB_PATH_DOWN)
+ #define	nfserr_locked		cpu_to_be32(NFSERR_LOCKED)
+ #define	nfserr_wrongsec		cpu_to_be32(NFSERR_WRONGSEC)
++#define nfserr_delay			cpu_to_be32(NFS4ERR_DELAY)
+ #define nfserr_badiomode		cpu_to_be32(NFS4ERR_BADIOMODE)
+ #define nfserr_badlayout		cpu_to_be32(NFS4ERR_BADLAYOUT)
+ #define nfserr_bad_session_digest	cpu_to_be32(NFS4ERR_BAD_SESSION_DIGEST)
 -- 
 2.51.0
 
