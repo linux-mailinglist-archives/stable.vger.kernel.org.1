@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-188078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4C0BF15E2
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:56:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 828E7BF15DF
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:56:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7F283E3786
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:56:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6AD984EE5CE
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA102F8BF0;
-	Mon, 20 Oct 2025 12:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F7C730FC08;
+	Mon, 20 Oct 2025 12:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cvlp6gte"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dl0ZUIIW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B65E1624E9
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408471624E9
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760964966; cv=none; b=MO2AzWDcYoOH02hUjCYKJA/9aejmng7tyePDBaGROACW5PGPJL3RezUQwi7TM9bCyl4MjAavlV/IE3J3gPKqqQSYNaAX7dghrfu4/t6PXXyZLn+9D0RwBNx4pJWMqCUabMMDt8sTKcclVLIIJCbUY8xBahg1WiFvetWSiLUgz3E=
+	t=1760964967; cv=none; b=m3LArSbuZOMYSk/JE2G1zJC2L/iJzD2FILBdbTzR6GO2bw3OqFV2U1qwd+ok2Vzk8rFzTXGiVBBSs5j+S0a/chCdL/TEvbkY+6dwtOxwyDcFuYgUGkOXCb7ATNNCNuF1ikMqyW4xxaOVprHRNc49thYpe/LFv3H9WS4iH4k73zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760964966; c=relaxed/simple;
-	bh=0e/hiJDL+SsTyJUNYdry2hi4lOu2u+4dw7H35Gyvjck=;
+	s=arc-20240116; t=1760964967; c=relaxed/simple;
+	bh=P3Xtc37YHjEYiL7ewNWp5qpVFdjy3fHshXty4ZCGTHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e69BUs0s7N268AF9PH4EggBVxsnQnTGJ0EAoGkGZRYymHyVvfu09Xvxht+owMWIMULeGbTQ/qTM4bG7to7uQ0/UJT10PG5/3z6EGkZZIJ/CQir4PG+xodKSTe4NDtgk4xS7NANNCZ45kBqAqrLg0YXIixNx5xA9OroDuj14V6XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cvlp6gte; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC9AC4CEF9;
-	Mon, 20 Oct 2025 12:56:05 +0000 (UTC)
+	 MIME-Version; b=p4k5t3e682arUslQZvdF0drnjzbOf0/VaXJh7iKDeU0k6100a3104Ff8/npZ7uV7OGxb4DoCd+uatdwAbHh0cFapCflEMLp0VNckx1BxufeZWwFE9I24TjF8TBu0Ks6tyHCneIA/o6DUYH5bDArXErE8jR2Wgw8n43XoX4l3g3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dl0ZUIIW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442FFC113D0;
+	Mon, 20 Oct 2025 12:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1760964966;
-	bh=0e/hiJDL+SsTyJUNYdry2hi4lOu2u+4dw7H35Gyvjck=;
+	bh=P3Xtc37YHjEYiL7ewNWp5qpVFdjy3fHshXty4ZCGTHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cvlp6gtetQ04mfQt/FXCkAgBLmDGgNtK7FMnENHf8HGKyZqRU78CZVoLQYiJdimGA
-	 1z7HeDVzyrYRCrNQhb0VzzDJCuSnTNWWK3B0ZIPQhCsA2pSJyzzL8OBSf3DVhEuDzU
-	 HhmRjEwHEgsLDUkLr0xUNmqaFSyOykz1AWo6id7ZDpsStTr8UpNU8WOWV8hjTdrC2w
-	 VSgErBfz26JVWiy9zWKyE0GLl7YYQmHECL6WqK5382KuwB7k9NcFiPMMJpJSLiYPi0
-	 wdjV0S46wxirtdWKQkrWcGlRxlnFOstyEsWQCzWgfaVheJWwvaQ8EbuJqzxbOD+d1z
-	 5ExowLHk4U6Fw==
+	b=dl0ZUIIWQ5CDf+cGlykg9pEQTbL1DS9Fjsx4drXa3bAesdWS2xRKKj90hmoYJiSWq
+	 jJ5Y8LmNmqf7DRfUN5RL9aaYhDuXruwUAysU5dSYw90fOOaOEIafZPU3vk8wnG2CHD
+	 EGzxe9HMzt/KTU9pqCbo8ONMk1WpAyX8N0WHhc6RoS9NQD0naZ/oXge9dhXRPx0VER
+	 ZFuPTssdhYBMtcioAqmiqEbANE+z813YeKnWz4L/Vd/Y9ugXv/eExAvHen/FNRLbda
+	 9cOsaLG6LGyrTewJQKTAcuUu+OzXpoEOirndmbz/7aKn7rpXmFGKWUjBOHm+0upT6Q
+	 JMILiFRy6/gGQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 1/3] NFSD: Rework encoding and decoding of nfsd4_deviceid
-Date: Mon, 20 Oct 2025 08:56:00 -0400
-Message-ID: <20251020125602.1761375-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 2/3] NFSD: Minor cleanup in layoutcommit processing
+Date: Mon, 20 Oct 2025 08:56:01 -0400
+Message-ID: <20251020125602.1761375-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101659-tightly-grandma-7323@gregkh>
+In-Reply-To: <20251020125602.1761375-1-sashal@kernel.org>
 References: <2025101659-tightly-grandma-7323@gregkh>
+ <20251020125602.1761375-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,161 +64,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit 832738e4b325b742940761e10487403f9aad13e8 ]
+[ Upstream commit 274365a51d88658fb51cca637ba579034e90a799 ]
 
-Compilers may optimize the layout of C structures, so we should not rely
-on sizeof struct and memcpy to encode and decode XDR structures. The byte
-order of the fields should also be taken into account.
+Remove dprintk in nfsd4_layoutcommit. These are not needed
+in day to day usage, and the information is also available
+in Wireshark when capturing NFS traffic.
 
-This patch adds the correct functions to handle the deviceid4 structure
-and removes the pad field, which is currently not used by NFSD, from the
-runtime state. The server's byte order is preserved because the deviceid4
-blob on the wire is only used as a cookie by the client.
-
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Stable-dep-of: d68886bae76a ("NFSD: Fix last write offset handling in layoutcommit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/blocklayoutxdr.c    |  7 ++-----
- fs/nfsd/flexfilelayoutxdr.c |  3 +--
- fs/nfsd/nfs4layouts.c       |  1 -
- fs/nfsd/nfs4xdr.c           | 14 +-------------
- fs/nfsd/xdr4.h              | 36 +++++++++++++++++++++++++++++++++++-
- 5 files changed, 39 insertions(+), 22 deletions(-)
+ fs/nfsd/nfs4proc.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/fs/nfsd/blocklayoutxdr.c b/fs/nfsd/blocklayoutxdr.c
-index 1ed2f691ebb90..dd35c472eb37d 100644
---- a/fs/nfsd/blocklayoutxdr.c
-+++ b/fs/nfsd/blocklayoutxdr.c
-@@ -29,8 +29,7 @@ nfsd4_block_encode_layoutget(struct xdr_stream *xdr,
- 	*p++ = cpu_to_be32(len);
- 	*p++ = cpu_to_be32(1);		/* we always return a single extent */
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index a976f67194e8a..35b9888aee51a 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -2278,18 +2278,12 @@ nfsd4_layoutcommit(struct svc_rqst *rqstp,
+ 	inode = d_inode(current_fh->fh_dentry);
  
--	p = xdr_encode_opaque_fixed(p, &b->vol_id,
--			sizeof(struct nfsd4_deviceid));
-+	p = svcxdr_encode_deviceid4(p, &b->vol_id);
- 	p = xdr_encode_hyper(p, b->foff);
- 	p = xdr_encode_hyper(p, b->len);
- 	p = xdr_encode_hyper(p, b->soff);
-@@ -145,9 +144,7 @@ nfsd4_block_decode_layoutupdate(__be32 *p, u32 len, struct iomap **iomapp,
- 	for (i = 0; i < nr_iomaps; i++) {
- 		struct pnfs_block_extent bex;
+ 	nfserr = nfserr_inval;
+-	if (new_size <= seg->offset) {
+-		dprintk("pnfsd: last write before layout segment\n");
++	if (new_size <= seg->offset)
+ 		goto out;
+-	}
+-	if (new_size > seg->offset + seg->length) {
+-		dprintk("pnfsd: last write beyond layout segment\n");
++	if (new_size > seg->offset + seg->length)
+ 		goto out;
+-	}
+-	if (!lcp->lc_newoffset && new_size > i_size_read(inode)) {
+-		dprintk("pnfsd: layoutcommit beyond EOF\n");
++	if (!lcp->lc_newoffset && new_size > i_size_read(inode))
+ 		goto out;
+-	}
  
--		memcpy(&bex.vol_id, p, sizeof(struct nfsd4_deviceid));
--		p += XDR_QUADLEN(sizeof(struct nfsd4_deviceid));
--
-+		p = svcxdr_decode_deviceid4(p, &bex.vol_id);
- 		p = xdr_decode_hyper(p, &bex.foff);
- 		if (bex.foff & (block_size - 1)) {
- 			dprintk("%s: unaligned offset 0x%llx\n",
-diff --git a/fs/nfsd/flexfilelayoutxdr.c b/fs/nfsd/flexfilelayoutxdr.c
-index bb205328e043d..223a10f37898e 100644
---- a/fs/nfsd/flexfilelayoutxdr.c
-+++ b/fs/nfsd/flexfilelayoutxdr.c
-@@ -54,8 +54,7 @@ nfsd4_ff_encode_layoutget(struct xdr_stream *xdr,
- 	*p++ = cpu_to_be32(1);			/* single mirror */
- 	*p++ = cpu_to_be32(1);			/* single data server */
- 
--	p = xdr_encode_opaque_fixed(p, &fl->deviceid,
--			sizeof(struct nfsd4_deviceid));
-+	p = svcxdr_encode_deviceid4(p, &fl->deviceid);
- 
- 	*p++ = cpu_to_be32(1);			/* efficiency */
- 
-diff --git a/fs/nfsd/nfs4layouts.c b/fs/nfsd/nfs4layouts.c
-index e4e23b2a3e655..d0fbbd34db689 100644
---- a/fs/nfsd/nfs4layouts.c
-+++ b/fs/nfsd/nfs4layouts.c
-@@ -120,7 +120,6 @@ nfsd4_set_deviceid(struct nfsd4_deviceid *id, const struct svc_fh *fhp,
- 
- 	id->fsid_idx = fhp->fh_export->ex_devid_map->idx;
- 	id->generation = device_generation;
--	id->pad = 0;
- 	return 0;
- }
- 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 0fb48e0c179da..3a9f929cdb31e 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -566,18 +566,6 @@ nfsd4_decode_state_owner4(struct nfsd4_compoundargs *argp,
- }
- 
- #ifdef CONFIG_NFSD_PNFS
--static __be32
--nfsd4_decode_deviceid4(struct nfsd4_compoundargs *argp,
--		       struct nfsd4_deviceid *devid)
--{
--	__be32 *p;
--
--	p = xdr_inline_decode(argp->xdr, NFS4_DEVICEID4_SIZE);
--	if (!p)
--		return nfserr_bad_xdr;
--	memcpy(devid, p, sizeof(*devid));
--	return nfs_ok;
--}
- 
- static __be32
- nfsd4_decode_layoutupdate4(struct nfsd4_compoundargs *argp,
-@@ -1733,7 +1721,7 @@ nfsd4_decode_getdeviceinfo(struct nfsd4_compoundargs *argp,
- 	__be32 status;
- 
- 	memset(gdev, 0, sizeof(*gdev));
--	status = nfsd4_decode_deviceid4(argp, &gdev->gd_devid);
-+	status = nfsd4_decode_deviceid4(argp->xdr, &gdev->gd_devid);
- 	if (status)
- 		return status;
- 	if (xdr_stream_decode_u32(argp->xdr, &gdev->gd_layout_type) < 0)
-diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index 9bd1ade6ba54f..c2765619edd4e 100644
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -459,9 +459,43 @@ struct nfsd4_reclaim_complete {
- struct nfsd4_deviceid {
- 	u64			fsid_idx;
- 	u32			generation;
--	u32			pad;
- };
- 
-+static inline __be32 *
-+svcxdr_encode_deviceid4(__be32 *p, const struct nfsd4_deviceid *devid)
-+{
-+	__be64 *q = (__be64 *)p;
-+
-+	*q = (__force __be64)devid->fsid_idx;
-+	p += 2;
-+	*p++ = (__force __be32)devid->generation;
-+	*p++ = xdr_zero;
-+	return p;
-+}
-+
-+static inline __be32 *
-+svcxdr_decode_deviceid4(__be32 *p, struct nfsd4_deviceid *devid)
-+{
-+	__be64 *q = (__be64 *)p;
-+
-+	devid->fsid_idx = (__force u64)(*q);
-+	p += 2;
-+	devid->generation = (__force u32)(*p++);
-+	p++; /* NFSD does not use the remaining octets */
-+	return p;
-+}
-+
-+static inline __be32
-+nfsd4_decode_deviceid4(struct xdr_stream *xdr, struct nfsd4_deviceid *devid)
-+{
-+	__be32 *p = xdr_inline_decode(xdr, NFS4_DEVICEID4_SIZE);
-+
-+	if (unlikely(!p))
-+		return nfserr_bad_xdr;
-+	svcxdr_decode_deviceid4(p, devid);
-+	return nfs_ok;
-+}
-+
- struct nfsd4_layout_seg {
- 	u32			iomode;
- 	u64			offset;
+ 	nfserr = nfsd4_preprocess_layout_stateid(rqstp, cstate, &lcp->lc_sid,
+ 						false, lcp->lc_layout_type,
 -- 
 2.51.0
 
