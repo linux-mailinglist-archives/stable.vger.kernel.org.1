@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-188216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E6EBF2BE1
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 19:38:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C46BF2BCF
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 19:37:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAD3D462EA4
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 17:37:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0C9B18A39D0
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 17:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C469E3321C9;
-	Mon, 20 Oct 2025 17:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD353321BE;
+	Mon, 20 Oct 2025 17:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rNPSE9VP"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Pw/SZog7"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C1A283FC3
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 17:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402AE3321BA
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 17:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760981833; cv=none; b=RMhNQR/WluJSGbW/isvWo5/m6WVvleUE9YkM50Zvct4Qccfuo7sXg9tFBUQ6nsiI5WdS8/LTXu3Rfu7F/I+v/3iz1T/KT1vy5HzMCPTbqfThopmvDIIHLfNmpdBs1aWlyReHNRfzIMom7HO4ET+ayC18BFH5UBHJHAQwhNVnlIY=
+	t=1760981840; cv=none; b=eJ4DTFOzzTLDFY9hcqAe+sNkFouMUfUPejY6EGxU9JCZADkkVLV6eIDFbb6do0amPiHERgNpIQ4Y0nTXI2s0k5uYZcB1g0BBDSsgWiWBudMZLRehDZNTP6A4ZW+8QsDOdAAc5R5U7Qa6qXLvAM9QxoQAJyyfqbJUVO3NsTmL/BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760981833; c=relaxed/simple;
-	bh=7FWRRuUr0NPDt9srgoKtdHi04YZV5u2d3P8yEn31ikE=;
+	s=arc-20240116; t=1760981840; c=relaxed/simple;
+	bh=f73eWFBfugp8MwCgSIQBfxYtokvEoHVFvyG6BdQ0I+k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WEwivgYHjU8CiYdYmh39fMg30FFKyQUq/ZllKTH99WhVh36511byU/sB0dGS+TCSYCnEusYkxyEREBN0lgPBV6WiOYfk66116kZk10tnSDztv3WKgXQjVPHz2hBiP+96JhMlLieR0RHNyx4jD0BU/5+OVZ57Mownp0nR5MAr3A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rNPSE9VP; arc=none smtp.client-ip=91.218.175.181
+	 MIME-Version; b=SXUomaINZPLwUzThSs3r6g3odw/rlfYP/cse8ZBfQNrvhpd+uEkRLUODMtwJjkIBCzYWkB8l3h5JqqRkq4RCjwUM7mvdqn9G+MuRdEziadCO4Xkk0b3tanhxTjIHNzQHys72Yp5ZXZhQGX3U+anhpaLqPSIDwb4YxH2Nxb1dd2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Pw/SZog7; arc=none smtp.client-ip=91.218.175.185
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760981829;
+	t=1760981836;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hPalUgdnLDU31YmTgBLbYTrr5ltLFLk4XsuAkkg0cvo=;
-	b=rNPSE9VP/Vlt1/lUcHlnlYQVgHIAtQbdd1RGWkuGCDKbbjZ0urxA/vejCfJGi/QDMIQcIH
-	2M5UPhp/dKbPhbwnyjmGUQCkzKRJ2kJmbPslKBeQ9t/eyCKsov70h/5TMPyrwL/z/EEzq0
-	zVWUu70JU1JEN1b5UvHvyuJ5yGJvEus=
+	bh=SCY5kU8EpU3MVckMObVG4N1+y1R9/TAdWq4ZwVcGpOQ=;
+	b=Pw/SZog7hYOdybJ7k1aSlebCWTWzK21ik7PnlFzMjlHL6xuMFKLNo7z1GDSVakx+kymp2v
+	ZYac/+ZIcsSNTHSRaE92Oxd99KaKlDXwNRxdEvBnwu67WPWs5l3A/GQevWZmFeVHDMyAZ4
+	V9xRnbcwo1zZLbrs7czv8AmC3LN1Gnw=
 From: Wen Yang <wen.yang@linux.dev>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jon Hunter <jonathanh@nvidia.com>
 Cc: stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Pierre Gondois <pierre.gondois@arm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sudeep Holla <sudeep.holla@arm.com>,
 	Wen Yang <wen.yang@linux.dev>
-Subject: [PATCH 6.1 03/10] cacheinfo: Check 'cache-unified' property to count cache leaves
-Date: Tue, 21 Oct 2025 01:36:17 +0800
-Message-Id: <20251020173624.20228-4-wen.yang@linux.dev>
+Subject: [PATCH 6.1 04/10] ACPI: PPTT: Remove acpi_find_cache_levels()
+Date: Tue, 21 Oct 2025 01:36:18 +0800
+Message-Id: <20251020173624.20228-5-wen.yang@linux.dev>
 In-Reply-To: <20251020173624.20228-1-wen.yang@linux.dev>
 References: <20251020173624.20228-1-wen.yang@linux.dev>
 Precedence: bulk
@@ -67,94 +69,74 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Pierre Gondois <pierre.gondois@arm.com>
 
-[ Upstream commit de0df442ee49cb1f6ee58f3fec5dcb5e5eb70aab ]
+[ Upstream commit fa4d566a605bc4cf32d69f16ef8cf9696635f75a ]
 
-The DeviceTree Specification v0.3 specifies that the cache node
-'[d-|i-|]cache-size' property is required. The 'cache-unified'
-property is specifies whether the cache level is separate
-or unified.
+acpi_find_cache_levels() is used at a single place and is short
+enough to be merged into the calling function. The removal allows
+an easier renaming of the calling function in the next patch.
 
-If the cache-size property is missing, no cache leaves is accounted.
-This can lead to a 'BUG: KASAN: slab-out-of-bounds' [1] bug.
+Also reorder the local variables in the 'reversed Christmas tree'
+order.
 
-Check 'cache-unified' property and always account for at least
-one cache leaf when parsing the device tree.
-
-[1] https://lore.kernel.org/all/0f19cb3f-d6cf-4032-66d2-dedc9d09a0e3@linaro.org/
-
-Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230104183033.755668-4-pierre.gondois@arm.com
+Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
+Acked-by: Rafael J. Wysocki  <rafael.j.wysocki@intel.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lore.kernel.org/r/20230104183033.755668-5-pierre.gondois@arm.com
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Wen Yang <wen.yang@linux.dev>
 ---
- drivers/base/cacheinfo.c | 37 ++++++++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ drivers/acpi/pptt.c | 21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-index 480007210bcc..ab99b0f0d010 100644
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -224,12 +224,9 @@ static int cache_setup_of_node(unsigned int cpu)
- 	return 0;
+diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+index 1938e4778725..01aae0f203b0 100644
+--- a/drivers/acpi/pptt.c
++++ b/drivers/acpi/pptt.c
+@@ -286,19 +286,6 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
+ 	return NULL;
  }
  
--int init_of_cache_level(unsigned int cpu)
-+static int of_count_cache_leaves(struct device_node *np)
+-static int acpi_find_cache_levels(struct acpi_table_header *table_hdr,
+-				  u32 acpi_cpu_id)
+-{
+-	int number_of_levels = 0;
+-	struct acpi_pptt_processor *cpu;
+-
+-	cpu = acpi_find_processor_node(table_hdr, acpi_cpu_id);
+-	if (cpu)
+-		number_of_levels = acpi_count_levels(table_hdr, cpu);
+-
+-	return number_of_levels;
+-}
+-
+ static u8 acpi_cache_type(enum cache_type type)
  {
--	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
--	struct device_node *np = of_cpu_device_node_get(cpu);
--	struct device_node *prev = NULL;
--	unsigned int levels = 0, leaves = 0, level;
-+	unsigned int leaves = 0;
+ 	switch (type) {
+@@ -621,9 +608,10 @@ static int check_acpi_cpu_flag(unsigned int cpu, int rev, u32 flag)
+  */
+ int acpi_find_last_cache_level(unsigned int cpu)
+ {
+-	u32 acpi_cpu_id;
++	struct acpi_pptt_processor *cpu_node;
+ 	struct acpi_table_header *table;
+ 	int number_of_levels = 0;
++	u32 acpi_cpu_id;
  
- 	if (of_property_read_bool(np, "cache-size"))
- 		++leaves;
-@@ -237,6 +234,28 @@ int init_of_cache_level(unsigned int cpu)
- 		++leaves;
- 	if (of_property_read_bool(np, "d-cache-size"))
- 		++leaves;
-+
-+	if (!leaves) {
-+		/* The '[i-|d-|]cache-size' property is required, but
-+		 * if absent, fallback on the 'cache-unified' property.
-+		 */
-+		if (of_property_read_bool(np, "cache-unified"))
-+			return 1;
-+		else
-+			return 2;
-+	}
-+
-+	return leaves;
-+}
-+
-+int init_of_cache_level(unsigned int cpu)
-+{
-+	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-+	struct device_node *np = of_cpu_device_node_get(cpu);
-+	struct device_node *prev = NULL;
-+	unsigned int levels = 0, leaves, level;
-+
-+	leaves = of_count_cache_leaves(np);
- 	if (leaves > 0)
- 		levels = 1;
+ 	table = acpi_get_pptt();
+ 	if (!table)
+@@ -632,7 +620,10 @@ int acpi_find_last_cache_level(unsigned int cpu)
+ 	pr_debug("Cache Setup find last level CPU=%d\n", cpu);
  
-@@ -250,12 +269,8 @@ int init_of_cache_level(unsigned int cpu)
- 			goto err_out;
- 		if (level <= levels)
- 			goto err_out;
--		if (of_property_read_bool(np, "cache-size"))
--			++leaves;
--		if (of_property_read_bool(np, "i-cache-size"))
--			++leaves;
--		if (of_property_read_bool(np, "d-cache-size"))
--			++leaves;
+ 	acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+-	number_of_levels = acpi_find_cache_levels(table, acpi_cpu_id);
++	cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
++	if (cpu_node)
++		number_of_levels = acpi_count_levels(table, cpu_node);
 +
-+		leaves += of_count_cache_leaves(np);
- 		levels = level;
- 	}
+ 	pr_debug("Cache Setup find last level level=%d\n", number_of_levels);
  
+ 	return number_of_levels;
 -- 
 2.25.1
 
