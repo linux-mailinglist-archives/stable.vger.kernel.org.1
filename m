@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-188106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCAEFBF171A
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:08:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63156BF16F0
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A96F4F5948
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 13:07:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3B4D188C8E2
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 13:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542243126B1;
-	Mon, 20 Oct 2025 13:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09293128D6;
+	Mon, 20 Oct 2025 13:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHxM4NKM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ubaK0Sn5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9882FB084
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 13:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F978313537
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 13:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760965614; cv=none; b=gXhR6rS5oLIirzjIG5HpbmA7FtqP8C42bV4tBwE1wOEpg7esTK02CPisCeP3I0yg+SHZZH+pvSaLzSmZU2xqT2Pe1NiWxB7BFGG+vOspuT/n8c1ZWkWRZEs8El8/gA4NH9yonCm/E01twPgXBsuZjSG6xcMojMv98NVpwW2awBI=
+	t=1760965615; cv=none; b=pUNvLqUcqOf3QnLvvaYb16CLXXk7mObzKEN0Jwmjwr/KDwYmtdl8InCIqpetnTX3Cz8wCdOUxM4C/iQq0dHhqWUcOEBqj0wk6t9bsmJYuT8b7qpM+wXqT3SPoKTxTQ5HTusv6Nws/TZZ1/1IImpM5cdNZ/ADrrtFhVMGxpyDwKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760965614; c=relaxed/simple;
-	bh=3jDhhGugn1t8ZBjaViLRd/U7fyCB7gGJIr6mDE1tB0M=;
+	s=arc-20240116; t=1760965615; c=relaxed/simple;
+	bh=qP43lfoQc+i1Ce3w1e/QzUAsdoBnEXVZfTkA3ZhhgGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MenplEWMux0FEZmtmrP2qSK2jCWWFPcRPOMCzIveQa9NZTQh7OPdYhEa7pGhGzWYZ3RmdKSrfQvPAj8P7AmTp6qBmeVl7DvtxytV1r7WyXqYGgVZ4WBn+/3yuGcosziVBWtGmewnAHMd9cJvu/bAHljhm+S1+ZZVTu/FgYG4feA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHxM4NKM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86013C116D0;
-	Mon, 20 Oct 2025 13:06:53 +0000 (UTC)
+	 MIME-Version; b=GgbGcmOctNZKv/VboQ3Lzk85RayDqVQSp8dsV4KoBR0WWACe2RR0tAkL3cp7R52UcuVInDU7jW6c0MITfW8Lff2PoL6NB8OzUxD8s5vQCY8+z90z/w/wVcbsXQIh+PtSqBwFftHpJZONU02RP42LkpDKfg0I8xQW/EASf2PwEXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ubaK0Sn5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84426C116B1;
+	Mon, 20 Oct 2025 13:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760965614;
-	bh=3jDhhGugn1t8ZBjaViLRd/U7fyCB7gGJIr6mDE1tB0M=;
+	s=k20201202; t=1760965615;
+	bh=qP43lfoQc+i1Ce3w1e/QzUAsdoBnEXVZfTkA3ZhhgGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHxM4NKMwwj2gF0vjUr1heuvcWLQNncnUqw4/0CuGMTj48dxxL3XGhoTDpYdXsvi1
-	 mIyoHwKvcsVCxZFKSPC9nULrjaGCzDNJyHCfRyD0/S+Twi3uDCJSnpjJ8ZHE1eaXhW
-	 E2eARxPonbUhy7vTgiUur+CFUZN2krFSKROVqtNI/4zj3zuKDUP2VWynA620Q2ZaTQ
-	 AoeSErVy3we4A+WoJo3Ax9I4svflC9gmEk9sea70k1eO2kkH0CLrz/bCe6Sfa98P/g
-	 dhHbeWOeCgu3xerZtH/XUnwGG3tP7fIWd3PL44l88S54un1dB+YDloho0VRzrW428R
-	 TINH/J2TG9ZzQ==
+	b=ubaK0Sn5ApNkAVRO+h7+ffGDjhErhfrv++gTcdsMtj7E6bqH+A2wsxpEr9AZZuXjj
+	 JPcXTiqABTA8wXajDOU86PdI715EtYDQNIq+fWNIYZPU3bVkD3IClkrK6sNvr5Zh5w
+	 LJUlNbI5mZNso2Ve91k1JChwPoL4wGBwureS8grg/oIFHlm61qOz68Ht2j7x1U72R5
+	 RjG2wRlk2XARAnoItHxQAeRtULp0r1tASIQJKSXCTnFtSCO84brneAAH4SvMHWZ4OP
+	 XieNW8JWSh+m3r65d+V238du7efOSoy/lMFFLt0C7MuhYtt1U6/qW5PN6kZDL+O2Yo
+	 5HdDl0owCGMCA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: John Garry <john.g.garry@oracle.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Hannes Reinecke <hare@suse.de>,
+Cc: Yu Kuai <yukuai3@huawei.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/4] md/raid10: Handle bio_split() errors
-Date: Mon, 20 Oct 2025 09:06:48 -0400
-Message-ID: <20251020130649.1765603-3-sashal@kernel.org>
+Subject: [PATCH 6.12.y 4/4] md: fix mssing blktrace bio split events
+Date: Mon, 20 Oct 2025 09:06:49 -0400
+Message-ID: <20251020130649.1765603-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251020130649.1765603-1-sashal@kernel.org>
 References: <2025101606-eggshell-static-9bca@gregkh>
@@ -63,134 +63,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: John Garry <john.g.garry@oracle.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 4cf58d9529097328b669e3c8693ed21e3a041903 ]
+[ Upstream commit 22f166218f7313e8fe2d19213b5f4b3265f8c39e ]
 
-Add proper bio_split() error handling. For any error, call
-raid_end_bio_io() and return. Except for discard, where we end the bio
-directly.
+If bio is split by internal handling like chunksize or badblocks, the
+corresponding trace_block_split() is missing, resulting in blktrace
+inability to catch BIO split events and making it harder to analyze the
+BIO sequence.
 
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241111112150.3756529-7-john.g.garry@oracle.com
+Cc: stable@vger.kernel.org
+Fixes: 4b1faf931650 ("block: Kill bio_pair_split()")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 22f166218f73 ("md: fix mssing blktrace bio split events")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 47 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 46 insertions(+), 1 deletion(-)
+ drivers/md/md-linear.c | 1 +
+ drivers/md/raid0.c     | 4 ++++
+ drivers/md/raid1.c     | 4 ++++
+ drivers/md/raid10.c    | 8 ++++++++
+ drivers/md/raid5.c     | 2 ++
+ 5 files changed, 19 insertions(+)
 
+diff --git a/drivers/md/md-linear.c b/drivers/md/md-linear.c
+index 369aed044b409..d733ebee624b7 100644
+--- a/drivers/md/md-linear.c
++++ b/drivers/md/md-linear.c
+@@ -267,6 +267,7 @@ static bool linear_make_request(struct mddev *mddev, struct bio *bio)
+ 		}
+ 
+ 		bio_chain(split, bio);
++		trace_block_split(split, bio->bi_iter.bi_sector);
+ 		submit_bio_noacct(bio);
+ 		bio = split;
+ 	}
+diff --git a/drivers/md/raid0.c b/drivers/md/raid0.c
+index 67ec633d27e26..db1ab214250f9 100644
+--- a/drivers/md/raid0.c
++++ b/drivers/md/raid0.c
+@@ -470,7 +470,9 @@ static void raid0_handle_discard(struct mddev *mddev, struct bio *bio)
+ 			bio_endio(bio);
+ 			return;
+ 		}
++
+ 		bio_chain(split, bio);
++		trace_block_split(split, bio->bi_iter.bi_sector);
+ 		submit_bio_noacct(bio);
+ 		bio = split;
+ 		end = zone->zone_end;
+@@ -618,7 +620,9 @@ static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
+ 			bio_endio(bio);
+ 			return true;
+ 		}
++
+ 		bio_chain(split, bio);
++		trace_block_split(split, bio->bi_iter.bi_sector);
+ 		raid0_map_submit_bio(mddev, bio);
+ 		bio = split;
+ 	}
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 31081d9e94025..4c6b1bd6da9bb 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1383,7 +1383,9 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
+ 			error = PTR_ERR(split);
+ 			goto err_handle;
+ 		}
++
+ 		bio_chain(split, bio);
++		trace_block_split(split, bio->bi_iter.bi_sector);
+ 		submit_bio_noacct(bio);
+ 		bio = split;
+ 		r1_bio->master_bio = bio;
+@@ -1574,7 +1576,9 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
+ 			error = PTR_ERR(split);
+ 			goto err_handle;
+ 		}
++
+ 		bio_chain(split, bio);
++		trace_block_split(split, bio->bi_iter.bi_sector);
+ 		submit_bio_noacct(bio);
+ 		bio = split;
+ 		r1_bio->master_bio = bio;
 diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 6579bbb6a39a5..d02bd096824c8 100644
+index d02bd096824c8..b0062ad9b1d95 100644
 --- a/drivers/md/raid10.c
 +++ b/drivers/md/raid10.c
-@@ -1153,6 +1153,7 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
- 	int slot = r10_bio->read_slot;
- 	struct md_rdev *err_rdev = NULL;
- 	gfp_t gfp = GFP_NOIO;
-+	int error;
- 
- 	if (slot >= 0 && r10_bio->devs[slot].rdev) {
- 		/*
-@@ -1203,6 +1204,10 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
- 	if (max_sectors < bio_sectors(bio)) {
- 		struct bio *split = bio_split(bio, max_sectors,
- 					      gfp, &conf->bio_split);
-+		if (IS_ERR(split)) {
-+			error = PTR_ERR(split);
-+			goto err_handle;
-+		}
+@@ -1208,7 +1208,9 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
+ 			error = PTR_ERR(split);
+ 			goto err_handle;
+ 		}
++
  		bio_chain(split, bio);
++		trace_block_split(split, bio->bi_iter.bi_sector);
  		allow_barrier(conf);
  		submit_bio_noacct(bio);
-@@ -1233,6 +1238,11 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
- 	mddev_trace_remap(mddev, read_bio, r10_bio->sector);
- 	submit_bio_noacct(read_bio);
- 	return;
-+err_handle:
-+	atomic_dec(&rdev->nr_pending);
-+	bio->bi_status = errno_to_blk_status(error);
-+	set_bit(R10BIO_Uptodate, &r10_bio->state);
-+	raid_end_bio_io(r10_bio);
- }
- 
- static void raid10_write_one_disk(struct mddev *mddev, struct r10bio *r10_bio,
-@@ -1341,9 +1351,10 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
- 				 struct r10bio *r10_bio)
- {
- 	struct r10conf *conf = mddev->private;
--	int i;
-+	int i, k;
- 	sector_t sectors;
- 	int max_sectors;
-+	int error;
- 
- 	if ((mddev_is_clustered(mddev) &&
- 	     md_cluster_ops->area_resyncing(mddev, WRITE,
-@@ -1469,6 +1480,10 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
- 	if (r10_bio->sectors < bio_sectors(bio)) {
- 		struct bio *split = bio_split(bio, r10_bio->sectors,
- 					      GFP_NOIO, &conf->bio_split);
-+		if (IS_ERR(split)) {
-+			error = PTR_ERR(split);
-+			goto err_handle;
-+		}
+ 		wait_barrier(conf, false);
+@@ -1484,7 +1486,9 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+ 			error = PTR_ERR(split);
+ 			goto err_handle;
+ 		}
++
  		bio_chain(split, bio);
++		trace_block_split(split, bio->bi_iter.bi_sector);
  		allow_barrier(conf);
  		submit_bio_noacct(bio);
-@@ -1488,6 +1503,26 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
- 			raid10_write_one_disk(mddev, r10_bio, bio, true, i);
- 	}
- 	one_write_done(r10_bio);
-+	return;
-+err_handle:
-+	for (k = 0;  k < i; k++) {
-+		int d = r10_bio->devs[k].devnum;
-+		struct md_rdev *rdev = conf->mirrors[d].rdev;
-+		struct md_rdev *rrdev = conf->mirrors[d].replacement;
+ 		wait_barrier(conf, false);
+@@ -1669,7 +1673,9 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
+ 			bio_endio(bio);
+ 			return 0;
+ 		}
 +
-+		if (r10_bio->devs[k].bio) {
-+			rdev_dec_pending(rdev, mddev);
-+			r10_bio->devs[k].bio = NULL;
-+		}
-+		if (r10_bio->devs[k].repl_bio) {
-+			rdev_dec_pending(rrdev, mddev);
-+			r10_bio->devs[k].repl_bio = NULL;
-+		}
-+	}
-+
-+	bio->bi_status = errno_to_blk_status(error);
-+	set_bit(R10BIO_Uptodate, &r10_bio->state);
-+	raid_end_bio_io(r10_bio);
- }
- 
- static void __make_request(struct mddev *mddev, struct bio *bio, int sectors)
-@@ -1629,6 +1664,11 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
- 	if (remainder) {
- 		split_size = stripe_size - remainder;
- 		split = bio_split(bio, split_size, GFP_NOIO, &conf->bio_split);
-+		if (IS_ERR(split)) {
-+			bio->bi_status = errno_to_blk_status(PTR_ERR(split));
-+			bio_endio(bio);
-+			return 0;
-+		}
  		bio_chain(split, bio);
++		trace_block_split(split, bio->bi_iter.bi_sector);
  		allow_barrier(conf);
  		/* Resend the fist split part */
-@@ -1639,6 +1679,11 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
- 	if (remainder) {
- 		split_size = bio_sectors(bio) - remainder;
- 		split = bio_split(bio, split_size, GFP_NOIO, &conf->bio_split);
-+		if (IS_ERR(split)) {
-+			bio->bi_status = errno_to_blk_status(PTR_ERR(split));
-+			bio_endio(bio);
-+			return 0;
-+		}
+ 		submit_bio_noacct(split);
+@@ -1684,7 +1690,9 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
+ 			bio_endio(bio);
+ 			return 0;
+ 		}
++
  		bio_chain(split, bio);
++		trace_block_split(split, bio->bi_iter.bi_sector);
  		allow_barrier(conf);
  		/* Resend the second split part */
+ 		submit_bio_noacct(bio);
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 39e7596e78c0b..4fae8ade24090 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -5484,8 +5484,10 @@ static struct bio *chunk_aligned_read(struct mddev *mddev, struct bio *raid_bio)
+ 
+ 	if (sectors < bio_sectors(raid_bio)) {
+ 		struct r5conf *conf = mddev->private;
++
+ 		split = bio_split(raid_bio, sectors, GFP_NOIO, &conf->bio_split);
+ 		bio_chain(split, raid_bio);
++		trace_block_split(split, raid_bio->bi_iter.bi_sector);
+ 		submit_bio_noacct(raid_bio);
+ 		raid_bio = split;
+ 	}
 -- 
 2.51.0
 
