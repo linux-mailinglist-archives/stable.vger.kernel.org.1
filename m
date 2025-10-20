@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-188189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DE8BF25F0
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:21:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2BFBF2617
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D77F4E8C65
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:21:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4619218A6DCE
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9208B285CA4;
-	Mon, 20 Oct 2025 16:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EF026B764;
+	Mon, 20 Oct 2025 16:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="advwkzTT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cSog/Wxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA632853F3
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554541D6187
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760977292; cv=none; b=rF1zKMdfOneA0m3ngagHGLhr/JXBVnjZGFhHKstnFuqLcVGhRn0LibCuUQg3S44qaU6LUIJWBq2jlHjhRy908HKtmpAL22xlDbAEDQEFYJEB9LaKYAXgHfuJlrEZKBZeKkoRXOg4askKOqWWhe3rmKscAOHVNySEblcCbXV0ORg=
+	t=1760977361; cv=none; b=PYq/leilKAbLRPwwz3gduMnlyHgUChbBjVqEgpYm5qstYXSXAxxQCR/xJ0zJI0zytX6scS1q90K10Pj4BgqDCZpSemP2d6gwAGsMVHI9IkFkrSiyMEgdRIlzlrXTVoplsa5skAn7BFeRj/chvtvMhaElfw7CuxT4QLE3ICeVhi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760977292; c=relaxed/simple;
-	bh=4al4JDvCgPGBjUH0B7Pvy4NrC6c6I0iT+CQRrXKahdI=;
+	s=arc-20240116; t=1760977361; c=relaxed/simple;
+	bh=5NzIpN6QjzKHl3e/Vkw2yyZV6gkDrslTLHb0Cgx7vKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BAwITHTJiMTDYtnVtZ5yP/+Klpp52MV5wln9gKOPJSRPTQVy8ktKHS5sRdh/YbSXYd8YRqAv5LzeAZvK5k+osvDc9fIwFzE4AxZNviGkhbbo/+sWp72QN5kh/e9LL3UyrgfkRe8sF+gNj3ctx4U6BPcP/vQ8RY72RPILGbVB3o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=advwkzTT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA68DC113D0;
-	Mon, 20 Oct 2025 16:21:30 +0000 (UTC)
+	 MIME-Version; b=V8BGEY6ohkMN5AOtKgBot0OnxIsxq+vBuakmzzVmecLWE8Mn9hEatzWFSbuoxhzUZSsrgyZUwDWMGdcubwvNoEZiYyX2Pq7DEQ+mBlhYxZW7C0DKaKwX1DEYsXW26kQnFoDNE8e9CuPzvCyvUGDV9ou3J9Qq9HO547KK0W8cAKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cSog/Wxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89DEC4CEF9;
+	Mon, 20 Oct 2025 16:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760977291;
-	bh=4al4JDvCgPGBjUH0B7Pvy4NrC6c6I0iT+CQRrXKahdI=;
+	s=k20201202; t=1760977360;
+	bh=5NzIpN6QjzKHl3e/Vkw2yyZV6gkDrslTLHb0Cgx7vKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=advwkzTT5oqcXvY3qjmpPi0bZTqEbMwse79v1+Dz+uaD00xtxOkc0HczaZ98FF0BL
-	 wxwHCf0ylDW3y/WRZXijpQx8+NpxKG6LOETADcs4XIVAQIk8H1ghbO4ab4N0We8ryc
-	 f9grUtstYumvxh/Wr8rWnPQuXn/OYC+uiGI+6QVl/49eILjqa7nfd7LecGPXz5UzPL
-	 EGUnNm6LoAYw6DYnrOpFYIUhdQpCcoJMzS+ixsAaLkAFua/cil7HwMgbKh3LzNuXdG
-	 IBQ663MIxMeKmiMdHoCcUIkPohKWf4GYPLpSkMxP5oNmHLO2bknmUrsx8Tf2vyne4q
-	 z9NbYliJIcLBQ==
+	b=cSog/Wxox+cufK1JOtXQ3H5lrmP7d3ySG7XMt2rAfHtYwj3ghBvP+J/Bjx0vbWyb9
+	 +wyV5c+3zsZ7//8IE+mwWXqoJ1r/CJ+31A2/P3uwJllL3/r38A+5mBTKlpt5YqU8Tg
+	 14akcOUEwle1yhw99iezQw8QLeHdLyDTl7/kCvoYBSSQ4RxJn47CUcOu/n0t9lobjc
+	 OOJqL4Cly43UVkJqXBXmkfUWnxpkh54CI6Ud3LvrIXgWImE41GsqPxgU2XPJ5+nM4n
+	 KNQmotkEM3TFjcydNTQu/lqea6KLm7A6oUJM96NCTRnRwi2c//RkYNUJz7Py/EY7Hk
+	 kIuNHXcZRSWOA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Vidya Sagar <vidyas@nvidia.com>,
@@ -50,12 +50,12 @@ Cc: Vidya Sagar <vidyas@nvidia.com>,
 	Jon Hunter <jonathanh@nvidia.com>,
 	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] PCI: tegra194: Handle errors in BPMP response
-Date: Mon, 20 Oct 2025 12:21:28 -0400
-Message-ID: <20251020162128.1836626-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] PCI: tegra194: Handle errors in BPMP response
+Date: Mon, 20 Oct 2025 12:22:37 -0400
+Message-ID: <20251020162237.1837094-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101627-backwash-capably-abbe@gregkh>
-References: <2025101627-backwash-capably-abbe@gregkh>
+In-Reply-To: <2025101628-deflected-bruising-7def@gregkh>
+References: <2025101628-deflected-bruising-7def@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -116,10 +116,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 0046983e5ab89..570b224a56be8 100644
+index 80c2015b49d8f..b230f2d5eb4d9 100644
 --- a/drivers/pci/controller/dwc/pcie-tegra194.c
 +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1168,6 +1168,7 @@ static int tegra_pcie_bpmp_set_ctrl_state(struct tegra_pcie_dw *pcie,
+@@ -1160,6 +1160,7 @@ static int tegra_pcie_bpmp_set_ctrl_state(struct tegra_pcie_dw *pcie,
  	struct mrq_uphy_response resp;
  	struct tegra_bpmp_message msg;
  	struct mrq_uphy_request req;
@@ -127,7 +127,7 @@ index 0046983e5ab89..570b224a56be8 100644
  
  	/* Controller-5 doesn't need to have its state set by BPMP-FW */
  	if (pcie->cid == 5)
-@@ -1187,7 +1188,13 @@ static int tegra_pcie_bpmp_set_ctrl_state(struct tegra_pcie_dw *pcie,
+@@ -1179,7 +1180,13 @@ static int tegra_pcie_bpmp_set_ctrl_state(struct tegra_pcie_dw *pcie,
  	msg.rx.data = &resp;
  	msg.rx.size = sizeof(resp);
  
@@ -142,7 +142,7 @@ index 0046983e5ab89..570b224a56be8 100644
  }
  
  static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
-@@ -1196,6 +1203,7 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
+@@ -1188,6 +1195,7 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
  	struct mrq_uphy_response resp;
  	struct tegra_bpmp_message msg;
  	struct mrq_uphy_request req;
@@ -150,7 +150,7 @@ index 0046983e5ab89..570b224a56be8 100644
  
  	memset(&req, 0, sizeof(req));
  	memset(&resp, 0, sizeof(resp));
-@@ -1215,7 +1223,13 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
+@@ -1207,7 +1215,13 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
  	msg.rx.data = &resp;
  	msg.rx.size = sizeof(resp);
  
