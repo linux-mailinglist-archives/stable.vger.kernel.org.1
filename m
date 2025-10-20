@@ -1,120 +1,129 @@
-Return-Path: <stable+bounces-188371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB20BF790D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 18:02:41 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22C3BF7DBF
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E429E3BAB9B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:02:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D446A3573BA
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDD5343D7A;
-	Tue, 21 Oct 2025 16:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F24B3502A0;
+	Tue, 21 Oct 2025 17:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HlSVVD/G"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Z+uBgZ0q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA433451AD
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 16:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA9234C82A;
+	Tue, 21 Oct 2025 17:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761062532; cv=none; b=UppnqWBG4ZlFOYjTJ6roC/adugefW1a/pNgtZoTeog5MpzPldTXfb3vJyKb0W3Eub5HYvAQNzhbffjsBfaCSCPT2fx+5fpnxKQ2tDoyPn0EChOtqR6HIHHVtJCyoLwV/22Lf54tTxzNATzE3hgPn2NR0JG4RZzaEtNWdlr47qTM=
+	t=1761067149; cv=none; b=HDMNTPKyXMa9u2lcnIxxPDdBezxUXplh2Z5IPJ6f4bRCot0AqHAeke0i1/U69iNJ9pNf3ksUCMCe+nAHY4ph1QSh9YUQ25rTsyxeiIUFC4CFYDpr9qvapL2Ws8cW4fi6myj1tpUlaqCateLb+zBcRm/5EMR1hEpJEc1E058Y0NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761062532; c=relaxed/simple;
-	bh=gyeCfcUHorLNn4PQBYOs8mrGfsYByDPHbv0CAjdWCIY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7G/J6isHRwi6YNbk/lTBaGrR1TBJffZltZt6ssA6zZzyH+P79+6yULzQnHe56iltHWgesw9NicmvAyDETmkkojxWAkFqqYpM4ERkaoG+xgE/g9VhJclDYyvcIF+ar3UkFLdAW7JUqFEi0LRLo+fC0GMTZPMYjY7Xb/m3t2yRRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HlSVVD/G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0CCC116B1;
-	Tue, 21 Oct 2025 16:02:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761062532;
-	bh=gyeCfcUHorLNn4PQBYOs8mrGfsYByDPHbv0CAjdWCIY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HlSVVD/GCGwXDGDHDIlsswguQDCFNmNdmGoViEOP+3qsI81jwNlS8xhyYvMmgoDpU
-	 +3/jd1Ch/rxQqC6gfLswI/ChSyoyj8pocO5OndvLBQkAVw3Yl4mUjo1xmMD9eZeKmL
-	 PG+OcjEBPwLlMnm2kfha4Q+hVIIguUFuJVaO6d5X++dD+sW02LtJL9T3kAy7bivsM8
-	 pSnkMRAaKXtPHDeuepGJxQrljBSD8gEPAqkmzL/ixH84LDi9ZUe3dSMeTIqPpX4vMZ
-	 A+tvqIQ/V5j74MDqFdPrG/QxTRp5hRzg2uP74LC63jv7cV3FNApE/OKfTptHcuMDx2
-	 jLUTYad21iVcg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Devarsh Thakkar <devarsht@ti.com>,
-	Harikrishna Shenoy <h-shenoy@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 3/3] phy: cadence: cdns-dphy: Update calibration wait time for startup state machine
-Date: Tue, 21 Oct 2025 12:02:07 -0400
-Message-ID: <20251021160207.2330991-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251021160207.2330991-1-sashal@kernel.org>
-References: <2025101625-laborer-imaging-a408@gregkh>
- <20251021160207.2330991-1-sashal@kernel.org>
+	s=arc-20240116; t=1761067149; c=relaxed/simple;
+	bh=APDtLhXblBwS9DQRReD0gd2A85Zk53l59rWi0MPQ0rk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BG2Xfmiv1pdZvuAn93UWenrPRFAv/QAkAofCu9nIn+sS7F/DNbV4Z+kffc4APtri7lth5cpjOzYT+Nu2kqriooXrWK4+Wor40J5/SG/xzis/zhonAzQqafG+z6n/7uME53SP+hJKl0IzccQvZalvisGpbnmLWNqGoNAT8NdNzBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Z+uBgZ0q; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=QzchzrjP8FlIuKSYCzJ8pjq9HCBr1gD14zJzjcDAwDs=; b=Z+uBgZ0qsiHGtjo8dv8YdnexnA
+	JasO0byS3J/dlOB9ulPFmIBg7VmhciiE+D6ghI94XCSEzZ3d9pR4fAwPsxMhMbO38FCNC0YB3M8VH
+	pdqZJ8APAjVTCOLjSOfvXg9L/CHHyNybafQBnexilywkjRf5S0UNBJKi0W52C7MpdGH6ccpxlLBPg
+	67fg0xZO0Noc2Og65nJTMPG6uLkpJuQwlCyazSzCeoC3VUi5GdmTLKQqVWUuHU4YWjmqW9dBaO2hd
+	pMzttx1cf0+S6EleJkT8bqHmJzy/bwg1Mz4FKwSbhWIUZXNrOYP+HxXGZ0kbmDACqC6vnGnG94H0F
+	UDbfek8A==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vBF8z-00000000tCI-2tgG;
+	Tue, 21 Oct 2025 16:23:30 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id A45FC3030BE; Mon, 20 Oct 2025 12:51:54 +0200 (CEST)
+Date: Mon, 20 Oct 2025 12:51:54 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function
+Message-ID: <20251020105154.GR3419281@noisy.programming.kicks-ass.net>
+References: <20251020020714.2511718-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251020020714.2511718-1-ojeda@kernel.org>
 
-From: Devarsh Thakkar <devarsht@ti.com>
+On Mon, Oct 20, 2025 at 04:07:14AM +0200, Miguel Ojeda wrote:
+> Between Rust 1.79 and 1.86, under `CONFIG_RUST_KERNEL_DOCTESTS=y`,
+> `objtool` may report:
+> 
+>     rust/doctests_kernel_generated.o: warning: objtool:
+>     rust_doctest_kernel_alloc_kbox_rs_13() falls through to next
+>     function rust_doctest_kernel_alloc_kvec_rs_0()
+> 
+> (as well as in rust_doctest_kernel_alloc_kvec_rs_0) due to calls to the
+> `noreturn` symbol:
+> 
+>     core::option::expect_failed
+> 
+> from code added in commits 779db37373a3 ("rust: alloc: kvec: implement
+> AsPageIter for VVec") and 671618432f46 ("rust: alloc: kbox: implement
+> AsPageIter for VBox").
+> 
+> Thus add the mangled one to the list so that `objtool` knows it is
+> actually `noreturn`.
+> 
+> This can be reproduced as well in other versions by tweaking the code,
+> such as the latest stable Rust (1.90.0).
+> 
+> Stable does not have code that triggers this, but it could have it in
+> the future. Downstream forks could too. Thus tag it for backport.
+> 
+> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+> for more details.
+> 
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later.
+> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  tools/objtool/check.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+> index a5770570b106..3c7ab910b189 100644
+> --- a/tools/objtool/check.c
+> +++ b/tools/objtool/check.c
+> @@ -217,6 +217,7 @@ static bool is_rust_noreturn(const struct symbol *func)
+>  	 * these come from the Rust standard library).
+>  	 */
+>  	return str_ends_with(func->name, "_4core5sliceSp15copy_from_slice17len_mismatch_fail")		||
+> +	       str_ends_with(func->name, "_4core6option13expect_failed")				||
+>  	       str_ends_with(func->name, "_4core6option13unwrap_failed")				||
+>  	       str_ends_with(func->name, "_4core6result13unwrap_failed")				||
+>  	       str_ends_with(func->name, "_4core9panicking5panic")					||
+> 
 
-[ Upstream commit 2c27aaee934a1b5229152fe33a14f1fdf50da143 ]
-
-Do read-modify-write so that we re-use the characterized reset value as
-specified in TRM [1] to program calibration wait time which defines number
-of cycles to wait for after startup state machine is in bandgap enable
-state.
-
-This fixes PLL lock timeout error faced while using RPi DSI Panel on TI's
-AM62L and J721E SoC since earlier calibration wait time was getting
-overwritten to zero value thus failing the PLL to lockup and causing
-timeout.
-
-[1] AM62P TRM (Section 14.8.6.3.2.1.1 DPHY_TX_DPHYTX_CMN0_CMN_DIG_TBIT2):
-Link: https://www.ti.com/lit/pdf/spruj83
-
-Cc: stable@vger.kernel.org
-Fixes: 7a343c8bf4b5 ("phy: Add Cadence D-PHY support")
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-Tested-by: Harikrishna Shenoy <h-shenoy@ti.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250704125915.1224738-3-devarsht@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/phy/cadence/cdns-dphy.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/phy/cadence/cdns-dphy.c b/drivers/phy/cadence/cdns-dphy.c
-index ee498df14ddab..de5389374d79d 100644
---- a/drivers/phy/cadence/cdns-dphy.c
-+++ b/drivers/phy/cadence/cdns-dphy.c
-@@ -30,6 +30,7 @@
- 
- #define DPHY_CMN_SSM			DPHY_PMA_CMN(0x20)
- #define DPHY_CMN_SSM_EN			BIT(0)
-+#define DPHY_CMN_SSM_CAL_WAIT_TIME	GENMASK(8, 1)
- #define DPHY_CMN_TX_MODE_EN		BIT(9)
- 
- #define DPHY_CMN_PWM			DPHY_PMA_CMN(0x40)
-@@ -421,7 +422,8 @@ static int cdns_dphy_power_on(struct phy *phy)
- 	writel(reg, dphy->regs + DPHY_BAND_CFG);
- 
- 	/* Start TX state machine. */
--	writel(DPHY_CMN_SSM_EN | DPHY_CMN_TX_MODE_EN,
-+	reg = readl(dphy->regs + DPHY_CMN_SSM);
-+	writel((reg & DPHY_CMN_SSM_CAL_WAIT_TIME) | DPHY_CMN_SSM_EN | DPHY_CMN_TX_MODE_EN,
- 	       dphy->regs + DPHY_CMN_SSM);
- 
- 	ret = cdns_dphy_wait_for_pll_lock(dphy);
--- 
-2.51.0
-
+I'll go stick it in tip/objtool/core; but I gotta ask, where are we with
+the toolchain support for noreturn?
 
