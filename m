@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-188192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF660BF262F
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:24:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 936E1BF26BC
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0BE514F7A90
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:24:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA57A3A6002
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C60285CB6;
-	Mon, 20 Oct 2025 16:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E627287504;
+	Mon, 20 Oct 2025 16:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nrYhsZaU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KNEY6FRp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D69223E33D
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3BA27466A
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760977426; cv=none; b=l1pzU+vyCnoGtnYHEHgRtMyatc3w1LGGSPpvv5G0/XgJng9/fS5R4moIoCptPy5HgsQsfMa3T5RIvy3CazP9MKsHchHD4D3l9zI5jgEomD47GxRGLHhCwBu7XIOBMFYC/gDRbV55sJIHXQhmBv3dUkxCOavlfAW6TNaYlgY7W4A=
+	t=1760977523; cv=none; b=hTFFu6EA9B3hlLimaYJTobzBM6voXyu0Vm/snJfJwvhcJ3Ff+sBI5kjM9kcRwv/18rN6PwFqnrG5+Hm28U5zp0ikq4+Tnqm9bO4ABHJcu1k8qVgQQbfZhDRkzR04yC4/TFr4mkuAUQvV321VUkNfENpmHXW2U0nIoslcYB/ltU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760977426; c=relaxed/simple;
-	bh=5iiTdNEgDqSUu/AqeVL2miXbD8ZzmQIKBpVn7ZM4Cxo=;
+	s=arc-20240116; t=1760977523; c=relaxed/simple;
+	bh=tQfmlhF/9qUCCfo1yxLduDV7fs6BncPVpVR5jEBuuHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pDvJRfN8xKWYxskcHdP6ZnP2qTFzA5+7jQYqmvwZzw6BIamLuzF+aoYNOT2UJxfhkE/MJfN0v2/iyUzMSCSPcHNeotjUqCtM8OWnhenUaJWnKrDA/aa8rYBLiBm2HMbGP7TLS63tQRyspiH0sTHoCakIZGyXRdY8Aqd+gL+ZUNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nrYhsZaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACF1C4CEF9;
-	Mon, 20 Oct 2025 16:23:45 +0000 (UTC)
+	 MIME-Version; b=isgDprNhkq2glzeKCVCeuSJxPE/E6xPiRR6XkhVyxz0AiDrBNIKXygpkDwOW0jR01gKlg19n85XD9SC7gQC3WA2WRCOh7XzYm6oOFEfoIFrRjZ2/I9NQ98FCaKoJ3mHgzgDh793SL3K9tBZhdJWEgaPQbUFs2m6fg46paJyNdXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KNEY6FRp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF5BC4CEF9;
+	Mon, 20 Oct 2025 16:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760977426;
-	bh=5iiTdNEgDqSUu/AqeVL2miXbD8ZzmQIKBpVn7ZM4Cxo=;
+	s=k20201202; t=1760977521;
+	bh=tQfmlhF/9qUCCfo1yxLduDV7fs6BncPVpVR5jEBuuHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrYhsZaUJuMad97hNFc4m87HNvo0DkVc++qCATf0k6sqR9jhMuP9HJgDuCfegzpdQ
-	 5aOS2PhhdB0SCKdqRheHYaV/UUeswqirejkG++4VtzfJVzdSV+75+oPujKsNuN7YhR
-	 cm2se3xz1wGwo1JC2KEOR4ystyfX6R3oqj+FfXxd7qB8SAokEhyVRsbi7RqdKYh0Pf
-	 mlE6fvmcuWBq7BOb6phScUmhgRzkn3+i75HA7NhTYDlWPkKLiXNfUFblWRQtqXeAnC
-	 o7fimYroO6AhHZv4308GPFR4qTamg/uYdLPLGwwhDANtL1DmI2r9bjPmqY1dmHEv38
-	 aDqUKVEP4ISRA==
+	b=KNEY6FRpg40oE0PEOVRcweCWUVWxVIL4dwxM/1SlVxZWIDCPZvQmH1cOoHihzI+id
+	 LOOOuLq97PVjXEdMdBmkOofRCse42UxYYsHuJFbmSum4qFVpI0Tot1iAdxsvO10BgG
+	 SZm/liNNEZRAk9QruLI1jt8H/bObrHXeKo7drvvXET50ne1JdlteLnv+LqOCU7koGR
+	 Fv7WfShr5c7PSlLCnB4ZoO7DkL4SRHd+9s43E+cCiy1SCjVXnjFVWiaIde/7jW7SjI
+	 4kk1yDGDhm1b7UnYesKQh9DWXZCPKj46n8ZnQPo8fuIlTTb42I5WRw5lMAHyZ8hX1N
+	 rkbaLIp8RwIyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+Cc: Maximilian Luz <luzmaximilian@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] crypto: rockchip - Fix dma_unmap_sg() nents value
-Date: Mon, 20 Oct 2025 12:23:42 -0400
-Message-ID: <20251020162342.1837833-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/3] PCI: Add sysfs attribute for device power state
+Date: Mon, 20 Oct 2025 12:25:16 -0400
+Message-ID: <20251020162518.1838256-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101647-olive-sheet-88ec@gregkh>
-References: <2025101647-olive-sheet-88ec@gregkh>
+In-Reply-To: <2025101636-tartar-brethren-067c@gregkh>
+References: <2025101636-tartar-brethren-067c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,39 +60,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Maximilian Luz <luzmaximilian@gmail.com>
 
-[ Upstream commit 21140e5caf019e4a24e1ceabcaaa16bd693b393f ]
+[ Upstream commit 80a129afb75cba8434fc5071bd6919172442315c ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+While PCI power states D0-D3hot can be queried from user-space via lspci,
+D3cold cannot.  lspci cannot provide an accurate value when the device is
+in D3cold as it has to restore the device to D0 before it can access its
+power state via the configuration space, leading to it reporting D0 or
+another on-state. Thus lspci cannot be used to diagnose power consumption
+issues for devices that can enter D3cold or to ensure that devices properly
+enter D3cold at all.
 
-Fixes: 57d67c6e8219 ("crypto: rockchip - rework by using crypto_engine")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ removed unused rctx variable declaration since device pointer already came from tctx->dev->dev instead of rctx->dev ]
+Add a new sysfs device attribute for the PCI power state, showing the
+current power state as seen by the kernel.
+
+[bhelgaas: drop READ_ONCE(), see discussion at the link]
+Link: https://lore.kernel.org/r/20201102141520.831630-1-luzmaximilian@gmail.com
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Stable-dep-of: 48991e493507 ("PCI/sysfs: Ensure devices are powered for config reads")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/rockchip/rk3288_crypto_ahash.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ Documentation/ABI/testing/sysfs-bus-pci |  9 +++++++++
+ drivers/pci/pci-sysfs.c                 | 10 ++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/drivers/crypto/rockchip/rk3288_crypto_ahash.c b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
-index edd40e16a3f0a..087b7c41c58da 100644
---- a/drivers/crypto/rockchip/rk3288_crypto_ahash.c
-+++ b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
-@@ -236,10 +236,9 @@ static int rk_hash_unprepare(struct crypto_engine *engine, void *breq)
- {
- 	struct ahash_request *areq = container_of(breq, struct ahash_request, base);
- 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
--	struct rk_ahash_rctx *rctx = ahash_request_ctx(areq);
- 	struct rk_ahash_ctx *tctx = crypto_ahash_ctx(tfm);
- 
--	dma_unmap_sg(tctx->dev->dev, areq->src, rctx->nrsg, DMA_TO_DEVICE);
-+	dma_unmap_sg(tctx->dev->dev, areq->src, sg_nents(areq->src), DMA_TO_DEVICE);
- 	return 0;
+diff --git a/Documentation/ABI/testing/sysfs-bus-pci b/Documentation/ABI/testing/sysfs-bus-pci
+index da33ab66ddfe7..9d499a126e87f 100644
+--- a/Documentation/ABI/testing/sysfs-bus-pci
++++ b/Documentation/ABI/testing/sysfs-bus-pci
+@@ -377,3 +377,12 @@ Contact:	Heiner Kallweit <hkallweit1@gmail.com>
+ Description:	If ASPM is supported for an endpoint, these files can be
+ 		used to disable or enable the individual power management
+ 		states. Write y/1/on to enable, n/0/off to disable.
++
++What:		/sys/bus/pci/devices/.../power_state
++Date:		November 2020
++Contact:	Linux PCI developers <linux-pci@vger.kernel.org>
++Description:
++		This file contains the current PCI power state of the device.
++		The value comes from the PCI kernel device state and can be one
++		of: "unknown", "error", "D0", D1", "D2", "D3hot", "D3cold".
++		The file is read only.
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index d27bc5a5d2f86..5a9d942198586 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -124,6 +124,15 @@ static ssize_t cpulistaffinity_show(struct device *dev,
  }
+ static DEVICE_ATTR_RO(cpulistaffinity);
  
++static ssize_t power_state_show(struct device *dev,
++				struct device_attribute *attr, char *buf)
++{
++	struct pci_dev *pdev = to_pci_dev(dev);
++
++	return sprintf(buf, "%s\n", pci_power_name(pdev->current_state));
++}
++static DEVICE_ATTR_RO(power_state);
++
+ /* show resources */
+ static ssize_t resource_show(struct device *dev, struct device_attribute *attr,
+ 			     char *buf)
+@@ -603,6 +612,7 @@ static ssize_t driver_override_show(struct device *dev,
+ static DEVICE_ATTR_RW(driver_override);
+ 
+ static struct attribute *pci_dev_attrs[] = {
++	&dev_attr_power_state.attr,
+ 	&dev_attr_resource.attr,
+ 	&dev_attr_vendor.attr,
+ 	&dev_attr_device.attr,
 -- 
 2.51.0
 
