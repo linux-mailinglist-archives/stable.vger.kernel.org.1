@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-188225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F07FBF2E01
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 20:10:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103B4BF2E04
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 20:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 404814EF6C0
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:10:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7445C3A8683
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A762C11C5;
-	Mon, 20 Oct 2025 18:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435C82C158B;
+	Mon, 20 Oct 2025 18:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxOt0T/X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ngcZAtqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A797311CBA
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 18:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01ACB2BEFEB
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 18:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760983832; cv=none; b=I6YxOi5B/k9FiJQ71eFrEDoYQPcJtYNF08eykNP572asXD9HL8+fX+THmmXQjQjDo4IEJU0ZrTsV93nzwB0SVIYa0Vup80+yH0P7AUua2MUOKrNFKkzNqehaeNt6QLlQoeJQhMQ+Td+7pwua86raEZmAtLA0SuVLcEpEtKSIssE=
+	t=1760983834; cv=none; b=shc/zYzKelRBT1DHu1OhQAZKecvSNRGaKESgv0oW8mqVwYItj8/3VbuBnJMCpsbvE79Ew7HgokLsaZVX1qTOTo4E6M0FhNpSGFql56J3rwMwZtUtTWMUYXm20g7FdXTnWVjLwVnxLeQNhXuXSPvJBU5yoKoxSLcfoIUV9tBIRPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760983832; c=relaxed/simple;
-	bh=xmVeoepAgXCrWUB8fHJ4OJAWS57ybqtiBut5clQ0bmw=;
+	s=arc-20240116; t=1760983834; c=relaxed/simple;
+	bh=/QVy3r9RQng/CbbjmDgs6Xd0R4mHg1RHyfm3d4yLRKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bs+ORG3Okxg+8l8rKPOsz+6NE1kmZLPb+LwiB0fZc7W0tDeBWxf8x7jGk+zwx4xXvcZoYwdE+QzRwuZR/aRYObzAHs7z9+P9Skj7APJuoH7YWdhtH0WUk2fQFbmNGI3J+inJWg6oApFF88I71HXTu1yar43lm3RSUTC2GZSjwqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxOt0T/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B582BC4CEFE;
-	Mon, 20 Oct 2025 18:10:31 +0000 (UTC)
+	 MIME-Version; b=Z7fCQIyNvDAb/SOho/ZHj+8c3+0QrbpCpF9Vget+h0FyT6TzFNPZoY81tvAw9hI1DhSn7l9rtp1ApKD3E/mA5c30O+CNS76+Mc0zvoY+zNUwQtuFT3aoD9LKQUsc9W4QlbkfRnWX8sTx7LvndwhwGPocOn/4nOKfJXXnitsIiJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ngcZAtqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF85FC113D0;
+	Mon, 20 Oct 2025 18:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760983832;
-	bh=xmVeoepAgXCrWUB8fHJ4OJAWS57ybqtiBut5clQ0bmw=;
+	s=k20201202; t=1760983833;
+	bh=/QVy3r9RQng/CbbjmDgs6Xd0R4mHg1RHyfm3d4yLRKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nxOt0T/X4uG62bvGEObr/wwuArLj4v381vY+dWhzDdZrrRZj0aieImR7wW4ILVrCD
-	 T+cPoZ+T0rCl7h0SutSHUsxa7vubFglkUw/WI9qUa6T7rmoSPyY7OjiSvyLT8CxP66
-	 QxUFvceenRgH/1kqqrYjMFTWy0rVUCmtls066Lj7uqKQuuA86TrOnOl3QJTuz6b3vL
-	 k+5VclYc/MX255+4exAEEtgliCy56kLaJlx4xIp1AmhldWbh/gz4inMxFVkBbYP/PB
-	 X6dBe3OvOCNvu3GBp0gMyec0qZF87Ve3d2Kc5gyrkc4zNJ2c6M7X/RtqBPZiBsRAIv
-	 kHXDsLMwi3ySA==
+	b=ngcZAtqNS5N5uj2S7w/Znt+EjvCtdtEZyHVgi5O8ByoeBabtx85uL2xSgPZNkbeQ2
+	 Mg9N1qNL8pXmtnOEyKKWT+3QRDpXpaHWpk3c6OZLhTasW2eNvLXErH6RZYHjSDPGwX
+	 L3rvHeu+ZlhraZ3KIJRlpzRHu+G9eG1uYjjn7wvKp/rCp3aK5fI3b1/emTNy97j4Qg
+	 xnmtUvX5brZa5rMuisqHWqDvni11SurTcHgGby+ki9quqvO9KV+Mapu4l6DN7VzGPL
+	 9pNTZfkySlglX3Z5YLeC2hwjNtzHv6gwwC4O//Xtfn/iqxGXO2oiu143agL0z8TVAp
+	 yw+qxFlt79jYw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+Cc: Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Andrzej Wilczynski <andrzejx.wilczynski@intel.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/4] ixgbevf: Add support for Intel(R) E610 device
-Date: Mon, 20 Oct 2025 14:10:26 -0400
-Message-ID: <20251020181028.1864198-2-sashal@kernel.org>
+Subject: [PATCH 6.6.y 3/4] ixgbevf: fix getting link speed data for E610 devices
+Date: Mon, 20 Oct 2025 14:10:27 -0400
+Message-ID: <20251020181028.1864198-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251020181028.1864198-1-sashal@kernel.org>
 References: <2025102051-bonded-proofread-bd52@gregkh>
@@ -64,178 +66,311 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-[ Upstream commit 4c44b450c69b676955c2790dcf467c1f969d80f1 ]
+[ Upstream commit 53f0eb62b4d23d40686f2dd51776b8220f2887bb ]
 
-Add support for Intel(R) E610 Series of network devices. The E610
-is based on X550 but adds firmware managed link, enhanced security
-capabilities and support for updated server manageability
+E610 adapters no longer use the VFLINKS register to read PF's link
+speed and linkup state. As a result VF driver cannot get actual link
+state and it incorrectly reports 10G which is the default option.
+It leads to a situation where even 1G adapters print 10G as actual
+link speed. The same happens when PF driver set speed different than 10G.
 
+Add new mailbox operation to let the VF driver request a PF driver
+to provide actual link data. Update the mailbox api to v1.6.
+
+Incorporate both ways of getting link status within the legacy
+ixgbe_check_mac_link_vf() function.
+
+Fixes: 4c44b450c69b ("ixgbevf: Add support for Intel(R) E610 device")
+Co-developed-by: Andrzej Wilczynski <andrzejx.wilczynski@intel.com>
+Signed-off-by: Andrzej Wilczynski <andrzejx.wilczynski@intel.com>
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20251009-jk-iwl-net-2025-10-01-v3-2-ef32a425b92a@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbevf/defines.h      |  5 ++++-
- drivers/net/ethernet/intel/ixgbevf/ixgbevf.h      |  6 +++++-
- drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c | 12 ++++++++++--
- drivers/net/ethernet/intel/ixgbevf/vf.c           | 12 +++++++++++-
- drivers/net/ethernet/intel/ixgbevf/vf.h           |  4 +++-
- 5 files changed, 33 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ixgbevf/defines.h  |   1 +
+ .../net/ethernet/intel/ixgbevf/ixgbevf_main.c |   6 +-
+ drivers/net/ethernet/intel/ixgbevf/mbx.h      |   4 +
+ drivers/net/ethernet/intel/ixgbevf/vf.c       | 137 ++++++++++++++----
+ 4 files changed, 116 insertions(+), 32 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ixgbevf/defines.h b/drivers/net/ethernet/intel/ixgbevf/defines.h
-index 5f08779c0e4e3..a9bc96f6399dc 100644
+index a9bc96f6399dc..e177d1d58696a 100644
 --- a/drivers/net/ethernet/intel/ixgbevf/defines.h
 +++ b/drivers/net/ethernet/intel/ixgbevf/defines.h
-@@ -1,5 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright(c) 1999 - 2018 Intel Corporation. */
-+/* Copyright(c) 1999 - 2024 Intel Corporation. */
+@@ -28,6 +28,7 @@
  
- #ifndef _IXGBEVF_DEFINES_H_
- #define _IXGBEVF_DEFINES_H_
-@@ -16,6 +16,9 @@
- #define IXGBE_DEV_ID_X550_VF_HV		0x1564
- #define IXGBE_DEV_ID_X550EM_X_VF_HV	0x15A9
- 
-+#define IXGBE_DEV_ID_E610_VF		0x57AD
-+#define IXGBE_SUBDEV_ID_E610_VF_HV	0x00FF
-+
- #define IXGBE_VF_IRQ_CLEAR_MASK		7
- #define IXGBE_VF_MAX_TX_QUEUES		8
- #define IXGBE_VF_MAX_RX_QUEUES		8
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-index 130cb868774c4..9b37f354d78ce 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-@@ -1,5 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright(c) 1999 - 2018 Intel Corporation. */
-+/* Copyright(c) 1999 - 2024 Intel Corporation. */
- 
- #ifndef _IXGBEVF_H_
- #define _IXGBEVF_H_
-@@ -418,6 +418,8 @@ enum ixgbevf_boards {
- 	board_X550EM_x_vf,
- 	board_X550EM_x_vf_hv,
- 	board_x550em_a_vf,
-+	board_e610_vf,
-+	board_e610_vf_hv,
- };
- 
- enum ixgbevf_xcast_modes {
-@@ -434,11 +436,13 @@ extern const struct ixgbevf_info ixgbevf_X550EM_x_vf_info;
- extern const struct ixgbe_mbx_operations ixgbevf_mbx_ops;
- extern const struct ixgbe_mbx_operations ixgbevf_mbx_ops_legacy;
- extern const struct ixgbevf_info ixgbevf_x550em_a_vf_info;
-+extern const struct ixgbevf_info ixgbevf_e610_vf_info;
- 
- extern const struct ixgbevf_info ixgbevf_82599_vf_hv_info;
- extern const struct ixgbevf_info ixgbevf_X540_vf_hv_info;
- extern const struct ixgbevf_info ixgbevf_X550_vf_hv_info;
- extern const struct ixgbevf_info ixgbevf_X550EM_x_vf_hv_info;
-+extern const struct ixgbevf_info ixgbevf_e610_vf_hv_info;
- extern const struct ixgbe_mbx_operations ixgbevf_hv_mbx_ops;
- 
- /* needed by ethtool.c */
+ /* Link speed */
+ typedef u32 ixgbe_link_speed;
++#define IXGBE_LINK_SPEED_UNKNOWN	0
+ #define IXGBE_LINK_SPEED_1GB_FULL	0x0020
+ #define IXGBE_LINK_SPEED_10GB_FULL	0x0080
+ #define IXGBE_LINK_SPEED_100_FULL	0x0008
 diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-index a44e4bd561421..eaf490976cf9c 100644
+index eaf490976cf9c..c1a2a6b77f8d0 100644
 --- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
 +++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
--/* Copyright(c) 1999 - 2018 Intel Corporation. */
-+/* Copyright(c) 1999 - 2024 Intel Corporation. */
+@@ -2279,6 +2279,7 @@ static void ixgbevf_negotiate_api(struct ixgbevf_adapter *adapter)
+ {
+ 	struct ixgbe_hw *hw = &adapter->hw;
+ 	static const int api[] = {
++		ixgbe_mbox_api_16,
+ 		ixgbe_mbox_api_15,
+ 		ixgbe_mbox_api_14,
+ 		ixgbe_mbox_api_13,
+@@ -2298,7 +2299,8 @@ static void ixgbevf_negotiate_api(struct ixgbevf_adapter *adapter)
+ 		idx++;
+ 	}
  
- /******************************************************************************
-  Copyright (c)2006 - 2007 Myricom, Inc. for some LRO specific code
-@@ -39,7 +39,7 @@ static const char ixgbevf_driver_string[] =
- 	"Intel(R) 10 Gigabit PCI Express Virtual Function Network Driver";
- 
- static char ixgbevf_copyright[] =
--	"Copyright (c) 2009 - 2018 Intel Corporation.";
-+	"Copyright (c) 2009 - 2024 Intel Corporation.";
- 
- static const struct ixgbevf_info *ixgbevf_info_tbl[] = {
- 	[board_82599_vf]	= &ixgbevf_82599_vf_info,
-@@ -51,6 +51,8 @@ static const struct ixgbevf_info *ixgbevf_info_tbl[] = {
- 	[board_X550EM_x_vf]	= &ixgbevf_X550EM_x_vf_info,
- 	[board_X550EM_x_vf_hv]	= &ixgbevf_X550EM_x_vf_hv_info,
- 	[board_x550em_a_vf]	= &ixgbevf_x550em_a_vf_info,
-+	[board_e610_vf]         = &ixgbevf_e610_vf_info,
-+	[board_e610_vf_hv]      = &ixgbevf_e610_vf_hv_info,
- };
- 
- /* ixgbevf_pci_tbl - PCI Device ID Table
-@@ -71,6 +73,9 @@ static const struct pci_device_id ixgbevf_pci_tbl[] = {
- 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_X_VF), board_X550EM_x_vf },
- 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_X_VF_HV), board_X550EM_x_vf_hv},
- 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_A_VF), board_x550em_a_vf },
-+	{PCI_VDEVICE_SUB(INTEL, IXGBE_DEV_ID_E610_VF, PCI_ANY_ID,
-+			 IXGBE_SUBDEV_ID_E610_VF_HV), board_e610_vf_hv},
-+	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_E610_VF), board_e610_vf},
- 	/* required last entry */
- 	{0, }
- };
-@@ -4694,6 +4699,9 @@ static int ixgbevf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	case ixgbe_mac_X540_vf:
- 		dev_info(&pdev->dev, "Intel(R) X540 Virtual Function\n");
+-	if (hw->api_version >= ixgbe_mbox_api_15) {
++	/* Following is not supported by API 1.6, it is specific for 1.5 */
++	if (hw->api_version == ixgbe_mbox_api_15) {
+ 		hw->mbx.ops.init_params(hw);
+ 		memcpy(&hw->mbx.ops, &ixgbevf_mbx_ops,
+ 		       sizeof(struct ixgbe_mbx_operations));
+@@ -2655,6 +2657,7 @@ static void ixgbevf_set_num_queues(struct ixgbevf_adapter *adapter)
+ 		case ixgbe_mbox_api_13:
+ 		case ixgbe_mbox_api_14:
+ 		case ixgbe_mbox_api_15:
++		case ixgbe_mbox_api_16:
+ 			if (adapter->xdp_prog &&
+ 			    hw->mac.max_tx_queues == rss)
+ 				rss = rss > 3 ? 2 : 1;
+@@ -4649,6 +4652,7 @@ static int ixgbevf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_15:
++	case ixgbe_mbox_api_16:
+ 		netdev->max_mtu = IXGBE_MAX_JUMBO_FRAME_SIZE -
+ 				  (ETH_HLEN + ETH_FCS_LEN);
  		break;
-+	case ixgbe_mac_e610_vf:
-+		dev_info(&pdev->dev, "Intel(R) E610 Virtual Function\n");
-+		break;
- 	case ixgbe_mac_82599_vf:
- 	default:
- 		dev_info(&pdev->dev, "Intel(R) 82599 Virtual Function\n");
+diff --git a/drivers/net/ethernet/intel/ixgbevf/mbx.h b/drivers/net/ethernet/intel/ixgbevf/mbx.h
+index 835bbcc5cc8e6..c1494fd1f67b4 100644
+--- a/drivers/net/ethernet/intel/ixgbevf/mbx.h
++++ b/drivers/net/ethernet/intel/ixgbevf/mbx.h
+@@ -66,6 +66,7 @@ enum ixgbe_pfvf_api_rev {
+ 	ixgbe_mbox_api_13,	/* API version 1.3, linux/freebsd VF driver */
+ 	ixgbe_mbox_api_14,	/* API version 1.4, linux/freebsd VF driver */
+ 	ixgbe_mbox_api_15,	/* API version 1.5, linux/freebsd VF driver */
++	ixgbe_mbox_api_16,      /* API version 1.6, linux/freebsd VF driver */
+ 	/* This value should always be last */
+ 	ixgbe_mbox_api_unknown,	/* indicates that API version is not known */
+ };
+@@ -102,6 +103,9 @@ enum ixgbe_pfvf_api_rev {
+ 
+ #define IXGBE_VF_GET_LINK_STATE 0x10 /* get vf link state */
+ 
++/* mailbox API, version 1.6 VF requests */
++#define IXGBE_VF_GET_PF_LINK_STATE	0x11 /* request PF to send link info */
++
+ /* length of permanent address message returned from PF */
+ #define IXGBE_VF_PERMADDR_MSG_LEN	4
+ /* word in permanent address message with the current multicast type */
 diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
-index 1641d00d8ed35..da7a72ecce7a2 100644
+index da7a72ecce7a2..55ac79f87438f 100644
 --- a/drivers/net/ethernet/intel/ixgbevf/vf.c
 +++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
--/* Copyright(c) 1999 - 2018 Intel Corporation. */
-+/* Copyright(c) 1999 - 2024 Intel Corporation. */
+@@ -313,6 +313,7 @@ int ixgbevf_get_reta_locked(struct ixgbe_hw *hw, u32 *reta, int num_rx_queues)
+ 	 * is not supported for this device type.
+ 	 */
+ 	switch (hw->api_version) {
++	case ixgbe_mbox_api_16:
+ 	case ixgbe_mbox_api_15:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_13:
+@@ -382,6 +383,7 @@ int ixgbevf_get_rss_key_locked(struct ixgbe_hw *hw, u8 *rss_key)
+ 	 * or if the operation is not supported for this device type.
+ 	 */
+ 	switch (hw->api_version) {
++	case ixgbe_mbox_api_16:
+ 	case ixgbe_mbox_api_15:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_13:
+@@ -552,6 +554,7 @@ static s32 ixgbevf_update_xcast_mode(struct ixgbe_hw *hw, int xcast_mode)
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_15:
++	case ixgbe_mbox_api_16:
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+@@ -624,6 +627,48 @@ static s32 ixgbevf_hv_get_link_state_vf(struct ixgbe_hw *hw, bool *link_state)
+ 	return -EOPNOTSUPP;
+ }
  
- #include "vf.h"
- #include "ixgbevf.h"
-@@ -1076,3 +1076,13 @@ const struct ixgbevf_info ixgbevf_x550em_a_vf_info = {
- 	.mac = ixgbe_mac_x550em_a_vf,
- 	.mac_ops = &ixgbevf_mac_ops,
- };
++/**
++ * ixgbevf_get_pf_link_state - Get PF's link status
++ * @hw: pointer to the HW structure
++ * @speed: link speed
++ * @link_up: indicate if link is up/down
++ *
++ * Ask PF to provide link_up state and speed of the link.
++ *
++ * Return: IXGBE_ERR_MBX in the case of mailbox error,
++ * -EOPNOTSUPP if the op is not supported or 0 on success.
++ */
++static int ixgbevf_get_pf_link_state(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
++				     bool *link_up)
++{
++	u32 msgbuf[3] = {};
++	int err;
 +
-+const struct ixgbevf_info ixgbevf_e610_vf_info = {
-+	.mac                    = ixgbe_mac_e610_vf,
-+	.mac_ops                = &ixgbevf_mac_ops,
-+};
++	switch (hw->api_version) {
++	case ixgbe_mbox_api_16:
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
 +
-+const struct ixgbevf_info ixgbevf_e610_vf_hv_info = {
-+	.mac            = ixgbe_mac_e610_vf,
-+	.mac_ops        = &ixgbevf_hv_mac_ops,
-+};
-diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.h b/drivers/net/ethernet/intel/ixgbevf/vf.h
-index b4eef5b6c172b..2d791bc26ae4e 100644
---- a/drivers/net/ethernet/intel/ixgbevf/vf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.h
-@@ -1,5 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright(c) 1999 - 2018 Intel Corporation. */
-+/* Copyright(c) 1999 - 2024 Intel Corporation. */
++	msgbuf[0] = IXGBE_VF_GET_PF_LINK_STATE;
++
++	err = ixgbevf_write_msg_read_ack(hw, msgbuf, msgbuf,
++					 ARRAY_SIZE(msgbuf));
++	if (err || (msgbuf[0] & IXGBE_VT_MSGTYPE_FAILURE)) {
++		err = IXGBE_ERR_MBX;
++		*speed = IXGBE_LINK_SPEED_UNKNOWN;
++		/* No need to set @link_up to false as it will be done by
++		 * ixgbe_check_mac_link_vf().
++		 */
++	} else {
++		*speed = msgbuf[1];
++		*link_up = msgbuf[2];
++	}
++
++	return err;
++}
++
+ /**
+  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
+  *  @hw: pointer to the HW structure
+@@ -658,6 +703,58 @@ static s32 ixgbevf_set_vfta_vf(struct ixgbe_hw *hw, u32 vlan, u32 vind,
+ 	return err;
+ }
  
- #ifndef __IXGBE_VF_H__
- #define __IXGBE_VF_H__
-@@ -54,6 +54,8 @@ enum ixgbe_mac_type {
- 	ixgbe_mac_X550_vf,
- 	ixgbe_mac_X550EM_x_vf,
- 	ixgbe_mac_x550em_a_vf,
-+	ixgbe_mac_e610,
-+	ixgbe_mac_e610_vf,
- 	ixgbe_num_macs
- };
++/**
++ * ixgbe_read_vflinks - Read VFLINKS register
++ * @hw: pointer to the HW structure
++ * @speed: link speed
++ * @link_up: indicate if link is up/down
++ *
++ * Get linkup status and link speed from the VFLINKS register.
++ */
++static void ixgbe_read_vflinks(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
++			       bool *link_up)
++{
++	u32 vflinks = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
++
++	/* if link status is down no point in checking to see if PF is up */
++	if (!(vflinks & IXGBE_LINKS_UP)) {
++		*link_up = false;
++		return;
++	}
++
++	/* for SFP+ modules and DA cables on 82599 it can take up to 500usecs
++	 * before the link status is correct
++	 */
++	if (hw->mac.type == ixgbe_mac_82599_vf) {
++		for (int i = 0; i < 5; i++) {
++			udelay(100);
++			vflinks = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
++
++			if (!(vflinks & IXGBE_LINKS_UP)) {
++				*link_up = false;
++				return;
++			}
++		}
++	}
++
++	/* We reached this point so there's link */
++	*link_up = true;
++
++	switch (vflinks & IXGBE_LINKS_SPEED_82599) {
++	case IXGBE_LINKS_SPEED_10G_82599:
++		*speed = IXGBE_LINK_SPEED_10GB_FULL;
++		break;
++	case IXGBE_LINKS_SPEED_1G_82599:
++		*speed = IXGBE_LINK_SPEED_1GB_FULL;
++		break;
++	case IXGBE_LINKS_SPEED_100_82599:
++		*speed = IXGBE_LINK_SPEED_100_FULL;
++		break;
++	default:
++		*speed = IXGBE_LINK_SPEED_UNKNOWN;
++	}
++}
++
+ /**
+  * ixgbevf_hv_set_vfta_vf - * Hyper-V variant - just a stub.
+  * @hw: unused
+@@ -705,7 +802,6 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
+ 	struct ixgbe_mbx_info *mbx = &hw->mbx;
+ 	struct ixgbe_mac_info *mac = &hw->mac;
+ 	s32 ret_val = 0;
+-	u32 links_reg;
+ 	u32 in_msg = 0;
  
+ 	/* If we were hit with a reset drop the link */
+@@ -715,36 +811,14 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
+ 	if (!mac->get_link_status)
+ 		goto out;
+ 
+-	/* if link status is down no point in checking to see if pf is up */
+-	links_reg = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
+-	if (!(links_reg & IXGBE_LINKS_UP))
+-		goto out;
+-
+-	/* for SFP+ modules and DA cables on 82599 it can take up to 500usecs
+-	 * before the link status is correct
+-	 */
+-	if (mac->type == ixgbe_mac_82599_vf) {
+-		int i;
+-
+-		for (i = 0; i < 5; i++) {
+-			udelay(100);
+-			links_reg = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
+-
+-			if (!(links_reg & IXGBE_LINKS_UP))
+-				goto out;
+-		}
+-	}
+-
+-	switch (links_reg & IXGBE_LINKS_SPEED_82599) {
+-	case IXGBE_LINKS_SPEED_10G_82599:
+-		*speed = IXGBE_LINK_SPEED_10GB_FULL;
+-		break;
+-	case IXGBE_LINKS_SPEED_1G_82599:
+-		*speed = IXGBE_LINK_SPEED_1GB_FULL;
+-		break;
+-	case IXGBE_LINKS_SPEED_100_82599:
+-		*speed = IXGBE_LINK_SPEED_100_FULL;
+-		break;
++	if (hw->mac.type == ixgbe_mac_e610_vf) {
++		ret_val = ixgbevf_get_pf_link_state(hw, speed, link_up);
++		if (ret_val)
++			goto out;
++	} else {
++		ixgbe_read_vflinks(hw, speed, link_up);
++		if (*link_up == false)
++			goto out;
+ 	}
+ 
+ 	/* if the read failed it could just be a mailbox collision, best wait
+@@ -951,6 +1025,7 @@ int ixgbevf_get_queues(struct ixgbe_hw *hw, unsigned int *num_tcs,
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_15:
++	case ixgbe_mbox_api_16:
+ 		break;
+ 	default:
+ 		return 0;
 -- 
 2.51.0
 
