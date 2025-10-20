@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-187968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AAC2BEFD44
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBC8BEFD5B
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EE09E4EB762
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:10:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 30D9E4EF1B4
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A1C2DFA29;
-	Mon, 20 Oct 2025 08:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FDB29E0F7;
+	Mon, 20 Oct 2025 08:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAQk6E2n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpG4WSn0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD9D2BE639
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826782AE70
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760947843; cv=none; b=tAh2zgVDfe1Ahbf5COTXdFVWUKqlRextjKUSBZ4sdYVJUX6KEdMStN8BW7SjW/dJ8nstrITnSGg6sFItFqdNyXyRQ6RICcLHu1cIo3+LRcS+3l791E18hlwSieH47+BMHfl4x8zFT8+LgLviSEI7pBjPoS3WmkniJgPTRmiAq6M=
+	t=1760947961; cv=none; b=anc9nHZpJEoaZuFpadgyOLTBsA24c1NMY59hj3Dwtg0uc59cOwyK8Qj4C20St1ZEwjIpIxIG3NPHR3m5H1Yd+MX1uLHUHf5yjJANuAcRmZZfPAqz1lcN6AUkWs/19zeAXET7mBGuYu7shOwI5IJn3bHYGlJ0aYQLZqZ4vtQckdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760947843; c=relaxed/simple;
-	bh=hedUl11LhdJPxdJYTasDSpiEQPsnUJCFY16uOxNasWE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Xj238Am+HV6nMguB2q2aeB6ychtuS4hSOlpZZLtNMlLuWvO8MH+Oe/MG32lgzoHAnDdjCaFwd66W465MuQ6DSo3y0Dbzel+CQhuCT2Lt6jY8Q048dv/g7fyN+2XV1NmoK3QAHDTevAxlZlJtYj8iW80+xoIze375FbEiDuvmji8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAQk6E2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A06C4CEF9;
-	Mon, 20 Oct 2025 08:10:42 +0000 (UTC)
+	s=arc-20240116; t=1760947961; c=relaxed/simple;
+	bh=qLWaTkBZj+r9FfCWzR/2YwhenoTv7W1vWgUbYt/dxjc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ez85Naq65SpeDrUQNpoMYHyT6/GtdjkIxp5uUICQAS4ZOZZuGaE3Jvv7J+DDVTCH/oIdCnWgJtMVdZIhWtXpQsyHv58XO4ZubF4d6Bt4DGSGs4Z4AIf92xHygdm6TS1NJyLv1pqgm8lHRhZQ6FUIjg0KShkDMOFDunlRJOhOOFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpG4WSn0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB1EC4CEF9;
+	Mon, 20 Oct 2025 08:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760947843;
-	bh=hedUl11LhdJPxdJYTasDSpiEQPsnUJCFY16uOxNasWE=;
+	s=korg; t=1760947961;
+	bh=qLWaTkBZj+r9FfCWzR/2YwhenoTv7W1vWgUbYt/dxjc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qAQk6E2nVL41MO6P3aDJo+8r2A5L1MeVN4RMoR2hf//qDrteCf1HkR2y3XodQcWTm
-	 /b+9EePQr+JbPEPnAP7iDApKA4rfREmhNfZjC94YuAoVnF1FJYEWxDWMStFTgnxriL
-	 gGekUCo9VKCZvn39qzs6tRHYjcBwH+5agz0moA9I=
-Subject: FAILED: patch "[PATCH] arm64: debug: always unmask interrupts in el0_softstp()" failed to apply to 6.17-stable tree
-To: ada.coupriediaz@arm.com,catalin.marinas@arm.com,mark.rutland@arm.com,stable@vger.kernel.org
+	b=PpG4WSn0EUXc2EA5d/YHsw8DNqeINrAPiRMGmqcN/0gqmrICdiIxzvUoy3wXrVrbJ
+	 qKqpkuzOwoQT3sAPwBdrDbA3J7eluDp0GJgH8UcNasjFmh+DOx1N6tVv8oBxeuzdfm
+	 E9EkV0vIqJ+9rZxju00BZJaM+xIYEeETVhQq41Bg=
+Subject: FAILED: patch "[PATCH] can: gs_usb: increase max interface to U8_MAX" failed to apply to 6.1-stable tree
+To: uwu@coelacanthus.name,mailhol@kernel.org,mkl@pengutronix.de,runcheng.lu@hpmicro.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Oct 2025 10:10:40 +0200
-Message-ID: <2025102040-gopher-dipping-a96a@gregkh>
+Date: Mon, 20 Oct 2025 10:12:38 +0200
+Message-ID: <2025102038-outsource-awhile-6150@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.17-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x ea0d55ae4b3207c33691a73da3443b1fd379f1d2
+git cherry-pick -x 2a27f6a8fb5722223d526843040f747e9b0e8060
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102040-gopher-dipping-a96a@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102038-outsource-awhile-6150@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,66 +77,117 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ea0d55ae4b3207c33691a73da3443b1fd379f1d2 Mon Sep 17 00:00:00 2001
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Date: Tue, 14 Oct 2025 10:25:36 +0100
-Subject: [PATCH] arm64: debug: always unmask interrupts in el0_softstp()
+From 2a27f6a8fb5722223d526843040f747e9b0e8060 Mon Sep 17 00:00:00 2001
+From: Celeste Liu <uwu@coelacanthus.name>
+Date: Tue, 30 Sep 2025 19:34:28 +0800
+Subject: [PATCH] can: gs_usb: increase max interface to U8_MAX
 
-We intend that EL0 exception handlers unmask all DAIF exceptions
-before calling exit_to_user_mode().
+This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
+converter[1]. The original developers may have only 3 interfaces
+device to test so they write 3 here and wait for future change.
 
-When completing single-step of a suspended breakpoint, we do not call
-local_daif_restore(DAIF_PROCCTX) before calling exit_to_user_mode(),
-leaving all DAIF exceptions masked.
+During the HSCanT development, we actually used 4 interfaces, so the
+limitation of 3 is not enough now. But just increase one is not
+future-proofed. Since the channel index type in gs_host_frame is u8,
+just make canch[] become a flexible array with a u8 index, so it
+naturally constraint by U8_MAX and avoid statically allocate 256
+pointer for every gs_usb device.
 
-When pseudo-NMIs are not in use this is benign.
+[1]: https://github.com/cherry-embedded/HSCanT-hardware
 
-When pseudo-NMIs are in use, this is unsound. At this point interrupts
-are masked by both DAIF.IF and PMR_EL1, and subsequent irq flag
-manipulation may not work correctly. For example, a subsequent
-local_irq_enable() within exit_to_user_mode_loop() will only unmask
-interrupts via PMR_EL1 (leaving those masked via DAIF.IF), and
-anything depending on interrupts being unmasked (e.g. delivery of
-signals) will not work correctly.
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+Link: https://patch.msgid.link/20250930-gs-usb-max-if-v5-1-863330bf6666@coelacanthus.name
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-This was detected by CONFIG_ARM64_DEBUG_PRIORITY_MASKING.
-
-Move the call to `try_step_suspended_breakpoints()` outside of the check
-so that interrupts can be unmasked even if we don't call the step handler.
-
-Fixes: 0ac7584c08ce ("arm64: debug: split single stepping exception entry")
-Cc: <stable@vger.kernel.org> # 6.17
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-[catalin.marinas@arm.com: added Mark's rewritten commit log and some whitespace]
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-
-diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
-index f546a914f041..a9c81715ce59 100644
---- a/arch/arm64/kernel/entry-common.c
-+++ b/arch/arm64/kernel/entry-common.c
-@@ -697,6 +697,8 @@ static void noinstr el0_breakpt(struct pt_regs *regs, unsigned long esr)
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index c9482d6e947b..9fb4cbbd6d6d 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -289,11 +289,6 @@ struct gs_host_frame {
+ #define GS_MAX_RX_URBS 30
+ #define GS_NAPI_WEIGHT 32
  
- static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
- {
-+	bool step_done;
+-/* Maximum number of interfaces the driver supports per device.
+- * Current hardware only supports 3 interfaces. The future may vary.
+- */
+-#define GS_MAX_INTF 3
+-
+ struct gs_tx_context {
+ 	struct gs_can *dev;
+ 	unsigned int echo_id;
+@@ -324,7 +319,6 @@ struct gs_can {
+ 
+ /* usb interface struct */
+ struct gs_usb {
+-	struct gs_can *canch[GS_MAX_INTF];
+ 	struct usb_anchor rx_submitted;
+ 	struct usb_device *udev;
+ 
+@@ -336,9 +330,11 @@ struct gs_usb {
+ 
+ 	unsigned int hf_size_rx;
+ 	u8 active_channels;
++	u8 channel_cnt;
+ 
+ 	unsigned int pipe_in;
+ 	unsigned int pipe_out;
++	struct gs_can *canch[] __counted_by(channel_cnt);
+ };
+ 
+ /* 'allocate' a tx context.
+@@ -599,7 +595,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	}
+ 
+ 	/* device reports out of range channel id */
+-	if (hf->channel >= GS_MAX_INTF)
++	if (hf->channel >= parent->channel_cnt)
+ 		goto device_detach;
+ 
+ 	dev = parent->canch[hf->channel];
+@@ -699,7 +695,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	/* USB failure take down all interfaces */
+ 	if (rc == -ENODEV) {
+ device_detach:
+-		for (rc = 0; rc < GS_MAX_INTF; rc++) {
++		for (rc = 0; rc < parent->channel_cnt; rc++) {
+ 			if (parent->canch[rc])
+ 				netif_device_detach(parent->canch[rc]->netdev);
+ 		}
+@@ -1460,17 +1456,19 @@ static int gs_usb_probe(struct usb_interface *intf,
+ 	icount = dconf.icount + 1;
+ 	dev_info(&intf->dev, "Configuring for %u interfaces\n", icount);
+ 
+-	if (icount > GS_MAX_INTF) {
++	if (icount > type_max(parent->channel_cnt)) {
+ 		dev_err(&intf->dev,
+ 			"Driver cannot handle more that %u CAN interfaces\n",
+-			GS_MAX_INTF);
++			type_max(parent->channel_cnt));
+ 		return -EINVAL;
+ 	}
+ 
+-	parent = kzalloc(sizeof(*parent), GFP_KERNEL);
++	parent = kzalloc(struct_size(parent, canch, icount), GFP_KERNEL);
+ 	if (!parent)
+ 		return -ENOMEM;
+ 
++	parent->channel_cnt = icount;
 +
- 	if (!is_ttbr0_addr(regs->pc))
- 		arm64_apply_bp_hardening();
+ 	init_usb_anchor(&parent->rx_submitted);
  
-@@ -707,10 +709,10 @@ static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
- 	 * If we are stepping a suspended breakpoint there's nothing more to do:
- 	 * the single-step is complete.
- 	 */
--	if (!try_step_suspended_breakpoints(regs)) {
--		local_daif_restore(DAIF_PROCCTX);
-+	step_done = try_step_suspended_breakpoints(regs);
-+	local_daif_restore(DAIF_PROCCTX);
-+	if (!step_done)
- 		do_el0_softstep(esr, regs);
--	}
- 	arm64_exit_to_user_mode(regs);
- }
+ 	usb_set_intfdata(intf, parent);
+@@ -1531,7 +1529,7 @@ static void gs_usb_disconnect(struct usb_interface *intf)
+ 		return;
+ 	}
+ 
+-	for (i = 0; i < GS_MAX_INTF; i++)
++	for (i = 0; i < parent->channel_cnt; i++)
+ 		if (parent->canch[i])
+ 			gs_destroy_candev(parent->canch[i]);
  
 
 
