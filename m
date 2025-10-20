@@ -1,84 +1,84 @@
-Return-Path: <stable+bounces-188268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D950BF3F2D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 00:41:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCF0BF3F42
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 00:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D0A418C5BCC
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 22:40:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 312CF54121D
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 22:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12A22EFD98;
-	Mon, 20 Oct 2025 22:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACD52F3C1D;
+	Mon, 20 Oct 2025 22:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kerneltoast.com header.i=@kerneltoast.com header.b="CFcf9CSX"
+	dkim=pass (2048-bit key) header.d=kerneltoast.com header.i=@kerneltoast.com header.b="WSYIcChS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25732F3606
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 22:38:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE632F3C18
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 22:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760999909; cv=none; b=UzPsNSDgS42H4+R6sIqc+4emn/Ho/Jv/ik8ZmpKcP64jk6uXYaPEJMNx8mJTfU5/YoP15r/XMPF4i5aVSCLsrsSXasb7YTjWDHBYuRUIOQrD+vt+PZ3h2E0knrA/pg6hv6sB0I6DfSrsqeQ0tj+oXhl6BmMHFp5JFEdxVxVWzJc=
+	t=1761000151; cv=none; b=WxXbWg9714UsXyGLcPrePaKyv4sP7aLqb+YIuvdu86GadzsKLUMrK13vPr59+VTDtr8IBrn5HH0XWgx58rXMZsA+CV/HDrhxMs34xfueQODKkhtneCwYRTtpNU3hIrGF9btXKyEivqr4TYfvkE1FRIrxUdciL0PS0/L9/a9fhww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760999909; c=relaxed/simple;
-	bh=orOSuq6/TaO8b3SlIRmCg3DN5wKL87zSxAtzqpgiNKI=;
+	s=arc-20240116; t=1761000151; c=relaxed/simple;
+	bh=V/QlFpXgyJoNbFyFYC7FJdEmHGD+nLW/QS0FRMghKNM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mMIuvfbbrGLa3Ywr/qrBRoMkA03IPqHFCFZuNlUI/3sfTppbd2FFvpFTUFcvatHppMKIq3WU1yx521jM8mWhJ39tBsA2Ih1fyXjzUb9cDmm+qD5DBBJQiehj1GNPmb6AMjseJI5nNvnKvLxZItQNBBT+vUQiHwKhhj2zpPz+Uas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kerneltoast.com; spf=pass smtp.mailfrom=kerneltoast.com; dkim=pass (2048-bit key) header.d=kerneltoast.com header.i=@kerneltoast.com header.b=CFcf9CSX; arc=none smtp.client-ip=209.85.210.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=bDGuHm1v1xYXA/cBzrLGp1ZA+ccl5Nh9mXYKPAZqjdSWobKrtnP6+akdYi0ugoES/CVwn2wsqwkciunpRzpEQR4Nya+AB451w+I+5qlpKOMhKOt/8pGzkQY0wab+y2QTohExLbbOoNyT6SmdEryEsh9gePNk/JBJ7Wc46ZquGM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kerneltoast.com; spf=pass smtp.mailfrom=kerneltoast.com; dkim=pass (2048-bit key) header.d=kerneltoast.com header.i=@kerneltoast.com header.b=WSYIcChS; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kerneltoast.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kerneltoast.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-782a77b5ec7so4482509b3a.1
-        for <stable@vger.kernel.org>; Mon, 20 Oct 2025 15:38:27 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-782023ca359so4783789b3a.2
+        for <stable@vger.kernel.org>; Mon, 20 Oct 2025 15:42:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kerneltoast.com; s=google; t=1760999907; x=1761604707; darn=vger.kernel.org;
+        d=kerneltoast.com; s=google; t=1761000149; x=1761604949; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZWRTJlVR14k1p+t4VRxVrxCe+1iPDNnQxl1YGhAuvaM=;
-        b=CFcf9CSXl2jYFaAF6xSkEiIDwt95eijEUXTOipjjSQe6DZ6yd7VbsHu33f4RQQg0fZ
-         aka/0ri6163qPlwHhxSiqQ9RKLBu0OGVDm447MrwpbpbNcxHH+Ue73dj2uWYdsnkq8X6
-         N5kL38eH0vAIdm7VvMKhKRVHhQ3v71hsRxQUHmk4BCdsX3DZ/Yvj//cWs7xqGeyIAjIj
-         7+/b2IbbtcGtcCQHGv4i90EWDLc0yahwlWwEker72MWxvYMskj7sn6Mw7Q+obZsr5mIK
-         m2Ix9SOTYc4aGBlOFdvEh5n4k7PAxkuns4JUiceLhzHWMhge3/Jbyw/YtXkCeZlEy93C
-         1k5w==
+        bh=0WZlH2DqYFCiXY7ctfKICcS4Udl66TWHE3E0JHv0JUQ=;
+        b=WSYIcChSQUc9Z/1xQBtIpyGELFJp4j41QLwWqoxR0J0IQJyQ6rCteD8c89r5iDCv2L
+         9ujLmaXbUac/EtivqQ7qKQKAmayiQRRlOpvEpc+OeVLfcUJC8asgNcli2VvrxYJaCbKB
+         3yxjzLDXK6hVoqSH/01/JrTpX0Td/yv2PAwUcLrPmP1qjGS6FvzlSkTm0dmgZ+ZxUqn8
+         UADUtUe6kWyanatsvLpt1/bU+Qb21sVWvezcc92wim7Tg/Z7yNKXkzrJXP4wxh4sDDgj
+         mB8jTZ09vmWfWtmH3yQZlLZBqQ6SzEHlr64RN6v/NuA33zXVdvxg6UsiH/MwYCJj+mwP
+         Zgtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760999907; x=1761604707;
+        d=1e100.net; s=20230601; t=1761000149; x=1761604949;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZWRTJlVR14k1p+t4VRxVrxCe+1iPDNnQxl1YGhAuvaM=;
-        b=kZE1WehqN18yQrdguRVqJIs/V9Op2Bi9cfc9bZVvnT9Va+4SmDUUrEcA/8qA/7QQ8f
-         U7ta4RC6DkCFrpMebiHsqW8lsvhI/WztJSPBSgCVQGl4kmWJfvWsb3blq+KIO70vb1eY
-         iPBR2NYeU9XzvEI4V7Tm+7xsf5lODEi3KT3MY4Ux1wmQ34WMxlFhXEavWVb/5qnMqNZF
-         8CANpnDXbKrl48XUaQs6/Yo1mFPsxSPZx3aHbO1ctCQwfZaoXVnPoPM7e3bC2+OU7VYY
-         tn6QHdEV8HhJaxQKkQQN2fF+n5ewEaYl9snOoPTK0LhP7FyS4B1RDRjfmo1F0NThF5IW
-         NgOw==
-X-Forwarded-Encrypted: i=1; AJvYcCUUcrp2KM5gdWNB/vDR583kKAu6mE5GW6iXFIN/XrMcDgJzliqIswkG7tZ86DJdIaj/jkXiw4k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwG5Uo/7gdPaI7aiVdIpE1ENsgO7mwN/oDlvEyG8Bp7IpIapEIY
-	vXGdCIw3PMcuY5SBx8IVTBkUCTNpkG2usokPGyiCP6LeNOvAdXElxrzniyGRSrgy06OL
-X-Gm-Gg: ASbGncuPiFtrplq//qYh9G+/dQpu7tvFm60Yo2Go5atpL0LQOgBBggN0MuMtRX/+OEF
-	inydtCtp10mkVplm6U/yDpYEyNyNFxSzIumKjS65COVB9s7YeseqeRUQ1pyw+FZFIUbkAk1gJbc
-	16UOIUoCGRmcypcRg3ComATghf4r1Z+o3sjIFzOmbAMB+wC5K9EwRrAVz07eULQjmJlklh3nDld
-	qzsmIdzGJB++/CUr1Yc+4OPKsKqELWl+BbJBfC/Y7pGYgGJs/Xf7DH/L7fZ0YgYw/7pQTlG//Pe
-	z9MJtC/h9r8nzIyysraCleoFY/I5jvjbxrvQN7QlNh1VAcEY9Sc+Akvlvq9LiP9JwCuwtmpV1rX
-	h06EHX1kWqbOs9vrYz9oOJx87/quu2ALUzj76+egHMVyGnHRDa9kGK5kB4aHq4tzKgYiFID6Q3W
-	9Qk6NfZb9duRpb
-X-Google-Smtp-Source: AGHT+IE0LQAIsZCu6j5Qdn8HCSh5MlQ2d0egKfnqGzGTZXmf5cDOmsKO8hmb5ZyKOB5MJuaSc4fszg==
-X-Received: by 2002:a05:6a20:42a3:b0:32a:91c6:e085 with SMTP id adf61e73a8af0-334a8504812mr17300178637.11.1760999906692;
-        Mon, 20 Oct 2025 15:38:26 -0700 (PDT)
+        bh=0WZlH2DqYFCiXY7ctfKICcS4Udl66TWHE3E0JHv0JUQ=;
+        b=mJlnCjmX9bI4izhtT7KJ4dX1uU22E/dcxb37QbFdB1Mx9H9u4EhsIiMRI3+ac6MBPl
+         GTaMExe7GgRF6UrU5yhb+ZStAvv+bVjVUf/MIs5xs/NVuwJYFVcepYH9OJILjelWuWl/
+         5kTkldFqR5zj3w+aOlWLEtJbAnIwWzb0n9gs3vkl2s5t0a2KAkn+l00IgoX5gEb6kRlr
+         U7x5WFaGFKa6rEkCn4c4/LwqbAlufgMXac0fPwRcLwh5ico63QJY9e+0mnsMV+nigZ2v
+         Wniwcd7Al6euUqVwWjDqVMu55W4L9QaxUB0zpnvU+7Z9DnSAF9fpLPTlQGnTuZib9jMy
+         p+NA==
+X-Forwarded-Encrypted: i=1; AJvYcCU6Ye3WWZ/0bAVQ/7uARzW10w8lPqBPUkgz7mY1+wKAPYqA701Rmo2FTxdFKI3g8A9KByOXxQc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyS/VYPbZpJ4MOCfZau7psDjsXLsL1zxQKsD5QwSLl03866NwSi
+	587iQaysRH37ULiZnIfm2CYWka4cdUCOjXvZveLAssrmSz8TG+p7v/4rgFSGBZS1wpCa
+X-Gm-Gg: ASbGncuJfc+jONIv4bqM5RREPTAae0lolakzs8bV8zRp2pFELMcnc6pl57ADtNu3TcK
+	VWbYALy/zXvYqb5+8kbxtIyaiY9xdZNGziMJT9+NP2+8fi7w/LhZhKlxH5ZbpcwoKZl8YTy3EpA
+	dB+J8xIhJrGCu55TUUvpvGVFrjiNjWb0zo6Uc7nQlx5svOiSIPd6UL4G69NJOdE4dUeVY/j4Mm0
+	Q4wiA8hie/lyVJ7rSL36dLkGh6ZNWbogpwPYpoBaX7QnrkrZKRbtrXzmYW/5cphIwBtjH/D7a/U
+	TxebG/XP1bbM56UuwTv/uGxAQvn+Tp4nx7rvosxfG+3JFv0qK7ZCGwtI/PC0lidB2wGEoSXF+AU
+	JjZ9H0v2l4C12+wE6/Y7/NOkXYHZAmkCTcNj1s8ZRjrSVn4tXk1O6r5lHQ769W7KJIrD8abyQhc
+	A7Ng==
+X-Google-Smtp-Source: AGHT+IHUEOc3xfI2tI8heWEXh/h72XqkqsVQcuo2Bv6d3BRyZGZMOF0s+ZVb8CgacF2pj4JNoea9QA==
+X-Received: by 2002:a17:902:c947:b0:24e:e5c9:ecfd with SMTP id d9443c01a7336-290cbb49e26mr225774035ad.42.1761000149306;
+        Mon, 20 Oct 2025 15:42:29 -0700 (PDT)
 Received: from sultan-box ([79.127.217.57])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b349b2sm8861349a12.23.2025.10.20.15.38.25
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33d5de3295dsm9095139a91.15.2025.10.20.15.42.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 15:38:26 -0700 (PDT)
-Date: Mon, 20 Oct 2025 15:38:23 -0700
+        Mon, 20 Oct 2025 15:42:28 -0700 (PDT)
+Date: Mon, 20 Oct 2025 15:42:26 -0700
 From: Sultan Alsawaf <sultan@kerneltoast.com>
 To: Mario Limonciello <mario.limonciello@amd.com>
 Cc: amd-gfx@lists.freedesktop.org, stable@vger.kernel.org
 Subject: Re: [PATCH] drm/amd: Add missing return for VPE idle handler
-Message-ID: <aPa539qN_yjj8_a5@sultan-box>
+Message-ID: <aPa60qtBV5iCiY2I@sultan-box>
 References: <20251020223434.5977-1-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -99,7 +99,30 @@ On Mon, Oct 20, 2025 at 05:34:34PM -0500, Mario Limonciello wrote:
 > Cc: stable@vger.kernel.org
 > Reported-by: Sultan Alsawaf <sultan@kerneltoast.com>
 > Closes: https://lore.kernel.org/amd-gfx/aPawCXBY9eM8oZvG@sultan-box/
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-Reviewed-by: Sultan Alsawaf <sultan@kerneltoast.com>
+I just noticed that this link doesn't work; it seems like that email of mine
+didn't make it onto the amd-gfx list?
+
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
+> index f4932339d79d..aa78c2ee9e21 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
+> @@ -356,6 +356,7 @@ static void vpe_idle_work_handler(struct work_struct *work)
+>  		goto reschedule;
+>  
+>  	amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VPE, AMD_PG_STATE_GATE);
+> +	return;
+>  
+>  reschedule:
+>  	schedule_delayed_work(&adev->vpe.idle_work, VPE_IDLE_TIMEOUT);
+> -- 
+> 2.49.0
+> 
+
+Sultan
 
