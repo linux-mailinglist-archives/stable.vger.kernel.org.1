@@ -1,88 +1,110 @@
-Return-Path: <stable+bounces-188262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1E7BF3C89
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 23:48:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE99EBF3C95
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 23:50:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC01218A6C89
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 21:49:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D43C3A9A43
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 21:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B042ECEAE;
-	Mon, 20 Oct 2025 21:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6199F2ECD37;
+	Mon, 20 Oct 2025 21:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="iHSwimkG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VaiAjI7z"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1882C3745;
-	Mon, 20 Oct 2025 21:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC542C3745
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 21:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760996926; cv=none; b=N0LeCINe6vpNSNAWPuvRFsmXDC/LYbRXslfOcee0WGeRzClEzz8/15xEiSnYbj//p+F/I7WQ/PG2XlAr/scWWUWdMwlkgisnUFJtFjrQaL6zqtVlGiVmxXKh/SNZfGzq78tT2UDz5wY1zZSVmJq9S7bStz14li/r2zzkijBedOI=
+	t=1760997017; cv=none; b=h5yj+GM4Jvc8uy68anXith3O1MD7vRau0RHu1xZvMG9TR/7l7EDfrlvbMbUfTEePrmh7anwHm84hLWCxp5RQBWw0oA1EdMVzGKzr0YkRCA2BQOQ3khNqSu8re5vY+H3Qx1Lm8tnB3ISfymcKlnxg5hxfu9bNlc0Lrq8XrGhN1fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760996926; c=relaxed/simple;
-	bh=PU8xqrPL32OwU9RzN8BAAKYLRXi9k7fryulkxnuUfo8=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=THgpuR5zyOO3DfoordYSkDwoF0gEKR50tnieusC07QLl5DYGFXVApeQt36uNaW24GWcbo91G9crNd2QLIbPxGxSldZKCDN9eietH8YmvyA2UKP4M9dFFZfo6EjFQCt4fJUMcu/au2we4QOVq4GFYsIsPS8dYozXRUZ/Semoh9HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=iHSwimkG; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4cr8FH49Drz9skk;
-	Mon, 20 Oct 2025 23:48:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
-	t=1760996915;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=DO+lqegYdHRq0Vs0fvqr06SqaYi7NrVimVmbeBoYBZ4=;
-	b=iHSwimkG8Cg6LDHMfAQCuITLd776z1s7MSVHnClgP9mBZgwRhFthfhSwQn1a/hOcepPlF5
-	FalSH9P3lLckA39HbeKf5kmB9LI20qiDK6sloRKbtjh5fB1LwmUt+Oo5j+fS5uqmmkKwcD
-	K7QZGPEg1TQVjr3ld52YuowK9FPEmbHRS6Juu0oZVRG80Z3Ec/+w4KdzFsz8v5pIMfL9u/
-	4P1UuylTAHXoddo9K1H7xdV7Gn44PHz3Sv8uL626nEgbejW+4rDmZRDdDzMSc5tVP3lG53
-	Ld4vmQVZATwDfufOX0Orzd4qWnB08lgtXin7F20paU4WoR/SPERa68azU/4kaQ==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of hauke@hauke-m.de designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=hauke@hauke-m.de
-Message-ID: <172c928c-8f55-410b-a5f9-1e13c57e7908@hauke-m.de>
-Date: Mon, 20 Oct 2025 23:48:32 +0200
+	s=arc-20240116; t=1760997017; c=relaxed/simple;
+	bh=SkGFJsykX59h6O2bOvS6jgyvSc6Hz8TWacHvQLYYnVo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=T0w2bP7CqpnZ6nL6bXtNxoFwsdzD45sbtqjYyXB7XAKkRzHd5VBvVU1cn56sn7HFGBKUbSqgxmPJHNUwODirrAnSWM0gjC0vbbkguhwB2zWa/6HMbcWMbUueKpZ2D9CVH+GdXRlcbRHg2ZRPb9Q93NG+ckMuZ9+mlRh2nUQl7HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VaiAjI7z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6E2C4CEFB;
+	Mon, 20 Oct 2025 21:50:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760997016;
+	bh=SkGFJsykX59h6O2bOvS6jgyvSc6Hz8TWacHvQLYYnVo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VaiAjI7zob/Uqh0B/r9tgSYxvlaacz/awU9D84bK1H5Xk5zq5SyGJAgBbbR0IM0Vq
+	 516NNbfwxEwY/CmcWoWpKFvpwnVXTenmSWo053H2yoXtZopqkaJRcybCJQ8oN6K8nV
+	 eazG75wvxUByLLrM8oHDa7M2yXc9W+0DCtAN4UlA5oTLwygIY/IoYdsCxoIo6yjOs+
+	 vDLHKU5JfO7SMfixt9C6Kwg8Rh4qpDsM+/8n0qBUGsrxtHJDs0xSNmPX03VLOlI0o0
+	 eYCEJO3VD9kBgURfrn2kl2X6hc3ot0dsLc8M47XRi2L+LQA4LNq4tyOcahjQH1MOSj
+	 oPZGQMIu7Nlfw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Chuck Lever <chuck.lever@oracle.com>,
+	Robert Morris <rtm@csail.mit.edu>,
+	Thomas Haynes <loghyr@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] NFSD: Define a proc_layoutcommit for the FlexFiles layout type
+Date: Mon, 20 Oct 2025 17:50:14 -0400
+Message-ID: <20251020215014.1927401-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025102007-unashamed-manmade-2cbd@gregkh>
+References: <2025102007-unashamed-manmade-2cbd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Namjae Jeon <linkinjeon@kernel.org>, Steve French <stfrench@microsoft.com>
-Cc: stable@vger.kernel.org, linux-cifs@vger.kernel.org
-From: Hauke Mehrtens <hauke@hauke-m.de>
-Subject: ksmbd: add max ip connections parameter: backport problem 6.6
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4cr8FH49Drz9skk
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Chuck Lever <chuck.lever@oracle.com>
 
-I think the backport of "ksmbd: add max ip connections parameter" to 
-kernel 6.6 breaks the ksmbd ABI.
+[ Upstream commit 4b47a8601b71ad98833b447d465592d847b4dc77 ]
 
-See here:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.6.y&id=bc718d0bd87e372f7786c0239e340f3577ac94fa
+Avoid a crash if a pNFS client should happen to send a LAYOUTCOMMIT
+operation on a FlexFiles layout.
 
-The "struct ksmbd_startup_request" is part of the ABI.
-The user space tool expects there the additional attribute:
-	__s8	bind_interfaces_only;
-See: 
-https://github.com/cifsd-team/ksmbd-tools/commit/3b7d4b4c02ddeb81ed3e68b623ac1b62bfe57a43
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Closes: https://lore.kernel.org/linux-nfs/152f99b2-ba35-4dec-93a9-4690e625dccd@oracle.com/T/#t
+Cc: Thomas Haynes <loghyr@hammerspace.com>
+Cc: stable@vger.kernel.org
+Fixes: 9b9960a0ca47 ("nfsd: Add a super simple flex file server")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ removed struct svc_rqst parameter from nfsd4_ff_proc_layoutcommit ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/nfsd/flexfilelayout.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Which was added in b2d99376c5d6 "ksmbd: browse interfaces list on 
-FSCTL_QUERY_INTERFACE_INFO IOCTL".
+diff --git a/fs/nfsd/flexfilelayout.c b/fs/nfsd/flexfilelayout.c
+index 3ca5304440ff0..0bc52e6bec394 100644
+--- a/fs/nfsd/flexfilelayout.c
++++ b/fs/nfsd/flexfilelayout.c
+@@ -125,6 +125,13 @@ nfsd4_ff_proc_getdeviceinfo(struct super_block *sb, struct svc_rqst *rqstp,
+ 	return 0;
+ }
+ 
++static __be32
++nfsd4_ff_proc_layoutcommit(struct inode *inode,
++		struct nfsd4_layoutcommit *lcp)
++{
++	return nfs_ok;
++}
++
+ const struct nfsd4_layout_ops ff_layout_ops = {
+ 	.notify_types		=
+ 			NOTIFY_DEVICEID4_DELETE | NOTIFY_DEVICEID4_CHANGE,
+@@ -133,4 +140,5 @@ const struct nfsd4_layout_ops ff_layout_ops = {
+ 	.encode_getdeviceinfo	= nfsd4_ff_encode_getdeviceinfo,
+ 	.proc_layoutget		= nfsd4_ff_proc_layoutget,
+ 	.encode_layoutget	= nfsd4_ff_encode_layoutget,
++	.proc_layoutcommit	= nfsd4_ff_proc_layoutcommit,
+ };
+-- 
+2.51.0
 
-Hauke
 
