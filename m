@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-187967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7283FBEFD51
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:11:38 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AAC2BEFD44
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:10:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D55523E6A44
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:10:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EE09E4EB762
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C652E9EA7;
-	Mon, 20 Oct 2025 08:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A1C2DFA29;
+	Mon, 20 Oct 2025 08:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeVvLNc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAQk6E2n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8F52E9756
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD9D2BE639
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760947812; cv=none; b=eOhLYjF8a/nt5CmzteMVfwVle1tYF+U90jZMvbvGPFWtkJNMKRf5NxF0YCrrchFF/7sNobHI7oSfGCPQQWobJifX0qMC+338DMpGRnMeKksUGoaTBXJLIn8e2UUUeAPHeFgSVANhspe5v1zHXAvlOJxII6iR/bioZAi/Ej58RUM=
+	t=1760947843; cv=none; b=tAh2zgVDfe1Ahbf5COTXdFVWUKqlRextjKUSBZ4sdYVJUX6KEdMStN8BW7SjW/dJ8nstrITnSGg6sFItFqdNyXyRQ6RICcLHu1cIo3+LRcS+3l791E18hlwSieH47+BMHfl4x8zFT8+LgLviSEI7pBjPoS3WmkniJgPTRmiAq6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760947812; c=relaxed/simple;
-	bh=o73le0Tdcb3iN3MSK6KeIhW1Wf+x6W1FvE+XPzKGR00=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EmIG4lZdycuqSCmJ1BaDUz+LdoLC8wVvzrsdOVretaULZiNRTAsazDpIOt+cz8QGmFeE3XYU4BMM9uUxbwSFufn1AZ6R6SAaH8ffBsEXQe9rNgCz+zkp9RuEl+mhJyxPjKp5kgUCXhzDomUerT3SOjvryO4rV3LhwTYWmTC+Ke4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeVvLNc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F6DC4CEF9;
-	Mon, 20 Oct 2025 08:10:11 +0000 (UTC)
+	s=arc-20240116; t=1760947843; c=relaxed/simple;
+	bh=hedUl11LhdJPxdJYTasDSpiEQPsnUJCFY16uOxNasWE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Xj238Am+HV6nMguB2q2aeB6ychtuS4hSOlpZZLtNMlLuWvO8MH+Oe/MG32lgzoHAnDdjCaFwd66W465MuQ6DSo3y0Dbzel+CQhuCT2Lt6jY8Q048dv/g7fyN+2XV1NmoK3QAHDTevAxlZlJtYj8iW80+xoIze375FbEiDuvmji8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAQk6E2n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A06C4CEF9;
+	Mon, 20 Oct 2025 08:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760947812;
-	bh=o73le0Tdcb3iN3MSK6KeIhW1Wf+x6W1FvE+XPzKGR00=;
+	s=korg; t=1760947843;
+	bh=hedUl11LhdJPxdJYTasDSpiEQPsnUJCFY16uOxNasWE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TeVvLNc3LZT+QLohvhxHhK4LWQ0aXq0EphuOXySHNFHq5sDlsD50ChQlotLOmbjhN
-	 dVdT7IlOYlKhtE67Wh4ztD1TV6hgpHKzI4TVVdQiPeciFZsKEzOZvMCMC3URJFo8K9
-	 2zxd9zmXAcJU6C19QeOjOvgaf0TuJt5Gc6LcpJ6s=
-Subject: FAILED: patch "[PATCH] ext4: detect invalid INLINE_DATA + EXTENTS flag combination" failed to apply to 5.4-stable tree
-To: kartikey406@gmail.com,tytso@mit.edu,yi.zhang@huawei.com
+	b=qAQk6E2nVL41MO6P3aDJo+8r2A5L1MeVN4RMoR2hf//qDrteCf1HkR2y3XodQcWTm
+	 /b+9EePQr+JbPEPnAP7iDApKA4rfREmhNfZjC94YuAoVnF1FJYEWxDWMStFTgnxriL
+	 gGekUCo9VKCZvn39qzs6tRHYjcBwH+5agz0moA9I=
+Subject: FAILED: patch "[PATCH] arm64: debug: always unmask interrupts in el0_softstp()" failed to apply to 6.17-stable tree
+To: ada.coupriediaz@arm.com,catalin.marinas@arm.com,mark.rutland@arm.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Oct 2025 10:10:09 +0200
-Message-ID: <2025102009-dares-negligent-77e3@gregkh>
+Date: Mon, 20 Oct 2025 10:10:40 +0200
+Message-ID: <2025102040-gopher-dipping-a96a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1d3ad183943b38eec2acf72a0ae98e635dc8456b
+git cherry-pick -x ea0d55ae4b3207c33691a73da3443b1fd379f1d2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102009-dares-negligent-77e3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102040-gopher-dipping-a96a@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,62 +77,66 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1d3ad183943b38eec2acf72a0ae98e635dc8456b Mon Sep 17 00:00:00 2001
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Tue, 30 Sep 2025 16:58:10 +0530
-Subject: [PATCH] ext4: detect invalid INLINE_DATA + EXTENTS flag combination
+From ea0d55ae4b3207c33691a73da3443b1fd379f1d2 Mon Sep 17 00:00:00 2001
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Date: Tue, 14 Oct 2025 10:25:36 +0100
+Subject: [PATCH] arm64: debug: always unmask interrupts in el0_softstp()
 
-syzbot reported a BUG_ON in ext4_es_cache_extent() when opening a verity
-file on a corrupted ext4 filesystem mounted without a journal.
+We intend that EL0 exception handlers unmask all DAIF exceptions
+before calling exit_to_user_mode().
 
-The issue is that the filesystem has an inode with both the INLINE_DATA
-and EXTENTS flags set:
+When completing single-step of a suspended breakpoint, we do not call
+local_daif_restore(DAIF_PROCCTX) before calling exit_to_user_mode(),
+leaving all DAIF exceptions masked.
 
-    EXT4-fs error (device loop0): ext4_cache_extents:545: inode #15:
-    comm syz.0.17: corrupted extent tree: lblk 0 < prev 66
+When pseudo-NMIs are not in use this is benign.
 
-Investigation revealed that the inode has both flags set:
-    DEBUG: inode 15 - flag=1, i_inline_off=164, has_inline=1, extents_flag=1
+When pseudo-NMIs are in use, this is unsound. At this point interrupts
+are masked by both DAIF.IF and PMR_EL1, and subsequent irq flag
+manipulation may not work correctly. For example, a subsequent
+local_irq_enable() within exit_to_user_mode_loop() will only unmask
+interrupts via PMR_EL1 (leaving those masked via DAIF.IF), and
+anything depending on interrupts being unmasked (e.g. delivery of
+signals) will not work correctly.
 
-This is an invalid combination since an inode should have either:
-- INLINE_DATA: data stored directly in the inode
-- EXTENTS: data stored in extent-mapped blocks
+This was detected by CONFIG_ARM64_DEBUG_PRIORITY_MASKING.
 
-Having both flags causes ext4_has_inline_data() to return true, skipping
-extent tree validation in __ext4_iget(). The unvalidated out-of-order
-extents then trigger a BUG_ON in ext4_es_cache_extent() due to integer
-underflow when calculating hole sizes.
+Move the call to `try_step_suspended_breakpoints()` outside of the check
+so that interrupts can be unmasked even if we don't call the step handler.
 
-Fix this by detecting this invalid flag combination early in ext4_iget()
-and rejecting the corrupted inode.
+Fixes: 0ac7584c08ce ("arm64: debug: split single stepping exception entry")
+Cc: <stable@vger.kernel.org> # 6.17
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+[catalin.marinas@arm.com: added Mark's rewritten commit log and some whitespace]
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 
-Cc: stable@kernel.org
-Reported-and-tested-by: syzbot+038b7bf43423e132b308@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=038b7bf43423e132b308
-Suggested-by: Zhang Yi <yi.zhang@huawei.com>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Message-ID: <20250930112810.315095-1-kartikey406@gmail.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index f9e4ac87211e..e99306a8f47c 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5319,6 +5319,14 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 	}
- 	ei->i_flags = le32_to_cpu(raw_inode->i_flags);
- 	ext4_set_inode_flags(inode, true);
-+	/* Detect invalid flag combination - can't have both inline data and extents */
-+	if (ext4_test_inode_flag(inode, EXT4_INODE_INLINE_DATA) &&
-+	    ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
-+		ext4_error_inode(inode, function, line, 0,
-+			"inode has both inline data and extents flags");
-+		ret = -EFSCORRUPTED;
-+		goto bad_inode;
-+	}
- 	inode->i_blocks = ext4_inode_blocks(raw_inode, ei);
- 	ei->i_file_acl = le32_to_cpu(raw_inode->i_file_acl_lo);
- 	if (ext4_has_feature_64bit(sb))
+diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
+index f546a914f041..a9c81715ce59 100644
+--- a/arch/arm64/kernel/entry-common.c
++++ b/arch/arm64/kernel/entry-common.c
+@@ -697,6 +697,8 @@ static void noinstr el0_breakpt(struct pt_regs *regs, unsigned long esr)
+ 
+ static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
+ {
++	bool step_done;
++
+ 	if (!is_ttbr0_addr(regs->pc))
+ 		arm64_apply_bp_hardening();
+ 
+@@ -707,10 +709,10 @@ static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
+ 	 * If we are stepping a suspended breakpoint there's nothing more to do:
+ 	 * the single-step is complete.
+ 	 */
+-	if (!try_step_suspended_breakpoints(regs)) {
+-		local_daif_restore(DAIF_PROCCTX);
++	step_done = try_step_suspended_breakpoints(regs);
++	local_daif_restore(DAIF_PROCCTX);
++	if (!step_done)
+ 		do_el0_softstep(esr, regs);
+-	}
+ 	arm64_exit_to_user_mode(regs);
+ }
+ 
 
 
