@@ -1,145 +1,266 @@
-Return-Path: <stable+bounces-187993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90811BEFF4C
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:31:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 576EFBEFFBB
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A16614EFC6C
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:31:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B74E6188FE56
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341082E9EB2;
-	Mon, 20 Oct 2025 08:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F642EC572;
+	Mon, 20 Oct 2025 08:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b="Hz510bjN"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VhZ4QVn9"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D67754763;
-	Mon, 20 Oct 2025 08:31:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760949078; cv=pass; b=JPRsB6lX+Ty1/Fd5PAOQynw5dyRwOy2Al55ZQryZJ3sDPy70ap4PEoucE3bhnz+PN1PFTjH5eB96YuZuKXslkBBdJB+T2Bclby8LoahonlMHTotTu2e29Rp/80QpAQg7Nx37dMSqKTxKVDozOiSTuKkraA3eN3C9a2tfAo08H6M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760949078; c=relaxed/simple;
-	bh=GxDW6HUYxD1XUJYrmVdYCf0aaVS7E0xLMcKwUuyGJy0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oxAdGVnfb9AzqEgk49Vrnv6tkE8HP5CQI1Bbtwg/uJxyIixy5Pg5Xqk1/FxogNRND6UuUIbEkIz2vZeXb/miZKdGFS9INDsWYp8iE447DfotO4+sqXS3W3rpnc0iQeHa8Unho6zvj4Ip0pKtwZaFNoEatqcVk0N08VEpD8ZilWU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b=Hz510bjN; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1760949065; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=fuGrOvO5gEcKfcaA5DfZD5Td/6duZ3meJlYvUUXHuNfZKtTAwGDtB+TclWhyfkzwT4l+P2tbuB9Kq1VNxJKE9gR8lTpt4qHIPikrC/XrkgU1tcaA8TX6DSoR6fGwH8lavbzavY4jSArjD0WJnzavv4K4vOrnHYFTC3r6QfW65Ek=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1760949065; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=i2q52bXAKqn7gOfHhudM0m7RKKiSLxsHofXnBnnwlZU=; 
-	b=KC2+fpAA6gHyMSH2GNoleqoGqhL4o+OBU/vqP83vsGm5ubPjm1q87zkXiDqWjMUMDPdPd00ZmYDa5TkDIhAkE0CBw2cSe4IQQc1AVTiRhc1mf2fVK44azU758p4uXkLxfzZhgNKjvUTOmcs8iwYTiwheZWg9OsDeJx/rt9ItZ7k=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=benjamin.gaignard@collabora.com;
-	dmarc=pass header.from=<benjamin.gaignard@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760949064;
-	s=zohomail; d=collabora.com; i=benjamin.gaignard@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=i2q52bXAKqn7gOfHhudM0m7RKKiSLxsHofXnBnnwlZU=;
-	b=Hz510bjNICHwjJ9c9WlvE/kJMH/Vcs2NB9XaFCoLdwYtqJv8TvSBJrvIKPIaHGFo
-	LLAU4P7dHA0HWaAuzhwCsF6HbOHPiTlr5xuqhs7uuvhZOZ411VAGmLxQ2ifF6ileenm
-	o0oPb/tY08JYjFPheFXr8xI4tDzLbzvm/LUOQALo=
-Received: by mx.zohomail.com with SMTPS id 1760949062626473.4112073699241;
-	Mon, 20 Oct 2025 01:31:02 -0700 (PDT)
-Message-ID: <258b9036-697d-48b2-91d6-5fb8ea2f1350@collabora.com>
-Date: Mon, 20 Oct 2025 10:30:59 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DBA2EC08D
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:35:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760949353; cv=none; b=Kls+upS/Ql/v+zW8OLKw6M1WFPZVY4pHM+jPknNWuNHMhFf9xRQZTX1NRo0fGLrzsYVj3CNOBhdrP/AoT6TA7PHlTHXFxJoR4JYWu77B6gIulFV/cuuxoUyPlWEIOg2zE9QqNj5Pq4iXv2yWQOaR2UO+kK4z1+scUf0UG8uOmsA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760949353; c=relaxed/simple;
+	bh=KXiu+5v4UcoRocSgo+bMn+59MlVJLOAB9GTC3B2T+wY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UlaxyqV+oA+Y4xg7MLpocoX+aRJQBNKidIx4vkBd8Y0LUmfkr1qf7ISwmQN+EhSA5oOeUssc2l9zlLVaX/c+998wy/CvKjKWnAzIxPUODI5udyo8xx5sIFcULP6+fd5b/Vs+Ln2BicIncjAhkJ3/0MTDeKFlHwZATS8mt94XN+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VhZ4QVn9; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b5a631b9c82so2646635a12.1
+        for <stable@vger.kernel.org>; Mon, 20 Oct 2025 01:35:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1760949351; x=1761554151; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FX9Zww9O3Jk2h6ADYPcVlunSkVS2QEMfHLussiu3vPU=;
+        b=VhZ4QVn9FuXOpsBid61MR2wZ3i/1wMUrh8tKuiZXWRjxt2k+c/4cULgmcDCXwBlFqM
+         axAct7Uv50PtPhQJg+QTonfKT4+0wM/7u8J71qG6+eoHeh08M1taBuq8Mzc2YnGYpeT2
+         /jyQoxXLzK5yN9+vRPiaKGtncGlNn1iIks1Ce4DB/T7qNFIjVmXObxOo86oV6th4Apaq
+         z13sXlYy97PF58KmnEPvcmaxsVXC6LGMYMInukvLs0iWCF4ZsMW/GfHmRXfDXoNSGQsY
+         cFGdEn6qxSzuLuuvHKDnQJ6ReyhAmmFDhHkHdyp5P2eK3/9+zUrJruzGr7URhoKwig9R
+         C+XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760949351; x=1761554151;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FX9Zww9O3Jk2h6ADYPcVlunSkVS2QEMfHLussiu3vPU=;
+        b=bN2gZh/EKsZk9fpWEm/pg+L16NJ50wcpKvYZHY1dA2g6yZ3RVD6qfp2DxhYykgP3Kv
+         AIBwVtWsl7w4TUR6TiZkzCxEKc+hnQ9m3g5GdXGvQwFgqccSP7Mt93fAkePWX4He/oW8
+         YVeQKgTz5tS5uc5mA5i6/Ldk4yTDNJQN6PYSnSXanrj37g0c9VkLQeq46F2q+cNsbQub
+         6z2naDvX32J4Bnies7AQSPDlDCJZt1k6JeCBzAV74YZHrpIfZdzZq2/oAjU+YYZSFi/8
+         cP+3qg9YL7H2Ox7FhR4KuMtq8ad7I35WDqfFLYPvrBeuatFmDl4GDGAA0wgEPpN8tect
+         FPFA==
+X-Gm-Message-State: AOJu0YzcNo6kuB1XYZdQ9BwzZI22Owgr57wiNLROBSv7pFTRge4IvEHV
+	rWyR2prqp3OZIv6WjMvzUtx1G9k2qTa2KYWWbcicbGMj+ltmPTFYPkbuEpMDU5SjOGdSN9ycLTB
+	TvqI3owJ3LDrG7JiYfFpLMNn8LmKcam3CO6N+yxQmHg==
+X-Gm-Gg: ASbGncvl7of+gmwTSSW+JItMkaOIhagvGLcCuMYQ1aDF6XNhOnMKaE5xgWXOVMC8SnZ
+	vCREJEWgOjSAJvoevcd7bcg6c4lT6sJJMs94GH7EaowkHOKrjqALc8qXezpq1ZJXGjiQgcmIfWF
+	s8oRKENxSJy6n/zx/R/gcu33onN5A9QV+KfJ+6VR2zw766zbHPB4sTr+Sh7JH29aJNlvxbgo4Jy
+	hSYVH49Om6LxtjWBWin7jR4SXzN6Dsp9TZf0R147PhCMal2PtrO/awftkZQhDTqPGGixrWo4NI2
+	PkoT09lHUvmQLJiX8/O/7sQLS76JeZq/EQNuBu7LeUEXu3lNDWKTP3duwCoo
+X-Google-Smtp-Source: AGHT+IFU6oqLPRomRy1wMoIHTNVRaMz6K0vF41c8RKflT+lxT7vnWZwSA1KlnTClNRdxk+a5OsNTaoZrTRoLJTs8c1o=
+X-Received: by 2002:a17:903:1a0e:b0:290:91d2:9315 with SMTP id
+ d9443c01a7336-290cb27ec56mr149901045ad.42.1760949351069; Mon, 20 Oct 2025
+ 01:35:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: videobuf2: forbid create_bufs/remove_bufs when
- legacy fileio is active
-To: Marek Szyprowski <m.szyprowski@samsung.com>,
- Hans Verkuil <hverkuil+cisco@kernel.org>, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Tomasz Figa <tfiga@chromium.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
- Hans Verkuil <hverkuil@kernel.org>, stable@vger.kernel.org
-References: <CGME20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d@eucas1p2.samsung.com>
- <20251016111154.993949-1-m.szyprowski@samsung.com>
- <36cfec0a-3717-4b0e-adc0-6887e6b58f44@collabora.com>
- <84133573-986d-4cc8-8147-246f0da34640@samsung.com>
- <1f2748a5-1955-48dd-93e4-69e032d895e0@kernel.org>
- <21707335-a45d-4f87-9490-ac2828a5d9e3@collabora.com>
- <642c2102-8d0f-4883-ab02-dd1da66a7a94@samsung.com>
-Content-Language: en-US
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-In-Reply-To: <642c2102-8d0f-4883-ab02-dd1da66a7a94@samsung.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20251017145201.780251198@linuxfoundation.org>
+In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 20 Oct 2025 14:05:38 +0530
+X-Gm-Features: AS18NWDNViaBt7FwHRCuMSW7fzYxCXS7p9GLBdmfGDKx8T04yDIJQhzU5po7OCg
+Message-ID: <CA+G9fYt4j3TvEtk_LsSUJojecZ2sk13Q_fXGi-ew_zNnii+RgQ@mail.gmail.com>
+Subject: Re: [PATCH 6.17 000/371] 6.17.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
 
-
-Le 20/10/2025 à 10:21, Marek Szyprowski a écrit :
-> On 20.10.2025 09:48, Benjamin Gaignard wrote:
->> Le 20/10/2025 à 09:39, Hans Verkuil a écrit :
->>> On 20/10/2025 09:34, Marek Szyprowski wrote:
->>>> On 20.10.2025 09:11, Benjamin Gaignard wrote:
->>>>> Le 16/10/2025 à 13:11, Marek Szyprowski a écrit :
->>>>>> create_bufs and remove_bufs ioctl calls manipulate queue internal
->>>>>> buffer
->>>>>> list, potentially overwriting some pointers used by the legacy fileio
->>>>>> access mode. Simply forbid those calls when fileio is active to
->>>>>> protect
->>>>>> internal queue state between subsequent read/write calls.
->>>>> Hi Marek,
->>>>>
->>>>> I may be wrong but using fileio API and create/remove API at the same
->>>>> time
->>>>> sound incorrect from application point of view, right ? If that not
->>>>> the
->>>>> case maybe we should also add a test in v4l2-compliance.
->>>> Definitely that's incorrect and v4l2-core must forbid such calls. The
->>>> standard reqbufs/qbuf/dqbuf API is also forbidden. Extending
->>>> v4l2-compliance tools is probably a good idea.
->>> Yes, please! A patch is welcome.
->>>
->>>    I also wonder if its a
->>>> good time to add a kernel option to completely disable legacy fileio
->>>> access mode, as it is not really needed for most of the systems
->>>> nowadays.
->>> No, that will break applications. Using read() is very common (and
->>> convenient!)
->>> for MPEG encoders such as the cx18 driver.
->>>
->>> The fileio code is not blocking any new development, it's just there
->>> for those
->>> drivers were it makes sense.
->>>
->>> Regards,
->>>
->>>      Hans
->> I wonder if this patch in useful because when calling
->> vb2_ioctl_create_bufs()
->> it already check in vb2_verify_memory_type() if fileio is used or not.
-> Frankly speaking the original report I got was about mixing fileio with
-> vb2_ioctl_remove_bufs and that case is indeed not protected.
+On Fri, 17 Oct 2025 at 20:58, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> While analyzing that I've inspected a symmetrical ioctl
-> (vb2_ioctl_create_bufs), but it looks I've I missed that a check is in
-> vb2_verify_memory_type(). I will remove it in v2 then.
-
-To keep vb2_ioctl_remove_bufs() symmetrical to vb2_ioctl_create_bufs()
-we should do in vb2_ioctl_remove_bufs() something like :
-res = vb2_verify_memory_type(vdev->queue, vdev->queue->memory, d->type);
-instead of vdev->queue->type != d->type.
-
-This way we test fileio too.
-
-
+> This is the start of the stable review cycle for the 6.17.4 release.
+> There are 371 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Best regards
+> Responses should be made by Sun, 19 Oct 2025 14:50:59 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.4-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+
+[ Apologies for the slight delay in sending the reports, due to the
+long weekend here in India.]
+
+As other reported,
+The riscv builds failed with clang-21 and gcc-14 on the stable rc 6.17.4-rc1
+
+Build regressions: 6.17.4-rc1 riscv pgtable.h:963:21: error:
+redefinition of 'pudp_huge_get_and_clear'
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build errors
+In file included from include/linux/pgtable.h:6,
+                 from include/linux/mm.h:31,
+                 from arch/riscv/kernel/asm-offsets.c:8:
+arch/riscv/include/asm/pgtable.h:963:21: error: redefinition of
+'pudp_huge_get_and_clear'
+  963 | static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~
+arch/riscv/include/asm/pgtable.h:946:21: note: previous definition of
+'pudp_huge_get_and_clear' with type 'pud_t(struct mm_struct *, long
+unsigned int,  pud_t *)'
+  946 | static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~
+make[3]: *** [scripts/Makefile.build:182:
+arch/riscv/kernel/asm-offsets.s] Error 1
+
+## Build
+* kernel: 6.17.4-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* git commit: 396c6daa5f57fff4f0c5ab890c6bfe6ca31b3bba
+* git describe: v6.17.3-372-g396c6daa5f57
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.17.y/build/v6.17.3-372-g396c6daa5f57
+
+## Test Regressions (compared to v6.17.2-564-g99cf54e7bd2f)
+* riscv, build
+  - clang-21-lkftconfig
+  - gcc-14-allmodconfig
+  - gcc-14-allyesconfig
+  - gcc-14-lkftconfig
+  - gcc-14-lkftconfig-libgpiod
+
+## Metric Regressions (compared to v6.17.2-564-g99cf54e7bd2f)
+
+## Test Fixes (compared to v6.17.2-564-g99cf54e7bd2f)
+
+## Metric Fixes (compared to v6.17.2-564-g99cf54e7bd2f)
+
+## Test result summary
+total: 123725, pass: 104164, fail: 4205, skip: 15356, xfail: 0
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 139 passed, 0 failed
+* arm64: 57 total, 54 passed, 3 failed
+* i386: 18 total, 18 passed, 0 failed
+* mips: 34 total, 33 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 40 total, 39 passed, 1 failed
+* riscv: 25 total, 19 passed, 6 failed
+* s390: 22 total, 22 passed, 0 failed
+* sh: 5 total, 5 passed, 0 failed
+* sparc: 4 total, 3 passed, 1 failed
+* x86_64: 49 total, 48 passed, 1 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+* rt-tests-cyclicdeadline
+* rt-tests-pi-stress
+* rt-tests-pmqtest
+* rt-tests-rt-migrate-test
+* rt-tests-signaltest
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
