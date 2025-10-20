@@ -1,113 +1,88 @@
-Return-Path: <stable+bounces-188261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96B8BF3ADE
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 23:14:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1E7BF3C89
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 23:48:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B1CE3B3B5A
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 21:11:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC01218A6C89
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 21:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292292E8B81;
-	Mon, 20 Oct 2025 21:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B042ECEAE;
+	Mon, 20 Oct 2025 21:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HaxUn8A9"
+	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="iHSwimkG"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD38278779;
-	Mon, 20 Oct 2025 21:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1882C3745;
+	Mon, 20 Oct 2025 21:48:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760994705; cv=none; b=RHQNBO5gqFn9QrbMILQge2RK6aqkkiFr1nKKk0TO5j21aQtuKeo3CNoCgzHnb3etfDHJoe16nLUNHVOUp4iACdjLXhZi6OcOJETlkiYbSekuCpYFGO4Q3Gh93dIUaXwz+PSdMviNc5YmZtvb9vBvcOcFJhYMWazY1aoaUDq+7J8=
+	t=1760996926; cv=none; b=N0LeCINe6vpNSNAWPuvRFsmXDC/LYbRXslfOcee0WGeRzClEzz8/15xEiSnYbj//p+F/I7WQ/PG2XlAr/scWWUWdMwlkgisnUFJtFjrQaL6zqtVlGiVmxXKh/SNZfGzq78tT2UDz5wY1zZSVmJq9S7bStz14li/r2zzkijBedOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760994705; c=relaxed/simple;
-	bh=O0XWQxNcqr7lrjtTeC0YbuaDEI/QKM9Ag4XHafCsbhk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oz2h3o8ikU7bOCDQGHWjdR3njrIY9fXIvmIR05pZ+I82KSUrNwtsYxnPof/n3Q7JzuWtV8Fux11eeQVmbfAxoGTOskVeRQTYp5xfmBIF6+35lJsipu+qhTsQKQ9Ann1P3oi/ZmS6mwAf2NWlyJjICwR3e1ghUyV4EwzmWp5TgD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HaxUn8A9; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760994704; x=1792530704;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=O0XWQxNcqr7lrjtTeC0YbuaDEI/QKM9Ag4XHafCsbhk=;
-  b=HaxUn8A9PF86JBZ1woF2S3POZfk+h8TEXAmLisUB3mCRZkXG0Jxo0ffg
-   J+Nb0YBjRd/hCUtYfPmvvP4+I+Z4hpb2i359fZwAvr/9mdZXDo/EpEn4A
-   +T23h2s8AquOro4swYN3QCfCxKwh5TTfisg/6Ezf/imV1HPoav7GjwIDy
-   vdVQ0rAEY5mLZdz56OFLa2jkFeKpO0FXOFck/4brTpHRwOn4aeJ5D0gxd
-   sGba6XhvvKuOLEKfRYJ8EmV93nSBUD4VWdvQ5+aNrAdkkoUi/aQnhMxMh
-   wsMgubBTTuaKqKQQX0NCy0fMgx2uaizGESau7jQw8802Tj7WdvxLgi+i5
-   w==;
-X-CSE-ConnectionGUID: 4yW4PwM6S1GoYlknTnOEAw==
-X-CSE-MsgGUID: ixJd+HZ4QAeS1luqk7yBoA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62150472"
-X-IronPort-AV: E=Sophos;i="6.19,243,1754982000"; 
-   d="scan'208";a="62150472"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 14:11:43 -0700
-X-CSE-ConnectionGUID: 79YoqZeXTXWg1dPD2YtHJQ==
-X-CSE-MsgGUID: zLZOAwvWR1qE5ZXHr5NCag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,243,1754982000"; 
-   d="scan'208";a="187688620"
-Received: from vcostago-desk1.jf.intel.com (HELO vcostago-desk1) ([10.88.27.140])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 14:11:43 -0700
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-To: Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: dmaengine@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>, Yi Sun
- <yi.sun@intel.com>, Shuai Xue <xueshuai@linux.alibaba.com>, Dave Jiang
- <dave.jiang@intel.com>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH 6.12] dmaengine: Add missing cleanup on module unload
-In-Reply-To: <20251020170422.2630360-1-linux@roeck-us.net>
-References: <20251020170422.2630360-1-linux@roeck-us.net>
-Date: Mon, 20 Oct 2025 14:11:57 -0700
-Message-ID: <87cy6hl1lu.fsf@intel.com>
+	s=arc-20240116; t=1760996926; c=relaxed/simple;
+	bh=PU8xqrPL32OwU9RzN8BAAKYLRXi9k7fryulkxnuUfo8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=THgpuR5zyOO3DfoordYSkDwoF0gEKR50tnieusC07QLl5DYGFXVApeQt36uNaW24GWcbo91G9crNd2QLIbPxGxSldZKCDN9eietH8YmvyA2UKP4M9dFFZfo6EjFQCt4fJUMcu/au2we4QOVq4GFYsIsPS8dYozXRUZ/Semoh9HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=iHSwimkG; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4cr8FH49Drz9skk;
+	Mon, 20 Oct 2025 23:48:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
+	t=1760996915;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DO+lqegYdHRq0Vs0fvqr06SqaYi7NrVimVmbeBoYBZ4=;
+	b=iHSwimkG8Cg6LDHMfAQCuITLd776z1s7MSVHnClgP9mBZgwRhFthfhSwQn1a/hOcepPlF5
+	FalSH9P3lLckA39HbeKf5kmB9LI20qiDK6sloRKbtjh5fB1LwmUt+Oo5j+fS5uqmmkKwcD
+	K7QZGPEg1TQVjr3ld52YuowK9FPEmbHRS6Juu0oZVRG80Z3Ec/+w4KdzFsz8v5pIMfL9u/
+	4P1UuylTAHXoddo9K1H7xdV7Gn44PHz3Sv8uL626nEgbejW+4rDmZRDdDzMSc5tVP3lG53
+	Ld4vmQVZATwDfufOX0Orzd4qWnB08lgtXin7F20paU4WoR/SPERa68azU/4kaQ==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of hauke@hauke-m.de designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=hauke@hauke-m.de
+Message-ID: <172c928c-8f55-410b-a5f9-1e13c57e7908@hauke-m.de>
+Date: Mon, 20 Oct 2025 23:48:32 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Language: en-US
+To: Namjae Jeon <linkinjeon@kernel.org>, Steve French <stfrench@microsoft.com>
+Cc: stable@vger.kernel.org, linux-cifs@vger.kernel.org
+From: Hauke Mehrtens <hauke@hauke-m.de>
+Subject: ksmbd: add max ip connections parameter: backport problem 6.6
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4cr8FH49Drz9skk
 
-Guenter Roeck <linux@roeck-us.net> writes:
+Hi,
 
-> Upstream commit b7cb9a034305 ("dmaengine: idxd: Fix refcount underflow
-> on module unload") fixes a refcount underflow by replacing the call to
-> idxd_cleanup() in the remove function with direct cleanup calls. That works
-> fine upstream. However, upstream removed support for IOMMU_DEV_FEAT_IOPF,
-> which is still supported in v6.12.y. The backport of commit b7cb9a034305
-> into v6.12.y misses the call to disable it. This results in a warning
-> backtrace when unloading and reloading the module.
->
-> WARNING: CPU: 0 PID: 665849 at drivers/pci/ats.c:337 pci_reset_pri+0x4c/0x60
-> ...
-> RIP: 0010:pci_reset_pri+0xa7/0x130
->
-> Add the missing cleanup call to fix the problem.
->
-> Fixes: ce81905bec91 ("dmaengine: idxd: Fix refcount underflow on module unload")
-> Cc: Yi Sun <yi.sun@intel.com>
-> Cc: Shuai Xue <xueshuai@linux.alibaba.com>
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-> Cc: Vinod Koul <vkoul@kernel.org>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
-> The problem fixed with this patch only affects v6.12.y.
->
+I think the backport of "ksmbd: add max ip connections parameter" to 
+kernel 6.6 breaks the ksmbd ABI.
 
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+See here:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.6.y&id=bc718d0bd87e372f7786c0239e340f3577ac94fa
 
+The "struct ksmbd_startup_request" is part of the ABI.
+The user space tool expects there the additional attribute:
+	__s8	bind_interfaces_only;
+See: 
+https://github.com/cifsd-team/ksmbd-tools/commit/3b7d4b4c02ddeb81ed3e68b623ac1b62bfe57a43
 
-Cheers,
--- 
-Vinicius
+Which was added in b2d99376c5d6 "ksmbd: browse interfaces list on 
+FSCTL_QUERY_INTERFACE_INFO IOCTL".
+
+Hauke
 
