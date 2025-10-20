@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-188182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46608BF25BD
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:18:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0A2BF25F3
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:21:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E580034BD52
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:18:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0AEE4624D5
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809881F875A;
-	Mon, 20 Oct 2025 16:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346BF279798;
+	Mon, 20 Oct 2025 16:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aC4zdm/r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQyqWeAl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409B51A00CE
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E862F1F875A
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760977097; cv=none; b=fCF/zMVIXzyAbFg9Hh6xx9HKs8lWAOlzFrupwnpcOhZ3QSGqaZDAn4hawZitVbOU3FMy4keelsGPBuaGO43ppgpcinCV/FczOgDJnvizPe5YlBY9qOVw0N+VVUqIi04NQC3fUQleeV8rnhJvWuCqwVBZhUJaF2GTMM481QRZoD4=
+	t=1760977185; cv=none; b=HoJ46g2ffVA34s7dInCLieoYycgiP8C7BCK2c1lAxCA/z7Jvw0fYfZMwhC7zSEKpVo38H+DHhKhby4MoWX1HthbecqX82q1R394Q8T4Q1osyx7mLTo+fSKb8gZURST1R8vIliiDsHZI/T5PszZSHaW48491jn5FSe3d8vgOWJUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760977097; c=relaxed/simple;
-	bh=TJNnbl96hMHCZ3DBbkqtOsXSE07wJoEwNreMZCwSJEE=;
+	s=arc-20240116; t=1760977185; c=relaxed/simple;
+	bh=qTTbB5kIrVVchEgwMnPPJ54SgqHLNUUJFf2BBpAkVZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOcEfIx1x73gAyc/4AKbPenciUkzZ0umoWQt/D6csV5h8gMaym9ZXc9sywGxWenfrHYeOAYhrWf8yDhpZTUOOc8JWr7PyOoUAt51fYj9wD27Qzz9h5lE5p/97WA4OSlRPzwnllpCwa0GgBaR74DaeItKIHknl+hqoGey1G8mKY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aC4zdm/r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B219C4CEF9;
-	Mon, 20 Oct 2025 16:18:15 +0000 (UTC)
+	 MIME-Version; b=qtCr/JJQ4FW+VwGdaGWJTo/5BpkNa1OrUCn4QXXmVcKtFXMxvOOxDQtZRBvKXxTd/hms+3NuycGaNT0wNhDgcxeoZhIm4rwYPlpwJICVqOCA2lDE3VKXkOrF+8KJ0aKMSkLYER625F14M41eS2yfxsHEC8DYxzr+mdhggjXA/x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQyqWeAl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDAFEC4CEFE;
+	Mon, 20 Oct 2025 16:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760977095;
-	bh=TJNnbl96hMHCZ3DBbkqtOsXSE07wJoEwNreMZCwSJEE=;
+	s=k20201202; t=1760977184;
+	bh=qTTbB5kIrVVchEgwMnPPJ54SgqHLNUUJFf2BBpAkVZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aC4zdm/r97i8sI7KafxlpQjE5mEWHsXTbl46pobkH6IKkWxQKcrrDx901mSlaxqBi
-	 cYZGT1FXR6DrHXgQ/yySEMP7yQQJ4u5MFoTFMerjlmdOR6cT2juXZRLzo8nlNrB5gv
-	 4VQoDYyoXQ8sW4T7yeTRavGFde+rnVMrPJEtP5uMQUV2jRbOvsvdJ7PDJCDHc0sSoK
-	 mCSiond8MZMrQAPpb+ehovNH1BBXk3m+Gxkv1JGmtPdqbJBpgBOfyu7EM04eC8kGcY
-	 0fFHhZajmXUR2o2uPnPAmVGBXIUBVaP1E5XJkIBPI6XgFOfggIZKz0kgkm+BOlfDlV
-	 MS/wPQm+7e6Mw==
+	b=JQyqWeAlPvmrpOYFspu78sBObMf3u+82ry87HYdbGOQPqcU/Iy9czjg/cuRBMEtwz
+	 q+BWvvnrjKLB2GKX2dHgnr641qyc0PVmaSzYbi8YLaTKIH+uQKcpjJkCTf2RM3Xrei
+	 6CcEGGmR9NX7LyITVxtmfmTtweBnFhvqSkWZ+M6NFbGTIW0smE22bnuz3KV7W9BGxm
+	 ZftT+Kqns1QTEos+/Fgvj5Bf43MYeZMGvCS4fnF2NLRgOim5Wj5x4b2+Z6yVt1K+0J
+	 dnsQwFrwrp4iTx3wuD0kx6QlNkiSxKstCUQrMblFai+FlnYuAS1L/5wxWSA5e9aTih
+	 KI1XrAK5asiWA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Kuen-Han Tsai <khtsai@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] wifi: ath11k: HAL SRNG: don't deinitialize and re-initialize again
-Date: Mon, 20 Oct 2025 12:18:13 -0400
-Message-ID: <20251020161813.1835424-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/3] usb: gadget: Store endpoint pointer in usb_request
+Date: Mon, 20 Oct 2025 12:19:40 -0400
+Message-ID: <20251020161942.1835894-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101626-library-underfoot-da02@gregkh>
-References: <2025101626-library-underfoot-da02@gregkh>
+In-Reply-To: <2025101616-unhappily-flatware-0bd2@gregkh>
+References: <2025101616-unhappily-flatware-0bd2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,89 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 32be3ca4cf78b309dfe7ba52fe2d7cc3c23c5634 ]
+[ Upstream commit bfb1d99d969fe3b892db30848aeebfa19d21f57f ]
 
-Don't deinitialize and reinitialize the HAL helpers. The dma memory is
-deallocated and there is high possibility that we'll not be able to get
-the same memory allocated from dma when there is high memory pressure.
+Gadget function drivers often have goto-based error handling in their
+bind paths, which can be bug-prone. Refactoring these paths to use
+__free() scope-based cleanup is desirable, but currently blocked.
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+The blocker is that usb_ep_free_request(ep, req) requires two
+parameters, while the __free() mechanism can only pass a pointer to the
+request itself.
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org
-Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://patch.msgid.link/20250722053121.1145001-1-usama.anjum@collabora.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Store an endpoint pointer in the struct usb_request. The pointer is
+populated centrally in usb_ep_alloc_request() on every successful
+allocation, making the request object self-contained.
+
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
+Stable-dep-of: 47b2116e54b4 ("usb: gadget: f_acm: Refactor bind path to use __free()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c |  6 +-----
- drivers/net/wireless/ath/ath11k/hal.c  | 16 ++++++++++++++++
- drivers/net/wireless/ath/ath11k/hal.h  |  1 +
- 3 files changed, 18 insertions(+), 5 deletions(-)
+ drivers/usb/gadget/udc/core.c | 3 +++
+ include/linux/usb/gadget.h    | 2 ++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 6282ccad79d5e..67c78ad2243b9 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -710,14 +710,10 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
- 	mutex_unlock(&ab->core_lock);
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index d865c4677ad7c..b59b6900e7051 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -177,6 +177,9 @@ struct usb_request *usb_ep_alloc_request(struct usb_ep *ep,
  
- 	ath11k_dp_free(ab);
--	ath11k_hal_srng_deinit(ab);
-+	ath11k_hal_srng_clear(ab);
+ 	req = ep->ops->alloc_request(ep, gfp_flags);
  
- 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS)) - 1;
- 
--	ret = ath11k_hal_srng_init(ab);
--	if (ret)
--		return ret;
--
- 	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
- 
- 	ret = ath11k_core_qmi_firmware_ready(ab);
-diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index d5921805af636..029827e14a15a 100644
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1317,6 +1317,22 @@ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
- }
- EXPORT_SYMBOL(ath11k_hal_srng_deinit);
- 
-+void ath11k_hal_srng_clear(struct ath11k_base *ab)
-+{
-+	/* No need to memset rdp and wrp memory since each individual
-+	 * segment would get cleared in ath11k_hal_srng_src_hw_init()
-+	 * and ath11k_hal_srng_dst_hw_init().
-+	 */
-+	memset(ab->hal.srng_list, 0,
-+	       sizeof(ab->hal.srng_list));
-+	memset(ab->hal.shadow_reg_addr, 0,
-+	       sizeof(ab->hal.shadow_reg_addr));
-+	ab->hal.avail_blk_resource = 0;
-+	ab->hal.current_blk_index = 0;
-+	ab->hal.num_shadow_reg_configured = 0;
-+}
-+EXPORT_SYMBOL(ath11k_hal_srng_clear);
++	if (req)
++		req->ep = ep;
 +
- void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
- {
- 	struct hal_srng *srng;
-diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
-index 5fbfded8d546c..00ab4f46e429a 100644
---- a/drivers/net/wireless/ath/ath11k/hal.h
-+++ b/drivers/net/wireless/ath/ath11k/hal.h
-@@ -940,6 +940,7 @@ int ath11k_hal_srng_setup(struct ath11k_base *ab, enum hal_ring_type type,
- 			  struct hal_srng_params *params);
- int ath11k_hal_srng_init(struct ath11k_base *ath11k);
- void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
-+void ath11k_hal_srng_clear(struct ath11k_base *ab);
- void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
- void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
- 				       u32 **cfg, u32 *len);
+ 	trace_usb_ep_alloc_request(ep, req, req ? 0 : -ENOMEM);
+ 
+ 	return req;
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index e4feeaa8bab30..35dc1009a703f 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -33,6 +33,7 @@ struct usb_ep;
+ 
+ /**
+  * struct usb_request - describes one i/o request
++ * @ep: The associated endpoint set by usb_ep_alloc_request().
+  * @buf: Buffer used for data.  Always provide this; some controllers
+  *	only use PIO, or don't use DMA for some endpoints.
+  * @dma: DMA address corresponding to 'buf'.  If you don't set this
+@@ -98,6 +99,7 @@ struct usb_ep;
+  */
+ 
+ struct usb_request {
++	struct usb_ep		*ep;
+ 	void			*buf;
+ 	unsigned		length;
+ 	dma_addr_t		dma;
 -- 
 2.51.0
 
