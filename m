@@ -1,223 +1,173 @@
-Return-Path: <stable+bounces-188046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B789BF12F7
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FF1BF14D4
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:46:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84F453E4079
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:26:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 882BC3A4748
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6542E2F6573;
-	Mon, 20 Oct 2025 12:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A182C0F7D;
+	Mon, 20 Oct 2025 12:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="s8SxGfA1";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="a7F/7USS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="om6Loj2W"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D6930FC35
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E277E258CE1
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760963189; cv=none; b=KaEJ8clLfQWm6d9PCIV4uIcKWTUFc1NQgEzu04hbja5zWzRroYiMFzC5tKh7FXYmIDXA3lRRKkXVOD/cahSFvo+w+Ob2TCVT/+pmX3EC8L7smq2p4ynU1YZO2fotjV5kT9k9Ij1CoaCD1GUEuZD+/8k/oS4tRG8SaSxZZC6C/ew=
+	t=1760964207; cv=none; b=B4uTOL08w3jocrPDxZ4wSq/aG78RQcn/uZG/xAqTPNkGR3AbZ0Xps2B5359BzuAC8dqMG8hYMDqNmwNkzzhiSypp6g/VGFaDj+XeDouFBNN3Pq1d+0evkCJBoENLckwnoGv9TUYUYVtIhUu3Tfcrk+IpnPZW1PI5D/EpskH9tnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760963189; c=relaxed/simple;
-	bh=4aK1YOWKpWPou/s67grAY+Rt0f89zfIVMNSYmwlCDr8=;
+	s=arc-20240116; t=1760964207; c=relaxed/simple;
+	bh=wjqu4HxXWrcnrCXlwNsdCBRW602tgURiBD8P4oztI9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0N8U2M6AQQNQnjzrjWbhFApXX/DnciJ0LPF7vw7XX43OMwVXxyVUlZkJ4mxrjtPnsXsf5fFQooDVc/SJ3LlZSZFjAFPIQUet5M1umJPMagCo4Rl5w0ndrHRzGBQagzaiChxd8/u6cfduBllTNvrS0n3sBuy3rWhDgYwU2IhC0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=s8SxGfA1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=a7F/7USS; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfout.stl.internal (Postfix) with ESMTP id 05DB01D00028;
-	Mon, 20 Oct 2025 08:26:22 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Mon, 20 Oct 2025 08:26:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	coelacanthus.name; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm3; t=1760963182; x=1761049582; bh=icqRWrpCgId7sSL9KtZ7u
-	un8+R7a0Uv/cLLpYhjJ8eo=; b=s8SxGfA1h25VXRZWRtU5qGGXpAeMAdqa1MJz+
-	9nNWFsO1/qMtBRrxCOdriK6FmMcZi7iPOaw6v8LfGGtWNnRsz59jaonP6KLuty9v
-	5EoqwK6w5YpUddb/jhxf2jqbvH2UPeEK+yu4HzBSA1H2w1aFMQcpiHD+2if1aW63
-	pAoe4/t+fvowKDR/v0BUOtkWjhiiCQa9LNfInkd/gpJ94TdisSu5Drnm93RcaNzY
-	Rq3buWbdU6+/cBBa+8wZoKe4SqHabGVL80yVi0/sDDarQjsOq+qwEu4tOxcAN45J
-	+k1FLccN4Nlqr5NxTbY09ValBLdTvZFMse3C7kF8rFNJlUEBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1760963182; x=1761049582; bh=i
-	cqRWrpCgId7sSL9KtZ7uun8+R7a0Uv/cLLpYhjJ8eo=; b=a7F/7USSGZ7vmmTiP
-	rmHuxce+K5/2QXXAsqIgF+dg5fR3f2kEbWTxzfVnnCyhKzSBC/j2UpwipHYmxHND
-	3lhsbz3CgluUc6a4yJdz7pn3a60GN2b7BnPe7Mjy92h1wVbJXO46PUGyUJeA3+7I
-	nysu5IiSldtWV2kX3g5RuTB6FEpfBAzpcfTwKclbd6W9L8l7CxeiuwZNEeZETQIt
-	Bpe9BAVr5aS4PdeOqf79b+ooCGV0rTOxEeFj36W5H/Fl8eWBK9S4VU8fL444at7W
-	PnJH+aeiXTG6A8lCc7nnAZT1dLQ73VoVdYBbMxf+n6FU9aFnIaZcejfrtIDLyrzk
-	fYL2Q==
-X-ME-Sender: <xms:bir2aEZrG0m_cVJ_kgSPSjxU9D5ECAzBOKAV7mOYIp8LXQ60dLfXng>
-    <xme:bir2aGR3wnbMDPycxafoxSsQ63QkTEeSeKUDV65OhTFOWTHktS0ROHBSLXWvT_83W
-    Te5XBBaIYSAz4EVtqd85nHkQiy27AtEyZsas70XolJTRv9h1Zlhn6c>
-X-ME-Received: <xmr:bir2aHRAU7PwNTtjXx-bF_YaBXgd2JnLU-bCGUsFBTqNITQrlDxXG1_tAA45bQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddufeejkedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepvegvlhgvshht
-    vgcunfhiuhcuoehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgvqeenucggtffrrg
-    htthgvrhhnpeetteeggfevudevffeileehtdeuteekieehvdefjeetffeiueehieejiedu
-    heevieenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhmshhgihgurdhlihhnkhenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehufihusegt
-    ohgvlhgrtggrnhhthhhushdrnhgrmhgvpdhnsggprhgtphhtthhopeehpdhmohguvgepsh
-    hmthhpohhuthdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgvpdhrtghpth
-    htoheprhhunhgthhgvnhhgrdhluheshhhpmhhitghrohdrtghomhdprhgtphhtthhopehm
-    rghilhhhohhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmkhhlsehpvghnghhuth
-    hrohhnihigrdguvg
-X-ME-Proxy: <xmx:bir2aKTT667tTDYLuTvgADHIz-x6Qb7BY9uWyB2PFsaoVvQlbuJZXQ>
-    <xmx:bir2aM4x1OI5CScOomtgvjVWnjU0H_B1PSt52lzumsbMOzUoEGbzmA>
-    <xmx:bir2aG2i_MpE71oYi51XiQPHxedm_dj46fqNrDM4ia-qzyTvujzzDw>
-    <xmx:bir2aHBeNAAj_sXhwhOr9vG5j08AEHWTW_tVnOUEHwHyttv31hLCbw>
-    <xmx:bir2aCiHioUL4k83wYaKB9ic4FXzX6KpUOoooTNv8paCJtdVqgn4x090>
-Feedback-ID: i95c648bc:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 20 Oct 2025 08:26:21 -0400 (EDT)
-From: Celeste Liu <uwu@coelacanthus.name>
+	 MIME-Version; b=stgDZXradzkh8FrlXwauPUGIM/C4dCDcX0BIoIRDpJG1fJNt8XRa9vvmwiQSu+kyAq5jW8+a0xsF4yMEcIMOoaN8+A1vjjH8zElHJE4sgsfUZatEZ0cDdkrxmO/IyBVE7oNM/3apD1kD5LwEX5UCm/Fxmb5UOxBqA6KTLaGXhnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=om6Loj2W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEE4C4CEF9;
+	Mon, 20 Oct 2025 12:43:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760964206;
+	bh=wjqu4HxXWrcnrCXlwNsdCBRW602tgURiBD8P4oztI9g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=om6Loj2WlUw1CRSXlQU0IiKowLTZZxmK9sErC2HZhHiTmU/MdrBG+SFEuC3wW+wac
+	 sIegcbGpAAwUPlDKYOz6Qr0EzLP4d+YdRuNj88J9OSCbnf4Qm5AvTdDaGuHINXgv6z
+	 ZRWEIfJjk3OVCNS6cgA7hFYNowLHWbbwVBPVh35AtdPi/xSJvxFcGwi/6Q+XWPgX4x
+	 Cjujb8N9Tj2BU7SU8Z1CQQqdJOavxtWyQaMpSH8Vj5S0zpbhUt6vEpEe7MOMifytIP
+	 OohcRGNInueBcWEqHbL6jIC0no3U9q9buIxxk+68pLNaBAFRjNafXFDThF1KGMpNFm
+	 y4EXW4i25qIdQ==
+From: bentiss@kernel.org
 To: stable@vger.kernel.org
-Cc: Celeste Liu <uwu@coelacanthus.name>,
-	Runcheng Lu <runcheng.lu@hpmicro.com>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1.y] can: gs_usb: increase max interface to U8_MAX
-Date: Mon, 20 Oct 2025 20:26:17 +0800
-Message-ID: <20251020122616.1518745-2-uwu@coelacanthus.name>
-X-Mailer: git-send-email 2.51.1.dirty
-In-Reply-To: <2025102038-outsource-awhile-6150@gregkh>
-References: <2025102038-outsource-awhile-6150@gregkh>
+Cc: Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.12.y] HID: multitouch: fix sticky fingers
+Date: Mon, 20 Oct 2025 14:43:15 +0200
+Message-ID: <20251020124315.2908333-1-bentiss@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025102008-likewise-rubbing-d48b@gregkh>
+References: <2025102008-likewise-rubbing-d48b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3814; i=uwu@coelacanthus.name; h=from:subject; bh=4aK1YOWKpWPou/s67grAY+Rt0f89zfIVMNSYmwlCDr8=; b=owJ4nJvAy8zAJeafov85RWVtBeNptSSGjG9aGX/CMgsCLCSm/St8YL/oIedXJvs0kb5gG6Y+s fVhe+N8lnWUsjCIcTHIiimy5JWw/OS8dLZ7b8f2Lpg5rEwgQxi4OAVgIgLbGf6Z/78iKLn32fqv 93a//F6+f3XQuricB/OD7Y7fXS58/OnjToZ/OofY7iyLMVb68fHHVv91O+q7RN1rbtxfWDs50/H esYfVrAAmP08I
-X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp; fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
 Content-Transfer-Encoding: 8bit
 
-commit 2a27f6a8fb5722223d526843040f747e9b0e8060 upstream
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
-converter[1]. The original developers may have only 3 interfaces
-device to test so they write 3 here and wait for future change.
+commit 46f781e0d151844589dc2125c8cce3300546f92a upstream.
 
-During the HSCanT development, we actually used 4 interfaces, so the
-limitation of 3 is not enough now. But just increase one is not
-future-proofed. Since the channel index type in gs_host_frame is u8,
-just make canch[] become a flexible array with a u8 index, so it
-naturally constraint by U8_MAX and avoid statically allocate 256
-pointer for every gs_usb device.
+The sticky fingers quirk (MT_QUIRK_STICKY_FINGERS) was only considering
+the case when slots were not released during the last report.
+This can be problematic if the firmware forgets to release a finger
+while others are still present.
 
-[1]: https://github.com/cherry-embedded/HSCanT-hardware
+This was observed on the Synaptics DLL0945 touchpad found on the Dell
+XPS 9310 and the Dell Inspiron 5406.
 
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
+Fixes: 4f4001bc76fd ("HID: multitouch: fix rare Win 8 cases when the touch up event gets missing")
 Cc: stable@vger.kernel.org
-Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
-Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-Link: https://patch.msgid.link/20250930-gs-usb-max-if-v5-1-863330bf6666@coelacanthus.name
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 ---
- drivers/net/can/usb/gs_usb.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ drivers/hid/hid-multitouch.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index ec28d504ca66..df89bfb8ef3c 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -277,10 +277,6 @@ struct gs_host_frame {
- #define GS_MAX_TX_URBS 10
- /* Only launch a max of GS_MAX_RX_URBS usb requests at a time. */
- #define GS_MAX_RX_URBS 30
--/* Maximum number of interfaces the driver supports per device.
-- * Current hardware only supports 3 interfaces. The future may vary.
-- */
--#define GS_MAX_INTF 3
- 
- struct gs_tx_context {
- 	struct gs_can *dev;
-@@ -318,14 +314,15 @@ struct gs_can {
- 
- /* usb interface struct */
- struct gs_usb {
--	struct gs_can *canch[GS_MAX_INTF];
- 	struct usb_anchor rx_submitted;
- 	struct usb_device *udev;
- 	unsigned int hf_size_rx;
- 	u8 active_channels;
-+	u8 channel_cnt;
- 
- 	unsigned int pipe_in;
- 	unsigned int pipe_out;
-+	struct gs_can *canch[] __counted_by(channel_cnt);
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 5c424010bc02..0667a24576fc 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -83,9 +83,8 @@ enum latency_mode {
+ 	HID_LATENCY_HIGH = 1,
  };
  
- /* 'allocate' a tx context.
-@@ -550,7 +547,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+-#define MT_IO_FLAGS_RUNNING		0
+-#define MT_IO_FLAGS_ACTIVE_SLOTS	1
+-#define MT_IO_FLAGS_PENDING_SLOTS	2
++#define MT_IO_SLOTS_MASK		GENMASK(7, 0) /* reserve first 8 bits for slot tracking */
++#define MT_IO_FLAGS_RUNNING		32
+ 
+ static const bool mtrue = true;		/* default for true */
+ static const bool mfalse;		/* default for false */
+@@ -160,7 +159,11 @@ struct mt_device {
+ 	struct mt_class mtclass;	/* our mt device class */
+ 	struct timer_list release_timer;	/* to release sticky fingers */
+ 	struct hid_device *hdev;	/* hid_device we're attached to */
+-	unsigned long mt_io_flags;	/* mt flags (MT_IO_FLAGS_*) */
++	unsigned long mt_io_flags;	/* mt flags (MT_IO_FLAGS_RUNNING)
++					 * first 8 bits are reserved for keeping the slot
++					 * states, this is fine because we only support up
++					 * to 250 slots (MT_MAX_MAXCONTACT)
++					 */
+ 	__u8 inputmode_value;	/* InputMode HID feature value */
+ 	__u8 maxcontacts;
+ 	bool is_buttonpad;	/* is this device a button pad? */
+@@ -941,6 +944,7 @@ static void mt_release_pending_palms(struct mt_device *td,
+ 
+ 	for_each_set_bit(slotnum, app->pending_palm_slots, td->maxcontacts) {
+ 		clear_bit(slotnum, app->pending_palm_slots);
++		clear_bit(slotnum, &td->mt_io_flags);
+ 
+ 		input_mt_slot(input, slotnum);
+ 		input_mt_report_slot_inactive(input);
+@@ -972,12 +976,6 @@ static void mt_sync_frame(struct mt_device *td, struct mt_application *app,
+ 
+ 	app->num_received = 0;
+ 	app->left_button_state = 0;
+-
+-	if (test_bit(MT_IO_FLAGS_ACTIVE_SLOTS, &td->mt_io_flags))
+-		set_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags);
+-	else
+-		clear_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags);
+-	clear_bit(MT_IO_FLAGS_ACTIVE_SLOTS, &td->mt_io_flags);
+ }
+ 
+ static int mt_compute_timestamp(struct mt_application *app, __s32 value)
+@@ -1152,7 +1150,9 @@ static int mt_process_slot(struct mt_device *td, struct input_dev *input,
+ 		input_event(input, EV_ABS, ABS_MT_TOUCH_MAJOR, major);
+ 		input_event(input, EV_ABS, ABS_MT_TOUCH_MINOR, minor);
+ 
+-		set_bit(MT_IO_FLAGS_ACTIVE_SLOTS, &td->mt_io_flags);
++		set_bit(slotnum, &td->mt_io_flags);
++	} else {
++		clear_bit(slotnum, &td->mt_io_flags);
  	}
  
- 	/* device reports out of range channel id */
--	if (hf->channel >= GS_MAX_INTF)
-+	if (hf->channel >= parent->channel_cnt)
- 		goto device_detach;
- 
- 	dev = parent->canch[hf->channel];
-@@ -653,7 +650,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	/* USB failure take down all interfaces */
- 	if (rc == -ENODEV) {
- device_detach:
--		for (rc = 0; rc < GS_MAX_INTF; rc++) {
-+		for (rc = 0; rc < parent->channel_cnt; rc++) {
- 			if (parent->canch[rc])
- 				netif_device_detach(parent->canch[rc]->netdev);
- 		}
-@@ -1374,17 +1371,19 @@ static int gs_usb_probe(struct usb_interface *intf,
- 	icount = dconf.icount + 1;
- 	dev_info(&intf->dev, "Configuring for %u interfaces\n", icount);
- 
--	if (icount > GS_MAX_INTF) {
-+	if (icount > type_max(typeof(parent->channel_cnt))) {
- 		dev_err(&intf->dev,
- 			"Driver cannot handle more that %u CAN interfaces\n",
--			GS_MAX_INTF);
-+			type_max(typeof(parent->channel_cnt)));
- 		return -EINVAL;
- 	}
- 
--	parent = kzalloc(sizeof(*parent), GFP_KERNEL);
-+	parent = kzalloc(struct_size(parent, canch, icount), GFP_KERNEL);
- 	if (!parent)
- 		return -ENOMEM;
- 
-+	parent->channel_cnt = icount;
-+
- 	init_usb_anchor(&parent->rx_submitted);
- 
- 	usb_set_intfdata(intf, parent);
-@@ -1445,7 +1444,7 @@ static void gs_usb_disconnect(struct usb_interface *intf)
+ 	return 0;
+@@ -1287,7 +1287,7 @@ static void mt_touch_report(struct hid_device *hid,
+ 	 * defect.
+ 	 */
+ 	if (app->quirks & MT_QUIRK_STICKY_FINGERS) {
+-		if (test_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags))
++		if (td->mt_io_flags & MT_IO_SLOTS_MASK)
+ 			mod_timer(&td->release_timer,
+ 				  jiffies + msecs_to_jiffies(100));
+ 		else
+@@ -1734,6 +1734,7 @@ static void mt_release_contacts(struct hid_device *hid)
+ 			for (i = 0; i < mt->num_slots; i++) {
+ 				input_mt_slot(input_dev, i);
+ 				input_mt_report_slot_inactive(input_dev);
++				clear_bit(i, &td->mt_io_flags);
+ 			}
+ 			input_mt_sync_frame(input_dev);
+ 			input_sync(input_dev);
+@@ -1756,7 +1757,7 @@ static void mt_expired_timeout(struct timer_list *t)
+ 	 */
+ 	if (test_and_set_bit_lock(MT_IO_FLAGS_RUNNING, &td->mt_io_flags))
  		return;
- 	}
- 
--	for (i = 0; i < GS_MAX_INTF; i++)
-+	for (i = 0; i < parent->channel_cnt; i++)
- 		if (parent->canch[i])
- 			gs_destroy_candev(parent->canch[i]);
- 
+-	if (test_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags))
++	if (td->mt_io_flags & MT_IO_SLOTS_MASK)
+ 		mt_release_contacts(hdev);
+ 	clear_bit_unlock(MT_IO_FLAGS_RUNNING, &td->mt_io_flags);
+ }
 -- 
-2.51.1.dirty
+2.51.0
 
 
