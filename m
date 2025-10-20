@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-188140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDED4BF223B
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 17:37:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A88B5BF2249
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 17:39:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E19284275D7
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:37:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D758427371
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1184826A0C7;
-	Mon, 20 Oct 2025 15:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B9026CE06;
+	Mon, 20 Oct 2025 15:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DB1F13MU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ft2ilYGt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BDB26B942
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 15:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98688266576
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 15:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760974627; cv=none; b=cyw/THg0uKYbKTSqjsnE/h7w12n20Pc5XZYIudd176Q9JgaLqxkd6lyuEklPpqbPiVHK5FLgIqHh7mmvz2sfpNqAUP563T7x55GmU0sg7Gef5vErbjHKqpKx+mLWACeSvDxQ6H2+uIpdKKIMQGq/L9DpKMxN27MDwrWHI/Ttnuk=
+	t=1760974679; cv=none; b=LP9xT8NdlYvnypBZVnEu2Qegapv9MprTq/g8biU9bEY2TKIHDpI3BJi+zlxg1Phl82oZHdfTIzHwnetLL2rCFcM0lnT16Y/Fp1nlRyUXRZb/jwEEZfMC+YJqQJ7KIaBQVHTDNzrH+JDprLA4m/6Q/adNAb48nC4J9dkaW5z0StA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760974627; c=relaxed/simple;
-	bh=WRIoYWnrI3ksQRrwE0fbaPIniiZCAjSCVqFuxUI4o/s=;
+	s=arc-20240116; t=1760974679; c=relaxed/simple;
+	bh=unb2DnMMG2XdlVn6h10GAqX3fHkUc8q2LvNm5daS2tE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmpDd6EGIizTTPQKHYqBPPnjTGWm6F69jcy585hV704ociLth050FJtc4hi94hNJU2FjKANFrFtFiwPuddYjqfkZ2vG7HICSbI5P1HZEUUA+r29F4jKztoEV+hX7+zgsM8LXQt5zf1qSqzwBMVWTR8UAXjOsi/DxTxe3RCs7PqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DB1F13MU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75D8C4CEF9;
-	Mon, 20 Oct 2025 15:37:04 +0000 (UTC)
+	 MIME-Version; b=G9IdqO1hVe1KoOBK/DT0rw6ZBFUEC5f9MQxQg+oVYaQLiNfdT/L9PRUb7pR6udC4KwGGI4zttODdUa8Fxls1WrdtED36Rgm9vmmNlaD7ycdehYZwJrN/Uq0U6WqCemus5/IbxodBd6X3wW/l9zG6InoaHbtDyzIIzHsawFPWiKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ft2ilYGt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9B9C4CEF9;
+	Mon, 20 Oct 2025 15:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760974625;
-	bh=WRIoYWnrI3ksQRrwE0fbaPIniiZCAjSCVqFuxUI4o/s=;
+	s=k20201202; t=1760974678;
+	bh=unb2DnMMG2XdlVn6h10GAqX3fHkUc8q2LvNm5daS2tE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DB1F13MUcODtmYbtENOJSW3wyEIdzO5mIP24W0mU87778FrxkA41ZcrZ8uzcYzuXr
-	 k6dWbTGts4gzRJIoWYY80aTLVeaMexE2dIH+fJFuqda1/2qUpIwSi/PqBcYel7HV4L
-	 Mg8t9t7VGbCAoXiZxfFrioloytRqg7yrGTTGqK/c5aJsolyG9r9f/nZcAqU1GTGr5K
-	 tmiph/fIJI0vwCM+lq+2J7bCckn6RPjY1KbA4sCPFQVOg9Ol7mO4+jPb4LPz4oILHU
-	 fSKDIcwtn+w9uUIedv4NUiyTuuKXuXkWy1RBIu/9y0F2/7kC+sM0XyLvj28toRXiMm
-	 K9Tsf6Ocz07yw==
+	b=Ft2ilYGt2ILAnscuXpdYfRquX7D8GYD5yYwQ+bReYT2H/fESpU5/lmXQKlwkPyEog
+	 FyB0/0vEumPCs78fjBiKW7kWt62seL+ER66UqDQmZCt6S2xzls0cjqpTcmBHZiDQwU
+	 HAFK12moh3i3P/ofeyVMJs1jDyc921v1GKlVTr7P0dS187amsW6pv9bzF/HLMWLG27
+	 GcAb8q0/SE69PgijWdj8+nOUseEsEorsZarxyA4Rs4/uAv3hlA0lsrGCGvCI35DBPs
+	 f5CZDcqt1xNiF7FKI5DnAXY1kDvKODsnTQs4ccvyoB0nCH9mIQ9cUtWxSSuUP3hDKZ
+	 zu2THutOH0bhg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Xiao Liang <shaw.leon@gmail.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] padata: Reset next CPU when reorder sequence wraps around
-Date: Mon, 20 Oct 2025 11:37:02 -0400
-Message-ID: <20251020153702.1820394-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] padata: Reset next CPU when reorder sequence wraps around
+Date: Mon, 20 Oct 2025 11:37:54 -0400
+Message-ID: <20251020153754.1820697-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101649-sector-ruined-1f7a@gregkh>
-References: <2025101649-sector-ruined-1f7a@gregkh>
+In-Reply-To: <2025101650-feline-ellipse-6256@gregkh>
+References: <2025101650-feline-ellipse-6256@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,14 +74,14 @@ Fixes: 6fc4dbcf0276 ("padata: Replace delayed timer with immediate workqueue in 
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ relocated fix to padata_find_next() using pd->processed and pd->cpu structure fields ]
+[ relocated fix from padata_reorder() function to padata_find_next() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  kernel/padata.c | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/padata.c b/kernel/padata.c
-index 3e0ef0753e73e..c3810f5bd7156 100644
+index 93cd7704ab63e..9260ab0b39eb5 100644
 --- a/kernel/padata.c
 +++ b/kernel/padata.c
 @@ -290,7 +290,11 @@ static struct padata_priv *padata_find_next(struct parallel_data *pd,
