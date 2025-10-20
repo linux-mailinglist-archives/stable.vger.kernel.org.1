@@ -1,144 +1,109 @@
-Return-Path: <stable+bounces-187990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73913BEFE62
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0188BEFE7A
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EAE53E69EB
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:21:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CA6E3E6647
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8B72EB85D;
-	Mon, 20 Oct 2025 08:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="H4qBAEVC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8E72EB862;
+	Mon, 20 Oct 2025 08:24:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C206A2EA74A
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A96178372
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760948496; cv=none; b=AQt/isTH7q5xOjV2tvbIWec/nkW3CGu8gexk67V94aGTv9pnADFXC8NPpCBkqOdO9NW8q/uwdc/JkVilB3+5H5xb7U8pSdY/Cmx5hD3VkPuoEf9xQsPQRuuzRdx8dRZycmBajis6TvrnQL5e6q6UqfJu7iKnNRbRYN9QgdQMu/0=
+	t=1760948654; cv=none; b=IKxuYLIQsYa4ICyOWLxG55VY/nZ7iXo2NIaTmR11Caw0Ck/dMBYsYRsN3Xrlu+OCxwrkuQf/xu3FVeMuXOCn2IJUkAZRvDHjCggyxJdhpQ4TSKdA4ZJ85XpjqD0U6ewyJrGYMNOHCmvH1gGqcWaWhSkROKeMSuGQB6XzXV5+l5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760948496; c=relaxed/simple;
-	bh=vYIeq28h+h6uqLtsFXdAP42iMivoDA7xV9+y/sQhMCg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=Q+u+tuMYfb+OsjzsCltNHFgO7105EpdimBFsnEOnXhBJJLbU1gkwXlK+Bf+YgFplMfeyPlge8AxIJeDrAVg30uThQyrTczClijW8CMk8ZPlZLwSFIb8JsMTk47zRStna+s1b97LzMQw5jhvOHIZrBGRbXhouU91IeJMKvtQl2tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=H4qBAEVC; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251020082131euoutp01b07116861a16680b02d05c26daeee943~wJVLHHI3m0480204802euoutp01h
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:21:31 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251020082131euoutp01b07116861a16680b02d05c26daeee943~wJVLHHI3m0480204802euoutp01h
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1760948491;
-	bh=ZFEomdtwKlWNv3vaRjUKVJ38TVbMvp19aEpEGTtW77A=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=H4qBAEVCxlWoQSWtZ7L1rf1eWVhBfrk/7TQogUjlqSKeJQF2pgixJ9afkIGX8Xpj/
-	 zE/UnPgB5KkA3RJBdCxGfy+PZf4bS90+d6OcZdw2/fF2Xvew7T+P1+ZGm0NK5Qi2m2
-	 IbLR9jPHZfU8lPEP+TFPF4Nn/vpUsXpyqDPPk9wk=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20251020082131eucas1p1d723f7687dc5453dd4d19f0aaaa68bcd~wJVKw2cA11652416524eucas1p1P;
-	Mon, 20 Oct 2025 08:21:31 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20251020082130eusmtip16db5dadda3e2e2ec69c92492a82572a2~wJVKGUsc92519025190eusmtip1h;
-	Mon, 20 Oct 2025 08:21:30 +0000 (GMT)
-Message-ID: <642c2102-8d0f-4883-ab02-dd1da66a7a94@samsung.com>
-Date: Mon, 20 Oct 2025 10:21:30 +0200
+	s=arc-20240116; t=1760948654; c=relaxed/simple;
+	bh=gKo0VtgLEkiYb2IxpSxPZ5r+SaVtq6PsGphBvXQ4M1s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pmQSVtbs9GALr56gk89TD/AEqYTePEu0rHgRQEwAu62U87Ow3tUkawKBTm21o5quVCP2o3JEWhNj9brhO2hp/B/CT7O5/IYoGDgqXlbcbFla99NwiYQqCXcPlMo8xei6tYLze9XGLU2wPptftzlAR+dD7b5qOoM7bxQuADSqMZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9765EC113D0;
+	Mon, 20 Oct 2025 08:24:13 +0000 (UTC)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: stable@vger.kernel.org
+Cc: Jisheng Zhang <jszhang@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 5.10.y + 5.4.y] pwm: berlin: Fix wrong register in suspend/resume
+Date: Mon, 20 Oct 2025 10:24:03 +0200
+Message-ID: <20251020082402.2785693-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101613-nullify-embolism-0853@gregkh>
+References: <2025101613-nullify-embolism-0853@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH] media: videobuf2: forbid create_bufs/remove_bufs when
- legacy fileio is active
-To: Benjamin Gaignard <benjamin.gaignard@collabora.com>, Hans Verkuil
-	<hverkuil+cisco@kernel.org>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Tomasz Figa <tfiga@chromium.org>, Mauro Carvalho Chehab
-	<mchehab@kernel.org>, Guennadi Liakhovetski <g.liakhovetski@gmx.de>, Hans
-	Verkuil <hverkuil@kernel.org>, stable@vger.kernel.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <21707335-a45d-4f87-9490-ac2828a5d9e3@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1993; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=jWANkc03qCwWczJ4OBcA41VlWWfB8Lz62Hb5GGvJ9Y8=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBo9fGiegLu7YnSnH6YpG3l9c1YG0c1BrzXHPse7 QwsQZbzgOCJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaPXxogAKCRCPgPtYfRL+ TlWxB/4iv2RBKJgZdvGWt7+J7l8n0ht54XynqnypFN0ivlcYy9lyU+atGE5mhr3u/KT/P7qthJN ZUTrVf3GNsIbkl1K2uWYoJe/ok7JTaH9ddXHcdBFVExDyp7rrAlVcQryO/KIcFOwWYl6gj1awdC xUmlNKBjbBO5cyAzUlFB5A3fjkW4lM34p6jbdJtoWlMLbKQNGigEJgcg8i2/EuZXxmM+IKYl26T Nd/VsRaR8nO7CD1oUH67TTDW/Kt8yntNzr9d1hknLJXvI+4s9VwpzA0sF+3DF+oYm3Bi8LkrPDw kljHDvQQhH8hQ8+myARGd7juTt2Oc/5iujWw1fn2Bn3tKTdQ
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251020082131eucas1p1d723f7687dc5453dd4d19f0aaaa68bcd
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d
-X-EPHeader: CA
-X-CMS-RootMailID: 20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d
-References: <CGME20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d@eucas1p2.samsung.com>
-	<20251016111154.993949-1-m.szyprowski@samsung.com>
-	<36cfec0a-3717-4b0e-adc0-6887e6b58f44@collabora.com>
-	<84133573-986d-4cc8-8147-246f0da34640@samsung.com>
-	<1f2748a5-1955-48dd-93e4-69e032d895e0@kernel.org>
-	<21707335-a45d-4f87-9490-ac2828a5d9e3@collabora.com>
 
+From: Jisheng Zhang <jszhang@kernel.org>
 
-On 20.10.2025 09:48, Benjamin Gaignard wrote:
->
-> Le 20/10/2025 à 09:39, Hans Verkuil a écrit :
->> On 20/10/2025 09:34, Marek Szyprowski wrote:
->>> On 20.10.2025 09:11, Benjamin Gaignard wrote:
->>>> Le 16/10/2025 à 13:11, Marek Szyprowski a écrit :
->>>>> create_bufs and remove_bufs ioctl calls manipulate queue internal 
->>>>> buffer
->>>>> list, potentially overwriting some pointers used by the legacy fileio
->>>>> access mode. Simply forbid those calls when fileio is active to 
->>>>> protect
->>>>> internal queue state between subsequent read/write calls.
->>>> Hi Marek,
->>>>
->>>> I may be wrong but using fileio API and create/remove API at the same
->>>> time
->>>> sound incorrect from application point of view, right ? If that not 
->>>> the
->>>> case maybe we should also add a test in v4l2-compliance.
->>> Definitely that's incorrect and v4l2-core must forbid such calls. The
->>> standard reqbufs/qbuf/dqbuf API is also forbidden. Extending
->>> v4l2-compliance tools is probably a good idea.
->> Yes, please! A patch is welcome.
->>
->>   I also wonder if its a
->>> good time to add a kernel option to completely disable legacy fileio
->>> access mode, as it is not really needed for most of the systems 
->>> nowadays.
->> No, that will break applications. Using read() is very common (and 
->> convenient!)
->> for MPEG encoders such as the cx18 driver.
->>
->> The fileio code is not blocking any new development, it's just there 
->> for those
->> drivers were it makes sense.
->>
->> Regards,
->>
->>     Hans
->
-> I wonder if this patch in useful because when calling 
-> vb2_ioctl_create_bufs()
-> it already check in vb2_verify_memory_type() if fileio is used or not.
+[ Upstream commit 3a4b9d027e4061766f618292df91760ea64a1fcc ]
 
-Frankly speaking the original report I got was about mixing fileio with 
-vb2_ioctl_remove_bufs and that case is indeed not protected.
+The 'enable' register should be BERLIN_PWM_EN rather than
+BERLIN_PWM_ENABLE, otherwise, the driver accesses wrong address, there
+will be cpu exception then kernel panic during suspend/resume.
 
-While analyzing that I've inspected a symmetrical ioctl 
-(vb2_ioctl_create_bufs), but it looks I've I missed that a check is in 
-vb2_verify_memory_type(). I will remove it in v2 then.
+Fixes: bbf0722c1c66 ("pwm: berlin: Add suspend/resume support")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://lore.kernel.org/r/20250819114224.31825-1-jszhang@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+[ukleinek: backport to 5.10]
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+Hello,
+
+this patch applies fine to both 5.4.y and 5.10.y. The 5.4 failure thread
+is at
+https://lore.kernel.org/stable/2025101613-candle-babble-137f@gregkh
+.
 
 Best regards
+Uwe
+
+ drivers/pwm/pwm-berlin.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pwm/pwm-berlin.c b/drivers/pwm/pwm-berlin.c
+index b91c477cc84b..c9d11486f2c1 100644
+--- a/drivers/pwm/pwm-berlin.c
++++ b/drivers/pwm/pwm-berlin.c
+@@ -249,7 +249,7 @@ static int berlin_pwm_suspend(struct device *dev)
+ 		if (!channel)
+ 			continue;
+ 
+-		channel->enable = berlin_pwm_readl(pwm, i, BERLIN_PWM_ENABLE);
++		channel->enable = berlin_pwm_readl(pwm, i, BERLIN_PWM_EN);
+ 		channel->ctrl = berlin_pwm_readl(pwm, i, BERLIN_PWM_CONTROL);
+ 		channel->duty = berlin_pwm_readl(pwm, i, BERLIN_PWM_DUTY);
+ 		channel->tcnt = berlin_pwm_readl(pwm, i, BERLIN_PWM_TCNT);
+@@ -280,7 +280,7 @@ static int berlin_pwm_resume(struct device *dev)
+ 		berlin_pwm_writel(pwm, i, channel->ctrl, BERLIN_PWM_CONTROL);
+ 		berlin_pwm_writel(pwm, i, channel->duty, BERLIN_PWM_DUTY);
+ 		berlin_pwm_writel(pwm, i, channel->tcnt, BERLIN_PWM_TCNT);
+-		berlin_pwm_writel(pwm, i, channel->enable, BERLIN_PWM_ENABLE);
++		berlin_pwm_writel(pwm, i, channel->enable, BERLIN_PWM_EN);
+ 	}
+ 
+ 	return 0;
+
+base-commit: d3d0b4e274d20103634bc7100cfb6d05ea3ec4d2
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.51.0
 
 
