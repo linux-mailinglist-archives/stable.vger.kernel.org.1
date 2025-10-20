@@ -1,121 +1,144 @@
-Return-Path: <stable+bounces-187989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D29BEFE14
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:18:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73913BEFE62
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EDD724E8466
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:18:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EAE53E69EB
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020832E8E0D;
-	Mon, 20 Oct 2025 08:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8B72EB85D;
+	Mon, 20 Oct 2025 08:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKhTnhjJ"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="H4qBAEVC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1B22E8B93
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C206A2EA74A
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:21:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760948284; cv=none; b=nzd+wQsqVfm+5IH/VTtSaJzoL3y20EGbF1QnpgeibV3KiG5mISsOeDdEl0bQgwTz7TPgQtKcVlbnCpT5Fz29pCzRXZtBx6AlAbCKBawkkfum1Fway5XvMhwsX0GeV9+OQtZo8rTOT/Af6nsvnxsBRTJKKt+Ef6vjJET289joDd8=
+	t=1760948496; cv=none; b=AQt/isTH7q5xOjV2tvbIWec/nkW3CGu8gexk67V94aGTv9pnADFXC8NPpCBkqOdO9NW8q/uwdc/JkVilB3+5H5xb7U8pSdY/Cmx5hD3VkPuoEf9xQsPQRuuzRdx8dRZycmBajis6TvrnQL5e6q6UqfJu7iKnNRbRYN9QgdQMu/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760948284; c=relaxed/simple;
-	bh=JrsnDqeFUuKBbZavIBx1ISJBOMTceEOj6qbObg2M9dU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YX9SDDy5cay+FcH5h7wdh7r9oMR/DwE13e+azYb39HlOzV25BwP0FIdOfB9nxk//NAJCB/XrB+PmB9bYNBsv0+nABn3cMrwPG0gAVBtHfP6Unkq7EjDi3Ig7xPmes6UAsGsXiaARp0rGqzAwPk2nuduJLjCbFpQ1R3cGr2nboYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKhTnhjJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25163C4CEF9;
-	Mon, 20 Oct 2025 08:18:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760948284;
-	bh=JrsnDqeFUuKBbZavIBx1ISJBOMTceEOj6qbObg2M9dU=;
-	h=Subject:To:Cc:From:Date:From;
-	b=UKhTnhjJYc69sNFmRgSu+SnfPqUWp321Lo6nA5M+qAAcvbFL3dJskRDWJqvl5GSTt
-	 qmKtLc1TnEEPb6DptycA7OqnGw6/q3aQLYzlTbZ08E5bTIzTJ57YVNB6EHTVwlSan4
-	 jdrlE7HACHBcTaBD/ysD4ZlFRceycOcegw8axS5k=
-Subject: FAILED: patch "[PATCH] cxl: Fix match_region_by_range() to use" failed to apply to 6.17-stable tree
-To: dave.jiang@intel.com,alison.schofield@intel.com,dan.j.williams@intel.com,gourry@gourry.net
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Oct 2025 10:18:01 +0200
-Message-ID: <2025102001-outsmart-slackness-607a@gregkh>
+	s=arc-20240116; t=1760948496; c=relaxed/simple;
+	bh=vYIeq28h+h6uqLtsFXdAP42iMivoDA7xV9+y/sQhMCg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=Q+u+tuMYfb+OsjzsCltNHFgO7105EpdimBFsnEOnXhBJJLbU1gkwXlK+Bf+YgFplMfeyPlge8AxIJeDrAVg30uThQyrTczClijW8CMk8ZPlZLwSFIb8JsMTk47zRStna+s1b97LzMQw5jhvOHIZrBGRbXhouU91IeJMKvtQl2tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=H4qBAEVC; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251020082131euoutp01b07116861a16680b02d05c26daeee943~wJVLHHI3m0480204802euoutp01h
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:21:31 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251020082131euoutp01b07116861a16680b02d05c26daeee943~wJVLHHI3m0480204802euoutp01h
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1760948491;
+	bh=ZFEomdtwKlWNv3vaRjUKVJ38TVbMvp19aEpEGTtW77A=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=H4qBAEVCxlWoQSWtZ7L1rf1eWVhBfrk/7TQogUjlqSKeJQF2pgixJ9afkIGX8Xpj/
+	 zE/UnPgB5KkA3RJBdCxGfy+PZf4bS90+d6OcZdw2/fF2Xvew7T+P1+ZGm0NK5Qi2m2
+	 IbLR9jPHZfU8lPEP+TFPF4Nn/vpUsXpyqDPPk9wk=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20251020082131eucas1p1d723f7687dc5453dd4d19f0aaaa68bcd~wJVKw2cA11652416524eucas1p1P;
+	Mon, 20 Oct 2025 08:21:31 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20251020082130eusmtip16db5dadda3e2e2ec69c92492a82572a2~wJVKGUsc92519025190eusmtip1h;
+	Mon, 20 Oct 2025 08:21:30 +0000 (GMT)
+Message-ID: <642c2102-8d0f-4883-ab02-dd1da66a7a94@samsung.com>
+Date: Mon, 20 Oct 2025 10:21:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH] media: videobuf2: forbid create_bufs/remove_bufs when
+ legacy fileio is active
+To: Benjamin Gaignard <benjamin.gaignard@collabora.com>, Hans Verkuil
+	<hverkuil+cisco@kernel.org>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Tomasz Figa <tfiga@chromium.org>, Mauro Carvalho Chehab
+	<mchehab@kernel.org>, Guennadi Liakhovetski <g.liakhovetski@gmx.de>, Hans
+	Verkuil <hverkuil@kernel.org>, stable@vger.kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <21707335-a45d-4f87-9490-ac2828a5d9e3@collabora.com>
 Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20251020082131eucas1p1d723f7687dc5453dd4d19f0aaaa68bcd
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d
+X-EPHeader: CA
+X-CMS-RootMailID: 20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d
+References: <CGME20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d@eucas1p2.samsung.com>
+	<20251016111154.993949-1-m.szyprowski@samsung.com>
+	<36cfec0a-3717-4b0e-adc0-6887e6b58f44@collabora.com>
+	<84133573-986d-4cc8-8147-246f0da34640@samsung.com>
+	<1f2748a5-1955-48dd-93e4-69e032d895e0@kernel.org>
+	<21707335-a45d-4f87-9490-ac2828a5d9e3@collabora.com>
 
 
-The patch below does not apply to the 6.17-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 20.10.2025 09:48, Benjamin Gaignard wrote:
+>
+> Le 20/10/2025 à 09:39, Hans Verkuil a écrit :
+>> On 20/10/2025 09:34, Marek Szyprowski wrote:
+>>> On 20.10.2025 09:11, Benjamin Gaignard wrote:
+>>>> Le 16/10/2025 à 13:11, Marek Szyprowski a écrit :
+>>>>> create_bufs and remove_bufs ioctl calls manipulate queue internal 
+>>>>> buffer
+>>>>> list, potentially overwriting some pointers used by the legacy fileio
+>>>>> access mode. Simply forbid those calls when fileio is active to 
+>>>>> protect
+>>>>> internal queue state between subsequent read/write calls.
+>>>> Hi Marek,
+>>>>
+>>>> I may be wrong but using fileio API and create/remove API at the same
+>>>> time
+>>>> sound incorrect from application point of view, right ? If that not 
+>>>> the
+>>>> case maybe we should also add a test in v4l2-compliance.
+>>> Definitely that's incorrect and v4l2-core must forbid such calls. The
+>>> standard reqbufs/qbuf/dqbuf API is also forbidden. Extending
+>>> v4l2-compliance tools is probably a good idea.
+>> Yes, please! A patch is welcome.
+>>
+>>   I also wonder if its a
+>>> good time to add a kernel option to completely disable legacy fileio
+>>> access mode, as it is not really needed for most of the systems 
+>>> nowadays.
+>> No, that will break applications. Using read() is very common (and 
+>> convenient!)
+>> for MPEG encoders such as the cx18 driver.
+>>
+>> The fileio code is not blocking any new development, it's just there 
+>> for those
+>> drivers were it makes sense.
+>>
+>> Regards,
+>>
+>>     Hans
+>
+> I wonder if this patch in useful because when calling 
+> vb2_ioctl_create_bufs()
+> it already check in vb2_verify_memory_type() if fileio is used or not.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Frankly speaking the original report I got was about mixing fileio with 
+vb2_ioctl_remove_bufs and that case is indeed not protected.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
-git checkout FETCH_HEAD
-git cherry-pick -x f4d027921c811ff7fc16e4d03c6bbbf4347cf37a
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102001-outsmart-slackness-607a@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
+While analyzing that I've inspected a symmetrical ioctl 
+(vb2_ioctl_create_bufs), but it looks I've I missed that a check is in 
+vb2_verify_memory_type(). I will remove it in v2 then.
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From f4d027921c811ff7fc16e4d03c6bbbf4347cf37a Mon Sep 17 00:00:00 2001
-From: Dave Jiang <dave.jiang@intel.com>
-Date: Fri, 10 Oct 2025 13:57:55 -0700
-Subject: [PATCH] cxl: Fix match_region_by_range() to use
- region_res_match_cxl_range()
-
-match_region_by_range() is not using the helper function that also takes
-extended linear cache size into account when comparing regions. This
-causes a x2 region to show up as 2 partial incomplete regions rather
-than a single CXL region with extended linear cache support. Replace
-the open coded compare logic with the proper helper function for
-comparison. User visible impact is that when 'cxl list' is issued,
-no activa CXL region(s) are shown. There may be multiple idle regions
-present. No actual active CXL region is present in the kernel.
-
-[dj: Fix stable address]
-
-Fixes: 0ec9849b6333 ("acpi/hmat / cxl: Add extended linear cache support for CXL")
-Cc: stable@vger.kernel.org
-Reviewed-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 858d4678628d..57ed85e332d3 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -3398,10 +3398,7 @@ static int match_region_by_range(struct device *dev, const void *data)
- 	p = &cxlr->params;
- 
- 	guard(rwsem_read)(&cxl_rwsem.region);
--	if (p->res && p->res->start == r->start && p->res->end == r->end)
--		return 1;
--
--	return 0;
-+	return region_res_match_cxl_range(p, r);
- }
- 
- static int cxl_extended_linear_cache_resize(struct cxl_region *cxlr,
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
