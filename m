@@ -1,65 +1,74 @@
-Return-Path: <stable+bounces-187915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DCCBEF0BB
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 04:07:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26687BEF51F
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 06:56:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BD811899146
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 02:08:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 041941896A61
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 04:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269FF1DF24F;
-	Mon, 20 Oct 2025 02:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2532C0F7F;
+	Mon, 20 Oct 2025 04:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kl4l2Izi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUa6eCTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C741D3594A;
-	Mon, 20 Oct 2025 02:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EEA29BD90;
+	Mon, 20 Oct 2025 04:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760926065; cv=none; b=Ewmy5nd2Y0jXVSKhKB18pkr+aD4Z82o7480TbYeAoY8pxgJzP0/0tw2ufAk4Oq10iXaRmzsUpljVcYiYAOf1C3DNoV5rDppJT/y96Z1xBvAJl7te/Opn3xEkBuQoackzYHFQ5YBrtRe7PQ7PPnryqCdcjinDYe+cjCkB8WnMEJE=
+	t=1760936197; cv=none; b=gtsGUGlYCbu4oG8cCHZzyF4oqcYgIGcc9xsZGMEnra7j+cE5mDzkXMQ3na9rgyjXZLbJ1n6/EmQdd6qfksaZD2DgEwc/4gWghsp2l7pk/SUKc+41TySUtdn8+iUcf/Cm4/yl8ILpCYNO/ykPV6uSUUk99eclZg40n41avTJv2Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760926065; c=relaxed/simple;
-	bh=rheH6Ia6DijJ7OprwEpFfSq6P7ogPSfbX6TYiHJYnvs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Lx/ybaole9BAG67XERRfTbpp3sjtpy4TzHIyE5Lr6zXaL6VLR5HeGi7d121lEpjsHKp0+p1LbXJgCZokXnUJK00yx+ztDAX9hYhOrbJhgNceTqxfQoJro4cD2dVWre1/4qtaxGAoLwzhKrlbVCYMzye6QJdYpg094UvQ1I6tikY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kl4l2Izi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA61C4CEE7;
-	Mon, 20 Oct 2025 02:07:41 +0000 (UTC)
+	s=arc-20240116; t=1760936197; c=relaxed/simple;
+	bh=zphBEhYRgWZAxroiGCHNYyuNwE4bWqDyjlGgmN4zMeM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Sg0Ia8jOl5gu11FMsAW+dzhzor3FCBgIel7Iy0Xt1tha+Lyn4NhZZEEa2tkfrGEDpcLBseafw+f6J64DJch8pcwSonmbMVRwePFpLaK+GB5f22zMmN7fqv5knuZd3TNg6UpOo7lZgx0i+84nkjnDhyEV3yEJe9+DDI5OlY3xbGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUa6eCTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AAABC4CEFB;
+	Mon, 20 Oct 2025 04:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760926065;
-	bh=rheH6Ia6DijJ7OprwEpFfSq6P7ogPSfbX6TYiHJYnvs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Kl4l2IziLW8kHFxHkhddlY0BAI82TlrFICtCwi6lmXdVXcmlXLYUJRdV6Ch2NxQgR
-	 jg9eFTQc32ZOmnELADfLFrd+K3Wah/AUiJz5AhEzpZbhep8QXiVxpssLDQakUxUPIJ
-	 zuv747Tvrex4uzl/DoqkMhJdaXEH7QY+WG3Bo+jqDfWfwAycM/ysxbiP5YnTK+gSM9
-	 A0SXW9yKhu7L0UNfHhLTYRfADgUfeERZF2JOltNyOCfxDrKOAvxFjl6mdin2kUb+9f
-	 NLVCLoql1vlvOkH9ocRWQunmc7EAtX3iIPWCT5MpUv2ItlmXsH36p2G2U1HkC3/Dn0
-	 2QTLSJPV8jIBw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
+	s=k20201202; t=1760936197;
+	bh=zphBEhYRgWZAxroiGCHNYyuNwE4bWqDyjlGgmN4zMeM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gUa6eCTIBwfS4ltnJk8WDLY2NvmFlqgOIL6Fo9omcbSKVUxkbgYSRttT+E8SFnxS9
+	 ZeBzTk4RvxUvdek0JivuHRFjvCNkcAy/NXnUHKBte1yaYvwmC2iS9p7c1O89Y+DQUc
+	 l5zxf2OWSdRCt4Z8+vwzx9sarRR8CfPTKp37oNx7I9wyriW2PkCsfrL6lKHFFORLYI
+	 X3vTim9RXMUB5G39SyJ6jREn4JZ5OrEieJh00wBbleZYKyp9MuJm8kXxEPdupiF2Kx
+	 id2gpeIRM8BXQBuSo9A7wyxUmtdIG288UolXjJLmsfg8CTVpFYHAeSaMSS09f7G53x
+	 hIlvBu11ZjBrg==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vAhwm-00000000831-3MyP;
+	Mon, 20 Oct 2025 06:56:40 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Yong Wu <yong.wu@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Krishna Reddy <vdumpa@nvidia.com>,
+	iommu@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
+	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH] objtool/rust: add one more `noreturn` Rust function
-Date: Mon, 20 Oct 2025 04:07:14 +0200
-Message-ID: <20251020020714.2511718-1-ojeda@kernel.org>
+Subject: [PATCH v3 01/14] iommu/apple-dart: fix device leak on of_xlate()
+Date: Mon, 20 Oct 2025 06:53:05 +0200
+Message-ID: <20251020045318.30690-2-johan@kernel.org>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20251020045318.30690-1-johan@kernel.org>
+References: <20251020045318.30690-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,57 +77,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Between Rust 1.79 and 1.86, under `CONFIG_RUST_KERNEL_DOCTESTS=y`,
-`objtool` may report:
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-    rust/doctests_kernel_generated.o: warning: objtool:
-    rust_doctest_kernel_alloc_kbox_rs_13() falls through to next
-    function rust_doctest_kernel_alloc_kvec_rs_0()
-
-(as well as in rust_doctest_kernel_alloc_kvec_rs_0) due to calls to the
-`noreturn` symbol:
-
-    core::option::expect_failed
-
-from code added in commits 779db37373a3 ("rust: alloc: kvec: implement
-AsPageIter for VVec") and 671618432f46 ("rust: alloc: kbox: implement
-AsPageIter for VBox").
-
-Thus add the mangled one to the list so that `objtool` knows it is
-actually `noreturn`.
-
-This can be reproduced as well in other versions by tweaking the code,
-such as the latest stable Rust (1.90.0).
-
-Stable does not have code that triggers this, but it could have it in
-the future. Downstream forks could too. Thus tag it for backport.
-
-See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-for more details.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later.
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 46d1fb072e76 ("iommu/dart: Add DART iommu driver")
+Cc: stable@vger.kernel.org	# 5.15
+Cc: Sven Peter <sven@kernel.org>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- tools/objtool/check.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/apple-dart.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index a5770570b106..3c7ab910b189 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -217,6 +217,7 @@ static bool is_rust_noreturn(const struct symbol *func)
- 	 * these come from the Rust standard library).
- 	 */
- 	return str_ends_with(func->name, "_4core5sliceSp15copy_from_slice17len_mismatch_fail")		||
-+	       str_ends_with(func->name, "_4core6option13expect_failed")				||
- 	       str_ends_with(func->name, "_4core6option13unwrap_failed")				||
- 	       str_ends_with(func->name, "_4core6result13unwrap_failed")				||
- 	       str_ends_with(func->name, "_4core9panicking5panic")					||
-
-base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+diff --git a/drivers/iommu/apple-dart.c b/drivers/iommu/apple-dart.c
+index 95a4e62b8f63..9804022c7f59 100644
+--- a/drivers/iommu/apple-dart.c
++++ b/drivers/iommu/apple-dart.c
+@@ -802,6 +802,8 @@ static int apple_dart_of_xlate(struct device *dev,
+ 	struct apple_dart *cfg_dart;
+ 	int i, sid;
+ 
++	put_device(&iommu_pdev->dev);
++
+ 	if (args->args_count != 1)
+ 		return -EINVAL;
+ 	sid = args->args[0];
 -- 
-2.51.0
+2.49.1
 
 
