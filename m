@@ -1,132 +1,111 @@
-Return-Path: <stable+bounces-187931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E918ABEFA2B
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 09:17:17 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B96BEFAEE
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 09:34:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4D2C74F2757
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 07:13:59 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6D0A3349282
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 07:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57BC2E11DC;
-	Mon, 20 Oct 2025 07:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7808D2D77F7;
+	Mon, 20 Oct 2025 07:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b="TUsE4oGO"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="P+lTRvxE"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DD72EA147;
-	Mon, 20 Oct 2025 07:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760944302; cv=pass; b=tRU2YkzbsRYhayr7zq/2zSrMGSKPDcA+wxJ7g9QUKQS/I3rGucmiuKx8QlzFU9p4GfYsc/bEp53wCCrDw6Fcz/lcyPdDFPUoFEEH2okoiDZt88dnasFmQMnIZGh4cRJn6ba4mevVE0c+rqvTpVllpEk/PA89Ak6/KLxuWI2BrxU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760944302; c=relaxed/simple;
-	bh=WVfiMNNWRiHFBrcRGE/MouaFQwHG99Zi3OjT/7dE4wo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L0XtqIfY77HmDl1Ks5AlMcSjG3L50zSrVcJHpjFN/fxPIiSKhPeKzbSisD1BTk8WLXBpW2B9DGytPKERqEmDNjdj/6cL14kIMHsKi82WF7pubX7hqeT6txjBxeot8ru27tQBViNtwNpdMxbakpdja2jlu96YuZM7e7yNmhgZaHc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b=TUsE4oGO; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1760944292; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=P/yBR+GyLqopb3+umWCbUXR8QIXzC0M/ZiaXrse+lsbn5geSeMLef6KDDXGFVZiP1PLGEQcmuVRnjQCSKbLumXwVFZLRbdUOMwV3KOGqZvIQIRZ1fF9N8C9cFWeYlPOT8DoT3BxI+cZ+1/Y3x7d+Gnw6ivrUVxzbXOktdWcfEaI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1760944292; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Grf8Aw8Kke2h/aVOmW63v6SnlnR1jcNw5IBgROmHZrM=; 
-	b=nDyPjmJpsVIWsd09YDJNKnu+LGzr9HqdYF+UnWj6U4xy+168Qs3+E3THTl8EZ+DBjr+kzcZzbikA9+P08DQZYXIU12vHxJHw9ZIHzMX+RUkJD/GDf+qcsv/D7b4DGD7IzM8O1FiwqcYU2pl/xgvhwpOWUCcuhX1wyJ4xsTdNkp4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=benjamin.gaignard@collabora.com;
-	dmarc=pass header.from=<benjamin.gaignard@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760944292;
-	s=zohomail; d=collabora.com; i=benjamin.gaignard@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=Grf8Aw8Kke2h/aVOmW63v6SnlnR1jcNw5IBgROmHZrM=;
-	b=TUsE4oGOYYFbymV9VuZ0hE/N4oeNcCPDTC/+rfVAo1g60VwIn9r8oCAjc9/2Lq1y
-	BM+nKA9UMoGSFl2AeLqpt0EmAVTzO1Nmy7t1bUD2q+K5z2Pl0NXpMDUOT1nGpG1eY0w
-	wuwNfg/hl01OFR78csVwT5te1HMBDIWjcR4vAOho=
-Received: by mx.zohomail.com with SMTPS id 1760944290591597.1904263054131;
-	Mon, 20 Oct 2025 00:11:30 -0700 (PDT)
-Message-ID: <36cfec0a-3717-4b0e-adc0-6887e6b58f44@collabora.com>
-Date: Mon, 20 Oct 2025 09:11:25 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BBC2153FB
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 07:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760945659; cv=none; b=DaPmsRh+TvCxDECmUTZZ9MeoqjnfbUxhtvn6TL7AOFjaYVZ3Jhc/oYQWBFeUHohVUFi7/wBN9CQ9g6LJWGwGpRd4tWDk2Y7dPx43rgI6inuqzpcu/IN0yulkhSrUSQ3fbvV0EnHO7CKs10ltvyvkPSIKXyDbjcs57Us66c8E19c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760945659; c=relaxed/simple;
+	bh=Wlc9i48wbTK+xDL32vSFbsdMWj5vR2h0m2lMN4Nw0y4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=Ni5O15Mpsp5PKfif4QxVlh9XiYNhCRFfW/ee5gsddG5P53I/0dq2GhgatSkof51Fql3VVt7tVhuRhUKEXNC30/qBqKPZmgdNMVCqkxF6p1vHJ+GQPACIk6xG6KgcJH31RKeTpK/UYGzrkvuKbrqH1c09iTaPbBbOnbKR5By5WyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=P+lTRvxE; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251020073409euoutp0106abd517d22fa67ec4512a294d8a6810~wIr0Vb08B1656516565euoutp01N
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 07:34:09 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251020073409euoutp0106abd517d22fa67ec4512a294d8a6810~wIr0Vb08B1656516565euoutp01N
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1760945649;
+	bh=5jPe1TQ+RTWIFGnSXXnbJc2Zb5Jf83DVrW561/+LfIc=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=P+lTRvxELWeJLOXzGL/y1DV6KLek7L5rBwePdZV0FsJElZxA3PC5vSPCdRVWEvhW7
+	 f895KSgpS+nf2B1CiGw5D5MEuVP6ZKV0NZFB6i5AdWYlsA5q1iEXiu5MnRZZbsm+FJ
+	 CSvB6uGuwHRy3mx9rSoHYE52V2HLyulHwvZ0RrXw=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20251020073409eucas1p1efafedfbe9cb2fb2a4cf4c774843aa9a~wIr0C-OLs1383513835eucas1p1J;
+	Mon, 20 Oct 2025 07:34:09 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20251020073409eusmtip1585557832218c8bf9795f009574a46a4~wIrznbpty0533405334eusmtip1L;
+	Mon, 20 Oct 2025 07:34:08 +0000 (GMT)
+Message-ID: <84133573-986d-4cc8-8147-246f0da34640@samsung.com>
+Date: Mon, 20 Oct 2025 09:34:08 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+User-Agent: Betterbird (Windows)
 Subject: Re: [PATCH] media: videobuf2: forbid create_bufs/remove_bufs when
  legacy fileio is active
-To: Marek Szyprowski <m.szyprowski@samsung.com>, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Tomasz Figa <tfiga@chromium.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
- Hans Verkuil <hverkuil@kernel.org>, stable@vger.kernel.org
-References: <CGME20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d@eucas1p2.samsung.com>
- <20251016111154.993949-1-m.szyprowski@samsung.com>
+To: Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Tomasz Figa <tfiga@chromium.org>, Mauro Carvalho Chehab
+	<mchehab@kernel.org>, Guennadi Liakhovetski <g.liakhovetski@gmx.de>, Hans
+	Verkuil <hverkuil@kernel.org>, stable@vger.kernel.org
 Content-Language: en-US
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-In-Reply-To: <20251016111154.993949-1-m.szyprowski@samsung.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <36cfec0a-3717-4b0e-adc0-6887e6b58f44@collabora.com>
 Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20251020073409eucas1p1efafedfbe9cb2fb2a4cf4c774843aa9a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d
+X-EPHeader: CA
+X-CMS-RootMailID: 20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d
+References: <CGME20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d@eucas1p2.samsung.com>
+	<20251016111154.993949-1-m.szyprowski@samsung.com>
+	<36cfec0a-3717-4b0e-adc0-6887e6b58f44@collabora.com>
 
-
-Le 16/10/2025 à 13:11, Marek Szyprowski a écrit :
-> create_bufs and remove_bufs ioctl calls manipulate queue internal buffer
-> list, potentially overwriting some pointers used by the legacy fileio
-> access mode. Simply forbid those calls when fileio is active to protect
-> internal queue state between subsequent read/write calls.
-
-Hi Marek,
-
-I may be wrong but using fileio API and create/remove API at the same time
-sound incorrect from application point of view, right ? If that not the
-case maybe we should also add a test in v4l2-compliance.
-
-Regards,
-Benjamin
-
+On 20.10.2025 09:11, Benjamin Gaignard wrote:
 >
-> CC: stable@vger.kernel.org
-> Fixes: 2d86401c2cbf ("[media] V4L: vb2: add support for buffers of different sizes on a single queue")
-> Fixes: a3293a85381e ("media: v4l2: Add REMOVE_BUFS ioctl")
-> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> ---
->   drivers/media/common/videobuf2/videobuf2-v4l2.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+> Le 16/10/2025 à 13:11, Marek Szyprowski a écrit :
+>> create_bufs and remove_bufs ioctl calls manipulate queue internal buffer
+>> list, potentially overwriting some pointers used by the legacy fileio
+>> access mode. Simply forbid those calls when fileio is active to protect
+>> internal queue state between subsequent read/write calls.
 >
-> diff --git a/drivers/media/common/videobuf2/videobuf2-v4l2.c b/drivers/media/common/videobuf2/videobuf2-v4l2.c
-> index d911021c1bb0..f4104d5971dd 100644
-> --- a/drivers/media/common/videobuf2/videobuf2-v4l2.c
-> +++ b/drivers/media/common/videobuf2/videobuf2-v4l2.c
-> @@ -751,6 +751,11 @@ int vb2_create_bufs(struct vb2_queue *q, struct v4l2_create_buffers *create)
->   	int ret = vb2_verify_memory_type(q, create->memory, f->type);
->   	unsigned i;
->   
-> +	if (vb2_fileio_is_active(q)) {
-> +		dprintk(q, 1, "file io in progress\n");
-> +		return -EBUSY;
-> +	}
-> +
->   	create->index = vb2_get_num_buffers(q);
->   	vb2_set_flags_and_caps(q, create->memory, &create->flags,
->   			       &create->capabilities, &create->max_num_buffers);
-> @@ -1010,6 +1015,11 @@ int vb2_ioctl_remove_bufs(struct file *file, void *priv,
->   	if (vb2_queue_is_busy(vdev->queue, file))
->   		return -EBUSY;
->   
-> +	if (vb2_fileio_is_active(vdev->queue)) {
-> +		dprintk(vdev->queue, 1, "file io in progress\n");
-> +		return -EBUSY;
-> +	}
-> +
->   	return vb2_core_remove_bufs(vdev->queue, d->index, d->count);
->   }
->   EXPORT_SYMBOL_GPL(vb2_ioctl_remove_bufs);
+> Hi Marek,
+>
+> I may be wrong but using fileio API and create/remove API at the same 
+> time
+> sound incorrect from application point of view, right ? If that not the
+> case maybe we should also add a test in v4l2-compliance.
+
+Definitely that's incorrect and v4l2-core must forbid such calls. The 
+standard reqbufs/qbuf/dqbuf API is also forbidden. Extending 
+v4l2-compliance tools is probably a good idea. I also wonder if its a 
+good time to add a kernel option to completely disable legacy fileio 
+access mode, as it is not really needed for most of the systems nowadays.
+
+ > ...
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
