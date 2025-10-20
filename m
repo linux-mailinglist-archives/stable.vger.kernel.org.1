@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-188043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E68BF1299
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:27:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E684BF12CC
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:29:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96A1C3A8268
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:24:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21FF83AEE41
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE545311C3A;
-	Mon, 20 Oct 2025 12:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600333126AD;
+	Mon, 20 Oct 2025 12:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="i1XmFziE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZEv+r2uE"
+	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="wuI+Sltx";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="s+0KG7rh"
 X-Original-To: stable@vger.kernel.org
 Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92995304967
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36242FD7B2
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760963034; cv=none; b=JvjaeSQ6jcFVPJBr6BWqJ1ahirxFXsedd9T4QMpLcN88vJdLrY0oDwuYDyypJkmrpdvEhlKcMYP47vsBFUsttec9OPUorBlxiBinggLVB+2MALTMGYsCdRI9uBQ9QXWp/a6EaJgiecn0N76nRuQoHeQoG7lMy7i08bYYjOZO4GQ=
+	t=1760963146; cv=none; b=qkuDMsIJgWyoopOuOY6wqvHHDLPYty3lYncutlTqbU0kMzjjVTbc3WUoJK9jQbA2EKzYcI3hCdrKd224O+/iHVaxf4gOV1KHr6SGK/C9F7axICFepyecc9ub+bzd27Xuj8h5rOJ86wl8CWBTAIZA8BsJ/U2QCbaL0ie+AuXeLDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760963034; c=relaxed/simple;
-	bh=vYUJ+xGeX8WoNFkyg5K6nyrI2bZw1/G526oTuJhvBH8=;
+	s=arc-20240116; t=1760963146; c=relaxed/simple;
+	bh=Nu7Gs/CwDtCZIt/xiKl+hDBm2H9N19Wurl9kZRgbdes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dfo6+/I9lvLPAYTAFjl4rXNy6jehRttc9VseL47OBCP9prnrEkKdImKWk+N48Cnh84Xl1OKsk30DQHpo5oE/W4kJ9BYgE7cry2iFKUKNk6i6V5lZXRAsQvkgDqe0X/PTr5OOCEeLv/hdo1xCba1Wcqrr9RJNQBVtFULTQqrcmuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=i1XmFziE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZEv+r2uE; arc=none smtp.client-ip=202.12.124.150
+	 MIME-Version; b=k+j2ITScEuF+Nxgry9MWxw266yx3O4VL6IcHbQbLSgZElTdPkqxIfBIdOEEtOmmpSWJxV92ebZkIHt+dPvLt5Hodr08EM/kF9pUkQbUNsIPS/mxMkFpy7Wh49qCsdhtespvTGp35gT+DMl7rru7cqgRrUHM/h8S//HAiyKOGvMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=wuI+Sltx; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=s+0KG7rh; arc=none smtp.client-ip=202.12.124.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id 6A44B1D00026;
-	Mon, 20 Oct 2025 08:23:51 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Mon, 20 Oct 2025 08:23:51 -0400
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 613781D000DC;
+	Mon, 20 Oct 2025 08:25:38 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 20 Oct 2025 08:25:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	coelacanthus.name; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm3; t=1760963031; x=1761049431; bh=cfl/FhP8lg3ZCS9xRETNw
-	jvbpvfF7q2LsEUJfyLeMBY=; b=i1XmFziEMOSI1246b719jnSnf9JqIyqzI0Lbt
-	O7cH9+3y+q4CWbqsCSE7GSNKu6L6EqsvtdQxnCwMGS0NmWmTQmxL3HPl+cy2gvW1
-	CZuRORFQK3aTqkndrnZF/AqbMB2ak6tsdXkZujKYbavdLM8uobiKHta6+UFafvdE
-	PjlbM+fC9wi3g4WyAn0gYa8eWEUoYx/JSSxoiU6K1flo4HLFKMpT0leuKHQXFZWJ
-	xiQ7qHRJTIY81oEO64I8GnEs8J/hWUmx5AiRZK2Bnye/D/78nSgdmoa9qdTJbQKD
-	NQd4dVgXnjfdpIiod3uEbRYwjMLGQ3P8AVpDqK4PrGdpqYQag==
+	:to; s=fm3; t=1760963138; x=1761049538; bh=VW40ojzBg5EEbNKXl+//H
+	Ge3cPHgdj2jDGzut4Ncr4Q=; b=wuI+SltxJufoUl6tPxzhBCVWxqT9j5LdQOitA
+	cV4g1CsXh81P5eKZo7xilInTFB7SxMZVrI8uRd8dH2GDURszTCudZBRlyD4984Bu
+	6BzlSFYu5kEajKecHwdqWCT+9uNU720bDfmGN9Kw3xC2EpbvEXuJ/K/MZzU24i5S
+	ToFIjoVOa83KNwgUFBUSCoc5Vrn6KEJtE+8TBQIh69Y+HT6uU8JtEbxYZ8QAvITc
+	VIYyZQZbgU5G53UAthLmH9lIwc9SXJUMxe6eM6dHB7xFnNN4lLk6+Hq+OS5U01zK
+	2RJ/ilHPGxBn8DGXhlouZisFfEkfs/2yuG0YRlNwdtcIoyOHA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1760963031; x=1761049431; bh=c
-	fl/FhP8lg3ZCS9xRETNwjvbpvfF7q2LsEUJfyLeMBY=; b=ZEv+r2uEVixC0ovMu
-	LNhKXRsbqXNbnl8xY/xC8QUnRslZ4qA/MD9sS5Q6KEc3jkSrHG/+UhzcP00ck279
-	0MOGIQmwgbIPul9tvZB8GGFy2rQWcG6SFGKNjmDlzNZEZxLOn4fZZZ9J+8ByfRZn
-	7UqaEllwbfvn5lnb/ObP/ZxOTxEnRh95qdaJJaxPZPVsnvMD3m+vrOFvKKmpYE07
-	16oFTa7+b4f+sBLbfMtrY7CdoSVvDqIfDw7e8RpNFVx9pYXko7IIRSlJ13L/kdnS
-	8viNGMM/su00GY6/Lk2gtSylDtpkYphPGC0SQ3SAa0LnYq3X7N6qkrBciSixjvYy
-	Phrqw==
-X-ME-Sender: <xms:1yn2aOWdbCCUZn7qqvQxhXRrAcesGOyPJGl1XamtCb_sFWcX6EmK2Q>
-    <xme:1yn2aBffY6TcTOunJfazgb3CRIjY3-x3b0L4GmL5ddxJmu2zT1Tm-0LcTySnDCYO7
-    bTTr8zEw7d_o8DkmxIx-hZM2Dhk1eHJ8j_aWYYKwF6_9b_75zvnmTk>
-X-ME-Received: <xmr:1yn2aKs5O_cxVxwHlwnVrBzQK755YBbCd8-kMrkrXLvD651BfEIdk_6Auqb41Q>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1760963138; x=1761049538; bh=V
+	W40ojzBg5EEbNKXl+//HGe3cPHgdj2jDGzut4Ncr4Q=; b=s+0KG7rh2D8ijOnpu
+	aeWhMmmTcuUiFPO/787A1MR6czzKBt97BicdH8WN9labFNgXEQ40ieRHKKFZpYkq
+	igCLH7+6dj2/n8oyNYAKZleNlMX3oyZjWeUaqDYEzbjqYUzuMb8dSN/YsGvyMCRd
+	YH7nQY+3dErVLKHLXQY5lcpONillWy6FRgiRaRBA8Fqy14jU07OPlwQu7YSMk2DU
+	Aw9m+9QNJDZgNfj57tqK9F1l6OOCQnixQu4D5Btr8jSGnaa9phs3JUzupf7r1lIu
+	ENVPaeYPF9gIhXxiX0CPiYpTnV5DV3l6o2KTpDWSpstbGEBl83HvY/rM7FzUP4yd
+	LJbpA==
+X-ME-Sender: <xms:Qir2aD6sSjufFLdtBH_ErB5bnTKFli3jIEA5CKqDfIXBYU90XwBItw>
+    <xme:Qir2aPzw3_3GzYOI7nsHOF1R6XNvJRuQipvfJ0jCMvEt9lvq1Rn3TEUGfSw4VyqLR
+    Z6i7_QIZ_Y96x1VUGvwtR2uE1glAqFf-i_cXuWLivAHzWahRQlEbA>
+X-ME-Received: <xmr:Qir2aCyWPp69aBToldE49VhNGgUr3MIQADAz143DNn1ApDD9ZhaUHf5I-ynxJA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddufeejkeduucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
@@ -79,33 +79,33 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddufeejkeduucetufdote
     htoheprhhunhgthhgvnhhgrdhluheshhhpmhhitghrohdrtghomhdprhgtphhtthhopehm
     rghilhhhohhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmkhhlsehpvghnghhuth
     hrohhnihigrdguvg
-X-ME-Proxy: <xmx:1yn2aA9aTHMlu4s4qjgHhWJh8F588NNnkXpyWwglpIF5R0Hqgmgnwg>
-    <xmx:1yn2aF2PVe1JaTNxj_ntPP7dRaKbwC2Oz9HJl6NJMhKribsZqZw9kA>
-    <xmx:1yn2aFDy879PUXACoRwN452789T3VGYRWoe_ZHTfEGetjxXVmjEiQw>
-    <xmx:1yn2aBdUi_7KLDeDScusv2XEMJ4D5XdKTzV4fJJQHCO-5vyoQSUNJw>
-    <xmx:1yn2aMtwDHcMuhJkOJampxiK5Hqow_irVbNmYnbQ9DZPANt8ldl-yu5A>
+X-ME-Proxy: <xmx:Qir2aPyiwrm0lZXxWsmasJzeUPEk6MVUrYe-RI3_jy3rQYlYB1LahQ>
+    <xmx:Qir2aEaKs_P61x6nvnSIZd-afjvEPpV1U2xYJZosRWlm_MU1q5dKcw>
+    <xmx:Qir2aIUdMUKIxz-rN2LngsglgfQFaQ0ILCbfh3NiJgM0eYl6ilr4WA>
+    <xmx:Qir2aKhXRDJZahB-C7mXG-gTXd2Uw3VUZvhHSFUsl7P3Nkw3pvONdA>
+    <xmx:Qir2aEDQ5sIqlPPAGZlXMQJ2ghgyuUMGG1DJNXtRTJs3XKdN2WmUkQAv>
 Feedback-ID: i95c648bc:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 20 Oct 2025 08:23:50 -0400 (EDT)
+ 20 Oct 2025 08:25:37 -0400 (EDT)
 From: Celeste Liu <uwu@coelacanthus.name>
 To: stable@vger.kernel.org
 Cc: Celeste Liu <uwu@coelacanthus.name>,
 	Runcheng Lu <runcheng.lu@hpmicro.com>,
 	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10.y] can: gs_usb: increase max interface to U8_MAX
-Date: Mon, 20 Oct 2025 20:23:43 +0800
-Message-ID: <20251020122342.1517889-2-uwu@coelacanthus.name>
+Subject: [PATCH 5.15.y] can: gs_usb: increase max interface to U8_MAX
+Date: Mon, 20 Oct 2025 20:25:30 +0800
+Message-ID: <20251020122529.1518396-2-uwu@coelacanthus.name>
 X-Mailer: git-send-email 2.51.1.dirty
-In-Reply-To: <2025102040-unusual-concur-90e9@gregkh>
-References: <2025102040-unusual-concur-90e9@gregkh>
+In-Reply-To: <2025102039-detoxify-trustee-aa22@gregkh>
+References: <2025102039-detoxify-trustee-aa22@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3797; i=uwu@coelacanthus.name; h=from:subject; bh=vYUJ+xGeX8WoNFkyg5K6nyrI2bZw1/G526oTuJhvBH8=; b=owJ4nJvAy8zAJeafov85RWVtBeNptSSGjG+a5+NC5+TMjIpVl/T7mGZ2Lct0t2XtIUGuoHbNy JN9U07ac3WUsjCIcTHIiimy5JWw/OS8dLZ7b8f2Lpg5rEwgQxi4OAXgIryMDEs3HYvtslr9KkJm y0qpBYF/2V4d3vmTRW/RlLhcy+hXiRYM/3MlFGzfKWv0zVysmnb9ypq0kle/Nxjwz7ypef9rxc1 6CU4Ay3RIBQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3797; i=uwu@coelacanthus.name; h=from:subject; bh=Nu7Gs/CwDtCZIt/xiKl+hDBm2H9N19Wurl9kZRgbdes=; b=owJ4nJvAy8zAJeafov85RWVtBeNptSSGjG9alktfbBe+q/Nv8yzxh5y/GZ4pVv/YJfv3W/mrh Rmdpnad4rc7SlkYxLgYZMUUWfJKWH5yXjrbvbdjexfMHFYmkCEMXJwCMJFNkQx/OLr/9Od6bdsy e9uKlZq3JZb2cv/JapLVyO37Yh9pt9LBi+GvoOBvNq2Ly0u/1T6OKjJr2RsqLSDfrhK90vnyvPU duQH8APp1Sl8=
 X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp; fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
 Content-Transfer-Encoding: 8bit
 
@@ -136,10 +136,10 @@ Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
  1 file changed, 11 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 864db200f45e..f39bd429f77d 100644
+index 7dc4fb574e45..33800bb75064 100644
 --- a/drivers/net/can/usb/gs_usb.c
 +++ b/drivers/net/can/usb/gs_usb.c
-@@ -156,10 +156,6 @@ struct gs_host_frame {
+@@ -157,10 +157,6 @@ struct gs_host_frame {
  #define GS_MAX_TX_URBS 10
  /* Only launch a max of GS_MAX_RX_URBS usb requests at a time. */
  #define GS_MAX_RX_URBS 30
@@ -150,7 +150,7 @@ index 864db200f45e..f39bd429f77d 100644
  
  struct gs_tx_context {
  	struct gs_can *dev;
-@@ -190,10 +186,11 @@ struct gs_can {
+@@ -191,10 +187,11 @@ struct gs_can {
  
  /* usb interface struct */
  struct gs_usb {
@@ -163,7 +163,7 @@ index 864db200f45e..f39bd429f77d 100644
  };
  
  /* 'allocate' a tx context.
-@@ -321,7 +318,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+@@ -322,7 +319,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
  	}
  
  	/* device reports out of range channel id */
@@ -172,7 +172,7 @@ index 864db200f45e..f39bd429f77d 100644
  		goto device_detach;
  
  	dev = usbcan->canch[hf->channel];
-@@ -409,7 +406,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+@@ -410,7 +407,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
  	/* USB failure take down all interfaces */
  	if (rc == -ENODEV) {
   device_detach:
@@ -181,7 +181,7 @@ index 864db200f45e..f39bd429f77d 100644
  			if (usbcan->canch[rc])
  				netif_device_detach(usbcan->canch[rc]->netdev);
  		}
-@@ -991,20 +988,22 @@ static int gs_usb_probe(struct usb_interface *intf,
+@@ -993,20 +990,22 @@ static int gs_usb_probe(struct usb_interface *intf,
  	icount = dconf->icount + 1;
  	dev_info(&intf->dev, "Configuring for %d interfaces\n", icount);
  
@@ -208,7 +208,7 @@ index 864db200f45e..f39bd429f77d 100644
  	init_usb_anchor(&dev->rx_submitted);
  
  	usb_set_intfdata(intf, dev);
-@@ -1045,7 +1044,7 @@ static void gs_usb_disconnect(struct usb_interface *intf)
+@@ -1047,7 +1046,7 @@ static void gs_usb_disconnect(struct usb_interface *intf)
  		return;
  	}
  
