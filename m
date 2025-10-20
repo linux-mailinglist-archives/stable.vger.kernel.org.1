@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-188160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E80EBF23F6
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 17:58:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A81DCBF2441
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 17:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01B88189F0DB
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:58:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FB06189FC43
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0219279DB7;
-	Mon, 20 Oct 2025 15:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8591B27A12C;
+	Mon, 20 Oct 2025 15:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VvRasipR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOfrCbL7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598BC2517B9;
-	Mon, 20 Oct 2025 15:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436B722652D;
+	Mon, 20 Oct 2025 15:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760975898; cv=none; b=YzmnxFDCvyb5yeRdT+jM6DAng7PG8XJx/dTuiE6LqEIntasMU1rxJ0AacvD9susLstKDImBviY04qTuC8hw+FytAQ/qsaEZYjT2XoFT/CzTaHZg7H/DRViUFzisoqaQqkEC8m5vYipyNS1UNxGt3j4eJLT9a5Zp8saIPc6sipF8=
+	t=1760975958; cv=none; b=VRGaiwivGFjVHgEDu3PM5KfCILzliVXgHXMLxGmzVoXXx/VchQLCZmjvJ7bPIzrfNHzz0HVi/h5oWXSdJNMdiNY9pGs4a/F94XI9RAe2TH+0m/yKZ9wciX5905pGoKY9LJ/YG3AIzjJNpnodOK6ic19BSAHMBEXjH4J8QdiOGiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760975898; c=relaxed/simple;
-	bh=c1pFx8WKouJ8FJj3ToqXrSrEjMFH54BLR0ELsARARUk=;
+	s=arc-20240116; t=1760975958; c=relaxed/simple;
+	bh=z9AgmlNOJT3LEVbLAQG9gIGGqSSqCri2xopx34BdR7g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BK4kyFvlm9kUSIVB4Jg+eFCCIo2fsTSVnJ3LU9DxpVci5hRQy5WHM0TU2Zv9k7Q74Z3+INalhh+phoBsN92UdVyMBjrXpnPkKRw9ES2tb9yzg19uW2F8hDVwX+OsayvqU4q0Z5XAHg7ACF8T/G5lb+oeugFeLs1GOE+Tq+kPqs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VvRasipR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A484C4CEFE;
-	Mon, 20 Oct 2025 15:58:15 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=YsRLrFO9oZu9XOBHMdcMvWwOYW0NX6eV6ijuSkUSEB4hKdqt7C0kJGgJ9adDrx5S+tdi8lDx/Gf48aDMZR4045eF6G6xCcZPFyckc7ESAJxGv+pDIQ5Aw9oLk59awS7Y5Vwu0lY9v7dr7VStz528n/lUx1qnTNKdMmbaGuE+wtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOfrCbL7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5800DC4CEF9;
+	Mon, 20 Oct 2025 15:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760975897;
-	bh=c1pFx8WKouJ8FJj3ToqXrSrEjMFH54BLR0ELsARARUk=;
+	s=k20201202; t=1760975956;
+	bh=z9AgmlNOJT3LEVbLAQG9gIGGqSSqCri2xopx34BdR7g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VvRasipRZTsQXIgyYOKhcKTqIYGgRXodZ4d8kfXfct1ws2fA5ltN3WFtMw4RiJuzG
-	 77YD/cXjTnqdgq/JezeOxH/HeEM1zD+CeoS+O+KaqnnwOIAvdlW1nj87aPwh6C2x4B
-	 0MSyKwSo8+FSJETqUTV3ypgWzF1M8ah5y58979IaDkTkM+n0H/yfeZANNSZo9xX/yG
-	 acd5h6/wQCMzExGPopD48E10PfZ29vYCNiP3J+QSI8bnkQFfqglc7ygDP7oZvej7Tw
-	 CuNIjW3yNrbJceNpeZrIplXe5pFU3T0LXXlpEkltDu0uBy+htp8izJlP6a4a1/i0qK
-	 UtKk1Q8MMGsuA==
-Message-ID: <a23607ec-e1a2-45b6-bc80-01deec03d6f0@kernel.org>
-Date: Mon, 20 Oct 2025 17:58:12 +0200
+	b=sOfrCbL7Gnlyc2u9qKcuWdhUj2vdfiYwEfbvl/5UGyfTDhRPvasrNjMK7fz+63uIK
+	 W1diSE6ahzcIb7QdDYlAe+oCRxftjjAhSztPcc3iJo7irsVyBTrvyVj5svsUbTQ64s
+	 RgYCLfJUNU6jKWcuM41fahE8xepGaz3MWT065XJYt5jIs/2LmPjYLV1d8gE5s6QcGL
+	 BcEp9c9kT41yT06eHmaBgrKhhQ8wmNRmMK72Zeit7fPVfDRO+9wXO+00/Awl87HCpW
+	 SBRB8eIMIrxrWNLN06YSjQ8XV9eBLNDW9VIFX/AidEE9b3aUu/kxhMXkvmY3lyhQuJ
+	 NbaQjbSftyQaQ==
+Message-ID: <a01bc438-8f27-4bf8-8bbe-05801fd3157a@kernel.org>
+Date: Mon, 20 Oct 2025 17:59:09 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,16 +50,22 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15.y 2/3] arch: back to -std=gnu89 in < v5.18
+Subject: Re: [PATCH 5.4.y 0/5] v5.4: fix build with GCC 15
 Content-Language: en-GB, fr-BE
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
  MPTCP Upstream <mptcp@lists.linux.dev>, Nathan Chancellor
- <nathan@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- Alexey Dobriyan <adobriyan@gmail.com>, Arnd Bergmann <arnd@arndb.de>
-References: <20251017-v5-15-gcc-15-v1-0-da6c065049d7@kernel.org>
- <20251017-v5-15-gcc-15-v1-2-da6c065049d7@kernel.org>
- <2025102015-alongside-kiwi-6f75@gregkh>
+ <nathan@kernel.org>, Kostadin Shishmanov
+ <kostadinshishmanov@protonmail.com>, Jakub Jelinek <jakub@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Alexey Dobriyan <adobriyan@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ "H. Peter Anvin (Intel)" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+ Nathan Chancellor <natechancellor@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+References: <20251017-v5-4-gcc-15-v1-0-6d6367ee50a1@kernel.org>
+ <2025102004-throwaway-compare-75c2@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -105,63 +111,74 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2025102015-alongside-kiwi-6f75@gregkh>
+In-Reply-To: <2025102004-throwaway-compare-75c2@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Greg,
 
-On 20/10/2025 15:30, Greg Kroah-Hartman wrote:
-> On Fri, Oct 17, 2025 at 06:24:01PM +0200, Matthieu Baerts (NGI0) wrote:
->> Recent fixes have been backported to < v5.18 to fix build issues with
->> GCC 5.15. They all force -std=gnu11 in the CFLAGS, "because [the kernel]
->> requests the gnu11 standard via '-std=' in the main Makefile".
+Thank you for your reply!
+
+On 20/10/2025 15:29, Greg Kroah-Hartman wrote:
+> On Fri, Oct 17, 2025 at 07:33:37PM +0200, Matthieu Baerts (NGI0) wrote:
+>> Two backports linked to build issues with GCC 15 have failed in this
+>> version:
 >>
->> This is true for >= 5.18 versions, but not before. This switch to
->> -std=gnu11 has been done in commit e8c07082a810 ("Kbuild: move to
->> -std=gnu11").
+>>   - ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
+>>   - 8ba14d9f490a ("efi: libstub: Use '-std=gnu11' to fix build with GCC 15")
 >>
->> For a question of uniformity, force -std=gnu89, similar to what is done
->> in the main Makefile.
+>> Conflicts have been solved, and described.
 >>
->> Note: the fixes tags below refers to upstream commits, but this fix is
->> only for kernels not having commit e8c07082a810 ("Kbuild: move to
->> -std=gnu11").
+>> After that, this kernel version still didn't build with GCC 15:
 >>
->> Fixes: 7cbb015e2d3d ("parisc: fix building with gcc-15")
->> Fixes: 3b8b80e99376 ("s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS")
->> Fixes: b3bee1e7c3f2 ("x86/boot: Compile boot code with -std=gnu11 too")
->> Fixes: ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
->> Fixes: 8ba14d9f490a ("efi: libstub: Use '-std=gnu11' to fix build with GCC 15")
->> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->> ---
->> Note:
->>   An alternative is to backport commit e8c07082a810 ("Kbuild: move to
->>   -std=gnu11"), but I guess we might not want to do that for stable, as
->>   it might introduce new warnings.
+>>   In file included from include/uapi/linux/posix_types.h:5,
+>>                    from include/uapi/linux/types.h:14,
+>>                    from include/linux/types.h:6,
+>>                    from arch/x86/realmode/rm/wakeup.h:11,
+>>                    from arch/x86/realmode/rm/wakemain.c:2:
+>>   include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+>>      11 |         false   = 0,
+>>         |         ^~~~~
+>>   include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+>>   include/linux/types.h:30:33: error: 'bool' cannot be defined via 'typedef'
+>>      30 | typedef _Bool                   bool;
+>>         |                                 ^~~~
+>>   include/linux/types.h:30:33: note: 'bool' is a keyword with '-std=c23' onwards
+>>   include/linux/types.h:30:1: warning: useless type name in empty declaration
+>>      30 | typedef _Bool                   bool;
+>>         | ^~~~~~~
+>>
+>> I initially fixed this by adding -std=gnu11 in arch/x86/Makefile, then I
+>> realised this fix was already done in an upstream commit, created before
+>> the GCC 15 release and not mentioning the error I had. This is patch 3.
+>>
+>> When I was investigating my error, I noticed other commits were already
+>> backported to stable versions. They were all adding -std=gnu11 in
+>> different Makefiles. In their commit message, they were mentioning
+>> 'gnu11' was picked to use the same as the one from the main Makefile.
+>> But this is not the case in this kernel version. Patch 4 fixes that.
+>>
+>> Finally, I noticed extra warnings I didn't have in v5.10. Patch 5 fixes
+>> that.
 > 
-> I would rather do that, as that would allow us to make things align up
-> and be easier to support over the next two years that this kernel needs
-> to be alive for.  How much work would that entail?
+> 5.4 is only going to be alive for about 1 more month, so I really don't
+> think trying to "downgrade" things here is worth it at all.  Anyone
+> still stuck on this old, obsolete, and very insecure kernel tree isn't
+> going to be attempting to build it using the bleeding edge gcc release :)
 
-Good question. I'm not an expert in this area, but I just did a quick
-test: I backported commit e8c07082a810 ("Kbuild: move to -std=gnu11")
-and its parent commit 4d94f910e79a ("Kbuild: use
--Wdeclaration-after-statement"). A build with 'make allyesconfig' and
-GCC 5.15 looks OK to me, no warnings.
+Fine by me for v5.4. I only suggested these very small patches because I
+had issues with GCC 15 when building v5.15, and I did the small work for
+older kernels.
 
-But when looking a bit around, I noticed these patches have already been
-suggested to be backported to v5.15 in 2023, but they got removed --
-except the doc update, see patch 3/3 -- because they were causing build
-issues with GCC 8 and 12, see:
+Please note that the two last patches are not directly linked to GCC 15:
 
- https://lore.kernel.org/a2fbbaa2-51d2-4a8c-b032-5331e72cd116@linaro.org
+- Patch 4/5 fixes the possible bump to C11 standard for some arch. So if
+I'm not mistaken, it changes the minimal requirements from GCC 4.6 to
+GCC 4.9. Is it not an issue for such old kernel?
+(Note: this patch depends on the parents ones, but can be adapted)
 
-I didn't try to reproduce the issues, but maybe we can re-add them to
-the v5.15 queue, and ask the CIs to test that?
-
-Note that even if we do that, the first patch will still be needed to
-have GCC 15 support in v5.15.
+- Patch 5/5 fixes a warning I saw, but I don't know from which version
+GCC complains about that.
 
 Cheers,
 Matt
