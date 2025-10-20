@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-188142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD1EABF224F
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 17:39:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8124EBF2261
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 17:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7D89C34DA68
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:39:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 340171895396
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F49D86352;
-	Mon, 20 Oct 2025 15:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C991DE3A5;
+	Mon, 20 Oct 2025 15:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ghuFIDao"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y6VsKSNq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E503DDC5
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 15:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5618186352
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 15:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760974756; cv=none; b=YIAerN+kGgOHCPyyuM1K6j2aFRnKMyfrJ2ldkzKABvjrBht+axlOfoRv0HLNyx/edjJiVuOf0qq4+sqfapst73EgR6X+sjc1hoSvtOfakHSHSekqWyO6TRTlln8l2NhS0xKg/gZWKQmY19O0SM5eOD21+JEnAEhVw+lBglpmiQM=
+	t=1760974800; cv=none; b=sGikG22gkZOkOE3MvsuanAlf1SdmfuUHm3koGTf3Y1WYEA7FIJT+8COJh4YdGy7PHt/IUjJisIx40Umq4iikOTscuJpAbIHKoo6PabacG4Vh4Fmzcf7roeX4aH5kpVTkbZWMpyEIeMflfOL+GtZhepMbTv+2eesWFO2zCBf/K3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760974756; c=relaxed/simple;
-	bh=GbuxPeQMwS9oGj90SYOXOii9DWOCB/BYzH4BmGZssnE=;
+	s=arc-20240116; t=1760974800; c=relaxed/simple;
+	bh=/XAq4jJsST6dPwiqKxpDhP6WKE5JhVyYuruRqTuPzfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ryhw0wD6fHH0V1ltzLhGRtxMxbhbdRX1+0zBUjqfSnfdg3tCphX27Pyjhl5bC2GQ7Lh5L8zNZaFea5DubhEgO2+4t8GvGyVRTTP7AZziOJAQTfBlb1ZXa19TwaEVMROybhbeSlwvSo8hWM5d1xRLIrjoznJ/LX2oNSiKYVFFcLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ghuFIDao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4005CC4CEF9;
-	Mon, 20 Oct 2025 15:39:14 +0000 (UTC)
+	 MIME-Version; b=HU+10MnGNrut65bwUqvSyWgk5a4bT3yQoMZJae2oo2D+BXg+dQJ8e3aEtDjeTwLRKXqVrrMseIUGQ1QLww3s9SMaMki4Eui8wlR64/eKSq9NQZpe7/OD+eJACCuqdas22p1FYRyQ8fpHW2UpI/EI1dnDl80UQprC+x6YA0N3DHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y6VsKSNq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A6CC4CEF9;
+	Mon, 20 Oct 2025 15:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760974754;
-	bh=GbuxPeQMwS9oGj90SYOXOii9DWOCB/BYzH4BmGZssnE=;
+	s=k20201202; t=1760974799;
+	bh=/XAq4jJsST6dPwiqKxpDhP6WKE5JhVyYuruRqTuPzfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghuFIDao5bRaHw4TQts6ItytJlGbCdh2IM2643jFXw1h2PJicrtczAnqY0+zmIqx5
-	 FgBajXH48nkIz4B6jNojcp0Marlbjx+L+rdKfpHMd1LSTQWdjJm0tb4+EdrCgRo83L
-	 ze2wAG+s4RAlGzpkpxJIhiaE6tHPPRn8RDv+KDgOi+1gcet+L3hneFhkC820eX2Boi
-	 UmTm9wt8GNvbyxTm0M0M5zm8BGAwCgdlMayN2rtu5G9btQDKmbkRucOWOzkjtfxM9v
-	 f3/DHoFv9G5FH1q5l7DAUz/kWb1e5AaYr3nC5AhzUWGBZCMZDVuZlErCMr5Aq8WMNS
-	 oqFovTVoCcGvQ==
+	b=Y6VsKSNqyr1/UYhb1IoORe+/cwiRSjUNorxQ/Cigc8EFf4XX5U/O5ul6lB32y+aKb
+	 kUljJ/OS7QYumyNgiLxqzUERM45y9B3NcnSl/I7FDlrNEGUGrcbN1lUSruYL5x+wxa
+	 6TRgjUbiyCu7bfGSIR2ILZdLSi9DIh7HfQM4EzjwEFfm5g54zZtdXCvSoUKnqNNgjq
+	 3q9QKbLX49bEwmN4uBenLbW5uFD3BnrjHZT17IPtWGPla0V75OSzb2lY+/p61wdYrb
+	 NKl6hIU7yyzLw+brc4tCzWQhcyP+mwx8lj/u/LFAN3fD3BAmYG7FwHU+8gpTBlIy+0
+	 5y98RR5tan3Cw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Xiao Liang <shaw.leon@gmail.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] padata: Reset next CPU when reorder sequence wraps around
-Date: Mon, 20 Oct 2025 11:39:11 -0400
-Message-ID: <20251020153911.1821042-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] padata: Reset next CPU when reorder sequence wraps around
+Date: Mon, 20 Oct 2025 11:39:57 -0400
+Message-ID: <20251020153957.1821339-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101650-dreamless-dry-49d5@gregkh>
-References: <2025101650-dreamless-dry-49d5@gregkh>
+In-Reply-To: <2025101651-unlimited-rippling-daa6@gregkh>
+References: <2025101651-unlimited-rippling-daa6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,14 +74,14 @@ Fixes: 6fc4dbcf0276 ("padata: Replace delayed timer with immediate workqueue in 
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ applied fix in padata_find_next() instead of padata_reorder() ]
+[ moved fix from padata_reorder() to padata_find_next() and adapted cpumask_next_wrap() to 4-argument signature ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  kernel/padata.c | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/padata.c b/kernel/padata.c
-index b3f79f23060c1..d49f97abe086f 100644
+index b443e19e64cf8..5453f57509067 100644
 --- a/kernel/padata.c
 +++ b/kernel/padata.c
 @@ -282,7 +282,11 @@ static struct padata_priv *padata_find_next(struct parallel_data *pd,
