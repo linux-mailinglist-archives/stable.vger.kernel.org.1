@@ -1,123 +1,128 @@
-Return-Path: <stable+bounces-187936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A4BBEFBC0
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 09:48:49 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88535BEFC38
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 09:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C2843B64A2
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 07:48:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 47FE84EF727
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 07:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F05E2E1C54;
-	Mon, 20 Oct 2025 07:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0032E2DD4;
+	Mon, 20 Oct 2025 07:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b="I2K0FfsJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tN+6ciS3"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8842E03E6;
-	Mon, 20 Oct 2025 07:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760946524; cv=pass; b=hPtgDoEezTEiNoJ4tEGYsXVc9MKSnZMy0du62n+kLie7X3Vfz7YM+0xFMuRnFwQbcby60X2NVhmEwxxIoGrvaAv8KHs+PszI/Ro+pA1R09vfSmPKNo+l2RzTgkBtjMJ1NdS25fbcRyn47Be/fmwdVlCuKIyf+fa3YHwbp7O3mVk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760946524; c=relaxed/simple;
-	bh=yizVlvXbz8Es7RJa61rxSIoFAkW0XSoMAY0g09sSWAU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kcphp4vUWqD2Qf7xFmp4iKCLM4q2kNh0fckDJTwj6fclmWGq0gTRka3dMTdBriLaQ1B9fRa5EBEujBdt/+xfga8gGmFd/kDu+F+GUC8kxHaJe4rGnWase8cuSNlac35k+Qb06jZDBvR/2preyXHX78L5R6OZv2lEViFXiNnrEKA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b=I2K0FfsJ; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1760946516; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=hSuXc7b8dPF7zdmfKcabME6hXjM9CNEIJba4gEirKLP0AW9cqPIro7HycKXBE8p5ottioTc6Gwt9mAyvSULf9Umx1DBQjRDg+247vErVeNYg0X47RY+DF2JBr/huDusacya8blIdHi2//5JmK/Ic6NraXKNlDsg8jA1nc7SuHbM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1760946516; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=F7qIvKTzEW6jumALJeFIwOEbUuUhF9KkO1gT88g/dVs=; 
-	b=nOPY2l3Wdjw+eDxZISe9X00uMsclAuq+Iy2h6a/H0EusQ9p+klR61qf2ukPQf/U+1Qp6Qfzq4fLlUZlQYCC0a6mknP9zxjmNbByPNAnTizR4cJOEBGmeeWKaYRQVGx/3tLcr/FaFMv+HlBdj1dlqpIBRCtuyo7pZn2I5tvrL91A=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=benjamin.gaignard@collabora.com;
-	dmarc=pass header.from=<benjamin.gaignard@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760946516;
-	s=zohomail; d=collabora.com; i=benjamin.gaignard@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=F7qIvKTzEW6jumALJeFIwOEbUuUhF9KkO1gT88g/dVs=;
-	b=I2K0FfsJaDyih/+I2MdgM/NIv9WuS/APZoTM0PZ9d6td4W2oCiV2flBljmIVdaA+
-	GZjkagCrutGhEJNfhDjWKI3Su+D/C8aSTzWGjUwwxkW9OptpPiYS1JiM9LiMtORRump
-	S6ECYcmwLEbLX5XpeRB0ienV+xBmgyvaE5RfPygs=
-Received: by mx.zohomail.com with SMTPS id 176094651202838.60314450046212;
-	Mon, 20 Oct 2025 00:48:32 -0700 (PDT)
-Message-ID: <21707335-a45d-4f87-9490-ac2828a5d9e3@collabora.com>
-Date: Mon, 20 Oct 2025 09:48:28 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AB319C542
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 07:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760947061; cv=none; b=ZLULLOGBgH3Zh4JAjMjgjP8vxk/OkzKyFpGCEucBsArUzf0qgjCeYhu8hpcqDI+tgr7u5BakpQlUtv9A+hJSv4Onv9MuOxZbZk2MaDGkkYUSkj3k5cW/3eLUoxO6iCx3eayWGF0fdrZACvvTRHvfYJ6pEjQTlSxXgNSe8nfws/E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760947061; c=relaxed/simple;
+	bh=3wJNvd2XwVxh6zd0AomAqW9G5QlYcnEIn8Jv1SRLE2c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sKg+iNN6/17TJCev07MQvEuboUfChCYr3JV3Q6uvjclGUFZ32R9hBQNS8xCIj735kr6Jw8q4futoV3gQLBXfkmB3ClKg6e5O5+VCyViX0qT8NBQguGzwSGgMGGUvwVXtu5Nr+tEG96vw16pwDFZNQOhdaS45Od8KqdQ0inlo5Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tN+6ciS3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502C2C4CEF9;
+	Mon, 20 Oct 2025 07:57:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760947060;
+	bh=3wJNvd2XwVxh6zd0AomAqW9G5QlYcnEIn8Jv1SRLE2c=;
+	h=Subject:To:Cc:From:Date:From;
+	b=tN+6ciS3X0f2A0rl7WIVQi6D9Hk9IL1ctJLP5tyKYxA0zIuYR+RTssDAJjrejuqJb
+	 KbDgJdAFvAxtGYfCC4Hob81rhBlGs+Ny5qDH7gGZCSjrBo21JOXf66gSxomKrcF6O1
+	 kip0FUZpq5gbTsag0MX9edWz823OuimKfjgM8e5A=
+Subject: FAILED: patch "[PATCH] vfs: Don't leak disconnected dentries on umount" failed to apply to 6.12-stable tree
+To: jack@suse.cz,brauner@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 20 Oct 2025 09:57:38 +0200
+Message-ID: <2025102038-hash-smashing-4b29@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: videobuf2: forbid create_bufs/remove_bufs when
- legacy fileio is active
-To: Hans Verkuil <hverkuil+cisco@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Tomasz Figa <tfiga@chromium.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
- Hans Verkuil <hverkuil@kernel.org>, stable@vger.kernel.org
-References: <CGME20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d@eucas1p2.samsung.com>
- <20251016111154.993949-1-m.szyprowski@samsung.com>
- <36cfec0a-3717-4b0e-adc0-6887e6b58f44@collabora.com>
- <84133573-986d-4cc8-8147-246f0da34640@samsung.com>
- <1f2748a5-1955-48dd-93e4-69e032d895e0@kernel.org>
-Content-Language: en-US
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-In-Reply-To: <1f2748a5-1955-48dd-93e4-69e032d895e0@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-Le 20/10/2025 à 09:39, Hans Verkuil a écrit :
-> On 20/10/2025 09:34, Marek Szyprowski wrote:
->> On 20.10.2025 09:11, Benjamin Gaignard wrote:
->>> Le 16/10/2025 à 13:11, Marek Szyprowski a écrit :
->>>> create_bufs and remove_bufs ioctl calls manipulate queue internal buffer
->>>> list, potentially overwriting some pointers used by the legacy fileio
->>>> access mode. Simply forbid those calls when fileio is active to protect
->>>> internal queue state between subsequent read/write calls.
->>> Hi Marek,
->>>
->>> I may be wrong but using fileio API and create/remove API at the same
->>> time
->>> sound incorrect from application point of view, right ? If that not the
->>> case maybe we should also add a test in v4l2-compliance.
->> Definitely that's incorrect and v4l2-core must forbid such calls. The
->> standard reqbufs/qbuf/dqbuf API is also forbidden. Extending
->> v4l2-compliance tools is probably a good idea.
-> Yes, please! A patch is welcome.
->
->   I also wonder if its a
->> good time to add a kernel option to completely disable legacy fileio
->> access mode, as it is not really needed for most of the systems nowadays.
-> No, that will break applications. Using read() is very common (and convenient!)
-> for MPEG encoders such as the cx18 driver.
->
-> The fileio code is not blocking any new development, it's just there for those
-> drivers were it makes sense.
->
-> Regards,
->
-> 	Hans
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-I wonder if this patch in useful because when calling vb2_ioctl_create_bufs()
-it already check in vb2_verify_memory_type() if fileio is used or not.
+To reproduce the conflict and resubmit, you may use the following commands:
 
->>   > ...
->>
->> Best regards
->
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 56094ad3eaa21e6621396cc33811d8f72847a834
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102038-hash-smashing-4b29@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 56094ad3eaa21e6621396cc33811d8f72847a834 Mon Sep 17 00:00:00 2001
+From: Jan Kara <jack@suse.cz>
+Date: Thu, 2 Oct 2025 17:55:07 +0200
+Subject: [PATCH] vfs: Don't leak disconnected dentries on umount
+
+When user calls open_by_handle_at() on some inode that is not cached, we
+will create disconnected dentry for it. If such dentry is a directory,
+exportfs_decode_fh_raw() will then try to connect this dentry to the
+dentry tree through reconnect_path(). It may happen for various reasons
+(such as corrupted fs or race with rename) that the call to
+lookup_one_unlocked() in reconnect_one() will fail to find the dentry we
+are trying to reconnect and instead create a new dentry under the
+parent. Now this dentry will not be marked as disconnected although the
+parent still may well be disconnected (at least in case this
+inconsistency happened because the fs is corrupted and .. doesn't point
+to the real parent directory). This creates inconsistency in
+disconnected flags but AFAICS it was mostly harmless. At least until
+commit f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
+which removed adding of most disconnected dentries to sb->s_anon list.
+Thus after this commit cleanup of disconnected dentries implicitely
+relies on the fact that dput() will immediately reclaim such dentries.
+However when some leaf dentry isn't marked as disconnected, as in the
+scenario described above, the reclaim doesn't happen and the dentries
+are "leaked". Memory reclaim can eventually reclaim them but otherwise
+they stay in memory and if umount comes first, we hit infamous "Busy
+inodes after unmount" bug. Make sure all dentries created under a
+disconnected parent are marked as disconnected as well.
+
+Reported-by: syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com
+Fixes: f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+
+diff --git a/fs/dcache.c b/fs/dcache.c
+index a067fa0a965a..035cccbc9276 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -2557,6 +2557,8 @@ struct dentry *d_alloc_parallel(struct dentry *parent,
+ 	spin_lock(&parent->d_lock);
+ 	new->d_parent = dget_dlock(parent);
+ 	hlist_add_head(&new->d_sib, &parent->d_children);
++	if (parent->d_flags & DCACHE_DISCONNECTED)
++		new->d_flags |= DCACHE_DISCONNECTED;
+ 	spin_unlock(&parent->d_lock);
+ 
+ retry:
+
 
