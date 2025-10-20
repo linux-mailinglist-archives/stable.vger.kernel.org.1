@@ -1,121 +1,149 @@
-Return-Path: <stable+bounces-187927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DCDBEF573
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 07:02:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B6FBEF5DB
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 07:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88DF24EB374
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 05:02:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C079B3B5261
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 05:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C062BE034;
-	Mon, 20 Oct 2025 05:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27C22C21DA;
+	Mon, 20 Oct 2025 05:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/3ujguI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VpY6c1/I"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC7518C26;
-	Mon, 20 Oct 2025 05:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3874145355;
+	Mon, 20 Oct 2025 05:38:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760936536; cv=none; b=arAASpRJ379iByaYBIZ8fGY6tmjhOPSkVaHEE2VodufC59U4usUMEWGNXt+5AbP57sfY3ccxfLU68uuFTriMAWmFyEtJ2fuFXLTOHILVM6W6yY65EoXoK+CSgYyxxhyxJ6HZ7LzapIxI0sSLM65jARU6/GNJsQTRw84j4LXdvQo=
+	t=1760938699; cv=none; b=tbYN36MGbLQgdlkOqQfGJBecNdVCV6kb1GfLDZYhljdU8iTtjefmZwzJ52iJIEHmt9A+64JT8Vm2tsPG2ArFyqx2qdc9mqvZtFEcbAHpCd7YNSAbEb4sgCBOILKDmM1ebb14mvuyRKOfrtkzc95BzAh0ec2n5rjo6zMBAUkgLZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760936536; c=relaxed/simple;
-	bh=JFWu/tb37fC0mWHoh013DMndU7LT3ziUW19WztFa44E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tE6Q/zj4yMhVLuRIlmSJC/STInIgwq81xAw7iKPIp0pZWrh4QMGjz8MCwhb7HHl2TR3Z2iUJWKA5iC4jQ3K7MEM5MFGr32wOfUPdCEsHcENmVZxF3b2AC5E2OIT8b1ex9Tl4NDQlqs2t9qufYJdK34JDfLfrMa5Y5snC3XMr5Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/3ujguI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A5AC4CEF9;
-	Mon, 20 Oct 2025 05:02:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760936535;
-	bh=JFWu/tb37fC0mWHoh013DMndU7LT3ziUW19WztFa44E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a/3ujguIQyAZl82wbKcI/tCITzC0HRq5Jlef+9KQ1FRwYgGyJAPgi1fgaSs5qryYG
-	 yOy0qkj6MuYOqhIUk16IGRT2iioDUnFG7mEjXU9ujv+8ezAlvLtxrpJgFvLz/ibkF7
-	 fyNPg20MNLUaSNvSXxYoMNNQFpNb8cslledLluqT3EEfNnYDmHHEr7C/ATBlbXQvZj
-	 Nkjk90tnFmIa3DfG1qqh+BJ78GzTMD3PhlUEo0PbflR0xBf606pjmzQnqVpdx1oLOr
-	 FvQbU4688jWrWO2BytpCSKoUQckyhV9GKXjZ62BDI6sMxgnOSi7kaCbd/AZ2Y50gCt
-	 3ALVw+l1jaYwg==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vAi2F-0000000089o-1NrX;
-	Mon, 20 Oct 2025 07:02:19 +0200
-Date: Mon, 20 Oct 2025 07:02:19 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Yong Wu =?utf-8?B?KOWQtOWLhyk=?= <Yong.Wu@mediatek.com>
-Cc: "joro@8bytes.org" <joro@8bytes.org>,
-	"will@kernel.org" <will@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"j@jannau.net" <j@jannau.net>,
-	"vdumpa@nvidia.com" <vdumpa@nvidia.com>,
-	"robin.murphy@arm.com" <robin.murphy@arm.com>,
-	"m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
-	"wens@csie.org" <wens@csie.org>,
-	"thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
-	"robin.clark@oss.qualcomm.com" <robin.clark@oss.qualcomm.com>,
-	"sven@kernel.org" <sven@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: Re: [PATCH v2 06/14] iommu/mediatek: fix device leaks on probe()
-Message-ID: <aPXCW43vFExjkVpq@hovoldconsulting.com>
-References: <20251007094327.11734-1-johan@kernel.org>
- <20251007094327.11734-7-johan@kernel.org>
- <aeec9ee86b63ee892d84ab0232f372bdeccc780f.camel@mediatek.com>
+	s=arc-20240116; t=1760938699; c=relaxed/simple;
+	bh=34fldmSOk8nJAh4latVatdAliKdxeQL60mo7ncKT1OA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l1cGt4NHCNVkyG7oAT7GNsdXdRtN9ZQHxJNzwhQ833+oV34SI/09DWsJXBcNblYMfFdfbzIjyJ17THJhuS+cB3ChmrqjBBPdvCF2VOb+5ntYWvM3jVM0LSfCijidT17kwVdNVPlIREjU55BYKyzce1+w1WAhuO9Pjly5X3egcDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VpY6c1/I; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760938698; x=1792474698;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=34fldmSOk8nJAh4latVatdAliKdxeQL60mo7ncKT1OA=;
+  b=VpY6c1/IlTY5DVddxOwIUc3Msx45rpZIYjHT4HjaQQicmBSSVjCSMXNs
+   473TGjX6/GG7LGVjjMvJpLz1MUx75zvTNz8HuXvBcheSQOdnj5Sefv7rB
+   id4BvPlelJKulmM97Q3ta5ygsHxha8Z8sgW5SUGjc7VHN1UaXwxESFw8C
+   9GuU37csQKzN3ewtS0YWyhqqhAs7dj1yvm4fYG5EYhPB+qOoZOOlMEGOx
+   7IjKYsUSjBwC/TsFYrsebcQZyVnzX2Onk6eL76qGzefxf/qKHD6rnXSqR
+   q3CIcwxC7zDpaf4cHI+UoZ37r8nEaDXf1ZQLMpbv55PlFsRR1fy1uOudp
+   w==;
+X-CSE-ConnectionGUID: JZlWQPb5SgmBVl/b6tMerw==
+X-CSE-MsgGUID: S8Sb6qD4R1mGNtWgV7dzpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11587"; a="62753912"
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
+   d="scan'208";a="62753912"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 22:38:17 -0700
+X-CSE-ConnectionGUID: 3+CThLmvSO6V5/F4GDCApA==
+X-CSE-MsgGUID: RsoVDXakTFCTuMkAqrRqsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
+   d="scan'208";a="214214521"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 22:38:11 -0700
+Message-ID: <13d660ea-9bff-47dc-9cd7-ae74869edc5a@linux.intel.com>
+Date: Mon, 20 Oct 2025 13:34:22 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot ci] Re: Fix stale IOTLB entries for kernel address space
+To: David Hildenbrand <david@redhat.com>, Dave Hansen
+ <dave.hansen@intel.com>,
+ syzbot ci <syzbot+cid009622971eb4566@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, apopple@nvidia.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, iommu@lists.linux.dev, jannh@google.com,
+ jean-philippe@linaro.org, jgg@nvidia.com, joro@8bytes.org,
+ kevin.tian@intel.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
+ mhocko@kernel.org, mingo@redhat.com, peterz@infradead.org,
+ robin.murphy@arm.com, rppt@kernel.org, security@kernel.org,
+ stable@vger.kernel.org, tglx@linutronix.de, urezki@gmail.com,
+ vasant.hegde@amd.com, vbabka@suse.cz, will@kernel.org, willy@infradead.org,
+ x86@kernel.org, yi1.lai@intel.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <68eeb99e.050a0220.91a22.0220.GAE@google.com>
+ <89146527-3f41-4f1e-8511-0d06e169c09e@intel.com>
+ <8cdb459f-f7d1-4ca0-a6a0-5c83d5092cd8@linux.intel.com>
+ <d1a6c65c-6518-4227-8ec3-f2af4f7724ad@redhat.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <d1a6c65c-6518-4227-8ec3-f2af4f7724ad@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aeec9ee86b63ee892d84ab0232f372bdeccc780f.camel@mediatek.com>
 
-On Sat, Oct 18, 2025 at 06:54:39AM +0000, Yong Wu (吴勇) wrote:
-> On Tue, 2025-10-07 at 11:43 +0200, Johan Hovold wrote:
-
-> > Make sure to drop the references taken to the larb devices during
-> > probe on probe failure (e.g. probe deferral) and on driver unbind.
-> > 
-> > Note that commit 26593928564c ("iommu/mediatek: Add error path for
-> > loop
-> > of mm_dts_parse") fixed the leaks in a couple of error paths, but the
-> > references are still leaking on success and late failures.
-
-> > @@ -1216,13 +1216,17 @@ static int mtk_iommu_mm_dts_parse(struct
-> > device *dev, struct component_match **m
-> >                 platform_device_put(plarbdev);
-> >         }
-> > 
-> > -       if (!frst_avail_smicomm_node)
-> > -               return -EINVAL;
-> > +       if (!frst_avail_smicomm_node) {
-> > +               ret = -EINVAL;
-> > +               goto err_larbdev_put;
+On 10/18/25 01:10, David Hildenbrand wrote:
+> On 16.10.25 10:00, Baolu Lu wrote:
+>> On 10/16/25 00:25, Dave Hansen wrote:
+>>> Here's the part that confuses me:
+>>>
+>>> On 10/14/25 13:59, syzbot ci wrote:
+>>>> page last free pid 5965 tgid 5964 stack trace:
+>>>>    reset_page_owner include/linux/page_owner.h:25 [inline]
+>>>>    free_pages_prepare mm/page_alloc.c:1394 [inline]
+>>>>    __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2906
+>>>>    pmd_free_pte_page+0xa1/0xc0 arch/x86/mm/pgtable.c:783
+>>>>    vmap_try_huge_pmd mm/vmalloc.c:158 [inline]
+>>> ...
+>>>
+>>> So, vmap_try_huge_pmd() did a pmd_free_pte_page(). Yet, somehow, the PMD
+>>> stuck around so that it *could* be used after being freed. It _looks_
+>>> like pmd_free_pte_page() freed the page, returned 0, and made
+>>> vmap_try_huge_pmd() return early, skipping the pmd pmd_set_huge().
+>>>
+>>> But I don't know how that could possibly happen.
+>>
+>> The reported issue is only related to this patch:
+>>
+>> - [PATCH v6 3/7] x86/mm: Use 'ptdesc' when freeing PMD pages
+>>
+>> It appears that the pmd_ptdesc() helper can't be used directly here in
+>> this patch. pmd_ptdesc() retrieves the page table page that the PMD
+>> entry resides in:
+>>
+>> static inline struct page *pmd_pgtable_page(pmd_t *pmd)
+>> {
+>>           unsigned long mask = ~(PTRS_PER_PMD * sizeof(pmd_t) - 1);
+>>           return virt_to_page((void *)((unsigned long) pmd & mask));
+>> }
+>>
+>> static inline struct ptdesc *pmd_ptdesc(pmd_t *pmd)
+>> {
+>>           return page_ptdesc(pmd_pgtable_page(pmd));
+>> }
+>>
+>> while, in this patch, we need the page descriptor that a pmd entry
+>> points to.
 > 
-> There already is a "platform_device_put(plarbdev);" at the end of "for"
-> loop, then no need put_device for it outside the "for" loop or outside
-> this function?
+> Ah. But that's just pointing at a leaf page table, right?
 
-You're right, thanks for catching that.
+Yes, that points to a leaf page table.
 
-But this means that we have an existing potential use-after-free as if,
-for example, the driver probe defers we would put the reference to any
-previously looked up larbs twice.
+These two helpers are called in vmap_try_huge_pmd/pud() to clean up the
+low-level page tables and make room for pmd/pud_set_huge(). The huge
+page entry case shouldn't go through these paths; otherwise, the code is
+already broken.
 
-I've just sent a v3 which fixes this by dropping the
-platform_device_put() after successful lookup as it is expected that the
-driver keeps the references while it uses the larb devices:
-
-	https://lore.kernel.org/lkml/20251020045318.30690-1-johan@kernel.org/
-
-Johan
+Thanks,
+baolu
 
