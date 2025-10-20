@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-188198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6D3BF2698
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:27:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCCFBF279D
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFF59189512E
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:27:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C992A3A4D03
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3BF287505;
-	Mon, 20 Oct 2025 16:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D82C320A15;
+	Mon, 20 Oct 2025 16:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="haFXT3u+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AD5wRAdU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE6F26FA5E
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C28031BCAB
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760977646; cv=none; b=DStI+299rV1zaUNvjPAci3JBA68z4untxJBPmakCvNZU7ZBDfnWS+dvyIAQaL3byvUp+XZQ0iDKtfDhT2C1vj1uvG0hf79GNmIq+4pD2IbfpQolICo6HOicFJ2EwieCpZoLG4fm217nOyyvh50rcYkB4QG6ePnWJv+lKsoOaN00=
+	t=1760978338; cv=none; b=TZsdleDNjVdF/bbCywaZnvPeDNK7fkadPr1WapMn7H9B8DyDizYPLJYN5ZGtMTD41xYhYTu1vxCVR+HFDHM3wRePoJTfCYNy/Vjndq3i550QCh+K6vv/K/9ZkjcjUTPhIYL/EB0V1w0ZcIxfl+ExH3EnMoB0XrURFYPOzKf5f8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760977646; c=relaxed/simple;
-	bh=+6bEQfqPcmHpYswJ1yDmWgE0Pu/wjYoN+9CiAlnCLYQ=;
+	s=arc-20240116; t=1760978338; c=relaxed/simple;
+	bh=/D3C2kDuMV6cEUux+P20+5500Bg5eCY4bYCWcJpAMtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oh2Rav3ebTLb6ZPv7A5EMAckgCOC80PzMvVgetPJ61qiwzb6twpSH1R3RCrrvSEG2rHxc+LOl9ugpvmpYV8ucn8Yn2plMk7f2A4ftTG0am7jTn1Frw+dQnUXJPutV1qyk4uctgvLHYBm+fZl7gv0qHqCHh1Rjl3fg8kyxF3PllY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=haFXT3u+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FD6C4CEF9;
-	Mon, 20 Oct 2025 16:27:24 +0000 (UTC)
+	 MIME-Version; b=iMIDybizOM5WvNyeGe0Krl2fDRB8wVJWiAQIq++V9uFtosOcXOsDjUnGgxYr2OMLVbHPS2bfILSjDYjj0yWq+7jYHNOTow+nZwufN3XP2BEfEpOK89z5mwJIS+gmaV2U3w6K7Fhusy0cztkDI5kcOzAzqDbgO3h9rsePGcdf5XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AD5wRAdU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB8EC4CEF9;
+	Mon, 20 Oct 2025 16:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760977645;
-	bh=+6bEQfqPcmHpYswJ1yDmWgE0Pu/wjYoN+9CiAlnCLYQ=;
+	s=k20201202; t=1760978337;
+	bh=/D3C2kDuMV6cEUux+P20+5500Bg5eCY4bYCWcJpAMtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=haFXT3u+i6qBcrtePpH6KQo+6vKX/m1hlSlRbKjTRfInX7f9rxQByJfQ1ZmRP14Fm
-	 9yRduRAsAEiLZk3pbq9fP4tJmEyBcwMGOHkXLe3piCHUIxvPlZFaPVfL60ijSTEsXp
-	 nUdRhkQ2lpCAYngaiAh16tBvtpaylZr4Zm009anKgqUA+biu10zixIMNH1dtxAT9fZ
-	 L3LmERadmvl5aJ530j5P1qtqxDAl7fshosC0hNG3Z7JnT3Jq596NjlYcFQIwTds/yQ
-	 apjONiEqyXzlwBd9XOKoDlHcrJznMGqCQvSwTSewwz74di5xamrpDKhOWfb2UQmk+W
-	 FJkTWUteEZmEg==
+	b=AD5wRAdUmbI1NS99dTPPoXsNmbi7AeAFCAAno9NE1jaDcbZE0BUPaOEAue45J02j2
+	 zRVQyGXraZgumNBtDqIOIvaeEzKzwmbED9hzypClkuet7IMweDsJX/rMH0H5P243q4
+	 NVHkBRrjYREqjYgKVEcFdi/Tr7ntARvQ/Qxni1Wem0RD48wlZbrZIkZ5EogM3O8Ymv
+	 PfXe9PPIITPoMytJ6vwAg3Hz2klP/xwcNtsv3S67akgY6Fc5y/xnmddm4ePAU/mkmO
+	 box4V4xqbvgie6cXLSasPwaT+gKXAT9EkTgL3d1RreJMBiIbId7eXzNEzfywVtJgL7
+	 BqWYxdmNtwwfA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Eric Biggers <ebiggers@kernel.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+Cc: Babu Moger <babu.moger@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Reinette Chatre <reinette.chatre@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] KEYS: trusted_tpm1: Compare HMAC values in constant time
-Date: Mon, 20 Oct 2025 12:27:23 -0400
-Message-ID: <20251020162723.1838996-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] x86/resctrl: Refactor resctrl_arch_rmid_read()
+Date: Mon, 20 Oct 2025 12:38:52 -0400
+Message-ID: <20251020163853.1841192-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101624-attitude-destruct-3559@gregkh>
-References: <2025101624-attitude-destruct-3559@gregkh>
+In-Reply-To: <2025102049-machine-domestic-c4b2@gregkh>
+References: <2025102049-machine-domestic-c4b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,67 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Babu Moger <babu.moger@amd.com>
 
-[ Upstream commit eed0e3d305530066b4fc5370107cff8ef1a0d229 ]
+[ Upstream commit 7c9ac605e202c4668e441fc8146a993577131ca1 ]
 
-To prevent timing attacks, HMAC value comparison needs to be constant
-time.  Replace the memcmp() with the correct function, crypto_memneq().
+resctrl_arch_rmid_read() adjusts the value obtained from MSR_IA32_QM_CTR to
+account for the overflow for MBM events and apply counter scaling for all the
+events. This logic is common to both reading an RMID and reading a hardware
+counter directly.
 
-[For the Fixes commit I used the commit that introduced the memcmp().
-It predates the introduction of crypto_memneq(), but it was still a bug
-at the time even though a helper function didn't exist yet.]
+Refactor the hardware value adjustment logic into get_corrected_val() to
+prepare for support of reading a hardware counter.
 
-Fixes: d00a1c72f7f4 ("keys: add new trusted key-type")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-[ changed include from crypto/utils.h to crypto/algapi.h ]
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Link: https://lore.kernel.org/cover.1757108044.git.babu.moger@amd.com
+Stable-dep-of: 15292f1b4c55 ("x86/resctrl: Fix miscount of bandwidth event when reactivating previously unavailable RMID")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/keys/trusted.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/resctrl/monitor.c | 38 ++++++++++++++++-----------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
 
-diff --git a/security/keys/trusted.c b/security/keys/trusted.c
-index 92a14ab82f72f..3ee9749c14fb6 100644
---- a/security/keys/trusted.c
-+++ b/security/keys/trusted.c
-@@ -9,6 +9,7 @@
-  */
+diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
+index 851b561850e0c..b8d0748c4f2db 100644
+--- a/arch/x86/kernel/cpu/resctrl/monitor.c
++++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+@@ -312,24 +312,13 @@ static u64 mbm_overflow_count(u64 prev_msr, u64 cur_msr, unsigned int width)
+ 	return chunks >> shift;
+ }
  
- #include <crypto/hash_info.h>
-+#include <crypto/algapi.h>
- #include <linux/uaccess.h>
- #include <linux/module.h>
- #include <linux/init.h>
-@@ -248,7 +249,7 @@ int TSS_checkhmac1(unsigned char *buffer,
- 	if (ret < 0)
- 		goto out;
+-int resctrl_arch_rmid_read(struct rdt_resource *r, struct rdt_mon_domain *d,
+-			   u32 unused, u32 rmid, enum resctrl_event_id eventid,
+-			   u64 *val, void *ignored)
++static u64 get_corrected_val(struct rdt_resource *r, struct rdt_mon_domain *d,
++			     u32 rmid, enum resctrl_event_id eventid, u64 msr_val)
+ {
+ 	struct rdt_hw_mon_domain *hw_dom = resctrl_to_arch_mon_dom(d);
+ 	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
+-	int cpu = cpumask_any(&d->hdr.cpu_mask);
+ 	struct arch_mbm_state *am;
+-	u64 msr_val, chunks;
+-	u32 prmid;
+-	int ret;
+-
+-	resctrl_arch_rmid_read_context_check();
+-
+-	prmid = logical_rmid_to_physical_rmid(cpu, rmid);
+-	ret = __rmid_read_phys(prmid, eventid, &msr_val);
+-	if (ret)
+-		return ret;
++	u64 chunks;
  
--	if (memcmp(testhmac, authdata, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac, authdata, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kzfree(sdesc);
-@@ -341,7 +342,7 @@ static int TSS_checkhmac2(unsigned char *buffer,
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag1, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
-+	if (crypto_memneq(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
- 		ret = -EINVAL;
- 		goto out;
+ 	am = get_arch_mbm_state(hw_dom, rmid, eventid);
+ 	if (am) {
+@@ -341,7 +330,26 @@ int resctrl_arch_rmid_read(struct rdt_resource *r, struct rdt_mon_domain *d,
+ 		chunks = msr_val;
  	}
-@@ -350,7 +351,7 @@ static int TSS_checkhmac2(unsigned char *buffer,
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag2, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac2, authdata2, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac2, authdata2, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kzfree(sdesc);
+ 
+-	*val = chunks * hw_res->mon_scale;
++	return chunks * hw_res->mon_scale;
++}
++
++int resctrl_arch_rmid_read(struct rdt_resource *r, struct rdt_mon_domain *d,
++			   u32 unused, u32 rmid, enum resctrl_event_id eventid,
++			   u64 *val, void *ignored)
++{
++	int cpu = cpumask_any(&d->hdr.cpu_mask);
++	u64 msr_val;
++	u32 prmid;
++	int ret;
++
++	resctrl_arch_rmid_read_context_check();
++
++	prmid = logical_rmid_to_physical_rmid(cpu, rmid);
++	ret = __rmid_read_phys(prmid, eventid, &msr_val);
++	if (ret)
++		return ret;
++
++	*val = get_corrected_val(r, d, rmid, eventid, msr_val);
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
