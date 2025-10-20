@@ -1,266 +1,113 @@
-Return-Path: <stable+bounces-187994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 576EFBEFFBB
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:36:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15579BF007D
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B74E6188FE56
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:36:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 419E73AB844
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F642EC572;
-	Mon, 20 Oct 2025 08:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1D72EC080;
+	Mon, 20 Oct 2025 08:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VhZ4QVn9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sLghJxFb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DBA2EC08D
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2003C1A4F3C;
+	Mon, 20 Oct 2025 08:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760949353; cv=none; b=Kls+upS/Ql/v+zW8OLKw6M1WFPZVY4pHM+jPknNWuNHMhFf9xRQZTX1NRo0fGLrzsYVj3CNOBhdrP/AoT6TA7PHlTHXFxJoR4JYWu77B6gIulFV/cuuxoUyPlWEIOg2zE9QqNj5Pq4iXv2yWQOaR2UO+kK4z1+scUf0UG8uOmsA=
+	t=1760950332; cv=none; b=VB1dElU5xTqTosZO0WmPX6DCzNC9RBLDit/M2UDN54pMQ4WZchS4xBwRhf+DOzm+8QZsO5bGleTey04TCnsxR+NpZSwXMVJ5u3LjpWnVZsBkGgaE6nbyQJ10ivygL8CbXR7rcQSmpPrjtKtnbL9JtBOC5ss0JqQfMQe9DsqBxDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760949353; c=relaxed/simple;
-	bh=KXiu+5v4UcoRocSgo+bMn+59MlVJLOAB9GTC3B2T+wY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UlaxyqV+oA+Y4xg7MLpocoX+aRJQBNKidIx4vkBd8Y0LUmfkr1qf7ISwmQN+EhSA5oOeUssc2l9zlLVaX/c+998wy/CvKjKWnAzIxPUODI5udyo8xx5sIFcULP6+fd5b/Vs+Ln2BicIncjAhkJ3/0MTDeKFlHwZATS8mt94XN+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VhZ4QVn9; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b5a631b9c82so2646635a12.1
-        for <stable@vger.kernel.org>; Mon, 20 Oct 2025 01:35:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1760949351; x=1761554151; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FX9Zww9O3Jk2h6ADYPcVlunSkVS2QEMfHLussiu3vPU=;
-        b=VhZ4QVn9FuXOpsBid61MR2wZ3i/1wMUrh8tKuiZXWRjxt2k+c/4cULgmcDCXwBlFqM
-         axAct7Uv50PtPhQJg+QTonfKT4+0wM/7u8J71qG6+eoHeh08M1taBuq8Mzc2YnGYpeT2
-         /jyQoxXLzK5yN9+vRPiaKGtncGlNn1iIks1Ce4DB/T7qNFIjVmXObxOo86oV6th4Apaq
-         z13sXlYy97PF58KmnEPvcmaxsVXC6LGMYMInukvLs0iWCF4ZsMW/GfHmRXfDXoNSGQsY
-         cFGdEn6qxSzuLuuvHKDnQJ6ReyhAmmFDhHkHdyp5P2eK3/9+zUrJruzGr7URhoKwig9R
-         C+XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760949351; x=1761554151;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FX9Zww9O3Jk2h6ADYPcVlunSkVS2QEMfHLussiu3vPU=;
-        b=bN2gZh/EKsZk9fpWEm/pg+L16NJ50wcpKvYZHY1dA2g6yZ3RVD6qfp2DxhYykgP3Kv
-         AIBwVtWsl7w4TUR6TiZkzCxEKc+hnQ9m3g5GdXGvQwFgqccSP7Mt93fAkePWX4He/oW8
-         YVeQKgTz5tS5uc5mA5i6/Ldk4yTDNJQN6PYSnSXanrj37g0c9VkLQeq46F2q+cNsbQub
-         6z2naDvX32J4Bnies7AQSPDlDCJZt1k6JeCBzAV74YZHrpIfZdzZq2/oAjU+YYZSFi/8
-         cP+3qg9YL7H2Ox7FhR4KuMtq8ad7I35WDqfFLYPvrBeuatFmDl4GDGAA0wgEPpN8tect
-         FPFA==
-X-Gm-Message-State: AOJu0YzcNo6kuB1XYZdQ9BwzZI22Owgr57wiNLROBSv7pFTRge4IvEHV
-	rWyR2prqp3OZIv6WjMvzUtx1G9k2qTa2KYWWbcicbGMj+ltmPTFYPkbuEpMDU5SjOGdSN9ycLTB
-	TvqI3owJ3LDrG7JiYfFpLMNn8LmKcam3CO6N+yxQmHg==
-X-Gm-Gg: ASbGncvl7of+gmwTSSW+JItMkaOIhagvGLcCuMYQ1aDF6XNhOnMKaE5xgWXOVMC8SnZ
-	vCREJEWgOjSAJvoevcd7bcg6c4lT6sJJMs94GH7EaowkHOKrjqALc8qXezpq1ZJXGjiQgcmIfWF
-	s8oRKENxSJy6n/zx/R/gcu33onN5A9QV+KfJ+6VR2zw766zbHPB4sTr+Sh7JH29aJNlvxbgo4Jy
-	hSYVH49Om6LxtjWBWin7jR4SXzN6Dsp9TZf0R147PhCMal2PtrO/awftkZQhDTqPGGixrWo4NI2
-	PkoT09lHUvmQLJiX8/O/7sQLS76JeZq/EQNuBu7LeUEXu3lNDWKTP3duwCoo
-X-Google-Smtp-Source: AGHT+IFU6oqLPRomRy1wMoIHTNVRaMz6K0vF41c8RKflT+lxT7vnWZwSA1KlnTClNRdxk+a5OsNTaoZrTRoLJTs8c1o=
-X-Received: by 2002:a17:903:1a0e:b0:290:91d2:9315 with SMTP id
- d9443c01a7336-290cb27ec56mr149901045ad.42.1760949351069; Mon, 20 Oct 2025
- 01:35:51 -0700 (PDT)
+	s=arc-20240116; t=1760950332; c=relaxed/simple;
+	bh=dvc6fYAioltejO7peNrfbDi7BiFRZGjjqEdY4mQmXGs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=n5i15/jf5fXH7xiSt5JvMixoP8fmnmd21+UNwLNwvpjYo8UEIvI6tyYSjcZXKyU1E9AIxGrtXxfldDaAzitgvolB47l3xznZkHYph6m1kTuh+KJJZl2bHU48oiTs4wJc4nQgFcpjoepQFwjXwQxZlkxWrRLfUvqqG1RGPYdN40c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sLghJxFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6233C4CEF9;
+	Mon, 20 Oct 2025 08:52:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760950330;
+	bh=dvc6fYAioltejO7peNrfbDi7BiFRZGjjqEdY4mQmXGs=;
+	h=From:Subject:Date:To:Cc:From;
+	b=sLghJxFbbY0pkoeIuiOzWtR6qZbpYUhB4lP2UJeqUKsrJEFjdv6VqehPDyw3TdI91
+	 pWLfq2WMIqIkDCkJWdZVfnXBn76LQ9ci1myy15jJxOmwwax+7HWIoffvofamXrx8bi
+	 S0jcu3TmtmH9KXnh8uHaEzgCIcETUeK3QnMn1ux0UkCOSPM4gcbNjBcM/lHdCTc5x9
+	 UkCDZB2kfytbO3vEjnrvv6n8u3bIEZ40bBqGrDjJTbxDAHI/PCTKjQvOnxop0vvv40
+	 5tNyI5nYRYcFjL/V6Ml7vRThN70ZBaI8Ni6jOThQOyg1g361xj+S4KY20G9gIVNLm+
+	 KB6CVymXdBvJw==
+From: William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH v2 0/3] gpio: idio-16: Fix regmap initialization errors
+Date: Mon, 20 Oct 2025 17:51:43 +0900
+Message-Id: <20251020-fix-gpio-idio-16-regmap-v2-0-ebeb50e93c33@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251017145201.780251198@linuxfoundation.org>
-In-Reply-To: <20251017145201.780251198@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Mon, 20 Oct 2025 14:05:38 +0530
-X-Gm-Features: AS18NWDNViaBt7FwHRCuMSW7fzYxCXS7p9GLBdmfGDKx8T04yDIJQhzU5po7OCg
-Message-ID: <CA+G9fYt4j3TvEtk_LsSUJojecZ2sk13Q_fXGi-ew_zNnii+RgQ@mail.gmail.com>
-Subject: Re: [PATCH 6.17 000/371] 6.17.4-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB/49WgC/4WNwQ6CMAxAf4X07My6CENP/ofhsIwyGpVhh0RD+
+ HenHjx6afJe2r4FEglTgkOxgNDMieOQwWwK8L0bAiluM4PRpkSNVnX8UGHkmH0eWCmhcHWjQlM
+ b3/qycriHfD0K5dXP51PzZaHbPQemn+w5TVGen/qMb/s/NKPSyllvUde6szt9PJMMdNlGCdCs6
+ /oCfGximtQAAAA=
+X-Change-ID: 20251017-fix-gpio-idio-16-regmap-1282cdc56a19
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+ Michael Walle <mwalle@kernel.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, 
+ Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, William Breathitt Gray <wbg@kernel.org>, 
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1493; i=wbg@kernel.org;
+ h=from:subject:message-id; bh=dvc6fYAioltejO7peNrfbDi7BiFRZGjjqEdY4mQmXGs=;
+ b=owGbwMvMwCW21SPs1D4hZW3G02pJDBlff1jmMm64yHxt5w4LP6XA5Iz1V51ld1RwP56s9X0lZ
+ 9bVl6XCHaUsDGJcDLJiiiy95mfvPrikqvHjxfxtMHNYmUCGMHBxCsBEzF4z/NPLKbZlVPJ5KbGJ
+ /VBng6TOFU3fxZy84hfPlh9vVXpxLYGRYfvipiUPIxTfRcobFkvG+q+zirirE+mf8eFp8gaRW/8
+ F2QE=
+X-Developer-Key: i=wbg@kernel.org; a=openpgp;
+ fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
 
-On Fri, 17 Oct 2025 at 20:58, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.17.4 release.
-> There are 371 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 19 Oct 2025 14:50:59 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.4-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+The migration of IDIO-16 GPIO drivers to the regmap API resulted in some
+regressions to the gpio-104-idio-16, gpio-pci-idio-16, and gpio-idio-16
+modules. Specifically, the 104-idio-16 and pci-idio-16 GPIO drivers
+utilize regmap caching and thus must set max_register for their
+regmap_config, while gpio-idio-16 requires fixed_direction_output to
+represent the fixed direction of the IDIO-16 GPIO lines. Fixes for these
+regressions are provided by this series.
 
-[ Apologies for the slight delay in sending the reports, due to the
-long weekend here in India.]
+Link: https://lore.kernel.org/r/cover.1680618405.git.william.gray@linaro.org
+Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nutanix.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+---
+Changes in v2:
+- Pick up Reviewed-by tags
+- Replace Link tags with Closes tags for fixes addressing bug reports
+- Link to v1: https://lore.kernel.org/r/20251017-fix-gpio-idio-16-regmap-v1-0-a7c71080f740@kernel.org
 
-As other reported,
-The riscv builds failed with clang-21 and gcc-14 on the stable rc 6.17.4-rc1
+---
+William Breathitt Gray (3):
+      gpio: 104-idio-16: Define maximum valid register address offset
+      gpio: pci-idio-16: Define maximum valid register address offset
+      gpio: idio-16: Define fixed direction of the GPIO lines
 
-Build regressions: 6.17.4-rc1 riscv pgtable.h:963:21: error:
-redefinition of 'pudp_huge_get_and_clear'
+ drivers/gpio/gpio-104-idio-16.c | 1 +
+ drivers/gpio/gpio-idio-16.c     | 5 +++++
+ drivers/gpio/gpio-pci-idio-16.c | 1 +
+ 3 files changed, 7 insertions(+)
+---
+base-commit: eba11116f39533d2e38cc5898014f2c95f32d23a
+change-id: 20251017-fix-gpio-idio-16-regmap-1282cdc56a19
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Best regards,
+-- 
+William Breathitt Gray <wbg@kernel.org>
 
-## Build errors
-In file included from include/linux/pgtable.h:6,
-                 from include/linux/mm.h:31,
-                 from arch/riscv/kernel/asm-offsets.c:8:
-arch/riscv/include/asm/pgtable.h:963:21: error: redefinition of
-'pudp_huge_get_and_clear'
-  963 | static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
-      |                     ^~~~~~~~~~~~~~~~~~~~~~~
-arch/riscv/include/asm/pgtable.h:946:21: note: previous definition of
-'pudp_huge_get_and_clear' with type 'pud_t(struct mm_struct *, long
-unsigned int,  pud_t *)'
-  946 | static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
-      |                     ^~~~~~~~~~~~~~~~~~~~~~~
-make[3]: *** [scripts/Makefile.build:182:
-arch/riscv/kernel/asm-offsets.s] Error 1
-
-## Build
-* kernel: 6.17.4-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* git commit: 396c6daa5f57fff4f0c5ab890c6bfe6ca31b3bba
-* git describe: v6.17.3-372-g396c6daa5f57
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.17.y/build/v6.17.3-372-g396c6daa5f57
-
-## Test Regressions (compared to v6.17.2-564-g99cf54e7bd2f)
-* riscv, build
-  - clang-21-lkftconfig
-  - gcc-14-allmodconfig
-  - gcc-14-allyesconfig
-  - gcc-14-lkftconfig
-  - gcc-14-lkftconfig-libgpiod
-
-## Metric Regressions (compared to v6.17.2-564-g99cf54e7bd2f)
-
-## Test Fixes (compared to v6.17.2-564-g99cf54e7bd2f)
-
-## Metric Fixes (compared to v6.17.2-564-g99cf54e7bd2f)
-
-## Test result summary
-total: 123725, pass: 104164, fail: 4205, skip: 15356, xfail: 0
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 139 passed, 0 failed
-* arm64: 57 total, 54 passed, 3 failed
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 33 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 39 passed, 1 failed
-* riscv: 25 total, 19 passed, 6 failed
-* s390: 22 total, 22 passed, 0 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 48 passed, 1 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-rust
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
