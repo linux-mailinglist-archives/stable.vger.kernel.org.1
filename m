@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-187983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9248BBEFDE0
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:15:53 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5183BEFDE6
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:16:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 197224EFCE6
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:15:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB9D94E5AE6
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EF02EA17D;
-	Mon, 20 Oct 2025 08:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0462C0F63;
+	Mon, 20 Oct 2025 08:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7sW4JVW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QP6dWQtU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595192EA17F
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793822E3B11
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760948118; cv=none; b=cRaD76I1nkN3u4qwa+gOV45li/5EvbmhSCDRft3quEdlPygDY59VWmrAGYUf2n4dsIEvACT8K8oKGWzw/OsOcFHgbkGeQH68W7JpdxsFtA9vQONsIhtnFKRxEFzKP68gNfABsVZOdcQdrtPKiDsFNywEtJ5y7Wu32+9mKk6GJ4o=
+	t=1760948151; cv=none; b=ggaFFHMM3fp/s6Q1ukhEqeZD1ibHueaD+BGcHn/0sOP9phwwOHms7NlcLBAEVG+kEtbyP/auEKZqS7HFszjNUAsYeDvsap4alLEyghMInbTSrBL/W46GvPl7D1zXIlWBS2us1rfNfO2EXElLG/hwyyPkdBnE2GqREYxt6iNUjAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760948118; c=relaxed/simple;
-	bh=UiQgCENkrChsloLEXK7o0joSWRoSf2K+SPhoViSTbdo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BeUEKskwMquAU6WXnfjHK6G142uqVrXLglfPrwVz6mnuco1sr9l/ROvgt6UGv8KqSfMCYFDbLqmHrDkyyI1+84jciGkUUFpt4Yb7XhSH8Vge2EVH2ycNHfamyMxBwd6Xz2YChZK7SW1ii9QOFQD6uC2taCZYKZun1vC6GXVHHng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7sW4JVW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AA5C4CEF9;
-	Mon, 20 Oct 2025 08:15:17 +0000 (UTC)
+	s=arc-20240116; t=1760948151; c=relaxed/simple;
+	bh=G15GVDPiNNy609jX/klj/fpAYq+mdIRPSv5l0weIW+o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fVdPKtRPHhL7s9bTuObyzgmpJNg2xiGI4Wm6lIrnD/RlyGazBrhHJaOxZUMQ6a4xBCLax/cCi+PEVoSHXZwbVWnPt95P233XlMXPBlmYxfeEAp6b+MynvCCeuOM7rR/zGcTqbXq4vzia5XdZRGY8joBCI4LSQknDO/pQZRHdvYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QP6dWQtU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE083C4CEF9;
+	Mon, 20 Oct 2025 08:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760948117;
-	bh=UiQgCENkrChsloLEXK7o0joSWRoSf2K+SPhoViSTbdo=;
+	s=korg; t=1760948151;
+	bh=G15GVDPiNNy609jX/klj/fpAYq+mdIRPSv5l0weIW+o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=M7sW4JVWagMHqYVhNHw55crJvUnhUYUGFxA1Tlvl+KRh9/Vwcn0UVR1QuDv1D3LSM
-	 /lS7IbseN15ohDycWqm7vr1YnYCnmkWZpKTXajxphGn0b7ShD8Yc1t0rFfMFXGqZHK
-	 F1+0rWMV00BO1PZ9rUoxtg+p52DET8kS60Gh20Qo=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: use atomic functions with memory barriers for vm" failed to apply to 5.4-stable tree
-To: hanguidong02@gmail.com,alexander.deucher@amd.com,felix.kuehling@amd.com
+	b=QP6dWQtU6VjCrCoINWg3J93HMcu1JpvwKZRDUMSTq8WdoBTzTR+1CuDsLDGgjfjwe
+	 d0LhHmviF18+p465mvEYB3LEx1j3F1yS7X/NzYNzPuvV6vrBzOPccLbofkHRsXNXmK
+	 DiCJnjaiiHRet9D8VSnU6XidCmjfrrJaVIOyGUa0=
+Subject: FAILED: patch "[PATCH] drm/xe: Don't allow evicting of BOs in same VM in array of VM" failed to apply to 6.17-stable tree
+To: matthew.brost@intel.com,lucas.demarchi@intel.com,paulo.r.zanoni@intel.com,thomas.hellstrom@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Oct 2025 10:15:12 +0200
-Message-ID: <2025102012-cranberry-chimp-891a@gregkh>
+Date: Mon, 20 Oct 2025 10:15:48 +0200
+Message-ID: <2025102048-unrushed-state-ce5e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6df8e84aa6b5b1812cc2cacd6b3f5ccbb18cda2b
+git cherry-pick -x 7ac74613e5f2ef3450f44fd2127198662c2563a9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102012-cranberry-chimp-891a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102048-unrushed-state-ce5e@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,121 +77,149 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6df8e84aa6b5b1812cc2cacd6b3f5ccbb18cda2b Mon Sep 17 00:00:00 2001
-From: Gui-Dong Han <hanguidong02@gmail.com>
-Date: Wed, 8 Oct 2025 03:43:27 +0000
-Subject: [PATCH] drm/amdgpu: use atomic functions with memory barriers for vm
- fault info
+From 7ac74613e5f2ef3450f44fd2127198662c2563a9 Mon Sep 17 00:00:00 2001
+From: Matthew Brost <matthew.brost@intel.com>
+Date: Thu, 9 Oct 2025 04:06:18 -0700
+Subject: [PATCH] drm/xe: Don't allow evicting of BOs in same VM in array of VM
+ binds
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The atomic variable vm_fault_info_updated is used to synchronize access to
-adev->gmc.vm_fault_info between the interrupt handler and
-get_vm_fault_info().
+An array of VM binds can potentially evict other buffer objects (BOs)
+within the same VM under certain conditions, which may lead to NULL
+pointer dereferences later in the bind pipeline. To prevent this, clear
+the allow_res_evict flag in the xe_bo_validate call.
 
-The default atomic functions like atomic_set() and atomic_read() do not
-provide memory barriers. This allows for CPU instruction reordering,
-meaning the memory accesses to vm_fault_info and the vm_fault_info_updated
-flag are not guaranteed to occur in the intended order. This creates a
-race condition that can lead to inconsistent or stale data being used.
+v2:
+ - Invert polarity of no_res_evict (Thomas)
+ - Add comment in code explaining issue (Thomas)
 
-The previous implementation, which used an explicit mb(), was incomplete
-and inefficient. It failed to account for all potential CPU reorderings,
-such as the access of vm_fault_info being reordered before the atomic_read
-of the flag. This approach is also more verbose and less performant than
-using the proper atomic functions with acquire/release semantics.
-
-Fix this by switching to atomic_set_release() and atomic_read_acquire().
-These functions provide the necessary acquire and release semantics,
-which act as memory barriers to ensure the correct order of operations.
-It is also more efficient and idiomatic than using explicit full memory
-barriers.
-
-Fixes: b97dfa27ef3a ("drm/amdgpu: save vm fault information for amdkfd")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: Paulo Zanoni <paulo.r.zanoni@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6268
+Fixes: 774b5fa509a9 ("drm/xe: Avoid evicting object of the same vm in none fault mode")
+Fixes: 77f2ef3f16f5 ("drm/xe: Lock all gpuva ops during VM bind IOCTL")
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Tested-by: Paulo Zanoni <paulo.r.zanoni@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://lore.kernel.org/r/20251009110618.3481870-1-matthew.brost@intel.com
+(cherry picked from commit 8b9ba8d6d95fe75fed6b0480bb03da4b321bea08)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-index 83020963dfde..a2ca9acf8c4e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -2329,10 +2329,9 @@ void amdgpu_amdkfd_gpuvm_unmap_gtt_bo_from_kernel(struct kgd_mem *mem)
- int amdgpu_amdkfd_gpuvm_get_vm_fault_info(struct amdgpu_device *adev,
- 					  struct kfd_vm_fault_info *mem)
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 027e6ce648c5..f602b874e054 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -2832,7 +2832,7 @@ static void vm_bind_ioctl_ops_unwind(struct xe_vm *vm,
+ }
+ 
+ static int vma_lock_and_validate(struct drm_exec *exec, struct xe_vma *vma,
+-				 bool validate)
++				 bool res_evict, bool validate)
  {
--	if (atomic_read(&adev->gmc.vm_fault_info_updated) == 1) {
-+	if (atomic_read_acquire(&adev->gmc.vm_fault_info_updated) == 1) {
- 		*mem = *adev->gmc.vm_fault_info;
--		mb(); /* make sure read happened */
--		atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
- 	}
- 	return 0;
- }
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-index 93d7ccb7d013..0e5e54d0a9a5 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-@@ -1068,7 +1068,7 @@ static int gmc_v7_0_sw_init(struct amdgpu_ip_block *ip_block)
- 					GFP_KERNEL);
- 	if (!adev->gmc.vm_fault_info)
- 		return -ENOMEM;
--	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
- 
- 	return 0;
- }
-@@ -1290,7 +1290,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
- 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
- 			     VMID);
- 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
--		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
-+		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
- 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
- 		u32 protections = REG_GET_FIELD(status,
- 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
-@@ -1306,8 +1306,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
- 		info->prot_read = protections & 0x8 ? true : false;
- 		info->prot_write = protections & 0x10 ? true : false;
- 		info->prot_exec = protections & 0x20 ? true : false;
--		mb();
--		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
+ 	struct xe_bo *bo = xe_vma_bo(vma);
+ 	struct xe_vm *vm = xe_vma_vm(vma);
+@@ -2843,7 +2843,8 @@ static int vma_lock_and_validate(struct drm_exec *exec, struct xe_vma *vma,
+ 			err = drm_exec_lock_obj(exec, &bo->ttm.base);
+ 		if (!err && validate)
+ 			err = xe_bo_validate(bo, vm,
+-					     !xe_vm_in_preempt_fence_mode(vm), exec);
++					     !xe_vm_in_preempt_fence_mode(vm) &&
++					     res_evict, exec);
  	}
  
- 	return 0;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-index c5e2a2c41e06..e1509480dfc2 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-@@ -1183,7 +1183,7 @@ static int gmc_v8_0_sw_init(struct amdgpu_ip_block *ip_block)
- 					GFP_KERNEL);
- 	if (!adev->gmc.vm_fault_info)
- 		return -ENOMEM;
--	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
- 
- 	return 0;
+ 	return err;
+@@ -2913,14 +2914,23 @@ static int prefetch_ranges(struct xe_vm *vm, struct xe_vma_op *op)
  }
-@@ -1478,7 +1478,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
- 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
- 			     VMID);
- 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
--		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
-+		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
- 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
- 		u32 protections = REG_GET_FIELD(status,
- 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
-@@ -1494,8 +1494,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
- 		info->prot_read = protections & 0x8 ? true : false;
- 		info->prot_write = protections & 0x10 ? true : false;
- 		info->prot_exec = protections & 0x20 ? true : false;
--		mb();
--		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
+ 
+ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
+-			    struct xe_vma_op *op)
++			    struct xe_vma_ops *vops, struct xe_vma_op *op)
+ {
+ 	int err = 0;
++	bool res_evict;
++
++	/*
++	 * We only allow evicting a BO within the VM if it is not part of an
++	 * array of binds, as an array of binds can evict another BO within the
++	 * bind.
++	 */
++	res_evict = !(vops->flags & XE_VMA_OPS_ARRAY_OF_BINDS);
+ 
+ 	switch (op->base.op) {
+ 	case DRM_GPUVA_OP_MAP:
+ 		if (!op->map.invalidate_on_bind)
+ 			err = vma_lock_and_validate(exec, op->map.vma,
++						    res_evict,
+ 						    !xe_vm_in_fault_mode(vm) ||
+ 						    op->map.immediate);
+ 		break;
+@@ -2931,11 +2941,13 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
+ 
+ 		err = vma_lock_and_validate(exec,
+ 					    gpuva_to_vma(op->base.remap.unmap->va),
+-					    false);
++					    res_evict, false);
+ 		if (!err && op->remap.prev)
+-			err = vma_lock_and_validate(exec, op->remap.prev, true);
++			err = vma_lock_and_validate(exec, op->remap.prev,
++						    res_evict, true);
+ 		if (!err && op->remap.next)
+-			err = vma_lock_and_validate(exec, op->remap.next, true);
++			err = vma_lock_and_validate(exec, op->remap.next,
++						    res_evict, true);
+ 		break;
+ 	case DRM_GPUVA_OP_UNMAP:
+ 		err = check_ufence(gpuva_to_vma(op->base.unmap.va));
+@@ -2944,7 +2956,7 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
+ 
+ 		err = vma_lock_and_validate(exec,
+ 					    gpuva_to_vma(op->base.unmap.va),
+-					    false);
++					    res_evict, false);
+ 		break;
+ 	case DRM_GPUVA_OP_PREFETCH:
+ 	{
+@@ -2959,7 +2971,7 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
+ 
+ 		err = vma_lock_and_validate(exec,
+ 					    gpuva_to_vma(op->base.prefetch.va),
+-					    false);
++					    res_evict, false);
+ 		if (!err && !xe_vma_has_no_bo(vma))
+ 			err = xe_bo_migrate(xe_vma_bo(vma),
+ 					    region_to_mem_type[region],
+@@ -3005,7 +3017,7 @@ static int vm_bind_ioctl_ops_lock_and_prep(struct drm_exec *exec,
+ 		return err;
+ 
+ 	list_for_each_entry(op, &vops->list, link) {
+-		err = op_lock_and_prep(exec, vm, op);
++		err = op_lock_and_prep(exec, vm, vops, op);
+ 		if (err)
+ 			return err;
+ 	}
+@@ -3638,6 +3650,8 @@ int xe_vm_bind_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
  	}
  
- 	return 0;
+ 	xe_vma_ops_init(&vops, vm, q, syncs, num_syncs);
++	if (args->num_binds > 1)
++		vops.flags |= XE_VMA_OPS_ARRAY_OF_BINDS;
+ 	for (i = 0; i < args->num_binds; ++i) {
+ 		u64 range = bind_ops[i].range;
+ 		u64 addr = bind_ops[i].addr;
+diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
+index da39940501d8..413353e1c225 100644
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -476,6 +476,7 @@ struct xe_vma_ops {
+ 	/** @flag: signify the properties within xe_vma_ops*/
+ #define XE_VMA_OPS_FLAG_HAS_SVM_PREFETCH BIT(0)
+ #define XE_VMA_OPS_FLAG_MADVISE          BIT(1)
++#define XE_VMA_OPS_ARRAY_OF_BINDS	 BIT(2)
+ 	u32 flags;
+ #ifdef TEST_VM_OPS_ERROR
+ 	/** @inject_error: inject error to test error handling */
 
 
