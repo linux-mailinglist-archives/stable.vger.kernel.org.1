@@ -1,133 +1,126 @@
-Return-Path: <stable+bounces-188111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A51BF1747
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:09:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392F2BF1750
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:10:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B31A3E61C7
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 13:09:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 84D944F50D8
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 13:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABC02FB0BC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50AA30DD2F;
 	Mon, 20 Oct 2025 13:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I8AP8xSf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQ+4/46c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DE12FB084
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 13:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EEE2F83DF
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 13:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760965783; cv=none; b=pNaFR8LxiEdEJHYJgS75RdjXQykaSBLgCogt0TUZEFXZpmBJXH3PP5fkzhw87OfYxPhpN6GgkUMg6iOagKwmNwfQpfF8Ml/s9cHykpni8b19elZtrF21/PjBRgtdVSmnXLC34aoh+i23yn5y/ZiWT6nPgIKStjq7m9ezaAiMINw=
+	t=1760965784; cv=none; b=c+TJz3jgTOZTMsq4BOF+2KxtMlqNwuCO8aG1W3L9FKDSGjb/EZtzKB7YVdoufzNLv1ZKAhrJQ9mtfAM8t2iXITAqiDpE7HuXNogXMZyZVzEh7CKAiyAbfOYinIUaHCok7B62N27F6LLNwIwxaOP6hGm9umqTZIwOILeJZUaLfIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760965783; c=relaxed/simple;
-	bh=ZrADtkXYvPAaOW+eUqadCCJQMVbpmaj2I7irxpdlrRo=;
+	s=arc-20240116; t=1760965784; c=relaxed/simple;
+	bh=w6C7x6wTV/Apo9RBTnJdxy1Qp1wUONocVYfrwqlHzr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YsbP/bNUWTqf+oJUbBc1V80/f89Dd9Xp9SznD6QPGNE1sMOyrn0H/8qQeQXI1HCsSDPWHBySUiaxEsWjIqMZzsYgC1GyI1a+KCr4tShpQz+s7ZJQEud7X881v5W8r7C0+YABLn/6mc7qyojSJ4QJGq5xgnWVpHjUa2Fj08bMH3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I8AP8xSf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7467CC113D0;
-	Mon, 20 Oct 2025 13:09:42 +0000 (UTC)
+	 MIME-Version; b=MctvB3vYRwDswd1iQp0yFm2WnF0w0kyF9FSC0rTzjdaLJ9T76t3v/H2WbRMZRsYvUGPOWzT/nkNVvKGKB0fjG6ro1NEI4AdZl1eUsVceYAV4O/H8XquTVXxOqEELEHbfKW8cRXElrBpIx0bl4HabanCFglNQxXsfWQJpHx1MENA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQ+4/46c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797D0C4CEF9;
+	Mon, 20 Oct 2025 13:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760965783;
-	bh=ZrADtkXYvPAaOW+eUqadCCJQMVbpmaj2I7irxpdlrRo=;
+	s=k20201202; t=1760965784;
+	bh=w6C7x6wTV/Apo9RBTnJdxy1Qp1wUONocVYfrwqlHzr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I8AP8xSfogE/fe6EAFEQzMkwf3FUOVc0TJcBmcTTctKgbWTHstaowHuwn41k2jwnz
-	 pg+TmYZW+9QOeBOuqrDQGNMHdRS+RBs2f6hH2Xp4lPu5m9q48+bEl2RBnuvFkg0wT6
-	 X4aVmuWklUQWeXIZ71nIK6xUDVBRMjLD7lMb2462GGS48Qjkpw9qMRiy0pX95A2WrK
-	 ZU/INZkBq9AHn4ZremI8mAXei10QkgUQSimh+jp+GaX9KVDo3UHlSFraLX0KoMkv7S
-	 leoMzGz0naSjfiJznthmhOArf9EXvWyQUrByOQ6bkzQesKbpovPaTQ/uep/tRQM+sJ
-	 +oCfOX8Kwy6xQ==
+	b=MQ+4/46c1yUvwvf+Rz07rt7dBCjdEDq3ZLzNw0eTVXNYu28mz/ZGaUN5IoA2h0OHx
+	 wbQ6B52L4nvAAUcSSiGyWCXM4TLjAuwATfcTAgLLdG33+KA22Yay0Wsh1nK2V57krb
+	 FS+JWSVlerf0HbIUkWGq8IFw44+YxY/IL6atPGpfe5c+QROGcSxJ1cv3NUjvTjpaI7
+	 9X2oJk2k9m8EG+XWEQYH0UkndBFEaXORxqbpY/p1KiDVf/57AfhnrmDdvn+eDAqkgw
+	 5CMLmmgwoktXDwMCYj0G7rcg0105S9pKAorvikiP4ECjF6TXigDlpmIvM8HMjOZao7
+	 qeN4O+ZxxgpXw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+Cc: Sean Nyekjaer <sean@geanix.com>,
+	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] iio: imu: inv_icm42600: use = { } instead of memset()
-Date: Mon, 20 Oct 2025 09:09:39 -0400
-Message-ID: <20251020130940.1767272-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/2] iio: imu: inv_icm42600: Avoid configuring if already pm_runtime suspended
+Date: Mon, 20 Oct 2025 09:09:40 -0400
+Message-ID: <20251020130940.1767272-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101623-clarify-manhood-adaa@gregkh>
+In-Reply-To: <20251020130940.1767272-1-sashal@kernel.org>
 References: <2025101623-clarify-manhood-adaa@gregkh>
+ <20251020130940.1767272-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: David Lechner <dlechner@baylibre.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit 352112e2d9aab6a156c2803ae14eb89a9fd93b7d ]
+[ Upstream commit 466f7a2fef2a4e426f809f79845a1ec1aeb558f4 ]
 
-Use { } instead of memset() to zero-initialize stack memory to simplify
-the code.
+Do as in suspend, skip resume configuration steps if the device is already
+pm_runtime suspended. This avoids reconfiguring a device that is already
+in the correct low-power state and ensures that pm_runtime handles the
+power state transitions properly.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20250611-iio-zero-init-stack-with-instead-of-memset-v1-16-ebb2d0a24302@baylibre.com
+Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250901-icm42pmreg-v3-3-ef1336246960@geanix.com
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 466f7a2fef2a ("iio: imu: inv_icm42600: Avoid configuring if already pm_runtime suspended")
+[ adjusted context for suspend/resume functions lacking APEX/wakeup support ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c | 5 ++---
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  | 5 ++---
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-index 7a0f5cfd9417f..06ff9c2db04af 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -748,7 +748,8 @@ int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev)
- 	const int8_t *temp;
- 	unsigned int odr;
- 	int64_t ts_val;
--	struct inv_icm42600_accel_buffer buffer;
-+	/* buffer is copied to userspace, zeroing it to avoid any data leak */
-+	struct inv_icm42600_accel_buffer buffer = { };
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+index f955c3d01fef9..cee9dee004a31 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -680,17 +680,15 @@ EXPORT_SYMBOL_GPL(inv_icm42600_core_probe);
+ static int __maybe_unused inv_icm42600_suspend(struct device *dev)
+ {
+ 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
+-	int ret;
++	int ret = 0;
  
- 	/* parse all fifo packets */
- 	for (i = 0, no = 0; i < st->fifo.count; i += size, ++no) {
-@@ -767,8 +768,6 @@ int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev)
- 			inv_icm42600_timestamp_apply_odr(ts, st->fifo.period,
- 							 st->fifo.nb.total, no);
+ 	mutex_lock(&st->lock);
  
--		/* buffer is copied to userspace, zeroing it to avoid any data leak */
--		memset(&buffer, 0, sizeof(buffer));
- 		memcpy(&buffer.accel, accel, sizeof(buffer.accel));
- 		/* convert 8 bits FIFO temperature in high resolution format */
- 		buffer.temp = temp ? (*temp * 64) : 0;
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-index 4fb796e11486f..aad8899ef8737 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -760,7 +760,8 @@ int inv_icm42600_gyro_parse_fifo(struct iio_dev *indio_dev)
- 	const int8_t *temp;
- 	unsigned int odr;
- 	int64_t ts_val;
--	struct inv_icm42600_gyro_buffer buffer;
-+	/* buffer is copied to userspace, zeroing it to avoid any data leak */
-+	struct inv_icm42600_gyro_buffer buffer = { };
+ 	st->suspended.gyro = st->conf.gyro.mode;
+ 	st->suspended.accel = st->conf.accel.mode;
+ 	st->suspended.temp = st->conf.temp_en;
+-	if (pm_runtime_suspended(dev)) {
+-		ret = 0;
++	if (pm_runtime_suspended(dev))
+ 		goto out_unlock;
+-	}
  
- 	/* parse all fifo packets */
- 	for (i = 0, no = 0; i < st->fifo.count; i += size, ++no) {
-@@ -779,8 +780,6 @@ int inv_icm42600_gyro_parse_fifo(struct iio_dev *indio_dev)
- 			inv_icm42600_timestamp_apply_odr(ts, st->fifo.period,
- 							 st->fifo.nb.total, no);
+ 	/* disable FIFO data streaming */
+ 	if (st->fifo.on) {
+@@ -722,10 +720,13 @@ static int __maybe_unused inv_icm42600_resume(struct device *dev)
+ 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
+ 	struct inv_icm42600_timestamp *gyro_ts = iio_priv(st->indio_gyro);
+ 	struct inv_icm42600_timestamp *accel_ts = iio_priv(st->indio_accel);
+-	int ret;
++	int ret = 0;
  
--		/* buffer is copied to userspace, zeroing it to avoid any data leak */
--		memset(&buffer, 0, sizeof(buffer));
- 		memcpy(&buffer.gyro, gyro, sizeof(buffer.gyro));
- 		/* convert 8 bits FIFO temperature in high resolution format */
- 		buffer.temp = temp ? (*temp * 64) : 0;
+ 	mutex_lock(&st->lock);
+ 
++	if (pm_runtime_suspended(dev))
++		goto out_unlock;
++
+ 	ret = inv_icm42600_enable_regulator_vddio(st);
+ 	if (ret)
+ 		goto out_unlock;
 -- 
 2.51.0
 
