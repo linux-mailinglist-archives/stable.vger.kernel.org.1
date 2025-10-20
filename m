@@ -1,73 +1,223 @@
-Return-Path: <stable+bounces-188041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5B6BF0ECE
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 13:52:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80915BF1293
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:27:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB8A34E7E60
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 11:52:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FA923A4154
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D626D2F7ACB;
-	Mon, 20 Oct 2025 11:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417712E9737;
+	Mon, 20 Oct 2025 12:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCt9k9zR"
+	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="DeYUQ9XI";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eWHTC+UY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78142354ADC
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 11:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFB82FD7B2
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760961171; cv=none; b=l61rkiABkWTo5xqRzIPsItsnu7Fz8cN7DgLdnDoX2xpKg3LqnOF+dfVjjjSmKWaBYaCLhK4I2hLjgxCo1PtsFCQX75wwxVPsw0DGyWoLAoGwXR4zcOOjxt+cYmmnOqkit/FfNQSDD349j2OWLos+/fDfIcHzDy3ZvC1Jop9wU3I=
+	t=1760962999; cv=none; b=UZ3nNAScgMNrDONP0BqkyjcZh8ivdzV4aiOGZ5GBv4Nf7AzSSkOcMeA7Zr+lXEjTBAXJW+voUMln56IvSC/ALPJaMXeTwU9jM8AjCmyPkMil8Zrdok1wQrulv9w036m7DTBthpXcDH1pwyPRVOTyPhcFo6KhRgCf9uGErEVKBck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760961171; c=relaxed/simple;
-	bh=sNyVM3UVsWwBR9cmuV5KYorFmACrf/906bSqRQY7KTA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rktqylfc3Ahxfz3UtcdMMely3n1mnJNvw4I2zL32W3ogg2eQJrQrXbrMU2wouf/SD/L2lhTTW5vHzx05IXNsX/TF5vKoe9Sevx/iPJ9Wmlxr1Y25OOYXrnmE6OhC8k75aT42Z9dCiEYSV0eBsV9HlY/t5oxP6eIfhgw1fQE3Ia4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCt9k9zR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B3FC4CEF9;
-	Mon, 20 Oct 2025 11:52:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760961171;
-	bh=sNyVM3UVsWwBR9cmuV5KYorFmACrf/906bSqRQY7KTA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gCt9k9zRBT6HLwg64SgY3+4hNkmU+4WhK3r6gW0j2n9U3GaKkHRKw40ijOocf4bbM
-	 GYiXkONVomTpsspzmOY73xpgLY6HCIBxAnJjp9EFXgOt7UeHHaOGDUgOHsjaWjPOXV
-	 g1RvEURXmqdUWQEA52vD4n7s5jxqNzltFSlRpkrM=
-Date: Mon, 20 Oct 2025 13:52:48 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: carnil@debian.org, kevin@xf.ee, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] Revert "io_uring/rw: drop -EOPNOTSUPP
- check in" failed to apply to 6.12-stable tree
-Message-ID: <2025102041-borax-livable-24e3@gregkh>
-References: <2025102039-bonelike-vocation-0372@gregkh>
- <6d07f9bb-5c73-4e17-8292-927257867c83@kernel.dk>
+	s=arc-20240116; t=1760962999; c=relaxed/simple;
+	bh=jHtAmnzRynfs4uM9im/cLEeXLg18k865eeiIWxwWuO4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tPhji7N5cmG4d/aC9zOZIndkvWlZzTIg9jTmnCOVGIueu5FqeNs7RedkRb3i0qV0/J+rpVPMdZ32dCX0ktvr7KgNZzGMpKsXbye5XjSnu1zHPdfRfcf/fNky7PTa0XAdRpyAzooSwm7D+UG5Ib3Y2dxryKXtg3/U19cDNMbvZ8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=DeYUQ9XI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eWHTC+UY; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 7BBBF7A008E;
+	Mon, 20 Oct 2025 08:23:15 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 20 Oct 2025 08:23:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	coelacanthus.name; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to; s=fm3; t=1760962995; x=1761049395; bh=fiC6uzb5upzVu6fzbrM4G
+	jGQI88WvS8crHqt9GuTq1s=; b=DeYUQ9XIQ4j+HqvvjsqdDNK9gjWdhxPWbF9zS
+	MM2TWGYTjUO1oBX3hgNLk68dMVCV0AqDKWFkmXGQcVqNOYHrUjpyTtfh4YUxJmlq
+	flnj9lodIaydf/pQrQDE+FU0ga7XBQOx8CC91sKmmq/vrdqVO4yEd4W0/5t2uB9y
+	7q4hcGFspP0FzoSXzxlEP9yJ7j8rFiZqhgbRISjeiVgPdULfgY/9/aiLDiQLX3nC
+	d8UTK11rj9T3XkuQTuGxlj4fDlqfjmrjXdYXIunOwzVMLrXnsihbT7u2eYPoin9R
+	3S6KU2LNx+7+gbRxh/ARk2U4s1x4hmq4C9OUwz9ufcv0VnmTw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm2; t=1760962995; x=1761049395; bh=f
+	iC6uzb5upzVu6fzbrM4GjGQI88WvS8crHqt9GuTq1s=; b=eWHTC+UYAgdDQRGQa
+	jM6Piw1Dq47Pdmvl9wg4sxaluxFaQx+TKlLCM4ENkmbiGZzDMJc9DTTc+xScf1MW
+	6ZgWUoT/OvQS31FeVdsrT4jb23Y67BEKGJSvSIid9wtzBe0VTfg6IcYSIhNUucje
+	SQELcHZ6L43Dxt2QgoXf86IvYuAZzuSeFrsdpmiApZyab3BI9kntb5sbW7PuJiP0
+	5QxIgR1H6Q6/6wbdDOgOXoVsKRpfqaqZAl1BsL1DJcqrJn+PGc/YeYHFNrbyRPNG
+	QfviJI6V08ZApwH3BRi2/vStBbvs00BkSwcL2E3JuHw+4Sm3zJfAjMcd8aoU73le
+	cK8ew==
+X-ME-Sender: <xms:sin2aGGQpRUW0RQ5EUhKSLGOU_4nAQMyWWOd4TKqHTHK_6-2NB8VSA>
+    <xme:sin2aOOFzkkYamASyx9LjPRFAb8-lBjuyXxHin7NcDssevO4qA2-UrLnhk5th4_jz
+    EqvRNnR3n2MVb6P7ljEBQhpeuuqKf2NyAVv7L8oStepWYMLYQrWL5s>
+X-ME-Received: <xmr:sin2aIeGj-O7KozWuCBPyQlJKt6DHijwdS5VolKGcdvXvzRN9WgsF1-UBM_Ryg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddufeejkeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepvegvlhgvshht
+    vgcunfhiuhcuoehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgvqeenucggtffrrg
+    htthgvrhhnpeetteeggfevudevffeileehtdeuteekieehvdefjeetffeiueehieejiedu
+    heevieenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhmshhgihgurdhlihhnkhenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehufihusegt
+    ohgvlhgrtggrnhhthhhushdrnhgrmhgvpdhnsggprhgtphhtthhopeehpdhmohguvgepsh
+    hmthhpohhuthdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgvpdhrtghpth
+    htoheprhhunhgthhgvnhhgrdhluheshhhpmhhitghrohdrtghomhdprhgtphhtthhopehm
+    rghilhhhohhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmkhhlsehpvghnghhuth
+    hrohhnihigrdguvg
+X-ME-Proxy: <xmx:sin2aLu7DnNRwyWF0A1KQ8xtZNuk-XIaMA_Xe2FqYyuCdc6IavMFfg>
+    <xmx:sin2aJmtaamsL9JTRIGX2AXU3nmGc5TCWUOuanqAUBmruNH2HSRjrg>
+    <xmx:sin2aNy5_s45i-8iVmq-00NHuWZHDa64qv-65u09h4ZDo8ZyvVjA_A>
+    <xmx:sin2aLMSenIZPMvkdv3c0TxmZuCaOTgi1r3Wi92hnnZsETaa3-_NHA>
+    <xmx:syn2aFefe53EZFc5rdTXkRvoybor-OUxEoH6Bp0NV6uWz0yLjz2kqI4X>
+Feedback-ID: i95c648bc:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 20 Oct 2025 08:23:13 -0400 (EDT)
+From: Celeste Liu <uwu@coelacanthus.name>
+To: stable@vger.kernel.org
+Cc: Celeste Liu <uwu@coelacanthus.name>,
+	Runcheng Lu <runcheng.lu@hpmicro.com>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.4.y] can: gs_usb: increase max interface to U8_MAX
+Date: Mon, 20 Oct 2025 20:22:38 +0800
+Message-ID: <20251020122237.1517578-2-uwu@coelacanthus.name>
+X-Mailer: git-send-email 2.51.1.dirty
+In-Reply-To: <2025102041-mounting-pursuit-e9d3@gregkh>
+References: <2025102041-mounting-pursuit-e9d3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6d07f9bb-5c73-4e17-8292-927257867c83@kernel.dk>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3797; i=uwu@coelacanthus.name; h=from:subject; bh=jHtAmnzRynfs4uM9im/cLEeXLg18k865eeiIWxwWuO4=; b=owJ4nJvAy8zAJeafov85RWVtBeNptSSGjG+avdd6XZNSp1vwnlksbXhnxXq3OIbqwI2/+zQ0c gSKr7zZfKejlIVBjItBVkyRJa+E5SfnpbPdezu2d8HMYWUCGcLAxSkAE4mPZGRYme/p6XG23vjW lZ3uqVb1bE4MKU9OKU+r0d+6N0p4hWoYI8MFX3fbNWZSxjfrKlfEFb/R3H955/X1If5HuJlnLfr N+50FAEB4Rtk=
+X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp; fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 20, 2025 at 05:20:34AM -0600, Jens Axboe wrote:
-> On 10/20/25 2:00 AM, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 6.12-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> 
-> Easy fixup, here's one for 6.12-stable.
+commit 2a27f6a8fb5722223d526843040f747e9b0e8060 upstream
 
-Now queued up, thanks!
+This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
+converter[1]. The original developers may have only 3 interfaces
+device to test so they write 3 here and wait for future change.
 
-greg k-h
+During the HSCanT development, we actually used 4 interfaces, so the
+limitation of 3 is not enough now. But just increase one is not
+future-proofed. Since the channel index type in gs_host_frame is u8,
+just make canch[] become a flexible array with a u8 index, so it
+naturally constraint by U8_MAX and avoid statically allocate 256
+pointer for every gs_usb device.
+
+[1]: https://github.com/cherry-embedded/HSCanT-hardware
+
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+Link: https://patch.msgid.link/20250930-gs-usb-max-if-v5-1-863330bf6666@coelacanthus.name
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/usb/gs_usb.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index 1a24c1d9dd8f..509b0c83ebb8 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -156,10 +156,6 @@ struct gs_host_frame {
+ #define GS_MAX_TX_URBS 10
+ /* Only launch a max of GS_MAX_RX_URBS usb requests at a time. */
+ #define GS_MAX_RX_URBS 30
+-/* Maximum number of interfaces the driver supports per device.
+- * Current hardware only supports 2 interfaces. The future may vary.
+- */
+-#define GS_MAX_INTF 2
+ 
+ struct gs_tx_context {
+ 	struct gs_can *dev;
+@@ -190,10 +186,11 @@ struct gs_can {
+ 
+ /* usb interface struct */
+ struct gs_usb {
+-	struct gs_can *canch[GS_MAX_INTF];
+ 	struct usb_anchor rx_submitted;
+ 	struct usb_device *udev;
+ 	u8 active_channels;
++	u8 channel_cnt;
++	struct gs_can *canch[] __counted_by(channel_cnt);
+ };
+ 
+ /* 'allocate' a tx context.
+@@ -321,7 +318,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	}
+ 
+ 	/* device reports out of range channel id */
+-	if (hf->channel >= GS_MAX_INTF)
++	if (hf->channel >= usbcan->channel_cnt)
+ 		goto device_detach;
+ 
+ 	dev = usbcan->canch[hf->channel];
+@@ -409,7 +406,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	/* USB failure take down all interfaces */
+ 	if (rc == -ENODEV) {
+  device_detach:
+-		for (rc = 0; rc < GS_MAX_INTF; rc++) {
++		for (rc = 0; rc < usbcan->channel_cnt; rc++) {
+ 			if (usbcan->canch[rc])
+ 				netif_device_detach(usbcan->canch[rc]->netdev);
+ 		}
+@@ -991,20 +988,22 @@ static int gs_usb_probe(struct usb_interface *intf,
+ 	icount = dconf->icount + 1;
+ 	dev_info(&intf->dev, "Configuring for %d interfaces\n", icount);
+ 
+-	if (icount > GS_MAX_INTF) {
++	if (icount > type_max(typeof(dev->channel_cnt))) {
+ 		dev_err(&intf->dev,
+-			"Driver cannot handle more that %d CAN interfaces\n",
+-			GS_MAX_INTF);
++			"Driver cannot handle more that %u CAN interfaces\n",
++			type_max(typeof(dev->channel_cnt)));
+ 		kfree(dconf);
+ 		return -EINVAL;
+ 	}
+ 
+-	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
++	dev = kzalloc(struct_size(dev, canch, icount), GFP_KERNEL);
+ 	if (!dev) {
+ 		kfree(dconf);
+ 		return -ENOMEM;
+ 	}
+ 
++	dev->channel_cnt = icount;
++
+ 	init_usb_anchor(&dev->rx_submitted);
+ 
+ 	usb_set_intfdata(intf, dev);
+@@ -1045,7 +1044,7 @@ static void gs_usb_disconnect(struct usb_interface *intf)
+ 		return;
+ 	}
+ 
+-	for (i = 0; i < GS_MAX_INTF; i++)
++	for (i = 0; i < dev->channel_cnt; i++)
+ 		if (dev->canch[i])
+ 			gs_destroy_candev(dev->canch[i]);
+ 
+-- 
+2.51.1.dirty
+
 
