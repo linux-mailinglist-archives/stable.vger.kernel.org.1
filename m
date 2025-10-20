@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-187972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C7ABEFD5F
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:13:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 519DDBEFDBF
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 10:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A0B1E4EFA0E
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:12:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC9353BC871
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045142E0B69;
-	Mon, 20 Oct 2025 08:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA02F2BE035;
+	Mon, 20 Oct 2025 08:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uI+6x6t9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmocGAVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F871DFD8B
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872742DA779
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 08:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760947970; cv=none; b=u7RVyWqROgEeFKywbuVw1d2hfkyXLNGnh4opGRw7y/oIB65poWjqMCKWG+iFyfvhCRn8R6CbYrGtHJtigAj2byDRj5mkDi588YlKDpPXYcON/xZQQxTVH74/pF0t82RarUXbbd0yodG11qePCY4jKUE8ScL9wPVMBfqOz+zHSjQ=
+	t=1760948052; cv=none; b=W2sC2if2JVf6kYrF16Fs3HNOGGsQ0OewcM3EmR6WvdudtDDVxNc3GlMQx4c9iPHGZk4weGwDiRwfkuMaHRN2jrbT5yfwO9dR1t0xRKiXLKkbxHDabt7fsaodAX1TYGMVKTfRGZdy2mcfWlXYwJ0QACYU5h3/ufo96m4+3nGDCgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760947970; c=relaxed/simple;
-	bh=URk2ZCpOAeg5+S5uURgyOZp7nyvDaIIZ5wCt2g0cltY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SFXzBv6qgzXvWyNu0lFzs+GWzbe0OJqMhk/d9rc3wn42/E9/ez3SjnpKxMXMU18F/eUAvWKzgELfLENixf+Xfqfo84mruFEeylEmrZn0ckv9qFBrNFZT27trdsqOuP5nQX9qjBJOs54Dl5v+mPAGLu4j9iHaaQO3lYBXCvYDBvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uI+6x6t9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66A7C116B1;
-	Mon, 20 Oct 2025 08:12:49 +0000 (UTC)
+	s=arc-20240116; t=1760948052; c=relaxed/simple;
+	bh=t9I5pWlq7HLfsWH4KNWQzVoJLTt5iXk0pVzy3yxuqo4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QPz7TCMIgJv1OavcWL5IPyAbWUzM+bJoc7s/wUNDPFq/4ho0nwJAdMClXFjbkno54t0VVT5HMH6PxD062Dyf2NOBENiW60QAmCbXxGuLSTbdHVh3zCrb13yLVR0+Ag+Ds/AVWmFwComAKHOKy0rg8t3cAMXyQapQkE4WvPU8ySw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmocGAVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B577DC4CEF9;
+	Mon, 20 Oct 2025 08:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760947970;
-	bh=URk2ZCpOAeg5+S5uURgyOZp7nyvDaIIZ5wCt2g0cltY=;
+	s=korg; t=1760948050;
+	bh=t9I5pWlq7HLfsWH4KNWQzVoJLTt5iXk0pVzy3yxuqo4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uI+6x6t9vFQ4Jwuuv5FZLAXljMSuweRuMu832S40+IdaxzJxah9drtrRhN1yhX4ls
-	 FfceEMETMfkA0Wdy9XnionkXEYMc786W2lTMCb5UR+G3a5JjzPQFG2QrjF5c36FUB5
-	 j/B7uUQOt4b5FUmMPYdHQ6/lmDI5Yvvzf3+S0VLI=
-Subject: FAILED: patch "[PATCH] can: gs_usb: increase max interface to U8_MAX" failed to apply to 5.4-stable tree
-To: uwu@coelacanthus.name,mailhol@kernel.org,mkl@pengutronix.de,runcheng.lu@hpmicro.com
+	b=QmocGAVfOw+5nSTHwjFMZIS8DIXGcFjfNsk5JvXfd0Z+QTwDpmsQTr+ufeLZnoZhb
+	 AIremnSTJfoBIhoHgucswdKy+Ys/xrIsaneW+AaKKsFH3aCuwN3chg6I+/oUQuyPha
+	 YEQfmHORzk6EUChwi1YagnZiZtpcrSg3hYsXuH/I=
+Subject: FAILED: patch "[PATCH] HID: multitouch: fix sticky fingers" failed to apply to 6.17-stable tree
+To: bentiss@kernel.org,jkosina@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Oct 2025 10:12:41 +0200
-Message-ID: <2025102041-mounting-pursuit-e9d3@gregkh>
+Date: Mon, 20 Oct 2025 10:14:07 +0200
+Message-ID: <2025102007-puma-shawl-4634@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.17-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.17.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2a27f6a8fb5722223d526843040f747e9b0e8060
+git cherry-pick -x 46f781e0d151844589dc2125c8cce3300546f92a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102041-mounting-pursuit-e9d3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025102007-puma-shawl-4634@gregkh' --subject-prefix 'PATCH 6.17.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,117 +77,110 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2a27f6a8fb5722223d526843040f747e9b0e8060 Mon Sep 17 00:00:00 2001
-From: Celeste Liu <uwu@coelacanthus.name>
-Date: Tue, 30 Sep 2025 19:34:28 +0800
-Subject: [PATCH] can: gs_usb: increase max interface to U8_MAX
+From 46f781e0d151844589dc2125c8cce3300546f92a Mon Sep 17 00:00:00 2001
+From: Benjamin Tissoires <bentiss@kernel.org>
+Date: Wed, 8 Oct 2025 16:06:58 +0200
+Subject: [PATCH] HID: multitouch: fix sticky fingers
 
-This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
-converter[1]. The original developers may have only 3 interfaces
-device to test so they write 3 here and wait for future change.
+The sticky fingers quirk (MT_QUIRK_STICKY_FINGERS) was only considering
+the case when slots were not released during the last report.
+This can be problematic if the firmware forgets to release a finger
+while others are still present.
 
-During the HSCanT development, we actually used 4 interfaces, so the
-limitation of 3 is not enough now. But just increase one is not
-future-proofed. Since the channel index type in gs_host_frame is u8,
-just make canch[] become a flexible array with a u8 index, so it
-naturally constraint by U8_MAX and avoid statically allocate 256
-pointer for every gs_usb device.
+This was observed on the Synaptics DLL0945 touchpad found on the Dell
+XPS 9310 and the Dell Inspiron 5406.
 
-[1]: https://github.com/cherry-embedded/HSCanT-hardware
-
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
+Fixes: 4f4001bc76fd ("HID: multitouch: fix rare Win 8 cases when the touch up event gets missing")
 Cc: stable@vger.kernel.org
-Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
-Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-Link: https://patch.msgid.link/20250930-gs-usb-max-if-v5-1-863330bf6666@coelacanthus.name
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index c9482d6e947b..9fb4cbbd6d6d 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -289,11 +289,6 @@ struct gs_host_frame {
- #define GS_MAX_RX_URBS 30
- #define GS_NAPI_WEIGHT 32
- 
--/* Maximum number of interfaces the driver supports per device.
-- * Current hardware only supports 3 interfaces. The future may vary.
-- */
--#define GS_MAX_INTF 3
--
- struct gs_tx_context {
- 	struct gs_can *dev;
- 	unsigned int echo_id;
-@@ -324,7 +319,6 @@ struct gs_can {
- 
- /* usb interface struct */
- struct gs_usb {
--	struct gs_can *canch[GS_MAX_INTF];
- 	struct usb_anchor rx_submitted;
- 	struct usb_device *udev;
- 
-@@ -336,9 +330,11 @@ struct gs_usb {
- 
- 	unsigned int hf_size_rx;
- 	u8 active_channels;
-+	u8 channel_cnt;
- 
- 	unsigned int pipe_in;
- 	unsigned int pipe_out;
-+	struct gs_can *canch[] __counted_by(channel_cnt);
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 513b8673ad8d..179dc316b4b5 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -94,9 +94,8 @@ enum report_mode {
+ 	TOUCHPAD_REPORT_ALL = TOUCHPAD_REPORT_BUTTONS | TOUCHPAD_REPORT_CONTACTS,
  };
  
- /* 'allocate' a tx context.
-@@ -599,7 +595,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+-#define MT_IO_FLAGS_RUNNING		0
+-#define MT_IO_FLAGS_ACTIVE_SLOTS	1
+-#define MT_IO_FLAGS_PENDING_SLOTS	2
++#define MT_IO_SLOTS_MASK		GENMASK(7, 0) /* reserve first 8 bits for slot tracking */
++#define MT_IO_FLAGS_RUNNING		32
+ 
+ static const bool mtrue = true;		/* default for true */
+ static const bool mfalse;		/* default for false */
+@@ -172,7 +171,11 @@ struct mt_device {
+ 	struct timer_list release_timer;	/* to release sticky fingers */
+ 	struct hid_haptic_device *haptic;	/* haptic related configuration */
+ 	struct hid_device *hdev;	/* hid_device we're attached to */
+-	unsigned long mt_io_flags;	/* mt flags (MT_IO_FLAGS_*) */
++	unsigned long mt_io_flags;	/* mt flags (MT_IO_FLAGS_RUNNING)
++					 * first 8 bits are reserved for keeping the slot
++					 * states, this is fine because we only support up
++					 * to 250 slots (MT_MAX_MAXCONTACT)
++					 */
+ 	__u8 inputmode_value;	/* InputMode HID feature value */
+ 	__u8 maxcontacts;
+ 	bool is_buttonpad;	/* is this device a button pad? */
+@@ -986,6 +989,7 @@ static void mt_release_pending_palms(struct mt_device *td,
+ 
+ 	for_each_set_bit(slotnum, app->pending_palm_slots, td->maxcontacts) {
+ 		clear_bit(slotnum, app->pending_palm_slots);
++		clear_bit(slotnum, &td->mt_io_flags);
+ 
+ 		input_mt_slot(input, slotnum);
+ 		input_mt_report_slot_inactive(input);
+@@ -1019,12 +1023,6 @@ static void mt_sync_frame(struct mt_device *td, struct mt_application *app,
+ 	app->left_button_state = 0;
+ 	if (td->is_haptic_touchpad)
+ 		hid_haptic_pressure_reset(td->haptic);
+-
+-	if (test_bit(MT_IO_FLAGS_ACTIVE_SLOTS, &td->mt_io_flags))
+-		set_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags);
+-	else
+-		clear_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags);
+-	clear_bit(MT_IO_FLAGS_ACTIVE_SLOTS, &td->mt_io_flags);
+ }
+ 
+ static int mt_compute_timestamp(struct mt_application *app, __s32 value)
+@@ -1202,7 +1200,9 @@ static int mt_process_slot(struct mt_device *td, struct input_dev *input,
+ 		input_event(input, EV_ABS, ABS_MT_TOUCH_MAJOR, major);
+ 		input_event(input, EV_ABS, ABS_MT_TOUCH_MINOR, minor);
+ 
+-		set_bit(MT_IO_FLAGS_ACTIVE_SLOTS, &td->mt_io_flags);
++		set_bit(slotnum, &td->mt_io_flags);
++	} else {
++		clear_bit(slotnum, &td->mt_io_flags);
  	}
  
- 	/* device reports out of range channel id */
--	if (hf->channel >= GS_MAX_INTF)
-+	if (hf->channel >= parent->channel_cnt)
- 		goto device_detach;
- 
- 	dev = parent->canch[hf->channel];
-@@ -699,7 +695,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	/* USB failure take down all interfaces */
- 	if (rc == -ENODEV) {
- device_detach:
--		for (rc = 0; rc < GS_MAX_INTF; rc++) {
-+		for (rc = 0; rc < parent->channel_cnt; rc++) {
- 			if (parent->canch[rc])
- 				netif_device_detach(parent->canch[rc]->netdev);
- 		}
-@@ -1460,17 +1456,19 @@ static int gs_usb_probe(struct usb_interface *intf,
- 	icount = dconf.icount + 1;
- 	dev_info(&intf->dev, "Configuring for %u interfaces\n", icount);
- 
--	if (icount > GS_MAX_INTF) {
-+	if (icount > type_max(parent->channel_cnt)) {
- 		dev_err(&intf->dev,
- 			"Driver cannot handle more that %u CAN interfaces\n",
--			GS_MAX_INTF);
-+			type_max(parent->channel_cnt));
- 		return -EINVAL;
- 	}
- 
--	parent = kzalloc(sizeof(*parent), GFP_KERNEL);
-+	parent = kzalloc(struct_size(parent, canch, icount), GFP_KERNEL);
- 	if (!parent)
- 		return -ENOMEM;
- 
-+	parent->channel_cnt = icount;
-+
- 	init_usb_anchor(&parent->rx_submitted);
- 
- 	usb_set_intfdata(intf, parent);
-@@ -1531,7 +1529,7 @@ static void gs_usb_disconnect(struct usb_interface *intf)
+ 	return 0;
+@@ -1337,7 +1337,7 @@ static void mt_touch_report(struct hid_device *hid,
+ 	 * defect.
+ 	 */
+ 	if (app->quirks & MT_QUIRK_STICKY_FINGERS) {
+-		if (test_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags))
++		if (td->mt_io_flags & MT_IO_SLOTS_MASK)
+ 			mod_timer(&td->release_timer,
+ 				  jiffies + msecs_to_jiffies(100));
+ 		else
+@@ -1814,6 +1814,7 @@ static void mt_release_contacts(struct hid_device *hid)
+ 			for (i = 0; i < mt->num_slots; i++) {
+ 				input_mt_slot(input_dev, i);
+ 				input_mt_report_slot_inactive(input_dev);
++				clear_bit(i, &td->mt_io_flags);
+ 			}
+ 			input_mt_sync_frame(input_dev);
+ 			input_sync(input_dev);
+@@ -1836,7 +1837,7 @@ static void mt_expired_timeout(struct timer_list *t)
+ 	 */
+ 	if (test_and_set_bit_lock(MT_IO_FLAGS_RUNNING, &td->mt_io_flags))
  		return;
- 	}
- 
--	for (i = 0; i < GS_MAX_INTF; i++)
-+	for (i = 0; i < parent->channel_cnt; i++)
- 		if (parent->canch[i])
- 			gs_destroy_candev(parent->canch[i]);
- 
+-	if (test_bit(MT_IO_FLAGS_PENDING_SLOTS, &td->mt_io_flags))
++	if (td->mt_io_flags & MT_IO_SLOTS_MASK)
+ 		mt_release_contacts(hdev);
+ 	clear_bit_unlock(MT_IO_FLAGS_RUNNING, &td->mt_io_flags);
+ }
 
 
