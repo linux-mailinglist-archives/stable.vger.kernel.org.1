@@ -1,156 +1,132 @@
-Return-Path: <stable+bounces-187930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-187931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410D1BEF7A2
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 08:33:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E918ABEFA2B
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 09:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E91F43B4BE2
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 06:33:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4D2C74F2757
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 07:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274A12D837B;
-	Mon, 20 Oct 2025 06:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57BC2E11DC;
+	Mon, 20 Oct 2025 07:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="ueHfJGWH"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b="TUsE4oGO"
 X-Original-To: stable@vger.kernel.org
-Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7610D2D8382;
-	Mon, 20 Oct 2025 06:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.200
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760942010; cv=none; b=g5pGcA3Bytgr2pSudlsn4lKLneYEIRa+CeNaB4qxhnZycBxxdLMAyKXu3sn/e4ddWNXkiNnU3/XQnrsYvgwibxFiimyH7gtkjZyPN6QL7+NIZZreNNoeiPP0Rm0bMVBREw1h+OKYe7UxjSYOmzJQbPoPh97Kc9Opdkt0vcPu2Yc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760942010; c=relaxed/simple;
-	bh=FEzwsFOvy/v03ZLbtJebqy/hxjdZUwkW0eHimLl/uoE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fkzKmTVkVjsOSZ/tdAdVkPkHZVj5oo/2wxlqrpEKjCkNWMnUjWuUk30OcVQrSlJwFT9GHVJSQbeVkdraIj2beqxLexvR5we0iL6EChkGtuPFXgDndWOXNVuRLO40m+cZkoIUuYUTC5ZBMWM96Ae+LB8YKIR1seuOPTwQE2dVb+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=ueHfJGWH; arc=none smtp.client-ip=178.154.239.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
-Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:9297:0:640:61e7:0])
-	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id E04B8807EF;
-	Mon, 20 Oct 2025 09:31:26 +0300 (MSK)
-Received: from i111667286.ld.yandex.ru (unknown [2a02:6bf:8080:980::1:37])
-	by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id MVO5mf3Ft8c0-jVpMFkLv;
-	Mon, 20 Oct 2025 09:31:25 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1760941885;
-	bh=nQTyHQD6nvJXJ6KJs/5NsdeNIuMnINOnwCKFZIX+qw8=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=ueHfJGWH4XWJPqU6rRlON860DNELB0YS/LlZaMALjNi0SaooMCjZb6k7XmoeZdEbY
-	 N4Kr5A5W6miwSNB5E5NBvc0AlquMNyPBhu5ZQ8fdREhGtRTIJbglJ3RjALkyEG7vSg
-	 mvND1cPmSy6kFhM6VreCjH1VRmUEo6cfuGJpmDJQ=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Andrey Troshin <drtrosh@yandex-team.ru>
-To: lvc-patches@linuxtesting.org,
-	stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andrey Troshin <drtrosh@yandex-team.ru>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 5.10] comedi: Make insn_rw_emulate_bits() do insn->n samples
-Date: Mon, 20 Oct 2025 09:31:22 +0300
-Message-ID: <20251020063122.2007-1-drtrosh@yandex-team.ru>
-X-Mailer: git-send-email 2.51.0.windows.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DD72EA147;
+	Mon, 20 Oct 2025 07:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760944302; cv=pass; b=tRU2YkzbsRYhayr7zq/2zSrMGSKPDcA+wxJ7g9QUKQS/I3rGucmiuKx8QlzFU9p4GfYsc/bEp53wCCrDw6Fcz/lcyPdDFPUoFEEH2okoiDZt88dnasFmQMnIZGh4cRJn6ba4mevVE0c+rqvTpVllpEk/PA89Ak6/KLxuWI2BrxU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760944302; c=relaxed/simple;
+	bh=WVfiMNNWRiHFBrcRGE/MouaFQwHG99Zi3OjT/7dE4wo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L0XtqIfY77HmDl1Ks5AlMcSjG3L50zSrVcJHpjFN/fxPIiSKhPeKzbSisD1BTk8WLXBpW2B9DGytPKERqEmDNjdj/6cL14kIMHsKi82WF7pubX7hqeT6txjBxeot8ru27tQBViNtwNpdMxbakpdja2jlu96YuZM7e7yNmhgZaHc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b=TUsE4oGO; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1760944292; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=P/yBR+GyLqopb3+umWCbUXR8QIXzC0M/ZiaXrse+lsbn5geSeMLef6KDDXGFVZiP1PLGEQcmuVRnjQCSKbLumXwVFZLRbdUOMwV3KOGqZvIQIRZ1fF9N8C9cFWeYlPOT8DoT3BxI+cZ+1/Y3x7d+Gnw6ivrUVxzbXOktdWcfEaI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1760944292; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Grf8Aw8Kke2h/aVOmW63v6SnlnR1jcNw5IBgROmHZrM=; 
+	b=nDyPjmJpsVIWsd09YDJNKnu+LGzr9HqdYF+UnWj6U4xy+168Qs3+E3THTl8EZ+DBjr+kzcZzbikA9+P08DQZYXIU12vHxJHw9ZIHzMX+RUkJD/GDf+qcsv/D7b4DGD7IzM8O1FiwqcYU2pl/xgvhwpOWUCcuhX1wyJ4xsTdNkp4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=benjamin.gaignard@collabora.com;
+	dmarc=pass header.from=<benjamin.gaignard@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760944292;
+	s=zohomail; d=collabora.com; i=benjamin.gaignard@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=Grf8Aw8Kke2h/aVOmW63v6SnlnR1jcNw5IBgROmHZrM=;
+	b=TUsE4oGOYYFbymV9VuZ0hE/N4oeNcCPDTC/+rfVAo1g60VwIn9r8oCAjc9/2Lq1y
+	BM+nKA9UMoGSFl2AeLqpt0EmAVTzO1Nmy7t1bUD2q+K5z2Pl0NXpMDUOT1nGpG1eY0w
+	wuwNfg/hl01OFR78csVwT5te1HMBDIWjcR4vAOho=
+Received: by mx.zohomail.com with SMTPS id 1760944290591597.1904263054131;
+	Mon, 20 Oct 2025 00:11:30 -0700 (PDT)
+Message-ID: <36cfec0a-3717-4b0e-adc0-6887e6b58f44@collabora.com>
+Date: Mon, 20 Oct 2025 09:11:25 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: videobuf2: forbid create_bufs/remove_bufs when
+ legacy fileio is active
+To: Marek Szyprowski <m.szyprowski@samsung.com>, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Tomasz Figa <tfiga@chromium.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
+ Hans Verkuil <hverkuil@kernel.org>, stable@vger.kernel.org
+References: <CGME20251016111208eucas1p24cd8cc1e952a8cdf73fbadea704b499d@eucas1p2.samsung.com>
+ <20251016111154.993949-1-m.szyprowski@samsung.com>
+Content-Language: en-US
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+In-Reply-To: <20251016111154.993949-1-m.szyprowski@samsung.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 7afba9221f70d4cbce0f417c558879cba0eb5e66 upstream.
+Le 16/10/2025 à 13:11, Marek Szyprowski a écrit :
+> create_bufs and remove_bufs ioctl calls manipulate queue internal buffer
+> list, potentially overwriting some pointers used by the legacy fileio
+> access mode. Simply forbid those calls when fileio is active to protect
+> internal queue state between subsequent read/write calls.
 
-The `insn_rw_emulate_bits()` function is used as a default handler for
-`INSN_READ` instructions for subdevices that have a handler for
-`INSN_BITS` but not for `INSN_READ`.  Similarly, it is used as a default
-handler for `INSN_WRITE` instructions for subdevices that have a handler
-for `INSN_BITS` but not for `INSN_WRITE`. It works by emulating the
-`INSN_READ` or `INSN_WRITE` instruction handling with a constructed
-`INSN_BITS` instruction.  However, `INSN_READ` and `INSN_WRITE`
-instructions are supposed to be able read or write multiple samples,
-indicated by the `insn->n` value, but `insn_rw_emulate_bits()` currently
-only handles a single sample.  For `INSN_READ`, the comedi core will
-copy `insn->n` samples back to user-space.  (That triggered KASAN
-kernel-infoleak errors when `insn->n` was greater than 1, but that is
-being fixed more generally elsewhere in the comedi core.)
+Hi Marek,
 
-Make `insn_rw_emulate_bits()` either handle `insn->n` samples, or return
-an error, to conform to the general expectation for `INSN_READ` and
-`INSN_WRITE` handlers.
+I may be wrong but using fileio API and create/remove API at the same time
+sound incorrect from application point of view, right ? If that not the
+case maybe we should also add a test in v4l2-compliance.
 
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: stable <stable@kernel.org> # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250725141034.87297-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Andrey Troshin: backport fix from drivers/comedi/drivers.c to drivers/staging/comedi/drivers.c.]
-Signed-off-by: Andrey Troshin <drtrosh@yandex-team.ru>
----
-Backport fix for CVE-2025-39686
-Link: https://nvd.nist.gov/vuln/detail/CVE-2025-39686
----
- drivers/staging/comedi/drivers.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+Regards,
+Benjamin
 
-diff --git a/drivers/staging/comedi/drivers.c b/drivers/staging/comedi/drivers.c
-index fd098e62a308..816225d1e1a4 100644
---- a/drivers/staging/comedi/drivers.c
-+++ b/drivers/staging/comedi/drivers.c
-@@ -620,11 +620,9 @@ static int insn_rw_emulate_bits(struct comedi_device *dev,
- 	unsigned int chan = CR_CHAN(insn->chanspec);
- 	unsigned int base_chan = (chan < 32) ? 0 : chan;
- 	unsigned int _data[2];
-+	unsigned int i;
- 	int ret;
- 
--	if (insn->n == 0)
--		return 0;
--
- 	memset(_data, 0, sizeof(_data));
- 	memset(&_insn, 0, sizeof(_insn));
- 	_insn.insn = INSN_BITS;
-@@ -635,18 +633,21 @@ static int insn_rw_emulate_bits(struct comedi_device *dev,
- 	if (insn->insn == INSN_WRITE) {
- 		if (!(s->subdev_flags & SDF_WRITABLE))
- 			return -EINVAL;
--		_data[0] = 1U << (chan - base_chan);		     /* mask */
--		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
-+		_data[0] = 1U << (chan - base_chan);		/* mask */
- 	}
-+	for (i = 0; i < insn->n; i++) {
-+		if (insn->insn == INSN_WRITE)
-+			_data[1] = data[i] ? _data[0] : 0;	/* bits */
- 
--	ret = s->insn_bits(dev, s, &_insn, _data);
--	if (ret < 0)
--		return ret;
-+		ret = s->insn_bits(dev, s, &_insn, _data);
-+		if (ret < 0)
-+			return ret;
- 
--	if (insn->insn == INSN_READ)
--		data[0] = (_data[1] >> (chan - base_chan)) & 1;
-+		if (insn->insn == INSN_READ)
-+			data[i] = (_data[1] >> (chan - base_chan)) & 1;
-+	}
- 
--	return 1;
-+	return insn->n;
- }
- 
- static int __comedi_device_postconfig_async(struct comedi_device *dev,
--- 
-2.34.1
-
+>
+> CC: stable@vger.kernel.org
+> Fixes: 2d86401c2cbf ("[media] V4L: vb2: add support for buffers of different sizes on a single queue")
+> Fixes: a3293a85381e ("media: v4l2: Add REMOVE_BUFS ioctl")
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> ---
+>   drivers/media/common/videobuf2/videobuf2-v4l2.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+>
+> diff --git a/drivers/media/common/videobuf2/videobuf2-v4l2.c b/drivers/media/common/videobuf2/videobuf2-v4l2.c
+> index d911021c1bb0..f4104d5971dd 100644
+> --- a/drivers/media/common/videobuf2/videobuf2-v4l2.c
+> +++ b/drivers/media/common/videobuf2/videobuf2-v4l2.c
+> @@ -751,6 +751,11 @@ int vb2_create_bufs(struct vb2_queue *q, struct v4l2_create_buffers *create)
+>   	int ret = vb2_verify_memory_type(q, create->memory, f->type);
+>   	unsigned i;
+>   
+> +	if (vb2_fileio_is_active(q)) {
+> +		dprintk(q, 1, "file io in progress\n");
+> +		return -EBUSY;
+> +	}
+> +
+>   	create->index = vb2_get_num_buffers(q);
+>   	vb2_set_flags_and_caps(q, create->memory, &create->flags,
+>   			       &create->capabilities, &create->max_num_buffers);
+> @@ -1010,6 +1015,11 @@ int vb2_ioctl_remove_bufs(struct file *file, void *priv,
+>   	if (vb2_queue_is_busy(vdev->queue, file))
+>   		return -EBUSY;
+>   
+> +	if (vb2_fileio_is_active(vdev->queue)) {
+> +		dprintk(vdev->queue, 1, "file io in progress\n");
+> +		return -EBUSY;
+> +	}
+> +
+>   	return vb2_core_remove_bufs(vdev->queue, d->index, d->count);
+>   }
+>   EXPORT_SYMBOL_GPL(vb2_ioctl_remove_bufs);
 
