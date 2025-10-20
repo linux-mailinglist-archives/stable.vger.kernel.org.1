@@ -1,240 +1,139 @@
-Return-Path: <stable+bounces-188054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E642BBF14FE
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:47:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF24EBF1525
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:49:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 96CA74E4B37
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:47:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9100018A5646
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588212F6933;
-	Mon, 20 Oct 2025 12:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54E430149A;
+	Mon, 20 Oct 2025 12:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YoucJFI9"
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="t8qVnE7A"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1071C2E1C6B
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B510F231C9F;
+	Mon, 20 Oct 2025 12:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760964448; cv=none; b=NDgoKjkPCD6Wp/tC1wYRZOTdJX54UExXpe7D0pDgWrWoQ07x9AjOaE+7f+7eLSD7motgh2mjoSVmERrJrg3wdwdGJtRdmwSuon1Ired022CmcINJ4pOpHCGXi7ox3mvX3iLC39DP/Eh/4ljJT+f36XQePCJZXi+mkAmdRsGYQRg=
+	t=1760964559; cv=none; b=mm7aNW5eIVmCp86ao7/wm0Tr/PSmy2u0o31BaqQbkjL5fDjQ1kR1eLpPTldaCvPfUCJeZveIqcWOAvP58by4BCKrvuDb/6vRx0v929C8GwlODD0rwtPZ3efBx3g0+LrTL5o1KXU7IA9O3JQtGS32PdVnNQuc+RDJYnd/2UxRywE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760964448; c=relaxed/simple;
-	bh=Wj5XSo6KsV7zxpnQ2q72SUiDyNJz08pSx0Mppt778N0=;
+	s=arc-20240116; t=1760964559; c=relaxed/simple;
+	bh=NOmJCRXZ6eAE3GfRXQ9ruS3iOj3qkQe52V3Hs6U/CVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mXImSxde04EaOAI/2gU3SSSZpZ+tBeJn20MwKWQbqwYfP1lR4v7g7/xqccAQXXCWfyFFEnC3a3jx0cfo44hFgrPS9YYg0xSzGdY7a/j/3pm+GQsd6YkR02dbXxrcmvb/ot4y3UxBfYPGCXdSny0zYQXwjSYGIXbIlRe0x3lyot0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YoucJFI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2D5C116D0;
-	Mon, 20 Oct 2025 12:47:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760964447;
-	bh=Wj5XSo6KsV7zxpnQ2q72SUiDyNJz08pSx0Mppt778N0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YoucJFI9d9X4F4dyGUhN2GyFk1gnzL/2JW8zi/gXfqoD9sTNyOHUuT2ycYIZhOMZh
-	 3CzQLXBE0E7O2s3rXbrK3oXNzGHVt1ivwfbYMFJw+HMgUomR7TKr2GASFOQZwYY8yb
-	 SGBt3jCG6tACacRilRDNCvnbmHCalHa5asv+Mjvju9XfsbVmQIeOvoDlD1J2mZ3aOQ
-	 JRHhTkcE08B1WQm+xU+WkShT3xRdXPhhCIqn/BJfzp7WJHdNeqyNw40smYGWaFRPxn
-	 fIFGb0ndIptY+50zcYXfw44Q3sG2aXRqR5AzDVqTgFewFBBegn/y72+f/1cbVW4Ndn
-	 bWkIrpDw6ANjQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] xfs: fix log CRC mismatches between i386 and other architectures
-Date: Mon, 20 Oct 2025 08:47:23 -0400
-Message-ID: <20251020124723.1757183-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251020124723.1757183-1-sashal@kernel.org>
-References: <2025101615-hunter-bonfire-f320@gregkh>
- <20251020124723.1757183-1-sashal@kernel.org>
+	 MIME-Version:Content-Type; b=Xq9/CXFcOfeft5Ut/dUIsPqdmrLBZOyuivCl3NzuBa35dyHkBu5GzrqMN9KVg37NjITjLxBXWcVC7JoPWfewMl5M9R2vpf88WpPyRdX7TGA2WPGS8yVlqWchjw6hMmQWiQlkRTds3wRHKVHp8u2WohDz7xi6sd7au3lOi/behho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=t8qVnE7A; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
+	bh=LT8UUy5Ej3UyVlJPtvk5iRBgSEzEU437pG46R+ymarY=; b=t8qVnE7A5m3NrSDtXnEhrdx7oQ
+	GuDvt4aKjvYuD5KxLgHuTFwBuvqYZ9xOEN2q90ikgdkzDwTlxrWocmflwGb5z0hRiDqz9U42cRdsY
+	R8CSpzsS/ZEJtBp9gv3OYLvpTjZMxMaIUK+4C0w00Uz9daMN2Di6EUosKmxapNblnFB+X/NiLGc/H
+	qCxsAPlLyz8ZGipQgIaxh/OqFIgkbxHGGI1KOrRG0N2mGDV9aM65nPqC6jOiIIRLiC5/98VpfpckX
+	P1il/ZXHNeecX9PH6kATylv9hWtIsXJuHTmAwj06x1g80o9a9JnAmL0h55UKbHb/Sp9kzBIIq5MPE
+	z47iTySw==;
+Received: from [141.76.253.240] (helo=phil.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1vApK3-0001CH-4r; Mon, 20 Oct 2025 14:49:11 +0200
+From: Heiko Stuebner <heiko@sntech.de>
+To: Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: Quentin Schulz <quentin.schulz@cherry.de>, mturquette@baylibre.com,
+ sboyd@kernel.org, zhangqing@rock-chips.com, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Andy Yan <andy.yan@rock-chips.com>
+Subject:
+ Re: [PATCH] clk: rockchip: rk3588: Don't change PLL rates when setting
+ dclk_vop2_src
+Date: Mon, 20 Oct 2025 14:49:10 +0200
+Message-ID: <4856104.usQuhbGJ8B@phil>
+In-Reply-To: <eumxn7lvp34si2gik33hcavcrsstqqoxixiznjbertxars7zcx@xsycorjhj3id>
+References:
+ <20251008133135.3745785-1-heiko@sntech.de> <2749454.BddDVKsqQX@diego>
+ <eumxn7lvp34si2gik33hcavcrsstqqoxixiznjbertxars7zcx@xsycorjhj3id>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-From: Christoph Hellwig <hch@lst.de>
+Am Donnerstag, 16. Oktober 2025, 00:57:15 Mitteleurop=C3=A4ische Sommerzeit=
+ schrieb Sebastian Reichel:
+> Hi,
+>=20
+> On Wed, Oct 15, 2025 at 03:27:12PM +0200, Heiko St=C3=BCbner wrote:
+> > Am Mittwoch, 15. Oktober 2025, 14:58:46 Mitteleurop=C3=A4ische Sommerze=
+it schrieb Quentin Schulz:
+> > > Hi Heiko,
+> > >=20
+> > > On 10/8/25 3:31 PM, Heiko Stuebner wrote:
+> > > > dclk_vop2_src currently has CLK_SET_RATE_PARENT | CLK_SET_RATE_NO_R=
+EPARENT
+> > > > flags set, which is vastly different than dclk_vop0_src or dclk_vop=
+1_src,
+> > > > which have none of those.
+> > > >=20
+> > > > With these flags in dclk_vop2_src, actually setting the clock then =
+results
+> > > > in a lot of other peripherals breaking, because setting the rate re=
+sults
+> > > > in the PLL source getting changed:
+> > > >=20
+> > > > [   14.898718] clk_core_set_rate_nolock: setting rate for dclk_vop2=
+ to 152840000
+> > > > [   15.155017] clk_change_rate: setting rate for pll_gpll to 168000=
+0000
+> > > > [ clk adjusting every gpll user ]
+> > > >=20
+> > > > This includes possibly the other vops, i2s, spdif and even the uart=
+s.
+> > > > Among other possible things, this breaks the uart console on a board
+> > > > I use. Sometimes it recovers later on, but there will be a big block
+> > >=20
+> > > I can reproduce on the same board as yours and this fixes the issue=20
+> > > indeed (note I can only reproduce for now when display the modetest=20
+> > > pattern, otherwise after boot the console seems fine to me).
+> >=20
+> > I boot into a Debian rootfs with fbcon on my system, and the serial
+> > console produces garbled output when the vop adjusts the clock
+> >=20
+> > Sometimes it recovers after a bit, but other times it doesn't
+> >=20
+> > > Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+> > > Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # RK3588 Tiger w=
+/DP carrierboard
+>=20
+> I'm pretty sure I've seen this while playing with USB-C DP AltMode
+> on Rock 5B. So far I had no time to investigate further.
+>=20
+> What I'm missing in the commit message is the impact on VOP. Also
+> it might be a good idea to have Andy in Cc, so I've added him.
 
-[ Upstream commit e747883c7d7306acb4d683038d881528fbfbe749 ]
+Hmm, it brings VP2 in line with the other two VPs, only VP2 had this
+special setting - even right from the start, so it could very well
+have been left there accidentially during submission.
 
-When mounting file systems with a log that was dirtied on i386 on
-other architectures or vice versa, log recovery is unhappy:
+So in the end VP2 will have to deal with this, because when the VP
+causes a rate change in the GPLL, this changes so many clocks of
+other possibly running devices. Not only the uart, but also emmc
+and many more. And all those devices do not like if their clock gets
+changed under them I think.
 
-[   11.068052] XFS (vdb): Torn write (CRC failure) detected at log block 0x2. Truncating head block from 0xc.
 
-This is because the CRCs generated by i386 and other architectures
-always diff.  The reason for that is that sizeof(struct xlog_rec_header)
-returns different values for i386 vs the rest (324 vs 328), because the
-struct is not sizeof(uint64_t) aligned, and i386 has odd struct size
-alignment rules.
+Heiko
 
-This issue goes back to commit 13cdc853c519 ("Add log versioning, and new
-super block field for the log stripe") in the xfs-import tree, which
-adds log v2 support and the h_size field that causes the unaligned size.
-At that time it only mattered for the crude debug only log header
-checksum, but with commit 0e446be44806 ("xfs: add CRC checks to the log")
-it became a real issue for v5 file system, because now there is a proper
-CRC, and regular builds actually expect it match.
-
-Fix this by allowing checksums with and without the padding.
-
-Fixes: 0e446be44806 ("xfs: add CRC checks to the log")
-Cc: <stable@vger.kernel.org> # v3.8
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/xfs/libxfs/xfs_log_format.h | 30 +++++++++++++++++++++++++++++-
- fs/xfs/xfs_log.c               |  8 ++++----
- fs/xfs/xfs_log_priv.h          |  4 ++--
- fs/xfs/xfs_log_recover.c       | 19 +++++++++++++++++--
- fs/xfs/xfs_ondisk.h            |  2 ++
- 5 files changed, 54 insertions(+), 9 deletions(-)
-
-diff --git a/fs/xfs/libxfs/xfs_log_format.h b/fs/xfs/libxfs/xfs_log_format.h
-index 269573c828085..e267fc9d3108f 100644
---- a/fs/xfs/libxfs/xfs_log_format.h
-+++ b/fs/xfs/libxfs/xfs_log_format.h
-@@ -171,12 +171,40 @@ typedef struct xlog_rec_header {
- 	__be32	  h_prev_block; /* block number to previous LR		:  4 */
- 	__be32	  h_num_logops;	/* number of log operations in this LR	:  4 */
- 	__be32	  h_cycle_data[XLOG_HEADER_CYCLE_SIZE / BBSIZE];
--	/* new fields */
-+
-+	/* fields added by the Linux port: */
- 	__be32    h_fmt;        /* format of log record                 :  4 */
- 	uuid_t	  h_fs_uuid;    /* uuid of FS                           : 16 */
-+
-+	/* fields added for log v2: */
- 	__be32	  h_size;	/* iclog size				:  4 */
-+
-+	/*
-+	 * When h_size added for log v2 support, it caused structure to have
-+	 * a different size on i386 vs all other architectures because the
-+	 * sum of the size ofthe  member is not aligned by that of the largest
-+	 * __be64-sized member, and i386 has really odd struct alignment rules.
-+	 *
-+	 * Due to the way the log headers are placed out on-disk that alone is
-+	 * not a problem becaue the xlog_rec_header always sits alone in a
-+	 * BBSIZEs area, and the rest of that area is padded with zeroes.
-+	 * But xlog_cksum used to calculate the checksum based on the structure
-+	 * size, and thus gives different checksums for i386 vs the rest.
-+	 * We now do two checksum validation passes for both sizes to allow
-+	 * moving v5 file systems with unclean logs between i386 and other
-+	 * (little-endian) architectures.
-+	 */
-+	__u32	  h_pad0;
- } xlog_rec_header_t;
- 
-+#ifdef __i386__
-+#define XLOG_REC_SIZE		offsetofend(struct xlog_rec_header, h_size)
-+#define XLOG_REC_SIZE_OTHER	sizeof(struct xlog_rec_header)
-+#else
-+#define XLOG_REC_SIZE		sizeof(struct xlog_rec_header)
-+#define XLOG_REC_SIZE_OTHER	offsetofend(struct xlog_rec_header, h_size)
-+#endif /* __i386__ */
-+
- typedef struct xlog_rec_ext_header {
- 	__be32	  xh_cycle;	/* write cycle of log			: 4 */
- 	__be32	  xh_cycle_data[XLOG_HEADER_CYCLE_SIZE / BBSIZE]; /*	: 256 */
-diff --git a/fs/xfs/xfs_log.c b/fs/xfs/xfs_log.c
-index a1650fc81382f..d03976b821802 100644
---- a/fs/xfs/xfs_log.c
-+++ b/fs/xfs/xfs_log.c
-@@ -1807,13 +1807,13 @@ xlog_cksum(
- 	struct xlog		*log,
- 	struct xlog_rec_header	*rhead,
- 	char			*dp,
--	int			size)
-+	unsigned int		hdrsize,
-+	unsigned int		size)
- {
- 	uint32_t		crc;
- 
- 	/* first generate the crc for the record header ... */
--	crc = xfs_start_cksum_update((char *)rhead,
--			      sizeof(struct xlog_rec_header),
-+	crc = xfs_start_cksum_update((char *)rhead, hdrsize,
- 			      offsetof(struct xlog_rec_header, h_crc));
- 
- 	/* ... then for additional cycle data for v2 logs ... */
-@@ -2077,7 +2077,7 @@ xlog_sync(
- 
- 	/* calculcate the checksum */
- 	iclog->ic_header.h_crc = xlog_cksum(log, &iclog->ic_header,
--					    iclog->ic_datap, size);
-+			iclog->ic_datap, XLOG_REC_SIZE, size);
- 	/*
- 	 * Intentionally corrupt the log record CRC based on the error injection
- 	 * frequency, if defined. This facilitates testing log recovery in the
-diff --git a/fs/xfs/xfs_log_priv.h b/fs/xfs/xfs_log_priv.h
-index e30c06ec20e33..a183bfb36470a 100644
---- a/fs/xfs/xfs_log_priv.h
-+++ b/fs/xfs/xfs_log_priv.h
-@@ -503,8 +503,8 @@ xlog_recover_finish(
- extern void
- xlog_recover_cancel(struct xlog *);
- 
--extern __le32	 xlog_cksum(struct xlog *log, struct xlog_rec_header *rhead,
--			    char *dp, int size);
-+__le32	 xlog_cksum(struct xlog *log, struct xlog_rec_header *rhead,
-+		char *dp, unsigned int hdrsize, unsigned int size);
- 
- extern struct kmem_cache *xfs_log_ticket_cache;
- struct xlog_ticket *xlog_ticket_alloc(struct xlog *log, int unit_bytes,
-diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
-index eedcae996e51e..f708bf4104b1a 100644
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2860,9 +2860,24 @@ xlog_recover_process(
- 	int			pass,
- 	struct list_head	*buffer_list)
- {
--	__le32			expected_crc = rhead->h_crc, crc;
-+	__le32			expected_crc = rhead->h_crc, crc, other_crc;
- 
--	crc = xlog_cksum(log, rhead, dp, be32_to_cpu(rhead->h_len));
-+	crc = xlog_cksum(log, rhead, dp, XLOG_REC_SIZE,
-+			be32_to_cpu(rhead->h_len));
-+
-+	/*
-+	 * Look at the end of the struct xlog_rec_header definition in
-+	 * xfs_log_format.h for the glory details.
-+	 */
-+	if (expected_crc && crc != expected_crc) {
-+		other_crc = xlog_cksum(log, rhead, dp, XLOG_REC_SIZE_OTHER,
-+				be32_to_cpu(rhead->h_len));
-+		if (other_crc == expected_crc) {
-+			xfs_notice_once(log->l_mp,
-+	"Fixing up incorrect CRC due to padding.");
-+			crc = other_crc;
-+		}
-+	}
- 
- 	/*
- 	 * Nothing else to do if this is a CRC verification pass. Just return
-diff --git a/fs/xfs/xfs_ondisk.h b/fs/xfs/xfs_ondisk.h
-index c4cc99b70dd30..618bf4f03f280 100644
---- a/fs/xfs/xfs_ondisk.h
-+++ b/fs/xfs/xfs_ondisk.h
-@@ -143,6 +143,8 @@ xfs_check_ondisk_structs(void)
- 	XFS_CHECK_STRUCT_SIZE(struct xfs_rud_log_format,	16);
- 	XFS_CHECK_STRUCT_SIZE(struct xfs_map_extent,		32);
- 	XFS_CHECK_STRUCT_SIZE(struct xfs_phys_extent,		16);
-+	XFS_CHECK_STRUCT_SIZE(struct xlog_rec_header,		328);
-+	XFS_CHECK_STRUCT_SIZE(struct xlog_rec_ext_header,	260);
- 
- 	XFS_CHECK_OFFSET(struct xfs_bui_log_format, bui_extents,	16);
- 	XFS_CHECK_OFFSET(struct xfs_cui_log_format, cui_extents,	16);
--- 
-2.51.0
 
 
