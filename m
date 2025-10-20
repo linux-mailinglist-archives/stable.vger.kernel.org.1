@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-188042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80915BF1293
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E68BF1299
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:27:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FA923A4154
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:23:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96A1C3A8268
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417712E9737;
-	Mon, 20 Oct 2025 12:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE545311C3A;
+	Mon, 20 Oct 2025 12:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="DeYUQ9XI";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eWHTC+UY"
+	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="i1XmFziE";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZEv+r2uE"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFB82FD7B2
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92995304967
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760962999; cv=none; b=UZ3nNAScgMNrDONP0BqkyjcZh8ivdzV4aiOGZ5GBv4Nf7AzSSkOcMeA7Zr+lXEjTBAXJW+voUMln56IvSC/ALPJaMXeTwU9jM8AjCmyPkMil8Zrdok1wQrulv9w036m7DTBthpXcDH1pwyPRVOTyPhcFo6KhRgCf9uGErEVKBck=
+	t=1760963034; cv=none; b=JvjaeSQ6jcFVPJBr6BWqJ1ahirxFXsedd9T4QMpLcN88vJdLrY0oDwuYDyypJkmrpdvEhlKcMYP47vsBFUsttec9OPUorBlxiBinggLVB+2MALTMGYsCdRI9uBQ9QXWp/a6EaJgiecn0N76nRuQoHeQoG7lMy7i08bYYjOZO4GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760962999; c=relaxed/simple;
-	bh=jHtAmnzRynfs4uM9im/cLEeXLg18k865eeiIWxwWuO4=;
+	s=arc-20240116; t=1760963034; c=relaxed/simple;
+	bh=vYUJ+xGeX8WoNFkyg5K6nyrI2bZw1/G526oTuJhvBH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPhji7N5cmG4d/aC9zOZIndkvWlZzTIg9jTmnCOVGIueu5FqeNs7RedkRb3i0qV0/J+rpVPMdZ32dCX0ktvr7KgNZzGMpKsXbye5XjSnu1zHPdfRfcf/fNky7PTa0XAdRpyAzooSwm7D+UG5Ib3Y2dxryKXtg3/U19cDNMbvZ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=DeYUQ9XI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eWHTC+UY; arc=none smtp.client-ip=202.12.124.158
+	 MIME-Version; b=Dfo6+/I9lvLPAYTAFjl4rXNy6jehRttc9VseL47OBCP9prnrEkKdImKWk+N48Cnh84Xl1OKsk30DQHpo5oE/W4kJ9BYgE7cry2iFKUKNk6i6V5lZXRAsQvkgDqe0X/PTr5OOCEeLv/hdo1xCba1Wcqrr9RJNQBVtFULTQqrcmuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=i1XmFziE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZEv+r2uE; arc=none smtp.client-ip=202.12.124.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 7BBBF7A008E;
-	Mon, 20 Oct 2025 08:23:15 -0400 (EDT)
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfout.stl.internal (Postfix) with ESMTP id 6A44B1D00026;
+	Mon, 20 Oct 2025 08:23:51 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Mon, 20 Oct 2025 08:23:15 -0400
+  by phl-compute-10.internal (MEProxy); Mon, 20 Oct 2025 08:23:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	coelacanthus.name; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm3; t=1760962995; x=1761049395; bh=fiC6uzb5upzVu6fzbrM4G
-	jGQI88WvS8crHqt9GuTq1s=; b=DeYUQ9XIQ4j+HqvvjsqdDNK9gjWdhxPWbF9zS
-	MM2TWGYTjUO1oBX3hgNLk68dMVCV0AqDKWFkmXGQcVqNOYHrUjpyTtfh4YUxJmlq
-	flnj9lodIaydf/pQrQDE+FU0ga7XBQOx8CC91sKmmq/vrdqVO4yEd4W0/5t2uB9y
-	7q4hcGFspP0FzoSXzxlEP9yJ7j8rFiZqhgbRISjeiVgPdULfgY/9/aiLDiQLX3nC
-	d8UTK11rj9T3XkuQTuGxlj4fDlqfjmrjXdYXIunOwzVMLrXnsihbT7u2eYPoin9R
-	3S6KU2LNx+7+gbRxh/ARk2U4s1x4hmq4C9OUwz9ufcv0VnmTw==
+	:to; s=fm3; t=1760963031; x=1761049431; bh=cfl/FhP8lg3ZCS9xRETNw
+	jvbpvfF7q2LsEUJfyLeMBY=; b=i1XmFziEMOSI1246b719jnSnf9JqIyqzI0Lbt
+	O7cH9+3y+q4CWbqsCSE7GSNKu6L6EqsvtdQxnCwMGS0NmWmTQmxL3HPl+cy2gvW1
+	CZuRORFQK3aTqkndrnZF/AqbMB2ak6tsdXkZujKYbavdLM8uobiKHta6+UFafvdE
+	PjlbM+fC9wi3g4WyAn0gYa8eWEUoYx/JSSxoiU6K1flo4HLFKMpT0leuKHQXFZWJ
+	xiQ7qHRJTIY81oEO64I8GnEs8J/hWUmx5AiRZK2Bnye/D/78nSgdmoa9qdTJbQKD
+	NQd4dVgXnjfdpIiod3uEbRYwjMLGQ3P8AVpDqK4PrGdpqYQag==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1760962995; x=1761049395; bh=f
-	iC6uzb5upzVu6fzbrM4GjGQI88WvS8crHqt9GuTq1s=; b=eWHTC+UYAgdDQRGQa
-	jM6Piw1Dq47Pdmvl9wg4sxaluxFaQx+TKlLCM4ENkmbiGZzDMJc9DTTc+xScf1MW
-	6ZgWUoT/OvQS31FeVdsrT4jb23Y67BEKGJSvSIid9wtzBe0VTfg6IcYSIhNUucje
-	SQELcHZ6L43Dxt2QgoXf86IvYuAZzuSeFrsdpmiApZyab3BI9kntb5sbW7PuJiP0
-	5QxIgR1H6Q6/6wbdDOgOXoVsKRpfqaqZAl1BsL1DJcqrJn+PGc/YeYHFNrbyRPNG
-	QfviJI6V08ZApwH3BRi2/vStBbvs00BkSwcL2E3JuHw+4Sm3zJfAjMcd8aoU73le
-	cK8ew==
-X-ME-Sender: <xms:sin2aGGQpRUW0RQ5EUhKSLGOU_4nAQMyWWOd4TKqHTHK_6-2NB8VSA>
-    <xme:sin2aOOFzkkYamASyx9LjPRFAb8-lBjuyXxHin7NcDssevO4qA2-UrLnhk5th4_jz
-    EqvRNnR3n2MVb6P7ljEBQhpeuuqKf2NyAVv7L8oStepWYMLYQrWL5s>
-X-ME-Received: <xmr:sin2aIeGj-O7KozWuCBPyQlJKt6DHijwdS5VolKGcdvXvzRN9WgsF1-UBM_Ryg>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1760963031; x=1761049431; bh=c
+	fl/FhP8lg3ZCS9xRETNwjvbpvfF7q2LsEUJfyLeMBY=; b=ZEv+r2uEVixC0ovMu
+	LNhKXRsbqXNbnl8xY/xC8QUnRslZ4qA/MD9sS5Q6KEc3jkSrHG/+UhzcP00ck279
+	0MOGIQmwgbIPul9tvZB8GGFy2rQWcG6SFGKNjmDlzNZEZxLOn4fZZZ9J+8ByfRZn
+	7UqaEllwbfvn5lnb/ObP/ZxOTxEnRh95qdaJJaxPZPVsnvMD3m+vrOFvKKmpYE07
+	16oFTa7+b4f+sBLbfMtrY7CdoSVvDqIfDw7e8RpNFVx9pYXko7IIRSlJ13L/kdnS
+	8viNGMM/su00GY6/Lk2gtSylDtpkYphPGC0SQ3SAa0LnYq3X7N6qkrBciSixjvYy
+	Phrqw==
+X-ME-Sender: <xms:1yn2aOWdbCCUZn7qqvQxhXRrAcesGOyPJGl1XamtCb_sFWcX6EmK2Q>
+    <xme:1yn2aBffY6TcTOunJfazgb3CRIjY3-x3b0L4GmL5ddxJmu2zT1Tm-0LcTySnDCYO7
+    bTTr8zEw7d_o8DkmxIx-hZM2Dhk1eHJ8j_aWYYKwF6_9b_75zvnmTk>
+X-ME-Received: <xmr:1yn2aKs5O_cxVxwHlwnVrBzQK755YBbCd8-kMrkrXLvD651BfEIdk_6Auqb41Q>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddufeejkeduucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
@@ -79,33 +79,33 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddufeejkeduucetufdote
     htoheprhhunhgthhgvnhhgrdhluheshhhpmhhitghrohdrtghomhdprhgtphhtthhopehm
     rghilhhhohhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmkhhlsehpvghnghhuth
     hrohhnihigrdguvg
-X-ME-Proxy: <xmx:sin2aLu7DnNRwyWF0A1KQ8xtZNuk-XIaMA_Xe2FqYyuCdc6IavMFfg>
-    <xmx:sin2aJmtaamsL9JTRIGX2AXU3nmGc5TCWUOuanqAUBmruNH2HSRjrg>
-    <xmx:sin2aNy5_s45i-8iVmq-00NHuWZHDa64qv-65u09h4ZDo8ZyvVjA_A>
-    <xmx:sin2aLMSenIZPMvkdv3c0TxmZuCaOTgi1r3Wi92hnnZsETaa3-_NHA>
-    <xmx:syn2aFefe53EZFc5rdTXkRvoybor-OUxEoH6Bp0NV6uWz0yLjz2kqI4X>
+X-ME-Proxy: <xmx:1yn2aA9aTHMlu4s4qjgHhWJh8F588NNnkXpyWwglpIF5R0Hqgmgnwg>
+    <xmx:1yn2aF2PVe1JaTNxj_ntPP7dRaKbwC2Oz9HJl6NJMhKribsZqZw9kA>
+    <xmx:1yn2aFDy879PUXACoRwN452789T3VGYRWoe_ZHTfEGetjxXVmjEiQw>
+    <xmx:1yn2aBdUi_7KLDeDScusv2XEMJ4D5XdKTzV4fJJQHCO-5vyoQSUNJw>
+    <xmx:1yn2aMtwDHcMuhJkOJampxiK5Hqow_irVbNmYnbQ9DZPANt8ldl-yu5A>
 Feedback-ID: i95c648bc:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 20 Oct 2025 08:23:13 -0400 (EDT)
+ 20 Oct 2025 08:23:50 -0400 (EDT)
 From: Celeste Liu <uwu@coelacanthus.name>
 To: stable@vger.kernel.org
 Cc: Celeste Liu <uwu@coelacanthus.name>,
 	Runcheng Lu <runcheng.lu@hpmicro.com>,
 	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.4.y] can: gs_usb: increase max interface to U8_MAX
-Date: Mon, 20 Oct 2025 20:22:38 +0800
-Message-ID: <20251020122237.1517578-2-uwu@coelacanthus.name>
+Subject: [PATCH 5.10.y] can: gs_usb: increase max interface to U8_MAX
+Date: Mon, 20 Oct 2025 20:23:43 +0800
+Message-ID: <20251020122342.1517889-2-uwu@coelacanthus.name>
 X-Mailer: git-send-email 2.51.1.dirty
-In-Reply-To: <2025102041-mounting-pursuit-e9d3@gregkh>
-References: <2025102041-mounting-pursuit-e9d3@gregkh>
+In-Reply-To: <2025102040-unusual-concur-90e9@gregkh>
+References: <2025102040-unusual-concur-90e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3797; i=uwu@coelacanthus.name; h=from:subject; bh=jHtAmnzRynfs4uM9im/cLEeXLg18k865eeiIWxwWuO4=; b=owJ4nJvAy8zAJeafov85RWVtBeNptSSGjG+avdd6XZNSp1vwnlksbXhnxXq3OIbqwI2/+zQ0c gSKr7zZfKejlIVBjItBVkyRJa+E5SfnpbPdezu2d8HMYWUCGcLAxSkAE4mPZGRYme/p6XG23vjW lZ3uqVb1bE4MKU9OKU+r0d+6N0p4hWoYI8MFX3fbNWZSxjfrKlfEFb/R3H955/X1If5HuJlnLfr N+50FAEB4Rtk=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3797; i=uwu@coelacanthus.name; h=from:subject; bh=vYUJ+xGeX8WoNFkyg5K6nyrI2bZw1/G526oTuJhvBH8=; b=owJ4nJvAy8zAJeafov85RWVtBeNptSSGjG+a5+NC5+TMjIpVl/T7mGZ2Lct0t2XtIUGuoHbNy JN9U07ac3WUsjCIcTHIiimy5JWw/OS8dLZ7b8f2Lpg5rEwgQxi4OAXgIryMDEs3HYvtslr9KkJm y0qpBYF/2V4d3vmTRW/RlLhcy+hXiRYM/3MlFGzfKWv0zVysmnb9ypq0kle/Nxjwz7ypef9rxc1 6CU4Ay3RIBQ==
 X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp; fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
 Content-Transfer-Encoding: 8bit
 
@@ -136,7 +136,7 @@ Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
  1 file changed, 11 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 1a24c1d9dd8f..509b0c83ebb8 100644
+index 864db200f45e..f39bd429f77d 100644
 --- a/drivers/net/can/usb/gs_usb.c
 +++ b/drivers/net/can/usb/gs_usb.c
 @@ -156,10 +156,6 @@ struct gs_host_frame {
