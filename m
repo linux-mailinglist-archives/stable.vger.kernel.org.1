@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-188152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE68BF22CA
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 17:44:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43137BF232D
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 17:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DC254344F9E
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:44:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30E7D3AAD11
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 15:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F80E26B96A;
-	Mon, 20 Oct 2025 15:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E7B26E71E;
+	Mon, 20 Oct 2025 15:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pTWkljph"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="na8Bjarr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFB0264FB5
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 15:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58097191F92
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 15:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760975059; cv=none; b=OlWXDjwMwU1nN+1hWs9vViKVYyTbZ7idwwEA14yzxop8K9zUj8YGKU8pxqy2Heb6WeQmGJNw7/p+HqRykdBg2B/3DTPs1LVmV23qjHGuu8ZLfV6Vz9fhxDsKfsAH8t3IGhjlMnJ8HKC/0a5UhoCDsRqrqamyG3PxuNIAOLRlfxU=
+	t=1760975060; cv=none; b=UXh7Lc8IF51E2BmXl9JNfL8BAXhongl1zoilWtTWOpilQYZow2T2JI2lODNETriyr9TypgErWDA8lRQ8b/qTY66Asx3L8Tqq7SqRqinljiMmg51UGlOMyqSiRIFxqCfv53k97uBqPJhyOAIrSuPhprkTTW6vlI/3j3ZT0FRVVdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760975059; c=relaxed/simple;
-	bh=RCYfSGk8jNXiHD89++DKvMXC6kGOm70xTlhiEFvDPnI=;
+	s=arc-20240116; t=1760975060; c=relaxed/simple;
+	bh=LkvrscrIBp06mopZAl9cfw1ZExmnu5oyZTd/waLUHQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSSAjogRStvKZPZh9RO2JRQa4ebrVcV3m7MkmXJeVfubWu2ZftBU9LDS+AI6P/Mv8sNVPUGUsaRTQoyKpFetfeY71uMI+A2LEK1DErQ0+KDhrQG7XPuiVrOD5eQupRTAqV7+de9u/K0LJMaYPHkZY4cdwmnEeVz6eYHc2FfHM7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pTWkljph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25619C116D0;
-	Mon, 20 Oct 2025 15:44:18 +0000 (UTC)
+	 MIME-Version; b=NPNynJUuFQt3XcgSBtOyPS7If88vGQnGJKzHpPU9hw6x5T3/DPKg8oGNxQAlclJmCobAEwKUA7QIl1jxsHe8ejmd5Z3u3RIxIDjXidYDVWKDjH4hIR87NJ5AOyDqjCfA5AX2X0EZ9R/zXeFvydtJCezXLap89XrbOyGyV2MuzPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=na8Bjarr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE34C4CEF9;
+	Mon, 20 Oct 2025 15:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760975058;
-	bh=RCYfSGk8jNXiHD89++DKvMXC6kGOm70xTlhiEFvDPnI=;
+	s=k20201202; t=1760975059;
+	bh=LkvrscrIBp06mopZAl9cfw1ZExmnu5oyZTd/waLUHQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTWkljphzvN0Tsev0RxyumYD6RNHVFA2L4UOpmVgv7S5Xhw6BLwfMmiDeOjPC/IEa
-	 ADJPD/77qYTpMclQtNQVcFPNP+/8HvsylSa1iTIuJ+ojQ7tZ/1P+Oy4X7jmJuIBLTu
-	 +xTn4Ax/ty0vpDEVUvuW59GXIP9wQ7aE5Tg3qThvW7v4FX6fz3aY8TPvn0R8oIa445
-	 /d2I60bVl0rFCGz9qIwEuSxagRG6XsUv7EOo/pdIRNeZI/2fgFrY9JMnyhLxV873pq
-	 7P5S9iZ590arYwWMUkW/GydCnClKJ9is/aYo2vd8Ydnx3xaYJ2hJXVrzA4jsqJ99MU
-	 w2ZHmmZnIaoBA==
+	b=na8BjarrUoXJdXHh0u2aOwPxxz/4lCYEIzl/uUjMykRLOBnGu+S5/Jy9BPxgQNcGc
+	 5V+IskeMEXHHbxzYej9bV5zq3A78U2Xd9RgX6xAkKp8DxMRVUop3FM7xB3THcwRfBL
+	 B/cwpDA3EKfLfbkgAmL6+cLn3JSybPRp8AA/DXJO8zd4O8GEo2UM1LxIkq8nB80r/f
+	 iPWFPcJCzcAIw90eb0oqi9DcovuMf1HX7tKUSc3L0Q4w31vdTInz4iBnH82Rb6S9ac
+	 c5icu9bX9LqAY/omt61ZglvRG9ydAk47RR8pms5LnoMPVImK78l4ZybUyt5xkld5iV
+	 5yJPpJzTQXNmA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Kuniyuki Iwashima <kuniyu@google.com>,
@@ -48,9 +48,9 @@ Cc: Kuniyuki Iwashima <kuniyu@google.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 6/8] mptcp: Call dst_release() in mptcp_active_enable().
-Date: Mon, 20 Oct 2025 11:44:07 -0400
-Message-ID: <20251020154409.1823664-6-sashal@kernel.org>
+Subject: [PATCH 6.12.y 7/8] mptcp: Use __sk_dst_get() and dst_dev_rcu() in mptcp_active_enable().
+Date: Mon, 20 Oct 2025 11:44:08 -0400
+Message-ID: <20251020154409.1823664-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251020154409.1823664-1-sashal@kernel.org>
 References: <2025101604-chamber-playhouse-5278@gregkh>
@@ -65,36 +65,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 108a86c71c93ff28087994e6107bc99ebe336629 ]
+[ Upstream commit 893c49a78d9f85e4b8081b908fb7c407d018106a ]
 
-mptcp_active_enable() calls sk_dst_get(), which returns dst with its
-refcount bumped, but forgot dst_release().
+mptcp_active_enable() is called from subflow_finish_connect(),
+which is icsk->icsk_af_ops->sk_rx_dst_set() and it's not always
+under RCU.
 
-Let's add missing dst_release().
+Using sk_dst_get(sk)->dev could trigger UAF.
 
-Cc: stable@vger.kernel.org
+Let's use __sk_dst_get() and dst_dev_rcu().
+
 Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250916214758.650211-7-kuniyu@google.com
+Link: https://patch.msgid.link/20250916214758.650211-8-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: 833d4313bc1e ("mptcp: reset blackhole on success with non-loopback ifaces")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/ctrl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/mptcp/ctrl.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
-index dd595d9b5e50c..6a97d11bda7e2 100644
+index 6a97d11bda7e2..9e1f61b02a66e 100644
 --- a/net/mptcp/ctrl.c
 +++ b/net/mptcp/ctrl.c
-@@ -385,6 +385,8 @@ void mptcp_active_enable(struct sock *sk)
+@@ -381,12 +381,15 @@ void mptcp_active_enable(struct sock *sk)
+ 	struct mptcp_pernet *pernet = mptcp_get_pernet(sock_net(sk));
  
- 		if (dst && dst->dev && (dst->dev->flags & IFF_LOOPBACK))
+ 	if (atomic_read(&pernet->active_disable_times)) {
+-		struct dst_entry *dst = sk_dst_get(sk);
++		struct net_device *dev;
++		struct dst_entry *dst;
+ 
+-		if (dst && dst->dev && (dst->dev->flags & IFF_LOOPBACK))
++		rcu_read_lock();
++		dst = __sk_dst_get(sk);
++		dev = dst ? dst_dev_rcu(dst) : NULL;
++		if (dev && (dev->flags & IFF_LOOPBACK))
  			atomic_set(&pernet->active_disable_times, 0);
-+
-+		dst_release(dst);
+-
+-		dst_release(dst);
++		rcu_read_unlock();
  	}
  }
  
