@@ -1,223 +1,313 @@
-Return-Path: <stable+bounces-188044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E684BF12CC
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:29:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2852BF1272
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:26:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21FF83AEE41
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:25:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8BB4188FD1F
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 12:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600333126AD;
-	Mon, 20 Oct 2025 12:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32C73128C7;
+	Mon, 20 Oct 2025 12:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="wuI+Sltx";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="s+0KG7rh"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="fOC+eo+2"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com [35.158.23.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36242FD7B2
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 12:25:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5902F83DF;
+	Mon, 20 Oct 2025 12:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.158.23.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760963146; cv=none; b=qkuDMsIJgWyoopOuOY6wqvHHDLPYty3lYncutlTqbU0kMzjjVTbc3WUoJK9jQbA2EKzYcI3hCdrKd224O+/iHVaxf4gOV1KHr6SGK/C9F7axICFepyecc9ub+bzd27Xuj8h5rOJ86wl8CWBTAIZA8BsJ/U2QCbaL0ie+AuXeLDw=
+	t=1760963179; cv=none; b=QiB6hhTHqvhKXQ/lrZ/PUHWA07CoggZ8zevKjGhodF27fORztSn4HRvlPicNEJG7DVUSTynhwHRlAcXGCjWXFrJJTxtkaK1jpVIGjlbfLUGs73ltH8UI/lxt6BtcgQSGIAmv6/57f+bcve4BuzmNzpudr+xFGAlopOOrJmuh50g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760963146; c=relaxed/simple;
-	bh=Nu7Gs/CwDtCZIt/xiKl+hDBm2H9N19Wurl9kZRgbdes=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+j2ITScEuF+Nxgry9MWxw266yx3O4VL6IcHbQbLSgZElTdPkqxIfBIdOEEtOmmpSWJxV92ebZkIHt+dPvLt5Hodr08EM/kF9pUkQbUNsIPS/mxMkFpy7Wh49qCsdhtespvTGp35gT+DMl7rru7cqgRrUHM/h8S//HAiyKOGvMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=wuI+Sltx; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=s+0KG7rh; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 613781D000DC;
-	Mon, 20 Oct 2025 08:25:38 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Mon, 20 Oct 2025 08:25:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	coelacanthus.name; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm3; t=1760963138; x=1761049538; bh=VW40ojzBg5EEbNKXl+//H
-	Ge3cPHgdj2jDGzut4Ncr4Q=; b=wuI+SltxJufoUl6tPxzhBCVWxqT9j5LdQOitA
-	cV4g1CsXh81P5eKZo7xilInTFB7SxMZVrI8uRd8dH2GDURszTCudZBRlyD4984Bu
-	6BzlSFYu5kEajKecHwdqWCT+9uNU720bDfmGN9Kw3xC2EpbvEXuJ/K/MZzU24i5S
-	ToFIjoVOa83KNwgUFBUSCoc5Vrn6KEJtE+8TBQIh69Y+HT6uU8JtEbxYZ8QAvITc
-	VIYyZQZbgU5G53UAthLmH9lIwc9SXJUMxe6eM6dHB7xFnNN4lLk6+Hq+OS5U01zK
-	2RJ/ilHPGxBn8DGXhlouZisFfEkfs/2yuG0YRlNwdtcIoyOHA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1760963138; x=1761049538; bh=V
-	W40ojzBg5EEbNKXl+//HGe3cPHgdj2jDGzut4Ncr4Q=; b=s+0KG7rh2D8ijOnpu
-	aeWhMmmTcuUiFPO/787A1MR6czzKBt97BicdH8WN9labFNgXEQ40ieRHKKFZpYkq
-	igCLH7+6dj2/n8oyNYAKZleNlMX3oyZjWeUaqDYEzbjqYUzuMb8dSN/YsGvyMCRd
-	YH7nQY+3dErVLKHLXQY5lcpONillWy6FRgiRaRBA8Fqy14jU07OPlwQu7YSMk2DU
-	Aw9m+9QNJDZgNfj57tqK9F1l6OOCQnixQu4D5Btr8jSGnaa9phs3JUzupf7r1lIu
-	ENVPaeYPF9gIhXxiX0CPiYpTnV5DV3l6o2KTpDWSpstbGEBl83HvY/rM7FzUP4yd
-	LJbpA==
-X-ME-Sender: <xms:Qir2aD6sSjufFLdtBH_ErB5bnTKFli3jIEA5CKqDfIXBYU90XwBItw>
-    <xme:Qir2aPzw3_3GzYOI7nsHOF1R6XNvJRuQipvfJ0jCMvEt9lvq1Rn3TEUGfSw4VyqLR
-    Z6i7_QIZ_Y96x1VUGvwtR2uE1glAqFf-i_cXuWLivAHzWahRQlEbA>
-X-ME-Received: <xmr:Qir2aCyWPp69aBToldE49VhNGgUr3MIQADAz143DNn1ApDD9ZhaUHf5I-ynxJA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddufeejkeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepvegvlhgvshht
-    vgcunfhiuhcuoehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgvqeenucggtffrrg
-    htthgvrhhnpeetteeggfevudevffeileehtdeuteekieehvdefjeetffeiueehieejiedu
-    heevieenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhmshhgihgurdhlihhnkhenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehufihusegt
-    ohgvlhgrtggrnhhthhhushdrnhgrmhgvpdhnsggprhgtphhtthhopeehpdhmohguvgepsh
-    hmthhpohhuthdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgvpdhrtghpth
-    htoheprhhunhgthhgvnhhgrdhluheshhhpmhhitghrohdrtghomhdprhgtphhtthhopehm
-    rghilhhhohhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmkhhlsehpvghnghhuth
-    hrohhnihigrdguvg
-X-ME-Proxy: <xmx:Qir2aPyiwrm0lZXxWsmasJzeUPEk6MVUrYe-RI3_jy3rQYlYB1LahQ>
-    <xmx:Qir2aEaKs_P61x6nvnSIZd-afjvEPpV1U2xYJZosRWlm_MU1q5dKcw>
-    <xmx:Qir2aIUdMUKIxz-rN2LngsglgfQFaQ0ILCbfh3NiJgM0eYl6ilr4WA>
-    <xmx:Qir2aKhXRDJZahB-C7mXG-gTXd2Uw3VUZvhHSFUsl7P3Nkw3pvONdA>
-    <xmx:Qir2aEDQ5sIqlPPAGZlXMQJ2ghgyuUMGG1DJNXtRTJs3XKdN2WmUkQAv>
-Feedback-ID: i95c648bc:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 20 Oct 2025 08:25:37 -0400 (EDT)
-From: Celeste Liu <uwu@coelacanthus.name>
-To: stable@vger.kernel.org
-Cc: Celeste Liu <uwu@coelacanthus.name>,
-	Runcheng Lu <runcheng.lu@hpmicro.com>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.15.y] can: gs_usb: increase max interface to U8_MAX
-Date: Mon, 20 Oct 2025 20:25:30 +0800
-Message-ID: <20251020122529.1518396-2-uwu@coelacanthus.name>
-X-Mailer: git-send-email 2.51.1.dirty
-In-Reply-To: <2025102039-detoxify-trustee-aa22@gregkh>
-References: <2025102039-detoxify-trustee-aa22@gregkh>
+	s=arc-20240116; t=1760963179; c=relaxed/simple;
+	bh=iFtNqAALTnaGMyjG4E8hOCEExNpCalehkWAxAsxgxcE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Id4J3PkUD2+/SR/Tp3PLEk5bbUEhED8I6Fko/Qh+wOdyaiZBwI1L5B8X32Jj2/prqiI1qMp+m39KM4sqExuNWVuKJ4IAPmYAYK/mwCo9EX4ujfz0pGGO6/z3XNSK+bF6HDxZBMo0yQFW/oaLp+A+0SmjEs01OJlQaaJsby4KfOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=fOC+eo+2; arc=none smtp.client-ip=35.158.23.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1760963173; x=1792499173;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pLrkDc9uOZVP5QDcEFJpTtan3stKZzUb4ru8DIN6Jio=;
+  b=fOC+eo+2cjyx3LnwMEYK83XHVLMzOaD7namg5jVCriv4p4qe1wfjFiYV
+   oShjZYudTuvuZg7ERUo0jN/ZkFAOhdQXbMynxpG7KXUKwMpbn/PFOwPxG
+   RxfKUEaVdHY9L/NgC5L5WXYTwW2gb3vPJZhBopKFjMcTmo0ViOsyo7t29
+   novvirFPicueTsKXc7xeqvUul1INisuG0/s31p9iM3hwAqjjFLhoaqqRk
+   qZurTGMsEwfXDKKObDQ+2GoYAFGXWIFtT2bQ3BeGhM4Umi0Qz4xV6ixC3
+   pPoVWAtjnmX2/sSgiFKLVXHuARMjMb1YtSMNA6pjCZiVy9q3bOKr2J1yf
+   g==;
+X-CSE-ConnectionGUID: XMphiMhvTgeNxgLfSTa9kg==
+X-CSE-MsgGUID: 5gVlu9EYQo6obBnfNFlH0Q==
+X-IronPort-AV: E=Sophos;i="6.19,242,1754956800"; 
+   d="scan'208";a="3882177"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 12:25:59 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:4783]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.33.169:2525] with esmtp (Farcaster)
+ id 71ef932b-06b0-4cee-8a75-9885cd1ac552; Mon, 20 Oct 2025 12:25:59 +0000 (UTC)
+X-Farcaster-Flow-ID: 71ef932b-06b0-4cee-8a75-9885cd1ac552
+Received: from EX19D013EUB004.ant.amazon.com (10.252.51.92) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Mon, 20 Oct 2025 12:25:56 +0000
+Received: from dev-dsk-mngyadam-1c-cb3f7548.eu-west-1.amazon.com
+ (10.253.107.175) by EX19D013EUB004.ant.amazon.com (10.252.51.92) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Mon, 20 Oct 2025
+ 12:25:49 +0000
+From: Mahmoud Adam <mngyadam@amazon.de>
+To: <stable@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <nagy@khwaternagy.com>, "Darrick J. Wong"
+	<djwong@kernel.org>, Christoph Hellwig <hch@lst.de>, Luis Chamberlain
+	<mcgrof@kernel.org>, Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	"Jens Axboe" <axboe@kernel.dk>, Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	<linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-nilfs@vger.kernel.org>
+Subject: [PATCH 6.6 1/2] block: fix race between set_blocksize and read paths
+Date: Mon, 20 Oct 2025 14:25:38 +0200
+Message-ID: <20251020122541.7227-1-mngyadam@amazon.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3797; i=uwu@coelacanthus.name; h=from:subject; bh=Nu7Gs/CwDtCZIt/xiKl+hDBm2H9N19Wurl9kZRgbdes=; b=owJ4nJvAy8zAJeafov85RWVtBeNptSSGjG9alktfbBe+q/Nv8yzxh5y/GZ4pVv/YJfv3W/mrh Rmdpnad4rc7SlkYxLgYZMUUWfJKWH5yXjrbvbdjexfMHFYmkCEMXJwCMJFNkQx/OLr/9Od6bdsy e9uKlZq3JZb2cv/JapLVyO37Yh9pt9LBi+GvoOBvNq2Ly0u/1T6OKjJr2RsqLSDfrhK90vnyvPU duQH8APp1Sl8=
-X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp; fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
-Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EX19D044UWB002.ant.amazon.com (10.13.139.188) To
+ EX19D013EUB004.ant.amazon.com (10.252.51.92)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-commit 2a27f6a8fb5722223d526843040f747e9b0e8060 upstream
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
-converter[1]. The original developers may have only 3 interfaces
-device to test so they write 3 here and wait for future change.
+commit c0e473a0d226479e8e925d5ba93f751d8df628e9 upstream.
 
-During the HSCanT development, we actually used 4 interfaces, so the
-limitation of 3 is not enough now. But just increase one is not
-future-proofed. Since the channel index type in gs_host_frame is u8,
-just make canch[] become a flexible array with a u8 index, so it
-naturally constraint by U8_MAX and avoid statically allocate 256
-pointer for every gs_usb device.
+With the new large sector size support, it's now the case that
+set_blocksize can change i_blksize and the folio order in a manner that
+conflicts with a concurrent reader and causes a kernel crash.
 
-[1]: https://github.com/cherry-embedded/HSCanT-hardware
+Specifically, let's say that udev-worker calls libblkid to detect the
+labels on a block device.  The read call can create an order-0 folio to
+read the first 4096 bytes from the disk.  But then udev is preempted.
 
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
-Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-Link: https://patch.msgid.link/20250930-gs-usb-max-if-v5-1-863330bf6666@coelacanthus.name
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Next, someone tries to mount an 8k-sectorsize filesystem from the same
+block device.  The filesystem calls set_blksize, which sets i_blksize to
+8192 and the minimum folio order to 1.
+
+Now udev resumes, still holding the order-0 folio it allocated.  It then
+tries to schedule a read bio and do_mpage_readahead tries to create
+bufferheads for the folio.  Unfortunately, blocks_per_folio == 0 because
+the page size is 4096 but the blocksize is 8192 so no bufferheads are
+attached and the bh walk never sets bdev.  We then submit the bio with a
+NULL block device and crash.
+
+Therefore, truncate the page cache after flushing but before updating
+i_blksize.  However, that's not enough -- we also need to lock out file
+IO and page faults during the update.  Take both the i_rwsem and the
+invalidate_lock in exclusive mode for invalidations, and in shared mode
+for read/write operations.
+
+I don't know if this is the correct fix, but xfs/259 found it.
+
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://lore.kernel.org/r/174543795699.4139148.2086129139322431423.stgit@frogsfrogsfrogs
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[use bdev->bd_inode instead]
+Signed-off-by: Mahmoud Adam <mngyadam@amazon.de>
 ---
- drivers/net/can/usb/gs_usb.c | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+    Fixes CVE-2025-38073.
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 7dc4fb574e45..33800bb75064 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -157,10 +157,6 @@ struct gs_host_frame {
- #define GS_MAX_TX_URBS 10
- /* Only launch a max of GS_MAX_RX_URBS usb requests at a time. */
- #define GS_MAX_RX_URBS 30
--/* Maximum number of interfaces the driver supports per device.
-- * Current hardware only supports 2 interfaces. The future may vary.
-- */
--#define GS_MAX_INTF 2
+ block/bdev.c      | 17 +++++++++++++++++
+ block/blk-zoned.c |  5 ++++-
+ block/fops.c      | 16 ++++++++++++++++
+ block/ioctl.c     |  6 ++++++
+ 4 files changed, 43 insertions(+), 1 deletion(-)
+
+diff --git a/block/bdev.c b/block/bdev.c
+index 5a54977518eeae..a8357b72a27b86 100644
+--- a/block/bdev.c
++++ b/block/bdev.c
+@@ -147,9 +147,26 @@ int set_blocksize(struct block_device *bdev, int size)
  
- struct gs_tx_context {
- 	struct gs_can *dev;
-@@ -191,10 +187,11 @@ struct gs_can {
- 
- /* usb interface struct */
- struct gs_usb {
--	struct gs_can *canch[GS_MAX_INTF];
- 	struct usb_anchor rx_submitted;
- 	struct usb_device *udev;
- 	u8 active_channels;
-+	u8 channel_cnt;
-+	struct gs_can *canch[] __counted_by(channel_cnt);
- };
- 
- /* 'allocate' a tx context.
-@@ -322,7 +319,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	}
- 
- 	/* device reports out of range channel id */
--	if (hf->channel >= GS_MAX_INTF)
-+	if (hf->channel >= usbcan->channel_cnt)
- 		goto device_detach;
- 
- 	dev = usbcan->canch[hf->channel];
-@@ -410,7 +407,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	/* USB failure take down all interfaces */
- 	if (rc == -ENODEV) {
-  device_detach:
--		for (rc = 0; rc < GS_MAX_INTF; rc++) {
-+		for (rc = 0; rc < usbcan->channel_cnt; rc++) {
- 			if (usbcan->canch[rc])
- 				netif_device_detach(usbcan->canch[rc]->netdev);
- 		}
-@@ -993,20 +990,22 @@ static int gs_usb_probe(struct usb_interface *intf,
- 	icount = dconf->icount + 1;
- 	dev_info(&intf->dev, "Configuring for %d interfaces\n", icount);
- 
--	if (icount > GS_MAX_INTF) {
-+	if (icount > type_max(typeof(dev->channel_cnt))) {
- 		dev_err(&intf->dev,
--			"Driver cannot handle more that %d CAN interfaces\n",
--			GS_MAX_INTF);
-+			"Driver cannot handle more that %u CAN interfaces\n",
-+			type_max(typeof(dev->channel_cnt)));
- 		kfree(dconf);
- 		return -EINVAL;
- 	}
- 
--	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-+	dev = kzalloc(struct_size(dev, canch, icount), GFP_KERNEL);
- 	if (!dev) {
- 		kfree(dconf);
- 		return -ENOMEM;
- 	}
- 
-+	dev->channel_cnt = icount;
+ 	/* Don't change the size if it is same as current */
+ 	if (bdev->bd_inode->i_blkbits != blksize_bits(size)) {
++		/*
++		 * Flush and truncate the pagecache before we reconfigure the
++		 * mapping geometry because folio sizes are variable now.  If a
++		 * reader has already allocated a folio whose size is smaller
++		 * than the new min_order but invokes readahead after the new
++		 * min_order becomes visible, readahead will think there are
++		 * "zero" blocks per folio and crash.  Take the inode and
++		 * invalidation locks to avoid racing with
++		 * read/write/fallocate.
++		 */
++		inode_lock(bdev->bd_inode);
++		filemap_invalidate_lock(bdev->bd_inode->i_mapping);
 +
- 	init_usb_anchor(&dev->rx_submitted);
+ 		sync_blockdev(bdev);
++		kill_bdev(bdev);
++
+ 		bdev->bd_inode->i_blkbits = blksize_bits(size);
+ 		kill_bdev(bdev);
++		filemap_invalidate_unlock(bdev->bd_inode->i_mapping);
++		inode_unlock(bdev->bd_inode);
+ 	}
+ 	return 0;
+ }
+diff --git a/block/blk-zoned.c b/block/blk-zoned.c
+index 619ee41a51cc8c..644bfa1f6753ea 100644
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -401,6 +401,7 @@ int blkdev_zone_mgmt_ioctl(struct block_device *bdev, blk_mode_t mode,
+ 		op = REQ_OP_ZONE_RESET;
  
- 	usb_set_intfdata(intf, dev);
-@@ -1047,7 +1046,7 @@ static void gs_usb_disconnect(struct usb_interface *intf)
- 		return;
+ 		/* Invalidate the page cache, including dirty pages. */
++		inode_lock(bdev->bd_inode);
+ 		filemap_invalidate_lock(bdev->bd_inode->i_mapping);
+ 		ret = blkdev_truncate_zone_range(bdev, mode, &zrange);
+ 		if (ret)
+@@ -423,8 +424,10 @@ int blkdev_zone_mgmt_ioctl(struct block_device *bdev, blk_mode_t mode,
+ 			       GFP_KERNEL);
+ 
+ fail:
+-	if (cmd == BLKRESETZONE)
++	if (cmd == BLKRESETZONE) {
+ 		filemap_invalidate_unlock(bdev->bd_inode->i_mapping);
++		inode_unlock(bdev->bd_inode);
++	}
+ 
+ 	return ret;
+ }
+diff --git a/block/fops.c b/block/fops.c
+index 7c257eb3564d0c..088143fa9ac9e1 100644
+--- a/block/fops.c
++++ b/block/fops.c
+@@ -681,7 +681,14 @@ static ssize_t blkdev_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 			ret = direct_write_fallback(iocb, from, ret,
+ 					blkdev_buffered_write(iocb, from));
+ 	} else {
++		/*
++		 * Take i_rwsem and invalidate_lock to avoid racing with
++		 * set_blocksize changing i_blkbits/folio order and punching
++		 * out the pagecache.
++		 */
++		inode_lock_shared(bd_inode);
+ 		ret = blkdev_buffered_write(iocb, from);
++		inode_unlock_shared(bd_inode);
  	}
  
--	for (i = 0; i < GS_MAX_INTF; i++)
-+	for (i = 0; i < dev->channel_cnt; i++)
- 		if (dev->canch[i])
- 			gs_destroy_candev(dev->canch[i]);
+ 	if (ret > 0)
+@@ -693,6 +700,7 @@ static ssize_t blkdev_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ static ssize_t blkdev_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ {
+ 	struct block_device *bdev = I_BDEV(iocb->ki_filp->f_mapping->host);
++	struct inode *bd_inode = bdev->bd_inode;
+ 	loff_t size = bdev_nr_bytes(bdev);
+ 	loff_t pos = iocb->ki_pos;
+ 	size_t shorted = 0;
+@@ -728,7 +736,13 @@ static ssize_t blkdev_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ 			goto reexpand;
+ 	}
+ 
++	/*
++	 * Take i_rwsem and invalidate_lock to avoid racing with set_blocksize
++	 * changing i_blkbits/folio order and punching out the pagecache.
++	 */
++	inode_lock_shared(bd_inode);
+ 	ret = filemap_read(iocb, to, ret);
++	inode_unlock_shared(bd_inode);
+ 
+ reexpand:
+ 	if (unlikely(shorted))
+@@ -771,6 +785,7 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
+ 	if ((start | len) & (bdev_logical_block_size(bdev) - 1))
+ 		return -EINVAL;
+ 
++	inode_lock(inode);
+ 	filemap_invalidate_lock(inode->i_mapping);
+ 
+ 	/*
+@@ -811,6 +826,7 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
+ 
+  fail:
+ 	filemap_invalidate_unlock(inode->i_mapping);
++	inode_unlock(inode);
+ 	return error;
+ }
+ 
+diff --git a/block/ioctl.c b/block/ioctl.c
+index 231537f79a8cb4..024767fa1e52d5 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -114,6 +114,7 @@ static int blk_ioctl_discard(struct block_device *bdev, blk_mode_t mode,
+ 	    end > bdev_nr_bytes(bdev))
+ 		return -EINVAL;
+ 
++	inode_lock(inode);
+ 	filemap_invalidate_lock(inode->i_mapping);
+ 	err = truncate_bdev_range(bdev, mode, start, end - 1);
+ 	if (err)
+@@ -121,6 +122,7 @@ static int blk_ioctl_discard(struct block_device *bdev, blk_mode_t mode,
+ 	err = blkdev_issue_discard(bdev, start >> 9, len >> 9, GFP_KERNEL);
+ fail:
+ 	filemap_invalidate_unlock(inode->i_mapping);
++	inode_unlock(inode);
+ 	return err;
+ }
+ 
+@@ -146,12 +148,14 @@ static int blk_ioctl_secure_erase(struct block_device *bdev, blk_mode_t mode,
+ 	    end > bdev_nr_bytes(bdev))
+ 		return -EINVAL;
+ 
++	inode_lock(bdev->bd_inode);
+ 	filemap_invalidate_lock(bdev->bd_inode->i_mapping);
+ 	err = truncate_bdev_range(bdev, mode, start, end - 1);
+ 	if (!err)
+ 		err = blkdev_issue_secure_erase(bdev, start >> 9, len >> 9,
+ 						GFP_KERNEL);
+ 	filemap_invalidate_unlock(bdev->bd_inode->i_mapping);
++	inode_unlock(bdev->bd_inode);
+ 	return err;
+ }
+ 
+@@ -184,6 +188,7 @@ static int blk_ioctl_zeroout(struct block_device *bdev, blk_mode_t mode,
+ 		return -EINVAL;
+ 
+ 	/* Invalidate the page cache, including dirty pages */
++	inode_lock(inode);
+ 	filemap_invalidate_lock(inode->i_mapping);
+ 	err = truncate_bdev_range(bdev, mode, start, end);
+ 	if (err)
+@@ -194,6 +199,7 @@ static int blk_ioctl_zeroout(struct block_device *bdev, blk_mode_t mode,
+ 
+ fail:
+ 	filemap_invalidate_unlock(inode->i_mapping);
++	inode_unlock(inode);
+ 	return err;
+ }
  
 -- 
-2.51.1.dirty
+2.47.3
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
 
