@@ -1,99 +1,114 @@
-Return-Path: <stable+bounces-188019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13391BF02E3
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 11:32:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC04BF02EC
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 11:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E94413A4842
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 09:30:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CA223AABEF
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 09:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420492F60A5;
-	Mon, 20 Oct 2025 09:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A9JEz9GP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B1E2F60CA;
+	Mon, 20 Oct 2025 09:30:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F41C2F60CA
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 09:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B391D5170;
+	Mon, 20 Oct 2025 09:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760952634; cv=none; b=W16R17kpNTrOVhV4oS0nOYFmLYsSn6GOKFsF2df5bxr9Z3zPpcHESB2d9v7COOVsqSbv8xKyRTTxlPNejaDAM4TaRmPPPrZujQ04pHMTimpRQaY1KRG4e7MlR4dXz9hxUi/OKQy5XGXF3X1ABDF/NyDfvLYGhHIgY6uWUwSubks=
+	t=1760952646; cv=none; b=FJ4gbO3gtG1i4xBqIwpD5W1k3QE6lKz6ywvkHQlL+G6of+v6IRyb9oyS7qcP4ipd/nOr5BsRMNpPaj1DefQA1pf/cTEmTxKFJFM5ajBMg4CvKR2a5+sBDiIh3XLHKsSdPpBlESy0mfUHlhrUAW1r25aJvyaJNRGBxXbl0IjEra0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760952634; c=relaxed/simple;
-	bh=YWv0wUMNSMPgNRqdl9ln5qfNkK/W4QOJi6WtJPcAoJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=tBvXyn6alYCRlsFl+x0crruGuunW5oP3F5qGpoKoHHtDG3PaTzkTIL9lNCV/Wqqt/bA36P3tPWoFzkfzYXfEBOq41Pe4krAmbfjs50tFk1KNbz0Lv9qpoajnFEL43OYL814HBpsnwg3EHExR6193yw+SGJv61lGGo3zfnhVcsEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A9JEz9GP; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760952627; x=1792488627;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=YWv0wUMNSMPgNRqdl9ln5qfNkK/W4QOJi6WtJPcAoJc=;
-  b=A9JEz9GPitDO6SdOKZ4WaaIEaw+f2rBvEohmQhTz/JCTYazvlkJMfdM3
-   Q0lBQZPEJi7fJosiCHW2cVkEnBJfnQluPOtjSldfINZ+Hz8BwilyfbTt6
-   aDbNtTBHIsmk9UMIy/FSOs7roX4iwnh+f26bOvTF9auVOpuz1/TUXngx0
-   sM9z4w7GhE/ppJPu69cddM6eraCdoY7ez+nkry+eYfUmzCeQuD5fsnLf4
-   PSurgWp0QqbH6RcoV/p1BasJEW2qGA0y8Of/yrNYZjvF6ndE4GevqBRIK
-   LZuVb/qX07I+lesCztWNxqcUcFrYsq2yFOc4yGSfbjHUEm/Bcco1CUlZl
-   w==;
-X-CSE-ConnectionGUID: 1FB6TRRNQw+zbno1LqqL8g==
-X-CSE-MsgGUID: fhyQmGtvQz2f0YeU0hA90A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11587"; a="63107346"
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
-   d="scan'208";a="63107346"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 02:30:26 -0700
-X-CSE-ConnectionGUID: 8PJTP3SJTiiwZPs+L6GLNQ==
-X-CSE-MsgGUID: 77U0ztMoTz2owSUNRRntJA==
-X-ExtLoop1: 1
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa003.fm.intel.com with ESMTP; 20 Oct 2025 02:30:25 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vAmDf-0009hN-14;
-	Mon, 20 Oct 2025 09:30:23 +0000
-Date: Mon, 20 Oct 2025 17:30:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 6.16-6.17 2/2] arm64: errata: Apply workarounds for
- Neoverse-V3AE
-Message-ID: <aPYBJGWKS1hS5NFF@ff1a9926167f>
+	s=arc-20240116; t=1760952646; c=relaxed/simple;
+	bh=FNMnx5+bZoNhpZBbNBNDjAZYL0dDEYjhSeKmd3AymaQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZcHMn0UZd5j93vhBrS6DPT2KqmJMHa0LyiOz+6XbEES9UqB1ZfNE6YrlMosgVSTbkVa+QYJ19EnWkV2HPRnEJUFKrkO5OkbNgUhywXtsibs+xMLAvgjIeuBI4Fj40vHXgGrzR7B7cki/WeIBEwejOlcX1mR5YqARv/XBG0aWohk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from ripper.localnet (p200300c59748F6e00000000000000c00.dip0.t-ipconnect.de [IPv6:2003:c5:9748:f6e0::c00])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 2476BFA130;
+	Mon, 20 Oct 2025 11:30:38 +0200 (CEST)
+From: Sven Eckelmann <se@simonwunderlich.de>
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+ Sean Wang <sean.wang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ stable@vger.kernel.org
+Subject:
+ Re: [PATCH mt76 v3] wifi: mt76: Fix DTS power-limits on little endian systems
+Date: Mon, 20 Oct 2025 11:30:37 +0200
+Message-ID: <2453774.NG923GbCHz@ripper>
+In-Reply-To: <20251020-fix-power-limits-v3-1-019d2e49239a@simonwunderlich.de>
+References: <20251020-fix-power-limits-v3-1-019d2e49239a@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251020092741.592431-3-ryan.roberts@arm.com>
+Content-Type: multipart/signed; boundary="nextPart880480923.0ifERbkFSE";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-Hi,
+--nextPart880480923.0ifERbkFSE
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <se@simonwunderlich.de>
+Date: Mon, 20 Oct 2025 11:30:37 +0200
+Message-ID: <2453774.NG923GbCHz@ripper>
+MIME-Version: 1.0
 
-Thanks for your patch.
+On Monday, 20 October 2025 11:20:53 CEST Sven Eckelmann (Plasma Cloud) wrote:
+> The power-limits for ru and mcs and stored in the devicetree as bytewise
+> array (often with sizes which are not a multiple of 4). These arrays have a
+> prefix which defines for how many modes a line is applied. This prefix is
+> also only a byte - but the code still tried to fix the endianness of this
+> byte with a be32 operation. As result, loading was mostly failing or was
+> sending completely unexpected values to the firmware.
+> 
+> Since the other rates are also stored in the devicetree as bytewise arrays,
+> just drop the u32 access + be32_to_cpu conversion and directly access them
+> as bytes arrays.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 22b980badc0f ("mt76: add functions for parsing rate power limits from DT")
+> Fixes: a9627d992b5e ("mt76: extend DT rate power limits to support 11ax devices")
+> Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+> ---
+> Changes in v3:
+> - add "mt76" as addition prefix after "PATCH" as requested by Zhi-Jun You
+> - Link to v2: https://lore.kernel.org/r/20250926-fix-power-limits-v2-1-c2bc7881eb6d@simonwunderlich.de
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Seems like the v2 was already picked up [1] and I've simply missed it.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+Sorry about the noise,
+	Sven
 
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH 6.16-6.17 2/2] arm64: errata: Apply workarounds for Neoverse-V3AE
-Link: https://lore.kernel.org/stable/20251020092741.592431-3-ryan.roberts%40arm.com
+[1] https://github.com/nbd168/wireless/commit/3d63b5084c50607fff84d17d2727c3bab8190d8e
 
-Please ignore this mail if the patch is not relevant for upstream.
+--nextPart880480923.0ifERbkFSE
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCaPYBPQAKCRBND3cr0xT1
+y4ebAQCwb9tDygtnPh36+fO93hSzJLDBcmb2cPfpL0IU63CHWAD/VAvazvuQmmS1
+TBo61BmhKvF9W99jw9t2dIur+vxrSA0=
+=hC3z
+-----END PGP SIGNATURE-----
+
+--nextPart880480923.0ifERbkFSE--
 
 
 
