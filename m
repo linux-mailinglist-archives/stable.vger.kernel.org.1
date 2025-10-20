@@ -1,89 +1,89 @@
-Return-Path: <stable+bounces-188125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56ECBF1B9F
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:07:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72114BF1D4A
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:26:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6888534D24D
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:07:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58420424051
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 14:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF41C320380;
-	Mon, 20 Oct 2025 14:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E1331DD82;
+	Mon, 20 Oct 2025 14:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T2hqfhWT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bvQV5ree"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1DD31DD82
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 14:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED7D2FD7B2
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 14:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760969254; cv=none; b=Gu8LQkZZLmKWlmlnetKos/Ct4WRN9nb3yqqDsttOKbvbpRFnwFdOPEe4E5K2/hSK/On06QXGzZm6eMM4N795uBwapsaHqvU5eXXm+9DkbLOVvtzh4fWx+f2CPCv9z6k08cLb8c+o7hu5QiDfJTPXpk3ZR6fm+NRk62JMshRpvA8=
+	t=1760970370; cv=none; b=hNsySSOSRQSY2Pklj4PoX50TX4EuTF3aS5AAtVb3iLKRR8OShIo+dCuHvz2QwSujkVWjkX/KtCrmhLC1aZgwLeZOWF3+1b7nxt43AexiRoL1PHRzt5N3Srzwc7LjceC8yQdWbB8gQa0xV7uFEFw2wvqGXjnuhQ8HJmPzHcG+JmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760969254; c=relaxed/simple;
-	bh=1sZXfQdrxQCKHpKxc5F96Lf9VMLPvAMvMgkDev/v+qI=;
+	s=arc-20240116; t=1760970370; c=relaxed/simple;
+	bh=hQAelAZ9HvVlNDMc9j43CpUIrb6f3Hpl+8tUuJ8nWUE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t/+RmiSwxz7BQBaWsWyBeq/Dx8w49VbZWTCXJHQz5rwfi0+90JmNZK5R+QBH4ylvtY8giQv077A6lzNfIQNtDuKyLUwt7CLM5XFiGqLZEF5TR0MDEaegPCx7DMNZKptnFOLnMXdkl9Y2WCmNIADwa/ji5sQEevPDAPjjjA+vyJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T2hqfhWT; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=BdzZN2P2Y02kEk3ioxMzLMujRTJDQTMcmujLtCAYcQ2t2WXg41vKooaSJkTO3EAOBPOCTs5p0IMS0ir4eAx5zVAx254mUHxL3DrlV9G+qV6SfKknCztykam/YDEy+KlrOsLYVFkV1qoG//3COTnqrb8zVbWW9DHF7PW104ng+HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bvQV5ree; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760969251;
+	s=mimecast20190719; t=1760970367;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bDRwF8i9GvZpeQJfAlGt77aYUSNIWfGo/XsoAzNEum0=;
-	b=T2hqfhWTe8HiaJOgUwd2iSKHv/x/vVFJeFvn6LdFp8HNO/buSxt84YFA6pnYDtjHYsLmwB
-	P7sxxSh5AcERPMUL8Xx5CtdY3xQIR0xHebvsTyf063ugtQNLFnXCs7BfV2MH7KyI5QBTzE
-	IV0ocuYhFvzJHF6LtwhA5GkghumuBPM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=pQyqqPVnzX80M9s6VBgWNHBBaztCyITJ++CqjP/sV5c=;
+	b=bvQV5reeDITVvD5GR0dHTxfpab0PuPAJhWWGjRqBMyd4472FqdbWQydPbRsZMU+vXjuUWx
+	uF4B5eASoviQ0UZngUQUm4LTwI7hNXcd28se+HSKajIKOmDSXDccVsvuguLUIvtV1+bc3E
+	peXs4YcZCZwJRe+er/bGS+aHD+ljSC4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-OGBAGY-sMH-RxuR7mUTh-g-1; Mon, 20 Oct 2025 10:07:29 -0400
-X-MC-Unique: OGBAGY-sMH-RxuR7mUTh-g-1
-X-Mimecast-MFC-AGG-ID: OGBAGY-sMH-RxuR7mUTh-g_1760969248
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46b303f6c9cso51909945e9.2
-        for <stable@vger.kernel.org>; Mon, 20 Oct 2025 07:07:28 -0700 (PDT)
+ us-mta-115-qojkjUP1MgCDAZQ8qy5Ucw-1; Mon, 20 Oct 2025 10:26:06 -0400
+X-MC-Unique: qojkjUP1MgCDAZQ8qy5Ucw-1
+X-Mimecast-MFC-AGG-ID: qojkjUP1MgCDAZQ8qy5Ucw_1760970365
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4711899ab0aso34158535e9.2
+        for <stable@vger.kernel.org>; Mon, 20 Oct 2025 07:26:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760969248; x=1761574048;
+        d=1e100.net; s=20230601; t=1760970365; x=1761575165;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bDRwF8i9GvZpeQJfAlGt77aYUSNIWfGo/XsoAzNEum0=;
-        b=eGahTnmh2M/BWd4Y9StS7GMp9fUaPrcUjZ3FiM8/YHRQxzJb6LrhbewHjwauyVBk6L
-         DM891k3WrCWYlReA9fn3O+d3dsVE3ehO+ZG37LN0H2NIdu2YS7wpeZucDGiswDBVNU5u
-         I0WvWq/9ZlJi3Kv+lZJv3bCIfWCQk4XToE7cYfhWJYOxsHZ2LYMuq7nx+6wxFsq9O2QE
-         qHyUKVhzVSIBd3DtQpZs5XhQIBIdP3/d8EEnO+gHojYA8TSlmUQ5RNO1v4tUFpFZWd4D
-         xaXzHNL3IDz7Qx4Ks2huro6Ydp/6Ackzg6D0FnYOlbVsUhOe7exeCOslCxR64Z6+o+8X
-         /IzA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMyjoHdqKTVzQjShpd77EPRns1DHkgjbEbcwfpmFbR2fCV3sXVI1lxMsp82i0MaycXRhZ/1HM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz95kf/JzamcJL/UkgRZ1BGmOZHv90RO4A8xmnkkTIMGZLefjZE
-	tibhH6ZygKByWIlN0fdzDNCcSABdx+1MUnyNEfK+8dRjbOsQGE60/oqzCalxvVDGgARnBGIm2QV
-	kwbfeusHSzBp44fga+gN6e95t2sRbSKsKUw/7kMVasDqVe0kj4Plyi0jnFg==
-X-Gm-Gg: ASbGnct+9mOgzjOG2fVC1yKMOzCW6zQTeVQwqY0tpUNt8k3fcrYhl/Ma4LyVpVqgQJ7
-	tQdDkeEJyGrDKmIExLX2UvAuFiIu8XncICPkFykaPkqfb+wjdpbTclacISsrQEkfkyGKo06/7fw
-	DDMYvshL0FmeSYj42wHGbHlGrjmXsCkz84kjwk9Cytoz3s9K+MufBIgrNaQKFxkAzg+g+74Vdjz
-	drXUyqoZIrpV9TdG/6N2NdT3T8bSBzeLGtnzg4CqKR+edl8EKv5tI24hpJX6BLMrAUZOnGwa5mP
-	OvQN9+uhgRgnWAqW4kQf5qSFFagDeVEaQ16rKriSmyYmMkKdNb6EVQmlOXgY9U8HSc/XvAIGDjk
-	W9HcHC+NXURck3P0Z7tvpx35lOeH2lfRxO19TYDOy2XhtPVlu5BuMktOkpOLkhSsaFywTAQI1bM
-	EUU2utTi6ENSorbadVxBN/9F6Abqc=
-X-Received: by 2002:a05:600c:4fd4:b0:471:13dd:bae7 with SMTP id 5b1f17b1804b1-4711791c5dfmr110039125e9.30.1760969247934;
-        Mon, 20 Oct 2025 07:07:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+BFmRlh4Swqvguf+7z76JRsLA1ogRx9ZpcgLz6sWvvE9fPmA/6t7XAcJOAeAXmY20mtuNzw==
-X-Received: by 2002:a05:600c:4fd4:b0:471:13dd:bae7 with SMTP id 5b1f17b1804b1-4711791c5dfmr110038835e9.30.1760969247508;
-        Mon, 20 Oct 2025 07:07:27 -0700 (PDT)
+        bh=pQyqqPVnzX80M9s6VBgWNHBBaztCyITJ++CqjP/sV5c=;
+        b=o4xUppcYXPINYCXMZaIaelI/SCmxkXnch2pBD3xXydWex5hUuKhDjNzFWcTiemt5CR
+         iEyW7/zZyPBykWdmqFNkxFr0jpsRhLDW2M7TxCZkjhCaXPIZhaBszGy4CgVMQeK204rR
+         D/mG2uL+EBW5tf9+onjb3yK6v5FjauQRANlmsC0Rc2WigIIdNHXOaO8X51mjXCDrHBzM
+         S1vWHPSlprQVCZ2UKAX+5pPiNyn79VeVwKgST7UNseBceNilFj0cg27hI2UWVzAQNkdw
+         wOdhQf+mUlQLp8ilY3cokjJnbg4WAhgCc94vS4nO3k+PDcgIrr1RtOaOTANYzwfsrzTA
+         n5tA==
+X-Forwarded-Encrypted: i=1; AJvYcCVlB7M4al59EkBz1hxp0zHn5elfl6CkkSZE7gi6VuQ1xE3u+yDRXClcQ1YHwmmDld2aOQHkzG4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykRRh914ByfNxw6u1iJ7pMklZpaDYYGoVKibl4smZXdPTi2Kwc
+	2vTeJiNsSZLqPGoUdtMqYmHAgsZrQOCyYb2IrkZh9hI5fMLlpCf5p0Ou3dBdKowlzpUcOUNytxa
+	JABvpI+yGxUOoF7WfhNNu+c4XmNVoPdQ5Bx5MMpP+2/ZWCs2JkDj1YDnRpw==
+X-Gm-Gg: ASbGncsb61/WBt4RaDpdS5AiP4jbhDFRNTxs3YarYzRyTeoINm2/jNomTtNZYj1S6uF
+	osVF+k6GhaQnfLKdCqXiMurRq8n9sVG16PCnfDzm061Ck/lOwIsaS4cw5QXZj3VQbXZjkavfjEV
+	j2s63bwPHSz43WXMwgZzNuWJyrOV9sXQSwgC6Orr2WD0La7eSEUdNXHviAw/DGRaBOBVkKV1ORF
+	3NDCj3Ev9mqM50BcFAoPaYfOAZUYlcV/MYUYisqvbxi1jY4/ltWJIxQpy4zaCxWyFor/5IGTGj0
+	0rbwSNNV3kdMx4f4LiE6ZN52qFvK6sUEunVes3x9G60xqo7hY2hJv6zpQNlFtgoZOrcsT9YHSQ+
+	KHR+vFJ/SELcUsW56nZj3+xhlKfUdfzpjaIX2M3uU2UnBFUwT8321DPymou3S3rYIhyAK0uS7uy
+	9SJz22pWqUyPcJBQfWLXTAAZBWi/g=
+X-Received: by 2002:a05:600d:62b1:b0:46f:b43a:aef4 with SMTP id 5b1f17b1804b1-471b5341411mr31713535e9.38.1760970364945;
+        Mon, 20 Oct 2025 07:26:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFivef5uKK4dO0bLoUG5afbj0PkGjj8ivIcoCqNvXGcEAdVc8Dd+wjfTpX6dFddxGB9NaRtjw==
+X-Received: by 2002:a05:600d:62b1:b0:46f:b43a:aef4 with SMTP id 5b1f17b1804b1-471b5341411mr31713105e9.38.1760970364447;
+        Mon, 20 Oct 2025 07:26:04 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47152959b55sm151911025e9.6.2025.10.20.07.07.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4715520d753sm148339825e9.13.2025.10.20.07.26.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Oct 2025 07:07:27 -0700 (PDT)
-Message-ID: <fe3cc258-6039-4061-8509-8e972127c211@redhat.com>
-Date: Mon, 20 Oct 2025 16:07:25 +0200
+        Mon, 20 Oct 2025 07:26:03 -0700 (PDT)
+Message-ID: <4f2066f8-f26e-4704-9f75-4652d4018cd9@redhat.com>
+Date: Mon, 20 Oct 2025 16:26:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,24 +91,25 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [DISCUSSION] Fixing bad pmd due to a race condition between
- change_prot_numa() and THP migration in pre-6.5 kernels.
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org, stable@vger.kernel.org
-References: <20250921232709.1608699-1-harry.yoo@oracle.com>
- <b41ea29e-6b48-4f64-859c-73be095453ae@redhat.com> <aNKIVVPLlxdX2Slj@hyeyoo>
- <6e4f6a37-2449-4089-8b3d-234ba86878e2@redhat.com> <aNPb3qVCZTf2xMkN@hyeyoo>
- <9b05b974-7478-4c99-9c4f-6593e0fd4f93@redhat.com> <aN6HMzXM4cL6Yf4A@hyeyoo>
- <9f3e4031-9e13-4f8b-a7fb-8db4166c47f0@redhat.com> <aPY4STwIIRxvk3oH@hyeyoo>
+Subject: Re: [syzbot ci] Re: Fix stale IOTLB entries for kernel address space
+To: Baolu Lu <baolu.lu@linux.intel.com>, Dave Hansen <dave.hansen@intel.com>,
+ syzbot ci <syzbot+cid009622971eb4566@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, apopple@nvidia.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, iommu@lists.linux.dev, jannh@google.com,
+ jean-philippe@linaro.org, jgg@nvidia.com, joro@8bytes.org,
+ kevin.tian@intel.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
+ mhocko@kernel.org, mingo@redhat.com, peterz@infradead.org,
+ robin.murphy@arm.com, rppt@kernel.org, security@kernel.org,
+ stable@vger.kernel.org, tglx@linutronix.de, urezki@gmail.com,
+ vasant.hegde@amd.com, vbabka@suse.cz, will@kernel.org, willy@infradead.org,
+ x86@kernel.org, yi1.lai@intel.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <68eeb99e.050a0220.91a22.0220.GAE@google.com>
+ <89146527-3f41-4f1e-8511-0d06e169c09e@intel.com>
+ <8cdb459f-f7d1-4ca0-a6a0-5c83d5092cd8@linux.intel.com>
+ <d1a6c65c-6518-4227-8ec3-f2af4f7724ad@redhat.com>
+ <13d660ea-9bff-47dc-9cd7-ae74869edc5a@linux.intel.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -155,55 +156,67 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aPY4STwIIRxvk3oH@hyeyoo>
+In-Reply-To: <13d660ea-9bff-47dc-9cd7-ae74869edc5a@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-
->>
->>>>>>> It'd be more robust to do something like:
->>>>>>
->>>>>> That's also what I had in mind. But all this lockless stuff makes me a bit
->>>>>> nervous :)
->>>>>
->>>>> Yeah the code is not very straightforward... :/
->>>>>
->>>>> But technically the diff that I pasted here should be enough to fix
->>>>> this... or do you have any alternative approach in mind?
+On 20.10.25 07:34, Baolu Lu wrote:
+> On 10/18/25 01:10, David Hildenbrand wrote:
+>> On 16.10.25 10:00, Baolu Lu wrote:
+>>> On 10/16/25 00:25, Dave Hansen wrote:
+>>>> Here's the part that confuses me:
 >>>>
->>>> Hopefully, I'm not convinced this code is not buggy, but at least regarding
->>>> concurrent migration it should be fine with that.
+>>>> On 10/14/25 13:59, syzbot ci wrote:
+>>>>> page last free pid 5965 tgid 5964 stack trace:
+>>>>>     reset_page_owner include/linux/page_owner.h:25 [inline]
+>>>>>     free_pages_prepare mm/page_alloc.c:1394 [inline]
+>>>>>     __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2906
+>>>>>     pmd_free_pte_page+0xa1/0xc0 arch/x86/mm/pgtable.c:783
+>>>>>     vmap_try_huge_pmd mm/vmalloc.c:158 [inline]
+>>>> ...
+>>>>
+>>>> So, vmap_try_huge_pmd() did a pmd_free_pte_page(). Yet, somehow, the PMD
+>>>> stuck around so that it *could* be used after being freed. It _looks_
+>>>> like pmd_free_pte_page() freed the page, returned 0, and made
+>>>> vmap_try_huge_pmd() return early, skipping the pmd pmd_set_huge().
+>>>>
+>>>> But I don't know how that could possibly happen.
 >>>
->>> I've been thinking about this...
+>>> The reported issue is only related to this patch:
 >>>
->>> Actually, it'll make more sense to open-code what pte_map_offset_lock()
->>> does in the mainline:
+>>> - [PATCH v6 3/7] x86/mm: Use 'ptdesc' when freeing PMD pages
 >>>
->>> 1. do not remove the "bad pte" checks, because pte_offset_map() in pre-6.5
->>>      kernels doesn't do the check for us unlike the mainline.
->>> 2. check is_swap_pmd(), pmd_trans_huge(), pmd_devmap() without ptl, but
->>>      atomically.
->>> 3. after acquiring ptl in change_pte_range(), check if pmd has changed
->>>      since step 1 and 2. if yes, retry (like mainline). if no, we're all good.
+>>> It appears that the pmd_ptdesc() helper can't be used directly here in
+>>> this patch. pmd_ptdesc() retrieves the page table page that the PMD
+>>> entry resides in:
 >>>
->>> What do you think?
+>>> static inline struct page *pmd_pgtable_page(pmd_t *pmd)
+>>> {
+>>>            unsigned long mask = ~(PTRS_PER_PMD * sizeof(pmd_t) - 1);
+>>>            return virt_to_page((void *)((unsigned long) pmd & mask));
+>>> }
+>>>
+>>> static inline struct ptdesc *pmd_ptdesc(pmd_t *pmd)
+>>> {
+>>>            return page_ptdesc(pmd_pgtable_page(pmd));
+>>> }
+>>>
+>>> while, in this patch, we need the page descriptor that a pmd entry
+>>> points to.
+>>
+>> Ah. But that's just pointing at a leaf page table, right?
 > 
-> Apologies for late reply...
-> 
->> Only for -stable, right?
-> 
-> Right!
-> 
->> Does not sound too wrong for me, but I would have
->> to take a closer look at the end result!
-> 
-> FYI I'll test these two patches and see if they survive for a week,
-> and then submit them to -stable. Thanks.
-> 
-> The first patch is also going to be backported since change_pte_range()
-> cannot return negative values without it.
+> Yes, that points to a leaf page table.
 
-That sound reasonable to me!
+Right, so I guess there is no simplifying that.
+
+Like we have in pte_lockptr():
+
+	return ptlock_ptr(page_ptdesc(pmd_page(*pmd)));
+
+So page_ptdesc(pmd_page()) is the way to go for now.
+
+Sorry for the confusion.
 
 -- 
 Cheers
