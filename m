@@ -1,73 +1,58 @@
-Return-Path: <stable+bounces-188250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397A5BF37F3
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 22:50:17 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594B6BF3802
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 22:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CED234FAAEF
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 20:50:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 05CC134ECA8
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 20:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945C32E090C;
-	Mon, 20 Oct 2025 20:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C312C2E22B4;
+	Mon, 20 Oct 2025 20:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cZM/45ag"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ivAzwDYR"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB241F37A1
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 20:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F1B2D63FF
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 20:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760993412; cv=none; b=Ey4ovplmOuT+dyxFLDlbMjxjPH00Rvo2xmn51DJFtHahSpu8EMFMI4I59Gq+DCl7qdhXT/JMVmnwCtrIkhMz+cpG5i/R22eZCmNfibDkMU8KhglsjOmws0aVcJnXc4NZmyj4du5z2k4oBoArva+VHACc5Uk7sb9nW+uycNXdL7M=
+	t=1760993491; cv=none; b=lsnl+76Aea6AwycmWflFXy6x8ixb/k4LZHJQRWbj9tbtA+n6yvoHHTy+k31YkFnG0LIf6UVgAEhV7/VOM2vgvAyyAsL3FGmbzMEHjLulw0Sji7zDSChAt984kMQNeQ9kSifluunPoa4HLgdurS4Ld9CvgFCCPauTKhN3vC69QBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760993412; c=relaxed/simple;
-	bh=p2I2NYraTlQqi+AeaDGhG+re8GepK8LJIIQuJhcf0p4=;
+	s=arc-20240116; t=1760993491; c=relaxed/simple;
+	bh=AaEa0mdc322sGpCmti2cbkZA7gU2aXGAzFFFalnywr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d49QMq4L2Xk9WGd7/xR425Rq95OXCORBI0DQcXswgRwDf46/CfJEAwFCF2xPIfjtR6rKWmPbP2tCfJbnjM8YacB1xzfxfNhGW7gVSdZinT3AUTXlaD0xQ1nQBf9nUWKkxN9rzyuHTFHXzWQZxDTiWpeBG4rzM0BLPWS0EMZN828=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cZM/45ag; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760993409;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O2BFBY39nNCt7qi+TDHA1Cukyk0M3YbxIYmbZtnwCRk=;
-	b=cZM/45agLD3R+660NK08hiRmd7Ow+prBRlrCZMLsBgu9AJ0WVqP1xksZn/a9AE45cdm1xV
-	+zae6PgVQND191mHAkchCTh20N3i+w9677X1pR27K9XUj1KbhlM6avoKmMRIiW/Qa9ykWL
-	V9xlEBq6g8kutwwLHpn3Gr1rxh/lGmU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-34-sAFXLznQMXSUiwknhLtwiw-1; Mon,
- 20 Oct 2025 16:50:07 -0400
-X-MC-Unique: sAFXLznQMXSUiwknhLtwiw-1
-X-Mimecast-MFC-AGG-ID: sAFXLznQMXSUiwknhLtwiw_1760993407
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ECF6F18007EB;
-	Mon, 20 Oct 2025 20:50:06 +0000 (UTC)
-Received: from aion.redhat.com (unknown [10.22.80.4])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 916E319560A2;
-	Mon, 20 Oct 2025 20:50:06 +0000 (UTC)
-Received: from aion.redhat.com (localhost [IPv6:::1])
-	by aion.redhat.com (Postfix) with ESMTP id CF6F94C0FA9;
-	Mon, 20 Oct 2025 16:50:04 -0400 (EDT)
-From: Scott Mayhew <smayhew@redhat.com>
+	 MIME-Version; b=Ck7KlTginM7FqsMVaTtxwlOvt1PQAFnVptDxb2rs7kJvb7llXirPMAUtdvK8O0lyQdQAIOWr7/JjAfb37VgRGOgyoQL0TvUEhEiRRtn/9XAeB9MJVA7RZfS4IPP8Jv2WKfkWkywkcajav03ammm36qwd7RqUt89hQCJ8Ef42I3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ivAzwDYR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D4CC113D0;
+	Mon, 20 Oct 2025 20:51:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760993491;
+	bh=AaEa0mdc322sGpCmti2cbkZA7gU2aXGAzFFFalnywr8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ivAzwDYRprcGwIPF1+0qf8WM2RG7T8RsPg8NeXYmjSVOdVM6hYHXRaf/BQEofujUD
+	 QCIAPde3h/G+wm/jaH04sSeG//CCRv3PkfFFhKGnfq+T0nOydyCGvH3dWsN3rkadln
+	 3vDKkc3QefMdd7DBdGfeOWCpzO9IQix9gR21k1yjKilfgorXqmp773pI9+UWV16wsc
+	 60PXu3mBALgo49aNZCz0u53DiW3MHltEwYq2IVWeJMXVcLJ0lH5ZNZMOXqM4RqBjJP
+	 qDXLLHLGwG6bfHsamvhHuQyIAjkrasdFffMCt4UbTgpbqZIE14/SAAaqhFjhqyMJ9c
+	 E+vVR7gRMD1rg==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: chuck.lever@oracle.com
-Subject: [PATCH 6.6.y] nfsd: decouple the xprtsec policy check from check_nfsd_access()
-Date: Mon, 20 Oct 2025 16:50:04 -0400
-Message-ID: <20251020205004.1034718-1-smayhew@redhat.com>
-In-Reply-To: <2025101611-revisit-ranging-52d6@gregkh>
-References: <2025101611-revisit-ranging-52d6@gregkh>
+Cc: Christoph Hellwig <hch@lst.de>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/4] f2fs: add a f2fs_get_block_locked helper
+Date: Mon, 20 Oct 2025 16:51:25 -0400
+Message-ID: <20251020205128.1912678-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025102052-work-collected-f03f@gregkh>
+References: <2025102052-work-collected-f03f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,180 +60,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-[ Upstream commit e4f574ca9c6dfa66695bb054ff5df43ecea873ec ]
+From: Christoph Hellwig <hch@lst.de>
 
-This is a backport of e4f574ca9c6d specifically for the 6.6-stable
-kernel.  It differs from the upstream version mainly in that it's
-working around the absence of some 6.12-era commits:
-- 1459ad57673b nfsd: Move error code mapping to per-version proc code.
-- 0a183f24a7ae NFSD: Handle @rqstp == NULL in check_nfsd_access()
-- 5e66d2d92a1c nfsd: factor out __fh_verify to allow NULL rqstp to be
-  passed
+[ Upstream commit cf342d3beda000b4c60990755ca7800de5038785 ]
 
-A while back I had reported that an NFSv3 client could successfully
-mount using '-o xprtsec=none' an export that had been exported with
-'xprtsec=tls:mtls'.  By "successfully" I mean that the mount command
-would succeed and the mount would show up in /proc/mount.  Attempting
-to do anything futher with the mount would be met with NFS3ERR_ACCES.
+This allows to keep the f2fs_do_map_lock based locking scheme
+private to data.c.
 
-Transport Layer Security isn't an RPC security flavor or pseudo-flavor,
-so we shouldn't be conflating them when determining whether the access
-checks can be bypassed.  Split check_nfsd_access() into two helpers, and
-have fh_verify() call the helpers directly since fh_verify() has
-logic that allows one or both of the checks to be skipped.  All other
-sites will continue to call check_nfsd_access().
-
-Link: https://lore.kernel.org/linux-nfs/ZjO3Qwf_G87yNXb2@aion/
-Fixes: 9280c5774314 ("NFSD: Handle new xprtsec= export option")
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 9d5c4f5c7a2c ("f2fs: fix wrong block mapping for multi-devices")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/export.c | 60 +++++++++++++++++++++++++++++++++++++++++-------
- fs/nfsd/export.h |  2 ++
- fs/nfsd/nfsfh.c  | 12 +++++++++-
- 3 files changed, 65 insertions(+), 9 deletions(-)
+ fs/f2fs/data.c | 16 ++++++++++++++--
+ fs/f2fs/f2fs.h |  3 +--
+ fs/f2fs/file.c |  4 +---
+ 3 files changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
-index 4b5d998cbc2f..f4e77859aa85 100644
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -1071,28 +1071,62 @@ static struct svc_export *exp_find(struct cache_detail *cd,
- 	return exp;
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index ac7d0ed3fb894..e1df8241ebd1e 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1192,7 +1192,7 @@ int f2fs_reserve_block(struct dnode_of_data *dn, pgoff_t index)
+ 	return err;
  }
  
--__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp)
-+/**
-+ * check_xprtsec_policy - check if access to export is allowed by the
-+ * 			  xprtsec policy
-+ * @exp: svc_export that is being accessed.
-+ * @rqstp: svc_rqst attempting to access @exp.
-+ *
-+ * Helper function for check_nfsd_access().  Note that callers should be
-+ * using check_nfsd_access() instead of calling this function directly.  The
-+ * one exception is fh_verify() since it has logic that may result in one
-+ * or both of the helpers being skipped.
-+ *
-+ * Return values:
-+ *   %nfs_ok if access is granted, or
-+ *   %nfserr_acces or %nfserr_wrongsec if access is denied
-+ */
-+__be32 check_xprtsec_policy(struct svc_export *exp, struct svc_rqst *rqstp)
+-int f2fs_get_block(struct dnode_of_data *dn, pgoff_t index)
++static int f2fs_get_block(struct dnode_of_data *dn, pgoff_t index)
  {
--	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
- 	struct svc_xprt *xprt = rqstp->rq_xprt;
- 
- 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_NONE) {
- 		if (!test_bit(XPT_TLS_SESSION, &xprt->xpt_flags))
--			goto ok;
-+			return nfs_ok;
- 	}
- 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_TLS) {
- 		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
- 		    !test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
--			goto ok;
-+			return nfs_ok;
- 	}
- 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_MTLS) {
- 		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
- 		    test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
--			goto ok;
-+			return nfs_ok;
- 	}
--	goto denied;
- 
--ok:
-+	return rqstp->rq_vers < 4 ? nfserr_acces : nfserr_wrongsec;
-+}
-+
-+/**
-+ * check_security_flavor - check if access to export is allowed by the
-+ * 			  xprtsec policy
-+ * @exp: svc_export that is being accessed.
-+ * @rqstp: svc_rqst attempting to access @exp.
-+ *
-+ * Helper function for check_nfsd_access().  Note that callers should be
-+ * using check_nfsd_access() instead of calling this function directly.  The
-+ * one exception is fh_verify() since it has logic that may result in one
-+ * or both of the helpers being skipped.
-+ *
-+ * Return values:
-+ *   %nfs_ok if access is granted, or
-+ *   %nfserr_acces or %nfserr_wrongsec if access is denied
-+ */
-+__be32 check_security_flavor(struct svc_export *exp, struct svc_rqst *rqstp)
-+{
-+	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
-+
- 	/* legacy gss-only clients are always OK: */
- 	if (exp->ex_client == rqstp->rq_gssclient)
- 		return 0;
-@@ -1117,10 +1151,20 @@ __be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp)
- 	if (nfsd4_spo_must_allow(rqstp))
- 		return 0;
- 
--denied:
- 	return rqstp->rq_vers < 4 ? nfserr_acces : nfserr_wrongsec;
+ 	struct extent_info ei = {0, };
+ 	struct inode *inode = dn->inode;
+@@ -1432,7 +1432,7 @@ static int __allocate_data_block(struct dnode_of_data *dn, int seg_type)
+ 	return 0;
  }
  
-+__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp)
+-void f2fs_do_map_lock(struct f2fs_sb_info *sbi, int flag, bool lock)
++static void f2fs_do_map_lock(struct f2fs_sb_info *sbi, int flag, bool lock)
+ {
+ 	if (flag == F2FS_GET_BLOCK_PRE_AIO) {
+ 		if (lock)
+@@ -1447,6 +1447,18 @@ void f2fs_do_map_lock(struct f2fs_sb_info *sbi, int flag, bool lock)
+ 	}
+ }
+ 
++int f2fs_get_block_locked(struct dnode_of_data *dn, pgoff_t index)
 +{
-+	__be32 status;
++	struct f2fs_sb_info *sbi = F2FS_I_SB(dn->inode);
++	int err;
 +
-+	status = check_xprtsec_policy(exp, rqstp);
-+	if (status != nfs_ok)
-+		return status;
++	f2fs_do_map_lock(sbi, F2FS_GET_BLOCK_PRE_AIO, true);
++	err = f2fs_get_block(dn, index);
++	f2fs_do_map_lock(sbi, F2FS_GET_BLOCK_PRE_AIO, false);
 +
-+	return check_security_flavor(exp, rqstp);
++	return err;
 +}
 +
  /*
-  * Uses rq_client and rq_gssclient to find an export; uses rq_client (an
-  * auth_unix client) if it's available and has secinfo information;
-diff --git a/fs/nfsd/export.h b/fs/nfsd/export.h
-index ca9dc230ae3d..4a48b2ad5606 100644
---- a/fs/nfsd/export.h
-+++ b/fs/nfsd/export.h
-@@ -100,6 +100,8 @@ struct svc_expkey {
- #define EX_WGATHER(exp)		((exp)->ex_flags & NFSEXP_GATHERED_WRITES)
+  * f2fs_map_blocks() tries to find or build mapping relationship which
+  * maps continuous logical blocks to physical blocks, and return such
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index ad7bc58ce0a40..db7ecd55b732e 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3783,7 +3783,7 @@ void f2fs_set_data_blkaddr(struct dnode_of_data *dn, block_t blkaddr);
+ void f2fs_update_data_blkaddr(struct dnode_of_data *dn, block_t blkaddr);
+ int f2fs_reserve_new_blocks(struct dnode_of_data *dn, blkcnt_t count);
+ int f2fs_reserve_new_block(struct dnode_of_data *dn);
+-int f2fs_get_block(struct dnode_of_data *dn, pgoff_t index);
++int f2fs_get_block_locked(struct dnode_of_data *dn, pgoff_t index);
+ int f2fs_reserve_block(struct dnode_of_data *dn, pgoff_t index);
+ struct page *f2fs_get_read_data_page(struct inode *inode, pgoff_t index,
+ 			blk_opf_t op_flags, bool for_write, pgoff_t *next_pgofs);
+@@ -3794,7 +3794,6 @@ struct page *f2fs_get_lock_data_page(struct inode *inode, pgoff_t index,
+ struct page *f2fs_get_new_data_page(struct inode *inode,
+ 			struct page *ipage, pgoff_t index, bool new_i_size);
+ int f2fs_do_write_data_page(struct f2fs_io_info *fio);
+-void f2fs_do_map_lock(struct f2fs_sb_info *sbi, int flag, bool lock);
+ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map,
+ 			int create, int flag);
+ int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 5e2a0cb8d24d9..f34692864ed11 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -113,10 +113,8 @@ static vm_fault_t f2fs_vm_page_mkwrite(struct vm_fault *vmf)
  
- int nfsexp_flags(struct svc_rqst *rqstp, struct svc_export *exp);
-+__be32 check_xprtsec_policy(struct svc_export *exp, struct svc_rqst *rqstp);
-+__be32 check_security_flavor(struct svc_export *exp, struct svc_rqst *rqstp);
- __be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp);
+ 	if (need_alloc) {
+ 		/* block allocation */
+-		f2fs_do_map_lock(sbi, F2FS_GET_BLOCK_PRE_AIO, true);
+ 		set_new_dnode(&dn, inode, NULL, NULL, 0);
+-		err = f2fs_get_block(&dn, page->index);
+-		f2fs_do_map_lock(sbi, F2FS_GET_BLOCK_PRE_AIO, false);
++		err = f2fs_get_block_locked(&dn, page->index);
+ 	}
  
- /*
-diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-index c2495d98c189..283c1a60c846 100644
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -370,6 +370,16 @@ fh_verify(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type, int access)
- 	if (error)
- 		goto out;
- 
-+	/*
-+	 * NLM is allowed to bypass the xprtsec policy check because lockd
-+	 * doesn't support xprtsec.
-+	 */
-+	if (!(access & NFSD_MAY_LOCK)) {
-+		error = check_xprtsec_policy(exp, rqstp);
-+		if (error)
-+			goto out;
-+	}
-+
- 	/*
- 	 * pseudoflavor restrictions are not enforced on NLM,
- 	 * which clients virtually always use auth_sys for,
-@@ -386,7 +396,7 @@ fh_verify(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type, int access)
- 			&& exp->ex_path.dentry == dentry)
- 		goto skip_pseudoflavor_check;
- 
--	error = check_nfsd_access(exp, rqstp);
-+	error = check_security_flavor(exp, rqstp);
- 	if (error)
- 		goto out;
- 
+ #ifdef CONFIG_F2FS_FS_COMPRESSION
 -- 
-2.47.3
+2.51.0
 
 
