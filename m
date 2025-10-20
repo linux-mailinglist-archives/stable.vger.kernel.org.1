@@ -1,84 +1,80 @@
-Return-Path: <stable+bounces-188005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AAC4BF0274
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 11:26:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312ADBF0280
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 11:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF4B33A7652
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 09:26:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C9B844F1048
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 09:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D752F5A0C;
-	Mon, 20 Oct 2025 09:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7R0adCE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D352F5A14;
+	Mon, 20 Oct 2025 09:26:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DAC2F5A09
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 09:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52DE2E972E;
+	Mon, 20 Oct 2025 09:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760952335; cv=none; b=O1Bvann/QQkfnAiZjeZ/JzEXgRUbKR58CwhcP0jvzPhjzmco0CrmC9dyM59+RUOHLQOLkVFij1DRnXrjN/netRka/hSKbfwpNR2W5t8Q2Ec85V0fFjBNbmMo+VybTAVdmLddJlYpX1skVJoOHtfk9YGeE+TjOgVSKtxwJr/j/CM=
+	t=1760952370; cv=none; b=Dp57GvwXZmS1r5HMfvepFouIEb2Y0yw4/d1p/wSHaEf2dBspMz1KBubUaVW1Ak20Al9LCLQWizSd4LX+T/gkYCnaAH7ENM+Q44BHigriXGdlhdFvOQbPxbgWjfikfmoJK9MBTrybqbM5sOhISiKpDVi/eIsygO9Dy2O6Fxpjppc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760952335; c=relaxed/simple;
-	bh=W8HXV47Y1iv4tzHg93ARptZ+Ago/9fhqC5B36Voyk84=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rQIEI8AkAgj5t+a2JS6EShpDs9aL9jZiB0WaVueeOToInIPZavi7KXk8gOOwipDSrEyZm5Iqe15NPJqtKX25uleb6VMXH7ns0xa44f0uuytP44LOVTKrArd+NPtMitXN6kAiqgJkpVlZ0h+RuOL/L4PtUZJpR+4eIoQ7Fy2WMbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7R0adCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A32C4CEF9;
-	Mon, 20 Oct 2025 09:25:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760952334;
-	bh=W8HXV47Y1iv4tzHg93ARptZ+Ago/9fhqC5B36Voyk84=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o7R0adCEVEDLXqy19JiuvwyYJVPcf1XYFXQ/W6rQcxa196PHsvcz+BL8isox3dS1q
-	 77gKzo+mheUEfAfXOKBrSm+JvPd+bzMMLv0GNJW5Aw6pNE+KMQQkpWh3spU6NxmpWl
-	 +KpF2/gVs0/FMtNFG0sfpIOxpFXCT66NMlFT9S00=
-Date: Mon, 20 Oct 2025 11:25:32 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Aakarsh Jain <aakarsh.jain@samsung.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: Re: [PATCH 6.1.y 1/5] media: s5p-mfc: constify fw_name strings
-Message-ID: <2025102014-try-superior-03d0@gregkh>
-References: <2025101646-overtake-starch-c0ab@gregkh>
- <20251017144900.4007781-1-sashal@kernel.org>
+	s=arc-20240116; t=1760952370; c=relaxed/simple;
+	bh=VlK4pbHtdxuCcU3EC1hLI4n4MuD5ZK/hEeTodvq6FAU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LPL81TeH1aeKkjkh8PYP6k91jkS67Hyki1TiqeRZuTiwvcLK/ri8erFcdBcDshknyOUZKgOCY/EJSQA/v31yZQtyJ6q5NhhPxsGM1eXgNW/Z6XZHdulWcgUyMTDj/mcgAOW9RnYRyw4oyXu9witq8enJuyD0qSxgfGnKw87jKOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4DE341063;
+	Mon, 20 Oct 2025 02:25:58 -0700 (PDT)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 126FE3F66E;
+	Mon, 20 Oct 2025 02:26:04 -0700 (PDT)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: stable@vger.kernel.org
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	mark.rutland@arm.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.4-5.10 0/2] arm64: errata: Apply workarounds for Neoverse-V3AE
+Date: Mon, 20 Oct 2025 10:25:51 +0100
+Message-ID: <20251020092555.591819-1-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251017144900.4007781-1-sashal@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 17, 2025 at 10:48:56AM -0400, Sasha Levin wrote:
-> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> [ Upstream commit dd761d3cf4d518db197c8e03e3447ddfdccdb27e ]
-> 
-> Constify stored pointers to firmware names for code safety.  These are
-> not modified by the driver.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Reviewed-by: Aakarsh Jain <aakarsh.jain@samsung.com>
-> Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-> Stable-dep-of: 7fa37ba25a1d ("media: s5p-mfc: remove an unused/uninitialized variable")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Hi All,
 
-I'll drop this series as the 6.6.y one did not apply.
+This series is a backport that applies to stable kernels 5.4 and 5.10, of the
+recent errata workarounds for Neoverse-V3AE, which were originally posted at:
 
-thanks,
+  https://lore.kernel.org/all/20250919145832.4035534-1-ryan.roberts@arm.com/
 
-greg k-h
+... and were originally merged upstream in v6.18-rc1.
+
+Thanks,
+Ryan
+
+Mark Rutland (2):
+  arm64: cputype: Add Neoverse-V3AE definitions
+  arm64: errata: Apply workarounds for Neoverse-V3AE
+
+ Documentation/arm64/silicon-errata.rst | 2 ++
+ arch/arm64/Kconfig                     | 1 +
+ arch/arm64/include/asm/cputype.h       | 2 ++
+ arch/arm64/kernel/cpu_errata.c         | 1 +
+ 4 files changed, 6 insertions(+)
+
+--
+2.43.0
+
 
