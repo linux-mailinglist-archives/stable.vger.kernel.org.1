@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-188167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469B4BF2490
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E77BF2493
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:03:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AF1518A5182
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:03:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77D5418A215A
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6D528314A;
-	Mon, 20 Oct 2025 16:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB06027B348;
+	Mon, 20 Oct 2025 16:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iA7PaQAI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WGjGhz5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9D727A46A
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF5D26B2B0
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760976156; cv=none; b=Zea2JydfmVK2i8jYjRF053lZokhwtwUvpmiu+IsfOoUipvM6fME3FkrbQ41pIq/3GQf4KrZ0bvp7bUr6Fhxc+9UVt6ru9EjIaWFRQBOdsvJyWAf+vVM7UGaEyIdBDLLorKRupEc5tXJA/0oO11hXJYYhGBRO88JaUAagWXQujoc=
+	t=1760976180; cv=none; b=CGtyM56oDWBXvtDKT+pv0I/ZoWJVQ78nLQCAQllBn6F7zD63Nb5BxYQdk59CDmyKnpg7Na4o4YRe/up4YIJ+jIVAEt7QfnU4+mXAdZkrOWjTOWVpM358oCIuhutLDG8ZsuHo+wO9JeHoBJ9cNYBluiZQNKrIoqaMnH32ubKKNl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760976156; c=relaxed/simple;
-	bh=7KSCfYOcieDLboDcjt2pSUc6GYfLfDXBSHzhBTLvlRQ=;
+	s=arc-20240116; t=1760976180; c=relaxed/simple;
+	bh=jubJTDVj5zmj4Ax+kQUuvlUA0Dc2l5U4k3gTPI3Eagg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTGRyMKe3FsEhZPAcqtWnUl0M+f1+0ZW9lWHHPCNN6AaATf9PpIx9W+yPGCn/xLAmn2wASdJLx85fVmU4wxli4ouIsW/drmV6CM7eeWHVrdvu34+irTEdaf2GthR4Yi49oI1dQ/6cUFOijR+ZJ/T8RA2Dk3GJFfFnVFs7GOyW+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iA7PaQAI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B564C4CEFE;
-	Mon, 20 Oct 2025 16:02:35 +0000 (UTC)
+	 MIME-Version; b=VVmpAz41T5q+oecp5bQduuLgXEC3AnF5qLEZ6AMfsziTx1yRspAS7A7vCxzHaoYZhcRpK+xIaSE9f1o4I69Zawt5JNLytmV6dFZjZ901YIeNIQinfTdDErsL9nJcVvfA31oBou6cB14axKYWrGqC8tOT2yGxzbm1arN/+abYrIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WGjGhz5W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE62C113D0;
+	Mon, 20 Oct 2025 16:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760976155;
-	bh=7KSCfYOcieDLboDcjt2pSUc6GYfLfDXBSHzhBTLvlRQ=;
+	s=k20201202; t=1760976180;
+	bh=jubJTDVj5zmj4Ax+kQUuvlUA0Dc2l5U4k3gTPI3Eagg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iA7PaQAITnM/KjU8xJygfnaHEoZ3YOQLPA9yTCTTHuozYgsawSMdhySKPUlQicAE6
-	 URpJoUeSolSw7PFGVXfdzECCumiwG+VgyRvQ4/tuvN2cjZN4FEDfhAzyAh1a9BFGwV
-	 FXtBm1770HeHAIEwTKH6ei1r6fTom0UzF9KBsk3tquOSq8KufQQta1ynkoqLawO15u
-	 6NZQPjKmeKp3FG3jsWdR6MMCOQS2Bp0PTWhw8/y8TnsvLBGq2SyfBxQ6ugB1MNbqkC
-	 nfAfgYNZ04yKpLWrNRGisr4OqGY4zGs2OH0Dwgg2hEd27jY9LtMivXoZn72zyw8O23
-	 INLY9rg85Q0EQ==
+	b=WGjGhz5WuE8IF1Og9orhiTToMhmz9S2roT3qszjRIwBRgXk8zYaP2sZHJK+I9COzs
+	 m4vIxSmr2bUF9QbKFQ7+X2sllov8SKKVMQ+PD0BisCAwkf03+GTU89tCudd8ZmHzL7
+	 524V6Fu7nTaZZVFeJXBbk+t/zU01SmUlAWYlsLkPt2sgLvci0EdHMw4BhAR1lfFrMU
+	 VyslSA6o7pMTQ2IoXUBbsHZx2/4v0ZK2rQQVAMpbrMrEEPXXGnQesP7ux1uiz0DekL
+	 3tCA9jfbevyOFQfGaVtHZ7c51P1ykS3ydM/UhrfXEIPpbY2MqesEhPCU6+Hd1WqZCV
+	 ksXP1Y36H2b/w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: "Darrick J. Wong" <djwong@kernel.org>,
 	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] fuse: fix livelock in synchronous file put from fuseblk workers
-Date: Mon, 20 Oct 2025 12:02:32 -0400
-Message-ID: <20251020160232.1828501-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y 2/2] fuse: fix livelock in synchronous file put from fuseblk workers
+Date: Mon, 20 Oct 2025 12:02:56 -0400
+Message-ID: <20251020160256.1828701-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251020160232.1828501-1-sashal@kernel.org>
-References: <2025101628-exclude-hamstring-8d43@gregkh>
- <20251020160232.1828501-1-sashal@kernel.org>
+In-Reply-To: <20251020160256.1828701-1-sashal@kernel.org>
+References: <2025101629-privacy-morally-5172@gregkh>
+ <20251020160256.1828701-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -129,10 +129,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 627ad8fadbec0..dd1864c95d074 100644
+index d940bebe623e8..ebe49bf1155ad 100644
 --- a/fs/fuse/file.c
 +++ b/fs/fuse/file.c
-@@ -338,8 +338,14 @@ void fuse_file_release(struct inode *inode, struct fuse_file *ff,
+@@ -340,8 +340,14 @@ void fuse_file_release(struct inode *inode, struct fuse_file *ff,
  	 * Make the release synchronous if this is a fuseblk mount,
  	 * synchronous RELEASE is allowed (and desirable) in this case
  	 * because the server can be trusted not to screw up.
