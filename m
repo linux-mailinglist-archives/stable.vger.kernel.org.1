@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-188181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A14BF25ED
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:21:34 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46608BF25BD
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 18:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43C683B1303
-	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:17:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E580034BD52
+	for <lists+stable@lfdr.de>; Mon, 20 Oct 2025 16:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4543285CA8;
-	Mon, 20 Oct 2025 16:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809881F875A;
+	Mon, 20 Oct 2025 16:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fVFVO5P8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aC4zdm/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93797277C9A
-	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409B51A00CE
+	for <stable@vger.kernel.org>; Mon, 20 Oct 2025 16:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760977063; cv=none; b=Iiy1af9iv8gGES1uVwJNvrk1gdGs6OCcmdkZYjwjwN29pqhYygmqIqA9RPpuUouwj9LCttzSkF4OLuVUE+/k1xUFP3hHxhvqmmQul5T5RELRgprdu43+qxFTg1v3cb4u7I4G6Gi43jgcuXluXYZuUTIZF65IEkpHzt9KZ8e4YAk=
+	t=1760977097; cv=none; b=fCF/zMVIXzyAbFg9Hh6xx9HKs8lWAOlzFrupwnpcOhZ3QSGqaZDAn4hawZitVbOU3FMy4keelsGPBuaGO43ppgpcinCV/FczOgDJnvizPe5YlBY9qOVw0N+VVUqIi04NQC3fUQleeV8rnhJvWuCqwVBZhUJaF2GTMM481QRZoD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760977063; c=relaxed/simple;
-	bh=qSql13iqTt41yx+7E3fHHKOVuY02uvRxg6yhs8DZG08=;
+	s=arc-20240116; t=1760977097; c=relaxed/simple;
+	bh=TJNnbl96hMHCZ3DBbkqtOsXSE07wJoEwNreMZCwSJEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVz82Hcud4v+yVvd6I+RbDAm8sEBgG9P6Y87DAhhGbHbdfJqueUi22hV4VAIYFWGfRSRTcDsxHXKZTcGL2jYoUr0NOp/mLw9Y68dztOgpyYyBQ2We67nqMqGT37hG5Pi2n/BGZ4lOO/2auPk8X9b01NJCdNf9nHyxIPd7ATr97g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fVFVO5P8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F79BC4CEF9;
-	Mon, 20 Oct 2025 16:17:42 +0000 (UTC)
+	 MIME-Version; b=rOcEfIx1x73gAyc/4AKbPenciUkzZ0umoWQt/D6csV5h8gMaym9ZXc9sywGxWenfrHYeOAYhrWf8yDhpZTUOOc8JWr7PyOoUAt51fYj9wD27Qzz9h5lE5p/97WA4OSlRPzwnllpCwa0GgBaR74DaeItKIHknl+hqoGey1G8mKY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aC4zdm/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B219C4CEF9;
+	Mon, 20 Oct 2025 16:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760977063;
-	bh=qSql13iqTt41yx+7E3fHHKOVuY02uvRxg6yhs8DZG08=;
+	s=k20201202; t=1760977095;
+	bh=TJNnbl96hMHCZ3DBbkqtOsXSE07wJoEwNreMZCwSJEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fVFVO5P8pjKlZ4JzrUPhlOnjbX8QEulnlSk1xmzI+My0BH76TaKW2e8ug8NG7LGHE
-	 8xVIcY1eWCY8LLSWbq+w5jyVLKi4lgNmTsET8Hc1NcX1SAyQVo0BlrZRez/ida3Vpx
-	 Vqw0EhaUddJJ7MwKEeAUbR53RZJO0EWYidqhaooPMZ+mQOKmAx9PKaM6Xo8xgg4KPI
-	 bbBsvC5P6g0Uj0BTvFlHNEove0IkS/06fo+lvVUtnhJ+Fwp+YYh0mJyk4uXy9O+9jz
-	 btBkVaQf0ryS2WtImBZvlhFhRq09RTEda9/lRHDaB8Ty7fu4G4PMyUYVt14bZggWkM
-	 jUMKv6Ped0HYw==
+	b=aC4zdm/r97i8sI7KafxlpQjE5mEWHsXTbl46pobkH6IKkWxQKcrrDx901mSlaxqBi
+	 cYZGT1FXR6DrHXgQ/yySEMP7yQQJ4u5MFoTFMerjlmdOR6cT2juXZRLzo8nlNrB5gv
+	 4VQoDYyoXQ8sW4T7yeTRavGFde+rnVMrPJEtP5uMQUV2jRbOvsvdJ7PDJCDHc0sSoK
+	 mCSiond8MZMrQAPpb+ehovNH1BBXk3m+Gxkv1JGmtPdqbJBpgBOfyu7EM04eC8kGcY
+	 0fFHhZajmXUR2o2uPnPAmVGBXIUBVaP1E5XJkIBPI6XgFOfggIZKz0kgkm+BOlfDlV
+	 MS/wPQm+7e6Mw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
 	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] wifi: ath11k: HAL SRNG: don't deinitialize and re-initialize again
-Date: Mon, 20 Oct 2025 12:17:40 -0400
-Message-ID: <20251020161740.1835172-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] wifi: ath11k: HAL SRNG: don't deinitialize and re-initialize again
+Date: Mon, 20 Oct 2025 12:18:13 -0400
+Message-ID: <20251020161813.1835424-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101625-phonebook-salt-0964@gregkh>
-References: <2025101625-phonebook-salt-0964@gregkh>
+In-Reply-To: <2025101626-library-underfoot-da02@gregkh>
+References: <2025101626-library-underfoot-da02@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,10 +86,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 18 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index e86ecdf433de5..01e2528fc9ca5 100644
+index 6282ccad79d5e..67c78ad2243b9 100644
 --- a/drivers/net/wireless/ath/ath11k/core.c
 +++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -942,14 +942,10 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
+@@ -710,14 +710,10 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
  	mutex_unlock(&ab->core_lock);
  
  	ath11k_dp_free(ab);
@@ -106,10 +106,10 @@ index e86ecdf433de5..01e2528fc9ca5 100644
  
  	ret = ath11k_core_qmi_firmware_ready(ab);
 diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index b134470ce2264..eb394ba6f500f 100644
+index d5921805af636..029827e14a15a 100644
 --- a/drivers/net/wireless/ath/ath11k/hal.c
 +++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1313,6 +1313,22 @@ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
+@@ -1317,6 +1317,22 @@ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
  }
  EXPORT_SYMBOL(ath11k_hal_srng_deinit);
  
@@ -133,10 +133,10 @@ index b134470ce2264..eb394ba6f500f 100644
  {
  	struct hal_srng *srng;
 diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
-index 7fdcd8bbf7e98..cbbd714a1fbe0 100644
+index 5fbfded8d546c..00ab4f46e429a 100644
 --- a/drivers/net/wireless/ath/ath11k/hal.h
 +++ b/drivers/net/wireless/ath/ath11k/hal.h
-@@ -952,6 +952,7 @@ int ath11k_hal_srng_setup(struct ath11k_base *ab, enum hal_ring_type type,
+@@ -940,6 +940,7 @@ int ath11k_hal_srng_setup(struct ath11k_base *ab, enum hal_ring_type type,
  			  struct hal_srng_params *params);
  int ath11k_hal_srng_init(struct ath11k_base *ath11k);
  void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
