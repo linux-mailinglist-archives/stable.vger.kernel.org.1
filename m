@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-188637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAEEFBF8842
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A66BF866F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 378EE4FA499
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E8A6188DD19
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1DC27B4F5;
-	Tue, 21 Oct 2025 20:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1CA273D66;
+	Tue, 21 Oct 2025 19:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPSXdfXq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCkGD6th"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6614927AC5C;
-	Tue, 21 Oct 2025 20:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B881274B2E;
+	Tue, 21 Oct 2025 19:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077043; cv=none; b=A8tR/Al+RRtrfAiovfe6/9f6Of9mzaHTAT8IE8wLqlcxuSQvLmjefNDpRsR9aH1LYYlgDbE4B4wtXh6nmpdAVFQE8xSMNHwjLqzvdyR3XQI/wwnQqV3GRQGjWP06C2PzELwB4cHSLDP1eE233stKA7xjT5VB0HWInm52s264qlo=
+	t=1761076642; cv=none; b=tps4z7UvEPEuNMJJe5Bz9stpGQk5kWP6P1UbutF1vANPIWp/6wovPNx9Ralfs2eKD+9bPA9HWFn19tPbZh5FlC1ASuEF1XkaXMxBqiDk8gQ7sm2eg+kDv5spJxBjSLhMBJSZI1Ipk9nCk1Uf+5zcEnwUjSfjaNmzVpSqsvtPRLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077043; c=relaxed/simple;
-	bh=sX9DZVObilYD4skcXOGYg9x/b2Llx1kKdkux5ScjdLw=;
+	s=arc-20240116; t=1761076642; c=relaxed/simple;
+	bh=CCfMeUrwFKT1kYAw13p3u127uc1BurcxXjPKh8tfdAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFGoqC8mM0n8tD9D2t7lT0Ybi9Era8H5vSWBxwc8MTRtZfvfBJfbLme6uw46yv0TDjcQb9p36DZuwkSb2nFJSR7cV8O75bD2dKARyxIJREYUUbCFqINGsVQevxTQzMJVXv4zs6bR5APgfYOAnv+DNT0ByYmHY//ztnDw7/r2oXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPSXdfXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9661EC4CEF1;
-	Tue, 21 Oct 2025 20:04:00 +0000 (UTC)
+	 MIME-Version; b=Hm3IfgJ/aCC2U+ntGOzjNQoHxUBC5DVbF5PjKLg20Go8OcgjeI5Mm7c76kDUE6KTq6gj3Q5xk9dXLwx++6MKlUov+aEbMj+Q70SYpH8ACo+4wg2JANE4L8FF1kRawG6XD9s8dE2bGxg24D8dt8rSgSTJdriySbRrM3uNOR4pJ6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCkGD6th; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A4FC4CEF1;
+	Tue, 21 Oct 2025 19:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077041;
-	bh=sX9DZVObilYD4skcXOGYg9x/b2Llx1kKdkux5ScjdLw=;
+	s=korg; t=1761076642;
+	bh=CCfMeUrwFKT1kYAw13p3u127uc1BurcxXjPKh8tfdAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jPSXdfXqmv2z44LSDlaYyoQVaABpCT/RkPOJpPp5qToHWCmhJdc64z5I/f1wJ6iUC
-	 j6SFeN0iHwBwnrY+vlNEH2keJMujG2iXYEGKyqzFMdXWVksmN0QRcY0CltJxo7nV8s
-	 SP+tEFoUwg+rN9fg+GmWv/Fu2u99kM07eGJ+Y1iY=
+	b=DCkGD6thKYrfnIaiuIZVP0YTxZI8bMYua46aoG+IW95Nnz1BsYlxjuYpIaQnXEVGB
+	 TfkLnNgAyvK0aqIIV76zaBsYGu8IGYOlGcbzoYB9qITFu8m9GEEm8r6i2mpdwtlpGh
+	 IrZKON0gbQnqHSQ/H54+1ltIv+eIkCgFqcFZn678=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/136] d_alloc_parallel(): set DCACHE_PAR_LOOKUP earlier
+Subject: [PATCH 6.6 096/105] ixgbevf: Add support for Intel(R) E610 device
 Date: Tue, 21 Oct 2025 21:51:45 +0200
-Message-ID: <20251021195038.784060452@linuxfoundation.org>
+Message-ID: <20251021195023.931092537@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +65,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
 
-[ Upstream commit e95db51c81f54dd12ea465b5127e4786f62a1095 ]
+[ Upstream commit 4c44b450c69b676955c2790dcf467c1f969d80f1 ]
 
-Do that before new dentry is visible anywhere.  It does create
-a new possible state for dentries present in ->d_children/->d_sib -
-DCACHE_PAR_LOOKUP present, negative, unhashed, not in in-lookup
-hash chains, refcount positive.  Those are going to be skipped
-by all tree-walkers (both d_walk() callbacks in fs/dcache.c and
-explicit loops over children/sibling lists elsewhere) and
-dput() is fine with those.
+Add support for Intel(R) E610 Series of network devices. The E610
+is based on X550 but adds firmware managed link, enhanced security
+capabilities and support for updated server manageability
 
-NOTE: dropping the final reference to a "normal" in-lookup dentry
-(in in-lookup hash) is a bug - somebody must've forgotten to
-call d_lookup_done() on it and bad things will happen.  With those
-it's OK; if/when we get around to making __dentry_kill() complain
-about such breakage, remember that predicate to check should
-*not* be just d_in_lookup(victim) but rather a combination of that
-with !hlist_bl_unhashed(&victim->d_u.d_in_lookup_hash).  Might
-be worth considering later...
-
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Stable-dep-of: 56094ad3eaa2 ("vfs: Don't leak disconnected dentries on umount")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dcache.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ixgbevf/defines.h      |    5 ++++-
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf.h      |    6 +++++-
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |   12 ++++++++++--
+ drivers/net/ethernet/intel/ixgbevf/vf.c           |   12 +++++++++++-
+ drivers/net/ethernet/intel/ixgbevf/vf.h           |    4 +++-
+ 5 files changed, 33 insertions(+), 6 deletions(-)
 
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -2475,13 +2475,19 @@ struct dentry *d_alloc_parallel(struct d
- 	unsigned int hash = name->hash;
- 	struct hlist_bl_head *b = in_lookup_hash(parent, hash);
- 	struct hlist_bl_node *node;
--	struct dentry *new = d_alloc(parent, name);
-+	struct dentry *new = __d_alloc(parent->d_sb, name);
- 	struct dentry *dentry;
- 	unsigned seq, r_seq, d_seq;
+--- a/drivers/net/ethernet/intel/ixgbevf/defines.h
++++ b/drivers/net/ethernet/intel/ixgbevf/defines.h
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 1999 - 2018 Intel Corporation. */
++/* Copyright(c) 1999 - 2024 Intel Corporation. */
  
- 	if (unlikely(!new))
- 		return ERR_PTR(-ENOMEM);
+ #ifndef _IXGBEVF_DEFINES_H_
+ #define _IXGBEVF_DEFINES_H_
+@@ -16,6 +16,9 @@
+ #define IXGBE_DEV_ID_X550_VF_HV		0x1564
+ #define IXGBE_DEV_ID_X550EM_X_VF_HV	0x15A9
  
-+	new->d_flags |= DCACHE_PAR_LOOKUP;
-+	spin_lock(&parent->d_lock);
-+	new->d_parent = dget_dlock(parent);
-+	hlist_add_head(&new->d_sib, &parent->d_children);
-+	spin_unlock(&parent->d_lock);
++#define IXGBE_DEV_ID_E610_VF		0x57AD
++#define IXGBE_SUBDEV_ID_E610_VF_HV	0x00FF
 +
- retry:
- 	rcu_read_lock();
- 	seq = smp_load_acquire(&parent->d_inode->i_dir_seq);
-@@ -2565,8 +2571,6 @@ retry:
- 		return dentry;
- 	}
- 	rcu_read_unlock();
--	/* we can't take ->d_lock here; it's OK, though. */
--	new->d_flags |= DCACHE_PAR_LOOKUP;
- 	new->d_wait = wq;
- 	hlist_bl_add_head(&new->d_u.d_in_lookup_hash, b);
- 	hlist_bl_unlock(b);
+ #define IXGBE_VF_IRQ_CLEAR_MASK		7
+ #define IXGBE_VF_MAX_TX_QUEUES		8
+ #define IXGBE_VF_MAX_RX_QUEUES		8
+--- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
++++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 1999 - 2018 Intel Corporation. */
++/* Copyright(c) 1999 - 2024 Intel Corporation. */
+ 
+ #ifndef _IXGBEVF_H_
+ #define _IXGBEVF_H_
+@@ -418,6 +418,8 @@ enum ixgbevf_boards {
+ 	board_X550EM_x_vf,
+ 	board_X550EM_x_vf_hv,
+ 	board_x550em_a_vf,
++	board_e610_vf,
++	board_e610_vf_hv,
+ };
+ 
+ enum ixgbevf_xcast_modes {
+@@ -434,11 +436,13 @@ extern const struct ixgbevf_info ixgbevf
+ extern const struct ixgbe_mbx_operations ixgbevf_mbx_ops;
+ extern const struct ixgbe_mbx_operations ixgbevf_mbx_ops_legacy;
+ extern const struct ixgbevf_info ixgbevf_x550em_a_vf_info;
++extern const struct ixgbevf_info ixgbevf_e610_vf_info;
+ 
+ extern const struct ixgbevf_info ixgbevf_82599_vf_hv_info;
+ extern const struct ixgbevf_info ixgbevf_X540_vf_hv_info;
+ extern const struct ixgbevf_info ixgbevf_X550_vf_hv_info;
+ extern const struct ixgbevf_info ixgbevf_X550EM_x_vf_hv_info;
++extern const struct ixgbevf_info ixgbevf_e610_vf_hv_info;
+ extern const struct ixgbe_mbx_operations ixgbevf_hv_mbx_ops;
+ 
+ /* needed by ethtool.c */
+--- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
++++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 1999 - 2018 Intel Corporation. */
++/* Copyright(c) 1999 - 2024 Intel Corporation. */
+ 
+ /******************************************************************************
+  Copyright (c)2006 - 2007 Myricom, Inc. for some LRO specific code
+@@ -39,7 +39,7 @@ static const char ixgbevf_driver_string[
+ 	"Intel(R) 10 Gigabit PCI Express Virtual Function Network Driver";
+ 
+ static char ixgbevf_copyright[] =
+-	"Copyright (c) 2009 - 2018 Intel Corporation.";
++	"Copyright (c) 2009 - 2024 Intel Corporation.";
+ 
+ static const struct ixgbevf_info *ixgbevf_info_tbl[] = {
+ 	[board_82599_vf]	= &ixgbevf_82599_vf_info,
+@@ -51,6 +51,8 @@ static const struct ixgbevf_info *ixgbev
+ 	[board_X550EM_x_vf]	= &ixgbevf_X550EM_x_vf_info,
+ 	[board_X550EM_x_vf_hv]	= &ixgbevf_X550EM_x_vf_hv_info,
+ 	[board_x550em_a_vf]	= &ixgbevf_x550em_a_vf_info,
++	[board_e610_vf]         = &ixgbevf_e610_vf_info,
++	[board_e610_vf_hv]      = &ixgbevf_e610_vf_hv_info,
+ };
+ 
+ /* ixgbevf_pci_tbl - PCI Device ID Table
+@@ -71,6 +73,9 @@ static const struct pci_device_id ixgbev
+ 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_X_VF), board_X550EM_x_vf },
+ 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_X_VF_HV), board_X550EM_x_vf_hv},
+ 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_A_VF), board_x550em_a_vf },
++	{PCI_VDEVICE_SUB(INTEL, IXGBE_DEV_ID_E610_VF, PCI_ANY_ID,
++			 IXGBE_SUBDEV_ID_E610_VF_HV), board_e610_vf_hv},
++	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_E610_VF), board_e610_vf},
+ 	/* required last entry */
+ 	{0, }
+ };
+@@ -4694,6 +4699,9 @@ static int ixgbevf_probe(struct pci_dev
+ 	case ixgbe_mac_X540_vf:
+ 		dev_info(&pdev->dev, "Intel(R) X540 Virtual Function\n");
+ 		break;
++	case ixgbe_mac_e610_vf:
++		dev_info(&pdev->dev, "Intel(R) E610 Virtual Function\n");
++		break;
+ 	case ixgbe_mac_82599_vf:
+ 	default:
+ 		dev_info(&pdev->dev, "Intel(R) 82599 Virtual Function\n");
+--- a/drivers/net/ethernet/intel/ixgbevf/vf.c
++++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 1999 - 2018 Intel Corporation. */
++/* Copyright(c) 1999 - 2024 Intel Corporation. */
+ 
+ #include "vf.h"
+ #include "ixgbevf.h"
+@@ -1076,3 +1076,13 @@ const struct ixgbevf_info ixgbevf_x550em
+ 	.mac = ixgbe_mac_x550em_a_vf,
+ 	.mac_ops = &ixgbevf_mac_ops,
+ };
++
++const struct ixgbevf_info ixgbevf_e610_vf_info = {
++	.mac                    = ixgbe_mac_e610_vf,
++	.mac_ops                = &ixgbevf_mac_ops,
++};
++
++const struct ixgbevf_info ixgbevf_e610_vf_hv_info = {
++	.mac            = ixgbe_mac_e610_vf,
++	.mac_ops        = &ixgbevf_hv_mac_ops,
++};
+--- a/drivers/net/ethernet/intel/ixgbevf/vf.h
++++ b/drivers/net/ethernet/intel/ixgbevf/vf.h
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 1999 - 2018 Intel Corporation. */
++/* Copyright(c) 1999 - 2024 Intel Corporation. */
+ 
+ #ifndef __IXGBE_VF_H__
+ #define __IXGBE_VF_H__
+@@ -54,6 +54,8 @@ enum ixgbe_mac_type {
+ 	ixgbe_mac_X550_vf,
+ 	ixgbe_mac_X550EM_x_vf,
+ 	ixgbe_mac_x550em_a_vf,
++	ixgbe_mac_e610,
++	ixgbe_mac_e610_vf,
+ 	ixgbe_num_macs
+ };
+ 
 
 
 
