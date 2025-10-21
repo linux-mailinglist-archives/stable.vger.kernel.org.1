@@ -1,129 +1,116 @@
-Return-Path: <stable+bounces-188391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CFFBF7E40
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:27:20 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B44FBF7EF9
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5C283358AC9
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:27:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E1A34E9252
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779B434B67A;
-	Tue, 21 Oct 2025 17:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467AC1E8826;
+	Tue, 21 Oct 2025 17:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KHsPEzhv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QtVWNae/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F02355810
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 17:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027932FD685
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 17:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761067528; cv=none; b=UlsrBcL6Kqoc//rF02p2lkobSs0zM/m9bVlHoWEEI0nA/HYuRT9Fyj8YaKCOHbSVV+vBn9LohbgBXF7y7kUncMZOgsyScQpyBVp0ZLvdoScMR/GbKHYejlQ/Dw73/bYVGYZJVqeNLRq14B1xSHdTUByAM1AdDf+VvX+DbX8R2xk=
+	t=1761068521; cv=none; b=hH4sDMGk79hFoMiTbK/WWa+8tSEdO8JqkVhi7L1iReUfxVmL8QRW8u4HljlTDyw5EQuZDe6S/1c3vIWEaAutgQTtsS8Yna5W24ax97h8RSsyVoMIPnveXVSWrBNAVJsm1hFapZdLq77XnNSD8EzPl982VFjQi6UgRPlcMUyarpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761067528; c=relaxed/simple;
-	bh=Ibl9ipy62JVcPBrthO993ocd5vWDT0JLzxK8s7HQuv4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nxtn6d2EyebMQevkw1rCeReiooPFCZoKClgY0BHqThTSJTA3rKgpUHPTaBMvIsSBS2RR36Ny8B35JqpJG6zonpEH5Sup6K1636VM4BXp949+iTW9eYlHvbnuMp/8DY41b6pLnd2+k6/w+o58GNMQJVk/Tc1dHS3DOatOLpXpIs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KHsPEzhv; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-29094f23eedso7961345ad.0
-        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 10:25:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761067524; x=1761672324; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RAf3KsXjFc/zQP1AJm1wtfxbLUgTjyr2ky6pgjmz4cM=;
-        b=KHsPEzhv9PnazcsMOs4hlJE2Vl9HIhNLf8vHqExNLD0kAG1qxJEsv27tm22+J8O8wj
-         RkjkRjC/jDM/qFsoL5b5t362+AobWncAZnCeVwaPk+z6D74+1OfKyHGiG1lLTtCOF+30
-         jkcBWIFuthLXPY770OFpr5VmMA0DTW4cMgsyHD2UmA2HTzWZHoZ89+rLE7PbKC4OiUs6
-         bnlYvxhe42RjZDMGBxVS6aSPaNqB/Q5AJzInEN3O7O2fCdz2GHHptArB/6xxFK6+Y/FE
-         r5r+EpJxRTudLOLlO+RH9mlwbUlm/Pzn+TU0W05YFHE11RqSDAMx2EBogC8hBBn3Lps7
-         9dIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761067524; x=1761672324;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RAf3KsXjFc/zQP1AJm1wtfxbLUgTjyr2ky6pgjmz4cM=;
-        b=JD+JRmB2iw82Elmd8LCkzoBGlNmGJHZCAjkcBm7T7nVjHUE100rtcMUFHCkQ9fSFIZ
-         7YI/zwaBwkjZqQgCfa6V9wBQ24tkZExR7XIu4rhvtGcFRLARGlDGV1wnNcdm4XDy/M/k
-         fFlk8zAAHIAqeRsFRk0pfw6dq1HgnkGPzq8Gr/osByVbMfo3vXvAN6lhjb9EOdoUDg3t
-         HiYNBOX3Sps1UkqFfApkp0+zdectEE8RQzqGs+/3sRJRSu8Dyn/lb0jYe8SP5AuqSGxd
-         Mq18k2dSh61u+ZXwgE9wyjk0yAPFw8wmI1jPlpC3ho6IcepCWlcGZyH3pxOXKxvVNyDD
-         QEEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVNjorCqVQJ0JLBHMMVJgEozNPFYsm3Ptyb+ZKlVXPtBdLu6nSuXiKrhsBuf9H7tU7efTQOlXs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM6W0QQu0WvQPEcfUQJPBGORW5TNetPmIulxBYEo2Jz6/t80Rc
-	mxrBXrdy9djMSc6d5rlwdcO96hIwCDGfh+zaCx2zCRcMgKZ1ZwDdAL+W18Cvys1tj3jj68Bbqg9
-	8eDZ+QUdM91na5DVTHgRrcKsnnZU5GuM=
-X-Gm-Gg: ASbGnctLu/TTGvXBeXhijn1LqulIShRtd0G2B5St1qAlmO/6gDn1yxH6jkXoGTwJTxh
-	WVy2ueWy6z5eb4ZOC6Y3n0QwBAme1HWhiFEFb9kYfBxSxyfST3envZ3cFEYPCasVRsrDrr7Mb41
-	0tX0lCn2oIwgglPeCLSpIcTA88yXlI0ykya/X8eemL3qxvV6XJ4L35TDNBne7zAT2Lqj5g7J2Lk
-	z/Wqm+hE+KI0kIK+UkmREr3dTTxGuJS34KHfWAmavd2wxcI+SzRygfe73SXWjfhCsa9KQWQXBsF
-	z1e64fmms+JiNXkhaPBLNsBLkHvjjmQBMMozzu7rpI2tYgIaBYLsZl2PRQpxd6EQY/U4rnwGTxG
-	gTMtgTMAeIsa/eA==
-X-Google-Smtp-Source: AGHT+IEWfCg0E0bwVttDNG0lql3yRpvV7id4seM/oa5UH+1sTXW5x3SO7M6tk+NNwv6wlch2bqa+yfg2OXtAPVMMHAk=
-X-Received: by 2002:a17:902:dace:b0:267:bd8d:1b6 with SMTP id
- d9443c01a7336-292d3fbc72cmr30865725ad.6.1761067523987; Tue, 21 Oct 2025
- 10:25:23 -0700 (PDT)
+	s=arc-20240116; t=1761068521; c=relaxed/simple;
+	bh=eSMIT92Z/0xLDCTPsBWAbFz8HK8n6dBQZmeus74uqSw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q4FeNsDwKwVM+Vqm0eCpJ7Z/vNdgFjJZJ4E3gqVn9rl9BajGS1YK9emXYug7rKblkuv+C3WtTXrmJnRmt/3MIl+DPydCRU/CvDpFQtkMpi+e6RYY/fMhJEb72nELL5FaL+vvvGTcrSjk5JVpZmlZ+BqPk7w0kyu5MF12SYCOhdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QtVWNae/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC8EC4CEF1;
+	Tue, 21 Oct 2025 17:41:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761068520;
+	bh=eSMIT92Z/0xLDCTPsBWAbFz8HK8n6dBQZmeus74uqSw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QtVWNae/uPiIs+5CQyuh+5s04QNLkP2wKyQ+xFbn4TUiwVQ6jB0tgQvl0xNd1OnLx
+	 xQvYvbCJvRleqVpBxWgHGiQyBb32qgjgfwoOx9YHd/i9/TZ85AAfpnoAXri+cbA1bU
+	 NuRuqq2khEz+1Ymzb56drw0oriMo+hNfO1N3iJk4J7bWp4CtrcJv9p7oDkzCxFBevN
+	 MuTlsEekj8+WeuG4scdwQAV+UGbotdoMPlzJdk8RaRN1OhKyz3CdRewgniM73aOFwt
+	 gxL03bhVew0qwkDq9KZ/+RmuBJ1tBWalKcpAdyWtTIkzBo59SptY9L12QYk+EPmzvc
+	 BTH2inEtwrNjA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Theodore Ts'o <tytso@mit.edu>,
+	Jan Kara <jack@suse.cz>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()
+Date: Tue, 21 Oct 2025 13:41:57 -0400
+Message-ID: <20251021174157.2449192-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101635-unbuckled-masses-9441@gregkh>
+References: <2025101635-unbuckled-masses-9441@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251020020714.2511718-1-ojeda@kernel.org> <20251020105154.GR3419281@noisy.programming.kicks-ass.net>
-In-Reply-To: <20251020105154.GR3419281@noisy.programming.kicks-ass.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 21 Oct 2025 19:25:11 +0200
-X-Gm-Features: AS18NWCYSZSyVH4h_NBns8SoCWBqHms6Y7SdEmcHUYKM5xtVUbbF7ERZLvXjKs4
-Message-ID: <CANiq72n_AnCJYw6R2XecapW9wZqs_Saa4t8BNgrPub2u9=9_xA@mail.gmail.com>
-Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function
-To: Peter Zijlstra <peterz@infradead.org>, Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 21, 2025 at 7:19=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> I'll go stick it in tip/objtool/core; but I gotta ask, where are we with
-> the toolchain support for noreturn?
+From: Theodore Ts'o <tytso@mit.edu>
 
-Thanks Peter!
+[ Upstream commit 8ecb790ea8c3fc69e77bace57f14cf0d7c177bd8 ]
 
-We discussed it with upstream Rust, and they understood the need, so
-we may get something like `--emit=3Dnoreturn` or similar, but it is
-still open (and not too high in the priority list since we can survive
-with this for now and we have other things that we really need them to
-get stabilized etc. But if you feel it should be prioritized more,
-please let me know).
+Unlike other strings in the ext4 superblock, we rely on tune2fs to
+make sure s_mount_opts is NUL terminated.  Harden
+parse_apply_sb_mount_options() by treating s_mount_opts as a potential
+__nonstring.
 
-I have the status under "Export (somehow) a list of all noreturn symbols." =
-at:
+Cc: stable@vger.kernel.org
+Fixes: 8b67f04ab9de ("ext4: Add mount options in superblock")
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Message-ID: <20250916-tune2fs-v2-1-d594dc7486f0@mit.edu>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ applied to ext4_fill_super() instead of parse_apply_sb_mount_options() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/ext4/super.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-    https://github.com/Rust-for-Linux/linux/issues/355
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 3957ff246bff2..453e746ba361a 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -4282,18 +4282,16 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 	}
+ 
+ 	if (sbi->s_es->s_mount_opts[0]) {
+-		char *s_mount_opts = kstrndup(sbi->s_es->s_mount_opts,
+-					      sizeof(sbi->s_es->s_mount_opts),
+-					      GFP_KERNEL);
+-		if (!s_mount_opts)
+-			goto failed_mount;
++		char s_mount_opts[65];
++
++		strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts,
++			    sizeof(s_mount_opts));
+ 		if (!parse_options(s_mount_opts, sb, &journal_devnum,
+ 				   &journal_ioprio, 0)) {
+ 			ext4_msg(sb, KERN_WARNING,
+ 				 "failed to parse options in superblock: %s",
+ 				 s_mount_opts);
+ 		}
+-		kfree(s_mount_opts);
+ 	}
+ 	sbi->s_def_mount_opt = sbi->s_mount_opt;
+ 	if (!parse_options((char *) data, sb, &journal_devnum,
+-- 
+2.51.0
 
-In particular, Gary proposed an alternative during those discussions:
-
-    "Gary proposed reading DWARF instead and wrote a quick Rust script
-for it via object and gimli, though DWARF would need to be available
-or generated on the fly just for that (and we cannot commit a fixed
-list since the kernel config may change and we support several Rust
-versions and so on):
-https://gist.github.com/nbdd0121/449692570622c2f46a29ad9f47c3379a."
-
-Cheers,
-Miguel
 
