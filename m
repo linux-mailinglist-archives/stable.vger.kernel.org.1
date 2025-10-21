@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-188472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E3FBF85D3
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:18 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2D8BF8715
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E66C19C37D9
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1812B4F84CE
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984EC273D9F;
-	Tue, 21 Oct 2025 19:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829D8274B30;
+	Tue, 21 Oct 2025 19:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zstFfbZv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0LiAD7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54943272E7C;
-	Tue, 21 Oct 2025 19:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A86350A2A;
+	Tue, 21 Oct 2025 19:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076515; cv=none; b=BCcjknMMc89NrGWFXfWPi4dM1MclS447yz+JMV3TcCCY/Ox6a1NPgmBLSfI8huybCLwctt7ji6ZDmLBf+7bI5vcwl9Ep0+yHgKN6xnkIj3ZIf+tKTp0LfjQBhTx3EtSG/lp8kCkmkN7JthSQVOdxbLFFT0tyso7yBmgj9olOw1o=
+	t=1761076779; cv=none; b=aTLVW1crT9KnmIG2YUZTeEvDjps1AJjuiu0cfIuY2ag4kow2cgw+b/a45Dxr+j2faVX5e2kWcKSMNFFf7yZ0MJStMU7faPrm3v2j1FNomA1bn3DirN5mBAMOdKwqHNzcz/KvoDyrPhjZBvrrEGzieWzAoHBfb65C9dmsxZGqWn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076515; c=relaxed/simple;
-	bh=0qJ/q5CD8a3mXPcGrOZLu/P93tAVKVdrJsbr4UEfoRg=;
+	s=arc-20240116; t=1761076779; c=relaxed/simple;
+	bh=Aa3aXR6grS6qRQKmM47IkIZ/IgAFyuk0/180uX2yfIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cE8qcJlxTyT9vvyuAbr3OBYePcpLjBu+E4mvXoXSEXuSQcw9xA2bBd4I81o4kuWQBIuodgP9X9FC5K3sw88dA8X8r7VFc8k7EFggwdswnP6vBHh8TO4EpNn/JVKmegQIlQLWKArwcSKty5WU13y+b2+Dwr/6tgxhYI4vNCCiXIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zstFfbZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7570C4CEF5;
-	Tue, 21 Oct 2025 19:55:14 +0000 (UTC)
+	 MIME-Version; b=JRVijFreH/pkigQH+/IdsvtxVvHBbYIqpZ3rsnlZAHAZs1s8lTNiri9D6rYK6fDvbXHC75B3tNl3VnM8ZJtF6RA2nkwi5C/5yC4RwZCSnXBACe2lSUO6i58RHsRWYXte4wkCtcyHWTRTMS55e5onR1xuzB6pCkGJ8BWNRMa7JTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0LiAD7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79441C4CEF1;
+	Tue, 21 Oct 2025 19:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076515;
-	bh=0qJ/q5CD8a3mXPcGrOZLu/P93tAVKVdrJsbr4UEfoRg=;
+	s=korg; t=1761076778;
+	bh=Aa3aXR6grS6qRQKmM47IkIZ/IgAFyuk0/180uX2yfIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zstFfbZv0Xj81difs2GQ9Jh5ltpuie4s5S6zucdT+gV5hCfeQEQ+5EuUMvgF9oIId
-	 hZpPgv2wGPhnXigzS5gfz69tQVMIGNxXztungnVNvMFGLILNdU+cBEaGGRzTMEHRE+
-	 mG/RRFzCCrypK9nSgNZVPn+9yv9eiUUUntkP/44E=
+	b=M0LiAD7wTRJIV2ckMjEGIBJhG90pnQlpnmJR2t0lybDqr2oziPv25/63+waFpesOb
+	 wCgegwsVq7etP8O59btR2rrNDoBK4ax1mnw2h7nFXVWsskIDnhQsSUXjYWZIP/FT3a
+	 Sy3TsgNcMLhpr16flxpDLnYtjtV3KwkIWDGpWxg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugene Korenevsky <ekorenevsky@aliyun.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 013/105] cifs: parse_dfs_referrals: prevent oob on malformed input
+	Inki Dae <inki.dae@samsung.com>,
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 034/136] drm/exynos: exynos7_drm_decon: remove ctx->suspended
 Date: Tue, 21 Oct 2025 21:50:22 +0200
-Message-ID: <20251021195021.805581253@linuxfoundation.org>
+Message-ID: <20251021195036.802937572@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugene Korenevsky <ekorenevsky@aliyun.com>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-commit 6447b0e355562a1ff748c4a2ffb89aae7e84d2c9 upstream.
+[ Upstream commit e1361a4f1be9cb69a662c6d7b5ce218007d6e82b ]
 
-Malicious SMB server can send invalid reply to FSCTL_DFS_GET_REFERRALS
+Condition guards are found to be redundant, as the call flow is properly
+managed now, as also observed in the Exynos5433 DECON driver. Since
+state checking is no longer necessary, remove it.
 
-- reply smaller than sizeof(struct get_dfs_referral_rsp)
-- reply with number of referrals smaller than NumberOfReferrals in the
-header
+This also fixes an issue which prevented decon_commit() from
+decon_atomic_enable() due to an incorrect state change setting.
 
-Processing of such replies will cause oob.
-
-Return -EINVAL error on such replies to prevent oob-s.
-
-Signed-off-by: Eugene Korenevsky <ekorenevsky@aliyun.com>
+Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
 Cc: stable@vger.kernel.org
-Suggested-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Suggested-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/misc.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c |   36 -----------------------------
+ 1 file changed, 36 deletions(-)
 
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -922,6 +922,14 @@ parse_dfs_referrals(struct get_dfs_refer
- 	char *data_end;
- 	struct dfs_referral_level_3 *ref;
+--- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
+@@ -51,7 +51,6 @@ struct decon_context {
+ 	void __iomem			*regs;
+ 	unsigned long			irq_flags;
+ 	bool				i80_if;
+-	bool				suspended;
+ 	wait_queue_head_t		wait_vsync_queue;
+ 	atomic_t			wait_vsync_event;
  
-+	if (rsp_size < sizeof(*rsp)) {
-+		cifs_dbg(VFS | ONCE,
-+			 "%s: header is malformed (size is %u, must be %zu)\n",
-+			 __func__, rsp_size, sizeof(*rsp));
-+		rc = -EINVAL;
-+		goto parse_DFS_referrals_exit;
-+	}
-+
- 	*num_of_nodes = le16_to_cpu(rsp->NumberOfReferrals);
+@@ -105,9 +104,6 @@ static void decon_shadow_protect_win(str
  
- 	if (*num_of_nodes < 1) {
-@@ -930,6 +938,15 @@ parse_dfs_referrals(struct get_dfs_refer
- 		rc = -EINVAL;
- 		goto parse_DFS_referrals_exit;
- 	}
-+
-+	if (sizeof(*rsp) + *num_of_nodes * sizeof(REFERRAL3) > rsp_size) {
-+		cifs_dbg(VFS | ONCE,
-+			 "%s: malformed buffer (size is %u, must be at least %zu)\n",
-+			 __func__, rsp_size,
-+			 sizeof(*rsp) + *num_of_nodes * sizeof(REFERRAL3));
-+		rc = -EINVAL;
-+		goto parse_DFS_referrals_exit;
-+	}
+ static void decon_wait_for_vblank(struct decon_context *ctx)
+ {
+-	if (ctx->suspended)
+-		return;
+-
+ 	atomic_set(&ctx->wait_vsync_event, 1);
  
- 	ref = (struct dfs_referral_level_3 *) &(rsp->referrals);
- 	if (ref->VersionNumber != cpu_to_le16(3)) {
+ 	/*
+@@ -183,9 +179,6 @@ static void decon_commit(struct exynos_d
+ 	struct drm_display_mode *mode = &crtc->base.state->adjusted_mode;
+ 	u32 val, clkdiv;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/* nothing to do if we haven't set the mode yet */
+ 	if (mode->htotal == 0 || mode->vtotal == 0)
+ 		return;
+@@ -247,9 +240,6 @@ static int decon_enable_vblank(struct ex
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return -EPERM;
+-
+ 	if (!test_and_set_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
+ 
+@@ -272,9 +262,6 @@ static void decon_disable_vblank(struct
+ 	struct decon_context *ctx = crtc->ctx;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	if (test_and_clear_bit(0, &ctx->irq_flags)) {
+ 		val = readl(ctx->regs + VIDINTCON0);
+ 
+@@ -376,9 +363,6 @@ static void decon_atomic_begin(struct ex
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, true);
+ }
+@@ -398,9 +382,6 @@ static void decon_update_plane(struct ex
+ 	unsigned int cpp = fb->format->cpp[0];
+ 	unsigned int pitch = fb->pitches[0];
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/*
+ 	 * SHADOWCON/PRTCON register is used for enabling timing.
+ 	 *
+@@ -488,9 +469,6 @@ static void decon_disable_plane(struct e
+ 	unsigned int win = plane->index;
+ 	u32 val;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/* protect windows */
+ 	decon_shadow_protect_win(ctx, win, true);
+ 
+@@ -509,9 +487,6 @@ static void decon_atomic_flush(struct ex
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	for (i = 0; i < WINDOWS_NR; i++)
+ 		decon_shadow_protect_win(ctx, i, false);
+ 	exynos_crtc_handle_event(crtc);
+@@ -539,9 +514,6 @@ static void decon_atomic_enable(struct e
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int ret;
+ 
+-	if (!ctx->suspended)
+-		return;
+-
+ 	ret = pm_runtime_resume_and_get(ctx->dev);
+ 	if (ret < 0) {
+ 		DRM_DEV_ERROR(ctx->dev, "failed to enable DECON device.\n");
+@@ -555,8 +527,6 @@ static void decon_atomic_enable(struct e
+ 		decon_enable_vblank(ctx->crtc);
+ 
+ 	decon_commit(ctx->crtc);
+-
+-	ctx->suspended = false;
+ }
+ 
+ static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
+@@ -564,9 +534,6 @@ static void decon_atomic_disable(struct
+ 	struct decon_context *ctx = crtc->ctx;
+ 	int i;
+ 
+-	if (ctx->suspended)
+-		return;
+-
+ 	/*
+ 	 * We need to make sure that all windows are disabled before we
+ 	 * suspend that connector. Otherwise we might try to scan from
+@@ -576,8 +543,6 @@ static void decon_atomic_disable(struct
+ 		decon_disable_plane(crtc, &ctx->planes[i]);
+ 
+ 	pm_runtime_put_sync(ctx->dev);
+-
+-	ctx->suspended = true;
+ }
+ 
+ static const struct exynos_drm_crtc_ops decon_crtc_ops = {
+@@ -698,7 +663,6 @@ static int decon_probe(struct platform_d
+ 		return -ENOMEM;
+ 
+ 	ctx->dev = dev;
+-	ctx->suspended = true;
+ 
+ 	i80_if_timings = of_get_child_by_name(dev->of_node, "i80-if-timings");
+ 	if (i80_if_timings)
 
 
 
