@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-188590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB64ABF8776
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A22F2BF85BC
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 534C6188F975
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D1FE19C3638
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFFA1E1E04;
-	Tue, 21 Oct 2025 20:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DA027381E;
+	Tue, 21 Oct 2025 19:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSMuSBSU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VELrqZ4r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BDD145A1F;
-	Tue, 21 Oct 2025 20:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D30273D9F;
+	Tue, 21 Oct 2025 19:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076891; cv=none; b=sbb0IKRg2eDE2It+vO8t0RxNA4XOjnkLDJDnhS/1f1BUESMHdwZ/GyC+ShKdzHKt+XQ9JdK6z8WeHOKpZ026QtqopB3bYxZky0WRNBHq5COuwP39MLz5Zim3MilBMhdN48jv9CfnPg90unVgZ633b1jym7Qr4l56srGmV6+QmT0=
+	t=1761076493; cv=none; b=uz3629E7MOvnU1SbmTJ6+xn2wFmSq2bon9HZpw8I17Fyz/O5mvGMpdjkPaklEAVwMtUUPUTWlJGxzQ51TTnLqBeTVrzSDKcbEmfnw6CBDv85d3Tzb01vca1UC8pYHqVUq78vUSbrS+jVLzIF43PPfl7TYtyZxnCOqHGTye/eNpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076891; c=relaxed/simple;
-	bh=9Du5nKseZ0nlPkg53gHpxnx9o6gcchmHqUXkFC7ce48=;
+	s=arc-20240116; t=1761076493; c=relaxed/simple;
+	bh=02QWRn99byKxGzN9Elqa1ia6cmVU7yZTJ7Kt5zujAzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iS3ynbllaIYmjP9isjNkEfXkc1Eel3CVR/PPCqrygWOqldDu8MMPBi81+/6h1X1j+UAU9KeLpa9G5WeNUc5iHAzHQwxPSWiz+PL6jgYcreS8WApkFwQc4/OpXf47AyAhw6P/6i6XQ3wpEXr79Pbg0/u0qlputDshuaumY4E1OSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSMuSBSU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3841C4CEF1;
-	Tue, 21 Oct 2025 20:01:30 +0000 (UTC)
+	 MIME-Version; b=YAQJM/FtTwUb+Fj75wBAjx25bJi2sP9xA5RhWb5943hC9h8F1xp6JwjUuOU7FrVte06w/06tPVr+Q1Bg2QH8qAs8L1tpnVv+i1HY0XF49wN0cCN9/7B/7zHowAki4rKR/XzBAXRpNtALpbkrQxvLo+hiUKMAPBD3pZ5yDLDLyjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VELrqZ4r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FD6C4CEF5;
+	Tue, 21 Oct 2025 19:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076891;
-	bh=9Du5nKseZ0nlPkg53gHpxnx9o6gcchmHqUXkFC7ce48=;
+	s=korg; t=1761076492;
+	bh=02QWRn99byKxGzN9Elqa1ia6cmVU7yZTJ7Kt5zujAzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSMuSBSUbNOYB3ATt1ntSjkRglPGS/6hvP5oFhrbvUnwpjdyO2pgSk2H+Lk0s4wv8
-	 Dqwpt6XCcnPTLE7h3vsV9ainOE5Wiy+OerXKTALHmCipBftg/47IYVmFQV5fEQAxCe
-	 rfg6MoxkcANQ9uIQKdUIhu1zORm1S5WXl67VFVyM=
+	b=VELrqZ4r3hd4T36i2peHhAlP2A37SI+pxGOBSV2cNOVRPX50bYlITYQIREGlnZb6n
+	 13GhBfXz/KDXhWnjAokslS6E9UtACMAZU5S2k3obI7WGUWwvj5D6LQhIPjbyYBF0wF
+	 nQKA2qGMVs4y7cMhdOHohAR8qBaSvibw0CtOxqzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Jann Horn <jannh@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/136] drm/bridge: lt9211: Drop check for last nibble of version register
+Subject: [PATCH 6.6 049/105] tls: dont rely on tx_work during send()
 Date: Tue, 21 Oct 2025 21:50:58 +0200
-Message-ID: <20251021195037.656942401@linuxfoundation.org>
+Message-ID: <20251021195022.845688585@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut@mailbox.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit db74b04edce1bc86b9a5acc724c7ca06f427ab60 ]
+[ Upstream commit 7f846c65ca11e63d2409868ff039081f80e42ae4 ]
 
-There is now a new LT9211 rev. U5, which reports chip ID 0x18 0x01 0xe4 .
-The previous LT9211 reported chip ID 0x18 0x01 0xe3 , which is what the
-driver checks for right now. Since there is a possibility there will be
-yet another revision of the LT9211 in the future, drop the last version
-nibble check to allow all future revisions of the chip to work with this
-driver.
+With async crypto, we rely on tx_work to actually transmit records
+once encryption completes. But while send() is running, both the
+tx_lock and socket lock are held, so tx_work_handler cannot process
+the queue of encrypted records, and simply reschedules itself. During
+a large send(), this could last a long time, and use a lot of memory.
 
-This fix makes LT9211 rev. U5 work with this driver.
+Transmit any pending encrypted records before restarting the main
+loop of tls_sw_sendmsg_locked.
 
-Fixes: 8ce4129e3de4 ("drm/bridge: lt9211: Add Lontium LT9211 bridge driver")
-Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251011110017.12521-1-marek.vasut@mailbox.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/8396631478f70454b44afb98352237d33f48d34d.1760432043.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt9211.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/tls/tls_sw.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt9211.c b/drivers/gpu/drm/bridge/lontium-lt9211.c
-index c8881796fba4c..4014375f06ea1 100644
---- a/drivers/gpu/drm/bridge/lontium-lt9211.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt9211.c
-@@ -120,8 +120,7 @@ static int lt9211_read_chipid(struct lt9211 *ctx)
- 	}
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 6ea557ebab171..410e39e4b79fd 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1152,6 +1152,13 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 				} else if (ret != -EAGAIN)
+ 					goto send_end;
+ 			}
++
++			/* Transmit if any encryptions have completed */
++			if (test_and_clear_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask)) {
++				cancel_delayed_work(&ctx->tx_work.work);
++				tls_tx_records(sk, msg->msg_flags);
++			}
++
+ 			continue;
+ rollback_iter:
+ 			copied -= try_to_copy;
+@@ -1207,6 +1214,12 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 					goto send_end;
+ 				}
+ 			}
++
++			/* Transmit if any encryptions have completed */
++			if (test_and_clear_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask)) {
++				cancel_delayed_work(&ctx->tx_work.work);
++				tls_tx_records(sk, msg->msg_flags);
++			}
+ 		}
  
- 	/* Test for known Chip ID. */
--	if (chipid[0] != REG_CHIPID0_VALUE || chipid[1] != REG_CHIPID1_VALUE ||
--	    chipid[2] != REG_CHIPID2_VALUE) {
-+	if (chipid[0] != REG_CHIPID0_VALUE || chipid[1] != REG_CHIPID1_VALUE) {
- 		dev_err(ctx->dev, "Unknown Chip ID: 0x%02x 0x%02x 0x%02x\n",
- 			chipid[0], chipid[1], chipid[2]);
- 		return -EINVAL;
+ 		continue;
 -- 
 2.51.0
 
