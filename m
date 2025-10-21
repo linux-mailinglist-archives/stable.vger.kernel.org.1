@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-188455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0955ABF8592
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3E8BF8791
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A8FCD356946
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CB313ACD5C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF082741A6;
-	Tue, 21 Oct 2025 19:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB97145A1F;
+	Tue, 21 Oct 2025 20:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcDT6rPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXdWLTDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0261A2737E7;
-	Tue, 21 Oct 2025 19:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE7A350A07;
+	Tue, 21 Oct 2025 20:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076460; cv=none; b=fSyf/Cm5/PIgiHGyOMZ6qraPTlp4FfRQQu8XiOzuKJi7XxVqmTLfKf3EIQnVS+CDK6QTzpEgeZciMiMCxD5N6ZgbIYkoiBRbVyhzNJL8dvFGb/ZPTs2Ch9LgRMGHxePIJIwedBUK0NZvjMzhXfO8C3+sYLzgmOTnNdbzXujAkyo=
+	t=1761076861; cv=none; b=N3jTyTT60kmzSLSxNJJWgNvkgFPit7fDTOvdhIeLk9e0r+c7v8lju6mtXaqvCH4otkzf1v1epcLcprVYLia8lkgMEvaOl13U2AY8wIYov5Qf3I6getyrHX7JLVk4+RasDetu6pLL7gwZ/WEEj4UuWtW6jFfKPfIcxPZQHnAeIhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076460; c=relaxed/simple;
-	bh=j2hbJi1zrNuUojDZKxPlxKfuUOiyst0qBHfmehSpWew=;
+	s=arc-20240116; t=1761076861; c=relaxed/simple;
+	bh=3/KOt74qayBq2ioE/1Enlk16UEQuUSk32hWDUOW+8AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oRQrHhgMATLYTJWnX/17GtjfwD3RoIHroB1xTIjb4bc+GgvGeGK/7Ri+8HhHDifrXPfpq0FgAcPihUgZHYXtMP7AvaMpGW57ErS3w0QVlGUfCBnL5dWFmw2oRZklGRkLU6hqFroLDgB84golrcKcS9A9e8XBFziRPKPwZDGn0RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcDT6rPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875D2C4CEF1;
-	Tue, 21 Oct 2025 19:54:19 +0000 (UTC)
+	 MIME-Version; b=VQvs31wi1UmXf3vjSmJMjyJGXoLjyQlZ9jQ+/BR5mInBzOYARAl74+6ngbyIo9S98jfnm7uHfw9tymozG9XtnrLXpaWJKT0h9r1QeJHz8wqVPsN/Yov39xylgn+6WpbJgkoqnUIxZF6tlIGU6RaduYe3Mg/hMIGEWeVBSErLeHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXdWLTDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F847C4CEF1;
+	Tue, 21 Oct 2025 20:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076459;
-	bh=j2hbJi1zrNuUojDZKxPlxKfuUOiyst0qBHfmehSpWew=;
+	s=korg; t=1761076859;
+	bh=3/KOt74qayBq2ioE/1Enlk16UEQuUSk32hWDUOW+8AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcDT6rPOGtVQMFPLfUlnnLXDzF/RctcVsBnJ+SrxJhkieUtWPVc42Nfillu5zXw1X
-	 PYKMSf56rxs2QwlQ82tCsEe7+5Q0YLJAuN6mfjvm/4eAwOK6e3x1sQ/1ByVjpk5jEH
-	 x5P7jRCVXkBvZwFRRO9lS4S4OOUCPf31Bs28c1gY=
+	b=MXdWLTDhNqSvjbKhbowLze6iu0YAsyrZyO2tihjAg0aq3nM4Ay6Lrjx7Uf4MDC4mX
+	 TudprOwuuA95ihqKJiMQdRg1Ll/PzHH4hBJpUklojnIsy0+T2XevxU4hjzXGPYwHbU
+	 uMXdLJWzy4u76ljFma2nmXfFzvKzU+eGaretAVtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Francesco Ruggeri <fruggeri05@gmail.com>,
-	Dmitry Safonov <dima@arista.com>,
+	Jann Horn <jannh@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/105] net/ip6_tunnel: Prevent perpetual tunnel growth
+Subject: [PATCH 6.12 061/136] tls: always set record_type in tls_process_cmsg
 Date: Tue, 21 Oct 2025 21:50:49 +0200
-Message-ID: <20251021195022.642042458@linuxfoundation.org>
+Message-ID: <20251021195037.444792252@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Safonov <dima@arista.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 21f4d45eba0b2dcae5dbc9e5e0ad08735c993f16 ]
+[ Upstream commit b6fe4c29bb51cf239ecf48eacf72b924565cb619 ]
 
-Similarly to ipv4 tunnel, ipv6 version updates dev->needed_headroom, too.
-While ipv4 tunnel headroom adjustment growth was limited in
-commit 5ae1e9922bbd ("net: ip_tunnel: prevent perpetual headroom growth"),
-ipv6 tunnel yet increases the headroom without any ceiling.
+When userspace wants to send a non-DATA record (via the
+TLS_SET_RECORD_TYPE cmsg), we need to send any pending data from a
+previous MSG_MORE send() as a separate DATA record. If that DATA record
+is encrypted asynchronously, tls_handle_open_record will return
+-EINPROGRESS. This is currently treated as an error by
+tls_process_cmsg, and it will skip setting record_type to the correct
+value, but the caller (tls_sw_sendmsg_locked) handles that return
+value correctly and proceeds with sending the new message with an
+incorrect record_type (DATA instead of whatever was requested in the
+cmsg).
 
-Reflect ipv4 tunnel headroom adjustment limit on ipv6 version.
+Always set record_type before handling the open record. If
+tls_handle_open_record returns an error, record_type will be
+ignored. If it succeeds, whether with synchronous crypto (returning 0)
+or asynchronous (returning -EINPROGRESS), the caller will proceed
+correctly.
 
-Credits to Francesco Ruggeri, who was originally debugging this issue
-and wrote local Arista-specific patch and a reproducer.
-
-Fixes: 8eb30be0352d ("ipv6: Create ip6_tnl_xmit")
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Francesco Ruggeri <fruggeri05@gmail.com>
-Signed-off-by: Dmitry Safonov <dima@arista.com>
-Link: https://patch.msgid.link/20251009-ip6_tunnel-headroom-v2-1-8e4dbd8f7e35@arista.com
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/0457252e578a10a94e40c72ba6288b3a64f31662.1760432043.git.sd@queasysnail.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_tunnels.h | 15 +++++++++++++++
- net/ipv4/ip_tunnel.c     | 14 --------------
- net/ipv6/ip6_tunnel.c    |  3 +--
- 3 files changed, 16 insertions(+), 16 deletions(-)
+ net/tls/tls_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 006a61ddd36fa..3d36794cb1899 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -489,6 +489,21 @@ struct metadata_dst *iptunnel_metadata_reply(struct metadata_dst *md,
- int skb_tunnel_check_pmtu(struct sk_buff *skb, struct dst_entry *encap_dst,
- 			  int headroom, bool reply);
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index 0acf313deb01f..e52e4c91c9091 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -255,12 +255,9 @@ int tls_process_cmsg(struct sock *sk, struct msghdr *msg,
+ 			if (msg->msg_flags & MSG_MORE)
+ 				return -EINVAL;
  
-+static inline void ip_tunnel_adj_headroom(struct net_device *dev,
-+					  unsigned int headroom)
-+{
-+	/* we must cap headroom to some upperlimit, else pskb_expand_head
-+	 * will overflow header offsets in skb_headers_offset_update().
-+	 */
-+	const unsigned int max_allowed = 512;
-+
-+	if (headroom > max_allowed)
-+		headroom = max_allowed;
-+
-+	if (headroom > READ_ONCE(dev->needed_headroom))
-+		WRITE_ONCE(dev->needed_headroom, headroom);
-+}
-+
- int iptunnel_handle_offloads(struct sk_buff *skb, int gso_type_mask);
- 
- static inline int iptunnel_pull_offloads(struct sk_buff *skb)
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index b5d64cd3ab0a2..090403c8cc6c3 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -567,20 +567,6 @@ static int tnl_update_pmtu(struct net_device *dev, struct sk_buff *skb,
- 	return 0;
- }
- 
--static void ip_tunnel_adj_headroom(struct net_device *dev, unsigned int headroom)
--{
--	/* we must cap headroom to some upperlimit, else pskb_expand_head
--	 * will overflow header offsets in skb_headers_offset_update().
--	 */
--	static const unsigned int max_allowed = 512;
+-			rc = tls_handle_open_record(sk, msg->msg_flags);
+-			if (rc)
+-				return rc;
 -
--	if (headroom > max_allowed)
--		headroom = max_allowed;
--
--	if (headroom > READ_ONCE(dev->needed_headroom))
--		WRITE_ONCE(dev->needed_headroom, headroom);
--}
--
- void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 		       u8 proto, int tunnel_hlen)
- {
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index d645d022ce774..e635ddd41aba6 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1255,8 +1255,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 	 */
- 	max_headroom = LL_RESERVED_SPACE(dst->dev) + sizeof(struct ipv6hdr)
- 			+ dst->header_len + t->hlen;
--	if (max_headroom > READ_ONCE(dev->needed_headroom))
--		WRITE_ONCE(dev->needed_headroom, max_headroom);
-+	ip_tunnel_adj_headroom(dev, max_headroom);
- 
- 	err = ip6_tnl_encap(skb, t, &proto, fl6);
- 	if (err)
+ 			*record_type = *(unsigned char *)CMSG_DATA(cmsg);
+-			rc = 0;
++
++			rc = tls_handle_open_record(sk, msg->msg_flags);
+ 			break;
+ 		default:
+ 			return -EINVAL;
 -- 
 2.51.0
 
