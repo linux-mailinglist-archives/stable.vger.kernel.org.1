@@ -1,116 +1,81 @@
-Return-Path: <stable+bounces-188372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BC2BF793D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 18:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B22BF7973
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 18:09:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 052721882FD8
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:06:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A10419C3254
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F236E3451DA;
-	Tue, 21 Oct 2025 16:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70429345CAE;
+	Tue, 21 Oct 2025 16:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMmhLyCq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIBUXKD6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF6F3451AD;
-	Tue, 21 Oct 2025 16:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A957345738;
+	Tue, 21 Oct 2025 16:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761062775; cv=none; b=iiT1WKkRZvw05WqF4EcPNyCxOsyLe03FFrU9RGi41pkY4txixSJEljtgmxAlHyQoMIEez4wG/JUq/5OQIDEoCq6muxdAm5MsQWgDyz41xO9YpQx6+AaEK0muC88i2ez5sRIKRb6th3Woc9ApjaK551UQJStHBnULEls4KwvD7q8=
+	t=1761062857; cv=none; b=O47TuqUO5Ca2b//cVcZNWdm8pTED0aBMxT9qZ/4pZGnY9qpQg9sHEoVdBS2FE60KGsOBiS4jfeENzrZVylw6ZVJkLyNt6ZwvHMFfbtvCwEqvA0kR2JEUL27jPMRwrWMGLo6zkoWXBVE3vhPl/gVYNMJ06LvLZVY1Q11lIRjssnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761062775; c=relaxed/simple;
-	bh=qYlGn7W1xsBMVOnKfhoZVoNO+LBcUe/Za6r0RNX+fZw=;
+	s=arc-20240116; t=1761062857; c=relaxed/simple;
+	bh=sRsqZ9Gxkv0xzgUAZLXIFfIxGhtDC8Iiu6B79hHd/N8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QqI7XWx2iDK+zrtO1cc6Ep52/IjAGgZaNeO6kxODK2sXlU4haugTqgPZZVlzYYY63S/GU27qpI7dD6sOP6BMRk6ki7slm7mbhWFW71br0iFYwJat0imkAceTiQv6WV3jLB0ugAA0ul6DHZtgn+d/RuCCiT8rDl/svH2ogkZHUUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMmhLyCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5032C4CEF1;
-	Tue, 21 Oct 2025 16:06:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ExYLw7pzxvIXohzkcgXf23KkYBt5+rCOvtaR0qemBQ/fdm910rRDMk9RO4sbIH+bOPhbbIq+gVmMIwxCtaeUGtSDGa4ZzfkiJz3TACEqJNjWJnoPDk9s4cVT4Y6cT+DLtiCU4BhSfvzhxa7GatIhPgJ9tD6RIsMI0mfyNJe1rWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIBUXKD6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F185C4CEF5;
+	Tue, 21 Oct 2025 16:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761062774;
-	bh=qYlGn7W1xsBMVOnKfhoZVoNO+LBcUe/Za6r0RNX+fZw=;
+	s=korg; t=1761062856;
+	bh=sRsqZ9Gxkv0xzgUAZLXIFfIxGhtDC8Iiu6B79hHd/N8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WMmhLyCq5nHPFAmMrY5p/3bBqV+VZaKAVyPQ0jSd9rHnLBzEuNpp5Bh98chqZ8j8Y
-	 xnuzfU8fhn9Asyt9lcDfhmpDoKEX3TkJaYOUthxmqfjAMRIG0/hMkOYA93QR1Fqftl
-	 k6KKdB/Go0bf/GntlEbBXjP4Uk0EDSjy5y2VZZic=
-Date: Tue, 21 Oct 2025 18:06:11 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Alan Stern <stern@rowland.harvard.edu>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	andrey.konovalov@linux.dev
-Subject: Re: [PATCH] usb: raw-gadget: do not limit transfer length
-Message-ID: <2025102151-footpath-entomb-76da@gregkh>
-References: <a6024e8eab679043e9b8a5defdb41c4bda62f02b.1757016152.git.andreyknvl@gmail.com>
- <CA+fCnZdG+X48_W_bSKYpziKohjp1QVgDzUzfYK_KOk42j58_ZA@mail.gmail.com>
- <CA+fCnZdHJtHgZuD9tiDGD8svXTEdP=GK8HSo71y_UfKgZcaUxg@mail.gmail.com>
+	b=YIBUXKD63bcbJDQ9+9LFUbnmgEGeDJeG5nbDp6PZw31IGYC+7rt70qqLzSymRSRrr
+	 kK467ooETQSJQ32A70df3enrfkdILUOI1UIvnzrJE0tLD6Ad8A9S/kK+etUIbfecI4
+	 tLupwvAzxkuGrrY7QgtaT7WymfCpP2ML58kwpE2k=
+Date: Tue, 21 Oct 2025 18:07:33 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+	Nathan Chancellor <nathan@kernel.org>, masahiroy@kernel.org
+Subject: Re: [REGRESSION] Secureboot violation for linux enrolled by-hash
+ into db v6.17.4 and v6.18-rc1
+Message-ID: <2025102104-battery-battering-038e@gregkh>
+References: <CANBHLUjPbXYghPx5zDwLDcGKXb7v7+1u-bpZ=L9r=qW7vDZ=cg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+fCnZdHJtHgZuD9tiDGD8svXTEdP=GK8HSo71y_UfKgZcaUxg@mail.gmail.com>
+In-Reply-To: <CANBHLUjPbXYghPx5zDwLDcGKXb7v7+1u-bpZ=L9r=qW7vDZ=cg@mail.gmail.com>
 
-On Tue, Oct 21, 2025 at 04:19:13PM +0200, Andrey Konovalov wrote:
-> On Tue, Oct 21, 2025 at 4:18 PM Andrey Konovalov <andreyknvl@gmail.com> wrote:
-> >
-> > On Thu, Sep 4, 2025 at 10:08 PM <andrey.konovalov@linux.dev> wrote:
-> > >
-> > > From: Andrey Konovalov <andreyknvl@gmail.com>
-> > >
-> > > Drop the check on the maximum transfer length in Raw Gadget for both
-> > > control and non-control transfers.
-> > >
-> > > Limiting the transfer length causes a problem with emulating USB devices
-> > > whose full configuration descriptor exceeds PAGE_SIZE in length.
-> > >
-> > > Overall, there does not appear to be any reason to enforce any kind of
-> > > transfer length limit on the Raw Gadget side for either control or
-> > > non-control transfers, so let's just drop the related check.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
-> > > Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-> > > ---
-> > >  drivers/usb/gadget/legacy/raw_gadget.c | 2 --
-> > >  1 file changed, 2 deletions(-)
-> > >
-> > > diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
-> > > index 20165e1582d9..b71680c58de6 100644
-> > > --- a/drivers/usb/gadget/legacy/raw_gadget.c
-> > > +++ b/drivers/usb/gadget/legacy/raw_gadget.c
-> > > @@ -667,8 +667,6 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
-> > >                 return ERR_PTR(-EINVAL);
-> > >         if (!usb_raw_io_flags_valid(io->flags))
-> > >                 return ERR_PTR(-EINVAL);
-> > > -       if (io->length > PAGE_SIZE)
-> > > -               return ERR_PTR(-EINVAL);
-> > >         if (get_from_user)
-> > >                 data = memdup_user(ptr + sizeof(*io), io->length);
-> > >         else {
-> > > --
-> > > 2.43.0
-> > >
-> >
-> > Hi Greg,
-> >
-> > Could you pick up this patch?
-> >
-> > Thank you!
+On Tue, Oct 21, 2025 at 03:00:56PM +0100, Dimitri John Ledkov wrote:
+> If one enrolls linux kernel by-hash into db (for example using
+> virt-fw-vars), the secureboot fails with security violation as EDK2
+> computation of authenticode for the linux binary doesn't match the
+> enrolled hash.
 > 
-> (Greg to To:)
+> This is reproducible in AWS VMs, as well as locally with EDK2 builds
+> with secureboot.
+> 
+> Not affected v6.17
+> Not affected v6.17.3
+> Affected v6.17.4
+> Affected v6.18-rc1
+> Affected v6.18-rc2
 
-Can you send it to the proper list again?  I didn't see it on the
-linux-usb list as it was never sent there :(
+great, we are bug compatible :)
+
+Once this is fixed in Linus's tree, we will be glad to take the fix into
+the stable branch.
 
 thanks,
 
