@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-188528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3701CBF86A9
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:58:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 314F8BF86E5
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D58CC352E85
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:58:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE013580507
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B03E274B44;
-	Tue, 21 Oct 2025 19:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD94274B2E;
+	Tue, 21 Oct 2025 19:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/PmiyuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3/1uUI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1CE350A2A;
-	Tue, 21 Oct 2025 19:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6D2246798;
+	Tue, 21 Oct 2025 19:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076694; cv=none; b=jDUTyA1cn15PiYtFB3ZblcDzSOVq76vH0dJT4IcQBPzz5ObIGowpLrUBlqypLflXFZdmxP1kPrjmKqnWexU7f4SLkqWpdJ19Ilk043GHKodnYquSinXcSykT6fuakPPKqEU5SJgfhjtvZ9G0ikZI3uk0OSzoCCoQ2AMAYzJUbaQ=
+	t=1761076730; cv=none; b=IMMel1+npeTHi6J+hshARDRMslOwlsOXBlvzqAbml7WeRSbr53y5OpfSVzI6ebCk4CgRDRBD28mylyO5Y88ZJPydYkJSCu1Wp6XfWRIibVLlJ24LZKr1WvThdOKh3UHterSFfy2JqfjQ3LwERP98we1WkuQHK8A7EBVhkdY+7Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076694; c=relaxed/simple;
-	bh=wFVLpyKImQbsGKPiM2Bjiu1EXngTC4M3/lGBlg+EUdM=;
+	s=arc-20240116; t=1761076730; c=relaxed/simple;
+	bh=z8WVqxBFbgDsHuNLgM1FHAPfqSB61aw9dmomFUgLXqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IfwT2qLm26wrCQFEDSr2fNXv5i0yC9Fd5wiycXsLt9EKT73EMBT0ZdUAqkLa3swqDIMpBJK7W6udlLeqR0zCZUEaqRPgJLFzBpg/ucDTGe8DQ1lS6SLSRSiZJGpvktN9UDFUSweV4psGPozmAjrNroN/1ihus25/2FlCDHKobIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/PmiyuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200CFC4CEF1;
-	Tue, 21 Oct 2025 19:58:11 +0000 (UTC)
+	 MIME-Version; b=eVxqIabmCgCw4ULLDX6hMRyFg2/6h+lXZcl6vYn5GMx9kLkkr1DSNcE0ITOMrS183atfn8mzDsE8YJVPJdNrpjm1nmOmA0TlwzOVWH5tdcIm9vrkzZvycqyazDaEpsk2NYDHEu9Uc5CuFEWrIKTFA6/c3/plYFHkxN+ouJXSeCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3/1uUI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5023C4CEF1;
+	Tue, 21 Oct 2025 19:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076692;
-	bh=wFVLpyKImQbsGKPiM2Bjiu1EXngTC4M3/lGBlg+EUdM=;
+	s=korg; t=1761076728;
+	bh=z8WVqxBFbgDsHuNLgM1FHAPfqSB61aw9dmomFUgLXqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/PmiyuJbLA51xWt+4+YhExMryo/3vox2FoJfqVG1nJ6YpTebY6nN/1DO+qUZEye9
-	 JCpWybPbcsPJZDmKOdZNGZkrfEdsz0PRVm2dTEPajq3mLLqSqDcffa118VOqN3K7Pi
-	 3LHU1dxWsGZk8UterROg66cYrU54kjHcWpUeSHWw=
+	b=f3/1uUI9zu1rK1mYdBVPJJcCrn78vxavAe7/Dfjfbr5S5Ymfgi4rqLDKFnhLNSRlR
+	 kAwne4qCNhMlmfRC9bU40AEv6qAKlGRndrba5T1RptUoawfrKUkLuahWyvNNsEtb3C
+	 XP/qTuGf0DVSIK+6N6vKnSWnO+xZxAa5Fwq8hfFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.12 001/136] drm/xe/guc: Check GuC running state before deregistering exec queue
-Date: Tue, 21 Oct 2025 21:49:49 +0200
-Message-ID: <20251021195035.992460476@linuxfoundation.org>
+	Conor Dooley <conor.dooley@microchip.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Paul Walmsley <pjw@kernel.org>
+Subject: [PATCH 6.12 002/136] rust: cfi: only 64-bit arm and x86 support CFI_CLANG
+Date: Tue, 21 Oct 2025 21:49:50 +0200
+Message-ID: <20251021195036.014512641@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
 References: <20251021195035.953989698@linuxfoundation.org>
@@ -66,77 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-commit 9f64b3cd051b825de0a2a9f145c8e003200cedd5 upstream.
+commit 812258ff4166bcd41c7d44707e0591f9ae32ac8c upstream.
 
-In normal operation, a registered exec queue is disabled and
-deregistered through the GuC, and freed only after the GuC confirms
-completion. However, if the driver is forced to unbind while the exec
-queue is still running, the user may call exec_destroy() after the GuC
-has already been stopped and CT communication disabled.
+The kernel uses the standard rustc targets for non-x86 targets, and out
+of those only 64-bit arm's target has kcfi support enabled. For x86, the
+custom 64-bit target enables kcfi.
 
-In this case, the driver cannot receive a response from the GuC,
-preventing proper cleanup of exec queue resources. Fix this by directly
-releasing the resources when GuC is not running.
+The HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC config option that allows
+CFI_CLANG to be used in combination with RUST does not check whether the
+rustc target supports kcfi. This breaks the build on riscv (and
+presumably 32-bit arm) when CFI_CLANG and RUST are enabled at the same
+time.
 
-Here is the failure dmesg log:
-"
-[  468.089581] ---[ end trace 0000000000000000 ]---
-[  468.089608] pci 0000:03:00.0: [drm] *ERROR* GT0: GUC ID manager unclean (1/65535)
-[  468.090558] pci 0000:03:00.0: [drm] GT0:     total 65535
-[  468.090562] pci 0000:03:00.0: [drm] GT0:     used 1
-[  468.090564] pci 0000:03:00.0: [drm] GT0:     range 1..1 (1)
-[  468.092716] ------------[ cut here ]------------
-[  468.092719] WARNING: CPU: 14 PID: 4775 at drivers/gpu/drm/xe/xe_ttm_vram_mgr.c:298 ttm_vram_mgr_fini+0xf8/0x130 [xe]
-"
+Ordinarily, a rustc-option check would be used to detect target support
+but unfortunately rustc-option filters out the target for reasons given
+in commit 46e24a545cdb4 ("rust: kasan/kbuild: fix missing flags on first
+build"). As a result, if the host supports kcfi but the target does not,
+e.g. when building for riscv on x86_64, the build would remain broken.
 
-v2: use xe_uc_fw_is_running() instead of xe_guc_ct_enabled().
-    As CT may go down and come back during VF migration.
+Instead, make HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC depend on the only
+two architectures where the target used supports it to fix the build.
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Cc: stable@vger.kernel.org
-Cc: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20251010172529.2967639-2-shuicheng.lin@intel.com
-(cherry picked from commit 9b42321a02c50a12b2beb6ae9469606257fbecea)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+CC: stable@vger.kernel.org
+Fixes: ca627e636551e ("rust: cfi: add support for CFI_CLANG with Rust")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20250908-distill-lint-1ae78bcf777c@spud
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -41,6 +41,7 @@
- #include "xe_ring_ops_types.h"
- #include "xe_sched_job.h"
- #include "xe_trace.h"
-+#include "xe_uc_fw.h"
- #include "xe_vm.h"
- 
- static struct xe_guc *
-@@ -1285,7 +1286,17 @@ static void __guc_exec_queue_process_msg
- 	xe_assert(xe, !(q->flags & EXEC_QUEUE_FLAG_PERMANENT));
- 	trace_xe_exec_queue_cleanup_entity(q);
- 
--	if (exec_queue_registered(q))
-+	/*
-+	 * Expected state transitions for cleanup:
-+	 * - If the exec queue is registered and GuC firmware is running, we must first
-+	 *   disable scheduling and deregister the queue to ensure proper teardown and
-+	 *   resource release in the GuC, then destroy the exec queue on driver side.
-+	 * - If the GuC is already stopped (e.g., during driver unload or GPU reset),
-+	 *   we cannot expect a response for the deregister request. In this case,
-+	 *   it is safe to directly destroy the exec queue on driver side, as the GuC
-+	 *   will not process further requests and all resources must be cleaned up locally.
-+	 */
-+	if (exec_queue_registered(q) && xe_uc_fw_is_running(&guc->fw))
- 		disable_scheduling_deregister(guc, q);
- 	else
- 		__guc_exec_queue_fini(guc, q);
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -861,6 +861,7 @@ config HAVE_CFI_ICALL_NORMALIZE_INTEGERS
+ 	def_bool y
+ 	depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
+ 	depends on RUSTC_VERSION >= 107900
++	depends on ARM64 || X86_64
+ 	# With GCOV/KASAN we need this fix: https://github.com/rust-lang/rust/pull/129373
+ 	depends on (RUSTC_LLVM_VERSION >= 190103 && RUSTC_VERSION >= 108200) || \
+ 		(!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
 
 
 
