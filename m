@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-188459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF37BF85A4
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEBEBF87A9
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 89E1B356B9E
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7495D3B511C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAAB2741A6;
-	Tue, 21 Oct 2025 19:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216991E1E04;
+	Tue, 21 Oct 2025 20:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWUdfQlQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z//i3J8s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0824B27381E;
-	Tue, 21 Oct 2025 19:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EDF350A29;
+	Tue, 21 Oct 2025 20:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076473; cv=none; b=QokSvITkLLaMKyUJ7h+sRrar310NVOgxspniYI+bFdjfi0UQdvQoYYhYVnK9D1MLjadbWuOAlUHRyMMHCFkff5lOSYC7kRqZBQKUyhxo3grNq6jKQfVs/clggBUzIdHmqyGH3sRwFq/CkMbAX5jbS8Ay5rX4FX0x4CKizPjrnLw=
+	t=1761076878; cv=none; b=aD+i0JfZ/HSXkzQ8E+7m9sDQw+b6iwOg4CGhx24xJkP6qCb3dcC6juQfIl2gJ+RYlCONAg+bMdPZPX4InwS4qNM7rHWLbyPHfOzhgEj4j5M6WTrAqlpcS1y4Hi6dVAlbrCdgkytcY56WbfaoStVgcGSIXlT7oltkymATV0WZSHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076473; c=relaxed/simple;
-	bh=zItiAPnLFn2D/8sJ78U9kIef9t3LU6apDza5EykgEKM=;
+	s=arc-20240116; t=1761076878; c=relaxed/simple;
+	bh=vOnqNBN0yx0GX2SQVP52xm5w0jITkrm8SBbpzztAFsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FY3MeBmT4KPW1faATl9goqOtLuGSrinKL0SKewC+uhGG0ICPUBmGoHb19t0FqRBJAnmhVxnjdm2OSmnWWAuIuiEFM9mq5Jn/GwmDgS5I9p03iXmNn8+q8JPgCc/4FL8/Fr5Vn7no8PNplb1sq1LopYulQWw19ydNDmMrfPkb1KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWUdfQlQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1A0C4CEF1;
-	Tue, 21 Oct 2025 19:54:32 +0000 (UTC)
+	 MIME-Version; b=VhRb58+rfB5k5i06Y6qOhnz/D+EelhZAlO3M1kTvW1LixqStVssuwHiKCYzhsGtBXKty7bNf3iyk+U5kHaqBFbnP1sHyuojA6ABJC+Qh6FTbnSfOwbgK5TtyxjlwTk5IvqSr6O2+0yjSGLcDxFn/ywL/yEgEClxOUbHupCj5J80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z//i3J8s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E0C5C4CEF1;
+	Tue, 21 Oct 2025 20:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076472;
-	bh=zItiAPnLFn2D/8sJ78U9kIef9t3LU6apDza5EykgEKM=;
+	s=korg; t=1761076878;
+	bh=vOnqNBN0yx0GX2SQVP52xm5w0jITkrm8SBbpzztAFsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWUdfQlQ9vAQKXVUXQRuq1k6Fhro57lW5pbAQd4HLVpRcstiVKh9U5K23GzKRMngn
-	 xS9rcgPrpWYeLfGlsFu7simSTPykEV2CPRpgJdKuTpxFPUJEvvVQwftBC9fPY/QYWi
-	 BPvFB2GMj6h4YKxHhqKHr3lztjN+imxhbKnqyqbI=
+	b=Z//i3J8scjfL/RHCtgv3cIm66KXMHsRAwAQDQEtLgBBFn44BJY5YTWjJE6TbqIvML
+	 fLP6s5UUVTgLxwM5GNsVhKAZ5e4OCuvIzrSiRGlNUUatdzJh1H03c1YxzwsA1Lhx69
+	 tbGbm+vMVSyTGmaedQxvOFPFPvFPE2nZonnAr26Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
+	I Viswanath <viswanathiyyappan@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Khalid Aziz <khalid@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/105] tls: trim encrypted message to match the plaintext on short splice
-Date: Tue, 21 Oct 2025 21:50:53 +0200
-Message-ID: <20251021195022.733476682@linuxfoundation.org>
+Subject: [PATCH 6.12 066/136] net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset
+Date: Tue, 21 Oct 2025 21:50:54 +0200
+Message-ID: <20251021195037.562091130@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: I Viswanath <viswanathiyyappan@gmail.com>
 
-[ Upstream commit ce5af41e3234425a40974696682163edfd21128c ]
+[ Upstream commit 8d93ff40d49d70e05c82a74beae31f883fe0eaf8 ]
 
-During tls_sw_sendmsg_locked, we pre-allocate the encrypted message
-for the size we're expecting to send during the current iteration, but
-we may end up sending less, for example when splicing: if we're
-getting the data from small fragments of memory, we may fill up all
-the slots in the skmsg with less data than expected.
+dev->chipid is used in lan78xx_init_mac_address before it's initialized:
 
-In this case, we need to trim the encrypted message to only the length
-we actually need, to avoid pushing uninitialized bytes down the
-underlying TCP socket.
+lan78xx_reset() {
+    lan78xx_init_mac_address()
+        lan78xx_read_eeprom()
+            lan78xx_read_raw_eeprom() <- dev->chipid is used here
 
-Fixes: fe1e81d4f73b ("tls/sw: Support MSG_SPLICE_PAGES")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/66a0ae99c9efc15f88e9e56c1f58f902f442ce86.1760432043.git.sd@queasysnail.net
+    dev->chipid = ... <- dev->chipid is initialized correctly here
+}
+
+Reorder initialization so that dev->chipid is set before calling
+lan78xx_init_mac_address().
+
+Fixes: a0db7d10b76e ("lan78xx: Add to handle mux control per chip id")
+Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Khalid Aziz <khalid@kernel.org>
+Link: https://patch.msgid.link/20251013181648.35153-1-viswanathiyyappan@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/usb/lan78xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 435235a351e2f..21276ac1f81dc 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1112,8 +1112,11 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
- 				goto send_end;
- 			tls_ctx->pending_open_record_frags = true;
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 6babe909036cf..2da67814556f9 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -2923,10 +2923,6 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 		}
+ 	} while (buf & HW_CFG_LRST_);
  
--			if (sk_msg_full(msg_pl))
-+			if (sk_msg_full(msg_pl)) {
- 				full_record = true;
-+				sk_msg_trim(sk, msg_en,
-+					    msg_pl->sg.size + prot->overhead_size);
-+			}
+-	ret = lan78xx_init_mac_address(dev);
+-	if (ret < 0)
+-		return ret;
+-
+ 	/* save DEVID for later usage */
+ 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
+ 	if (ret < 0)
+@@ -2935,6 +2931,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 	dev->chipid = (buf & ID_REV_CHIP_ID_MASK_) >> 16;
+ 	dev->chiprev = buf & ID_REV_CHIP_REV_MASK_;
  
- 			if (full_record || eor)
- 				goto copied;
++	ret = lan78xx_init_mac_address(dev);
++	if (ret < 0)
++		return ret;
++
+ 	/* Respond to the IN token with a NAK */
+ 	ret = lan78xx_read_reg(dev, USB_CFG0, &buf);
+ 	if (ret < 0)
 -- 
 2.51.0
 
