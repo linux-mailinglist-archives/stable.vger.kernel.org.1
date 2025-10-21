@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-188440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E041BF8552
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:36 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67434BF8785
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5BAC188D172
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:53:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 079544E77DF
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096EB2737E7;
-	Tue, 21 Oct 2025 19:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1BE23D7E8;
+	Tue, 21 Oct 2025 20:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqwOTQTA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTBwgo/6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B1E26C3BE;
-	Tue, 21 Oct 2025 19:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF86350A2C;
+	Tue, 21 Oct 2025 20:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076412; cv=none; b=cdOXQ/v82ti58Mih3JfcksuWRzRylSAlaj68NOkh4WcUvdMC82Y1PZbQuXqDOkaNMlupxsLTUd69FQsY+sgUA7KMnak4a380L608T5zLjDp6IzxvLeTiUy4DWdIGNeSK/wa1E6a0LPnmahiLYYqqqZZTYs0nie4TmRBWNpX+RmE=
+	t=1761076904; cv=none; b=U1w8T8zYs3Q3CvGaSjcQnvOKiJPIRswm7oiGgtgkcG/OjFrfWcU3M8F4O4U9m/NvBU34MRr3f+mQRsclkcx3D+dZVzYwkA0uf8v0X7H1GsPGzW8P/VyhnF6UikJ0/QM/F701FpGUAOn+d3J7mUA6R1AxuirzbziRih9o4/P+KcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076412; c=relaxed/simple;
-	bh=sFvRo7wFSThEHtZfMRAwrs1FQ7OH+g3Eyt6YnQaUpW0=;
+	s=arc-20240116; t=1761076904; c=relaxed/simple;
+	bh=+7rtn2d+8/T6MWOO3xP4KMKMcv1Prz2u2chc3mq11hY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OEbHX9CBDvyUAmu/l2dt/u+z7M52osOIQfREzSbYF3gsAWFOLr7g6R4VxPlK0xOhO7htKjHc2JFMF9nN4hNqcaqgzQtjI5xtCDS+nl5cDuAIF+k+Fgljrg6h7Ax49GC+LMS/1oP2Zj3k78wobhYAOSjgn2XHOJNVm1+wEZl2fk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqwOTQTA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF57C4CEF1;
-	Tue, 21 Oct 2025 19:53:31 +0000 (UTC)
+	 MIME-Version; b=sOj7CCkp/sKgdaTA2GN4jqX1yFY17JP0IgpJZUQQkc2VkFiOMph7oBCzx1XqfBNBGEU/PnpfZkIYZwY8uYh9OW9ynaapubAT1Itcrrgj1shkufjupHVOnbeoVWOqqjHdlkum6KYItWmRcZ5dP7/j4uuHTwPG4DlF5RU05ehQpFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTBwgo/6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E397C4CEF1;
+	Tue, 21 Oct 2025 20:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076412;
-	bh=sFvRo7wFSThEHtZfMRAwrs1FQ7OH+g3Eyt6YnQaUpW0=;
+	s=korg; t=1761076904;
+	bh=+7rtn2d+8/T6MWOO3xP4KMKMcv1Prz2u2chc3mq11hY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqwOTQTA4+NljJ6hJG6zPzvYAMpTlbbtc4dOzqU/BVSTxVDp/kWgjzPXA4kW0LlTb
-	 LOHeR+/w4JHcqc2Xld2m/wYE8iN60Mpjbz6utSymZffUhDdM47yZpVF3yh5qaBd5m8
-	 XdmMNjuhBvACMnGbTGa43XJVuRYxTqvt3+DxYWBE=
+	b=cTBwgo/6NZ8Y5eSRMZnYCSTJcWSd0poJ6fzPI4gdQFT6nbE8x8K40u/lPTUUeDQD3
+	 i60F9b962OHxYtgwVh3IVMrWS5HMyn5L8saWDsbSNMiriuHweEPerBupZcyyLuGptU
+	 84sjwMdCSMFOJe3qtqlsHaibBvpwop/hD3wBbQkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/105] media: nxp: imx8-isi: Drop unused argument to mxc_isi_channel_chain()
+Subject: [PATCH 6.12 047/136] can: m_can: m_can_chip_config(): bring up interface in correct state
 Date: Tue, 21 Oct 2025 21:50:35 +0200
-Message-ID: <20251021195022.320505489@linuxfoundation.org>
+Message-ID: <20251021195037.118049904@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 9a21ffeade25cbf310f5db39a1f9932695dd41bb ]
+[ Upstream commit 4942c42fe1849e6d68dfb5b36ccba344a9fac016 ]
 
-The bypass argument to the mxc_isi_channel_chain() function is unused.
-Drop it.
+In some SoCs (observed on the STM32MP15) the M_CAN IP core keeps the
+CAN state and CAN error counters over an internal reset cycle. An
+external reset is not always possible, due to the shared reset with
+the other CAN core. This caused the core not always be in Error Active
+state when bringing up the controller.
 
-Link: https://lore.kernel.org/r/20250813225501.20762-1-laurent.pinchart@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Stable-dep-of: 178aa3360220 ("media: nxp: imx8-isi: m2m: Fix streaming cleanup on release")
+Instead of always setting the CAN state to Error Active in
+m_can_chip_config(), fix this by reading and decoding the Protocol
+Status Regitser (PSR) and set the CAN state accordingly.
+
+Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
+Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Link: https://patch.msgid.link/20250929-m_can-fix-state-handling-v4-3-682b49b49d9a@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h |    2 +-
- drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c   |    2 +-
- drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c  |   11 +++++------
- drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c |    2 +-
- 4 files changed, 8 insertions(+), 9 deletions(-)
+ drivers/net/can/m_can/m_can.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-@@ -361,7 +361,7 @@ void mxc_isi_channel_get(struct mxc_isi_
- void mxc_isi_channel_put(struct mxc_isi_pipe *pipe);
- void mxc_isi_channel_enable(struct mxc_isi_pipe *pipe);
- void mxc_isi_channel_disable(struct mxc_isi_pipe *pipe);
--int mxc_isi_channel_chain(struct mxc_isi_pipe *pipe, bool bypass);
-+int mxc_isi_channel_chain(struct mxc_isi_pipe *pipe);
- void mxc_isi_channel_unchain(struct mxc_isi_pipe *pipe);
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index 8f663db386948..a7e326faca8ca 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -1617,7 +1617,7 @@ static int m_can_start(struct net_device *dev)
+ 	netdev_queue_set_dql_min_limit(netdev_get_tx_queue(cdev->net, 0),
+ 				       cdev->tx_max_coalesced_frames);
  
- void mxc_isi_channel_config(struct mxc_isi_pipe *pipe,
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
-@@ -589,7 +589,7 @@ void mxc_isi_channel_release(struct mxc_
-  *
-  * TODO: Support secondary line buffer for downscaling YUV420 images.
-  */
--int mxc_isi_channel_chain(struct mxc_isi_pipe *pipe, bool bypass)
-+int mxc_isi_channel_chain(struct mxc_isi_pipe *pipe)
- {
- 	/* Channel chaining requires both line and output buffer. */
- 	const u8 resources = MXC_ISI_CHANNEL_RES_OUTPUT_BUF
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-@@ -493,7 +493,6 @@ static int mxc_isi_m2m_streamon(struct f
- 	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
- 	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
- 	struct mxc_isi_m2m *m2m = ctx->m2m;
--	bool bypass;
- 	int ret;
+-	cdev->can.state = CAN_STATE_ERROR_ACTIVE;
++	cdev->can.state = m_can_state_get_by_psr(cdev);
  
- 	if (q->streaming)
-@@ -506,15 +505,15 @@ static int mxc_isi_m2m_streamon(struct f
- 		goto unlock;
- 	}
+ 	m_can_enable_all_interrupts(cdev);
  
--	bypass = cap_pix->width == out_pix->width &&
--		 cap_pix->height == out_pix->height &&
--		 cap_info->encoding == out_info->encoding;
--
- 	/*
- 	 * Acquire the pipe and initialize the channel with the first user of
- 	 * the M2M device.
- 	 */
- 	if (m2m->usage_count == 0) {
-+		bool bypass = cap_pix->width == out_pix->width &&
-+			      cap_pix->height == out_pix->height &&
-+			      cap_info->encoding == out_info->encoding;
-+
- 		ret = mxc_isi_channel_acquire(m2m->pipe,
- 					      &mxc_isi_m2m_frame_write_done,
- 					      bypass);
-@@ -531,7 +530,7 @@ static int mxc_isi_m2m_streamon(struct f
- 	 * buffer chaining.
- 	 */
- 	if (!ctx->chained && out_pix->width > MXC_ISI_MAX_WIDTH_UNCHAINED) {
--		ret = mxc_isi_channel_chain(m2m->pipe, bypass);
-+		ret = mxc_isi_channel_chain(m2m->pipe);
- 		if (ret)
- 			goto deinit;
- 
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-@@ -851,7 +851,7 @@ int mxc_isi_pipe_acquire(struct mxc_isi_
- 
- 	/* Chain the channel if needed for wide resolutions. */
- 	if (sink_fmt->width > MXC_ISI_MAX_WIDTH_UNCHAINED) {
--		ret = mxc_isi_channel_chain(pipe, bypass);
-+		ret = mxc_isi_channel_chain(pipe);
- 		if (ret)
- 			mxc_isi_channel_release(pipe);
- 	}
+-- 
+2.51.0
+
 
 
 
