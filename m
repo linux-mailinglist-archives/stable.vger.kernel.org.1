@@ -1,57 +1,52 @@
-Return-Path: <stable+bounces-188514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E53CBF866E
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:57:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7614BF86A6
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:58:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBCED189C407
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:57:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9C6314F6215
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36213274B4A;
-	Tue, 21 Oct 2025 19:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39ACA274FC1;
+	Tue, 21 Oct 2025 19:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gr0zRJNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3W9vTaW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7101273D66;
-	Tue, 21 Oct 2025 19:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1EE350A2A;
+	Tue, 21 Oct 2025 19:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076648; cv=none; b=ZQ0PQx7DArImto10LQvrgvNIAOE+5VAA++s+hn6gk8Fpl8em/63HbGKe22tRgg+jA9B/O8QMIcn6DwuFGsEztXQOOZoTiILG6fzV5JvH7nGsYUtdJ7pmUMFE+XCRTTGehzoy+A52HxCGdSNHCCd6DmH0lhjnyR4zCtSu+yDYt64=
+	t=1761076690; cv=none; b=p4KO+dkay5/l7VC/t4R0SIZC95+9hw70RRnf0tVnBkx0VzKtsEZ35NaTRolCTd2WNg0eI/A31dDPqShhCLqCWpQGoHIHlKVJX0TlpU4NSqFqNENuUBWgBCbtdCl3fLbxryTajcgRDNPrFbekQqpFHx8aZZtMiKcB1RtWZwqTdyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076648; c=relaxed/simple;
-	bh=ccArKI4vDiM3kIOQNDl8mYQLd8jXiOzHVosU/krkD7s=;
+	s=arc-20240116; t=1761076690; c=relaxed/simple;
+	bh=fCv3RlD/BtvkgOeL6/zXEvNzoI8q9VJmW/ND8RSpSHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8qoasG2THEooSzff/hHXlpNvMuZEZGwv2XSd8lEPp5mt8CN8MmzCjOHdaOX90ReuIl/BMO2FabYdW2paOaRgTfEMMe7oxfDUXSGEykj7Ri8xqmZdplIAyOAWHvh3FG6hOnHpKk3/EVtC2ZSUJYWjWBbiUEGLYyFLr5DR6MyGxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gr0zRJNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7647AC4CEF1;
-	Tue, 21 Oct 2025 19:57:27 +0000 (UTC)
+	 MIME-Version; b=rQmG5aQkMceE/USqc9Se2++82yY+R/3lfq9uPTkJ05HMSYrnUIsFe6CMRQdn/n5jQIq6TjpNI1SoB2GYSFamUnULugcDgZ6ad7djdcqN9iN7Qqn6CRxvL83vqYem1GIa7FMDQFsXrPyoturH+8NWfUD1F3qiSm3qw75Gl7mpXsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3W9vTaW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1E8C4CEF1;
+	Tue, 21 Oct 2025 19:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076647;
-	bh=ccArKI4vDiM3kIOQNDl8mYQLd8jXiOzHVosU/krkD7s=;
+	s=korg; t=1761076689;
+	bh=fCv3RlD/BtvkgOeL6/zXEvNzoI8q9VJmW/ND8RSpSHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gr0zRJNinR1KA9a5F24gkxRlLpoo1ImivRhJgKdpeopu6eK9j31cMNSKnNU9lh0/F
-	 S/TIcxtE1HbKhHi9i1cIL3zYAhdpu8mYby5PdYC9/yCes8DFybQcTAyt7oO83QA8fP
-	 LY39SDc8jEF9eoByKrAd7TbEvPGLaYfcF7vPshBc=
+	b=P3W9vTaWycyyJry4svmckl4Grlhte0j+NeNqKL6ZqsVk13eaN9aIHnJVxAw/gKu4M
+	 e9TqFLCySx2H8NZGmD0Ppr+t2UjF2UGw9r/Iq+kjEwj9DRK2ry+aA1nFIoKNEAFESj
+	 171QmeXfiRha6e49+2+gJ9+WfVlmu/GDJ9PqXOuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/105] ixgbevf: fix mailbox API compatibility by negotiating supported features
-Date: Tue, 21 Oct 2025 21:51:47 +0200
-Message-ID: <20251021195023.980240234@linuxfoundation.org>
+	chuck.lever@oracle.com,
+	Scott Mayhew <smayhew@redhat.com>
+Subject: [PATCH 6.6 099/105] nfsd: decouple the xprtsec policy check from check_nfsd_access()
+Date: Tue, 21 Oct 2025 21:51:48 +0200
+Message-ID: <20251021195024.004492578@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
 References: <20251021195021.492915002@linuxfoundation.org>
@@ -70,325 +65,175 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit a7075f501bd33c93570af759b6f4302ef0175168 ]
+[ Upstream commit e4f574ca9c6dfa66695bb054ff5df43ecea873ec ]
 
-There was backward compatibility in the terms of mailbox API. Various
-drivers from various OSes supporting 10G adapters from Intel portfolio
-could easily negotiate mailbox API.
+This is a backport of e4f574ca9c6d specifically for the 6.6-stable
+kernel.  It differs from the upstream version mainly in that it's
+working around the absence of some 6.12-era commits:
+- 1459ad57673b nfsd: Move error code mapping to per-version proc code.
+- 0a183f24a7ae NFSD: Handle @rqstp == NULL in check_nfsd_access()
+- 5e66d2d92a1c nfsd: factor out __fh_verify to allow NULL rqstp to be
+  passed
 
-This convention has been broken since introducing API 1.4.
-Commit 0062e7cc955e ("ixgbevf: add VF IPsec offload code") added support
-for IPSec which is specific only for the kernel ixgbe driver. None of the
-rest of the Intel 10G PF/VF drivers supports it. And actually lack of
-support was not included in the IPSec implementation - there were no such
-code paths. No possibility to negotiate support for the feature was
-introduced along with introduction of the feature itself.
+A while back I had reported that an NFSv3 client could successfully
+mount using '-o xprtsec=none' an export that had been exported with
+'xprtsec=tls:mtls'.  By "successfully" I mean that the mount command
+would succeed and the mount would show up in /proc/mount.  Attempting
+to do anything futher with the mount would be met with NFS3ERR_ACCES.
 
-Commit 339f28964147 ("ixgbevf: Add support for new mailbox communication
-between PF and VF") increasing API version to 1.5 did the same - it
-introduced code supported specifically by the PF ESX driver. It altered API
-version for the VF driver in the same time not touching the version
-defined for the PF ixgbe driver. It led to additional discrepancies,
-as the code provided within API 1.6 cannot be supported for Linux ixgbe
-driver as it causes crashes.
+Transport Layer Security isn't an RPC security flavor or pseudo-flavor,
+so we shouldn't be conflating them when determining whether the access
+checks can be bypassed.  Split check_nfsd_access() into two helpers, and
+have fh_verify() call the helpers directly since fh_verify() has
+logic that allows one or both of the checks to be skipped.  All other
+sites will continue to call check_nfsd_access().
 
-The issue was noticed some time ago and mitigated by Jake within the commit
-d0725312adf5 ("ixgbevf: stop attempting IPSEC offload on Mailbox API 1.5").
-As a result we have regression for IPsec support and after increasing API
-to version 1.6 ixgbevf driver stopped to support ESX MBX.
-
-To fix this mess add new mailbox op asking PF driver about supported
-features. Basing on a response determine whether to set support for IPSec
-and ESX-specific enhanced mailbox.
-
-New mailbox op, for compatibility purposes, must be added within new API
-revision, as API version of OOT PF & VF drivers is already increased to
-1.6 and doesn't incorporate features negotiate op.
-
-Features negotiation mechanism gives possibility to be extended with new
-features when needed in the future.
-
-Reported-by: Jacob Keller <jacob.e.keller@intel.com>
-Closes: https://lore.kernel.org/intel-wired-lan/20241101-jk-ixgbevf-mailbox-v1-5-fixes-v1-0-f556dc9a66ed@intel.com/
-Fixes: 0062e7cc955e ("ixgbevf: add VF IPsec offload code")
-Fixes: 339f28964147 ("ixgbevf: Add support for new mailbox communication between PF and VF")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20251009-jk-iwl-net-2025-10-01-v3-4-ef32a425b92a@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-nfs/ZjO3Qwf_G87yNXb2@aion/
+Fixes: 9280c5774314 ("NFSD: Handle new xprtsec= export option")
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbevf/ipsec.c        |   10 ++++
- drivers/net/ethernet/intel/ixgbevf/ixgbevf.h      |    7 +++
- drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |   32 ++++++++++++++-
- drivers/net/ethernet/intel/ixgbevf/mbx.h          |    4 +
- drivers/net/ethernet/intel/ixgbevf/vf.c           |   45 +++++++++++++++++++++-
- drivers/net/ethernet/intel/ixgbevf/vf.h           |    1 
- 6 files changed, 96 insertions(+), 3 deletions(-)
+ fs/nfsd/export.c |   60 +++++++++++++++++++++++++++++++++++++++++++++++--------
+ fs/nfsd/export.h |    2 +
+ fs/nfsd/nfsfh.c  |   12 ++++++++++-
+ 3 files changed, 65 insertions(+), 9 deletions(-)
 
---- a/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-@@ -271,6 +271,9 @@ static int ixgbevf_ipsec_add_sa(struct x
- 	adapter = netdev_priv(dev);
- 	ipsec = adapter->ipsec;
- 
-+	if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+		return -EOPNOTSUPP;
-+
- 	if (xs->id.proto != IPPROTO_ESP && xs->id.proto != IPPROTO_AH) {
- 		NL_SET_ERR_MSG_MOD(extack, "Unsupported protocol for IPsec offload");
- 		return -EINVAL;
-@@ -400,6 +403,9 @@ static void ixgbevf_ipsec_del_sa(struct
- 	adapter = netdev_priv(dev);
- 	ipsec = adapter->ipsec;
- 
-+	if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+		return;
-+
- 	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN) {
- 		sa_idx = xs->xso.offload_handle - IXGBE_IPSEC_BASE_RX_INDEX;
- 
-@@ -628,6 +634,10 @@ void ixgbevf_init_ipsec_offload(struct i
- 	size_t size;
- 
- 	switch (adapter->hw.api_version) {
-+	case ixgbe_mbox_api_17:
-+		if (!(adapter->pf_features & IXGBEVF_PF_SUP_IPSEC))
-+			return;
-+		break;
- 	case ixgbe_mbox_api_14:
- 		break;
- 	default:
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-@@ -366,6 +366,13 @@ struct ixgbevf_adapter {
- 	/* Interrupt Throttle Rate */
- 	u32 eitr_param;
- 
-+	u32 pf_features;
-+#define IXGBEVF_PF_SUP_IPSEC		BIT(0)
-+#define IXGBEVF_PF_SUP_ESX_MBX		BIT(1)
-+
-+#define IXGBEVF_SUPPORTED_FEATURES	(IXGBEVF_PF_SUP_IPSEC | \
-+					IXGBEVF_PF_SUP_ESX_MBX)
-+
- 	struct ixgbevf_hw_stats stats;
- 
- 	unsigned long state;
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -2275,10 +2275,35 @@ static void ixgbevf_init_last_counter_st
- 	adapter->stats.base_vfmprc = adapter->stats.last_vfmprc;
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1071,28 +1071,62 @@ static struct svc_export *exp_find(struc
+ 	return exp;
  }
  
+-__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp)
 +/**
-+ * ixgbevf_set_features - Set features supported by PF
-+ * @adapter: pointer to the adapter struct
++ * check_xprtsec_policy - check if access to export is allowed by the
++ * 			  xprtsec policy
++ * @exp: svc_export that is being accessed.
++ * @rqstp: svc_rqst attempting to access @exp.
 + *
-+ * Negotiate with PF supported features and then set pf_features accordingly.
++ * Helper function for check_nfsd_access().  Note that callers should be
++ * using check_nfsd_access() instead of calling this function directly.  The
++ * one exception is fh_verify() since it has logic that may result in one
++ * or both of the helpers being skipped.
++ *
++ * Return values:
++ *   %nfs_ok if access is granted, or
++ *   %nfserr_acces or %nfserr_wrongsec if access is denied
 + */
-+static void ixgbevf_set_features(struct ixgbevf_adapter *adapter)
-+{
-+	u32 *pf_features = &adapter->pf_features;
-+	struct ixgbe_hw *hw = &adapter->hw;
-+	int err;
-+
-+	err = hw->mac.ops.negotiate_features(hw, pf_features);
-+	if (err && err != -EOPNOTSUPP)
-+		netdev_dbg(adapter->netdev,
-+			   "PF feature negotiation failed.\n");
-+
-+	/* Address also pre API 1.7 cases */
-+	if (hw->api_version == ixgbe_mbox_api_14)
-+		*pf_features |= IXGBEVF_PF_SUP_IPSEC;
-+	else if (hw->api_version == ixgbe_mbox_api_15)
-+		*pf_features |= IXGBEVF_PF_SUP_ESX_MBX;
-+}
-+
- static void ixgbevf_negotiate_api(struct ixgbevf_adapter *adapter)
++__be32 check_xprtsec_policy(struct svc_export *exp, struct svc_rqst *rqstp)
  {
- 	struct ixgbe_hw *hw = &adapter->hw;
- 	static const int api[] = {
-+		ixgbe_mbox_api_17,
- 		ixgbe_mbox_api_16,
- 		ixgbe_mbox_api_15,
- 		ixgbe_mbox_api_14,
-@@ -2299,8 +2324,9 @@ static void ixgbevf_negotiate_api(struct
- 		idx++;
+-	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
+ 	struct svc_xprt *xprt = rqstp->rq_xprt;
+ 
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_NONE) {
+ 		if (!test_bit(XPT_TLS_SESSION, &xprt->xpt_flags))
+-			goto ok;
++			return nfs_ok;
  	}
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_TLS) {
+ 		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
+ 		    !test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
+-			goto ok;
++			return nfs_ok;
+ 	}
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_MTLS) {
+ 		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
+ 		    test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
+-			goto ok;
++			return nfs_ok;
+ 	}
+-	goto denied;
  
--	/* Following is not supported by API 1.6, it is specific for 1.5 */
--	if (hw->api_version == ixgbe_mbox_api_15) {
-+	ixgbevf_set_features(adapter);
-+
-+	if (adapter->pf_features & IXGBEVF_PF_SUP_ESX_MBX) {
- 		hw->mbx.ops.init_params(hw);
- 		memcpy(&hw->mbx.ops, &ixgbevf_mbx_ops,
- 		       sizeof(struct ixgbe_mbx_operations));
-@@ -2658,6 +2684,7 @@ static void ixgbevf_set_num_queues(struc
- 		case ixgbe_mbox_api_14:
- 		case ixgbe_mbox_api_15:
- 		case ixgbe_mbox_api_16:
-+		case ixgbe_mbox_api_17:
- 			if (adapter->xdp_prog &&
- 			    hw->mac.max_tx_queues == rss)
- 				rss = rss > 3 ? 2 : 1;
-@@ -4653,6 +4680,7 @@ static int ixgbevf_probe(struct pci_dev
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		netdev->max_mtu = IXGBE_MAX_JUMBO_FRAME_SIZE -
- 				  (ETH_HLEN + ETH_FCS_LEN);
- 		break;
---- a/drivers/net/ethernet/intel/ixgbevf/mbx.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/mbx.h
-@@ -67,6 +67,7 @@ enum ixgbe_pfvf_api_rev {
- 	ixgbe_mbox_api_14,	/* API version 1.4, linux/freebsd VF driver */
- 	ixgbe_mbox_api_15,	/* API version 1.5, linux/freebsd VF driver */
- 	ixgbe_mbox_api_16,      /* API version 1.6, linux/freebsd VF driver */
-+	ixgbe_mbox_api_17,	/* API version 1.7, linux/freebsd VF driver */
- 	/* This value should always be last */
- 	ixgbe_mbox_api_unknown,	/* indicates that API version is not known */
- };
-@@ -106,6 +107,9 @@ enum ixgbe_pfvf_api_rev {
- /* mailbox API, version 1.6 VF requests */
- #define IXGBE_VF_GET_PF_LINK_STATE	0x11 /* request PF to send link info */
- 
-+/* mailbox API, version 1.7 VF requests */
-+#define IXGBE_VF_FEATURES_NEGOTIATE	0x12 /* get features supported by PF*/
-+
- /* length of permanent address message returned from PF */
- #define IXGBE_VF_PERMADDR_MSG_LEN	4
- /* word in permanent address message with the current multicast type */
---- a/drivers/net/ethernet/intel/ixgbevf/vf.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-@@ -313,6 +313,7 @@ int ixgbevf_get_reta_locked(struct ixgbe
- 	 * is not supported for this device type.
- 	 */
- 	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_14:
-@@ -383,6 +384,7 @@ int ixgbevf_get_rss_key_locked(struct ix
- 	 * or if the operation is not supported for this device type.
- 	 */
- 	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_14:
-@@ -555,6 +557,7 @@ static s32 ixgbevf_update_xcast_mode(str
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -646,6 +649,7 @@ static int ixgbevf_get_pf_link_state(str
- 
- 	switch (hw->api_version) {
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -670,6 +674,42 @@ static int ixgbevf_get_pf_link_state(str
- }
- 
- /**
-+ * ixgbevf_negotiate_features_vf - negotiate supported features with PF driver
-+ * @hw: pointer to the HW structure
-+ * @pf_features: bitmask of features supported by PF
-+ *
-+ * Return: IXGBE_ERR_MBX in the  case of mailbox error,
-+ * -EOPNOTSUPP if the op is not supported or 0 on success.
-+ */
-+static int ixgbevf_negotiate_features_vf(struct ixgbe_hw *hw, u32 *pf_features)
-+{
-+	u32 msgbuf[2] = {};
-+	int err;
-+
-+	switch (hw->api_version) {
-+	case ixgbe_mbox_api_17:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	msgbuf[0] = IXGBE_VF_FEATURES_NEGOTIATE;
-+	msgbuf[1] = IXGBEVF_SUPPORTED_FEATURES;
-+
-+	err = ixgbevf_write_msg_read_ack(hw, msgbuf, msgbuf,
-+					 ARRAY_SIZE(msgbuf));
-+
-+	if (err || (msgbuf[0] & IXGBE_VT_MSGTYPE_FAILURE)) {
-+		err = IXGBE_ERR_MBX;
-+		*pf_features = 0x0;
-+	} else {
-+		*pf_features = msgbuf[1];
-+	}
-+
-+	return err;
+-ok:
++	return rqstp->rq_vers < 4 ? nfserr_acces : nfserr_wrongsec;
 +}
 +
 +/**
-  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
-  *  @hw: pointer to the HW structure
-  *  @vlan: 12 bit VLAN ID
-@@ -799,6 +839,7 @@ static s32 ixgbevf_check_mac_link_vf(str
- 				     bool *link_up,
- 				     bool autoneg_wait_to_complete)
- {
-+	struct ixgbevf_adapter *adapter = hw->back;
- 	struct ixgbe_mbx_info *mbx = &hw->mbx;
- 	struct ixgbe_mac_info *mac = &hw->mac;
- 	s32 ret_val = 0;
-@@ -825,7 +866,7 @@ static s32 ixgbevf_check_mac_link_vf(str
- 	 * until we are called again and don't report an error
- 	 */
- 	if (mbx->ops.read(hw, &in_msg, 1)) {
--		if (hw->api_version >= ixgbe_mbox_api_15)
-+		if (adapter->pf_features & IXGBEVF_PF_SUP_ESX_MBX)
- 			mac->get_link_status = false;
- 		goto out;
- 	}
-@@ -1026,6 +1067,7 @@ int ixgbevf_get_queues(struct ixgbe_hw *
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_15:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
++ * check_security_flavor - check if access to export is allowed by the
++ * 			  xprtsec policy
++ * @exp: svc_export that is being accessed.
++ * @rqstp: svc_rqst attempting to access @exp.
++ *
++ * Helper function for check_nfsd_access().  Note that callers should be
++ * using check_nfsd_access() instead of calling this function directly.  The
++ * one exception is fh_verify() since it has logic that may result in one
++ * or both of the helpers being skipped.
++ *
++ * Return values:
++ *   %nfs_ok if access is granted, or
++ *   %nfserr_acces or %nfserr_wrongsec if access is denied
++ */
++__be32 check_security_flavor(struct svc_export *exp, struct svc_rqst *rqstp)
++{
++	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
++
+ 	/* legacy gss-only clients are always OK: */
+ 	if (exp->ex_client == rqstp->rq_gssclient)
  		return 0;
-@@ -1080,6 +1122,7 @@ static const struct ixgbe_mac_operations
- 	.setup_link		= ixgbevf_setup_mac_link_vf,
- 	.check_link		= ixgbevf_check_mac_link_vf,
- 	.negotiate_api_version	= ixgbevf_negotiate_api_version_vf,
-+	.negotiate_features	= ixgbevf_negotiate_features_vf,
- 	.set_rar		= ixgbevf_set_rar_vf,
- 	.update_mc_addr_list	= ixgbevf_update_mc_addr_list_vf,
- 	.update_xcast_mode	= ixgbevf_update_xcast_mode,
---- a/drivers/net/ethernet/intel/ixgbevf/vf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.h
-@@ -26,6 +26,7 @@ struct ixgbe_mac_operations {
- 	s32 (*stop_adapter)(struct ixgbe_hw *);
- 	s32 (*get_bus_info)(struct ixgbe_hw *);
- 	s32 (*negotiate_api_version)(struct ixgbe_hw *hw, int api);
-+	int (*negotiate_features)(struct ixgbe_hw *hw, u32 *pf_features);
+@@ -1117,10 +1151,20 @@ ok:
+ 	if (nfsd4_spo_must_allow(rqstp))
+ 		return 0;
  
- 	/* Link */
- 	s32 (*setup_link)(struct ixgbe_hw *, ixgbe_link_speed, bool, bool);
+-denied:
+ 	return rqstp->rq_vers < 4 ? nfserr_acces : nfserr_wrongsec;
+ }
+ 
++__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp)
++{
++	__be32 status;
++
++	status = check_xprtsec_policy(exp, rqstp);
++	if (status != nfs_ok)
++		return status;
++
++	return check_security_flavor(exp, rqstp);
++}
++
+ /*
+  * Uses rq_client and rq_gssclient to find an export; uses rq_client (an
+  * auth_unix client) if it's available and has secinfo information;
+--- a/fs/nfsd/export.h
++++ b/fs/nfsd/export.h
+@@ -100,6 +100,8 @@ struct svc_expkey {
+ #define EX_WGATHER(exp)		((exp)->ex_flags & NFSEXP_GATHERED_WRITES)
+ 
+ int nfsexp_flags(struct svc_rqst *rqstp, struct svc_export *exp);
++__be32 check_xprtsec_policy(struct svc_export *exp, struct svc_rqst *rqstp);
++__be32 check_security_flavor(struct svc_export *exp, struct svc_rqst *rqstp);
+ __be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp);
+ 
+ /*
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -371,6 +371,16 @@ fh_verify(struct svc_rqst *rqstp, struct
+ 		goto out;
+ 
+ 	/*
++	 * NLM is allowed to bypass the xprtsec policy check because lockd
++	 * doesn't support xprtsec.
++	 */
++	if (!(access & NFSD_MAY_LOCK)) {
++		error = check_xprtsec_policy(exp, rqstp);
++		if (error)
++			goto out;
++	}
++
++	/*
+ 	 * pseudoflavor restrictions are not enforced on NLM,
+ 	 * which clients virtually always use auth_sys for,
+ 	 * even while using RPCSEC_GSS for NFS.
+@@ -386,7 +396,7 @@ fh_verify(struct svc_rqst *rqstp, struct
+ 			&& exp->ex_path.dentry == dentry)
+ 		goto skip_pseudoflavor_check;
+ 
+-	error = check_nfsd_access(exp, rqstp);
++	error = check_security_flavor(exp, rqstp);
+ 	if (error)
+ 		goto out;
+ 
 
 
 
