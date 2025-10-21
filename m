@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-188663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E69FBF88DE
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:06:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9E4BF8A0A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:11:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97A95581F9B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:05:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9D3E6500B00
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AB8275B1A;
-	Tue, 21 Oct 2025 20:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D609F277C81;
+	Tue, 21 Oct 2025 20:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d50vXyg9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2eCD23W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031A923D7E8;
-	Tue, 21 Oct 2025 20:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EB52773F1;
+	Tue, 21 Oct 2025 20:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077123; cv=none; b=axsW1zOsAfQ7LB4589D/OvdtlLOSm1ENMtqlgBW+JLbp+MR/Ux4N7Kkfir/MpzSfoGd4RAH6gWpM/LZROtQAGaYWDK5vxYjn9rsLsod+i/tkgNRYPBuR1gsPoOwDZKmZHfND+TSQWhWgw1fNLTvADa9XoHQOfJCB+ouHRsB19Yw=
+	t=1761077459; cv=none; b=hUAc8HzPw7tUvJu2mJify/6uHN+g9/GePFucQ5I8mxjK8LHgDhy+anyFBChz688PbFtVJFLTUz3Untm8ivQWBEKfTWEcxPyhYjbZIYxNCtZDI6BJ1jhb4hzPs9+4AZo1vIRfr+egK2n5OQevseTwhGR9fEw4EbEWUlbTBnHnLro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077123; c=relaxed/simple;
-	bh=XWePQsprpOMovf/pD7BjjCpZKH/3QT+Gh+grIG8yrOs=;
+	s=arc-20240116; t=1761077459; c=relaxed/simple;
+	bh=To6xkbsE9hOoyTPRGXO37Jy6h9h4kmXdTXmFwg2AZYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFjhofg1zBgB0MxF4Jcnvn5X34dYVPTVgPlJN2+uFlOzuJ4Cf1zSBUw5oqT5dnsNDNTA7HAt8sxjCqyA7SIhS6BKTU9Phi0LUh33IVKL5Loxdwnezhks80a9K0AbwspR4j076+m/btkL2UM/ZnmE4zYhgh/xMl++Pwdnq7pmtfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d50vXyg9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC0CC4CEF1;
-	Tue, 21 Oct 2025 20:05:22 +0000 (UTC)
+	 MIME-Version; b=hRsrb5NFg+0aybNZ34Zqcf5JNgHJvSEQuNJipSB9t1gdSLJYu2fSy77SU/jS55wmyJnqxWxIf0utB7chlPOPezmZxauToNE8+R+P3oyETYeFcwkJuCCsv2aFehpMt7ZBYZ+zE7CZkj0IZ8Md2xysa1r+/EJjrO3yXHD5eQi/nzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2eCD23W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CAEC4CEF1;
+	Tue, 21 Oct 2025 20:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077122;
-	bh=XWePQsprpOMovf/pD7BjjCpZKH/3QT+Gh+grIG8yrOs=;
+	s=korg; t=1761077459;
+	bh=To6xkbsE9hOoyTPRGXO37Jy6h9h4kmXdTXmFwg2AZYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d50vXyg9SOq0FU8LQGbH7Ely31bJR7Jxt6aK3t2jJ/CweZm8BMxLSA4rlT6tyz3Rl
-	 4/1DeGsjLq6kB2ITWO4P0nZ23viDxXl2OTmw6p0Dr0DvCeZDA1NoXIc1jtB+xsu22+
-	 ollHcYQ2gJFsHZ3GDb30FrII5gdNPTZADhd5OijE=
+	b=M2eCD23WOCJlDr5aOEPoX7vnJQOhEBAQy1JrBmYxNw81LCOhglEh/x6d+zr6SMr1E
+	 pCklka9mkcceqwsWnvgPssa5S99MmxxBeeFbXHqaFVBmC4uCgxwTCg4UjeSz5bOpxb
+	 xvpwpf4R/tEFHWjsHd9mTMnkX1N3t1pOgQUxLQiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 101/136] iio: imu: inv_icm42600: Avoid configuring if already pm_runtime suspended
+Subject: [PATCH 6.17 112/159] drm/xe: Enable media sampler power gating
 Date: Tue, 21 Oct 2025 21:51:29 +0200
-Message-ID: <20251021195038.387478095@linuxfoundation.org>
+Message-ID: <20251021195045.861637242@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
+References: <20251021195043.182511864@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 
-[ Upstream commit 466f7a2fef2a4e426f809f79845a1ec1aeb558f4 ]
+[ Upstream commit 1852d27aa998272696680607b65a2ceac966104e ]
 
-Do as in suspend, skip resume configuration steps if the device is already
-pm_runtime suspended. This avoids reconfiguring a device that is already
-in the correct low-power state and ensures that pm_runtime handles the
-power state transitions properly.
+Where applicable, enable media sampler power gating. Also, add
+it to the powergate_info debugfs.
 
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-3-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ removed apex/wakeup variable declarations ]
+v2: Remove the sampler powergate status since it is cleared quickly anyway.
+v3: Use vcs mask (Rodrigo) and fix the version check for media
+v4: Remove extra spaces
+v5: Media samplers are independent of vcs mask,
+    use Media version 1255 (Matt Roper)
+
+Fixes: 38e8c4184ea0 ("drm/xe: Enable Coarse Power Gating")
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Link: https://lore.kernel.org/r/20251010011047.2047584-1-vinay.belgaumkar@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 4cbc08649a54c3d533df9832342d52d409dfbbf0)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/regs/xe_gt_regs.h | 1 +
+ drivers/gpu/drm/xe/xe_gt_idle.c      | 8 ++++++++
+ 2 files changed, 9 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -787,17 +787,15 @@ EXPORT_SYMBOL_NS_GPL(inv_icm42600_core_p
- static int inv_icm42600_suspend(struct device *dev)
- {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
--	int ret;
-+	int ret = 0;
+diff --git a/drivers/gpu/drm/xe/regs/xe_gt_regs.h b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+index 5cd5ab8529c5c..9994887fc73f9 100644
+--- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+@@ -342,6 +342,7 @@
+ #define POWERGATE_ENABLE			XE_REG(0xa210)
+ #define   RENDER_POWERGATE_ENABLE		REG_BIT(0)
+ #define   MEDIA_POWERGATE_ENABLE		REG_BIT(1)
++#define   MEDIA_SAMPLERS_POWERGATE_ENABLE	REG_BIT(2)
+ #define   VDN_HCP_POWERGATE_ENABLE(n)		REG_BIT(3 + 2 * (n))
+ #define   VDN_MFXVDENC_POWERGATE_ENABLE(n)	REG_BIT(4 + 2 * (n))
  
- 	mutex_lock(&st->lock);
+diff --git a/drivers/gpu/drm/xe/xe_gt_idle.c b/drivers/gpu/drm/xe/xe_gt_idle.c
+index ffb210216aa99..9bd197da60279 100644
+--- a/drivers/gpu/drm/xe/xe_gt_idle.c
++++ b/drivers/gpu/drm/xe/xe_gt_idle.c
+@@ -124,6 +124,9 @@ void xe_gt_idle_enable_pg(struct xe_gt *gt)
+ 	if (xe_gt_is_main_type(gt))
+ 		gtidle->powergate_enable |= RENDER_POWERGATE_ENABLE;
  
- 	st->suspended.gyro = st->conf.gyro.mode;
- 	st->suspended.accel = st->conf.accel.mode;
- 	st->suspended.temp = st->conf.temp_en;
--	if (pm_runtime_suspended(dev)) {
--		ret = 0;
-+	if (pm_runtime_suspended(dev))
- 		goto out_unlock;
--	}
- 
- 	/* disable FIFO data streaming */
- 	if (st->fifo.on) {
-@@ -829,10 +827,13 @@ static int inv_icm42600_resume(struct de
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
- 	struct inv_icm42600_sensor_state *gyro_st = iio_priv(st->indio_gyro);
- 	struct inv_icm42600_sensor_state *accel_st = iio_priv(st->indio_accel);
--	int ret;
-+	int ret = 0;
- 
- 	mutex_lock(&st->lock);
- 
-+	if (pm_runtime_suspended(dev))
-+		goto out_unlock;
++	if (MEDIA_VERx100(xe) >= 1100 && MEDIA_VERx100(xe) < 1255)
++		gtidle->powergate_enable |= MEDIA_SAMPLERS_POWERGATE_ENABLE;
 +
- 	ret = inv_icm42600_enable_regulator_vddio(st);
- 	if (ret)
- 		goto out_unlock;
+ 	if (xe->info.platform != XE_DG1) {
+ 		for (i = XE_HW_ENGINE_VCS0, j = 0; i <= XE_HW_ENGINE_VCS7; ++i, ++j) {
+ 			if ((gt->info.engine_mask & BIT(i)))
+@@ -246,6 +249,11 @@ int xe_gt_idle_pg_print(struct xe_gt *gt, struct drm_printer *p)
+ 				drm_printf(p, "Media Slice%d Power Gate Status: %s\n", n,
+ 					   str_up_down(pg_status & media_slices[n].status_bit));
+ 	}
++
++	if (MEDIA_VERx100(xe) >= 1100 && MEDIA_VERx100(xe) < 1255)
++		drm_printf(p, "Media Samplers Power Gating Enabled: %s\n",
++			   str_yes_no(pg_enabled & MEDIA_SAMPLERS_POWERGATE_ENABLE));
++
+ 	return 0;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
