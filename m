@@ -1,151 +1,101 @@
-Return-Path: <stable+bounces-188281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A37BF449C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 03:42:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D6FBF4559
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 03:57:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C55F835188C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 01:42:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43843465C97
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 01:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A4B231C9F;
-	Tue, 21 Oct 2025 01:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B5927381C;
+	Tue, 21 Oct 2025 01:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gCUBEKlS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d9GG6EOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D7815D1
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 01:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76351264A86
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 01:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761010945; cv=none; b=Q2FFYkoZEEwCKlYzFn/PrsUhMEPSAk4Bz1T/xWgkl1j6x1qzmt2Cg4OBTDHFRzzvlWKTHaRPfJ0b9Y8bcFuBHXRxyLjGrlMJph0BONzkakfzbqTRTDsinNgSQso3MRfkwFP8CFXuOHWrtaddrs1sI5crHbLmv6JaPMn330XOWI8=
+	t=1761011838; cv=none; b=SHdjJgYYrAOzU9HKBh93OH28v/WJU5xsiH56INvmO0qRD3Dek8ENsodJN0K2NqKgPPcjpFRNTRtX5GuePolmYj4c5fvWaxbWaF8q2KOjOqehcbS3f/mwYz+4TAjpjq7bh0wWnyByTUCZQmrc25BQHDrzlLXg8Xb4D/qf2SDUCbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761010945; c=relaxed/simple;
-	bh=acJQVIGlGocxO7bOMGUg9aHn0yalZej7k4h23WBG4LU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COMLd8BcQp13wLqOl1K5DeFFDHZWUV7wxltO6TvmlzgvDvAtxzDK5QYYFIzEiHMIEG/g6Q506YJU6Aor1wYOi3hs+my6HwpEOqnPME28FiJOBEk0YRuabcUeYVpLRS6/BqCKaPMErC3zMR+uYOBm55ILCw3CXOBkEXMHdk0H0dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gCUBEKlS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BADCC4CEFB;
-	Tue, 21 Oct 2025 01:42:24 +0000 (UTC)
+	s=arc-20240116; t=1761011838; c=relaxed/simple;
+	bh=qvgDIRLoCo1oWWbngx/kRkqNJeW/9MNb6IK1qpsX25k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RaTXuYJOETe6rP07KnVe2cu93uITbcQkTumf2+Du+6JL9Oiz+jCuPuE0+RNr2lZum33wLpT22v/j7lh4TTMJfnD8sD4xWmNrVc97EpixdlekLsJEyQZglIsW4+n3VW1fLaxmP+mlcr3zFkNHtE2CqrHjbOS4Hx24f5oTvDAy/G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d9GG6EOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D34DC19422
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 01:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761010945;
-	bh=acJQVIGlGocxO7bOMGUg9aHn0yalZej7k4h23WBG4LU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCUBEKlSRECCu9RjOoKqZWasdgCx0d6tKqVRc1nvnyHe3MRpW/FfUUnpBpWwp8poB
-	 SYHyP7L8iVMdtU9q38ZrB7Eejzw16gYPlaHqQf7pMebtsBn0X9tc3tH1Ob42RsxP/x
-	 GNaYLoQUTO5Q64zIcZGcFs59E+O9tSQd5+WaxwNFckyx9R2x7EsMUc8oqjngrrQpy4
-	 CuJ9gevYLpMb1fyCOtU2WTJT5+aKJggW0jSvych4lBnvnHENftYkBg6iWcm/P0AVO8
-	 P6MNHLqtO+Vgf0DUMijq/8hhHXRoH5SyMyt6MXkj5FbHzAgiGgPqpbiIhMklamEPsG
-	 wDeNhfAejnyXw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Zhang Yi <yi.zhang@huawei.com>,
-	stable@kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] jbd2: ensure that all ongoing I/O complete before freeing blocks
-Date: Mon, 20 Oct 2025 21:42:22 -0400
-Message-ID: <20251021014222.1974745-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102030-hurt-surplus-ab8e@gregkh>
-References: <2025102030-hurt-surplus-ab8e@gregkh>
+	s=k20201202; t=1761011838;
+	bh=qvgDIRLoCo1oWWbngx/kRkqNJeW/9MNb6IK1qpsX25k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=d9GG6EOKaKRiO61CY+6wnhsKYUljF4jkVfcJytWsZudhY7cxEL9ic63cGR6CKIz2P
+	 RDHlvCt9qmiifOrRFeL+dVwCvBUiIgzNFP2zFZY3Y7Isw+PAuRgIviZuQTd06IRpCQ
+	 G5LlZ+bsnZZMgdqlWu0MeP2pNAijtK14apUBgTcwZg5QuIu4EkergiSjpCh/wJyvAe
+	 ehjgKz8IgK7+RBSRfWr27YpofKXVi3EuRsjNxYhNOgtkn+m9ybhdl6Uk6DKylXWIqi
+	 Xn4dH45TEpuiNTb2JKzseqo4dHTyGN9E5teM/KL5eKb4bh6LknsQDjoVTGpB89cAnT
+	 8r+MNAHwcTW5A==
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6399328ff1fso8445285a12.0
+        for <stable@vger.kernel.org>; Mon, 20 Oct 2025 18:57:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWytenVeQtAOyoTssuQ61MnAEkWzveuvpfEXPJvkDCtrNJAZ1txXVYXGP2nZ52IMBSVeftqZ00=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNntzju7b/gSmraWcIKv1NW6N6phDuRAlEDRYuBJQDuIwVPjPo
+	XbvvL2/YrwylBhXsPhrLbqmnYKSlJDzmWZcT7HTZ6pCRrSrIMh6Scof9ak92eL1pMvj8BP8I+R6
+	FrehUPwFMaLsHh7QVqJ59ib8BL1FU1EY=
+X-Google-Smtp-Source: AGHT+IGnHnnOxmt/4yjnjQ8qGLAcIVukTyZe98TJLT6uSG/VZp2nZ7yoAZdsj4kIYRZocpP5dBZI5WdC2pPOdgh+b20=
+X-Received: by 2002:a05:6402:13d3:b0:634:b4cb:c892 with SMTP id
+ 4fb4d7f45d1cf-63c1f6f5e21mr15024301a12.32.1761011836686; Mon, 20 Oct 2025
+ 18:57:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <172c928c-8f55-410b-a5f9-1e13c57e7908@hauke-m.de>
+In-Reply-To: <172c928c-8f55-410b-a5f9-1e13c57e7908@hauke-m.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Tue, 21 Oct 2025 10:57:04 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd9WTwUTOzdoaAqeWUETJZbSC+u_cji3Hg+ZXqudu5SbYA@mail.gmail.com>
+X-Gm-Features: AS18NWADeZjoawJ2_xcC1mF6L7uGKWUUjXBlnL5eIvcBR0Npo4sers3sEow3sa0
+Message-ID: <CAKYAXd9WTwUTOzdoaAqeWUETJZbSC+u_cji3Hg+ZXqudu5SbYA@mail.gmail.com>
+Subject: Re: ksmbd: add max ip connections parameter: backport problem 6.6
+To: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: Steve French <stfrench@microsoft.com>, stable@vger.kernel.org, 
+	linux-cifs@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Zhang Yi <yi.zhang@huawei.com>
+On Tue, Oct 21, 2025 at 6:48=E2=80=AFAM Hauke Mehrtens <hauke@hauke-m.de> w=
+rote:
+>
+> Hi,
+Hi Hauke,
+>
+> I think the backport of "ksmbd: add max ip connections parameter" to
+> kernel 6.6 breaks the ksmbd ABI.
+>
+> See here:
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?=
+h=3Dlinux-6.6.y&id=3Dbc718d0bd87e372f7786c0239e340f3577ac94fa
+>
+> The "struct ksmbd_startup_request" is part of the ABI.
+> The user space tool expects there the additional attribute:
+>         __s8    bind_interfaces_only;
+> See:
+> https://github.com/cifsd-team/ksmbd-tools/commit/3b7d4b4c02ddeb81ed3e68b6=
+23ac1b62bfe57a43
+>
+> Which was added in b2d99376c5d6 "ksmbd: browse interfaces list on
+> FSCTL_QUERY_INTERFACE_INFO IOCTL".
+Okay, I will make a backport patch for 6.1 and 6.6 stable kernels.
 
-[ Upstream commit 3c652c3a71de1d30d72dc82c3bead8deb48eb749 ]
-
-When releasing file system metadata blocks in jbd2_journal_forget(), if
-this buffer has not yet been checkpointed, it may have already been
-written back, currently be in the process of being written back, or has
-not yet written back.  jbd2_journal_forget() calls
-jbd2_journal_try_remove_checkpoint() to check the buffer's status and
-add it to the current transaction if it has not been written back. This
-buffer can only be reallocated after the transaction is committed.
-
-jbd2_journal_try_remove_checkpoint() attempts to lock the buffer and
-check its dirty status while holding the buffer lock. If the buffer has
-already been written back, everything proceeds normally. However, there
-are two issues. First, the function returns immediately if the buffer is
-locked by the write-back process. It does not wait for the write-back to
-complete. Consequently, until the current transaction is committed and
-the block is reallocated, there is no guarantee that the I/O will
-complete. This means that ongoing I/O could write stale metadata to the
-newly allocated block, potentially corrupting data. Second, the function
-unlocks the buffer as soon as it detects that the buffer is still dirty.
-If a concurrent write-back occurs immediately after this unlocking and
-before clear_buffer_dirty() is called in jbd2_journal_forget(), data
-corruption can theoretically still occur.
-
-Although these two issues are unlikely to occur in practice since the
-undergoing metadata writeback I/O does not take this long to complete,
-it's better to explicitly ensure that all ongoing I/O operations are
-completed.
-
-Fixes: 597599268e3b ("jbd2: discard dirty data when forgetting an un-journalled buffer")
-Cc: stable@kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20250916093337.3161016-2-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/jbd2/transaction.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
-index 72e9297d6adcb..97ff68f90d573 100644
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -1550,6 +1550,7 @@ int jbd2_journal_forget (handle_t *handle, struct buffer_head *bh)
- 	int drop_reserve = 0;
- 	int err = 0;
- 	int was_modified = 0;
-+	int wait_for_writeback = 0;
- 
- 	if (is_handle_aborted(handle))
- 		return -EROFS;
-@@ -1675,18 +1676,22 @@ int jbd2_journal_forget (handle_t *handle, struct buffer_head *bh)
- 		}
- 
- 		/*
--		 * The buffer is still not written to disk, we should
--		 * attach this buffer to current transaction so that the
--		 * buffer can be checkpointed only after the current
--		 * transaction commits.
-+		 * The buffer has not yet been written to disk. We should
-+		 * either clear the buffer or ensure that the ongoing I/O
-+		 * is completed, and attach this buffer to current
-+		 * transaction so that the buffer can be checkpointed only
-+		 * after the current transaction commits.
- 		 */
- 		clear_buffer_dirty(bh);
-+		wait_for_writeback = 1;
- 		__jbd2_journal_file_buffer(jh, transaction, BJ_Forget);
- 		spin_unlock(&journal->j_list_lock);
- 	}
- 
- 	jbd_unlock_bh_state(bh);
- 	__brelse(bh);
-+	if (wait_for_writeback)
-+		wait_on_buffer(bh);
- drop:
- 	if (drop_reserve) {
- 		/* no need to reserve log space for this block -bzzz */
--- 
-2.51.0
-
+Thanks for your report:)
+>
+> Hauke
 
