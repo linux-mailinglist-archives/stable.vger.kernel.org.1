@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-188578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1104FBF878B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38716BF8595
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C3F53A999D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5D90461545
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290751FF7BC;
-	Tue, 21 Oct 2025 20:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C84272E7C;
+	Tue, 21 Oct 2025 19:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDxPP3RK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4QEFj/G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BB0350A07;
-	Tue, 21 Oct 2025 20:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5C02737E7;
+	Tue, 21 Oct 2025 19:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076852; cv=none; b=QUgaBybJjQZwCTkm13OuHADTReI1FAg5TgymBe9mcAARcKaXZ941hwHR4nkdDNHSCfe+oVmDvpEX18iAm5A3uWJANc3PqhLp1EJe3nNYO1eN7AyUl4qqcruv+a/RWkgtVT5GKp521OT6cXKZPZKdnq+RDllJ6AVMuLG+SSfCfTM=
+	t=1761076457; cv=none; b=rPJVBAtGaJwyMIyaeNX81aQj5dgVTcCOgR/eNkSCqmutBmPjr85ex/IxOZ9xrsswdx+/PXCHbp6Sh85ro+Iy+fR+iJNjm0WDWqLU1/DvUkqrPuMPI3e0ZkzQGrV7Z28GzaWL/fkcgOmRPKGr7It1ukrS3imkU/ac1DZA1wHsCno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076852; c=relaxed/simple;
-	bh=4Tdd5lf/uPUVV2ez89JeYhgnIjLSgBZQ7ZuXvmEIgaI=;
+	s=arc-20240116; t=1761076457; c=relaxed/simple;
+	bh=xcpDKlqExEsh2Ug+tkuLx9TBGPn6fWtp7XumeflEqxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chc3hZ1WGgLXtKcKDQvgI0kKletUzCmJqZhh+r1bPWtw/8rPWnofEDPUTcgFVTXZjCbEICxeEWajx9T8uvIBs8Y8OwX+dj2Aer/H1148dMAwO0RgmGQGA8POEuIUzdHlNeg50guj0KTYNHqjiGKvlYy7pGiDghN3IuQwNv+heF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDxPP3RK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BE6C4CEF1;
-	Tue, 21 Oct 2025 20:00:52 +0000 (UTC)
+	 MIME-Version; b=JJmHnMPqW88pXpIrzC1rmnQDl0YF0REuHg6Qasr+g+xnmo7W5/tE59YROkt7fKZ432randnQE6A/wh4hvYQm6e+NIQJTFUeaxQ9sSn4zI1y4m60i7z7CsFqIJJuAQb1ITWqWQlorS4VctFcHpZtBU639f9dJp7YtezfkkcGmfbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4QEFj/G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C551BC4CEF7;
+	Tue, 21 Oct 2025 19:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076852;
-	bh=4Tdd5lf/uPUVV2ez89JeYhgnIjLSgBZQ7ZuXvmEIgaI=;
+	s=korg; t=1761076457;
+	bh=xcpDKlqExEsh2Ug+tkuLx9TBGPn6fWtp7XumeflEqxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UDxPP3RKep+MuDbJNHC4+WpKQ6EAd8bfsPEML3c8uVSJZeN4vBQX63fu5LdTiU2s5
-	 3YWXGgy+FC7SKf2MTl6O/mmOSgyM4CwJggT4xm/I4SxmItrCWSTuPnMvcUcDr/rdNb
-	 cZV5PL4aP/CyXVaBq0CNflUFvAmOkCT2a+K/sibo=
+	b=J4QEFj/GqZvlx1FC3A/fsTpLdGhCgbbS3G28FzpQ8sCJxTOEiFWi4tThg+XETXch6
+	 m1IfMgi2aAededeOqu7XYgEkoDiKLxTTAZZXZPgFFpuUfuQJ4fWtl68vMpJGwqRiVx
+	 kUjWnFxlpzlaycmAZLbLhOBp1nFnVCVJtNlhVvL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
+	Linmao Li <lilinmao@kylinos.cn>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/136] tls: trim encrypted message to match the plaintext on short splice
-Date: Tue, 21 Oct 2025 21:50:47 +0200
-Message-ID: <20251021195037.399435126@linuxfoundation.org>
+Subject: [PATCH 6.6 039/105] r8169: fix packet truncation after S4 resume on RTL8168H/RTL8111H
+Date: Tue, 21 Oct 2025 21:50:48 +0200
+Message-ID: <20251021195022.617605046@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Linmao Li <lilinmao@kylinos.cn>
 
-[ Upstream commit ce5af41e3234425a40974696682163edfd21128c ]
+[ Upstream commit 70f92ab97042f243e1c8da1c457ff56b9b3e49f1 ]
 
-During tls_sw_sendmsg_locked, we pre-allocate the encrypted message
-for the size we're expecting to send during the current iteration, but
-we may end up sending less, for example when splicing: if we're
-getting the data from small fragments of memory, we may fill up all
-the slots in the skmsg with less data than expected.
+After resume from S4 (hibernate), RTL8168H/RTL8111H truncates incoming
+packets. Packet captures show messages like "IP truncated-ip - 146 bytes
+missing!".
 
-In this case, we need to trim the encrypted message to only the length
-we actually need, to avoid pushing uninitialized bytes down the
-underlying TCP socket.
+The issue is caused by RxConfig not being properly re-initialized after
+resume. Re-initializing the RxConfig register before the chip
+re-initialization sequence avoids the truncation and restores correct
+packet reception.
 
-Fixes: fe1e81d4f73b ("tls/sw: Support MSG_SPLICE_PAGES")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/66a0ae99c9efc15f88e9e56c1f58f902f442ce86.1760432043.git.sd@queasysnail.net
+This follows the same pattern as commit ef9da46ddef0 ("r8169: fix data
+corruption issue on RTL8402").
+
+Fixes: 6e1d0b898818 ("r8169:add support for RTL8168H and RTL8107E")
+Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20251009122549.3955845-1-lilinmao@kylinos.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index f46550b96061e..aac685daf66c4 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1112,8 +1112,11 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
- 				goto send_end;
- 			tls_ctx->pending_open_record_frags = true;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 5af932a5e70c4..3b90f257e94f8 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4919,8 +4919,9 @@ static int rtl8169_resume(struct device *device)
+ 	if (!device_may_wakeup(tp_to_dev(tp)))
+ 		clk_prepare_enable(tp->clk);
  
--			if (sk_msg_full(msg_pl))
-+			if (sk_msg_full(msg_pl)) {
- 				full_record = true;
-+				sk_msg_trim(sk, msg_en,
-+					    msg_pl->sg.size + prot->overhead_size);
-+			}
+-	/* Reportedly at least Asus X453MA truncates packets otherwise */
+-	if (tp->mac_version == RTL_GIGA_MAC_VER_37)
++	/* Some chip versions may truncate packets without this initialization */
++	if (tp->mac_version == RTL_GIGA_MAC_VER_37 ||
++	    tp->mac_version == RTL_GIGA_MAC_VER_46)
+ 		rtl_init_rxcfg(tp);
  
- 			if (full_record || eor)
- 				goto copied;
+ 	return rtl8169_runtime_resume(device);
 -- 
 2.51.0
 
