@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-188647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC197BF8857
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B03BF8866
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6735919C4E56
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:05:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7C76C4FBE43
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E852277C81;
-	Tue, 21 Oct 2025 20:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1261A00CE;
+	Tue, 21 Oct 2025 20:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skIskRCk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvPqTl/Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C2C1A3029;
-	Tue, 21 Oct 2025 20:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14767350A0D;
+	Tue, 21 Oct 2025 20:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077072; cv=none; b=T8jH+ZO3YTRuzeQPFBzGlLSo/Ony5IoAwmCu4Ww2pEQvPTk0yAf5Czs608k8bz2r2CPSokOdX7nL7EDyv4RB47Uenffz4HuwEGjD2Fyiu8b2LspmieGj3yVMsXwI5szs/DWQHOKEbfA2EfkrdR/PFGVpKVARfijHS5/0/LzIOdY=
+	t=1761077079; cv=none; b=a9nJPIO3H4sJQmvL67JMDv1/44Ika72v9g077/9GyeTMJU4s3q7z8Zvd7HbLj8U0GR5E1V8pMCYqtQCeMXAqEUmals1qapRA1NNvtxGoZOUt/5V/hlGVOBlv4xA47EBBYL62Lsi8G+/95xXQVEOfOCu/aQhMVdqQuAeth9UAkcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077072; c=relaxed/simple;
-	bh=O3mxsBAZxow9BcL3rHQ57HilQ5vaUZDHKES1Pnvd8XQ=;
+	s=arc-20240116; t=1761077079; c=relaxed/simple;
+	bh=/hUFGAC0TVC/geyMV5dQoEvVDt3I9zRlXX5YZiCFtYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hgvtQs+t1OpkJIfiGTWfxbmv0rSmGKGdM2pyQjPFl+T5lRlsLr26g0yWoilfcDix8M7yhWW5KJu/yFSBRKY+JDHB4fMT3n9r/NQlhinvMETGnBhkFIafEqMjoaCUArYng+0CZMxLOgG54c7Uj+bw4hYRkmAqt7MiiTU0StVpywg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skIskRCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FBB9C4CEF1;
-	Tue, 21 Oct 2025 20:04:31 +0000 (UTC)
+	 MIME-Version; b=fXcQNkhg/d2yYQ+YO86lYgNfhB5H78dGZ4J6eI2Rfq8n8diAUIckws7zQAwWTQ1RJW2MAFdBwAdU3akdKWyuTZc+TMuQrjuP4orIgfCjbP7Lyna0auZ2EVE6Mt+KjSm3o78E+0yFRJcpLPZ5ThK4O94Yi94M+dqj6VGAAbWcTSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvPqTl/Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933CBC4CEF1;
+	Tue, 21 Oct 2025 20:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077071;
-	bh=O3mxsBAZxow9BcL3rHQ57HilQ5vaUZDHKES1Pnvd8XQ=;
+	s=korg; t=1761077079;
+	bh=/hUFGAC0TVC/geyMV5dQoEvVDt3I9zRlXX5YZiCFtYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skIskRCk0OD1oLzaBAULAT/4Yt8p3D6xTDl+2hTosEUQ1RtRZosHsl1jnjfgUYSQE
-	 SkzPRYIVaYlaHvvb6n+Nv+EN50G8J1L5tr5IEDJqj1seUdAHQffG5EJbEE8W5q886I
-	 X6Oi7QHji/VGcp/WxBlAnZmaI2nrRcq9Qvw0eM4Q=
+	b=dvPqTl/QILro9agpEN3DOhHgf2c6GySaB3lcIoYnG7NRVgifIeb1WPt91RvOuwB36
+	 0AQJzU6Sw9Yl4TnSRXOAQ2lLu70dZC+ggFxWlvhFWwXKiB8EZdc/pryl3ZF1n84JL1
+	 VGPE7y9KUGukrpSHzJTOTlGjoxxef2AQHedxkWbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/136] ipv4: adopt dst_dev, skb_dst_dev and skb_dst_dev_net[_rcu]
-Date: Tue, 21 Oct 2025 21:51:54 +0200
-Message-ID: <20251021195039.013449244@linuxfoundation.org>
+Subject: [PATCH 6.12 128/136] mptcp: Call dst_release() in mptcp_active_enable().
+Date: Tue, 21 Oct 2025 21:51:56 +0200
+Message-ID: <20251021195039.062650307@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
 References: <20251021195035.953989698@linuxfoundation.org>
@@ -67,382 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit a74fc62eec155ca5a6da8ff3856f3dc87fe24558 ]
+[ Upstream commit 108a86c71c93ff28087994e6107bc99ebe336629 ]
 
-Use the new helpers as a first step to deal with
-potential dst->dev races.
+mptcp_active_enable() calls sk_dst_get(), which returns dst with its
+refcount bumped, but forgot dst_release().
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250630121934.3399505-8-edumazet@google.com
+Let's add missing dst_release().
+
+Cc: stable@vger.kernel.org
+Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250916214758.650211-7-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: 833d4313bc1e ("mptcp: reset blackhole on success with non-loopback ifaces")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/inet_hashtables.h |    2 +-
- include/net/ip.h              |   11 ++++++-----
- include/net/route.h           |    2 +-
- net/ipv4/icmp.c               |   24 +++++++++++++-----------
- net/ipv4/igmp.c               |    2 +-
- net/ipv4/ip_fragment.c        |    2 +-
- net/ipv4/ip_output.c          |    6 +++---
- net/ipv4/ip_vti.c             |    4 ++--
- net/ipv4/netfilter.c          |    4 ++--
- net/ipv4/route.c              |    8 ++++----
- net/ipv4/tcp_fastopen.c       |    4 +++-
- net/ipv4/tcp_ipv4.c           |    2 +-
- net/ipv4/tcp_metrics.c        |    8 ++++----
- net/ipv4/xfrm4_output.c       |    2 +-
- 14 files changed, 43 insertions(+), 38 deletions(-)
+ net/mptcp/ctrl.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -492,7 +492,7 @@ static inline struct sock *__inet_lookup
- 					     const int sdif,
- 					     bool *refcounted)
- {
--	struct net *net = dev_net_rcu(skb_dst(skb)->dev);
-+	struct net *net = skb_dst_dev_net_rcu(skb);
- 	const struct iphdr *iph = ip_hdr(skb);
- 	struct sock *sk;
+--- a/net/mptcp/ctrl.c
++++ b/net/mptcp/ctrl.c
+@@ -385,6 +385,8 @@ void mptcp_active_enable(struct sock *sk
  
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -475,7 +475,7 @@ static inline unsigned int ip_dst_mtu_ma
- 
- 	rcu_read_lock();
- 
--	net = dev_net_rcu(dst->dev);
-+	net = dev_net_rcu(dst_dev(dst));
- 	if (READ_ONCE(net->ipv4.sysctl_ip_fwd_use_pmtu) ||
- 	    ip_mtu_locked(dst) ||
- 	    !forwarding) {
-@@ -489,7 +489,7 @@ static inline unsigned int ip_dst_mtu_ma
- 	if (mtu)
- 		goto out;
- 
--	mtu = READ_ONCE(dst->dev->mtu);
-+	mtu = READ_ONCE(dst_dev(dst)->mtu);
- 
- 	if (unlikely(ip_mtu_locked(dst))) {
- 		if (rt->rt_uses_gateway && mtu > 576)
-@@ -509,16 +509,17 @@ out:
- static inline unsigned int ip_skb_dst_mtu(struct sock *sk,
- 					  const struct sk_buff *skb)
- {
-+	const struct dst_entry *dst = skb_dst(skb);
- 	unsigned int mtu;
- 
- 	if (!sk || !sk_fullsock(sk) || ip_sk_use_pmtu(sk)) {
- 		bool forwarding = IPCB(skb)->flags & IPSKB_FORWARDED;
- 
--		return ip_dst_mtu_maybe_forward(skb_dst(skb), forwarding);
-+		return ip_dst_mtu_maybe_forward(dst, forwarding);
+ 		if (dst && dst->dev && (dst->dev->flags & IFF_LOOPBACK))
+ 			atomic_set(&pernet->active_disable_times, 0);
++
++		dst_release(dst);
  	}
- 
--	mtu = min(READ_ONCE(skb_dst(skb)->dev->mtu), IP_MAX_MTU);
--	return mtu - lwtunnel_headroom(skb_dst(skb)->lwtstate, mtu);
-+	mtu = min(READ_ONCE(dst_dev(dst)->mtu), IP_MAX_MTU);
-+	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
  }
  
- struct dst_metrics *ip_fib_metrics_init(struct nlattr *fc_mx, int fc_mx_len,
---- a/include/net/route.h
-+++ b/include/net/route.h
-@@ -369,7 +369,7 @@ static inline int ip4_dst_hoplimit(const
- 		const struct net *net;
- 
- 		rcu_read_lock();
--		net = dev_net_rcu(dst->dev);
-+		net = dev_net_rcu(dst_dev(dst));
- 		hoplimit = READ_ONCE(net->ipv4.sysctl_ip_default_ttl);
- 		rcu_read_unlock();
- 	}
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -311,18 +311,20 @@ static bool icmpv4_xrlim_allow(struct ne
- {
- 	struct dst_entry *dst = &rt->dst;
- 	struct inet_peer *peer;
-+	struct net_device *dev;
- 	bool rc = true;
- 
- 	if (!apply_ratelimit)
- 		return true;
- 
- 	/* No rate limit on loopback */
--	if (dst->dev && (dst->dev->flags&IFF_LOOPBACK))
-+	dev = dst_dev(dst);
-+	if (dev && (dev->flags & IFF_LOOPBACK))
- 		goto out;
- 
- 	rcu_read_lock();
- 	peer = inet_getpeer_v4(net->ipv4.peers, fl4->daddr,
--			       l3mdev_master_ifindex_rcu(dst->dev));
-+			       l3mdev_master_ifindex_rcu(dev));
- 	rc = inet_peer_xrlim_allow(peer,
- 				   READ_ONCE(net->ipv4.sysctl_icmp_ratelimit));
- 	rcu_read_unlock();
-@@ -468,13 +470,13 @@ out_bh_enable:
-  */
- static struct net_device *icmp_get_route_lookup_dev(struct sk_buff *skb)
- {
--	struct net_device *route_lookup_dev = NULL;
-+	struct net_device *dev = skb->dev;
-+	const struct dst_entry *dst;
- 
--	if (skb->dev)
--		route_lookup_dev = skb->dev;
--	else if (skb_dst(skb))
--		route_lookup_dev = skb_dst(skb)->dev;
--	return route_lookup_dev;
-+	if (dev)
-+		return dev;
-+	dst = skb_dst(skb);
-+	return dst ? dst_dev(dst) : NULL;
- }
- 
- static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
-@@ -873,7 +875,7 @@ static enum skb_drop_reason icmp_unreach
- 	struct net *net;
- 	u32 info = 0;
- 
--	net = dev_net_rcu(skb_dst(skb)->dev);
-+	net = skb_dst_dev_net_rcu(skb);
- 
- 	/*
- 	 *	Incomplete header ?
-@@ -1016,7 +1018,7 @@ static enum skb_drop_reason icmp_echo(st
- 	struct icmp_bxm icmp_param;
- 	struct net *net;
- 
--	net = dev_net_rcu(skb_dst(skb)->dev);
-+	net = skb_dst_dev_net_rcu(skb);
- 	/* should there be an ICMP stat for ignored echos? */
- 	if (READ_ONCE(net->ipv4.sysctl_icmp_echo_ignore_all))
- 		return SKB_NOT_DROPPED_YET;
-@@ -1186,7 +1188,7 @@ static enum skb_drop_reason icmp_timesta
- 	return SKB_NOT_DROPPED_YET;
- 
- out_err:
--	__ICMP_INC_STATS(dev_net_rcu(skb_dst(skb)->dev), ICMP_MIB_INERRORS);
-+	__ICMP_INC_STATS(skb_dst_dev_net_rcu(skb), ICMP_MIB_INERRORS);
- 	return SKB_DROP_REASON_PKT_TOO_SMALL;
- }
- 
---- a/net/ipv4/igmp.c
-+++ b/net/ipv4/igmp.c
-@@ -424,7 +424,7 @@ static int igmpv3_sendpack(struct sk_buf
- 
- 	pig->csum = ip_compute_csum(igmp_hdr(skb), igmplen);
- 
--	return ip_local_out(dev_net(skb_dst(skb)->dev), skb->sk, skb);
-+	return ip_local_out(skb_dst_dev_net(skb), skb->sk, skb);
- }
- 
- static int grec_size(struct ip_mc_list *pmc, int type, int gdel, int sdel)
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -488,7 +488,7 @@ out_fail:
- /* Process an incoming IP datagram fragment. */
- int ip_defrag(struct net *net, struct sk_buff *skb, u32 user)
- {
--	struct net_device *dev = skb->dev ? : skb_dst(skb)->dev;
-+	struct net_device *dev = skb->dev ? : skb_dst_dev(skb);
- 	int vif = l3mdev_master_ifindex_rcu(dev);
- 	struct ipq *qp;
- 
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -117,7 +117,7 @@ int __ip_local_out(struct net *net, stru
- 	skb->protocol = htons(ETH_P_IP);
- 
- 	return nf_hook(NFPROTO_IPV4, NF_INET_LOCAL_OUT,
--		       net, sk, skb, NULL, skb_dst(skb)->dev,
-+		       net, sk, skb, NULL, skb_dst_dev(skb),
- 		       dst_output);
- }
- 
-@@ -200,7 +200,7 @@ static int ip_finish_output2(struct net
- {
- 	struct dst_entry *dst = skb_dst(skb);
- 	struct rtable *rt = dst_rtable(dst);
--	struct net_device *dev = dst->dev;
-+	struct net_device *dev = dst_dev(dst);
- 	unsigned int hh_len = LL_RESERVED_SPACE(dev);
- 	struct neighbour *neigh;
- 	bool is_v6gw = false;
-@@ -426,7 +426,7 @@ int ip_mc_output(struct net *net, struct
- 
- int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	struct net_device *dev = skb_dst(skb)->dev, *indev = skb->dev;
-+	struct net_device *dev = skb_dst_dev(skb), *indev = skb->dev;
- 
- 	skb->dev = dev;
- 	skb->protocol = htons(ETH_P_IP);
---- a/net/ipv4/ip_vti.c
-+++ b/net/ipv4/ip_vti.c
-@@ -229,7 +229,7 @@ static netdev_tx_t vti_xmit(struct sk_bu
- 		goto tx_error_icmp;
- 	}
- 
--	tdev = dst->dev;
-+	tdev = dst_dev(dst);
- 
- 	if (tdev == dev) {
- 		dst_release(dst);
-@@ -259,7 +259,7 @@ static netdev_tx_t vti_xmit(struct sk_bu
- xmit:
- 	skb_scrub_packet(skb, !net_eq(tunnel->net, dev_net(dev)));
- 	skb_dst_set(skb, dst);
--	skb->dev = skb_dst(skb)->dev;
-+	skb->dev = skb_dst_dev(skb);
- 
- 	err = dst_output(tunnel->net, skb->sk, skb);
- 	if (net_xmit_eval(err) == 0)
---- a/net/ipv4/netfilter.c
-+++ b/net/ipv4/netfilter.c
-@@ -20,12 +20,12 @@
- /* route_me_harder function, used by iptable_nat, iptable_mangle + ip_queue */
- int ip_route_me_harder(struct net *net, struct sock *sk, struct sk_buff *skb, unsigned int addr_type)
- {
-+	struct net_device *dev = skb_dst_dev(skb);
- 	const struct iphdr *iph = ip_hdr(skb);
- 	struct rtable *rt;
- 	struct flowi4 fl4 = {};
- 	__be32 saddr = iph->saddr;
- 	__u8 flags;
--	struct net_device *dev = skb_dst(skb)->dev;
- 	struct flow_keys flkeys;
- 	unsigned int hh_len;
- 
-@@ -74,7 +74,7 @@ int ip_route_me_harder(struct net *net,
- #endif
- 
- 	/* Change in oif may mean change in hh_len. */
--	hh_len = skb_dst(skb)->dev->hard_header_len;
-+	hh_len = skb_dst_dev(skb)->hard_header_len;
- 	if (skb_headroom(skb) < hh_len &&
- 	    pskb_expand_head(skb, HH_DATA_ALIGN(hh_len - skb_headroom(skb)),
- 				0, GFP_ATOMIC))
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -413,7 +413,7 @@ static struct neighbour *ipv4_neigh_look
- 					   const void *daddr)
- {
- 	const struct rtable *rt = container_of(dst, struct rtable, dst);
--	struct net_device *dev = dst->dev;
-+	struct net_device *dev = dst_dev(dst);
- 	struct neighbour *n;
- 
- 	rcu_read_lock();
-@@ -440,7 +440,7 @@ static struct neighbour *ipv4_neigh_look
- static void ipv4_confirm_neigh(const struct dst_entry *dst, const void *daddr)
- {
- 	const struct rtable *rt = container_of(dst, struct rtable, dst);
--	struct net_device *dev = dst->dev;
-+	struct net_device *dev = dst_dev(dst);
- 	const __be32 *pkey = daddr;
- 
- 	if (rt->rt_gw_family == AF_INET) {
-@@ -1025,7 +1025,7 @@ static void __ip_rt_update_pmtu(struct r
- 		return;
- 
- 	rcu_read_lock();
--	net = dev_net_rcu(dst->dev);
-+	net = dev_net_rcu(dst_dev(dst));
- 	if (mtu < net->ipv4.ip_rt_min_pmtu) {
- 		lock = true;
- 		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
-@@ -1323,7 +1323,7 @@ static unsigned int ipv4_default_advmss(
- 	struct net *net;
- 
- 	rcu_read_lock();
--	net = dev_net_rcu(dst->dev);
-+	net = dev_net_rcu(dst_dev(dst));
- 	advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
- 				   net->ipv4.ip_rt_min_advmss);
- 	rcu_read_unlock();
---- a/net/ipv4/tcp_fastopen.c
-+++ b/net/ipv4/tcp_fastopen.c
-@@ -558,6 +558,7 @@ bool tcp_fastopen_active_should_disable(
- void tcp_fastopen_active_disable_ofo_check(struct sock *sk)
- {
- 	struct tcp_sock *tp = tcp_sk(sk);
-+	struct net_device *dev;
- 	struct dst_entry *dst;
- 	struct sk_buff *skb;
- 
-@@ -575,7 +576,8 @@ void tcp_fastopen_active_disable_ofo_che
- 	} else if (tp->syn_fastopen_ch &&
- 		   atomic_read(&sock_net(sk)->ipv4.tfo_active_disable_times)) {
- 		dst = sk_dst_get(sk);
--		if (!(dst && dst->dev && (dst->dev->flags & IFF_LOOPBACK)))
-+		dev = dst ? dst_dev(dst) : NULL;
-+		if (!(dev && (dev->flags & IFF_LOOPBACK)))
- 			atomic_set(&sock_net(sk)->ipv4.tfo_active_disable_times, 0);
- 		dst_release(dst);
- 	}
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -786,7 +786,7 @@ static void tcp_v4_send_reset(const stru
- 	arg.iov[0].iov_base = (unsigned char *)&rep;
- 	arg.iov[0].iov_len  = sizeof(rep.th);
- 
--	net = sk ? sock_net(sk) : dev_net_rcu(skb_dst(skb)->dev);
-+	net = sk ? sock_net(sk) : skb_dst_dev_net_rcu(skb);
- 
- 	/* Invalid TCP option size or twice included auth */
- 	if (tcp_parse_auth_options(tcp_hdr(skb), &md5_hash_location, &aoh))
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -166,11 +166,11 @@ static struct tcp_metrics_block *tcpm_ne
- 					  unsigned int hash)
- {
- 	struct tcp_metrics_block *tm;
--	struct net *net;
- 	bool reclaim = false;
-+	struct net *net;
- 
- 	spin_lock_bh(&tcp_metrics_lock);
--	net = dev_net_rcu(dst->dev);
-+	net = dev_net_rcu(dst_dev(dst));
- 
- 	/* While waiting for the spin-lock the cache might have been populated
- 	 * with this entry and so we have to check again.
-@@ -273,7 +273,7 @@ static struct tcp_metrics_block *__tcp_g
- 		return NULL;
- 	}
- 
--	net = dev_net_rcu(dst->dev);
-+	net = dev_net_rcu(dst_dev(dst));
- 	hash ^= net_hash_mix(net);
- 	hash = hash_32(hash, tcp_metrics_hash_log);
- 
-@@ -318,7 +318,7 @@ static struct tcp_metrics_block *tcp_get
- 	else
- 		return NULL;
- 
--	net = dev_net_rcu(dst->dev);
-+	net = dev_net_rcu(dst_dev(dst));
- 	hash ^= net_hash_mix(net);
- 	hash = hash_32(hash, tcp_metrics_hash_log);
- 
---- a/net/ipv4/xfrm4_output.c
-+++ b/net/ipv4/xfrm4_output.c
-@@ -31,7 +31,7 @@ static int __xfrm4_output(struct net *ne
- int xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
- 	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
--			    net, sk, skb, skb->dev, skb_dst(skb)->dev,
-+			    net, sk, skb, skb->dev, skb_dst_dev(skb),
- 			    __xfrm4_output,
- 			    !(IPCB(skb)->flags & IPSKB_REROUTED));
- }
 
 
 
