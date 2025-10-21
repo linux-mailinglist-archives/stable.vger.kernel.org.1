@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-188664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906DFBF8884
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:05:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F5E6BF8833
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7F5F94FA3B0
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:05:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67E85582F0B
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6DE265CDD;
-	Tue, 21 Oct 2025 20:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFD423D7E8;
+	Tue, 21 Oct 2025 20:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5WPuQvf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1nPWKFX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52EC23D7E8;
-	Tue, 21 Oct 2025 20:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93BB1E1E04;
+	Tue, 21 Oct 2025 20:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077126; cv=none; b=bh8YqKlt/oVUpxrLjP4ovS43EQMx4QJ32qBB8I74yAl4CzX0/g1pKz7Pt1upaDIPENTCENJSHQRr7BWd5uBlsgPXJL4FtmZSfO+HEG1wPvY1/kdAPaKXuhOGA5At8Vc1Ck7xrDtOMWL9eGDtvs77T8IGCwkHxNDA0S+NaZlp+/4=
+	t=1761076986; cv=none; b=tSLqtTI0mtBuSODuGYqtm8RKzweepZPdGjHUhRHlDL/3/IWIF158+QdKLRPnGk53oSQZJ31bc6gW8sCmmkHGtJfkzuBffVPbiKscDMgkw2Lkxek9BaDeHIJUtWItpqpzhoQTIZKKhscjYd1OuN9DgCxCSvVWuJJSndgfJtzqc7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077126; c=relaxed/simple;
-	bh=J3/lGoeOKPWcyT6SB44c/NLzl+dB+vwQzwBqYngwYDM=;
+	s=arc-20240116; t=1761076986; c=relaxed/simple;
+	bh=n4jNkTAv5/VgpqfS5/Ck/yBu7OCscmUkV/xl7lsT/OM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bvUsKiT+t/wXAH3BANOgeUmERjmxUMf3ALac9OERqetX2LzhI6WwiKg85LE1x//YyEMegjc+QZMU9tTbPIkLCk/A53WyYlDX2Ga218CedSXCYbYnULu/1JvdELRftLAIiEwpd4OcvaWCvd8L2hi2ToSrOvNxNCPOrrczY51yg1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5WPuQvf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20224C4CEF1;
-	Tue, 21 Oct 2025 20:05:25 +0000 (UTC)
+	 MIME-Version; b=sNZu0DsCtsfnsqJbNuoffvJ0j4NvBq3Icqkf5A1lRyaBCgbadrjizGyhoCcx55TaYjFDzqr3dWS90byQzB6aH8wCw6+a+cKrmVkW4IqEfc7l1eC5203y8lbkUjLOYh2zOt9vGBEWre7Ub/LR03a3NrmtPxu5o9MUa609e5RdwdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1nPWKFX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D47C4CEF1;
+	Tue, 21 Oct 2025 20:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077126;
-	bh=J3/lGoeOKPWcyT6SB44c/NLzl+dB+vwQzwBqYngwYDM=;
+	s=korg; t=1761076986;
+	bh=n4jNkTAv5/VgpqfS5/Ck/yBu7OCscmUkV/xl7lsT/OM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5WPuQvfpi3Sg3/bkNY6fqiSXpxjA42/9v85/eKssMZDImOpgojBDUeYCu4T8LQDj
-	 j8BgA5u61LZxHpgNzMXAoAdGi9hdyoAoVfVP5yVvA8Xo9jWdXwGCW2jtLO43HtTZXJ
-	 NnMBiUDXZ+dJ8D+9RDDn+MqOGKIXPgObjbhyCfdk=
+	b=F1nPWKFX+y5oFTUFgGu2QZUhIyl1CuuG49HkN8ZSMLwg8YQIRZAd0fLbcvnFJTTW9
+	 l7Leyy71RdM9cq5sh6Wk8+ZzFNSjT6EbDqSimJ+fD+vLrHNgqG5Fe5iMoNMIMlGaQj
+	 uvtbh6yrxkNpHa16bvyIns5u81RPbm5CviC5KD+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xing Guo <higuoxing@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/136] selftests: arg_parsing: Ensure data is flushed to disk before reading.
-Date: Tue, 21 Oct 2025 21:51:20 +0200
-Message-ID: <20251021195038.171447171@linuxfoundation.org>
+Subject: [PATCH 6.12 093/136] nvme/tcp: handle tls partially sent records in write_space()
+Date: Tue, 21 Oct 2025 21:51:21 +0200
+Message-ID: <20251021195038.194730851@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
 References: <20251021195035.953989698@linuxfoundation.org>
@@ -66,39 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xing Guo <higuoxing@gmail.com>
+From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 
-[ Upstream commit 0c1999ed33722f85476a248186d6e0eb2bf3dd2a ]
+[ Upstream commit 5a869d017793399fd1d2609ff27e900534173eb3 ]
 
-test_parse_test_list_file writes some data to
-/tmp/bpf_arg_parsing_test.XXXXXX and parse_test_list_file() will read
-the data back.  However, after writing data to that file, we forget to
-call fsync() and it's causing testing failure in my laptop.  This patch
-helps fix it by adding the missing fsync() call.
+With TLS enabled, records that are encrypted and appended to TLS TX
+list can fail to see a retry if the underlying TCP socket is busy, for
+example, hitting an EAGAIN from tcp_sendmsg_locked(). This is not known
+to the NVMe TCP driver, as the TLS layer successfully generated a record.
 
-Fixes: 64276f01dce8 ("selftests/bpf: Test_progs can read test lists from file")
-Signed-off-by: Xing Guo <higuoxing@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20251016035330.3217145-1-higuoxing@gmail.com
+Typically, the TLS write_space() callback would ensure such records are
+retried, but in the NVMe TCP Host driver, write_space() invokes
+nvme_tcp_write_space(). This causes a partially sent record in the TLS TX
+list to timeout after not being retried.
+
+This patch fixes the above by calling queue->write_space(), which calls
+into the TLS layer to retry any pending records.
+
+Fixes: be8e82caa685 ("nvme-tcp: enable TLS handshake upcall")
+Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/arg_parsing.c | 3 +++
+ drivers/nvme/host/tcp.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/arg_parsing.c b/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
-index fbf0d9c2f58b3..e27d66b75fb1f 100644
---- a/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
-+++ b/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
-@@ -144,6 +144,9 @@ static void test_parse_test_list_file(void)
- 	if (!ASSERT_OK(ferror(fp), "prepare tmp"))
- 		goto out_fclose;
- 
-+	if (!ASSERT_OK(fsync(fileno(fp)), "fsync tmp"))
-+		goto out_fclose;
-+
- 	init_test_filter_set(&set);
- 
- 	if (!ASSERT_OK(parse_test_list_file(tmpfile, &set, true), "parse file"))
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 83a6b18b01ada..77df3432dfb78 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1075,6 +1075,9 @@ static void nvme_tcp_write_space(struct sock *sk)
+ 	queue = sk->sk_user_data;
+ 	if (likely(queue && sk_stream_is_writeable(sk))) {
+ 		clear_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
++		/* Ensure pending TLS partial records are retried */
++		if (nvme_tcp_queue_tls(queue))
++			queue->write_space(sk);
+ 		queue_work_on(queue->io_cpu, nvme_tcp_wq, &queue->io_work);
+ 	}
+ 	read_unlock_bh(&sk->sk_callback_lock);
 -- 
 2.51.0
 
