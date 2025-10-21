@@ -1,343 +1,251 @@
-Return-Path: <stable+bounces-188292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B028DBF4AD8
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 08:02:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E534BF4BC9
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 08:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20576400D17
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 06:02:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 710C74E239D
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 06:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7EB20102B;
-	Tue, 21 Oct 2025 06:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A207D267F58;
+	Tue, 21 Oct 2025 06:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hinwa3Ks"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nbzpM9sn"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BEE1F5EA;
-	Tue, 21 Oct 2025 06:02:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF5C264F99
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 06:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761026561; cv=none; b=mrrONX81mtADxPUabBfxeuyWObmWtXvRa/XP2xfD2fOOgyOYMlPdieCBhod3yrwuF6vF27TbU0Z2zpsWvZP/2MALcw0dM0qs0hg86uWV6eep+V/z/w4u/07/xGcSWPUONcCu0/hVexlYlATMxMTHBNk5QaJ5jrJgGjWQxnRk5w0=
+	t=1761029313; cv=none; b=koe6IyY9AYU72Zkj+L92ntYEslMPx/D1x4D0p3Clj+0zVbYCxBQm83aT7I2XyZ3dgHmWoFReuYui6OWtdDz2adGU1kCTyjMdtuW0jhbkwXlww6aDosHtlTXlojSpHHnU5p33ilMsRc3MkOQGvN0bCDMW9njD/VrYhDpNmXlfmVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761026561; c=relaxed/simple;
-	bh=UtM24LBw0kofOTgc1QtR+H0svFZ+FPwtIYWVWuHPnnc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=OyOhHyfVD+BaXwIZneWEcEaK05ZjrzQJk5pwuRD6X/WqGVgu1SSj2omHLw7XEOaJxfMkadEWDNSBgKcEcJ9M2GeosBGgxQ8y9X4hGdX7QSiN8nsisxr90ath4tSMy9+elJ0lWr2rJxsgxRjTsV8klqh/FXU89erTIrx1zpi9XV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hinwa3Ks; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59L0b7Fc027573;
-	Tue, 21 Oct 2025 06:02:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IjvYYX
-	wFHBFwYJzsKvgtttHEn+x6uLowqynQy5g3kx0=; b=hinwa3KsGM6Ugf0T4po25h
-	fm8Z1031bkYEHfxtA2TlM8ZyEqduwXL1bl29mRUuzZODX6Mm2/q2IIIatf564/4K
-	i5k7bKK9oySQVhAjZswJwL90GvPXFCiyc/ilqszXSQIL2HIV6tIUCfP/RRd/okMq
-	O02W4wI2/UmOi+zcT384vUxKQ8WXNgRk2t+bQqM/nVKenl5Qt22tx9UAhn0nW/RQ
-	5j+sa+QI8/vspzbPzXmujXQxAKIOqxvIO7bd6OeZYSdy+4llX/yjsNF0IrMHc8p7
-	PLODIsTnevcTiFDcdUMemvcimrHaoMmE1oIaYGk1qMNhMvBgoz8gMfn8aWvffhFQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31rwajq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Oct 2025 06:02:27 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59L62Rlq023601;
-	Tue, 21 Oct 2025 06:02:27 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31rwajk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Oct 2025 06:02:27 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59L3vfTZ002926;
-	Tue, 21 Oct 2025 06:02:26 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqej93mh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Oct 2025 06:02:26 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59L62PZn9241520
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Oct 2025 06:02:25 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1355C5805D;
-	Tue, 21 Oct 2025 06:02:25 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DBFB658043;
-	Tue, 21 Oct 2025 06:02:19 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.240.251])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 21 Oct 2025 06:02:19 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1761029313; c=relaxed/simple;
+	bh=Yao5CLBIZBpqI8yZPYhEq0pLUsEI2cplrdc+D5Sg0x0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SlYJaOPkrO9KpmVM7YjzeAWiqTt5oNNjK8+rFwUizEiPMwDyyiPA4/9gQ+R1zBJ7vRS/sUqUUicajabXVZZ6BwuCfsRPYELYk87SsWL9s2r1ghbrjYx/LVs7SkxY1XGUxb+nUnY8rVDUKzzLo0ETsPd64GG4q6NGeiaNhhHvEtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nbzpM9sn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099EDC4CEFF
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 06:48:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761029313;
+	bh=Yao5CLBIZBpqI8yZPYhEq0pLUsEI2cplrdc+D5Sg0x0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nbzpM9snHIvTmCdgk9XL9kWjWJCsQb5xGylqoOW8ntqO3t7FM4ISonMrkKV4dld3A
+	 VIFDVegKvs7CJSY4P6rtkaSvsDGhzenf/UdAz+ArtErG7IhGAYNI2zKs3VZbP/YiOO
+	 VYjH1vdzNB6vb9K2xbNgDu1m77iYes8SuLsdcwfUCKAK6OX2XdJOtbXeO1/Qjt/kPC
+	 pNKOXERX1gBxKcEDKqDkO9xEqFURZnPtlEQpmEpY84uzMiBHTkVXv9HR0LBzQiEQKe
+	 T89qy9borWV5ZpPJu+lw7bTzYhjhw03Wo5HONjcSgG+hSzN7pK29D+vbqWgE5OeiJ3
+	 5xdnVXjYocYnQ==
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7847f4265e3so29138697b3.3
+        for <stable@vger.kernel.org>; Mon, 20 Oct 2025 23:48:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXLsKvhzyTzK5ymrVJKHzjVcg1hRHjsYjnkQhmEyMdA+IQ/Kmk3AgWpe7G0ByjUU6DgV3rINsg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5HeB/JYj+xH5zQVz8dWTOaqoljuMd2r8bscdjVLnso9v4RQaa
+	PfGyom2xdV8jdPej01DqOZQGjvApBKVdDqSgBEZW4lykOq+pHyeFBE++REHYPvibrhZ83ZkNRxC
+	L81ApusMrqu6pAlvd9/g3JmY37u8dC5EdOO0QWEEc1w==
+X-Google-Smtp-Source: AGHT+IEKwgU/k6+a6m9j5wLqPHqWi37Ymmn/fXH4mZwMQ6tpYpjsC1ZwqJENF/v+P8dGntZXlSsHbAcNq1qNWQU/s6E=
+X-Received: by 2002:a53:edc2:0:b0:63c:f5a6:f2de with SMTP id
+ 956f58d0204a3-63e1626c69amr9740357d50.64.1761029312099; Mon, 20 Oct 2025
+ 23:48:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: +
- crash-let-architecture-decide-crash-memory-export-to-iomem_resource.patch
- added to mm-nonmm-unstable branch
-From: Venkat <venkat88@linux.ibm.com>
-In-Reply-To: <20251016195042.D8570C4CEF9@smtp.kernel.org>
-Date: Tue, 21 Oct 2025 11:32:06 +0530
-Cc: mm-commits@vger.kernel.org, vgoyal@redhat.com, stable@vger.kernel.org,
-        rppt@kernel.org, ritesh.list@gmail.com,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>, dyoung@redhat.com,
-        bhe@redhat.com, Sourabh Jain <sourabhjain@linux.ibm.com>
+MIME-Version: 1.0
+References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
+ <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
+ <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
+ <CAMgjq7BD6SOgALj2jv2SVtNjWLJpT=1UhuaL=qxvDCMKUy68Hw@mail.gmail.com>
+ <CACePvbVEGgtTqkMPqsf69C7qUD52yVcC56POed8Pdt674Pn68A@mail.gmail.com>
+ <CACePvbWu0P+8Sv-sS7AnG+ESdnJdnFE_teC9NF9Rkn1HegQ9_Q@mail.gmail.com>
+ <CAMgjq7BJcxGzrnr+EeO6_ZC7dAn0_WmWn8DX8gSPfyYiY4S3Ug@mail.gmail.com> <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com>
+In-Reply-To: <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 20 Oct 2025 23:48:20 -0700
+X-Gmail-Original-Message-ID: <CACePvbWn1pAJg8xGfJFrWxpkJDakJA0GfgJc0W80EUYS6YhBAg@mail.gmail.com>
+X-Gm-Features: AS18NWDK_5ydoR83ck7SoROtH9BUHSuIRVHk1u1H4KWAOIdgu6-tq2E-NYuReAE
+Message-ID: <CACePvbWn1pAJg8xGfJFrWxpkJDakJA0GfgJc0W80EUYS6YhBAg@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mm, swap: do not perform synchronous discard during allocation
+To: Kairui Song <ryncsn@gmail.com>
+Cc: YoungJun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <14D10834-DD07-4F14-B182-6423B8C7A9BE@linux.ibm.com>
-References: <20251016195042.D8570C4CEF9@smtp.kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-X-Mailer: Apple Mail (2.3774.600.62)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: A8xGDCgOD79lJ0pB6mlVoh5MuZ10iX_C
-X-Proofpoint-GUID: KnRttpubXfkkPGgdspqaSsRxuHTgAe30
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX9RRvuCy6UJfT
- I/hS8dTyqpF7pwNw9sUhD3KVbRllbv83MZTBBJzSRRyuzeC4Iz6A5aiv8AQiPiEK70fovl7NxLW
- isT+sEXFxy0ouXGtkiucJnYLquJrtCCL6pZpMVf9Ci4JvS9v7DqFOuWFwBXLVps3ZPcbWOqhbAm
- d0/T+ehA9ab0SNot7yhVAly1y31y00z6z7gm6R7SObqJU7wY9EsbaFY9wNrdK/GrlsEeh1mrFjw
- W1WGMsWcCi7sQORV5wVcWYNkmCYr5Ece0hAlctuWjgRxQste5+QVgJyaq1h/P7DXLthahR7vEp/
- C2MKdmciCj60FNSfkR6T9jXNuLhTPoyQtDTg4ka2Rwsxuy00AhWOLAfUQNkXsY/r6ELB+o41Tba
- +c/fH5lW7t1HvhS1wxpSazVdNjIIiw==
-X-Authority-Analysis: v=2.4 cv=IJYPywvG c=1 sm=1 tr=0 ts=68f721f3 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=Z4Rwk6OoAAAA:8 a=20KFwNOVAAAA:8
- a=pGLkceISAAAA:8 a=qCpo0lJxKfPyk4X55hgA:9 a=QEXdDO2ut3YA:10
- a=HkZW87K1Qel5hWWM3VKY:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-20_07,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 clxscore=1011 suspectscore=0 spamscore=0
- bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
 
+On Wed, Oct 15, 2025 at 9:46=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Wed, Oct 15, 2025 at 2:24=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wr=
+ote:
+> >
+> > On Wed, Oct 15, 2025 at 12:00=E2=80=AFPM Chris Li <chrisl@kernel.org> w=
+rote:
+> > >
+> > > On Tue, Oct 14, 2025 at 2:27=E2=80=AFPM Chris Li <chrisl@kernel.org> =
+wrote:
+> > > >
+> > > > On Sun, Oct 12, 2025 at 9:49=E2=80=AFAM Kairui Song <ryncsn@gmail.c=
+om> wrote:
+> > > > > > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > > > > > index cb2392ed8e0e..0d1924f6f495 100644
+> > > > > > > --- a/mm/swapfile.c
+> > > > > > > +++ b/mm/swapfile.c
+> > > > > > > @@ -1101,13 +1101,6 @@ static unsigned long cluster_alloc_swa=
+p_entry(struct swap_info_struct *si, int o
+> > > > > > >                         goto done;
+> > > > > > >         }
+> > > > > > >
+> > > > > > > -       /*
+> > > > > > > -        * We don't have free cluster but have some clusters =
+in discarding,
+> > > > > > > -        * do discard now and reclaim them.
+> > > > > > > -        */
+> > > > > > > -       if ((si->flags & SWP_PAGE_DISCARD) && swap_do_schedul=
+ed_discard(si))
+> > > > > > > -               goto new_cluster;
+> > > > > >
+> > > > > > Assume you follow my suggestion.
+> > > > > > Change this to some function to detect if there is a pending di=
+scard
+> > > > > > on this device. Return to the caller indicating that you need a
+> > > > > > discard for this device that has a pending discard.
+> > > > > > Add an output argument to indicate the discard device "discard"=
+ if needed.
+> > > > >
+> > > > > The problem I just realized is that, if we just bail out here, we=
+ are
+> > > > > forbidding order 0 to steal if there is any discarding cluster. W=
+e
+> > > > > just return here to let the caller handle the discard outside
+> > > > > the lock.
+> > > >
+> > > > Oh, yes, there might be a bit of change in behavior. However I can'=
+t
+> > > > see it is such a bad thing if we wait for the pending discard to
+> > > > complete before stealing and fragmenting the existing folio list. W=
+e
+> > > > will have less fragments compared to the original result. Again, my
+> > > > point is not that we always keep 100% the old behavior, then there =
+is
+> > > > no room for improvement.
+> > > >
+> > > > My point is that, are we doing the best we can in that situation,
+> > > > regardless how unlikely it is.
+> > > >
+> > > > >
+> > > > > It may just discard the cluster just fine, then retry from free c=
+lusters.
+> > > > > Then everything is fine, that's the easy part.
+> > > >
+> > > > Ack.
+> > > >
+> > > > > But it might also fail, and interestingly, in the failure case we=
+ need
+> > > >
+> > > > Can you spell out the failure case you have in mind? Do you mean th=
+e
+> > > > discard did happen but another thread stole "the recently discarded
+> > > > then became free cluster"?
+> > > >
+> > > > Anyway, in such a case, the swap allocator should continue and find
+> > > > out we don't have things to discard now, it will continue to the
+> > > > "steal from other order > 0 list".
+> > > >
+> > > > > to try again as well. It might fail with a race with another disc=
+ard,
+> > > > > in that case order 0 steal is still feasible. Or it fail with
+> > > > > get_swap_device_info (we have to release the device to return her=
+e),
+> > > > > in that case we should go back to the plist and try other devices=
+.
+> > > >
+> > > > When stealing from the other order >0 list failed, we should try
+> > > > another device in the plist.
+> > > >
+> > > > >
+> > > > > This is doable but seems kind of fragile, we'll have something li=
+ke
+> > > > > this in the folio_alloc_swap function:
+> > > > >
+> > > > > local_lock(&percpu_swap_cluster.lock);
+> > > > > if (!swap_alloc_fast(&entry, order))
+> > > > >     swap_alloc_slow(&entry, order, &discard_si);
+> > > > > local_unlock(&percpu_swap_cluster.lock);
+> > > > >
+> > > > > +if (discard_si) {
+> > > >
+> > > > I feel the discard logic should be inside the swap_alloc_slow().
+> > > > There is a  plist_for_each_entry_safe(), inside that loop to do the
+> > > > discard and retry().
+> > > > If I previously suggested it change in here, sorry I have changed m=
+y
+> > > > mind after reasoning the code a bit more.
+> > >
+> > > Actually now I have given it a bit more thought, one thing I realized
+> > > is that you might need to hold the percpu_swap_cluster lock all the
+> > > time during allocation. That might force you to do the release lock
+> > > and discard in the current position.
+> > >
+> > > If that is the case, then just making the small change in your patch
+> > > to allow hold waiting to discard before trying the fragmentation list
+> > > might be good enough.
+> > >
+> > > Chris
+> > >
+> >
+> > Thanks, I was composing a reply on this and just saw your new comment.
+> > I agree with this.
+>
+> Hmm, it turns out modifying V1 to handle non-order 0 allocation
+> failure also has some minor issues. Every mTHP SWAP allocation failure
+> will have a slight higher overhead due to the discard check. V1 is
+> fine since it only checks discard for order 0, and order 0 alloc
+> failure is uncommon and usually means OOM already.
+>
+> I'm not saying V1 is the final solution, but I think maybe we can just
+> keep V1 as it is? That's easier for a stable backport too, and this is
 
+I am fine with that, assuming you need to adjust the presentation to
+push V1 as hotfix. I can ack your newer  patch to adjust the
+presentation.
 
-> On 17 Oct 2025, at 1:20=E2=80=AFAM, Andrew Morton =
-<akpm@linux-foundation.org> wrote:
->=20
->=20
-> The patch titled
->     Subject: crash: let architecture decide crash memory export to =
-iomem_resource
-> has been added to the -mm mm-nonmm-unstable branch.  Its filename is
->     =
-crash-let-architecture-decide-crash-memory-export-to-iomem_resource.patch
->=20
-> This patch will shortly appear at
->     =
-https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patch=
-es/crash-let-architecture-decide-crash-memory-export-to-iomem_resource.pat=
-ch
->=20
-> This patch will later appear in the mm-nonmm-unstable branch at
->    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
->=20
-> Before you just go and hit "reply", please:
->   a) Consider who else should be cc'ed
->   b) Prefer to cc a suitable mailing list as well
->   c) Ideally: find the original patch on the mailing list and do a
->      reply-to-all to that, adding suitable additional cc's
->=20
-> *** Remember to use Documentation/process/submit-checklist.rst when =
-testing your code ***
->=20
-> The -mm tree is included into linux-next via the mm-everything
-> branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> and is updated there every 2-3 working days
->=20
-> ------------------------------------------------------
-> From: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Subject: crash: let architecture decide crash memory export to =
-iomem_resource
-> Date: Thu, 16 Oct 2025 19:58:31 +0530
->=20
-> With the generic crashkernel reservation, the kernel emits the =
-following
-> warning on powerpc:
->=20
-> WARNING: CPU: 0 PID: 1 at arch/powerpc/mm/mem.c:341 =
-add_system_ram_resources+0xfc/0x180
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted =
-6.17.0-auto-12607-g5472d60c129f #1 VOLUNTARY
-> Hardware name: IBM,9080-HEX Power11 (architected) 0x820200 0xf000007 =
-of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
-> NIP:  c00000000201de3c LR: c00000000201de34 CTR: 0000000000000000
-> REGS: c000000127cef8a0 TRAP: 0700   Not tainted =
-(6.17.0-auto-12607-g5472d60c129f)
-> MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 84000840  XER: =
-20040010
-> CFAR: c00000000017eed0 IRQMASK: 0
-> GPR00: c00000000201de34 c000000127cefb40 c0000000016a8100 =
-0000000000000001
-> GPR04: c00000012005aa00 0000000020000000 c000000002b705c8 =
-0000000000000000
-> GPR08: 000000007fffffff fffffffffffffff0 c000000002db8100 =
-000000011fffffff
-> GPR12: c00000000201dd40 c000000002ff0000 c0000000000112bc =
-0000000000000000
-> GPR16: 0000000000000000 0000000000000000 0000000000000000 =
-0000000000000000
-> GPR20: 0000000000000000 0000000000000000 0000000000000000 =
-c0000000015a3808
-> GPR24: c00000000200468c c000000001699888 0000000000000106 =
-c0000000020d1950
-> GPR28: c0000000014683f8 0000000081000200 c0000000015c1868 =
-c000000002b9f710
-> NIP [c00000000201de3c] add_system_ram_resources+0xfc/0x180
-> LR [c00000000201de34] add_system_ram_resources+0xf4/0x180
-> Call Trace:
-> add_system_ram_resources+0xf4/0x180 (unreliable)
-> do_one_initcall+0x60/0x36c
-> do_initcalls+0x120/0x220
-> kernel_init_freeable+0x23c/0x390
-> kernel_init+0x34/0x26c
-> ret_from_kernel_user_thread+0x14/0x1c
->=20
-> This warning occurs due to a conflict between crashkernel and System =
-RAM
-> iomem resources.
->=20
-> The generic crashkernel reservation adds the crashkernel memory range =
-to
-> /proc/iomem during early initialization. Later, all memblock ranges =
-are
-> added to /proc/iomem as System RAM. If the crashkernel region overlaps
-> with any memblock range, it causes a conflict while adding those =
-memblock
-> regions as iomem resources, triggering the above warning. The =
-conflicting
-> memblock regions are then omitted from /proc/iomem.
->=20
-> For example, if the following crashkernel region is added to =
-/proc/iomem:
-> 20000000-11fffffff : Crash kernel
->=20
-> then the following memblock regions System RAM regions fail to be =
-inserted:
-> 00000000-7fffffff : System RAM
-> 80000000-257fffffff : System RAM
->=20
-> Fix this by not adding the crashkernel memory to /proc/iomem on =
-powerpc.
-> Introduce an architecture hook to let each architecture decide whether =
-to
-> export the crashkernel region to /proc/iomem.
->=20
-> For more info checkout commit c40dd2f766440 ("powerpc: Add System RAM
-> to /proc/iomem") and commit bce074bdbc36 ("powerpc: insert System RAM
-> resource to prevent crashkernel conflict")
->=20
-> Note: Before switching to the generic crashkernel reservation, powerpc
-> never exported the crashkernel region to /proc/iomem.
->=20
-> Link: =
-https://lkml.kernel.org/r/20251016142831.144515-1-sourabhjain@linux.ibm.co=
-m
-> Fixes: e3185ee438c2 ("powerpc/crash: use generic crashkernel =
-reservation").
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Closes: =
-https://lore.kernel.org/all/90937fe0-2e76-4c82-b27e-7b8a7fe3ac69@linux.ibm=
-.com/
-> Cc: Baoquan he <bhe@redhat.com>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Cc: Vivek Goyal <vgoyal@redhat.com>
-> Cc: Dave Young <dyoung@redhat.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
+> doing far better than what it was like. The sync discard was added in
+> 2013 and the later added percpu cluster at the same year never treated
+> it carefully. And the discard during allocation after recent swap
+> allocator rework has been kind of broken for a while.
+>
+> To optimize it further in a clean way, we have to reverse the
+> allocator's handling order of the plist and fast / slow path. Current
+> order is local_lock -> fast -> slow (plist).
 
-Tested this patch by applying on the mainline kernel, and it fixes =
-reported issue. Please add below tag.
+I like that. I think that is the eventual way to go. I want to see how
+it integrates with the swap.tiers patches. If you let me pick, I would
+go straight with this one for 6.19.
 
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+>
+> We can walk the plist first, then do the fast / slow path: plist (or
+> maybe something faster than plist but handles the priority) ->
+> local_lock -> fast -> slow (bonus: this is more friendly to RT kernels
+> too I think). That way we don't need to rewalk the plist after
+> releasing the local_lock and save a lot of trouble. I remember I
+> discussed with Youngjun on this sometime ago in the mail list, I know
+> things have changed a lot but some ideas seems are still similar. I
+> think his series is moving the percpu cluster into each device (si),
+> we can also move the local_lock there, which is just what I'm talking
+> about here.
 
-Regards,
-Venkat.
->=20
-> arch/powerpc/include/asm/crash_reserve.h |    8 ++++++++
-> include/linux/crash_reserve.h            |    6 ++++++
-> kernel/crash_reserve.c                   |    3 +++
-> 3 files changed, 17 insertions(+)
->=20
-> --- =
-a/arch/powerpc/include/asm/crash_reserve.h~crash-let-architecture-decide-c=
-rash-memory-export-to-iomem_resource
-> +++ a/arch/powerpc/include/asm/crash_reserve.h
-> @@ -5,4 +5,12 @@
-> /* crash kernel regions are Page size agliged */
-> #define CRASH_ALIGN             PAGE_SIZE
->=20
-> +#ifdef CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
-> +static inline bool arch_add_crash_res_to_iomem(void)
-> +{
-> + return false;
-> +}
-> +#define arch_add_crash_res_to_iomem arch_add_crash_res_to_iomem
-> +#endif
-> +
-> #endif /* _ASM_POWERPC_CRASH_RESERVE_H */
-> --- =
-a/include/linux/crash_reserve.h~crash-let-architecture-decide-crash-memory=
--export-to-iomem_resource
-> +++ a/include/linux/crash_reserve.h
-> @@ -32,6 +32,12 @@ int __init parse_crashkernel(char *cmdli
-> void __init reserve_crashkernel_cma(unsigned long long cma_size);
->=20
-> #ifdef CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
-> +#ifndef arch_add_crash_res_to_iomem
-> +static inline bool arch_add_crash_res_to_iomem(void)
-> +{
-> + return true;
-> +}
-> +#endif
-> #ifndef DEFAULT_CRASH_KERNEL_LOW_SIZE
-> #define DEFAULT_CRASH_KERNEL_LOW_SIZE (128UL << 20)
-> #endif
-> --- =
-a/kernel/crash_reserve.c~crash-let-architecture-decide-crash-memory-export=
--to-iomem_resource
-> +++ a/kernel/crash_reserve.c
-> @@ -524,6 +524,9 @@ void __init reserve_crashkernel_cma(unsi
-> #ifndef HAVE_ARCH_ADD_CRASH_RES_TO_IOMEM_EARLY
-> static __init int insert_crashkernel_resources(void)
-> {
-> + if (!arch_add_crash_res_to_iomem())
-> + return 0;
-> +
-> if (crashk_res.start < crashk_res.end)
-> insert_resource(&iomem_resource, &crashk_res);
->=20
-> _
->=20
-> Patches currently in -mm which might be from sourabhjain@linux.ibm.com =
-are
->=20
-> =
-crash-let-architecture-decide-crash-memory-export-to-iomem_resource.patch
->=20
+Ack. We will need to see both patches to figure out how to integrate
+them together. Right now we have two moving parts. More to the point
+that we get the eventual patch sooner.
 
+Chris
 
