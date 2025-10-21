@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-188280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F530BF43D3
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 03:19:24 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A37BF449C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 03:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59E88460B60
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 01:19:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C55F835188C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 01:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6E6190664;
-	Tue, 21 Oct 2025 01:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A4B231C9F;
+	Tue, 21 Oct 2025 01:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nbQFSZBH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gCUBEKlS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A19918CBE1
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 01:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D7815D1
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 01:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761009554; cv=none; b=fX3HFnNAfObhYCKg2jAxRe0Gj3Ju83XY34n/1yQNNgmvRq2e9xEs48tzV2KhlRDE+KHMfN8ksSELiAR3bRXaaOPqqr+q31UcUTQeaeYJRIJDvonXGR+lMgE0bjrFKHmS0Exb6jlVZhevudWiy3u/0CaYc4csP3lKjh9D1CoTHfU=
+	t=1761010945; cv=none; b=Q2FFYkoZEEwCKlYzFn/PrsUhMEPSAk4Bz1T/xWgkl1j6x1qzmt2Cg4OBTDHFRzzvlWKTHaRPfJ0b9Y8bcFuBHXRxyLjGrlMJph0BONzkakfzbqTRTDsinNgSQso3MRfkwFP8CFXuOHWrtaddrs1sI5crHbLmv6JaPMn330XOWI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761009554; c=relaxed/simple;
-	bh=HH+QSFxHcmSf+5O2/leY6ebiF54pYmXTXLkivh9Mtrg=;
+	s=arc-20240116; t=1761010945; c=relaxed/simple;
+	bh=acJQVIGlGocxO7bOMGUg9aHn0yalZej7k4h23WBG4LU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dRfZcT9KuahOkvpyv6bDJdYGReu5bpQyfOsU17yWSapmNQVROeUSH6xRCwV0qbwv4hvHoa99XyK2CYHhy+vf+9LKY9wvVVKy8dTsDp5KP+QLkSsGa2vweOTwKTv6Q+G43HngImJVdFdLrSoP/wHadOMwj3CNXPOWfC4m+yMDfnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nbQFSZBH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A706C4CEFB;
-	Tue, 21 Oct 2025 01:19:13 +0000 (UTC)
+	 MIME-Version; b=COMLd8BcQp13wLqOl1K5DeFFDHZWUV7wxltO6TvmlzgvDvAtxzDK5QYYFIzEiHMIEG/g6Q506YJU6Aor1wYOi3hs+my6HwpEOqnPME28FiJOBEk0YRuabcUeYVpLRS6/BqCKaPMErC3zMR+uYOBm55ILCw3CXOBkEXMHdk0H0dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gCUBEKlS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BADCC4CEFB;
+	Tue, 21 Oct 2025 01:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761009553;
-	bh=HH+QSFxHcmSf+5O2/leY6ebiF54pYmXTXLkivh9Mtrg=;
+	s=k20201202; t=1761010945;
+	bh=acJQVIGlGocxO7bOMGUg9aHn0yalZej7k4h23WBG4LU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbQFSZBH3pGgK63gs3cs05Dk2hMPx6R2JfcO12r1iCEfLiRUFQbsgnxXPuu07fXer
-	 EwLeeHLPlILfJunyS257BEaSoz7SbsMpHLzexPboCR26Fq4IW/92cJJI6juuLNVuqq
-	 Wqp2SNJMFXjV/45UxcOClqJJPPlbDhpsPybW5xqliszP47z6NR25M8FyOHL0X1TAfS
-	 JASYusnuij47YTgPqE+8beW6Pt9xUqZeyDkiDBURWGCIXTL5bFUy3vSBg2O9vIdN6A
-	 qqfGCPEk0WutvvHK6ldGm0j4eWDz2T7uL63cyRJzKx4Zs+MroH7gHznKNRUHB9Lcus
-	 Ws3iYdn/Hcz/Q==
+	b=gCUBEKlSRECCu9RjOoKqZWasdgCx0d6tKqVRc1nvnyHe3MRpW/FfUUnpBpWwp8poB
+	 SYHyP7L8iVMdtU9q38ZrB7Eejzw16gYPlaHqQf7pMebtsBn0X9tc3tH1Ob42RsxP/x
+	 GNaYLoQUTO5Q64zIcZGcFs59E+O9tSQd5+WaxwNFckyx9R2x7EsMUc8oqjngrrQpy4
+	 CuJ9gevYLpMb1fyCOtU2WTJT5+aKJggW0jSvych4lBnvnHENftYkBg6iWcm/P0AVO8
+	 P6MNHLqtO+Vgf0DUMijq/8hhHXRoH5SyMyt6MXkj5FbHzAgiGgPqpbiIhMklamEPsG
+	 wDeNhfAejnyXw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>,
-	syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Zhang Yi <yi.zhang@huawei.com>,
+	stable@kernel.org,
+	Jan Kara <jack@suse.cz>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] vfs: Don't leak disconnected dentries on umount
-Date: Mon, 20 Oct 2025 21:19:11 -0400
-Message-ID: <20251021011911.1967865-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y] jbd2: ensure that all ongoing I/O complete before freeing blocks
+Date: Mon, 20 Oct 2025 21:42:22 -0400
+Message-ID: <20251021014222.1974745-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102042-tactical-subtract-5775@gregkh>
-References: <2025102042-tactical-subtract-5775@gregkh>
+In-Reply-To: <2025102030-hurt-surplus-ab8e@gregkh>
+References: <2025102030-hurt-surplus-ab8e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,57 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jan Kara <jack@suse.cz>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 56094ad3eaa21e6621396cc33811d8f72847a834 ]
+[ Upstream commit 3c652c3a71de1d30d72dc82c3bead8deb48eb749 ]
 
-When user calls open_by_handle_at() on some inode that is not cached, we
-will create disconnected dentry for it. If such dentry is a directory,
-exportfs_decode_fh_raw() will then try to connect this dentry to the
-dentry tree through reconnect_path(). It may happen for various reasons
-(such as corrupted fs or race with rename) that the call to
-lookup_one_unlocked() in reconnect_one() will fail to find the dentry we
-are trying to reconnect and instead create a new dentry under the
-parent. Now this dentry will not be marked as disconnected although the
-parent still may well be disconnected (at least in case this
-inconsistency happened because the fs is corrupted and .. doesn't point
-to the real parent directory). This creates inconsistency in
-disconnected flags but AFAICS it was mostly harmless. At least until
-commit f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
-which removed adding of most disconnected dentries to sb->s_anon list.
-Thus after this commit cleanup of disconnected dentries implicitely
-relies on the fact that dput() will immediately reclaim such dentries.
-However when some leaf dentry isn't marked as disconnected, as in the
-scenario described above, the reclaim doesn't happen and the dentries
-are "leaked". Memory reclaim can eventually reclaim them but otherwise
-they stay in memory and if umount comes first, we hit infamous "Busy
-inodes after unmount" bug. Make sure all dentries created under a
-disconnected parent are marked as disconnected as well.
+When releasing file system metadata blocks in jbd2_journal_forget(), if
+this buffer has not yet been checkpointed, it may have already been
+written back, currently be in the process of being written back, or has
+not yet written back.  jbd2_journal_forget() calls
+jbd2_journal_try_remove_checkpoint() to check the buffer's status and
+add it to the current transaction if it has not been written back. This
+buffer can only be reallocated after the transaction is committed.
 
-Reported-by: syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com
-Fixes: f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ relocated DCACHE_DISCONNECTED propagation from d_alloc_parallel() to d_alloc() ]
+jbd2_journal_try_remove_checkpoint() attempts to lock the buffer and
+check its dirty status while holding the buffer lock. If the buffer has
+already been written back, everything proceeds normally. However, there
+are two issues. First, the function returns immediately if the buffer is
+locked by the write-back process. It does not wait for the write-back to
+complete. Consequently, until the current transaction is committed and
+the block is reallocated, there is no guarantee that the I/O will
+complete. This means that ongoing I/O could write stale metadata to the
+newly allocated block, potentially corrupting data. Second, the function
+unlocks the buffer as soon as it detects that the buffer is still dirty.
+If a concurrent write-back occurs immediately after this unlocking and
+before clear_buffer_dirty() is called in jbd2_journal_forget(), data
+corruption can theoretically still occur.
+
+Although these two issues are unlikely to occur in practice since the
+undergoing metadata writeback I/O does not take this long to complete,
+it's better to explicitly ensure that all ongoing I/O operations are
+completed.
+
+Fixes: 597599268e3b ("jbd2: discard dirty data when forgetting an un-journalled buffer")
+Cc: stable@kernel.org
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20250916093337.3161016-2-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dcache.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/jbd2/transaction.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index 78081bdc49311..1c905958c011a 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -1782,6 +1782,8 @@ struct dentry *d_alloc(struct dentry * parent, const struct qstr *name)
- 	__dget_dlock(parent);
- 	dentry->d_parent = parent;
- 	list_add(&dentry->d_child, &parent->d_subdirs);
-+	if (parent->d_flags & DCACHE_DISCONNECTED)
-+		dentry->d_flags |= DCACHE_DISCONNECTED;
- 	spin_unlock(&parent->d_lock);
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index 72e9297d6adcb..97ff68f90d573 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1550,6 +1550,7 @@ int jbd2_journal_forget (handle_t *handle, struct buffer_head *bh)
+ 	int drop_reserve = 0;
+ 	int err = 0;
+ 	int was_modified = 0;
++	int wait_for_writeback = 0;
  
- 	return dentry;
+ 	if (is_handle_aborted(handle))
+ 		return -EROFS;
+@@ -1675,18 +1676,22 @@ int jbd2_journal_forget (handle_t *handle, struct buffer_head *bh)
+ 		}
+ 
+ 		/*
+-		 * The buffer is still not written to disk, we should
+-		 * attach this buffer to current transaction so that the
+-		 * buffer can be checkpointed only after the current
+-		 * transaction commits.
++		 * The buffer has not yet been written to disk. We should
++		 * either clear the buffer or ensure that the ongoing I/O
++		 * is completed, and attach this buffer to current
++		 * transaction so that the buffer can be checkpointed only
++		 * after the current transaction commits.
+ 		 */
+ 		clear_buffer_dirty(bh);
++		wait_for_writeback = 1;
+ 		__jbd2_journal_file_buffer(jh, transaction, BJ_Forget);
+ 		spin_unlock(&journal->j_list_lock);
+ 	}
+ 
+ 	jbd_unlock_bh_state(bh);
+ 	__brelse(bh);
++	if (wait_for_writeback)
++		wait_on_buffer(bh);
+ drop:
+ 	if (drop_reserve) {
+ 		/* no need to reserve log space for this block -bzzz */
 -- 
 2.51.0
 
