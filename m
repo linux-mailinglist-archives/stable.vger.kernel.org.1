@@ -1,159 +1,144 @@
-Return-Path: <stable+bounces-188850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A83BF90BB
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 00:27:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77219BF927D
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 00:54:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FAA35826B6
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:26:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 49C9A560480
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920A22417C6;
-	Tue, 21 Oct 2025 22:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA97E2C0F93;
+	Tue, 21 Oct 2025 22:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VYmwI9Hi"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MmKFGYey"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F97299920
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 22:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E911C3C11;
+	Tue, 21 Oct 2025 22:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761085611; cv=none; b=pq+mBMzSnhXkqY8K9T3OzdgC6D+VxxEATCvFgRnIPUxCCHRr4UoVnbpE1AqdW0KYMnYJ1sEH3G4U0St8kSzdVfiXDYq6xq9P2irQis+casN8FJeDhlDElRUKIGE9Y59XZbS6AhcJSu0dgQ0qKkwXmmfDDSUnlx4/gjrupAgcMb4=
+	t=1761086816; cv=none; b=etE31qAD/FJjHOV/cz+2ibJs8JhYuSohme5SVs9Rov+NVSJGkT6q0B5/G4QVHFo967hblssilufn5Usv50tLfwpytEJ3Q0YkF62JKhZAiiBytr/0N2GHtnuXMsBPhyhHkTPDRtVFlSpbmx+2AJlgxZ4oB+ZRpznlWbDg4V4u79M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761085611; c=relaxed/simple;
-	bh=mwRp7aXDMeuqw9lPShCQa7Qn0mcGgCkUVUwaPDlvSCo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OPMXUIaCVtlLQh8MQW2RvcjF8eKbt24UwX6u2g3oEQntg0XRWg+tAphzVG9rTbxxRHvKKrFk9G0lsmya/IUVkW3PXclxUjO0DBpecpR7SqZmTqeBwkP6LkeZeGydrlRl2IpUGk4QQCgqnlkxZQHafssufLHFkp/0ZbwRXEkVjn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VYmwI9Hi; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4712c6d9495so10325245e9.2
-        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 15:26:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761085604; x=1761690404; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yk5EdGXRJO7qKp/sEruSVRBX2qsBvNyyYKbMfRHxLXk=;
-        b=VYmwI9HiVbeWpkMwpgji4Ov2hrnphV8zjiboWWKIi+7zT8p03h5EGbECtvBT73wgv4
-         XJ+d+wC6SS2gMU6srf1pmk6JaVgU8FMbMsbleyJVKJzClwZs6lpqsmtX5fTLxEkvTaXP
-         TqNzZPhEd05kMOpHdkFWX4ahksFgKSPJjcLQLT215j/XW5Ntcq0O4538HAheAtiX8y4g
-         ju8Bjc88sZNHF74nrdB0SBv7ve31OfpIOEiT4PNEF1bOSP6HpwO4AGOKejJXMC/0Zs7w
-         STgph5a6+x5dS255kIp6HNPt9l6tPtQ7SsizSpUd3hAEOLedJQOB3ivz07CTBOawhyiH
-         tegA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761085604; x=1761690404;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yk5EdGXRJO7qKp/sEruSVRBX2qsBvNyyYKbMfRHxLXk=;
-        b=jskBHjrHTR2sY6cSlDXhZNVfRzJ3cykFhPo4xy14cz75cSXIzrvsrQ8MMf/xMYK1KG
-         7BJmOalAywg/002g7QWFNs2Ikoup7fxUsV9Jx4eZJnJNpOiKUU15NZ2ihL0kmUTkZ1TV
-         RlJ7qhLiafllfh9jmXa6YwUrD76/Z0r/lX4tgODWPLotRiFaMb+syU1EWVH6dmETab63
-         49y7tsT+lnSRkFFOqRGfPlCiLiOuy37IPBuDY4Uc7pthfWndnb88VgUl8zUOJUd1BjUv
-         e3FQl4W/2eme4x5PmUh+9LtIYWZ42yqdVxdyLF10gd3e9PCpPPiUfDeMzkBh7KjUNWwf
-         dhrA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCw4bT6yDwFd2GAmjgCBI6B83I2kHQpsplThvfCHmanqXjmEIHoJ0/Ht8OldzrvCBPcWfSKDs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpYNWsuRpbrdHx5EsnU6ai2tBbtqROZs2fjz/FjalF3tu4gVrH
-	kRSlrEouE/hKellqVRiHZmG0fVBsDJAD2yamngzeTM1vFjqsBVxG2+o1h5beumiPqC/15XD/P8N
-	lfPN6jKwHS0d02MX4IbMw8h/J6pgK9x0=
-X-Gm-Gg: ASbGnctlLBO8RuuskBirsxX4LmTX3Kgo1UVm6XQDoh3Nrj4L7BgHUibZyjOhCpfPApc
-	roriHjscAAX0TJEbldkyte+CIvrL6xHBMvjDUBYJKH0PPhQwj3iURviT9f0RAeMxVIPJ4TOWvCy
-	NZNbkqMLaF3nflS7t04EUdRChK21562MhpZ+tZl80zZN5/5h0oITCTethaxSLPZgZ8c7Ihr0WWv
-	/k3Yvu2vVwsGjZwJrotitEqopBT+1o3qREYCIaXCTzML6lqNzJLHxE8iOiDBU4NwVVX8G1Jl/Hi
-	bVSst8hOM/98REeH64A=
-X-Google-Smtp-Source: AGHT+IGYoeRkbinjZq4rfb3IpCbKu1sZPsyNIP34D3eTPladuTEWTWB5CAhB0AiDCHZrF11k6gXwYJbfXqyVdDGYlGQ=
-X-Received: by 2002:a05:600c:4fd4:b0:46e:37fe:f0e6 with SMTP id
- 5b1f17b1804b1-4711791391emr159678545e9.30.1761085603795; Tue, 21 Oct 2025
- 15:26:43 -0700 (PDT)
+	s=arc-20240116; t=1761086816; c=relaxed/simple;
+	bh=HwjKxoRqWWm+zyASq59PHrY+g+Yeveiw7Tu3cLecB6w=;
+	h=Date:To:From:Subject:Message-Id; b=QbEwqGUUzKAH9CmAHv1i1O0ImWle1MpsrEI7Z11D9FCYddkbnmYE0IxQ9isJDqZXTFlzvnVIoO5BUV5bni1RFhLTIjHO30PL+wnTykndNdvT3qNZ0fEdnnDg26fs21w+GTxIeU+u371TDlb00ZcrSPv6Zyf4l7SGkV1NQ3f8KWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MmKFGYey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58D2C4CEF1;
+	Tue, 21 Oct 2025 22:46:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761086815;
+	bh=HwjKxoRqWWm+zyASq59PHrY+g+Yeveiw7Tu3cLecB6w=;
+	h=Date:To:From:Subject:From;
+	b=MmKFGYeyiuJ/Ir+cGavCqcdpPxRcJqHnWo+hWzXhtiRqxnyGwbsKhUtu4z2cSMM8y
+	 WfKskFApNUPbZ2SdGSzUh6CQSURTPWatZ600RL356hVqmM42qMSDXAHYrcF3FTg2f3
+	 4EN8n5AN7sTJxFaciZL02tOvMpRoeV6w781g1UN8=
+Date: Tue, 21 Oct 2025 15:46:54 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,pfalcato@suse.de,liam.howlett@oracle.com,jannh@google.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-mremap-correctly-account-old-mapping-after-mremap_dontunmap-remap.patch removed from -mm tree
+Message-Id: <20251021224655.A58D2C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <a6024e8eab679043e9b8a5defdb41c4bda62f02b.1757016152.git.andreyknvl@gmail.com>
- <CA+fCnZdG+X48_W_bSKYpziKohjp1QVgDzUzfYK_KOk42j58_ZA@mail.gmail.com>
- <CA+fCnZdHJtHgZuD9tiDGD8svXTEdP=GK8HSo71y_UfKgZcaUxg@mail.gmail.com> <2025102151-footpath-entomb-76da@gregkh>
-In-Reply-To: <2025102151-footpath-entomb-76da@gregkh>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Wed, 22 Oct 2025 00:26:33 +0200
-X-Gm-Features: AS18NWCf_UXS44wj9g_pn-uEAnNcwzugyYPMuelk7EE5VgyExzuwoWDIV5U5S9g
-Message-ID: <CA+fCnZea_CXGFD5cgwamM_0VtkjcPR=tcOUqzEN+eNY+EtR2+Q@mail.gmail.com>
-Subject: Re: [PATCH] usb: raw-gadget: do not limit transfer length
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alan Stern <stern@rowland.harvard.edu>, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	andrey.konovalov@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 21, 2025 at 6:06=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Oct 21, 2025 at 04:19:13PM +0200, Andrey Konovalov wrote:
-> > On Tue, Oct 21, 2025 at 4:18=E2=80=AFPM Andrey Konovalov <andreyknvl@gm=
-ail.com> wrote:
-> > >
-> > > On Thu, Sep 4, 2025 at 10:08=E2=80=AFPM <andrey.konovalov@linux.dev> =
-wrote:
-> > > >
-> > > > From: Andrey Konovalov <andreyknvl@gmail.com>
-> > > >
-> > > > Drop the check on the maximum transfer length in Raw Gadget for bot=
-h
-> > > > control and non-control transfers.
-> > > >
-> > > > Limiting the transfer length causes a problem with emulating USB de=
-vices
-> > > > whose full configuration descriptor exceeds PAGE_SIZE in length.
-> > > >
-> > > > Overall, there does not appear to be any reason to enforce any kind=
- of
-> > > > transfer length limit on the Raw Gadget side for either control or
-> > > > non-control transfers, so let's just drop the related check.
-> > > >
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
-> > > > Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-> > > > ---
-> > > >  drivers/usb/gadget/legacy/raw_gadget.c | 2 --
-> > > >  1 file changed, 2 deletions(-)
-> > > >
-> > > > diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/g=
-adget/legacy/raw_gadget.c
-> > > > index 20165e1582d9..b71680c58de6 100644
-> > > > --- a/drivers/usb/gadget/legacy/raw_gadget.c
-> > > > +++ b/drivers/usb/gadget/legacy/raw_gadget.c
-> > > > @@ -667,8 +667,6 @@ static void *raw_alloc_io_data(struct usb_raw_e=
-p_io *io, void __user *ptr,
-> > > >                 return ERR_PTR(-EINVAL);
-> > > >         if (!usb_raw_io_flags_valid(io->flags))
-> > > >                 return ERR_PTR(-EINVAL);
-> > > > -       if (io->length > PAGE_SIZE)
-> > > > -               return ERR_PTR(-EINVAL);
-> > > >         if (get_from_user)
-> > > >                 data =3D memdup_user(ptr + sizeof(*io), io->length)=
-;
-> > > >         else {
-> > > > --
-> > > > 2.43.0
-> > > >
-> > >
-> > > Hi Greg,
-> > >
-> > > Could you pick up this patch?
-> > >
-> > > Thank you!
-> >
-> > (Greg to To:)
->
-> Can you send it to the proper list again?  I didn't see it on the
-> linux-usb list as it was never sent there :(
 
-Sure, done!
+The quilt patch titled
+     Subject: mm/mremap: correctly account old mapping after MREMAP_DONTUNMAP remap
+has been removed from the -mm tree.  Its filename was
+     mm-mremap-correctly-account-old-mapping-after-mremap_dontunmap-remap.patch
+
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: mm/mremap: correctly account old mapping after MREMAP_DONTUNMAP remap
+Date: Mon, 13 Oct 2025 17:58:36 +0100
+
+Commit b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
+mistakenly introduced a new behaviour - clearing the VM_ACCOUNT flag of
+the old mapping when a mapping is mremap()'d with the MREMAP_DONTUNMAP
+flag set.
+
+While we always clear the VM_LOCKED and VM_LOCKONFAULT flags for the old
+mapping (the page tables have been moved, so there is no data that could
+possibly be locked in memory), there is no reason to touch any other VMA
+flags.
+
+This is because after the move the old mapping is in a state as if it were
+freshly mapped.  This implies that the attributes of the mapping ought to
+remain the same, including whether or not the mapping is accounted.
+
+Link: https://lkml.kernel.org/r/20251013165836.273113-1-lorenzo.stoakes@oracle.com
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mremap.c |   15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
+
+--- a/mm/mremap.c~mm-mremap-correctly-account-old-mapping-after-mremap_dontunmap-remap
++++ a/mm/mremap.c
+@@ -1237,10 +1237,10 @@ static int copy_vma_and_data(struct vma_
+ }
+ 
+ /*
+- * Perform final tasks for MADV_DONTUNMAP operation, clearing mlock() and
+- * account flags on remaining VMA by convention (it cannot be mlock()'d any
+- * longer, as pages in range are no longer mapped), and removing anon_vma_chain
+- * links from it (if the entire VMA was copied over).
++ * Perform final tasks for MADV_DONTUNMAP operation, clearing mlock() flag on
++ * remaining VMA by convention (it cannot be mlock()'d any longer, as pages in
++ * range are no longer mapped), and removing anon_vma_chain links from it if the
++ * entire VMA was copied over.
+  */
+ static void dontunmap_complete(struct vma_remap_struct *vrm,
+ 			       struct vm_area_struct *new_vma)
+@@ -1250,11 +1250,8 @@ static void dontunmap_complete(struct vm
+ 	unsigned long old_start = vrm->vma->vm_start;
+ 	unsigned long old_end = vrm->vma->vm_end;
+ 
+-	/*
+-	 * We always clear VM_LOCKED[ONFAULT] | VM_ACCOUNT on the old
+-	 * vma.
+-	 */
+-	vm_flags_clear(vrm->vma, VM_LOCKED_MASK | VM_ACCOUNT);
++	/* We always clear VM_LOCKED[ONFAULT] on the old VMA. */
++	vm_flags_clear(vrm->vma, VM_LOCKED_MASK);
+ 
+ 	/*
+ 	 * anon_vma links of the old vma is no longer needed after its page
+_
+
+Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+
+mm-shmem-update-shmem-to-use-mmap_prepare.patch
+device-dax-update-devdax-to-use-mmap_prepare.patch
+mm-vma-remove-unused-function-make-internal-functions-static.patch
+mm-add-vma_desc_size-vma_desc_pages-helpers.patch
+relay-update-relay-to-use-mmap_prepare.patch
+mm-vma-rename-__mmap_prepare-function-to-avoid-confusion.patch
+mm-add-remap_pfn_range_prepare-remap_pfn_range_complete.patch
+mm-abstract-io_remap_pfn_range-based-on-pfn.patch
+mm-introduce-io_remap_pfn_range_.patch
+mm-add-ability-to-take-further-action-in-vm_area_desc.patch
+doc-update-porting-vfs-documentation-for-mmap_prepare-actions.patch
+mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare.patch
+mm-add-shmem_zero_setup_desc.patch
+mm-update-mem-char-driver-to-use-mmap_prepare.patch
+mm-update-resctl-to-use-mmap_prepare.patch
+
 
