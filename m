@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-188617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CF1BF882A
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:17 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1209CBF8577
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35C67582C01
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:59 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7BE0D3488DB
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA571A00CE;
-	Tue, 21 Oct 2025 20:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2233C27465C;
+	Tue, 21 Oct 2025 19:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xj9NU/Ps"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzBovujx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903A41A3029;
-	Tue, 21 Oct 2025 20:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7072737E7;
+	Tue, 21 Oct 2025 19:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076977; cv=none; b=taCsQoJQII1zEVV5Z0eNqmCRFCH0mUdahjL+IBtrhHmsbLuvx37mBJh08Rn9w+FeNfRs6yiHBwxFdEiwcsUb1183LqC26L/cwKle2FqYNn4wOXpPGbnGirihbnZvZX+o9Pec4FzrAYH1GpwA6U825az0JS2Y5uRR2c1yh+Ootw8=
+	t=1761076431; cv=none; b=rrqNYZVcljcW6wW5B86jfaZTjqArzjDkr5B58WLoi5Nm88LTkgJWfH9R8arEebfwE5r1GG7sPUACsN63kfKK5v+czfqxTOVcxkUPLX9bcZAhC57ATQ8eO4q//L/+DVui1r0mGe3FUuIYV59yz6A5iQFQCRIlem1pqnxrvf/hZBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076977; c=relaxed/simple;
-	bh=SGWZ001JtS3LyV+yjfGDTXS4JNMK5HPzQbsNsJ+ZEwk=;
+	s=arc-20240116; t=1761076431; c=relaxed/simple;
+	bh=IfbuT+ozhk4HphvbiC7uzxVqdL+1Ax9nBVFDv76d9OQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iA4nbhqxJ8memSNGpRq6GKN8uXJRM1SRqJjvyWtos3HCGiUXwNPrDLflzovNxylfRqw40T4nr0qMipQzT8wfzpEa9Pt8SZ4PnWe+VIpwKFVqGvnwkS94h2DsLNM8/v2lvTuWyMs1mrMChZrFlbqti3w7wY1G43jzTpnUM0P7Aco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xj9NU/Ps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AD2C4CEF1;
-	Tue, 21 Oct 2025 20:02:56 +0000 (UTC)
+	 MIME-Version; b=NjpUAnpChORLMRl93bftf+b76pKlOXfI5QSz8YxlaMic017EtKNH4xlPHxiZa6Coes1MJKKw9TW32byen8uP5UxImGLH2yGtIvVL/BqBn/U1t3tYuyts9sc8W21wzdjRO0Yq+9COYQvTiJWNjvMk3G+BMfCvB/Kqm7EjcUwG0tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzBovujx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2103C4CEF5;
+	Tue, 21 Oct 2025 19:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076977;
-	bh=SGWZ001JtS3LyV+yjfGDTXS4JNMK5HPzQbsNsJ+ZEwk=;
+	s=korg; t=1761076431;
+	bh=IfbuT+ozhk4HphvbiC7uzxVqdL+1Ax9nBVFDv76d9OQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xj9NU/Ps7DxXDKfKlXTlmvynwNR07me7CboIRwLwvoIjBHEvskh89lfzkK8mw/Hof
-	 9KDxHSIGDv60hUFauC+cAwLZ1+wrPRugmaZjwQELNO+ZAvCxrEmNAL4ADoMivOxykr
-	 oHLvu3/CWAM0gteyWKPoI3Lamea/k209w+P5S6Xo=
+	b=ZzBovujxbP3u+bU+jmvOxcK+rURpUS9dJwajqDRYqx28XAQoHMH8NWjUHs+/mkhX0
+	 bE1ItQI1jS7RP6S72FVvs7kItgvYBVT5ksVzh7UvOeXNUuWTKAlWNpmPC4xmzzJqiP
+	 t43RJuLWi8/d022oK7AYHQtiGqwQVOA8SPDmfQ4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philippe Guibert <philippe.guibert@6wind.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	stable@kernel.org,
+	Kuen-Han Tsai <khtsai@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/136] doc: fix seg6_flowlabel path
-Date: Tue, 21 Oct 2025 21:50:40 +0200
-Message-ID: <20251021195037.231435093@linuxfoundation.org>
+Subject: [PATCH 6.6 032/105] usb: gadget: f_ncm: Refactor bind path to use __free()
+Date: Tue, 21 Oct 2025 21:50:41 +0200
+Message-ID: <20251021195022.460559748@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,231 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 0b4b77eff5f8cd9be062783a1c1e198d46d0a753 ]
+[ Upstream commit 75a5b8d4ddd4eb6b16cb0b475d14ff4ae64295ef ]
 
-This sysctl is not per interface; it's global per netns.
+After an bind/unbind cycle, the ncm->notify_req is left stale. If a
+subsequent bind fails, the unified error label attempts to free this
+stale request, leading to a NULL pointer dereference when accessing
+ep->ops->free_request.
 
-Fixes: 292ecd9f5a94 ("doc: move seg6_flowlabel to seg6-sysctl.rst")
-Reported-by: Philippe Guibert <philippe.guibert@6wind.com>
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Refactor the error handling in the bind path to use the __free()
+automatic cleanup mechanism.
+
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
+Call trace:
+ usb_ep_free_request+0x2c/0xec
+ ncm_bind+0x39c/0x3dc
+ usb_add_function+0xcc/0x1f0
+ configfs_composite_bind+0x468/0x588
+ gadget_bind_driver+0x104/0x270
+ really_probe+0x190/0x374
+ __driver_probe_device+0xa0/0x12c
+ driver_probe_device+0x3c/0x218
+ __device_attach_driver+0x14c/0x188
+ bus_for_each_drv+0x10c/0x168
+ __device_attach+0xfc/0x198
+ device_initial_probe+0x14/0x24
+ bus_probe_device+0x94/0x11c
+ device_add+0x268/0x48c
+ usb_add_gadget+0x198/0x28c
+ dwc3_gadget_init+0x700/0x858
+ __dwc3_set_mode+0x3cc/0x664
+ process_scheduled_works+0x1d8/0x488
+ worker_thread+0x244/0x334
+ kthread+0x114/0x1bc
+ ret_from_fork+0x10/0x20
+
+Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
+Cc: stable@kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250916-ready-v1-3-4997bf277548@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916-ready-v1-3-4997bf277548@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/networking/seg6-sysctl.rst | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/gadget/function/f_ncm.c |   78 +++++++++++++++---------------------
+ 1 file changed, 33 insertions(+), 45 deletions(-)
 
-diff --git a/Documentation/networking/seg6-sysctl.rst b/Documentation/networking/seg6-sysctl.rst
-index 07c20e470bafe..1b6af4779be11 100644
---- a/Documentation/networking/seg6-sysctl.rst
-+++ b/Documentation/networking/seg6-sysctl.rst
-@@ -25,6 +25,9 @@ seg6_require_hmac - INTEGER
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -11,6 +11,7 @@
+  * Copyright (C) 2008 Nokia Corporation
+  */
  
- 	Default is 0.
++#include <linux/cleanup.h>
+ #include <linux/kernel.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+@@ -19,6 +20,7 @@
+ #include <linux/crc32.h>
  
-+/proc/sys/net/ipv6/seg6_* variables:
-+====================================
+ #include <linux/usb/cdc.h>
++#include <linux/usb/gadget.h>
+ 
+ #include "u_ether.h"
+ #include "u_ether_configfs.h"
+@@ -1422,18 +1424,18 @@ static int ncm_bind(struct usb_configura
+ 	struct usb_ep		*ep;
+ 	struct f_ncm_opts	*ncm_opts;
+ 
++	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
++	struct usb_request		*request __free(free_usb_request) = NULL;
 +
- seg6_flowlabel - INTEGER
- 	Controls the behaviour of computing the flowlabel of outer
- 	IPv6 header in case of SR T.encaps
--- 
-2.51.0
-
+ 	if (!can_support_ecm(cdev->gadget))
+ 		return -EINVAL;
+ 
+ 	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
+ 
+ 	if (cdev->use_os_string) {
+-		f->os_desc_table = kzalloc(sizeof(*f->os_desc_table),
+-					   GFP_KERNEL);
+-		if (!f->os_desc_table)
++		os_desc_table = kzalloc(sizeof(*os_desc_table), GFP_KERNEL);
++		if (!os_desc_table)
+ 			return -ENOMEM;
+-		f->os_desc_n = 1;
+-		f->os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
+ 	}
+ 
+ 	mutex_lock(&ncm_opts->lock);
+@@ -1443,16 +1445,15 @@ static int ncm_bind(struct usb_configura
+ 	mutex_unlock(&ncm_opts->lock);
+ 
+ 	if (status)
+-		goto fail;
++		return status;
+ 
+ 	ncm_opts->bound = true;
+ 
+ 	us = usb_gstrings_attach(cdev, ncm_strings,
+ 				 ARRAY_SIZE(ncm_string_defs));
+-	if (IS_ERR(us)) {
+-		status = PTR_ERR(us);
+-		goto fail;
+-	}
++	if (IS_ERR(us))
++		return PTR_ERR(us);
++
+ 	ncm_control_intf.iInterface = us[STRING_CTRL_IDX].id;
+ 	ncm_data_nop_intf.iInterface = us[STRING_DATA_IDX].id;
+ 	ncm_data_intf.iInterface = us[STRING_DATA_IDX].id;
+@@ -1462,55 +1463,47 @@ static int ncm_bind(struct usb_configura
+ 	/* allocate instance-specific interface IDs */
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	ncm->ctrl_id = status;
+ 	ncm_iad_desc.bFirstInterface = status;
+ 
+ 	ncm_control_intf.bInterfaceNumber = status;
+ 	ncm_union_desc.bMasterInterface0 = status;
+ 
+-	if (cdev->use_os_string)
+-		f->os_desc_table[0].if_id =
+-			ncm_iad_desc.bFirstInterface;
+-
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	ncm->data_id = status;
+ 
+ 	ncm_data_nop_intf.bInterfaceNumber = status;
+ 	ncm_data_intf.bInterfaceNumber = status;
+ 	ncm_union_desc.bSlaveInterface0 = status;
+ 
+-	status = -ENODEV;
+-
+ 	/* allocate instance-specific endpoints */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_in_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ncm->port.in_ep = ep;
+ 
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_out_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ncm->port.out_ep = ep;
+ 
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ncm_notify_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ncm->notify = ep;
+ 
+-	status = -ENOMEM;
+-
+ 	/* allocate notification request and buffer */
+-	ncm->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
+-	if (!ncm->notify_req)
+-		goto fail;
+-	ncm->notify_req->buf = kmalloc(NCM_STATUS_BYTECOUNT, GFP_KERNEL);
+-	if (!ncm->notify_req->buf)
+-		goto fail;
+-	ncm->notify_req->context = ncm;
+-	ncm->notify_req->complete = ncm_notify_complete;
++	request = usb_ep_alloc_request(ep, GFP_KERNEL);
++	if (!request)
++		return -ENOMEM;
++	request->buf = kmalloc(NCM_STATUS_BYTECOUNT, GFP_KERNEL);
++	if (!request->buf)
++		return -ENOMEM;
++	request->context = ncm;
++	request->complete = ncm_notify_complete;
+ 
+ 	/*
+ 	 * support all relevant hardware speeds... we expect that when
+@@ -1530,7 +1523,7 @@ static int ncm_bind(struct usb_configura
+ 	status = usb_assign_descriptors(f, ncm_fs_function, ncm_hs_function,
+ 			ncm_ss_function, ncm_ss_function);
+ 	if (status)
+-		goto fail;
++		return status;
+ 
+ 	/*
+ 	 * NOTE:  all that is done without knowing or caring about
+@@ -1544,23 +1537,18 @@ static int ncm_bind(struct usb_configura
+ 	hrtimer_init(&ncm->task_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
+ 	ncm->task_timer.function = ncm_tx_timeout;
+ 
++	if (cdev->use_os_string) {
++		os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
++		os_desc_table[0].if_id = ncm_iad_desc.bFirstInterface;
++		f->os_desc_table = no_free_ptr(os_desc_table);
++		f->os_desc_n = 1;
++	}
++	ncm->notify_req = no_free_ptr(request);
++
+ 	DBG(cdev, "CDC Network: IN/%s OUT/%s NOTIFY/%s\n",
+ 			ncm->port.in_ep->name, ncm->port.out_ep->name,
+ 			ncm->notify->name);
+ 	return 0;
+-
+-fail:
+-	kfree(f->os_desc_table);
+-	f->os_desc_n = 0;
+-
+-	if (ncm->notify_req) {
+-		kfree(ncm->notify_req->buf);
+-		usb_ep_free_request(ncm->notify, ncm->notify_req);
+-	}
+-
+-	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
+-
+-	return status;
+ }
+ 
+ static inline struct f_ncm_opts *to_f_ncm_opts(struct config_item *item)
 
 
 
