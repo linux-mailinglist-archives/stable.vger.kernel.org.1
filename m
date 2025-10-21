@@ -1,120 +1,97 @@
-Return-Path: <stable+bounces-188847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35152BF8F81
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 23:44:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F405CBF8FBA
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 23:53:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E18275619A5
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:44:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD7204E2E68
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B2C296BD8;
-	Tue, 21 Oct 2025 21:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCFA23EA9B;
+	Tue, 21 Oct 2025 21:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hburrdRR"
+	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="SYy35YpB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A01D296BB2;
-	Tue, 21 Oct 2025 21:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0A9241665
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 21:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761083067; cv=none; b=Jwgnva7ZAPGQJjxZlLfZGuDxxQoUuEIGWZfvZeysCEHQwgJeC1m7S14516x5LR9xxcjNJXGicFun8fC1REmUWchsREahEQhp2cg/fL4x5kJHPl6/9kkCT05ZbXlLgl5N6BTced/Yb0QqcZftlp4goo4UL13uHY/iu62vtZdyKV8=
+	t=1761083592; cv=none; b=bAEvhxX0VIc+KoXO3tR0HucwkzwZArIwbLkwklNJznlDYPJXjJOLMkEfaEAmUnzDghT0nhOVBdd0WFrdqLmBz+SSiUbnNnDAvDdMs7aknqFTw26mY4q77vuMhvv61LdJTl4OuyKxpEEnwcSr/8NDK376+M8Q3vxBROUTaFoqGVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761083067; c=relaxed/simple;
-	bh=LH5PVxY5EL733clxfZZcW9q1PxHHbZTzuaiYx5J9AH4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hk+m8boWbexN0iz1JPNotUwSQtuGTOVC4vo5qL43tmqjG3VU9zXPpu7KnARHgFUP3iQ+7n06iK95A4XiuXAMKvc3nR8S9w/W3noKSA5eKU5K+Ts7wVNhvPoAn0uRRMzKLa9YD3VCJtcrHmp/hQc8WtO5HrCjjTy+omHfsck4oHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hburrdRR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE4FC4CEF1;
-	Tue, 21 Oct 2025 21:44:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761083067;
-	bh=LH5PVxY5EL733clxfZZcW9q1PxHHbZTzuaiYx5J9AH4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hburrdRRG6qRTf5+j96MsAPMyXqiCGl5cNTlx8oh0PpcD6F2R0pgsaQ3j7q9xx68/
-	 Axk4AQribaYivfqXd/isTTrzui5e5FA9vr1E0kCbM5t6sSTiDhwGitrWIYkZzhJuOO
-	 QHvEKRWLjoQgMXdej/EYdk4ZPrDOIkkS+H+TnF1ANwO9fTBW/Hp/4o7+lKVI6suBWd
-	 sWTjVGoii5+2HtOu/qCKzQhwn0Cp1HOtyidzCNsAv/6idJSJ8DEPs1MzComYwOONkE
-	 +DEDF+s+z6xUYm5NAtghSP9I0hgvY337dsaOJl5c0Kvj8+dyW5Jcxlsf35+G9EQQQ0
-	 yLcp4e7IB4+JA==
-Message-ID: <f5c4f35d-6305-49a5-8408-a418761c6a6a@kernel.org>
-Date: Tue, 21 Oct 2025 16:44:23 -0500
+	s=arc-20240116; t=1761083592; c=relaxed/simple;
+	bh=l9ZYVX95LGhTdGY/AdLGKCqXypgRReYL1oZfjL+RzdY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=gzmy/X8SO3poWEf9HEwoLBRgA4vKOp39x5DdohS7FR4mDFYzJ/vyp5Bcc5vlsgIABx0wtkk2OtXXXEagp4Y/p/q1U+W1mIbJ1rM4i+860duUfwu7yk24TOEG72b7/MQMlFrstVk1GdcBPrKuBNTTIqjdnuJnU2LQCkpugeiNnLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=SYy35YpB; arc=none smtp.client-ip=213.190.28.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
+	s=dkim_2024-02-03; t=1761083587;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e7UvSLVPJoNzvzJqaHF65H3yaU3SzqsscVV2EXHW5Z0=;
+	b=SYy35YpB11zkMH3EaoQpJJhUsMUevz1aTsstv92o2VBOrVZoWCpXf8KwlG3096Gm3d0zBx
+	27KGGXtVymAy9XCQ==
+Message-ID: <c5038e5a-ebb1-464f-9b79-905168ac7e44@hardfalcon.net>
+Date: Tue, 21 Oct 2025 23:53:06 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.17 000/159] 6.17.5-rc1 review
-To: =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20251021195043.182511864@linuxfoundation.org>
- <fc400181-7c76-6344-c6ea-a4e48d722f55@applied-asynchrony.com>
- <b7c17e91-cae7-46ef-bfc8-a9014d11346a@kernel.org>
- <b01cf3f0-fef4-e8f7-180d-903a84bc69a7@applied-asynchrony.com>
-Content-Language: en-US
-From: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-In-Reply-To: <b01cf3f0-fef4-e8f7-180d-903a84bc69a7@applied-asynchrony.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: Patch "PM: hibernate: Add pm_hibernation_mode_is_suspend()" has
+ been added to the 6.17-stable tree
+To: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>
+References: <2025102032-crescent-acuteness-5060 () gregkh>
+ <2745b827-b831-4964-8fc5-368f7446d73e@hardfalcon.net>
+ <8c4d1326-512c-4b98-bac0-aa207b54aa2a@kernel.org>
+ <19c7ba58-7300-4e10-bd81-367354f826db@hardfalcon.net>
+ <1f15260b-684e-4b8c-807f-244bbfd31f1c@kernel.org>
+ <edffeaca-e52a-4ecc-b788-3120e11bbef2@kernel.org>
+Content-Language: en-US, de-DE, en-US-large
+From: Pascal Ernster <git@hardfalcon.net>
+In-Reply-To: <edffeaca-e52a-4ecc-b788-3120e11bbef2@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+[2025-10-21 23:34] Mario Limonciello (AMD) (kernel.org):
+> On 10/21/2025 4:19 PM, Mario Limonciello (AMD) (kernel.org) wrote:
+>> It looks to me that you have CONFIG_HIBERNATE_CALLBACKS set but not CONFIG_HIBERNATION set.
+>>
+>> How does this happen?  HIBERNATE_CALLBACKS is hidden, and it's only selected by CONFIG_HIBERNATE.
+
+Excerpt from "make menuconfig":
+
+> │ Symbol: HIBERNATE_CALLBACKS [=y]
+> │ Type  : bool
+> │ Defined at kernel/power/Kconfig:35
+> │ Selected by [y]:
+> │   - XEN_SAVE_RESTORE [=y] && HYPERVISOR_GUEST [=y] && XEN [=y]
+> │ Selected by [n]:
+> │   - HIBERNATION [=n] && SWAP [=y] && ARCH_HIBERNATION_POSSIBLE [=y]
 
 
-On 10/21/2025 4:43 PM, Holger Hoffstätte wrote:
-> On 2025-10-21 23:33, Mario Limonciello (AMD) (kernel.org) wrote:
->>
->>
->> On 10/21/2025 4:30 PM, Holger Hoffstätte wrote:
->>> On 2025-10-21 21:49, Greg Kroah-Hartman wrote:
->>>> This is the start of the stable review cycle for the 6.17.5 release.
->>>
->>> Hmm:
->>>
->>> *  LD [M]  drivers/gpu/drm/amd/amdgpu/amdgpu.o
->>> *  MODPOST Module.symvers
->>> *ERROR: modpost: "pm_hibernation_mode_is_suspend" [drivers/gpu/drm/ 
->>> amd/ amdgpu/amdgpu.ko] undefined!
->>>
->>> Caused by drm-amd-fix-hybrid-sleep.patch
->>>
->>> I have CONFIG_SUSPEND enabled, exactly same config as 6.17.4.
->>>
->>> Looking at mainline it seems we also need parts of:
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/ 
->>> commit/?id=495c8d35035edb66e3284113bef01f3b1b843832
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/ 
->>> commit/?id=bbfe987c5a2854705393ad79813074e5eadcbde6
->>>
->>> cheers
->>> Holger
->>
->> Can you please share your kconfig?
->>
->> Specifically interesting are CONFIG_SUSPEND, CONFIG_HIBERNATION, 
->> CONFIG_HIBERNATE_CALLBACKS.
+>> The fix for now for you is to either turn off CONFIG_HIBERNATE_CALLBACKS or turn on CONFIG_HIBERNATION.
 > 
-> $grep -e CONFIG_SUSPEND -e CONFIG_HIBERNATION -e 
-> CONFIG_HIBERNATE_CALLBACKS /etc/kernels/kernel-config-x86_64-6.17.5
-> CONFIG_SUSPEND=y
-> CONFIG_SUSPEND_FREEZER=y
-> # CONFIG_SUSPEND_SKIP_SYNC is not set
-> # CONFIG_HIBERNATION is not set
-> 
-> This is intentional as I don't use hibernation, only suspend-to-ram.
-> 
-> thanks,
-> Holger
+> Alternatively does picking https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=bbfe987c5a2854705393ad79813074e5eadcbde6 help your issue?
 
-OK I think that we need those other commits you identified brought back too.
+
+Thanks for the hint! :)
+
+I'll give that patch a try, but compiling will take a while.
+
+
+Regards
+Pascal
 
