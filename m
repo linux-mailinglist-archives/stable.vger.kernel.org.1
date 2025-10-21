@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-188560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06EF2BF873D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A63BF854E
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7079D42783B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00877580237
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA41B274B5C;
-	Tue, 21 Oct 2025 19:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1070C2737E7;
+	Tue, 21 Oct 2025 19:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INxyCplo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqI2hGU1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932E3246798;
-	Tue, 21 Oct 2025 19:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD859274B2A;
+	Tue, 21 Oct 2025 19:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076795; cv=none; b=tYg9PvkkFVRSrlzl4JgmIsf+Rz+Lhq4cQalOdULyE3WzeziYLgwVONWtXPAHlbmbPVh/M4bRMhxYJsZ21vvzY2O0trbMpqlK11RgGCFswe/ZSLwOkcfv0pGlV/dG/DG0XTS1eMA1gHvYQkX2GeNNc8O6UsWevTEiCeW6FSOaZCg=
+	t=1761076386; cv=none; b=oUu3eNxTL2l2XaG6UyTZpJi8idU9qCcdsEsSsEn6Y+WTE/wmc4cbP2hLMT0UlfPPku6sJ3u+GvGwd0Kqbec8xgiKBzMkDJ0KmS1jIljViw7eITW8PQDN3kN0VKmQJaXiWSwTE+nxamlWcHvrmQASsXyg5/F1CxFOi2xPG1wdtoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076795; c=relaxed/simple;
-	bh=aynywAlu27qWn/YB9ToKqWfCCXFOXt1ZQt4It23XzhE=;
+	s=arc-20240116; t=1761076386; c=relaxed/simple;
+	bh=ALMSmygY5WLndd/HytDf7LXS/kgVfHOKdcY4NsWlpwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwo08TN2sKNU6cgLoKZAzWnYPZ7ypwkUJIB2D2d37Kall1yz0VJHg+s4MlfbDD/uy/+VspZq4aKhMHqYLMh6gXNOA0wuosa1kKR1NiYZiW+02yxex6OL3p6V0kBdaYdq6NyBTqWfEyHaFNHRjX5BIDLKIpIjHQrj+mjJCdhyBdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INxyCplo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811A5C4CEF7;
-	Tue, 21 Oct 2025 19:59:54 +0000 (UTC)
+	 MIME-Version; b=K+hf/GzVZtLXB4f7jzQE5VPHg8neAtNrGmPiLFSQ40Hn6HYde8dKGhNvUD1pV23kWLonaulW9PkIerdrgRjUVoRZfYgfUH2rp1EvX30VgaBx0YteT5zlmELkWiZ//8c4+rMThzgXgvLlSqSwEImSzlSWTTZoMThjzp+qhemv3c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqI2hGU1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1407FC4CEF5;
+	Tue, 21 Oct 2025 19:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076795;
-	bh=aynywAlu27qWn/YB9ToKqWfCCXFOXt1ZQt4It23XzhE=;
+	s=korg; t=1761076386;
+	bh=ALMSmygY5WLndd/HytDf7LXS/kgVfHOKdcY4NsWlpwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INxyCploUbdraWItbrzZMQObHr2drbrOSuD37VWLadlh3YS53We+nggQ5blPfZdFf
-	 MRHToD51ftggrQIqXlbuhgOs2rMX/iLr1R8eolbGCBfxUbxZAxboFyinAdp7kNW+YF
-	 1qIm17GdMnuoJ9AQSB+4E1g07deq2Vzw0UVxC7kY=
+	b=KqI2hGU1yXWdw6rPFs4wlK9WC+usWBUzih0BX6KQ00xotQFIkV4gi10JEBMxF/+oY
+	 6vqCZ2spVQ9UCC+z7Fysd0kSUmIA7sPMdE/of/By2vj1d4FOOXBURzXcofgLOTnsoB
+	 /wKbwADPbf0QHtYoj38BwvwJDWPxgKR9Lz90u92k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Kuen-Han Tsai <khtsai@google.com>,
+	Huang Xiaojia <huangxiaojia2@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/136] usb: gadget: f_ecm: Refactor bind path to use __free()
-Date: Tue, 21 Oct 2025 21:50:27 +0200
-Message-ID: <20251021195036.922416050@linuxfoundation.org>
+Subject: [PATCH 6.6 019/105] epoll: Remove ep_scan_ready_list() in comments
+Date: Tue, 21 Oct 2025 21:50:28 +0200
+Message-ID: <20251021195021.949558008@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,159 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Huang Xiaojia <huangxiaojia2@huawei.com>
 
-[ Upstream commit 42988380ac67c76bb9dff8f77d7ef3eefd50b7b5 ]
+[ Upstream commit e6f7958042a7b1dc9a4dfc19fca74217bc0c4865 ]
 
-After an bind/unbind cycle, the ecm->notify_req is left stale. If a
-subsequent bind fails, the unified error label attempts to free this
-stale request, leading to a NULL pointer dereference when accessing
-ep->ops->free_request.
+Since commit 443f1a042233 ("lift the calls of ep_send_events_proc()
+into the callers"), ep_scan_ready_list() has been removed.
+But there are still several in comments. All of them should
+be replaced with other caller functions.
 
-Refactor the error handling in the bind path to use the __free()
-automatic cleanup mechanism.
-
-Fixes: da741b8c56d6 ("usb ethernet gadget: split CDC Ethernet function")
-Cc: stable@kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
+Signed-off-by: Huang Xiaojia <huangxiaojia2@huawei.com>
+Link: https://lore.kernel.org/r/20240206014353.4191262-1-huangxiaojia2@huawei.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 0c43094f8cc9 ("eventpoll: Replace rwlock with spinlock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ecm.c |   48 +++++++++++++++---------------------
- 1 file changed, 20 insertions(+), 28 deletions(-)
+ fs/eventpoll.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/gadget/function/f_ecm.c
-+++ b/drivers/usb/gadget/function/f_ecm.c
-@@ -8,12 +8,15 @@
- 
- /* #define VERBOSE_DEBUG */
- 
-+#include <linux/cleanup.h>
- #include <linux/slab.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/device.h>
- #include <linux/etherdevice.h>
- 
-+#include <linux/usb/gadget.h>
-+
- #include "u_ether.h"
- #include "u_ether_configfs.h"
- #include "u_ecm.h"
-@@ -678,6 +681,7 @@ ecm_bind(struct usb_configuration *c, st
- 	struct usb_ep		*ep;
- 
- 	struct f_ecm_opts	*ecm_opts;
-+	struct usb_request	*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_ecm(cdev->gadget))
- 		return -EINVAL;
-@@ -711,7 +715,7 @@ ecm_bind(struct usb_configuration *c, st
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ecm->ctrl_id = status;
- 	ecm_iad_descriptor.bFirstInterface = status;
- 
-@@ -720,24 +724,22 @@ ecm_bind(struct usb_configuration *c, st
- 
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	ecm->data_id = status;
- 
- 	ecm_data_nop_intf.bInterfaceNumber = status;
- 	ecm_data_intf.bInterfaceNumber = status;
- 	ecm_union_desc.bSlaveInterface0 = status;
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ecm->port.in_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ecm->port.out_ep = ep;
- 
- 	/* NOTE:  a status/notification endpoint is *OPTIONAL* but we
-@@ -746,20 +748,18 @@ ecm_bind(struct usb_configuration *c, st
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -206,7 +206,7 @@ struct eventpoll {
  	 */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_notify_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	ecm->notify = ep;
+ 	struct epitem *ovflist;
  
--	status = -ENOMEM;
--
- 	/* allocate notification request and buffer */
--	ecm->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
--	if (!ecm->notify_req)
--		goto fail;
--	ecm->notify_req->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
--	if (!ecm->notify_req->buf)
--		goto fail;
--	ecm->notify_req->context = ecm;
--	ecm->notify_req->complete = ecm_notify_complete;
-+	request = usb_ep_alloc_request(ep, GFP_KERNEL);
-+	if (!request)
-+		return -ENOMEM;
-+	request->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
-+	if (!request->buf)
-+		return -ENOMEM;
-+	request->context = ecm;
-+	request->complete = ecm_notify_complete;
+-	/* wakeup_source used when ep_scan_ready_list is running */
++	/* wakeup_source used when ep_send_events or __ep_eventpoll_poll is running */
+ 	struct wakeup_source *ws;
  
- 	/* support all relevant hardware speeds... we expect that when
- 	 * hardware is dual speed, all bulk-capable endpoints work at
-@@ -778,7 +778,7 @@ ecm_bind(struct usb_configuration *c, st
- 	status = usb_assign_descriptors(f, ecm_fs_function, ecm_hs_function,
- 			ecm_ss_function, ecm_ss_function);
- 	if (status)
--		goto fail;
-+		return status;
+ 	/* The user that created the eventpoll descriptor */
+@@ -1190,7 +1190,7 @@ static inline bool chain_epi_lockless(st
+  * This callback takes a read lock in order not to contend with concurrent
+  * events from another file descriptor, thus all modifications to ->rdllist
+  * or ->ovflist are lockless.  Read lock is paired with the write lock from
+- * ep_scan_ready_list(), which stops all list modifications and guarantees
++ * ep_start/done_scan(), which stops all list modifications and guarantees
+  * that lists state is seen correctly.
+  *
+  * Another thing worth to mention is that ep_poll_callback() can be called
+@@ -1792,7 +1792,7 @@ static int ep_send_events(struct eventpo
+ 			 * availability. At this point, no one can insert
+ 			 * into ep->rdllist besides us. The epoll_ctl()
+ 			 * callers are locked out by
+-			 * ep_scan_ready_list() holding "mtx" and the
++			 * ep_send_events() holding "mtx" and the
+ 			 * poll callback will queue them in ep->ovflist.
+ 			 */
+ 			list_add_tail(&epi->rdllink, &ep->rdllist);
+@@ -1945,7 +1945,7 @@ static int ep_poll(struct eventpoll *ep,
+ 		__set_current_state(TASK_INTERRUPTIBLE);
  
- 	/* NOTE:  all that is done without knowing or caring about
- 	 * the network link ... which is unavailable to this code
-@@ -788,20 +788,12 @@ ecm_bind(struct usb_configuration *c, st
- 	ecm->port.open = ecm_open;
- 	ecm->port.close = ecm_close;
- 
-+	ecm->notify_req = no_free_ptr(request);
-+
- 	DBG(cdev, "CDC Ethernet: IN/%s OUT/%s NOTIFY/%s\n",
- 			ecm->port.in_ep->name, ecm->port.out_ep->name,
- 			ecm->notify->name);
- 	return 0;
--
--fail:
--	if (ecm->notify_req) {
--		kfree(ecm->notify_req->buf);
--		usb_ep_free_request(ecm->notify, ecm->notify_req);
--	}
--
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
--
--	return status;
- }
- 
- static inline struct f_ecm_opts *to_f_ecm_opts(struct config_item *item)
+ 		/*
+-		 * Do the final check under the lock. ep_scan_ready_list()
++		 * Do the final check under the lock. ep_start/done_scan()
+ 		 * plays with two lists (->rdllist and ->ovflist) and there
+ 		 * is always a race when both lists are empty for short
+ 		 * period of time although events are pending, so lock is
 
 
 
