@@ -1,221 +1,187 @@
-Return-Path: <stable+bounces-188344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C2FBF6CDC
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:36:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C91F1BF6D00
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:36:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85DEA3B1C2A
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 13:35:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D5B819A5CAE
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 13:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BEB33711A;
-	Tue, 21 Oct 2025 13:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E03B3370F4;
+	Tue, 21 Oct 2025 13:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mD6p9Be8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ooBbHfGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405133396F0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45EE25B2E7
 	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 13:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761053675; cv=none; b=a7PHgZTZ/frpTvXy+swtgLUMhIUMh+8ei7KK3NO+XhrqMrdY/vloGhkF4QwGJQoR/n4LaqVW40q6pHYZ8tgujwIWGGYVjTrsBwawt73zKqS/tH/REfKRJXtjnduKh9vh5sBLPWclXEXRYVHvTNpglAtoQFwds6f6yr/K89Sr/Zc=
+	t=1761053675; cv=none; b=kW3nQIKeDLNRNKb/ubJhuH0ZHWj65Yx4jOxi5EHsU0eSTYz4Dv6cAGz5RVcuvttztdgw11/0nDc46wkry7Pir43zkLuowwXRW0WdKzN3QIBF9nWinKvLDoCcl5fTllUocY+s9y4clfSv5tWY+1NOYbhowukEgdHxVuV4diE43W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761053675; c=relaxed/simple;
-	bh=Hako7mm/uzxprjB/C8uGzpdRr6HTKJh1SojQMzmEQBg=;
+	bh=Uu7YtjmlrQ8Sg9e07b+q4E2VGaflebYLlhMutFUp+Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W7D2z+rujGZh25I/JdonINISC1dWyr6Csz0cHhPYETO06UDmm5hh3roBVx9aOeP/QeHp6QqYraGgpxhSui+xL76JnhFKWxEImvATx57Djp/GfQFe15BopiFDXcWdXpxCjUSncZVb94msMuksVgP7hyn4gEPhHq6hwOYTPPgEunE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mD6p9Be8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619AEC4CEFF;
+	 MIME-Version; b=RWfB1KaQzF4tYzjgLw84a7xsjKEaZE8AiG31p/F3kqL70FZrsjWjIaurqyy6aGa/D3XtD4hAJJ49jswSw23MJpS4ra7y40SLhRecNN2aHVdDJb9Kk8oNo5jISjpYl4PbTtpdCOY+Fj1qcTTSQKwDOV9Fa4v+lo49Lirow1YmKm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ooBbHfGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C470C116B1;
 	Tue, 21 Oct 2025 13:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761053674;
-	bh=Hako7mm/uzxprjB/C8uGzpdRr6HTKJh1SojQMzmEQBg=;
+	s=k20201202; t=1761053675;
+	bh=Uu7YtjmlrQ8Sg9e07b+q4E2VGaflebYLlhMutFUp+Gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mD6p9Be8pfLw3kfdRwerbWV3e7i3icJJD5MDfNFNI5aOV/3tbyb584LTjQZBATVYy
-	 DRFroNCfKPbvbek2UEXu0z9c5OeKWB4IIhRuAzYwyeSYD1P8NbFNRpYJ2rhOuJG1yh
-	 asUh5j5JYkaxezONA3p5IwFzIWRVWSQ+xm4FiBYbvGjkgeJ2L9+mqrFksdCYmGapbL
-	 G9IJq8lSsN6McqmZCGPIxdbysmossm26eNFJM7sHCqgL48tQRpMZS1tQuXioSjN2Ze
-	 E4MJ/gwoqneNuXhtnayE7+hwBa0RrqpgpiUaGW0YpOmHKvNhDEMcG0xqUQSN1zikAL
-	 xvSVqoCG3D+rQ==
+	b=ooBbHfGj/QmPg1hC3Ngm39rSX7w8KrXPGC6dfaiGI2Wp46hzY5ibJhbrazs+9ZzcC
+	 XQ2Jqw7eXIdoOiVrpIPCXhidPYAOieoqYwwp61P7QnRwyVu/hdzr5xckzxia6n/OFE
+	 Www/Io0pRzwHcCG5V2hqo40wvxKHqk1nLcPCn9tY4wTpojj9DmIE7c+vA9N2cIHF4G
+	 31mOnyEXD4XMGxNxl6yZaF7tr616md/d/LZItbFQSMV5gIBfHwB3REmu+HPEWaC+Gw
+	 Pf9puLVuC5WGQ9RdPvkOi4zepKrsn9ej5EeTpD0F/Wg4bSvZshak7+QMge+3YB1+lX
+	 lZyNbo4FZ2T3A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Gui-Dong Han <hanguidong02@gmail.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y 5/5] drm/xe: Move rebar to be done earlier
-Date: Tue, 21 Oct 2025 09:34:27 -0400
-Message-ID: <20251021133427.2079917-5-sashal@kernel.org>
+Subject: [PATCH 5.10.y] drm/amdgpu: use atomic functions with memory barriers for vm fault info
+Date: Tue, 21 Oct 2025 09:34:32 -0400
+Message-ID: <20251021133432.2080290-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251021133427.2079917-1-sashal@kernel.org>
-References: <2025102055-prayer-clock-414f@gregkh>
- <20251021133427.2079917-1-sashal@kernel.org>
+In-Reply-To: <2025102010-body-overnight-fcad@gregkh>
+References: <2025102010-body-overnight-fcad@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit d30203739be798d3de5c84db3060e96f00c54e82 ]
+[ Upstream commit 6df8e84aa6b5b1812cc2cacd6b3f5ccbb18cda2b ]
 
-There may be cases in which the BAR0 also needs to move to accommodate
-the bigger BAR2. However if it's not released, the BAR2 resize fails.
-During the vram probe it can't be released as it's already in use by
-xe_mmio for early register access.
+The atomic variable vm_fault_info_updated is used to synchronize access to
+adev->gmc.vm_fault_info between the interrupt handler and
+get_vm_fault_info().
 
-Add a new function in xe_vram and let xe_pci call it directly before
-even early device probe. This allows the BAR2 to resize in cases BAR0
-also needs to move, assuming there aren't other reasons to hold that
-move:
+The default atomic functions like atomic_set() and atomic_read() do not
+provide memory barriers. This allows for CPU instruction reordering,
+meaning the memory accesses to vm_fault_info and the vm_fault_info_updated
+flag are not guaranteed to occur in the intended order. This creates a
+race condition that can lead to inconsistent or stale data being used.
 
-	[] xe 0000:03:00.0: vgaarb: deactivate vga console
-	[] xe 0000:03:00.0: [drm] Attempting to resize bar from 8192MiB -> 16384MiB
-	[] xe 0000:03:00.0: BAR 0 [mem 0x83000000-0x83ffffff 64bit]: releasing
-	[] xe 0000:03:00.0: BAR 2 [mem 0x4000000000-0x41ffffffff 64bit pref]: releasing
-	[] pcieport 0000:02:01.0: bridge window [mem 0x4000000000-0x41ffffffff 64bit pref]: releasing
-	[] pcieport 0000:01:00.0: bridge window [mem 0x4000000000-0x41ffffffff 64bit pref]: releasing
-	[] pcieport 0000:01:00.0: bridge window [mem 0x4000000000-0x43ffffffff 64bit pref]: assigned
-	[] pcieport 0000:02:01.0: bridge window [mem 0x4000000000-0x43ffffffff 64bit pref]: assigned
-	[] xe 0000:03:00.0: BAR 2 [mem 0x4000000000-0x43ffffffff 64bit pref]: assigned
-	[] xe 0000:03:00.0: BAR 0 [mem 0x83000000-0x83ffffff 64bit]: assigned
-	[] pcieport 0000:00:01.0: PCI bridge to [bus 01-04]
-	[] pcieport 0000:00:01.0:   bridge window [mem 0x83000000-0x840fffff]
-	[] pcieport 0000:00:01.0:   bridge window [mem 0x4000000000-0x44007fffff 64bit pref]
-	[] pcieport 0000:01:00.0: PCI bridge to [bus 02-04]
-	[] pcieport 0000:01:00.0:   bridge window [mem 0x83000000-0x840fffff]
-	[] pcieport 0000:01:00.0:   bridge window [mem 0x4000000000-0x43ffffffff 64bit pref]
-	[] pcieport 0000:02:01.0: PCI bridge to [bus 03]
-	[] pcieport 0000:02:01.0:   bridge window [mem 0x83000000-0x83ffffff]
-	[] pcieport 0000:02:01.0:   bridge window [mem 0x4000000000-0x43ffffffff 64bit pref]
-	[] xe 0000:03:00.0: [drm] BAR2 resized to 16384M
-	[] xe 0000:03:00.0: [drm:xe_pci_probe [xe]] BATTLEMAGE  e221:0000 dgfx:1 gfx:Xe2_HPG (20.02) ...
+The previous implementation, which used an explicit mb(), was incomplete
+and inefficient. It failed to account for all potential CPU reorderings,
+such as the access of vm_fault_info being reordered before the atomic_read
+of the flag. This approach is also more verbose and less performant than
+using the proper atomic functions with acquire/release semantics.
 
-For BMG there are additional fix needed in the PCI side, but this
-helps getting it to a working resize.
+Fix this by switching to atomic_set_release() and atomic_read_acquire().
+These functions provide the necessary acquire and release semantics,
+which act as memory barriers to ensure the correct order of operations.
+It is also more efficient and idiomatic than using explicit full memory
+barriers.
 
-All the rebar logic is more pci-specific than xe-specific and can be
-done very early in the probe sequence. In future it would be good to
-move it out of xe_vram.c, but this refactor is left for later.
-
-Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: stable@vger.kernel.org # 6.12+
-Link: https://lore.kernel.org/intel-xe/fafda2a3-fc63-ce97-d22b-803f771a4d19@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20250918-xe-pci-rebar-2-v1-2-6c094702a074@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 45e33f220fd625492c11e15733d8e9b4f9db82a4)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: b97dfa27ef3a ("drm/amdgpu: save vm fault information for amdkfd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ kept kgd_dev parameter and adev cast in amdgpu_amdkfd_gpuvm_get_vm_fault_info ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pci.c  |  2 ++
- drivers/gpu/drm/xe/xe_vram.c | 34 ++++++++++++++++++++++++++--------
- drivers/gpu/drm/xe/xe_vram.h |  1 +
- 3 files changed, 29 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 5 ++---
+ drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c            | 7 +++----
+ drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c            | 7 +++----
+ 3 files changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
-index f64942737a0b1..6c2637fc8f1ab 100644
---- a/drivers/gpu/drm/xe/xe_pci.c
-+++ b/drivers/gpu/drm/xe/xe_pci.c
-@@ -805,6 +805,8 @@ static int xe_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	if (err)
- 		return err;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index 4a95a624fca7b..53efc07cf4243 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1640,10 +1640,9 @@ int amdgpu_amdkfd_gpuvm_get_vm_fault_info(struct kgd_dev *kgd,
+ 	struct amdgpu_device *adev;
  
-+	xe_vram_resize_bar(xe);
-+
- 	err = xe_device_probe_early(xe);
- 	/*
- 	 * In Boot Survivability mode, no drm card is exposed and driver
-diff --git a/drivers/gpu/drm/xe/xe_vram.c b/drivers/gpu/drm/xe/xe_vram.c
-index b44ebf50fedbb..652df7a5f4f65 100644
---- a/drivers/gpu/drm/xe/xe_vram.c
-+++ b/drivers/gpu/drm/xe/xe_vram.c
-@@ -26,15 +26,35 @@
+ 	adev = (struct amdgpu_device *)kgd;
+-	if (atomic_read(&adev->gmc.vm_fault_info_updated) == 1) {
++	if (atomic_read_acquire(&adev->gmc.vm_fault_info_updated) == 1) {
+ 		*mem = *adev->gmc.vm_fault_info;
+-		mb();
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
+ 	}
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
+index 80c146df338aa..a5e78036ae457 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
+@@ -1067,7 +1067,7 @@ static int gmc_v7_0_sw_init(void *handle)
+ 					GFP_KERNEL);
+ 	if (!adev->gmc.vm_fault_info)
+ 		return -ENOMEM;
+-	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
  
- #define BAR_SIZE_SHIFT 20
- 
--static void
--_resize_bar(struct xe_device *xe, int resno, resource_size_t size)
-+/*
-+ * Release all the BARs that could influence/block LMEMBAR resizing, i.e.
-+ * assigned IORESOURCE_MEM_64 BARs
-+ */
-+static void release_bars(struct pci_dev *pdev)
-+{
-+	struct resource *res;
-+	int i;
-+
-+	pci_dev_for_each_resource(pdev, res, i) {
-+		/* Resource already un-assigned, do not reset it */
-+		if (!res->parent)
-+			continue;
-+
-+		/* No need to release unrelated BARs */
-+		if (!(res->flags & IORESOURCE_MEM_64))
-+			continue;
-+
-+		pci_release_resource(pdev, i);
-+	}
-+}
-+
-+static void resize_bar(struct xe_device *xe, int resno, resource_size_t size)
- {
- 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
- 	int bar_size = pci_rebar_bytes_to_size(size);
- 	int ret;
- 
--	if (pci_resource_len(pdev, resno))
--		pci_release_resource(pdev, resno);
-+	release_bars(pdev);
- 
- 	ret = pci_resize_resource(pdev, resno, bar_size);
- 	if (ret) {
-@@ -50,7 +70,7 @@ _resize_bar(struct xe_device *xe, int resno, resource_size_t size)
-  * if force_vram_bar_size is set, attempt to set to the requested size
-  * else set to maximum possible size
-  */
--static void resize_vram_bar(struct xe_device *xe)
-+void xe_vram_resize_bar(struct xe_device *xe)
- {
- 	int force_vram_bar_size = xe_modparam.force_vram_bar_size;
- 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
-@@ -119,7 +139,7 @@ static void resize_vram_bar(struct xe_device *xe)
- 	pci_read_config_dword(pdev, PCI_COMMAND, &pci_cmd);
- 	pci_write_config_dword(pdev, PCI_COMMAND, pci_cmd & ~PCI_COMMAND_MEMORY);
- 
--	_resize_bar(xe, LMEM_BAR, rebar_size);
-+	resize_bar(xe, LMEM_BAR, rebar_size);
- 
- 	pci_assign_unassigned_bus_resources(pdev->bus);
- 	pci_write_config_dword(pdev, PCI_COMMAND, pci_cmd);
-@@ -148,8 +168,6 @@ static int determine_lmem_bar_size(struct xe_device *xe, struct xe_vram_region *
- 		return -ENXIO;
+ 	return 0;
+ }
+@@ -1297,7 +1297,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
+ 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+ 			     VMID);
+ 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
+-		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
++		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
+ 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
+ 		u32 protections = REG_GET_FIELD(status,
+ 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+@@ -1313,8 +1313,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
+ 		info->prot_read = protections & 0x8 ? true : false;
+ 		info->prot_write = protections & 0x10 ? true : false;
+ 		info->prot_exec = protections & 0x20 ? true : false;
+-		mb();
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
  	}
  
--	resize_vram_bar(xe);
--
- 	lmem_bar->io_start = pci_resource_start(pdev, LMEM_BAR);
- 	lmem_bar->io_size = pci_resource_len(pdev, LMEM_BAR);
- 	if (!lmem_bar->io_size)
-diff --git a/drivers/gpu/drm/xe/xe_vram.h b/drivers/gpu/drm/xe/xe_vram.h
-index 72860f714fc66..13505cfb184dc 100644
---- a/drivers/gpu/drm/xe/xe_vram.h
-+++ b/drivers/gpu/drm/xe/xe_vram.h
-@@ -11,6 +11,7 @@
- struct xe_device;
- struct xe_vram_region;
+ 	return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
+index 873bc33912e23..8a8bbbb28dc15 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
+@@ -1199,7 +1199,7 @@ static int gmc_v8_0_sw_init(void *handle)
+ 					GFP_KERNEL);
+ 	if (!adev->gmc.vm_fault_info)
+ 		return -ENOMEM;
+-	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
  
-+void xe_vram_resize_bar(struct xe_device *xe);
- int xe_vram_probe(struct xe_device *xe);
+ 	return 0;
+ }
+@@ -1488,7 +1488,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
+ 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+ 			     VMID);
+ 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
+-		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
++		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
+ 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
+ 		u32 protections = REG_GET_FIELD(status,
+ 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+@@ -1504,8 +1504,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
+ 		info->prot_read = protections & 0x8 ? true : false;
+ 		info->prot_write = protections & 0x10 ? true : false;
+ 		info->prot_exec = protections & 0x20 ? true : false;
+-		mb();
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
+ 	}
  
- struct xe_vram_region *xe_vram_region_alloc(struct xe_device *xe, u8 id, u32 placement);
+ 	return 0;
 -- 
 2.51.0
 
