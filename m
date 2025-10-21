@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-188547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C38BF86FA
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F47BF8538
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:52:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03B1219C3DD4
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:59:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B371463899
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1326A274B2E;
-	Tue, 21 Oct 2025 19:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F6827381E;
+	Tue, 21 Oct 2025 19:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTIePF0u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAl2g6UH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B90350A2A;
-	Tue, 21 Oct 2025 19:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A3E273D73;
+	Tue, 21 Oct 2025 19:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076753; cv=none; b=oYplm6yywCTWTUHrRUP72w+qa+/i00oe7JOaDrD1Dwi/WVJcQ7jL5CPiT7ddSw4RMSzMKFnh7EzSwTarKBr2RDybV2txgaHr95mpeh1l37nA882FEjpWV6Foq0Ssx2AkxDOyk4PR375JhnLQDIrUQvETlBxi+vFkA+fDe3XqfSc=
+	t=1761076369; cv=none; b=DNYAgaMH+dPC781FWqSi7h5voeWCyyhQqlrRe0Gre868LB7TUgBa+xLOjs0hQHW4QOPuKqlTNfUrCvfx7KjBmsIW1XO4xU2ERywfTyRhR32Nsks0+wP+hR90suvD+y1dJBm5n/dOlY4BzV8tNLzm7pdhbGlrcg1b3KC29WoH63w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076753; c=relaxed/simple;
-	bh=8JHmGjp+BOYTDcsueH2DcALLHfOTo+3x0Wudv2GCa6A=;
+	s=arc-20240116; t=1761076369; c=relaxed/simple;
+	bh=27UO3HsGbRjIhR5ejo8ziCkMR09m6iiTf8UTPKYMTQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DrmzBTy3yk3OlVuHMnwtJtRSJTf7QOuA1NwF1B3P+0a60jFqBkg+lO/w7WxPdDj3yoib05cQSxQHwRd+vtzr08e7mxRcWLI1GYGZz9VME4MzVVZnkbBUNO80++yd9FYFSZ+IDC9R6DGy8E+Fg6W7Aq9nQNZ8T3SZ0g9CNnQsgs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTIePF0u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8F0C4CEF1;
-	Tue, 21 Oct 2025 19:59:13 +0000 (UTC)
+	 MIME-Version; b=BDo24YSgAu73pOujIEqBjxLCZ21ayiE3e7fsfcU1Pg1kSIejMb/gE8iJ2N1v1WMT6Hd8y6xPi8kRiU2QGbtzRvQFx1PP+A7UkauHJubUYdzyfLGLW6rLIbycrD5mZvXNp0+Zfqcn7S6baQ4el6jU8B70KZ1Z+oQvdSv2d1OMDMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAl2g6UH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE15C4CEF5;
+	Tue, 21 Oct 2025 19:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076753;
-	bh=8JHmGjp+BOYTDcsueH2DcALLHfOTo+3x0Wudv2GCa6A=;
+	s=korg; t=1761076369;
+	bh=27UO3HsGbRjIhR5ejo8ziCkMR09m6iiTf8UTPKYMTQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qTIePF0u3ERUUO5TRAdOukGUkSjMVAmn09l1kEyKF+7ioK5/E+SBydJtTibsuAV3j
-	 W7ymgZ7u17aIuuZgGxNQJSzIu6pFqExdCev7MCXgfgEGL8xbvLcZfHpf641y6B5RUD
-	 2+aOGDanY4VT3ZWAH0CmG2B+NtViifnO8lKlUTd8=
+	b=TAl2g6UH/CeGsz63Sz0fAlKucWGMiOv9JdD2KlUD40y8DyQ2OMYVuD+0ax8tLHLGx
+	 eX/VuHbtp/w4+z3pSyyYPttexgLWDJnRMEOsXXqvenNih2HdfQDDR8bhyswopxosJ0
+	 d6HfOq7DfIJ91/lubaULs1/WogD7fSYLBA7jxojI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/136] irqdomain: cdx: Switch to of_fwnode_handle()
+	stable@kernel.org,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 006/105] ext4: wait for ongoing I/O to complete before freeing blocks
 Date: Tue, 21 Oct 2025 21:50:15 +0200
-Message-ID: <20251021195036.628315897@linuxfoundation.org>
+Message-ID: <20251021195021.644663041@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 2a87a55f2281a1096d9e77ac6309b9128c107d97 ]
+commit 328a782cb138029182e521c08f50eb1587db955d upstream.
 
-of_node_to_fwnode() is irqdomain's reimplementation of the "officially"
-defined of_fwnode_handle(). The former is in the process of being
-removed, so use the latter instead.
+When freeing metadata blocks in nojournal mode, ext4_forget() calls
+bforget() to clear the dirty flag on the buffer_head and remvoe
+associated mappings. This is acceptable if the metadata has not yet
+begun to be written back. However, if the write-back has already started
+but is not yet completed, ext4_forget() will have no effect.
+Subsequently, ext4_mb_clear_bb() will immediately return the block to
+the mb allocator. This block can then be reallocated immediately,
+potentially causing an data corruption issue.
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Nipun Gupta <nipun.gupta@amd.com>
-Cc: Nikhil Agarwal <nikhil.agarwal@amd.com>
-Acked-by: Nipun Gupta <nipun.gupta@amd.com>
-Link: https://lore.kernel.org/r/20250415104734.106849-1-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 76254bc489d3 ("cdx: Fix device node reference leak in cdx_msi_domain_init")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by clearing the buffer's dirty flag and waiting for the ongoing
+I/O to complete, ensuring that no further writes to stale data will
+occur.
+
+Fixes: 16e08b14a455 ("ext4: cleanup clean_bdev_aliases() calls")
+Cc: stable@kernel.org
+Reported-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Closes: https://lore.kernel.org/linux-ext4/a9417096-9549-4441-9878-b1955b899b4e@huaweicloud.com/
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20250916093337.3161016-3-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cdx/cdx_msi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/ext4_jbd2.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/cdx/cdx_msi.c
-+++ b/drivers/cdx/cdx_msi.c
-@@ -165,7 +165,7 @@ struct irq_domain *cdx_msi_domain_init(s
- 	struct device_node *parent_node;
- 	struct irq_domain *parent;
+--- a/fs/ext4/ext4_jbd2.c
++++ b/fs/ext4/ext4_jbd2.c
+@@ -277,9 +277,16 @@ int __ext4_forget(const char *where, uns
+ 		  bh, is_metadata, inode->i_mode,
+ 		  test_opt(inode->i_sb, DATA_FLAGS));
  
--	fwnode_handle = of_node_to_fwnode(np);
-+	fwnode_handle = of_fwnode_handle(np);
- 
- 	parent_node = of_parse_phandle(np, "msi-map", 1);
- 	if (!parent_node) {
-@@ -173,7 +173,7 @@ struct irq_domain *cdx_msi_domain_init(s
- 		return NULL;
+-	/* In the no journal case, we can just do a bforget and return */
++	/*
++	 * In the no journal case, we should wait for the ongoing buffer
++	 * to complete and do a forget.
++	 */
+ 	if (!ext4_handle_valid(handle)) {
+-		bforget(bh);
++		if (bh) {
++			clear_buffer_dirty(bh);
++			wait_on_buffer(bh);
++			__bforget(bh);
++		}
+ 		return 0;
  	}
  
--	parent = irq_find_matching_fwnode(of_node_to_fwnode(parent_node), DOMAIN_BUS_NEXUS);
-+	parent = irq_find_matching_fwnode(of_fwnode_handle(parent_node), DOMAIN_BUS_NEXUS);
- 	if (!parent || !msi_get_domain_info(parent)) {
- 		dev_err(dev, "unable to locate ITS domain\n");
- 		return NULL;
 
 
 
