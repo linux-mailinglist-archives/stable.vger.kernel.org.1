@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-188596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2094BF87CA
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:03:01 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E3EBF85DF
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4AEE3BE11D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:01:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7A9634F6B98
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6059D23D7E8;
-	Tue, 21 Oct 2025 20:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39FC274652;
+	Tue, 21 Oct 2025 19:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUPo7wh1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjt+CUey"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB4D350A2C;
-	Tue, 21 Oct 2025 20:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6D527381E;
+	Tue, 21 Oct 2025 19:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076910; cv=none; b=gjdfuhrgFu8Nr2rjp74H2lNTAzlEL0cTWw9poz7W1eP8Tnte4FfT+XLojAlyU7p52L7qUbTFGHOBcznGNtsi9r54wivfk7bwga5LoWXKyCOpuJotku3KIfnt+nxJMa1gF/ZM1QrYvkHNJaTKHVZsIn6zL7EkZ0BpmSPhEGi77e8=
+	t=1761076524; cv=none; b=SKUeLn/cU3ZGsvHpK2uVlI4HLabktLMksDi8RM1a7K3qg5fZ4shDasedYAV/Cbx+rn5/idZMRqoqXC5cjX9BMPq2Gq3vws/D/jfmxbWDd5Ks4ete0CdvLcgEiS8S2sxsrO5SdmJy0xMytFJ7uKni0EzhtUqOUJdwxIw0MQ0/ltk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076910; c=relaxed/simple;
-	bh=oHGOpscUARyeq4u7M1CHmxA/ZBZfzOVTnIMeDFkxFBs=;
+	s=arc-20240116; t=1761076524; c=relaxed/simple;
+	bh=Hi1epSTKvEogTwbFkI4ogsZaDU5OfQsxfaxKS95hvOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TSB1iHBnkW0PyyCTQUbavJqXhCgudYIcMHpMKxrC9F8vI4d4kE88dlxLChLGvpGQtMY+rotZCVXTXk0RJR9sT8bpoGJGOB0LCDWC/Io/eIEYDndtQl2RLPqmlEFu5d7gSRwKXUPv6gGB4AfT3pGuNXQwsqDnZhgRTWvrWCWjlwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUPo7wh1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1CCCC4CEF1;
-	Tue, 21 Oct 2025 20:01:49 +0000 (UTC)
+	 MIME-Version; b=LZE7ay8+72RkbnVTVpVSEYpJr37ge/WkmzesWg7NP1W3TtJvzwzuTjskpfHI6cP9UYtRX86eT4NeookYH2bnBLT2Kn74wfzHJeF4k6yma4xQ8TX6GkHvOMW/+5tYLj8rKWJhD71yf6D8bSogMcZ7xxgUXnyqNJJxU0bGitWzFfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjt+CUey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAED1C4CEF5;
+	Tue, 21 Oct 2025 19:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076910;
-	bh=oHGOpscUARyeq4u7M1CHmxA/ZBZfzOVTnIMeDFkxFBs=;
+	s=korg; t=1761076524;
+	bh=Hi1epSTKvEogTwbFkI4ogsZaDU5OfQsxfaxKS95hvOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KUPo7wh1g1v4vTMJRz3HXbrvmBgPtUBGt4HYZtF0gq8StF7ih9p4qFaHhNYW2mfLs
-	 H2muMxh8lWyaIXd894JPHzJkJcG9eThP53x2alUSWT1rxh/O+mJPXdkPLWGJz6pld0
-	 buzaRqTYqYc7zeia31WtJSWcLzEdzgdma08PFrn8=
+	b=kjt+CUeyw7q2rEbM7+fmCNkSea6kRbVt9NX+1MerzXKZVJJMP2XlqHXX1vwLWqI2Y
+	 HZtW6KC5TugCaPohzlrGOreHmjKv4IPlsY8uyofoYhJfC/+BKKnxqtuuw2f1fzLEKU
+	 XM1DlpLuu8uNeukciaSV+6YRtcw1QHdHnJt8ArQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhanjun Dong <zhanjun.dong@intel.com>,
-	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Marek Vasut <marek.vasut@mailbox.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/136] drm/i915/guc: Skip communication warning on reset in progress
+Subject: [PATCH 6.6 054/105] drm/bridge: lt9211: Drop check for last nibble of version register
 Date: Tue, 21 Oct 2025 21:51:03 +0200
-Message-ID: <20251021195037.776565600@linuxfoundation.org>
+Message-ID: <20251021195022.962479389@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhanjun Dong <zhanjun.dong@intel.com>
+From: Marek Vasut <marek.vasut@mailbox.org>
 
-[ Upstream commit 1696b0cfcf004a3af34ffe4c57a14e837ef18144 ]
+[ Upstream commit db74b04edce1bc86b9a5acc724c7ca06f427ab60 ]
 
-GuC IRQ and tasklet handler receive just single G2H message, and let other
-messages to be received from next tasklet. During this chained tasklet
-process, if reset process started, communication will be disabled.
-Skip warning for this condition.
+There is now a new LT9211 rev. U5, which reports chip ID 0x18 0x01 0xe4 .
+The previous LT9211 reported chip ID 0x18 0x01 0xe3 , which is what the
+driver checks for right now. Since there is a possibility there will be
+yet another revision of the LT9211 in the future, drop the last version
+nibble check to allow all future revisions of the chip to work with this
+driver.
 
-Fixes: 65dd4ed0f4e1 ("drm/i915/guc: Don't receive all G2H messages in irq handler")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15018
-Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
-Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Link: https://lore.kernel.org/r/20250929152904.269776-1-zhanjun.dong@intel.com
-(cherry picked from commit 604b5ee4a653a70979ce689dbd6a5d942eb016bf)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+This fix makes LT9211 rev. U5 work with this driver.
+
+Fixes: 8ce4129e3de4 ("drm/bridge: lt9211: Add Lontium LT9211 bridge driver")
+Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251011110017.12521-1-marek.vasut@mailbox.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/lontium-lt9211.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c
-index 0d5197c0824a9..5cf3a516ccfb3 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c
-@@ -1324,9 +1324,16 @@ static int ct_receive(struct intel_guc_ct *ct)
+diff --git a/drivers/gpu/drm/bridge/lontium-lt9211.c b/drivers/gpu/drm/bridge/lontium-lt9211.c
+index 4d404f5ef87eb..ea192c90b543e 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt9211.c
++++ b/drivers/gpu/drm/bridge/lontium-lt9211.c
+@@ -120,8 +120,7 @@ static int lt9211_read_chipid(struct lt9211 *ctx)
+ 	}
  
- static void ct_try_receive_message(struct intel_guc_ct *ct)
- {
-+	struct intel_guc *guc = ct_to_guc(ct);
- 	int ret;
- 
--	if (GEM_WARN_ON(!ct->enabled))
-+	if (!ct->enabled) {
-+		GEM_WARN_ON(!guc_to_gt(guc)->uc.reset_in_progress);
-+		return;
-+	}
-+
-+	/* When interrupt disabled, message handling is not expected */
-+	if (!guc->interrupts.enabled)
- 		return;
- 
- 	ret = ct_receive(ct);
+ 	/* Test for known Chip ID. */
+-	if (chipid[0] != REG_CHIPID0_VALUE || chipid[1] != REG_CHIPID1_VALUE ||
+-	    chipid[2] != REG_CHIPID2_VALUE) {
++	if (chipid[0] != REG_CHIPID0_VALUE || chipid[1] != REG_CHIPID1_VALUE) {
+ 		dev_err(ctx->dev, "Unknown Chip ID: 0x%02x 0x%02x 0x%02x\n",
+ 			chipid[0], chipid[1], chipid[2]);
+ 		return -EINVAL;
 -- 
 2.51.0
 
