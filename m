@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-188511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEE9BF866D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:57:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEEFBF8842
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E3E61356F10
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:57:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 378EE4FA499
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52039274B44;
-	Tue, 21 Oct 2025 19:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1DC27B4F5;
+	Tue, 21 Oct 2025 20:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkf6YXgf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPSXdfXq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9DF274B2E;
-	Tue, 21 Oct 2025 19:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6614927AC5C;
+	Tue, 21 Oct 2025 20:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076639; cv=none; b=rtltIeX6CVS7VqM9ryDcFbzUb85XcGvjgz/Tr4Giz9f2igbiaVuyQhk6dEfBu6C2UWF7TueU+9mI4xjOP8evb5T3l6ojHFo2HeamZLQe7KqW9SE6f/MfOhgjTrFqFblOi1yndqZzhIJxnq8YrSUztmNr+fRlREdHs2QZIy93mgc=
+	t=1761077043; cv=none; b=A8tR/Al+RRtrfAiovfe6/9f6Of9mzaHTAT8IE8wLqlcxuSQvLmjefNDpRsR9aH1LYYlgDbE4B4wtXh6nmpdAVFQE8xSMNHwjLqzvdyR3XQI/wwnQqV3GRQGjWP06C2PzELwB4cHSLDP1eE233stKA7xjT5VB0HWInm52s264qlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076639; c=relaxed/simple;
-	bh=ALHH4l/Dq5vDThnp3rB+HhbB05y9zty6VXYahHNEcUc=;
+	s=arc-20240116; t=1761077043; c=relaxed/simple;
+	bh=sX9DZVObilYD4skcXOGYg9x/b2Llx1kKdkux5ScjdLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpL8vHUkacYdkV0FzA7MchY1y7ZAU4czaR3XUXDOmMqyZLj/p58LG2HhXtP9wDkB1PX8qE846oHlouwFlDSMjwq6lMIu/7lR0fIWM5+722ixzCGL+TVe51H9bi22k/zVbXwQy5zeGfn7wCcfTVMwyaDEH6uQ0oZk6l1eOeo54b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkf6YXgf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0C1C4CEF1;
-	Tue, 21 Oct 2025 19:57:18 +0000 (UTC)
+	 MIME-Version; b=jFGoqC8mM0n8tD9D2t7lT0Ybi9Era8H5vSWBxwc8MTRtZfvfBJfbLme6uw46yv0TDjcQb9p36DZuwkSb2nFJSR7cV8O75bD2dKARyxIJREYUUbCFqINGsVQevxTQzMJVXv4zs6bR5APgfYOAnv+DNT0ByYmHY//ztnDw7/r2oXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPSXdfXq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9661EC4CEF1;
+	Tue, 21 Oct 2025 20:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076638;
-	bh=ALHH4l/Dq5vDThnp3rB+HhbB05y9zty6VXYahHNEcUc=;
+	s=korg; t=1761077041;
+	bh=sX9DZVObilYD4skcXOGYg9x/b2Llx1kKdkux5ScjdLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkf6YXgfJc8fKUUzGeGt1DLIMfhaHW6vEXchhRMiebBpPlahSeGPLK31j8XDqS1ro
-	 ysUkIyjLaxLRI4q1u1NEBkNyzoXXYfg+EiXbGNeCfG0zpLD98AmzL7BAAzbwVJQF8Y
-	 IpLI09vkg5AtwOh8Osd3NSxEWJdAfw9ELOSmgw/U=
+	b=jPSXdfXqmv2z44LSDlaYyoQVaABpCT/RkPOJpPp5qToHWCmhJdc64z5I/f1wJ6iUC
+	 j6SFeN0iHwBwnrY+vlNEH2keJMujG2iXYEGKyqzFMdXWVksmN0QRcY0CltJxo7nV8s
+	 SP+tEFoUwg+rN9fg+GmWv/Fu2u99kM07eGJ+Y1iY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/105] PCI: Add PCI_VDEVICE_SUB helper macro
-Date: Tue, 21 Oct 2025 21:51:44 +0200
-Message-ID: <20251021195023.907502378@linuxfoundation.org>
+Subject: [PATCH 6.12 117/136] d_alloc_parallel(): set DCACHE_PAR_LOOKUP earlier
+Date: Tue, 21 Oct 2025 21:51:45 +0200
+Message-ID: <20251021195038.784060452@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 208fff3f567e2a3c3e7e4788845e90245c3891b4 ]
+[ Upstream commit e95db51c81f54dd12ea465b5127e4786f62a1095 ]
 
-PCI_VDEVICE_SUB generates the pci_device_id struct layout for
-the specific PCI device/subdevice. Private data may follow the
-output.
+Do that before new dentry is visible anywhere.  It does create
+a new possible state for dentries present in ->d_children/->d_sib -
+DCACHE_PAR_LOOKUP present, negative, unhashed, not in in-lookup
+hash chains, refcount positive.  Those are going to be skipped
+by all tree-walkers (both d_walk() callbacks in fs/dcache.c and
+explicit loops over children/sibling lists elsewhere) and
+dput() is fine with those.
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
+NOTE: dropping the final reference to a "normal" in-lookup dentry
+(in in-lookup hash) is a bug - somebody must've forgotten to
+call d_lookup_done() on it and bad things will happen.  With those
+it's OK; if/when we get around to making __dentry_kill() complain
+about such breakage, remember that predicate to check should
+*not* be just d_in_lookup(victim) but rather a combination of that
+with !hlist_bl_unhashed(&victim->d_u.d_in_lookup_hash).  Might
+be worth considering later...
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Stable-dep-of: 56094ad3eaa2 ("vfs: Don't leak disconnected dentries on umount")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pci.h |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ fs/dcache.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1035,6 +1035,20 @@ static inline struct pci_driver *to_pci_
- 	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, 0, 0
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -2475,13 +2475,19 @@ struct dentry *d_alloc_parallel(struct d
+ 	unsigned int hash = name->hash;
+ 	struct hlist_bl_head *b = in_lookup_hash(parent, hash);
+ 	struct hlist_bl_node *node;
+-	struct dentry *new = d_alloc(parent, name);
++	struct dentry *new = __d_alloc(parent->d_sb, name);
+ 	struct dentry *dentry;
+ 	unsigned seq, r_seq, d_seq;
  
- /**
-+ * PCI_VDEVICE_SUB - describe a specific PCI device/subdevice in a short form
-+ * @vend: the vendor name
-+ * @dev: the 16 bit PCI Device ID
-+ * @subvend: the 16 bit PCI Subvendor ID
-+ * @subdev: the 16 bit PCI Subdevice ID
-+ *
-+ * Generate the pci_device_id struct layout for the specific PCI
-+ * device/subdevice. Private data may follow the output.
-+ */
-+#define PCI_VDEVICE_SUB(vend, dev, subvend, subdev) \
-+	.vendor = PCI_VENDOR_ID_##vend, .device = (dev), \
-+	.subvendor = (subvend), .subdevice = (subdev), 0, 0
+ 	if (unlikely(!new))
+ 		return ERR_PTR(-ENOMEM);
+ 
++	new->d_flags |= DCACHE_PAR_LOOKUP;
++	spin_lock(&parent->d_lock);
++	new->d_parent = dget_dlock(parent);
++	hlist_add_head(&new->d_sib, &parent->d_children);
++	spin_unlock(&parent->d_lock);
 +
-+/**
-  * PCI_DEVICE_DATA - macro used to describe a specific PCI device in very short form
-  * @vend: the vendor name (without PCI_VENDOR_ID_ prefix)
-  * @dev: the device name (without PCI_DEVICE_ID_<vend>_ prefix)
+ retry:
+ 	rcu_read_lock();
+ 	seq = smp_load_acquire(&parent->d_inode->i_dir_seq);
+@@ -2565,8 +2571,6 @@ retry:
+ 		return dentry;
+ 	}
+ 	rcu_read_unlock();
+-	/* we can't take ->d_lock here; it's OK, though. */
+-	new->d_flags |= DCACHE_PAR_LOOKUP;
+ 	new->d_wait = wq;
+ 	hlist_bl_add_head(&new->d_u.d_in_lookup_hash, b);
+ 	hlist_bl_unlock(b);
 
 
 
