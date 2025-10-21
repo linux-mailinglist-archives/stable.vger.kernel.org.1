@@ -1,168 +1,187 @@
-Return-Path: <stable+bounces-188336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058A7BF6B3B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:14:41 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78847BF6B2F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:14:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2A0A3B22F0
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 13:13:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 89173502ECD
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 13:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA56337B89;
-	Tue, 21 Oct 2025 13:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E55833375D;
+	Tue, 21 Oct 2025 13:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jaevhp3o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxN58l5a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B6C3370E8
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 13:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB88245033
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 13:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761052374; cv=none; b=WdbVOrHM/l4ZcGpzbLtNa5cp2LKso6GPLPLKAmx+xl0a6UZwMREaBNg6s0ssnXknHiR0JEX1q5fhA8GhN4cKOm3MN88j36sC5QJ1Bm7kRpvoRFoyq/bRpi5iFF+f9/qkQAMJK7jmu5M378oWWaMmZ6sJZ61nsSe0Z8EwW6yQ+ew=
+	t=1761052422; cv=none; b=HlQCOU4Ky6lS6N6089/Ej+M9caco/slnWhdEASDpAGoAqatjK/LK4KACSskkHiBCwksQEvoWnfzOHXizjDjQKywvsVrYqtWXpLm742DtjtW5h2ijDTkzrNvO0Nx77AKHs1a+1BsqE4SzOX6JMvkSCg+1ISxOxv051ExwP8LhBM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761052374; c=relaxed/simple;
-	bh=8oRM8KNv9EpBZEUAjSUMO/IEtmvTcNa9qeko5xoXvMA=;
+	s=arc-20240116; t=1761052422; c=relaxed/simple;
+	bh=mLLxrPX8zPT+lnRvSLl2DXFfB+bGx8ELX6jWPwDOZ3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tWvQNc8+/wBMDSDwX7Ej8/v3sEjaBa0dWQUt/UXRTZi58VZitIgmkn7Uybw+4yvTxXh/XN1wIxrLV/1dT9yhPyQjBSxoUiEQIVGjv7DS+/7nVFVuo2p0BEEV+Hab84OhcwndoKsXdsh5RamNx5sY78oYJ0tRZ/s2rvwQOokk10c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jaevhp3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997DFC4CEF1;
-	Tue, 21 Oct 2025 13:12:52 +0000 (UTC)
+	 MIME-Version; b=t/opztnGveFNXznAvjXUYSETijnABz/fo1x3mpLLvJbW0x+6XcZfJ8Z9KHBX0w0YAd9OtX8Oeai8PU/z7/EDO2ZPZlAMRtSHPo3sCkpW72l+yjbccCAEGwUEF74KiCXPyKtehoxRjvV8GwBPA6n7MYhWryYPTRJM7Dpc4AHolis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxN58l5a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1753CC4CEF1;
+	Tue, 21 Oct 2025 13:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761052373;
-	bh=8oRM8KNv9EpBZEUAjSUMO/IEtmvTcNa9qeko5xoXvMA=;
+	s=k20201202; t=1761052421;
+	bh=mLLxrPX8zPT+lnRvSLl2DXFfB+bGx8ELX6jWPwDOZ3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jaevhp3oMGrB0GYTEE6HDJ7F1JG1S/T3W89avJUeQp7zOWWEVL2drgrbtJSmfrK79
-	 lfQwfKz2yVhvHxD/g9o/RIxQtlcvP51Eb43xe0SnLu9ZotfSTFEmZ/lbCkWCWgQ9r7
-	 9oqc9o8rSvFvWi18HlyZ4GKPME0OIzzAYufL0AsLjwOOaCyGZeawsVDnpiNNiaQm7O
-	 WdjE9HjIKyNXQ6sk5fltMoJxKsxD/a7JjE+wS4VmFAziydBlang6sBfg+/yXGT0wMu
-	 aIsfSWaGlBpCVtj1SSSbCA89lwUoWr3Lb5NLeu9DGQH2JO0KgpYd560sQ38+pG2+kJ
-	 UHI10pQg3MGMA==
+	b=qxN58l5aSfm2e0mkVeAatuZF8gXGdnnZqiiUZy36KKcpkYoTlITd0u8TLDwEbu0p8
+	 fj2MZZpkHEeOgWwio4HHtgP32aSBETy2eOE2nw80QXaPbCwldIsiA7gRS46mRPKUN5
+	 tTVk2I1QCQLylm6pd1gOC/rFb/aWej90Z8RBoG3p5pdhZJoUVhGAZ73yY4pvyrdDvB
+	 W5SVLtccbwdNxvh4i3Bq/VN080CpaMETOIPg16lLC1OtRRXJimC0QrLYLYfWRMVLvD
+	 qwe/MEPonHgLX96dhhA+xOuVmkK4f7VVBSoEHCb5peYeGTRNlwdVlvblYZ5+IdVGlk
+	 TR9WGSCfKXFRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Rob Clark <robdclark@chromium.org>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Stanner <phasta@kernel.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
-	dri-devel@lists.freedesktop.org,
+Cc: Gui-Dong Han <hanguidong02@gmail.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] drm/sched: Fix potential double free in drm_sched_job_add_resv_dependencies
-Date: Tue, 21 Oct 2025 09:12:50 -0400
-Message-ID: <20251021131250.2072371-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] drm/amdgpu: use atomic functions with memory barriers for vm fault info
+Date: Tue, 21 Oct 2025 09:13:39 -0400
+Message-ID: <20251021131339.2072904-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102034-voltage-truck-aeff@gregkh>
-References: <2025102034-voltage-truck-aeff@gregkh>
+In-Reply-To: <2025102009-dominion-underfeed-6f4b@gregkh>
+References: <2025102009-dominion-underfeed-6f4b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 5801e65206b065b0b2af032f7f1eef222aa2fd83 ]
+[ Upstream commit 6df8e84aa6b5b1812cc2cacd6b3f5ccbb18cda2b ]
 
-When adding dependencies with drm_sched_job_add_dependency(), that
-function consumes the fence reference both on success and failure, so in
-the latter case the dma_fence_put() on the error path (xarray failed to
-expand) is a double free.
+The atomic variable vm_fault_info_updated is used to synchronize access to
+adev->gmc.vm_fault_info between the interrupt handler and
+get_vm_fault_info().
 
-Interestingly this bug appears to have been present ever since
-commit ebd5f74255b9 ("drm/sched: Add dependency tracking"), since the code
-back then looked like this:
+The default atomic functions like atomic_set() and atomic_read() do not
+provide memory barriers. This allows for CPU instruction reordering,
+meaning the memory accesses to vm_fault_info and the vm_fault_info_updated
+flag are not guaranteed to occur in the intended order. This creates a
+race condition that can lead to inconsistent or stale data being used.
 
-drm_sched_job_add_implicit_dependencies():
-...
-       for (i = 0; i < fence_count; i++) {
-               ret = drm_sched_job_add_dependency(job, fences[i]);
-               if (ret)
-                       break;
-       }
+The previous implementation, which used an explicit mb(), was incomplete
+and inefficient. It failed to account for all potential CPU reorderings,
+such as the access of vm_fault_info being reordered before the atomic_read
+of the flag. This approach is also more verbose and less performant than
+using the proper atomic functions with acquire/release semantics.
 
-       for (; i < fence_count; i++)
-               dma_fence_put(fences[i]);
+Fix this by switching to atomic_set_release() and atomic_read_acquire().
+These functions provide the necessary acquire and release semantics,
+which act as memory barriers to ensure the correct order of operations.
+It is also more efficient and idiomatic than using explicit full memory
+barriers.
 
-Which means for the failing 'i' the dma_fence_put was already a double
-free. Possibly there were no users at that time, or the test cases were
-insufficient to hit it.
-
-The bug was then only noticed and fixed after
-commit 9c2ba265352a ("drm/scheduler: use new iterator in drm_sched_job_add_implicit_dependencies v2")
-landed, with its fixup of
-commit 4eaf02d6076c ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies").
-
-At that point it was a slightly different flavour of a double free, which
-commit 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies harder")
-noticed and attempted to fix.
-
-But it only moved the double free from happening inside the
-drm_sched_job_add_dependency(), when releasing the reference not yet
-obtained, to the caller, when releasing the reference already released by
-the former in the failure case.
-
-As such it is not easy to identify the right target for the fixes tag so
-lets keep it simple and just continue the chain.
-
-While fixing we also improve the comment and explain the reason for taking
-the reference and not dropping it.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies harder")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/dri-devel/aNFbXq8OeYl3QSdm@stanley.mountain/
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Rob Clark <robdclark@chromium.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Philipp Stanner <phasta@kernel.org>
-Cc: Christian König <ckoenig.leichtzumerken@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org # v5.16+
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20251015084015.6273-1-tvrtko.ursulin@igalia.com
-[ applied to drm_sched_job_add_implicit_dependencies instead of drm_sched_job_add_resv_dependencies ]
+Fixes: b97dfa27ef3a ("drm/amdgpu: save vm fault information for amdkfd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ kept kgd_dev parameter and adev cast in amdgpu_amdkfd_gpuvm_get_vm_fault_info ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/sched_main.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 5 ++---
+ drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c            | 7 +++----
+ drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c            | 7 +++----
+ 3 files changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
-index dbdd00c61315b..a80001350411a 100644
---- a/drivers/gpu/drm/scheduler/sched_main.c
-+++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -719,13 +719,14 @@ int drm_sched_job_add_implicit_dependencies(struct drm_sched_job *job,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index 1fae36e33411f..0b36c5a85e562 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1870,10 +1870,9 @@ int amdgpu_amdkfd_gpuvm_get_vm_fault_info(struct kgd_dev *kgd,
+ 	struct amdgpu_device *adev;
  
- 	dma_resv_for_each_fence(&cursor, obj->resv, dma_resv_usage_rw(write),
- 				fence) {
--		/* Make sure to grab an additional ref on the added fence */
--		dma_fence_get(fence);
--		ret = drm_sched_job_add_dependency(job, fence);
--		if (ret) {
--			dma_fence_put(fence);
-+		/*
-+		 * As drm_sched_job_add_dependency always consumes the fence
-+		 * reference (even when it fails), and dma_resv_for_each_fence
-+		 * is not obtaining one, we need to grab one before calling.
-+		 */
-+		ret = drm_sched_job_add_dependency(job, dma_fence_get(fence));
-+		if (ret)
- 			return ret;
--		}
+ 	adev = (struct amdgpu_device *)kgd;
+-	if (atomic_read(&adev->gmc.vm_fault_info_updated) == 1) {
++	if (atomic_read_acquire(&adev->gmc.vm_fault_info_updated) == 1) {
+ 		*mem = *adev->gmc.vm_fault_info;
+-		mb();
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
  	}
  	return 0;
  }
+diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
+index 63c47f61d0dfd..3df71a5ccfd87 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
+@@ -1072,7 +1072,7 @@ static int gmc_v7_0_sw_init(void *handle)
+ 					GFP_KERNEL);
+ 	if (!adev->gmc.vm_fault_info)
+ 		return -ENOMEM;
+-	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
+ 
+ 	return 0;
+ }
+@@ -1301,7 +1301,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
+ 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+ 			     VMID);
+ 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
+-		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
++		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
+ 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
+ 		u32 protections = REG_GET_FIELD(status,
+ 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+@@ -1317,8 +1317,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
+ 		info->prot_read = protections & 0x8 ? true : false;
+ 		info->prot_write = protections & 0x10 ? true : false;
+ 		info->prot_exec = protections & 0x20 ? true : false;
+-		mb();
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
+index bef9610084f10..8fcf2d362c52b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
+@@ -1194,7 +1194,7 @@ static int gmc_v8_0_sw_init(void *handle)
+ 					GFP_KERNEL);
+ 	if (!adev->gmc.vm_fault_info)
+ 		return -ENOMEM;
+-	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
+ 
+ 	return 0;
+ }
+@@ -1482,7 +1482,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
+ 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+ 			     VMID);
+ 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
+-		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
++		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
+ 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
+ 		u32 protections = REG_GET_FIELD(status,
+ 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+@@ -1498,8 +1498,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
+ 		info->prot_read = protections & 0x8 ? true : false;
+ 		info->prot_write = protections & 0x10 ? true : false;
+ 		info->prot_exec = protections & 0x20 ? true : false;
+-		mb();
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
+ 	}
+ 
+ 	return 0;
 -- 
 2.51.0
 
