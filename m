@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-188638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF2BBF8896
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:05:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FBFBF8A50
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B2E75839D2
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 870FC4FEBFD
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7F027BF7C;
-	Tue, 21 Oct 2025 20:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36176277C98;
+	Tue, 21 Oct 2025 20:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crMpGn1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pNgLxhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF17927CB35;
-	Tue, 21 Oct 2025 20:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E712D27587D;
+	Tue, 21 Oct 2025 20:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077043; cv=none; b=XWrPFHg80jvKoBKIDMmmV91+/b9nFIksKMuHDeqqs6jP8geO2GtOtw2Cs/Uh3ifpuhbaCzJvGbl6DGPX+8OkqDxBL4g06VUUsEUsm8XfyX9Ng4d4mnqgBXZEkbRNbR53KM3loyFoJB9qhrLuWYhdj4pInWi9pSeJEKW16shct20=
+	t=1761077522; cv=none; b=r1EqQ4ONqetkDuy/B+gSx3VyDhFaW20Laif5yAGxByEzugIyT/47FbI4MWYZKQSYsImzYvrDJcVIDQAGsn1IIcJgyJWL1ycrqpK87V9A3xB/qFeOAoNdr6yUz7xP3YQHDigWnyHFmfYEHbTGwtm3A6TB8UbxGeSHCsIolNveUrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077043; c=relaxed/simple;
-	bh=e4uzxxiziBtufe63d8n5NssUDJoRyzQo0g9ZQTlxGT0=;
+	s=arc-20240116; t=1761077522; c=relaxed/simple;
+	bh=jYM53U8sdsA5Uofovq5AIWDWh/umPhjxzXbb1rWMyF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lX6nxLtqPlf7KQRf1vd8UP15BxVwqSj4OU11FKTJSSw82l/eKvqu0fJSWuQOxAh0u2rPPyszEXQ1Fqrivfu8cpSTZR++SGgnRP3Usj3d4W2H8zpXDMMe13uyMW9kjeOtbAxv0aNStWDwPqY6FBQUY+nwofNe8Eiu3baobFDgs6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crMpGn1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5778CC19423;
-	Tue, 21 Oct 2025 20:04:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qPiTMfoj23+n5swkqDi/gFijdGhZaUyTCr+7GCpj1XRTOrCaTbLoIlm6n5PJYWS8cLFBcQ1fstVqIoDHl/jUMUJnhXjmKvh01TCa3iYgaeeZkVpe11wAGGWnngyVRUG59Vpn0dtMs3c+nRsSRdho25TpsHQoKOd7SnyHwe/f30I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pNgLxhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CDDC4CEF1;
+	Tue, 21 Oct 2025 20:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077043;
-	bh=e4uzxxiziBtufe63d8n5NssUDJoRyzQo0g9ZQTlxGT0=;
+	s=korg; t=1761077519;
+	bh=jYM53U8sdsA5Uofovq5AIWDWh/umPhjxzXbb1rWMyF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crMpGn1Qlt33CMKFPFVKfk9ifF8TyRPqGKSWPQYQ8lR/iDJwEpA4BunSCsEPeCK4I
-	 EeW0l59c92IFxRx7/nPT9aDYJNtsgmD7skj3+UGO2+XcN+RAwy1IXWaVn0VKjmyGgD
-	 wt0nm5/WP0NgcYg7ZQ/vIlh67BJffoaIKKxk5qmU=
+	b=1pNgLxhXSjl3v31O8eeDeobEhgRdrl4M6kzOx3utNSMulu026ZL9523W6DgW7D/0U
+	 WowAEIp1leiGWsy55HWWQkB+Eh4DqFnR4q/7778dcwG/2NO6RCmH19IBwb67JnSVqG
+	 fKm4Dmmd5mP3TjcoYW1al8DaqCDieLDdm7V9o8pU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Ming Lei <ming.lei@redhat.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/136] vfs: Dont leak disconnected dentries on umount
+Subject: [PATCH 6.17 129/159] block: Remove elevator_lock usage from blkg_conf frozen operations
 Date: Tue, 21 Oct 2025 21:51:46 +0200
-Message-ID: <20251021195038.808933501@linuxfoundation.org>
+Message-ID: <20251021195046.252364262@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
+References: <20251021195043.182511864@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 56094ad3eaa21e6621396cc33811d8f72847a834 ]
+[ Upstream commit 08823e89e3e269bf4c4a20b4c24a8119920cc7a4 ]
 
-When user calls open_by_handle_at() on some inode that is not cached, we
-will create disconnected dentry for it. If such dentry is a directory,
-exportfs_decode_fh_raw() will then try to connect this dentry to the
-dentry tree through reconnect_path(). It may happen for various reasons
-(such as corrupted fs or race with rename) that the call to
-lookup_one_unlocked() in reconnect_one() will fail to find the dentry we
-are trying to reconnect and instead create a new dentry under the
-parent. Now this dentry will not be marked as disconnected although the
-parent still may well be disconnected (at least in case this
-inconsistency happened because the fs is corrupted and .. doesn't point
-to the real parent directory). This creates inconsistency in
-disconnected flags but AFAICS it was mostly harmless. At least until
-commit f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
-which removed adding of most disconnected dentries to sb->s_anon list.
-Thus after this commit cleanup of disconnected dentries implicitely
-relies on the fact that dput() will immediately reclaim such dentries.
-However when some leaf dentry isn't marked as disconnected, as in the
-scenario described above, the reclaim doesn't happen and the dentries
-are "leaked". Memory reclaim can eventually reclaim them but otherwise
-they stay in memory and if umount comes first, we hit infamous "Busy
-inodes after unmount" bug. Make sure all dentries created under a
-disconnected parent are marked as disconnected as well.
+Remove the acquisition and release of q->elevator_lock in the
+blkg_conf_open_bdev_frozen() and blkg_conf_exit_frozen() functions. The
+elevator lock is no longer needed in these code paths since commit
+78c271344b6f ("block: move wbt_enable_default() out of queue freezing
+from sched ->exit()") which introduces `disk->rqos_state_mutex` for
+protecting wbt state change, and not necessary to abuse elevator_lock
+for this purpose.
 
-Reported-by: syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com
-Fixes: f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+This change helps to solve the lockdep warning reported from Yu Kuai[1].
+
+Pass blktests/throtl with lockdep enabled.
+
+Links: https://lore.kernel.org/linux-block/e5e7ac3f-2063-473a-aafb-4d8d43e5576e@yukuai.org.cn/ [1]
+Fixes: commit 78c271344b6f ("block: move wbt_enable_default() out of queue freezing from sched ->exit()")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dcache.c |    2 ++
- 1 file changed, 2 insertions(+)
+ block/blk-cgroup.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -2486,6 +2486,8 @@ struct dentry *d_alloc_parallel(struct d
- 	spin_lock(&parent->d_lock);
- 	new->d_parent = dget_dlock(parent);
- 	hlist_add_head(&new->d_sib, &parent->d_children);
-+	if (parent->d_flags & DCACHE_DISCONNECTED)
-+		new->d_flags |= DCACHE_DISCONNECTED;
- 	spin_unlock(&parent->d_lock);
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 7246fc2563152..091e9623bc294 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -812,8 +812,7 @@ int blkg_conf_open_bdev(struct blkg_conf_ctx *ctx)
+ }
+ /*
+  * Similar to blkg_conf_open_bdev, but additionally freezes the queue,
+- * acquires q->elevator_lock, and ensures the correct locking order
+- * between q->elevator_lock and q->rq_qos_mutex.
++ * ensures the correct locking order between freeze queue and q->rq_qos_mutex.
+  *
+  * This function returns negative error on failure. On success it returns
+  * memflags which must be saved and later passed to blkg_conf_exit_frozen
+@@ -834,13 +833,11 @@ unsigned long __must_check blkg_conf_open_bdev_frozen(struct blkg_conf_ctx *ctx)
+ 	 * At this point, we haven’t started protecting anything related to QoS,
+ 	 * so we release q->rq_qos_mutex here, which was first acquired in blkg_
+ 	 * conf_open_bdev. Later, we re-acquire q->rq_qos_mutex after freezing
+-	 * the queue and acquiring q->elevator_lock to maintain the correct
+-	 * locking order.
++	 * the queue to maintain the correct locking order.
+ 	 */
+ 	mutex_unlock(&ctx->bdev->bd_queue->rq_qos_mutex);
  
- retry:
+ 	memflags = blk_mq_freeze_queue(ctx->bdev->bd_queue);
+-	mutex_lock(&ctx->bdev->bd_queue->elevator_lock);
+ 	mutex_lock(&ctx->bdev->bd_queue->rq_qos_mutex);
+ 
+ 	return memflags;
+@@ -1002,9 +999,8 @@ void blkg_conf_exit(struct blkg_conf_ctx *ctx)
+ EXPORT_SYMBOL_GPL(blkg_conf_exit);
+ 
+ /*
+- * Similar to blkg_conf_exit, but also unfreezes the queue and releases
+- * q->elevator_lock. Should be used when blkg_conf_open_bdev_frozen
+- * is used to open the bdev.
++ * Similar to blkg_conf_exit, but also unfreezes the queue. Should be used
++ * when blkg_conf_open_bdev_frozen is used to open the bdev.
+  */
+ void blkg_conf_exit_frozen(struct blkg_conf_ctx *ctx, unsigned long memflags)
+ {
+@@ -1012,7 +1008,6 @@ void blkg_conf_exit_frozen(struct blkg_conf_ctx *ctx, unsigned long memflags)
+ 		struct request_queue *q = ctx->bdev->bd_queue;
+ 
+ 		blkg_conf_exit(ctx);
+-		mutex_unlock(&q->elevator_lock);
+ 		blk_mq_unfreeze_queue(q, memflags);
+ 	}
+ }
+-- 
+2.51.0
+
 
 
 
