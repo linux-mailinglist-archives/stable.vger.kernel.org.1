@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-188715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3828BF892C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:08:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8D9BF898F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C35A64FB358
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:08:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C82487289
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B95823D7E8;
-	Tue, 21 Oct 2025 20:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0264C2773F1;
+	Tue, 21 Oct 2025 20:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zao+tgTP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGZHiTgi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7F41A3029;
-	Tue, 21 Oct 2025 20:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1157274B29;
+	Tue, 21 Oct 2025 20:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077288; cv=none; b=oD/Btb27kYG9AM7lMmBhnkh6y1AoYRpmveuzp1Jjo7lAxc33V/3we4oomCDNZpQHtnzK5kjbUr9jIjOeWJ/fAbXhMTHD6Mgl1EgM2DFyyDao65II1CDE3uOsabsG/vRNR+EHjoEAiRJFaYXkFCGywUJlDGFSX2FZaHitYpRTT6Q=
+	t=1761077294; cv=none; b=G1eTkSnIUX5K7LWyHlL1MjuBlgvy88giWOYhKxmzvDEYCuY6/0HyP8aGZA2D1DOoIK9U0nrr391MI7JPiUIMUOB5anlez5N+ZIfH+8SZsWEFwemQRQ3bq3CJFOWIQv+VduiPaee4F0a5JhxCD1qfzAnQYbXB9J2qxFDqsl0ZyS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077288; c=relaxed/simple;
-	bh=Zg/lizIfSnikAu/c+lAa0a+FJkeltMp54GfE9iu74QE=;
+	s=arc-20240116; t=1761077294; c=relaxed/simple;
+	bh=Jaj65oYTG900KevAcPRgvr+7Iyv6ZAY9s71HWtkPZ8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPrgdM9B0W8Cv9Se3aB2x9mKwzYkyPsyZnoBolZtfKn74+yNi60auioWVQKNlgMN5+5HS+PGk0E3cnGxfInNXA5vx4m9E/BJtuLp1i7IX4Z/LvUWShHy02JSYLhAWQmVIe3TFH7rv8XtqP01lOeZVsCrwm/Y6fXjAhBjso5TQ9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zao+tgTP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BC9C4CEF1;
-	Tue, 21 Oct 2025 20:08:07 +0000 (UTC)
+	 MIME-Version; b=EGGV/D2niEEBAfIE5rmij1ewOU+lL0C3nZxWZkD8nJsYkCI0H0udcfkkHdN8LC7O/43rggab8yiKY8d4LrGI0nlGaf31R74raxuG+oJtaG7xqvfkjbRktigQBgMJbuYqmVG6WLSJXH5WPCKt4ASgi479zqW9b8Hy9b1zZwD6bZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGZHiTgi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40ED6C4CEF1;
+	Tue, 21 Oct 2025 20:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077287;
-	bh=Zg/lizIfSnikAu/c+lAa0a+FJkeltMp54GfE9iu74QE=;
+	s=korg; t=1761077294;
+	bh=Jaj65oYTG900KevAcPRgvr+7Iyv6ZAY9s71HWtkPZ8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zao+tgTPYdYTMqs3Uhxwob0hFOt5g0YC/Ir7KRDV91J5IrpqavrvR5e4qWtRKdIzH
-	 67iJZle6tnPvMPhA3Mr1CK3M+4+Ol7RFloEnIcmBsKuiyvRxTiIKNo2qdLByytynUC
-	 lApw+zwQx6mCy1gXDvGlv9L9y0qwc14QIObjTtEM=
+	b=uGZHiTgija98MMjjrM2LIv99wZ+5gwvViJBiOMjs8EmFMiOTeVxOGq22dVh7g15fP
+	 AYWy7LC2ui84SxmkyWM17n/YP/5255hghnMlN9dF57dg7UIStJk3PvVVzTprWA6M8G
+	 Bo8xa8M3iL+JSvtO8QglACEYKRh5Gy+aCHbMP3Es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Yu Watanabe <watanabe.yu@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Patrik Flykt <patrik.flykt@linux.intel.com>,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 059/159] coredump: fix core_pattern input validation
-Date: Tue, 21 Oct 2025 21:50:36 +0200
-Message-ID: <20251021195044.633492429@linuxfoundation.org>
+Subject: [PATCH 6.17 060/159] can: m_can: m_can_plat_remove(): add missing pm_runtime_disable()
+Date: Tue, 21 Oct 2025 21:50:37 +0200
+Message-ID: <20251021195044.658225664@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
 References: <20251021195043.182511864@linuxfoundation.org>
@@ -67,54 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit a779e27f24aeb679969ddd1fdd7f636e22ddbc1e ]
+[ Upstream commit ba569fb07a7e9e9b71e9282e27e993ba859295c2 ]
 
-In be1e0283021e ("coredump: don't pointlessly check and spew warnings")
-we tried to fix input validation so it only happens during a write to
-core_pattern. This would avoid needlessly logging a lot of warnings
-during a read operation. However the logic accidently got inverted in
-this commit. Fix it so the input validation only happens on write and is
-skipped on read.
+Commit 227619c3ff7c ("can: m_can: move runtime PM enable/disable to
+m_can_platform") moved the PM runtime enable from the m_can core
+driver into the m_can_platform.
 
-Fixes: be1e0283021e ("coredump: don't pointlessly check and spew warnings")
-Fixes: 16195d2c7dd2 ("coredump: validate socket name as it is written")
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reported-by: Yu Watanabe <watanabe.yu@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+That patch forgot to move the pm_runtime_disable() to
+m_can_plat_remove(), so that unloading the m_can_platform driver
+causes an "Unbalanced pm_runtime_enable!" error message.
+
+Add the missing pm_runtime_disable() to m_can_plat_remove() to fix the
+problem.
+
+Cc: Patrik Flykt <patrik.flykt@linux.intel.com>
+Fixes: 227619c3ff7c ("can: m_can: move runtime PM enable/disable to m_can_platform")
+Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Link: https://patch.msgid.link/20250929-m_can-fix-state-handling-v4-1-682b49b49d9a@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/coredump.c | 2 +-
- fs/exec.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/can/m_can/m_can_platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/coredump.c b/fs/coredump.c
-index 60bc9685e1498..c5e9a855502dd 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -1466,7 +1466,7 @@ static int proc_dostring_coredump(const struct ctl_table *table, int write,
- 	ssize_t retval;
- 	char old_core_pattern[CORENAME_MAX_SIZE];
+diff --git a/drivers/net/can/m_can/m_can_platform.c b/drivers/net/can/m_can/m_can_platform.c
+index b832566efda04..057eaa7b8b4b2 100644
+--- a/drivers/net/can/m_can/m_can_platform.c
++++ b/drivers/net/can/m_can/m_can_platform.c
+@@ -180,7 +180,7 @@ static void m_can_plat_remove(struct platform_device *pdev)
+ 	struct m_can_classdev *mcan_class = &priv->cdev;
  
--	if (write)
-+	if (!write)
- 		return proc_dostring(table, write, buffer, lenp, ppos);
- 
- 	retval = strscpy(old_core_pattern, core_pattern, CORENAME_MAX_SIZE);
-diff --git a/fs/exec.c b/fs/exec.c
-index e861a4b7ffda9..a69a2673f6311 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -2048,7 +2048,7 @@ static int proc_dointvec_minmax_coredump(const struct ctl_table *table, int writ
- {
- 	int error = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 
--	if (!error && !write)
-+	if (!error && write)
- 		validate_coredump_safety();
- 	return error;
+ 	m_can_class_unregister(mcan_class);
+-
++	pm_runtime_disable(mcan_class->dev);
+ 	m_can_class_free_dev(mcan_class->net);
  }
+ 
 -- 
 2.51.0
 
