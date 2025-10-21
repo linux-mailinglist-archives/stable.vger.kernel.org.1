@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-188478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E0B5BF85EB
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1099FBF8803
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:03:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D68F19C38F7
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AECCC58245D
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F7D27381E;
-	Tue, 21 Oct 2025 19:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D606425A355;
+	Tue, 21 Oct 2025 20:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZ+Xcge9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chemOxIb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C7F26F292;
-	Tue, 21 Oct 2025 19:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9219C350A0B;
+	Tue, 21 Oct 2025 20:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076533; cv=none; b=EFhSYiNrsx/ZjeGQhld+O8JmCaC4zyqGrlU6V1K/LIS7Qk96+Pr2MTw3k3TWnrbOhqCppkyyawNVYJa4fhAcPwbxACYV8t0QW4rI44rKW4/NZexA/UYjaK6HTVm+WUujF4egEfxbBEPzZkS4GmVbRtIP5YfW7Z/DDVfKDf+03Qs=
+	t=1761076948; cv=none; b=ZR/NjhDE44/xL3/7ssgkedVBWj5iYbXN6sUNdz05tCrH95nKCV2XEtCPdT0NJf+DWCPucyjRgoLb2rVsogcqBMxNFpf6kcGjVO/v5eq7YBe/xUIGqmibDsLdXnPRNvK7ymYJ/O3+GcfGCymhUG/q9nGxrnW0aS5orJOEth+LBso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076533; c=relaxed/simple;
-	bh=Q8+d9nzzCOa1zHnanRVDVB3a0X97Aqux6VPILTyPB2g=;
+	s=arc-20240116; t=1761076948; c=relaxed/simple;
+	bh=VAfJ3KOCUqrXEtu+qNdOSBvOK8+xJMKZH/nLNP7o9cY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nxo2XqsV45BV0M6zdParjB4WoiptTI52aZu0HF3YPuncstxGLwPEmgnM/jEo4V8PTv/WOclo88Idhn5THiM2NTU4ovPISpcCZB3oOz9p72UVbXTRaF7IJ7SUVERGTGSB51aLOvaM31HRWUs1/INZ/zlML5NosQitCysnK5s4JW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZ+Xcge9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5121C4CEF1;
-	Tue, 21 Oct 2025 19:55:32 +0000 (UTC)
+	 MIME-Version; b=GKtm7D+jkXWzt5UngnQukocQ6kZqUNKrJGqoJy3IQzMbkKKaPDrURNSUmdeKUbJ+5/JKG0u3DFGwDXKwxamFIJgysBuqqCwLAYF8bvqFgQ6zlGA6YioxAUrexuCzo7hWSOBsqaqBvqcGzMfzJLx6TNIGTEB+ni+GYeCsDxEa14E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chemOxIb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A51C4CEF1;
+	Tue, 21 Oct 2025 20:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076533;
-	bh=Q8+d9nzzCOa1zHnanRVDVB3a0X97Aqux6VPILTyPB2g=;
+	s=korg; t=1761076948;
+	bh=VAfJ3KOCUqrXEtu+qNdOSBvOK8+xJMKZH/nLNP7o9cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZ+Xcge9kOGsstOxA2zuL3lkh0WpcRF2wm48Cse+gpP8/V8ho4lNfgD3SB0eEbLwu
-	 dHN4YZ/jXakCKIGVbLK9yzhZZTpOWTHtYE/Je5SuzkgSA0u+LU3vCHJrZUdROKDdMz
-	 M/AbSkQB/2Ncq+3D/rxdbyxrFdRt71arJfGWrK9M=
+	b=chemOxIb9aECwkRkaRqXABUi8qiDuLwIssz6zvAkjpmUuli6mf5gd/X/ve0BH2ZNu
+	 YW2xwalKVaD7nnkNAaebifYNXnU+OHdB0jsjT3PD4BwL7pBtxJkC52E3PEii4mhPGN
+	 PD0/dtUQJ2hToQ59LGVqawV8hVs+0kkoIX5cFgYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>,
 	Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>,
 	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
 	Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/105] accel/qaic: Treat remaining == 0 as error in find_and_map_user_pages()
+Subject: [PATCH 6.12 086/136] accel/qaic: Synchronize access to DBC request queue head & tail pointer
 Date: Tue, 21 Oct 2025 21:51:14 +0200
-Message-ID: <20251021195023.211289832@linuxfoundation.org>
+Message-ID: <20251021195038.030412171@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youssef Samir <quic_yabdulra@quicinc.com>
+From: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
 
-[ Upstream commit 11f08c30a3e4157305ba692f1d44cca5fc9a8fca ]
+[ Upstream commit 52e59f7740ba23bbb664914967df9a00208ca10c ]
 
-Currently, if find_and_map_user_pages() takes a DMA xfer request from the
-user with a length field set to 0, or in a rare case, the host receives
-QAIC_TRANS_DMA_XFER_CONT from the device where resources->xferred_dma_size
-is equal to the requested transaction size, the function will return 0
-before allocating an sgt or setting the fields of the dma_xfer struct.
-In that case, encode_addr_size_pairs() will try to access the sgt which
-will lead to a general protection fault.
+Two threads of the same process can potential read and write parallelly to
+head and tail pointers of the same DBC request queue. This could lead to a
+race condition and corrupt the DBC request queue.
 
-Return an EINVAL in case the user provides a zero-sized ALP, or the device
-requests continuation after all of the bytes have been transferred.
-
-Fixes: 96d3c1cadedb ("accel/qaic: Clean up integer overflow checking in map_user_pages()")
-Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Fixes: ff13be830333 ("accel/qaic: Add datapath")
+Signed-off-by: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
 Signed-off-by: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
 Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
 Reviewed-by: Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>
+[jhugo: Add fixes tag]
 Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251007122320.339654-1-youssef.abdulrahman@oss.qualcomm.com
+Link: https://lore.kernel.org/r/20251007061837.206132-1-youssef.abdulrahman@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/qaic/qaic_control.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/accel/qaic/qaic.h      |  2 ++
+ drivers/accel/qaic/qaic_data.c | 12 ++++++++++--
+ drivers/accel/qaic/qaic_drv.c  |  3 +++
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/accel/qaic/qaic_control.c b/drivers/accel/qaic/qaic_control.c
-index f3db3fa91dd52..08b78f5678532 100644
---- a/drivers/accel/qaic/qaic_control.c
-+++ b/drivers/accel/qaic/qaic_control.c
-@@ -407,7 +407,7 @@ static int find_and_map_user_pages(struct qaic_device *qdev,
- 		return -EINVAL;
- 	remaining = in_trans->size - resources->xferred_dma_size;
- 	if (remaining == 0)
--		return 0;
-+		return -EINVAL;
+diff --git a/drivers/accel/qaic/qaic.h b/drivers/accel/qaic/qaic.h
+index 02561b6cecc64..2d7b3af09e284 100644
+--- a/drivers/accel/qaic/qaic.h
++++ b/drivers/accel/qaic/qaic.h
+@@ -91,6 +91,8 @@ struct dma_bridge_chan {
+ 	 * response queue's head and tail pointer of this DBC.
+ 	 */
+ 	void __iomem		*dbc_base;
++	/* Synchronizes access to Request queue's head and tail pointer */
++	struct mutex		req_lock;
+ 	/* Head of list where each node is a memory handle queued in request queue */
+ 	struct list_head	xfer_list;
+ 	/* Synchronizes DBC readers during cleanup */
+diff --git a/drivers/accel/qaic/qaic_data.c b/drivers/accel/qaic/qaic_data.c
+index 43aba57b48f05..265eeb4e156fc 100644
+--- a/drivers/accel/qaic/qaic_data.c
++++ b/drivers/accel/qaic/qaic_data.c
+@@ -1357,13 +1357,17 @@ static int __qaic_execute_bo_ioctl(struct drm_device *dev, void *data, struct dr
+ 		goto release_ch_rcu;
+ 	}
  
- 	if (check_add_overflow(xfer_start_addr, remaining, &end))
- 		return -EINVAL;
++	ret = mutex_lock_interruptible(&dbc->req_lock);
++	if (ret)
++		goto release_ch_rcu;
++
+ 	head = readl(dbc->dbc_base + REQHP_OFF);
+ 	tail = readl(dbc->dbc_base + REQTP_OFF);
+ 
+ 	if (head == U32_MAX || tail == U32_MAX) {
+ 		/* PCI link error */
+ 		ret = -ENODEV;
+-		goto release_ch_rcu;
++		goto unlock_req_lock;
+ 	}
+ 
+ 	queue_level = head <= tail ? tail - head : dbc->nelem - (head - tail);
+@@ -1371,11 +1375,12 @@ static int __qaic_execute_bo_ioctl(struct drm_device *dev, void *data, struct dr
+ 	ret = send_bo_list_to_device(qdev, file_priv, exec, args->hdr.count, is_partial, dbc,
+ 				     head, &tail);
+ 	if (ret)
+-		goto release_ch_rcu;
++		goto unlock_req_lock;
+ 
+ 	/* Finalize commit to hardware */
+ 	submit_ts = ktime_get_ns();
+ 	writel(tail, dbc->dbc_base + REQTP_OFF);
++	mutex_unlock(&dbc->req_lock);
+ 
+ 	update_profiling_data(file_priv, exec, args->hdr.count, is_partial, received_ts,
+ 			      submit_ts, queue_level);
+@@ -1383,6 +1388,9 @@ static int __qaic_execute_bo_ioctl(struct drm_device *dev, void *data, struct dr
+ 	if (datapath_polling)
+ 		schedule_work(&dbc->poll_work);
+ 
++unlock_req_lock:
++	if (ret)
++		mutex_unlock(&dbc->req_lock);
+ release_ch_rcu:
+ 	srcu_read_unlock(&dbc->ch_lock, rcu_id);
+ unlock_dev_srcu:
+diff --git a/drivers/accel/qaic/qaic_drv.c b/drivers/accel/qaic/qaic_drv.c
+index 10e711c96a670..cb606c4bb8511 100644
+--- a/drivers/accel/qaic/qaic_drv.c
++++ b/drivers/accel/qaic/qaic_drv.c
+@@ -422,6 +422,9 @@ static struct qaic_device *create_qdev(struct pci_dev *pdev, const struct pci_de
+ 			return NULL;
+ 		init_waitqueue_head(&qdev->dbc[i].dbc_release);
+ 		INIT_LIST_HEAD(&qdev->dbc[i].bo_lists);
++		ret = drmm_mutex_init(drm, &qdev->dbc[i].req_lock);
++		if (ret)
++			return NULL;
+ 	}
+ 
+ 	return qdev;
 -- 
 2.51.0
 
