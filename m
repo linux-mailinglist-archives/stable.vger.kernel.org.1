@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-188556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821DDBF8718
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:44 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA01FBF85D6
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C94719C402D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4D5024F68C6
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74EB350A2A;
-	Tue, 21 Oct 2025 19:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FA72749CF;
+	Tue, 21 Oct 2025 19:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I586xNPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyFdi+GP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DEB246798;
-	Tue, 21 Oct 2025 19:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048E3272E7C;
+	Tue, 21 Oct 2025 19:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076782; cv=none; b=SmH7X2M3Gj6+iBh8AWGBZKWzI3Q5D7GPFtYapDdruzWmYsJ8XjTYv69B/MXsRgDakUnkw2lb+dkd8PgsuqgwYBxP0msOOjB5fVLXQo13RCkpTZnYSZ0gxKhI/zKCdbrlNuZGhj+Sv097g0v3ppV3qGe2MXUMmIAlvqUn1JRzJJc=
+	t=1761076518; cv=none; b=dBeb59xYegwrIJIUCxuKdiTy4pf94kXxVjl1L4EUAzwNwb5jti1xkLDjw5DJUdgcayBe8JSG6/kCd4YiWQBDNyodh/5rpV2IWxP4Y82QR0UhjnCtsNndIf8dX2rmwLpML2i0+TuuMA5gBE3YKhdOeHlcjuZjw/6BzFg9az3/J9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076782; c=relaxed/simple;
-	bh=sV4sFoxNk4iGeT7s1dgOa0tYPqp/PISi+eN4EfaJd1Q=;
+	s=arc-20240116; t=1761076518; c=relaxed/simple;
+	bh=1AIuktULjc/pNhWLIZxz1AV9RTA7H1m7zWJWU3MY+Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TmKn2yHFS9PnQEvujrN5UHxfY0rdoXv1iBsldF5FMC5rtS03cUUN8vnZ6HxtpIx22jUUUQ1K9WiFBHyv5ipdi/iGaxg6kjY7e/18U9Yhd/D1Xl5GnLxtQUtB3G3wvKL7Uj0XaSd5GBtzmrs8ch3pkr5g0fCRO+/YEFJ3YceEYko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I586xNPL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD97C4CEF1;
-	Tue, 21 Oct 2025 19:59:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kLX5PXXQbCmBjb0OTSiMzt9TbPF9zq73wUBm/VMkBa9Mv9B/dF9Nfjrx4LUsGrIXZOC15wi9NQUHIHa/wYC6UG6Qu/5AqKr57uKMoBskBCOaKypoNXG/hrr2GQ9vCbyUGF17pUVC5MQVG6A1Tr1tIO/7jTG3Gcc2RQOj3B8kBCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyFdi+GP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A37C4CEF1;
+	Tue, 21 Oct 2025 19:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076782;
-	bh=sV4sFoxNk4iGeT7s1dgOa0tYPqp/PISi+eN4EfaJd1Q=;
+	s=korg; t=1761076517;
+	bh=1AIuktULjc/pNhWLIZxz1AV9RTA7H1m7zWJWU3MY+Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I586xNPL03REJxo79K6LZyVboLHGGC0gekM446NayxdO3db9eLHopgWPmt+xTMLWQ
-	 XZTvmkGMuzBIhaUqNj2KAt/hOLlVCaI5G1di3vwOH0FBHrR5f6EMMxBG1spf+G2YHo
-	 gNGC/yMTWbxxbJz4Wt+WEyeMS3r9nYF6DL5nVtdE=
+	b=zyFdi+GPpHDYdxaB11EMPeaTE/NpfVWhl5HoMX2iTL3g6x97nSt59nXEOFd1TIaCb
+	 hWe05VxU3R1UR/155e6GohSn9Ax5jsP1mYJZpixn8e7XqnVh5blRbKejqtu3ymw0y4
+	 w9EvRQ6gX3I4C5oPpZOfgjGBWRBdbXig6fHib5xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/136] usb: gadget: Store endpoint pointer in usb_request
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Rob Clark <robdclark@chromium.org>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Philipp Stanner <phasta@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.6 014/105] drm/sched: Fix potential double free in drm_sched_job_add_resv_dependencies
 Date: Tue, 21 Oct 2025 21:50:23 +0200
-Message-ID: <20251021195036.826979619@linuxfoundation.org>
+Message-ID: <20251021195021.828714773@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,70 +67,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit bfb1d99d969fe3b892db30848aeebfa19d21f57f ]
+commit 5801e65206b065b0b2af032f7f1eef222aa2fd83 upstream.
 
-Gadget function drivers often have goto-based error handling in their
-bind paths, which can be bug-prone. Refactoring these paths to use
-__free() scope-based cleanup is desirable, but currently blocked.
+When adding dependencies with drm_sched_job_add_dependency(), that
+function consumes the fence reference both on success and failure, so in
+the latter case the dma_fence_put() on the error path (xarray failed to
+expand) is a double free.
 
-The blocker is that usb_ep_free_request(ep, req) requires two
-parameters, while the __free() mechanism can only pass a pointer to the
-request itself.
+Interestingly this bug appears to have been present ever since
+commit ebd5f74255b9 ("drm/sched: Add dependency tracking"), since the code
+back then looked like this:
 
-Store an endpoint pointer in the struct usb_request. The pointer is
-populated centrally in usb_ep_alloc_request() on every successful
-allocation, making the request object self-contained.
+drm_sched_job_add_implicit_dependencies():
+...
+       for (i = 0; i < fence_count; i++) {
+               ret = drm_sched_job_add_dependency(job, fences[i]);
+               if (ret)
+                       break;
+       }
 
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
-Stable-dep-of: 75a5b8d4ddd4 ("usb: gadget: f_ncm: Refactor bind path to use __free()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+       for (; i < fence_count; i++)
+               dma_fence_put(fences[i]);
+
+Which means for the failing 'i' the dma_fence_put was already a double
+free. Possibly there were no users at that time, or the test cases were
+insufficient to hit it.
+
+The bug was then only noticed and fixed after
+commit 9c2ba265352a ("drm/scheduler: use new iterator in drm_sched_job_add_implicit_dependencies v2")
+landed, with its fixup of
+commit 4eaf02d6076c ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies").
+
+At that point it was a slightly different flavour of a double free, which
+commit 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies harder")
+noticed and attempted to fix.
+
+But it only moved the double free from happening inside the
+drm_sched_job_add_dependency(), when releasing the reference not yet
+obtained, to the caller, when releasing the reference already released by
+the former in the failure case.
+
+As such it is not easy to identify the right target for the fixes tag so
+lets keep it simple and just continue the chain.
+
+While fixing we also improve the comment and explain the reason for taking
+the reference and not dropping it.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: 963d0b356935 ("drm/scheduler: fix drm_sched_job_add_implicit_dependencies harder")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/dri-devel/aNFbXq8OeYl3QSdm@stanley.mountain/
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Rob Clark <robdclark@chromium.org>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Philipp Stanner <phasta@kernel.org>
+Cc: Christian König <ckoenig.leichtzumerken@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org # v5.16+
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://lore.kernel.org/r/20251015084015.6273-1-tvrtko.ursulin@igalia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/core.c |    3 +++
- include/linux/usb/gadget.h    |    2 ++
- 2 files changed, 5 insertions(+)
+ drivers/gpu/drm/scheduler/sched_main.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -194,6 +194,9 @@ struct usb_request *usb_ep_alloc_request
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -783,13 +783,14 @@ int drm_sched_job_add_resv_dependencies(
+ 	dma_resv_assert_held(resv);
  
- 	req = ep->ops->alloc_request(ep, gfp_flags);
- 
-+	if (req)
-+		req->ep = ep;
-+
- 	trace_usb_ep_alloc_request(ep, req, req ? 0 : -ENOMEM);
- 
- 	return req;
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -32,6 +32,7 @@ struct usb_ep;
- 
- /**
-  * struct usb_request - describes one i/o request
-+ * @ep: The associated endpoint set by usb_ep_alloc_request().
-  * @buf: Buffer used for data.  Always provide this; some controllers
-  *	only use PIO, or don't use DMA for some endpoints.
-  * @dma: DMA address corresponding to 'buf'.  If you don't set this
-@@ -98,6 +99,7 @@ struct usb_ep;
-  */
- 
- struct usb_request {
-+	struct usb_ep		*ep;
- 	void			*buf;
- 	unsigned		length;
- 	dma_addr_t		dma;
+ 	dma_resv_for_each_fence(&cursor, resv, usage, fence) {
+-		/* Make sure to grab an additional ref on the added fence */
+-		dma_fence_get(fence);
+-		ret = drm_sched_job_add_dependency(job, fence);
+-		if (ret) {
+-			dma_fence_put(fence);
++		/*
++		 * As drm_sched_job_add_dependency always consumes the fence
++		 * reference (even when it fails), and dma_resv_for_each_fence
++		 * is not obtaining one, we need to grab one before calling.
++		 */
++		ret = drm_sched_job_add_dependency(job, dma_fence_get(fence));
++		if (ret)
+ 			return ret;
+-		}
+ 	}
+ 	return 0;
+ }
 
 
 
