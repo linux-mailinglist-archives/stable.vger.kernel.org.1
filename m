@@ -1,117 +1,121 @@
-Return-Path: <stable+bounces-188388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C768EBF7D49
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:11:05 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B67BF7E31
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0B3619A64CC
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:11:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E7F8F358A50
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD34347FC6;
-	Tue, 21 Oct 2025 17:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410AD34D4E1;
+	Tue, 21 Oct 2025 17:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TV0zIBVv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZjJF+4r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8F7345CB1
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 17:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7670934D4D9;
+	Tue, 21 Oct 2025 17:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761066661; cv=none; b=Wq4FOd+4/DtMnCtjyXRH0g/rb4JECzGVN6+xxJEPqe3NIBTWN25i/zpOIwPz6c66haIjHuo9ed/MCEZFBnVI02QG7ASrcXHwLqWeVCsv/P632GFQ1cVbxcdzo3RYKdlUxopdKCSQG6eVvI1XeEEI7RiHDXUmNemrIiWPnp6N0cY=
+	t=1761067391; cv=none; b=H7UqmITucjMiAI3r2Iqtn6yuAxEz7FJmXmwGsRzPJhWMOeTlav02uXqkyy34s+J8w/FrNHz0hfuxJ040/3spVYp31RhNlWM6GdJrhqteqtlPq+dSe1+j4ZSNtFBOgtxuXNl9PusGjzSDdFfV83p0YWzP/nAVldz9BD89DhZ3o68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761066661; c=relaxed/simple;
-	bh=ndpoYvDHpJCeCHkx0vczV7h4N6Xr6AnIME+hX5AX/pQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWgconbHLXbE1yKadPUuJ16ZZ/rn0fDvPvzZQ6ab3AVz/qtNHdGFkazDw+C0Ev+BxXk6r46bf8/XsmQqLezaE8gSOXuwmOGhHVEBdQfo3XpDrJPwWEltozk2fy9IItZ+y2pF9VtCP2F+UyrreIhGqIAcf0kdhXrVCPTrcULVuTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TV0zIBVv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC42C4CEF1;
-	Tue, 21 Oct 2025 17:10:59 +0000 (UTC)
+	s=arc-20240116; t=1761067391; c=relaxed/simple;
+	bh=WtDAPjj2uGIdoRAWnE+iIkBURVgXeLBKvep422kdXHE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=NZa8lOsmwqyF6Uck6Mp2lYAxIlE+ok3ZX3t59upEMPHL4CJmyOU52stgNWyJz3ylNzWj6r6hjSB+cGI5XGyag8ukX0t6Aul4jdSpWkGlS/TaVkOLZe8bDXL0jKgY/o6NLxyV3K84sf6gdFCX3fcAvSFW6ZfCK0Z7AdIjbkF6zJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZjJF+4r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E29C4CEF1;
+	Tue, 21 Oct 2025 17:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761066659;
-	bh=ndpoYvDHpJCeCHkx0vczV7h4N6Xr6AnIME+hX5AX/pQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TV0zIBVvYN3qboIUu4K8Z9UOVhxqOzpK6G3pl863csDLVxtVVhWPtOjGAkO+ITv/d
-	 DbR4Sw/L2l1kwORvkQNWWBLQO8rmnaLzIRM5Htk8w2nUIHlILeKvJgMxA/RYXHAzHx
-	 erM++AU3htt/jpA1vVfTA7wZz7OHRLCiXfwcZYZImNp/cy1vwFIycH192bNdXLAIXO
-	 dlQvpnfyFtzfaKwL6IIH1R5bo5ZRk41IY8dWdCrjgf4WOY7++XW3xI95PSY3KYn5KB
-	 rk+DAF7qOy77RWpDZMLiDnmpsbS2LY1WMpV5g9o4xbkNUi3idtSrS97t7+lkj2TYw9
-	 8drmxrR8tw65g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pratyush Yadav <pratyush@kernel.org>,
-	Santhosh Kumar K <s-k6@ti.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] spi: cadence-quadspi: Flush posted register writes before DAC access
-Date: Tue, 21 Oct 2025 13:10:55 -0400
-Message-ID: <20251021171055.2412702-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101634-glare-unrivaled-70bf@gregkh>
-References: <2025101634-glare-unrivaled-70bf@gregkh>
+	s=k20201202; t=1761067390;
+	bh=WtDAPjj2uGIdoRAWnE+iIkBURVgXeLBKvep422kdXHE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=FZjJF+4r91jouTqR4ZCGqzgg0rVgTjnvGMOtExNJniwX5dWlP4jCwmBXfEbVJuqti
+	 7IXt4pidP071Ogg9iGMBn38tmDXu75p9f2J92QJqiccOw/kxe0mEufMpxqK+n/b6dM
+	 JQAKYV8Ne/rBstqxIewQZaV49n8p7GNi8MD9GN0UDraKVCTlcY1S4/GjbsiBtM/wzp
+	 46uYfybDE61g6tR53qeFxSYdNJeFgsV+m+ov7nVifWmTKiUzdoU5abyz9XKoCaj+2l
+	 zIsZH9Tdg/O/QqQ2UaxeiOqnNWBbkVyDpD702xmI0jgsENuk+XdJ+za6yM1daKa4Aa
+	 hOm1C5wxr6JfQ==
+Date: Tue, 21 Oct 2025 12:23:09 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Ravi Kumar Bandi <ravib@amazon.com>
+Cc: mani@kernel.org, thippeswamy.havalige@amd.com, lpieralisi@kernel.org,
+	bhelgaas@google.com, linux-pci@vger.kernel.org,
+	kwilczynski@kernel.org, robh@kernel.org, michal.simek@amd.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Stefan Roese <stefan.roese@mailbox.org>,
+	Sean Anderson <sean.anderson@linux.dev>
+Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+Message-ID: <20251021172309.GA1198438@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250920225232.18757-1-ravib@amazon.com>
 
-From: Pratyush Yadav <pratyush@kernel.org>
+[+cc Stefan, Sean]
 
-[ Upstream commit 1ad55767e77a853c98752ed1e33b68049a243bd7 ]
+On Sat, Sep 20, 2025 at 10:52:32PM +0000, Ravi Kumar Bandi wrote:
+> The pcie-xilinx-dma-pl driver does not enable INTx interrupts
+> after initializing the port, preventing INTx interrupts from
+> PCIe endpoints from flowing through the Xilinx XDMA root port
+> bridge. This issue affects kernel 6.6.0 and later versions.
+> 
+> This patch allows INTx interrupts generated by PCIe endpoints
+> to flow through the root port. Tested the fix on a board with
+> two endpoints generating INTx interrupts. Interrupts are
+> properly detected and serviced. The /proc/interrupts output
+> shows:
+> 
+> [...]
+> 32:        320          0  pl_dma:RC-Event  16 Level     400000000.axi-pcie, azdrv
+> 52:        470          0  pl_dma:RC-Event  16 Level     500000000.axi-pcie, azdrv
+> [...]
+> 
+> Changes since v1::
+> - Fixed commit message per reviewer's comments
+> 
+> Fixes: 8d786149d78c ("PCI: xilinx-xdma: Add Xilinx XDMA Root Port driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ravi Kumar Bandi <ravib@amazon.com>
 
-cqspi_read_setup() and cqspi_write_setup() program the address width as
-the last step in the setup. This is likely to be immediately followed by
-a DAC region read/write. On TI K3 SoCs the DAC region is on a different
-endpoint from the register region. This means that the order of the two
-operations is not guaranteed, and they might be reordered at the
-interconnect level. It is possible that the DAC read/write goes through
-before the address width update goes through. In this situation if the
-previous command used a different address width the OSPI command is sent
-with the wrong number of address bytes, resulting in an invalid command
-and undefined behavior.
+Hi Ravi, obviously you tested this, but I don't know how to reconcile
+this with Stefan's INTx fix at
+https://lore.kernel.org/r/20251021154322.973640-1-stefan.roese@mailbox.org
 
-Read back the size register to make sure the write gets flushed before
-accessing the DAC region.
+Does Stefan's fix need to be squashed into this patch?
 
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-CC: stable@vger.kernel.org
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
-Message-ID: <20250905185958.3575037-3-s-k6@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-cadence-quadspi.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 8b31aaa1d0f16..1ee3641c88736 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -474,6 +474,7 @@ static int cqspi_read_setup(struct cqspi_flash_pdata *f_pdata,
- 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
- 	reg |= (op->addr.nbytes - 1);
- 	writel(reg, reg_base + CQSPI_REG_SIZE);
-+	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
- 	return 0;
- }
- 
-@@ -586,6 +587,7 @@ static int cqspi_write_setup(struct cqspi_flash_pdata *f_pdata,
- 	reg &= ~CQSPI_REG_SIZE_ADDRESS_MASK;
- 	reg |= (op->addr.nbytes - 1);
- 	writel(reg, reg_base + CQSPI_REG_SIZE);
-+	readl(reg_base + CQSPI_REG_SIZE); /* Flush posted write. */
- 	return 0;
- }
- 
--- 
-2.51.0
-
+> ---
+>  drivers/pci/controller/pcie-xilinx-dma-pl.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/pcie-xilinx-dma-pl.c b/drivers/pci/controller/pcie-xilinx-dma-pl.c
+> index b037c8f315e4..cc539292d10a 100644
+> --- a/drivers/pci/controller/pcie-xilinx-dma-pl.c
+> +++ b/drivers/pci/controller/pcie-xilinx-dma-pl.c
+> @@ -659,6 +659,12 @@ static int xilinx_pl_dma_pcie_setup_irq(struct pl_dma_pcie *port)
+>  		return err;
+>  	}
+>  
+> +	/* Enable interrupts */
+> +	pcie_write(port, XILINX_PCIE_DMA_IMR_ALL_MASK,
+> +		   XILINX_PCIE_DMA_REG_IMR);
+> +	pcie_write(port, XILINX_PCIE_DMA_IDRN_MASK,
+> +		   XILINX_PCIE_DMA_REG_IDRN_MASK);
+> +
+>  	return 0;
+>  }
+>  
+> -- 
+> 2.47.3
+> 
 
