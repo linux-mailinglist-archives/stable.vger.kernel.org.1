@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-188557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A01BF871B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 744D5BF853B
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6FFB580AD9
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:59:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A531119C2FC6
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87158274FE3;
-	Tue, 21 Oct 2025 19:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DB0273D7B;
+	Tue, 21 Oct 2025 19:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNaEUSgU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+I4Niye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B1F273D66;
-	Tue, 21 Oct 2025 19:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6020827381E;
+	Tue, 21 Oct 2025 19:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076786; cv=none; b=qweqFhTbyXx9PKj+crp98vNkx5PCOFxp4D2sLwnUYTzCWhpvijt46XPICvkhxR17Zf8DFIWLac5w/3nb7WY+PJRJq8Byg9WK/AYpigT1ny77qJktkzgyKOmhYBUYihEJwXR0SudoedVPsXrXBbpcKRXD0L4Gai69JWWgMz6WoYU=
+	t=1761076376; cv=none; b=anktd3sMmqTT5HvZhHuH/fp6LbA9D+HQb8qykMzjFryIWUHntS/T15YZS/tlZeloC7VZvdXdT5U6UmXPOPoKN5+JydvrVdoo3CR+1lWiXLUD0uvlmPNlNGb3mu1eWMPJxNjuYcsLnrYeVWHa7lM+CfAiXDcXnjW2kZa0Exqqox8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076786; c=relaxed/simple;
-	bh=mCUNkcafyKtRekV8LGlD7KWiqmbTkTPt5be9qh1xrn4=;
+	s=arc-20240116; t=1761076376; c=relaxed/simple;
+	bh=734ohUiCP0Dykk4VIQP/Pnn0+5VaEfbFS67RROJkCZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2dlLMtu+7FatEJCYj/vHBkmk01+YS7Vs9WCJVk6Urx6oyPL8Rtk1/PV5R5LxrXbn71aPFOYvwFR20AUGLFYFPNl/C+VSUVPx2lzogeOqJdyE9ytnleHar3G9eLstdo39JHTN8UFewTwjKciRXjb8TWlv7den5qN5Hh3KNbgYVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNaEUSgU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D6FC4CEF1;
-	Tue, 21 Oct 2025 19:59:45 +0000 (UTC)
+	 MIME-Version; b=Yscb/nfUtubkX2/nWWFoBrPvPyse/l3GFcDiNEwnr5nYgVQlHPs3f4QIF3gTEshXY1i8XPzG3Kvd90OxwjXoZg621Wn6a+/sDBRg7Hy00cr2tG9pdlU4mvmVWKHx03uJ+1K1fZIr5zB1MdhkKVtRaN04BzJlnCRcq5EJPyQ5KPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+I4Niye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C1DC4CEF1;
+	Tue, 21 Oct 2025 19:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076786;
-	bh=mCUNkcafyKtRekV8LGlD7KWiqmbTkTPt5be9qh1xrn4=;
+	s=korg; t=1761076376;
+	bh=734ohUiCP0Dykk4VIQP/Pnn0+5VaEfbFS67RROJkCZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNaEUSgU3VHljv/jDTqKuSu5PPtC8wW1LE3au8FOKgp//kwA77qtGGOsEO1NMlehF
-	 HaYzvlRImgiyHLV49EDgzESDq7eQf8d6BQmJel+AzYPd0RNZsLZKCdu8JXJfuzl9Fq
-	 MB8O5AWddTLVBzNiTLi5F91uvpi+C25dt+c+JYbE=
+	b=o+I4Niye19+NmXaMtYdd8/JnauVbN0npjkABDqxhfuVYVnjbBCaWx/BaSfwlbKFd4
+	 F0az+t2lmKkUaASmkDyPohdcGXv3RpuAdskGKvTg/xGqEy1b/chGUJSUkprg/oQSHB
+	 YZemA8uZSnRVToXWwFjH83rF32BarNGlWTqY1nMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/136] usb: gadget: Introduce free_usb_request helper
-Date: Tue, 21 Oct 2025 21:50:24 +0200
-Message-ID: <20251021195036.851484506@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Adrian Yip <adrian.ytw@gmail.com>
+Subject: [PATCH 6.6 016/105] drm/amd: Check whether secure display TA loaded successfully
+Date: Tue, 21 Oct 2025 21:50:25 +0200
+Message-ID: <20251021195021.877117390@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 201c53c687f2b55a7cc6d9f4000af4797860174b ]
+commit c760bcda83571e07b72c10d9da175db5051ed971 upstream.
 
-Introduce the free_usb_request() function that frees both the request's
-buffer and the request itself.
+[Why]
+Not all renoir hardware supports secure display.  If the TA is present
+but the feature isn't supported it will fail to load or send commands.
+This shows ERR messages to the user that make it seems like there is
+a problem.
 
-This function serves as the cleanup callback for DEFINE_FREE() to enable
-automatic, scope-based cleanup for usb_request pointers.
+[How]
+Check the resp_status of the context to see if there was an error
+before trying to send any secure display commands.
 
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-2-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-2-4997bf277548@google.com
-Stable-dep-of: 75a5b8d4ddd4 ("usb: gadget: f_ncm: Refactor bind path to use __free()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1415
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Adrian Yip <adrian.ytw@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/usb/gadget.h |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -15,6 +15,7 @@
- #ifndef __LINUX_USB_GADGET_H
- #define __LINUX_USB_GADGET_H
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -2012,7 +2012,7 @@ static int psp_securedisplay_initialize(
+ 	}
  
-+#include <linux/cleanup.h>
- #include <linux/configfs.h>
- #include <linux/device.h>
- #include <linux/errno.h>
-@@ -293,6 +294,28 @@ static inline void usb_ep_fifo_flush(str
- 
- /*-------------------------------------------------------------------------*/
- 
-+/**
-+ * free_usb_request - frees a usb_request object and its buffer
-+ * @req: the request being freed
-+ *
-+ * This helper function frees both the request's buffer and the request object
-+ * itself by calling usb_ep_free_request(). Its signature is designed to be used
-+ * with DEFINE_FREE() to enable automatic, scope-based cleanup for usb_request
-+ * pointers.
-+ */
-+static inline void free_usb_request(struct usb_request *req)
-+{
-+	if (!req)
-+		return;
-+
-+	kfree(req->buf);
-+	usb_ep_free_request(req->ep, req);
-+}
-+
-+DEFINE_FREE(free_usb_request, struct usb_request *, free_usb_request(_T))
-+
-+/*-------------------------------------------------------------------------*/
-+
- struct usb_dcd_config_params {
- 	__u8  bU1devExitLat;	/* U1 Device exit Latency */
- #define USB_DEFAULT_U1_DEV_EXIT_LAT	0x01	/* Less then 1 microsec */
+ 	ret = psp_ta_load(psp, &psp->securedisplay_context.context);
+-	if (!ret) {
++	if (!ret && !psp->securedisplay_context.context.resp_status) {
+ 		psp->securedisplay_context.context.initialized = true;
+ 		mutex_init(&psp->securedisplay_context.mutex);
+ 	} else
 
 
 
