@@ -1,111 +1,189 @@
-Return-Path: <stable+bounces-188287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB02BF48F7
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 06:02:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90AFBBF4A01
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 07:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F081F18937E6
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 04:02:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F21F3AF268
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 05:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09337DA66;
-	Tue, 21 Oct 2025 04:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y1ap0kGS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DBA22B8B0;
+	Tue, 21 Oct 2025 05:14:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032011448E0
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 04:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1AC2556E;
+	Tue, 21 Oct 2025 05:14:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761019330; cv=none; b=iIVIyGFPw9zcXYmob0qDVmFCPDqcuvlw/8hDHehMORKZ/8e9LX8TS7Vii9wbZ/JO5fNXKq8hd3WU5WNGN67x/0ahXuPT2yEgyi4SEKdE1W2KYocgnRwj9hIJTuSdAMx4ksPbTlgEq0o9s86ZY5blncUGyvlXniHYTBWo74WEmns=
+	t=1761023670; cv=none; b=i8SeRD15E7EQ86VWufrgRMT9v5myYuSWKbTnr90udFTE5Amt3MLz/I1Na6KGBLN0WmD397RHn9XS4lIljpxpLcrmjXxs9s+TWBUrvNqczRippqYGEcl6yIRmxYtg0Jf6Q0a/lOEzRDTkbmA9XfnUMHc66bLWkrbZYw6hVlwx6PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761019330; c=relaxed/simple;
-	bh=wDzEUsxTs0HUyl+iDwt3UIdWCbndTkElyHk0pfl57Tk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-type; b=HOKiGof+QOfOiJzLAWJ/+bemAdd+v2YAlJ+n34/HZFb44xaGmo4OwCqE8H6qC6tcqXAyoT8p3rLHymQcpTBbMFSP76syZiDGFndEwWANlzmBt/4ne58jShSoU9Ipm4ZxnJLOy8XWzSSQsyMhuNl03nGbZrSNTXzifftYwz0bPww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y1ap0kGS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761019328;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rL7lFmSI7S3KHfZ01SLxw49A4U6D/hN5WOkCgf3+TU8=;
-	b=Y1ap0kGSghWJ067U7zdZZuoRC/Ruve6YCMvhQF82aZtf+EYcZY1fA+5Pq4cJjqz/b2hzQd
-	CX4J3NKiiKd2PJ6KV9ykTcm+K4lnT8WoBQbsKB91DZiaXRBTxRLfBqcsc3SYsVvmftAkls
-	4MLPqcjMZdu4lnqu++MHVQapTUFf3pc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-470-_oBuolmeNYyF2XXsrfOPCA-1; Tue,
- 21 Oct 2025 00:02:04 -0400
-X-MC-Unique: _oBuolmeNYyF2XXsrfOPCA-1
-X-Mimecast-MFC-AGG-ID: _oBuolmeNYyF2XXsrfOPCA_1761019323
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 035751800365;
-	Tue, 21 Oct 2025 04:02:03 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.72.112.71])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 958F11956056;
-	Tue, 21 Oct 2025 04:01:58 +0000 (UTC)
-From: Jason Wang <jasowang@redhat.com>
-To: mst@redhat.com,
-	jasowang@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com,
-	pabeni@redhat.com,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
+	s=arc-20240116; t=1761023670; c=relaxed/simple;
+	bh=xy8cNH6sTwXVBTkTDDbECNc1/pqnDa6gGjanwWWIMp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PsI28rkHVOBtP4trErTrzyanhhX/KIR3gVUd8c0b/fYeP+aDJryknKGhPp/XXxoBi7BV5uu5iHqGL+7nqVb2Lbavd78qJ4cwDUBWAwQGTj5tmIcXKHCWvdJ8CK1Lm0tRirN8c62GkNdzfYxF+4lcK38N4PDI5He7OfNaS0GtsNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=pass smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=54.206.34.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bamaicloud.com
+X-QQ-mid: zesmtpgz4t1761023579t34c21be9
+X-QQ-Originating-IP: qGMv6aoSEDb63nVxt9x1iPy8Vvy2daGnc5g4UZVP11M=
+Received: from localhost.localdomain ( [111.204.182.100])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 21 Oct 2025 13:12:56 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 12081062612498682095
+EX-QQ-RecipientCnt: 11
+From: Tonghao Zhang <tonghao@bamaicloud.com>
+To: netdev@vger.kernel.org
+Cc: Tonghao Zhang <tonghao@bamaicloud.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Vincent Bernat <vincent@bernat.ch>,
 	stable@vger.kernel.org
-Subject: [PATCH net] virtio-net: zero unused hash fields
-Date: Tue, 21 Oct 2025 12:01:55 +0800
-Message-ID: <20251021040155.47707-1-jasowang@redhat.com>
+Subject: [PATCH net] net: bonding: fix possible peer notify event loss or dup issue
+Date: Tue, 21 Oct 2025 13:09:33 +0800
+Message-Id: <20251021050933.46412-1-tonghao@bamaicloud.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:bamaicloud.com:qybglogicsvrsz:qybglogicsvrsz4a-0
+X-QQ-XMAILINFO: NiFdmnmiW14nXvW8MnAcrigq1zelh5DavZX82X8a628gbZN4f6jWSmGv
+	o5rd87U4P+Wi0/CUCoOUle3jVKoIbRMuFwUvWOCKNbZV/HhgP8sWYBhiNJ5FrqGtACcMo4M
+	znQD4CPsTQ4YFD8F2vtJVYycEthaHl50kuUx3moRV6Bs132XhxRAZNxqxZDjIp43WX6L0ak
+	Zhyro7yDbgZmogb1fxhLyS491Wqts+0ON+Wk7VJ3leCP3pke8bjk0ISIfotLrXgQ3OTPqeW
+	oECu49Lu+y5VhghoZKPdVBsHgBfXq82BLq6+CFlOOc9biDjwFNGyEuwoHMn5IWEWhIEdw9P
+	lmrWdJ1n0eBR7ob3W1FlU3sVLMsrOTclXAjeiJjWW7uESUCGsgdTBX22JoHW3jXzOrUgikF
+	T5gA2sG6YZjxyt1Zy0krIZ3Sr8luSRgmXISX5+sGGIhO1yshMzg+5DSNFvJDUOrkolGrWc8
+	FSNVdrJVAJ1eYs+fvYeL21WZ2hblUU0A9ymwiWQJNhRkd9oysCipf3NB344k/Ri/kJtSG4Q
+	Z2y2VLGHBreoASfssTHITP3iejLmUeEhN1DSG4pk3UvlsjdpP1UPuwoRM1on01Kf9X42IiL
+	oMJph4AL6yDBQrIeGGRoX035s1ghhEdiiaZWJGMUCLc0Z/wS1Dx/XxJN3KvH63gxeRunRaP
+	GUv1hj/EmiEZB4RqsbnErpx0xE4EoT9TpVgPGwr2U5ftQJx2/bX9LDz8piZqAftm4qWllEX
+	SzxWZL6tyoTwda8i6bVLS6LE3bWwMBNPc99AEYYuScjsVqwA9iQau5/LDy+XNtSS7nlcGvm
+	0FeSWlaCJiL7rfgXXO5DGicx10GsmFBC1lqsjbuMyWLDBDxlPAlSFjOU+GG8M5WkdlJ13P6
+	sWFPnfyUiilTxE4QCbWdsViCsipEJlhGfU803gpw1ojx+pYF3Def7tJ2PPjgSEvqnPfLiYH
+	+6EsKr/39LQzc6iBosI4FOU7LXlcPdUD9W6YruVjF/k/ilBq7dPfaM9fnXWs0ncTx/6U=
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-RECHKSPAM: 0
 
-When GSO tunnel is negotiated virtio_net_hdr_tnl_from_skb() tries to
-initialize the tunnel metadata but forget to zero unused rxhash
-fields. This may leak information to another side. Fixing this by
-zeroing the unused hash fields.
+If the send_peer_notif counter and the peer event notify are not synchronized.
+It may cause problems such as the loss or dup of peer notify event.
 
-Fixes: a2fb4bc4e2a6a ("net: implement virtio helpers to handle UDP GSO tunneling")x
+Before this patch:
+- If should_notify_peers is true and the lock for send_peer_notif-- fails, peer
+  event may be sent again in next mii_monitor loop, because should_notify_peers
+  is still true.
+- If should_notify_peers is true and the lock for send_peer_notif-- succeeded,
+  but the lock for peer event fails, the peer event will be lost.
+
+This patch locks the RTNL for send_peer_notif, events, and commit simultaneously.
+
+Fixes: 07a4ddec3ce9 ("bonding: add an option to specify a delay between peer notifications")
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Vincent Bernat <vincent@bernat.ch>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
----
- include/linux/virtio_net.h | 4 ++++
- 1 file changed, 4 insertions(+)
+Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 20e0584db1dd..4d1780848d0e 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -401,6 +401,10 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
- 	if (!tnl_hdr_negotiated)
- 		return -EINVAL;
+---
+ drivers/net/bonding/bond_main.c | 40 +++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 5791c3e39baa..52b7ac8ddfbc 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2971,7 +2971,7 @@ static void bond_mii_monitor(struct work_struct *work)
+ {
+ 	struct bonding *bond = container_of(work, struct bonding,
+ 					    mii_work.work);
+-	bool should_notify_peers = false;
++	bool should_notify_peers;
+ 	bool commit;
+ 	unsigned long delay;
+ 	struct slave *slave;
+@@ -2983,30 +2983,33 @@ static void bond_mii_monitor(struct work_struct *work)
+ 		goto re_arm;
  
-+        vhdr->hash_hdr.hash_value = 0;
-+        vhdr->hash_hdr.hash_report = 0;
-+        vhdr->hash_hdr.padding = 0;
+ 	rcu_read_lock();
 +
- 	/* Let the basic parsing deal with plain GSO features. */
- 	skb_shinfo(skb)->gso_type &= ~tnl_gso_type;
- 	ret = virtio_net_hdr_from_skb(skb, hdr, true, false, vlan_hlen);
+ 	should_notify_peers = bond_should_notify_peers(bond);
+ 	commit = !!bond_miimon_inspect(bond);
+-	if (bond->send_peer_notif) {
+-		rcu_read_unlock();
+-		if (rtnl_trylock()) {
+-			bond->send_peer_notif--;
+-			rtnl_unlock();
+-		}
+-	} else {
+-		rcu_read_unlock();
+-	}
+ 
+-	if (commit) {
++	rcu_read_unlock();
++
++	if (commit || bond->send_peer_notif) {
+ 		/* Race avoidance with bond_close cancel of workqueue */
+ 		if (!rtnl_trylock()) {
+ 			delay = 1;
+-			should_notify_peers = false;
+ 			goto re_arm;
+ 		}
+ 
+-		bond_for_each_slave(bond, slave, iter) {
+-			bond_commit_link_state(slave, BOND_SLAVE_NOTIFY_LATER);
++		if (commit) {
++			bond_for_each_slave(bond, slave, iter) {
++				bond_commit_link_state(slave,
++						       BOND_SLAVE_NOTIFY_LATER);
++			}
++			bond_miimon_commit(bond);
++		}
++
++		if (bond->send_peer_notif) {
++			bond->send_peer_notif--;
++			if (should_notify_peers)
++				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
++							 bond->dev);
+ 		}
+-		bond_miimon_commit(bond);
+ 
+ 		rtnl_unlock();	/* might sleep, hold no other locks */
+ 	}
+@@ -3014,13 +3017,6 @@ static void bond_mii_monitor(struct work_struct *work)
+ re_arm:
+ 	if (bond->params.miimon)
+ 		queue_delayed_work(bond->wq, &bond->mii_work, delay);
+-
+-	if (should_notify_peers) {
+-		if (!rtnl_trylock())
+-			return;
+-		call_netdevice_notifiers(NETDEV_NOTIFY_PEERS, bond->dev);
+-		rtnl_unlock();
+-	}
+ }
+ 
+ static int bond_upper_dev_walk(struct net_device *upper,
 -- 
-2.42.0
+2.34.1
 
 
