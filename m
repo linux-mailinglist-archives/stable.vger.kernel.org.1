@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-188577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4D1BF8758
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:00:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A23BF858C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E76A019C449A
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:01:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB1D24F551C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099892701B6;
-	Tue, 21 Oct 2025 20:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BCC274666;
+	Tue, 21 Oct 2025 19:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcf+TSAg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLhSIryG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6DE1FF7BC;
-	Tue, 21 Oct 2025 20:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C531026738B;
+	Tue, 21 Oct 2025 19:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076849; cv=none; b=T7fuShXBqb+eCcg4G61Xq/znBoP0mioYB4+y4oT3sgWsEgWakrZFp0lx6agEqeJ/OJnSLOyq9bU7NjniJw/9BX9jHVUQ6uzRoczS186QjGWxjgJAGjr7o4fRfo8/IbmqV1I6pg47iedKZjbMYOtQi+BK7+XXu/25smVWDzHzP/U=
+	t=1761076449; cv=none; b=iHLNf8nIffPZcQJ0GOnOuaJ2D41Qs9uEy49rrlH3zob5U91ry3ZL5K8ZfRoPJR3kReTwpsHpx0N8FlgHqRTWHMxQ5s7O0j5WAJok/h7RCF2kzeF7c9ESCVvdWK2KjY6gbhwFrl6eVwPRQRC8eOKtTdeyjw9wGdnp2JFt1wAYQBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076849; c=relaxed/simple;
-	bh=lVAOsXwkbHHKAMirYlyhjxWcrKfUCyOSOf3yZ2QGv3o=;
+	s=arc-20240116; t=1761076449; c=relaxed/simple;
+	bh=LZHrH7/XCBsbrCStNMghNcar9g4/QoflSmOWUnFmFTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcu0PnlrQRMPSMG9qhrObIxBFMuBVF7dTLCl/sK372RzRmxF0rCKTlEhFJ/nVTDRTKoQDS/+Dnuz/E5d2/W8O3MjRrHdEfaLovbnNuvt+CavWJkWuvN7h4Y+8tEd1kTr+SsBicyrrctrRPSaMpCFBO9g4puTys1PH/D1bDibNgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcf+TSAg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46DFAC4CEF1;
-	Tue, 21 Oct 2025 20:00:49 +0000 (UTC)
+	 MIME-Version; b=YnDA1150o5ql47mA7lsO0i4qsrpgG6EkEbiLIidmVhp2bRdWXBKwNuDNGNyg1rnE78G9AffIM3oJ3VZb502NvZRe5cnAL36N1XTxDkIVcu7IRTeTi1Nv51bp6xQOrQBgvoX6wYGweWmt6CNSNocpIbm0k5Ev9xx6g8Qa4yaoPw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLhSIryG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54570C4CEF5;
+	Tue, 21 Oct 2025 19:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076849;
-	bh=lVAOsXwkbHHKAMirYlyhjxWcrKfUCyOSOf3yZ2QGv3o=;
+	s=korg; t=1761076449;
+	bh=LZHrH7/XCBsbrCStNMghNcar9g4/QoflSmOWUnFmFTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wcf+TSAgrwAhGIL0hN3IcV4wPjbSZx1yxZuCHEPR47wRiqyVWwCpGD5vfWcKHw5yN
-	 Lpyrn8cbqk7Ex3fsgTfD4LaK+7mmCfPMzLOwhVBI59++mpWVqbB+GMGUjsVxv/XUvJ
-	 Cb2CieHRkmgGTdu4bigL4VcbCoxiRmHWIXLe/83k=
+	b=oLhSIryGRd7UaV7TUCncYFLCQcKYJwLVe0P0Z68Ocl76npghZaEt0zI/Zxaj38O9t
+	 CSTopY/PP4uiMl5g8uaFTKl0stxsk56rnrgQZ8TvKjoej4rYtgii7hifL8ojq4Neh5
+	 0XP6W+HWmwpLr0tlvjExxXNFp3R4WHalgB6xiTC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandr Sapozhnikov <alsp705@gmail.com>,
-	Alexey Simakov <bigalex934@gmail.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yeounsu Moon <yyyynoom@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/136] tg3: prevent use of uninitialized remote_adv and local_adv variables
+Subject: [PATCH 6.6 037/105] net: dlink: handle dma_map_single() failure properly
 Date: Tue, 21 Oct 2025 21:50:46 +0200
-Message-ID: <20251021195037.376690740@linuxfoundation.org>
+Message-ID: <20251021195022.572694947@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Simakov <bigalex934@gmail.com>
+From: Yeounsu Moon <yyyynoom@gmail.com>
 
-[ Upstream commit 0c3f2e62815a43628e748b1e4ad97a1c46cce703 ]
+[ Upstream commit 65946eac6d888d50ae527c4e5c237dbe5cc3a2f2 ]
 
-Some execution paths that jump to the fiber_setup_done label
-could leave the remote_adv and local_adv variables uninitialized
-and then use it.
+There is no error handling for `dma_map_single()` failures.
 
-Initialize this variables at the point of definition to avoid this.
+Add error handling by checking `dma_mapping_error()` and freeing
+the `skb` using `dev_kfree_skb()` (process context) when it fails.
 
-Fixes: 85730a631f0c ("tg3: Add SGMII phy support for 5719/5718 serdes")
-Co-developed-by: Alexandr Sapozhnikov <alsp705@gmail.com>
-Signed-off-by: Alexandr Sapozhnikov <alsp705@gmail.com>
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://patch.msgid.link/20251014164736.5890-1-bigalex934@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
+Tested-on: D-Link DGE-550T Rev-A3
+Suggested-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/net/ethernet/dlink/dl2k.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 717e110d23c91..dc170feee8ad7 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -5803,7 +5803,7 @@ static int tg3_setup_fiber_mii_phy(struct tg3 *tp, bool force_reset)
- 	u32 current_speed = SPEED_UNKNOWN;
- 	u8 current_duplex = DUPLEX_UNKNOWN;
- 	bool current_link_up = false;
--	u32 local_adv, remote_adv, sgsr;
-+	u32 local_adv = 0, remote_adv = 0, sgsr;
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index 1c3a5cf379cd0..72c97dcd0fee0 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -498,25 +498,34 @@ static int alloc_list(struct net_device *dev)
+ 	for (i = 0; i < RX_RING_SIZE; i++) {
+ 		/* Allocated fixed size of skbuff */
+ 		struct sk_buff *skb;
++		dma_addr_t addr;
  
- 	if ((tg3_asic_rev(tp) == ASIC_REV_5719 ||
- 	     tg3_asic_rev(tp) == ASIC_REV_5720) &&
-@@ -5944,9 +5944,6 @@ static int tg3_setup_fiber_mii_phy(struct tg3 *tp, bool force_reset)
- 		else
- 			current_duplex = DUPLEX_HALF;
+ 		skb = netdev_alloc_skb_ip_align(dev, np->rx_buf_sz);
+ 		np->rx_skbuff[i] = skb;
+-		if (!skb) {
+-			free_list(dev);
+-			return -ENOMEM;
+-		}
++		if (!skb)
++			goto err_free_list;
++
++		addr = dma_map_single(&np->pdev->dev, skb->data,
++				      np->rx_buf_sz, DMA_FROM_DEVICE);
++		if (dma_mapping_error(&np->pdev->dev, addr))
++			goto err_kfree_skb;
  
--		local_adv = 0;
--		remote_adv = 0;
--
- 		if (bmcr & BMCR_ANENABLE) {
- 			u32 common;
+ 		np->rx_ring[i].next_desc = cpu_to_le64(np->rx_ring_dma +
+ 						((i + 1) % RX_RING_SIZE) *
+ 						sizeof(struct netdev_desc));
+ 		/* Rubicon now supports 40 bits of addressing space. */
+-		np->rx_ring[i].fraginfo =
+-		    cpu_to_le64(dma_map_single(&np->pdev->dev, skb->data,
+-					       np->rx_buf_sz, DMA_FROM_DEVICE));
++		np->rx_ring[i].fraginfo = cpu_to_le64(addr);
+ 		np->rx_ring[i].fraginfo |= cpu_to_le64((u64)np->rx_buf_sz << 48);
+ 	}
  
+ 	return 0;
++
++err_kfree_skb:
++	dev_kfree_skb(np->rx_skbuff[i]);
++	np->rx_skbuff[i] = NULL;
++err_free_list:
++	free_list(dev);
++	return -ENOMEM;
+ }
+ 
+ static void rio_hw_init(struct net_device *dev)
 -- 
 2.51.0
 
