@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-188783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E42BF8A49
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:12:13 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED7EBF8A3D
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DE62A501D73
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:11:45 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BF0AE3576AC
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414AF27815E;
-	Tue, 21 Oct 2025 20:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F38274B44;
+	Tue, 21 Oct 2025 20:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UE4Iqy6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6BTZiLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF56275861;
-	Tue, 21 Oct 2025 20:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F36275861;
+	Tue, 21 Oct 2025 20:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077504; cv=none; b=tCKvMAPcZ/ZT9XRQMfwc8lwrzmsBT9vdRkeKDGtSwXF2b/DvMmFzEeYwtU46bTUASCgZqK+U6R2HwI6+9B3vFDDyQLcQ5HFMUBQk1v/4yzQGdlVca81YWPQObinqkg7/g0aKD4Juy+TfStdbh78zdZRUFqMkgzkMU2PQDRVgybE=
+	t=1761077511; cv=none; b=GM3CONmp80sV3wyiD9blyEZuM4zjELYwqgrZWV438nPZRpoeXzh6LDcQd7sFXo/jreiF2jA/vPqnKxEQ9V/SlmE/eaIUbHltxDM+476BVXl2fIisXN4iPMXFiHXmK9eebzCksr7GdbKKLySoQLqMxx+NxqkpfNwmtFOOPPGrvx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077504; c=relaxed/simple;
-	bh=ehTC5FnRHcDRgRyr9kEhpLB9MhTbEmExB2CH9zQdMTU=;
+	s=arc-20240116; t=1761077511; c=relaxed/simple;
+	bh=GlHz2JeD0d+ZF1Yfi2kVhDuNyZgwC6G3QkJMUSVi48k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tYk4DH7XqlDsBQIJEXnJknnsGT5ZLhBqvzzR3PoJNx8CE3g7EA6LDG/OyIC6liejL4fPwUPtlr92YGXB9xQ3UsHPllqNgM+I4rEim1zDjvOx2AEI705hMeN2q/5hH3Y5O/V8UOxiH9wDZy2vbnUQUWrMKe883zLafx2E4hWamJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UE4Iqy6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E59AC4CEF1;
-	Tue, 21 Oct 2025 20:11:43 +0000 (UTC)
+	 MIME-Version; b=LKdqmoTNlFI9QurImxr9OqtpGAT6RaIPLEZRNqqSwitDKjCHzLt+lzPymoXhmkfs3XB250k3fr8GJ6EGTdtdIcQMAZjCSy0x/QFbq2M+pgGG+Bwa1KgfXT62rCZqI3RXHJqdWHrPEKzJs9sm0Nrfaaah3RKp6AKFvxodVgS0ip0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6BTZiLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0217EC4CEF1;
+	Tue, 21 Oct 2025 20:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077503;
-	bh=ehTC5FnRHcDRgRyr9kEhpLB9MhTbEmExB2CH9zQdMTU=;
+	s=korg; t=1761077510;
+	bh=GlHz2JeD0d+ZF1Yfi2kVhDuNyZgwC6G3QkJMUSVi48k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UE4Iqy6R+31LfFGr2YvQBqj7hfA1IBX/RDRdOcVCe8s9y3E0BGvfSpUFArN7jacIm
-	 a1vznefnYo2tD9O7PeZxPM537lZbLeXo1czpmPVkjdO+HvGTOYW5YwA+bdxY9+kxSm
-	 ABFg0fhpCZXeAHSFsSayKuzhZ1SxyExsuiaBQKd0=
+	b=s6BTZiLZ1RJrIT5PKF0mD42AcD8imZ65pM0kc9aeqF9sI7ITYTOSzIhWsc/YIV+mh
+	 Yx9I/FkZx8o+HJ5IXLdnR0gas1Zw75FSZnS6izpVCXjqFY1wTJxkzDvYNeJXIlRNjq
+	 alM/Xm57BpYkanS5qXD6K5ocmVUeseAt3IDCW1g8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 125/159] cxl/trace: Subtract to find an hpa_alias0 in cxl_poison events
-Date: Tue, 21 Oct 2025 21:51:42 +0200
-Message-ID: <20251021195046.160350492@linuxfoundation.org>
+Subject: [PATCH 6.17 126/159] selftests/bpf: make arg_parsing.c more robust to crashes
+Date: Tue, 21 Oct 2025 21:51:43 +0200
+Message-ID: <20251021195046.183391926@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
 References: <20251021195043.182511864@linuxfoundation.org>
@@ -66,38 +67,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit a4bbb493a3247ef32f6191fd8b2a0657139f8e08 ]
+[ Upstream commit e603a342cf7ecd64ef8f36207dfe1caacb9e2583 ]
 
-Traces of cxl_poison events include an hpa_alias0 field if the poison
-address is in a region configured with an ELC, Extended Linear Cache.
+We started getting a crash in BPF CI, which seems to originate from
+test_parse_test_list_file() test and is happening at this line:
 
-Since the ELC always comes first in the region, the calculation needs
-to subtract the ELC size from the calculated HPA address.
+  ASSERT_OK(strcmp("test_with_spaces", set.tests[0].name), "test 0 name");
 
-Fixes: 8c520c5f1e76 ("cxl: Add extended linear cache address alias emission for cxl events")
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+One way we can crash there is if set.cnt zero, which is checked for with
+ASSERT_EQ() above, but we proceed after this regardless of the outcome.
+Instead of crashing, we should bail out with test failure early.
+
+Similarly, if parse_test_list_file() fails, we shouldn't be even looking
+at set, so bail even earlier if ASSERT_OK() fails.
+
+Fixes: 64276f01dce8 ("selftests/bpf: Test_progs can read test lists from file")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Link: https://lore.kernel.org/r/20251014202037.72922-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/arg_parsing.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
-index a53ec4798b12f..a972e4ef19368 100644
---- a/drivers/cxl/core/trace.h
-+++ b/drivers/cxl/core/trace.h
-@@ -1068,7 +1068,7 @@ TRACE_EVENT(cxl_poison,
- 			__entry->hpa = cxl_dpa_to_hpa(cxlr, cxlmd,
- 						      __entry->dpa);
- 			if (__entry->hpa != ULLONG_MAX && cxlr->params.cache_size)
--				__entry->hpa_alias0 = __entry->hpa +
-+				__entry->hpa_alias0 = __entry->hpa -
- 						      cxlr->params.cache_size;
- 			else
- 				__entry->hpa_alias0 = ULLONG_MAX;
+diff --git a/tools/testing/selftests/bpf/prog_tests/arg_parsing.c b/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
+index bb143de68875c..fbf0d9c2f58b3 100644
+--- a/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
++++ b/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
+@@ -146,9 +146,12 @@ static void test_parse_test_list_file(void)
+ 
+ 	init_test_filter_set(&set);
+ 
+-	ASSERT_OK(parse_test_list_file(tmpfile, &set, true), "parse file");
++	if (!ASSERT_OK(parse_test_list_file(tmpfile, &set, true), "parse file"))
++		goto out_fclose;
++
++	if (!ASSERT_EQ(set.cnt, 4, "test  count"))
++		goto out_free_set;
+ 
+-	ASSERT_EQ(set.cnt, 4, "test  count");
+ 	ASSERT_OK(strcmp("test_with_spaces", set.tests[0].name), "test 0 name");
+ 	ASSERT_EQ(set.tests[0].subtest_cnt, 0, "test 0 subtest count");
+ 	ASSERT_OK(strcmp("testA", set.tests[1].name), "test 1 name");
+@@ -158,8 +161,8 @@ static void test_parse_test_list_file(void)
+ 	ASSERT_OK(strcmp("testB", set.tests[2].name), "test 2 name");
+ 	ASSERT_OK(strcmp("testC_no_eof_newline", set.tests[3].name), "test 3 name");
+ 
++out_free_set:
+ 	free_test_filter_set(&set);
+-
+ out_fclose:
+ 	fclose(fp);
+ out_remove:
 -- 
 2.51.0
 
