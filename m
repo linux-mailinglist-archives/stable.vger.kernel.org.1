@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-188612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B56BF87BB
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4398BF8608
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCDAB19C460C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:03:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 463B419C3A57
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DFA23D7E8;
-	Tue, 21 Oct 2025 20:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FF4273D9F;
+	Tue, 21 Oct 2025 19:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAWsG+h/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/WJJ55A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129751A3029;
-	Tue, 21 Oct 2025 20:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B6E350A39;
+	Tue, 21 Oct 2025 19:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076961; cv=none; b=V0PaOMWGQA6d2boKUSA7Dapim+pMl0UuopMcklXGsCHHwzBDtkj/zIrUYuaHdNJp9YG868H91ju4zloObgpdD31nddqzAbpHoHkKFXn9jSxOk6n+Pj18cvhoVTt4QblSISBnPQ/wygCL8h5buaIAtIDBtCMK/oIP+GpHbp5vNAk=
+	t=1761076546; cv=none; b=rOu70Ncf8pvizL0bnbOVXidx2CAJE+vx91Jms//l73JLHU5JTqGyFTtM8uu0aaKvb3oxPM3dbqMzBK5Lr8zocUO3L2PTnM+VFnzKo1Yb2LlgK9qi3al5pkN7/FmwLgheabLuPcdTBNy0T2avxoQJ5GFGvPyAXYcmO+/76Ay5Sd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076961; c=relaxed/simple;
-	bh=6rOh9Wj0gS59CK9HysNlfABveAXJg8ePUGXQd286wio=;
+	s=arc-20240116; t=1761076546; c=relaxed/simple;
+	bh=PLBDteV8vj52UzUZ3KRzLmXqiExyee1q1DPwbh4ESUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvfYu+Mf04+280HzKQ2vHkGh1D7Cqcc8+MM9ttdyOHLePwFzUnpNJiGPBtd4X4Eyk3YtTlb8CDcX6e8u+kdSjOLlT8AANOfm0oEq5pi/n6aecucZTA9w6Q8UDeb8YJbqlauMtXGXWWk5xMPbZcBSskx7tv3QAl5tZX/GslKuIoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAWsG+h/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 724A6C4CEF1;
-	Tue, 21 Oct 2025 20:02:40 +0000 (UTC)
+	 MIME-Version; b=SBK/SZAtfq6JmTFkonYyPrl4Khc49OmW7guZ7qzUda4WAFLzPDhxT4RreGLpXJFQPdA4QBlIurxOle5xjdb31yVunaF9vb5czEEDxnpM95V/h0lz8jIygSDGCk1akIW41+2m5+h7OdgiVUe9+ShE3+yQ7qiroocPKlwWtPgN97c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/WJJ55A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E23C4CEF1;
+	Tue, 21 Oct 2025 19:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076960;
-	bh=6rOh9Wj0gS59CK9HysNlfABveAXJg8ePUGXQd286wio=;
+	s=korg; t=1761076545;
+	bh=PLBDteV8vj52UzUZ3KRzLmXqiExyee1q1DPwbh4ESUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KAWsG+h/HJZ/bBfmkbMFK2E0Kl05RLjlBfxagHf8jktJqnyPvNuQZNNYHnVbbwLwW
-	 toLQ6Pv4qH2M7Kszg2iqtSpU2JStKQ+JGlRCziZySMyJccWc4npqjwkC+EWtbSAxsh
-	 7llo5J07Nv7u0dpCQhKu9R8VDkC8+d+beSzwBo6k=
+	b=O/WJJ55AsxNdAB2et1Kll7O1S5l+H50GggIduQJOhmVSQcco6H9VVfO5SGVzvcOqm
+	 5hQvACjMfDBvwhi0h1xha8BpfmlGhb495olxQ/D3TvLMSLd1dJwCff1OAT5c5iyeqn
+	 Kz0vpb817PfGfmVtYa2rlkmQOiaA/UCJlGcYnSWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/136] HID: multitouch: fix name of Stylus input devices
+Subject: [PATCH 6.6 069/105] HID: multitouch: fix name of Stylus input devices
 Date: Tue, 21 Oct 2025 21:51:18 +0200
-Message-ID: <20251021195038.126598140@linuxfoundation.org>
+Message-ID: <20251021195023.302615731@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -99,10 +99,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 0667a24576fc4..0e4cb0e668eb5 100644
+index 6f1e54ee8f05d..b9e67b408a4b9 100644
 --- a/drivers/hid/hid-multitouch.c
 +++ b/drivers/hid/hid-multitouch.c
-@@ -1663,6 +1663,7 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
+@@ -1658,6 +1658,7 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
  	case HID_CP_CONSUMER_CONTROL:
  	case HID_GD_WIRELESS_RADIO_CTLS:
  	case HID_GD_SYSTEM_MULTIAXIS:
