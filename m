@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-188824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C30CBF8ABE
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36175BF8A71
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:12:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB76C500757
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:14:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C418C500F58
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B8327FB2B;
-	Tue, 21 Oct 2025 20:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136A52798E5;
+	Tue, 21 Oct 2025 20:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KwzSb5f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXfO9tQF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113B327FB28;
-	Tue, 21 Oct 2025 20:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33F6279798;
+	Tue, 21 Oct 2025 20:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077638; cv=none; b=HGUYDad5Rgn9klpS+eTXxQ+9jwR8gT2a9FbNQIcv7sMX64HO/FBawCvT/il3XzLa2VMVX5azvt76lsfPv+lclRLDTr+QTEXha4k+Wi/dpYUc4KaZJ+Dqo4c0nonez4GOl0zToPOhzS90StIPe+6W079HjsJlhyA5pZi2Rpr3NQg=
+	t=1761077552; cv=none; b=WklSSsgefcxWMbbZPf4f+Ddsi+qEqFFHE3Q0I+BuKd/4MmLMnVNiDwnAaeluzTKLal6wlVQG9Au4nyqSN62XX1WjnYBoLjx345cpqS4Fmnew3zDWCiSG8lAaoUbl0f6z41VGWCyMvyiilc2zV89wCXxiTAieK9Si45fRJ1VfiRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077638; c=relaxed/simple;
-	bh=j8f8olhIExITD6nCBcHUXC9b510caFhkWKIMLc7if/k=;
+	s=arc-20240116; t=1761077552; c=relaxed/simple;
+	bh=JvywHpEGtIp7pYUXmEXnTxZLwQqLiAw5Jqq8BA74HrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vo7PU2Tz6wZzUOgGQeLdojmXJuhz4gqt4f2s9w66iUYcNHjm3r3ESPcupOfnQCd07P6rSrMylIjTBiBC2rKJE8rZiaCLPsrqGhQ1cB2QgC3ozszvv/8oE5iAwSNBqZQMinMxjZNfF12YUtC9ymL4O6JNxIUIWizY/z9AOMTq3Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KwzSb5f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BD6C4CEF1;
-	Tue, 21 Oct 2025 20:13:57 +0000 (UTC)
+	 MIME-Version; b=IBUM++wTjDX4mhh6U0zrVo7LJ1Nj3sxkjSK6E84FbSerjcVexfM7ScyitU5Ilh17TMhQbOzZoabFRmuDEpYnRxrJWe2kT710MAy5pxZDsFfTZOx8vSFIxyIYkWihl6+kaFWUlQ/v/yYR0PUJDEPoWZtzBpJxy6729Xgj/R8+3uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXfO9tQF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C61C4CEF1;
+	Tue, 21 Oct 2025 20:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077637;
-	bh=j8f8olhIExITD6nCBcHUXC9b510caFhkWKIMLc7if/k=;
+	s=korg; t=1761077552;
+	bh=JvywHpEGtIp7pYUXmEXnTxZLwQqLiAw5Jqq8BA74HrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1KwzSb5ftshBY9rSq07tUM5EnudRvyN9H3YDXcsTHewaoq7XgpiQs9o7wWBXYY/vR
-	 zYqm3qIWYZYiZhGblJtsOdh2jyKc5tYjD7SErP4dhR2hARyx/PyVsODKNntc+fdUOE
-	 ZJE+YljPKztOqLBPGgLi3P8PbAP2AoeRxAFiJZ0Q=
+	b=kXfO9tQF/6Hh1M9pOS26NWMlPZL86qsISqGcxtVZ5eRYcYQ8T9wFmxIGNYaOBraB4
+	 6LyXlh//eM9tpiQmYzUb5OXGD4SKrdA+r26mzsmX3W5yBK1HTgk7I4SHCHakqv+Pzt
+	 Vuz2gBWnh/aApMt5iCNyVKyWDTwZn4ir3GG9+Kfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Xing Guo <higuoxing@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 133/159] drm/xe/evict: drop bogus assert
-Date: Tue, 21 Oct 2025 21:51:50 +0200
-Message-ID: <20251021195046.346542743@linuxfoundation.org>
+Subject: [PATCH 6.17 134/159] selftests: arg_parsing: Ensure data is flushed to disk before reading.
+Date: Tue, 21 Oct 2025 21:51:51 +0200
+Message-ID: <20251021195046.370432712@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
 References: <20251021195043.182511864@linuxfoundation.org>
@@ -62,64 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Xing Guo <higuoxing@gmail.com>
 
-[ Upstream commit 225bc03d85427e7e3821d6f99f4f2d4a09350dda ]
+[ Upstream commit 0c1999ed33722f85476a248186d6e0eb2bf3dd2a ]
 
-This assert can trigger here with non pin_map users that select
-LATE_RESTORE, since the vmap is allowed to be NULL given that
-save/restore can now use the blitter instead. The check here doesn't
-seem to have much value anymore given that we no longer move pinned
-memory, so any existing vmap is left well alone, and doesn't need to be
-recreated upon restore, so just drop the assert here.
+test_parse_test_list_file writes some data to
+/tmp/bpf_arg_parsing_test.XXXXXX and parse_test_list_file() will read
+the data back.  However, after writing data to that file, we forget to
+call fsync() and it's causing testing failure in my laptop.  This patch
+helps fix it by adding the missing fsync() call.
 
-Fixes: 86f69c26113c ("drm/xe: use backup object for pinned save/restore")
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6213
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://lore.kernel.org/r/20251010152457.177884-2-matthew.auld@intel.com
-(cherry picked from commit a10b4a69c7f8f596d2c5218fbe84430734fab3b2)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: 64276f01dce8 ("selftests/bpf: Test_progs can read test lists from file")
+Signed-off-by: Xing Guo <higuoxing@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20251016035330.3217145-1-higuoxing@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo_evict.c | 8 --------
- 1 file changed, 8 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/arg_parsing.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo_evict.c b/drivers/gpu/drm/xe/xe_bo_evict.c
-index d5dbc51e8612d..bc5b4c5fab812 100644
---- a/drivers/gpu/drm/xe/xe_bo_evict.c
-+++ b/drivers/gpu/drm/xe/xe_bo_evict.c
-@@ -182,7 +182,6 @@ int xe_bo_evict_all(struct xe_device *xe)
+diff --git a/tools/testing/selftests/bpf/prog_tests/arg_parsing.c b/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
+index fbf0d9c2f58b3..e27d66b75fb1f 100644
+--- a/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
++++ b/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
+@@ -144,6 +144,9 @@ static void test_parse_test_list_file(void)
+ 	if (!ASSERT_OK(ferror(fp), "prepare tmp"))
+ 		goto out_fclose;
  
- static int xe_bo_restore_and_map_ggtt(struct xe_bo *bo)
- {
--	struct xe_device *xe = xe_bo_device(bo);
- 	int ret;
++	if (!ASSERT_OK(fsync(fileno(fp)), "fsync tmp"))
++		goto out_fclose;
++
+ 	init_test_filter_set(&set);
  
- 	ret = xe_bo_restore_pinned(bo);
-@@ -201,13 +200,6 @@ static int xe_bo_restore_and_map_ggtt(struct xe_bo *bo)
- 		}
- 	}
- 
--	/*
--	 * We expect validate to trigger a move VRAM and our move code
--	 * should setup the iosys map.
--	 */
--	xe_assert(xe, !(bo->flags & XE_BO_FLAG_PINNED_LATE_RESTORE) ||
--		  !iosys_map_is_null(&bo->vmap));
--
- 	return 0;
- }
- 
+ 	if (!ASSERT_OK(parse_test_list_file(tmpfile, &set, true), "parse file"))
 -- 
 2.51.0
 
