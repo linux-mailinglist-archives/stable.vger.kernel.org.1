@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-188613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B06E9BF8818
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7314EBF860D
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 485B75828AA
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D67D63ACB24
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA89E2652AC;
-	Tue, 21 Oct 2025 20:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C1B2749E4;
+	Tue, 21 Oct 2025 19:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XUL74UX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1QLmbFG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68DB258EDF;
-	Tue, 21 Oct 2025 20:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C810C350A39;
+	Tue, 21 Oct 2025 19:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076964; cv=none; b=Ll/yfhgFSRT4Qt6jpv8g4CuDmKQ7zUeiWaIH6lhfhhsCyUI/ITUNrZMpKozlNbFhqxhYPrFAjX8iYv4b2O0YqlWsjBa0Bi4TyIFid8+peDNKMIWt0L7TW+VKzSNr4mgOLm1Kkk+1Z2OODy2UIyEjMypqDav1QVHhR42sm75wKVA=
+	t=1761076549; cv=none; b=kM/DNBHSW2f25MrhIcynEdDLCAXfH+pDSGSNBz8eN1VFhn/eCsdFl1DA0R5OuktypWfBXi4guQb7eQNreOC2iEBT1+gQEHEEPOW8I/4FRvecLD77eiwYGBL8xGGen7bJ5X/Vb5+K7KmUc5k5cDCIALp7UJD25ZSqikI2EHgHQHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076964; c=relaxed/simple;
-	bh=1J7tHA0audNBqoIWuKM9YIoOVt+s5DUN2BG2vLfUeG4=;
+	s=arc-20240116; t=1761076549; c=relaxed/simple;
+	bh=LXsEFORcaMoseHLv3Yaz+qolnAk0GXJK+ITtBjqe+7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aG3feW+kBek1U6TCRMBZh0JBGEcc5CJ48tiQ+ZRIvnuhlrqtj6qANrnVrlLPrXwXIiiJoX7JU4iqoAMRAmWuNVnaz0baQtvqmZtklJnayp2g1e/rFJ6k/hfIHzY4Qm4jLv6oms7bnWEbUBCBpdxTWo3K2mVvMgGuDP1iB0prRgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XUL74UX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0C3C4CEF1;
-	Tue, 21 Oct 2025 20:02:43 +0000 (UTC)
+	 MIME-Version; b=Xk2JnF4CiYDVWqo1xWwDM31mrxndH5pAcjcrZVWg1GX4LqCSVUgaRPmNNVIJO7zaPwfaOeEjX/ZK24a21tkLvT25/Ldfq3Ay+5WwUP/32i3YQzNKHMuoHghankzPcSa/YJ6cBxIwRN+XWGuSdXadda4ip81R/VVJOW4vYINQrqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1QLmbFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5B5C4CEF1;
+	Tue, 21 Oct 2025 19:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076964;
-	bh=1J7tHA0audNBqoIWuKM9YIoOVt+s5DUN2BG2vLfUeG4=;
+	s=korg; t=1761076549;
+	bh=LXsEFORcaMoseHLv3Yaz+qolnAk0GXJK+ITtBjqe+7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0XUL74UX6ZuSa+Zu9Jwud0kZjA0Hk1dS0uLUVyNuZ40CuMcWHS2qdjW6QLMzVi9om
-	 8s3o2JJgJBXrjdUHe3g3r60LRnBOi0vNKvasRR+M6K2snpao6499fjG2LfeLMOvEU1
-	 Csfsu3biqYesMjQm9++ElmBn6AFzYe+vkLLBbrk8=
+	b=l1QLmbFG2E+ZL0AiT4hEbXGGZzy2O5xbotYhPg2fRMkckVQNjmyPY/RguG3MyU46a
+	 d+okXTPqQzDlZHjPmhN1w/eRRB+tESFC3GnoxJbm2Hv6zv1CbM+LDx+NGbFXBgSgJa
+	 LkvRjbHODV9229NZr9/AUY139p57FFgPWMZuz3qI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiang <liqiang01@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Xing Guo <higuoxing@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 091/136] ASoC: amd/sdw_utils: avoid NULL deref when devm_kasprintf() fails
+Subject: [PATCH 6.6 070/105] selftests: arg_parsing: Ensure data is flushed to disk before reading.
 Date: Tue, 21 Oct 2025 21:51:19 +0200
-Message-ID: <20251021195038.149302892@linuxfoundation.org>
+Message-ID: <20251021195023.324951801@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiang <liqiang01@kylinos.cn>
+From: Xing Guo <higuoxing@gmail.com>
 
-[ Upstream commit 5726b68473f7153a7f6294185e5998b7e2a230a2 ]
+[ Upstream commit 0c1999ed33722f85476a248186d6e0eb2bf3dd2a ]
 
-devm_kasprintf() may return NULL on memory allocation failure,
-but the debug message prints cpus->dai_name before checking it.
-Move the dev_dbg() call after the NULL check to prevent potential
-NULL pointer dereference.
+test_parse_test_list_file writes some data to
+/tmp/bpf_arg_parsing_test.XXXXXX and parse_test_list_file() will read
+the data back.  However, after writing data to that file, we forget to
+call fsync() and it's causing testing failure in my laptop.  This patch
+helps fix it by adding the missing fsync() call.
 
-Fixes: cb8ea62e64020 ("ASoC: amd/sdw_utils: add sof based soundwire generic machine driver")
-Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
-Link: https://patch.msgid.link/20251015075530.146851-1-liqiang01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 64276f01dce8 ("selftests/bpf: Test_progs can read test lists from file")
+Signed-off-by: Xing Guo <higuoxing@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20251016035330.3217145-1-higuoxing@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-sdw-sof-mach.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/arg_parsing.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/amd/acp/acp-sdw-sof-mach.c b/sound/soc/amd/acp/acp-sdw-sof-mach.c
-index 99a244f495bd3..876f0b7fcd3de 100644
---- a/sound/soc/amd/acp/acp-sdw-sof-mach.c
-+++ b/sound/soc/amd/acp/acp-sdw-sof-mach.c
-@@ -216,9 +216,9 @@ static int create_sdw_dailink(struct snd_soc_card *card,
- 			cpus->dai_name = devm_kasprintf(dev, GFP_KERNEL,
- 							"SDW%d Pin%d",
- 							link_num, cpu_pin_id);
--			dev_dbg(dev, "cpu->dai_name:%s\n", cpus->dai_name);
- 			if (!cpus->dai_name)
- 				return -ENOMEM;
-+			dev_dbg(dev, "cpu->dai_name:%s\n", cpus->dai_name);
+diff --git a/tools/testing/selftests/bpf/prog_tests/arg_parsing.c b/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
+index fbf0d9c2f58b3..e27d66b75fb1f 100644
+--- a/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
++++ b/tools/testing/selftests/bpf/prog_tests/arg_parsing.c
+@@ -144,6 +144,9 @@ static void test_parse_test_list_file(void)
+ 	if (!ASSERT_OK(ferror(fp), "prepare tmp"))
+ 		goto out_fclose;
  
- 			codec_maps[j].cpu = 0;
- 			codec_maps[j].codec = j;
++	if (!ASSERT_OK(fsync(fileno(fp)), "fsync tmp"))
++		goto out_fclose;
++
+ 	init_test_filter_set(&set);
+ 
+ 	if (!ASSERT_OK(parse_test_list_file(tmpfile, &set, true), "parse file"))
 -- 
 2.51.0
 
