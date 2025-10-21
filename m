@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-188545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1A3BF86F1
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:13 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20FABF85DA
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9E3719C3EB5
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:59:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 929AA4F4B03
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE5F274B2E;
-	Tue, 21 Oct 2025 19:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F357A272E7C;
+	Tue, 21 Oct 2025 19:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2ehkBtd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kzf2NVVU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE205350A2A;
-	Tue, 21 Oct 2025 19:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF75526F292;
+	Tue, 21 Oct 2025 19:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076748; cv=none; b=po0M6daIOx923QN96iO7Z3L3NWDt8tGq4AslHUJ5+6V4obnMCK1K+BiM7mxjPKCNl6lCGKL1ippyTkznnOA/C4Wvc/Dh1SkSevkANYE0g6GfdN7JOiptFZKt39mhcgzaQLoDox4o6pB1pDgf4d/qJEk5gVyl5LrDSol34oU51+4=
+	t=1761076520; cv=none; b=q7oN9aDseNer2cRo1qpX+KPi+jFl2IHnbtI4RrYejLIyIJaLkSYx3Hf4/ERYTDk/EkrdBb6NKGqeg1Wz0V2Xh1zELa53u0oOUlkCgBqqPK20e6hhviV1HDAK4+c/uRoBdOhaJWbb2iJ2UkqywyZ4jnf3qRmCb3rqeshon3y4L9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076748; c=relaxed/simple;
-	bh=toVv56p8Ueg7D1zf4osCvITCaZicFvgmxVYRcG7uzI4=;
+	s=arc-20240116; t=1761076520; c=relaxed/simple;
+	bh=MGjgbC/jFgk9C0CytzjcP/3fSHkPcCb8AjITugdUEUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWtj/G6Oks9pAg/xJyl+nOjuR8ApUB3R0M23KHlysMmewrWzy2e+oKN74bzg8vIhr4IHrKmzusN4aqzrtb8UNCBHT59w0P5cG6z9ForuAdIJ0kFLmDVV/W+UC4tAKKp1Fjb4ig6GTDNe+KVtZb3UmuXPNkxE5JNcLoRUmijah5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2ehkBtd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4789EC4CEF1;
-	Tue, 21 Oct 2025 19:59:07 +0000 (UTC)
+	 MIME-Version; b=rNEOfmwzBQoqlEwCLsj7y/ZAZvdiD0a4VeJSuElz8YGDeAnRiPyWw/bsSE6RPa7MpC6Pl7L1GSJDk8do1ko6cWxYY6m2mlqFYV+JY3EM/mi314+3t9Jo8B+vCn8LyzJ8nSwSX9AouJ+/Ok1Kf9xfYXLRmfdkyTmQ4RZIwjy1x3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kzf2NVVU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC46C4CEF1;
+	Tue, 21 Oct 2025 19:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076747;
-	bh=toVv56p8Ueg7D1zf4osCvITCaZicFvgmxVYRcG7uzI4=;
+	s=korg; t=1761076520;
+	bh=MGjgbC/jFgk9C0CytzjcP/3fSHkPcCb8AjITugdUEUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2ehkBtd1S5zo/6RI0qgmgS4UcKxsz+kEJy8qtobLSbfvDO0MrkYrtfYFmIrSqeP3
-	 1byZGQbwiAv8P7zGATpch90IVKsTBpuZiUl14Ag1jBfopLsZKDh701WbIQBqewx2nk
-	 y0ytaLwME2cB5RZ53CtEmLSyFnEOoFB9nbDHnS8o=
+	b=Kzf2NVVUC0GSe4rFH6KWgX2puuqIQMuz9Kijixf/U3qDjiaIpxY4uCRqzyRwE+DG6
+	 QF7H/0T0b3eHI/0fNpN2PvSBJjtrxBeZmxPh2426fxo75lqKy7cbwqgaleApIa4f8U
+	 UE/DMP7L6cgzjAed0+B6u3v+yD06LUFK9eEgaRRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 6.12 025/136] perf/core: Fix MMAP2 event device with backing files
-Date: Tue, 21 Oct 2025 21:50:13 +0200
-Message-ID: <20251021195036.581007903@linuxfoundation.org>
+	stable@kernel.org,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 005/105] jbd2: ensure that all ongoing I/O complete before freeing blocks
+Date: Tue, 21 Oct 2025 21:50:14 +0200
+Message-ID: <20251021195021.621764081@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit fa4f4bae893fbce8a3edfff1ab7ece0c01dc1328 upstream.
+commit 3c652c3a71de1d30d72dc82c3bead8deb48eb749 upstream.
 
-Some file systems like FUSE-based ones or overlayfs may record the backing
-file in struct vm_area_struct vm_file, instead of the user file that the
-user mmapped.
+When releasing file system metadata blocks in jbd2_journal_forget(), if
+this buffer has not yet been checkpointed, it may have already been
+written back, currently be in the process of being written back, or has
+not yet written back.  jbd2_journal_forget() calls
+jbd2_journal_try_remove_checkpoint() to check the buffer's status and
+add it to the current transaction if it has not been written back. This
+buffer can only be reallocated after the transaction is committed.
 
-That causes perf to misreport the device major/minor numbers of the file
-system of the file, and the generation of the file, and potentially other
-inode details.  There is an existing helper file_user_inode() for that
-situation.
+jbd2_journal_try_remove_checkpoint() attempts to lock the buffer and
+check its dirty status while holding the buffer lock. If the buffer has
+already been written back, everything proceeds normally. However, there
+are two issues. First, the function returns immediately if the buffer is
+locked by the write-back process. It does not wait for the write-back to
+complete. Consequently, until the current transaction is committed and
+the block is reallocated, there is no guarantee that the I/O will
+complete. This means that ongoing I/O could write stale metadata to the
+newly allocated block, potentially corrupting data. Second, the function
+unlocks the buffer as soon as it detects that the buffer is still dirty.
+If a concurrent write-back occurs immediately after this unlocking and
+before clear_buffer_dirty() is called in jbd2_journal_forget(), data
+corruption can theoretically still occur.
 
-Use file_user_inode() instead of file_inode() to get the inode for MMAP2
-events.
+Although these two issues are unlikely to occur in practice since the
+undergoing metadata writeback I/O does not take this long to complete,
+it's better to explicitly ensure that all ongoing I/O operations are
+completed.
 
-Example:
-
-  Setup:
-
-    # cd /root
-    # mkdir test ; cd test ; mkdir lower upper work merged
-    # cp `which cat` lower
-    # mount -t overlay overlay -olowerdir=lower,upperdir=upper,workdir=work merged
-    # perf record -e cycles:u -- /root/test/merged/cat /proc/self/maps
-    ...
-    55b2c91d0000-55b2c926b000 r-xp 00018000 00:1a 3419                       /root/test/merged/cat
-    ...
-    [ perf record: Woken up 1 times to write data ]
-    [ perf record: Captured and wrote 0.004 MB perf.data (5 samples) ]
-    #
-    # stat /root/test/merged/cat
-      File: /root/test/merged/cat
-      Size: 1127792         Blocks: 2208       IO Block: 4096   regular file
-    Device: 0,26    Inode: 3419        Links: 1
-    Access: (0755/-rwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
-    Access: 2025-09-08 12:23:59.453309624 +0000
-    Modify: 2025-09-08 12:23:59.454309624 +0000
-    Change: 2025-09-08 12:23:59.454309624 +0000
-     Birth: 2025-09-08 12:23:59.453309624 +0000
-
-  Before:
-
-    Device reported 00:02 differs from stat output and /proc/self/maps
-
-    # perf script --show-mmap-events | grep /root/test/merged/cat
-             cat     377 [-01]   243.078558: PERF_RECORD_MMAP2 377/377: [0x55b2c91d0000(0x9b000) @ 0x18000 00:02 3419 2068525940]: r-xp /root/test/merged/cat
-
-  After:
-
-    Device reported 00:1a is the same as stat output and /proc/self/maps
-
-    # perf script --show-mmap-events | grep /root/test/merged/cat
-             cat     362 [-01]   127.755167: PERF_RECORD_MMAP2 362/362: [0x55ba6e781000(0x9b000) @ 0x18000 00:1a 3419 0]: r-xp /root/test/merged/cat
-
-With respect to stable kernels, overlayfs mmap function ovl_mmap() was
-added in v4.19 but file_user_inode() was not added until v6.8 and never
-back-ported to stable kernels.  FMODE_BACKING that it depends on was added
-in v6.5.  This issue has gone largely unnoticed, so back-porting before
-v6.8 is probably not worth it, so put 6.8 as the stable kernel prerequisite
-version, although in practice the next long term kernel is 6.12.
-
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Amir Goldstein <amir73il@gmail.com>
-Cc: stable@vger.kernel.org # 6.8
+Fixes: 597599268e3b ("jbd2: discard dirty data when forgetting an un-journalled buffer")
+Cc: stable@kernel.org
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20250916093337.3161016-2-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/jbd2/transaction.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -8997,7 +8997,7 @@ static void perf_event_mmap_event(struct
- 		flags |= MAP_HUGETLB;
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1649,6 +1649,7 @@ int jbd2_journal_forget(handle_t *handle
+ 	int drop_reserve = 0;
+ 	int err = 0;
+ 	int was_modified = 0;
++	int wait_for_writeback = 0;
  
- 	if (file) {
--		struct inode *inode;
-+		const struct inode *inode;
- 		dev_t dev;
- 
- 		buf = kmalloc(PATH_MAX, GFP_KERNEL);
-@@ -9015,7 +9015,7 @@ static void perf_event_mmap_event(struct
- 			name = "//toolong";
- 			goto cpy_name;
+ 	if (is_handle_aborted(handle))
+ 		return -EROFS;
+@@ -1772,18 +1773,22 @@ int jbd2_journal_forget(handle_t *handle
  		}
--		inode = file_inode(vma->vm_file);
-+		inode = file_user_inode(vma->vm_file);
- 		dev = inode->i_sb->s_dev;
- 		ino = inode->i_ino;
- 		gen = inode->i_generation;
+ 
+ 		/*
+-		 * The buffer is still not written to disk, we should
+-		 * attach this buffer to current transaction so that the
+-		 * buffer can be checkpointed only after the current
+-		 * transaction commits.
++		 * The buffer has not yet been written to disk. We should
++		 * either clear the buffer or ensure that the ongoing I/O
++		 * is completed, and attach this buffer to current
++		 * transaction so that the buffer can be checkpointed only
++		 * after the current transaction commits.
+ 		 */
+ 		clear_buffer_dirty(bh);
++		wait_for_writeback = 1;
+ 		__jbd2_journal_file_buffer(jh, transaction, BJ_Forget);
+ 		spin_unlock(&journal->j_list_lock);
+ 	}
+ drop:
+ 	__brelse(bh);
+ 	spin_unlock(&jh->b_state_lock);
++	if (wait_for_writeback)
++		wait_on_buffer(bh);
+ 	jbd2_journal_put_journal_head(jh);
+ 	if (drop_reserve) {
+ 		/* no need to reserve log space for this block -bzzz */
 
 
 
