@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-188432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A63BF854E
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D672BF8746
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00877580237
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:53:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C08C7428337
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1070C2737E7;
-	Tue, 21 Oct 2025 19:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A877274FC1;
+	Tue, 21 Oct 2025 20:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqI2hGU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFg2HE+t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD859274B2A;
-	Tue, 21 Oct 2025 19:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EDC27587E;
+	Tue, 21 Oct 2025 20:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076386; cv=none; b=oUu3eNxTL2l2XaG6UyTZpJi8idU9qCcdsEsSsEn6Y+WTE/wmc4cbP2hLMT0UlfPPku6sJ3u+GvGwd0Kqbec8xgiKBzMkDJ0KmS1jIljViw7eITW8PQDN3kN0VKmQJaXiWSwTE+nxamlWcHvrmQASsXyg5/F1CxFOi2xPG1wdtoY=
+	t=1761076802; cv=none; b=EZ+Plpuqbzpt/jz2GyNG9hJgOphTfpXPrLxtoIUhlJnKBipBuntDTWu8dnoQ7pcnHYJdZITihYHBlIMh7mpZ97rzR40LF1q1X39R6FWkEuifEYhV5LNSSJfP5KS3o2O5cBbFcamyoPDpzBUUxfG+Nj4uDLG6iSCjoj3J8SzpebU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076386; c=relaxed/simple;
-	bh=ALMSmygY5WLndd/HytDf7LXS/kgVfHOKdcY4NsWlpwg=;
+	s=arc-20240116; t=1761076802; c=relaxed/simple;
+	bh=0uujzXi2Wyxvo2GY1tlWZ2hN3KblriNCyFI31hijZOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+hf/GzVZtLXB4f7jzQE5VPHg8neAtNrGmPiLFSQ40Hn6HYde8dKGhNvUD1pV23kWLonaulW9PkIerdrgRjUVoRZfYgfUH2rp1EvX30VgaBx0YteT5zlmELkWiZ//8c4+rMThzgXgvLlSqSwEImSzlSWTTZoMThjzp+qhemv3c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqI2hGU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1407FC4CEF5;
-	Tue, 21 Oct 2025 19:53:05 +0000 (UTC)
+	 MIME-Version; b=Da3F2wqU2V6uFSuXMo8MUsFYiMac0nRbWSL8+WWsNDNga0NG9pAblrp17M/awsVE43m8A7HnHrYsJ1Dkb62COMBvC9VI7ZEGNm9cgHqpfWKbXo9Fgs6EAQ0E9G+GFEzXSZd4cbGIazGONfrD4VtcpYNXzHrL0aTZCrEQ/JJrj/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFg2HE+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1C7C4CEF1;
+	Tue, 21 Oct 2025 20:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076386;
-	bh=ALMSmygY5WLndd/HytDf7LXS/kgVfHOKdcY4NsWlpwg=;
+	s=korg; t=1761076801;
+	bh=0uujzXi2Wyxvo2GY1tlWZ2hN3KblriNCyFI31hijZOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KqI2hGU1yXWdw6rPFs4wlK9WC+usWBUzih0BX6KQ00xotQFIkV4gi10JEBMxF/+oY
-	 6vqCZ2spVQ9UCC+z7Fysd0kSUmIA7sPMdE/of/By2vj1d4FOOXBURzXcofgLOTnsoB
-	 /wKbwADPbf0QHtYoj38BwvwJDWPxgKR9Lz90u92k=
+	b=lFg2HE+tbwKFhAI16YMvVvY9LETZG5h409Dee2YpRMSgx+lNq6sEw9ocqgf0lklwk
+	 R/A3k6GMWenuNCxrzvPhvTdRFx5aiSyNt3AfnW1ig/YJpu76TrF1wIld9PNT7p+xLB
+	 e87wf+jZQMq156/GzvjUJfkMbR0Jd8pErhJOrZM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huang Xiaojia <huangxiaojia2@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	stable@kernel.org,
+	Kuen-Han Tsai <khtsai@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/105] epoll: Remove ep_scan_ready_list() in comments
+Subject: [PATCH 6.12 040/136] usb: gadget: f_rndis: Refactor bind path to use __free()
 Date: Tue, 21 Oct 2025 21:50:28 +0200
-Message-ID: <20251021195021.949558008@linuxfoundation.org>
+Message-ID: <20251021195036.944935213@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,214 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Xiaojia <huangxiaojia2@huawei.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit e6f7958042a7b1dc9a4dfc19fca74217bc0c4865 ]
+[ Upstream commit 08228941436047bdcd35a612c1aec0912a29d8cd ]
 
-Since commit 443f1a042233 ("lift the calls of ep_send_events_proc()
-into the callers"), ep_scan_ready_list() has been removed.
-But there are still several in comments. All of them should
-be replaced with other caller functions.
+After an bind/unbind cycle, the rndis->notify_req is left stale. If a
+subsequent bind fails, the unified error label attempts to free this
+stale request, leading to a NULL pointer dereference when accessing
+ep->ops->free_request.
 
-Signed-off-by: Huang Xiaojia <huangxiaojia2@huawei.com>
-Link: https://lore.kernel.org/r/20240206014353.4191262-1-huangxiaojia2@huawei.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 0c43094f8cc9 ("eventpoll: Replace rwlock with spinlock")
+Refactor the error handling in the bind path to use the __free()
+automatic cleanup mechanism.
+
+Fixes: 45fe3b8e5342 ("usb ethernet gadget: split RNDIS function")
+Cc: stable@kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250916-ready-v1-6-4997bf277548@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916-ready-v1-6-4997bf277548@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/eventpoll.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/function/f_rndis.c |   85 ++++++++++++++--------------------
+ 1 file changed, 35 insertions(+), 50 deletions(-)
 
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -206,7 +206,7 @@ struct eventpoll {
+--- a/drivers/usb/gadget/function/f_rndis.c
++++ b/drivers/usb/gadget/function/f_rndis.c
+@@ -19,6 +19,8 @@
+ 
+ #include <linux/atomic.h>
+ 
++#include <linux/usb/gadget.h>
++
+ #include "u_ether.h"
+ #include "u_ether_configfs.h"
+ #include "u_rndis.h"
+@@ -662,6 +664,8 @@ rndis_bind(struct usb_configuration *c,
+ 	struct usb_ep		*ep;
+ 
+ 	struct f_rndis_opts *rndis_opts;
++	struct usb_os_desc_table        *os_desc_table __free(kfree) = NULL;
++	struct usb_request		*request __free(free_usb_request) = NULL;
+ 
+ 	if (!can_support_rndis(c))
+ 		return -EINVAL;
+@@ -669,12 +673,9 @@ rndis_bind(struct usb_configuration *c,
+ 	rndis_opts = container_of(f->fi, struct f_rndis_opts, func_inst);
+ 
+ 	if (cdev->use_os_string) {
+-		f->os_desc_table = kzalloc(sizeof(*f->os_desc_table),
+-					   GFP_KERNEL);
+-		if (!f->os_desc_table)
++		os_desc_table = kzalloc(sizeof(*os_desc_table), GFP_KERNEL);
++		if (!os_desc_table)
+ 			return -ENOMEM;
+-		f->os_desc_n = 1;
+-		f->os_desc_table[0].os_desc = &rndis_opts->rndis_os_desc;
+ 	}
+ 
+ 	rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
+@@ -692,16 +693,14 @@ rndis_bind(struct usb_configuration *c,
+ 		gether_set_gadget(rndis_opts->net, cdev->gadget);
+ 		status = gether_register_netdev(rndis_opts->net);
+ 		if (status)
+-			goto fail;
++			return status;
+ 		rndis_opts->bound = true;
+ 	}
+ 
+ 	us = usb_gstrings_attach(cdev, rndis_strings,
+ 				 ARRAY_SIZE(rndis_string_defs));
+-	if (IS_ERR(us)) {
+-		status = PTR_ERR(us);
+-		goto fail;
+-	}
++	if (IS_ERR(us))
++		return PTR_ERR(us);
+ 	rndis_control_intf.iInterface = us[0].id;
+ 	rndis_data_intf.iInterface = us[1].id;
+ 	rndis_iad_descriptor.iFunction = us[2].id;
+@@ -709,36 +708,30 @@ rndis_bind(struct usb_configuration *c,
+ 	/* allocate instance-specific interface IDs */
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	rndis->ctrl_id = status;
+ 	rndis_iad_descriptor.bFirstInterface = status;
+ 
+ 	rndis_control_intf.bInterfaceNumber = status;
+ 	rndis_union_desc.bMasterInterface0 = status;
+ 
+-	if (cdev->use_os_string)
+-		f->os_desc_table[0].if_id =
+-			rndis_iad_descriptor.bFirstInterface;
+-
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	rndis->data_id = status;
+ 
+ 	rndis_data_intf.bInterfaceNumber = status;
+ 	rndis_union_desc.bSlaveInterface0 = status;
+ 
+-	status = -ENODEV;
+-
+ 	/* allocate instance-specific endpoints */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_in_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	rndis->port.in_ep = ep;
+ 
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_out_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	rndis->port.out_ep = ep;
+ 
+ 	/* NOTE:  a status/notification endpoint is, strictly speaking,
+@@ -747,21 +740,19 @@ rndis_bind(struct usb_configuration *c,
  	 */
- 	struct epitem *ovflist;
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_notify_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	rndis->notify = ep;
  
--	/* wakeup_source used when ep_scan_ready_list is running */
-+	/* wakeup_source used when ep_send_events or __ep_eventpoll_poll is running */
- 	struct wakeup_source *ws;
+-	status = -ENOMEM;
+-
+ 	/* allocate notification request and buffer */
+-	rndis->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
+-	if (!rndis->notify_req)
+-		goto fail;
+-	rndis->notify_req->buf = kmalloc(STATUS_BYTECOUNT, GFP_KERNEL);
+-	if (!rndis->notify_req->buf)
+-		goto fail;
+-	rndis->notify_req->length = STATUS_BYTECOUNT;
+-	rndis->notify_req->context = rndis;
+-	rndis->notify_req->complete = rndis_response_complete;
++	request = usb_ep_alloc_request(ep, GFP_KERNEL);
++	if (!request)
++		return -ENOMEM;
++	request->buf = kmalloc(STATUS_BYTECOUNT, GFP_KERNEL);
++	if (!request->buf)
++		return -ENOMEM;
++	request->length = STATUS_BYTECOUNT;
++	request->context = rndis;
++	request->complete = rndis_response_complete;
  
- 	/* The user that created the eventpoll descriptor */
-@@ -1190,7 +1190,7 @@ static inline bool chain_epi_lockless(st
-  * This callback takes a read lock in order not to contend with concurrent
-  * events from another file descriptor, thus all modifications to ->rdllist
-  * or ->ovflist are lockless.  Read lock is paired with the write lock from
-- * ep_scan_ready_list(), which stops all list modifications and guarantees
-+ * ep_start/done_scan(), which stops all list modifications and guarantees
-  * that lists state is seen correctly.
-  *
-  * Another thing worth to mention is that ep_poll_callback() can be called
-@@ -1792,7 +1792,7 @@ static int ep_send_events(struct eventpo
- 			 * availability. At this point, no one can insert
- 			 * into ep->rdllist besides us. The epoll_ctl()
- 			 * callers are locked out by
--			 * ep_scan_ready_list() holding "mtx" and the
-+			 * ep_send_events() holding "mtx" and the
- 			 * poll callback will queue them in ep->ovflist.
- 			 */
- 			list_add_tail(&epi->rdllink, &ep->rdllist);
-@@ -1945,7 +1945,7 @@ static int ep_poll(struct eventpoll *ep,
- 		__set_current_state(TASK_INTERRUPTIBLE);
+ 	/* support all relevant hardware speeds... we expect that when
+ 	 * hardware is dual speed, all bulk-capable endpoints work at
+@@ -778,7 +769,7 @@ rndis_bind(struct usb_configuration *c,
+ 	status = usb_assign_descriptors(f, eth_fs_function, eth_hs_function,
+ 			eth_ss_function, eth_ss_function);
+ 	if (status)
+-		goto fail;
++		return status;
  
- 		/*
--		 * Do the final check under the lock. ep_scan_ready_list()
-+		 * Do the final check under the lock. ep_start/done_scan()
- 		 * plays with two lists (->rdllist and ->ovflist) and there
- 		 * is always a race when both lists are empty for short
- 		 * period of time although events are pending, so lock is
+ 	rndis->port.open = rndis_open;
+ 	rndis->port.close = rndis_close;
+@@ -789,9 +780,18 @@ rndis_bind(struct usb_configuration *c,
+ 	if (rndis->manufacturer && rndis->vendorID &&
+ 			rndis_set_param_vendor(rndis->params, rndis->vendorID,
+ 					       rndis->manufacturer)) {
+-		status = -EINVAL;
+-		goto fail_free_descs;
++		usb_free_all_descriptors(f);
++		return -EINVAL;
++	}
++
++	if (cdev->use_os_string) {
++		os_desc_table[0].os_desc = &rndis_opts->rndis_os_desc;
++		os_desc_table[0].if_id = rndis_iad_descriptor.bFirstInterface;
++		f->os_desc_table = no_free_ptr(os_desc_table);
++		f->os_desc_n = 1;
++
+ 	}
++	rndis->notify_req = no_free_ptr(request);
+ 
+ 	/* NOTE:  all that is done without knowing or caring about
+ 	 * the network link ... which is unavailable to this code
+@@ -802,21 +802,6 @@ rndis_bind(struct usb_configuration *c,
+ 			rndis->port.in_ep->name, rndis->port.out_ep->name,
+ 			rndis->notify->name);
+ 	return 0;
+-
+-fail_free_descs:
+-	usb_free_all_descriptors(f);
+-fail:
+-	kfree(f->os_desc_table);
+-	f->os_desc_n = 0;
+-
+-	if (rndis->notify_req) {
+-		kfree(rndis->notify_req->buf);
+-		usb_ep_free_request(rndis->notify, rndis->notify_req);
+-	}
+-
+-	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
+-
+-	return status;
+ }
+ 
+ void rndis_borrow_net(struct usb_function_instance *f, struct net_device *net)
 
 
 
