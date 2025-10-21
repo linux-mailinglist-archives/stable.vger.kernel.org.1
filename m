@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-188486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8061BBF861B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:56:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C1ABF87D0
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072DB19C3B57
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:56:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 535A83BEDC1
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB9E2741A6;
-	Tue, 21 Oct 2025 19:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4341FF7BC;
+	Tue, 21 Oct 2025 20:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgby0rhl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfPHt9eU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992F12737E7;
-	Tue, 21 Oct 2025 19:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42259350A3C;
+	Tue, 21 Oct 2025 20:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076558; cv=none; b=O7+M41YP/RXYmO8iqsEZBSkZO3dtuc+Z/PQBdP3mva9EX3XlM9KwBmbzj9WPbfk/30clM8pLTmakf3vjH4BTqnIzMu20Gyx/ziqjiU2KrCqxTmDNvcsqQu/4E4cS0GX1WCqVvexpu5Nm4cMCmLcWfh3rPUJvHqPEM8WLinw2jKU=
+	t=1761076913; cv=none; b=FYqjZzBM4LOPAvsqkkmgumEFFYquKbRP/MC53F6m017FkvSPW/iZIy35XQUE9pb55sWCNXt6cvQj5YLGZsnUkt1S1z0DsKBGUr7hyE+ORcXGlHMzvwgLfKtjY5eSoa5xau3elgglCH6WJwzc3ksx9joOXb942fXYq7zhf7jI2nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076558; c=relaxed/simple;
-	bh=ExSU1DjHuJzI0UcFDp/bMKnzqO7zbB/dy80FVglzCOk=;
+	s=arc-20240116; t=1761076913; c=relaxed/simple;
+	bh=5t76b2vMIAEidXT+55mV6FsZKWk0zJmnNoIvhxHwPwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izaU5f+2CcrVYWYHf8g+Eb1OVPyWrraw/pnbJxFaDi5k+RLQzd5hbAGuDf+MYQPJUMGgU3KauWglHve1TsawUPAKqfS6wGujcR6qMk7/wNk5vkFeVKxXm0V7jdlnCOx9Lvgfw8ivNg6EjK2XmkodIWB1oo4pkezWpqC6fs5iKOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgby0rhl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A4EC4CEF7;
-	Tue, 21 Oct 2025 19:55:57 +0000 (UTC)
+	 MIME-Version; b=rX6q/vRNjgIjoA9pE+CHseeBYJ7fuG/IZkQqgFg+Pi3GGUDzFZdDqdD3e0D7ZlBxey2TTvZb0Uw5NBdiqaLKK0s8VuzidokZdkSw2UJzvgwLDTYgL68JvMYjNe6kXtMIREMpsFECuplbVXuF+IAZMxz+r3KtddypBs2KCxaUbvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfPHt9eU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D34AC4CEF1;
+	Tue, 21 Oct 2025 20:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076558;
-	bh=ExSU1DjHuJzI0UcFDp/bMKnzqO7zbB/dy80FVglzCOk=;
+	s=korg; t=1761076913;
+	bh=5t76b2vMIAEidXT+55mV6FsZKWk0zJmnNoIvhxHwPwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgby0rhlFU1sWAc3cuWHwPeEVqn9C73CxDhr4capb/5jlXDarKhg8dE6INTIoJLGI
-	 uaXPbm+3jdqV5fGkaqQDJU6vdl3CaLOFwMROtlaneXluyAKsQ4FaRMDgGBt8VxrJt5
-	 2lLpjGt+oXYvP6KbGjNTEjeycSinJMyVEoT8GYas=
+	b=bfPHt9eUIqGX4ATy3b3kWNv3mrkkIm7BlnNnS9VbHn0TrNVXu59rjse7M/GkmUA8t
+	 25YlcnBqbj6USxqJSf0ceM7a5pncjp1/urBbOqgMeMv6QtCCYXk0JeH9KTk0gqGiea
+	 TU1ijq/fmOjVhrM7975Q6C/cDEHL4qiytrJoJhEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Mark Brown <broonie@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/105] ASoC: codecs: Fix gain setting ranges for Renesas IDT821034 codec
+Subject: [PATCH 6.12 076/136] drm/amdgpu: add ip offset support for cyan skillfish
 Date: Tue, 21 Oct 2025 21:51:04 +0200
-Message-ID: <20251021195022.985126114@linuxfoundation.org>
+Message-ID: <20251021195037.799389115@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 6370a996f308ea3276030769b7482b346e7cc7c1 ]
+[ Upstream commit e8529dbc75cab56fc3c57830d0fd48cbd8911e6c ]
 
-The gain ranges specified in Renesas IDT821034 codec documentation
-are [-3dB;+13dB] in the transmit path (ADC) and [-13dB;+3dB] in the
-receive path (DAC). Allthough the registers allow programming values
-outside those ranges, the signal S/N and distorsion are only
-guaranteed in the specified ranges.
+For chips that don't have IP discovery tables.
 
-Set ranges to the specified ones.
-
-Fixes: e51166990e81 ("ASoC: codecs: Add support for the Renesas IDT821034 codec")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://patch.msgid.link/2bd547194f3398e6182f770d7d6be711c702b4b2.1760029099.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 357d90be2c7a ("drm/amdgpu: fix handling of harvesting for ip_discovery firmware")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/idt821034.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/Makefile           |  3 +-
+ .../drm/amd/amdgpu/cyan_skillfish_reg_init.c  | 56 +++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/nv.h               |  1 +
+ 3 files changed, 59 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/gpu/drm/amd/amdgpu/cyan_skillfish_reg_init.c
 
-diff --git a/sound/soc/codecs/idt821034.c b/sound/soc/codecs/idt821034.c
-index 2cc7b9166e695..068a5448e273e 100644
---- a/sound/soc/codecs/idt821034.c
-+++ b/sound/soc/codecs/idt821034.c
-@@ -548,14 +548,14 @@ static int idt821034_kctrl_mute_put(struct snd_kcontrol *kcontrol,
- 	return ret;
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/Makefile b/drivers/gpu/drm/amd/amdgpu/Makefile
+index c7b18c52825d6..784651269ec55 100644
+--- a/drivers/gpu/drm/amd/amdgpu/Makefile
++++ b/drivers/gpu/drm/amd/amdgpu/Makefile
+@@ -83,7 +83,8 @@ amdgpu-y += \
+ 	vega20_reg_init.o nbio_v7_4.o nbio_v2_3.o nv.o arct_reg_init.o mxgpu_nv.o \
+ 	nbio_v7_2.o hdp_v4_0.o hdp_v5_0.o aldebaran_reg_init.o aldebaran.o soc21.o soc24.o \
+ 	sienna_cichlid.o smu_v13_0_10.o nbio_v4_3.o hdp_v6_0.o nbio_v7_7.o hdp_v5_2.o lsdma_v6_0.o \
+-	nbio_v7_9.o aqua_vanjaram.o nbio_v7_11.o lsdma_v7_0.o hdp_v7_0.o nbif_v6_3_1.o
++	nbio_v7_9.o aqua_vanjaram.o nbio_v7_11.o lsdma_v7_0.o hdp_v7_0.o nbif_v6_3_1.o \
++	cyan_skillfish_reg_init.o
  
--static const DECLARE_TLV_DB_LINEAR(idt821034_gain_in, -6520, 1306);
--#define IDT821034_GAIN_IN_MIN_RAW	1 /* -65.20 dB -> 10^(-65.2/20.0) * 1820 = 1 */
--#define IDT821034_GAIN_IN_MAX_RAW	8191 /* 13.06 dB -> 10^(13.06/20.0) * 1820 = 8191 */
-+static const DECLARE_TLV_DB_LINEAR(idt821034_gain_in, -300, 1300);
-+#define IDT821034_GAIN_IN_MIN_RAW	1288 /* -3.0 dB -> 10^(-3.0/20.0) * 1820 = 1288 */
-+#define IDT821034_GAIN_IN_MAX_RAW	8130 /* 13.0 dB -> 10^(13.0/20.0) * 1820 = 8130 */
- #define IDT821034_GAIN_IN_INIT_RAW	1820 /* 0dB -> 10^(0/20) * 1820 = 1820 */
+ # add DF block
+ amdgpu-y += \
+diff --git a/drivers/gpu/drm/amd/amdgpu/cyan_skillfish_reg_init.c b/drivers/gpu/drm/amd/amdgpu/cyan_skillfish_reg_init.c
+new file mode 100644
+index 0000000000000..96616a865aac7
+--- /dev/null
++++ b/drivers/gpu/drm/amd/amdgpu/cyan_skillfish_reg_init.c
+@@ -0,0 +1,56 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright 2018 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ */
++#include "amdgpu.h"
++#include "nv.h"
++
++#include "soc15_common.h"
++#include "soc15_hw_ip.h"
++#include "cyan_skillfish_ip_offset.h"
++
++int cyan_skillfish_reg_base_init(struct amdgpu_device *adev)
++{
++	/* HW has more IP blocks,  only initialized the blocke needed by driver */
++	uint32_t i;
++
++	adev->gfx.xcc_mask = 1;
++	for (i = 0 ; i < MAX_INSTANCE ; ++i) {
++		adev->reg_offset[GC_HWIP][i] = (uint32_t *)(&(GC_BASE.instance[i]));
++		adev->reg_offset[HDP_HWIP][i] = (uint32_t *)(&(HDP_BASE.instance[i]));
++		adev->reg_offset[MMHUB_HWIP][i] = (uint32_t *)(&(MMHUB_BASE.instance[i]));
++		adev->reg_offset[ATHUB_HWIP][i] = (uint32_t *)(&(ATHUB_BASE.instance[i]));
++		adev->reg_offset[NBIO_HWIP][i] = (uint32_t *)(&(NBIO_BASE.instance[i]));
++		adev->reg_offset[MP0_HWIP][i] = (uint32_t *)(&(MP0_BASE.instance[i]));
++		adev->reg_offset[MP1_HWIP][i] = (uint32_t *)(&(MP1_BASE.instance[i]));
++		adev->reg_offset[VCN_HWIP][i] = (uint32_t *)(&(UVD0_BASE.instance[i]));
++		adev->reg_offset[DF_HWIP][i] = (uint32_t *)(&(DF_BASE.instance[i]));
++		adev->reg_offset[DCE_HWIP][i] = (uint32_t *)(&(DMU_BASE.instance[i]));
++		adev->reg_offset[OSSSYS_HWIP][i] = (uint32_t *)(&(OSSSYS_BASE.instance[i]));
++		adev->reg_offset[SDMA0_HWIP][i] = (uint32_t *)(&(GC_BASE.instance[i]));
++		adev->reg_offset[SDMA1_HWIP][i] = (uint32_t *)(&(GC_BASE.instance[i]));
++		adev->reg_offset[SMUIO_HWIP][i] = (uint32_t *)(&(SMUIO_BASE.instance[i]));
++		adev->reg_offset[THM_HWIP][i] = (uint32_t *)(&(THM_BASE.instance[i]));
++		adev->reg_offset[CLK_HWIP][i] = (uint32_t *)(&(CLK_BASE.instance[i]));
++	}
++	return 0;
++}
+diff --git a/drivers/gpu/drm/amd/amdgpu/nv.h b/drivers/gpu/drm/amd/amdgpu/nv.h
+index 83e9782aef39d..8f4817404f10d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/nv.h
++++ b/drivers/gpu/drm/amd/amdgpu/nv.h
+@@ -31,5 +31,6 @@ extern const struct amdgpu_ip_block_version nv_common_ip_block;
+ void nv_grbm_select(struct amdgpu_device *adev,
+ 		    u32 me, u32 pipe, u32 queue, u32 vmid);
+ void nv_set_virt_ops(struct amdgpu_device *adev);
++int cyan_skillfish_reg_base_init(struct amdgpu_device *adev);
  
--static const DECLARE_TLV_DB_LINEAR(idt821034_gain_out, -6798, 1029);
--#define IDT821034_GAIN_OUT_MIN_RAW	1 /* -67.98 dB -> 10^(-67.98/20.0) * 2506 = 1*/
--#define IDT821034_GAIN_OUT_MAX_RAW	8191 /* 10.29 dB -> 10^(10.29/20.0) * 2506 = 8191 */
-+static const DECLARE_TLV_DB_LINEAR(idt821034_gain_out, -1300, 300);
-+#define IDT821034_GAIN_OUT_MIN_RAW	561 /* -13.0 dB -> 10^(-13.0/20.0) * 2506 = 561 */
-+#define IDT821034_GAIN_OUT_MAX_RAW	3540 /* 3.0 dB -> 10^(3.0/20.0) * 2506 = 3540 */
- #define IDT821034_GAIN_OUT_INIT_RAW	2506 /* 0dB -> 10^(0/20) * 2506 = 2506 */
- 
- static const struct snd_kcontrol_new idt821034_controls[] = {
+ #endif
 -- 
 2.51.0
 
