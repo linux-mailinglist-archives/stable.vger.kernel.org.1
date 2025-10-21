@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-188466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16AD6BF85B9
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:59 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF34ABF8779
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:01:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 023FB4F5E9B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AE4E84E703F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69985273D9A;
-	Tue, 21 Oct 2025 19:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DF72620F5;
+	Tue, 21 Oct 2025 20:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uubDZSsK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3qyW3i/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204F2272E7C;
-	Tue, 21 Oct 2025 19:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0658528E;
+	Tue, 21 Oct 2025 20:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076496; cv=none; b=jRBVgweAwtGuo5Ny7t5eLEOM8YqUb2kes0k25MnQX9UuabfY2zV+0Mb5I1pevCvdf5Oaal/fz82QfzHYFabO0jbzCkUQhOrZCECp51DOVeMwmctc+ij5T+9X1jNW/6VSWlQHIDES7/uWd7eZrtRRHJGXJaALNidst54CVE34RuU=
+	t=1761076895; cv=none; b=kWgfaBxSXUhw7y4CBBi6AW+QXmBcX9TvKSvbzzXmmutrOdFNarRAHPMLXjFFK9Adb1+Mkd/ffL+qNSWreAf7EmKtAeRlxmT7cmpsrSs3lOttCmd9zt90rOh9nPwYuClpE4SPLRbNpVh5WPVQ8Ub7MaIJS+Y5lnJde55gCfODHMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076496; c=relaxed/simple;
-	bh=1Fl7qpbFcqcupis5agngzOfYR//B5jI91nEm6FO3jCE=;
+	s=arc-20240116; t=1761076895; c=relaxed/simple;
+	bh=TV3xv+NAvv3cVfZNdmZwD/ZoIxFiTqlxEM+JZdtVwTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IOcXDpX1NmLYDdH2P4WsACn9l9Xo41fP2qbIMtIkT5cHkZ636OzgGX3ujIXq96kE8JtEzqFEqGCoBZsK/jYorKqgRFAE/ZsptdvEvXGCd2PJWX23dqNkMr1VCF8KcXSM/wmrZr6D319FPcIvSUcqr1yM4QCfgmcrgEcoaXrI2lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uubDZSsK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451A3C4CEF1;
-	Tue, 21 Oct 2025 19:54:55 +0000 (UTC)
+	 MIME-Version; b=hWgcFbLxWNpFmRIf4rBNkYsm2waQt2nmRjawiyUM7QqgZ64e6U83LXQ1Um6QQSUsQx4txS0ytQ+VtoA3o8kDv5/h/+KKJj+uIGqsZ5Ky3mZPp88P12XEN60AsWIbAJ9Fcs4gd2u5NZb4VcSKTsCRmwc0+n13AmjPvnQx18X0U/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3qyW3i/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C51C4CEF1;
+	Tue, 21 Oct 2025 20:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076495;
-	bh=1Fl7qpbFcqcupis5agngzOfYR//B5jI91nEm6FO3jCE=;
+	s=korg; t=1761076894;
+	bh=TV3xv+NAvv3cVfZNdmZwD/ZoIxFiTqlxEM+JZdtVwTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uubDZSsKONhCKt/HJTU9YVcDP88VPa/c9X2sAfkJFrQv/soqmAfGEDrCcTBXWJce7
-	 i/gv+yMCWAY4d8/j9nsQ+CjAq8VNkZcm4M5dAEHWyoDKjfcuxXbcsxnHWfegp9RXjU
-	 +97MW8A2ny9oeFEqm7u/SSuuEXMr5lIlpMUOWy3A=
+	b=u3qyW3i/locDH/6kJloRB5E+1QuhW9LdBX8AQDgHeKrtDmbZeXKVIbPK8vR9zOOXj
+	 RWXcTEHKZoJ9FTpyR8eRYlMql34UaiTmwaiLMgYuc8gIq/NTclU57TQUek4sbnEQyq
+	 jnCUJznyyd/3ykLff7eRpQPQQX2nQ8H4+udY62IA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/105] net: usb: lan78xx: Add error handling to lan78xx_init_mac_address
+Subject: [PATCH 6.12 071/136] ASoC: codecs: Fix gain setting ranges for Renesas IDT821034 codec
 Date: Tue, 21 Oct 2025 21:50:59 +0200
-Message-ID: <20251021195022.870635726@linuxfoundation.org>
+Message-ID: <20251021195037.680566241@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 6f31135894ec96481e2bda93a1da70712f5e57c1 ]
+[ Upstream commit 6370a996f308ea3276030769b7482b346e7cc7c1 ]
 
-Convert `lan78xx_init_mac_address` to return error codes and handle
-failures in register read and write operations. Update `lan78xx_reset`
-to check for errors during MAC address initialization and propagate them
-appropriately.
+The gain ranges specified in Renesas IDT821034 codec documentation
+are [-3dB;+13dB] in the transmit path (ADC) and [-13dB;+3dB] in the
+receive path (DAC). Allthough the registers allow programming values
+outside those ranges, the signal S/N and distorsion are only
+guaranteed in the specified ranges.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241209130751.703182-3-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8d93ff40d49d ("net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset")
+Set ranges to the specified ones.
+
+Fixes: e51166990e81 ("ASoC: codecs: Add support for the Renesas IDT821034 codec")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://patch.msgid.link/2bd547194f3398e6182f770d7d6be711c702b4b2.1760029099.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+ sound/soc/codecs/idt821034.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index ec5689cd240aa..712530d6738fa 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1940,13 +1940,19 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
- 	.get_regs	= lan78xx_get_regs,
- };
- 
--static void lan78xx_init_mac_address(struct lan78xx_net *dev)
-+static int lan78xx_init_mac_address(struct lan78xx_net *dev)
- {
- 	u32 addr_lo, addr_hi;
- 	u8 addr[6];
-+	int ret;
-+
-+	ret = lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
-+	if (ret < 0)
-+		return ret;
- 
--	lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
--	lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
-+	ret = lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
-+	if (ret < 0)
-+		return ret;
- 
- 	addr[0] = addr_lo & 0xFF;
- 	addr[1] = (addr_lo >> 8) & 0xFF;
-@@ -1979,14 +1985,26 @@ static void lan78xx_init_mac_address(struct lan78xx_net *dev)
- 			  (addr[2] << 16) | (addr[3] << 24);
- 		addr_hi = addr[4] | (addr[5] << 8);
- 
--		lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
--		lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
-+		ret = lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
--	lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
--	lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
-+	ret = lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
-+	if (ret < 0)
-+		return ret;
- 
- 	eth_hw_addr_set(dev->net, addr);
-+
-+	return 0;
+diff --git a/sound/soc/codecs/idt821034.c b/sound/soc/codecs/idt821034.c
+index cb7a68c799f8f..401d0897b8ab4 100644
+--- a/sound/soc/codecs/idt821034.c
++++ b/sound/soc/codecs/idt821034.c
+@@ -548,14 +548,14 @@ static int idt821034_kctrl_mute_put(struct snd_kcontrol *kcontrol,
+ 	return ret;
  }
  
- /* MDIO read and write wrappers for phylib */
-@@ -2910,7 +2928,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 		}
- 	} while (buf & HW_CFG_LRST_);
+-static const DECLARE_TLV_DB_LINEAR(idt821034_gain_in, -6520, 1306);
+-#define IDT821034_GAIN_IN_MIN_RAW	1 /* -65.20 dB -> 10^(-65.2/20.0) * 1820 = 1 */
+-#define IDT821034_GAIN_IN_MAX_RAW	8191 /* 13.06 dB -> 10^(13.06/20.0) * 1820 = 8191 */
++static const DECLARE_TLV_DB_LINEAR(idt821034_gain_in, -300, 1300);
++#define IDT821034_GAIN_IN_MIN_RAW	1288 /* -3.0 dB -> 10^(-3.0/20.0) * 1820 = 1288 */
++#define IDT821034_GAIN_IN_MAX_RAW	8130 /* 13.0 dB -> 10^(13.0/20.0) * 1820 = 8130 */
+ #define IDT821034_GAIN_IN_INIT_RAW	1820 /* 0dB -> 10^(0/20) * 1820 = 1820 */
  
--	lan78xx_init_mac_address(dev);
-+	ret = lan78xx_init_mac_address(dev);
-+	if (ret < 0)
-+		return ret;
+-static const DECLARE_TLV_DB_LINEAR(idt821034_gain_out, -6798, 1029);
+-#define IDT821034_GAIN_OUT_MIN_RAW	1 /* -67.98 dB -> 10^(-67.98/20.0) * 2506 = 1*/
+-#define IDT821034_GAIN_OUT_MAX_RAW	8191 /* 10.29 dB -> 10^(10.29/20.0) * 2506 = 8191 */
++static const DECLARE_TLV_DB_LINEAR(idt821034_gain_out, -1300, 300);
++#define IDT821034_GAIN_OUT_MIN_RAW	561 /* -13.0 dB -> 10^(-13.0/20.0) * 2506 = 561 */
++#define IDT821034_GAIN_OUT_MAX_RAW	3540 /* 3.0 dB -> 10^(3.0/20.0) * 2506 = 3540 */
+ #define IDT821034_GAIN_OUT_INIT_RAW	2506 /* 0dB -> 10^(0/20) * 2506 = 2506 */
  
- 	/* save DEVID for later usage */
- 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
+ static const struct snd_kcontrol_new idt821034_controls[] = {
 -- 
 2.51.0
 
