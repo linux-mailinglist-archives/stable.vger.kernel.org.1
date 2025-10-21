@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-188787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33EFCBF8A40
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:12:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF2BBF8896
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EDD118A6B5A
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:12:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B2E75839D2
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE2D2773F4;
-	Tue, 21 Oct 2025 20:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7F027BF7C;
+	Tue, 21 Oct 2025 20:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iolnhRfl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crMpGn1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679041A3029;
-	Tue, 21 Oct 2025 20:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF17927CB35;
+	Tue, 21 Oct 2025 20:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077516; cv=none; b=vAV+v8KZOleJmU5303ZcqGSlo2gXECZSXqBonlnJgQw5h/VAlXLfQ6ON4zXMkktQPQYRwO1FcgR7skxkZ1g17AaYUY/PwPInGcD+KqiHX7ilLq/gDcMmeXCx/ezHMo3sk1eWqQyfHhORZRVnYYqcaFO7cZgg54/8SfFxDqmxkwk=
+	t=1761077043; cv=none; b=XWrPFHg80jvKoBKIDMmmV91+/b9nFIksKMuHDeqqs6jP8geO2GtOtw2Cs/Uh3ifpuhbaCzJvGbl6DGPX+8OkqDxBL4g06VUUsEUsm8XfyX9Ng4d4mnqgBXZEkbRNbR53KM3loyFoJB9qhrLuWYhdj4pInWi9pSeJEKW16shct20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077516; c=relaxed/simple;
-	bh=5fKqL36pzUJf0EGpeExgb4DW6diH/+332jE5ypoU5xo=;
+	s=arc-20240116; t=1761077043; c=relaxed/simple;
+	bh=e4uzxxiziBtufe63d8n5NssUDJoRyzQo0g9ZQTlxGT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N02fyB3/+rBz7sK64XwK7QnjudLpdhngBsQ6b9bCBX4nVUjDH2Uj1jrf6fpSIPuNN2LFsJhRb4+aVDVLr910wE2SveWsIPxsWp6aLTDyEq9xy9Ist5ORDW22OsJxOV7ocW1WxhTlBo1nY4oKAsLrHlO/o+jeDLk0PBvo0kZoGfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iolnhRfl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E912BC4CEF1;
-	Tue, 21 Oct 2025 20:11:55 +0000 (UTC)
+	 MIME-Version; b=lX6nxLtqPlf7KQRf1vd8UP15BxVwqSj4OU11FKTJSSw82l/eKvqu0fJSWuQOxAh0u2rPPyszEXQ1Fqrivfu8cpSTZR++SGgnRP3Usj3d4W2H8zpXDMMe13uyMW9kjeOtbAxv0aNStWDwPqY6FBQUY+nwofNe8Eiu3baobFDgs6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crMpGn1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5778CC19423;
+	Tue, 21 Oct 2025 20:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077516;
-	bh=5fKqL36pzUJf0EGpeExgb4DW6diH/+332jE5ypoU5xo=;
+	s=korg; t=1761077043;
+	bh=e4uzxxiziBtufe63d8n5NssUDJoRyzQo0g9ZQTlxGT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iolnhRflNY6Jt5a3tFQCyPcWFaAMM5e5C2O+oCgJz/V0MDKJh8yZ6E61Fi6V+mE6t
-	 JZrcsR/1Y39MJdsB0wRCq3YHMRerdRY9HCh+L+jPlSGCTGZhrmnINUgHXs9ndlESej
-	 IO+Ocvs9MqoivEd7dkhWfiK4MBW1cTBElwIYB3uA=
+	b=crMpGn1Qlt33CMKFPFVKfk9ifF8TyRPqGKSWPQYQ8lR/iDJwEpA4BunSCsEPeCK4I
+	 EeW0l59c92IFxRx7/nPT9aDYJNtsgmD7skj3+UGO2+XcN+RAwy1IXWaVn0VKjmyGgD
+	 wt0nm5/WP0NgcYg7ZQ/vIlh67BJffoaIKKxk5qmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Chris Mason <clm@meta.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 128/159] blk-mq: fix stale tag depth for shared sched tags in blk_mq_update_nr_requests()
-Date: Tue, 21 Oct 2025 21:51:45 +0200
-Message-ID: <20251021195046.229856162@linuxfoundation.org>
+Subject: [PATCH 6.12 118/136] vfs: Dont leak disconnected dentries on umount
+Date: Tue, 21 Oct 2025 21:51:46 +0200
+Message-ID: <20251021195038.808933501@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
-References: <20251021195043.182511864@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit dc96cefef0d3032c69e46a21b345c60e56b18934 ]
+[ Upstream commit 56094ad3eaa21e6621396cc33811d8f72847a834 ]
 
-Commit 7f2799c546db ("blk-mq: cleanup shared tags case in
-blk_mq_update_nr_requests()") moves blk_mq_tag_update_sched_shared_tags()
-before q->nr_requests is updated, however, it's still using the old
-q->nr_requests to resize tag depth.
+When user calls open_by_handle_at() on some inode that is not cached, we
+will create disconnected dentry for it. If such dentry is a directory,
+exportfs_decode_fh_raw() will then try to connect this dentry to the
+dentry tree through reconnect_path(). It may happen for various reasons
+(such as corrupted fs or race with rename) that the call to
+lookup_one_unlocked() in reconnect_one() will fail to find the dentry we
+are trying to reconnect and instead create a new dentry under the
+parent. Now this dentry will not be marked as disconnected although the
+parent still may well be disconnected (at least in case this
+inconsistency happened because the fs is corrupted and .. doesn't point
+to the real parent directory). This creates inconsistency in
+disconnected flags but AFAICS it was mostly harmless. At least until
+commit f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
+which removed adding of most disconnected dentries to sb->s_anon list.
+Thus after this commit cleanup of disconnected dentries implicitely
+relies on the fact that dput() will immediately reclaim such dentries.
+However when some leaf dentry isn't marked as disconnected, as in the
+scenario described above, the reclaim doesn't happen and the dentries
+are "leaked". Memory reclaim can eventually reclaim them but otherwise
+they stay in memory and if umount comes first, we hit infamous "Busy
+inodes after unmount" bug. Make sure all dentries created under a
+disconnected parent are marked as disconnected as well.
 
-Fix this problem by passing in expected new tag depth.
-
-Fixes: 7f2799c546db ("blk-mq: cleanup shared tags case in blk_mq_update_nr_requests()")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reported-by: Chris Mason <clm@meta.com>
-Link: https://lore.kernel.org/linux-block/20251014130507.4187235-2-clm@meta.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com
+Fixes: f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq-sched.c | 2 +-
- block/blk-mq-tag.c   | 5 +++--
- block/blk-mq.c       | 2 +-
- block/blk-mq.h       | 3 ++-
- 4 files changed, 7 insertions(+), 5 deletions(-)
+ fs/dcache.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/block/blk-mq-sched.c b/block/blk-mq-sched.c
-index d06bb137a7437..e0bed16485c34 100644
---- a/block/blk-mq-sched.c
-+++ b/block/blk-mq-sched.c
-@@ -557,7 +557,7 @@ int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e,
- 	if (blk_mq_is_shared_tags(flags)) {
- 		/* Shared tags are stored at index 0 in @et->tags. */
- 		q->sched_shared_tags = et->tags[0];
--		blk_mq_tag_update_sched_shared_tags(q);
-+		blk_mq_tag_update_sched_shared_tags(q, et->nr_requests);
- 	}
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -2486,6 +2486,8 @@ struct dentry *d_alloc_parallel(struct d
+ 	spin_lock(&parent->d_lock);
+ 	new->d_parent = dget_dlock(parent);
+ 	hlist_add_head(&new->d_sib, &parent->d_children);
++	if (parent->d_flags & DCACHE_DISCONNECTED)
++		new->d_flags |= DCACHE_DISCONNECTED;
+ 	spin_unlock(&parent->d_lock);
  
- 	queue_for_each_hw_ctx(q, hctx, i) {
-diff --git a/block/blk-mq-tag.c b/block/blk-mq-tag.c
-index aed84c5d5c2b2..12f48e7a0f774 100644
---- a/block/blk-mq-tag.c
-+++ b/block/blk-mq-tag.c
-@@ -622,10 +622,11 @@ void blk_mq_tag_resize_shared_tags(struct blk_mq_tag_set *set, unsigned int size
- 	sbitmap_queue_resize(&tags->bitmap_tags, size - set->reserved_tags);
- }
- 
--void blk_mq_tag_update_sched_shared_tags(struct request_queue *q)
-+void blk_mq_tag_update_sched_shared_tags(struct request_queue *q,
-+					 unsigned int nr)
- {
- 	sbitmap_queue_resize(&q->sched_shared_tags->bitmap_tags,
--			     q->nr_requests - q->tag_set->reserved_tags);
-+			     nr - q->tag_set->reserved_tags);
- }
- 
- /**
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index f8a8a23b90402..19f62b070ca9d 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -4942,7 +4942,7 @@ struct elevator_tags *blk_mq_update_nr_requests(struct request_queue *q,
- 		 * tags can't grow, see blk_mq_alloc_sched_tags().
- 		 */
- 		if (q->elevator)
--			blk_mq_tag_update_sched_shared_tags(q);
-+			blk_mq_tag_update_sched_shared_tags(q, nr);
- 		else
- 			blk_mq_tag_resize_shared_tags(set, nr);
- 	} else if (!q->elevator) {
-diff --git a/block/blk-mq.h b/block/blk-mq.h
-index 6c9d03625ba12..2fdc8eeb40040 100644
---- a/block/blk-mq.h
-+++ b/block/blk-mq.h
-@@ -188,7 +188,8 @@ int blk_mq_tag_update_depth(struct blk_mq_hw_ctx *hctx,
- 		struct blk_mq_tags **tags, unsigned int depth);
- void blk_mq_tag_resize_shared_tags(struct blk_mq_tag_set *set,
- 		unsigned int size);
--void blk_mq_tag_update_sched_shared_tags(struct request_queue *q);
-+void blk_mq_tag_update_sched_shared_tags(struct request_queue *q,
-+					 unsigned int nr);
- 
- void blk_mq_tag_wakeup_all(struct blk_mq_tags *tags, bool);
- void blk_mq_queue_tag_busy_iter(struct request_queue *q, busy_tag_iter_fn *fn,
--- 
-2.51.0
-
+ retry:
 
 
 
