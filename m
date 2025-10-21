@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-188650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4748BF88BD
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:06:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD6FBF8AB0
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15B95581B00
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA43319C50A4
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577EC27990A;
-	Tue, 21 Oct 2025 20:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC07D27BF7C;
+	Tue, 21 Oct 2025 20:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1ABVvj6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7ABZ8TE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1279527815E;
-	Tue, 21 Oct 2025 20:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6909327B4F5;
+	Tue, 21 Oct 2025 20:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077082; cv=none; b=fsSHLPj4apHu7F0BwSbzaRtJeEfq2rFbPTNTmPzJnWPYqZbotqm8icRqZtU+sILNRFV7X0KmMDD7EHaoxwafdifRwT3m0lJPbpUXKgbk/uN3P8o+LjAD6GxLj00SxmDG2nrIa9i+rCrbRoAioLzz23Ldb8yPM5wACrrJoXTpj08=
+	t=1761077631; cv=none; b=We4+esvSm3bE4eJehw+E0dM0/59laHuxVXs/kAGHsVMbJUfZ6AXgZ6DLGrR0CfmI+4ezHWZaO2rZjwIRnGdZusWkoSUhwxXs+lknKIMxlUdlVpJ2AuRzLEBNsEr3y0tawCeNkWIE5r8PwKY/hFbP2CV/6kjK7lBvNm0gubMvynk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077082; c=relaxed/simple;
-	bh=6YEDFmJNQayL1TWBo39454LEvHaX5RuB68yz+X8sBAI=;
+	s=arc-20240116; t=1761077631; c=relaxed/simple;
+	bh=4oHU5W8+pV06v4ty7bz7xWw35ZBsJdjyR+xAnoHBhyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcswqRV3N0k3RWWUJ7wlSvRhpErIBpPFB0V/Uur4nD5yLjLXVQ5qrvm75ACpOoxTx2YWNwX/RlTQPcpTfP6TAeC1meJTORCrd2oUAs8zbVdSgLDEj/EX+aJw0fiOA0PG3dnSQ8hSy/+O8xvBK45rU821VXTbgZlQlad4Ff7hQhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1ABVvj6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9ADC4CEF1;
-	Tue, 21 Oct 2025 20:04:41 +0000 (UTC)
+	 MIME-Version; b=i5trQbACAfIBukJmD+GB4gFe7WMQzlrd0g0x2RMzzs271dy0sgb0YyKYCqU7j/pHhAq3N9GURh9v8jDL8b5I1M2JtwgqJdWsEYDfdXjbMcR7D9Jm6OGILJj+E4FR2SJppbOcTzPpf7dQVAQTQE88abzdap9MlSD6VOOLm4SdTkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7ABZ8TE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3FB1C4CEF1;
+	Tue, 21 Oct 2025 20:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077081;
-	bh=6YEDFmJNQayL1TWBo39454LEvHaX5RuB68yz+X8sBAI=;
+	s=korg; t=1761077631;
+	bh=4oHU5W8+pV06v4ty7bz7xWw35ZBsJdjyR+xAnoHBhyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1ABVvj6bRdY2ecIyZTcLnRHPodHKLFFusVXppFmqNhSLdpnR1bnUVo70fhzCW2Fo
-	 d0QB/2VD65xGXKaxsR3VX1Z7vuUMPBMX/oaFb9B0m2/XDF/6S6YlGWf8Z9QwSZh3p9
-	 plhpwfDbVEYLlSB7ChTx+pGm/G3S9PZRlc+E38+w=
+	b=k7ABZ8TEluNLRQeksbAIqiStHYwmaVIg/oe0uCnTp4D5cFH9LtKwu812qw7ZShQAl
+	 NqwnMNcEWTWlmJUQ1HiW11ozeQT98nCwPo1PVAq4hIw7bgc0hiw/nK3UMzaL2Kmq9O
+	 pEicF4SalqCPNKPClKfPRayHMpc8A9eN/IScxkfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 129/136] mptcp: Use __sk_dst_get() and dst_dev_rcu() in mptcp_active_enable().
-Date: Tue, 21 Oct 2025 21:51:57 +0200
-Message-ID: <20251021195039.088834210@linuxfoundation.org>
+Subject: [PATCH 6.17 141/159] xfs: rename the old_crc variable in xlog_recover_process
+Date: Tue, 21 Oct 2025 21:51:58 +0200
+Message-ID: <20251021195046.537858737@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
+References: <20251021195043.182511864@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 893c49a78d9f85e4b8081b908fb7c407d018106a ]
+[ Upstream commit 0b737f4ac1d3ec093347241df74bbf5f54a7e16c ]
 
-mptcp_active_enable() is called from subflow_finish_connect(),
-which is icsk->icsk_af_ops->sk_rx_dst_set() and it's not always
-under RCU.
+old_crc is a very misleading name.  Rename it to expected_crc as that
+described the usage much better.
 
-Using sk_dst_get(sk)->dev could trigger UAF.
-
-Let's use __sk_dst_get() and dst_dev_rcu().
-
-Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250916214758.650211-8-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 833d4313bc1e ("mptcp: reset blackhole on success with non-loopback ifaces")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Stable-dep-of: e747883c7d73 ("xfs: fix log CRC mismatches between i386 and other architectures")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/ctrl.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/xfs/xfs_log_recover.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/net/mptcp/ctrl.c
-+++ b/net/mptcp/ctrl.c
-@@ -381,12 +381,15 @@ void mptcp_active_enable(struct sock *sk
- 	struct mptcp_pernet *pernet = mptcp_get_pernet(sock_net(sk));
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2894,20 +2894,19 @@ xlog_recover_process(
+ 	int			pass,
+ 	struct list_head	*buffer_list)
+ {
+-	__le32			old_crc = rhead->h_crc;
+-	__le32			crc;
++	__le32			expected_crc = rhead->h_crc, crc;
  
- 	if (atomic_read(&pernet->active_disable_times)) {
--		struct dst_entry *dst = sk_dst_get(sk);
-+		struct net_device *dev;
-+		struct dst_entry *dst;
+ 	crc = xlog_cksum(log, rhead, dp, be32_to_cpu(rhead->h_len));
  
--		if (dst && dst->dev && (dst->dev->flags & IFF_LOOPBACK))
-+		rcu_read_lock();
-+		dst = __sk_dst_get(sk);
-+		dev = dst ? dst_dev_rcu(dst) : NULL;
-+		if (dev && (dev->flags & IFF_LOOPBACK))
- 			atomic_set(&pernet->active_disable_times, 0);
--
--		dst_release(dst);
-+		rcu_read_unlock();
+ 	/*
+ 	 * Nothing else to do if this is a CRC verification pass. Just return
+ 	 * if this a record with a non-zero crc. Unfortunately, mkfs always
+-	 * sets old_crc to 0 so we must consider this valid even on v5 supers.
+-	 * Otherwise, return EFSBADCRC on failure so the callers up the stack
+-	 * know precisely what failed.
++	 * sets expected_crc to 0 so we must consider this valid even on v5
++	 * supers.  Otherwise, return EFSBADCRC on failure so the callers up the
++	 * stack know precisely what failed.
+ 	 */
+ 	if (pass == XLOG_RECOVER_CRCPASS) {
+-		if (old_crc && crc != old_crc)
++		if (expected_crc && crc != expected_crc)
+ 			return -EFSBADCRC;
+ 		return 0;
  	}
- }
- 
+@@ -2918,11 +2917,11 @@ xlog_recover_process(
+ 	 * zero CRC check prevents warnings from being emitted when upgrading
+ 	 * the kernel from one that does not add CRCs by default.
+ 	 */
+-	if (crc != old_crc) {
+-		if (old_crc || xfs_has_crc(log->l_mp)) {
++	if (crc != expected_crc) {
++		if (expected_crc || xfs_has_crc(log->l_mp)) {
+ 			xfs_alert(log->l_mp,
+ 		"log record CRC mismatch: found 0x%x, expected 0x%x.",
+-					le32_to_cpu(old_crc),
++					le32_to_cpu(expected_crc),
+ 					le32_to_cpu(crc));
+ 			xfs_hex_dump(dp, 32);
+ 		}
 
 
 
