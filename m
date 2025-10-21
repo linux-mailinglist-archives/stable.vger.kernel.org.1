@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-188727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F24CBF89CB
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6103EBF89E9
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:10:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB91C583C97
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:08:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB18358474E
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A212773DA;
-	Tue, 21 Oct 2025 20:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68908277CBD;
+	Tue, 21 Oct 2025 20:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjCw9JhD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGmwK7DW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F023C25A355;
-	Tue, 21 Oct 2025 20:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240C22773F1;
+	Tue, 21 Oct 2025 20:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077326; cv=none; b=nwNBOprAclzOimO/d2mbZ1M2NJNH1kjSfo8Aoxbkr6Z6esFlUHvAD3i/rXi8j7uHXQ73YWZS6nF57lavSvbq8L6aBaens0Yg+5zFZek079t2v6QiuLtQx8E61yL1EunqPvCpnwPg0czAe8aksRZmaeb3/4hXwU+Fe63pV6U/P/I=
+	t=1761077361; cv=none; b=fHoko4tZlMk1U0SwFhf4HOW+KG3e8im0B/BCztbaj0uVgugzq+rk88ML3OQV9Lijqznh0bW5zA2R2WdczW6kaRzkVcKkK8kNhevocv5HZdqz8oChcKo7CjaYaVOJlvebwB2eScC2C2TLfFHMj9D6TXUTyndSt63mAIvXEqzHaaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077326; c=relaxed/simple;
-	bh=5UCq4CeYtDwuj2LxS1TAS6Lly5G9T/wx3mONF5ni+c4=;
+	s=arc-20240116; t=1761077361; c=relaxed/simple;
+	bh=xogXHObruw5FGgFprr1rM6FTNT2FvKOtjKm04d3BbHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N5iXPuhkFeBrXQd2lv5prml/Cjr3zcXzpVGF1v+rnfm0Ef2jhahESLogZ/pd9tYLke9V7SlpWcCRSYvPxLAF1N+uHf1ZbMdLa0MRJ0SVJP4300aMOanUVL58z4gmTO+ttNE36KxXD3W9iPhfi2cmvS9QopbbHefblLCfxbzI7bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjCw9JhD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC49C4CEF1;
-	Tue, 21 Oct 2025 20:08:45 +0000 (UTC)
+	 MIME-Version; b=oTdsrbnmfYfgQ06lKTaiA43JHc5M+f8mnBLXLFFzbbR5TjtvAbbzzyJNxDe0DIVhwJsR9tsqbnL6yWY2bThseb/f3YAoIDzAo6ce6/5HIb9+phAFx4t+7+v1TSAneg2IdB9F5DJ7+yFAtOQk63davLXJ0W3Vg9Pt/7pOe1A56mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGmwK7DW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DC7C4CEF1;
+	Tue, 21 Oct 2025 20:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077325;
-	bh=5UCq4CeYtDwuj2LxS1TAS6Lly5G9T/wx3mONF5ni+c4=;
+	s=korg; t=1761077360;
+	bh=xogXHObruw5FGgFprr1rM6FTNT2FvKOtjKm04d3BbHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YjCw9JhDcwv/8kdiVKrCfz8Om9M2uEaEhQ0pvTVdvfu51+T2dTpNG+zkR0AthXQAD
-	 5d8kVafIACREyIN7QLHKXQldww1h3kEdb1D1GlEHYrMFq/+hOdORmadovPvM8QjE54
-	 a/Pac8dIuLzbL7kjGDuqY0/XtsGdGiID9yHl/5xw=
+	b=BGmwK7DWp3609HZdceW6jHTXqYszxQCRQANEIU0el3SM3NswWBe5ujNyNxwxeSVgd
+	 zqQt5RWDndcIfLccb1/k5o7vvF/ZIG9Nb2yk8V99XC7yc/M80MP+KmsnphQSTOd9rp
+	 szFjiTBnBPYvabglzfkAnW/NVcou54iZUp4XWRx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Graunke <kenneth@whitecape.org>,
-	Maarten Lankhorst <dev@lankhorst.se>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.17 043/159] drm/xe: Increase global invalidation timeout to 1000us
-Date: Tue, 21 Oct 2025 21:50:20 +0200
-Message-ID: <20251021195044.238391832@linuxfoundation.org>
+	Edd Barrett <edd@theunixzoo.co.uk>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 6.17 044/159] perf/core: Fix address filter match with backing files
+Date: Tue, 21 Oct 2025 21:50:21 +0200
+Message-ID: <20251021195044.261503558@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
 References: <20251021195043.182511864@linuxfoundation.org>
@@ -67,47 +67,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kenneth Graunke <kenneth@whitecape.org>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit e5ae8d1eb08a3e27fff4ae264af4c8056d908639 upstream.
+commit ebfc8542ad62d066771e46c8aa30f5624b89cad8 upstream.
 
-The previous timeout of 500us seems to be too small; panning the map in
-the Roll20 VTT in Firefox on a KDE/Wayland desktop reliably triggered
-timeouts within a few seconds of usage, causing the monitor to freeze
-and the following to be printed to dmesg:
+It was reported that Intel PT address filters do not work in Docker
+containers.  That relates to the use of overlayfs.
 
-[Jul30 13:44] xe 0000:03:00.0: [drm] *ERROR* GT0: Global invalidation timeout
-[Jul30 13:48] xe 0000:03:00.0: [drm] *ERROR* [CRTC:82:pipe A] flip_done timed out
+overlayfs records the backing file in struct vm_area_struct vm_file,
+instead of the user file that the user mmapped.  In order for an address
+filter to match, it must compare to the user file inode.  There is an
+existing helper file_user_inode() for that situation.
 
-I haven't hit a single timeout since increasing it to 1000us even after
-several multi-hour testing sessions.
+Use file_user_inode() instead of file_inode() to get the inode for address
+filter matching.
 
-Fixes: 0dd2dd0182bc ("drm/xe: Move DSB l2 flush to a more sensible place")
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5710
-Signed-off-by: Kenneth Graunke <kenneth@whitecape.org>
-Cc: stable@vger.kernel.org
-Cc: Maarten Lankhorst <dev@lankhorst.se>
-Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Link: https://lore.kernel.org/r/20250912223254.147940-1-kenneth@whitecape.org
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 146046907b56578263434107f5a7d5051847c459)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Example:
+
+  Setup:
+
+    # cd /root
+    # mkdir test ; cd test ; mkdir lower upper work merged
+    # cp `which cat` lower
+    # mount -t overlay overlay -olowerdir=lower,upperdir=upper,workdir=work merged
+    # perf record --buildid-mmap -e intel_pt//u --filter 'filter * @ /root/test/merged/cat' -- /root/test/merged/cat /proc/self/maps
+    ...
+    55d61d246000-55d61d2e1000 r-xp 00018000 00:1a 3418                       /root/test/merged/cat
+    ...
+    [ perf record: Woken up 1 times to write data ]
+    [ perf record: Captured and wrote 0.015 MB perf.data ]
+    # perf buildid-cache --add /root/test/merged/cat
+
+  Before:
+
+    Address filter does not match so there are no control flow packets
+
+    # perf script --itrace=e
+    # perf script --itrace=b | wc -l
+    0
+    # perf script -D | grep 'TIP.PGE' | wc -l
+    0
+    #
+
+  After:
+
+    Address filter does match so there are control flow packets
+
+    # perf script --itrace=e
+    # perf script --itrace=b | wc -l
+    235
+    # perf script -D | grep 'TIP.PGE' | wc -l
+    57
+    #
+
+With respect to stable kernels, overlayfs mmap function ovl_mmap() was
+added in v4.19 but file_user_inode() was not added until v6.8 and never
+back-ported to stable kernels.  FMODE_BACKING that it depends on was added
+in v6.5.  This issue has gone largely unnoticed, so back-porting before
+v6.8 is probably not worth it, so put 6.8 as the stable kernel prerequisite
+version, although in practice the next long term kernel is 6.12.
+
+Closes: https://lore.kernel.org/linux-perf-users/aBCwoq7w8ohBRQCh@fremen.lan
+Reported-by: Edd Barrett <edd@theunixzoo.co.uk>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Amir Goldstein <amir73il@gmail.com>
+Cc: stable@vger.kernel.org # 6.8
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_device.c |    2 +-
+ kernel/events/core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -1029,7 +1029,7 @@ void xe_device_l2_flush(struct xe_device
- 	spin_lock(&gt->global_invl_lock);
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -9479,7 +9479,7 @@ static bool perf_addr_filter_match(struc
+ 	if (!filter->path.dentry)
+ 		return false;
  
- 	xe_mmio_write32(&gt->mmio, XE2_GLOBAL_INVAL, 0x1);
--	if (xe_mmio_wait32(&gt->mmio, XE2_GLOBAL_INVAL, 0x1, 0x0, 500, NULL, true))
-+	if (xe_mmio_wait32(&gt->mmio, XE2_GLOBAL_INVAL, 0x1, 0x0, 1000, NULL, true))
- 		xe_gt_err_once(gt, "Global invalidation timeout\n");
+-	if (d_inode(filter->path.dentry) != file_inode(file))
++	if (d_inode(filter->path.dentry) != file_user_inode(file))
+ 		return false;
  
- 	spin_unlock(&gt->global_invl_lock);
+ 	if (filter->offset > offset + size)
 
 
 
