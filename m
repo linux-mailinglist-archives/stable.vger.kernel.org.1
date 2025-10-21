@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-188431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE60BF854D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06EF2BF873D
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90617580162
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:53:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7079D42783B
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7121274FFD;
-	Tue, 21 Oct 2025 19:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA41B274B5C;
+	Tue, 21 Oct 2025 19:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tsg718IK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INxyCplo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737A02737E7;
-	Tue, 21 Oct 2025 19:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932E3246798;
+	Tue, 21 Oct 2025 19:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076386; cv=none; b=oC9xYEC6RmD45Til5oS0YcVAqHREQauPuM9w9EPj9Qf+Bwk7vof4L9+ZFQ1eYKnbuY8+QmZTyEUd1rctD3aZzK5eCqMbIDYDb2UQ6VBO3ITEB1gAkXKuGKGZEKXZBGg0Zo/ImVfOco61/T3/KeaOA5C3MMTLBsRrEiGFdXzOdxs=
+	t=1761076795; cv=none; b=tYg9PvkkFVRSrlzl4JgmIsf+Rz+Lhq4cQalOdULyE3WzeziYLgwVONWtXPAHlbmbPVh/M4bRMhxYJsZ21vvzY2O0trbMpqlK11RgGCFswe/ZSLwOkcfv0pGlV/dG/DG0XTS1eMA1gHvYQkX2GeNNc8O6UsWevTEiCeW6FSOaZCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076386; c=relaxed/simple;
-	bh=oSbWMEAej/lce0E2ZCxHHg0Gs4I2PYms8DmJwzKnsr4=;
+	s=arc-20240116; t=1761076795; c=relaxed/simple;
+	bh=aynywAlu27qWn/YB9ToKqWfCCXFOXt1ZQt4It23XzhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0o1k2w79ChogBYTZ3i0M2vCMHvzBQs9HIFq25xHTj4J2tDkTmAuwzY66PSc56+Uffcgsy+PqmM+CIKHn3/JuOn9Qw9abhC04P96/II4BVi1ltL/24n26IZSJAnDGVRTf2QXXUgARFirfZTWR43+ttX6QepVShxZ78+/4Uk7iBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tsg718IK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E377C113D0;
-	Tue, 21 Oct 2025 19:53:02 +0000 (UTC)
+	 MIME-Version; b=cwo08TN2sKNU6cgLoKZAzWnYPZ7ypwkUJIB2D2d37Kall1yz0VJHg+s4MlfbDD/uy/+VspZq4aKhMHqYLMh6gXNOA0wuosa1kKR1NiYZiW+02yxex6OL3p6V0kBdaYdq6NyBTqWfEyHaFNHRjX5BIDLKIpIjHQrj+mjJCdhyBdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INxyCplo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811A5C4CEF7;
+	Tue, 21 Oct 2025 19:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076382;
-	bh=oSbWMEAej/lce0E2ZCxHHg0Gs4I2PYms8DmJwzKnsr4=;
+	s=korg; t=1761076795;
+	bh=aynywAlu27qWn/YB9ToKqWfCCXFOXt1ZQt4It23XzhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tsg718IKLcPW2ZPz7+dZJZNOMp5QaiPQKHiyN4yqzajd8fOkcOpRGaasfZ/rfSgbm
-	 oQN7Bab0xxbkS9jG6D+aSLp1Al2CwNM8FUWkO3BN0JRPbIP9ZXjiG7icDhpLKFd7EK
-	 xF3bQ+XfXw6NX+MPfZmQv8vXKvM2VQ01KAePuEhA=
+	b=INxyCploUbdraWItbrzZMQObHr2drbrOSuD37VWLadlh3YS53We+nggQ5blPfZdFf
+	 MRHToD51ftggrQIqXlbuhgOs2rMX/iLr1R8eolbGCBfxUbxZAxboFyinAdp7kNW+YF
+	 1qIm17GdMnuoJ9AQSB+4E1g07deq2Vzw0UVxC7kY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenm Chen <zenmchen@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 018/105] Bluetooth: btusb: Add USB ID 2001:332a for D-Link AX9U rev. A1
+	stable@kernel.org,
+	Kuen-Han Tsai <khtsai@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 039/136] usb: gadget: f_ecm: Refactor bind path to use __free()
 Date: Tue, 21 Oct 2025 21:50:27 +0200
-Message-ID: <20251021195021.926301466@linuxfoundation.org>
+Message-ID: <20251021195036.922416050@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 34ecb8760190606472f71ebf4ca2817928ce5d40 upstream.
+[ Upstream commit 42988380ac67c76bb9dff8f77d7ef3eefd50b7b5 ]
 
-Add USB ID 2001:332a for D-Link AX9U rev. A1 which is based on a Realtek
-RTL8851BU chip.
+After an bind/unbind cycle, the ecm->notify_req is left stale. If a
+subsequent bind fails, the unified error label attempts to free this
+stale request, leading to a NULL pointer dereference when accessing
+ep->ops->free_request.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below:
+Refactor the error handling in the bind path to use the __free()
+automatic cleanup mechanism.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2001 ProdID=332a Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=802.11ax WLAN Adapter
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtw89_8851bu_git
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable@vger.kernel.org # 6.12.x
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Fixes: da741b8c56d6 ("usb ethernet gadget: split CDC Ethernet function")
+Cc: stable@kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916-ready-v1-5-4997bf277548@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/function/f_ecm.c |   48 +++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 28 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -511,6 +511,8 @@ static const struct usb_device_id quirks
- 	/* Realtek 8851BU Bluetooth devices */
- 	{ USB_DEVICE(0x3625, 0x010b), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x2001, 0x332a), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+--- a/drivers/usb/gadget/function/f_ecm.c
++++ b/drivers/usb/gadget/function/f_ecm.c
+@@ -8,12 +8,15 @@
  
- 	/* Realtek 8852AE Bluetooth devices */
- 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
+ /* #define VERBOSE_DEBUG */
+ 
++#include <linux/cleanup.h>
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
+ #include <linux/etherdevice.h>
+ 
++#include <linux/usb/gadget.h>
++
+ #include "u_ether.h"
+ #include "u_ether_configfs.h"
+ #include "u_ecm.h"
+@@ -678,6 +681,7 @@ ecm_bind(struct usb_configuration *c, st
+ 	struct usb_ep		*ep;
+ 
+ 	struct f_ecm_opts	*ecm_opts;
++	struct usb_request	*request __free(free_usb_request) = NULL;
+ 
+ 	if (!can_support_ecm(cdev->gadget))
+ 		return -EINVAL;
+@@ -711,7 +715,7 @@ ecm_bind(struct usb_configuration *c, st
+ 	/* allocate instance-specific interface IDs */
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	ecm->ctrl_id = status;
+ 	ecm_iad_descriptor.bFirstInterface = status;
+ 
+@@ -720,24 +724,22 @@ ecm_bind(struct usb_configuration *c, st
+ 
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	ecm->data_id = status;
+ 
+ 	ecm_data_nop_intf.bInterfaceNumber = status;
+ 	ecm_data_intf.bInterfaceNumber = status;
+ 	ecm_union_desc.bSlaveInterface0 = status;
+ 
+-	status = -ENODEV;
+-
+ 	/* allocate instance-specific endpoints */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_in_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ecm->port.in_ep = ep;
+ 
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_out_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ecm->port.out_ep = ep;
+ 
+ 	/* NOTE:  a status/notification endpoint is *OPTIONAL* but we
+@@ -746,20 +748,18 @@ ecm_bind(struct usb_configuration *c, st
+ 	 */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_ecm_notify_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	ecm->notify = ep;
+ 
+-	status = -ENOMEM;
+-
+ 	/* allocate notification request and buffer */
+-	ecm->notify_req = usb_ep_alloc_request(ep, GFP_KERNEL);
+-	if (!ecm->notify_req)
+-		goto fail;
+-	ecm->notify_req->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
+-	if (!ecm->notify_req->buf)
+-		goto fail;
+-	ecm->notify_req->context = ecm;
+-	ecm->notify_req->complete = ecm_notify_complete;
++	request = usb_ep_alloc_request(ep, GFP_KERNEL);
++	if (!request)
++		return -ENOMEM;
++	request->buf = kmalloc(ECM_STATUS_BYTECOUNT, GFP_KERNEL);
++	if (!request->buf)
++		return -ENOMEM;
++	request->context = ecm;
++	request->complete = ecm_notify_complete;
+ 
+ 	/* support all relevant hardware speeds... we expect that when
+ 	 * hardware is dual speed, all bulk-capable endpoints work at
+@@ -778,7 +778,7 @@ ecm_bind(struct usb_configuration *c, st
+ 	status = usb_assign_descriptors(f, ecm_fs_function, ecm_hs_function,
+ 			ecm_ss_function, ecm_ss_function);
+ 	if (status)
+-		goto fail;
++		return status;
+ 
+ 	/* NOTE:  all that is done without knowing or caring about
+ 	 * the network link ... which is unavailable to this code
+@@ -788,20 +788,12 @@ ecm_bind(struct usb_configuration *c, st
+ 	ecm->port.open = ecm_open;
+ 	ecm->port.close = ecm_close;
+ 
++	ecm->notify_req = no_free_ptr(request);
++
+ 	DBG(cdev, "CDC Ethernet: IN/%s OUT/%s NOTIFY/%s\n",
+ 			ecm->port.in_ep->name, ecm->port.out_ep->name,
+ 			ecm->notify->name);
+ 	return 0;
+-
+-fail:
+-	if (ecm->notify_req) {
+-		kfree(ecm->notify_req->buf);
+-		usb_ep_free_request(ecm->notify, ecm->notify_req);
+-	}
+-
+-	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
+-
+-	return status;
+ }
+ 
+ static inline struct f_ecm_opts *to_f_ecm_opts(struct config_item *item)
 
 
 
