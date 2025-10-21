@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-188768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68FBBF8A70
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:12:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E69FBF88DE
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A74C23B26FD
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:10:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97A95581F9B
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234641A3029;
-	Tue, 21 Oct 2025 20:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AB8275B1A;
+	Tue, 21 Oct 2025 20:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cj23OmIh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d50vXyg9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B4E2773F1;
-	Tue, 21 Oct 2025 20:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031A923D7E8;
+	Tue, 21 Oct 2025 20:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077456; cv=none; b=ueowuL0T9ww/JByA3XdSjtYRP5k1C/73RJ+7IhIpbw8rZG9CxrRyIqWlQ7/EknaIQW6KrC74atPHfLmymNe04NJ9e+0kHcbjOSuTjCjz5enQwP76fE93Wx2Jf6oZdbKs4d0yLuhg7jh9Z+GXPg4Du5SipeJ80M/cnX7zkJV6UuY=
+	t=1761077123; cv=none; b=axsW1zOsAfQ7LB4589D/OvdtlLOSm1ENMtqlgBW+JLbp+MR/Ux4N7Kkfir/MpzSfoGd4RAH6gWpM/LZROtQAGaYWDK5vxYjn9rsLsod+i/tkgNRYPBuR1gsPoOwDZKmZHfND+TSQWhWgw1fNLTvADa9XoHQOfJCB+ouHRsB19Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077456; c=relaxed/simple;
-	bh=zUCB2teSguGcry1D0MpUNo8ViGBuqPrHpVtdVfrvZx8=;
+	s=arc-20240116; t=1761077123; c=relaxed/simple;
+	bh=XWePQsprpOMovf/pD7BjjCpZKH/3QT+Gh+grIG8yrOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jn6o4xGlie2tYoNaJrf49dqjqdlaGzsJ/uZCHWUvHQdTnoS4AHqXonveQE3PUiDY87fjlTBqG7Xtd57EVRerXZiUS2T2nrZOKX8y9Q5EcJShqPuzffMZGfSd145n2zP6rxbQpWD06JIdnjx8k0FL6Ed459gCBrCRUAldXNknfaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cj23OmIh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E737C4CEF1;
-	Tue, 21 Oct 2025 20:10:56 +0000 (UTC)
+	 MIME-Version; b=NFjhofg1zBgB0MxF4Jcnvn5X34dYVPTVgPlJN2+uFlOzuJ4Cf1zSBUw5oqT5dnsNDNTA7HAt8sxjCqyA7SIhS6BKTU9Phi0LUh33IVKL5Loxdwnezhks80a9K0AbwspR4j076+m/btkL2UM/ZnmE4zYhgh/xMl++Pwdnq7pmtfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d50vXyg9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC0CC4CEF1;
+	Tue, 21 Oct 2025 20:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077456;
-	bh=zUCB2teSguGcry1D0MpUNo8ViGBuqPrHpVtdVfrvZx8=;
+	s=korg; t=1761077122;
+	bh=XWePQsprpOMovf/pD7BjjCpZKH/3QT+Gh+grIG8yrOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cj23OmIhIxA850CkSRe0wWyfg1xeUTZQIZ/6MFWSQXxS97hSRwAPt/JgeC/2P/duM
-	 B9nTHtsURe580V4m/G9yaBYoCjm3I76noSlCFLRlag23IEJnGvSgJ8yFBY+WluQBVZ
-	 o/n+c3Z31jLOK2H5sACDix1/h35wTz8xcDsuyEIw=
+	b=d50vXyg9SOq0FU8LQGbH7Ely31bJR7Jxt6aK3t2jJ/CweZm8BMxLSA4rlT6tyz3Rl
+	 4/1DeGsjLq6kB2ITWO4P0nZ23viDxXl2OTmw6p0Dr0DvCeZDA1NoXIc1jtB+xsu22+
+	 ollHcYQ2gJFsHZ3GDb30FrII5gdNPTZADhd5OijE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 111/159] drm/amd/powerplay: Fix CIK shutdown temperature
-Date: Tue, 21 Oct 2025 21:51:28 +0200
-Message-ID: <20251021195045.840048660@linuxfoundation.org>
+Subject: [PATCH 6.12 101/136] iio: imu: inv_icm42600: Avoid configuring if already pm_runtime suspended
+Date: Tue, 21 Oct 2025 21:51:29 +0200
+Message-ID: <20251021195038.387478095@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
-References: <20251021195043.182511864@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit 6917112af2ba36c5f19075eb9f2933ffd07e55bf ]
+[ Upstream commit 466f7a2fef2a4e426f809f79845a1ec1aeb558f4 ]
 
-Remove extra multiplication.
+Do as in suspend, skip resume configuration steps if the device is already
+pm_runtime suspended. This avoids reconfiguring a device that is already
+in the correct low-power state and ensures that pm_runtime handles the
+power state transitions properly.
 
-CIK GPUs such as Hawaii appear to use PP_TABLE_V0 in which case
-the shutdown temperature is hardcoded in smu7_init_dpm_defaults
-and is already multiplied by 1000. The value was mistakenly
-multiplied another time by smu7_get_thermal_temperature_range.
-
-Fixes: 4ba082572a42 ("drm/amd/powerplay: export the thermal ranges of VI asics (V2)")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1676
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250901-icm42pmreg-v3-3-ef1336246960@geanix.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ removed apex/wakeup variable declarations ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 8da882c518565..9b28c07282699 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -5444,8 +5444,7 @@ static int smu7_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
- 		thermal_data->max = table_info->cac_dtp_table->usSoftwareShutdownTemp *
- 			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
- 	else if (hwmgr->pp_table_version == PP_TABLE_V0)
--		thermal_data->max = data->thermal_temp_setting.temperature_shutdown *
--			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
-+		thermal_data->max = data->thermal_temp_setting.temperature_shutdown;
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -787,17 +787,15 @@ EXPORT_SYMBOL_NS_GPL(inv_icm42600_core_p
+ static int inv_icm42600_suspend(struct device *dev)
+ {
+ 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
+-	int ret;
++	int ret = 0;
  
- 	thermal_data->sw_ctf_threshold = thermal_data->max;
+ 	mutex_lock(&st->lock);
  
--- 
-2.51.0
-
+ 	st->suspended.gyro = st->conf.gyro.mode;
+ 	st->suspended.accel = st->conf.accel.mode;
+ 	st->suspended.temp = st->conf.temp_en;
+-	if (pm_runtime_suspended(dev)) {
+-		ret = 0;
++	if (pm_runtime_suspended(dev))
+ 		goto out_unlock;
+-	}
+ 
+ 	/* disable FIFO data streaming */
+ 	if (st->fifo.on) {
+@@ -829,10 +827,13 @@ static int inv_icm42600_resume(struct de
+ 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
+ 	struct inv_icm42600_sensor_state *gyro_st = iio_priv(st->indio_gyro);
+ 	struct inv_icm42600_sensor_state *accel_st = iio_priv(st->indio_accel);
+-	int ret;
++	int ret = 0;
+ 
+ 	mutex_lock(&st->lock);
+ 
++	if (pm_runtime_suspended(dev))
++		goto out_unlock;
++
+ 	ret = inv_icm42600_enable_regulator_vddio(st);
+ 	if (ret)
+ 		goto out_unlock;
 
 
 
