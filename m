@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-188646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DAADBF8854
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F857BF86A3
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1176919C4E7E
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:05:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57EAB19A5009
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77ABA275861;
-	Tue, 21 Oct 2025 20:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E77274B2E;
+	Tue, 21 Oct 2025 19:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d73eyf6u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiBkqc1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FAA134AC;
-	Tue, 21 Oct 2025 20:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C431350A2A;
+	Tue, 21 Oct 2025 19:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077069; cv=none; b=VRlJVDl2TKLwmGGbaCcZ70UbTB4Or8DlS13DaME2ibrkyk/Onosv1MhcfhgsRVgPMwstTS8D1Q9Dj55nBJXNsOsMl5KlNv6vY1v8tOfDte+pcw1F3oOTy3loCsAVAR6NzweENi5QOUK6tf6Imm9BuzZXtwD4VjRiRxqc/OfPmJo=
+	t=1761076683; cv=none; b=SshwYyhPjwOPMBVskZadNrvv86eQJyqYUrG5g5RlN9vVwVSn07GfLCWdMTvJCOzDasm1AFabmZrvIDElpGJvlzuPJkmTQqKMGg5l8GVArS7TC7OPdhR/T6m1juA/KbekW3sKWHlcPAQ+mdy7ss+mVcWlmGJY7SsOkoM9U7vP2gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077069; c=relaxed/simple;
-	bh=x03amE9aXISPVOaFqP1vaE638cLgGNjTW0PeAE36wf0=;
+	s=arc-20240116; t=1761076683; c=relaxed/simple;
+	bh=ziSffa68WLNv1HkLFBApbHqhe0LPGV34qwm2TL7A2KQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LA1Iw4esVf2Fq4kJULWbFV1BEgKUGIqZU+fcL8mv3VR+Yjrhpwn2VfwPmUtpULKX4HSMuJC/kAKGVcLOZWDQWLJIHh4bUqnmhjKxbAxti/HaYLRlMZw/ZQyG6tzUnDwxZ9VxnvGQSN1xlrqQdQBn50lQbNB6hh7ERl9RvKoIneM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d73eyf6u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8199C4CEF1;
-	Tue, 21 Oct 2025 20:04:28 +0000 (UTC)
+	 MIME-Version; b=O00zYkDrYIje+u5+a6imnzWlZgq6gobglvUsY8Sin3//+lH0ljYGM5tbL3Ih3i4V0SozOk1l2tDwfE/jyvyZRvhoNSfdoYmncXS6KOfa+Et4jUOJ0eCQUxO5KHBocwhv5xJOlLnTS+Epkbx57uE1JMnV9IJt8JCNnmshqZkRKFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiBkqc1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D40CC4CEF1;
+	Tue, 21 Oct 2025 19:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077069;
-	bh=x03amE9aXISPVOaFqP1vaE638cLgGNjTW0PeAE36wf0=;
+	s=korg; t=1761076682;
+	bh=ziSffa68WLNv1HkLFBApbHqhe0LPGV34qwm2TL7A2KQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d73eyf6u8vV7+Yftux+hjFj170Fz72IMZJDXLVj/qHx9jx2tQTEe4+gL2Jj2LQ5PU
-	 esC+dGmcsvcexjeZActzQcq455DiHkNNr4MbXyWUA7s28/PakJIS40OIAdJKlDpYnP
-	 +XsR2yIiw+oLGkHl12fE/fr4j1bIyCczl6U8Ih8w=
+	b=LiBkqc1g7TGso1nfE76/uA1VhkanL1hynHu75Spw/CwbPBfO6PLmTTCsNGj5jGsIT
+	 uRmauk7D4NvKvSNxw0zr91r73+ihsgm7FMTthFCdWGjfrXEw1PVNXNtxr4RFxjBTlp
+	 0NucrvndA5I8F2EffNVp0v1e2KRSdVFVNwqEU2do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 125/136] net: dst: add four helpers to annotate data-races around dst->dev
+Subject: [PATCH 6.6 104/105] PCI: j721e: Fix programming sequence of "strap" settings
 Date: Tue, 21 Oct 2025 21:51:53 +0200
-Message-ID: <20251021195038.988443676@linuxfoundation.org>
+Message-ID: <20251021195024.123675459@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,137 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 88fe14253e181878c2ddb51a298ae8c468a63010 ]
+[ Upstream commit f842d3313ba179d4005096357289c7ad09cec575 ]
 
-dst->dev is read locklessly in many contexts,
-and written in dst_dev_put().
+The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
+Root-Complex and Endpoint modes of operation. The Glue Layer allows
+"strapping" the Mode of operation of the Controller, the Link Speed
+and the Link Width. This is enabled by programming the "PCIEn_CTRL"
+register (n corresponds to the PCIe instance) within the CTRL_MMR
+memory-mapped register space. The "reset-values" of the registers are
+also different depending on the mode of operation.
 
-Fixing all the races is going to need many changes.
+Since the PCIe Controller latches onto the "reset-values" immediately
+after being powered on, if the Glue Layer configuration is not done while
+the PCIe Controller is off, it will result in the PCIe Controller latching
+onto the wrong "reset-values". In practice, this will show up as a wrong
+representation of the PCIe Controller's capability structures in the PCIe
+Configuration Space. Some such capabilities which are supported by the PCIe
+Controller in the Root-Complex mode but are incorrectly latched onto as
+being unsupported are:
+- Link Bandwidth Notification
+- Alternate Routing ID (ARI) Forwarding Support
+- Next capability offset within Advanced Error Reporting (AER) capability
 
-We probably will have to add full RCU protection.
+Fix this by powering off the PCIe Controller before programming the "strap"
+settings and powering it on after that. The runtime PM APIs namely
+pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
+increment the usage counter respectively, causing GENPD to power off and
+power on the PCIe Controller.
 
-Add three helpers to ease this painful process.
-
-static inline struct net_device *dst_dev(const struct dst_entry *dst)
-{
-       return READ_ONCE(dst->dev);
-}
-
-static inline struct net_device *skb_dst_dev(const struct sk_buff *skb)
-{
-       return dst_dev(skb_dst(skb));
-}
-
-static inline struct net *skb_dst_dev_net(const struct sk_buff *skb)
-{
-       return dev_net(skb_dst_dev(skb));
-}
-
-static inline struct net *skb_dst_dev_net_rcu(const struct sk_buff *skb)
-{
-       return dev_net_rcu(skb_dst_dev(skb));
-}
-
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250630121934.3399505-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 833d4313bc1e ("mptcp: reset blackhole on success with non-loopback ifaces")
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250908120828.1471776-1-s-vadapalli@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/dst.h |   20 ++++++++++++++++++++
- net/core/dst.c    |    4 ++--
- net/core/sock.c   |    8 ++++----
- 3 files changed, 26 insertions(+), 6 deletions(-)
+ drivers/pci/controller/cadence/pci-j721e.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -561,6 +561,26 @@ static inline void skb_dst_update_pmtu_n
- 		dst->ops->update_pmtu(dst, NULL, skb, mtu, false);
- }
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -277,6 +277,25 @@ static int j721e_pcie_ctrl_init(struct j
+ 	if (!ret)
+ 		offset = args.args[0];
  
-+static inline struct net_device *dst_dev(const struct dst_entry *dst)
-+{
-+	return READ_ONCE(dst->dev);
-+}
++	/*
++	 * The PCIe Controller's registers have different "reset-values"
++	 * depending on the "strap" settings programmed into the PCIEn_CTRL
++	 * register within the CTRL_MMR memory-mapped register space.
++	 * The registers latch onto a "reset-value" based on the "strap"
++	 * settings sampled after the PCIe Controller is powered on.
++	 * To ensure that the "reset-values" are sampled accurately, power
++	 * off the PCIe Controller before programming the "strap" settings
++	 * and power it on after that. The runtime PM APIs namely
++	 * pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
++	 * increment the usage counter respectively, causing GENPD to power off
++	 * and power on the PCIe Controller.
++	 */
++	ret = pm_runtime_put_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power off PCIe Controller\n");
++		return ret;
++	}
 +
-+static inline struct net_device *skb_dst_dev(const struct sk_buff *skb)
-+{
-+	return dst_dev(skb_dst(skb));
-+}
-+
-+static inline struct net *skb_dst_dev_net(const struct sk_buff *skb)
-+{
-+	return dev_net(skb_dst_dev(skb));
-+}
-+
-+static inline struct net *skb_dst_dev_net_rcu(const struct sk_buff *skb)
-+{
-+	return dev_net_rcu(skb_dst_dev(skb));
-+}
-+
- struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
- void dst_blackhole_update_pmtu(struct dst_entry *dst, struct sock *sk,
- 			       struct sk_buff *skb, u32 mtu, bool confirm_neigh);
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -150,7 +150,7 @@ void dst_dev_put(struct dst_entry *dst)
- 		dst->ops->ifdown(dst, dev);
- 	WRITE_ONCE(dst->input, dst_discard);
- 	WRITE_ONCE(dst->output, dst_discard_out);
--	dst->dev = blackhole_netdev;
-+	WRITE_ONCE(dst->dev, blackhole_netdev);
- 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
- 			   GFP_ATOMIC);
- }
-@@ -263,7 +263,7 @@ unsigned int dst_blackhole_mtu(const str
- {
- 	unsigned int mtu = dst_metric_raw(dst, RTAX_MTU);
- 
--	return mtu ? : dst->dev->mtu;
-+	return mtu ? : dst_dev(dst)->mtu;
- }
- EXPORT_SYMBOL_GPL(dst_blackhole_mtu);
- 
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2534,8 +2534,8 @@ static u32 sk_dst_gso_max_size(struct so
- 		   !ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr));
- #endif
- 	/* pairs with the WRITE_ONCE() in netif_set_gso(_ipv4)_max_size() */
--	max_size = is_ipv6 ? READ_ONCE(dst->dev->gso_max_size) :
--			READ_ONCE(dst->dev->gso_ipv4_max_size);
-+	max_size = is_ipv6 ? READ_ONCE(dst_dev(dst)->gso_max_size) :
-+			READ_ONCE(dst_dev(dst)->gso_ipv4_max_size);
- 	if (max_size > GSO_LEGACY_MAX_SIZE && !sk_is_tcp(sk))
- 		max_size = GSO_LEGACY_MAX_SIZE;
- 
-@@ -2546,7 +2546,7 @@ void sk_setup_caps(struct sock *sk, stru
- {
- 	u32 max_segs = 1;
- 
--	sk->sk_route_caps = dst->dev->features;
-+	sk->sk_route_caps = dst_dev(dst)->features;
- 	if (sk_is_tcp(sk)) {
- 		struct inet_connection_sock *icsk = inet_csk(sk);
- 
-@@ -2564,7 +2564,7 @@ void sk_setup_caps(struct sock *sk, stru
- 			sk->sk_route_caps |= NETIF_F_SG | NETIF_F_HW_CSUM;
- 			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dst);
- 			/* pairs with the WRITE_ONCE() in netif_set_gso_max_segs() */
--			max_segs = max_t(u32, READ_ONCE(dst->dev->gso_max_segs), 1);
-+			max_segs = max_t(u32, READ_ONCE(dst_dev(dst)->gso_max_segs), 1);
- 		}
+ 	ret = j721e_pcie_set_mode(pcie, syscon, offset);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to set pci mode\n");
+@@ -295,6 +314,12 @@ static int j721e_pcie_ctrl_init(struct j
+ 		return ret;
  	}
- 	sk->sk_gso_max_segs = max_segs;
+ 
++	ret = pm_runtime_get_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power on PCIe Controller\n");
++		return ret;
++	}
++
+ 	/* Enable ACSPCIE refclk output if the optional property exists */
+ 	syscon = syscon_regmap_lookup_by_phandle_optional(node,
+ 						"ti,syscon-acspcie-proxy-ctrl");
 
 
 
