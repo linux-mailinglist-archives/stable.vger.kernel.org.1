@@ -1,109 +1,175 @@
-Return-Path: <stable+bounces-188838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2B5BF8ECA
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 23:19:50 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36249BF8EF4
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 23:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 485074E5AB6
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:19:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 09F0A4E704F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0956277011;
-	Tue, 21 Oct 2025 21:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE7528A1CC;
+	Tue, 21 Oct 2025 21:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTdZ9btv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rYILZj0z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC9A27FB2D
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 21:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A141F1932;
+	Tue, 21 Oct 2025 21:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761081586; cv=none; b=NgxnC0ph96gEt1MGUomZ1dRJqhToR0LX+oevVSMg/Sab1T5HFTZXKUiVuvv0qX9N9zPV7uOFTF8G7Q+xZZhpARD/92iZeQR7kTuweS8WY1RnCrq2RCUe1oJiisZjJMiaUw7NlOowquZ3a/mPCPk4iJ5YAiQqPTDeuLWSE/blaqc=
+	t=1761082085; cv=none; b=Ruj5CVNc0B25J/ap3lr21vKV4aBM/4lL3IcdvAfRssNxUz/9DyA/dfgt8M6Pp0XQFez0N3gYAQblmHgwRa+myhV14vS+ahYtmg2AtzAxis39Aupt5ZzUsLVLLc+BjiVbil9r24In2c2kYu6QRuy1oCINxQ0oMAYnyZ6hk/pOihw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761081586; c=relaxed/simple;
-	bh=DUS95MhFSqfsdvk2fUcY3ixxEHwgfQrCz8w8n29QEfs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=V1HXPM5Y/1bOku86QoV3C74EU/aqnm93f1skNW+i/n6WJa4IGjHWWVHJnHaVNQ2sOWdj05bCrG38LzE93TrrLRg9QPWXuCIv2ojVf7mmKRTFk1DeadzZcg8kloXWCmkNTcBdLCw/l0d6+PinPmQ5y944NfhUViCsB0ZXV1ez71A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTdZ9btv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF1AC4CEF1;
-	Tue, 21 Oct 2025 21:19:45 +0000 (UTC)
+	s=arc-20240116; t=1761082085; c=relaxed/simple;
+	bh=7DJTlR2G0EM6flcfPIzx+BstQxm35mBy6ZxDp8G+Ikw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=aF65CXtw8jmPPXfICvBqL9jveBEWVSpYQMLDAaSWk6x62K6i79PKMyuIy/3jO6kxhW8fgtryN9iRisWxZgst8MVtiIEfJsvySd1DRi/lnfAx9IX4r2axCqTTB3/y6NzezBv5i4E96GtHguD7Mh/Uxnyxsn6d9Q4AFs9EVa47fis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rYILZj0z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FFFC4CEF1;
+	Tue, 21 Oct 2025 21:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761081586;
-	bh=DUS95MhFSqfsdvk2fUcY3ixxEHwgfQrCz8w8n29QEfs=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=eTdZ9btvxS4QJHr7TjvRd0Vm4lCmPKcu/rc8bPOxeONC63ZrZcJ3No7yXgdjriXz5
-	 wk+8fR4xvW1pH1Yd1Ib0H+07TXY3w4SBBRoNHWWXcRNxV/jeHFS5J7g7DfCZgvvda2
-	 mp9YPM1aG0Twr9OES5OR7OODFYvDxC9uh6W5e4cZACDnAgmtIpmWrdtz95uDfF+Jwa
-	 5wWM5LhyDc8ie43aLwNmGUHttMghPVaHfWxoH0kB8tcR3N0CfrBTR+kJuUuvPJCxqa
-	 epgzYNDKFGPHN7dvQXLNwTjEJtXuFaQcUmsU9yqXG7c+XujOn/wTkS+oQl11Rlmaq6
-	 MKvUiQu8QgIug==
-Message-ID: <1f15260b-684e-4b8c-807f-244bbfd31f1c@kernel.org>
-Date: Tue, 21 Oct 2025 16:19:44 -0500
+	s=k20201202; t=1761082082;
+	bh=7DJTlR2G0EM6flcfPIzx+BstQxm35mBy6ZxDp8G+Ikw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=rYILZj0zajYYKNolxEYq945LMlng3mB6nL71U4ToThg2FGUKoR/mjJwlZOLQXeFBV
+	 dAD1ksrur2INevocfXapVPZ+taCoP9FJqSKNNtQq4cg74wPTjTJ1q+PJEVSkmwgZBu
+	 bt98hvQr3fvkgAIocQl4fkv1P7hsuRRgUJw9otfglMOq3zG3XbTVVamxREIn3QzDtY
+	 JmN7OsIYBhI843iNNmUx+bZog6s4+LTknYMXUCtpobN05nu5jUoTCR2se5UaabtnU1
+	 02ddpK9/LNi5FsZG+Job33luBQkvd1uSQDuKSWFAVVKx2jyrHGEQVwcIBa7OiHzDe7
+	 qC9/yZ+QtLzzQ==
+Date: Tue, 21 Oct 2025 16:28:01 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Bandi, Ravi Kumar" <ravib@amazon.com>
+Cc: "mani@kernel.org" <mani@kernel.org>,
+	"thippeswamy.havalige@amd.com" <thippeswamy.havalige@amd.com>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"michal.simek@amd.com" <michal.simek@amd.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Stefan Roese <stefan.roese@mailbox.org>,
+	Sean Anderson <sean.anderson@linux.dev>
+Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+Message-ID: <20251021212801.GA1224310@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "PM: hibernate: Add pm_hibernation_mode_is_suspend()" has
- been added to the 6.17-stable tree
-To: Pascal Ernster <git@hardfalcon.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- Sasha Levin <sashal@kernel.org>
-References: <2025102032-crescent-acuteness-5060 () gregkh>
- <2745b827-b831-4964-8fc5-368f7446d73e@hardfalcon.net>
- <8c4d1326-512c-4b98-bac0-aa207b54aa2a@kernel.org>
- <19c7ba58-7300-4e10-bd81-367354f826db@hardfalcon.net>
-Content-Language: en-US
-From: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-In-Reply-To: <19c7ba58-7300-4e10-bd81-367354f826db@hardfalcon.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <467D7D30-DC05-4612-87BA-7E980A9C0A4A@amazon.com>
 
+On Tue, Oct 21, 2025 at 08:55:41PM +0000, Bandi, Ravi Kumar wrote:
+> > On Tue, Oct 21, 2025 at 05:46:17PM +0000, Bandi, Ravi Kumar wrote:
+> >>> On Oct 21, 2025, at 10:23 AM, Bjorn Helgaas <helgaas@kernel.org> wrote:
+> >>> On Sat, Sep 20, 2025 at 10:52:32PM +0000, Ravi Kumar Bandi wrote:
+> >>>> The pcie-xilinx-dma-pl driver does not enable INTx interrupts
+> >>>> after initializing the port, preventing INTx interrupts from
+> >>>> PCIe endpoints from flowing through the Xilinx XDMA root port
+> >>>> bridge. This issue affects kernel 6.6.0 and later versions.
+> >>>> 
+> >>>> This patch allows INTx interrupts generated by PCIe endpoints
+> >>>> to flow through the root port. Tested the fix on a board with
+> >>>> two endpoints generating INTx interrupts. Interrupts are
+> >>>> properly detected and serviced. The /proc/interrupts output
+> >>>> shows:
+> >>>> 
+> >>>> [...]
+> >>>> 32:        320          0  pl_dma:RC-Event  16 Level     400000000.axi-pcie, azdrv
+> >>>> 52:        470          0  pl_dma:RC-Event  16 Level     500000000.axi-pcie, azdrv
+> >>>> [...]
+> >>>> 
+> >>>> Changes since v1::
+> >>>> - Fixed commit message per reviewer's comments
+> >>>> 
+> >>>> Fixes: 8d786149d78c ("PCI: xilinx-xdma: Add Xilinx XDMA Root Port driver")
+> >>>> Cc: stable@vger.kernel.org
+> >>>> Signed-off-by: Ravi Kumar Bandi <ravib@amazon.com>
+> >>> 
+> >>> Hi Ravi, obviously you tested this, but I don't know how to reconcile
+> >>> this with Stefan's INTx fix at
+> >>> https://lore.kernel.org/r/20251021154322.973640-1-stefan.roese@mailbox.org
+> >>> 
+> >>> Does Stefan's fix need to be squashed into this patch?
+> >> 
+> >> Sure, we can squash Stefan’s fix into this.
+> > 
+> > I know we *can* squash them.
+> > 
+> > I want to know why things worked for you and Stefan when they
+> > *weren't* squashed:
+> > 
+> >  - Why did INTx work for you even without Stefan's patch.  Did you
+> >    get INTx interrupts but not the right ones, e.g., did the device
+> >    signal INTA but it was received as INTB?
+> 
+> I saw that interrupts were being generated by the endpoint device,
+> but I didn’t specifically check if they were correctly translated in
+> the controller. I noticed that the new driver wasn't explicitly
+> enabling the interrupts, so my first approach was to enable them,
+> which helped the interrupts flow through.
 
+OK, I'll assume the interrupts happened but the driver might not have
+been able to handle them correctly, e.g., it was prepared for INTA but
+got INTB or similar.
 
-On 10/21/2025 4:08 PM, Pascal Ernster wrote:
-> [2025-10-21 22:45] Mario Limonciello (AMD) (kernel.org):
->> Are you cleaning your tree between builds?
+> >  - Why did Stefan's patch work for him even without your patch.  How
+> >    could Stefan's INTx work without the CSR writes to enable
+> >    interrupts?
 > 
-> 
-> Yes.
-> 
-> I'm building custom kernel packages in a clean chroot for my private package repo. The kernel config and the PKGBUILD can be found here:
-> 
-> https://remotehost.online/linux-6.17.4/debug2/config
-> https://remotehost.online/linux-6.17.4/debug2/PKGBUILD
-> 
-> Here's a tarball that contains the PKGBUILD, the config, and all source files that I used:
-> 
-> https://remotehost.online/linux-6.17.4/debug2/linux-hardened-6.17.4.hardened0-0.src.tar.zst
-> 
-> Here's a log of stdout and stderr of the build process:
-> 
-> https://remotehost.online/linux-6.17.4/debug2/stdout_stderr_combined.log
-> 
-> 
-> Here's a fixed PKGBUILD that I used successfully to build my kernel packages:
-> 
-> https://remotehost.online/linux-6.17.4/debug2/PKGBUILD.fixed
-> 
-> The only difference is that I've commented out the two patches from your patch set, and removed the corresponding sha256 sums.
-> 
-> 
-> Regards
-> Pascal
+> I'm not entirely sure if there are any other dependencies in the
+> FPGA bitstream. I'll investigate further and get back to you.
 
-It looks to me that you have CONFIG_HIBERNATE_CALLBACKS set but not 
-CONFIG_HIBERNATION set.
+Stefan clarified in a private message that he had applied your patch
+first, so this mystery is solved.
 
-How does this happen?  HIBERNATE_CALLBACKS is hidden, and it's only 
-selected by CONFIG_HIBERNATE.
+> >  - Why you mentioned "kernel 6.6.0 and later versions."
+> >  8d786149d78c appeared in v6.7, so why would v6.6.0 would be
+> >  affected?
+> 
+> Apologies for not clearly mentioning the version earlier. This is
+> from the linux-xlnx tree on the xlnx_rebase_v6.6 branch, which
+> includes the new Xilinx root port driver with QDMA support:
+> https://github.com/Xilinx/linux-xlnx/blob/xlnx_rebase_v6.6_LTS/drivers/pci/controller/pcie-xilinx-dma-pl.c
+> 
+> In earlier versions, the driver was:
+> https://github.com/Xilinx/linux-xlnx/blob/xlnx_rebase_v6.1_LTS_2023.1_update/drivers/pci/controller/pcie-xdma-pl.c
+> This older driver had no issues with interrupts.
+> 
+> The new driver introduced in v6.7 and later is a rewrite of the old
+> one, now with QDMA support, which has issues with INTx interrupts.
 
-The fix for now for you is to either turn off CONFIG_HIBERNATE_CALLBACKS 
-or turn on CONFIG_HIBERNATION.
+OK, this sounds like out-of-tree history that is not relevant in the
+mainline kernel, so Mani did the right thing in omitting it.
+
+I think the best thing to do is to squash Stefan's patch into this one
+so we end up with a single patch that makes INTx work correctly.
+
+Ravi and Stefan, does that seem OK to you?
+
+> >>>> +++ b/drivers/pci/controller/pcie-xilinx-dma-pl.c
+> >>>> @@ -659,6 +659,12 @@ static int xilinx_pl_dma_pcie_setup_irq(struct pl_dma_pcie *port)
+> >>>>             return err;
+> >>>>     }
+> >>>> 
+> >>>> +     /* Enable interrupts */
+> >>>> +     pcie_write(port, XILINX_PCIE_DMA_IMR_ALL_MASK,
+> >>>> +                XILINX_PCIE_DMA_REG_IMR);
+> >>>> +     pcie_write(port, XILINX_PCIE_DMA_IDRN_MASK,
+> >>>> +                XILINX_PCIE_DMA_REG_IDRN_MASK);
+> >>>> +
+> >>>>     return 0;
+> >>>> }
+> 
 
