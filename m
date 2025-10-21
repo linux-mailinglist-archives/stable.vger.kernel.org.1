@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-188474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20FABF85DA
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E9CBF86F4
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 929AA4F4B03
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDCD419C3E6C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F357A272E7C;
-	Tue, 21 Oct 2025 19:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566D7274B44;
+	Tue, 21 Oct 2025 19:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kzf2NVVU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+T40p2L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF75526F292;
-	Tue, 21 Oct 2025 19:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13161274652;
+	Tue, 21 Oct 2025 19:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076520; cv=none; b=q7oN9aDseNer2cRo1qpX+KPi+jFl2IHnbtI4RrYejLIyIJaLkSYx3Hf4/ERYTDk/EkrdBb6NKGqeg1Wz0V2Xh1zELa53u0oOUlkCgBqqPK20e6hhviV1HDAK4+c/uRoBdOhaJWbb2iJ2UkqywyZ4jnf3qRmCb3rqeshon3y4L9E=
+	t=1761076751; cv=none; b=cM2kKUUdQ0GbwmXic3pifqNQylla1qds2ERCMCXh5fCy+zZOmCou6LgColU4ETHFCiGotdyJmJrY/qGJro0w96i/25xfmzYoG5dOQzETbc+xddoOguwRjWfPa0+1NsRxUn70fbBMFTi9CGIoVd7Iz0Qa4kZ6RKURSsUV4PC6FAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076520; c=relaxed/simple;
-	bh=MGjgbC/jFgk9C0CytzjcP/3fSHkPcCb8AjITugdUEUU=;
+	s=arc-20240116; t=1761076751; c=relaxed/simple;
+	bh=a9nXNNSeRoqS8OLH0Ow2TVGw4pforG2OWKOZFdwFI/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNEOfmwzBQoqlEwCLsj7y/ZAZvdiD0a4VeJSuElz8YGDeAnRiPyWw/bsSE6RPa7MpC6Pl7L1GSJDk8do1ko6cWxYY6m2mlqFYV+JY3EM/mi314+3t9Jo8B+vCn8LyzJ8nSwSX9AouJ+/Ok1Kf9xfYXLRmfdkyTmQ4RZIwjy1x3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kzf2NVVU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC46C4CEF1;
-	Tue, 21 Oct 2025 19:55:20 +0000 (UTC)
+	 MIME-Version; b=N1ALA3RVTh45Xfq7g8nEbta6VzWvI2LAFjlt0vTR9hbNyNHxFq204WWBUd0+8bDM3eeBEVLiAEGWMQUoFgOUlTOaddGu8kTs7Ix+Yyaj0hPfKLhbEqi5tQGhh9L7btJZGL4ofJ+otSpwG7XAbU7AVr+cJCNnU9nk+2ojfBlzEQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+T40p2L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AAAC4AF09;
+	Tue, 21 Oct 2025 19:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076520;
-	bh=MGjgbC/jFgk9C0CytzjcP/3fSHkPcCb8AjITugdUEUU=;
+	s=korg; t=1761076750;
+	bh=a9nXNNSeRoqS8OLH0Ow2TVGw4pforG2OWKOZFdwFI/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kzf2NVVUC0GSe4rFH6KWgX2puuqIQMuz9Kijixf/U3qDjiaIpxY4uCRqzyRwE+DG6
-	 QF7H/0T0b3eHI/0fNpN2PvSBJjtrxBeZmxPh2426fxo75lqKy7cbwqgaleApIa4f8U
-	 UE/DMP7L6cgzjAed0+B6u3v+yD06LUFK9eEgaRRY=
+	b=k+T40p2LbLryz0lg+Tvnzyrh0E4BJf2GBXqxVi8xZGCC4vCujLaVUWCAGzRZ1ZJvK
+	 +uMRr1QFgM8WTDwqUCKhn04RCc+FbQU+y9rkW/MwSB/4pLJ0GRrlckZzqaKoG3weWO
+	 0DpwGHcSw8MjEM/1EKTY8Ojy43gGdPqfSuqHYyF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 005/105] jbd2: ensure that all ongoing I/O complete before freeing blocks
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Adrian Yip <adrian.ytw@gmail.com>
+Subject: [PATCH 6.12 026/136] drm/amd: Check whether secure display TA loaded successfully
 Date: Tue, 21 Oct 2025 21:50:14 +0200
-Message-ID: <20251021195021.621764081@linuxfoundation.org>
+Message-ID: <20251021195036.605136873@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 3c652c3a71de1d30d72dc82c3bead8deb48eb749 upstream.
+commit c760bcda83571e07b72c10d9da175db5051ed971 upstream.
 
-When releasing file system metadata blocks in jbd2_journal_forget(), if
-this buffer has not yet been checkpointed, it may have already been
-written back, currently be in the process of being written back, or has
-not yet written back.  jbd2_journal_forget() calls
-jbd2_journal_try_remove_checkpoint() to check the buffer's status and
-add it to the current transaction if it has not been written back. This
-buffer can only be reallocated after the transaction is committed.
+[Why]
+Not all renoir hardware supports secure display.  If the TA is present
+but the feature isn't supported it will fail to load or send commands.
+This shows ERR messages to the user that make it seems like there is
+a problem.
 
-jbd2_journal_try_remove_checkpoint() attempts to lock the buffer and
-check its dirty status while holding the buffer lock. If the buffer has
-already been written back, everything proceeds normally. However, there
-are two issues. First, the function returns immediately if the buffer is
-locked by the write-back process. It does not wait for the write-back to
-complete. Consequently, until the current transaction is committed and
-the block is reallocated, there is no guarantee that the I/O will
-complete. This means that ongoing I/O could write stale metadata to the
-newly allocated block, potentially corrupting data. Second, the function
-unlocks the buffer as soon as it detects that the buffer is still dirty.
-If a concurrent write-back occurs immediately after this unlocking and
-before clear_buffer_dirty() is called in jbd2_journal_forget(), data
-corruption can theoretically still occur.
+[How]
+Check the resp_status of the context to see if there was an error
+before trying to send any secure display commands.
 
-Although these two issues are unlikely to occur in practice since the
-undergoing metadata writeback I/O does not take this long to complete,
-it's better to explicitly ensure that all ongoing I/O operations are
-completed.
-
-Fixes: 597599268e3b ("jbd2: discard dirty data when forgetting an un-journalled buffer")
-Cc: stable@kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20250916093337.3161016-2-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1415
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Adrian Yip <adrian.ytw@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/transaction.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -1649,6 +1649,7 @@ int jbd2_journal_forget(handle_t *handle
- 	int drop_reserve = 0;
- 	int err = 0;
- 	int was_modified = 0;
-+	int wait_for_writeback = 0;
- 
- 	if (is_handle_aborted(handle))
- 		return -EROFS;
-@@ -1772,18 +1773,22 @@ int jbd2_journal_forget(handle_t *handle
- 		}
- 
- 		/*
--		 * The buffer is still not written to disk, we should
--		 * attach this buffer to current transaction so that the
--		 * buffer can be checkpointed only after the current
--		 * transaction commits.
-+		 * The buffer has not yet been written to disk. We should
-+		 * either clear the buffer or ensure that the ongoing I/O
-+		 * is completed, and attach this buffer to current
-+		 * transaction so that the buffer can be checkpointed only
-+		 * after the current transaction commits.
- 		 */
- 		clear_buffer_dirty(bh);
-+		wait_for_writeback = 1;
- 		__jbd2_journal_file_buffer(jh, transaction, BJ_Forget);
- 		spin_unlock(&journal->j_list_lock);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -2171,7 +2171,7 @@ static int psp_securedisplay_initialize(
  	}
- drop:
- 	__brelse(bh);
- 	spin_unlock(&jh->b_state_lock);
-+	if (wait_for_writeback)
-+		wait_on_buffer(bh);
- 	jbd2_journal_put_journal_head(jh);
- 	if (drop_reserve) {
- 		/* no need to reserve log space for this block -bzzz */
+ 
+ 	ret = psp_ta_load(psp, &psp->securedisplay_context.context);
+-	if (!ret) {
++	if (!ret && !psp->securedisplay_context.context.resp_status) {
+ 		psp->securedisplay_context.context.initialized = true;
+ 		mutex_init(&psp->securedisplay_context.mutex);
+ 	} else
 
 
 
