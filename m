@@ -1,97 +1,97 @@
-Return-Path: <stable+bounces-188848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F405CBF8FBA
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 23:53:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F14B4BF90AC
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 00:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD7204E2E68
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 663CB40131B
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCFA23EA9B;
-	Tue, 21 Oct 2025 21:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D0E29D26D;
+	Tue, 21 Oct 2025 22:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="SYy35YpB"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="q9nMATXD"
 X-Original-To: stable@vger.kernel.org
-Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0A9241665
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 21:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2535524676D
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 22:25:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761083592; cv=none; b=bAEvhxX0VIc+KoXO3tR0HucwkzwZArIwbLkwklNJznlDYPJXjJOLMkEfaEAmUnzDghT0nhOVBdd0WFrdqLmBz+SSiUbnNnDAvDdMs7aknqFTw26mY4q77vuMhvv61LdJTl4OuyKxpEEnwcSr/8NDK376+M8Q3vxBROUTaFoqGVk=
+	t=1761085559; cv=none; b=Jftbm2kcc7WoWiWiL7ZIeN48LauDJskXfmVdECT/bl1jl2opWvwieBw5Tz6AWvN1PeX4QVFNbqk79Pbg+Xv/QlAxGnInrWEIq21NZjIvurIx0hU2O6hHSnZ9iB9H9btxM11oXP3KJY02UQhsKBl3H9iMRy9etaLjlCFrA0P36C0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761083592; c=relaxed/simple;
-	bh=l9ZYVX95LGhTdGY/AdLGKCqXypgRReYL1oZfjL+RzdY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=gzmy/X8SO3poWEf9HEwoLBRgA4vKOp39x5DdohS7FR4mDFYzJ/vyp5Bcc5vlsgIABx0wtkk2OtXXXEagp4Y/p/q1U+W1mIbJ1rM4i+860duUfwu7yk24TOEG72b7/MQMlFrstVk1GdcBPrKuBNTTIqjdnuJnU2LQCkpugeiNnLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=SYy35YpB; arc=none smtp.client-ip=213.190.28.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
-	s=dkim_2024-02-03; t=1761083587;
+	s=arc-20240116; t=1761085559; c=relaxed/simple;
+	bh=L6pJCJRQlpGz4vRVZTttL4VLEPacbukwogeVseG1pvo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IrmOf845K8giEhLbmKt61zabMsA1+InXM6McM2gA6SACMFb/BIoefMb4jvRJdzHlOKtdVFahcxQAfSqsM9kplLJf/nyiJmp6sAVL0AkltR7ePPVFTAZQVuU6nH3bYScUyxbi4GF/hIW2xEoDIsQyMuBmKIrdC6MInLlMC+mLgjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=q9nMATXD; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761085555;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e7UvSLVPJoNzvzJqaHF65H3yaU3SzqsscVV2EXHW5Z0=;
-	b=SYy35YpB11zkMH3EaoQpJJhUsMUevz1aTsstv92o2VBOrVZoWCpXf8KwlG3096Gm3d0zBx
-	27KGGXtVymAy9XCQ==
-Message-ID: <c5038e5a-ebb1-464f-9b79-905168ac7e44@hardfalcon.net>
-Date: Tue, 21 Oct 2025 23:53:06 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=5OCK17bkD8uC3U/dYZyCUkvEyfsk5UZB3M9kPb7WAEA=;
+	b=q9nMATXDZ0SuzSXKHJh3gEsQHW/85awbOp1eNT9X8/Ie8aSWzp2jf0HvMShu1tZX/xsdAW
+	IeuFm61EY2+R2Kx6TqRLNhek1rNjW0KTjhkhhsIS9noTxZd+jui3XyheAZnBm+xrDvpRBN
+	8cbP/OzjUaHmYTBxwiB27ABfQ6CwTls=
+From: andrey.konovalov@linux.dev
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] usb: raw-gadget: do not limit transfer length
+Date: Wed, 22 Oct 2025 00:25:45 +0200
+Message-ID: <a6024e8eab679043e9b8a5defdb41c4bda62f02b.1761085528.git.andreyknvl@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: Patch "PM: hibernate: Add pm_hibernation_mode_is_suspend()" has
- been added to the 6.17-stable tree
-To: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- Sasha Levin <sashal@kernel.org>
-References: <2025102032-crescent-acuteness-5060 () gregkh>
- <2745b827-b831-4964-8fc5-368f7446d73e@hardfalcon.net>
- <8c4d1326-512c-4b98-bac0-aa207b54aa2a@kernel.org>
- <19c7ba58-7300-4e10-bd81-367354f826db@hardfalcon.net>
- <1f15260b-684e-4b8c-807f-244bbfd31f1c@kernel.org>
- <edffeaca-e52a-4ecc-b788-3120e11bbef2@kernel.org>
-Content-Language: en-US, de-DE, en-US-large
-From: Pascal Ernster <git@hardfalcon.net>
-In-Reply-To: <edffeaca-e52a-4ecc-b788-3120e11bbef2@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-[2025-10-21 23:34] Mario Limonciello (AMD) (kernel.org):
-> On 10/21/2025 4:19 PM, Mario Limonciello (AMD) (kernel.org) wrote:
->> It looks to me that you have CONFIG_HIBERNATE_CALLBACKS set but not CONFIG_HIBERNATION set.
->>
->> How does this happen?  HIBERNATE_CALLBACKS is hidden, and it's only selected by CONFIG_HIBERNATE.
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-Excerpt from "make menuconfig":
+Drop the check on the maximum transfer length in Raw Gadget for both
+control and non-control transfers.
 
-> │ Symbol: HIBERNATE_CALLBACKS [=y]
-> │ Type  : bool
-> │ Defined at kernel/power/Kconfig:35
-> │ Selected by [y]:
-> │   - XEN_SAVE_RESTORE [=y] && HYPERVISOR_GUEST [=y] && XEN [=y]
-> │ Selected by [n]:
-> │   - HIBERNATION [=n] && SWAP [=y] && ARCH_HIBERNATION_POSSIBLE [=y]
+Limiting the transfer length causes a problem with emulating USB devices
+whose full configuration descriptor exceeds PAGE_SIZE in length.
 
+Overall, there does not appear to be any reason to enforce any kind of
+transfer length limit on the Raw Gadget side for either control or
+non-control transfers, so let's just drop the related check.
 
->> The fix for now for you is to either turn off CONFIG_HIBERNATE_CALLBACKS or turn on CONFIG_HIBERNATION.
-> 
-> Alternatively does picking https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=bbfe987c5a2854705393ad79813074e5eadcbde6 help your issue?
+Cc: stable@vger.kernel.org
+Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+---
+ drivers/usb/gadget/legacy/raw_gadget.c | 2 --
+ 1 file changed, 2 deletions(-)
 
+diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
+index 20165e1582d9..b71680c58de6 100644
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -667,8 +667,6 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
+ 		return ERR_PTR(-EINVAL);
+ 	if (!usb_raw_io_flags_valid(io->flags))
+ 		return ERR_PTR(-EINVAL);
+-	if (io->length > PAGE_SIZE)
+-		return ERR_PTR(-EINVAL);
+ 	if (get_from_user)
+ 		data = memdup_user(ptr + sizeof(*io), io->length);
+ 	else {
+-- 
+2.43.0
 
-Thanks for the hint! :)
-
-I'll give that patch a try, but compiling will take a while.
-
-
-Regards
-Pascal
 
