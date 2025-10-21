@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-188726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CD8BF896B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:09:01 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2D2BF8971
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:09:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E80E84FE6F3
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:08:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7BC814FBD70
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E65277C81;
-	Tue, 21 Oct 2025 20:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E294525A355;
+	Tue, 21 Oct 2025 20:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlE1kyxy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LczAvm1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E30274B35;
-	Tue, 21 Oct 2025 20:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCD226E6F5;
+	Tue, 21 Oct 2025 20:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077323; cv=none; b=VvWkCUlLS+fDmLx0y3CUln0f+7LZQJ66u7PP8zt4iOM2t0bOY0XLPFx7IEhIG5AjGsPBwUKhH/mpCLaFFn8N1qs4X3Ere91FUY+dJRxLQ9RKOpxn8AElFpOqaBkGgOS46tC6Z07luR3+ADJe/CgKetdQ7bQHzB9B9zPDDluKSVc=
+	t=1761077329; cv=none; b=uiw0vUvp7Flj4KQnZxHNDZCEoG70vIKAh96VaT/jUQo0jqOvqAJqtB4aCkmyyQHnxdKRitlQ67B0RGPkuHHM1TnvjkaqM82Xf0QEpzYPdW3F/glqAXb73NbCiAWLyT+JCS8NjFCkpcy8eoO3v3u0AmP4CmZ3EOvAx02qt4T6TAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077323; c=relaxed/simple;
-	bh=m6IrAL2QNFekNd05qrTpwSuzLKNjxrXMkbTK7GDCJS8=;
+	s=arc-20240116; t=1761077329; c=relaxed/simple;
+	bh=tMvXZzU0dR08ShNzKnMURa1o4lrhVoTn52ARAloaoIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYks6rMjM9f1AmI+YEObamnH+/XfrRHyngVMzcqBmd32btmjcEGRRH+61QaT3tKg3PMf1uiIhPhIiPjUK3Y+atnpf4ypBblDWiGhs/gpfOrhrZDia5zqQluaa6PJLIdb4f/xSekVtx4h+EImjAJOo5rZ/fqKMfDT8jcC13mMCN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlE1kyxy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471DCC4CEF7;
-	Tue, 21 Oct 2025 20:08:42 +0000 (UTC)
+	 MIME-Version; b=nrwUg99hHUJVEftzJG4YF/U3yb50/4AN0NYBZ/qfwZfE8C8+Ad2DgNoGv1vJI6ASLGZI1QGiqn0Yh3UkFMSEFrcorhCmsarvsC85NzoKhYlnlxwp5OJ5oDt7yvTod3w/Az+WScHSyLWY/i0LQSmg2H29nSIDH9z1b2ABbshxnro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LczAvm1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01789C4CEF1;
+	Tue, 21 Oct 2025 20:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077322;
-	bh=m6IrAL2QNFekNd05qrTpwSuzLKNjxrXMkbTK7GDCJS8=;
+	s=korg; t=1761077329;
+	bh=tMvXZzU0dR08ShNzKnMURa1o4lrhVoTn52ARAloaoIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HlE1kyxyf3nzIcTjpuI7N1b1eQWZMif3vAW0NEgIyojn2G6Bk1Af/mzcjcXygml7X
-	 5BKrXUHtrqfiGrnBsovAsUi9ShvYugWL+6roEP0dRmzjTGviN8mw91DP7eusmv5Qxc
-	 Z34+OzJVLXp40Yup40jzDbfQhbCHQax0HxEh+bgA=
+	b=LczAvm1yFYhbEJTc1LMPu+ASmr7Z9HEqH7mLTx/FHRWn5KAQ3J43xW5BUvDxqDzUL
+	 hhIlc41oh0WTJml5NBa+LlGAIxkJCZ8Set64W+7CbR5H4VlCbMzRt2972iOyzUH0Ru
+	 /oOZvi5bM1t3D7Lm2X9XdUngegdSL5HT7JvNB9f8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Simon Horman <horms@kernel.org>,
+	Linmao Li <lilinmao@kylinos.cn>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 069/159] dpll: zl3073x: Handle missing or corrupted flash configuration
-Date: Tue, 21 Oct 2025 21:50:46 +0200
-Message-ID: <20251021195044.866855085@linuxfoundation.org>
+Subject: [PATCH 6.17 070/159] r8169: fix packet truncation after S4 resume on RTL8168H/RTL8111H
+Date: Tue, 21 Oct 2025 21:50:47 +0200
+Message-ID: <20251021195044.891187707@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
 References: <20251021195043.182511864@linuxfoundation.org>
@@ -67,90 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Linmao Li <lilinmao@kylinos.cn>
 
-[ Upstream commit fcb8b32a68fd40b0440cb9468cf6f6ab9de9f3c5 ]
+[ Upstream commit 70f92ab97042f243e1c8da1c457ff56b9b3e49f1 ]
 
-If the internal flash contains missing or corrupted configuration,
-basic communication over the bus still functions, but the device
-is not capable of normal operation (for example, using mailboxes).
+After resume from S4 (hibernate), RTL8168H/RTL8111H truncates incoming
+packets. Packet captures show messages like "IP truncated-ip - 146 bytes
+missing!".
 
-This condition is indicated in the info register by the ready bit.
-If this bit is cleared, the probe procedure times out while fetching
-the device state.
+The issue is caused by RxConfig not being properly re-initialized after
+resume. Re-initializing the RxConfig register before the chip
+re-initialization sequence avoids the truncation and restores correct
+packet reception.
 
-Handle this case by checking the ready bit value in zl3073x_dev_start()
-and skipping DPLL device and pin registration if it is cleared.
-Do not report this condition as an error, allowing the devlink device
-to be registered and enabling the user to flash the correct configuration.
+This follows the same pattern as commit ef9da46ddef0 ("r8169: fix data
+corruption issue on RTL8402").
 
-Prior this patch:
-[   31.112299] zl3073x-i2c 1-0070: Failed to fetch input state: -ETIMEDOUT
-[   31.116332] zl3073x-i2c 1-0070: error -ETIMEDOUT: Failed to start device
-[   31.136881] zl3073x-i2c 1-0070: probe with driver zl3073x-i2c failed with error -110
-
-After this patch:
-[   41.011438] zl3073x-i2c 1-0070: FW not fully ready - missing or corrupted config
-
-Fixes: 75a71ecc24125 ("dpll: zl3073x: Register DPLL devices and pins")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251008141445.841113-1-ivecera@redhat.com
+Fixes: 6e1d0b898818 ("r8169:add support for RTL8168H and RTL8107E")
+Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20251009122549.3955845-1-lilinmao@kylinos.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dpll/zl3073x/core.c | 21 +++++++++++++++++++++
- drivers/dpll/zl3073x/regs.h |  3 +++
- 2 files changed, 24 insertions(+)
+ drivers/net/ethernet/realtek/r8169_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c
-index 0df210cec08da..59c75b470efbf 100644
---- a/drivers/dpll/zl3073x/core.c
-+++ b/drivers/dpll/zl3073x/core.c
-@@ -864,8 +864,29 @@ zl3073x_dev_phase_meas_setup(struct zl3073x_dev *zldev)
- int zl3073x_dev_start(struct zl3073x_dev *zldev, bool full)
- {
- 	struct zl3073x_dpll *zldpll;
-+	u8 info;
- 	int rc;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 9c601f271c02b..4b0ac73565ea9 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4994,8 +4994,9 @@ static int rtl8169_resume(struct device *device)
+ 	if (!device_may_wakeup(tp_to_dev(tp)))
+ 		clk_prepare_enable(tp->clk);
  
-+	rc = zl3073x_read_u8(zldev, ZL_REG_INFO, &info);
-+	if (rc) {
-+		dev_err(zldev->dev, "Failed to read device status info\n");
-+		return rc;
-+	}
-+
-+	if (!FIELD_GET(ZL_INFO_READY, info)) {
-+		/* The ready bit indicates that the firmware was successfully
-+		 * configured and is ready for normal operation. If it is
-+		 * cleared then the configuration stored in flash is wrong
-+		 * or missing. In this situation the driver will expose
-+		 * only devlink interface to give an opportunity to flash
-+		 * the correct config.
-+		 */
-+		dev_info(zldev->dev,
-+			 "FW not fully ready - missing or corrupted config\n");
-+
-+		return 0;
-+	}
-+
- 	if (full) {
- 		/* Fetch device state */
- 		rc = zl3073x_dev_state_fetch(zldev);
-diff --git a/drivers/dpll/zl3073x/regs.h b/drivers/dpll/zl3073x/regs.h
-index 614e33128a5c9..bb9965b8e8c75 100644
---- a/drivers/dpll/zl3073x/regs.h
-+++ b/drivers/dpll/zl3073x/regs.h
-@@ -67,6 +67,9 @@
-  * Register Page 0, General
-  **************************/
+-	/* Reportedly at least Asus X453MA truncates packets otherwise */
+-	if (tp->mac_version == RTL_GIGA_MAC_VER_37)
++	/* Some chip versions may truncate packets without this initialization */
++	if (tp->mac_version == RTL_GIGA_MAC_VER_37 ||
++	    tp->mac_version == RTL_GIGA_MAC_VER_46)
+ 		rtl_init_rxcfg(tp);
  
-+#define ZL_REG_INFO				ZL_REG(0, 0x00, 1)
-+#define ZL_INFO_READY				BIT(7)
-+
- #define ZL_REG_ID				ZL_REG(0, 0x01, 2)
- #define ZL_REG_REVISION				ZL_REG(0, 0x03, 2)
- #define ZL_REG_FW_VER				ZL_REG(0, 0x05, 2)
+ 	return rtl8169_runtime_resume(device);
 -- 
 2.51.0
 
