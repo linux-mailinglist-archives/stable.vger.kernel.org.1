@@ -1,121 +1,129 @@
-Return-Path: <stable+bounces-188390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B67BF7E31
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:26:43 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4CFFBF7E40
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E7F8F358A50
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:26:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5C283358AC9
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410AD34D4E1;
-	Tue, 21 Oct 2025 17:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779B434B67A;
+	Tue, 21 Oct 2025 17:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZjJF+4r"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KHsPEzhv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7670934D4D9;
-	Tue, 21 Oct 2025 17:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F02355810
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 17:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761067391; cv=none; b=H7UqmITucjMiAI3r2Iqtn6yuAxEz7FJmXmwGsRzPJhWMOeTlav02uXqkyy34s+J8w/FrNHz0hfuxJ040/3spVYp31RhNlWM6GdJrhqteqtlPq+dSe1+j4ZSNtFBOgtxuXNl9PusGjzSDdFfV83p0YWzP/nAVldz9BD89DhZ3o68=
+	t=1761067528; cv=none; b=UlsrBcL6Kqoc//rF02p2lkobSs0zM/m9bVlHoWEEI0nA/HYuRT9Fyj8YaKCOHbSVV+vBn9LohbgBXF7y7kUncMZOgsyScQpyBVp0ZLvdoScMR/GbKHYejlQ/Dw73/bYVGYZJVqeNLRq14B1xSHdTUByAM1AdDf+VvX+DbX8R2xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761067391; c=relaxed/simple;
-	bh=WtDAPjj2uGIdoRAWnE+iIkBURVgXeLBKvep422kdXHE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=NZa8lOsmwqyF6Uck6Mp2lYAxIlE+ok3ZX3t59upEMPHL4CJmyOU52stgNWyJz3ylNzWj6r6hjSB+cGI5XGyag8ukX0t6Aul4jdSpWkGlS/TaVkOLZe8bDXL0jKgY/o6NLxyV3K84sf6gdFCX3fcAvSFW6ZfCK0Z7AdIjbkF6zJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZjJF+4r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E29C4CEF1;
-	Tue, 21 Oct 2025 17:23:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761067390;
-	bh=WtDAPjj2uGIdoRAWnE+iIkBURVgXeLBKvep422kdXHE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=FZjJF+4r91jouTqR4ZCGqzgg0rVgTjnvGMOtExNJniwX5dWlP4jCwmBXfEbVJuqti
-	 7IXt4pidP071Ogg9iGMBn38tmDXu75p9f2J92QJqiccOw/kxe0mEufMpxqK+n/b6dM
-	 JQAKYV8Ne/rBstqxIewQZaV49n8p7GNi8MD9GN0UDraKVCTlcY1S4/GjbsiBtM/wzp
-	 46uYfybDE61g6tR53qeFxSYdNJeFgsV+m+ov7nVifWmTKiUzdoU5abyz9XKoCaj+2l
-	 zIsZH9Tdg/O/QqQ2UaxeiOqnNWBbkVyDpD702xmI0jgsENuk+XdJ+za6yM1daKa4Aa
-	 hOm1C5wxr6JfQ==
-Date: Tue, 21 Oct 2025 12:23:09 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ravi Kumar Bandi <ravib@amazon.com>
-Cc: mani@kernel.org, thippeswamy.havalige@amd.com, lpieralisi@kernel.org,
-	bhelgaas@google.com, linux-pci@vger.kernel.org,
-	kwilczynski@kernel.org, robh@kernel.org, michal.simek@amd.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Stefan Roese <stefan.roese@mailbox.org>,
-	Sean Anderson <sean.anderson@linux.dev>
-Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
-Message-ID: <20251021172309.GA1198438@bhelgaas>
+	s=arc-20240116; t=1761067528; c=relaxed/simple;
+	bh=Ibl9ipy62JVcPBrthO993ocd5vWDT0JLzxK8s7HQuv4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Nxtn6d2EyebMQevkw1rCeReiooPFCZoKClgY0BHqThTSJTA3rKgpUHPTaBMvIsSBS2RR36Ny8B35JqpJG6zonpEH5Sup6K1636VM4BXp949+iTW9eYlHvbnuMp/8DY41b6pLnd2+k6/w+o58GNMQJVk/Tc1dHS3DOatOLpXpIs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KHsPEzhv; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-29094f23eedso7961345ad.0
+        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 10:25:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761067524; x=1761672324; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RAf3KsXjFc/zQP1AJm1wtfxbLUgTjyr2ky6pgjmz4cM=;
+        b=KHsPEzhv9PnazcsMOs4hlJE2Vl9HIhNLf8vHqExNLD0kAG1qxJEsv27tm22+J8O8wj
+         RkjkRjC/jDM/qFsoL5b5t362+AobWncAZnCeVwaPk+z6D74+1OfKyHGiG1lLTtCOF+30
+         jkcBWIFuthLXPY770OFpr5VmMA0DTW4cMgsyHD2UmA2HTzWZHoZ89+rLE7PbKC4OiUs6
+         bnlYvxhe42RjZDMGBxVS6aSPaNqB/Q5AJzInEN3O7O2fCdz2GHHptArB/6xxFK6+Y/FE
+         r5r+EpJxRTudLOLlO+RH9mlwbUlm/Pzn+TU0W05YFHE11RqSDAMx2EBogC8hBBn3Lps7
+         9dIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761067524; x=1761672324;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RAf3KsXjFc/zQP1AJm1wtfxbLUgTjyr2ky6pgjmz4cM=;
+        b=JD+JRmB2iw82Elmd8LCkzoBGlNmGJHZCAjkcBm7T7nVjHUE100rtcMUFHCkQ9fSFIZ
+         7YI/zwaBwkjZqQgCfa6V9wBQ24tkZExR7XIu4rhvtGcFRLARGlDGV1wnNcdm4XDy/M/k
+         fFlk8zAAHIAqeRsFRk0pfw6dq1HgnkGPzq8Gr/osByVbMfo3vXvAN6lhjb9EOdoUDg3t
+         HiYNBOX3Sps1UkqFfApkp0+zdectEE8RQzqGs+/3sRJRSu8Dyn/lb0jYe8SP5AuqSGxd
+         Mq18k2dSh61u+ZXwgE9wyjk0yAPFw8wmI1jPlpC3ho6IcepCWlcGZyH3pxOXKxvVNyDD
+         QEEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVNjorCqVQJ0JLBHMMVJgEozNPFYsm3Ptyb+ZKlVXPtBdLu6nSuXiKrhsBuf9H7tU7efTQOlXs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM6W0QQu0WvQPEcfUQJPBGORW5TNetPmIulxBYEo2Jz6/t80Rc
+	mxrBXrdy9djMSc6d5rlwdcO96hIwCDGfh+zaCx2zCRcMgKZ1ZwDdAL+W18Cvys1tj3jj68Bbqg9
+	8eDZ+QUdM91na5DVTHgRrcKsnnZU5GuM=
+X-Gm-Gg: ASbGnctLu/TTGvXBeXhijn1LqulIShRtd0G2B5St1qAlmO/6gDn1yxH6jkXoGTwJTxh
+	WVy2ueWy6z5eb4ZOC6Y3n0QwBAme1HWhiFEFb9kYfBxSxyfST3envZ3cFEYPCasVRsrDrr7Mb41
+	0tX0lCn2oIwgglPeCLSpIcTA88yXlI0ykya/X8eemL3qxvV6XJ4L35TDNBne7zAT2Lqj5g7J2Lk
+	z/Wqm+hE+KI0kIK+UkmREr3dTTxGuJS34KHfWAmavd2wxcI+SzRygfe73SXWjfhCsa9KQWQXBsF
+	z1e64fmms+JiNXkhaPBLNsBLkHvjjmQBMMozzu7rpI2tYgIaBYLsZl2PRQpxd6EQY/U4rnwGTxG
+	gTMtgTMAeIsa/eA==
+X-Google-Smtp-Source: AGHT+IEWfCg0E0bwVttDNG0lql3yRpvV7id4seM/oa5UH+1sTXW5x3SO7M6tk+NNwv6wlch2bqa+yfg2OXtAPVMMHAk=
+X-Received: by 2002:a17:902:dace:b0:267:bd8d:1b6 with SMTP id
+ d9443c01a7336-292d3fbc72cmr30865725ad.6.1761067523987; Tue, 21 Oct 2025
+ 10:25:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250920225232.18757-1-ravib@amazon.com>
+References: <20251020020714.2511718-1-ojeda@kernel.org> <20251020105154.GR3419281@noisy.programming.kicks-ass.net>
+In-Reply-To: <20251020105154.GR3419281@noisy.programming.kicks-ass.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 21 Oct 2025 19:25:11 +0200
+X-Gm-Features: AS18NWCYSZSyVH4h_NBns8SoCWBqHms6Y7SdEmcHUYKM5xtVUbbF7ERZLvXjKs4
+Message-ID: <CANiq72n_AnCJYw6R2XecapW9wZqs_Saa4t8BNgrPub2u9=9_xA@mail.gmail.com>
+Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function
+To: Peter Zijlstra <peterz@infradead.org>, Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[+cc Stefan, Sean]
+On Tue, Oct 21, 2025 at 7:19=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> I'll go stick it in tip/objtool/core; but I gotta ask, where are we with
+> the toolchain support for noreturn?
 
-On Sat, Sep 20, 2025 at 10:52:32PM +0000, Ravi Kumar Bandi wrote:
-> The pcie-xilinx-dma-pl driver does not enable INTx interrupts
-> after initializing the port, preventing INTx interrupts from
-> PCIe endpoints from flowing through the Xilinx XDMA root port
-> bridge. This issue affects kernel 6.6.0 and later versions.
-> 
-> This patch allows INTx interrupts generated by PCIe endpoints
-> to flow through the root port. Tested the fix on a board with
-> two endpoints generating INTx interrupts. Interrupts are
-> properly detected and serviced. The /proc/interrupts output
-> shows:
-> 
-> [...]
-> 32:        320          0  pl_dma:RC-Event  16 Level     400000000.axi-pcie, azdrv
-> 52:        470          0  pl_dma:RC-Event  16 Level     500000000.axi-pcie, azdrv
-> [...]
-> 
-> Changes since v1::
-> - Fixed commit message per reviewer's comments
-> 
-> Fixes: 8d786149d78c ("PCI: xilinx-xdma: Add Xilinx XDMA Root Port driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ravi Kumar Bandi <ravib@amazon.com>
+Thanks Peter!
 
-Hi Ravi, obviously you tested this, but I don't know how to reconcile
-this with Stefan's INTx fix at
-https://lore.kernel.org/r/20251021154322.973640-1-stefan.roese@mailbox.org
+We discussed it with upstream Rust, and they understood the need, so
+we may get something like `--emit=3Dnoreturn` or similar, but it is
+still open (and not too high in the priority list since we can survive
+with this for now and we have other things that we really need them to
+get stabilized etc. But if you feel it should be prioritized more,
+please let me know).
 
-Does Stefan's fix need to be squashed into this patch?
+I have the status under "Export (somehow) a list of all noreturn symbols." =
+at:
 
-> ---
->  drivers/pci/controller/pcie-xilinx-dma-pl.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/pcie-xilinx-dma-pl.c b/drivers/pci/controller/pcie-xilinx-dma-pl.c
-> index b037c8f315e4..cc539292d10a 100644
-> --- a/drivers/pci/controller/pcie-xilinx-dma-pl.c
-> +++ b/drivers/pci/controller/pcie-xilinx-dma-pl.c
-> @@ -659,6 +659,12 @@ static int xilinx_pl_dma_pcie_setup_irq(struct pl_dma_pcie *port)
->  		return err;
->  	}
->  
-> +	/* Enable interrupts */
-> +	pcie_write(port, XILINX_PCIE_DMA_IMR_ALL_MASK,
-> +		   XILINX_PCIE_DMA_REG_IMR);
-> +	pcie_write(port, XILINX_PCIE_DMA_IDRN_MASK,
-> +		   XILINX_PCIE_DMA_REG_IDRN_MASK);
-> +
->  	return 0;
->  }
->  
-> -- 
-> 2.47.3
-> 
+    https://github.com/Rust-for-Linux/linux/issues/355
+
+In particular, Gary proposed an alternative during those discussions:
+
+    "Gary proposed reading DWARF instead and wrote a quick Rust script
+for it via object and gimli, though DWARF would need to be available
+or generated on the fly just for that (and we cannot commit a fixed
+list since the kernel config may change and we support several Rust
+versions and so on):
+https://gist.github.com/nbdd0121/449692570622c2f46a29ad9f47c3379a."
+
+Cheers,
+Miguel
 
