@@ -1,185 +1,136 @@
-Return-Path: <stable+bounces-188415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E14BF8309
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:04:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2B1BF8333
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A7BED4EE139
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:04:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BA6F3A600E
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E14346E7A;
-	Tue, 21 Oct 2025 19:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E2D34A772;
+	Tue, 21 Oct 2025 19:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kqebElYu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u2I3Kyuk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F149264612
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 19:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4729B34D925;
+	Tue, 21 Oct 2025 19:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761073492; cv=none; b=a1UU6okVEf8u0NgOIVLYEYSsW85jF9ZPa1m92nhGSBB0MPkCcntBp6ISFu8IOQylvqYSL78FLSLonOMxf8jfTO69XqToyLG0UM8VdnXdO6Es5wuFKoUZJTr/6pzv8LFpz993cB6O2kbozA9mFEC5iqkZ5J7md001rYfAs6E1Ifw=
+	t=1761073807; cv=none; b=suehChYkdB/QKNSUpZdOqykmHJKB+FIXRRWwC3ZXfsaI7W4ql15zjv6G2T5lf5+DdYdq3THy+g/j+FvhQ6HWAQTK0TVd4G8eKl240KmsZeoe6Fct2d1CKQc4VjJadbT5IsQkLsoiVF2V9ZljBO+/PvC8+SD+T/CFvwDCfAKvY+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761073492; c=relaxed/simple;
-	bh=q11VqPhISxAq83SdAd0VRiD2EuJuQ7IvglCXKCEFYKI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a91Yq3pRSEiNEVnTxRe836amu8HHBG/mRG6hfhbVHTkzPcbmPgsYIG62QVEMDK+CyZOBBynP3C8bN7nW8k5WENi1alqSeZODp5M7M++FWSLrfhGlhZ/M4YwVGNVY8wzTH4nWo9J3Zwvtb0o4bnwYVeVQqxSpwE4l0yaG5atNg+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kqebElYu; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-781997d195aso4564779b3a.3
-        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 12:04:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761073490; x=1761678290; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ISZWYz7jwfSXd9tq4inzuqOWmGJUHyHpKimpAOEt6OY=;
-        b=kqebElYuOlYJNumYFTw1asnsmq8yZDSltsM6ONFo+C6Gm72w7xccRCkXQ9dLcUKecC
-         m+57wsUYiBYNOCm/626ue3KMLeSNfcJ1mas+VzcwuB3uwYpPKiSJOPLy4UwS21d7OQ1E
-         Khzxh6ZDVIxADvRb2BojG5aH1BN94DN4aC4o1CIv0Y7o8mba6wqM1xZi5hvMwlIXnL4J
-         t1DMNYPNOvadyeMRf/GIHGU8A6mRottlgJfkZRTvUSEQghoCsFrRq8oeeO1untZtGTNw
-         w5tlMvoKWBiFIRcFaaLPRtIiXtYJmexE6FkFqAca4aloixqFLVSku1i9N5wsF60Q8wje
-         g2oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761073490; x=1761678290;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ISZWYz7jwfSXd9tq4inzuqOWmGJUHyHpKimpAOEt6OY=;
-        b=Y1KQD+qkBpkCV7ThKydy0bpvvx0Hq1IBlv4nGwymgaaLnvxi9PMl8Nr9vgmX5L9/m8
-         si4134PbQiOvX8wa2avb8unicMwcKUYlWaVODlooonCMGvLcPto3opYhFpEtv39gU7uD
-         zQm+TEW+DlyZ4tsUD5PilBFqWWR9YjCUIyTZtMO4k8BMgrU+yFseGcHoRovMdNsVhlEx
-         WShtitT3RzubLFCRQt/p/Hai9h38ECbw8z/bbAbfo34DOH13cQAq7cKyPJsJ3GooioJz
-         HcvrPdnZiMWVlgdZQxsfLdZNiwhvePyu7Q2oYbyeXS51F+RjVjbehjjuL3K9ZAwucgVM
-         Hj2g==
-X-Forwarded-Encrypted: i=1; AJvYcCWQrb2IReJymzW0JvC+a7yWnwT+pWaVNPIu76QSKh9nFRpmzc23436yzYPMAiB1B6k/nCQs+5c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAkzXFSS08A0qZnFlmYicidqEZp5oXkk2Yg2fWEBESfP2p9Wot
-	dfiBnVMGE2zVnGIRHMCdMb8Tn5os+o5uBIBZDpFZFmfJaTp7HuNtE1vE
-X-Gm-Gg: ASbGnctsXlsAG9NmoZMPMj9L0YUB/rkgcGlXyyXV6aNIEqXOylGvLcJcsIU9ErU6oRZ
-	HfNlsClmCcbF6RswoCh4pyjZRkS0Wjenz5UZYw453wwNqFQ7Jw4KRkXS8ZpMgDy1cCj0GWgCDbc
-	joZ6gIuCfano8XQORdD7hLNpOqQYBkwKpHUlsuoT4hVzQhuXBE262JoU/HFI+MpfizxtaL4LCrz
-	mg31joTouwicVZxa8OKyrvWrxN/e39Db0UGnCRs7ymFeBLgmPDaZZvpi321uDhubc0n7PK8J2Ic
-	lt5sVlQA9KTcZPHBn3udyyZGzyhs8j12U677u8H0NQf+3fq8wX4+gZh1LXTMfLzczVUpGlPo/Kd
-	SCu8ou1xWDFFjgh8cHsMmh2n4ChWz3rUyVYsWnA3zvDtVYpbAeWhleLGP0cIdSoCm6adO37K0Bh
-	MUTymUIaqaHjc+xn0BtCoNNT2JVMnafio=
-X-Google-Smtp-Source: AGHT+IHkT8UoFnBBi1CBq+2YccEgjqBI+DLZKtcKn0a9UNxsMkVcsdd6kuH2vJPgljjD95mJq5TuRg==
-X-Received: by 2002:a17:902:fc8e:b0:27e:ef96:c153 with SMTP id d9443c01a7336-290c9ca73a0mr247432075ad.19.1761073490421;
-        Tue, 21 Oct 2025 12:04:50 -0700 (PDT)
-Received: from KASONG-MC4.tencent.com ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29246ebca5csm117664615ad.19.2025.10.21.12.04.45
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 21 Oct 2025 12:04:49 -0700 (PDT)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Hugh Dickins <hughd@google.com>,
-	Dev Jain <dev.jain@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mariano Pache <npache@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/shmem: fix THP allocation size check and fallback
-Date: Wed, 22 Oct 2025 03:04:36 +0800
-Message-ID: <20251021190436.81682-1-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.51.0
-Reply-To: Kairui Song <ryncsn@gmail.com>
+	s=arc-20240116; t=1761073807; c=relaxed/simple;
+	bh=OlM+hp5liynWD7x8TgYwNOV4Zf2KLGwQL6h+7jLysUk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=eXatPtyRHel9UpdLRI/pgkTAYBg7aITLqxcqDlRMkXbpKmk7vmzAwgC+k6AWH5kMw2Dk8ToD92wxnkIvpKWkPbsetHbQeKL/2/WMkgt95O2upWRSFW4qoP6I4b+JpSUCNEKCOIinLvXoiNj59l7m//fLFdMaaHij23xZBGYOy2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u2I3Kyuk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91784C4CEF1;
+	Tue, 21 Oct 2025 19:10:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761073805;
+	bh=OlM+hp5liynWD7x8TgYwNOV4Zf2KLGwQL6h+7jLysUk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=u2I3Kyukg/Wif1wUoptuz5TgrwRmfk7omZ+7pSbwDV8VJh4ZKmmg6jbknZp3kDthA
+	 8x5+cMD+KsRJ1QpuNTaCLO7J9uNmQtf+osMB4Qpq+euqRl99kqmgTJFrcjUnXQTSU9
+	 I2BtKqHN8sMMxk5FW7/41y3nTiLTt9wlSMOgJKvbYP0PNhJhFUOdKYzH49cLv0xXiW
+	 lj3r4OmNqQlxvW4/AfxxtgPTpgOpaRevzbkIQZ8+RSk1mCXq4Ld0yX9x9pEaSsXhd+
+	 tSRZnzJeZOZNbczRtKmE8XDucUY2vIY02W3EzKxDQbZ2ehGrR5Yv2NMCeAEgwBZcmM
+	 SLKdchcqT9Klw==
+Date: Tue, 21 Oct 2025 14:10:04 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Bandi, Ravi Kumar" <ravib@amazon.com>
+Cc: "mani@kernel.org" <mani@kernel.org>,
+	"thippeswamy.havalige@amd.com" <thippeswamy.havalige@amd.com>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"michal.simek@amd.com" <michal.simek@amd.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Stefan Roese <stefan.roese@mailbox.org>,
+	Sean Anderson <sean.anderson@linux.dev>
+Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+Message-ID: <20251021191004.GA1205652@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <AB5963BB-A896-4CFA-AF27-31164705DF5A@amazon.com>
 
-From: Kairui Song <kasong@tencent.com>
+On Tue, Oct 21, 2025 at 05:46:17PM +0000, Bandi, Ravi Kumar wrote:
+> > On Oct 21, 2025, at 10:23 AM, Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > On Sat, Sep 20, 2025 at 10:52:32PM +0000, Ravi Kumar Bandi wrote:
+> >> The pcie-xilinx-dma-pl driver does not enable INTx interrupts
+> >> after initializing the port, preventing INTx interrupts from
+> >> PCIe endpoints from flowing through the Xilinx XDMA root port
+> >> bridge. This issue affects kernel 6.6.0 and later versions.
+> >> 
+> >> This patch allows INTx interrupts generated by PCIe endpoints
+> >> to flow through the root port. Tested the fix on a board with
+> >> two endpoints generating INTx interrupts. Interrupts are
+> >> properly detected and serviced. The /proc/interrupts output
+> >> shows:
+> >> 
+> >> [...]
+> >> 32:        320          0  pl_dma:RC-Event  16 Level     400000000.axi-pcie, azdrv
+> >> 52:        470          0  pl_dma:RC-Event  16 Level     500000000.axi-pcie, azdrv
+> >> [...]
+> >> 
+> >> Changes since v1::
+> >> - Fixed commit message per reviewer's comments
+> >> 
+> >> Fixes: 8d786149d78c ("PCI: xilinx-xdma: Add Xilinx XDMA Root Port driver")
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Ravi Kumar Bandi <ravib@amazon.com>
+> > 
+> > Hi Ravi, obviously you tested this, but I don't know how to reconcile
+> > this with Stefan's INTx fix at
+> > https://lore.kernel.org/r/20251021154322.973640-1-stefan.roese@mailbox.org
+> > 
+> > Does Stefan's fix need to be squashed into this patch?
+> 
+> Sure, we can squash Stefan’s fix into this.
 
-There are some problems with the code implementations of THP fallback.
-suitable_orders could be zero, and calling highest_order on a zero value
-returns an overflowed size. And the order check loop is updating the
-index value on every loop which may cause the index to be aligned by a
-larger value while the loop shrinks the order. And it forgot to try order
-0 after the final loop.
+I know we *can* squash them. 
 
-This is usually fine because shmem_add_to_page_cache ensures the shmem
-mapping is still sane, but it might cause many potential issues like
-allocating random folios into the random position in the map or return
--ENOMEM by accident. This triggered some strange userspace errors [1],
-and shouldn't have happened in the first place.
+I want to know why things worked for you and Stefan when they
+*weren't* squashed:
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
-Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem")
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- mm/shmem.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+  - Why did INTx work for you even without Stefan's patch.  Did you
+    get INTx interrupts but not the right ones, e.g., did the device
+    signal INTA but it was received as INTB?
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b50ce7dbc84a..25303711f123 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1824,6 +1824,9 @@ static unsigned long shmem_suitable_orders(struct inode *inode, struct vm_fault
- 	unsigned long pages;
- 	int order;
- 
-+	if (!orders)
-+		return 0;
-+
- 	if (vma) {
- 		orders = thp_vma_suitable_orders(vma, vmf->address, orders);
- 		if (!orders)
-@@ -1888,27 +1891,28 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
- 	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
- 		orders = 0;
- 
--	if (orders > 0) {
--		suitable_orders = shmem_suitable_orders(inode, vmf,
--							mapping, index, orders);
-+	suitable_orders = shmem_suitable_orders(inode, vmf,
-+						mapping, index, orders);
- 
-+	if (suitable_orders) {
- 		order = highest_order(suitable_orders);
--		while (suitable_orders) {
-+		do {
- 			pages = 1UL << order;
--			index = round_down(index, pages);
--			folio = shmem_alloc_folio(gfp, order, info, index);
--			if (folio)
-+			folio = shmem_alloc_folio(gfp, order, info, round_down(index, pages));
-+			if (folio) {
-+				index = round_down(index, pages);
- 				goto allocated;
-+			}
- 
- 			if (pages == HPAGE_PMD_NR)
- 				count_vm_event(THP_FILE_FALLBACK);
- 			count_mthp_stat(order, MTHP_STAT_SHMEM_FALLBACK);
- 			order = next_order(&suitable_orders, order);
--		}
--	} else {
--		pages = 1;
--		folio = shmem_alloc_folio(gfp, 0, info, index);
-+		} while (suitable_orders);
- 	}
-+
-+	pages = 1;
-+	folio = shmem_alloc_folio(gfp, 0, info, index);
- 	if (!folio)
- 		return ERR_PTR(-ENOMEM);
- 
--- 
-2.51.0
+  - Why did Stefan's patch work for him even without your patch.  How
+    could Stefan's INTx work without the CSR writes to enable
+    interrupts?
 
+  - Why you mentioned "kernel 6.6.0 and later versions."  8d786149d78c
+    appeared in v6.7, so why would v6.6.0 would be affected?
+
+> >> +++ b/drivers/pci/controller/pcie-xilinx-dma-pl.c
+> >> @@ -659,6 +659,12 @@ static int xilinx_pl_dma_pcie_setup_irq(struct pl_dma_pcie *port)
+> >>              return err;
+> >>      }
+> >> 
+> >> +     /* Enable interrupts */
+> >> +     pcie_write(port, XILINX_PCIE_DMA_IMR_ALL_MASK,
+> >> +                XILINX_PCIE_DMA_REG_IMR);
+> >> +     pcie_write(port, XILINX_PCIE_DMA_IDRN_MASK,
+> >> +                XILINX_PCIE_DMA_REG_IDRN_MASK);
+> >> +
+> >>      return 0;
+> >> }
 
