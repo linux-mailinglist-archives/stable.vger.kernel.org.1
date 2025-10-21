@@ -1,118 +1,131 @@
-Return-Path: <stable+bounces-188361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035E5BF73F0
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8E8BF741A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 896FD1893E9B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:03:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA9B41884C51
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09899341671;
-	Tue, 21 Oct 2025 15:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC29342178;
+	Tue, 21 Oct 2025 15:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mSDQFfNs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iOqSZyig"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C7B341AD5
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 15:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA58355033;
+	Tue, 21 Oct 2025 15:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761058948; cv=none; b=QDIpWWt48f/pJysFpfqr8sBQJZJQu1dL4+X6H4TUO8kaXSwlKrVw1/Pwn6yy1RetsLh/LVAV0QhxJJc/IqIQB3Xo0Yxc3D+g1KFlRGlYkFICWtNkY2oTYlO4PVGjzCFc/bB7/n9i0t8u8PxMH42HTnyYPmlT7+zs11jbY1Vks+0=
+	t=1761059107; cv=none; b=TLM5gRLJeYCqrC4s6vTr1r7nMsgxqH59IfF/5MvIABEd62LM+eSp0bDII7h8WS47aSO7kwyhizNbKiJCIbJ9OjMq8McgZqa7gd2ISB4WRzaNDhlHPKWsXt5aKedlzwlq3CvMkmAq8HbmVHcnd0z/qS1m1R0TIFw4yfNqs6b5OJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761058948; c=relaxed/simple;
-	bh=BJs6Ir9670bWClN5+YBMCCT/SwUup2iPOdwkLS4jjsg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Watsa4i+sIkFiDjUYTpf8IqSnuxoepxstGI1+IRmkzpzWDVMwzmlb65lO7DO3iN5dY9uwjWSwpkggkM4awTqb5YS1SsOweNzWNk/H6PW2bomCVvD6OO9StGputfPfwpfTG7rL+DCrHgpdEtm3TzXbfaXWewMjBjC6wptzCAj/rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mSDQFfNs; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2699ef1b4e3so9810245ad.0
-        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 08:02:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761058947; x=1761663747; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wL1NUF9v9eOhRL7BYek4+tEdXvWfoRp05X0T2l2evBo=;
-        b=mSDQFfNsKIFyxaUWSMUbchvdV5pxUVUr1g34CvZFwwA/5Qm/ixZTicN55ourD6c5C2
-         dnUorulj10Ve9+1SxKEJRM3vrluseKqGbZ/bge4KdCA763eUsLymQ6yGQ2yhbvYAP1Zr
-         NHhVTNWfe65zW0h7wUzn42XhfRzpvTHyDr/PpALi9ZniKnXTvwT2npwp9jeVJYCRG6f+
-         CHnFA91Q+3DIHpDXECW6JGBJxm2NtmPvyY2bcT8qzhyeT6w/4FUePQ4RKUbdXoRanwTJ
-         UUiExb0QKOaJAwI/lmWOMPwz8Ngipt1F5nXUCzlBhCPJgtCD+VO70gbJXIGozBtHe93G
-         +vfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761058947; x=1761663747;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wL1NUF9v9eOhRL7BYek4+tEdXvWfoRp05X0T2l2evBo=;
-        b=hvKe2GChdWR8O43BrwhlRezFLzYNLY642CbVlAxjkOJnFYstBWYQkHLeUeimCyOUv4
-         O6keQ/mVU4MrECoLyNqzLCzleZsiYS6DHJ3caPkfgqLV9iIBWr2RmnlgpePdI0/s9E2z
-         kRAQfpMWAWbYXHRJMHmQyFSfUtdCzgruAb1Y5J2ml0XKg9b2UDgH8l3O/obGT4ifCOP5
-         4pUjrxXsDOLV0OU6LOHpo88SJj+qkXa0eW0OBXAPE8srp1TbHowmpk2IOMrG7lZql1+M
-         y+D9LLCJf2dg+OKCYAej2xUZn2yS4J34jkFnIjiT3jz/JU00IDc3gI6GtO+B1LRMvK58
-         MYiQ==
-X-Gm-Message-State: AOJu0YyeFvVYRUIAwZ3zffWuSfKEovqgJCWfTKGxWo2TR4LRhEmi8fNs
-	EFX/7tY3QSBQcB+WYloCsDJK+ceuIEGA8SrD0dYkQ+PCneOXh4P7Ng5VXGq2DsjxGckvh26Cqge
-	+xuclw9IssgaIQVinJSHJhTRgR4VFU+KBMYai
-X-Gm-Gg: ASbGncu2mZsJXmusLLtBgx81t/Ja8U6PF/TXjb09V92PTypF8wjJIihrYJBnZB8Jl6S
-	A5BWai5qtrNgwZtmchU7vGcUSa0CCO3mHYyYw9xvahV99nxmGrcqEFF311vq+sOngiXBzXxf0Fu
-	pi4pqOw069VdbgbvVGPuc/zYU+eJ8pBg7dlZM1zeognLy6IuN/DfcyE1xxBjhPMLRMfZRABdKDq
-	t6tyqXzQZm0L03kTw7IixzdGtUf31U+c+P8B+Y/vxj9AOQ6BMP9QG/qecqho1fdwD4eGyNQq8LZ
-	nzwB3arxw2RyqWtutw5ygXkXyJITfgPHv0Q9UjRBKslPAnUjwL+wxk+hPDkyTrih/yQw+vN7+UW
-	ncUVnkfe1kdyL2Q==
-X-Google-Smtp-Source: AGHT+IGN3iA250a5jPK1QuTk8o0uyzfB1B8Dw+jNR52vCCtVHEMefhckwvVweYdqqBYz5TtRbRhXJRJIGcR33KI2Vw8=
-X-Received: by 2002:a17:903:19e6:b0:27a:186f:53ec with SMTP id
- d9443c01a7336-290cc2023d8mr127425665ad.9.1761058946416; Tue, 21 Oct 2025
- 08:02:26 -0700 (PDT)
+	s=arc-20240116; t=1761059107; c=relaxed/simple;
+	bh=FaUP+ZJCRLG0XK7J7G8wDX9g9uWPgDASzWD4tjirebI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q/FqyApTQpOx1jarRGaEfWc/O6yZF7lajmAaAmbDqc+xHzHHx2ke/0y8DvxHa6tqqJlGtdqRRqTX+nW4IxUTSeJnpleLz6di6EtS2ppFuWC88ckZwxSWkWIoQFnakRolMaR9kQjOKBJmc/hVLuux/YwkSNIXclPr7vCOoX8b+Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iOqSZyig; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761059106; x=1792595106;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=FaUP+ZJCRLG0XK7J7G8wDX9g9uWPgDASzWD4tjirebI=;
+  b=iOqSZyigBGwFTfQeiVmKbJ01pjUB4TIMFH7+/dFOmgOgG2cLvTJyOWSA
+   Bq4bRSMHP3uSe9cIYOXiq2xseYMIuKXe7f1Q+wcTMvlkFrGXM/TEC0tgn
+   80QbAImayn28ne/ws+nkhlbTJWt3iOfxYl5Y8NyUDsixbWEMLNPZUYAcU
+   UMCFxA5n1s10vHgvhGCcjtRehnRla8YPmmkUyNK11f6Inlv5ZuGzCTIRe
+   3mBmxozrrNo1wq11nhN/M4QF8unJ0KNEb6eKgRHjw6q9n8mHJ1way3Gn8
+   YsvfuJI8b37psv98GM2qXUudv5FlH/6Ta1vvCVjPBLGpI+ROUHHY+o6lp
+   w==;
+X-CSE-ConnectionGUID: hf3arhGPS5+2OBPn5ySbpw==
+X-CSE-MsgGUID: ImXOZqA7SUe7seTBIbzi0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74529333"
+X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
+   d="scan'208";a="74529333"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 08:05:04 -0700
+X-CSE-ConnectionGUID: 5AgqhxHRTraMQY2jY6FzJQ==
+X-CSE-MsgGUID: LuP6kbcrQFGthA2nK0lz+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
+   d="scan'208";a="188723725"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.148])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 08:05:01 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1vBDuz-00000001Wcu-3wOh;
+	Tue, 21 Oct 2025 18:04:57 +0300
+Date: Tue, 21 Oct 2025 18:04:57 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: William Breathitt Gray <wbg@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] gpio: idio-16: Define fixed direction of the GPIO
+ lines
+Message-ID: <aPehGYRf9vCtzOA-@smile.fi.intel.com>
+References: <20251020-fix-gpio-idio-16-regmap-v2-0-ebeb50e93c33@kernel.org>
+ <20251020-fix-gpio-idio-16-regmap-v2-3-ebeb50e93c33@kernel.org>
+ <CAMRc=MeFZTDk4cgzEJNnkrJOEneFUBLwtKjkpV3-cLSm=xsxNg@mail.gmail.com>
+ <aPebhGETy_3MIwkf@smile.fi.intel.com>
+ <CAMRc=McPP6obWpnd7Y7duJDC=NLAOE7bjFN-iytDJ524nDr9mA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251021145842.2241496-1-sashal@kernel.org>
-In-Reply-To: <20251021145842.2241496-1-sashal@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 21 Oct 2025 17:02:13 +0200
-X-Gm-Features: AS18NWBE_YloELBW71lfoBBgs0uKe2nuayynx_YTuiu4yvOOEyKFLmzYv9DGO5Y
-Message-ID: <CANiq72=FCsw6HQvGjPqwQuN7SJsN=81KS4s5HQf1oAJhR5KhFQ@mail.gmail.com>
-Subject: Re: Patch "rust: cpufreq: fix formatting" has been added to the
- 6.17-stable tree
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, ojeda@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=McPP6obWpnd7Y7duJDC=NLAOE7bjFN-iytDJ524nDr9mA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Oct 21, 2025 at 4:58=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
-te:
->
-> This is a note to let you know that I've just added the patch titled
->
->     rust: cpufreq: fix formatting
->
-> to the 6.17-stable tree which can be found at:
->     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
-it;a=3Dsummary
->
-> The filename of the patch is:
->      rust-cpufreq-fix-formatting.patch
-> and it can be found in the queue-6.17 subdirectory.
+On Tue, Oct 21, 2025 at 04:49:05PM +0200, Bartosz Golaszewski wrote:
+> On Tue, Oct 21, 2025 at 4:41 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Tue, Oct 21, 2025 at 09:21:38AM -0400, Bartosz Golaszewski wrote:
+> > > On Mon, 20 Oct 2025 10:51:46 +0200, William Breathitt Gray
+> > > <wbg@kernel.org> said:
 
-Yes, thanks -- with this one 6.17.y should be `rustfmt` clean again
-too, like mainline.
+...
 
-Cheers,
-Miguel
+> > > > Cc: stable@vger.kernel.org # ae495810cffe: gpio: regmap: add the .fixed_direction_output configuration parameter
+> >
+> > > Turns out, this requires commit ae495810cffe ("gpio: regmap: add the
+> > > .fixed_direction_output configuration parameter") so I cannot queue it for
+> > > v6.18. What do you want me to do? Send the first two ones upstream and apply
+> > > this for v6.19?
+> >
+> > Why can't this be pulled from some IB/IT as part of the fix?
+> 
+> These kinds of things should be signalled before applying the patches
+> that should go to an immutable branch. I would now have to rebase the
+> my for-next branch.
+
+No objections on this one, this is unfortunate.
+
+> Also: the commit in question brings in a new feature, not a fix.
+
+I can argue that this is part of the fix.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
