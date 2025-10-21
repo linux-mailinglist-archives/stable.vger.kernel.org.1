@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-188592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C24BF877F
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:01:41 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEE4BF85BF
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43D68189305A
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:03 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B9EEC356824
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DDA350A3C;
-	Tue, 21 Oct 2025 20:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628BE26F292;
+	Tue, 21 Oct 2025 19:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJibNcJo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19+bbJ0L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDF714286;
-	Tue, 21 Oct 2025 20:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177C8272E7C;
+	Tue, 21 Oct 2025 19:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076897; cv=none; b=uLq02zfJxBbN5mMTAaTFxOf3zPrd8lGdoPKK+GC19KAZF4sGVY6MeSPfbPE1OaYfQzI7DzFpXT8T0QrvxjfrFK6raoB2pVUH+XNSnCmly8sEUq0X/nMDUhVLciztiWoACYtweTa8hpW+Ym6KVE1lrW4xfTW8nhjhYZli+k/bK8w=
+	t=1761076499; cv=none; b=GiTwX2Xn3hz8hd+9mSKuvxVRP96dczbFDaAwGNkulo1YtrIN9MktNPBUckSRwAU552EL0Om96xCYdP0GeBPUGCzJJ9vhoI7VI0LUj0E8cR4feO7dl/AsRhIMklDXiXOr5qTwUnMplv0iv7TMUXU87aCXu5YmN3VBJ/orM3t1p68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076897; c=relaxed/simple;
-	bh=uO6Pdxt6Moaf2jVTw+OxMOOOVpuTx/JUsU1y8gItuA4=;
+	s=arc-20240116; t=1761076499; c=relaxed/simple;
+	bh=XmCcVR0gxM0rNEpBYPYZGBaBhSNxsab3c1zTaZI0dNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F2lCVrrLgb/KvPgNx2tL/TQ80mbEYMb/1J+YnertG6LTv99HeTKai5lFKuAoKtGN2Ga3AuZ8okvXwVdaxmnMUH22G4Onv01lvx/5vPJCk9CLeCLyXE3YN6tAevdblr/v0M+DVS+PMS6CAmjgEMkZSYYa9dKOlokaiDvMMERxsUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJibNcJo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C19C4CEF1;
-	Tue, 21 Oct 2025 20:01:36 +0000 (UTC)
+	 MIME-Version; b=OiXHo1zrmn2YNPyGtWvCJKJbl/KoLl4hqTGbthB1mta6KtotOeIejdQcQv4Xgy46C6G1KpCWcf0obJPgZJoy+HWb/2JdbR5XrX59SCHYfZXtILfv/sdGd4X6YKGP+0yOF01jQHMN36rCMP4Poet/6nYn0aerVMnYZRv2W2x3vGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19+bbJ0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCEAC4CEF1;
+	Tue, 21 Oct 2025 19:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076897;
-	bh=uO6Pdxt6Moaf2jVTw+OxMOOOVpuTx/JUsU1y8gItuA4=;
+	s=korg; t=1761076499;
+	bh=XmCcVR0gxM0rNEpBYPYZGBaBhSNxsab3c1zTaZI0dNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJibNcJoFNamTaoRNuIcDHAkzEc+DVzhHr2xpH/GyC36VNOJ0joOypwZvpJLC/1Xs
-	 bWFiBdd0NgFJ29xO6Mi6kj4sWCYYFEGv84vBxotoOjcM8N8lt6G1f0TfEXzB0SQ81W
-	 oitEYbtpneO0/WwBqZMrCpMVUEP+EVJEW+ty1c34=
+	b=19+bbJ0LGqbsonJQSr0NAfgHQbLLZGmhVZtqDuT1unf/cjOctxHl4vh0eJHVUCdpH
+	 0oW77DR96RC4+XaUJGmLfPzqoezrLroQIoPucMeJEwDpNTswEYh3r0Jj1wE8xutDxh
+	 U4j4u6fky/HgMg+Obrbc/Z4AGUvff7Sf7vJYj7fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	I Viswanath <viswanathiyyappan@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Khalid Aziz <khalid@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/136] ASoC: nau8821: Cancel jdet_work before handling jack ejection
+Subject: [PATCH 6.6 051/105] net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset
 Date: Tue, 21 Oct 2025 21:51:00 +0200
-Message-ID: <20251021195037.703783607@linuxfoundation.org>
+Message-ID: <20251021195022.894125677@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: I Viswanath <viswanathiyyappan@gmail.com>
 
-[ Upstream commit 6e54919cb541fdf1063b16f3254c28d01bc9e5ff ]
+[ Upstream commit 8d93ff40d49d70e05c82a74beae31f883fe0eaf8 ]
 
-The microphone detection work scheduled by a prior jack insertion
-interrupt may still be in a pending state or under execution when a jack
-ejection interrupt has been fired.
+dev->chipid is used in lan78xx_init_mac_address before it's initialized:
 
-This might lead to a racing condition or nau8821_jdet_work() completing
-after nau8821_eject_jack(), which will override the currently
-disconnected state of the jack and incorrectly report the headphone or
-the headset as being connected.
+lan78xx_reset() {
+    lan78xx_init_mac_address()
+        lan78xx_read_eeprom()
+            lan78xx_read_raw_eeprom() <- dev->chipid is used here
 
-Cancel any pending jdet_work or wait for its execution to finish before
-attempting to handle the ejection interrupt.
+    dev->chipid = ... <- dev->chipid is initialized correctly here
+}
 
-Proceed similarly before launching the eject handler as a consequence of
-detecting an invalid insert interrupt.
+Reorder initialization so that dev->chipid is set before calling
+lan78xx_init_mac_address().
 
-Fixes: aab1ad11d69f ("ASoC: nau8821: new driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20251003-nau8821-jdet-fixes-v1-1-f7b0e2543f09@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a0db7d10b76e ("lan78xx: Add to handle mux control per chip id")
+Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Khalid Aziz <khalid@kernel.org>
+Link: https://patch.msgid.link/20251013181648.35153-1-viswanathiyyappan@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/nau8821.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/usb/lan78xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/nau8821.c b/sound/soc/codecs/nau8821.c
-index de5c4db05c8f8..23ee515db9bdd 100644
---- a/sound/soc/codecs/nau8821.c
-+++ b/sound/soc/codecs/nau8821.c
-@@ -1186,6 +1186,7 @@ static irqreturn_t nau8821_interrupt(int irq, void *data)
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 712530d6738fa..121f1c15c6793 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -2928,10 +2928,6 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 		}
+ 	} while (buf & HW_CFG_LRST_);
  
- 	if ((active_irq & NAU8821_JACK_EJECT_IRQ_MASK) ==
- 		NAU8821_JACK_EJECT_DETECTED) {
-+		cancel_work_sync(&nau8821->jdet_work);
- 		regmap_update_bits(regmap, NAU8821_R71_ANALOG_ADC_1,
- 			NAU8821_MICDET_MASK, NAU8821_MICDET_DIS);
- 		nau8821_eject_jack(nau8821);
-@@ -1200,11 +1201,11 @@ static irqreturn_t nau8821_interrupt(int irq, void *data)
- 		clear_irq = NAU8821_KEY_RELEASE_IRQ;
- 	} else if ((active_irq & NAU8821_JACK_INSERT_IRQ_MASK) ==
- 		NAU8821_JACK_INSERT_DETECTED) {
-+		cancel_work_sync(&nau8821->jdet_work);
- 		regmap_update_bits(regmap, NAU8821_R71_ANALOG_ADC_1,
- 			NAU8821_MICDET_MASK, NAU8821_MICDET_EN);
- 		if (nau8821_is_jack_inserted(regmap)) {
- 			/* detect microphone and jack type */
--			cancel_work_sync(&nau8821->jdet_work);
- 			schedule_work(&nau8821->jdet_work);
- 			/* Turn off insertion interruption at manual mode */
- 			regmap_update_bits(regmap,
+-	ret = lan78xx_init_mac_address(dev);
+-	if (ret < 0)
+-		return ret;
+-
+ 	/* save DEVID for later usage */
+ 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
+ 	if (ret < 0)
+@@ -2940,6 +2936,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 	dev->chipid = (buf & ID_REV_CHIP_ID_MASK_) >> 16;
+ 	dev->chiprev = buf & ID_REV_CHIP_REV_MASK_;
+ 
++	ret = lan78xx_init_mac_address(dev);
++	if (ret < 0)
++		return ret;
++
+ 	/* Respond to the IN token with a NAK */
+ 	ret = lan78xx_read_reg(dev, USB_CFG0, &buf);
+ 	if (ret < 0)
 -- 
 2.51.0
 
