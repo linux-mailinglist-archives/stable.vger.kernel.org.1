@@ -1,87 +1,56 @@
-Return-Path: <stable+bounces-188362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8E8BF741A
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:08:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32440BF7432
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA9B41884C51
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:05:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39650188B6B8
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC29342178;
-	Tue, 21 Oct 2025 15:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C93342CB2;
+	Tue, 21 Oct 2025 15:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iOqSZyig"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AY5TKxio"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA58355033;
-	Tue, 21 Oct 2025 15:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD1C340299;
+	Tue, 21 Oct 2025 15:06:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761059107; cv=none; b=TLM5gRLJeYCqrC4s6vTr1r7nMsgxqH59IfF/5MvIABEd62LM+eSp0bDII7h8WS47aSO7kwyhizNbKiJCIbJ9OjMq8McgZqa7gd2ISB4WRzaNDhlHPKWsXt5aKedlzwlq3CvMkmAq8HbmVHcnd0z/qS1m1R0TIFw4yfNqs6b5OJU=
+	t=1761059206; cv=none; b=FVjmC/0I9Q0P2fQ3DWUYBm/1Kl+nohk+7KwwaTuMD9Vue3vnzi14L0vCzwOWQK3EfRZy9cdRC0Esg34ZzVZzSz2RrC7zInjE5MUaxnSFCEmXuWY3Mo7+JmT1VKZR5peYMpMqdeZvzu+T2UV0yfZfL/KmZ/ZuGr95C6E/cziLRyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761059107; c=relaxed/simple;
-	bh=FaUP+ZJCRLG0XK7J7G8wDX9g9uWPgDASzWD4tjirebI=;
+	s=arc-20240116; t=1761059206; c=relaxed/simple;
+	bh=GbKOuiXZBtxsAWSv9rFIVwfWTojJtnRVB3sTM7YwbPc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q/FqyApTQpOx1jarRGaEfWc/O6yZF7lajmAaAmbDqc+xHzHHx2ke/0y8DvxHa6tqqJlGtdqRRqTX+nW4IxUTSeJnpleLz6di6EtS2ppFuWC88ckZwxSWkWIoQFnakRolMaR9kQjOKBJmc/hVLuux/YwkSNIXclPr7vCOoX8b+Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iOqSZyig; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761059106; x=1792595106;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=FaUP+ZJCRLG0XK7J7G8wDX9g9uWPgDASzWD4tjirebI=;
-  b=iOqSZyigBGwFTfQeiVmKbJ01pjUB4TIMFH7+/dFOmgOgG2cLvTJyOWSA
-   Bq4bRSMHP3uSe9cIYOXiq2xseYMIuKXe7f1Q+wcTMvlkFrGXM/TEC0tgn
-   80QbAImayn28ne/ws+nkhlbTJWt3iOfxYl5Y8NyUDsixbWEMLNPZUYAcU
-   UMCFxA5n1s10vHgvhGCcjtRehnRla8YPmmkUyNK11f6Inlv5ZuGzCTIRe
-   3mBmxozrrNo1wq11nhN/M4QF8unJ0KNEb6eKgRHjw6q9n8mHJ1way3Gn8
-   YsvfuJI8b37psv98GM2qXUudv5FlH/6Ta1vvCVjPBLGpI+ROUHHY+o6lp
-   w==;
-X-CSE-ConnectionGUID: hf3arhGPS5+2OBPn5ySbpw==
-X-CSE-MsgGUID: ImXOZqA7SUe7seTBIbzi0A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74529333"
-X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
-   d="scan'208";a="74529333"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 08:05:04 -0700
-X-CSE-ConnectionGUID: 5AgqhxHRTraMQY2jY6FzJQ==
-X-CSE-MsgGUID: LuP6kbcrQFGthA2nK0lz+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
-   d="scan'208";a="188723725"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.148])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 08:05:01 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1vBDuz-00000001Wcu-3wOh;
-	Tue, 21 Oct 2025 18:04:57 +0300
-Date: Tue, 21 Oct 2025 18:04:57 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: William Breathitt Gray <wbg@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] gpio: idio-16: Define fixed direction of the GPIO
- lines
-Message-ID: <aPehGYRf9vCtzOA-@smile.fi.intel.com>
-References: <20251020-fix-gpio-idio-16-regmap-v2-0-ebeb50e93c33@kernel.org>
- <20251020-fix-gpio-idio-16-regmap-v2-3-ebeb50e93c33@kernel.org>
- <CAMRc=MeFZTDk4cgzEJNnkrJOEneFUBLwtKjkpV3-cLSm=xsxNg@mail.gmail.com>
- <aPebhGETy_3MIwkf@smile.fi.intel.com>
- <CAMRc=McPP6obWpnd7Y7duJDC=NLAOE7bjFN-iytDJ524nDr9mA@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Go2XxtHEonsILUyBiZjASs78vk6m9oW3pyM7wo/H4rrplFgWERhAXPBTRkkPkDSoXfgqTJn4Wf82NMTCRXwD4brMVPbJakc4GYfylPBUwbl8oltaM+rcXTf9EeJz3ysupHBRHhzW37e9WtAksAopJGM6O8guMnzYXljAiYH6nhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AY5TKxio; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0937C4CEF5;
+	Tue, 21 Oct 2025 15:06:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761059206;
+	bh=GbKOuiXZBtxsAWSv9rFIVwfWTojJtnRVB3sTM7YwbPc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AY5TKxioba5QvWwSvsvhkB1ZkjjKEaSKHHQ+Hj8ieaibQAssbMUiPcu8ylPDXYn4G
+	 ANJoGSN3MXVXXP0yM7a6iPISzqEWtg+6JNcFXBCyO5Dse20NjJjNYnNvjWMyn3L+v1
+	 LZ5HqPCRU8M/nNOREr+8P0kJnhp38e12+LcqmkVzXBQ+iIydCirk2cLT2GFVRa7PKk
+	 X65d+MysAxMI8B3JYVvn4ZXYJUL+Nj+HjmsrtvsKBQ3CdrBDisjDEUx5mSVIuYyPHQ
+	 +OOQWGqYs92xw6THmp5PlyOhWGBSsMkQLYsTxg0JFdzbojQkws0HW8yrl4s2G+pstm
+	 OO95NhE5UT1ww==
+Date: Tue, 21 Oct 2025 16:06:42 +0100
+From: Lee Jones <lee@kernel.org>
+To: Christian Hitz <christian@klarinett.li>
+Cc: Pavel Machek <pavel@kernel.org>, Christian Hitz <christian.hitz@bbv.ch>,
+	stable@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] leds: leds-lp50xx: LP5009 supports 3 modules for a total
+ of 9 LEDs
+Message-ID: <20251021150642.GJ475031@google.com>
+References: <20251008125031.1174886-1-christian@klarinett.li>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,41 +60,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=McPP6obWpnd7Y7duJDC=NLAOE7bjFN-iytDJ524nDr9mA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20251008125031.1174886-1-christian@klarinett.li>
 
-On Tue, Oct 21, 2025 at 04:49:05PM +0200, Bartosz Golaszewski wrote:
-> On Tue, Oct 21, 2025 at 4:41 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Oct 21, 2025 at 09:21:38AM -0400, Bartosz Golaszewski wrote:
-> > > On Mon, 20 Oct 2025 10:51:46 +0200, William Breathitt Gray
-> > > <wbg@kernel.org> said:
+On Wed, 08 Oct 2025, Christian Hitz wrote:
 
-...
+> From: Christian Hitz <christian.hitz@bbv.ch>
 
-> > > > Cc: stable@vger.kernel.org # ae495810cffe: gpio: regmap: add the .fixed_direction_output configuration parameter
-> >
-> > > Turns out, this requires commit ae495810cffe ("gpio: regmap: add the
-> > > .fixed_direction_output configuration parameter") so I cannot queue it for
-> > > v6.18. What do you want me to do? Send the first two ones upstream and apply
-> > > this for v6.19?
-> >
-> > Why can't this be pulled from some IB/IT as part of the fix?
+You need forthcoming and insightful commit message.
+
+> Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
+> Cc: stable@vger.kernel.org
+
+Fine, but place this above your SoB.
+
+> ---
+>  drivers/leds/leds-lp50xx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> These kinds of things should be signalled before applying the patches
-> that should go to an immutable branch. I would now have to rebase the
-> my for-next branch.
-
-No objections on this one, this is unfortunate.
-
-> Also: the commit in question brings in a new feature, not a fix.
-
-I can argue that this is part of the fix.
+> diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
+> index 94f8ef6b482c..05229e2f2e7e 100644
+> --- a/drivers/leds/leds-lp50xx.c
+> +++ b/drivers/leds/leds-lp50xx.c
+> @@ -54,7 +54,7 @@
+>  /* There are 3 LED outputs per bank */
+>  #define LP50XX_LEDS_PER_MODULE	3
+>  
+> -#define LP5009_MAX_LED_MODULES	2
+> +#define LP5009_MAX_LED_MODULES	3
+>  #define LP5012_MAX_LED_MODULES	4
+>  #define LP5018_MAX_LED_MODULES	6
+>  #define LP5024_MAX_LED_MODULES	8
+> -- 
+> 2.51.0
+> 
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Lee Jones [李琼斯]
 
