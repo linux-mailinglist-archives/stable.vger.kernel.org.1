@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-188808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B049BBF8A84
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:13:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDC2BF8ACA
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8F4754F6069
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:13:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75D5E46696B
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF9427990A;
-	Tue, 21 Oct 2025 20:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24318279DCA;
+	Tue, 21 Oct 2025 20:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4Hf6gZb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDGvDxeC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988D42773F4;
-	Tue, 21 Oct 2025 20:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45DD2798E5;
+	Tue, 21 Oct 2025 20:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077584; cv=none; b=SyZjkQHf3NnMyg/lEbi2iERQTZe0Oa8E1t7vBUX5U9W5HGP8BVMzkfTZDeg8yHdFMAyZHVz8xfHmK7DJ+UPcIgnT6PJFoCxl6evDt46m83bMlgVV8OZ5vBHuK7+aVAinYUxK2FbKhwHOkFirb3WDdVNr6vT/z3wddNd5W6qKjCE=
+	t=1761077591; cv=none; b=H8OR3d31FfTZGoEoP3eokwuVJGqhz1JT3OPJA5UFT6DvUeJHy+7pG1QNxZS/f1ijwM/BobGTIGLKE57Q1v80jByv7/X3LMu8cktUZ8av5FhV6U2E7Fh6yfsEmERHmh9asGPTIjxGJAzQ8kmpZt/IMiA1Tr9I8sumyiKckYm4+O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077584; c=relaxed/simple;
-	bh=Cu1OH+hErbxXsoYZNyWus+jyTTIdJsFh8X3w0SXsyZo=;
+	s=arc-20240116; t=1761077591; c=relaxed/simple;
+	bh=zFXm7b16MmHwOesib5t4eOAiv1axvZrn0jP0gz9tjHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXpmrDTq91xw/B2wQdMsmbpW+8jTvWmJ/GoxfRWIpGEFvMZhR1A5NwpA0A5GOYz0D3XqFQPoInVVotM54/Mphrl4iZWa/dQRIIzJ7FlM0gGAG0cv/KYl7wYFs8shKwkeEWFqtvf1iPHOAWvbC1u1EtEqKcVVGU1IkSST6zY3MXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4Hf6gZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BD0C4CEF7;
-	Tue, 21 Oct 2025 20:13:03 +0000 (UTC)
+	 MIME-Version; b=liYBfPCtscuVdKo2Kb6XoJixBG/iKvnmxv0HnvS6TDI7lqfF1IMZEBFYHqTkIIdPFLCNOKloNDzzCOYdgjsbbRjexcgZPlsWKON4SHD/JymNuruR1rR4bbiPyub9Ivecu3Q29DOCJrXUgCnK0EzklBJxcQRQEIDLLjNQKCPW3iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDGvDxeC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BA6C4CEF1;
+	Tue, 21 Oct 2025 20:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077584;
-	bh=Cu1OH+hErbxXsoYZNyWus+jyTTIdJsFh8X3w0SXsyZo=;
+	s=korg; t=1761077591;
+	bh=zFXm7b16MmHwOesib5t4eOAiv1axvZrn0jP0gz9tjHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4Hf6gZbZ7NRZI4hRvUrBdAFpncl2z1v4CbCgYhNu6mly/U+R7pYrcnUiGV27tsIT
-	 F7uR9sDNJ6Z6kK9IQLcfO8H9bFob54TWjLTOO+Mo2afTPfGaoZvk70NAyNb6+x5f+j
-	 bEthmE7IirVbGa8Nx3+c9NyNFGGI3oJDGDIqKxLw=
+	b=cDGvDxeCQWJHBwt6sgkaiwS00qEMx6inNScSGbnopwYbf3YDLrgGs8wNJx/PGh+kD
+	 Sphaxw7rxAqQnDodNMmo3ts5vY8PumAY0xROFg0uRQVFBU70kbvBKkjHyLMj5ZOroY
+	 /gi6GyyWAUBTEbDkoesaV7+hXeW7Zmmvmkztl2mY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gourry@gourry.net>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Harikrishna Shenoy <h-shenoy@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 152/159] cxl: Fix match_region_by_range() to use region_res_match_cxl_range()
-Date: Tue, 21 Oct 2025 21:52:09 +0200
-Message-ID: <20251021195046.830582334@linuxfoundation.org>
+Subject: [PATCH 6.17 153/159] phy: cadence: cdns-dphy: Update calibration wait time for startup state machine
+Date: Tue, 21 Oct 2025 21:52:10 +0200
+Message-ID: <20251021195046.855516196@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
 References: <20251021195043.182511864@linuxfoundation.org>
@@ -68,57 +68,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Devarsh Thakkar <devarsht@ti.com>
 
-[ Upstream commit f4d027921c811ff7fc16e4d03c6bbbf4347cf37a ]
+[ Upstream commit 2c27aaee934a1b5229152fe33a14f1fdf50da143 ]
 
-match_region_by_range() is not using the helper function that also takes
-extended linear cache size into account when comparing regions. This
-causes a x2 region to show up as 2 partial incomplete regions rather
-than a single CXL region with extended linear cache support. Replace
-the open coded compare logic with the proper helper function for
-comparison. User visible impact is that when 'cxl list' is issued,
-no activa CXL region(s) are shown. There may be multiple idle regions
-present. No actual active CXL region is present in the kernel.
+Do read-modify-write so that we re-use the characterized reset value as
+specified in TRM [1] to program calibration wait time which defines number
+of cycles to wait for after startup state machine is in bandgap enable
+state.
 
-[dj: Fix stable address]
+This fixes PLL lock timeout error faced while using RPi DSI Panel on TI's
+AM62L and J721E SoC since earlier calibration wait time was getting
+overwritten to zero value thus failing the PLL to lockup and causing
+timeout.
 
-Fixes: 0ec9849b6333 ("acpi/hmat / cxl: Add extended linear cache support for CXL")
+[1] AM62P TRM (Section 14.8.6.3.2.1.1 DPHY_TX_DPHYTX_CMN0_CMN_DIG_TBIT2):
+Link: https://www.ti.com/lit/pdf/spruj83
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-[ constify struct range ]
+Fixes: 7a343c8bf4b5 ("phy: Add Cadence D-PHY support")
+Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+Tested-by: Harikrishna Shenoy <h-shenoy@ti.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250704125915.1224738-3-devarsht@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/region.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/phy/cadence/cdns-dphy.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -831,7 +831,7 @@ static int match_free_decoder(struct dev
- }
+--- a/drivers/phy/cadence/cdns-dphy.c
++++ b/drivers/phy/cadence/cdns-dphy.c
+@@ -30,6 +30,7 @@
  
- static bool region_res_match_cxl_range(const struct cxl_region_params *p,
--				       struct range *range)
-+				       const struct range *range)
- {
- 	if (!p->res)
- 		return false;
-@@ -3287,10 +3287,7 @@ static int match_region_by_range(struct
- 	p = &cxlr->params;
+ #define DPHY_CMN_SSM			DPHY_PMA_CMN(0x20)
+ #define DPHY_CMN_SSM_EN			BIT(0)
++#define DPHY_CMN_SSM_CAL_WAIT_TIME	GENMASK(8, 1)
+ #define DPHY_CMN_TX_MODE_EN		BIT(9)
  
- 	guard(rwsem_read)(&cxl_rwsem.region);
--	if (p->res && p->res->start == r->start && p->res->end == r->end)
--		return 1;
--
--	return 0;
-+	return region_res_match_cxl_range(p, r);
- }
+ #define DPHY_CMN_PWM			DPHY_PMA_CMN(0x40)
+@@ -421,7 +422,8 @@ static int cdns_dphy_power_on(struct phy
+ 	writel(reg, dphy->regs + DPHY_BAND_CFG);
  
- static int cxl_extended_linear_cache_resize(struct cxl_region *cxlr,
+ 	/* Start TX state machine. */
+-	writel(DPHY_CMN_SSM_EN | DPHY_CMN_TX_MODE_EN,
++	reg = readl(dphy->regs + DPHY_CMN_SSM);
++	writel((reg & DPHY_CMN_SSM_CAL_WAIT_TIME) | DPHY_CMN_SSM_EN | DPHY_CMN_TX_MODE_EN,
+ 	       dphy->regs + DPHY_CMN_SSM);
+ 
+ 	ret = cdns_dphy_wait_for_pll_lock(dphy);
 
 
 
