@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-188450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A91BF8586
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C796BF8788
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:01:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2F144F505A
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BD7B3A8E22
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AD9273D7B;
-	Tue, 21 Oct 2025 19:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2870D261B8C;
+	Tue, 21 Oct 2025 20:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNIW2093"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ustewprg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C5926738B;
-	Tue, 21 Oct 2025 19:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76748528E;
+	Tue, 21 Oct 2025 20:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076447; cv=none; b=c4NVpSosDfuP7TKzgNLpKLsVLP+l5PeWgwYPTTMDaY8ZfMtfwBt8NL0SjRIfLLsEvzrVokV8Lma8P4T2krfZaVMglF6zxo7kijY7a4OYsVjBW//+SbrtOEE3xaEXUeMoqzTcXFIe7AbxhaNkdxdm4b4AAguEnIYHJczYgox+LZw=
+	t=1761076846; cv=none; b=BNFuTFHLHAsmE528F32E93W2Ht4zHdvmfFzbftKgWkQ+NfJWUcjkWiPiXJVtmlVJP7KXe6+sKF92/maFkojgBu5i7rOuNEBpQpvY9GygaxZ07rvv++WI43vj69zWDMDbDwIY8byimtS/I/DqPmlM24842L/ClN+5+t4p091i4wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076447; c=relaxed/simple;
-	bh=WFdroiBYogNRKrHRAnfAZAuGWaijCZKzJof47kXhMC0=;
+	s=arc-20240116; t=1761076846; c=relaxed/simple;
+	bh=iPalggLNQv8cll3df0daoX8cQg8XvW35Wfmmb7Hf/Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q+uIc0/BxFNkoP7ezZRBeM0Ofm9bKJD4d+MVG+2+2syOg5NuYtr2YvyKFlFPLOLkALSdAC0qzfWd5Pw4k1HuAC+UOUNGuqQPEdGGqOORWzVYFMLZylRMvWW/U1ilu23c1H8fAHeONOlPt4JqV8OLFmCPjVggmNTKUvZOAl4DXno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNIW2093; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BD9C4CEF7;
-	Tue, 21 Oct 2025 19:54:06 +0000 (UTC)
+	 MIME-Version; b=d7FM+au9oahDQRC0rIlEQHd6vKBXiR8iGEr2FRtsZ8VoT5Astfas9e07dAKOv4p01RWmKPRAEoeKg4CdAa7RTxQusy5rvvUKuzejPoMwmwdbxqln3kHhHtmpffuhTqUIY8XVQLEb1+hwptTiUj+1M8faajd8d6sMhupQpLx2lA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ustewprg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6F6C4CEF1;
+	Tue, 21 Oct 2025 20:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076447;
-	bh=WFdroiBYogNRKrHRAnfAZAuGWaijCZKzJof47kXhMC0=;
+	s=korg; t=1761076846;
+	bh=iPalggLNQv8cll3df0daoX8cQg8XvW35Wfmmb7Hf/Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YNIW2093MPCAXL9XJLIgM4/US2gdOQ5exTwABkVjx9hfR54Sk/GmmG1NyKC3pcxhY
-	 QA30H3uH4+XHCsGpYhxc492xyjl1gRjBRvCXLl5k6X40RuGNIg9+PR6ftpYqDbzVW1
-	 6uQSa9bR5fpCDQsa4jnnpwsTV55IfshPX9joARKI=
+	b=ustewprgfFFcv8oWz76P1h0HviApgn0F+jRGjbda/k+vfkojjM466t8utAJpyGThi
+	 G1o58OrE2YDqDvW/KN9R7n9bjb8z3TjOnFtmdqufr6hTajm9HdBwcoujhn06e4Xevs
+	 XMytJh2CkMSAKmpzXDzRFmPx4/OM7ksF0flFKzYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrik Flykt <patrik.flykt@linux.intel.com>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Marios Makassikis <mmakassikis@freebox.fr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/105] can: m_can: m_can_plat_remove(): add missing pm_runtime_disable()
+Subject: [PATCH 6.12 057/136] ksmbd: fix recursive locking in RPC handle list access
 Date: Tue, 21 Oct 2025 21:50:45 +0200
-Message-ID: <20251021195022.550879315@linuxfoundation.org>
+Message-ID: <20251021195037.352496637@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
-[ Upstream commit ba569fb07a7e9e9b71e9282e27e993ba859295c2 ]
+[ Upstream commit 88f170814fea74911ceab798a43cbd7c5599bed4 ]
 
-Commit 227619c3ff7c ("can: m_can: move runtime PM enable/disable to
-m_can_platform") moved the PM runtime enable from the m_can core
-driver into the m_can_platform.
+Since commit 305853cce3794 ("ksmbd: Fix race condition in RPC handle list
+access"), ksmbd_session_rpc_method() attempts to lock sess->rpc_lock.
 
-That patch forgot to move the pm_runtime_disable() to
-m_can_plat_remove(), so that unloading the m_can_platform driver
-causes an "Unbalanced pm_runtime_enable!" error message.
+This causes hung connections / tasks when a client attempts to open
+a named pipe. Using Samba's rpcclient tool:
 
-Add the missing pm_runtime_disable() to m_can_plat_remove() to fix the
-problem.
+ $ rpcclient //192.168.1.254 -U user%password
+ $ rpcclient $> srvinfo
+ <connection hung here>
 
-Cc: Patrik Flykt <patrik.flykt@linux.intel.com>
-Fixes: 227619c3ff7c ("can: m_can: move runtime PM enable/disable to m_can_platform")
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Link: https://patch.msgid.link/20250929-m_can-fix-state-handling-v4-1-682b49b49d9a@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Kernel side:
+  "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+  task:kworker/0:0 state:D stack:0 pid:5021 tgid:5021 ppid:2 flags:0x00200000
+  Workqueue: ksmbd-io handle_ksmbd_work
+  Call trace:
+  __schedule from schedule+0x3c/0x58
+  schedule from schedule_preempt_disabled+0xc/0x10
+  schedule_preempt_disabled from rwsem_down_read_slowpath+0x1b0/0x1d8
+  rwsem_down_read_slowpath from down_read+0x28/0x30
+  down_read from ksmbd_session_rpc_method+0x18/0x3c
+  ksmbd_session_rpc_method from ksmbd_rpc_open+0x34/0x68
+  ksmbd_rpc_open from ksmbd_session_rpc_open+0x194/0x228
+  ksmbd_session_rpc_open from create_smb2_pipe+0x8c/0x2c8
+  create_smb2_pipe from smb2_open+0x10c/0x27ac
+  smb2_open from handle_ksmbd_work+0x238/0x3dc
+  handle_ksmbd_work from process_scheduled_works+0x160/0x25c
+  process_scheduled_works from worker_thread+0x16c/0x1e8
+  worker_thread from kthread+0xa8/0xb8
+  kthread from ret_from_fork+0x14/0x38
+  Exception stack(0x8529ffb0 to 0x8529fff8)
+
+The task deadlocks because the lock is already held:
+  ksmbd_session_rpc_open
+    down_write(&sess->rpc_lock)
+    ksmbd_rpc_open
+      ksmbd_session_rpc_method
+        down_read(&sess->rpc_lock)   <-- deadlock
+
+Adjust ksmbd_session_rpc_method() callers to take the lock when necessary.
+
+Fixes: 305853cce3794 ("ksmbd: Fix race condition in RPC handle list access")
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/m_can/m_can_platform.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/mgmt/user_session.c |  7 ++-----
+ fs/smb/server/smb2pdu.c           |  9 ++++++++-
+ fs/smb/server/transport_ipc.c     | 12 ++++++++++++
+ 3 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/can/m_can/m_can_platform.c b/drivers/net/can/m_can/m_can_platform.c
-index cdb28d6a092c6..e5477775992e6 100644
---- a/drivers/net/can/m_can/m_can_platform.c
-+++ b/drivers/net/can/m_can/m_can_platform.c
-@@ -183,7 +183,7 @@ static void m_can_plat_remove(struct platform_device *pdev)
- 	struct m_can_classdev *mcan_class = &priv->cdev;
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index b36d0676dbe58..00805aed0b07d 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -147,14 +147,11 @@ void ksmbd_session_rpc_close(struct ksmbd_session *sess, int id)
+ int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id)
+ {
+ 	struct ksmbd_session_rpc *entry;
+-	int method;
  
- 	m_can_class_unregister(mcan_class);
--
-+	pm_runtime_disable(mcan_class->dev);
- 	m_can_class_free_dev(mcan_class->net);
+-	down_read(&sess->rpc_lock);
++	lockdep_assert_held(&sess->rpc_lock);
+ 	entry = xa_load(&sess->rpc_handle_list, id);
+-	method = entry ? entry->method : 0;
+-	up_read(&sess->rpc_lock);
+ 
+-	return method;
++	return entry ? entry->method : 0;
  }
  
+ void ksmbd_session_destroy(struct ksmbd_session *sess)
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index d2182477566a6..796235cb95677 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4623,8 +4623,15 @@ static int smb2_get_info_file_pipe(struct ksmbd_session *sess,
+ 	 * pipe without opening it, checking error condition here
+ 	 */
+ 	id = req->VolatileFileId;
+-	if (!ksmbd_session_rpc_method(sess, id))
++
++	lockdep_assert_not_held(&sess->rpc_lock);
++
++	down_read(&sess->rpc_lock);
++	if (!ksmbd_session_rpc_method(sess, id)) {
++		up_read(&sess->rpc_lock);
+ 		return -ENOENT;
++	}
++	up_read(&sess->rpc_lock);
+ 
+ 	ksmbd_debug(SMB, "FileInfoClass %u, FileId 0x%llx\n",
+ 		    req->FileInfoClass, req->VolatileFileId);
+diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
+index 4454bbe3c7107..816f136ce5c4e 100644
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -825,6 +825,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_write(struct ksmbd_session *sess, int handle
+ 	if (!msg)
+ 		return NULL;
+ 
++	lockdep_assert_not_held(&sess->rpc_lock);
++
++	down_read(&sess->rpc_lock);
+ 	msg->type = KSMBD_EVENT_RPC_REQUEST;
+ 	req = (struct ksmbd_rpc_command *)msg->payload;
+ 	req->handle = handle;
+@@ -833,6 +836,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_write(struct ksmbd_session *sess, int handle
+ 	req->flags |= KSMBD_RPC_WRITE_METHOD;
+ 	req->payload_sz = payload_sz;
+ 	memcpy(req->payload, payload, payload_sz);
++	up_read(&sess->rpc_lock);
+ 
+ 	resp = ipc_msg_send_request(msg, req->handle);
+ 	ipc_msg_free(msg);
+@@ -849,6 +853,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_read(struct ksmbd_session *sess, int handle)
+ 	if (!msg)
+ 		return NULL;
+ 
++	lockdep_assert_not_held(&sess->rpc_lock);
++
++	down_read(&sess->rpc_lock);
+ 	msg->type = KSMBD_EVENT_RPC_REQUEST;
+ 	req = (struct ksmbd_rpc_command *)msg->payload;
+ 	req->handle = handle;
+@@ -856,6 +863,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_read(struct ksmbd_session *sess, int handle)
+ 	req->flags |= rpc_context_flags(sess);
+ 	req->flags |= KSMBD_RPC_READ_METHOD;
+ 	req->payload_sz = 0;
++	up_read(&sess->rpc_lock);
+ 
+ 	resp = ipc_msg_send_request(msg, req->handle);
+ 	ipc_msg_free(msg);
+@@ -876,6 +884,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_ioctl(struct ksmbd_session *sess, int handle
+ 	if (!msg)
+ 		return NULL;
+ 
++	lockdep_assert_not_held(&sess->rpc_lock);
++
++	down_read(&sess->rpc_lock);
+ 	msg->type = KSMBD_EVENT_RPC_REQUEST;
+ 	req = (struct ksmbd_rpc_command *)msg->payload;
+ 	req->handle = handle;
+@@ -884,6 +895,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_ioctl(struct ksmbd_session *sess, int handle
+ 	req->flags |= KSMBD_RPC_IOCTL_METHOD;
+ 	req->payload_sz = payload_sz;
+ 	memcpy(req->payload, payload, payload_sz);
++	up_read(&sess->rpc_lock);
+ 
+ 	resp = ipc_msg_send_request(msg, req->handle);
+ 	ipc_msg_free(msg);
 -- 
 2.51.0
 
