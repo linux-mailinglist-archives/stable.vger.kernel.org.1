@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-188550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1FDBF8706
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 624B7BF8740
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 68AC94F81D5
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:59:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98799427D1A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22BB274B30;
-	Tue, 21 Oct 2025 19:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA79227510E;
+	Tue, 21 Oct 2025 19:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmF9Liif"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7a/Nhfw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5A3350A2A;
-	Tue, 21 Oct 2025 19:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D40274B30;
+	Tue, 21 Oct 2025 19:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076763; cv=none; b=T9m4yHOz1CvPQ/DbexoGkpKTkKLoX/WM+9KVimpr8BOvUFaxY3yUCdr7JqkP967TJEN1c5+U3XZ/AV8ad8XtZ0m3VmGJyND1dmyvtulVav5OBKXMDdVhjhh8I+8KpfgAcOuGNxeCQ64L24o+JH/0JKNfQBnS8C1KuVNwi3SjBlo=
+	t=1761076798; cv=none; b=geXKZ7daIyvavBEIyzQU2N2v3aqgt7ktfOL3b4+NB9wMh7Lt0Alcpf2p0ZQoHEyIfCpzt3JLs7PtYK4b5rHtuYbxIYgFI8WBpfKI70USflt5gA3cA3Ht4qqcwsTG0Ofw0YOpIKc/IwXHZKLjgtjvL3QFe8Ke7W4yjWxggfuKUsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076763; c=relaxed/simple;
-	bh=IYsvDpUcIkw1Quog69FtGK8M3DiAl+FfFcyYLA5PPhU=;
+	s=arc-20240116; t=1761076798; c=relaxed/simple;
+	bh=dr7vos+97ZbW14yHpihcD9M0nWEw5OfzlOfFTwLao7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oiX/xljqLAl+7hAalQ298LZj3FH2jVKPaIbG9L94DsZ2i+qZ6l59mIjQdO7EPvw7z2pCYxPxQKa/4IJIDnsOgvGeVptwxbfPAxFfH6ozLkAiHbChszuhawL4609LSygvL4zM1UBbqZ3hZrIRAauPAarlOXAQAmnE5kNpVN8DHMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmF9Liif; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0926AC4CEF1;
-	Tue, 21 Oct 2025 19:59:22 +0000 (UTC)
+	 MIME-Version; b=l1HZrhUmc8at5TnbHB0jdb0oNN/UjOyLCdY1Y/W5fkfoIV8rG7bI3KX3M6VSA8ZeWVIfRi8f8EcCr9LLOhWucRn7d9bCj1eD9s3ggYLv8rQ+2b/DUbIoyNIO2eCpQqnqEAiIsgCzb+R/m2L7V0uf21iTo9Wp4t/pUoFlfxFqIOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7a/Nhfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B640C4CEF1;
+	Tue, 21 Oct 2025 19:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076763;
-	bh=IYsvDpUcIkw1Quog69FtGK8M3DiAl+FfFcyYLA5PPhU=;
+	s=korg; t=1761076798;
+	bh=dr7vos+97ZbW14yHpihcD9M0nWEw5OfzlOfFTwLao7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmF9Liif+I27yB7Ea/GzU0LZqEDIOCzSxC+4IAEorjmq+VD1YFmMbL5Epadn5hI6Q
-	 LLfj7vgasvCeO6FHc0Yb0c07yGKzfL0j6xYL0/Bj7m5PHYpiDNfwKQwl1SKjXxdXB7
-	 Je5x0ht4AQtrENmJtpXjpeaoaHx55qOSN0r6aqHI=
+	b=o7a/NhfwprfXCCs0kO0rxS1PQPvQQFn647hHNTHDs57Q3r9jTq5bTm/InhcnnePck
+	 /lvsFQ006JMzblINRFc/cZP+HFX8Maz7x4GOc1ir9VtDo4DC0hieB16eilHxFW6565
+	 utR28CwBq0mty3Xu+xu2WNn8e/Mz8pWcMM0KFQRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 003/136] smb: client: Fix refcount leak for cifs_sb_tlink
-Date: Tue, 21 Oct 2025 21:49:51 +0200
-Message-ID: <20251021195036.036928680@linuxfoundation.org>
+	Hao Ge <gehao@kylinos.cn>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.12 004/136] slab: reset slab->obj_ext when freeing and it is OBJEXTS_ALLOC_FAIL
+Date: Tue, 21 Oct 2025 21:49:52 +0200
+Message-ID: <20251021195036.063946102@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
 References: <20251021195035.953989698@linuxfoundation.org>
@@ -65,81 +67,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shuhao Fu <sfual@cse.ust.hk>
+From: Hao Ge <gehao@kylinos.cn>
 
-commit c2b77f42205ef485a647f62082c442c1cd69d3fc upstream.
+commit 86f54f9b6c17d6567c69e3a6fed52fdf5d7dbe93 upstream.
 
-Fix three refcount inconsistency issues related to `cifs_sb_tlink`.
+If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
+But we do not clear it when freeing the slab. Since OBJEXTS_ALLOC_FAIL and
+MEMCG_DATA_OBJEXTS currently share the same bit position, during the
+release of the associated folio, a VM_BUG_ON_FOLIO() check in
+folio_memcg_kmem() is triggered because the OBJEXTS_ALLOC_FAIL flag was
+not cleared, causing it to be interpreted as a kmem folio (non-slab)
+with MEMCG_OBJEXTS_DATA flag set, which is invalid because
+MEMCG_OBJEXTS_DATA is supposed to be set only on slabs.
 
-Comments for `cifs_sb_tlink` state that `cifs_put_tlink()` needs to be
-called after successful calls to `cifs_sb_tlink()`. Three calls fail to
-update refcount accordingly, leading to possible resource leaks.
+Another problem that predates sharing the OBJEXTS_ALLOC_FAIL and
+MEMCG_DATA_OBJEXTS bits is that on configurations with
+is_check_pages_enabled(), the non-cleared bit in page->memcg_data will
+trigger a free_page_is_bad() failure "page still charged to cgroup"
 
-Fixes: 8ceb98437946 ("CIFS: Move rename to ops struct")
-Fixes: 2f1afe25997f ("cifs: Use smb 2 - 3 and cifsacl mount options getacl functions")
-Fixes: 366ed846df60 ("cifs: Use smb 2 - 3 and cifsacl mount options setacl function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+When freeing a slab, we clear slab->obj_exts if the obj_ext array has
+been successfully allocated. So let's clear it also when the allocation
+has failed.
+
+Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to mark failed slab_ext allocations")
+Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
+Link: https://lore.kernel.org/all/20251015141642.700170-1-hao.ge@linux.dev/
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Hao Ge <gehao@kylinos.cn>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/inode.c   |    6 ++++--
- fs/smb/client/smb2ops.c |    8 ++++----
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ mm/slub.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -2381,8 +2381,10 @@ cifs_do_rename(const unsigned int xid, s
- 	tcon = tlink_tcon(tlink);
- 	server = tcon->ses->server;
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2038,8 +2038,15 @@ static inline void free_slab_obj_exts(st
+ 	struct slabobj_ext *obj_exts;
  
--	if (!server->ops->rename)
--		return -ENOSYS;
-+	if (!server->ops->rename) {
-+		rc = -ENOSYS;
-+		goto do_rename_exit;
+ 	obj_exts = slab_obj_exts(slab);
+-	if (!obj_exts)
++	if (!obj_exts) {
++		/*
++		 * If obj_exts allocation failed, slab->obj_exts is set to
++		 * OBJEXTS_ALLOC_FAIL. In this case, we end up here and should
++		 * clear the flag.
++		 */
++		slab->obj_exts = 0;
+ 		return;
 +	}
  
- 	/* try path-based rename first */
- 	rc = server->ops->rename(xid, tcon, from_dentry,
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3134,8 +3134,7 @@ get_smb2_acl_by_path(struct cifs_sb_info
- 	utf16_path = cifs_convert_path_to_utf16(path, cifs_sb);
- 	if (!utf16_path) {
- 		rc = -ENOMEM;
--		free_xid(xid);
--		return ERR_PTR(rc);
-+		goto put_tlink;
- 	}
- 
- 	oparms = (struct cifs_open_parms) {
-@@ -3167,6 +3166,7 @@ get_smb2_acl_by_path(struct cifs_sb_info
- 		SMB2_close(xid, tcon, fid.persistent_fid, fid.volatile_fid);
- 	}
- 
-+put_tlink:
- 	cifs_put_tlink(tlink);
- 	free_xid(xid);
- 
-@@ -3207,8 +3207,7 @@ set_smb2_acl(struct smb_ntsd *pnntsd, __
- 	utf16_path = cifs_convert_path_to_utf16(path, cifs_sb);
- 	if (!utf16_path) {
- 		rc = -ENOMEM;
--		free_xid(xid);
--		return rc;
-+		goto put_tlink;
- 	}
- 
- 	oparms = (struct cifs_open_parms) {
-@@ -3229,6 +3228,7 @@ set_smb2_acl(struct smb_ntsd *pnntsd, __
- 		SMB2_close(xid, tcon, fid.persistent_fid, fid.volatile_fid);
- 	}
- 
-+put_tlink:
- 	cifs_put_tlink(tlink);
- 	free_xid(xid);
- 	return rc;
+ 	/*
+ 	 * obj_exts was created with __GFP_NO_OBJ_EXT flag, therefore its
 
 
 
