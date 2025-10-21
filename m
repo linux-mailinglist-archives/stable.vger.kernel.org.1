@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-188629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820FDBF87E2
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:03:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0585ABF8661
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:57:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6D2B2353116
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:03:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A34694F9E38
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125302652AC;
-	Tue, 21 Oct 2025 20:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61341275B15;
+	Tue, 21 Oct 2025 19:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLlY2we/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/YhfQbV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C384B134AC;
-	Tue, 21 Oct 2025 20:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE52274B44;
+	Tue, 21 Oct 2025 19:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077015; cv=none; b=tXrfNHBYmjHf/dy8KcY8e0Tvu5msjJG1rJvbmLfVb4WjWaivV6qo7V54e0Hg1/j65i0AHe7lsSxY+02Ad3+SM5PlsSqIcvUXp2d7+jn13x1E2QTj7WcyfbrPDbWcSg0Ap4nbWctnmIQZ7RQjg4X2vvq38YzDF6kSNK3acEJPk/U=
+	t=1761076620; cv=none; b=hs+qtxZjpWC81lk/5K8JJ1pFLlsFV6sVG3uWg02F0k0MI/BJRaUoYIHO2knHOEm6g/ulPCNg5ZtEN+xgGevzpwLKdCK3I+iaM3AbIu1V8VTvtHt0Mv9sNwMbtcslXLSX8bVBLd9RWKYu4DZEcvCxETA1YqZYA9VaMw3RhHAKnMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077015; c=relaxed/simple;
-	bh=pTVfSLxQyJj6MKM0ZKEX2Bj9kopSSx92QHZzVTb3vHA=;
+	s=arc-20240116; t=1761076620; c=relaxed/simple;
+	bh=J+1+dF1tVLBbd/2NGWukJ0ppl2bDYHx1uo0xGmAZZdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOnkwa6yt3+LNJPtfpA9e+4LyWvwIQBSKhlfxi6OOTtb/PazAc++aiaTREYY97fwVAHPb6Th1uXDzWhnvwwMU0k6hLwrvWM2HTDBEiex5wEWyTpeGyLhv86VPA4tGl8ZcgGNJv/MmZVELhkxmiIffPZ5/rtfV76RCCvefvZaElo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLlY2we/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F434C4CEF1;
-	Tue, 21 Oct 2025 20:03:35 +0000 (UTC)
+	 MIME-Version; b=uRCCtd0Ns59eHU2MaYKTNQy4KOjIuT41n8H2NCJQcUALllC7K8571cOaE0uLNHdhfVsPn/xN/BQVnyktSoEq4y6TChLhLav5GxZPP9VwRiW4nE/+rDYw4MkB4XdZL+z3vHxce52nHpBE9PSPbdJjQpbdKQfXyUwWf+tRcSjFUVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/YhfQbV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B59C4CEF1;
+	Tue, 21 Oct 2025 19:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077015;
-	bh=pTVfSLxQyJj6MKM0ZKEX2Bj9kopSSx92QHZzVTb3vHA=;
+	s=korg; t=1761076619;
+	bh=J+1+dF1tVLBbd/2NGWukJ0ppl2bDYHx1uo0xGmAZZdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SLlY2we/JbW0XuF5GH1lLrfFk2JkxmGOaTPn2sNx9AoA66f6Wd4re7mAUwo94cwKk
-	 QuqOTxAAaZBjuRi6zY7utmx22Rou+fTaSS6mD5I4sXOetK5LZkfz7OGQhL5c4scv4n
-	 WzQF9gHvW5xrak1bAZABEymoKqXriB2geaMSuMq4=
+	b=V/YhfQbVlrnXvYuHRwCJ1HsNrE2YM4gmtRBpgi7rT2JCEq1ktjJNkzemVMCkJlGx+
+	 tpRNdgokROFqnwIBzYzbGUetR7XM77pOthh0p9mCe8gpnyBKTqflxtw/pK0l5Wtb+s
+	 DmPMTdYIPpCETLETvyCau6JeDbH16CBF5a6FOtUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Liang <shaw.leon@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Shashank A P <shashank.ap@samsung.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/136] padata: Reset next CPU when reorder sequence wraps around
-Date: Tue, 21 Oct 2025 21:51:38 +0200
-Message-ID: <20251021195038.610513580@linuxfoundation.org>
+Subject: [PATCH 6.6 090/105] fs: quota: create dedicated workqueue for quota_release_work
+Date: Tue, 21 Oct 2025 21:51:39 +0200
+Message-ID: <20251021195023.787915016@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiao Liang <shaw.leon@gmail.com>
+From: Shashank A P <shashank.ap@samsung.com>
 
-[ Upstream commit 501302d5cee0d8e8ec2c4a5919c37e0df9abc99b ]
+[ Upstream commit 72b7ceca857f38a8ca7c5629feffc63769638974 ]
 
-When seq_nr wraps around, the next reorder job with seq 0 is hashed to
-the first CPU in padata_do_serial(). Correspondingly, need reset pd->cpu
-to the first one when pd->processed wraps around. Otherwise, if the
-number of used CPUs is not a power of 2, padata_find_next() will be
-checking a wrong list, hence deadlock.
+There is a kernel panic due to WARN_ONCE when panic_on_warn is set.
 
-Fixes: 6fc4dbcf0276 ("padata: Replace delayed timer with immediate workqueue in padata_reorder")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ relocated fix to padata_find_next() using pd->processed and pd->cpu structure fields ]
+This issue occurs when writeback is triggered due to sync call for an
+opened file(ie, writeback reason is WB_REASON_SYNC). When f2fs balance
+is needed at sync path, flush for quota_release_work is triggered.
+By default quota_release_work is queued to "events_unbound" queue which
+does not have WQ_MEM_RECLAIM flag. During f2fs balance "writeback"
+workqueue tries to flush quota_release_work causing kernel panic due to
+MEM_RECLAIM flag mismatch errors.
+
+This patch creates dedicated workqueue with WQ_MEM_RECLAIM flag
+for work quota_release_work.
+
+------------[ cut here ]------------
+WARNING: CPU: 4 PID: 14867 at kernel/workqueue.c:3721 check_flush_dependency+0x13c/0x148
+Call trace:
+ check_flush_dependency+0x13c/0x148
+ __flush_work+0xd0/0x398
+ flush_delayed_work+0x44/0x5c
+ dquot_writeback_dquots+0x54/0x318
+ f2fs_do_quota_sync+0xb8/0x1a8
+ f2fs_write_checkpoint+0x3cc/0x99c
+ f2fs_gc+0x190/0x750
+ f2fs_balance_fs+0x110/0x168
+ f2fs_write_single_data_page+0x474/0x7dc
+ f2fs_write_data_pages+0x7d0/0xd0c
+ do_writepages+0xe0/0x2f4
+ __writeback_single_inode+0x44/0x4ac
+ writeback_sb_inodes+0x30c/0x538
+ wb_writeback+0xf4/0x440
+ wb_workfn+0x128/0x5d4
+ process_scheduled_works+0x1c4/0x45c
+ worker_thread+0x32c/0x3e8
+ kthread+0x11c/0x1b0
+ ret_from_fork+0x10/0x20
+Kernel panic - not syncing: kernel: panic_on_warn set ...
+
+Fixes: ac6f420291b3 ("quota: flush quota_release_work upon quota writeback")
+CC: stable@vger.kernel.org
+Signed-off-by: Shashank A P <shashank.ap@samsung.com>
+Link: https://patch.msgid.link/20250901092905.2115-1-shashank.ap@samsung.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/padata.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/quota/dquot.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -290,7 +290,11 @@ static struct padata_priv *padata_find_n
- 	if (remove_object) {
- 		list_del_init(&padata->list);
- 		++pd->processed;
--		pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
-+		/* When sequence wraps around, reset to the first CPU. */
-+		if (unlikely(pd->processed == 0))
-+			pd->cpu = cpumask_first(pd->cpumask.pcpu);
-+		else
-+			pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
- 	}
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -163,6 +163,9 @@ static struct quota_module_name module_n
+ /* SLAB cache for dquot structures */
+ static struct kmem_cache *dquot_cachep;
  
- 	spin_unlock(&reorder->lock);
++/* workqueue for work quota_release_work*/
++static struct workqueue_struct *quota_unbound_wq;
++
+ void register_quota_format(struct quota_format_type *fmt)
+ {
+ 	spin_lock(&dq_list_lock);
+@@ -891,7 +894,7 @@ void dqput(struct dquot *dquot)
+ 	put_releasing_dquots(dquot);
+ 	atomic_dec(&dquot->dq_count);
+ 	spin_unlock(&dq_list_lock);
+-	queue_delayed_work(system_unbound_wq, &quota_release_work, 1);
++	queue_delayed_work(quota_unbound_wq, &quota_release_work, 1);
+ }
+ EXPORT_SYMBOL(dqput);
+ 
+@@ -3046,6 +3049,11 @@ static int __init dquot_init(void)
+ 	if (register_shrinker(&dqcache_shrinker, "dquota-cache"))
+ 		panic("Cannot register dquot shrinker");
+ 
++	quota_unbound_wq = alloc_workqueue("quota_events_unbound",
++					   WQ_UNBOUND | WQ_MEM_RECLAIM, WQ_MAX_ACTIVE);
++	if (!quota_unbound_wq)
++		panic("Cannot create quota_unbound_wq\n");
++
+ 	return 0;
+ }
+ fs_initcall(dquot_init);
 
 
 
