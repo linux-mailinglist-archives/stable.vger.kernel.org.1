@@ -1,94 +1,173 @@
-Return-Path: <stable+bounces-188835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0394BF8E63
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 23:08:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A03BF8EBE
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 23:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1EFA1345BA7
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:08:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ABD074F72EC
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383BF28506C;
-	Tue, 21 Oct 2025 21:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C4127FB1E;
+	Tue, 21 Oct 2025 21:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="LB9EkbVY"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="iyW6QSN2"
 X-Original-To: stable@vger.kernel.org
-Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6705D28506B
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 21:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B65A27BF7C;
+	Tue, 21 Oct 2025 21:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761080903; cv=none; b=LG3P1MZOvT0GGNo4ps/PZMwopGFNQpNx97WKp7zVOFJ21iL3FEDMQ3GpWM2EcLFj8LtLjcB3e7xWKDVRKnrZdRsno0pQGHMCfUrySs9PiQ4IWBUyiscWsSMyOIANoZhBweVaFq588r5QSDp9/x94tqZYgMoWoM05qaCMr0CpYOk=
+	t=1761081439; cv=none; b=oB/6JPmpHZ0UnGulCZ9/0tl+s5CI2mHmH1W6rGbmaee9EZAfcZevKxocw5MRGQyShmndSnLoGos1K6cxc94cfiqxpwwk7p0YvTxSVKuTTyfErGIzmd9OVE7oGH2OtgPt3LFcCQnzvI3ZxX/cM0Dhifv72u8w6yYkhOCbisxVbNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761080903; c=relaxed/simple;
-	bh=2VQ6nTz/SOAwoFUxbYpiUjOxfPfx0sJdgIyJh1gwDUc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Hr30iedlPwu7gmvA7VID4CXEwJ+RwiD8IV6QK0d7Qia8j4NpjtzafePKZw9whkaBoltW07VX2bR/vg4zhmMR5sKUjctAlBOTGOv++B8sfUnfOQYf6ltBD6bnEmKa78OF8TFFBwvtzcLLlu+SLoVnGyPkwdEiLB8szYTvoQx574k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=LB9EkbVY; arc=none smtp.client-ip=213.190.28.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
-	s=dkim_2024-02-03; t=1761080898;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2VQ6nTz/SOAwoFUxbYpiUjOxfPfx0sJdgIyJh1gwDUc=;
-	b=LB9EkbVYINvfchak0NzjB3YWDgUOFqy9LubpPkfU0yyHJE4T4EUkb4ZWueDZnHFPsmBqXh
-	+cnwSEZUrhX/xDCw==
-Message-ID: <19c7ba58-7300-4e10-bd81-367354f826db@hardfalcon.net>
-Date: Tue, 21 Oct 2025 23:08:17 +0200
+	s=arc-20240116; t=1761081439; c=relaxed/simple;
+	bh=Is8OEJ6yaeGMKzX6wgy8g+v6FK3EgTrTNTk8+DFwGxU=;
+	h=Date:To:From:Subject:Message-Id; b=CyK1rT1Ob9+oFz+u1dsf5CpC0qZdQzvSrUzYytwZhXdgk//u6OFDO2PksAdNj3JpSV3syFng3YrRQzuSQ6GPJtXZvIRN64AgPHjaGUfDk3IJc4beluu6JK1nNZYCy0RGw4SyxbEnHNDSsj4xILrn6QYSMdusaMd+0ayd4/3FR+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=iyW6QSN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF31C4CEF1;
+	Tue, 21 Oct 2025 21:17:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761081438;
+	bh=Is8OEJ6yaeGMKzX6wgy8g+v6FK3EgTrTNTk8+DFwGxU=;
+	h=Date:To:From:Subject:From;
+	b=iyW6QSN22+0ZVRlk7zhLVFEm7OBz2N78HMW1rJM+3sFskecmeT4+HhXuqfK581r+F
+	 2f2uocFkt4wQVJ75OfN4dv+uXGZUmYrHmfGqXRLaQRjgOzCnKGa85nRD60lX6XPw4/
+	 fnmnE7aUR4w2rVHZ4YBiq6KbDlRseuGW5XXcKIfo=
+Date: Tue, 21 Oct 2025 14:17:18 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,willy@infradead.org,stable@vger.kernel.org,ryan.roberts@arm.com,npache@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,hughd@google.com,dev.jain@arm.com,david@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-shmem-fix-thp-allocation-size-check-and-fallback.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251021211718.BEF31C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: Patch "PM: hibernate: Add pm_hibernation_mode_is_suspend()" has
- been added to the 6.17-stable tree
-To: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- Sasha Levin <sashal@kernel.org>
-References: <2025102032-crescent-acuteness-5060 () gregkh>
- <2745b827-b831-4964-8fc5-368f7446d73e@hardfalcon.net>
- <8c4d1326-512c-4b98-bac0-aa207b54aa2a@kernel.org>
-Content-Language: en-US, de-DE, en-US-large
-From: Pascal Ernster <git@hardfalcon.net>
-In-Reply-To: <8c4d1326-512c-4b98-bac0-aa207b54aa2a@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-[2025-10-21 22:45] Mario Limonciello (AMD) (kernel.org):
-> Are you cleaning your tree between builds?
 
 
-Yes.
+The patch titled
+     Subject: mm/shmem: fix THP allocation size check and fallback
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-shmem-fix-thp-allocation-size-check-and-fallback.patch
 
-I'm building custom kernel packages in a clean chroot for my private package repo. The kernel config and the PKGBUILD can be found here:
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-shmem-fix-thp-allocation-size-check-and-fallback.patch
 
-https://remotehost.online/linux-6.17.4/debug2/config
-https://remotehost.online/linux-6.17.4/debug2/PKGBUILD
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Here's a tarball that contains the PKGBUILD, the config, and all source files that I used:
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-https://remotehost.online/linux-6.17.4/debug2/linux-hardened-6.17.4.hardened0-0.src.tar.zst
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Here's a log of stdout and stderr of the build process:
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-https://remotehost.online/linux-6.17.4/debug2/stdout_stderr_combined.log
+------------------------------------------------------
+From: Kairui Song <kasong@tencent.com>
+Subject: mm/shmem: fix THP allocation size check and fallback
+Date: Wed, 22 Oct 2025 03:04:36 +0800
 
+There are some problems with the code implementations of THP fallback. 
+suitable_orders could be zero, and calling highest_order on a zero value
+returns an overflowed size.  And the order check loop is updating the
+index value on every loop which may cause the index to be aligned by a
+larger value while the loop shrinks the order.  And it forgot to try order
+0 after the final loop.
 
-Here's a fixed PKGBUILD that I used successfully to build my kernel packages:
+This is usually fine because shmem_add_to_page_cache ensures the shmem
+mapping is still sane, but it might cause many potential issues like
+allocating random folios into the random position in the map or return
+-ENOMEM by accident.  This triggered some strange userspace errors [1],
+and shouldn't have happened in the first place.
 
-https://remotehost.online/linux-6.17.4/debug2/PKGBUILD.fixed
+Link: https://lkml.kernel.org/r/20251021190436.81682-1-ryncsn@gmail.com
+Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
+Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-The only difference is that I've commented out the two patches from your patch set, and removed the corresponding sha256 sums.
+ mm/shmem.c |   26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
+--- a/mm/shmem.c~mm-shmem-fix-thp-allocation-size-check-and-fallback
++++ a/mm/shmem.c
+@@ -1824,6 +1824,9 @@ static unsigned long shmem_suitable_orde
+ 	unsigned long pages;
+ 	int order;
+ 
++	if (!orders)
++		return 0;
++
+ 	if (vma) {
+ 		orders = thp_vma_suitable_orders(vma, vmf->address, orders);
+ 		if (!orders)
+@@ -1888,27 +1891,28 @@ static struct folio *shmem_alloc_and_add
+ 	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+ 		orders = 0;
+ 
+-	if (orders > 0) {
+-		suitable_orders = shmem_suitable_orders(inode, vmf,
+-							mapping, index, orders);
++	suitable_orders = shmem_suitable_orders(inode, vmf,
++						mapping, index, orders);
+ 
++	if (suitable_orders) {
+ 		order = highest_order(suitable_orders);
+-		while (suitable_orders) {
++		do {
+ 			pages = 1UL << order;
+-			index = round_down(index, pages);
+-			folio = shmem_alloc_folio(gfp, order, info, index);
+-			if (folio)
++			folio = shmem_alloc_folio(gfp, order, info, round_down(index, pages));
++			if (folio) {
++				index = round_down(index, pages);
+ 				goto allocated;
++			}
+ 
+ 			if (pages == HPAGE_PMD_NR)
+ 				count_vm_event(THP_FILE_FALLBACK);
+ 			count_mthp_stat(order, MTHP_STAT_SHMEM_FALLBACK);
+ 			order = next_order(&suitable_orders, order);
+-		}
+-	} else {
+-		pages = 1;
+-		folio = shmem_alloc_folio(gfp, 0, info, index);
++		} while (suitable_orders);
+ 	}
++
++	pages = 1;
++	folio = shmem_alloc_folio(gfp, 0, info, index);
+ 	if (!folio)
+ 		return ERR_PTR(-ENOMEM);
+ 
+_
 
-Regards
-Pascal
+Patches currently in -mm which might be from kasong@tencent.com are
+
+mm-shmem-fix-thp-allocation-size-check-and-fallback.patch
+
 
