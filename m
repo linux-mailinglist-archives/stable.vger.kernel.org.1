@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-188791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382E9BF8A53
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C30CBF8ABE
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A4AA050021F
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:12:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB76C500757
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DECB4350A07;
-	Tue, 21 Oct 2025 20:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B8327FB2B;
+	Tue, 21 Oct 2025 20:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Rk8TWnr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KwzSb5f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CB12797B5;
-	Tue, 21 Oct 2025 20:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113B327FB28;
+	Tue, 21 Oct 2025 20:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077529; cv=none; b=JtvMHD1bJK81mDOjcYI3IEMF6p8WCSGG8fGYQn6wSryqPXk4r1bSE1xA1hlK893KDYg1Jqy+ybD56BR1gLaIi6sXzLozuiS14pzmiDFjkl0WnT/+OfiLsZvAJNpNwAfbye3J2E6OgXvbI6hKuTy/2olTC1imF/x9vHWAb5Z8qmk=
+	t=1761077638; cv=none; b=HGUYDad5Rgn9klpS+eTXxQ+9jwR8gT2a9FbNQIcv7sMX64HO/FBawCvT/il3XzLa2VMVX5azvt76lsfPv+lclRLDTr+QTEXha4k+Wi/dpYUc4KaZJ+Dqo4c0nonez4GOl0zToPOhzS90StIPe+6W079HjsJlhyA5pZi2Rpr3NQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077529; c=relaxed/simple;
-	bh=SW2plMvQUerm5wL4tJFZ38P1Xuh4aF6Uut1g0C8XTT8=;
+	s=arc-20240116; t=1761077638; c=relaxed/simple;
+	bh=j8f8olhIExITD6nCBcHUXC9b510caFhkWKIMLc7if/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHdzRoG4arqFo2oXzCYKEFBM6qq5qtHbG3abT4MEOkXoU+jJArljv1EKofCnAofvTFox+SIZPU+g9v+RbiOCpxa+3r1UaQN+RseaTycOvzYEZlzunISaUVZ/Ra/szYqbY6SVLTuIQ81M5QtHsMsepjo+aAnW4iJDzV1IqxKIVr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Rk8TWnr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3534C4CEF1;
-	Tue, 21 Oct 2025 20:12:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Vo7PU2Tz6wZzUOgGQeLdojmXJuhz4gqt4f2s9w66iUYcNHjm3r3ESPcupOfnQCd07P6rSrMylIjTBiBC2rKJE8rZiaCLPsrqGhQ1cB2QgC3ozszvv/8oE5iAwSNBqZQMinMxjZNfF12YUtC9ymL4O6JNxIUIWizY/z9AOMTq3Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KwzSb5f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BD6C4CEF1;
+	Tue, 21 Oct 2025 20:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077529;
-	bh=SW2plMvQUerm5wL4tJFZ38P1Xuh4aF6Uut1g0C8XTT8=;
+	s=korg; t=1761077637;
+	bh=j8f8olhIExITD6nCBcHUXC9b510caFhkWKIMLc7if/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Rk8TWnr5fI+PW7IB1tJZL1XSTdcJE8LxECnDQckmVyW9Jdg+NefojujwKBKfKQvu
-	 Vz3mi26umxAqi0ogvWDMhCsmBuV5aQUBROS27kP1Jk2dq5Efhcp3fTITmiFGwnShMc
-	 rAPfJPBybaZMZbgeyYGlS1hQawnare8VlPa5bb8c=
+	b=1KwzSb5ftshBY9rSq07tUM5EnudRvyN9H3YDXcsTHewaoq7XgpiQs9o7wWBXYY/vR
+	 zYqm3qIWYZYiZhGblJtsOdh2jyKc5tYjD7SErP4dhR2hARyx/PyVsODKNntc+fdUOE
+	 ZJE+YljPKztOqLBPGgLi3P8PbAP2AoeRxAFiJZ0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiang <liqiang01@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 132/159] ASoC: amd/sdw_utils: avoid NULL deref when devm_kasprintf() fails
-Date: Tue, 21 Oct 2025 21:51:49 +0200
-Message-ID: <20251021195046.324082972@linuxfoundation.org>
+Subject: [PATCH 6.17 133/159] drm/xe/evict: drop bogus assert
+Date: Tue, 21 Oct 2025 21:51:50 +0200
+Message-ID: <20251021195046.346542743@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
 References: <20251021195043.182511864@linuxfoundation.org>
@@ -60,45 +62,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiang <liqiang01@kylinos.cn>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit 5726b68473f7153a7f6294185e5998b7e2a230a2 ]
+[ Upstream commit 225bc03d85427e7e3821d6f99f4f2d4a09350dda ]
 
-devm_kasprintf() may return NULL on memory allocation failure,
-but the debug message prints cpus->dai_name before checking it.
-Move the dev_dbg() call after the NULL check to prevent potential
-NULL pointer dereference.
+This assert can trigger here with non pin_map users that select
+LATE_RESTORE, since the vmap is allowed to be NULL given that
+save/restore can now use the blitter instead. The check here doesn't
+seem to have much value anymore given that we no longer move pinned
+memory, so any existing vmap is left well alone, and doesn't need to be
+recreated upon restore, so just drop the assert here.
 
-Fixes: cb8ea62e64020 ("ASoC: amd/sdw_utils: add sof based soundwire generic machine driver")
-Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
-Link: https://patch.msgid.link/20251015075530.146851-1-liqiang01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 86f69c26113c ("drm/xe: use backup object for pinned save/restore")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6213
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://lore.kernel.org/r/20251010152457.177884-2-matthew.auld@intel.com
+(cherry picked from commit a10b4a69c7f8f596d2c5218fbe84430734fab3b2)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-sdw-sof-mach.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_bo_evict.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/sound/soc/amd/acp/acp-sdw-sof-mach.c b/sound/soc/amd/acp/acp-sdw-sof-mach.c
-index 91d72d4bb9a26..d055582a3bf1a 100644
---- a/sound/soc/amd/acp/acp-sdw-sof-mach.c
-+++ b/sound/soc/amd/acp/acp-sdw-sof-mach.c
-@@ -176,9 +176,9 @@ static int create_sdw_dailink(struct snd_soc_card *card,
- 			cpus->dai_name = devm_kasprintf(dev, GFP_KERNEL,
- 							"SDW%d Pin%d",
- 							link_num, cpu_pin_id);
--			dev_dbg(dev, "cpu->dai_name:%s\n", cpus->dai_name);
- 			if (!cpus->dai_name)
- 				return -ENOMEM;
-+			dev_dbg(dev, "cpu->dai_name:%s\n", cpus->dai_name);
+diff --git a/drivers/gpu/drm/xe/xe_bo_evict.c b/drivers/gpu/drm/xe/xe_bo_evict.c
+index d5dbc51e8612d..bc5b4c5fab812 100644
+--- a/drivers/gpu/drm/xe/xe_bo_evict.c
++++ b/drivers/gpu/drm/xe/xe_bo_evict.c
+@@ -182,7 +182,6 @@ int xe_bo_evict_all(struct xe_device *xe)
  
- 			codec_maps[j].cpu = 0;
- 			codec_maps[j].codec = j;
+ static int xe_bo_restore_and_map_ggtt(struct xe_bo *bo)
+ {
+-	struct xe_device *xe = xe_bo_device(bo);
+ 	int ret;
+ 
+ 	ret = xe_bo_restore_pinned(bo);
+@@ -201,13 +200,6 @@ static int xe_bo_restore_and_map_ggtt(struct xe_bo *bo)
+ 		}
+ 	}
+ 
+-	/*
+-	 * We expect validate to trigger a move VRAM and our move code
+-	 * should setup the iosys map.
+-	 */
+-	xe_assert(xe, !(bo->flags & XE_BO_FLAG_PINNED_LATE_RESTORE) ||
+-		  !iosys_map_is_null(&bo->vmap));
+-
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
