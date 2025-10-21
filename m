@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-188442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3FEBF8574
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:52 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37AFBF87BF
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD238462DE1
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:53:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C25AE4F56FD
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C123272E7C;
-	Tue, 21 Oct 2025 19:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3627C258EDF;
+	Tue, 21 Oct 2025 20:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijF5DkcQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBkwbO2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A762737E7;
-	Tue, 21 Oct 2025 19:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81641E1E04;
+	Tue, 21 Oct 2025 20:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076419; cv=none; b=KZup0l6WP5GOkHLmIdlVeWV8ebPGduB+nbXG8Jk9aHTmDP+ciAxQgn1jCXkXdBd0ykOUsNIoUAmut8oIGgacCmFNTMTD26DQF/S+mx/kQ9dBAXsHYJCUW4+EDg6l3rdvVSI9OPvRxo++MeFDBgRRVXP3LbFPwXnDOdeDJ+7vHEo=
+	t=1761076968; cv=none; b=KHYfgdUYuwTe+ZzJr7QSPf12K4pw/OQQLmMN4bRbvI0g1R2tpUu9eFUGZU112o4ZMLHGpe6wQryIEttuxv+/QrvzRkIhc87ij1kHKHJN3pKxLL/p/zzK32ok0BftC6KcErtEHndzUjBkm59KTi0Pm/0lAT7XuVg1J1YW9mzQv/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076419; c=relaxed/simple;
-	bh=7OSI9lTiTdpCjpt9Y6wI/wkwlbr+xOtbFnrRfUkZi/M=;
+	s=arc-20240116; t=1761076968; c=relaxed/simple;
+	bh=s7TWBiKa/64WhbzcCQI+02XbWeYB/HwvmuCXVhP/IZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bm6ltWmVpz62dMEhGeQwLQNrtEaRchGjvQtsSU+lOGO1mGairoK7B0R8uhwTKUY1qIkfS8TW9XPSRVubM3H7i8sPrji7N44EC5fXSOHpLXmy7Ht2ROnw5Cy9Dxq5q1nwcNdq4sbUncBYUVIdNWCDH1+BYSoHP95r0AghgK1tMNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijF5DkcQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E73C4CEF1;
-	Tue, 21 Oct 2025 19:53:37 +0000 (UTC)
+	 MIME-Version; b=iG50Z/WxQ4jpBiu6/mkmnTJFD6Wh1RhLACTqt+tTP+XoZ3TtMHbniYEZRzNImm96Dzg6qd8t46S0HzuNuMXjNdkKOoxTdO5Xn1wQ0dxn8nASBHxAen2XMAjCRW9mXC0CXZPsW9gCxTSNUYvuFtF9OaQDkKn23271XA+seXFosK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBkwbO2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7487BC4CEF1;
+	Tue, 21 Oct 2025 20:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076418;
-	bh=7OSI9lTiTdpCjpt9Y6wI/wkwlbr+xOtbFnrRfUkZi/M=;
+	s=korg; t=1761076967;
+	bh=s7TWBiKa/64WhbzcCQI+02XbWeYB/HwvmuCXVhP/IZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijF5DkcQZJHpjLlgfLPiPh8brCNyZwGp+QB5PYla5b5c0nHsnq/wZhJr2y1MGFmF6
-	 Ku/pPAc/9bb+Kcyujp83tCHouQAO36b+j4z0SiFBcsP2GKuUKCrWjwSl12sBrjGLHT
-	 qIad7YSOAuoIVebQZWfomgEyybzC6G/qD9WTpSfo=
+	b=EBkwbO2VUnu2dAlqaDWWzJUVGJqYf3dXpKJD4QCiLe7kXhkKnF+p98gN7rF30oypF
+	 hXT5VLhcT/nQEeawGswjRbIqsdq2tDN0ypq9d38aMnG/OxpNZGintIaUICLwKJbtk6
+	 a6/kaKo97t+Ssk3pObk4SrSr70SqrSQGsBYcM5gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/105] usb: gadget: Store endpoint pointer in usb_request
+Subject: [PATCH 6.12 049/136] can: m_can: call deinit/init callback when going into suspend/resume
 Date: Tue, 21 Oct 2025 21:50:37 +0200
-Message-ID: <20251021195022.368050723@linuxfoundation.org>
+Message-ID: <20251021195037.164124087@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit bfb1d99d969fe3b892db30848aeebfa19d21f57f ]
+[ Upstream commit ad1ddb3bfb0c9193eb19d4788192904350c7e51a ]
 
-Gadget function drivers often have goto-based error handling in their
-bind paths, which can be bug-prone. Refactoring these paths to use
-__free() scope-based cleanup is desirable, but currently blocked.
+m_can user like the tcan4x5x device, can go into standby mode.
+Low power RX mode is enabled to allow wake on can.
 
-The blocker is that usb_ep_free_request(ep, req) requires two
-parameters, while the __free() mechanism can only pass a pointer to the
-request itself.
-
-Store an endpoint pointer in the struct usb_request. The pointer is
-populated centrally in usb_ep_alloc_request() on every successful
-allocation, making the request object self-contained.
-
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250916-ready-v1-1-4997bf277548@google.com
-Stable-dep-of: 75a5b8d4ddd4 ("usb: gadget: f_ncm: Refactor bind path to use __free()")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20241122-tcan-standby-v3-3-90bafaf5eccd@geanix.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: a9e30a22d6f2 ("can: m_can: fix CAN state in system PM")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/core.c |    3 +++
- include/linux/usb/gadget.h    |    2 ++
- 2 files changed, 5 insertions(+)
+ drivers/net/can/m_can/m_can.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -194,6 +194,9 @@ struct usb_request *usb_ep_alloc_request
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index 249263fca748d..bf7996c302426 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -2485,6 +2485,7 @@ int m_can_class_suspend(struct device *dev)
+ {
+ 	struct m_can_classdev *cdev = dev_get_drvdata(dev);
+ 	struct net_device *ndev = cdev->net;
++	int ret = 0;
  
- 	req = ep->ops->alloc_request(ep, gfp_flags);
- 
-+	if (req)
-+		req->ep = ep;
+ 	if (netif_running(ndev)) {
+ 		netif_stop_queue(ndev);
+@@ -2497,6 +2498,9 @@ int m_can_class_suspend(struct device *dev)
+ 		if (cdev->pm_wake_source) {
+ 			hrtimer_cancel(&cdev->hrtimer);
+ 			m_can_write(cdev, M_CAN_IE, IR_RF0N);
 +
- 	trace_usb_ep_alloc_request(ep, req, req ? 0 : -ENOMEM);
++			if (cdev->ops->deinit)
++				ret = cdev->ops->deinit(cdev);
+ 		} else {
+ 			m_can_stop(ndev);
+ 		}
+@@ -2508,7 +2512,7 @@ int m_can_class_suspend(struct device *dev)
  
- 	return req;
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -32,6 +32,7 @@ struct usb_ep;
+ 	cdev->can.state = CAN_STATE_SLEEPING;
  
- /**
-  * struct usb_request - describes one i/o request
-+ * @ep: The associated endpoint set by usb_ep_alloc_request().
-  * @buf: Buffer used for data.  Always provide this; some controllers
-  *	only use PIO, or don't use DMA for some endpoints.
-  * @dma: DMA address corresponding to 'buf'.  If you don't set this
-@@ -97,6 +98,7 @@ struct usb_ep;
-  */
+-	return 0;
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(m_can_class_suspend);
  
- struct usb_request {
-+	struct usb_ep		*ep;
- 	void			*buf;
- 	unsigned		length;
- 	dma_addr_t		dma;
+@@ -2516,14 +2520,13 @@ int m_can_class_resume(struct device *dev)
+ {
+ 	struct m_can_classdev *cdev = dev_get_drvdata(dev);
+ 	struct net_device *ndev = cdev->net;
++	int ret = 0;
+ 
+ 	pinctrl_pm_select_default_state(dev);
+ 
+ 	cdev->can.state = CAN_STATE_ERROR_ACTIVE;
+ 
+ 	if (netif_running(ndev)) {
+-		int ret;
+-
+ 		ret = m_can_clk_start(cdev);
+ 		if (ret)
+ 			return ret;
+@@ -2536,6 +2539,10 @@ int m_can_class_resume(struct device *dev)
+ 			 * again.
+ 			 */
+ 			cdev->active_interrupts |= IR_RF0N | IR_TEFN;
++
++			if (cdev->ops->init)
++				ret = cdev->ops->init(cdev);
++
+ 			m_can_write(cdev, M_CAN_IE, cdev->active_interrupts);
+ 		} else {
+ 			ret  = m_can_start(ndev);
+@@ -2549,7 +2556,7 @@ int m_can_class_resume(struct device *dev)
+ 		netif_start_queue(ndev);
+ 	}
+ 
+-	return 0;
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(m_can_class_resume);
+ 
+-- 
+2.51.0
+
 
 
 
