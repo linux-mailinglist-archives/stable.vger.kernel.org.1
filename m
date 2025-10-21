@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-188524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BE3BF86B2
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:58:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8EF9BF8863
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79939485009
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:58:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F45F4FA980
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E920C274FF5;
-	Tue, 21 Oct 2025 19:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81F52773EC;
+	Tue, 21 Oct 2025 20:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWGAPc93"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjyZSgD7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92150274B5A;
-	Tue, 21 Oct 2025 19:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B83275B1A;
+	Tue, 21 Oct 2025 20:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076681; cv=none; b=Moj21vqk+hfKo5IyMFHPHLE4sL/SQx+of6ZPCPaahJZ+sSgetVfigWr0lE0/eamwOvEzvqQTqNnfrLZ/U4xTri3bAv6BR1WAVIaqyUW9rqeSJgHjNeAJk8BSEm1IPIdLvHR+yWhs6jgNImpplSjTuuRPUoyG3X/+6WSpWFo/+1s=
+	t=1761077066; cv=none; b=sxE+mHVk7U4aGhdOxkyaGGsJsNaZiBBLV4kdkIQBwGRKM6XTaW5gj1IP01yrRAGEtymeJmkPyroh051JQNDtfv8RsoBZ7ExdFDjok9p8lBiXSJsSuhK4K60s0X/GaLfg5+JKEYea+RKEWth+Atrkd0M0T6+U+TuppXGZjKU/zm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076681; c=relaxed/simple;
-	bh=2YkQoYxWETzXDc6jcHOlyO7PPIw3q7TmFZaV8ULs/rY=;
+	s=arc-20240116; t=1761077066; c=relaxed/simple;
+	bh=VzPoxuqNop0MvQRhOnoqpOXoAV8Zpim4pqOOcdlQqjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tKaX3tWngdPgP3Bg7Z4gkc5RFzF1jjBrt/D5+gtZTpEE38xS+n9Lu5BYZLDgbR3b3EMchAVKP8NQX9ziDsaJjtD3PLXN3kcoMCFH3imfmzBFoyGgQ2JJmN6Hd7+QVUtD90fh6kbLcocVwADMtSbK2xEnuq0M0Z01zGAfHMiWQM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWGAPc93; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63F6C4CEF1;
-	Tue, 21 Oct 2025 19:57:59 +0000 (UTC)
+	 MIME-Version; b=h0eaonKG1WRYbkS3/Uop46nSg0ht/K8TdGpWd+hM5S4x0Dx+ECwLS+0Xju37izL44sxiu1K3VfH5WC/uqAQD9itG2C/EtnaQtUYz/pXVK4T/3Y2HKfTyPL3CxX9qLJ6y7boI02B5jum8J5Ic2TrTUWOT+9F9iA1Pb69kwX88qWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjyZSgD7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF8FC4CEF1;
+	Tue, 21 Oct 2025 20:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076680;
-	bh=2YkQoYxWETzXDc6jcHOlyO7PPIw3q7TmFZaV8ULs/rY=;
+	s=korg; t=1761077066;
+	bh=VzPoxuqNop0MvQRhOnoqpOXoAV8Zpim4pqOOcdlQqjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WWGAPc93YgTGrNbi4Tg5A/P7x1UUHbA1CgS4aXuMfaeTY0+h7r5006pR/JfDN2zpF
-	 vuj3ybZ9JqKDJ3MmINBSUjVi2kkoN9Sg1BWk59NNVR2aRg/Rddo9eKZCSgny4pMdG4
-	 Y136e64HY8OPnczkHSYYHkmZtoWbjLn7i+MRPAwY=
+	b=wjyZSgD7rXOCNvvdCXoKCdEBR4n6hJPrGLajeKRMb9zLhsyll3DfnxTrchqvpfbtH
+	 JVIqFU2am4b/RMyLWGIQ4itmNbuAWB/grhiBWTuBcgh3seOj1W019aV9wHK6xWsvST
+	 /uAtWeBcS+hx4VGh9SCUk63b8ivmyhdn1oFuWvkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/105] PCI: j721e: Enable ACSPCIE Refclk if "ti,syscon-acspcie-proxy-ctrl" exists
+Subject: [PATCH 6.12 124/136] tcp: cache RTAX_QUICKACK metric in a hot cache line
 Date: Tue, 21 Oct 2025 21:51:52 +0200
-Message-ID: <20251021195024.099594947@linuxfoundation.org>
+Message-ID: <20251021195038.964318914@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 82c4be4168e26a5593aaa1002b5678128a638824 ]
+[ Upstream commit 15492700ac41459b54a6683490adcee350ab11e3 ]
 
-The ACSPCIE module is capable of driving the reference clock required by
-the PCIe Endpoint device. It is an alternative to on-board and external
-reference clock generators. Enabling the output from the ACSPCIE module's
-PAD IO Buffers requires clearing the "PAD IO disable" bits of the
-ACSPCIE_PROXY_CTRL register in the CTRL_MMR register space.
+tcp_in_quickack_mode() is called from input path for small packets.
 
-Add support to enable the ACSPCIE reference clock output using the optional
-device-tree property "ti,syscon-acspcie-proxy-ctrl".
+It calls __sk_dst_get() which reads sk->sk_dst_cache which has been
+put in sock_read_tx group (for good reasons).
 
-Link: https://lore.kernel.org/linux-pci/20240829105316.1483684-3-s-vadapalli@ti.com
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Stable-dep-of: f842d3313ba1 ("PCI: j721e: Fix programming sequence of "strap" settings")
+Then dst_metric(dst, RTAX_QUICKACK) also needs extra cache line misses.
+
+Cache RTAX_QUICKACK in icsk->icsk_ack.dst_quick_ack to no longer pull
+these cache lines for the cases a delayed ACK is scheduled.
+
+After this patch TCP receive path does not longer access sock_read_tx
+group.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250312083907.1931644-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 833d4313bc1e ("mptcp: reset blackhole on success with non-loopback ifaces")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/cadence/pci-j721e.c |   39 ++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ include/net/inet_connection_sock.h |    3 ++-
+ net/core/sock.c                    |    6 +++++-
+ net/ipv4/tcp_input.c               |    3 +--
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -48,6 +48,7 @@ enum link_status {
- #define J721E_MODE_RC			BIT(7)
- #define LANE_COUNT(n)			((n) << 8)
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -116,7 +116,8 @@ struct inet_connection_sock {
+ 		#define ATO_BITS 8
+ 		__u32		  ato:ATO_BITS,	 /* Predicted tick of soft clock	   */
+ 				  lrcv_flowlabel:20, /* last received ipv6 flowlabel	   */
+-				  unused:4;
++				  dst_quick_ack:1, /* cache dst RTAX_QUICKACK		   */
++				  unused:3;
+ 		unsigned long	  timeout;	 /* Currently scheduled timeout		   */
+ 		__u32		  lrcvtime;	 /* timestamp of last received data packet */
+ 		__u16		  last_seg_size; /* Size of last incoming segment	   */
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2547,8 +2547,12 @@ void sk_setup_caps(struct sock *sk, stru
+ 	u32 max_segs = 1;
  
-+#define ACSPCIE_PAD_DISABLE_MASK	GENMASK(1, 0)
- #define GENERATION_SEL_MASK		GENMASK(1, 0)
- 
- struct j721e_pcie {
-@@ -225,6 +226,36 @@ static int j721e_pcie_set_lane_count(str
- 	return ret;
- }
- 
-+static int j721e_enable_acspcie_refclk(struct j721e_pcie *pcie,
-+				       struct regmap *syscon)
-+{
-+	struct device *dev = pcie->cdns_pcie->dev;
-+	struct device_node *node = dev->of_node;
-+	u32 mask = ACSPCIE_PAD_DISABLE_MASK;
-+	struct of_phandle_args args;
-+	u32 val;
-+	int ret;
+ 	sk->sk_route_caps = dst->dev->features;
+-	if (sk_is_tcp(sk))
++	if (sk_is_tcp(sk)) {
++		struct inet_connection_sock *icsk = inet_csk(sk);
 +
-+	ret = of_parse_phandle_with_fixed_args(node,
-+					       "ti,syscon-acspcie-proxy-ctrl",
-+					       1, 0, &args);
-+	if (ret) {
-+		dev_err(dev,
-+			"ti,syscon-acspcie-proxy-ctrl has invalid arguments\n");
-+		return ret;
+ 		sk->sk_route_caps |= NETIF_F_GSO;
++		icsk->icsk_ack.dst_quick_ack = dst_metric(dst, RTAX_QUICKACK);
 +	}
-+
-+	/* Clear PAD IO disable bits to enable refclk output */
-+	val = ~(args.args[0]);
-+	ret = regmap_update_bits(syscon, 0, mask, val);
-+	if (ret) {
-+		dev_err(dev, "failed to enable ACSPCIE refclk: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
+ 	if (sk->sk_route_caps & NETIF_F_GSO)
+ 		sk->sk_route_caps |= NETIF_F_GSO_SOFTWARE;
+ 	if (unlikely(sk->sk_gso_disabled))
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -331,9 +331,8 @@ static void tcp_enter_quickack_mode(stru
+ static bool tcp_in_quickack_mode(struct sock *sk)
  {
- 	struct device *dev = pcie->cdns_pcie->dev;
-@@ -264,7 +295,13 @@ static int j721e_pcie_ctrl_init(struct j
- 		return ret;
- 	}
+ 	const struct inet_connection_sock *icsk = inet_csk(sk);
+-	const struct dst_entry *dst = __sk_dst_get(sk);
  
--	return 0;
-+	/* Enable ACSPCIE refclk output if the optional property exists */
-+	syscon = syscon_regmap_lookup_by_phandle_optional(node,
-+						"ti,syscon-acspcie-proxy-ctrl");
-+	if (!syscon)
-+		return 0;
-+
-+	return j721e_enable_acspcie_refclk(pcie, syscon);
+-	return (dst && dst_metric(dst, RTAX_QUICKACK)) ||
++	return icsk->icsk_ack.dst_quick_ack ||
+ 		(icsk->icsk_ack.quick && !inet_csk_in_pingpong_mode(sk));
  }
  
- static int cdns_ti_pcie_config_read(struct pci_bus *bus, unsigned int devfn,
 
 
 
