@@ -1,115 +1,150 @@
-Return-Path: <stable+bounces-188351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50451BF6F24
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:02:23 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1141BF6F8A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 02D92355253
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 14:02:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17E804F9E9C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 14:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD2133DEF5;
-	Tue, 21 Oct 2025 14:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D2E33890C;
+	Tue, 21 Oct 2025 14:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=surgut.co.uk header.i=@surgut.co.uk header.b="IYmZg1qc"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jnF9I0Fl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701AC339702
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 14:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20BA32ED3B;
+	Tue, 21 Oct 2025 14:07:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761055272; cv=none; b=gSlxeEySFYySqFojCGNqJFhF/s5VMn/Iuf40jXc8fhR1fdCv61IgpBZSqPqXXeBjaMyk7TDJuLjfb+Uh7g5ekL0pWur7+zof2701h/z6IVa/37yxrY4FGOdzod5G4vsKPMpA/RKZsQ0VdFIfIr63tLqczyuz9jwWWFZ5Fa1IH8E=
+	t=1761055649; cv=none; b=N2x7YD0Xpat030U1dtLJqe1LBVGEER8a6D9+hupbsoHR5+K6pCnEQbNBaZVZdnrmo4UEsnM+S2kmZJpeMnmoJ6dIzrdBErUY5Q6SO7ZITyHeH0WAzsWqXB538wz85QvGREgU5dFQ1rumexGldBRtxEbinWsUi6AC5wi6LtJUH9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761055272; c=relaxed/simple;
-	bh=FXZryhOBUuaH1agho0lX1ijHBCPEotwN/matuAtY8Kk=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ICsYBk0iqLxm95UXi6py1ZOAOpP3+pg+847JtJaQjo6v/37YD9D4nUIC4ndg0zZNHoE692ExSf0nUN93sGtQqR6wAVY4i53Ozc1xQfI26g+7frHB+aBVHoE/Ps2vj0NHmMxc8vilIOOL3Hf9plxMv7XmYVv75yyRnKSrUHtR7j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surgut.co.uk; spf=pass smtp.mailfrom=surgut.co.uk; dkim=pass (1024-bit key) header.d=surgut.co.uk header.i=@surgut.co.uk header.b=IYmZg1qc; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surgut.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=surgut.co.uk
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b6bbfc57b75so334713166b.0
-        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 07:01:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=surgut.co.uk; s=google; t=1761055268; x=1761660068; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=3MlGVICVnwf2AbhcJWjlMkUKPriiyuKSWycGMTjAGCk=;
-        b=IYmZg1qc31AjMTZJT7sYafOdY/6eROP8Wk0Zs+q7PhTNM9vJigqgp8TjftC0e1bCnX
-         rdcF8rsJoBAoOtWX4a7NK+OBy+I4n5TQIkE3Q7gdb7Ld+XLGrblgqY7yjr/3jgEKNheO
-         zjS6IRAmGYL88TynL++ImnIUiaTe+e6GqDXFI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761055268; x=1761660068;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3MlGVICVnwf2AbhcJWjlMkUKPriiyuKSWycGMTjAGCk=;
-        b=sVX65EyCJ7hs3l8GNigbl/OiAP2PEHoZ+YK7NnWdC8G5jR1lR70KXvvC28JcThUJx7
-         rwvix0b8YvwdT9MX06hzY/oBIKLtRMJj7RDf+sr/OBStT8EWbFKq7zr+O1t/aWDfBEDa
-         7cBAetZpTPc0AdW89wJc+NvbMJBedXDhwRTB6IcLPvnVvCNcxS/0txl1u7D/91sg8PVm
-         2VYVnxxAoOW4cLiP8hcSx3jJs0KuvYZW1TBz61iD51pTjY7kCNWIU3PZ+Ih2aZqrMHSA
-         eFQJRjWnrpWEQRQ2at0u8JNxvw4MSdmRU4uQ/BADP4N9h3qmZCe9BMPKES/sCd+IYgqj
-         iQKw==
-X-Gm-Message-State: AOJu0YzJQydduMnTgd2gVwXenbVtDIvynXObMrT+Sl5ujjr48XNtkSqu
-	ScJwNe05Ps7vGfiqV1yF+SQGnFIEvns6srepqfLgEMlePTrxVpNBh0TQcy9zRAr3EjJ1HzBVkEo
-	pG3va6GAATaf5BvndPTw7cmP+3vhOB6MhoQkVPd/5jzT3i7SectekxUhpxzqU
-X-Gm-Gg: ASbGncsRBJuWW6819gVyliFgaJ4xh7ecfqWGHLbsxxLyWZs+R9Up7LBpyW48WEJMM4M
-	Qnju+SjeqjubeR0IkLXCsdkFZtmu2c9GqVTauMyMudOYXX2UTFrd4wKrro7dh3aZDbnjGGkMYrV
-	xlqf0DPF5I+Iqp88Ge3D+qu+MjK4+2F3CIvRMVwG71rEbbB5ZJRt/wBh6nCkw8Zt/lnXPGK7Qgx
-	/Z9BI78W0emYbGvcMQMbBuMNHt4OR7yndFmIkdDWjEtqLyvTA7KCbgYdOSv1K8bXXw2tU1OzqVA
-	NNDxkJAlcMtMWBX7eOEZqv2cdv6ZmE9+gifVoqA=
-X-Google-Smtp-Source: AGHT+IEhP7kVq9PE132is9j8ouoWPlUTOCUfix/DfQvvmp+psPK5aOtwUG+tYX99bgBwAgKA98hVuFKznDNuCl9gxCM=
-X-Received: by 2002:a17:906:e52:b0:b40:bdc3:ca04 with SMTP id
- a640c23a62f3a-b6d2b8811abmr4888166b.0.1761055267731; Tue, 21 Oct 2025
- 07:01:07 -0700 (PDT)
+	s=arc-20240116; t=1761055649; c=relaxed/simple;
+	bh=JzxByh5kUBoKHIxN82xwOONVGLcA34XTs/076ZBn/jY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ilmq88LI7bA9us0kOWxsYjwXFFx4cTAAD42FTjgz0MP4u+M6aDiQTizAIjZTTcx7g2pviQTtdDyiDmBWRi/hwXVvm2nTNjbUtE73ePM+K1HQnLlyv7NPF0nNL6O0RNwvRCrc7ueNqI6y8GJT3zXmlWBlTGET/HnHHGBW3qJR+38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jnF9I0Fl; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59LDcG6F027549;
+	Tue, 21 Oct 2025 14:07:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=yOIHTh
+	PjQYl0MFMCKBnXOX5p5/c+cVfRPWqfjLRw10s=; b=jnF9I0FlYcIpBi/g6o9BYp
+	4AxoXDmsLyF73v871SgpUI3JKh0jOySkJn4B5Bf4nxB6p+rnUN6+DZmd6dAvtOMR
+	/uOopbJCiA3jbdiccDI6bR/iNFtibDWEosmigIvYqw3izQQMUcHmHJ3jajM3Qa8r
+	A6g2w1+HFS6ZLiP0gV+3jdzIJd5CoKc/DDzP+3ataB1cWYVInDEYGZJjw44qPIEq
+	/bHwMKDcH1csC6XRfRt8glKz380SGQrzuRXGg78BuEB+xoLXWm/G6peV5gMRRO6y
+	3hVRXBJoGduHzjYx7Oq5Y6gvvgjhLAUeUkXn+zdzeHMz0GFCK39Qz3lJYRJFyHIA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33f7dgc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Oct 2025 14:07:25 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59LCF5DI024940;
+	Tue, 21 Oct 2025 14:07:24 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vpqju15c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Oct 2025 14:07:24 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59LE7MAX24576754
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Oct 2025 14:07:23 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ADBD85805E;
+	Tue, 21 Oct 2025 14:07:22 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CF5C45805F;
+	Tue, 21 Oct 2025 14:07:21 +0000 (GMT)
+Received: from [9.61.43.59] (unknown [9.61.43.59])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 21 Oct 2025 14:07:21 +0000 (GMT)
+Message-ID: <0170a16a-aadd-450f-be9a-9b60dfd5c8e7@linux.ibm.com>
+Date: Tue, 21 Oct 2025 10:07:21 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
-Date: Tue, 21 Oct 2025 15:00:56 +0100
-X-Gm-Features: AS18NWAtEPVdNCWM7Q2aPN08-btIALJJ-APjrT481FTu1EUbYgDb0SaJ1vbV5_E
-Message-ID: <CANBHLUjPbXYghPx5zDwLDcGKXb7v7+1u-bpZ=L9r=qW7vDZ=cg@mail.gmail.com>
-Subject: [REGRESSION] Secureboot violation for linux enrolled by-hash into db
- v6.17.4 and v6.18-rc1
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>, masahiroy@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 3/3] s390/pci: Restore IRQ unconditionally for the zPCI
+ device
+To: Farhan Ali <alifm@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Cc: helgaas@kernel.org, stable@vger.kernel.org, schnelle@linux.ibm.com
+References: <20251020190200.1365-1-alifm@linux.ibm.com>
+ <20251020190200.1365-4-alifm@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20251020190200.1365-4-alifm@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68f7939d cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=X6ZiwJvXWaKFF5TKYhAA:9 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: 8RplYV_leo0CPNopDWt-CIFvZ4pPABj9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX8lh7A9xZZgw2
+ 2jIOg691Sj/zkSDhvapiXdpin/U9OnGJKBb7avSgjKKqqdWr7YbVTe+cx6vesJXQOyxE25m1Fk3
+ 584mZ3Ft2pYHLyrvnDne5+ph5/8jaEOsq8XvwwCfpwNzgv6B9t9T+Yp40QAELTfuoir6/Y5ojsi
+ mf8ArdU0Niig3iLca7AYfBzjgiP/BV4kAXvPssWlBC23kmAwAvfKWoKmy2msD3TuawSDUQIAdld
+ x4DCqx5dS7WMeBWv2c6cgluYRxsl4PBbiLhYvBAJdSBsqgLmA9hchOCjFTyhf4OTq4mZDOF+FhO
+ 2dF91IVxviwyktc90dPlsjcjZSDPORnodwYzVJOEwSrZEWeGuzyJWjb0L5D9eiIOq/DhaRTZV69
+ W9/hDC7ujrIkDHAerCneZ4S/haLqLQ==
+X-Proofpoint-ORIG-GUID: 8RplYV_leo0CPNopDWt-CIFvZ4pPABj9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-21_02,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
 
-If one enrolls linux kernel by-hash into db (for example using
-virt-fw-vars), the secureboot fails with security violation as EDK2
-computation of authenticode for the linux binary doesn't match the
-enrolled hash.
+On 10/20/25 3:02 PM, Farhan Ali wrote:
+> Commit c1e18c17bda6 ("s390/pci: add zpci_set_irq()/zpci_clear_irq()"),
+> introduced the zpci_set_irq() and zpci_clear_irq(), to be used while
+> resetting a zPCI device.
+> 
+> Commit da995d538d3a ("s390/pci: implement reset_slot for hotplug slot"),
+> mentions zpci_clear_irq() being called in the path for zpci_hot_reset_device().
+> But that is not the case anymore and these functions are not called
+> outside of this file. Instead zpci_hot_reset_device() relies on
+> zpci_disable_device() also clearing the IRQs, but misses to reset the
+> zdev->irqs_registered flag.
+> 
+> However after a CLP disable/enable reset, the device's IRQ are
+> unregistered, but the flag zdev->irq_registered does not get cleared. It
+> creates an inconsistent state and so arch_restore_msi_irqs() doesn't
+> correctly restore the device's IRQ. This becomes a problem when a PCI
+> driver tries to restore the state of the device through
+> pci_restore_state(). Restore IRQ unconditionally for the device and remove
+> the irq_registered flag as its redundant.
+> 
+> Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 
-This is reproducible in AWS VMs, as well as locally with EDK2 builds
-with secureboot.
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 
-Not affected v6.17
-Not affected v6.17.3
-Affected v6.17.4
-Affected v6.18-rc1
-Affected v6.18-rc2
+But one question: Unlike the other 2 patches in this series, this only touches s390 code.  It doesn't depend on the other 2 patches in this series, right?
 
-Suspected patches are:
+If not then shouldn't this one go thru s390 rather than PCI subsystem?  Note: none of the s390 arch maintainers are on CC.
 
-$ git log --oneline  v6.17.3..v6.17.4 -- scripts/
-8e5e13c8df9e6 kbuild: Add '.rel.*' strip pattern for vmlinux
-7b80f81ae3190 kbuild: Restore pattern to avoid stripping .rela.dyn from vmlinux
-5b5cdb1fe434e kbuild: keep .modinfo section in vmlinux.unstripped
-86f364ee58420 kbuild: always create intermediate vmlinux.unstripped
-
-Reverting all of the above, makes secureboot with by-hash enrolled
-into db work again.
-
-I will try to bisect this further to determine the culprit. It feels
-like the strip potentially didn't update section offsets or their
-numbers or something like that.
-
--- 
-Regards,
-
-Dimitri.
+> ---
+>  arch/s390/include/asm/pci.h | 1 -
+>  arch/s390/pci/pci_irq.c     | 9 +--------
+>  2 files changed, 1 insertion(+), 9 deletions(-)
+> 
 
