@@ -1,154 +1,149 @@
-Return-Path: <stable+bounces-188406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1A6BF81AE
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:37:29 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47D84BF81B1
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:37:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D217219C06C8
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 18:37:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4F2AE35874C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 18:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA5C34D923;
-	Tue, 21 Oct 2025 18:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC2934D92E;
+	Tue, 21 Oct 2025 18:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahz4lxFK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="grLDOAI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED24434D900
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 18:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B2934D900
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 18:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761071845; cv=none; b=KclijtBKyHSXpzn/gDCetooGBJ/kl/+XGYE0JyFLLQ3OXDWuejiAYVMsX3AKrqpHwb7V3P/QPI21YqMF5dWH4RjrO2oFS7mg4kZ4QvzLBXdfARZgBV4oyvfADPlSVmDatXeF6AKKtlpa2EZfK8oOZk2rYgtbjURrLYCfFuNA9h8=
+	t=1761071845; cv=none; b=o4eVNETRT4e6RaVJzQGTawDYe09P5YHLqybnLSa7qiiyf9tO16bYPVr2gG5uHKkRdyEVDLpoo8dOOrMee+iOklpbhymGpsJ31EwUJ/+QhOb8YFuil5v/CnG42wbBEGs2WDVT89XU3A7eSOr4izNNVYu1LUBVgbKVrduD6VsY6H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761071845; c=relaxed/simple;
-	bh=Qizt93syst2CSE8ZIrmjxg6cpVXn0pQWjtejEUz7K6k=;
+	bh=1QEb0CqG9+vuTU1O9Ao2Z331nATk0wGOxUBxe2NYplc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pJJxRnfm3N3cD2qoQoGkJgrKQtzkD6J7yFsBWmh2FZJsL0Z1rGEqt3vaeUYrHUrsoSTX0FK2MU1Ahjp6tI8TNwki2hF10y7Wk+2xooULw2e9MucvrqUTjd9lPbjC17sBOE6Rt0iODEs7ZgGVYpKwNP3Qw0MLy9D7FwV+yYG6UUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahz4lxFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1FBC4CEF1;
-	Tue, 21 Oct 2025 18:37:23 +0000 (UTC)
+	 MIME-Version; b=q5Tu+/nnAFkR2qmlvYKPUtq5a6Z8xSozsEsu6gFcT12cGy1CvvH3Mq+qADs3QIBUQ9ksvFtKN2+Z/2Ak5ItYcz1CoWvaCaL4oTBYak09SNt++ATqQ+BBpD78vA+VkUgM4d2odk4HAY4mrsctF1jXspUg4A+YW4ntpRlqR4c4wZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=grLDOAI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A0FC113D0;
+	Tue, 21 Oct 2025 18:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761071844;
-	bh=Qizt93syst2CSE8ZIrmjxg6cpVXn0pQWjtejEUz7K6k=;
+	s=k20201202; t=1761071845;
+	bh=1QEb0CqG9+vuTU1O9Ao2Z331nATk0wGOxUBxe2NYplc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahz4lxFKQrZ70emN14FTcm84j2Qa+lO346g3JxYg7yNTGC6WMLT/PKU9HHvMwPCVg
-	 dTNbzWA1D6jr1vr+ajbjxYFd0Zv+4MCC/2Anpc/wzDCDLlH2mAVYIdUyqQyHmGKtJ0
-	 nUGoL6piSEDg9t9VeAt2KFisgv6O7+6n31+1gEfU72OaHt06+/0/uCis4MezVwJD/S
-	 9y0BZh3Vk8BnnUD4b3XjcMRunt4tzckmrHelcp65U7Szq8xMW1zZqUmCkS0Pi8swVM
-	 fd2xYmM7jU95WP62pN/8+BbBapqNrkvyMTKzFiGEyuOJHWCgey5d91HjCPGABQhU0R
-	 2q7/0+WRxarkQ==
+	b=grLDOAI74H1rlq7YVkET5AtOxEwKNklAojeUC5UE4RF3Jfhltl3evrkCFJR1pAl1L
+	 8H+jmjTw3Ul/73vgeeiSqXrsYtdowS+qbko7e3+nkgXr2h6+c5hJZ+eYL7iZgP5i9e
+	 WNzNlv3XIlPbAFajAugH3lK286/vHNvJqCmIIUhPPW4DHQcZoNGIDFN98+8iLIO5Qo
+	 vaLbcsISJI7fhWdDy4drL0Y/RaZs7O2yfmsK14PLfnH1pvqCUK+FVfzgpiuFTbFMSw
+	 PRqXtfoN2K/aXESwfCQ5TdYBGzAfYB2WZH6UACDAzakspD9Dmh0ZecA0kc+u1AE/px
+	 b9BKc3fG9o2Ng==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 1/2] PCI: j721e: Enable ACSPCIE Refclk if "ti,syscon-acspcie-proxy-ctrl" exists
-Date: Tue, 21 Oct 2025 14:37:21 -0400
-Message-ID: <20251021183722.2520843-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 2/2] PCI: j721e: Fix programming sequence of "strap" settings
+Date: Tue, 21 Oct 2025 14:37:22 -0400
+Message-ID: <20251021183722.2520843-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025101614-regulator-gumball-c7c6@gregkh>
+In-Reply-To: <20251021183722.2520843-1-sashal@kernel.org>
 References: <2025101614-regulator-gumball-c7c6@gregkh>
+ <20251021183722.2520843-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 82c4be4168e26a5593aaa1002b5678128a638824 ]
+[ Upstream commit f842d3313ba179d4005096357289c7ad09cec575 ]
 
-The ACSPCIE module is capable of driving the reference clock required by
-the PCIe Endpoint device. It is an alternative to on-board and external
-reference clock generators. Enabling the output from the ACSPCIE module's
-PAD IO Buffers requires clearing the "PAD IO disable" bits of the
-ACSPCIE_PROXY_CTRL register in the CTRL_MMR register space.
+The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
+Root-Complex and Endpoint modes of operation. The Glue Layer allows
+"strapping" the Mode of operation of the Controller, the Link Speed
+and the Link Width. This is enabled by programming the "PCIEn_CTRL"
+register (n corresponds to the PCIe instance) within the CTRL_MMR
+memory-mapped register space. The "reset-values" of the registers are
+also different depending on the mode of operation.
 
-Add support to enable the ACSPCIE reference clock output using the optional
-device-tree property "ti,syscon-acspcie-proxy-ctrl".
+Since the PCIe Controller latches onto the "reset-values" immediately
+after being powered on, if the Glue Layer configuration is not done while
+the PCIe Controller is off, it will result in the PCIe Controller latching
+onto the wrong "reset-values". In practice, this will show up as a wrong
+representation of the PCIe Controller's capability structures in the PCIe
+Configuration Space. Some such capabilities which are supported by the PCIe
+Controller in the Root-Complex mode but are incorrectly latched onto as
+being unsupported are:
+- Link Bandwidth Notification
+- Alternate Routing ID (ARI) Forwarding Support
+- Next capability offset within Advanced Error Reporting (AER) capability
 
-Link: https://lore.kernel.org/linux-pci/20240829105316.1483684-3-s-vadapalli@ti.com
+Fix this by powering off the PCIe Controller before programming the "strap"
+settings and powering it on after that. The runtime PM APIs namely
+pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
+increment the usage counter respectively, causing GENPD to power off and
+power on the PCIe Controller.
+
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
 Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Stable-dep-of: f842d3313ba1 ("PCI: j721e: Fix programming sequence of "strap" settings")
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250908120828.1471776-1-s-vadapalli@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pci-j721e.c | 39 +++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ drivers/pci/controller/cadence/pci-j721e.c | 25 ++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
 diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index f76a358e2b5b6..28da514bfa128 100644
+index 28da514bfa128..753a4c615781f 100644
 --- a/drivers/pci/controller/cadence/pci-j721e.c
 +++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -48,6 +48,7 @@ enum link_status {
- #define J721E_MODE_RC			BIT(7)
- #define LANE_COUNT(n)			((n) << 8)
+@@ -277,6 +277,25 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
+ 	if (!ret)
+ 		offset = args.args[0];
  
-+#define ACSPCIE_PAD_DISABLE_MASK	GENMASK(1, 0)
- #define GENERATION_SEL_MASK		GENMASK(1, 0)
- 
- struct j721e_pcie {
-@@ -225,6 +226,36 @@ static int j721e_pcie_set_lane_count(struct j721e_pcie *pcie,
- 	return ret;
- }
- 
-+static int j721e_enable_acspcie_refclk(struct j721e_pcie *pcie,
-+				       struct regmap *syscon)
-+{
-+	struct device *dev = pcie->cdns_pcie->dev;
-+	struct device_node *node = dev->of_node;
-+	u32 mask = ACSPCIE_PAD_DISABLE_MASK;
-+	struct of_phandle_args args;
-+	u32 val;
-+	int ret;
-+
-+	ret = of_parse_phandle_with_fixed_args(node,
-+					       "ti,syscon-acspcie-proxy-ctrl",
-+					       1, 0, &args);
-+	if (ret) {
-+		dev_err(dev,
-+			"ti,syscon-acspcie-proxy-ctrl has invalid arguments\n");
++	/*
++	 * The PCIe Controller's registers have different "reset-values"
++	 * depending on the "strap" settings programmed into the PCIEn_CTRL
++	 * register within the CTRL_MMR memory-mapped register space.
++	 * The registers latch onto a "reset-value" based on the "strap"
++	 * settings sampled after the PCIe Controller is powered on.
++	 * To ensure that the "reset-values" are sampled accurately, power
++	 * off the PCIe Controller before programming the "strap" settings
++	 * and power it on after that. The runtime PM APIs namely
++	 * pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
++	 * increment the usage counter respectively, causing GENPD to power off
++	 * and power on the PCIe Controller.
++	 */
++	ret = pm_runtime_put_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power off PCIe Controller\n");
 +		return ret;
 +	}
 +
-+	/* Clear PAD IO disable bits to enable refclk output */
-+	val = ~(args.args[0]);
-+	ret = regmap_update_bits(syscon, 0, mask, val);
-+	if (ret) {
-+		dev_err(dev, "failed to enable ACSPCIE refclk: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
- {
- 	struct device *dev = pcie->cdns_pcie->dev;
-@@ -264,7 +295,13 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
+ 	ret = j721e_pcie_set_mode(pcie, syscon, offset);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to set pci mode\n");
+@@ -295,6 +314,12 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
  		return ret;
  	}
  
--	return 0;
-+	/* Enable ACSPCIE refclk output if the optional property exists */
-+	syscon = syscon_regmap_lookup_by_phandle_optional(node,
-+						"ti,syscon-acspcie-proxy-ctrl");
-+	if (!syscon)
-+		return 0;
++	ret = pm_runtime_get_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power on PCIe Controller\n");
++		return ret;
++	}
 +
-+	return j721e_enable_acspcie_refclk(pcie, syscon);
- }
- 
- static int cdns_ti_pcie_config_read(struct pci_bus *bus, unsigned int devfn,
+ 	/* Enable ACSPCIE refclk output if the optional property exists */
+ 	syscon = syscon_regmap_lookup_by_phandle_optional(node,
+ 						"ti,syscon-acspcie-proxy-ctrl");
 -- 
 2.51.0
 
