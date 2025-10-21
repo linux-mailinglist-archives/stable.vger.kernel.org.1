@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-188475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E3EBF85DF
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8061BBF861B
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:56:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7A9634F6B98
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072DB19C3B57
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39FC274652;
-	Tue, 21 Oct 2025 19:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB9E2741A6;
+	Tue, 21 Oct 2025 19:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjt+CUey"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgby0rhl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6D527381E;
-	Tue, 21 Oct 2025 19:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992F12737E7;
+	Tue, 21 Oct 2025 19:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076524; cv=none; b=SKUeLn/cU3ZGsvHpK2uVlI4HLabktLMksDi8RM1a7K3qg5fZ4shDasedYAV/Cbx+rn5/idZMRqoqXC5cjX9BMPq2Gq3vws/D/jfmxbWDd5Ks4ete0CdvLcgEiS8S2sxsrO5SdmJy0xMytFJ7uKni0EzhtUqOUJdwxIw0MQ0/ltk=
+	t=1761076558; cv=none; b=O7+M41YP/RXYmO8iqsEZBSkZO3dtuc+Z/PQBdP3mva9EX3XlM9KwBmbzj9WPbfk/30clM8pLTmakf3vjH4BTqnIzMu20Gyx/ziqjiU2KrCqxTmDNvcsqQu/4E4cS0GX1WCqVvexpu5Nm4cMCmLcWfh3rPUJvHqPEM8WLinw2jKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076524; c=relaxed/simple;
-	bh=Hi1epSTKvEogTwbFkI4ogsZaDU5OfQsxfaxKS95hvOc=;
+	s=arc-20240116; t=1761076558; c=relaxed/simple;
+	bh=ExSU1DjHuJzI0UcFDp/bMKnzqO7zbB/dy80FVglzCOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZE7ay8+72RkbnVTVpVSEYpJr37ge/WkmzesWg7NP1W3TtJvzwzuTjskpfHI6cP9UYtRX86eT4NeookYH2bnBLT2Kn74wfzHJeF4k6yma4xQ8TX6GkHvOMW/+5tYLj8rKWJhD71yf6D8bSogMcZ7xxgUXnyqNJJxU0bGitWzFfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjt+CUey; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAED1C4CEF5;
-	Tue, 21 Oct 2025 19:55:23 +0000 (UTC)
+	 MIME-Version; b=izaU5f+2CcrVYWYHf8g+Eb1OVPyWrraw/pnbJxFaDi5k+RLQzd5hbAGuDf+MYQPJUMGgU3KauWglHve1TsawUPAKqfS6wGujcR6qMk7/wNk5vkFeVKxXm0V7jdlnCOx9Lvgfw8ivNg6EjK2XmkodIWB1oo4pkezWpqC6fs5iKOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgby0rhl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A4EC4CEF7;
+	Tue, 21 Oct 2025 19:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076524;
-	bh=Hi1epSTKvEogTwbFkI4ogsZaDU5OfQsxfaxKS95hvOc=;
+	s=korg; t=1761076558;
+	bh=ExSU1DjHuJzI0UcFDp/bMKnzqO7zbB/dy80FVglzCOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjt+CUeyw7q2rEbM7+fmCNkSea6kRbVt9NX+1MerzXKZVJJMP2XlqHXX1vwLWqI2Y
-	 HZtW6KC5TugCaPohzlrGOreHmjKv4IPlsY8uyofoYhJfC/+BKKnxqtuuw2f1fzLEKU
-	 XM1DlpLuu8uNeukciaSV+6YRtcw1QHdHnJt8ArQY=
+	b=dgby0rhlFU1sWAc3cuWHwPeEVqn9C73CxDhr4capb/5jlXDarKhg8dE6INTIoJLGI
+	 uaXPbm+3jdqV5fGkaqQDJU6vdl3CaLOFwMROtlaneXluyAKsQ4FaRMDgGBt8VxrJt5
+	 2lLpjGt+oXYvP6KbGjNTEjeycSinJMyVEoT8GYas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/105] drm/bridge: lt9211: Drop check for last nibble of version register
-Date: Tue, 21 Oct 2025 21:51:03 +0200
-Message-ID: <20251021195022.962479389@linuxfoundation.org>
+Subject: [PATCH 6.6 055/105] ASoC: codecs: Fix gain setting ranges for Renesas IDT821034 codec
+Date: Tue, 21 Oct 2025 21:51:04 +0200
+Message-ID: <20251021195022.985126114@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
 References: <20251021195021.492915002@linuxfoundation.org>
@@ -66,43 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Vasut <marek.vasut@mailbox.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit db74b04edce1bc86b9a5acc724c7ca06f427ab60 ]
+[ Upstream commit 6370a996f308ea3276030769b7482b346e7cc7c1 ]
 
-There is now a new LT9211 rev. U5, which reports chip ID 0x18 0x01 0xe4 .
-The previous LT9211 reported chip ID 0x18 0x01 0xe3 , which is what the
-driver checks for right now. Since there is a possibility there will be
-yet another revision of the LT9211 in the future, drop the last version
-nibble check to allow all future revisions of the chip to work with this
-driver.
+The gain ranges specified in Renesas IDT821034 codec documentation
+are [-3dB;+13dB] in the transmit path (ADC) and [-13dB;+3dB] in the
+receive path (DAC). Allthough the registers allow programming values
+outside those ranges, the signal S/N and distorsion are only
+guaranteed in the specified ranges.
 
-This fix makes LT9211 rev. U5 work with this driver.
+Set ranges to the specified ones.
 
-Fixes: 8ce4129e3de4 ("drm/bridge: lt9211: Add Lontium LT9211 bridge driver")
-Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251011110017.12521-1-marek.vasut@mailbox.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: e51166990e81 ("ASoC: codecs: Add support for the Renesas IDT821034 codec")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://patch.msgid.link/2bd547194f3398e6182f770d7d6be711c702b4b2.1760029099.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt9211.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/codecs/idt821034.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt9211.c b/drivers/gpu/drm/bridge/lontium-lt9211.c
-index 4d404f5ef87eb..ea192c90b543e 100644
---- a/drivers/gpu/drm/bridge/lontium-lt9211.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt9211.c
-@@ -120,8 +120,7 @@ static int lt9211_read_chipid(struct lt9211 *ctx)
- 	}
+diff --git a/sound/soc/codecs/idt821034.c b/sound/soc/codecs/idt821034.c
+index 2cc7b9166e695..068a5448e273e 100644
+--- a/sound/soc/codecs/idt821034.c
++++ b/sound/soc/codecs/idt821034.c
+@@ -548,14 +548,14 @@ static int idt821034_kctrl_mute_put(struct snd_kcontrol *kcontrol,
+ 	return ret;
+ }
  
- 	/* Test for known Chip ID. */
--	if (chipid[0] != REG_CHIPID0_VALUE || chipid[1] != REG_CHIPID1_VALUE ||
--	    chipid[2] != REG_CHIPID2_VALUE) {
-+	if (chipid[0] != REG_CHIPID0_VALUE || chipid[1] != REG_CHIPID1_VALUE) {
- 		dev_err(ctx->dev, "Unknown Chip ID: 0x%02x 0x%02x 0x%02x\n",
- 			chipid[0], chipid[1], chipid[2]);
- 		return -EINVAL;
+-static const DECLARE_TLV_DB_LINEAR(idt821034_gain_in, -6520, 1306);
+-#define IDT821034_GAIN_IN_MIN_RAW	1 /* -65.20 dB -> 10^(-65.2/20.0) * 1820 = 1 */
+-#define IDT821034_GAIN_IN_MAX_RAW	8191 /* 13.06 dB -> 10^(13.06/20.0) * 1820 = 8191 */
++static const DECLARE_TLV_DB_LINEAR(idt821034_gain_in, -300, 1300);
++#define IDT821034_GAIN_IN_MIN_RAW	1288 /* -3.0 dB -> 10^(-3.0/20.0) * 1820 = 1288 */
++#define IDT821034_GAIN_IN_MAX_RAW	8130 /* 13.0 dB -> 10^(13.0/20.0) * 1820 = 8130 */
+ #define IDT821034_GAIN_IN_INIT_RAW	1820 /* 0dB -> 10^(0/20) * 1820 = 1820 */
+ 
+-static const DECLARE_TLV_DB_LINEAR(idt821034_gain_out, -6798, 1029);
+-#define IDT821034_GAIN_OUT_MIN_RAW	1 /* -67.98 dB -> 10^(-67.98/20.0) * 2506 = 1*/
+-#define IDT821034_GAIN_OUT_MAX_RAW	8191 /* 10.29 dB -> 10^(10.29/20.0) * 2506 = 8191 */
++static const DECLARE_TLV_DB_LINEAR(idt821034_gain_out, -1300, 300);
++#define IDT821034_GAIN_OUT_MIN_RAW	561 /* -13.0 dB -> 10^(-13.0/20.0) * 2506 = 561 */
++#define IDT821034_GAIN_OUT_MAX_RAW	3540 /* 3.0 dB -> 10^(3.0/20.0) * 2506 = 3540 */
+ #define IDT821034_GAIN_OUT_INIT_RAW	2506 /* 0dB -> 10^(0/20) * 2506 = 2506 */
+ 
+ static const struct snd_kcontrol_new idt821034_controls[] = {
 -- 
 2.51.0
 
