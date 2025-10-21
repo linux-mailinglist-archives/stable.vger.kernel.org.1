@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-188449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9542BF8583
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88EABF8709
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CDF284F44D2
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 632CF485950
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D16273D9A;
-	Tue, 21 Oct 2025 19:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52D1274B2E;
+	Tue, 21 Oct 2025 19:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fs2sjphP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BnDsi4FD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C4A272E7C;
-	Tue, 21 Oct 2025 19:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC25246798;
+	Tue, 21 Oct 2025 19:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076443; cv=none; b=mOjcCL5/M3MMgUODrPIccsiHA7emEJkjBa/yGUh2soIrKucBbu4hG8thnnq3nxgJuL9GYmSKiDSO4eNVKbpZ8PZnD6tttMt2EjE4yjMTsVTDAea6yV1iwdwdpXmreFPgN+YSXYhVRogBfKxebaDX+yg6wbajXcNVulZLWtSZP5k=
+	t=1761076766; cv=none; b=qRn7tCgnInqCzP0leD1kxoKNOTX9ibUv/IaRmVPRN6ZIbZHgb4AmtLcwSeUnkXEVPf++wn39L6EqcbIwRkg4vzBB9PUJUyEFndbEmbc1oaqG4yIUHjFO2La8hd5lojjhJ3JBJHd/wo4TiLzEY4x7fJ6gLhpyMKIZsZjiR6ZMSf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076443; c=relaxed/simple;
-	bh=REbb3oDmQUByAepH++HGUCoNKM6QK4G8L5mXdQv/DOM=;
+	s=arc-20240116; t=1761076766; c=relaxed/simple;
+	bh=ltmiJ5sqZS17RtI3/THHg9rXoT61hHoszcD0rr48SHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZulSUIQp8j0NCDWWlydOsaFsMxfP7LS/fg/qWrMLRXcmZdzb1OAb1q/3VomTCTGwG++R8FmxE6bnyij54w3tgbkgXfJwwAkPsr4k1q+iIrCxEd0qd79Tp/2crKW7HBk1CGgJp3clS2UcCGIU+gfUSCV5lZIhREt5p7REs0mzBRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fs2sjphP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E568C4CEF5;
-	Tue, 21 Oct 2025 19:53:59 +0000 (UTC)
+	 MIME-Version; b=iMUnBrb6OJ3scqa/Jb7zX4Ey0hU4/dHDq9rFOGCernQllhHBlVx3+wJi7tHygntza22dSmhbXBE96hbcj83tQrLJfgwDmF33v9G04vqlhaQYnkwJEnqvVFc7m4dh0O9++r9h0kCTJJYeVskNLlruaW9cPD0MEq6AHwHNLevFJgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnDsi4FD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68BEC4CEF1;
+	Tue, 21 Oct 2025 19:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076440;
-	bh=REbb3oDmQUByAepH++HGUCoNKM6QK4G8L5mXdQv/DOM=;
+	s=korg; t=1761076766;
+	bh=ltmiJ5sqZS17RtI3/THHg9rXoT61hHoszcD0rr48SHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fs2sjphPPrm0aS34GlcKNwAwYTihZs/tnhxXGcoYbtbIl9Ps5pfNqAAlS7PBmnq+X
-	 TPkC6Zba7a4HIjCO8ponkK4N/Fyq95b/CHpwgPv78FbpRcLUMJ8gNvVuB75VU+MW8z
-	 p//XSKlV5B6nFOhRlR4WrbJCjMRU1tM5J0i+dhns=
+	b=BnDsi4FDh2pmyjUq+gbCNj4RRwVThSU+5X+wedwESg6sBQU0ZdBgQ0UzpPhAY1Umv
+	 hvTewc8aRtteW3ZP59Wm6mTW95IO+rRH23bRLKoI8JjKommn6c1dqiFgKUaHZ6iaUh
+	 QC3+vrUvsSZ4dDYM91Eg4ElwQxEISVu7HVnsL1oM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 008/105] btrfs: fix clearing of BTRFS_FS_RELOC_RUNNING if relocation already running
-Date: Tue, 21 Oct 2025 21:50:17 +0200
-Message-ID: <20251021195021.689783065@linuxfoundation.org>
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 030/136] media: nxp: imx8-isi: Drop unused argument to mxc_isi_channel_chain()
+Date: Tue, 21 Oct 2025 21:50:18 +0200
+Message-ID: <20251021195036.696754003@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-commit 7e5a5983edda664e8e4bb20af17b80f5135c655c upstream.
+[ Upstream commit 9a21ffeade25cbf310f5db39a1f9932695dd41bb ]
 
-When starting relocation, at reloc_chunk_start(), if we happen to find
-the flag BTRFS_FS_RELOC_RUNNING is already set we return an error
-(-EINPROGRESS) to the callers, however the callers call reloc_chunk_end()
-which will clear the flag BTRFS_FS_RELOC_RUNNING, which is wrong since
-relocation was started by another task and still running.
+The bypass argument to the mxc_isi_channel_chain() function is unused.
+Drop it.
 
-Finding the BTRFS_FS_RELOC_RUNNING flag already set is an unexpected
-scenario, but still our current behaviour is not correct.
-
-Fix this by never calling reloc_chunk_end() if reloc_chunk_start() has
-returned an error, which is what logically makes sense, since the general
-widespread pattern is to have end functions called only if the counterpart
-start functions succeeded. This requires changing reloc_chunk_start() to
-clear BTRFS_FS_RELOC_RUNNING if there's a pending cancel request.
-
-Fixes: 907d2710d727 ("btrfs: add cancellable chunk relocation support")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: https://lore.kernel.org/r/20250813225501.20762-1-laurent.pinchart@ideasonboard.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Stable-dep-of: 178aa3360220 ("media: nxp: imx8-isi: m2m: Fix streaming cleanup on release")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/relocation.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h |    2 +-
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c   |    2 +-
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c  |   11 +++++------
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c |    2 +-
+ 4 files changed, 8 insertions(+), 9 deletions(-)
 
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -3877,6 +3877,7 @@ out:
- /*
-  * Mark start of chunk relocation that is cancellable. Check if the cancellation
-  * has been requested meanwhile and don't start in that case.
-+ * NOTE: if this returns an error, reloc_chunk_end() must not be called.
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+@@ -361,7 +361,7 @@ void mxc_isi_channel_get(struct mxc_isi_
+ void mxc_isi_channel_put(struct mxc_isi_pipe *pipe);
+ void mxc_isi_channel_enable(struct mxc_isi_pipe *pipe);
+ void mxc_isi_channel_disable(struct mxc_isi_pipe *pipe);
+-int mxc_isi_channel_chain(struct mxc_isi_pipe *pipe, bool bypass);
++int mxc_isi_channel_chain(struct mxc_isi_pipe *pipe);
+ void mxc_isi_channel_unchain(struct mxc_isi_pipe *pipe);
+ 
+ void mxc_isi_channel_config(struct mxc_isi_pipe *pipe,
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
+@@ -587,7 +587,7 @@ void mxc_isi_channel_release(struct mxc_
   *
-  * Return:
-  *   0             success
-@@ -3893,10 +3894,8 @@ static int reloc_chunk_start(struct btrf
- 
- 	if (atomic_read(&fs_info->reloc_cancel_req) > 0) {
- 		btrfs_info(fs_info, "chunk relocation canceled on start");
--		/*
--		 * On cancel, clear all requests but let the caller mark
--		 * the end after cleanup operations.
--		 */
-+		/* On cancel, clear all requests. */
-+		clear_and_wake_up_bit(BTRFS_FS_RELOC_RUNNING, &fs_info->flags);
- 		atomic_set(&fs_info->reloc_cancel_req, 0);
- 		return -ECANCELED;
- 	}
-@@ -3905,9 +3904,11 @@ static int reloc_chunk_start(struct btrf
- 
- /*
-  * Mark end of chunk relocation that is cancellable and wake any waiters.
-+ * NOTE: call only if a previous call to reloc_chunk_start() succeeded.
+  * TODO: Support secondary line buffer for downscaling YUV420 images.
   */
- static void reloc_chunk_end(struct btrfs_fs_info *fs_info)
+-int mxc_isi_channel_chain(struct mxc_isi_pipe *pipe, bool bypass)
++int mxc_isi_channel_chain(struct mxc_isi_pipe *pipe)
  {
-+	ASSERT(test_bit(BTRFS_FS_RELOC_RUNNING, &fs_info->flags));
- 	/* Requested after start, clear bit first so any waiters can continue */
- 	if (atomic_read(&fs_info->reloc_cancel_req) > 0)
- 		btrfs_info(fs_info, "chunk relocation canceled during operation");
-@@ -4119,9 +4120,9 @@ out:
- 	if (err && rw)
- 		btrfs_dec_block_group_ro(rc->block_group);
- 	iput(rc->data_inode);
-+	reloc_chunk_end(fs_info);
- out_put_bg:
- 	btrfs_put_block_group(bg);
--	reloc_chunk_end(fs_info);
- 	free_reloc_control(rc);
- 	return err;
- }
-@@ -4311,8 +4312,8 @@ out_clean:
- 		err = ret;
- out_unset:
- 	unset_reloc_control(rc);
--out_end:
- 	reloc_chunk_end(fs_info);
-+out_end:
- 	free_reloc_control(rc);
- out:
- 	free_reloc_roots(&reloc_roots);
+ 	/* Channel chaining requires both line and output buffer. */
+ 	const u8 resources = MXC_ISI_CHANNEL_RES_OUTPUT_BUF
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+@@ -493,7 +493,6 @@ static int mxc_isi_m2m_streamon(struct f
+ 	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
+ 	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
+ 	struct mxc_isi_m2m *m2m = ctx->m2m;
+-	bool bypass;
+ 	int ret;
+ 
+ 	if (q->streaming)
+@@ -506,15 +505,15 @@ static int mxc_isi_m2m_streamon(struct f
+ 		goto unlock;
+ 	}
+ 
+-	bypass = cap_pix->width == out_pix->width &&
+-		 cap_pix->height == out_pix->height &&
+-		 cap_info->encoding == out_info->encoding;
+-
+ 	/*
+ 	 * Acquire the pipe and initialize the channel with the first user of
+ 	 * the M2M device.
+ 	 */
+ 	if (m2m->usage_count == 0) {
++		bool bypass = cap_pix->width == out_pix->width &&
++			      cap_pix->height == out_pix->height &&
++			      cap_info->encoding == out_info->encoding;
++
+ 		ret = mxc_isi_channel_acquire(m2m->pipe,
+ 					      &mxc_isi_m2m_frame_write_done,
+ 					      bypass);
+@@ -531,7 +530,7 @@ static int mxc_isi_m2m_streamon(struct f
+ 	 * buffer chaining.
+ 	 */
+ 	if (!ctx->chained && out_pix->width > MXC_ISI_MAX_WIDTH_UNCHAINED) {
+-		ret = mxc_isi_channel_chain(m2m->pipe, bypass);
++		ret = mxc_isi_channel_chain(m2m->pipe);
+ 		if (ret)
+ 			goto deinit;
+ 
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+@@ -855,7 +855,7 @@ int mxc_isi_pipe_acquire(struct mxc_isi_
+ 
+ 	/* Chain the channel if needed for wide resolutions. */
+ 	if (sink_fmt->width > MXC_ISI_MAX_WIDTH_UNCHAINED) {
+-		ret = mxc_isi_channel_chain(pipe, bypass);
++		ret = mxc_isi_channel_chain(pipe);
+ 		if (ret)
+ 			mxc_isi_channel_release(pipe);
+ 	}
 
 
 
