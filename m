@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-188482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4398BF8608
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B06E9BF8818
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 463B419C3A57
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:56:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 485B75828AA
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FF4273D9F;
-	Tue, 21 Oct 2025 19:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA89E2652AC;
+	Tue, 21 Oct 2025 20:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/WJJ55A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XUL74UX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B6E350A39;
-	Tue, 21 Oct 2025 19:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68DB258EDF;
+	Tue, 21 Oct 2025 20:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076546; cv=none; b=rOu70Ncf8pvizL0bnbOVXidx2CAJE+vx91Jms//l73JLHU5JTqGyFTtM8uu0aaKvb3oxPM3dbqMzBK5Lr8zocUO3L2PTnM+VFnzKo1Yb2LlgK9qi3al5pkN7/FmwLgheabLuPcdTBNy0T2avxoQJ5GFGvPyAXYcmO+/76Ay5Sd4=
+	t=1761076964; cv=none; b=Ll/yfhgFSRT4Qt6jpv8g4CuDmKQ7zUeiWaIH6lhfhhsCyUI/ITUNrZMpKozlNbFhqxhYPrFAjX8iYv4b2O0YqlWsjBa0Bi4TyIFid8+peDNKMIWt0L7TW+VKzSNr4mgOLm1Kkk+1Z2OODy2UIyEjMypqDav1QVHhR42sm75wKVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076546; c=relaxed/simple;
-	bh=PLBDteV8vj52UzUZ3KRzLmXqiExyee1q1DPwbh4ESUA=;
+	s=arc-20240116; t=1761076964; c=relaxed/simple;
+	bh=1J7tHA0audNBqoIWuKM9YIoOVt+s5DUN2BG2vLfUeG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBK/SZAtfq6JmTFkonYyPrl4Khc49OmW7guZ7qzUda4WAFLzPDhxT4RreGLpXJFQPdA4QBlIurxOle5xjdb31yVunaF9vb5czEEDxnpM95V/h0lz8jIygSDGCk1akIW41+2m5+h7OdgiVUe9+ShE3+yQ7qiroocPKlwWtPgN97c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/WJJ55A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E23C4CEF1;
-	Tue, 21 Oct 2025 19:55:45 +0000 (UTC)
+	 MIME-Version; b=aG3feW+kBek1U6TCRMBZh0JBGEcc5CJ48tiQ+ZRIvnuhlrqtj6qANrnVrlLPrXwXIiiJoX7JU4iqoAMRAmWuNVnaz0baQtvqmZtklJnayp2g1e/rFJ6k/hfIHzY4Qm4jLv6oms7bnWEbUBCBpdxTWo3K2mVvMgGuDP1iB0prRgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XUL74UX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0C3C4CEF1;
+	Tue, 21 Oct 2025 20:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076545;
-	bh=PLBDteV8vj52UzUZ3KRzLmXqiExyee1q1DPwbh4ESUA=;
+	s=korg; t=1761076964;
+	bh=1J7tHA0audNBqoIWuKM9YIoOVt+s5DUN2BG2vLfUeG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/WJJ55AsxNdAB2et1Kll7O1S5l+H50GggIduQJOhmVSQcco6H9VVfO5SGVzvcOqm
-	 5hQvACjMfDBvwhi0h1xha8BpfmlGhb495olxQ/D3TvLMSLd1dJwCff1OAT5c5iyeqn
-	 Kz0vpb817PfGfmVtYa2rlkmQOiaA/UCJlGcYnSWs=
+	b=0XUL74UX6ZuSa+Zu9Jwud0kZjA0Hk1dS0uLUVyNuZ40CuMcWHS2qdjW6QLMzVi9om
+	 8s3o2JJgJBXrjdUHe3g3r60LRnBOi0vNKvasRR+M6K2snpao6499fjG2LfeLMOvEU1
+	 Csfsu3biqYesMjQm9++ElmBn6AFzYe+vkLLBbrk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Li Qiang <liqiang01@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/105] HID: multitouch: fix name of Stylus input devices
-Date: Tue, 21 Oct 2025 21:51:18 +0200
-Message-ID: <20251021195023.302615731@linuxfoundation.org>
+Subject: [PATCH 6.12 091/136] ASoC: amd/sdw_utils: avoid NULL deref when devm_kasprintf() fails
+Date: Tue, 21 Oct 2025 21:51:19 +0200
+Message-ID: <20251021195038.149302892@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Li Qiang <liqiang01@kylinos.cn>
 
-[ Upstream commit aa4daea418ee4215dca5c8636090660c545cb233 ]
+[ Upstream commit 5726b68473f7153a7f6294185e5998b7e2a230a2 ]
 
-HID_DG_PEN devices should have a suffix of "Stylus", as pointed out by
-commit c0ee1d571626 ("HID: hid-input: Add suffix also for HID_DG_PEN").
-However, on multitouch devices, these suffixes may be overridden. Before
-that commit, HID_DG_PEN devices would get the "Stylus" suffix, but after
-that, multitouch would override them to have an "UNKNOWN" suffix. Just add
-HID_DG_PEN to the list of non-overriden suffixes in multitouch.
+devm_kasprintf() may return NULL on memory allocation failure,
+but the debug message prints cpus->dai_name before checking it.
+Move the dev_dbg() call after the NULL check to prevent potential
+NULL pointer dereference.
 
-Before this fix:
-
-[    0.470981] input: ELAN9008:00 04F3:2E14 UNKNOWN as /devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-16/i2c-ELAN9008:00/0018:04F3:2E14.0001/input/input8
-ELAN9008:00 04F3:2E14 UNKNOWN
-
-After this fix:
-
-[    0.474332] input: ELAN9008:00 04F3:2E14 Stylus as /devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-16/i2c-ELAN9008:00/0018:04F3:2E14.0001/input/input8
-
-ELAN9008:00 04F3:2E14 Stylus
-
-Fixes: c0ee1d571626 ("HID: hid-input: Add suffix also for HID_DG_PEN")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: cb8ea62e64020 ("ASoC: amd/sdw_utils: add sof based soundwire generic machine driver")
+Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
+Link: https://patch.msgid.link/20251015075530.146851-1-liqiang01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/amd/acp/acp-sdw-sof-mach.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 6f1e54ee8f05d..b9e67b408a4b9 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1658,6 +1658,7 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
- 	case HID_CP_CONSUMER_CONTROL:
- 	case HID_GD_WIRELESS_RADIO_CTLS:
- 	case HID_GD_SYSTEM_MULTIAXIS:
-+	case HID_DG_PEN:
- 		/* already handled by hid core */
- 		break;
- 	case HID_DG_TOUCHSCREEN:
+diff --git a/sound/soc/amd/acp/acp-sdw-sof-mach.c b/sound/soc/amd/acp/acp-sdw-sof-mach.c
+index 99a244f495bd3..876f0b7fcd3de 100644
+--- a/sound/soc/amd/acp/acp-sdw-sof-mach.c
++++ b/sound/soc/amd/acp/acp-sdw-sof-mach.c
+@@ -216,9 +216,9 @@ static int create_sdw_dailink(struct snd_soc_card *card,
+ 			cpus->dai_name = devm_kasprintf(dev, GFP_KERNEL,
+ 							"SDW%d Pin%d",
+ 							link_num, cpu_pin_id);
+-			dev_dbg(dev, "cpu->dai_name:%s\n", cpus->dai_name);
+ 			if (!cpus->dai_name)
+ 				return -ENOMEM;
++			dev_dbg(dev, "cpu->dai_name:%s\n", cpus->dai_name);
+ 
+ 			codec_maps[j].cpu = 0;
+ 			codec_maps[j].codec = j;
 -- 
 2.51.0
 
