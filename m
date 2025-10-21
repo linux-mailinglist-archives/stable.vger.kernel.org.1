@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-188620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5E6BF8833
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B77BF861A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:56:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67E85582F0B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:03:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5E3F3AFD25
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFD423D7E8;
-	Tue, 21 Oct 2025 20:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2209274B29;
+	Tue, 21 Oct 2025 19:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1nPWKFX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRdBcLBO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93BB1E1E04;
-	Tue, 21 Oct 2025 20:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889D2274652;
+	Tue, 21 Oct 2025 19:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076986; cv=none; b=tSLqtTI0mtBuSODuGYqtm8RKzweepZPdGjHUhRHlDL/3/IWIF158+QdKLRPnGk53oSQZJ31bc6gW8sCmmkHGtJfkzuBffVPbiKscDMgkw2Lkxek9BaDeHIJUtWItpqpzhoQTIZKKhscjYd1OuN9DgCxCSvVWuJJSndgfJtzqc7M=
+	t=1761076555; cv=none; b=s5QXFO7fEy2SEmdBCPwJK9d8T9lr/RUb88y6DZTJEU60svWQUC1j1aeLaGQNfrsmMup1xh3ycJeXPp7Osal0dY7SKK4MZiKymh3ROF2qWjW/IBd4I6h4q4ubyKVjo84k3YE5FYTrUgooUS8MMxi3VZalysRdTWXgerikn10hxhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076986; c=relaxed/simple;
-	bh=n4jNkTAv5/VgpqfS5/Ck/yBu7OCscmUkV/xl7lsT/OM=;
+	s=arc-20240116; t=1761076555; c=relaxed/simple;
+	bh=+9qrknr7PNJnMZk/7r5+CqgXnIWMpuaiCwi5JjwGzvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sNZu0DsCtsfnsqJbNuoffvJ0j4NvBq3Icqkf5A1lRyaBCgbadrjizGyhoCcx55TaYjFDzqr3dWS90byQzB6aH8wCw6+a+cKrmVkW4IqEfc7l1eC5203y8lbkUjLOYh2zOt9vGBEWre7Ub/LR03a3NrmtPxu5o9MUa609e5RdwdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1nPWKFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D47C4CEF1;
-	Tue, 21 Oct 2025 20:03:05 +0000 (UTC)
+	 MIME-Version; b=OxI3GiLC2fCfpQI555kC55UMqxZ/s+b3HmvvL36cJwh2rqx/Z3fqBSCnOKwDqulD7V3HD+uB1bdtuciEcnylDhVTrJtxlXCin2/BPA0L93UxJP653SHgbBc78rsW6FQKb0E4yLHeA1KugSZY7Ufvo/DdHyjccjcE2G/YUZNmGh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRdBcLBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7D4C4CEF1;
+	Tue, 21 Oct 2025 19:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076986;
-	bh=n4jNkTAv5/VgpqfS5/Ck/yBu7OCscmUkV/xl7lsT/OM=;
+	s=korg; t=1761076555;
+	bh=+9qrknr7PNJnMZk/7r5+CqgXnIWMpuaiCwi5JjwGzvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F1nPWKFX+y5oFTUFgGu2QZUhIyl1CuuG49HkN8ZSMLwg8YQIRZAd0fLbcvnFJTTW9
-	 l7Leyy71RdM9cq5sh6Wk8+ZzFNSjT6EbDqSimJ+fD+vLrHNgqG5Fe5iMoNMIMlGaQj
-	 uvtbh6yrxkNpHa16bvyIns5u81RPbm5CviC5KD+k=
+	b=XRdBcLBOhsW5kDm6Y5yjiAkfAxTDpmR4nKNNXiDL+g35WYixw3RenFQf+cRj5DOi/
+	 7J+LjHorgCdBl7AiI3xoxWr47yNcLEoknMHtJaBxkTjkvAAbW950eHyR60uogNXc9J
+	 uhbzDGCLNNOaZ+tUT3sJStVNme6QMrkyt4kIdJqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/136] nvme/tcp: handle tls partially sent records in write_space()
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH 6.6 072/105] arm64: cputype: Add Neoverse-V3AE definitions
 Date: Tue, 21 Oct 2025 21:51:21 +0200
-Message-ID: <20251021195038.194730851@linuxfoundation.org>
+Message-ID: <20251021195023.369333967@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 5a869d017793399fd1d2609ff27e900534173eb3 ]
+commit 3bbf004c4808e2c3241e5c1ad6cc102f38a03c39 upstream.
 
-With TLS enabled, records that are encrypted and appended to TLS TX
-list can fail to see a retry if the underlying TCP socket is busy, for
-example, hitting an EAGAIN from tcp_sendmsg_locked(). This is not known
-to the NVMe TCP driver, as the TLS layer successfully generated a record.
+Add cputype definitions for Neoverse-V3AE. These will be used for errata
+detection in subsequent patches.
 
-Typically, the TLS write_space() callback would ensure such records are
-retried, but in the NVMe TCP Host driver, write_space() invokes
-nvme_tcp_write_space(). This causes a partially sent record in the TLS TX
-list to timeout after not being retried.
+These values can be found in the Neoverse-V3AE TRM:
 
-This patch fixes the above by calling queue->write_space(), which calls
-into the TLS layer to retry any pending records.
+  https://developer.arm.com/documentation/SDEN-2615521/9-0/
 
-Fixes: be8e82caa685 ("nvme-tcp: enable TLS handshake upcall")
-Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+... in section A.6.1 ("MIDR_EL1, Main ID Register").
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/tcp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 83a6b18b01ada..77df3432dfb78 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1075,6 +1075,9 @@ static void nvme_tcp_write_space(struct sock *sk)
- 	queue = sk->sk_user_data;
- 	if (likely(queue && sk_stream_is_writeable(sk))) {
- 		clear_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
-+		/* Ensure pending TLS partial records are retried */
-+		if (nvme_tcp_queue_tls(queue))
-+			queue->write_space(sk);
- 		queue_work_on(queue->io_cpu, nvme_tcp_wq, &queue->io_work);
- 	}
- 	read_unlock_bh(&sk->sk_callback_lock);
--- 
-2.51.0
-
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -93,6 +93,7 @@
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
++#define ARM_CPU_PART_NEOVERSE_V3AE	0xD83
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+ #define ARM_CPU_PART_CORTEX_X925	0xD85
+ #define ARM_CPU_PART_CORTEX_A725	0xD87
+@@ -180,6 +181,7 @@
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
++#define MIDR_NEOVERSE_V3AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3AE)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+ #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
 
 
 
