@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-188635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24112BF8821
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B39BF8679
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 89DC04FA867
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A3C5F4FA004
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AD6279DAB;
-	Tue, 21 Oct 2025 20:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94DD273D66;
+	Tue, 21 Oct 2025 19:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akHNIQfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWAzid1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA9D25A355;
-	Tue, 21 Oct 2025 20:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75260274B30;
+	Tue, 21 Oct 2025 19:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077034; cv=none; b=HJSKQQRdPHNeCGNpgLDLP4EwJPNx+OtYbIYUsUck4EDgE6cLmwXBsFPfcUZBLPXV/TRDTsJMKBm2dozNN4txQgRDxRODOh91cgtwfiphfoj3Auq2oXyOusFYvG23Vdk8QgY9HIdmO1Oo8zHCViZis293xijTCZMor35+F771sqs=
+	t=1761076635; cv=none; b=VXdCjHZFmN31jGJQPI+XqO1roS+H/ccugUjssuicZwqVTv+KzFm5jJln7PVjVb3Ic22sXctdcasdAiH01aTIgDDdba06ZC5w+pCzh9X83SwauOmR1viifZ0youxM8pSIGC1PJHzZcIeXy8hDr15rJY7aSYXXbviMSFqNu1+qsSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077034; c=relaxed/simple;
-	bh=065M9XyQPuFsfWB0Y+B4lm7uEGG/Y4VIyVrj4IEyoPw=;
+	s=arc-20240116; t=1761076635; c=relaxed/simple;
+	bh=hhmNHPmOCCkoFyGVzJ0133E9W5cp1zZyIyVZpqiN144=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYCb+TRD3UGbdsSoGQpsAMxxvDXKIQy6UoHI6iRqAFoRNXaJIjVYGyRJ/RCR2lCObyXiP5ZVVsTRDTwtc4kXWtrY/DJjVz2FUDycYnn9wGWr4PoSs9VmZ1LChK1qotTxR2841e8/ttb86b8OjEVzVxEupOt+ZK2dylWqPVSUD2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akHNIQfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8FCC116C6;
-	Tue, 21 Oct 2025 20:03:53 +0000 (UTC)
+	 MIME-Version; b=GJs0yzAk56KGwowv7tFYzbQm/RhkS1ClH7xSqrimI1znLtHGkAbvlPjxvJkzncrKaQgf+wlRfVyKOPoskTK8mis/2TbV41PpV8iOnwdO7Yp2Alx6iTOAEKwin8sd/VLokUYTGshURfeKVpHBgXMfuYaAaJ509m9nicS4YPw134k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWAzid1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033CAC4CEF1;
+	Tue, 21 Oct 2025 19:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077033;
-	bh=065M9XyQPuFsfWB0Y+B4lm7uEGG/Y4VIyVrj4IEyoPw=;
+	s=korg; t=1761076635;
+	bh=hhmNHPmOCCkoFyGVzJ0133E9W5cp1zZyIyVZpqiN144=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=akHNIQfMeUHhNb3BDpI7fM5llvXWo4XF+mYv1q6+9qjYomQsHsJfqu6BGB7tMCcGK
-	 HtLXuCCu9B12yBEb4N5YBHMFpkXXXWtKXzXFgSx//kIElj8Uk1P9ML0Gu3nACFjM4F
-	 EN9zEpQMJpyBMZhL16Tnhxhp1R/tRDcE4v5IfVaE=
+	b=kWAzid1nb9hD9dVdUi9hjoTh1nHTtIMepwZe8fkuuyrgjGb5F10OV0VWKk+dCjlus
+	 NuEd4hC/S9RzLxJNmsJ3+iTEdH3csLreu/KzwPONM2Ubv2pUzuG8fXQi2yopHI0Iro
+	 EB0C2IauhFgY2D7Si2b4u2Kj/EnTHQHpFRIu43hI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Babu Moger <babu.moger@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Reinette Chatre <reinette.chatre@intel.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Harikrishna Shenoy <h-shenoy@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 115/136] x86/resctrl: Refactor resctrl_arch_rmid_read()
+Subject: [PATCH 6.6 094/105] phy: cadence: cdns-dphy: Update calibration wait time for startup state machine
 Date: Tue, 21 Oct 2025 21:51:43 +0200
-Message-ID: <20251021195038.734871061@linuxfoundation.org>
+Message-ID: <20251021195023.884111243@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Babu Moger <babu.moger@amd.com>
+From: Devarsh Thakkar <devarsht@ti.com>
 
-[ Upstream commit 7c9ac605e202c4668e441fc8146a993577131ca1 ]
+[ Upstream commit 2c27aaee934a1b5229152fe33a14f1fdf50da143 ]
 
-resctrl_arch_rmid_read() adjusts the value obtained from MSR_IA32_QM_CTR to
-account for the overflow for MBM events and apply counter scaling for all the
-events. This logic is common to both reading an RMID and reading a hardware
-counter directly.
+Do read-modify-write so that we re-use the characterized reset value as
+specified in TRM [1] to program calibration wait time which defines number
+of cycles to wait for after startup state machine is in bandgap enable
+state.
 
-Refactor the hardware value adjustment logic into get_corrected_val() to
-prepare for support of reading a hardware counter.
+This fixes PLL lock timeout error faced while using RPi DSI Panel on TI's
+AM62L and J721E SoC since earlier calibration wait time was getting
+overwritten to zero value thus failing the PLL to lockup and causing
+timeout.
 
-Signed-off-by: Babu Moger <babu.moger@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lore.kernel.org/cover.1757108044.git.babu.moger@amd.com
-Stable-dep-of: 15292f1b4c55 ("x86/resctrl: Fix miscount of bandwidth event when reactivating previously unavailable RMID")
+[1] AM62P TRM (Section 14.8.6.3.2.1.1 DPHY_TX_DPHYTX_CMN0_CMN_DIG_TBIT2):
+Link: https://www.ti.com/lit/pdf/spruj83
+
+Cc: stable@vger.kernel.org
+Fixes: 7a343c8bf4b5 ("phy: Add Cadence D-PHY support")
+Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+Tested-by: Harikrishna Shenoy <h-shenoy@ti.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250704125915.1224738-3-devarsht@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/resctrl/monitor.c |   38 ++++++++++++++++++++--------------
- 1 file changed, 23 insertions(+), 15 deletions(-)
+ drivers/phy/cadence/cdns-dphy.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/resctrl/monitor.c
-+++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-@@ -312,24 +312,13 @@ static u64 mbm_overflow_count(u64 prev_m
- 	return chunks >> shift;
- }
+--- a/drivers/phy/cadence/cdns-dphy.c
++++ b/drivers/phy/cadence/cdns-dphy.c
+@@ -30,6 +30,7 @@
  
--int resctrl_arch_rmid_read(struct rdt_resource *r, struct rdt_mon_domain *d,
--			   u32 unused, u32 rmid, enum resctrl_event_id eventid,
--			   u64 *val, void *ignored)
-+static u64 get_corrected_val(struct rdt_resource *r, struct rdt_mon_domain *d,
-+			     u32 rmid, enum resctrl_event_id eventid, u64 msr_val)
- {
- 	struct rdt_hw_mon_domain *hw_dom = resctrl_to_arch_mon_dom(d);
- 	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
--	int cpu = cpumask_any(&d->hdr.cpu_mask);
- 	struct arch_mbm_state *am;
--	u64 msr_val, chunks;
--	u32 prmid;
--	int ret;
--
--	resctrl_arch_rmid_read_context_check();
--
--	prmid = logical_rmid_to_physical_rmid(cpu, rmid);
--	ret = __rmid_read_phys(prmid, eventid, &msr_val);
--	if (ret)
--		return ret;
-+	u64 chunks;
+ #define DPHY_CMN_SSM			DPHY_PMA_CMN(0x20)
+ #define DPHY_CMN_SSM_EN			BIT(0)
++#define DPHY_CMN_SSM_CAL_WAIT_TIME	GENMASK(8, 1)
+ #define DPHY_CMN_TX_MODE_EN		BIT(9)
  
- 	am = get_arch_mbm_state(hw_dom, rmid, eventid);
- 	if (am) {
-@@ -341,7 +330,26 @@ int resctrl_arch_rmid_read(struct rdt_re
- 		chunks = msr_val;
- 	}
+ #define DPHY_CMN_PWM			DPHY_PMA_CMN(0x40)
+@@ -421,7 +422,8 @@ static int cdns_dphy_power_on(struct phy
+ 	writel(reg, dphy->regs + DPHY_BAND_CFG);
  
--	*val = chunks * hw_res->mon_scale;
-+	return chunks * hw_res->mon_scale;
-+}
-+
-+int resctrl_arch_rmid_read(struct rdt_resource *r, struct rdt_mon_domain *d,
-+			   u32 unused, u32 rmid, enum resctrl_event_id eventid,
-+			   u64 *val, void *ignored)
-+{
-+	int cpu = cpumask_any(&d->hdr.cpu_mask);
-+	u64 msr_val;
-+	u32 prmid;
-+	int ret;
-+
-+	resctrl_arch_rmid_read_context_check();
-+
-+	prmid = logical_rmid_to_physical_rmid(cpu, rmid);
-+	ret = __rmid_read_phys(prmid, eventid, &msr_val);
-+	if (ret)
-+		return ret;
-+
-+	*val = get_corrected_val(r, d, rmid, eventid, msr_val);
+ 	/* Start TX state machine. */
+-	writel(DPHY_CMN_SSM_EN | DPHY_CMN_TX_MODE_EN,
++	reg = readl(dphy->regs + DPHY_CMN_SSM);
++	writel((reg & DPHY_CMN_SSM_CAL_WAIT_TIME) | DPHY_CMN_SSM_EN | DPHY_CMN_TX_MODE_EN,
+ 	       dphy->regs + DPHY_CMN_SSM);
  
- 	return 0;
- }
+ 	ret = cdns_dphy_wait_for_pll_lock(dphy);
 
 
 
