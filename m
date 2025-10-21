@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-188561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624B7BF8740
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:00:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1D5BF8734
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:00:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98799427D1A
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5468D19C43DD
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA79227510E;
-	Tue, 21 Oct 2025 19:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31EB274FFD;
+	Tue, 21 Oct 2025 20:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7a/Nhfw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1qwL5ZR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D40274B30;
-	Tue, 21 Oct 2025 19:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB1A2773D4;
+	Tue, 21 Oct 2025 20:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076798; cv=none; b=geXKZ7daIyvavBEIyzQU2N2v3aqgt7ktfOL3b4+NB9wMh7Lt0Alcpf2p0ZQoHEyIfCpzt3JLs7PtYK4b5rHtuYbxIYgFI8WBpfKI70USflt5gA3cA3Ht4qqcwsTG0Ofw0YOpIKc/IwXHZKLjgtjvL3QFe8Ke7W4yjWxggfuKUsE=
+	t=1761076814; cv=none; b=thZ+Ybcjwa7L1IogLjO5QG7bb4hZU9LWMPTPYPySHEuTRa168/c9y5lLta1gO9lbj9KLsngojIf2nlFch5SUeWUnOM/K3KgGGVyWXItiX8f1MLSX0vcGmLP81OpqVGf0/XX4rR2zUri8CIWjm1ki0EuDr05L5Ta268Zr0v66KhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076798; c=relaxed/simple;
-	bh=dr7vos+97ZbW14yHpihcD9M0nWEw5OfzlOfFTwLao7g=;
+	s=arc-20240116; t=1761076814; c=relaxed/simple;
+	bh=OYGVOL2XNQ5P+FH53RT8PPJmP923uxewY2asD1NFPyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1HZrhUmc8at5TnbHB0jdb0oNN/UjOyLCdY1Y/W5fkfoIV8rG7bI3KX3M6VSA8ZeWVIfRi8f8EcCr9LLOhWucRn7d9bCj1eD9s3ggYLv8rQ+2b/DUbIoyNIO2eCpQqnqEAiIsgCzb+R/m2L7V0uf21iTo9Wp4t/pUoFlfxFqIOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7a/Nhfw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B640C4CEF1;
-	Tue, 21 Oct 2025 19:59:58 +0000 (UTC)
+	 MIME-Version; b=Av8GvsGzUhbFdQufkv+eRgwdmEaYXpynOejfehWugIVaK7O3fBo4SKaJpqTpgVmOu2IT3sEeBzrndmF9eRz1tUyVuXUur9QzqwNsn6xpCvuCGLT8qWD0jBUajCJ0b+Uhn+eojXHiMh6NyumdCGXta9/mgrF+lUNSE/tAe6hUnXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1qwL5ZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EA5C4CEF7;
+	Tue, 21 Oct 2025 20:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076798;
-	bh=dr7vos+97ZbW14yHpihcD9M0nWEw5OfzlOfFTwLao7g=;
+	s=korg; t=1761076814;
+	bh=OYGVOL2XNQ5P+FH53RT8PPJmP923uxewY2asD1NFPyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7a/NhfwprfXCCs0kO0rxS1PQPvQQFn647hHNTHDs57Q3r9jTq5bTm/InhcnnePck
-	 /lvsFQ006JMzblINRFc/cZP+HFX8Maz7x4GOc1ir9VtDo4DC0hieB16eilHxFW6565
-	 utR28CwBq0mty3Xu+xu2WNn8e/Mz8pWcMM0KFQRs=
+	b=n1qwL5ZRNw0AvQpO+90r4+5Zch7RLVcO2dOG4We3daY2wYY4O52XtpjZfrxieZ92Y
+	 222e9/9DpDYvtRJjjEs0EU2cUz8gh1v05Lz8WzhsByj520TIEgIS8ogjnmjFDvQ41U
+	 kT5oF4M+fblukVqCydVDGOc/LfoWKM2vRoGKV72s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Ge <gehao@kylinos.cn>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.12 004/136] slab: reset slab->obj_ext when freeing and it is OBJEXTS_ALLOC_FAIL
-Date: Tue, 21 Oct 2025 21:49:52 +0200
-Message-ID: <20251021195036.063946102@linuxfoundation.org>
+	Yi Cong <yicong@kylinos.cn>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 005/136] r8152: add error handling in rtl8152_driver_init
+Date: Tue, 21 Oct 2025 21:49:53 +0200
+Message-ID: <20251021195036.088481275@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
 References: <20251021195035.953989698@linuxfoundation.org>
@@ -67,60 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hao Ge <gehao@kylinos.cn>
+From: Yi Cong <yicong@kylinos.cn>
 
-commit 86f54f9b6c17d6567c69e3a6fed52fdf5d7dbe93 upstream.
+commit 75527d61d60d493d1eb064f335071a20ca581f54 upstream.
 
-If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
-But we do not clear it when freeing the slab. Since OBJEXTS_ALLOC_FAIL and
-MEMCG_DATA_OBJEXTS currently share the same bit position, during the
-release of the associated folio, a VM_BUG_ON_FOLIO() check in
-folio_memcg_kmem() is triggered because the OBJEXTS_ALLOC_FAIL flag was
-not cleared, causing it to be interpreted as a kmem folio (non-slab)
-with MEMCG_OBJEXTS_DATA flag set, which is invalid because
-MEMCG_OBJEXTS_DATA is supposed to be set only on slabs.
+rtl8152_driver_init() is missing the error handling.
+When rtl8152_driver registration fails, rtl8152_cfgselector_driver
+should be deregistered.
 
-Another problem that predates sharing the OBJEXTS_ALLOC_FAIL and
-MEMCG_DATA_OBJEXTS bits is that on configurations with
-is_check_pages_enabled(), the non-cleared bit in page->memcg_data will
-trigger a free_page_is_bad() failure "page still charged to cgroup"
-
-When freeing a slab, we clear slab->obj_exts if the obj_ext array has
-been successfully allocated. So let's clear it also when the allocation
-has failed.
-
-Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to mark failed slab_ext allocations")
-Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
-Link: https://lore.kernel.org/all/20251015141642.700170-1-hao.ge@linux.dev/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yi Cong <yicong@kylinos.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251011082415.580740-1-yicongsrfy@163.com
+[pabeni@redhat.com: clarified the commit message]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/usb/r8152.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2038,8 +2038,15 @@ static inline void free_slab_obj_exts(st
- 	struct slabobj_ext *obj_exts;
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10151,7 +10151,12 @@ static int __init rtl8152_driver_init(vo
+ 	ret = usb_register_device_driver(&rtl8152_cfgselector_driver, THIS_MODULE);
+ 	if (ret)
+ 		return ret;
+-	return usb_register(&rtl8152_driver);
++
++	ret = usb_register(&rtl8152_driver);
++	if (ret)
++		usb_deregister_device_driver(&rtl8152_cfgselector_driver);
++
++	return ret;
+ }
  
- 	obj_exts = slab_obj_exts(slab);
--	if (!obj_exts)
-+	if (!obj_exts) {
-+		/*
-+		 * If obj_exts allocation failed, slab->obj_exts is set to
-+		 * OBJEXTS_ALLOC_FAIL. In this case, we end up here and should
-+		 * clear the flag.
-+		 */
-+		slab->obj_exts = 0;
- 		return;
-+	}
- 
- 	/*
- 	 * obj_exts was created with __GFP_NO_OBJ_EXT flag, therefore its
+ static void __exit rtl8152_driver_exit(void)
 
 
 
