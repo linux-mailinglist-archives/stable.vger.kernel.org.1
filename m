@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-188662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4F2BF887E
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:05:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C65BF8632
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AA8914FA2F5
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:05:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 085FA1886B6C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34FE25A355;
-	Tue, 21 Oct 2025 20:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82EF627381E;
+	Tue, 21 Oct 2025 19:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvkK5qcJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSc9nV92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECA824A047;
-	Tue, 21 Oct 2025 20:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3881E350A39;
+	Tue, 21 Oct 2025 19:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077119; cv=none; b=sOhkiV+wMTqxyWBQFv1YjaabL+is1yDzYhoBaJKP+wWnDK2nKDPej89EUm4iSejWq3ms09LBt7ec9kK/XWBjQCCDcP240S/QuNJsWNr8AQTDMl/bb+du9AZj49/56yqhdifWQ1DpU0FciBHycomxw88YaUK2khBfU1ykoHfWkY0=
+	t=1761076581; cv=none; b=S2h463ImvdIASABuW2IOoMHezT/EHUnTK8/Nu9QG9OhX2a5rRof+YAcBD/kJZ2AOQQkmhpudIH/z4O83E4OuuYLUeKp8NbnngPoYUEvBsGCquD3/BiR77iyz/JhjLh6msxSfSRgXeX6DnqsxcoI0IdAuGvYDW5aXMiiGsUsOuNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077119; c=relaxed/simple;
-	bh=wYp4+LtomJsPD8y6mIvy9B9pJ4cewAW+ooSfQ0sIpDQ=;
+	s=arc-20240116; t=1761076581; c=relaxed/simple;
+	bh=0dB62Ns56rxduhCNVD/tH3XdpjVxapTFHXMzwxcpR0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uaJ6lu0KMgcyVGjAbv6mM8BxHmfj7Y8KEvFY0baZPsWd0jumJlrNbKcY3hezVgz9tB8epfNZpcAlWJdqScGKjQAhM1FANDz2qMoxQ4Zt2omk1dQg7lBZuobPD5P5KVw9UJ8bIMiux+bCcziOI89kgObHK1k/1PHJ1DeJziyuRKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvkK5qcJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308B3C4CEF1;
-	Tue, 21 Oct 2025 20:05:19 +0000 (UTC)
+	 MIME-Version; b=cSdk+JxYua8c/bmM/UO5lZ2MjnYsDNhTTLOlieB3zM8tksONeQL8YCn/FsJEY766DPWnWvHwnByaEv9OQNMz6p7jC+/9qs7bM2GQScUwo5F234iJeztwNZwlTgrF4214nqAo0hgFfiVDe8As3V6ON26H/zWwcc+5hmkCWhYgGgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSc9nV92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973E5C4CEF1;
+	Tue, 21 Oct 2025 19:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077119;
-	bh=wYp4+LtomJsPD8y6mIvy9B9pJ4cewAW+ooSfQ0sIpDQ=;
+	s=korg; t=1761076581;
+	bh=0dB62Ns56rxduhCNVD/tH3XdpjVxapTFHXMzwxcpR0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvkK5qcJ0e5aLrueyzzk5OvrwKjhp30r0IAI5mP4e9pXDBmBZ9OZ6cqkbAUOVOtTN
-	 v8ANIwUZM2874Kxdq622kxItyrmp+9ttmqnvVpLvG0zGLoOpVcdo9PNiEZicDX+B6L
-	 oK3U2VAA5ixq0Ux5dUwTQ/2aS153i1TuM38djcGM=
+	b=KSc9nV92w/tOEb0DJjEwRcUz7idGSRceaUpGWgL027jL/BvXBbkzLf4mONSRPfV8b
+	 ZWnRpyzv8XIRFhx7k2uhALHtjqXTe4n1fc0T7ZrJb+hAU6BGE5P35vDBU4l9Q4sv9j
+	 OyTKVofoIGtI79cUdj95ux2VWzdIDk4ZoMiTZTAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/136] iio: imu: inv_icm42600: Simplify pm_runtime setup
+Subject: [PATCH 6.6 079/105] xfs: rename the old_crc variable in xlog_recover_process
 Date: Tue, 21 Oct 2025 21:51:28 +0200
-Message-ID: <20251021195038.365034805@linuxfoundation.org>
+Message-ID: <20251021195023.527664682@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 0792c1984a45ccd7a296d6b8cb78088bc99a212e ]
+[ Upstream commit 0b737f4ac1d3ec093347241df74bbf5f54a7e16c ]
 
-Rework the power management in inv_icm42600_core_probe() to use
-devm_pm_runtime_set_active_enabled(), which simplifies the runtime PM
-setup by handling activation and enabling in one step.
-Remove the separate inv_icm42600_disable_pm callback, as it's no longer
-needed with the devm-managed approach.
-Using devm_pm_runtime_enable() also fixes the missing disable of
-autosuspend.
-Update inv_icm42600_disable_vddio_reg() to only disable the regulator if
-the device is not suspended i.e. powered-down, preventing unbalanced
-disables.
-Also remove redundant error msg on regulator_disable(), the regulator
-framework already emits an error message when regulator_disable() fails.
+old_crc is a very misleading name.  Rename it to expected_crc as that
+described the usage much better.
 
-This simplifies the PM setup and avoids manipulating the usage counter
-unnecessarily.
-
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-1-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Stable-dep-of: e747883c7d73 ("xfs: fix log CRC mismatches between i386 and other architectures")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   24 ++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+ fs/xfs/xfs_log_recover.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -667,20 +667,12 @@ static void inv_icm42600_disable_vdd_reg
- static void inv_icm42600_disable_vddio_reg(void *_data)
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2860,20 +2860,19 @@ xlog_recover_process(
+ 	int			pass,
+ 	struct list_head	*buffer_list)
  {
- 	struct inv_icm42600_state *st = _data;
--	const struct device *dev = regmap_get_device(st->map);
--	int ret;
--
--	ret = regulator_disable(st->vddio_supply);
--	if (ret)
--		dev_err(dev, "failed to disable vddio error %d\n", ret);
--}
-+	struct device *dev = regmap_get_device(st->map);
+-	__le32			old_crc = rhead->h_crc;
+-	__le32			crc;
++	__le32			expected_crc = rhead->h_crc, crc;
  
--static void inv_icm42600_disable_pm(void *_data)
--{
--	struct device *dev = _data;
-+	if (pm_runtime_status_suspended(dev))
-+		return;
+ 	crc = xlog_cksum(log, rhead, dp, be32_to_cpu(rhead->h_len));
  
--	pm_runtime_put_sync(dev);
--	pm_runtime_disable(dev);
-+	regulator_disable(st->vddio_supply);
- }
- 
- int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
-@@ -777,16 +769,14 @@ int inv_icm42600_core_probe(struct regma
- 		return ret;
- 
- 	/* setup runtime power management */
--	ret = pm_runtime_set_active(dev);
-+	ret = devm_pm_runtime_set_active_enabled(dev);
- 	if (ret)
- 		return ret;
--	pm_runtime_get_noresume(dev);
--	pm_runtime_enable(dev);
-+
- 	pm_runtime_set_autosuspend_delay(dev, INV_ICM42600_SUSPEND_DELAY_MS);
- 	pm_runtime_use_autosuspend(dev);
--	pm_runtime_put(dev);
- 
--	return devm_add_action_or_reset(dev, inv_icm42600_disable_pm, dev);
-+	return ret;
- }
- EXPORT_SYMBOL_NS_GPL(inv_icm42600_core_probe, IIO_ICM42600);
- 
+ 	/*
+ 	 * Nothing else to do if this is a CRC verification pass. Just return
+ 	 * if this a record with a non-zero crc. Unfortunately, mkfs always
+-	 * sets old_crc to 0 so we must consider this valid even on v5 supers.
+-	 * Otherwise, return EFSBADCRC on failure so the callers up the stack
+-	 * know precisely what failed.
++	 * sets expected_crc to 0 so we must consider this valid even on v5
++	 * supers.  Otherwise, return EFSBADCRC on failure so the callers up the
++	 * stack know precisely what failed.
+ 	 */
+ 	if (pass == XLOG_RECOVER_CRCPASS) {
+-		if (old_crc && crc != old_crc)
++		if (expected_crc && crc != expected_crc)
+ 			return -EFSBADCRC;
+ 		return 0;
+ 	}
+@@ -2884,11 +2883,11 @@ xlog_recover_process(
+ 	 * zero CRC check prevents warnings from being emitted when upgrading
+ 	 * the kernel from one that does not add CRCs by default.
+ 	 */
+-	if (crc != old_crc) {
+-		if (old_crc || xfs_has_crc(log->l_mp)) {
++	if (crc != expected_crc) {
++		if (expected_crc || xfs_has_crc(log->l_mp)) {
+ 			xfs_alert(log->l_mp,
+ 		"log record CRC mismatch: found 0x%x, expected 0x%x.",
+-					le32_to_cpu(old_crc),
++					le32_to_cpu(expected_crc),
+ 					le32_to_cpu(crc));
+ 			xfs_hex_dump(dp, 32);
+ 		}
 
 
 
