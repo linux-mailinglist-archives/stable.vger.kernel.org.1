@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-188604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED88EBF87ED
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:03:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8551BF87A6
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 950ED581E2C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 952304E2F4F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7B52620F5;
-	Tue, 21 Oct 2025 20:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C762701B6;
+	Tue, 21 Oct 2025 20:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqTbu/6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwC99rPn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17738275844;
-	Tue, 21 Oct 2025 20:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1879258EDF;
+	Tue, 21 Oct 2025 20:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076936; cv=none; b=CN7/7xaua9qxQouemCSeWHFZ4pbdM0h2TOxm3eqmG/ObuSOkeW65hpo+SwfoLTJLoVSDExBLERIrdmgkfEFzXLndGruKwpLllobNRLgeXpwXLiU7Sv9A8SMfHRJ5r9739jfwlyPx7xmNQ4QjEx3adgbqT5v7HeuuLoSc/yzQIvg=
+	t=1761076942; cv=none; b=B9il85F+jonWGC90ipcFC+IBDewHft1YZoHVAundEz6PGdfmsJDsNY/OOhEQ/fy/usyOaizo+8HNB8Z2e0g3ZpcHxKIWkhoJhSQgbALhXAAIAfjVqhUZySmSxu8pqPDPIU5/hZojzscNRcLDIl7PQKueDdewJ7CJnXulKZD1x3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076936; c=relaxed/simple;
-	bh=XfwEEYYrPBaw4NzESTih0NlFKR3UbikxOI82jdOnXWU=;
+	s=arc-20240116; t=1761076942; c=relaxed/simple;
+	bh=es6Ag6khfp4m9CWJamkrc+o5uPlVFhLCvcpejNHRDwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dLWGBg5BMyjwj/fxTYW6m4sfQWYvygftvkfOgwr9z4Z589CEzo840Wn3XlB9n9J+p33dyDmXqbvlHRLz/DreTVhHxVGBAp9sJB0QicfsDou2WjfUJmqWoWSajlyu6ShxVgnOD2pRj6GJcWzRx0D/+H65U8wzFBYdGeqpkuuIAKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqTbu/6E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75BE1C4CEF1;
-	Tue, 21 Oct 2025 20:02:15 +0000 (UTC)
+	 MIME-Version; b=Sk4yzD8EI+9v6OtIXJ8sg1UBsj0Y5QPCYMgUWSq5OVfCKzLIrR4ZcxILRsNO3e+UiVv/DvHjTo3wOeziq2HDVMEsEmx7NKAiL8gt7mVj90+/5HqobT2xbXvixIQi1zRm/wf3HYUOSO5kuZau+iuu+oc1cRheh19tJqeN5XfniSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwC99rPn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E20CC4CEF1;
+	Tue, 21 Oct 2025 20:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076936;
-	bh=XfwEEYYrPBaw4NzESTih0NlFKR3UbikxOI82jdOnXWU=;
+	s=korg; t=1761076942;
+	bh=es6Ag6khfp4m9CWJamkrc+o5uPlVFhLCvcpejNHRDwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bqTbu/6EbHXv63oj5cVICqVP6J1Ne7jcIjdqGIprP+NJJjPWrP/jYdO0Zsa865NNv
-	 2jROFgrAw22LrQsmrR76xPhdPjEqep9g6876W5RGvVHmSFxt0arfwebHk3U48ET22d
-	 jiH0TZhRvl9r2DF8htS8yMK8jDMs5Gg6knYNDMsg=
+	b=CwC99rPnC6hxDpBNwZeFfR/YFE9S4rFnp4JmHOlHiQVGeJHUpW7aCeY4nCRE3qIc4
+	 8oYh8Lb53D5RN2vfSCYZBReTjd6XOf7DZFN1FdRThBD5l/xcnQQk3CER6F1eW+homf
+	 bstc1ZABxpYZGs10j+BjK/gt2VTdkW72myBoAG8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/136] ALSA: firewire: amdtp-stream: fix enum kernel-doc warnings
-Date: Tue, 21 Oct 2025 21:51:11 +0200
-Message-ID: <20251021195037.960485046@linuxfoundation.org>
+Subject: [PATCH 6.12 084/136] accel/qaic: Fix bootlog initialization ordering
+Date: Tue, 21 Oct 2025 21:51:12 +0200
+Message-ID: <20251021195037.983870167@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
 References: <20251021195035.953989698@linuxfoundation.org>
@@ -67,37 +68,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Jeffrey Hugo <quic_jhugo@quicinc.com>
 
-[ Upstream commit d41f68dff783d181a8fd462e612bda0fbab7f735 ]
+[ Upstream commit fd6e385528d8f85993b7bfc6430576136bb14c65 ]
 
-Fix spelling of CIP_NO_HEADER to prevent a kernel-doc warning.
+As soon as we queue MHI buffers to receive the bootlog from the device,
+we could be receiving data. Therefore all the resources needed to
+process that data need to be setup prior to queuing the buffers.
 
-Warning: amdtp-stream.h:57 Enum value 'CIP_NO_HEADER' not described in enum 'cip_flags'
-Warning: amdtp-stream.h:57 Excess enum value '%CIP_NO_HEADERS' description in 'cip_flags'
+We currently initialize some of the resources after queuing the buffers
+which creates a race between the probe() and any data that comes back
+from the device. If the uninitialized resources are accessed, we could
+see page faults.
 
-Fixes: 3b196c394dd9f ("ALSA: firewire-lib: add no-header packet processing")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix the init ordering to close the race.
+
+Fixes: 5f8df5c6def6 ("accel/qaic: Add bootlog debugfs")
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>
+Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251007115750.332169-1-youssef.abdulrahman@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/amdtp-stream.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/accel/qaic/qaic_debugfs.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/firewire/amdtp-stream.h b/sound/firewire/amdtp-stream.h
-index 775db3fc4959f..ec10270c2cce3 100644
---- a/sound/firewire/amdtp-stream.h
-+++ b/sound/firewire/amdtp-stream.h
-@@ -32,7 +32,7 @@
-  *	allows 5 times as large as IEC 61883-6 defines.
-  * @CIP_HEADER_WITHOUT_EOH: Only for in-stream. CIP Header doesn't include
-  *	valid EOH.
-- * @CIP_NO_HEADERS: a lack of headers in packets
-+ * @CIP_NO_HEADER: a lack of headers in packets
-  * @CIP_UNALIGHED_DBC: Only for in-stream. The value of dbc is not alighed to
-  *	the value of current SYT_INTERVAL; e.g. initial value is not zero.
-  * @CIP_UNAWARE_SYT: For outgoing packet, the value in SYT field of CIP is 0xffff.
+diff --git a/drivers/accel/qaic/qaic_debugfs.c b/drivers/accel/qaic/qaic_debugfs.c
+index 20b653d99e524..5ed49daaf541f 100644
+--- a/drivers/accel/qaic/qaic_debugfs.c
++++ b/drivers/accel/qaic/qaic_debugfs.c
+@@ -251,6 +251,9 @@ static int qaic_bootlog_mhi_probe(struct mhi_device *mhi_dev, const struct mhi_d
+ 	if (ret)
+ 		goto destroy_workqueue;
+ 
++	dev_set_drvdata(&mhi_dev->dev, qdev);
++	qdev->bootlog_ch = mhi_dev;
++
+ 	for (i = 0; i < BOOTLOG_POOL_SIZE; i++) {
+ 		msg = devm_kzalloc(&qdev->pdev->dev, sizeof(*msg), GFP_KERNEL);
+ 		if (!msg) {
+@@ -266,8 +269,6 @@ static int qaic_bootlog_mhi_probe(struct mhi_device *mhi_dev, const struct mhi_d
+ 			goto mhi_unprepare;
+ 	}
+ 
+-	dev_set_drvdata(&mhi_dev->dev, qdev);
+-	qdev->bootlog_ch = mhi_dev;
+ 	return 0;
+ 
+ mhi_unprepare:
 -- 
 2.51.0
 
