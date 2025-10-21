@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-188586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BEBEBF87A9
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD20CBF85B6
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7495D3B511C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E240B464781
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216991E1E04;
-	Tue, 21 Oct 2025 20:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7852737E7;
+	Tue, 21 Oct 2025 19:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z//i3J8s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOLS232S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EDF350A29;
-	Tue, 21 Oct 2025 20:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7CA2749CF;
+	Tue, 21 Oct 2025 19:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076878; cv=none; b=aD+i0JfZ/HSXkzQ8E+7m9sDQw+b6iwOg4CGhx24xJkP6qCb3dcC6juQfIl2gJ+RYlCONAg+bMdPZPX4InwS4qNM7rHWLbyPHfOzhgEj4j5M6WTrAqlpcS1y4Hi6dVAlbrCdgkytcY56WbfaoStVgcGSIXlT7oltkymATV0WZSHY=
+	t=1761076480; cv=none; b=oy7oemG88ofG1s1VAoCprFQNHhiZEoEX2UlPXCyKjIoF5Oo5/a9hJQw4jdH5nYfnskc5bQl8zkOJcWCM8vbDk8Hnnro9WF/ayBgpfphIpwSsJcPUrBmwGX5P2q8tlzokEuo4HIDGoZ8ReCvlQwxWCNwyr3ahmTkO8juj6xgPyZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076878; c=relaxed/simple;
-	bh=vOnqNBN0yx0GX2SQVP52xm5w0jITkrm8SBbpzztAFsI=;
+	s=arc-20240116; t=1761076480; c=relaxed/simple;
+	bh=Vi18ai1mEMcv9k9P/563n37k9fvHToc2oun/gbU8mG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhRb58+rfB5k5i06Y6qOhnz/D+EelhZAlO3M1kTvW1LixqStVssuwHiKCYzhsGtBXKty7bNf3iyk+U5kHaqBFbnP1sHyuojA6ABJC+Qh6FTbnSfOwbgK5TtyxjlwTk5IvqSr6O2+0yjSGLcDxFn/ywL/yEgEClxOUbHupCj5J80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z//i3J8s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E0C5C4CEF1;
-	Tue, 21 Oct 2025 20:01:17 +0000 (UTC)
+	 MIME-Version; b=WByue2baLcvO0tf8VE0seIEoIPzGNxhdESmmHpYmVsHmucThIHzBU6bVLZSVzbsbx26KKX7POKVBHzTZ3IqnB35rEUgWMfML6wJdSAkFCKmYBq8g6S9RKlhFxAXhVADct+oDLElWLGjCKlK9LD+BAWsw59JWo3idePZH6mzXExM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOLS232S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F1FC4CEF1;
+	Tue, 21 Oct 2025 19:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076878;
-	bh=vOnqNBN0yx0GX2SQVP52xm5w0jITkrm8SBbpzztAFsI=;
+	s=korg; t=1761076480;
+	bh=Vi18ai1mEMcv9k9P/563n37k9fvHToc2oun/gbU8mG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z//i3J8scjfL/RHCtgv3cIm66KXMHsRAwAQDQEtLgBBFn44BJY5YTWjJE6TbqIvML
-	 fLP6s5UUVTgLxwM5GNsVhKAZ5e4OCuvIzrSiRGlNUUatdzJh1H03c1YxzwsA1Lhx69
-	 tbGbm+vMVSyTGmaedQxvOFPFPvFPE2nZonnAr26Y=
+	b=aOLS232S0DF4GSiYDwzFol226qPqc4fcNDpv+4+MxYrKj4aUb12aT1oCxdd7DZZ4A
+	 J7a9ChoaPhvbhGeeImHfIv2Of7cbc/d7vTrBjbVeOmZgFuzneAHGVL9DQHnTQK26r6
+	 +31XPGXJPyFkTpR0xLKhmKBxLb2mRlgzHmY07+10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	I Viswanath <viswanathiyyappan@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Khalid Aziz <khalid@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/136] net: usb: lan78xx: fix use of improperly initialized dev->chipid in lan78xx_reset
+Subject: [PATCH 6.6 045/105] net: tls: wait for async completion on last message
 Date: Tue, 21 Oct 2025 21:50:54 +0200
-Message-ID: <20251021195037.562091130@linuxfoundation.org>
+Message-ID: <20251021195022.757030632@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Viswanath <viswanathiyyappan@gmail.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit 8d93ff40d49d70e05c82a74beae31f883fe0eaf8 ]
+[ Upstream commit 54001d0f2fdbc7852136a00f3e6fc395a9547ae5 ]
 
-dev->chipid is used in lan78xx_init_mac_address before it's initialized:
+When asynchronous encryption is used KTLS sends out the final data at
+proto->close time. This becomes problematic when the task calling
+close() receives a signal. In this case it can happen that
+tcp_sendmsg_locked() called at close time returns -ERESTARTSYS and the
+final data is not sent.
 
-lan78xx_reset() {
-    lan78xx_init_mac_address()
-        lan78xx_read_eeprom()
-            lan78xx_read_raw_eeprom() <- dev->chipid is used here
+The described situation happens when KTLS is used in conjunction with
+io_uring, as io_uring uses task_work_add() to add work to the current
+userspace task. A discussion of the problem along with a reproducer can
+be found in [1] and [2]
 
-    dev->chipid = ... <- dev->chipid is initialized correctly here
-}
+Fix this by waiting for the asynchronous encryption to be completed on
+the final message. With this there is no data left to be sent at close
+time.
 
-Reorder initialization so that dev->chipid is set before calling
-lan78xx_init_mac_address().
+[1] https://lore.kernel.org/all/20231010141932.GD3114228@pengutronix.de/
+[2] https://lore.kernel.org/all/20240315100159.3898944-1-s.hauer@pengutronix.de/
 
-Fixes: a0db7d10b76e ("lan78xx: Add to handle mux control per chip id")
-Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Khalid Aziz <khalid@kernel.org>
-Link: https://patch.msgid.link/20251013181648.35153-1-viswanathiyyappan@gmail.com
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://patch.msgid.link/20240904-ktls-wait-async-v1-1-a62892833110@pengutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: b014a4e066c5 ("tls: wait for async encrypt in case of error during latter iterations of sendmsg")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/tls/tls_sw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 6babe909036cf..2da67814556f9 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -2923,10 +2923,6 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 		}
- 	} while (buf & HW_CFG_LRST_);
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 21276ac1f81dc..1f22c7adf3e56 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1228,7 +1228,7 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
  
--	ret = lan78xx_init_mac_address(dev);
--	if (ret < 0)
--		return ret;
--
- 	/* save DEVID for later usage */
- 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
- 	if (ret < 0)
-@@ -2935,6 +2931,10 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 	dev->chipid = (buf & ID_REV_CHIP_ID_MASK_) >> 16;
- 	dev->chiprev = buf & ID_REV_CHIP_REV_MASK_;
+ 	if (!num_async) {
+ 		goto send_end;
+-	} else if (num_zc) {
++	} else if (num_zc || eor) {
+ 		int err;
  
-+	ret = lan78xx_init_mac_address(dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	/* Respond to the IN token with a NAK */
- 	ret = lan78xx_read_reg(dev, USB_CFG0, &buf);
- 	if (ret < 0)
+ 		/* Wait for pending encryptions to get completed */
 -- 
 2.51.0
 
