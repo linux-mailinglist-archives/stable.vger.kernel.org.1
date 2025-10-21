@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-188581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C44EFBF8767
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:01:06 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65136BF8598
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B55519C4502
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:01:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7FB6B35682C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CEF1A9F88;
-	Tue, 21 Oct 2025 20:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD3A273D9A;
+	Tue, 21 Oct 2025 19:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0OvuULy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhDroc5e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D8E350A07;
-	Tue, 21 Oct 2025 20:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7FB26738B;
+	Tue, 21 Oct 2025 19:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076862; cv=none; b=g+8KwsTxAWDUapGIrfFulgVRXkhCwUn0AgjNY+OA5+135UEOjC4RKs9VysQxFnapMK2vzqcGQA2sV/XVB8DYJzIqY73gTQfYVwx9tpkjKxWGUAf6J313iQ4CSyD0yIo4TEQinZjqxirmDNtl3EZ+jsW+/bRMoAjXRHjxSQ6kGMI=
+	t=1761076462; cv=none; b=IzgnOetW3I3N7rFvbzkwDs0nahgAUkxA6W4g+s3hFweNc6iu2fKnme5Jr7du2zQKILQFaAchW0XF20TnHqyGgS0uNCvBofoRBJ2WqwxqPGC2U7WHROWCzPJd/uafqqn5cMz1H2KyjlFZonVTfki6UGpqAD2z1MbQqYU2a6YGQwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076862; c=relaxed/simple;
-	bh=0Iet2tfbbS6B+nQDQLwjWRyEz1Ar55+2j/Fvgl2MAQE=;
+	s=arc-20240116; t=1761076462; c=relaxed/simple;
+	bh=7aN7/+H2N5eyRkEpCHXbPMjiwhVO5W3RRMeIr3KWInc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inbbSKuwXToKbPPgfzImajLa6RYOZQuGqA0nXpMZR0tYilNargMSp+IcqVXSgbGTMtb9UD1wDqig/HRlKtzOlmjA4y88qcCjeLc8rTWjb0sK8ic9SHQ6pntjjzM8hfjfLC3ogoCSmQEyKXuhHPRiIwAQiMvA5GYwYxCROP8x35c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0OvuULy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0188AC4CEF1;
-	Tue, 21 Oct 2025 20:01:01 +0000 (UTC)
+	 MIME-Version; b=NOvWFcjezKBDAiTRInEhQxu8CKTCPXGc5+/SAwUDzcPXCP6LyZncNSbFwJFsT4IvzcJtnnawqH+xAOQBRd7TkJom5FexaOfMXlQ3h6t+d09C83MeLXwasFpR3PzA/WxmPaB0+ws3W34c4nj8td/sNCosIRlqF7BMuM4M4hcTmpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhDroc5e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE76C116B1;
+	Tue, 21 Oct 2025 19:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076862;
-	bh=0Iet2tfbbS6B+nQDQLwjWRyEz1Ar55+2j/Fvgl2MAQE=;
+	s=korg; t=1761076462;
+	bh=7aN7/+H2N5eyRkEpCHXbPMjiwhVO5W3RRMeIr3KWInc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0OvuULyCQs5eFbrNUWWUZ8Wkw5O0xg5vynHUgh0GuP15n/NCWbxr4bWz5/T+OwhF
-	 +S6bQlSx09XSEUrNFyJQa/NBCECN1OsVqFex8Xd610IoYAb1cjFQ62xcTRrkshJP4Y
-	 F2gmJB3+QjA0WuPQ/jb45SfCLIfhcLchWDwc/nbc=
+	b=hhDroc5ee+Biil4mei8IIXpQfghIb3QdlnUf6Ld2QLfpei8cmoJKdFuDPkpQE0XBl
+	 5hXdNOMoDKkd1KHtDAN96g+wYryfBfEG7fbnkP0SDfjt4AmJtYGA7OeleYWyEouhRv
+	 z9T1RNfByFd3IvWNp+8W766GUMdhAIr1EfhErqfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/136] tls: wait for pending async decryptions if tls_strp_msg_hold fails
+Subject: [PATCH 6.6 041/105] amd-xgbe: Avoid spurious link down messages during interface toggle
 Date: Tue, 21 Oct 2025 21:50:50 +0200
-Message-ID: <20251021195037.468716927@linuxfoundation.org>
+Message-ID: <20251021195022.663945545@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit b8a6ff84abbcbbc445463de58704686011edc8e1 ]
+[ Upstream commit 2616222e423398bb374ffcb5d23dea4ba2c3e524 ]
 
-Async decryption calls tls_strp_msg_hold to create a clone of the
-input skb to hold references to the memory it uses. If we fail to
-allocate that clone, proceeding with async decryption can lead to
-various issues (UAF on the skb, writing into userspace memory after
-the recv() call has returned).
+During interface toggle operations (ifdown/ifup), the driver currently
+resets the local helper variable 'phy_link' to -1. This causes the link
+state machine to incorrectly interpret the state as a link change event,
+resulting in spurious "Link is down" messages being logged when the
+interface is brought back up.
 
-In this case, wait for all pending decryption requests.
+Preserve the phy_link state across interface toggles to avoid treating
+the -1 sentinel value as a legitimate link state transition.
 
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/b9fe61dcc07dab15da9b35cf4c7d86382a98caf2.1760432043.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 88131a812b16 ("amd-xgbe: Perform phy connect/disconnect at dev open/stop")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Link: https://patch.msgid.link/20251010065142.1189310-1-Raju.Rangoju@amd.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c  | 1 -
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index dc5a7e24d7b77..bebf0dd3b95fa 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1637,8 +1637,10 @@ static int tls_decrypt_sg(struct sock *sk, struct iov_iter *out_iov,
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+index 34d45cebefb5d..b4d57da71de2a 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+@@ -1172,7 +1172,6 @@ static void xgbe_free_rx_data(struct xgbe_prv_data *pdata)
  
- 	if (unlikely(darg->async)) {
- 		err = tls_strp_msg_hold(&ctx->strp, &ctx->async_hold);
--		if (err)
--			__skb_queue_tail(&ctx->async_hold, darg->skb);
-+		if (err) {
-+			err = tls_decrypt_async_wait(ctx);
-+			darg->async = false;
-+		}
- 		return err;
+ static int xgbe_phy_reset(struct xgbe_prv_data *pdata)
+ {
+-	pdata->phy_link = -1;
+ 	pdata->phy_speed = SPEED_UNKNOWN;
+ 
+ 	return pdata->phy_if.phy_reset(pdata);
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+index 8345d439184eb..63012119f2c8e 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+@@ -1664,6 +1664,7 @@ static int xgbe_phy_init(struct xgbe_prv_data *pdata)
+ 		pdata->phy.duplex = DUPLEX_FULL;
  	}
  
++	pdata->phy_link = 0;
+ 	pdata->phy.link = 0;
+ 
+ 	pdata->phy.pause_autoneg = pdata->pause_autoneg;
 -- 
 2.51.0
 
