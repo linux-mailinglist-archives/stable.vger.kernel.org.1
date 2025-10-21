@@ -1,115 +1,125 @@
-Return-Path: <stable+bounces-188356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37BD6BF71F8
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2212CBF726F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6860750183C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 14:41:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7ACDD4EDDBD
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 14:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191F833C516;
-	Tue, 21 Oct 2025 14:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA52340A64;
+	Tue, 21 Oct 2025 14:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jzvt7HQG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PxuUDRjW"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EE1332EA5;
-	Tue, 21 Oct 2025 14:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6776733B975
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 14:46:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761057676; cv=none; b=ZK+abSjT3fheK6b10unKT4mwrYTxOqKSCkExLJZdhMRFCQrmXQKW7jzp+lMd4tFj35pyF7KJTdbv0OcFqY6zId1ut9VC6VoGEJ8FdLsYTLUfVsNLPj0JHk90eu6z58FJh9773wgQIRNXogP6XkKCNR5YTjRFFzt6LtuDiHiJmLU=
+	t=1761058000; cv=none; b=RE86dVmek69zdvecPBhdgeRNw+jHb3oXqkqtWoQdWoZb6dEvV5Z+lotj0BomKl3pv473P4NBQwuLEteaYlqO9D7sXP8Gd39iGcO+ka7lFTuFZPxEZKx5yJMBscu/ELxA7cTQp1ktKvz1E/lg4KxFypIDwfUEeZf5xWNLfSQ3FIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761057676; c=relaxed/simple;
-	bh=TLAonmS28l2Atrks9dB3gf5XsFrnkrzaVmxa1ByY8Vc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hT68Fj3dszLzeX2rreE4lppEYTOpco4WmxAo/EKzNAr1/3xLPwcM7duBo/oUx0VqjPgEYvUgsb6aGGz1TcZ9dCyjOdxVoxTmXgFcCthU+exQ7yJDdHbQZLy7pnNKyQ9ke1NNV1LAckQ17whG9YFaJqC9XEVlKT/hqqe/uRpWPN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jzvt7HQG; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761057675; x=1792593675;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TLAonmS28l2Atrks9dB3gf5XsFrnkrzaVmxa1ByY8Vc=;
-  b=jzvt7HQGp23/zHkWR3nKJPVPNRbKcScTKYy8qiGExNC84Wc/bHd6Aj4h
-   IZEkxN30Pk5olUYAaAMEbkITu+2eH4gBYCqcReOuctSw8RT3aWkYCbuKB
-   E7SAMP74pEa/SPHPQT4Dt3+jOk8oxjv+etwoaDwNszXob1rnyCr6Hx26o
-   coslEOeQgKAtEUJaf9w8feP6a2luJ1nWMbxJ93T4A2khd116wjtC3WhcH
-   rxA50pA+1lMFAXXpSYkGJXixm5xkVkUy8OPdWRCWdEcj1RiUsvNKJ2OtB
-   ZiZlpP3Dyml+yeoyeTnsg2woOWHDP5FZjZekFLJ7x6+szVyFv4n+D6e6F
-   A==;
-X-CSE-ConnectionGUID: VS339jUhQ2O7U4qYLLBKIw==
-X-CSE-MsgGUID: gRz2t9VqT3qi+SgFTv9FLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62215412"
-X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
-   d="scan'208";a="62215412"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 07:41:14 -0700
-X-CSE-ConnectionGUID: 0H82ZSkkQD+aXRtbHN36FA==
-X-CSE-MsgGUID: uttA66GNQIegkA2Q52rXFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
-   d="scan'208";a="187874725"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.148])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 07:41:12 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1vBDXw-00000001WJe-3qP2;
-	Tue, 21 Oct 2025 17:41:08 +0300
-Date: Tue, 21 Oct 2025 17:41:08 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: William Breathitt Gray <wbg@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
+	s=arc-20240116; t=1761058000; c=relaxed/simple;
+	bh=DfZMU0R0dRnRuQiWcl7q8VsHGYmCXQ9jXTVQm1yN/2o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RmnStUv53Scw3KkUevUB+n9HjgqS1Qet05kXlST9TCJiXBLW+cdD59EghG7t4q6DS6gP8PdrZQXu+HpaJKfXlHa3NNI2XwdrtvizWYBqMi375HxS+FqNAfq1q5m5a7S23hp7G0h5KLWn8pVDQCEa535tiJYo5e+mhWSz7ARKTDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PxuUDRjW; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-77f68dfe7d9so407445b3a.3
+        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 07:46:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761057997; x=1761662797; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=i8VP2I0PGCA2sfJ++TfsZS3uJgWd3RCZmM7e0QrTU2A=;
+        b=PxuUDRjWhjWUQ3B+hAGIeDC+eY5/HMdO0MfFdIKCsWf2WDjysEB6j7FFO/S8rK2cWd
+         HkW1PDhQH7EvWXbX4olKMDYqy2RJK+6GhIW2DUHRiN4tD6sXrc2nZ6mgGkTup9UjUZGj
+         KLGipUI1umAhmhn3PCivDhQqlDVBG/wHtfKG7miOB6BbuEZkdTJ4cMNa7TRAdZHSQE4t
+         kmKkedbm45obfnRGa1zUqSFa0Nufu3JbOKDSb+16xmFUdeUQzWCFIgf4A/R8KRmRlfci
+         HwmM6Nv0f4s0tl6NfwaRhO6tUmKHuzIJengLvbUUGzzWG8+85qwXTkl0CVtMRomRRRja
+         Xtmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761057997; x=1761662797;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i8VP2I0PGCA2sfJ++TfsZS3uJgWd3RCZmM7e0QrTU2A=;
+        b=PTqa0yg5MwMKBGaiCPRaug9dyNEq0DJsUmk9xVmhRRvpttv5N+gJ2L5uM+NeXRm91m
+         nEpIkoXTzKq3zMGh1HGX+1QELFivB4hbcLkZlw3jE2Yo7cEeAVbm5ElednHIXIrE6Tsg
+         GHUZlF49LPK7SEgMCqNkUeaJry5PLFzT5S0oX3v+KX19ev5LPovYG7n8jlOeu8tAOudZ
+         ldPMERMlLxy/R5YvylU2CZDaunLWxzsJwbLWtMJbVCfFIYuyz0iZ6R7LRJf7Lp4mP7kU
+         y2xlehkNvhLrU9p9nsuNcokyBAbvycc6oQupAWq1qxkmQy1UZTl7bm78jTbLYxrmf7jO
+         HKbw==
+X-Forwarded-Encrypted: i=1; AJvYcCWdY8NIep6pv6m/QE0cTZW0bKNiPc1Qq2HN+GFvJHY0j9+mXeCxjR0hDLdZe/trxW0YX6NqYZ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaWKu+uhCYVn5IDLjNKLqvWni/E8q6k/JOgsuiFJDj5LLkeJkV
+	RLnOKGb2pt44xj/NbaWtI8d636ZXb5jJZXYHt5w6+z4zL5pKeTqJD1vYGneC59IG
+X-Gm-Gg: ASbGnctfglYXqPLOBznGrfJb4s7XLJ2OVeMKm8BOFz5sWJp77l1ePWDHMTVlW8oydBT
+	zmr9wNbl6Fg4njbh1tNt1yZF7SLboWZ+vYp81lNNlOHxaHmUKAGPPcHZ2TQcx8m0Avzc4xoSk7u
+	xbbync4lUeZkIfmqY44CGpcphSyafYNu/3Evn0u+PMBV8KGV9e0YMsRKZaqvByBxywDOiU5MMcH
+	vWcosLMV7dV9YZA1Lm0nATeZ/szGncjnXx+9rXkmuNjqfo6Kv3/4iRkncxUzcviq3VIvOAG39hl
+	2A5dhhs0wQu5QFyqY5hdKjB0oOUwgJFcEaWQphXpcCh4cTfPxyhUvh6vu2Fa+M8ziIXI8d1h0rE
+	ibMT14hNdNoZoad9sj8yGKG+cGuhjS0HPmJLcF3xJp2bEaWeLHL+pNgTxI5lIujrFFIjt1e9dd5
+	CF7fpttGguqm9Poybh6F3GWxNU/Tx3rL7RhT8MweAjIMZspEpAFK+HtTWsTFbxjJJnu6Rss5B/W
+	NXzGXVZcFY=
+X-Google-Smtp-Source: AGHT+IH+6S5tydaEC5w0t3ABTMCkv48wPA62Xj3S7Ydy/DqQXwtxS+amoxYPHQbPejtDF3dxTsEwag==
+X-Received: by 2002:a05:6a00:140c:b0:781:18ae:2b8 with SMTP id d2e1a72fcca58-7a25727182bmr2687642b3a.2.1761057997446;
+        Tue, 21 Oct 2025 07:46:37 -0700 (PDT)
+Received: from poi.localdomain (KD118158218050.ppp-bb.dion.ne.jp. [118.158.218.50])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a22ff34b8bsm11591703b3a.22.2025.10.21.07.46.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Oct 2025 07:46:37 -0700 (PDT)
+From: Qianchang Zhao <pioooooooooip@gmail.com>
+To: harm0niakwer@gmail.com
+Cc: Qianchang Zhao <pioooooooooip@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] gpio: idio-16: Define fixed direction of the GPIO
- lines
-Message-ID: <aPebhGETy_3MIwkf@smile.fi.intel.com>
-References: <20251020-fix-gpio-idio-16-regmap-v2-0-ebeb50e93c33@kernel.org>
- <20251020-fix-gpio-idio-16-regmap-v2-3-ebeb50e93c33@kernel.org>
- <CAMRc=MeFZTDk4cgzEJNnkrJOEneFUBLwtKjkpV3-cLSm=xsxNg@mail.gmail.com>
+Subject: [PATCH] ksmbd: transport_ipc: validate payload size before reading handle
+Date: Tue, 21 Oct 2025 23:46:26 +0900
+Message-Id: <20251021144626.473844-1-pioooooooooip@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMRc=MeFZTDk4cgzEJNnkrJOEneFUBLwtKjkpV3-cLSm=xsxNg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 21, 2025 at 09:21:38AM -0400, Bartosz Golaszewski wrote:
-> On Mon, 20 Oct 2025 10:51:46 +0200, William Breathitt Gray
-> <wbg@kernel.org> said:
+handle_response() dereferences the payload as a 4-byte handle without
+verifying that the declared payload size is at least 4 bytes. A malformed
+or truncated message from ksmbd.mountd can lead to a 4-byte read past the
+declared payload size. Validate the size before dereferencing.
 
-...
+This is a minimal fix to guard the initial handle read.
 
-> > Cc: stable@vger.kernel.org # ae495810cffe: gpio: regmap: add the .fixed_direction_output configuration parameter
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Cc: stable@vger.kernel.org
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+---
+ fs/smb/server/transport_ipc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> Turns out, this requires commit ae495810cffe ("gpio: regmap: add the
-> .fixed_direction_output configuration parameter") so I cannot queue it for
-> v6.18. What do you want me to do? Send the first two ones upstream and apply
-> this for v6.19?
-
-Why can't this be pulled from some IB/IT as part of the fix?
-
+diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
+index 46f87fd1ce1c..2028de4d3ddf 100644
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -263,6 +263,10 @@ static void ipc_msg_handle_free(int handle)
+ 
+ static int handle_response(int type, void *payload, size_t sz)
+ {
++	/* Prevent 4-byte read beyond declared payload size */
++	if (sz < sizeof(unsigned int))
++		return -EINVAL;
++
+ 	unsigned int handle = *(unsigned int *)payload;
+ 	struct ipc_msg_table_entry *entry;
+ 	int ret = 0;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
 
