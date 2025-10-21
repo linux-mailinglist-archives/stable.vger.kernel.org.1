@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-188601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD45BF87DC
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:03:15 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4EDBF867F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70A4E581213
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 631654E4BB1
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11CA258EDF;
-	Tue, 21 Oct 2025 20:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F59274B30;
+	Tue, 21 Oct 2025 19:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xr2fAxRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ufu7eJiG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9506D1A3029;
-	Tue, 21 Oct 2025 20:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DCA273D66;
+	Tue, 21 Oct 2025 19:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076926; cv=none; b=TahNCe0CbTGI9IxTAJFInrtXgq00bP0FrrLVVPZWTIqs7WXlaaDxSHdLPD5MJuoQtI6Fi1n+bQRFAHYRk4xTbI96SReSfQiNm2O8yp1a/scGrBCBYisc3kl8QDSX+UkcldIPh5BsuxFHL4GprGSwGbZROvVcU1VaME8iVmL4PpQ=
+	t=1761076655; cv=none; b=qRpYd5AYQWR3NIeOn5cyyh3MJ8T8zD+KArkp3avaSJ8g+OBvDZPLZZh9NJBNBYr8jRjKRVZUX7s47ekP7DghCHhupHWUPt5v/Vmev0+NCS4CXM9u76ShrH9o4KLKJnZOKTOR0dooezDYp5DO+BMCnqwMeED+705Me0YKsXSQcMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076926; c=relaxed/simple;
-	bh=+BNKvJiv54DDHql/ATz7W/Yu04Oboh18B37mQNno1rI=;
+	s=arc-20240116; t=1761076655; c=relaxed/simple;
+	bh=tNvlNYja77FPsWuLQ4Kvx0ko7aGGkXE/nVDnelrhbC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d6WiFuQQDXLEd0/RuxfQyTut1caVZoNbgvaLUti0OUVSgwjTzmY0+s/PCle41tjXo5Im/nRANOhelgj+DIXjQRZf3GttS+f/yRIl4C5G8tt90qVPOjhxUJesHClB/M3Wl2jsNlT4u7KeoKI7bVweAa5ttRsypH53edp6A5x3jjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xr2fAxRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05CEC4CEF1;
-	Tue, 21 Oct 2025 20:02:05 +0000 (UTC)
+	 MIME-Version; b=BcPRHSzZ5UoBGtTJMcYyeX3yfgihgQR+xcjMjHFAkoXLpKeEbA7cNURhRtdOExHEnMIgUv2D7OKQkODOhEFpoG1pIiE/Trh4QOan47MlblO8ara1Vp7kr0lDJkshm+0vIoM1ZHVqjUBUTELiJjr2p6iSFcu34BrNnGXKx9xCHKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ufu7eJiG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91542C4CEF5;
+	Tue, 21 Oct 2025 19:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076926;
-	bh=+BNKvJiv54DDHql/ATz7W/Yu04Oboh18B37mQNno1rI=;
+	s=korg; t=1761076655;
+	bh=tNvlNYja77FPsWuLQ4Kvx0ko7aGGkXE/nVDnelrhbC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xr2fAxRjv0T9eK34yiLqtNuTvSKZEyV0JySOY85y8xwXt2c6a/JRmrsSUBkhIasCl
-	 IIWkeb2FUlCu11b1Xtdrt7TgozBoUVeJeZBAdV3P8KBTjorwVi5F4XdluMXeh3WWA8
-	 SDqkEom2M+mQL3oyiPVj06cI3yTIlzAccfPzKaWQ=
+	b=Ufu7eJiGXxp8DFcM8LS/Ql54JMQxE/2SW1MJHxCMeMX1XPHjaa2LUPq5f82rhwF2N
+	 VKhebPH3IC6WRH+hNC7dTLWE8lNsoKyGNhZMXyOZ33mI95SxVQZr8Jj1cSP+NFmXJk
+	 ZXOhcfEeWFwSfBEcOOisjbnsUZdr2CILl6ZFYXRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Valla <francesco@valla.it>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
+	Zhanjun Dong <zhanjun.dong@intel.com>,
+	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/136] drm/draw: fix color truncation in drm_draw_fill24
+Subject: [PATCH 6.6 059/105] drm/i915/guc: Skip communication warning on reset in progress
 Date: Tue, 21 Oct 2025 21:51:08 +0200
-Message-ID: <20251021195037.890677045@linuxfoundation.org>
+Message-ID: <20251021195023.078227632@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Valla <francesco@valla.it>
+From: Zhanjun Dong <zhanjun.dong@intel.com>
 
-[ Upstream commit 095232711f23179053ca26bcf046ca121a91a465 ]
+[ Upstream commit 1696b0cfcf004a3af34ffe4c57a14e837ef18144 ]
 
-The color parameter passed to drm_draw_fill24() was truncated to 16
-bits, leading to an incorrect color drawn to the target iosys_map.
-Fix this behavior, widening the parameter to 32 bits.
+GuC IRQ and tasklet handler receive just single G2H message, and let other
+messages to be received from next tasklet. During this chained tasklet
+process, if reset process started, communication will be disabled.
+Skip warning for this condition.
 
-Fixes: 31fa2c1ca0b2 ("drm/panic: Move drawing functions to drm_draw")
-
-Signed-off-by: Francesco Valla <francesco@valla.it>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://lore.kernel.org/r/20251003-drm_draw_fill24_fix-v1-1-8fb7c1c2a893@valla.it
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Fixes: 65dd4ed0f4e1 ("drm/i915/guc: Don't receive all G2H messages in irq handler")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15018
+Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
+Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Link: https://lore.kernel.org/r/20250929152904.269776-1-zhanjun.dong@intel.com
+(cherry picked from commit 604b5ee4a653a70979ce689dbd6a5d942eb016bf)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_draw.c          | 2 +-
- drivers/gpu/drm/drm_draw_internal.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_draw.c b/drivers/gpu/drm/drm_draw.c
-index d41f8ae1c1483..b61ebc5bdd5ce 100644
---- a/drivers/gpu/drm/drm_draw.c
-+++ b/drivers/gpu/drm/drm_draw.c
-@@ -125,7 +125,7 @@ EXPORT_SYMBOL(drm_draw_fill16);
+diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c
+index 97eadd08181d6..38fad14ffd435 100644
+--- a/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c
++++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c
+@@ -1281,9 +1281,16 @@ static int ct_receive(struct intel_guc_ct *ct)
  
- void drm_draw_fill24(struct iosys_map *dmap, unsigned int dpitch,
- 		     unsigned int height, unsigned int width,
--		     u16 color)
-+		     u32 color)
+ static void ct_try_receive_message(struct intel_guc_ct *ct)
  {
- 	unsigned int y, x;
++	struct intel_guc *guc = ct_to_guc(ct);
+ 	int ret;
  
-diff --git a/drivers/gpu/drm/drm_draw_internal.h b/drivers/gpu/drm/drm_draw_internal.h
-index f121ee7339dc1..20cb404e23ea6 100644
---- a/drivers/gpu/drm/drm_draw_internal.h
-+++ b/drivers/gpu/drm/drm_draw_internal.h
-@@ -47,7 +47,7 @@ void drm_draw_fill16(struct iosys_map *dmap, unsigned int dpitch,
+-	if (GEM_WARN_ON(!ct->enabled))
++	if (!ct->enabled) {
++		GEM_WARN_ON(!guc_to_gt(guc)->uc.reset_in_progress);
++		return;
++	}
++
++	/* When interrupt disabled, message handling is not expected */
++	if (!guc->interrupts.enabled)
+ 		return;
  
- void drm_draw_fill24(struct iosys_map *dmap, unsigned int dpitch,
- 		     unsigned int height, unsigned int width,
--		     u16 color);
-+		     u32 color);
- 
- void drm_draw_fill32(struct iosys_map *dmap, unsigned int dpitch,
- 		     unsigned int height, unsigned int width,
+ 	ret = ct_receive(ct);
 -- 
 2.51.0
 
