@@ -1,136 +1,127 @@
-Return-Path: <stable+bounces-188315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D84EBF586E
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 11:34:20 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92CF2BF587A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 11:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C3F118C1BF1
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 09:34:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9A06E4FF3F8
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 09:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6117D2DF71E;
-	Tue, 21 Oct 2025 09:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752AA2E3373;
+	Tue, 21 Oct 2025 09:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lFX/nQQ7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YHgfaIFm"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231AD221F0C;
-	Tue, 21 Oct 2025 09:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C0A284686
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 09:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761039254; cv=none; b=fyhg3IymSizjk/wUKL0RnGt6gHmT8xkBHfOeL0PXfOL2KjR2K+KnVL/Ar4NA8sUdAGqZnlMea3A5Yw6HCWLAfCOyg2/x6o7OZaorGlCQqnrI6+xHJjPk3cu/ZUp7yJwqsvDXBiAo9749FVAkUGU0F+LpO5NysJa8FfEDT8nOXNI=
+	t=1761039309; cv=none; b=sPv41ulVnTxBaRgFAOYtIGomwKI/yDwPCsJI+0/moNwj9zIaqVbwvspOS8Fl9GyH3E68ZdBmGRtKACC+Ndj4xE5S9l1RWx/3Q6vpla6Y7+jQUVPXWMxImXYs+qhxpjazFUSv2LLOt0hkalECKZmlq55MChICadj+F4NS5+f0IcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761039254; c=relaxed/simple;
-	bh=NuNaGs/aTEkE7RGJzLyuoXHuGc7MDkZXmN/08+xvIOc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JuPq2L4y6mpP/G28iqRtQfiiwp4J0tB6mOAH4ono8mSSQG85P/H3WSAyRFY5n41yFSkiUwyXLxz9MSN3iO+SfB0Sn5vdiZTrXkzN4x8AfJQAP8s0Q/toXnFMZFdUA6Hd8Xqwjt+0sZfHv5dBCGjGIjLv4lED/AD5ck8uVdCYpBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lFX/nQQ7; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761039252; x=1792575252;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NuNaGs/aTEkE7RGJzLyuoXHuGc7MDkZXmN/08+xvIOc=;
-  b=lFX/nQQ7uhNa+ONRAR1zv2WAC4W9bYMBRmlHhy8Eon2RO46cDXN4ukPM
-   paQW/SHXCBxqFRVES/Q+M3CCy70nq0EiEfLXB0YhjrVb0bKz/N3NA02LS
-   jTXjIpWTzsRVxoyRoOS/5+nn4oToXRIFdAsOLOeSMZtL4AWrj+j8twsIu
-   j7mXSDWiLI0OkUMF+5fmwytywVzcTNvF4Gwr++0PhKP5MT8KtTbhsTB9b
-   qeaDHZxDj1NF5iuwOWLqk/vo3Ueok0GkaxcnvN2L70k9tWxIn8wvgf2/g
-   VB3nF77RpkRvmPlwhQW+O4L1WLI0Jr5URf4lX7r7HSdhxg7hFgcOSWQRl
-   g==;
-X-CSE-ConnectionGUID: F60VwwwuTfOyJhRvdPaxyA==
-X-CSE-MsgGUID: ZH1hGBcmR8aB5N9jU0zZTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="73833360"
-X-IronPort-AV: E=Sophos;i="6.19,244,1754982000"; 
-   d="scan'208";a="73833360"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 02:34:11 -0700
-X-CSE-ConnectionGUID: vD6z0ZsJRle3uMTT2KkwVg==
-X-CSE-MsgGUID: xor/ioRCQdqRm1zZIOR81A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,244,1754982000"; 
-   d="scan'208";a="183254367"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 21 Oct 2025 02:34:09 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vB8ih-000AhN-37;
-	Tue, 21 Oct 2025 09:33:39 +0000
-Date: Tue, 21 Oct 2025 17:29:38 +0800
-From: kernel test robot <lkp@intel.com>
-To: Haotian Zhang <vulab@iscas.ac.cn>,
-	Yiting Deng <yiting.deng@amlogic.com>,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-amlogic@lists.infradead.org, linux-rtc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Haotian Zhang <vulab@iscas.ac.cn>
-Subject: Re: [PATCH] rtc: amlogic-a4: fix double free caused by devm
-Message-ID: <202510211756.vnQ8ZIWo-lkp@intel.com>
-References: <20251020150956.491-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1761039309; c=relaxed/simple;
+	bh=l/h5cb+0/LUyVGEvr+WGHekbJqC8VotYimlfk9vdV8A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MaR5nHNkVlJhpa5NQeowxB8tDRjrsc05ezdSN5XZUhtXDVfCuBRKDVgu+/oaaCoWZAU8S1Z8zfy6ayLUgIJml+5o1fi5Pj8Vpg+KGzwzSOEiGWrhvLhwEUfP2QBAUvMHcDOjIkFcKHqr2gLFWZlyIacBxEbiFTVCO6RnEaSxOqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YHgfaIFm; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761039306;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DsfpJjNAphnWLSpR/9hQ9zHV9rrWcLBcQx4ViQ+mRJk=;
+	b=YHgfaIFmnInkFFk37eeVcwSax2i/hH8ByqU0GV8mYYDSUkUanqNQjHJbT/Oj2C7d2e2t04
+	CswuLVjg6rPyvMjPW1KF7N1LcREIIRmOAqaeHkM329/DjhcwIFNjpDuurmXHwirWd8+9cL
+	GufjEF/56w5gcZPBwpAPDpbfriOREOk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-44-r9RevEPXPQ-2SbOcvASMsg-1; Tue, 21 Oct 2025 05:35:03 -0400
+X-MC-Unique: r9RevEPXPQ-2SbOcvASMsg-1
+X-Mimecast-MFC-AGG-ID: r9RevEPXPQ-2SbOcvASMsg_1761039303
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-47113dcc15dso37507265e9.1
+        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 02:35:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761039302; x=1761644102;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DsfpJjNAphnWLSpR/9hQ9zHV9rrWcLBcQx4ViQ+mRJk=;
+        b=gHampZ/u2lrI04H2o6zOBOn+hhOgVditB60MIWW7PQlZSFWKt0j1iUXaUUWlfNvHIc
+         WdnV6xnkmx6CzqZMrQyHN5mUwJKMvWk5+8PjUVIEAWYLRp8tEytOKVrnNmuAKPaA7788
+         Y3R0nWnVBD9DoZiFR4ewjCrEEgiKtyX7l8zAD1DtsFnhCHhCzLPJj0t7/4NysaW4Udkq
+         EbcqRpvcZEeISxxCSKScBwmgk0/RehCEaTXKFfl8NgXME+ALil+g95VleBj/cWSSs0qV
+         krEvtTSDLL/51eGH1lh+0Mc0iQkMsuAWtz96A3+imWN+DDI2IAsKjJtif7gHVnEcZbFQ
+         b2Vw==
+X-Gm-Message-State: AOJu0Ywm/hkYvt3KmqB1CpquxrpBfwLOorCBv1ZelGfyAi6BaGaScvJ2
+	L9c3VM2aCGIMZncHTW7+LmCNAWwKXC/JG2dahLVVpF5eaEcct3Dk825qIKIeyVK+mDLvAcL2Ezb
+	CaZdYMDe17g0BGODNg7e+iJrUyQOdQ73R4y2qjVE/qgVVIN1gqLMRdSeXBw==
+X-Gm-Gg: ASbGncvoGkcEzJOSnGjuGEJqPY255Ao2Jk5owTmUWgYcmTDMWDCV8SjDR0Qz3jWchqb
+	WxTcIUD3JqYGg0wS0aQw52CcXxRCDL5f7UK9pSlyGSQDnYsen53JqJECYhvbzmC1vEXHiDqOPal
+	cpWxyc6rpyJK8ctSAQRUWWcjnZSY+SKTJmOX+E8vQ0SZcY8nRA9+EnQIPmKXV+ICvn1UX9Ec3RL
+	nKw2KVl9Ef4bmGZoZP4Fx7KIbuyGU4UrJlFBKumFb31cmh5JCErFZxzBSIJqCa2KaWhp75mGH5/
+	yJ+MnwOG25r7+cwe41xmfzXW9aAUdjpx1Y4YsTkxAdr/8wPfZZiYI5jhRuuCzUEX9hZrG+NO/g6
+	ZYgbnj/Bn2a2USgU4fBEr948xz4WzwlP0LZTuJ7A=
+X-Received: by 2002:a05:600c:4448:b0:45d:e28c:875a with SMTP id 5b1f17b1804b1-47117912b0dmr121009815e9.31.1761039302607;
+        Tue, 21 Oct 2025 02:35:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGt5KLfPmw83SPRT8OisjsvH92UuGC/3O3ChwZqMD9Wd7ly0YlXsAEqC/1kFgopwE5vclnf0g==
+X-Received: by 2002:a05:600c:4448:b0:45d:e28c:875a with SMTP id 5b1f17b1804b1-47117912b0dmr121009555e9.31.1761039302202;
+        Tue, 21 Oct 2025 02:35:02 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:c:37e0:8998:e0cf:68cc:1b62? ([2a01:e0a:c:37e0:8998:e0cf:68cc:1b62])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f00ce678sm19776843f8f.51.2025.10.21.02.35.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Oct 2025 02:35:01 -0700 (PDT)
+Message-ID: <f8f1e0ec-46fe-4d71-94aa-bdd081ec35fb@redhat.com>
+Date: Tue, 21 Oct 2025 11:35:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251020150956.491-1-vulab@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] drm/panic: Fixes found with kunit.
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Javier Martinez Canillas <javierm@redhat.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+References: <20251009122955.562888-1-jfalempe@redhat.com>
+Content-Language: en-US, fr
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <20251009122955.562888-1-jfalempe@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Haotian,
+On 09/10/2025 14:24, Jocelyn Falempe wrote:
+> A few fixes for drm panic, that I found when writing unit tests with kunit.
 
-kernel test robot noticed the following build warnings:
+Pushed to drm-misc-fixes.
 
-[auto build test WARNING on abelloni/rtc-next]
-[also build test WARNING on linus/master v6.18-rc2 next-20251021]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Thanks Javier for your reviews.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Haotian-Zhang/rtc-amlogic-a4-fix-double-free-caused-by-devm/20251020-231345
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/abelloni/linux.git rtc-next
-patch link:    https://lore.kernel.org/r/20251020150956.491-1-vulab%40iscas.ac.cn
-patch subject: [PATCH] rtc: amlogic-a4: fix double free caused by devm
-config: i386-buildonly-randconfig-002-20251021 (https://download.01.org/0day-ci/archive/20251021/202510211756.vnQ8ZIWo-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251021/202510211756.vnQ8ZIWo-lkp@intel.com/reproduce)
+> 
+> Jocelyn Falempe (6):
+>    drm/panic: Fix drawing the logo on a small narrow screen
+>    drm/panic: Fix overlap between qr code and logo
+>    drm/panic: Fix qr_code, ensure vmargin is positive
+>    drm/panic: Fix kmsg text drawing rectangle
+>    drm/panic: Fix divide by 0 if the screen width < font width
+>    drm/panic: Fix 24bit pixel crossing page boundaries
+> 
+>   drivers/gpu/drm/drm_panic.c | 60 +++++++++++++++++++++++++++++++++----
+>   1 file changed, 54 insertions(+), 6 deletions(-)
+> 
+> 
+> base-commit: e4bea919584ff292c9156cf7d641a2ab3cbe27b0
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510211756.vnQ8ZIWo-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/rtc/rtc-amlogic-a4.c:425:23: warning: unused variable 'rtc' [-Wunused-variable]
-     425 |         struct aml_rtc_data *rtc = dev_get_drvdata(&pdev->dev);
-         |                              ^~~
-   1 warning generated.
-
-
-vim +/rtc +425 drivers/rtc/rtc-amlogic-a4.c
-
-c89ac9182ee297 Yiting Deng  2024-11-12  419  
-c89ac9182ee297 Yiting Deng  2024-11-12  420  static SIMPLE_DEV_PM_OPS(aml_rtc_pm_ops,
-c89ac9182ee297 Yiting Deng  2024-11-12  421  			 aml_rtc_suspend, aml_rtc_resume);
-c89ac9182ee297 Yiting Deng  2024-11-12  422  
-c89ac9182ee297 Yiting Deng  2024-11-12  423  static void aml_rtc_remove(struct platform_device *pdev)
-c89ac9182ee297 Yiting Deng  2024-11-12  424  {
-c89ac9182ee297 Yiting Deng  2024-11-12 @425  	struct aml_rtc_data *rtc = dev_get_drvdata(&pdev->dev);
-c89ac9182ee297 Yiting Deng  2024-11-12  426  
-8c28c4993f117e Wolfram Sang 2024-12-17  427  	device_init_wakeup(&pdev->dev, false);
-c89ac9182ee297 Yiting Deng  2024-11-12  428  }
-c89ac9182ee297 Yiting Deng  2024-11-12  429  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
