@@ -1,188 +1,85 @@
-Return-Path: <stable+bounces-188337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78847BF6B2F
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:14:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68578BF6E51
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 89173502ECD
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 13:13:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 051D6505E1F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 13:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E55833375D;
-	Tue, 21 Oct 2025 13:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C9433893D;
+	Tue, 21 Oct 2025 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxN58l5a"
+	dkim=pass (2048-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b="UWL+wvey"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cmsr-t-2.hinet.net (cmsr-t-2.hinet.net [203.69.209.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB88245033
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 13:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9CC33859C
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 13:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.69.209.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761052422; cv=none; b=HlQCOU4Ky6lS6N6089/Ej+M9caco/slnWhdEASDpAGoAqatjK/LK4KACSskkHiBCwksQEvoWnfzOHXizjDjQKywvsVrYqtWXpLm742DtjtW5h2ijDTkzrNvO0Nx77AKHs1a+1BsqE4SzOX6JMvkSCg+1ISxOxv051ExwP8LhBM8=
+	t=1761054664; cv=none; b=ZP2UnhTw/MGSFxrP5tdveDbihJ8i79NXPFWSfn86NHKz6/cZzedg6a0NW4dx1l91OMtJ6w4ZFV6J5qZ8gcVaHjzrrlKFb9UWJ/v9/871NqEtd444wI+LJ9K44iQCROv9AEaomTnGd9YMnezxWIfixN/qHbMQ4ZMyj2983yg2+Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761052422; c=relaxed/simple;
-	bh=mLLxrPX8zPT+lnRvSLl2DXFfB+bGx8ELX6jWPwDOZ3Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/opztnGveFNXznAvjXUYSETijnABz/fo1x3mpLLvJbW0x+6XcZfJ8Z9KHBX0w0YAd9OtX8Oeai8PU/z7/EDO2ZPZlAMRtSHPo3sCkpW72l+yjbccCAEGwUEF74KiCXPyKtehoxRjvV8GwBPA6n7MYhWryYPTRJM7Dpc4AHolis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxN58l5a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1753CC4CEF1;
-	Tue, 21 Oct 2025 13:13:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761052421;
-	bh=mLLxrPX8zPT+lnRvSLl2DXFfB+bGx8ELX6jWPwDOZ3Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qxN58l5aSfm2e0mkVeAatuZF8gXGdnnZqiiUZy36KKcpkYoTlITd0u8TLDwEbu0p8
-	 fj2MZZpkHEeOgWwio4HHtgP32aSBETy2eOE2nw80QXaPbCwldIsiA7gRS46mRPKUN5
-	 tTVk2I1QCQLylm6pd1gOC/rFb/aWej90Z8RBoG3p5pdhZJoUVhGAZ73yY4pvyrdDvB
-	 W5SVLtccbwdNxvh4i3Bq/VN080CpaMETOIPg16lLC1OtRRXJimC0QrLYLYfWRMVLvD
-	 qwe/MEPonHgLX96dhhA+xOuVmkK4f7VVBSoEHCb5peYeGTRNlwdVlvblYZ5+IdVGlk
-	 TR9WGSCfKXFRQ==
-From: Sasha Levin <sashal@kernel.org>
+	s=arc-20240116; t=1761054664; c=relaxed/simple;
+	bh=y+IX4V7HeNVL6fvhtsPtFPoQGQJrmRnXwH1Tj/P+LMw=;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=stsI3sbm6UwsRIL6J59wCgpQO1bLZQdURJ07rc4Hl449sUwx+jldlZRn6JqJ391eSASMPFgPowEPtcqKmI5v+PAQhBeZF35RVPMtlUfkLbyJteWA8uCpDNnJQ+BLxXLoXIyw7PW6HfJeVFu32wuVsbpLCKBhRveBYb+y+xu97i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net; spf=pass smtp.mailfrom=ms29.hinet.net; dkim=pass (2048-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b=UWL+wvey; arc=none smtp.client-ip=203.69.209.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ms29.hinet.net
+Received: from cmsr1.hinet.net ([10.199.216.80])
+	by cmsr-t-2.hinet.net (8.15.2/8.15.2) with ESMTPS id 59LDEPpI926770
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 21:14:25 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ms29.hinet.net;
+	s=s2; t=1761052465; bh=y+IX4V7HeNVL6fvhtsPtFPoQGQJrmRnXwH1Tj/P+LMw=;
+	h=From:To:Subject:Date;
+	b=UWL+wveyAvnnXB868Uak4Np3f6ScXo15iMF/+3gTZMyStY+6Xn9eFArxP6Rgfdj/S
+	 XQujiLF5iQVuBmPSucO57y8lxf+GbO/tcG84ZlRY4uf7DPG8kpgmQiwyNj3VAycMXV
+	 l6szZxD5JiFkFgaUs6vY3zTSsNuU2ss2ULUpp8k7HXHR1f+GeFKnBIYF7g3RTyg8Tx
+	 KE0MjCIBGPzj4jBrxGOPIwkVwmFV4Yu6SCQ0sA5NAOEeaVbSIm++e1GYwkvs5FiLHL
+	 6nT0pACtEApQ5D3pt+ffWudWEjQaLYMwOeS/M8KSSo2bvHGHMWbPuWWF2ZlQ29VTXI
+	 J4DakO4ZnMb5w==
+Received: from [127.0.0.1] (118-170-214-10.dynamic-ip.hinet.net [118.170.214.10])
+	by cmsr1.hinet.net (8.15.2/8.15.2) with ESMTPS id 59LDB18h972054
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 21:14:24 +0800
+From: "Purchase - PathnSitu 737" <Stable@ms29.hinet.net>
 To: stable@vger.kernel.org
-Cc: Gui-Dong Han <hanguidong02@gmail.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] drm/amdgpu: use atomic functions with memory barriers for vm fault info
-Date: Tue, 21 Oct 2025 09:13:39 -0400
-Message-ID: <20251021131339.2072904-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102009-dominion-underfeed-6f4b@gregkh>
-References: <2025102009-dominion-underfeed-6f4b@gregkh>
+Reply-To: "Purchase - PathnSitu." <purchase@pathnsithu.com>
+Subject: =?UTF-8?B?TmV3IE9jdG9iZXIgT3JkZXIuIDEwOTM4IFR1ZXNkYXksIE9jdG9iZXIgMjEsIDIwMjUgYXQgMDM6MTQ6MjMgUE0=?=
+Message-ID: <02495f50-5a6b-2013-059c-71ab014294f0@ms29.hinet.net>
+Content-Transfer-Encoding: 7bit
+Date: Tue, 21 Oct 2025 13:14:23 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=I57GR8gg c=1 sm=1 tr=0 ts=68f78731
+	a=JOw0GWazgAxnFcuvyDQgqQ==:117 a=IkcTkHD0fZMA:10 a=5KLPUuaC_9wA:10
+	a=751GVyYgdrAhH6-ziKsA:9 a=QEXdDO2ut3YA:10
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+Hi Stable,
 
-[ Upstream commit 6df8e84aa6b5b1812cc2cacd6b3f5ccbb18cda2b ]
+Please provide a quote for your products:
 
-The atomic variable vm_fault_info_updated is used to synchronize access to
-adev->gmc.vm_fault_info between the interrupt handler and
-get_vm_fault_info().
+Include:
+1.Pricing (per unit)
+2.Delivery cost & timeline
+3.Quote expiry date
 
-The default atomic functions like atomic_set() and atomic_read() do not
-provide memory barriers. This allows for CPU instruction reordering,
-meaning the memory accesses to vm_fault_info and the vm_fault_info_updated
-flag are not guaranteed to occur in the intended order. This creates a
-race condition that can lead to inconsistent or stale data being used.
+Deadline: October
 
-The previous implementation, which used an explicit mb(), was incomplete
-and inefficient. It failed to account for all potential CPU reorderings,
-such as the access of vm_fault_info being reordered before the atomic_read
-of the flag. This approach is also more verbose and less performant than
-using the proper atomic functions with acquire/release semantics.
+Thanks!
 
-Fix this by switching to atomic_set_release() and atomic_read_acquire().
-These functions provide the necessary acquire and release semantics,
-which act as memory barriers to ensure the correct order of operations.
-It is also more efficient and idiomatic than using explicit full memory
-barriers.
+Danny Peddinti
 
-Fixes: b97dfa27ef3a ("drm/amdgpu: save vm fault information for amdkfd")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ kept kgd_dev parameter and adev cast in amdgpu_amdkfd_gpuvm_get_vm_fault_info ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 5 ++---
- drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c            | 7 +++----
- drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c            | 7 +++----
- 3 files changed, 8 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-index 1fae36e33411f..0b36c5a85e562 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -1870,10 +1870,9 @@ int amdgpu_amdkfd_gpuvm_get_vm_fault_info(struct kgd_dev *kgd,
- 	struct amdgpu_device *adev;
- 
- 	adev = (struct amdgpu_device *)kgd;
--	if (atomic_read(&adev->gmc.vm_fault_info_updated) == 1) {
-+	if (atomic_read_acquire(&adev->gmc.vm_fault_info_updated) == 1) {
- 		*mem = *adev->gmc.vm_fault_info;
--		mb();
--		atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
- 	}
- 	return 0;
- }
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-index 63c47f61d0dfd..3df71a5ccfd87 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-@@ -1072,7 +1072,7 @@ static int gmc_v7_0_sw_init(void *handle)
- 					GFP_KERNEL);
- 	if (!adev->gmc.vm_fault_info)
- 		return -ENOMEM;
--	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
- 
- 	return 0;
- }
-@@ -1301,7 +1301,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
- 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
- 			     VMID);
- 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
--		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
-+		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
- 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
- 		u32 protections = REG_GET_FIELD(status,
- 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
-@@ -1317,8 +1317,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
- 		info->prot_read = protections & 0x8 ? true : false;
- 		info->prot_write = protections & 0x10 ? true : false;
- 		info->prot_exec = protections & 0x20 ? true : false;
--		mb();
--		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
- 	}
- 
- 	return 0;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-index bef9610084f10..8fcf2d362c52b 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-@@ -1194,7 +1194,7 @@ static int gmc_v8_0_sw_init(void *handle)
- 					GFP_KERNEL);
- 	if (!adev->gmc.vm_fault_info)
- 		return -ENOMEM;
--	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
- 
- 	return 0;
- }
-@@ -1482,7 +1482,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
- 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
- 			     VMID);
- 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
--		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
-+		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
- 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
- 		u32 protections = REG_GET_FIELD(status,
- 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
-@@ -1498,8 +1498,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
- 		info->prot_read = protections & 0x8 ? true : false;
- 		info->prot_write = protections & 0x10 ? true : false;
- 		info->prot_exec = protections & 0x20 ? true : false;
--		mb();
--		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
- 	}
- 
- 	return 0;
--- 
-2.51.0
-
+PathnSitu Trading
 
