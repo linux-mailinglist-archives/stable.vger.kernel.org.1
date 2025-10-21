@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-188599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED54ABF87D6
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1730BF8680
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E851D462C5E
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01689580621
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9F0258EDF;
-	Tue, 21 Oct 2025 20:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5EF2750ED;
+	Tue, 21 Oct 2025 19:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lr25CCs5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmtwZzg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21E6350A3C;
-	Tue, 21 Oct 2025 20:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2FA274FE3;
+	Tue, 21 Oct 2025 19:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076920; cv=none; b=qSjulXGfi3c2xqH9gEPhLcIRLGg6rEQZytKkvxMH1gmfdlIAvhUItlGXtwx9PPJ+Og0mcmDnrDXcxAj7kap6bQfePdwKnnI9xKCBcMh75811YJx3P25DqIvw5jT4H9YmNIXo34Xc+jNhxEb/am6Q/YhJKR4n0Qsrk4n9w45PjcA=
+	t=1761076629; cv=none; b=E3SM16hqVpedBWMCdq3JAwjAAAm+fAKQdd6VHRdlN5n/2fm9M7E0GOxoZa98EC58niLEE4gpnZ98AbHqhH8sItbi3tEv2n0P4pZyAgRD/zw1tXwqlnELTo8ib+xsJVaWd2ndMbYc9uXXj9IvD7BLNLu3KpbftMq8HT1D7Bn3IWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076920; c=relaxed/simple;
-	bh=FjFLsKkhP2wAhoHklfvP3H64HzbTjSdlP7viFnNrYjI=;
+	s=arc-20240116; t=1761076629; c=relaxed/simple;
+	bh=mj0Y7Q16SISSP1y9yv3GLQ/5sK6PSup2SPHtkLCk4D0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acqV6bCey3wVXt0jpacAfrs5G6DCpM++GCpCdjIOBxoeGQcXFzcrC7S95PR1rdogORa4Mk8g4BBeDSAS8zObzVlS1T+HT3bar+87XWuqhhhLE1MrTgXz39pSK/BoXDFT43aX+aGnxlF0t5uESf6hiH7i5AH2bFmO45ElT40hv0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lr25CCs5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A43C4CEF1;
-	Tue, 21 Oct 2025 20:01:59 +0000 (UTC)
+	 MIME-Version; b=Vacz+o/ibn83jN0oZYim5v8nH1abTKNNtiYeVAYpo0X6jPBVZNL75KujLExnbRu6n0dpb8joPT7dDA9Y4c8/sGvI7VtNLI6C3PfC/0Zv4EGudaCFhxhZBuuSvWgMWn7sWXiSlf3dZKkZjum1wabTMdcsBeVIDl3E9aDesVPsDsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmtwZzg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B7FC4CEF5;
+	Tue, 21 Oct 2025 19:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076919;
-	bh=FjFLsKkhP2wAhoHklfvP3H64HzbTjSdlP7viFnNrYjI=;
+	s=korg; t=1761076629;
+	bh=mj0Y7Q16SISSP1y9yv3GLQ/5sK6PSup2SPHtkLCk4D0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lr25CCs5SxIMAGx9u4qMfFqAqoXutgefB0Du8SVvn4b3OSup10npmSAgBKUWxykqi
-	 cA8S9T8diKplPC1I4XPFiFSN8g64PYU/V8Iqio6jMWmpFwQquJN0/OnK5ryX36fUo1
-	 kD9+lUra4fQwnta3JbwpyfR4fhSDUSe+/c34+se4=
+	b=KmtwZzg/hxhOTljFBKJ15ffdDrZ44OXs/SUvZOIPhdl9t09P6mrL91dSqTqHnQaWJ
+	 IkKFkS1e6WeSJtHw2Kbjy+oFADjE3qeTOuFdoqwDOfyUtZMD0qe8iKsLloSahPzxkX
+	 XJHr0s9inabUsw0ku6EmOrYfNyeeWVkOElKUOyr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom St Denis <tom.stdenis@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/136] drm/amdgpu: fix handling of harvesting for ip_discovery firmware
+Subject: [PATCH 6.6 057/105] ASoC: nau8821: Generalize helper to clear IRQ status
 Date: Tue, 21 Oct 2025 21:51:06 +0200
-Message-ID: <20251021195037.845392386@linuxfoundation.org>
+Message-ID: <20251021195023.031063244@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 357d90be2c7aaa526a840cddffd2b8d676fe75a6 ]
+[ Upstream commit 9273aa85b35cc02d0953a1ba3b7bd694e5a2c10e ]
 
-Chips which use the IP discovery firmware loaded by the driver
-reported incorrect harvesting information in the ip discovery
-table in sysfs because the driver only uses the ip discovery
-firmware for populating sysfs and not for direct parsing for the
-driver itself as such, the fields that are used to print the
-harvesting info in sysfs report incorrect data for some IPs.  Populate
-the relevant fields for this case as well.
+Instead of adding yet another utility function for dealing with the
+interrupt clearing register, generalize nau8821_int_status_clear_all()
+by renaming it to nau8821_irq_status_clear(), whilst introducing a
+second parameter to allow restricting the operation scope to a single
+interrupt instead of the whole range of active IRQs.
 
-Fixes: 514678da56da ("drm/amdgpu/discovery: fix fw based ip discovery")
-Acked-by: Tom St Denis <tom.stdenis@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+While at it, also fix a spelling typo in the comment block.
+
+Note this is mainly a prerequisite for subsequent patches aiming to
+address some deficiencies in the implementation of the interrupt
+handler.  Thus the presence of the Fixes tag below is intentional, to
+facilitate backporting.
+
+Fixes: aab1ad11d69f ("ASoC: nau8821: new driver")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20251003-nau8821-jdet-fixes-v1-2-f7b0e2543f09@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ sound/soc/codecs/nau8821.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-index 0f427314b2b48..e00b5e4542347 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -1016,7 +1016,9 @@ static uint8_t amdgpu_discovery_get_harvest_info(struct amdgpu_device *adev,
- 	/* Until a uniform way is figured, get mask based on hwid */
- 	switch (hw_id) {
- 	case VCN_HWID:
--		harvest = ((1 << inst) & adev->vcn.inst_mask) == 0;
-+		/* VCN vs UVD+VCE */
-+		if (!amdgpu_ip_version(adev, VCE_HWIP, 0))
-+			harvest = ((1 << inst) & adev->vcn.inst_mask) == 0;
- 		break;
- 	case DMU_HWID:
- 		if (adev->harvest_ip_mask & AMD_HARVEST_IP_DMU_MASK)
-@@ -2462,7 +2464,9 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
- 		amdgpu_discovery_init(adev);
- 		vega10_reg_base_init(adev);
- 		adev->sdma.num_instances = 2;
-+		adev->sdma.sdma_mask = 3;
- 		adev->gmc.num_umc = 4;
-+		adev->gfx.xcc_mask = 1;
- 		adev->ip_versions[MMHUB_HWIP][0] = IP_VERSION(9, 0, 0);
- 		adev->ip_versions[ATHUB_HWIP][0] = IP_VERSION(9, 0, 0);
- 		adev->ip_versions[OSSSYS_HWIP][0] = IP_VERSION(4, 0, 0);
-@@ -2489,7 +2493,9 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
- 		amdgpu_discovery_init(adev);
- 		vega10_reg_base_init(adev);
- 		adev->sdma.num_instances = 2;
-+		adev->sdma.sdma_mask = 3;
- 		adev->gmc.num_umc = 4;
-+		adev->gfx.xcc_mask = 1;
- 		adev->ip_versions[MMHUB_HWIP][0] = IP_VERSION(9, 3, 0);
- 		adev->ip_versions[ATHUB_HWIP][0] = IP_VERSION(9, 3, 0);
- 		adev->ip_versions[OSSSYS_HWIP][0] = IP_VERSION(4, 0, 1);
-@@ -2516,8 +2522,10 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
- 		amdgpu_discovery_init(adev);
- 		vega10_reg_base_init(adev);
- 		adev->sdma.num_instances = 1;
-+		adev->sdma.sdma_mask = 1;
- 		adev->vcn.num_vcn_inst = 1;
- 		adev->gmc.num_umc = 2;
-+		adev->gfx.xcc_mask = 1;
- 		if (adev->apu_flags & AMD_APU_IS_RAVEN2) {
- 			adev->ip_versions[MMHUB_HWIP][0] = IP_VERSION(9, 2, 0);
- 			adev->ip_versions[ATHUB_HWIP][0] = IP_VERSION(9, 2, 0);
-@@ -2560,7 +2568,9 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
- 		amdgpu_discovery_init(adev);
- 		vega20_reg_base_init(adev);
- 		adev->sdma.num_instances = 2;
-+		adev->sdma.sdma_mask = 3;
- 		adev->gmc.num_umc = 8;
-+		adev->gfx.xcc_mask = 1;
- 		adev->ip_versions[MMHUB_HWIP][0] = IP_VERSION(9, 4, 0);
- 		adev->ip_versions[ATHUB_HWIP][0] = IP_VERSION(9, 4, 0);
- 		adev->ip_versions[OSSSYS_HWIP][0] = IP_VERSION(4, 2, 0);
-@@ -2588,8 +2598,10 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
- 		amdgpu_discovery_init(adev);
- 		arct_reg_base_init(adev);
- 		adev->sdma.num_instances = 8;
-+		adev->sdma.sdma_mask = 0xff;
- 		adev->vcn.num_vcn_inst = 2;
- 		adev->gmc.num_umc = 8;
-+		adev->gfx.xcc_mask = 1;
- 		adev->ip_versions[MMHUB_HWIP][0] = IP_VERSION(9, 4, 1);
- 		adev->ip_versions[ATHUB_HWIP][0] = IP_VERSION(9, 4, 1);
- 		adev->ip_versions[OSSSYS_HWIP][0] = IP_VERSION(4, 2, 1);
-@@ -2621,8 +2633,10 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
- 		amdgpu_discovery_init(adev);
- 		aldebaran_reg_base_init(adev);
- 		adev->sdma.num_instances = 5;
-+		adev->sdma.sdma_mask = 0x1f;
- 		adev->vcn.num_vcn_inst = 2;
- 		adev->gmc.num_umc = 4;
-+		adev->gfx.xcc_mask = 1;
- 		adev->ip_versions[MMHUB_HWIP][0] = IP_VERSION(9, 4, 2);
- 		adev->ip_versions[ATHUB_HWIP][0] = IP_VERSION(9, 4, 2);
- 		adev->ip_versions[OSSSYS_HWIP][0] = IP_VERSION(4, 4, 0);
-@@ -2657,6 +2671,8 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
- 		} else {
- 			cyan_skillfish_reg_base_init(adev);
- 			adev->sdma.num_instances = 2;
-+			adev->sdma.sdma_mask = 3;
-+			adev->gfx.xcc_mask = 1;
- 			adev->ip_versions[MMHUB_HWIP][0] = IP_VERSION(2, 0, 3);
- 			adev->ip_versions[ATHUB_HWIP][0] = IP_VERSION(2, 0, 3);
- 			adev->ip_versions[OSSSYS_HWIP][0] = IP_VERSION(5, 0, 1);
+diff --git a/sound/soc/codecs/nau8821.c b/sound/soc/codecs/nau8821.c
+index ee65707a7827e..432b47340dbc7 100644
+--- a/sound/soc/codecs/nau8821.c
++++ b/sound/soc/codecs/nau8821.c
+@@ -1030,12 +1030,17 @@ static bool nau8821_is_jack_inserted(struct regmap *regmap)
+ 	return active_high == is_high;
+ }
+ 
+-static void nau8821_int_status_clear_all(struct regmap *regmap)
++static void nau8821_irq_status_clear(struct regmap *regmap, int active_irq)
+ {
+-	int active_irq, clear_irq, i;
++	int clear_irq, i;
+ 
+-	/* Reset the intrruption status from rightmost bit if the corres-
+-	 * ponding irq event occurs.
++	if (active_irq) {
++		regmap_write(regmap, NAU8821_R11_INT_CLR_KEY_STATUS, active_irq);
++		return;
++	}
++
++	/* Reset the interruption status from rightmost bit if the
++	 * corresponding irq event occurs.
+ 	 */
+ 	regmap_read(regmap, NAU8821_R10_IRQ_STATUS, &active_irq);
+ 	for (i = 0; i < NAU8821_REG_DATA_LEN; i++) {
+@@ -1062,7 +1067,7 @@ static void nau8821_eject_jack(struct nau8821 *nau8821)
+ 	snd_soc_dapm_sync(dapm);
+ 
+ 	/* Clear all interruption status */
+-	nau8821_int_status_clear_all(regmap);
++	nau8821_irq_status_clear(regmap, 0);
+ 
+ 	/* Enable the insertion interruption, disable the ejection inter-
+ 	 * ruption, and then bypass de-bounce circuit.
+@@ -1528,7 +1533,7 @@ static int nau8821_resume_setup(struct nau8821 *nau8821)
+ 	nau8821_configure_sysclk(nau8821, NAU8821_CLK_DIS, 0);
+ 	if (nau8821->irq) {
+ 		/* Clear all interruption status */
+-		nau8821_int_status_clear_all(regmap);
++		nau8821_irq_status_clear(regmap, 0);
+ 
+ 		/* Enable both insertion and ejection interruptions, and then
+ 		 * bypass de-bounce circuit.
 -- 
 2.51.0
 
