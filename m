@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-188744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15539BF89F5
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:11:09 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C94BF8A6A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:12:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDBD4584AD0
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:09:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D81744ECB89
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FC6275861;
-	Tue, 21 Oct 2025 20:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFD127587D;
+	Tue, 21 Oct 2025 20:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFu8lSr+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiKSuqkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4609F350A0D;
-	Tue, 21 Oct 2025 20:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A91A350A07;
+	Tue, 21 Oct 2025 20:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077380; cv=none; b=kJApFiL6dSXg6xPvwZm2IFmAy9PrVY4Wr2vXUYWWkvL0p9kSEIyZMwYkXCbHqmNDPO+//Rz+o1hqYGg7S+Xry9mQ/z3zr8LHFkqHfuoCSJwZ95ONTEwMaRrW+QhckQmTLpYeKjatXG5KRJfpPA6FHKThg1174KMy1bS7Hx6+34I=
+	t=1761077550; cv=none; b=OkpPDdpXHU0Z00z1y9RTh9TnzWzXZHpOA8JuXVSNyN8Gu+n1hYUb5lRC+gisPU2CGcROMC8qHzzPHDyYnZB3tR7X7IIO2CGj6p++yoc9khDauq6Vge06x9ChFxBkip64LID7+FvAoBARCqRGX/DP1l6tXbhGm0NQAIaJqAsa6iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077380; c=relaxed/simple;
-	bh=uJ+veUI9NAXrjqPiwEtji/sWD/z3gqEKuRX37hdJBi0=;
+	s=arc-20240116; t=1761077550; c=relaxed/simple;
+	bh=xIXFJjXYRN1awfXORHePPqo2lBrOqvGEyeBK2zqP/Pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HA8wMXMm//PPascNelU8jpo9ExApAmvUMT/QhHVpZokLWTOYDP2cH1u7SkBmZIn3PjikXUNTWW7jS3KPKoSRjUy0woxLhCB7WRbsZWOJVUrBWQZTS3bvx917ORD+yGGUyS04/p4nPebaIruY+rXrGT9sw3C/BSk78QSGI0PuugY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFu8lSr+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AAAC4CEF1;
-	Tue, 21 Oct 2025 20:09:39 +0000 (UTC)
+	 MIME-Version; b=EYoPnQ5o4SDckK7fR7yvFCKSoR13UIYRAvPgtQ2JMpJHtngDqq5/EQt4MubUw4dOWqPmbbYAJ6JoecWIcanqovXmd31aB1I5q6SDf5o6OgwJG/Ht4Iy1p6KmnSvNtXVZymUlW+xaBmjHyrG8aA/MNhU/AG9JLkiClh3qliU4jM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiKSuqkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C42C4CEF1;
+	Tue, 21 Oct 2025 20:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077380;
-	bh=uJ+veUI9NAXrjqPiwEtji/sWD/z3gqEKuRX37hdJBi0=;
+	s=korg; t=1761077549;
+	bh=xIXFJjXYRN1awfXORHePPqo2lBrOqvGEyeBK2zqP/Pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NFu8lSr+YKHjSpiehFRxeKWyHrUpccGwdzh0GFePYHJqdcMfHcyPYotu52NbEZui4
-	 OC5UewQD9iUgmY7oY4lWKVLa9pAj/tOvmiQrwRZSYm5OVvZhXodJnnjsyC0vZ99NOF
-	 /ceqVPreLAx+l5Lfo1j622uL1fROVYYR1lZNz4F0=
+	b=fiKSuqkDFmygS0oyzN6AjqBkpSJ5RaP/Cgx18zFEbN6bV82sAttfrFLjsXfpL2kfs
+	 m795I5PPlizDLqyPBTm92I8VOucefNweV1Qdd5lcXLXSJLGw4+JtGsdikjAewQ3v16
+	 /+VnGBrBI3wrpxcpacrBu2kT1y8XX2aA4ioHq3VM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 085/159] tls: trim encrypted message to match the plaintext on short splice
-Date: Tue, 21 Oct 2025 21:51:02 +0200
-Message-ID: <20251021195045.235520245@linuxfoundation.org>
+Subject: [PATCH 6.17 086/159] tls: wait for async encrypt in case of error during latter iterations of sendmsg
+Date: Tue, 21 Oct 2025 21:51:03 +0200
+Message-ID: <20251021195045.258313753@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
 References: <20251021195043.182511864@linuxfoundation.org>
@@ -69,45 +69,62 @@ Content-Transfer-Encoding: 8bit
 
 From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit ce5af41e3234425a40974696682163edfd21128c ]
+[ Upstream commit b014a4e066c555185b7c367efacdc33f16695495 ]
 
-During tls_sw_sendmsg_locked, we pre-allocate the encrypted message
-for the size we're expecting to send during the current iteration, but
-we may end up sending less, for example when splicing: if we're
-getting the data from small fragments of memory, we may fill up all
-the slots in the skmsg with less data than expected.
+If we hit an error during the main loop of tls_sw_sendmsg_locked (eg
+failed allocation), we jump to send_end and immediately
+return. Previous iterations may have queued async encryption requests
+that are still pending. We should wait for those before returning, as
+we could otherwise be reading from memory that userspace believes
+we're not using anymore, which would be a sort of use-after-free.
 
-In this case, we need to trim the encrypted message to only the length
-we actually need, to avoid pushing uninitialized bytes down the
-underlying TCP socket.
+This is similar to what tls_sw_recvmsg already does: failures during
+the main loop jump to the "wait for async" code, not straight to the
+unlock/return.
 
-Fixes: fe1e81d4f73b ("tls/sw: Support MSG_SPLICE_PAGES")
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
 Reported-by: Jann Horn <jannh@google.com>
 Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/66a0ae99c9efc15f88e9e56c1f58f902f442ce86.1760432043.git.sd@queasysnail.net
+Link: https://patch.msgid.link/c793efe9673b87f808d84fdefc0f732217030c52.1760432043.git.sd@queasysnail.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/tls/tls_sw.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index daac9fd4be7eb..36ca3011ab876 100644
+index 36ca3011ab876..1478d515badc8 100644
 --- a/net/tls/tls_sw.c
 +++ b/net/tls/tls_sw.c
-@@ -1112,8 +1112,11 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
- 				goto send_end;
- 			tls_ctx->pending_open_record_frags = true;
+@@ -1054,7 +1054,7 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 			if (ret == -EINPROGRESS)
+ 				num_async++;
+ 			else if (ret != -EAGAIN)
+-				goto send_end;
++				goto end;
+ 		}
+ 	}
  
--			if (sk_msg_full(msg_pl))
-+			if (sk_msg_full(msg_pl)) {
- 				full_record = true;
-+				sk_msg_trim(sk, msg_en,
-+					    msg_pl->sg.size + prot->overhead_size);
-+			}
+@@ -1226,8 +1226,9 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 			goto alloc_encrypted;
+ 	}
  
- 			if (full_record || eor)
- 				goto copied;
++send_end:
+ 	if (!num_async) {
+-		goto send_end;
++		goto end;
+ 	} else if (num_zc || eor) {
+ 		int err;
+ 
+@@ -1245,7 +1246,7 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 		tls_tx_records(sk, msg->msg_flags);
+ 	}
+ 
+-send_end:
++end:
+ 	ret = sk_stream_error(sk, msg->msg_flags, ret);
+ 	return copied > 0 ? copied : ret;
+ }
 -- 
 2.51.0
 
