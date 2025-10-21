@@ -1,261 +1,116 @@
-Return-Path: <stable+bounces-188294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAB9BF4CEC
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 09:05:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD3ABF4E56
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 09:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7112818C5C0F
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 07:05:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE1353A3169
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 07:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCED274B2A;
-	Tue, 21 Oct 2025 07:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E99279792;
+	Tue, 21 Oct 2025 07:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nJUF1Sii";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CDFaaZ1U";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="JRo30k8r";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="UY6yhdWy"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kepdiKbI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5488927466D
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 07:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE142116E9
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 07:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761030288; cv=none; b=Kt3ptBncZ1N7gEWnp/FxvCSpfkW6rYbT2PEIoq0FlMltnhA8F2hJirKGGUIQQg4dIF6DWIZHfwTN93UMkKIApqgMUobguBW1wGeAxlIKsaa2e151YEpKF+4oj8mhPbQHXH1VQdB31fL7rfj5X9tz0audUSnFbj0N9KohV81Sj84=
+	t=1761030968; cv=none; b=B2jwCZRMG8xVowuxxORvTdT/ORnJXMb/2SIn3QZEey9l1t4GB1DcWcShF5OYJcZ0M0Y84vR7MgKNGG4igcl976bSZTv5NB1DL3Cg8RVfmLSuywJvd3Ox2CSZ35VyDOr520QUXHIKs/lhvbbi4aXKxao8s7X9Kpg33VBELzuCCiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761030288; c=relaxed/simple;
-	bh=rQ+CUkJdoRT0ozNPnoytiGWj/GejocPZ37c2TUaKIbk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hElIcrdYiw2/zissH+Xdj0k+Qx8P9iFXlmuhUPdSGnbxlcXmI6qdyZgMYESI5jlw3MJQ5WIRPH7Pf3ClORJqRlAxN3W/MGKPEo8DRzea96CqL72UjoPsiL3a6wrGm76CAVvzhZ5TIeton1J5iMG0b/ZjlF+jWupEY1Wy9PSCa7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nJUF1Sii; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CDFaaZ1U; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=JRo30k8r; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=UY6yhdWy; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 669F6211E9;
-	Tue, 21 Oct 2025 07:04:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761030279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
-	b=nJUF1SiiczGXdcJgqVdI10l5W3jAiIMIz/vFLGByHgcgBR1Fb76iL33fLu1/t2yL8DGw2i
-	A8oYP5lEGXkxJM/Eddlst0M+/f6CRN/eBvSy2zuPn64/pAUIG9KIyO7N8z80jCASAQsVwV
-	z4rzqZOHdJ2+1+fRfF8pzE4nqUsF7Lo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761030279;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
-	b=CDFaaZ1U4RVA4MONSr3k68hzq23fEQIPc481aV7/8k6aBmmEOlYMOcquhB9mxR5Vl7LSS+
-	agiGUBVWJP8mXxCw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JRo30k8r;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UY6yhdWy
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761030275; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
-	b=JRo30k8rYa3bP1bS2eHkjrV16N81bi+ALvbpYx7eVyroiHV+TQBR/s5GvDqmV3CbY9yBb5
-	WjjXAXYK/czIxA3raAMTRliYok2qrqzZ9DqUntHjlXCiysMs+zdtrZ+GZopY4Og/kahyY8
-	c3Tg/TpZoxmOO12OqQWFl1eknt3OBFw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761030275;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
-	b=UY6yhdWykkfCRRy6ZK+k+gNZnRHDbGZoS0fdr/1JW+GyCqSE81lGzy8Qag0A9z1RALUzXW
-	6Z7z4QJlNfYtq8Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4B696139D2;
-	Tue, 21 Oct 2025 07:04:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id owgTEoMw92h/OwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 21 Oct 2025 07:04:35 +0000
-Message-ID: <1e1376fd-1d38-4dde-918a-d4e937d4feac@suse.cz>
-Date: Tue, 21 Oct 2025 09:04:35 +0200
+	s=arc-20240116; t=1761030968; c=relaxed/simple;
+	bh=rQWEzVQ2sP3X3UgfzW4ijWcMIC5eMV3255ZFLSUlASw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nWUt13+SOXsx8mspBtIFXbbmy+wSmsHpRk8YFhV+J4UbXDHsu6P2izoK+8jPCYJxtovg/R3e4b8Q1k2vD3qLLCUCRD4gYRDol0niKc8l6H5WCJzvJE5+pEcUlabXVCoiKsKKe93Et99kIBgEOQqP5TWdHlHIFyEU9L+FRiFKpu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kepdiKbI; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-59093864727so6150096e87.3
+        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 00:16:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761030963; x=1761635763; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rQWEzVQ2sP3X3UgfzW4ijWcMIC5eMV3255ZFLSUlASw=;
+        b=kepdiKbI8ekSPamszj/hk5m50ouOSGP/DCVQg/X3cA+s1hgBv13VzJHI7U3lGsbdPH
+         JgYcAOEubkUzjVUj6eiTNqHBeY5oEOaF/+myZlfTs3are917vPVR/CLnu8FWVMRsp2N9
+         sKRUw4H0CgJd2J2r6gP8CPG6vHkUqfOv1xiI+Nb6QZTweh76tJ6PpkG580lDAaS6iS3/
+         r4V/aLDfP6VprcNxZ3+/vj9rmKY1o/76j9Kx2fnpOFn2JoKKBHzHuGye8MbsdlFsbd1W
+         qR3BJ2Vlxou7vB7qEPWrTRoMZp7DmIDe8ojEe2YiIA+hxPI9UjMGlEkl/r5ME+F8YYVH
+         OpKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761030963; x=1761635763;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rQWEzVQ2sP3X3UgfzW4ijWcMIC5eMV3255ZFLSUlASw=;
+        b=koxkATLEUpYPIO+oq1qNlrI7QhHGbZZi+R14nWMRkXFWGKRIY61JU/i3PzDkD3kIjg
+         9u14BO/rwPFKVkUYk34zhzUH4zxQuNUumCp2rt5WaDdHgKm/lS7aUg6ddL4ehCDiikUj
+         3F6JH/yw1gRgqnAmOudxHhccXbFGt18bIvNM/kjf+37X5CDg9L9WgxfJP8OGdTAyCThS
+         bRNpjrai/+0jX37vrCUcqi6n3WdBO7oEn362Hj4/CDgJAsc3C9o33dxrsCkmGPc69uGc
+         4EBpcw6kKC66TBDoqFpMQ30280DCtT0u6mFBPtmnfaRzWxDMXJfr49WDkHyEIHHMCS1G
+         yWXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVVq5EreNIdrbld62od3bDJqbGVUAcnXRsC0ystHZJHBVTDSOv/bOHyQKi0Ej3SmxtHh/g2U0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLiqzvBSutU4JCInGWVSO1RhTsBIehowlV6X8aV5Thj4Z5SWJh
+	drF2TWrySzKH5k8vY4i9Lp/DVlgvXc8Gy8GrAWxf1B2PA/bs2OqJDck4D1sG6ZkgOAG/M2oeQOd
+	NWiu+JZ4PhbVxvkUo1MRgUIkcYv1Bvkegf3LtXG8p0Q==
+X-Gm-Gg: ASbGnctM1zRDIp7DvkfJ+Xqrvg+gs81t4iFc0Npxy8q04EE71aG5+yhGJ8THojnm6C5
+	rWC5l6gl2/7Mis+fEx1+6JdqTTrmUxwe2ehIPPqrCNuO/REAPsSn8csKDWaEh12gqbJHMQmxGK4
+	uQX7E2rQyi4InYZs7c8uHxprbALcd1nY3GPNM88EKQa2hBtwSj3rYb7ymicc2ENUm4U9Zmsma2G
+	UeByvkGKOU+mWR0MDJiNmXV1n+I2U18sT9hH9folGNQpvdjbQ8F9Bw9UbVm
+X-Google-Smtp-Source: AGHT+IGzyDckrbb1KeiI9VS9GysBs3j9cjfg3lRF18ScYzfeA7CZmuQgIKBi5NB2RI/U9eWthIdLrHA/CXD4tCAv970=
+X-Received: by 2002:a05:651c:19aa:b0:377:78cd:e8f0 with SMTP id
+ 38308e7fff4ca-37797abc759mr50103031fa.45.1761030963322; Tue, 21 Oct 2025
+ 00:16:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] slab: Avoid race on slab->obj_exts in
- alloc_slab_obj_exts
-To: Hao Ge <hao.ge@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>,
- stable@vger.kernel.org
-References: <20251021010353.1187193-1-hao.ge@linux.dev>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251021010353.1187193-1-hao.ge@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 669F6211E9
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,suse.cz:dkim,kylinos.cn:email];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
+References: <20251020-fix-gpio-idio-16-regmap-v2-0-ebeb50e93c33@kernel.org>
+In-Reply-To: <20251020-fix-gpio-idio-16-regmap-v2-0-ebeb50e93c33@kernel.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 21 Oct 2025 09:15:50 +0200
+X-Gm-Features: AS18NWA5wVKiKD-IlLzPjovWaTZwReIiIH_ziKmQoyWOfM6XDCDv0q_UbsE4rDA
+Message-ID: <CACRpkdZyyjLjnfqT7Vq8VvzP7bbT+b1s0y142ODEhiK-thButw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] gpio: idio-16: Fix regmap initialization errors
+To: William Breathitt Gray <wbg@kernel.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Michael Walle <mwalle@kernel.org>, 
+	Ioana Ciornei <ioana.ciornei@nxp.com>, Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Mark Cave-Ayland <mark.caveayland@nutanix.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/21/25 03:03, Hao Ge wrote:
-> From: Hao Ge <gehao@kylinos.cn>
-> 
-> If two competing threads enter alloc_slab_obj_exts() and one of them
-> fails to allocate the object extension vector, it might override the
-> valid slab->obj_exts allocated by the other thread with
-> OBJEXTS_ALLOC_FAIL. This will cause the thread that lost this race and
-> expects a valid pointer to dereference a NULL pointer later on.
-> 
-> Update slab->obj_exts atomically using cmpxchg() to avoid
-> slab->obj_exts overrides by racing threads.
-> 
-> Thanks for Vlastimil and Suren's help with debugging.
-> 
-> Fixes: f7381b911640 ("slab: mark slab->obj_exts allocation failures unconditionally")
-> Cc: <stable@vger.kernel.org>
-> Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Hao Ge <gehao@kylinos.cn>
+On Mon, Oct 20, 2025 at 10:52=E2=80=AFAM William Breathitt Gray <wbg@kernel=
+.org> wrote:
 
-Added to slab/for-next-fixes, thanks!
+> The migration of IDIO-16 GPIO drivers to the regmap API resulted in some
+> regressions to the gpio-104-idio-16, gpio-pci-idio-16, and gpio-idio-16
+> modules. Specifically, the 104-idio-16 and pci-idio-16 GPIO drivers
+> utilize regmap caching and thus must set max_register for their
+> regmap_config, while gpio-idio-16 requires fixed_direction_output to
+> represent the fixed direction of the IDIO-16 GPIO lines. Fixes for these
+> regressions are provided by this series.
+>
+> Link: https://lore.kernel.org/r/cover.1680618405.git.william.gray@linaro.=
+org
+> Closes: https://lore.kernel.org/r/9b0375fd-235f-4ee1-a7fa-daca296ef6bf@nu=
+tanix.com
+> Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 
-> ---
-> v3: According to Suren's suggestion, simplify the commit message and the code comments.
->     Thanks for Suren.
-> 
-> v2: Incorporate handling for the scenario where, if mark_failed_objexts_alloc wins the race,
->     the other process (that previously succeeded in allocation) will lose the race, based on Suren's suggestion.
->     Add Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> ---
->  mm/slub.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 2e4340c75be2..d4403341c9df 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2054,7 +2054,7 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
->  
->  static inline void mark_failed_objexts_alloc(struct slab *slab)
->  {
-> -	slab->obj_exts = OBJEXTS_ALLOC_FAIL;
-> +	cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
->  }
->  
->  static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
-> @@ -2136,6 +2136,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  #ifdef CONFIG_MEMCG
->  	new_exts |= MEMCG_DATA_OBJEXTS;
->  #endif
-> +retry:
->  	old_exts = READ_ONCE(slab->obj_exts);
->  	handle_failed_objexts_alloc(old_exts, vec, objects);
->  	if (new_slab) {
-> @@ -2145,8 +2146,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  		 * be simply assigned.
->  		 */
->  		slab->obj_exts = new_exts;
-> -	} else if ((old_exts & ~OBJEXTS_FLAGS_MASK) ||
-> -		   cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
-> +	} else if (old_exts & ~OBJEXTS_FLAGS_MASK) {
->  		/*
->  		 * If the slab is already in use, somebody can allocate and
->  		 * assign slabobj_exts in parallel. In this case the existing
-> @@ -2158,6 +2158,9 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  		else
->  			kfree(vec);
->  		return 0;
-> +	} else if (cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
-> +		/* Retry if a racing thread changed slab->obj_exts from under us. */
-> +		goto retry;
->  	}
->  
->  	if (allow_spin)
+The series:
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
+Yours,
+Linus Walleij
 
