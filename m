@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-188615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D048BBF87BE
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:52 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D9DBF856E
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A007919C4AD4
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:03:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6221A4F493A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AE6265CDD;
-	Tue, 21 Oct 2025 20:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7E9273D9A;
+	Tue, 21 Oct 2025 19:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrpOAG/7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cm+sNX1V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9701B25A355;
-	Tue, 21 Oct 2025 20:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5778426738B;
+	Tue, 21 Oct 2025 19:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076970; cv=none; b=BS0HOMFlldc/yPIYhXiQ4Wk8lTVhHSjtwkP6LEf7uzepE+HKwjw9GcK14QXt4Rc8C8CcATc37+GFEqH1egpNt5p/qUt7jYcAAM9+dT3yitFH8W83/gOlH/WKa7UyGV3JA2zw8rQnKpKf7IT/fa4Op3zJgdUjG9IF9y+PElzSS90=
+	t=1761076422; cv=none; b=bpPy1Qj2+dN/CZ8IkbWvWJX4ZoY/jAW8XFaL4cTK2v5a0M/uY9kMAdpXRFLP2p7/DMhLBTgHKD90vBTArTqWevO/2OkUbqFfTVHUnfeG2/WtC/IBGiW6kUysLOaJ1WNrZm6Juar1yHx7LXDxolfpz9YIg7gSDo1ZkN9okUs5rMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076970; c=relaxed/simple;
-	bh=i3F3TV2XHwYUi+nBVCnkAEjgMIX4BFwLncxGQox3oHc=;
+	s=arc-20240116; t=1761076422; c=relaxed/simple;
+	bh=2Vv3+na6YqSqwG8+sUBIUYDMbUjF0sjxFvSbND5FR+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jVI4KJw65oyFpjoU5lhM5fat6tz8WxBsCTsj5q2q2OIE/LtufsUWksb7Hnrh6PH9+HxRywY2LnAiQKlLtCzmNxOVJceij4yJzxUC/OBb8y7eSTz7+9Jd4BI5AhLjIS3P4jrdePRKbYHdDq53RUM3fuGk0daF5T8V7xiEgSQgIwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrpOAG/7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28956C4CEF1;
-	Tue, 21 Oct 2025 20:02:50 +0000 (UTC)
+	 MIME-Version; b=NEncgIdaGWYwjBhE2HGpOpfNDVbXZ++PNMYi4KSPtHww2tzW+fq2W+D+qFHHQ8BiEywr3Yz/weE7ELnF0IUjY5wdOp5x7ucgGBgflpqeptuKjo1jbocr8aPQ5RmznmBia22sbUgaIBvXpfu27SAFXl6yqjKHdO9QLl6FZVOwy38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cm+sNX1V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A7AC4CEF1;
+	Tue, 21 Oct 2025 19:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076970;
-	bh=i3F3TV2XHwYUi+nBVCnkAEjgMIX4BFwLncxGQox3oHc=;
+	s=korg; t=1761076422;
+	bh=2Vv3+na6YqSqwG8+sUBIUYDMbUjF0sjxFvSbND5FR+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WrpOAG/7tr4V/QIRL7HO/VpqCB4JnNjFUMwG6g+Gbe1FS2dGoVc9pp6c5WYZy4xM8
-	 +rj1mBWBre6RJFXCNwMMdxG1C9Di5b8PnszMsern3J2P0wqfYIsBaA5809BPoAZGaU
-	 vAZo2qfi4YlJ6VcD1qUVvIavSKysPQX2D7/zmPkA=
+	b=Cm+sNX1VncWy79grK0VlLl9xZ/8VbANiNXv0Q86+mun2mMYX2+zmCVJq6qZxMtmOg
+	 LVGXuCy5rJVKTa7OrrZ3t087A7sTPZlMjE2C1BMtB4peZqyFvbz+Hq0vNlje1SP6Aj
+	 55BnSOALb23RgeoID1gb7ZHUDqQ5WTiRW3G/ZpyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Kuen-Han Tsai <khtsai@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/136] can: m_can: fix CAN state in system PM
+Subject: [PATCH 6.6 029/105] usb: gadget: Introduce free_usb_request helper
 Date: Tue, 21 Oct 2025 21:50:38 +0200
-Message-ID: <20251021195037.186706369@linuxfoundation.org>
+Message-ID: <20251021195022.393619854@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit a9e30a22d6f23a2684c248871cad4c3061181639 ]
+[ Upstream commit 201c53c687f2b55a7cc6d9f4000af4797860174b ]
 
-A suspend/resume cycle on a down interface results in the interface
-coming up in Error Active state. A suspend/resume cycle on an Up
-interface will always result in Error Active state, regardless of the
-actual CAN state.
+Introduce the free_usb_request() function that frees both the request's
+buffer and the request itself.
 
-During suspend, only set running interfaces to CAN_STATE_SLEEPING.
-During resume only touch the CAN state of running interfaces. For
-wakeup sources, set the CAN state depending on the Protocol Status
-Regitser (PSR), for non wakeup source interfaces m_can_start() will do
-the same.
+This function serves as the cleanup callback for DEFINE_FREE() to enable
+automatic, scope-based cleanup for usb_request pointers.
 
-Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Link: https://patch.msgid.link/20250929-m_can-fix-state-handling-v4-4-682b49b49d9a@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250916-ready-v1-2-4997bf277548@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916-ready-v1-2-4997bf277548@google.com
+Stable-dep-of: 75a5b8d4ddd4 ("usb: gadget: f_ncm: Refactor bind path to use __free()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/m_can/m_can.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ include/linux/usb/gadget.h |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index bf7996c302426..f31a91ec7a6d0 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -2506,12 +2506,11 @@ int m_can_class_suspend(struct device *dev)
- 		}
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -15,6 +15,7 @@
+ #ifndef __LINUX_USB_GADGET_H
+ #define __LINUX_USB_GADGET_H
  
- 		m_can_clk_stop(cdev);
-+		cdev->can.state = CAN_STATE_SLEEPING;
- 	}
++#include <linux/cleanup.h>
+ #include <linux/configfs.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+@@ -291,6 +292,28 @@ static inline void usb_ep_fifo_flush(str
  
- 	pinctrl_pm_select_sleep_state(dev);
+ /*-------------------------------------------------------------------------*/
  
--	cdev->can.state = CAN_STATE_SLEEPING;
--
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(m_can_class_suspend);
-@@ -2524,8 +2523,6 @@ int m_can_class_resume(struct device *dev)
- 
- 	pinctrl_pm_select_default_state(dev);
- 
--	cdev->can.state = CAN_STATE_ERROR_ACTIVE;
--
- 	if (netif_running(ndev)) {
- 		ret = m_can_clk_start(cdev);
- 		if (ret)
-@@ -2543,6 +2540,8 @@ int m_can_class_resume(struct device *dev)
- 			if (cdev->ops->init)
- 				ret = cdev->ops->init(cdev);
- 
-+			cdev->can.state = m_can_state_get_by_psr(cdev);
++/**
++ * free_usb_request - frees a usb_request object and its buffer
++ * @req: the request being freed
++ *
++ * This helper function frees both the request's buffer and the request object
++ * itself by calling usb_ep_free_request(). Its signature is designed to be used
++ * with DEFINE_FREE() to enable automatic, scope-based cleanup for usb_request
++ * pointers.
++ */
++static inline void free_usb_request(struct usb_request *req)
++{
++	if (!req)
++		return;
 +
- 			m_can_write(cdev, M_CAN_IE, cdev->active_interrupts);
- 		} else {
- 			ret  = m_can_start(ndev);
--- 
-2.51.0
-
++	kfree(req->buf);
++	usb_ep_free_request(req->ep, req);
++}
++
++DEFINE_FREE(free_usb_request, struct usb_request *, free_usb_request(_T))
++
++/*-------------------------------------------------------------------------*/
++
+ struct usb_dcd_config_params {
+ 	__u8  bU1devExitLat;	/* U1 Device exit Latency */
+ #define USB_DEFAULT_U1_DEV_EXIT_LAT	0x01	/* Less then 1 microsec */
 
 
 
