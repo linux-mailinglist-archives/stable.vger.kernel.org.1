@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-188496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A262BF863B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:56:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37420BF8643
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:56:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C04B5188EED9
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:56:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD408467599
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109A8268688;
-	Tue, 21 Oct 2025 19:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D08274B29;
+	Tue, 21 Oct 2025 19:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7fHkaP2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9jYJWU5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFECA273D9F;
-	Tue, 21 Oct 2025 19:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832CD2749DC;
+	Tue, 21 Oct 2025 19:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076590; cv=none; b=DN7HJEfzBqjD1guB6gh72spYGIuJsxqIm7T7jLP6udBmBaqrho1a0z1tyOpNtlaj45kRTyu31jfY+OMfbwDJf6w//W2rjZomHzT6y7Xw/1DiWTs/1Al0SJXu5KFlIrDWuvDCBohH9CS/t+egQJAne4kjS4iJDWzwJbmrmVLtk4Q=
+	t=1761076597; cv=none; b=Z+MNGeL1YiuSTXmm8EOK/gOBDu4SlssNaimLPuOq2xmhc2AICV3axPkrbjmmMJoHmaPvt2lH6SjXnWyYb/7BqYA1S/PrBh5Z1rEsj8vwdF48BulCBCrF2MvP+LEivGMRNzJw54ZTEATlCaNqebgfkHsVSq/BzzD/JrPpa2mxr0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076590; c=relaxed/simple;
-	bh=zs5GG8w4VfzdxWN+mKUA0DbbSrtn/NlJh97GW67oRwU=;
+	s=arc-20240116; t=1761076597; c=relaxed/simple;
+	bh=du3UXb7xdxe+svxZM+Iq0jy21iYCaIU10P8EXDK9dBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPoZQKyTNqviAgGWkNOyjlOqarkArrX6BGMwya78dOWq3X9bpy9p44RcY2WuLbTIzIfhAf/e9qfOxef2SG9Hb+oAvQ3zAASGwtyjLp8hCUNPzjtkbq6QJJZ7z50vACLj6rZw4CTf1f8yEoYNnt9yjdfxwAON+yFP6YmFZF5pVEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7fHkaP2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28641C4CEF1;
-	Tue, 21 Oct 2025 19:56:29 +0000 (UTC)
+	 MIME-Version; b=rpA83SpIa5p44vxl6jSMUqcH/UDFXM3tbuHZJuuBsTsWrGGl8eeqCAUjxMrpq6gX8avo6LnNWHLDfgeWfrP5rCKVg9ruo86PqfC9XEUIUBjkYiZ9a9Wy9ECad5iRCKpjsuoalXn+4248/ZwtOELYM1jiatXeWi0qJJm6WUZKtic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9jYJWU5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EB5C113D0;
+	Tue, 21 Oct 2025 19:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076590;
-	bh=zs5GG8w4VfzdxWN+mKUA0DbbSrtn/NlJh97GW67oRwU=;
+	s=korg; t=1761076597;
+	bh=du3UXb7xdxe+svxZM+Iq0jy21iYCaIU10P8EXDK9dBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7fHkaP2aVC6XnYyz1His3MjlOidjW5KLfTIqwd0Ly5DR79SPnlJKMRsSwCEbWOgj
-	 uiLkhddOr165LakaMiVQG37Y9Oe3LhCdQZ3A3WUXBpZrSGdUFB6JaKXjqm4onbZfe5
-	 WS8voCudtGaRHv2R13VdnGxnXu5dsAS7UKMsHrF8=
+	b=R9jYJWU58fpvx3EyukOUCjCn5KlH+pCazIwhlwJN/Bn/ZsMCul489vv0jtTo3DT0Z
+	 ZRhKU+A5yQiZvCZnlydKvX8SKJLJYFjpCDmN+nfCpsscC6wbUhlWBrsDw5HmNmNMv1
+	 CgRecGoX4LLOIFi+vIxiGWbJ+3P9J1aDUy/nFYHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/105] iio: imu: inv_icm42600: Simplify pm_runtime setup
-Date: Tue, 21 Oct 2025 21:51:31 +0200
-Message-ID: <20251021195023.596481655@linuxfoundation.org>
+Subject: [PATCH 6.6 083/105] phy: cdns-dphy: Store hs_clk_rate and return it
+Date: Tue, 21 Oct 2025 21:51:32 +0200
+Message-ID: <20251021195023.619740010@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
 References: <20251021195021.492915002@linuxfoundation.org>
@@ -67,84 +70,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 0792c1984a45ccd7a296d6b8cb78088bc99a212e ]
+[ Upstream commit 689a54acb56858c85de8c7285db82b8ae6dbf683 ]
 
-Rework the power management in inv_icm42600_core_probe() to use
-devm_pm_runtime_set_active_enabled(), which simplifies the runtime PM
-setup by handling activation and enabling in one step.
-Remove the separate inv_icm42600_disable_pm callback, as it's no longer
-needed with the devm-managed approach.
-Using devm_pm_runtime_enable() also fixes the missing disable of
-autosuspend.
-Update inv_icm42600_disable_vddio_reg() to only disable the regulator if
-the device is not suspended i.e. powered-down, preventing unbalanced
-disables.
-Also remove redundant error msg on regulator_disable(), the regulator
-framework already emits an error message when regulator_disable() fails.
+The DPHY driver does not return the actual hs_clk_rate, so the DSI
+driver has no idea what clock was actually achieved. Set the realized
+hs_clk_rate to the opts struct, so that the DSI driver gets it back.
 
-This simplifies the PM setup and avoids manipulating the usage counter
-unnecessarily.
-
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250901-icm42pmreg-v3-1-ef1336246960@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
+Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
+Acked-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250723-cdns-dphy-hs-clk-rate-fix-v1-1-d4539d44cbe7@ideasonboard.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 284fb19a3ffb ("phy: cadence: cdns-dphy: Fix PLL lock and O_CMN_READY polling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   24 ++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+ drivers/phy/cadence/cdns-dphy.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -567,20 +567,12 @@ static void inv_icm42600_disable_vdd_reg
- static void inv_icm42600_disable_vddio_reg(void *_data)
- {
- 	struct inv_icm42600_state *st = _data;
--	const struct device *dev = regmap_get_device(st->map);
--	int ret;
--
--	ret = regulator_disable(st->vddio_supply);
--	if (ret)
--		dev_err(dev, "failed to disable vddio error %d\n", ret);
--}
-+	struct device *dev = regmap_get_device(st->map);
+--- a/drivers/phy/cadence/cdns-dphy.c
++++ b/drivers/phy/cadence/cdns-dphy.c
+@@ -79,6 +79,7 @@ struct cdns_dphy_cfg {
+ 	u8 pll_ipdiv;
+ 	u8 pll_opdiv;
+ 	u16 pll_fbdiv;
++	u32 hs_clk_rate;
+ 	unsigned int nlanes;
+ };
  
--static void inv_icm42600_disable_pm(void *_data)
--{
--	struct device *dev = _data;
-+	if (pm_runtime_status_suspended(dev))
-+		return;
+@@ -154,6 +155,9 @@ static int cdns_dsi_get_dphy_pll_cfg(str
+ 					  cfg->pll_ipdiv,
+ 					  pll_ref_hz);
  
--	pm_runtime_put_sync(dev);
--	pm_runtime_disable(dev);
-+	regulator_disable(st->vddio_supply);
++	cfg->hs_clk_rate = div_u64((u64)pll_ref_hz * cfg->pll_fbdiv,
++				   2 * cfg->pll_opdiv * cfg->pll_ipdiv);
++
+ 	return 0;
  }
  
- int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
-@@ -677,16 +669,14 @@ int inv_icm42600_core_probe(struct regma
- 		return ret;
- 
- 	/* setup runtime power management */
--	ret = pm_runtime_set_active(dev);
-+	ret = devm_pm_runtime_set_active_enabled(dev);
+@@ -297,6 +301,7 @@ static int cdns_dphy_config_from_opts(st
  	if (ret)
  		return ret;
--	pm_runtime_get_noresume(dev);
--	pm_runtime_enable(dev);
-+
- 	pm_runtime_set_autosuspend_delay(dev, INV_ICM42600_SUSPEND_DELAY_MS);
- 	pm_runtime_use_autosuspend(dev);
--	pm_runtime_put(dev);
  
--	return devm_add_action_or_reset(dev, inv_icm42600_disable_pm, dev);
-+	return ret;
- }
- EXPORT_SYMBOL_NS_GPL(inv_icm42600_core_probe, IIO_ICM42600);
++	opts->hs_clk_rate = cfg->hs_clk_rate;
+ 	opts->wakeup = cdns_dphy_get_wakeup_time_ns(dphy) / 1000;
  
+ 	return 0;
 
 
 
