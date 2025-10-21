@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-188434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A79BF8551
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F6CBF874C
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8503946687E
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:53:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E300A428548
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5EA2741A6;
-	Tue, 21 Oct 2025 19:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F8A275B15;
+	Tue, 21 Oct 2025 20:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVLPZbUL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDNNQEtM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CF9274B29;
-	Tue, 21 Oct 2025 19:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C01274FDF;
+	Tue, 21 Oct 2025 20:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076392; cv=none; b=pepixY42/o4pNN6izrM0ZHZK/3A8mIZZyQRJUD2nUjqavneWXzpDn4vxkIkPSXBSDw0aLTceovQGtKfXKbzvoYCdAu2lvgWYplc3reqqswUBOMeXUOOTMXTLPY1kb1bAf1TJqX8SO32QA7Bx1Si3g02yFnHrQdtUyYiu8KVZNds=
+	t=1761076808; cv=none; b=ruL87u8aaz9yJMqSUMBzh3idkM5iPJRnSRY5wdiJfXNhHNngqyw44qSFsNPBSysPRd93CrqenYdupO+0QKZsD8/mHBpRDiCzDu644IONMCNYocflavIDW85Zd3NnaqFUACSrE5RsgVFyshMVixMbLIGW1+P1V+Sohva1jaqE0K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076392; c=relaxed/simple;
-	bh=3ZZc+ItAU4pmNEf9fraT69KxWiiGr9qGlkrF+Ps5gB0=;
+	s=arc-20240116; t=1761076808; c=relaxed/simple;
+	bh=VBqGgWzHcwvvi+gl99MtaLLE0EHb+p0wPER/PwAd3kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDo3Na0IxyHyuiEXMKn6OjvgZ8GfuDDHF2HbUsajeaw+A4FwN4lsbhVPDnTnWKERsIG8849szcCvB92KG5MIz0gIQXSFygRwlPHgKzMCjpQ9qFmWNyqiqBxmyjX9C8cJ6y6Npmr5HcZ10B8ZAg+LHKCJV9Ji4o46O9tZNgqBjyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVLPZbUL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A388FC4CEF1;
-	Tue, 21 Oct 2025 19:53:11 +0000 (UTC)
+	 MIME-Version; b=KQ9dYW0YTYqwycDjQOA1HkV9AaSy+tE7f79Gh+IVGVYXZAc7AXDc678v51bfvBR7/4LJxtu9szzJYa1EIGKAqMBM670naM+1QF2jOM2+IPkSGSkqCwkXZRmdSxCaKXT4ugttM9RbzQp2BONcu9QvQQPcbjBtqQ+/h5hq628dYLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDNNQEtM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25192C4CEF1;
+	Tue, 21 Oct 2025 20:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076392;
-	bh=3ZZc+ItAU4pmNEf9fraT69KxWiiGr9qGlkrF+Ps5gB0=;
+	s=korg; t=1761076808;
+	bh=VBqGgWzHcwvvi+gl99MtaLLE0EHb+p0wPER/PwAd3kI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TVLPZbULa0+o2+0k5n28J7r3fMXDl11GTaZ9IZ0qeVneQTH6dghmJCERqqPfs2x23
-	 ylzyJOGYe8a6IlIhHPZAlROrQaLxP2/xIDrjhv5zohWWSLrJc524Zn0r3890RJgc/x
-	 LvABw95ZdIOAXWDWb9UJUjhKyZHh4o/aHaqReHIc=
+	b=VDNNQEtMZ7no3EBcOLJ0V+8MPew1usOswm186ujBRhhDsWWylzSl0VaNKv/XSoL1O
+	 Rok+iOBgveY3N0pBd+1nOojmbrQDSqRMAde16sHacm9mpTR1wzVi+nQQ4lbaL4vIKS
+	 T+AYnnbl/aQmXG8YwZQmP+UMKlyiXFhJiXF7s/xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Akhil P Oommen <quic_akhilpo@quicinc.com>,
-	Rob Clark <robdclark@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/105] drm/msm/adreno: De-spaghettify the use of memory barriers
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Kevin Lumik <kevin@xf.ee>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 042/136] Revert "io_uring/rw: drop -EOPNOTSUPP check in __io_complete_rw_common()"
 Date: Tue, 21 Oct 2025 21:50:30 +0200
-Message-ID: <20251021195021.998087443@linuxfoundation.org>
+Message-ID: <20251021195036.995832476@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 43ec1a202cfa9f765412d325b93873284e7c3d82 ]
+Commit 927069c4ac2cd1a37efa468596fb5b8f86db9df0 upstream.
 
-Memory barriers help ensure instruction ordering, NOT time and order
-of actual write arrival at other observers (e.g. memory-mapped IP).
-On architectures employing weak memory ordering, the latter can be a
-giant pain point, and it has been as part of this driver.
+This reverts commit 90bfb28d5fa8127a113a140c9791ea0b40ab156a.
 
-Moreover, the gpu_/gmu_ accessors already use non-relaxed versions of
-readl/writel, which include r/w (respectively) barriers.
+Kevin reports that this commit causes an issue for him with LVM
+snapshots, most likely because of turning off NOWAIT support while a
+snapshot is being created. This makes -EOPNOTSUPP bubble back through
+the completion handler, where io_uring read/write handling should just
+retry it.
 
-Replace the barriers with a readback (or drop altogether where possible)
-that ensures the previous writes have exited the write buffer (as the CPU
-must flush the write to the register it's trying to read back).
+Reinstate the previous check removed by the referenced commit.
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/600869/
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Stable-dep-of: f248d5d5159a ("drm/msm/a6xx: Fix PDC sleep sequence")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 90bfb28d5fa8 ("io_uring/rw: drop -EOPNOTSUPP check in __io_complete_rw_common()")
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Reported-by: Kevin Lumik <kevin@xf.ee>
+Link: https://lore.kernel.org/io-uring/cceb723c-051b-4de2-9a4c-4aa82e1619ee@kernel.dk/
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c |    4 +---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c |   10 ++++++----
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ io_uring/rw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -460,9 +460,7 @@ static int a6xx_rpmh_start(struct a6xx_g
- 	int ret;
- 	u32 val;
- 
--	gmu_write(gmu, REG_A6XX_GMU_RSCC_CONTROL_REQ, 1 << 1);
--	/* Wait for the register to finish posting */
--	wmb();
-+	gmu_write(gmu, REG_A6XX_GMU_RSCC_CONTROL_REQ, BIT(1));
- 
- 	ret = gmu_poll_timeout(gmu, REG_A6XX_GMU_RSCC_CONTROL_ACK, val,
- 		val & (1 << 1), 100, 10000);
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -1209,14 +1209,16 @@ static int hw_init(struct msm_gpu *gpu)
- 	/* Clear GBIF halt in case GX domain was not collapsed */
- 	if (adreno_is_a619_holi(adreno_gpu)) {
- 		gpu_write(gpu, REG_A6XX_GBIF_HALT, 0);
-+		gpu_read(gpu, REG_A6XX_GBIF_HALT);
-+
- 		gpu_write(gpu, REG_A6XX_RBBM_GPR0_CNTL, 0);
--		/* Let's make extra sure that the GPU can access the memory.. */
--		mb();
-+		gpu_read(gpu, REG_A6XX_RBBM_GPR0_CNTL);
- 	} else if (a6xx_has_gbif(adreno_gpu)) {
- 		gpu_write(gpu, REG_A6XX_GBIF_HALT, 0);
-+		gpu_read(gpu, REG_A6XX_GBIF_HALT);
-+
- 		gpu_write(gpu, REG_A6XX_RBBM_GBIF_HALT, 0);
--		/* Let's make extra sure that the GPU can access the memory.. */
--		mb();
-+		gpu_read(gpu, REG_A6XX_RBBM_GBIF_HALT);
- 	}
- 
- 	gpu_write(gpu, REG_A6XX_RBBM_SECVID_TSB_CNTL, 0);
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -477,7 +477,7 @@ static void io_req_io_end(struct io_kioc
+ static bool __io_complete_rw_common(struct io_kiocb *req, long res)
+ {
+ 	if (unlikely(res != req->cqe.res)) {
+-		if (res == -EAGAIN && io_rw_should_reissue(req)) {
++		if ((res == -EOPNOTSUPP || res == -EAGAIN) && io_rw_should_reissue(req)) {
+ 			/*
+ 			 * Reissue will start accounting again, finish the
+ 			 * current cycle.
 
 
 
