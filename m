@@ -1,150 +1,215 @@
-Return-Path: <stable+bounces-188352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1141BF6F8A
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:09:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162BABF6FD8
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17E804F9E9C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 14:07:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DA23464035
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 14:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D2E33890C;
-	Tue, 21 Oct 2025 14:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FC833B948;
+	Tue, 21 Oct 2025 14:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jnF9I0Fl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mf+eT4Ho"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20BA32ED3B;
-	Tue, 21 Oct 2025 14:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6460533B943
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 14:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761055649; cv=none; b=N2x7YD0Xpat030U1dtLJqe1LBVGEER8a6D9+hupbsoHR5+K6pCnEQbNBaZVZdnrmo4UEsnM+S2kmZJpeMnmoJ6dIzrdBErUY5Q6SO7ZITyHeH0WAzsWqXB538wz85QvGREgU5dFQ1rumexGldBRtxEbinWsUi6AC5wi6LtJUH9g=
+	t=1761055896; cv=none; b=DySoOXuE3kVO2hQHBzV8OczoVkDkUnPxS4j6cztY9KjhuyNyXu9nrqEVfBs1U3rJ73es6suUojajeTzHPm4xJdvRNzCdAQpRcsIqNIfQAUI5Pehf2gbB9TFGVAcC5cC6SNIalc8BYu3pDMVAq2SKENbyemqH+7NUk3VXqZJ8CsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761055649; c=relaxed/simple;
-	bh=JzxByh5kUBoKHIxN82xwOONVGLcA34XTs/076ZBn/jY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ilmq88LI7bA9us0kOWxsYjwXFFx4cTAAD42FTjgz0MP4u+M6aDiQTizAIjZTTcx7g2pviQTtdDyiDmBWRi/hwXVvm2nTNjbUtE73ePM+K1HQnLlyv7NPF0nNL6O0RNwvRCrc7ueNqI6y8GJT3zXmlWBlTGET/HnHHGBW3qJR+38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jnF9I0Fl; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59LDcG6F027549;
-	Tue, 21 Oct 2025 14:07:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=yOIHTh
-	PjQYl0MFMCKBnXOX5p5/c+cVfRPWqfjLRw10s=; b=jnF9I0FlYcIpBi/g6o9BYp
-	4AxoXDmsLyF73v871SgpUI3JKh0jOySkJn4B5Bf4nxB6p+rnUN6+DZmd6dAvtOMR
-	/uOopbJCiA3jbdiccDI6bR/iNFtibDWEosmigIvYqw3izQQMUcHmHJ3jajM3Qa8r
-	A6g2w1+HFS6ZLiP0gV+3jdzIJd5CoKc/DDzP+3ataB1cWYVInDEYGZJjw44qPIEq
-	/bHwMKDcH1csC6XRfRt8glKz380SGQrzuRXGg78BuEB+xoLXWm/G6peV5gMRRO6y
-	3hVRXBJoGduHzjYx7Oq5Y6gvvgjhLAUeUkXn+zdzeHMz0GFCK39Qz3lJYRJFyHIA
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33f7dgc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Oct 2025 14:07:25 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59LCF5DI024940;
-	Tue, 21 Oct 2025 14:07:24 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vpqju15c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Oct 2025 14:07:24 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59LE7MAX24576754
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Oct 2025 14:07:23 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ADBD85805E;
-	Tue, 21 Oct 2025 14:07:22 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CF5C45805F;
-	Tue, 21 Oct 2025 14:07:21 +0000 (GMT)
-Received: from [9.61.43.59] (unknown [9.61.43.59])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 21 Oct 2025 14:07:21 +0000 (GMT)
-Message-ID: <0170a16a-aadd-450f-be9a-9b60dfd5c8e7@linux.ibm.com>
-Date: Tue, 21 Oct 2025 10:07:21 -0400
+	s=arc-20240116; t=1761055896; c=relaxed/simple;
+	bh=qhpDDWHXCKWpQOwUtFHMqDQXM10R3JS0MkdzjGtwt4o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r0kuO6pENstvc8zF6hnJ8dI9gonH4ibe/Pl81NW5EB43/6lTDvSz1r8uW09WIwvKJAF4W68OIuqXUct8oe9GZdCnEtTPpmsWirrmU/zoNYB3Wx276oWxUUPXG69WDDKTf+pjjK2faW3Bgcvrabzl3W54DJWMEYpch6fksVN1HTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mf+eT4Ho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CAFEC4CEF1;
+	Tue, 21 Oct 2025 14:11:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761055895;
+	bh=qhpDDWHXCKWpQOwUtFHMqDQXM10R3JS0MkdzjGtwt4o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Mf+eT4HoyXfH6dWbwE9dc0nUe1lQa5jIJtlVjxmpIza2gqi0j242bZbXsRsJSAkGs
+	 qn26gKefLFFsPI9AHx8+UfZfE8SWDml6aKydDBLDSQcIbqpx1V475tHudjSlfFcIYn
+	 ASewwny7XCvYqmc94eIEaOCwx35x0nU2CMvUEI0DK11Jeg3WW1mLYu9jsgL9+13f6w
+	 /EkgPstuzt0HmiMYfD3zpNniDPl8QsmRQpBkIF9ykB69M9XzqIyhYA51BpZ/8JPT/a
+	 elJHnfOkmvtnswALacjrVD2PFg5aei/nDO6aAQ+MuMOugRqjE/cRJWUMt80K2fJrjL
+	 0xV8yJRv9RsRQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	Paulo Zanoni <paulo.r.zanoni@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17.y] drm/xe: Don't allow evicting of BOs in same VM in array of VM binds
+Date: Tue, 21 Oct 2025 10:11:33 -0400
+Message-ID: <20251021141133.2151101-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025102048-unrushed-state-ce5e@gregkh>
+References: <2025102048-unrushed-state-ce5e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/3] s390/pci: Restore IRQ unconditionally for the zPCI
- device
-To: Farhan Ali <alifm@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Cc: helgaas@kernel.org, stable@vger.kernel.org, schnelle@linux.ibm.com
-References: <20251020190200.1365-1-alifm@linux.ibm.com>
- <20251020190200.1365-4-alifm@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20251020190200.1365-4-alifm@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68f7939d cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=X6ZiwJvXWaKFF5TKYhAA:9 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: 8RplYV_leo0CPNopDWt-CIFvZ4pPABj9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX8lh7A9xZZgw2
- 2jIOg691Sj/zkSDhvapiXdpin/U9OnGJKBb7avSgjKKqqdWr7YbVTe+cx6vesJXQOyxE25m1Fk3
- 584mZ3Ft2pYHLyrvnDne5+ph5/8jaEOsq8XvwwCfpwNzgv6B9t9T+Yp40QAELTfuoir6/Y5ojsi
- mf8ArdU0Niig3iLca7AYfBzjgiP/BV4kAXvPssWlBC23kmAwAvfKWoKmy2msD3TuawSDUQIAdld
- x4DCqx5dS7WMeBWv2c6cgluYRxsl4PBbiLhYvBAJdSBsqgLmA9hchOCjFTyhf4OTq4mZDOF+FhO
- 2dF91IVxviwyktc90dPlsjcjZSDPORnodwYzVJOEwSrZEWeGuzyJWjb0L5D9eiIOq/DhaRTZV69
- W9/hDC7ujrIkDHAerCneZ4S/haLqLQ==
-X-Proofpoint-ORIG-GUID: 8RplYV_leo0CPNopDWt-CIFvZ4pPABj9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-21_02,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+Content-Transfer-Encoding: 8bit
 
-On 10/20/25 3:02 PM, Farhan Ali wrote:
-> Commit c1e18c17bda6 ("s390/pci: add zpci_set_irq()/zpci_clear_irq()"),
-> introduced the zpci_set_irq() and zpci_clear_irq(), to be used while
-> resetting a zPCI device.
-> 
-> Commit da995d538d3a ("s390/pci: implement reset_slot for hotplug slot"),
-> mentions zpci_clear_irq() being called in the path for zpci_hot_reset_device().
-> But that is not the case anymore and these functions are not called
-> outside of this file. Instead zpci_hot_reset_device() relies on
-> zpci_disable_device() also clearing the IRQs, but misses to reset the
-> zdev->irqs_registered flag.
-> 
-> However after a CLP disable/enable reset, the device's IRQ are
-> unregistered, but the flag zdev->irq_registered does not get cleared. It
-> creates an inconsistent state and so arch_restore_msi_irqs() doesn't
-> correctly restore the device's IRQ. This becomes a problem when a PCI
-> driver tries to restore the state of the device through
-> pci_restore_state(). Restore IRQ unconditionally for the device and remove
-> the irq_registered flag as its redundant.
-> 
-> Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+[ Upstream commit 7ac74613e5f2ef3450f44fd2127198662c2563a9 ]
 
-But one question: Unlike the other 2 patches in this series, this only touches s390 code.  It doesn't depend on the other 2 patches in this series, right?
+An array of VM binds can potentially evict other buffer objects (BOs)
+within the same VM under certain conditions, which may lead to NULL
+pointer dereferences later in the bind pipeline. To prevent this, clear
+the allow_res_evict flag in the xe_bo_validate call.
 
-If not then shouldn't this one go thru s390 rather than PCI subsystem?  Note: none of the s390 arch maintainers are on CC.
+v2:
+ - Invert polarity of no_res_evict (Thomas)
+ - Add comment in code explaining issue (Thomas)
 
-> ---
->  arch/s390/include/asm/pci.h | 1 -
->  arch/s390/pci/pci_irq.c     | 9 +--------
->  2 files changed, 1 insertion(+), 9 deletions(-)
-> 
+Cc: stable@vger.kernel.org
+Reported-by: Paulo Zanoni <paulo.r.zanoni@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6268
+Fixes: 774b5fa509a9 ("drm/xe: Avoid evicting object of the same vm in none fault mode")
+Fixes: 77f2ef3f16f5 ("drm/xe: Lock all gpuva ops during VM bind IOCTL")
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Tested-by: Paulo Zanoni <paulo.r.zanoni@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://lore.kernel.org/r/20251009110618.3481870-1-matthew.brost@intel.com
+(cherry picked from commit 8b9ba8d6d95fe75fed6b0480bb03da4b321bea08)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+[ removed exec parameter from xe_bo_validate() calls ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/xe/xe_vm.c       | 32 +++++++++++++++++++++++---------
+ drivers/gpu/drm/xe/xe_vm_types.h |  2 ++
+ 2 files changed, 25 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 5146999d27fa2..bf44cd5bf49c0 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -2894,7 +2894,7 @@ static void vm_bind_ioctl_ops_unwind(struct xe_vm *vm,
+ }
+ 
+ static int vma_lock_and_validate(struct drm_exec *exec, struct xe_vma *vma,
+-				 bool validate)
++				 bool res_evict, bool validate)
+ {
+ 	struct xe_bo *bo = xe_vma_bo(vma);
+ 	struct xe_vm *vm = xe_vma_vm(vma);
+@@ -2905,7 +2905,8 @@ static int vma_lock_and_validate(struct drm_exec *exec, struct xe_vma *vma,
+ 			err = drm_exec_lock_obj(exec, &bo->ttm.base);
+ 		if (!err && validate)
+ 			err = xe_bo_validate(bo, vm,
+-					     !xe_vm_in_preempt_fence_mode(vm));
++					     !xe_vm_in_preempt_fence_mode(vm) &&
++					     res_evict);
+ 	}
+ 
+ 	return err;
+@@ -2978,14 +2979,23 @@ static int prefetch_ranges(struct xe_vm *vm, struct xe_vma_op *op)
+ }
+ 
+ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
+-			    struct xe_vma_op *op)
++			    struct xe_vma_ops *vops, struct xe_vma_op *op)
+ {
+ 	int err = 0;
++	bool res_evict;
++
++	/*
++	 * We only allow evicting a BO within the VM if it is not part of an
++	 * array of binds, as an array of binds can evict another BO within the
++	 * bind.
++	 */
++	res_evict = !(vops->flags & XE_VMA_OPS_ARRAY_OF_BINDS);
+ 
+ 	switch (op->base.op) {
+ 	case DRM_GPUVA_OP_MAP:
+ 		if (!op->map.invalidate_on_bind)
+ 			err = vma_lock_and_validate(exec, op->map.vma,
++						    res_evict,
+ 						    !xe_vm_in_fault_mode(vm) ||
+ 						    op->map.immediate);
+ 		break;
+@@ -2996,11 +3006,13 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
+ 
+ 		err = vma_lock_and_validate(exec,
+ 					    gpuva_to_vma(op->base.remap.unmap->va),
+-					    false);
++					    res_evict, false);
+ 		if (!err && op->remap.prev)
+-			err = vma_lock_and_validate(exec, op->remap.prev, true);
++			err = vma_lock_and_validate(exec, op->remap.prev,
++						    res_evict, true);
+ 		if (!err && op->remap.next)
+-			err = vma_lock_and_validate(exec, op->remap.next, true);
++			err = vma_lock_and_validate(exec, op->remap.next,
++						    res_evict, true);
+ 		break;
+ 	case DRM_GPUVA_OP_UNMAP:
+ 		err = check_ufence(gpuva_to_vma(op->base.unmap.va));
+@@ -3009,7 +3021,7 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
+ 
+ 		err = vma_lock_and_validate(exec,
+ 					    gpuva_to_vma(op->base.unmap.va),
+-					    false);
++					    res_evict, false);
+ 		break;
+ 	case DRM_GPUVA_OP_PREFETCH:
+ 	{
+@@ -3025,7 +3037,7 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
+ 
+ 		err = vma_lock_and_validate(exec,
+ 					    gpuva_to_vma(op->base.prefetch.va),
+-					    false);
++					    res_evict, false);
+ 		if (!err && !xe_vma_has_no_bo(vma))
+ 			err = xe_bo_migrate(xe_vma_bo(vma),
+ 					    region_to_mem_type[region]);
+@@ -3069,7 +3081,7 @@ static int vm_bind_ioctl_ops_lock_and_prep(struct drm_exec *exec,
+ 		return err;
+ 
+ 	list_for_each_entry(op, &vops->list, link) {
+-		err = op_lock_and_prep(exec, vm, op);
++		err = op_lock_and_prep(exec, vm, vops, op);
+ 		if (err)
+ 			return err;
+ 	}
+@@ -3698,6 +3710,8 @@ int xe_vm_bind_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
+ 	}
+ 
+ 	xe_vma_ops_init(&vops, vm, q, syncs, num_syncs);
++	if (args->num_binds > 1)
++		vops.flags |= XE_VMA_OPS_ARRAY_OF_BINDS;
+ 	for (i = 0; i < args->num_binds; ++i) {
+ 		u64 range = bind_ops[i].range;
+ 		u64 addr = bind_ops[i].addr;
+diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
+index 6058cf739388b..f6616d595999f 100644
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -467,6 +467,8 @@ struct xe_vma_ops {
+ 	struct xe_vm_pgtable_update_ops pt_update_ops[XE_MAX_TILES_PER_DEVICE];
+ 	/** @flag: signify the properties within xe_vma_ops*/
+ #define XE_VMA_OPS_FLAG_HAS_SVM_PREFETCH BIT(0)
++#define XE_VMA_OPS_FLAG_MADVISE          BIT(1)
++#define XE_VMA_OPS_ARRAY_OF_BINDS	 BIT(2)
+ 	u32 flags;
+ #ifdef TEST_VM_OPS_ERROR
+ 	/** @inject_error: inject error to test error handling */
+-- 
+2.51.0
+
 
