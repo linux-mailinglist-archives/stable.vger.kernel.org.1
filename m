@@ -1,120 +1,143 @@
-Return-Path: <stable+bounces-188413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57BEEBF82A0
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:56:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D923BF82D9
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:59:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 503E43B8991
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 18:56:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D850918C1F46
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 18:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7646234D92D;
-	Tue, 21 Oct 2025 18:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE1F3502B3;
+	Tue, 21 Oct 2025 18:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tWBjq7vw"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Lie1doHY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361B334D904
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 18:56:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7B634E751
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 18:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761072963; cv=none; b=GSGnQDbRjGSp9VUsX/Dz51Bh//6TGG5jy96Enk5p5CYiVwaCUzpOcGaHRxcnerApJAqaYBoEmtnEnM79oExqyMMKC+qp12XSScJc1P5h6Zrv7rOcrXGdOjPIAY8UV9YeYkKu0kLB/U2mR91C+S/lM4QtN76Vd/tsRGwxMLHppRA=
+	t=1761073149; cv=none; b=h3hQXDNACaFZuPRj9yBqqkY51ioQbaEDyHWETTDywQ9uwG2nch+no5mln1DL7BHVVzl3/CqRVrqI//rUaRqfJw/BxmDwjmydUKkbnC0GOrJbXjRXg2EuBIDUr2pBZKQdA6kODY2yS0TIKoA0QvvleOszB7UxBbfJixkOj04yWUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761072963; c=relaxed/simple;
-	bh=o9sUZgyZC9p5lP1A1RY1k6pzqzMAewIziWsD7CDB33s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuODSbGnB2/lGKQt5Owq5X8rHTJWau96PHNe4ZM/xJSdzNrAedmanjjAgFKCmNYB5G9ap2nTAE2fcWzyTl+lRNhDF4LdhOpxm7GrG7pEd+3iq9zy+DMSrxSgepCAXtXXKwXAO1xpCGDxUIG+/i3elTDNUcBJNLwZg8Q6RlNr6G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tWBjq7vw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48528C4CEF5;
-	Tue, 21 Oct 2025 18:56:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761072961;
-	bh=o9sUZgyZC9p5lP1A1RY1k6pzqzMAewIziWsD7CDB33s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWBjq7vwrY+2aoISd2zYl2TNQkpwIEMj58wh3Rp+YIo27UY+ZMSVlS/j6/TUN7yEU
-	 OZM82aEvMwqjEGYBJ8gwwTHARjRpUr12ItiikkK/8HZZjJl7zPNHU3VfmaznpMiF3a
-	 kUb+T9NhN/vDMvFbKWH0v4O1nygfkkIz+EaIixIAIlhkb0SxBbONFQ2gXJyznjcWsY
-	 OQmBk6nY8/oDgKa+lYrsqzaam+Yvflj9hrLJqgrWrvQ8Xv8BFu09XLrGlGRNe8jP12
-	 Xtro/vfyWbkb6MO5/xbJwMM5XXvTZYLnZkcCfC1ofcZWo4gl0cDXN8vdeCl46+ePrR
-	 6q8LifCfRwPZA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Zhen Ni <zhen.ni@easystack.cn>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 2/2] memory: samsung: exynos-srom: Fix of_iomap leak in exynos_srom_probe
-Date: Tue, 21 Oct 2025 14:55:58 -0400
-Message-ID: <20251021185558.2643476-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251021185558.2643476-1-sashal@kernel.org>
-References: <2025101607-discharge-haiku-4150@gregkh>
- <20251021185558.2643476-1-sashal@kernel.org>
+	s=arc-20240116; t=1761073149; c=relaxed/simple;
+	bh=VK4uFuKeL1jQjhwhET5OamktbLThHddjP4Lo+W2yrek=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=KwQZpGbJSz/S2/GYQAeFD4LSEJU9izOfU6fNMHf25llgo6ZSMjtzK3HPU2l+owlV4BgRNkKVwrOIUaJlui7lVZ6zu2FeGv80uFAwYe2PhDZra/pdUPwe46cyaCiNn7BVpnT4prltYTYUbVTFXYJBmat9/+mRiqSz5aw3Dr3EgBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=Lie1doHY; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-781251eec51so4730728b3a.3
+        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 11:59:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1761073144; x=1761677944; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qWC8hVDWUNSz93bUAzIR5RNAl4fES/0l4NlkL98L2Zc=;
+        b=Lie1doHYYXUvcef3qUrqeaiY3UAE1N1SCGHpS4+Qzg6EnuvrGaMZgFZUne5ZQRu/p8
+         arAnXmx9hs/r4Snb9RKZ8zciaWrbci++eQemIEUNm+vlXTiFyk9tgDr6hwWoGxHYBNlF
+         muN4qMXd+I3AWYSC4PhKjtzPktnZtw4O7c+9Pza24bu2XlFZ4PZ4HbWCW1jsifaXJdLi
+         4OXvQgQBL+FB6jLB6KG1xe4eTuTDry44pswWQf0lN7O0da048Spe1akmN0zU8khuEF4B
+         c6qM2d8Fk67+QzsXFSc2ysnK1R/mnqZGkOgnF4a6FdclLS4kqzTiekCvtZIWxbf2oa3m
+         5gKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761073144; x=1761677944;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qWC8hVDWUNSz93bUAzIR5RNAl4fES/0l4NlkL98L2Zc=;
+        b=EBusOUq0Gn5w+jxuCQlHQxL9x8VUnw+9xe0uSm/1ywLXlYpljeCd4G61Ghfu2AMfPt
+         7IN8LVxpSX7jU3bNIoS48aaiqCZM+1+e3IMeOdEoBZDVycF2WLFMp/2vZu3kDxfzq+yW
+         bBiZzJDiHr3tHsTWNTC6w0fa8Nw8k8bgBO35+w7sXKfj2GZBDOdYKZXz7B4Z9Mg14IVt
+         EDzguMCCQatHk2FHBJAMyYT2I6YGG4zJViYkOS4M7L3QUGqs7O3AxyCI9hM+SNGRRBJU
+         RH1qdGYNRFiQ4ChO2qSnMhdix2JvfMz83Gm+zwTF/X0XrF1q3LG50sBvPfePThhjeddn
+         Dh6w==
+X-Forwarded-Encrypted: i=1; AJvYcCVNgs7TQ8hYP1XXFHW/dXLsuv/ma+ngfxZeIbEoO2ytKey+6lvv/anVoOAnNabAn036RaiaJoE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwP43GnWqE4rtQjXFN2Dbc3XvhiGgeFDkTR2lQm4rP3OH5MVWM5
+	RkfI9OUn57BdtKb1GA77+onID1/xSRPoC9yqBMAULVelhCLUXnNAY16ZIrwv5BQn1dHgVRvQkbJ
+	uryK/
+X-Gm-Gg: ASbGncuQlJ+CkuxriQMJVzfRSbPXOj3qMCqDT4nZT1CR2dzoCr1cwcUhavxzqsnHuCE
+	CpxkExay5CJixnMXryFW3qaKl7QNB7TbHaMi++qZZz+eUMdO7o3hP5N08IOfNhPnvX31vNpdYbm
+	UHkYwSpd/YDWdcVQjk0YQ1leR0JePo6DeZLx0iSlx3fiASbD+eTY02ESFWojWqB8aOZFq73GibD
+	RNG6CWitiw1AtraZ+Vcr5kx4Dn1WL27Q2JVdOEwMu4oxOsGQdRem+7Ersc7BxOFR2qQF0Dk1+mA
+	+H+suwD+OK/5N/3AYTObAIDnSbHiStgGh/timDEz4gxbzJPsp/fNRCCRGxX0Q+kvJHXj1fArwla
+	LeTGl3ZYDXXXUoYUTrAYxD2ZcdCXvP+rnKr9WAJDX27MHqDMHDKTifn1rtPnaSeZYLflNuiANGv
+	6J1Jif
+X-Google-Smtp-Source: AGHT+IFX9qXN4re39RTgTtFl2yEe86cMESEZ3lEYPhA9ZFh8XNYJRli5iWajGptWw7VF14jSsOD50A==
+X-Received: by 2002:a05:6a20:4311:b0:334:9b03:7bbb with SMTP id adf61e73a8af0-334a8621752mr22680271637.41.1761073144610;
+        Tue, 21 Oct 2025 11:59:04 -0700 (PDT)
+Received: from 15dd6324cc71 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b6ac0bsm10954376a12.37.2025.10.21.11.59.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Oct 2025 11:59:04 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: [REGRESSION] stable-rc/linux-5.10.y: (build) passing 'const struct
+ iomap *' to
+ parameter of type 'struct iomap ...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Tue, 21 Oct 2025 18:59:03 -0000
+Message-ID: <176107314334.5116.11694860086926357376@15dd6324cc71>
 
-From: Zhen Ni <zhen.ni@easystack.cn>
 
-[ Upstream commit 6744085079e785dae5f7a2239456135407c58b25 ]
 
-The of_platform_populate() call at the end of the function has a
-possible failure path, causing a resource leak.
 
-Replace of_iomap() with devm_platform_ioremap_resource() to ensure
-automatic cleanup of srom->reg_base.
 
-This issue was detected by smatch static analysis:
-drivers/memory/samsung/exynos-srom.c:155 exynos_srom_probe()warn:
-'srom->reg_base' from of_iomap() not released on lines: 155.
+Hello,
 
-Fixes: 8ac2266d8831 ("memory: samsung: exynos-srom: Add support for bank configuration")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Link: https://lore.kernel.org/r/20250806025538.306593-1-zhen.ni@easystack.cn
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+New build issue found on stable-rc/linux-5.10.y:
+
 ---
- drivers/memory/samsung/exynos-srom.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ passing 'const struct iomap *' to parameter of type 'struct iomap *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers] in fs/dax.o (fs/dax.c) [logspec:kbuild,kbuild.compiler.error]
+---
 
-diff --git a/drivers/memory/samsung/exynos-srom.c b/drivers/memory/samsung/exynos-srom.c
-index 734fe988cd287..0f182698ccc66 100644
---- a/drivers/memory/samsung/exynos-srom.c
-+++ b/drivers/memory/samsung/exynos-srom.c
-@@ -121,20 +121,18 @@ static int exynos_srom_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	srom->dev = dev;
--	srom->reg_base = of_iomap(np, 0);
--	if (!srom->reg_base) {
-+	srom->reg_base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(srom->reg_base)) {
- 		dev_err(&pdev->dev, "iomap of exynos srom controller failed\n");
--		return -ENOMEM;
-+		return PTR_ERR(srom->reg_base);
- 	}
- 
- 	platform_set_drvdata(pdev, srom);
- 
- 	srom->reg_offset = exynos_srom_alloc_reg_dump(exynos_srom_offsets,
- 						      ARRAY_SIZE(exynos_srom_offsets));
--	if (!srom->reg_offset) {
--		iounmap(srom->reg_base);
-+	if (!srom->reg_offset)
- 		return -ENOMEM;
--	}
- 
- 	for_each_child_of_node(np, child) {
- 		if (exynos_srom_configure_bank(srom, child)) {
--- 
-2.51.0
+- dashboard: https://d.kernelci.org/i/maestro:568e928648fdbc507b4cfc190ad338a93fe02440
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  63caad8a89c150b298b2e95d18ca60cd904d3183
 
+
+
+Log excerpt:
+=====================================================
+fs/dax.c:1147:44: error: passing 'const struct iomap *' to parameter of type 'struct iomap *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
+ 1147 |                 const sector_t sector = dax_iomap_sector(iomap, pos);
+      |                                                          ^~~~~
+fs/dax.c:1009:48: note: passing argument to parameter 'iomap' here
+ 1009 | static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
+      |                                                ^
+1 error generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## defconfig+allmodconfig on (arm64):
+- compiler: clang-17
+- config: https://files.kernelci.org/kbuild-clang-17-arm64-allmodconfig-68f7d39c9533132a1895417c/.config
+- dashboard: https://d.kernelci.org/build/maestro:68f7d39c9533132a1895417c
+
+
+#kernelci issue maestro:568e928648fdbc507b4cfc190ad338a93fe02440
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
