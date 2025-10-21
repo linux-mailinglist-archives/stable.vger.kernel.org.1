@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-188640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DC6BF884B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6376EBF86AC
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:58:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C92CC4FB1AD
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41C045818A4
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D462773EC;
-	Tue, 21 Oct 2025 20:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6BD27510E;
+	Tue, 21 Oct 2025 19:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPYATO16"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCTCkNRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AE31A00CE;
-	Tue, 21 Oct 2025 20:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B9B274B5C;
+	Tue, 21 Oct 2025 19:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077051; cv=none; b=gIvPXgmXPNWioHxgbUMhxD/KcE8eNdtj2609bv5oFaDQ0MukMIcNmsUCSRRpcG+hJZ4EBAowKjQAka3XPtLgsfaMN+AJTIwy+9pxNkeiRzxb/kLXeJGCNAgYG6hFe7dBFWRkCxt7zG4kY/L9Rz2pabomfIRw23ekijB5KgGDCos=
+	t=1761076670; cv=none; b=hOHUvw4N9lMce4kHgXaYIrOShobtqIiJd/L+tAP5xOPqhTsXr9EnPRLKFKFC4WpVKiRLyRfgDO6pGbhppinaDetUgzWnsHoNe8bhC7DZT5PDenMGk4N0qEfu99NlzRHNUrXYKVsZ1kb2V4S+wzvlMLauSTwrt0+vKEbMO0dOEYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077051; c=relaxed/simple;
-	bh=BHK/nBplP7xI318oOIqP3j1i56QUszkvI43u2KzbCpw=;
+	s=arc-20240116; t=1761076670; c=relaxed/simple;
+	bh=jMJ33baitd62FvM916VQTmi1SFf/wRWkJY/6NULfzZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sR1c8RF3d6RKu4a2cZN4WqIbCKkKN2QfrxHVZh/zA0iHTDLHFuSQhdjSTOVqDAbws+UmHyHHXG9pabhooVa9fc08RaeEP3QxD8luWK6VUldUmuOuL69Z92gbx4W9HAaz6MvUxvKBv2Ju+6cged9K61RZU9FmnVAeMJj5doIYcaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPYATO16; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEECC4CEF1;
-	Tue, 21 Oct 2025 20:04:09 +0000 (UTC)
+	 MIME-Version; b=A7PSm2hsYzD3p86XBFoHadkIrxShdILefD/ncOBxEabnqU+N/aCjRIjPrpkwROVmf3e0rdstY1jKu4l+PbMoCKpetKfqFQPJFXJcI9RKZ0c8bSEpwDU050DzA0uKIwa7Ld559P2oAwa0yzU8BZ1iKfPzGXrPkiUFHpON7GSTw2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCTCkNRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA337C4CEF1;
+	Tue, 21 Oct 2025 19:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077050;
-	bh=BHK/nBplP7xI318oOIqP3j1i56QUszkvI43u2KzbCpw=;
+	s=korg; t=1761076670;
+	bh=jMJ33baitd62FvM916VQTmi1SFf/wRWkJY/6NULfzZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OPYATO16xRsnx8Qcs8zT4DXo2ew7lLmRW6cmSfj+vsDK6mx36Rwr7FlBXN4pi0W5s
-	 gE0mgM1D+8pXaW6uOEewxFeoznksVbmzGZTvGke/wUcSy9UXIwhb0AM0AbrCBsRqoE
-	 mA8uD9nzWoezesvmXBXKWI7vDQEIwe7+eXgf0bx4=
+	b=yCTCkNRjVRfoZeYv0wGojuxPmBz2ZfLBxAf4RuyBS2z7ybFog4z99zElD8X7dljbi
+	 pclK6par9cwjd2Ddd7ML/QYAdS7Ff2R/qDvtAqISx+JP+dt6x0s81B5gsjLhA9jwbV
+	 4sVsLYJ/lcLWxUKRhaXHgPyDdgRrLaRszXgs1yTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/136] ixgbevf: Add support for Intel(R) E610 device
-Date: Tue, 21 Oct 2025 21:51:48 +0200
-Message-ID: <20251021195038.863629316@linuxfoundation.org>
+	Brian Norris <briannorris@google.com>,
+	Brian Norris <briannorris@chromium.org>
+Subject: [PATCH 6.6 100/105] PCI/sysfs: Ensure devices are powered for config reads (part 2)
+Date: Tue, 21 Oct 2025 21:51:49 +0200
+Message-ID: <20251021195024.028643471@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,172 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+From: Brian Norris <briannorris@google.com>
 
-[ Upstream commit 4c44b450c69b676955c2790dcf467c1f969d80f1 ]
+Commit 48991e493507 ("PCI/sysfs: Ensure devices are powered for config
+reads") was applied to various linux-stable trees. However, prior to
+6.12.y, we do not have commit d2bd39c0456b ("PCI: Store all PCIe
+Supported Link Speeds"). Therefore, we also need to apply the change to
+max_link_speed_show().
 
-Add support for Intel(R) E610 Series of network devices. The E610
-is based on X550 but adds firmware managed link, enhanced security
-capabilities and support for updated server manageability
+This was pointed out here:
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Re: Patch "PCI/sysfs: Ensure devices are powered for config reads" has been added to the 6.6-stable tree
+  https://lore.kernel.org/all/aPEMIreBYZ7yk3cm@google.com/
+
+Original change description follows:
+
+    The "max_link_width", "current_link_speed", "current_link_width",
+    "secondary_bus_number", and "subordinate_bus_number" sysfs files all access
+    config registers, but they don't check the runtime PM state. If the device
+    is in D3cold or a parent bridge is suspended, we may see -EINVAL, bogus
+    values, or worse, depending on implementation details.
+
+    Wrap these access in pci_config_pm_runtime_{get,put}() like most of the
+    rest of the similar sysfs attributes.
+
+    Notably, "max_link_speed" does not access config registers; it returns a
+    cached value since d2bd39c0456b ("PCI: Store all PCIe Supported Link
+    Speeds").
+
+Fixes: 56c1af4606f0 ("PCI: Add sysfs max_link_speed/width, current_link_speed/width, etc")
+Link: https://lore.kernel.org/all/aPEMIreBYZ7yk3cm@google.com/
+Signed-off-by: Brian Norris <briannorris@google.com>
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbevf/defines.h      |    5 ++++-
- drivers/net/ethernet/intel/ixgbevf/ixgbevf.h      |    6 +++++-
- drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |   12 ++++++++++--
- drivers/net/ethernet/intel/ixgbevf/vf.c           |   12 +++++++++++-
- drivers/net/ethernet/intel/ixgbevf/vf.h           |    4 +++-
- 5 files changed, 33 insertions(+), 6 deletions(-)
+ drivers/pci/pci-sysfs.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/intel/ixgbevf/defines.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/defines.h
-@@ -1,5 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright(c) 1999 - 2018 Intel Corporation. */
-+/* Copyright(c) 1999 - 2024 Intel Corporation. */
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -186,9 +186,15 @@ static ssize_t max_link_speed_show(struc
+ 				   struct device_attribute *attr, char *buf)
+ {
+ 	struct pci_dev *pdev = to_pci_dev(dev);
++	ssize_t ret;
  
- #ifndef _IXGBEVF_DEFINES_H_
- #define _IXGBEVF_DEFINES_H_
-@@ -16,6 +16,9 @@
- #define IXGBE_DEV_ID_X550_VF_HV		0x1564
- #define IXGBE_DEV_ID_X550EM_X_VF_HV	0x15A9
- 
-+#define IXGBE_DEV_ID_E610_VF		0x57AD
-+#define IXGBE_SUBDEV_ID_E610_VF_HV	0x00FF
+-	return sysfs_emit(buf, "%s\n",
+-			  pci_speed_string(pcie_get_speed_cap(pdev)));
++	/* We read PCI_EXP_LNKCAP, so we need the device to be accessible. */
++	pci_config_pm_runtime_get(pdev);
++	ret = sysfs_emit(buf, "%s\n",
++			 pci_speed_string(pcie_get_speed_cap(pdev)));
++	pci_config_pm_runtime_put(pdev);
 +
- #define IXGBE_VF_IRQ_CLEAR_MASK		7
- #define IXGBE_VF_MAX_TX_QUEUES		8
- #define IXGBE_VF_MAX_RX_QUEUES		8
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-@@ -1,5 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright(c) 1999 - 2018 Intel Corporation. */
-+/* Copyright(c) 1999 - 2024 Intel Corporation. */
- 
- #ifndef _IXGBEVF_H_
- #define _IXGBEVF_H_
-@@ -418,6 +418,8 @@ enum ixgbevf_boards {
- 	board_X550EM_x_vf,
- 	board_X550EM_x_vf_hv,
- 	board_x550em_a_vf,
-+	board_e610_vf,
-+	board_e610_vf_hv,
- };
- 
- enum ixgbevf_xcast_modes {
-@@ -434,11 +436,13 @@ extern const struct ixgbevf_info ixgbevf
- extern const struct ixgbe_mbx_operations ixgbevf_mbx_ops;
- extern const struct ixgbe_mbx_operations ixgbevf_mbx_ops_legacy;
- extern const struct ixgbevf_info ixgbevf_x550em_a_vf_info;
-+extern const struct ixgbevf_info ixgbevf_e610_vf_info;
- 
- extern const struct ixgbevf_info ixgbevf_82599_vf_hv_info;
- extern const struct ixgbevf_info ixgbevf_X540_vf_hv_info;
- extern const struct ixgbevf_info ixgbevf_X550_vf_hv_info;
- extern const struct ixgbevf_info ixgbevf_X550EM_x_vf_hv_info;
-+extern const struct ixgbevf_info ixgbevf_e610_vf_hv_info;
- extern const struct ixgbe_mbx_operations ixgbevf_hv_mbx_ops;
- 
- /* needed by ethtool.c */
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
--/* Copyright(c) 1999 - 2018 Intel Corporation. */
-+/* Copyright(c) 1999 - 2024 Intel Corporation. */
- 
- /******************************************************************************
-  Copyright (c)2006 - 2007 Myricom, Inc. for some LRO specific code
-@@ -39,7 +39,7 @@ static const char ixgbevf_driver_string[
- 	"Intel(R) 10 Gigabit PCI Express Virtual Function Network Driver";
- 
- static char ixgbevf_copyright[] =
--	"Copyright (c) 2009 - 2018 Intel Corporation.";
-+	"Copyright (c) 2009 - 2024 Intel Corporation.";
- 
- static const struct ixgbevf_info *ixgbevf_info_tbl[] = {
- 	[board_82599_vf]	= &ixgbevf_82599_vf_info,
-@@ -51,6 +51,8 @@ static const struct ixgbevf_info *ixgbev
- 	[board_X550EM_x_vf]	= &ixgbevf_X550EM_x_vf_info,
- 	[board_X550EM_x_vf_hv]	= &ixgbevf_X550EM_x_vf_hv_info,
- 	[board_x550em_a_vf]	= &ixgbevf_x550em_a_vf_info,
-+	[board_e610_vf]         = &ixgbevf_e610_vf_info,
-+	[board_e610_vf_hv]      = &ixgbevf_e610_vf_hv_info,
- };
- 
- /* ixgbevf_pci_tbl - PCI Device ID Table
-@@ -71,6 +73,9 @@ static const struct pci_device_id ixgbev
- 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_X_VF), board_X550EM_x_vf },
- 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_X_VF_HV), board_X550EM_x_vf_hv},
- 	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_X550EM_A_VF), board_x550em_a_vf },
-+	{PCI_VDEVICE_SUB(INTEL, IXGBE_DEV_ID_E610_VF, PCI_ANY_ID,
-+			 IXGBE_SUBDEV_ID_E610_VF_HV), board_e610_vf_hv},
-+	{PCI_VDEVICE(INTEL, IXGBE_DEV_ID_E610_VF), board_e610_vf},
- 	/* required last entry */
- 	{0, }
- };
-@@ -4693,6 +4698,9 @@ static int ixgbevf_probe(struct pci_dev
- 	case ixgbe_mac_X540_vf:
- 		dev_info(&pdev->dev, "Intel(R) X540 Virtual Function\n");
- 		break;
-+	case ixgbe_mac_e610_vf:
-+		dev_info(&pdev->dev, "Intel(R) E610 Virtual Function\n");
-+		break;
- 	case ixgbe_mac_82599_vf:
- 	default:
- 		dev_info(&pdev->dev, "Intel(R) 82599 Virtual Function\n");
---- a/drivers/net/ethernet/intel/ixgbevf/vf.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
--/* Copyright(c) 1999 - 2018 Intel Corporation. */
-+/* Copyright(c) 1999 - 2024 Intel Corporation. */
- 
- #include "vf.h"
- #include "ixgbevf.h"
-@@ -1076,3 +1076,13 @@ const struct ixgbevf_info ixgbevf_x550em
- 	.mac = ixgbe_mac_x550em_a_vf,
- 	.mac_ops = &ixgbevf_mac_ops,
- };
-+
-+const struct ixgbevf_info ixgbevf_e610_vf_info = {
-+	.mac                    = ixgbe_mac_e610_vf,
-+	.mac_ops                = &ixgbevf_mac_ops,
-+};
-+
-+const struct ixgbevf_info ixgbevf_e610_vf_hv_info = {
-+	.mac            = ixgbe_mac_e610_vf,
-+	.mac_ops        = &ixgbevf_hv_mac_ops,
-+};
---- a/drivers/net/ethernet/intel/ixgbevf/vf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.h
-@@ -1,5 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright(c) 1999 - 2018 Intel Corporation. */
-+/* Copyright(c) 1999 - 2024 Intel Corporation. */
- 
- #ifndef __IXGBE_VF_H__
- #define __IXGBE_VF_H__
-@@ -54,6 +54,8 @@ enum ixgbe_mac_type {
- 	ixgbe_mac_X550_vf,
- 	ixgbe_mac_X550EM_x_vf,
- 	ixgbe_mac_x550em_a_vf,
-+	ixgbe_mac_e610,
-+	ixgbe_mac_e610_vf,
- 	ixgbe_num_macs
- };
++	return ret;
+ }
+ static DEVICE_ATTR_RO(max_link_speed);
  
 
 
