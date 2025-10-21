@@ -1,96 +1,94 @@
-Return-Path: <stable+bounces-188836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0CDBF8E8D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 23:10:15 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0394BF8E63
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 23:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9B213B0EE7
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:10:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1EFA1345BA7
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FC328000C;
-	Tue, 21 Oct 2025 21:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383BF28506C;
+	Tue, 21 Oct 2025 21:08:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="LB9EkbVY"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BC228504F;
-	Tue, 21 Oct 2025 21:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6705D28506B
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 21:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761081011; cv=none; b=aaQB3H/O0Tg/k0W3GozGMj66ILfwtVRuXzm8xcv/TOG01EWrKpsk1Ey3V8vpWpsyUiM2CGtqeIJY46B77DXFNS18wv6jYCk6i+xcwO/sB+A5AyIcpzOfEP0EbeMba0Icg10B8mtmn5L9Z4Wi4CLGQWJoJn67a4Y/dFygxhj/nAE=
+	t=1761080903; cv=none; b=LG3P1MZOvT0GGNo4ps/PZMwopGFNQpNx97WKp7zVOFJ21iL3FEDMQ3GpWM2EcLFj8LtLjcB3e7xWKDVRKnrZdRsno0pQGHMCfUrySs9PiQ4IWBUyiscWsSMyOIANoZhBweVaFq588r5QSDp9/x94tqZYgMoWoM05qaCMr0CpYOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761081011; c=relaxed/simple;
-	bh=HEt6WD06oYzuqeSOXwxyNbgmB4LKiDDTAoQolw9CRwc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YCGLUWGqCXvj9AjQ0Sjl/zqonUohGo6qx+gE1yokXRruquyJUN0jpbHHJ+k4qwZszFsf6HesYpduALNWoAYip05GDKaXu6qq5/gjEp/M3ysCV3qPxq//9HhaLTzkOx49LUfVYWCWZrvo9j58AsIn4+rJa6T5SK4AEa4xMcQ3Zbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 078792337D;
-	Wed, 22 Oct 2025 00:00:16 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: stable@vger.kernel.org
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	rcu@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	kovalev@altlinux.org
-Subject: [PATCH 5.10/5.15] srcu: Tighten cleanup_srcu_struct() GP checks
-Date: Wed, 22 Oct 2025 00:00:16 +0300
-Message-Id: <20251021210016.181003-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	s=arc-20240116; t=1761080903; c=relaxed/simple;
+	bh=2VQ6nTz/SOAwoFUxbYpiUjOxfPfx0sJdgIyJh1gwDUc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Hr30iedlPwu7gmvA7VID4CXEwJ+RwiD8IV6QK0d7Qia8j4NpjtzafePKZw9whkaBoltW07VX2bR/vg4zhmMR5sKUjctAlBOTGOv++B8sfUnfOQYf6ltBD6bnEmKa78OF8TFFBwvtzcLLlu+SLoVnGyPkwdEiLB8szYTvoQx574k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=LB9EkbVY; arc=none smtp.client-ip=213.190.28.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
+	s=dkim_2024-02-03; t=1761080898;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2VQ6nTz/SOAwoFUxbYpiUjOxfPfx0sJdgIyJh1gwDUc=;
+	b=LB9EkbVYINvfchak0NzjB3YWDgUOFqy9LubpPkfU0yyHJE4T4EUkb4ZWueDZnHFPsmBqXh
+	+cnwSEZUrhX/xDCw==
+Message-ID: <19c7ba58-7300-4e10-bd81-367354f826db@hardfalcon.net>
+Date: Tue, 21 Oct 2025 23:08:17 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: Patch "PM: hibernate: Add pm_hibernation_mode_is_suspend()" has
+ been added to the 6.17-stable tree
+To: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>
+References: <2025102032-crescent-acuteness-5060 () gregkh>
+ <2745b827-b831-4964-8fc5-368f7446d73e@hardfalcon.net>
+ <8c4d1326-512c-4b98-bac0-aa207b54aa2a@kernel.org>
+Content-Language: en-US, de-DE, en-US-large
+From: Pascal Ernster <git@hardfalcon.net>
+In-Reply-To: <8c4d1326-512c-4b98-bac0-aa207b54aa2a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: "Paul E. McKenney" <paulmck@kernel.org>
+[2025-10-21 22:45] Mario Limonciello (AMD) (kernel.org):
+> Are you cleaning your tree between builds?
 
-commit 8ed00760203d8018bee042fbfe8e076579be2c2b upstream.
 
-Currently, cleanup_srcu_struct() checks for a grace period in progress,
-but it does not check for a grace period that has not yet started but
-which might start at any time.  Such a situation could result in a
-use-after-free bug, so this commit adds a check for a grace period that
-is needed but not yet started to cleanup_srcu_struct().
+Yes.
 
-Fixes: da915ad5cf25 ("srcu: Parallelize callback handling")
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-[ kovalev: backport to fix CVE-2022-49651; added Fixes tag for commit
-  da915ad5cf25 that introduced the srcu_gp_seq_needed field and the
-  race condition between grace period requests and cleanup ]
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
- kernel/rcu/srcutree.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+I'm building custom kernel packages in a clean chroot for my private package repo. The kernel config and the PKGBUILD can be found here:
 
-diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-index b8821665c435..5d89d941280f 100644
---- a/kernel/rcu/srcutree.c
-+++ b/kernel/rcu/srcutree.c
-@@ -388,9 +388,11 @@ void cleanup_srcu_struct(struct srcu_struct *ssp)
- 			return; /* Forgot srcu_barrier(), so just leak it! */
- 	}
- 	if (WARN_ON(rcu_seq_state(READ_ONCE(ssp->srcu_gp_seq)) != SRCU_STATE_IDLE) ||
-+	    WARN_ON(rcu_seq_current(&ssp->srcu_gp_seq) != ssp->srcu_gp_seq_needed) ||
- 	    WARN_ON(srcu_readers_active(ssp))) {
--		pr_info("%s: Active srcu_struct %p state: %d\n",
--			__func__, ssp, rcu_seq_state(READ_ONCE(ssp->srcu_gp_seq)));
-+		pr_info("%s: Active srcu_struct %p read state: %d gp state: %lu/%lu\n",
-+			__func__, ssp, rcu_seq_state(READ_ONCE(ssp->srcu_gp_seq)),
-+			rcu_seq_current(&ssp->srcu_gp_seq), ssp->srcu_gp_seq_needed);
- 		return; /* Caller forgot to stop doing call_srcu()? */
- 	}
- 	free_percpu(ssp->sda);
--- 
-2.50.1
+https://remotehost.online/linux-6.17.4/debug2/config
+https://remotehost.online/linux-6.17.4/debug2/PKGBUILD
 
+Here's a tarball that contains the PKGBUILD, the config, and all source files that I used:
+
+https://remotehost.online/linux-6.17.4/debug2/linux-hardened-6.17.4.hardened0-0.src.tar.zst
+
+Here's a log of stdout and stderr of the build process:
+
+https://remotehost.online/linux-6.17.4/debug2/stdout_stderr_combined.log
+
+
+Here's a fixed PKGBUILD that I used successfully to build my kernel packages:
+
+https://remotehost.online/linux-6.17.4/debug2/PKGBUILD.fixed
+
+The only difference is that I've commented out the two patches from your patch set, and removed the corresponding sha256 sums.
+
+
+Regards
+Pascal
 
