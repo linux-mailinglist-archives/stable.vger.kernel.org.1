@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-188823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B4ABF8AB8
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:14:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75448BF8A76
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:12:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7646019C514F
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:14:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 66C294EF220
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742D227F756;
-	Tue, 21 Oct 2025 20:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA5627990A;
+	Tue, 21 Oct 2025 20:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/TIVxML"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxUMR+qI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA7627F4C7;
-	Tue, 21 Oct 2025 20:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FDE27587D;
+	Tue, 21 Oct 2025 20:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077635; cv=none; b=gPL2L3kEkLUBVuqfTEsSZnYDwNSF2GGZtJC1GQn5E1V+ZBoZk1axkCaC3S+uBj0zM6CAl9g4WFBM0wxNtpC9VTqENTTkhycJUJIRk/+RX/NKhPaw4vUZI4vlta6NEuKvguG09red1R6oV22AjrM/gnHaBqhDPrjkk9KmAzc/Hy4=
+	t=1761077556; cv=none; b=Q2e9QV0xF2/eXX1gO5Xls2V6ugD5a2lRfqQKi2b89mQh3YbmdLhzH7T9qCyD1TasGuugJsqC2PHnYyUliAzEjjR86zUSWSaIFV16qpSzLBfqu4yX11BjWkpg6uvz1II42ebSVjuIScXzW4UI2mBxPkF2vzEA8H9JbIIRtu0gg+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077635; c=relaxed/simple;
-	bh=O8dWSTn431VsNX6X1FdabULmrDdj5bezi4KvNj0z31o=;
+	s=arc-20240116; t=1761077556; c=relaxed/simple;
+	bh=DTHAwZgnoji2Chc4Uo2M/bGwusP821c0IX+pS5JsfqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLH+2HneBPFiuDlOn3ehQ5YNeUGAMt5X/9/Foj9R8wDstc7P0N9dE9QBieaqAXcl1YIUV73eJ2amBmyAIw/5vOmqhEQAukuA5WCVcwp5JW4Zz8xpazCBjtvSkje1dBVWDDZMwfITk/fzlYFKVFIf3+hcEqkZuuCZKAea/bkbWFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/TIVxML; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925FEC4CEF1;
-	Tue, 21 Oct 2025 20:13:54 +0000 (UTC)
+	 MIME-Version; b=STyg1pw3wPDyHlWt9ZnyVKlYSqPedeRn0sT96jMYUFw4S4YlRGiYO7yrTBryGMKJnT4JIV46PNVbO7ezyO63n6eIhMR0uN9QQCj/6JJx9IxWsJqyv4zdGzvAzs4wPn5tl9UyI4VMkRY2osk8TFZNGlnce2WhOhavHpjqeWyDSjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxUMR+qI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D6AC4CEF1;
+	Tue, 21 Oct 2025 20:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077635;
-	bh=O8dWSTn431VsNX6X1FdabULmrDdj5bezi4KvNj0z31o=;
+	s=korg; t=1761077556;
+	bh=DTHAwZgnoji2Chc4Uo2M/bGwusP821c0IX+pS5JsfqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/TIVxMLJP9pzmAdtmgVG4H98Q/6Sudogc7RQ3PgAUqLXMNQf3uUisjkQDOxgTpk4
-	 OZQgdfGMsmE7kQhjsJrHHR15PZqSV2vbNolv0qyLVlWm/sxP9Jwg0nHleX3LLqxGXB
-	 c3GVvPAGOzmu8p6zpXoUj5RWLvzRlMGFeJ+8rkM0=
+	b=UxUMR+qI7QQ+aML0VkCAYujpGRqqTYLkI8K3leORRO5WiMkYrSjobTb2jp4BPsNZI
+	 X3xpc3kzsmgbs+in0Hg68kcpEf9rbV+wGqAI3soy29S0WnbGwSWIq5QbOMAKAJ8vt7
+	 AuTj497GyoWejxIf/jCegUkw6H2J1RAUUkpUwkno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 142/159] xfs: fix log CRC mismatches between i386 and other architectures
-Date: Tue, 21 Oct 2025 21:51:59 +0200
-Message-ID: <20251021195046.563941329@linuxfoundation.org>
+Subject: [PATCH 6.17 143/159] NFSD: Rework encoding and decoding of nfsd4_deviceid
+Date: Tue, 21 Oct 2025 21:52:00 +0200
+Message-ID: <20251021195046.601288442@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
 References: <20251021195043.182511864@linuxfoundation.org>
@@ -66,170 +66,154 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit e747883c7d7306acb4d683038d881528fbfbe749 ]
+[ Upstream commit 832738e4b325b742940761e10487403f9aad13e8 ]
 
-When mounting file systems with a log that was dirtied on i386 on
-other architectures or vice versa, log recovery is unhappy:
+Compilers may optimize the layout of C structures, so we should not rely
+on sizeof struct and memcpy to encode and decode XDR structures. The byte
+order of the fields should also be taken into account.
 
-[   11.068052] XFS (vdb): Torn write (CRC failure) detected at log block 0x2. Truncating head block from 0xc.
+This patch adds the correct functions to handle the deviceid4 structure
+and removes the pad field, which is currently not used by NFSD, from the
+runtime state. The server's byte order is preserved because the deviceid4
+blob on the wire is only used as a cookie by the client.
 
-This is because the CRCs generated by i386 and other architectures
-always diff.  The reason for that is that sizeof(struct xlog_rec_header)
-returns different values for i386 vs the rest (324 vs 328), because the
-struct is not sizeof(uint64_t) aligned, and i386 has odd struct size
-alignment rules.
-
-This issue goes back to commit 13cdc853c519 ("Add log versioning, and new
-super block field for the log stripe") in the xfs-import tree, which
-adds log v2 support and the h_size field that causes the unaligned size.
-At that time it only mattered for the crude debug only log header
-checksum, but with commit 0e446be44806 ("xfs: add CRC checks to the log")
-it became a real issue for v5 file system, because now there is a proper
-CRC, and regular builds actually expect it match.
-
-Fix this by allowing checksums with and without the padding.
-
-Fixes: 0e446be44806 ("xfs: add CRC checks to the log")
-Cc: <stable@vger.kernel.org> # v3.8
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: d68886bae76a ("NFSD: Fix last write offset handling in layoutcommit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_log_format.h |   30 +++++++++++++++++++++++++++++-
- fs/xfs/libxfs/xfs_ondisk.h     |    2 ++
- fs/xfs/xfs_log.c               |    8 ++++----
- fs/xfs/xfs_log_priv.h          |    4 ++--
- fs/xfs/xfs_log_recover.c       |   19 +++++++++++++++++--
- 5 files changed, 54 insertions(+), 9 deletions(-)
+ fs/nfsd/blocklayoutxdr.c    |    7 ++-----
+ fs/nfsd/flexfilelayoutxdr.c |    3 +--
+ fs/nfsd/nfs4layouts.c       |    1 -
+ fs/nfsd/nfs4xdr.c           |   14 +-------------
+ fs/nfsd/xdr4.h              |   36 +++++++++++++++++++++++++++++++++++-
+ 5 files changed, 39 insertions(+), 22 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_log_format.h
-+++ b/fs/xfs/libxfs/xfs_log_format.h
-@@ -174,12 +174,40 @@ typedef struct xlog_rec_header {
- 	__be32	  h_prev_block; /* block number to previous LR		:  4 */
- 	__be32	  h_num_logops;	/* number of log operations in this LR	:  4 */
- 	__be32	  h_cycle_data[XLOG_HEADER_CYCLE_SIZE / BBSIZE];
--	/* new fields */
+--- a/fs/nfsd/blocklayoutxdr.c
++++ b/fs/nfsd/blocklayoutxdr.c
+@@ -29,8 +29,7 @@ nfsd4_block_encode_layoutget(struct xdr_
+ 	*p++ = cpu_to_be32(len);
+ 	*p++ = cpu_to_be32(1);		/* we always return a single extent */
+ 
+-	p = xdr_encode_opaque_fixed(p, &b->vol_id,
+-			sizeof(struct nfsd4_deviceid));
++	p = svcxdr_encode_deviceid4(p, &b->vol_id);
+ 	p = xdr_encode_hyper(p, b->foff);
+ 	p = xdr_encode_hyper(p, b->len);
+ 	p = xdr_encode_hyper(p, b->soff);
+@@ -156,9 +155,7 @@ nfsd4_block_decode_layoutupdate(__be32 *
+ 	for (i = 0; i < nr_iomaps; i++) {
+ 		struct pnfs_block_extent bex;
+ 
+-		memcpy(&bex.vol_id, p, sizeof(struct nfsd4_deviceid));
+-		p += XDR_QUADLEN(sizeof(struct nfsd4_deviceid));
+-
++		p = svcxdr_decode_deviceid4(p, &bex.vol_id);
+ 		p = xdr_decode_hyper(p, &bex.foff);
+ 		if (bex.foff & (block_size - 1)) {
+ 			goto fail;
+--- a/fs/nfsd/flexfilelayoutxdr.c
++++ b/fs/nfsd/flexfilelayoutxdr.c
+@@ -54,8 +54,7 @@ nfsd4_ff_encode_layoutget(struct xdr_str
+ 	*p++ = cpu_to_be32(1);			/* single mirror */
+ 	*p++ = cpu_to_be32(1);			/* single data server */
+ 
+-	p = xdr_encode_opaque_fixed(p, &fl->deviceid,
+-			sizeof(struct nfsd4_deviceid));
++	p = svcxdr_encode_deviceid4(p, &fl->deviceid);
+ 
+ 	*p++ = cpu_to_be32(1);			/* efficiency */
+ 
+--- a/fs/nfsd/nfs4layouts.c
++++ b/fs/nfsd/nfs4layouts.c
+@@ -120,7 +120,6 @@ nfsd4_set_deviceid(struct nfsd4_deviceid
+ 
+ 	id->fsid_idx = fhp->fh_export->ex_devid_map->idx;
+ 	id->generation = device_generation;
+-	id->pad = 0;
+ 	return 0;
+ }
+ 
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -588,18 +588,6 @@ nfsd4_decode_state_owner4(struct nfsd4_c
+ }
+ 
+ #ifdef CONFIG_NFSD_PNFS
+-static __be32
+-nfsd4_decode_deviceid4(struct nfsd4_compoundargs *argp,
+-		       struct nfsd4_deviceid *devid)
+-{
+-	__be32 *p;
+-
+-	p = xdr_inline_decode(argp->xdr, NFS4_DEVICEID4_SIZE);
+-	if (!p)
+-		return nfserr_bad_xdr;
+-	memcpy(devid, p, sizeof(*devid));
+-	return nfs_ok;
+-}
+ 
+ static __be32
+ nfsd4_decode_layoutupdate4(struct nfsd4_compoundargs *argp,
+@@ -1784,7 +1772,7 @@ nfsd4_decode_getdeviceinfo(struct nfsd4_
+ 	__be32 status;
+ 
+ 	memset(gdev, 0, sizeof(*gdev));
+-	status = nfsd4_decode_deviceid4(argp, &gdev->gd_devid);
++	status = nfsd4_decode_deviceid4(argp->xdr, &gdev->gd_devid);
+ 	if (status)
+ 		return status;
+ 	if (xdr_stream_decode_u32(argp->xdr, &gdev->gd_layout_type) < 0)
+--- a/fs/nfsd/xdr4.h
++++ b/fs/nfsd/xdr4.h
+@@ -595,9 +595,43 @@ struct nfsd4_reclaim_complete {
+ struct nfsd4_deviceid {
+ 	u64			fsid_idx;
+ 	u32			generation;
+-	u32			pad;
+ };
+ 
++static inline __be32 *
++svcxdr_encode_deviceid4(__be32 *p, const struct nfsd4_deviceid *devid)
++{
++	__be64 *q = (__be64 *)p;
 +
-+	/* fields added by the Linux port: */
- 	__be32    h_fmt;        /* format of log record                 :  4 */
- 	uuid_t	  h_fs_uuid;    /* uuid of FS                           : 16 */
++	*q = (__force __be64)devid->fsid_idx;
++	p += 2;
++	*p++ = (__force __be32)devid->generation;
++	*p++ = xdr_zero;
++	return p;
++}
 +
-+	/* fields added for log v2: */
- 	__be32	  h_size;	/* iclog size				:  4 */
++static inline __be32 *
++svcxdr_decode_deviceid4(__be32 *p, struct nfsd4_deviceid *devid)
++{
++	__be64 *q = (__be64 *)p;
 +
-+	/*
-+	 * When h_size added for log v2 support, it caused structure to have
-+	 * a different size on i386 vs all other architectures because the
-+	 * sum of the size ofthe  member is not aligned by that of the largest
-+	 * __be64-sized member, and i386 has really odd struct alignment rules.
-+	 *
-+	 * Due to the way the log headers are placed out on-disk that alone is
-+	 * not a problem becaue the xlog_rec_header always sits alone in a
-+	 * BBSIZEs area, and the rest of that area is padded with zeroes.
-+	 * But xlog_cksum used to calculate the checksum based on the structure
-+	 * size, and thus gives different checksums for i386 vs the rest.
-+	 * We now do two checksum validation passes for both sizes to allow
-+	 * moving v5 file systems with unclean logs between i386 and other
-+	 * (little-endian) architectures.
-+	 */
-+	__u32	  h_pad0;
- } xlog_rec_header_t;
- 
-+#ifdef __i386__
-+#define XLOG_REC_SIZE		offsetofend(struct xlog_rec_header, h_size)
-+#define XLOG_REC_SIZE_OTHER	sizeof(struct xlog_rec_header)
-+#else
-+#define XLOG_REC_SIZE		sizeof(struct xlog_rec_header)
-+#define XLOG_REC_SIZE_OTHER	offsetofend(struct xlog_rec_header, h_size)
-+#endif /* __i386__ */
++	devid->fsid_idx = (__force u64)(*q);
++	p += 2;
++	devid->generation = (__force u32)(*p++);
++	p++; /* NFSD does not use the remaining octets */
++	return p;
++}
 +
- typedef struct xlog_rec_ext_header {
- 	__be32	  xh_cycle;	/* write cycle of log			: 4 */
- 	__be32	  xh_cycle_data[XLOG_HEADER_CYCLE_SIZE / BBSIZE]; /*	: 256 */
---- a/fs/xfs/libxfs/xfs_ondisk.h
-+++ b/fs/xfs/libxfs/xfs_ondisk.h
-@@ -174,6 +174,8 @@ xfs_check_ondisk_structs(void)
- 	XFS_CHECK_STRUCT_SIZE(struct xfs_rud_log_format,	16);
- 	XFS_CHECK_STRUCT_SIZE(struct xfs_map_extent,		32);
- 	XFS_CHECK_STRUCT_SIZE(struct xfs_phys_extent,		16);
-+	XFS_CHECK_STRUCT_SIZE(struct xlog_rec_header,		328);
-+	XFS_CHECK_STRUCT_SIZE(struct xlog_rec_ext_header,	260);
- 
- 	XFS_CHECK_OFFSET(struct xfs_bui_log_format, bui_extents,	16);
- 	XFS_CHECK_OFFSET(struct xfs_cui_log_format, cui_extents,	16);
---- a/fs/xfs/xfs_log.c
-+++ b/fs/xfs/xfs_log.c
-@@ -1568,13 +1568,13 @@ xlog_cksum(
- 	struct xlog		*log,
- 	struct xlog_rec_header	*rhead,
- 	char			*dp,
--	int			size)
-+	unsigned int		hdrsize,
-+	unsigned int		size)
- {
- 	uint32_t		crc;
- 
- 	/* first generate the crc for the record header ... */
--	crc = xfs_start_cksum_update((char *)rhead,
--			      sizeof(struct xlog_rec_header),
-+	crc = xfs_start_cksum_update((char *)rhead, hdrsize,
- 			      offsetof(struct xlog_rec_header, h_crc));
- 
- 	/* ... then for additional cycle data for v2 logs ... */
-@@ -1818,7 +1818,7 @@ xlog_sync(
- 
- 	/* calculcate the checksum */
- 	iclog->ic_header.h_crc = xlog_cksum(log, &iclog->ic_header,
--					    iclog->ic_datap, size);
-+			iclog->ic_datap, XLOG_REC_SIZE, size);
- 	/*
- 	 * Intentionally corrupt the log record CRC based on the error injection
- 	 * frequency, if defined. This facilitates testing log recovery in the
---- a/fs/xfs/xfs_log_priv.h
-+++ b/fs/xfs/xfs_log_priv.h
-@@ -499,8 +499,8 @@ xlog_recover_finish(
- extern void
- xlog_recover_cancel(struct xlog *);
- 
--extern __le32	 xlog_cksum(struct xlog *log, struct xlog_rec_header *rhead,
--			    char *dp, int size);
-+__le32	 xlog_cksum(struct xlog *log, struct xlog_rec_header *rhead,
-+		char *dp, unsigned int hdrsize, unsigned int size);
- 
- extern struct kmem_cache *xfs_log_ticket_cache;
- struct xlog_ticket *xlog_ticket_alloc(struct xlog *log, int unit_bytes,
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2894,9 +2894,24 @@ xlog_recover_process(
- 	int			pass,
- 	struct list_head	*buffer_list)
- {
--	__le32			expected_crc = rhead->h_crc, crc;
-+	__le32			expected_crc = rhead->h_crc, crc, other_crc;
- 
--	crc = xlog_cksum(log, rhead, dp, be32_to_cpu(rhead->h_len));
-+	crc = xlog_cksum(log, rhead, dp, XLOG_REC_SIZE,
-+			be32_to_cpu(rhead->h_len));
++static inline __be32
++nfsd4_decode_deviceid4(struct xdr_stream *xdr, struct nfsd4_deviceid *devid)
++{
++	__be32 *p = xdr_inline_decode(xdr, NFS4_DEVICEID4_SIZE);
 +
-+	/*
-+	 * Look at the end of the struct xlog_rec_header definition in
-+	 * xfs_log_format.h for the glory details.
-+	 */
-+	if (expected_crc && crc != expected_crc) {
-+		other_crc = xlog_cksum(log, rhead, dp, XLOG_REC_SIZE_OTHER,
-+				be32_to_cpu(rhead->h_len));
-+		if (other_crc == expected_crc) {
-+			xfs_notice_once(log->l_mp,
-+	"Fixing up incorrect CRC due to padding.");
-+			crc = other_crc;
-+		}
-+	}
- 
- 	/*
- 	 * Nothing else to do if this is a CRC verification pass. Just return
++	if (unlikely(!p))
++		return nfserr_bad_xdr;
++	svcxdr_decode_deviceid4(p, devid);
++	return nfs_ok;
++}
++
+ struct nfsd4_layout_seg {
+ 	u32			iomode;
+ 	u64			offset;
 
 
 
