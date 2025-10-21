@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-188649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B03BF8866
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:05:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76537BF8869
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:05:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7C76C4FBE43
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A41B19C4D63
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1261A00CE;
-	Tue, 21 Oct 2025 20:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F2824A047;
+	Tue, 21 Oct 2025 20:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvPqTl/Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1vL1xYA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14767350A0D;
-	Tue, 21 Oct 2025 20:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB78350A0D;
+	Tue, 21 Oct 2025 20:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077079; cv=none; b=a9nJPIO3H4sJQmvL67JMDv1/44Ika72v9g077/9GyeTMJU4s3q7z8Zvd7HbLj8U0GR5E1V8pMCYqtQCeMXAqEUmals1qapRA1NNvtxGoZOUt/5V/hlGVOBlv4xA47EBBYL62Lsi8G+/95xXQVEOfOCu/aQhMVdqQuAeth9UAkcc=
+	t=1761077101; cv=none; b=TZqHqM9f+HsN6lpsZrEXAwi44jyfDTXmYO6m5JS4f/IzR8gAt2mfAHPpvAM2LNg6jtZNcmygDI8Q75IbGus+E7tzh81qLp7zE2a7XNoB7yNzhbbAID6BoOeNvSVExXml0StkIT/AkNrjDf/6dooPqzvprU3jlCUQdcspiCJ5U8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077079; c=relaxed/simple;
-	bh=/hUFGAC0TVC/geyMV5dQoEvVDt3I9zRlXX5YZiCFtYk=;
+	s=arc-20240116; t=1761077101; c=relaxed/simple;
+	bh=v/Jd0ldGGXOJF4/NF2KylgVaju5R7aK61hatNUlWQHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fXcQNkhg/d2yYQ+YO86lYgNfhB5H78dGZ4J6eI2Rfq8n8diAUIckws7zQAwWTQ1RJW2MAFdBwAdU3akdKWyuTZc+TMuQrjuP4orIgfCjbP7Lyna0auZ2EVE6Mt+KjSm3o78E+0yFRJcpLPZ5ThK4O94Yi94M+dqj6VGAAbWcTSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvPqTl/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933CBC4CEF1;
-	Tue, 21 Oct 2025 20:04:38 +0000 (UTC)
+	 MIME-Version; b=nwrsxDJa1clImE5l6GxCRMrXd4+gTCKnsSVTb7PlCbFhkYjszleomhXupuAla97RO1yPxdqo+mijldemXtudFarlFZnOKt6C1H0MXwcV1C60uR8/wM1/nVrOz8SuUU9TmdmZp5AlX053EAAodbnjCEU2KZ0hD6nPchqrXZYQqbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1vL1xYA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D17C4CEF1;
+	Tue, 21 Oct 2025 20:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077079;
-	bh=/hUFGAC0TVC/geyMV5dQoEvVDt3I9zRlXX5YZiCFtYk=;
+	s=korg; t=1761077101;
+	bh=v/Jd0ldGGXOJF4/NF2KylgVaju5R7aK61hatNUlWQHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dvPqTl/QILro9agpEN3DOhHgf2c6GySaB3lcIoYnG7NRVgifIeb1WPt91RvOuwB36
-	 0AQJzU6Sw9Yl4TnSRXOAQ2lLu70dZC+ggFxWlvhFWwXKiB8EZdc/pryl3ZF1n84JL1
-	 VGPE7y9KUGukrpSHzJTOTlGjoxxef2AQHedxkWbQ=
+	b=s1vL1xYADkmQxS9sFqheeYtM+3QPMt50gBi57hNq+8IhvEOaQSa9u+F8k6IH1LvSD
+	 1hhPTAC5GtWWO4uYDwApxe8tsrRHAa9ed+J218DvRkV9kO1535X9PCjT+gbh27vTvd
+	 Ufui+pctirlAj6BFsfev1eFah+E4o+K0kYKF7FcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 128/136] mptcp: Call dst_release() in mptcp_active_enable().
-Date: Tue, 21 Oct 2025 21:51:56 +0200
-Message-ID: <20251021195039.062650307@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH 6.12 134/136] arm64: cputype: Add Neoverse-V3AE definitions
+Date: Tue, 21 Oct 2025 21:52:02 +0200
+Message-ID: <20251021195039.212974101@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
 References: <20251021195035.953989698@linuxfoundation.org>
@@ -68,40 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 108a86c71c93ff28087994e6107bc99ebe336629 ]
+commit 3bbf004c4808e2c3241e5c1ad6cc102f38a03c39 upstream.
 
-mptcp_active_enable() calls sk_dst_get(), which returns dst with its
-refcount bumped, but forgot dst_release().
+Add cputype definitions for Neoverse-V3AE. These will be used for errata
+detection in subsequent patches.
 
-Let's add missing dst_release().
+These values can be found in the Neoverse-V3AE TRM:
 
-Cc: stable@vger.kernel.org
-Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250916214758.650211-7-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 833d4313bc1e ("mptcp: reset blackhole on success with non-loopback ifaces")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  https://developer.arm.com/documentation/SDEN-2615521/9-0/
+
+... in section A.6.1 ("MIDR_EL1, Main ID Register").
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/ctrl.c |    2 ++
+ arch/arm64/include/asm/cputype.h |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/net/mptcp/ctrl.c
-+++ b/net/mptcp/ctrl.c
-@@ -385,6 +385,8 @@ void mptcp_active_enable(struct sock *sk
- 
- 		if (dst && dst->dev && (dst->dev->flags & IFF_LOOPBACK))
- 			atomic_set(&pernet->active_disable_times, 0);
-+
-+		dst_release(dst);
- 	}
- }
- 
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -93,6 +93,7 @@
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
++#define ARM_CPU_PART_NEOVERSE_V3AE	0xD83
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+ #define ARM_CPU_PART_CORTEX_X925	0xD85
+ #define ARM_CPU_PART_CORTEX_A725	0xD87
+@@ -180,6 +181,7 @@
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
++#define MIDR_NEOVERSE_V3AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3AE)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+ #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
 
 
 
