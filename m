@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-188607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4748BF8800
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:03:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0B5BF85EB
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D90F582396
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D68F19C38F7
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81BE275B1A;
-	Tue, 21 Oct 2025 20:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F7D27381E;
+	Tue, 21 Oct 2025 19:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNMxsFkO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZ+Xcge9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8411C350A3C;
-	Tue, 21 Oct 2025 20:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C7F26F292;
+	Tue, 21 Oct 2025 19:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076945; cv=none; b=FYou8J4/7+BuN8lA2uir6YtViWTzUgdNM+4xaG7ImUrCXXKmA6VGELzaEMYJspYPL1zYrVrpa22A3EIsoxX06XGT43tkgvhH7VItU1zH5txJf+eD2B0/Lsw65Hmno3vBOIQqMVir1fLv/7NI5x/zzMuGot6/vUuHsdwgSbyk9BA=
+	t=1761076533; cv=none; b=EFhSYiNrsx/ZjeGQhld+O8JmCaC4zyqGrlU6V1K/LIS7Qk96+Pr2MTw3k3TWnrbOhqCppkyyawNVYJa4fhAcPwbxACYV8t0QW4rI44rKW4/NZexA/UYjaK6HTVm+WUujF4egEfxbBEPzZkS4GmVbRtIP5YfW7Z/DDVfKDf+03Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076945; c=relaxed/simple;
-	bh=ndB22XhyFUgpeuX/Rfwlm9jd5t2Z6albEYNLoeMmplk=;
+	s=arc-20240116; t=1761076533; c=relaxed/simple;
+	bh=Q8+d9nzzCOa1zHnanRVDVB3a0X97Aqux6VPILTyPB2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idWs2sGVTHbVzkAXek7nt+N3HWp8WtPGkQMbKlklN6UDlc9DK2UgGnv1cHCk132+t7plUHPAY3K19IcCFhbasmYgV8kuirzjWXg3xi8LcGY41A0H6a+2aAjTfbAVfa0xu4lIhcl/ir4iebOvE7ZNNmSNhIkaQThYlUE6YAOciXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNMxsFkO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A79DC4CEF1;
-	Tue, 21 Oct 2025 20:02:24 +0000 (UTC)
+	 MIME-Version; b=nxo2XqsV45BV0M6zdParjB4WoiptTI52aZu0HF3YPuncstxGLwPEmgnM/jEo4V8PTv/WOclo88Idhn5THiM2NTU4ovPISpcCZB3oOz9p72UVbXTRaF7IJ7SUVERGTGSB51aLOvaM31HRWUs1/INZ/zlML5NosQitCysnK5s4JW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZ+Xcge9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5121C4CEF1;
+	Tue, 21 Oct 2025 19:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076945;
-	bh=ndB22XhyFUgpeuX/Rfwlm9jd5t2Z6albEYNLoeMmplk=;
+	s=korg; t=1761076533;
+	bh=Q8+d9nzzCOa1zHnanRVDVB3a0X97Aqux6VPILTyPB2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yNMxsFkO9LMvQHl7OULxdqagBcV+b7In91hevGvJ0wPi/6Ym/9oTNpGo9lY5EORUP
-	 /S8z3AFRU01+8uR638TENEm99Z+AjMmXaqskjz3EuMmS3jIErwT0DM7EI37tltBDHG
-	 vmlKBKf1/ZGTTU9ZzPz5H1DS3RmQPT2AKW1gs3bM=
+	b=VZ+Xcge9kOGsstOxA2zuL3lkh0WpcRF2wm48Cse+gpP8/V8ho4lNfgD3SB0eEbLwu
+	 dHN4YZ/jXakCKIGVbLK9yzhZZTpOWTHtYE/Je5SuzkgSA0u+LU3vCHJrZUdROKDdMz
+	 M/AbSkQB/2Ncq+3D/rxdbyxrFdRt71arJfGWrK9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
 	Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/136] accel/qaic: Treat remaining == 0 as error in find_and_map_user_pages()
-Date: Tue, 21 Oct 2025 21:51:13 +0200
-Message-ID: <20251021195038.007797659@linuxfoundation.org>
+Subject: [PATCH 6.6 065/105] accel/qaic: Treat remaining == 0 as error in find_and_map_user_pages()
+Date: Tue, 21 Oct 2025 21:51:14 +0200
+Message-ID: <20251021195023.211289832@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -96,7 +96,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/accel/qaic/qaic_control.c b/drivers/accel/qaic/qaic_control.c
-index d8bdab69f8009..b86a8e48e731b 100644
+index f3db3fa91dd52..08b78f5678532 100644
 --- a/drivers/accel/qaic/qaic_control.c
 +++ b/drivers/accel/qaic/qaic_control.c
 @@ -407,7 +407,7 @@ static int find_and_map_user_pages(struct qaic_device *qdev,
