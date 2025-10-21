@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-188606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8551BF87A6
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843A9BF85E2
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 952304E2F4F
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F215466B2B
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C762701B6;
-	Tue, 21 Oct 2025 20:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30CD2741A6;
+	Tue, 21 Oct 2025 19:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwC99rPn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbByn0LZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1879258EDF;
-	Tue, 21 Oct 2025 20:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2962737E7;
+	Tue, 21 Oct 2025 19:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076942; cv=none; b=B9il85F+jonWGC90ipcFC+IBDewHft1YZoHVAundEz6PGdfmsJDsNY/OOhEQ/fy/usyOaizo+8HNB8Z2e0g3ZpcHxKIWkhoJhSQgbALhXAAIAfjVqhUZySmSxu8pqPDPIU5/hZojzscNRcLDIl7PQKueDdewJ7CJnXulKZD1x3Y=
+	t=1761076527; cv=none; b=Lxgj3gchB2+mxKMMzDUS25qgsZ30/vWgz3Ow5vzjl5EouWR0G0Ex/p7/pdCHadiUnw4bLI1I7wPxG4IWiayljn2ad1Z2BszobGrniv1J/p5ypZlL/hgK+JW7Orj2S+5hZLhRjy6HZc24TwT6lbLg8qorT8J+8KShVy9KnrxYz6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076942; c=relaxed/simple;
-	bh=es6Ag6khfp4m9CWJamkrc+o5uPlVFhLCvcpejNHRDwA=;
+	s=arc-20240116; t=1761076527; c=relaxed/simple;
+	bh=Qck5tU6vRhpGgfQyEP1g75413NdbiWvS9SlOzL5cqpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sk4yzD8EI+9v6OtIXJ8sg1UBsj0Y5QPCYMgUWSq5OVfCKzLIrR4ZcxILRsNO3e+UiVv/DvHjTo3wOeziq2HDVMEsEmx7NKAiL8gt7mVj90+/5HqobT2xbXvixIQi1zRm/wf3HYUOSO5kuZau+iuu+oc1cRheh19tJqeN5XfniSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwC99rPn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E20CC4CEF1;
-	Tue, 21 Oct 2025 20:02:22 +0000 (UTC)
+	 MIME-Version; b=XvAGl8JeatNDOnkiLL9GaB9SZAsgi5DLWMhdZw8rlLX7oDmixvVNP6G6hFcLOGH4evkrAaISVxLAZ5p4Ae+2P7ptqmjwaN7IrUgzw/TfNMWSHghbeZyG7FOR+7RZBHnIfz35FDwXU/LIdmpDcfs8fP4qTZQit99aheZjvO2m0Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbByn0LZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F101C4CEF1;
+	Tue, 21 Oct 2025 19:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076942;
-	bh=es6Ag6khfp4m9CWJamkrc+o5uPlVFhLCvcpejNHRDwA=;
+	s=korg; t=1761076527;
+	bh=Qck5tU6vRhpGgfQyEP1g75413NdbiWvS9SlOzL5cqpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CwC99rPnC6hxDpBNwZeFfR/YFE9S4rFnp4JmHOlHiQVGeJHUpW7aCeY4nCRE3qIc4
-	 8oYh8Lb53D5RN2vfSCYZBReTjd6XOf7DZFN1FdRThBD5l/xcnQQk3CER6F1eW+homf
-	 bstc1ZABxpYZGs10j+BjK/gt2VTdkW72myBoAG8U=
+	b=cbByn0LZ6DNqapT2mwPIM+B72eIkIu5IR49ulbPzdsaunW0czPeMP4/SvxL8JCjLb
+	 HCQpvUwz7AvzSWaCW2PnMWtt5JgN2H/GXYEFUxJEjWzlmJ/EQ5N/6Eh1PlYeSHrys1
+	 hy8wRkvl/WoUNM/utNz0LE9RBr4G3nkIMErNmDxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/136] accel/qaic: Fix bootlog initialization ordering
+Subject: [PATCH 6.6 063/105] sched/fair: Fix pelt lost idle time detection
 Date: Tue, 21 Oct 2025 21:51:12 +0200
-Message-ID: <20251021195037.983870167@linuxfoundation.org>
+Message-ID: <20251021195023.166709232@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-[ Upstream commit fd6e385528d8f85993b7bfc6430576136bb14c65 ]
+[ Upstream commit 17e3e88ed0b6318fde0d1c14df1a804711cab1b5 ]
 
-As soon as we queue MHI buffers to receive the bootlog from the device,
-we could be receiving data. Therefore all the resources needed to
-process that data need to be setup prior to queuing the buffers.
+The check for some lost idle pelt time should be always done when
+pick_next_task_fair() fails to pick a task and not only when we call it
+from the fair fast-path.
 
-We currently initialize some of the resources after queuing the buffers
-which creates a race between the probe() and any data that comes back
-from the device. If the uninitialized resources are accessed, we could
-see page faults.
+The case happens when the last running task on rq is a RT or DL task. When
+the latter goes to sleep and the /Sum of util_sum of the rq is at the max
+value, we don't account the lost of idle time whereas we should.
 
-Fix the init ordering to close the race.
-
-Fixes: 5f8df5c6def6 ("accel/qaic: Add bootlog debugfs")
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Reviewed-by: Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>
-Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251007115750.332169-1-youssef.abdulrahman@oss.qualcomm.com
+Fixes: 67692435c411 ("sched: Rework pick_next_task() slow-path")
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/qaic/qaic_debugfs.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/accel/qaic/qaic_debugfs.c b/drivers/accel/qaic/qaic_debugfs.c
-index 20b653d99e524..5ed49daaf541f 100644
---- a/drivers/accel/qaic/qaic_debugfs.c
-+++ b/drivers/accel/qaic/qaic_debugfs.c
-@@ -251,6 +251,9 @@ static int qaic_bootlog_mhi_probe(struct mhi_device *mhi_dev, const struct mhi_d
- 	if (ret)
- 		goto destroy_workqueue;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 84d5caf6230f6..58231999d929e 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8528,21 +8528,21 @@ done: __maybe_unused;
+ 	return p;
  
-+	dev_set_drvdata(&mhi_dev->dev, qdev);
-+	qdev->bootlog_ch = mhi_dev;
-+
- 	for (i = 0; i < BOOTLOG_POOL_SIZE; i++) {
- 		msg = devm_kzalloc(&qdev->pdev->dev, sizeof(*msg), GFP_KERNEL);
- 		if (!msg) {
-@@ -266,8 +269,6 @@ static int qaic_bootlog_mhi_probe(struct mhi_device *mhi_dev, const struct mhi_d
- 			goto mhi_unprepare;
- 	}
+ idle:
+-	if (!rf)
+-		return NULL;
+-
+-	new_tasks = sched_balance_newidle(rq, rf);
++	if (rf) {
++		new_tasks = sched_balance_newidle(rq, rf);
  
--	dev_set_drvdata(&mhi_dev->dev, qdev);
--	qdev->bootlog_ch = mhi_dev;
- 	return 0;
+-	/*
+-	 * Because sched_balance_newidle() releases (and re-acquires) rq->lock, it is
+-	 * possible for any higher priority task to appear. In that case we
+-	 * must re-start the pick_next_entity() loop.
+-	 */
+-	if (new_tasks < 0)
+-		return RETRY_TASK;
++		/*
++		 * Because sched_balance_newidle() releases (and re-acquires)
++		 * rq->lock, it is possible for any higher priority task to
++		 * appear. In that case we must re-start the pick_next_entity()
++		 * loop.
++		 */
++		if (new_tasks < 0)
++			return RETRY_TASK;
  
- mhi_unprepare:
+-	if (new_tasks > 0)
+-		goto again;
++		if (new_tasks > 0)
++			goto again;
++	}
+ 
+ 	/*
+ 	 * rq is about to be idle, check if we need to update the
 -- 
 2.51.0
 
