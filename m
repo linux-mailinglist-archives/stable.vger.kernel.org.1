@@ -1,136 +1,107 @@
-Return-Path: <stable+bounces-188416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2B1BF8333
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:10:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C0ABF83B2
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BA6F3A600E
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:10:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 458033A428A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E2D34A772;
-	Tue, 21 Oct 2025 19:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C509934A3A8;
+	Tue, 21 Oct 2025 19:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u2I3Kyuk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHG6pFSo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4729B34D925;
-	Tue, 21 Oct 2025 19:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C9A338903
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 19:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761073807; cv=none; b=suehChYkdB/QKNSUpZdOqykmHJKB+FIXRRWwC3ZXfsaI7W4ql15zjv6G2T5lf5+DdYdq3THy+g/j+FvhQ6HWAQTK0TVd4G8eKl240KmsZeoe6Fct2d1CKQc4VjJadbT5IsQkLsoiVF2V9ZljBO+/PvC8+SD+T/CFvwDCfAKvY+8=
+	t=1761074548; cv=none; b=Rc3yJgUqdD/WrMH/1hWixnpxh/5c7orY00b/4C/i4/eqG7vsh6WFZeKSNL5om9CovK8li5jupFl3hHzT1V9O4Enl6lIXSog1jaVQESePyiIGbmc+qlZi2W/eUa13O2ujkaWZva2l8InLaDbIP+xDclht5/1PASLsl9w/RHLLdS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761073807; c=relaxed/simple;
-	bh=OlM+hp5liynWD7x8TgYwNOV4Zf2KLGwQL6h+7jLysUk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=eXatPtyRHel9UpdLRI/pgkTAYBg7aITLqxcqDlRMkXbpKmk7vmzAwgC+k6AWH5kMw2Dk8ToD92wxnkIvpKWkPbsetHbQeKL/2/WMkgt95O2upWRSFW4qoP6I4b+JpSUCNEKCOIinLvXoiNj59l7m//fLFdMaaHij23xZBGYOy2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u2I3Kyuk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91784C4CEF1;
-	Tue, 21 Oct 2025 19:10:05 +0000 (UTC)
+	s=arc-20240116; t=1761074548; c=relaxed/simple;
+	bh=lYiLOSIv41E66nSgKgtX032B2kkuG+mtkwEQCSxWM3c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N3SbZU3nanslhVCXXl9Vc8QqRN2InMLp9Nm3Y3E1hWcTdo6GR41ARIfNvm+X69d6v11TfWI3G45TyLCFFA1iqdurAt7j0xy2b+VXWi4uONF69W7lCZ9NLhAeMye74y9M0k0L5Ux7CCMF8oEQmlpF7FK4KphH1LkiUPAPtF4h8BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHG6pFSo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65764C4CEF1;
+	Tue, 21 Oct 2025 19:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761073805;
-	bh=OlM+hp5liynWD7x8TgYwNOV4Zf2KLGwQL6h+7jLysUk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=u2I3Kyukg/Wif1wUoptuz5TgrwRmfk7omZ+7pSbwDV8VJh4ZKmmg6jbknZp3kDthA
-	 8x5+cMD+KsRJ1QpuNTaCLO7J9uNmQtf+osMB4Qpq+euqRl99kqmgTJFrcjUnXQTSU9
-	 I2BtKqHN8sMMxk5FW7/41y3nTiLTt9wlSMOgJKvbYP0PNhJhFUOdKYzH49cLv0xXiW
-	 lj3r4OmNqQlxvW4/AfxxtgPTpgOpaRevzbkIQZ8+RSk1mCXq4Ld0yX9x9pEaSsXhd+
-	 tSRZnzJeZOZNbczRtKmE8XDucUY2vIY02W3EzKxDQbZ2ehGrR5Yv2NMCeAEgwBZcmM
-	 SLKdchcqT9Klw==
-Date: Tue, 21 Oct 2025 14:10:04 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Bandi, Ravi Kumar" <ravib@amazon.com>
-Cc: "mani@kernel.org" <mani@kernel.org>,
-	"thippeswamy.havalige@amd.com" <thippeswamy.havalige@amd.com>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"michal.simek@amd.com" <michal.simek@amd.com>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Stefan Roese <stefan.roese@mailbox.org>,
-	Sean Anderson <sean.anderson@linux.dev>
-Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
-Message-ID: <20251021191004.GA1205652@bhelgaas>
+	s=k20201202; t=1761074547;
+	bh=lYiLOSIv41E66nSgKgtX032B2kkuG+mtkwEQCSxWM3c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OHG6pFSohoGUV8Q6Ztnf+tIxMpkxgj8wQJwa1Ozp4HUuMJy0cSu2K0MAL6Z5OFSNf
+	 ATy+0UVmsEmVTl5vVurv3JtfyJRDc75s7dBO3aefwkmiXRJsFn7Rw+FMNXtZNaF0fX
+	 VVV3jsKr8tOA4W5JZ68xevfHoCBS1euWB5cF7WIubDB/8ck4vQuW1xmVcucneF7sdn
+	 qdTkGFuBo8eH5CRp/RtGSPhbemIo+UbvWizx17nnnF+2hiseD+6HTHuhAFueQux1lc
+	 2+MYWTNSh1wocKnUUO8zj1Lt9bQZcBZVCIkV+6vMrArkcX9o2OZSGkj6ruI6B+9MRB
+	 i5JimIfQJ+iQg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/4] PM: EM: Drop unused parameter from em_adjust_new_capacity()
+Date: Tue, 21 Oct 2025 15:22:22 -0400
+Message-ID: <20251021192225.2899605-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101616-gigahertz-profane-b22c@gregkh>
+References: <2025101616-gigahertz-profane-b22c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <AB5963BB-A896-4CFA-AF27-31164705DF5A@amazon.com>
 
-On Tue, Oct 21, 2025 at 05:46:17PM +0000, Bandi, Ravi Kumar wrote:
-> > On Oct 21, 2025, at 10:23 AM, Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Sat, Sep 20, 2025 at 10:52:32PM +0000, Ravi Kumar Bandi wrote:
-> >> The pcie-xilinx-dma-pl driver does not enable INTx interrupts
-> >> after initializing the port, preventing INTx interrupts from
-> >> PCIe endpoints from flowing through the Xilinx XDMA root port
-> >> bridge. This issue affects kernel 6.6.0 and later versions.
-> >> 
-> >> This patch allows INTx interrupts generated by PCIe endpoints
-> >> to flow through the root port. Tested the fix on a board with
-> >> two endpoints generating INTx interrupts. Interrupts are
-> >> properly detected and serviced. The /proc/interrupts output
-> >> shows:
-> >> 
-> >> [...]
-> >> 32:        320          0  pl_dma:RC-Event  16 Level     400000000.axi-pcie, azdrv
-> >> 52:        470          0  pl_dma:RC-Event  16 Level     500000000.axi-pcie, azdrv
-> >> [...]
-> >> 
-> >> Changes since v1::
-> >> - Fixed commit message per reviewer's comments
-> >> 
-> >> Fixes: 8d786149d78c ("PCI: xilinx-xdma: Add Xilinx XDMA Root Port driver")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Ravi Kumar Bandi <ravib@amazon.com>
-> > 
-> > Hi Ravi, obviously you tested this, but I don't know how to reconcile
-> > this with Stefan's INTx fix at
-> > https://lore.kernel.org/r/20251021154322.973640-1-stefan.roese@mailbox.org
-> > 
-> > Does Stefan's fix need to be squashed into this patch?
-> 
-> Sure, we can squash Stefan’s fix into this.
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-I know we *can* squash them. 
+[ Upstream commit 5fad775d432c6c9158ea12e7e00d8922ef8d3dfc ]
 
-I want to know why things worked for you and Stefan when they
-*weren't* squashed:
+The max_cap parameter is never used in em_adjust_new_capacity(), so
+drop it.
 
-  - Why did INTx work for you even without Stefan's patch.  Did you
-    get INTx interrupts but not the right ones, e.g., did the device
-    signal INTA but it was received as INTB?
+No functional impact.
 
-  - Why did Stefan's patch work for him even without your patch.  How
-    could Stefan's INTx work without the CSR writes to enable
-    interrupts?
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/2369979.ElGaqSPkdT@rjwysocki.net
+Stable-dep-of: 1ebe8f7e7825 ("PM: EM: Fix late boot with holes in CPU topology")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/power/energy_model.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-  - Why you mentioned "kernel 6.6.0 and later versions."  8d786149d78c
-    appeared in v6.7, so why would v6.6.0 would be affected?
+diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+index 1c9fe741fe6d5..8ee72c6c1daf3 100644
+--- a/kernel/power/energy_model.c
++++ b/kernel/power/energy_model.c
+@@ -723,8 +723,7 @@ static int em_recalc_and_update(struct device *dev, struct em_perf_domain *pd,
+  * are correctly calculated.
+  */
+ static void em_adjust_new_capacity(struct device *dev,
+-				   struct em_perf_domain *pd,
+-				   u64 max_cap)
++				   struct em_perf_domain *pd)
+ {
+ 	struct em_perf_table *em_table;
+ 
+@@ -795,7 +794,7 @@ static void em_check_capacity_update(void)
+ 			 cpu, cpu_capacity, em_max_perf);
+ 
+ 		dev = get_cpu_device(cpu);
+-		em_adjust_new_capacity(dev, pd, cpu_capacity);
++		em_adjust_new_capacity(dev, pd);
+ 	}
+ 
+ 	free_cpumask_var(cpu_done_mask);
+-- 
+2.51.0
 
-> >> +++ b/drivers/pci/controller/pcie-xilinx-dma-pl.c
-> >> @@ -659,6 +659,12 @@ static int xilinx_pl_dma_pcie_setup_irq(struct pl_dma_pcie *port)
-> >>              return err;
-> >>      }
-> >> 
-> >> +     /* Enable interrupts */
-> >> +     pcie_write(port, XILINX_PCIE_DMA_IMR_ALL_MASK,
-> >> +                XILINX_PCIE_DMA_REG_IMR);
-> >> +     pcie_write(port, XILINX_PCIE_DMA_IDRN_MASK,
-> >> +                XILINX_PCIE_DMA_REG_IDRN_MASK);
-> >> +
-> >>      return 0;
-> >> }
 
