@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-188610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E70A0BF87B5
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908BBBF8601
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0DCD19C4A96
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:03:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42E453A9623
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA292652AC;
-	Tue, 21 Oct 2025 20:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B704E350A13;
+	Tue, 21 Oct 2025 19:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isQUq5L4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBtUjdkf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD48D1E1E04;
-	Tue, 21 Oct 2025 20:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74586273D9A;
+	Tue, 21 Oct 2025 19:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076955; cv=none; b=QA5bARuGfkSjsmL/5UJfVblQgXNNx1cikjwqjUJsO0RmvZ1T0u8GqAIIZVc+oX3Z5TeXyRVEWBAqF1gZvI83knqvvi5VxO6ku2m7+fe6IhWC53PsgcQv7n6CrC0z0VKdb7ZIhLJ+qwKGIxj09DhkzC1cW6xAEcMmh4qGzIY5GGE=
+	t=1761076540; cv=none; b=hzyfukC9P62MZ6bgt5ZgkgbiOoFYep3/8ziQ6U1rzTT/Q82ZZmr6TUXKvErqTlR0ZYY9/IT82Tiz4gthmJgESEUa/A9ZalCQGbcOvmLFNnigqmLBuv9aEVBThdt7+qMdIy6ewycU84nsbunuy15sk2prJ1uSSp0YJDdRiXtWcXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076955; c=relaxed/simple;
-	bh=MVlwPOadfulU0D4MQGgTLSAZOTfR1xqpziCWriNZJ88=;
+	s=arc-20240116; t=1761076540; c=relaxed/simple;
+	bh=Biyv34mINv1f8qHCOs+26c07ewlyCPSDwNS+RddYLdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+yLBzBrsK1HWmlWqMLcaf7vuXTcw8ow506ZiMWWdJuHVvaTvTKGv2fjPcK5O3iGFxJ2l2X2rAwnbhUSW7Ift6AzrzZjOUJ4BwcbGUF6hE+0Djg6GpnGV3wHsg2wW25GpeNKtuVJKeMOCclFASMHlN2jpAkumH+cY0Ub5nuTz6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isQUq5L4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E308BC4CEF1;
-	Tue, 21 Oct 2025 20:02:34 +0000 (UTC)
+	 MIME-Version; b=SNZLJXk+884GjnJmVLPDlFgMS2Yk6yPyqP4agz1HvL74afZEpZVdArArzUC/5t6JzAMmCr5gEZpuW8sbW4EIfMjeEsVZHDZktRSP+89z5PWFYm5Ce0veUcdWGsOEVkqSklRdw6RyzpAINBNR/LtNtJiBnTIoLRqtrZAUtEJgr1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBtUjdkf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02128C4CEF1;
+	Tue, 21 Oct 2025 19:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076955;
-	bh=MVlwPOadfulU0D4MQGgTLSAZOTfR1xqpziCWriNZJ88=;
+	s=korg; t=1761076540;
+	bh=Biyv34mINv1f8qHCOs+26c07ewlyCPSDwNS+RddYLdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=isQUq5L4QZMhCTwoOVvLvHCM5GuvUOEwCJlkXAoH5S2704iIH2iPXXBdqT7h0aYOv
-	 c1PFrD9qc9opw6pE136IEsF5j6hWm5PSJ+75+eGLgN6bCqXXWTHS7bQ7wRJ+uMh7qt
-	 BegvGeFYrM68bhD8D18OWZdz4W3IeWoXuCpoxbVg=
+	b=VBtUjdkfAkrVJ2LmtflSH/PTNMYpPb52vKc+mDrTNzEqbZzLbnkjrd4ON35H+rZSN
+	 tEe/3/LkkE1TTHUTbwPdMKglKTHuPGVt1kAFiAlgLQuz/9uvtJ2tnDPZSuTQungIai
+	 NWvVYsuFg5Y2vetiKYnuDUrFK62/gPCLXhUoCkGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiaming Zhang <r772577952@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/136] ALSA: usb-audio: Fix NULL pointer deference in try_to_register_card
+Subject: [PATCH 6.6 067/105] ALSA: usb-audio: Fix NULL pointer deference in try_to_register_card
 Date: Tue, 21 Oct 2025 21:51:16 +0200
-Message-ID: <20251021195038.079959034@linuxfoundation.org>
+Message-ID: <20251021195023.257013360@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,10 +86,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/sound/usb/card.c b/sound/usb/card.c
-index 9c411b82a218d..d0a42859208aa 100644
+index 7743ea983b1a8..9335bc20c56df 100644
 --- a/sound/usb/card.c
 +++ b/sound/usb/card.c
-@@ -760,10 +760,16 @@ get_alias_quirk(struct usb_device *dev, unsigned int id)
+@@ -754,10 +754,16 @@ get_alias_quirk(struct usb_device *dev, unsigned int id)
   */
  static int try_to_register_card(struct snd_usb_audio *chip, int ifnum)
  {
