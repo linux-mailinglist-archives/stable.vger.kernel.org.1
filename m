@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-188481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86073BF8600
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADD8BF87B8
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 03F4D4F6BE4
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5933B4EA994
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ECA4273D9A;
-	Tue, 21 Oct 2025 19:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600A11A00CE;
+	Tue, 21 Oct 2025 20:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AsQIWeVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzLGfAxK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9A227381E;
-	Tue, 21 Oct 2025 19:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1887123D7E8;
+	Tue, 21 Oct 2025 20:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076543; cv=none; b=L/w9rXm+P01JiRIOWVIqRE3cRp25mKCKi6NRM38Mvlia6oriuSrA1FMrBPWR7pr0x0y3iTEDiwLVn32xQgcVhb9+1xEYflZlNw48DzVjDvAcrZOXHMs9NHsNXWwvEsO/o61qmM6AafFp9c8TnP8+Bbalj9FGesg+V7CdNfGJ78w=
+	t=1761076958; cv=none; b=qDeMqf7CatFdC0Ad9lxMDooYGgyW+fHGyReUNVZlY8KuvPQf1AgEBzbfSGFxgH+T0eK7ZXhk+AX3oLpIFHjQDPqjqhWnKkOp+lJT2X+blRXpyCkd6XhR3ozxF6iD6lB/ksDgBvT/NOShYDE/CoVVwZ6OQ2GGNl5wG0wVhZwr4tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076543; c=relaxed/simple;
-	bh=foI71qDENRnCphzbn796UsLtUwZEaP+5ICgXEZhQV9w=;
+	s=arc-20240116; t=1761076958; c=relaxed/simple;
+	bh=DPjpwP3behx68LLK2WJFNOvKNcgZkP5eVxp256JU+WY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BZYUPlG9n9P+MbzmupA6NVmmMkRsB6rZm1EdiF0P9OI+wvyjiWGXDGM52MSdjUbgiUmPLFDn9T/eSmlYoAdEkNgRpJicGVunAaZJLqLxdwTEOWfau4Ob+SToJzuBtanIIdEb7bXadue6gNtmXP1e0NhnqkUVX7h7jyyH5lZGw+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AsQIWeVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76DCC4CEF1;
-	Tue, 21 Oct 2025 19:55:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E2AupopgtN9x/U3cHKX0yujljR+eolSGK501ev3dBGdKIHBeJ8p9hpm4wF02/f9LD+YX8WG3TELUaQCEWVax20URxVzwmB3ANohP7/ZwgNV7BWPeCqBM7OvYNK9LeB08/GZr0QsI02B+2gsih8inxpzcBCCk5oqtmOqsspn4AFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzLGfAxK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2EEC4CEF1;
+	Tue, 21 Oct 2025 20:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076543;
-	bh=foI71qDENRnCphzbn796UsLtUwZEaP+5ICgXEZhQV9w=;
+	s=korg; t=1761076958;
+	bh=DPjpwP3behx68LLK2WJFNOvKNcgZkP5eVxp256JU+WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AsQIWeVy1FkCtHCAb+8MUcMVdFUFdUDBfwq0sEkH4D8GcUNjEonYpDi910TNOR8SB
-	 skA2rUnIAvOws6R1scMHeYQsCP7Kfe4Tiivj/L8yesLfliIuOTDZrnp1iym/p71L8X
-	 QqVDymuxgXgatIlfDmZFUrsB0yWc9gNk8uqj/J1o=
+	b=mzLGfAxKKD0PbsCqvxJF0eKAfw5qJ0pOSb/Bry94vchGI51GRax1Ft3PMgfqc0XSa
+	 YezijPuBK93i7KuroLnEV1Z+oBzSv5bjsN0ZN5W9I/sJP4Dm/XLz9FL6IRiSoZxZfU
+	 td+uSEtcrFzSiL8JGAV6XRV6BX3YYNXl7R48p3bI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/105] HID: hid-input: only ignore 0 battery events for digitizers
+Subject: [PATCH 6.12 089/136] HID: hid-input: only ignore 0 battery events for digitizers
 Date: Tue, 21 Oct 2025 21:51:17 +0200
-Message-ID: <20251021195023.280260494@linuxfoundation.org>
+Message-ID: <20251021195038.103321653@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
