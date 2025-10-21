@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-188761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D300BF89E6
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:10:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C32F3BF88AB
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D0D06501CD0
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:10:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 196D03A6DDC
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296642773F1;
-	Tue, 21 Oct 2025 20:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07B3277C98;
+	Tue, 21 Oct 2025 20:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYxILfUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyofo+L/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66BF26E6F5;
-	Tue, 21 Oct 2025 20:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6B2279918;
+	Tue, 21 Oct 2025 20:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077434; cv=none; b=lf916MdjwkPIsayBxwyPB9WLZADn8/DCimzQgTVY4oolLy+srJPgP8pZaBRuajfXwkUEbmehTa+eA0rkOMGN3+lTZQbL6yf0bFHUknFG1O1ftJLMwlxtLdv0tqW8BCYhS81z+Crr5V284wbYP3YHqYoeBJ3PGo3yPfv3tFdDlE0=
+	t=1761077056; cv=none; b=hoCo47Tr3o8LHXwINS32oEdZFUtH1Js0F8Mfo4SOKbSmdpqhbSSreVDTCGFkWyNzJF7guZUamWrcMzfaJgdGu4es7JDB9pTUnRBtY5FMH7vygVDKgevF40KXT0BoENO3+iAbuQdOZhtTh01oZDdcvKNYWBEbuLJt3Uy6E8rFj+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077434; c=relaxed/simple;
-	bh=4p+VQtd6js3WcfhYbhn4S/e2OHJcfsT2YMmtS0oMwjU=;
+	s=arc-20240116; t=1761077056; c=relaxed/simple;
+	bh=QXyKEWUx4U7sE4m6uShbqHkOhLOpk8vf7EMW+38N+9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMUl0hTrO7xNaz90yh45YUYo7QyLclxXuQHg4a+SXsXku+v2e6zfR2bIRXDiJkgxWQwIwxTzf/eMYRzHzdODsehC2Sg7CgQiICT4+sp+3xDf/GtBS4i2bvWjwz6uc5firFyS/nZ7D2RRruWhcVkLTs46Zw+ZH84ClgQyDrHqMjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYxILfUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A20C4CEF1;
-	Tue, 21 Oct 2025 20:10:33 +0000 (UTC)
+	 MIME-Version; b=QLkIzwyPMjJCbVsbgTXE0R3dLnd7lc8mY9ZjkgjxnkEMPlHzYNK53/5G+eHUqBt0keiFXOfQjUeYvdae1WuUqN49KtMF0Sm7NLYoFxrg9ZsViOpJj7klfn5xF/r4S9xaA0qYIFw+9YDWp581FUNyO1L8wyEWixQgHiqFjnOICF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oyofo+L/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAE2C4CEF5;
+	Tue, 21 Oct 2025 20:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077434;
-	bh=4p+VQtd6js3WcfhYbhn4S/e2OHJcfsT2YMmtS0oMwjU=;
+	s=korg; t=1761077056;
+	bh=QXyKEWUx4U7sE4m6uShbqHkOhLOpk8vf7EMW+38N+9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYxILfUpXEwzIwPTUbYf69DdKdUeK3WGAg8CC82bvmIw9Judv2novXbVbHV/GULzC
-	 +Lod8vnlq1ECqV7h5nQq8BxvUkMhcURSUAuYBAjr2KuqFYpCgOAwuGrdFu5GVjyqxB
-	 KXQwiKIARlS1TdWA7CQ0CXc4i2wb/sZ22qWygDnQ=
+	b=oyofo+L/IX/wig5PNcHg6peevatJkDiJ+S54i5wFz9QP2aB5G2yWV2vtGusZJRT2n
+	 N6mziEH944CU3hQO9TdsXsa2NdIKqh7MvnbisO6CIcb9mcoTvDc1RFh9PZc4l7qbxS
+	 nIHw4ZpqNekAcKMjQJPXzpQLHJrMVyjDoIrEH0p4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 105/159] drm/amdgpu: add ip offset support for cyan skillfish
-Date: Tue, 21 Oct 2025 21:51:22 +0200
-Message-ID: <20251021195045.704161275@linuxfoundation.org>
+Subject: [PATCH 6.12 095/136] xfs: rename the old_crc variable in xlog_recover_process
+Date: Tue, 21 Oct 2025 21:51:23 +0200
+Message-ID: <20251021195038.240763216@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
-References: <20251021195043.182511864@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit e8529dbc75cab56fc3c57830d0fd48cbd8911e6c ]
+[ Upstream commit 0b737f4ac1d3ec093347241df74bbf5f54a7e16c ]
 
-For chips that don't have IP discovery tables.
+old_crc is a very misleading name.  Rename it to expected_crc as that
+described the usage much better.
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 357d90be2c7a ("drm/amdgpu: fix handling of harvesting for ip_discovery firmware")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Stable-dep-of: e747883c7d73 ("xfs: fix log CRC mismatches between i386 and other architectures")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/Makefile           |  3 +-
- .../drm/amd/amdgpu/cyan_skillfish_reg_init.c  | 56 +++++++++++++++++++
- drivers/gpu/drm/amd/amdgpu/nv.h               |  1 +
- 3 files changed, 59 insertions(+), 1 deletion(-)
- create mode 100644 drivers/gpu/drm/amd/amdgpu/cyan_skillfish_reg_init.c
+ fs/xfs/xfs_log_recover.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/Makefile b/drivers/gpu/drm/amd/amdgpu/Makefile
-index 930de203d533c..2d0fea87af79f 100644
---- a/drivers/gpu/drm/amd/amdgpu/Makefile
-+++ b/drivers/gpu/drm/amd/amdgpu/Makefile
-@@ -84,7 +84,8 @@ amdgpu-y += \
- 	vega20_reg_init.o nbio_v7_4.o nbio_v2_3.o nv.o arct_reg_init.o mxgpu_nv.o \
- 	nbio_v7_2.o hdp_v4_0.o hdp_v5_0.o aldebaran_reg_init.o aldebaran.o soc21.o soc24.o \
- 	sienna_cichlid.o smu_v13_0_10.o nbio_v4_3.o hdp_v6_0.o nbio_v7_7.o hdp_v5_2.o lsdma_v6_0.o \
--	nbio_v7_9.o aqua_vanjaram.o nbio_v7_11.o lsdma_v7_0.o hdp_v7_0.o nbif_v6_3_1.o
-+	nbio_v7_9.o aqua_vanjaram.o nbio_v7_11.o lsdma_v7_0.o hdp_v7_0.o nbif_v6_3_1.o \
-+	cyan_skillfish_reg_init.o
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2890,20 +2890,19 @@ xlog_recover_process(
+ 	int			pass,
+ 	struct list_head	*buffer_list)
+ {
+-	__le32			old_crc = rhead->h_crc;
+-	__le32			crc;
++	__le32			expected_crc = rhead->h_crc, crc;
  
- # add DF block
- amdgpu-y += \
-diff --git a/drivers/gpu/drm/amd/amdgpu/cyan_skillfish_reg_init.c b/drivers/gpu/drm/amd/amdgpu/cyan_skillfish_reg_init.c
-new file mode 100644
-index 0000000000000..96616a865aac7
---- /dev/null
-+++ b/drivers/gpu/drm/amd/amdgpu/cyan_skillfish_reg_init.c
-@@ -0,0 +1,56 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright 2018 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ */
-+#include "amdgpu.h"
-+#include "nv.h"
-+
-+#include "soc15_common.h"
-+#include "soc15_hw_ip.h"
-+#include "cyan_skillfish_ip_offset.h"
-+
-+int cyan_skillfish_reg_base_init(struct amdgpu_device *adev)
-+{
-+	/* HW has more IP blocks,  only initialized the blocke needed by driver */
-+	uint32_t i;
-+
-+	adev->gfx.xcc_mask = 1;
-+	for (i = 0 ; i < MAX_INSTANCE ; ++i) {
-+		adev->reg_offset[GC_HWIP][i] = (uint32_t *)(&(GC_BASE.instance[i]));
-+		adev->reg_offset[HDP_HWIP][i] = (uint32_t *)(&(HDP_BASE.instance[i]));
-+		adev->reg_offset[MMHUB_HWIP][i] = (uint32_t *)(&(MMHUB_BASE.instance[i]));
-+		adev->reg_offset[ATHUB_HWIP][i] = (uint32_t *)(&(ATHUB_BASE.instance[i]));
-+		adev->reg_offset[NBIO_HWIP][i] = (uint32_t *)(&(NBIO_BASE.instance[i]));
-+		adev->reg_offset[MP0_HWIP][i] = (uint32_t *)(&(MP0_BASE.instance[i]));
-+		adev->reg_offset[MP1_HWIP][i] = (uint32_t *)(&(MP1_BASE.instance[i]));
-+		adev->reg_offset[VCN_HWIP][i] = (uint32_t *)(&(UVD0_BASE.instance[i]));
-+		adev->reg_offset[DF_HWIP][i] = (uint32_t *)(&(DF_BASE.instance[i]));
-+		adev->reg_offset[DCE_HWIP][i] = (uint32_t *)(&(DMU_BASE.instance[i]));
-+		adev->reg_offset[OSSSYS_HWIP][i] = (uint32_t *)(&(OSSSYS_BASE.instance[i]));
-+		adev->reg_offset[SDMA0_HWIP][i] = (uint32_t *)(&(GC_BASE.instance[i]));
-+		adev->reg_offset[SDMA1_HWIP][i] = (uint32_t *)(&(GC_BASE.instance[i]));
-+		adev->reg_offset[SMUIO_HWIP][i] = (uint32_t *)(&(SMUIO_BASE.instance[i]));
-+		adev->reg_offset[THM_HWIP][i] = (uint32_t *)(&(THM_BASE.instance[i]));
-+		adev->reg_offset[CLK_HWIP][i] = (uint32_t *)(&(CLK_BASE.instance[i]));
-+	}
-+	return 0;
-+}
-diff --git a/drivers/gpu/drm/amd/amdgpu/nv.h b/drivers/gpu/drm/amd/amdgpu/nv.h
-index 83e9782aef39d..8f4817404f10d 100644
---- a/drivers/gpu/drm/amd/amdgpu/nv.h
-+++ b/drivers/gpu/drm/amd/amdgpu/nv.h
-@@ -31,5 +31,6 @@ extern const struct amdgpu_ip_block_version nv_common_ip_block;
- void nv_grbm_select(struct amdgpu_device *adev,
- 		    u32 me, u32 pipe, u32 queue, u32 vmid);
- void nv_set_virt_ops(struct amdgpu_device *adev);
-+int cyan_skillfish_reg_base_init(struct amdgpu_device *adev);
+ 	crc = xlog_cksum(log, rhead, dp, be32_to_cpu(rhead->h_len));
  
- #endif
--- 
-2.51.0
-
+ 	/*
+ 	 * Nothing else to do if this is a CRC verification pass. Just return
+ 	 * if this a record with a non-zero crc. Unfortunately, mkfs always
+-	 * sets old_crc to 0 so we must consider this valid even on v5 supers.
+-	 * Otherwise, return EFSBADCRC on failure so the callers up the stack
+-	 * know precisely what failed.
++	 * sets expected_crc to 0 so we must consider this valid even on v5
++	 * supers.  Otherwise, return EFSBADCRC on failure so the callers up the
++	 * stack know precisely what failed.
+ 	 */
+ 	if (pass == XLOG_RECOVER_CRCPASS) {
+-		if (old_crc && crc != old_crc)
++		if (expected_crc && crc != expected_crc)
+ 			return -EFSBADCRC;
+ 		return 0;
+ 	}
+@@ -2914,11 +2913,11 @@ xlog_recover_process(
+ 	 * zero CRC check prevents warnings from being emitted when upgrading
+ 	 * the kernel from one that does not add CRCs by default.
+ 	 */
+-	if (crc != old_crc) {
+-		if (old_crc || xfs_has_crc(log->l_mp)) {
++	if (crc != expected_crc) {
++		if (expected_crc || xfs_has_crc(log->l_mp)) {
+ 			xfs_alert(log->l_mp,
+ 		"log record CRC mismatch: found 0x%x, expected 0x%x.",
+-					le32_to_cpu(old_crc),
++					le32_to_cpu(expected_crc),
+ 					le32_to_cpu(crc));
+ 			xfs_hex_dump(dp, 32);
+ 		}
 
 
 
