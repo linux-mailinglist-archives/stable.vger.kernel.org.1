@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-188853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB4ABF924D
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 00:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2BF3BF9250
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 00:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4056819A6FAE
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:51:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88EEF19A6FD9
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1390A2D0639;
-	Tue, 21 Oct 2025 22:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA262D23B9;
+	Tue, 21 Oct 2025 22:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GfAV3E5z"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uAjXibi+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D5B350A02;
-	Tue, 21 Oct 2025 22:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ABD2BE636;
+	Tue, 21 Oct 2025 22:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761086817; cv=none; b=opvn9/CMOegvJM07uPnbZIpm6qPnN7Xfw9VisBN8c/3x4J0he/lCo9wXKogQ+IWC4Wcgo7bmShVDyNa4kQ/V7lxNK5GiY/HUypRFfUrn9ewS8CnTB4jyT2c/Ge0iLMouKOIEDL6UzEwazvNqRg6RxRmoKZ1s4/5+EhaPQIBlK3s=
+	t=1761086820; cv=none; b=L9w0K/Q7WjBsoP39ejmUo2QIfywtv+DPjj/F5I342Tf4hxIDQtacbe1QVH//TGMaldi6HW+WtggQwCu6zJx64OioaKnleuI5RB6rb65vZnbg8ATBZrTVloEat7jNyR8zGJ3xaB3+Z1KVxLHMEX9fcikFE3UQEWZoZnn27Slkt5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761086817; c=relaxed/simple;
-	bh=LM9P/srTUMHNetw2DNwFne4Fy4HW4DxWALPWYyCSX38=;
-	h=Date:To:From:Subject:Message-Id; b=ZMZeYTBPXz6JA7WG6hflXR5LbmtI04WFTJEkHCCrmZJxmqayQ+5MGjTMZxFzS7v0lVNnGyAeKF1+MbwAuRwUChoJJji7R3bHODfw8sbClmNPpVtu6WrKtA0QileKwCKyvqR+y6OxkMdMve/Y9rO0kYbYGsYQOYmHeP/T5uBxRAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GfAV3E5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B77CC19424;
-	Tue, 21 Oct 2025 22:46:57 +0000 (UTC)
+	s=arc-20240116; t=1761086820; c=relaxed/simple;
+	bh=l2GkWEFTS3t8kI2a4r+Boo5pB5vyH1ikZd1lB18+zIs=;
+	h=Date:To:From:Subject:Message-Id; b=BHJPSE3aCXLVtFtr7IWg0zclRjbx3hkG9UZC/hkM00Gtin2A5dE8ncI/NGV2YF4i3UtD9vRGEplBG8NmrU/wTOEXOpZX91COCRY9nRoOtaE6WhJabpaLR/MFdEElLC5RooibGKjkkfJfHGE4k6lJWUu6UhG3+5qz0qLkTNtQp6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uAjXibi+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A80AC4CEF1;
+	Tue, 21 Oct 2025 22:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761086817;
-	bh=LM9P/srTUMHNetw2DNwFne4Fy4HW4DxWALPWYyCSX38=;
+	s=korg; t=1761086819;
+	bh=l2GkWEFTS3t8kI2a4r+Boo5pB5vyH1ikZd1lB18+zIs=;
 	h=Date:To:From:Subject:From;
-	b=GfAV3E5zrryf+AYwRdc3tS6Qk012SB0/KwMDoMnVtm8beZ3io4Iss7DEBRPUyozgx
-	 Ee5IcbJB+mN2WHyzzhUbQM3TL8HvfwFBITH8UpM2zuMG7xbeZOjuApTQpL54EvzC6S
-	 lE4yZHez1jpBfOvrzVBHqJwktn4Y1BN75ZO5xuyk=
-Date: Tue, 21 Oct 2025 15:46:57 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,jerrin.shaji-george@broadcom.com,gregkh@linuxfoundation.org,bcm-kernel-feedback-list@broadcom.com,arnd@arndb.de,david@redhat.com,akpm@linux-foundation.org
+	b=uAjXibi+brwR66NH0a+04xrFZnRk6kt5aJro4Qo4IE52HRyEfjWkJ9kRisbSBOtqB
+	 ZmzD7ILAxKiV3NbR3k66JvL+I9X9pFI31F2ffDc2hgic2jQkApGOnVrpRaLGYSoP0N
+	 Hx3S6fe003DnAtWv0mhI2CtA/aNLd4Lo9X4tg35c=
+Date: Tue, 21 Oct 2025 15:46:58 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,lienze@kylinos.cn,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] vmw_balloon-indicate-success-when-effectively-deflating-during-migration.patch removed from -mm tree
-Message-Id: <20251021224657.8B77CC19424@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-damon-core-fix-potential-memory-leak-by-cleaning-ops_filter-in-damon_destroy_scheme.patch removed from -mm tree
+Message-Id: <20251021224659.8A80AC4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,103 +50,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: vmw_balloon: indicate success when effectively deflating during migration
+     Subject: mm/damon/core: fix potential memory leak by cleaning ops_filter in damon_destroy_scheme
 has been removed from the -mm tree.  Its filename was
-     vmw_balloon-indicate-success-when-effectively-deflating-during-migration.patch
+     mm-damon-core-fix-potential-memory-leak-by-cleaning-ops_filter-in-damon_destroy_scheme.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: vmw_balloon: indicate success when effectively deflating during migration
-Date: Tue, 14 Oct 2025 14:44:55 +0200
+From: Enze Li <lienze@kylinos.cn>
+Subject: mm/damon/core: fix potential memory leak by cleaning ops_filter in damon_destroy_scheme
+Date: Tue, 14 Oct 2025 16:42:25 +0800
 
-When migrating a balloon page, we first deflate the old page to then
-inflate the new page.
+Currently, damon_destroy_scheme() only cleans up the filter list but
+leaves ops_filter untouched, which could lead to memory leaks when a
+scheme is destroyed.
 
-However, if inflating the new page succeeded, we effectively deflated the
-old page, reducing the balloon size.
+This patch ensures both filter and ops_filter are properly freed in
+damon_destroy_scheme(), preventing potential memory leaks.
 
-In that case, the migration actually worked: similar to migrating+
-immediately deflating the new page.  The old page will be freed back to
-the buddy.
-
-Right now, the core will leave the page be marked as isolated (as we
-returned an error).  When later trying to putback that page, we will run
-into the WARN_ON_ONCE() in balloon_page_putback().
-
-That handling was changed in commit 3544c4faccb8 ("mm/balloon_compaction:
-stop using __ClearPageMovable()"); before that change, we would have
-tolerated that way of handling it.
-
-To fix it, let's just return 0 in that case, making the core effectively
-just clear the "isolated" flag + freeing it back to the buddy as if the
-migration succeeded.  Note that the new page will also get freed when the
-core puts the last reference.
-
-Note that this also makes it all be more consistent: we will no longer
-unisolate the page in the balloon driver while keeping it marked as being
-isolated in migration core.
-
-This was found by code inspection.
-
-Link: https://lkml.kernel.org/r/20251014124455.478345-1-david@redhat.com
-Fixes: 3544c4faccb8 ("mm/balloon_compaction: stop using __ClearPageMovable()")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20251014084225.313313-1-lienze@kylinos.cn
+Fixes: ab82e57981d0 ("mm/damon/core: introduce damos->ops_filters")
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Tested-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- drivers/misc/vmw_balloon.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ mm/damon/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/misc/vmw_balloon.c~vmw_balloon-indicate-success-when-effectively-deflating-during-migration
-+++ a/drivers/misc/vmw_balloon.c
-@@ -1737,7 +1737,7 @@ static int vmballoon_migratepage(struct
- {
- 	unsigned long status, flags;
- 	struct vmballoon *b;
--	int ret;
-+	int ret = 0;
+--- a/mm/damon/core.c~mm-damon-core-fix-potential-memory-leak-by-cleaning-ops_filter-in-damon_destroy_scheme
++++ a/mm/damon/core.c
+@@ -452,6 +452,9 @@ void damon_destroy_scheme(struct damos *
+ 	damos_for_each_filter_safe(f, next, s)
+ 		damos_destroy_filter(f);
  
- 	b = container_of(b_dev_info, struct vmballoon, b_dev_info);
- 
-@@ -1796,17 +1796,15 @@ static int vmballoon_migratepage(struct
- 		 * A failure happened. While we can deflate the page we just
- 		 * inflated, this deflation can also encounter an error. Instead
- 		 * we will decrease the size of the balloon to reflect the
--		 * change and report failure.
-+		 * change.
- 		 */
- 		atomic64_dec(&b->size);
--		ret = -EBUSY;
- 	} else {
- 		/*
- 		 * Success. Take a reference for the page, and we will add it to
- 		 * the list after acquiring the lock.
- 		 */
- 		get_page(newpage);
--		ret = 0;
- 	}
- 
- 	/* Update the balloon list under the @pages_lock */
-@@ -1817,7 +1815,7 @@ static int vmballoon_migratepage(struct
- 	 * If we succeed just insert it to the list and update the statistics
- 	 * under the lock.
- 	 */
--	if (!ret) {
-+	if (status == VMW_BALLOON_SUCCESS) {
- 		balloon_page_insert(&b->b_dev_info, newpage);
- 		__count_vm_event(BALLOON_MIGRATE);
- 	}
++	damos_for_each_ops_filter_safe(f, next, s)
++		damos_destroy_filter(f);
++
+ 	kfree(s->migrate_dests.node_id_arr);
+ 	kfree(s->migrate_dests.weight_arr);
+ 	damon_del_scheme(s);
 _
 
-Patches currently in -mm which might be from david@redhat.com are
+Patches currently in -mm which might be from lienze@kylinos.cn are
 
 
 
