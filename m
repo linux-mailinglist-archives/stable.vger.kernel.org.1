@@ -1,135 +1,105 @@
-Return-Path: <stable+bounces-188290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED1CBF4A65
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 07:36:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED543BF4A71
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 07:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0E1FA4E1273
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 05:36:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 163ED4671D2
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 05:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830C9244669;
-	Tue, 21 Oct 2025 05:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5D72472A8;
+	Tue, 21 Oct 2025 05:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="O5ys5hDF"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="t/I+VyMD"
 X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9AB23AB9C;
-	Tue, 21 Oct 2025 05:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB621DE2B4;
+	Tue, 21 Oct 2025 05:39:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761025010; cv=none; b=Rg70yt1LK63iSvOY746y8caHWP1svPSSNltUKOlQPHHpri2PcLM1h1YZXwN0THHmGwMw94Nx1gBOrq50gxdfVSNhhDSnoyctVKLmaeDCOArMPoObtiuC4ltpsXOr76Om4zJs1rtCSck/1Pri5DyYOlIoaXyk6+QQRwNzJrygOoI=
+	t=1761025174; cv=none; b=LgkswBVEiW4rQWvCAuwrt5R/HQKh75htzmMHQ2aMlrDcMxC3pV3SbNxOWL1zxtgwq4MOcmOZ6lwkDw0tikv1cm3LR5oMTsORDftqXgbDHCrFc/ejCddeH/n8CxagGbprR+djFy6aQkNej4etJrGr/HSQPyakWGuAsWG2auGpplM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761025010; c=relaxed/simple;
-	bh=T09YKLc/aWWjmxxkF2jQHHlcSWx+HpI6aR2Lq2mNO58=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OGQfK6jalBZxjzTZKxa3yX8z7PVrqKO6Y/NWc77+o7nza3nt3DqyInDeuLcMH3xcOC5FWHTFkpetVKGywSPGnYMi7AV9FWN5LXG2HScroSxfIVecr3ey8uoW5Tuh8CagoFKymUeaWHiKGMp/7uaSpqyTlXjJfo0TkxWBgV7tGP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=O5ys5hDF; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=YlFYbdykABayPvN+IU9EDT7b7dDniXXWQfbMhJjQoRY=; b=O5ys5hDF/JUqv4GTDZ9CfnNB97
-	bkSwcNvT9u+cK36isCaQ/FW3WPY2Uy7KpnNsxMtEoO3wLNSe4ClSQeBdbAOj6J9P4HdkTeeO8MWe5
-	l1VdwCZko+QrkD0/VPNnd2ywkMPz6gJImVpJsMoRo5DWBmiju5M0TzkvIeffT2bnDpBe1riVxxgHH
-	5kOY8ZlN2+Kixvf8nhquo//E8n+Lkt7JCuVegYYdCZvSIqQOfuZKKnlZ2EE+8stbGcBSrh4rBXGOV
-	1d5cFqNeoy3/CASLSqSX6sAdfXfF82xArzYDOY57XDQ+QJHy7LpT5pDBT2w2IdkuxtwZ8CI58IIsh
-	ypncjiDg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vB53A-0000000FsC2-1kdS;
-	Tue, 21 Oct 2025 05:36:48 +0000
-Date: Mon, 20 Oct 2025 22:36:48 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Yuhao Jiang <danisjiang@gmail.com>
-Cc: James.Bottomley@hansenpartnership.com, martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: wd33c93: fix buffer overflow in SCSI message-in
- handling
-Message-ID: <aPcb8MMIJ2ve64yD@infradead.org>
-References: <20251021020804.3248930-1-danisjiang@gmail.com>
+	s=arc-20240116; t=1761025174; c=relaxed/simple;
+	bh=cjRHQNrimilRSaOgbS0Q6HnXr8qOt5kl4nozO1ryvW4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Fj0dsV3WxxxCeVb3DVrIIjKVKVotywhLRoih4uBbPlbHawcsm3UEhOD2hqaHvf/TqSHteNPa2eAPoYllUUH3ZgbmDr8ITudxTLXdgyyjPEk1Ds5VOPDWsVZySiWM9Iw4o+2t+EQgFiRAA4ABRajlzBc+oBgm/Qa7QR/XNANI3MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=t/I+VyMD; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 59L5dR2J12487462, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1761025167; bh=cjRHQNrimilRSaOgbS0Q6HnXr8qOt5kl4nozO1ryvW4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=t/I+VyMDqSRJ1MHL3JzJOH1T3Pgpmzh+V3lzvPTsC7krWNk4a1J2WghsK9d9Quiwv
+	 EKNCvSsiMjl+Q/J4aOFWteRWCeD/b7bsd7GM5O+ln+HUvd+hjlfp5rirYRftOLHgug
+	 lIHL00dx1hfaGsff5dW0VGWWbhmz84ES3SCtgZdM5DDym7VbiawsbjPXFcRuK8Y9eq
+	 ylGEsEZan0DKUC4luXcAVBNB0txx/lR9R4Ce2RnCtlMLrLl95UoMeJeFRy1KAnYY3m
+	 /c3jeSHXRbpdLa8K+yXvpjOqK4okMtYvNdNe0pQYrPQ0EzgBOxsAh3bpAyRyVQvzHL
+	 zFBDW3Fjc+Dpw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 59L5dR2J12487462
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Oct 2025 13:39:27 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Tue, 21 Oct 2025 13:39:27 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Tue, 21 Oct 2025 13:39:27 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
+ 15.02.1544.027; Tue, 21 Oct 2025 13:39:27 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Zenm Chen <zenmchen@gmail.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "rtl8821cerfe2@gmail.com"
+	<rtl8821cerfe2@gmail.com>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH rtw-next] wifi: rtw88: Add USB ID 2001:3329 for D-Link AC13U rev. A1
+Thread-Topic: [PATCH rtw-next] wifi: rtw88: Add USB ID 2001:3329 for D-Link
+ AC13U rev. A1
+Thread-Index: AQHcMPU5hCUM159tz0WqTXkJwzs92rTMOCeA
+Date: Tue, 21 Oct 2025 05:39:27 +0000
+Message-ID: <c9a3af8155d848aa8812c97d699c11f9@realtek.com>
+References: <20250929035719.6172-1-zenmchen@gmail.com>
+ <20250929035719.6172-2-zenmchen@gmail.com>
+In-Reply-To: <20250929035719.6172-2-zenmchen@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251021020804.3248930-1-danisjiang@gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-This exploit really needs a catchy name.  Just think of how much
-valuable data you could extract by selling malicious fake 8-bit
-SCSI disks to retro computing enthusiasts and then exploiting their
-SCSI HBA driver.
+Zenm Chen <zenmchen@gmail.com> wrote:
 
-On Mon, Oct 20, 2025 at 09:08:04PM -0500, Yuhao Jiang wrote:
-> A buffer overflow vulnerability exists in the wd33c93 SCSI driver's
-> message handling where missing bounds checking allows a malicious
-> SCSI device to overflow the incoming_msg[] buffer and corrupt kernel
-> memory.
-> 
-> The issue occurs because:
-> - incoming_msg[] is a fixed 8-byte buffer (line 235 in wd33c93.h)
-> - wd33c93_intr() writes to incoming_msg[incoming_ptr] without
->   validating incoming_ptr is within bounds (line 935)
-> - For EXTENDED_MESSAGE, incoming_ptr increments based on the device-
->   supplied length field (line 1085) with no maximum check
-> - The validation at line 1001 only checks if the message is complete,
->   not if it exceeds buffer size
-> 
-> This allows an attacker controlling a SCSI device to craft an extended
-> message with length field 0xFF, causing the driver to write 256 bytes
-> into an 8-byte buffer. This can corrupt adjacent fields in the
-> WD33C93_hostdata structure including function pointers, potentially
-> leading to arbitrary code execution.
-> 
-> Add bounds checking in the MESSAGE_IN handler to ensure incoming_ptr
-> does not exceed buffer capacity before writing. Reject oversized
-> messages per SCSI protocol by sending MESSAGE_REJECT.
-> 
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
-> ---
->  drivers/scsi/wd33c93.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/drivers/scsi/wd33c93.c b/drivers/scsi/wd33c93.c
-> index dd1fef9226f2..2d50a0a01726 100644
-> --- a/drivers/scsi/wd33c93.c
-> +++ b/drivers/scsi/wd33c93.c
-> @@ -932,6 +932,19 @@ wd33c93_intr(struct Scsi_Host *instance)
->  		sr = read_wd33c93(regs, WD_SCSI_STATUS);	/* clear interrupt */
->  		udelay(7);
->  
-> +		/* Prevent buffer overflow from malicious extended messages */
-> +		if (hostdata->incoming_ptr >= sizeof(hostdata->incoming_msg)) {
-> +			printk("wd33c93: Incoming message too long, rejecting\n");
-> +			hostdata->incoming_ptr = 0;
-> +			write_wd33c93_cmd(regs, WD_CMD_ASSERT_ATN);
-> +			hostdata->outgoing_msg[0] = MESSAGE_REJECT;
-> +			hostdata->outgoing_len = 1;
-> +			write_wd33c93_cmd(regs, WD_CMD_NEGATE_ACK);
-> +			hostdata->state = S_CONNECTED;
-> +			spin_unlock_irqrestore(&hostdata->lock, flags);
-> +			break;
-> +		}
-> +
->  		hostdata->incoming_msg[hostdata->incoming_ptr] = msg;
->  		if (hostdata->incoming_msg[0] == EXTENDED_MESSAGE)
->  			msg = EXTENDED_MESSAGE;
-> -- 
-> 2.34.1
-> 
-> 
----end quoted text---
+> Add USB ID 2001:3329 for D-Link AC13U rev. A1 which is a RTL8812CU-based
+> Wi-Fi adapter.
+>
+> Compile tested only.
+>
+> Cc: stable@vger.kernel.org # 6.6.x
+> Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+
+b377dcd9a286 wifi: rtw88: Add USB ID 2001:3329 for D-Link AC13U rev. A1
+
+---
+https://github.com/pkshih/rtw.git
+
 
