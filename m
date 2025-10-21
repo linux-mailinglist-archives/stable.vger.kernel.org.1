@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-188461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD20CBF85B6
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD92BF8770
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E240B464781
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9E0C18885EE
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7852737E7;
-	Tue, 21 Oct 2025 19:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE2E1FBEAC;
+	Tue, 21 Oct 2025 20:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOLS232S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZWLqLyv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7CA2749CF;
-	Tue, 21 Oct 2025 19:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABCF145A1F;
+	Tue, 21 Oct 2025 20:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076480; cv=none; b=oy7oemG88ofG1s1VAoCprFQNHhiZEoEX2UlPXCyKjIoF5Oo5/a9hJQw4jdH5nYfnskc5bQl8zkOJcWCM8vbDk8Hnnro9WF/ayBgpfphIpwSsJcPUrBmwGX5P2q8tlzokEuo4HIDGoZ8ReCvlQwxWCNwyr3ahmTkO8juj6xgPyZQ=
+	t=1761076882; cv=none; b=QF9lF7t4j76gD05et4v3lJ3UGvQIOe+9W0Ic1fDwW2fq0AQjfcF6S5r351KwABACfbmUThBfyZ1KTqm2Yp5nBfwSiUS2+ksokGDZtuHZrHNZH5KIlxizu5pky17iPA3yRcZfZDslgY2NNyi3aMQRFXwZrwCzSmNUXfq/afLOFiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076480; c=relaxed/simple;
-	bh=Vi18ai1mEMcv9k9P/563n37k9fvHToc2oun/gbU8mG8=;
+	s=arc-20240116; t=1761076882; c=relaxed/simple;
+	bh=F4CXBQlZannanc7D5G6j3BhgoqehzJhV6OLz1cf441A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WByue2baLcvO0tf8VE0seIEoIPzGNxhdESmmHpYmVsHmucThIHzBU6bVLZSVzbsbx26KKX7POKVBHzTZ3IqnB35rEUgWMfML6wJdSAkFCKmYBq8g6S9RKlhFxAXhVADct+oDLElWLGjCKlK9LD+BAWsw59JWo3idePZH6mzXExM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOLS232S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F1FC4CEF1;
-	Tue, 21 Oct 2025 19:54:39 +0000 (UTC)
+	 MIME-Version; b=sj66hR2cfNQbCIyEGWhVIC0gEbeUagpd69bJsVgD5cdxxAuTIvNrE3OVNHsAHJDnrmqX5EhZRcqVacPYu8trq8AtZMvCZYiT0Ana9lCIVgbuniVLoT2WlDWk1WrM4+iTKmU3tklhfYy5kM7Xm21nBRMmGhuSZ9KncIs0TccYsOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZWLqLyv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7708C4CEF1;
+	Tue, 21 Oct 2025 20:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076480;
-	bh=Vi18ai1mEMcv9k9P/563n37k9fvHToc2oun/gbU8mG8=;
+	s=korg; t=1761076882;
+	bh=F4CXBQlZannanc7D5G6j3BhgoqehzJhV6OLz1cf441A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aOLS232S0DF4GSiYDwzFol226qPqc4fcNDpv+4+MxYrKj4aUb12aT1oCxdd7DZZ4A
-	 J7a9ChoaPhvbhGeeImHfIv2Of7cbc/d7vTrBjbVeOmZgFuzneAHGVL9DQHnTQK26r6
-	 +31XPGXJPyFkTpR0xLKhmKBxLb2mRlgzHmY07+10=
+	b=lZWLqLyvOfkBxgl+BCQPpGAYQriptyf1Eh62hOGhz/GeHFpBjD6VF17rUPQK9NlHN
+	 aorb9lo2s/O5pKjCrvG6AoOe08+UWelv/JxhRl230VToIpfKYGDgqmc1V69jj4tfHl
+	 0Uzw+FjDzPELpak9sIFP46ysFYUwlHBgT5fZURsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ketil Johnsen <ketil.johnsen@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/105] net: tls: wait for async completion on last message
-Date: Tue, 21 Oct 2025 21:50:54 +0200
-Message-ID: <20251021195022.757030632@linuxfoundation.org>
+Subject: [PATCH 6.12 067/136] drm/panthor: Ensure MCU is disabled on suspend
+Date: Tue, 21 Oct 2025 21:50:55 +0200
+Message-ID: <20251021195037.586464770@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Ketil Johnsen <ketil.johnsen@arm.com>
 
-[ Upstream commit 54001d0f2fdbc7852136a00f3e6fc395a9547ae5 ]
+[ Upstream commit e07e10ae83bdf429f59c8c149173a8c4f29c481e ]
 
-When asynchronous encryption is used KTLS sends out the final data at
-proto->close time. This becomes problematic when the task calling
-close() receives a signal. In this case it can happen that
-tcp_sendmsg_locked() called at close time returns -ERESTARTSYS and the
-final data is not sent.
+Currently the Panthor driver needs the GPU to be powered down
+between suspend and resume. If this is not done, then the
+MCU_CONTROL register will be preserved as AUTO, which again will
+cause a premature FW boot on resume. The FW will go directly into
+fatal state in this case.
 
-The described situation happens when KTLS is used in conjunction with
-io_uring, as io_uring uses task_work_add() to add work to the current
-userspace task. A discussion of the problem along with a reproducer can
-be found in [1] and [2]
+This case needs to be handled as there is no guarantee that the
+GPU will be powered down after the suspend callback on all platforms.
 
-Fix this by waiting for the asynchronous encryption to be completed on
-the final message. With this there is no data left to be sent at close
-time.
+The fix is to call panthor_fw_stop() in "pre-reset" path to ensure
+the MCU_CONTROL register is cleared (set DISABLE). This matches
+well with the already existing call to panthor_fw_start() from the
+"post-reset" path.
 
-[1] https://lore.kernel.org/all/20231010141932.GD3114228@pengutronix.de/
-[2] https://lore.kernel.org/all/20240315100159.3898944-1-s.hauer@pengutronix.de/
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://patch.msgid.link/20240904-ktls-wait-async-v1-1-a62892833110@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: b014a4e066c5 ("tls: wait for async encrypt in case of error during latter iterations of sendmsg")
+Signed-off-by: Ketil Johnsen <ketil.johnsen@arm.com>
+Acked-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Fixes: 2718d91816ee ("drm/panthor: Add the FW logical block")
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20251008105112.4077015-1-ketil.johnsen@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_fw.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 21276ac1f81dc..1f22c7adf3e56 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1228,7 +1228,7 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+diff --git a/drivers/gpu/drm/panthor/panthor_fw.c b/drivers/gpu/drm/panthor/panthor_fw.c
+index 4e2d3a02ea068..cdd6e1c08cebd 100644
+--- a/drivers/gpu/drm/panthor/panthor_fw.c
++++ b/drivers/gpu/drm/panthor/panthor_fw.c
+@@ -1057,6 +1057,7 @@ void panthor_fw_pre_reset(struct panthor_device *ptdev, bool on_hang)
+ 	}
  
- 	if (!num_async) {
- 		goto send_end;
--	} else if (num_zc) {
-+	} else if (num_zc || eor) {
- 		int err;
+ 	panthor_job_irq_suspend(&ptdev->fw->irq);
++	panthor_fw_stop(ptdev);
+ }
  
- 		/* Wait for pending encryptions to get completed */
+ /**
 -- 
 2.51.0
 
