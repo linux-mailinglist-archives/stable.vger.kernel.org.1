@@ -1,214 +1,200 @@
-Return-Path: <stable+bounces-188365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5B3BF76FF
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:41:14 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 780B2BF771A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2BEA3AAD4B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:39:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 56C9E4E1FE9
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A466432E6B4;
-	Tue, 21 Oct 2025 15:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A4C340299;
+	Tue, 21 Oct 2025 15:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7piabgI"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XuYECq5Z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E06D36B;
-	Tue, 21 Oct 2025 15:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05421338937
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 15:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761061138; cv=none; b=kT0SRMTGi6WE7FkJPjzrEQ5Y/mtuIfx3DzuwDgxqGQRt+udr8h4MNdKHMUb7bFXDKLJaXGvhpdu9V7c4WSpgPY3mVAircpSnjkQqHO+yliu7lLeuUIpkz5N8k5NUSpX+9lhl5QU1xbwuVU6E6xd492h9mRyZfGQS9pFZm+Etwjs=
+	t=1761061382; cv=none; b=OzTXXjTJU20Vdge+oH/86CwzYm3hQgj9Sk4WJsuy3lzPpiRGQCNstWjWgniaQQLYIw0O3jPdNnskzEin0Nm6hwcq3JY5LsO24xYNMpiT0sOH0zmR8knT9AcDou68Z28ihcH4jk7k5+2uPGMjhGH2p3N61iEQ1f4DRBWHoxgjZis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761061138; c=relaxed/simple;
-	bh=XLeQYak413CtBI3jcHC674M9UA1GVPE1UqJrMh7w2Ns=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pvsABwajZMkwLw/g/mzyx+RfqXLrWZRIq0s/ZhzaNwjnK5TUi2MZLeb06RsF3MJ5AYmLHiPLRpfTHin2prAiVHfOopRBiP+lcl6olBjAq9+xB6FNMaoQJX/F9gxB8K2PgBhKbhkkeB00FohHQg9zp9ZOhdVjKlmf73f9w+YJH5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7piabgI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFB3C4CEF1;
-	Tue, 21 Oct 2025 15:38:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761061137;
-	bh=XLeQYak413CtBI3jcHC674M9UA1GVPE1UqJrMh7w2Ns=;
-	h=From:To:Cc:Subject:Date:From;
-	b=V7piabgI1bWhCF95A9brwFN0p4hcGLyPsPXALNZjPWF1E6zNXVvwTcCYr2FldeE/D
-	 gLsoGdsOdmJo4ySXSqpTTQNZj5mmnyBB5+0EAXkLH8SCa/Bu5KuLi+OZnWd6oFacUZ
-	 IejZzvSQgBKh0xL8kABVHI8NDmjeI1Vhr7o944CEj3YW6SpbRT14ccjXkKs0V2CMqV
-	 by/fWEXqZhtYKU0H3H3DAYxbykSqlxoENYobVy3IVv1rcQTsS0xzxgiReSlEEj0p8Y
-	 IMy2gVqGTwMO62l4J/5oiFiGcsGzignqQc1ZWSbFhEmP9wMcuX4uCkAG+v85TrDZGv
-	 0gK0JUW1KP2CA==
-From: Conor Dooley <conor@kernel.org>
-To: linux-riscv@lists.infradead.org
-Cc: conor@kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
-	stable@vger.kernel.org,
-	Valentina.FernandezAlanis@microchip.com,
-	Cyril.Jean@microchip.com,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Jamie Gibbons <jamie.gibbons@microchip.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] riscv: dts: microchip: remove BeagleV Fire fabric.dtsi
-Date: Tue, 21 Oct 2025 16:38:37 +0100
-Message-ID: <20251021-dastardly-washbowl-b8c4ec1745db@spud>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1761061382; c=relaxed/simple;
+	bh=N21AliblMPWaA0AUzxTZ6Nv7AA/MfaFCoxuvbrLNL1Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LFR5JHAiSJuVSOUOanA/zzhB/UuDfRlwYOrLnPlFfapUjoBxnGH3Wz2sUAzBEDGxtBDTaCrFkoPZq29TnpBtWzde6PUO3Cp/+j4Gn5CjEsjQsOneXxMJpxuAx9yEfYtJbXX/bL9eQIsKfNiBs2gnUlFAruHkL9U/F+YX1FQcoHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XuYECq5Z; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761061378;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jNcno7kT0irEzub8Roey9W2mYI7FYUplQutZ5yVhFdg=;
+	b=XuYECq5ZFv7GHtICTN1kGs7TPi4LozroT38cAJORg8cbdkb5dkFYXFF0puNl/DMe4LS7ks
+	KJlM8UkTzTdyi9B4aenkcBY92OLafmEuYzJ4ckpg06VjyCh/s8ao08VlWlwbpUnURxGLuo
+	qdALjufKcyGvqrlb1H4+ERrdvz6t1eY=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-251-opHyeFJ-Mpitr9UBQ00bog-1; Tue, 21 Oct 2025 11:42:57 -0400
+X-MC-Unique: opHyeFJ-Mpitr9UBQ00bog-1
+X-Mimecast-MFC-AGG-ID: opHyeFJ-Mpitr9UBQ00bog_1761061376
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4711899ab0aso44347275e9.2
+        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 08:42:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761061376; x=1761666176;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jNcno7kT0irEzub8Roey9W2mYI7FYUplQutZ5yVhFdg=;
+        b=VwGClATejOlEY/IWxPPltVPmzw4pEgL6Y9QDDt28eLHyqGk5gXFWlBe8fnGOqI9/vv
+         2TNdZM2MhtucgdZNgouIGjJ8+hWL6MgIUlghrXuGVbB0Me5ZzoMW/IJJB9+Sv0YOtERS
+         KMA3bk0dSo04IcKP/lePM37SpBAXVoa/8eOE4WgcpuUgBokNLnoO6RActO5lMHaXXres
+         vsmcfdP0KzPOjXgg2C9CuA/WZzJKCKdT/6BNmL7M+vuE//azTzgaH6iwLjcNFpKMga05
+         gczWbWMgJxHvTkAkaTiVcAFyDmj/9QufwHvlNJzVzyy5KsMCUhWcTTyJKSxHP6X3i3W+
+         df/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUiAr4XLwFVtMd+USvfJW297yUQSV5YAZGzLAvPa8hfEyonXo17s7IIeewnRdzIaoYNy5bEYRE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfCp4aQl7mk42ex/P2/e/7bQk5tG2HcjLk1n4qnl1cEx7eRO91
+	r2TeabDmllfsjXLUI0Lz4Zs5cZKeU+XXJL6mvQ/Vs/w1ka2zafCW24K/bWn6pRnjJFiOdmWe8Rd
+	7cXQumK1xbOhha7C2Fp/Mjz6Wp6V+Fou6onLyh28+jkHTLxAwsF44eWb4jQ==
+X-Gm-Gg: ASbGncv7ZLF4NFYNrFnNMFCM3NTwPGBLTMwfkSSuEfDve5C/RMHePS0dsMzB5ZHJWuE
+	CIg1o6OgKZHHS7VeHH7DH81YIjobj+Urs/H+1yUSJMW4IahHJypJEv3JrYQ56pekLf4zVVRE9wa
+	ql+VE619POX8HOBGN9JQ5DnJwsOQpnEEsOSn2DTjMsbeD4y5xsYXQ8vD7yXrK0CbXN6Pe4t8y98
+	HWHxGT83MgqfJC9SzE21PRYnInWWhnhl2k27noI6fpwaE7s44K0HkdtYvr2qBvoxF6/Mzlhj8cr
+	ULgpk/4kE7n8mwu/itwQiuWtOJVNaNVB991Bh9vEdqQqQqz/Am/PzHRNnI1kaOq3GQ1NKjQjzy5
+	59adaiu2lPaSX6MqRKZp21u28v8eKUKuT5i4sfn5BgDMMsWWKzmEFMimdzmYlos2wzZPGaRHSQe
+	yXqzS+2bNgLdz5xwB16cB9IBEkNeQ=
+X-Received: by 2002:a05:600c:870b:b0:46f:b42e:e366 with SMTP id 5b1f17b1804b1-4711791fa34mr125576445e9.40.1761061376011;
+        Tue, 21 Oct 2025 08:42:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHAXCpx0sJcyJNfRiKm2dYACcXvFmWjsvuh2uNond6HHIL7tB74zy8IJxnnZIUjSnynaOrehQ==
+X-Received: by 2002:a05:600c:870b:b0:46f:b42e:e366 with SMTP id 5b1f17b1804b1-4711791fa34mr125575985e9.40.1761061375574;
+        Tue, 21 Oct 2025 08:42:55 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4714fb1b668sm232749515e9.0.2025.10.21.08.42.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Oct 2025 08:42:55 -0700 (PDT)
+Message-ID: <88f8477b-5898-4d7e-8583-9d769a34645f@redhat.com>
+Date: Tue, 21 Oct 2025 17:42:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4872; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=tyhyGYHv/CwA3yfRKyi9p1HyzXfeQhJxBatLuQlCYLs=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDBnfV/zpXPZYImjSnd01gmdzeFWtpt/7+tpx8dHLPrdbb 8868aZFo6OUhUGMi0FWTJEl8XZfi9T6Py47nHvewsxhZQIZwsDFKQATcZjG8N9pjtpyhUmnlOJm 9c2bHdxpWNX2I6vg7kLv5JZ37ye8++TP8Fd4RtVRv2tpqgXX1Mo0RNr0sgPYTNe9Pln2PFLf55+ CJD8A
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/huge_memory: do not change split_huge_page*()
+ target order silently.
+To: Zi Yan <ziy@nvidia.com>, linmiaohe@huawei.com, jane.chu@oracle.com,
+ kernel@pankajraghav.com,
+ syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com,
+ syzkaller-bugs@googlegroups.com
+Cc: akpm@linux-foundation.org, mcgrof@kernel.org, nao.horiguchi@gmail.com,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Wei Yang <richard.weiyang@gmail.com>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
+ Pankaj Raghav <p.raghav@samsung.com>
+References: <20251017013630.139907-1-ziy@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20251017013630.139907-1-ziy@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Conor Dooley <conor.dooley@microchip.com>
+On 17.10.25 03:36, Zi Yan wrote:
+> Page cache folios from a file system that support large block size (LBS)
+> can have minimal folio order greater than 0, thus a high order folio might
+> not be able to be split down to order-0. Commit e220917fa507 ("mm: split a
+> folio in minimum folio order chunks") bumps the target order of
+> split_huge_page*() to the minimum allowed order when splitting a LBS folio.
+> This causes confusion for some split_huge_page*() callers like memory
+> failure handling code, since they expect after-split folios all have
+> order-0 when split succeeds but in reality get min_order_for_split() order
+> folios and give warnings.
+> 
+> Fix it by failing a split if the folio cannot be split to the target order.
+> Rename try_folio_split() to try_folio_split_to_order() to reflect the added
+> new_order parameter. Remove its unused list parameter.
+> 
+> Fixes: e220917fa507 ("mm: split a folio in minimum folio order chunks")
+> [The test poisons LBS folios, which cannot be split to order-0 folios, and
+> also tries to poison all memory. The non split LBS folios take more memory
+> than the test anticipated, leading to OOM. The patch fixed the kernel
+> warning and the test needs some change to avoid OOM.]
+> Reported-by: syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/68d2c943.a70a0220.1b52b.02b3.GAE@google.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+> Reviewed-by: Pankaj Raghav <p.raghav@samsung.com>
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> ---
 
-At the time of adding the fabric.dtsi for the BeagleV Fire, we thought
-that the fabric nodes in the Beagle supplied images were stable. They
-are not, which has lead to nodes present in the devicetree that are not
-in the programmed FPGA images. This is obviously problematic, and these
-nodes must be removed.
+With Lorenzos comments addressed, this looks good to me, thanks for 
+taking care of this!
 
-CC: stable@vger.kernel.org
-Fixes: 3f41368fbfe1 ("riscv: dts: microchip: add an initial devicetree for the BeagleV Fire")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
---
-CC: Valentina.FernandezAlanis@microchip.com
-CC: Cyril.Jean@microchip.com
-CC: Conor Dooley <conor@kernel.org>
-CC: Daire McNamara <daire.mcnamara@microchip.com>
-CC: Rob Herring <robh@kernel.org>
-CC: Krzysztof Kozlowski <krzk+dt@kernel.org>
-CC: Paul Walmsley <paul.walmsley@sifive.com>
-CC: Jamie Gibbons <jamie.gibbons@microchip.com>
-CC: linux-riscv@lists.infradead.org
-CC: devicetree@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
----
- .../microchip/mpfs-beaglev-fire-fabric.dtsi   | 82 -------------------
- .../boot/dts/microchip/mpfs-beaglev-fire.dts  |  5 --
- 2 files changed, 87 deletions(-)
- delete mode 100644 arch/riscv/boot/dts/microchip/mpfs-beaglev-fire-fabric.dtsi
+Acked-by: David Hildenbrand <david@redhat.com>
 
-diff --git a/arch/riscv/boot/dts/microchip/mpfs-beaglev-fire-fabric.dtsi b/arch/riscv/boot/dts/microchip/mpfs-beaglev-fire-fabric.dtsi
-deleted file mode 100644
-index e153eaf9b90e..000000000000
---- a/arch/riscv/boot/dts/microchip/mpfs-beaglev-fire-fabric.dtsi
-+++ /dev/null
-@@ -1,82 +0,0 @@
--// SPDX-License-Identifier: (GPL-2.0 OR MIT)
--
--/ {
--	fabric_clk3: fabric-clk3 {
--		compatible = "fixed-clock";
--		#clock-cells = <0>;
--		clock-frequency = <50000000>;
--	};
--
--	fabric_clk1: fabric-clk1 {
--		compatible = "fixed-clock";
--		#clock-cells = <0>;
--		clock-frequency = <125000000>;
--	};
--
--	fabric-bus@40000000 {
--		compatible = "simple-bus";
--		#address-cells = <2>;
--		#size-cells = <2>;
--		ranges = <0x0 0x40000000 0x0 0x40000000 0x0 0x20000000>, /* FIC3-FAB */
--			 <0x0 0x60000000 0x0 0x60000000 0x0 0x20000000>, /* FIC0, LO */
--			 <0x0 0xe0000000 0x0 0xe0000000 0x0 0x20000000>, /* FIC1, LO */
--			 <0x20 0x0 0x20 0x0 0x10 0x0>, /* FIC0,HI */
--			 <0x30 0x0 0x30 0x0 0x10 0x0>; /* FIC1,HI */
--
--		cape_gpios_p8: gpio@41100000 {
--			compatible = "microchip,coregpio-rtl-v3";
--			reg = <0x0 0x41100000 0x0 0x1000>;
--			clocks = <&fabric_clk3>;
--			gpio-controller;
--			#gpio-cells = <2>;
--			ngpios = <16>;
--			gpio-line-names = "P8_PIN31", "P8_PIN32", "P8_PIN33", "P8_PIN34",
--					  "P8_PIN35", "P8_PIN36", "P8_PIN37", "P8_PIN38",
--					  "P8_PIN39", "P8_PIN40", "P8_PIN41", "P8_PIN42",
--					  "P8_PIN43", "P8_PIN44", "P8_PIN45", "P8_PIN46";
--		};
--
--		cape_gpios_p9: gpio@41200000 {
--			compatible = "microchip,coregpio-rtl-v3";
--			reg = <0x0 0x41200000 0x0 0x1000>;
--			clocks = <&fabric_clk3>;
--			gpio-controller;
--			#gpio-cells = <2>;
--			ngpios = <20>;
--			gpio-line-names = "P9_PIN11", "P9_PIN12", "P9_PIN13", "P9_PIN14",
--					  "P9_PIN15", "P9_PIN16", "P9_PIN17", "P9_PIN18",
--					  "P9_PIN21", "P9_PIN22", "P9_PIN23", "P9_PIN24",
--					  "P9_PIN25", "P9_PIN26", "P9_PIN27", "P9_PIN28",
--					  "P9_PIN29", "P9_PIN31", "P9_PIN41", "P9_PIN42";
--		};
--
--		hsi_gpios: gpio@44000000 {
--			compatible = "microchip,coregpio-rtl-v3";
--			reg = <0x0 0x44000000 0x0 0x1000>;
--			clocks = <&fabric_clk3>;
--			gpio-controller;
--			#gpio-cells = <2>;
--			ngpios = <20>;
--			gpio-line-names = "B0_HSIO70N", "B0_HSIO71N", "B0_HSIO83N",
--					  "B0_HSIO73N_C2P_CLKN", "B0_HSIO70P", "B0_HSIO71P",
--					  "B0_HSIO83P", "B0_HSIO73N_C2P_CLKP", "XCVR1_RX_VALID",
--					  "XCVR1_LOCK", "XCVR1_ERROR", "XCVR2_RX_VALID",
--					  "XCVR2_LOCK", "XCVR2_ERROR", "XCVR3_RX_VALID",
--					  "XCVR3_LOCK", "XCVR3_ERROR", "XCVR_0B_REF_CLK_PLL_LOCK",
--					  "XCVR_0C_REF_CLK_PLL_LOCK", "B0_HSIO81N";
--		};
--	};
--
--	refclk_ccc: cccrefclk {
--		compatible = "fixed-clock";
--		#clock-cells = <0>;
--	};
--};
--
--&ccc_nw {
--	clocks = <&refclk_ccc>, <&refclk_ccc>, <&refclk_ccc>, <&refclk_ccc>,
--		 <&refclk_ccc>, <&refclk_ccc>;
--	clock-names = "pll0_ref0", "pll0_ref1", "pll1_ref0", "pll1_ref1",
--		      "dll0_ref", "dll1_ref";
--	status = "okay";
--};
-diff --git a/arch/riscv/boot/dts/microchip/mpfs-beaglev-fire.dts b/arch/riscv/boot/dts/microchip/mpfs-beaglev-fire.dts
-index 47cf693beb68..aae239d79162 100644
---- a/arch/riscv/boot/dts/microchip/mpfs-beaglev-fire.dts
-+++ b/arch/riscv/boot/dts/microchip/mpfs-beaglev-fire.dts
-@@ -5,7 +5,6 @@
- 
- #include <dt-bindings/gpio/gpio.h>
- #include "mpfs.dtsi"
--#include "mpfs-beaglev-fire-fabric.dtsi"
- 
- /* Clock frequency (in Hz) of MTIMER */
- #define MTIMER_FREQ		1000000
-@@ -183,10 +182,6 @@ &refclk {
- 	clock-frequency = <125000000>;
- };
- 
--&refclk_ccc {
--	clock-frequency = <50000000>;
--};
--
- &rtc {
- 	status = "okay";
- };
 -- 
-2.51.0
+Cheers
+
+David / dhildenb
 
 
