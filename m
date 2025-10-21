@@ -1,52 +1,58 @@
-Return-Path: <stable+bounces-188676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F5DBF88A8
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:06:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B324BF88D3
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 65DF84FAD4E
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:06:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29BA71888165
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC22B258EDF;
-	Tue, 21 Oct 2025 20:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4942773F1;
+	Tue, 21 Oct 2025 20:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pba0+XIU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Odizybiw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882941A3029;
-	Tue, 21 Oct 2025 20:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB6823D7E8;
+	Tue, 21 Oct 2025 20:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077164; cv=none; b=IfkDC/B0geO6NzGQ60r2zBbrdp2P1HE6DCkupQ3M0Pfgn3nUPu5fut1gG6D16v/wZo416APU5BKiiLHgcUeqdUbiVLroj5WAyA5ZFe7zPLtzJpYcGLDgotCH8tGDgU8ftZxYPndsUjaqPPq2CcuNHgCZ5BTAXl2JqQoJfRj5XrU=
+	t=1761077199; cv=none; b=LLmkItKQtps+j4dERoreFw6K4niZIirIBpSQUeTJdhcTHfUQBjSHY/p2l3mWUc2EH0V69ElVRl/AqehJptiyD3Ioy1szkbO1X4Ywl+AzsQP1Od2+ezJbUmeWPfTmSzNkeVrgyJnmBoSLzsbFV6+rxIpqG/ujGif7Ce1QaTgO3e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077164; c=relaxed/simple;
-	bh=h/VbPAvq1GeJ1X8j6wOe1oGh1r/P1NJauQxKsz+99Y4=;
+	s=arc-20240116; t=1761077199; c=relaxed/simple;
+	bh=vN3bG8HZF2gygsjJo0uh+FhGBrj81LGRnduYBkbqnIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRazg95DUpFnn6wo7OwxWeL9QHeXgySHj58BEyudDNDVzNZ9bP4mTb3mQbMbprHQ7Hv4tE2KKw11B4tMkch0aDi79q7R20yRJCVy5q5GKOvS35hArwxLznpClH4Wji9jJsNtSDwfOWQ8MhZbW40fuaEyuIH/y6zixRtbpsJ/NN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pba0+XIU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18318C4CEF1;
-	Tue, 21 Oct 2025 20:06:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ud4CUxSrUrUDkkYkYdAHijpdg7Lmdir6WtPN5smR/Q2S0WcSLpP5TYJRnGaS2PIAlEs/Y5tOH42ahsxJWhVtERnZpvcNdZjPlc4JwfMfl0ZK2g19fnc2VjOL3mbKGEqlHLqaNygsU7jDa8o9tTrSboL441Z9UQAcZqpOu3O5lu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Odizybiw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9692C4CEF1;
+	Tue, 21 Oct 2025 20:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077164;
-	bh=h/VbPAvq1GeJ1X8j6wOe1oGh1r/P1NJauQxKsz+99Y4=;
+	s=korg; t=1761077199;
+	bh=vN3bG8HZF2gygsjJo0uh+FhGBrj81LGRnduYBkbqnIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pba0+XIU6Vwrhtngrl5qR1QL8WsrkRZCsC0iwFh0RyRTurs4PRhwr9d/a2Ziq+lwT
-	 47rclGzUGB5Qjmrhf0mkwH7VeM8vqqs33mbDm5179eNmTvXc2G3iysw7L1JtFn9YKr
-	 p0xjkhs9P1Y+In5eZZf+nG8f7/RngU7b/hsFQLWA=
+	b=OdizybiwqakUJSKcmwk2qBzeBhCVuiUtvJNr0pQwAUYSWJDZYANtoxVkRb9gyI9og
+	 JVg/LtuFeo69yT8lIvO7YpGxLjm3ItNxfxeECcR/rsHGSXXkrcWB9JW/ybUiYDEfVZ
+	 DftK6fyfqvT+01M6RWEH+CrrW9o/Kop3rzqLoyVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Albershteyn <aalbersh@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.17 002/159] Revert "fs: make vfs_fileattr_[get|set] return -EOPNOTSUPP"
-Date: Tue, 21 Oct 2025 21:49:39 +0200
-Message-ID: <20251021195043.243572726@linuxfoundation.org>
+	Kenneth Crudup <kenny@panix.com>,
+	Genes Lists <lists@sapience.com>,
+	Todd Brandt <todd.e.brandt@intel.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	=?UTF-8?q?Herv=C3=A9?= <herve@dxcv.net>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Todd Brandt <todd.e.brandt@linux.intel.com>
+Subject: [PATCH 6.17 003/159] PCI: vmd: Override irq_startup()/irq_shutdown() in vmd_init_dev_msi_info()
+Date: Tue, 21 Oct 2025 21:49:40 +0200
+Message-ID: <20251021195043.267235879@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
 References: <20251021195043.182511864@linuxfoundation.org>
@@ -59,142 +65,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Albershteyn <aalbersh@redhat.com>
+From: Inochi Amaoto <inochiama@gmail.com>
 
-commit 4dd5b5ac089bb6ea719b7ffb748707ac9cbce4e4 upstream.
+commit e433110eb5bf067f74d3d15c5fb252206c66ae0b upstream.
 
-This reverts commit 474b155adf3927d2c944423045757b54aa1ca4de.
+Since commit 54f45a30c0d0 ("PCI/MSI: Add startup/shutdown for per
+device domains") set callback irq_startup() and irq_shutdown() of
+the struct pci_msi[x]_template, __irq_startup() will always invokes
+irq_startup() callback instead of irq_enable() callback overridden
+in vmd_init_dev_msi_info(). This will not start the IRQ correctly.
 
-This patch caused regression in ioctl_setflags(). Underlying filesystems
-use EOPNOTSUPP to indicate that flag is not supported. This error is
-also gets converted in ioctl_setflags(). Therefore, for unsupported
-flags error changed from EOPNOSUPP to ENOIOCTLCMD.
+Also override irq_startup()/irq_shutdown() in vmd_init_dev_msi_info(),
+so the irq_startup() can invoke the real logic.
 
-Link: https://lore.kernel.org/linux-xfs/a622643f-1585-40b0-9441-cf7ece176e83@kernel.org/
-Signed-off-by: Andrey Albershteyn <aalbersh@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 54f45a30c0d0 ("PCI/MSI: Add startup/shutdown for per device domains")
+Reported-by: Kenneth Crudup <kenny@panix.com>
+Closes: https://lore.kernel.org/r/8a923590-5b3a-406f-a324-7bd1cf894d8f@panix.com/
+Reported-by: Genes Lists <lists@sapience.com>
+Closes: https://lore.kernel.org/r/4b392af8847cc19720ffcd53865f60ab3edc56b3.camel@sapience.com
+Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220658
+Reported-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Closes: https://lore.kernel.org/r/8d6887a5-60bc-423c-8f7a-87b4ab739f6a@hartkopp.net
+Reported-by: Hervé <herve@dxcv.net>
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Kenneth R. Crudup <kenny@panix.com>
+Tested-by: Genes Lists <lists@sapience.com>
+Tested-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+Tested-by: Hervé <herve@dxcv.net>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251014014607.612586-1-inochiama@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/file_attr.c         | 12 ++----------
- fs/fuse/ioctl.c        |  4 ----
- fs/overlayfs/copy_up.c |  2 +-
- fs/overlayfs/inode.c   |  5 ++++-
- 4 files changed, 7 insertions(+), 16 deletions(-)
+ drivers/pci/controller/vmd.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/fs/file_attr.c b/fs/file_attr.c
-index 12424d4945d0..460b2dd21a85 100644
---- a/fs/file_attr.c
-+++ b/fs/file_attr.c
-@@ -84,7 +84,7 @@ int vfs_fileattr_get(struct dentry *dentry, struct file_kattr *fa)
- 	int error;
- 
- 	if (!inode->i_op->fileattr_get)
--		return -EOPNOTSUPP;
-+		return -ENOIOCTLCMD;
- 
- 	error = security_inode_file_getattr(dentry, fa);
- 	if (error)
-@@ -270,7 +270,7 @@ int vfs_fileattr_set(struct mnt_idmap *idmap, struct dentry *dentry,
- 	int err;
- 
- 	if (!inode->i_op->fileattr_set)
--		return -EOPNOTSUPP;
-+		return -ENOIOCTLCMD;
- 
- 	if (!inode_owner_or_capable(idmap, inode))
- 		return -EPERM;
-@@ -312,8 +312,6 @@ int ioctl_getflags(struct file *file, unsigned int __user *argp)
- 	int err;
- 
- 	err = vfs_fileattr_get(file->f_path.dentry, &fa);
--	if (err == -EOPNOTSUPP)
--		err = -ENOIOCTLCMD;
- 	if (!err)
- 		err = put_user(fa.flags, argp);
- 	return err;
-@@ -335,8 +333,6 @@ int ioctl_setflags(struct file *file, unsigned int __user *argp)
- 			fileattr_fill_flags(&fa, flags);
- 			err = vfs_fileattr_set(idmap, dentry, &fa);
- 			mnt_drop_write_file(file);
--			if (err == -EOPNOTSUPP)
--				err = -ENOIOCTLCMD;
- 		}
- 	}
- 	return err;
-@@ -349,8 +345,6 @@ int ioctl_fsgetxattr(struct file *file, void __user *argp)
- 	int err;
- 
- 	err = vfs_fileattr_get(file->f_path.dentry, &fa);
--	if (err == -EOPNOTSUPP)
--		err = -ENOIOCTLCMD;
- 	if (!err)
- 		err = copy_fsxattr_to_user(&fa, argp);
- 
-@@ -371,8 +365,6 @@ int ioctl_fssetxattr(struct file *file, void __user *argp)
- 		if (!err) {
- 			err = vfs_fileattr_set(idmap, dentry, &fa);
- 			mnt_drop_write_file(file);
--			if (err == -EOPNOTSUPP)
--				err = -ENOIOCTLCMD;
- 		}
- 	}
- 	return err;
-diff --git a/fs/fuse/ioctl.c b/fs/fuse/ioctl.c
-index 57032eadca6c..fdc175e93f74 100644
---- a/fs/fuse/ioctl.c
-+++ b/fs/fuse/ioctl.c
-@@ -536,8 +536,6 @@ int fuse_fileattr_get(struct dentry *dentry, struct file_kattr *fa)
- cleanup:
- 	fuse_priv_ioctl_cleanup(inode, ff);
- 
--	if (err == -ENOTTY)
--		err = -EOPNOTSUPP;
- 	return err;
+diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
+index 1bd5bf4a6097..b4b62b9ccc45 100644
+--- a/drivers/pci/controller/vmd.c
++++ b/drivers/pci/controller/vmd.c
+@@ -192,6 +192,12 @@ static void vmd_pci_msi_enable(struct irq_data *data)
+ 	data->chip->irq_unmask(data);
  }
  
-@@ -574,7 +572,5 @@ int fuse_fileattr_set(struct mnt_idmap *idmap,
- cleanup:
- 	fuse_priv_ioctl_cleanup(inode, ff);
- 
--	if (err == -ENOTTY)
--		err = -EOPNOTSUPP;
- 	return err;
- }
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index aac7e34f56c1..604a82acd164 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -178,7 +178,7 @@ static int ovl_copy_fileattr(struct inode *inode, const struct path *old,
- 	err = ovl_real_fileattr_get(old, &oldfa);
- 	if (err) {
- 		/* Ntfs-3g returns -EINVAL for "no fileattr support" */
--		if (err == -EOPNOTSUPP || err == -EINVAL)
-+		if (err == -ENOTTY || err == -EINVAL)
- 			return 0;
- 		pr_warn("failed to retrieve lower fileattr (%pd2, err=%i)\n",
- 			old->dentry, err);
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index aaa4cf579561..e11f310ce092 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -720,7 +720,10 @@ int ovl_real_fileattr_get(const struct path *realpath, struct file_kattr *fa)
- 	if (err)
- 		return err;
- 
--	return vfs_fileattr_get(realpath->dentry, fa);
-+	err = vfs_fileattr_get(realpath->dentry, fa);
-+	if (err == -ENOIOCTLCMD)
-+		err = -ENOTTY;
-+	return err;
++static unsigned int vmd_pci_msi_startup(struct irq_data *data)
++{
++	vmd_pci_msi_enable(data);
++	return 0;
++}
++
+ static void vmd_irq_disable(struct irq_data *data)
+ {
+ 	struct vmd_irq *vmdirq = data->chip_data;
+@@ -210,6 +216,11 @@ static void vmd_pci_msi_disable(struct irq_data *data)
+ 	vmd_irq_disable(data->parent_data);
  }
  
- int ovl_fileattr_get(struct dentry *dentry, struct file_kattr *fa)
++static void vmd_pci_msi_shutdown(struct irq_data *data)
++{
++	vmd_pci_msi_disable(data);
++}
++
+ static struct irq_chip vmd_msi_controller = {
+ 	.name			= "VMD-MSI",
+ 	.irq_compose_msi_msg	= vmd_compose_msi_msg,
+@@ -309,6 +320,8 @@ static bool vmd_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
+ 	if (!msi_lib_init_dev_msi_info(dev, domain, real_parent, info))
+ 		return false;
+ 
++	info->chip->irq_startup		= vmd_pci_msi_startup;
++	info->chip->irq_shutdown	= vmd_pci_msi_shutdown;
+ 	info->chip->irq_enable		= vmd_pci_msi_enable;
+ 	info->chip->irq_disable		= vmd_pci_msi_disable;
+ 	return true;
 -- 
 2.51.1.dirty
 
