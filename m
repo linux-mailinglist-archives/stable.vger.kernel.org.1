@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-188644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDD8BF884E
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:04:41 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A691FBF869A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:57:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE80419C4DBF
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:05:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2AF7D3432E9
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8537127CB04;
-	Tue, 21 Oct 2025 20:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991B5274FDF;
+	Tue, 21 Oct 2025 19:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DooWuGTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qp9Xhvp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BAB25A355;
-	Tue, 21 Oct 2025 20:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56657274B5C;
+	Tue, 21 Oct 2025 19:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077063; cv=none; b=mVIrwu1QiwqX3qlbXhPQmVEXQvyOcYwRCynzcWuLM1kL+OY1velIQgAHKsztz+8UdLF3qyfMJEYINtwNO5O+Fa9z7p3OI+i+2W2M9b2+ppe6e691MRY8/4tExQxIXx1VdhDxk+vgfQvTlCrJ+tXf7PYRa+PIrRqFG9m5wgjixxQ=
+	t=1761076677; cv=none; b=Qv2CuvKK1NPWR9kRIJlCBqJhMYdUA8Q7N1TsF1IUuG/ZVIJwv2xkckhYDK327gNOSrDoG9Nsj5fihisxnDTL47SnUjgNT/iZ2iSFKMm4qeFS8aGNkyb6gEw+rZfI9ugsmsbKYdEw7ywSk3xTQfVYhMrs/5rlc8Gl7EJY5Y16e3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077063; c=relaxed/simple;
-	bh=Btp7ahj1Xy+IonypYtGKXDX9s3zlk1NUsdDIvihZo0M=;
+	s=arc-20240116; t=1761076677; c=relaxed/simple;
+	bh=PNKaXs+Ridf2VLuSVok9h34aLLukT9DdXCBYTMKtVwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OFZdHhUuq1/Pv9OebxT/+LVHZsVL7TW6eFIn5wZ/RGpchS4DSGpSPT1pF5zAIjcE906JKDwzpQ7diBWff6l95O8KPSuWbFh3KKngQaSGbpEyetjiyhDUuKIuOw7LSdXbbwKsUIGrvUsK8S9pwudSfax5pORjX78tkkny33IWPGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DooWuGTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327B6C4CEF1;
-	Tue, 21 Oct 2025 20:04:21 +0000 (UTC)
+	 MIME-Version; b=Fs5KuceacP+t+b2N7WLC/f7TbNtqWiggVdvi365WoCK+XifQcQvkkjQJjyP7LKMddiAlZk4n3GzmiMa5UxkvhnIrITq86JXVvFVkkTSZMUrY3sZA8d9DP6uG+hAgNt8aeYvKdEjn9e9RBWRJcJkS8a/DbZ5FqZ3cUhZBKl/Hmg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qp9Xhvp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6623C4CEF1;
+	Tue, 21 Oct 2025 19:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077062;
-	bh=Btp7ahj1Xy+IonypYtGKXDX9s3zlk1NUsdDIvihZo0M=;
+	s=korg; t=1761076677;
+	bh=PNKaXs+Ridf2VLuSVok9h34aLLukT9DdXCBYTMKtVwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DooWuGTkPCWkCjtK0azfwQ39imLGSyoEvim2uqXSuC8Q+bGbRGvLGkP5am5uEyKtF
-	 8lK0zSnHcl7E89XO7QsuWg3V0GEQg+D59iIKZ90EH5PNKzIHTjItIdXZwHGqW821MO
-	 0hH1zPVuNfnaWg+jxOuaiZAIyziyQqPyRoyQMg7c=
+	b=2qp9XhvpcGsEIJ2HfqsMOQtRz9GtqIHswTDiVzm9BVgxdrYaI85h22tpEfv+iEuKO
+	 i/byy8e5RR2LYmJ8IlwnUVjXM86q48U4qWIjshu0WwbpCQUHE1uY0wE5nP0YVIyf2W
+	 LhB9u4bLJlzbNc+Dtg8MRs2oGWPZWl0KoktfxQ7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 123/136] tcp: convert to dev_net_rcu()
+	Jakub Acs <acsjakub@amazon.de>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	SeongJae Park <sj@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Peter Xu <peterx@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 102/105] mm/ksm: fix flag-dropping behavior in ksm_madvise
 Date: Tue, 21 Oct 2025 21:51:51 +0200
-Message-ID: <20251021195038.939285293@linuxfoundation.org>
+Message-ID: <20251021195024.076805825@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,199 +69,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jakub Acs <acsjakub@amazon.de>
 
-[ Upstream commit e7b9ecce562ca6a1de32c56c597fa45e08c44ec0 ]
+commit f04aad36a07cc17b7a5d5b9a2d386ce6fae63e93 upstream.
 
-TCP uses of dev_net() are under RCU protection, change them
-to dev_net_rcu() to get LOCKDEP support.
+syzkaller discovered the following crash: (kernel BUG)
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250301201424.2046477-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 833d4313bc1e ("mptcp: reset blackhole on success with non-loopback ifaces")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[   44.607039] ------------[ cut here ]------------
+[   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+[   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+[   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
+
+<snip other registers, drop unreliable trace>
+
+[   44.617726] Call Trace:
+[   44.617926]  <TASK>
+[   44.619284]  userfaultfd_release+0xef/0x1b0
+[   44.620976]  __fput+0x3f9/0xb60
+[   44.621240]  fput_close_sync+0x110/0x210
+[   44.622222]  __x64_sys_close+0x8f/0x120
+[   44.622530]  do_syscall_64+0x5b/0x2f0
+[   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   44.623244] RIP: 0033:0x7f365bb3f227
+
+Kernel panics because it detects UFFD inconsistency during
+userfaultfd_release_all().  Specifically, a VMA which has a valid pointer
+to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
+
+The inconsistency is caused in ksm_madvise(): when user calls madvise()
+with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR mode,
+it accidentally clears all flags stored in the upper 32 bits of
+vma->vm_flags.
+
+Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int and
+int are 32-bit wide.  This setup causes the following mishap during the &=
+~VM_MERGEABLE assignment.
+
+VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+promoted to unsigned long before the & operation.  This promotion fills
+upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+even for a signed conversion, this wouldn't help as the leading bit is 0).
+& operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+the upper 32-bits of its value.
+
+Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
+BIT() macro.
+
+Note: other VM_* flags are not affected: This only happens to the
+VM_MERGEABLE flag, as the other VM_* flags are all constants of type int
+and after ~ operation, they end up with leading 1 and are thus converted
+to unsigned long with leading 1s.
+
+Note 2:
+After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+no longer a kernel BUG, but a WARNING at the same place:
+
+[   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+
+but the root-cause (flag-drop) remains the same.
+
+[akpm@linux-foundation.org: rust bindgen wasn't able to handle BIT(), from Miguel]
+  Link: https://lore.kernel.org/oe-kbuild-all/202510030449.VfSaAjvd-lkp@intel.com/
+Link: https://lkml.kernel.org/r/20251001090353.57523-2-acsjakub@amazon.de
+Fixes: 7677f7fd8be7 ("userfaultfd: add minor fault registration mode")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Signed-off-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: SeongJae Park <sj@kernel.org>
+Tested-by: Alice Ryhl <aliceryhl@google.com>
+Tested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Xu Xin <xu.xin16@zte.com.cn>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[acsjakub@amazon.de: adapt rust bindgen const to older versions]
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/inet6_hashtables.h |    2 +-
- include/net/inet_hashtables.h  |    2 +-
- net/ipv4/tcp_ipv4.c            |   12 ++++++------
- net/ipv4/tcp_metrics.c         |    6 +++---
- net/ipv6/tcp_ipv6.c            |   22 +++++++++++-----------
- 5 files changed, 22 insertions(+), 22 deletions(-)
+ include/linux/mm.h              |    2 +-
+ rust/bindings/bindings_helper.h |    2 ++
+ rust/bindings/lib.rs            |    1 +
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/include/net/inet6_hashtables.h
-+++ b/include/net/inet6_hashtables.h
-@@ -150,7 +150,7 @@ static inline struct sock *__inet6_looku
- 					      int iif, int sdif,
- 					      bool *refcounted)
- {
--	struct net *net = dev_net(skb_dst(skb)->dev);
-+	struct net *net = dev_net_rcu(skb_dst(skb)->dev);
- 	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
- 	struct sock *sk;
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -315,7 +315,7 @@ extern unsigned int kobjsize(const void
+ #define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
+ #define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
+ #define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
+-#define VM_MERGEABLE	0x80000000	/* KSM may merge identical pages */
++#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
  
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -492,7 +492,7 @@ static inline struct sock *__inet_lookup
- 					     const int sdif,
- 					     bool *refcounted)
- {
--	struct net *net = dev_net(skb_dst(skb)->dev);
-+	struct net *net = dev_net_rcu(skb_dst(skb)->dev);
- 	const struct iphdr *iph = ip_hdr(skb);
- 	struct sock *sk;
+ #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+ #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -12,8 +12,10 @@
+ #include <linux/refcount.h>
+ #include <linux/wait.h>
+ #include <linux/sched.h>
++#include <linux/mm.h>
  
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -494,14 +494,14 @@ int tcp_v4_err(struct sk_buff *skb, u32
- {
- 	const struct iphdr *iph = (const struct iphdr *)skb->data;
- 	struct tcphdr *th = (struct tcphdr *)(skb->data + (iph->ihl << 2));
--	struct tcp_sock *tp;
-+	struct net *net = dev_net_rcu(skb->dev);
- 	const int type = icmp_hdr(skb)->type;
- 	const int code = icmp_hdr(skb)->code;
--	struct sock *sk;
- 	struct request_sock *fastopen;
-+	struct tcp_sock *tp;
- 	u32 seq, snd_una;
-+	struct sock *sk;
- 	int err;
--	struct net *net = dev_net(skb->dev);
+ /* `bindgen` gets confused at certain things. */
+ const size_t BINDINGS_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+ const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
+ const gfp_t BINDINGS___GFP_ZERO = __GFP_ZERO;
++const vm_flags_t BINDINGS_VM_MERGEABLE = VM_MERGEABLE;
+--- a/rust/bindings/lib.rs
++++ b/rust/bindings/lib.rs
+@@ -51,3 +51,4 @@ pub use bindings_raw::*;
  
- 	sk = __inet_lookup_established(net, net->ipv4.tcp_death_row.hashinfo,
- 				       iph->daddr, th->dest, iph->saddr,
-@@ -786,7 +786,7 @@ static void tcp_v4_send_reset(const stru
- 	arg.iov[0].iov_base = (unsigned char *)&rep;
- 	arg.iov[0].iov_len  = sizeof(rep.th);
- 
--	net = sk ? sock_net(sk) : dev_net(skb_dst(skb)->dev);
-+	net = sk ? sock_net(sk) : dev_net_rcu(skb_dst(skb)->dev);
- 
- 	/* Invalid TCP option size or twice included auth */
- 	if (tcp_parse_auth_options(tcp_hdr(skb), &md5_hash_location, &aoh))
-@@ -1965,7 +1965,7 @@ EXPORT_SYMBOL(tcp_v4_do_rcv);
- 
- int tcp_v4_early_demux(struct sk_buff *skb)
- {
--	struct net *net = dev_net(skb->dev);
-+	struct net *net = dev_net_rcu(skb->dev);
- 	const struct iphdr *iph;
- 	const struct tcphdr *th;
- 	struct sock *sk;
-@@ -2176,7 +2176,7 @@ static void tcp_v4_fill_cb(struct sk_buf
- 
- int tcp_v4_rcv(struct sk_buff *skb)
- {
--	struct net *net = dev_net(skb->dev);
-+	struct net *net = dev_net_rcu(skb->dev);
- 	enum skb_drop_reason drop_reason;
- 	int sdif = inet_sdif(skb);
- 	int dif = inet_iif(skb);
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -170,7 +170,7 @@ static struct tcp_metrics_block *tcpm_ne
- 	bool reclaim = false;
- 
- 	spin_lock_bh(&tcp_metrics_lock);
--	net = dev_net(dst->dev);
-+	net = dev_net_rcu(dst->dev);
- 
- 	/* While waiting for the spin-lock the cache might have been populated
- 	 * with this entry and so we have to check again.
-@@ -273,7 +273,7 @@ static struct tcp_metrics_block *__tcp_g
- 		return NULL;
- 	}
- 
--	net = dev_net(dst->dev);
-+	net = dev_net_rcu(dst->dev);
- 	hash ^= net_hash_mix(net);
- 	hash = hash_32(hash, tcp_metrics_hash_log);
- 
-@@ -318,7 +318,7 @@ static struct tcp_metrics_block *tcp_get
- 	else
- 		return NULL;
- 
--	net = dev_net(dst->dev);
-+	net = dev_net_rcu(dst->dev);
- 	hash ^= net_hash_mix(net);
- 	hash = hash_32(hash, tcp_metrics_hash_log);
- 
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -376,7 +376,7 @@ static int tcp_v6_err(struct sk_buff *sk
- {
- 	const struct ipv6hdr *hdr = (const struct ipv6hdr *)skb->data;
- 	const struct tcphdr *th = (struct tcphdr *)(skb->data+offset);
--	struct net *net = dev_net(skb->dev);
-+	struct net *net = dev_net_rcu(skb->dev);
- 	struct request_sock *fastopen;
- 	struct ipv6_pinfo *np;
- 	struct tcp_sock *tp;
-@@ -864,16 +864,16 @@ static void tcp_v6_send_response(const s
- 				 int oif, int rst, u8 tclass, __be32 label,
- 				 u32 priority, u32 txhash, struct tcp_key *key)
- {
--	const struct tcphdr *th = tcp_hdr(skb);
--	struct tcphdr *t1;
--	struct sk_buff *buff;
--	struct flowi6 fl6;
--	struct net *net = sk ? sock_net(sk) : dev_net(skb_dst(skb)->dev);
--	struct sock *ctl_sk = net->ipv6.tcp_sk;
-+	struct net *net = sk ? sock_net(sk) : dev_net_rcu(skb_dst(skb)->dev);
- 	unsigned int tot_len = sizeof(struct tcphdr);
-+	struct sock *ctl_sk = net->ipv6.tcp_sk;
-+	const struct tcphdr *th = tcp_hdr(skb);
- 	__be32 mrst = 0, *topt;
- 	struct dst_entry *dst;
--	__u32 mark = 0;
-+	struct sk_buff *buff;
-+	struct tcphdr *t1;
-+	struct flowi6 fl6;
-+	u32 mark = 0;
- 
- 	if (tsecr)
- 		tot_len += TCPOLEN_TSTAMP_ALIGNED;
-@@ -1036,7 +1036,7 @@ static void tcp_v6_send_reset(const stru
- 	if (!sk && !ipv6_unicast_destination(skb))
- 		return;
- 
--	net = sk ? sock_net(sk) : dev_net(skb_dst(skb)->dev);
-+	net = sk ? sock_net(sk) : dev_net_rcu(skb_dst(skb)->dev);
- 	/* Invalid TCP option size or twice included auth */
- 	if (tcp_parse_auth_options(th, &md5_hash_location, &aoh))
- 		return;
-@@ -1739,6 +1739,7 @@ static void tcp_v6_fill_cb(struct sk_buf
- 
- INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
- {
-+	struct net *net = dev_net_rcu(skb->dev);
- 	enum skb_drop_reason drop_reason;
- 	int sdif = inet6_sdif(skb);
- 	int dif = inet6_iif(skb);
-@@ -1748,7 +1749,6 @@ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(s
- 	bool refcounted;
- 	int ret;
- 	u32 isn;
--	struct net *net = dev_net(skb->dev);
- 
- 	drop_reason = SKB_DROP_REASON_NOT_SPECIFIED;
- 	if (skb->pkt_type != PACKET_HOST)
-@@ -1999,7 +1999,7 @@ do_time_wait:
- 
- void tcp_v6_early_demux(struct sk_buff *skb)
- {
--	struct net *net = dev_net(skb->dev);
-+	struct net *net = dev_net_rcu(skb->dev);
- 	const struct ipv6hdr *hdr;
- 	const struct tcphdr *th;
- 	struct sock *sk;
+ pub const GFP_KERNEL: gfp_t = BINDINGS_GFP_KERNEL;
+ pub const __GFP_ZERO: gfp_t = BINDINGS___GFP_ZERO;
++pub const VM_MERGEABLE: vm_flags_t = BINDINGS_VM_MERGEABLE;
 
 
 
