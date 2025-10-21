@@ -1,131 +1,124 @@
-Return-Path: <stable+bounces-188317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1864BBF5A3C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 11:51:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4121BF5A7B
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 11:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 09E01501DD4
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 09:50:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71926188A800
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 09:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE5031DD9A;
-	Tue, 21 Oct 2025 09:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B39A24DD09;
+	Tue, 21 Oct 2025 09:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="LoUIUnBG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TPjgrZ+Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EFB302175
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 09:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B846E2D77F7;
+	Tue, 21 Oct 2025 09:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761040213; cv=none; b=ISgJ/hHVyXg4kwtmF01cLhrAYHFiI9983J/pqctH133e1Zml2fH4pDbyrKl/xkFAgNNan219w7u0Uz05bEKaJF+nMCVw1VLGsZEO25u+oOyTkOwQe6q/NUDzIsMVybFgzkmEA1qwGdhUOArcHhw9YrvA7OP9KV4kcWgsoty6e2A=
+	t=1761040594; cv=none; b=a0SuktBxNI4ZmaiiekmpeXF4sK93p06dzg6MuTZ7W/npw+nKYTZy3iFb2ancb7DUbc/pounsdyoZLJcboS/0ESgl4zFeF/Z8tO+iSLZtPU8v1Dl/xOvZngITyS1cSw391uStK1kLXIVCqK09U2fvI+Bl+vjY2eosEd9YONEyDQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761040213; c=relaxed/simple;
-	bh=w8Oc5CXQnODol2Z1aBao8r/q0Wa58FCcym4zOFLDd3w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CgjBmmwP67sqVSkdttvoBskcW9WM7pKCpFTOnbz5n9t1aVLXLMhAWfz04bbKRCBUjq4kRlsx5hKYU1oLOZaC0QM4kuq3616uWJD00M3c3QQX+YMDINbHrpbvbKxaGi3TdeqT2zUguZXwtixoLq6jEedQo35CpF4KWvxUqpzlx1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=LoUIUnBG; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-426fc536b5dso2944315f8f.3
-        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 02:50:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1761040209; x=1761645009; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qPNz7PQsxK/vD4wJS6lZP5itb6jIXQBhqBzv0rdeEmk=;
-        b=LoUIUnBGuhzf9NIy5fs35FV65Yd8r2xi3lQzmLTOpReUfsGWeGfiTVwqEbahS5QK+2
-         P+EPPUlDpIxZK6aILXyz0ZJmUdT9645fjahYp+zHHXOKRVUlxFb/WtlAIzblEZbXPH9F
-         VV9wQR+znM0QnBPta1Q4r2HJtPHNLbCVsscS8hXUEyt+PImUiJLOvKENNAXg6kTVJ2Bs
-         K29z3Z8eu2hrW9WDykzHoU8s704BA9d1dQKzT87xDYaHltTmw4cg7T/vz/X9/6pgjHEI
-         ZE7QDX7pTZzH9mCfrZr7A0nndzc7FDnkfIWe8+mcRkbXard4ZmNeeDIpY+u3RQ4XWC0P
-         JZUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761040209; x=1761645009;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qPNz7PQsxK/vD4wJS6lZP5itb6jIXQBhqBzv0rdeEmk=;
-        b=OoAVZ0knek1yjZcqE2gKGa56Plc/GdYF0UzxqxG6RI5jxfnfmUdrO8D9yySLq2O8i5
-         DfzBUN7H1bVpeCgZSyz4RCrdvRjBtVb73mIi7vt4eVNm7BL8VQeVMafxbBK6PdTE9Q7+
-         +v+cOSesZw2R9vHhSK78YMLeHO9EzNYIiaydnTjPhD3FVSgrf+yEWMOD611Fywm838Iw
-         xRHJHsTp9iWFOMsbddEESubAS8YauzqKTINFhDETGK0MSxj3y29zBky9Juyw1CTbb8lC
-         EgZIKVTuL0yYsBeqfmGOWVNM+wvwcGv2+4bygHaWoPW8xxpWovQvnBbLVjJUWs2+92D0
-         VgjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXcIvTi+vhGENXNM1FVF4vCi7INkm8TDlgidjSjN2Uwrm2qaMh4mA4233dYATbhlmhH1t+y0q4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKHiTG9fSb+VmOy/HdyUBwxaFZ/cZQHfbwsiG3ragntEwAo8XA
-	mGRBTJt5nWluC0eLhrmmJ0x030UUIKoszwWZJ3Hxv3s6HTluK4ECsuhSxXKvNe6N9Bw=
-X-Gm-Gg: ASbGnctKb9Z60n9miC1sh/CTE5NTY4Dn6nJYklYYesDfRDL9tPj/2rQ3rfFepfGc8a2
-	zJTUsl32iVkm5erR/8FLbc3rQy2UnLxHZkrlv6HRlEtSoKMxf02hW0bB9l2bITYle5ISCg2k7FM
-	EFxpqr97jGjOlHIFgrzhxlD1BSSZkSFroRhzUay+A0sbJNaKKHX5BO+R0gjIAWe825by6fo0mZR
-	T+0wbgj9CQRlwYpPZwOBaiewEq3nwa4Q793UYeWCAc1M/EPrcQ00s0l+hml/uK+Er2tLlNLyBX3
-	Iq48ll6X617+oI6CNXlAilGiZlsQmVi4qJGNoBhhD+63kDY8PyaWfU6jVy2oTsE2WHaQhH6WjDI
-	TiIHp+95xgPj/FRv+PRHwP3C0bKj7yQpqB6xYUs8dgLtQcAYJllNu0GtEjM10x2cXLz8EThSn6F
-	iR
-X-Google-Smtp-Source: AGHT+IHPGkc/h8Jiiqko8Gw+upkQmqIHT9O+SKimr6c7jtn4O2FqbpYyJAxT0Ch9yDXgoZBek8Pn1g==
-X-Received: by 2002:a05:600c:37c7:b0:46e:1fb7:a1b3 with SMTP id 5b1f17b1804b1-4711790b56emr98878505e9.23.1761040208871;
-        Tue, 21 Oct 2025 02:50:08 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:2979:9ff9:6677:97c6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-471556e1892sm183880295e9.18.2025.10.21.02.50.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 02:50:08 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mark Cave-Ayland <mark.caveayland@nutanix.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] gpio: idio-16: Fix regmap initialization errors
-Date: Tue, 21 Oct 2025 11:50:06 +0200
-Message-ID: <176104019221.14444.5245953247967826732.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251020-fix-gpio-idio-16-regmap-v2-0-ebeb50e93c33@kernel.org>
-References: <20251020-fix-gpio-idio-16-regmap-v2-0-ebeb50e93c33@kernel.org>
+	s=arc-20240116; t=1761040594; c=relaxed/simple;
+	bh=5Rm81nIKRtPBRA3BFntrFY6s5Mpud2dDBun1ALVD8d4=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=rhyXodCVlwxPf0j7cYbfUwartUtbjuwqYJpIlD49KP7UoRgxvEF5VifTvHIEeG06LTKaqFylkYIkGZ67IpDN+j1aoumRIF3HEH/30hfNucNcPd1RSfIR2juQY0lQF12HlquGInZvS2IUD6GegKQ5qnSx+boo782koy7/+qnzyXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TPjgrZ+Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D772C4CEF1;
+	Tue, 21 Oct 2025 09:56:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761040594;
+	bh=5Rm81nIKRtPBRA3BFntrFY6s5Mpud2dDBun1ALVD8d4=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=TPjgrZ+ZaAcHNg/Cf8O76DLSZphZpSGUpJBhliSKiC3X6LPwVGgRCMsES/Z7RFANr
+	 VyQNhX++xTTRzpYuwcKZV2SLH5wLa3jdwUN6nZ0CjeaQz3S/wt7tVSplkR8nlXjs8q
+	 hisqHedVWgC5NWXYFUStHNnGFD0+rFPpeP8Hb5cVn2ZcpHxNby05xwj69cRLBbfda9
+	 GTnPkNIeoopDSyihJ5Dq917ImGvkrE93AVAW49jTJmO+KCsSZrGD0dbCvQQcayzDFE
+	 VZyvERmx5R/zQSwkvs5xiz1TSBhHArsTCURc+9i8x9ovMwhNw8T0BSC5p334Hd0kCO
+	 A9o+v2Zjwsoyw==
+Message-ID: <9996520a-fbad-4f02-9630-7de85f04c286@kernel.org>
+Date: Tue, 21 Oct 2025 11:56:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: Re: [PATCH v2] media: videobuf2: forbid remove_bufs when legacy
+ fileio is active
+To: Marek Szyprowski <m.szyprowski@samsung.com>, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Tomasz Figa <tfiga@chromium.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ Hans Verkuil <hverkuil@kernel.org>, stable@vger.kernel.org,
+ Shuangpeng Bai <SJB7183@psu.edu>
+References: <CGME20251020160135eucas1p29eb8517e240f188f102e77713f85e29d@eucas1p2.samsung.com>
+ <20251020160121.1985354-1-m.szyprowski@samsung.com>
+Content-Language: en-US, nl
+In-Reply-To: <20251020160121.1985354-1-m.szyprowski@samsung.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Hi Marek,
 
-
-On Mon, 20 Oct 2025 17:51:43 +0900, William Breathitt Gray wrote:
-> The migration of IDIO-16 GPIO drivers to the regmap API resulted in some
-> regressions to the gpio-104-idio-16, gpio-pci-idio-16, and gpio-idio-16
-> modules. Specifically, the 104-idio-16 and pci-idio-16 GPIO drivers
-> utilize regmap caching and thus must set max_register for their
-> regmap_config, while gpio-idio-16 requires fixed_direction_output to
-> represent the fixed direction of the IDIO-16 GPIO lines. Fixes for these
-> regressions are provided by this series.
+On 20/10/2025 18:01, Marek Szyprowski wrote:
+> vb2_ioctl_remove_bufs() call manipulates queue internal buffer list,
+> potentially overwriting some pointers used by the legacy fileio access
+> mode. Add a vb2_verify_memory_type() check symmetrical to
+> vb2_ioctl_create_bufs() to forbid that ioctl when fileio is active to
+> protect internal queue state between subsequent read/write calls.
 > 
-> [...]
+> CC: stable@vger.kernel.org
+> Fixes: a3293a85381e ("media: v4l2: Add REMOVE_BUFS ioctl")
+> Reported-by: Shuangpeng Bai<SJB7183@psu.edu>
+> Suggested-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
 
-Queued for fixes, thanks!
+I'll pick this up as a fix for v6.18. I think this is important enough to
+not wait for v6.19.
 
-[1/3] gpio: 104-idio-16: Define maximum valid register address offset
-      https://git.kernel.org/brgl/linux/c/c4d35e635f3a65aec291a6045cae8c99cede5bba
-[2/3] gpio: pci-idio-16: Define maximum valid register address offset
-      https://git.kernel.org/brgl/linux/c/d37623132a6347b4ab9e2179eb3f2fa77863c364
-[3/3] gpio: idio-16: Define fixed direction of the GPIO lines
-      https://git.kernel.org/brgl/linux/c/0d3f95740ced3acb6171cdec8c5bef336b0cabdb
+Regards,
 
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+	Hans
+
+> ---
+> v2:
+> - dropped a change to vb2_ioctl_create_bufs(), as it is already handled
+>   by the vb2_verify_memory_type() call
+> - replaced queue->type check in vb2_ioctl_remove_bufs() by a call to
+>   vb2_verify_memory_type() which covers all cases
+> 
+> v1: https://lore.kernel.org/all/20251016111154.993949-1-m.szyprowski@samsung.com/
+> ---
+>  drivers/media/common/videobuf2/videobuf2-v4l2.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/media/common/videobuf2/videobuf2-v4l2.c b/drivers/media/common/videobuf2/videobuf2-v4l2.c
+> index d911021c1bb0..0de7490292fe 100644
+> --- a/drivers/media/common/videobuf2/videobuf2-v4l2.c
+> +++ b/drivers/media/common/videobuf2/videobuf2-v4l2.c
+> @@ -1000,9 +1000,11 @@ int vb2_ioctl_remove_bufs(struct file *file, void *priv,
+>  			  struct v4l2_remove_buffers *d)
+>  {
+>  	struct video_device *vdev = video_devdata(file);
+> +	int res;
+>  
+> -	if (vdev->queue->type != d->type)
+> -		return -EINVAL;
+> +	res = vb2_verify_memory_type(vdev->queue, vdev->queue->memory, d->type);
+> +	if (res)
+> +		return res;
+>  
+>  	if (d->count == 0)
+>  		return 0;
+
 
