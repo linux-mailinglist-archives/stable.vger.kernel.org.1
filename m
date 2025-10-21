@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-188517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58B9BF8694
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:57:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E700BF8795
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:02:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A3CD5816C2
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:57:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED6A4188F9B8
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB8C2750ED;
-	Tue, 21 Oct 2025 19:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FC11FF7BC;
+	Tue, 21 Oct 2025 20:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDiLDjV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvW2+DNL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE841273D66;
-	Tue, 21 Oct 2025 19:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA85350A3C;
+	Tue, 21 Oct 2025 20:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076658; cv=none; b=H7XOppEk/hQlOTAP0SffkH/pc5qvpmeRQzKASq3Jg+4FonDMUrx6cqeRJLP7Ufk+JOoUMZ/XDgOHS/ABSz6DUb9r/fn55NnFGTbvBz0nAssQdRR+zbPagcxtKZKwxxqOq+wDNm/nvNsALJ1z5TyU0kXJaHcQ432f+TLptGbw/G4=
+	t=1761076930; cv=none; b=f7Uekk2x22cG21kT3g8qmcCvhye6W4YKknpTesUk+TYrYoxqoJ2qfRIp9mMZ1Dt3v/bZgbSxTy6KVY3c85jrG7ZSD/N4JeBf0vxoGRPA957/PfehDR/sczgAPiC4vD6jqvoFVMBiYIq5ProVM9s36Wi/tfvAAQRo7ukpico6Tno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076658; c=relaxed/simple;
-	bh=ORxnmxONr3/i1KidS7xU2mfnGT9SYjRCiz+E7c1Iv3Y=;
+	s=arc-20240116; t=1761076930; c=relaxed/simple;
+	bh=TrvWM8qTvKS46o2MBefGmlrdrPERCJPDCuF+tW1XSY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fBm8kh3oywv2pxNoR/1Lms09B4fA8dv3UDtA2rxN6Ctx9x/w52m3nUp+YiFt82JMuaYXAT9V1IOJb4RfdQBe1ZP+rJviEKV0mvR4rth55asqPG8eE/Sby+/laiQEun/0zaNg2O7R+BKd98TZRftEBQRJqehUssVeTt/cYf+rLwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDiLDjV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB86C4CEF1;
-	Tue, 21 Oct 2025 19:57:37 +0000 (UTC)
+	 MIME-Version; b=cOPVRWPohj2s7iF406VB06MEiy6kOs8RxK5T/ohHWH4/curZPtL3sXRBYt49HrfpkRdfx6e1Re1DUjMYrVFyb5vL8myfgt0CZ6wGgFQqBPSKnGcWLCL0ozkkCmeYQ9lehno96SU5FZLx1Ov6pDA2zuGjyKlDgnxarWDNRDLYcOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvW2+DNL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6F1C4CEF1;
+	Tue, 21 Oct 2025 20:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076657;
-	bh=ORxnmxONr3/i1KidS7xU2mfnGT9SYjRCiz+E7c1Iv3Y=;
+	s=korg; t=1761076930;
+	bh=TrvWM8qTvKS46o2MBefGmlrdrPERCJPDCuF+tW1XSY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDiLDjV8AbBs4Gw4ofQoY6h0qVBlvX/mT4Fj/2nrTaubSISZ23ruz/14wX2DhgaAH
-	 giyBX8wvr+dxtwCXUD6C73Tj5gCMvpuYwT9Xwrn4UFZ+FReUewZ3DTo67ps+WhuS4s
-	 NtVNlCwSNDja+I7MBS8XV5NOuaAdYiEikHoI7jQ0=
+	b=zvW2+DNLtseU17mOfyAMJrYAkvFuNfkDIyDzihJx6kKROJaj6/G6R7W4wocXsWOvO
+	 6sIocKJzRKwoht9mbPoDYbpyWtgwsZcOJUSCuKV9c1QnxPyBfPB36KBW5XP54wxbar
+	 lOtLsAPS4olt/cEO42QCdpDU+TKUXcwgnS1h6j00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/105] drm/amd/powerplay: Fix CIK shutdown temperature
+Subject: [PATCH 6.12 081/136] drm/rockchip: vop2: use correct destination rectangle height check
 Date: Tue, 21 Oct 2025 21:51:09 +0200
-Message-ID: <20251021195023.100329522@linuxfoundation.org>
+Message-ID: <20251021195037.913929617@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 6917112af2ba36c5f19075eb9f2933ffd07e55bf ]
+[ Upstream commit 7f38a1487555604bc4e210fa7cc9b1bce981c40e ]
 
-Remove extra multiplication.
+The vop2_plane_atomic_check() function incorrectly checks
+drm_rect_width(dest) twice instead of verifying both width and height.
+Fix the second condition to use drm_rect_height(dest) so that invalid
+destination rectangles with height < 4 are correctly rejected.
 
-CIK GPUs such as Hawaii appear to use PP_TABLE_V0 in which case
-the shutdown temperature is hardcoded in smu7_init_dpm_defaults
-and is already multiplied by 1000. The value was mistakenly
-multiplied another time by smu7_get_thermal_temperature_range.
-
-Fixes: 4ba082572a42 ("drm/amd/powerplay: export the thermal ranges of VI asics (V2)")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1676
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20251012142005.660727-1-alok.a.tiwari@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 53849fd3615f6..965ffcac17f86 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -5437,8 +5437,7 @@ static int smu7_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
- 		thermal_data->max = table_info->cac_dtp_table->usSoftwareShutdownTemp *
- 			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
- 	else if (hwmgr->pp_table_version == PP_TABLE_V0)
--		thermal_data->max = data->thermal_temp_setting.temperature_shutdown *
--			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
-+		thermal_data->max = data->thermal_temp_setting.temperature_shutdown;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index 5d7df4c3b08c4..a551458ad4340 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -1118,7 +1118,7 @@ static int vop2_plane_atomic_check(struct drm_plane *plane,
+ 		return format;
  
- 	thermal_data->sw_ctf_threshold = thermal_data->max;
- 
+ 	if (drm_rect_width(src) >> 16 < 4 || drm_rect_height(src) >> 16 < 4 ||
+-	    drm_rect_width(dest) < 4 || drm_rect_width(dest) < 4) {
++	    drm_rect_width(dest) < 4 || drm_rect_height(dest) < 4) {
+ 		drm_err(vop2->drm, "Invalid size: %dx%d->%dx%d, min size is 4x4\n",
+ 			drm_rect_width(src) >> 16, drm_rect_height(src) >> 16,
+ 			drm_rect_width(dest), drm_rect_height(dest));
 -- 
 2.51.0
 
