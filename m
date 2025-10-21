@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-188542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF22BF86E8
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03121BF8526
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37A7919C3E4A
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:59:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B64EC406A83
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D464274B30;
-	Tue, 21 Oct 2025 19:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579392737E7;
+	Tue, 21 Oct 2025 19:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3vqsbfH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFwQ3L7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA07350A2A;
-	Tue, 21 Oct 2025 19:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E2C261B8D;
+	Tue, 21 Oct 2025 19:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076738; cv=none; b=BkqpZN8QeSCz9iHh+CZNBmvaVjOUbwcfU1rUyUpuorcAmL2tHo41jPtZJHEb7QUmhFSeCcyKHTIp/pPvO1l1l/+mRgjOQ1hi+9rbSNiS2NhXdaP5eXrL8PuWGGfDo+zJDYgcZK+DZaCKRKGeB3b5z5u+TpawLIxe187g7hgvRgs=
+	t=1761076353; cv=none; b=RYlEFaz5cBB7P6amZ5EkMqxbcneGrBrx2WsQW43jzMaeHeBprS3VLbjbiG+FKP1zJhw9ojE+JyaXDk3UX0PN7IEfU6nAzup/wY7GeDzYmcOBe0pAojj1uvjuRji1WCynG1GMdFEZqDQRVXWcc39kOX2aH4NJTqGzbQVZhzGEgJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076738; c=relaxed/simple;
-	bh=p7EpDIzG+Cg/4SBzsJVJpXnelA2QTEvYvNhgULeOBgI=;
+	s=arc-20240116; t=1761076353; c=relaxed/simple;
+	bh=c+vIpMsE0HVc90BT5CiJ86M2OZp1Opwnn3I/uZPqQts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ghpq8A+O40/eqkDMso0SRxCwCJ5gF8IZB+v8GLtJ+o76Nzt/eGR0Mq07TSXdqxcYguT0ZpYhdoxYv9AsgU7+0YAIvjhgC/wouuMq7B12w2nwa6VnDqajO7EQOFwIFEQMFXMTIKp8+bIRDz+Atw4equ/Pli8aBy2E9ayy8Hhq3Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3vqsbfH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0D9C4CEF1;
-	Tue, 21 Oct 2025 19:58:57 +0000 (UTC)
+	 MIME-Version; b=dSfoEsecvs2XsseuvwcarHFtnOxBEpcuFa+xk1ZlF6Qw0EaRJ8/24lJivoUt66f33IalDAx0l2KChtGf4XU6asXxcBK5trBE+YvcTIZSGEN7arWvddVh9XVOedMGGsgSX/AqLjSNs0xPHy6NbqPN7PdwXsvllt8Htc9UQ9/t5dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFwQ3L7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8188BC4CEF5;
+	Tue, 21 Oct 2025 19:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076737;
-	bh=p7EpDIzG+Cg/4SBzsJVJpXnelA2QTEvYvNhgULeOBgI=;
+	s=korg; t=1761076352;
+	bh=c+vIpMsE0HVc90BT5CiJ86M2OZp1Opwnn3I/uZPqQts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3vqsbfH4lU3KFgz1mb8bXPf5S+27VrxBdvpvzIsxJsZktSCZ9D53mOrk/f1JiJmt
-	 sjuh0QxFBvqWP78CmV5p/k1NvbU0FIXrlATsKbm9y3n0vYR6yOTMVNl22+5qrSEks8
-	 q6xIrXkVpFo/j8UsztOuv3sQK1hkDM5HSzBStywU=
+	b=fFwQ3L7A8FJgNyEf0RXwUBjAnfIMswUmtZcsA8g/6hLp00ujlP5YYsvaCmDVTov5r
+	 acc7PgMu2FzKd+gD8hXcJXmbwK91zXMwOucZuTXHbeWDr/xu5JHmm9oGkG14k7xrrp
+	 QDEpckTFk9unRK+OKkhffC9wLYzHhRTVVIj6/YpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Kim <jonathan.kim@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 022/136] drm/amdgpu: fix gfx12 mes packet status return check
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 001/105] smb: client: Fix refcount leak for cifs_sb_tlink
 Date: Tue, 21 Oct 2025 21:50:10 +0200
-Message-ID: <20251021195036.508383897@linuxfoundation.org>
+Message-ID: <20251021195021.530455975@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Kim <jonathan.kim@amd.com>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-commit d0de79f66a80eeb849033fae34bd07a69ce72235 upstream.
+commit c2b77f42205ef485a647f62082c442c1cd69d3fc upstream.
 
-GFX12 MES uses low 32 bits of status return for success (1 or 0)
-and high bits for debug information if low bits are 0.
+Fix three refcount inconsistency issues related to `cifs_sb_tlink`.
 
-GFX11 MES doesn't do this so checking full 64-bit status return
-for 1 or 0 is still valid.
+Comments for `cifs_sb_tlink` state that `cifs_put_tlink()` needs to be
+called after successful calls to `cifs_sb_tlink()`. Three calls fail to
+update refcount accordingly, leading to possible resource leaks.
 
-Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 8ceb98437946 ("CIFS: Move rename to ops struct")
+Fixes: 2f1afe25997f ("cifs: Use smb 2 - 3 and cifsacl mount options getacl functions")
+Fixes: 366ed846df60 ("cifs: Use smb 2 - 3 and cifsacl mount options setacl function")
 Cc: stable@vger.kernel.org
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/smb/client/inode.c   |    6 ++++--
+ fs/smb/client/smb2ops.c |    8 ++++----
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-@@ -224,7 +224,12 @@ static int mes_v12_0_submit_pkt_and_poll
- 			pipe, x_pkt->header.opcode);
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -2319,8 +2319,10 @@ cifs_do_rename(const unsigned int xid, s
+ 	tcon = tlink_tcon(tlink);
+ 	server = tcon->ses->server;
  
- 	r = amdgpu_fence_wait_polling(ring, seq, timeout);
--	if (r < 1 || !*status_ptr) {
-+
-+	/*
-+	 * status_ptr[31:0] == 0 (fail) or status_ptr[63:0] == 1 (success).
-+	 * If status_ptr[31:0] == 0 then status_ptr[63:32] will have debug error information.
-+	 */
-+	if (r < 1 || !(lower_32_bits(*status_ptr))) {
+-	if (!server->ops->rename)
+-		return -ENOSYS;
++	if (!server->ops->rename) {
++		rc = -ENOSYS;
++		goto do_rename_exit;
++	}
  
- 		if (misc_op_str)
- 			dev_err(adev->dev, "MES(%d) failed to respond to msg=%s (%s)\n",
+ 	/* try path-based rename first */
+ 	rc = server->ops->rename(xid, tcon, from_dentry,
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -3072,8 +3072,7 @@ get_smb2_acl_by_path(struct cifs_sb_info
+ 	utf16_path = cifs_convert_path_to_utf16(path, cifs_sb);
+ 	if (!utf16_path) {
+ 		rc = -ENOMEM;
+-		free_xid(xid);
+-		return ERR_PTR(rc);
++		goto put_tlink;
+ 	}
+ 
+ 	oparms = (struct cifs_open_parms) {
+@@ -3105,6 +3104,7 @@ get_smb2_acl_by_path(struct cifs_sb_info
+ 		SMB2_close(xid, tcon, fid.persistent_fid, fid.volatile_fid);
+ 	}
+ 
++put_tlink:
+ 	cifs_put_tlink(tlink);
+ 	free_xid(xid);
+ 
+@@ -3145,8 +3145,7 @@ set_smb2_acl(struct smb_ntsd *pnntsd, __
+ 	utf16_path = cifs_convert_path_to_utf16(path, cifs_sb);
+ 	if (!utf16_path) {
+ 		rc = -ENOMEM;
+-		free_xid(xid);
+-		return rc;
++		goto put_tlink;
+ 	}
+ 
+ 	oparms = (struct cifs_open_parms) {
+@@ -3167,6 +3166,7 @@ set_smb2_acl(struct smb_ntsd *pnntsd, __
+ 		SMB2_close(xid, tcon, fid.persistent_fid, fid.volatile_fid);
+ 	}
+ 
++put_tlink:
+ 	cifs_put_tlink(tlink);
+ 	free_xid(xid);
+ 	return rc;
 
 
 
