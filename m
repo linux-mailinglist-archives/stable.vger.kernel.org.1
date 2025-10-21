@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-188469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94AC5BF85C5
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC5FBF870A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FE3E46338A
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 957914873BE
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A29273D9A;
-	Tue, 21 Oct 2025 19:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1408B274B30;
+	Tue, 21 Oct 2025 19:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDBz0/D/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tULipL4l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E0F272E7C;
-	Tue, 21 Oct 2025 19:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52B1350A2A;
+	Tue, 21 Oct 2025 19:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076505; cv=none; b=Oy6CHhhTrf3Dpz1OOqiZRvD1khORbD4E87Gy8bOT50nK02wqzE8PcEJ5TetebsNerM3oS7xjUQOtnY9qQmPGnmiO9HRuz93FFoo5IbdZafQbiNlAOkfm0/0mbVbfXm94+REWni4f7Al8emNLpw8w1PxX+9DrJWxdq7BoOqjHFo8=
+	t=1761076769; cv=none; b=GZ7S12WT1/z6DuoShh2kpmA3l/DGQ5lFpqyw/XnAdtNgdOyUKp4AnaSPpwQWK8tXwPUNJKTnINlOp7F58LgPSDevbQusRnde4mA9hdINJeL0wfBvQlchNcyzL3I3oTCtSXoxMMllq9YvmO4dKrqPxwq0TcgoALyAFaq3HwS8AXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076505; c=relaxed/simple;
-	bh=v7XpgijZIbu95PXGBBqe0kB8N1nt5ogu1+tSduCWWUU=;
+	s=arc-20240116; t=1761076769; c=relaxed/simple;
+	bh=D2nHJ3qp0SIPhqSE/POsr+UwCTxRYTMKNaex6pHeJ1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oIifQdu4kBw+TnV1ymlFQePbwT2gUKnswxXhySaOU3Z/0NVoVOGtATummilAdEC2vjrHOfFGvIu2x+QYCPYbyoZQ5SDgOzr4RJjDMgK1juIwmkvA6aXuW9dZj8ExuUNpvzLFYx1dk+du56rT0+yb8Mbnfvhh/qDeM0Glhe5CM0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDBz0/D/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A19BC4CEF1;
-	Tue, 21 Oct 2025 19:55:04 +0000 (UTC)
+	 MIME-Version; b=LytYJLyPJnQKboqU+HOwPlgjOQpZm0wE0VS+pFi+h1OYC2sSUhJaivgUkefJrot7+rvIoTLwK6dW3DhkhV74j5ZOYk9JPMWwZJR6HLPnVDRJRIFE8lPpprgbR/BAWsVxd6prQadwXrk7MEzGOLJxWMtzIc3cxQjk/iXqsj0w+44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tULipL4l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E86FC4CEF1;
+	Tue, 21 Oct 2025 19:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076505;
-	bh=v7XpgijZIbu95PXGBBqe0kB8N1nt5ogu1+tSduCWWUU=;
+	s=korg; t=1761076769;
+	bh=D2nHJ3qp0SIPhqSE/POsr+UwCTxRYTMKNaex6pHeJ1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDBz0/D/YyU9jkiIpxPmk3cWghSAlKFDqskGZzz7YeC2E6h/8m+wowXKt/rjwR0qz
-	 J8jBV2nVa6GIN0IYEObJ0VQTs5cSHn3OcobK5Tw/7HDqHrylnZXamEqpq48zW6j0BF
-	 XmlS8zF5y9Zza3tNvYjVuYt4gVv6wftJO1TVY3es=
+	b=tULipL4ldYkr1lVRU/INLWz35e1MUhxQWzC+Iihe+Cp7zoCbau6smlGexSotEPFUr
+	 t/ZdUmuVBk0kWtnIkSWmEdjKfYayfM0QvaXCJpps1DpkMerntZ/FwmFMEXSyPjkrOT
+	 BUC0vheNfGE7cGf9ZkAYCVvTyR7BPjIFmWuS3ArY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+884dc4621377ba579a6f@syzkaller.appspotmail.com,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 010/105] btrfs: do not assert we found block group item when creating free space tree
+	Guoniu Zhou <guoniu.zhou@nxp.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 031/136] media: nxp: imx8-isi: m2m: Fix streaming cleanup on release
 Date: Tue, 21 Oct 2025 21:50:19 +0200
-Message-ID: <20251021195021.735941041@linuxfoundation.org>
+Message-ID: <20251021195036.724811520@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +64,346 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Guoniu Zhou <guoniu.zhou@nxp.com>
 
-commit a5a51bf4e9b7354ce7cd697e610d72c1b33fd949 upstream.
+[ Upstream commit 178aa3360220231dd91e7dbc2eb984525886c9c1 ]
 
-Currently, when building a free space tree at populate_free_space_tree(),
-if we are not using the block group tree feature, we always expect to find
-block group items (either extent items or a block group item with key type
-BTRFS_BLOCK_GROUP_ITEM_KEY) when we search the extent tree with
-btrfs_search_slot_for_read(), so we assert that we found an item. However
-this expectation is wrong since we can have a new block group created in
-the current transaction which is still empty and for which we still have
-not added the block group's item to the extent tree, in which case we do
-not have any items in the extent tree associated to the block group.
+If streamon/streamoff calls are imbalanced, such as when exiting an
+application with Ctrl+C when streaming, the m2m usage_count will never
+reach zero and the ISI channel won't be freed. Besides from that, if the
+input line width is more than 2K, it will trigger a WARN_ON():
 
-The insertion of a new block group's block group item in the extent tree
-happens at btrfs_create_pending_block_groups() when it calls the helper
-insert_block_group_item(). This typically is done when a transaction
-handle is released, committed or when running delayed refs (either as
-part of a transaction commit or when serving tickets for space reservation
-if we are low on free space).
+[ 59.222120] ------------[ cut here ]------------
+[ 59.226758] WARNING: drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c:631 at mxc_isi_channel_chain+0xa4/0x120, CPU#4: v4l2-ctl/654
+[ 59.238569] Modules linked in: ap1302
+[ 59.242231] CPU: 4 UID: 0 PID: 654 Comm: v4l2-ctl Not tainted 6.16.0-rc4-next-20250704-06511-gff0e002d480a-dirty #258 PREEMPT
+[ 59.253597] Hardware name: NXP i.MX95 15X15 board (DT)
+[ 59.258720] pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 59.265669] pc : mxc_isi_channel_chain+0xa4/0x120
+[ 59.270358] lr : mxc_isi_channel_chain+0x44/0x120
+[ 59.275047] sp : ffff8000848c3b40
+[ 59.278348] x29: ffff8000848c3b40 x28: ffff0000859b4c98 x27: ffff800081939f00
+[ 59.285472] x26: 000000000000000a x25: ffff0000859b4cb8 x24: 0000000000000001
+[ 59.292597] x23: ffff0000816f4760 x22: ffff0000816f4258 x21: ffff000084ceb780
+[ 59.299720] x20: ffff000084342ff8 x19: ffff000084340000 x18: 0000000000000000
+[ 59.306845] x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffffdb369e1c
+[ 59.313969] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[ 59.321093] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+[ 59.328217] x8 : ffff8000848c3d48 x7 : ffff800081930b30 x6 : ffff800081930b30
+[ 59.335340] x5 : ffff0000859b6000 x4 : ffff80008193ae80 x3 : ffff800081022420
+[ 59.342464] x2 : ffff0000852f6900 x1 : 0000000000000001 x0 : ffff000084341000
+[ 59.349590] Call trace:
+[ 59.352025]  mxc_isi_channel_chain+0xa4/0x120 (P)
+[ 59.356722]  mxc_isi_m2m_streamon+0x160/0x20c
+[ 59.361072]  v4l_streamon+0x24/0x30
+[ 59.364556]  __video_do_ioctl+0x40c/0x4a0
+[ 59.368560]  video_usercopy+0x2bc/0x690
+[ 59.372382]  video_ioctl2+0x18/0x24
+[ 59.375857]  v4l2_ioctl+0x40/0x60
+[ 59.379168]  __arm64_sys_ioctl+0xac/0x104
+[ 59.383172]  invoke_syscall+0x48/0x104
+[ 59.386916]  el0_svc_common.constprop.0+0xc0/0xe0
+[ 59.391613]  do_el0_svc+0x1c/0x28
+[ 59.394915]  el0_svc+0x34/0xf4
+[ 59.397966]  el0t_64_sync_handler+0xa0/0xe4
+[ 59.402143]  el0t_64_sync+0x198/0x19c
+[ 59.405801] ---[ end trace 0000000000000000 ]---
 
-So remove the assertion at populate_free_space_tree() even when the block
-group tree feature is not enabled and update the comment to mention this
-case.
+Address this issue by moving the streaming preparation and cleanup to
+the vb2 .prepare_streaming() and .unprepare_streaming() operations. This
+also simplifies the driver by allowing direct usage of the
+v4l2_m2m_ioctl_streamon() and v4l2_m2m_ioctl_streamoff() helpers.
 
-Syzbot reported this with the following stack trace:
-
-  BTRFS info (device loop3 state M): rebuilding free space tree
-  assertion failed: ret == 0 :: 0, in fs/btrfs/free-space-tree.c:1115
-  ------------[ cut here ]------------
-  kernel BUG at fs/btrfs/free-space-tree.c:1115!
-  Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-  CPU: 1 UID: 0 PID: 6352 Comm: syz.3.25 Not tainted syzkaller #0 PREEMPT(full)
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
-  RIP: 0010:populate_free_space_tree+0x700/0x710 fs/btrfs/free-space-tree.c:1115
-  Code: ff ff e8 d3 (...)
-  RSP: 0018:ffffc9000430f780 EFLAGS: 00010246
-  RAX: 0000000000000043 RBX: ffff88805b709630 RCX: fea61d0e2e79d000
-  RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-  RBP: ffffc9000430f8b0 R08: ffffc9000430f4a7 R09: 1ffff92000861e94
-  R10: dffffc0000000000 R11: fffff52000861e95 R12: 0000000000000001
-  R13: 1ffff92000861f00 R14: dffffc0000000000 R15: 0000000000000000
-  FS:  00007f424d9fe6c0(0000) GS:ffff888125afc000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007fd78ad212c0 CR3: 0000000076d68000 CR4: 00000000003526f0
-  Call Trace:
-   <TASK>
-   btrfs_rebuild_free_space_tree+0x1ba/0x6d0 fs/btrfs/free-space-tree.c:1364
-   btrfs_start_pre_rw_mount+0x128f/0x1bf0 fs/btrfs/disk-io.c:3062
-   btrfs_remount_rw fs/btrfs/super.c:1334 [inline]
-   btrfs_reconfigure+0xaed/0x2160 fs/btrfs/super.c:1559
-   reconfigure_super+0x227/0x890 fs/super.c:1076
-   do_remount fs/namespace.c:3279 [inline]
-   path_mount+0xd1a/0xfe0 fs/namespace.c:4027
-   do_mount fs/namespace.c:4048 [inline]
-   __do_sys_mount fs/namespace.c:4236 [inline]
-   __se_sys_mount+0x313/0x410 fs/namespace.c:4213
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   RIP: 0033:0x7f424e39066a
-  Code: d8 64 89 02 (...)
-  RSP: 002b:00007f424d9fde68 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-  RAX: ffffffffffffffda RBX: 00007f424d9fdef0 RCX: 00007f424e39066a
-  RDX: 0000200000000180 RSI: 0000200000000380 RDI: 0000000000000000
-  RBP: 0000200000000180 R08: 00007f424d9fdef0 R09: 0000000000000020
-  R10: 0000000000000020 R11: 0000000000000246 R12: 0000200000000380
-  R13: 00007f424d9fdeb0 R14: 0000000000000000 R15: 00002000000002c0
-   </TASK>
-  Modules linked in:
-  ---[ end trace 0000000000000000 ]---
-
-Reported-by: syzbot+884dc4621377ba579a6f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/68dc3dab.a00a0220.102ee.004e.GAE@google.com/
-Fixes: a5ed91828518 ("Btrfs: implement the free space B-tree")
-CC: <stable@vger.kernel.org> # 6.1.x: 1961d20f6fa8: btrfs: fix assertion when building free space tree
-CC: <stable@vger.kernel.org> # 6.1.x
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250821135123.29462-1-laurent.pinchart@ideasonboard.com
+Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+Co-developed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Tested-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/free-space-tree.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c |  224 ++++++++-------------
+ 1 file changed, 92 insertions(+), 132 deletions(-)
 
---- a/fs/btrfs/free-space-tree.c
-+++ b/fs/btrfs/free-space-tree.c
-@@ -1108,14 +1108,15 @@ static int populate_free_space_tree(stru
- 	 * If ret is 1 (no key found), it means this is an empty block group,
- 	 * without any extents allocated from it and there's no block group
- 	 * item (key BTRFS_BLOCK_GROUP_ITEM_KEY) located in the extent tree
--	 * because we are using the block group tree feature, so block group
--	 * items are stored in the block group tree. It also means there are no
--	 * extents allocated for block groups with a start offset beyond this
--	 * block group's end offset (this is the last, highest, block group).
-+	 * because we are using the block group tree feature (so block group
-+	 * items are stored in the block group tree) or this is a new block
-+	 * group created in the current transaction and its block group item
-+	 * was not yet inserted in the extent tree (that happens in
-+	 * btrfs_create_pending_block_groups() -> insert_block_group_item()).
-+	 * It also means there are no extents allocated for block groups with a
-+	 * start offset beyond this block group's end offset (this is the last,
-+	 * highest, block group).
- 	 */
--	if (!btrfs_fs_compat_ro(trans->fs_info, BLOCK_GROUP_TREE))
--		ASSERT(ret == 0);
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+@@ -43,7 +43,6 @@ struct mxc_isi_m2m_ctx_queue_data {
+ 	struct v4l2_pix_format_mplane format;
+ 	const struct mxc_isi_format_info *info;
+ 	u32 sequence;
+-	bool streaming;
+ };
+ 
+ struct mxc_isi_m2m_ctx {
+@@ -236,6 +235,65 @@ static void mxc_isi_m2m_vb2_buffer_queue
+ 	v4l2_m2m_buf_queue(ctx->fh.m2m_ctx, vbuf);
+ }
+ 
++static int mxc_isi_m2m_vb2_prepare_streaming(struct vb2_queue *q)
++{
++	struct mxc_isi_m2m_ctx *ctx = vb2_get_drv_priv(q);
++	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
++	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
++	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
++	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
++	struct mxc_isi_m2m *m2m = ctx->m2m;
++	int ret;
++
++	guard(mutex)(&m2m->lock);
++
++	if (m2m->usage_count == INT_MAX)
++		return -EOVERFLOW;
++
++	/*
++	 * Acquire the pipe and initialize the channel with the first user of
++	 * the M2M device.
++	 */
++	if (m2m->usage_count == 0) {
++		bool bypass = cap_pix->width == out_pix->width &&
++			      cap_pix->height == out_pix->height &&
++			      cap_info->encoding == out_info->encoding;
++
++		ret = mxc_isi_channel_acquire(m2m->pipe,
++					      &mxc_isi_m2m_frame_write_done,
++					      bypass);
++		if (ret)
++			return ret;
++
++		mxc_isi_channel_get(m2m->pipe);
++	}
++
++	m2m->usage_count++;
++
++	/*
++	 * Allocate resources for the channel, counting how many users require
++	 * buffer chaining.
++	 */
++	if (!ctx->chained && out_pix->width > MXC_ISI_MAX_WIDTH_UNCHAINED) {
++		ret = mxc_isi_channel_chain(m2m->pipe);
++		if (ret)
++			goto err_deinit;
++
++		m2m->chained_count++;
++		ctx->chained = true;
++	}
++
++	return 0;
++
++err_deinit:
++	if (--m2m->usage_count == 0) {
++		mxc_isi_channel_put(m2m->pipe);
++		mxc_isi_channel_release(m2m->pipe);
++	}
++
++	return ret;
++}
++
+ static int mxc_isi_m2m_vb2_start_streaming(struct vb2_queue *q,
+ 					   unsigned int count)
+ {
+@@ -265,6 +323,35 @@ static void mxc_isi_m2m_vb2_stop_streami
+ 	}
+ }
+ 
++static void mxc_isi_m2m_vb2_unprepare_streaming(struct vb2_queue *q)
++{
++	struct mxc_isi_m2m_ctx *ctx = vb2_get_drv_priv(q);
++	struct mxc_isi_m2m *m2m = ctx->m2m;
++
++	guard(mutex)(&m2m->lock);
++
++	/*
++	 * If the last context is this one, reset it to make sure the device
++	 * will be reconfigured when streaming is restarted.
++	 */
++	if (m2m->last_ctx == ctx)
++		m2m->last_ctx = NULL;
++
++	/* Free the channel resources if this is the last chained context. */
++	if (ctx->chained && --m2m->chained_count == 0)
++		mxc_isi_channel_unchain(m2m->pipe);
++	ctx->chained = false;
++
++	/* Turn off the light with the last user. */
++	if (--m2m->usage_count == 0) {
++		mxc_isi_channel_disable(m2m->pipe);
++		mxc_isi_channel_put(m2m->pipe);
++		mxc_isi_channel_release(m2m->pipe);
++	}
++
++	WARN_ON(m2m->usage_count < 0);
++}
++
+ static const struct vb2_ops mxc_isi_m2m_vb2_qops = {
+ 	.queue_setup		= mxc_isi_m2m_vb2_queue_setup,
+ 	.buf_init		= mxc_isi_m2m_vb2_buffer_init,
+@@ -272,8 +359,10 @@ static const struct vb2_ops mxc_isi_m2m_
+ 	.buf_queue		= mxc_isi_m2m_vb2_buffer_queue,
+ 	.wait_prepare		= vb2_ops_wait_prepare,
+ 	.wait_finish		= vb2_ops_wait_finish,
++	.prepare_streaming	= mxc_isi_m2m_vb2_prepare_streaming,
+ 	.start_streaming	= mxc_isi_m2m_vb2_start_streaming,
+ 	.stop_streaming		= mxc_isi_m2m_vb2_stop_streaming,
++	.unprepare_streaming	= mxc_isi_m2m_vb2_unprepare_streaming,
+ };
+ 
+ static int mxc_isi_m2m_queue_init(void *priv, struct vb2_queue *src_vq,
+@@ -483,135 +572,6 @@ static int mxc_isi_m2m_s_fmt_vid(struct
+ 	return 0;
+ }
+ 
+-static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+-				enum v4l2_buf_type type)
+-{
+-	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
+-	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
+-	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
+-	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
+-	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
+-	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
+-	struct mxc_isi_m2m *m2m = ctx->m2m;
+-	int ret;
 -
- 	start = block_group->start;
- 	end = block_group->start + block_group->length;
- 	while (ret == 0) {
+-	if (q->streaming)
+-		return 0;
+-
+-	mutex_lock(&m2m->lock);
+-
+-	if (m2m->usage_count == INT_MAX) {
+-		ret = -EOVERFLOW;
+-		goto unlock;
+-	}
+-
+-	/*
+-	 * Acquire the pipe and initialize the channel with the first user of
+-	 * the M2M device.
+-	 */
+-	if (m2m->usage_count == 0) {
+-		bool bypass = cap_pix->width == out_pix->width &&
+-			      cap_pix->height == out_pix->height &&
+-			      cap_info->encoding == out_info->encoding;
+-
+-		ret = mxc_isi_channel_acquire(m2m->pipe,
+-					      &mxc_isi_m2m_frame_write_done,
+-					      bypass);
+-		if (ret)
+-			goto unlock;
+-
+-		mxc_isi_channel_get(m2m->pipe);
+-	}
+-
+-	m2m->usage_count++;
+-
+-	/*
+-	 * Allocate resources for the channel, counting how many users require
+-	 * buffer chaining.
+-	 */
+-	if (!ctx->chained && out_pix->width > MXC_ISI_MAX_WIDTH_UNCHAINED) {
+-		ret = mxc_isi_channel_chain(m2m->pipe);
+-		if (ret)
+-			goto deinit;
+-
+-		m2m->chained_count++;
+-		ctx->chained = true;
+-	}
+-
+-	/*
+-	 * Drop the lock to start the stream, as the .device_run() operation
+-	 * needs to acquire it.
+-	 */
+-	mutex_unlock(&m2m->lock);
+-	ret = v4l2_m2m_ioctl_streamon(file, fh, type);
+-	if (ret) {
+-		/* Reacquire the lock for the cleanup path. */
+-		mutex_lock(&m2m->lock);
+-		goto unchain;
+-	}
+-
+-	q->streaming = true;
+-
+-	return 0;
+-
+-unchain:
+-	if (ctx->chained && --m2m->chained_count == 0)
+-		mxc_isi_channel_unchain(m2m->pipe);
+-	ctx->chained = false;
+-
+-deinit:
+-	if (--m2m->usage_count == 0) {
+-		mxc_isi_channel_put(m2m->pipe);
+-		mxc_isi_channel_release(m2m->pipe);
+-	}
+-
+-unlock:
+-	mutex_unlock(&m2m->lock);
+-	return ret;
+-}
+-
+-static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+-				 enum v4l2_buf_type type)
+-{
+-	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
+-	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
+-	struct mxc_isi_m2m *m2m = ctx->m2m;
+-
+-	v4l2_m2m_ioctl_streamoff(file, fh, type);
+-
+-	if (!q->streaming)
+-		return 0;
+-
+-	mutex_lock(&m2m->lock);
+-
+-	/*
+-	 * If the last context is this one, reset it to make sure the device
+-	 * will be reconfigured when streaming is restarted.
+-	 */
+-	if (m2m->last_ctx == ctx)
+-		m2m->last_ctx = NULL;
+-
+-	/* Free the channel resources if this is the last chained context. */
+-	if (ctx->chained && --m2m->chained_count == 0)
+-		mxc_isi_channel_unchain(m2m->pipe);
+-	ctx->chained = false;
+-
+-	/* Turn off the light with the last user. */
+-	if (--m2m->usage_count == 0) {
+-		mxc_isi_channel_disable(m2m->pipe);
+-		mxc_isi_channel_put(m2m->pipe);
+-		mxc_isi_channel_release(m2m->pipe);
+-	}
+-
+-	WARN_ON(m2m->usage_count < 0);
+-
+-	mutex_unlock(&m2m->lock);
+-
+-	q->streaming = false;
+-
+-	return 0;
+-}
+-
+ static const struct v4l2_ioctl_ops mxc_isi_m2m_ioctl_ops = {
+ 	.vidioc_querycap		= mxc_isi_m2m_querycap,
+ 
+@@ -632,8 +592,8 @@ static const struct v4l2_ioctl_ops mxc_i
+ 	.vidioc_prepare_buf		= v4l2_m2m_ioctl_prepare_buf,
+ 	.vidioc_create_bufs		= v4l2_m2m_ioctl_create_bufs,
+ 
+-	.vidioc_streamon		= mxc_isi_m2m_streamon,
+-	.vidioc_streamoff		= mxc_isi_m2m_streamoff,
++	.vidioc_streamon		= v4l2_m2m_ioctl_streamon,
++	.vidioc_streamoff		= v4l2_m2m_ioctl_streamoff,
+ 
+ 	.vidioc_subscribe_event		= v4l2_ctrl_subscribe_event,
+ 	.vidioc_unsubscribe_event	= v4l2_event_unsubscribe,
 
 
 
