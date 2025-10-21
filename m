@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-188464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59451BF85B3
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29148BF8773
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 05D0035663F
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91B8D188C6D4
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40180274B29;
-	Tue, 21 Oct 2025 19:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72D71D5CDE;
+	Tue, 21 Oct 2025 20:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OD2YWJlF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdVyDqbS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC672749DC;
-	Tue, 21 Oct 2025 19:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93214350A29;
+	Tue, 21 Oct 2025 20:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076490; cv=none; b=q96hc5eYCBzZor58dMbwMYLhrGzGBLinjWYvewjol+ct3Ag8ZCtQiSjCZROhfMUKZPOKz6bLGTH6KlPlYN8gKLUUBTbrr/oZvTMtimHeCboMFzfpoc7Jee0HDLUIQngcYQFbEKqYESXYawijN3+1lPSHiiCPPsExbfed/b273s0=
+	t=1761076887; cv=none; b=mH2aH2m+/7XkEEhEZ+IDRR+dRGAjJEdWlV2+u2CQhmYfmrf4uPy7QO3+ovIw6FXUa6Fhwm1mDA3T4R+FzYGSJnEYjd4w9qnO9k+CBn3qHeqDeNt09LXMIo+wkxNCjIaG48qRXj15ypdCAfrF/O178YYqbceYOy+QS29xfQrKkMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076490; c=relaxed/simple;
-	bh=6pZzjieTnjvSem/glb3XK7kG4UmsO+0OEH2hokZgbmo=;
+	s=arc-20240116; t=1761076887; c=relaxed/simple;
+	bh=6tQhZsAt38I9AhSNH8C6Ek3jxo1o5acU/BZINzyd9bE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcFAUvVX9FVAIRWBJTktY/XOD3SjfuNoPFwDgLxEMMrdS8+1rKKnGdUWdEGe0PL1zVvoC1eId3b+tLaity0OFFFdmdMP4p1wgk/0LrFhIuHEXHjQJlg10k6kTkMV5hoJkuBCbRdIXF7hoAW6i/089Q9zA/6AbSvbetjY5Cyv9tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OD2YWJlF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F401DC4CEF1;
-	Tue, 21 Oct 2025 19:54:48 +0000 (UTC)
+	 MIME-Version; b=qx070gDn81yJqxqeWLc7P+CiZ4rrmliqyFHXCsCQsV0YnS/oFFXKL+jXVjBbz+FnvVDF1tci3fkVZ9A9ZponBzOmB7aAVwyMc80sXDsK1FH53A2NCe3egYrAAnKfhYiZQFu2b8HQL9oBXxUuKCrF2od7s0RLPn1oVCjY8bjcvkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdVyDqbS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DC8C4CEF1;
+	Tue, 21 Oct 2025 20:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076489;
-	bh=6pZzjieTnjvSem/glb3XK7kG4UmsO+0OEH2hokZgbmo=;
+	s=korg; t=1761076887;
+	bh=6tQhZsAt38I9AhSNH8C6Ek3jxo1o5acU/BZINzyd9bE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OD2YWJlFe2nLwL27ljpg4qajVFOdydB8EJuSu+r9a24rbkyvQNZRQ62qxueY1HDgo
-	 /gjUZh/W4LdP7Ldbtkot33zAE1aHIMRNgzYL2Cb1U9qUuEQTnyMrAtTTLftYrXFjCj
-	 0kmCYkfUoiVGMFJNLeOSxgBFApUcxLLen8eFDEvo=
+	b=qdVyDqbSOsc5qh7aY86cXQs+nIVm6wdB5RZ5zR6meCsYym+8qsXnxMugw0EklVt9o
+	 d6K2lfPSi71NZV7WzlVzaO47FtuRfz0qr1bJt+bZdw5DVcg93EuvI7Fq+RP9N5EhCq
+	 WLEAx5FAbEBnDS0jth/9Zz37W+1NijHU3dQ5BBfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fabian Vogt <fvogt@suse.de>,
+	Marvin Friedrich <marvin.friedrich@suse.com>,
+	Guo Ren <guoren@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/105] tls: wait for pending async decryptions if tls_strp_msg_hold fails
+Subject: [PATCH 6.12 069/136] riscv: kprobes: Fix probe address validation
 Date: Tue, 21 Oct 2025 21:50:57 +0200
-Message-ID: <20251021195022.823800236@linuxfoundation.org>
+Message-ID: <20251021195037.634110509@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Fabian Vogt <fvogt@suse.de>
 
-[ Upstream commit b8a6ff84abbcbbc445463de58704686011edc8e1 ]
+[ Upstream commit 9e68bd803fac49274fde914466fd3b07c4d602c8 ]
 
-Async decryption calls tls_strp_msg_hold to create a clone of the
-input skb to hold references to the memory it uses. If we fail to
-allocate that clone, proceeding with async decryption can lead to
-various issues (UAF on the skb, writing into userspace memory after
-the recv() call has returned).
+When adding a kprobe such as "p:probe/tcp_sendmsg _text+15392192",
+arch_check_kprobe would start iterating all instructions starting from
+_text until the probed address. Not only is this very inefficient, but
+literal values in there (e.g. left by function patching) are
+misinterpreted in a way that causes a desync.
 
-In this case, wait for all pending decryption requests.
+Fix this by doing it like x86: start the iteration at the closest
+preceding symbol instead of the given starting point.
 
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/b9fe61dcc07dab15da9b35cf4c7d86382a98caf2.1760432043.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 87f48c7ccc73 ("riscv: kprobe: Fixup kernel panic when probing an illegal position")
+Signed-off-by: Fabian Vogt <fvogt@suse.de>
+Signed-off-by: Marvin Friedrich <marvin.friedrich@suse.com>
+Acked-by: Guo Ren <guoren@kernel.org>
+Link: https://lore.kernel.org/r/6191817.lOV4Wx5bFT@fvogt-thinkpad
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/riscv/kernel/probes/kprobes.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index d3bf2dbc297ae..6ea557ebab171 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1637,8 +1637,10 @@ static int tls_decrypt_sg(struct sock *sk, struct iov_iter *out_iov,
+diff --git a/arch/riscv/kernel/probes/kprobes.c b/arch/riscv/kernel/probes/kprobes.c
+index d2dacea1aedd9..0daba93c1a81e 100644
+--- a/arch/riscv/kernel/probes/kprobes.c
++++ b/arch/riscv/kernel/probes/kprobes.c
+@@ -49,10 +49,15 @@ static void __kprobes arch_simulate_insn(struct kprobe *p, struct pt_regs *regs)
+ 	post_kprobe_handler(p, kcb, regs);
+ }
  
- 	if (unlikely(darg->async)) {
- 		err = tls_strp_msg_hold(&ctx->strp, &ctx->async_hold);
--		if (err)
--			__skb_queue_tail(&ctx->async_hold, darg->skb);
-+		if (err) {
-+			err = tls_decrypt_async_wait(ctx);
-+			darg->async = false;
-+		}
- 		return err;
- 	}
+-static bool __kprobes arch_check_kprobe(struct kprobe *p)
++static bool __kprobes arch_check_kprobe(unsigned long addr)
+ {
+-	unsigned long tmp  = (unsigned long)p->addr - p->offset;
+-	unsigned long addr = (unsigned long)p->addr;
++	unsigned long tmp, offset;
++
++	/* start iterating at the closest preceding symbol */
++	if (!kallsyms_lookup_size_offset(addr, NULL, &offset))
++		return false;
++
++	tmp = addr - offset;
  
+ 	while (tmp <= addr) {
+ 		if (tmp == addr)
+@@ -71,7 +76,7 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
+ 	if ((unsigned long)insn & 0x1)
+ 		return -EILSEQ;
+ 
+-	if (!arch_check_kprobe(p))
++	if (!arch_check_kprobe((unsigned long)p->addr))
+ 		return -EILSEQ;
+ 
+ 	/* copy instruction */
 -- 
 2.51.0
 
