@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-188790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A45BF8A52
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:12:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1E5BF88A9
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:06:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 00749500A1F
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:12:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23CA93A3C8A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE38D2797BD;
-	Tue, 21 Oct 2025 20:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871B02798FA;
+	Tue, 21 Oct 2025 20:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2k6Fs0Bz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pimYKT+t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FFB278143;
-	Tue, 21 Oct 2025 20:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407B92797B5;
+	Tue, 21 Oct 2025 20:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077526; cv=none; b=Mq1uahlw8n6CKkHW8INX4bTuqxp0IGNWFYKZl5yQRuCrgTOmVcT3ka2DGUgjgrTVJjgLCnJBy4tILwTlJFiGie4nthEDuMhjKoG8WI5+B3aQuxlc37FkBywOY8uJ6rU4+4Gbx2kgs0txxAIr5f1XWtB2qSQRBZTwXEonHYKaegY=
+	t=1761077055; cv=none; b=hnXKPnz+IK3iQ16QOufcFdw81cIuWmfC7X1oJOXEdn/tj4c8NWChkQqKkG+D9n5WPy8dC5r5oGu8SSeEE/jkb1upNQGqbIu8j4piAjIewsGdYdVxuwDAPXi8zREov4Te6A7NFuO2codDC4MqwF9SNX+JPbkW79mPVKBQHtv++Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077526; c=relaxed/simple;
-	bh=NoIaLyWhafcUtGaI0tgHtG74THFK8I5+MQl/0cmMnb4=;
+	s=arc-20240116; t=1761077055; c=relaxed/simple;
+	bh=PDDGSU8pGE+xHeQ5JfQSeYRAxq6m5ggG0L9JslDH/tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HClw/qpuOJpGY57NqQsqTlZ4OK5AHcLfq7tKkNASv9nlA2B98jM45JGgtDR8fIoOh4H8PLS7k57wzF/sZ2Xxs6K1FlE9e7rW9CfXuPX9DP3TFJyOB/HO3T/uP84M92HbH7Esw1RBb1uZCPj21u5uiuz+iKyK7KvdT7C6j/tUP0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2k6Fs0Bz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5F4C4CEF1;
-	Tue, 21 Oct 2025 20:12:05 +0000 (UTC)
+	 MIME-Version; b=ITgO97Q2onW8CbxY9W2DiwI/Clez/+/pIAErnebNCM4R4ExouwIscWLmQK64mpukQPpYBL+bnpN1g1ouJ3SE3HK3wMTdIWUEpwGx1TrC6v4kq7KILv6cZvHqB/zWgaNPMloDZL07pRwtiqbN0ZrsERmInffGRDNbwT2zamdI5AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pimYKT+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCDBC4CEF1;
+	Tue, 21 Oct 2025 20:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077526;
-	bh=NoIaLyWhafcUtGaI0tgHtG74THFK8I5+MQl/0cmMnb4=;
+	s=korg; t=1761077053;
+	bh=PDDGSU8pGE+xHeQ5JfQSeYRAxq6m5ggG0L9JslDH/tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2k6Fs0BznbiEmwb/ynkzIpDnSP/xn4740GOqLpAzR3ziyg9dJztHbwc0ntK3e1lkr
-	 3Crxk0WUkvt++PNdminxoAvcu6i5/SRNj2cLfDhUo2PWOSdHGKswV7TSb8RXviqc1E
-	 ZVPgaBtTjKc3HLwNEhe/G3lMlXGfpz6SPq8otDMk=
+	b=pimYKT+tF9DmEi7SKIbztRo9Tq283rpFZEjp4532mtkuY02nmTQMejwrQUnUjcvmv
+	 n2sKnB9aY/3tIusdWAEmGQEBvObWtlakdtpuzRAKbYR5dp2jxMMhxOgNM6Imws1CGq
+	 CTbeGBdH5wgg+Dc2viRj3TaZddW1mdlJJslqQx08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Andrzej Wilczynski <andrzejx.wilczynski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 131/159] HID: multitouch: fix name of Stylus input devices
-Date: Tue, 21 Oct 2025 21:51:48 +0200
-Message-ID: <20251021195046.300765850@linuxfoundation.org>
+Subject: [PATCH 6.12 121/136] ixgbevf: fix getting link speed data for E610 devices
+Date: Tue, 21 Oct 2025 21:51:49 +0200
+Message-ID: <20251021195038.888628022@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
-References: <20251021195043.182511864@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +67,308 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-[ Upstream commit aa4daea418ee4215dca5c8636090660c545cb233 ]
+[ Upstream commit 53f0eb62b4d23d40686f2dd51776b8220f2887bb ]
 
-HID_DG_PEN devices should have a suffix of "Stylus", as pointed out by
-commit c0ee1d571626 ("HID: hid-input: Add suffix also for HID_DG_PEN").
-However, on multitouch devices, these suffixes may be overridden. Before
-that commit, HID_DG_PEN devices would get the "Stylus" suffix, but after
-that, multitouch would override them to have an "UNKNOWN" suffix. Just add
-HID_DG_PEN to the list of non-overriden suffixes in multitouch.
+E610 adapters no longer use the VFLINKS register to read PF's link
+speed and linkup state. As a result VF driver cannot get actual link
+state and it incorrectly reports 10G which is the default option.
+It leads to a situation where even 1G adapters print 10G as actual
+link speed. The same happens when PF driver set speed different than 10G.
 
-Before this fix:
+Add new mailbox operation to let the VF driver request a PF driver
+to provide actual link data. Update the mailbox api to v1.6.
 
-[    0.470981] input: ELAN9008:00 04F3:2E14 UNKNOWN as /devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-16/i2c-ELAN9008:00/0018:04F3:2E14.0001/input/input8
-ELAN9008:00 04F3:2E14 UNKNOWN
+Incorporate both ways of getting link status within the legacy
+ixgbe_check_mac_link_vf() function.
 
-After this fix:
-
-[    0.474332] input: ELAN9008:00 04F3:2E14 Stylus as /devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-16/i2c-ELAN9008:00/0018:04F3:2E14.0001/input/input8
-
-ELAN9008:00 04F3:2E14 Stylus
-
-Fixes: c0ee1d571626 ("HID: hid-input: Add suffix also for HID_DG_PEN")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 4c44b450c69b ("ixgbevf: Add support for Intel(R) E610 device")
+Co-developed-by: Andrzej Wilczynski <andrzejx.wilczynski@intel.com>
+Signed-off-by: Andrzej Wilczynski <andrzejx.wilczynski@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20251009-jk-iwl-net-2025-10-01-v3-2-ef32a425b92a@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-multitouch.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/ixgbevf/defines.h      |    1 
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |    6 
+ drivers/net/ethernet/intel/ixgbevf/mbx.h          |    4 
+ drivers/net/ethernet/intel/ixgbevf/vf.c           |  137 +++++++++++++++++-----
+ 4 files changed, 116 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 7587a7748a82d..a9ff84f0bd9bb 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1711,6 +1711,7 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
- 	case HID_CP_CONSUMER_CONTROL:
- 	case HID_GD_WIRELESS_RADIO_CTLS:
- 	case HID_GD_SYSTEM_MULTIAXIS:
-+	case HID_DG_PEN:
- 		/* already handled by hid core */
+--- a/drivers/net/ethernet/intel/ixgbevf/defines.h
++++ b/drivers/net/ethernet/intel/ixgbevf/defines.h
+@@ -28,6 +28,7 @@
+ 
+ /* Link speed */
+ typedef u32 ixgbe_link_speed;
++#define IXGBE_LINK_SPEED_UNKNOWN	0
+ #define IXGBE_LINK_SPEED_1GB_FULL	0x0020
+ #define IXGBE_LINK_SPEED_10GB_FULL	0x0080
+ #define IXGBE_LINK_SPEED_100_FULL	0x0008
+--- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
++++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+@@ -2278,6 +2278,7 @@ static void ixgbevf_negotiate_api(struct
+ {
+ 	struct ixgbe_hw *hw = &adapter->hw;
+ 	static const int api[] = {
++		ixgbe_mbox_api_16,
+ 		ixgbe_mbox_api_15,
+ 		ixgbe_mbox_api_14,
+ 		ixgbe_mbox_api_13,
+@@ -2297,7 +2298,8 @@ static void ixgbevf_negotiate_api(struct
+ 		idx++;
+ 	}
+ 
+-	if (hw->api_version >= ixgbe_mbox_api_15) {
++	/* Following is not supported by API 1.6, it is specific for 1.5 */
++	if (hw->api_version == ixgbe_mbox_api_15) {
+ 		hw->mbx.ops.init_params(hw);
+ 		memcpy(&hw->mbx.ops, &ixgbevf_mbx_ops,
+ 		       sizeof(struct ixgbe_mbx_operations));
+@@ -2654,6 +2656,7 @@ static void ixgbevf_set_num_queues(struc
+ 		case ixgbe_mbox_api_13:
+ 		case ixgbe_mbox_api_14:
+ 		case ixgbe_mbox_api_15:
++		case ixgbe_mbox_api_16:
+ 			if (adapter->xdp_prog &&
+ 			    hw->mac.max_tx_queues == rss)
+ 				rss = rss > 3 ? 2 : 1;
+@@ -4648,6 +4651,7 @@ static int ixgbevf_probe(struct pci_dev
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_15:
++	case ixgbe_mbox_api_16:
+ 		netdev->max_mtu = IXGBE_MAX_JUMBO_FRAME_SIZE -
+ 				  (ETH_HLEN + ETH_FCS_LEN);
  		break;
- 	case HID_DG_TOUCHSCREEN:
--- 
-2.51.0
-
+--- a/drivers/net/ethernet/intel/ixgbevf/mbx.h
++++ b/drivers/net/ethernet/intel/ixgbevf/mbx.h
+@@ -66,6 +66,7 @@ enum ixgbe_pfvf_api_rev {
+ 	ixgbe_mbox_api_13,	/* API version 1.3, linux/freebsd VF driver */
+ 	ixgbe_mbox_api_14,	/* API version 1.4, linux/freebsd VF driver */
+ 	ixgbe_mbox_api_15,	/* API version 1.5, linux/freebsd VF driver */
++	ixgbe_mbox_api_16,      /* API version 1.6, linux/freebsd VF driver */
+ 	/* This value should always be last */
+ 	ixgbe_mbox_api_unknown,	/* indicates that API version is not known */
+ };
+@@ -102,6 +103,9 @@ enum ixgbe_pfvf_api_rev {
+ 
+ #define IXGBE_VF_GET_LINK_STATE 0x10 /* get vf link state */
+ 
++/* mailbox API, version 1.6 VF requests */
++#define IXGBE_VF_GET_PF_LINK_STATE	0x11 /* request PF to send link info */
++
+ /* length of permanent address message returned from PF */
+ #define IXGBE_VF_PERMADDR_MSG_LEN	4
+ /* word in permanent address message with the current multicast type */
+--- a/drivers/net/ethernet/intel/ixgbevf/vf.c
++++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
+@@ -313,6 +313,7 @@ int ixgbevf_get_reta_locked(struct ixgbe
+ 	 * is not supported for this device type.
+ 	 */
+ 	switch (hw->api_version) {
++	case ixgbe_mbox_api_16:
+ 	case ixgbe_mbox_api_15:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_13:
+@@ -382,6 +383,7 @@ int ixgbevf_get_rss_key_locked(struct ix
+ 	 * or if the operation is not supported for this device type.
+ 	 */
+ 	switch (hw->api_version) {
++	case ixgbe_mbox_api_16:
+ 	case ixgbe_mbox_api_15:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_13:
+@@ -552,6 +554,7 @@ static s32 ixgbevf_update_xcast_mode(str
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_15:
++	case ixgbe_mbox_api_16:
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+@@ -625,6 +628,48 @@ static s32 ixgbevf_hv_get_link_state_vf(
+ }
+ 
+ /**
++ * ixgbevf_get_pf_link_state - Get PF's link status
++ * @hw: pointer to the HW structure
++ * @speed: link speed
++ * @link_up: indicate if link is up/down
++ *
++ * Ask PF to provide link_up state and speed of the link.
++ *
++ * Return: IXGBE_ERR_MBX in the case of mailbox error,
++ * -EOPNOTSUPP if the op is not supported or 0 on success.
++ */
++static int ixgbevf_get_pf_link_state(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
++				     bool *link_up)
++{
++	u32 msgbuf[3] = {};
++	int err;
++
++	switch (hw->api_version) {
++	case ixgbe_mbox_api_16:
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	msgbuf[0] = IXGBE_VF_GET_PF_LINK_STATE;
++
++	err = ixgbevf_write_msg_read_ack(hw, msgbuf, msgbuf,
++					 ARRAY_SIZE(msgbuf));
++	if (err || (msgbuf[0] & IXGBE_VT_MSGTYPE_FAILURE)) {
++		err = IXGBE_ERR_MBX;
++		*speed = IXGBE_LINK_SPEED_UNKNOWN;
++		/* No need to set @link_up to false as it will be done by
++		 * ixgbe_check_mac_link_vf().
++		 */
++	} else {
++		*speed = msgbuf[1];
++		*link_up = msgbuf[2];
++	}
++
++	return err;
++}
++
++/**
+  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
+  *  @hw: pointer to the HW structure
+  *  @vlan: 12 bit VLAN ID
+@@ -659,6 +704,58 @@ mbx_err:
+ }
+ 
+ /**
++ * ixgbe_read_vflinks - Read VFLINKS register
++ * @hw: pointer to the HW structure
++ * @speed: link speed
++ * @link_up: indicate if link is up/down
++ *
++ * Get linkup status and link speed from the VFLINKS register.
++ */
++static void ixgbe_read_vflinks(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
++			       bool *link_up)
++{
++	u32 vflinks = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
++
++	/* if link status is down no point in checking to see if PF is up */
++	if (!(vflinks & IXGBE_LINKS_UP)) {
++		*link_up = false;
++		return;
++	}
++
++	/* for SFP+ modules and DA cables on 82599 it can take up to 500usecs
++	 * before the link status is correct
++	 */
++	if (hw->mac.type == ixgbe_mac_82599_vf) {
++		for (int i = 0; i < 5; i++) {
++			udelay(100);
++			vflinks = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
++
++			if (!(vflinks & IXGBE_LINKS_UP)) {
++				*link_up = false;
++				return;
++			}
++		}
++	}
++
++	/* We reached this point so there's link */
++	*link_up = true;
++
++	switch (vflinks & IXGBE_LINKS_SPEED_82599) {
++	case IXGBE_LINKS_SPEED_10G_82599:
++		*speed = IXGBE_LINK_SPEED_10GB_FULL;
++		break;
++	case IXGBE_LINKS_SPEED_1G_82599:
++		*speed = IXGBE_LINK_SPEED_1GB_FULL;
++		break;
++	case IXGBE_LINKS_SPEED_100_82599:
++		*speed = IXGBE_LINK_SPEED_100_FULL;
++		break;
++	default:
++		*speed = IXGBE_LINK_SPEED_UNKNOWN;
++	}
++}
++
++/**
+  * ixgbevf_hv_set_vfta_vf - * Hyper-V variant - just a stub.
+  * @hw: unused
+  * @vlan: unused
+@@ -705,7 +802,6 @@ static s32 ixgbevf_check_mac_link_vf(str
+ 	struct ixgbe_mbx_info *mbx = &hw->mbx;
+ 	struct ixgbe_mac_info *mac = &hw->mac;
+ 	s32 ret_val = 0;
+-	u32 links_reg;
+ 	u32 in_msg = 0;
+ 
+ 	/* If we were hit with a reset drop the link */
+@@ -715,36 +811,14 @@ static s32 ixgbevf_check_mac_link_vf(str
+ 	if (!mac->get_link_status)
+ 		goto out;
+ 
+-	/* if link status is down no point in checking to see if pf is up */
+-	links_reg = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
+-	if (!(links_reg & IXGBE_LINKS_UP))
+-		goto out;
+-
+-	/* for SFP+ modules and DA cables on 82599 it can take up to 500usecs
+-	 * before the link status is correct
+-	 */
+-	if (mac->type == ixgbe_mac_82599_vf) {
+-		int i;
+-
+-		for (i = 0; i < 5; i++) {
+-			udelay(100);
+-			links_reg = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
+-
+-			if (!(links_reg & IXGBE_LINKS_UP))
+-				goto out;
+-		}
+-	}
+-
+-	switch (links_reg & IXGBE_LINKS_SPEED_82599) {
+-	case IXGBE_LINKS_SPEED_10G_82599:
+-		*speed = IXGBE_LINK_SPEED_10GB_FULL;
+-		break;
+-	case IXGBE_LINKS_SPEED_1G_82599:
+-		*speed = IXGBE_LINK_SPEED_1GB_FULL;
+-		break;
+-	case IXGBE_LINKS_SPEED_100_82599:
+-		*speed = IXGBE_LINK_SPEED_100_FULL;
+-		break;
++	if (hw->mac.type == ixgbe_mac_e610_vf) {
++		ret_val = ixgbevf_get_pf_link_state(hw, speed, link_up);
++		if (ret_val)
++			goto out;
++	} else {
++		ixgbe_read_vflinks(hw, speed, link_up);
++		if (*link_up == false)
++			goto out;
+ 	}
+ 
+ 	/* if the read failed it could just be a mailbox collision, best wait
+@@ -951,6 +1025,7 @@ int ixgbevf_get_queues(struct ixgbe_hw *
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_15:
++	case ixgbe_mbox_api_16:
+ 		break;
+ 	default:
+ 		return 0;
 
 
 
