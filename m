@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-188593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450C1BF8782
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:01:44 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41550BF85C2
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:55:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C73B1897025
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:02:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 028954F5CB6
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48D82652AC;
-	Tue, 21 Oct 2025 20:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03AA52741A6;
+	Tue, 21 Oct 2025 19:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xy1C6AhF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/Ik5y1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1651FF7BC;
-	Tue, 21 Oct 2025 20:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BCD272E7C;
+	Tue, 21 Oct 2025 19:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076900; cv=none; b=jdkBHna96bUXRQf4C9lJqxKKMUV5N3RST1pjXmesmyl90dViAPKSTpOAJk+qSl7QyTmVYJ3514WZuFklr6hfutD2oa8GYW3cj8Gm6XFIZyQb0iFGsIdvKPuZQFKtp0lNpKx4t8SVxEDmxrm4XzyS9XiSq7v26jD5rJjJlcMWqp0=
+	t=1761076502; cv=none; b=TZpopkA56AEMF0UlGbsjUehiaRx6Ep2niORTMOckzTOFRVl7VheIDj6OCMBDF1O4giWbRCwEKsgrLQg8E9ZK8bc98oshM40qRC2YMHvb+Q09ixzz35rD8zSKw1eCPPCSPvBGpYYK6jlfXGGridg7SapFwmhKz41Wu7LSODco23U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076900; c=relaxed/simple;
-	bh=Cv8SSUi4Oy9QO+Wvd6cY40YJ9tzfWAtqCz//dZM2UVI=;
+	s=arc-20240116; t=1761076502; c=relaxed/simple;
+	bh=PlPDd15spc5Eq+oQj6tj/qehLHX4bCJ0Wt4WhjBexao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMDVsxFBcI+jZO7ECFS5/6MP8/pgVL3eIOLXkRrxiqaC9LDYBr7vHf5GnX+wx2+49ilcvKxrNgfqTKEhDws2b12RTa702cRsioEOYW0M+8qsZk5CL9CGWWuQYcGebTlCFFtCKSizEdS9dvnW09/YFaKtoLC+usea03yvfo3wcFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xy1C6AhF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA193C4CEF1;
-	Tue, 21 Oct 2025 20:01:39 +0000 (UTC)
+	 MIME-Version; b=htkG3SjapDYHavOxZtV7FlczPJhyhUi/ArXPZt1VHwWNNSeHMkaNeNLEwbVPVu/VuojmvDh6sX4lDFun1lG1osfBDXxQgNNG0TcAs4Dc76ceUXJBXTsJtBSw6Yl/LuvnKtCvfjOlpOjm+/MFqosU8ubDFhRLZPcRxR7hxexA5dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/Ik5y1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBD7C4CEF7;
+	Tue, 21 Oct 2025 19:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076900;
-	bh=Cv8SSUi4Oy9QO+Wvd6cY40YJ9tzfWAtqCz//dZM2UVI=;
+	s=korg; t=1761076502;
+	bh=PlPDd15spc5Eq+oQj6tj/qehLHX4bCJ0Wt4WhjBexao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xy1C6AhFc7URRjgjVRpGrAeK5EdQT58yFpAHkbRy2LXOYwyhxJu3Q7d8VDJ58OX0s
-	 ubOsZpn7qNnrNmpFH5D2WVirPSUMSlIo3j26OfAcuqWCgI/CYUIOyq4u+THf2WuG3D
-	 6OUmmQ75pZw23vpe2xFLP69BIIMtcmi9XA0RxPCw=
+	b=g/Ik5y1CDtYZE31Ns1eHqLt47rDJSih3nFaUCyouIIRsmoojw94/57SMtuXHD7B1p
+	 eYW7WGKnsiLFc+lLuDMxAFlmYoN48Y/Tz6Wu76UwVSJjxZltGJISJa2iHsuqiff+vX
+	 /ra1r95P1I6X7ELwIejgvAO/QyHXE72uVIubDwNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Amit Chaudhary <achaudhary@purestorage.com>,
+	Randy Jennings <randyj@purestorage.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/136] ASoC: nau8821: Generalize helper to clear IRQ status
+Subject: [PATCH 6.6 052/105] nvme-multipath: Skip nr_active increments in RETRY disposition
 Date: Tue, 21 Oct 2025 21:51:01 +0200
-Message-ID: <20251021195037.726929689@linuxfoundation.org>
+Message-ID: <20251021195022.917124814@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Amit Chaudhary <achaudhary@purestorage.com>
 
-[ Upstream commit 9273aa85b35cc02d0953a1ba3b7bd694e5a2c10e ]
+[ Upstream commit bb642e2d300ee27dcede65cda7ffc47a7047bd69 ]
 
-Instead of adding yet another utility function for dealing with the
-interrupt clearing register, generalize nau8821_int_status_clear_all()
-by renaming it to nau8821_irq_status_clear(), whilst introducing a
-second parameter to allow restricting the operation scope to a single
-interrupt instead of the whole range of active IRQs.
+For queue-depth I/O policy, this patch fixes unbalanced I/Os across
+nvme multipaths.
 
-While at it, also fix a spelling typo in the comment block.
+Issue Description:
 
-Note this is mainly a prerequisite for subsequent patches aiming to
-address some deficiencies in the implementation of the interrupt
-handler.  Thus the presence of the Fixes tag below is intentional, to
-facilitate backporting.
+The RETRY disposition incorrectly increments ns->ctrl->nr_active
+counter and reinitializes iostat start-time. In such cases nr_active
+counter never goes back to zero until that path disconnects and
+reconnects.
 
-Fixes: aab1ad11d69f ("ASoC: nau8821: new driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20251003-nau8821-jdet-fixes-v1-2-f7b0e2543f09@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Such a path is not chosen for new I/Os if multiple RETRY cases on a given
+a path cause its queue-depth counter to be artificially higher compared
+to other paths. This leads to unbalanced I/Os across paths.
+
+The patch skips incrementing nr_active if NVME_MPATH_CNT_ACTIVE is already
+set. And it skips restarting io stats if NVME_MPATH_IO_STATS is already set.
+
+base-commit: e989a3da2d371a4b6597ee8dee5c72e407b4db7a
+Fixes: d4d957b53d91eeb ("nvme-multipath: support io stats on the mpath device")
+Signed-off-by: Amit Chaudhary <achaudhary@purestorage.com>
+Reviewed-by: Randy Jennings <randyj@purestorage.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/nau8821.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/nvme/host/multipath.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/nau8821.c b/sound/soc/codecs/nau8821.c
-index 23ee515db9bdd..56e769446eb30 100644
---- a/sound/soc/codecs/nau8821.c
-+++ b/sound/soc/codecs/nau8821.c
-@@ -1022,12 +1022,17 @@ static bool nau8821_is_jack_inserted(struct regmap *regmap)
- 	return active_high == is_high;
- }
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 119afdfe4b91e..57416bbf9344f 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -131,12 +131,14 @@ void nvme_mpath_start_request(struct request *rq)
+ 	struct nvme_ns *ns = rq->q->queuedata;
+ 	struct gendisk *disk = ns->head->disk;
  
--static void nau8821_int_status_clear_all(struct regmap *regmap)
-+static void nau8821_irq_status_clear(struct regmap *regmap, int active_irq)
- {
--	int active_irq, clear_irq, i;
-+	int clear_irq, i;
+-	if (READ_ONCE(ns->head->subsys->iopolicy) == NVME_IOPOLICY_QD) {
++	if ((READ_ONCE(ns->head->subsys->iopolicy) == NVME_IOPOLICY_QD) &&
++	    !(nvme_req(rq)->flags & NVME_MPATH_CNT_ACTIVE)) {
+ 		atomic_inc(&ns->ctrl->nr_active);
+ 		nvme_req(rq)->flags |= NVME_MPATH_CNT_ACTIVE;
+ 	}
  
--	/* Reset the intrruption status from rightmost bit if the corres-
--	 * ponding irq event occurs.
-+	if (active_irq) {
-+		regmap_write(regmap, NAU8821_R11_INT_CLR_KEY_STATUS, active_irq);
-+		return;
-+	}
-+
-+	/* Reset the interruption status from rightmost bit if the
-+	 * corresponding irq event occurs.
- 	 */
- 	regmap_read(regmap, NAU8821_R10_IRQ_STATUS, &active_irq);
- 	for (i = 0; i < NAU8821_REG_DATA_LEN; i++) {
-@@ -1054,7 +1059,7 @@ static void nau8821_eject_jack(struct nau8821 *nau8821)
- 	snd_soc_dapm_sync(dapm);
+-	if (!blk_queue_io_stat(disk->queue) || blk_rq_is_passthrough(rq))
++	if (!blk_queue_io_stat(disk->queue) || blk_rq_is_passthrough(rq) ||
++	    (nvme_req(rq)->flags & NVME_MPATH_IO_STATS))
+ 		return;
  
- 	/* Clear all interruption status */
--	nau8821_int_status_clear_all(regmap);
-+	nau8821_irq_status_clear(regmap, 0);
- 
- 	/* Enable the insertion interruption, disable the ejection inter-
- 	 * ruption, and then bypass de-bounce circuit.
-@@ -1523,7 +1528,7 @@ static int nau8821_resume_setup(struct nau8821 *nau8821)
- 	nau8821_configure_sysclk(nau8821, NAU8821_CLK_DIS, 0);
- 	if (nau8821->irq) {
- 		/* Clear all interruption status */
--		nau8821_int_status_clear_all(regmap);
-+		nau8821_irq_status_clear(regmap, 0);
- 
- 		/* Enable both insertion and ejection interruptions, and then
- 		 * bypass de-bounce circuit.
+ 	nvme_req(rq)->flags |= NVME_MPATH_IO_STATS;
 -- 
 2.51.0
 
