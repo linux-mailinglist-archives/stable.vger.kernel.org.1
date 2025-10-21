@@ -1,215 +1,138 @@
-Return-Path: <stable+bounces-188353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 162BABF6FD8
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:11:42 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3F3BF7046
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:19:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DA23464035
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 14:11:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3287C50500F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 14:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FC833B948;
-	Tue, 21 Oct 2025 14:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30463260580;
+	Tue, 21 Oct 2025 14:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mf+eT4Ho"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PBs96o1a"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6460533B943
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 14:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9A0238C1F
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 14:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761055896; cv=none; b=DySoOXuE3kVO2hQHBzV8OczoVkDkUnPxS4j6cztY9KjhuyNyXu9nrqEVfBs1U3rJ73es6suUojajeTzHPm4xJdvRNzCdAQpRcsIqNIfQAUI5Pehf2gbB9TFGVAcC5cC6SNIalc8BYu3pDMVAq2SKENbyemqH+7NUk3VXqZJ8CsU=
+	t=1761056327; cv=none; b=ANZlS0TsbsO6g/6rzb5Y28ttVTUC34pXpyHBlOG9v4fJEeQzdkNiTqPfs8t5Oiy4wLBXrND6WltAhSJ1iKbcaeS9xPCoSuS1gM/Ax1W6K0kQX2YLsrZkwPauM3VAc/5qzOtZdV3iQy5ybu6huyIqksEy7gqWysBhPsWOHRdvqKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761055896; c=relaxed/simple;
-	bh=qhpDDWHXCKWpQOwUtFHMqDQXM10R3JS0MkdzjGtwt4o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r0kuO6pENstvc8zF6hnJ8dI9gonH4ibe/Pl81NW5EB43/6lTDvSz1r8uW09WIwvKJAF4W68OIuqXUct8oe9GZdCnEtTPpmsWirrmU/zoNYB3Wx276oWxUUPXG69WDDKTf+pjjK2faW3Bgcvrabzl3W54DJWMEYpch6fksVN1HTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mf+eT4Ho; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CAFEC4CEF1;
-	Tue, 21 Oct 2025 14:11:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761055895;
-	bh=qhpDDWHXCKWpQOwUtFHMqDQXM10R3JS0MkdzjGtwt4o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mf+eT4HoyXfH6dWbwE9dc0nUe1lQa5jIJtlVjxmpIza2gqi0j242bZbXsRsJSAkGs
-	 qn26gKefLFFsPI9AHx8+UfZfE8SWDml6aKydDBLDSQcIbqpx1V475tHudjSlfFcIYn
-	 ASewwny7XCvYqmc94eIEaOCwx35x0nU2CMvUEI0DK11Jeg3WW1mLYu9jsgL9+13f6w
-	 /EkgPstuzt0HmiMYfD3zpNniDPl8QsmRQpBkIF9ykB69M9XzqIyhYA51BpZ/8JPT/a
-	 elJHnfOkmvtnswALacjrVD2PFg5aei/nDO6aAQ+MuMOugRqjE/cRJWUMt80K2fJrjL
-	 0xV8yJRv9RsRQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
-	Paulo Zanoni <paulo.r.zanoni@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17.y] drm/xe: Don't allow evicting of BOs in same VM in array of VM binds
-Date: Tue, 21 Oct 2025 10:11:33 -0400
-Message-ID: <20251021141133.2151101-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102048-unrushed-state-ce5e@gregkh>
-References: <2025102048-unrushed-state-ce5e@gregkh>
+	s=arc-20240116; t=1761056327; c=relaxed/simple;
+	bh=td0wxdJvwksCsQ8szApwyuadUAHIWrEX7VEhKsxp9ow=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=agHmSV90u7K24DNIDR5t/amNodbBz5sK7ZazQh/yyiMa7BzgxZLHPgzxs/a8QPLVvhR2HfYxbHbjkRlMuVbB+38HNEdBv2SF3igL0qQb2BNqQvfFxoaz+e6zeTRpWjPPMy6AneoJoKMmgMUj959kp/YiMDHPubNDLZQAIDPrOYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PBs96o1a; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-42701b29a7eso2659431f8f.0
+        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 07:18:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761056323; x=1761661123; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DTg6iWTU9Y0FmHMWVr7mpqpsIik70Dq7Hr+fkZkn6eg=;
+        b=PBs96o1ah+w8aX0y9oKe7fpZGAOu+zu+VpZA+sClRj0ZqIvIRIN1YOvUh6F5NtPzyS
+         8mSsy9/uArSliWIBBMxPkzBP8aQYL8cS5464cU3eTZG2IhGgFUcrE2WCNEeUl0/eIbZ4
+         zhNi5HalEiUG5GWsIcQDLF+XVZob0jBSP2POq+nBYpbxUyIIleC93j7fItiBGHaby+QZ
+         8FlCq5rwcnTM6s711duD4aKwJ2ucWymccpdZKnHsk4hSsS5iZ/f+uKXlJyfzLD2znLL6
+         tns2UN3WiT2t/mcyprUsvuqqGRV4aIDZC83yocuouLJFNir0b1ttUl6T7u6ITzh0pC8O
+         rlzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761056323; x=1761661123;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DTg6iWTU9Y0FmHMWVr7mpqpsIik70Dq7Hr+fkZkn6eg=;
+        b=bkt3IDTYd61eCEL6Ahk8Me0TdQ+lMT/EMSYl+ftYrl95UVjKCumGUaJj/jvBVzLOLN
+         jlMgtXzguwCgMnzJPE8ZIAG48sIk3afq3Cma53eiIxuF24tWdRq+aS/JXpk1ReeM1xn0
+         A6QGSS9ED5iIUTgSJlh/IogMTKKM2ThiYaqOCAABBZ1ChdEvKWpGi/WyHBz6uKf+2uYI
+         gqnmvzn8kjZK9uOs8Y3uT3wC65YS8Ek/sTGSsxTf/f6DXGBqjhnc35BqhADZcdJ2CANQ
+         HpuBrQx1pa1HgHb3pkHWhidVqtf3ITmPAjIUFRXHJX5nP3C0Ox6JVQIaSAjyDSfGU+Zv
+         xKSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVBeECX4Ya/5HCkXCoDnoFS4UFhD965+BifheihyNbKIhecwvqZCFXoENOfyUOIQtb51bnIAls=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuToSl31fZX8ezGzIipS5bac4lJRYHzRrXiKqKwrG4jlsfzYTZ
+	b9T6YbaGCdFpTTlYwXRhxPGcWhjbJ6WhpnmBXmj83Kf1UxzaG9/ZfO9avffopA1SsAsH04giloj
+	/hP4k4xK0dTrPwjzBqythsCOff5FZ+Sw=
+X-Gm-Gg: ASbGncvVjDvG4Js6IwmlNOp74lDLVTZ5VdxpG7Q46w3Z/0xs/2PIeytpHoOBJoBWscv
+	Mi5k1bg9oK8EEFWOKvAgVxOs4AZTBAfuV5CThY4XnMAt2xPwczb0E/5DaFzca/tStCALA/Zff87
+	ads3D9Apw73h1Lzhg2C96AGDH3qdbKTTbfLfk4QU8Cg/8h0i7hUBNb04kBBRQG1Ry05YkHs1mhS
+	kuPkIMV/1LRIcU31UfYKeZSK1hI9zTDN/lO0UiMXQX1VmFjZVp6UgMHp5l/aHl8lOv81YOup4/4
+	khhQLUf/mRg1L/EqNKk=
+X-Google-Smtp-Source: AGHT+IFa3o4oRIU+3qLtptCG5zaP5IZUIUu7lzLKc3QkSze+Ys7kW5YhqHaljicbPhcJw59uJZEAVQ42kFJjUoq0zdA=
+X-Received: by 2002:a5d:584c:0:b0:401:8707:8a4b with SMTP id
+ ffacd0b85a97d-4285304a024mr45398f8f.13.1761056323420; Tue, 21 Oct 2025
+ 07:18:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <a6024e8eab679043e9b8a5defdb41c4bda62f02b.1757016152.git.andreyknvl@gmail.com>
+In-Reply-To: <a6024e8eab679043e9b8a5defdb41c4bda62f02b.1757016152.git.andreyknvl@gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Tue, 21 Oct 2025 16:18:32 +0200
+X-Gm-Features: AS18NWBzXNiBqt2jGmlRH7AZ1KVpx77wzAqEXOoi8Zzb_trF3c5-FIFSgDdxD7c
+Message-ID: <CA+fCnZdG+X48_W_bSKYpziKohjp1QVgDzUzfYK_KOk42j58_ZA@mail.gmail.com>
+Subject: Re: [PATCH] usb: raw-gadget: do not limit transfer length
+To: andrey.konovalov@linux.dev
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alan Stern <stern@rowland.harvard.edu>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Matthew Brost <matthew.brost@intel.com>
+On Thu, Sep 4, 2025 at 10:08=E2=80=AFPM <andrey.konovalov@linux.dev> wrote:
+>
+> From: Andrey Konovalov <andreyknvl@gmail.com>
+>
+> Drop the check on the maximum transfer length in Raw Gadget for both
+> control and non-control transfers.
+>
+> Limiting the transfer length causes a problem with emulating USB devices
+> whose full configuration descriptor exceeds PAGE_SIZE in length.
+>
+> Overall, there does not appear to be any reason to enforce any kind of
+> transfer length limit on the Raw Gadget side for either control or
+> non-control transfers, so let's just drop the related check.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
+> Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+> ---
+>  drivers/usb/gadget/legacy/raw_gadget.c | 2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/=
+legacy/raw_gadget.c
+> index 20165e1582d9..b71680c58de6 100644
+> --- a/drivers/usb/gadget/legacy/raw_gadget.c
+> +++ b/drivers/usb/gadget/legacy/raw_gadget.c
+> @@ -667,8 +667,6 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *=
+io, void __user *ptr,
+>                 return ERR_PTR(-EINVAL);
+>         if (!usb_raw_io_flags_valid(io->flags))
+>                 return ERR_PTR(-EINVAL);
+> -       if (io->length > PAGE_SIZE)
+> -               return ERR_PTR(-EINVAL);
+>         if (get_from_user)
+>                 data =3D memdup_user(ptr + sizeof(*io), io->length);
+>         else {
+> --
+> 2.43.0
+>
 
-[ Upstream commit 7ac74613e5f2ef3450f44fd2127198662c2563a9 ]
+Hi Greg,
 
-An array of VM binds can potentially evict other buffer objects (BOs)
-within the same VM under certain conditions, which may lead to NULL
-pointer dereferences later in the bind pipeline. To prevent this, clear
-the allow_res_evict flag in the xe_bo_validate call.
+Could you pick up this patch?
 
-v2:
- - Invert polarity of no_res_evict (Thomas)
- - Add comment in code explaining issue (Thomas)
-
-Cc: stable@vger.kernel.org
-Reported-by: Paulo Zanoni <paulo.r.zanoni@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6268
-Fixes: 774b5fa509a9 ("drm/xe: Avoid evicting object of the same vm in none fault mode")
-Fixes: 77f2ef3f16f5 ("drm/xe: Lock all gpuva ops during VM bind IOCTL")
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Tested-by: Paulo Zanoni <paulo.r.zanoni@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://lore.kernel.org/r/20251009110618.3481870-1-matthew.brost@intel.com
-(cherry picked from commit 8b9ba8d6d95fe75fed6b0480bb03da4b321bea08)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-[ removed exec parameter from xe_bo_validate() calls ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/xe/xe_vm.c       | 32 +++++++++++++++++++++++---------
- drivers/gpu/drm/xe/xe_vm_types.h |  2 ++
- 2 files changed, 25 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 5146999d27fa2..bf44cd5bf49c0 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -2894,7 +2894,7 @@ static void vm_bind_ioctl_ops_unwind(struct xe_vm *vm,
- }
- 
- static int vma_lock_and_validate(struct drm_exec *exec, struct xe_vma *vma,
--				 bool validate)
-+				 bool res_evict, bool validate)
- {
- 	struct xe_bo *bo = xe_vma_bo(vma);
- 	struct xe_vm *vm = xe_vma_vm(vma);
-@@ -2905,7 +2905,8 @@ static int vma_lock_and_validate(struct drm_exec *exec, struct xe_vma *vma,
- 			err = drm_exec_lock_obj(exec, &bo->ttm.base);
- 		if (!err && validate)
- 			err = xe_bo_validate(bo, vm,
--					     !xe_vm_in_preempt_fence_mode(vm));
-+					     !xe_vm_in_preempt_fence_mode(vm) &&
-+					     res_evict);
- 	}
- 
- 	return err;
-@@ -2978,14 +2979,23 @@ static int prefetch_ranges(struct xe_vm *vm, struct xe_vma_op *op)
- }
- 
- static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
--			    struct xe_vma_op *op)
-+			    struct xe_vma_ops *vops, struct xe_vma_op *op)
- {
- 	int err = 0;
-+	bool res_evict;
-+
-+	/*
-+	 * We only allow evicting a BO within the VM if it is not part of an
-+	 * array of binds, as an array of binds can evict another BO within the
-+	 * bind.
-+	 */
-+	res_evict = !(vops->flags & XE_VMA_OPS_ARRAY_OF_BINDS);
- 
- 	switch (op->base.op) {
- 	case DRM_GPUVA_OP_MAP:
- 		if (!op->map.invalidate_on_bind)
- 			err = vma_lock_and_validate(exec, op->map.vma,
-+						    res_evict,
- 						    !xe_vm_in_fault_mode(vm) ||
- 						    op->map.immediate);
- 		break;
-@@ -2996,11 +3006,13 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
- 
- 		err = vma_lock_and_validate(exec,
- 					    gpuva_to_vma(op->base.remap.unmap->va),
--					    false);
-+					    res_evict, false);
- 		if (!err && op->remap.prev)
--			err = vma_lock_and_validate(exec, op->remap.prev, true);
-+			err = vma_lock_and_validate(exec, op->remap.prev,
-+						    res_evict, true);
- 		if (!err && op->remap.next)
--			err = vma_lock_and_validate(exec, op->remap.next, true);
-+			err = vma_lock_and_validate(exec, op->remap.next,
-+						    res_evict, true);
- 		break;
- 	case DRM_GPUVA_OP_UNMAP:
- 		err = check_ufence(gpuva_to_vma(op->base.unmap.va));
-@@ -3009,7 +3021,7 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
- 
- 		err = vma_lock_and_validate(exec,
- 					    gpuva_to_vma(op->base.unmap.va),
--					    false);
-+					    res_evict, false);
- 		break;
- 	case DRM_GPUVA_OP_PREFETCH:
- 	{
-@@ -3025,7 +3037,7 @@ static int op_lock_and_prep(struct drm_exec *exec, struct xe_vm *vm,
- 
- 		err = vma_lock_and_validate(exec,
- 					    gpuva_to_vma(op->base.prefetch.va),
--					    false);
-+					    res_evict, false);
- 		if (!err && !xe_vma_has_no_bo(vma))
- 			err = xe_bo_migrate(xe_vma_bo(vma),
- 					    region_to_mem_type[region]);
-@@ -3069,7 +3081,7 @@ static int vm_bind_ioctl_ops_lock_and_prep(struct drm_exec *exec,
- 		return err;
- 
- 	list_for_each_entry(op, &vops->list, link) {
--		err = op_lock_and_prep(exec, vm, op);
-+		err = op_lock_and_prep(exec, vm, vops, op);
- 		if (err)
- 			return err;
- 	}
-@@ -3698,6 +3710,8 @@ int xe_vm_bind_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
- 	}
- 
- 	xe_vma_ops_init(&vops, vm, q, syncs, num_syncs);
-+	if (args->num_binds > 1)
-+		vops.flags |= XE_VMA_OPS_ARRAY_OF_BINDS;
- 	for (i = 0; i < args->num_binds; ++i) {
- 		u64 range = bind_ops[i].range;
- 		u64 addr = bind_ops[i].addr;
-diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
-index 6058cf739388b..f6616d595999f 100644
---- a/drivers/gpu/drm/xe/xe_vm_types.h
-+++ b/drivers/gpu/drm/xe/xe_vm_types.h
-@@ -467,6 +467,8 @@ struct xe_vma_ops {
- 	struct xe_vm_pgtable_update_ops pt_update_ops[XE_MAX_TILES_PER_DEVICE];
- 	/** @flag: signify the properties within xe_vma_ops*/
- #define XE_VMA_OPS_FLAG_HAS_SVM_PREFETCH BIT(0)
-+#define XE_VMA_OPS_FLAG_MADVISE          BIT(1)
-+#define XE_VMA_OPS_ARRAY_OF_BINDS	 BIT(2)
- 	u32 flags;
- #ifdef TEST_VM_OPS_ERROR
- 	/** @inject_error: inject error to test error handling */
--- 
-2.51.0
-
+Thank you!
 
