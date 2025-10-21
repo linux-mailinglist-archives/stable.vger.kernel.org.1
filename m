@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-188544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71873BF86EB
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52045BF852F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3647F19C3E03
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:59:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 214EF18A840B
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F09274B2E;
-	Tue, 21 Oct 2025 19:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EC4273D73;
+	Tue, 21 Oct 2025 19:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHxsrVHd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPc4nNRv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71302273D66;
-	Tue, 21 Oct 2025 19:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552CC2737F6;
+	Tue, 21 Oct 2025 19:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076744; cv=none; b=gZayNcRWhKjJKWOPjF1sniScMTOJfqtkVviuCKn9tVbnpcM/vKbtNrFIArKOb+Wq2q4kxH6d1sLZ1fxzGu+nXOIhPFUNBXNkPgLTCI31y4D3fILMpqXoCBU0Baglqha3WYwYgWIK7x2CyZlPqlr+cyRFWVcjhx9mvm1TWbqSTuQ=
+	t=1761076363; cv=none; b=HDaEksIviAStjaXexqZEjUM0vB81HXAwv4WVV3R2+zmep/NGLjTnZp+Nai3qVOy+e9vnEoKJid0oeTWlsVcW6i6E9N5S9wnyhGtCWEH646+SVm0YYtw+cB1p85yrFoFdNrlfj35xvmjWtALXm5wCb4NqBIFMCvLc3Ezavx2j2cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076744; c=relaxed/simple;
-	bh=3d1k5ppOAi9cFt/wvduHYBQFqP0dmFpwG2fNu7Mn2pY=;
+	s=arc-20240116; t=1761076363; c=relaxed/simple;
+	bh=Yi9sScQaH9IgdnVwrHuvGabhCvC33aaIUQlT/MaERkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PRSvLXIXBbHMi+YFH0BPpVxgH7+4bh5fOlkaFvEqX3e4CtnkesPxXH9xC+lhtZcS+9cHpRVFPwu2o7mBwWZjigheKjngO1/nEs0OMX2XT14eYDEspEkwiOp8CJqDzkgJJQcD96WScPCpKBWeEKrgqaDcBuOla25voraVG9uUamE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHxsrVHd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5A2C4CEF1;
-	Tue, 21 Oct 2025 19:59:03 +0000 (UTC)
+	 MIME-Version; b=p/RwBbkfmm64lmCZkXgauUUwxWak2w0pyuil5n+fKH4dljXG3IuTHm4tDcejJ5Qu8MtigHpSEBv/EWrwskgV6TQjRo6pa/gXyMEhMqCdSULCRb1GlUiA0N26mwIOiSYwwkyqdHZuj/8y/PclE4V0edvcXObZZPRTsFQwqkxHzAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPc4nNRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A09EC4CEF1;
+	Tue, 21 Oct 2025 19:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076744;
-	bh=3d1k5ppOAi9cFt/wvduHYBQFqP0dmFpwG2fNu7Mn2pY=;
+	s=korg; t=1761076363;
+	bh=Yi9sScQaH9IgdnVwrHuvGabhCvC33aaIUQlT/MaERkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHxsrVHd/pI/dnlxQwOsmZ6gdTssojbe7hd2KkJiJJj76a1hMonW35G1zQjfePAGy
-	 SFyQ1j01GGcoVEXgUP2mrINk6Iap+U0XIrI1rDPZ39MHTXLJsbu86dYaUOn02uAjkg
-	 QQWXmgXsjmphatgSzoDTxCZOwOKuwKIQrOB73Mdg=
+	b=bPc4nNRvMQCKtdYrNoS7h/69D5can707pNpHTOs1/HG4V+QhGN175UYeFQJZWs9/S
+	 iWImyMjpu1V/9OG5gxXyhIiiBFsTc5qf4RWYCHqYFuKbixLog3GjPdKZkmu0Vbu05X
+	 p3u5xqgRDl0VBxewnqE9uxQsfkzXRlaG+CxD3eGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 6.12 024/136] perf/core: Fix MMAP event path names with backing files
-Date: Tue, 21 Oct 2025 21:50:12 +0200
-Message-ID: <20251021195036.555765840@linuxfoundation.org>
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 004/105] f2fs: fix wrong block mapping for multi-devices
+Date: Tue, 21 Oct 2025 21:50:13 +0200
+Message-ID: <20251021195021.599570699@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-commit 8818f507a9391019a3ec7c57b1a32e4b386e48a5 upstream.
+commit 9d5c4f5c7a2c7677e1b3942772122b032c265aae upstream.
 
-Some file systems like FUSE-based ones or overlayfs may record the backing
-file in struct vm_area_struct vm_file, instead of the user file that the
-user mmapped.
+Assuming the disk layout as below,
 
-Since commit def3ae83da02f ("fs: store real path instead of fake path in
-backing file f_path"), file_path() no longer returns the user file path
-when applied to a backing file.  There is an existing helper
-file_user_path() for that situation.
+disk0: 0            --- 0x00035abfff
+disk1: 0x00035ac000 --- 0x00037abfff
+disk2: 0x00037ac000 --- 0x00037ebfff
 
-Use file_user_path() instead of file_path() to get the path for MMAP
-and MMAP2 events.
+and we want to read data from offset=13568 having len=128 across the block
+devices, we can illustrate the block addresses like below.
 
-Example:
+0 .. 0x00037ac000 ------------------- 0x00037ebfff, 0x00037ec000 -------
+          |          ^            ^                                ^
+          |   fofs   0            13568                            13568+128
+          |       ------------------------------------------------------
+          |   LBA    0x37e8aa9    0x37ebfa9                        0x37ec029
+          --- map    0x3caa9      0x3ffa9
 
-  Setup:
+In this example, we should give the relative map of the target block device
+ranging from 0x3caa9 to 0x3ffa9 where the length should be calculated by
+0x37ebfff + 1 - 0x37ebfa9.
 
-    # cd /root
-    # mkdir test ; cd test ; mkdir lower upper work merged
-    # cp `which cat` lower
-    # mount -t overlay overlay -olowerdir=lower,upperdir=upper,workdir=work merged
-    # perf record -e intel_pt//u -- /root/test/merged/cat /proc/self/maps
-    ...
-    55b0ba399000-55b0ba434000 r-xp 00018000 00:1a 3419                       /root/test/merged/cat
-    ...
-    [ perf record: Woken up 1 times to write data ]
-    [ perf record: Captured and wrote 0.060 MB perf.data ]
-    #
+In the below equation, however, map->m_pblk was supposed to be the original
+address instead of the one from the target block address.
 
-  Before:
+ - map->m_len = min(map->m_len, dev->end_blk + 1 - map->m_pblk);
 
-    File name is wrong (/cat), so decoding fails:
-
-    # perf script --no-itrace --show-mmap-events
-             cat     367 [016]   100.491492: PERF_RECORD_MMAP2 367/367: [0x55b0ba399000(0x9b000) @ 0x18000 00:02 3419 489959280]: r-xp /cat
-    ...
-    # perf script --itrace=e | wc -l
-    Warning:
-    19 instruction trace errors
-    19
-    #
-
-  After:
-
-    File name is correct (/root/test/merged/cat), so decoding is ok:
-
-    # perf script --no-itrace --show-mmap-events
-                 cat     364 [016]    72.153006: PERF_RECORD_MMAP2 364/364: [0x55ce4003d000(0x9b000) @ 0x18000 00:02 3419 3132534314]: r-xp /root/test/merged/cat
-    # perf script --itrace=e
-    # perf script --itrace=e | wc -l
-    0
-    #
-
-Fixes: def3ae83da02f ("fs: store real path instead of fake path in backing file f_path")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Amir Goldstein <amir73il@gmail.com>
 Cc: stable@vger.kernel.org
+Fixes: 71f2c8206202 ("f2fs: multidevice: support direct IO")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |    2 +-
+ fs/f2fs/data.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9010,7 +9010,7 @@ static void perf_event_mmap_event(struct
- 		 * need to add enough zero bytes after the string to handle
- 		 * the 64bit alignment we do later.
- 		 */
--		name = file_path(file, buf, PATH_MAX - sizeof(u64));
-+		name = d_path(file_user_path(file), buf, PATH_MAX - sizeof(u64));
- 		if (IS_ERR(name)) {
- 			name = "//toolong";
- 			goto cpy_name;
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1506,8 +1506,8 @@ static bool f2fs_map_blocks_cached(struc
+ 		struct f2fs_dev_info *dev = &sbi->devs[bidx];
+ 
+ 		map->m_bdev = dev->bdev;
+-		map->m_pblk -= dev->start_blk;
+ 		map->m_len = min(map->m_len, dev->end_blk + 1 - map->m_pblk);
++		map->m_pblk -= dev->start_blk;
+ 	} else {
+ 		map->m_bdev = inode->i_sb->s_bdev;
+ 	}
 
 
 
