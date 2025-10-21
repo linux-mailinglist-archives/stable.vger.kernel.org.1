@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-188632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2095ABF87FD
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:03:49 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F396BF8667
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9B6E19C4C47
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EFC27356F42
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190F02765C3;
-	Tue, 21 Oct 2025 20:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737AD274B44;
+	Tue, 21 Oct 2025 19:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pngy4v6L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCHc4FJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62CE275844;
-	Tue, 21 Oct 2025 20:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF26273D7B;
+	Tue, 21 Oct 2025 19:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077024; cv=none; b=gcErnRmux3gqth1mVF0j5xcQh0hN5wxt8sRkdtTETNHUfxGV6tcp8q/GNug/ZTs+j9dQqddz/L31bwYXUbxwuApkq0nWlrSICOTvTsv8WThfS2laIhq3eab4MP/vYIk9Mp4h+VAITs6POh5R3H8H+2d/YInRYgl8BtW6RcVV2Ak=
+	t=1761076628; cv=none; b=GmUWmEcOxjIh3JaLfqehvE5GZ931SlYagXQ13G8i1dd1CqqzZQLbTGxZkky1GzZkXDE7BEYIsmyd2J3Jwaled85RWG7/GDtJNMLkCSlYU7RJ+jr4L9LBGCVQZNxk/6DFzjA7ktsjDhGzwDqAn3Vsb9c43l+Y5EqOIzU7ovThVIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077024; c=relaxed/simple;
-	bh=z1p7c6EG+AmPSSsApoRX/TRQkY2Awe/130fNyW042LM=;
+	s=arc-20240116; t=1761076628; c=relaxed/simple;
+	bh=MQki1NXAOynjv83SHOwZihAUKh1yvhz6e7CBlYSU7KU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGnofSh+NdvY2tomsQnOk9WE7G8ZL9lAsgHRlfD+eEjtDpPXSSGvz4ZzhtNdx29ofpK367AKSUVf6O2CZRqJ+QIpO1qqtEUAeSzNkLyXDWGoetHCe1+3mXrSIyoIbCHtelqyhgEOi9RBdi/EkYyIyLA+RSeT8NXJBtnRan/TUIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pngy4v6L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE0DC113D0;
-	Tue, 21 Oct 2025 20:03:43 +0000 (UTC)
+	 MIME-Version; b=Hzxh/zalCnUWeCZSAN8o6/qqswDqBUmx7piraVpSk6AX3JYHBXLF1bQQ9cQSludMEUgM8kR9IjfyX71dT2pIR0bIofYNqKKc4n3TIxE001uIJO901urzypkeVLznHKTXArDSmYYEdMbJVkfIzMLTci0xyQq2gBIbP8rG1lD08v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCHc4FJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD40C4CEF1;
+	Tue, 21 Oct 2025 19:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077024;
-	bh=z1p7c6EG+AmPSSsApoRX/TRQkY2Awe/130fNyW042LM=;
+	s=korg; t=1761076625;
+	bh=MQki1NXAOynjv83SHOwZihAUKh1yvhz6e7CBlYSU7KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pngy4v6L94hT5iY7ValD90GPhqL6bm+H2Pm6V+KZIMTjeOO8p7prNiaOfQHOu8urW
-	 ju2xSYNG6sxyBo9KYhjJsfzqJc+45aIGEitKMj82bLbB00RZrvHDSo5Pvg0vWzre3o
-	 qT6+jn/G6nD0q14Z+MRDJ6KklSbwj82o17lKwJ34=
+	b=XCHc4FJBEbMNcOO/U5VmkIfraLhKoiSGpnYlTMoMFf3aD/vt3WdLBFcKkEM9pkcrv
+	 GUqBQ3qWDayQJubjI5WHZ2meLv5j8ZPc/03pA7kvL9xaX4JgZspmZuQiP6Zy7rPBnc
+	 MrRfrLPuZ819oaHtBg7/yBj90sWGpIOY7EfhGSLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Hannes Reinecke <hare@suse.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/136] md/raid1: Handle bio_split() errors
-Date: Tue, 21 Oct 2025 21:51:40 +0200
-Message-ID: <20251021195038.660734822@linuxfoundation.org>
+Subject: [PATCH 6.6 092/105] vfs: Dont leak disconnected dentries on umount
+Date: Tue, 21 Oct 2025 21:51:41 +0200
+Message-ID: <20251021195023.836449821@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit b1a7ad8b5c4fa28325ee7b369a2d545d3e16ccde ]
+[ Upstream commit 56094ad3eaa21e6621396cc33811d8f72847a834 ]
 
-Add proper bio_split() error handling. For any error, call
-raid_end_bio_io() and return.
+When user calls open_by_handle_at() on some inode that is not cached, we
+will create disconnected dentry for it. If such dentry is a directory,
+exportfs_decode_fh_raw() will then try to connect this dentry to the
+dentry tree through reconnect_path(). It may happen for various reasons
+(such as corrupted fs or race with rename) that the call to
+lookup_one_unlocked() in reconnect_one() will fail to find the dentry we
+are trying to reconnect and instead create a new dentry under the
+parent. Now this dentry will not be marked as disconnected although the
+parent still may well be disconnected (at least in case this
+inconsistency happened because the fs is corrupted and .. doesn't point
+to the real parent directory). This creates inconsistency in
+disconnected flags but AFAICS it was mostly harmless. At least until
+commit f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
+which removed adding of most disconnected dentries to sb->s_anon list.
+Thus after this commit cleanup of disconnected dentries implicitely
+relies on the fact that dput() will immediately reclaim such dentries.
+However when some leaf dentry isn't marked as disconnected, as in the
+scenario described above, the reclaim doesn't happen and the dentries
+are "leaked". Memory reclaim can eventually reclaim them but otherwise
+they stay in memory and if umount comes first, we hit infamous "Busy
+inodes after unmount" bug. Make sure all dentries created under a
+disconnected parent are marked as disconnected as well.
 
-For the case of an in the write path, we need to undo the increment in
-the rdev pending count and NULLify the r1_bio->bios[] pointers.
-
-For read path failure, we need to undo rdev pending count increment from
-the earlier read_balance() call.
-
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241111112150.3756529-6-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 22f166218f73 ("md: fix mssing blktrace bio split events")
+Reported-by: syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com
+Fixes: f1ee616214cb ("VFS: don't keep disconnected dentries on d_anon")
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ relocated DCACHE_DISCONNECTED propagation from d_alloc_parallel() to d_alloc() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid1.c |   33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ fs/dcache.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1317,7 +1317,7 @@ static void raid1_read_request(struct md
- 	struct raid1_info *mirror;
- 	struct bio *read_bio;
- 	int max_sectors;
--	int rdisk;
-+	int rdisk, error;
- 	bool r1bio_existed = !!r1_bio;
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -1861,6 +1861,8 @@ struct dentry *d_alloc(struct dentry * p
+ 	__dget_dlock(parent);
+ 	dentry->d_parent = parent;
+ 	list_add(&dentry->d_child, &parent->d_subdirs);
++	if (parent->d_flags & DCACHE_DISCONNECTED)
++		dentry->d_flags |= DCACHE_DISCONNECTED;
+ 	spin_unlock(&parent->d_lock);
  
- 	/*
-@@ -1378,6 +1378,11 @@ static void raid1_read_request(struct md
- 	if (max_sectors < bio_sectors(bio)) {
- 		struct bio *split = bio_split(bio, max_sectors,
- 					      gfp, &conf->bio_split);
-+
-+		if (IS_ERR(split)) {
-+			error = PTR_ERR(split);
-+			goto err_handle;
-+		}
- 		bio_chain(split, bio);
- 		submit_bio_noacct(bio);
- 		bio = split;
-@@ -1404,6 +1409,13 @@ static void raid1_read_request(struct md
- 	read_bio->bi_private = r1_bio;
- 	mddev_trace_remap(mddev, read_bio, r1_bio->sector);
- 	submit_bio_noacct(read_bio);
-+	return;
-+
-+err_handle:
-+	atomic_dec(&mirror->rdev->nr_pending);
-+	bio->bi_status = errno_to_blk_status(error);
-+	set_bit(R1BIO_Uptodate, &r1_bio->state);
-+	raid_end_bio_io(r1_bio);
- }
- 
- static void raid1_write_request(struct mddev *mddev, struct bio *bio,
-@@ -1411,7 +1423,7 @@ static void raid1_write_request(struct m
- {
- 	struct r1conf *conf = mddev->private;
- 	struct r1bio *r1_bio;
--	int i, disks;
-+	int i, disks, k, error;
- 	unsigned long flags;
- 	struct md_rdev *blocked_rdev;
- 	int first_clone;
-@@ -1557,6 +1569,11 @@ static void raid1_write_request(struct m
- 	if (max_sectors < bio_sectors(bio)) {
- 		struct bio *split = bio_split(bio, max_sectors,
- 					      GFP_NOIO, &conf->bio_split);
-+
-+		if (IS_ERR(split)) {
-+			error = PTR_ERR(split);
-+			goto err_handle;
-+		}
- 		bio_chain(split, bio);
- 		submit_bio_noacct(bio);
- 		bio = split;
-@@ -1640,6 +1657,18 @@ static void raid1_write_request(struct m
- 
- 	/* In case raid1d snuck in to freeze_array */
- 	wake_up_barrier(conf);
-+	return;
-+err_handle:
-+	for (k = 0; k < i; k++) {
-+		if (r1_bio->bios[k]) {
-+			rdev_dec_pending(conf->mirrors[k].rdev, mddev);
-+			r1_bio->bios[k] = NULL;
-+		}
-+	}
-+
-+	bio->bi_status = errno_to_blk_status(error);
-+	set_bit(R1BIO_Uptodate, &r1_bio->state);
-+	raid_end_bio_io(r1_bio);
- }
- 
- static bool raid1_make_request(struct mddev *mddev, struct bio *bio)
+ 	return dentry;
 
 
 
