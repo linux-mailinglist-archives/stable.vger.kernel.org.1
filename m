@@ -1,188 +1,138 @@
-Return-Path: <stable+bounces-188345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C91F1BF6D00
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:36:49 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B88A7BF6D2B
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 15:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D5B819A5CAE
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 13:36:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 99E9750524F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 13:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E03B3370F4;
-	Tue, 21 Oct 2025 13:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2A13385AB;
+	Tue, 21 Oct 2025 13:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ooBbHfGj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S18DavwY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45EE25B2E7
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 13:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B259632ABD0
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 13:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761053675; cv=none; b=kW3nQIKeDLNRNKb/ubJhuH0ZHWj65Yx4jOxi5EHsU0eSTYz4Dv6cAGz5RVcuvttztdgw11/0nDc46wkry7Pir43zkLuowwXRW0WdKzN3QIBF9nWinKvLDoCcl5fTllUocY+s9y4clfSv5tWY+1NOYbhowukEgdHxVuV4diE43W8=
+	t=1761053723; cv=none; b=axCgbvFwvOZH28NO2/hvMNPoxhyNXAoNbwq5iGHIBaKAxQu7x5DqkN4ECtyNNWDQhexmbdgg1+LahjwLdOzgv2SoewecbouicHQlRGrmi+IFSABTDC78bF99q1jC9rqAgOiogFAW4FiywakvOL9SaygG9jy0tHOXa0tICvhdu9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761053675; c=relaxed/simple;
-	bh=Uu7YtjmlrQ8Sg9e07b+q4E2VGaflebYLlhMutFUp+Gs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RWfB1KaQzF4tYzjgLw84a7xsjKEaZE8AiG31p/F3kqL70FZrsjWjIaurqyy6aGa/D3XtD4hAJJ49jswSw23MJpS4ra7y40SLhRecNN2aHVdDJb9Kk8oNo5jISjpYl4PbTtpdCOY+Fj1qcTTSQKwDOV9Fa4v+lo49Lirow1YmKm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ooBbHfGj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C470C116B1;
-	Tue, 21 Oct 2025 13:34:34 +0000 (UTC)
+	s=arc-20240116; t=1761053723; c=relaxed/simple;
+	bh=ZuqBsIVbt1VZeH9Nd3+eLrJ3RNjtyUBnOrvCECRWIMo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dTIDvwolDl+87ZxTOKzh/pFxouyfxSviXBPLjA0dJFVU+ZOXOTBKAtDTQsPeEAbWmE3ugTQYhtxDxBU3JoGeJj51jsn6Oml4RLOHY6JVfiT5yoknmYzqZWKtRBr/woHSbgnta21e0/PMiHs44gth/u2yDvFpjCq5ciV708zJ7YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S18DavwY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA8CC19425
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 13:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761053675;
-	bh=Uu7YtjmlrQ8Sg9e07b+q4E2VGaflebYLlhMutFUp+Gs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ooBbHfGj/QmPg1hC3Ngm39rSX7w8KrXPGC6dfaiGI2Wp46hzY5ibJhbrazs+9ZzcC
-	 XQ2Jqw7eXIdoOiVrpIPCXhidPYAOieoqYwwp61P7QnRwyVu/hdzr5xckzxia6n/OFE
-	 Www/Io0pRzwHcCG5V2hqo40wvxKHqk1nLcPCn9tY4wTpojj9DmIE7c+vA9N2cIHF4G
-	 31mOnyEXD4XMGxNxl6yZaF7tr616md/d/LZItbFQSMV5gIBfHwB3REmu+HPEWaC+Gw
-	 Pf9puLVuC5WGQ9RdPvkOi4zepKrsn9ej5EeTpD0F/Wg4bSvZshak7+QMge+3YB1+lX
-	 lZyNbo4FZ2T3A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Gui-Dong Han <hanguidong02@gmail.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] drm/amdgpu: use atomic functions with memory barriers for vm fault info
-Date: Tue, 21 Oct 2025 09:34:32 -0400
-Message-ID: <20251021133432.2080290-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102010-body-overnight-fcad@gregkh>
-References: <2025102010-body-overnight-fcad@gregkh>
+	s=k20201202; t=1761053723;
+	bh=ZuqBsIVbt1VZeH9Nd3+eLrJ3RNjtyUBnOrvCECRWIMo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=S18DavwYbzRxUahcWRpwvrAe0zB/UyjTqme1jX6ivlUDXe9QF0MKnRpZNlzcuUyr8
+	 qP5MgWy12F+Rs9j7/aCAn6IFq9dZJl3do1D5zUf4WGRirGdJX9e52/ghZzazGqgLq8
+	 jltEEgMXbsleqCDk34o9aZkyOzhqHH5ihgj2Ag5zKitF1ewMcY0HKzIRV0L+UQBVqm
+	 92UaqEccm542WIRtl/tiJOy6cjSQyveypKBIyuOGWuZm4fA2jWKGnilpLEmqBs7Xmo
+	 lPOeXhXZEwXbADA8Pt1oU6PNsQ3Ei09bw7u1q+Wq9LxPo5DNaN9tkIR6oFASPG7Mob
+	 KEPxeFT7w9bQw==
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-43f9cc65f66so3183697b6e.2
+        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 06:35:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXutTfbhjlGg8btL1e+n0ahZQVbB0h6wZlGK89dS+Bc1ogiOet4ksRjKdmK/q0U2eHNg08TP7k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyA1cor3vi6m9IGjuagWUQ+EU2VGDUM7fbT6TpW8x++Oe3JHcH8
+	C9/lyBThOoX6ACDhEmFM/XcY9dh4jWYCCeKX0s6wzvNQHXE44ZNJfl5V/oBSrpT6kG2JYhHvb/b
+	9WDVGhAcoqJTBauHzuXro0k5NwbeZnD8=
+X-Google-Smtp-Source: AGHT+IEKKO8UIzncbp3yZO81oyf6QsCEy/ZN7tr85jZ4pwoPxanGyvexPT/O4C5oiumqVgjKTnBwE1h32ENYeNiUZgM=
+X-Received: by 2002:a05:6808:444b:b0:441:8f74:f1a with SMTP id
+ 5614622812f47-443a315b372mr7649786b6e.52.1761053722613; Tue, 21 Oct 2025
+ 06:35:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251021092825.822007-1-xry111@xry111.site>
+In-Reply-To: <20251021092825.822007-1-xry111@xry111.site>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 21 Oct 2025 15:35:11 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iy8wChaPYGmc=mWJRrA+uXnGF2Ar7aMCMRoUqS6877aQ@mail.gmail.com>
+X-Gm-Features: AS18NWA8xXgTYvIuPvaLuEdFpvBPRx9_4TgORXKHv2p-jVKPnls01cOnTQbgH10
+Message-ID: <CAJZ5v0iy8wChaPYGmc=mWJRrA+uXnGF2Ar7aMCMRoUqS6877aQ@mail.gmail.com>
+Subject: Re: [PATCH] acpica: Work around bogus -Wstringop-overread warning
+ since GCC 11
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, loongarch@lists.linux.dev, 
+	Mingcong Bai <jeffbai@aosc.io>, Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org, 
+	Saket Dumbre <saket.dumbre@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, Len Brown <lenb@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, 
+	"open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <linux-acpi@vger.kernel.org>, 
+	"open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <acpica-devel@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+On Tue, Oct 21, 2025 at 11:28=E2=80=AFAM Xi Ruoyao <xry111@xry111.site> wro=
+te:
+>
+> When ACPI_MISALIGNMENT_NOT_SUPPORTED, GCC can produce a bogus
+> -Wstringop-overread warning, see https://gcc.gnu.org/PR122073.
+>
+> To me it's very clear that we have a compiler bug here, thus just
+> disable the warning.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: a9d13433fe17 ("LoongArch: Align ACPI structures if ARCH_STRICT_ALI=
+GN enabled")
+> Link: https://lore.kernel.org/all/899f2dec-e8b9-44f4-ab8d-001e160a2aed@ro=
+eck-us.net/
+> Link: https://github.com/acpica/acpica/commit/abf5b573
+> Co-developed-by: Saket Dumbre <saket.dumbre@intel.com>
+> Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
+> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
 
-[ Upstream commit 6df8e84aa6b5b1812cc2cacd6b3f5ccbb18cda2b ]
+Please submit ACPICA changes to the upstream ACPICA project on GitHub
+as pull requests (PRs).  After a given PR has been merged upstream, a
+corresponding Linux patch can be submitted with a Link: tag pointing
+to the upstream commit, but note that upstream ACPICA material is
+automatically transferred to Linux, so it should not be necessary to
+do so unless timing is important.
 
-The atomic variable vm_fault_info_updated is used to synchronize access to
-adev->gmc.vm_fault_info between the interrupt handler and
-get_vm_fault_info().
-
-The default atomic functions like atomic_set() and atomic_read() do not
-provide memory barriers. This allows for CPU instruction reordering,
-meaning the memory accesses to vm_fault_info and the vm_fault_info_updated
-flag are not guaranteed to occur in the intended order. This creates a
-race condition that can lead to inconsistent or stale data being used.
-
-The previous implementation, which used an explicit mb(), was incomplete
-and inefficient. It failed to account for all potential CPU reorderings,
-such as the access of vm_fault_info being reordered before the atomic_read
-of the flag. This approach is also more verbose and less performant than
-using the proper atomic functions with acquire/release semantics.
-
-Fix this by switching to atomic_set_release() and atomic_read_acquire().
-These functions provide the necessary acquire and release semantics,
-which act as memory barriers to ensure the correct order of operations.
-It is also more efficient and idiomatic than using explicit full memory
-barriers.
-
-Fixes: b97dfa27ef3a ("drm/amdgpu: save vm fault information for amdkfd")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ kept kgd_dev parameter and adev cast in amdgpu_amdkfd_gpuvm_get_vm_fault_info ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 5 ++---
- drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c            | 7 +++----
- drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c            | 7 +++----
- 3 files changed, 8 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-index 4a95a624fca7b..53efc07cf4243 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -1640,10 +1640,9 @@ int amdgpu_amdkfd_gpuvm_get_vm_fault_info(struct kgd_dev *kgd,
- 	struct amdgpu_device *adev;
- 
- 	adev = (struct amdgpu_device *)kgd;
--	if (atomic_read(&adev->gmc.vm_fault_info_updated) == 1) {
-+	if (atomic_read_acquire(&adev->gmc.vm_fault_info_updated) == 1) {
- 		*mem = *adev->gmc.vm_fault_info;
--		mb();
--		atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
- 	}
- 	return 0;
- }
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-index 80c146df338aa..a5e78036ae457 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
-@@ -1067,7 +1067,7 @@ static int gmc_v7_0_sw_init(void *handle)
- 					GFP_KERNEL);
- 	if (!adev->gmc.vm_fault_info)
- 		return -ENOMEM;
--	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
- 
- 	return 0;
- }
-@@ -1297,7 +1297,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
- 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
- 			     VMID);
- 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
--		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
-+		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
- 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
- 		u32 protections = REG_GET_FIELD(status,
- 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
-@@ -1313,8 +1313,7 @@ static int gmc_v7_0_process_interrupt(struct amdgpu_device *adev,
- 		info->prot_read = protections & 0x8 ? true : false;
- 		info->prot_write = protections & 0x10 ? true : false;
- 		info->prot_exec = protections & 0x20 ? true : false;
--		mb();
--		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
- 	}
- 
- 	return 0;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-index 873bc33912e23..8a8bbbb28dc15 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
-@@ -1199,7 +1199,7 @@ static int gmc_v8_0_sw_init(void *handle)
- 					GFP_KERNEL);
- 	if (!adev->gmc.vm_fault_info)
- 		return -ENOMEM;
--	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
-+	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
- 
- 	return 0;
- }
-@@ -1488,7 +1488,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
- 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
- 			     VMID);
- 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
--		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
-+		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
- 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
- 		u32 protections = REG_GET_FIELD(status,
- 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
-@@ -1504,8 +1504,7 @@ static int gmc_v8_0_process_interrupt(struct amdgpu_device *adev,
- 		info->prot_read = protections & 0x8 ? true : false;
- 		info->prot_write = protections & 0x10 ? true : false;
- 		info->prot_exec = protections & 0x20 ? true : false;
--		mb();
--		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
-+		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
- 	}
- 
- 	return 0;
--- 
-2.51.0
-
+> ---
+>  drivers/acpi/acpica/tbprint.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/acpi/acpica/tbprint.c b/drivers/acpi/acpica/tbprint.=
+c
+> index 049f6c2f1e32..e5631027f7f1 100644
+> --- a/drivers/acpi/acpica/tbprint.c
+> +++ b/drivers/acpi/acpica/tbprint.c
+> @@ -95,6 +95,11 @@ acpi_tb_print_table_header(acpi_physical_address addre=
+ss,
+>  {
+>         struct acpi_table_header local_header;
+>
+> +#pragma GCC diagnostic push
+> +#if defined(__GNUC__) && __GNUC__ >=3D 11
+> +#pragma GCC diagnostic ignored "-Wstringop-overread"
+> +#endif
+> +
+>         if (ACPI_COMPARE_NAMESEG(header->signature, ACPI_SIG_FACS)) {
+>
+>                 /* FACS only has signature and length fields */
+> @@ -143,4 +148,5 @@ acpi_tb_print_table_header(acpi_physical_address addr=
+ess,
+>                            local_header.asl_compiler_id,
+>                            local_header.asl_compiler_revision));
+>         }
+> +#pragma GCC diagnostic pop
+>  }
+> --
+> 2.51.1
+>
 
