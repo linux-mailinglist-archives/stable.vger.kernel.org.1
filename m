@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-188750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790A8BF8A0D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:11:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91475BF8968
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:08:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF809584F8B
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:10:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9219D465ADF
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3312773DA;
-	Tue, 21 Oct 2025 20:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5060279798;
+	Tue, 21 Oct 2025 20:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fB8ADAYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePnuXF5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FE9350A0D;
-	Tue, 21 Oct 2025 20:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792C9277C9A;
+	Tue, 21 Oct 2025 20:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077399; cv=none; b=fgfd5cMxRfy6cfUdHkOFPIz1M/WHZ6NzOiGcIUU8UTQGKpfq6cCCfTJ2TB28eQEwsxSFg7ojb6mkOjlXB+U257UhoTlTmF+8Hoye8CnjBc4qQLmTeLKkRHaLGVQwq20nCSgm9L4cluAMZcGDBDx0eVIT8p7WPsSN6rko4bM/z1Q=
+	t=1761077256; cv=none; b=ilIniYUtxe4Q0lOxxZYmD/tFAlxMYCjIL8CotgINoMNyJE+dqQSjHmUhSI86oj79HL5Z9dWx8B5rqNHR2C9YCUpGURl5P7fjrdPA9Nued5Ca5xRqFyXcqY79DPKqJJTaDwDkiHbQQFDhGRpam6KzGCpDWkF9zo7mn0zaCwln1hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077399; c=relaxed/simple;
-	bh=PB7B/AipzO93x44/hRYdq2OUS4rKuXptvT7Psx9fFh8=;
+	s=arc-20240116; t=1761077256; c=relaxed/simple;
+	bh=jYuNsXvyZDLhAAVW3BNJ0cSSMqZTCScG4mvECMhJRtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y3HddBdgt4nvzpmTZZbEyuMT8gTUH51c5oRFL+LdQuYAeybDQQwvLiR2AIwlgFOEvX/WcGM2FegCZRGjMDhDGmMSr61pxPf5xwt5wl9Niy5PU0qvoegIIFWbwl9HX01heYY7iqltRSQMQl6lX92KEQL2EmOwKsbTnuV8iShi0+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fB8ADAYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E48C4CEF1;
-	Tue, 21 Oct 2025 20:09:58 +0000 (UTC)
+	 MIME-Version; b=ImUb0na+egRiNOJO+fPIGfpqy8eA2aq5AC16/2TyWmBBMzILQ/BfczisCwCWnEkjy4it7slt5gDfZJE2wEl9XnkNcXEvm3xm7NY74PRy2RiU00e6tanRKqhoA/kOX8wai+RRSRQyDhHX75qyFzg0D7KvTMIOCZB9AzmRyJ0JdT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePnuXF5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC447C4CEF1;
+	Tue, 21 Oct 2025 20:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077399;
-	bh=PB7B/AipzO93x44/hRYdq2OUS4rKuXptvT7Psx9fFh8=;
+	s=korg; t=1761077256;
+	bh=jYuNsXvyZDLhAAVW3BNJ0cSSMqZTCScG4mvECMhJRtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fB8ADAYponwkGpHh9MqGJkYBdRQjrlRG/AwaLo10l8zQovjSdDqCym09buShsC5H9
-	 PM0Qb1Zinem5rIUn5AfC0DQH03jW0QXxY2G5BTGVQOjSf5KfVZi/w5I+CaazaFVpxh
-	 dk2UsGVnmMSJJfFHfg7ZyRCs7wdV5A5wtafj/BpQ=
+	b=ePnuXF5SE9+dsDglpku+tzsUU4Uu5i4fo3PI5iiOF0XbmA4v2ddI0ZYNXKNTJI/hF
+	 92Pi+bSd9IFUA3wJYe+1gGg9LuRER7xUyGt2K870PYICDLxfm9yu9ZPMFuHU2utSoM
+	 dVL2bEcbt6tiiaD70kOaxVXZGQS6zAcmu64twDPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Nick Bowler <nbowler@draconx.ca>,
-	Douglas Anderson <dianders@chromium.org>,
-	Dave Airlie <airlied@redhat.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.17 040/159] drm/ast: Blank with VGACR17 sync enable, always clear VGACRB6 sync off
-Date: Tue, 21 Oct 2025 21:50:17 +0200
-Message-ID: <20251021195044.163217433@linuxfoundation.org>
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.17 041/159] drm/amdgpu: use atomic functions with memory barriers for vm fault info
+Date: Tue, 21 Oct 2025 21:50:18 +0200
+Message-ID: <20251021195044.191029729@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
 References: <20251021195043.182511864@linuxfoundation.org>
@@ -69,91 +66,120 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-commit 6f719373b943a955fee6fc2012aed207b65e2854 upstream.
+commit 6df8e84aa6b5b1812cc2cacd6b3f5ccbb18cda2b upstream.
 
-Blank the display by disabling sync pulses with VGACR17<7>. Unblank
-by reenabling them. This VGA setting should be supported by all Aspeed
-hardware.
+The atomic variable vm_fault_info_updated is used to synchronize access to
+adev->gmc.vm_fault_info between the interrupt handler and
+get_vm_fault_info().
 
-Ast currently blanks via sync-off bits in VGACRB6. Not all BMCs handle
-VGACRB6 correctly. After disabling sync during a reboot, some BMCs do
-not reenable it after the soft reset. The display output remains dark.
-When the display is off during boot, some BMCs set the sync-off bits in
-VGACRB6, so the display remains dark. Observed with  Blackbird AST2500
-BMCs. Clearing the sync-off bits unconditionally fixes these issues.
+The default atomic functions like atomic_set() and atomic_read() do not
+provide memory barriers. This allows for CPU instruction reordering,
+meaning the memory accesses to vm_fault_info and the vm_fault_info_updated
+flag are not guaranteed to occur in the intended order. This creates a
+race condition that can lead to inconsistent or stale data being used.
 
-Also do not modify VGASR1's SD bit for blanking, as it only disables GPU
-access to video memory.
+The previous implementation, which used an explicit mb(), was incomplete
+and inefficient. It failed to account for all potential CPU reorderings,
+such as the access of vm_fault_info being reordered before the atomic_read
+of the flag. This approach is also more verbose and less performant than
+using the proper atomic functions with acquire/release semantics.
 
-v2:
-- init vgacrb6 correctly (Jocelyn)
+Fix this by switching to atomic_set_release() and atomic_read_acquire().
+These functions provide the necessary acquire and release semantics,
+which act as memory barriers to ensure the correct order of operations.
+It is also more efficient and idiomatic than using explicit full memory
+barriers.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: ce3d99c83495 ("drm: Call drm_atomic_helper_shutdown() at shutdown time for misc drivers")
-Tested-by: Nick Bowler <nbowler@draconx.ca>
-Reported-by: Nick Bowler <nbowler@draconx.ca>
-Closes: https://lore.kernel.org/dri-devel/wpwd7rit6t4mnu6kdqbtsnk5bhftgslio6e2jgkz6kgw6cuvvr@xbfswsczfqsi/
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.7+
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://lore.kernel.org/r/20251014084743.18242-1-tzimmermann@suse.de
+Fixes: b97dfa27ef3a ("drm/amdgpu: save vm fault information for amdkfd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ast/ast_mode.c |   18 ++++++++++--------
- drivers/gpu/drm/ast/ast_reg.h  |    1 +
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    5 ++---
+ drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c            |    7 +++----
+ drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c            |    7 +++----
+ 3 files changed, 8 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/ast/ast_mode.c
-+++ b/drivers/gpu/drm/ast/ast_mode.c
-@@ -836,22 +836,24 @@ ast_crtc_helper_atomic_flush(struct drm_
- static void ast_crtc_helper_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_state *state)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -2325,10 +2325,9 @@ void amdgpu_amdkfd_gpuvm_unmap_gtt_bo_fr
+ int amdgpu_amdkfd_gpuvm_get_vm_fault_info(struct amdgpu_device *adev,
+ 					  struct kfd_vm_fault_info *mem)
  {
- 	struct ast_device *ast = to_ast_device(crtc->dev);
-+	u8 vgacr17 = 0x00;
-+	u8 vgacrb6 = 0xff;
- 
--	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, 0x00);
--	ast_set_index_reg_mask(ast, AST_IO_VGASRI, 0x01, 0xdf, 0x00);
-+	vgacr17 |= AST_IO_VGACR17_SYNC_ENABLE;
-+	vgacrb6 &= ~(AST_IO_VGACRB6_VSYNC_OFF | AST_IO_VGACRB6_HSYNC_OFF);
-+
-+	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0x17, 0x7f, vgacr17);
-+	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, vgacrb6);
+-	if (atomic_read(&adev->gmc.vm_fault_info_updated) == 1) {
++	if (atomic_read_acquire(&adev->gmc.vm_fault_info_updated) == 1) {
+ 		*mem = *adev->gmc.vm_fault_info;
+-		mb(); /* make sure read happened */
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
+ 	}
+ 	return 0;
  }
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c
+@@ -1066,7 +1066,7 @@ static int gmc_v7_0_sw_init(struct amdgp
+ 					GFP_KERNEL);
+ 	if (!adev->gmc.vm_fault_info)
+ 		return -ENOMEM;
+-	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
  
- static void ast_crtc_helper_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_state *state)
- {
- 	struct drm_crtc_state *old_crtc_state = drm_atomic_get_old_crtc_state(state, crtc);
- 	struct ast_device *ast = to_ast_device(crtc->dev);
--	u8 vgacrb6;
-+	u8 vgacr17 = 0xff;
+ 	return 0;
+ }
+@@ -1288,7 +1288,7 @@ static int gmc_v7_0_process_interrupt(st
+ 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+ 			     VMID);
+ 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
+-		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
++		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
+ 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
+ 		u32 protections = REG_GET_FIELD(status,
+ 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+@@ -1304,8 +1304,7 @@ static int gmc_v7_0_process_interrupt(st
+ 		info->prot_read = protections & 0x8 ? true : false;
+ 		info->prot_write = protections & 0x10 ? true : false;
+ 		info->prot_exec = protections & 0x20 ? true : false;
+-		mb();
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
+ 	}
  
--	ast_set_index_reg_mask(ast, AST_IO_VGASRI, 0x01, 0xdf, AST_IO_VGASR1_SD);
--
--	vgacrb6 = AST_IO_VGACRB6_VSYNC_OFF |
--		  AST_IO_VGACRB6_HSYNC_OFF;
--	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xb6, 0xfc, vgacrb6);
-+	vgacr17 &= ~AST_IO_VGACR17_SYNC_ENABLE;
-+	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0x17, 0x7f, vgacr17);
+ 	return 0;
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c
+@@ -1179,7 +1179,7 @@ static int gmc_v8_0_sw_init(struct amdgp
+ 					GFP_KERNEL);
+ 	if (!adev->gmc.vm_fault_info)
+ 		return -ENOMEM;
+-	atomic_set(&adev->gmc.vm_fault_info_updated, 0);
++	atomic_set_release(&adev->gmc.vm_fault_info_updated, 0);
  
- 	/*
- 	 * HW cursors require the underlying primary plane and CRTC to
---- a/drivers/gpu/drm/ast/ast_reg.h
-+++ b/drivers/gpu/drm/ast/ast_reg.h
-@@ -29,6 +29,7 @@
- #define AST_IO_VGAGRI			(0x4E)
+ 	return 0;
+ }
+@@ -1474,7 +1474,7 @@ static int gmc_v8_0_process_interrupt(st
+ 	vmid = REG_GET_FIELD(status, VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+ 			     VMID);
+ 	if (amdgpu_amdkfd_is_kfd_vmid(adev, vmid)
+-		&& !atomic_read(&adev->gmc.vm_fault_info_updated)) {
++		&& !atomic_read_acquire(&adev->gmc.vm_fault_info_updated)) {
+ 		struct kfd_vm_fault_info *info = adev->gmc.vm_fault_info;
+ 		u32 protections = REG_GET_FIELD(status,
+ 					VM_CONTEXT1_PROTECTION_FAULT_STATUS,
+@@ -1490,8 +1490,7 @@ static int gmc_v8_0_process_interrupt(st
+ 		info->prot_read = protections & 0x8 ? true : false;
+ 		info->prot_write = protections & 0x10 ? true : false;
+ 		info->prot_exec = protections & 0x20 ? true : false;
+-		mb();
+-		atomic_set(&adev->gmc.vm_fault_info_updated, 1);
++		atomic_set_release(&adev->gmc.vm_fault_info_updated, 1);
+ 	}
  
- #define AST_IO_VGACRI			(0x54)
-+#define AST_IO_VGACR17_SYNC_ENABLE	BIT(7) /* called "Hardware reset" in docs */
- #define AST_IO_VGACR80_PASSWORD		(0xa8)
- #define AST_IO_VGACR99_VGAMEM_RSRV_MASK	GENMASK(1, 0)
- #define AST_IO_VGACRA1_VGAIO_DISABLED	BIT(1)
+ 	return 0;
 
 
 
