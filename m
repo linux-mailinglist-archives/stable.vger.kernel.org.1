@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-188639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC86DBF889C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:05:56 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A45BF8A52
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:12:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97F12582F8C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:04:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 00749500A1F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B1627A46A;
-	Tue, 21 Oct 2025 20:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE38D2797BD;
+	Tue, 21 Oct 2025 20:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdsI+Tx5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2k6Fs0Bz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A59279DDB;
-	Tue, 21 Oct 2025 20:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FFB278143;
+	Tue, 21 Oct 2025 20:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077047; cv=none; b=Eb4BDD/HQMdypBvTle2lKjInlEu8CPMz0eLhebyQ2iPU0zx9ZNtisGOU+RWcVcowM1hfBJzGAgRP4MG+ixZUMzvIQIohwPIb4Td8I+J8mopWv85ZCt0G6dp6R+jtHrjRra+vlKqxYAwYZuXoTE07G4vnNpxcVBISP0W6WlMhAq8=
+	t=1761077526; cv=none; b=Mq1uahlw8n6CKkHW8INX4bTuqxp0IGNWFYKZl5yQRuCrgTOmVcT3ka2DGUgjgrTVJjgLCnJBy4tILwTlJFiGie4nthEDuMhjKoG8WI5+B3aQuxlc37FkBywOY8uJ6rU4+4Gbx2kgs0txxAIr5f1XWtB2qSQRBZTwXEonHYKaegY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077047; c=relaxed/simple;
-	bh=AQXn4jtcHUaBsmMm2CQ7CGYkTS8i8e0j1u8rjljk2cw=;
+	s=arc-20240116; t=1761077526; c=relaxed/simple;
+	bh=NoIaLyWhafcUtGaI0tgHtG74THFK8I5+MQl/0cmMnb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKVwPYY049bj1Ls6MhMIOy+Pmh4sw5EgbFf30EpechPh/X6H5R9ieT1u2nxNDh7w8CAjWfYSjRo8KB3n5YPdmEtXflp/5vQqVY5QZqRNqKg+Nr+EYhPFR3VM6IPfoML4+KZGEuu/MtFMa9rAVAxrn05LP6JiRYjAXwALcgVzPc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdsI+Tx5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115BDC4CEF5;
-	Tue, 21 Oct 2025 20:04:05 +0000 (UTC)
+	 MIME-Version; b=HClw/qpuOJpGY57NqQsqTlZ4OK5AHcLfq7tKkNASv9nlA2B98jM45JGgtDR8fIoOh4H8PLS7k57wzF/sZ2Xxs6K1FlE9e7rW9CfXuPX9DP3TFJyOB/HO3T/uP84M92HbH7Esw1RBb1uZCPj21u5uiuz+iKyK7KvdT7C6j/tUP0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2k6Fs0Bz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5F4C4CEF1;
+	Tue, 21 Oct 2025 20:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761077046;
-	bh=AQXn4jtcHUaBsmMm2CQ7CGYkTS8i8e0j1u8rjljk2cw=;
+	s=korg; t=1761077526;
+	bh=NoIaLyWhafcUtGaI0tgHtG74THFK8I5+MQl/0cmMnb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SdsI+Tx5dg78BMuKxhj/GV7xKfng1KOMVdAxxosLDeyFixm7fmCKXGpUJrNmfiEwH
-	 C3NsTx7X5freb1GnwkODRL/kvSIcGQZEU9RIv4PVa046Bl3WWDpAllZNxhN0pcWTLF
-	 YljVdKCqkYjKY9hnS5RBOFHbXrg8fC9MX+Np2Er8=
+	b=2k6Fs0BznbiEmwb/ynkzIpDnSP/xn4740GOqLpAzR3ziyg9dJztHbwc0ntK3e1lkr
+	 3Crxk0WUkvt++PNdminxoAvcu6i5/SRNj2cLfDhUo2PWOSdHGKswV7TSb8RXviqc1E
+	 ZVPgaBtTjKc3HLwNEhe/G3lMlXGfpz6SPq8otDMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/136] PCI: Add PCI_VDEVICE_SUB helper macro
-Date: Tue, 21 Oct 2025 21:51:47 +0200
-Message-ID: <20251021195038.834757428@linuxfoundation.org>
+Subject: [PATCH 6.17 131/159] HID: multitouch: fix name of Stylus input devices
+Date: Tue, 21 Oct 2025 21:51:48 +0200
+Message-ID: <20251021195046.300765850@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195043.182511864@linuxfoundation.org>
+References: <20251021195043.182511864@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 208fff3f567e2a3c3e7e4788845e90245c3891b4 ]
+[ Upstream commit aa4daea418ee4215dca5c8636090660c545cb233 ]
 
-PCI_VDEVICE_SUB generates the pci_device_id struct layout for
-the specific PCI device/subdevice. Private data may follow the
-output.
+HID_DG_PEN devices should have a suffix of "Stylus", as pointed out by
+commit c0ee1d571626 ("HID: hid-input: Add suffix also for HID_DG_PEN").
+However, on multitouch devices, these suffixes may be overridden. Before
+that commit, HID_DG_PEN devices would get the "Stylus" suffix, but after
+that, multitouch would override them to have an "UNKNOWN" suffix. Just add
+HID_DG_PEN to the list of non-overriden suffixes in multitouch.
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
+Before this fix:
+
+[    0.470981] input: ELAN9008:00 04F3:2E14 UNKNOWN as /devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-16/i2c-ELAN9008:00/0018:04F3:2E14.0001/input/input8
+ELAN9008:00 04F3:2E14 UNKNOWN
+
+After this fix:
+
+[    0.474332] input: ELAN9008:00 04F3:2E14 Stylus as /devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-16/i2c-ELAN9008:00/0018:04F3:2E14.0001/input/input8
+
+ELAN9008:00 04F3:2E14 Stylus
+
+Fixes: c0ee1d571626 ("HID: hid-input: Add suffix also for HID_DG_PEN")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pci.h |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/hid/hid-multitouch.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1067,6 +1067,20 @@ struct pci_driver {
- 	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, 0, 0
- 
- /**
-+ * PCI_VDEVICE_SUB - describe a specific PCI device/subdevice in a short form
-+ * @vend: the vendor name
-+ * @dev: the 16 bit PCI Device ID
-+ * @subvend: the 16 bit PCI Subvendor ID
-+ * @subdev: the 16 bit PCI Subdevice ID
-+ *
-+ * Generate the pci_device_id struct layout for the specific PCI
-+ * device/subdevice. Private data may follow the output.
-+ */
-+#define PCI_VDEVICE_SUB(vend, dev, subvend, subdev) \
-+	.vendor = PCI_VENDOR_ID_##vend, .device = (dev), \
-+	.subvendor = (subvend), .subdevice = (subdev), 0, 0
-+
-+/**
-  * PCI_DEVICE_DATA - macro used to describe a specific PCI device in very short form
-  * @vend: the vendor name (without PCI_VENDOR_ID_ prefix)
-  * @dev: the device name (without PCI_DEVICE_ID_<vend>_ prefix)
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 7587a7748a82d..a9ff84f0bd9bb 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1711,6 +1711,7 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
+ 	case HID_CP_CONSUMER_CONTROL:
+ 	case HID_GD_WIRELESS_RADIO_CTLS:
+ 	case HID_GD_SYSTEM_MULTIAXIS:
++	case HID_DG_PEN:
+ 		/* already handled by hid core */
+ 		break;
+ 	case HID_DG_TOUCHSCREEN:
+-- 
+2.51.0
+
 
 
 
