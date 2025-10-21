@@ -1,251 +1,169 @@
-Return-Path: <stable+bounces-188293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E534BF4BC9
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 08:48:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C672CBF4D49
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 09:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 710C74E239D
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 06:48:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FA393B486F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 07:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A207D267F58;
-	Tue, 21 Oct 2025 06:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D9527466A;
+	Tue, 21 Oct 2025 07:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nbzpM9sn"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="HVC87p1a"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.74.81.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF5C264F99
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 06:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18CC25A623;
+	Tue, 21 Oct 2025 07:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.74.81.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761029313; cv=none; b=koe6IyY9AYU72Zkj+L92ntYEslMPx/D1x4D0p3Clj+0zVbYCxBQm83aT7I2XyZ3dgHmWoFReuYui6OWtdDz2adGU1kCTyjMdtuW0jhbkwXlww6aDosHtlTXlojSpHHnU5p33ilMsRc3MkOQGvN0bCDMW9njD/VrYhDpNmXlfmVE=
+	t=1761030554; cv=none; b=StjrkF2+zizVPYASEiz7WaDfXVYhDVhYOe5v38c1HIub5nemvq8iW+Xc9H0D8tSM5swpPxlV304AEn7jOgvYe4sD8FKFHmlCZvw2sUghB7pZ8B0mhxlA5ndmBNeL5hFCSO8H7cX8ZDzKEwFySKPzuWva56QNNh4aUSll7XnGZbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761029313; c=relaxed/simple;
-	bh=Yao5CLBIZBpqI8yZPYhEq0pLUsEI2cplrdc+D5Sg0x0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SlYJaOPkrO9KpmVM7YjzeAWiqTt5oNNjK8+rFwUizEiPMwDyyiPA4/9gQ+R1zBJ7vRS/sUqUUicajabXVZZ6BwuCfsRPYELYk87SsWL9s2r1ghbrjYx/LVs7SkxY1XGUxb+nUnY8rVDUKzzLo0ETsPd64GG4q6NGeiaNhhHvEtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nbzpM9sn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099EDC4CEFF
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 06:48:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761029313;
-	bh=Yao5CLBIZBpqI8yZPYhEq0pLUsEI2cplrdc+D5Sg0x0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nbzpM9snHIvTmCdgk9XL9kWjWJCsQb5xGylqoOW8ntqO3t7FM4ISonMrkKV4dld3A
-	 VIFDVegKvs7CJSY4P6rtkaSvsDGhzenf/UdAz+ArtErG7IhGAYNI2zKs3VZbP/YiOO
-	 VYjH1vdzNB6vb9K2xbNgDu1m77iYes8SuLsdcwfUCKAK6OX2XdJOtbXeO1/Qjt/kPC
-	 pNKOXERX1gBxKcEDKqDkO9xEqFURZnPtlEQpmEpY84uzMiBHTkVXv9HR0LBzQiEQKe
-	 T89qy9borWV5ZpPJu+lw7bTzYhjhw03Wo5HONjcSgG+hSzN7pK29D+vbqWgE5OeiJ3
-	 5xdnVXjYocYnQ==
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7847f4265e3so29138697b3.3
-        for <stable@vger.kernel.org>; Mon, 20 Oct 2025 23:48:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXLsKvhzyTzK5ymrVJKHzjVcg1hRHjsYjnkQhmEyMdA+IQ/Kmk3AgWpe7G0ByjUU6DgV3rINsg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5HeB/JYj+xH5zQVz8dWTOaqoljuMd2r8bscdjVLnso9v4RQaa
-	PfGyom2xdV8jdPej01DqOZQGjvApBKVdDqSgBEZW4lykOq+pHyeFBE++REHYPvibrhZ83ZkNRxC
-	L81ApusMrqu6pAlvd9/g3JmY37u8dC5EdOO0QWEEc1w==
-X-Google-Smtp-Source: AGHT+IEKwgU/k6+a6m9j5wLqPHqWi37Ymmn/fXH4mZwMQ6tpYpjsC1ZwqJENF/v+P8dGntZXlSsHbAcNq1qNWQU/s6E=
-X-Received: by 2002:a53:edc2:0:b0:63c:f5a6:f2de with SMTP id
- 956f58d0204a3-63e1626c69amr9740357d50.64.1761029312099; Mon, 20 Oct 2025
- 23:48:32 -0700 (PDT)
+	s=arc-20240116; t=1761030554; c=relaxed/simple;
+	bh=hV+SdjKKzEi70TyGpPZCe2pK7qZK2WxjRRL1B1KcNTM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GieyvBiGRqXfJyvizVr3dcB54JKhpnnuNkk8OiGfPa1Z1cQh0If02pE4kAkRP8YF7M95PuJ8KJOWS9wSczzoQ6rEu0gyruQ9pHQtHMGm2ju6vCT/PMtwYJZSUHdupmZTdGFLYZGEQ5/ko80HPGBgruO4G9tq5XunfR43lKSw4j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=HVC87p1a; arc=none smtp.client-ip=3.74.81.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1761030552; x=1792566552;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4aKg8jaea9UUgjVGAZ9pvPl/2rw7Jg81FmzroUsdh8U=;
+  b=HVC87p1aBmQ4gE7O4jCj6ingqjU5/wx1ks+x6YUQxcnxcz7KPdkYbbS6
+   y0y6AgAOA1l0fSqRJzp6YLtPL3bBk+w2Lauh57SSZGBd4rfmq3XL9a9l2
+   mFPvdsmpoAARb7rBeD2K7SGt0N8t7twqpPQMCFdWr2zC86pHJ5FQtHbhT
+   cEvYGqIkY4hpeWaNIdDHpZmEx5kjzNOz4v69Hl6YtS2Gr8IoznIFZLB8J
+   Y5OZZ85SUSbuOufHNLsB7dlJ/vL+9c+mdNMYY1Ck5vPn3hCxfE3r3vAAT
+   84Dtrj753DUrD6Gc307KTN0K1q49/fN/PeWCTu3gGxIqN8yJCoNUNDtaE
+   A==;
+X-CSE-ConnectionGUID: xhZ9wZyxSpmrCzcqqePl8A==
+X-CSE-MsgGUID: 8WykqeV0SPuRFwAH0TlCVw==
+X-IronPort-AV: E=Sophos;i="6.19,244,1754956800"; 
+   d="scan'208";a="3934174"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 07:08:59 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:10631]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.15.22:2525] with esmtp (Farcaster)
+ id 3750a0e3-50a3-4ee5-985b-1ddb7d86a82d; Tue, 21 Oct 2025 07:08:59 +0000 (UTC)
+X-Farcaster-Flow-ID: 3750a0e3-50a3-4ee5-985b-1ddb7d86a82d
+Received: from EX19D013EUB004.ant.amazon.com (10.252.51.92) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Tue, 21 Oct 2025 07:08:58 +0000
+Received: from dev-dsk-mngyadam-1c-cb3f7548.eu-west-1.amazon.com
+ (10.253.107.175) by EX19D013EUB004.ant.amazon.com (10.252.51.92) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Tue, 21 Oct 2025
+ 07:08:50 +0000
+From: Mahmoud Adam <mngyadam@amazon.de>
+To: <stable@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <nagy@khwaternagy.com>, Jens Axboe
+	<axboe@kernel.dk>, Xiubo Li <xiubli@redhat.com>, Ilya Dryomov
+	<idryomov@gmail.com>, Jeff Layton <jlayton@kernel.org>, Alexander Viro
+	<viro@zeniv.linux.org.uk>, Theodore Ts'o <tytso@mit.edu>, Andreas Dilger
+	<adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu
+	<chao@kernel.org>, Christoph Hellwig <hch@infradead.org>, "Darrick J. Wong"
+	<djwong@kernel.org>, Trond Myklebust <trond.myklebust@hammerspace.com>, "Anna
+ Schumaker" <anna@kernel.org>, Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton
+	<akpm@linux-foundation.org>, Hannes Reinecke <hare@suse.de>, Damien Le Moal
+	<dlemoal@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+	<linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<ceph-devel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-ext4@vger.kernel.org>, <linux-f2fs-devel@lists.sourceforge.net>,
+	<linux-xfs@vger.kernel.org>, <linux-nfs@vger.kernel.org>,
+	<linux-nilfs@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: [PATCH 6.1 0/8] Backporting CVE-2025-38073 fix patch
+Date: Tue, 21 Oct 2025 09:03:35 +0200
+Message-ID: <20251021070353.96705-2-mngyadam@amazon.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
- <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
- <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
- <CAMgjq7BD6SOgALj2jv2SVtNjWLJpT=1UhuaL=qxvDCMKUy68Hw@mail.gmail.com>
- <CACePvbVEGgtTqkMPqsf69C7qUD52yVcC56POed8Pdt674Pn68A@mail.gmail.com>
- <CACePvbWu0P+8Sv-sS7AnG+ESdnJdnFE_teC9NF9Rkn1HegQ9_Q@mail.gmail.com>
- <CAMgjq7BJcxGzrnr+EeO6_ZC7dAn0_WmWn8DX8gSPfyYiY4S3Ug@mail.gmail.com> <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com>
-In-Reply-To: <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Mon, 20 Oct 2025 23:48:20 -0700
-X-Gmail-Original-Message-ID: <CACePvbWn1pAJg8xGfJFrWxpkJDakJA0GfgJc0W80EUYS6YhBAg@mail.gmail.com>
-X-Gm-Features: AS18NWDK_5ydoR83ck7SoROtH9BUHSuIRVHk1u1H4KWAOIdgu6-tq2E-NYuReAE
-Message-ID: <CACePvbWn1pAJg8xGfJFrWxpkJDakJA0GfgJc0W80EUYS6YhBAg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] mm, swap: do not perform synchronous discard during allocation
-To: Kairui Song <ryncsn@gmail.com>
-Cc: YoungJun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: EX19D037UWC004.ant.amazon.com (10.13.139.254) To
+ EX19D013EUB004.ant.amazon.com (10.252.51.92)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 15, 2025 at 9:46=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Wed, Oct 15, 2025 at 2:24=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wr=
-ote:
-> >
-> > On Wed, Oct 15, 2025 at 12:00=E2=80=AFPM Chris Li <chrisl@kernel.org> w=
-rote:
-> > >
-> > > On Tue, Oct 14, 2025 at 2:27=E2=80=AFPM Chris Li <chrisl@kernel.org> =
-wrote:
-> > > >
-> > > > On Sun, Oct 12, 2025 at 9:49=E2=80=AFAM Kairui Song <ryncsn@gmail.c=
-om> wrote:
-> > > > > > > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > > > > > > index cb2392ed8e0e..0d1924f6f495 100644
-> > > > > > > --- a/mm/swapfile.c
-> > > > > > > +++ b/mm/swapfile.c
-> > > > > > > @@ -1101,13 +1101,6 @@ static unsigned long cluster_alloc_swa=
-p_entry(struct swap_info_struct *si, int o
-> > > > > > >                         goto done;
-> > > > > > >         }
-> > > > > > >
-> > > > > > > -       /*
-> > > > > > > -        * We don't have free cluster but have some clusters =
-in discarding,
-> > > > > > > -        * do discard now and reclaim them.
-> > > > > > > -        */
-> > > > > > > -       if ((si->flags & SWP_PAGE_DISCARD) && swap_do_schedul=
-ed_discard(si))
-> > > > > > > -               goto new_cluster;
-> > > > > >
-> > > > > > Assume you follow my suggestion.
-> > > > > > Change this to some function to detect if there is a pending di=
-scard
-> > > > > > on this device. Return to the caller indicating that you need a
-> > > > > > discard for this device that has a pending discard.
-> > > > > > Add an output argument to indicate the discard device "discard"=
- if needed.
-> > > > >
-> > > > > The problem I just realized is that, if we just bail out here, we=
- are
-> > > > > forbidding order 0 to steal if there is any discarding cluster. W=
-e
-> > > > > just return here to let the caller handle the discard outside
-> > > > > the lock.
-> > > >
-> > > > Oh, yes, there might be a bit of change in behavior. However I can'=
-t
-> > > > see it is such a bad thing if we wait for the pending discard to
-> > > > complete before stealing and fragmenting the existing folio list. W=
-e
-> > > > will have less fragments compared to the original result. Again, my
-> > > > point is not that we always keep 100% the old behavior, then there =
-is
-> > > > no room for improvement.
-> > > >
-> > > > My point is that, are we doing the best we can in that situation,
-> > > > regardless how unlikely it is.
-> > > >
-> > > > >
-> > > > > It may just discard the cluster just fine, then retry from free c=
-lusters.
-> > > > > Then everything is fine, that's the easy part.
-> > > >
-> > > > Ack.
-> > > >
-> > > > > But it might also fail, and interestingly, in the failure case we=
- need
-> > > >
-> > > > Can you spell out the failure case you have in mind? Do you mean th=
-e
-> > > > discard did happen but another thread stole "the recently discarded
-> > > > then became free cluster"?
-> > > >
-> > > > Anyway, in such a case, the swap allocator should continue and find
-> > > > out we don't have things to discard now, it will continue to the
-> > > > "steal from other order > 0 list".
-> > > >
-> > > > > to try again as well. It might fail with a race with another disc=
-ard,
-> > > > > in that case order 0 steal is still feasible. Or it fail with
-> > > > > get_swap_device_info (we have to release the device to return her=
-e),
-> > > > > in that case we should go back to the plist and try other devices=
-.
-> > > >
-> > > > When stealing from the other order >0 list failed, we should try
-> > > > another device in the plist.
-> > > >
-> > > > >
-> > > > > This is doable but seems kind of fragile, we'll have something li=
-ke
-> > > > > this in the folio_alloc_swap function:
-> > > > >
-> > > > > local_lock(&percpu_swap_cluster.lock);
-> > > > > if (!swap_alloc_fast(&entry, order))
-> > > > >     swap_alloc_slow(&entry, order, &discard_si);
-> > > > > local_unlock(&percpu_swap_cluster.lock);
-> > > > >
-> > > > > +if (discard_si) {
-> > > >
-> > > > I feel the discard logic should be inside the swap_alloc_slow().
-> > > > There is a  plist_for_each_entry_safe(), inside that loop to do the
-> > > > discard and retry().
-> > > > If I previously suggested it change in here, sorry I have changed m=
-y
-> > > > mind after reasoning the code a bit more.
-> > >
-> > > Actually now I have given it a bit more thought, one thing I realized
-> > > is that you might need to hold the percpu_swap_cluster lock all the
-> > > time during allocation. That might force you to do the release lock
-> > > and discard in the current position.
-> > >
-> > > If that is the case, then just making the small change in your patch
-> > > to allow hold waiting to discard before trying the fragmentation list
-> > > might be good enough.
-> > >
-> > > Chris
-> > >
-> >
-> > Thanks, I was composing a reply on this and just saw your new comment.
-> > I agree with this.
->
-> Hmm, it turns out modifying V1 to handle non-order 0 allocation
-> failure also has some minor issues. Every mTHP SWAP allocation failure
-> will have a slight higher overhead due to the discard check. V1 is
-> fine since it only checks discard for order 0, and order 0 alloc
-> failure is uncommon and usually means OOM already.
->
-> I'm not saying V1 is the final solution, but I think maybe we can just
-> keep V1 as it is? That's easier for a stable backport too, and this is
+This series aims to fix the CVE-2025-38073 for 6.1 LTS. Which is fixed
+by c0e473a0d226 ("block: fix race between set_blocksize and read
+paths"). This patch is built on top multiple refactors that where
+merged on 6.6. The needed dependecies are:
 
-I am fine with that, assuming you need to adjust the presentation to
-push V1 as hotfix. I can ack your newer  patch to adjust the
-presentation.
+  - e003f74afbd2 ("filemap: add a kiocb_invalidate_pages helper")
+  - c402a9a9430b ("filemap: add a kiocb_invalidate_post_direct_write
+    helper")
+  - 182c25e9c157 ("filemap: update ki_pos in generic_perform_write")
+  - 44fff0fa08ec ("fs: factor out a direct_write_fallback helper")
+  - 727cfe976758 ("block: open code __generic_file_write_iter for
+    blkdev writes")
 
-> doing far better than what it was like. The sync discard was added in
-> 2013 and the later added percpu cluster at the same year never treated
-> it carefully. And the discard during allocation after recent swap
-> allocator rework has been kind of broken for a while.
->
-> To optimize it further in a clean way, we have to reverse the
-> allocator's handling order of the plist and fast / slow path. Current
-> order is local_lock -> fast -> slow (plist).
+Also backport follow up fixes:
+- fb881cd76045 ("nilfs2: fix deadlock warnings caused by lock
+  dependency in init_nilfs()").
+- 8287474aa5ff ("direct_write_fallback(): on error revert the ->ki_pos
+  update from buffered write")
 
-I like that. I think that is the eventual way to go. I want to see how
-it integrates with the swap.tiers patches. If you let me pick, I would
-go straight with this one for 6.19.
+Thanks,
+MNAdam
 
->
-> We can walk the plist first, then do the fast / slow path: plist (or
-> maybe something faster than plist but handles the priority) ->
-> local_lock -> fast -> slow (bonus: this is more friendly to RT kernels
-> too I think). That way we don't need to rewalk the plist after
-> releasing the local_lock and save a lot of trouble. I remember I
-> discussed with Youngjun on this sometime ago in the mail list, I know
-> things have changed a lot but some ideas seems are still similar. I
-> think his series is moving the percpu cluster into each device (si),
-> we can also move the local_lock there, which is just what I'm talking
-> about here.
+Al Viro (1):
+  direct_write_fallback(): on error revert the ->ki_pos update from
+    buffered write
 
-Ack. We will need to see both patches to figure out how to integrate
-them together. Right now we have two moving parts. More to the point
-that we get the eventual patch sooner.
+Christoph Hellwig (5):
+  filemap: add a kiocb_invalidate_pages helper
+  filemap: add a kiocb_invalidate_post_direct_write helper
+  filemap: update ki_pos in generic_perform_write
+  fs: factor out a direct_write_fallback helper
+  block: open code __generic_file_write_iter for blkdev writes
 
-Chris
+Darrick J. Wong (1):
+  block: fix race between set_blocksize and read paths
+
+Ryusuke Konishi (1):
+  nilfs2: fix deadlock warnings caused by lock dependency in
+    init_nilfs()
+
+ block/bdev.c            |  17 +++++
+ block/blk-zoned.c       |   5 +-
+ block/fops.c            |  61 +++++++++++++++-
+ block/ioctl.c           |   6 ++
+ fs/ceph/file.c          |   2 -
+ fs/direct-io.c          |  10 +--
+ fs/ext4/file.c          |   9 +--
+ fs/f2fs/file.c          |   1 -
+ fs/iomap/direct-io.c    |  12 +---
+ fs/libfs.c              |  42 +++++++++++
+ fs/nfs/file.c           |   1 -
+ fs/nilfs2/the_nilfs.c   |   3 -
+ include/linux/fs.h      |   7 +-
+ include/linux/pagemap.h |   2 +
+ mm/filemap.c            | 154 +++++++++++++++++-----------------------
+ 15 files changed, 205 insertions(+), 127 deletions(-)
+
+-- 
+2.47.3
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
