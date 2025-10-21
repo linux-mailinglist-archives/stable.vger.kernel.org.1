@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-188543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFAE3BF86EE
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:59:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF5EBF8529
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A1A5580921
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:59:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBDFD46036A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63497274B44;
-	Tue, 21 Oct 2025 19:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D94273D73;
+	Tue, 21 Oct 2025 19:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfwosIFC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHsaCH5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD41350A2A;
-	Tue, 21 Oct 2025 19:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A16D270EC1;
+	Tue, 21 Oct 2025 19:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076741; cv=none; b=CK2xYdzsDA9L31Eo9LL4A3BEzq8yVjINAN1OISdkonmFajlfTcK4KGaW2Ky/WOgVotNiOV2Er86+SZEQRLA3vc8+4Yo9bSU/AA2bCHuezn7Q7fSz3lZTOVi4H9PvUmLntDatlE5b0tG+sOXQCCXoYq/EHAtEDPTZvg2k3Fg20lA=
+	t=1761076356; cv=none; b=jiZe/9L/PY/w1Shlg31VP/R+PBTpnTWYrPaa7zbBdzAnMtFg23ZnS7K59cgTkrxbza+zwuarlfp7CmUoVBZ1YCug+LJq6qec0fHAMHUzlJrXV3VBDfUM2oHMW5ty2oaTLo9FWylJJQ0ek1mmOg3H9+bbTHPuCxOpmjANDEeAuR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076741; c=relaxed/simple;
-	bh=yDL0ml7fYKl8ejGi5VnOSUhsuFiVWkabnsNpykNEjeQ=;
+	s=arc-20240116; t=1761076356; c=relaxed/simple;
+	bh=pfLrxdpJ8gN+syGKgLz7HlqpeMg3FImPk8OuGGMT+10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GW6ffN0BlLX+QiwE4+m9LfEy3GgKq62bjthteSiIiutt5BrL54/eU7Undp7vZjsZNCCBikItv7QQyDdtW3b0GR7cdJPy7AvbSiiSk9VesqbNYbZsopC3mUCsBvyofBQlNsGZBzy3KWDIkIFOWemaEhK+v4Xhz+oCZSDjtYPHI7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfwosIFC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D30DC4CEF7;
-	Tue, 21 Oct 2025 19:59:00 +0000 (UTC)
+	 MIME-Version; b=d++d1TpmVNWWZNOYCw6ogAg3UznUEoOL+gcK8UwwoBFnkoMWrbYv3bhXtkiBDvRN1/w4v6ZiQYlAuD9L3kEgLbkKlVifAqIA1gYAPLIccFmtXQmcPD/kB+13LfcbuIO/DcE4HQn6Sp2d1Dhn3J8zgx9Xb8BO3Ae5LopHb9ldlTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHsaCH5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B639C4CEF1;
+	Tue, 21 Oct 2025 19:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076741;
-	bh=yDL0ml7fYKl8ejGi5VnOSUhsuFiVWkabnsNpykNEjeQ=;
+	s=korg; t=1761076356;
+	bh=pfLrxdpJ8gN+syGKgLz7HlqpeMg3FImPk8OuGGMT+10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VfwosIFCtz9AuxTg5dDcz/P7cSZguNIUFg+M4hjDARRRecYXDJppPyt5vuxcFU4Cj
-	 +zNCTFX7r6kE4tICkIlC8TfiR/vszuYkTbnz8oh+ilT2KIBU4UWSVISptmQTixclmC
-	 FIoItHr/v3gnrEZaUZGaIyJFsDt9+HbrRVlLwM1M=
+	b=vHsaCH5qaSKacgZv6723znvBJkWoMkaA91e9qQTofUS8uoSdqGKUCHgAakll5gbJa
+	 Q8O2Zn61qwpehThvnoHTL3TJLiPNCnVCR2jtakNbtnXnJ9utqW7kYtCZzoQw009Lav
+	 LtntnMK1yV4AEo3qgnFECrDi/qm/A7USP63pQ2JU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edd Barrett <edd@theunixzoo.co.uk>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 6.12 023/136] perf/core: Fix address filter match with backing files
+	Yi Cong <yicong@kylinos.cn>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 002/105] r8152: add error handling in rtl8152_driver_init
 Date: Tue, 21 Oct 2025 21:50:11 +0200
-Message-ID: <20251021195036.531546029@linuxfoundation.org>
+Message-ID: <20251021195021.553803037@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Yi Cong <yicong@kylinos.cn>
 
-commit ebfc8542ad62d066771e46c8aa30f5624b89cad8 upstream.
+commit 75527d61d60d493d1eb064f335071a20ca581f54 upstream.
 
-It was reported that Intel PT address filters do not work in Docker
-containers.  That relates to the use of overlayfs.
+rtl8152_driver_init() is missing the error handling.
+When rtl8152_driver registration fails, rtl8152_cfgselector_driver
+should be deregistered.
 
-overlayfs records the backing file in struct vm_area_struct vm_file,
-instead of the user file that the user mmapped.  In order for an address
-filter to match, it must compare to the user file inode.  There is an
-existing helper file_user_inode() for that situation.
-
-Use file_user_inode() instead of file_inode() to get the inode for address
-filter matching.
-
-Example:
-
-  Setup:
-
-    # cd /root
-    # mkdir test ; cd test ; mkdir lower upper work merged
-    # cp `which cat` lower
-    # mount -t overlay overlay -olowerdir=lower,upperdir=upper,workdir=work merged
-    # perf record --buildid-mmap -e intel_pt//u --filter 'filter * @ /root/test/merged/cat' -- /root/test/merged/cat /proc/self/maps
-    ...
-    55d61d246000-55d61d2e1000 r-xp 00018000 00:1a 3418                       /root/test/merged/cat
-    ...
-    [ perf record: Woken up 1 times to write data ]
-    [ perf record: Captured and wrote 0.015 MB perf.data ]
-    # perf buildid-cache --add /root/test/merged/cat
-
-  Before:
-
-    Address filter does not match so there are no control flow packets
-
-    # perf script --itrace=e
-    # perf script --itrace=b | wc -l
-    0
-    # perf script -D | grep 'TIP.PGE' | wc -l
-    0
-    #
-
-  After:
-
-    Address filter does match so there are control flow packets
-
-    # perf script --itrace=e
-    # perf script --itrace=b | wc -l
-    235
-    # perf script -D | grep 'TIP.PGE' | wc -l
-    57
-    #
-
-With respect to stable kernels, overlayfs mmap function ovl_mmap() was
-added in v4.19 but file_user_inode() was not added until v6.8 and never
-back-ported to stable kernels.  FMODE_BACKING that it depends on was added
-in v6.5.  This issue has gone largely unnoticed, so back-porting before
-v6.8 is probably not worth it, so put 6.8 as the stable kernel prerequisite
-version, although in practice the next long term kernel is 6.12.
-
-Closes: https://lore.kernel.org/linux-perf-users/aBCwoq7w8ohBRQCh@fremen.lan
-Reported-by: Edd Barrett <edd@theunixzoo.co.uk>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Amir Goldstein <amir73il@gmail.com>
-Cc: stable@vger.kernel.org # 6.8
+Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yi Cong <yicong@kylinos.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251011082415.580740-1-yicongsrfy@163.com
+[pabeni@redhat.com: clarified the commit message]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/r8152.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9086,7 +9086,7 @@ static bool perf_addr_filter_match(struc
- 	if (!filter->path.dentry)
- 		return false;
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10104,7 +10104,12 @@ static int __init rtl8152_driver_init(vo
+ 	ret = usb_register_device_driver(&rtl8152_cfgselector_driver, THIS_MODULE);
+ 	if (ret)
+ 		return ret;
+-	return usb_register(&rtl8152_driver);
++
++	ret = usb_register(&rtl8152_driver);
++	if (ret)
++		usb_deregister_device_driver(&rtl8152_cfgselector_driver);
++
++	return ret;
+ }
  
--	if (d_inode(filter->path.dentry) != file_inode(file))
-+	if (d_inode(filter->path.dentry) != file_user_inode(file))
- 		return false;
- 
- 	if (filter->offset > offset + size)
+ static void __exit rtl8152_driver_exit(void)
 
 
 
