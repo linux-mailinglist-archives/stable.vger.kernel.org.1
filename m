@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-188575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C46CBF8753
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:00:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526CBBF8589
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 480884F6947
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 050DA3B082D
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86F9275861;
-	Tue, 21 Oct 2025 20:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8F2274652;
+	Tue, 21 Oct 2025 19:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljdSohHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfnaJQqH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731031A3029;
-	Tue, 21 Oct 2025 20:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B873F26738B;
+	Tue, 21 Oct 2025 19:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076843; cv=none; b=nl15t24xnI0wOZIwe76n9dq0eAVpwThxHS/KOGxTb2/E34e/zeLCGNDLqE5Oppu+bbcmC4veL8DqeYTNpSzZ3siIEHCRKCmM7YcxKkks22cEBJk5foN91xXQe5jHfYolt11YzNQ3TtvgHh8pK3R829qBD6lPYh/ehuPkOO++gVw=
+	t=1761076448; cv=none; b=bek/yGucgEpubsOqzULQnqJc70O7aQniAaDS47AD9jvYQ9gt/a+Ok2Llyq7fCl7CtR7clX2l0QDGIYFSbZrXKJXa1j/4BdavPx/Ov2T3hM4h0SWwGjmQc/U+sPLPvbPoq/IClVU21X/oEQz5PgRWcuq4tEO7iPfHT69h+axC59U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076843; c=relaxed/simple;
-	bh=tyLvWvyKp/OG/1T1Awi+zyRHHYDNYY++vIHl5bZ2KjQ=;
+	s=arc-20240116; t=1761076448; c=relaxed/simple;
+	bh=0M9W7mZ8lHve0m9YRtioTjORhANvrBNVSJQGkQmfP98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBGr32ddV3EycQP8j7fsHQ9stM+RNZEj6HoqzU9O3kLzPfe6NDfuElpMENw0I8wApUEyv2LAqxSk+Tz6syItIR7nZbIduUpsfnSAgVL8XwgvLWEQguBTLWHMH6MgyvFSGJl8UkaCcJi0Td2yaMz7NaKkl9FRZcKEWkIOYOaBgH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljdSohHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BCBC4CEF1;
-	Tue, 21 Oct 2025 20:00:42 +0000 (UTC)
+	 MIME-Version; b=H8GjFTOeys26yC1iHL0l9MsQM4IFj+1P4Af7aZTQEKbSsOTcvEhuZf44/V3Xne7QdQC5RslGNxxoLYE59ezxZaZfrnJSYfNWXbZlOo0p1awA5SgwbQiU85Qdo1e5bYiSWMtu7qg596tZpDZqUCkc4yVwRTlLy1pwZa1E9s0frSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfnaJQqH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6528C4CEF5;
+	Tue, 21 Oct 2025 19:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076843;
-	bh=tyLvWvyKp/OG/1T1Awi+zyRHHYDNYY++vIHl5bZ2KjQ=;
+	s=korg; t=1761076444;
+	bh=0M9W7mZ8lHve0m9YRtioTjORhANvrBNVSJQGkQmfP98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ljdSohHKDDpgSAw6hR/WSxHU4a5sdwNQK8DvznPebmkF5uPjC/L7qGvhZTxVwbkCg
-	 hOjNsrSec8l2MKMAp4oFRdyP8ZCApj1fLgzBplux8qeG1UpG9fjckFqB/kbLxBFXfP
-	 rl0woahVg6lkNy8wYbkc1oVlz4TiN7DAUwYiwRXM=
+	b=NfnaJQqHvKa/MlY6UWwJVFVU74v5Nefa2QbWh6nY56522Eti04LRIOWf8FpDRyGgD
+	 0PmkAYb53dRjY+I1o2OcCixJU91IdpMP0L5BumH5sXlwBMgld4kWmYAZaRDopQVHNF
+	 4j6xxERvHMZlXoDG+kTvIW6dzEIjYGJYHASApnho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Friendy Su <friendy.su@sony.com>,
+	Daniel Palmer <daniel.palmer@sony.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/136] tcp: fix tcp_tso_should_defer() vs large RTT
+Subject: [PATCH 6.6 035/105] dax: skip read lock assertion for read-only filesystems
 Date: Tue, 21 Oct 2025 21:50:44 +0200
-Message-ID: <20251021195037.327903544@linuxfoundation.org>
+Message-ID: <20251021195022.527432075@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
+In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
+References: <20251021195021.492915002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit 295ce1eb36ae47dc862d6c8a1012618a25516208 ]
+[ Upstream commit 154d1e7ad9e5ce4b2aaefd3862b3dba545ad978d ]
 
-Neal reported that using neper tcp_stream with TCP_TX_DELAY
-set to 50ms would often lead to flows stuck in a small cwnd mode,
-regardless of the congestion control.
+The commit 168316db3583("dax: assert that i_rwsem is held
+exclusive for writes") added lock assertions to ensure proper
+locking in DAX operations. However, these assertions trigger
+false-positive lockdep warnings since read lock is unnecessary
+on read-only filesystems(e.g., erofs).
 
-While tcp_stream sets TCP_TX_DELAY too late after the connect(),
-it highlighted two kernel bugs.
+This patch skips the read lock assertion for read-only filesystems,
+eliminating the spurious warnings while maintaining the integrity
+checks for writable filesystems.
 
-The following heuristic in tcp_tso_should_defer() seems wrong
-for large RTT:
-
-delta = tp->tcp_clock_cache - head->tstamp;
-/* If next ACK is likely to come too late (half srtt), do not defer */
-if ((s64)(delta - (u64)NSEC_PER_USEC * (tp->srtt_us >> 4)) < 0)
-      goto send_now;
-
-If next ACK is expected to come in more than 1 ms, we should
-not defer because we prefer a smooth ACK clocking.
-
-While blamed commit was a step in the good direction, it was not
-generic enough.
-
-Another patch fixing TCP_TX_DELAY for established flows
-will be proposed when net-next reopens.
-
-Fixes: 50c8339e9299 ("tcp: tso: restore IW10 after TSO autosizing")
-Reported-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Tested-by: Neal Cardwell <ncardwell@google.com>
-Link: https://patch.msgid.link/20251011115742.1245771-1-edumazet@google.com
-[pabeni@redhat.com: fixed whitespace issue]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 168316db3583 ("dax: assert that i_rwsem is held exclusive for writes")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Friendy Su <friendy.su@sony.com>
+Reviewed-by: Daniel Palmer <daniel.palmer@sony.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_output.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ fs/dax.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 6d5387811c32a..5e37dc45639db 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2217,7 +2217,8 @@ static bool tcp_tso_should_defer(struct sock *sk, struct sk_buff *skb,
- 				 u32 max_segs)
- {
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
--	u32 send_win, cong_win, limit, in_flight;
-+	u32 send_win, cong_win, limit, in_flight, threshold;
-+	u64 srtt_in_ns, expected_ack, how_far_is_the_ack;
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	struct sk_buff *head;
- 	int win_divisor;
-@@ -2279,9 +2280,19 @@ static bool tcp_tso_should_defer(struct sock *sk, struct sk_buff *skb,
- 	head = tcp_rtx_queue_head(sk);
- 	if (!head)
- 		goto send_now;
--	delta = tp->tcp_clock_cache - head->tstamp;
--	/* If next ACK is likely to come too late (half srtt), do not defer */
--	if ((s64)(delta - (u64)NSEC_PER_USEC * (tp->srtt_us >> 4)) < 0)
-+
-+	srtt_in_ns = (u64)(NSEC_PER_USEC >> 3) * tp->srtt_us;
-+	/* When is the ACK expected ? */
-+	expected_ack = head->tstamp + srtt_in_ns;
-+	/* How far from now is the ACK expected ? */
-+	how_far_is_the_ack = expected_ack - tp->tcp_clock_cache;
-+
-+	/* If next ACK is likely to come too late,
-+	 * ie in more than min(1ms, half srtt), do not defer.
-+	 */
-+	threshold = min(srtt_in_ns >> 1, NSEC_PER_MSEC);
-+
-+	if ((s64)(how_far_is_the_ack - threshold) > 0)
- 		goto send_now;
+diff --git a/fs/dax.c b/fs/dax.c
+index 8c09578fa0357..e1451efaab140 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1578,7 +1578,7 @@ dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
+ 	if (iov_iter_rw(iter) == WRITE) {
+ 		lockdep_assert_held_write(&iomi.inode->i_rwsem);
+ 		iomi.flags |= IOMAP_WRITE;
+-	} else {
++	} else if (!sb_rdonly(iomi.inode->i_sb)) {
+ 		lockdep_assert_held(&iomi.inode->i_rwsem);
+ 	}
  
- 	/* Ok, it looks like it is advisable to defer.
 -- 
 2.51.0
 
