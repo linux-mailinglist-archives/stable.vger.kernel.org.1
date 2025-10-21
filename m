@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-188437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EF0BF854C
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 21:53:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E294CBF874F
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 22:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0B919C2D99
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:53:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D16864F961A
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 20:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31763273D9A;
-	Tue, 21 Oct 2025 19:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86061275861;
+	Tue, 21 Oct 2025 20:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnsLzuFj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGi6o3r0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DE8273D7B;
-	Tue, 21 Oct 2025 19:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4212E274B44;
+	Tue, 21 Oct 2025 20:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761076403; cv=none; b=sw8tQxtnB42x2xIH5OESFv9shW86SH+bSq5i9zgEsVZjOcnva1KNzPnN4jR8X0B8VmbR5P6tx2jUK+nFQpPnyJAx2GpK+S88yg9KBQcy7/an+eP0wcRflN9Zkpl438AeF8Jr2SvYhVEzMPkZzbsFe7AlAEfX0hfLX+fmkJH228U=
+	t=1761076834; cv=none; b=G8VrLw/WUiiciWCWCnlgFf8sIkCKz7xu7Coy0Pjfx4JR7C8o4RtNUf2EapgCHKTTlOZ6FVlk2W8cFDMjFsBhc9AScoe/LcKsyGqzS6cEer50I8yv7GjF7Vv38utpxdxVxucGgRs1iSjYC3vTk8pATI4SvjzQbKlurmnktqQ7HiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761076403; c=relaxed/simple;
-	bh=CuGcTrz6KDWdsdK4JqmtHVT4bUFVNMR0LKBsZj+9/3I=;
+	s=arc-20240116; t=1761076834; c=relaxed/simple;
+	bh=ZID80Uof4DAeXepPETVA9nS1ya/kPWgN7cgkqkvVB2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eo3pRj48563d1vpPhnlnoAFXRDM+LOdNikB/BroJwWHfbvkrPpvdCbIwU1W5ok4D6mlKhs+ir69ltj+YS2ZI3NH7w42NRkbamsfnjw/sSsz20K0LGOQyE+GQxxsVG1OfPgiKsgtMxLFpjQtI580RrPZPaCH/GQMKaaxZ/9pk/Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnsLzuFj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE85C4CEF1;
-	Tue, 21 Oct 2025 19:53:21 +0000 (UTC)
+	 MIME-Version; b=laWt3i3d98GbO4fVEye5lYBwG1kO3Ok/ZUaWTPJnOcwBqSM8UF/GLrguhh4KoZ4cgFEKExS1XA8YoWLdj5tFo98pJkCNqhf5LgzRv2ed52fI7A9S8pY3REFlMHwam5LYzyEa2i6XMPEmIUfXGSy1QbkNtKTEyWkNk5b2gGcJj9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGi6o3r0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FDAC4CEF5;
+	Tue, 21 Oct 2025 20:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761076402;
-	bh=CuGcTrz6KDWdsdK4JqmtHVT4bUFVNMR0LKBsZj+9/3I=;
+	s=korg; t=1761076834;
+	bh=ZID80Uof4DAeXepPETVA9nS1ya/kPWgN7cgkqkvVB2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SnsLzuFjVzVaQoam+kW0u+1YxeEjkJO1GZUtdvGmnafNV0eCjG8gSD1ci/Y34KBDB
-	 piMbURfUqkUcZzgJZDHPVQolK8/wYAyLnXgnbS5IpH2C4eac1Lzgi+kTi61ybJ0hSO
-	 N7IxHYQ+sqdoa7YdGqDdHVJS7XHsnCYJfN8U+0n4=
+	b=OGi6o3r0+sHBJysPrvDytkOQ2focklDA4k43g5mTckRPN2XF1r9aRuCo2rnp3NqVM
+	 H/ISRlAohSFMNN77LfXQN2klNdXD/n2We/GBG/E9bUqIs21qFlTMdHS6RGhP/qSHhd
+	 +U7RjZmJO7cXc0kWT4i04hk/Js2LxUpJsrMjaZto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	Inki Dae <inki.dae@samsung.com>,
+	Patrik Flykt <patrik.flykt@linux.intel.com>,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/105] drm/exynos: exynos7_drm_decon: properly clear channels during bind
+Subject: [PATCH 6.12 045/136] can: m_can: m_can_plat_remove(): add missing pm_runtime_disable()
 Date: Tue, 21 Oct 2025 21:50:33 +0200
-Message-ID: <20251021195022.274271000@linuxfoundation.org>
+Message-ID: <20251021195037.069992490@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
+References: <20251021195035.953989698@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 5f1a453974204175f20b3788824a0fe23cc36f79 ]
+[ Upstream commit ba569fb07a7e9e9b71e9282e27e993ba859295c2 ]
 
-The DECON channels are not cleared properly as the windows aren't
-shadow protected. When accompanied with an IOMMU, it pagefaults, and
-the kernel panics.
+Commit 227619c3ff7c ("can: m_can: move runtime PM enable/disable to
+m_can_platform") moved the PM runtime enable from the m_can core
+driver into the m_can_platform.
 
-Implement shadow protect/unprotect, along with a standalone update,
-for channel clearing to properly take effect.
+That patch forgot to move the pm_runtime_disable() to
+m_can_plat_remove(), so that unloading the m_can_platform driver
+causes an "Unbalanced pm_runtime_enable!" error message.
 
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Stable-dep-of: e1361a4f1be9 ("drm/exynos: exynos7_drm_decon: remove ctx->suspended")
+Add the missing pm_runtime_disable() to m_can_plat_remove() to fix the
+problem.
+
+Cc: Patrik Flykt <patrik.flykt@linux.intel.com>
+Fixes: 227619c3ff7c ("can: m_can: move runtime PM enable/disable to m_can_platform")
+Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Link: https://patch.msgid.link/20250929-m_can-fix-state-handling-v4-1-682b49b49d9a@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/exynos/exynos7_drm_decon.c |   55 ++++++++++++++++-------------
- 1 file changed, 32 insertions(+), 23 deletions(-)
+ drivers/net/can/m_can/m_can_platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-+++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-@@ -81,6 +81,28 @@ static const enum drm_plane_type decon_w
- 	DRM_PLANE_TYPE_CURSOR,
- };
+diff --git a/drivers/net/can/m_can/m_can_platform.c b/drivers/net/can/m_can/m_can_platform.c
+index b832566efda04..057eaa7b8b4b2 100644
+--- a/drivers/net/can/m_can/m_can_platform.c
++++ b/drivers/net/can/m_can/m_can_platform.c
+@@ -180,7 +180,7 @@ static void m_can_plat_remove(struct platform_device *pdev)
+ 	struct m_can_classdev *mcan_class = &priv->cdev;
  
-+/**
-+ * decon_shadow_protect_win() - disable updating values from shadow registers at vsync
-+ *
-+ * @ctx: display and enhancement controller context
-+ * @win: window to protect registers for
-+ * @protect: 1 to protect (disable updates)
-+ */
-+static void decon_shadow_protect_win(struct decon_context *ctx,
-+				     unsigned int win, bool protect)
-+{
-+	u32 bits, val;
-+
-+	bits = SHADOWCON_WINx_PROTECT(win);
-+
-+	val = readl(ctx->regs + SHADOWCON);
-+	if (protect)
-+		val |= bits;
-+	else
-+		val &= ~bits;
-+	writel(val, ctx->regs + SHADOWCON);
-+}
-+
- static void decon_wait_for_vblank(struct decon_context *ctx)
- {
- 	if (ctx->suspended)
-@@ -101,18 +123,27 @@ static void decon_wait_for_vblank(struct
- static void decon_clear_channels(struct decon_context *ctx)
- {
- 	unsigned int win, ch_enabled = 0;
-+	u32 val;
- 
- 	/* Check if any channel is enabled. */
- 	for (win = 0; win < WINDOWS_NR; win++) {
--		u32 val = readl(ctx->regs + WINCON(win));
-+		val = readl(ctx->regs + WINCON(win));
- 
- 		if (val & WINCONx_ENWIN) {
-+			decon_shadow_protect_win(ctx, win, true);
-+
- 			val &= ~WINCONx_ENWIN;
- 			writel(val, ctx->regs + WINCON(win));
- 			ch_enabled = 1;
-+
-+			decon_shadow_protect_win(ctx, win, false);
- 		}
- 	}
- 
-+	val = readl(ctx->regs + DECON_UPDATE);
-+	val |= DECON_UPDATE_STANDALONE_F;
-+	writel(val, ctx->regs + DECON_UPDATE);
-+
- 	/* Wait for vsync, as disable channel takes effect at next vsync */
- 	if (ch_enabled)
- 		decon_wait_for_vblank(ctx);
-@@ -340,28 +371,6 @@ static void decon_win_set_colkey(struct
- 	writel(keycon1, ctx->regs + WKEYCON1_BASE(win));
+ 	m_can_class_unregister(mcan_class);
+-
++	pm_runtime_disable(mcan_class->dev);
+ 	m_can_class_free_dev(mcan_class->net);
  }
  
--/**
-- * decon_shadow_protect_win() - disable updating values from shadow registers at vsync
-- *
-- * @ctx: display and enhancement controller context
-- * @win: window to protect registers for
-- * @protect: 1 to protect (disable updates)
-- */
--static void decon_shadow_protect_win(struct decon_context *ctx,
--				     unsigned int win, bool protect)
--{
--	u32 bits, val;
--
--	bits = SHADOWCON_WINx_PROTECT(win);
--
--	val = readl(ctx->regs + SHADOWCON);
--	if (protect)
--		val |= bits;
--	else
--		val &= ~bits;
--	writel(val, ctx->regs + SHADOWCON);
--}
--
- static void decon_atomic_begin(struct exynos_drm_crtc *crtc)
- {
- 	struct decon_context *ctx = crtc->ctx;
+-- 
+2.51.0
+
 
 
 
