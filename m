@@ -1,129 +1,118 @@
-Return-Path: <stable+bounces-188389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22C3BF7DBF
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 19:22:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3BC2BF793D
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 18:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D446A3573BA
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 17:22:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 052721882FD8
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 16:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F24B3502A0;
-	Tue, 21 Oct 2025 17:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F236E3451DA;
+	Tue, 21 Oct 2025 16:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Z+uBgZ0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMmhLyCq"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA9234C82A;
-	Tue, 21 Oct 2025 17:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF6F3451AD;
+	Tue, 21 Oct 2025 16:06:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761067149; cv=none; b=HDMNTPKyXMa9u2lcnIxxPDdBezxUXplh2Z5IPJ6f4bRCot0AqHAeke0i1/U69iNJ9pNf3ksUCMCe+nAHY4ph1QSh9YUQ25rTsyxeiIUFC4CFYDpr9qvapL2Ws8cW4fi6myj1tpUlaqCateLb+zBcRm/5EMR1hEpJEc1E058Y0NA=
+	t=1761062775; cv=none; b=iiT1WKkRZvw05WqF4EcPNyCxOsyLe03FFrU9RGi41pkY4txixSJEljtgmxAlHyQoMIEez4wG/JUq/5OQIDEoCq6muxdAm5MsQWgDyz41xO9YpQx6+AaEK0muC88i2ez5sRIKRb6th3Woc9ApjaK551UQJStHBnULEls4KwvD7q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761067149; c=relaxed/simple;
-	bh=APDtLhXblBwS9DQRReD0gd2A85Zk53l59rWi0MPQ0rk=;
+	s=arc-20240116; t=1761062775; c=relaxed/simple;
+	bh=qYlGn7W1xsBMVOnKfhoZVoNO+LBcUe/Za6r0RNX+fZw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BG2Xfmiv1pdZvuAn93UWenrPRFAv/QAkAofCu9nIn+sS7F/DNbV4Z+kffc4APtri7lth5cpjOzYT+Nu2kqriooXrWK4+Wor40J5/SG/xzis/zhonAzQqafG+z6n/7uME53SP+hJKl0IzccQvZalvisGpbnmLWNqGoNAT8NdNzBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Z+uBgZ0q; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QzchzrjP8FlIuKSYCzJ8pjq9HCBr1gD14zJzjcDAwDs=; b=Z+uBgZ0qsiHGtjo8dv8YdnexnA
-	JasO0byS3J/dlOB9ulPFmIBg7VmhciiE+D6ghI94XCSEzZ3d9pR4fAwPsxMhMbO38FCNC0YB3M8VH
-	pdqZJ8APAjVTCOLjSOfvXg9L/CHHyNybafQBnexilywkjRf5S0UNBJKi0W52C7MpdGH6ccpxlLBPg
-	67fg0xZO0Noc2Og65nJTMPG6uLkpJuQwlCyazSzCeoC3VUi5GdmTLKQqVWUuHU4YWjmqW9dBaO2hd
-	pMzttx1cf0+S6EleJkT8bqHmJzy/bwg1Mz4FKwSbhWIUZXNrOYP+HxXGZ0kbmDACqC6vnGnG94H0F
-	UDbfek8A==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBF8z-00000000tCI-2tgG;
-	Tue, 21 Oct 2025 16:23:30 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A45FC3030BE; Mon, 20 Oct 2025 12:51:54 +0200 (CEST)
-Date: Mon, 20 Oct 2025 12:51:54 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function
-Message-ID: <20251020105154.GR3419281@noisy.programming.kicks-ass.net>
-References: <20251020020714.2511718-1-ojeda@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=QqI7XWx2iDK+zrtO1cc6Ep52/IjAGgZaNeO6kxODK2sXlU4haugTqgPZZVlzYYY63S/GU27qpI7dD6sOP6BMRk6ki7slm7mbhWFW71br0iFYwJat0imkAceTiQv6WV3jLB0ugAA0ul6DHZtgn+d/RuCCiT8rDl/svH2ogkZHUUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMmhLyCq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5032C4CEF1;
+	Tue, 21 Oct 2025 16:06:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1761062774;
+	bh=qYlGn7W1xsBMVOnKfhoZVoNO+LBcUe/Za6r0RNX+fZw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WMmhLyCq5nHPFAmMrY5p/3bBqV+VZaKAVyPQ0jSd9rHnLBzEuNpp5Bh98chqZ8j8Y
+	 xnuzfU8fhn9Asyt9lcDfhmpDoKEX3TkJaYOUthxmqfjAMRIG0/hMkOYA93QR1Fqftl
+	 k6KKdB/Go0bf/GntlEbBXjP4Uk0EDSjy5y2VZZic=
+Date: Tue, 21 Oct 2025 18:06:11 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	andrey.konovalov@linux.dev
+Subject: Re: [PATCH] usb: raw-gadget: do not limit transfer length
+Message-ID: <2025102151-footpath-entomb-76da@gregkh>
+References: <a6024e8eab679043e9b8a5defdb41c4bda62f02b.1757016152.git.andreyknvl@gmail.com>
+ <CA+fCnZdG+X48_W_bSKYpziKohjp1QVgDzUzfYK_KOk42j58_ZA@mail.gmail.com>
+ <CA+fCnZdHJtHgZuD9tiDGD8svXTEdP=GK8HSo71y_UfKgZcaUxg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251020020714.2511718-1-ojeda@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+fCnZdHJtHgZuD9tiDGD8svXTEdP=GK8HSo71y_UfKgZcaUxg@mail.gmail.com>
 
-On Mon, Oct 20, 2025 at 04:07:14AM +0200, Miguel Ojeda wrote:
-> Between Rust 1.79 and 1.86, under `CONFIG_RUST_KERNEL_DOCTESTS=y`,
-> `objtool` may report:
+On Tue, Oct 21, 2025 at 04:19:13PM +0200, Andrey Konovalov wrote:
+> On Tue, Oct 21, 2025 at 4:18 PM Andrey Konovalov <andreyknvl@gmail.com> wrote:
+> >
+> > On Thu, Sep 4, 2025 at 10:08 PM <andrey.konovalov@linux.dev> wrote:
+> > >
+> > > From: Andrey Konovalov <andreyknvl@gmail.com>
+> > >
+> > > Drop the check on the maximum transfer length in Raw Gadget for both
+> > > control and non-control transfers.
+> > >
+> > > Limiting the transfer length causes a problem with emulating USB devices
+> > > whose full configuration descriptor exceeds PAGE_SIZE in length.
+> > >
+> > > Overall, there does not appear to be any reason to enforce any kind of
+> > > transfer length limit on the Raw Gadget side for either control or
+> > > non-control transfers, so let's just drop the related check.
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
+> > > Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+> > > ---
+> > >  drivers/usb/gadget/legacy/raw_gadget.c | 2 --
+> > >  1 file changed, 2 deletions(-)
+> > >
+> > > diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
+> > > index 20165e1582d9..b71680c58de6 100644
+> > > --- a/drivers/usb/gadget/legacy/raw_gadget.c
+> > > +++ b/drivers/usb/gadget/legacy/raw_gadget.c
+> > > @@ -667,8 +667,6 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
+> > >                 return ERR_PTR(-EINVAL);
+> > >         if (!usb_raw_io_flags_valid(io->flags))
+> > >                 return ERR_PTR(-EINVAL);
+> > > -       if (io->length > PAGE_SIZE)
+> > > -               return ERR_PTR(-EINVAL);
+> > >         if (get_from_user)
+> > >                 data = memdup_user(ptr + sizeof(*io), io->length);
+> > >         else {
+> > > --
+> > > 2.43.0
+> > >
+> >
+> > Hi Greg,
+> >
+> > Could you pick up this patch?
+> >
+> > Thank you!
 > 
->     rust/doctests_kernel_generated.o: warning: objtool:
->     rust_doctest_kernel_alloc_kbox_rs_13() falls through to next
->     function rust_doctest_kernel_alloc_kvec_rs_0()
-> 
-> (as well as in rust_doctest_kernel_alloc_kvec_rs_0) due to calls to the
-> `noreturn` symbol:
-> 
->     core::option::expect_failed
-> 
-> from code added in commits 779db37373a3 ("rust: alloc: kvec: implement
-> AsPageIter for VVec") and 671618432f46 ("rust: alloc: kbox: implement
-> AsPageIter for VBox").
-> 
-> Thus add the mangled one to the list so that `objtool` knows it is
-> actually `noreturn`.
-> 
-> This can be reproduced as well in other versions by tweaking the code,
-> such as the latest stable Rust (1.90.0).
-> 
-> Stable does not have code that triggers this, but it could have it in
-> the future. Downstream forks could too. Thus tag it for backport.
-> 
-> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-> for more details.
-> 
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later.
-> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  tools/objtool/check.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-> index a5770570b106..3c7ab910b189 100644
-> --- a/tools/objtool/check.c
-> +++ b/tools/objtool/check.c
-> @@ -217,6 +217,7 @@ static bool is_rust_noreturn(const struct symbol *func)
->  	 * these come from the Rust standard library).
->  	 */
->  	return str_ends_with(func->name, "_4core5sliceSp15copy_from_slice17len_mismatch_fail")		||
-> +	       str_ends_with(func->name, "_4core6option13expect_failed")				||
->  	       str_ends_with(func->name, "_4core6option13unwrap_failed")				||
->  	       str_ends_with(func->name, "_4core6result13unwrap_failed")				||
->  	       str_ends_with(func->name, "_4core9panicking5panic")					||
-> 
+> (Greg to To:)
 
-I'll go stick it in tip/objtool/core; but I gotta ask, where are we with
-the toolchain support for noreturn?
+Can you send it to the proper list again?  I didn't see it on the
+linux-usb list as it was never sent there :(
+
+thanks,
+
+greg k-h
 
