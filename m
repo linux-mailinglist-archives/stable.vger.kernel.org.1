@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-188279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6702BF43A2
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 03:11:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F530BF43D3
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 03:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 328344F37F9
-	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 01:11:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59E88460B60
+	for <lists+stable@lfdr.de>; Tue, 21 Oct 2025 01:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FFD222564;
-	Tue, 21 Oct 2025 01:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6E6190664;
+	Tue, 21 Oct 2025 01:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q2ACnNU2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nbQFSZBH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43905220F5D
-	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 01:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A19918CBE1
+	for <stable@vger.kernel.org>; Tue, 21 Oct 2025 01:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761009083; cv=none; b=Qc6wCC/CFgpr4ToK+hqQ7m6MCgsQR5/4HCKf36MKI60BugGLFZARjraRdrFtSD35MxoL828kYlGLFOsUynzqixrj48wKKCnjmgTptkYtxInIjwAVdYQ+lHtCOF7rJjl5cyioVi0x+BD9qbnJPOnigHsqUfzT/1WkXAbbl8Se80s=
+	t=1761009554; cv=none; b=fX3HFnNAfObhYCKg2jAxRe0Gj3Ju83XY34n/1yQNNgmvRq2e9xEs48tzV2KhlRDE+KHMfN8ksSELiAR3bRXaaOPqqr+q31UcUTQeaeYJRIJDvonXGR+lMgE0bjrFKHmS0Exb6jlVZhevudWiy3u/0CaYc4csP3lKjh9D1CoTHfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761009083; c=relaxed/simple;
-	bh=Ohb57XTT0PPeAsOfOfde1qhjR2LW4fbniN8oeiiygIk=;
+	s=arc-20240116; t=1761009554; c=relaxed/simple;
+	bh=HH+QSFxHcmSf+5O2/leY6ebiF54pYmXTXLkivh9Mtrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJmErvmTLCs7r7ZK5AdGFU/rSH6TrNmFtUj68DSSxim+q9fNxfWiNMCAfbFVQh+uBrtifVVJhMLX1Be21yUukWTu+gnvB9+AtX0OGXuHMqjRKw02Da00ft6uv2Hr3aLPIrfu7WcCwjeW4sw7OSWhe7unLGh1uRemHJsU3lFsbY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q2ACnNU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17871C4CEFB;
-	Tue, 21 Oct 2025 01:11:20 +0000 (UTC)
+	 MIME-Version; b=dRfZcT9KuahOkvpyv6bDJdYGReu5bpQyfOsU17yWSapmNQVROeUSH6xRCwV0qbwv4hvHoa99XyK2CYHhy+vf+9LKY9wvVVKy8dTsDp5KP+QLkSsGa2vweOTwKTv6Q+G43HngImJVdFdLrSoP/wHadOMwj3CNXPOWfC4m+yMDfnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nbQFSZBH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A706C4CEFB;
+	Tue, 21 Oct 2025 01:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761009081;
-	bh=Ohb57XTT0PPeAsOfOfde1qhjR2LW4fbniN8oeiiygIk=;
+	s=k20201202; t=1761009553;
+	bh=HH+QSFxHcmSf+5O2/leY6ebiF54pYmXTXLkivh9Mtrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q2ACnNU2Sm19jvod0iyTCECTsDb54x7NkI9TlBhtxLTFGAgQtpXFwAU7qhGJDF4Z7
-	 Po1boK/LagD+2uZLFL+YvPUAr3dCLNgLkHaPA8QJ8jWtPPRdK9yaqq7O8Myse3Yf19
-	 e0wlNjtGmCc/Os+GLv+7zFXLtGt56iMd4NahOkVONwPfZgxkrFuaDqCq0Iz71kNsrF
-	 Iop77mQkRV5DKcXoBuJz8An1fWVFWeACkd4kn7HGBRGD5buSsUgn7wQcDG2nXF5kko
-	 z5lmDRGPgN1sqZ7mNYXvh7RYMkEQaTnqZQG6M3zte30pLiQBtlWCpVBfVEATviwmhk
-	 Ic4bcBjFcagKw==
+	b=nbQFSZBH3pGgK63gs3cs05Dk2hMPx6R2JfcO12r1iCEfLiRUFQbsgnxXPuu07fXer
+	 EwLeeHLPlILfJunyS257BEaSoz7SbsMpHLzexPboCR26Fq4IW/92cJJI6juuLNVuqq
+	 Wqp2SNJMFXjV/45UxcOClqJJPPlbDhpsPybW5xqliszP47z6NR25M8FyOHL0X1TAfS
+	 JASYusnuij47YTgPqE+8beW6Pt9xUqZeyDkiDBURWGCIXTL5bFUy3vSBg2O9vIdN6A
+	 qqfGCPEk0WutvvHK6ldGm0j4eWDz2T7uL63cyRJzKx4Zs+MroH7gHznKNRUHB9Lcus
+	 Ws3iYdn/Hcz/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jan Kara <jack@suse.cz>,
 	syzbot+1d79ebe5383fc016cf07@syzkaller.appspotmail.com,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] vfs: Don't leak disconnected dentries on umount
-Date: Mon, 20 Oct 2025 21:11:19 -0400
-Message-ID: <20251021011119.1965137-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y] vfs: Don't leak disconnected dentries on umount
+Date: Mon, 20 Oct 2025 21:19:11 -0400
+Message-ID: <20251021011911.1967865-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025102041-bonus-amid-8eda@gregkh>
-References: <2025102041-bonus-amid-8eda@gregkh>
+In-Reply-To: <2025102042-tactical-subtract-5775@gregkh>
+References: <2025102042-tactical-subtract-5775@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,10 +100,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/fs/dcache.c b/fs/dcache.c
-index 5febd219fdebf..85fffa3d7ac53 100644
+index 78081bdc49311..1c905958c011a 100644
 --- a/fs/dcache.c
 +++ b/fs/dcache.c
-@@ -1801,6 +1801,8 @@ struct dentry *d_alloc(struct dentry * parent, const struct qstr *name)
+@@ -1782,6 +1782,8 @@ struct dentry *d_alloc(struct dentry * parent, const struct qstr *name)
  	__dget_dlock(parent);
  	dentry->d_parent = parent;
  	list_add(&dentry->d_child, &parent->d_subdirs);
