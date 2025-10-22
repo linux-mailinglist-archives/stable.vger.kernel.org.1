@@ -1,258 +1,166 @@
-Return-Path: <stable+bounces-188863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B80BF98FE
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 03:08:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4148BBF99A5
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 03:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D990D19A64B7
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 01:08:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F39143AF19E
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 01:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6701DC997;
-	Wed, 22 Oct 2025 01:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B491EB193;
+	Wed, 22 Oct 2025 01:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="MVjX+kcW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JS0q5mk0"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="w6L5g+CS"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B6B208AD;
-	Wed, 22 Oct 2025 01:08:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFF92A1AA;
+	Wed, 22 Oct 2025 01:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761095293; cv=none; b=os9PbAGZyYEKBuqN8cngPBgx/vYJZAo9GeNTxYrWzoKqCO6Ra5q3gyRFtQJ//WZL0NSvtEDcMDwdNez7eHKHNumJmDFLyfGYE2udO6T0sl6dpTiWsDM9KRYwjJEh3Rc4VMQR9aymJ8/bXIJx7S7Kh4ri8H7V8vzxlI5eaetZw3w=
+	t=1761096324; cv=none; b=BnAVRdQmPXVLPq3guAdXbmxs19CZ4yklzlTAF1rrv7F3vyuAUoamwyACfH5BFzpmyrKDYAQfjK5MA5b7omtk7sK49TvitCqwgwbqvXn0npodG5YDjNYh4RWGT1Vzwh4e65/WfWahWjpXF7i6BHYVQw2yN/pk7Plwy3jGqlH0+vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761095293; c=relaxed/simple;
-	bh=wf3eeZM7mj1ejiDynEQH/nZW39k5CL2pQdDuhNlkqUo=;
-	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
-	 Content-Type:Date:Message-ID; b=Zzb1zSoWFgW76us3OdroLHtB89OesWHWQJrPfKgruFUt2MSX0+WJBXMrlYW3UIcfwP+VWR2FNbJP9hy4yehLlEpPQXFpbUxinxiRhARTQtaH0i40a3UGYJmjVCE/t7gU1ht6ab4Ey5yvWvNbWQe+PrA+mNEghWD5SVSACp3VlWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=MVjX+kcW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JS0q5mk0; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 839401400186;
-	Tue, 21 Oct 2025 21:08:08 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Tue, 21 Oct 2025 21:08:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-id:content-transfer-encoding:content-type
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm1; t=1761095288; x=1761181688; bh=ZMxT5iUoaULJnUvpJx0j9
-	sC7E0gpCkSzQso8i0x1z30=; b=MVjX+kcWGI//T3AHipu+gj+coPGH0MMxsbzuh
-	9veygfwQynG4KlBnTzoE/YbJli5GUCYvOQRv3Npf8or0csSQg6h/GpW459uc32ex
-	zLYgxdibPpd+t8TTuukS/KzQtffDFCUFguQrrAstZFrBdPAYb05GSsFL2EHd6BTP
-	Oj4yurfYVZELfsYO2kbrOH3BtHvw4JMSzdBbyWeSJ19gSdhC2anL3BMXSuZKCe+C
-	fqOLIShC6WgtIbNDXBeCATUDYWRtDZ3W3fjRWl96EhMAtR85Nj0MJrVz6cmk9agt
-	nI40tpjJFby3LjNmOsjeviAL/tgd+HV+zx2F4RLBNS17doyPQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-id
-	:content-transfer-encoding:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1761095288; x=1761181688; bh=ZMxT5iUoaULJnUvpJx0j9sC7E0gpCkSzQso
-	8i0x1z30=; b=JS0q5mk0dbGJaIiw4wLK9AR3Ek1ffTf6cPI0USeDPGckUjLNzQy
-	a/+fjcZsG5di8EU1Lm04ZvpLzBEG+37846K9SwnQxvkjmlxFAr/Y3t7tnMsgkGFr
-	GehGgXQNG7MDr5K/8uF4AmGOYGcNoTlX1YoTeGeriuBzN6ffFhSUkQXDuiukMkcX
-	xJUJygyU8y0OE6p/gyPFpQbCgtIMrxLuMqyKHpoTymioM/d28iTyRZT5yQdHNFxc
-	4L9q4VF9otjmlgnabpqqetSPaInIKP7HQJFd3fB0o8Xg+5ntbFIA59vk2F428GNw
-	L1rgINmvce00bx4MZtsaY9yeZOEYQ3oPSxA==
-X-ME-Sender: <xms:di74aBSuLD_gV6kYoon0owjhQrdVfY7CoJQUE7zbGUM4r7p8PS55HA>
-    <xme:di74aN0XUQ3t7a-TpkbRMmYtSw0jYl8bdD-2pIKdJKR-2z1kGQuepSEcdetC5NjyG
-    ckITdB_jgNt9ztH9sHoiHKXV0h3ccfd6KMaYqtk5PM25KJ11C0fs7Q>
-X-ME-Received: <xmr:di74aBeP0YgivKkyPUFcHyB14D2gh_1tuh-W5_eesNx-7xIBcEImkyn7-Tsa1f8tc2mKxw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugedvvddvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefujghfofggtgfgfffksehtqhertdertddvnecuhfhrohhmpeflrgihucgg
-    ohhssghurhhghhcuoehjvhesjhhvohhssghurhhghhdrnhgvtheqnecuggftrfgrthhtvg
-    hrnhepieefvdelfeeljeevtefhfeeiudeuiedvfeeiveelffduvdevfedtheffffetfeff
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhvse
-    hjvhhoshgsuhhrghhhrdhnvghtpdhnsggprhgtphhtthhopedutddpmhhouggvpehsmhht
-    phhouhhtpdhrtghpthhtohepthhonhhghhgrohessggrmhgrihgtlhhouhgurdgtohhmpd
-    hrtghpthhtohepvhhinhgtvghnthessggvrhhnrghtrdgthhdprhgtphhtthhopehrrgii
-    ohhrsegslhgrtghkfigrlhhlrdhorhhgpdhrtghpthhtoheplhhiuhhhrghnghgsihhnse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtgho
-    mhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnug
-    hrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopehprggsvghnihesrhgv
-    ughhrghtrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrd
-    horhhg
-X-ME-Proxy: <xmx:dy74aFMO_zu46M1f02C9SiD3ziJaD6O4fXN7Wgar0iBWfsUM-V2wew>
-    <xmx:dy74aFUUvHTKEU_kEzR0NOQDqv9Y0M707abTaJcBPfPI5qVbo-GUIQ>
-    <xmx:dy74aNwWJ-WPZZ8LOmutxWvC_U48I8b4CTd3zCYyKcf1e337KdWV4A>
-    <xmx:dy74aM8leRTXFKVahjtWmgtnGtZz61xHxPIb5BBO0b5WdcIrraWTAQ>
-    <xmx:eC74aH8SDBmq2zymZkESYOnZ3o1zvqE4OLn9TTvNxUuUSoJyqJ3_0VaL>
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 21 Oct 2025 21:08:06 -0400 (EDT)
-Received: by famine.localdomain (Postfix, from userid 1000)
-	id B240D9FD51; Tue, 21 Oct 2025 18:08:05 -0700 (PDT)
-Received: from famine (localhost [127.0.0.1])
-	by famine.localdomain (Postfix) with ESMTP id B157F9FD50;
-	Tue, 21 Oct 2025 18:08:05 -0700 (PDT)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: Tonghao Zhang <tonghao@bamaicloud.com>
-cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-    Paolo Abeni <pabeni@redhat.com>, Hangbin Liu <liuhangbin@gmail.com>,
-    Nikolay Aleksandrov <razor@blackwall.org>,
-    Vincent Bernat <vincent@bernat.ch>, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: bonding: fix possible peer notify event loss or
- dup issue
-In-reply-to: <20251021050933.46412-1-tonghao@bamaicloud.com>
-References: <20251021050933.46412-1-tonghao@bamaicloud.com>
-Comments: In-reply-to Tonghao Zhang <tonghao@bamaicloud.com>
-   message dated "Tue, 21 Oct 2025 13:09:33 +0800."
-X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
+	s=arc-20240116; t=1761096324; c=relaxed/simple;
+	bh=mUjnV054ob0edU5HqryO2gPg+ZqCRgPXhtkdvjywWzo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=toBfSZOS+iQ19zgWrVNlPCCf9TrJikDcMJv+NCj/OgCt5kIjuL0TXbjO9MTOHrqA8mJhPOxcPWGpKtR34VWyihsvSXyD/SEfEaWNtngR0FJ+fWlqt5qdd2fFf/1lehE+OjZ7lvj0rXSwaRbcjA6bVtIq9qN5VNI3M9RkOEuqJ+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=w6L5g+CS; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761096312; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=mMBGLFybuvXPMK2gINIMRD6FATE14CDq9nXmqTlEp6I=;
+	b=w6L5g+CSpDmTK0lGQZ8vQhX9tSx4IrSWgy/kHQT0Ps0qtuwwu9xjodx7533htnW0Kicq8G3d9vtvU4ZlanxrVS/SaRXUQEJn4/8peBzsqr8WQzLKKYQkkqlTCA1qn1jZmVXuvM8f7LBOQlHxy3IiHE2L2Et03Z6X3E7jhWsxWas=
+Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WqkgTKQ_1761096310 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 22 Oct 2025 09:25:10 +0800
+Message-ID: <65f4dd0b-2bc2-4345-86c2-630a91fcfa39@linux.alibaba.com>
+Date: Wed, 22 Oct 2025 09:25:09 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <953399.1761095285.1@famine>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 21 Oct 2025 18:08:05 -0700
-Message-ID: <953400.1761095285@famine>
-
-Tonghao Zhang <tonghao@bamaicloud.com> wrote:
-
->If the send_peer_notif counter and the peer event notify are not synchron=
-ized.
->It may cause problems such as the loss or dup of peer notify event.
->
->Before this patch:
->- If should_notify_peers is true and the lock for send_peer_notif-- fails=
-, peer
->  event may be sent again in next mii_monitor loop, because should_notify=
-_peers
->  is still true.
->- If should_notify_peers is true and the lock for send_peer_notif-- succe=
-eded,
->  but the lock for peer event fails, the peer event will be lost.
->
->This patch locks the RTNL for send_peer_notif, events, and commit simulta=
-neously.
->
->Fixes: 07a4ddec3ce9 ("bonding: add an option to specify a delay between p=
-eer notifications")
->Cc: Jay Vosburgh <jv@jvosburgh.net>
->Cc: Andrew Lunn <andrew+netdev@lunn.ch>
->Cc: Eric Dumazet <edumazet@google.com>
->Cc: Jakub Kicinski <kuba@kernel.org>
->Cc: Paolo Abeni <pabeni@redhat.com>
->Cc: Hangbin Liu <liuhangbin@gmail.com>
->Cc: Nikolay Aleksandrov <razor@blackwall.org>
->Cc: Vincent Bernat <vincent@bernat.ch>
->Cc: <stable@vger.kernel.org>
->Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
-
-	I'll note that this appears to preserve the ordering of the
-various events (commit, link state, notify peers).
-
-	-J
-
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/shmem: fix THP allocation size check and fallback
+To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins
+ <hughd@google.com>, Dev Jain <dev.jain@arm.com>,
+ David Hildenbrand <david@redhat.com>, Barry Song <baohua@kernel.org>,
+ Liam Howlett <liam.howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Mariano Pache <npache@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
+ stable@vger.kernel.org
+References: <20251021190436.81682-1-ryncsn@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20251021190436.81682-1-ryncsn@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
->---
-> drivers/net/bonding/bond_main.c | 40 +++++++++++++++------------------
-> 1 file changed, 18 insertions(+), 22 deletions(-)
->
->diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_m=
-ain.c
->index 5791c3e39baa..52b7ac8ddfbc 100644
->--- a/drivers/net/bonding/bond_main.c
->+++ b/drivers/net/bonding/bond_main.c
->@@ -2971,7 +2971,7 @@ static void bond_mii_monitor(struct work_struct *wo=
-rk)
-> {
-> 	struct bonding *bond =3D container_of(work, struct bonding,
-> 					    mii_work.work);
->-	bool should_notify_peers =3D false;
->+	bool should_notify_peers;
-> 	bool commit;
-> 	unsigned long delay;
-> 	struct slave *slave;
->@@ -2983,30 +2983,33 @@ static void bond_mii_monitor(struct work_struct *=
-work)
-> 		goto re_arm;
-> =
 
-> 	rcu_read_lock();
->+
-> 	should_notify_peers =3D bond_should_notify_peers(bond);
-> 	commit =3D !!bond_miimon_inspect(bond);
->-	if (bond->send_peer_notif) {
->-		rcu_read_unlock();
->-		if (rtnl_trylock()) {
->-			bond->send_peer_notif--;
->-			rtnl_unlock();
->-		}
->-	} else {
->-		rcu_read_unlock();
->-	}
-> =
+On 2025/10/22 03:04, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> There are some problems with the code implementations of THP fallback.
+> suitable_orders could be zero, and calling highest_order on a zero value
+> returns an overflowed size. And the order check loop is updating the
+> index value on every loop which may cause the index to be aligned by a
+> larger value while the loop shrinks the order. 
 
->-	if (commit) {
->+	rcu_read_unlock();
->+
->+	if (commit || bond->send_peer_notif) {
-> 		/* Race avoidance with bond_close cancel of workqueue */
-> 		if (!rtnl_trylock()) {
-> 			delay =3D 1;
->-			should_notify_peers =3D false;
-> 			goto re_arm;
-> 		}
-> =
+No, this is not true. Although ‘suitable_orders’ might be 0, it will not 
+enter the ‘while (suitable_orders)’ loop, and ‘order’ will not be used 
+(this is also how the highest_order() function is used in other places).
 
->-		bond_for_each_slave(bond, slave, iter) {
->-			bond_commit_link_state(slave, BOND_SLAVE_NOTIFY_LATER);
->+		if (commit) {
->+			bond_for_each_slave(bond, slave, iter) {
->+				bond_commit_link_state(slave,
->+						       BOND_SLAVE_NOTIFY_LATER);
->+			}
->+			bond_miimon_commit(bond);
->+		}
->+
->+		if (bond->send_peer_notif) {
->+			bond->send_peer_notif--;
->+			if (should_notify_peers)
->+				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
->+							 bond->dev);
-> 		}
->-		bond_miimon_commit(bond);
-> =
+> And it forgot to try order
+> 0 after the final loop.
 
-> 		rtnl_unlock();	/* might sleep, hold no other locks */
-> 	}
->@@ -3014,13 +3017,6 @@ static void bond_mii_monitor(struct work_struct *w=
-ork)
-> re_arm:
-> 	if (bond->params.miimon)
-> 		queue_delayed_work(bond->wq, &bond->mii_work, delay);
->-
->-	if (should_notify_peers) {
->-		if (!rtnl_trylock())
->-			return;
->-		call_netdevice_notifiers(NETDEV_NOTIFY_PEERS, bond->dev);
->-		rtnl_unlock();
->-	}
-> }
-> =
+This is also not true. We will fallback to order 0 allocation in 
+shmem_get_folio_gfp() if large order allocation fails.
 
-> static int bond_upper_dev_walk(struct net_device *upper,
->-- =
+> This is usually fine because shmem_add_to_page_cache ensures the shmem
+> mapping is still sane, but it might cause many potential issues like
+> allocating random folios into the random position in the map or return
+> -ENOMEM by accident. This triggered some strange userspace errors [1],
+> and shouldn't have happened in the first place.
 
->2.34.1
->
+I tested tmpfs with swap on ZRAM in the mm-new branch, and no issues 
+were encountered. However, it is worth mentioning that, after the commit 
+69e0a3b49003 ("mm: shmem: fix the strategy for the tmpfs 'huge=' 
+options"), tmpfs may consume more memory (because we no longer allocate 
+large folios based on the write size), which might cause your test case 
+to run out of memory (OOM) and trigger some errors. You may need to 
+adjust your swap size or memcg limit.
 
----
-	-Jay Vosburgh, jv@jvosburgh.net
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
+> Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>   mm/shmem.c | 26 +++++++++++++++-----------
+>   1 file changed, 15 insertions(+), 11 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index b50ce7dbc84a..25303711f123 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1824,6 +1824,9 @@ static unsigned long shmem_suitable_orders(struct inode *inode, struct vm_fault
+>   	unsigned long pages;
+>   	int order;
+>   
+> +	if (!orders)
+> +		return 0;
+> +
+>   	if (vma) {
+>   		orders = thp_vma_suitable_orders(vma, vmf->address, orders);
+>   		if (!orders)
+> @@ -1888,27 +1891,28 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
+>   	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+>   		orders = 0;
+>   
+> -	if (orders > 0) {
+> -		suitable_orders = shmem_suitable_orders(inode, vmf,
+> -							mapping, index, orders);
+> +	suitable_orders = shmem_suitable_orders(inode, vmf,
+> +						mapping, index, orders);
+>   
+> +	if (suitable_orders) {
+>   		order = highest_order(suitable_orders);
+> -		while (suitable_orders) {
+> +		do {
+>   			pages = 1UL << order;
+> -			index = round_down(index, pages);
+> -			folio = shmem_alloc_folio(gfp, order, info, index);
+> -			if (folio)
+> +			folio = shmem_alloc_folio(gfp, order, info, round_down(index, pages));
+> +			if (folio) {
+> +				index = round_down(index, pages);
+>   				goto allocated;
+> +			}
+>   
+>   			if (pages == HPAGE_PMD_NR)
+>   				count_vm_event(THP_FILE_FALLBACK);
+>   			count_mthp_stat(order, MTHP_STAT_SHMEM_FALLBACK);
+>   			order = next_order(&suitable_orders, order);
+> -		}
+> -	} else {
+> -		pages = 1;
+> -		folio = shmem_alloc_folio(gfp, 0, info, index);
+> +		} while (suitable_orders);
+>   	}
+> +
+> +	pages = 1;
+> +	folio = shmem_alloc_folio(gfp, 0, info, index);
+>   	if (!folio)
+>   		return ERR_PTR(-ENOMEM);
+>   
+
 
