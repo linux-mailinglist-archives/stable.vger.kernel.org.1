@@ -1,194 +1,164 @@
-Return-Path: <stable+bounces-188931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66426BFADCD
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 10:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E952BFAE44
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 10:29:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A5E53B73EF
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:21:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E04B842009C
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5908D307ACE;
-	Wed, 22 Oct 2025 08:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFC3309EF1;
+	Wed, 22 Oct 2025 08:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="PvJ7asxK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HO48mn1E"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7E0305070
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 08:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CE130AAA9;
+	Wed, 22 Oct 2025 08:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761121307; cv=none; b=oFexRGICTclLLG2+4xGXQNMHp45+kBIRZscCDQMRoF5789mCol5Rtv7JUUUArCPoRPbJSGYiOk58ABRH9BgTRcm22EMxFa1PYIBBUJDqFR8FkQvpeTDgjwHlOPev5vCLi5/dv+Lr9CEQEickSF0lOroTpeAys9N5vJCMSr9LI6w=
+	t=1761121760; cv=none; b=WNU5AG+BAUydlRqjLssNj6/GAZRr1Po1jOAtOnjfAvrq3pKsxCaahNFNPeknfv0KL+c1t23lKrDQP3EdrGkNBvaLuNF/r6/cCil7B3l3E84VvtkT55ckKxO1DmSjEhf1qak0RGXubn6nggN9Y2fnW5wYfUfYNn6I2uVxutrmCf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761121307; c=relaxed/simple;
-	bh=ZkLVJ4CPf+Od02T5p4UpDr1VbFhpdPQXCD2ro3NnE+Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GhaeO2a1viJcDe9hw9sMOC0eAS2nilZDS6H5V2uUc73VUs6ppYP7E3vFNOWk58p5T4Cv1nPsVmv/ajg3rH3cGI8C66pRtfYWVDL3+4D3U3+BaUWNj/lRAaev64tArg2KjAD1cpMSi3Vn7dsfpuVL5yUATyhFt17f9k+Sg46UZLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=PvJ7asxK; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from canpmsgout05.his.huawei.com (unknown [172.19.92.145])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cs2DQ2yrCzVmdk
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 16:20:54 +0800 (CST)
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=27ELNbxEYhJODT7dorjM6ja6xnMNYxTKfYD+DwnBsm4=;
-	b=PvJ7asxKUk9LiYCYVeCbhan0UIpdlA3kLQTgqcndPvDrIvp6v2L3UzxV66GcZcMrzj7mhRr6S
-	DnyQuF1hAeGKzGEA3i+Pb2GqaQVx2SX0UvqYfuZspybbQrnjpyOWIsK5cd6q1m2coFyvCe3fs26
-	lvq3cQ3cxp+Lppw9X01p6/Y=
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4cs2DP6YHyz12Ldj;
-	Wed, 22 Oct 2025 16:20:53 +0800 (CST)
-Received: from kwepemj200013.china.huawei.com (unknown [7.202.194.25])
-	by mail.maildlp.com (Postfix) with ESMTPS id 20C2814010D;
-	Wed, 22 Oct 2025 16:21:35 +0800 (CST)
-Received: from [10.174.179.155] (10.174.179.155) by
- kwepemj200013.china.huawei.com (7.202.194.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 22 Oct 2025 16:21:34 +0800
-Message-ID: <1767bec2-b660-42b2-b828-b221e0896eba@huawei.com>
-Date: Wed, 22 Oct 2025 16:21:33 +0800
+	s=arc-20240116; t=1761121760; c=relaxed/simple;
+	bh=X8hpluMqUjHyF3NnFKeki1ZNOZ9A7wW3hfxRIst9gNk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kJqWRNUW2hXuzx9sihvEzkI7nkSJAd8LGKxme736+6hiw831f+UuAyXthfzuT/JF9AyZDic9lc9I6IyA7vKHHOcyBM9Y2Rd0erhadfeDU26mTfohY4Z0t0mkQ/AaFq8oB4pyeqOzjMBjZBI73wa0UTrvBI6vS9TiThvbZR3riL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HO48mn1E; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761121758; x=1792657758;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=X8hpluMqUjHyF3NnFKeki1ZNOZ9A7wW3hfxRIst9gNk=;
+  b=HO48mn1EaWM6bikVLYXswOm+wWf7J103gcxVuf89BePxwmBPzfryGGhY
+   2rbWBd4ETjBOHyBQyJfUu+INYn8s4yuIn5EHnrdIPcooZQDmLm9SyjLge
+   HdRc1l/jDECz46SOKUkKLNokuBcyZ4r6QKYkd75jOUiYAgnTOs6QAH80z
+   cZww6i/czqqYexvB4gBBWukEsw8KQ54YgA7yJZZYfXWHpQp8VkurB2966
+   XXr7LF27vBNOQMdC8sylTIdnTkHnUgtA/VxA6SB5aPR3xKN+An0GDR0Xs
+   GeSdnv/EbyFYgR8ZZuojsjPoIy4R5U+LJ0JfStu/3yCX+90Hz+RqpUjis
+   g==;
+X-CSE-ConnectionGUID: Sa3ljfcdTBaBkvNaOgXIxw==
+X-CSE-MsgGUID: eJKOQM1BRzGD8RkWXZTqmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74382487"
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="74382487"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 01:29:17 -0700
+X-CSE-ConnectionGUID: V+b1HRBlR6SJ4CzEl3BbxA==
+X-CSE-MsgGUID: akeshMYnSd64ObPki9LPvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="183516218"
+Received: from allen-box.sh.intel.com ([10.239.159.52])
+  by fmviesa007.fm.intel.com with ESMTP; 22 Oct 2025 01:29:11 -0700
+From: Lu Baolu <baolu.lu@linux.intel.com>
+To: Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jann Horn <jannh@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Yi Lai <yi1.lai@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: iommu@lists.linux.dev,
+	security@kernel.org,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v7 1/8] iommu: Disable SVA when CONFIG_X86 is set
+Date: Wed, 22 Oct 2025 16:26:27 +0800
+Message-ID: <20251022082635.2462433-2-baolu.lu@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251022082635.2462433-1-baolu.lu@linux.intel.com>
+References: <20251022082635.2462433-1-baolu.lu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: =?UTF-8?B?TW96aWxsYSBUaHVuZGVyYmlyZCDmtYvor5XniYg=?=
-Subject: Re: [PATCH 5.10.y] dm: fix NULL pointer dereference in __dm_suspend()
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: Sasha Levin <sashal@kernel.org>, <stable@vger.kernel.org>, Zheng Qixing
-	<zhengqixing@huawei.com>, Mikulas Patocka <mpatocka@redhat.com>,
-	<dm-devel@lists.linux.dev>, yangerkun <yangerkun@huawei.com>, "zhangyi (F)"
-	<yi.zhang@huawei.com>, Hou Tao <houtao1@huawei.com>
-References: <2025101316-favored-pulsate-a811@gregkh>
- <20251014030334.3868139-1-sashal@kernel.org>
- <cdadc001-3c0e-4152-8b05-08eb79fb528b@huawei.com>
- <2025102252-abrasive-glamorous-465b@gregkh>
-From: Li Lingfeng <lilingfeng3@huawei.com>
-In-Reply-To: <2025102252-abrasive-glamorous-465b@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemj200013.china.huawei.com (7.202.194.25)
 
-Hi,
+In the IOMMU Shared Virtual Addressing (SVA) context, the IOMMU hardware
+shares and walks the CPU's page tables. The x86 architecture maps the
+kernel's virtual address space into the upper portion of every process's
+page table. Consequently, in an SVA context, the IOMMU hardware can walk
+and cache kernel page table entries.
 
-在 2025/10/22 16:10, Greg KH 写道:
-> On Wed, Oct 22, 2025 at 04:01:04PM +0800, Li Lingfeng wrote:
->> Hi,
->>
->> 在 2025/10/14 11:03, Sasha Levin 写道:
->>> From: Zheng Qixing <zhengqixing@huawei.com>
->>>
->>> [ Upstream commit 8d33a030c566e1f105cd5bf27f37940b6367f3be ]
->>>
->>> There is a race condition between dm device suspend and table load that
->>> can lead to null pointer dereference. The issue occurs when suspend is
->>> invoked before table load completes:
->>>
->>> BUG: kernel NULL pointer dereference, address: 0000000000000054
->>> Oops: 0000 [#1] PREEMPT SMP PTI
->>> CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
->>> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
->>> RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
->>> Call Trace:
->>>     <TASK>
->>>     blk_mq_quiesce_queue+0x2c/0x50
->>>     dm_stop_queue+0xd/0x20
->>>     __dm_suspend+0x130/0x330
->>>     dm_suspend+0x11a/0x180
->>>     dev_suspend+0x27e/0x560
->>>     ctl_ioctl+0x4cf/0x850
->>>     dm_ctl_ioctl+0xd/0x20
->>>     vfs_ioctl+0x1d/0x50
->>>     __se_sys_ioctl+0x9b/0xc0
->>>     __x64_sys_ioctl+0x19/0x30
->>>     x64_sys_call+0x2c4a/0x4620
->>>     do_syscall_64+0x9e/0x1b0
->>>
->>> The issue can be triggered as below:
->>>
->>> T1 						T2
->>> dm_suspend					table_load
->>> __dm_suspend					dm_setup_md_queue
->>> 						dm_mq_init_request_queue
->>> 						blk_mq_init_allocated_queue
->>> 						=> q->mq_ops = set->ops; (1)
->>> dm_stop_queue / dm_wait_for_completion
->>> => q->tag_set NULL pointer!	(2)
->>> 						=> q->tag_set = set; (3)
->>>
->>> Fix this by checking if a valid table (map) exists before performing
->>> request-based suspend and waiting for target I/O. When map is NULL,
->>> skip these table-dependent suspend steps.
->>>
->>> Even when map is NULL, no I/O can reach any target because there is
->>> no table loaded; I/O submitted in this state will fail early in the
->>> DM layer. Skipping the table-dependent suspend logic in this case
->>> is safe and avoids NULL pointer dereferences.
->>>
->>> Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
->>> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
->>> [ omitted DMF_QUEUE_STOPPED flag setting and braces absent in 5.15 ]
->>> Signed-off-by: Sasha Levin <sashal@kernel.org>
->>> ---
->>>    drivers/md/dm.c | 7 ++++---
->>>    1 file changed, 4 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/md/dm.c b/drivers/md/dm.c
->>> index 0868358a7a8d2..b51281ce15d4c 100644
->>> --- a/drivers/md/dm.c
->>> +++ b/drivers/md/dm.c
->>> @@ -2457,7 +2457,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
->>>    {
->>>    	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
->>>    	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
->>> -	int r;
->>> +	int r = 0;
->>>    	lockdep_assert_held(&md->suspend_lock);
->>> @@ -2509,7 +2509,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
->>>    	 * Stop md->queue before flushing md->wq in case request-based
->>>    	 * dm defers requests to md->wq from md->queue.
->>>    	 */
->>> -	if (dm_request_based(md))
->>> +	if (map && dm_request_based(md))
->>>    		dm_stop_queue(md->queue);
->> It seems that before commit 80bd4a7aab4c ("blk-mq: move the srcu_struct
->> used for quiescing to the tagset") was merged, blk_mq_wait_quiesce_done()
->> would not attempt to access q->tag_set, so in dm_stop_queue() this kind
->> of race condition would not cause a null pointer dereference. The change
->> may not be necessary for 5.10, but adding it doesn’t appear to cause any
->> issues either.
->>>    	flush_workqueue(md->wq);
->>> @@ -2519,7 +2519,8 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
->>>    	 * We call dm_wait_for_completion to wait for all existing requests
->>>    	 * to finish.
->>>    	 */
->>> -	r = dm_wait_for_completion(md, task_state);
->>> +	if (map)
->>> +		r = dm_wait_for_completion(md, task_state);
->> The fix tag c4576aed8d85 ("dm: fix request-based dm's use of
->> dm_wait_for_completion") seems to correspond to the modification of
->> dm_wait_for_completion().
->>>    	if (!r)
->>>    		set_bit(dmf_suspended_flag, &md->flags);
->> Perhaps adding another fix tag would be more appropriate?
-> Those tags come directly from the original commit.
-Thanks for the clarification. Since the patch has already been merged into
-the mainline tree, we can't update the commit there. I was just wondering
-if it would be acceptable to add an additional “Fixes” tag when applying
-it to the stable branch, before merging.
+The Linux kernel currently lacks a notification mechanism for kernel page
+table changes, specifically when page table pages are freed and reused.
+The IOMMU driver is only notified of changes to user virtual address
+mappings. This can cause the IOMMU's internal caches to retain stale
+entries for kernel VA.
 
-Thanks,
-Lingfeng.
+Use-After-Free (UAF) and Write-After-Free (WAF) conditions arise when
+kernel page table pages are freed and later reallocated. The IOMMU could
+misinterpret the new data as valid page table entries. The IOMMU might
+then walk into attacker-controlled memory, leading to arbitrary physical
+memory DMA access or privilege escalation. This is also a Write-After-Free
+issue, as the IOMMU will potentially continue to write Accessed and Dirty
+bits to the freed memory while attempting to walk the stale page tables.
 
->
+Currently, SVA contexts are unprivileged and cannot access kernel
+mappings. However, the IOMMU will still walk kernel-only page tables
+all the way down to the leaf entries, where it realizes the mapping
+is for the kernel and errors out. This means the IOMMU still caches
+these intermediate page table entries, making the described vulnerability
+a real concern.
+
+Disable SVA on x86 architecture until the IOMMU can receive notification
+to flush the paging cache before freeing the CPU kernel page table pages.
+
+Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
+Cc: stable@vger.kernel.org
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+---
+ drivers/iommu/iommu-sva.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/iommu/iommu-sva.c b/drivers/iommu/iommu-sva.c
+index 1a51cfd82808..a0442faad952 100644
+--- a/drivers/iommu/iommu-sva.c
++++ b/drivers/iommu/iommu-sva.c
+@@ -77,6 +77,9 @@ struct iommu_sva *iommu_sva_bind_device(struct device *dev, struct mm_struct *mm
+ 	if (!group)
+ 		return ERR_PTR(-ENODEV);
+ 
++	if (IS_ENABLED(CONFIG_X86))
++		return ERR_PTR(-EOPNOTSUPP);
++
+ 	mutex_lock(&iommu_sva_lock);
+ 
+ 	/* Allocate mm->pasid if necessary. */
+-- 
+2.43.0
+
 
