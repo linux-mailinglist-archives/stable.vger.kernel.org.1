@@ -1,108 +1,131 @@
-Return-Path: <stable+bounces-188954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1A3BFB3E6
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:56:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BBD5BFB416
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 184393BB569
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:56:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4AE29504C8A
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A72A314D0A;
-	Wed, 22 Oct 2025 09:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D809431B11F;
+	Wed, 22 Oct 2025 09:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="JGO3i+I+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNqJ5pC8"
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D750C296BC3
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 09:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CDA315D42;
+	Wed, 22 Oct 2025 09:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761127003; cv=none; b=S5melq5agVw4pZnkbtgb+0SXMqG2039aqLBxnrliDBJ6tqggJrVJTHmF4Dnc3G9MS/EmeJi7npEL1nKHxN+4VYt2HyNA8o5rYpu/PlGuBnsu8M6MvwfZ+Qmgd8rfJdWxIj2RPXMoSeunBuuxeUIpG0R9ZlZlpA8cVUucyK1/jv0=
+	t=1761127067; cv=none; b=BYwi8iK4LqoeUgWcmxwwcSEdXmclcuAj0+YHd2LY5srezEq73pxm8YfO5QthaBMxDlUuLU9tHQ0BUb9AOm3VmtZTvzUcRIp2Dj7qVL4kiDDfpzfnME4lSwpdRLvfUyEyW62benlbW7xFaaRBU38IT8S08ALFHq8kdGTQup+pyJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761127003; c=relaxed/simple;
-	bh=M92oZjJRV29zncBnFJrQxQTJHBtsqpM7ptA2wW3uN+4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SeKjgqMAeQ1k7EtKPW9pYVLPF3nJWmddFPzbgcyUb14U8O8Ldrx6eVqIGY5YrZUxuiRMZ8Y4QiwHqdD/6CQdZiDqISnDn1iY+6zRG4l0uN5gfB+dVVlg8Xc66tQws9m+oo1XKnmmD/32b6mo24xL2adNEBy9BUNy5MXltNqIQPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=JGO3i+I+; arc=none smtp.client-ip=113.46.200.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=xli/qbpvNWvvC2EqcDhSBwe7VGcn6AodXA6fZIGnxsU=;
-	b=JGO3i+I+57r8U3YWOgPLeZx/BUHaU7rxnG+olIQ2ARxUIzGm25wZ4RHygoKLP5Ao+rVoWGhEK
-	u6d1rVpUZhILYNA7vNpNARGjBQOqdOr1Yxy6zv4oRldvs46jlsBW23s5LPmQz6dBqxeNL4WX4hZ
-	5s/yxw9LJRBwtlZ2yrGZFhU=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4cs4LJ1btmz1cyVL;
-	Wed, 22 Oct 2025 17:56:08 +0800 (CST)
-Received: from kwepemj200003.china.huawei.com (unknown [7.202.194.15])
-	by mail.maildlp.com (Postfix) with ESMTPS id C16CD140259;
-	Wed, 22 Oct 2025 17:56:32 +0800 (CST)
-Received: from [10.67.120.170] (10.67.120.170) by
- kwepemj200003.china.huawei.com (7.202.194.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 22 Oct 2025 17:56:32 +0800
-Message-ID: <ebcee1f6-1a10-464d-8f79-233d7e312938@huawei.com>
-Date: Wed, 22 Oct 2025 17:56:32 +0800
+	s=arc-20240116; t=1761127067; c=relaxed/simple;
+	bh=7A1KpfR0RlRnCRdnu9t09fhdInNhsVZdUl5tQbeore4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DURIyVocZ0kOhPAgIDqGUNXuh3jpGR3PMSQk0AYZr+BAONpyUUt3ttoMiFPNbfnhCnKcCMr5MoCRGDLMy+zjlI+40wBhffLdm6zed7q2CAVdCK29P6uUM3Elymm0WkQStx57fy3YcdKtOUaNIXJhiL4t34vXi79EASX2/W5M5l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNqJ5pC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A439CC4CEE7;
+	Wed, 22 Oct 2025 09:57:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1761127067;
+	bh=7A1KpfR0RlRnCRdnu9t09fhdInNhsVZdUl5tQbeore4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pNqJ5pC8uPR3bKmyL5D+Cnsj3weyAt9W5wzH2U2cZSVdz4LX6KZlTeTGZy6+D8gnI
+	 J4+ebKDXyoNd/ohCcjVlTldhy4ZKSCGFZ1+GjZOLM1H7yXCOva1HGOrgRvBdcAKyiJ
+	 2uT9CRW8lCLJON92XOhx84HYrhbio+SqouzQB5aw=
+Date: Wed, 22 Oct 2025 11:57:44 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Peng Zhang <zhangpeng.00@bytedance.com>
+Cc: jirislaby@kernel.org, ilpo.jarvinen@linux.intel.com,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	songmuchun@bytedance.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] serial: 8250: always disable IRQ during THRE test
+Message-ID: <2025102231-fender-bovine-ecd9@gregkh>
+References: <20251016070516.37549-1-zhangpeng.00@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH] dma-mapping: benchmark: Add padding to ensure uABI
- remained consistent
-To: <wangzhou1@hisilicon.com>
-CC: <stable@vger.kernel.org>, Barry Song <baohua@kernel.org>
-References: <20251022095208.2301302-1-xiaqinxin@huawei.com>
-From: Qinxin Xia <xiaqinxin@huawei.com>
-In-Reply-To: <20251022095208.2301302-1-xiaqinxin@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemj200003.china.huawei.com (7.202.194.15)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251016070516.37549-1-zhangpeng.00@bytedance.com>
 
-
-
-On 2025/10/22 17:52:08, Qinxin Xia <xiaqinxin@huawei.com> wrote:
-> The padding field in the structure was previously reserved to
-> maintain a stable interface for potential new fields, ensuring
-> compatibility with user-space shared data structures.
-> However,it was accidentally removed by tiantao in a prior commit,
-> which may lead to incompatibility between user space and the kernel.
+On Thu, Oct 16, 2025 at 03:05:16PM +0800, Peng Zhang wrote:
+> commit 039d4926379b ("serial: 8250: Toggle IER bits on only after irq
+> has been set up") moved IRQ setup before the THRE test, so the interrupt
+> handler can run during the test and race with its IIR reads. This can
+> produce wrong THRE test results and cause spurious registration of the
+> serial8250_backup_timeout timer. Unconditionally disable the IRQ for the
+> short duration of the test and re-enable it afterwards to avoid the race.
 > 
-> This patch reinstates the padding to restore the original structure
-> layout and preserve compatibility.
-> 
-> Fixes: 8ddde07a3d28 ("dma-mapping: benchmark: extract a common header file for map_benchmark definition")
 > Cc: stable@vger.kernel.org
-> Acked-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
+> Fixes: 039d4926379b ("serial: 8250: Toggle IER bits on only after irq has been set up")
+> Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
 > ---
->   include/linux/map_benchmark.h | 1 +
->   1 file changed, 1 insertion(+)
+>  drivers/tty/serial/8250/8250_port.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 > 
-> diff --git a/include/linux/map_benchmark.h b/include/linux/map_benchmark.h
-> index 62674c83bde4..2ac2fe52f248 100644
-> --- a/include/linux/map_benchmark.h
-> +++ b/include/linux/map_benchmark.h
-> @@ -27,5 +27,6 @@ struct map_benchmark {
->   	__u32 dma_dir; /* DMA data direction */
->   	__u32 dma_trans_ns; /* time for DMA transmission in ns */
->   	__u32 granule;  /* how many PAGE_SIZE will do map/unmap once a time */
-> +	__u8 expansion[76];     /* For future use */
->   };
->   #endif /* _KERNEL_DMA_BENCHMARK_H */
-Dear All,
+> diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+> index 719faf92aa8a..f1740cc91143 100644
+> --- a/drivers/tty/serial/8250/8250_port.c
+> +++ b/drivers/tty/serial/8250/8250_port.c
+> @@ -2147,8 +2147,7 @@ static void serial8250_THRE_test(struct uart_port *port)
+>  	if (up->port.flags & UPF_NO_THRE_TEST)
+>  		return;
+>  
+> -	if (port->irqflags & IRQF_SHARED)
+> -		disable_irq_nosync(port->irq);
+> +	disable_irq(port->irq);
+>  
+>  	/*
+>  	 * Test for UARTs that do not reassert THRE when the transmitter is idle and the interrupt
+> @@ -2170,8 +2169,7 @@ static void serial8250_THRE_test(struct uart_port *port)
+>  		serial_port_out(port, UART_IER, 0);
+>  	}
+>  
+> -	if (port->irqflags & IRQF_SHARED)
+> -		enable_irq(port->irq);
+> +	enable_irq(port->irq);
+>  
+>  	/*
+>  	 * If the interrupt is not reasserted, or we otherwise don't trust the iir, setup a timer to
+> -- 
+> 2.20.1
+> 
+> 
 
-Please ignore this email, I have resent.
+Hi,
 
-Thanks.
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
+
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
 
