@@ -1,130 +1,147 @@
-Return-Path: <stable+bounces-189016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7389CBFD2B5
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 18:26:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C375BFD401
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 18:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3B3D2357CAC
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 16:26:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D79E18876BD
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 16:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3AA38086F;
-	Wed, 22 Oct 2025 16:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A14B35B12F;
+	Wed, 22 Oct 2025 16:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="en0+pvYN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvVF5irx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20E3380860
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 16:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1406835B121;
+	Wed, 22 Oct 2025 16:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761149432; cv=none; b=sxWumqMloA3hvdZ4UgNMxjKD1Xfe44FXXk73+csvKc7k6NaUhGq7dhOcDCpgpbpAa1oMIkP0mpYOcH06QfZYTu3Z1BzjIgv3tpPQSBMaD6JBvNyvL+I+W+F7EmtuJAbmgLcWD8y8qrnoeqzkWzudteHdTIdCqe6fHUARuoTTE+8=
+	t=1761149523; cv=none; b=LjPkx/sMduy2wk42uS2teM826FP2f89M2M/QFKosEtdpEVc27r2QyC0TSG+7UEgF/SoiKwexzObVbFQAorVZ0DIHlQ9nchRbfRYfI3KJ1A11DxzJx6QbcU7O8eZH/USAwUsZ6QRkhCKVaIybVkB/ZMwb5JsNdwEPRyxfdkNQ1kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761149432; c=relaxed/simple;
-	bh=KKrkK8RpkI2SMuDE/cHHahMB360eSTnAZDbrSoI4o58=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n3hbeCvtwQYXJvzh2LQGeRUC9uWHs2wLM/1NnvDPThoXOlQaZafZkM/DFVqVug6cqH5BvZkBd4q4vVe87MDtjONpovuG5U58cGnSYAKY6BJFcWZ0N4gAzUMbTD0BE6ll0m3cgJQHAO+9+N/9l3hacHK19T6+ZrqP8+qroL4FIG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=en0+pvYN; arc=none smtp.client-ip=209.85.166.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-93e89a59d68so189150139f.0
-        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 09:10:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1761149430; x=1761754230; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/fJk0vLG7thkf+LY+zE0uqEbWMzbuwo6FawmPYnjzlk=;
-        b=en0+pvYNEUmF7YkAtcnmGw5nKtnIbmWpVRua3IVrSwE0/X0airnn6m3JujwyGAKowV
-         UAXFZ1+EXhpA1eGzzDXEHruFNy5fM/U1wBxyJSWDbRgui9NdDDUfwR/6yM37n+WXDfGc
-         WFocoUznjyaJ6e0hOeSUWkW7kwkVyOaToRonY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761149430; x=1761754230;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/fJk0vLG7thkf+LY+zE0uqEbWMzbuwo6FawmPYnjzlk=;
-        b=JA3DYTnr8vAbJSdUrMHWAs4r0TTQkNzAJ8gNH2jCM3HYlguQ6XMSPLa9ugQ3tuyNq3
-         KsVjjWeHHZRCee10ey+L8B8eB00CXX3yf+0n5T0+1BTT9zjBexmUnAHVsGMfwo/U0Jp2
-         1lqvow1cnAcrp93kVfqipVRm5PpyjVVG+DL2xY/6l0cJJwV9CwSnWumg4kc5LXZ5gFre
-         WJfz/zl8Y9qrQv8OP7HRmjxKDeVeU7IPLSZxI4XpU+ZfxMiLfBdvZHoq0Qiq3D76EYZJ
-         hRNyS4icAD0gx0H+slcqGRR9poIilLKyWRkdG6Xc3J+r5E6ph63Ldwon7H5ouQxFkVdQ
-         8MUg==
-X-Forwarded-Encrypted: i=1; AJvYcCU87NqEfUOYCZzxAWEwooY+eDzKZDgZdlvgiGBob+R3FMAX/ANeYAHcuihv5hQiyETaoMOKy10=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygXfeX5Egl3ssjYPzA9rdcEFln1BhGiE928wu1LKqJEJ0s/x90
-	ZMLr7KqQmlul35vQ7c2S70gFVyHtvBqwjaUxc5ZcUNRpPqtufIST8xwfJZqJ6AHY2KA=
-X-Gm-Gg: ASbGnct4oollRJVkEclfvWm1oy1zhsXXlNLU7pdMnvQtqlSo9iKermJbMMngxuAj2hk
-	OhVjo51akQV1MXR3g1DWacOiLDGKkfAr6qTnCToigCJpji42/57VsZe+gmn4i2fyEtiIQvSnFTz
-	PMlriBPEOvF22u3u9zDD1LE4egb43jhXJZkuAiy8HQECaarNSTg9lpBvT300ERqkVZg2Z9M+cpC
-	OzEJpW5hnmtwa7fdDEXyvdtoGoiSlIa2QLSxtvmniarNkJoYeYL+8GgV2vKEjpgiMQGQ92DnTo5
-	fFGthmXlPrUyqRMRgfkOL0sk0dA8MuhvMTNcNiJ4HXXU6dWcADtDnE5cY37HBJfnAMsfMU0W08c
-	8Jf6gwEKJ11QQJDyclIMXG149ReBBivsNkCIlKJcH9LXTrbG5hcJfI/kJiRfSSa9mCBRCuSfEWb
-	KIuVl+qDaxhd8qzuV7L/i4srg=
-X-Google-Smtp-Source: AGHT+IF7j9Lnn708nVHmf7dGCzAt+5tww1lpkvS1+R+l8hRA+Mp02MiCzDvJ4Kqgi3VuqK5H3C3cwg==
-X-Received: by 2002:a05:6602:2dc6:b0:940:d157:afd5 with SMTP id ca18e2360f4ac-940d157b1fdmr2126994539f.17.1761149429575;
-        Wed, 22 Oct 2025 09:10:29 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-93e86645264sm488502039f.10.2025.10.22.09.10.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Oct 2025 09:10:28 -0700 (PDT)
-Message-ID: <79b7357c-332d-40a4-b8e8-c521b6873099@linuxfoundation.org>
-Date: Wed, 22 Oct 2025 10:10:27 -0600
+	s=arc-20240116; t=1761149523; c=relaxed/simple;
+	bh=AjmDQ+nkEwesZ4wY/xTAfi7/c3fMFdEeUmW/V+xDmGA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VW0ZoDuRV4L88s8u9ndAd68qC8JqH4M+QASSSbYJOnTfv9X3l44tRHZzyuUnaosXcYiSHFbRTWEL26VhWcO7hE1DMq3DmAhTs25U7mLymC0LAA1YZLwHO6zV4z6lD0ZuSoAz1pa4zFAZc3HkJ/hsFpxaDlCV7mL+cvoWfACaQng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvVF5irx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4EBFC4CEE7;
+	Wed, 22 Oct 2025 16:12:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761149522;
+	bh=AjmDQ+nkEwesZ4wY/xTAfi7/c3fMFdEeUmW/V+xDmGA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pvVF5irx0L426TzVrHlus1fd8nHnWCvtXXmTZ4/24eCZPVPo6K0B2FNGpANU1k3pf
+	 NKtx6cLrjhnmhAoeX/lmuBCOZlMXucdac8KML/AxkltQqNFlzjg4KH/JbpUWCKRjPJ
+	 NoYZn9HMDyGAE3NFi+rCxxR7vf3t6bAglLQyos0FVUoOc8XoUT/JTvpdN3JQdLMX85
+	 3GywjywWvzz7GH1MTO5pIEchN2uT4ZctSSuFEXuxWrajpUKQEPJwkp76htyFqNInOd
+	 OSNI2ng6LS2mtfCsHTrQPJQw9wK7k3cE3Fw5MBUA3jECGksG1xk3wXJq+vPXdq71RN
+	 2TGq/pPeM3HEA==
+Date: Wed, 22 Oct 2025 09:12:02 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Carlos Maiolino <cem@kernel.org>
+Cc: hch@lst.de, stable@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 2/4] xfs: always warn about deprecated mount options
+Message-ID: <20251022161202.GN3356773@frogsfrogsfrogs>
+References: <176107133959.4152072.11526530466991879614.stgit@frogsfrogsfrogs>
+ <MK77eWYpInMwgQbgEmSwJLbCh54diNy9QV2ebaTYOT2J82_b40KtfxBIvp4JLwmeM2iW_USktGAfL7bQOEuFqg==@protonmail.internalid>
+ <176107134023.4152072.12787167413342928659.stgit@frogsfrogsfrogs>
+ <dduztn5x2drvcafdcnvk6jvnmgdteh6wjnzswkrrjhrx7tcwvd@z7s5ej7lvlxs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/136] 6.12.55-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20251021195035.953989698@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20251021195035.953989698@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dduztn5x2drvcafdcnvk6jvnmgdteh6wjnzswkrrjhrx7tcwvd@z7s5ej7lvlxs>
 
-On 10/21/25 13:49, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.55 release.
-> There are 136 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Oct 22, 2025 at 10:00:55AM +0200, Carlos Maiolino wrote:
+> On Tue, Oct 21, 2025 at 11:30:12AM -0700, Darrick J. Wong wrote:
+> > From: Darrick J. Wong <djwong@kernel.org>
+> > 
+> > The deprecation of the 'attr2' mount option in 6.18 wasn't entirely
+> > successful because nobody noticed that the kernel never printed a
+> > warning about attr2 being set in fstab if the only xfs filesystem is the
+> > root fs; the initramfs mounts the root fs with no mount options; and the
+> > init scripts only conveyed the fstab options by remounting the root fs.
 > 
-> Responses should be made by Thu, 23 Oct 2025 19:49:51 +0000.
-> Anything received after that time might be too late.
+> This is a weird behavior IMHO, as far as I remember not all mount options should
+> necessarily work with remount and what the initramfs initially mounted
+> might not reflect the reality the user expects. Assuming the 'remount'
+> used here does not mean unmounting/mounting the root fs, but using mount
+> -o remount...
+
+Yes, this is a ... weird quirk of the initramfs behavior where it mounts
+the rootfs with no mount options, grabs the intended mount options out
+of /etc/fstab, and then mount / -o remount,$fstaboptions.  In that case
+there's no warning if the fstab options contain 'attr2'.
+
+> This is not a concern this patch should consider though, it looks fine
+> as-is.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.55-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
+> Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+
+Thanks!
+
+--D
+
 > 
-> thanks,
+> > 
+> > Fix this by making it complain all the time.
+> > 
+> > Cc: <stable@vger.kernel.org> # v5.13
+> > Fixes: 92cf7d36384b99 ("xfs: Skip repetitive warnings about mount options")
+> > Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+> > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > ---
+> >  fs/xfs/xfs_super.c |   25 +++++++++++++++++--------
+> >  1 file changed, 17 insertions(+), 8 deletions(-)
+> > 
+> > 
+> > diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+> > index e85a156dc17d16..ae9b17730eaf41 100644
+> > --- a/fs/xfs/xfs_super.c
+> > +++ b/fs/xfs/xfs_super.c
+> > @@ -1373,16 +1373,25 @@ suffix_kstrtoull(
+> >  static inline void
+> >  xfs_fs_warn_deprecated(
+> >  	struct fs_context	*fc,
+> > -	struct fs_parameter	*param,
+> > -	uint64_t		flag,
+> > -	bool			value)
+> > +	struct fs_parameter	*param)
+> >  {
+> > -	/* Don't print the warning if reconfiguring and current mount point
+> > -	 * already had the flag set
+> > +	/*
+> > +	 * Always warn about someone passing in a deprecated mount option.
+> > +	 * Previously we wouldn't print the warning if we were reconfiguring
+> > +	 * and current mount point already had the flag set, but that was not
+> > +	 * the right thing to do.
+> > +	 *
+> > +	 * Many distributions mount the root filesystem with no options in the
+> > +	 * initramfs and rely on mount -a to remount the root fs with the
+> > +	 * options in fstab.  However, the old behavior meant that there would
+> > +	 * never be a warning about deprecated mount options for the root fs in
+> > +	 * /etc/fstab.  On a single-fs system, that means no warning at all.
+> > +	 *
+> > +	 * Compounding this problem are distribution scripts that copy
+> > +	 * /proc/mounts to fstab, which means that we can't remove mount
+> > +	 * options unless we're 100% sure they have only ever been advertised
+> > +	 * in /proc/mounts in response to explicitly provided mount options.
+> >  	 */
+> > -	if ((fc->purpose & FS_CONTEXT_FOR_RECONFIGURE) &&
+> > -            !!(XFS_M(fc->root->d_sb)->m_features & flag) == value)
+> > -		return;
+> >  	xfs_warn(fc->s_fs_info, "%s mount option is deprecated.", param->key);
+> >  }
+> > 
+> > 
 > 
-> greg k-h
-> 
-
-> Mario Limonciello <mario.limonciello@amd.com>
->      drm/amd: Check whether secure display TA loaded successfully
-
-Verified that the error messages are now gone with this patch.
-
-Compiled and booted on my test system. No dmesg regressions.
-
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
-
-thanks,
--- Shuah
 
