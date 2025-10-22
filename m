@@ -1,50 +1,57 @@
-Return-Path: <stable+bounces-188861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD11BF9876
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 02:50:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D51D7BF98E9
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 03:03:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FF5C19C68D7
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 00:51:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C62019C333B
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 01:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C25C1607A4;
-	Wed, 22 Oct 2025 00:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F2713A258;
+	Wed, 22 Oct 2025 01:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZwdH/bcZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XfIODQLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED40DA944;
-	Wed, 22 Oct 2025 00:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAA686340
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 01:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761094240; cv=none; b=hIEJnog6BvBtPi9CLqORmALwigJRaLPUw2mJuyci70Uky3Y1lIIGwBH/I+R6cDE7Uo3jzHLlNU7ayKsmTo/7FC5DdWJXJskM1BJaU6nrio49+ODdbjez0oUqGFb/ULXv7uMzPJic85PQeHwqj8Nt9VQasKo0ZpafisxFOSttQaU=
+	t=1761095002; cv=none; b=pwudtPnxyz3Wsx/BT/LNH7T4ipV9cDmSgu7pEs/Gea/+Vmtp4qADVCOUbspVMSBHErmbYzLRBHfzpFqtS7Gieslj28prq0Jiup3opL72DZryvW6aO5Mtwdojf0owuunajHEtsQxtUskNcq1go8r+wPWiO0vR899bnUifzlv7UuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761094240; c=relaxed/simple;
-	bh=uyeq1nQagIkGtivTdpHLo9/uLR6OX6m79fgpchqEuQs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=W56ntb4BsKqajBcEaqiTZpF5oAUzasRs6NjKwKA4FXNRz51MU+NburziRzIBgoWikCR2jRrcyJ+T7MQ2IGCjgVbw7zenac3xJ9VvlVLw0yRYVV/ISt9mTnFLTmov2Ra7zzYOcvQxwLQmmmVmkxBNEn7kor3rOdZLvE953K+JtQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZwdH/bcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72253C4CEF1;
-	Wed, 22 Oct 2025 00:50:39 +0000 (UTC)
+	s=arc-20240116; t=1761095002; c=relaxed/simple;
+	bh=d3nkD+M6VNYMnT3ux9goVbFObuvgGJYvFZeH7aQIfhA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=be+Z06vS3lGHqvyQrbn3Y2VWBzWrsIlIb6s36No2Vuv2t1TnkzSwOnpEiDyJuoepUe2GAQ5JuFPiNOYxZaarNi2UTTb8MFfg6yKF5uSv0RvfX5t284tKe3pn21OJ+fOKujtVAoqXqb4HhK2c4Jy0KDLw2u9CqQdCEM0oy1lbS5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XfIODQLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B6EC4CEF1;
+	Wed, 22 Oct 2025 01:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761094239;
-	bh=uyeq1nQagIkGtivTdpHLo9/uLR6OX6m79fgpchqEuQs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ZwdH/bcZx+g6wRU/JpSjieaQe1E1IsgBAk7XfFZ1YdiUfVoP4nAlTA/P2j5pySkjT
-	 1Lhrb2P59x5hQwJ9xB9XXJOYzGLdju93T4DZ+hCLGPB6cxGhGzx9zmjOm0ESzUGVFi
-	 Ynh/sdZlab3BBP49LOZPBuW/P3VkISgzTuHx5Bz7WHKlYw/pOYMIg9H12B5Z7SSOr5
-	 4q1dZ3hpzTySlAeE0pjVkq8YYbBiffU6oVDANzhvSRcTq2oEfDMFe9wQ8YuEA2nPXU
-	 TkFvB32Qx5I+A/pM+0Yooclm8iHBcv4K6gouP2q1h+2qVvsNpoYyh24UhLeXOyHLfR
-	 eswwyVRjsHHFQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EADF23A55FA6;
-	Wed, 22 Oct 2025 00:50:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1761095001;
+	bh=d3nkD+M6VNYMnT3ux9goVbFObuvgGJYvFZeH7aQIfhA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XfIODQLI1q8FsBGZHcwt9hQozBfAq7Rx1eKcTP1I3ljjQRQSp/PniKklZWHKKD604
+	 gs4Jzq43zoEN1HWuDFx1nFOnnrAEVft70GQFzl+0N+nKRkeil0WsJQWhasoilBiRG3
+	 9nMGJsXqlT8k/hn5wc1LEJCSicoz4MkCs5udA7DftjhDbqrYL8VhCjMwW5Arjg818v
+	 4JN+EXb2lBOijVlJuygdgzi2PIOpmANnFKLo6iaKMb/P8u56gSzKtMaOwTtFPXZ9JK
+	 QzuPd3NUKheF8RfzPtGL2VESEeef/wUKFnlqgoLiKzEKL0wDavRQ79QqNKbtzsvHOp
+	 dcTD4qUf/Gjhw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Darrick J. Wong" <djwong@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] fuse: fix livelock in synchronous file put from fuseblk workers
+Date: Tue, 21 Oct 2025 21:03:19 -0400
+Message-ID: <20251022010319.3557814-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025101630-unvaried-protector-cae4@gregkh>
+References: <2025101630-unvaried-protector-cae4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,56 +59,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/5] mptcp: handle late ADD_ADDR + selftests skip
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176109422076.1291118.8078163870194117369.git-patchwork-notify@kernel.org>
-Date: Wed, 22 Oct 2025 00:50:20 +0000
-References: 
- <20251020-net-mptcp-c-flag-late-add-addr-v1-0-8207030cb0e8@kernel.org>
-In-Reply-To: 
- <20251020-net-mptcp-c-flag-late-add-addr-v1-0-8207030cb0e8@kernel.org>
-To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- shuah@kernel.org, netdev@vger.kernel.org, mptcp@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- stable@vger.kernel.org
 
-Hello:
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+[ Upstream commit 26e5c67deb2e1f42a951f022fdf5b9f7eb747b01 ]
 
-On Mon, 20 Oct 2025 22:53:25 +0200 you wrote:
-> Here are a few independent fixes related to MPTCP and its selftests:
-> 
-> - Patch 1: correctly handle ADD_ADDR being received after the switch to
->   'fully-established'. A fix for another recent fix backported up to
->   v5.14.
-> 
-> - Patches 2-5: properly mark some MPTCP Join subtests as 'skipped' if
->   the tested kernel doesn't support the feature being validated. Some
->   fixes for up to v5.13, v5.18, v6.11 and v6.18-rc1 respectively.
-> 
-> [...]
+I observed a hang when running generic/323 against a fuseblk server.
+This test opens a file, initiates a lot of AIO writes to that file
+descriptor, and closes the file descriptor before the writes complete.
+Unsurprisingly, the AIO exerciser threads are mostly stuck waiting for
+responses from the fuseblk server:
 
-Here is the summary with links:
-  - [net,1/5] mptcp: pm: in-kernel: C-flag: handle late ADD_ADDR
-    https://git.kernel.org/netdev/net/c/e84cb860ac3c
-  - [net,2/5] selftests: mptcp: join: mark 'flush re-add' as skipped if not supported
-    https://git.kernel.org/netdev/net/c/d68460bc31f9
-  - [net,3/5] selftests: mptcp: join: mark implicit tests as skipped if not supported
-    https://git.kernel.org/netdev/net/c/973f80d715bd
-  - [net,4/5] selftests: mptcp: join: mark 'delete re-add signal' as skipped if not supported
-    https://git.kernel.org/netdev/net/c/c3496c052ac3
-  - [net,5/5] selftests: mptcp: join: mark laminar tests as skipped if not supported
-    https://git.kernel.org/netdev/net/c/a9649dfbe552
+[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
+[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
+[<0>] fuse_do_getattr+0xfc/0x1f0 [fuse]
+[<0>] fuse_file_read_iter+0xbe/0x1c0 [fuse]
+[<0>] aio_read+0x130/0x1e0
+[<0>] io_submit_one+0x542/0x860
+[<0>] __x64_sys_io_submit+0x98/0x1a0
+[<0>] do_syscall_64+0x37/0xf0
+[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-You are awesome, thank you!
+But the /weird/ part is that the fuseblk server threads are waiting for
+responses from itself:
+
+[<0>] request_wait_answer+0x1fe/0x2a0 [fuse]
+[<0>] __fuse_simple_request+0xd3/0x2b0 [fuse]
+[<0>] fuse_file_put+0x9a/0xd0 [fuse]
+[<0>] fuse_release+0x36/0x50 [fuse]
+[<0>] __fput+0xec/0x2b0
+[<0>] task_work_run+0x55/0x90
+[<0>] syscall_exit_to_user_mode+0xe9/0x100
+[<0>] do_syscall_64+0x43/0xf0
+[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+The fuseblk server is fuse2fs so there's nothing all that exciting in
+the server itself.  So why is the fuse server calling fuse_file_put?
+The commit message for the fstest sheds some light on that:
+
+"By closing the file descriptor before calling io_destroy, you pretty
+much guarantee that the last put on the ioctx will be done in interrupt
+context (during I/O completion).
+
+Aha.  AIO fgets a new struct file from the fd when it queues the ioctx.
+The completion of the FUSE_WRITE command from userspace causes the fuse
+server to call the AIO completion function.  The completion puts the
+struct file, queuing a delayed fput to the fuse server task.  When the
+fuse server task returns to userspace, it has to run the delayed fput,
+which in the case of a fuseblk server, it does synchronously.
+
+Sending the FUSE_RELEASE command sychronously from fuse server threads
+is a bad idea because a client program can initiate enough simultaneous
+AIOs such that all the fuse server threads end up in delayed_fput, and
+now there aren't any threads left to handle the queued fuse commands.
+
+Fix this by only using asynchronous fputs when closing files, and leave
+a comment explaining why.
+
+Cc: stable@vger.kernel.org # v2.6.38
+Fixes: 5a18ec176c934c ("fuse: fix hang of single threaded fuseblk filesystem")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+[ added isdir parameter to fuse_file_put() call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/fuse/file.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index c0acdb0a29863..23bc96887abcb 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -324,8 +324,14 @@ void fuse_release_common(struct file *file, bool isdir)
+ 	 * Make the release synchronous if this is a fuseblk mount,
+ 	 * synchronous RELEASE is allowed (and desirable) in this case
+ 	 * because the server can be trusted not to screw up.
++	 *
++	 * Always use the asynchronous file put because the current thread
++	 * might be the fuse server.  This can happen if a process starts some
++	 * aio and closes the fd before the aio completes.  Since aio takes its
++	 * own ref to the file, the IO completion has to drop the ref, which is
++	 * how the fuse server can end up closing its clients' files.
+ 	 */
+-	fuse_file_put(ff, ff->fm->fc->destroy, isdir);
++	fuse_file_put(ff, false, isdir);
+ }
+ 
+ static int fuse_open(struct inode *inode, struct file *file)
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.51.0
 
 
