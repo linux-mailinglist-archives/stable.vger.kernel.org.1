@@ -1,157 +1,158 @@
-Return-Path: <stable+bounces-188973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB69EBFB9CC
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 13:22:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2DD3BFB9EA
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 13:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6E4B19C1051
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:22:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 841AB3B3BF9
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E92334C26;
-	Wed, 22 Oct 2025 11:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A33285C8B;
+	Wed, 22 Oct 2025 11:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DFeyeUwZ";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="4M2WQhvG";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="s5mVy2cG";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="kGFccDIj"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="J41xu8Kl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1CA33372C
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 11:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4730F2857FC
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 11:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761132092; cv=none; b=flpIs7oe+0qn0Irhu3AMx9bjGFh+WMcG1QRGvPMtYvbbptO5ftlRybtz5SVs8edegnZ9xET6FtYu22qthlqb4QguWJEVw1RBzXuvGV8CIq9rXbP/83OKUgbwbfc1yPkjnpJrIT1LsI0FFJO3fvnrjI0v9LeBO8RDAPK5kJRi94k=
+	t=1761132210; cv=none; b=paWEQ8PzHnAjWzzG4nwXzR20501i9Ye1D8NwNcYY+WGOcJhdw4g6Lxi9ZWSSVO2r2x2hTRgpLTlx11iz49xgO4k2pvZI4hCLf58T0xTgFsvstN2k4jc4GXU0nEDN5lt4+Xwuh44ldQhjZa4zbN2C4OZzNlv1J5b+FCbhJbd04R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761132092; c=relaxed/simple;
-	bh=+TJrs6jIt9jGlepgnbM7MN/AOTJRSFWRSpI90Ph/9AE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uMu+JSiW7fdVb5d1qser6e3mhd3zSL0jD+XK0Qn/cGzxuw8jBw6HUNiL8S+2GpeoxXFXKq+ho+GZ0LEm1KYrjsaHF5JGRxJ7UrIVr6PoxGv4ryZYeZAxo2VuTvyBCvYc3h0UErZVxwrH6a0dik57UM8tVrzt41jPuK5HlJfmvpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=DFeyeUwZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=4M2WQhvG; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=s5mVy2cG; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=kGFccDIj; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6EF6C21197;
-	Wed, 22 Oct 2025 11:21:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761132083;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+TJrs6jIt9jGlepgnbM7MN/AOTJRSFWRSpI90Ph/9AE=;
-	b=DFeyeUwZhpBkcOY35s3ZdDRRlmoMerjZuq0sQiV7fEi3z5NPrjqA6Vny2CLit0+pjkxpMl
-	vmRMorFnasy9P+xW/4MfFUVakoUGRAZ80ftye/mlDn6ZXIJVHAaj/+ZaQCovWBbhG3jS4b
-	C3ZRJENWdv9A6U8qhSzgDekMSGT/XDE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761132083;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+TJrs6jIt9jGlepgnbM7MN/AOTJRSFWRSpI90Ph/9AE=;
-	b=4M2WQhvGDWpdYfelzDfZdpJZ1uTPM68ZjFxuSQhloxNkFssGG8IXfsQSJXPZ91/qVkCoGs
-	ZVZl3fNFirwcoBBQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761132079;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+TJrs6jIt9jGlepgnbM7MN/AOTJRSFWRSpI90Ph/9AE=;
-	b=s5mVy2cGBF2Myg/9l+as3ze+Dv/ei+jR2qJTACTI5h15eCrg/9fA/k5C17WvcyrjKRNB1q
-	cRQeKrP/d8hvSGpdXwmKAFX7CyZw56ibcZLOuDIEmj4WH5IZZk9Apt4iHjoWd9SzyYcN/H
-	LudJ+/Ci1BglhdAy9j/Ern7wE6xTfXI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761132079;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+TJrs6jIt9jGlepgnbM7MN/AOTJRSFWRSpI90Ph/9AE=;
-	b=kGFccDIjZ7WGo1sWCYKH9HyaxCo4B60ga2MDHRA7NXGP9Rf+3XPQ8pchTIJgVipOnWlAWj
-	fBCoGMxujVKnOZBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 460A91339F;
-	Wed, 22 Oct 2025 11:21:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7OwPEC+++GhsbgAAD6G6ig
-	(envelope-from <pvorel@suse.cz>); Wed, 22 Oct 2025 11:21:19 +0000
-Date: Wed, 22 Oct 2025 13:21:13 +0200
-From: Petr Vorel <pvorel@suse.cz>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] drm/i915/dmc: Clear HRR EVT_CTL/HTP to zero on ADL-S
-Message-ID: <20251022112113.GA476500@pevik>
-Reply-To: Petr Vorel <pvorel@suse.cz>
-References: <20251022100718.24803-1-ville.syrjala@linux.intel.com>
- <20251022100718.24803-2-ville.syrjala@linux.intel.com>
+	s=arc-20240116; t=1761132210; c=relaxed/simple;
+	bh=pux7Gftl3kdbJdsfJg60JElS64sO0dvQBi7V8W+jdLY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fs8mnvr/Oiuhh74B7ZoskH4it9jJG7UOEMMBrYtgye3CZNIgA01vfdQjUbuCggXFPcNuUvMS+3CODaWEnj4j1h42rih31NaVdIBwdz1g9XlF2Oj6h0lxRUncpKRXXZpuuQO2YvfXPox1vWH0T58Ov6fWH1lR62iZhdc/I+uINUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=J41xu8Kl; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-471bde1e8f8so17267615e9.0
+        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 04:23:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1761132207; x=1761737007; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kjPYwjUGUBLIRYRVo/Xv8w6fNKMNsLf3PLH0iArVM50=;
+        b=J41xu8Kl60uirrCh1ZYuDzQzNGyHUSVkM/zsLgpEAe7Zy6P5P+dSIUprk7Pe16aTZg
+         +V6Z5F1BFC0fCcNUhJ1kGR4ZaME6wROMJzQdY3y83SjVlIaFwYpNft0LARWy4Z/ntyBD
+         5wsumEnNH5JyjTF+QJ6HG8jNtbcS4Xm80M/h81aDEo5fRoipsf4zNQouKtx+fiDp+BMD
+         0AGk6rHkR3HYXgA+nXdTNrOdXKhT+LRQSFoVHsoznVTMkCX+xNjQ9J1WWLcIIqe9V7oI
+         s++Jk6veK5Yk8vO3ruyL1EKWsHr9SlB4f4RWhgnCCSvZWP50zOAUk9at8489kZM207J2
+         6qqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761132207; x=1761737007;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kjPYwjUGUBLIRYRVo/Xv8w6fNKMNsLf3PLH0iArVM50=;
+        b=BN43TMEEnnAiRK9+VGLCed0VxA152Nsy2Y3t6V4zjYmq7ROtK5f2WJ/SOZ6xfLVg13
+         wbZ5TrDXjnO/PhuUAVEMl+y8bhYE13Sgsgf8vqYM3RA5RtEMa7114IlistKHVqw5Y164
+         yfO6eEFk+fWZqhl4CF1iJyIW39jrQLEHmKRkIOxCHNzvhJ3+KxakaKwmXabFohLHpYEM
+         LfE+8CvR51/FdsmEou/4t7ZeEabrXeOTcLpgjS+MJrLNm06AbRcj4lgbqImgwpmloYqi
+         aQhe6CU7XvpWmUOtqutjn96WYhsu70Qm51tG5i5LskSV10xnUQ+s4z1RpN70nqlyAo5b
+         eqNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQehtz+RPd3W20NhrsMWiS0LWlwSkK69045/EiAiuVouwn5/+sknplHjX7qmED0IyFLigy8RE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxu43I2awmnMrjNUoN2VWy8bJKtDWgDWjW3NpS8PgwwwDeqCiZ0
+	b9pMtK1Z/KD3qYCqOyrzqkMJrtxr6FCLCzNGiLAL85Nu1RjC1ntFDeI=
+X-Gm-Gg: ASbGncvbRqtR9tImObQKHZS87NFf7wtl6owawLbbQPieie8sTeNQVZcvQohVtuvo9tn
+	HWcKX7MkrCgpFQA4C/I0QduKiO4ue47gMSX+nbrtvqwRwlcjLQNFZULhKiIDpXNL9tMefkabRb0
+	SByHkC8LJiTpwO+VOokauYmYehMGJVX0CFZjG+awXanFAoACrfoArFFZOjEbT1BHyUB5YTkPBHp
+	BKf2gdgBHPL75ShMgu/esdw7qB7vjwbq/Duo3aELSODTJytzbUmcf2DO9+D7T7DGOOUUQ6Tcfa2
+	KM1Y6THsb5COe0TZOBB/e+WzmWLBHpjoNxHycGj2l3fHhSAs9k68vS7edL2lz2m+dxbjUsNiafw
+	iPEXcHPsnG7Bft8dmnCg55uqaa/cLGH2IOyo+Vya8pQDoV4vDZ2iSfcRXVqDz4MdQh8F46feWNZ
+	l24gL4fmWbjNzUZkW8YS9ZdlcvDxDMv6kjXQh+OzCNuz9ywDirrQgEuzU0rMZ+pA==
+X-Google-Smtp-Source: AGHT+IHvaWk6lF5t+4jkEZNj4fCR2v2SPRQO7ACJdqn9xWJPRqdmrWzxShh0nYRVjV+WCcz+aSXGQA==
+X-Received: by 2002:a05:600c:6291:b0:470:fcdf:418 with SMTP id 5b1f17b1804b1-47117911694mr151571175e9.27.1761132206345;
+        Wed, 22 Oct 2025 04:23:26 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057850.dip0.t-ipconnect.de. [91.5.120.80])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47496afd459sm36880475e9.1.2025.10.22.04.23.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Oct 2025 04:23:25 -0700 (PDT)
+Message-ID: <3ca10b2e-fb9c-4495-9219-5e8537314751@googlemail.com>
+Date: Wed, 22 Oct 2025 13:23:25 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251022100718.24803-2-ville.syrjala@linux.intel.com>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.50 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	HAS_REPLYTO(0.30)[pvorel@suse.cz];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_EQ_ENVFROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:replyto];
-	RCVD_COUNT_TWO(0.00)[2];
-	REPLYTO_EQ_FROM(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -3.50
+User-Agent: Betterbird (Windows)
+Subject: Re: [REGRESSION][BISECTED] Screen goes blank with ASpeed AST2300 in
+ 6.18-rc2
+Content-Language: de-DE
+To: Thomas Zimmermann <tzimmermann@suse.de>, regressions@lists.linux.dev,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+ jfalempe@redhat.com, airlied@redhat.com, dianders@chromium.org,
+ nbowler@draconx.ca, Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thorsten Leemhuis <regressions@leemhuis.info>
+References: <20251014084743.18242-1-tzimmermann@suse.de>
+ <a40caf8e-58ad-4f9c-af7f-54f6f69c29bb@googlemail.com>
+ <43992c88-3a3a-4855-9f46-27a7e5fdec2e@suse.de>
+ <798ba37a-41d0-4953-b8f5-8fe6c00f8dd3@googlemail.com>
+ <bf827c5c-c4dd-46f1-962d-3a8e2a0a7fdf@suse.de>
+ <5f8fba3b-2ee1-4a02-9b41-e6e1de1a507a@googlemail.com>
+ <e2462c92-4049-486b-92d7-e78aaec4b05d@suse.de>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <e2462c92-4049-486b-92d7-e78aaec4b05d@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Ville,
+Am 22.10.2025 um 12:20 schrieb Thomas Zimmermann:
+> Hi
+> 
+> Am 22.10.25 um 11:16 schrieb Peter Schneider:
+>> Am 22.10.2025 um 11:11 schrieb Thomas Zimmermann:
+>>> Hi
+>>>
+>>> Am 22.10.25 um 10:08 schrieb Peter Schneider:
+>>>>
+>>>> Your patch applied cleanly against 6.18-rc2 and the kernel built fine, but unfortunately it did not solve the issue: 
+>>>> my console screen stays blank after booting. This is regardless whether I do a soft reboot, press the reset button 
+>>>> or power cycle and do a cold boot. They are all the same.
+>>>
+>>> Just to be sure: you do see output at the early boot stages (BIOS, boot loader). It's at some later point during 
+>>> boot, the driver loads and the display blanks out?
+>>
+>> Yes, that's correct.
+>>
+>>> There's another patch attached. does this make a difference?
+>>
+>> Do I have to apply that against base 6.18-rc2 or against 6.18-rc2 + your previous patch?
+> 
+> Base 6.18-rc2. All the patches are against this.
 
-> On ADL-S the main DMC HRR event DMC_EVT_CTL/HTP are never
-> restored to their previous values during DC6 exit. This
-> angers assert_dmc_loaded(), and basically makes the HRR
-> handler unusable because we don't rewrite EVT_HTP when
-> enabling DMC events.
+So with this new patch against 6.18-rc2, I first got this build error:
 
-> Let's just clear the HRR EVT_CTL/HTP to zero from the
-> beginnning so that the expected value matches the post-DC6
-> reality.
+   CC [M]  drivers/gpu/drm/ast/ast_mode.o
+drivers/gpu/drm/ast/ast_mode.c: In function ‘ast_crtc_helper_atomic_disable’:
+drivers/gpu/drm/ast/ast_mode.c:857:12: error: unused variable ‘vgacr17’ [-Werror=unused-variable]
+   857 |         u8 vgacr17 = 0xff;
+       |            ^~~~~~~
+cc1: all warnings being treated as errors
 
-> I suppose if we ever had actual use for HRR we'd have to both,
-> reject HRR+PSR, and reprogram EVT_HTP when enabling the event.
-> But for now we don't care about HRR so keeping both registers
-> zeroed is fine.
-...
 
-LGTM.
+because I always do my kernel builds with CONFIG_WERROR=y. So then I commented out the now superfluous declaration in 
+line 857 and the build succeeded. However, unfortunately the issue still persists. The screen still gets blanked on 
+reboot (as clarified before, after BIOS/POST messages, Grub boot menu, initial boot messages).
 
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Beste Grüße,
+Peter Schneider
 
-Kind regards,
-Petr
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
