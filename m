@@ -1,69 +1,61 @@
-Return-Path: <stable+bounces-188903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDE9BFA3E8
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:34:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882B5BFA3EB
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:34:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 731A73B47F9
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 06:33:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2501419A3D12
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 06:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554362ECD2D;
-	Wed, 22 Oct 2025 06:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734C72EC0AD;
+	Wed, 22 Oct 2025 06:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=klarinett.li header.i=@klarinett.li header.b="z0DZXkro"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rqT+dBEZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hostpark.net (mail.hostpark.net [212.243.197.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CB025784B;
-	Wed, 22 Oct 2025 06:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.243.197.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ED0257824;
+	Wed, 22 Oct 2025 06:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761114825; cv=none; b=py+h/ZHEM+MY2/OUrpRjxam4Rw3E6eASBIIPa54k7wkhCl1s/nqS/eLiu6zBqMDnm+hYMwc9KMRLJfgnNoTrD/ZNTJKjfc0PAAZnd4y6VNwRHC4v81cCW/8zYbgj2BprOTX+AnkJn6aw3N712ZF7esdN0XdKbL2i5ugXEqO18bk=
+	t=1761114867; cv=none; b=Ac3dKSBurT8gXurcSOHRaYHCRExbZj0Y46zzWBSSf23eApF2gUfHnZPhQ/N937N3mrZJEoCbJ5CubCq/lKkckasPVKs2Lsws2TLgML4TY8gLkyDWLM5EoO4zIn/OoEeSqBOquqgZk8/ccjv0yb5Nkm+McfHYPsaCY02H5cE/Y28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761114825; c=relaxed/simple;
-	bh=flOl1xCGuCOPWGoBMyaOBP2p4GmZpiLATLs+rbLLmEM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WevDtihfaczjyjpNoXlZ8md39UZQK93rfP5fd/ugAaw1a8PDCWJue773vm7DbeUlVC9tpqi/ktNQ+LIKPuFr86xKl3DqU9SKloxavi3PzVxKDmAD8c9JT3MN8owx3qtT7xJjEijzAdrZuEhF8LXthmxeLRyQ8TfMODiRCkDv+4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klarinett.li; spf=pass smtp.mailfrom=klarinett.li; dkim=pass (1024-bit key) header.d=klarinett.li header.i=@klarinett.li header.b=z0DZXkro; arc=none smtp.client-ip=212.243.197.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klarinett.li
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=klarinett.li
-Received: from localhost (localhost [127.0.0.1])
-	by mail.hostpark.net (Postfix) with ESMTP id 733D9166D7;
-	Wed, 22 Oct 2025 08:33:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=klarinett.li; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:from:from; s=sel2011a; t=1761114813; bh=fl
-	Ol1xCGuCOPWGoBMyaOBP2p4GmZpiLATLs+rbLLmEM=; b=z0DZXkroMiSV9rsxQy
-	fSpwWOIum+QbeW7pU9OrGzgSI+Jlwjutj85VZwek+6E0aG8Lqft+totSlKL5/jfT
-	YHhCEFQsHeU+E+Rho3uAGzVnRkrcxu2SoUjVGI5Hsj7HHpZEFSq+m3bS5aFjtrr/
-	BVb8DAzmONqOFcarRFvFBPpQE=
-X-Virus-Scanned: by Hostpark/NetZone Mailprotection at hostpark.net
-Received: from mail.hostpark.net ([127.0.0.1])
- by localhost (mail1.hostpark.net [127.0.0.1]) (amavis, port 10224) with ESMTP
- id DYbDTf5dOueE; Wed, 22 Oct 2025 08:33:33 +0200 (CEST)
-Received: from customer (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.hostpark.net (Postfix) with ESMTPSA id 410A5166D6;
-	Wed, 22 Oct 2025 08:33:32 +0200 (CEST)
-From: Christian Hitz <christian@klarinett.li>
-To: Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-	Dan Murphy <dmurphy@ti.com>
-Cc: Christian Hitz <christian.hitz@bbv.ch>,
-	stable@vger.kernel.org,
-	Pavel Machek <pavel@ucw.cz>,
-	linux-leds@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] leds: leds-lp50xx: LP5009 supports 3 modules for a total of 9 LEDs
-Date: Wed, 22 Oct 2025 08:33:04 +0200
-Message-ID: <20251022063305.972190-1-christian@klarinett.li>
-X-Mailer: git-send-email 2.51.1
+	s=arc-20240116; t=1761114867; c=relaxed/simple;
+	bh=9L6GffcfeerIeIPNhor4pQw206J3UW0w+l+X2vVd58Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d/Bmu1p3bs9VGUGUybZ+c4fR2dWayTFDi6XZ6/yARiPOq+YbsFUsgnIldgtQp1B5cZOHlr43ZYbjJXQTs64i+5dV+LT34oytzDWbkxqxVNvVwtYXs9G99slQwVLha/6bBCNt1Z2VSmpBF2vNh8oLcqUYIvuhnR/JI27sGvc1HM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rqT+dBEZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C356C4CEE7;
+	Wed, 22 Oct 2025 06:34:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761114866;
+	bh=9L6GffcfeerIeIPNhor4pQw206J3UW0w+l+X2vVd58Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rqT+dBEZS1BAr8dG7SJabEEAdUnmoXAKiBJcIwMwmCSQ25lBTLANAXSBdmO6Z0NaD
+	 /oi0yCnC3gLYpt+gHLhwgwl+tzMCWJnYYeGHM00CLzX1bKdBfrScWfb3NrgiHS3lcb
+	 0cEVA8ib1hLARnLLg6srznHciBxJwR+wHRpTjV2FxfY2dCT5myrjUIIc3qjAgCYChK
+	 ucFO9ybs+w70nLr6aZYcMTzAOTxZ+a3+wpBNAYnN3uUGos44Gkf2BD/Rldr1x5eKro
+	 BG7OG/l+o2YzVkxpNnPOLAanDNGxX5ZlCJPPYlB4uuS2lLxfAn+fCelrBdKEZzVhw1
+	 g6yCSR6v7X3iA==
+From: Philipp Stanner <phasta@kernel.org>
+To: Matthew Brost <matthew.brost@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Philipp Stanner <phasta@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/sched: Fix race in drm_sched_entity_select_rq()
+Date: Wed, 22 Oct 2025 08:34:03 +0200
+Message-ID: <20251022063402.87318-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,35 +64,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Christian Hitz <christian.hitz@bbv.ch>
+In a past bug fix it was forgotten that entity access must be protected
+by the entity lock. That's a data race and potentially UB.
 
-LP5009 supports 9 LED outputs that are grouped into 3 modules.
+Move the spin_unlock() to the appropriate position.
 
-Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: ac4eb83ab255 ("drm/sched: select new rq even if there is only one v3")
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
 ---
-Changes in v2:
- - Improve log message
----
- drivers/leds/leds-lp50xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/scheduler/sched_entity.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
-index 94f8ef6b482c..05229e2f2e7e 100644
---- a/drivers/leds/leds-lp50xx.c
-+++ b/drivers/leds/leds-lp50xx.c
-@@ -54,7 +54,7 @@
- /* There are 3 LED outputs per bank */
- #define LP50XX_LEDS_PER_MODULE	3
+diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
+index 5a4697f636f2..aa222166de58 100644
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -552,10 +552,11 @@ void drm_sched_entity_select_rq(struct drm_sched_entity *entity)
+ 		drm_sched_rq_remove_entity(entity->rq, entity);
+ 		entity->rq = rq;
+ 	}
+-	spin_unlock(&entity->lock);
  
--#define LP5009_MAX_LED_MODULES	2
-+#define LP5009_MAX_LED_MODULES	3
- #define LP5012_MAX_LED_MODULES	4
- #define LP5018_MAX_LED_MODULES	6
- #define LP5024_MAX_LED_MODULES	8
+ 	if (entity->num_sched_list == 1)
+ 		entity->sched_list = NULL;
++
++	spin_unlock(&entity->lock);
+ }
+ 
+ /**
 -- 
-2.51.1
+2.49.0
 
 
