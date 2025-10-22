@@ -1,185 +1,125 @@
-Return-Path: <stable+bounces-188983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13E7BFBCFE
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 14:18:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A4FBFBD7A
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 14:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 454B758404F
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 12:16:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DA8518C2F15
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 12:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6852A2EC576;
-	Wed, 22 Oct 2025 12:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A225343D6E;
+	Wed, 22 Oct 2025 12:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="iSyD2eAC";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gkayi/hY"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="AOsjwj61"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21634285074;
-	Wed, 22 Oct 2025 12:16:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5603A33F8BD
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 12:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761135379; cv=none; b=hYUj3UbPZvpVBzAx4ruUb26YbVIYmNeCzVgUg3BEpjQEYcBrykKsxw+BitKnfnAWaB7QsivCtcqn6QYfnFX5thB+JCtzaCcpUgZARQnyiG1eHJKtr7iel/LzbfVkAYtGuwWGXelV5s96Rl2Mh2IHjvpmeS+bGvWF3Dc+txKMdiY=
+	t=1761136088; cv=none; b=t4BLekuu/xcN2w/wD3eZqho97T36Jo0E94hzuREWXHIv+uWgSrobh/N8a+fYKmMDMMtDL7EN6guhpsVybI7iMrNEANgs3FIgKTWsPLm1BQkZ3GgEEwdU1Ir7a4TXHi44jDNHWFGt65U0OQYQ6F3QGTyItt5/8DQbJtDV/Bsa9gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761135379; c=relaxed/simple;
-	bh=cgt7CLQjSoyB4oOe7l2CcWFiQDCWV6sN2Ax5llb7nBI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iJ4zY2Pk/2jpSHEqvIujYTzWuz1r7a2i5w3kJMduQdl2d4T4GwEx2BGSALdZBEg9a3Pqlw13oGTBNn5zfXihW4yf5/IZEnN86B6yFuwnLPG9A/AQJ9nXcVooRMOoIhUs5t19kpvdKYLUu4/C+mWHKqmixRMpINwFH31gkIMuu0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=iSyD2eAC; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gkayi/hY; arc=none smtp.client-ip=103.168.172.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 2694EEC0064;
-	Wed, 22 Oct 2025 08:16:16 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 22 Oct 2025 08:16:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1761135376;
-	 x=1761221776; bh=FajAkPMbd4+2ubuOtdzYe8+OKPtN1c8032SY+wXAvDY=; b=
-	iSyD2eACEzRF6VDWame1A5MHviX4LWMvaxRqBmr1pgb33aceXZfLqHU/ISr5i+tT
-	qtN+n5sP9ZZLSCDiVRU/Rc/k2+esSNRKCCGraLclmrAIc0BzjfbCT8/H0wWyN+NU
-	pCR7Qm9yQfThGY2m2HmIbKfbaCKGNCOv8uDoM/3B8Bg1hyMYoWzxVzsgNHQeJeFX
-	7rl3VNuUXA+BzDkiI35MxMqKTLZRwN6jD08HR3ZSwiB2nipZ5wPaum+6GZpL/2LO
-	ppg5li9qCS/IKHmEogzNRTf/tLuErnsrepjDxyRqSWJSla+jG0W2JyIG02cU3xqa
-	kXYfAcKae9/KGNh3oPXcjQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1761135376; x=
-	1761221776; bh=FajAkPMbd4+2ubuOtdzYe8+OKPtN1c8032SY+wXAvDY=; b=g
-	kayi/hYyHMifyC8iIhm4lQ/zTyJ4NhXv/m8BY0gEuzF7k3rfbZAcGrOFHuX03Gwd
-	OIYyKa+y0Q3i6PUO3Zvc/YH+/4FMYjB/cjlxwY1gK1TgyiYx+MpDdAMgw+GqUYtp
-	nd5XF9aMlgG+L4L8jgzUc8nd3r9plXaZWukysSoB7pS/5tj+PRvhv+tTDbF7YLnt
-	y/MkurKZM25GaKVrS566CI/vApKIa6PW+1zI8d4KuNVK9KkYWcX01XMw9bN9SjUO
-	BIEq/K0nFf8oWhkR/5TW1OcP+bdFQV8VVX6mvk2UHP7jsvQQNvf9SbNMdt7ZkV+Z
-	QqRjrhKHaa6mDO5Gp74ew==
-X-ME-Sender: <xms:D8v4aNEdLghyyTWWIoz-fduLwSRHBg1W-HyvnhTS0oyTE3-6Yd7l2Q>
-    <xme:D8v4aDT2UOHVhQdxPd29RQimS1qQ552-p95GhdSlCVF-vCgSGh_xpP6yxtq1zwbDy
-    YcDKyeYtTQPSVBsghwA6P-cQjQDR2O5W4crG8a0qAo8h3tQdZEWlQ4>
-X-ME-Received: <xmr:D8v4aPeRSJv-GU6Sus5cMAVIbRKRq0j5Zl0lffpZ6IEwsQijlgfoLP9jTNZ4l4WsrmoRd9NP2k3dqJQJAICPRQ61LbaCzrc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeefheeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefpihhklhgr
-    shcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrg
-    htvggthhdrshgvqeenucggtffrrghtthgvrhhnpeevteegtddvvdfhtdekgefhfeefheet
-    heekkeegfeejudeiudeuleegtdehkeekteenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhn
-    rghtvggthhdrshgvpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpd
-    hrtghpthhtohepphhrrggshhgrkhgrrhdrtghsvghnghhgsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtohepphgruhhlsehpsggrrhhkvghrrdguvghvpdhrtghpthhtoheprghnughrvg
-    ifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghm
-    lhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
-    dprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggv
-    nhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehgvggvrhhtodhrvghnvghsrghsse
-    hglhhiuggvrhdrsggvpdhrtghpthhtohepmhhithhsuhhhihhrohdrkhhimhhurhgrrdhk
-    tgesrhgvnhgvshgrshdrtghomh
-X-ME-Proxy: <xmx:D8v4aBjaP8DysEkFTY6jndxGe_WRCn6GI6dMIPMGeL34M4BWQ26okA>
-    <xmx:D8v4aKION9Fh9EbRfbc9m-QiGIHmbd-iRS0GQDbpoaG-hOiVj1WMTQ>
-    <xmx:D8v4aOGFM86KB_ajjLJsW8NLemQsDZ-3zi36hUbXEViRApSedQ-__g>
-    <xmx:D8v4aA3DhWIAmcR5qaV8zGi49T_gFZlBVTDlcCQ5ew_yxAEI4eqokg>
-    <xmx:EMv4aNy87RC6RJe0MigPyc-lHMrxy5gYkhDiktWYQfk8Ads_XrkqA7y5>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Oct 2025 08:16:15 -0400 (EDT)
-Date: Wed, 22 Oct 2025 14:16:14 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: Paul Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mitsuhiro Kimura <mitsuhiro.kimura.kc@renesas.com>,
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] net: ravb: Ensure memory write completes before
- ringing TX doorbell
-Message-ID: <20251022121614.GE1694476@ragnatech.se>
-References: <20251017151830.171062-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <20251017151830.171062-5-prabhakar.mahadev-lad.rj@bp.renesas.com>
+	s=arc-20240116; t=1761136088; c=relaxed/simple;
+	bh=Iejn0pWjNdBJA/skFH2+V/JvIaDlDJ3P1ZCkLVxJQvY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ExtWyG5YOM1eIatjXBNlIcZ3J7yd6CV/EciU7ek/f3dpuqCpKdJ7tiSiMEhwotmtAuf6PnoyLxOlPEulu5IgMnEU4ob7TIivrhkwRVp0dPKf3+TxTZEIlt8so1AEDyz3Ijuqp1QoDqCfHSDojJnzTTS2o5p4tR0Vx3O/otloR1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=AOsjwj61; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42701aa714aso4102601f8f.3
+        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 05:28:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1761136083; x=1761740883; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WFbuSQX+6YT+HVJbPcsJSl2m1jB0KH5oX7eFGxAFFNQ=;
+        b=AOsjwj61kMGZzbmE1tQnMGq5K/0JJ982cQIQI9j41XGJLYVjYXbL4SyedjwvK4pja5
+         GCp3K2vN3S6bo3lkHsvcYgm4UzeHqpIc9+p7TX5WzAZw16ue37frIp8cwa+olGG24DWz
+         ZGKoScaQi96uYIa786DqMlV2YoSqSPcz6Qt5/yFXaYO0QZ7O+upi82fJtLVveA+0PMAE
+         Qhj9DdrDG2tHoBtVuxd3KjBfXCV1nedA+6hnCS8CpWNdYmlTwK1KjQBANCL5uiN8wudB
+         CqyJOvA8JlqVUEkQwzoUgo0zceRFaZa90zvYAdqc7zdomid7VU9xsNkN3ifVU1LE8Q6X
+         SHRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761136083; x=1761740883;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WFbuSQX+6YT+HVJbPcsJSl2m1jB0KH5oX7eFGxAFFNQ=;
+        b=T0GoK0I9Keue67UjjAWH+uQph1v3qR74yuIo/DPF/XYjbkXH2Cj+YTob6GMI/wfFpr
+         dAXu5p5xUct+iYo9r6qUV2e6isdBgFamxf3joSuqiJqnlAFJ0oUB1FoLmrJaYbEwLSnB
+         lu2IR8znmO65PT1FGP1X6km/2OFUeNWIvfWfqfPj0Hr2f7njp0NDYXLE45MvdqmdbvlE
+         ELZjF7il/KFNS/mL3ySp6/hGaP95VxYxGYK5KzpBDDJdqMctna/7Nc+iE+hrg9dW51VC
+         cmutNPn+iBI1o0ijz+z9/fqp110KMubQACbZNWMRvxvjHpDnWG+pw7kFHsI3tAj26nw6
+         8iUA==
+X-Forwarded-Encrypted: i=1; AJvYcCWSRuDiz4S9JU4/0n05q3nOBhC76Gs3EfXBSe4MSVAQ1vd6YEjiZB6ccJ55DNlztkLZhteMv4E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw61SsHrAjiKLUA44MJMKof2wZPH6S+lb11/a9spV5xGZFlwoNJ
+	9+HlYXaHHtDAgbk+KtDiHfdkPfbJnJuOz0OycQS3cGMGsEkB/19EBwY=
+X-Gm-Gg: ASbGncsWJtwCI5Nfu3ZG0lOQFsFPe/T86eCxL55gpacwyku20KpQwNY/c919DMxjQB+
+	r1iVRAT2gHNdU0JzMOPhwlCz4hKuNGAJKTIRjYsdca6VFZc+clXTpS0Y6YUflN9ckzOAAGxNgGj
+	UI71NBJdOL9q+lfHTAnyxJxyE8cROlY70ZFeuB9g2pWNF0STaWU4wh+Vtkg7QHGO3g6xaC288bu
+	EZHr5GK6xFGvUZk64nROrqRokcbW3pEsP71/8R/fkcDMm6yBtVuvOTOfz6mjYAN6kpKyQZ5ixlo
+	6zpMkmF/KPL1uWYflrpegLNZog8mnvAaNtF/BdyQqirRENw0SfQEpbzDh0HodF3qZ+B0uoH2v5+
+	zJzR65Xh/8lSLEVVz2uqbrCeCAEycxn3zF5bEnn60czB8OU1I0slyVRpTZeXLUzCPEYYdLz43fR
+	fymIB372wUGS8XotK9sXPsaEx8hytc2YfYEFeOaPzgqJoDAIDrGGI0FfoVoLzPnQ==
+X-Google-Smtp-Source: AGHT+IFzalpz4I7N4GW5iAQvE1IHT4hcwYoMkH4rdlEMLAfJYgGKj+R8HqkyYQFmUVrdcF3vsI9GFg==
+X-Received: by 2002:a05:6000:220c:b0:426:fd63:bbc0 with SMTP id ffacd0b85a97d-42704d786c2mr16326022f8f.27.1761136083310;
+        Wed, 22 Oct 2025 05:28:03 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057850.dip0.t-ipconnect.de. [91.5.120.80])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f00ce3aesm25354082f8f.48.2025.10.22.05.28.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Oct 2025 05:28:02 -0700 (PDT)
+Message-ID: <7965a547-2267-4f09-af62-0b81a2d8dae7@googlemail.com>
+Date: Wed, 22 Oct 2025 14:28:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.17 000/160] 6.17.5-rc2 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20251022053328.623411246@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20251022053328.623411246@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251017151830.171062-5-prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Hello Lad,
+Am 22.10.2025 um 07:34 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.17.5 release.
+> There are 160 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Thanks for your work.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No more screen problems, no dmesg oddities or 
+regressions found.
 
-On 2025-10-17 16:18:30 +0100, Prabhakar wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> 
-> Add a final dma_wmb() barrier before triggering the transmit request
-> (TCCR_TSRQ) to ensure all descriptor and buffer writes are visible to
-> the DMA engine.
-> 
-> According to the hardware manual, a read-back operation is required
-> before writing to the doorbell register to guarantee completion of
-> previous writes. Instead of performing a dummy read, a dma_wmb() is
-> used to both enforce the same ordering semantics on the CPU side and
-> also to ensure completion of writes.
-> 
-> Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-> Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-> ---
-> v1->v2:
-> - New patch added to separate out the memory barrier change
->   before ringing the doorbell.
-> ---
->  drivers/net/ethernet/renesas/ravb_main.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> index 0e40001f64b4..c3fc15f9ec85 100644
-> --- a/drivers/net/ethernet/renesas/ravb_main.c
-> +++ b/drivers/net/ethernet/renesas/ravb_main.c
-> @@ -2232,6 +2232,14 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
->  		dma_wmb();
->  		desc->die_dt = DT_FSINGLE;
->  	}
-> +
-> +	/* Before ringing the doorbell we need to make sure that the latest
-> +	 * writes have been committed to memory, otherwise it could delay
-> +	 * things until the doorbell is rang again.
-> +	 * This is in replacement of the read operation mentioned in the HW
-
-nit: I would spell out hardware here, if you do a v3.
-
-> +	 * manuals.
-> +	 */
-> +	dma_wmb();
->  	ravb_modify(ndev, TCCR, TCCR_TSRQ0 << q, TCCR_TSRQ0 << q);
->  
->  	priv->cur_tx[q] += num_tx_desc;
-> -- 
-> 2.43.0
-> 
+Beste Grüße,
+Peter Schneider
 
 -- 
-Kind Regards,
-Niklas Söderlund
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
