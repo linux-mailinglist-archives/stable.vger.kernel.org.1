@@ -1,139 +1,146 @@
-Return-Path: <stable+bounces-188915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CDEBFAA30
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:42:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 622B7BFAAB1
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D62AD5070C0
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 07:42:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35D9018C7EC0
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 07:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA312FB98E;
-	Wed, 22 Oct 2025 07:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979752FD1BF;
+	Wed, 22 Oct 2025 07:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="S2CX+9xO";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DU/wXHAj"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="a2eq5ARI"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581572FB61C;
-	Wed, 22 Oct 2025 07:40:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6C52FC873;
+	Wed, 22 Oct 2025 07:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761118857; cv=none; b=VPFnHntlaG5tQU4fn85M0KMYIwuSi8nlNCHQ1twkcSaKFfYnRkSDszMJONA8rzHqJ+oaN4ktPcl2hFglcGnOJKXsHkq6cODLr1i8lzPFfba+jeNbe4mSNblwYrqFHt1XjA3SEmSpXxa+PyGt1xfOm7+Jj9x4TZHnXh8TUKulH/8=
+	t=1761119257; cv=none; b=jBD51zTYxgnl3fL+sGR66l1krZvOom0tiNde9vJ2iH5mGJq3LgQiNRNRSks9BRHssV969q2yYx2JDErZZEYfOmFW7nuw4N8F6xv9TdTJkule3ZDYy4NrVoJQiTDHvSjRz170ehtfv5v5I1CmuyPtr4rsm+AhM6rf2YbAf46P8Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761118857; c=relaxed/simple;
-	bh=ptsr+CkrEYXAO4QKKRWMvqPRb8OQOyW1l37qGvBpwuA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kgy3igNi7wePPMhTDqEEvnHudDhWXHtgMLf2bGLTbrj0HeEsZB5z+Py7j6ePlpCzxbJtkxlbbNhTaxT5Brn7FjCScwDVCsNbANHMDwjdc1byr3PGkUK0QdyeJKQhCwqSDq8n1LaazT4DTa8VYNLEgfyDe0aJgc2NfX0xJ5j+m1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=S2CX+9xO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DU/wXHAj; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfout.phl.internal (Postfix) with ESMTP id 42678EC0183;
-	Wed, 22 Oct 2025 03:40:53 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Wed, 22 Oct 2025 03:40:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1761118853; x=1761205253; bh=9u/6AOHdyJ
-	KLm2MAVj/gg3WnnXnpnA5iTO0PKfyo/5U=; b=S2CX+9xO+lB5b8QIcajBhxlNP9
-	B6S0lIMXmIEIHLe0mBNFn53EkW9n3eRhfYHhGyW6Q8HTO2V4HJKSYkXqUSGPpSOS
-	mX7L0xZ+YAsYs6GU9T5KSu8wSHcB4zXguoOe+DpboeDuYh9qYO3Daznip60lTbyB
-	pXe2flQNFYvMEEj2+YEd/OpC68yX2Ei8bG0LQueWg+93vvwZPmVv6rWKiZXjZJx1
-	jb5aDkcBjo/8TSYZUAQv1BSxoYQ7P1l117xNRhFcTJzewh17ZIsCJC8zXBbD/c7J
-	mkritEo8EsTxvYU7j+MXUwJt0AnWQPD7Rdz8tQPXX1lE2Db+QuvCZ8LGYjOg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1761118853; x=1761205253; bh=9u/6AOHdyJKLm2MAVj/gg3WnnXnpnA5iTO0
-	PKfyo/5U=; b=DU/wXHAj0AuA/qtjvo2fDScseQKQ4OMji/CnkC7szRlxmbbDWCv
-	rGNG16shMn0eboV1GejawCJ3DBb98pWeLiFmkfUyxOuG3L8XMcGd6WKwC5xoQxM/
-	N89Dxj1/wOVspufdjh/9QFCP8Hs17ncM+JS8omOD8YATEfOXdBD9pHkJs4HhITAp
-	nzdBxUPedvEersg9PedjWUqtfbqApJP8tyXeX0kE+0/nQTBTvN1M2zT8j9g1/8rW
-	/2aZ/Dn1xSC9yFM4c8Xsa/QjGC9celo4R4dwI3rZ6d/5G9j0dDu1I04AGBfppGy4
-	Fvp8WZ3ryPfGRX+A4sBCn3fmnGMi6vESRtg==
-X-ME-Sender: <xms:hIr4aLlAkY4zwtHdoPYzDEThSSYDKiJbNeqGUBF3uWGWfisNuhE-tQ>
-    <xme:hIr4aHlgs-mwtp1Qbf5F5Vbx43rgjXqeLQponxF18l-tPIyAk6l2KAXQQslts92Io
-    Y8i2RWO00reWipJGVCjvMca-mJWS611MmQjkILGISo0w0VZmg>
-X-ME-Received: <xmr:hIr4aAXpN9J0gX4tRVJFrMqBBVZeMpM2bqQwB9Uajdzv4o5A9N1MIWtK>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeeftddtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
-    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
-    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
-    gtohhmpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    oheplhgvohhnrdhhfigrnhhgsehlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslh
-    gvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhig
-    qdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrth
-    drtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
-    tghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
-    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlrghntggvrdihrg
-    hngheslhhinhhugidruggvvh
-X-ME-Proxy: <xmx:hIr4aF9M30XQygfl7U-P6vIcPnB5h_FMk1MekPlYvg2aVh15tPH9og>
-    <xmx:hIr4aNqd-8PMwOlgRSJEGQjZ-7PiXKIFBW3N7mIj5-3_hXb4R48Jjg>
-    <xmx:hIr4aHnI4hZqJrIurvlLueaonGwfj55DByZl4_l256-hg_KTCc_0Fg>
-    <xmx:hIr4aBYb3lFJsPbTSmNmiGw_1_Q0jffZuO2XT91gIVjladboH6cvqw>
-    <xmx:hYr4aC1uwQoSH2P8BZR-2V4Ltoxt1wCMWv6d1hEpg4nNI-tMkewhJZof>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Oct 2025 03:40:52 -0400 (EDT)
-Date: Wed, 22 Oct 2025 09:40:49 +0200
-From: Greg KH <greg@kroah.com>
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, shuah@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
- vm_util.c
-Message-ID: <2025102230-scoured-levitator-a530@gregkh>
-References: <20251022055138.375042-1-leon.hwang@linux.dev>
+	s=arc-20240116; t=1761119257; c=relaxed/simple;
+	bh=J8lI3pRi+FHOLMgixx/WcXitesh7xzPj+PHBZicAT/c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A+2EblIL7ksKUzEbAmfjc06KePgIOFSgR0pdQ5ykX0EKOoQsiDC869hQ7GwZotuRJGJjCq/5ifZ2PV0XzLVkPpN5Lx66DXtMqlfa8915v5X2Ezbw8iO7yS4qVT76X7/fAvEg6RhtZ5ZC1Y/S09RD7uaAAXWo2LfN+uisXsgagPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=a2eq5ARI; arc=none smtp.client-ip=115.124.30.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761119251; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=H+qvTFZ8jw1vc9BmwmZE7CbJfZv05rrBieJVcIWZoxI=;
+	b=a2eq5ARIDi1BZcTm1e4rsd/klmSJk6cSJX88TcThxDqkgUybKtSVyuifFHNoWfWxzA+zznO8yxLK+TwAuYOfxnI4rCQJABfG/B/37Birq3mGklkEsVqe9MfqGGLDCpC7RBsyzsrro7sQ/brBUNPhjxzM2JRg05h4+9wjPllkFbY=
+Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wqm-W--_1761119248 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 22 Oct 2025 15:47:28 +0800
+Message-ID: <6d67cbbf-a609-491e-a0c3-a3d5fd782966@linux.alibaba.com>
+Date: Wed, 22 Oct 2025 15:47:27 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251022055138.375042-1-leon.hwang@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/shmem: fix THP allocation size check and fallback
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Hugh Dickins <hughd@google.com>, Dev Jain <dev.jain@arm.com>,
+ David Hildenbrand <david@redhat.com>, Barry Song <baohua@kernel.org>,
+ Liam Howlett <liam.howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Mariano Pache <npache@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251021190436.81682-1-ryncsn@gmail.com>
+ <65f4dd0b-2bc2-4345-86c2-630a91fcfa39@linux.alibaba.com>
+ <CAMgjq7D_G=5bJe_Uj11sHV2qCyu-Z-3PZu7QuZyPEhuFiE63wQ@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAMgjq7D_G=5bJe_Uj11sHV2qCyu-Z-3PZu7QuZyPEhuFiE63wQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 22, 2025 at 01:51:38PM +0800, Leon Hwang wrote:
-> Fix the build error:
+
+
+On 2025/10/22 13:48, Kairui Song wrote:
+> On Wed, Oct 22, 2025 at 9:25 AM Baolin Wang
+> <baolin.wang@linux.alibaba.com> wrote:
+>>
+>>
+>>
+>> On 2025/10/22 03:04, Kairui Song wrote:
+>>> From: Kairui Song <kasong@tencent.com>
+>>>
+>>> There are some problems with the code implementations of THP fallback.
+>>> suitable_orders could be zero, and calling highest_order on a zero value
+>>> returns an overflowed size. And the order check loop is updating the
+>>> index value on every loop which may cause the index to be aligned by a
+>>> larger value while the loop shrinks the order.
+>>
+>> No, this is not true. Although ‘suitable_orders’ might be 0, it will not
+>> enter the ‘while (suitable_orders)’ loop, and ‘order’ will not be used
+>> (this is also how the highest_order() function is used in other places).
 > 
-> map_hugetlb.c: In function 'main':
-> map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
->    79 |         hugepage_size = default_huge_page_size();
->       |                         ^~~~~~~~~~~~~~~~~~~~~~
-> /usr/bin/ld: /tmp/ccYOogvJ.o: in function 'main':
-> map_hugetlb.c:(.text+0x114): undefined reference to 'default_huge_page_size'
+> Maybe I shouldn't mix the trivial issue with the real issue here,
+> sorry, my bad, I was in a hurry :P.
+> I mean if suitable_orders is zero we should just skip calling the
+> highest_order since that returns a negative value. It's not causing an
+> issue though, but redundant.
+
+I think compiler can optimize this(?).
+
+>>> And it forgot to try order
+>>> 0 after the final loop.
+>>
+>> This is also not true. We will fallback to order 0 allocation in
+>> shmem_get_folio_gfp() if large order allocation fails.
 > 
-> According to the latest selftests, 'default_huge_page_size' has been
-> moved to 'vm_util.c'. So fix the error by the same way.
+> I thought after the fix, we can simplify the code, and maybe reduce
+> the call to shmem_alloc_and_add_folio to only one so it will be
+> inlined by the compiler.
 > 
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-> ---
->  tools/testing/selftests/vm/Makefile      |  1 +
->  tools/testing/selftests/vm/userfaultfd.c | 24 ------------------------
->  tools/testing/selftests/vm/vm_util.c     | 21 +++++++++++++++++++++
->  tools/testing/selftests/vm/vm_util.h     |  1 +
->  4 files changed, 23 insertions(+), 24 deletions(-)
+> On second thought some more changes are needed to respect the
+> huge_gfp. Maybe I should send a series to split the hot fix with clean
+> ups.
 
+Yes, I've considered simplifying this, but it would require more 
+changes, making it less readable compared to how it is now. Of course, 
+if you have a better approach, feel free to try cleaning it up in 
+another thread.
 
-What commit id does this fix?  And again, why not just take the original
-commits instead?
+> But here the index being modified during the loop do need a fix I
+> think, so, for the fix part, we just need:
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 29e1eb690125..e89ae4dd6859 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1895,10 +1895,11 @@ static struct folio
+> *shmem_alloc_and_add_folio(struct vm_fault *vmf,
+>                  order = highest_order(suitable_orders);
+>                  while (suitable_orders) {
+>                          pages = 1UL << order;
+> -                       index = round_down(index, pages);
+> -                       folio = shmem_alloc_folio(gfp, order, info, index);
+> -                       if (folio)
+> +                       folio = shmem_alloc_folio(gfp, order, info,
+> round_down(index, pages));
+> +                       if (folio) {
+> +                               index = round_down(index, pages);
+>                                  goto allocated;
+> +                       }
+> 
+>                          if (pages == HPAGE_PMD_NR)
+>                                  count_vm_event(THP_FILE_FALLBACK);
 
-thanks,
-
-greg k-h
+Good catch. I've fixed one similar issue with commit 4cbf320b1500 ("mm: 
+shmem: fix incorrect aligned index when checking conflicts"), but I 
+missed this part. Please resend the bugfix patch with a correct commit 
+message and remove the cleanup changes.
 
