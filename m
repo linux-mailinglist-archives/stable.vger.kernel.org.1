@@ -1,99 +1,138 @@
-Return-Path: <stable+bounces-188904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882B5BFA3EB
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:34:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1669BFA439
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2501419A3D12
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 06:34:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AD7418C23B6
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 06:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734C72EC0AD;
-	Wed, 22 Oct 2025 06:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676B92EE268;
+	Wed, 22 Oct 2025 06:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rqT+dBEZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPrhTjdt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ED0257824;
-	Wed, 22 Oct 2025 06:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EF72566DF
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 06:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761114867; cv=none; b=Ac3dKSBurT8gXurcSOHRaYHCRExbZj0Y46zzWBSSf23eApF2gUfHnZPhQ/N937N3mrZJEoCbJ5CubCq/lKkckasPVKs2Lsws2TLgML4TY8gLkyDWLM5EoO4zIn/OoEeSqBOquqgZk8/ccjv0yb5Nkm+McfHYPsaCY02H5cE/Y28=
+	t=1761115158; cv=none; b=m43+gZctQieJZTBBNRYplqCQ+OmQGUoolmjILAI4+7PYHlCUyrS3TrFnSJ/66CN9RJKF/b00Q8OluzTxf9G1Gtc1Ae9lN81joQQ7v4vrgQjlX2ccBEd+2mNlaxvpvpFxKc6nGLPytjWBrcuT6TZJePuFK6wUay+VJNVVAQfkZRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761114867; c=relaxed/simple;
-	bh=9L6GffcfeerIeIPNhor4pQw206J3UW0w+l+X2vVd58Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d/Bmu1p3bs9VGUGUybZ+c4fR2dWayTFDi6XZ6/yARiPOq+YbsFUsgnIldgtQp1B5cZOHlr43ZYbjJXQTs64i+5dV+LT34oytzDWbkxqxVNvVwtYXs9G99slQwVLha/6bBCNt1Z2VSmpBF2vNh8oLcqUYIvuhnR/JI27sGvc1HM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rqT+dBEZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C356C4CEE7;
-	Wed, 22 Oct 2025 06:34:23 +0000 (UTC)
+	s=arc-20240116; t=1761115158; c=relaxed/simple;
+	bh=hm4nlhtNPGmEi69KVa2bKeYCOGjdSHFu7LVZDz9W3nY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cFJukxGZZVf5WP4B3SDSBA3THHPxe9QQmu8RiUYaqrxkTu59bNSdxwm37Y4mQ9RP+0MaOAxBv1BDvkJga51G8x+qNQybywMhTHfBNWY0ktjWZ9WCfWnAH96crVEGFx0PFjY2krqLViRYPwgKeSwrk5Bf6D1AmAD561k9QKBSrFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPrhTjdt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E58C4CEF5
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 06:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761114866;
-	bh=9L6GffcfeerIeIPNhor4pQw206J3UW0w+l+X2vVd58Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=rqT+dBEZS1BAr8dG7SJabEEAdUnmoXAKiBJcIwMwmCSQ25lBTLANAXSBdmO6Z0NaD
-	 /oi0yCnC3gLYpt+gHLhwgwl+tzMCWJnYYeGHM00CLzX1bKdBfrScWfb3NrgiHS3lcb
-	 0cEVA8ib1hLARnLLg6srznHciBxJwR+wHRpTjV2FxfY2dCT5myrjUIIc3qjAgCYChK
-	 ucFO9ybs+w70nLr6aZYcMTzAOTxZ+a3+wpBNAYnN3uUGos44Gkf2BD/Rldr1x5eKro
-	 BG7OG/l+o2YzVkxpNnPOLAanDNGxX5ZlCJPPYlB4uuS2lLxfAn+fCelrBdKEZzVhw1
-	 g6yCSR6v7X3iA==
-From: Philipp Stanner <phasta@kernel.org>
-To: Matthew Brost <matthew.brost@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Stanner <phasta@kernel.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/sched: Fix race in drm_sched_entity_select_rq()
-Date: Wed, 22 Oct 2025 08:34:03 +0200
-Message-ID: <20251022063402.87318-2-phasta@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	s=k20201202; t=1761115157;
+	bh=hm4nlhtNPGmEi69KVa2bKeYCOGjdSHFu7LVZDz9W3nY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=iPrhTjdtk1xC+sPY84Z3bYO9UV8Ek7rfvrmG8cIeTnOFtXE6kc0tdo/lT9MVfGfHG
+	 4Md+zJekPfm3E1Bqhsjsnc8JTL+zJE5US1jOiEWTz/EQGNLprrOf3bfZEcX60jOlja
+	 QXg4vReraVA6IQD7ofFajXhHtt36Z+MSz/BIWB/o6Z6rV5O/bCec9/vlhaF3hql+OH
+	 Vz59YZ6eLJSZKN8BCUVB1I0Bn1jJpgpaBfO4XtHvVyOBZ+++r+7n2Vy05w/LDlpNb1
+	 brj3JruW0aknAiaGUuBcV4fZ1ivE4d2CMny2yPO4qaBsfg4Oq32NmUFmf8+b50yAx1
+	 dm6Z+5SAf4+OA==
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-63e0abe71a1so2242944a12.1
+        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 23:39:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV4GY/orufdtzUK+7nUdkY6KYxoSxjoma1LWWDqDxIuBjvzKHuRvNb9mR8owl8obceHKBvQPPg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysDKk72FJzBGhbCWKgXFvMOIEKUrEycgs7ZSrSQutKYeq8ZoRa
+	1pI+PZ7bgHhmtcfNcvG+erT4aIjKg6CdHqqJWjcPy2pC76JFrXEup8itBtOGSWIwcFNnAJG5oUv
+	5OSmNtlhdFg8HXmEa1sjbCKA2KIXn+Mg=
+X-Google-Smtp-Source: AGHT+IEVbw59KyPcLUZsUJMNGGcdxdAw21EgXFnRXyi6U3bIi41kp6ndgSXyQYRN4XBLaNJoZbyTlyQ4X/MV3FzOgwU=
+X-Received: by 2002:a05:6402:358a:b0:61c:9852:bb9f with SMTP id
+ 4fb4d7f45d1cf-63c1f630745mr18498531a12.1.1761115156420; Tue, 21 Oct 2025
+ 23:39:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <2025102125-petted-gristle-43a0@gregkh> <20251021145449.473932-1-pioooooooooip@gmail.com>
+In-Reply-To: <20251021145449.473932-1-pioooooooooip@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Wed, 22 Oct 2025 15:39:03 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd-JFuBptqzEbgggUhaF2bEfWMRXCSK9N_spiBxvi1v0Wg@mail.gmail.com>
+X-Gm-Features: AS18NWCL_qZDAmZMV5o8SxFrFzgvvH5lIHZHd4Cjd8dpv-koKZ4OHU2zTrTPt68
+Message-ID: <CAKYAXd-JFuBptqzEbgggUhaF2bEfWMRXCSK9N_spiBxvi1v0Wg@mail.gmail.com>
+Subject: Re: [PATCH] ksmbd: transport_ipc: validate payload size before
+ reading handle
+To: Qianchang Zhao <pioooooooooip@gmail.com>
+Cc: Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Tom Talpey <tom@talpey.com>, linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	gregkh@linuxfoundation.org, stable@vger.kernel.org
+Content-Type: multipart/mixed; boundary="0000000000004ef5df0641b993b8"
 
-In a past bug fix it was forgotten that entity access must be protected
-by the entity lock. That's a data race and potentially UB.
+--0000000000004ef5df0641b993b8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Move the spin_unlock() to the appropriate position.
+On Tue, Oct 21, 2025 at 11:55=E2=80=AFPM Qianchang Zhao <pioooooooooip@gmai=
+l.com> wrote:
+>
+> handle_response() dereferences the payload as a 4-byte handle without
+> verifying that the declared payload size is at least 4 bytes. A malformed
+> or truncated message from ksmbd.mountd can lead to a 4-byte read past the
+> declared payload size. Validate the size before dereferencing.
+>
+> This is a minimal fix to guard the initial handle read.
+>
+> Fixes: 0626e6641f6b ("cifsd: add server handler for central processing an=
+d tranport layers")
+> Cc: stable@vger.kernel.org
+> Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+> Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+I have directly updated your patch. Can you check the attached patch ?
+Thanks!
 
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: ac4eb83ab255 ("drm/sched: select new rq even if there is only one v3")
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
----
- drivers/gpu/drm/scheduler/sched_entity.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+--0000000000004ef5df0641b993b8
+Content-Type: text/x-patch; charset="US-ASCII"; 
+	name="0001-ksmbd-transport_ipc-validate-payload-size-before-rea.patch"
+Content-Disposition: attachment; 
+	filename="0001-ksmbd-transport_ipc-validate-payload-size-before-rea.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mh1mgnbo0>
+X-Attachment-Id: f_mh1mgnbo0
 
-diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
-index 5a4697f636f2..aa222166de58 100644
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -552,10 +552,11 @@ void drm_sched_entity_select_rq(struct drm_sched_entity *entity)
- 		drm_sched_rq_remove_entity(entity->rq, entity);
- 		entity->rq = rq;
- 	}
--	spin_unlock(&entity->lock);
- 
- 	if (entity->num_sched_list == 1)
- 		entity->sched_list = NULL;
-+
-+	spin_unlock(&entity->lock);
- }
- 
- /**
--- 
-2.49.0
-
+RnJvbSAxNzdhZjYxMDI1Mjc1NzFlYWEzODEzMjNkZGRkNzA4NGMyMDMzNTNlIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBRaWFuY2hhbmcgWmhhbyA8cGlvb29vb29vb29pcEBnbWFpbC5j
+b20+CkRhdGU6IFdlZCwgMjIgT2N0IDIwMjUgMTU6Mjc6NDcgKzA5MDAKU3ViamVjdDogW1BBVENI
+XSBrc21iZDogdHJhbnNwb3J0X2lwYzogdmFsaWRhdGUgcGF5bG9hZCBzaXplIGJlZm9yZSByZWFk
+aW5nCiBoYW5kbGUKCmhhbmRsZV9yZXNwb25zZSgpIGRlcmVmZXJlbmNlcyB0aGUgcGF5bG9hZCBh
+cyBhIDQtYnl0ZSBoYW5kbGUgd2l0aG91dAp2ZXJpZnlpbmcgdGhhdCB0aGUgZGVjbGFyZWQgcGF5
+bG9hZCBzaXplIGlzIGF0IGxlYXN0IDQgYnl0ZXMuIEEgbWFsZm9ybWVkCm9yIHRydW5jYXRlZCBt
+ZXNzYWdlIGZyb20ga3NtYmQubW91bnRkIGNhbiBsZWFkIHRvIGEgNC1ieXRlIHJlYWQgcGFzdCB0
+aGUKZGVjbGFyZWQgcGF5bG9hZCBzaXplLiBWYWxpZGF0ZSB0aGUgc2l6ZSBiZWZvcmUgZGVyZWZl
+cmVuY2luZy4KClRoaXMgaXMgYSBtaW5pbWFsIGZpeCB0byBndWFyZCB0aGUgaW5pdGlhbCBoYW5k
+bGUgcmVhZC4KCkZpeGVzOiAwNjI2ZTY2NDFmNmIgKCJjaWZzZDogYWRkIHNlcnZlciBoYW5kbGVy
+IGZvciBjZW50cmFsIHByb2Nlc3NpbmcgYW5kIHRyYW5wb3J0IGxheWVycyIpCkNjOiBzdGFibGVA
+dmdlci5rZXJuZWwub3JnClJlcG9ydGVkLWJ5OiBRaWFuY2hhbmcgWmhhbyA8cGlvb29vb29vb29p
+cEBnbWFpbC5jb20+ClNpZ25lZC1vZmYtYnk6IFFpYW5jaGFuZyBaaGFvIDxwaW9vb29vb29vb2lw
+QGdtYWlsLmNvbT4KQWNrZWQtYnk6IE5hbWphZSBKZW9uIDxsaW5raW5qZW9uQGtlcm5lbC5vcmc+
+ClNpZ25lZC1vZmYtYnk6IFN0ZXZlIEZyZW5jaCA8c3RmcmVuY2hAbWljcm9zb2Z0LmNvbT4KLS0t
+CiBmcy9zbWIvc2VydmVyL3RyYW5zcG9ydF9pcGMuYyB8IDggKysrKysrKy0KIDEgZmlsZSBjaGFu
+Z2VkLCA3IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9mcy9zbWIv
+c2VydmVyL3RyYW5zcG9ydF9pcGMuYyBiL2ZzL3NtYi9zZXJ2ZXIvdHJhbnNwb3J0X2lwYy5jCmlu
+ZGV4IDQ2Zjg3ZmQxY2UxYy4uMmMwOGNjY2ZhNjgwIDEwMDY0NAotLS0gYS9mcy9zbWIvc2VydmVy
+L3RyYW5zcG9ydF9pcGMuYworKysgYi9mcy9zbWIvc2VydmVyL3RyYW5zcG9ydF9pcGMuYwpAQCAt
+MjYzLDEwICsyNjMsMTYgQEAgc3RhdGljIHZvaWQgaXBjX21zZ19oYW5kbGVfZnJlZShpbnQgaGFu
+ZGxlKQogCiBzdGF0aWMgaW50IGhhbmRsZV9yZXNwb25zZShpbnQgdHlwZSwgdm9pZCAqcGF5bG9h
+ZCwgc2l6ZV90IHN6KQogewotCXVuc2lnbmVkIGludCBoYW5kbGUgPSAqKHVuc2lnbmVkIGludCAq
+KXBheWxvYWQ7CisJdW5zaWduZWQgaW50IGhhbmRsZTsKIAlzdHJ1Y3QgaXBjX21zZ190YWJsZV9l
+bnRyeSAqZW50cnk7CiAJaW50IHJldCA9IDA7CiAKKwkvKiBQcmV2ZW50IDQtYnl0ZSByZWFkIGJl
+eW9uZCBkZWNsYXJlZCBwYXlsb2FkIHNpemUgKi8KKwlpZiAoc3ogPCBzaXplb2YodW5zaWduZWQg
+aW50KSkKKwkJcmV0dXJuIC1FSU5WQUw7CisKKwloYW5kbGUgPSAqKHVuc2lnbmVkIGludCAqKXBh
+eWxvYWQ7CisKIAlpcGNfdXBkYXRlX2xhc3RfYWN0aXZlKCk7CiAJZG93bl9yZWFkKCZpcGNfbXNn
+X3RhYmxlX2xvY2spOwogCWhhc2hfZm9yX2VhY2hfcG9zc2libGUoaXBjX21zZ190YWJsZSwgZW50
+cnksIGlwY190YWJsZV9obGlzdCwgaGFuZGxlKSB7Ci0tIAoyLjI1LjEKCg==
+--0000000000004ef5df0641b993b8--
 
