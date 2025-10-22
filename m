@@ -1,52 +1,81 @@
-Return-Path: <stable+bounces-189025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D008BFD9B4
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 19:35:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 017CFBFD9C0
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 19:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D3343AF52B
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 17:31:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86A1F3AC226
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 17:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899EB2C11FE;
-	Wed, 22 Oct 2025 17:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9B82C21EA;
+	Wed, 22 Oct 2025 17:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="glxIbN8Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hMp9SCMN"
 X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4A037160;
-	Wed, 22 Oct 2025 17:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201432C21D3
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 17:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761154248; cv=none; b=U+Xl73M1EbiDwdiW33CBL3cQjIiGyPusBUJjRGs6K4KuD0ickVG7urLbw+ebms0c5ZCVF0F136T/Inz2s2fuHOF96jFAjD/HWr1mXKv9qwe4MvyJmMCvxuAWdshZSJ06vdqLLeZHjaBTskGOUUJweWK4asLDzy4mAvCH3Zx6hro=
+	t=1761154395; cv=none; b=FmPANhHrG8H+tzi19ZalWjkGLKeGu7WwgjjO1i0HW3JWqjxHhXdfi9r7oaj7S8V3F4RAV1kio5/L+xjftISbxq0U2Z7O2N90WSWB85l+RVUC0aMEwIDyogbcxMMqtKCqwhVnA8qjMhzIcNDGkIJ50pUm+leYp15u1YtpeYxp0c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761154248; c=relaxed/simple;
-	bh=1qmY/CwBJD83zWmp5rWvoLYG9ya3rrBEJYcOdtURn9c=;
+	s=arc-20240116; t=1761154395; c=relaxed/simple;
+	bh=X6lF8zIJjF7s5ROui5zboNzCSWi7qJozziFtgW7mR/A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CRukTAoiVztyUGq/rd102UDRs7UAsu0HApiTz7JaJGUVGq3WLpcjmwPOH67iZOep5H9uqqfVjejfCo7MndkMFzB7CYbKrfTg/oMX5wE13Xw4B/S/X1XXWA+HldZNNA5ZZ9QlknOG6nasXjlYSgfmm0y2PCru//lfGBD85KMkV5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=glxIbN8Q; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=CeC5OMKBMYRDelbMUjaS7F56dsB+qLx2c1x5CAej9Xk=; b=glxIbN8QhiARCJCgYFMGzZKmGB
-	LHkhlk24oX1rrwwapt8AOyvPPKlqODK0OMgTF+pVDD9HLLmFIDRlf8acW9OFzidRESCmNRKLZK9iJ
-	nWqdjjv+Bs/v7am+Zu/LUV4dYXRlk45eqo+FIcmrOuUgPOO0eefHt8ay6nVzyNFG/Ot8L0cQU8Ywb
-	NdSxIXMTtA2k4rr+GyWuSWlqTOopUcGfJysRaP2xwACp5+V39TVWzAN3qS2g7Pe29xBDgiXaK4D78
-	j9pdEJ7/eaHV89ylxU8a383FFaM35SlCFpZywak45mLd/l1zpQPGqYmsRdVvmBT8ZUlaa5EMId1zS
-	32z9IpEw==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBcfd-00000003nIr-1V7h;
-	Wed, 22 Oct 2025 17:30:45 +0000
-Message-ID: <2997d8b9-a37a-4411-a5d8-b2cfcc3944b8@infradead.org>
-Date: Wed, 22 Oct 2025 10:30:44 -0700
+	 In-Reply-To:Content-Type; b=pWaJeuO/OZ9qQlRQTgY59uSve7U9tBEI36jNcIQuuiGP/kb3vFqPg4vZzFE6MzWUAVU8ksraSRfUSGs5ZfRgXgtwvUl74QBoSWY6KO3X3yh9Tj9ybIoWmgE2niuuhm+FobHCOMaghWczbDUV3ytm+LZPNSUbGjB4RV8qjtjF4yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hMp9SCMN; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-781997d195aso5451773b3a.3
+        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 10:33:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761154393; x=1761759193; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OroZpdIC1yf+MDvOR3gnvSgvT2N1FiEkEXy4YQzpI70=;
+        b=hMp9SCMNjvPhuLTXuw6lmv3mrsZRWO+t91neV44I7KqAWMkCE78QUmXOY0oGm+Pfyt
+         rTme2YCzB/NmRU9R8kLLiCLPvMrq9St5MpLMTyJUP3QrRrqhDR1K9bhxMacnVUlwGHKZ
+         cEPhnBz5w8PmDeOGFznaQGCwgkmbp7WDhmlJV4y0vsSr+WvN1cpe18LBQ0otkcvpFDqT
+         p/4xoN2hFMiNaQBt5uzAMN3qCIF0vW0gt2C/UzhV5pXlc22k6cIej1p2m+ReBFWqizvG
+         Dn70GyDs29YoOyASX+b/8DPXxhtkqf7gW9QJKH8FwnqRLmHNbzmbE5KjOj52HcDnnIwH
+         ZkeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761154393; x=1761759193;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OroZpdIC1yf+MDvOR3gnvSgvT2N1FiEkEXy4YQzpI70=;
+        b=Yo/FoBlsZn8oPMSzJxxDSeTZhySd0dnyztkopd/sNPA5JdLumPHspoFz/YXShAPBAh
+         flDMDcsPrsoMAC9fBG6Iu75uUZ34Q84g85WW7/XNp2FWgODHshE4PzEVRTEADJu+JMf/
+         i6X0rGwAPOwSnIveXgGtItyQgokLsPX0ngV6ZKoD1b1GQgxDt5dS6aeSBmRy9Du+Hm3T
+         BXS1AH7XzvhqKFOZ6ms0xr0jIt4A1zPyWbGOFkP8ooX+VO7oAphgUTXIO3LWFmnH1aEk
+         SW3ZdE5C4ud7+9HcrUURJb4Q0RKancwPZbJ4MCmmrNIkYBKop7ugK4n65r/HgMxV8NaJ
+         bgeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW0kQz67ZrgEkeCk90tCGTLzk3bHJlQc/yJN+EhOWCj6EilOudLIr2mqJuRuF3q61Gph05+hHk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVwa7psIUBmHqf7h5z60csQyZFEtKbucf2LoI99bSYzUt4S+E1
+	wEaw3o/3f1ZkTY2V3gPodWTbS5ioriaq7K1jgd3JiahVM67Lj/h53Efr
+X-Gm-Gg: ASbGnctG9h0ho7QUkoadsdEb+1zweLmkmLscl0hj3nX7uJ8BiZBPmYwoCvhf7gr6BNF
+	txYARe5erBnsfnehMKoIvQYy7KvygAl3NueD6lktmSV8/pNfRyr6B1SDYY/v5EXF0DW+ez7+vGz
+	XretAo4lwUVsGPAlJi9vHKzSwMjzqTLYLAuol82TSKPVSUuJP3WdxpAgdI3cEkSE7P0AOLh/V7o
+	eaicFJfpZZef2M5X8cwCK6EVqC7/aYDwf/DuQ7EAzJxhUVbPT4xRW9e4gm/60ChT5WCwhvhsYfv
+	LnS9pVK4CvVi85QHIP/zC+5fw2R/GydbifqLKiBi+FbfsLxQT9/8Q/GjQ1Vd76j1VyVIIp0BlO7
+	SDxHDEVK4HOaaeHcCGP73hrri3o7UCmXQ9tCIJI8rZZ8ZLKLeBu5TocqxOoRnRwK2+R8G5QxZbM
+	V+BbPNOL5q+HOysDl6xf7ihbVjT2MM9mvmESbl9Q==
+X-Google-Smtp-Source: AGHT+IH2Iq8OrJ8QYXSfjxY6+hOLsa6tF8yaRUdubPLGMOGZUqcxqkOZLieRbhpzfe7R9WCuEBEiww==
+X-Received: by 2002:a05:6a20:a11a:b0:262:1611:6528 with SMTP id adf61e73a8af0-334a85fdab2mr28401979637.29.1761154393201;
+        Wed, 22 Oct 2025 10:33:13 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a22ff349bcsm15116989b3a.17.2025.10.22.10.33.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Oct 2025 10:33:12 -0700 (PDT)
+Message-ID: <bd847f60-5d93-4924-8e92-ec0e3b809817@gmail.com>
+Date: Wed, 22 Oct 2025 10:33:09 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,63 +83,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Documentation: process: Also mention Sasha Levin as
- stable tree maintainer
-To: Bagas Sanjaya <bagasdotme@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Documentation <linux-doc@vger.kernel.org>,
- Linux Kernel Workflows <workflows@vger.kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-References: <20251022034336.22839-1-bagasdotme@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20251022034336.22839-1-bagasdotme@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH 6.12 000/135] 6.12.55-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20251022060141.370358070@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20251022060141.370358070@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
-On 10/21/25 8:43 PM, Bagas Sanjaya wrote:
-> Sasha has also maintaining stable branch in conjunction with Greg
-> since cb5d21946d2a2f ("MAINTAINERS: Add Sasha as a stable branch
-> maintainer"). Mention him in 2.Process.rst.
+On 10/22/25 01:19, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.55 release.
+> There are 135 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-
-
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-
-Now matches the MAINTAINERS file.
-
-Thanks.
-
-> ---
->  Documentation/process/2.Process.rst | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> Responses should be made by Fri, 24 Oct 2025 06:01:25 +0000.
+> Anything received after that time might be too late.
 > 
-> diff --git a/Documentation/process/2.Process.rst b/Documentation/process/2.Process.rst
-> index 8e63d171767db8..7bd41838a5464f 100644
-> --- a/Documentation/process/2.Process.rst
-> +++ b/Documentation/process/2.Process.rst
-> @@ -99,8 +99,10 @@ go out with a handful of known regressions, though, hopefully, none of them
->  are serious.
->  
->  Once a stable release is made, its ongoing maintenance is passed off to the
-> -"stable team," currently Greg Kroah-Hartman. The stable team will release
-> -occasional updates to the stable release using the 9.x.y numbering scheme.
-> +"stable team," currently consists of Greg Kroah-Hartman and Sasha Levin. The
-> +stable team will release occasional updates to the stable release using the
-> +9.x.y numbering scheme.
-> +
->  To be considered for an update release, a patch must (1) fix a significant
->  bug, and (2) already be merged into the mainline for the next development
->  kernel. Kernels will typically receive stable updates for a little more
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.55-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
 > 
-> base-commit: 0aa760051f4eb3d3bcd812125557bd09629a71e8
+> thanks,
+> 
+> greg k-h
 
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-~Randy
+Florian
 
