@@ -1,121 +1,182 @@
-Return-Path: <stable+bounces-188952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F408ABFB3BD
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:54:30 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D86DBFB3DD
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:55:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E30B74F3E57
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:54:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D20473568B8
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868BD314B8E;
-	Wed, 22 Oct 2025 09:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71ABD3168E8;
+	Wed, 22 Oct 2025 09:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MaxRNrmv"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C4D314A78;
-	Wed, 22 Oct 2025 09:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B91D314B8E;
+	Wed, 22 Oct 2025 09:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761126865; cv=none; b=CFpjLnNQ3kULLcu3gbQtkZ+AJdTsOeIZh7+sizFuIvMZSy1lOp+CN8hgj80qgjzgdgtJQzWQIgmH368yEP8E2yt2zXIOYlbPJ2FWzfN37ahs4zDObB0JiDoIk6K2DFsJYiCLcx+otxyGLh3v2y7b4PPxtU2Sqt+dwksu0dy6bCY=
+	t=1761126932; cv=none; b=iyb509a7xdcxnimt6draRafQLUmhaQ4I66vnNxpWxuKDN6Q5VYzpsWn/Yx65Kuz3ISJ6XxeghaSkk8JOzT/fzHNyUzZtmhQf3VIZHMJzbY/LRHIHAHZd34qZ54juLVwdrEKhvGhS9D8B9mmP0OKusu5lBIsXOm64UdWe/cIrx9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761126865; c=relaxed/simple;
-	bh=21fruIWNLjdivA6RFgeOV9STlHPvkZB2T0WctS2B14M=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=VyL/No0GP+A9PknVtgf6q3vVxs82L72yu6XK+0nGkFCWHU3zPLKbL5ZmvIM+3h2D0uBr95L7+rwKu1bT1CEvor5qalvtys6444FJpqWDPBRQFqybxTjEbdW5oS3jnWjoReFvT3R7VcwqBr1NZUV0hsTylC5srck+licAsRh8OC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-01 (Coremail) with SMTP id qwCowABnvZ+8qfhoyUDhEw--.32721S2;
-	Wed, 22 Oct 2025 17:54:14 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: syniurge@gmail.com,
-	shyam-sundar.s-k@amd.com,
-	andi.shyti@kernel.org,
-	wsa@kernel.org
-Cc: linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] i2c: fix reference leak in MP2 PCI device
-Date: Wed, 22 Oct 2025 17:54:02 +0800
-Message-Id: <20251022095402.8846-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:qwCowABnvZ+8qfhoyUDhEw--.32721S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zw17JF1rXr47XrWDGw4UJwb_yoW8Aw4fpF
-	WUJFWfArykGF4vgw1DX3W8ZFy3Aw4vvw4rWrWxCw1F93WrZas0kryktr909w15ArWqyF43
-	tFW7tayruFyjqaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9l14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUeF4EDUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1761126932; c=relaxed/simple;
+	bh=7i9Ez8UvNOZbo+rgVehka2n3g0H3oeOM4jQuNJXZ9tw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sGfgDSzsAK0bUkUhK2zXY8reSEgbi2uW7YorfZT3uQzZBTa4g3Rg0k9TcOfppQeqsAsRvF8KYZZoatoRMmVuMauhuGYQy9lQpgdP4MWFXeJg7q+tfxMYgb/TvYGnSbKOQayxzGqyDj/ajjSqxscJl5ynO413bYn63pUo8YJt8h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MaxRNrmv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024E8C4CEF5;
+	Wed, 22 Oct 2025 09:55:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761126931;
+	bh=7i9Ez8UvNOZbo+rgVehka2n3g0H3oeOM4jQuNJXZ9tw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MaxRNrmvX8kuENhtIKpWYOiD8IYJc50VTb693B6lZsQQhq1R7zHk8kCq4zG9gutD1
+	 /FSAt9+/5BT+ThL+vsgBgL1GxfggbFjrQdUFVu8apPMoBTI+k3qnD9FCkk4CLdLDak
+	 miDXzFG9NyzP5PsDE8/pI3cq3S4S6bBa51N57kpkmYuT3/oixoLWOsIG+ElSgjtQt/
+	 Jif4GLloCeTU3oN/sKG6Puonep0VMUgwDV6DjPH3LVmcnu9vI4Ydc90re3LCMLv0UN
+	 +/GespTrv7m4ePZ0YcK4l9wRKFn4kbIu49Z+k/GFyWkRRG1nRDYxLtLLLWjmLvHYaA
+	 fwohulvdDBSbA==
+Date: Wed, 22 Oct 2025 15:25:13 +0530
+From: "mani@kernel.org" <mani@kernel.org>
+To: Stefan Roese <stefan.roese@mailbox.org>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, 
+	"Bandi, Ravi Kumar" <ravib@amazon.com>, "thippeswamy.havalige@amd.com" <thippeswamy.havalige@amd.com>, 
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
+	"robh@kernel.org" <robh@kernel.org>, "michal.simek@amd.com" <michal.simek@amd.com>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Sean Anderson <sean.anderson@linux.dev>
+Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+Message-ID: <3it5l556vmfpuu6kz5yvulwosi4ecmcgfbzcizrc5wi7ifddkh@mpzfxf2v6v3f>
+References: <20251021212801.GA1224310@bhelgaas>
+ <ab1f7c51-bc41-4774-a0dc-850e53c412eb@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ab1f7c51-bc41-4774-a0dc-850e53c412eb@mailbox.org>
 
-In i2c_amd_probe(), amd_mp2_find_device() utilizes
-driver_find_next_device() which internally calls driver_find_device()
-to locate the matching device. driver_find_device() increments the
-reference count of the found device by calling get_device(), but
-amd_mp2_find_device() fails to call put_device() to decrement the
-reference count before returning. This results in a reference count
-leak of the PCI device each time i2c_amd_probe() is executed, which
-may prevent the device from being properly released and cause a memory
-leak.
+On Wed, Oct 22, 2025 at 08:59:19AM +0200, Stefan Roese wrote:
+> Hi Bjorn,
+> Hi Ravi,
+> 
+> On 10/21/25 23:28, Bjorn Helgaas wrote:
+> > On Tue, Oct 21, 2025 at 08:55:41PM +0000, Bandi, Ravi Kumar wrote:
+> > > > On Tue, Oct 21, 2025 at 05:46:17PM +0000, Bandi, Ravi Kumar wrote:
+> > > > > > On Oct 21, 2025, at 10:23 AM, Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > > > > On Sat, Sep 20, 2025 at 10:52:32PM +0000, Ravi Kumar Bandi wrote:
+> > > > > > > The pcie-xilinx-dma-pl driver does not enable INTx interrupts
+> > > > > > > after initializing the port, preventing INTx interrupts from
+> > > > > > > PCIe endpoints from flowing through the Xilinx XDMA root port
+> > > > > > > bridge. This issue affects kernel 6.6.0 and later versions.
+> > > > > > > 
+> > > > > > > This patch allows INTx interrupts generated by PCIe endpoints
+> > > > > > > to flow through the root port. Tested the fix on a board with
+> > > > > > > two endpoints generating INTx interrupts. Interrupts are
+> > > > > > > properly detected and serviced. The /proc/interrupts output
+> > > > > > > shows:
+> > > > > > > 
+> > > > > > > [...]
+> > > > > > > 32:        320          0  pl_dma:RC-Event  16 Level     400000000.axi-pcie, azdrv
+> > > > > > > 52:        470          0  pl_dma:RC-Event  16 Level     500000000.axi-pcie, azdrv
+> > > > > > > [...]
+> 
+> First a comment on this IRQ logging:
+> 
+> These lines do NOT refer to the INTx IRQ(s) but the controller internal
+> "events" (errors etc). Please see this log for INTx on my Versal
+> platform with pci_irqd_intx_xlate added:
+> 
+>  24:          0          0  pl_dma:RC-Event   0 Level     LINK_DOWN
+>  25:          0          0  pl_dma:RC-Event   3 Level     HOT_RESET
+>  26:          0          0  pl_dma:RC-Event   8 Level     CFG_TIMEOUT
+>  27:          0          0  pl_dma:RC-Event   9 Level     CORRECTABLE
+>  28:          0          0  pl_dma:RC-Event  10 Level     NONFATAL
+>  29:          0          0  pl_dma:RC-Event  11 Level     FATAL
+>  30:          0          0  pl_dma:RC-Event  20 Level     SLV_UNSUPP
+>  31:          0          0  pl_dma:RC-Event  21 Level     SLV_UNEXP
+>  32:          0          0  pl_dma:RC-Event  22 Level     SLV_COMPL
+>  33:          0          0  pl_dma:RC-Event  23 Level     SLV_ERRP
+>  34:          0          0  pl_dma:RC-Event  24 Level     SLV_CMPABT
+>  35:          0          0  pl_dma:RC-Event  25 Level     SLV_ILLBUR
+>  36:          0          0  pl_dma:RC-Event  26 Level     MST_DECERR
+>  37:          0          0  pl_dma:RC-Event  27 Level     MST_SLVERR
+>  38:         94          0  pl_dma:RC-Event  16 Level     84000000.axi-pcie
+>  39:         94          0  pl_dma:INTx   0 Level     nvme0q0, nvme0q1
+> 
+> The last line shows the INTx IRQs here ('pl_dma:INTx' vs 'pl_dma:RC-
+> Event').
+> 
+> More below...
+> 
+> > > > > > > 
+> > > > > > > Changes since v1::
+> > > > > > > - Fixed commit message per reviewer's comments
+> > > > > > > 
+> > > > > > > Fixes: 8d786149d78c ("PCI: xilinx-xdma: Add Xilinx XDMA Root Port driver")
+> > > > > > > Cc: stable@vger.kernel.org
+> > > > > > > Signed-off-by: Ravi Kumar Bandi <ravib@amazon.com>
+> > > > > > 
+> > > > > > Hi Ravi, obviously you tested this, but I don't know how to reconcile
+> > > > > > this with Stefan's INTx fix at
+> > > > > > https://lore.kernel.org/r/20251021154322.973640-1-stefan.roese@mailbox.org
+> > > > > > 
+> > > > > > Does Stefan's fix need to be squashed into this patch?
+> > > > > 
+> > > > > Sure, we can squash Stefan’s fix into this.
+> > > > 
+> > > > I know we *can* squash them.
+> > > > 
+> > > > I want to know why things worked for you and Stefan when they
+> > > > *weren't* squashed:
+> > > > 
+> > > >   - Why did INTx work for you even without Stefan's patch.  Did you
+> > > >     get INTx interrupts but not the right ones, e.g., did the device
+> > > >     signal INTA but it was received as INTB?
+> > > 
+> > > I saw that interrupts were being generated by the endpoint device,
+> > > but I didn’t specifically check if they were correctly translated in
+> > > the controller. I noticed that the new driver wasn't explicitly
+> > > enabling the interrupts, so my first approach was to enable them,
+> > > which helped the interrupts flow through.
+> > 
+> > OK, I'll assume the interrupts happened but the driver might not have
+> > been able to handle them correctly, e.g., it was prepared for INTA but
+> > got INTB or similar.
+> > 
+> > > >   - Why did Stefan's patch work for him even without your patch.  How
+> > > >     could Stefan's INTx work without the CSR writes to enable
+> > > >     interrupts?
+> > > 
+> > > I'm not entirely sure if there are any other dependencies in the
+> > > FPGA bitstream. I'll investigate further and get back to you.
+> > 
+> > Stefan clarified in a private message that he had applied your patch
+> > first, so this mystery is solved.
+> 
+> Yes. I applied Ravi's patch first and still got no INTx delivered
+> to the nvme driver. That's what me triggered to dig deeper here and
+> resulted in this v2 patch with pci_irqd_intx_xlate added.
+> 
+> BTW:
+> I re-tested just now w/o Ravi's patch and the INTx worked. Still I think
+> Ravi's patch is valid and should be applied...
 
-Found by code review.
+How come INTx is working without the patch from Ravi which enabled INTx routing
+in the controller? Was it enabled by default in the hardware?
 
-Cc: stable@vger.kernel.org
-Fixes: 529766e0a011 ("i2c: Add drivers for the AMD PCIe MP2 I2C controller")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v3:
-- kept the temporary variable to store pci_get_drvdata() result before releasing the device reference;
-Changes in v2:
-- modified the missing initialization in the patch. Sorry for the omission.
----
- drivers/i2c/busses/i2c-amd-mp2-pci.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+- Mani
 
-diff --git a/drivers/i2c/busses/i2c-amd-mp2-pci.c b/drivers/i2c/busses/i2c-amd-mp2-pci.c
-index ef7370d3dbea..60edbabc2986 100644
---- a/drivers/i2c/busses/i2c-amd-mp2-pci.c
-+++ b/drivers/i2c/busses/i2c-amd-mp2-pci.c
-@@ -458,13 +458,16 @@ struct amd_mp2_dev *amd_mp2_find_device(void)
- {
- 	struct device *dev;
- 	struct pci_dev *pci_dev;
-+	struct amd_mp2_dev *mp2_dev;
- 
- 	dev = driver_find_next_device(&amd_mp2_pci_driver.driver, NULL);
- 	if (!dev)
- 		return NULL;
- 
- 	pci_dev = to_pci_dev(dev);
--	return (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
-+	mp2_dev = (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
-+	put_device(dev);
-+	return mp2_dev;
- }
- EXPORT_SYMBOL_GPL(amd_mp2_find_device);
- 
 -- 
-2.17.1
-
+மணிவண்ணன் சதாசிவம்
 
