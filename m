@@ -1,118 +1,99 @@
-Return-Path: <stable+bounces-189042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B82BFE6E5
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 00:36:40 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5509BFE807
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 01:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 390643A56BD
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 22:36:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6779C355BAF
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 23:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423D327F01B;
-	Wed, 22 Oct 2025 22:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A78030ACF9;
+	Wed, 22 Oct 2025 23:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dWnmU19m"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317F2295516
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 22:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D55307AFC
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 23:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761172596; cv=none; b=EkyZdT9fGnbB/tFcndcTeQ0ky8sffDZx2bZrHvnjNkdjC6sEAacBX0N8yRn24+9gobwcoY4nSoyACKOGQTddB7+gQhW1aRoVXXgUtqUQyve/qc0uQh0sDU3jy3BKL8PB9WPelmphrJGFyoXkPgysXAGfWIBkzph3rs1afOavme8=
+	t=1761174827; cv=none; b=kLttTlmHxI3hFROtcQmOz360ehA+vzBHeENgJWkFoSgJujccvUZSsvmuUNEoRU1zYvQ7OwFqJNxPugfsrVWZY7drKgqSKtY4VUjocn7D2u7FCkGRSB3SKcgiBwj9yikF6JFWWY83CBiE51PNZtBBWN8u8wdQAM+tMidTfcx3ZVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761172596; c=relaxed/simple;
-	bh=1viVxlVljlhWpxer5DUpIVF9HCJ7b85XBeqsv15ioH8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YtTBxzaMcJubPcDWCHtCZLgzIh2N4aCc9sairf2QyB4X9BgLm76/j8T5u7WGItcdaea4EmOmOngpR+cIN1OiD/KrFVABE91W26CBh9jkW3fwPNoPUFJtmuKERKQhMPp7H9zy0H1Ux6eRUMQBbaipXdcVbW/iY5kr87Xlu1CU6pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 360272333A;
-	Thu, 23 Oct 2025 01:36:29 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: stable@vger.kernel.org
-Cc: Jeremy Kerr <jk@codeconstruct.com.au>,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	lvc-project@linuxtesting.org,
-	kovalev@altlinux.org
-Subject: [PATCH 6.1.y] net: mctp: Don't access ifa_index when missing
-Date: Thu, 23 Oct 2025 01:36:27 +0300
-Message-Id: <20251022223627.216402-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	s=arc-20240116; t=1761174827; c=relaxed/simple;
+	bh=TGQodGtXgknIsWY7/3w2xJfTuc724moitZcuwddpmY8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qCB37BPHGkR16TcZE0538J5qtRQVZuoffEN3FNvxVEJov6ZDb+LCUA/3TulOxhBG2P+wr+WLlP7Z2LFcVlK0xT/DeNUItq10IZqmv/Bq6FsfNYeKQm1j1qOsHwAVGWDTGAiE5gfrUgMeSQq5GB9Cw8WicIYx15IFNw62kPfXH10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dWnmU19m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBA7C4AF0C
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 23:13:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761174827;
+	bh=TGQodGtXgknIsWY7/3w2xJfTuc724moitZcuwddpmY8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=dWnmU19mOcQIiyBuF8JpGmdU3+wwiT2XOiniqiJR54sonlLROu40d6sFubKCNoTvr
+	 FVNlaRE66w0aUBDH77G8JMCfeLN1KLMort8YxIs1A40tFOc2L+q7ciXDSgQB7YqEAe
+	 8jgOg6isnFvZEROs4ilXe3TmoPT/sLcw5wboQmExEe/3A8K9AKXrZ7Q+Gwgzzj/6dY
+	 amXto+DNg0sV4ke2fRtYe/TApAS2gQOyDHbqYykwwAPf8LqJSVjHE23i6b3dm5OO8r
+	 Je5qIWBv5UfbrWwIBZV2nexSEy8gs2DKgnn0x/FlEcIg+rfBL6j0rgUr5+viKkYc2F
+	 svj1niu9+Pq+w==
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-63bad3cd668so229108a12.3
+        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 16:13:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXc7HgjomiD8diOmhzerMWH+16mRKVB+uNVYkDHG0cF5fC4cRsrfbNegp8ikR9b/qvjxT2RQ8U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTsIoORqjgk/QTSjAWEB9ogHaOPhPNS+bnB2ReEsGP3r+rw+MQ
+	PmH/zdp6artD8wnJn3/dMDeMJtAqRD+8UwOqidElj8YtMGWB4uY0dpiIf17HMIyPKqNEXrBa0Xe
+	08ixUUp8i5BNdScHunHH9bNdYUkIw7fE=
+X-Google-Smtp-Source: AGHT+IHa5nyuANlWVI4EYphccWVc09Zo1B8uBJqUhFVxvUaS+9LYu1uwl3f9ymu6svhKRlY1hkMC5RHo/C+TtCFRprE=
+X-Received: by 2002:a05:6402:2551:b0:63c:295a:d516 with SMTP id
+ 4fb4d7f45d1cf-63c295ad6f1mr23462978a12.27.1761174825930; Wed, 22 Oct 2025
+ 16:13:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <2025102125-petted-gristle-43a0@gregkh> <20251021145449.473932-1-pioooooooooip@gmail.com>
+ <CAKYAXd-JFuBptqzEbgggUhaF2bEfWMRXCSK9N_spiBxvi1v0Wg@mail.gmail.com> <CAFgAp7g52dJDvJyEoV7Ms-YofG6a2=G=N16ARNrBOiCSkLVLTw@mail.gmail.com>
+In-Reply-To: <CAFgAp7g52dJDvJyEoV7Ms-YofG6a2=G=N16ARNrBOiCSkLVLTw@mail.gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Thu, 23 Oct 2025 08:13:33 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd-v9r0kKU9wO1ZZAtFju4H+OsG8RA3iYd15=eR6d5VEaQ@mail.gmail.com>
+X-Gm-Features: AS18NWA9NqkARBQUm-jcxNp4I7v8U9iK-F28MdBbsUrCH4ZQBHXD6jTrQSJ5QII
+Message-ID: <CAKYAXd-v9r0kKU9wO1ZZAtFju4H+OsG8RA3iYd15=eR6d5VEaQ@mail.gmail.com>
+Subject: Re: [PATCH] ksmbd: transport_ipc: validate payload size before
+ reading handle
+To: =?UTF-8?B?44GP44GV44GC44GV?= <pioooooooooip@gmail.com>
+Cc: Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Tom Talpey <tom@talpey.com>, linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	gregkh@linuxfoundation.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Matt Johnston <matt@codeconstruct.com.au>
-
-commit f11cf946c0a92c560a890d68e4775723353599e1 upstream.
-
-In mctp_dump_addrinfo, ifa_index can be used to filter interfaces, but
-only when the struct ifaddrmsg is provided. Otherwise it will be
-comparing to uninitialised memory - reproducible in the syzkaller case from
-dhcpd, or busybox "ip addr show".
-
-The kernel MCTP implementation has always filtered by ifa_index, so
-existing userspace programs expecting to dump MCTP addresses must
-already be passing a valid ifa_index value (either 0 or a real index).
-
-BUG: KMSAN: uninit-value in mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
- mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
- rtnl_dump_all+0x3ec/0x5b0 net/core/rtnetlink.c:4380
- rtnl_dumpit+0xd5/0x2f0 net/core/rtnetlink.c:6824
- netlink_dump+0x97b/0x1690 net/netlink/af_netlink.c:2309
-
-Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
-Reported-by: syzbot+e76d52dadc089b9d197f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68135815.050a0220.3a872c.000e.GAE@google.com/
-Reported-by: syzbot+1065a199625a388fce60@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/681357d6.050a0220.14dd7d.000d.GAE@google.com/
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Link: https://patch.msgid.link/20250508-mctp-addr-dump-v2-1-c8a53fd2dd66@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ kovalev: bp to fix CVE-2025-38006 ]
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
- net/mctp/device.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
-
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index 85cc5f31f1e7..27aee8b04055 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -119,12 +119,19 @@ static int mctp_dump_addrinfo(struct sk_buff *skb, struct netlink_callback *cb)
- 	struct net_device *dev;
- 	struct ifaddrmsg *hdr;
- 	struct mctp_dev *mdev;
--	int ifindex;
-+	int ifindex = 0;
- 	int idx = 0, rc;
- 
--	hdr = nlmsg_data(cb->nlh);
--	// filter by ifindex if requested
--	ifindex = hdr->ifa_index;
-+	/* Filter by ifindex if a header is provided */
-+	if (cb->nlh->nlmsg_len >= nlmsg_msg_size(sizeof(*hdr))) {
-+		hdr = nlmsg_data(cb->nlh);
-+		ifindex = hdr->ifa_index;
-+	} else {
-+		if (cb->strict_check) {
-+			NL_SET_ERR_MSG(cb->extack, "mctp: Invalid header for addr dump request");
-+			return -EINVAL;
-+		}
-+	}
- 
- 	rcu_read_lock();
- 	for (; mcb->h < NETDEV_HASHENTRIES; mcb->h++, mcb->idx = 0) {
--- 
-2.50.1
-
+On Wed, Oct 22, 2025 at 7:45=E2=80=AFPM =E3=81=8F=E3=81=95=E3=81=82=E3=81=
+=95 <pioooooooooip@gmail.com> wrote:
+>
+> Hi Namjae, Steve,
+Hi,
+>
+> Thanks for updating the patch. I=E2=80=99ve reviewed the changes and they=
+ look good to me.
+Okay.
+>
+> Minor impact note: this patch prevents a 4-byte out-of-bounds read in ksm=
+bd=E2=80=99s handle_response() when the declared Generic Netlink payload si=
+ze is < 4.
+> If a remote client can influence ksmbd.mountd to emit a truncated payload=
+, this could be remotely triggerable (info-leak/DoS potential).
+I don't understand how this is possible. Could you please explain it
+to me via private email?
+> If you consider this security-impacting, I=E2=80=99m happy to request a C=
+VE via the kernel.org CNA.
+>
+> Thanks!!
+> Qianchang Zhao
 
