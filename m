@@ -1,163 +1,130 @@
-Return-Path: <stable+bounces-188995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5881BBFC3ED
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 15:46:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E897FBFC41A
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 15:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5DE44566C23
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 13:38:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1686A544DCB
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 13:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB6334845E;
-	Wed, 22 Oct 2025 13:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B7E3491DA;
+	Wed, 22 Oct 2025 13:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5Ajyn6i"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="K6158Wcy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17B726ED2A;
-	Wed, 22 Oct 2025 13:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B600319870;
+	Wed, 22 Oct 2025 13:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761140242; cv=none; b=s6Sw5zMupV3fB/UHPOo/tSOfBamdOKazZCIXLtKoTr8oQM/3Kf5qMYhAee67p/o/QTh6WPAGz/vLGuMVCISBqaLYVB/FDPT5/VWM5tBkVivZqKWFRDbaZT1+jgCinboIbqTJcLmCZLtNNgjjflETUEwHf230t59QvdWMBPv9TS8=
+	t=1761140260; cv=none; b=N5houvVNnwTK/QoPt3ubRA1RGLb0mTHsuqNx0uddfBvYpVuljmxfsnWI5P90wj9uhYORLKin2k8CdmN6Oy2lZGejl6n0zd2n6ZSosKDH5xhjoMRdbe9GD/KatlQ9IX09y+MMvZnqBiUfY2oeXMVIoiV9WXHK16S4bGd0EmmLaQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761140242; c=relaxed/simple;
-	bh=jbC9Sb3AKdA6ZHnElBfDO40DRbp3oq6m6FxraEOQX40=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0gfJvjN4iGrcyLi43PLmQ5rXMfQMYw3OA6ZBH906DqbjskomSuhiNThPSPW41UDmJT4EdPMoSIEuQot3QwJxkYLVwGg/T2sTWXuhV9WLnIwY7MBFEW7pf5ps/UitVZrXGMO9u7OeJlTVDuRfO4O86PpmCeac5hAFPUrp3U1vzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5Ajyn6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6E8C4CEFF;
-	Wed, 22 Oct 2025 13:37:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761140241;
-	bh=jbC9Sb3AKdA6ZHnElBfDO40DRbp3oq6m6FxraEOQX40=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5Ajyn6iWyJIJYkujtYJ74t7yoFj24fi7EU1MpKPhkjmxN28Zs+MpXR7zqi5v8XiL
-	 S1bvo42iRe/ZHt/eXS/4SNtq/4XUYNJf1Hbx8syyrFTUtWp9xDqVV/7Xg2gfuganaJ
-	 GFK48pAgWzxqGYwPezTwrX9rZaWTMio4hloWs5q9OpOCfNFsJbxPqx/o8jTOeOQUvA
-	 bZQWNgGn1ahuiJTUX5rGWGDBOSurvNR6PX7LmKGOmgpSaRZ+W5W1yBxPAuXxpS38w9
-	 aAhdUKTSP3tqY2IPxQaYXMKJoZ9D61JgmypQgUcnMOne8pcEY3jlKBAnSlWKBPO3E3
-	 p7wz8Jfq9pp/g==
-From: Hans de Goede <hansg@kernel.org>
-To: Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Linus Walleij <linus.walleij@linaro.org>
-Cc: Hans de Goede <hansg@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	stable@vger.kernel.org,
-	Mario Limonciello <superm1@kernel.org>
-Subject: [REGRESSION FIX resend 1/1] gpiolib: acpi: Make set debounce errors non fatal
-Date: Wed, 22 Oct 2025 15:37:15 +0200
-Message-ID: <20251022133715.331241-2-hansg@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251022133715.331241-1-hansg@kernel.org>
-References: <20251022133715.331241-1-hansg@kernel.org>
+	s=arc-20240116; t=1761140260; c=relaxed/simple;
+	bh=bM78zcZcxf2ooIixxkmQEBOcOTvghqfII/4EoujWcjU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E/J3DQLrendkwstRNreqSdTHk647w6ROgQKJ4L/b+WPw4nApK66O/qOiu6/Eg78Ue5I25b9K1GaK0bchX+YnVbICN5/pT42bbJQk91kxVRxeB2DicEScmKG+Ewz1+1QR89SRrYri/OLdKFxec2u9v2+tr3uGwkjckpwgLbqdVEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=K6158Wcy; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4cs9Fp5VDJz9tRP;
+	Wed, 22 Oct 2025 15:37:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1761140254;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2gGJ2j4XuU1eR+kSbHyPUvCzb9zojsG4YTdQlWdLMjQ=;
+	b=K6158WcyF+BOJQFTdw7hpnl4LPtjCCwgBiCCZO314UzujaTkx27mAfeDY5kNdNKdVk0isG
+	8VPHMrNfvq0ZC1yqFQMz5ULuKEl3qIJpwgDU18sOlqnIo41/WcD7wlhEaCZMekDFokhQDI
+	2GEVpL7TtH0CxWs6P7aORkWFNddL+3VOAY8DtBbB+E5av5VXHzz7+L68UlqTmIjOdyeZxu
+	HOYZnBAKk8EfJplVInSYNX7G1tUYZHvISQx0Tc8+xC59LATJzNcO+DdghHs6ea1IQgU+mK
+	M0nVhp8ia3Bajfz0E/a56fJum/z5GuDpqcUS0w9CVvUe6GM4uJKlzWnIsoWlOQ==
+Message-ID: <29bc5e92-04c9-475a-ba3d-a5ea26f1c95a@mailbox.org>
+Date: Wed, 22 Oct 2025 15:37:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+To: "Musham, Sai Krishna" <sai.krishna.musham@amd.com>,
+ "mani@kernel.org" <mani@kernel.org>,
+ "Havalige, Thippeswamy" <thippeswamy.havalige@amd.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, "Bandi, Ravi Kumar"
+ <ravib@amazon.com>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+ "robh@kernel.org" <robh@kernel.org>, "Simek, Michal" <michal.simek@amd.com>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Sean Anderson <sean.anderson@linux.dev>,
+ "Yeleswarapu, Nagaradhesh" <nagaradhesh.yeleswarapu@amd.com>
+References: <20251021212801.GA1224310@bhelgaas>
+ <ab1f7c51-bc41-4774-a0dc-850e53c412eb@mailbox.org>
+ <3it5l556vmfpuu6kz5yvulwosi4ecmcgfbzcizrc5wi7ifddkh@mpzfxf2v6v3f>
+ <72267a6c-13c7-40bd-babb-f73a28625ca4@mailbox.org>
+ <SN7PR12MB7201CF621AF0A38AA905799D8BF3A@SN7PR12MB7201.namprd12.prod.outlook.com>
+ <brekq5jmgnotwpshcksxefpg2adm4vlsbuncazdg32sdpxqjwj@annnvyzshrys>
+ <SN7PR12MB7201C6B5B64F8847DD6D816D8BF3A@SN7PR12MB7201.namprd12.prod.outlook.com>
+ <zuj6puxpqgjmaa3y3wwyixlru7e7locplnjev37i5fnh6zummw@72t5prkfsrpk>
+ <DM4PR12MB6158ACBA7BCEDB99A55ACA03CDF3A@DM4PR12MB6158.namprd12.prod.outlook.com>
+Content-Language: en-US
+From: Stefan Roese <stefan.roese@mailbox.org>
+In-Reply-To: <DM4PR12MB6158ACBA7BCEDB99A55ACA03CDF3A@DM4PR12MB6158.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 4eec622a3ee0e92cfaf
+X-MBO-RS-META: bxfn33oh4qooy9od7kb88eg7bpucyym8
 
-Commit 16c07342b542 ("gpiolib: acpi: Program debounce when finding GPIO")
-adds a gpio_set_debounce_timeout() call to acpi_find_gpio() and makes
-acpi_find_gpio() fail if this fails.
+On 10/22/25 14:48, Musham, Sai Krishna wrote:
+> [AMD Official Use Only - AMD Internal Distribution Only]
 
-But gpio_set_debounce_timeout() failing is a somewhat normal occurrence,
-since not all debounce values are supported on all GPIO/pinctrl chips.
+<snip>
 
-Making this an error for example break getting the card-detect GPIO for
-the micro-sd slot found on many Bay Trail tablets, breaking support for
-the micro-sd slot on these tablets.
+>>> We even don’t need ravi patch, as we have tested this at our end it
+>>> works fine by just updating interrupt-map Property. We need to now understand the
+>> difference in design.
+>>
+>> Ok, please let us know with your findings. In the meantime, I'll keep Ravi's patch in
+>> tree, as it seems to be required on his setup.
+>>
+> 
+> We tested on Linux version 6.12.40 without applying either Stefan's or Ravi's patches.
+> Instead, we applied only the following interrupt-map property change (entries 0,1,2,3) and verified that
+> legacy interrupts are working correctly.
+> 
+> interrupt-map = <0 0 0 1 &pcie_intc_0 0>,
+> <0 0 0 2 &pcie_intc_0 1>,
+> <0 0 0 3 &pcie_intc_0 2>,
+> <0 0 0 4 &pcie_intc_0 3>;
+> 
+> 38:       1143          0  pl_dma:RC-Event  16 Level     80000000.axi-pcie
+> 39:       1143          0  pl_dma:INTx   0 Level     nvme0q0, nvme0q1
 
-acpi_request_own_gpiod() already treats gpio_set_debounce_timeout()
-failures as non-fatal, just warning about them.
+Okay. Same here. I don't need Ravi's patch for the INTx bit enabling.
 
-Add a acpi_gpio_set_debounce_timeout() helper which wraps
-gpio_set_debounce_timeout() and warns on failures and replace both existing
-gpio_set_debounce_timeout() calls with the helper.
+I understand that you want us to change the interrupt map in the auto-
+generated device-tree from Vivado. Which is IMHO a bit "suboptimal".
 
-Since the helper only warns on failures this fixes the card-detect issue.
+I would prefer to have a solution which works out-of-the-box, w/o the
+need to manually change DT properties. Is it planned to change / fix
+this interrupt map in pl.dtsi generated with a newer version of Vivado?
 
-Fixes: 16c07342b542 ("gpiolib: acpi: Program debounce when finding GPIO")
-Cc: stable@vger.kernel.org
-Cc: Mario Limonciello <superm1@kernel.org>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
----
- drivers/gpio/gpiolib-acpi-core.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index 284e762d92c4..67c4c38afb86 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -291,6 +291,19 @@ acpi_gpio_to_gpiod_flags(const struct acpi_resource_gpio *agpio, int polarity)
- 	return GPIOD_ASIS;
- }
- 
-+static void acpi_gpio_set_debounce_timeout(struct gpio_desc *desc,
-+					   unsigned int acpi_debounce)
-+{
-+	int ret;
-+
-+	/* ACPI uses hundredths of milliseconds units */
-+	acpi_debounce *= 10;
-+	ret = gpio_set_debounce_timeout(desc, acpi_debounce);
-+	if (ret)
-+		gpiod_warn(desc, "Failed to set debounce-timeout %u: %d\n",
-+			   acpi_debounce, ret);
-+}
-+
- static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
- 						struct acpi_resource_gpio *agpio,
- 						unsigned int index,
-@@ -300,18 +313,12 @@ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
- 	enum gpiod_flags flags = acpi_gpio_to_gpiod_flags(agpio, polarity);
- 	unsigned int pin = agpio->pin_table[index];
- 	struct gpio_desc *desc;
--	int ret;
- 
- 	desc = gpiochip_request_own_desc(chip, pin, label, polarity, flags);
- 	if (IS_ERR(desc))
- 		return desc;
- 
--	/* ACPI uses hundredths of milliseconds units */
--	ret = gpio_set_debounce_timeout(desc, agpio->debounce_timeout * 10);
--	if (ret)
--		dev_warn(chip->parent,
--			 "Failed to set debounce-timeout for pin 0x%04X, err %d\n",
--			 pin, ret);
-+	acpi_gpio_set_debounce_timeout(desc, agpio->debounce_timeout);
- 
- 	return desc;
- }
-@@ -944,7 +951,6 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- 	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
- 	struct acpi_gpio_info info = {};
- 	struct gpio_desc *desc;
--	int ret;
- 
- 	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
- 	if (IS_ERR(desc))
-@@ -959,10 +965,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- 	acpi_gpio_update_gpiod_flags(dflags, &info);
- 	acpi_gpio_update_gpiod_lookup_flags(lookupflags, &info);
- 
--	/* ACPI uses hundredths of milliseconds units */
--	ret = gpio_set_debounce_timeout(desc, info.debounce * 10);
--	if (ret)
--		return ERR_PTR(ret);
-+	acpi_gpio_set_debounce_timeout(desc, info.debounce);
- 
- 	return desc;
- }
--- 
-2.51.0
+Thanks,
+Stefan
 
 
