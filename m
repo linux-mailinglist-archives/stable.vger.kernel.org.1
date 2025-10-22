@@ -1,137 +1,163 @@
-Return-Path: <stable+bounces-189029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE3E3BFDCE6
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 20:23:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E76EEBFDD10
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 20:25:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F25C018C6F72
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 18:24:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F392018C7210
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 18:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B1C33DED2;
-	Wed, 22 Oct 2025 18:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WRFV/t5X"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBFDE2737F2;
+	Wed, 22 Oct 2025 18:25:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBC133FE22
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 18:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D48F33FE22;
+	Wed, 22 Oct 2025 18:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761157406; cv=none; b=Z2vp3UMkPJrdUcHlYZXPo8nA4daW1QaU2NzRbvGpAU9G//RjoeF5bL1I9u96LHkExuKI6s/Sx7yHAZtWTLWlEvvVqSg4kBQb7+lFhVp7i3dXA9bg4yua2N6zWtmlecZ9I7PqW7tPBGAS4OexCBJWnAgu07vM5UZ7kJ/Ek7XZELI=
+	t=1761157540; cv=none; b=cU8WdKWH9iF9sN8/JmCzaiYap80IODkteF75H7Oe4T1Ri9sgqgbbgGYaOWdAFme+SJbhNkAKaBalcBIeGNUUXloemj8aI92kJlEw9wTYFVnO3FSQSPakUoD9lmvgl4bmYhUsythuq/yqEahH+e0dR0viLNC9xa92PuPBiybDWoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761157406; c=relaxed/simple;
-	bh=D/N87KwxV+Z68IbXXzogjntbGGIivtw3E0aCgzNmrh4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kB6eveDYEWzkevIVlUXPFRB+E+kJR2CukV2bbvmDEW4jvp40RkuiqXDFTN1ce1Pn7VDgo3Yvt96U2QwxbH0l4WhP/FqhZ/XHCiKm/gc9VjrJa692jfatCy5LxkKpq0PsAMKiJB9NDfrlfQLx0Xn3DA2z9kU2WO+vra0UMr/L1E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WRFV/t5X; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-59054fc6a45so8296426e87.3
-        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 11:23:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761157403; x=1761762203; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z3Ba3B15sVVtpDRMi97H+sxsvfjd9I6QEv7fyC8Xwxw=;
-        b=WRFV/t5XY1cbsYpMW7W5bl1wTvVexIXwgITTuAL23odOJ9t8jW+l6J6O+fVlIy63lw
-         YuKTfrW9+Xd/cDq27tPXsaWF4X8X/U+BHXcIz4cMUj1+OCNIKv3oFLEwS74Ndf22L1Un
-         ce2K/Vr7epFPF5oMKdLKEmHqgrlqrtgCeEma2GW602W6QWi1VFkl+ZlJuHv8o6SD8viN
-         kakbiOzj0IsnlrHAPfyQVQLTDvEkV0hhSnfRRXOeVmEAuHFa1n0wMG+lzxt/+s6XRL70
-         EPHuEUaLkEfb/2DbBTjn9C2nQ3kljyMmAEvSXj/IoCZ87KvuG2rd/DbwjgdYzMjyJTkY
-         Kvrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761157403; x=1761762203;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z3Ba3B15sVVtpDRMi97H+sxsvfjd9I6QEv7fyC8Xwxw=;
-        b=DpX/HmAYuRNTQgbpAI9sRXHBUEToVc2gHj7k5Nswca+MP6wwuRFsHzelkSMSyDGR6G
-         Ss2/jVEn4DV5O4kbt5L4Qw6WC/CUdub3MFxrUhPZHdL9NNAMT74yW0vwFipHIRU6W5w5
-         WFNRumarmW38oe5K/V+ayvHUOPMQQ9bRMzAyG5gRmw1TTpBExlwjaM1lcy7gXbtucG80
-         ZLDLVrqVKDxgtC1aigHkmIVC1P5+SxRwh1tp109QYWfPfm72o5TAH2+poTFYxKyKAfwN
-         s9bx6U2F5YGNSjl2EC6DhkkQhhAkpE0B8I0xmhjKqU4hFo5CWzngYPhzjjsOtMmPkuGW
-         Dygw==
-X-Gm-Message-State: AOJu0YxwJC+F7syB/PjAXSPtII/rjSso8NZHZoKAcshapJ9lpo20KNki
-	XvTl0JuUDurfN/aeVPveaQWb7WqtEYe/8ft4g8+sPjqEnCGnBlW0h/Wem9STLsgLv2S1R2WUHGH
-	SNpptNuIOVw4vO7e+UW49ioDQ/zVEMRc=
-X-Gm-Gg: ASbGncuKechS9GtSPGtnGjjdw3N0FuT6S01DQGZmKGz/+2P8/zzN0NJJ8c3sNrjurC+
-	pfwNTSu0KJPjKZMPCtpUoFQEVsuVdNzLi7rHhXkNuFnROh0shCK0RaRxe+RDxbfp+zbxyXhncas
-	G1gtMy2/7IzDT8pPtWq0Ru1U6l3wqTty9GL1WQZj1ZjV/qCLs/haDr+jqcqPgfSGmnyI8l8u4m1
-	MWtF1YQT6juZG4IDBcbleUfoV8lyy6PIUFXh89poiDiqQ3rDP+KV1M9NAhu4DUYjEp8y9jUyJtc
-	gUHCP1wJqznKnQdEtA==
-X-Google-Smtp-Source: AGHT+IFe5sIAVTfqOs2vfE2J8nxHXTDuWTZ/Gh2yprS/NSIsXhVORISS9EYSyEXk1cLCfTI14WyTvgWzGLNy9u/kyuE=
-X-Received: by 2002:a05:6512:3ca9:b0:578:75b3:4326 with SMTP id
- 2adb3069b0e04-591d85898camr6876561e87.29.1761157402448; Wed, 22 Oct 2025
- 11:23:22 -0700 (PDT)
+	s=arc-20240116; t=1761157540; c=relaxed/simple;
+	bh=xkE2FLw+RuZ4Eyk+yxOUlF6mM+Yrv8yn88+mMUlIefc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JEyXAoCf+6Q6M75YhFS41V9n5/SCo2v9EMUD9mj2J54mW/whwSqBDI64lSfYr1e4LJSHs+2AVTCht0jNdNqV+iznTpw461MJzAHPwcgp2wb7U33sD3zwSXvhMtGwsm4OdFp4UX9iA1GKzNnwuy56ajcrf8+tfAVSOnuEdMHyeZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
+	(Authenticated sender: kovalevvv)
+	by air.basealt.ru (Postfix) with ESMTPSA id 0D41023374;
+	Wed, 22 Oct 2025 21:25:31 +0300 (MSK)
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+To: stable@vger.kernel.org
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Doug Ledford <dledford@redhat.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-rdma@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	kovalev@altlinux.org
+Subject: [PATCH 5.10.y] RDMA/mlx5: Fix mlx5_ib_get_hw_stats when used for device
+Date: Wed, 22 Oct 2025 21:25:29 +0300
+Message-Id: <20251022182529.211983-1-kovalev@altlinux.org>
+X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251022053328.623411246@linuxfoundation.org>
-In-Reply-To: <20251022053328.623411246@linuxfoundation.org>
-From: Dileep malepu <dileep.debian@gmail.com>
-Date: Wed, 22 Oct 2025 23:53:09 +0530
-X-Gm-Features: AWmQ_bkB1VnCzq_z3-s9Pg8J_-xBFqTPE9lCpcHmgjOViDGV_maAREzZjQVmEWU
-Message-ID: <CAC-m1roB4_c_ThPxiEi9yzvFE2qZxuY_s2fQkUKqYvF72o+ODw@mail.gmail.com>
-Subject: Re: [PATCH 6.17 000/160] 6.17.5-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hii Greg,
+From: Shay Drory <shayd@nvidia.com>
 
-On Wed, Oct 22, 2025 at 11:04=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.17.5 release.
-> There are 160 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 24 Oct 2025 05:33:10 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.17.5-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.17.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
-> -------------
+commit 38b50aa44495d5eb4218f0b82fc2da76505cec53 upstream.
 
-Build and boot tested 6.17.5-rc2 using qemu-x86_64. The kernel was
-successfully built and booted in a virtualized environment without any
-issues.
+Currently, when mlx5_ib_get_hw_stats() is used for device (port_num = 0),
+there is a special handling in order to use the correct counters, but,
+port_num is being passed down the stack without any change.  Also, some
+functions assume that port_num >=1. As a result, the following oops can
+occur.
 
-Build
-kernel: 6.17.5-rc2
-git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc=
-.git
-git commit: 3cc198d00990d2fccf1413a30fa9ecfa9a02d35d
+ BUG: unable to handle page fault for address: ffff89510294f1a8
+ #PF: supervisor write access in kernel mode
+ #PF: error_code(0x0002) - not-present page
+ PGD 0 P4D 0
+ Oops: 0002 [#1] SMP
+ CPU: 8 PID: 1382 Comm: devlink Tainted: G W          6.1.0-rc4_for_upstream_base_2022_11_10_16_12 #1
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:_raw_spin_lock+0xc/0x20
+ Call Trace:
+  <TASK>
+  mlx5_ib_get_native_port_mdev+0x73/0xe0 [mlx5_ib]
+  do_get_hw_stats.constprop.0+0x109/0x160 [mlx5_ib]
+  mlx5_ib_get_hw_stats+0xad/0x180 [mlx5_ib]
+  ib_setup_device_attrs+0xf0/0x290 [ib_core]
+  ib_register_device+0x3bb/0x510 [ib_core]
+  ? atomic_notifier_chain_register+0x67/0x80
+  __mlx5_ib_add+0x2b/0x80 [mlx5_ib]
+  mlx5r_probe+0xb8/0x150 [mlx5_ib]
+  ? auxiliary_match_id+0x6a/0x90
+  auxiliary_bus_probe+0x3c/0x70
+  ? driver_sysfs_add+0x6b/0x90
+  really_probe+0xcd/0x380
+  __driver_probe_device+0x80/0x170
+  driver_probe_device+0x1e/0x90
+  __device_attach_driver+0x7d/0x100
+  ? driver_allows_async_probing+0x60/0x60
+  ? driver_allows_async_probing+0x60/0x60
+  bus_for_each_drv+0x7b/0xc0
+  __device_attach+0xbc/0x200
+  bus_probe_device+0x87/0xa0
+  device_add+0x404/0x940
+  ? dev_set_name+0x53/0x70
+  __auxiliary_device_add+0x43/0x60
+  add_adev+0x99/0xe0 [mlx5_core]
+  mlx5_attach_device+0xc8/0x120 [mlx5_core]
+  mlx5_load_one_devl_locked+0xb2/0xe0 [mlx5_core]
+  devlink_reload+0x133/0x250
+  devlink_nl_cmd_reload+0x480/0x570
+  ? devlink_nl_pre_doit+0x44/0x2b0
+  genl_family_rcv_msg_doit.isra.0+0xc2/0x110
+  genl_rcv_msg+0x180/0x2b0
+  ? devlink_nl_cmd_region_read_dumpit+0x540/0x540
+  ? devlink_reload+0x250/0x250
+  ? devlink_put+0x50/0x50
+  ? genl_family_rcv_msg_doit.isra.0+0x110/0x110
+  netlink_rcv_skb+0x54/0x100
+  genl_rcv+0x24/0x40
+  netlink_unicast+0x1f6/0x2c0
+  netlink_sendmsg+0x237/0x490
+  sock_sendmsg+0x33/0x40
+  __sys_sendto+0x103/0x160
+  ? handle_mm_fault+0x10e/0x290
+  ? do_user_addr_fault+0x1c0/0x5f0
+  __x64_sys_sendto+0x25/0x30
+  do_syscall_64+0x3d/0x90
+  entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
-Tested-by: Dileep Malepu <dileep.debian@gmail.com>
+Fix it by setting port_num to 1 in order to get device status and remove
+unused variable.
 
-Best regards
-Dileep Malepu.
+Fixes: aac4492ef23a ("IB/mlx5: Update counter implementation for dual port RoCE")
+Link: https://lore.kernel.org/r/98b82994c3cd3fa593b8a75ed3f3901e208beb0f.1672231736.git.leonro@nvidia.com
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+[ kovalev: bp to fix CVE-2023-53393 ]
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+---
+ drivers/infiniband/hw/mlx5/counters.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/infiniband/hw/mlx5/counters.c b/drivers/infiniband/hw/mlx5/counters.c
+index 33636268d43d..29b38cf055be 100644
+--- a/drivers/infiniband/hw/mlx5/counters.c
++++ b/drivers/infiniband/hw/mlx5/counters.c
+@@ -249,7 +249,6 @@ static int mlx5_ib_get_hw_stats(struct ib_device *ibdev,
+ 	const struct mlx5_ib_counters *cnts = get_counters(dev, port_num - 1);
+ 	struct mlx5_core_dev *mdev;
+ 	int ret, num_counters;
+-	u8 mdev_port_num;
+ 
+ 	if (!stats)
+ 		return -EINVAL;
+@@ -270,8 +269,9 @@ static int mlx5_ib_get_hw_stats(struct ib_device *ibdev,
+ 	}
+ 
+ 	if (MLX5_CAP_GEN(dev->mdev, cc_query_allowed)) {
+-		mdev = mlx5_ib_get_native_port_mdev(dev, port_num,
+-						    &mdev_port_num);
++		if (!port_num)
++			port_num = 1;
++		mdev = mlx5_ib_get_native_port_mdev(dev, port_num, NULL);
+ 		if (!mdev) {
+ 			/* If port is not affiliated yet, its in down state
+ 			 * which doesn't have any counters yet, so it would be
+-- 
+2.50.1
+
 
