@@ -1,159 +1,106 @@
-Return-Path: <stable+bounces-188902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CF0BFA34F
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:24:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EDE9BFA3E8
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1F57334A7A5
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 06:24:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 731A73B47F9
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 06:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1508E246BB0;
-	Wed, 22 Oct 2025 06:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554362ECD2D;
+	Wed, 22 Oct 2025 06:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="hqwfhTYG"
+	dkim=pass (1024-bit key) header.d=klarinett.li header.i=@klarinett.li header.b="z0DZXkro"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mail.hostpark.net (mail.hostpark.net [212.243.197.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C833722F14C;
-	Wed, 22 Oct 2025 06:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CB025784B;
+	Wed, 22 Oct 2025 06:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.243.197.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761114288; cv=none; b=KgaKONrw0rZa0mvDeJW7+CLiNMlM4X33SXsOTeFxvU2pzBvEvXYuXtuQ8SStB/9DHIH1sH90Qr9YR1+ltTjM4xZ4fz10hXP4RAjpqKqd0y8OKlSGn/eDhioTmHUxZ3oee78U+8jQWx5ojHKGTswu/MHUc8xGGG8dX4dCDx6AsKA=
+	t=1761114825; cv=none; b=py+h/ZHEM+MY2/OUrpRjxam4Rw3E6eASBIIPa54k7wkhCl1s/nqS/eLiu6zBqMDnm+hYMwc9KMRLJfgnNoTrD/ZNTJKjfc0PAAZnd4y6VNwRHC4v81cCW/8zYbgj2BprOTX+AnkJn6aw3N712ZF7esdN0XdKbL2i5ugXEqO18bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761114288; c=relaxed/simple;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dhfGtSs5VOgAinaGMkOnxM0Juk+VJwYR+QRN7VtpscV6xdXkyekdRX2cQPHnebjnVTMLRUUu9oMAzikI5PFxjHNbEjf5uaKjS+NpflnDSNPUQ0wnHQ09AGZ1eGq8+p429i437zZ1v/W0BH6si8HJhKX9yeHpHNjIvFjaKEVgL7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=hqwfhTYG; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1761114265; x=1761719065; i=rwarsow@gmx.de;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=hqwfhTYGCcRnBNUu4jXOuCUEH8C0RJ//BKrRb1ua8uGBkIxLNGU44yLx0xp+4Pfa
-	 xrTJD2HS38iuzrq95Tt/58TwYYtvqUaHLdsj3061KwRg/QoIT7ANllcfjG3bJvCoM
-	 FKmEP53Ukxtx0WbJrLz3iZrHsuRu8hbV1c2U1F11dHib++IpvbPn2a/zovfW2wUAF
-	 ZPzOoXc++9dGwjy+JZbblyegcJo0LnYsvDH1+BjUamTiKcht7x7wQSa6xB/5/ifw/
-	 hOIIlKEq7l1aXD4rMsgSdJkGJCOYiqiFRSvvx1FQjGfO1O49pPncHXR1AW0/ba4WC
-	 bJbj4TUG/TICd4lxxQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.33.216]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N95eJ-1u9POY2aMZ-014iyY; Wed, 22
- Oct 2025 08:24:25 +0200
-Message-ID: <880e4f43-7a35-4273-b5d5-0f16dc8decdf@gmx.de>
-Date: Wed, 22 Oct 2025 08:24:23 +0200
+	s=arc-20240116; t=1761114825; c=relaxed/simple;
+	bh=flOl1xCGuCOPWGoBMyaOBP2p4GmZpiLATLs+rbLLmEM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WevDtihfaczjyjpNoXlZ8md39UZQK93rfP5fd/ugAaw1a8PDCWJue773vm7DbeUlVC9tpqi/ktNQ+LIKPuFr86xKl3DqU9SKloxavi3PzVxKDmAD8c9JT3MN8owx3qtT7xJjEijzAdrZuEhF8LXthmxeLRyQ8TfMODiRCkDv+4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klarinett.li; spf=pass smtp.mailfrom=klarinett.li; dkim=pass (1024-bit key) header.d=klarinett.li header.i=@klarinett.li header.b=z0DZXkro; arc=none smtp.client-ip=212.243.197.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klarinett.li
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=klarinett.li
+Received: from localhost (localhost [127.0.0.1])
+	by mail.hostpark.net (Postfix) with ESMTP id 733D9166D7;
+	Wed, 22 Oct 2025 08:33:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=klarinett.li; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:from:from; s=sel2011a; t=1761114813; bh=fl
+	Ol1xCGuCOPWGoBMyaOBP2p4GmZpiLATLs+rbLLmEM=; b=z0DZXkroMiSV9rsxQy
+	fSpwWOIum+QbeW7pU9OrGzgSI+Jlwjutj85VZwek+6E0aG8Lqft+totSlKL5/jfT
+	YHhCEFQsHeU+E+Rho3uAGzVnRkrcxu2SoUjVGI5Hsj7HHpZEFSq+m3bS5aFjtrr/
+	BVb8DAzmONqOFcarRFvFBPpQE=
+X-Virus-Scanned: by Hostpark/NetZone Mailprotection at hostpark.net
+Received: from mail.hostpark.net ([127.0.0.1])
+ by localhost (mail1.hostpark.net [127.0.0.1]) (amavis, port 10224) with ESMTP
+ id DYbDTf5dOueE; Wed, 22 Oct 2025 08:33:33 +0200 (CEST)
+Received: from customer (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.hostpark.net (Postfix) with ESMTPSA id 410A5166D6;
+	Wed, 22 Oct 2025 08:33:32 +0200 (CEST)
+From: Christian Hitz <christian@klarinett.li>
+To: Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Dan Murphy <dmurphy@ti.com>
+Cc: Christian Hitz <christian.hitz@bbv.ch>,
+	stable@vger.kernel.org,
+	Pavel Machek <pavel@ucw.cz>,
+	linux-leds@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] leds: leds-lp50xx: LP5009 supports 3 modules for a total of 9 LEDs
+Date: Wed, 22 Oct 2025 08:33:04 +0200
+Message-ID: <20251022063305.972190-1-christian@klarinett.li>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.17 000/160] 6.17.5-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20251022053328.623411246@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20251022053328.623411246@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:rB6+gqPJEKPcCitri7AjHXIxvTaeChAkkeUGOwUhNT/+OEDbopm
- f/6S6CvsXnRuonBZfT1XZnYOOkz5LodGJEnBRaHeSmX6/jg8EvDO6XYh8H0HVxTfgZSytS+
- XSjW6mY54KmCWRmplwOXQPm6ijKoonJDp/6vrdfvWlNdsKJ/UHrrD2G+erDDH7pugLtPp/U
- Ym6t+BK+3w7nCbB/xZKRA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:on9AkEJv0XE=;iGFxHtxpYzxU92xRBG9jduKxpHM
- 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
- P
+Content-Transfer-Encoding: 8bit
 
-Hi
+From: Christian Hitz <christian.hitz@bbv.ch>
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+LP5009 supports 9 LED outputs that are grouped into 3 modules.
 
-Thanks
+Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
+---
+Changes in v2:
+ - Improve log message
+---
+ drivers/leds/leds-lp50xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
+index 94f8ef6b482c..05229e2f2e7e 100644
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -54,7 +54,7 @@
+ /* There are 3 LED outputs per bank */
+ #define LP50XX_LEDS_PER_MODULE	3
+ 
+-#define LP5009_MAX_LED_MODULES	2
++#define LP5009_MAX_LED_MODULES	3
+ #define LP5012_MAX_LED_MODULES	4
+ #define LP5018_MAX_LED_MODULES	6
+ #define LP5024_MAX_LED_MODULES	8
+-- 
+2.51.1
 
 
