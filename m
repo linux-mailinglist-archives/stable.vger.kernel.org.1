@@ -1,207 +1,191 @@
-Return-Path: <stable+bounces-189037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D01BFE201
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 22:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18630BFE20D
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 22:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F14DC4E9DFE
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 20:10:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8C2BA4EF474
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 20:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305E62F9984;
-	Wed, 22 Oct 2025 20:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36092F8BFC;
+	Wed, 22 Oct 2025 20:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="x0/W+Sw7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJtg2ADQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A042F83C2
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 20:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E847A2F83C2
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 20:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761163818; cv=none; b=hsKRGL1hZ8OngaXP4vioSLPADbrvQB/+f65q8kZGiIQCw/v0/sP5FdyNmJ24hgmfkqyV8AqxsAepHRhmfWAI2KVtP1NqXtb4BfyryjxNQQBr1MypYX5rY+wfE6HYgUM5Mb0R+W+PoD6vwmzqrWyXY52x41qfYGRshaSzAMF2I8I=
+	t=1761163827; cv=none; b=Z5io0P3lvZSNwaI1b0YElv/et1vd55ByPMism+swNsFtv2qD8LFMV9VIFU6thUpmOa7WooJ8KVHNLcRufXYOtDTrQhMr++7XqBDz1xnyT0qTeFe32CVoVOiMDxKoTZFEeuxwQF9JsmutjCY1Fcw8829+SCfGb05W67PXzSk6qiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761163818; c=relaxed/simple;
-	bh=jL1xyKeY+DSl7FnGn5fIu9UTUzTUBfMaCWMbOzVyaiw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UHSB0P6MV4ApOdyqKdPodH98au/MfHRF9fz3sKGvMDP5iuQYxtRHbxAt7/sV/sc+dgGEIkZ5qExnfrLJslVNs9qH4A4vAYaff7LXtj3YuWlBCAGLW5VB6fBRIOfax2+wjqF5Px2UVRHoHZObbSUWJp1nLgR1GaWhYP8zS3kUviM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=x0/W+Sw7; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-475c9881821so1446245e9.0
-        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 13:10:15 -0700 (PDT)
+	s=arc-20240116; t=1761163827; c=relaxed/simple;
+	bh=Ek3haOYmPyu4dgOa5C0zgHctdofHHVO9EUyqAYNfa2g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oyBkTgLj8dstboonyrtnddJ/DafwQNZFI0DwpdjQJXieh484N/9XDW8F6SM8BmSkQPmo1rzOdQtMv7Ov0PK3eqZMF7hKnng3SxqGCaGVK6QVdw1XtU4cCGexkhdyq36k8CnfEFt+tM5KVN8VXGJtxBQzZ21ImmBsV65vo659bwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJtg2ADQ; arc=none smtp.client-ip=209.85.217.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-5d40e0106b6so3352289137.2
+        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 13:10:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761163814; x=1761768614; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CMO+68yA0NJP1unpK3WFsi9ClsA9S0hkHZBERZCyzFs=;
-        b=x0/W+Sw7IeyhYqPazvetiAgzrtGlYSD1Q/885UKNowuBEW3JnNqnQA1pMbCqSYX0OQ
-         r0EfPfq8wLF4I0fPWcZkaScuuLow6/X1zaBqbGaDR+GS36F2PjvxTNqDXIMdCw+Nl+ip
-         tXaYKBepDZNrlJs8I0W6RpZBIryVpuvLR7mYGJZM3WZufoGmWQ1AKOFgM4avQP51joZf
-         iqsZpceizRnsnKiCNwLeDsU13SRlc7DOZV1vFEzRVS0wzVQtRer0+TS6TfMh0MFPs0re
-         y8u7FIBBO06FUJbkF4HdRWa9Xc9y7X0ric0/Hx5vdg8THOddammCyALxQ3q5WtRMb0OQ
-         stpA==
+        d=gmail.com; s=20230601; t=1761163825; x=1761768625; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Tn5VKrdn1aznBkaeIAwzuNTcwHsl29o2bnaUn9NgWHw=;
+        b=dJtg2ADQlG39P/7E15ZCN14M1JcnfeGwn8Jh5dVPvJ9O/kq75zKSJkxJfrC3sJAr4o
+         +VWwO1l0Lxx9DzzAARu5Rs2c+2xXmC3SHPY7FpEypfGSNND3HOQ+03gndGGTe03K3SiQ
+         IEuM8Emo6TVAaTC0GETRGviXvh76X2Hwytua6kTTf5szKjFpoHS7wYdpROBGXEBW3V2x
+         ZFcNmQmSJ7v+MHIq1cchaBOekrFfXxZf3srpXHbD9XKVZp56jXAdAFDS79yeRoNrNpHi
+         APpdAHD8/pxbnjx2WuladnFsEDc96LfmDnKpn1KQdZQlZe9M3/v3ytYSXzMVBW4ry7bV
+         E4pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761163814; x=1761768614;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CMO+68yA0NJP1unpK3WFsi9ClsA9S0hkHZBERZCyzFs=;
-        b=E5iPKIM2voui+MPZ15FVoyJ/lwXKonQSUiu7/6Fr6pFXdxHOnlJj+MOK3ul9aVcUvl
-         jLDgvM0vpyUmH3BwRRJkp4lhDSz9iPz/1yASsB8k8ssEFcHVijitRif3p9nYBpw6TFWR
-         KHsZSqOH7jk/ns3BXOUiwtbAHdFeomZ41zbvfTDPbcTzA47jFNZ2JXmXevJZwnPwgYiF
-         EubOBnMVU6DQbEpSnzyHiYM2idAjThmBGd0Ma2a+X6EspiRCeOvscfcxlPQy7L0XZl/J
-         BUSRsmJfNe9QJ2MBXiq5AW5Pk6TCFCPxqnnGmIIsAxQlTgVObVyJQvYPOim1fapC99wh
-         rwMw==
-X-Forwarded-Encrypted: i=1; AJvYcCUfWqFK2y1fXlQgYojyATmqWlUAZiTrcutQplwZ/Q3iVyGXgSNYB4YQTsVH6MAX6q+jH6YoS28=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCkkY3UUrXPENuIFUJ/EPFTbB4rmoiQqsZoEL7tMnWDFms9xik
-	XWeRQ6Mqd7igSUy2qV+iHdiEU5EWmyUwcKb15Dq9Owz8vfk+IGoWP6psK0JbvSnPC/M=
-X-Gm-Gg: ASbGncvu4afT234VwiEnf12URRLwxc/gKZezCu7VRr+XmZSl2loBAiaBOjosWBcg64F
-	LX/U0Rvlyviotat6mPC3MDWGG1gKPjVktMFjhUErOujQlF0xlVnkWQJsIY7zjZ6tG/mPvePyo8f
-	DNuqOcDYlxINakstXBAQb3/o/L1lHnTDKylQpJ8iOMANJEUVEuguBU9G0shwCR8k2c6RFZLKr8y
-	/C4Ht+QXGXzEz5PVB6iUG7zilogbBDGFrfBr8S4Ti44aRVTbHIUpjJ10hDYwaKmtJhhRKA+bXAb
-	hrJiLtBhQUZIN2V1QR4V1RR4y6lAb2MVyjDPPz5oJOT/8x0A+ZV/LVVhSH2Q9UPTVVm+uG2B4OY
-	cG1O3UNrlhsc8pP6RweZ96q6RcH1g4xGCHbSjxPvIj3b0Vl4hAyVtZaEI/T4YkssqaOjmhWA1Yo
-	xXV+jQv6K6OkeFvcjE
-X-Google-Smtp-Source: AGHT+IEE7nbdHtxCgzExX95o6DoJe0s0AWHwSyXzENCSmPhw5KThK31EPdJRY52brcU+d9kt2XaOCg==
-X-Received: by 2002:a05:600c:c3:b0:46f:cdfe:cd39 with SMTP id 5b1f17b1804b1-475c6f69890mr15544315e9.16.1761163814335;
-        Wed, 22 Oct 2025 13:10:14 -0700 (PDT)
-Received: from orion.home ([2a02:c7c:7259:a00:11f4:2b3f:7c5a:5c10])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475caa8c785sm415275e9.14.2025.10.22.13.10.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 13:10:13 -0700 (PDT)
-From: Alexey Klimov <alexey.klimov@linaro.org>
-To: broonie@kernel.org,
-	gregkh@linuxfoundation.org,
-	srini@kernel.org
-Cc: rafael@kernel.org,
-	dakr@kernel.org,
-	make24@iscas.ac.cn,
-	steev@kali.org,
-	dmitry.baryshkov@oss.qualcomm.com,
-	linux-kernel@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	abel.vesa@linaro.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] regmap: slimbus: fix bus_context pointer in regmap init calls
-Date: Wed, 22 Oct 2025 21:10:12 +0100
-Message-ID: <20251022201013.1740211-1-alexey.klimov@linaro.org>
-X-Mailer: git-send-email 2.47.3
+        d=1e100.net; s=20230601; t=1761163825; x=1761768625;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Tn5VKrdn1aznBkaeIAwzuNTcwHsl29o2bnaUn9NgWHw=;
+        b=FG0AgDXUPaPbkd0bAMWBSfeVgRHduUl32A0dxtKU8eS7L/bZjLO3v30/504TiMS6gx
+         hBBkGiEZOsC9yOe1QXuZvuez4rF5QpXzvN6iHk05Hmjo4jRj2ZkIqkhozjlPywW9mElq
+         BC0qid2I9ZZ07ok6o0aJyI+AMTiHMHQ2tRJ7k/ZxYymaCU82ufC8euR8N+sx59TtUGmm
+         AUEhMlA3PN04VlDVr+o35vwR6bExVTlSzVzsYADAQq2pA15KpTWP7/SFN7aH6l7KsmUo
+         YGVRiGiEoqhSmQ82Fy6ZMkS+YXnjs2FhlqJ0nsemas+T4mz/IAovrDr8EFeczKyatKTN
+         PYtg==
+X-Forwarded-Encrypted: i=1; AJvYcCUTOxUKOsbidrGPPVNlq+lWSF5iecJE8QnNIFmJKEf2L2mqWbJUrZ0G25o9UQkuxgkx4L/zklA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynBverVGLF3U4RY13wFhD/QCKNwRXZZjxbfrhtbv3Y54IH4iel
+	7OJBho0W9mUk8mkJmG+ASB8yFafIQgCuD49EV5CTMVFeb6FUzkn/++dj6Vzc5ZM9vSIfmAFgaGk
+	DCHnqst47wR8vGpbbD35MWqwhHGNNRTw=
+X-Gm-Gg: ASbGncsP7X6O9MGpRIcJchn+rGYPo0S9WMIpbtN/TK6Z/Vq5mG50hY+ZMgCTNxVQ6qm
+	cSbI5pBLFRNwz1H5Qsp/acavnQU52WYtopXNu6pgtAf24iVDwOupG3htnnHbNAfIgStRiPBISSl
+	8d+oCYKT9/wmAp7ZOXjKnUu1QY/y38wyMq0XzzauUNnOS+WhNsDaTrk48LTp0Q4SfduiOwIBOli
+	jem2kq+PqNrue9yneRAlcTuHYuzOIybfqMKCepfXaAv6V7DuHJG9DbzQqXWhFhC8P+9ZqvqUXPG
+	6MUdMxxeacSHXAgPcaduIR+CSQ==
+X-Google-Smtp-Source: AGHT+IEAmpCYQ3I3CaF01f4rD5k8jsO3VFkaaCggeAPNetgcdL42bDO5ziQu0Y8LVdLou4hTbEHf9n0KaVc/TOKWEY4=
+X-Received: by 2002:a05:6102:c48:b0:5d5:f6ae:74b4 with SMTP id
+ ada2fe7eead31-5d7dd62a873mr7028676137.40.1761163824525; Wed, 22 Oct 2025
+ 13:10:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251022042514.2167599-1-danisjiang@gmail.com> <cf501c1e-94eb-4855-b3ad-e0b8c68d1a74@kernel.org>
+In-Reply-To: <cf501c1e-94eb-4855-b3ad-e0b8c68d1a74@kernel.org>
+From: Yuhao Jiang <danisjiang@gmail.com>
+Date: Wed, 22 Oct 2025 15:10:12 -0500
+X-Gm-Features: AWmQ_blNULWk3f3C_pQvJ7TQXzRfUECTP0SyTqgDO42bYPywBEVt3wfIIpRq2Ys
+Message-ID: <CAHYQsXRpG9LL5cL9w_UPWpZpR-TiOp2QZzF5k69NiEzT8+oOFg@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: video: Fix use-after-free in acpi_video_switch_brightness()
+To: Hans de Goede <hansg@kernel.org>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit 4e65bda8273c ("ASoC: wcd934x: fix error handling in
-wcd934x_codec_parse_data()") revealed the problem in the slimbus regmap.
-That commit breaks audio playback, for instance, on sdm845 Thundercomm
-Dragonboard 845c board:
+Hi Hans,
 
- Unable to handle kernel paging request at virtual address ffff8000847cbad4
- ...
- CPU: 5 UID: 0 PID: 776 Comm: aplay Not tainted 6.18.0-rc1-00028-g7ea30958b305 #11 PREEMPT
- Hardware name: Thundercomm Dragonboard 845c (DT)
- ...
- Call trace:
-  slim_xfer_msg+0x24/0x1ac [slimbus] (P)
-  slim_read+0x48/0x74 [slimbus]
-  regmap_slimbus_read+0x18/0x24 [regmap_slimbus]
-  _regmap_raw_read+0xe8/0x174
-  _regmap_bus_read+0x44/0x80
-  _regmap_read+0x60/0xd8
-  _regmap_update_bits+0xf4/0x140
-  _regmap_select_page+0xa8/0x124
-  _regmap_raw_write_impl+0x3b8/0x65c
-  _regmap_bus_raw_write+0x60/0x80
-  _regmap_write+0x58/0xc0
-  regmap_write+0x4c/0x80
-  wcd934x_hw_params+0x494/0x8b8 [snd_soc_wcd934x]
-  snd_soc_dai_hw_params+0x3c/0x7c [snd_soc_core]
-  __soc_pcm_hw_params+0x22c/0x634 [snd_soc_core]
-  dpcm_be_dai_hw_params+0x1d4/0x38c [snd_soc_core]
-  dpcm_fe_dai_hw_params+0x9c/0x17c [snd_soc_core]
-  snd_pcm_hw_params+0x124/0x464 [snd_pcm]
-  snd_pcm_common_ioctl+0x110c/0x1820 [snd_pcm]
-  snd_pcm_ioctl+0x34/0x4c [snd_pcm]
-  __arm64_sys_ioctl+0xac/0x104
-  invoke_syscall+0x48/0x104
-  el0_svc_common.constprop.0+0x40/0xe0
-  do_el0_svc+0x1c/0x28
-  el0_svc+0x34/0xec
-  el0t_64_sync_handler+0xa0/0xf0
-  el0t_64_sync+0x198/0x19c
+Thanks for the feedback! I've submitted it in patch v3:
+https://lore.kernel.org/all/20251022200704.2655507-1-danisjiang@gmail.com/.
 
-The __devm_regmap_init_slimbus() started to be used instead of
-__regmap_init_slimbus() after the commit mentioned above and turns out
-the incorrect bus_context pointer (3rd argument) was used in
-__devm_regmap_init_slimbus(). It should be just "slimbus" (which is equal
-to &slimbus->dev). Correct it. The wcd934x codec seems to be the only or
-the first user of devm_regmap_init_slimbus() but we should fix it till
-the point where __devm_regmap_init_slimbus() was introduced therefore
-two "Fixes" tags.
+Best regards,
+Yuhao
 
-While at this, also correct the same argument in __regmap_init_slimbus().
-
-Fixes: 4e65bda8273c ("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
-Fixes: 7d6f7fb053ad ("regmap: add SLIMbus support")
-Cc: stable@vger.kernel.org
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Ma Ke <make24@iscas.ac.cn>
-Cc: Steev Klimaszewski <steev@kali.org>
-Cc: Srinivas Kandagatla <srini@kernel.org>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
----
-
-The patch/fix is for the current 6.18 development cycle
-since it fixes the regression introduced in 6.18.0-rc1.
-
-Changes in v2:
- - &slimbus->dev replaced with just "slimbus", no functional change
- (as suggested by Dmitry);
- - the same argument in __regmap_init_slimbus() was replaced with
- "slimbus" (as suggested by Dmitry);
- - reduced the backtrace log in the commit message (as suggested by Mark);
- - corrected subject/title, few typos, added mention of non-managed init
- func change, rephrased smth;
- - added Reviewed-by tag from Abel.
-
-Prev version: https://lore.kernel.org/linux-sound/20251020015557.1127542-1-alexey.klimov@linaro.org/
-
- drivers/base/regmap/regmap-slimbus.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/base/regmap/regmap-slimbus.c b/drivers/base/regmap/regmap-slimbus.c
-index 54eb7d227cf4..e523fae73004 100644
---- a/drivers/base/regmap/regmap-slimbus.c
-+++ b/drivers/base/regmap/regmap-slimbus.c
-@@ -48,8 +48,7 @@ struct regmap *__regmap_init_slimbus(struct slim_device *slimbus,
- 	if (IS_ERR(bus))
- 		return ERR_CAST(bus);
- 
--	return __regmap_init(&slimbus->dev, bus, &slimbus->dev, config,
--			     lock_key, lock_name);
-+	return __regmap_init(&slimbus->dev, bus, slimbus, config, lock_key, lock_name);
- }
- EXPORT_SYMBOL_GPL(__regmap_init_slimbus);
- 
-@@ -63,8 +62,7 @@ struct regmap *__devm_regmap_init_slimbus(struct slim_device *slimbus,
- 	if (IS_ERR(bus))
- 		return ERR_CAST(bus);
- 
--	return __devm_regmap_init(&slimbus->dev, bus, &slimbus, config,
--				  lock_key, lock_name);
-+	return __devm_regmap_init(&slimbus->dev, bus, slimbus, config, lock_key, lock_name);
- }
- EXPORT_SYMBOL_GPL(__devm_regmap_init_slimbus);
- 
--- 
-2.47.3
-
+On Wed, Oct 22, 2025 at 4:28=E2=80=AFAM Hans de Goede <hansg@kernel.org> wr=
+ote:
+>
+> Hi Yuhao,
+>
+> On 22-Oct-25 6:25 AM, Yuhao Jiang wrote:
+> > The switch_brightness_work delayed work accesses device->brightness
+> > and device->backlight, which are freed by
+> > acpi_video_dev_unregister_backlight() during device removal.
+> >
+> > If the work executes after acpi_video_bus_unregister_backlight()
+> > frees these resources, it causes a use-after-free when
+> > acpi_video_switch_brightness() dereferences device->brightness or
+> > device->backlight.
+> >
+> > Fix this by calling cancel_delayed_work_sync() for each device's
+> > switch_brightness_work before unregistering its backlight resources.
+> > This ensures the work completes before the memory is freed.
+> >
+> > Fixes: 8ab58e8e7e097 ("ACPI / video: Fix backlight taking 2 steps on a =
+brightness up/down keypress")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
+>
+> Thank you for your patch, this is a good catch.
+>
+> > ---
+> > Changes in v2:
+> > - Move cancel_delayed_work_sync() to acpi_video_bus_unregister_backligh=
+t()
+> >   instead of acpi_video_bus_put_devices() for better logic clarity and =
+to
+> >   prevent potential UAF of device->brightness
+> > - Correct Fixes tag to point to 8ab58e8e7e097 which introduced the dela=
+yed work
+> > - Link to v1: https://lore.kernel.org/all/20251022040859.2102914-1-dani=
+sjiang@gmail.com
+> > ---
+> >  drivers/acpi/acpi_video.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+> > index 103f29661576..64709658bdc4 100644
+> > --- a/drivers/acpi/acpi_video.c
+> > +++ b/drivers/acpi/acpi_video.c
+> > @@ -1869,8 +1869,10 @@ static int acpi_video_bus_unregister_backlight(s=
+truct acpi_video_bus *video)
+> >       error =3D unregister_pm_notifier(&video->pm_nb);
+> >
+> >       mutex_lock(&video->device_list_lock);
+> > -     list_for_each_entry(dev, &video->video_device_list, entry)
+> > +     list_for_each_entry(dev, &video->video_device_list, entry) {
+> > +             cancel_delayed_work_sync(&dev->switch_brightness_work);
+> >               acpi_video_dev_unregister_backlight(dev);
+> > +     }
+> >       mutex_unlock(&video->device_list_lock);
+> >
+> >       video->backlight_registered =3D false;
+>
+> As you mention in your changelog, the cancel_delayed_work_sync() needs
+> to happen before acpi_video_dev_unregister_backlight().
+>
+> Since this needs to happen before unregistering things I think it would b=
+e
+> more logical to put the cancel_delayed_work_sync(&dev->switch_brightness_=
+work);
+> call inside acpi_video_bus_remove_notify_handler().
+>
+> So do the cancel in the loop there, directly after the
+> acpi_video_dev_remove_notify_handler(dev) call which removes the handler
+> which queues the work.
+>
+> E.g. make the loop inside acpi_video_bus_remove_notify_handler() look lik=
+e
+> this:
+>
+>         mutex_lock(&video->device_list_lock);
+>         list_for_each_entry(dev, &video->video_device_list, entry) {
+>                 acpi_video_dev_remove_notify_handler(dev);
+>                 cancel_delayed_work_sync(&dev->switch_brightness_work);
+>         }
+>         mutex_unlock(&video->device_list_lock);
+>
+> This cancels the work a bit earlier, but more importantly this feels
+> like the more logical place to put the cancel call.
+>
+> Regards,
+>
+> Hans
+>
+>
 
