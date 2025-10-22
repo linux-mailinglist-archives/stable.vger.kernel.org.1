@@ -1,130 +1,149 @@
-Return-Path: <stable+bounces-188970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C2CBFB709
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 12:43:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC44BFB7D0
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 12:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C70A818896EC
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 10:43:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C87074E23DD
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 10:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A439A30F7FA;
-	Wed, 22 Oct 2025 10:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DE732779B;
+	Wed, 22 Oct 2025 10:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="o5j7WoI0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A8rBLIzo"
 X-Original-To: stable@vger.kernel.org
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5DD221DB9
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 10:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F541326D70
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 10:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761129797; cv=none; b=u84ds+wK3XD32D8kahmpFQ4JwCFYjHBDXdlWipUOLQuWQEF0VC/gSURCxV6yLsVBrC16Ui0J1DdrKjuWqny0S1LU61gb9l1SqAlHxwFC5KbPggqevYtiYwP+Yzhv8WBFeR2kaYAA+XmLl6qDbOs2UnBquGIkwkH0H8/vempIQkg=
+	t=1761130649; cv=none; b=o6cNMAuYxk3UWwnimHV22ozs/TvWwlnSx/oKkFlcUoEzf7ipw6WD5A6raBBT6nDPTjYWGE6xnqhsKbUvNEpsfaXA62znVftrslOr4uUy6AItK1sZdHfMO/xpN+/AJYeRiNrwcKgmyfBwio+dowYnjjhIXQu5Ke9f6xDSn3a5g5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761129797; c=relaxed/simple;
-	bh=JZ4P+wYE8YZdEKQsH+NfoSABTfJNMWLi6rL0+6dUT14=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DfPa/CZynvzUNq+3a0NL8o3FVp2GCoowqe2JpuejiK0szlL7JMsoLGI7EmdeggkrmympaP+IYylBNrpsHTxJhNOPk7AVW4Nun/S/NbzoRabg7po7YsDaymNd89Evf/rsJdP/7HsS3OpThomA0Ni6rXn1o75mhRMd+Uf3lNkPWaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=o5j7WoI0; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6006b.ext.cloudfilter.net ([10.0.30.211])
-	by cmsmtp with ESMTPS
-	id BROdvRLL7eNqiBWJGvkghx; Wed, 22 Oct 2025 10:43:14 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id BWJEvdUtFMem5BWJEvnqYQ; Wed, 22 Oct 2025 10:43:12 +0000
-X-Authority-Analysis: v=2.4 cv=bZtrUPPB c=1 sm=1 tr=0 ts=68f8b542
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=fB1EUuAJHaHnRYsFKpoA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=dlFZvav2JxkX6DXRhpjf71y+Kb2+lLpOvXc+C6RSZuM=; b=o5j7WoI0NEjXbsiqdG1K/WaJDC
-	If7ZMcgxhUox+4mEypQsuOIewqHPfhyHqKOaZ8DvoeGk+LjNhS5kIxIVpsNzSIYXvAaYo64AUEzzl
-	gQYbE4AuEfYlNDcnoqT/3Y64UmkNuwgz7Iqnt5ieLq8MVtIFi7h7qvI7xJ4NTxBwo/1+YtuB4Hhu+
-	ukA1ZVQ2zJYmnWNUAZeTLXBh9MF3EiPqGr/S1rgBE0goMjLEGlr8CUCmFGSdK7ICDo3VHGtgJi7pI
-	r3U0uCHDJQUDtM1je3ZIQ/ygbeyzTaj0GhARsUXkSsW6x51g9ZcqfUmO0++xrIFf7rFDQoOZxLH5n
-	8SqSO2iA==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:49900 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vBWJD-00000000q4O-2xIr;
-	Wed, 22 Oct 2025 04:43:11 -0600
-Message-ID: <8e8997f8-f266-4237-9325-3ae602f4304c@w6rz.net>
-Date: Wed, 22 Oct 2025 03:43:00 -0700
+	s=arc-20240116; t=1761130649; c=relaxed/simple;
+	bh=Bm+cJgJrGpbVpo2k4DHQR58J+3jHfjbzIIQ76OGCebU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FRlg86csYAAFFr+P8SX+bKj6MQ6Fu/Tcw6a3E/2RCh5PEc9/PCBrqOGR1vwr0Y0JaJP/boxEosTTiUh2y2uS22FkJVrDi39cr64cBv3rGdJ5ufl8U94SHbBDYgng7wDEuWwzHefZELpuQGuW97AHJQJMwOIM+aaCtIThmZs/Wkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A8rBLIzo; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-77f343231fcso4577813b3a.3
+        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 03:57:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761130647; x=1761735447; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:reply-to:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kk2BPiYFNzn3CXG6RkzldSGrwb1ZpVic8o4pFAU0ZkE=;
+        b=A8rBLIzoqevJLIFI1ChgF1XZV+SVli+A/0eRmOvhnv5gLj/GyhqXXKFchjPqKteESk
+         clh3X4FaO7E+dVPaIkzjuYQ6rWgYCy7TcREMxj9FTtEHVIrBNC7WMi0mRG0xC/OteSdd
+         C1/R4QZHF00kkGQgMryvryGiWS362CwqM/AAzrpfnpwSqBS1K6gTk5xatA/MkLA1XlFt
+         rk1XZYgoTHO65Z08OlPkfLHOKK1qXdfNoM9BKk13p4mk9tiqikwd55g/A/Er7tyVNzix
+         2cgD5RO1f1zeE7i7FrQLJtBpDC3F5lIMEViSu19d4f2ORsGooN/SBGA8cFnJs2h1EA2W
+         I1nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761130647; x=1761735447;
+        h=content-transfer-encoding:mime-version:reply-to:message-id:date
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kk2BPiYFNzn3CXG6RkzldSGrwb1ZpVic8o4pFAU0ZkE=;
+        b=GCB2mS3uidP/20WN8xfAE51onPGT7bY1tSKLmhjXRV9u2MKj/L6pQuQtm2RyJp4myT
+         IbN+jTHGn/TaziaVJsFCceZu5+035tm+OCcdqo0nD5YGw6F5EzLazzRUQee+ZFbIMstU
+         fwV5L8BlPzv9PsAm8N8W/kpegF/+RwNQ48glP1DqDmfHlvYxFSNaou+BnMOuEakxR6ua
+         qAsX4uKQRL7V15QJKWnv06uiA9jASnzAtqCOoxpZbAJCrOrcvb1TRTR/A+OLZFqgcYMD
+         pjfJne2mwZEYQLHhj4bYW+2n+snzB0VW0pbT/sE7lu9q+EPiCOwl+8REv/l6pdxw8klO
+         Hoig==
+X-Forwarded-Encrypted: i=1; AJvYcCXPA/XxETdbiG86769Um0Kn7KYezUc4UGLO7YU/LrLhI9DPlAm2QW4OwxgLA7B1XjmhcfjGX08=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweRI4JwWQ3qdfB/q7t7vhFesBWxhTtZu54EnYCEEYAQC6MON9e
+	EJLLzcfyfXLXAvNuzNif/eQW2JEwK2puCJVXPyChaKTaq70Kpf3HrAH/
+X-Gm-Gg: ASbGncu0GXnj2Nn6KJM8Jamq8w82+lcNbjFYWnR51DBi6ujkgMRvXbZoY1KuVGTjmnp
+	FPSTtmyV/zggFMTBu+pkB8lpXGThDoBfA+I070Bk6LNx8v0ThbitBqW7DkvPaPYfNTxJXopVRHQ
+	8aBIjpTGQY804TuDVIfjOy1H+9Xb1ctQcDtn0zMRLWTHAqphSqCtQcrlxfFMphpqt8m1DawnBxD
+	bLjosdxYNcCDtJ1weMXh+DkGqxgBZdHaE/mK/CZpG4ei5jRxrzl/wvJ8Tic1FBoTisYAxNc1fpI
+	AITFpYSaZIBdyxVgCTz/qfnwp9ZWKeKHmilK0p6swONDCmkawua6ei9QI5IXfSKEw82UVylKj5e
+	P2JYst36+bJfCopHsqU0BHdE35JGg81rhf4iC3+pHC2HPpq8Bwog5llYGCuz8lLq6LN97GhMU75
+	JptzEeFxb4JO/NFm9C1xF3q9cU3Qwa97M=
+X-Google-Smtp-Source: AGHT+IFWysXp9eqMZj5Qi90FK5sw1pd9AH0StflzodduEPErD8Q0fn6Hmz60MpZnfpCZjB1sS9bTuA==
+X-Received: by 2002:a05:6a20:5483:b0:334:93f3:9b28 with SMTP id adf61e73a8af0-334a8644249mr25233224637.56.1761130647394;
+        Wed, 22 Oct 2025 03:57:27 -0700 (PDT)
+Received: from KASONG-MC4.tencent.com ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b35dadsm13346482a12.26.2025.10.22.03.57.23
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 22 Oct 2025 03:57:26 -0700 (PDT)
+From: Kairui Song <ryncsn@gmail.com>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Hugh Dickins <hughd@google.com>,
+	Dev Jain <dev.jain@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mariano Pache <npache@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	Kairui Song <kasong@tencent.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm/shmem: fix THP allocation and fallback loop
+Date: Wed, 22 Oct 2025 18:57:19 +0800
+Message-ID: <20251022105719.18321-1-ryncsn@gmail.com>
+X-Mailer: git-send-email 2.51.0
+Reply-To: Kairui Song <ryncsn@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/105] 6.6.114-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20251021195021.492915002@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1vBWJD-00000000q4O-2xIr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:49900
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 56
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfKcX5GXD+SxlHkmxQ4vm11yuJEuLTuNQDQYG1BeqOwyytoNVi6Bz20PtxtjgWmI7bnun24WoORNAJXZadqqxkUsIBPYXwmcLgmebrMhcCQkY3IbFMNls
- cX/AEN6cANSWsqe3es93xFOEFy3Bm985V22Effmf/vgKB3Sw7Nfp42A/RNue8Q2Uh12kMSU8bpYbrg==
+Content-Transfer-Encoding: 8bit
 
-On 10/21/25 12:50, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.114 release.
-> There are 105 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 23 Oct 2025 19:49:51 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.114-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Kairui Song <kasong@tencent.com>
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+The order check and fallback loop is updating the index value on
+every loop, this will cause the index to be aligned by a larger
+value while the loop shrinks the order.
 
-Tested-by: Ron Economos <re@w6rz.net>
+This may result in inserting and returning a folio of the wrong index
+and cause data corruption with some userspace workloads [1].
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
+Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+
+Changes from V1:
+- Link to V1: https://lore.kernel.org/linux-mm/20251021190436.81682-1-ryncsn@gmail.com/
+- Remove unnecessary cleanup and simplify the commit message.
+
+ mm/shmem.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b50ce7dbc84a..7559773ebb30 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1895,10 +1895,11 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
+ 		order = highest_order(suitable_orders);
+ 		while (suitable_orders) {
+ 			pages = 1UL << order;
+-			index = round_down(index, pages);
+-			folio = shmem_alloc_folio(gfp, order, info, index);
+-			if (folio)
++			folio = shmem_alloc_folio(gfp, order, info, round_down(index, pages));
++			if (folio) {
++				index = round_down(index, pages);
+ 				goto allocated;
++			}
+ 
+ 			if (pages == HPAGE_PMD_NR)
+ 				count_vm_event(THP_FILE_FALLBACK);
+-- 
+2.51.0
 
 
