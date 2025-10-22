@@ -1,135 +1,139 @@
-Return-Path: <stable+bounces-188978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294B3BFBC01
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 14:00:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E53BFBC3A
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 14:03:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA89919C3416
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 12:01:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B20C1A010A7
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 12:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B68C340A4D;
-	Wed, 22 Oct 2025 12:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C3232D42B;
+	Wed, 22 Oct 2025 12:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZU0fnZtG"
-X-Original-To: Stable@vger.kernel.org
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="XJKCzpAB"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472603161AF
-	for <Stable@vger.kernel.org>; Wed, 22 Oct 2025 12:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B5F32ED27
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 12:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761134442; cv=none; b=EDp56khSJwMaWHE0kd8W47mYInxwAdRzf5v0/7OvifVk7gcUqVkSLSu5Gy9ObbNa32KjqRmepsT7uzvbFi3tr0OJcETCsyV3cXytc4hti7YF/6BfOHRiUHic0meX37wykZgN1qDIHKKgdAP0SSNO249QnHZuYnXWURMdY4cTF9Q=
+	t=1761134566; cv=none; b=MCmM6UBR2nxSYpjVxhAC5SlQxb4GvSXC/3kr+PCuqPH8i6MSjCp1WMVMS6+W9Qc7x5U4ntEJhZUnw+mPf//hHSKZBV3rf5KI6dXnSwgPJFNS+8KVb9/BhT+5uzPAp8/78SHLwV2YxmmyI/6+FGQpLtIz9Tx261AHOnxipbSaTu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761134442; c=relaxed/simple;
-	bh=97a8tZjKqwRtHNr6BZl+meSJb3s8o64hqDASwzxbu5E=;
+	s=arc-20240116; t=1761134566; c=relaxed/simple;
+	bh=qc+TGmxJjDR8e93EuCMFZsvuB2trJNVKy1yWPZqivBc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pR20Q8mJP9Y3ZRyR30XLGE+44uUvn+QEFkhPTdKrXRbOAswWFZ7g3+JATy32eKmWIOChIiDS2hBoLsE6s/Px0iQ1Tci4u/sTqUUTPy3WOof08u+7AOg1iNfsI08MXuhVtHpisXuVxhlv6oNq6FvizfOe50PB/rPUA0zOpWLLEIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZU0fnZtG; arc=none smtp.client-ip=74.125.224.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-63d97bcb898so1517948d50.0
-        for <Stable@vger.kernel.org>; Wed, 22 Oct 2025 05:00:41 -0700 (PDT)
+	 To:Cc:Content-Type; b=Ln5fN35/fYFHZ5MWR6pY/jvPhYvkyrAQRuj8dtZFUMd4N4MFFa458CQn1R+3zV+98OGJsZpMPalPdYY2gWCDpn9ZASJSAQAPcTVoRhwLFV6rxOcZHm5Q0jlvdMH1zjPDGt8Btsj3v02rnKhBkYBTRi10+v7bMXG+JbUSSMlFsmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=XJKCzpAB; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b6ce696c18bso359834a12.1
+        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 05:02:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761134440; x=1761739240; darn=vger.kernel.org;
+        d=futuring-girl.com; s=google; t=1761134563; x=1761739363; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/6uhgqipKW89TbAKSJ0VsiSw+i7Bc0BvME8dlqiNOkU=;
-        b=ZU0fnZtGUkFNuLa8Ca6e43Ct9sxzfOOMFNaD/PsOrrOIveuOY7JsxWvOuqyz8EarfA
-         TooN8WmQWzEWlnMScJOSM9H4gtWDzlxtj2bqLSlXnMxv0gtZQWk19KaRQ6tm6BgZcxaw
-         Qb3DRFQZDjD4/xKWBl9AaBFWNUCPir1scC3exaxZbF8lDVV5NpArwYWzo11fwi5ii4F1
-         Pfr1ZMmDhOrTvcm2Z57Zj4GIAHL1RIexvGC6RgHQaUCD25y23vjfBen9k2VukcKern18
-         AvQL9FnGDL790sKs1WsCuE7JW3o3X4bA5UfnYJLtpa36JrSFOmKfMUKlPZxJAj+Hn42y
-         AQiQ==
+        bh=d5/wbf6GFhoGu3668TdoXMB0FT53GKQn1LtblB+CeVA=;
+        b=XJKCzpABZvpOntw5f+NpGJ9RnShY54S2mztKg2R14SMf5F4WbZdKnyWpa1DaVI2CDD
+         9D6V7q9q9LDgB6873yjqSXflbxCHeRpb0y7Kcn8cNNqZ8nKI3igqOAW4Z5I5QuT+d1X2
+         +EEuGbTRWTMlyRtyJjLJbkQa/JcKP3+IB9jpTkZAgLbGK5plPyZp92wt8alWB9eO2fEJ
+         KGvWAuwk3imBtGmofvHAtxFIIeIW0TO4RVTbk4GCf7FDZa9PzHaoVOK/zl9ViqJCjb3a
+         L3KenxeaoPWI1UR22IFLMNVCxIyRcShtaj32S1n7epd6q9wQhIowW9CPgRz1h2JU7PK3
+         s4iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761134440; x=1761739240;
+        d=1e100.net; s=20230601; t=1761134563; x=1761739363;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/6uhgqipKW89TbAKSJ0VsiSw+i7Bc0BvME8dlqiNOkU=;
-        b=JY/HnWuF4e8vkd8R8eGW7s9F5zr4xRrawra494ePPZ8DjfbXUIL6uWkl93b8QYxLuC
-         RW/H1Fh8umrr5KYnau7clVQXEkv3L7P/3UEjhEvB1bawodwhxpwtwIdrv/hFqGJVVG5s
-         75u2Kn42ArZlSGdvVwgiR344UzVr/h8c7GsEAaLl/SERSMN5vVDltmZkzQOnLPWlS/rB
-         cKtY380gRyiPbPF4kxIuNGYCiqL8hCSMYgfLtLSr17RgsbXh3jsjOaP8rPhzTA3xeEKi
-         nxexYvojbQmAC+wr0KNDp8UA4933Y/ZPFdLBflhLACqkR+jGaE3VHWJpaEg458YASRlO
-         D6nQ==
-X-Gm-Message-State: AOJu0Yyk+w39d0KdhgBIHRb3g9G0YzWQL2dN3zZ3wuwXqZs9F9SxE/rV
-	vZUMHqfDqtNpkyuEeKcIhSD1vRQEqa3UjeBkwKnorEkfeRvfxRyQnQfgjSvOvap425c45QFjtnR
-	w6dxEgJnh8/IG8dlr/iLR9Hh2RpdKC5c=
-X-Gm-Gg: ASbGncuhWOrPuK+ZeZUWMHmtd1eg7wsjRkZ0Tx3EHV27XC/O7NQKk64IGwFKTiDqBCY
-	7rWZghWclgRCuQTEGwGzJ4eILDcEjplYk2vBPZi09u8M4Zv2T9m4MAiGQIVikp84WoJP1RX+o/W
-	97md4LbLl7kTdKcbafmXME8sXDtTKfowe5CSUhtdwJbcsTMArf7VAboyTFijuEdnivTfYy8GSWe
-	XAshreGgxdnY0+LlVJCDI0uuX6jZHxvGgM0jbCbn5KvIvp2yDtKvwuWE3YHHA==
-X-Google-Smtp-Source: AGHT+IHe7HPf6WFvrCRkjbNGAn3hqNruzzhDGzkeQpPjDeNqpVAuLbWf1eiEYp5Q7LepTL72CtjhjX2Ia5Crn9kuh08=
-X-Received: by 2002:a05:690e:1a8d:b0:63b:a941:90c1 with SMTP id
- 956f58d0204a3-63f2f5b4e47mr755807d50.12.1761134440040; Wed, 22 Oct 2025
- 05:00:40 -0700 (PDT)
+        bh=d5/wbf6GFhoGu3668TdoXMB0FT53GKQn1LtblB+CeVA=;
+        b=jdWLfTvvTWRaxeD6yli5b/8m5hX3dOpDx0UxlJL1p/EQ9O1UE+c3Hf8skx8jG2B08R
+         1QGZq3DJg1w48Q+npTpKLPB3Eiu2kEbq2/3id/5PVF3YDhscuaT78rQ7Y6mdRattzdqU
+         0j8aePgXdlJRIbe+Okgfqg99tlIlyc7ziNBB+Zn+I/v2gDaKwgIYoBZ6kkD45Z6YvgST
+         gUajxjtzYQ+xlTr9UPSnowDPYNiApMh+5JLs3t8plUzz6UHSXblweMjZseIOHyes8Fkc
+         GkTLd94BEKDePshlSqWFT0F1tv5d1aq1ysv9Jya7y+mtdn9AwTaMsxzZFf/6lJw/JiLN
+         cM5g==
+X-Gm-Message-State: AOJu0Yy7SgllpJvCiINHHz3QJWIDZWJDrgvDqezqR53nrkRdlkJVm9sS
+	3oSZ/MTnFI1MXKjLNBvUfNgGNSHPLwBziG2c//dFKWz9L5e7tOkalkpVqhQBh28u+Wtxyxdc8uy
+	CtKJafuAEbrl1W2KVMCq3nmlnF+u7fbzqO/LEasGqHQ==
+X-Gm-Gg: ASbGncv7gO9GUD6Ji2ES4j8/SePFpGNDUFrU31EBHNkaPKdoXqFcH7bBBeACEKHDEuF
+	HEHANRxaE3jTs0TjVNr5NDp3yD2L54c2sezZrLL3zWq4ItsWn/9WTLgH9j8sTqxZprZF8Ey1+1B
+	bTLg+j43u6qf9y7fh+o0ZQdOaEoAGqm6G0SxVllCNQ5atD8opBVpmTBgZc4vr8cD4vklpF54yvN
+	j1pKErysAJ+CTIes3S3Fy/Dsc5IEfVX2syPYJncUksC2AH4poN8Biyg1JB7MEmd45bMWdWEUO4F
+	N1f/m8fcT+d/vfTYE1OsTxchxo2T
+X-Google-Smtp-Source: AGHT+IFL5t8enG2Zw7oK7pknpiCUZ9vYUeXHaONtu4SrU5QNhCELXo3GPXNs5SlUx4N7/HvLFJQcnXzAdCHO9w8JdQ0=
+X-Received: by 2002:a17:902:cecb:b0:290:c94b:8381 with SMTP id
+ d9443c01a7336-290c9c89dbbmr301590825ad.7.1761134562657; Wed, 22 Oct 2025
+ 05:02:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251021104002.249745-2-srinivas.kandagatla@oss.qualcomm.com>
- <20251022003429.4445-1-threeway@gmail.com> <76567559-4cac-467f-9740-e8a539a445f7@oss.qualcomm.com>
-In-Reply-To: <76567559-4cac-467f-9740-e8a539a445f7@oss.qualcomm.com>
-From: Steev Klimaszewski <threeway@gmail.com>
-Date: Wed, 22 Oct 2025 07:00:29 -0500
-X-Gm-Features: AS18NWAgMZIyWSBaRtc28HmRupfvFkfndCADg6zxwcxhZ5F7Sr-vfM6vIit3CAM
-Message-ID: <CAOvMTZjjCn5gDgOrf_2++QjfdCxz2PXTey5Nh_-=caB4wX1g5Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] ASoC: qcom: sdw: fix memory leak
-To: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Cc: Stable@vger.kernel.org, alexey.klimov@linaro.org, broonie@kernel.org, 
-	krzysztof.kozlowski@linaro.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, perex@perex.cz, 
-	srini@kernel.org, tiwai@suse.com
+References: <20251022053328.623411246@linuxfoundation.org>
+In-Reply-To: <20251022053328.623411246@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Wed, 22 Oct 2025 21:02:26 +0900
+X-Gm-Features: AS18NWDUgkoVTtfgD8dgXCgAaXo5KDUPhO3XXcd_9Q3gWO6keur8-RT4nYB1Nl0
+Message-ID: <CAKL4bV747Ucee17YwB4y5L_We7Kk5aRe4REckptqgfH2+o2LxQ@mail.gmail.com>
+Subject: Re: [PATCH 6.17 000/160] 6.17.5-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Srini,
+Hi Greg
 
-On Wed, Oct 22, 2025 at 4:52=E2=80=AFAM Srinivas Kandagatla
-<srinivas.kandagatla@oss.qualcomm.com> wrote:
+On Wed, Oct 22, 2025 at 2:34=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On 10/22/25 1:34 AM, Steev Klimaszewski wrote:
-> > Hi Srini,
-> >
-> > On the Thinkpad X13s, with this patchset applied, we end up seeing a NU=
-LL
-> > pointer dereference:
-> >
+> This is the start of the stable review cycle for the 6.17.5 release.
+> There are 160 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Thanks Steev,
-> I think I know the issue, There was a silly typo in 3/4 patch.
-> Could you please try this change, I will send this in v3 anyway;
+> Responses should be made by Fri, 24 Oct 2025 05:33:10 +0000.
+> Anything received after that time might be too late.
 >
->
-> -------------------------->cut<------------------------
-> diff --git a/sound/soc/qcom/sdw.c b/sound/soc/qcom/sdw.c
-> index 16bf09db29f5..6576b47a4c8c 100644
-> --- a/sound/soc/qcom/sdw.c
-> +++ b/sound/soc/qcom/sdw.c
-> @@ -31,6 +31,7 @@ static bool qcom_snd_is_sdw_dai(int id)
->         case RX_CODEC_DMA_RX_6:
->         case RX_CODEC_DMA_RX_7:
->         case SLIMBUS_0_RX...SLIMBUS_6_TX:
-> +               return true;
->         default:
->                 break;
->         }
->
-> -------------------------->cut<------------------------
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.17.5-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.17.y
+> and the diffstat can be found below.
 >
 > thanks,
-> Srini>
+>
+> greg k-h
+>
 
-Yep, that does it :)  Thanks for the quick fix.
+6.17.5-rc2 tested.
 
-Tested-by: Steev Klimaszewski <threeway@gmail.com> # Thinkpad X13s
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
--- steev
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+
+[    0.000000] Linux version 6.17.5-rc2rv-g3cc198d00990
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20250813, GNU ld (GNU
+Binutils) 2.45.0) #1 SMP PREEMPT_DYNAMIC Wed Oct 22 19:52:46 JST 2025
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
