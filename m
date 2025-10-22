@@ -1,182 +1,108 @@
-Return-Path: <stable+bounces-188953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D86DBFB3DD
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:55:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D1A3BFB3E6
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D20473568B8
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:55:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 184393BB569
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71ABD3168E8;
-	Wed, 22 Oct 2025 09:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A72A314D0A;
+	Wed, 22 Oct 2025 09:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MaxRNrmv"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="JGO3i+I+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B91D314B8E;
-	Wed, 22 Oct 2025 09:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D750C296BC3
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 09:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761126932; cv=none; b=iyb509a7xdcxnimt6draRafQLUmhaQ4I66vnNxpWxuKDN6Q5VYzpsWn/Yx65Kuz3ISJ6XxeghaSkk8JOzT/fzHNyUzZtmhQf3VIZHMJzbY/LRHIHAHZd34qZ54juLVwdrEKhvGhS9D8B9mmP0OKusu5lBIsXOm64UdWe/cIrx9s=
+	t=1761127003; cv=none; b=S5melq5agVw4pZnkbtgb+0SXMqG2039aqLBxnrliDBJ6tqggJrVJTHmF4Dnc3G9MS/EmeJi7npEL1nKHxN+4VYt2HyNA8o5rYpu/PlGuBnsu8M6MvwfZ+Qmgd8rfJdWxIj2RPXMoSeunBuuxeUIpG0R9ZlZlpA8cVUucyK1/jv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761126932; c=relaxed/simple;
-	bh=7i9Ez8UvNOZbo+rgVehka2n3g0H3oeOM4jQuNJXZ9tw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sGfgDSzsAK0bUkUhK2zXY8reSEgbi2uW7YorfZT3uQzZBTa4g3Rg0k9TcOfppQeqsAsRvF8KYZZoatoRMmVuMauhuGYQy9lQpgdP4MWFXeJg7q+tfxMYgb/TvYGnSbKOQayxzGqyDj/ajjSqxscJl5ynO413bYn63pUo8YJt8h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MaxRNrmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024E8C4CEF5;
-	Wed, 22 Oct 2025 09:55:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761126931;
-	bh=7i9Ez8UvNOZbo+rgVehka2n3g0H3oeOM4jQuNJXZ9tw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MaxRNrmvX8kuENhtIKpWYOiD8IYJc50VTb693B6lZsQQhq1R7zHk8kCq4zG9gutD1
-	 /FSAt9+/5BT+ThL+vsgBgL1GxfggbFjrQdUFVu8apPMoBTI+k3qnD9FCkk4CLdLDak
-	 miDXzFG9NyzP5PsDE8/pI3cq3S4S6bBa51N57kpkmYuT3/oixoLWOsIG+ElSgjtQt/
-	 Jif4GLloCeTU3oN/sKG6Puonep0VMUgwDV6DjPH3LVmcnu9vI4Ydc90re3LCMLv0UN
-	 +/GespTrv7m4ePZ0YcK4l9wRKFn4kbIu49Z+k/GFyWkRRG1nRDYxLtLLLWjmLvHYaA
-	 fwohulvdDBSbA==
-Date: Wed, 22 Oct 2025 15:25:13 +0530
-From: "mani@kernel.org" <mani@kernel.org>
-To: Stefan Roese <stefan.roese@mailbox.org>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, 
-	"Bandi, Ravi Kumar" <ravib@amazon.com>, "thippeswamy.havalige@amd.com" <thippeswamy.havalige@amd.com>, 
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
-	"robh@kernel.org" <robh@kernel.org>, "michal.simek@amd.com" <michal.simek@amd.com>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Sean Anderson <sean.anderson@linux.dev>
-Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
-Message-ID: <3it5l556vmfpuu6kz5yvulwosi4ecmcgfbzcizrc5wi7ifddkh@mpzfxf2v6v3f>
-References: <20251021212801.GA1224310@bhelgaas>
- <ab1f7c51-bc41-4774-a0dc-850e53c412eb@mailbox.org>
+	s=arc-20240116; t=1761127003; c=relaxed/simple;
+	bh=M92oZjJRV29zncBnFJrQxQTJHBtsqpM7ptA2wW3uN+4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=SeKjgqMAeQ1k7EtKPW9pYVLPF3nJWmddFPzbgcyUb14U8O8Ldrx6eVqIGY5YrZUxuiRMZ8Y4QiwHqdD/6CQdZiDqISnDn1iY+6zRG4l0uN5gfB+dVVlg8Xc66tQws9m+oo1XKnmmD/32b6mo24xL2adNEBy9BUNy5MXltNqIQPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=JGO3i+I+; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=xli/qbpvNWvvC2EqcDhSBwe7VGcn6AodXA6fZIGnxsU=;
+	b=JGO3i+I+57r8U3YWOgPLeZx/BUHaU7rxnG+olIQ2ARxUIzGm25wZ4RHygoKLP5Ao+rVoWGhEK
+	u6d1rVpUZhILYNA7vNpNARGjBQOqdOr1Yxy6zv4oRldvs46jlsBW23s5LPmQz6dBqxeNL4WX4hZ
+	5s/yxw9LJRBwtlZ2yrGZFhU=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4cs4LJ1btmz1cyVL;
+	Wed, 22 Oct 2025 17:56:08 +0800 (CST)
+Received: from kwepemj200003.china.huawei.com (unknown [7.202.194.15])
+	by mail.maildlp.com (Postfix) with ESMTPS id C16CD140259;
+	Wed, 22 Oct 2025 17:56:32 +0800 (CST)
+Received: from [10.67.120.170] (10.67.120.170) by
+ kwepemj200003.china.huawei.com (7.202.194.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 22 Oct 2025 17:56:32 +0800
+Message-ID: <ebcee1f6-1a10-464d-8f79-233d7e312938@huawei.com>
+Date: Wed, 22 Oct 2025 17:56:32 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ab1f7c51-bc41-4774-a0dc-850e53c412eb@mailbox.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH] dma-mapping: benchmark: Add padding to ensure uABI
+ remained consistent
+To: <wangzhou1@hisilicon.com>
+CC: <stable@vger.kernel.org>, Barry Song <baohua@kernel.org>
+References: <20251022095208.2301302-1-xiaqinxin@huawei.com>
+From: Qinxin Xia <xiaqinxin@huawei.com>
+In-Reply-To: <20251022095208.2301302-1-xiaqinxin@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemj200003.china.huawei.com (7.202.194.15)
 
-On Wed, Oct 22, 2025 at 08:59:19AM +0200, Stefan Roese wrote:
-> Hi Bjorn,
-> Hi Ravi,
-> 
-> On 10/21/25 23:28, Bjorn Helgaas wrote:
-> > On Tue, Oct 21, 2025 at 08:55:41PM +0000, Bandi, Ravi Kumar wrote:
-> > > > On Tue, Oct 21, 2025 at 05:46:17PM +0000, Bandi, Ravi Kumar wrote:
-> > > > > > On Oct 21, 2025, at 10:23 AM, Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > > > On Sat, Sep 20, 2025 at 10:52:32PM +0000, Ravi Kumar Bandi wrote:
-> > > > > > > The pcie-xilinx-dma-pl driver does not enable INTx interrupts
-> > > > > > > after initializing the port, preventing INTx interrupts from
-> > > > > > > PCIe endpoints from flowing through the Xilinx XDMA root port
-> > > > > > > bridge. This issue affects kernel 6.6.0 and later versions.
-> > > > > > > 
-> > > > > > > This patch allows INTx interrupts generated by PCIe endpoints
-> > > > > > > to flow through the root port. Tested the fix on a board with
-> > > > > > > two endpoints generating INTx interrupts. Interrupts are
-> > > > > > > properly detected and serviced. The /proc/interrupts output
-> > > > > > > shows:
-> > > > > > > 
-> > > > > > > [...]
-> > > > > > > 32:        320          0  pl_dma:RC-Event  16 Level     400000000.axi-pcie, azdrv
-> > > > > > > 52:        470          0  pl_dma:RC-Event  16 Level     500000000.axi-pcie, azdrv
-> > > > > > > [...]
-> 
-> First a comment on this IRQ logging:
-> 
-> These lines do NOT refer to the INTx IRQ(s) but the controller internal
-> "events" (errors etc). Please see this log for INTx on my Versal
-> platform with pci_irqd_intx_xlate added:
-> 
->  24:          0          0  pl_dma:RC-Event   0 Level     LINK_DOWN
->  25:          0          0  pl_dma:RC-Event   3 Level     HOT_RESET
->  26:          0          0  pl_dma:RC-Event   8 Level     CFG_TIMEOUT
->  27:          0          0  pl_dma:RC-Event   9 Level     CORRECTABLE
->  28:          0          0  pl_dma:RC-Event  10 Level     NONFATAL
->  29:          0          0  pl_dma:RC-Event  11 Level     FATAL
->  30:          0          0  pl_dma:RC-Event  20 Level     SLV_UNSUPP
->  31:          0          0  pl_dma:RC-Event  21 Level     SLV_UNEXP
->  32:          0          0  pl_dma:RC-Event  22 Level     SLV_COMPL
->  33:          0          0  pl_dma:RC-Event  23 Level     SLV_ERRP
->  34:          0          0  pl_dma:RC-Event  24 Level     SLV_CMPABT
->  35:          0          0  pl_dma:RC-Event  25 Level     SLV_ILLBUR
->  36:          0          0  pl_dma:RC-Event  26 Level     MST_DECERR
->  37:          0          0  pl_dma:RC-Event  27 Level     MST_SLVERR
->  38:         94          0  pl_dma:RC-Event  16 Level     84000000.axi-pcie
->  39:         94          0  pl_dma:INTx   0 Level     nvme0q0, nvme0q1
-> 
-> The last line shows the INTx IRQs here ('pl_dma:INTx' vs 'pl_dma:RC-
-> Event').
-> 
-> More below...
-> 
-> > > > > > > 
-> > > > > > > Changes since v1::
-> > > > > > > - Fixed commit message per reviewer's comments
-> > > > > > > 
-> > > > > > > Fixes: 8d786149d78c ("PCI: xilinx-xdma: Add Xilinx XDMA Root Port driver")
-> > > > > > > Cc: stable@vger.kernel.org
-> > > > > > > Signed-off-by: Ravi Kumar Bandi <ravib@amazon.com>
-> > > > > > 
-> > > > > > Hi Ravi, obviously you tested this, but I don't know how to reconcile
-> > > > > > this with Stefan's INTx fix at
-> > > > > > https://lore.kernel.org/r/20251021154322.973640-1-stefan.roese@mailbox.org
-> > > > > > 
-> > > > > > Does Stefan's fix need to be squashed into this patch?
-> > > > > 
-> > > > > Sure, we can squash Stefan’s fix into this.
-> > > > 
-> > > > I know we *can* squash them.
-> > > > 
-> > > > I want to know why things worked for you and Stefan when they
-> > > > *weren't* squashed:
-> > > > 
-> > > >   - Why did INTx work for you even without Stefan's patch.  Did you
-> > > >     get INTx interrupts but not the right ones, e.g., did the device
-> > > >     signal INTA but it was received as INTB?
-> > > 
-> > > I saw that interrupts were being generated by the endpoint device,
-> > > but I didn’t specifically check if they were correctly translated in
-> > > the controller. I noticed that the new driver wasn't explicitly
-> > > enabling the interrupts, so my first approach was to enable them,
-> > > which helped the interrupts flow through.
-> > 
-> > OK, I'll assume the interrupts happened but the driver might not have
-> > been able to handle them correctly, e.g., it was prepared for INTA but
-> > got INTB or similar.
-> > 
-> > > >   - Why did Stefan's patch work for him even without your patch.  How
-> > > >     could Stefan's INTx work without the CSR writes to enable
-> > > >     interrupts?
-> > > 
-> > > I'm not entirely sure if there are any other dependencies in the
-> > > FPGA bitstream. I'll investigate further and get back to you.
-> > 
-> > Stefan clarified in a private message that he had applied your patch
-> > first, so this mystery is solved.
-> 
-> Yes. I applied Ravi's patch first and still got no INTx delivered
-> to the nvme driver. That's what me triggered to dig deeper here and
-> resulted in this v2 patch with pci_irqd_intx_xlate added.
-> 
-> BTW:
-> I re-tested just now w/o Ravi's patch and the INTx worked. Still I think
-> Ravi's patch is valid and should be applied...
 
-How come INTx is working without the patch from Ravi which enabled INTx routing
-in the controller? Was it enabled by default in the hardware?
 
-- Mani
+On 2025/10/22 17:52:08, Qinxin Xia <xiaqinxin@huawei.com> wrote:
+> The padding field in the structure was previously reserved to
+> maintain a stable interface for potential new fields, ensuring
+> compatibility with user-space shared data structures.
+> However,it was accidentally removed by tiantao in a prior commit,
+> which may lead to incompatibility between user space and the kernel.
+> 
+> This patch reinstates the padding to restore the original structure
+> layout and preserve compatibility.
+> 
+> Fixes: 8ddde07a3d28 ("dma-mapping: benchmark: extract a common header file for map_benchmark definition")
+> Cc: stable@vger.kernel.org
+> Acked-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
+> ---
+>   include/linux/map_benchmark.h | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/include/linux/map_benchmark.h b/include/linux/map_benchmark.h
+> index 62674c83bde4..2ac2fe52f248 100644
+> --- a/include/linux/map_benchmark.h
+> +++ b/include/linux/map_benchmark.h
+> @@ -27,5 +27,6 @@ struct map_benchmark {
+>   	__u32 dma_dir; /* DMA data direction */
+>   	__u32 dma_trans_ns; /* time for DMA transmission in ns */
+>   	__u32 granule;  /* how many PAGE_SIZE will do map/unmap once a time */
+> +	__u8 expansion[76];     /* For future use */
+>   };
+>   #endif /* _KERNEL_DMA_BENCHMARK_H */
+Dear All,
 
--- 
-மணிவண்ணன் சதாசிவம்
+Please ignore this email, I have resent.
+
+Thanks.
 
