@@ -1,97 +1,181 @@
-Return-Path: <stable+bounces-188898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9081BFA24F
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:01:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F99BFA257
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:02:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5F82C34F756
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 06:01:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3EAE188C7CA
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 06:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AC421B9C1;
-	Wed, 22 Oct 2025 06:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE7A2EC0BB;
+	Wed, 22 Oct 2025 06:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PmoBmHf9"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZGVsJof6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E49D2E401;
-	Wed, 22 Oct 2025 06:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6326139D;
+	Wed, 22 Oct 2025 06:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761112886; cv=none; b=NrJbSY+u1qwH39YX+TOJZPp4DR/R/JlXs+8ZCZ04EE/kvlKPpBuMz2lq1ay0DMs6DAd4Yn0aTkae8TJpwd4lU45m+tYNjKrHdD6agtC5wcVDbeY6qCWYJK7aQ/kY++LMcV7ZRyuIZEezyvr45MhQGNHP7agDV9t/nlvXPIJt1kU=
+	t=1761112899; cv=none; b=kzDTeke6twcprLgIirwLP4hsSNdsjuhY9eupb24ZcGtz43DRbKusW8V8V4UpvX8RAc1qvmH0rhYs/f+KvgsZ6Xx74JvtKwFqdJ/TFInsMmoTYvOLdcx7JGRgKroz3l9oSH7trjdtTUOyVTzDNKsp8iKkcPfj0d+BB4NU9V8CBFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761112886; c=relaxed/simple;
-	bh=ljiLlxvsuemtkUTdxR99prnOHMvm/yaLMWqYL9E2vlY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SmwEsqttA2lGuwILvr8j8HqymCmyKKfY95McYR9j49IpUxBlVC99IWKkycTrSmvpBar2aHNggsStJ9e2AeZSnZsJAD8beIiSbYbAw4ZXd6eG6hOFprJUOzVF7vtQ0ugxh/oEAai1qif1EVxwHGVkJK/mTSNt1PFFvwH2koNU3QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PmoBmHf9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E15C4CEF7;
-	Wed, 22 Oct 2025 06:01:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761112886;
-	bh=ljiLlxvsuemtkUTdxR99prnOHMvm/yaLMWqYL9E2vlY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PmoBmHf9Ql6qH+pe9CemgRLWBAJhjSi/hoSABnk9ndpV+2zUxCziVK4S5Lo0Sm9Nn
-	 Bp2qAEq953xvv8w4/luZLLy4s9ZTB4p0ZKutX2m0xj1MU1xszZbt6smCVpD1tSo4pD
-	 +Qmik6bLUKZlATOg+pikO/bhM3h21XPwypLZ1APc=
-Date: Wed, 22 Oct 2025 08:01:14 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Peter Schneider <pschneider1968@googlemail.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Nick Bowler <nbowler@draconx.ca>,
-	Douglas Anderson <dianders@chromium.org>,
-	Dave Airlie <airlied@redhat.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 6.12 020/136] drm/ast: Blank with VGACR17 sync enable,
- always clear VGACRB6 sync off
-Message-ID: <2025102259-open-shallow-089e@gregkh>
-References: <20251021195035.953989698@linuxfoundation.org>
- <20251021195036.457336682@linuxfoundation.org>
- <7015844a-7eca-469c-9115-b84183a94154@googlemail.com>
+	s=arc-20240116; t=1761112899; c=relaxed/simple;
+	bh=+hL0miMu2efF/q8FanVfxv6B9+KLc5IphfM8WVdYgq4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=utRLYazPcgnnXsWoBxOl3lOrQ6BNsfpMKPFCEnNUqEuzSFTwoAjypzuGvl+gkb5u0VBDrLYDcGjlMyQjPByodu9cCAhvAtvQWLAvuZ7r899nLFFWuoKBMKg/ZipoGMdFHT0sLahqDL2qW0Axj3oupcZG0s76pIifgp1/0bRG5BI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZGVsJof6; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <49bfd367-bb7e-4680-a859-d6ac500d1334@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761112894;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MaKTtydp6I4aIQxhn86P3BAwgNQxEfqBxIOSSlgkBPM=;
+	b=ZGVsJof6iMjWSHuR5ov4Or/qdDwPisoId8W2V45U1a+S7XD/tZMzr6/JEbVKREB0SP8Puz
+	79Y4HFxLemsNK6x1F5k5kdHbjZ/fSUsYBPmDWxA4wWDyZ+pYDs0llCAtpiWe+hgx4HEWKP
+	5qEzcEh0okJCRunHxGYLZJbLwuYY1xQ=
+Date: Wed, 22 Oct 2025 14:01:26 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7015844a-7eca-469c-9115-b84183a94154@googlemail.com>
+Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
+ vm_util.c
+Content-Language: en-US
+To: stable@vger.kernel.org, gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+ shuah@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Leon Hwang <leon.hwang@linux.dev>
+References: <20251022055138.375042-1-leon.hwang@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20251022055138.375042-1-leon.hwang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Oct 22, 2025 at 07:42:14AM +0200, Peter Schneider wrote:
-> Hi Greg,
-> 
-> Am 21.10.2025 um 21:50 schrieb Greg Kroah-Hartman:
-> > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Thomas Zimmermann <tzimmermann@suse.de>
-> > 
-> > commit 6f719373b943a955fee6fc2012aed207b65e2854 upstream.
-> > 
-> > Blank the display by disabling sync pulses with VGACR17<7>. Unblank
-> > by reenabling them. This VGA setting should be supported by all Aspeed
-> > hardware.
-> 
-> This patch breaks VGA output on my machine. I have already reported this regression against mainline 6.18-rc2, see here:
-> 
-> https://lore.kernel.org/all/a40caf8e-58ad-4f9c-af7f-54f6f69c29bb@googlemail.com/
-> 
-> When I revert this patch from 6.12.55-rc1, the issue goes away, just as in
-> mainline. I'm still going to test 6.17.5-rc1 too and report back, but I
-> guess it will be just the same.
++Cc: Greg
 
-Now dropped from this queue as well.  I'll go push out a -rc2 to be
-safe.
+On 2025/10/22 13:51, Leon Hwang wrote:
+> Fix the build error:
+> 
+> map_hugetlb.c: In function 'main':
+> map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
+>     79 |         hugepage_size = default_huge_page_size();
+>        |                         ^~~~~~~~~~~~~~~~~~~~~~
+> /usr/bin/ld: /tmp/ccYOogvJ.o: in function 'main':
+> map_hugetlb.c:(.text+0x114): undefined reference to 'default_huge_page_size'
+> 
+> According to the latest selftests, 'default_huge_page_size' has been
+> moved to 'vm_util.c'. So fix the error by the same way.
+> 
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+> ---
+>   tools/testing/selftests/vm/Makefile      |  1 +
+>   tools/testing/selftests/vm/userfaultfd.c | 24 ------------------------
+>   tools/testing/selftests/vm/vm_util.c     | 21 +++++++++++++++++++++
+>   tools/testing/selftests/vm/vm_util.h     |  1 +
+>   4 files changed, 23 insertions(+), 24 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/vm/Makefile b/tools/testing/selftests/vm/Makefile
+> index 192ea3725c5c..ed90deebef0d 100644
+> --- a/tools/testing/selftests/vm/Makefile
+> +++ b/tools/testing/selftests/vm/Makefile
+> @@ -100,6 +100,7 @@ $(OUTPUT)/madv_populate: vm_util.c
+>   $(OUTPUT)/soft-dirty: vm_util.c
+>   $(OUTPUT)/split_huge_page_test: vm_util.c
+>   $(OUTPUT)/userfaultfd: vm_util.c
+> +$(OUTPUT)/map_hugetlb: vm_util.c
+>   
+>   ifeq ($(MACHINE),x86_64)
+>   BINARIES_32 := $(patsubst %,$(OUTPUT)/%,$(BINARIES_32))
+> diff --git a/tools/testing/selftests/vm/userfaultfd.c b/tools/testing/selftests/vm/userfaultfd.c
+> index 297f250c1d95..4751b28eba18 100644
+> --- a/tools/testing/selftests/vm/userfaultfd.c
+> +++ b/tools/testing/selftests/vm/userfaultfd.c
+> @@ -1674,30 +1674,6 @@ static int userfaultfd_stress(void)
+>   		|| userfaultfd_events_test() || userfaultfd_minor_test();
+>   }
+>   
+> -/*
+> - * Copied from mlock2-tests.c
+> - */
+> -unsigned long default_huge_page_size(void)
+> -{
+> -	unsigned long hps = 0;
+> -	char *line = NULL;
+> -	size_t linelen = 0;
+> -	FILE *f = fopen("/proc/meminfo", "r");
+> -
+> -	if (!f)
+> -		return 0;
+> -	while (getline(&line, &linelen, f) > 0) {
+> -		if (sscanf(line, "Hugepagesize:       %lu kB", &hps) == 1) {
+> -			hps <<= 10;
+> -			break;
+> -		}
+> -	}
+> -
+> -	free(line);
+> -	fclose(f);
+> -	return hps;
+> -}
+> -
+>   static void set_test_type(const char *type)
+>   {
+>   	if (!strcmp(type, "anon")) {
+> diff --git a/tools/testing/selftests/vm/vm_util.c b/tools/testing/selftests/vm/vm_util.c
+> index fc5743bc1283..613cc61602c9 100644
+> --- a/tools/testing/selftests/vm/vm_util.c
+> +++ b/tools/testing/selftests/vm/vm_util.c
+> @@ -161,6 +161,27 @@ bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size)
+>   	return __check_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
+>   }
+>   
+> +unsigned long default_huge_page_size(void)
+> +{
+> +	unsigned long hps = 0;
+> +	char *line = NULL;
+> +	size_t linelen = 0;
+> +	FILE *f = fopen("/proc/meminfo", "r");
+> +
+> +	if (!f)
+> +		return 0;
+> +	while (getline(&line, &linelen, f) > 0) {
+> +		if (sscanf(line, "Hugepagesize:       %lu kB", &hps) == 1) {
+> +			hps <<= 10;
+> +			break;
+> +		}
+> +	}
+> +
+> +	free(line);
+> +	fclose(f);
+> +	return hps;
+> +}
+> +
+>   static bool check_vmflag(void *addr, const char *flag)
+>   {
+>   	char buffer[MAX_LINE_LENGTH];
+> diff --git a/tools/testing/selftests/vm/vm_util.h b/tools/testing/selftests/vm/vm_util.h
+> index 470f85fe9594..a4439db0d6f8 100644
+> --- a/tools/testing/selftests/vm/vm_util.h
+> +++ b/tools/testing/selftests/vm/vm_util.h
+> @@ -11,4 +11,5 @@ uint64_t read_pmd_pagesize(void);
+>   bool check_huge_anon(void *addr, int nr_hpages, uint64_t hpage_size);
+>   bool check_huge_file(void *addr, int nr_hpages, uint64_t hpage_size);
+>   bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size);
+> +unsigned long default_huge_page_size(void);
+>   bool softdirty_supported(void);
 
-thanks,
-
-greg k-h
 
