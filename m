@@ -1,195 +1,375 @@
-Return-Path: <stable+bounces-188998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA034BFC9FF
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 16:46:08 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51905BFC93F
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 16:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E5AF6E1E09
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 14:31:03 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CAC2C35701A
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 14:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5D634EEE6;
-	Wed, 22 Oct 2025 14:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA48734CFAF;
+	Wed, 22 Oct 2025 14:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="XBtN2lNj";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="wi8ZyAIs"
-X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dy30tpnQ"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7782434E76E;
-	Wed, 22 Oct 2025 14:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1333491F8
+	for <Stable@vger.kernel.org>; Wed, 22 Oct 2025 14:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761143216; cv=none; b=oOHXhuLv8LIH6krSR9CBYiG71sIMvdowL6rgehnwbL1iydijh7LsB8pwTp/P+840WIy6iMVwdHJARbYCDrVu/zX0507dWDRyUYTgxfSGwUk1AQ8GLrvKPdtfY7w5VYCMvE/UilcBvx6OnhcIpejU2uT9RgzvuOv+CF9S+sPU+7U=
+	t=1761143646; cv=none; b=HUA71Y0tPX5NxtRKPQaL7OgSi9ToGhOcpAvQfOC82PUz3VUZem0uR9D8Ur6bXjXUNKTql37bg+zmx7JxV6sCkM7oKbiiCRrxvEa/jASEdwnddCPq2B0xRDx2HQ0pgLffM4qv9iZFHalaLT7DY1JeOpM1PkyGT2bbY+aoFmKkexU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761143216; c=relaxed/simple;
-	bh=njnMKnmAzBOYSt4qbFbbHsfQ3+1SX5N8fWPqY9xDRPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MMd9f/B8O25jukzwnc7VPDzlHDDAxGCfZGE/k39ssfi+4XsHZHhCX8rB2L5NyUlEZt1v8jZIXQVTj3ga0h/pqFbOq1Wjz43XFIQL3clWO+6rf5iFuuL+yqrrtVxBVBgI/7c229Rmc3F9xu8kkATGH29D9GI6puUOothYhB1c1Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=XBtN2lNj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=wi8ZyAIs; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 400357A00B5;
-	Wed, 22 Oct 2025 10:26:53 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 22 Oct 2025 10:26:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1761143213;
-	 x=1761229613; bh=jOvRrxLI/PxVSWmhxM2KgyJk/X+u6+/Vmaw9PuxY40k=; b=
-	XBtN2lNjCSSfXGaqXi0gx/hlO8WnexR6tUKWFw0W+Esl1w0VoLdaeTBIpl3+3SRt
-	8k0rusGVLaZzq6WMIbQuyM0WTeGOvKbmHJjwdrvEfb9GrR896b9a+9tEVP/3sdpf
-	paxsxPUnRdTFFnAtOtM07XbRfRVrG5HBEzRZC5uKdExsyRB/Bzp5lpOMbS7BkPih
-	KmI1toWj9g8kClgqlGVd7rtTlylfX4nulaysdLtdZfm6WvkOnT4eDZOEZObwlbIe
-	XvmLXVmfvHix8i5HNxPGoT1+fXs0nagnK9AITqKPBowKP+EmQHFKGhEf++nGCMZe
-	YxA9ggHBJsJm8bv/iF/7zA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1761143213; x=
-	1761229613; bh=jOvRrxLI/PxVSWmhxM2KgyJk/X+u6+/Vmaw9PuxY40k=; b=w
-	i8ZyAIsZtLOryR2GGVNqeGZtf8OTyPOHf6pua9/Bnpk4edYPEghboe7XrCsnRwis
-	WBKNNK16wl9riG2ABWUcXXmkWKAM1IVvWIdcAv7TTPWO+dumAHiiNHlmQnNI1YKU
-	DrtJyS7tlvRrHh0MzxA3OGVC1hODIFU6Vuvuj1ilxlG9EMHHWOVZKI2iojCk4VWJ
-	TG3TEuoKd1Iytp3ITeBTdouGLMRhifNM27Ck0KHTFXWf2Xmm+dlkq+dxEeUJ+jRh
-	8OWM26Faoey1nPrM5mbxb0xSgnGKfPzk1lS/4MV0eBfqNl4q02z1X8mlKKLvd3yf
-	2xr2nypxaOlNK4P7Xi2AA==
-X-ME-Sender: <xms:rOn4aFjhzhWf5UKFXIQngaoA8wC5xpsjfdgvdKyzQz3Uj3wIGjqYUA>
-    <xme:rOn4aCye09H1Qqwat59MyRiZ4WtcMmBzXAYGpX5Dv_8ePeV4HZsSBFpgnQhSeQNHN
-    3hVy940u5n_SnfyubajrMH9x33xXWTfWkjLF6aOEp0l3DasAQ>
-X-ME-Received: <xmr:rOn4aDwAZbrOopB1xYax-VhcTT1OpzDw9qNkcnPY-NQn_rQEMd01G0at>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeefkedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpefgkeffie
-    efieevkeelteejvdetvddtledugfdvhfetjeejieduledtfefffedvieenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
-    drtghomhdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehlvghonhdrhhifrghngheslhhinhhugidruggvvhdprhgtphhtthhopehsthgrsg
-    hlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhu
-    gidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrg
-    htrdgtohhmpdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgv
-    rdgtohhmpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    eplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgv
-    rhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhgrnhgtvgdrhi
-    grnhhgsehlihhnuhigrdguvghv
-X-ME-Proxy: <xmx:rOn4aMqYobzJeKegfjkTb2Jig2imGUptMSQ-WOJVeXy52dqRTzyJLQ>
-    <xmx:rOn4aGlJAiIhljC8Jzc8Rlme4sPAFf5x2PVyh9nJ_wFCv19LEn15gw>
-    <xmx:rOn4aFxOsEdEjF2cBNW6DFm5xJ1ZddlhJYnaYAxsI3aZNGWcNn7iMw>
-    <xmx:rOn4aL0O7gaLZH54F7WEnqsoInBzvSTsUEWRZEg_V-XeXCFJ2g7Eog>
-    <xmx:ren4aATnIlNrUwkxxcWac1tUEZMNUOouhUXC6W31CVSQFSaRLN_PrAxB>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Oct 2025 10:26:52 -0400 (EDT)
-Date: Wed, 22 Oct 2025 16:26:50 +0200
-From: Greg KH <greg@kroah.com>
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, shuah@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
- vm_util.c
-Message-ID: <2025102241-clubbed-smirk-8819@gregkh>
-References: <20251022055138.375042-1-leon.hwang@linux.dev>
- <2025102230-scoured-levitator-a530@gregkh>
- <ff0b2bd4-2bb0-4d0b-8a9e-4a712c419331@linux.dev>
- <2025102210-detection-blurred-8332@gregkh>
- <70f8c6a1-cbb5-4a62-99aa-69b2f06bece2@linux.dev>
+	s=arc-20240116; t=1761143646; c=relaxed/simple;
+	bh=lhxTLcb/X+R0W0b3tDUVNgpKKlGRY+Qpo1UN7CrZMXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m0/swaUlEP0v/j5z2nPG7CLkafyCmsW19JsFyCJXwwuQP/wHDwDjBiZioIBDAgFofOINl72zPe+rEN1LdepkI7waSDEBxzKiHItzdZyRszWNdIywcckE2D5u4zY9bifb/gTVSP2dW8PSoSvFGmSW+y5dFCq9ESc2CE3cudwTknE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dy30tpnQ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59M9qq7m018736
+	for <Stable@vger.kernel.org>; Wed, 22 Oct 2025 14:34:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=QX+/j6ug5Bp
+	ZFxeqiWYjDUw7viVbs6iAE/eqbzDRJuU=; b=dy30tpnQHfVD+4IuX6H+jk7NY8G
+	ifaXmBJeoLpgm+oQ4Hs4mFbMNuKbmZ4+abxBOUnH+la7nSwXl9l71wc8LNwaLmcr
+	PjRSfmAJZl770fBH1NzPelM9YFG78tqGIKjb0s/EYlfs78OTZ/GU1l+icZkgQXE/
+	uI1Z/8K+xasyiBWNwbeMOQ9hScWGXGinGCbsY02MMFnK3WxJmKuBwKhSWE3xXOok
+	XV9pwN7AktzVcKH6mi14OKkRM6Br23Qewu2PvlIPtflUUYAyONazKQEVn7Ez/jsO
+	9Z+/IhbD8G9aUTi3k0jQ5U4l09odtfmOb32Sbj17MG14kCSLL+utnFIIMSQ==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v469mxck-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <Stable@vger.kernel.org>; Wed, 22 Oct 2025 14:34:03 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4e894937010so38216561cf.3
+        for <Stable@vger.kernel.org>; Wed, 22 Oct 2025 07:34:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761143642; x=1761748442;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QX+/j6ug5BpZFxeqiWYjDUw7viVbs6iAE/eqbzDRJuU=;
+        b=PqE+AdauxHLK/MM+S8XJemN1R5W8mDXlk/O4xPGvVS2kRtlQtHFs7eAjrgPduQ+uD8
+         MUSmSp/9IN3TxMCcy6fsQOT1ldb30XjtR70LBv0BQ2fpWWrzgHYo6FgNAnFZrfsrstzQ
+         337JzAL2frENrV/kzO4uvxEOfGuSc0ZbqsTl5tcdIl3cac7PeI84HWBV9q+0nw68opPt
+         0Fg2of8SkJa1B1SAcXLGicCe237JJ3f6FgHQGTQt04DyyuSDoUj9LWzfco3NJzYz5CY5
+         lsP4CBbMbUus4DzcAAXs9MGiNORDICmyIsxpRvSNpi39MKJzXE2rvm950r/27V7YVuO4
+         tVjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXg9GKMLZvh1ZCfjBF+w6VSy2fXzdzpxCtOxQW5L2Nvdo2IZNTjxGE9+VAi1ZMvtZM7PsWvo+k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz38ZtxcmWaWW5XWa53k7n1Up9dNHLcy1/H/wVrDN8tYExhW0kO
+	VsOd8b+xPFueiYsBJBPA4INzEUENMy3DFWWA9wafx/EgL4JDrqwRr1mIDOGMjOM7NtHfGlohE6s
+	a5+eAJnDrGKTxhEB0p9GrIVRHMp/4/dWHBeV1nwRyOHNqRNUGgEG0/hS7ymQ=
+X-Gm-Gg: ASbGnctezKZ2/djNBuPhytMW/lQz8kGxDNzFmUtiryOo2V9vPHuVMsGHe7rodSy+/v7
+	F3fbiQjmU6uVKTUJYtJBwa7AUmVs/sS3HZnoe3Ybj9/wFgaPEGcXWR8UNHd2zAH6H4Y1vlZIYGp
+	euoRRjASWrW+lbDUBcZLZjUZOxdeNF6pX3a2UyvVWGA/Si5U0GD4Lh3mjQfs0j+mvy6kUay4GuR
+	VY1E5pa276TQTjfKhjzoqU7EnjzbPgqtWJ+uxvP8qKYoYYY3W3+u3gAvpMJS/kgYKbMQb1i/8Wv
+	Yf7xY+h1b9oXPxnYYV+q3QmuzPxeI+butsZlN4yt1ioR/RVYYV6593SiTZOQzW6WpnTq99TN2dD
+	3TTlLpWtCuWpL
+X-Received: by 2002:ac8:598b:0:b0:4e5:6cf8:289 with SMTP id d75a77b69052e-4e89d29bab9mr248332481cf.29.1761143641928;
+        Wed, 22 Oct 2025 07:34:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGZXiC6dm1aJzPYIm80nJKiwk9U83kUHT9S3LNgQ5bVxeCwtXipr7lRzWEi+/7qed69ffam1w==
+X-Received: by 2002:ac8:598b:0:b0:4e5:6cf8:289 with SMTP id d75a77b69052e-4e89d29bab9mr248331991cf.29.1761143641431;
+        Wed, 22 Oct 2025 07:34:01 -0700 (PDT)
+Received: from debian ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f009a993sm25544910f8f.24.2025.10.22.07.34.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Oct 2025 07:34:01 -0700 (PDT)
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+To: broonie@kernel.org
+Cc: perex@perex.cz, tiwai@suse.com, srini@kernel.org, alexey.klimov@linaro.org,
+        linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Stable@vger.kernel.org, Steev Klimaszewski <threeway@gmail.com>
+Subject: [PATCH v3 1/4] ASoC: qcom: sdw: fix memory leak for sdw_stream_runtime
+Date: Wed, 22 Oct 2025 15:33:46 +0100
+Message-ID: <20251022143349.1081513-2-srinivas.kandagatla@oss.qualcomm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251022143349.1081513-1-srinivas.kandagatla@oss.qualcomm.com>
+References: <20251022143349.1081513-1-srinivas.kandagatla@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <70f8c6a1-cbb5-4a62-99aa-69b2f06bece2@linux.dev>
+X-Proofpoint-ORIG-GUID: u9GE8oWwsVoS_ssJ682vdni5NWRmJ0Gh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAzMiBTYWx0ZWRfX9Ff0KsJZeo4Z
+ PgGNJKgpVwu9ZbtmkTYZHylQ5Aa081Wl+XC/BWIiiQ0bOBy3ptZv1XwFrcgL7ZuhHHfK5TWjgFE
+ hSWaGAu2zr5Me39uvePsK3nczSxmNobzhomH4mXknITo5ImhpLWdc44fX5d3TcY0ejigikpkoI/
+ iPnne/sof/HPjEnJi9USE5CG5t5e+Io4vZ+SX2+g6r5BWnAAIYE37IChxfK856NP553mLCAG9TO
+ Uw/TOWdcYLlQmXv8pe28LeIXkNAf/BIKTgZegt9BSXdlONRrl5CpzTnRqktojzFS9mc0TQGb3xs
+ H1DdBI3imt+YD61xOB0K2Hk/5wp4378Y7PmG3jYNDBu69qF00IDr8WXtRbc4dO73UiniG/XfSnG
+ 64jQmI83Vg8Puo7kAuCsyEBTBiJ4yg==
+X-Authority-Analysis: v=2.4 cv=U8qfzOru c=1 sm=1 tr=0 ts=68f8eb5b cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=KKAkSRfTAAAA:8 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=pGLkceISAAAA:8 a=N47DpUgmF8P8R7KZyx8A:9
+ a=dawVfQjAaf238kedN5IG:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: u9GE8oWwsVoS_ssJ682vdni5NWRmJ0Gh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_06,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
+ spamscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180032
 
-On Wed, Oct 22, 2025 at 09:34:52PM +0800, Leon Hwang wrote:
-> 
-> 
-> On 2025/10/22 16:20, Greg KH wrote:
-> > On Wed, Oct 22, 2025 at 04:08:45PM +0800, Leon Hwang wrote:
-> >>
-> >>
-> >> On 22/10/25 15:40, Greg KH wrote:
-> >>> On Wed, Oct 22, 2025 at 01:51:38PM +0800, Leon Hwang wrote:
-> >>>> Fix the build error:
-> >>>>
-> >>>> map_hugetlb.c: In function 'main':
-> >>>> map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
-> >>>>    79 |         hugepage_size = default_huge_page_size();
-> >>>>       |                         ^~~~~~~~~~~~~~~~~~~~~~
-> >>>> /usr/bin/ld: /tmp/ccYOogvJ.o: in function 'main':
-> >>>> map_hugetlb.c:(.text+0x114): undefined reference to 'default_huge_page_size'
-> >>>>
-> >>>> According to the latest selftests, 'default_huge_page_size' has been
-> >>>> moved to 'vm_util.c'. So fix the error by the same way.
-> >>>>
-> >>>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> >>>> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-> >>>> ---
-> >>>>  tools/testing/selftests/vm/Makefile      |  1 +
-> >>>>  tools/testing/selftests/vm/userfaultfd.c | 24 ------------------------
-> >>>>  tools/testing/selftests/vm/vm_util.c     | 21 +++++++++++++++++++++
-> >>>>  tools/testing/selftests/vm/vm_util.h     |  1 +
-> >>>>  4 files changed, 23 insertions(+), 24 deletions(-)
-> >>>
-> >>>
-> >>> What commit id does this fix?  And again, why not just take the original
-> >>
-> >> Let me check which commit introduced the fix.
-> >>
-> >>> commits instead?
-> >>
-> >> I agree that taking the original commits would be preferable.
-> >>
-> >> However, it might involve quite a few patches to backport, which could
-> >> be a bit of work.
-> >
-> > We can easily take lots of patches, don't worry about the quantity.  But
-> > it would be good to figure out what caused this to break here, and not
-> > in other branches.
-> >
-> 
-> Hi Greg,
-> 
-> After checking with 'git blame map_hugetlb.c', the issue was introduced
-> by commit a584c7734a4d (“selftests: mm: fix map_hugetlb failure on 64K
-> page size systems”), which corresponds to upstream commit 91b80cc5b39f.
-> This change appears to have caused the build error in the 6.1.y tree.
-> 
-> Comparing several stable trees shows the following:
-> 
-> - 6.0.y: not backported*
-> - 6.1.y: backported
-> - 6.2.y: not backported*
-> - 6.3.y: not backported*
-> - 6.4.y: not backported*
-> - 6.5.y: not backported*
-> - 6.6.y: backported
-> - 6.7.y: backported
-> 
-> Given this, it might be preferable to revert a584c7734a4d in 6.1.y for
-> consistency with the other stable trees (6.0.y, 6.2–6.5.y).
+For some reason we endedup allocating sdw_stream_runtime for every cpu dai,
+this has two issues.
+1. we never set snd_soc_dai_set_stream for non soundwire dai, which
+   means there is no way that we can free this, resulting in memory leak
+2. startup and shutdown callbacks can be called without
+   hw_params callback called. This combination results in memory leak
+because machine driver sruntime array pointer is only set in hw_params
+callback.
 
-Ah, yeah, it looks like this commit was reverted from other stable
-releases, as it shows up in the following releases:
+Fix this by
+ 1. adding a helper function to get sdw_runtime for substream
+which can be used by shutdown callback to get hold of sruntime to free.
+ 2. only allocate sdw_runtime for soundwire dais.
 
-	4.19.310 4.19.315 5.4.272 5.4.277 5.10.213 5.10.218 5.15.152 5.15.160 6.1.82 6.6.18 6.7.6
+Fixes: d32bac9cb09c ("ASoC: qcom: Add helper for allocating Soundwire stream runtime")
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Tested-by: Steev Klimaszewski <threeway@gmail.com> # Thinkpad X13s
+---
+ sound/soc/qcom/sc7280.c   |   2 +-
+ sound/soc/qcom/sc8280xp.c |   2 +-
+ sound/soc/qcom/sdw.c      | 105 +++++++++++++++++++++-----------------
+ sound/soc/qcom/sdw.h      |   1 +
+ sound/soc/qcom/sm8250.c   |   2 +-
+ sound/soc/qcom/x1e80100.c |   2 +-
+ 6 files changed, 64 insertions(+), 50 deletions(-)
 
-So a revert would be fine, want to submit it?
+diff --git a/sound/soc/qcom/sc7280.c b/sound/soc/qcom/sc7280.c
+index af412bd0c89f..c444dae563c7 100644
+--- a/sound/soc/qcom/sc7280.c
++++ b/sound/soc/qcom/sc7280.c
+@@ -317,7 +317,7 @@ static void sc7280_snd_shutdown(struct snd_pcm_substream *substream)
+ 	struct snd_soc_card *card = rtd->card;
+ 	struct sc7280_snd_data *data = snd_soc_card_get_drvdata(card);
+ 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+-	struct sdw_stream_runtime *sruntime = data->sruntime[cpu_dai->id];
++	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
+ 
+ 	switch (cpu_dai->id) {
+ 	case MI2S_PRIMARY:
+diff --git a/sound/soc/qcom/sc8280xp.c b/sound/soc/qcom/sc8280xp.c
+index 78e327bc2f07..9ba536dff667 100644
+--- a/sound/soc/qcom/sc8280xp.c
++++ b/sound/soc/qcom/sc8280xp.c
+@@ -73,7 +73,7 @@ static void sc8280xp_snd_shutdown(struct snd_pcm_substream *substream)
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+ 	struct sc8280xp_snd_data *pdata = snd_soc_card_get_drvdata(rtd->card);
+-	struct sdw_stream_runtime *sruntime = pdata->sruntime[cpu_dai->id];
++	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
+ 
+ 	pdata->sruntime[cpu_dai->id] = NULL;
+ 	sdw_release_stream(sruntime);
+diff --git a/sound/soc/qcom/sdw.c b/sound/soc/qcom/sdw.c
+index 7d7981d4295b..7b2cae92c812 100644
+--- a/sound/soc/qcom/sdw.c
++++ b/sound/soc/qcom/sdw.c
+@@ -7,6 +7,37 @@
+ #include <sound/soc.h>
+ #include "sdw.h"
+ 
++static bool qcom_snd_is_sdw_dai(int id)
++{
++	switch (id) {
++	case WSA_CODEC_DMA_RX_0:
++	case WSA_CODEC_DMA_TX_0:
++	case WSA_CODEC_DMA_RX_1:
++	case WSA_CODEC_DMA_TX_1:
++	case WSA_CODEC_DMA_TX_2:
++	case RX_CODEC_DMA_RX_0:
++	case TX_CODEC_DMA_TX_0:
++	case RX_CODEC_DMA_RX_1:
++	case TX_CODEC_DMA_TX_1:
++	case RX_CODEC_DMA_RX_2:
++	case TX_CODEC_DMA_TX_2:
++	case RX_CODEC_DMA_RX_3:
++	case TX_CODEC_DMA_TX_3:
++	case RX_CODEC_DMA_RX_4:
++	case TX_CODEC_DMA_TX_4:
++	case RX_CODEC_DMA_RX_5:
++	case TX_CODEC_DMA_TX_5:
++	case RX_CODEC_DMA_RX_6:
++	case RX_CODEC_DMA_RX_7:
++	case SLIMBUS_0_RX...SLIMBUS_6_TX:
++		return true;
++	default:
++		break;
++	}
++
++	return false;
++}
++
+ /**
+  * qcom_snd_sdw_startup() - Helper to start Soundwire stream for SoC audio card
+  * @substream: The PCM substream from audio, as passed to snd_soc_ops->startup()
+@@ -29,6 +60,9 @@ int qcom_snd_sdw_startup(struct snd_pcm_substream *substream)
+ 	u32 rx_ch_cnt = 0, tx_ch_cnt = 0;
+ 	int ret, i, j;
+ 
++	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
++		return 0;
++
+ 	sruntime = sdw_alloc_stream(cpu_dai->name, SDW_STREAM_PCM);
+ 	if (!sruntime)
+ 		return -ENOMEM;
+@@ -89,19 +123,8 @@ int qcom_snd_sdw_prepare(struct snd_pcm_substream *substream,
+ 	if (!sruntime)
+ 		return 0;
+ 
+-	switch (cpu_dai->id) {
+-	case WSA_CODEC_DMA_RX_0:
+-	case WSA_CODEC_DMA_RX_1:
+-	case RX_CODEC_DMA_RX_0:
+-	case RX_CODEC_DMA_RX_1:
+-	case TX_CODEC_DMA_TX_0:
+-	case TX_CODEC_DMA_TX_1:
+-	case TX_CODEC_DMA_TX_2:
+-	case TX_CODEC_DMA_TX_3:
+-		break;
+-	default:
++	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
+ 		return 0;
+-	}
+ 
+ 	if (*stream_prepared)
+ 		return 0;
+@@ -129,9 +152,7 @@ int qcom_snd_sdw_prepare(struct snd_pcm_substream *substream,
+ }
+ EXPORT_SYMBOL_GPL(qcom_snd_sdw_prepare);
+ 
+-int qcom_snd_sdw_hw_params(struct snd_pcm_substream *substream,
+-			   struct snd_pcm_hw_params *params,
+-			   struct sdw_stream_runtime **psruntime)
++struct sdw_stream_runtime *qcom_snd_sdw_get_stream(struct snd_pcm_substream *substream)
+ {
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_soc_dai *codec_dai;
+@@ -139,21 +160,23 @@ int qcom_snd_sdw_hw_params(struct snd_pcm_substream *substream,
+ 	struct sdw_stream_runtime *sruntime;
+ 	int i;
+ 
+-	switch (cpu_dai->id) {
+-	case WSA_CODEC_DMA_RX_0:
+-	case RX_CODEC_DMA_RX_0:
+-	case RX_CODEC_DMA_RX_1:
+-	case TX_CODEC_DMA_TX_0:
+-	case TX_CODEC_DMA_TX_1:
+-	case TX_CODEC_DMA_TX_2:
+-	case TX_CODEC_DMA_TX_3:
+-		for_each_rtd_codec_dais(rtd, i, codec_dai) {
+-			sruntime = snd_soc_dai_get_stream(codec_dai, substream->stream);
+-			if (sruntime != ERR_PTR(-ENOTSUPP))
+-				*psruntime = sruntime;
+-		}
+-		break;
++	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
++		return NULL;
++
++	for_each_rtd_codec_dais(rtd, i, codec_dai) {
++		sruntime = snd_soc_dai_get_stream(codec_dai, substream->stream);
++		if (sruntime != ERR_PTR(-ENOTSUPP))
++			return sruntime;
+ 	}
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(qcom_snd_sdw_get_stream);
++
++int qcom_snd_sdw_hw_params(struct snd_pcm_substream *substream,
++			   struct snd_pcm_hw_params *params,
++			   struct sdw_stream_runtime **psruntime)
++{
++	*psruntime = qcom_snd_sdw_get_stream(substream);
+ 
+ 	return 0;
+ 
+@@ -166,23 +189,13 @@ int qcom_snd_sdw_hw_free(struct snd_pcm_substream *substream,
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+ 
+-	switch (cpu_dai->id) {
+-	case WSA_CODEC_DMA_RX_0:
+-	case WSA_CODEC_DMA_RX_1:
+-	case RX_CODEC_DMA_RX_0:
+-	case RX_CODEC_DMA_RX_1:
+-	case TX_CODEC_DMA_TX_0:
+-	case TX_CODEC_DMA_TX_1:
+-	case TX_CODEC_DMA_TX_2:
+-	case TX_CODEC_DMA_TX_3:
+-		if (sruntime && *stream_prepared) {
+-			sdw_disable_stream(sruntime);
+-			sdw_deprepare_stream(sruntime);
+-			*stream_prepared = false;
+-		}
+-		break;
+-	default:
+-		break;
++	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
++		return 0;
++
++	if (sruntime && *stream_prepared) {
++		sdw_disable_stream(sruntime);
++		sdw_deprepare_stream(sruntime);
++		*stream_prepared = false;
+ 	}
+ 
+ 	return 0;
+diff --git a/sound/soc/qcom/sdw.h b/sound/soc/qcom/sdw.h
+index 392e3455f1b1..b8bc5beb0522 100644
+--- a/sound/soc/qcom/sdw.h
++++ b/sound/soc/qcom/sdw.h
+@@ -10,6 +10,7 @@ int qcom_snd_sdw_startup(struct snd_pcm_substream *substream);
+ int qcom_snd_sdw_prepare(struct snd_pcm_substream *substream,
+ 			 struct sdw_stream_runtime *runtime,
+ 			 bool *stream_prepared);
++struct sdw_stream_runtime *qcom_snd_sdw_get_stream(struct snd_pcm_substream *stream);
+ int qcom_snd_sdw_hw_params(struct snd_pcm_substream *substream,
+ 			   struct snd_pcm_hw_params *params,
+ 			   struct sdw_stream_runtime **psruntime);
+diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
+index f5b75a06e5bd..ce5b0059207f 100644
+--- a/sound/soc/qcom/sm8250.c
++++ b/sound/soc/qcom/sm8250.c
+@@ -117,7 +117,7 @@ static void sm8250_snd_shutdown(struct snd_pcm_substream *substream)
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+ 	struct sm8250_snd_data *data = snd_soc_card_get_drvdata(rtd->card);
+-	struct sdw_stream_runtime *sruntime = data->sruntime[cpu_dai->id];
++	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
+ 
+ 	data->sruntime[cpu_dai->id] = NULL;
+ 	sdw_release_stream(sruntime);
+diff --git a/sound/soc/qcom/x1e80100.c b/sound/soc/qcom/x1e80100.c
+index 444f2162889f..2e3599516aa2 100644
+--- a/sound/soc/qcom/x1e80100.c
++++ b/sound/soc/qcom/x1e80100.c
+@@ -55,7 +55,7 @@ static void x1e80100_snd_shutdown(struct snd_pcm_substream *substream)
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+ 	struct x1e80100_snd_data *data = snd_soc_card_get_drvdata(rtd->card);
+-	struct sdw_stream_runtime *sruntime = data->sruntime[cpu_dai->id];
++	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
+ 
+ 	data->sruntime[cpu_dai->id] = NULL;
+ 	sdw_release_stream(sruntime);
+-- 
+2.51.0
 
-thanks,
-
-greg k-h
 
