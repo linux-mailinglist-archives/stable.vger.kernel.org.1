@@ -1,137 +1,117 @@
-Return-Path: <stable+bounces-188945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7A8BFB1D5
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:17:08 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC0ABFB1F9
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:18:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EC811A01894
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:17:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A8CC55061C7
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB173128A5;
-	Wed, 22 Oct 2025 09:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="lzmcFTb1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC993101BA;
+	Wed, 22 Oct 2025 09:18:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB2A2F83D2
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 09:16:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E162571A0;
+	Wed, 22 Oct 2025 09:18:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761124622; cv=none; b=RWXidmpj9kd7+xPRTwuilMDoSs41dM50DDNOrrKLcJAYECNcRNnUDO0MTc91cNAKP/CGPmHROWJNfKgJY2680yhrN9BwkQMyXGFNj6Zk9Up8sBYKhqfcLc/TcARFm+CIicJ3LyRa/w/2OJj4gwzNK+Buh+gxnosHYh/a7THTRa8=
+	t=1761124718; cv=none; b=sSFytcDJkVIVvmJxkrOLt2AnqqjbqaL0PR8yJNhLRh9CcEcIVLuHjRDbdWchrIe9wa+YuciLN3BKMh666iDm9T+eInLTyGpse3IDnTPG++aX0FQ5IkXOxtBtS25c2TPVWarELMMgT0BBA3gO8bcDNmLGa0I4zOEgOjhf9z/xYVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761124622; c=relaxed/simple;
-	bh=uT0LN1EUMQAZ1v7BvLjcq3iXoGtsuTlf5kkUSCJBu2c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y5lkOhkd6WFfJJ/UfmxmV9uomo5I3dSX+Ib9HWMqZKPsPdcIsKL80jsQ916AqRhMqp4nph6Ltawys0hTX3FpyHuiFanqt4bXS3sXUApMY4qhgG3We6cOPnGDtAtAvplvD/inDD/4op3t/Wg8oOV/AfVOgl47JxErNQRNfHbtvsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=lzmcFTb1; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-426ff4f3ad4so3572815f8f.0
-        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 02:16:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1761124617; x=1761729417; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0d1OtznxSM+pdxcYthlznRVSRSBvTGMBZ9iBozHqpE0=;
-        b=lzmcFTb1SODOtoiyQ5JVKp2d3GabR4bWNAXhGO5+FoC7+FroHz8FrRI0k9/Y1N9B6u
-         Pl0MPnTexWeyjwE30rIRo2JBSQ/OcumJWSUNhERSloYQy00swhWtLoiXPGMXDVKQgl/8
-         zvqMZtnla+/is7pG4tPjV8qa1BamJTwaGePaqrC1aW+R97t7R2QYCtZCcq+V+mXfyz7c
-         YXvha9x5Y7+UKFcwM4tK/eoDvZcuEKeLyWhM3F9SHMGKCdp6wHEJKP22orF8j1yCKTzf
-         EEH/sxMWZyZjuUPlD4oYktpDQ4spw8SaJXLd9YBA6vUTm9mtMBOokgPWTUnKPqkXvTu0
-         nWcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761124617; x=1761729417;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0d1OtznxSM+pdxcYthlznRVSRSBvTGMBZ9iBozHqpE0=;
-        b=JQZli4RKXwInixThw2fCx1e358t9JQXTK6FpLrqANTae0X09PEsxFI9Q/Cg2F5Jo2Z
-         tIi/W7J3V2jy3iFXlCp5eRIwuyr6cnmhoeHQaJTrsdmIxuUKsVZO6sYddaOJGnnlnCHR
-         oQotCpkym2DIBPxIGE7M6rhbBwNCSkNIkMaokUT0N8WH8XzYNSVgxaw2emcM99AjdrXz
-         VRlo7oWWhKQ5zkh1Z6WSvMbIlI1BqTzLJ+KcT9diLvC6aI9wdfnlq1+Mj7I96hvbjtmx
-         NpVJhZ8pKp8TID515wlSYadSy0/u1EeoBK6w59lnALn3yGd3NZQObaRszWXoYGc1xKzr
-         5lWw==
-X-Forwarded-Encrypted: i=1; AJvYcCUfOsnuSlX0RLl+lGjS38Nd068W4xFayiBrVcF2NxMN76H+piIhQLIgqJe/yRE0ED7WYLEpItI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYqyqo/aEJvJmE+AEjJXDHP1uXJKfMDzVeexdeS/GRBK7U4uJ8
-	IiDXdL7rDeg7R7cTkGlXADGvV5gg409PoONHPwAXhjzlg9ZS0czVC/w=
-X-Gm-Gg: ASbGnctafkXnyMOteGY348FzPegw/Ai1bQu+AoHbx61rpSgpru54swCrI66ixANgx6S
-	BVEouktxaekOdcQj1TzyznbOowvfVKKQ+fyDGE6Pqx1eP3XaZ2dcVbjxAOVEQm2GVBqyYTAhaPE
-	T8I32XGD7/x+MYCVEuD6Gr2mkRTHg/PISv/QEloEa9npA0PP51CaKSsXuAlm4sjjeLlv1Us51MZ
-	6S3BSIB+MlMabyUr7dJyZ09fySOIYDKt9yJx8SuFPoB3cj7gIjVtGzGp6JS9Tqv+jkTdrNutzZa
-	FJgZ6nAVWzpxZdxQMWgch0FSo0UUW7uXe79Wkw8SL9mzmTafUjPRf7BNYUT774sri+91vM7SrsZ
-	hZnSM2tU6CF0gO2EoAUo4od6j2Jg8nfEzfeYflLSuVCJ7coou/8i5mVc2IR8t/B1+Zi5TcKAzUj
-	BqXSiEikvO7Gm8u0k3hjqxkwEmlRMukbsrUYC4DiPQMjEiBZgIqywJSAjLMPkL5w==
-X-Google-Smtp-Source: AGHT+IHa35nbyTK6Dmlfdg41+HIA1hn/cBaTOnRlZDC5R3mjJeMyTqjZs96LilY2c+rKxD8zCB0KXg==
-X-Received: by 2002:a05:6000:26ce:b0:3eb:5e99:cbb9 with SMTP id ffacd0b85a97d-42704d7eaa2mr12913918f8f.10.1761124616882;
-        Wed, 22 Oct 2025 02:16:56 -0700 (PDT)
-Received: from [192.168.1.3] (p5b057850.dip0.t-ipconnect.de. [91.5.120.80])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427ea5a0f88sm23394732f8f.7.2025.10.22.02.16.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Oct 2025 02:16:56 -0700 (PDT)
-Message-ID: <5f8fba3b-2ee1-4a02-9b41-e6e1de1a507a@googlemail.com>
-Date: Wed, 22 Oct 2025 11:16:56 +0200
+	s=arc-20240116; t=1761124718; c=relaxed/simple;
+	bh=iFDCalLskXW9rVP0zzspDtQbMZaXfTw4fPS+22BIkQ0=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=uUTAVzPd6NUXbpch/p2JQF4gPAlm/zdbssnntjmpvT37fP/pyUtQKua78P4DBiuXPpwpPeOOjOlXi+sH5F0GiSzAq7o8HcQnU2EN3DMXexRzBhyiROZq7ST86GLGQ5brqsh1c0kd3iR+6ZP25fgisIuMeDZtpcmoxXuaBFufl/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-01 (Coremail) with SMTP id qwCowADXK55Qofhopw_aEw--.35253S2;
+	Wed, 22 Oct 2025 17:18:21 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: eajames@linux.ibm.com,
+	ninad@linux.ibm.com,
+	joel@jms.id.au,
+	jk@ozlabs.org
+Cc: linux-fsi@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] fsi/core: fix error handling in fsi_slave_init()
+Date: Wed, 22 Oct 2025 17:18:07 +0800
+Message-Id: <20251022091807.3300-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:qwCowADXK55Qofhopw_aEw--.35253S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WryrKw4rWw17XFW8GFyDJrb_yoW8Wr4kpa
+	1DGa4FyrWUGr1kKrsrZas7ZF98C3yIv34furWrGwn2krZxXr90vryjg340ya48JFWkCF48
+	X3srXrykW3WDXF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9G14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r4fMxAIw28IcxkI7VAKI48JMx
+	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
+	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
+	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v2
+	0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
+	W8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjWxR3UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [REGRESSION][BISECTED] Screen goes blank with ASpeed AST2300 in
- 6.18-rc2
-Content-Language: de-DE
-To: Thomas Zimmermann <tzimmermann@suse.de>, regressions@lists.linux.dev,
- LKML <linux-kernel@vger.kernel.org>
-Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
- jfalempe@redhat.com, airlied@redhat.com, dianders@chromium.org,
- nbowler@draconx.ca, Linus Torvalds <torvalds@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thorsten Leemhuis <regressions@leemhuis.info>
-References: <20251014084743.18242-1-tzimmermann@suse.de>
- <a40caf8e-58ad-4f9c-af7f-54f6f69c29bb@googlemail.com>
- <43992c88-3a3a-4855-9f46-27a7e5fdec2e@suse.de>
- <798ba37a-41d0-4953-b8f5-8fe6c00f8dd3@googlemail.com>
- <bf827c5c-c4dd-46f1-962d-3a8e2a0a7fdf@suse.de>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <bf827c5c-c4dd-46f1-962d-3a8e2a0a7fdf@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Am 22.10.2025 um 11:11 schrieb Thomas Zimmermann:
-> Hi
-> 
-> Am 22.10.25 um 10:08 schrieb Peter Schneider:
->>
->> Your patch applied cleanly against 6.18-rc2 and the kernel built fine, but unfortunately it did not solve the issue: 
->> my console screen stays blank after booting. This is regardless whether I do a soft reboot, press the reset button or 
->> power cycle and do a cold boot. They are all the same.
-> 
-> Just to be sure: you do see output at the early boot stages (BIOS, boot loader). It's at some later point during boot, 
-> the driver loads and the display blanks out?
+Once cdev_device_add() failed, we should use put_device() to decrement
+reference count for cleanup. Or it could cause memory leak. Although
+operations in err_free_ida are similar to the operations in callback
+function fsi_slave_release(), put_device() is a correct handling
+operation as comments require when cdev_device_add() fails.
 
-Yes, that's correct.
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
 
-> There's another patch attached. does this make a difference?
+Found by code review.
 
-Do I have to apply that against base 6.18-rc2 or against 6.18-rc2 + your previous patch?
+Cc: stable@vger.kernel.org
+Fixes: 371975b0b075 ("fsi/core: Fix error paths on CFAM init")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/fsi/fsi-core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-
-Beste Grüße,
-Peter Schneider
-
+diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
+index c6c115993ebc..444878ab9fb1 100644
+--- a/drivers/fsi/fsi-core.c
++++ b/drivers/fsi/fsi-core.c
+@@ -1084,7 +1084,8 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
+ 	rc = cdev_device_add(&slave->cdev, &slave->dev);
+ 	if (rc) {
+ 		dev_err(&slave->dev, "Error %d creating slave device\n", rc);
+-		goto err_free_ida;
++		put_device(&slave->dev);
++		return rc;
+ 	}
+ 
+ 	/* Now that we have the cdev registered with the core, any fatal
+@@ -1110,8 +1111,6 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
+ 
+ 	return 0;
+ 
+-err_free_ida:
+-	fsi_free_minor(slave->dev.devt);
+ err_free:
+ 	of_node_put(slave->dev.of_node);
+ 	kfree(slave);
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.17.1
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
