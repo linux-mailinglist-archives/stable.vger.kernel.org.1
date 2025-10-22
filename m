@@ -1,131 +1,204 @@
-Return-Path: <stable+bounces-188955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBD5BFB416
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:58:20 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5264BFB452
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4AE29504C8A
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:58:10 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8E238356BD8
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D809431B11F;
-	Wed, 22 Oct 2025 09:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F80312820;
+	Wed, 22 Oct 2025 09:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNqJ5pC8"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="N+ivhJdU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CDA315D42;
-	Wed, 22 Oct 2025 09:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D28830F53E;
+	Wed, 22 Oct 2025 09:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761127067; cv=none; b=BYwi8iK4LqoeUgWcmxwwcSEdXmclcuAj0+YHd2LY5srezEq73pxm8YfO5QthaBMxDlUuLU9tHQ0BUb9AOm3VmtZTvzUcRIp2Dj7qVL4kiDDfpzfnME4lSwpdRLvfUyEyW62benlbW7xFaaRBU38IT8S08ALFHq8kdGTQup+pyJU=
+	t=1761127168; cv=none; b=mglLpQwL9GGQW+9E8q2jnNkcoICGzzfCKg1X/e95V1hfTJHUyEsy1b0tEGLel3RLVkpTlwgUvzb2z+GVug4kLsMX+k5MkVySvUopfoCpAkvAkd4DRG2xzIWdWAac2KAp2rd1GjZlzIOzFSDuayOy1hKlro/vLX7o6tFDQ5JgfwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761127067; c=relaxed/simple;
-	bh=7A1KpfR0RlRnCRdnu9t09fhdInNhsVZdUl5tQbeore4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DURIyVocZ0kOhPAgIDqGUNXuh3jpGR3PMSQk0AYZr+BAONpyUUt3ttoMiFPNbfnhCnKcCMr5MoCRGDLMy+zjlI+40wBhffLdm6zed7q2CAVdCK29P6uUM3Elymm0WkQStx57fy3YcdKtOUaNIXJhiL4t34vXi79EASX2/W5M5l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNqJ5pC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A439CC4CEE7;
-	Wed, 22 Oct 2025 09:57:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761127067;
-	bh=7A1KpfR0RlRnCRdnu9t09fhdInNhsVZdUl5tQbeore4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pNqJ5pC8uPR3bKmyL5D+Cnsj3weyAt9W5wzH2U2cZSVdz4LX6KZlTeTGZy6+D8gnI
-	 J4+ebKDXyoNd/ohCcjVlTldhy4ZKSCGFZ1+GjZOLM1H7yXCOva1HGOrgRvBdcAKyiJ
-	 2uT9CRW8lCLJON92XOhx84HYrhbio+SqouzQB5aw=
-Date: Wed, 22 Oct 2025 11:57:44 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: jirislaby@kernel.org, ilpo.jarvinen@linux.intel.com,
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	songmuchun@bytedance.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] serial: 8250: always disable IRQ during THRE test
-Message-ID: <2025102231-fender-bovine-ecd9@gregkh>
-References: <20251016070516.37549-1-zhangpeng.00@bytedance.com>
+	s=arc-20240116; t=1761127168; c=relaxed/simple;
+	bh=QmEpF6sPqLGtPfR97ODlWi8K2yCDWkjPz1yM9eoEWZM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cCELPSzJgExu0dAksMqOoTu61hkdjzmYW5bntlNwqNFGoCgFDMZBf5kRjJXVRKuRNXi3CT+rLCgIff1m8dFRjhn6LKpFaoufC5AnM9NrueUy4+NcNaUuB2lNJMo/SjW9ifCwU2Mk0Jqt8BEHpFR1nhl470MON3rwdiuNy8KlDyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=N+ivhJdU; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4cs4Q20Hn5z9tm8;
+	Wed, 22 Oct 2025 11:59:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1761127162;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rs9gC2MuUAS+IiZaGoI5syk4lSYwDHEmE+5KRFDk2J8=;
+	b=N+ivhJdUViE2sx8JFuqurvh6YesjViJsAfOk6IZ+HoHyiqnBEGcpE2j+L/CCRW0M5ucsL7
+	Xon9ZukDAIY5YQjrCATS/9RJZl9VM0L6qORNgjwPpEdK92UNhxWRC2hVjlRtJSGA/wZvA+
+	zAAOn+Ltj3A52VpZ+QMGuhAlFe7O22IVwr1bFg+/XWAJu+ljWO2gU3Pbfccj0XqCXb5cHH
+	50KgDJH7KcL15jY7IT0SzIDTaemRvYyPk1lOoTZOSZrWsvlMxYK5eu+qhqo7sYVa8Cga6K
+	UbEzSiKHdzw7JG3vtZ/PhtE6e74egcYx9dKUL9wLEw8WGv1ZnHPP5x+Vyj4TDw==
+Message-ID: <72267a6c-13c7-40bd-babb-f73a28625ca4@mailbox.org>
+Date: Wed, 22 Oct 2025 11:59:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251016070516.37549-1-zhangpeng.00@bytedance.com>
+Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+To: "mani@kernel.org" <mani@kernel.org>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, "Bandi, Ravi Kumar"
+ <ravib@amazon.com>,
+ "thippeswamy.havalige@amd.com" <thippeswamy.havalige@amd.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+ "robh@kernel.org" <robh@kernel.org>,
+ "michal.simek@amd.com" <michal.simek@amd.com>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Sean Anderson <sean.anderson@linux.dev>
+References: <20251021212801.GA1224310@bhelgaas>
+ <ab1f7c51-bc41-4774-a0dc-850e53c412eb@mailbox.org>
+ <3it5l556vmfpuu6kz5yvulwosi4ecmcgfbzcizrc5wi7ifddkh@mpzfxf2v6v3f>
+Content-Language: en-US
+From: Stefan Roese <stefan.roese@mailbox.org>
+In-Reply-To: <3it5l556vmfpuu6kz5yvulwosi4ecmcgfbzcizrc5wi7ifddkh@mpzfxf2v6v3f>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 6e55d69c8ea0868a40e
+X-MBO-RS-META: az7nnbuxz6o4bpe17pfhm65i8n7q5a34
 
-On Thu, Oct 16, 2025 at 03:05:16PM +0800, Peng Zhang wrote:
-> commit 039d4926379b ("serial: 8250: Toggle IER bits on only after irq
-> has been set up") moved IRQ setup before the THRE test, so the interrupt
-> handler can run during the test and race with its IIR reads. This can
-> produce wrong THRE test results and cause spurious registration of the
-> serial8250_backup_timeout timer. Unconditionally disable the IRQ for the
-> short duration of the test and re-enable it afterwards to avoid the race.
+On 10/22/25 11:55, mani@kernel.org wrote:
+> On Wed, Oct 22, 2025 at 08:59:19AM +0200, Stefan Roese wrote:
+>> Hi Bjorn,
+>> Hi Ravi,
+>>
+>> On 10/21/25 23:28, Bjorn Helgaas wrote:
+>>> On Tue, Oct 21, 2025 at 08:55:41PM +0000, Bandi, Ravi Kumar wrote:
+>>>>> On Tue, Oct 21, 2025 at 05:46:17PM +0000, Bandi, Ravi Kumar wrote:
+>>>>>>> On Oct 21, 2025, at 10:23 AM, Bjorn Helgaas <helgaas@kernel.org> wrote:
+>>>>>>> On Sat, Sep 20, 2025 at 10:52:32PM +0000, Ravi Kumar Bandi wrote:
+>>>>>>>> The pcie-xilinx-dma-pl driver does not enable INTx interrupts
+>>>>>>>> after initializing the port, preventing INTx interrupts from
+>>>>>>>> PCIe endpoints from flowing through the Xilinx XDMA root port
+>>>>>>>> bridge. This issue affects kernel 6.6.0 and later versions.
+>>>>>>>>
+>>>>>>>> This patch allows INTx interrupts generated by PCIe endpoints
+>>>>>>>> to flow through the root port. Tested the fix on a board with
+>>>>>>>> two endpoints generating INTx interrupts. Interrupts are
+>>>>>>>> properly detected and serviced. The /proc/interrupts output
+>>>>>>>> shows:
+>>>>>>>>
+>>>>>>>> [...]
+>>>>>>>> 32:        320          0  pl_dma:RC-Event  16 Level     400000000.axi-pcie, azdrv
+>>>>>>>> 52:        470          0  pl_dma:RC-Event  16 Level     500000000.axi-pcie, azdrv
+>>>>>>>> [...]
+>>
+>> First a comment on this IRQ logging:
+>>
+>> These lines do NOT refer to the INTx IRQ(s) but the controller internal
+>> "events" (errors etc). Please see this log for INTx on my Versal
+>> platform with pci_irqd_intx_xlate added:
+>>
+>>   24:          0          0  pl_dma:RC-Event   0 Level     LINK_DOWN
+>>   25:          0          0  pl_dma:RC-Event   3 Level     HOT_RESET
+>>   26:          0          0  pl_dma:RC-Event   8 Level     CFG_TIMEOUT
+>>   27:          0          0  pl_dma:RC-Event   9 Level     CORRECTABLE
+>>   28:          0          0  pl_dma:RC-Event  10 Level     NONFATAL
+>>   29:          0          0  pl_dma:RC-Event  11 Level     FATAL
+>>   30:          0          0  pl_dma:RC-Event  20 Level     SLV_UNSUPP
+>>   31:          0          0  pl_dma:RC-Event  21 Level     SLV_UNEXP
+>>   32:          0          0  pl_dma:RC-Event  22 Level     SLV_COMPL
+>>   33:          0          0  pl_dma:RC-Event  23 Level     SLV_ERRP
+>>   34:          0          0  pl_dma:RC-Event  24 Level     SLV_CMPABT
+>>   35:          0          0  pl_dma:RC-Event  25 Level     SLV_ILLBUR
+>>   36:          0          0  pl_dma:RC-Event  26 Level     MST_DECERR
+>>   37:          0          0  pl_dma:RC-Event  27 Level     MST_SLVERR
+>>   38:         94          0  pl_dma:RC-Event  16 Level     84000000.axi-pcie
+>>   39:         94          0  pl_dma:INTx   0 Level     nvme0q0, nvme0q1
+>>
+>> The last line shows the INTx IRQs here ('pl_dma:INTx' vs 'pl_dma:RC-
+>> Event').
+>>
+>> More below...
+>>
+>>>>>>>>
+>>>>>>>> Changes since v1::
+>>>>>>>> - Fixed commit message per reviewer's comments
+>>>>>>>>
+>>>>>>>> Fixes: 8d786149d78c ("PCI: xilinx-xdma: Add Xilinx XDMA Root Port driver")
+>>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>>> Signed-off-by: Ravi Kumar Bandi <ravib@amazon.com>
+>>>>>>>
+>>>>>>> Hi Ravi, obviously you tested this, but I don't know how to reconcile
+>>>>>>> this with Stefan's INTx fix at
+>>>>>>> https://lore.kernel.org/r/20251021154322.973640-1-stefan.roese@mailbox.org
+>>>>>>>
+>>>>>>> Does Stefan's fix need to be squashed into this patch?
+>>>>>>
+>>>>>> Sure, we can squash Stefan’s fix into this.
+>>>>>
+>>>>> I know we *can* squash them.
+>>>>>
+>>>>> I want to know why things worked for you and Stefan when they
+>>>>> *weren't* squashed:
+>>>>>
+>>>>>    - Why did INTx work for you even without Stefan's patch.  Did you
+>>>>>      get INTx interrupts but not the right ones, e.g., did the device
+>>>>>      signal INTA but it was received as INTB?
+>>>>
+>>>> I saw that interrupts were being generated by the endpoint device,
+>>>> but I didn’t specifically check if they were correctly translated in
+>>>> the controller. I noticed that the new driver wasn't explicitly
+>>>> enabling the interrupts, so my first approach was to enable them,
+>>>> which helped the interrupts flow through.
+>>>
+>>> OK, I'll assume the interrupts happened but the driver might not have
+>>> been able to handle them correctly, e.g., it was prepared for INTA but
+>>> got INTB or similar.
+>>>
+>>>>>    - Why did Stefan's patch work for him even without your patch.  How
+>>>>>      could Stefan's INTx work without the CSR writes to enable
+>>>>>      interrupts?
+>>>>
+>>>> I'm not entirely sure if there are any other dependencies in the
+>>>> FPGA bitstream. I'll investigate further and get back to you.
+>>>
+>>> Stefan clarified in a private message that he had applied your patch
+>>> first, so this mystery is solved.
+>>
+>> Yes. I applied Ravi's patch first and still got no INTx delivered
+>> to the nvme driver. That's what me triggered to dig deeper here and
+>> resulted in this v2 patch with pci_irqd_intx_xlate added.
+>>
+>> BTW:
+>> I re-tested just now w/o Ravi's patch and the INTx worked. Still I think
+>> Ravi's patch is valid and should be applied...
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 039d4926379b ("serial: 8250: Toggle IER bits on only after irq has been set up")
-> Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
-> ---
->  drivers/tty/serial/8250/8250_port.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-> index 719faf92aa8a..f1740cc91143 100644
-> --- a/drivers/tty/serial/8250/8250_port.c
-> +++ b/drivers/tty/serial/8250/8250_port.c
-> @@ -2147,8 +2147,7 @@ static void serial8250_THRE_test(struct uart_port *port)
->  	if (up->port.flags & UPF_NO_THRE_TEST)
->  		return;
->  
-> -	if (port->irqflags & IRQF_SHARED)
-> -		disable_irq_nosync(port->irq);
-> +	disable_irq(port->irq);
->  
->  	/*
->  	 * Test for UARTs that do not reassert THRE when the transmitter is idle and the interrupt
-> @@ -2170,8 +2169,7 @@ static void serial8250_THRE_test(struct uart_port *port)
->  		serial_port_out(port, UART_IER, 0);
->  	}
->  
-> -	if (port->irqflags & IRQF_SHARED)
-> -		enable_irq(port->irq);
-> +	enable_irq(port->irq);
->  
->  	/*
->  	 * If the interrupt is not reasserted, or we otherwise don't trust the iir, setup a timer to
-> -- 
-> 2.20.1
-> 
-> 
+> How come INTx is working without the patch from Ravi which enabled INTx routing
+> in the controller? Was it enabled by default in the hardware?
 
-Hi,
+Yes, this is my best guess right now. I could double-check here, but
+IMHO it makes sense to enable it "manually" as done with Ravi's patch
+to not rely on this default setup at all.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Thanks,
+Stefan
 
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
 
