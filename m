@@ -1,76 +1,86 @@
-Return-Path: <stable+bounces-188938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BACBFB027
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 10:56:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E30BFB0D5
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B167118C441B
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:57:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 010CA586A12
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0136B30DD0B;
-	Wed, 22 Oct 2025 08:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80EC30EF88;
+	Wed, 22 Oct 2025 09:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWNfs8BH"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAE730CDB7;
-	Wed, 22 Oct 2025 08:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D2730F53E;
+	Wed, 22 Oct 2025 09:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761123406; cv=none; b=crkTQf58tKA6GddFvRsSJM3ND0GE6AZHMcexla0jXeDIgJ4DHFd3vytV1seoGE2Mp55BjPPNJTuzIUjbJ4jBI1srMtOa+EZEd0++2M9577sWYjrKSJdIrkoVMLxSMqdHjpxRojuDZyFKencaD3xmnG4R86B8WDIAnHcZE9th5Jw=
+	t=1761123811; cv=none; b=JbiyMz1XPnIzg059BP0no6TY2EQv9mGe64zml1MfYx1qJRjL/Mo17FJYaFutgntv3GB9VUIgCZDLqcPNKlLxiHjG5T8XWrev2hwhye2YKgxP6cT5Blt4i9Pb7OIpLzo53fwry6CQb5kdKT4V+htgBrUl5Po+G0AV2VgTqvSYUTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761123406; c=relaxed/simple;
-	bh=2UaMPM+XEE4PKWwxOkREkoG+56CZYhIWp/g5dEP4MOo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sw7FoDqL8WKyyOcCbA0zdrGjcNkhZs6SlpdBG3aRGu73HFcynkeGoFA7bajwDWiBaI7B8H8Krcna4H9LQqOzWU2zM/vJsPMbShoxiazFBs6UiNRaxEpVtQBovLIl/mo6l4hLkHsZxZEjB52jGak6Hum5SUQOTfS0AbO1dYl0S/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 6.6 000/105] 6.6.114-rc1 review
-Date: Wed, 22 Oct 2025 08:56:20 +0000
-Message-ID: <20251022085625.3785-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251021195021.492915002@linuxfoundation.org>
-References: <20251021195021.492915002@linuxfoundation.org>
+	s=arc-20240116; t=1761123811; c=relaxed/simple;
+	bh=1AIH2AYzLPkYaHTuJ+0VCesAbN3+Q26DFihqpPIVOT8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZSVuINHVYt6FkUl6tAEJ0/13LIBcFsdTDt9ZO36/l9KfU+nCdjfVa3oBvn0D+VLQzrP3HlfQhKb1+JzjkAnYP4IVQihh4MMXgeeE36/JiVvqA7CC5F/wHKiIwCMdqGZF/ayYgPVc8vPz3BFtS7UDSJgVpYJv6fqZSp0soz8kafw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWNfs8BH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850D5C4CEFD;
+	Wed, 22 Oct 2025 09:03:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1761123810;
+	bh=1AIH2AYzLPkYaHTuJ+0VCesAbN3+Q26DFihqpPIVOT8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HWNfs8BH3PLxKN94ZqFqGtlNDCBrhcl1ZVjiIQDgmBrd0n+tWB9nQFrWAuFYPNyQF
+	 vzS+0y4KLHeQFGEx42sAJHJKu/Ir5zF36Lgh80fZCxhIz6xBvGIdYpeu+92NkszOl1
+	 mb2fUylkBsJdM+O7GOTqMMYNZHFlP1cs1xBpcFhw=
+Date: Wed, 22 Oct 2025 11:03:28 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Oliver Upton <oliver.upton@linux.dev>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH 6.12 006/136] KVM: arm64: Prevent access to vCPU events
+ before init
+Message-ID: <2025102247-delighted-cycling-61c4@gregkh>
+References: <20251021195035.953989698@linuxfoundation.org>
+ <20251021195036.111716876@linuxfoundation.org>
+ <aPiVtgLCCbQ9igWp@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aPiVtgLCCbQ9igWp@linux.dev>
 
-# Librecast Test Results
+On Wed, Oct 22, 2025 at 01:28:38AM -0700, Oliver Upton wrote:
+> Hey,
+> 
+> Can you please drop this patch from all but 6.17?
+> 
+> On Tue, Oct 21, 2025 at 09:49:54PM +0200, Greg Kroah-Hartman wrote:
+> 
+> [...]
+> 
+> > Cc: stable@vger.kernel.org # 6.17
+> 
+> FWIW, I called this out here.
+> 
+> Thanks,
+> Oliver
+> 
+> > Fixes: b7b27facc7b5 ("arm/arm64: KVM: Add KVM_GET/SET_VCPU_EVENTS")
 
-020/020 [ OK ] liblcrq
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+Ok, but note that this Fixes: tag references a much much older kernel
+release, hence my confusion as to where this should be backported to :)
 
-CPU/kernel: Linux auntie 6.6.114-rc1-g8ed83e981d68 #117 SMP PREEMPT_DYNAMIC Wed Oct 22 08:52:13 -00 2025 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+I'll go drop it from older queues now, thanks.
 
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
+greg k-h
 
