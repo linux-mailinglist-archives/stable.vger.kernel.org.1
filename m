@@ -1,74 +1,76 @@
-Return-Path: <stable+bounces-188935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6DCBFAF97
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 10:48:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36410BFB00D
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 10:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D686E19C3399
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:49:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 261073A8D58
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997EE3054D7;
-	Wed, 22 Oct 2025 08:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gQ/zcbs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE48309EF4;
+	Wed, 22 Oct 2025 08:56:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1292F99B8;
-	Wed, 22 Oct 2025 08:48:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BAF309DDC;
+	Wed, 22 Oct 2025 08:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761122928; cv=none; b=Qsk0PJSTKK+r8RbJu5Td36bybOQ0ja5CrkC8qOEPIGz6vQna61Qnk/mO4BuOILRdwjWOYeGdstRkFJnR63/STa21TW0aS41hUtWatOXzobJCOeI4KbZiV33JKSH8D8kqQZpubb9EAkGVBvIfP+H/qJd8roW2RnfVvabHn/4jK/o=
+	t=1761123373; cv=none; b=kGX/YghONAU+EuDCNCYOKB0m7CNLFSSuFQAsBeK4atw3FZaAhv2bp2CdI5q9Cy+4ZjfKqXeACnTDRKWk6y6FS8VC+bbdswdnN43uM3+Chk+LCj8Catsw9hEYqGsj2j0k8AV8Y77nKFZFD9O1CxGtEz8706x4pvtVYvVZpTLpmbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761122928; c=relaxed/simple;
-	bh=Uc/QVU2M7Q75wiFeDLGW5PtLoxS3htEIR1Lh3uZxtqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g5wbD2QZMx5THKi5N5ItU4M+VEzuq/oOy8jUbvpEaRZLyCUrur11Umd14q+fMtow8jMSSO8WdvQmtKSx9aDni/R8uWoz99dHCSvY+XdA4dfGqt2jJHpXNV5ew0B336RF+dOulIvLcfa7XryFb+96iQ2xi9bpfpf/AyY/c64v6XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gQ/zcbs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89693C4CEE7;
-	Wed, 22 Oct 2025 08:48:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761122926;
-	bh=Uc/QVU2M7Q75wiFeDLGW5PtLoxS3htEIR1Lh3uZxtqc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1gQ/zcbs3755oybpEUPpHEApIn0Ca9Uku8Wyk7JJtQ2mt5v56kb2vMCfhWEzq9VWC
-	 XQ++2JAlxCBNuUJoZzKjSRtJiEIvWZ7oWukwzXjaE511MY8ObkBYSAUnL6lwxKOj3f
-	 hIox+6fGVIndAdbgRiqvJ9eoKOZY0rJO+/yWa9wY=
-Date: Wed, 22 Oct 2025 10:48:44 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: eajames@linux.ibm.com, ninad@linux.ibm.com, joel@jms.id.au,
-	jk@ozlabs.org, linux-fsi@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] Once cdev_device_add() failed, we should use
- put_device() to decrement reference count for cleanup. Or it could cause
- memory leak. Although operations in err_free_ida are similar to the
- operations in callback function fsi_slave_release(), put_device() is a
- correct handling operation as comments require when cdev_device_add() fails.
-Message-ID: <2025102231-sturdily-zoom-ada1@gregkh>
-References: <20251022083452.37409-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1761123373; c=relaxed/simple;
+	bh=Yf6Reo/wz+7zlVdeyvce3JyP9NiEWdt/ZI9RvdrMYes=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Qk/DJc3+5bX9EAPffyKRW07TJ3zwRz9NUiHE2yrVLGE+1+IWbkacLCESnk4MPw58zMShUcI7Nc9D14e7MILoIBl7gfQ/oJ2Kqj9rkVZiJaxgZumJuWkzlUp7y3/UWgG4TBzVOiKM7qhBaR0pfFPFi4dtUN27NAD2ru4+2Zbqk34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+From: Brett A C Sheffield <bacs@librecast.net>
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	Brett A C Sheffield <bacs@librecast.net>
+Subject: Re: [PATCH 6.17 000/160] 6.17.5-rc2 review
+Date: Wed, 22 Oct 2025 08:55:36 +0000
+Message-ID: <20251022085542.3691-1-bacs@librecast.net>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251022053328.623411246@linuxfoundation.org>
+References: <20251022053328.623411246@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251022083452.37409-1-make24@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 22, 2025 at 04:34:52PM +0800, Ma Ke wrote:
-> As comment of device_add() says, 'if device_add() succeeds, you should
-> call device_del() when you want to get rid of it. If device_add() has
-> not succeeded, use only put_device() to drop the reference count'.
-> 
-> Found by code review.
+# Librecast Test Results
 
-Your subject line looks a bit messed up :(
+020/020 [ OK ] liblcrq
+010/010 [ OK ] libmld
+120/120 [ OK ] liblibrecast
 
+CPU/kernel: Linux auntie 6.17.5-rc2-g3cc198d00990 #115 SMP PREEMPT_DYNAMIC Wed Oct 22 08:36:08 -00 2025 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+
+Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
