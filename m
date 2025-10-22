@@ -1,138 +1,166 @@
-Return-Path: <stable+bounces-188905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1669BFA439
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:39:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3B4BFA4D2
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 08:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AD7418C23B6
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 06:39:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 99C8F4E4317
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 06:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676B92EE268;
-	Wed, 22 Oct 2025 06:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649D52F260B;
+	Wed, 22 Oct 2025 06:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPrhTjdt"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=ritesh.sarraf@collabora.com header.b="XMgxKuCN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EF72566DF
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 06:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761115158; cv=none; b=m43+gZctQieJZTBBNRYplqCQ+OmQGUoolmjILAI4+7PYHlCUyrS3TrFnSJ/66CN9RJKF/b00Q8OluzTxf9G1Gtc1Ae9lN81joQQ7v4vrgQjlX2ccBEd+2mNlaxvpvpFxKc6nGLPytjWBrcuT6TZJePuFK6wUay+VJNVVAQfkZRI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761115158; c=relaxed/simple;
-	bh=hm4nlhtNPGmEi69KVa2bKeYCOGjdSHFu7LVZDz9W3nY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cFJukxGZZVf5WP4B3SDSBA3THHPxe9QQmu8RiUYaqrxkTu59bNSdxwm37Y4mQ9RP+0MaOAxBv1BDvkJga51G8x+qNQybywMhTHfBNWY0ktjWZ9WCfWnAH96crVEGFx0PFjY2krqLViRYPwgKeSwrk5Bf6D1AmAD561k9QKBSrFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPrhTjdt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E58C4CEF5
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 06:39:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761115157;
-	bh=hm4nlhtNPGmEi69KVa2bKeYCOGjdSHFu7LVZDz9W3nY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iPrhTjdtk1xC+sPY84Z3bYO9UV8Ek7rfvrmG8cIeTnOFtXE6kc0tdo/lT9MVfGfHG
-	 4Md+zJekPfm3E1Bqhsjsnc8JTL+zJE5US1jOiEWTz/EQGNLprrOf3bfZEcX60jOlja
-	 QXg4vReraVA6IQD7ofFajXhHtt36Z+MSz/BIWB/o6Z6rV5O/bCec9/vlhaF3hql+OH
-	 Vz59YZ6eLJSZKN8BCUVB1I0Bn1jJpgpaBfO4XtHvVyOBZ+++r+7n2Vy05w/LDlpNb1
-	 brj3JruW0aknAiaGUuBcV4fZ1ivE4d2CMny2yPO4qaBsfg4Oq32NmUFmf8+b50yAx1
-	 dm6Z+5SAf4+OA==
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-63e0abe71a1so2242944a12.1
-        for <stable@vger.kernel.org>; Tue, 21 Oct 2025 23:39:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV4GY/orufdtzUK+7nUdkY6KYxoSxjoma1LWWDqDxIuBjvzKHuRvNb9mR8owl8obceHKBvQPPg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysDKk72FJzBGhbCWKgXFvMOIEKUrEycgs7ZSrSQutKYeq8ZoRa
-	1pI+PZ7bgHhmtcfNcvG+erT4aIjKg6CdHqqJWjcPy2pC76JFrXEup8itBtOGSWIwcFNnAJG5oUv
-	5OSmNtlhdFg8HXmEa1sjbCKA2KIXn+Mg=
-X-Google-Smtp-Source: AGHT+IEVbw59KyPcLUZsUJMNGGcdxdAw21EgXFnRXyi6U3bIi41kp6ndgSXyQYRN4XBLaNJoZbyTlyQ4X/MV3FzOgwU=
-X-Received: by 2002:a05:6402:358a:b0:61c:9852:bb9f with SMTP id
- 4fb4d7f45d1cf-63c1f630745mr18498531a12.1.1761115156420; Tue, 21 Oct 2025
- 23:39:16 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527EB2F066D;
+	Wed, 22 Oct 2025 06:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761115636; cv=pass; b=cpbnoE8TML8ajcCQUQXTPQccvMZTWr8QAope1apIDb9Is86zxI5N2X8Z9sl7lqwkJBaYxGrC/ZnetiMzb04KQKc9zN5heFSWaKzSh/BsL+nsK9i2uXHAatNOi+IayYUlwKB/hZ2AYLuM905t2HjbYU/oGICGiJnLeF/9rmvpslo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761115636; c=relaxed/simple;
+	bh=iXPWz2QjbUvP+ZhaYmRd2U0MHIe5TJkZINXJqdyQAoQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QFaHSqXaEpNf4ecQD6auOqVYrYHOGU/U+lCrHxcO8CVP5HnOfQV5X22qoXjc7ptkHweyx0AbdjrLjQeIK4zv5lKckCKSq6PrljRHqUm9ktV3zE3JGTQ4JThITNiwPVM/izx0EgWhAh9ojKhptTRfylBuCzw6tl4n5aQHNDhN3Gg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=ritesh.sarraf@collabora.com header.b=XMgxKuCN; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1761115602; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=OY5eI8FiK89nDoLUMlm4zXMg31ZKUmKDZiHJGJrnqMK4av+BnVW5ryByC0OZeGNwcLT/q3wGkqH4brRpHHkiUd1m/9vCGNaK1gPQzW6fLszqOJSsfUiOwBjspbzJi4fGeqMs7337WkdfXkH8qY2M9lR09AOGLo/gzikr6G39V1k=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1761115602; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:Reply-To:References:Subject:Subject:To:To:Message-Id; 
+	bh=iXPWz2QjbUvP+ZhaYmRd2U0MHIe5TJkZINXJqdyQAoQ=; 
+	b=ZwBIeZ/0duREMR6pV2Ya4Hk42PMKU22Te2lz4U8Dkp2Jb6/ZllboY4q9e7T4+unjV9XVWnH99F6/PegY0xkGqixcyQuzYqIB9CkgEIRLw3JsUHI03WqbkNQCgLab4ksk1z90pHnVRsKdV1af3Z8+lCwANG/hrY/skxRgoKzPQkk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=ritesh.sarraf@collabora.com;
+	dmarc=pass header.from=<ritesh.sarraf@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1761115602;
+	s=zohomail; d=collabora.com; i=ritesh.sarraf@collabora.com;
+	h=Message-ID:Subject:Subject:From:From:Reply-To:Reply-To:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id;
+	bh=iXPWz2QjbUvP+ZhaYmRd2U0MHIe5TJkZINXJqdyQAoQ=;
+	b=XMgxKuCNC+tlU1KEKBYTot2jTmw67numFN2dMUMA8zxwGaOiIT+zlDBXNRgiWik8
+	7X2c+hpSRrorksDoysHO2IgMfs5xuqFHvWngH6QJuAAJsmwahAXFK+51rF6ArJf9UYu
+	NQ6KizUydHvMClaXRyMJ4LovL71pahDhcIdZBScY=
+Received: by mx.zohomail.com with SMTPS id 176111559636163.48776361928731;
+	Tue, 21 Oct 2025 23:46:36 -0700 (PDT)
+Message-ID: <4240cc29adb6707005cba18c956a70ab414edc07.camel@collabora.com>
+Subject: Re: [PATCH] drm/mediatek: fix device use-after-free on unbind
+From: Ritesh Raj Sarraf <ritesh.sarraf@collabora.com>
+Reply-To: ritesh.sarraf@collabora.com
+To: Johan Hovold <johan@kernel.org>, Chun-Kuang Hu
+ <chunkuang.hu@kernel.org>,  Philipp Zabel <p.zabel@pengutronix.de>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>,  CK Hu <ck.hu@mediatek.com>, Ma
+ Ke <make24@iscas.ac.cn>, Sjoerd Simons <sjoerd@collabora.com>, 
+	dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Wed, 22 Oct 2025 12:16:21 +0530
+In-Reply-To: <20251006093937.27869-1-johan@kernel.org>
+References: <20251006093937.27869-1-johan@kernel.org>
+Autocrypt: addr=ritesh.sarraf@collabora.com; prefer-encrypt=mutual;
+ keydata=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
+Organization: Collabora
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-5 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025102125-petted-gristle-43a0@gregkh> <20251021145449.473932-1-pioooooooooip@gmail.com>
-In-Reply-To: <20251021145449.473932-1-pioooooooooip@gmail.com>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Wed, 22 Oct 2025 15:39:03 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd-JFuBptqzEbgggUhaF2bEfWMRXCSK9N_spiBxvi1v0Wg@mail.gmail.com>
-X-Gm-Features: AS18NWCL_qZDAmZMV5o8SxFrFzgvvH5lIHZHd4Cjd8dpv-koKZ4OHU2zTrTPt68
-Message-ID: <CAKYAXd-JFuBptqzEbgggUhaF2bEfWMRXCSK9N_spiBxvi1v0Wg@mail.gmail.com>
-Subject: Re: [PATCH] ksmbd: transport_ipc: validate payload size before
- reading handle
-To: Qianchang Zhao <pioooooooooip@gmail.com>
-Cc: Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Tom Talpey <tom@talpey.com>, linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	gregkh@linuxfoundation.org, stable@vger.kernel.org
-Content-Type: multipart/mixed; boundary="0000000000004ef5df0641b993b8"
+X-ZohoMailClient: External
 
---0000000000004ef5df0641b993b8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Mon, 2025-10-06 at 11:39 +0200, Johan Hovold wrote:
+> A recent change fixed device reference leaks when looking up drm
+> platform device driver data during bind() but failed to remove a
+> partial
+> fix which had been added by commit 80805b62ea5b ("drm/mediatek: Fix
+> kobject put for component sub-drivers").
+>=20
+> This results in a reference imbalance on component bind() failures
+> and
+> on unbind() which could lead to a user-after-free.
+>=20
+> Make sure to only drop the references after retrieving the driver
+> data
+> by effectively reverting the previous partial fix.
+>=20
+> Note that holding a reference to a device does not prevent its driver
+> data from going away so there is no point in keeping the reference.
+>=20
 
-On Tue, Oct 21, 2025 at 11:55=E2=80=AFPM Qianchang Zhao <pioooooooooip@gmai=
-l.com> wrote:
->
-> handle_response() dereferences the payload as a 4-byte handle without
-> verifying that the declared payload size is at least 4 bytes. A malformed
-> or truncated message from ksmbd.mountd can lead to a 4-byte read past the
-> declared payload size. Validate the size before dereferencing.
->
-> This is a minimal fix to guard the initial handle read.
->
-> Fixes: 0626e6641f6b ("cifsd: add server handler for central processing an=
-d tranport layers")
+We ran into the same issue in mesaci[1] and have test validated this
+proposed fix. It was tested with Linux 6.17.3 + this fix.
+
+[1] https://gitlab.freedesktop.org/RickXy/mesa/-/jobs/86389548
+
+
+Tested-by: Ritesh Raj Sarraf <ritesh.sarraf@collabora.com>
+
+> Fixes: 1f403699c40f ("drm/mediatek: Fix device/node reference count
+> leaks in mtk_drm_get_all_drm_priv")
+> Reported-by: Sjoerd Simons <sjoerd@collabora.com>
+> Link:
+> https://lore.kernel.org/r/20251003-mtk-drm-refcount-v1-1-3b3f2813b0db@col=
+labora.com
 > Cc: stable@vger.kernel.org
-> Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-> Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
-I have directly updated your patch. Can you check the attached patch ?
-Thanks!
+> Cc: Ma Ke <make24@iscas.ac.cn>
+> Cc: AngeloGioacchino Del Regno
+> <angelogioacchino.delregno@collabora.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
---0000000000004ef5df0641b993b8
-Content-Type: text/x-patch; charset="US-ASCII"; 
-	name="0001-ksmbd-transport_ipc-validate-payload-size-before-rea.patch"
-Content-Disposition: attachment; 
-	filename="0001-ksmbd-transport_ipc-validate-payload-size-before-rea.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_mh1mgnbo0>
-X-Attachment-Id: f_mh1mgnbo0
-
-RnJvbSAxNzdhZjYxMDI1Mjc1NzFlYWEzODEzMjNkZGRkNzA4NGMyMDMzNTNlIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBRaWFuY2hhbmcgWmhhbyA8cGlvb29vb29vb29pcEBnbWFpbC5j
-b20+CkRhdGU6IFdlZCwgMjIgT2N0IDIwMjUgMTU6Mjc6NDcgKzA5MDAKU3ViamVjdDogW1BBVENI
-XSBrc21iZDogdHJhbnNwb3J0X2lwYzogdmFsaWRhdGUgcGF5bG9hZCBzaXplIGJlZm9yZSByZWFk
-aW5nCiBoYW5kbGUKCmhhbmRsZV9yZXNwb25zZSgpIGRlcmVmZXJlbmNlcyB0aGUgcGF5bG9hZCBh
-cyBhIDQtYnl0ZSBoYW5kbGUgd2l0aG91dAp2ZXJpZnlpbmcgdGhhdCB0aGUgZGVjbGFyZWQgcGF5
-bG9hZCBzaXplIGlzIGF0IGxlYXN0IDQgYnl0ZXMuIEEgbWFsZm9ybWVkCm9yIHRydW5jYXRlZCBt
-ZXNzYWdlIGZyb20ga3NtYmQubW91bnRkIGNhbiBsZWFkIHRvIGEgNC1ieXRlIHJlYWQgcGFzdCB0
-aGUKZGVjbGFyZWQgcGF5bG9hZCBzaXplLiBWYWxpZGF0ZSB0aGUgc2l6ZSBiZWZvcmUgZGVyZWZl
-cmVuY2luZy4KClRoaXMgaXMgYSBtaW5pbWFsIGZpeCB0byBndWFyZCB0aGUgaW5pdGlhbCBoYW5k
-bGUgcmVhZC4KCkZpeGVzOiAwNjI2ZTY2NDFmNmIgKCJjaWZzZDogYWRkIHNlcnZlciBoYW5kbGVy
-IGZvciBjZW50cmFsIHByb2Nlc3NpbmcgYW5kIHRyYW5wb3J0IGxheWVycyIpCkNjOiBzdGFibGVA
-dmdlci5rZXJuZWwub3JnClJlcG9ydGVkLWJ5OiBRaWFuY2hhbmcgWmhhbyA8cGlvb29vb29vb29p
-cEBnbWFpbC5jb20+ClNpZ25lZC1vZmYtYnk6IFFpYW5jaGFuZyBaaGFvIDxwaW9vb29vb29vb2lw
-QGdtYWlsLmNvbT4KQWNrZWQtYnk6IE5hbWphZSBKZW9uIDxsaW5raW5qZW9uQGtlcm5lbC5vcmc+
-ClNpZ25lZC1vZmYtYnk6IFN0ZXZlIEZyZW5jaCA8c3RmcmVuY2hAbWljcm9zb2Z0LmNvbT4KLS0t
-CiBmcy9zbWIvc2VydmVyL3RyYW5zcG9ydF9pcGMuYyB8IDggKysrKysrKy0KIDEgZmlsZSBjaGFu
-Z2VkLCA3IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9mcy9zbWIv
-c2VydmVyL3RyYW5zcG9ydF9pcGMuYyBiL2ZzL3NtYi9zZXJ2ZXIvdHJhbnNwb3J0X2lwYy5jCmlu
-ZGV4IDQ2Zjg3ZmQxY2UxYy4uMmMwOGNjY2ZhNjgwIDEwMDY0NAotLS0gYS9mcy9zbWIvc2VydmVy
-L3RyYW5zcG9ydF9pcGMuYworKysgYi9mcy9zbWIvc2VydmVyL3RyYW5zcG9ydF9pcGMuYwpAQCAt
-MjYzLDEwICsyNjMsMTYgQEAgc3RhdGljIHZvaWQgaXBjX21zZ19oYW5kbGVfZnJlZShpbnQgaGFu
-ZGxlKQogCiBzdGF0aWMgaW50IGhhbmRsZV9yZXNwb25zZShpbnQgdHlwZSwgdm9pZCAqcGF5bG9h
-ZCwgc2l6ZV90IHN6KQogewotCXVuc2lnbmVkIGludCBoYW5kbGUgPSAqKHVuc2lnbmVkIGludCAq
-KXBheWxvYWQ7CisJdW5zaWduZWQgaW50IGhhbmRsZTsKIAlzdHJ1Y3QgaXBjX21zZ190YWJsZV9l
-bnRyeSAqZW50cnk7CiAJaW50IHJldCA9IDA7CiAKKwkvKiBQcmV2ZW50IDQtYnl0ZSByZWFkIGJl
-eW9uZCBkZWNsYXJlZCBwYXlsb2FkIHNpemUgKi8KKwlpZiAoc3ogPCBzaXplb2YodW5zaWduZWQg
-aW50KSkKKwkJcmV0dXJuIC1FSU5WQUw7CisKKwloYW5kbGUgPSAqKHVuc2lnbmVkIGludCAqKXBh
-eWxvYWQ7CisKIAlpcGNfdXBkYXRlX2xhc3RfYWN0aXZlKCk7CiAJZG93bl9yZWFkKCZpcGNfbXNn
-X3RhYmxlX2xvY2spOwogCWhhc2hfZm9yX2VhY2hfcG9zc2libGUoaXBjX21zZ190YWJsZSwgZW50
-cnksIGlwY190YWJsZV9obGlzdCwgaGFuZGxlKSB7Ci0tIAoyLjI1LjEKCg==
---0000000000004ef5df0641b993b8--
+--=20
+Ritesh Raj Sarraf
+Collabora
 
