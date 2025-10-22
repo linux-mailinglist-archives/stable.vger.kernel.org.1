@@ -1,124 +1,195 @@
-Return-Path: <stable+bounces-188997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C08DBFC48C
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 15:52:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA034BFC9FF
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 16:46:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A595E1A053D3
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 13:50:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E5AF6E1E09
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 14:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2334C34887E;
-	Wed, 22 Oct 2025 13:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5D634EEE6;
+	Wed, 22 Oct 2025 14:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DHaW3NDe"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="XBtN2lNj";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="wi8ZyAIs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B58C348447
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 13:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7782434E76E;
+	Wed, 22 Oct 2025 14:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761140895; cv=none; b=N9QEUmnPZtizhRUPqzKOiVtDLcCuNWcP+S/rUC8DHTnWfDpkLXlgWAihPSX9jjsLeoX0U7v6FLqjOOmBgwsSOJHP87UBGM6tm7DFsKzWXtjeZBGAUsqOmazqSEvcQKKgFnkbZRqXMuQ1Cz81EyTGuxF5vprC+hkxLy7O3oeRYQ8=
+	t=1761143216; cv=none; b=oOHXhuLv8LIH6krSR9CBYiG71sIMvdowL6rgehnwbL1iydijh7LsB8pwTp/P+840WIy6iMVwdHJARbYCDrVu/zX0507dWDRyUYTgxfSGwUk1AQ8GLrvKPdtfY7w5VYCMvE/UilcBvx6OnhcIpejU2uT9RgzvuOv+CF9S+sPU+7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761140895; c=relaxed/simple;
-	bh=aYT6Os1q2Rohj9KWPycuJw6XL0ogAAvatT1CGliGFF8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BiV6OBoocJ/ks5d8zp7fy0dJ11JKAJDrfyzXZeH9S8GqPSuFbXyk6le3XwULqube8w/geNyxbMNIiRaqSOLxG1G//Q3DtZwk5L2fNTsTChIRvpxbhXDIB3vVajwRx8QdzD2YUlwZzk6YEdXNpq7Iowu4YzeEJB3ZWtQPYOxXvRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DHaW3NDe; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-63c3d7e2217so9869461a12.3
-        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 06:48:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761140892; x=1761745692; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aYT6Os1q2Rohj9KWPycuJw6XL0ogAAvatT1CGliGFF8=;
-        b=DHaW3NDev1RDSphTbDxQD251qxiDChfS61xdvO0IDpC1JxWRGuCTmbqFPp7bRlTEbH
-         J0c92Q/jB1nKojacP1C/x0eyPH1ZyQaBKZUJmEJ9a7MEo2s5RWJVhw77mkAKrh5liwtV
-         PJJ+pGcGVv5y1LXkUjTPCOl1fl3FWrdghLdrW80WSGYvUqaP6kcYoevWjNXw9dtraHER
-         Z+Dmp5l+6/7jaS4xCLH9WfHPJgOQiyoIqPrzCeO5s0Ve3TBooRJBIVHS3y5kybHdA+7A
-         8L4DWh25aYfB0aoQv5HR25kGnZFsw7uPlHHj9KRRtqfVEK1E10Xh7CcZRsZYKxQ9Tcbv
-         tdMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761140892; x=1761745692;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aYT6Os1q2Rohj9KWPycuJw6XL0ogAAvatT1CGliGFF8=;
-        b=RL9Gh6Gv/0GDcPFYrYD7I1KTtorK6K6sdzL+UuPb4yiCJAM2D92W0XVLa3n2OFyH/I
-         p0r15+W544bxKjKoP7nfN3OM2wKSo8akbSf8NW9j/LYrmlz+eOde9Tocz9UfcKjoA2NG
-         jRU5mzyX59HAOc5JxOsSSOYJL14pFUWX3w1F7ALMlLi/rxTvD8afHtStWou+O92X5Bh+
-         tTcXujig3QHK0Fk9sG4GmwYoxLQKwf7fQMVNYOCGn2ZuhiT3fyx3RYC2kvBJBiOBBhle
-         2AzA/4ZB8Ocghx+B+kfXNuvPpIh+bjoLfyJnzHv9jkLfd/dIqIX2ERMVJx6ZZxlXmsih
-         DZKA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPQKsbs5nl00YdzXTGt8pE2h7K5yT54FUaE+a0DPphgWzQILRb+OSDbi4Yoqn1MKlpXOGa8wU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEHzYwOY07ifsB+MnM6SKxYb6UCukkDTZ1MxmXPM/RBQtTkyQH
-	Ju0V4IrI9+UOm4ztpP6B+YT9Vw+Ena8KKjAu1+/3O+VSQml3JiWnx7NfZCRpTg/m5+fW09/OXvN
-	egQG2iHpYvNfXN9qKoJ8bhUf0qu8xBOmRHOTHkZA=
-X-Gm-Gg: ASbGncu6250fNjscMtzfc1sY5JFU8i2eXB/SHotCdat+b+D8MKhbUhvSiuthqI5pylv
-	45+h+Wk+eN1aVPa4X+7RtlWR7JQEK3j5Ezsb1WsGSZhXeoim0rVuFUKBZGh26akEuNgxAyPtbyk
-	32upJZvGwqgxzjqgDcoTxH1gw18qpEWfeJYi0I0qlpuvgwXnJoL1FoG6WA4aPZhF73zqYBewUKu
-	9581i7wpmzMsdrJFW2wEQAEY2+Lc7/hii0PrNzkVAl4ay4dp4AL7E4nBa82hgsyfGPURxlG
-X-Google-Smtp-Source: AGHT+IEuV7ok09UjY4sSyg8xFKgHnnOuV/JfYn1sZVkbPUVR5FFRF22mq8r+kNUqlJQt2/5X3tjoeoegXNFBatkKhxo=
-X-Received: by 2002:a17:907:72d3:b0:b3b:4e6:46e6 with SMTP id
- a640c23a62f3a-b6472c6191dmr2347267866b.1.1761140892136; Wed, 22 Oct 2025
- 06:48:12 -0700 (PDT)
+	s=arc-20240116; t=1761143216; c=relaxed/simple;
+	bh=njnMKnmAzBOYSt4qbFbbHsfQ3+1SX5N8fWPqY9xDRPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MMd9f/B8O25jukzwnc7VPDzlHDDAxGCfZGE/k39ssfi+4XsHZHhCX8rB2L5NyUlEZt1v8jZIXQVTj3ga0h/pqFbOq1Wjz43XFIQL3clWO+6rf5iFuuL+yqrrtVxBVBgI/7c229Rmc3F9xu8kkATGH29D9GI6puUOothYhB1c1Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=XBtN2lNj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=wi8ZyAIs; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 400357A00B5;
+	Wed, 22 Oct 2025 10:26:53 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 22 Oct 2025 10:26:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1761143213;
+	 x=1761229613; bh=jOvRrxLI/PxVSWmhxM2KgyJk/X+u6+/Vmaw9PuxY40k=; b=
+	XBtN2lNjCSSfXGaqXi0gx/hlO8WnexR6tUKWFw0W+Esl1w0VoLdaeTBIpl3+3SRt
+	8k0rusGVLaZzq6WMIbQuyM0WTeGOvKbmHJjwdrvEfb9GrR896b9a+9tEVP/3sdpf
+	paxsxPUnRdTFFnAtOtM07XbRfRVrG5HBEzRZC5uKdExsyRB/Bzp5lpOMbS7BkPih
+	KmI1toWj9g8kClgqlGVd7rtTlylfX4nulaysdLtdZfm6WvkOnT4eDZOEZObwlbIe
+	XvmLXVmfvHix8i5HNxPGoT1+fXs0nagnK9AITqKPBowKP+EmQHFKGhEf++nGCMZe
+	YxA9ggHBJsJm8bv/iF/7zA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1761143213; x=
+	1761229613; bh=jOvRrxLI/PxVSWmhxM2KgyJk/X+u6+/Vmaw9PuxY40k=; b=w
+	i8ZyAIsZtLOryR2GGVNqeGZtf8OTyPOHf6pua9/Bnpk4edYPEghboe7XrCsnRwis
+	WBKNNK16wl9riG2ABWUcXXmkWKAM1IVvWIdcAv7TTPWO+dumAHiiNHlmQnNI1YKU
+	DrtJyS7tlvRrHh0MzxA3OGVC1hODIFU6Vuvuj1ilxlG9EMHHWOVZKI2iojCk4VWJ
+	TG3TEuoKd1Iytp3ITeBTdouGLMRhifNM27Ck0KHTFXWf2Xmm+dlkq+dxEeUJ+jRh
+	8OWM26Faoey1nPrM5mbxb0xSgnGKfPzk1lS/4MV0eBfqNl4q02z1X8mlKKLvd3yf
+	2xr2nypxaOlNK4P7Xi2AA==
+X-ME-Sender: <xms:rOn4aFjhzhWf5UKFXIQngaoA8wC5xpsjfdgvdKyzQz3Uj3wIGjqYUA>
+    <xme:rOn4aCye09H1Qqwat59MyRiZ4WtcMmBzXAYGpX5Dv_8ePeV4HZsSBFpgnQhSeQNHN
+    3hVy940u5n_SnfyubajrMH9x33xXWTfWkjLF6aOEp0l3DasAQ>
+X-ME-Received: <xmr:rOn4aDwAZbrOopB1xYax-VhcTT1OpzDw9qNkcnPY-NQn_rQEMd01G0at>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeefkedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpefgkeffie
+    efieevkeelteejvdetvddtledugfdvhfetjeejieduledtfefffedvieenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomhdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehlvghonhdrhhifrghngheslhhinhhugidruggvvhdprhgtphhtthhopehsthgrsg
+    hlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhu
+    gidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrg
+    htrdgtohhmpdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgv
+    rdgtohhmpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    eplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgv
+    rhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhgrnhgtvgdrhi
+    grnhhgsehlihhnuhigrdguvghv
+X-ME-Proxy: <xmx:rOn4aMqYobzJeKegfjkTb2Jig2imGUptMSQ-WOJVeXy52dqRTzyJLQ>
+    <xmx:rOn4aGlJAiIhljC8Jzc8Rlme4sPAFf5x2PVyh9nJ_wFCv19LEn15gw>
+    <xmx:rOn4aFxOsEdEjF2cBNW6DFm5xJ1ZddlhJYnaYAxsI3aZNGWcNn7iMw>
+    <xmx:rOn4aL0O7gaLZH54F7WEnqsoInBzvSTsUEWRZEg_V-XeXCFJ2g7Eog>
+    <xmx:ren4aATnIlNrUwkxxcWac1tUEZMNUOouhUXC6W31CVSQFSaRLN_PrAxB>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 22 Oct 2025 10:26:52 -0400 (EDT)
+Date: Wed, 22 Oct 2025 16:26:50 +0200
+From: Greg KH <greg@kroah.com>
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com,
+	lorenzo.stoakes@oracle.com, shuah@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
+ vm_util.c
+Message-ID: <2025102241-clubbed-smirk-8819@gregkh>
+References: <20251022055138.375042-1-leon.hwang@linux.dev>
+ <2025102230-scoured-levitator-a530@gregkh>
+ <ff0b2bd4-2bb0-4d0b-8a9e-4a712c419331@linux.dev>
+ <2025102210-detection-blurred-8332@gregkh>
+ <70f8c6a1-cbb5-4a62-99aa-69b2f06bece2@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251022133715.331241-1-hansg@kernel.org> <20251022133715.331241-2-hansg@kernel.org>
-In-Reply-To: <20251022133715.331241-2-hansg@kernel.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 22 Oct 2025 16:47:34 +0300
-X-Gm-Features: AS18NWBj2gBYFMQcocMtRK0flD8nTDu1ZgBmGY1rHhMmb1QfH--tXoq-ijJYeDk
-Message-ID: <CAHp75VcDmafp4fiOH7LqhPqtTX5BEp1w0eA5UMk13U=2_tHsyA@mail.gmail.com>
-Subject: Re: [REGRESSION FIX resend 1/1] gpiolib: acpi: Make set debounce
- errors non fatal
-To: Hans de Goede <hansg@kernel.org>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>, Andy Shevchenko <andy@kernel.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, stable@vger.kernel.org, 
-	Mario Limonciello <superm1@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <70f8c6a1-cbb5-4a62-99aa-69b2f06bece2@linux.dev>
 
-On Wed, Oct 22, 2025 at 4:37=E2=80=AFPM Hans de Goede <hansg@kernel.org> wr=
-ote:
->
-> Commit 16c07342b542 ("gpiolib: acpi: Program debounce when finding GPIO")
-> adds a gpio_set_debounce_timeout() call to acpi_find_gpio() and makes
-> acpi_find_gpio() fail if this fails.
->
-> But gpio_set_debounce_timeout() failing is a somewhat normal occurrence,
-> since not all debounce values are supported on all GPIO/pinctrl chips.
->
-> Making this an error for example break getting the card-detect GPIO for
-> the micro-sd slot found on many Bay Trail tablets, breaking support for
-> the micro-sd slot on these tablets.
->
-> acpi_request_own_gpiod() already treats gpio_set_debounce_timeout()
-> failures as non-fatal, just warning about them.
->
-> Add a acpi_gpio_set_debounce_timeout() helper which wraps
-> gpio_set_debounce_timeout() and warns on failures and replace both existi=
-ng
-> gpio_set_debounce_timeout() calls with the helper.
->
-> Since the helper only warns on failures this fixes the card-detect issue.
+On Wed, Oct 22, 2025 at 09:34:52PM +0800, Leon Hwang wrote:
+> 
+> 
+> On 2025/10/22 16:20, Greg KH wrote:
+> > On Wed, Oct 22, 2025 at 04:08:45PM +0800, Leon Hwang wrote:
+> >>
+> >>
+> >> On 22/10/25 15:40, Greg KH wrote:
+> >>> On Wed, Oct 22, 2025 at 01:51:38PM +0800, Leon Hwang wrote:
+> >>>> Fix the build error:
+> >>>>
+> >>>> map_hugetlb.c: In function 'main':
+> >>>> map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
+> >>>>    79 |         hugepage_size = default_huge_page_size();
+> >>>>       |                         ^~~~~~~~~~~~~~~~~~~~~~
+> >>>> /usr/bin/ld: /tmp/ccYOogvJ.o: in function 'main':
+> >>>> map_hugetlb.c:(.text+0x114): undefined reference to 'default_huge_page_size'
+> >>>>
+> >>>> According to the latest selftests, 'default_huge_page_size' has been
+> >>>> moved to 'vm_util.c'. So fix the error by the same way.
+> >>>>
+> >>>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> >>>> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+> >>>> ---
+> >>>>  tools/testing/selftests/vm/Makefile      |  1 +
+> >>>>  tools/testing/selftests/vm/userfaultfd.c | 24 ------------------------
+> >>>>  tools/testing/selftests/vm/vm_util.c     | 21 +++++++++++++++++++++
+> >>>>  tools/testing/selftests/vm/vm_util.h     |  1 +
+> >>>>  4 files changed, 23 insertions(+), 24 deletions(-)
+> >>>
+> >>>
+> >>> What commit id does this fix?  And again, why not just take the original
+> >>
+> >> Let me check which commit introduced the fix.
+> >>
+> >>> commits instead?
+> >>
+> >> I agree that taking the original commits would be preferable.
+> >>
+> >> However, it might involve quite a few patches to backport, which could
+> >> be a bit of work.
+> >
+> > We can easily take lots of patches, don't worry about the quantity.  But
+> > it would be good to figure out what caused this to break here, and not
+> > in other branches.
+> >
+> 
+> Hi Greg,
+> 
+> After checking with 'git blame map_hugetlb.c', the issue was introduced
+> by commit a584c7734a4d (“selftests: mm: fix map_hugetlb failure on 64K
+> page size systems”), which corresponds to upstream commit 91b80cc5b39f.
+> This change appears to have caused the build error in the 6.1.y tree.
+> 
+> Comparing several stable trees shows the following:
+> 
+> - 6.0.y: not backported*
+> - 6.1.y: backported
+> - 6.2.y: not backported*
+> - 6.3.y: not backported*
+> - 6.4.y: not backported*
+> - 6.5.y: not backported*
+> - 6.6.y: backported
+> - 6.7.y: backported
+> 
+> Given this, it might be preferable to revert a584c7734a4d in 6.1.y for
+> consistency with the other stable trees (6.0.y, 6.2–6.5.y).
 
-Acked-by: Andy Shevchenko <andy@kernel.org>
-if Bart wants to take this directly.
+Ah, yeah, it looks like this commit was reverted from other stable
+releases, as it shows up in the following releases:
 
---=20
-With Best Regards,
-Andy Shevchenko
+	4.19.310 4.19.315 5.4.272 5.4.277 5.10.213 5.10.218 5.15.152 5.15.160 6.1.82 6.6.18 6.7.6
+
+So a revert would be fine, want to submit it?
+
+thanks,
+
+greg k-h
 
