@@ -1,89 +1,104 @@
-Return-Path: <stable+bounces-188975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED514BFBA59
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 13:33:03 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B24FBFBB88
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 13:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B647119C1A35
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:33:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D5580356133
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0290A2F8BF7;
-	Wed, 22 Oct 2025 11:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N7OLLMRm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DCE33EB0A;
+	Wed, 22 Oct 2025 11:47:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A5FCA6B;
-	Wed, 22 Oct 2025 11:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4AE28507E;
+	Wed, 22 Oct 2025 11:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761132778; cv=none; b=BiuevrZJBzJUHWa2q2A9HpWuk9j0h2m6Dh/2+/JfmIUFWaosxpT8c7MWVPzOqBEX6pPOP4S5HCcKGULFRzlCLb643oZetuLxhf3HJgtofkY9h6ui4hb9c5fJxXST8nyic3P+8VAeDbFtur656PwBzpr6zJsB76EMliYEZ6TLxWE=
+	t=1761133663; cv=none; b=kT/Qwc949YktX7eLWv5NmC+iHnESyShlR1yBVOANMCeXg89y2MyAoS2WyEPXtM/G7mwBFrqyuqDLXZ74E1yi6rXyMGt7Prt3bUwHLDb/QXWhWYAoF2Ikkcm6sCmhu4r9zrueDlUQhaKhD6ygueWVc4uvV9CFeS7F4bNBCvTJdMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761132778; c=relaxed/simple;
-	bh=0j3aErqYStg0c4zRP+UOFNxgk15ITr7C3ltZOxxe3ZU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=K2a0NKXmXHp7mM/+VzVxYJzaWPDNiDOo7v88+ACqJ+e5nMBldER4MdeI1wj9sCduuEuq89XfWZSRWRRjulgHibNScxBUj/DC89p0F+GKStPSpbuETmNkLUD5l7LQAFarpo/ny1gRLwUOv7CYT9I6T2XsYBp82jyW+HxAKnxeM+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N7OLLMRm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1061C4CEE7;
-	Wed, 22 Oct 2025 11:32:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761132778;
-	bh=0j3aErqYStg0c4zRP+UOFNxgk15ITr7C3ltZOxxe3ZU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=N7OLLMRmLS3CmC05BjaYai7Almvy+TlSvgwr5lS9oHaFvN87A1MX139uPqz4sTh6b
-	 uVrzA4V+VxmkB8LhK0tMtzg5hfAukq7YpoYzNM+VfaQPdjKW9AL8YvbZbAC1ACi/XF
-	 BgSB1HLlGJs9Gl4Sy7SkNYQJdHA1H2tw5Hd2rzEddKkquzXw/R2b0I7o4kHvw1Ak1K
-	 apCt5xjSgMAYyg3EZOaoU9e5jJvJSaEjOTngjR3DhmktJp3TtyZtxBJBOW2TBw0I5f
-	 QAOMQFXif5g4KmSR6PB6G52a8JXzuzpHbnTpNOwy9p95c9KqgEb50WSCWuCoOq9QId
-	 mdXtAJo6u/OVw==
-From: Carlos Maiolino <cem@kernel.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: oleksandr@natalenko.name, hch@lst.de, vbabka@suse.cz, 
- stable@vger.kernel.org, linux-xfs@vger.kernel.org, hch@lst.de
-In-Reply-To: <176107133959.4152072.11526530466991879614.stgit@frogsfrogsfrogs>
-References: <176107133959.4152072.11526530466991879614.stgit@frogsfrogsfrogs>
-Subject: Re: [PATCHSET] xfs: random fixes for 6.18
-Message-Id: <176113277643.82207.1441469219564358238.b4-ty@kernel.org>
-Date: Wed, 22 Oct 2025 13:32:56 +0200
+	s=arc-20240116; t=1761133663; c=relaxed/simple;
+	bh=zSpjC6m3pglcmLbIGjS2FcUdLFf8FTEZflp0fi6fCj0=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=pniMGorTT0AmK2H3AEcDBpGvN6DFdF7xhFLSm+Nh1G1bckWXGT6uBh1nqHs4Hq70F/mGoc8jcs3n5yp0/YZ3r3Yb7i/+QiSgy8vH1x1vEG4WT+QmmtuR/FrsDXmtx293RheQjp8n5XGGCutdSgM1Hmidm+y32DjxfnsYos1IHWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-01 (Coremail) with SMTP id qwCowAAHYKJJxPhosYX2Ew--.12754S2;
+	Wed, 22 Oct 2025 19:47:30 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: thierry.reding@gmail.com,
+	mperttunen@nvidia.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	jonathanh@nvidia.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] drm/tegra: dc: fix reference leak in tegra_dc_couple()
+Date: Wed, 22 Oct 2025 19:47:20 +0800
+Message-Id: <20251022114720.24937-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:qwCowAAHYKJJxPhosYX2Ew--.12754S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Xw15uFW5Zr1rAFy5KFW3Jrb_yoWfuFg_GF
+	yUZryxW3yaqFsY9FnFvr13Zry2yFyq9FW0gr42k393Gry3XFyqg34jgFZ09ryUWa1UWFn8
+	AayrXr40vF12kjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbD8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwV
+	W8KwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v2
+	6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2
+	Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
+	Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
+	IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU6GQhUUUUU
+	=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
 
-On Tue, 21 Oct 2025 11:29:50 -0700, Darrick J. Wong wrote:
-> Random fixes for 6.18.
-> 
-> If you're going to start using this code, I strongly recommend pulling
-> from my git trees, which are linked below.
-> 
-> This has been running on the djcloud for months with no problems.  Enjoy!
-> Comments and questions are, as always, welcome.
-> 
-> [...]
+driver_find_device() calls get_device() to increment the reference
+count once a matching device is found, but there is no put_device() to
+balance the reference count. To avoid reference count leakage, add
+put_device() to decrease the reference count.
 
-Applied to for-next, thanks!
+Found by code review.
 
-[1/4] xfs: don't set bt_nr_sectors to a negative number
-      commit: bd721ec7dedcc24ced51559e42a39140b59dfd08
-[2/4] xfs: always warn about deprecated mount options
-      commit: 630785bfbe12c3ee3ebccd8b530a98d632b7e39d
-[3/4] xfs: loudly complain about defunct mount options
-      commit: 3e7ec343f066cb3b6916239680ab6ad44537b453
-[4/4] xfs: fix locking in xchk_nlinks_collect_dir
-      commit: f477af0cfa0487eddec66ffe10fd9df628ba6f52
+Cc: stable@vger.kernel.org
+Fixes: a31500fe7055 ("drm/tegra: dc: Restore coupling of display controllers")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/gpu/drm/tegra/dc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Best regards,
+diff --git a/drivers/gpu/drm/tegra/dc.c b/drivers/gpu/drm/tegra/dc.c
+index 59d5c1ba145a..6c84bd69b11f 100644
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -3148,6 +3148,7 @@ static int tegra_dc_couple(struct tegra_dc *dc)
+ 		dc->client.parent = &parent->client;
+ 
+ 		dev_dbg(dc->dev, "coupled to %s\n", dev_name(companion));
++		put_device(companion);
+ 	}
+ 
+ 	return 0;
 -- 
-Carlos Maiolino <cem@kernel.org>
+2.17.1
 
 
