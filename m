@@ -1,93 +1,45 @@
-Return-Path: <stable+bounces-188942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-188943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EB6BFB17D
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13363BFB193
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 11:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 121814F20E1
-	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:12:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C595A4EB764
+	for <lists+stable@lfdr.de>; Wed, 22 Oct 2025 09:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4474B3128AD;
-	Wed, 22 Oct 2025 09:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="W0aWkm30";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZTAhkox9";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="urvz5H0T";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QK2lD9CF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8783126C7;
+	Wed, 22 Oct 2025 09:14:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3065D126F0A
-	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 09:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4D52FB097
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 09:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761124331; cv=none; b=GGds1zGf0nNIohQAVe4XOFCBu+7HbM+G3PCdYfIRD+wWSJ1ZhnkfI6V6qAJyBv5kkfs1+wUKyimTUGOkg25KdjIfX+Fm5RFq7qn1xmaHxEZDqJn9Y1h3VEfZHt51q8X/y4ID/8FC4phEDMWayH/Com9G2aJWpe9SyHjdOF9nZgQ=
+	t=1761124451; cv=none; b=EM3j/B5Qp+xrzm7ZVaaTUh0xSTmT2rQ088i/Ij4/udqe/Iejx80MXPPZ2ZZVfgace323DgNI+k84rxNiv9qP4b+abilpVs8PAEaYL3v99txr6LYe8t0Yh3yI4EOXX0IcKM94h5rEKAak3SD3CqByfY6nknNU36OC3P1MJbX28H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761124331; c=relaxed/simple;
-	bh=newh0vZAKrIWf3SDU2MyjvcfVpESktbyH6LDHwZmJBo=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=fTNv0B1YueAjkj6xoSWi34HSqy65H+PydcNjxY4Fw78dUPKlfYyTo0myv3wa1c56KMYYPyWDXVNTkDGZKjCSlCvp+kDUtXbF4lnV3NMp3S0IacYV40zfK9rICgjjjRLdUQn+l7hEW4054th0W+dHi5xc6CfcpcyxKSw+Yppok7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=W0aWkm30; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZTAhkox9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=urvz5H0T; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QK2lD9CF; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0BB7D1F397;
-	Wed, 22 Oct 2025 09:11:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761124321; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cw5kWRl1Bd7qYVYp6/DsOMSD1R+FICQyPDwP157acEg=;
-	b=W0aWkm30t7gzuBhBdM6UjDNBoNTPWCsxOk4jTCgGxu3dgF6u6ejB5sAl2GEpWrQ9WwGiSK
-	6JfRaxSe1nMC85ZJQjKcXNhHS7ctdI9ewJve00BtHCBuG7NZo7GAG4yIDg9BjBh96N8Unn
-	mfRTKnGtMk/aDrDWdb3jlebsZopjwZw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761124321;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cw5kWRl1Bd7qYVYp6/DsOMSD1R+FICQyPDwP157acEg=;
-	b=ZTAhkox9wIlL5Z97TRd7ANxIUCzk4Yqf9QoGIEg5zBfMyldXLyg/dz+I6TkeENmMJxDMJw
-	Vky4jEdEtDowi1BA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=urvz5H0T;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QK2lD9CF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761124317; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cw5kWRl1Bd7qYVYp6/DsOMSD1R+FICQyPDwP157acEg=;
-	b=urvz5H0T6GpVq39dohXI5YdVSGsBu+ZFYVPeqbHEDxV6JVrV2CHN7HqHm3Co5+rqZNrxTG
-	uEK7kGwiyoIufW8wAixc0F/xmPlfz6rC5pr9EtxuFsJNf6WCaCFjuc6hJEJ6ZknXfHZGhb
-	czqU+2jiZVHEaWMlRwfzGCTjKxXBj+U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761124317;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cw5kWRl1Bd7qYVYp6/DsOMSD1R+FICQyPDwP157acEg=;
-	b=QK2lD9CFNTaG8cjouCCkfuK2tZxdHCs5FgZLEPwb05lIDmj8XSgXnYODdRNStOQUjubnLe
-	7G6oo22OY0Iy3tAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9C76F13A29;
-	Wed, 22 Oct 2025 09:11:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EjnwJNyf+Gj3dAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 22 Oct 2025 09:11:56 +0000
-Content-Type: multipart/mixed; boundary="------------LYtJwVQ0ylxAhEFDOTekbpiR"
-Message-ID: <bf827c5c-c4dd-46f1-962d-3a8e2a0a7fdf@suse.de>
-Date: Wed, 22 Oct 2025 11:11:56 +0200
+	s=arc-20240116; t=1761124451; c=relaxed/simple;
+	bh=cnDVP3LL4LQdZ+QtTsXIhx4X1v93yq3hPbbrEUiDMa4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vy2vSen5+aNPP2GcIdQ9lDgPWtjGbmJ3llerQf+Po/nAIFEZcwmVetKeboPlVsfMG4rdw8HPO46s4XTdpn459L52/WcnJ9jK+LhAczBi54zCB0ImFUDhPWwvr4VXu+93O3LcS8HJUZZD0yaGMhlsLtrE+vRexoE0xmKgbOWggAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4cs3Ns5XNBzKHMYl
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 17:13:17 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 6E43E1A0F4F
+	for <stable@vger.kernel.org>; Wed, 22 Oct 2025 17:14:05 +0800 (CST)
+Received: from [10.174.178.72] (unknown [10.174.178.72])
+	by APP2 (Coremail) with SMTP id Syh0CgBXrERboPhoTRHfBA--.16399S3;
+	Wed, 22 Oct 2025 17:14:05 +0800 (CST)
+Message-ID: <0a3ace4a-3c0b-4672-8d96-dc456d5b06f0@huaweicloud.com>
+Date: Wed, 22 Oct 2025 17:14:02 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,211 +47,191 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION][BISECTED] Screen goes blank with ASpeed AST2300 in
- 6.18-rc2
-To: Peter Schneider <pschneider1968@googlemail.com>,
- regressions@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>
-Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
- jfalempe@redhat.com, airlied@redhat.com, dianders@chromium.org,
- nbowler@draconx.ca, Linus Torvalds <torvalds@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thorsten Leemhuis <regressions@leemhuis.info>
-References: <20251014084743.18242-1-tzimmermann@suse.de>
- <a40caf8e-58ad-4f9c-af7f-54f6f69c29bb@googlemail.com>
- <43992c88-3a3a-4855-9f46-27a7e5fdec2e@suse.de>
- <798ba37a-41d0-4953-b8f5-8fe6c00f8dd3@googlemail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <798ba37a-41d0-4953-b8f5-8fe6c00f8dd3@googlemail.com>
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 0BB7D1F397
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.41 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-0.978];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
-	MIME_BASE64_TEXT(0.10)[];
-	MX_GOOD(-0.01)[];
-	FREEMAIL_TO(0.00)[googlemail.com,lists.linux.dev,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FREEMAIL_ENVRCPT(0.00)[googlemail.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid,suse.de:email]
-X-Spam-Score: -3.41
-
-This is a multi-part message in MIME format.
---------------LYtJwVQ0ylxAhEFDOTekbpiR
+Subject: Re: [PATCH 5.10.y] dm: fix NULL pointer dereference in __dm_suspend()
+To: Li Lingfeng <lilingfeng3@huawei.com>, Greg KH <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+ Mikulas Patocka <mpatocka@redhat.com>, dm-devel@lists.linux.dev,
+ yangerkun <yangerkun@huawei.com>, "zhangyi (F)" <yi.zhang@huawei.com>,
+ Hou Tao <houtao1@huawei.com>
+References: <2025101316-favored-pulsate-a811@gregkh>
+ <20251014030334.3868139-1-sashal@kernel.org>
+ <cdadc001-3c0e-4152-8b05-08eb79fb528b@huawei.com>
+ <2025102252-abrasive-glamorous-465b@gregkh>
+ <1767bec2-b660-42b2-b828-b221e0896eba@huawei.com>
+ <2025102212-pouring-embellish-95fc@gregkh>
+ <28a7f62d-ae81-4629-864c-a0c1ecf98ee9@huawei.com>
+From: Zheng Qixing <zhengqixing@huaweicloud.com>
+In-Reply-To: <28a7f62d-ae81-4629-864c-a0c1ecf98ee9@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Syh0CgBXrERboPhoTRHfBA--.16399S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxKr18ZF45ZrWfJF43WrWxWFg_yoWxXw13pr
+	4kGF1UKryrJr1kJw1Utr1DtryUtr45tw1UXr18JFy5Jw4qyr1Fqr1UXr1qgr18Cr48Jr1U
+	Jr1UJry3Zw1UJw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUylb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAK
+	I48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
+	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
+	jxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw2
+	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
+	67AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUF1v3UUUUU
+X-CM-SenderInfo: x2kh0wptl0x03j6k3tpzhluzxrxghudrp/
 
-Hi
+Hi,
 
-Am 22.10.25 um 10:08 schrieb Peter Schneider:
-> Hi Thomas,
+在 2025/10/22 17:10, Li Lingfeng 写道:
 >
-> thanks very much for your quick response!
->
-> (adding Thorsten to CC)
->
->
-> Am 22.10.2025 um 08:51 schrieb Thomas Zimmermann:
->> Hi
->>
->> Am 22.10.25 um 05:27 schrieb Peter Schneider:
->>> #regzbot introduced: 6f719373b943a955fee6fc2012aed207b65e2854
+> 在 2025/10/22 16:45, Greg KH 写道:
+>> On Wed, Oct 22, 2025 at 04:21:33PM +0800, Li Lingfeng wrote:
+>>> Hi,
 >>>
->>> Hi all,
->>>
->>> I have encountered a serious (for me) regression with 6.18-rc2 on my 
->>> 2-socket Ivy Bridge Xeon E5-2697 v2 server. After booting, my 
->>> console screen goes blank and stays blank. 6.18-rc1 was still fine.
->>>
->>> The machine has an Asus Z9PE-D16 server mainboard with an onboard 
->>> ASpeed AST2300 VGA chip with 16MB VRAM. I have attached an older HP 
->>> Monitor to it via old VGA jack/cable. It also has a second graphics 
->>> card in a PCI-E slot; an older NVidia GTX 560. It is not connected 
->>> to a monitor, but I have configured it via kernel command line for 
->>> PCI-pass- through to VMs running on this server (I use Proxmox VE, 
->>> i.e. QEMU/KVM virtual machines). Currently, no VMs use this yet, and 
->>> also no VMs are autostarting with machine boot. So when this 
->>> regression occurs, the server is idle. Pressing a key on the 
->>> keyboard does not make the screen come alive. The server is running 
->>> fine though, and I can access it via SSH. It just has no graphic 
->>> output anymore. In case this is important, the machine also has a 
->>> ASMB6 BMC (can be used via http).
->>>
->>> I have attached dmesg output from both 6.18-rc1 which is fine, and 
->>> 6.18-rc2 which exhibits this bug. I have bisected the issue, please 
->>> see attached git bisect.log.
+>>> 在 2025/10/22 16:10, Greg KH 写道:
+>>>> On Wed, Oct 22, 2025 at 04:01:04PM +0800, Li Lingfeng wrote:
+>>>>> Hi,
+>>>>>
+>>>>> 在 2025/10/14 11:03, Sasha Levin 写道:
+>>>>>> From: Zheng Qixing <zhengqixing@huawei.com>
+>>>>>>
+>>>>>> [ Upstream commit 8d33a030c566e1f105cd5bf27f37940b6367f3be ]
+>>>>>>
+>>>>>> There is a race condition between dm device suspend and table 
+>>>>>> load that
+>>>>>> can lead to null pointer dereference. The issue occurs when 
+>>>>>> suspend is
+>>>>>> invoked before table load completes:
+>>>>>>
+>>>>>> BUG: kernel NULL pointer dereference, address: 0000000000000054
+>>>>>> Oops: 0000 [#1] PREEMPT SMP PTI
+>>>>>> CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
+>>>>>> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 
+>>>>>> 1.16.1-2.fc37 04/01/2014
+>>>>>> RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
+>>>>>> Call Trace:
+>>>>>>      <TASK>
+>>>>>>      blk_mq_quiesce_queue+0x2c/0x50
+>>>>>>      dm_stop_queue+0xd/0x20
+>>>>>>      __dm_suspend+0x130/0x330
+>>>>>>      dm_suspend+0x11a/0x180
+>>>>>>      dev_suspend+0x27e/0x560
+>>>>>>      ctl_ioctl+0x4cf/0x850
+>>>>>>      dm_ctl_ioctl+0xd/0x20
+>>>>>>      vfs_ioctl+0x1d/0x50
+>>>>>>      __se_sys_ioctl+0x9b/0xc0
+>>>>>>      __x64_sys_ioctl+0x19/0x30
+>>>>>>      x64_sys_call+0x2c4a/0x4620
+>>>>>>      do_syscall_64+0x9e/0x1b0
+>>>>>>
+>>>>>> The issue can be triggered as below:
+>>>>>>
+>>>>>> T1                         T2
+>>>>>> dm_suspend                    table_load
+>>>>>> __dm_suspend                    dm_setup_md_queue
+>>>>>>                         dm_mq_init_request_queue
+>>>>>>                         blk_mq_init_allocated_queue
+>>>>>>                         => q->mq_ops = set->ops; (1)
+>>>>>> dm_stop_queue / dm_wait_for_completion
+>>>>>> => q->tag_set NULL pointer!    (2)
+>>>>>>                         => q->tag_set = set; (3)
+>>>>>>
+>>>>>> Fix this by checking if a valid table (map) exists before performing
+>>>>>> request-based suspend and waiting for target I/O. When map is NULL,
+>>>>>> skip these table-dependent suspend steps.
+>>>>>>
+>>>>>> Even when map is NULL, no I/O can reach any target because there is
+>>>>>> no table loaded; I/O submitted in this state will fail early in the
+>>>>>> DM layer. Skipping the table-dependent suspend logic in this case
+>>>>>> is safe and avoids NULL pointer dereferences.
+>>>>>>
+>>>>>> Fixes: c4576aed8d85 ("dm: fix request-based dm's use of 
+>>>>>> dm_wait_for_completion")
+>>>>>> Cc: stable@vger.kernel.org
+>>>>>> Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+>>>>>> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+>>>>>> [ omitted DMF_QUEUE_STOPPED flag setting and braces absent in 5.15 ]
+>>>>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>>>>> ---
+>>>>>>     drivers/md/dm.c | 7 ++++---
+>>>>>>     1 file changed, 4 insertions(+), 3 deletions(-)
+>>>>>>
+>>>>>> diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+>>>>>> index 0868358a7a8d2..b51281ce15d4c 100644
+>>>>>> --- a/drivers/md/dm.c
+>>>>>> +++ b/drivers/md/dm.c
+>>>>>> @@ -2457,7 +2457,7 @@ static int __dm_suspend(struct 
+>>>>>> mapped_device *md, struct dm_table *map,
+>>>>>>     {
+>>>>>>         bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
+>>>>>>         bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
+>>>>>> -    int r;
+>>>>>> +    int r = 0;
+>>>>>>         lockdep_assert_held(&md->suspend_lock);
+>>>>>> @@ -2509,7 +2509,7 @@ static int __dm_suspend(struct 
+>>>>>> mapped_device *md, struct dm_table *map,
+>>>>>>          * Stop md->queue before flushing md->wq in case 
+>>>>>> request-based
+>>>>>>          * dm defers requests to md->wq from md->queue.
+>>>>>>          */
+>>>>>> -    if (dm_request_based(md))
+>>>>>> +    if (map && dm_request_based(md))
+>>>>>>             dm_stop_queue(md->queue);
+>>>>> It seems that before commit 80bd4a7aab4c ("blk-mq: move the 
+>>>>> srcu_struct
+>>>>> used for quiescing to the tagset") was merged, 
+>>>>> blk_mq_wait_quiesce_done()
+>>>>> would not attempt to access q->tag_set, so in dm_stop_queue() this 
+>>>>> kind
+>>>>> of race condition would not cause a null pointer dereference. The 
+>>>>> change
+>>>>> may not be necessary for 5.10, but adding it doesn’t appear to 
+>>>>> cause any
+>>>>> issues either.
+>>>>>> flush_workqueue(md->wq);
+>>>>>> @@ -2519,7 +2519,8 @@ static int __dm_suspend(struct 
+>>>>>> mapped_device *md, struct dm_table *map,
+>>>>>>          * We call dm_wait_for_completion to wait for all 
+>>>>>> existing requests
+>>>>>>          * to finish.
+>>>>>>          */
+>>>>>> -    r = dm_wait_for_completion(md, task_state);
+>>>>>> +    if (map)
+>>>>>> +        r = dm_wait_for_completion(md, task_state);
+>>>>> The fix tag c4576aed8d85 ("dm: fix request-based dm's use of
+>>>>> dm_wait_for_completion") seems to correspond to the modification of
+>>>>> dm_wait_for_completion().
+>>>>>>         if (!r)
+>>>>>>             set_bit(dmf_suspended_flag, &md->flags);
+>>>>> Perhaps adding another fix tag would be more appropriate?
+>>>> Those tags come directly from the original commit.
+>>> Thanks for the clarification. Since the patch has already been 
+>>> merged into
+>>> the mainline tree, we can't update the commit there. I was just 
+>>> wondering
+>>> if it would be acceptable to add an additional “Fixes” tag when 
+>>> applying
+>>> it to the stable branch, before merging.
+>> I can, if needed, can you please provide that line?
+>
+> Fixes: 80bd4a7aab4c ("blk-mq: move the srcu_struct used for quiescing 
+> to the tagset")
+>
+> Thanks,
+> Lingfeng
+>
+
+Thank you for adding a fix tag.
+
+Qixing
+
+
 >>
->> Thanks for the detailed bug report.
+>> thanks,
 >>
->> Attached is a patch that partially reverts the broken commit. Could 
->> you please apply it on top of the broken kernel and report on the 
->> results?
+>> greg k-h
 >>
->> Best regards
->> Thomas
->
->
-> Your patch applied cleanly against 6.18-rc2 and the kernel built fine, 
-> but unfortunately it did not solve the issue: my console screen stays 
-> blank after booting. This is regardless whether I do a soft reboot, 
-> press the reset button or power cycle and do a cold boot. They are all 
-> the same.
 
-Just to be sure: you do see output at the early boot stages (BIOS, boot 
-loader). It's at some later point during boot, the driver loads and the 
-display blanks out?
-
-There's another patch attached. does this make a difference?
-
-Best regards
-Thomas
-
->
->
-> Beste Grüße,
-> Peter Schneider
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
-
---------------LYtJwVQ0ylxAhEFDOTekbpiR
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-v2-ast-Set-clear-screen-disable-bit.patch"
-Content-Disposition: attachment;
- filename="0001-v2-ast-Set-clear-screen-disable-bit.patch"
-Content-Transfer-Encoding: base64
-
-RnJvbSAwODAwZThhZWFmMGMxZmQ2YzQ5YTlmZTIxNGYzOWM2NTUzNDViYjMxIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5A
-c3VzZS5kZT4KRGF0ZTogV2VkLCAyMiBPY3QgMjAyNSAwODo0ODo0OSArMDIwMApTdWJqZWN0
-OiBbUEFUQ0hdIFt2Ml0gYXN0OiBTZXQvY2xlYXIgc2NyZWVuLWRpc2FibGUgYml0CgotLS0K
-IGRyaXZlcnMvZ3B1L2RybS9hc3QvYXN0X21vZGUuYyB8IDEyICsrKysrKysrKystLQogMSBm
-aWxlIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9ncHUvZHJtL2FzdC9hc3RfbW9kZS5jIGIvZHJpdmVycy9ncHUvZHJt
-L2FzdC9hc3RfbW9kZS5jCmluZGV4IDljZTg3NGRiYTY5Yy4uMDVjYmYyZmM2NTYwIDEwMDY0
-NAotLS0gYS9kcml2ZXJzL2dwdS9kcm0vYXN0L2FzdF9tb2RlLmMKKysrIGIvZHJpdmVycy9n
-cHUvZHJtL2FzdC9hc3RfbW9kZS5jCkBAIC04MjAsNiArODIwLDcgQEAgYXN0X2NydGNfaGVs
-cGVyX2F0b21pY19mbHVzaChzdHJ1Y3QgZHJtX2NydGMgKmNydGMsCiBzdGF0aWMgdm9pZCBh
-c3RfY3J0Y19oZWxwZXJfYXRvbWljX2VuYWJsZShzdHJ1Y3QgZHJtX2NydGMgKmNydGMsIHN0
-cnVjdCBkcm1fYXRvbWljX3N0YXRlICpzdGF0ZSkKIHsKIAlzdHJ1Y3QgYXN0X2RldmljZSAq
-YXN0ID0gdG9fYXN0X2RldmljZShjcnRjLT5kZXYpOworCXU4IHZnYXNyMSA9IDB4ZmY7CiAJ
-dTggdmdhY3IxNyA9IDB4MDA7CiAJdTggdmdhY3JiNiA9IDB4ZmY7CiAKQEAgLTgyOCw2ICs4
-MjksOSBAQCBzdGF0aWMgdm9pZCBhc3RfY3J0Y19oZWxwZXJfYXRvbWljX2VuYWJsZShzdHJ1
-Y3QgZHJtX2NydGMgKmNydGMsIHN0cnVjdCBkcm1fYXRvbQogCiAJYXN0X3NldF9pbmRleF9y
-ZWdfbWFzayhhc3QsIEFTVF9JT19WR0FDUkksIDB4MTcsIDB4N2YsIHZnYWNyMTcpOwogCWFz
-dF9zZXRfaW5kZXhfcmVnX21hc2soYXN0LCBBU1RfSU9fVkdBQ1JJLCAweGI2LCAweGZjLCB2
-Z2FjcmI2KTsKKworCXZnYXNyMSAmPSB+QVNUX0lPX1ZHQVNSMV9TRDsKKwlhc3Rfc2V0X2lu
-ZGV4X3JlZ19tYXNrKGFzdCwgQVNUX0lPX1ZHQVNSSSwgMHgwMSwgMHhkZiwgdmdhc3IxKTsK
-IH0KIAogc3RhdGljIHZvaWQgYXN0X2NydGNfaGVscGVyX2F0b21pY19kaXNhYmxlKHN0cnVj
-dCBkcm1fY3J0YyAqY3J0Yywgc3RydWN0IGRybV9hdG9taWNfc3RhdGUgKnN0YXRlKQpAQCAt
-ODM1LDkgKzgzOSwxMyBAQCBzdGF0aWMgdm9pZCBhc3RfY3J0Y19oZWxwZXJfYXRvbWljX2Rp
-c2FibGUoc3RydWN0IGRybV9jcnRjICpjcnRjLCBzdHJ1Y3QgZHJtX2F0bwogCXN0cnVjdCBk
-cm1fY3J0Y19zdGF0ZSAqb2xkX2NydGNfc3RhdGUgPSBkcm1fYXRvbWljX2dldF9vbGRfY3J0
-Y19zdGF0ZShzdGF0ZSwgY3J0Yyk7CiAJc3RydWN0IGFzdF9kZXZpY2UgKmFzdCA9IHRvX2Fz
-dF9kZXZpY2UoY3J0Yy0+ZGV2KTsKIAl1OCB2Z2FjcjE3ID0gMHhmZjsKKwl1OCB2Z2FzcjEg
-PSAweDAwOwogCi0JdmdhY3IxNyAmPSB+QVNUX0lPX1ZHQUNSMTdfU1lOQ19FTkFCTEU7Ci0J
-YXN0X3NldF9pbmRleF9yZWdfbWFzayhhc3QsIEFTVF9JT19WR0FDUkksIDB4MTcsIDB4N2Ys
-IHZnYWNyMTcpOworCXZnYXNyMSB8PSBBU1RfSU9fVkdBU1IxX1NEOworCWFzdF9zZXRfaW5k
-ZXhfcmVnX21hc2soYXN0LCBBU1RfSU9fVkdBU1JJLCAweDAxLCAweGRmLCB2Z2FzcjEpOwor
-CisJLy92Z2FjcjE3ICY9IH5BU1RfSU9fVkdBQ1IxN19TWU5DX0VOQUJMRTsKKwkvL2FzdF9z
-ZXRfaW5kZXhfcmVnX21hc2soYXN0LCBBU1RfSU9fVkdBQ1JJLCAweDE3LCAweDdmLCB2Z2Fj
-cjE3KTsKIAogCS8qCiAJICogSFcgY3Vyc29ycyByZXF1aXJlIHRoZSB1bmRlcmx5aW5nIHBy
-aW1hcnkgcGxhbmUgYW5kIENSVEMgdG8KLS0gCjIuNTEuMAoK
-
---------------LYtJwVQ0ylxAhEFDOTekbpiR--
 
