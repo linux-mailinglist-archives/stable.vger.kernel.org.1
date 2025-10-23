@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-189168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD62C0391E
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 23:40:49 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756E3C039B4
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 23:47:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3ADD54E7BF9
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 21:40:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 227F6354EA5
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 21:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0B72C21D4;
-	Thu, 23 Oct 2025 21:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qPOgB7Zb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5467A191F91;
+	Thu, 23 Oct 2025 21:47:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157C12C0F81;
-	Thu, 23 Oct 2025 21:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AAA13790B
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 21:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761255631; cv=none; b=TWMmO4wY0rXJ/NEHpNNR9lYOgwwJ0EPBamT1XYXsCF54XsIUchOe/qO5e1uJLNzO6v96QO4JPzq6zTt5cWJKFQWDu1t6md+scISNvDjLKYR6ynKHhg6/PvMfrSFO74asWERoePvtFoye2Sr4/TwHeTwrxF7lx7IYnKTPum/M7vk=
+	t=1761256073; cv=none; b=Ha2TDGmQXaZsVpHBbzsagbuflHqIECeXNuM+aDmdVnlbovSY9lzbauJ8saWDXOMEbRrLWowy97rhg/NIxYE79NF0btj8ulpdftPyr6WwwWQR0ej5Lx+t3724FHeui3NhlX1HKkFOecC00ruF3WGSzozGtX5L+fSW9a5whEPpweY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761255631; c=relaxed/simple;
-	bh=d31fxEionGDqWxCah++7HR8uos8Wm0b0XhvSzDRCHT0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=LJicgvsnIP/cJIEKoQYjy+6bSn1BVlWYolebqSGXBo0vfgBkL780udKUdZVQ2C/WB9gxWbrKTT3MP5aRMECmUZn8l38Ctec0a69CeBpDg+fkhnC6CudnCn2s6NGti6HI0AyQPD24TR66Eg2D5rKrbo8AKnH/95I65407O/+ziJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qPOgB7Zb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A16C4CEE7;
-	Thu, 23 Oct 2025 21:40:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761255630;
-	bh=d31fxEionGDqWxCah++7HR8uos8Wm0b0XhvSzDRCHT0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qPOgB7ZbFrY3w8SGFNGEVY3qHsgEQZBaVWStjO8GytPOCuGTs/29Yix86h+nZvfw4
-	 TlHBZgU1Hn+en1rzl/Qy8sbWF0La65GujMV1VETpdqkNL74GxoCPMjurny/1DPOOW/
-	 gL0y6gsoWHQwS/kpdiCbkxKympGWiq3aKltAFsVm6AjC2kMH7lFQ2+lCKRrRB8ENLP
-	 NB3s98if5mblIB7UGVc8x2+h7QKECOcv4BxXpax3MgVw6g2+MkVdwSkqkNAa8aOF5J
-	 zKgVWeIa3OMC3KiDXzFVGWgY+utRJCsdNQS/zaajam7/I3VSpaDMkwaU7kZ0pcZKVv
-	 L1neGlxRyU+rg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D41380A960;
-	Thu, 23 Oct 2025 21:40:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1761256073; c=relaxed/simple;
+	bh=mJpOqNCTvzTBHwdN370dGYMUzPzecvsrw4ANCkvgjtQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bQhwUZkVgyc9ertR4WupGxG5bINcdtqTnECrnoU+mzYv1lNyWThZz3gZ3Y20NFC5PqpAce+dPWjQUwsji00jV25v2bumd2G44EDnuR/7UXAjXKdcCRIl85eXVNPv4SpC0Yy8PIu4zHaUC3gyMAQWqshO2tTU+e4pY/ddLDbfKLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
+	(Authenticated sender: kovalevvv)
+	by air.basealt.ru (Postfix) with ESMTPSA id 5891623372;
+	Fri, 24 Oct 2025 00:47:40 +0300 (MSK)
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+To: stable@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	lvc-project@linuxtesting.org,
+	kovalev@altlinux.org
+Subject: [PATCH 6.1.y] spi-rockchip: Fix register out of bounds access
+Date: Fri, 24 Oct 2025 00:47:39 +0300
+Message-Id: <20251023214739.247289-1-kovalev@altlinux.org>
+X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,44 +49,41 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] Bluetooth: rfcomm: fix modem control handling
-From: patchwork-bot+bluetooth@kernel.org
-Message-Id: 
- <176125561099.3260295.2414265996830531276.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Oct 2025 21:40:10 +0000
-References: <20251023120530.5685-1-johan@kernel.org>
-In-Reply-To: <20251023120530.5685-1-johan@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: luiz.dentz@gmail.com, marcel@holtmann.org, johan.hedberg@gmail.com,
- linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
 
-Hello:
+From: Luis de Arquer <luis.dearquer@inertim.com>
 
-This patch was applied to bluetooth/bluetooth-next.git (master)
-by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+commit 7a874e8b54ea21094f7fd2d428b164394c6cb316 upstream.
 
-On Thu, 23 Oct 2025 14:05:30 +0200 you wrote:
-> The RFCOMM driver confuses the local and remote modem control signals,
-> which specifically means that the reported DTR and RTS state will
-> instead reflect the remote end (i.e. DSR and CTS).
-> 
-> This issue dates back to the original driver (and a follow-on update)
-> merged in 2002, which resulted in a non-standard implementation of
-> TIOCMSET that allowed controlling also the TS07.10 IC and DV signals by
-> mapping them to the RI and DCD input flags, while TIOCMGET failed to
-> return the actual state of DTR and RTS.
-> 
-> [...]
+Do not write native chip select stuff for GPIO chip selects.
+GPIOs can be numbered much higher than native CS.
+Also, it makes no sense.
 
-Here is the summary with links:
-  - [v2] Bluetooth: rfcomm: fix modem control handling
-    https://git.kernel.org/bluetooth/bluetooth-next/c/8d2c47aeb078
+Fixes: 736b81e07517 ("spi: rockchip: Support SPI_CS_HIGH")
+Signed-off-by: Luis de Arquer <luis.dearquer@inertim.com>
+Link: https://patch.msgid.link/365ccddfba110549202b3520f4401a6a936e82a8.camel@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ kovalev: bp to fix CVE-2025-38081; added Fixes tag ]
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+---
+ drivers/spi/spi-rockchip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-You are awesome, thank you!
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index dbefc7e77313..cba858a7b4f9 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -540,8 +540,8 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
+ 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
+ 	if (spi->mode & SPI_LSB_FIRST)
+ 		cr0 |= CR0_FBM_LSB << CR0_FBM_OFFSET;
+-	if (spi->mode & SPI_CS_HIGH)
+-		cr0 |= BIT(spi->chip_select) << CR0_SOI_OFFSET;
++	if ((spi->mode & SPI_CS_HIGH) && !(spi_get_csgpiod(spi, 0)))
++		cr0 |= BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET;
+ 
+ 	if (xfer->rx_buf && xfer->tx_buf)
+ 		cr0 |= CR0_XFM_TR << CR0_XFM_OFFSET;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.50.1
 
 
