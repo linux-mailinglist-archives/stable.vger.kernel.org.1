@@ -1,100 +1,137 @@
-Return-Path: <stable+bounces-189146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27DFEC0229F
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 17:37:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F3EC02589
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 18:13:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C8C4E35712A
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 15:37:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 827D8189637D
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 16:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00773385A3;
-	Thu, 23 Oct 2025 15:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E8E2D592B;
+	Thu, 23 Oct 2025 16:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDXrlqyZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YXtsxzp9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677102FD1DA;
-	Thu, 23 Oct 2025 15:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D952F28504F;
+	Thu, 23 Oct 2025 16:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761233860; cv=none; b=nzDGK7vVuMjVNSSMwUNgu/ky+APm3INDovSdw3P7I0ZngFonhECS+b3J0tXhop3nXitAmyvE44n5UTNpuo6orrQakcDwk08bZaGLE07hUqzpGmExDArvuWJ69rXL3DlsVrlNGIj9EkbJ10XHyB4z888WWndDYlIPhgVQIW9G1hc=
+	t=1761235862; cv=none; b=KylrdpjTvHk9Oqsx/YrMmDNM7KDpWopPKvNE1hSG3fF5egToLGVbX8wwYP4EFQNQS/pxm0gbDB3l80hZZfoGZrA7QK72PDvGwg+uWhe9n143vjCVTGjIC6Z1NA5yDZdttFkB5wj9hyqYD0/t9A/5pvYknAS/CJc4MDs2PDo+c6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761233860; c=relaxed/simple;
-	bh=nZQHZBGJA0dspt1JZdkYmR340SVDu6+R4Nq+hrvBsOg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rN743kuQvBMeizvnZs2wUFRKE9icVQ2F/0gylma/AekkzEYxKUw6cl4iFB9bMfPlNj39eKrmCibkuTMp2fVr5Nsaugc3Ct5D3p3VRU/jirwR0BarAZkvonnFaVfRwwFvuqixvqL/98aXf8iB+7uGuDHynTDHNIUDqYRFcc2hh9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDXrlqyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6298CC4CEE7;
-	Thu, 23 Oct 2025 15:37:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761233859;
-	bh=nZQHZBGJA0dspt1JZdkYmR340SVDu6+R4Nq+hrvBsOg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gDXrlqyZTFwM/QhfhBohfhOevY8nWIbnERiRuavTNn6DAHk6p+xbLfB1qkwrjxQNM
-	 4+HEKcXbYI0NdLyK+5YDDSLbc9ahcWI49kMzgU2jcnqWCKkLuDQOZNs8JG/xR540Sq
-	 8Ey1KHy30p+o1ldgkzzj8KAFXEWOFvKNuP1kQwig=
-Date: Thu, 23 Oct 2025 17:37:36 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-	achill@achill.org
-Subject: Re: [PATCH 6.17 000/563] 6.17.3-rc1 review
-Message-ID: <2025102330-sliding-unturned-31bd@gregkh>
-References: <20251013144411.274874080@linuxfoundation.org>
- <7d762aa4-b73d-49be-8150-3971435b8712@roeck-us.net>
- <20251022130852.GA1221362@ax162>
+	s=arc-20240116; t=1761235862; c=relaxed/simple;
+	bh=QoQ0G1vzfRKHWUkpNlMaZxVkeeSKpfz8eW4ukxGyOFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=CRKbZkrPUZONlhYPJ7OFbBPydaJtkGbanRihucswIX03R/I3SnQcyyRJFp2dARsToVvBT1SlurCtS4ETEdXaXr+BRlrUCoAhClIfkWb/tsxKTyl1BFjwvGG4+jOE3CDv4ZiDs5atumQqZ/r8jPL1WYK4CNdFRh9waMd1kMBGjVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXtsxzp9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37110C4CEE7;
+	Thu, 23 Oct 2025 16:11:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761235861;
+	bh=QoQ0G1vzfRKHWUkpNlMaZxVkeeSKpfz8eW4ukxGyOFI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=YXtsxzp9O3qmvAboQgiGhtU2a4kOVmoOZAF18a40K9jWaODby5Dr5KkClDRCmRecB
+	 5Kwhfe9OVtuVJwx7qlFIa1qenNEhOQdQBQeGgPvf3lk0m6+mNz10ONzXFOpFn1jjIr
+	 KnAfYrzBAregsG25fnWb4MgB0VgFPDZdM6xqlySUvRHmA1c3X80Sx1UtHUntoeJfu+
+	 AbKhx8Y8ctx3lE2ly7QbBlNrFLoOe/j/gTTqV+cP5JNhmdetJjk0b7qZhQ1wtwzhGN
+	 KpS+Yc1Tj4SG7JVI4fFMWtkkhO2QkT0pkvm1HJLRz6uJzE0GfUQPYIuHjzYITZin/R
+	 kW8LtX2vAFT+g==
+Date: Thu, 23 Oct 2025 11:11:00 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Stefan Roese <stefan.roese@mailbox.org>
+Cc: "Musham, Sai Krishna" <sai.krishna.musham@amd.com>,
+	"mani@kernel.org" <mani@kernel.org>,
+	"Havalige, Thippeswamy" <thippeswamy.havalige@amd.com>,
+	"Bandi, Ravi Kumar" <ravib@amazon.com>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"Simek, Michal" <michal.simek@amd.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	"Yeleswarapu, Nagaradhesh" <nagaradhesh.yeleswarapu@amd.com>
+Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+Message-ID: <20251023161100.GA1297651@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251022130852.GA1221362@ax162>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9c7e43c3-24e9-4b08-a6ce-2035b50226f4@mailbox.org>
 
-On Wed, Oct 22, 2025 at 03:08:52PM +0200, Nathan Chancellor wrote:
-> On Fri, Oct 17, 2025 at 11:03:47AM -0700, Guenter Roeck wrote:
-> > On 10/13/25 07:37, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 6.17.3 release.
-> > > There are 563 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > > 
-> > > Responses should be made by Wed, 15 Oct 2025 14:42:41 +0000.
-> > > Anything received after that time might be too late.
-> > > 
-> > 
-> > Building m68k:allmodconfig ... failed
-> > --------------
-> > Error log:
-> > drivers/vfio/cdx/intr.c: In function 'vfio_cdx_msi_enable':
-> > drivers/vfio/cdx/intr.c:41:15: error: implicit declaration of function 'msi_domain_alloc_irqs'; did you mean 'msi_domain_get_virq'? [-Wimplicit-function-declaration]
-> >    41 |         ret = msi_domain_alloc_irqs(dev, MSI_DEFAULT_DOMAIN, nvec);
-> >       |               ^~~~~~~~~~~~~~~~~~~~~
-> >       |               msi_domain_get_virq
-> > drivers/vfio/cdx/intr.c: In function 'vfio_cdx_msi_disable':
-> > drivers/vfio/cdx/intr.c:135:9: error: implicit declaration of function 'msi_domain_free_irqs_all' [-Wimplicit-function-declaration]
-> >   135 |         msi_domain_free_irqs_all(dev, MSI_DEFAULT_DOMAIN);
+On Thu, Oct 23, 2025 at 09:03:07AM +0200, Stefan Roese wrote:
+> On 10/23/25 08:35, Musham, Sai Krishna wrote:
+> > > -----Original Message-----
+> > > From: Stefan Roese <stefan.roese@mailbox.org>
+> > > On 10/22/25 14:48, Musham, Sai Krishna wrote:
 > ...
-> > # first bad commit: [db05b70c5d4c34c748e25697bf7489b909d1d71a] cdx: don't select CONFIG_GENERIC_MSI_IRQ
+
+> > > > > > We even don’t need ravi patch, as we have tested this at
+> > > > > > our end it works fine by just updating interrupt-map
+> > > > > > Property. We need to now understand the difference in
+> > > > > > design.
+> > > > > 
+> > > > > Ok, please let us know with your findings. In the meantime,
+> > > > > I'll keep Ravi's patch in tree, as it seems to be required
+> > > > > on his setup.
+> > > > 
+> > > > We tested on Linux version 6.12.40 without applying either
+> > > > Stefan's or Ravi's patches.  Instead, we applied only the
+> > > > following interrupt-map property change (entries 0,1,2,3) and
+> > > > verified that legacy interrupts are working correctly.
+> > > > 
+> > > > interrupt-map = <0 0 0 1 &pcie_intc_0 0>,
+> > > > <0 0 0 2 &pcie_intc_0 1>,
+> > > > <0 0 0 3 &pcie_intc_0 2>,
+> > > > <0 0 0 4 &pcie_intc_0 3>;
+> > > > 
+> > > > 38:       1143          0  pl_dma:RC-Event  16 Level     80000000.axi-pcie
+> > > > 39:       1143          0  pl_dma:INTx   0 Level     nvme0q0, nvme0q1
+> > > 
+> > > Okay. Same here. I don't need Ravi's patch for the INTx bit
+> > > enabling.
+> > > 
+> > > I understand that you want us to change the interrupt map in the
+> > > auto- generated device-tree from Vivado. Which is IMHO a bit
+> > > "suboptimal".
+> > > 
+> > > I would prefer to have a solution which works out-of-the-box,
+> > > w/o the need to manually change DT properties. Is it planned to
+> > > change / fix this interrupt map in pl.dtsi generated with a
+> > > newer version of Vivado?
+> > 
+> > Yes Stefan, this will be fixed in the newer versions and the
+> > auto-generated device tree will include the correct interrupt-map
+> > property entries.
 > 
-> Our CI sees this as well with ARCH=hexagon allmodconfig. Commit
-> 9f3acb3d9a18 ("vfio/cdx: update driver to build without
-> CONFIG_GENERIC_MSI_IRQ") resolves this for me.
+> Understood. And thanks the update on this.
+> 
+> @Bjorn & Mani, this patch can be dropped then.
 
-Now queued up,t hanks.
+Just to confirm, we can drop both of these patches:
 
-greg k-h
+  https://patch.msgid.link/20250920225232.18757-1-ravib@amazon.com
+  https://patch.msgid.link/20251021154322.973640-1-stefan.roese@mailbox.org
+
+AND there are no DTs in the field that will need to be updated for
+things to work?
+
+It's OK if you need to update internal DTs that haven't been shipped
+to users, but we do not want to force users to update DTs that have
+previously been working.
+
+Bjorn
 
