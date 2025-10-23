@@ -1,279 +1,243 @@
-Return-Path: <stable+bounces-189073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C0EBFFA29
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 09:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4727BFF772
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 09:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 619D6548F25
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 07:29:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 47E564E72FE
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 07:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177542DD5E2;
-	Thu, 23 Oct 2025 07:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C5E2BE03C;
+	Thu, 23 Oct 2025 07:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="blqg4DDY"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1768C2DE1F0
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 07:24:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDA2239E80
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 07:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761204259; cv=none; b=C2D+4Nc5o1UW/xcoL9CSMaF+FPH6/IWgX6EehrTfycPMroo6vUDl2ZZYkxf5hYl9GaG4u5CTIhLbR7Nj8hyLZveY0f0fjqJApGX3ZPIPGCuiAcbh7wB+L9LT1+IxgG30AmCWgnEdMdazqe2ggqAU5eduERDSgFTWgtKHMgpnku4=
+	t=1761203477; cv=none; b=mz+kOa9KnnJUdsRfjZBHAyqI0ji+HWUHC5oM1sRmbJ3X77bruvrpLoqKzZvGozW87nV669mrZRD6mbZTFKXqkKL+T0LPee5hMsTzVGraasvPvqmKF91CJhgHmyYEhPMFLAgfxhMwyuoVc8gGac8dtUs43hLsXrV8Hg331dKWNT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761204259; c=relaxed/simple;
-	bh=F2SJW3rdahBBH5hiprcx75Lc1LshSjkOlLzPl9zF8k4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=C6rsC0SxrMi7lru0D2xpDoMY+f6oKgwU6sCRkHL3ixBNg6AC148EWnUTq4yne3JIdLa4vDIPmbpuDmotoWoeU/VV8K0MMZ8P/+GMddYHfUjcN7GWaDWxzSjJ7Ekh/OY0d7EfoPB+aENBLs58ip0xRcCzkzVvqZMVF956gv53DuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cscRX6K1KzxWtd;
-	Thu, 23 Oct 2025 15:02:32 +0800 (CST)
-Received: from kwepemj200013.china.huawei.com (unknown [7.202.194.25])
-	by mail.maildlp.com (Postfix) with ESMTPS id E4C68140142;
-	Thu, 23 Oct 2025 15:07:29 +0800 (CST)
-Received: from [10.174.179.155] (10.174.179.155) by
- kwepemj200013.china.huawei.com (7.202.194.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 23 Oct 2025 15:07:29 +0800
-Message-ID: <45a1c253-da13-4390-b2bb-7fdc56341edb@huawei.com>
-Date: Thu, 23 Oct 2025 15:07:28 +0800
+	s=arc-20240116; t=1761203477; c=relaxed/simple;
+	bh=83WfB3SqYO2Z9dZJO8Pzq5z46Mj56YTUJvCapIfPmAg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hRhEn0gyTZZlHZBSvQN3be4nDqo5VXhzxXzDsDBxIlaDtujysiLZKPEUJhDSF6aoLxrn3hXO0So/K8CVIP64Q6Cc/j9rVyOdkkuQ5vPjr8el5px57qjyPbU0DE+w9UZMxNIgmHBy9oqKTfQ2xYrKziHYsgWkYWlZtMIKkmargbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=blqg4DDY; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-785cc93634eso3609347b3.3
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 00:11:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761203473; x=1761808273; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BVFmcKppr8jIO/+cy4Rhc1x+4EvS+GSHFcZUJ4Pfb18=;
+        b=blqg4DDYSCovejyIvemMMK27MlBOA9HC/IIQEU0bq2gnWMguHL83E98lhcT1htszE6
+         H9x8CdGAhQ0EoYpOl7gH0P4smixwy4iCkDWiI2HjJtEcVrlYDqZvw/TzxPlf+5DsbTs4
+         eT8X2d5T4GjVBo11Rxy5MlXXuZ4KMaPgQ8JaReied2UHFO+klNDm4JPOWY/sugMFhE3a
+         oL9/ogIcNf6HDyoV+IS2gr/PXuebRiEy5iOFDjFCZcFng1yWDHlF0L/OXK/TEYu0LiWN
+         apMtE5lDnPR1H35cLjDzOUixSKXx4JmlkvQP5b0P69mNoAuGMS+M3zfTO4MqMWx6shUk
+         lI5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761203473; x=1761808273;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BVFmcKppr8jIO/+cy4Rhc1x+4EvS+GSHFcZUJ4Pfb18=;
+        b=oQfalQyEPF3H5P1ldvyKBOesrdNfYVLFnjvwverP3LpDj7n5KeWC7gDAZjt4vgn7K9
+         4JQUoa166Htm/sb6/2PTvwd0cR/YMqER+xPOh9sD3mrD4fpQjX5j7wHx84jbbhNDYE1C
+         +J0KEA7zv5ZzbLzRhDof3F/wf6s1pl0+mL+bKi4LArCeOzMhO543iCy2TXcUURdeLZih
+         WqzNN/pCOH+eBMmewdMdr5EK6vQHQ1Uq6hnr9pm8WK3PCwca0pEy5h2ygFiH4ysjPYWM
+         GgwLghzJGLZArzTRnuhMUdpoE2dQkjyIV7HzSHzdcfiz3D7ws3NjK+GnM/OzmA7LeYEW
+         EvDg==
+X-Gm-Message-State: AOJu0YzizgKNfh3P9Z4ibhYtSbuysmAPhhp5eT+q94YCyurBtvysTGT+
+	m1BUtPpbm/gcp+MXoTJv/1z9wiIYBLuH/5MABoQx4iuSJ8/6XaIjmprFqavdGoSs6N0snrAE87y
+	vMggHck4BsdsRo9lQr6epVes872re7kcBEjRTYKSUIQ==
+X-Gm-Gg: ASbGncs1brXes7Nyp4QE48bWAfKxxZc9T8cgDNiYegyoAvG2u4nXkkLe9XXLTN4nTHC
+	3Htp0+f7F+8uYEYDTYHpc5mvoiMSfBCtT/6vBFpzFbM5owrQ3oXBkwhA134G4EVnkN4zopoFFSt
+	ISnRh/uXuSXRpLMt2EwiMx16LZo4o9ED5GLiLY4lRo99hjnaVHUPqvZIx3rpWex6pFBk2BqwH1P
+	u/tkq8U3Mt+ntuPpEqq37/o9Cl/nqImR11eKvzhHBfx0qdU1KTgzE+LxswTRLfOqRWIMO024Whb
+	C62Yb7XwYpg5t34TrR4M6Pbckt4KHqScnXRnvxW9VQ+UqNss5i/jz25EO5LTbmhdhxgSZDI=
+X-Google-Smtp-Source: AGHT+IH3VvCDO2eAFj9JJJRDEEDT2NNCXO5PyFPHxu8d0hi6hIJxQoOArUWORp1GvtDA6/0rOxpi/UwchI9zIngrtoA=
+X-Received: by 2002:a05:690e:d85:b0:63f:309f:6354 with SMTP id
+ 956f58d0204a3-63f309f66efmr3332065d50.47.1761203473301; Thu, 23 Oct 2025
+ 00:11:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: =?UTF-8?B?TW96aWxsYSBUaHVuZGVyYmlyZCDmtYvor5XniYg=?=
-Subject: Re: [PATCH 5.10.y] dm: fix NULL pointer dereference in __dm_suspend()
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: Sasha Levin <sashal@kernel.org>, <stable@vger.kernel.org>, Zheng Qixing
-	<zhengqixing@huawei.com>, Mikulas Patocka <mpatocka@redhat.com>,
-	<dm-devel@lists.linux.dev>, yangerkun <yangerkun@huawei.com>, "zhangyi (F)"
-	<yi.zhang@huawei.com>, Hou Tao <houtao1@huawei.com>
-References: <2025101316-favored-pulsate-a811@gregkh>
- <20251014030334.3868139-1-sashal@kernel.org>
- <cdadc001-3c0e-4152-8b05-08eb79fb528b@huawei.com>
- <2025102252-abrasive-glamorous-465b@gregkh>
- <1767bec2-b660-42b2-b828-b221e0896eba@huawei.com>
- <2025102212-pouring-embellish-95fc@gregkh>
- <28a7f62d-ae81-4629-864c-a0c1ecf98ee9@huawei.com>
- <2025102231-outlying-lapel-6159@gregkh>
- <c8d7ae0f-bddd-41ff-bd93-ad340c8a20bc@huawei.com>
- <2025102310-blinked-handsaw-ade3@gregkh>
-From: Li Lingfeng <lilingfeng3@huawei.com>
-In-Reply-To: <2025102310-blinked-handsaw-ade3@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemj200013.china.huawei.com (7.202.194.25)
+References: <20251022060141.370358070@linuxfoundation.org>
+In-Reply-To: <20251022060141.370358070@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 23 Oct 2025 12:41:00 +0530
+X-Gm-Features: AWmQ_bnJFFuVapEywiEjdKwHI9nFNuApBe7za4vRcqQ8LxS3q9W1qtdNuEfmywk
+Message-ID: <CA+G9fYuEMMptWPgF5wmEPN4T2eyrDC8i+Ha_xLT_E35AXHeP-A@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/135] 6.12.55-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-在 2025/10/23 13:20, Greg KH 写道:
-> On Thu, Oct 23, 2025 at 09:12:13AM +0800, Li Lingfeng wrote:
->> 在 2025/10/22 17:20, Greg KH 写道:
->>> On Wed, Oct 22, 2025 at 05:10:36PM +0800, Li Lingfeng wrote:
->>>> 在 2025/10/22 16:45, Greg KH 写道:
->>>>> On Wed, Oct 22, 2025 at 04:21:33PM +0800, Li Lingfeng wrote:
->>>>>> Hi,
->>>>>>
->>>>>> 在 2025/10/22 16:10, Greg KH 写道:
->>>>>>> On Wed, Oct 22, 2025 at 04:01:04PM +0800, Li Lingfeng wrote:
->>>>>>>> Hi,
->>>>>>>>
->>>>>>>> 在 2025/10/14 11:03, Sasha Levin 写道:
->>>>>>>>> From: Zheng Qixing <zhengqixing@huawei.com>
->>>>>>>>>
->>>>>>>>> [ Upstream commit 8d33a030c566e1f105cd5bf27f37940b6367f3be ]
->>>>>>>>>
->>>>>>>>> There is a race condition between dm device suspend and table load that
->>>>>>>>> can lead to null pointer dereference. The issue occurs when suspend is
->>>>>>>>> invoked before table load completes:
->>>>>>>>>
->>>>>>>>> BUG: kernel NULL pointer dereference, address: 0000000000000054
->>>>>>>>> Oops: 0000 [#1] PREEMPT SMP PTI
->>>>>>>>> CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
->>>>>>>>> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
->>>>>>>>> RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
->>>>>>>>> Call Trace:
->>>>>>>>>        <TASK>
->>>>>>>>>        blk_mq_quiesce_queue+0x2c/0x50
->>>>>>>>>        dm_stop_queue+0xd/0x20
->>>>>>>>>        __dm_suspend+0x130/0x330
->>>>>>>>>        dm_suspend+0x11a/0x180
->>>>>>>>>        dev_suspend+0x27e/0x560
->>>>>>>>>        ctl_ioctl+0x4cf/0x850
->>>>>>>>>        dm_ctl_ioctl+0xd/0x20
->>>>>>>>>        vfs_ioctl+0x1d/0x50
->>>>>>>>>        __se_sys_ioctl+0x9b/0xc0
->>>>>>>>>        __x64_sys_ioctl+0x19/0x30
->>>>>>>>>        x64_sys_call+0x2c4a/0x4620
->>>>>>>>>        do_syscall_64+0x9e/0x1b0
->>>>>>>>>
->>>>>>>>> The issue can be triggered as below:
->>>>>>>>>
->>>>>>>>> T1 						T2
->>>>>>>>> dm_suspend					table_load
->>>>>>>>> __dm_suspend					dm_setup_md_queue
->>>>>>>>> 						dm_mq_init_request_queue
->>>>>>>>> 						blk_mq_init_allocated_queue
->>>>>>>>> 						=> q->mq_ops = set->ops; (1)
->>>>>>>>> dm_stop_queue / dm_wait_for_completion
->>>>>>>>> => q->tag_set NULL pointer!	(2)
->>>>>>>>> 						=> q->tag_set = set; (3)
->>>>>>>>>
->>>>>>>>> Fix this by checking if a valid table (map) exists before performing
->>>>>>>>> request-based suspend and waiting for target I/O. When map is NULL,
->>>>>>>>> skip these table-dependent suspend steps.
->>>>>>>>>
->>>>>>>>> Even when map is NULL, no I/O can reach any target because there is
->>>>>>>>> no table loaded; I/O submitted in this state will fail early in the
->>>>>>>>> DM layer. Skipping the table-dependent suspend logic in this case
->>>>>>>>> is safe and avoids NULL pointer dereferences.
->>>>>>>>>
->>>>>>>>> Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
->>>>>>>>> Cc: stable@vger.kernel.org
->>>>>>>>> Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
->>>>>>>>> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
->>>>>>>>> [ omitted DMF_QUEUE_STOPPED flag setting and braces absent in 5.15 ]
->>>>>>>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
->>>>>>>>> ---
->>>>>>>>>       drivers/md/dm.c | 7 ++++---
->>>>>>>>>       1 file changed, 4 insertions(+), 3 deletions(-)
->>>>>>>>>
->>>>>>>>> diff --git a/drivers/md/dm.c b/drivers/md/dm.c
->>>>>>>>> index 0868358a7a8d2..b51281ce15d4c 100644
->>>>>>>>> --- a/drivers/md/dm.c
->>>>>>>>> +++ b/drivers/md/dm.c
->>>>>>>>> @@ -2457,7 +2457,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
->>>>>>>>>       {
->>>>>>>>>       	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
->>>>>>>>>       	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
->>>>>>>>> -	int r;
->>>>>>>>> +	int r = 0;
->>>>>>>>>       	lockdep_assert_held(&md->suspend_lock);
->>>>>>>>> @@ -2509,7 +2509,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
->>>>>>>>>       	 * Stop md->queue before flushing md->wq in case request-based
->>>>>>>>>       	 * dm defers requests to md->wq from md->queue.
->>>>>>>>>       	 */
->>>>>>>>> -	if (dm_request_based(md))
->>>>>>>>> +	if (map && dm_request_based(md))
->>>>>>>>>       		dm_stop_queue(md->queue);
->>>>>>>> It seems that before commit 80bd4a7aab4c ("blk-mq: move the srcu_struct
->>>>>>>> used for quiescing to the tagset") was merged, blk_mq_wait_quiesce_done()
->>>>>>>> would not attempt to access q->tag_set, so in dm_stop_queue() this kind
->>>>>>>> of race condition would not cause a null pointer dereference. The change
->>>>>>>> may not be necessary for 5.10, but adding it doesn’t appear to cause any
->>>>>>>> issues either.
->>>>>>>>>       	flush_workqueue(md->wq);
->>>>>>>>> @@ -2519,7 +2519,8 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
->>>>>>>>>       	 * We call dm_wait_for_completion to wait for all existing requests
->>>>>>>>>       	 * to finish.
->>>>>>>>>       	 */
->>>>>>>>> -	r = dm_wait_for_completion(md, task_state);
->>>>>>>>> +	if (map)
->>>>>>>>> +		r = dm_wait_for_completion(md, task_state);
->>>>>>>> The fix tag c4576aed8d85 ("dm: fix request-based dm's use of
->>>>>>>> dm_wait_for_completion") seems to correspond to the modification of
->>>>>>>> dm_wait_for_completion().
->>>>>>>>>       	if (!r)
->>>>>>>>>       		set_bit(dmf_suspended_flag, &md->flags);
->>>>>>>> Perhaps adding another fix tag would be more appropriate?
->>>>>>> Those tags come directly from the original commit.
->>>>>> Thanks for the clarification. Since the patch has already been merged into
->>>>>> the mainline tree, we can't update the commit there. I was just wondering
->>>>>> if it would be acceptable to add an additional “Fixes” tag when applying
->>>>>> it to the stable branch, before merging.
->>>>> I can, if needed, can you please provide that line?
->>>> Fixes: 80bd4a7aab4c ("blk-mq: move the srcu_struct used for quiescing to the
->>>> tagset")
->>> This is odd, that is a 6.2 commit, yet this is being asked to be added
->>> to 5.10.y.  So what help is this going to provide?
->>>
->>> confused,
->>>
->>> greg k-h
->> Apologies, I didn't notice the version of this patch. Indeed, this patch
->> was not included in 5.10, and 5.10 is not affected by this issue.
-> The original Fixes: tag points to a commit from 5.0, which is why this
-> was queued up for here.
+On Wed, 22 Oct 2025 at 13:49, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
->> Perhaps we could add the new fix tag to the stable branch patches
->> starting from 6.2?
-> I do not understand, sorry.
+> This is the start of the stable review cycle for the 6.12.55 release.
+> There are 135 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Let's start over, should this patch be included in the 5.10.y tree?  The
-> 5.4.y tree?  If not, why not?
+> Responses should be made by Fri, 24 Oct 2025 06:01:25 +0000.
+> Anything received after that time might be too late.
 >
-> And as this is already in the 5.15.y and 6.1.y releases, should it be
-> reverted from there?
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.55-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
 >
 > thanks,
 >
 > greg k-h
-The original patch made two changes:
-1.
-@@ -2960,7 +2960,7 @@ static int __dm_suspend(struct mapped_device *md, 
-struct dm_table *map,
-          * Stop md->queue before flushing md->wq in case request-based
-          * dm defers requests to md->wq from md->queue.
-          */
--       if (dm_request_based(md)) {
-+       if (map && dm_request_based(md)) {
-                 dm_stop_queue(md->queue);
-                 set_bit(DMF_QUEUE_STOPPED, &md->flags);
-         }
-After commit 80bd4a7aab4c ("blk-mq: move the srcu_struct used for quiescing
-to the tagset") was merged in v6.2, dm_request_based() started to trigger
-access to tag_set, so a null check on map became necessary to avoid a
-potential null pointer dereference.
-The original patch merged into mainline was missing this Fixes tag.
 
-2.
-@@ -2972,7 +2972,8 @@ static int __dm_suspend(struct mapped_device *md, 
-struct dm_table *map,
-          * We call dm_wait_for_completion to wait for all existing requests
-          * to finish.
-          */
--       r = dm_wait_for_completion(md, task_state);
-+       if (map)
-+               r = dm_wait_for_completion(md, task_state);
-         if (!r)
-                 set_bit(dmf_suspended_flag, &md->flags);
-After commit c4576aed8d85 ("dm: fix request-based dm's use of 
-dm_wait_for_completion")
-was merged in v5.0, dm_wait_for_completion() started to access tag_set, so
-the additional null check on map was also needed to prevent a null pointer
-dereference.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-In summary:
-For kernels v6.2 and later, there should be two Fixes tags:
-Fixes: 80bd4a7aab4c ("blk-mq: move the srcu_struct used for quiescing to 
-the tagset")
-Fixes: c4576aed8d85 ("dm: fix request-based dm's use of 
-dm_wait_for_completion")
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-For kernels v5.0 to v6.2, only the second Fixes tag is needed:
-Fixes: c4576aed8d85 ("dm: fix request-based dm's use of 
-dm_wait_for_completion")
+## Build
+* kernel: 6.12.55-rc2
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: bd9af5ba302635dcb1e470488c0fdf70be8d45cf
+* git describe: v6.12.54-136-gbd9af5ba3026
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
+.54-136-gbd9af5ba3026
 
-Although the first change isn't actually required for kernels between v5.0
-and v6.2, it doesn't introduce any new issues, so there's no need to
-revert it.
+## Test Regressions (compared to v6.12.53-278-g6122296b30b6)
 
-My suggestion is:
-For stable kernels v6.2 and later, if this patch hasn't been applied yet,
-it would be better to include the extra Fixes tag for 80bd4a7aab4c when
-merging.
-If it has already been merged, there's no need to revert it, since the
-first change is harmless anyway.
+## Metric Regressions (compared to v6.12.53-278-g6122296b30b6)
 
-Sorry for not explaining this clearly earlier.
+## Test Fixes (compared to v6.12.53-278-g6122296b30b6)
 
-Thanks,
-Lingfeng
+## Metric Fixes (compared to v6.12.53-278-g6122296b30b6)
 
+## Test result summary
+total: 119783, pass: 101440, fail: 3822, skip: 14162, xfail: 359
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 137 passed, 2 failed
+* arm64: 57 total, 51 passed, 6 failed
+* i386: 18 total, 18 passed, 0 failed
+* mips: 34 total, 33 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 40 total, 39 passed, 1 failed
+* riscv: 25 total, 24 passed, 1 failed
+* s390: 22 total, 21 passed, 1 failed
+* sh: 5 total, 5 passed, 0 failed
+* sparc: 4 total, 3 passed, 1 failed
+* x86_64: 49 total, 46 passed, 3 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+* rt-tests-cyclicdeadline
+* rt-tests-pi-stress
+* rt-tests-pmqtest
+* rt-tests-rt-migrate-test
+* rt-tests-signaltest
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
