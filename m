@@ -1,101 +1,186 @@
-Return-Path: <stable+bounces-189125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6213CC01A93
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 16:11:23 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE280C01B36
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 16:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 911C7188145E
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 14:11:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A80E563059
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 14:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F96322C7D;
-	Thu, 23 Oct 2025 14:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED393161AF;
+	Thu, 23 Oct 2025 14:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pm9Nidj9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErQg4Paz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357342C08D4;
-	Thu, 23 Oct 2025 14:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23762C08D4;
+	Thu, 23 Oct 2025 14:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761228660; cv=none; b=MGNaRc1HXotYGx8wJH1jxUk7BOcBxPjmxDmmnlpIEebwJfR2uY2gWaGS83MPJQ1xEafI+exLGL/46ALzYFv7Bj2ws+o8AyM1XoJezfIqlsQqeZ0KwhxRDRl92Bqt53XTGM4cz/yb715HYeWtwViEK+45NNY0Z+z+39/yZGwtfFk=
+	t=1761228653; cv=none; b=eIPAqdCNtivXbaNRYOe28O/Mos3mUY08WLmPtXkO4YPBhhZ4DjN6r7Q8wFYiWRjc8lFu15G7pmCVpbU7Tks8CNCF25p+ItqAynu7u3r5jN6Pr755AnYTr2RBgDiRCXiPehGNBNJMJDl0z7gCzjFhnyYog01uGHbyBJSaduQnrn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761228660; c=relaxed/simple;
-	bh=eSprNQlHjgFzkbUuWVP7nIc8dN/p5jGa3oWGpzxaiY4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rYYys97xLvzav1lCmdNH9M9TR5lBGU8oPTq7KyJfXj6Ye7DZ2GOv1pT6wxI1WD6NVZczzVYiJYdveHThImEF49yi2IQxTYF2ge2pXtT8AGO8uNpY9W//0R6ToJ1YgiaojkXW05kx2b9/CMhWFFM7CwJg69YCt8XIJsghnbGxhBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pm9Nidj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D3EC4CEE7;
-	Thu, 23 Oct 2025 14:10:59 +0000 (UTC)
+	s=arc-20240116; t=1761228653; c=relaxed/simple;
+	bh=9j/Nj79fZM+lECIfYOli/ze3SV2mU/GUWdoAbKY6Buw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JZSRgND/JtsEhbwV4njA4dxX4icvGll89cmuYeX63Ok33o2RbnaKvpF9Veq8uaf1/gwQV8cTt3m02cV5ejnI66ecm5o8kqaw75yt7UpI2a9yn9uZwj8xrWCKFKcPoZvSBYGrqOcgm+F8ehJSAAo0WjeTqc+Vuq9KtysdB1KtCN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErQg4Paz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33EEFC4CEE7;
+	Thu, 23 Oct 2025 14:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761228659;
-	bh=eSprNQlHjgFzkbUuWVP7nIc8dN/p5jGa3oWGpzxaiY4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Pm9Nidj91Fi+yfXRmJwj8wVZHIZgbjGDV/dfkC/8TMB7zQjnQsK/QBLjuLywtWCO6
-	 CHgKqi1WU5SoGj8YT5OUK8PMHTVk+CLGMJZHxAOdBvZQtvbBpGmkLzHrT/a1ZANL0i
-	 0/UaNjiQpxtjmWyDtN1WEmQIJHkl3oS1U9mK+ZcdKYyqKd+fxfBaklYcd4e1uF3TEN
-	 mcSHv6NrgBmCCG1z6eJ3Le9cy0UCrLwNn1jjzRlAhT6fm8bbsJzP7f8mgK0/uMSgjC
-	 p7BbZ664nbOkRTBkYuhZJwas3r0XzOJTTISoY6JqypseQ0WybHEvs9KP1NrCZOMyY9
-	 ualZ8llezL7Fg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70FA73809A96;
-	Thu, 23 Oct 2025 14:10:41 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1761228652;
+	bh=9j/Nj79fZM+lECIfYOli/ze3SV2mU/GUWdoAbKY6Buw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ErQg4Paz3kRBPlWuFBJhWREpNcYlrqM42mVImWxF51ZtNphxKiFWKubBtEqQUX68g
+	 vHlRrVz8lHY9SkBxlx/t+MMB2m0PcTjn3SRfAsJf+cmoUYkDIFvsrgYRi/tCcfD7m7
+	 7xlMXSbi5JZpO/qaMZdGOEXIhYtUPeC7k+AxXFM93nE0hwU/IfF9BlYdXRIWcor5Uu
+	 tKryLCFNLtUNA8yyZV/uQSezNnUKd7xE6ETEs/44TjtvpZChyxHx1y3H2akaHn2PGQ
+	 kjPTwrpTHH5zZr/ZpvzRccv6NC9xLVyxtwqBaNiEvDUm5CV3M2ty2rFFWiQOkHbgiR
+	 msA4vpFoWW8Ug==
+Message-ID: <cc923a56-cf2d-4c3a-b1bd-90dbc3075ef2@kernel.org>
+Date: Thu, 23 Oct 2025 16:10:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] vsock: fix lock inversion in vsock_assign_transport()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176122864026.3096909.17516600367441031200.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Oct 2025 14:10:40 +0000
-References: <20251021121718.137668-1-sgarzare@redhat.com>
-In-Reply-To: <20251021121718.137668-1-sgarzare@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org, kuba@kernel.org,
- virtualization@lists.linux.dev, mhal@rbox.co, edumazet@google.com,
- davem@davemloft.net, syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com,
- stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 1/3] net,mptcp: fix proto fallback detection with
+ BPF sockmap
+Content-Language: en-GB, fr-BE
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, mptcp@lists.linux.dev
+Cc: stable@vger.kernel.org, Jakub Sitnicki <jakub@cloudflare.com>,
+ John Fastabend <john.fastabend@gmail.com>, Eric Dumazet
+ <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Mat Martineau <martineau@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20251023125450.105859-1-jiayuan.chen@linux.dev>
+ <20251023125450.105859-2-jiayuan.chen@linux.dev>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20251023125450.105859-2-jiayuan.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
+Hi Jiayuan,
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue, 21 Oct 2025 14:17:18 +0200 you wrote:
-> From: Stefano Garzarella <sgarzare@redhat.com>
+On 23/10/2025 14:54, Jiayuan Chen wrote:
+> When the server has MPTCP enabled but receives a non-MP-capable request
+> from a client, it calls mptcp_fallback_tcp_ops().
 > 
-> Syzbot reported a potential lock inversion deadlock between
-> vsock_register_mutex and sk_lock-AF_VSOCK when vsock_linger() is called.
+> Since non-MPTCP connections are allowed to use sockmap, which replaces
+> sk->sk_prot, using sk->sk_prot to determine the IP version in
+> mptcp_fallback_tcp_ops() becomes unreliable. This can lead to assigning
+> incorrect ops to sk->sk_socket->ops.
 > 
-> The issue was introduced by commit 687aa0c5581b ("vsock: Fix
-> transport_* TOCTOU") which added vsock_register_mutex locking in
-> vsock_assign_transport() around the transport->release() call, that can
-> call vsock_linger(). vsock_assign_transport() can be called with sk_lock
-> held. vsock_linger() calls sk_wait_event() that temporarily releases and
-> re-acquires sk_lock. During this window, if another thread hold
-> vsock_register_mutex while trying to acquire sk_lock, a circular
-> dependency is created.
+> Additionally, when BPF Sockmap modifies the protocol handlers, the
+> original WARN_ON_ONCE(sk->sk_prot != &tcp_prot) check would falsely
+> trigger warnings.
 > 
-> [...]
+> Fix this by using the more stable sk_family to distinguish between IPv4
+> and IPv6 connections, ensuring correct fallback protocol operations are
+> selected even when BPF Sockmap has modified the socket protocol handlers.
+> 
+> Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+> ---
+>  net/mptcp/protocol.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+> index 0292162a14ee..2393741bc310 100644
+> --- a/net/mptcp/protocol.c
+> +++ b/net/mptcp/protocol.c
+> @@ -61,11 +61,16 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
+>  
+>  static const struct proto_ops *mptcp_fallback_tcp_ops(const struct sock *sk)
+>  {
+> +	/* When BPF sockmap is used, it may replace sk->sk_prot.
+> +	 * Using sk_family is a reliable way to determine the IP version.
+> +	 */
+> +	unsigned short family = READ_ONCE(sk->sk_family);
+> +
+>  #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+> -	if (sk->sk_prot == &tcpv6_prot)
+> +	if (family == AF_INET6)
+>  		return &inet6_stream_ops;
+>  #endif
+> -	WARN_ON_ONCE(sk->sk_prot != &tcp_prot);
+> +	WARN_ON_ONCE(family != AF_INET);
+>  	return &inet_stream_ops;
 
-Here is the summary with links:
-  - [net] vsock: fix lock inversion in vsock_assign_transport()
-    https://git.kernel.org/netdev/net/c/f7c877e75352
+Just to be sure: is there anything in BPF modifying sk->sk_socket->ops?
+Because that's what mptcp_fallback_tcp_ops() will do somehow.
 
-You are awesome, thank you!
+In other words, is it always fine to set inet(6)_stream_ops? (I guess
+yes, but better to be sure while we are looking at that :) )
+
+>  }
+>  
+
+Cheers,
+Matt
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Sponsored by the NGI0 Core fund.
 
 
