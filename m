@@ -1,123 +1,163 @@
-Return-Path: <stable+bounces-189093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C06FC0093F
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 12:53:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E6EC00969
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 12:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB3D53A3A70
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 10:53:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA4CA3AD361
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 10:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6F9306B08;
-	Thu, 23 Oct 2025 10:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F3A30BF63;
+	Thu, 23 Oct 2025 10:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="frWti8oe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qO7hHRqm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33426309DA1
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 10:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE40C30ACF1;
+	Thu, 23 Oct 2025 10:54:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761216782; cv=none; b=LVDqz1FZn52TNIc7jUJOP4F4w2xtXDNG4YmLNxqNuYB7mKhGdjrfXs9s+5JB5p/FAjQxPrWCmKOotIN2Y1gdLpPuK+T4SdoXwBNoBbNKM9fJDwBfEXfSCfV6LgLYykwbOkkWtB23w18mx2kZujL7UXkwRm9wz9/+8Ilvu2Op+Po=
+	t=1761216877; cv=none; b=OprbZnS3IR+CQ4LXR9H6DgLwRenbyJ4ul2WEaMcxoA6+/3Uuk03YeHeFzV5VtY4N0wXFaZ9lIJfzDv4dBPdCbcFKJcbzOrLH1Cf0KtLOPloYGL7AzIMNlS6F63OUvIoL+0BSZKp4eAnlA4zJbjNH366BYiJNH84JqfKgPzDYFSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761216782; c=relaxed/simple;
-	bh=+vMUjxVk+nS+BilhYa3CMtB+EET0zgU8rBG6KfAsYNI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=beT8xeF0W/7vExeLiIjsO2IEd6k0b7P/n1HJLGF24a5wnYGywCHDhBD0+gKBKFdhk8zZrlyEspL4NakxoF8hQc1iPd9KSlYm72w6zshAeMHEAJy62vEaHHKZxyLsLnBmkzM5IllyDtPFQ6zf/OkSOuNJSH9auHcAnwd1rOA5d3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=frWti8oe; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-470ffbf2150so11981195e9.1
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 03:53:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761216779; x=1761821579; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+vMUjxVk+nS+BilhYa3CMtB+EET0zgU8rBG6KfAsYNI=;
-        b=frWti8oeRBLu+QB6bESi/iuVYjSFqXMBUwngM/QfNOF/e3Ng1iNKsMJXQHBuypa2B8
-         zpF5RBc8CR175HiU9jLzYLIZz9IXjGL3r3n0fPSwJuGUgb11GsYQ77bYUOczAu8Lrg3A
-         PMb5rcR9NhLkCivvZJhr8sy5cGTi0zLNH6lSWgAbhYHWe+jPomKYPY+dCWcgttLYSKPc
-         1muu8SIhdCkJYlcYpITu29QL2/ng1avo4uMNvD4Xfp4S60j4Kex2lPc3+O87fbxRIvgz
-         dJuQ+ms/Y0+qonH80kIhtpGhPrjpR6iefBYv3T0tYa0lV3VucJMSWMmhO3UNl+Z4aw9N
-         dLQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761216779; x=1761821579;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+vMUjxVk+nS+BilhYa3CMtB+EET0zgU8rBG6KfAsYNI=;
-        b=YP854VxJXhxXpJlBLD9lda4BLhU/LAEQQHalCdmv0hfpxPOxs4bja3OolrKrkbO8u9
-         ExiwDNvqqwXpSw265IK35WtDj7RncHJCvv2mOFKuXS8P0amTtEZ5bSL58ll0epT/DITj
-         XvUI3YLkbEkvME7VJZ0zgfx326pdnf8sl/hf6NPKDa7L7Auxn3q/CTYdIeJGI83VGeMB
-         Hzr2TXsdo2Fk9+MsYEg/IvdetZx7Tc+5PkCSVY8p9m+5I+TYyAk6rSMScqJWpzk3L2Oa
-         bcxWruu+XqvwYUGl79GVia07nTKpn5nCi8W3cczzFhMTaoQVWE7UK7w6EY5l7HYDHjE6
-         XESw==
-X-Forwarded-Encrypted: i=1; AJvYcCVEYPGKUIQTLpn0mDYp990pkmEe322TsIA6OHPC9e2umTYUXC+umYP3CZjP0kfqMpPTnddH0MA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzycAY4R3+tM4kDbok5VHrTBK63Z/ot6hUbVfusZ274x0bjhn2e
-	eQ4/QED8L0iNP6KW+Xwq27JR7gIzkVhO4mHQWPappXA/n2TiIELdhlZw+ayI86mS7juRr9akQDR
-	JPLCxQnIjsQFYW5Hv6YJZjVDJ3xvK2ZA=
-X-Gm-Gg: ASbGncuuYAqsJ5DhNOfEzdPi3C6lnFkRlguy4UEH4VFIH+E6z4QBbs5hyYWnALe5KMf
-	rcqbStRTANIXR409KbiYepRluWVQG+5m40Brm/mITEnWyDtTPRfHR8FETKTlA8QCYXqZYdThgnC
-	eoMnoAEkH7SzFA5PIGupOr2UV9RX3mB4Ze1PDioz8KSv9C6LLAYKmORApi/PSl/n3GqEH3OJtpP
-	Zhtmm1/deRY6LfqX9ECkyZG0KcjPYvnHz7NCmi4mGM72KTAsjlmfWtBDoETeg==
-X-Google-Smtp-Source: AGHT+IEq+zNMHj9WPfjzhOgVqdeT8MY8s9ConstnjU+A+nm1h37hA1lLmbMQ890yX6bv5OV3H8gCIbax8AgydOiwcEc=
-X-Received: by 2002:a05:6000:2312:b0:3e7:6424:1b47 with SMTP id
- ffacd0b85a97d-4285324c1ecmr5374774f8f.6.1761216779388; Thu, 23 Oct 2025
- 03:52:59 -0700 (PDT)
+	s=arc-20240116; t=1761216877; c=relaxed/simple;
+	bh=dWQl6pU3dyRq8+1fnpMd8H6DB6WUbSvDKBPEwBJg1is=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=BDhmymndrSpE6Gdkz9P/jd2b41hth7gzaUO6qftUVuyYH7Zw4hyU+Xr9AwA++RcBlzjaBzyCq6dun60ozXWGvageRuV1KwjTPMMyN+rkYtHlatJd+mJpkw1mVazsm9My57NXUx6Ns6O1k8l/hABBYxVcWOuCo596P4ihe0erXyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qO7hHRqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92571C4CEF7;
+	Thu, 23 Oct 2025 10:54:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761216877;
+	bh=dWQl6pU3dyRq8+1fnpMd8H6DB6WUbSvDKBPEwBJg1is=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=qO7hHRqm5IdSVK/0UvC76xrF3aiLyb/jBVakmMSBurjt3nrO3AjrD52ImPew21SVa
+	 T7pRduPt/qOlqRnanksM0h5hzILAcwkXjt2qXcaEJLHnU4RuKdakEOTQLCFVWgaLFl
+	 kqasOSQGsBVabe4ddcyNN03cKf1Bhy9g2leaPB/QbxhBspJt4VBmoemiqQLaL1FUV6
+	 21YL09WMxq09ooqn46M9WcEbV8YuV4CRxv2YXvZOm6U2Bo85fsSR1DFkr2IsXkiA5F
+	 it6Idt04vnQjRO614R8+XCFXu+XC1TnEadyALfUdwmEKjQB6FOk/zNm1M2Zw6rUX4l
+	 PTh/v7Lnoeoeg==
+Message-ID: <138b53bd-8b89-4260-bfa1-ff88ae2c1050@kernel.org>
+Date: Thu, 23 Oct 2025 12:54:33 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251017151830.171062-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <20251017151830.171062-3-prabhakar.mahadev-lad.rj@bp.renesas.com> <20251022181348.1e16df68@kernel.org>
-In-Reply-To: <20251022181348.1e16df68@kernel.org>
-From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date: Thu, 23 Oct 2025 11:52:33 +0100
-X-Gm-Features: AWmQ_bkmX85GH1EUjJGjidbFOCdBNnjQxmkV7py__nnaP17JZzd2tI33jtRLgQg
-Message-ID: <CA+V-a8un_DQdQcg+kQUs_HCRK15H-K3dW_yBtWXWzH9RMARJ_Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] net: ravb: Allocate correct number of queues based
- on SoC support
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
-	Paul Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Mitsuhiro Kimura <mitsuhiro.kimura.kc@renesas.com>, netdev@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Biju Das <biju.das.jz@bp.renesas.com>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, stable@vger.kernel.org, 
-	=?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: Re: [PATCH v2] media: videobuf2: forbid remove_bufs when legacy
+ fileio is active
+To: Marek Szyprowski <m.szyprowski@samsung.com>, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Tomasz Figa <tfiga@chromium.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ Hans Verkuil <hverkuil@kernel.org>, stable@vger.kernel.org,
+ Shuangpeng Bai <SJB7183@psu.edu>
+References: <CGME20251020160135eucas1p29eb8517e240f188f102e77713f85e29d@eucas1p2.samsung.com>
+ <20251020160121.1985354-1-m.szyprowski@samsung.com>
+ <9996520a-fbad-4f02-9630-7de85f04c286@kernel.org>
+ <9df0295d-418b-46ea-958a-a025de8b62e7@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <9df0295d-418b-46ea-958a-a025de8b62e7@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Jakub,
+On 23/10/2025 11:01, Hans Verkuil wrote:
+> On 21/10/2025 11:56, Hans Verkuil wrote:
+>> Hi Marek,
+>>
+>> On 20/10/2025 18:01, Marek Szyprowski wrote:
+>>> vb2_ioctl_remove_bufs() call manipulates queue internal buffer list,
+>>> potentially overwriting some pointers used by the legacy fileio access
+>>> mode. Add a vb2_verify_memory_type() check symmetrical to
+>>> vb2_ioctl_create_bufs() to forbid that ioctl when fileio is active to
+>>> protect internal queue state between subsequent read/write calls.
+>>>
+>>> CC: stable@vger.kernel.org
+>>> Fixes: a3293a85381e ("media: v4l2: Add REMOVE_BUFS ioctl")
+>>> Reported-by: Shuangpeng Bai<SJB7183@psu.edu>
+>>> Suggested-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+>>> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>>
+>> I'll pick this up as a fix for v6.18. I think this is important enough to
+>> not wait for v6.19.
+> 
+> Hmm, it's failing on v4l2-compliance. I'm debugging to see whether it is a
+> kernel or v4l2-compliance problem.
+> 
+> Regards,
+> 
+> 	Hans
+> 
+>>
+>> Regards,
+>>
+>> 	Hans
+>>
+>>> ---
+>>> v2:
+>>> - dropped a change to vb2_ioctl_create_bufs(), as it is already handled
+>>>   by the vb2_verify_memory_type() call
+>>> - replaced queue->type check in vb2_ioctl_remove_bufs() by a call to
+>>>   vb2_verify_memory_type() which covers all cases
+>>>
+>>> v1: https://lore.kernel.org/all/20251016111154.993949-1-m.szyprowski@samsung.com/
+>>> ---
+>>>  drivers/media/common/videobuf2/videobuf2-v4l2.c | 6 ++++--
+>>>  1 file changed, 4 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/media/common/videobuf2/videobuf2-v4l2.c b/drivers/media/common/videobuf2/videobuf2-v4l2.c
+>>> index d911021c1bb0..0de7490292fe 100644
+>>> --- a/drivers/media/common/videobuf2/videobuf2-v4l2.c
+>>> +++ b/drivers/media/common/videobuf2/videobuf2-v4l2.c
+>>> @@ -1000,9 +1000,11 @@ int vb2_ioctl_remove_bufs(struct file *file, void *priv,
+>>>  			  struct v4l2_remove_buffers *d)
+>>>  {
+>>>  	struct video_device *vdev = video_devdata(file);
+>>> +	int res;
+>>>  
+>>> -	if (vdev->queue->type != d->type)
+>>> -		return -EINVAL;
+>>> +	res = vb2_verify_memory_type(vdev->queue, vdev->queue->memory, d->type);
+>>> +	if (res)
+>>> +		return res;
+>>>  
+>>>  	if (d->count == 0)
+>>>  		return 0;
 
-Thank you for the review.
+This is the problem. For the corner case where d->count == 0 it can be that
+vdev->queue->memory is VB2_MEMORY_UNKNOWN (that happens if no buffers were ever
+queued). But it should still return 0 in that case. Also the fileio test doesn't
+apply in that case, but that's not tested in v4l2-compliance.
 
-On Thu, Oct 23, 2025 at 2:13=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Fri, 17 Oct 2025 16:18:28 +0100 Prabhakar wrote:
-> > On SoCs that only support the best-effort queue and not the network
-> > control queue, calling alloc_etherdev_mqs() with fixed values for
-> > TX/RX queues is not appropriate. Use the nc_queues flag from the
-> > per-SoC match data to determine whether the network control queue
-> > is available, and fall back to a single TX/RX queue when it is not.
-> > This ensures correct queue allocation across all supported SoCs.
->
-> Same comment as on patch 1, what is the _real_ problem?
-> Allocating a bit too much memory is not an stable-worthy issue.
+I suggest this:
 
-Ok, I will drop the fixes tag and cc to stable and post it for net-next.
+	if (d->count == 0)
+		return d->type == vdev->queue->type ? 0 : -EINVAL;
 
-Cheers,
-Prabhakar
+	res = vb2_verify_memory_type(vdev->queue, vdev->queue->memory, d->type);
+	if (res)
+		return res;
+
+I tested this and it passes v4l2-compliance.
+
+Marek, can you post a v3?
+
+Thank you,
+
+	Hans
+
+>>
+>>
+> 
+> 
+
 
