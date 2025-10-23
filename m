@@ -1,87 +1,98 @@
-Return-Path: <stable+bounces-189086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9978DC006F0
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 12:19:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C41FC00741
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 12:26:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 545973AB0CE
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 10:19:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B274A19C43CC
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 10:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5D03002D0;
-	Thu, 23 Oct 2025 10:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A22B30AD1C;
+	Thu, 23 Oct 2025 10:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VNax37lN"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="b4Ujkerf"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966EA2D8360
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 10:19:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86532FD1B5
+	for <Stable@vger.kernel.org>; Thu, 23 Oct 2025 10:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761214785; cv=none; b=ZJD8M9VSHx8jqMG5ocZF34qT16S5mObTtSEALdDsLAnFxuszJp2GjHnqF0JM27eaG+lpyhHhI6LlUh2A/1ziprAB8Tp9YG2+D/iUO3g/ggthzndHfPYZe1dESobBV49Aj5X/MsiMB/qIDi4n0kkx+ACROrnhvaxocHx1uBbEwgs=
+	t=1761215160; cv=none; b=k6/Imk5lqPWD+bQYQnj04k51oCrLQYspisNeig8Kk6zA2dX3wfx8adncd5Zr4xpXmRzG4dU7IUnmcW8soMc8RY94Z/kByKRn2iKzUQ9rkr4xrxA6LfDwe+4BTZi79FOTm0wxrBLpuuDMXeJEylAcCKtoMsKjsMxtulQ2RsnTYy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761214785; c=relaxed/simple;
-	bh=sP1yFN5X69EjHA1XrQLO6NIRH09PVVmY0gD8350XCKU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ahmh7hHwfEhx9DZTnzOI2TPNL4gHWgcRh7B7jr451GK/Cy0muFy/BkGJLMo6YjBA9x0xKcvY5LqN5AqAT369AIflKAkeD5GOOEL0iy8rTc+lScBUmIPQqZ4Vyhyw5pYtDMvsZKogh+ITj3NmHpT4XISilMC4NwbUC1W9uzumsiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VNax37lN; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-427087fce27so97226f8f.2
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 03:19:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761214782; x=1761819582; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YHLKzDlOLcS1osErm5kDOBwxCW+aeEx4uEbgTKleyko=;
-        b=VNax37lNKW8+UFKTUjmxnZDf5U5C1pWp9yjAH6XcSkGmzGEaKPlHH0Q+x40S5RCQHa
-         7n65aGv3SUQCG/zIKhJykbTZnnIevX1ulSQJq6co1OfBJ3wITO8/LXVdMBiuTs5pGZ4i
-         JyTO5eE3daSf9/jk0GJ1oamy726Io9QE+44KkE46d5ggTJeGC2FNjn0PJbTgdHFe7siZ
-         CCieXtblN9r2nVBKyhaIl0APRfFH+8gSSyvXaPGJ5aQhl5dDqY3Z9SoLcagcBMvB39CT
-         AGytT8XsgoMaHnthJtRqg42pmPthKIC9qsHMOqmHRcf5gxlFchVoIUMGHKvE+E9ao3+c
-         kvZQ==
+	s=arc-20240116; t=1761215160; c=relaxed/simple;
+	bh=fKU+7psoGKhGov9+abzdK9VeiEyjPMI2pGqzhT736sc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=k/Prjyy2RoBCJEc1YiLih4pu36PFTFQJTkczoIVRYkgY+ford5IFSnvJ0NM1s8M0CSkbzGIjS/VsIIJNAjNRJPoBTbIxygJjPxFtXNZEUPf2V51OZdJhfveARYOCn8+qHouhtufO78wVVdhlziz6R9GDIoZDP5qNKZqo28RyXMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=b4Ujkerf; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N7Gdh3025827
+	for <Stable@vger.kernel.org>; Thu, 23 Oct 2025 10:25:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=HoHmVwgfwgY
+	ctL/x1k53Df3AjUPsgAlOxk1+AKZybp0=; b=b4Ujkerf3On4nYtoUk7dWUASpse
+	yPsTwgbNGnrJnQ02X9yZicsJahmXpEmnZ92+btcP+7Q1xU0MnviixhFsttF1M9wU
+	TS8O2UMWtZLOPdD0qXAfTOL8URC+oijTNvwUU132PDIXHH7VRxuauYNJF2/ezJ2N
+	FBoSta3SRwhqaM8PuDT2nM3ND1QNnys/Q9J416yu5TITF7bONhsl6P1RFjAFtkqr
+	CMwLOMWf5kLdhnG2IByI77GmffT3aY4v1Z9rdfRfp5bjpKWDLc0AR7M1SIvz0p5n
+	Q1kFRoA1B6V3We8OMuNAP4PL6SUtxV2BOVm9rSd5tomTmMFv34usgQbciGQ==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v42kfu12-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <Stable@vger.kernel.org>; Thu, 23 Oct 2025 10:25:57 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4e8a4c63182so17538551cf.3
+        for <Stable@vger.kernel.org>; Thu, 23 Oct 2025 03:25:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761214782; x=1761819582;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YHLKzDlOLcS1osErm5kDOBwxCW+aeEx4uEbgTKleyko=;
-        b=DrrIGpJvUoUw4rk+KNc3Ojv7bxWxBJvtTTQkSy6gJAmFrvwKaM88Q0KEnMMoWaz2tB
-         bEA5fqbw0L6P9oqxWmebocD4rViXoeN6FsZv33SXroJ0w9gMe8cb3RcKwGvAGNGVs9R3
-         14taw78k8j9jmLRDJht6hjKJyqXp97atsJNd3rdnfCzJvHdEztsC67EhUwSxmqa3lv1G
-         gXdEJ8OGJfv3AixEEmob8i1VKErc6YdTL1XkKlW9LM3Kf0EuyNZWuKsYwoKmSIDpgPBN
-         BvhTpPg6aKdS3riF1RXOOkkJFgA7jJobrAqMTwCBBuBRogCCcQI+6ndHsBl5/taL6cko
-         Dh4A==
-X-Forwarded-Encrypted: i=1; AJvYcCU6UIa0JWxz3oP0eBB/xFq7yQY0hl+twuJ7NZAha/xiD8znUBfWgW+JKbZYllr5bCdGTQxZpcY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuWuhYRR/GojbkloBSw2NfG8XRRAZvmwlJE11O7ot8/BaVaRrW
-	OZ0TeqoOCbG0dvA8h7e3TdHTjSHVWJ+FzS3ZL0F8kDY4LY1E7Qrz3oTLwa4/TYb9ByI=
-X-Gm-Gg: ASbGncusbOz4n3MvQodCMAC8u2viDZFyKEvpiTo1cScc5rNWmksLf8c6YQONins7BVz
-	ZIfwxqNT12pNQWspvxR85BfON3olIsxwKriEf5Ei4qVClyyr24W9KYX5ExeULOT1R0zuNdp0t1z
-	pAl1oY7BX8kMrIhx5z8c5+T8ARgxAfWoIB6UVnUAs/meJv81JxPFzOBEmjBMeXyhAVe+8/DVFmq
-	6Mc+86FBk/Gp0Ed9QB6TJJCX9QmwGAEiX+OPYwyvy0NAruZrn89WgG9RdKwaWk73H2vBcXCdxNx
-	4F5KooKmyOsriWRdgFGui5uAf+BvB8RKh2ej9KcW50k6zw1Pg7b9pQNAJMf1DUsQfRyp+Pbha9Y
-	m/bRvVLu231ZZxjj7obOXmUb8Zf82zkayU+T84/8PfELrMVEEvNceVADpiI2OfFXi9CG85H+HuX
-	TOYh+hrUWZgfcCieET10wWGg==
-X-Google-Smtp-Source: AGHT+IHj7IggOZbvGodn+nW38DF7QGidxY4FbIRHzT1uITsjCrIDo/bUdySa+7xP5mlr//VmMJpJdA==
-X-Received: by 2002:a05:6000:1863:b0:3fc:854:8b84 with SMTP id ffacd0b85a97d-4284e54a7fbmr3485801f8f.3.1761214781926;
-        Thu, 23 Oct 2025 03:19:41 -0700 (PDT)
-Received: from kuoka.. ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429897f57efsm3149173f8f.18.2025.10.23.03.19.40
+        d=1e100.net; s=20230601; t=1761215156; x=1761819956;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HoHmVwgfwgYctL/x1k53Df3AjUPsgAlOxk1+AKZybp0=;
+        b=mXDbQAt8DDSm54YjgwRq8hldnK4+B4umS2NqA35PmhxklrFZw0CWdGKmeC1566yWJp
+         Mx+lKdSl24836hjQ7twGvL2ns59ccj4xTCQ25ZM/hJFIp8JQXEs4fFCb9mTrQzPt+sLt
+         94S98LFxSVkutiipyoBQGf1TzSPEPi35LNjzpYlul8l/Fft071fCN5WFX0gXfb9TdBuD
+         dwqDmzSKOw6lAWM/AasreX4Iaz64NDhmQT5n4JZPZxQ6EbFdtZPtId0QK1Qerp+vx/UZ
+         1wbl3b6zfGg0FipzagYmPBDmaa2IURfsw/xNKjcp7CeWEdwci3gg+nmT9EhHcDgclFib
+         v1Ig==
+X-Forwarded-Encrypted: i=1; AJvYcCUb9iSyFoTfw0SmmwF5RhawMO3fCxNHDArpzsynl1XiHBQc2yml+E6Zt+q72c4FgzezIdebzwE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxbuye72qhTD3F46IOQsY8yeMNg9ZXxa3RimaoD/y89CG1rseYb
+	hXU0IdBR6nXKs/CcdPZlUh5dwc6EVgqFp8QnT4sPB6VuQYp3M2apNjmvGlUFnQ2WXa+ArElVD2f
+	zSVpXiW3MblTqSYuBD6dBmRCeLw7S2ao+lGBhaAX1mJ5xSf39/1DGGxEL/9exD8leNQI=
+X-Gm-Gg: ASbGncsmCT5/s2g8ZG7F2NBQHj36V80/dIBgMvHYGb14z0TZDZdGsq8oKUCqJAHHNG6
+	yTvjXCLBbAHxt7G1JWZ418+UkFe/rraWqvpT1r803Mf+8w2mDEG+CqZDhb+1OYObnNoY5wfoz4k
+	d74apU7funr6CtkdtxtL6KyknQoTiAcHCzOKwRkvmUXNGkq0To+IIAtzxPdTR0i6fhApVBKcW+C
+	YR4o/GrXxliKb7+ipqaWCh71+cmpL3aBhezrXOrXI8BA0Qc7ir8GH8/ZseZJDE9dEJhb8Mxd6Lq
+	CQ4qfAv6N32FATbzo9mhYH4S6IyLp3oFyaibn9OGiC4uCykr3R/RpByUkkSP5xgcMASgURf1+OB
+	GPNE2reBtx7M4
+X-Received: by 2002:a05:622a:13d3:b0:4e8:a2aa:77c9 with SMTP id d75a77b69052e-4eb81020e0bmr20467351cf.1.1761215155860;
+        Thu, 23 Oct 2025 03:25:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF4pmDb7EjDueb6982IesIBCCpfc2JJhwDrIZYFugXpp3Mkd6MdhDM2CIiRAZN+L5enEZqEDw==
+X-Received: by 2002:a05:622a:13d3:b0:4e8:a2aa:77c9 with SMTP id d75a77b69052e-4eb81020e0bmr20467131cf.1.1761215155423;
+        Thu, 23 Oct 2025 03:25:55 -0700 (PDT)
+Received: from debian ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c427f77bsm92220685e9.3.2025.10.23.03.25.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 03:19:41 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Lee Jones <lee@kernel.org>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	stable@vger.kernel.org
-Subject: [RFT PATCH] mfd: max77620: Fix potential IRQ chip conflict when probing two devices
-Date: Thu, 23 Oct 2025 12:19:40 +0200
-Message-ID: <20251023101939.67991-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.48.1
+        Thu, 23 Oct 2025 03:25:55 -0700 (PDT)
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+To: broonie@kernel.org
+Cc: perex@perex.cz, tiwai@suse.com, srini@kernel.org,
+        linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+        Stable@vger.kernel.org, Alexey Klimov <alexey.klimov@linaro.org>
+Subject: [PATCH v2 01/20] ASoC: qcom: q6apm-dai: set flags to reflect correct operation of appl_ptr
+Date: Thu, 23 Oct 2025 11:24:25 +0100
+Message-ID: <20251023102444.88158-2-srinivas.kandagatla@oss.qualcomm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251023102444.88158-1-srinivas.kandagatla@oss.qualcomm.com>
+References: <20251023102444.88158-1-srinivas.kandagatla@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,83 +100,65 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: Y7sgNFdPE_dKKu2ZRSvsnPo5pgjCYuoJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAzMSBTYWx0ZWRfX6j74XiemvHqz
+ 8koMLESCkG7+486nk8/XeUJXVCSi7DjICpuRZfILTVpPXf3Rdwlwl7tTFh1lsM41xY0jjD7XHvH
+ LHgmhjOmWvhrsGuylsWrUMCaoWry599olnVAV1qMWiQTRI1fMzE878jqKmVyT1QnqvDhT5RsjPK
+ 6nb8327QwlgsvNhZy+vcHPKd0Kdc7qhW4/kdwNjHtH8R0CzYgsN7yz9rljnxrM9QuU1GgO+DdRE
+ ALXHFQzKoDLbaW1nBUant9v1PuKxlhZS/bGNnfnyDytUaCC515MSFA7N/zYYHEWc8WNQnYllf6W
+ K0ciLfDwec7dXyLZa3chFPh/vo3GdJjEWvmN8B7nddwuO/kS+xYt7w+SjLNyWVLTNgGApmlIkeS
+ QbZ1Xe1XeUYCLjmec2rkuULEYK6dlw==
+X-Authority-Analysis: v=2.4 cv=QYNrf8bv c=1 sm=1 tr=0 ts=68fa02b5 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=KKAkSRfTAAAA:8 a=-7q2M0jigxX2LbQM1jMA:9 a=uxP6HrT_eTzRwkO_Te1X:22
+ a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: Y7sgNFdPE_dKKu2ZRSvsnPo5pgjCYuoJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 malwarescore=0 clxscore=1015 impostorscore=0
+ spamscore=0 bulkscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180031
 
-MAX77620 is most likely always a single device on the board, however
-nothing stops board designers to have two of them, thus same device
-driver could probe twice. Or user could manually try to probing second
-time.
+Driver does not expect the appl_ptr to move backward and requires
+explict sync. Make sure that the userspace does not do appl_ptr rewinds
+by specifying the correct flags in pcm_info.
 
-Device driver is not ready for that case, because it allocates
-statically 'struct regmap_irq_chip' as non-const and stores during
-probe in 'irq_drv_data' member a pointer to per-probe state
-container ('struct max77620_chip').  devm_regmap_add_irq_chip() does not
-make a copy of 'struct regmap_irq_chip' but store the pointer.
+Without this patch, the result could be a forever loop as current logic assumes
+that appl_ptr can only move forward.
 
-Second probe - either successful or failure - would overwrite the
-'irq_drv_data' from previous device probe, so interrupts would be
-executed in a wrong context.
-
-Fixes: 3df140d11c6d ("mfd: max77620: Mask/unmask interrupt before/after servicing it")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+Fixes: 3d4a4411aa8b ("ASoC: q6apm-dai: schedule all available frames to avoid dsp under-runs")
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
 ---
+ sound/soc/qcom/qdsp6/q6apm-dai.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Not tested on hardware
----
- drivers/mfd/max77620.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/mfd/max77620.c b/drivers/mfd/max77620.c
-index 21d2ab3db254..3af2974b3023 100644
---- a/drivers/mfd/max77620.c
-+++ b/drivers/mfd/max77620.c
-@@ -254,7 +254,7 @@ static int max77620_irq_global_unmask(void *irq_drv_data)
- 	return ret;
- }
- 
--static struct regmap_irq_chip max77620_top_irq_chip = {
-+static const struct regmap_irq_chip max77620_top_irq_chip = {
- 	.name = "max77620-top",
- 	.irqs = max77620_top_irqs,
- 	.num_irqs = ARRAY_SIZE(max77620_top_irqs),
-@@ -498,6 +498,7 @@ static int max77620_probe(struct i2c_client *client)
- 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
- 	const struct regmap_config *rmap_config;
- 	struct max77620_chip *chip;
-+	struct regmap_irq_chip *chip_desc;
- 	const struct mfd_cell *mfd_cells;
- 	int n_mfd_cells;
- 	bool pm_off;
-@@ -508,6 +509,14 @@ static int max77620_probe(struct i2c_client *client)
- 		return -ENOMEM;
- 
- 	i2c_set_clientdata(client, chip);
-+
-+	chip_desc = devm_kmemdup(&client->dev, &max77620_top_irq_chip,
-+				 sizeof(max77620_top_irq_chip),
-+				 GFP_KERNEL);
-+	if (!chip_desc)
-+		return -ENOMEM;
-+	chip_desc->irq_drv_data = chip;
-+
- 	chip->dev = &client->dev;
- 	chip->chip_irq = client->irq;
- 	chip->chip_id = (enum max77620_chip_id)id->driver_data;
-@@ -544,11 +553,9 @@ static int max77620_probe(struct i2c_client *client)
- 	if (ret < 0)
- 		return ret;
- 
--	max77620_top_irq_chip.irq_drv_data = chip;
- 	ret = devm_regmap_add_irq_chip(chip->dev, chip->rmap, client->irq,
- 				       IRQF_ONESHOT | IRQF_SHARED, 0,
--				       &max77620_top_irq_chip,
--				       &chip->top_irq_data);
-+				       chip_desc, &chip->top_irq_data);
- 	if (ret < 0) {
- 		dev_err(chip->dev, "Failed to add regmap irq: %d\n", ret);
- 		return ret;
+diff --git a/sound/soc/qcom/qdsp6/q6apm-dai.c b/sound/soc/qcom/qdsp6/q6apm-dai.c
+index 4ecaff45c518..786ab3222515 100644
+--- a/sound/soc/qcom/qdsp6/q6apm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
+@@ -86,6 +86,7 @@ static const struct snd_pcm_hardware q6apm_dai_hardware_capture = {
+ 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
+ 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
+ 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
++				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
+ 				 SNDRV_PCM_INFO_BATCH),
+ 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
+ 	.rates =                SNDRV_PCM_RATE_8000_48000,
+@@ -105,6 +106,7 @@ static const struct snd_pcm_hardware q6apm_dai_hardware_playback = {
+ 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
+ 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
+ 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
++				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
+ 				 SNDRV_PCM_INFO_BATCH),
+ 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
+ 	.rates =                SNDRV_PCM_RATE_8000_192000,
 -- 
-2.48.1
+2.51.0
 
 
