@@ -1,120 +1,100 @@
-Return-Path: <stable+bounces-189047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4709BFED36
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 03:20:37 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B46BFED4E
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 03:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD74619A5CA0
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 01:21:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76FB44F1B22
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 01:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7CB1448D5;
-	Thu, 23 Oct 2025 01:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96081FBEA6;
+	Thu, 23 Oct 2025 01:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="YLkqZIlO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VwI4lMh0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400E82B2D7
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 01:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CB21F239B;
+	Thu, 23 Oct 2025 01:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761182433; cv=none; b=OvRDzT+wWwu+WcNnj/633cYSs0SVL2q4kIiVtzGPqH0SGb+lvD/ScnJQq53Ldu8wyHoMZRqwC8w4MS+sXJU2MW5stjnrwAei3iuRzw/F2DlQCjspsCGaa9JWzG+s460Q4dYoOhmm+J6prP+1bdNJCUGSogvIeLEgIMOsY/H6+Jk=
+	t=1761182548; cv=none; b=cN0XR15wKkq5MHLMnw0X0rIQRIngkmkkjxnSHTpPZ6NmBbqilEyrMdpk/xAqfWGdS1lRjViE21DX6pAQZZqGqpDmE6u0Lae1520HwNoO3x61cr1Gz/VSgdrIe4Y7mf1e1k2Ok5PTzOP003qxfhLmixzIuNNI9QbhYA7jtXamCbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761182433; c=relaxed/simple;
-	bh=HWeVzs4HkP0W/Y6HvJDuWMbx8SneTc7qsQZMtj9yvMk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QB0wlR5gUxQ3JjQP49cL7T+MusNsKJ0YhAsL90SsBI+ukJu4LFxyKXtYMA0WNGoqtnOqZQpcViV+DTb4W6htR2wuF+0OQQBsOO0QCJc03X9Qjh5USuxPDPIc5dfUj7+A2XRxjGFS4J4jlgTc9HuyUgTDCnCaXfPLYS4nKK+wNGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=YLkqZIlO; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-290c2b6a6c2so2517215ad.1
-        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 18:20:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1761182429; x=1761787229; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8ijG+3nszibgNynLBA4c1V0LvvFa9+rH6/8ywIqIspo=;
-        b=YLkqZIlOPSWH7uqLb98KRUHOr/4QzLA9u7R8GqPdeeqnRo5u+LuHPZwmz8mSFHkJ/y
-         c1SHk+zrIFBGyohbmg04vRx3/d2+TKY3Gm1wzkzfLVThqHF97X7EjTNM6q/DApEWG0di
-         ll0mA8YQPMJV4xoKXNDZynABNIxMPTYIgk5OI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761182429; x=1761787229;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8ijG+3nszibgNynLBA4c1V0LvvFa9+rH6/8ywIqIspo=;
-        b=Q6jSHiPdmBglIHGEwtOGnpMH1u1OgeMmMBvVpD9uZpmECeNWKjdrx2rnwy7LM/AnbF
-         2Y0UVJE9k/hU7N4ytjB3wF8Xi4MPeJOSTJTB0L0lTz5Gbo+D2RLcViK/6raYjyQHcuDB
-         ARIDvGxsMMQZJf29p1tWCmkHaFlCZadPNAOEd3Mk+MeU3XIvmSK7emsT9Wo/Q8oMHqf1
-         E7fveecQiVcmAU7R8zHnzzEwMJMPdCJR1BY6PM/7NlZkSMGf2QzWTWSQw9a7LRgemJLM
-         femtILd5RssS8uhgoNUBaAYTWiG672DMeSb8+OGG2zlL91Ymk+oy1+qDO0h6bFny3wLa
-         TJ1A==
-X-Gm-Message-State: AOJu0Yzh7zhZlYtOqOy/YPbcBT6l6RxJoCh0kpOO76quuQKlP8AgIIN3
-	2wRoLWO+AkTaKmlP+5tWeMwf4WLdmAja6B2EnWCd2E9rQLcTS0SS1Fc0+5zmetCRuw==
-X-Gm-Gg: ASbGncscQ/AbmCDC/LoEJqkF0DNZQ1asLw8LaSbBnv1E45wQ3kjL8/OWjb0trCB5Geq
-	rjm8OW82sdUjHSF0cjJpXfMQl3kJo5TPc/EDa4vP6dYCcbqZzj6P47rGqNJL8+U7GtDGb8yqsBL
-	2tcnRonJJEPuBoEx73mw+3RWhjPf+uV4HnyvsNhdTsvLhm1sieaC0/1wYrFKubqUJvjTUnAGe8e
-	hQkhOFhoCVkf+zK6bxLDiqFqwBKUGwptAW5GM/W394TnAMzWQeKSfQCQCB1auVYyYRctB/1qFYn
-	INHV5Mesb1LFVfVWDB3tp9lbPgteqVt/bz/VBOHk68b+OS4td0yZx80mcyydHOYLuO4TvmwLSmF
-	xumJnTjIon2mVjrsENYPuEYVt3ypa6EXI8x4SsOF4NjftqYYZoA/9Jrr15VQ/xiRCK9DToQtdi6
-	4bxOiyX+tIoxaI+R7FfCJDwVs1jNqMPpA=
-X-Google-Smtp-Source: AGHT+IGqlsv2gN808APRt6SB8St16ScWc42axG4K0bEhdfrp2ymJT8G4ZPKTSW9b6iTHmmaAgcxKNA==
-X-Received: by 2002:a17:902:d2c6:b0:290:c0d7:237e with SMTP id d9443c01a7336-290caf831cdmr329156695ad.39.1761182429389;
-        Wed, 22 Oct 2025 18:20:29 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([216.147.124.76])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6cf4e4303dsm378640a12.37.2025.10.22.18.20.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 18:20:28 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Wed, 22 Oct 2025 19:20:25 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-Subject: Re: [PATCH 6.17 000/160] 6.17.5-rc2 review
-Message-ID: <aPmC2fnwdvffkc_B@fedora64.linuxtx.org>
-References: <20251022053328.623411246@linuxfoundation.org>
+	s=arc-20240116; t=1761182548; c=relaxed/simple;
+	bh=M/kOOtmuCLonxyhFvM6Jte5Rr17Ar3gXBIKaIvRR38w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C4lmUMKwzuyUNUYu0kwAcdmDA/11LWUNp+TrE76ihUrHSPVA9pxJt1LOvljgKF0Pftz2MSgJNtjYWkNKiBkaEyiw3/5l9sED2jUaOQHxl1iZ0ksR5bjBAWyqnLYUcr0hUyysykdIZd3Sl1o4nA7Nnhx6LJ9jvx6Eg6TnQR7O2tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VwI4lMh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB19C4CEE7;
+	Thu, 23 Oct 2025 01:22:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761182548;
+	bh=M/kOOtmuCLonxyhFvM6Jte5Rr17Ar3gXBIKaIvRR38w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=VwI4lMh0tBD6FYDFmmepO9ymPEfNz7TD6GaA1jTJJoXOBR5lc4dIxFDEDFHvzGR6a
+	 LtIIHI+22Juf/zPuy6YPMvQ3UTL9pxBh1XIVX0UmMyTBuWJKmnIoEV2i4uMdSAebuK
+	 HigmeQyhcpwGzBiVkcArueYrUS9GmVXjEUA2QAQXUseADEZFwqCWwokxVk8IPntm8q
+	 gBHQzB+rUiHcFt9rACfVYgUSVDSLoGal7kRVbDv1TKM7/kjjZ/q5BgHpMT2sydMRYW
+	 wi2AhBiAxi2Fw0CDS6mFYtzZP8PlFEWp59+pnwrwKvDYTOiQY1ktcU3gmEtheORODE
+	 pT/lbhzh6oidg==
+Date: Wed, 22 Oct 2025 18:22:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bo Sun <bo@mboxify.com>
+Cc: pabeni@redhat.com, sgoutham@marvell.com, lcherian@marvell.com,
+ gakula@marvell.com, jerinj@marvell.com, hkelam@marvell.com,
+ sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net 1/1] octeontx2-af: CGX: fix bitmap leaks
+Message-ID: <20251022182226.00967149@kernel.org>
+In-Reply-To: <20251020143112.357819-2-bo@mboxify.com>
+References: <20251020143112.357819-1-bo@mboxify.com>
+	<20251020143112.357819-2-bo@mboxify.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251022053328.623411246@linuxfoundation.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 22, 2025 at 07:34:14AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.17.5 release.
-> There are 160 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Mon, 20 Oct 2025 22:31:12 +0800 Bo Sun wrote:
+> The RX/TX flow-control bitmaps (rx_fc_pfvf_bmap and tx_fc_pfvf_bmap)
+> are allocated by cgx_lmac_init() but never freed in cgx_lmac_exit().
+> Unbinding and rebinding the driver therefore triggers kmemleak:
 > 
-> Responses should be made by Fri, 24 Oct 2025 05:33:10 +0000.
-> Anything received after that time might be too late.
+>     unreferenced object (size 16):
+>         backtrace:
+>           rvu_alloc_bitmap
+>           cgx_probe
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.5-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
-> and the diffstat can be found below.
+> Free both bitmaps during teardown.
 > 
-> thanks,
-> 
-> greg k-h
+> Fixes: e740003874ed ("octeontx2-af: Flow control resource management")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bo Sun <bo@mboxify.com>
 
-Tested rc2 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+Looks like rvu_free_bitmap() exists. We should probably use it?
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+> index ec0e11c77cbf..f56e6782c4de 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+> @@ -1823,6 +1823,8 @@ static int cgx_lmac_exit(struct cgx *cgx)
+>  		cgx->mac_ops->mac_pause_frm_config(cgx, lmac->lmac_id, false);
+>  		cgx_configure_interrupt(cgx, lmac, lmac->lmac_id, true);
+>  		kfree(lmac->mac_to_index_bmap.bmap);
+> +		kfree(lmac->rx_fc_pfvf_bmap.bmap);
+> +		kfree(lmac->tx_fc_pfvf_bmap.bmap);
+>  		kfree(lmac->name);
+>  		kfree(lmac);
+>  	}
+-- 
+pw-bot: cr
+
 
