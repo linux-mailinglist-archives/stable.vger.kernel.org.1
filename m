@@ -1,199 +1,194 @@
-Return-Path: <stable+bounces-189172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B8FC03CE9
-	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 01:12:23 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0FEBC03DF8
+	for <lists+stable@lfdr.de>; Fri, 24 Oct 2025 01:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F1B43B5E00
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 23:12:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7BB954E5364
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 23:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B147D284B2E;
-	Thu, 23 Oct 2025 23:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2512E1EF8;
+	Thu, 23 Oct 2025 23:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Jk50ZrsW"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="ktmGf7Hn";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="uFzgVvat"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DA627F00A;
-	Thu, 23 Oct 2025 23:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D11F2D3204
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 23:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761261139; cv=none; b=OaX+omZ7gdvGSAhvZlnldSt7jbTWjHbDeOR7js+E0hc4ZHdBrQ+icsV5WB2ypilrv9XG8GCI9dP6+CIlKNxlpF6Ga67dEKX5DRm2zpGAcME5NiXIpKrH45ssEkxPoUMuXqEb5evNNoE9Cr+ZBBGTvO5HLmOkLEVAEckesQ6vJic=
+	t=1761262943; cv=none; b=TKjMSQATonxHnxQKov4RLEZXc2dVQ5+8CQVjq3PiIAUSFeeM6iUCp944UyjLyxssJtCvPdrkDlNL/Ru+4UtXcZGdEW66qF5hcjCPkmbkdGgcSDl5kEHbKtCZKVFiozOdj3EW7VPlWn+Ax9nWDW9xAORArxAQfqJzuseMWsiqBtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761261139; c=relaxed/simple;
-	bh=R6VHOs6crHStYqt6NpOLBoOrpNxWX9apRS5fy/uQaf4=;
-	h=Date:To:From:Subject:Message-Id; b=jP3rjcCSg3UJAp28aZL13Dgcn1YB9Dv2U6s+mh1XPDOuyzkF0ygk4MYTWy8QxFyOSQ75zUx235MQtE3O98ip7aLwJxWeAsFA7mPEa3mQ8/KrBmNkoR3j+fyagygeBAYwHtnXq5wKaENuJcIaSyP0sGXtdXT4ino5S2Fh1cBeamY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Jk50ZrsW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECFCC4CEE7;
-	Thu, 23 Oct 2025 23:12:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761261138;
-	bh=R6VHOs6crHStYqt6NpOLBoOrpNxWX9apRS5fy/uQaf4=;
-	h=Date:To:From:Subject:From;
-	b=Jk50ZrsW0KmsxZtep4rZOWbjKJYspv1j/TBFhPetc9vZZrfYvZaS5YCD6Gu1nwAp9
-	 kB0pbaWSEzG46miwyUs1rti8pi9fCNC9SntTPjGx9O3dfzEHLHH49I/cwlXgCD2RTW
-	 OFLVLjP9xzxUG/Mer5BVVgV1V0O8gctuLBFKhZbA=
-Date: Thu, 23 Oct 2025 16:12:18 -0700
-To: mm-commits@vger.kernel.org,yang@os.amperecomputing.com,willy@infradead.org,stable@vger.kernel.org,ryan.roberts@arm.com,richard.weiyang@gmail.com,npache@redhat.com,nao.horiguchi@gmail.com,mcgrof@kernel.org,lorenzo.stoakes@oracle.com,linmiaohe@huawei.com,liam.howlett@oracle.com,lance.yang@linux.dev,kernel@pankajraghav.com,jane.chu@oracle.com,dev.jain@arm.com,david@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,ziy@nvidia.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-huge_memory-preserve-pg_has_hwpoisoned-if-a-folio-is-split-to-0-order.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251023231218.AECFCC4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1761262943; c=relaxed/simple;
+	bh=jLdybE/qki2eED1uEl4s0cHYVKVXbct1t25HD7Fa8sM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M2VgKLbBFYiLUAyU+FTKOhjPUrBo05KEgZA42IMl7SMLzSG7yL+AhL83Be+1Ez0VYpp0JKs6ArcSTblYBJqeS5cv8aynaoIM3AF9z7EQN1HSJC8b7TK67EvJV3oXu1H/IbY7cG6m2+UOQBQJaqL0V1b0P4MWUEx/sU8ND4ssyY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=ktmGf7Hn; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=uFzgVvat; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 357301F388;
+	Thu, 23 Oct 2025 23:42:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1761262935; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=W1na+FtDNglbTJzDSzM6dw9QLavVXUwPQSF79yRDqpg=;
+	b=ktmGf7Hn3G7KH2z4J5XPjtCMQI9m8JSPmOMqGqW75uUu9K58NYRnCK3mx9sTFMDmocsRDG
+	zL9YmT4OWZ9u/Gq0nb6ZBvuKSSlaNqIqMJYJzVm24W4JWvJRcbG8z6sv8L3hnBOCCGX6yH
+	4lJXYEiqnguI0D6SgmzZVAP6X+aIZZA=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1761262931; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=W1na+FtDNglbTJzDSzM6dw9QLavVXUwPQSF79yRDqpg=;
+	b=uFzgVvatFM8wIzRN4javJRq690BEInwAhfI6B6GOLywC6WoPwboIdgJTKba8H+ghy1lU9p
+	Dm0WbgC2buXtK9pC0l6sAQdyBTpVssdn3t25pksApIBUnTpd038n/wYX5GnPR43zcHs6iT
+	B1bHYNwRd+LS2I5sLO+YLzh6CeaEKlE=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 324FC13285;
+	Thu, 23 Oct 2025 23:42:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id NK63OFG9+mjUaAAAD6G6ig
+	(envelope-from <wqu@suse.com>); Thu, 23 Oct 2025 23:42:09 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v2] btrfs: ensure no dirty metadata is written back for an fs with errors
+Date: Fri, 24 Oct 2025 10:11:48 +1030
+Message-ID: <bfc7d8db794cc39fa2909c0b38a69f1a1ae73b81.1761262682.git.wqu@suse.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.com:mid];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
 
+[BUG]
+During development of a minor feature (make sure all btrfs_bio::end_io()
+is called in task context), I noticed a crash in generic/388, where
+metadata writes triggered new works after btrfs_stop_all_workers().
 
-The patch titled
-     Subject: mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split to >0 order
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-huge_memory-preserve-pg_has_hwpoisoned-if-a-folio-is-split-to-0-order.patch
+It turns out that it can even happen without any code modification, just
+using RAID5 for metadata and the same workload from generic/388 is going
+to trigger the use-after-free.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-preserve-pg_has_hwpoisoned-if-a-folio-is-split-to-0-order.patch
+[CAUSE]
+If btrfs hits an error, the fs is marked as error, no new
+transaction is allowed thus metadata is in a frozen state.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+But there are some metadata modifications before that error, and they are
+still in the btree inode page cache.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Since there will be no real transaction commit, all those dirty folios
+are just kept as is in the page cache, and they can not be invalidated
+by invalidate_inode_pages2() call inside close_ctree(), because they are
+dirty.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+And finally after btrfs_stop_all_workers(), we call iput() on btree
+inode, which triggers writeback of those dirty metadata.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+And if the fs is using RAID56 metadata, this will trigger RMW and queue
+new works into rmw_workers, which is already stopped, causing warning
+from queue_work() and use-after-free.
 
-------------------------------------------------------
-From: Zi Yan <ziy@nvidia.com>
-Subject: mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split to >0 order
-Date: Wed, 22 Oct 2025 23:05:21 -0400
+[FIX]
+Add a special handling for write_one_eb(), that if the fs is already in
+an error state, immediately mark the bbio as failure, instead of really
+submitting them.
 
-folio split clears PG_has_hwpoisoned, but the flag should be preserved in
-after-split folios containing pages with PG_hwpoisoned flag if the folio
-is split to >0 order folios.  Scan all pages in a to-be-split folio to
-determine which after-split folios need the flag.
+Then during close_ctree(), iput() will just discard all those dirty
+tree blocks without really writing them back, thus no more new jobs for
+already stopped-and-freed workqueues.
 
-An alternatives is to change PG_has_hwpoisoned to PG_maybe_hwpoisoned to
-avoid the scan and set it on all after-split folios, but resulting false
-positive has undesirable negative impact.  To remove false positive,
-caller of folio_test_has_hwpoisoned() and folio_contain_hwpoisoned_page()
-needs to do the scan.  That might be causing a hassle for current and
-future callers and more costly than doing the scan in the split code. 
-More details are discussed in [1].
+The extra discard in write_one_eb() also acts as an extra safenet.
+E.g. the transaction abort is triggered by some extent/free space
+tree corruptions, and since extent/free space tree is already corrupted
+some tree blocks may be allocated where they shouldn't be (overwriting
+existing tree blocks). In that case writing them back will further
+corrupting the fs.
 
-This issue can be exposed via:
-1. splitting a has_hwpoisoned folio to >0 order from debugfs interface;
-2. truncating part of a has_hwpoisoned folio in
-   truncate_inode_partial_folio().
-
-And later accesses to a hwpoisoned page could be possible due to the
-missing has_hwpoisoned folio flag.  This will lead to MCE errors.
-
-Link: https://lore.kernel.org/all/CAHbLzkoOZm0PXxE9qwtF4gKR=cpRXrSrJ9V9Pm2DJexs985q4g@mail.gmail.com/ [1]
-Link: https://lkml.kernel.org/r/20251023030521.473097-1-ziy@nvidia.com
-Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Pankaj Raghav <kernel@pankajraghav.com>
-Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Luis Chamberalin <mcgrof@kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+CC: stable@vger.kernel.org #6.6
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 ---
+Changelog
+v2:
+- Various grammar and newline fixes
 
- mm/huge_memory.c |   23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+- A shorter title line
 
---- a/mm/huge_memory.c~mm-huge_memory-preserve-pg_has_hwpoisoned-if-a-folio-is-split-to-0-order
-+++ a/mm/huge_memory.c
-@@ -3263,6 +3263,14 @@ bool can_split_folio(struct folio *folio
- 					caller_pins;
+- Enhance the [FIX] part, explain the full fix
+
+- Limit the backport for 6.6
+  v6.1 code base is very different compared to the current one, thus
+  backporting to v6.6 would be the limit.
+
+- Explain more why discarding bios at write_one_eb() is safer
+
+- Remove the extra flushing part inside close_ctree()
+  There is no difference flushing the dirty folios manually or by
+  iput(), as dirty folios are discarded anyway, no new job will be
+  created.
+---
+ fs/btrfs/extent_io.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 870584dde575..8f6b8baba003 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2246,6 +2246,14 @@ static noinline_for_stack void write_one_eb(struct extent_buffer *eb,
+ 		wbc_account_cgroup_owner(wbc, folio, range_len);
+ 		folio_unlock(folio);
+ 	}
++	/*
++	 * If the fs is already in error status, do not submit any writeback
++	 * but immediately finish it.
++	 */
++	if (unlikely(BTRFS_FS_ERROR(fs_info))) {
++		btrfs_bio_end_io(bbio, errno_to_blk_status(-EROFS));
++		return;
++	}
+ 	btrfs_submit_bbio(bbio, 0);
  }
  
-+static bool page_range_has_hwpoisoned(struct page *page, long nr_pages)
-+{
-+	for (; nr_pages; page++, nr_pages--)
-+		if (PageHWPoison(page))
-+			return true;
-+	return false;
-+}
-+
- /*
-  * It splits @folio into @new_order folios and copies the @folio metadata to
-  * all the resulting folios.
-@@ -3270,17 +3278,24 @@ bool can_split_folio(struct folio *folio
- static void __split_folio_to_order(struct folio *folio, int old_order,
- 		int new_order)
- {
-+	/* Scan poisoned pages when split a poisoned folio to large folios */
-+	const bool handle_hwpoison = folio_test_has_hwpoisoned(folio) && new_order;
- 	long new_nr_pages = 1 << new_order;
- 	long nr_pages = 1 << old_order;
- 	long i;
- 
-+	folio_clear_has_hwpoisoned(folio);
-+
-+	/* Check first new_nr_pages since the loop below skips them */
-+	if (handle_hwpoison &&
-+	    page_range_has_hwpoisoned(folio_page(folio, 0), new_nr_pages))
-+		folio_set_has_hwpoisoned(folio);
- 	/*
- 	 * Skip the first new_nr_pages, since the new folio from them have all
- 	 * the flags from the original folio.
- 	 */
- 	for (i = new_nr_pages; i < nr_pages; i += new_nr_pages) {
- 		struct page *new_head = &folio->page + i;
--
- 		/*
- 		 * Careful: new_folio is not a "real" folio before we cleared PageTail.
- 		 * Don't pass it around before clear_compound_head().
-@@ -3322,6 +3337,10 @@ static void __split_folio_to_order(struc
- 				 (1L << PG_dirty) |
- 				 LRU_GEN_MASK | LRU_REFS_MASK));
- 
-+		if (handle_hwpoison &&
-+		    page_range_has_hwpoisoned(new_head, new_nr_pages))
-+			folio_set_has_hwpoisoned(new_folio);
-+
- 		new_folio->mapping = folio->mapping;
- 		new_folio->index = folio->index + i;
- 
-@@ -3422,8 +3441,6 @@ static int __split_unmapped_folio(struct
- 	if (folio_test_anon(folio))
- 		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
- 
--	folio_clear_has_hwpoisoned(folio);
--
- 	/*
- 	 * split to new_order one order at a time. For uniform split,
- 	 * folio is split to new_order directly.
-_
-
-Patches currently in -mm which might be from ziy@nvidia.com are
-
-mm-huge_memory-do-not-change-split_huge_page-target-order-silently.patch
-mm-huge_memory-preserve-pg_has_hwpoisoned-if-a-folio-is-split-to-0-order.patch
+-- 
+2.51.0
 
 
