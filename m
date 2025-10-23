@@ -1,164 +1,159 @@
-Return-Path: <stable+bounces-189076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B79BBFFCDC
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 10:10:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A47EBBFFCB8
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 10:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 072E53AA61E
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 08:10:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21ECA1A04EDA
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 08:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650152EB863;
-	Thu, 23 Oct 2025 08:10:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="MYgfIPNv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2A32ECD1B;
+	Thu, 23 Oct 2025 08:08:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366FB2EB849;
-	Thu, 23 Oct 2025 08:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733AD2EB863
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 08:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761207000; cv=none; b=jvFxrlmFLofFtAhALr3fnvzWAXkIhHiK9jg1VRdb9mt8Tiw6eUlb7U2beAwDVWZapmYmTABx1fcBywqDnN+tu4RBZBo2niTa8quQN66MCKO/Xqp8oOmEjQ0ubW1hxnvzSZ3ZapraZlJUyYOU7AP4NfxsAhWCjWFA52TBCterEM8=
+	t=1761206892; cv=none; b=da4prMBgIgUOMgtJw98k+v6C16SvHjOQ6W5Cjj/yLLdwNV2boIypF9HVxK0gzKvqzl9XnPmaw3mTILObyVo3/svYs+tumofILlGo0LJq2HcAfbClUq8NhAMFmamKPDGo/raH/J3jD9KX/TonS+Jxg0ihywyxb6strcXmPNnOcvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761207000; c=relaxed/simple;
-	bh=UMHvqXKAXLDewNQALGomwABCwZxZfH+IN/9gnJya+fI=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To:
-	 Content-Type; b=ij/48k6s2I9fFVxIHUzbUKjvzhesU85f87w7CxguelYGICqkYGuJxFbmgrIjy8aWaUFWVNyX9sk32/S9/IrxS9jutRDvAjbEpwqgokMzjaIBNzk5fgNbCnTt/qoKG684LZzsJ1OkgfJSWRis0vozPRnbND0k1CPK1x4bnP3EJJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=MYgfIPNv; arc=none smtp.client-ip=115.124.30.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761206988; h=Message-ID:Subject:Date:From:To:Content-Type;
-	bh=0pwkfXQbGk5Oqq1wZCavhvUj7jR9C8by8Jut+zAJHnU=;
-	b=MYgfIPNvY1PihNggVFqC/poHpU3u8DaNEYW/1EoPFj1syMck3FRPHhlvTEdRWbOcVIqgNzauHSJzAQRf8KZ/dnZELxyWXoCNGN+KSQrW6clNxTu0VNy+zjTMS0+a4hGFDSjdxIKngnBlbnOUAyw3Eov8NC3XGvszBVqKyoVdAhk=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WqqL4XV_1761206987 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 23 Oct 2025 16:09:47 +0800
-Message-ID: <1761206734.6182284-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net v4] virtio-net: fix received length check in big packets
-Date: Thu, 23 Oct 2025 16:05:34 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Gavin Li <gavinl@nvidia.com>,
- Gavi Teitz <gavi@nvidia.com>,
- Parav Pandit <parav@nvidia.com>,
- virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- Bui Quang Minh <minhquangbui99@gmail.com>,
- stable@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20251022160623.51191-1-minhquangbui99@gmail.com>
-In-Reply-To: <20251022160623.51191-1-minhquangbui99@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1761206892; c=relaxed/simple;
+	bh=YSlV3Ui/R8OX+GLrbep0IihwU6AoVM62SupLufD3Caw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PltyqZKAsLGPa4fsDo3kWdxXC4IpeeuOerJbTKTOfpDAIL8Bg6L+D1VaDw/onYxhxV1H7Le7wVLYQzkjWpDifkyx4iXY0whrnzvKS6XlXVJbvbi8wQSRidomFIxCs/MSz//ylSYCdv0Hbq9atHmgCaKH5rQiPg5sTFzbwwD2zL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-5db24071011so1271779137.1
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 01:08:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761206888; x=1761811688;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nolr+eNt6aVR4bnXOrSXLAjzFqxSLYKSdI0s7QV7cbw=;
+        b=f1p1gkKa4TDE71XFTB5VdSLTa9YfO8NhprlPsGPf/woSc7JqEUMYJH0cSXXUoZwwAc
+         Jzwe15YXA5dRqogOs3lObhvqtuHFRQ2widiT8uo8bPnLZGmlWjmjFUQvvb+PpofQYPV5
+         PRNQfl8DpBVjWI3q52LMGvGr0zwd6LBPenHmc41GhPNV/K+nTTtrB8au4GtJk5U+aWYe
+         I1f8l7FFCVJoUegnLn7gXV8oP0bsyyYBRr+oD4F+CQ4AVMkx698M0KfCtIDa/SLtcQAh
+         EQ4UMMhiVpSuSlI0VvVGRx3cIg87ulMRbCqlR71utuEhK94g71yAxsg6NRvsq3IaSrxf
+         actA==
+X-Forwarded-Encrypted: i=1; AJvYcCWD8zkX6JBXw/XyI4amWb9nRG34BKEwBEEE2EAeueLkhJt/IngzORtWQ4plEi/Rg+Vy1mJgTCs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymjfMfoVi1KDe4yWrIYgC8vd2KURpC2d6kZymqP3pQQKYUeluB
+	Mv43LLVCwrgo53NSAInanmtl3gtfYhhQtMA9K7W5Rj6y9KxFwk5Lt2Kz4RqZDJKp
+X-Gm-Gg: ASbGncsnuSrb+d9Bq1t9NbQ1gGaykw3IVyibDF+guAzn1+Gw+3yhMScdTUkxty9KfRq
+	THlXTn8wOPA2xYX4qG5ic0r/N14DxTOYR80Ou3hqXujg3zroUgZsLd6PVmj6dAVUG+gGCoYFOxU
+	RWCmaAgRtwyw8ne91FDUAZ/a8IiFeoN+pp5GbxxPRhlDMOC69fEYTh3Iv6zmF02WvXlPO+vGrfi
+	Jp3MftzdP7rUaAa4H+q0Hrcn9bt+F42WTOkawGt3g+rctghfYaUWZ0pqa1UWYiSTggdarwUbj4K
+	KstYnoMMIrjZm8eF733fassKEl/jmqznBFpmUmUGH5/6Htk9s7kJxfrK0i4E9oNbTe1C/+BhV6N
+	u1km6JfQRWiadIgrWPyVLPkebjuqjNBCo6DIJfA/cmr45fZaCUu27oAydQCcmtBPcFnAlmrAkA2
+	2NpGqfq1yFfyi+ZgR/zqZ6sH5ZIkAcU7K+CKoXVA==
+X-Google-Smtp-Source: AGHT+IH4017MKI4nRrI+XMzOYdJw3C05vIrPjzV0oeBf8uV57RJlnRwSIJXcggV68t1cQnpfbnnlgw==
+X-Received: by 2002:a05:6102:1669:b0:59c:1727:f59d with SMTP id ada2fe7eead31-5db238492b0mr1193076137.11.1761206888320;
+        Thu, 23 Oct 2025 01:08:08 -0700 (PDT)
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com. [209.85.217.49])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-934aba93a1csm669811241.2.2025.10.23.01.08.07
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Oct 2025 01:08:07 -0700 (PDT)
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-5db2dc4e42dso506160137.1
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 01:08:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUMf0hS7fVpLMYmUSaDDlcxC//DWH2vSlDztt4TTAhFrrijDb4iRDp/c6TnilyliImlZiXztE0=@vger.kernel.org
+X-Received: by 2002:a05:6102:81c6:b0:5d5:f6ae:3902 with SMTP id
+ ada2fe7eead31-5db23866f45mr1605522137.19.1761206887227; Thu, 23 Oct 2025
+ 01:08:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20251022124350.4115552-1-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To: <20251022124350.4115552-1-claudiu.beznea.uj@bp.renesas.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 23 Oct 2025 10:07:55 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWTe8t8O2H+hPU6=WC6V_YGHwTd7sF1htuhX8mVC_fUqA@mail.gmail.com>
+X-Gm-Features: AS18NWCVYlN6uQfMDhc6d_B3LlrJdzYInr_Xaym6zmDpvYwmst5OSgE2t6h-cSM
+Message-ID: <CAMuHMdWTe8t8O2H+hPU6=WC6V_YGHwTd7sF1htuhX8mVC_fUqA@mail.gmail.com>
+Subject: Re: [PATCH] usb: renesas_usbhs: Fix synchronous external abort on unbind
+To: Claudiu <claudiu.beznea@tuxon.dev>
+Cc: gregkh@linuxfoundation.org, yoshihiro.shimoda.uh@renesas.com, 
+	prabhakar.mahadev-lad.rj@bp.renesas.com, kuninori.morimoto.gx@renesas.com, 
+	geert+renesas@glider.be, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 22 Oct 2025 23:06:23 +0700, Bui Quang Minh <minhquangbui99@gmail.co=
-m> wrote:
-> Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
-> for big packets"), when guest gso is off, the allocated size for big
-> packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
-> negotiated MTU. The number of allocated frags for big packets is stored
-> in vi->big_packets_num_skbfrags.
+Hi Claudiu,
+
+On Wed, 22 Oct 2025 at 15:06, Claudiu <claudiu.beznea@tuxon.dev> wrote:
+> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 >
-> Because the host announced buffer length can be malicious (e.g. the host
-> vhost_net driver's get_rx_bufs is modified to announce incorrect
-> length), we need a check in virtio_net receive path. Currently, the
-> check is not adapted to the new change which can lead to NULL page
-> pointer dereference in the below while loop when receiving length that
-> is larger than the allocated one.
+> A synchronous external abort occurs on the Renesas RZ/G3S SoC if unbind is
+> executed after the configuration sequence described above:
+
+[...]
+
+> The issue occurs because usbhs_sys_function_pullup(), which accesses the IP
+> registers, is executed after the USBHS clocks have been disabled. The
+> problem is reproducible on the Renesas RZ/G3S SoC starting with the
+> addition of module stop in the clock enable/disable APIs. With module stop
+> functionality enabled, a bus error is expected if a master accesses a
+> module whose clock has been stopped and module stop activated.
 >
-> This commit fixes the received length check corresponding to the new
-> change.
+> Disable the IP clocks at the end of remove.
 >
-> Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big p=
-ackets")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-> ---
-> Changes in v4:
-> - Remove unrelated changes, add more comments
-> Changes in v3:
-> - Convert BUG_ON to WARN_ON_ONCE
-> Changes in v2:
-> - Remove incorrect give_pages call
-> ---
->  drivers/net/virtio_net.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
+> Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+
+Thanks for your patch!
+
+> --- a/drivers/usb/renesas_usbhs/common.c
+> +++ b/drivers/usb/renesas_usbhs/common.c
+> @@ -813,18 +813,18 @@ static void usbhs_remove(struct platform_device *pdev)
 >
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index a757cbcab87f..0ffe78b3fd8d 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -852,7 +852,7 @@ static struct sk_buff *page_to_skb(struct virtnet_inf=
-o *vi,
->  {
->  	struct sk_buff *skb;
->  	struct virtio_net_common_hdr *hdr;
-> -	unsigned int copy, hdr_len, hdr_padded_len;
-> +	unsigned int copy, hdr_len, hdr_padded_len, max_remaining_len;
->  	struct page *page_to_free =3D NULL;
->  	int tailroom, shinfo_size;
->  	char *p, *hdr_p, *buf;
-> @@ -915,13 +915,23 @@ static struct sk_buff *page_to_skb(struct virtnet_i=
-nfo *vi,
->  	 * This is here to handle cases when the device erroneously
->  	 * tries to receive more than is possible. This is usually
->  	 * the case of a broken device.
-> +	 *
-> +	 * The number of allocated pages for big packet is
-> +	 * vi->big_packets_num_skbfrags + 1, the start of first page is
-> +	 * for virtio header, the remaining is for data. We need to ensure
-> +	 * the remaining len does not go out of the allocated pages.
-> +	 * Please refer to add_recvbuf_big for more details on big packet
-> +	 * buffer allocation.
->  	 */
-> -	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
-> +	BUG_ON(offset >=3D PAGE_SIZE);
-> +	max_remaining_len =3D (unsigned int)PAGE_SIZE - offset;
-> +	max_remaining_len +=3D vi->big_packets_num_skbfrags * PAGE_SIZE;
+>         flush_delayed_work(&priv->notify_hotplug_work);
+>
+> -       /* power off */
+> -       if (!usbhs_get_dparam(priv, runtime_pwctrl))
+> -               usbhsc_power_ctrl(priv, 0);
+> -
+> -       pm_runtime_disable(&pdev->dev);
+> -
+>         usbhs_platform_call(priv, hardware_exit, pdev);
+>         usbhsc_clk_put(priv);
 
+Shouldn't the usbhsc_clk_put() call be moved just before the
+pm_runtime_disable() call, too, cfr. the error path in usbhs_probe()?
 
-Could we perform this check inside `receive_big` to avoid computing
-`max_remaining_len` altogether? Instead, we could directly compare `len` ag=
-ainst
-`(vi->big_packets_num_skbfrags + 1) * PAGE_SIZE`.
-
-And I=E2=80=99d like to know if this check is necessary for other modes as =
-well.
-
-Thanks.
-
-
-
-> +	if (unlikely(len > max_remaining_len)) {
->  		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
->  		dev_kfree_skb(skb);
->  		return NULL;
->  	}
-> -	BUG_ON(offset >=3D PAGE_SIZE);
+>         reset_control_assert(priv->rsts);
+>         usbhs_mod_remove(priv);
+>         usbhs_fifo_remove(priv);
+>         usbhs_pipe_remove(priv);
 > +
->  	while (len) {
->  		unsigned int frag_size =3D min((unsigned)PAGE_SIZE - offset, len);
->  		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, page, offset,
-> --
-> 2.43.0
+> +       /* power off */
+> +       if (!usbhs_get_dparam(priv, runtime_pwctrl))
+> +               usbhsc_power_ctrl(priv, 0);
+> +
+> +       pm_runtime_disable(&pdev->dev);
+>  }
 >
+>  static int usbhsc_suspend(struct device *dev)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
