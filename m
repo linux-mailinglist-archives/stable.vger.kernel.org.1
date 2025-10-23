@@ -1,217 +1,252 @@
-Return-Path: <stable+bounces-189052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D22BFF062
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 05:35:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E17EBFF0E8
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 06:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 526054EC1B3
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 03:34:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 232A43A7A81
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 04:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36812BD013;
-	Thu, 23 Oct 2025 03:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BCAA2472A6;
+	Thu, 23 Oct 2025 04:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="nGyk9e9q"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="U7l97oNF"
 X-Original-To: stable@vger.kernel.org
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013024.outbound.protection.outlook.com [40.93.201.24])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011064.outbound.protection.outlook.com [52.101.62.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B41813D2B2;
-	Thu, 23 Oct 2025 03:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5817D2222C0;
+	Thu, 23 Oct 2025 04:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761190455; cv=fail; b=LzXONL9cw/47fvBhUXSw7NBRkGAydeDQyeNL88T3TPDKXMbrx9VnQGsvR6nl80Wb0t/fDy6vZtqfKYeC+qJHAuCW0tUmIdY+VXGkYW8pid5sX3ZoP1qYrS8DOZ4CVhHJTasxzZrn63UlELHCBzCnDpggyFNasunWGiwI5XLXPtU=
+	t=1761192269; cv=fail; b=tb70tJ7pvlnF1aCpXBaDmDQSbO5uAfdgAl19ZeZh5fj2xPbfeEgQ9l6gbY8IRA7tXnns/EDcmwuwfV813SA1ZmHSceOs8Dh2eLAyS7N0wOPFv4hJT9zP016SyiOOXAj9Nmno8tCOjcMOQMwK95nq+LAnkxwhOjHc2Mv4k/pRu8w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761190455; c=relaxed/simple;
-	bh=lKaasXfSzzU/mAkS7I1Dq8aQUkoxIav1h6J3hgssB1Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=FdgWSOz26MJgBOBeohVvOJaYk8/E/IlbPRqhMaHc6bFpxs4BWa31uSXnHKDRKpGpNkA4TxNnuXyHGq0PJT4eA2Vr5s9uGWhBcgWhQVfFEiDAVp7wyQUFcH9VwuwbE7weEck95yrjjE3zCUmSShAtJ2U48dXo33vOxW2XCfHqwfg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=nGyk9e9q; arc=fail smtp.client-ip=40.93.201.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
+	s=arc-20240116; t=1761192269; c=relaxed/simple;
+	bh=l+ErySWbEK6ke2Gefw/Bfddm0nEMrAUxpGMlgMWFMEY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IY//i89V/zKNfAic68ZXt4BxNBm/dJEuo0MRMhlR8M6rkRoXrfdkpc96CG1rIw993YJuU+cImeMY7zFQhBW29qznHqJ73746W1HyYtNVelkD4tCxo2829W7APiDuA+FzszbTnhGHDOmrXQeTD6GxtuvWaQz8FGYKuADnSoOSAWQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=U7l97oNF; arc=fail smtp.client-ip=52.101.62.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hKmA6WBovhG/olPc3ka91q262XtrL6i21NA11KJxFKjBJxiANV8PmYGi8+dpsujqSkUMVMgEabRsacd5ty/VmYTYx0FDsMAuwJoQPhfRDUqAwMiZkk74+vcMkIQzKQXbtI/XQYHW2q3ilDagX0d0DV0mQm7B9bITFE6RZ2v7oJgyfaIuvdh4dfMWiGZda1MNi9f/FaLjgYw6zQt5UnVA1hbjiIOyPoNo2JqtED9xPp8cuYmQFhnyLGgjjWVWtMWflC05vDt65xG2KThPdJOahzVMCClAtLNVIGxsEbcF6l0+X/8NJ2eO93Ocsw4wJBdF8+DdiPKVrAHn7JUzhjCe/g==
+ b=GMymxcNyI0tId8udSj5zzIwxsWQSbvgK1Z1zLOIbx71/kNs7tbXHK6OHawUkdERK6SgLT/Vug7svg/8i8YtNfcIC7cyktPRBjl+KTdgePXuaawU2lSUoG/Fy3DrZh6NlHuw+enjO7PjRjCDt+BV7E67JO0XB9TTLCbdOIE0gZOnehJf6ff63AAdds+3uc8oxQG9Orvq8MTIm1sLH677oMT6Xw4hm4yjiaqBcyQUJWqMtP2BK4XHDKKVSH3IigL4cCPzYMsiNgq2JbPiRIg2dYMkrIZKEwUUZcw8VSp9LkYGWARgVz3agxQteiHx0NPEVaR6uKTL1HkNQd8XeRAEAfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ggPNp4EuR+acxkZM50RjJf1lfUdyHAHOWZwDaqcTK2w=;
- b=szETlM/44pLYqPwmw29MEVMUPqmirEvwUawhBlqWiBvAunzr2O3clgOIwEvH6UurtOB+iTLvIffHtfGcYDF/Dhc1RqhTttMm0KGoMesa24icp+UFzEP+QXSl5ActBUASP0mhzG7GskM9CTOVCvHnYf5anoOl7pDIf3IWo6rDWIan9T+Lq61PTS2uosO3pUUUZ+O/V1nL6dYq2sFbWB8kpwDIDPoK5I39uPGyNwZZc6wZYaw2WhfUKCfSL0mq0eSrwwX4GXTBRqoI5jxYeWI28w2cfblkoDAURNxbB5M1JikaPJhaYaQS5yGAoGq5VNBYmCAQetcHcR6mOhEtkt/HTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
- dkim=pass header.d=altera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
- s=selector2;
+ bh=IY2l+lOUNDjlNb73tP4+8WaqW9YymWX9lwcrnq0qYWo=;
+ b=xpQKNwpy/hSDPy29yt8BccEXiathb1JB2oTeS8puhiZUUmIaPbd443AewtHFIgq3dnNSMYcr3dYQPTCZGi1nvhkLIihapQoi12EjJKaX6KgVXIoeenOPiMbxHD0CzgC8wCh8HTUSMzlzxDUj7ECVmRj7OeX7GVHWVCZBXT6rJxGLSaL9e420emWVKhYJyGcJKJUcg2C3Vesv55i3MCCu2MemttSKgAeBEM3UOC58R96Pi9TiR49gdOfdo8BbsgOCX2A0+t5xZEihVDXqrHWJy/t1DYBPWkEOlu9uNJRvjMbS/Aukfw2o8ekYUJLeb2QTogYINQ7li7J9Aixo/PQfvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linuxfoundation.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ggPNp4EuR+acxkZM50RjJf1lfUdyHAHOWZwDaqcTK2w=;
- b=nGyk9e9qVod81SFa8hznDeWWfP1lKu8m6lBf8kP+Gh8DUT+hSzAFzRY9TcCzFIobnYiVPVMuA9yHoWVWD5pLNscon12dqu3wSW3NgaKq72yKXrhZaB5DSM2T60sOoPVDsyPg6h5BNGVwN6CEPgrDv6VvV5+A9q+2Hm/QeZwdEz7f57QLK1FyE46/fWTn77G/0oGig4oIhYnMykb1K73uUJmhPb/Br+FGCMf2Tp/AuVlQBHHxg/JLQ6JU4QZsG8HQJHWpbFk3Cl8oUClXpV1z8nExmHcL4fECDgytbHcfMlb6f2O0gmXlUF/lTdUXFM+FFvx/RrCUVwOEHcpVRwZmqA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=altera.com;
-Received: from BL1PR03MB6037.namprd03.prod.outlook.com (2603:10b6:208:309::10)
- by CO1PR03MB5811.namprd03.prod.outlook.com (2603:10b6:303:91::12) with
+ bh=IY2l+lOUNDjlNb73tP4+8WaqW9YymWX9lwcrnq0qYWo=;
+ b=U7l97oNFkgz2ilk1Hu2TEKGuu0IgcwlUjn+kNRHkq8zvbW8YVN6bCsr4ly1DieDg6FmZ3mft4eGl6dx9SRJmDq7+LM1xQcEEmsKSsitYMp4S66LvuNMHugCSL3rNbCtLDY/bCF4zI5SyUj6zeH7ceak6ylKOAPKfusaJTecL1bY=
+Received: from BY5PR04CA0015.namprd04.prod.outlook.com (2603:10b6:a03:1d0::25)
+ by DM4PR12MB8474.namprd12.prod.outlook.com (2603:10b6:8:181::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.13; Thu, 23 Oct
- 2025 03:34:08 +0000
-Received: from BL1PR03MB6037.namprd03.prod.outlook.com
- ([fe80::9413:f1a2:1d92:93f1]) by BL1PR03MB6037.namprd03.prod.outlook.com
- ([fe80::9413:f1a2:1d92:93f1%3]) with mapi id 15.20.9228.015; Thu, 23 Oct 2025
- 03:34:08 +0000
-From: niravkumarlaxmidas.rabara@altera.com
-To: miquel.raynal@bootlin.com,
-	richard@nod.at,
-	vigneshr@ti.com
-Cc: linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mtd: rawnand: cadence: fix DMA device NULL pointer dereference
-Date: Thu, 23 Oct 2025 11:32:01 +0800
-Message-Id: <20251023033201.2182-1-niravkumarlaxmidas.rabara@altera.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: KU0P306CA0067.MYSP306.PROD.OUTLOOK.COM
- (2603:1096:d10:23::18) To BL1PR03MB6037.namprd03.prod.outlook.com
- (2603:10b6:208:309::10)
+ 2025 04:04:23 +0000
+Received: from CO1PEPF000066E6.namprd05.prod.outlook.com
+ (2603:10b6:a03:1d0:cafe::ce) by BY5PR04CA0015.outlook.office365.com
+ (2603:10b6:a03:1d0::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9253.13 via Frontend Transport; Thu,
+ 23 Oct 2025 04:04:22 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CO1PEPF000066E6.mail.protection.outlook.com (10.167.249.4) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9253.7 via Frontend Transport; Thu, 23 Oct 2025 04:04:21 +0000
+Received: from BLRKPRNAYAK.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 22 Oct
+ 2025 21:04:15 -0700
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin
+	<sashal@kernel.org>, <stable@vger.kernel.org>, Matt Fleming
+	<matt@readmodwrite.com>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra
+	<peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+	<vincent.guittot@linaro.org>, <linux-kernel@vger.kernel.org>
+CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
+	<rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
+	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+	<kernel-team@cloudflare.com>, Matt Fleming <mfleming@cloudflare.com>, "Oleg
+ Nesterov" <oleg@redhat.com>, John Stultz <jstultz@google.com>, Chris Arges
+	<carges@cloudflare.com>, "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
+	"K Prateek Nayak" <kprateek.nayak@amd.com>
+Subject: [PATCH 6.17] sched/fair: Block delayed tasks on throttled hierarchy during dequeue
+Date: Thu, 23 Oct 2025 04:03:59 +0000
+Message-ID: <20251023040359.39021-1-kprateek.nayak@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAENh_SRj9pMyMLZAM0WVr3tuD5ogMQySzkPoiHu4SRoGFkmnZw@mail.gmail.com>
+References: <CAENh_SRj9pMyMLZAM0WVr3tuD5ogMQySzkPoiHu4SRoGFkmnZw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR03MB6037:EE_|CO1PR03MB5811:EE_
-X-MS-Office365-Filtering-Correlation-Id: 33398008-413a-4100-7a52-08de11e5060c
-X-MS-Exchange-AtpMessageProperties: SA
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066E6:EE_|DM4PR12MB8474:EE_
+X-MS-Office365-Filtering-Correlation-Id: fce6b99c-1c2f-4c85-2241-08de11e93f3c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|36860700013|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XD2en/RwqYukAeXqI5I39p/175R0Dej+gftGcmvi9yUbdprpsuPmGTyfb6oo?=
- =?us-ascii?Q?JdDrI6SjY7oT8sVny01Gh0uJ1c6u83slD2pYKHiSvGiu5l3QZw/04iDbc1BL?=
- =?us-ascii?Q?qkV4FP3JZ6Pxti3Ypo8n8XiRlOjG/l5Y79rm+U2XsrQR7sfO79M8lguUlVrs?=
- =?us-ascii?Q?yweVmM9YVzttXVVXKDDUSirwBSN0sww9DgAiN5qM7YkVdNr5ZzTpLZD0BRGK?=
- =?us-ascii?Q?ftPM/kjBiKoT1RVvTBpROJBj14kROrUO06iC4SIYYd9W6HJ5p4KqdFvvS2An?=
- =?us-ascii?Q?t1/4ILyMm+LjBjxdoGpUMQ4MIYqu09IBE4A8Me2NihBoo2LK6NtSTcuiJFN+?=
- =?us-ascii?Q?tlOiCjV6Z1yaVIhuNefS46HMDDzwgdpbPaZNwQu7AlQQ9HRHSxDRpqzFmLA+?=
- =?us-ascii?Q?6YuPBSsEbM9+jQjxvVJ/dMbNWhmjGACaeYYbnqY09+rVaEAfc7UTh3AvjadN?=
- =?us-ascii?Q?Hv2o/MkomPnCjXH0q5ooF2u5xcD0FUt5fuefXGZrX391zj1D3jZJ24JnXEOp?=
- =?us-ascii?Q?JOWAMEelmFwREl75FpxCrv5leI/BYA+0ixVvuuINBbxNIzAtW9rOESOpsO3j?=
- =?us-ascii?Q?VNiHqsiOMxNa/YH3TqKHTP4IrOgS7m8hi/qo9Mdl/76yGxFnqQ2m8Nr/BDNC?=
- =?us-ascii?Q?EXRh6GuMjsfsosBN6qMyC/FZkTdR4bckTFzvmEBKFgWdrrzcrEM4dBkfPBKX?=
- =?us-ascii?Q?ZHSgy3He4AFALdrtB3h9Bu0sDsGfhygo+zuuSETfpQpWYeqlg3+Q+UTvKSig?=
- =?us-ascii?Q?HS4RSmsdqBaG+I9TvINDulcr/TLSqPbe8AsjTBf7ocWa/c25eHqVeVSe8BOW?=
- =?us-ascii?Q?pJ2l0OelzAJRwANXLOTlccvxOIQcUrz1slMTBqC1VE62BNOJwccXw6hYlgWN?=
- =?us-ascii?Q?huhqD9nf3753EHhX45l4O9It4Ybth5lbeKNC8aCfeNkZNvf0ua0smIqaOCs/?=
- =?us-ascii?Q?c2KFaaXmIEq9jQLfxmUQWU417uy3Z78EP7PKUHB9mYUmHPxplrGTNZQAiUAP?=
- =?us-ascii?Q?mn3I13lDbLn5KOLbOgXAT9QeUW+8FDjaBnv/hvN0h/kCW7us7rJfkwEErir0?=
- =?us-ascii?Q?LgMDN+v+YqL+RZfN+rnzBNf9Kaf3j0dlL5mpGhNVNoglq0E457KZSyZpMCyf?=
- =?us-ascii?Q?rW1RauxjZn3hyQkuaqWuaROSM5Wmfv9c6SZsYIj4+FLcb20PoESQGlMj5Vb3?=
- =?us-ascii?Q?ZVzV/kyeljV1pKPfdkRXM2EDExOrdcBdh5lIZgGzFf2DiSQ12SueDpha2JJG?=
- =?us-ascii?Q?9Bm3As36dFK/pTNMpr1hsK8Xyl06H12+ZI08YF0OGJ2Csypye2Rp5ow9lBUu?=
- =?us-ascii?Q?ccgHLHaLB9GfTIg4r05gyyhwbe72FkACXQQgzK2EJuyS+0cSBwMuH3npcVZG?=
- =?us-ascii?Q?xkipUq/0f0N7pD9uKl5Y+Z0Kkb6DoN3clXXUpKf4x3pJ678Syu2mLT+hzRsc?=
- =?us-ascii?Q?TlraX0pRUdVmssIDLbOGdJ3IeThex8+u?=
+	=?us-ascii?Q?7wd8UqThP8S8vvgExHA0gJaVuMEX2RyE/i8yJsi4xmY/7yMnJJy/baB+ZttD?=
+ =?us-ascii?Q?1xR4nuOIrj2wLZJTnTisBFi6arV5Wclm0p8gby0BfoBRi/RxnmQmSqSAFYzE?=
+ =?us-ascii?Q?7ZeSsfIWzHGOaKUyRFurXtjg1/8M5Jmfom/So7S/ZoLQA3Nh+YIOJD5/v0aU?=
+ =?us-ascii?Q?diJV85JhnaQkSEfEnNXZ2hguXB6If7hAk6XpQnAlNkTmPT38hDA7yR+fd58u?=
+ =?us-ascii?Q?kGnnfaoXBhI4a9EGS5KCjk4osl4lOD1ON62GSDOgVP/SFqZsiWzTv87lKyMW?=
+ =?us-ascii?Q?lFPP6H00iK/lBLomgNSnY7I5V3/fLYKB4CjEVwCWqRJpY+et/VBmKarASqYw?=
+ =?us-ascii?Q?iM7zIy07opXq7pC+zVCAmW7wgqe5YWaR8Hh2rgGLTqCjyPfr2HIf/ZJ8RvAN?=
+ =?us-ascii?Q?sraFiJs5uSglbtpn/AQuji0vK0eLBSdsHPF52iisd0XhFpfTbVZSLXgZLxmB?=
+ =?us-ascii?Q?7WgHU9ZpPjZYCzmRpBpZhEp/nqtpqDnoCxi+6VOReEdtzIHG8Ph7XVQXNATL?=
+ =?us-ascii?Q?AZPYKFob0qkajZi8mqZnkAltR4t6rdD7+ROZfxiMzi/x5b1DObEtzN17Gi7N?=
+ =?us-ascii?Q?0vIwetT6pCm4+u7sbuWKCv/EHlIxqGJl6qPdS/vIuISt5cXbXQM+Ayg7cEy6?=
+ =?us-ascii?Q?QaOhA09TROXWAe8aw4dvnmabzVFK2Whj5xE44BmcZKCs+miI8Oq5oINJ+zuY?=
+ =?us-ascii?Q?NT0eov+tsPPw1lTIyNlHvXl4/37U3M6v12znQhF1EL4iU6hMyakXkhBrcPWA?=
+ =?us-ascii?Q?wSyWOy8LUHoXcuH8rPMTM919x5qJPANlqQZCZ/ozwqKMaFEVEH6yobPK3gO+?=
+ =?us-ascii?Q?vV/DQqXCRfCqaRwy872bTZ/mY54oJenYJzb2stTq/OsiHVIfnGftjMbCtMS4?=
+ =?us-ascii?Q?OVzO0h4JSB4x2l9JgkoNZlyWyq9daz9iZCVvnN/vFZplaXc8/7KXsalOnXR0?=
+ =?us-ascii?Q?mp67/HJmEJaptLGb5ZwnNYSNUS7BfCLRqg+Pl3XDXHm9qeRY6G3L69b4AqpV?=
+ =?us-ascii?Q?KR9IvMoYv8dfA73Zaaxcrpf84/KQ/i0LbbJq7Egqvxp89lGo5Sq4NMAoPdjD?=
+ =?us-ascii?Q?u6QAyfawoDn1Y1cbFKeIJtKqldH8uCThEL+0O3Vt1qFNxJ/Kr56Zq3AeeRub?=
+ =?us-ascii?Q?p97tQPFwMCddMCqkS/WmiaYYBy0oWZ3GAWvfVQpOnknjSHWGqGzQ9sHo0EdX?=
+ =?us-ascii?Q?G49QHfCDiVORpb5xvq52KwTsMHL3/XWGavt5ZT46hdT2w29c28iB5/uAbFlq?=
+ =?us-ascii?Q?Yghx/GdKWtdENlJl1VYoAF+x1ST3I5/TXkUElLG2u3B/xvme36E+aJQrB6cO?=
+ =?us-ascii?Q?0lGLYMhVhVl/iSzvxj6FvUyIOdEHyUfhbAc7GXUnDEK1sEi7E1O/5Jud29Su?=
+ =?us-ascii?Q?baivUDGMB8dGyE4aLoTxQtpspvsHdngg7Tx559cCCKFUK1prD/gErJ/CsFR+?=
+ =?us-ascii?Q?6/BH2UueG0ctFkaSR0cugg74XeIS4QSaOkdmoIywrAc9mS4jFbrW08MVljMg?=
+ =?us-ascii?Q?MsueN2Z5NMNGcU7QeOex8/cMK1zbyok+GsJkhfxe5gzn8Y1uZhrSmiFxyAEL?=
+ =?us-ascii?Q?oJnC9BcnRSAYn+0WiPxWFgK/ONmycMGgSDct2jw2?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR03MB6037.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8+8ysbvZB0wOoL0wjpTdXS9d9dqQK1HhgxwSBU+hJaDvH8SPzf+1958v+bfW?=
- =?us-ascii?Q?Do1wPSHUCPaWGU06L7mhbYYWI5rPPYUQW0n4veyj70+IV83M06/yOfvyBJLo?=
- =?us-ascii?Q?PW5TeCAcMmDAfp2XfQ5gRIBWjLx8fbX95kcUbfYxRnDgmoqDIIu4ZJzf+5tS?=
- =?us-ascii?Q?ofivLHAcm2atLFt1Rf9KwXGP+PaYNiGNWo+ZELLcSibpqkemyiOYb0OJDSxf?=
- =?us-ascii?Q?KVJ64PhSbhhb0wVv6FRYTQ9oZZiq6FdyxjuixO3G07Yf7Y3/GJmyJORLeRwX?=
- =?us-ascii?Q?6TSRfYy2uFkdERtRWGMm7EftUEiJQ8hXbEIelp7B623LAtSDD8eo65m0riD5?=
- =?us-ascii?Q?kfiiP+QhL/lnfeEpjx6iO8MznWa7fXAkp1x2Iowqt7QJCWMgZdD11h7KxY6l?=
- =?us-ascii?Q?Kt2zfUrClOqRxgR3kLULCL5KzHDWJrMelfyUqFbT/H9Cqn2sHLzN0GiVy2nb?=
- =?us-ascii?Q?sIJ64Oc/z0/CLfwdsHup++FsqgP4GeBOIXkV6hv1ht3szzwW37PibO6iKKVu?=
- =?us-ascii?Q?yaIlZUr7ML85/FWmIM2tbmrDMnZUT7RLXUSqO/eFZwQaRFUuhROu2K50XO+5?=
- =?us-ascii?Q?PwzFXoRCrVCz/6lBYNn4gkChusb9hy7PFomElUykatYRNDpbe5+5jggwCKsb?=
- =?us-ascii?Q?CP4yCNsv2ySHWjh5z/34qozU+h4G9Ga1MPHUM5pKOMiSFhSWSYNfhzICVmuP?=
- =?us-ascii?Q?1sTrYQRAH7VNsJZ0TXplsmKkaMk3KNEPK4pzVIKm1UpQdjMn52tClsk/BKW+?=
- =?us-ascii?Q?83AcDWyriN5LR9uOWvqFRz4YV3xaCWizeT+ogSoGzYZP8IuiCf1Qe+Sj27hQ?=
- =?us-ascii?Q?Cf9+hCJPZ1MMiQAKHZ5cZodIOoDisCiUo+lFJbCPd3rUFts4Rj1UUHWiPDJs?=
- =?us-ascii?Q?1q+9dLXw9eYRkMgPj/GbtW2N8wPrR0csyZlE0BytKcEJS4NflwYyddQIdQs6?=
- =?us-ascii?Q?NrwiG2Wde4/Yfc+ZIjuU2WlomN8dM+jPus0/f3oUvvLiC7P+2tSrjII63UTx?=
- =?us-ascii?Q?qa8T6AEO3AuVl2A4r2neOjD+x3JykLIwrhd6YQVpYjyV/R5SXJTNjARtjGKZ?=
- =?us-ascii?Q?uQ9OtF7RhL1Pd1+q+wlohcniwgauaqcj9nq2I1q15rnAaHnZfvTTsngZfKFS?=
- =?us-ascii?Q?PenhX4tMtmwuhAnhZJSD41Wddk3qol6TUTCbsD2avLal0xPwRu3sy4fB23Iw?=
- =?us-ascii?Q?6R8W6XGnvj6AGrkcwStgtzTONJtCqv0PAktAvVIISlTxauHYcMZJtWUpvbg+?=
- =?us-ascii?Q?eSaJ+DErAeOYz8gd0pBDQGPHr23xGMGdU7Wldu3PEycm+x5QrevhbHsINfL7?=
- =?us-ascii?Q?TASNIFBjFQZ+bnNydSgFxdlMJtU/djfm6aFs7GKSxrVw91E3qH5bJkhlN8s9?=
- =?us-ascii?Q?Gvo+mDJDcvufdwlSpnLULT+Qc0aFmCrNB9l0TICCGW2+Co7XEpBHfN20Bey/?=
- =?us-ascii?Q?9JAzT5lcL6/w1KMggIMdXlvi2fT3tc9ba/vm0WkvugXFdRqFZek3BBkJT+UU?=
- =?us-ascii?Q?FItqwtSHcckJ+C5hUb7QjE6yJnG2GJs13JLdHGWzwyDY1pcja8OthO74vCHd?=
- =?us-ascii?Q?/GzCbOoh6pGKG1ZnYo06IqsiMFHRLhOe1Xi2xjw39v8O2/koghaptA6ddCFr?=
- =?us-ascii?Q?qDRzl2SnX6TjFhH9XJ0eFc8zaVVruxqORFEO4OWLYyLS?=
-X-OriginatorOrg: altera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33398008-413a-4100-7a52-08de11e5060c
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR03MB6037.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2025 03:34:08.3547
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(36860700013)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2025 04:04:21.7810
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: g1If7SCYS2beigGO2LiIOOcPNKysVl0A1fQd5wZJsvUxub65rqfEp8xHC86ZVb0gw13+EvDuKGu+LKwglfzAaexOSPx08fhdBK/sy6Xvg2BThOJQ8AOZFnFrLvdQqagm
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR03MB5811
+X-MS-Exchange-CrossTenant-Network-Message-Id: fce6b99c-1c2f-4c85-2241-08de11e93f3c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000066E6.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8474
 
-From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Dequeuing a fair task on a throttled hierarchy returns early on
+encountering a throttled cfs_rq since the throttle path has already
+dequeued the hierarchy above and has adjusted the h_nr_* accounting till
+the root cfs_rq.
 
-The DMA device pointer `dma_dev` was being dereferenced before ensuring
-that `cdns_ctrl->dmac` is properly initialized.
+dequeue_entities() crucially misses calling __block_task() for delayed
+tasks being dequeued on the throttled hierarchies, but this was mostly
+harmless until commit b7ca5743a260 ("sched/core: Tweak
+wait_task_inactive() to force dequeue sched_delayed tasks") since all
+existing cases would re-enqueue the task if task_on_rq_queued() returned
+true and the task would eventually be blocked at pick after the
+hierarchy was unthrottled.
 
-Move the assignment of `dma_dev` after successfully acquiring the DMA
-channel to ensure the pointer is valid before use.
+wait_task_inactive() is special as it expects the delayed task on
+throttled hierarchy to reach the blocked state on dequeue but since
+__block_task() is never called, task_on_rq_queued() continues to return
+true. Furthermore, since the task is now off the hierarchy, the pick
+never reaches it to fully block the task even after unthrottle leading
+to wait_task_inactive() looping endlessly.
 
-Fixes: d76d22b5096c ("mtd: rawnand: cadence: use dma_map_resource for sdma address")
+Remedy this by calling __block_task() if a delayed task is being
+dequeued on a throttled hierarchy.
+
+This fix is only required for stabled kernels implementing delay dequeue
+(>= v6.12) before v6.18 since upstream commit e1fad12dcb66 ("sched/fair:
+Switch to task based throttle model") indirectly fixes this by removing
+the early return conditions in dequeue_entities() as part of the per-task
+throttle feature.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Reported-by: Matt Fleming <matt@readmodwrite.com>
+Closes: https://lore.kernel.org/all/20250925133310.1843863-1-matt@readmodwrite.com/
+Fixes: b7ca5743a260 ("sched/core: Tweak wait_task_inactive() to force dequeue sched_delayed tasks")
+Tested-by: Matt Fleming <mfleming@cloudflare.com>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
 ---
+Hello Greg, Sasha,
 
-This patch fixes below kernel Oops:
-...
-[    1.469661] cadence-nand-controller 10b80000.nand-controller: IRQ: nr 21
-[    1.476591] Unable to handle kernel paging request at virtual address fffffffffffffff8
-[    1.484493] Mem abort info:
-[    1.487280]   ESR = 0x0000000096000004
-[    1.491019]   EC = 0x25: DABT (current EL), IL = 32 bits
-[    1.496318]   SET = 0, FnV = 0
-[    1.499366]   EA = 0, S1PTW = 0
-[    1.502499]   FSC = 0x04: level 0 translation fault
-[    1.507363] Data abort info:
-[    1.510237]   ISV = 0, ISS = 0x00000004
-[    1.514062]   CM = 0, WnR = 0
-[    1.517024] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000087a0a000
-[    1.523706] [fffffffffffffff8] pgd=0000000000000000, p4d=0000000000000000
-[    1.530490] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-...
+Please consider the same fix for the v6.17 stable kernel too since there
+is a report of a similar issue on v6.17.1 based RT kernel at
+https://lore.kernel.org/lkml/aPN7XBJbGhdWJDb2@uudg.org/ and Luis
+confirmed that this fix solves the issue for him in
+https://lore.kernel.org/lkml/aPgm6KvDx5Os2oJS@uudg.org/
+---
+ kernel/sched/fair.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
- drivers/mtd/nand/raw/cadence-nand-controller.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/nand/raw/cadence-nand-controller.c b/drivers/mtd/nand/raw/cadence-nand-controller.c
-index 6667eea95597..32ed38b89394 100644
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -2871,7 +2871,7 @@ cadence_nand_irq_cleanup(int irqnum, struct cdns_nand_ctrl *cdns_ctrl)
- static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
- {
- 	dma_cap_mask_t mask;
--	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
-+	struct dma_device *dma_dev;
- 	int ret;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 8ce56a8d507f..f0a4d9d7424d 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6969,6 +6969,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 	int h_nr_runnable = 0;
+ 	struct cfs_rq *cfs_rq;
+ 	u64 slice = 0;
++	int ret = 0;
  
- 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
-@@ -2915,6 +2915,7 @@ static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
- 		}
+ 	if (entity_is_task(se)) {
+ 		p = task_of(se);
+@@ -6998,7 +6999,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 
+ 		/* end evaluation on encountering a throttled cfs_rq */
+ 		if (cfs_rq_throttled(cfs_rq))
+-			return 0;
++			goto out;
+ 
+ 		/* Don't dequeue parent if it has other entities besides us */
+ 		if (cfs_rq->load.weight) {
+@@ -7039,7 +7040,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 
+ 		/* end evaluation on encountering a throttled cfs_rq */
+ 		if (cfs_rq_throttled(cfs_rq))
+-			return 0;
++			goto out;
  	}
  
-+	dma_dev = cdns_ctrl->dmac->device;
- 	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
- 						  cdns_ctrl->io.size,
- 						  DMA_BIDIRECTIONAL, 0);
+ 	sub_nr_running(rq, h_nr_queued);
+@@ -7048,6 +7049,8 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 	if (unlikely(!was_sched_idle && sched_idle_rq(rq)))
+ 		rq->next_balance = jiffies;
+ 
++	ret = 1;
++out:
+ 	if (p && task_delayed) {
+ 		WARN_ON_ONCE(!task_sleep);
+ 		WARN_ON_ONCE(p->on_rq != 1);
+@@ -7063,7 +7066,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 		__block_task(rq, p);
+ 	}
+ 
+-	return 1;
++	return ret;
+ }
+ 
+ /*
+
+base-commit: 6c7871823908a4330e145d635371582f76ce1407
 -- 
-2.25.1
+2.34.1
 
 
