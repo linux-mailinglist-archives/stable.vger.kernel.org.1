@@ -1,98 +1,89 @@
-Return-Path: <stable+bounces-189089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CEB9C00759
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 12:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B66C007E3
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 12:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A3C219A5DBD
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 10:27:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 559CF188BB8F
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 10:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23B130BF7F;
-	Thu, 23 Oct 2025 10:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D5C30C62E;
+	Thu, 23 Oct 2025 10:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ofp7nl/H"
-X-Original-To: Stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DYrAgg0M"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833F430BB88
-	for <Stable@vger.kernel.org>; Thu, 23 Oct 2025 10:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D37530C368
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 10:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761215165; cv=none; b=oe9n2eZ+2exQrlNocKxWnGCeiBD9ofBn4Z4oNHLsnrmGiM2UP01fIngojsklhUv5BZKY0Y0ikyg5i+p0CHn+pYgJASEKeCLHfKvmy9Ps/f8CXaRaUKclOlqvBc5VIDcXGCvHKznCDm1J4QsUaz5rLbIj+H0OPNsTO7WeGAUj9DQ=
+	t=1761215352; cv=none; b=QxQTptDm/1auq0vPXpRRUYOUr3bP0GG9kpOETErcgzhdwXV9L3PdqwmGSAGhzECiuRQvpdIZHgy+GuipxRM6h2oDastoDLOYFayu00oZr2YxnUql+xExnFIV3WMy5O2EvGjOExpNBwzYllEZypajlyJt8TeB3+eTXTuy0sdQ4Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761215165; c=relaxed/simple;
-	bh=n/QDHw1ITWRby7vrBcC4hapXZgt2KFZCOKf4tNRyaaA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4q1T0bh775QZg1VdZpLhGe264vsgyQrrvSoGtfYYdzfBhlQMOAGOsrQdKQxONUJe7716jL+XYhxQzkRf2A7P/7AKcEciF+0OeeYtd3WRjxlo0kk3dWzY/wZ9MTDQyrEv6xpPeCxdAMHw8GEwiR21BxngCM4DgCU1ALo9EE6tdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ofp7nl/H; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N76T0X029864
-	for <Stable@vger.kernel.org>; Thu, 23 Oct 2025 10:26:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=jdyJtjan7SM
-	H7wF51lvA8fxlxpPM+Q5el4ttALOfDg8=; b=ofp7nl/HBaXVLLvPU82S4U87eL6
-	Gy9EvPxlr17buAKxBAYQcnWxylx1Kg++K7y8RtBRTKCk3MLstr16HdN1ARN6pVcd
-	6RVXfXm0xPTCQGj/nALSmHn8Vhp9cjATvCuE6O0M0LXy+3TANJXVZWyvk18fC5yu
-	DhnYPYKaIAXV4/YnAwL8b6PB0V4AKOQ8yxiNIrZbx1H4i4d1x4bL6mJYAmwgQa1A
-	AfRV9HT8L7HoB1n3vE8Xr9iyfd+zhOYMtpboYGP+zNQ5WbHanUx0Qz8MYHuqnRCS
-	+PnTudC3dlP+T7wAtvywk02KPHYcSn0Nvbasoqgqc+MFqSidEGwvkV9z9jA==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v2ge80jq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <Stable@vger.kernel.org>; Thu, 23 Oct 2025 10:26:01 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4e8b15de40fso31049151cf.1
-        for <Stable@vger.kernel.org>; Thu, 23 Oct 2025 03:26:01 -0700 (PDT)
+	s=arc-20240116; t=1761215352; c=relaxed/simple;
+	bh=pluT3fe/JrETSIHHgu8mtUlYeIruYoNzHyfoBOUg2eg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NMiLXX5OQHAIFrFDNrm23fNuM3meXSCIG+sf+z7i0v87lSUsdc/Gv7Ixu3IqijoePYF6AO+GueulC9FxIacgTaMi0xUTcNcm65cmGYHrsNFYENLLD3LZ2QuScD+yvPTUQGR4VFWO2OTQvdU9zvyFNPMwNzxJ/rfHEHoNIcMlAK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DYrAgg0M; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-427054641f0so97951f8f.1
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 03:29:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761215348; x=1761820148; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NHJKzwfxsuuIDKuJ2Y7MxCWL8cdo6xWLdj43JgzP38U=;
+        b=DYrAgg0MyQHo7Bm7OUT96PTZNeNOtJHh9yLUZauxKO2Lx9kiaZBewwlj+Soa+RP/aK
+         6FEfmbW4isiSa2MoIAgv3BvDvTnpH0lQTpjVrmCmPUTgY4wvW7KXRFSSNnbpBFkk8oF9
+         s1Y4VXZVZm0nUWMWhJWx5n6v7ETnnC1cdj9tGmlmvYK0Rsp2Ls6kANhX38s7jihLUQPk
+         0WuPypPNPWm6Hh/BSPMWGZfW/VLasO4rC+G1iwY1HJGsPa4qoWxmxYmyLA9+mgLQ/zPt
+         QKN2fFeJV0QESDqeD8ka9xbTHDjXCwzEGLsVD0PKWgFVbaQIGHOxOISbAiXcOXROh71H
+         wN0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761215160; x=1761819960;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jdyJtjan7SMH7wF51lvA8fxlxpPM+Q5el4ttALOfDg8=;
-        b=DCeP0QTrH/9vHvyl/DlMt9HuUD8bAHpsKINAv0WXDZcT6XbC9MCV9e6zl1NySXcWLo
-         /N9PnBPyeiEUkmWpop/LFbUBvqbScxo87SGiFge0ClgfZu4XEr+I3n7DPZ9wmbRxiOcQ
-         vgpexsdRX6sPILFYEZyxNeDz4nLZ08jVxdqOCLOcv5HK2IVb76YNG83ocZx+T6oZqR7+
-         5HKppIIKYrlUvID8KcBF/PDA59RQUWppMO1UO3LUnbC2tWDUKeZkB1cpQFAC53v5xwT4
-         pjhfdEOH2dJMOtUbfvBwKdU2IjlspaTwJ8rzB61ykvKYAp45OW0de6Bkv87mH5Vk9wIl
-         vYng==
-X-Forwarded-Encrypted: i=1; AJvYcCUSCgerYGb1ua3+XdRQuwDfQh5c5x4rlIbyoiOhD+MsWgF/OjJGLYP+GnWRj/6Q74cOIjvzGME=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzS9e3142enyJi2sMdD06MO8eD89fZbAp1xn3zMO1x2PZZsgAu
-	yFlzXI1iXYahxOqbdDrl1aTcd5e/H2qzJYUPpG96GEkGLZDha7xbikRCWhucLr2zHYlmqmYcsB7
-	FRQEzRqYY9b/+/yURJf9yPxf8rW3mUkTbKFv7xieANsTurLMxvTCBQ6UYvqk=
-X-Gm-Gg: ASbGncuLZwIfHSQjDqqHsoZa4vDpmDEK53AdHhGgyTku8gd1ZQ15idHKsTFgsAIsRZh
-	V/4UHTI163UXTjbNfnuZSpgOPEZjNl6SJq8ekELnTxWVKKEYNmZSRk/CoHqUpw1nSJW+96LEBFy
-	HZHO0jtj6WYAGiofM9NViCUYavFsW5+JCLKmNitQkRi6DFtZC1EPNhBxYYe7fPWdpzApifM8fru
-	wsfj00+eClwfWsu9wAwqYg21tvxOdw9khkS5vDAacitRHhOP7RjXohnNVw5G1dxXSJbnS7HfLip
-	QH0JJ8KooBuzmqS/QafbXhUcqfBqMPsZUhglTyYZlmDW8p8s7GDgW5CC7/XfGs7QYKcFbNjueMS
-	4r0vL+4qEkfoy
-X-Received: by 2002:a05:622a:1827:b0:4e8:b8f7:299d with SMTP id d75a77b69052e-4e8b8f72eaamr207458381cf.68.1761215160567;
-        Thu, 23 Oct 2025 03:26:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFD7wLSA44400aNfpBlMqCLaACZqamHhHypYbkYfQM4rxcD3dsHflxyufF1YmFN6YdHQzG4bA==
-X-Received: by 2002:a05:622a:1827:b0:4e8:b8f7:299d with SMTP id d75a77b69052e-4e8b8f72eaamr207458091cf.68.1761215160076;
-        Thu, 23 Oct 2025 03:26:00 -0700 (PDT)
-Received: from debian ([5.133.47.210])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c427f77bsm92220685e9.3.2025.10.23.03.25.59
+        d=1e100.net; s=20230601; t=1761215348; x=1761820148;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NHJKzwfxsuuIDKuJ2Y7MxCWL8cdo6xWLdj43JgzP38U=;
+        b=qe8PBPsHel92tDcOv/Tx1f/hTf7JbtVbyUHkg9E3jaqOlpYDPTJQ2bliNkYyBDSaIJ
+         ZAFM7YH1hGSlQUxyFuq5CLk7dmeLrEsSPblwOgoOYehhd0sVG4Se13dOzO6WaoaKqHxu
+         ywzSf4cPPQm8diSI+VFITrs8mJHKwQqQdF3hzEFq1c+7AAKv+6vQmne8HApFJvDjOy/D
+         G+TaJzC3BwBbP3jGzEMEF97CJetIA90HAzT+9OjXDL8Y9xlVC6HME60sINeOTQKYKHS4
+         DvvhYPjf82BOu7LAo7Din9g4XW17A8zc/I32/XsWebEw46iqijPeCaHlxanpJlTe0UEd
+         OlTg==
+X-Gm-Message-State: AOJu0YytMfz+HXEQqg5RIkBNshFDNsTl2PuN9QKuFfNFEHowD4h9JnQc
+	YLvwEEsAgjZJeWZWNk3GHQW98oIIdXKUDGrzpm5pEc1BG9k/4I8dsdrQpUgYvk/22W8xzZUOY84
+	1CIFj
+X-Gm-Gg: ASbGncts1Oc0EMABoXWS5wXBJOQ3jDp0RR0cEomBI74zFwCa2U0JDNXPq4c/DKN1hPR
+	9JFLNTE4IP82A7weOvesVrpptlwTO2JS31LJt16FvxW9tVOe3swy7W9eTRC4TLV/6s9bXvjC6+l
+	tsd8W2ZKdpGSKS8y2KfBG8RH8bpWUkbrEpTxxldphWrLtQfvuujlXVCw3a9fseIGPElJIp4/4XN
+	Ci+asSWO5vPDrVpj7n947yyvZjYVXNagMQZS4LlxdNUD/O86wC6e1/YdZ9tkGYDqsAakLRBoxCa
+	BFKJV68kwQDeSNrwPPN3Xr0DXvvo0Do9+q/mVgmGFJyj9Y0fkbiosJCsMaHZqRxYfnS/ipN7xUn
+	IvK0re2AdfYqSzNOGAh9cYgBUO4QNIrq+xlqCCJOTVTsjfd3KzypXj7DaMYSFWw/H6Z9rSXWjaZ
+	Me77OvNtbYyrM=
+X-Google-Smtp-Source: AGHT+IEpZ5MhhD+4VmCipbsuMXBPQNWZTP9mAos6+Z9IvudfJzgjQzAoyUcSmbnGkZ8yQ+8VCn1FXQ==
+X-Received: by 2002:a05:600c:1ca9:b0:46e:2562:ed71 with SMTP id 5b1f17b1804b1-47494260568mr52916995e9.1.1761215348549;
+        Thu, 23 Oct 2025 03:29:08 -0700 (PDT)
+Received: from kuoka.. ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898cc930sm3816280f8f.33.2025.10.23.03.29.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 03:25:59 -0700 (PDT)
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-To: broonie@kernel.org
-Cc: perex@perex.cz, tiwai@suse.com, srini@kernel.org,
-        linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-        Stable@vger.kernel.org, Alexey Klimov <alexey.klimov@linaro.org>
-Subject: [PATCH v2 04/20] ASoC: qcom: q6asm-dai: perform correct state check before closing
-Date: Thu, 23 Oct 2025 11:24:28 +0100
-Message-ID: <20251023102444.88158-5-srinivas.kandagatla@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251023102444.88158-1-srinivas.kandagatla@oss.qualcomm.com>
-References: <20251023102444.88158-1-srinivas.kandagatla@oss.qualcomm.com>
+        Thu, 23 Oct 2025 03:29:08 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Sebastian Reichel <sre@kernel.org>,
+	Dzmitry Sankouski <dsankouski@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] power: supply: max77705: Fix potential IRQ chip conflict when probing two devices
+Date: Thu, 23 Oct 2025 12:29:06 +0200
+Message-ID: <20251023102905.71535-2-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,65 +91,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMCBTYWx0ZWRfXwnygIno/vsGZ
- 1DvdKKT+5PfXFBLjQHW6qZ8cUp1jLhKP7txwTtXxEOCWKG4QkMj+OcV2h00WnSWZYlqGZYSCHbQ
- yHhBYAppoe1ILtlI8juPqxeoNfiVO5dLfRtHkUDAhoLzte6OWP4BJP7mEWovVJQX6R17S92wyDh
- nhlxvx59BD+gFH9EBOI0j3nWHcblB/J254DKkBv6i/mEun2MyadHFHN41KWEh8P+EcejN+KYfU3
- 91kANcommqsJhfa3fLyPpYUQ51lOgzlc8Xd/LXzSG6N625smmlBWf5OTbeFf8ef63Z2DCfZK3qi
- OX2frW9hgJRr7xuESbj4ep+ZwL5cw+9WUrDuZYjFr+8Muwk/46h/VFrJ/Pz617I5h+zTZkAtrno
- f7kplwl83hjx2S3CjhsRlmbop7Orkw==
-X-Authority-Analysis: v=2.4 cv=KqFAGGWN c=1 sm=1 tr=0 ts=68fa02b9 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=KKAkSRfTAAAA:8 a=MOmvoJmQv4oe-d1MVI8A:9 a=dawVfQjAaf238kedN5IG:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: aUn5U7I29hwq9oow29kOd5sHEvmlQ124
-X-Proofpoint-ORIG-GUID: aUn5U7I29hwq9oow29kOd5sHEvmlQ124
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 phishscore=0 malwarescore=0 impostorscore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180020
 
-Do not stop a q6asm stream if its not started, this can result in
-unnecessary dsp command which will timeout anyway something like below:
+MAX77705 charger is most likely always a single device on the board,
+however nothing stops board designers to have two of them, thus same
+device driver could probe twice. Or user could manually try to probing
+second time.
 
-q6asm-dai ab00000.remoteproc:glink-edge:apr:service@7:dais: CMD 10bcd timeout
+Device driver is not ready for that case, because it allocates
+statically 'struct regmap_irq_chip' as non-const and stores during
+probe in 'irq_drv_data' member a pointer to per-probe state
+container ('struct max77705_charger_data').  devm_regmap_add_irq_chip()
+does not make a copy of 'struct regmap_irq_chip' but stores the pointer.
 
-Fix this by correctly checking the state.
+Second probe - either successful or failure - would overwrite the
+'irq_drv_data' from previous device probe, so interrupts would be
+executed in a wrong context.
 
-Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
+Fixes: a6a494c8e3ce ("power: supply: max77705: Add charger driver for Maxim 77705")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/qcom/qdsp6/q6asm-dai.c b/sound/soc/qcom/qdsp6/q6asm-dai.c
-index e8129510a734..0eae8c6e42b8 100644
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -233,13 +233,14 @@ static int q6asm_dai_prepare(struct snd_soc_component *component,
- 	prtd->pcm_count = snd_pcm_lib_period_bytes(substream);
- 	prtd->pcm_irq_pos = 0;
- 	/* rate and channels are sent to audio driver */
--	if (prtd->state) {
-+	if (prtd->state == Q6ASM_STREAM_RUNNING) {
- 		/* clear the previous setup if any  */
- 		q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
- 		q6asm_unmap_memory_regions(substream->stream,
- 					   prtd->audio_client);
- 		q6routing_stream_close(soc_prtd->dai_link->id,
- 					 substream->stream);
-+		prtd->state = Q6ASM_STREAM_STOPPED;
- 	}
+Not tested on hardware
+---
+ drivers/power/supply/max77705_charger.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/power/supply/max77705_charger.c b/drivers/power/supply/max77705_charger.c
+index b1a227bf72e2..1044bf58aeac 100644
+--- a/drivers/power/supply/max77705_charger.c
++++ b/drivers/power/supply/max77705_charger.c
+@@ -60,7 +60,7 @@ static const struct regmap_irq max77705_charger_irqs[] = {
+ 	REGMAP_IRQ_REG_LINE(MAX77705_AICL_I, BITS_PER_BYTE),
+ };
  
- 	ret = q6asm_map_memory_regions(substream->stream, prtd->audio_client,
+-static struct regmap_irq_chip max77705_charger_irq_chip = {
++static const struct regmap_irq_chip max77705_charger_irq_chip = {
+ 	.name			= "max77705-charger",
+ 	.status_base		= MAX77705_CHG_REG_INT,
+ 	.mask_base		= MAX77705_CHG_REG_INT_MASK,
+@@ -567,6 +567,7 @@ static int max77705_charger_probe(struct i2c_client *i2c)
+ {
+ 	struct power_supply_config pscfg = {};
+ 	struct max77705_charger_data *chg;
++	struct regmap_irq_chip *chip_desc;
+ 	struct device *dev;
+ 	struct regmap_irq_chip_data *irq_data;
+ 	int ret;
+@@ -580,6 +581,13 @@ static int max77705_charger_probe(struct i2c_client *i2c)
+ 	chg->dev = dev;
+ 	i2c_set_clientdata(i2c, chg);
+ 
++	chip_desc = devm_kmemdup(dev, &max77705_charger_irq_chip,
++				 sizeof(max77705_charger_irq_chip),
++				 GFP_KERNEL);
++	if (!chip_desc)
++		return -ENOMEM;
++	chip_desc->irq_drv_data = chg;
++
+ 	chg->regmap = devm_regmap_init_i2c(i2c, &max77705_chg_regmap_config);
+ 	if (IS_ERR(chg->regmap))
+ 		return PTR_ERR(chg->regmap);
+@@ -599,11 +607,9 @@ static int max77705_charger_probe(struct i2c_client *i2c)
+ 	if (IS_ERR(chg->psy_chg))
+ 		return PTR_ERR(chg->psy_chg);
+ 
+-	max77705_charger_irq_chip.irq_drv_data = chg;
+ 	ret = devm_regmap_add_irq_chip(chg->dev, chg->regmap, i2c->irq,
+ 					IRQF_ONESHOT, 0,
+-					&max77705_charger_irq_chip,
+-					&irq_data);
++					chip_desc, &irq_data);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "failed to add irq chip\n");
+ 
 -- 
-2.51.0
+2.48.1
 
 
