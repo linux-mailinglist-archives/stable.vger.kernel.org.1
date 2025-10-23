@@ -1,148 +1,146 @@
-Return-Path: <stable+bounces-189104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCA9C00DB3
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 13:46:23 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18151C00D59
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 13:44:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1DA53ACB62
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 11:40:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 02C5F4FD111
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 11:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD9930DD23;
-	Thu, 23 Oct 2025 11:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84BD30DED7;
+	Thu, 23 Oct 2025 11:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vGBqCB4c"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="aYwsPchA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D7030DD2F
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 11:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6142FD690
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 11:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761219616; cv=none; b=HJCPk71E+Jp5DtCmLKCdVZwfzc1BLULGARPsvYSdb/0ZmszfdXmyO5FnOEW9aiQP9xI/LBctnRyWHhfNviYwW2hBN4YV3E++1y75siJlZeZcQIDgejjAwfM2ki8hhYN6HB4WHxxmulMIrLoSKt2Q8nwAoic/QfCbWM2IQHtxD18=
+	t=1761219862; cv=none; b=eBKnfiyDh1ZlGBhHFk84sxcQL859OK/4jqdGCTbJ1TyFNcyue+BcQhkdyqAYUH3SyWZUm+hAzJZwBcoT1/bBmgvdTyvjfba88T4O9MLGsDAMpuyrRcNto1+jXwhRoIXPB52swvKmXY6VpKu1BmQZJTca48I7qdHqcP/UA2yesMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761219616; c=relaxed/simple;
-	bh=mOdQL1gEA0sDveYqZF59jTdhyi6R3BOt3m/pryB1k8s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IocfXi2+oqM6nMbn8GDxvs782yNX4MwLDlNVVOlko19tbppLfNqSUIAVUSEAhvyd01OkOPFm+JZQUhp5HXEXZz98xU4BPYC7nDJPp0TdH8oFl9gAcf5qUywMm1A94zsranGFaMD4mt+BssAL0rQOqrsrGXAo/ql2SaXGsB9V3FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vGBqCB4c; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b4c89df6145so126217166b.3
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 04:40:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1761219613; x=1761824413; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CqaZdRm6596hrpgIfe4f6IaRd+GA1qO846EqRJ45Rvc=;
-        b=vGBqCB4ccxWyVAU3pZzCslMMgzZotbTA9BO6VYQRdn5sss0Axnv3ofhXPjWYRRPSlF
-         rtapqclTI/KdsyLuRnQFnuRDODVHFj9FOX1mcrn+jnAqTUzh7Fi4pA/aCDmbKKp7s3CF
-         zjUSpB3H5ETKlZGpTl6NJJ3zj3zjaYluphscVpKTV0lwPTkAshYauQxbcVJAjqB3w1Gz
-         K50xnFeRR1pBmaIrlP13JIGWCdg6WdOIjGva0xhBh4nC4FhF/tYZvgWv3AMZtDAro9vy
-         tUSrvmphEVqIFf6fREqb71fLbfCGg0xWyGxvACb4FqszlwPpxLR0D/Vyqlyb1e5ADOf4
-         4KAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761219613; x=1761824413;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CqaZdRm6596hrpgIfe4f6IaRd+GA1qO846EqRJ45Rvc=;
-        b=FkxoIJo1lz0RWOEZ0ixaDdElXKAsP5Bc5vO9GMqUT5WpmKt+S6VPzO6gbnnS6t/loU
-         lePCWRrj0boApJZnINnPV4KbqSOyGI6l6rUNG/WGzMYDQTLgVzUyw7woQ31umtn3sInV
-         CycSFULaxuXW5Zw4PC/BszLNOinRsDZtfz77e6AOyX50GXkfW2BxO9JLCFGgGNtsEWGy
-         E6dyCwD+WFqoMk+PSiB0aDkm04MYXvFlOtOCXlQO+1f9hVd2RjxGgluxYHtL2PxBSo3s
-         H5ZXMlh/jl7+A7iAx+xsHnSDGBmXRHViSOkIi9mQkz+NqwHqVptEAmNRJ7OdWFRlqs0f
-         m/zg==
-X-Forwarded-Encrypted: i=1; AJvYcCWq9HBgbGkLqLanMjJ0PNEtMl4jsZWb0tRfbj5u7mi+596/FnpM+Tm8OhwXXZaj9rVEEwgZUKs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywvmn3Cqhg5CEhyMAnH2GfGHikKEplFcqfyKMUnscwL571heq3w
-	Qwe/Eb+QS1eHB+U4pqawihc9WcRaX15WyD0ak8pZTV+s0E2XGtXErOxtRfbmSvHQE8k=
-X-Gm-Gg: ASbGncupz8DHLZXLv3flxKQmUjvLPZhHk9yWMncUV6GvKjT9T7O0/ETh6sq8cUQnh3y
-	E/nwFNYkxhrvJPARYpXivj5jHwoZBFfuS32lx6X1a2pHC2Ya+6kJa7sJJsKMmr1Iss4q5VD2eAf
-	nvgATnSXkqPYRYNWyCm7Vd/kf2HADivOoPPs+0o5vp2IZXkK49RYIb4WRjIPPPyCw6GWGcO+acK
-	KHh3zVAoV4mvobcVhhOx/IHLCI00mnw4la8/UEdsp7r02u8Ftb7P2Y+QyzGWSp4chu9LzTUEf5f
-	vxnGbyDtl0fEH3KWe6zCnOG0j/WxPlEVBkG8XJhD0jvhxAwmCjN6fY5sGBA2AMyiNbBB4vwCp41
-	aoe4UD8fgoc+KlyaFb9ioTUTHGhAAPrFPuuOr/NKIXuL+kb8oakfTlLng97GhDi6aWpzuCn0h0R
-	jo6aetcFu89J3RQ1xY/3Ip8vut73dnUjgXQfiGYr4cXDcsUA==
-X-Google-Smtp-Source: AGHT+IH3p84PJmGwvI2f01P7O38tZI9K0OwbqpVO9/74/g6JJiwjHN+D0EAPynMe39kBO0m67vhIJA==
-X-Received: by 2002:a17:906:fd87:b0:b2b:63a9:223b with SMTP id a640c23a62f3a-b6474b365eamr3224940566b.31.1761219612666;
-        Thu, 23 Oct 2025 04:40:12 -0700 (PDT)
-Received: from [192.168.178.36] (046124199085.public.t-mobile.at. [46.124.199.85])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d5144cfbcsm192518066b.56.2025.10.23.04.40.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 04:40:12 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Thu, 23 Oct 2025 13:39:26 +0200
-Subject: [PATCH v3 1/3] arm64: dts: qcom: sm6350: Fix wrong order of
- freq-table-hz for UFS
+	s=arc-20240116; t=1761219862; c=relaxed/simple;
+	bh=h+dc5AqFfnkmtTAZbQO+NkR9PLebd1H4BvcJw2dHSbE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=WTdgIWlMgjnU1amfyG7Px8KYRYoEasDIeEE6d6fpGaIwcvxPJrWTsXmF+IwQr0cClLA8Ga8iuGVdHHhcjB1CnQ+3MPdn69S7cBog+c/OccPhlxIum3RLgHdEuEbX5xjuWjqUx9jYH9soHKlrqpCqrbRReM9Uxqg+c4neWtHjFVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=aYwsPchA; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251023114418euoutp01b6fb413553e98730c11221ecaade6f92~xHCE4XDG20976009760euoutp01k
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 11:44:18 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251023114418euoutp01b6fb413553e98730c11221ecaade6f92~xHCE4XDG20976009760euoutp01k
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1761219858;
+	bh=2fURsD/TdpeT0oW0aRr7tuIshJQdrzIjM052zXlpILc=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=aYwsPchAgkzg8vx6Zx9On0Ol5zmYcRNq7pJA/3iWMI2MxHEsQmboZS2oUAd1Em8vw
+	 GCbsqoaDTOe7rKt+zr5549IGGelEiQxTONIcESV75u26Q1xRHzR1AtWZeJ/G4QSbE4
+	 GAry5awAaMHBz3CpHKVZW6jdfhq3Fk8S25csgJWg=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20251023114417eucas1p2eefb194161abc6c9acbf84146a6b7201~xHCEkmvBc3032330323eucas1p2w;
+	Thu, 23 Oct 2025 11:44:17 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20251023114417eusmtip1d57db1143928bedab74047ae6f135434~xHCD5EApQ2479824798eusmtip19;
+	Thu, 23 Oct 2025 11:44:17 +0000 (GMT)
+Message-ID: <4efe960a-83e3-4c0b-a7e1-1d467ea94962@samsung.com>
+Date: Thu, 23 Oct 2025 13:44:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v3] media: videobuf2: forbid remove_bufs when legacy
+ fileio is active
+To: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Tomasz Figa <tfiga@chromium.org>, Mauro Carvalho Chehab
+	<mchehab@kernel.org>, Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Hans Verkuil
+	<hverkuil@kernel.org>, stable@vger.kernel.org, Shuangpeng Bai
+	<SJB7183@psu.edu>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20251023113052.1303082-1-m.szyprowski@samsung.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20251023114417eucas1p2eefb194161abc6c9acbf84146a6b7201
+X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251023-sm6350-ufs-things-v3-1-b68b74e29d35@fairphone.com>
-References: <20251023-sm6350-ufs-things-v3-0-b68b74e29d35@fairphone.com>
-In-Reply-To: <20251023-sm6350-ufs-things-v3-0-b68b74e29d35@fairphone.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>, stable@vger.kernel.org, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761219609; l=1104;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=mOdQL1gEA0sDveYqZF59jTdhyi6R3BOt3m/pryB1k8s=;
- b=NCjA1CK8e9d0aUeCy3cGdfqVTHyko0drrGnsVMBqRTZVSMlkuM4GnexZJZlNUg0ij/Nsv9VFw
- SauSJBL7lv3BIvn7xnvQ7AhQfeGtgraNKQviqsTWHgSqoGVmyMBsfkV
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+X-RootMTR: 20251023113101eucas1p2c227985b0198d888564cab00aeb94f01
+X-EPHeader: CA
+X-CMS-RootMailID: 20251023113101eucas1p2c227985b0198d888564cab00aeb94f01
+References: <CGME20251023113101eucas1p2c227985b0198d888564cab00aeb94f01@eucas1p2.samsung.com>
+	<20251023113052.1303082-1-m.szyprowski@samsung.com>
 
-During upstreaming the order of clocks was adjusted to match the
-upstream sort order, but mistakently freq-table-hz wasn't re-ordered
-with the new order.
+On 23.10.2025 13:30, Marek Szyprowski wrote:
+> vb2_ioctl_remove_bufs() call manipulates queue internal buffer list,
+> potentially overwriting some pointers used by the legacy fileio access
+> mode. Add a vb2_verify_memory_type() check symmetrical to
+> vb2_ioctl_create_bufs() to forbid that ioctl when fileio is active to
+> protect internal queue state between subsequent read/write calls.
+>
+> CC: stable@vger.kernel.org
+> Fixes: a3293a85381e ("media: v4l2: Add REMOVE_BUFS ioctl")
+> Reported-by: Shuangpeng Bai<SJB7183@psu.edu>
+> Suggested-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> ---
 
-Fix that by moving the entry for the ICE clk to the last place.
+History:
 
-Fixes: 5a814af5fc22 ("arm64: dts: qcom: sm6350: Add UFS nodes")
-Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/sm6350.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v3:
+- moved vb2_verify_memory_type() check after (d->count == 0) check to 
+pass v4l2
+  compliance
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-index 8459b27cacc7..19a7b9f9ea8b 100644
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -1180,11 +1180,11 @@ ufs_mem_hc: ufshc@1d84000 {
- 				<0 0>,
- 				<0 0>,
- 				<37500000 150000000>,
--				<75000000 300000000>,
- 				<0 0>,
- 				<0 0>,
- 				<0 0>,
--				<0 0>;
-+				<0 0>,
-+				<75000000 300000000>;
- 
- 			status = "disabled";
- 		};
+v2: 
+https://lore.kernel.org/all/20251020160121.1985354-1-m.szyprowski@samsung.com/
+- dropped a change to vb2_ioctl_create_bufs(), as it is already handled
+   by the vb2_verify_memory_type() call
+- replaced queue->type check in vb2_ioctl_remove_bufs() by a call to
+   vb2_verify_memory_type() which covers all cases
 
+v1: 
+https://lore.kernel.org/all/20251016111154.993949-1-m.szyprowski@samsung.com/
+
+>   drivers/media/common/videobuf2/videobuf2-v4l2.c | 8 +++++---
+>   1 file changed, 5 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/media/common/videobuf2/videobuf2-v4l2.c b/drivers/media/common/videobuf2/videobuf2-v4l2.c
+> index d911021c1bb0..a8a5b42a42d0 100644
+> --- a/drivers/media/common/videobuf2/videobuf2-v4l2.c
+> +++ b/drivers/media/common/videobuf2/videobuf2-v4l2.c
+> @@ -1000,13 +1000,15 @@ int vb2_ioctl_remove_bufs(struct file *file, void *priv,
+>   			  struct v4l2_remove_buffers *d)
+>   {
+>   	struct video_device *vdev = video_devdata(file);
+> -
+> -	if (vdev->queue->type != d->type)
+> -		return -EINVAL;
+> +	int res;
+>   
+>   	if (d->count == 0)
+>   		return 0;
+>   
+> +	res = vb2_verify_memory_type(vdev->queue, vdev->queue->memory, d->type);
+> +	if (res)
+> +		return res;
+> +
+>   	if (vb2_queue_is_busy(vdev->queue, file))
+>   		return -EBUSY;
+>   
+
+Best regards
 -- 
-2.51.1
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
