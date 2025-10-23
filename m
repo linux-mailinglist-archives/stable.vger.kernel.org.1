@@ -1,228 +1,177 @@
-Return-Path: <stable+bounces-189156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 695D7C02C42
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 19:40:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1143CC02C57
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 19:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4B3294E46FC
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 17:40:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9AB43AC00E
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 17:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD63F34A76E;
-	Thu, 23 Oct 2025 17:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD4034A76D;
+	Thu, 23 Oct 2025 17:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eYjoycFg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SIztLfdL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5EF347FC9
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 17:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E773112D5
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 17:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761241232; cv=none; b=KdX3HP0qQ/YJL5NR9xRdzcerCH337lZ+r6fuaZeDOOmkbOWhnZOzcZ8g3aZG/Y8+vEaWVuUV8lPEh+m772xVLKeJ5nNAsjF4XhDil32jFPxdcco0zWtq4/sZMParB3ZzG8GgdMrNpfAvGiDQGxgtpk5bRIjJyTKTy2eGIIbG9qw=
+	t=1761241366; cv=none; b=KFalaf+vwhzUfdprtfDZ+fY6RyJK9qySf/v+dqZMmEZOSVfS0s+BU3zHHQjYjAKDJk//MDqYvHTgdbhMBKK1sEu0FVzud9AVHCKoso1znZt7KdZ8/8JkH9pvhVT1Ane7vKgDsCkXQkPPKF6ygdkJW0n3RwZ9MUkg6y0Y2wBRQh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761241232; c=relaxed/simple;
-	bh=TTK6h6ml7y/22TB+D+/QTwGdPNuUZy3BGLD3gRDdYAM=;
+	s=arc-20240116; t=1761241366; c=relaxed/simple;
+	bh=tN8Tb70+nrqsimQF3WIi1yTMIjN+5Om0ChlgLkRhs+A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sPF8rZ289vfZ2tTxfK4eE4Kq9l+NjBbT2IGh3dSod5nSdAkCNs38dBVnhlGiVCVrx+yUpwkEqxosrJZnAvrjxDnWogxNGl7mPubg7QmOS8qttPkp2L+b59eVfjwuQuurOsHNlrkvP74fqKs03qx72ODbfsuEMjMsZOBy/vRHH8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eYjoycFg; arc=none smtp.client-ip=209.85.208.41
+	 To:Cc:Content-Type; b=SE+0pYEKjSHaInPiyxZIl+qENJd8xvYJ024UkZaEPIpo7ej78AQI/jasvwRIIdoAt8Lm9gUW0/ubb9nVrGdGBO6EghBaq6CucpysRuC0f74GEX5/QuM8xTsX5E4Ff0DZSR2T2Ua7gMhx8qwIKNUzVNlgKiGiB5pDA9J1cLd+kpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SIztLfdL; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63e076e24f2so2327092a12.3
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 10:40:29 -0700 (PDT)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7a26dab3a97so687651b3a.0
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 10:42:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761241228; x=1761846028; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761241364; x=1761846164; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=smzdmE7oqDk8LuIhXOJODpEUrtL1Td6tLH8AoLayyPw=;
-        b=eYjoycFgUCk9GaDxqbRzoUj4IiltGk2u55V0kLa6PmdSHsBkiJJabBLYfDsp9VZrOq
-         0RmTBwNI7ijbhKKLAkd9+cAMhWaIgCVgmrTIkDBiiz2NndQxhn+/cSzIZXZe5c3AJPmS
-         uJ43YpR/1emzqFLJCeHzWleD5tEXIHhrSGy3h60K1GnEGmqIwufjNUBe8bE+ME4C4sPy
-         v8n0FvYa/WCYG/yCSbvwfuy/31wtcEZB5JAOOMhO0I1FDRSCrEjzyUcSeW9Sf8tHUAUo
-         naG85qzW4sXNmDCa4TjHcLx0/RsjDd7TshEIePFtpEG0Kw8OkPJgNPKuy1LmSnhpL8dk
-         wWCQ==
+        bh=PPAtMguVYUjm2bPXdyPdBBsK+GKvEKPYmuqUzpm+2v0=;
+        b=SIztLfdLp598RQ3YFRGSDgX9PXgBp8nKYfl1jWbJ3X6v6+7xYJPp8tU+oUlsDlAuhU
+         YR1tqeEYla5kvVpZyy2OMSunZNoUuGfItKd/Rg/+8qOl90kNDLj/9EKANxCl/pX0IO/H
+         tRp8zS6SLOVHp4H4d1i5uFD3Vgf2yb+E5uZlv1f+9jwSzO5cKIR+/Ns8TvuiqLevA0Kq
+         IhGTUO7Jk7egOiaBOP9de7TOL3aV6fQPVWMmvh0i44z3pxJRR8IpGFAMxXWMzjsNBYbv
+         vGjjQr2SwPN+rMkF2/YDzkjVVTcC0LyTKGceq0SUjggVVaXlOnG71BkEcF0hCgbiwK2+
+         7luw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761241228; x=1761846028;
+        d=1e100.net; s=20230601; t=1761241364; x=1761846164;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=smzdmE7oqDk8LuIhXOJODpEUrtL1Td6tLH8AoLayyPw=;
-        b=cC3nfe874AmQ8KIY4C1/zsU9ugbM+dsd9TAkDUwZklGjm2xfnKBhs3OFIOrYCWFabk
-         dFZrCMSOnTTJWjEYlAwAeOJQ9JrizYBaYebuSe9eNIPP1OWFndpq+rIwYn7NxEWU97Vw
-         ufnop8hzDHLNz5EJBCgM2fdv9Xf2yxXw4HB+rHS3bLhMuFVw18+b3Gxp7vcMnt8+QHtP
-         myxLiiKU9O/59tjQrmOlB3eedIux4yWeem3HlI2Yaonj4TmjNdZI4kK3efeyVI2IcGU6
-         rgsJOMTyOHIzrt9SU2zJ/1oK3zz/ObVV8N2XQRw9T93IGcaGYqaiNs13Iia1PD3yfIM9
-         LYzg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0XSGWOmzrwdEJmCSboD8SHS/PT/hRkFTOUkW7fVmBerDE7JaFDZVfenxgkEqBYz41cbycyTM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRwp76YIaCeZCPm7kg4DD+K4RyX2wdi2OnOGm5/CDsH4vSaaVp
-	o1l8USIGU+KbCe9aAU7WNG9A2rsfK0tNHyBHzYovaiXKXKOtDvd1LJ63623/axdtygieCv0kwPU
-	4T8yrML7gady0ZvKKSgWjVPHLtF7Kbdk=
-X-Gm-Gg: ASbGncuTL6ByBgVqyzIBRTtedVgVMFUOCcXakXOnX7vbd/1SXmnGABE5xbargmTESvf
-	FmU3mHOgr7H6kDiXmYARdZF85ZW8KahjSynoyNB3oz9xwfGNffZMbttR86PxFAj5wRz4IJ3653v
-	9n4UFXEm0L8AAj1AEoC68PXPRLDxhHYgb+wyrSwFVXn06N+gDOzpeYpF24gfEjhXL+tOqgTmP2M
-	5i7VOiSCGx9nU2wUJ4er2nCChbL1U9epYle8+khcbYnp9wCmKQwSKM4aajs3H7MIZ5pHJLXyg==
-X-Google-Smtp-Source: AGHT+IHow1VR8JQAE5q6qgDSicvmCI1LUGpLgKgoz/cgPgRgNpbdkUQD3/ZXHjoZ0VycRm0yeeZH7AQnSl5smGqMZo0=
-X-Received: by 2002:a17:907:3f87:b0:b3c:3c8e:1896 with SMTP id
- a640c23a62f3a-b6473b52634mr2763877966b.42.1761241228124; Thu, 23 Oct 2025
- 10:40:28 -0700 (PDT)
+        bh=PPAtMguVYUjm2bPXdyPdBBsK+GKvEKPYmuqUzpm+2v0=;
+        b=wFyCsAtwPI4+goJlOMtMX0KH+wE2mLhczxURoqz2Jk7glEN6uJBNVPpX9oyA3O0TRU
+         rHdP9pWk9APpK5FGXM7vuPrlnxZFqoE6Lv3Ik3okx+cz9DLWZqVPsYoRn5nklP+be2H5
+         sSKNJD5ucG7N9+g12yIbFFsGub6HfAo1LiXY1/JZ1R23qBJh0NePRBQHQnHz2urKW+UX
+         TA5wS8f6pJygrjF/rP/fcqSGVa3gFz3/Pa62lIZ6TcRI8A73q6odz+bYu0MscuDkNmW4
+         bSxDoa2O59Q9TAvWVADyKSC1TH97N1jRo8ObUcgsp1LOuwOjGZ1H4FGT9FmpBP8LlhO2
+         4i9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVQYtkTZvikXCMDioaMZAwNCbaeH+qCERNE/0Nx/cADfFpqIEIEHEvBdiazfMWZtc4+3RFlEuM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8tb3z9aemVDjfVBL/yX0GNpmq0mHC0aRyRTTcrATUv172wGcU
+	0e+zuZPJXa6v6yU8zkhX3qk/He9zxlxQiY+iJHJLjD98P0ZHkLk4g6UmiZqAWTRnVqCNR5q8WSM
+	NGX6rWdDM0p93uynvCpGi547dlxbwgCM=
+X-Gm-Gg: ASbGncvvMkbe8n9XCEI+sV1jEc74u9VfGYG/V2b7LyuIHMWV2Re+TKXt0Q30/RTU1Hh
+	9jeS9VI7SfA/uPf6Ig3wyC51kpT0xoM5n/jAHFKtb3bOJbwrrnGP4E1UUcQs1CmAKM6zf4E2htj
+	ivRTMjWUy1Gt8MAguZFC0kAFtCqyFQ2eCQZGBkf0BwO6QMHQHLm5j/5Y7sbP1e+vASsr37Eq2v3
+	aw2uKjtaUhGJ7J5KYDtRa0wdkY4LzqlZWvXDsVKjCCjpeZ94/ftTOoftHDI
+X-Google-Smtp-Source: AGHT+IGLmB1ebZNebWwSLNxI6zWpEV/Sv/pPIWfLfVFPhnIS1gTRgxcF5G/Ed1LOT26G5vAVRNngplSfykW+Lus7CTI=
+X-Received: by 2002:a17:903:94e:b0:27e:dc53:d222 with SMTP id
+ d9443c01a7336-290cb278e97mr315093915ad.44.1761241364475; Thu, 23 Oct 2025
+ 10:42:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251023030521.473097-1-ziy@nvidia.com>
-In-Reply-To: <20251023030521.473097-1-ziy@nvidia.com>
-From: Yang Shi <shy828301@gmail.com>
-Date: Thu, 23 Oct 2025 10:40:15 -0700
-X-Gm-Features: AWmQ_bn3zq0uDKg6ko2JiMC7FRwDGgYYe7WpkCFUwmKJwPnSL1F1mC_HQ9WgH9I
-Message-ID: <CAHbLzkqf37UpnFmQ_yZqZmWAa5X72JgFHsyUUBcyP6Pn9c3YyQ@mail.gmail.com>
-Subject: Re: [PATCH v4] mm/huge_memory: preserve PG_has_hwpoisoned if a folio
- is split to >0 order
-To: Zi Yan <ziy@nvidia.com>
-Cc: linmiaohe@huawei.com, david@redhat.com, jane.chu@oracle.com, 
-	kernel@pankajraghav.com, akpm@linux-foundation.org, mcgrof@kernel.org, 
-	nao.horiguchi@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, stable@vger.kernel.org
+References: <20251023065913.36925-1-ryncsn@gmail.com> <774c443f-f12f-4d4f-93b1-8913734b62b2@redhat.com>
+ <f0715f2c-ee27-4e13-84d0-5df156410527@redhat.com>
+In-Reply-To: <f0715f2c-ee27-4e13-84d0-5df156410527@redhat.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 24 Oct 2025 01:42:05 +0800
+X-Gm-Features: AS18NWCKbpYNUbtlmhqYan2nj3cCPEw88Vfgq-76wvP0ZxptePnkT4EeZPn3IR4
+Message-ID: <CAMgjq7Chg6e_xL4wxYJqMzmCRENawQ63KSABrZ9zVbR4ET=YFA@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/shmem: fix THP allocation and fallback loop
+To: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Hugh Dickins <hughd@google.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Liam Howlett <liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Mariano Pache <npache@redhat.com>, Matthew Wilcox <willy@infradead.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 22, 2025 at 8:05=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+On Fri, Oct 24, 2025 at 12:14=E2=80=AFAM David Hildenbrand <david@redhat.co=
+m> wrote:
 >
-> folio split clears PG_has_hwpoisoned, but the flag should be preserved in
-> after-split folios containing pages with PG_hwpoisoned flag if the folio =
-is
-> split to >0 order folios. Scan all pages in a to-be-split folio to
-> determine which after-split folios need the flag.
+> On 23.10.25 18:13, David Hildenbrand wrote:
+> > On 23.10.25 08:59, Kairui Song wrote:
+> >> From: Kairui Song <kasong@tencent.com>
+> >>
+> >> The order check and fallback loop is updating the index value on every
+> >> loop, this will cause the index to be wrongly aligned by a larger valu=
+e
+> >> while the loop shrinks the order.
+> >>
+> >> This may result in inserting and returning a folio of the wrong index
+> >> and cause data corruption with some userspace workloads [1].
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n=
+4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
+> >> Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem=
+")
+> >> Signed-off-by: Kairui Song <kasong@tencent.com>
+> >>
+> >> ---
+> >>
+> >> Changes from V2:
+> >> - Introduce a temporary variable to improve code,
+> >>     no behavior change, generated code is identical.
+> >> - Link to V2: https://lore.kernel.org/linux-mm/20251022105719.18321-1-=
+ryncsn@gmail.com/
+> >>
+> >> Changes from V1:
+> >> - Remove unnecessary cleanup and simplify the commit message.
+> >> - Link to V1: https://lore.kernel.org/linux-mm/20251021190436.81682-1-=
+ryncsn@gmail.com/
+> >>
+> >> ---
+> >>    mm/shmem.c | 9 ++++++---
+> >>    1 file changed, 6 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/mm/shmem.c b/mm/shmem.c
+> >> index b50ce7dbc84a..e1dc2d8e939c 100644
+> >> --- a/mm/shmem.c
+> >> +++ b/mm/shmem.c
+> >> @@ -1882,6 +1882,7 @@ static struct folio *shmem_alloc_and_add_folio(s=
+truct vm_fault *vmf,
+> >>      struct shmem_inode_info *info =3D SHMEM_I(inode);
+> >>      unsigned long suitable_orders =3D 0;
+> >>      struct folio *folio =3D NULL;
+> >> +    pgoff_t aligned_index;
+> >>      long pages;
+> >>      int error, order;
+> >>
+> >> @@ -1895,10 +1896,12 @@ static struct folio *shmem_alloc_and_add_folio=
+(struct vm_fault *vmf,
+> >>              order =3D highest_order(suitable_orders);
+> >>              while (suitable_orders) {
+> >>                      pages =3D 1UL << order;
+> >> -                    index =3D round_down(index, pages);
+> >> -                    folio =3D shmem_alloc_folio(gfp, order, info, ind=
+ex);
+> >> -                    if (folio)
+> >> +                    aligned_index =3D round_down(index, pages);
+> >> +                    folio =3D shmem_alloc_folio(gfp, order, info, ali=
+gned_index);
+> >> +                    if (folio) {
+> >> +                            index =3D aligned_index;
+> >>                              goto allocated;
+> >> +                    }
+> >
+> > Was the found by code inspection or was there a report about this?
 >
-> An alternatives is to change PG_has_hwpoisoned to PG_maybe_hwpoisoned to
-> avoid the scan and set it on all after-split folios, but resulting false
-> positive has undesirable negative impact. To remove false positive, calle=
-r
-> of folio_test_has_hwpoisoned() and folio_contain_hwpoisoned_page() needs =
-to
-> do the scan. That might be causing a hassle for current and future caller=
-s
-> and more costly than doing the scan in the split code. More details are
-> discussed in [1].
+> Answering my own question, the "Link:" above should be
 >
-> This issue can be exposed via:
-> 1. splitting a has_hwpoisoned folio to >0 order from debugfs interface;
-> 2. truncating part of a has_hwpoisoned folio in
->    truncate_inode_partial_folio().
+> Closes:
+> https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgott=
+edy0S6YYeUw@mail.gmail.com/
 >
-> And later accesses to a hwpoisoned page could be possible due to the
-> missing has_hwpoisoned folio flag. This will lead to MCE errors.
->
-> Link: https://lore.kernel.org/all/CAHbLzkoOZm0PXxE9qwtF4gKR=3DcpRXrSrJ9V9=
-Pm2DJexs985q4g@mail.gmail.com/ [1]
-> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
 
-Thanks for fixing this. Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
-
-> ---
-> From V3[1]:
->
-> 1. Separated from the original series;
-> 2. Added Fixes tag and cc'd stable;
-> 3. Simplified page_range_has_hwpoisoned();
-> 4. Renamed check_poisoned_pages to handle_hwpoison, made it const, and
->    shorten the statement;
-> 5. Removed poisoned_new_folio variable and checked the condition
->    directly.
->
-> [1] https://lore.kernel.org/all/20251022033531.389351-2-ziy@nvidia.com/
->
->  mm/huge_memory.c | 23 ++++++++++++++++++++---
->  1 file changed, 20 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index fc65ec3393d2..5215bb6aecfc 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3455,6 +3455,14 @@ bool can_split_folio(struct folio *folio, int call=
-er_pins, int *pextra_pins)
->                                         caller_pins;
->  }
->
-> +static bool page_range_has_hwpoisoned(struct page *page, long nr_pages)
-> +{
-> +       for (; nr_pages; page++, nr_pages--)
-> +               if (PageHWPoison(page))
-> +                       return true;
-> +       return false;
-> +}
-> +
->  /*
->   * It splits @folio into @new_order folios and copies the @folio metadat=
-a to
->   * all the resulting folios.
-> @@ -3462,17 +3470,24 @@ bool can_split_folio(struct folio *folio, int cal=
-ler_pins, int *pextra_pins)
->  static void __split_folio_to_order(struct folio *folio, int old_order,
->                 int new_order)
->  {
-> +       /* Scan poisoned pages when split a poisoned folio to large folio=
-s */
-> +       const bool handle_hwpoison =3D folio_test_has_hwpoisoned(folio) &=
-& new_order;
->         long new_nr_pages =3D 1 << new_order;
->         long nr_pages =3D 1 << old_order;
->         long i;
->
-> +       folio_clear_has_hwpoisoned(folio);
-> +
-> +       /* Check first new_nr_pages since the loop below skips them */
-> +       if (handle_hwpoison &&
-> +           page_range_has_hwpoisoned(folio_page(folio, 0), new_nr_pages)=
-)
-> +               folio_set_has_hwpoisoned(folio);
->         /*
->          * Skip the first new_nr_pages, since the new folio from them hav=
-e all
->          * the flags from the original folio.
->          */
->         for (i =3D new_nr_pages; i < nr_pages; i +=3D new_nr_pages) {
->                 struct page *new_head =3D &folio->page + i;
-> -
->                 /*
->                  * Careful: new_folio is not a "real" folio before we cle=
-ared PageTail.
->                  * Don't pass it around before clear_compound_head().
-> @@ -3514,6 +3529,10 @@ static void __split_folio_to_order(struct folio *f=
-olio, int old_order,
->                                  (1L << PG_dirty) |
->                                  LRU_GEN_MASK | LRU_REFS_MASK));
->
-> +               if (handle_hwpoison &&
-> +                   page_range_has_hwpoisoned(new_head, new_nr_pages))
-> +                       folio_set_has_hwpoisoned(new_folio);
-> +
->                 new_folio->mapping =3D folio->mapping;
->                 new_folio->index =3D folio->index + i;
->
-> @@ -3600,8 +3619,6 @@ static int __split_unmapped_folio(struct folio *fol=
-io, int new_order,
->         int start_order =3D uniform_split ? new_order : old_order - 1;
->         int split_order;
->
-> -       folio_clear_has_hwpoisoned(folio);
-> -
->         /*
->          * split to new_order one order at a time. For uniform split,
->          * folio is split to new_order directly.
-> --
-> 2.51.0
->
+Thanks for the review. It's reported by and fixed by me, so I didn't
+include an extra Report-By & Closes, I thought that's kind of
+redundant. Do we need that? Maybe Andrew can help add it :) ?
 
