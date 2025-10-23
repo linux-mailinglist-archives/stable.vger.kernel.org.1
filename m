@@ -1,165 +1,163 @@
-Return-Path: <stable+bounces-189066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1099DBFF70C
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 08:59:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04E2BFF72D
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 09:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50E53A2832
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 06:59:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D088D3A4F54
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 07:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA6B29C33F;
-	Thu, 23 Oct 2025 06:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A2527A448;
+	Thu, 23 Oct 2025 07:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PVGXZ3Xe"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="vu+Mc10b"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CEC279DC9
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 06:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B5E1D6194;
+	Thu, 23 Oct 2025 07:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761202763; cv=none; b=OTfF5Q9g1TgfbH4Xz7EZNrCTLKZkan7wLI0ehYyFCIQNw8/NE0ThN9kr2D2HYuw1tibkFKYlttFVIIUE7wGdTkV44juSwmLbjr9RJ6MHxJXFXfRnCUt+BMtAg8EbE0OFwj2Bd4HAZ5HWBw9xlPtuD/FaTFyRgACp+404Y1qYrXg=
+	t=1761203006; cv=none; b=oewH53McTim7J7DLuf+UtPVIo6IZMT5fD8lRZmAoarkc3ND/soqKc2FJwj2Werw2eUNyOWFC/cyjLRTFj4hvr+8N6Pscw6mfWyTky6r8dXjioSwQiyerj7rsIk+zIxTL3icnMQu6nzmqSujh9oJmlRAXwKylBH6e665XLyp1e2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761202763; c=relaxed/simple;
-	bh=jv3RRiQeAxRj+yS1gIR9ygnBb8z/VVm8giUZt1eG3P0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mVVHc9gRsGPWEFcGE0sk0XQ2BGgkSfSBwYE9ZDca1RnKBqakn9avbTCwudhwwYaRS7jjxRT0jFz1MK/YHF3ppLPGqgOS/1y5se/PjGGxiCvNFVYF4K6u6PHux/sYq04IcWK9LDk05Nto9KQ9nZZEI2q1wR+XUZsWdmZ4NlSwgM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PVGXZ3Xe; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-339d7c4039aso505572a91.0
-        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 23:59:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761202761; x=1761807561; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rv8wkF7zXzO22qUjEduk8QMkq+ulYIyp393gGAAnjeA=;
-        b=PVGXZ3Xe2ueNZRV4NcXS0RxIZYo6klu4qou5aLo+QN3kCfDUYU/6/7b/sErcAIGJA7
-         dX+o1EHbquax9OV3euJvpISoPQNtq0hfAdw6J5sahdOUnoCYtUQ+TDrs/sWHpetjSDE2
-         w9893JySCFztXCTMllf5rRPpL7HXOm0qPaKzxbciyjYHaabYJ5/tT7EeGyrzzLKvi/RU
-         5S+DSjOOuhOb1/HuOR+LJGvjLow4kycrFgd3tLG3X+dleKh8PMqNVyGCqWBMN9yZdtPZ
-         6/K4I36co15nwkry3LYId+DOqyDpwObi77gFmxcOdhHoTU0VxzOWJGT5Pk9bsNkFS0nY
-         YsFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761202761; x=1761807561;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rv8wkF7zXzO22qUjEduk8QMkq+ulYIyp393gGAAnjeA=;
-        b=N4c0UbSgMdksDQtKW+egYDf/rD63cEM8oglEbZ+t5MZhvBMD5rKFH8CQ6gQ6Kv6M/Y
-         0XWota7jl7klwMmkAJkh4FkumEFuLmrmAPlJds3hT0zVE2kGcx/M2smyf3ZvZn2dwns4
-         ABpG7pTgAVjHqj8/KbR0+0qtHU7XAAjqGS5Gqvf7PDjZW13Y08LncLvS/N3ndJQ4JYXb
-         YZgMwsWltQVsD3ZrZYN7WjGQgS63BFPLlHeGSF0wvam0RuGPuiZhbv1+aHzYvtyGvu01
-         9h8+HK8BL9dH5JjMKMCZYevYVaniQKhjdBRc79MkMHoOQk7ymY3os/bBLWeBrzakU0pB
-         EOaw==
-X-Forwarded-Encrypted: i=1; AJvYcCWRVFx0s72fqytOh0JLBzDvyu1M2aTtO1jA92cPIqS+/tUlUL8HRSQkDgKPjKAAZvS4x/ALQ7Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkG3uR7FcSH964Pmdqf6ZpRP2ChdvoA6lxzwjH1IUE3P3dm+Sa
-	OGS47MqDszHwrisahsmy1b/RaGRNDfKz0WF32Z03uKxB/Mgt5oKs2QTM5ePlYywk8Fg=
-X-Gm-Gg: ASbGncu055pbLwMmSXHdN7yCHA2kBLk3vIsftkPtL0PWLLzXAzKtOECp+UyImIfFy85
-	Ugrb7N0aYJn3JB0jzRAUcJHfdRqWxZEmw1IeLqQJ5xGqa+lt+mNLTQsKliScVsRru3aw8cY9Nkl
-	PAG6U+gm/ZZWCxMOOfnYPqapLKMH20rEJpyvfpvHc+VKROODS78WozuiIekm9eOk1thHsLwXwWQ
-	T7SiZ+L/8UmfJ8jB/lAoJTz3HrupFHqW/1aXBZsE6lGMtHyBcvEepbZZMoBFUFWWZfY3Wm3TYu3
-	NFxRKnbGTiK3epyj2zLeDryHsTkteAQBz4CNaKOEkZmBipBE95yLsx6f2wCcee3x1cd1VYYLoje
-	LDViAZNvJDx8GqHoCPaFYfksG3JGU8bb/rWCWNEISlC7yBSTE3zqbbcILQ3V0HjLxWSUT9YPaKl
-	jSpQH495jQXZhTGw==
-X-Google-Smtp-Source: AGHT+IGY9vl7Ys2QrXyChnMJJ8Hm15T8p66vefo6gmsF42VNf8SOd0Wf86nEbGrndI9aN+e5mM9IXw==
-X-Received: by 2002:a17:90b:1dc4:b0:33b:ade7:51d3 with SMTP id 98e67ed59e1d1-33bcf8f78c4mr32616407a91.20.1761202760650;
-        Wed, 22 Oct 2025 23:59:20 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.24])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fb016f83fsm1351963a91.12.2025.10.22.23.59.16
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 22 Oct 2025 23:59:19 -0700 (PDT)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Hugh Dickins <hughd@google.com>,
-	Dev Jain <dev.jain@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mariano Pache <npache@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] mm/shmem: fix THP allocation and fallback loop
-Date: Thu, 23 Oct 2025 14:59:13 +0800
-Message-ID: <20251023065913.36925-1-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.51.0
-Reply-To: Kairui Song <ryncsn@gmail.com>
+	s=arc-20240116; t=1761203006; c=relaxed/simple;
+	bh=0ckqV0K2dAXM3Dkb2JcKRgkmbGuv8T4/uaLf0swVWsU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qbiSnah3XxjiRye3n+vmr9fla0hnfwSizhgJZo7BrzhdDxZUTXUwfGlkxCDwZmfPxtRv01p9gJRF5VH4MPHHbItmY/WWx1MFOPQsI7heNy2pE40EJCs9ZxlwFovhFUnmw60HrbWV5VH25y+7kAlijcW6PwMQi0SmpZAlbAC1l3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=vu+Mc10b; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cscSJ4tYYz9t4g;
+	Thu, 23 Oct 2025 09:03:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1761202992;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G6Ffq+ccXhdu6bXkIVnRfbSR16dvXJBwWlJvJBmc4C0=;
+	b=vu+Mc10bLXPpvhAqYk5bXxYTs1HTKafr6RVNerUH3+/USKTUzMsf+pd1rvIWl9QchACxgY
+	4zKKcupQrMnuvqwZI7y99Fci6+G7L5Tj1nJyEppAlzPlroaJnvnX4Fj7gRi3kCKFSoT2/H
+	uH01xiEk6xYbMxtHS50MrrVbQE8dW9nYZXhITofdse1xstTFfhADwldr64mub4LkhxyAdH
+	NniMIgcoPySC5PBH8r5adx8mqwK/9y+KDFVITyXqemq3caRUPBtPjmxjghvBY80hL12zjQ
+	6b6hWvtEjQtV/SnMlX3TSEQI9iFnql5jaDzi2unQD7+L0B8XGM3HypbE9GQJjQ==
+Message-ID: <9c7e43c3-24e9-4b08-a6ce-2035b50226f4@mailbox.org>
+Date: Thu, 23 Oct 2025 09:03:07 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+To: "Musham, Sai Krishna" <sai.krishna.musham@amd.com>,
+ "mani@kernel.org" <mani@kernel.org>,
+ "Havalige, Thippeswamy" <thippeswamy.havalige@amd.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, "Bandi, Ravi Kumar"
+ <ravib@amazon.com>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+ "robh@kernel.org" <robh@kernel.org>, "Simek, Michal" <michal.simek@amd.com>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Sean Anderson <sean.anderson@linux.dev>,
+ "Yeleswarapu, Nagaradhesh" <nagaradhesh.yeleswarapu@amd.com>
+References: <20251021212801.GA1224310@bhelgaas>
+ <ab1f7c51-bc41-4774-a0dc-850e53c412eb@mailbox.org>
+ <3it5l556vmfpuu6kz5yvulwosi4ecmcgfbzcizrc5wi7ifddkh@mpzfxf2v6v3f>
+ <72267a6c-13c7-40bd-babb-f73a28625ca4@mailbox.org>
+ <SN7PR12MB7201CF621AF0A38AA905799D8BF3A@SN7PR12MB7201.namprd12.prod.outlook.com>
+ <brekq5jmgnotwpshcksxefpg2adm4vlsbuncazdg32sdpxqjwj@annnvyzshrys>
+ <SN7PR12MB7201C6B5B64F8847DD6D816D8BF3A@SN7PR12MB7201.namprd12.prod.outlook.com>
+ <zuj6puxpqgjmaa3y3wwyixlru7e7locplnjev37i5fnh6zummw@72t5prkfsrpk>
+ <DM4PR12MB6158ACBA7BCEDB99A55ACA03CDF3A@DM4PR12MB6158.namprd12.prod.outlook.com>
+ <29bc5e92-04c9-475a-ba3d-a5ea26f1c95a@mailbox.org>
+ <DM4PR12MB615855ADA4F81818418FD6EBCDF0A@DM4PR12MB6158.namprd12.prod.outlook.com>
+Content-Language: en-US
+From: Stefan Roese <stefan.roese@mailbox.org>
+In-Reply-To: <DM4PR12MB615855ADA4F81818418FD6EBCDF0A@DM4PR12MB6158.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 358144a9827ee41a4ee
+X-MBO-RS-META: g69ksoo1z1asa47yurzwt9fgrzr3uqh6
 
-From: Kairui Song <kasong@tencent.com>
+On 10/23/25 08:35, Musham, Sai Krishna wrote:
+> [AMD Official Use Only - AMD Internal Distribution Only]
+> 
+>> -----Original Message-----
+>> From: Stefan Roese <stefan.roese@mailbox.org>
+>> Sent: Wednesday, October 22, 2025 7:08 PM
+>> To: Musham, Sai Krishna <sai.krishna.musham@amd.com>; mani@kernel.org;
+>> Havalige, Thippeswamy <thippeswamy.havalige@amd.com>
+>> Cc: Bjorn Helgaas <helgaas@kernel.org>; Bandi, Ravi Kumar
+>> <ravib@amazon.com>; lpieralisi@kernel.org; bhelgaas@google.com; linux-
+>> pci@vger.kernel.org; kwilczynski@kernel.org; robh@kernel.org; Simek, Michal
+>> <michal.simek@amd.com>; linux-arm-kernel@lists.infradead.org; linux-
+>> kernel@vger.kernel.org; stable@vger.kernel.org; Sean Anderson
+>> <sean.anderson@linux.dev>; Yeleswarapu, Nagaradhesh
+>> <nagaradhesh.yeleswarapu@amd.com>
+>> Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+>>
+>> Caution: This message originated from an External Source. Use proper caution
+>> when opening attachments, clicking links, or responding.
+>>
+>>
+>> On 10/22/25 14:48, Musham, Sai Krishna wrote:
+>>> [AMD Official Use Only - AMD Internal Distribution Only]
+>>
+>> <snip>
+>>
+>>>>> We even don’t need ravi patch, as we have tested this at our end it
+>>>>> works fine by just updating interrupt-map Property. We need to now
+>>>>> understand the
+>>>> difference in design.
+>>>>
+>>>> Ok, please let us know with your findings. In the meantime, I'll keep
+>>>> Ravi's patch in tree, as it seems to be required on his setup.
+>>>>
+>>>
+>>> We tested on Linux version 6.12.40 without applying either Stefan's or Ravi's
+>> patches.
+>>> Instead, we applied only the following interrupt-map property change
+>>> (entries 0,1,2,3) and verified that legacy interrupts are working correctly.
+>>>
+>>> interrupt-map = <0 0 0 1 &pcie_intc_0 0>,
+>>> <0 0 0 2 &pcie_intc_0 1>,
+>>> <0 0 0 3 &pcie_intc_0 2>,
+>>> <0 0 0 4 &pcie_intc_0 3>;
+>>>
+>>> 38:       1143          0  pl_dma:RC-Event  16 Level     80000000.axi-pcie
+>>> 39:       1143          0  pl_dma:INTx   0 Level     nvme0q0, nvme0q1
+>>
+>> Okay. Same here. I don't need Ravi's patch for the INTx bit enabling.
+>>
+>> I understand that you want us to change the interrupt map in the auto- generated
+>> device-tree from Vivado. Which is IMHO a bit "suboptimal".
+>>
+>> I would prefer to have a solution which works out-of-the-box, w/o the need to
+>> manually change DT properties. Is it planned to change / fix this interrupt map in
+>> pl.dtsi generated with a newer version of Vivado?
+>>
+> 
+> Yes Stefan, this will be fixed in the newer versions and the auto-generated
+> device tree will include the correct interrupt-map property entries.
 
-The order check and fallback loop is updating the index value on every
-loop, this will cause the index to be wrongly aligned by a larger value
-while the loop shrinks the order.
+Understood. And thanks the update on this.
 
-This may result in inserting and returning a folio of the wrong index
-and cause data corruption with some userspace workloads [1].
+@Bjorn & Mani, this patch can be dropped then.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
-Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-
----
-
-Changes from V2:
-- Introduce a temporary variable to improve code,
-  no behavior change, generated code is identical.
-- Link to V2: https://lore.kernel.org/linux-mm/20251022105719.18321-1-ryncsn@gmail.com/
-
-Changes from V1:
-- Remove unnecessary cleanup and simplify the commit message.
-- Link to V1: https://lore.kernel.org/linux-mm/20251021190436.81682-1-ryncsn@gmail.com/
-
----
- mm/shmem.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b50ce7dbc84a..e1dc2d8e939c 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1882,6 +1882,7 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
- 	struct shmem_inode_info *info = SHMEM_I(inode);
- 	unsigned long suitable_orders = 0;
- 	struct folio *folio = NULL;
-+	pgoff_t aligned_index;
- 	long pages;
- 	int error, order;
- 
-@@ -1895,10 +1896,12 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
- 		order = highest_order(suitable_orders);
- 		while (suitable_orders) {
- 			pages = 1UL << order;
--			index = round_down(index, pages);
--			folio = shmem_alloc_folio(gfp, order, info, index);
--			if (folio)
-+			aligned_index = round_down(index, pages);
-+			folio = shmem_alloc_folio(gfp, order, info, aligned_index);
-+			if (folio) {
-+				index = aligned_index;
- 				goto allocated;
-+			}
- 
- 			if (pages == HPAGE_PMD_NR)
- 				count_vm_event(THP_FILE_FALLBACK);
--- 
-2.51.0
+Thanks,
+Stefan
 
 
