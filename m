@@ -1,215 +1,198 @@
-Return-Path: <stable+bounces-189056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CC7BFF3E0
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 07:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 864B8BFF46F
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 07:50:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 230B83A8C02
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 05:20:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2DB93A83F3
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 05:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073C0248869;
-	Thu, 23 Oct 2025 05:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422D2242D7C;
+	Thu, 23 Oct 2025 05:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00Cs/y7d"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ABKZBjWL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AA9242D70;
-	Thu, 23 Oct 2025 05:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C9E1D7999
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 05:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761196841; cv=none; b=GymHJJdXWSsBaQMKwOKBEs1x4AvAZ0rUvdA7wVoLqxfiwEt0yE3wr9PUB+Uv8w/R7IvNRcDIMOqOjx9s1/QHr7y5DxUbLcKUL6a2Wi4+iIAGGFxgkOATWyFocWUk1TsO7FYeH2OwXAFSC0Wicm2gNa7kBPgPXLQ1nLHVQ6rljbo=
+	t=1761198593; cv=none; b=Ne8yNCPBLZlP9Dih95Il3PfCRcvZ32afao0Ryn25Q7/wxddvyCTG2Lv6v04XS+HtABquSNQ1101m/xm63dbmU8tJJ1ZWTcVmVDCmBUWAt600/huMrxi8kRTTelu480OerJDClulT43VTC4JuhxqqlWpMJIyjh+Bo5cjZgBZJk/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761196841; c=relaxed/simple;
-	bh=hn9Vo2gjlbAoD8sdpgHL7QW0YWQDhQoNg3RrvPJiPr8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M98Nk37DC/jqQHQrqKQ+P68hTKS0k6LjQGr+J3qbNMtOCkynH1FvBo05GWOCUDqDjpIEjQpuLE7NviI8Hv0bHZLJcFkC12NM5pOM4D/kqebHRASE0+paeznlL8NUae8lLORTXKUOg6P0Kiu4yeU/JA8JUDVaSZcbdUGEJeQ+CA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00Cs/y7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC3AC4CEE7;
-	Thu, 23 Oct 2025 05:20:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761196841;
-	bh=hn9Vo2gjlbAoD8sdpgHL7QW0YWQDhQoNg3RrvPJiPr8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=00Cs/y7dQBxYjuqXo93KdIftfjPJE8+zwXfa3++JrCLhbIoq2mrorMAKwnS5sedMI
-	 TVNPTtJYZz/9H+u2IAlU4uLhvA/bwhqzcvP/eG61r095HdHD/QknjIxq+qOqs6xHhH
-	 VLcAEYxJ8bEX8cDA++W0EqeVht6vss9DHot/3Izo=
-Date: Thu, 23 Oct 2025 07:20:37 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Li Lingfeng <lilingfeng3@huawei.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Mikulas Patocka <mpatocka@redhat.com>, dm-devel@lists.linux.dev,
-	yangerkun <yangerkun@huawei.com>,
-	"zhangyi (F)" <yi.zhang@huawei.com>, Hou Tao <houtao1@huawei.com>
-Subject: Re: [PATCH 5.10.y] dm: fix NULL pointer dereference in __dm_suspend()
-Message-ID: <2025102310-blinked-handsaw-ade3@gregkh>
-References: <2025101316-favored-pulsate-a811@gregkh>
- <20251014030334.3868139-1-sashal@kernel.org>
- <cdadc001-3c0e-4152-8b05-08eb79fb528b@huawei.com>
- <2025102252-abrasive-glamorous-465b@gregkh>
- <1767bec2-b660-42b2-b828-b221e0896eba@huawei.com>
- <2025102212-pouring-embellish-95fc@gregkh>
- <28a7f62d-ae81-4629-864c-a0c1ecf98ee9@huawei.com>
- <2025102231-outlying-lapel-6159@gregkh>
- <c8d7ae0f-bddd-41ff-bd93-ad340c8a20bc@huawei.com>
+	s=arc-20240116; t=1761198593; c=relaxed/simple;
+	bh=WE4jqOZA7KkdwOGi0+RVNNRpbqfXETLzoSlM4Ffn53Q=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iumBL/WHL2jbqngQ/l0orkYRzfcpr+ge9lgttgPRjajR2URzoJxu+OUxmIlsGqNdCl3F7x986b+CqQV1Wmyq1ozbnvwIdH3r6ACg4kzsQlv7B/I8Rsn0jvZZQLyZFyhEYdNzGbFt90+/us3TASkfIbipvp1ko0orBOgVB4qnj6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hhhuuu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ABKZBjWL; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hhhuuu.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-290b13c5877so9378505ad.0
+        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 22:49:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761198590; x=1761803390; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NIhAkKap4bXPdBe9tdBh2Dfw5XmidblPGWSaqTaADHM=;
+        b=ABKZBjWLLZm/Oc1wpE4GI4xe5X4D20hK2ejNvvW40ymLb+BqyhEp4uOGvzZ1G+z3qu
+         ZhR3+lpFOD76VFLkyCoCDKaqjdPQI2wFYoXPQwjqFKiJ3SpyLaC/yLj1FLwPX47UOxkU
+         1D25Ne3w/v0ioM1LsgpYCfIkqr2v7tPjy0O2lOKHc2Uc5TnVV6Pcp3zInZk+Dht/XN1+
+         3okcnq8hk0B0Q06AoJROofSLV3khshOkaCC+njrlbbx0tWdRW15yCWYyZ807XBTHCzLL
+         f0Jduex7n7neiGnjLob8q5IAe3/6kmwr63mJ6rfGjl8BipVv4iJq2YDyednaVXB9ww0g
+         FCaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761198590; x=1761803390;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NIhAkKap4bXPdBe9tdBh2Dfw5XmidblPGWSaqTaADHM=;
+        b=SFTKXEzO+ep01JXyUK/tYS/mE8ekTuviUqGmlGHsqzkD4va2oNVMwFeDEhJUS7OuAc
+         TJJMo9NvGLP2fX8bWVmKyOLqdgZgF5szIAiKaNpuAIAl/yS8gCNII1GzmZLW5c94iOD/
+         HYhlTerXAVdfN41Es8orh6ViD/bwrajxkpSxINUzwHBz971lPW7E+hPlPjWGfJfHFgkw
+         YGFfnXEUl3KE1+x+xVXlAvDudvfObPPGqDzODDERYqSJrdlpp/orKN42iavwFZxVySXa
+         5z9Nh4AIbpdWPtqNdWaOMimqHwOmtzuRhEWa2Yph+FlScFR+3q/6OaJqyDbruD8idGA7
+         /sxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWZYSCKzdUeVHG0V1VONmWL2rX4kXbUZmRNou4a0S+AN7gldRG3FffLHnxtIF67Xv1TIrdL9uE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRiqz8AGqf2TT5529SsIL0Qn8jwMiMOt8YmmR+YSsTI7if1RIg
+	ydca1Eqf0hpYLfhzsHiGTuOVAxgT7IcB5ydszyMciBAEwanp+eBybcNW5lHJsJSV4l+54uk4EzK
+	B0INjSQ==
+X-Google-Smtp-Source: AGHT+IEMjTPtfWycynhX8q/fK1VTeTW0RUJSCoi4GOOUYmYo+BFfUaUmR30ZiQtIXSsXWiJUkaNBSHcqvAY=
+X-Received: from plxe8.prod.google.com ([2002:a17:902:ef48:b0:292:3da1:8ea8])
+ (user=hhhuuu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:298c:b0:25c:38be:748f
+ with SMTP id d9443c01a7336-290c9c89cb3mr259915235ad.9.1761198589120; Wed, 22
+ Oct 2025 22:49:49 -0700 (PDT)
+Date: Thu, 23 Oct 2025 05:49:45 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c8d7ae0f-bddd-41ff-bd93-ad340c8a20bc@huawei.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.1.814.gb8fa24458f-goog
+Message-ID: <20251023054945.233861-1-hhhuuu@google.com>
+Subject: [PATCH v3] usb: gadget: udc: fix use-after-free in usb_gadget_state_work
+From: Jimmy Hu <hhhuuu@google.com>
+To: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org
+Cc: badhri@google.com, hhhuuu@google.com, stern@rowland.harvard.edu, 
+	royluo@google.com, Thinh.Nguyen@synopsys.com, balbi@ti.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Oct 23, 2025 at 09:12:13AM +0800, Li Lingfeng wrote:
-> 
-> 在 2025/10/22 17:20, Greg KH 写道:
-> > On Wed, Oct 22, 2025 at 05:10:36PM +0800, Li Lingfeng wrote:
-> > > 在 2025/10/22 16:45, Greg KH 写道:
-> > > > On Wed, Oct 22, 2025 at 04:21:33PM +0800, Li Lingfeng wrote:
-> > > > > Hi,
-> > > > > 
-> > > > > 在 2025/10/22 16:10, Greg KH 写道:
-> > > > > > On Wed, Oct 22, 2025 at 04:01:04PM +0800, Li Lingfeng wrote:
-> > > > > > > Hi,
-> > > > > > > 
-> > > > > > > 在 2025/10/14 11:03, Sasha Levin 写道:
-> > > > > > > > From: Zheng Qixing <zhengqixing@huawei.com>
-> > > > > > > > 
-> > > > > > > > [ Upstream commit 8d33a030c566e1f105cd5bf27f37940b6367f3be ]
-> > > > > > > > 
-> > > > > > > > There is a race condition between dm device suspend and table load that
-> > > > > > > > can lead to null pointer dereference. The issue occurs when suspend is
-> > > > > > > > invoked before table load completes:
-> > > > > > > > 
-> > > > > > > > BUG: kernel NULL pointer dereference, address: 0000000000000054
-> > > > > > > > Oops: 0000 [#1] PREEMPT SMP PTI
-> > > > > > > > CPU: 6 PID: 6798 Comm: dmsetup Not tainted 6.6.0-g7e52f5f0ca9b #62
-> > > > > > > > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
-> > > > > > > > RIP: 0010:blk_mq_wait_quiesce_done+0x0/0x50
-> > > > > > > > Call Trace:
-> > > > > > > >       <TASK>
-> > > > > > > >       blk_mq_quiesce_queue+0x2c/0x50
-> > > > > > > >       dm_stop_queue+0xd/0x20
-> > > > > > > >       __dm_suspend+0x130/0x330
-> > > > > > > >       dm_suspend+0x11a/0x180
-> > > > > > > >       dev_suspend+0x27e/0x560
-> > > > > > > >       ctl_ioctl+0x4cf/0x850
-> > > > > > > >       dm_ctl_ioctl+0xd/0x20
-> > > > > > > >       vfs_ioctl+0x1d/0x50
-> > > > > > > >       __se_sys_ioctl+0x9b/0xc0
-> > > > > > > >       __x64_sys_ioctl+0x19/0x30
-> > > > > > > >       x64_sys_call+0x2c4a/0x4620
-> > > > > > > >       do_syscall_64+0x9e/0x1b0
-> > > > > > > > 
-> > > > > > > > The issue can be triggered as below:
-> > > > > > > > 
-> > > > > > > > T1 						T2
-> > > > > > > > dm_suspend					table_load
-> > > > > > > > __dm_suspend					dm_setup_md_queue
-> > > > > > > > 						dm_mq_init_request_queue
-> > > > > > > > 						blk_mq_init_allocated_queue
-> > > > > > > > 						=> q->mq_ops = set->ops; (1)
-> > > > > > > > dm_stop_queue / dm_wait_for_completion
-> > > > > > > > => q->tag_set NULL pointer!	(2)
-> > > > > > > > 						=> q->tag_set = set; (3)
-> > > > > > > > 
-> > > > > > > > Fix this by checking if a valid table (map) exists before performing
-> > > > > > > > request-based suspend and waiting for target I/O. When map is NULL,
-> > > > > > > > skip these table-dependent suspend steps.
-> > > > > > > > 
-> > > > > > > > Even when map is NULL, no I/O can reach any target because there is
-> > > > > > > > no table loaded; I/O submitted in this state will fail early in the
-> > > > > > > > DM layer. Skipping the table-dependent suspend logic in this case
-> > > > > > > > is safe and avoids NULL pointer dereferences.
-> > > > > > > > 
-> > > > > > > > Fixes: c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
-> > > > > > > > Cc: stable@vger.kernel.org
-> > > > > > > > Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-> > > > > > > > Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-> > > > > > > > [ omitted DMF_QUEUE_STOPPED flag setting and braces absent in 5.15 ]
-> > > > > > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > > > > > > ---
-> > > > > > > >      drivers/md/dm.c | 7 ++++---
-> > > > > > > >      1 file changed, 4 insertions(+), 3 deletions(-)
-> > > > > > > > 
-> > > > > > > > diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-> > > > > > > > index 0868358a7a8d2..b51281ce15d4c 100644
-> > > > > > > > --- a/drivers/md/dm.c
-> > > > > > > > +++ b/drivers/md/dm.c
-> > > > > > > > @@ -2457,7 +2457,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
-> > > > > > > >      {
-> > > > > > > >      	bool do_lockfs = suspend_flags & DM_SUSPEND_LOCKFS_FLAG;
-> > > > > > > >      	bool noflush = suspend_flags & DM_SUSPEND_NOFLUSH_FLAG;
-> > > > > > > > -	int r;
-> > > > > > > > +	int r = 0;
-> > > > > > > >      	lockdep_assert_held(&md->suspend_lock);
-> > > > > > > > @@ -2509,7 +2509,7 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
-> > > > > > > >      	 * Stop md->queue before flushing md->wq in case request-based
-> > > > > > > >      	 * dm defers requests to md->wq from md->queue.
-> > > > > > > >      	 */
-> > > > > > > > -	if (dm_request_based(md))
-> > > > > > > > +	if (map && dm_request_based(md))
-> > > > > > > >      		dm_stop_queue(md->queue);
-> > > > > > > It seems that before commit 80bd4a7aab4c ("blk-mq: move the srcu_struct
-> > > > > > > used for quiescing to the tagset") was merged, blk_mq_wait_quiesce_done()
-> > > > > > > would not attempt to access q->tag_set, so in dm_stop_queue() this kind
-> > > > > > > of race condition would not cause a null pointer dereference. The change
-> > > > > > > may not be necessary for 5.10, but adding it doesn’t appear to cause any
-> > > > > > > issues either.
-> > > > > > > >      	flush_workqueue(md->wq);
-> > > > > > > > @@ -2519,7 +2519,8 @@ static int __dm_suspend(struct mapped_device *md, struct dm_table *map,
-> > > > > > > >      	 * We call dm_wait_for_completion to wait for all existing requests
-> > > > > > > >      	 * to finish.
-> > > > > > > >      	 */
-> > > > > > > > -	r = dm_wait_for_completion(md, task_state);
-> > > > > > > > +	if (map)
-> > > > > > > > +		r = dm_wait_for_completion(md, task_state);
-> > > > > > > The fix tag c4576aed8d85 ("dm: fix request-based dm's use of
-> > > > > > > dm_wait_for_completion") seems to correspond to the modification of
-> > > > > > > dm_wait_for_completion().
-> > > > > > > >      	if (!r)
-> > > > > > > >      		set_bit(dmf_suspended_flag, &md->flags);
-> > > > > > > Perhaps adding another fix tag would be more appropriate?
-> > > > > > Those tags come directly from the original commit.
-> > > > > Thanks for the clarification. Since the patch has already been merged into
-> > > > > the mainline tree, we can't update the commit there. I was just wondering
-> > > > > if it would be acceptable to add an additional “Fixes” tag when applying
-> > > > > it to the stable branch, before merging.
-> > > > I can, if needed, can you please provide that line?
-> > > Fixes: 80bd4a7aab4c ("blk-mq: move the srcu_struct used for quiescing to the
-> > > tagset")
-> > This is odd, that is a 6.2 commit, yet this is being asked to be added
-> > to 5.10.y.  So what help is this going to provide?
-> > 
-> > confused,
-> > 
-> > greg k-h
-> Apologies, I didn't notice the version of this patch. Indeed, this patch
-> was not included in 5.10, and 5.10 is not affected by this issue.
+A race condition during gadget teardown can lead to a use-after-free
+in usb_gadget_state_work(), as reported by KASAN:
 
-The original Fixes: tag points to a commit from 5.0, which is why this
-was queued up for here.
+  BUG: KASAN: invalid-access in sysfs_notify+0x2c/0xd0
+  Workqueue: events usb_gadget_state_work
 
-> Perhaps we could add the new fix tag to the stable branch patches
-> starting from 6.2?
+The fundamental race occurs because a concurrent event (e.g., an
+interrupt) can call usb_gadget_set_state() and schedule gadget->work
+at any time during the cleanup process in usb_del_gadget().
 
-I do not understand, sorry.
+Commit 399a45e5237c ("usb: gadget: core: flush gadget workqueue after
+device removal") attempted to fix this by moving flush_work() to after
+device_del(). However, this does not fully solve the race, as a new
+work item can still be scheduled *after* flush_work() completes but
+before the gadget's memory is freed, leading to the same use-after-free.
 
-Let's start over, should this patch be included in the 5.10.y tree?  The
-5.4.y tree?  If not, why not?
+This patch fixes the race condition robustly by introducing a 'teardown'
+flag and a 'state_lock' spinlock to the usb_gadget struct. The flag is
+set during cleanup in usb_del_gadget() *before* calling flush_work() to
+prevent any new work from being scheduled once cleanup has commenced.
+The scheduling site, usb_gadget_set_state(), now checks this flag under
+the lock before queueing the work, thus safely closing the race window.
 
-And as this is already in the 5.15.y and 6.1.y releases, should it be
-reverted from there?
+Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+---
+Changes in v3:
+  - Updated patch title to more accurately describe the bug.
+  - Moved changelog below the '---' line as requested by Greg KH.
+  - Rebased on usb-linus branch as requested by Greg KH.
 
-thanks,
+Changes in v2:
+  - Removed redundant inline comments as suggested by Alan Stern.
 
-greg k-h
+ drivers/usb/gadget/udc/core.c | 17 ++++++++++++++++-
+ include/linux/usb/gadget.h    |  5 +++++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index 694653761c44..8dbe79bdc0f9 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1126,8 +1126,13 @@ static void usb_gadget_state_work(struct work_struct *work)
+ void usb_gadget_set_state(struct usb_gadget *gadget,
+ 		enum usb_device_state state)
+ {
++	unsigned long flags;
++
++	spin_lock_irqsave(&gadget->state_lock, flags);
+ 	gadget->state = state;
+-	schedule_work(&gadget->work);
++	if (!gadget->teardown)
++		schedule_work(&gadget->work);
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ 	trace_usb_gadget_set_state(gadget, 0);
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
+@@ -1361,6 +1366,8 @@ static void usb_udc_nop_release(struct device *dev)
+ void usb_initialize_gadget(struct device *parent, struct usb_gadget *gadget,
+ 		void (*release)(struct device *dev))
+ {
++	spin_lock_init(&gadget->state_lock);
++	gadget->teardown = false;
+ 	INIT_WORK(&gadget->work, usb_gadget_state_work);
+ 	gadget->dev.parent = parent;
+ 
+@@ -1535,6 +1542,7 @@ EXPORT_SYMBOL_GPL(usb_add_gadget_udc);
+ void usb_del_gadget(struct usb_gadget *gadget)
+ {
+ 	struct usb_udc *udc = gadget->udc;
++	unsigned long flags;
+ 
+ 	if (!udc)
+ 		return;
+@@ -1548,6 +1556,13 @@ void usb_del_gadget(struct usb_gadget *gadget)
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
+ 	sysfs_remove_link(&udc->dev.kobj, "gadget");
+ 	device_del(&gadget->dev);
++	/*
++	 * Set the teardown flag before flushing the work to prevent new work
++	 * from being scheduled while we are cleaning up.
++	 */
++	spin_lock_irqsave(&gadget->state_lock, flags);
++	gadget->teardown = true;
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ 	flush_work(&gadget->work);
+ 	ida_free(&gadget_id_numbers, gadget->id_number);
+ 	cancel_work_sync(&udc->vbus_work);
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index 3aaf19e77558..8285b19a25e0 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -376,6 +376,9 @@ struct usb_gadget_ops {
+  *	can handle. The UDC must support this and all slower speeds and lower
+  *	number of lanes.
+  * @state: the state we are now (attached, suspended, configured, etc)
++ * @state_lock: Spinlock protecting the `state` and `teardown` members.
++ * @teardown: True if the device is undergoing teardown, used to prevent
++ *	new work from being scheduled during cleanup.
+  * @name: Identifies the controller hardware type.  Used in diagnostics
+  *	and sometimes configuration.
+  * @dev: Driver model state for this abstract device.
+@@ -451,6 +454,8 @@ struct usb_gadget {
+ 	enum usb_ssp_rate		max_ssp_rate;
+ 
+ 	enum usb_device_state		state;
++	spinlock_t			state_lock;
++	bool				teardown;
+ 	const char			*name;
+ 	struct device			dev;
+ 	unsigned			isoch_delay;
+-- 
+2.51.1.814.gb8fa24458f-goog
+
 
