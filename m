@@ -1,181 +1,102 @@
-Return-Path: <stable+bounces-189151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA3E2C027F1
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 18:50:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB01DC02AAC
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 19:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CE0B1AA2175
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 16:50:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B09425806AE
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 17:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809B633DEC9;
-	Thu, 23 Oct 2025 16:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E45F33F8AB;
+	Thu, 23 Oct 2025 17:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fkdpnOlV"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="M9pUntZf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183B241760;
-	Thu, 23 Oct 2025 16:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F48B257427;
+	Thu, 23 Oct 2025 17:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761238199; cv=none; b=RRzFCx3TTmSZ5pg6K9zAxw/V4akC17vF5SQZhGYjFQsCj+HuAZVtnuQdSL4/mFfvEXkGaLSdaRB4jA5K1Qlbxeqmc7SpfjIku9Vt5J7qu4OAQ4HrDh9DU9g1HsXDu+V8jaPKe0vzlaS2IqRngq92FsNso2YuRavZvJGUgpXMqHg=
+	t=1761238909; cv=none; b=QQ7hf26gUOEOpd+GB4BmPf91mkqkC1i3cryV6mzzzDkRXnKGTSLVo0OWnjC3I1zTzuTzsuZIYJ7J6zs2KKTtsjyVBGvGUQ2vQw3pYe4qKBPshl0X/2Z8vMVJCRuEYYVbbQepfgXozbfyTAQpiCHwDgtLz6bbquIV5li5QherYvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761238199; c=relaxed/simple;
-	bh=Sv5ZTJIc8mdOyFyYEUpoBFZA3FTMtAHYeE6VxCWxjyU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gRSpelV4nx1HbEgcoNV5nPFV9XNsfDWrTD2JHeco4WDF3ycRuxEg3hfSuO8+QKixyMuHj4g7Oj64s97wg0UOiFFeXDauMubR4Y2GhcuEWep1FppiSX/FijikqnZPWjwAiDVATehuaK6sNhjWSjTUTwgDe+c6koGE1UxTRZoXYNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkdpnOlV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AADC4CEE7;
-	Thu, 23 Oct 2025 16:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761238198;
-	bh=Sv5ZTJIc8mdOyFyYEUpoBFZA3FTMtAHYeE6VxCWxjyU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fkdpnOlVfwsj074MXISpqiMtq9R0FJEHXd3jn71OpJZiFKooy+7N42nSSiTQ5A/KB
-	 Y5xN9b8RSoz77cWgSxhCgybD0vvhydql69Sljnoo9VBik/lRghY7IZm3Qf7xWJbo7p
-	 7AiVN8EqgPF7jv/kvkuxmB2ADWb6Qj+PlKbp4IN0M2hgRvvdmhREq7WWBlRX3bEt0y
-	 qN+kPQTWe+lRnt/SRlWyKIzqIcDYoiTAsphhUPVMrJYYNwrM9Xs8XK2QCRAjA9v9bI
-	 HWFA/hkweKvq8HQ++vqb+ehkOQc4UkbKCQ3kSv0XHRo4mkLtTNpnIff9qmDSzaJwQ9
-	 4hp4zIIOTwIkg==
-Message-ID: <affa81cd-6f44-4408-9b07-f635b00cfaa6@kernel.org>
-Date: Thu, 23 Oct 2025 17:49:51 +0100
+	s=arc-20240116; t=1761238909; c=relaxed/simple;
+	bh=hdmq/sRayl6/auhTmgwlv9zfI+n+5rqdaNCPOPrk0aY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KH3DQxxfGbQ9gFSqJqUqJKwngWvR+ZZVz73tLULnAhULQh3E41KKHX6OnwOUZOALFhSKzu1Y2xp3Nb7Y3X9sCInAYjCvRRnOH1Pp/kcnfGI/DS32pLXa8PzBUFqgJosIcOyLDANsG61I6gtRBhqctNHO8Cn7ne5G8vowdvnhY5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=M9pUntZf; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=p7rBIGumlMcci27kMgSWW94FUPYeAc7w0OEyP+alJhY=; b=M9pUntZf8dbZP5qLisc0QF2O0j
+	ZMr+j8SvzUpGicdgVvORE6WYSt53H7MmZkEN5VK5DTnJlay0kGDcwTVSH1XplHzQNrWGcpNJ7cHpd
+	geo1lK/PR3CM2gcbBWC4OMcQYGk3teTSwOLYvzdrDbADNK1RofquGDWYGgKLOoR8z554=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vBygw-00Bu7J-CS; Thu, 23 Oct 2025 19:01:34 +0200
+Date: Thu, 23 Oct 2025 19:01:34 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] net: phy: dp83867: Disable EEE support as not
+ implemented
+Message-ID: <0b61689c-ac4a-402c-bbc8-2c1207e19c76@lunn.ch>
+References: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] regmap: slimbus: fix bus_context pointer in regmap
- init calls
-To: Alexey Klimov <alexey.klimov@linaro.org>, broonie@kernel.org,
- gregkh@linuxfoundation.org, srini@kernel.org
-Cc: rafael@kernel.org, dakr@kernel.org, make24@iscas.ac.cn, steev@kali.org,
- dmitry.baryshkov@oss.qualcomm.com, linux-kernel@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- abel.vesa@linaro.org, stable@vger.kernel.org
-References: <20251022201013.1740211-1-alexey.klimov@linaro.org>
-Content-Language: en-US
-From: Srinivas Kandagatla <srini@kernel.org>
-In-Reply-To: <20251022201013.1740211-1-alexey.klimov@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
 
+On Thu, Oct 23, 2025 at 04:48:53PM +0200, Emanuele Ghidoli wrote:
+> From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> 
+> While the DP83867 PHYs report EEE capability through their feature
+> registers, the actual hardware does not support EEE (see Links).
+> When the connected MAC enables EEE, it causes link instability and
+> communication failures.
+> 
+> The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
+> Since the introduction of phylink-managed EEE support in the stmmac driver,
+> EEE is now enabled by default, leading to issues on systems using the
+> DP83867 PHY.
+> 
+> Call phy_disable_eee during phy initialization to prevent EEE from being
+> enabled on DP83867 PHYs.
+> 
+> Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/1445244/dp83867ir-dp83867-disable-eee-lpi
+> Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/658638/dp83867ir-eee-energy-efficient-ethernet
 
+Interesting statement this last one. "None of our gigabit PHYs
+support EEE operation today."
 
-On 10/22/25 9:10 PM, Alexey Klimov wrote:
-> Commit 4e65bda8273c ("ASoC: wcd934x: fix error handling in
-> wcd934x_codec_parse_data()") revealed the problem in the slimbus regmap.
-> That commit breaks audio playback, for instance, on sdm845 Thundercomm
-> Dragonboard 845c board:
-> 
->  Unable to handle kernel paging request at virtual address ffff8000847cbad4
->  ...
->  CPU: 5 UID: 0 PID: 776 Comm: aplay Not tainted 6.18.0-rc1-00028-g7ea30958b305 #11 PREEMPT
->  Hardware name: Thundercomm Dragonboard 845c (DT)
->  ...
->  Call trace:
->   slim_xfer_msg+0x24/0x1ac [slimbus] (P)
->   slim_read+0x48/0x74 [slimbus]
->   regmap_slimbus_read+0x18/0x24 [regmap_slimbus]
->   _regmap_raw_read+0xe8/0x174
->   _regmap_bus_read+0x44/0x80
->   _regmap_read+0x60/0xd8
->   _regmap_update_bits+0xf4/0x140
->   _regmap_select_page+0xa8/0x124
->   _regmap_raw_write_impl+0x3b8/0x65c
->   _regmap_bus_raw_write+0x60/0x80
->   _regmap_write+0x58/0xc0
->   regmap_write+0x4c/0x80
->   wcd934x_hw_params+0x494/0x8b8 [snd_soc_wcd934x]
->   snd_soc_dai_hw_params+0x3c/0x7c [snd_soc_core]
->   __soc_pcm_hw_params+0x22c/0x634 [snd_soc_core]
->   dpcm_be_dai_hw_params+0x1d4/0x38c [snd_soc_core]
->   dpcm_fe_dai_hw_params+0x9c/0x17c [snd_soc_core]
->   snd_pcm_hw_params+0x124/0x464 [snd_pcm]
->   snd_pcm_common_ioctl+0x110c/0x1820 [snd_pcm]
->   snd_pcm_ioctl+0x34/0x4c [snd_pcm]
->   __arm64_sys_ioctl+0xac/0x104
->   invoke_syscall+0x48/0x104
->   el0_svc_common.constprop.0+0x40/0xe0
->   do_el0_svc+0x1c/0x28
->   el0_svc+0x34/0xec
->   el0t_64_sync_handler+0xa0/0xf0
->   el0t_64_sync+0x198/0x19c
-> 
-> The __devm_regmap_init_slimbus() started to be used instead of
-> __regmap_init_slimbus() after the commit mentioned above and turns out
-> the incorrect bus_context pointer (3rd argument) was used in
-> __devm_regmap_init_slimbus(). It should be just "slimbus" (which is equal
-> to &slimbus->dev). Correct it. The wcd934x codec seems to be the only or
-> the first user of devm_regmap_init_slimbus() but we should fix it till
-> the point where __devm_regmap_init_slimbus() was introduced therefore
-> two "Fixes" tags.
-> 
-> While at this, also correct the same argument in __regmap_init_slimbus().
-> 
-> Fixes: 4e65bda8273c ("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
-> Fixes: 7d6f7fb053ad ("regmap: add SLIMbus support")
+I wounder if any of the other TI PHY drivers need this fix?
+
+> Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
 > Cc: stable@vger.kernel.org
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> Cc: Ma Ke <make24@iscas.ac.cn>
-> Cc: Steev Klimaszewski <steev@kali.org>
-> Cc: Srinivas Kandagatla <srini@kernel.org>
-> Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-> Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-> ---
-> 
-> The patch/fix is for the current 6.18 development cycle
-> since it fixes the regression introduced in 6.18.0-rc1.
-> 
-> Changes in v2:
->  - &slimbus->dev replaced with just "slimbus", no functional change
->  (as suggested by Dmitry);
->  - the same argument in __regmap_init_slimbus() was replaced with
->  "slimbus" (as suggested by Dmitry);
->  - reduced the backtrace log in the commit message (as suggested by Mark);
->  - corrected subject/title, few typos, added mention of non-managed init
->  func change, rephrased smth;
->  - added Reviewed-by tag from Abel.
-> 
-> Prev version: https://lore.kernel.org/linux-sound/20251020015557.1127542-1-alexey.klimov@linaro.org/
-> 
->  drivers/base/regmap/regmap-slimbus.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
+> Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-In case Mark if you want to pick this up,
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Acked-by: Srinivas Kandagatla <srini@kernel.org>
-
-
-> diff --git a/drivers/base/regmap/regmap-slimbus.c b/drivers/base/regmap/regmap-slimbus.c
-> index 54eb7d227cf4..e523fae73004 100644
-> --- a/drivers/base/regmap/regmap-slimbus.c
-> +++ b/drivers/base/regmap/regmap-slimbus.c
-> @@ -48,8 +48,7 @@ struct regmap *__regmap_init_slimbus(struct slim_device *slimbus,
->  	if (IS_ERR(bus))
->  		return ERR_CAST(bus);
->  
-> -	return __regmap_init(&slimbus->dev, bus, &slimbus->dev, config,
-> -			     lock_key, lock_name);
-> +	return __regmap_init(&slimbus->dev, bus, slimbus, config, lock_key, lock_name);
->  }
->  EXPORT_SYMBOL_GPL(__regmap_init_slimbus);
->  
-> @@ -63,8 +62,7 @@ struct regmap *__devm_regmap_init_slimbus(struct slim_device *slimbus,
->  	if (IS_ERR(bus))
->  		return ERR_CAST(bus);
->  
-> -	return __devm_regmap_init(&slimbus->dev, bus, &slimbus, config,
-> -				  lock_key, lock_name);
-> +	return __devm_regmap_init(&slimbus->dev, bus, slimbus, config, lock_key, lock_name);
->  }
->  EXPORT_SYMBOL_GPL(__devm_regmap_init_slimbus);
->  
-
+    Andrew
 
