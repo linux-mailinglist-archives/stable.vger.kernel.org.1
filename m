@@ -1,135 +1,133 @@
-Return-Path: <stable+bounces-189164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15207C0312A
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 20:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 914D9C03253
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 21:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2E593B091D
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 18:51:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F32DB3AD18D
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 19:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B6E29827E;
-	Thu, 23 Oct 2025 18:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E47F34B433;
+	Thu, 23 Oct 2025 19:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iLCV8LWz"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="cJ7tAcIK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C6AA59
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 18:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538E634C98F
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 19:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761245478; cv=none; b=Pbdxv6w0kScnt2d5tgqxELKBLYlMj+sKYgSKv7gAOd0zIC0bLYgDh/HZ227J0eZpmBoGFCW6eWKjAzKlQzhqAj97xESRbBbsWvyelaB/Bnmib+B850hHqzqEYTSrU2baV/3sZq6KPTZ0EZn4WG/6mDFFZLu5xxgfIGbz7NEk5lY=
+	t=1761246706; cv=none; b=gAQAmlCjhGrwFmlQj3ptjbXMF02Fh2EIF7eqWtlsjR4hqubf4m3OxyNyqNWqfbUzrxpDCOs5W6oJ6dB5Rpa2J40y98QsyIWoTC03fSRiXzHGfHS2/hyByETjUYU/e7jrecsHncF7uxf+9QMRLdwSOK3wZlrqi6Cvr6zL8Q8901U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761245478; c=relaxed/simple;
-	bh=yclZU/krkrcJNTHYs1a/Ose0CM2p4xAA1NpE1Z5NhIg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ncWS1HjuCaau4YlA9myFCLg6+T4uzemplLSSUjE/gwbPBUJ9sAfbxofSG2DwtrFAPP+eA63hreWfiCM4DMjYGJWqu8BEG66PWDvbV0lEYEuOa0qtEDUZID4EeIUwkPPDJooY1vRa8rhvg6AjlLwDa5FTK3rsC6vrxpoCTZlAyr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iLCV8LWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72CCC4CEFD
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 18:51:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761245477;
-	bh=yclZU/krkrcJNTHYs1a/Ose0CM2p4xAA1NpE1Z5NhIg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iLCV8LWzS4UN3Z9BHsVcf5a7TKcGBu+Yjy3+DaKJlCpnb03GOxOJII3OJPzClah4L
-	 eg1LiHmosSP9xvVqoVk6lEN0/I5pRTWssMJCXzR/VgV7v9F353Psu+qGG1D4c/esgd
-	 tRqBB7E00TdhNWFLC5FFWkPQ3doOEBdIPmm2FnCM6ACNNvaYSJ8euiDq7kdpwfBaGz
-	 J8Er5yY7wamW+7FgQ4NAaWsKJuMwEOaad1R3pYuS47l+O4/Eh4PVvMuHTwjeGZY9v6
-	 TBMvwoSS6793xMPRh3KGDTYhpUmODTTmjM3M2K4ktjf+kYMosa12iLJvnvyq0e67E+
-	 IWZc/8Y5sli6g==
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7c27e5ca2beso363470a34.3
-        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 11:51:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX3Phi0oNT/bwafMcfluYfYEjd5QVSC8y8g3j6TFFjU/nrv+iMg8tCdbRPZeXKeDgI92HYpwak=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzuP42ITb1necUBk60xJAY+Fp1jZ6H5bK91+0mO+V3DJO4XC8c
-	dfIS5VEtz+Z4VZ/ZukfDk6ntusb0xlovAwzpERcXVB9DdvFbTD4jdrnex5Bd/yAF+F2yNDyeZYu
-	vjrl3SLZOxgRJrm+mcJE4zkzoYxTbu0s=
-X-Google-Smtp-Source: AGHT+IEGlrA2tIZjRTjUxrWjNMeSXBMeR/3TmzD7/9IyoNmW9DR5dApIhJs1FEbo3ID9rck8DzYQhLSwBbOSCMybCuE=
-X-Received: by 2002:a05:6870:2b12:b0:36d:287c:694f with SMTP id
- 586e51a60fabf-3c98d0c76ffmr12646634fac.30.1761245477276; Thu, 23 Oct 2025
- 11:51:17 -0700 (PDT)
+	s=arc-20240116; t=1761246706; c=relaxed/simple;
+	bh=pttWRU7/dgK2UjwSiWEkHrJdOEDz6wX/zKzFjPVx6ow=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lYnrLVNGWbtkpv6G5hapsFZSjqEk3wjQJFtQwQUDoCHWUjYZxcmJW6eMqgbfDw5QTlmSiC8E/spEsPwVmWuKIGuMyqzSZrpGgki2WRT6M3bvfQROwmbVXPpL6xauZrRm9dRqxii+aaV/1mu9c6BUmwGkYwUWdZ6yO4s7nAwl2oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=cJ7tAcIK; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4710683a644so10156925e9.0
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 12:11:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1761246703; x=1761851503; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YC021s3hSX0b6kL+FC7sXtMbVcQNzXKMZzcCBREO6dA=;
+        b=cJ7tAcIKU89hjZAl1DbRa4SNrr4SpaI95dgst2LjXJdaLHW3Hif8Dew0Soi+H8+46G
+         8krliozT5kjd/QtNDLM4RJl3lwybmTo7YVcvO7+/wP0OZMnTklPw12FP1G62FSxvj4qf
+         IFye18Bz/vXXiXcAteoYXC8L8K4p/mpZJbBN2vT8m9DhTGPmeSfcYGsbJ/AjcWAQuQGd
+         0lQIWNOMH7P8K+IwYrJOHLYCaucZAffWGyGpp+6rPTCIBWUQdWCCzY/gsRjnvFkonyvz
+         x7kvdwkABDPg6+a3I3he2V8+kuIU9QYsAEI0HNFeZlmy/KxQEJ2D19ChakuXDd8rhDd/
+         qFJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761246703; x=1761851503;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YC021s3hSX0b6kL+FC7sXtMbVcQNzXKMZzcCBREO6dA=;
+        b=HS6laOXB70T0io0vhm8uR4BXyWOVgcro5tdVFp4SxaFKBuVaV4FM9WfDKFjSXxDKCl
+         jRzHCZkUfVh9jhHf1eXfrU93eXSD+DZVJV1vt8lssjomRS5Nwi/GAxMOOr93Nl/z2esa
+         4WD9atRHcZZCS0h7LkqULp/peHZZrIZ/tXKNbXAjOWaiCdco/8AB7m8oY7Yuuq9GhseC
+         Y0FUq4OvRf5NFfLZDEiBuNBuWoUFKdjpQzq/XLPDN1v7br8cOjQNQdG767J8hbef5vOi
+         NqKNGe45dOkxvQolVP1lh/YYzNgCvO1EnvSy2d8u9r88HOMNHQ4p6FeEzhulrneuRdIf
+         o3Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCVZek4JzcIwMG7FI953EmNCpA3IO0hyNQ3/RdRauyRe5/mPD/YywEUI7kk5tgfBa2BABWf83zY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzc5z0wUhGF3ZTGN3IeYir/yDdpQ3N2VvXRCtYwyqRV6zVbtNac
+	QB5c2xmP4PcyhWDwFnvkG+yyCGoBqrpyZF6qP3MrBuvI5GolnNLMGPI=
+X-Gm-Gg: ASbGncuMUnzNjtTbIZDiY4mwEJF6B2TRXtsC4rA62o/gR56UbvdUh9vAe6HIYk7XMR5
+	GaekEMOS/rps/XsMiXfULZff/oIFnuIBQSNEol/O6gHQiznRlRgzy3AzFIpgKRTF/s5eS3apD/L
+	owE0ijXZXjT/JqTHpBNobQ92bLzW6DAS0m2Mu3nXZ8I/I6seMO6xoa+IM1/Cs16poz99W9c4eUO
+	V8fvPXJoASf8bR9cE27l+I04OfyTMrWiB32SxGDCjDdV3auk8Exfyz9BZ+xOXzy/7vablpXnX5n
+	JGxohpe3osquLWLNDRMJlBe99wbT7XwdAKViWzBcTpf3mOLQVcRPl1oOOq3QhppdEQfSl8lcFo3
+	dk3SZie5sLXGJLkBFEV1ZtOzQoVEBvZ+3gMdqwZU+ORS0U8X/hTCZ7tGVeoCf2ilbPgkoqsETeu
+	qlHcM33ZDb1ukD0sv1RjFdYspwF5K2EzMq7/eJRub+T9RQ6853w3LSL70oSQwHpas=
+X-Google-Smtp-Source: AGHT+IFNsNEq2TdqKr0cvqPqFFbm5Iwue3LIAxDBLdoZa+wyAY95ssAJ4sXZtAPUqqOIfIkrYHRO3Q==
+X-Received: by 2002:a05:600c:c3:b0:46f:cdfe:cd39 with SMTP id 5b1f17b1804b1-475c6f69890mr34045225e9.16.1761246702297;
+        Thu, 23 Oct 2025 12:11:42 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4069.dip0.t-ipconnect.de. [91.43.64.105])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475caf15b10sm60824215e9.11.2025.10.23.12.11.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Oct 2025 12:11:41 -0700 (PDT)
+Message-ID: <270ce9a3-5067-4ef8-9205-414b5667cf3a@googlemail.com>
+Date: Thu, 23 Oct 2025 21:11:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251022200704.2655507-1-danisjiang@gmail.com> <83852558-0fdc-493c-8f44-95356480c8aa@kernel.org>
-In-Reply-To: <83852558-0fdc-493c-8f44-95356480c8aa@kernel.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 23 Oct 2025 20:51:06 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hZaOALPUB63zqSJt+3E82YM=oU6d08UitHWcuc2iMDSA@mail.gmail.com>
-X-Gm-Features: AS18NWDFl2L0oQKDod5Y7100pSGWoUy5AMpurCSHDpagcdmJhEBc9g6yX1gWlo4
-Message-ID: <CAJZ5v0hZaOALPUB63zqSJt+3E82YM=oU6d08UitHWcuc2iMDSA@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: video: Fix use-after-free in acpi_video_switch_brightness()
-To: Hans de Goede <hansg@kernel.org>, Yuhao Jiang <danisjiang@gmail.com>
-Cc: Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Betterbird (Windows)
+Subject: Re: [REGRESSION][BISECTED] Screen goes blank with ASpeed AST2300 in
+ 6.18-rc2
+To: Thomas Zimmermann <tzimmermann@suse.de>, regressions@lists.linux.dev,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+ jfalempe@redhat.com, airlied@redhat.com, dianders@chromium.org,
+ nbowler@draconx.ca, Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thorsten Leemhuis <regressions@leemhuis.info>
+References: <20251014084743.18242-1-tzimmermann@suse.de>
+ <a40caf8e-58ad-4f9c-af7f-54f6f69c29bb@googlemail.com>
+ <43992c88-3a3a-4855-9f46-27a7e5fdec2e@suse.de>
+ <798ba37a-41d0-4953-b8f5-8fe6c00f8dd3@googlemail.com>
+ <bf827c5c-c4dd-46f1-962d-3a8e2a0a7fdf@suse.de>
+ <5f8fba3b-2ee1-4a02-9b41-e6e1de1a507a@googlemail.com>
+ <e2462c92-4049-486b-92d7-e78aaec4b05d@suse.de>
+ <3ca10b2e-fb9c-4495-9219-5e8537314751@googlemail.com>
+ <329a9f97-dd66-49c2-bc42-470566d01539@suse.de>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <329a9f97-dd66-49c2-bc42-470566d01539@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 23, 2025 at 3:25=E2=80=AFPM Hans de Goede <hansg@kernel.org> wr=
-ote:
->
-> Hi,
->
-> On 22-Oct-25 10:07 PM, Yuhao Jiang wrote:
-> > The switch_brightness_work delayed work accesses device->brightness
-> > and device->backlight, which are freed by
-> > acpi_video_dev_unregister_backlight() during device removal.
-> >
-> > If the work executes after acpi_video_bus_unregister_backlight()
-> > frees these resources, it causes a use-after-free when
-> > acpi_video_switch_brightness() dereferences device->brightness or
-> > device->backlight.
-> >
-> > Fix this by calling cancel_delayed_work_sync() for each device's
-> > switch_brightness_work in acpi_video_bus_remove_notify_handler()
-> > after removing the notify handler that queues the work. This ensures
-> > the work completes before the memory is freed.
-> >
-> > Fixes: 8ab58e8e7e097 ("ACPI / video: Fix backlight taking 2 steps on a =
-brightness up/down keypress")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
-> > ---
-> > Changes in v3:
-> > - Move cancel_delayed_work_sync() to acpi_video_bus_remove_notify_handl=
-er()
-> >   instead of acpi_video_bus_unregister_backlight() for better logic pla=
-cement
-> > - Link to v2: https://lore.kernel.org/all/20251022042514.2167599-1-dani=
-sjiang@gmail.com/
->
-> Thanks, patch looks good to me:
->
-> Reviewed-by: Hans de Goede <hansg@kernel.org>
+Hi Thomas,
 
-Applied as 6.18-rc material, thanks!
+Am 23.10.2025 um 14:46 schrieb Thomas Zimmermann:
+[...]
+> I've been able to reproduce the problem with an AST2300 test system. The attached patch fixes the problem for me. Can 
+> you please test and report on the results?
 
-> > ---
-> >  drivers/acpi/acpi_video.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> > index 103f29661576..be8e7e18abca 100644
-> > --- a/drivers/acpi/acpi_video.c
-> > +++ b/drivers/acpi/acpi_video.c
-> > @@ -1959,8 +1959,10 @@ static void acpi_video_bus_remove_notify_handler=
-(struct acpi_video_bus *video)
-> >       struct acpi_video_device *dev;
-> >
-> >       mutex_lock(&video->device_list_lock);
-> > -     list_for_each_entry(dev, &video->video_device_list, entry)
-> > +     list_for_each_entry(dev, &video->video_device_list, entry) {
-> >               acpi_video_dev_remove_notify_handler(dev);
-> > +             cancel_delayed_work_sync(&dev->switch_brightness_work);
-> > +     }
-> >       mutex_unlock(&video->device_list_lock);
-> >
-> >       acpi_video_bus_stop_devices(video);
->
+Great! - this patch on top of 6.18-rc2 fixes the issue for me, too. Thanks very much for your effort!
+
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
