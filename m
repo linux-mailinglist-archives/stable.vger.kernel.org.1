@@ -1,106 +1,98 @@
-Return-Path: <stable+bounces-189096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03714C00A40
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 13:11:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F0AC00AF3
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 13:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87D543AEC40
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 11:10:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DD8918C8409
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 11:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D454B30C344;
-	Thu, 23 Oct 2025 11:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB5630DD2A;
+	Thu, 23 Oct 2025 11:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pankajraghav.com header.i=@pankajraghav.com header.b="nmWmhWK2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cMJMx3LK"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5774307481;
-	Thu, 23 Oct 2025 11:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9779830DD05;
+	Thu, 23 Oct 2025 11:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761217839; cv=none; b=VQ3jIQREVNXqfcycDvOQzQag/ag8nkiVbuqFNmlNqa3YAWY0DHqln8Tt3TqAiPz1u4OrnQS5gdodFVKtuQ31VfPsiA2q3f5VzgN2jvyBjB/Ud6EcrP7xb4ZadH5kduPItR0rkAx6ff4YKQi3Fw3esuVu16zAi29CP1Cl1VlR1YI=
+	t=1761218425; cv=none; b=gEKT4SOjeufyjkFbeRg9WFpzb5S116Gokn3TpgNmtzOmdgIDrAu7d5tZ1osgPr7sEowiWcJP+XcBtb4qv6r9P5RxmvttzPcNFpi/KORV1yk/wD6zp+hp9t5yMVGFOHcjD/DnSNi0kN6Pdyw8ZYkneC6fPG/480u8sba2yxtBnII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761217839; c=relaxed/simple;
-	bh=o0c6exPywiZ6/nb9TIRG/xQseSArQ2GZ1/x3VYQDxSA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JJphTSm6tJhp11lrw15FZX+++2JvmwGNGxW0LMc6MX18ogKeGMO9SB1FdZMF0kBFnwhGT6doVpaUbZtOviHlhyeS+ffFi8vLfeRptb7sgB9m1M4lTQSBUBLVxsDwhn1l/o4P6A+ahtI++cvKiXzNhaAtNvUVGcrFFAKzZu3Hbgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pankajraghav.com; spf=pass smtp.mailfrom=pankajraghav.com; dkim=pass (2048-bit key) header.d=pankajraghav.com header.i=@pankajraghav.com header.b=nmWmhWK2; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pankajraghav.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pankajraghav.com
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4csjxb4yYzz9tPF;
-	Thu, 23 Oct 2025 13:10:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1761217827;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lYodpbyQD8BgZF0WGadbX6rC3JbxgU0ZmWtjqSGv5Aw=;
-	b=nmWmhWK2I7Z6FVqbm3fmwSHWLaFv7Q1u8sKzHlojkBMqYpkvX0RIn6dB5ditpNeSnS3ZoM
-	JezUagEeVhbKHlsh5wcSq/3Wm+4XTcjnyG7BsrSYPKmWe2nEqTY8AbYFrgVB1pni+zuZuR
-	hVq26wI2hDJ2rtRurszzfgCxbJsWoFVOyzWorIyxf8RX3TKshZm4NmmHzKbMvirhWJlQ8X
-	IzwL1nXSJCYMHuqm1Iyw7NSgYQAKU7cZtGs3AeiN/x/E5N6xSVyhH9zsKXrZiVGqI3ghuO
-	0Z0VKsUxWS9qnzV2sieVZt5w/ZwcgKG6cjkVmwnvjePhq4IQpi9Ua3Rtr7rY0A==
-Message-ID: <d0362c9d-67f9-4ea5-a5c1-792f960da70b@pankajraghav.com>
-Date: Thu, 23 Oct 2025 13:10:16 +0200
+	s=arc-20240116; t=1761218425; c=relaxed/simple;
+	bh=EACSA+aR9Zcp1Yk9oT27Z6eIKRKW6aqxFMAM4e4KET8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OJ4X52F35To7twMb7EmJ7Ziimqub5YJwCOiwVqSizb2asIiWKwNKoY2+fV0mducqmxT/uSLfGmlGhP9RGKfCY04BmfVY4ykdKg5cGI/C8FfbqMzCBovfvkAhj+UncEVSr8VLErRNVhWZ4+Ngy2iCkICss0cWY6XSPOmbLGxYHdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cMJMx3LK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73324C4CEE7;
+	Thu, 23 Oct 2025 11:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761218425;
+	bh=EACSA+aR9Zcp1Yk9oT27Z6eIKRKW6aqxFMAM4e4KET8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=cMJMx3LKJDwxgQT3DSRQkV1Ftxp+AbI94yd8tsLlrvqOGrVfLiGAJieaC7CCfcx+s
+	 P8WYJKe4DCHUi/cCLRHjMkw9N4vCfBgAs0d209aIIM0nAL0kiu6VICfCXNIWQbS41z
+	 f+/3IFVqQXCX2sEA8RgBwReJEzsYAWz/bOpxZKiy/hAabtGqIb7RdoxO1H/qgaI+0c
+	 Ric6SAsMlNq986ie9VJTV2OZN996F48DOJ/8GGhfMQdyeJZFfrCUZuhbt8bmeuGls8
+	 JjnYXmw/gmm9yVETSw8fMj9YQ3EED6/jAHAdMNj9bgFIGAC3diOhJ7DohNTTz5hOKC
+	 B9kbLt2cfkdMQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33BF63809A31;
+	Thu, 23 Oct 2025 11:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v4] mm/huge_memory: preserve PG_has_hwpoisoned if a folio
- is split to >0 order
-To: Zi Yan <ziy@nvidia.com>, linmiaohe@huawei.com, david@redhat.com,
- jane.chu@oracle.com
-Cc: akpm@linux-foundation.org, mcgrof@kernel.org, nao.horiguchi@gmail.com,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Wei Yang <richard.weiyang@gmail.com>, Yang Shi <shy828301@gmail.com>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-References: <20251023030521.473097-1-ziy@nvidia.com>
-Content-Language: en-US
-From: Pankaj Raghav <kernel@pankajraghav.com>
-In-Reply-To: <20251023030521.473097-1-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: bonding: fix possible peer notify event loss or
+ dup
+ issue
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176121840586.3001126.18409474218756623058.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Oct 2025 11:20:05 +0000
+References: <20251021050933.46412-1-tonghao@bamaicloud.com>
+In-Reply-To: <20251021050933.46412-1-tonghao@bamaicloud.com>
+To: Tonghao Zhang <tonghao@bamaicloud.com>
+Cc: netdev@vger.kernel.org, jv@jvosburgh.net, andrew+netdev@lunn.ch,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ liuhangbin@gmail.com, razor@blackwall.org, vincent@bernat.ch,
+ stable@vger.kernel.org
 
+Hello:
 
-On 10/23/25 05:05, Zi Yan wrote:
-> folio split clears PG_has_hwpoisoned, but the flag should be preserved in
-> after-split folios containing pages with PG_hwpoisoned flag if the folio is
-> split to >0 order folios. Scan all pages in a to-be-split folio to
-> determine which after-split folios need the flag.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Tue, 21 Oct 2025 13:09:33 +0800 you wrote:
+> If the send_peer_notif counter and the peer event notify are not synchronized.
+> It may cause problems such as the loss or dup of peer notify event.
 > 
-> An alternatives is to change PG_has_hwpoisoned to PG_maybe_hwpoisoned to
-> avoid the scan and set it on all after-split folios, but resulting false
-> positive has undesirable negative impact. To remove false positive, caller
-> of folio_test_has_hwpoisoned() and folio_contain_hwpoisoned_page() needs to
-> do the scan. That might be causing a hassle for current and future callers
-> and more costly than doing the scan in the split code. More details are
-> discussed in [1].
+> Before this patch:
+> - If should_notify_peers is true and the lock for send_peer_notif-- fails, peer
+>   event may be sent again in next mii_monitor loop, because should_notify_peers
+>   is still true.
+> - If should_notify_peers is true and the lock for send_peer_notif-- succeeded,
+>   but the lock for peer event fails, the peer event will be lost.
 > 
-> This issue can be exposed via:
-> 1. splitting a has_hwpoisoned folio to >0 order from debugfs interface;
+> [...]
 
-Is it easy to add a selftest in split_huge_page_test for this scenario?
+Here is the summary with links:
+  - [net] net: bonding: fix possible peer notify event loss or dup issue
+    https://git.kernel.org/netdev/net/c/10843e1492e4
 
-> 2. truncating part of a has_hwpoisoned folio in
->    truncate_inode_partial_folio().
-> 
---
-Pankaj
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
