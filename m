@@ -1,186 +1,197 @@
-Return-Path: <stable+bounces-189124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE280C01B36
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 16:17:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EBA2C01BDE
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 16:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A80E563059
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 14:10:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF98C3AD231
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 14:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED393161AF;
-	Thu, 23 Oct 2025 14:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C7B2F9995;
+	Thu, 23 Oct 2025 14:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErQg4Paz"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pU+Mn0X9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23762C08D4;
-	Thu, 23 Oct 2025 14:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA31F32779B
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 14:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761228653; cv=none; b=eIPAqdCNtivXbaNRYOe28O/Mos3mUY08WLmPtXkO4YPBhhZ4DjN6r7Q8wFYiWRjc8lFu15G7pmCVpbU7Tks8CNCF25p+ItqAynu7u3r5jN6Pr755AnYTr2RBgDiRCXiPehGNBNJMJDl0z7gCzjFhnyYog01uGHbyBJSaduQnrn0=
+	t=1761228824; cv=none; b=riLd3WasMK40V4EVFgu8x131vD3wjgYyb3o8+3ZATabiv6mRSM8yBAFgeEb3Ntgc4fHS9dXWv2KRp7oY8ZbInbZWxwk3RW6hwQT1yUCvy3PdyADEAHzaFww5UYZ05jWdDPIvtVC8ZgSePZJtqClnHxo3zeXQHBCqh1oKJOJaho0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761228653; c=relaxed/simple;
-	bh=9j/Nj79fZM+lECIfYOli/ze3SV2mU/GUWdoAbKY6Buw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JZSRgND/JtsEhbwV4njA4dxX4icvGll89cmuYeX63Ok33o2RbnaKvpF9Veq8uaf1/gwQV8cTt3m02cV5ejnI66ecm5o8kqaw75yt7UpI2a9yn9uZwj8xrWCKFKcPoZvSBYGrqOcgm+F8ehJSAAo0WjeTqc+Vuq9KtysdB1KtCN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErQg4Paz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33EEFC4CEE7;
-	Thu, 23 Oct 2025 14:10:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761228652;
-	bh=9j/Nj79fZM+lECIfYOli/ze3SV2mU/GUWdoAbKY6Buw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ErQg4Paz3kRBPlWuFBJhWREpNcYlrqM42mVImWxF51ZtNphxKiFWKubBtEqQUX68g
-	 vHlRrVz8lHY9SkBxlx/t+MMB2m0PcTjn3SRfAsJf+cmoUYkDIFvsrgYRi/tCcfD7m7
-	 7xlMXSbi5JZpO/qaMZdGOEXIhYtUPeC7k+AxXFM93nE0hwU/IfF9BlYdXRIWcor5Uu
-	 tKryLCFNLtUNA8yyZV/uQSezNnUKd7xE6ETEs/44TjtvpZChyxHx1y3H2akaHn2PGQ
-	 kjPTwrpTHH5zZr/ZpvzRccv6NC9xLVyxtwqBaNiEvDUm5CV3M2ty2rFFWiQOkHbgiR
-	 msA4vpFoWW8Ug==
-Message-ID: <cc923a56-cf2d-4c3a-b1bd-90dbc3075ef2@kernel.org>
-Date: Thu, 23 Oct 2025 16:10:41 +0200
+	s=arc-20240116; t=1761228824; c=relaxed/simple;
+	bh=Uwo+aYqg5B2e+9HKK6ZZffaGQmJz/+R31BTiwfyuubU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qvGQrO1jZ6/gqnd/I3ZyU0JYtebkfN68I/OEE8B7suyYCpyfACJyh3331Geg383/j3cgOYejUyzKXGMdajzE6gesxzR3MK1yQIifJUI/sXXuHuzLTe+BM17qdcmrnuWPlcQnGrqakNTHG2/SVdfJNN81YBQvMf014D37AUac6vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pU+Mn0X9; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59N8AXvX019179
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 14:13:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=bxlmW53Ze95tx/Dvnq3bdZa2
+	THJyIwU6ELjaUv9Gq8M=; b=pU+Mn0X9jNXUt1EVLox7A5LY7XOubdiPbjYo+RRx
+	W1M2o4bBX9bF3cgjRLj2g8kBIbNZUvTjym5lZj1bm3LKCH80/Z+ImWiL69lKXOpW
+	mYHS1tSAu0Ow4LmopH2i1pxtRx4NQSU9P2Tfq8vBpgmhD5GiAF5Nv599R4+zL0Se
+	OOHtoenOEZlvDm2WmnAdEXgBWKSgKEVcqdlzaLQbai0MNXIvsB6/AyDeq09602O4
+	D5xftRE6H8h0z7XnUg4679p8+4TvGOIZdGYbxtPwu38NkTUGI143wDnFfLd2Zmts
+	Co2tGIXbTDruXTQb6tGIQ77H2SzVXj+87+bKdxgGRAGEAQ==
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com [209.85.222.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49y67qjn6u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 14:13:42 +0000 (GMT)
+Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-932c96b8fecso4978512241.1
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 07:13:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761228821; x=1761833621;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bxlmW53Ze95tx/Dvnq3bdZa2THJyIwU6ELjaUv9Gq8M=;
+        b=LizDj5QJGU9mNRaPpLCOQOgwLXHFeXopqXNrIhzaBhUhrNNDOLP4cmPVHHfwlvTLp4
+         Q8ufyLxse3lxL1m2SE+3JzM0hsqCvabFA9Pb41+x/RzWSFCO8lwepFCXbbGiEllhDAzW
+         +56EC2+Iqi6rqFUaTJTxz5z+nSw3bXSvIgH2bGCmvJa/IHc5LbqE4bfWRaO3B8+eHQws
+         N+vPrk/MZ4Mhhcfhzhv4/w3OucJtm7vVrd2T2fwhOHstVsqyKOjGCT4ofzKjYa/vRT4L
+         EM2e3lEISBTYmNUxtMN/DjUudWbrkt2ZmLdv0CqaPSwSb4Gd6BxCIdWH1mgAtSW3yF/j
+         YntA==
+X-Forwarded-Encrypted: i=1; AJvYcCULnDuBBIoh5wQb7KgQfMS9wOMGV+mrowVWwJkXBZYNralabxMw20SJ8N8NRAt8axEqemWgf8E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyArboLmDsIiwsURHNPDB7lIRgJEY3sBg9Ix1tuX4X2x9l7zRem
+	6Yq0RUxrbT24dmucOYIPiPWyzQ5sINEuhqHFScdjYJNLm3wcYKR/5u++SRRJemHcEq6qBBPQ7QN
+	RB6lQ6vfBXjejwQPXVQcxyCcx2QitWkPrc6Um9NB9NCLqJBnmPr4mYoJsqDQ=
+X-Gm-Gg: ASbGncvzNd9Rvr7TNzrJTiXe/KTCAjXqzxyQtMhsPISvUwq8AoUgLulZ+Ed0O3L92ex
+	FK70yKNJ0SivWodVcJe+K7pd3s2rmEbap7+JGJ40suyU8MHZ/yEQtFpJrCm16i2z/PxZnKMzQ60
+	YAx77hAaIZEjxsTbJ98ECoqu03K8G4PJCYZr6PCHoeBDjcCttYL5ckwRJchNhWeIiJfXw7bNUx5
+	iNUAV/dl2J5V/5MKw97CmgRXLD/R36nv6qvosg2g1tdhkW9EzHLrd+p1+YL/kETQzc4gURuyLXi
+	0+SKFrRpj4meHzU4KvwG0n4FjRo7ChyHrG05/WPcXFZ2QpcwEsruaq1yoOFa0MmihpyDvjSNO4s
+	I/9oZgpxxIypKT+3gsNSnxg1sn6NGZ0n1GaMFZWizEsQBpqAr3Xw8SbaKpiMNnwci/6SwocrCRc
+	AOd9t/go9UBy+i
+X-Received: by 2002:a05:6122:810:b0:54a:a58f:e989 with SMTP id 71dfb90a1353d-556a23d1b76mr1496693e0c.8.1761228820701;
+        Thu, 23 Oct 2025 07:13:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG5TgXEWMCaYgffAKUiCdHKVEM+aaviF0rQ5ddKDKB+LpphL8HT0eGhK1PfL8c/RkWPBJR2bg==
+X-Received: by 2002:a05:6122:810:b0:54a:a58f:e989 with SMTP id 71dfb90a1353d-556a23d1b76mr1496672e0c.8.1761228820138;
+        Thu, 23 Oct 2025 07:13:40 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-378d66bbc2bsm4790101fa.5.2025.10.23.07.13.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 07:13:39 -0700 (PDT)
+Date: Thu, 23 Oct 2025 17:13:37 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Alexey Klimov <alexey.klimov@linaro.org>
+Cc: broonie@kernel.org, gregkh@linuxfoundation.org, srini@kernel.org,
+        rafael@kernel.org, dakr@kernel.org, make24@iscas.ac.cn, steev@kali.org,
+        linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, abel.vesa@linaro.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] regmap: slimbus: fix bus_context pointer in regmap
+ init calls
+Message-ID: <aduio24mrmn2n5ioznn4qqvxohka5ellynbhsfuai5ybupja7n@alr3vpmtayxa>
+References: <20251022201013.1740211-1-alexey.klimov@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 1/3] net,mptcp: fix proto fallback detection with
- BPF sockmap
-Content-Language: en-GB, fr-BE
-To: Jiayuan Chen <jiayuan.chen@linux.dev>, mptcp@lists.linux.dev
-Cc: stable@vger.kernel.org, Jakub Sitnicki <jakub@cloudflare.com>,
- John Fastabend <john.fastabend@gmail.com>, Eric Dumazet
- <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20251023125450.105859-1-jiayuan.chen@linux.dev>
- <20251023125450.105859-2-jiayuan.chen@linux.dev>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20251023125450.105859-2-jiayuan.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251022201013.1740211-1-alexey.klimov@linaro.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDIyMDE2OCBTYWx0ZWRfX8B2UaOtTCd/r
+ CsvEQ8tMtjKFDRbJ1yPs3N+yoJ9E8U+GzhDPufQ6J/RU42JRmpKnQushLYgxpaXQLnOWAjA/+Wa
+ qz3IzYJLr4ODmKxF4x+93NAlx+JL+hgMpJmVxGTV3pgrSEIBcka14bgCBH0a8HDDY4OXeDIioqn
+ 2bdFP4kqj9Xg9zpivF3ruz7Rb+YkNeaa714lFheLA+wJtwaFYallVyya9XAs/MLPJmK5Khwho9p
+ Ec3YplAQx+tuAcrxB4imHfpRYaULjsmTgq0wSJTDePwUqPxugd+ruML0GUIC8TCD86JLf/CHZws
+ OGuR1z3l7jfbWBozmv/UNfZfNxZgJYSPGZ5JtSCO+wJ0xz6JedUa3XA3ZTCRCA64ct5cX/fdaM9
+ 3chkhIdynWHlEGAg0xv8yJwYC4t8bw==
+X-Authority-Analysis: v=2.4 cv=LMRrgZW9 c=1 sm=1 tr=0 ts=68fa3816 cx=c_pps
+ a=R6oCqFB+Yf/t2GF8e0/dFg==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=FQcGyLhEAAAA:8 a=KKAkSRfTAAAA:8 a=PG27YUxyvBvumL9L9GoA:9 a=CjuIK1q_8ugA:10
+ a=TD8TdBvy0hsOASGTdmB-:22 a=09nrmc514_O-33C_6P4G:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: vbxL9YTk4FZLCuuFk2AxXQhR6MBP4Hpi
+X-Proofpoint-ORIG-GUID: vbxL9YTk4FZLCuuFk2AxXQhR6MBP4Hpi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-23_01,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015 priorityscore=1501 impostorscore=0 phishscore=0
+ bulkscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510220168
 
-Hi Jiayuan,
-
-On 23/10/2025 14:54, Jiayuan Chen wrote:
-> When the server has MPTCP enabled but receives a non-MP-capable request
-> from a client, it calls mptcp_fallback_tcp_ops().
+On Wed, Oct 22, 2025 at 09:10:12PM +0100, Alexey Klimov wrote:
+> Commit 4e65bda8273c ("ASoC: wcd934x: fix error handling in
+> wcd934x_codec_parse_data()") revealed the problem in the slimbus regmap.
+> That commit breaks audio playback, for instance, on sdm845 Thundercomm
+> Dragonboard 845c board:
 > 
-> Since non-MPTCP connections are allowed to use sockmap, which replaces
-> sk->sk_prot, using sk->sk_prot to determine the IP version in
-> mptcp_fallback_tcp_ops() becomes unreliable. This can lead to assigning
-> incorrect ops to sk->sk_socket->ops.
+>  Unable to handle kernel paging request at virtual address ffff8000847cbad4
+>  ...
+>  CPU: 5 UID: 0 PID: 776 Comm: aplay Not tainted 6.18.0-rc1-00028-g7ea30958b305 #11 PREEMPT
+>  Hardware name: Thundercomm Dragonboard 845c (DT)
+>  ...
+>  Call trace:
+>   slim_xfer_msg+0x24/0x1ac [slimbus] (P)
+>   slim_read+0x48/0x74 [slimbus]
+>   regmap_slimbus_read+0x18/0x24 [regmap_slimbus]
+>   _regmap_raw_read+0xe8/0x174
+>   _regmap_bus_read+0x44/0x80
+>   _regmap_read+0x60/0xd8
+>   _regmap_update_bits+0xf4/0x140
+>   _regmap_select_page+0xa8/0x124
+>   _regmap_raw_write_impl+0x3b8/0x65c
+>   _regmap_bus_raw_write+0x60/0x80
+>   _regmap_write+0x58/0xc0
+>   regmap_write+0x4c/0x80
+>   wcd934x_hw_params+0x494/0x8b8 [snd_soc_wcd934x]
+>   snd_soc_dai_hw_params+0x3c/0x7c [snd_soc_core]
+>   __soc_pcm_hw_params+0x22c/0x634 [snd_soc_core]
+>   dpcm_be_dai_hw_params+0x1d4/0x38c [snd_soc_core]
+>   dpcm_fe_dai_hw_params+0x9c/0x17c [snd_soc_core]
+>   snd_pcm_hw_params+0x124/0x464 [snd_pcm]
+>   snd_pcm_common_ioctl+0x110c/0x1820 [snd_pcm]
+>   snd_pcm_ioctl+0x34/0x4c [snd_pcm]
+>   __arm64_sys_ioctl+0xac/0x104
+>   invoke_syscall+0x48/0x104
+>   el0_svc_common.constprop.0+0x40/0xe0
+>   do_el0_svc+0x1c/0x28
+>   el0_svc+0x34/0xec
+>   el0t_64_sync_handler+0xa0/0xf0
+>   el0t_64_sync+0x198/0x19c
 > 
-> Additionally, when BPF Sockmap modifies the protocol handlers, the
-> original WARN_ON_ONCE(sk->sk_prot != &tcp_prot) check would falsely
-> trigger warnings.
+> The __devm_regmap_init_slimbus() started to be used instead of
+> __regmap_init_slimbus() after the commit mentioned above and turns out
+> the incorrect bus_context pointer (3rd argument) was used in
+> __devm_regmap_init_slimbus(). It should be just "slimbus" (which is equal
+> to &slimbus->dev). Correct it. The wcd934x codec seems to be the only or
+> the first user of devm_regmap_init_slimbus() but we should fix it till
+> the point where __devm_regmap_init_slimbus() was introduced therefore
+> two "Fixes" tags.
 > 
-> Fix this by using the more stable sk_family to distinguish between IPv4
-> and IPv6 connections, ensuring correct fallback protocol operations are
-> selected even when BPF Sockmap has modified the socket protocol handlers.
+> While at this, also correct the same argument in __regmap_init_slimbus().
 > 
-> Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+> Fixes: 4e65bda8273c ("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
+> Fixes: 7d6f7fb053ad ("regmap: add SLIMbus support")
+> Cc: stable@vger.kernel.org
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> Cc: Ma Ke <make24@iscas.ac.cn>
+> Cc: Steev Klimaszewski <steev@kali.org>
+> Cc: Srinivas Kandagatla <srini@kernel.org>
+> Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+> Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
 > ---
->  net/mptcp/protocol.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
 > 
-> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-> index 0292162a14ee..2393741bc310 100644
-> --- a/net/mptcp/protocol.c
-> +++ b/net/mptcp/protocol.c
-> @@ -61,11 +61,16 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
->  
->  static const struct proto_ops *mptcp_fallback_tcp_ops(const struct sock *sk)
->  {
-> +	/* When BPF sockmap is used, it may replace sk->sk_prot.
-> +	 * Using sk_family is a reliable way to determine the IP version.
-> +	 */
-> +	unsigned short family = READ_ONCE(sk->sk_family);
-> +
->  #if IS_ENABLED(CONFIG_MPTCP_IPV6)
-> -	if (sk->sk_prot == &tcpv6_prot)
-> +	if (family == AF_INET6)
->  		return &inet6_stream_ops;
->  #endif
-> -	WARN_ON_ONCE(sk->sk_prot != &tcp_prot);
-> +	WARN_ON_ONCE(family != AF_INET);
->  	return &inet_stream_ops;
 
-Just to be sure: is there anything in BPF modifying sk->sk_socket->ops?
-Because that's what mptcp_fallback_tcp_ops() will do somehow.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-In other words, is it always fine to set inet(6)_stream_ops? (I guess
-yes, but better to be sure while we are looking at that :) )
 
->  }
->  
-
-Cheers,
-Matt
 -- 
-Sponsored by the NGI0 Core fund.
-
+With best wishes
+Dmitry
 
