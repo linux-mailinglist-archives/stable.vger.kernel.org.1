@@ -1,270 +1,221 @@
-Return-Path: <stable+bounces-189148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4583AC025C1
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 18:14:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F73C025EB
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 18:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC7DB3A7043
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 16:14:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 57932563FF4
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 16:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E92299A8C;
-	Thu, 23 Oct 2025 16:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B32E2877F2;
+	Thu, 23 Oct 2025 16:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="nQj3ZwRx"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O4kSxcFr"
 X-Original-To: stable@vger.kernel.org
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010065.outbound.protection.outlook.com [52.101.85.65])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36A51F8724
-	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 16:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761235971; cv=fail; b=KJMQKpDd3eoX/liaNa3fSUMF47YndfIEcoYav3Pmu1NmsmwxsMAP/tVbUf2mlGNio4xREJ03Z3Be7Y/3CDlVSXeVMtregyGuUKQ25uTkl2GwvAFAbR5fTptd/prFsWTwXnLJ05zc4+eD1SVlkS8M+rMdWpx8q3j5YvyHZwxkEzE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761235971; c=relaxed/simple;
-	bh=aHVMBybRXEAXo+Fou5dU3ui/QvCO07VfO3qgeD9yXJY=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PBesuye862tNgskJBSQG8Sskw6amFrziP4uvyPG8q6It4Jr4zIlRayDIC3Yne1pdkBPLSXmMGqjQjnMxw00ZK5dnhEo1+BHART6jDU2k1vqP248088j5jdpeI5y89CHzzG7Gxbzvo8uYDGJRGCTTJ5EwlT9L1Y8Hq+aVPtaRcoc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=nQj3ZwRx; arc=fail smtp.client-ip=52.101.85.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IcbLJxcldVqvwIhdP2mhp4R4UW50FhNJhezs1aeJmetMd3Pxar/pXk3b3Gm3RoQSoyimf+sdvozKiBKddUvocm9C+tWmGEkH2lz+vfo5lmMP/jvQUVxSh9HHsfPVcWiYcYXKqh/UO4Nrf08B7Pqzkk1w6gAchzJJlcbN/2S8quhWOaedFTi/QuZzWzRV7MPveWa4R1wHghGQJR5x38ZM9UIbFCb/iUAQeM/ReWS9E48NwRRbuHYuvHT5L/6jLUsSNdm500ZTlH7pKDPmaWFR2QhEs3riclE+1ewQcapr3qKxkPeX8tjZfrzPY9UpWa3QTn/orabbMwQDw6+uBj3oKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7mgKBHE5r1HJdeUd2WzgzxY5hWD03dxs9j9g5ooIrS0=;
- b=F45GzJLzPELZdqkKKB8phjlG+RZKIkobr1n0pWKa5CkI6e0yxQN3T2GBWMdGtttR0s2m5w9YKuXsAdti2NsHFTUxP7W3kvYjDbX3iqLJgXR5CKR+y3GJRnDDOFZDnaLI6TY+GUDwXMvr9Y6LXymf1G0d6hjQ6IEgStVH9WpSLfpVAUDR7uEGZIAMIpEJzI/NrbPZ2ZKDZInLi5td5xQBV73RMjpoeKDxrpTiY5Mt4zkVlUlhEepOlR/QwipRwFny9hSifa2s/8xyU/TiXYh6VmUBjch/8tpyBZTaSPKtCX9uV93TScSS3eEhW4FiyMh+6OPekYaDlsDSZ4idVXHW4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7mgKBHE5r1HJdeUd2WzgzxY5hWD03dxs9j9g5ooIrS0=;
- b=nQj3ZwRxKlbxgPSX5062dHTt+1pwI+rCA8kUYKbirUVTbr2iBSV+TaZ5ntFPqk84LMIuKjtFynzBt2RHHNdpU4Rx2jLYaE9Fr2r94poN0wviFTgk3NLHGHDU1B6hwrTHdsuO9TeT7iVgq68zW4uPwaS7szgL/zA7HbJybQT3H9s=
-Received: from CH0PR13CA0038.namprd13.prod.outlook.com (2603:10b6:610:b2::13)
- by CH2PR12MB4071.namprd12.prod.outlook.com (2603:10b6:610:7b::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.13; Thu, 23 Oct
- 2025 16:12:47 +0000
-Received: from CH3PEPF00000012.namprd21.prod.outlook.com
- (2603:10b6:610:b2:cafe::86) by CH0PR13CA0038.outlook.office365.com
- (2603:10b6:610:b2::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9253.9 via Frontend Transport; Thu,
- 23 Oct 2025 16:12:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CH3PEPF00000012.mail.protection.outlook.com (10.167.244.117) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9275.0 via Frontend Transport; Thu, 23 Oct 2025 16:12:47 +0000
-Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 23 Oct
- 2025 09:12:46 -0700
-From: Babu Moger <babu.moger@amd.com>
-To: <stable@vger.kernel.org>
-Subject: [PATCH 6.6.y] x86/resctrl: Fix miscount of bandwidth event when reactivating previously unavailable RMID
-Date: Thu, 23 Oct 2025 11:12:40 -0500
-Message-ID: <20251023161240.75240-1-babu.moger@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2025102051-foe-trunks-268f@gregkh>
-References: <2025102051-foe-trunks-268f@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9191B28507E
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 16:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761236014; cv=none; b=eRdi3erm9MJAzCBX9I3fzGU3x/OHjQooquGHiYFEU9bFYyZFHJwc/SuW7UoDP9iNeOXGUoG/iCZfozCoatgptlY3tbFSmgqyAm+FZRRyl43Jw/vqhLWGQ95rqKK/ptylM7z3MWee5ET9W7KZWtd0GwY5ASi4siw76OaXO1iyGSI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761236014; c=relaxed/simple;
+	bh=5ZbYpXwMEDonxiJlAkt2uKMw0L1kxi32qzZgFk4LN8g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g/LBktAAGr0Gu848umdu9uFLiDriTINRyhnrejPLfc1/U/GHvo7ap0gyISkS0BcEioolx4Q7Z68kvl13GAS7VMGjWkCiZzjvZarpQaSnPcrYeAbFJXRPyFr9rrBoO6UZeKZ1BjYiR4GzS3D1lc48bURsu8XwPm5kqgIig3Y8mpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O4kSxcFr; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761236010;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ig3HQ8bYhCVLH2BAUocbNQ6YHiWBZLmjBb9TUrUsFyA=;
+	b=O4kSxcFrYrd7qBzsgs0fVLd127wpkN4f260T+XCHedTgToTNTnzbPfg2V1CQX5Ejp6913X
+	inYCXNMPsonIPxsccZrTdLK8c3nYRh3ln4lT412LDD0G6IhnjEA7E8TxdxN/QRfC0pSN8C
+	nF/56cj4tZ79fm9e09FFZbkdJ0/wTmA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-538-ikLEkNFFM_K-6-l1vCGFZQ-1; Thu, 23 Oct 2025 12:13:28 -0400
+X-MC-Unique: ikLEkNFFM_K-6-l1vCGFZQ-1
+X-Mimecast-MFC-AGG-ID: ikLEkNFFM_K-6-l1vCGFZQ_1761236008
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4711899ab0aso7142975e9.2
+        for <stable@vger.kernel.org>; Thu, 23 Oct 2025 09:13:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761236007; x=1761840807;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ig3HQ8bYhCVLH2BAUocbNQ6YHiWBZLmjBb9TUrUsFyA=;
+        b=CnUsb15G4VUc1Q8LYftcz4UaBUFXIuE1J6nJb/3OOyWz1fHYOUNfl0fCFTNYPyUhKr
+         9Z+AZmvdRutcMJECg1ryNsJ96zeqVv8cfR0tVC6BfbbNMQV9irsN4Rn/VqN72FaXHx3Z
+         fQd21zbIXxjJ/eBV4lmIt51ju5a8wmjTwC6UbvaKEu66x00nN0xYBbx3Aw8d/suAnroh
+         6PcdXr0hNwqkLILxOjmYLCjpzD98I1kF1y/cqBAxrJPCvkuafESw+AIq1aVTdeHU3GEb
+         gfr54wyMV7S2F3U2AwYs8xdKWzD9W8HKzCT/1ORdIMGAAKXfo7arYW8axdKosriEoNS/
+         HNbg==
+X-Forwarded-Encrypted: i=1; AJvYcCWSed5TXFx3KGHB8GMdd1Tmp1+0xMlUmmyxgDca1vOnNsYyctbf8NxLgLU2T6/Y/MOJDj03TbM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbSTETZkrCxgFKmefVZW9xfYFT55kelMfWsDFC2XuA6/VPNWUw
+	bqtGL7oRuQP7EiZ4I6OsuG2xQymgpujG6be2rO7D50jKTOo6TzFvivVSf+s73yLk9HSj+FbPMZI
+	UCnQyoMowXLHVMnjAQ20002tJXqGpAew3jOZWJ0hTlnUp2hDd3QiWT5GxHg==
+X-Gm-Gg: ASbGncv8wQCs46r7jTU71vF3GDzVrAq4ulJ3L5YBVVT91XvH7G/BqamlKhZfNbtlQ3Q
+	9rLWnmI7FrY/uuJTHCu/idaY/z6APwqDSo3ogNGTNNN/bJAa7Ic1nRw+oQ4Cclca9YKcgr6kRtS
+	fj5lVEKqoekiGp5wFMrW7eEbwSl4L3439hb1ImU9Q+Enwit1isH2EoAIJAElTEPrw6TBybfzfC0
+	hcPhwO2qb1lz4ubLakl7x3Akpku8VbBIsApiMZUbRs6I5+1aTfPz17q9xxwevbJqTN31kxfTSRd
+	XJTEJxuJFn+CVn3IHjqOJlMFmEuxR1WGX5RQoxpgmAMbidwLhdIBGWdKmGxE47dyLw/pOTTB6iY
+	x/VYp/pfM0Y7K7ONYkztg0gWucK/asfSGGdgS9Wuh07zkI2N/zVTmx4tGbcqqi25AxtDLRwUWwH
+	tego/1sDemZprL7jLHwoOTAHZr+vo=
+X-Received: by 2002:a05:600d:8231:b0:471:1db3:6105 with SMTP id 5b1f17b1804b1-4711db36173mr118254065e9.33.1761236007591;
+        Thu, 23 Oct 2025 09:13:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFIBFxSSw3+IKAFXz0EGdOjGrB1iGECsd05YGqHD0B7YU/PNcL8LH4TmKfjCrviJIPRDDTiVA==
+X-Received: by 2002:a05:600d:8231:b0:471:1db3:6105 with SMTP id 5b1f17b1804b1-4711db36173mr118253775e9.33.1761236007181;
+        Thu, 23 Oct 2025 09:13:27 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475caf4642fsm42674025e9.17.2025.10.23.09.13.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Oct 2025 09:13:26 -0700 (PDT)
+Message-ID: <774c443f-f12f-4d4f-93b1-8913734b62b2@redhat.com>
+Date: Thu, 23 Oct 2025 18:13:25 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000012:EE_|CH2PR12MB4071:EE_
-X-MS-Office365-Filtering-Correlation-Id: af66aa28-4651-4fa7-97bd-08de124f01f0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Ep9/z6XkaUBFGslFvXMdlsMIpC6v7IGcaHuEBcBu1tTsBFXlPPxgpMhmEaen?=
- =?us-ascii?Q?Ufmw4cRITEPstKWJ93W2uAez5A0azHJD8yTWEe81Ij4aAdNq6uV+nchzN9GW?=
- =?us-ascii?Q?b2oNkAQ+JOf1B67laN/sH3ei78/66cXDvR3NvK1eZGNIE9XZ33/zkNBp8x8G?=
- =?us-ascii?Q?SDDEE9dCksW7y67H8JBdQPoIA9j7/gFjWfrokRwGELKdzZt6Po+1quvZnfxM?=
- =?us-ascii?Q?X286/ir2MgfVo3TgwG6gAN/UTmhY+iEKJjP65uSI9cnTKROAYPDc82gbIFPv?=
- =?us-ascii?Q?1qfzw5gJHefQw/hJb+Vl9EaqwYIXpDqFHMGmG/oXRkF5S+GxvB/LhHW8Ogac?=
- =?us-ascii?Q?j9xvHOV8NTvsNHtwfjjUQwvA1uBIaSFEUC81HwCD1p2ZM231WlIiVCARmZyF?=
- =?us-ascii?Q?cocdq9gulEO4NTrNmx7J0lgcmanbr45309raOuBJoM1jaNIhwlG1SzMfEQNm?=
- =?us-ascii?Q?p0IKc7ki3h0eDKyKWfmtY6d7HwVIdJmTfuYhKB/ZDVTTkZpXgArkGpElDIZm?=
- =?us-ascii?Q?vOMhVUsiB8S2e0Lf0LC18siyspsx+GQBTDtUyGilfXNqB4wGfIe7KzdaKyVO?=
- =?us-ascii?Q?vpCjRJGkAbuEMyzJcrxlYAkCSEFbCrFJKUOsxrAYqKBZsSF640GBHrdqDeCf?=
- =?us-ascii?Q?RfWBfb3CtYdSrW/1Sylcc11r1V4DBs3i5tw1c7HRt/vUwOlJ/GNQB3jb8UXL?=
- =?us-ascii?Q?9Ul0k1ZRQaCHeUDBjHS8VnALBKSMgYYBXmldDPiKcHKOibEWzWMitXX2krWU?=
- =?us-ascii?Q?ifzm0AWE4D59VBDTHCmNYiO40y+fe6ZXshAB29uVcUH6ttEungVdzMY8UYv0?=
- =?us-ascii?Q?//wLpdj2Pwgs+F7Do3UckBI2gaVFTbkZ46++nFxsP4x+akROXxk3RAm6Hmlb?=
- =?us-ascii?Q?m5tKz7OxquLg1NnWovUIJ+mnWp7HuB6A9OOryaRetcXTDg3NFZY3vhF3pM8q?=
- =?us-ascii?Q?uSjfp3RpnuQmpA3NIuOi7pC0cmAnnq+4/gUQQ3KU9jbMIl9Cs+ZCHXkQVQ9e?=
- =?us-ascii?Q?3lMw3c3pE/1+IhQXppk1T39bJkCuY3rDWJOCJbYFTX9QN/Ko04B+jWZQZO19?=
- =?us-ascii?Q?q6j1WEgbmCp5p3UybG/QDQe6VSy0nZP95BsBtzXsSupB3xggZdvBjOrSd8d7?=
- =?us-ascii?Q?oYa3wRHxTpa3nwtYsRsuaPxhTxF6K7GFo+SMLs249sSYQN/teSjy4CvG4c4A?=
- =?us-ascii?Q?jvueDM6Ldm3ACaGuef4vfjXdMA+QLv4qR8qe4n1kdldbUUYtwLPZAOb5J8En?=
- =?us-ascii?Q?H464SQRXI8QQNh9O0pQlwHYvUEsIXNPPhIemEFY8aVKN1893VMJEgri4vOnM?=
- =?us-ascii?Q?5GiFZDflk4Pl3Hf4VOCYHFrVIajxUUi1gCX0RB31zWQ7y+OJmGtiw4fLuY6K?=
- =?us-ascii?Q?LvdvC4mO+XrwyoqIFdEDCnMTZr6fJbAcdLNrH0MsWnDP3HXWLkURxOg+8uKV?=
- =?us-ascii?Q?ZbZheX0e1tOA7bECMhXGUoQZBsY44ABDnKlfcfH7jjeodFfEDXAQYOwrB1tm?=
- =?us-ascii?Q?63zM8JHyXOEznteWAeiwcUYWoeFDAS5tvUQhiVINHHc0nT2F/gW2ocBKwKpp?=
- =?us-ascii?Q?FzmI0veJXun5dePGpIc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2025 16:12:47.6908
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: af66aa28-4651-4fa7-97bd-08de124f01f0
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF00000012.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4071
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/shmem: fix THP allocation and fallback loop
+To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Liam Howlett <liam.howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Mariano Pache <npache@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
+ stable@vger.kernel.org
+References: <20251023065913.36925-1-ryncsn@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20251023065913.36925-1-ryncsn@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Users can create as many monitoring groups as the number of RMIDs supported
-by the hardware. However, on AMD systems, only a limited number of RMIDs
-are guaranteed to be actively tracked by the hardware. RMIDs that exceed
-this limit are placed in an "Unavailable" state.
+On 23.10.25 08:59, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> The order check and fallback loop is updating the index value on every
+> loop, this will cause the index to be wrongly aligned by a larger value
+> while the loop shrinks the order.
+> 
+> This may result in inserting and returning a folio of the wrong index
+> and cause data corruption with some userspace workloads [1].
+> 
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
+> Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> 
+> ---
+> 
+> Changes from V2:
+> - Introduce a temporary variable to improve code,
+>    no behavior change, generated code is identical.
+> - Link to V2: https://lore.kernel.org/linux-mm/20251022105719.18321-1-ryncsn@gmail.com/
+> 
+> Changes from V1:
+> - Remove unnecessary cleanup and simplify the commit message.
+> - Link to V1: https://lore.kernel.org/linux-mm/20251021190436.81682-1-ryncsn@gmail.com/
+> 
+> ---
+>   mm/shmem.c | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index b50ce7dbc84a..e1dc2d8e939c 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1882,6 +1882,7 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
+>   	struct shmem_inode_info *info = SHMEM_I(inode);
+>   	unsigned long suitable_orders = 0;
+>   	struct folio *folio = NULL;
+> +	pgoff_t aligned_index;
+>   	long pages;
+>   	int error, order;
+>   
+> @@ -1895,10 +1896,12 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
+>   		order = highest_order(suitable_orders);
+>   		while (suitable_orders) {
+>   			pages = 1UL << order;
+> -			index = round_down(index, pages);
+> -			folio = shmem_alloc_folio(gfp, order, info, index);
+> -			if (folio)
+> +			aligned_index = round_down(index, pages);
+> +			folio = shmem_alloc_folio(gfp, order, info, aligned_index);
+> +			if (folio) {
+> +				index = aligned_index;
+>   				goto allocated;
+> +			}
 
-When a bandwidth counter is read for such an RMID, the hardware sets
-MSR_IA32_QM_CTR.Unavailable (bit 62). When such an RMID starts being tracked
-again the hardware counter is reset to zero. MSR_IA32_QM_CTR.Unavailable
-remains set on first read after tracking re-starts and is clear on all
-subsequent reads as long as the RMID is tracked.
+Was the found by code inspection or was there a report about this?
 
-resctrl miscounts the bandwidth events after an RMID transitions from the
-"Unavailable" state back to being tracked. This happens because when the
-hardware starts counting again after resetting the counter to zero, resctrl
-in turn compares the new count against the counter value stored from the
-previous time the RMID was tracked.
+Acked-by: David Hildenbrand <david@redhat.com>
 
-This results in resctrl computing an event value that is either undercounting
-(when new counter is more than stored counter) or a mistaken overflow (when
-new counter is less than stored counter).
-
-Reset the stored value (arch_mbm_state::prev_msr) of MSR_IA32_QM_CTR to
-zero whenever the RMID is in the "Unavailable" state to ensure accurate
-counting after the RMID resets to zero when it starts to be tracked again.
-
-Example scenario that results in mistaken overflow
-==================================================
-1. The resctrl filesystem is mounted, and a task is assigned to a
-   monitoring group.
-
-   $mount -t resctrl resctrl /sys/fs/resctrl
-   $mkdir /sys/fs/resctrl/mon_groups/test1/
-   $echo 1234 > /sys/fs/resctrl/mon_groups/test1/tasks
-
-   $cat /sys/fs/resctrl/mon_groups/test1/mon_data/mon_L3_*/mbm_total_bytes
-   21323            <- Total bytes on domain 0
-   "Unavailable"    <- Total bytes on domain 1
-
-   Task is running on domain 0. Counter on domain 1 is "Unavailable".
-
-2. The task runs on domain 0 for a while and then moves to domain 1. The
-   counter starts incrementing on domain 1.
-
-   $cat /sys/fs/resctrl/mon_groups/test1/mon_data/mon_L3_*/mbm_total_bytes
-   7345357          <- Total bytes on domain 0
-   4545             <- Total bytes on domain 1
-
-3. At some point, the RMID in domain 0 transitions to the "Unavailable"
-   state because the task is no longer executing in that domain.
-
-   $cat /sys/fs/resctrl/mon_groups/test1/mon_data/mon_L3_*/mbm_total_bytes
-   "Unavailable"    <- Total bytes on domain 0
-   434341           <- Total bytes on domain 1
-
-4.  Since the task continues to migrate between domains, it may eventually
-    return to domain 0.
-
-    $cat /sys/fs/resctrl/mon_groups/test1/mon_data/mon_L3_*/mbm_total_bytes
-    17592178699059  <- Overflow on domain 0
-    3232332         <- Total bytes on domain 1
-
-In this case, the RMID on domain 0 transitions from "Unavailable" state to
-active state. The hardware sets MSR_IA32_QM_CTR.Unavailable (bit 62) when
-the counter is read and begins tracking the RMID counting from 0.
-
-Subsequent reads succeed but return a value smaller than the previously
-saved MSR value (7345357). Consequently, the resctrl's overflow logic is
-triggered, it compares the previous value (7345357) with the new, smaller
-value and incorrectly interprets this as a counter overflow, adding a large
-delta.
-
-In reality, this is a false positive: the counter did not overflow but was
-simply reset when the RMID transitioned from "Unavailable" back to active
-state.
-
-Here is the text from APM [1] available from [2].
-
-"In PQOS Version 2.0 or higher, the MBM hardware will set the U bit on the
-first QM_CTR read when it begins tracking an RMID that it was not
-previously tracking. The U bit will be zero for all subsequent reads from
-that RMID while it is still tracked by the hardware. Therefore, a QM_CTR
-read with the U bit set when that RMID is in use by a processor can be
-considered 0 when calculating the difference with a subsequent read."
-
-[1] AMD64 Architecture Programmer's Manual Volume 2: System Programming
-    Publication # 24593 Revision 3.41 section 19.3.3 Monitoring L3 Memory
-    Bandwidth (MBM).
-
-  [ bp: Split commit message into smaller paragraph chunks for better
-    consumption. ]
-
-Fixes: 4d05bf71f157d ("x86/resctrl: Introduce AMD QOS feature")
-Signed-off-by: Babu Moger <babu.moger@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Tested-by: Reinette Chatre <reinette.chatre@intel.com>
-Cc: stable@vger.kernel.org # needs adjustments for <= v6.17
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 # [2]
-(cherry picked from commit 15292f1b4c55a3a7c940dbcb6cb8793871ed3d92)
-[babu.moger@amd.com: Fix conflict for v6.6 stable]
----
- arch/x86/kernel/cpu/resctrl/monitor.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-index 3a6c069614eb..976bdf15be22 100644
---- a/arch/x86/kernel/cpu/resctrl/monitor.c
-+++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-@@ -241,11 +241,15 @@ int resctrl_arch_rmid_read(struct rdt_resource *r, struct rdt_domain *d,
- 	if (!cpumask_test_cpu(smp_processor_id(), &d->cpu_mask))
- 		return -EINVAL;
- 
-+	am = get_arch_mbm_state(hw_dom, rmid, eventid);
-+
- 	ret = __rmid_read(rmid, eventid, &msr_val);
--	if (ret)
-+	if (ret) {
-+		if (am && ret == -EINVAL)
-+			am->prev_msr = 0;
- 		return ret;
-+	}
- 
--	am = get_arch_mbm_state(hw_dom, rmid, eventid);
- 	if (am) {
- 		am->chunks += mbm_overflow_count(am->prev_msr, msr_val,
- 						 hw_res->mbm_width);
 -- 
-2.34.1
+Cheers
+
+David / dhildenb
 
 
