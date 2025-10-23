@@ -1,128 +1,165 @@
-Return-Path: <stable+bounces-189065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-189066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0825EBFF5EC
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 08:39:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1099DBFF70C
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 08:59:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9F93F357A2B
-	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 06:39:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50E53A2832
+	for <lists+stable@lfdr.de>; Thu, 23 Oct 2025 06:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B81229B795;
-	Thu, 23 Oct 2025 06:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA6B29C33F;
+	Thu, 23 Oct 2025 06:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M5o5fGAK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PVGXZ3Xe"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEAC2980A8;
-	Thu, 23 Oct 2025 06:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CEC279DC9
+	for <stable@vger.kernel.org>; Thu, 23 Oct 2025 06:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761201583; cv=none; b=rguur2znN/8wMjovrx00vvbG6zTR17wLDVorVN8qi2c3jI2sEkWAik8s/FC/He6SBsa8WaD3uneRqiGB2e/W/X/tgGOM9zzrJyX4IzqG6pdKTgYR05uC1AIhHP085CFETf0Uq9wai8dqTatO0hCfGul+JnTlD6NwyrT4C4XFKNA=
+	t=1761202763; cv=none; b=OTfF5Q9g1TgfbH4Xz7EZNrCTLKZkan7wLI0ehYyFCIQNw8/NE0ThN9kr2D2HYuw1tibkFKYlttFVIIUE7wGdTkV44juSwmLbjr9RJ6MHxJXFXfRnCUt+BMtAg8EbE0OFwj2Bd4HAZ5HWBw9xlPtuD/FaTFyRgACp+404Y1qYrXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761201583; c=relaxed/simple;
-	bh=YyvvwYN7bxHsIVzFJjPr+syowRuB6CCI1UdA16U57IE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MLpFjIetaFcYDnlU2ztP9yw2IqIAK8b+1phaAJ31WXVY8V1CopLBySThdP3UMnXpYJ0CHeSR4V6ydygMFOEDMBc/W/ZKSzmoH81M6QUZr6Eo3NHvwJXDKvXjSdDQSVgVlWBJYz9J6txev/l/z7ZLviMzXFnNuei4nWMkp9TpsUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M5o5fGAK; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761201581; x=1792737581;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=YyvvwYN7bxHsIVzFJjPr+syowRuB6CCI1UdA16U57IE=;
-  b=M5o5fGAKL5KYw7/VXgWdxwrJfOCabK2UwAm5uDDiZvAFv9mq1bibYz+9
-   OIT3zQBOZi+urRZh1JiQKpr2YwGnXleJLeYaqgwo1bNVSnErpYPOr2QAT
-   bWD6QRYvcpnwVs/OM2OGEEsX4kG8wdvniaMVq2s1KfZdiL8GRqQpx3Us6
-   S0Q7WsZzpso4dkXf768TD5dg17jrCQBSM93/eL7oBgMXSyvQrisIXHrn1
-   P4vWMm7V/d2kUMeVfV06VffJz97AMRgTAy6GH3fi5MdNvjERq9zl1FaXA
-   HRgYe6ln6EOsl8vGS0VjKK/Se5J2D4bbZGcUlXCZ6GmfrQbBl/VgSq7y5
-   A==;
-X-CSE-ConnectionGUID: RxcCrE/dRqiet2wIrH884w==
-X-CSE-MsgGUID: eTicpYy7S6OyOLPTn04rqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="88827816"
-X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; 
-   d="scan'208";a="88827816"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 23:39:40 -0700
-X-CSE-ConnectionGUID: E6BmgmP0SEOq5mzUudffcQ==
-X-CSE-MsgGUID: ALsmw+gLRLmsGVxve1foOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; 
-   d="scan'208";a="184006536"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.163])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 23:39:38 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vBoz1-00000001rhn-2NId;
-	Thu, 23 Oct 2025 09:39:35 +0300
-Date: Thu, 23 Oct 2025 09:39:35 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Hans de Goede <hansg@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	stable@vger.kernel.org, Mario Limonciello <superm1@kernel.org>
-Subject: Re: [REGRESSION FIX resend 1/1] gpiolib: acpi: Make set debounce
- errors non fatal
-Message-ID: <aPnNpy6tXlCKnBsL@smile.fi.intel.com>
-References: <20251022133715.331241-1-hansg@kernel.org>
- <20251022133715.331241-2-hansg@kernel.org>
- <CAHp75VcDmafp4fiOH7LqhPqtTX5BEp1w0eA5UMk13U=2_tHsyA@mail.gmail.com>
+	s=arc-20240116; t=1761202763; c=relaxed/simple;
+	bh=jv3RRiQeAxRj+yS1gIR9ygnBb8z/VVm8giUZt1eG3P0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mVVHc9gRsGPWEFcGE0sk0XQ2BGgkSfSBwYE9ZDca1RnKBqakn9avbTCwudhwwYaRS7jjxRT0jFz1MK/YHF3ppLPGqgOS/1y5se/PjGGxiCvNFVYF4K6u6PHux/sYq04IcWK9LDk05Nto9KQ9nZZEI2q1wR+XUZsWdmZ4NlSwgM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PVGXZ3Xe; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-339d7c4039aso505572a91.0
+        for <stable@vger.kernel.org>; Wed, 22 Oct 2025 23:59:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761202761; x=1761807561; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:reply-to:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rv8wkF7zXzO22qUjEduk8QMkq+ulYIyp393gGAAnjeA=;
+        b=PVGXZ3Xe2ueNZRV4NcXS0RxIZYo6klu4qou5aLo+QN3kCfDUYU/6/7b/sErcAIGJA7
+         dX+o1EHbquax9OV3euJvpISoPQNtq0hfAdw6J5sahdOUnoCYtUQ+TDrs/sWHpetjSDE2
+         w9893JySCFztXCTMllf5rRPpL7HXOm0qPaKzxbciyjYHaabYJ5/tT7EeGyrzzLKvi/RU
+         5S+DSjOOuhOb1/HuOR+LJGvjLow4kycrFgd3tLG3X+dleKh8PMqNVyGCqWBMN9yZdtPZ
+         6/K4I36co15nwkry3LYId+DOqyDpwObi77gFmxcOdhHoTU0VxzOWJGT5Pk9bsNkFS0nY
+         YsFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761202761; x=1761807561;
+        h=content-transfer-encoding:mime-version:reply-to:message-id:date
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rv8wkF7zXzO22qUjEduk8QMkq+ulYIyp393gGAAnjeA=;
+        b=N4c0UbSgMdksDQtKW+egYDf/rD63cEM8oglEbZ+t5MZhvBMD5rKFH8CQ6gQ6Kv6M/Y
+         0XWota7jl7klwMmkAJkh4FkumEFuLmrmAPlJds3hT0zVE2kGcx/M2smyf3ZvZn2dwns4
+         ABpG7pTgAVjHqj8/KbR0+0qtHU7XAAjqGS5Gqvf7PDjZW13Y08LncLvS/N3ndJQ4JYXb
+         YZgMwsWltQVsD3ZrZYN7WjGQgS63BFPLlHeGSF0wvam0RuGPuiZhbv1+aHzYvtyGvu01
+         9h8+HK8BL9dH5JjMKMCZYevYVaniQKhjdBRc79MkMHoOQk7ymY3os/bBLWeBrzakU0pB
+         EOaw==
+X-Forwarded-Encrypted: i=1; AJvYcCWRVFx0s72fqytOh0JLBzDvyu1M2aTtO1jA92cPIqS+/tUlUL8HRSQkDgKPjKAAZvS4x/ALQ7Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkG3uR7FcSH964Pmdqf6ZpRP2ChdvoA6lxzwjH1IUE3P3dm+Sa
+	OGS47MqDszHwrisahsmy1b/RaGRNDfKz0WF32Z03uKxB/Mgt5oKs2QTM5ePlYywk8Fg=
+X-Gm-Gg: ASbGncu055pbLwMmSXHdN7yCHA2kBLk3vIsftkPtL0PWLLzXAzKtOECp+UyImIfFy85
+	Ugrb7N0aYJn3JB0jzRAUcJHfdRqWxZEmw1IeLqQJ5xGqa+lt+mNLTQsKliScVsRru3aw8cY9Nkl
+	PAG6U+gm/ZZWCxMOOfnYPqapLKMH20rEJpyvfpvHc+VKROODS78WozuiIekm9eOk1thHsLwXwWQ
+	T7SiZ+L/8UmfJ8jB/lAoJTz3HrupFHqW/1aXBZsE6lGMtHyBcvEepbZZMoBFUFWWZfY3Wm3TYu3
+	NFxRKnbGTiK3epyj2zLeDryHsTkteAQBz4CNaKOEkZmBipBE95yLsx6f2wCcee3x1cd1VYYLoje
+	LDViAZNvJDx8GqHoCPaFYfksG3JGU8bb/rWCWNEISlC7yBSTE3zqbbcILQ3V0HjLxWSUT9YPaKl
+	jSpQH495jQXZhTGw==
+X-Google-Smtp-Source: AGHT+IGY9vl7Ys2QrXyChnMJJ8Hm15T8p66vefo6gmsF42VNf8SOd0Wf86nEbGrndI9aN+e5mM9IXw==
+X-Received: by 2002:a17:90b:1dc4:b0:33b:ade7:51d3 with SMTP id 98e67ed59e1d1-33bcf8f78c4mr32616407a91.20.1761202760650;
+        Wed, 22 Oct 2025 23:59:20 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.24])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fb016f83fsm1351963a91.12.2025.10.22.23.59.16
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 22 Oct 2025 23:59:19 -0700 (PDT)
+From: Kairui Song <ryncsn@gmail.com>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Hugh Dickins <hughd@google.com>,
+	Dev Jain <dev.jain@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mariano Pache <npache@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	Kairui Song <kasong@tencent.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] mm/shmem: fix THP allocation and fallback loop
+Date: Thu, 23 Oct 2025 14:59:13 +0800
+Message-ID: <20251023065913.36925-1-ryncsn@gmail.com>
+X-Mailer: git-send-email 2.51.0
+Reply-To: Kairui Song <ryncsn@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75VcDmafp4fiOH7LqhPqtTX5BEp1w0eA5UMk13U=2_tHsyA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Oct 22, 2025 at 04:47:34PM +0300, Andy Shevchenko wrote:
-> On Wed, Oct 22, 2025 at 4:37 PM Hans de Goede <hansg@kernel.org> wrote:
-> >
-> > Commit 16c07342b542 ("gpiolib: acpi: Program debounce when finding GPIO")
-> > adds a gpio_set_debounce_timeout() call to acpi_find_gpio() and makes
-> > acpi_find_gpio() fail if this fails.
-> >
-> > But gpio_set_debounce_timeout() failing is a somewhat normal occurrence,
-> > since not all debounce values are supported on all GPIO/pinctrl chips.
-> >
-> > Making this an error for example break getting the card-detect GPIO for
-> > the micro-sd slot found on many Bay Trail tablets, breaking support for
-> > the micro-sd slot on these tablets.
-> >
-> > acpi_request_own_gpiod() already treats gpio_set_debounce_timeout()
-> > failures as non-fatal, just warning about them.
-> >
-> > Add a acpi_gpio_set_debounce_timeout() helper which wraps
-> > gpio_set_debounce_timeout() and warns on failures and replace both existing
-> > gpio_set_debounce_timeout() calls with the helper.
-> >
-> > Since the helper only warns on failures this fixes the card-detect issue.
-> 
-> Acked-by: Andy Shevchenko <andy@kernel.org>
-> if Bart wants to take this directly.
+From: Kairui Song <kasong@tencent.com>
 
-Never mind, it seems we gotta fix an LKP thingy, I'm about to send a PR out of
-two patches.
+The order check and fallback loop is updating the index value on every
+loop, this will cause the index to be wrongly aligned by a larger value
+while the loop shrinks the order.
 
+This may result in inserting and returning a folio of the wrong index
+and cause data corruption with some userspace workloads [1].
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
+Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+
+---
+
+Changes from V2:
+- Introduce a temporary variable to improve code,
+  no behavior change, generated code is identical.
+- Link to V2: https://lore.kernel.org/linux-mm/20251022105719.18321-1-ryncsn@gmail.com/
+
+Changes from V1:
+- Remove unnecessary cleanup and simplify the commit message.
+- Link to V1: https://lore.kernel.org/linux-mm/20251021190436.81682-1-ryncsn@gmail.com/
+
+---
+ mm/shmem.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b50ce7dbc84a..e1dc2d8e939c 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1882,6 +1882,7 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
+ 	struct shmem_inode_info *info = SHMEM_I(inode);
+ 	unsigned long suitable_orders = 0;
+ 	struct folio *folio = NULL;
++	pgoff_t aligned_index;
+ 	long pages;
+ 	int error, order;
+ 
+@@ -1895,10 +1896,12 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
+ 		order = highest_order(suitable_orders);
+ 		while (suitable_orders) {
+ 			pages = 1UL << order;
+-			index = round_down(index, pages);
+-			folio = shmem_alloc_folio(gfp, order, info, index);
+-			if (folio)
++			aligned_index = round_down(index, pages);
++			folio = shmem_alloc_folio(gfp, order, info, aligned_index);
++			if (folio) {
++				index = aligned_index;
+ 				goto allocated;
++			}
+ 
+ 			if (pages == HPAGE_PMD_NR)
+ 				count_vm_event(THP_FILE_FALLBACK);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.51.0
 
 
